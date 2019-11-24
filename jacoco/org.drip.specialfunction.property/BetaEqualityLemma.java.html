@@ -6,41 +6,53 @@ package org.drip.specialfunction.property;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -90,16 +102,16 @@ package org.drip.specialfunction.property;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md&quot;&gt;Function Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Analysis&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md&quot;&gt;Special Function Property Lemma Verifiers&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L102">public class BetaEqualityLemma</span>
+<span class="nc" id="L114">public class BetaEqualityLemma</span>
 {
 
 	/**
@@ -110,51 +122,51 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R2ToR1Property Identity1()
 	{
-<span class="nc" id="L113">		final org.drip.specialfunction.beta.SummationSeriesEstimator summationSeries =</span>
-<span class="nc" id="L114">			org.drip.specialfunction.beta.SummationSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
+<span class="nc" id="L125">		final org.drip.specialfunction.beta.SummationSeriesEstimator summationSeries =</span>
+<span class="nc" id="L126">			org.drip.specialfunction.beta.SummationSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
 
 		try
 		{
-<span class="nc" id="L118">			return new org.drip.function.definition.R2ToR1Property (</span>
+<span class="nc" id="L130">			return new org.drip.function.definition.R2ToR1Property (</span>
 				org.drip.function.definition.RxToR1Property.EQ,
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L121">				{</span>
+<span class="nc" id="L133">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double y)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L127" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L128" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. &gt;= y)</span>
+<span class="nc bnc" id="L139" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L140" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. &gt;= y)</span>
 						{
-<span class="nc" id="L130">							throw new java.lang.Exception</span>
+<span class="nc" id="L142">							throw new java.lang.Exception</span>
 								(&quot;BetaEqualityLemma::Identity1::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L134">						return summationSeries.evaluate (</span>
+<span class="nc" id="L146">						return summationSeries.evaluate (</span>
 							x,
 							y
 						);
 					}
 				},
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L141">				{</span>
+<span class="nc" id="L153">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double y)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L147" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L148" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. &gt;= y)</span>
+<span class="nc bnc" id="L159" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L160" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. &gt;= y)</span>
 						{
-<span class="nc" id="L150">							throw new java.lang.Exception</span>
+<span class="nc" id="L162">							throw new java.lang.Exception</span>
 								(&quot;BetaEqualityLemma::Identity1::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L154">						return summationSeries.evaluate (</span>
+<span class="nc" id="L166">						return summationSeries.evaluate (</span>
 							x + 1,
 							y
-<span class="nc" id="L157">						) + summationSeries.evaluate (</span>
+<span class="nc" id="L169">						) + summationSeries.evaluate (</span>
 							x,
 							y + 1
 						);
@@ -163,12 +175,12 @@ package org.drip.specialfunction.property;
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L166">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L178">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L168">			e.printStackTrace();</span>
+<span class="nc" id="L180">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L171">		return null;</span>
+<span class="nc" id="L183">		return null;</span>
 	}
 
 	/**
@@ -179,48 +191,48 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R2ToR1Property Identity2()
 	{
-<span class="nc" id="L182">		final org.drip.specialfunction.beta.SummationSeriesEstimator summationSeries =</span>
-<span class="nc" id="L183">			org.drip.specialfunction.beta.SummationSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
+<span class="nc" id="L194">		final org.drip.specialfunction.beta.SummationSeriesEstimator summationSeries =</span>
+<span class="nc" id="L195">			org.drip.specialfunction.beta.SummationSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
 
 		try
 		{
-<span class="nc" id="L187">			return new org.drip.function.definition.R2ToR1Property (</span>
+<span class="nc" id="L199">			return new org.drip.function.definition.R2ToR1Property (</span>
 				org.drip.function.definition.RxToR1Property.EQ,
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L190">				{</span>
+<span class="nc" id="L202">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double y)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L196" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L197" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. &gt;= y)</span>
+<span class="nc bnc" id="L208" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L209" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. &gt;= y)</span>
 						{
-<span class="nc" id="L199">							throw new java.lang.Exception</span>
+<span class="nc" id="L211">							throw new java.lang.Exception</span>
 								(&quot;BetaEqualityLemma::Identity2::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L203">						return summationSeries.evaluate (</span>
+<span class="nc" id="L215">						return summationSeries.evaluate (</span>
 							x + 1,
 							y
 						);
 					}
 				},
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L210">				{</span>
+<span class="nc" id="L222">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double y)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L216" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L217" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. &gt;= y)</span>
+<span class="nc bnc" id="L228" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L229" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. &gt;= y)</span>
 						{
-<span class="nc" id="L219">							throw new java.lang.Exception</span>
+<span class="nc" id="L231">							throw new java.lang.Exception</span>
 								(&quot;BetaEqualityLemma::Identity2::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L223">						return summationSeries.evaluate (</span>
+<span class="nc" id="L235">						return summationSeries.evaluate (</span>
 							x,
 							y
 						) * x / (x + y);
@@ -229,12 +241,12 @@ package org.drip.specialfunction.property;
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L232">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L244">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L234">			e.printStackTrace();</span>
+<span class="nc" id="L246">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L237">		return null;</span>
+<span class="nc" id="L249">		return null;</span>
 	}
 
 	/**
@@ -245,48 +257,48 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R2ToR1Property Identity3()
 	{
-<span class="nc" id="L248">		final org.drip.specialfunction.beta.SummationSeriesEstimator summationSeries =</span>
-<span class="nc" id="L249">			org.drip.specialfunction.beta.SummationSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
+<span class="nc" id="L260">		final org.drip.specialfunction.beta.SummationSeriesEstimator summationSeries =</span>
+<span class="nc" id="L261">			org.drip.specialfunction.beta.SummationSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
 
 		try
 		{
-<span class="nc" id="L253">			return new org.drip.function.definition.R2ToR1Property (</span>
+<span class="nc" id="L265">			return new org.drip.function.definition.R2ToR1Property (</span>
 				org.drip.function.definition.RxToR1Property.EQ,
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L256">				{</span>
+<span class="nc" id="L268">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double y)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L262" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L263" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. &gt;= y)</span>
+<span class="nc bnc" id="L274" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L275" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. &gt;= y)</span>
 						{
-<span class="nc" id="L265">							throw new java.lang.Exception</span>
+<span class="nc" id="L277">							throw new java.lang.Exception</span>
 								(&quot;BetaEqualityLemma::Identity3::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L269">						return summationSeries.evaluate (</span>
+<span class="nc" id="L281">						return summationSeries.evaluate (</span>
 							x,
 							y + 1
 						);
 					}
 				},
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L276">				{</span>
+<span class="nc" id="L288">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double y)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L282" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L283" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. &gt;= y)</span>
+<span class="nc bnc" id="L294" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L295" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. &gt;= y)</span>
 						{
-<span class="nc" id="L285">							throw new java.lang.Exception</span>
+<span class="nc" id="L297">							throw new java.lang.Exception</span>
 								(&quot;BetaEqualityLemma::Identity3::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L289">						return summationSeries.evaluate (</span>
+<span class="nc" id="L301">						return summationSeries.evaluate (</span>
 							x,
 							y
 						) * y / (x + y);
@@ -295,12 +307,12 @@ package org.drip.specialfunction.property;
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L298">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L310">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L300">			e.printStackTrace();</span>
+<span class="nc" id="L312">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L303">		return null;</span>
+<span class="nc" id="L315">		return null;</span>
 	}
 
 	/**
@@ -311,62 +323,62 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R2ToR1Property Identity4()
 	{
-<span class="nc" id="L314">		final org.drip.specialfunction.beta.SummationSeriesEstimator summationSeries =</span>
-<span class="nc" id="L315">			org.drip.specialfunction.beta.SummationSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
+<span class="nc" id="L326">		final org.drip.specialfunction.beta.SummationSeriesEstimator summationSeries =</span>
+<span class="nc" id="L327">			org.drip.specialfunction.beta.SummationSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
 
 		try
 		{
-<span class="nc" id="L319">			return new org.drip.function.definition.R2ToR1Property (</span>
+<span class="nc" id="L331">			return new org.drip.function.definition.R2ToR1Property (</span>
 				org.drip.function.definition.RxToR1Property.EQ,
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L322">				{</span>
+<span class="nc" id="L334">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double y)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L328" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L329" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. &gt;= y)</span>
+<span class="nc bnc" id="L340" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L341" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. &gt;= y)</span>
 						{
-<span class="nc" id="L331">							throw new java.lang.Exception</span>
+<span class="nc" id="L343">							throw new java.lang.Exception</span>
 								(&quot;BetaEqualityLemma::Identity4::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L335">						return summationSeries.evaluate (</span>
+<span class="nc" id="L347">						return summationSeries.evaluate (</span>
 							x,
 							y
-<span class="nc" id="L338">						) * summationSeries.evaluate (</span>
+<span class="nc" id="L350">						) * summationSeries.evaluate (</span>
 							x + y,
 							1. - y
 						);
 					}
 				},
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L345">				{</span>
+<span class="nc" id="L357">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double y)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L351" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L352" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. &gt;= y)</span>
+<span class="nc bnc" id="L363" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L364" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. &gt;= y)</span>
 						{
-<span class="nc" id="L354">							throw new java.lang.Exception</span>
+<span class="nc" id="L366">							throw new java.lang.Exception</span>
 								(&quot;BetaEqualityLemma::Identity4::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L358">						return java.lang.Math.PI / (x * java.lang.Math.sin (java.lang.Math.PI * y));</span>
+<span class="nc" id="L370">						return java.lang.Math.PI / (x * java.lang.Math.sin (java.lang.Math.PI * y));</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L364">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L376">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L366">			e.printStackTrace();</span>
+<span class="nc" id="L378">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L369">		return null;</span>
+<span class="nc" id="L381">		return null;</span>
 	}
 
 	/**
@@ -377,55 +389,55 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R1ToR1Property Identity5()
 	{
-<span class="nc" id="L380">		final org.drip.specialfunction.beta.SummationSeriesEstimator summationSeries =</span>
-<span class="nc" id="L381">			org.drip.specialfunction.beta.SummationSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
+<span class="nc" id="L392">		final org.drip.specialfunction.beta.SummationSeriesEstimator summationSeries =</span>
+<span class="nc" id="L393">			org.drip.specialfunction.beta.SummationSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
 
 		try
 		{
-<span class="nc" id="L385">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L397">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.EQ,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L388">				{</span>
+<span class="nc" id="L400">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L393" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. &gt;= z)</span>
+<span class="nc bnc" id="L405" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. &gt;= z)</span>
 						{
-<span class="nc" id="L395">							throw new java.lang.Exception</span>
+<span class="nc" id="L407">							throw new java.lang.Exception</span>
 								(&quot;BetaEqualityLemma::Identity5::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L399">						return summationSeries.evaluate (</span>
+<span class="nc" id="L411">						return summationSeries.evaluate (</span>
 							z,
 							1. - z
 						);
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L406">				{</span>
+<span class="nc" id="L418">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L411" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. &gt;= z)</span>
+<span class="nc bnc" id="L423" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. &gt;= z)</span>
 						{
-<span class="nc" id="L413">							throw new java.lang.Exception</span>
+<span class="nc" id="L425">							throw new java.lang.Exception</span>
 								(&quot;BetaEqualityLemma::Identity5::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L417">						return java.lang.Math.PI / java.lang.Math.sin (java.lang.Math.PI * z);</span>
+<span class="nc" id="L429">						return java.lang.Math.PI / java.lang.Math.sin (java.lang.Math.PI * z);</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L423">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L435">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L425">			e.printStackTrace();</span>
+<span class="nc" id="L437">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L428">		return null;</span>
+<span class="nc" id="L440">		return null;</span>
 	}
 
 	/**
@@ -436,55 +448,55 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R1ToR1Property Identity6()
 	{
-<span class="nc" id="L439">		final org.drip.specialfunction.beta.SummationSeriesEstimator summationSeries =</span>
-<span class="nc" id="L440">			org.drip.specialfunction.beta.SummationSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
+<span class="nc" id="L451">		final org.drip.specialfunction.beta.SummationSeriesEstimator summationSeries =</span>
+<span class="nc" id="L452">			org.drip.specialfunction.beta.SummationSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
 
 		try
 		{
-<span class="nc" id="L444">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L456">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.EQ,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L447">				{</span>
+<span class="nc" id="L459">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L452" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. &gt;= z)</span>
+<span class="nc bnc" id="L464" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. &gt;= z)</span>
 						{
-<span class="nc" id="L454">							throw new java.lang.Exception</span>
+<span class="nc" id="L466">							throw new java.lang.Exception</span>
 								(&quot;BetaEqualityLemma::Identity6::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L458">						return summationSeries.evaluate (</span>
+<span class="nc" id="L470">						return summationSeries.evaluate (</span>
 							1.,
 							z
 						);
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L465">				{</span>
+<span class="nc" id="L477">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L470" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. &gt;= z)</span>
+<span class="nc bnc" id="L482" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. &gt;= z)</span>
 						{
-<span class="nc" id="L472">							throw new java.lang.Exception</span>
+<span class="nc" id="L484">							throw new java.lang.Exception</span>
 								(&quot;BetaEqualityLemma::Identity6::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L476">						return 1. / z;</span>
+<span class="nc" id="L488">						return 1. / z;</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L482">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L494">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L484">			e.printStackTrace();</span>
+<span class="nc" id="L496">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L487">		return null;</span>
+<span class="nc" id="L499">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

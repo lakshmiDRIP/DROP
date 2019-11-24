@@ -6,41 +6,53 @@ package org.drip.specialfunction.property;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -92,16 +104,16 @@ package org.drip.specialfunction.property;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md&quot;&gt;Function Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Analysis&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md&quot;&gt;Special Function Property Lemma Verifiers&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L104">public class GammaInequalityLemma</span>
+<span class="nc" id="L116">public class GammaInequalityLemma</span>
 {
 
 	/**
@@ -115,56 +127,56 @@ package org.drip.specialfunction.property;
 	public static final org.drip.function.definition.R1ToR1Property AsymptoticUpperApproximate (
 		final double alpha)
 	{
-<span class="nc bnc" id="L118" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (alpha))</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (alpha))</span>
 		{
-<span class="nc" id="L120">			return null;</span>
+<span class="nc" id="L132">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L125">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L137">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.GTE,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L128">				{</span>
+<span class="nc" id="L140">				{</span>
 					@Override public double evaluate (
 						final double s)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L133" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (s))</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (s))</span>
 						{
-<span class="nc" id="L135">							throw new java.lang.Exception</span>
+<span class="nc" id="L147">							throw new java.lang.Exception</span>
 								(&quot;GammaInequalityLemma::AsymptoticUpperApproximate::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L139">						return org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400).evaluate </span>
-<span class="nc" id="L140">							(s + alpha);</span>
+<span class="nc" id="L151">						return org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400).evaluate </span>
+<span class="nc" id="L152">							(s + alpha);</span>
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L144">				{</span>
+<span class="nc" id="L156">				{</span>
 					@Override public double evaluate (
 						final double s)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L149" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (s))</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (s))</span>
 						{
-<span class="nc" id="L151">							throw new java.lang.Exception</span>
+<span class="nc" id="L163">							throw new java.lang.Exception</span>
 								(&quot;GammaInequalityLemma::AsymptoticUpperApproximate::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L155">						return alpha * java.lang.Math.log (s)  +</span>
-<span class="nc" id="L156">							org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400).evaluate (s);</span>
+<span class="nc" id="L167">						return alpha * java.lang.Math.log (s)  +</span>
+<span class="nc" id="L168">							org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400).evaluate (s);</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L162">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L174">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L164">			e.printStackTrace();</span>
+<span class="nc" id="L176">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L167">		return null;</span>
+<span class="nc" id="L179">		return null;</span>
 	}
 
 	/**
@@ -180,59 +192,59 @@ package org.drip.specialfunction.property;
 		final double z1,
 		final double z2)
 	{
-<span class="nc bnc" id="L183" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (z1) ||</span>
-<span class="nc bnc" id="L184" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (z2))</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (z1) ||</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (z2))</span>
 		{
-<span class="nc" id="L186">			return null;</span>
+<span class="nc" id="L198">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L191">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L203">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.LTE,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L194">				{</span>
+<span class="nc" id="L206">				{</span>
 					@Override public double evaluate (
 						final double t)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L199" title="All 6 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (t) || 0. &gt; t || 1. &lt; t)</span>
+<span class="nc bnc" id="L211" title="All 6 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (t) || 0. &gt; t || 1. &lt; t)</span>
 						{
-<span class="nc" id="L201">							throw new java.lang.Exception</span>
+<span class="nc" id="L213">							throw new java.lang.Exception</span>
 								(&quot;GammaInequalityLemma::ExponentiallyConvex::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L205">						return org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400).evaluate</span>
-<span class="nc" id="L206">							(t * z1 + (1. - t) * z2);</span>
+<span class="nc" id="L217">						return org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400).evaluate</span>
+<span class="nc" id="L218">							(t * z1 + (1. - t) * z2);</span>
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L210">				{</span>
+<span class="nc" id="L222">				{</span>
 					@Override public double evaluate (
 						final double t)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L215" title="All 6 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (t) || 0. &gt; t || 1. &lt; t)</span>
+<span class="nc bnc" id="L227" title="All 6 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (t) || 0. &gt; t || 1. &lt; t)</span>
 						{
-<span class="nc" id="L217">							throw new java.lang.Exception</span>
+<span class="nc" id="L229">							throw new java.lang.Exception</span>
 								(&quot;GammaInequalityLemma::ExponentiallyConvex::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L221">						org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =</span>
-<span class="nc" id="L222">							org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);</span>
+<span class="nc" id="L233">						org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =</span>
+<span class="nc" id="L234">							org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);</span>
 
-<span class="nc" id="L224">						return t * weierStrass.evaluate (z1) + (1. - t) * weierStrass.evaluate (z2);</span>
+<span class="nc" id="L236">						return t * weierStrass.evaluate (z1) + (1. - t) * weierStrass.evaluate (z2);</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L230">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L242">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L232">			e.printStackTrace();</span>
+<span class="nc" id="L244">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L235">		return null;</span>
+<span class="nc" id="L247">		return null;</span>
 	}
 
 	/**
@@ -246,65 +258,65 @@ package org.drip.specialfunction.property;
 	public static final org.drip.function.definition.R1ToR1Property SpacedPointConvex (
 		final double y)
 	{
-<span class="nc bnc" id="L249" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (y))</span>
+<span class="nc bnc" id="L261" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (y))</span>
 		{
-<span class="nc" id="L251">			return null;</span>
+<span class="nc" id="L263">			return null;</span>
 		}
 
-<span class="nc" id="L254">		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =</span>
-<span class="nc" id="L255">			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);</span>
+<span class="nc" id="L266">		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =</span>
+<span class="nc" id="L267">			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);</span>
 
 		try
 		{
-<span class="nc" id="L259">			final double logGammaY = weierStrass.evaluate (y);</span>
+<span class="nc" id="L271">			final double logGammaY = weierStrass.evaluate (y);</span>
 
-<span class="nc" id="L261">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L273">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.GT,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L264">				{</span>
+<span class="nc" id="L276">				{</span>
 					@Override public double evaluate (
 						final double x)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L269" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || x &gt;= y)</span>
+<span class="nc bnc" id="L281" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || x &gt;= y)</span>
 						{
-<span class="nc" id="L271">							throw new java.lang.Exception</span>
+<span class="nc" id="L283">							throw new java.lang.Exception</span>
 								(&quot;GammaInequalityLemma::SpacedPointConvex::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L275">						return (logGammaY - weierStrass.evaluate (x)) / (y - x);</span>
+<span class="nc" id="L287">						return (logGammaY - weierStrass.evaluate (x)) / (y - x);</span>
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L279">				{</span>
+<span class="nc" id="L291">				{</span>
 					@Override public double evaluate (
 						final double x)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L284" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
+<span class="nc bnc" id="L296" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
 						{
-<span class="nc" id="L286">							throw new java.lang.Exception</span>
+<span class="nc" id="L298">							throw new java.lang.Exception</span>
 								(&quot;GammaInequalityLemma::SpacedPointConvex::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L290">						org.drip.specialfunction.gamma.EulerIntegralSecondKind eulerIntegralSecondKind =</span>
+<span class="nc" id="L302">						org.drip.specialfunction.gamma.EulerIntegralSecondKind eulerIntegralSecondKind =</span>
 							new org.drip.specialfunction.gamma.EulerIntegralSecondKind (null);
 
-<span class="nc" id="L293">						return eulerIntegralSecondKind.derivative (</span>
+<span class="nc" id="L305">						return eulerIntegralSecondKind.derivative (</span>
 							x,
 							1
-<span class="nc" id="L296">						) - weierStrass.evaluate (x);</span>
+<span class="nc" id="L308">						) - weierStrass.evaluate (x);</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L302">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L314">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L304">			e.printStackTrace();</span>
+<span class="nc" id="L316">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L307">		return null;</span>
+<span class="nc" id="L319">		return null;</span>
 	}
 
 	/**
@@ -315,47 +327,47 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R1ToR1Property LogarithmicConvex()
 	{
-<span class="nc" id="L318">		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =</span>
-<span class="nc" id="L319">			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);</span>
+<span class="nc" id="L330">		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =</span>
+<span class="nc" id="L331">			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);</span>
 
 		try
 		{
-<span class="nc" id="L323">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L335">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.GT,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L326">				{</span>
+<span class="nc" id="L338">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L331" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L343" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L333">							throw new java.lang.Exception</span>
+<span class="nc" id="L345">							throw new java.lang.Exception</span>
 								(&quot;GammaInequalityLemma::LogarithmicConvex::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L337">						return java.lang.Math.log (</span>
-<span class="nc" id="L338">							new org.drip.specialfunction.gamma.EulerIntegralSecondKind (null).derivative (</span>
+<span class="nc" id="L349">						return java.lang.Math.log (</span>
+<span class="nc" id="L350">							new org.drip.specialfunction.gamma.EulerIntegralSecondKind (null).derivative (</span>
 								z,
 								2
 							)
-<span class="nc" id="L342">						) + weierStrass.evaluate (z);</span>
+<span class="nc" id="L354">						) + weierStrass.evaluate (z);</span>
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L346">				{</span>
+<span class="nc" id="L358">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L351" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L363" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L353">							throw new java.lang.Exception</span>
+<span class="nc" id="L365">							throw new java.lang.Exception</span>
 								(&quot;GammaInequalityLemma::LogarithmicConvex::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L357">						return java.lang.Math.log (</span>
-<span class="nc" id="L358">							new org.drip.specialfunction.gamma.EulerIntegralSecondKind (null).derivative (</span>
+<span class="nc" id="L369">						return java.lang.Math.log (</span>
+<span class="nc" id="L370">							new org.drip.specialfunction.gamma.EulerIntegralSecondKind (null).derivative (</span>
 								z,
 								1
 							)
@@ -365,12 +377,12 @@ package org.drip.specialfunction.property;
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L368">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L380">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L370">			e.printStackTrace();</span>
+<span class="nc" id="L382">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L373">		return null;</span>
+<span class="nc" id="L385">		return null;</span>
 	}
 
 	/**
@@ -384,57 +396,57 @@ package org.drip.specialfunction.property;
 	public static final org.drip.function.definition.R1ToR1Property GautschiLeft (
 		final double s)
 	{
-<span class="nc bnc" id="L387" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (s) || 0. &gt;= s || 1. &lt;= s)</span>
+<span class="nc bnc" id="L399" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (s) || 0. &gt;= s || 1. &lt;= s)</span>
 		{
-<span class="nc" id="L389">			return null;</span>
+<span class="nc" id="L401">			return null;</span>
 		}
 
-<span class="nc" id="L392">		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =</span>
-<span class="nc" id="L393">			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);</span>
+<span class="nc" id="L404">		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =</span>
+<span class="nc" id="L405">			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);</span>
 
 		try
 		{
-<span class="nc" id="L397">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L409">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.LT,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L400">				{</span>
+<span class="nc" id="L412">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L405" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L417" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L407">							throw new java.lang.Exception</span>
+<span class="nc" id="L419">							throw new java.lang.Exception</span>
 								(&quot;GammaInequalityLemma::GautschiLeft::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L411">						return (1. - s) * java.lang.Math.log (z);</span>
+<span class="nc" id="L423">						return (1. - s) * java.lang.Math.log (z);</span>
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L415">				{</span>
+<span class="nc" id="L427">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L420" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L432" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L422">							throw new java.lang.Exception</span>
+<span class="nc" id="L434">							throw new java.lang.Exception</span>
 								(&quot;GammaInequalityLemma::GautschiLeft::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L426">						return weierStrass.evaluate (z + 1) - weierStrass.evaluate (z + s);</span>
+<span class="nc" id="L438">						return weierStrass.evaluate (z + 1) - weierStrass.evaluate (z + s);</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L432">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L444">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L434">			e.printStackTrace();</span>
+<span class="nc" id="L446">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L437">		return null;</span>
+<span class="nc" id="L449">		return null;</span>
 	}
 
 	/**
@@ -448,57 +460,57 @@ package org.drip.specialfunction.property;
 	public static final org.drip.function.definition.R1ToR1Property GautschiRight (
 		final double s)
 	{
-<span class="nc bnc" id="L451" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (s) || 0. &gt;= s || 1. &lt;= s)</span>
+<span class="nc bnc" id="L463" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (s) || 0. &gt;= s || 1. &lt;= s)</span>
 		{
-<span class="nc" id="L453">			return null;</span>
+<span class="nc" id="L465">			return null;</span>
 		}
 
-<span class="nc" id="L456">		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =</span>
-<span class="nc" id="L457">			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);</span>
+<span class="nc" id="L468">		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =</span>
+<span class="nc" id="L469">			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);</span>
 
 		try
 		{
-<span class="nc" id="L461">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L473">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.LT,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L464">				{</span>
+<span class="nc" id="L476">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L469" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L481" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L471">							throw new java.lang.Exception</span>
+<span class="nc" id="L483">							throw new java.lang.Exception</span>
 								(&quot;GammaInequalityLemma::GautschiRight::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L475">						return weierStrass.evaluate (z + 1) - weierStrass.evaluate (z + s);</span>
+<span class="nc" id="L487">						return weierStrass.evaluate (z + 1) - weierStrass.evaluate (z + s);</span>
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L479">				{</span>
+<span class="nc" id="L491">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L484" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L496" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L486">							throw new java.lang.Exception</span>
+<span class="nc" id="L498">							throw new java.lang.Exception</span>
 								(&quot;GammaInequalityLemma::GautschiRight::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L490">						return (1. - s) * java.lang.Math.log (z + 1.);</span>
+<span class="nc" id="L502">						return (1. - s) * java.lang.Math.log (z + 1.);</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L496">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L508">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L498">			e.printStackTrace();</span>
+<span class="nc" id="L510">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L501">		return null;</span>
+<span class="nc" id="L513">		return null;</span>
 	}
 
 	/**
@@ -512,52 +524,52 @@ package org.drip.specialfunction.property;
 	public static final org.drip.function.definition.R1PropertyVerification JensenMultiPointInterpolant (
 		final org.drip.numerical.common.Array2D multiPoint2D)
 	{
-<span class="nc bnc" id="L515" title="All 2 branches missed.">		if (null == multiPoint2D)</span>
+<span class="nc bnc" id="L527" title="All 2 branches missed.">		if (null == multiPoint2D)</span>
 		{
-<span class="nc" id="L517">			return null;</span>
+<span class="nc" id="L529">			return null;</span>
 		}
 
-<span class="nc" id="L520">		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =</span>
-<span class="nc" id="L521">			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);</span>
+<span class="nc" id="L532">		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =</span>
+<span class="nc" id="L533">			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);</span>
 
-<span class="nc" id="L523">		double[] xArray = multiPoint2D.x();</span>
+<span class="nc" id="L535">		double[] xArray = multiPoint2D.x();</span>
 
-<span class="nc" id="L525">		double[] aArray = multiPoint2D.y();</span>
+<span class="nc" id="L537">		double[] aArray = multiPoint2D.y();</span>
 
-<span class="nc" id="L527">		double interpolantDenominator = 0.;</span>
-<span class="nc" id="L528">		double interpolantNumerator = 0.;</span>
-<span class="nc" id="L529">		int count = aArray.length;</span>
-<span class="nc" id="L530">		double rValue = 0.;</span>
+<span class="nc" id="L539">		double interpolantDenominator = 0.;</span>
+<span class="nc" id="L540">		double interpolantNumerator = 0.;</span>
+<span class="nc" id="L541">		int count = aArray.length;</span>
+<span class="nc" id="L542">		double rValue = 0.;</span>
 
-<span class="nc bnc" id="L532" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+<span class="nc bnc" id="L544" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
 		{
-<span class="nc" id="L534">			interpolantNumerator = interpolantNumerator + aArray[index] * xArray[index];</span>
-<span class="nc" id="L535">			interpolantDenominator = interpolantDenominator + aArray[index];</span>
+<span class="nc" id="L546">			interpolantNumerator = interpolantNumerator + aArray[index] * xArray[index];</span>
+<span class="nc" id="L547">			interpolantDenominator = interpolantDenominator + aArray[index];</span>
 		}
 
-<span class="nc" id="L538">		double interpolantDenominatorInverse = 1. / interpolantDenominator;</span>
+<span class="nc" id="L550">		double interpolantDenominatorInverse = 1. / interpolantDenominator;</span>
 
 		try
 		{
-<span class="nc" id="L542">			double lValue = weierStrass.evaluate (interpolantNumerator* interpolantDenominatorInverse);</span>
+<span class="nc" id="L554">			double lValue = weierStrass.evaluate (interpolantNumerator* interpolantDenominatorInverse);</span>
 
-<span class="nc bnc" id="L544" title="All 2 branches missed.">			for (int index = 0; index &lt; count; ++index)</span>
+<span class="nc bnc" id="L556" title="All 2 branches missed.">			for (int index = 0; index &lt; count; ++index)</span>
 			{
-<span class="nc" id="L546">				rValue = rValue + aArray[index] * weierStrass.evaluate (xArray[index]);</span>
+<span class="nc" id="L558">				rValue = rValue + aArray[index] * weierStrass.evaluate (xArray[index]);</span>
 			}
 
-<span class="nc bnc" id="L549" title="All 2 branches missed.">			return new org.drip.function.definition.R1PropertyVerification (</span>
+<span class="nc bnc" id="L561" title="All 2 branches missed.">			return new org.drip.function.definition.R1PropertyVerification (</span>
 				lValue,
 				rValue = rValue * interpolantDenominatorInverse,
 				lValue &lt;= rValue
 			);
 		}
-<span class="nc" id="L555">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L567">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L557">			e.printStackTrace();</span>
+<span class="nc" id="L569">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L560">		return null;</span>
+<span class="nc" id="L572">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,41 +6,53 @@ package org.drip.specialfunction.ode;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -93,9 +105,9 @@ package org.drip.specialfunction.ode;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Project&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md&quot;&gt;Function Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Analysis&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md&quot;&gt;Special Function Ordinary Differential Equations&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
@@ -104,8 +116,8 @@ package org.drip.specialfunction.ode;
 
 public class HilleQForm2F1 extends org.drip.specialfunction.ode.SecondOrder
 {
-<span class="nc" id="L107">	private org.drip.function.definition.R1ToR1 _q = null;</span>
-<span class="nc" id="L108">	private org.drip.function.definition.R1ToR1 _v = null;</span>
+<span class="nc" id="L119">	private org.drip.function.definition.R1ToR1 _q = null;</span>
+<span class="nc" id="L120">	private org.drip.function.definition.R1ToR1 _v = null;</span>
 
 	/**
 	 * Construct the Hille Q-Form of 2F1 ODE
@@ -122,89 +134,89 @@ public class HilleQForm2F1 extends org.drip.specialfunction.ode.SecondOrder
 		final double b,
 		final double c)
 	{
-<span class="nc bnc" id="L125" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (a) ||</span>
-<span class="nc bnc" id="L126" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (b) ||</span>
-<span class="nc bnc" id="L127" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (c))</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (a) ||</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (b) ||</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (c))</span>
 		{
-<span class="nc" id="L129">			return null;</span>
+<span class="nc" id="L141">			return null;</span>
 		}
 
-<span class="nc" id="L132">		final org.drip.function.definition.R1ToR1 q = new org.drip.function.definition.R1ToR1 (null)</span>
-<span class="nc" id="L133">		{</span>
+<span class="nc" id="L144">		final org.drip.function.definition.R1ToR1 q = new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="nc" id="L145">		{</span>
 			@Override public double evaluate (
 				final double z)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L138" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 				{
-<span class="nc" id="L140">					throw new java.lang.Exception</span>
+<span class="nc" id="L152">					throw new java.lang.Exception</span>
 						(&quot;HilleQForm2F1::Standard::q::evaluate =&gt; Invalid Inputs&quot;);
 				}
 
-<span class="nc" id="L144">				double aMinusB = a - b;</span>
-<span class="nc" id="L145">				double zMinus1 = z - 1.;</span>
+<span class="nc" id="L156">				double aMinusB = a - b;</span>
+<span class="nc" id="L157">				double zMinus1 = z - 1.;</span>
 
-<span class="nc" id="L147">				return (z * z * (1. - aMinusB * aMinusB) + z * (2. * c * (a + b - 1.) - 4. * a * b) + c *</span>
+<span class="nc" id="L159">				return (z * z * (1. - aMinusB * aMinusB) + z * (2. * c * (a + b - 1.) - 4. * a * b) + c *</span>
 					(2. - c)) / (4. * z * z * zMinus1 * zMinus1);
 			}
 		};
 
 		try
 		{
-<span class="nc" id="L154">			return new HilleQForm2F1 (</span>
+<span class="nc" id="L166">			return new HilleQForm2F1 (</span>
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L156">				{</span>
+<span class="nc" id="L168">				{</span>
 					@Override public double evaluate (
 						final double z,
 						final double u)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L162">						return 1.;</span>
+<span class="nc" id="L174">						return 1.;</span>
 					}
 				},
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L166">				{</span>
+<span class="nc" id="L178">				{</span>
 					@Override public double evaluate (
 						final double z,
 						final double w)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L172">						return 0.;</span>
+<span class="nc" id="L184">						return 0.;</span>
 					}
 				},
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L176">				{</span>
+<span class="nc" id="L188">				{</span>
 					@Override public double evaluate (
 						final double z,
 						final double u)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L182" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (u))</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (u))</span>
 						{
-<span class="nc" id="L184">							throw new java.lang.Exception</span>
+<span class="nc" id="L196">							throw new java.lang.Exception</span>
 								(&quot;HilleQForm2F1::Standard::ZeroOrder::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L188">						return q.evaluate (z) * u;</span>
+<span class="nc" id="L200">						return q.evaluate (z) * u;</span>
 					}
 				},
 				q,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L193">				{</span>
+<span class="nc" id="L205">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L198" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L200">							throw new java.lang.Exception</span>
+<span class="nc" id="L212">							throw new java.lang.Exception</span>
 								(&quot;HilleQForm2F1::Standard::v::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L204">						return java.lang.Math.pow (</span>
+<span class="nc" id="L216">						return java.lang.Math.pow (</span>
 							z,
 							-0.5 * c
-<span class="nc" id="L207">						) * java.lang.Math.pow (</span>
+<span class="nc" id="L219">						) * java.lang.Math.pow (</span>
 							1. - z,
 							0.5 * (c - a - b - 1.)
 						);
@@ -212,12 +224,12 @@ public class HilleQForm2F1 extends org.drip.specialfunction.ode.SecondOrder
 				}
 			);
 		}
-<span class="nc" id="L215">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L227">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L217">			e.printStackTrace();</span>
+<span class="nc" id="L229">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L220">		return null;</span>
+<span class="nc" id="L232">		return null;</span>
 	}
 
 	private HilleQForm2F1 (
@@ -228,18 +240,18 @@ public class HilleQForm2F1 extends org.drip.specialfunction.ode.SecondOrder
 		final org.drip.function.definition.R1ToR1 v)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L231">		super (</span>
+<span class="nc" id="L243">		super (</span>
 			secondDerivativeCoefficient,
 			firstDerivativeCoefficient,
 			zeroDerivativeCoefficient
 		);
 
-<span class="nc bnc" id="L237" title="All 4 branches missed.">		if (null == (_q = q) ||</span>
+<span class="nc bnc" id="L249" title="All 4 branches missed.">		if (null == (_q = q) ||</span>
 			null == (_v = v))
 		{
-<span class="nc" id="L240">			throw new java.lang.Exception (&quot;HilleQForm2F1 Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L252">			throw new java.lang.Exception (&quot;HilleQForm2F1 Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L242">	}</span>
+<span class="nc" id="L254">	}</span>
 
 	/**
 	 * Retrieve the Q Form Function
@@ -249,7 +261,7 @@ public class HilleQForm2F1 extends org.drip.specialfunction.ode.SecondOrder
 
 	public org.drip.function.definition.R1ToR1 q()
 	{
-<span class="nc" id="L252">		return _q;</span>
+<span class="nc" id="L264">		return _q;</span>
 	}
 
 	/**
@@ -260,7 +272,7 @@ public class HilleQForm2F1 extends org.drip.specialfunction.ode.SecondOrder
 
 	public org.drip.function.definition.R1ToR1 v()
 	{
-<span class="nc" id="L263">		return _v;</span>
+<span class="nc" id="L275">		return _v;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

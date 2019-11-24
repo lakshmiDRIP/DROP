@@ -6,41 +6,53 @@ package org.drip.specialfunction.hypergeometric;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -93,10 +105,10 @@ package org.drip.specialfunction.hypergeometric;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md&quot;&gt;Definition of Special Function Estimators&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md&quot;&gt;Function Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hypergeometric/README.md&quot;&gt;Hyper-geometric Function Estimation Schemes&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -104,13 +116,13 @@ package org.drip.specialfunction.hypergeometric;
 
 public class GaussContiguousRelations
 {
-<span class="nc" id="L107">	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _aPlus = null;</span>
-<span class="nc" id="L108">	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _bPlus = null;</span>
-<span class="nc" id="L109">	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _cPlus = null;</span>
-<span class="nc" id="L110">	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _aMinus = null;</span>
-<span class="nc" id="L111">	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _bMinus = null;</span>
-<span class="nc" id="L112">	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _cMinus = null;</span>
-<span class="nc" id="L113">	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _aPlusBPlusCPlus = null;</span>
+<span class="nc" id="L119">	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _aPlus = null;</span>
+<span class="nc" id="L120">	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _bPlus = null;</span>
+<span class="nc" id="L121">	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _cPlus = null;</span>
+<span class="nc" id="L122">	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _aMinus = null;</span>
+<span class="nc" id="L123">	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _bMinus = null;</span>
+<span class="nc" id="L124">	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _cMinus = null;</span>
+<span class="nc" id="L125">	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _aPlusBPlusCPlus = null;</span>
 
 	/**
 	 * GaussContiguousRelations Constructor
@@ -124,22 +136,22 @@ public class GaussContiguousRelations
 		final org.drip.specialfunction.definition.RegularHypergeometricEstimator
 			regularHypergeometricEstimator)
 		throws java.lang.Exception
-<span class="nc" id="L127">	{</span>
-<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (null == regularHypergeometricEstimator)</span>
+<span class="nc" id="L139">	{</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">		if (null == regularHypergeometricEstimator)</span>
 		{
-<span class="nc" id="L130">			throw new java.lang.Exception (&quot;GaussContiguousRelations Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L142">			throw new java.lang.Exception (&quot;GaussContiguousRelations Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L133">		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =</span>
-<span class="nc" id="L134">			regularHypergeometricEstimator.hypergeometricParameters();</span>
+<span class="nc" id="L145">		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =</span>
+<span class="nc" id="L146">			regularHypergeometricEstimator.hypergeometricParameters();</span>
 
-<span class="nc" id="L136">		double a = hypergeometricParameters.a();</span>
+<span class="nc" id="L148">		double a = hypergeometricParameters.a();</span>
 
-<span class="nc" id="L138">		double b = hypergeometricParameters.b();</span>
+<span class="nc" id="L150">		double b = hypergeometricParameters.b();</span>
 
-<span class="nc" id="L140">		double c = hypergeometricParameters.c();</span>
+<span class="nc" id="L152">		double c = hypergeometricParameters.c();</span>
 
-<span class="nc" id="L142">		_aPlus = regularHypergeometricEstimator.albinate (</span>
+<span class="nc" id="L154">		_aPlus = regularHypergeometricEstimator.albinate (</span>
 			new org.drip.specialfunction.definition.HypergeometricParameters (
 				a + 1,
 				b,
@@ -149,7 +161,7 @@ public class GaussContiguousRelations
 			null
 		);
 
-<span class="nc" id="L152">		_aMinus = regularHypergeometricEstimator.albinate (</span>
+<span class="nc" id="L164">		_aMinus = regularHypergeometricEstimator.albinate (</span>
 			new org.drip.specialfunction.definition.HypergeometricParameters (
 					a - 1,
 					b,
@@ -159,7 +171,7 @@ public class GaussContiguousRelations
 				null
 			);
 
-<span class="nc" id="L162">		_bPlus = regularHypergeometricEstimator.albinate (</span>
+<span class="nc" id="L174">		_bPlus = regularHypergeometricEstimator.albinate (</span>
 			new org.drip.specialfunction.definition.HypergeometricParameters (
 					a,
 					b + 1,
@@ -169,7 +181,7 @@ public class GaussContiguousRelations
 				null
 			);
 
-<span class="nc" id="L172">		_bMinus = regularHypergeometricEstimator.albinate (</span>
+<span class="nc" id="L184">		_bMinus = regularHypergeometricEstimator.albinate (</span>
 			new org.drip.specialfunction.definition.HypergeometricParameters (
 					a,
 					b - 1,
@@ -179,7 +191,7 @@ public class GaussContiguousRelations
 				null
 			);
 
-<span class="nc" id="L182">		_cPlus = regularHypergeometricEstimator.albinate (</span>
+<span class="nc" id="L194">		_cPlus = regularHypergeometricEstimator.albinate (</span>
 			new org.drip.specialfunction.definition.HypergeometricParameters (
 					a,
 					b,
@@ -189,7 +201,7 @@ public class GaussContiguousRelations
 				null
 			);
 
-<span class="nc" id="L192">		_cMinus = regularHypergeometricEstimator.albinate (</span>
+<span class="nc" id="L204">		_cMinus = regularHypergeometricEstimator.albinate (</span>
 			new org.drip.specialfunction.definition.HypergeometricParameters (
 					a,
 					b,
@@ -199,7 +211,7 @@ public class GaussContiguousRelations
 				null
 			);
 
-<span class="nc" id="L202">		_aPlusBPlusCPlus = regularHypergeometricEstimator.albinate (</span>
+<span class="nc" id="L214">		_aPlusBPlusCPlus = regularHypergeometricEstimator.albinate (</span>
 			new org.drip.specialfunction.definition.HypergeometricParameters (
 					a + 1,
 					b + 1,
@@ -208,7 +220,7 @@ public class GaussContiguousRelations
 				null,
 				null
 			);
-<span class="nc" id="L211">	}</span>
+<span class="nc" id="L223">	}</span>
 
 	/**
 	 * Retrieve the a+ Gauss Contiguous Function
@@ -218,7 +230,7 @@ public class GaussContiguousRelations
 
 	public org.drip.specialfunction.definition.RegularHypergeometricEstimator aPlus()
 	{
-<span class="nc" id="L221">		return _aPlus;</span>
+<span class="nc" id="L233">		return _aPlus;</span>
 	}
 
 	/**
@@ -229,7 +241,7 @@ public class GaussContiguousRelations
 
 	public org.drip.specialfunction.definition.RegularHypergeometricEstimator aMinus()
 	{
-<span class="nc" id="L232">		return _aMinus;</span>
+<span class="nc" id="L244">		return _aMinus;</span>
 	}
 
 	/**
@@ -240,7 +252,7 @@ public class GaussContiguousRelations
 
 	public org.drip.specialfunction.definition.RegularHypergeometricEstimator bPlus()
 	{
-<span class="nc" id="L243">		return _bPlus;</span>
+<span class="nc" id="L255">		return _bPlus;</span>
 	}
 
 	/**
@@ -251,7 +263,7 @@ public class GaussContiguousRelations
 
 	public org.drip.specialfunction.definition.RegularHypergeometricEstimator bMinus()
 	{
-<span class="nc" id="L254">		return _bMinus;</span>
+<span class="nc" id="L266">		return _bMinus;</span>
 	}
 
 	/**
@@ -262,7 +274,7 @@ public class GaussContiguousRelations
 
 	public org.drip.specialfunction.definition.RegularHypergeometricEstimator cPlus()
 	{
-<span class="nc" id="L265">		return _cPlus;</span>
+<span class="nc" id="L277">		return _cPlus;</span>
 	}
 
 	/**
@@ -273,7 +285,7 @@ public class GaussContiguousRelations
 
 	public org.drip.specialfunction.definition.RegularHypergeometricEstimator cMinus()
 	{
-<span class="nc" id="L276">		return _cMinus;</span>
+<span class="nc" id="L288">		return _cMinus;</span>
 	}
 
 	/**
@@ -284,7 +296,7 @@ public class GaussContiguousRelations
 
 	public org.drip.specialfunction.definition.RegularHypergeometricEstimator aPlusBPlusCPlus()
 	{
-<span class="nc" id="L287">		return _aPlusBPlusCPlus;</span>
+<span class="nc" id="L299">		return _aPlusBPlusCPlus;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,41 +6,53 @@ package org.drip.specialfunction.property;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -91,16 +103,16 @@ package org.drip.specialfunction.property;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md&quot;&gt;Function Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Analysis&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md&quot;&gt;Special Function Property Lemma Verifiers&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L103">public class IncompleteBetaEqualityLemma</span>
+<span class="nc" id="L115">public class IncompleteBetaEqualityLemma</span>
 {
 
 	/**
@@ -113,29 +125,29 @@ package org.drip.specialfunction.property;
 	{
 		try
 		{
-<span class="nc" id="L116">			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator</span>
+<span class="nc" id="L128">			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator</span>
 				= new org.drip.specialfunction.beta.IncompleteRegularizedEstimator (
-<span class="nc" id="L118">					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),</span>
-<span class="nc" id="L119">					org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000)</span>
+<span class="nc" id="L130">					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),</span>
+<span class="nc" id="L131">					org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000)</span>
 						);
 
-<span class="nc" id="L122">			return new org.drip.function.definition.R2ToR1Property (</span>
+<span class="nc" id="L134">			return new org.drip.function.definition.R2ToR1Property (</span>
 				org.drip.function.definition.RxToR1Property.EQ,
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L125">				{</span>
+<span class="nc" id="L137">				{</span>
 					@Override public double evaluate (
 						final double a,
 						final double b)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L131" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a ||</span>
-<span class="nc bnc" id="L132" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
+<span class="nc bnc" id="L143" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a ||</span>
+<span class="nc bnc" id="L144" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
 						{
-<span class="nc" id="L134">							throw new java.lang.Exception</span>
+<span class="nc" id="L146">							throw new java.lang.Exception</span>
 								(&quot;IncompleteBetaEqualityLemma::Identity1::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L138">						return incompleteRegularizedEstimator.evaluate (</span>
+<span class="nc" id="L150">						return incompleteRegularizedEstimator.evaluate (</span>
 							0.,
 							a,
 							b
@@ -143,31 +155,31 @@ package org.drip.specialfunction.property;
 					}
 				},
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L146">				{</span>
+<span class="nc" id="L158">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double y)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L152" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L153" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. &gt;= y)</span>
+<span class="nc bnc" id="L164" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L165" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. &gt;= y)</span>
 						{
-<span class="nc" id="L155">							throw new java.lang.Exception</span>
+<span class="nc" id="L167">							throw new java.lang.Exception</span>
 								(&quot;IncompleteBetaEqualityLemma::Identity1::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L159">						return 0.;</span>
+<span class="nc" id="L171">						return 0.;</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L165">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L177">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L167">			e.printStackTrace();</span>
+<span class="nc" id="L179">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L170">		return null;</span>
+<span class="nc" id="L182">		return null;</span>
 	}
 
 	/**
@@ -180,29 +192,29 @@ package org.drip.specialfunction.property;
 	{
 		try
 		{
-<span class="nc" id="L183">			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator</span>
+<span class="nc" id="L195">			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator</span>
 				= new org.drip.specialfunction.beta.IncompleteRegularizedEstimator (
-<span class="nc" id="L185">					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),</span>
-<span class="nc" id="L186">					org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000)</span>
+<span class="nc" id="L197">					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),</span>
+<span class="nc" id="L198">					org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000)</span>
 						);
 
-<span class="nc" id="L189">			return new org.drip.function.definition.R2ToR1Property (</span>
+<span class="nc" id="L201">			return new org.drip.function.definition.R2ToR1Property (</span>
 				org.drip.function.definition.RxToR1Property.EQ,
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L192">				{</span>
+<span class="nc" id="L204">				{</span>
 					@Override public double evaluate (
 						final double a,
 						final double b)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L198" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a ||</span>
-<span class="nc bnc" id="L199" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
+<span class="nc bnc" id="L210" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a ||</span>
+<span class="nc bnc" id="L211" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
 						{
-<span class="nc" id="L201">							throw new java.lang.Exception</span>
+<span class="nc" id="L213">							throw new java.lang.Exception</span>
 								(&quot;IncompleteBetaEqualityLemma::Identity2::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L205">						return incompleteRegularizedEstimator.evaluate (</span>
+<span class="nc" id="L217">						return incompleteRegularizedEstimator.evaluate (</span>
 							1.,
 							a,
 							b
@@ -210,31 +222,31 @@ package org.drip.specialfunction.property;
 					}
 				},
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L213">				{</span>
+<span class="nc" id="L225">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double y)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L219" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L220" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. &gt;= y)</span>
+<span class="nc bnc" id="L231" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L232" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. &gt;= y)</span>
 						{
-<span class="nc" id="L222">							throw new java.lang.Exception</span>
+<span class="nc" id="L234">							throw new java.lang.Exception</span>
 								(&quot;IncompleteBetaEqualityLemma::Identity2::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L226">						return 1.;</span>
+<span class="nc" id="L238">						return 1.;</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L232">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L244">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L234">			e.printStackTrace();</span>
+<span class="nc" id="L246">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L237">		return null;</span>
+<span class="nc" id="L249">		return null;</span>
 	}
 
 	/**
@@ -247,29 +259,29 @@ package org.drip.specialfunction.property;
 	{
 		try
 		{
-<span class="nc" id="L250">			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator</span>
+<span class="nc" id="L262">			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator</span>
 				= new org.drip.specialfunction.beta.IncompleteRegularizedEstimator (
-<span class="nc" id="L252">					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),</span>
-<span class="nc" id="L253">					org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000)</span>
+<span class="nc" id="L264">					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),</span>
+<span class="nc" id="L265">					org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000)</span>
 						);
 
-<span class="nc" id="L256">			return new org.drip.function.definition.R2ToR1Property (</span>
+<span class="nc" id="L268">			return new org.drip.function.definition.R2ToR1Property (</span>
 				org.drip.function.definition.RxToR1Property.EQ,
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L259">				{</span>
+<span class="nc" id="L271">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double a)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L265" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L266" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a)</span>
+<span class="nc bnc" id="L277" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L278" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a)</span>
 						{
-<span class="nc" id="L268">							throw new java.lang.Exception</span>
+<span class="nc" id="L280">							throw new java.lang.Exception</span>
 								(&quot;IncompleteBetaEqualityLemma::Identity3::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L272">						return incompleteRegularizedEstimator.evaluate (</span>
+<span class="nc" id="L284">						return incompleteRegularizedEstimator.evaluate (</span>
 							x,
 							a,
 							1.
@@ -277,20 +289,20 @@ package org.drip.specialfunction.property;
 					}
 				},
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L280">				{</span>
+<span class="nc" id="L292">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double a)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L286" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L287" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a)</span>
+<span class="nc bnc" id="L298" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L299" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a)</span>
 						{
-<span class="nc" id="L289">							throw new java.lang.Exception</span>
+<span class="nc" id="L301">							throw new java.lang.Exception</span>
 								(&quot;IncompleteBetaEqualityLemma::Identity3::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L293">						return java.lang.Math.pow (</span>
+<span class="nc" id="L305">						return java.lang.Math.pow (</span>
 							x,
 							a
 						);
@@ -299,12 +311,12 @@ package org.drip.specialfunction.property;
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L302">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L314">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L304">			e.printStackTrace();</span>
+<span class="nc" id="L316">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L307">		return null;</span>
+<span class="nc" id="L319">		return null;</span>
 	}
 
 	/**
@@ -317,29 +329,29 @@ package org.drip.specialfunction.property;
 	{
 		try
 		{
-<span class="nc" id="L320">			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator</span>
+<span class="nc" id="L332">			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator</span>
 				= new org.drip.specialfunction.beta.IncompleteRegularizedEstimator (
-<span class="nc" id="L322">					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),</span>
-<span class="nc" id="L323">					org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000)</span>
+<span class="nc" id="L334">					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),</span>
+<span class="nc" id="L335">					org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000)</span>
 						);
 
-<span class="nc" id="L326">			return new org.drip.function.definition.R2ToR1Property (</span>
+<span class="nc" id="L338">			return new org.drip.function.definition.R2ToR1Property (</span>
 				org.drip.function.definition.RxToR1Property.EQ,
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L329">				{</span>
+<span class="nc" id="L341">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double b)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L335" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L336" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
+<span class="nc bnc" id="L347" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L348" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
 						{
-<span class="nc" id="L338">							throw new java.lang.Exception</span>
+<span class="nc" id="L350">							throw new java.lang.Exception</span>
 								(&quot;IncompleteBetaEqualityLemma::Identity4::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L342">						return incompleteRegularizedEstimator.evaluate (</span>
+<span class="nc" id="L354">						return incompleteRegularizedEstimator.evaluate (</span>
 							x,
 							1.,
 							b
@@ -347,20 +359,20 @@ package org.drip.specialfunction.property;
 					}
 				},
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L350">				{</span>
+<span class="nc" id="L362">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double b)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L356" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L357" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
+<span class="nc bnc" id="L368" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L369" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
 						{
-<span class="nc" id="L359">							throw new java.lang.Exception</span>
+<span class="nc" id="L371">							throw new java.lang.Exception</span>
 								(&quot;IncompleteBetaEqualityLemma::Identity4::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L363">						return 1. - java.lang.Math.pow (</span>
+<span class="nc" id="L375">						return 1. - java.lang.Math.pow (</span>
 							1. - x,
 							b
 						);
@@ -369,12 +381,12 @@ package org.drip.specialfunction.property;
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L372">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L384">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L374">			e.printStackTrace();</span>
+<span class="nc" id="L386">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L377">		return null;</span>
+<span class="nc" id="L389">		return null;</span>
 	}
 
 	/**
@@ -387,31 +399,31 @@ package org.drip.specialfunction.property;
 	{
 		try
 		{
-<span class="nc" id="L390">			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator</span>
+<span class="nc" id="L402">			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator</span>
 				= new org.drip.specialfunction.beta.IncompleteRegularizedEstimator (
-<span class="nc" id="L392">					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),</span>
-<span class="nc" id="L393">					org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000)</span>
+<span class="nc" id="L404">					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),</span>
+<span class="nc" id="L405">					org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000)</span>
 				);
 
-<span class="nc" id="L396">			return new org.drip.function.definition.R3ToR1Property (</span>
+<span class="nc" id="L408">			return new org.drip.function.definition.R3ToR1Property (</span>
 				org.drip.function.definition.RxToR1Property.EQ,
 				new org.drip.function.definition.R3ToR1()
-<span class="nc" id="L399">				{</span>
+<span class="nc" id="L411">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double a,
 						final double b)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L406" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L407" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a ||</span>
-<span class="nc bnc" id="L408" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
+<span class="nc bnc" id="L418" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L419" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a ||</span>
+<span class="nc bnc" id="L420" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
 						{
-<span class="nc" id="L410">							throw new java.lang.Exception</span>
+<span class="nc" id="L422">							throw new java.lang.Exception</span>
 								(&quot;IncompleteBetaEqualityLemma::Identity5::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L414">						return incompleteRegularizedEstimator.evaluate (</span>
+<span class="nc" id="L426">						return incompleteRegularizedEstimator.evaluate (</span>
 							x,
 							a,
 							b
@@ -419,22 +431,22 @@ package org.drip.specialfunction.property;
 					}
 				},
 				new org.drip.function.definition.R3ToR1()
-<span class="nc" id="L422">				{</span>
+<span class="nc" id="L434">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double a,
 						final double b)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L429" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L430" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a ||</span>
-<span class="nc bnc" id="L431" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
+<span class="nc bnc" id="L441" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L442" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a ||</span>
+<span class="nc bnc" id="L443" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
 						{
-<span class="nc" id="L433">							throw new java.lang.Exception</span>
+<span class="nc" id="L445">							throw new java.lang.Exception</span>
 								(&quot;IncompleteBetaEqualityLemma::Identity5::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L437">						return 1. - incompleteRegularizedEstimator.evaluate (</span>
+<span class="nc" id="L449">						return 1. - incompleteRegularizedEstimator.evaluate (</span>
 							1. - x,
 							b,
 							a
@@ -444,12 +456,12 @@ package org.drip.specialfunction.property;
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L447">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L459">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L449">			e.printStackTrace();</span>
+<span class="nc" id="L461">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L452">		return null;</span>
+<span class="nc" id="L464">		return null;</span>
 	}
 
 	/**
@@ -460,36 +472,36 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R3ToR1Property Identity6()
 	{
-<span class="nc" id="L463">		final org.drip.specialfunction.beta.IntegrandEstimator integrandEstimator =</span>
-<span class="nc" id="L464">			org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000);</span>
+<span class="nc" id="L475">		final org.drip.specialfunction.beta.IntegrandEstimator integrandEstimator =</span>
+<span class="nc" id="L476">			org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000);</span>
 
 		try
 		{
-<span class="nc" id="L468">			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator</span>
+<span class="nc" id="L480">			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator</span>
 				= new org.drip.specialfunction.beta.IncompleteRegularizedEstimator (
-<span class="nc" id="L470">					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),</span>
+<span class="nc" id="L482">					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),</span>
 					integrandEstimator
 				);
 
-<span class="nc" id="L474">			return new org.drip.function.definition.R3ToR1Property (</span>
+<span class="nc" id="L486">			return new org.drip.function.definition.R3ToR1Property (</span>
 				org.drip.function.definition.RxToR1Property.EQ,
 				new org.drip.function.definition.R3ToR1()
-<span class="nc" id="L477">				{</span>
+<span class="nc" id="L489">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double a,
 						final double b)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L484" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L485" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a ||</span>
-<span class="nc bnc" id="L486" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
+<span class="nc bnc" id="L496" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L497" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a ||</span>
+<span class="nc bnc" id="L498" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
 						{
-<span class="nc" id="L488">							throw new java.lang.Exception</span>
+<span class="nc" id="L500">							throw new java.lang.Exception</span>
 								(&quot;IncompleteBetaEqualityLemma::Identity6::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L492">						return incompleteRegularizedEstimator.evaluate (</span>
+<span class="nc" id="L504">						return incompleteRegularizedEstimator.evaluate (</span>
 							x,
 							a + 1.,
 							b
@@ -497,32 +509,32 @@ package org.drip.specialfunction.property;
 					}
 				},
 				new org.drip.function.definition.R3ToR1()
-<span class="nc" id="L500">				{</span>
+<span class="nc" id="L512">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double a,
 						final double b)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L507" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L508" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a ||</span>
-<span class="nc bnc" id="L509" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
+<span class="nc bnc" id="L519" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L520" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a ||</span>
+<span class="nc bnc" id="L521" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
 						{
-<span class="nc" id="L511">							throw new java.lang.Exception</span>
+<span class="nc" id="L523">							throw new java.lang.Exception</span>
 								(&quot;IncompleteBetaEqualityLemma::Identity6::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L515">						return incompleteRegularizedEstimator.evaluate (</span>
+<span class="nc" id="L527">						return incompleteRegularizedEstimator.evaluate (</span>
 							x,
 							a,
 							b
-<span class="nc" id="L519">						) - java.lang.Math.pow (</span>
+<span class="nc" id="L531">						) - java.lang.Math.pow (</span>
 							x,
 							a
-<span class="nc" id="L522">						) * java.lang.Math.pow (</span>
+<span class="nc" id="L534">						) * java.lang.Math.pow (</span>
 							1. - x,
 							b
-<span class="nc" id="L525">						) / a / integrandEstimator.evaluate (</span>
+<span class="nc" id="L537">						) / a / integrandEstimator.evaluate (</span>
 							a,
 							b
 						);
@@ -531,12 +543,12 @@ package org.drip.specialfunction.property;
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L534">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L546">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L536">			e.printStackTrace();</span>
+<span class="nc" id="L548">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L539">		return null;</span>
+<span class="nc" id="L551">		return null;</span>
 	}
 
 	/**
@@ -547,36 +559,36 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R3ToR1Property Identity7()
 	{
-<span class="nc" id="L550">		final org.drip.specialfunction.beta.IntegrandEstimator integrandEstimator =</span>
-<span class="nc" id="L551">			org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000);</span>
+<span class="nc" id="L562">		final org.drip.specialfunction.beta.IntegrandEstimator integrandEstimator =</span>
+<span class="nc" id="L563">			org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000);</span>
 
 		try
 		{
-<span class="nc" id="L555">			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator</span>
+<span class="nc" id="L567">			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator</span>
 				= new org.drip.specialfunction.beta.IncompleteRegularizedEstimator (
-<span class="nc" id="L557">					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),</span>
+<span class="nc" id="L569">					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),</span>
 					integrandEstimator
 				);
 
-<span class="nc" id="L561">			return new org.drip.function.definition.R3ToR1Property (</span>
+<span class="nc" id="L573">			return new org.drip.function.definition.R3ToR1Property (</span>
 				org.drip.function.definition.RxToR1Property.EQ,
 				new org.drip.function.definition.R3ToR1()
-<span class="nc" id="L564">				{</span>
+<span class="nc" id="L576">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double a,
 						final double b)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L571" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L572" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a ||</span>
-<span class="nc bnc" id="L573" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
+<span class="nc bnc" id="L583" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L584" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a ||</span>
+<span class="nc bnc" id="L585" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
 						{
-<span class="nc" id="L575">							throw new java.lang.Exception</span>
+<span class="nc" id="L587">							throw new java.lang.Exception</span>
 								(&quot;IncompleteBetaEqualityLemma::Identity7::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L579">						return incompleteRegularizedEstimator.evaluate (</span>
+<span class="nc" id="L591">						return incompleteRegularizedEstimator.evaluate (</span>
 							x,
 							a,
 							b + 1.
@@ -584,32 +596,32 @@ package org.drip.specialfunction.property;
 					}
 				},
 				new org.drip.function.definition.R3ToR1()
-<span class="nc" id="L587">				{</span>
+<span class="nc" id="L599">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double a,
 						final double b)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L594" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L595" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a ||</span>
-<span class="nc bnc" id="L596" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
+<span class="nc bnc" id="L606" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L607" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a ||</span>
+<span class="nc bnc" id="L608" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
 						{
-<span class="nc" id="L598">							throw new java.lang.Exception</span>
+<span class="nc" id="L610">							throw new java.lang.Exception</span>
 								(&quot;IncompleteBetaEqualityLemma::Identity7::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L602">						return incompleteRegularizedEstimator.evaluate (</span>
+<span class="nc" id="L614">						return incompleteRegularizedEstimator.evaluate (</span>
 							x,
 							a,
 							b
-<span class="nc" id="L606">						) + java.lang.Math.pow (</span>
+<span class="nc" id="L618">						) + java.lang.Math.pow (</span>
 							x,
 							a
-<span class="nc" id="L609">						) * java.lang.Math.pow (</span>
+<span class="nc" id="L621">						) * java.lang.Math.pow (</span>
 							1. - x,
 							b
-<span class="nc" id="L612">						) / b / integrandEstimator.evaluate (</span>
+<span class="nc" id="L624">						) / b / integrandEstimator.evaluate (</span>
 							a,
 							b
 						);
@@ -618,12 +630,12 @@ package org.drip.specialfunction.property;
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L621">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L633">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L623">			e.printStackTrace();</span>
+<span class="nc" id="L635">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L626">		return null;</span>
+<span class="nc" id="L638">		return null;</span>
 	}
 
 	/**
@@ -634,36 +646,36 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R3ToR1Property Identity8()
 	{
-<span class="nc" id="L637">		final org.drip.specialfunction.beta.IntegrandEstimator integrandEstimator =</span>
-<span class="nc" id="L638">			org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000);</span>
+<span class="nc" id="L649">		final org.drip.specialfunction.beta.IntegrandEstimator integrandEstimator =</span>
+<span class="nc" id="L650">			org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000);</span>
 
 		try
 		{
-<span class="nc" id="L642">			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator</span>
+<span class="nc" id="L654">			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator</span>
 				= new org.drip.specialfunction.beta.IncompleteRegularizedEstimator (
-<span class="nc" id="L644">					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),</span>
+<span class="nc" id="L656">					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),</span>
 					integrandEstimator
 				);
 
-<span class="nc" id="L648">			return new org.drip.function.definition.R3ToR1Property (</span>
+<span class="nc" id="L660">			return new org.drip.function.definition.R3ToR1Property (</span>
 				org.drip.function.definition.RxToR1Property.EQ,
 				new org.drip.function.definition.R3ToR1()
-<span class="nc" id="L651">				{</span>
+<span class="nc" id="L663">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double a,
 						final double b)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L658" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L659" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a ||</span>
-<span class="nc bnc" id="L660" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
+<span class="nc bnc" id="L670" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L671" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a ||</span>
+<span class="nc bnc" id="L672" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
 						{
-<span class="nc" id="L662">							throw new java.lang.Exception</span>
+<span class="nc" id="L674">							throw new java.lang.Exception</span>
 								(&quot;IncompleteBetaEqualityLemma::Identity8::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L666">						return incompleteRegularizedEstimator.evaluate (</span>
+<span class="nc" id="L678">						return incompleteRegularizedEstimator.evaluate (</span>
 							x,
 							a,
 							b
@@ -671,22 +683,22 @@ package org.drip.specialfunction.property;
 					}
 				},
 				new org.drip.function.definition.R3ToR1()
-<span class="nc" id="L674">				{</span>
+<span class="nc" id="L686">				{</span>
 					@Override public double evaluate (
 						final double x,
 						final double a,
 						final double b)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L681" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
-<span class="nc bnc" id="L682" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a ||</span>
-<span class="nc bnc" id="L683" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
+<span class="nc bnc" id="L693" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x ||</span>
+<span class="nc bnc" id="L694" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. &gt;= a ||</span>
+<span class="nc bnc" id="L695" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. &gt;= b)</span>
 						{
-<span class="nc" id="L685">							throw new java.lang.Exception</span>
+<span class="nc" id="L697">							throw new java.lang.Exception</span>
 								(&quot;IncompleteBetaEqualityLemma::Identity8::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L689">						return incompleteRegularizedEstimator.evaluate (</span>
+<span class="nc" id="L701">						return incompleteRegularizedEstimator.evaluate (</span>
 							x / (1. - x),
 							a,
 							1. - a - b
@@ -696,12 +708,12 @@ package org.drip.specialfunction.property;
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L699">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L711">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L701">			e.printStackTrace();</span>
+<span class="nc" id="L713">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L704">		return null;</span>
+<span class="nc" id="L716">		return null;</span>
 	}
 
 	/**
@@ -714,31 +726,31 @@ package org.drip.specialfunction.property;
 	{
 		try
 		{
-<span class="nc" id="L717">			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator</span>
+<span class="nc" id="L729">			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator</span>
 				= new org.drip.specialfunction.beta.IncompleteRegularizedEstimator (
-<span class="nc" id="L719">					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),</span>
-<span class="nc" id="L720">					org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000)</span>
+<span class="nc" id="L731">					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),</span>
+<span class="nc" id="L732">					org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000)</span>
 				);
 
-<span class="nc" id="L723">			return new org.drip.function.definition.R3ToR1Property (</span>
+<span class="nc" id="L735">			return new org.drip.function.definition.R3ToR1Property (</span>
 				org.drip.function.definition.RxToR1Property.EQ,
 				new org.drip.function.definition.R3ToR1()
-<span class="nc" id="L726">				{</span>
+<span class="nc" id="L738">				{</span>
 					@Override public double evaluate (
 						final double p,
 						final double n,
 						final double k)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L733" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (p) || 0. &gt;= p ||</span>
-<span class="nc bnc" id="L734" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (n) || 0. &gt;= n ||</span>
-<span class="nc bnc" id="L735" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (k) || 0. &gt;= k)</span>
+<span class="nc bnc" id="L745" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (p) || 0. &gt;= p ||</span>
+<span class="nc bnc" id="L746" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (n) || 0. &gt;= n ||</span>
+<span class="nc bnc" id="L747" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (k) || 0. &gt;= k)</span>
 						{
-<span class="nc" id="L737">							throw new java.lang.Exception</span>
+<span class="nc" id="L749">							throw new java.lang.Exception</span>
 								(&quot;IncompleteBetaEqualityLemma::CumulativeBinomialDistribution::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L741">						return incompleteRegularizedEstimator.evaluate (</span>
+<span class="nc" id="L753">						return incompleteRegularizedEstimator.evaluate (</span>
 							1. - p,
 							n - k,
 							k + 1.
@@ -746,22 +758,22 @@ package org.drip.specialfunction.property;
 					}
 				},
 				new org.drip.function.definition.R3ToR1()
-<span class="nc" id="L749">				{</span>
+<span class="nc" id="L761">				{</span>
 					@Override public double evaluate (
 						final double p,
 						final double n,
 						final double k)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L756" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (p) || 0. &gt;= p ||</span>
-<span class="nc bnc" id="L757" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (n) || 0. &gt;= n ||</span>
-<span class="nc bnc" id="L758" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (k) || 0. &gt;= k)</span>
+<span class="nc bnc" id="L768" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (p) || 0. &gt;= p ||</span>
+<span class="nc bnc" id="L769" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (n) || 0. &gt;= n ||</span>
+<span class="nc bnc" id="L770" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (k) || 0. &gt;= k)</span>
 						{
-<span class="nc" id="L760">							throw new java.lang.Exception</span>
+<span class="nc" id="L772">							throw new java.lang.Exception</span>
 								(&quot;IncompleteBetaEqualityLemma::CumulativeBinomialDistribution::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L764">						return 1. - incompleteRegularizedEstimator.evaluate (</span>
+<span class="nc" id="L776">						return 1. - incompleteRegularizedEstimator.evaluate (</span>
 							p,
 							k + 1.,
 							n - k
@@ -771,12 +783,12 @@ package org.drip.specialfunction.property;
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L774">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L786">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L776">			e.printStackTrace();</span>
+<span class="nc" id="L788">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L779">		return null;</span>
+<span class="nc" id="L791">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,6 +6,7 @@ package org.drip.spline.basis;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -14,39 +15,50 @@ package org.drip.spline.basis;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -104,17 +116,17 @@ package org.drip.spline.basis;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/basis&quot;&gt;Basis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md&quot;&gt;Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/basis/README.md&quot;&gt;Basis Spline Construction/Customization Parameters&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L117">public class FunctionSetBuilder {</span>
+<span class="nc" id="L129">public class FunctionSetBuilder {</span>
 
 	/**
 	 * This function implements the elastic coefficients for the segment using tension exponential basis
@@ -134,20 +146,20 @@ package org.drip.spline.basis;
 	public static final org.drip.spline.basis.FunctionSet ExponentialTensionBasisSet (
 		final org.drip.spline.basis.ExponentialTensionSetParams etsp)
 	{
-<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		if (null == etsp) return null;</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">		if (null == etsp) return null;</span>
 
-<span class="fc" id="L139">		double dblTension = etsp.tension();</span>
+<span class="fc" id="L151">		double dblTension = etsp.tension();</span>
 
 		try {
-<span class="fc" id="L142">			return new org.drip.spline.basis.FunctionSet (new org.drip.function.definition.R1ToR1[]</span>
+<span class="fc" id="L154">			return new org.drip.spline.basis.FunctionSet (new org.drip.function.definition.R1ToR1[]</span>
 				{new org.drip.function.r1tor1.Polynomial (0), new org.drip.function.r1tor1.Polynomial (1),
 					new org.drip.function.r1tor1.ExponentialTension (java.lang.Math.E, dblTension), new
 						org.drip.function.r1tor1.ExponentialTension (java.lang.Math.E, -dblTension)});
-<span class="nc" id="L146">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L147">			e.printStackTrace();</span>
+<span class="nc" id="L158">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L159">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L150">		return null;</span>
+<span class="nc" id="L162">		return null;</span>
 	}
 
 	/**
@@ -168,22 +180,22 @@ package org.drip.spline.basis;
 	public static final org.drip.spline.basis.FunctionSet HyperbolicTensionBasisSet (
 		final org.drip.spline.basis.ExponentialTensionSetParams etsp)
 	{
-<span class="pc bpc" id="L171" title="1 of 2 branches missed.">		if (null == etsp) return null;</span>
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">		if (null == etsp) return null;</span>
 
-<span class="fc" id="L173">		double dblTension = etsp.tension();</span>
+<span class="fc" id="L185">		double dblTension = etsp.tension();</span>
 
 		try {
-<span class="fc" id="L176">			return new org.drip.spline.basis.FunctionSet (new org.drip.function.definition.R1ToR1[]</span>
+<span class="fc" id="L188">			return new org.drip.spline.basis.FunctionSet (new org.drip.function.definition.R1ToR1[]</span>
 				{new org.drip.function.r1tor1.Polynomial (0), new org.drip.function.r1tor1.Polynomial (1),
 					new org.drip.function.r1tor1.HyperbolicTension
 						(org.drip.function.r1tor1.HyperbolicTension.COSH, dblTension), new
 							org.drip.function.r1tor1.HyperbolicTension
 								(org.drip.function.r1tor1.HyperbolicTension.SINH, dblTension)});
-<span class="nc" id="L182">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L183">			e.printStackTrace();</span>
+<span class="nc" id="L194">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L195">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L186">		return null;</span>
+<span class="nc" id="L198">		return null;</span>
 	}
 
 	/**
@@ -204,23 +216,23 @@ package org.drip.spline.basis;
 	public static final org.drip.spline.basis.FunctionSet PolynomialBasisSet (
 		final org.drip.spline.basis.PolynomialFunctionSetParams pfsp)
 	{
-<span class="pc bpc" id="L207" title="1 of 2 branches missed.">		if (null == pfsp) return null;</span>
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">		if (null == pfsp) return null;</span>
 
-<span class="fc" id="L209">		int iNumBasis = pfsp.numBasis();</span>
+<span class="fc" id="L221">		int iNumBasis = pfsp.numBasis();</span>
 
-<span class="fc" id="L211">		org.drip.function.definition.R1ToR1[] aAU = new</span>
+<span class="fc" id="L223">		org.drip.function.definition.R1ToR1[] aAU = new</span>
 			org.drip.function.definition.R1ToR1[iNumBasis];
 
 		try {
-<span class="fc bfc" id="L215" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumBasis; ++i)</span>
-<span class="fc" id="L216">				aAU[i] = new org.drip.function.r1tor1.Polynomial (i);</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumBasis; ++i)</span>
+<span class="fc" id="L228">				aAU[i] = new org.drip.function.r1tor1.Polynomial (i);</span>
 
-<span class="fc" id="L218">			return new org.drip.spline.basis.FunctionSet (aAU);</span>
-<span class="nc" id="L219">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L220">			e.printStackTrace();</span>
+<span class="fc" id="L230">			return new org.drip.spline.basis.FunctionSet (aAU);</span>
+<span class="nc" id="L231">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L232">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L223">		return null;</span>
+<span class="nc" id="L235">		return null;</span>
 	}
 
 	/**
@@ -243,23 +255,23 @@ package org.drip.spline.basis;
 	public static final org.drip.spline.basis.FunctionSet BernsteinPolynomialBasisSet (
 		final org.drip.spline.basis.PolynomialFunctionSetParams pfsp)
 	{
-<span class="pc bpc" id="L246" title="1 of 2 branches missed.">		if (null == pfsp) return null;</span>
+<span class="pc bpc" id="L258" title="1 of 2 branches missed.">		if (null == pfsp) return null;</span>
 
-<span class="fc" id="L248">		int iNumBasis = pfsp.numBasis();</span>
+<span class="fc" id="L260">		int iNumBasis = pfsp.numBasis();</span>
 
-<span class="fc" id="L250">		org.drip.function.definition.R1ToR1[] aAU = new</span>
+<span class="fc" id="L262">		org.drip.function.definition.R1ToR1[] aAU = new</span>
 			org.drip.function.definition.R1ToR1[iNumBasis];
 
 		try {
-<span class="fc bfc" id="L254" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumBasis; ++i)</span>
-<span class="fc" id="L255">				aAU[i] = new org.drip.function.r1tor1.BernsteinPolynomial (i, iNumBasis - 1 - i);</span>
+<span class="fc bfc" id="L266" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumBasis; ++i)</span>
+<span class="fc" id="L267">				aAU[i] = new org.drip.function.r1tor1.BernsteinPolynomial (i, iNumBasis - 1 - i);</span>
 
-<span class="fc" id="L257">			return new org.drip.spline.basis.FunctionSet (aAU);</span>
-<span class="nc" id="L258">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L259">			e.printStackTrace();</span>
+<span class="fc" id="L269">			return new org.drip.spline.basis.FunctionSet (aAU);</span>
+<span class="nc" id="L270">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L271">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L262">		return null;</span>
+<span class="nc" id="L274">		return null;</span>
 	}
 
 	/**
@@ -275,28 +287,28 @@ package org.drip.spline.basis;
 	public static final org.drip.spline.basis.FunctionSet KaklisPandelisBasisSet (
 		final org.drip.spline.basis.KaklisPandelisSetParams kpsp)
 	{
-<span class="pc bpc" id="L278" title="1 of 2 branches missed.">		if (null == kpsp) return null;</span>
+<span class="pc bpc" id="L290" title="1 of 2 branches missed.">		if (null == kpsp) return null;</span>
 
 		try {
-<span class="fc" id="L281">			org.drip.function.definition.R1ToR1 auLinearPoly = new org.drip.function.r1tor1.Polynomial</span>
+<span class="fc" id="L293">			org.drip.function.definition.R1ToR1 auLinearPoly = new org.drip.function.r1tor1.Polynomial</span>
 				(1);
 
-<span class="fc" id="L284">			org.drip.function.definition.R1ToR1 auReflectedLinearPoly = new</span>
+<span class="fc" id="L296">			org.drip.function.definition.R1ToR1 auReflectedLinearPoly = new</span>
 				org.drip.function.r1tor1.UnivariateReflection (auLinearPoly);
 
-<span class="fc" id="L287">			org.drip.function.definition.R1ToR1 auKaklisPandelisPolynomial = new</span>
-<span class="fc" id="L288">				org.drip.function.r1tor1.Polynomial (kpsp.polynomialTensionDegree());</span>
+<span class="fc" id="L299">			org.drip.function.definition.R1ToR1 auKaklisPandelisPolynomial = new</span>
+<span class="fc" id="L300">				org.drip.function.r1tor1.Polynomial (kpsp.polynomialTensionDegree());</span>
 
-<span class="fc" id="L290">			return new org.drip.spline.basis.FunctionSet (new org.drip.function.definition.R1ToR1[]</span>
+<span class="fc" id="L302">			return new org.drip.spline.basis.FunctionSet (new org.drip.function.definition.R1ToR1[]</span>
 				{auReflectedLinearPoly, auLinearPoly, new org.drip.function.r1tor1.UnivariateConvolution
 					(auLinearPoly, new org.drip.function.r1tor1.UnivariateReflection
 						(auKaklisPandelisPolynomial)), new org.drip.function.r1tor1.UnivariateConvolution
 							(auKaklisPandelisPolynomial, auReflectedLinearPoly)});
-<span class="nc" id="L295">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L296">			e.printStackTrace();</span>
+<span class="nc" id="L307">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L308">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L299">		return null;</span>
+<span class="nc" id="L311">		return null;</span>
 	}
 
 	/**
@@ -312,29 +324,29 @@ package org.drip.spline.basis;
 	public static final org.drip.spline.basis.FunctionSet ExponentialRationalBasisSet (
 		final org.drip.spline.basis.ExponentialRationalSetParams ersp)
 	{
-<span class="nc bnc" id="L315" title="All 2 branches missed.">		if (null == ersp) return null;</span>
+<span class="nc bnc" id="L327" title="All 2 branches missed.">		if (null == ersp) return null;</span>
 
 		try {
-<span class="nc" id="L318">			org.drip.function.definition.R1ToR1 auLinearPoly = new org.drip.function.r1tor1.Polynomial</span>
+<span class="nc" id="L330">			org.drip.function.definition.R1ToR1 auLinearPoly = new org.drip.function.r1tor1.Polynomial</span>
 				(0);
 
-<span class="nc" id="L321">			org.drip.function.definition.R1ToR1 auLRSC = new</span>
-<span class="nc" id="L322">				org.drip.function.r1tor1.LinearRationalShapeControl (ersp.rationalTension());</span>
+<span class="nc" id="L333">			org.drip.function.definition.R1ToR1 auLRSC = new</span>
+<span class="nc" id="L334">				org.drip.function.r1tor1.LinearRationalShapeControl (ersp.rationalTension());</span>
 
-<span class="nc" id="L324">			org.drip.function.definition.R1ToR1 auET = new</span>
-<span class="nc" id="L325">				org.drip.function.r1tor1.ExponentialTension (java.lang.Math.E, -ersp.exponentialTension());</span>
+<span class="nc" id="L336">			org.drip.function.definition.R1ToR1 auET = new</span>
+<span class="nc" id="L337">				org.drip.function.r1tor1.ExponentialTension (java.lang.Math.E, -ersp.exponentialTension());</span>
 
-<span class="nc" id="L327">			org.drip.function.definition.R1ToR1 auLRET = new</span>
-<span class="nc" id="L328">				org.drip.function.r1tor1.LinearRationalTensionExponential (-ersp.exponentialTension(),</span>
-<span class="nc" id="L329">					ersp.rationalTension());</span>
+<span class="nc" id="L339">			org.drip.function.definition.R1ToR1 auLRET = new</span>
+<span class="nc" id="L340">				org.drip.function.r1tor1.LinearRationalTensionExponential (-ersp.exponentialTension(),</span>
+<span class="nc" id="L341">					ersp.rationalTension());</span>
 
-<span class="nc" id="L331">			return new org.drip.spline.basis.FunctionSet (new org.drip.function.definition.R1ToR1[]</span>
+<span class="nc" id="L343">			return new org.drip.spline.basis.FunctionSet (new org.drip.function.definition.R1ToR1[]</span>
 				{auLinearPoly, auLRSC, auET, auLRET});
-<span class="nc" id="L333">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L334">			e.printStackTrace();</span>
+<span class="nc" id="L345">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L346">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L337">		return null;</span>
+<span class="nc" id="L349">		return null;</span>
 	}
 
 	/**
@@ -350,28 +362,28 @@ package org.drip.spline.basis;
 	public static final org.drip.spline.basis.FunctionSet ExponentialMixtureBasisSet (
 		final org.drip.spline.basis.ExponentialMixtureSetParams emsp)
 	{
-<span class="pc bpc" id="L353" title="1 of 2 branches missed.">		if (null == emsp) return null;</span>
+<span class="pc bpc" id="L365" title="1 of 2 branches missed.">		if (null == emsp) return null;</span>
 
 		try {
-<span class="fc" id="L356">			org.drip.function.definition.R1ToR1 auLinearPoly = new</span>
+<span class="fc" id="L368">			org.drip.function.definition.R1ToR1 auLinearPoly = new</span>
 				org.drip.function.r1tor1.Polynomial (0);
 
-<span class="fc" id="L359">			org.drip.function.definition.R1ToR1 auExp1 = new</span>
-<span class="fc" id="L360">				org.drip.function.r1tor1.ExponentialTension (java.lang.Math.E, -emsp.tension (0));</span>
+<span class="fc" id="L371">			org.drip.function.definition.R1ToR1 auExp1 = new</span>
+<span class="fc" id="L372">				org.drip.function.r1tor1.ExponentialTension (java.lang.Math.E, -emsp.tension (0));</span>
 
-<span class="fc" id="L362">			org.drip.function.definition.R1ToR1 auExp2 = new</span>
-<span class="fc" id="L363">				org.drip.function.r1tor1.ExponentialTension (java.lang.Math.E, -emsp.tension (1));</span>
+<span class="fc" id="L374">			org.drip.function.definition.R1ToR1 auExp2 = new</span>
+<span class="fc" id="L375">				org.drip.function.r1tor1.ExponentialTension (java.lang.Math.E, -emsp.tension (1));</span>
 
-<span class="fc" id="L365">			org.drip.function.definition.R1ToR1 auExp3 = new</span>
-<span class="fc" id="L366">				org.drip.function.r1tor1.ExponentialTension (java.lang.Math.E, -emsp.tension (2));</span>
+<span class="fc" id="L377">			org.drip.function.definition.R1ToR1 auExp3 = new</span>
+<span class="fc" id="L378">				org.drip.function.r1tor1.ExponentialTension (java.lang.Math.E, -emsp.tension (2));</span>
 
-<span class="fc" id="L368">			return new org.drip.spline.basis.FunctionSet (new org.drip.function.definition.R1ToR1[]</span>
+<span class="fc" id="L380">			return new org.drip.spline.basis.FunctionSet (new org.drip.function.definition.R1ToR1[]</span>
 				{auLinearPoly, auExp1, auExp2, auExp3});
-<span class="nc" id="L370">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L371">			e.printStackTrace();</span>
+<span class="nc" id="L382">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L383">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L374">		return null;</span>
+<span class="nc" id="L386">		return null;</span>
 	}
 
 	/**
@@ -385,40 +397,40 @@ package org.drip.spline.basis;
 	public static final org.drip.spline.basis.FunctionSet BSplineBasisSet (
 		final org.drip.spline.basis.BSplineSequenceParams bssp)
 	{
-<span class="pc bpc" id="L388" title="1 of 2 branches missed.">		if (null == bssp) return null;</span>
+<span class="pc bpc" id="L400" title="1 of 2 branches missed.">		if (null == bssp) return null;</span>
 
-<span class="fc" id="L390">		org.drip.spline.bspline.SegmentBasisFunction[] aSBF =</span>
-<span class="fc" id="L391">			org.drip.spline.bspline.SegmentBasisFunctionGenerator.MonicSequence (bssp.hat(),</span>
-<span class="fc" id="L392">				bssp.shapeControl(), bssp.predictorOrdinates(), bssp.procBasisDerivOrder(), bssp.tension());</span>
+<span class="fc" id="L402">		org.drip.spline.bspline.SegmentBasisFunction[] aSBF =</span>
+<span class="fc" id="L403">			org.drip.spline.bspline.SegmentBasisFunctionGenerator.MonicSequence (bssp.hat(),</span>
+<span class="fc" id="L404">				bssp.shapeControl(), bssp.predictorOrdinates(), bssp.procBasisDerivOrder(), bssp.tension());</span>
 
-<span class="pc bpc" id="L394" title="2 of 4 branches missed.">		if (null == aSBF || bssp.numBasis() &gt;= aSBF.length) return null;</span>
+<span class="pc bpc" id="L406" title="2 of 4 branches missed.">		if (null == aSBF || bssp.numBasis() &gt;= aSBF.length) return null;</span>
 
-<span class="fc" id="L396">		int iBSplineOrder = bssp.bSplineOrder();</span>
+<span class="fc" id="L408">		int iBSplineOrder = bssp.bSplineOrder();</span>
 
 		try {
-<span class="pc bpc" id="L399" title="1 of 2 branches missed.">			return new org.drip.spline.bspline.SegmentBasisFunctionSet (bssp.numBasis(), bssp.tension(), 2 ==</span>
+<span class="pc bpc" id="L411" title="1 of 2 branches missed.">			return new org.drip.spline.bspline.SegmentBasisFunctionSet (bssp.numBasis(), bssp.tension(), 2 ==</span>
 				iBSplineOrder ? aSBF : org.drip.spline.bspline.SegmentBasisFunctionGenerator.MulticSequence
-<span class="fc" id="L401">					(iBSplineOrder, aSBF));</span>
-<span class="nc" id="L402">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L403">			e.printStackTrace();</span>
+<span class="fc" id="L413">					(iBSplineOrder, aSBF));</span>
+<span class="nc" id="L414">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L415">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L406">		return null;</span>
+<span class="nc" id="L418">		return null;</span>
 	}
 
 	public static final void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L413">		org.drip.spline.basis.BSplineSequenceParams bssp = new org.drip.spline.basis.BSplineSequenceParams</span>
+<span class="nc" id="L425">		org.drip.spline.basis.BSplineSequenceParams bssp = new org.drip.spline.basis.BSplineSequenceParams</span>
 			(org.drip.spline.bspline.BasisHatPairGenerator.RAW_TENSION_HYPERBOLIC,
 				org.drip.spline.bspline.BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR, 2, 4, 1., -1);
 
-<span class="nc" id="L417">		org.drip.numerical.common.NumberUtil.Print1DArray (&quot;BSSP&quot;, bssp.predictorOrdinates(), false);</span>
+<span class="nc" id="L429">		org.drip.numerical.common.NumberUtil.Print1DArray (&quot;BSSP&quot;, bssp.predictorOrdinates(), false);</span>
 
-<span class="nc" id="L419">		org.drip.spline.basis.FunctionSet fsBSS = BSplineBasisSet (bssp);</span>
+<span class="nc" id="L431">		org.drip.spline.basis.FunctionSet fsBSS = BSplineBasisSet (bssp);</span>
 
-<span class="nc" id="L421">		System.out.println (&quot;fsBSS Size = &quot; + fsBSS.numBasis());</span>
-<span class="nc" id="L422">	}</span>
+<span class="nc" id="L433">		System.out.println (&quot;fsBSS Size = &quot; + fsBSS.numBasis());</span>
+<span class="nc" id="L434">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

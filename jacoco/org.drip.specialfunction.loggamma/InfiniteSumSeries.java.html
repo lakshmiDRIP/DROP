@@ -6,41 +6,53 @@ package org.drip.specialfunction.loggamma;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -91,16 +103,16 @@ package org.drip.specialfunction.loggamma;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md&quot;&gt;Function Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Analysis&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/loggamma/README.md&quot;&gt;Analytic/Series/Integral Log Gamma Estimators&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L103">public class InfiniteSumSeries</span>
+<span class="nc" id="L115">public class InfiniteSumSeries</span>
 {
 
 	/**
@@ -116,29 +128,29 @@ package org.drip.specialfunction.loggamma;
 	{
 		try
 		{
-<span class="nc" id="L119">			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
+<span class="nc" id="L131">			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
 				java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
-<span class="nc bnc" id="L122" title="All 2 branches missed.">			for (int termIndex = 1; termIndex &lt;= termCount; ++termIndex)</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">			for (int termIndex = 1; termIndex &lt;= termCount; ++termIndex)</span>
 			{
-<span class="nc" id="L124">				termWeightMap.put (</span>
-<span class="nc" id="L125">					termIndex,</span>
-<span class="nc" id="L126">					1.</span>
+<span class="nc" id="L136">				termWeightMap.put (</span>
+<span class="nc" id="L137">					termIndex,</span>
+<span class="nc" id="L138">					1.</span>
 				);
 			}
 
-<span class="nc" id="L130">			return new org.drip.numerical.estimation.R1ToR1Series (</span>
-<span class="nc" id="L131">				org.drip.specialfunction.loggamma.InfiniteSumSeriesTerm.Euler(),</span>
+<span class="nc" id="L142">			return new org.drip.numerical.estimation.R1ToR1Series (</span>
+<span class="nc" id="L143">				org.drip.specialfunction.loggamma.InfiniteSumSeriesTerm.Euler(),</span>
 				false,
 				termWeightMap
 			);
 		}
-<span class="nc" id="L136">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L148">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L138">			e.printStackTrace();</span>
+<span class="nc" id="L150">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L141">		return null;</span>
+<span class="nc" id="L153">		return null;</span>
 	}
 
 	/**
@@ -154,29 +166,29 @@ package org.drip.specialfunction.loggamma;
 	{
 		try
 		{
-<span class="nc" id="L157">			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
+<span class="nc" id="L169">			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
 				java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
-<span class="nc bnc" id="L160" title="All 2 branches missed.">			for (int termIndex = 1; termIndex &lt;= termCount; ++termIndex)</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">			for (int termIndex = 1; termIndex &lt;= termCount; ++termIndex)</span>
 			{
-<span class="nc" id="L162">				termWeightMap.put (</span>
-<span class="nc" id="L163">					termIndex,</span>
-<span class="nc" id="L164">					1.</span>
+<span class="nc" id="L174">				termWeightMap.put (</span>
+<span class="nc" id="L175">					termIndex,</span>
+<span class="nc" id="L176">					1.</span>
 				);
 			}
 
-<span class="nc" id="L168">			return new org.drip.numerical.estimation.R1ToR1Series (</span>
-<span class="nc" id="L169">				org.drip.specialfunction.loggamma.InfiniteSumSeriesTerm.Weierstrass(),</span>
+<span class="nc" id="L180">			return new org.drip.numerical.estimation.R1ToR1Series (</span>
+<span class="nc" id="L181">				org.drip.specialfunction.loggamma.InfiniteSumSeriesTerm.Weierstrass(),</span>
 				false,
 				termWeightMap
 			);
 		}
-<span class="nc" id="L174">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L186">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L176">			e.printStackTrace();</span>
+<span class="nc" id="L188">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L179">		return null;</span>
+<span class="nc" id="L191">		return null;</span>
 	}
 
 	/**
@@ -192,29 +204,29 @@ package org.drip.specialfunction.loggamma;
 	{
 		try
 		{
-<span class="nc" id="L195">			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
+<span class="nc" id="L207">			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
 				java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
-<span class="nc bnc" id="L198" title="All 2 branches missed.">			for (int termIndex = 1; termIndex &lt;= termCount; ++termIndex)</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">			for (int termIndex = 1; termIndex &lt;= termCount; ++termIndex)</span>
 			{
-<span class="nc" id="L200">				termWeightMap.put (</span>
-<span class="nc" id="L201">					termIndex,</span>
-<span class="nc" id="L202">					1.</span>
+<span class="nc" id="L212">				termWeightMap.put (</span>
+<span class="nc" id="L213">					termIndex,</span>
+<span class="nc" id="L214">					1.</span>
 				);
 			}
 
-<span class="nc" id="L206">			return new org.drip.numerical.estimation.R1ToR1Series (</span>
-<span class="nc" id="L207">				org.drip.specialfunction.loggamma.InfiniteSumSeriesTerm.Fourier(),</span>
+<span class="nc" id="L218">			return new org.drip.numerical.estimation.R1ToR1Series (</span>
+<span class="nc" id="L219">				org.drip.specialfunction.loggamma.InfiniteSumSeriesTerm.Fourier(),</span>
 				false,
 				termWeightMap
 			);
 		}
-<span class="nc" id="L212">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L224">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L214">			e.printStackTrace();</span>
+<span class="nc" id="L226">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L217">		return null;</span>
+<span class="nc" id="L229">		return null;</span>
 	}
 
 	/**
@@ -230,32 +242,32 @@ package org.drip.specialfunction.loggamma;
 	{
 		try
 		{
-<span class="nc" id="L233">			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
+<span class="nc" id="L245">			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
 				java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
-<span class="nc bnc" id="L236" title="All 2 branches missed.">			for (int termIndex = 1; termIndex &lt; termCount; ++termIndex)</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">			for (int termIndex = 1; termIndex &lt; termCount; ++termIndex)</span>
 			{
-<span class="nc bnc" id="L238" title="All 2 branches missed.">				if (2 * termIndex != termCount)</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">				if (2 * termIndex != termCount)</span>
 				{
-<span class="nc" id="L240">					termWeightMap.put (</span>
-<span class="nc" id="L241">						termIndex,</span>
-<span class="nc" id="L242">						1.</span>
+<span class="nc" id="L252">					termWeightMap.put (</span>
+<span class="nc" id="L253">						termIndex,</span>
+<span class="nc" id="L254">						1.</span>
 					);
 				}
 			}
 
-<span class="nc" id="L247">			return new org.drip.numerical.estimation.R1ToR1Series (</span>
-<span class="nc" id="L248">				org.drip.specialfunction.loggamma.InfiniteSumSeriesTerm.Blagouchine2015(),</span>
+<span class="nc" id="L259">			return new org.drip.numerical.estimation.R1ToR1Series (</span>
+<span class="nc" id="L260">				org.drip.specialfunction.loggamma.InfiniteSumSeriesTerm.Blagouchine2015(),</span>
 				false,
 				termWeightMap
 			);
 		}
-<span class="nc" id="L253">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L265">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L255">			e.printStackTrace();</span>
+<span class="nc" id="L267">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L258">		return null;</span>
+<span class="nc" id="L270">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

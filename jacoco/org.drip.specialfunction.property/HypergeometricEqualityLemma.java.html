@@ -6,41 +6,53 @@ package org.drip.specialfunction.property;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -93,16 +105,16 @@ package org.drip.specialfunction.property;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md&quot;&gt;Definition of Special Function Estimators&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md&quot;&gt;Function Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md&quot;&gt;Special Function Property Lemma Verifiers&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L105">public class HypergeometricEqualityLemma</span>
+<span class="nc" id="L117">public class HypergeometricEqualityLemma</span>
 {
 
 	private static final double RecursiveGaussContinedFraction (
@@ -113,13 +125,13 @@ package org.drip.specialfunction.property;
 		final int termCurrent,
 		final int termCount)
 	{
-<span class="nc bnc" id="L116" title="All 2 branches missed.">		if (termCurrent == termCount)</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (termCurrent == termCount)</span>
 		{
-<span class="nc" id="L118">			return 1.;</span>
+<span class="nc" id="L130">			return 1.;</span>
 		}
 
-<span class="nc" id="L121">		double gaussContinedFraction = 1. + ((b - c - termCurrent - 1.) * (a + termCurrent) /</span>
-<span class="nc" id="L122">			((c + termCurrent + 1.) * (c + termCurrent + 2.))) * z / RecursiveGaussContinedFraction (</span>
+<span class="nc" id="L133">		double gaussContinedFraction = 1. + ((b - c - termCurrent - 1.) * (a + termCurrent) /</span>
+<span class="nc" id="L134">			((c + termCurrent + 1.) * (c + termCurrent + 2.))) * z / RecursiveGaussContinedFraction (</span>
 				a,
 				b,
 				c,
@@ -128,7 +140,7 @@ package org.drip.specialfunction.property;
 				termCount
 			);
 
-<span class="nc" id="L131">		return 1. + (a - c - termCurrent) * (b + termCurrent) /</span>
+<span class="nc" id="L143">		return 1. + (a - c - termCurrent) * (b + termCurrent) /</span>
 			((c + termCurrent) * (c + termCurrent + 1)) * z / gaussContinedFraction;
 	}
 
@@ -145,17 +157,17 @@ package org.drip.specialfunction.property;
 		final double a,
 		final double b)
 	{
-<span class="nc" id="L148">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
-<span class="nc" id="L149">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (1000);</span>
+<span class="nc" id="L160">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L161">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (1000);</span>
 
-<span class="nc bnc" id="L151" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
 		{
-<span class="nc" id="L153">			return null;</span>
+<span class="nc" id="L165">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L158">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator1 =</span>
+<span class="nc" id="L170">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator1 =</span>
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
 					new org.drip.specialfunction.definition.HypergeometricParameters (
 						a,
@@ -166,7 +178,7 @@ package org.drip.specialfunction.property;
 					10000
 				);
 
-<span class="nc" id="L169">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator2 =</span>
+<span class="nc" id="L181">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator2 =</span>
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
 					new org.drip.specialfunction.definition.HypergeometricParameters (
 						b,
@@ -177,27 +189,27 @@ package org.drip.specialfunction.property;
 					10000
 				);
 
-<span class="nc" id="L180">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L192">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L183">				{</span>
-					@Override public double evaluate (
-						final double z)
-						throws java.lang.Exception
-					{
-<span class="nc" id="L188">						return hypergeometricEstimator1.derivative (</span>
-							z,
-							1
-						);
-					}
-				},
 				new org.drip.function.definition.R1ToR1 (null)
 <span class="nc" id="L195">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L200">						return hypergeometricEstimator2.derivative (</span>
+<span class="nc" id="L200">						return hypergeometricEstimator1.derivative (</span>
+							z,
+							1
+						);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L207">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L212">						return hypergeometricEstimator2.derivative (</span>
 							z,
 							1
 						);
@@ -206,12 +218,12 @@ package org.drip.specialfunction.property;
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L209">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L221">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L211">			e.printStackTrace();</span>
+<span class="nc" id="L223">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L214">		return null;</span>
+<span class="nc" id="L226">		return null;</span>
 	}
 
 	/**
@@ -227,17 +239,17 @@ package org.drip.specialfunction.property;
 		final double a,
 		final double b)
 	{
-<span class="nc" id="L230">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
-<span class="nc" id="L231">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (1000);</span>
+<span class="nc" id="L242">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L243">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (1000);</span>
 
-<span class="nc bnc" id="L233" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
 		{
-<span class="nc" id="L235">			return null;</span>
+<span class="nc" id="L247">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L240">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =</span>
+<span class="nc" id="L252">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =</span>
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
 					new org.drip.specialfunction.definition.HypergeometricParameters (
 						a,
@@ -248,43 +260,43 @@ package org.drip.specialfunction.property;
 					10000
 				);
 
-<span class="nc" id="L251">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L263">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L254">				{</span>
-					@Override public double evaluate (
-						final double z)
-						throws java.lang.Exception
-					{
-<span class="nc" id="L259">						return hypergeometricEstimator.derivative (</span>
-							z,
-							1
-						);
-					}
-				},
 				new org.drip.function.definition.R1ToR1 (null)
 <span class="nc" id="L266">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L271">						return a / z * (</span>
-<span class="nc" id="L272">							java.lang.Math.pow (</span>
+<span class="nc" id="L271">						return hypergeometricEstimator.derivative (</span>
+							z,
+							1
+						);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L278">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L283">						return a / z * (</span>
+<span class="nc" id="L284">							java.lang.Math.pow (</span>
 								1. - z,
 								-b
-<span class="nc" id="L275">							) - hypergeometricEstimator.regularHypergeometric (z)</span>
+<span class="nc" id="L287">							) - hypergeometricEstimator.regularHypergeometric (z)</span>
 						);
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L282">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L294">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L284">			e.printStackTrace();</span>
+<span class="nc" id="L296">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L287">		return null;</span>
+<span class="nc" id="L299">		return null;</span>
 	}
 
 	/**
@@ -295,17 +307,17 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R1ToR1Property LogOnePlusZ()
 	{
-<span class="nc" id="L298">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
-<span class="nc" id="L299">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (1000);</span>
+<span class="nc" id="L310">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L311">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (1000);</span>
 
-<span class="nc bnc" id="L301" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+<span class="nc bnc" id="L313" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
 		{
-<span class="nc" id="L303">			return null;</span>
+<span class="nc" id="L315">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L308">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =</span>
+<span class="nc" id="L320">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =</span>
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
 					new org.drip.specialfunction.definition.HypergeometricParameters (
 						1.,
@@ -316,35 +328,35 @@ package org.drip.specialfunction.property;
 					10000
 				);
 
-<span class="nc" id="L319">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L331">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.EQ,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L322">				{</span>
+<span class="nc" id="L334">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L327">						return z * hypergeometricEstimator.evaluate (-z);</span>
+<span class="nc" id="L339">						return z * hypergeometricEstimator.evaluate (-z);</span>
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L331">				{</span>
+<span class="nc" id="L343">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L336">						return java.lang.Math.log (1. + z);</span>
+<span class="nc" id="L348">						return java.lang.Math.log (1. + z);</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L342">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L354">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L344">			e.printStackTrace();</span>
+<span class="nc" id="L356">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L347">		return null;</span>
+<span class="nc" id="L359">		return null;</span>
 	}
 
 	/**
@@ -358,17 +370,17 @@ package org.drip.specialfunction.property;
 	public static final org.drip.function.definition.R1ToR1Property InversePowerA (
 		final double a)
 	{
-<span class="nc" id="L361">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
-<span class="nc" id="L362">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (1000);</span>
+<span class="nc" id="L373">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L374">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (1000);</span>
 
-<span class="nc bnc" id="L364" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+<span class="nc bnc" id="L376" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
 		{
-<span class="nc" id="L366">			return null;</span>
+<span class="nc" id="L378">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L371">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =</span>
+<span class="nc" id="L383">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =</span>
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
 					new org.drip.specialfunction.definition.HypergeometricParameters (
 						a,
@@ -379,24 +391,24 @@ package org.drip.specialfunction.property;
 					10000
 				);
 
-<span class="nc" id="L382">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L394">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.EQ,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L385">				{</span>
+<span class="nc" id="L397">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L390">						return hypergeometricEstimator.evaluate (z);</span>
+<span class="nc" id="L402">						return hypergeometricEstimator.evaluate (z);</span>
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L394">				{</span>
+<span class="nc" id="L406">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L399">						return java.lang.Math.pow (</span>
+<span class="nc" id="L411">						return java.lang.Math.pow (</span>
 							1. - z,
 							-a
 						);
@@ -405,12 +417,12 @@ package org.drip.specialfunction.property;
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L408">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L420">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L410">			e.printStackTrace();</span>
+<span class="nc" id="L422">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L413">		return null;</span>
+<span class="nc" id="L425">		return null;</span>
 	}
 
 	/**
@@ -421,17 +433,17 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R1ToR1Property InverseSine()
 	{
-<span class="nc" id="L424">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
-<span class="nc" id="L425">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (1000);</span>
+<span class="nc" id="L436">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L437">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (1000);</span>
 
-<span class="nc bnc" id="L427" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+<span class="nc bnc" id="L439" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
 		{
-<span class="nc" id="L429">			return null;</span>
+<span class="nc" id="L441">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L434">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =</span>
+<span class="nc" id="L446">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =</span>
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
 					new org.drip.specialfunction.definition.HypergeometricParameters (
 						0.5,
@@ -442,35 +454,35 @@ package org.drip.specialfunction.property;
 					10000
 				);
 
-<span class="nc" id="L445">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L457">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.EQ,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L448">				{</span>
+<span class="nc" id="L460">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L453">						return z * hypergeometricEstimator.evaluate (z * z);</span>
+<span class="nc" id="L465">						return z * hypergeometricEstimator.evaluate (z * z);</span>
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L457">				{</span>
+<span class="nc" id="L469">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L462">						return java.lang.Math.asin (z);</span>
+<span class="nc" id="L474">						return java.lang.Math.asin (z);</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L468">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L480">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L470">			e.printStackTrace();</span>
+<span class="nc" id="L482">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L473">		return null;</span>
+<span class="nc" id="L485">		return null;</span>
 	}
 
 	/**
@@ -486,17 +498,17 @@ package org.drip.specialfunction.property;
 		final double a,
 		final double b)
 	{
-<span class="nc" id="L489">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
-<span class="nc" id="L490">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
+<span class="nc" id="L501">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L502">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
 
-<span class="nc bnc" id="L492" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+<span class="nc bnc" id="L504" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
 		{
-<span class="nc" id="L494">			return null;</span>
+<span class="nc" id="L506">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L499">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator1 =</span>
+<span class="nc" id="L511">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator1 =</span>
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
 					new org.drip.specialfunction.definition.HypergeometricParameters (
 						a,
@@ -507,7 +519,7 @@ package org.drip.specialfunction.property;
 					100000
 				);
 
-<span class="nc" id="L510">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator2 =</span>
+<span class="nc" id="L522">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator2 =</span>
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
 					new org.drip.specialfunction.definition.HypergeometricParameters (
 						0.5 * a,
@@ -518,27 +530,27 @@ package org.drip.specialfunction.property;
 					100000
 				);
 
-<span class="nc" id="L521">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L533">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.EQ,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L524">				{</span>
+<span class="nc" id="L536">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L529">						return hypergeometricEstimator1.regularHypergeometric (z);</span>
+<span class="nc" id="L541">						return hypergeometricEstimator1.regularHypergeometric (z);</span>
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L533">				{</span>
+<span class="nc" id="L545">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L538">						return java.lang.Math.pow (</span>
+<span class="nc" id="L550">						return java.lang.Math.pow (</span>
 							1. - z,
 							-0.5 * a
-<span class="nc" id="L541">						) * hypergeometricEstimator2.regularHypergeometric (</span>
+<span class="nc" id="L553">						) * hypergeometricEstimator2.regularHypergeometric (</span>
 							z * z / (4. * z - 4.)
 						);
 					}
@@ -546,12 +558,12 @@ package org.drip.specialfunction.property;
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L549">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L561">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L551">			e.printStackTrace();</span>
+<span class="nc" id="L563">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L554">		return null;</span>
+<span class="nc" id="L566">		return null;</span>
 	}
 
 	/**
@@ -565,17 +577,17 @@ package org.drip.specialfunction.property;
 	public static final org.drip.function.definition.R1ToR1Property GoursatCubicTransformation (
 		final double a)
 	{
-<span class="nc" id="L568">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
-<span class="nc" id="L569">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
+<span class="nc" id="L580">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L581">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
 
-<span class="nc bnc" id="L571" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+<span class="nc bnc" id="L583" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
 		{
-<span class="nc" id="L573">			return null;</span>
+<span class="nc" id="L585">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L578">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator1 =</span>
+<span class="nc" id="L590">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator1 =</span>
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
 					new org.drip.specialfunction.definition.HypergeometricParameters (
 						1.5 * a,
@@ -586,7 +598,7 @@ package org.drip.specialfunction.property;
 					100000
 				);
 
-<span class="nc" id="L589">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator2 =</span>
+<span class="nc" id="L601">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator2 =</span>
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
 					new org.drip.specialfunction.definition.HypergeometricParameters (
 						a - (1. / 3.),
@@ -597,29 +609,29 @@ package org.drip.specialfunction.property;
 					100000
 				);
 
-<span class="nc" id="L600">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L612">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.EQ,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L603">				{</span>
+<span class="nc" id="L615">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L608">						return hypergeometricEstimator1.regularHypergeometric (-1. * z * z / 3.);</span>
+<span class="nc" id="L620">						return hypergeometricEstimator1.regularHypergeometric (-1. * z * z / 3.);</span>
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L612">				{</span>
+<span class="nc" id="L624">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L617">						double onePlusZ = 1. + z;</span>
+<span class="nc" id="L629">						double onePlusZ = 1. + z;</span>
 
-<span class="nc" id="L619">						return java.lang.Math.pow (</span>
+<span class="nc" id="L631">						return java.lang.Math.pow (</span>
 							onePlusZ,
 							1. - 3. * a
-<span class="nc" id="L622">						) * hypergeometricEstimator2.regularHypergeometric (</span>
+<span class="nc" id="L634">						) * hypergeometricEstimator2.regularHypergeometric (</span>
 							2. * z * (3. + z * z) / (onePlusZ * onePlusZ * onePlusZ)
 						);
 					}
@@ -627,12 +639,12 @@ package org.drip.specialfunction.property;
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L630">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L642">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L632">			e.printStackTrace();</span>
+<span class="nc" id="L644">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L635">		return null;</span>
+<span class="nc" id="L647">		return null;</span>
 	}
 
 	/**
@@ -643,17 +655,17 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R1ToR1Property VidunasHigherOrderTransformation()
 	{
-<span class="nc" id="L646">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
-<span class="nc" id="L647">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
+<span class="nc" id="L658">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L659">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
 
-<span class="nc bnc" id="L649" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+<span class="nc bnc" id="L661" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
 		{
-<span class="nc" id="L651">			return null;</span>
+<span class="nc" id="L663">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L656">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator1 =</span>
+<span class="nc" id="L668">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator1 =</span>
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
 					new org.drip.specialfunction.definition.HypergeometricParameters (
 						0.25,
@@ -664,7 +676,7 @@ package org.drip.specialfunction.property;
 					100000
 				);
 
-<span class="nc" id="L667">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator2 =</span>
+<span class="nc" id="L679">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator2 =</span>
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
 					new org.drip.specialfunction.definition.HypergeometricParameters (
 						1./ 48.,
@@ -675,31 +687,31 @@ package org.drip.specialfunction.property;
 					100000
 				);
 
-<span class="nc" id="L678">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L690">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L681">				{</span>
-					@Override public double evaluate (
-						final double z)
-						throws java.lang.Exception
-					{
-<span class="nc" id="L686">						return java.lang.Math.pow (</span>
-							z * z * z * z - 60. * z * z * z + 134. * z * z - 60. * z + 1.,
-							1. / 16.
-<span class="nc" id="L689">						) * hypergeometricEstimator1.regularHypergeometric (z);</span>
-					}
-				},
 				new org.drip.function.definition.R1ToR1 (null)
 <span class="nc" id="L693">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L698">						return hypergeometricEstimator2.regularHypergeometric (</span>
-<span class="nc" id="L699">							-432. * z * (z - 1.) * (z - 1.) * java.lang.Math.pow (</span>
+<span class="nc" id="L698">						return java.lang.Math.pow (</span>
+							z * z * z * z - 60. * z * z * z + 134. * z * z - 60. * z + 1.,
+							1. / 16.
+<span class="nc" id="L701">						) * hypergeometricEstimator1.regularHypergeometric (z);</span>
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L705">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L710">						return hypergeometricEstimator2.regularHypergeometric (</span>
+<span class="nc" id="L711">							-432. * z * (z - 1.) * (z - 1.) * java.lang.Math.pow (</span>
 								z + 1.,
 								8.
-<span class="nc" id="L702">							) * java.lang.Math.pow (</span>
+<span class="nc" id="L714">							) * java.lang.Math.pow (</span>
 								z * z * z * z - 60. * z * z * z + 134. * z * z - 60. * z + 1.,
 								-3.
 							)
@@ -709,12 +721,12 @@ package org.drip.specialfunction.property;
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L712">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L724">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L714">			e.printStackTrace();</span>
+<span class="nc" id="L726">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L717">		return null;</span>
+<span class="nc" id="L729">		return null;</span>
 	}
 
 	/**
@@ -725,30 +737,30 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R3ToR1Property GaussVanderMondeZPlusOne()
 	{
-<span class="nc" id="L728">		final org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
-<span class="nc" id="L729">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
+<span class="nc" id="L740">		final org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L741">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
 
-<span class="nc bnc" id="L731" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+<span class="nc bnc" id="L743" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
 		{
-<span class="nc" id="L733">			return null;</span>
+<span class="nc" id="L745">			return null;</span>
 		}
 
-<span class="nc" id="L736">		final org.drip.specialfunction.gamma.WindschitlTothAnalytic gammaEstimator =</span>
+<span class="nc" id="L748">		final org.drip.specialfunction.gamma.WindschitlTothAnalytic gammaEstimator =</span>
 			new org.drip.specialfunction.gamma.WindschitlTothAnalytic (null);
 
 		try
 		{
-<span class="nc" id="L741">			return new org.drip.function.definition.R3ToR1Property (</span>
+<span class="nc" id="L753">			return new org.drip.function.definition.R3ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.EQ,
 				new org.drip.function.definition.R3ToR1()
-<span class="nc" id="L744">				{</span>
+<span class="nc" id="L756">				{</span>
 					@Override public double evaluate (
 						final double a,
 						final double b,
 						final double c)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L751">						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (</span>
+<span class="nc" id="L763">						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (</span>
 							new org.drip.specialfunction.definition.HypergeometricParameters (
 								a,
 								b,
@@ -756,31 +768,31 @@ package org.drip.specialfunction.property;
 							),
 							logBetaEstimator,
 							100000
-<span class="nc" id="L759">						).regularHypergeometric (1.);</span>
+<span class="nc" id="L771">						).regularHypergeometric (1.);</span>
 					}
 				},
 				new org.drip.function.definition.R3ToR1()
-<span class="nc" id="L763">				{</span>
+<span class="nc" id="L775">				{</span>
 					@Override public double evaluate (
 						final double a,
 						final double b,
 						final double c)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L770">						return gammaEstimator.evaluate (c) * gammaEstimator.evaluate (c - a - b) / (</span>
-<span class="nc" id="L771">							gammaEstimator.evaluate (c - a) * gammaEstimator.evaluate (c - b)</span>
+<span class="nc" id="L782">						return gammaEstimator.evaluate (c) * gammaEstimator.evaluate (c - a - b) / (</span>
+<span class="nc" id="L783">							gammaEstimator.evaluate (c - a) * gammaEstimator.evaluate (c - b)</span>
 						);
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L778">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L790">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L780">			e.printStackTrace();</span>
+<span class="nc" id="L792">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L783">		return null;</span>
+<span class="nc" id="L795">		return null;</span>
 	}
 
 	/**
@@ -791,27 +803,27 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R3ToR1Property GaussDougallZPlusOne()
 	{
-<span class="nc" id="L794">		final org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
-<span class="nc" id="L795">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
+<span class="nc" id="L806">		final org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L807">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
 
-<span class="nc bnc" id="L797" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+<span class="nc bnc" id="L809" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
 		{
-<span class="nc" id="L799">			return null;</span>
+<span class="nc" id="L811">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L804">			return new org.drip.function.definition.R3ToR1Property (</span>
+<span class="nc" id="L816">			return new org.drip.function.definition.R3ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.EQ,
 				new org.drip.function.definition.R3ToR1()
-<span class="nc" id="L807">				{</span>
+<span class="nc" id="L819">				{</span>
 					@Override public double evaluate (
 						final double m,
 						final double b,
 						final double c)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L814">						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (</span>
+<span class="nc" id="L826">						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (</span>
 							new org.drip.specialfunction.definition.HypergeometricParameters (
 								-m,
 								b,
@@ -819,21 +831,21 @@ package org.drip.specialfunction.property;
 							),
 							logBetaEstimator,
 							100000
-<span class="nc" id="L822">						).regularHypergeometric (1.);</span>
+<span class="nc" id="L834">						).regularHypergeometric (1.);</span>
 					}
 				},
 				new org.drip.function.definition.R3ToR1()
-<span class="nc" id="L826">				{</span>
+<span class="nc" id="L838">				{</span>
 					@Override public double evaluate (
 						final double m,
 						final double b,
 						final double c)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L833">						return org.drip.numerical.common.NumberUtil.PochhammerSymbol (</span>
+<span class="nc" id="L845">						return org.drip.numerical.common.NumberUtil.PochhammerSymbol (</span>
 							c - b,
 							(int) m
-<span class="nc" id="L836">						) / org.drip.numerical.common.NumberUtil.PochhammerSymbol (</span>
+<span class="nc" id="L848">						) / org.drip.numerical.common.NumberUtil.PochhammerSymbol (</span>
 							c,
 							(int) m
 						);
@@ -842,12 +854,12 @@ package org.drip.specialfunction.property;
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L845">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L857">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L847">			e.printStackTrace();</span>
+<span class="nc" id="L859">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L850">		return null;</span>
+<span class="nc" id="L862">		return null;</span>
 	}
 
 	/**
@@ -858,29 +870,29 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R2ToR1Property GaussKummerZMinusOne()
 	{
-<span class="nc" id="L861">		final org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
-<span class="nc" id="L862">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
+<span class="nc" id="L873">		final org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L874">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
 
-<span class="nc bnc" id="L864" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+<span class="nc bnc" id="L876" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
 		{
-<span class="nc" id="L866">			return null;</span>
+<span class="nc" id="L878">			return null;</span>
 		}
 
-<span class="nc" id="L869">		final org.drip.specialfunction.gamma.WindschitlTothAnalytic gammaEstimator =</span>
+<span class="nc" id="L881">		final org.drip.specialfunction.gamma.WindschitlTothAnalytic gammaEstimator =</span>
 			new org.drip.specialfunction.gamma.WindschitlTothAnalytic (null);
 
 		try
 		{
-<span class="nc" id="L874">			return new org.drip.function.definition.R2ToR1Property (</span>
+<span class="nc" id="L886">			return new org.drip.function.definition.R2ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.EQ,
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L877">				{</span>
+<span class="nc" id="L889">				{</span>
 					@Override public double evaluate (
 						final double a,
 						final double b)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L883">						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (</span>
+<span class="nc" id="L895">						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (</span>
 							new org.drip.specialfunction.definition.HypergeometricParameters (
 								a,
 								b,
@@ -888,31 +900,31 @@ package org.drip.specialfunction.property;
 							),
 							logBetaEstimator,
 							100000
-<span class="nc" id="L891">						).regularHypergeometric (-1.);</span>
+<span class="nc" id="L903">						).regularHypergeometric (-1.);</span>
 					}
 				},
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L895">				{</span>
+<span class="nc" id="L907">				{</span>
 					@Override public double evaluate (
 						final double a,
 						final double b)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L901">						return gammaEstimator.evaluate (1. + a - b) * gammaEstimator.evaluate (1. + 0.5 * a)</span>
+<span class="nc" id="L913">						return gammaEstimator.evaluate (1. + a - b) * gammaEstimator.evaluate (1. + 0.5 * a)</span>
 						/ (
-<span class="nc" id="L903">							gammaEstimator.evaluate (1. + a) * gammaEstimator.evaluate (1. + 0.5 * a - b)</span>
+<span class="nc" id="L915">							gammaEstimator.evaluate (1. + a) * gammaEstimator.evaluate (1. + 0.5 * a - b)</span>
 						);
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L910">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L922">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L912">			e.printStackTrace();</span>
+<span class="nc" id="L924">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L915">		return null;</span>
+<span class="nc" id="L927">		return null;</span>
 	}
 
 	/**
@@ -923,29 +935,29 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R2ToR1Property GaussSecondSummationZPlusHalf()
 	{
-<span class="nc" id="L926">		final org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
-<span class="nc" id="L927">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
+<span class="nc" id="L938">		final org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L939">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
 
-<span class="nc bnc" id="L929" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+<span class="nc bnc" id="L941" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
 		{
-<span class="nc" id="L931">			return null;</span>
+<span class="nc" id="L943">			return null;</span>
 		}
 
-<span class="nc" id="L934">		final org.drip.specialfunction.gamma.WindschitlTothAnalytic gammaEstimator =</span>
+<span class="nc" id="L946">		final org.drip.specialfunction.gamma.WindschitlTothAnalytic gammaEstimator =</span>
 			new org.drip.specialfunction.gamma.WindschitlTothAnalytic (null);
 
 		try
 		{
-<span class="nc" id="L939">			return new org.drip.function.definition.R2ToR1Property (</span>
+<span class="nc" id="L951">			return new org.drip.function.definition.R2ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.EQ,
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L942">				{</span>
+<span class="nc" id="L954">				{</span>
 					@Override public double evaluate (
 						final double a,
 						final double b)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L948">						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (</span>
+<span class="nc" id="L960">						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (</span>
 							new org.drip.specialfunction.definition.HypergeometricParameters (
 								a,
 								b,
@@ -953,32 +965,32 @@ package org.drip.specialfunction.property;
 							),
 							logBetaEstimator,
 							100000
-<span class="nc" id="L956">						).regularHypergeometric (0.5);</span>
+<span class="nc" id="L968">						).regularHypergeometric (0.5);</span>
 					}
 				},
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L960">				{</span>
+<span class="nc" id="L972">				{</span>
 					@Override public double evaluate (
 						final double a,
 						final double b)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L966">						return gammaEstimator.evaluate (0.5) * gammaEstimator.evaluate (0.5 * (1. + a + b)) /</span>
+<span class="nc" id="L978">						return gammaEstimator.evaluate (0.5) * gammaEstimator.evaluate (0.5 * (1. + a + b)) /</span>
 						(
-<span class="nc" id="L968">							gammaEstimator.evaluate (0.5 * (1. + a)) *</span>
-<span class="nc" id="L969">							gammaEstimator.evaluate (0.5 * (1. + b))</span>
+<span class="nc" id="L980">							gammaEstimator.evaluate (0.5 * (1. + a)) *</span>
+<span class="nc" id="L981">							gammaEstimator.evaluate (0.5 * (1. + b))</span>
 						);
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L976">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L988">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L978">			e.printStackTrace();</span>
+<span class="nc" id="L990">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L981">		return null;</span>
+<span class="nc" id="L993">		return null;</span>
 	}
 
 	/**
@@ -989,29 +1001,29 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R2ToR1Property GaussBaileyZPlusHalf()
 	{
-<span class="nc" id="L992">		final org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
-<span class="nc" id="L993">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
+<span class="nc" id="L1004">		final org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L1005">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
 
-<span class="nc bnc" id="L995" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+<span class="nc bnc" id="L1007" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
 		{
-<span class="nc" id="L997">			return null;</span>
+<span class="nc" id="L1009">			return null;</span>
 		}
 
-<span class="nc" id="L1000">		final org.drip.specialfunction.gamma.WindschitlTothAnalytic gammaEstimator =</span>
+<span class="nc" id="L1012">		final org.drip.specialfunction.gamma.WindschitlTothAnalytic gammaEstimator =</span>
 			new org.drip.specialfunction.gamma.WindschitlTothAnalytic (null);
 
 		try
 		{
-<span class="nc" id="L1005">			return new org.drip.function.definition.R2ToR1Property (</span>
+<span class="nc" id="L1017">			return new org.drip.function.definition.R2ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.EQ,
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L1008">				{</span>
+<span class="nc" id="L1020">				{</span>
 					@Override public double evaluate (
 						final double a,
 						final double c)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L1014">						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (</span>
+<span class="nc" id="L1026">						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (</span>
 							new org.drip.specialfunction.definition.HypergeometricParameters (
 								a,
 								1. - a,
@@ -1019,32 +1031,32 @@ package org.drip.specialfunction.property;
 							),
 							logBetaEstimator,
 							100000
-<span class="nc" id="L1022">						).regularHypergeometric (0.5);</span>
+<span class="nc" id="L1034">						).regularHypergeometric (0.5);</span>
 					}
 				},
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L1026">				{</span>
+<span class="nc" id="L1038">				{</span>
 					@Override public double evaluate (
 						final double a,
 						final double c)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L1032">						return gammaEstimator.evaluate (0.5 * c) * gammaEstimator.evaluate (0.5 * (1. + c)) /</span>
+<span class="nc" id="L1044">						return gammaEstimator.evaluate (0.5 * c) * gammaEstimator.evaluate (0.5 * (1. + c)) /</span>
 						(
-<span class="nc" id="L1034">							gammaEstimator.evaluate (0.5 * (c + a)) *</span>
-<span class="nc" id="L1035">							gammaEstimator.evaluate (0.5 * (1. + c - a))</span>
+<span class="nc" id="L1046">							gammaEstimator.evaluate (0.5 * (c + a)) *</span>
+<span class="nc" id="L1047">							gammaEstimator.evaluate (0.5 * (1. + c - a))</span>
 						);
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L1042">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L1054">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L1044">			e.printStackTrace();</span>
+<span class="nc" id="L1056">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1047">		return null;</span>
+<span class="nc" id="L1059">		return null;</span>
 	}
 
 	/**
@@ -1055,26 +1067,26 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R2ToR1Property FirstGesselStantonKoepf()
 	{
-<span class="nc" id="L1058">		final org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
-<span class="nc" id="L1059">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (100000);</span>
+<span class="nc" id="L1070">		final org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L1071">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (100000);</span>
 
-<span class="nc bnc" id="L1061" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+<span class="nc bnc" id="L1073" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
 		{
-<span class="nc" id="L1063">			return null;</span>
+<span class="nc" id="L1075">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L1068">			return new org.drip.function.definition.R2ToR1Property (</span>
+<span class="nc" id="L1080">			return new org.drip.function.definition.R2ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.EQ,
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L1071">				{</span>
+<span class="nc" id="L1083">				{</span>
 					@Override public double evaluate (
 						final double a,
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L1077">						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (</span>
+<span class="nc" id="L1089">						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (</span>
 							new org.drip.specialfunction.definition.HypergeometricParameters (
 								a,
 								-1. * a,
@@ -1082,21 +1094,21 @@ package org.drip.specialfunction.property;
 							),
 							logBetaEstimator,
 							1000000
-<span class="nc" id="L1085">						).regularHypergeometric (0.25 * z * z / (z - 1.));</span>
+<span class="nc" id="L1097">						).regularHypergeometric (0.25 * z * z / (z - 1.));</span>
 					}
 				},
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L1089">				{</span>
+<span class="nc" id="L1101">				{</span>
 					@Override public double evaluate (
 						final double a,
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L1095">						return 0.5 * (</span>
-<span class="nc" id="L1096">							java.lang.Math.pow (</span>
+<span class="nc" id="L1107">						return 0.5 * (</span>
+<span class="nc" id="L1108">							java.lang.Math.pow (</span>
 								1. - z,
 								a
-<span class="nc" id="L1099">							) + java.lang.Math.pow (</span>
+<span class="nc" id="L1111">							) + java.lang.Math.pow (</span>
 								1. - z,
 								-a
 							)
@@ -1106,12 +1118,12 @@ package org.drip.specialfunction.property;
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L1109">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L1121">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L1111">			e.printStackTrace();</span>
+<span class="nc" id="L1123">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1114">		return null;</span>
+<span class="nc" id="L1126">		return null;</span>
 	}
 
 	/**
@@ -1122,26 +1134,26 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R2ToR1Property SecondGesselStantonKoepf()
 	{
-<span class="nc" id="L1125">		final org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
-<span class="nc" id="L1126">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (100000);</span>
+<span class="nc" id="L1137">		final org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L1138">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (100000);</span>
 
-<span class="nc bnc" id="L1128" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+<span class="nc bnc" id="L1140" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
 		{
-<span class="nc" id="L1130">			return null;</span>
+<span class="nc" id="L1142">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L1135">			return new org.drip.function.definition.R2ToR1Property (</span>
+<span class="nc" id="L1147">			return new org.drip.function.definition.R2ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.EQ,
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L1138">				{</span>
+<span class="nc" id="L1150">				{</span>
 					@Override public double evaluate (
 						final double a,
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L1144">						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (</span>
+<span class="nc" id="L1156">						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (</span>
 							new org.drip.specialfunction.definition.HypergeometricParameters (
 								a,
 								-1. * a,
@@ -1149,28 +1161,28 @@ package org.drip.specialfunction.property;
 							),
 							logBetaEstimator,
 							1000000
-<span class="nc" id="L1152">						).regularHypergeometric (0.5 * (1. - java.lang.Math.cos (z)));</span>
+<span class="nc" id="L1164">						).regularHypergeometric (0.5 * (1. - java.lang.Math.cos (z)));</span>
 					}
 				},
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L1156">				{</span>
+<span class="nc" id="L1168">				{</span>
 					@Override public double evaluate (
 						final double a,
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L1162">						return java.lang.Math.cos (a * z);</span>
+<span class="nc" id="L1174">						return java.lang.Math.cos (a * z);</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L1168">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L1180">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L1170">			e.printStackTrace();</span>
+<span class="nc" id="L1182">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1173">		return null;</span>
+<span class="nc" id="L1185">		return null;</span>
 	}
 
 	/**
@@ -1188,17 +1200,17 @@ package org.drip.specialfunction.property;
 		final double b,
 		final double c)
 	{
-<span class="nc" id="L1191">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
-<span class="nc" id="L1192">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (1000);</span>
+<span class="nc" id="L1203">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L1204">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (1000);</span>
 
-<span class="nc bnc" id="L1194" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+<span class="nc bnc" id="L1206" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
 		{
-<span class="nc" id="L1196">			return null;</span>
+<span class="nc" id="L1208">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L1201">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator1 =</span>
+<span class="nc" id="L1213">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator1 =</span>
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
 					new org.drip.specialfunction.definition.HypergeometricParameters (
 						a,
@@ -1209,7 +1221,7 @@ package org.drip.specialfunction.property;
 					10000
 				);
 
-<span class="nc" id="L1212">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator2 =</span>
+<span class="nc" id="L1224">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator2 =</span>
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
 					new org.drip.specialfunction.definition.HypergeometricParameters (
 						a + 1,
@@ -1220,24 +1232,24 @@ package org.drip.specialfunction.property;
 					10000
 				);
 
-<span class="nc" id="L1223">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L1235">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.EQ,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L1226">				{</span>
+<span class="nc" id="L1238">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L1231">						return hypergeometricEstimator2.evaluate (z) / hypergeometricEstimator1.evaluate (z);</span>
+<span class="nc" id="L1243">						return hypergeometricEstimator2.evaluate (z) / hypergeometricEstimator1.evaluate (z);</span>
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L1235">				{</span>
+<span class="nc" id="L1247">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L1240">						return 1. / RecursiveGaussContinedFraction (</span>
+<span class="nc" id="L1252">						return 1. / RecursiveGaussContinedFraction (</span>
 							a,
 							b,
 							c,
@@ -1250,12 +1262,12 @@ package org.drip.specialfunction.property;
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L1253">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L1265">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L1255">			e.printStackTrace();</span>
+<span class="nc" id="L1267">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1258">		return null;</span>
+<span class="nc" id="L1270">		return null;</span>
 	}
 
 	/**
@@ -1271,20 +1283,20 @@ package org.drip.specialfunction.property;
 		final double p,
 		final double q)
 	{
-<span class="nc" id="L1274">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
-<span class="nc" id="L1275">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
+<span class="nc" id="L1286">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L1287">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
 
-<span class="nc bnc" id="L1277" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+<span class="nc bnc" id="L1289" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
 		{
-<span class="nc" id="L1279">			return null;</span>
+<span class="nc" id="L1291">			return null;</span>
 		}
 
-<span class="nc" id="L1282">		final org.drip.specialfunction.beta.IncompleteIntegrandEstimator incompleteBetaEstimator =</span>
-<span class="nc" id="L1283">			org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (10000);</span>
+<span class="nc" id="L1294">		final org.drip.specialfunction.beta.IncompleteIntegrandEstimator incompleteBetaEstimator =</span>
+<span class="nc" id="L1295">			org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (10000);</span>
 
 		try
 		{
-<span class="nc" id="L1287">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =</span>
+<span class="nc" id="L1299">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =</span>
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
 					new org.drip.specialfunction.definition.HypergeometricParameters (
 						p,
@@ -1295,27 +1307,27 @@ package org.drip.specialfunction.property;
 					10000
 				);
 
-<span class="nc" id="L1298">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L1310">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L1301">				{</span>
-					@Override public double evaluate (
-						final double z)
-						throws java.lang.Exception
-					{
-<span class="nc" id="L1306">						return java.lang.Math.pow (</span>
-							z,
-							p
-<span class="nc" id="L1309">						) * hypergeometricEstimator.evaluate (z) / p;</span>
-					}
-				},
 				new org.drip.function.definition.R1ToR1 (null)
 <span class="nc" id="L1313">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L1318">						return incompleteBetaEstimator.evaluate (</span>
+<span class="nc" id="L1318">						return java.lang.Math.pow (</span>
+							z,
+							p
+<span class="nc" id="L1321">						) * hypergeometricEstimator.evaluate (z) / p;</span>
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L1325">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L1330">						return incompleteBetaEstimator.evaluate (</span>
 							z,
 							p,
 							q
@@ -1325,12 +1337,12 @@ package org.drip.specialfunction.property;
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L1328">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L1340">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L1330">			e.printStackTrace();</span>
+<span class="nc" id="L1342">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1333">		return null;</span>
+<span class="nc" id="L1345">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

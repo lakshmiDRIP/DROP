@@ -6,41 +6,53 @@ package org.drip.specialfunction.property;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -92,19 +104,19 @@ package org.drip.specialfunction.property;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md&quot;&gt;Function Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Analysis&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md&quot;&gt;Special Function Property Lemma Verifiers&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L104">public class GammaPolynomialQuotientLemma</span>
+<span class="nc" id="L116">public class GammaPolynomialQuotientLemma</span>
 {
-<span class="nc" id="L106">	private org.drip.function.r1tor1.MonicPolynomial _monicPolynomialP = null;</span>
-<span class="nc" id="L107">	private org.drip.function.r1tor1.MonicPolynomial _monicPolynomialQ = null;</span>
+<span class="nc" id="L118">	private org.drip.function.r1tor1.MonicPolynomial _monicPolynomialP = null;</span>
+<span class="nc" id="L119">	private org.drip.function.r1tor1.MonicPolynomial _monicPolynomialQ = null;</span>
 
 	/**
 	 * Retrieve the Monic Polynomial &quot;P&quot;
@@ -114,7 +126,7 @@ package org.drip.specialfunction.property;
 
 	public org.drip.function.r1tor1.MonicPolynomial _monicPolynomialP()
 	{
-<span class="nc" id="L117">		return _monicPolynomialP;</span>
+<span class="nc" id="L129">		return _monicPolynomialP;</span>
 	}
 
 	/**
@@ -125,7 +137,7 @@ package org.drip.specialfunction.property;
 
 	public org.drip.function.r1tor1.MonicPolynomial _monicPolynomialQ()
 	{
-<span class="nc" id="L128">		return _monicPolynomialQ;</span>
+<span class="nc" id="L140">		return _monicPolynomialQ;</span>
 	}
 
 	/**
@@ -141,57 +153,57 @@ package org.drip.specialfunction.property;
 		final int a,
 		final int b)
 	{
-<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (a &gt;= b)</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (a &gt;= b)</span>
 		{
-<span class="nc" id="L146">			return null;</span>
+<span class="nc" id="L158">			return null;</span>
 		}
 
-<span class="nc" id="L149">		org.drip.specialfunction.loggamma.InfiniteSumEstimator logGammaEstimator =</span>
-<span class="nc" id="L150">			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);</span>
+<span class="nc" id="L161">		org.drip.specialfunction.loggamma.InfiniteSumEstimator logGammaEstimator =</span>
+<span class="nc" id="L162">			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);</span>
 
 		try
 		{
-<span class="nc" id="L154">			double lValue = 1.;</span>
+<span class="nc" id="L166">			double lValue = 1.;</span>
 
-<span class="nc bnc" id="L156" title="All 2 branches missed.">			for (int i = a; i &lt;= b; ++i)</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">			for (int i = a; i &lt;= b; ++i)</span>
 			{
-<span class="nc" id="L158">				lValue = lValue * _monicPolynomialP.evaluate (i) / _monicPolynomialQ.evaluate (i);</span>
+<span class="nc" id="L170">				lValue = lValue * _monicPolynomialP.evaluate (i) / _monicPolynomialQ.evaluate (i);</span>
 			}
 
-<span class="nc" id="L161">			double rValue = java.lang.Math.exp (</span>
-<span class="nc" id="L162">				_monicPolynomialP.logGammaProduct (</span>
+<span class="nc" id="L173">			double rValue = java.lang.Math.exp (</span>
+<span class="nc" id="L174">				_monicPolynomialP.logGammaProduct (</span>
 					a,
 					b,
 					logGammaEstimator
-<span class="nc" id="L166">				) - _monicPolynomialQ.logGammaProduct (</span>
+<span class="nc" id="L178">				) - _monicPolynomialQ.logGammaProduct (</span>
 					a,
 					b,
 					logGammaEstimator
 				)
 			);
 
-<span class="nc" id="L173">			double leftTolerance = java.lang.Math.abs (lValue *</span>
+<span class="nc" id="L185">			double leftTolerance = java.lang.Math.abs (lValue *</span>
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE);
 
-<span class="nc" id="L176">			double rightTolerance = java.lang.Math.abs (rValue *</span>
+<span class="nc" id="L188">			double rightTolerance = java.lang.Math.abs (rValue *</span>
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE);
 
-<span class="nc bnc" id="L179" title="All 2 branches missed.">			double tolerance = leftTolerance &lt; rightTolerance ? leftTolerance: rightTolerance;</span>
-<span class="nc bnc" id="L180" title="All 2 branches missed.">			tolerance = tolerance &lt; org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE ?</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">			double tolerance = leftTolerance &lt; rightTolerance ? leftTolerance: rightTolerance;</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">			tolerance = tolerance &lt; org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE ?</span>
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE : tolerance;
 
-<span class="nc" id="L183">			return new org.drip.function.definition.R1PropertyVerification (</span>
+<span class="nc" id="L195">			return new org.drip.function.definition.R1PropertyVerification (</span>
 				lValue,
 				rValue,
-<span class="nc bnc" id="L186" title="All 2 branches missed.">				java.lang.Math.abs (lValue - rValue) &lt; tolerance</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">				java.lang.Math.abs (lValue - rValue) &lt; tolerance</span>
 			);
 		}
-<span class="nc" id="L189">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L201">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L191">			e.printStackTrace();</span>
+<span class="nc" id="L203">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L194">		return null;</span>
+<span class="nc" id="L206">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

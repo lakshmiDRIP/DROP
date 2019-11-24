@@ -6,6 +6,7 @@ package org.drip.spline.bspline;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -14,39 +15,50 @@ package org.drip.spline.bspline;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -75,10 +87,10 @@ package org.drip.spline.bspline;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline&quot;&gt;B Spline&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md&quot;&gt;Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md&quot;&gt;de Boor Rational/Exponential/Tension B-Splines&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -86,8 +98,8 @@ package org.drip.spline.bspline;
  */
 
 public class TensionProcessedBasisHat extends org.drip.spline.bspline.TensionBasisHat {
-<span class="fc" id="L89">	private int _iDerivOrder = -1;</span>
-<span class="fc" id="L90">	private org.drip.spline.bspline.TensionBasisHat _tbhRaw = null;</span>
+<span class="fc" id="L101">	private int _iDerivOrder = -1;</span>
+<span class="fc" id="L102">	private org.drip.spline.bspline.TensionBasisHat _tbhRaw = null;</span>
 
 	/**
 	 * TensionProcessedBasisHat constructor
@@ -103,17 +115,17 @@ public class TensionProcessedBasisHat extends org.drip.spline.bspline.TensionBas
 		final int iDerivOrder)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L106">		super (tbhRaw.left(), tbhRaw.right(), tbhRaw.tension());</span>
+<span class="fc" id="L118">		super (tbhRaw.left(), tbhRaw.right(), tbhRaw.tension());</span>
 
-<span class="pc bpc" id="L108" title="2 of 4 branches missed.">		if (null == (_tbhRaw = tbhRaw) || 0 &gt;= (_iDerivOrder = iDerivOrder))</span>
-<span class="nc" id="L109">			throw new java.lang.Exception (&quot;TensionProcessedBasisHat ctr: Invalid Input&quot;);</span>
-<span class="fc" id="L110">	}</span>
+<span class="pc bpc" id="L120" title="2 of 4 branches missed.">		if (null == (_tbhRaw = tbhRaw) || 0 &gt;= (_iDerivOrder = iDerivOrder))</span>
+<span class="nc" id="L121">			throw new java.lang.Exception (&quot;TensionProcessedBasisHat ctr: Invalid Input&quot;);</span>
+<span class="fc" id="L122">	}</span>
 
 	@Override public double evaluate (
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L116" title="All 2 branches covered.">		return in (dblPredictorOrdinate) ? _tbhRaw.derivative (dblPredictorOrdinate, _iDerivOrder) : 0.;</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">		return in (dblPredictorOrdinate) ? _tbhRaw.derivative (dblPredictorOrdinate, _iDerivOrder) : 0.;</span>
 	}
 
 	@Override public double derivative (
@@ -121,12 +133,12 @@ public class TensionProcessedBasisHat extends org.drip.spline.bspline.TensionBas
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L124" title="1 of 2 branches missed.">		if (0 &gt; iOrder)</span>
-<span class="nc" id="L125">			throw new java.lang.Exception (&quot;TensionProcessedBasisHat::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">		if (0 &gt; iOrder)</span>
+<span class="nc" id="L137">			throw new java.lang.Exception (&quot;TensionProcessedBasisHat::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L127" title="All 2 branches covered.">		if (!in (dblPredictorOrdinate)) return 0.;</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">		if (!in (dblPredictorOrdinate)) return 0.;</span>
 
-<span class="fc" id="L129">		return _tbhRaw.derivative (dblPredictorOrdinate, iOrder + _iDerivOrder);</span>
+<span class="fc" id="L141">		return _tbhRaw.derivative (dblPredictorOrdinate, iOrder + _iDerivOrder);</span>
 	}
 
 	@Override public double integrate (
@@ -134,28 +146,28 @@ public class TensionProcessedBasisHat extends org.drip.spline.bspline.TensionBas
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L138" title="1 of 2 branches missed.">			(dblEnd))</span>
-<span class="nc" id="L139">			throw new java.lang.Exception (&quot;TensionProcessedBasisHat::integrate =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">			(dblEnd))</span>
+<span class="nc" id="L151">			throw new java.lang.Exception (&quot;TensionProcessedBasisHat::integrate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L141">		double dblBoundedBegin = org.drip.numerical.common.NumberUtil.Bound (dblBegin, left(), right());</span>
+<span class="fc" id="L153">		double dblBoundedBegin = org.drip.numerical.common.NumberUtil.Bound (dblBegin, left(), right());</span>
 
-<span class="fc" id="L143">		double dblBoundedEnd = org.drip.numerical.common.NumberUtil.Bound (dblEnd, left(), right());</span>
+<span class="fc" id="L155">		double dblBoundedEnd = org.drip.numerical.common.NumberUtil.Bound (dblEnd, left(), right());</span>
 
-<span class="pc bpc" id="L145" title="1 of 2 branches missed.">		if (dblBoundedBegin &gt;= dblBoundedEnd) return 0.;</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">		if (dblBoundedBegin &gt;= dblBoundedEnd) return 0.;</span>
 
-<span class="pc bpc" id="L147" title="1 of 2 branches missed.">		if (1 == _iDerivOrder) return _tbhRaw.evaluate (dblBoundedEnd) - _tbhRaw.evaluate (dblBoundedBegin);</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">		if (1 == _iDerivOrder) return _tbhRaw.evaluate (dblBoundedEnd) - _tbhRaw.evaluate (dblBoundedBegin);</span>
 
-<span class="fc" id="L149">		return _tbhRaw.derivative (dblBoundedEnd, _iDerivOrder - 1) - _tbhRaw.derivative (dblBoundedBegin,</span>
+<span class="fc" id="L161">		return _tbhRaw.derivative (dblBoundedEnd, _iDerivOrder - 1) - _tbhRaw.derivative (dblBoundedBegin,</span>
 			_iDerivOrder - 1);
 	}
 
 	@Override public double normalizer()
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (1 == _iDerivOrder) return _tbhRaw.evaluate (right()) - _tbhRaw.evaluate (left());</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">		if (1 == _iDerivOrder) return _tbhRaw.evaluate (right()) - _tbhRaw.evaluate (left());</span>
 
-<span class="nc" id="L158">		return _tbhRaw.derivative (right(), _iDerivOrder - 1) - _tbhRaw.derivative (left(), _iDerivOrder -</span>
+<span class="nc" id="L170">		return _tbhRaw.derivative (right(), _iDerivOrder - 1) - _tbhRaw.derivative (left(), _iDerivOrder -</span>
 			1);
 	}
 }

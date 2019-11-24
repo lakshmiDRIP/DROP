@@ -6,41 +6,53 @@ package org.drip.specialfunction.ode;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -93,16 +105,16 @@ package org.drip.specialfunction.ode;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Project&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md&quot;&gt;Function Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Analysis&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md&quot;&gt;Special Function Ordinary Differential Equations&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L105">public class IndependentLinearSolutionList2F1Z1</span>
+<span class="nc" id="L117">public class IndependentLinearSolutionList2F1Z1</span>
 {
 
 	/**
@@ -117,41 +129,41 @@ package org.drip.specialfunction.ode;
 		final org.drip.specialfunction.definition.RegularHypergeometricEstimator
 			regularHypergeometricEstimator)
 	{
-<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (null == regularHypergeometricEstimator)</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (null == regularHypergeometricEstimator)</span>
 		{
-<span class="nc" id="L122">			return null;</span>
+<span class="nc" id="L134">			return null;</span>
 		}
 
-<span class="nc" id="L125">		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =</span>
-<span class="nc" id="L126">			regularHypergeometricEstimator.hypergeometricParameters();</span>
+<span class="nc" id="L137">		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =</span>
+<span class="nc" id="L138">			regularHypergeometricEstimator.hypergeometricParameters();</span>
 
-<span class="nc" id="L128">		final double a = hypergeometricParameters.a();</span>
+<span class="nc" id="L140">		final double a = hypergeometricParameters.a();</span>
 
-<span class="nc" id="L130">		final double b = hypergeometricParameters.b();</span>
+<span class="nc" id="L142">		final double b = hypergeometricParameters.b();</span>
 
-<span class="nc" id="L132">		final double c = hypergeometricParameters.c();</span>
+<span class="nc" id="L144">		final double c = hypergeometricParameters.c();</span>
 
 		try
 		{
-<span class="nc bnc" id="L136" title="All 2 branches missed.">			if (org.drip.numerical.common.NumberUtil.IsInteger (c - a - b))</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">			if (org.drip.numerical.common.NumberUtil.IsInteger (c - a - b))</span>
 			{
-<span class="nc" id="L138">				return null;</span>
+<span class="nc" id="L150">				return null;</span>
 			}
 		}
-<span class="nc" id="L141">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L153">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L143">			e.printStackTrace();</span>
+<span class="nc" id="L155">			e.printStackTrace();</span>
 
-<span class="nc" id="L145">			return null;</span>
-<span class="nc" id="L146">		}</span>
+<span class="nc" id="L157">			return null;</span>
+<span class="nc" id="L158">		}</span>
 
-<span class="nc" id="L148">		org.drip.specialfunction.ode.IndependentLinearSolutionList independentLinearSolutionList2F1Z1 = new</span>
+<span class="nc" id="L160">		org.drip.specialfunction.ode.IndependentLinearSolutionList independentLinearSolutionList2F1Z1 = new</span>
 			org.drip.specialfunction.ode.IndependentLinearSolutionList();
 
 		try
 		{
-<span class="nc bnc" id="L153" title="All 2 branches missed.">			if (!independentLinearSolutionList2F1Z1.add (</span>
-<span class="nc" id="L154">				regularHypergeometricEstimator.albinate (</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">			if (!independentLinearSolutionList2F1Z1.add (</span>
+<span class="nc" id="L166">				regularHypergeometricEstimator.albinate (</span>
 					new org.drip.specialfunction.definition.HypergeometricParameters (
 						a,
 						b,
@@ -159,60 +171,60 @@ package org.drip.specialfunction.ode;
 					),
 					null,
 					new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L162">					{</span>
+<span class="nc" id="L174">					{</span>
 						@Override public double evaluate (
 							final double z)
 							throws java.lang.Exception
 						{
-<span class="nc" id="L167">							return 1. - z;</span>
+<span class="nc" id="L179">							return 1. - z;</span>
 						}
 					}
 				)
 			))
 			{
-<span class="nc" id="L173">				return null;</span>
+<span class="nc" id="L185">				return null;</span>
 			}
 
-<span class="nc bnc" id="L176" title="All 2 branches missed.">			if (!independentLinearSolutionList2F1Z1.add (</span>
-<span class="nc" id="L177">				regularHypergeometricEstimator.albinate (</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">			if (!independentLinearSolutionList2F1Z1.add (</span>
+<span class="nc" id="L189">				regularHypergeometricEstimator.albinate (</span>
 					new org.drip.specialfunction.definition.HypergeometricParameters (
 						c - a,
 						c - b,
 						1. + c - a
 					),
 					new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L184">					{</span>
+<span class="nc" id="L196">					{</span>
 						@Override public double evaluate (
 							final double z)
 							throws java.lang.Exception
 						{
-<span class="nc" id="L189">							return java.lang.Math.pow (</span>
+<span class="nc" id="L201">							return java.lang.Math.pow (</span>
 								1. - z,
 								c - a - b
 							);
 						}
 					},
 					new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L196">					{</span>
+<span class="nc" id="L208">					{</span>
 						@Override public double evaluate (
 							final double z)
 							throws java.lang.Exception
 						{
-<span class="nc" id="L201">							return 1. - z;</span>
+<span class="nc" id="L213">							return 1. - z;</span>
 						}
 					}
 				)
 			))
 			{
-<span class="nc" id="L207">				return null;</span>
+<span class="nc" id="L219">				return null;</span>
 			}
 		}
-<span class="nc" id="L210">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L222">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L212">			e.printStackTrace();</span>
-<span class="nc" id="L213">		}</span>
+<span class="nc" id="L224">			e.printStackTrace();</span>
+<span class="nc" id="L225">		}</span>
 
-<span class="nc" id="L215">		return independentLinearSolutionList2F1Z1;</span>
+<span class="nc" id="L227">		return independentLinearSolutionList2F1Z1;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

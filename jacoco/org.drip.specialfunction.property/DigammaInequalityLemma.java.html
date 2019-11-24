@@ -6,41 +6,53 @@ package org.drip.specialfunction.property;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -92,16 +104,16 @@ package org.drip.specialfunction.property;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md&quot;&gt;Function Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Analysis&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md&quot;&gt;Special Function Property Lemma Verifiers&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L104">public class DigammaInequalityLemma</span>
+<span class="nc" id="L116">public class DigammaInequalityLemma</span>
 {
 
 	/**
@@ -112,52 +124,52 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R1ToR1Property LeftAsymptote()
 	{
-<span class="nc" id="L115">		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =</span>
-<span class="nc" id="L116">			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
+<span class="nc" id="L127">		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =</span>
+<span class="nc" id="L128">			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
 
 		try
 		{
-<span class="nc" id="L120">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L132">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.LT,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L123">				{</span>
+<span class="nc" id="L135">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L128" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L130">							throw new java.lang.Exception</span>
+<span class="nc" id="L142">							throw new java.lang.Exception</span>
 								(&quot;DigammaInequalityLemma::LeftAsymptote::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L134">						return java.lang.Math.log (z - 0.5);</span>
+<span class="nc" id="L146">						return java.lang.Math.log (z - 0.5);</span>
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L138">				{</span>
+<span class="nc" id="L150">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L143" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L145">							throw new java.lang.Exception</span>
+<span class="nc" id="L157">							throw new java.lang.Exception</span>
 								(&quot;DigammaInequalityLemma::LeftAsymptote::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L149">						return abramowitzStegun2007.evaluate (z);</span>
+<span class="nc" id="L161">						return abramowitzStegun2007.evaluate (z);</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L155">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L167">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L157">			e.printStackTrace();</span>
+<span class="nc" id="L169">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L160">		return null;</span>
+<span class="nc" id="L172">		return null;</span>
 	}
 
 	/**
@@ -168,52 +180,52 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R1ToR1Property RightAsymptote()
 	{
-<span class="nc" id="L171">		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =</span>
-<span class="nc" id="L172">			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
+<span class="nc" id="L183">		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =</span>
+<span class="nc" id="L184">			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
 
 		try
 		{
-<span class="nc" id="L176">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L188">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.GT,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L179">				{</span>
+<span class="nc" id="L191">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L184" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L186">							throw new java.lang.Exception</span>
+<span class="nc" id="L198">							throw new java.lang.Exception</span>
 								(&quot;DigammaInequalityLemma::RightAsymptote::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L190">						return java.lang.Math.log (z);</span>
+<span class="nc" id="L202">						return java.lang.Math.log (z);</span>
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L194">				{</span>
+<span class="nc" id="L206">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L199" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L201">							throw new java.lang.Exception</span>
+<span class="nc" id="L213">							throw new java.lang.Exception</span>
 								(&quot;DigammaInequalityLemma::RightAsymptote::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L205">						return abramowitzStegun2007.evaluate (z);</span>
+<span class="nc" id="L217">						return abramowitzStegun2007.evaluate (z);</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L211">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L223">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L213">			e.printStackTrace();</span>
+<span class="nc" id="L225">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L216">		return null;</span>
+<span class="nc" id="L228">		return null;</span>
 	}
 
 	/**
@@ -224,52 +236,52 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R1ToR1Property ZeroOneLeftBound()
 	{
-<span class="nc" id="L227">		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =</span>
-<span class="nc" id="L228">			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
+<span class="nc" id="L239">		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =</span>
+<span class="nc" id="L240">			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
 
 		try
 		{
-<span class="nc" id="L232">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L244">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.LT,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L235">				{</span>
+<span class="nc" id="L247">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L240" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L242">							throw new java.lang.Exception</span>
+<span class="nc" id="L254">							throw new java.lang.Exception</span>
 								(&quot;DigammaInequalityLemma::ZeroOneLeftBound::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L246">						return -1. / z - org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;</span>
+<span class="nc" id="L258">						return -1. / z - org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;</span>
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L250">				{</span>
+<span class="nc" id="L262">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L255" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L257">							throw new java.lang.Exception</span>
+<span class="nc" id="L269">							throw new java.lang.Exception</span>
 								(&quot;DigammaInequalityLemma::ZeroOneLeftBound::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L261">						return abramowitzStegun2007.evaluate (z);</span>
+<span class="nc" id="L273">						return abramowitzStegun2007.evaluate (z);</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L267">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L279">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L269">			e.printStackTrace();</span>
+<span class="nc" id="L281">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L272">		return null;</span>
+<span class="nc" id="L284">		return null;</span>
 	}
 
 	/**
@@ -280,52 +292,52 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R1ToR1Property ZeroOneRightBound()
 	{
-<span class="nc" id="L283">		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =</span>
-<span class="nc" id="L284">			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
+<span class="nc" id="L295">		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =</span>
+<span class="nc" id="L296">			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
 
 		try
 		{
-<span class="nc" id="L288">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L300">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.GT,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L291">				{</span>
+<span class="nc" id="L303">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L296" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L308" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L298">							throw new java.lang.Exception</span>
+<span class="nc" id="L310">							throw new java.lang.Exception</span>
 								(&quot;DigammaInequalityLemma::ZeroOneRightBound::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L302">						return 1. - 1. / z - org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;</span>
+<span class="nc" id="L314">						return 1. - 1. / z - org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;</span>
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L306">				{</span>
+<span class="nc" id="L318">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L311" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L323" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L313">							throw new java.lang.Exception</span>
+<span class="nc" id="L325">							throw new java.lang.Exception</span>
 								(&quot;DigammaInequalityLemma::ZeroOneRightBound::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L317">						return abramowitzStegun2007.evaluate (z);</span>
+<span class="nc" id="L329">						return abramowitzStegun2007.evaluate (z);</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L323">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L335">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L325">			e.printStackTrace();</span>
+<span class="nc" id="L337">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L328">		return null;</span>
+<span class="nc" id="L340">		return null;</span>
 	}
 
 	/**
@@ -336,52 +348,52 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R1ToR1Property BernsteinBinetLeftBound()
 	{
-<span class="nc" id="L339">		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =</span>
-<span class="nc" id="L340">			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
+<span class="nc" id="L351">		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =</span>
+<span class="nc" id="L352">			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
 
 		try
 		{
-<span class="nc" id="L344">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L356">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.LT,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L347">				{</span>
+<span class="nc" id="L359">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L352" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L364" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L354">							throw new java.lang.Exception</span>
+<span class="nc" id="L366">							throw new java.lang.Exception</span>
 								(&quot;DigammaInequalityLemma::BernsteinBinetLeftBound::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L358">						return java.lang.Math.log (z) - 1. / z;</span>
+<span class="nc" id="L370">						return java.lang.Math.log (z) - 1. / z;</span>
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L362">				{</span>
+<span class="nc" id="L374">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L367" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L379" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L369">							throw new java.lang.Exception</span>
+<span class="nc" id="L381">							throw new java.lang.Exception</span>
 								(&quot;DigammaInequalityLemma::BernsteinBinetLeftBound::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L373">						return abramowitzStegun2007.evaluate (z);</span>
+<span class="nc" id="L385">						return abramowitzStegun2007.evaluate (z);</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L379">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L391">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L381">			e.printStackTrace();</span>
+<span class="nc" id="L393">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L384">		return null;</span>
+<span class="nc" id="L396">		return null;</span>
 	}
 
 	/**
@@ -392,52 +404,52 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R1ToR1Property BernsteinBinetRightBound()
 	{
-<span class="nc" id="L395">		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =</span>
-<span class="nc" id="L396">			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
+<span class="nc" id="L407">		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =</span>
+<span class="nc" id="L408">			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
 
 		try
 		{
-<span class="nc" id="L400">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L412">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.GT,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L403">				{</span>
+<span class="nc" id="L415">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L408" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L420" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L410">							throw new java.lang.Exception</span>
+<span class="nc" id="L422">							throw new java.lang.Exception</span>
 								(&quot;DigammaInequalityLemma::BernsteinBinetRightBound::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L414">						return java.lang.Math.log (z) - 0.5 / z;</span>
+<span class="nc" id="L426">						return java.lang.Math.log (z) - 0.5 / z;</span>
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L418">				{</span>
+<span class="nc" id="L430">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L423" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L435" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L425">							throw new java.lang.Exception</span>
+<span class="nc" id="L437">							throw new java.lang.Exception</span>
 								(&quot;DigammaInequalityLemma::BernsteinBinetRightBound::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L429">						return abramowitzStegun2007.evaluate (z);</span>
+<span class="nc" id="L441">						return abramowitzStegun2007.evaluate (z);</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L435">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L447">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L437">			e.printStackTrace();</span>
+<span class="nc" id="L449">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L440">		return null;</span>
+<span class="nc" id="L452">		return null;</span>
 	}
 
 	/**
@@ -448,52 +460,52 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R1ToR1Property ElezovicGiordanoPecaricLeftBound()
 	{
-<span class="nc" id="L451">		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =</span>
-<span class="nc" id="L452">			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
+<span class="nc" id="L463">		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =</span>
+<span class="nc" id="L464">			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
 
 		try
 		{
-<span class="nc" id="L456">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L468">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.LT,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L459">				{</span>
+<span class="nc" id="L471">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L464" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L476" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L466">							throw new java.lang.Exception</span>
+<span class="nc" id="L478">							throw new java.lang.Exception</span>
 								(&quot;DigammaInequalityLemma::ElezovicGiordanoPecaricLeftBound::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L470">						return java.lang.Math.log (z + 0.5) - 1. / z;</span>
+<span class="nc" id="L482">						return java.lang.Math.log (z + 0.5) - 1. / z;</span>
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L474">				{</span>
+<span class="nc" id="L486">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L479" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L491" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L481">							throw new java.lang.Exception</span>
+<span class="nc" id="L493">							throw new java.lang.Exception</span>
 								(&quot;DigammaInequalityLemma::ElezovicGiordanoPecaricLeftBound::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L485">						return abramowitzStegun2007.evaluate (z);</span>
+<span class="nc" id="L497">						return abramowitzStegun2007.evaluate (z);</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L491">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L503">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L493">			e.printStackTrace();</span>
+<span class="nc" id="L505">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L496">		return null;</span>
+<span class="nc" id="L508">		return null;</span>
 	}
 
 	/**
@@ -504,56 +516,56 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R1ToR1Property ElezovicGiordanoPecaricRightBound()
 	{
-<span class="nc" id="L507">		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =</span>
-<span class="nc" id="L508">			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
+<span class="nc" id="L519">		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =</span>
+<span class="nc" id="L520">			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
 
 		try
 		{
-<span class="nc" id="L512">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L524">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.GT,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L515">				{</span>
+<span class="nc" id="L527">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L520" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L532" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L522">							throw new java.lang.Exception</span>
+<span class="nc" id="L534">							throw new java.lang.Exception</span>
 								(&quot;DigammaInequalityLemma::ElezovicGiordanoPecaricRightBound::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L526">						return java.lang.Math.log (</span>
-<span class="nc" id="L527">							z + java.lang.Math.exp (</span>
+<span class="nc" id="L538">						return java.lang.Math.log (</span>
+<span class="nc" id="L539">							z + java.lang.Math.exp (</span>
 								-org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI
 							)
 						) - 1. / z;
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L534">				{</span>
+<span class="nc" id="L546">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L539" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L551" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L541">							throw new java.lang.Exception</span>
+<span class="nc" id="L553">							throw new java.lang.Exception</span>
 								(&quot;DigammaInequalityLemma::ElezovicGiordanoPecaricRightBound::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L545">						return abramowitzStegun2007.evaluate (z);</span>
+<span class="nc" id="L557">						return abramowitzStegun2007.evaluate (z);</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L551">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L563">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L553">			e.printStackTrace();</span>
+<span class="nc" id="L565">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L556">		return null;</span>
+<span class="nc" id="L568">		return null;</span>
 	}
 
 	/**
@@ -567,52 +579,52 @@ package org.drip.specialfunction.property;
 	public static final org.drip.function.definition.R1ToR1Property AlzerDifference1997 (
 		final double s)
 	{
-<span class="nc" id="L570">		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =</span>
-<span class="nc" id="L571">			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
+<span class="nc" id="L582">		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =</span>
+<span class="nc" id="L583">			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
 
 		try
 		{
-<span class="nc" id="L575">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L587">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.LT,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L578">				{</span>
+<span class="nc" id="L590">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L583" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L595" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L585">							throw new java.lang.Exception</span>
+<span class="nc" id="L597">							throw new java.lang.Exception</span>
 								(&quot;DigammaInequalityLemma::AlzerDifference1997::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L589">						return (1. - s) / (z + s);</span>
+<span class="nc" id="L601">						return (1. - s) / (z + s);</span>
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L593">				{</span>
+<span class="nc" id="L605">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L598" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L610" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L600">							throw new java.lang.Exception</span>
+<span class="nc" id="L612">							throw new java.lang.Exception</span>
 								(&quot;DigammaInequalityLemma::AlzerDifference1997::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L604">						return abramowitzStegun2007.evaluate (z + 1) - abramowitzStegun2007.evaluate (z + s);</span>
+<span class="nc" id="L616">						return abramowitzStegun2007.evaluate (z + 1) - abramowitzStegun2007.evaluate (z + s);</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L610">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L622">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L612">			e.printStackTrace();</span>
+<span class="nc" id="L624">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L615">		return null;</span>
+<span class="nc" id="L627">		return null;</span>
 	}
 
 	/**
@@ -623,56 +635,56 @@ package org.drip.specialfunction.property;
 
 	public static final org.drip.function.definition.R1ToR1Property AlzerJameson2017()
 	{
-<span class="nc" id="L626">		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =</span>
-<span class="nc" id="L627">			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
+<span class="nc" id="L638">		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =</span>
+<span class="nc" id="L639">			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);</span>
 
 		try
 		{
-<span class="nc" id="L631">			return new org.drip.function.definition.R1ToR1Property (</span>
+<span class="nc" id="L643">			return new org.drip.function.definition.R1ToR1Property (</span>
 				org.drip.function.definition.R1ToR1Property.LTE,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L634">				{</span>
+<span class="nc" id="L646">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L639" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L651" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L641">							throw new java.lang.Exception</span>
+<span class="nc" id="L653">							throw new java.lang.Exception</span>
 								(&quot;DigammaInequalityLemma::AlzerJameson2017::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L645">						return -1. * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;</span>
+<span class="nc" id="L657">						return -1. * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;</span>
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L649">				{</span>
+<span class="nc" id="L661">				{</span>
 					@Override public double evaluate (
 						final double z)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L654" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L666" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L656">							throw new java.lang.Exception</span>
+<span class="nc" id="L668">							throw new java.lang.Exception</span>
 								(&quot;DigammaInequalityLemma::AlzerJameson2017::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L660">						double digammaZ = abramowitzStegun2007.evaluate (z);</span>
+<span class="nc" id="L672">						double digammaZ = abramowitzStegun2007.evaluate (z);</span>
 
-<span class="nc" id="L662">						double digammaZInverse = abramowitzStegun2007.evaluate (1. / z);</span>
+<span class="nc" id="L674">						double digammaZInverse = abramowitzStegun2007.evaluate (1. / z);</span>
 
-<span class="nc" id="L664">						return 2. * digammaZ * digammaZInverse / (digammaZ + digammaZInverse);</span>
+<span class="nc" id="L676">						return 2. * digammaZ * digammaZInverse / (digammaZ + digammaZInverse);</span>
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
-<span class="nc" id="L670">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L682">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L672">			e.printStackTrace();</span>
+<span class="nc" id="L684">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L675">		return null;</span>
+<span class="nc" id="L687">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
