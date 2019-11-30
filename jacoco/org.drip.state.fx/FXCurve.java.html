@@ -6,45 +6,57 @@ package org.drip.state.fx;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -72,10 +84,10 @@ package org.drip.state.fx;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/fx&quot;&gt;FX&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md&quot;&gt;Latent State Inference and Creation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/fx/README.md&quot;&gt;FX Latent State Curve Estimator&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -83,19 +95,19 @@ package org.drip.state.fx;
  */
 
 public abstract class FXCurve implements org.drip.analytics.definition.Curve {
-<span class="fc" id="L86">	private org.drip.product.params.CurrencyPair _cp = null;</span>
+<span class="fc" id="L98">	private org.drip.product.params.CurrencyPair _cp = null;</span>
 
-<span class="fc" id="L88">	protected int _iEpochDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L100">	protected int _iEpochDate = java.lang.Integer.MIN_VALUE;</span>
 
 	protected FXCurve (
 		final int iEpochDate,
 		final org.drip.product.params.CurrencyPair cp)
 		throws java.lang.Exception
-<span class="fc" id="L94">	{</span>
-<span class="pc bpc" id="L95" title="1 of 2 branches missed.">		if (null == (_cp = cp)) throw new java.lang.Exception (&quot;FXCurve ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L106">	{</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">		if (null == (_cp = cp)) throw new java.lang.Exception (&quot;FXCurve ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L97">		_iEpochDate = iEpochDate;</span>
-<span class="fc" id="L98">	}</span>
+<span class="fc" id="L109">		_iEpochDate = iEpochDate;</span>
+<span class="fc" id="L110">	}</span>
 
 	/**
 	 * Calculate the FX Forward to the given Date
@@ -213,17 +225,17 @@ public abstract class FXCurve implements org.drip.analytics.definition.Curve {
 
 	@Override public org.drip.state.identifier.LatentStateLabel label()
 	{
-<span class="fc" id="L216">		return org.drip.state.identifier.FXLabel.Standard (_cp);</span>
+<span class="fc" id="L228">		return org.drip.state.identifier.FXLabel.Standard (_cp);</span>
 	}
 
 	@Override public java.lang.String currency()
 	{
-<span class="nc" id="L221">		return _cp.quoteCcy();</span>
+<span class="nc" id="L233">		return _cp.quoteCcy();</span>
 	}
 
 	@Override public org.drip.analytics.date.JulianDate epoch()
 	{
-<span class="fc" id="L226">		return new org.drip.analytics.date.JulianDate (_iEpochDate);</span>
+<span class="fc" id="L238">		return new org.drip.analytics.date.JulianDate (_iEpochDate);</span>
 	}
 
 	/**
@@ -234,7 +246,7 @@ public abstract class FXCurve implements org.drip.analytics.definition.Curve {
 
 	public org.drip.product.params.CurrencyPair currencyPair()
 	{
-<span class="fc" id="L237">		return _cp;</span>
+<span class="fc" id="L249">		return _cp;</span>
 	}
 
 	/**
@@ -251,9 +263,9 @@ public abstract class FXCurve implements org.drip.analytics.definition.Curve {
 		final org.drip.analytics.date.JulianDate dt)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L254" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;FXCurve::fx got null for date&quot;);</span>
+<span class="pc bpc" id="L266" title="1 of 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;FXCurve::fx got null for date&quot;);</span>
 
-<span class="fc" id="L256">		return fx (dt.julian());</span>
+<span class="fc" id="L268">		return fx (dt.julian());</span>
 	}
 
 	/**
@@ -270,34 +282,34 @@ public abstract class FXCurve implements org.drip.analytics.definition.Curve {
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L273" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
-<span class="nc" id="L274">			throw new java.lang.Exception (&quot;FXCurve::fx got bad tenor&quot;);</span>
+<span class="pc bpc" id="L285" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
+<span class="nc" id="L286">			throw new java.lang.Exception (&quot;FXCurve::fx got bad tenor&quot;);</span>
 
-<span class="fc" id="L276">		return fx (epoch().addTenor (strTenor));</span>
+<span class="fc" id="L288">		return fx (epoch().addTenor (strTenor));</span>
 	}
 
 	@Override public boolean setCCIS (
 		final org.drip.analytics.input.CurveConstructionInputSet ccis)
 	{
-<span class="fc" id="L282">		return true;</span>
+<span class="fc" id="L294">		return true;</span>
 	}
 
 	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
 	{
-<span class="nc" id="L287">		return null;</span>
+<span class="nc" id="L299">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; manifestMeasure (
 		final java.lang.String strInstr)
 	{
-<span class="nc" id="L293">		return null;</span>
+<span class="nc" id="L305">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState parallelShiftManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc" id="L300">		return null;</span>
+<span class="nc" id="L312">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState shiftManifestMeasure (
@@ -305,26 +317,26 @@ public abstract class FXCurve implements org.drip.analytics.definition.Curve {
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc" id="L308">		return null;</span>
+<span class="nc" id="L320">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState customTweakManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc" id="L315">		return null;</span>
+<span class="nc" id="L327">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState parallelShiftQuantificationMetric (
 		final double dblShift)
 	{
-<span class="nc" id="L321">		return null;</span>
+<span class="nc" id="L333">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState customTweakQuantificationMetric (
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc" id="L327">		return null;</span>
+<span class="nc" id="L339">		return null;</span>
 	}
 
 	/**
@@ -353,9 +365,9 @@ public abstract class FXCurve implements org.drip.analytics.definition.Curve {
 		final java.lang.String strManifestMeasure,
 		final org.drip.analytics.date.JulianDate dt)
 	{
-<span class="nc bnc" id="L356" title="All 2 branches missed.">		if (null == dt) return null;</span>
+<span class="nc bnc" id="L368" title="All 2 branches missed.">		if (null == dt) return null;</span>
 
-<span class="nc" id="L358">		return jackDForwardDManifestMeasure (strManifestMeasure, dt.julian());</span>
+<span class="nc" id="L370">		return jackDForwardDManifestMeasure (strManifestMeasure, dt.julian());</span>
 	}
 
 	/**
@@ -371,15 +383,15 @@ public abstract class FXCurve implements org.drip.analytics.definition.Curve {
 		final java.lang.String strManifestMeasure,
 		final java.lang.String strTenor)
 	{
-<span class="nc bnc" id="L374" title="All 4 branches missed.">		if (null == strTenor || strTenor.isEmpty()) return null;</span>
+<span class="nc bnc" id="L386" title="All 4 branches missed.">		if (null == strTenor || strTenor.isEmpty()) return null;</span>
 
 		try {
-<span class="nc" id="L377">			return jackDForwardDManifestMeasure (strManifestMeasure, epoch().addTenor (strTenor));</span>
-<span class="nc" id="L378">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L379">			e.printStackTrace();</span>
+<span class="nc" id="L389">			return jackDForwardDManifestMeasure (strManifestMeasure, epoch().addTenor (strTenor));</span>
+<span class="nc" id="L390">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L391">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L382">		return null;</span>
+<span class="nc" id="L394">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

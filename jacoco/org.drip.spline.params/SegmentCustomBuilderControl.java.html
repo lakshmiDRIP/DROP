@@ -6,6 +6,7 @@ package org.drip.spline.params;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -14,39 +15,50 @@ package org.drip.spline.params;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -75,10 +87,10 @@ package org.drip.spline.params;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md&quot;&gt;Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md&quot;&gt;Spline Segment Construction Control Parameters&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -86,11 +98,11 @@ package org.drip.spline.params;
  */
 
 public class SegmentCustomBuilderControl {
-<span class="fc" id="L89">	private java.lang.String _strBasisSpline = &quot;&quot;;</span>
-<span class="fc" id="L90">	private org.drip.spline.basis.FunctionSetBuilderParams _fsbp = null;</span>
-<span class="fc" id="L91">	private org.drip.spline.params.ResponseScalingShapeControl _rssc = null;</span>
-<span class="fc" id="L92">	private org.drip.spline.params.SegmentInelasticDesignControl _sdic = null;</span>
-<span class="fc" id="L93">	private org.drip.spline.params.PreceedingManifestSensitivityControl _pmsc = null;</span>
+<span class="fc" id="L101">	private java.lang.String _strBasisSpline = &quot;&quot;;</span>
+<span class="fc" id="L102">	private org.drip.spline.basis.FunctionSetBuilderParams _fsbp = null;</span>
+<span class="fc" id="L103">	private org.drip.spline.params.ResponseScalingShapeControl _rssc = null;</span>
+<span class="fc" id="L104">	private org.drip.spline.params.SegmentInelasticDesignControl _sdic = null;</span>
+<span class="fc" id="L105">	private org.drip.spline.params.PreceedingManifestSensitivityControl _pmsc = null;</span>
 
 	/**
 	 * SegmentCustomBuilderControl constructor
@@ -111,13 +123,13 @@ public class SegmentCustomBuilderControl {
 		final org.drip.spline.params.ResponseScalingShapeControl rssc,
 		final org.drip.spline.params.PreceedingManifestSensitivityControl pmsc)
 		throws java.lang.Exception
-<span class="fc" id="L114">	{</span>
-<span class="pc bpc" id="L115" title="3 of 6 branches missed.">		if (null == (_strBasisSpline = strBasisSpline) || null == (_fsbp = fsbp) || null == (_sdic = sdic))</span>
-<span class="nc" id="L116">			throw new java.lang.Exception (&quot;SegmentCustomBuilderControl ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L126">	{</span>
+<span class="pc bpc" id="L127" title="3 of 6 branches missed.">		if (null == (_strBasisSpline = strBasisSpline) || null == (_fsbp = fsbp) || null == (_sdic = sdic))</span>
+<span class="nc" id="L128">			throw new java.lang.Exception (&quot;SegmentCustomBuilderControl ctr =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L118">		_pmsc = pmsc;</span>
-<span class="fc" id="L119">		_rssc = rssc;</span>
-<span class="fc" id="L120">	}</span>
+<span class="fc" id="L130">		_pmsc = pmsc;</span>
+<span class="fc" id="L131">		_rssc = rssc;</span>
+<span class="fc" id="L132">	}</span>
 
 	/**
 	 * Retrieve the Basis Spline Name
@@ -127,7 +139,7 @@ public class SegmentCustomBuilderControl {
 
 	public java.lang.String basisSpline()
 	{
-<span class="fc" id="L130">		return _strBasisSpline;</span>
+<span class="fc" id="L142">		return _strBasisSpline;</span>
 	}
 
 	/**
@@ -138,7 +150,7 @@ public class SegmentCustomBuilderControl {
 
 	public org.drip.spline.basis.FunctionSetBuilderParams basisSetParams()
 	{
-<span class="fc" id="L141">		return _fsbp;</span>
+<span class="fc" id="L153">		return _fsbp;</span>
 	}
 
 	/**
@@ -149,7 +161,7 @@ public class SegmentCustomBuilderControl {
 
 	public org.drip.spline.params.SegmentInelasticDesignControl inelasticParams()
 	{
-<span class="fc" id="L152">		return _sdic;</span>
+<span class="fc" id="L164">		return _sdic;</span>
 	}
 
 	/**
@@ -160,7 +172,7 @@ public class SegmentCustomBuilderControl {
 
 	public org.drip.spline.params.ResponseScalingShapeControl shapeController()
 	{
-<span class="fc" id="L163">		return _rssc;</span>
+<span class="fc" id="L175">		return _rssc;</span>
 	}
 
 	/**
@@ -171,7 +183,7 @@ public class SegmentCustomBuilderControl {
 
 	public org.drip.spline.params.PreceedingManifestSensitivityControl preceedingManifestSensitivityControl()
 	{
-<span class="nc" id="L174">		return _pmsc;</span>
+<span class="nc" id="L186">		return _pmsc;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,6 +6,7 @@ package org.drip.spline.stretch;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -14,39 +15,50 @@ package org.drip.spline.stretch;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -100,17 +112,17 @@ package org.drip.spline.stretch;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch&quot;&gt;Stretch&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md&quot;&gt;Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch/README.md&quot;&gt;Multi-Segment Sequence Spline Stretch&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L113">public class MultiSegmentSequenceBuilder {</span>
+<span class="nc" id="L125">public class MultiSegmentSequenceBuilder {</span>
 
 	/**
 	 * Polynomial Spline
@@ -194,117 +206,117 @@ package org.drip.spline.stretch;
 		final double[] adblPredictorOrdinate,
 		final org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC)
 	{
-<span class="pc bpc" id="L197" title="2 of 4 branches missed.">		if (null == adblPredictorOrdinate || null == aSCBC) return null;</span>
+<span class="pc bpc" id="L209" title="2 of 4 branches missed.">		if (null == adblPredictorOrdinate || null == aSCBC) return null;</span>
 
-<span class="fc" id="L199">		int iNumSegment = adblPredictorOrdinate.length - 1;</span>
+<span class="fc" id="L211">		int iNumSegment = adblPredictorOrdinate.length - 1;</span>
 
-<span class="pc bpc" id="L201" title="2 of 4 branches missed.">		if (1 &gt; iNumSegment || iNumSegment != aSCBC.length) return null;</span>
+<span class="pc bpc" id="L213" title="2 of 4 branches missed.">		if (1 &gt; iNumSegment || iNumSegment != aSCBC.length) return null;</span>
 
-<span class="fc" id="L203">		org.drip.spline.segment.LatentStateResponseModel[] aCS = new</span>
+<span class="fc" id="L215">		org.drip.spline.segment.LatentStateResponseModel[] aCS = new</span>
 			org.drip.spline.segment.LatentStateResponseModel[iNumSegment];
 
-<span class="fc bfc" id="L206" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i) {</span>
-<span class="pc bpc" id="L207" title="1 of 2 branches missed.">			if (null == aSCBC[i]) return null;</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i) {</span>
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">			if (null == aSCBC[i]) return null;</span>
 
-<span class="fc" id="L209">			java.lang.String strBasisSpline = aSCBC[i].basisSpline();</span>
+<span class="fc" id="L221">			java.lang.String strBasisSpline = aSCBC[i].basisSpline();</span>
 
-<span class="pc bpc" id="L211" title="1 of 4 branches missed.">			if (null == strBasisSpline || (!BASIS_SPLINE_POLYNOMIAL.equalsIgnoreCase (strBasisSpline) &amp;&amp;</span>
-<span class="fc bfc" id="L212" title="All 2 branches covered.">				!BASIS_SPLINE_BERNSTEIN_POLYNOMIAL.equalsIgnoreCase (strBasisSpline) &amp;&amp;</span>
-<span class="fc bfc" id="L213" title="All 2 branches covered.">					!BASIS_SPLINE_HYPERBOLIC_TENSION.equalsIgnoreCase (strBasisSpline) &amp;&amp;</span>
-<span class="fc bfc" id="L214" title="All 2 branches covered.">						!BASIS_SPLINE_EXPONENTIAL_TENSION.equalsIgnoreCase (strBasisSpline) &amp;&amp;</span>
-<span class="fc bfc" id="L215" title="All 2 branches covered.">							!BASIS_SPLINE_KAKLIS_PANDELIS.equalsIgnoreCase (strBasisSpline) &amp;&amp;</span>
-<span class="pc bpc" id="L216" title="1 of 2 branches missed.">								!BASIS_SPLINE_EXPONENTIAL_RATIONAL.equalsIgnoreCase (strBasisSpline) &amp;&amp;</span>
-<span class="fc bfc" id="L217" title="All 2 branches covered.">									!BASIS_SPLINE_EXPONENTIAL_MIXTURE.equalsIgnoreCase (strBasisSpline) &amp;&amp;</span>
+<span class="pc bpc" id="L223" title="1 of 4 branches missed.">			if (null == strBasisSpline || (!BASIS_SPLINE_POLYNOMIAL.equalsIgnoreCase (strBasisSpline) &amp;&amp;</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">				!BASIS_SPLINE_BERNSTEIN_POLYNOMIAL.equalsIgnoreCase (strBasisSpline) &amp;&amp;</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">					!BASIS_SPLINE_HYPERBOLIC_TENSION.equalsIgnoreCase (strBasisSpline) &amp;&amp;</span>
+<span class="fc bfc" id="L226" title="All 2 branches covered.">						!BASIS_SPLINE_EXPONENTIAL_TENSION.equalsIgnoreCase (strBasisSpline) &amp;&amp;</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">							!BASIS_SPLINE_KAKLIS_PANDELIS.equalsIgnoreCase (strBasisSpline) &amp;&amp;</span>
+<span class="pc bpc" id="L228" title="1 of 2 branches missed.">								!BASIS_SPLINE_EXPONENTIAL_RATIONAL.equalsIgnoreCase (strBasisSpline) &amp;&amp;</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">									!BASIS_SPLINE_EXPONENTIAL_MIXTURE.equalsIgnoreCase (strBasisSpline) &amp;&amp;</span>
 										!BASIS_SPLINE_KLK_EXPONENTIAL_TENSION.equalsIgnoreCase
-<span class="fc bfc" id="L219" title="All 2 branches covered.">											(strBasisSpline) &amp;&amp;</span>
+<span class="fc bfc" id="L231" title="All 2 branches covered.">											(strBasisSpline) &amp;&amp;</span>
 												!BASIS_SPLINE_KLK_HYPERBOLIC_TENSION.equalsIgnoreCase
-<span class="fc bfc" id="L221" title="All 2 branches covered.">													(strBasisSpline) &amp;&amp;</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">													(strBasisSpline) &amp;&amp;</span>
 														!BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION.equalsIgnoreCase
-<span class="fc bfc" id="L223" title="All 2 branches covered.">				(strBasisSpline) &amp;&amp; !BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION.equalsIgnoreCase</span>
-<span class="pc bpc" id="L224" title="1 of 2 branches missed.">					(strBasisSpline)))</span>
-<span class="nc" id="L225">				return null;</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">				(strBasisSpline) &amp;&amp; !BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION.equalsIgnoreCase</span>
+<span class="pc bpc" id="L236" title="1 of 2 branches missed.">					(strBasisSpline)))</span>
+<span class="nc" id="L237">				return null;</span>
 
-<span class="fc bfc" id="L227" title="All 2 branches covered.">			if (BASIS_SPLINE_POLYNOMIAL.equalsIgnoreCase (strBasisSpline)) {</span>
-<span class="fc" id="L228">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
-<span class="pc bpc" id="L229" title="1 of 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">			if (BASIS_SPLINE_POLYNOMIAL.equalsIgnoreCase (strBasisSpline)) {</span>
+<span class="fc" id="L240">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
+<span class="pc bpc" id="L241" title="1 of 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
 						org.drip.spline.basis.FunctionSetBuilder.PolynomialBasisSet
-<span class="fc" id="L231">							((org.drip.spline.basis.PolynomialFunctionSetParams) aSCBC[i].basisSetParams()),</span>
-<span class="fc" id="L232">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
-<span class="nc" id="L233">					return null;</span>
-<span class="fc bfc" id="L234" title="All 2 branches covered.">			} else if (BASIS_SPLINE_BERNSTEIN_POLYNOMIAL.equalsIgnoreCase (strBasisSpline)) {</span>
-<span class="fc" id="L235">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
-<span class="pc bpc" id="L236" title="1 of 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
+<span class="fc" id="L243">							((org.drip.spline.basis.PolynomialFunctionSetParams) aSCBC[i].basisSetParams()),</span>
+<span class="fc" id="L244">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
+<span class="nc" id="L245">					return null;</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">			} else if (BASIS_SPLINE_BERNSTEIN_POLYNOMIAL.equalsIgnoreCase (strBasisSpline)) {</span>
+<span class="fc" id="L247">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
+<span class="pc bpc" id="L248" title="1 of 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
 						org.drip.spline.basis.FunctionSetBuilder.BernsteinPolynomialBasisSet
-<span class="fc" id="L238">							((org.drip.spline.basis.PolynomialFunctionSetParams) aSCBC[i].basisSetParams()),</span>
-<span class="fc" id="L239">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
-<span class="nc" id="L240">					return null;</span>
-<span class="fc bfc" id="L241" title="All 2 branches covered.">			} else if (BASIS_SPLINE_HYPERBOLIC_TENSION.equalsIgnoreCase (strBasisSpline)) {</span>
-<span class="fc" id="L242">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
-<span class="pc bpc" id="L243" title="1 of 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
+<span class="fc" id="L250">							((org.drip.spline.basis.PolynomialFunctionSetParams) aSCBC[i].basisSetParams()),</span>
+<span class="fc" id="L251">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
+<span class="nc" id="L252">					return null;</span>
+<span class="fc bfc" id="L253" title="All 2 branches covered.">			} else if (BASIS_SPLINE_HYPERBOLIC_TENSION.equalsIgnoreCase (strBasisSpline)) {</span>
+<span class="fc" id="L254">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
+<span class="pc bpc" id="L255" title="1 of 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
 						org.drip.spline.basis.FunctionSetBuilder.HyperbolicTensionBasisSet
-<span class="fc" id="L245">							((org.drip.spline.basis.ExponentialTensionSetParams) aSCBC[i].basisSetParams()),</span>
-<span class="fc" id="L246">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
-<span class="nc" id="L247">					return null;</span>
-<span class="fc bfc" id="L248" title="All 2 branches covered.">			} else if (BASIS_SPLINE_EXPONENTIAL_TENSION.equalsIgnoreCase (strBasisSpline)) {</span>
-<span class="fc" id="L249">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
-<span class="pc bpc" id="L250" title="1 of 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
+<span class="fc" id="L257">							((org.drip.spline.basis.ExponentialTensionSetParams) aSCBC[i].basisSetParams()),</span>
+<span class="fc" id="L258">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
+<span class="nc" id="L259">					return null;</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">			} else if (BASIS_SPLINE_EXPONENTIAL_TENSION.equalsIgnoreCase (strBasisSpline)) {</span>
+<span class="fc" id="L261">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
+<span class="pc bpc" id="L262" title="1 of 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
 						org.drip.spline.basis.FunctionSetBuilder.ExponentialTensionBasisSet
-<span class="fc" id="L252">							((org.drip.spline.basis.ExponentialTensionSetParams) aSCBC[i].basisSetParams()),</span>
-<span class="fc" id="L253">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
-<span class="nc" id="L254">					return null;</span>
-<span class="fc bfc" id="L255" title="All 2 branches covered.">			} else if (BASIS_SPLINE_KAKLIS_PANDELIS.equalsIgnoreCase (strBasisSpline)) {</span>
-<span class="fc" id="L256">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
-<span class="pc bpc" id="L257" title="1 of 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
+<span class="fc" id="L264">							((org.drip.spline.basis.ExponentialTensionSetParams) aSCBC[i].basisSetParams()),</span>
+<span class="fc" id="L265">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
+<span class="nc" id="L266">					return null;</span>
+<span class="fc bfc" id="L267" title="All 2 branches covered.">			} else if (BASIS_SPLINE_KAKLIS_PANDELIS.equalsIgnoreCase (strBasisSpline)) {</span>
+<span class="fc" id="L268">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
+<span class="pc bpc" id="L269" title="1 of 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
 						org.drip.spline.basis.FunctionSetBuilder.KaklisPandelisBasisSet
-<span class="fc" id="L259">							((org.drip.spline.basis.KaklisPandelisSetParams) aSCBC[i].basisSetParams()),</span>
-<span class="fc" id="L260">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
-<span class="nc" id="L261">					return null;</span>
-<span class="pc bpc" id="L262" title="1 of 2 branches missed.">			} else if (BASIS_SPLINE_EXPONENTIAL_RATIONAL.equalsIgnoreCase (strBasisSpline)) {</span>
-<span class="nc" id="L263">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
-<span class="nc bnc" id="L264" title="All 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
+<span class="fc" id="L271">							((org.drip.spline.basis.KaklisPandelisSetParams) aSCBC[i].basisSetParams()),</span>
+<span class="fc" id="L272">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
+<span class="nc" id="L273">					return null;</span>
+<span class="pc bpc" id="L274" title="1 of 2 branches missed.">			} else if (BASIS_SPLINE_EXPONENTIAL_RATIONAL.equalsIgnoreCase (strBasisSpline)) {</span>
+<span class="nc" id="L275">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
 						org.drip.spline.basis.FunctionSetBuilder.ExponentialRationalBasisSet
-<span class="nc" id="L266">							((org.drip.spline.basis.ExponentialRationalSetParams) aSCBC[i].basisSetParams()),</span>
-<span class="nc" id="L267">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
-<span class="nc" id="L268">					return null;</span>
-<span class="fc bfc" id="L269" title="All 2 branches covered.">			} else if (BASIS_SPLINE_EXPONENTIAL_MIXTURE.equalsIgnoreCase (strBasisSpline)) {</span>
-<span class="fc" id="L270">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
-<span class="pc bpc" id="L271" title="1 of 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
+<span class="nc" id="L278">							((org.drip.spline.basis.ExponentialRationalSetParams) aSCBC[i].basisSetParams()),</span>
+<span class="nc" id="L279">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
+<span class="nc" id="L280">					return null;</span>
+<span class="fc bfc" id="L281" title="All 2 branches covered.">			} else if (BASIS_SPLINE_EXPONENTIAL_MIXTURE.equalsIgnoreCase (strBasisSpline)) {</span>
+<span class="fc" id="L282">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
 						org.drip.spline.basis.FunctionSetBuilder.ExponentialMixtureBasisSet
-<span class="fc" id="L273">							((org.drip.spline.basis.ExponentialMixtureSetParams) aSCBC[i].basisSetParams()),</span>
-<span class="fc" id="L274">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
-<span class="nc" id="L275">					return null;</span>
-<span class="fc bfc" id="L276" title="All 2 branches covered.">			} else if (BASIS_SPLINE_KLK_EXPONENTIAL_TENSION.equalsIgnoreCase (strBasisSpline)) {</span>
-<span class="fc" id="L277">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
-<span class="pc bpc" id="L278" title="1 of 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
+<span class="fc" id="L285">							((org.drip.spline.basis.ExponentialMixtureSetParams) aSCBC[i].basisSetParams()),</span>
+<span class="fc" id="L286">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
+<span class="nc" id="L287">					return null;</span>
+<span class="fc bfc" id="L288" title="All 2 branches covered.">			} else if (BASIS_SPLINE_KLK_EXPONENTIAL_TENSION.equalsIgnoreCase (strBasisSpline)) {</span>
+<span class="fc" id="L289">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
+<span class="pc bpc" id="L290" title="1 of 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
 						org.drip.spline.tension.KochLycheKvasovFamily.FromExponentialPrimitive
-<span class="fc" id="L280">							((org.drip.spline.basis.ExponentialTensionSetParams) aSCBC[i].basisSetParams()),</span>
-<span class="fc" id="L281">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
-<span class="nc" id="L282">					return null;</span>
-<span class="fc bfc" id="L283" title="All 2 branches covered.">			} else if (BASIS_SPLINE_KLK_HYPERBOLIC_TENSION.equalsIgnoreCase (strBasisSpline)) {</span>
-<span class="fc" id="L284">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
-<span class="pc bpc" id="L285" title="1 of 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
+<span class="fc" id="L292">							((org.drip.spline.basis.ExponentialTensionSetParams) aSCBC[i].basisSetParams()),</span>
+<span class="fc" id="L293">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
+<span class="nc" id="L294">					return null;</span>
+<span class="fc bfc" id="L295" title="All 2 branches covered.">			} else if (BASIS_SPLINE_KLK_HYPERBOLIC_TENSION.equalsIgnoreCase (strBasisSpline)) {</span>
+<span class="fc" id="L296">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
+<span class="pc bpc" id="L297" title="1 of 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
 						org.drip.spline.tension.KochLycheKvasovFamily.FromHyperbolicPrimitive
-<span class="fc" id="L287">							((org.drip.spline.basis.ExponentialTensionSetParams) aSCBC[i].basisSetParams()),</span>
-<span class="fc" id="L288">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
-<span class="nc" id="L289">					return null;</span>
-<span class="fc bfc" id="L290" title="All 2 branches covered.">			} else if (BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION.equalsIgnoreCase (strBasisSpline)) {</span>
-<span class="fc" id="L291">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
-<span class="pc bpc" id="L292" title="1 of 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
+<span class="fc" id="L299">							((org.drip.spline.basis.ExponentialTensionSetParams) aSCBC[i].basisSetParams()),</span>
+<span class="fc" id="L300">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
+<span class="nc" id="L301">					return null;</span>
+<span class="fc bfc" id="L302" title="All 2 branches covered.">			} else if (BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION.equalsIgnoreCase (strBasisSpline)) {</span>
+<span class="fc" id="L303">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
+<span class="pc bpc" id="L304" title="1 of 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
 						org.drip.spline.tension.KochLycheKvasovFamily.FromRationalLinearPrimitive
-<span class="fc" id="L294">							((org.drip.spline.basis.ExponentialTensionSetParams) aSCBC[i].basisSetParams()),</span>
-<span class="fc" id="L295">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
-<span class="nc" id="L296">					return null;</span>
-<span class="pc bpc" id="L297" title="1 of 2 branches missed.">			} else if (BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION.equalsIgnoreCase (strBasisSpline)) {</span>
-<span class="fc" id="L298">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
-<span class="pc bpc" id="L299" title="1 of 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
+<span class="fc" id="L306">							((org.drip.spline.basis.ExponentialTensionSetParams) aSCBC[i].basisSetParams()),</span>
+<span class="fc" id="L307">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
+<span class="nc" id="L308">					return null;</span>
+<span class="pc bpc" id="L309" title="1 of 2 branches missed.">			} else if (BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION.equalsIgnoreCase (strBasisSpline)) {</span>
+<span class="fc" id="L310">				if (null == (aCS[i] = org.drip.spline.segment.LatentStateResponseModel.Create</span>
+<span class="pc bpc" id="L311" title="1 of 2 branches missed.">					(adblPredictorOrdinate[i], adblPredictorOrdinate[i + 1],</span>
 						org.drip.spline.tension.KochLycheKvasovFamily.FromRationalQuadraticPrimitive
-<span class="fc" id="L301">							((org.drip.spline.basis.ExponentialTensionSetParams) aSCBC[i].basisSetParams()),</span>
-<span class="fc" id="L302">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
-<span class="nc" id="L303">					return null;</span>
+<span class="fc" id="L313">							((org.drip.spline.basis.ExponentialTensionSetParams) aSCBC[i].basisSetParams()),</span>
+<span class="fc" id="L314">								aSCBC[i].shapeController(), aSCBC[i].inelasticParams())))</span>
+<span class="nc" id="L315">					return null;</span>
 			}
 		}
 
-<span class="fc" id="L307">		return aCS;</span>
+<span class="fc" id="L319">		return aCS;</span>
 	}
 
 	/**
@@ -323,23 +335,23 @@ package org.drip.spline.stretch;
 		final double[] adblPredictorOrdinate,
 		final org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC)
 	{
-<span class="fc" id="L326">		org.drip.spline.segment.LatentStateResponseModel[] latentStateResponseModelArray = CreateSegmentSet (</span>
+<span class="fc" id="L338">		org.drip.spline.segment.LatentStateResponseModel[] latentStateResponseModelArray = CreateSegmentSet (</span>
 			adblPredictorOrdinate,
 			aSCBC
 		);
 
 		try {
-<span class="pc bpc" id="L332" title="1 of 2 branches missed.">			return null == latentStateResponseModelArray ? null :</span>
+<span class="pc bpc" id="L344" title="1 of 2 branches missed.">			return null == latentStateResponseModelArray ? null :</span>
 			new org.drip.spline.stretch.CalibratableMultiSegmentSequence (
 				strName,
 				latentStateResponseModelArray,
 				aSCBC
 			);
-<span class="nc" id="L338">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L339">			e.printStackTrace();</span>
+<span class="nc" id="L350">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L351">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L342">		return null;</span>
+<span class="nc" id="L354">		return null;</span>
 	}
 
 	/**
@@ -366,20 +378,20 @@ package org.drip.spline.stretch;
 		final org.drip.spline.stretch.BoundarySettings bs,
 		final int iCalibrationDetail)
 	{
-<span class="fc" id="L369">		org.drip.spline.stretch.MultiSegmentSequence mss = CreateUncalibratedStretchEstimator (strName,</span>
+<span class="fc" id="L381">		org.drip.spline.stretch.MultiSegmentSequence mss = CreateUncalibratedStretchEstimator (strName,</span>
 			adblPredictorOrdinate, aSCBC);
 
-<span class="pc bpc" id="L372" title="2 of 4 branches missed.">		if (null == mss || null == adblResponseValue) return null;</span>
+<span class="pc bpc" id="L384" title="2 of 4 branches missed.">		if (null == mss || null == adblResponseValue) return null;</span>
 
-<span class="fc" id="L374">		int iNumRightNode = adblResponseValue.length - 1;</span>
-<span class="fc" id="L375">		double[] adblResponseValueRight = new double[iNumRightNode];</span>
+<span class="fc" id="L386">		int iNumRightNode = adblResponseValue.length - 1;</span>
+<span class="fc" id="L387">		double[] adblResponseValueRight = new double[iNumRightNode];</span>
 
-<span class="pc bpc" id="L377" title="1 of 2 branches missed.">		if (0 == iNumRightNode) return null;</span>
+<span class="pc bpc" id="L389" title="1 of 2 branches missed.">		if (0 == iNumRightNode) return null;</span>
 
-<span class="fc bfc" id="L379" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRightNode; ++i)</span>
-<span class="fc" id="L380">			adblResponseValueRight[i] = adblResponseValue[i + 1];</span>
+<span class="fc bfc" id="L391" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRightNode; ++i)</span>
+<span class="fc" id="L392">			adblResponseValueRight[i] = adblResponseValue[i + 1];</span>
 
-<span class="pc bpc" id="L382" title="1 of 2 branches missed.">		return mss.setup (adblResponseValue[0], adblResponseValueRight, rbfr, bs, iCalibrationDetail) ? mss :</span>
+<span class="pc bpc" id="L394" title="1 of 2 branches missed.">		return mss.setup (adblResponseValue[0], adblResponseValueRight, rbfr, bs, iCalibrationDetail) ? mss :</span>
 			null;
 	}
 
@@ -407,17 +419,17 @@ package org.drip.spline.stretch;
 		final org.drip.spline.stretch.BoundarySettings bs,
 		final int iCalibrationDetail)
 	{
-<span class="pc bpc" id="L410" title="1 of 2 branches missed.">		if (null == aiPredictorOrdinate) return null;</span>
+<span class="pc bpc" id="L422" title="1 of 2 branches missed.">		if (null == aiPredictorOrdinate) return null;</span>
 
-<span class="fc" id="L412">		int iNumPredictorOrdinate = aiPredictorOrdinate.length;</span>
-<span class="fc" id="L413">		double[] adblPredictorOrdinate = new double[iNumPredictorOrdinate];</span>
+<span class="fc" id="L424">		int iNumPredictorOrdinate = aiPredictorOrdinate.length;</span>
+<span class="fc" id="L425">		double[] adblPredictorOrdinate = new double[iNumPredictorOrdinate];</span>
 
-<span class="pc bpc" id="L415" title="1 of 2 branches missed.">		if (0 == iNumPredictorOrdinate) return null;</span>
+<span class="pc bpc" id="L427" title="1 of 2 branches missed.">		if (0 == iNumPredictorOrdinate) return null;</span>
 
-<span class="fc bfc" id="L417" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i)</span>
-<span class="fc" id="L418">			adblPredictorOrdinate[i] = aiPredictorOrdinate[i];</span>
+<span class="fc bfc" id="L429" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i)</span>
+<span class="fc" id="L430">			adblPredictorOrdinate[i] = aiPredictorOrdinate[i];</span>
 
-<span class="fc" id="L420">		return CreateCalibratedStretchEstimator (strName, adblPredictorOrdinate, adblResponseValue, aSCBC,</span>
+<span class="fc" id="L432">		return CreateCalibratedStretchEstimator (strName, adblPredictorOrdinate, adblResponseValue, aSCBC,</span>
 			rbfr, bs, iCalibrationDetail);
 	}
 
@@ -447,10 +459,10 @@ package org.drip.spline.stretch;
 		final org.drip.spline.stretch.BoundarySettings bs,
 		final int iCalibrationDetail)
 	{
-<span class="fc" id="L450">		org.drip.spline.stretch.MultiSegmentSequence mss = CreateUncalibratedStretchEstimator (strName,</span>
+<span class="fc" id="L462">		org.drip.spline.stretch.MultiSegmentSequence mss = CreateUncalibratedStretchEstimator (strName,</span>
 			adblPredictorOrdinate, aSCBC);
 
-<span class="pc bpc" id="L453" title="2 of 4 branches missed.">		return null == mss ? null : mss.setup (dblStretchLeftResponseValue, aSRVC, rbfr, bs,</span>
+<span class="pc bpc" id="L465" title="2 of 4 branches missed.">		return null == mss ? null : mss.setup (dblStretchLeftResponseValue, aSRVC, rbfr, bs,</span>
 			iCalibrationDetail) ? mss : null;
 	}
 
@@ -480,10 +492,10 @@ package org.drip.spline.stretch;
 		final org.drip.spline.stretch.BoundarySettings bs,
 		final int iCalibrationDetail)
 	{
-<span class="nc" id="L483">		org.drip.spline.stretch.MultiSegmentSequence mss = CreateUncalibratedStretchEstimator (strName,</span>
+<span class="nc" id="L495">		org.drip.spline.stretch.MultiSegmentSequence mss = CreateUncalibratedStretchEstimator (strName,</span>
 			adblPredictorOrdinate, aSCBC);
 
-<span class="nc bnc" id="L486" title="All 4 branches missed.">		return null == mss ? null : mss.setup (srvcStretchLeft, aSRVC, sbfr, bs, iCalibrationDetail) ? mss :</span>
+<span class="nc bnc" id="L498" title="All 4 branches missed.">		return null == mss ? null : mss.setup (srvcStretchLeft, aSRVC, sbfr, bs, iCalibrationDetail) ? mss :</span>
 			null;
 	}
 
@@ -510,25 +522,25 @@ package org.drip.spline.stretch;
 		final org.drip.spline.stretch.BoundarySettings bs,
 		final int iCalibrationDetail)
 	{
-<span class="nc bnc" id="L513" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblResponseValue) || null == adblPredictorOrdinate ||</span>
+<span class="nc bnc" id="L525" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblResponseValue) || null == adblPredictorOrdinate ||</span>
 			null == scbc)
-<span class="nc" id="L515">			return null;</span>
+<span class="nc" id="L527">			return null;</span>
 
-<span class="nc" id="L517">		int iNumPredictorOrdinate = adblPredictorOrdinate.length;</span>
+<span class="nc" id="L529">		int iNumPredictorOrdinate = adblPredictorOrdinate.length;</span>
 
-<span class="nc bnc" id="L519" title="All 2 branches missed.">		if (1 &gt;= iNumPredictorOrdinate) return null;</span>
+<span class="nc bnc" id="L531" title="All 2 branches missed.">		if (1 &gt;= iNumPredictorOrdinate) return null;</span>
 
-<span class="nc" id="L521">		double[] adblResponseValue = new double[iNumPredictorOrdinate];</span>
-<span class="nc" id="L522">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
+<span class="nc" id="L533">		double[] adblResponseValue = new double[iNumPredictorOrdinate];</span>
+<span class="nc" id="L534">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
 			org.drip.spline.params.SegmentCustomBuilderControl[iNumPredictorOrdinate - 1];
 
-<span class="nc bnc" id="L525" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i) {</span>
-<span class="nc" id="L526">			adblResponseValue[i] = dblResponseValue;</span>
+<span class="nc bnc" id="L537" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i) {</span>
+<span class="nc" id="L538">			adblResponseValue[i] = dblResponseValue;</span>
 
-<span class="nc bnc" id="L528" title="All 2 branches missed.">			if (0 != i) aSCBC[i - 1] = scbc;</span>
+<span class="nc bnc" id="L540" title="All 2 branches missed.">			if (0 != i) aSCBC[i - 1] = scbc;</span>
 		}
 
-<span class="nc" id="L531">		return CreateCalibratedStretchEstimator (strName, adblPredictorOrdinate, adblResponseValue, aSCBC,</span>
+<span class="nc" id="L543">		return CreateCalibratedStretchEstimator (strName, adblPredictorOrdinate, adblResponseValue, aSCBC,</span>
 			sbfr, bs, iCalibrationDetail);
 	}
 
@@ -554,12 +566,12 @@ package org.drip.spline.stretch;
 		final org.drip.spline.stretch.BoundarySettings bs,
 		final int iCalibrationDetail)
 	{
-<span class="fc" id="L557">		org.drip.spline.stretch.MultiSegmentSequence mss = CreateUncalibratedStretchEstimator (strName,</span>
+<span class="fc" id="L569">		org.drip.spline.stretch.MultiSegmentSequence mss = CreateUncalibratedStretchEstimator (strName,</span>
 			adblKnotPredictorOrdinate, aSCBC);
 
-<span class="pc bpc" id="L560" title="1 of 2 branches missed.">		if (null == mss) return null;</span>
+<span class="pc bpc" id="L572" title="1 of 2 branches missed.">		if (null == mss) return null;</span>
 
-<span class="pc bpc" id="L562" title="1 of 2 branches missed.">		return mss.setup (null, null, sbfr, bs, iCalibrationDetail) ? mss : null;</span>
+<span class="pc bpc" id="L574" title="1 of 2 branches missed.">		return mss.setup (null, null, sbfr, bs, iCalibrationDetail) ? mss : null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

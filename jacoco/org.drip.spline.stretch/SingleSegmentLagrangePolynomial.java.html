@@ -6,6 +6,7 @@ package org.drip.spline.stretch;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -14,39 +15,50 @@ package org.drip.spline.stretch;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -76,10 +88,10 @@ package org.drip.spline.stretch;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch&quot;&gt;Stretch&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md&quot;&gt;Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch/README.md&quot;&gt;Multi-Segment Sequence Spline Stretch&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -92,71 +104,71 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 	private static final int MINIMA_PREDICTOR_ORDINATE_NODE = 2;
 	private static final int MONOTONE_PREDICTOR_ORDINATE_NODE = 4;
 
-<span class="fc" id="L95">	private double[] _adblResponseValue = null;</span>
-<span class="fc" id="L96">	private double[] _adblPredictorOrdinate = null;</span>
+<span class="fc" id="L107">	private double[] _adblResponseValue = null;</span>
+<span class="fc" id="L108">	private double[] _adblPredictorOrdinate = null;</span>
 
 	private static final double CalcAbsoluteMin (
 		final double[] adblY)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L102" title="1 of 2 branches missed.">		if (null == adblY)</span>
-<span class="nc" id="L103">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">		if (null == adblY)</span>
+<span class="nc" id="L115">			throw new java.lang.Exception</span>
 				(&quot;SingleSegmentLagrangePolynomial::CalcAbsoluteMin =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L106">		int iNumPoints = adblY.length;</span>
+<span class="fc" id="L118">		int iNumPoints = adblY.length;</span>
 
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		if (1 &gt;= iNumPoints)</span>
-<span class="nc" id="L109">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		if (1 &gt;= iNumPoints)</span>
+<span class="nc" id="L121">			throw new java.lang.Exception</span>
 				(&quot;SingleSegmentLagrangePolynomial::CalcAbsoluteMin =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L112">		double dblMin = java.lang.Math.abs (adblY[0]);</span>
+<span class="fc" id="L124">		double dblMin = java.lang.Math.abs (adblY[0]);</span>
 
-<span class="fc bfc" id="L114" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPoints; ++i) {</span>
-<span class="fc" id="L115">			double dblValue = java.lang.Math.abs (adblY[i]);</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPoints; ++i) {</span>
+<span class="fc" id="L127">			double dblValue = java.lang.Math.abs (adblY[i]);</span>
 
-<span class="pc bpc" id="L117" title="1 of 2 branches missed.">			dblMin = dblMin &gt; dblValue ? dblValue : dblMin;</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">			dblMin = dblMin &gt; dblValue ? dblValue : dblMin;</span>
 		}
 
-<span class="fc" id="L120">		return dblMin;</span>
+<span class="fc" id="L132">		return dblMin;</span>
 	}
 
 	private static final double CalcMinDifference (
 		final double[] adblY)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (null == adblY)</span>
-<span class="nc" id="L128">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">		if (null == adblY)</span>
+<span class="nc" id="L140">			throw new java.lang.Exception</span>
 				(&quot;SingleSegmentLagrangePolynomial::CalcMinDifference =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L131">		int iNumPoints = adblY.length;</span>
+<span class="fc" id="L143">		int iNumPoints = adblY.length;</span>
 
-<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		if (1 &gt;= iNumPoints)</span>
-<span class="nc" id="L134">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">		if (1 &gt;= iNumPoints)</span>
+<span class="nc" id="L146">			throw new java.lang.Exception</span>
 				(&quot;SingleSegmentLagrangePolynomial::CalcMinDifference =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L137">		double dblMinDiff = java.lang.Math.abs (adblY[0] - adblY[1]);</span>
+<span class="fc" id="L149">		double dblMinDiff = java.lang.Math.abs (adblY[0] - adblY[1]);</span>
 
-<span class="fc bfc" id="L139" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPoints; ++i) {</span>
-<span class="fc bfc" id="L140" title="All 2 branches covered.">			for (int j = i + 1; j &lt; iNumPoints; ++j) {</span>
-<span class="fc" id="L141">				double dblDiff = java.lang.Math.abs (adblY[i] - adblY[j]);</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPoints; ++i) {</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">			for (int j = i + 1; j &lt; iNumPoints; ++j) {</span>
+<span class="fc" id="L153">				double dblDiff = java.lang.Math.abs (adblY[i] - adblY[j]);</span>
 
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">				dblMinDiff = dblMinDiff &gt; dblDiff ? dblDiff : dblMinDiff;</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">				dblMinDiff = dblMinDiff &gt; dblDiff ? dblDiff : dblMinDiff;</span>
 			}
 		}
 
-<span class="fc" id="L147">		return dblMinDiff;</span>
+<span class="fc" id="L159">		return dblMinDiff;</span>
 	}
 
 	private static final double EstimateBumpDelta (
 		final double[] adblY)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L154">		double dblBumpDelta = CalcMinDifference (adblY);</span>
+<span class="fc" id="L166">		double dblBumpDelta = CalcMinDifference (adblY);</span>
 
-<span class="pc bpc" id="L156" title="1 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBumpDelta) || 0. == dblBumpDelta)</span>
-<span class="fc" id="L157">			dblBumpDelta = CalcAbsoluteMin (adblY);</span>
+<span class="pc bpc" id="L168" title="1 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBumpDelta) || 0. == dblBumpDelta)</span>
+<span class="fc" id="L169">			dblBumpDelta = CalcAbsoluteMin (adblY);</span>
 
-<span class="pc bpc" id="L159" title="1 of 2 branches missed.">		return 0. == dblBumpDelta ? DIFF_SCALE : dblBumpDelta * DIFF_SCALE;</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">		return 0. == dblBumpDelta ? DIFF_SCALE : dblBumpDelta * DIFF_SCALE;</span>
 	}
 
 	/**
@@ -170,22 +182,22 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 	public SingleSegmentLagrangePolynomial (
 		final double[] adblPredictorOrdinate)
 		throws java.lang.Exception
-<span class="fc" id="L173">	{</span>
-<span class="pc bpc" id="L174" title="1 of 2 branches missed.">		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate))</span>
-<span class="nc" id="L175">			throw new java.lang.Exception (&quot;SingleSegmentLagrangePolynomial ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L185">	{</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate))</span>
+<span class="nc" id="L187">			throw new java.lang.Exception (&quot;SingleSegmentLagrangePolynomial ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L177">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
+<span class="fc" id="L189">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
 
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">		if (1 &gt;= iNumPredictorOrdinate)</span>
-<span class="nc" id="L180">			throw new java.lang.Exception (&quot;SingleSegmentLagrangePolynomial ctr: Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">		if (1 &gt;= iNumPredictorOrdinate)</span>
+<span class="nc" id="L192">			throw new java.lang.Exception (&quot;SingleSegmentLagrangePolynomial ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L182" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i) {</span>
-<span class="fc bfc" id="L183" title="All 2 branches covered.">			for (int j = i + 1; j &lt; iNumPredictorOrdinate; ++j) {</span>
-<span class="pc bpc" id="L184" title="1 of 2 branches missed.">				if (_adblPredictorOrdinate[i] == _adblPredictorOrdinate[j])</span>
-<span class="nc" id="L185">					throw new java.lang.Exception (&quot;SingleSegmentLagrangePolynomial ctr: Invalid Inputs&quot;);</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i) {</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">			for (int j = i + 1; j &lt; iNumPredictorOrdinate; ++j) {</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">				if (_adblPredictorOrdinate[i] == _adblPredictorOrdinate[j])</span>
+<span class="nc" id="L197">					throw new java.lang.Exception (&quot;SingleSegmentLagrangePolynomial ctr: Invalid Inputs&quot;);</span>
 			}
 		}
-<span class="fc" id="L188">	}</span>
+<span class="fc" id="L200">	}</span>
 
 	@Override public boolean setup (
 		final double dblYLeading,
@@ -194,7 +206,7 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 		final org.drip.spline.stretch.BoundarySettings bs,
 		final int iCalibrationDetail)
 	{
-<span class="pc bpc" id="L197" title="2 of 4 branches missed.">		return null != (_adblResponseValue = adblResponseValue) &amp;&amp; _adblResponseValue.length ==</span>
+<span class="pc bpc" id="L209" title="2 of 4 branches missed.">		return null != (_adblResponseValue = adblResponseValue) &amp;&amp; _adblResponseValue.length ==</span>
 			_adblPredictorOrdinate.length;
 	}
 
@@ -202,33 +214,33 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L205" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
-<span class="nc" id="L206">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
+<span class="nc" id="L218">			throw new java.lang.Exception</span>
 				(&quot;SingleSegmentLagrangePolynomial::responseValue =&gt; Invalid inputs!&quot;);
 
-<span class="fc" id="L209">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
+<span class="fc" id="L221">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
 
-<span class="pc bpc" id="L211" title="1 of 4 branches missed.">		if (_adblPredictorOrdinate[0] &gt; dblPredictorOrdinate ||</span>
+<span class="pc bpc" id="L223" title="1 of 4 branches missed.">		if (_adblPredictorOrdinate[0] &gt; dblPredictorOrdinate ||</span>
 			_adblPredictorOrdinate[iNumPredictorOrdinate - 1] &lt; dblPredictorOrdinate)
-<span class="fc" id="L213">			throw new java.lang.Exception</span>
+<span class="fc" id="L225">			throw new java.lang.Exception</span>
 				(&quot;SingleSegmentLagrangePolynomial::responseValue =&gt; Input out of range!&quot;);
 
-<span class="fc" id="L216">		double dblResponse = 0;</span>
+<span class="fc" id="L228">		double dblResponse = 0;</span>
 
-<span class="fc bfc" id="L218" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i) {</span>
-<span class="fc" id="L219">			double dblResponsePredictorOrdinateContribution = _adblResponseValue[i];</span>
+<span class="fc bfc" id="L230" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i) {</span>
+<span class="fc" id="L231">			double dblResponsePredictorOrdinateContribution = _adblResponseValue[i];</span>
 
-<span class="fc bfc" id="L221" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumPredictorOrdinate; ++j) {</span>
-<span class="fc bfc" id="L222" title="All 2 branches covered.">				if (i != j)</span>
-<span class="fc" id="L223">					dblResponsePredictorOrdinateContribution = dblResponsePredictorOrdinateContribution *</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumPredictorOrdinate; ++j) {</span>
+<span class="fc bfc" id="L234" title="All 2 branches covered.">				if (i != j)</span>
+<span class="fc" id="L235">					dblResponsePredictorOrdinateContribution = dblResponsePredictorOrdinateContribution *</span>
 						(dblPredictorOrdinate - _adblPredictorOrdinate[j]) / (_adblPredictorOrdinate[i] -
 							_adblPredictorOrdinate[j]);
 			}
 
-<span class="fc" id="L228">			dblResponse += dblResponsePredictorOrdinateContribution;</span>
+<span class="fc" id="L240">			dblResponse += dblResponsePredictorOrdinateContribution;</span>
 		}
 
-<span class="fc" id="L231">		return dblResponse;</span>
+<span class="fc" id="L243">		return dblResponse;</span>
 	}
 
 	@Override public double responseValueDerivative (
@@ -236,79 +248,79 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L239" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate) || 0 &gt;= iOrder)</span>
-<span class="nc" id="L240">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L251" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate) || 0 &gt;= iOrder)</span>
+<span class="nc" id="L252">			throw new java.lang.Exception</span>
 				(&quot;SingleSegmentLagrangePolynomial::responseValueDerivative =&gt; Invalid inputs!&quot;);
 
-<span class="nc" id="L243">		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1</span>
-<span class="nc" id="L244">			(null) {</span>
+<span class="nc" id="L255">		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1</span>
+<span class="nc" id="L256">			(null) {</span>
 			@Override public double evaluate (
 				double dblX)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L249">				return responseValue (dblX);</span>
+<span class="nc" id="L261">				return responseValue (dblX);</span>
 			}
 		};
 
-<span class="nc" id="L253">		return au.derivative (dblPredictorOrdinate, iOrder);</span>
+<span class="nc" id="L265">		return au.derivative (dblPredictorOrdinate, iOrder);</span>
 	}
 
 	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDCalibrationInput (
 		final double dblPredictorOrdinate,
 		final int iOrder)
 	{
-<span class="pc bpc" id="L260" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate)) return null;</span>
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate)) return null;</span>
 
-<span class="fc" id="L262">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
-<span class="fc" id="L263">		double dblInputResponseSensitivityShift = java.lang.Double.NaN;</span>
-<span class="fc" id="L264">		double dblResponseWithUnadjustedResponseInput = java.lang.Double.NaN;</span>
-<span class="fc" id="L265">		org.drip.numerical.differentiation.WengertJacobian wjDResponseDResponseInput = null;</span>
+<span class="fc" id="L274">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
+<span class="fc" id="L275">		double dblInputResponseSensitivityShift = java.lang.Double.NaN;</span>
+<span class="fc" id="L276">		double dblResponseWithUnadjustedResponseInput = java.lang.Double.NaN;</span>
+<span class="fc" id="L277">		org.drip.numerical.differentiation.WengertJacobian wjDResponseDResponseInput = null;</span>
 
-<span class="pc bpc" id="L267" title="2 of 4 branches missed.">		if (_adblPredictorOrdinate[0] &gt; dblPredictorOrdinate ||</span>
+<span class="pc bpc" id="L279" title="2 of 4 branches missed.">		if (_adblPredictorOrdinate[0] &gt; dblPredictorOrdinate ||</span>
 			_adblPredictorOrdinate[iNumPredictorOrdinate - 1] &lt; dblPredictorOrdinate)
-<span class="nc" id="L269">			return null;</span>
+<span class="nc" id="L281">			return null;</span>
 
 		try {
-<span class="pc bpc" id="L272" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblInputResponseSensitivityShift =</span>
-<span class="fc" id="L273">				EstimateBumpDelta (_adblResponseValue)) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L274" title="1 of 2 branches missed.">					(dblResponseWithUnadjustedResponseInput = responseValue (dblPredictorOrdinate)))</span>
-<span class="nc" id="L275">				return null;</span>
+<span class="pc bpc" id="L284" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblInputResponseSensitivityShift =</span>
+<span class="fc" id="L285">				EstimateBumpDelta (_adblResponseValue)) || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L286" title="1 of 2 branches missed.">					(dblResponseWithUnadjustedResponseInput = responseValue (dblPredictorOrdinate)))</span>
+<span class="nc" id="L287">				return null;</span>
 
-<span class="fc" id="L277">			wjDResponseDResponseInput = new org.drip.numerical.differentiation.WengertJacobian (1,</span>
+<span class="fc" id="L289">			wjDResponseDResponseInput = new org.drip.numerical.differentiation.WengertJacobian (1,</span>
 				iNumPredictorOrdinate);
-<span class="nc" id="L279">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L280">			e.printStackTrace();</span>
+<span class="nc" id="L291">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L292">			e.printStackTrace();</span>
 
-<span class="nc" id="L282">			return null;</span>
-<span class="fc" id="L283">		}</span>
+<span class="nc" id="L294">			return null;</span>
+<span class="fc" id="L295">		}</span>
 
-<span class="fc bfc" id="L285" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i) {</span>
-<span class="fc" id="L286">			double[] adblSensitivityShiftedInputResponse = new double[iNumPredictorOrdinate];</span>
+<span class="fc bfc" id="L297" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i) {</span>
+<span class="fc" id="L298">			double[] adblSensitivityShiftedInputResponse = new double[iNumPredictorOrdinate];</span>
 
-<span class="fc bfc" id="L288" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumPredictorOrdinate; ++j)</span>
-<span class="fc bfc" id="L289" title="All 2 branches covered.">				adblSensitivityShiftedInputResponse[j] = i == j ? _adblResponseValue[j] +</span>
+<span class="fc bfc" id="L300" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumPredictorOrdinate; ++j)</span>
+<span class="fc bfc" id="L301" title="All 2 branches covered.">				adblSensitivityShiftedInputResponse[j] = i == j ? _adblResponseValue[j] +</span>
 					dblInputResponseSensitivityShift : _adblResponseValue[j];
 
 			try {
-<span class="fc" id="L293">				SingleSegmentLagrangePolynomial lps = new SingleSegmentLagrangePolynomial</span>
+<span class="fc" id="L305">				SingleSegmentLagrangePolynomial lps = new SingleSegmentLagrangePolynomial</span>
 					(_adblPredictorOrdinate);
 
-<span class="pc bpc" id="L296" title="1 of 2 branches missed.">				if (!lps.setup (adblSensitivityShiftedInputResponse[0], adblSensitivityShiftedInputResponse,</span>
-<span class="fc" id="L297">					null, org.drip.spline.stretch.BoundarySettings.FloatingStandard(),</span>
+<span class="pc bpc" id="L308" title="1 of 2 branches missed.">				if (!lps.setup (adblSensitivityShiftedInputResponse[0], adblSensitivityShiftedInputResponse,</span>
+<span class="fc" id="L309">					null, org.drip.spline.stretch.BoundarySettings.FloatingStandard(),</span>
 						org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE) ||
-<span class="pc bpc" id="L299" title="1 of 2 branches missed.">							!wjDResponseDResponseInput.accumulatePartialFirstDerivative (0, i,</span>
-<span class="fc" id="L300">								(lps.responseValue (dblPredictorOrdinate) -</span>
+<span class="pc bpc" id="L311" title="1 of 2 branches missed.">							!wjDResponseDResponseInput.accumulatePartialFirstDerivative (0, i,</span>
+<span class="fc" id="L312">								(lps.responseValue (dblPredictorOrdinate) -</span>
 									dblResponseWithUnadjustedResponseInput) /
 										dblInputResponseSensitivityShift))
-<span class="nc" id="L303">					return null;</span>
-<span class="nc" id="L304">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L305">				e.printStackTrace();</span>
+<span class="nc" id="L315">					return null;</span>
+<span class="nc" id="L316">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L317">				e.printStackTrace();</span>
 
-<span class="nc" id="L307">				return null;</span>
-<span class="fc" id="L308">			}</span>
+<span class="nc" id="L319">				return null;</span>
+<span class="fc" id="L320">			}</span>
 		}
 
-<span class="fc" id="L311">		return wjDResponseDResponseInput;</span>
+<span class="fc" id="L323">		return wjDResponseDResponseInput;</span>
 	}
 
 	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDManifestMeasure (
@@ -316,40 +328,40 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 		final double dblPredictorOrdinate,
 		final int iOrder)
 	{
-<span class="nc" id="L319">		return null;</span>
+<span class="nc" id="L331">		return null;</span>
 	}
 
 	@Override public org.drip.spline.segment.Monotonocity monotoneType (
 		final double dblPredictorOrdinate)
 	{
-<span class="pc bpc" id="L325" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate)) return null;</span>
+<span class="pc bpc" id="L337" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate)) return null;</span>
 
-<span class="fc" id="L327">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
+<span class="fc" id="L339">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
 
-<span class="pc bpc" id="L329" title="2 of 4 branches missed.">		if (_adblPredictorOrdinate[0] &gt; dblPredictorOrdinate ||</span>
+<span class="pc bpc" id="L341" title="2 of 4 branches missed.">		if (_adblPredictorOrdinate[0] &gt; dblPredictorOrdinate ||</span>
 			_adblPredictorOrdinate[iNumPredictorOrdinate - 1] &lt; dblPredictorOrdinate)
-<span class="nc" id="L331">			return null;</span>
+<span class="nc" id="L343">			return null;</span>
 
-<span class="pc bpc" id="L333" title="1 of 2 branches missed.">		if (2 == iNumPredictorOrdinate) {</span>
+<span class="pc bpc" id="L345" title="1 of 2 branches missed.">		if (2 == iNumPredictorOrdinate) {</span>
 			try {
-<span class="nc" id="L335">				return new org.drip.spline.segment.Monotonocity</span>
+<span class="nc" id="L347">				return new org.drip.spline.segment.Monotonocity</span>
 					(org.drip.spline.segment.Monotonocity.MONOTONIC);
-<span class="nc" id="L337">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L338">				e.printStackTrace();</span>
+<span class="nc" id="L349">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L350">				e.printStackTrace();</span>
 
-<span class="nc" id="L340">				return null;</span>
+<span class="nc" id="L352">				return null;</span>
 			}
 		}
 
-<span class="fc" id="L344">		org.drip.function.definition.R1ToR1 auDeriv = new</span>
-<span class="fc" id="L345">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L356">		org.drip.function.definition.R1ToR1 auDeriv = new</span>
+<span class="fc" id="L357">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="fc" id="L350">				double dblDeltaX = CalcMinDifference (_adblPredictorOrdinate) * DIFF_SCALE;</span>
+<span class="fc" id="L362">				double dblDeltaX = CalcMinDifference (_adblPredictorOrdinate) * DIFF_SCALE;</span>
 
-<span class="fc" id="L352">				return (responseValue (dblX + dblDeltaX) - responseValue (dblX)) / dblDeltaX;</span>
+<span class="fc" id="L364">				return (responseValue (dblX + dblDeltaX) - responseValue (dblX)) / dblDeltaX;</span>
 			}
 
 			@Override public double integrate (
@@ -357,163 +369,163 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L360">				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="nc" id="L372">				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 			}
 		};
 
 		try {
-<span class="fc" id="L365">			org.drip.function.r1tor1solver.FixedPointFinderOutput fpop = new</span>
+<span class="fc" id="L377">			org.drip.function.r1tor1solver.FixedPointFinderOutput fpop = new</span>
 				org.drip.function.r1tor1solver.FixedPointFinderBrent (0., auDeriv, true).findRoot
-<span class="fc" id="L367">					(org.drip.function.r1tor1solver.InitializationHeuristics.FromHardSearchEdges (0., 1.));</span>
+<span class="fc" id="L379">					(org.drip.function.r1tor1solver.InitializationHeuristics.FromHardSearchEdges (0., 1.));</span>
 
-<span class="pc bpc" id="L369" title="3 of 4 branches missed.">			if (null == fpop || !fpop.containsRoot())</span>
-<span class="fc" id="L370">				return new org.drip.spline.segment.Monotonocity</span>
+<span class="pc bpc" id="L381" title="3 of 4 branches missed.">			if (null == fpop || !fpop.containsRoot())</span>
+<span class="fc" id="L382">				return new org.drip.spline.segment.Monotonocity</span>
 					(org.drip.spline.segment.Monotonocity.MONOTONIC);
 
-<span class="nc" id="L373">			double dblExtremum = fpop.getRoot();</span>
+<span class="nc" id="L385">			double dblExtremum = fpop.getRoot();</span>
 
-<span class="nc bnc" id="L375" title="All 6 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblExtremum) || dblExtremum &lt;= 0. || dblExtremum</span>
+<span class="nc bnc" id="L387" title="All 6 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblExtremum) || dblExtremum &lt;= 0. || dblExtremum</span>
 				&gt;= 1.)
-<span class="nc" id="L377">				return new org.drip.spline.segment.Monotonocity</span>
+<span class="nc" id="L389">				return new org.drip.spline.segment.Monotonocity</span>
 					(org.drip.spline.segment.Monotonocity.MONOTONIC);
 
-<span class="nc" id="L380">			double dblDeltaX = CalcMinDifference (_adblPredictorOrdinate) * DIFF_SCALE;</span>
+<span class="nc" id="L392">			double dblDeltaX = CalcMinDifference (_adblPredictorOrdinate) * DIFF_SCALE;</span>
 
-<span class="nc" id="L382">			double dbl2ndDeriv = responseValue (dblExtremum + dblDeltaX) + responseValue (dblExtremum -</span>
-<span class="nc" id="L383">				dblDeltaX) - 2. * responseValue (dblPredictorOrdinate);</span>
+<span class="nc" id="L394">			double dbl2ndDeriv = responseValue (dblExtremum + dblDeltaX) + responseValue (dblExtremum -</span>
+<span class="nc" id="L395">				dblDeltaX) - 2. * responseValue (dblPredictorOrdinate);</span>
 
-<span class="nc bnc" id="L385" title="All 2 branches missed.">			if (0. &gt; dbl2ndDeriv)</span>
-<span class="nc" id="L386">				return new org.drip.spline.segment.Monotonocity</span>
+<span class="nc bnc" id="L397" title="All 2 branches missed.">			if (0. &gt; dbl2ndDeriv)</span>
+<span class="nc" id="L398">				return new org.drip.spline.segment.Monotonocity</span>
 					(org.drip.spline.segment.Monotonocity.MAXIMA);
 
-<span class="nc bnc" id="L389" title="All 2 branches missed.">			if (0. &lt; dbl2ndDeriv)</span>
-<span class="nc" id="L390">				return new org.drip.spline.segment.Monotonocity</span>
+<span class="nc bnc" id="L401" title="All 2 branches missed.">			if (0. &lt; dbl2ndDeriv)</span>
+<span class="nc" id="L402">				return new org.drip.spline.segment.Monotonocity</span>
 					(org.drip.spline.segment.Monotonocity.MINIMA);
 
-<span class="nc bnc" id="L393" title="All 2 branches missed.">			if (0. == dbl2ndDeriv)</span>
-<span class="nc" id="L394">				return new org.drip.spline.segment.Monotonocity</span>
+<span class="nc bnc" id="L405" title="All 2 branches missed.">			if (0. == dbl2ndDeriv)</span>
+<span class="nc" id="L406">				return new org.drip.spline.segment.Monotonocity</span>
 					(org.drip.spline.segment.Monotonocity.INFLECTION);
 
-<span class="nc" id="L397">			return new org.drip.spline.segment.Monotonocity</span>
+<span class="nc" id="L409">			return new org.drip.spline.segment.Monotonocity</span>
 				(org.drip.spline.segment.Monotonocity.NON_MONOTONIC);
-<span class="nc" id="L399">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L400">			e.printStackTrace();</span>
+<span class="nc" id="L411">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L412">			e.printStackTrace();</span>
 		}
 
 		try {
-<span class="nc" id="L404">			return new org.drip.spline.segment.Monotonocity</span>
+<span class="nc" id="L416">			return new org.drip.spline.segment.Monotonocity</span>
 				(org.drip.spline.segment.Monotonocity.MONOTONIC);
-<span class="nc" id="L406">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L407">			e.printStackTrace();</span>
+<span class="nc" id="L418">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L419">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L410">		return null;</span>
+<span class="nc" id="L422">		return null;</span>
 	}
 
 	@Override public boolean isLocallyMonotone()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L416">		org.drip.spline.segment.Monotonocity sm = monotoneType (0.5 * (_adblPredictorOrdinate[0] +</span>
+<span class="fc" id="L428">		org.drip.spline.segment.Monotonocity sm = monotoneType (0.5 * (_adblPredictorOrdinate[0] +</span>
 			_adblPredictorOrdinate[_adblPredictorOrdinate.length - 1]));
 
-<span class="pc bpc" id="L419" title="2 of 4 branches missed.">		return null != sm &amp;&amp; org.drip.spline.segment.Monotonocity.MONOTONIC == sm.type();</span>
+<span class="pc bpc" id="L431" title="2 of 4 branches missed.">		return null != sm &amp;&amp; org.drip.spline.segment.Monotonocity.MONOTONIC == sm.type();</span>
 	}
 
 	@Override public boolean isCoMonotone (
 		final double[] adblMeasuredResponse)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L426" title="All 2 branches missed.">		if (null == adblMeasuredResponse) return false;</span>
+<span class="nc bnc" id="L438" title="All 2 branches missed.">		if (null == adblMeasuredResponse) return false;</span>
 
-<span class="nc" id="L428">		int iNumMeasuredResponse = adblMeasuredResponse.length;</span>
+<span class="nc" id="L440">		int iNumMeasuredResponse = adblMeasuredResponse.length;</span>
 
-<span class="nc bnc" id="L430" title="All 2 branches missed.">		if (2 &gt;= iNumMeasuredResponse) return false;</span>
+<span class="nc bnc" id="L442" title="All 2 branches missed.">		if (2 &gt;= iNumMeasuredResponse) return false;</span>
 
-<span class="nc" id="L432">		int[] aiNodeMiniMax = new int[iNumMeasuredResponse];</span>
-<span class="nc" id="L433">		int[] aiMonotoneType = new int[iNumMeasuredResponse];</span>
+<span class="nc" id="L444">		int[] aiNodeMiniMax = new int[iNumMeasuredResponse];</span>
+<span class="nc" id="L445">		int[] aiMonotoneType = new int[iNumMeasuredResponse];</span>
 
-<span class="nc bnc" id="L435" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumMeasuredResponse; ++i) {</span>
-<span class="nc bnc" id="L436" title="All 4 branches missed.">			if (0 == i || iNumMeasuredResponse - 1 == i)</span>
-<span class="nc" id="L437">				aiNodeMiniMax[i] = 0;</span>
+<span class="nc bnc" id="L447" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumMeasuredResponse; ++i) {</span>
+<span class="nc bnc" id="L448" title="All 4 branches missed.">			if (0 == i || iNumMeasuredResponse - 1 == i)</span>
+<span class="nc" id="L449">				aiNodeMiniMax[i] = 0;</span>
 			else {
-<span class="nc bnc" id="L439" title="All 4 branches missed.">				if (adblMeasuredResponse[i - 1] &lt; adblMeasuredResponse[i] &amp;&amp; adblMeasuredResponse[i + 1] &lt;</span>
+<span class="nc bnc" id="L451" title="All 4 branches missed.">				if (adblMeasuredResponse[i - 1] &lt; adblMeasuredResponse[i] &amp;&amp; adblMeasuredResponse[i + 1] &lt;</span>
 					adblMeasuredResponse[i])
-<span class="nc" id="L441">					aiNodeMiniMax[i] = MAXIMA_PREDICTOR_ORDINATE_NODE;</span>
-<span class="nc bnc" id="L442" title="All 4 branches missed.">				else if (adblMeasuredResponse[i - 1] &gt; adblMeasuredResponse[i] &amp;&amp; adblMeasuredResponse[i + 1]</span>
+<span class="nc" id="L453">					aiNodeMiniMax[i] = MAXIMA_PREDICTOR_ORDINATE_NODE;</span>
+<span class="nc bnc" id="L454" title="All 4 branches missed.">				else if (adblMeasuredResponse[i - 1] &gt; adblMeasuredResponse[i] &amp;&amp; adblMeasuredResponse[i + 1]</span>
 					&gt; adblMeasuredResponse[i])
-<span class="nc" id="L444">					aiNodeMiniMax[i] = MINIMA_PREDICTOR_ORDINATE_NODE;</span>
+<span class="nc" id="L456">					aiNodeMiniMax[i] = MINIMA_PREDICTOR_ORDINATE_NODE;</span>
 				else
-<span class="nc" id="L446">					aiNodeMiniMax[i] = MONOTONE_PREDICTOR_ORDINATE_NODE;</span>
+<span class="nc" id="L458">					aiNodeMiniMax[i] = MONOTONE_PREDICTOR_ORDINATE_NODE;</span>
 			}
 
-<span class="nc" id="L449">			org.drip.spline.segment.Monotonocity sm = monotoneType (adblMeasuredResponse[i]);</span>
+<span class="nc" id="L461">			org.drip.spline.segment.Monotonocity sm = monotoneType (adblMeasuredResponse[i]);</span>
 
-<span class="nc bnc" id="L451" title="All 2 branches missed.">			aiMonotoneType[i] = null != sm ? sm.type() :</span>
+<span class="nc bnc" id="L463" title="All 2 branches missed.">			aiMonotoneType[i] = null != sm ? sm.type() :</span>
 				org.drip.spline.segment.Monotonocity.NON_MONOTONIC;
 		}
 
-<span class="nc bnc" id="L455" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumMeasuredResponse - 1; ++i) {</span>
-<span class="nc bnc" id="L456" title="All 2 branches missed.">			if (MAXIMA_PREDICTOR_ORDINATE_NODE == aiNodeMiniMax[i]) {</span>
-<span class="nc bnc" id="L457" title="All 4 branches missed.">				if (org.drip.spline.segment.Monotonocity.MAXIMA != aiMonotoneType[i] &amp;&amp;</span>
+<span class="nc bnc" id="L467" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumMeasuredResponse - 1; ++i) {</span>
+<span class="nc bnc" id="L468" title="All 2 branches missed.">			if (MAXIMA_PREDICTOR_ORDINATE_NODE == aiNodeMiniMax[i]) {</span>
+<span class="nc bnc" id="L469" title="All 4 branches missed.">				if (org.drip.spline.segment.Monotonocity.MAXIMA != aiMonotoneType[i] &amp;&amp;</span>
 					org.drip.spline.segment.Monotonocity.MAXIMA != aiMonotoneType[i - 1])
-<span class="nc" id="L459">					return false;</span>
-<span class="nc bnc" id="L460" title="All 2 branches missed.">			} else if (MINIMA_PREDICTOR_ORDINATE_NODE == aiNodeMiniMax[i]) {</span>
-<span class="nc bnc" id="L461" title="All 4 branches missed.">				if (org.drip.spline.segment.Monotonocity.MINIMA != aiMonotoneType[i] &amp;&amp;</span>
+<span class="nc" id="L471">					return false;</span>
+<span class="nc bnc" id="L472" title="All 2 branches missed.">			} else if (MINIMA_PREDICTOR_ORDINATE_NODE == aiNodeMiniMax[i]) {</span>
+<span class="nc bnc" id="L473" title="All 4 branches missed.">				if (org.drip.spline.segment.Monotonocity.MINIMA != aiMonotoneType[i] &amp;&amp;</span>
 					org.drip.spline.segment.Monotonocity.MINIMA != aiMonotoneType[i - 1])
-<span class="nc" id="L463">					return false;</span>
+<span class="nc" id="L475">					return false;</span>
 			}
 		}
 
-<span class="nc" id="L467">		return true;</span>
+<span class="nc" id="L479">		return true;</span>
 	}
 
 	@Override public boolean isKnot (
 		final double dblPredictorOrdinate)
 	{
-<span class="nc bnc" id="L473" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate)) return false;</span>
+<span class="nc bnc" id="L485" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate)) return false;</span>
 
-<span class="nc" id="L475">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
+<span class="nc" id="L487">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
 
-<span class="nc bnc" id="L477" title="All 4 branches missed.">		if (_adblPredictorOrdinate[0] &gt; dblPredictorOrdinate ||</span>
+<span class="nc bnc" id="L489" title="All 4 branches missed.">		if (_adblPredictorOrdinate[0] &gt; dblPredictorOrdinate ||</span>
 			_adblPredictorOrdinate[iNumPredictorOrdinate - 1] &lt; dblPredictorOrdinate)
-<span class="nc" id="L479">			return false;</span>
+<span class="nc" id="L491">			return false;</span>
 
-<span class="nc bnc" id="L481" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i) {</span>
-<span class="nc bnc" id="L482" title="All 2 branches missed.">			if (dblPredictorOrdinate == _adblPredictorOrdinate[i]) return true;</span>
+<span class="nc bnc" id="L493" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumPredictorOrdinate; ++i) {</span>
+<span class="nc bnc" id="L494" title="All 2 branches missed.">			if (dblPredictorOrdinate == _adblPredictorOrdinate[i]) return true;</span>
 		}
 
-<span class="nc" id="L485">		return false;</span>
+<span class="nc" id="L497">		return false;</span>
 	}
 
 	@Override public boolean resetNode (
 		final int iPredictorOrdinateNodeIndex,
 		final double dblResetResponse)
 	{
-<span class="nc bnc" id="L492" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblResetResponse)) return false;</span>
+<span class="nc bnc" id="L504" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblResetResponse)) return false;</span>
 
-<span class="nc bnc" id="L494" title="All 2 branches missed.">		if (iPredictorOrdinateNodeIndex &gt; _adblPredictorOrdinate.length) return false;</span>
+<span class="nc bnc" id="L506" title="All 2 branches missed.">		if (iPredictorOrdinateNodeIndex &gt; _adblPredictorOrdinate.length) return false;</span>
 
-<span class="nc" id="L496">		_adblResponseValue[iPredictorOrdinateNodeIndex] = dblResetResponse;</span>
-<span class="nc" id="L497">		return true;</span>
+<span class="nc" id="L508">		_adblResponseValue[iPredictorOrdinateNodeIndex] = dblResetResponse;</span>
+<span class="nc" id="L509">		return true;</span>
 	}
 
 	@Override public boolean resetNode (
 		final int iPredictorOrdinateNodeIndex,
 		final org.drip.spline.params.SegmentResponseValueConstraint sprcReset)
 	{
-<span class="nc" id="L504">		return false;</span>
+<span class="nc" id="L516">		return false;</span>
 	}
 
 	@Override public org.drip.function.definition.R1ToR1 toAU()
 	{
-<span class="nc" id="L509">		org.drip.function.definition.R1ToR1 au = new</span>
+<span class="nc" id="L521">		org.drip.function.definition.R1ToR1 au = new</span>
 			org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L511">		{</span>
+<span class="nc" id="L523">		{</span>
 			@Override public double evaluate (
 				final double dblVariate)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L516">				return responseValue (dblVariate);</span>
+<span class="nc" id="L528">				return responseValue (dblVariate);</span>
 			}
 
 			@Override public double derivative (
@@ -521,21 +533,21 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 				final int iOrder)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L524">				return responseValueDerivative (dblVariate, iOrder);</span>
+<span class="nc" id="L536">				return responseValueDerivative (dblVariate, iOrder);</span>
 			}
 		};
 
-<span class="nc" id="L528">		return au;</span>
+<span class="nc" id="L540">		return au;</span>
 	}
 
 	@Override public double getLeftPredictorOrdinateEdge()
 	{
-<span class="nc" id="L533">		return _adblPredictorOrdinate[0];</span>
+<span class="nc" id="L545">		return _adblPredictorOrdinate[0];</span>
 	}
 
 	@Override public double getRightPredictorOrdinateEdge()
 	{
-<span class="nc" id="L538">		return _adblPredictorOrdinate[_adblPredictorOrdinate.length - 1];</span>
+<span class="nc" id="L550">		return _adblPredictorOrdinate[_adblPredictorOrdinate.length - 1];</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

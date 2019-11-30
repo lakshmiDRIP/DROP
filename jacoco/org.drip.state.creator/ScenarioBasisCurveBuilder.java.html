@@ -6,6 +6,7 @@ package org.drip.state.creator;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -13,39 +14,50 @@ package org.drip.state.creator;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -74,17 +86,17 @@ package org.drip.state.creator;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator&quot;&gt;Creator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md&quot;&gt;Latent State Inference and Creation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md&quot;&gt;Scenario State Curve/Surface Builders&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L87">public class ScenarioBasisCurveBuilder {</span>
+<span class="nc" id="L99">public class ScenarioBasisCurveBuilder {</span>
 
 	/**
 	 * Create an Instance of the Custom Splined Basis Curve
@@ -111,48 +123,48 @@ package org.drip.state.creator;
 		final double[] adblBasis,
 		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
 	{
-<span class="pc bpc" id="L114" title="5 of 10 branches missed.">		if (null == strName || null == dtSpot || strName.isEmpty() || null == astrTenor || null == adblBasis)</span>
-<span class="nc" id="L115">			return null;</span>
+<span class="pc bpc" id="L126" title="5 of 10 branches missed.">		if (null == strName || null == dtSpot || strName.isEmpty() || null == astrTenor || null == adblBasis)</span>
+<span class="nc" id="L127">			return null;</span>
 
-<span class="fc" id="L117">		int iNumTenor = astrTenor.length;</span>
-<span class="fc" id="L118">		int[] aiBasisPredictorOrdinate = new int[iNumTenor + 1];</span>
-<span class="fc" id="L119">		double[] adblBasisResponseValue = new double[iNumTenor + 1];</span>
-<span class="fc" id="L120">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
+<span class="fc" id="L129">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L130">		int[] aiBasisPredictorOrdinate = new int[iNumTenor + 1];</span>
+<span class="fc" id="L131">		double[] adblBasisResponseValue = new double[iNumTenor + 1];</span>
+<span class="fc" id="L132">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
 			org.drip.spline.params.SegmentCustomBuilderControl[iNumTenor];
 
-<span class="pc bpc" id="L123" title="2 of 4 branches missed.">		if (0 == iNumTenor || iNumTenor != adblBasis.length) return null;</span>
+<span class="pc bpc" id="L135" title="2 of 4 branches missed.">		if (0 == iNumTenor || iNumTenor != adblBasis.length) return null;</span>
 
-<span class="fc bfc" id="L125" title="All 2 branches covered.">		for (int i = 0; i &lt;= iNumTenor; ++i) {</span>
-<span class="fc bfc" id="L126" title="All 2 branches covered.">			if (0 != i) {</span>
-<span class="fc" id="L127">				java.lang.String strTenor = astrTenor[i - 1];</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">		for (int i = 0; i &lt;= iNumTenor; ++i) {</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">			if (0 != i) {</span>
+<span class="fc" id="L139">				java.lang.String strTenor = astrTenor[i - 1];</span>
 
-<span class="pc bpc" id="L129" title="2 of 4 branches missed.">				if (null == strTenor || strTenor.isEmpty()) return null;</span>
+<span class="pc bpc" id="L141" title="2 of 4 branches missed.">				if (null == strTenor || strTenor.isEmpty()) return null;</span>
 
-<span class="fc" id="L131">				org.drip.analytics.date.JulianDate dtMaturity = dtSpot.addTenor (strTenor);</span>
+<span class="fc" id="L143">				org.drip.analytics.date.JulianDate dtMaturity = dtSpot.addTenor (strTenor);</span>
 
-<span class="pc bpc" id="L133" title="1 of 2 branches missed.">				if (null == dtMaturity) return null;</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">				if (null == dtMaturity) return null;</span>
 
-<span class="fc" id="L135">				aiBasisPredictorOrdinate[i] = dtMaturity.julian();</span>
-<span class="fc" id="L136">			} else</span>
-<span class="fc" id="L137">				aiBasisPredictorOrdinate[i] = dtSpot.julian();</span>
+<span class="fc" id="L147">				aiBasisPredictorOrdinate[i] = dtMaturity.julian();</span>
+<span class="fc" id="L148">			} else</span>
+<span class="fc" id="L149">				aiBasisPredictorOrdinate[i] = dtSpot.julian();</span>
 
-<span class="fc bfc" id="L139" title="All 2 branches covered.">			adblBasisResponseValue[i] = 0 == i ? adblBasis[0] : adblBasis[i - 1];</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">			adblBasisResponseValue[i] = 0 == i ? adblBasis[0] : adblBasis[i - 1];</span>
 
-<span class="fc bfc" id="L141" title="All 2 branches covered.">			if (0 != i) aSCBC[i - 1] = scbc;</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">			if (0 != i) aSCBC[i - 1] = scbc;</span>
 		}
 
 		try {
-<span class="fc" id="L145">			return new org.drip.state.curve.BasisSplineBasisCurve (friReference, friDerived,</span>
+<span class="fc" id="L157">			return new org.drip.state.curve.BasisSplineBasisCurve (friReference, friDerived,</span>
 				bBasisOnReference, new org.drip.spline.grid.OverlappingStretchSpan
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-<span class="fc" id="L148">						(strName, aiBasisPredictorOrdinate, adblBasisResponseValue, aSCBC, null,</span>
-<span class="fc" id="L149">							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
+<span class="fc" id="L160">						(strName, aiBasisPredictorOrdinate, adblBasisResponseValue, aSCBC, null,</span>
+<span class="fc" id="L161">							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
 								org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE)));
-<span class="nc" id="L151">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L152">			e.printStackTrace();</span>
+<span class="nc" id="L163">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L164">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L155">		return null;</span>
+<span class="nc" id="L167">		return null;</span>
 	}
 
 	/**
@@ -179,16 +191,16 @@ package org.drip.state.creator;
 		final double[] adblBasis)
 	{
 		try {
-<span class="fc" id="L182">			return CustomSplineBasisCurve (strName, dtStart, friReference, friDerived, bBasisOnReference,</span>
+<span class="fc" id="L194">			return CustomSplineBasisCurve (strName, dtStart, friReference, friDerived, bBasisOnReference,</span>
 				astrTenor, adblBasis, new org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
 						org.drip.spline.basis.PolynomialFunctionSetParams (4),
-<span class="fc" id="L186">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L187">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L188">			e.printStackTrace();</span>
+<span class="fc" id="L198">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L199">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L200">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L191">		return null;</span>
+<span class="nc" id="L203">		return null;</span>
 	}
 
 	/**
@@ -215,16 +227,16 @@ package org.drip.state.creator;
 		final double[] adblBasis)
 	{
 		try {
-<span class="fc" id="L218">			return CustomSplineBasisCurve (strName, dtStart, friReference, friDerived, bBasisOnReference,</span>
+<span class="fc" id="L230">			return CustomSplineBasisCurve (strName, dtStart, friReference, friDerived, bBasisOnReference,</span>
 				astrTenor, adblBasis, new org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
 						org.drip.spline.basis.PolynomialFunctionSetParams (5),
-<span class="fc" id="L222">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L223">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L224">			e.printStackTrace();</span>
+<span class="fc" id="L234">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L235">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L236">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L227">		return null;</span>
+<span class="nc" id="L239">		return null;</span>
 	}
 
 	/**
@@ -251,16 +263,16 @@ package org.drip.state.creator;
 		final double[] adblBasis)
 	{
 		try {
-<span class="fc" id="L254">			return CustomSplineBasisCurve (strName, dtStart, friReference, friDerived, bBasisOnReference,</span>
+<span class="fc" id="L266">			return CustomSplineBasisCurve (strName, dtStart, friReference, friDerived, bBasisOnReference,</span>
 				astrTenor, adblBasis, new org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS,
 						new org.drip.spline.basis.KaklisPandelisSetParams (2),
-<span class="fc" id="L258">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L259">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L260">			e.printStackTrace();</span>
+<span class="fc" id="L270">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L271">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L272">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L263">		return null;</span>
+<span class="nc" id="L275">		return null;</span>
 	}
 
 	/**
@@ -289,16 +301,16 @@ package org.drip.state.creator;
 		final double dblTension)
 	{
 		try {
-<span class="fc" id="L292">			return CustomSplineBasisCurve (strName, dtStart, friReference, friDerived, bBasisOnReference,</span>
+<span class="fc" id="L304">			return CustomSplineBasisCurve (strName, dtStart, friReference, friDerived, bBasisOnReference,</span>
 				astrTenor, adblBasis, new org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
 						new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="fc" id="L296">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L297">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L298">			e.printStackTrace();</span>
+<span class="fc" id="L308">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L309">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L310">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L301">		return null;</span>
+<span class="nc" id="L313">		return null;</span>
 	}
 
 	/**
@@ -327,16 +339,16 @@ package org.drip.state.creator;
 		final double dblTension)
 	{
 		try {
-<span class="fc" id="L330">			return CustomSplineBasisCurve (strName, dtStart, friReference, friDerived, bBasisOnReference,</span>
+<span class="fc" id="L342">			return CustomSplineBasisCurve (strName, dtStart, friReference, friDerived, bBasisOnReference,</span>
 				astrTenor, adblBasis, new org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
 				new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="fc" id="L334">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L335">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L336">			e.printStackTrace();</span>
+<span class="fc" id="L346">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L347">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L348">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L339">		return null;</span>
+<span class="nc" id="L351">		return null;</span>
 	}
 
 	/**
@@ -365,16 +377,16 @@ package org.drip.state.creator;
 		final double dblTension)
 	{
 		try {
-<span class="nc" id="L368">			return CustomSplineBasisCurve (strName, dtStart, friReference, friDerived, bBasisOnReference,</span>
+<span class="nc" id="L380">			return CustomSplineBasisCurve (strName, dtStart, friReference, friDerived, bBasisOnReference,</span>
 				astrTenor, adblBasis, new org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
 				new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="nc" id="L372">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L373">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L374">			e.printStackTrace();</span>
+<span class="nc" id="L384">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L385">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L386">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L377">		return null;</span>
+<span class="nc" id="L389">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

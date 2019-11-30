@@ -6,6 +6,7 @@ package org.drip.spline.params;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -14,39 +15,50 @@ package org.drip.spline.params;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -111,10 +123,10 @@ package org.drip.spline.params;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md&quot;&gt;Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md&quot;&gt;Spline Segment Construction Control Parameters&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -141,9 +153,9 @@ public class SegmentResponseValueConstraint {
 
 	public static final int SPLITS_CONSTRAINT = 4;
 
-<span class="fc" id="L144">	private double[] _adblPredictorOrdinate = null;</span>
-<span class="fc" id="L145">	private double[] _adblResponseValueWeight = null;</span>
-<span class="fc" id="L146">	private double _dblWeightedResponseValueConstraint = java.lang.Double.NaN;</span>
+<span class="fc" id="L156">	private double[] _adblPredictorOrdinate = null;</span>
+<span class="fc" id="L157">	private double[] _adblResponseValueWeight = null;</span>
+<span class="fc" id="L158">	private double _dblWeightedResponseValueConstraint = java.lang.Double.NaN;</span>
 
 	/**
 	 * Generate a SegmentResponseValueConstraint instance from the given predictor/response pair.
@@ -158,18 +170,18 @@ public class SegmentResponseValueConstraint {
 		final double dblPredictorOrdinate,
 		final double dblResponseValue)
 	{
-<span class="pc bpc" id="L161" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate) ||</span>
-<span class="pc bpc" id="L162" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblResponseValue))</span>
-<span class="nc" id="L163">			return null;</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate) ||</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblResponseValue))</span>
+<span class="nc" id="L175">			return null;</span>
 
 		try {
-<span class="fc" id="L166">			return new SegmentResponseValueConstraint (new double[] {dblPredictorOrdinate}, new double[]</span>
+<span class="fc" id="L178">			return new SegmentResponseValueConstraint (new double[] {dblPredictorOrdinate}, new double[]</span>
 				{1.}, dblResponseValue);
-<span class="nc" id="L168">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L169">			e.printStackTrace();</span>
+<span class="nc" id="L180">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L181">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L172">		return null;</span>
+<span class="nc" id="L184">		return null;</span>
 	}
 
 	/**
@@ -188,17 +200,17 @@ public class SegmentResponseValueConstraint {
 		final double[] adblResponseValueWeight,
 		final double dblWeightedResponseValueConstraint)
 		throws java.lang.Exception
-<span class="fc" id="L191">	{</span>
-<span class="pc bpc" id="L192" title="2 of 4 branches missed.">		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate) || null == (_adblResponseValueWeight =</span>
+<span class="fc" id="L203">	{</span>
+<span class="pc bpc" id="L204" title="2 of 4 branches missed.">		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate) || null == (_adblResponseValueWeight =</span>
 			adblResponseValueWeight) || !org.drip.numerical.common.NumberUtil.IsValid
-<span class="pc bpc" id="L194" title="1 of 2 branches missed.">				(_dblWeightedResponseValueConstraint = dblWeightedResponseValueConstraint))</span>
-<span class="nc" id="L195">			throw new java.lang.Exception (&quot;SegmentResponseValueConstraint ctr: Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">				(_dblWeightedResponseValueConstraint = dblWeightedResponseValueConstraint))</span>
+<span class="nc" id="L207">			throw new java.lang.Exception (&quot;SegmentResponseValueConstraint ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L197">		int iNumPredictorOrdinate = adblPredictorOrdinate.length;</span>
+<span class="fc" id="L209">		int iNumPredictorOrdinate = adblPredictorOrdinate.length;</span>
 
-<span class="pc bpc" id="L199" title="2 of 4 branches missed.">		if (0 == iNumPredictorOrdinate || _adblResponseValueWeight.length != iNumPredictorOrdinate)</span>
-<span class="nc" id="L200">			throw new java.lang.Exception (&quot;SegmentResponseValueConstraint ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L201">	}</span>
+<span class="pc bpc" id="L211" title="2 of 4 branches missed.">		if (0 == iNumPredictorOrdinate || _adblResponseValueWeight.length != iNumPredictorOrdinate)</span>
+<span class="nc" id="L212">			throw new java.lang.Exception (&quot;SegmentResponseValueConstraint ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L213">	}</span>
 
 	/**
 	 * Retrieve the Array of Predictor Ordinates
@@ -208,7 +220,7 @@ public class SegmentResponseValueConstraint {
 
 	public double[] predictorOrdinates()
 	{
-<span class="fc" id="L211">		return _adblPredictorOrdinate;</span>
+<span class="fc" id="L223">		return _adblPredictorOrdinate;</span>
 	}
 
 	/**
@@ -219,7 +231,7 @@ public class SegmentResponseValueConstraint {
 
 	public double[] responseWeights()
 	{
-<span class="nc" id="L222">		return _adblResponseValueWeight;</span>
+<span class="nc" id="L234">		return _adblResponseValueWeight;</span>
 	}
 
 	/**
@@ -230,18 +242,18 @@ public class SegmentResponseValueConstraint {
 
 	public double constraintValue()
 	{
-<span class="nc" id="L233">		return _dblWeightedResponseValueConstraint;</span>
+<span class="nc" id="L245">		return _dblWeightedResponseValueConstraint;</span>
 	}
 
 	public void display (
 		final java.lang.String strComment)
 	{
-<span class="nc bnc" id="L239" title="All 2 branches missed.">		for (int i = 0; i &lt; _adblPredictorOrdinate.length; ++i)</span>
-<span class="nc" id="L240">			System.out.println (&quot;\t\t&quot; + strComment + &quot; - &quot; + new org.drip.analytics.date.JulianDate ((int)</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">		for (int i = 0; i &lt; _adblPredictorOrdinate.length; ++i)</span>
+<span class="nc" id="L252">			System.out.println (&quot;\t\t&quot; + strComment + &quot; - &quot; + new org.drip.analytics.date.JulianDate ((int)</span>
 				_adblPredictorOrdinate[i]) + &quot; =&gt; &quot; + _adblResponseValueWeight[i]);
 
-<span class="nc" id="L243">		System.out.println (&quot;\tConstraint: &quot; + _dblWeightedResponseValueConstraint);</span>
-<span class="nc" id="L244">	}</span>
+<span class="nc" id="L255">		System.out.println (&quot;\tConstraint: &quot; + _dblWeightedResponseValueConstraint);</span>
+<span class="nc" id="L256">	}</span>
 
 	/**
 	 * Convert the Segment Constraint onto Local Predictor Ordinates, the corresponding Response Basis
@@ -257,31 +269,31 @@ public class SegmentResponseValueConstraint {
 		final org.drip.spline.segment.BasisEvaluator lbe,
 		final org.drip.spline.segment.LatentStateInelastic ics)
 	{
-<span class="pc bpc" id="L260" title="2 of 4 branches missed.">		if (null == lbe || null == ics) return null;</span>
+<span class="pc bpc" id="L272" title="2 of 4 branches missed.">		if (null == lbe || null == ics) return null;</span>
 
-<span class="fc" id="L262">		int iNumResponseBasis = lbe.numBasis();</span>
+<span class="fc" id="L274">		int iNumResponseBasis = lbe.numBasis();</span>
 
-<span class="fc" id="L264">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
-<span class="fc" id="L265">		double[] adblResponseBasisWeight = new double[iNumResponseBasis];</span>
+<span class="fc" id="L276">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
+<span class="fc" id="L277">		double[] adblResponseBasisWeight = new double[iNumResponseBasis];</span>
 
-<span class="pc bpc" id="L267" title="1 of 2 branches missed.">		if (0 == iNumResponseBasis) return null;</span>
+<span class="pc bpc" id="L279" title="1 of 2 branches missed.">		if (0 == iNumResponseBasis) return null;</span>
 
 		try {
-<span class="fc bfc" id="L270" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumResponseBasis; ++i) {</span>
-<span class="fc" id="L271">				adblResponseBasisWeight[i] = 0.;</span>
+<span class="fc bfc" id="L282" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumResponseBasis; ++i) {</span>
+<span class="fc" id="L283">				adblResponseBasisWeight[i] = 0.;</span>
 
-<span class="fc bfc" id="L273" title="All 2 branches covered.">				for (int j = 0; j &lt; iNumPredictorOrdinate; ++j)</span>
-<span class="fc" id="L274">					adblResponseBasisWeight[i] += _adblResponseValueWeight[j] *</span>
-<span class="fc" id="L275">						lbe.shapedBasisFunctionResponse (_adblPredictorOrdinate[j], i);</span>
+<span class="fc bfc" id="L285" title="All 2 branches covered.">				for (int j = 0; j &lt; iNumPredictorOrdinate; ++j)</span>
+<span class="fc" id="L286">					adblResponseBasisWeight[i] += _adblResponseValueWeight[j] *</span>
+<span class="fc" id="L287">						lbe.shapedBasisFunctionResponse (_adblPredictorOrdinate[j], i);</span>
 			}
 
-<span class="fc" id="L278">			return new org.drip.spline.params.SegmentBasisFlexureConstraint (adblResponseBasisWeight,</span>
+<span class="fc" id="L290">			return new org.drip.spline.params.SegmentBasisFlexureConstraint (adblResponseBasisWeight,</span>
 				_dblWeightedResponseValueConstraint);
-<span class="nc" id="L280">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L281">			e.printStackTrace();</span>
+<span class="nc" id="L292">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L293">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L284">		return null;</span>
+<span class="nc" id="L296">		return null;</span>
 	}
 
 	/**
@@ -299,15 +311,15 @@ public class SegmentResponseValueConstraint {
 		final double dblPredictorKnot)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L302" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorKnot))</span>
-<span class="nc" id="L303">			throw new java.lang.Exception (&quot;SegmentResponseValueConstraint::knotPosition =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L314" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorKnot))</span>
+<span class="nc" id="L315">			throw new java.lang.Exception (&quot;SegmentResponseValueConstraint::knotPosition =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L305" title="All 2 branches missed.">		if (dblPredictorKnot &lt; _adblPredictorOrdinate[0]) return LEFT_OF_CONSTRAINT;</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">		if (dblPredictorKnot &lt; _adblPredictorOrdinate[0]) return LEFT_OF_CONSTRAINT;</span>
 
-<span class="nc bnc" id="L307" title="All 2 branches missed.">		if (dblPredictorKnot &gt; _adblPredictorOrdinate[_adblPredictorOrdinate.length - 1])</span>
-<span class="nc" id="L308">			return RIGHT_OF_CONSTRAINT;</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">		if (dblPredictorKnot &gt; _adblPredictorOrdinate[_adblPredictorOrdinate.length - 1])</span>
+<span class="nc" id="L320">			return RIGHT_OF_CONSTRAINT;</span>
 
-<span class="nc" id="L310">		return SPLITS_CONSTRAINT;</span>
+<span class="nc" id="L322">		return SPLITS_CONSTRAINT;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

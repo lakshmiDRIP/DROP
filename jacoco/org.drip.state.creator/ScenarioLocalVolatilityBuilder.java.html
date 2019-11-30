@@ -6,45 +6,57 @@ package org.drip.state.creator;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,17 +85,17 @@ package org.drip.state.creator;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator&quot;&gt;Creator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md&quot;&gt;Latent State Inference and Creation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md&quot;&gt;Scenario State Curve/Surface Builders&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L86">public class ScenarioLocalVolatilityBuilder {</span>
+<span class="nc" id="L98">public class ScenarioLocalVolatilityBuilder {</span>
 
 	/**
 	 * Create a Volatility Curve from the Calibration Instruments
@@ -112,8 +124,8 @@ package org.drip.state.creator;
 		final org.drip.state.forward.ForwardCurve fc,
 		final org.drip.param.market.LatentStateFixingsContainer lsfc)
 	{
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		return null == dtSpot ? null : org.drip.state.boot.VolatilityCurveScenario.Standard (strName,</span>
-<span class="fc" id="L116">			org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), lslUnderlying, aFRACapFloor,</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		return null == dtSpot ? null : org.drip.state.boot.VolatilityCurveScenario.Standard (strName,</span>
+<span class="fc" id="L128">			org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), lslUnderlying, aFRACapFloor,</span>
 				adblCalibQuote, astrCalibMeasure, false, dc, fc, lsfc, null);
 	}
 
@@ -144,48 +156,48 @@ package org.drip.state.creator;
 		final org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan,
 		final org.drip.spline.params.SegmentCustomBuilderControl scbcSurface)
 	{
-<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblRiskFreeRate)) return null;</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblRiskFreeRate)) return null;</span>
 
-<span class="nc" id="L149">		org.drip.analytics.definition.MarketSurface msCallPrice =</span>
-<span class="nc" id="L150">			org.drip.state.creator.ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (strName +</span>
+<span class="nc" id="L161">		org.drip.analytics.definition.MarketSurface msCallPrice =</span>
+<span class="nc" id="L162">			org.drip.state.creator.ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (strName +</span>
 				&quot;_CALL_PRICE_SURFACE&quot;, dtStart, strCurrency, adblStrike, adblMaturity, aadblCallPrice,
 					scbcWireSpan, scbcSurface);
 
-<span class="nc bnc" id="L154" title="All 2 branches missed.">		if (null == msCallPrice) return null;</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">		if (null == msCallPrice) return null;</span>
 
-<span class="nc" id="L156">		int iNumStrike = adblStrike.length;</span>
-<span class="nc" id="L157">		int iNumMaturity = adblMaturity.length;</span>
-<span class="nc" id="L158">		double[][] aadblLocalVolatility = new double[iNumStrike][iNumMaturity];</span>
-<span class="nc" id="L159">		org.drip.analytics.definition.NodeStructure[] aTSMaturityAnchor = new</span>
+<span class="nc" id="L168">		int iNumStrike = adblStrike.length;</span>
+<span class="nc" id="L169">		int iNumMaturity = adblMaturity.length;</span>
+<span class="nc" id="L170">		double[][] aadblLocalVolatility = new double[iNumStrike][iNumMaturity];</span>
+<span class="nc" id="L171">		org.drip.analytics.definition.NodeStructure[] aTSMaturityAnchor = new</span>
 			org.drip.analytics.definition.NodeStructure[iNumMaturity];
 
-<span class="nc bnc" id="L162" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumMaturity; ++j) {</span>
-<span class="nc bnc" id="L163" title="All 2 branches missed.">			if (null == (aTSMaturityAnchor[j] = msCallPrice.yAnchorTermStructure (adblMaturity[j])))</span>
-<span class="nc" id="L164">				return null;</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumMaturity; ++j) {</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">			if (null == (aTSMaturityAnchor[j] = msCallPrice.yAnchorTermStructure (adblMaturity[j])))</span>
+<span class="nc" id="L176">				return null;</span>
 		}
 
-<span class="nc bnc" id="L167" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumStrike; ++i) {</span>
-<span class="nc" id="L168">			org.drip.analytics.definition.NodeStructure tsStrikeAnchor = msCallPrice.xAnchorTermStructure</span>
-<span class="nc" id="L169">				(adblStrike[i]);</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumStrike; ++i) {</span>
+<span class="nc" id="L180">			org.drip.analytics.definition.NodeStructure tsStrikeAnchor = msCallPrice.xAnchorTermStructure</span>
+<span class="nc" id="L181">				(adblStrike[i]);</span>
 
-<span class="nc bnc" id="L171" title="All 2 branches missed.">			if (null == tsStrikeAnchor) return null;</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">			if (null == tsStrikeAnchor) return null;</span>
 
-<span class="nc bnc" id="L173" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumMaturity; ++j) {</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumMaturity; ++j) {</span>
 				try {
-<span class="nc" id="L175">					aadblLocalVolatility[i][j] = java.lang.Math.sqrt ((tsStrikeAnchor.nodeDerivative ((int)</span>
+<span class="nc" id="L187">					aadblLocalVolatility[i][j] = java.lang.Math.sqrt ((tsStrikeAnchor.nodeDerivative ((int)</span>
 						adblMaturity[j], 1) + dblRiskFreeRate * adblStrike[i] *
-<span class="nc" id="L177">							aTSMaturityAnchor[j].nodeDerivative ((int) adblStrike[i], 1)) / (adblStrike[i] *</span>
-<span class="nc" id="L178">								adblStrike[i] * aTSMaturityAnchor[j].nodeDerivative ((int) adblStrike[i],</span>
+<span class="nc" id="L189">							aTSMaturityAnchor[j].nodeDerivative ((int) adblStrike[i], 1)) / (adblStrike[i] *</span>
+<span class="nc" id="L190">								adblStrike[i] * aTSMaturityAnchor[j].nodeDerivative ((int) adblStrike[i],</span>
 									2)));
-<span class="nc" id="L180">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L181">					e.printStackTrace();</span>
+<span class="nc" id="L192">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L193">					e.printStackTrace();</span>
 
-<span class="nc" id="L183">					return null;</span>
-<span class="nc" id="L184">				}</span>
+<span class="nc" id="L195">					return null;</span>
+<span class="nc" id="L196">				}</span>
 			}
 		}
 
-<span class="nc" id="L188">		return org.drip.state.creator.ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (strName, dtStart,</span>
+<span class="nc" id="L200">		return org.drip.state.creator.ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (strName, dtStart,</span>
 			strCurrency, adblStrike, adblMaturity, aadblLocalVolatility, scbcWireSpan, scbcSurface);
 	}
 
@@ -213,35 +225,35 @@ package org.drip.state.creator;
 		final java.lang.String[] astrTenor,
 		final double[][] aadblNode)
 	{
-<span class="nc bnc" id="L216" title="All 2 branches missed.">		if (null == astrTenor) return null;</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">		if (null == astrTenor) return null;</span>
 
-<span class="nc" id="L218">		int iNumTenor = astrTenor.length;</span>
-<span class="nc" id="L219">		double[] adblMaturity = new double[iNumTenor];</span>
-<span class="nc" id="L220">		org.drip.spline.params.SegmentCustomBuilderControl scbcSurface = null;</span>
-<span class="nc" id="L221">		org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan = null;</span>
+<span class="nc" id="L230">		int iNumTenor = astrTenor.length;</span>
+<span class="nc" id="L231">		double[] adblMaturity = new double[iNumTenor];</span>
+<span class="nc" id="L232">		org.drip.spline.params.SegmentCustomBuilderControl scbcSurface = null;</span>
+<span class="nc" id="L233">		org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan = null;</span>
 
-<span class="nc bnc" id="L223" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="nc bnc" id="L225" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
-<span class="nc" id="L226">			adblMaturity[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="nc" id="L238">			adblMaturity[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
 
 		try {
-<span class="nc" id="L229">			scbcWireSpan = new org.drip.spline.params.SegmentCustomBuilderControl</span>
+<span class="nc" id="L241">			scbcWireSpan = new org.drip.spline.params.SegmentCustomBuilderControl</span>
 				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
 					org.drip.spline.basis.PolynomialFunctionSetParams (4),
-<span class="nc" id="L232">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
+<span class="nc" id="L244">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
 
-<span class="nc" id="L234">			scbcSurface = new org.drip.spline.params.SegmentCustomBuilderControl</span>
+<span class="nc" id="L246">			scbcSurface = new org.drip.spline.params.SegmentCustomBuilderControl</span>
 				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
 					org.drip.spline.basis.PolynomialFunctionSetParams (4),
-<span class="nc" id="L237">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
-<span class="nc" id="L238">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L239">			e.printStackTrace();</span>
+<span class="nc" id="L249">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
+<span class="nc" id="L250">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L251">			e.printStackTrace();</span>
 
-<span class="nc" id="L241">			return null;</span>
-<span class="nc" id="L242">		}</span>
+<span class="nc" id="L253">			return null;</span>
+<span class="nc" id="L254">		}</span>
 
-<span class="nc" id="L244">		return CustomSplineWireSurface (strName, dtStart, strCurrency, dblRiskFreeRate, adblStrike,</span>
+<span class="nc" id="L256">		return CustomSplineWireSurface (strName, dtStart, strCurrency, dblRiskFreeRate, adblStrike,</span>
 			adblMaturity, aadblNode, scbcWireSpan, scbcSurface);
 	}
 }

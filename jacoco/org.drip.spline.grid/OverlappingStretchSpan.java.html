@@ -6,6 +6,7 @@ package org.drip.spline.grid;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -13,39 +14,50 @@ package org.drip.spline.grid;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -76,10 +88,10 @@ package org.drip.spline.grid;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/grid&quot;&gt;Grid&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md&quot;&gt;Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/grid/README.md&quot;&gt;Aggregated/Overlapping Stretch/Span Grids&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -87,7 +99,7 @@ package org.drip.spline.grid;
  */
 
 public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
-<span class="fc" id="L90">	private java.util.List&lt;org.drip.spline.stretch.MultiSegmentSequence&gt; _lsMSS = new</span>
+<span class="fc" id="L102">	private java.util.List&lt;org.drip.spline.stretch.MultiSegmentSequence&gt; _lsMSS = new</span>
 		java.util.ArrayList&lt;org.drip.spline.stretch.MultiSegmentSequence&gt;();
 
 	/**
@@ -101,79 +113,79 @@ public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
 	public OverlappingStretchSpan (
 		final org.drip.spline.stretch.MultiSegmentSequence mss)
 		throws java.lang.Exception
-<span class="fc" id="L104">	{</span>
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		if (null == mss) throw new java.lang.Exception (&quot;OverlappingStretchSpan ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L116">	{</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">		if (null == mss) throw new java.lang.Exception (&quot;OverlappingStretchSpan ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L107">		_lsMSS.add (mss);</span>
-<span class="fc" id="L108">	}</span>
+<span class="fc" id="L119">		_lsMSS.add (mss);</span>
+<span class="fc" id="L120">	}</span>
 
 	@Override public boolean addStretch (
 		final org.drip.spline.stretch.MultiSegmentSequence mss)
 	{
-<span class="pc bpc" id="L113" title="1 of 2 branches missed.">		if (null == mss) return false;</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		if (null == mss) return false;</span>
 
-<span class="fc" id="L115">		_lsMSS.add (mss);</span>
+<span class="fc" id="L127">		_lsMSS.add (mss);</span>
 
-<span class="fc" id="L117">		return true;</span>
+<span class="fc" id="L129">		return true;</span>
 	}
 
 	@Override public org.drip.spline.stretch.MultiSegmentSequence getContainingStretch (
 		final double dblPredictorOrdinate)
 	{
-<span class="pc bpc" id="L123" title="2 of 4 branches missed.">		if (null == _lsMSS || 0 == _lsMSS.size()) return null;</span>
+<span class="pc bpc" id="L135" title="2 of 4 branches missed.">		if (null == _lsMSS || 0 == _lsMSS.size()) return null;</span>
 
-<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
 			try {
-<span class="fc bfc" id="L127" title="All 2 branches covered.">				if (mss.in (dblPredictorOrdinate)) return mss;</span>
-<span class="nc" id="L128">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L129">				e.printStackTrace();</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">				if (mss.in (dblPredictorOrdinate)) return mss;</span>
+<span class="nc" id="L140">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L141">				e.printStackTrace();</span>
 
-<span class="nc" id="L131">				return null;</span>
-<span class="fc" id="L132">			}</span>
-<span class="fc" id="L133">		}</span>
-
-<span class="nc" id="L135">		return null;</span>
-	}
-
-	@Override public org.drip.spline.stretch.MultiSegmentSequence getStretch (
-		final java.lang.String strName)
-	{
-<span class="pc bpc" id="L141" title="1 of 2 branches missed.">		if (null == strName) return null;</span>
-
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
-<span class="fc bfc" id="L144" title="All 2 branches covered.">			if (strName.equalsIgnoreCase (mss.name())) return mss;</span>
+<span class="nc" id="L143">				return null;</span>
+<span class="fc" id="L144">			}</span>
 <span class="fc" id="L145">		}</span>
 
 <span class="nc" id="L147">		return null;</span>
 	}
 
+	@Override public org.drip.spline.stretch.MultiSegmentSequence getStretch (
+		final java.lang.String strName)
+	{
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">		if (null == strName) return null;</span>
+
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">			if (strName.equalsIgnoreCase (mss.name())) return mss;</span>
+<span class="fc" id="L157">		}</span>
+
+<span class="nc" id="L159">		return null;</span>
+	}
+
 	@Override public double left()
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L153" title="1 of 2 branches missed.">		if (0 == _lsMSS.size())</span>
-<span class="nc" id="L154">			throw new java.lang.Exception (&quot;OverlappingStretchSpan::left =&gt; No valid Stretches found&quot;);</span>
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">		if (0 == _lsMSS.size())</span>
+<span class="nc" id="L166">			throw new java.lang.Exception (&quot;OverlappingStretchSpan::left =&gt; No valid Stretches found&quot;);</span>
 
-<span class="fc" id="L156">		return _lsMSS.get (0).getLeftPredictorOrdinateEdge();</span>
+<span class="fc" id="L168">		return _lsMSS.get (0).getLeftPredictorOrdinateEdge();</span>
 	}
 
 	@Override public double right()
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L162" title="1 of 2 branches missed.">		if (0 == _lsMSS.size())</span>
-<span class="nc" id="L163">			throw new java.lang.Exception (&quot;OverlappingStretchSpan::right =&gt; No valid Stretches found&quot;);</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">		if (0 == _lsMSS.size())</span>
+<span class="nc" id="L175">			throw new java.lang.Exception (&quot;OverlappingStretchSpan::right =&gt; No valid Stretches found&quot;);</span>
 
-<span class="fc" id="L165">		return _lsMSS.get (_lsMSS.size() - 1).getRightPredictorOrdinateEdge();</span>
+<span class="fc" id="L177">		return _lsMSS.get (_lsMSS.size() - 1).getRightPredictorOrdinateEdge();</span>
 	}
 
 	@Override public double calcResponseValue (
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L172" title="1 of 2 branches missed.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
-<span class="fc bfc" id="L173" title="All 2 branches covered.">			if (mss.in (dblPredictorOrdinate)) return mss.responseValue (dblPredictorOrdinate);</span>
-<span class="fc" id="L174">		}</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">			if (mss.in (dblPredictorOrdinate)) return mss.responseValue (dblPredictorOrdinate);</span>
+<span class="fc" id="L186">		}</span>
 
-<span class="nc" id="L176">		throw new java.lang.Exception (&quot;OverlappingStretchSpan::calcResponseValue =&gt; Cannot Calculate!&quot;);</span>
+<span class="nc" id="L188">		throw new java.lang.Exception (&quot;OverlappingStretchSpan::calcResponseValue =&gt; Cannot Calculate!&quot;);</span>
 	}
 
 	@Override public double calcResponseValueDerivative (
@@ -181,12 +193,12 @@ public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L184" title="1 of 2 branches missed.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
-<span class="pc bpc" id="L185" title="1 of 2 branches missed.">			if (mss.in (dblPredictorOrdinate))</span>
-<span class="fc" id="L186">				return mss.responseValueDerivative (dblPredictorOrdinate, iOrder);</span>
-<span class="nc" id="L187">		}</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">			if (mss.in (dblPredictorOrdinate))</span>
+<span class="fc" id="L198">				return mss.responseValueDerivative (dblPredictorOrdinate, iOrder);</span>
+<span class="nc" id="L199">		}</span>
 
-<span class="nc" id="L189">		throw new java.lang.Exception</span>
+<span class="nc" id="L201">		throw new java.lang.Exception</span>
 			(&quot;OverlappingStretchSpan::calcResponseValueDerivative =&gt; Cannot Calculate!&quot;);
 	}
 
@@ -195,18 +207,18 @@ public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
 		final org.drip.state.identifier.LatentStateLabel lsl)
 	{
 		try {
-<span class="nc bnc" id="L198" title="All 2 branches missed.">			for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
-<span class="nc bnc" id="L199" title="All 2 branches missed.">				if (mss.in (dblPredictorOrdinate)) {</span>
-<span class="nc" id="L200">					org.drip.state.representation.MergeSubStretchManager msm = mss.msm();</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">			for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">				if (mss.in (dblPredictorOrdinate)) {</span>
+<span class="nc" id="L212">					org.drip.state.representation.MergeSubStretchManager msm = mss.msm();</span>
 
-<span class="nc bnc" id="L202" title="All 2 branches missed.">					return null == msm ? false : msm.partOfMergeState (dblPredictorOrdinate, lsl);</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">					return null == msm ? false : msm.partOfMergeState (dblPredictorOrdinate, lsl);</span>
 				}
-<span class="nc" id="L204">			}</span>
-<span class="nc" id="L205">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L206">			e.printStackTrace();</span>
-<span class="nc" id="L207">		}</span>
+<span class="nc" id="L216">			}</span>
+<span class="nc" id="L217">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L218">			e.printStackTrace();</span>
+<span class="nc" id="L219">		}</span>
 
-<span class="nc" id="L209">		return false;</span>
+<span class="nc" id="L221">		return false;</span>
 	}
 
 	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDManifestMeasure (
@@ -214,47 +226,47 @@ public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
 		final double dblPredictorOrdinate,
 		final int iOrder)
 	{
-<span class="pc bpc" id="L217" title="1 of 2 branches missed.">		if (0 == _lsMSS.size()) return null;</span>
+<span class="pc bpc" id="L229" title="1 of 2 branches missed.">		if (0 == _lsMSS.size()) return null;</span>
 
-<span class="fc" id="L219">		java.util.List&lt;org.drip.numerical.differentiation.WengertJacobian&gt; lsWJ = new</span>
+<span class="fc" id="L231">		java.util.List&lt;org.drip.numerical.differentiation.WengertJacobian&gt; lsWJ = new</span>
 			java.util.ArrayList&lt;org.drip.numerical.differentiation.WengertJacobian&gt;();
 
-<span class="fc" id="L222">		boolean bPredictorOrdinateCovered = false;</span>
+<span class="fc" id="L234">		boolean bPredictorOrdinateCovered = false;</span>
 
-<span class="fc bfc" id="L224" title="All 2 branches covered.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
-<span class="pc bpc" id="L225" title="1 of 2 branches missed.">			if (null == mss) continue;</span>
+<span class="fc bfc" id="L236" title="All 2 branches covered.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
+<span class="pc bpc" id="L237" title="1 of 2 branches missed.">			if (null == mss) continue;</span>
 
 			try {
-<span class="fc" id="L228">				org.drip.numerical.differentiation.WengertJacobian wj = null;</span>
+<span class="fc" id="L240">				org.drip.numerical.differentiation.WengertJacobian wj = null;</span>
 
-<span class="fc bfc" id="L230" title="All 4 branches covered.">				if (!bPredictorOrdinateCovered &amp;&amp; mss.in (dblPredictorOrdinate)) {</span>
-<span class="fc" id="L231">					wj = mss.jackDResponseDManifestMeasure (strManifestMeasure, dblPredictorOrdinate,</span>
+<span class="fc bfc" id="L242" title="All 4 branches covered.">				if (!bPredictorOrdinateCovered &amp;&amp; mss.in (dblPredictorOrdinate)) {</span>
+<span class="fc" id="L243">					wj = mss.jackDResponseDManifestMeasure (strManifestMeasure, dblPredictorOrdinate,</span>
 						iOrder);
 
-<span class="fc" id="L234">					bPredictorOrdinateCovered = true;</span>
+<span class="fc" id="L246">					bPredictorOrdinateCovered = true;</span>
 				} else
-<span class="fc" id="L236">					wj = new org.drip.numerical.differentiation.WengertJacobian (1, mss.segments().length);</span>
+<span class="fc" id="L248">					wj = new org.drip.numerical.differentiation.WengertJacobian (1, mss.segments().length);</span>
 
-<span class="fc bfc" id="L238" title="All 2 branches covered.">				if (null != wj) lsWJ.add (wj);</span>
-<span class="nc" id="L239">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L240">				e.printStackTrace();</span>
+<span class="fc bfc" id="L250" title="All 2 branches covered.">				if (null != wj) lsWJ.add (wj);</span>
+<span class="nc" id="L251">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L252">				e.printStackTrace();</span>
 
-<span class="nc" id="L242">				return null;</span>
-<span class="fc" id="L243">			}</span>
-<span class="fc" id="L244">		}</span>
+<span class="nc" id="L254">				return null;</span>
+<span class="fc" id="L255">			}</span>
+<span class="fc" id="L256">		}</span>
 
-<span class="fc" id="L246">		return org.drip.numerical.common.CollectionUtil.AppendWengert (lsWJ);</span>
+<span class="fc" id="L258">		return org.drip.numerical.common.CollectionUtil.AppendWengert (lsWJ);</span>
 	}
 
 	@Override public boolean in (
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L253" title="All 2 branches covered.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
-<span class="fc bfc" id="L254" title="All 2 branches covered.">			if (mss.in (dblPredictorOrdinate)) return true;</span>
-<span class="fc" id="L255">		}</span>
+<span class="fc bfc" id="L265" title="All 2 branches covered.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
+<span class="fc bfc" id="L266" title="All 2 branches covered.">			if (mss.in (dblPredictorOrdinate)) return true;</span>
+<span class="fc" id="L267">		}</span>
 
-<span class="fc" id="L257">		return false;</span>
+<span class="fc" id="L269">		return false;</span>
 	}
 
 	/**
@@ -266,47 +278,47 @@ public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
 
 	public org.drip.spline.grid.Span toNonOverlapping()
 	{
-<span class="nc bnc" id="L269" title="All 2 branches missed.">		if (0 == _lsMSS.size()) return null;</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">		if (0 == _lsMSS.size()) return null;</span>
 
-<span class="nc" id="L271">		org.drip.spline.grid.OverlappingStretchSpan oss = null;</span>
-<span class="nc" id="L272">		org.drip.spline.stretch.MultiSegmentSequence mssPrev = null;</span>
+<span class="nc" id="L283">		org.drip.spline.grid.OverlappingStretchSpan oss = null;</span>
+<span class="nc" id="L284">		org.drip.spline.stretch.MultiSegmentSequence mssPrev = null;</span>
 
-<span class="nc bnc" id="L274" title="All 2 branches missed.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
-<span class="nc bnc" id="L275" title="All 2 branches missed.">			if (null == mss) continue;</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">			if (null == mss) continue;</span>
 
-<span class="nc bnc" id="L277" title="All 2 branches missed.">			if (null == oss) {</span>
+<span class="nc bnc" id="L289" title="All 2 branches missed.">			if (null == oss) {</span>
 				try {
-<span class="nc" id="L279">					oss = new org.drip.spline.grid.OverlappingStretchSpan (mssPrev = mss);</span>
-<span class="nc" id="L280">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L281">					e.printStackTrace();</span>
+<span class="nc" id="L291">					oss = new org.drip.spline.grid.OverlappingStretchSpan (mssPrev = mss);</span>
+<span class="nc" id="L292">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L293">					e.printStackTrace();</span>
 
-<span class="nc" id="L283">					return null;</span>
-<span class="nc" id="L284">				}</span>
+<span class="nc" id="L295">					return null;</span>
+<span class="nc" id="L296">				}</span>
 			} else {
-<span class="nc" id="L286">				double dblPrevRightPredictorOrdinateEdge = mssPrev.getRightPredictorOrdinateEdge();</span>
+<span class="nc" id="L298">				double dblPrevRightPredictorOrdinateEdge = mssPrev.getRightPredictorOrdinateEdge();</span>
 
-<span class="nc" id="L288">				double dblCurrentLeftPredictorOrdinateEdge = mss.getLeftPredictorOrdinateEdge();</span>
+<span class="nc" id="L300">				double dblCurrentLeftPredictorOrdinateEdge = mss.getLeftPredictorOrdinateEdge();</span>
 
-<span class="nc bnc" id="L290" title="All 2 branches missed.">				if (dblCurrentLeftPredictorOrdinateEdge &gt;= dblPrevRightPredictorOrdinateEdge)</span>
-<span class="nc" id="L291">					oss.addStretch (mss);</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">				if (dblCurrentLeftPredictorOrdinateEdge &gt;= dblPrevRightPredictorOrdinateEdge)</span>
+<span class="nc" id="L303">					oss.addStretch (mss);</span>
 				else
-<span class="nc" id="L293">					oss.addStretch (mss.clipLeft (mss.name(), dblPrevRightPredictorOrdinateEdge));</span>
+<span class="nc" id="L305">					oss.addStretch (mss.clipLeft (mss.name(), dblPrevRightPredictorOrdinateEdge));</span>
 			}
-<span class="nc" id="L295">		}</span>
+<span class="nc" id="L307">		}</span>
 
-<span class="nc" id="L297">		return oss;</span>
+<span class="nc" id="L309">		return oss;</span>
 	}
 
 	@Override public java.lang.String displayString()
 	{
-<span class="nc" id="L302">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
+<span class="nc" id="L314">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
 
-<span class="nc bnc" id="L304" title="All 2 branches missed.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS)</span>
-<span class="nc" id="L305">			sb.append (mss.name() + &quot; | &quot; + new org.drip.analytics.date.JulianDate ((int)</span>
-<span class="nc" id="L306">				mss.getLeftPredictorOrdinateEdge()) + &quot; =&gt; &quot; + new org.drip.analytics.date.JulianDate ((int)</span>
-<span class="nc" id="L307">					mss.getRightPredictorOrdinateEdge()) + &quot;\n&quot;);</span>
+<span class="nc bnc" id="L316" title="All 2 branches missed.">		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS)</span>
+<span class="nc" id="L317">			sb.append (mss.name() + &quot; | &quot; + new org.drip.analytics.date.JulianDate ((int)</span>
+<span class="nc" id="L318">				mss.getLeftPredictorOrdinateEdge()) + &quot; =&gt; &quot; + new org.drip.analytics.date.JulianDate ((int)</span>
+<span class="nc" id="L319">					mss.getRightPredictorOrdinateEdge()) + &quot;\n&quot;);</span>
 
-<span class="nc" id="L309">		return sb.toString();</span>
+<span class="nc" id="L321">		return sb.toString();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

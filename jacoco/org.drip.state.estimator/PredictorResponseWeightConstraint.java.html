@@ -6,6 +6,7 @@ package org.drip.state.estimator;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -14,39 +15,50 @@ package org.drip.state.estimator;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -93,10 +105,10 @@ package org.drip.state.estimator;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator&quot;&gt;Estimator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md&quot;&gt;Latent State Inference and Creation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator/README.md&quot;&gt;Multi-Pass Customized Stretch Curve&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -104,25 +116,25 @@ package org.drip.state.estimator;
  */
 
 public class PredictorResponseWeightConstraint {
-<span class="fc" id="L107">	private java.util.HashSet&lt;org.drip.state.identifier.LatentStateLabel&gt; _setLSL = null;</span>
+<span class="fc" id="L119">	private java.util.HashSet&lt;org.drip.state.identifier.LatentStateLabel&gt; _setLSL = null;</span>
 
-<span class="fc" id="L109">	private org.drip.state.estimator.PredictorResponseRelationSetup _prrsCalib = new</span>
+<span class="fc" id="L121">	private org.drip.state.estimator.PredictorResponseRelationSetup _prrsCalib = new</span>
 		org.drip.state.estimator.PredictorResponseRelationSetup();
 
-<span class="fc" id="L112">	private org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.state.estimator.PredictorResponseRelationSetup&gt;</span>
+<span class="fc" id="L124">	private org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.state.estimator.PredictorResponseRelationSetup&gt;</span>
 		_mapPRRSSens = new
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.state.estimator.PredictorResponseRelationSetup&gt;();
 
 	private org.drip.state.estimator.PredictorResponseRelationSetup getPRRS (
 		final java.lang.String strManifestMeasure)
 	{
-<span class="pc bpc" id="L119" title="2 of 4 branches missed.">		if (null == strManifestMeasure || strManifestMeasure.isEmpty()) return null;</span>
+<span class="pc bpc" id="L131" title="2 of 4 branches missed.">		if (null == strManifestMeasure || strManifestMeasure.isEmpty()) return null;</span>
 
-<span class="fc bfc" id="L121" title="All 2 branches covered.">		if (!_mapPRRSSens.containsKey (strManifestMeasure))</span>
-<span class="fc" id="L122">			_mapPRRSSens.put (strManifestMeasure, new</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">		if (!_mapPRRSSens.containsKey (strManifestMeasure))</span>
+<span class="fc" id="L134">			_mapPRRSSens.put (strManifestMeasure, new</span>
 				org.drip.state.estimator.PredictorResponseRelationSetup());
 
-<span class="fc" id="L125">		return _mapPRRSSens.get (strManifestMeasure);</span>
+<span class="fc" id="L137">		return _mapPRRSSens.get (strManifestMeasure);</span>
 	}
 
 	/**
@@ -130,8 +142,8 @@ public class PredictorResponseWeightConstraint {
 	 */
 
 	public PredictorResponseWeightConstraint()
-<span class="fc" id="L133">	{</span>
-<span class="fc" id="L134">	}</span>
+<span class="fc" id="L145">	{</span>
+<span class="fc" id="L146">	}</span>
 
 	/**
 	 * Add a Predictor/Response Weight entry to the Linearized Constraint
@@ -146,7 +158,7 @@ public class PredictorResponseWeightConstraint {
 		final double dblPredictor,
 		final double dblResponseWeight)
 	{
-<span class="fc" id="L149">		return _prrsCalib.addPredictorResponseWeight (dblPredictor, dblResponseWeight);</span>
+<span class="fc" id="L161">		return _prrsCalib.addPredictorResponseWeight (dblPredictor, dblResponseWeight);</span>
 	}
 
 	/**
@@ -165,7 +177,7 @@ public class PredictorResponseWeightConstraint {
 		final double dblPredictor,
 		final double dblDResponseWeightDManifestMeasure)
 	{
-<span class="fc" id="L168">		return getPRRS (strManifestMeasure).addPredictorResponseWeight (dblPredictor,</span>
+<span class="fc" id="L180">		return getPRRS (strManifestMeasure).addPredictorResponseWeight (dblPredictor,</span>
 			dblDResponseWeightDManifestMeasure);
 	}
 
@@ -180,7 +192,7 @@ public class PredictorResponseWeightConstraint {
 	public boolean updateValue (
 		final double dblValue)
 	{
-<span class="fc" id="L183">		return _prrsCalib.updateValue (dblValue);</span>
+<span class="fc" id="L195">		return _prrsCalib.updateValue (dblValue);</span>
 	}
 
 	/**
@@ -196,7 +208,7 @@ public class PredictorResponseWeightConstraint {
 		final java.lang.String strManifestMeasure,
 		final double dblDValueDManifestMeasure)
 	{
-<span class="fc" id="L199">		return getPRRS (strManifestMeasure).updateValue (dblDValueDManifestMeasure);</span>
+<span class="fc" id="L211">		return getPRRS (strManifestMeasure).updateValue (dblDValueDManifestMeasure);</span>
 	}
 
 	/**
@@ -207,7 +219,7 @@ public class PredictorResponseWeightConstraint {
 
 	public double getValue()
 	{
-<span class="fc" id="L210">		return _prrsCalib.getValue();</span>
+<span class="fc" id="L222">		return _prrsCalib.getValue();</span>
 	}
 
 	/**
@@ -224,12 +236,12 @@ public class PredictorResponseWeightConstraint {
 		final java.lang.String strManifestMeasure)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L227" title="1 of 2 branches missed.">		if (!_mapPRRSSens.containsKey (strManifestMeasure))</span>
-<span class="nc" id="L228">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L239" title="1 of 2 branches missed.">		if (!_mapPRRSSens.containsKey (strManifestMeasure))</span>
+<span class="nc" id="L240">			throw new java.lang.Exception</span>
 				(&quot;PredictorResponseWeightConstraint::getDValueDManifestMeasure =&gt; Cannot locate manifest measure &quot;
 					+ strManifestMeasure);
 
-<span class="fc" id="L232">		return _mapPRRSSens.get (strManifestMeasure).getValue();</span>
+<span class="fc" id="L244">		return _mapPRRSSens.get (strManifestMeasure).getValue();</span>
 	}
 
 	/**
@@ -243,13 +255,13 @@ public class PredictorResponseWeightConstraint {
 	public boolean addMergeLabel (
 		final org.drip.state.identifier.LatentStateLabel lslMerge)
 	{
-<span class="pc bpc" id="L246" title="1 of 2 branches missed.">		if (null == lslMerge) return false;</span>
+<span class="pc bpc" id="L258" title="1 of 2 branches missed.">		if (null == lslMerge) return false;</span>
 
-<span class="fc bfc" id="L248" title="All 2 branches covered.">		if (null == _setLSL) _setLSL = new java.util.HashSet&lt;org.drip.state.identifier.LatentStateLabel&gt;();</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">		if (null == _setLSL) _setLSL = new java.util.HashSet&lt;org.drip.state.identifier.LatentStateLabel&gt;();</span>
 
-<span class="fc" id="L250">		_setLSL.add (lslMerge);</span>
+<span class="fc" id="L262">		_setLSL.add (lslMerge);</span>
 
-<span class="fc" id="L252">		return true;</span>
+<span class="fc" id="L264">		return true;</span>
 	}
 
 	/**
@@ -260,7 +272,7 @@ public class PredictorResponseWeightConstraint {
 
 	public java.util.Set&lt;org.drip.state.identifier.LatentStateLabel&gt; mergeLabelSet()
 	{
-<span class="fc" id="L263">		return _setLSL;</span>
+<span class="fc" id="L275">		return _setLSL;</span>
 	}
 
 	/**
@@ -271,7 +283,7 @@ public class PredictorResponseWeightConstraint {
 
 	public java.util.TreeMap&lt;java.lang.Double, java.lang.Double&gt; getPredictorResponseWeight()
 	{
-<span class="fc" id="L274">		return _prrsCalib.getPredictorResponseWeight();</span>
+<span class="fc" id="L286">		return _prrsCalib.getPredictorResponseWeight();</span>
 	}
 
 	/**
@@ -285,8 +297,8 @@ public class PredictorResponseWeightConstraint {
 	public java.util.TreeMap&lt;java.lang.Double, java.lang.Double&gt; getDResponseWeightDManifestMeasure (
 		final java.lang.String strManifestMeasure)
 	{
-<span class="pc bpc" id="L288" title="1 of 2 branches missed.">		return !_mapPRRSSens.containsKey (strManifestMeasure) ? null : _mapPRRSSens.get</span>
-<span class="fc" id="L289">			(strManifestMeasure).getPredictorResponseWeight();</span>
+<span class="pc bpc" id="L300" title="1 of 2 branches missed.">		return !_mapPRRSSens.containsKey (strManifestMeasure) ? null : _mapPRRSSens.get</span>
+<span class="fc" id="L301">			(strManifestMeasure).getPredictorResponseWeight();</span>
 	}
 
 	/**
@@ -300,36 +312,36 @@ public class PredictorResponseWeightConstraint {
 	public boolean absorb (
 		final PredictorResponseWeightConstraint prwcOther)
 	{
-<span class="pc bpc" id="L303" title="2 of 4 branches missed.">		if (null == prwcOther || !_prrsCalib.absorb (prwcOther._prrsCalib)) return false;</span>
+<span class="pc bpc" id="L315" title="2 of 4 branches missed.">		if (null == prwcOther || !_prrsCalib.absorb (prwcOther._prrsCalib)) return false;</span>
 
-<span class="pc bpc" id="L305" title="1 of 2 branches missed.">		if (0 == prwcOther._mapPRRSSens.size()) return true;</span>
+<span class="pc bpc" id="L317" title="1 of 2 branches missed.">		if (0 == prwcOther._mapPRRSSens.size()) return true;</span>
 
-<span class="fc bfc" id="L307" title="All 2 branches covered.">		if (0 != _mapPRRSSens.size()) {</span>
+<span class="fc bfc" id="L319" title="All 2 branches covered.">		if (0 != _mapPRRSSens.size()) {</span>
 			for (java.util.Map.Entry&lt;java.lang.String, org.drip.state.estimator.PredictorResponseRelationSetup&gt;
-<span class="fc bfc" id="L309" title="All 2 branches covered.">				me : _mapPRRSSens.entrySet()) {</span>
-<span class="fc" id="L310">				java.lang.String strKey = me.getKey();</span>
+<span class="fc bfc" id="L321" title="All 2 branches covered.">				me : _mapPRRSSens.entrySet()) {</span>
+<span class="fc" id="L322">				java.lang.String strKey = me.getKey();</span>
 
-<span class="pc bpc" id="L312" title="1 of 2 branches missed.">				if (prwcOther._mapPRRSSens.containsKey (strKey))</span>
-<span class="fc" id="L313">					me.getValue().absorb (prwcOther._mapPRRSSens.get (strKey));</span>
-<span class="fc" id="L314">			}</span>
+<span class="pc bpc" id="L324" title="1 of 2 branches missed.">				if (prwcOther._mapPRRSSens.containsKey (strKey))</span>
+<span class="fc" id="L325">					me.getValue().absorb (prwcOther._mapPRRSSens.get (strKey));</span>
+<span class="fc" id="L326">			}</span>
 		}
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.state.estimator.PredictorResponseRelationSetup&gt;
-<span class="fc bfc" id="L318" title="All 2 branches covered.">			me : prwcOther._mapPRRSSens.entrySet()) {</span>
-<span class="fc" id="L319">			java.lang.String strKey = me.getKey();</span>
+<span class="fc bfc" id="L330" title="All 2 branches covered.">			me : prwcOther._mapPRRSSens.entrySet()) {</span>
+<span class="fc" id="L331">			java.lang.String strKey = me.getKey();</span>
 
-<span class="fc bfc" id="L321" title="All 2 branches covered.">			if (!_mapPRRSSens.containsKey (strKey)) _mapPRRSSens.put (strKey, me.getValue());</span>
-<span class="fc" id="L322">		}</span>
+<span class="fc bfc" id="L333" title="All 2 branches covered.">			if (!_mapPRRSSens.containsKey (strKey)) _mapPRRSSens.put (strKey, me.getValue());</span>
+<span class="fc" id="L334">		}</span>
 
-<span class="fc" id="L324">		java.util.Set&lt;org.drip.state.identifier.LatentStateLabel&gt; lsLSL = prwcOther.mergeLabelSet();</span>
+<span class="fc" id="L336">		java.util.Set&lt;org.drip.state.identifier.LatentStateLabel&gt; lsLSL = prwcOther.mergeLabelSet();</span>
 
-<span class="pc bpc" id="L326" title="1 of 4 branches missed.">		if (null == lsLSL || 0 == lsLSL.size()) return true;</span>
+<span class="pc bpc" id="L338" title="1 of 4 branches missed.">		if (null == lsLSL || 0 == lsLSL.size()) return true;</span>
 
-<span class="fc bfc" id="L328" title="All 2 branches covered.">		for (org.drip.state.identifier.LatentStateLabel lsl : lsLSL) {</span>
-<span class="pc bpc" id="L329" title="1 of 2 branches missed.">			if (!addMergeLabel (lsl)) return false;</span>
-<span class="fc" id="L330">		}</span>
+<span class="fc bfc" id="L340" title="All 2 branches covered.">		for (org.drip.state.identifier.LatentStateLabel lsl : lsLSL) {</span>
+<span class="pc bpc" id="L341" title="1 of 2 branches missed.">			if (!addMergeLabel (lsl)) return false;</span>
+<span class="fc" id="L342">		}</span>
 
-<span class="fc" id="L332">		return true;</span>
+<span class="fc" id="L344">		return true;</span>
 	}
 
 	/**
@@ -340,7 +352,7 @@ public class PredictorResponseWeightConstraint {
 
 	public java.util.Set&lt;java.lang.String&gt; sensitivityKeys()
 	{
-<span class="fc" id="L343">		return _mapPRRSSens.keySet();</span>
+<span class="fc" id="L355">		return _mapPRRSSens.keySet();</span>
 	}
 
 	/**
@@ -352,29 +364,29 @@ public class PredictorResponseWeightConstraint {
 	public void displayString (
 		final java.lang.String strComment)
 	{
-<span class="nc" id="L355">		java.util.Map&lt;java.lang.Double, java.lang.Double&gt; mapPRW = _prrsCalib.getPredictorResponseWeight();</span>
+<span class="nc" id="L367">		java.util.Map&lt;java.lang.Double, java.lang.Double&gt; mapPRW = _prrsCalib.getPredictorResponseWeight();</span>
 
-<span class="nc bnc" id="L357" title="All 4 branches missed.">		if (null != mapPRW &amp;&amp; 0 != mapPRW.size()) {</span>
-<span class="nc bnc" id="L358" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.Double, java.lang.Double&gt; me : mapPRW.entrySet()) {</span>
-<span class="nc" id="L359">				double dblDate = me.getKey();</span>
+<span class="nc bnc" id="L369" title="All 4 branches missed.">		if (null != mapPRW &amp;&amp; 0 != mapPRW.size()) {</span>
+<span class="nc bnc" id="L370" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.Double, java.lang.Double&gt; me : mapPRW.entrySet()) {</span>
+<span class="nc" id="L371">				double dblDate = me.getKey();</span>
 
-<span class="nc" id="L361">				System.out.println (&quot;\t\t&quot; + strComment + &quot; - &quot; + new org.drip.analytics.date.JulianDate</span>
-<span class="nc" id="L362">					((int) dblDate) + &quot; =&gt; &quot; + me.getValue());</span>
-<span class="nc" id="L363">			}</span>
+<span class="nc" id="L373">				System.out.println (&quot;\t\t&quot; + strComment + &quot; - &quot; + new org.drip.analytics.date.JulianDate</span>
+<span class="nc" id="L374">					((int) dblDate) + &quot; =&gt; &quot; + me.getValue());</span>
+<span class="nc" id="L375">			}</span>
 		}
 
-<span class="nc" id="L366">		System.out.println (&quot;\t&quot; + strComment + &quot; Constraint: &quot; + _prrsCalib.getValue());</span>
+<span class="nc" id="L378">		System.out.println (&quot;\t&quot; + strComment + &quot; Constraint: &quot; + _prrsCalib.getValue());</span>
 
-<span class="nc bnc" id="L368" title="All 2 branches missed.">		if (null != _setLSL) {</span>
-<span class="nc" id="L369">			java.lang.String strLabels = &quot;\t&quot; + strComment + &quot; Labels:&quot;;</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">		if (null != _setLSL) {</span>
+<span class="nc" id="L381">			java.lang.String strLabels = &quot;\t&quot; + strComment + &quot; Labels:&quot;;</span>
 
-<span class="nc bnc" id="L371" title="All 2 branches missed.">			for (org.drip.state.identifier.LatentStateLabel lsl : _setLSL)</span>
-<span class="nc" id="L372">				strLabels += &quot; &quot; + lsl.fullyQualifiedName();</span>
+<span class="nc bnc" id="L383" title="All 2 branches missed.">			for (org.drip.state.identifier.LatentStateLabel lsl : _setLSL)</span>
+<span class="nc" id="L384">				strLabels += &quot; &quot; + lsl.fullyQualifiedName();</span>
 
-<span class="nc" id="L374">			System.out.println (strLabels);</span>
+<span class="nc" id="L386">			System.out.println (strLabels);</span>
 		}
 
-<span class="nc" id="L377">		System.out.flush();</span>
-<span class="nc" id="L378">	}</span>
+<span class="nc" id="L389">		System.out.flush();</span>
+<span class="nc" id="L390">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

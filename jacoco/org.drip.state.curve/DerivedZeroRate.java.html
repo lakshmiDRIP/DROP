@@ -6,6 +6,7 @@ package org.drip.state.curve;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -15,39 +16,50 @@ package org.drip.state.curve;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -76,10 +88,10 @@ package org.drip.state.curve;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve&quot;&gt;Curve&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md&quot;&gt;Latent State Inference and Creation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md&quot;&gt;Basis Spline Based Latent States&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -89,9 +101,9 @@ package org.drip.state.curve;
 public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 	private static final int NUM_DF_QUADRATURES = 5;
 
-<span class="fc" id="L92">	private org.drip.state.discount.DiscountCurve _dc = null;</span>
-<span class="fc" id="L93">	private org.drip.spline.stretch.MultiSegmentSequence _mssDF = null;</span>
-<span class="fc" id="L94">	private org.drip.spline.stretch.MultiSegmentSequence _mssZeroRate = null;</span>
+<span class="fc" id="L104">	private org.drip.state.discount.DiscountCurve _dc = null;</span>
+<span class="fc" id="L105">	private org.drip.spline.stretch.MultiSegmentSequence _mssDF = null;</span>
+<span class="fc" id="L106">	private org.drip.spline.stretch.MultiSegmentSequence _mssZeroRate = null;</span>
 
 	private static final boolean EntryFromDiscountCurve (
 		final org.drip.state.discount.DiscountCurve dc,
@@ -103,20 +115,20 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 		final java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapZeroRate)
 	{
 		try {
-<span class="fc" id="L106">			double dblZeroRate = org.drip.analytics.support.Helper.DF2Yield (iFreq, dc.df (iDate),</span>
+<span class="fc" id="L118">			double dblZeroRate = org.drip.analytics.support.Helper.DF2Yield (iFreq, dc.df (iDate),</span>
 				dblYearFraction) + dblShift;
 
-<span class="fc" id="L109">			mapDF.put (iDate, org.drip.analytics.support.Helper.Yield2DF (iFreq, dblZeroRate,</span>
+<span class="fc" id="L121">			mapDF.put (iDate, org.drip.analytics.support.Helper.Yield2DF (iFreq, dblZeroRate,</span>
 				dblYearFraction));
 
-<span class="fc" id="L112">			mapZeroRate.put (iDate, dblZeroRate);</span>
+<span class="fc" id="L124">			mapZeroRate.put (iDate, dblZeroRate);</span>
 
-<span class="fc" id="L114">			return true;</span>
-<span class="nc" id="L115">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L116">			e.printStackTrace();</span>
+<span class="fc" id="L126">			return true;</span>
+<span class="nc" id="L127">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L128">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L119">		return false;</span>
+<span class="nc" id="L131">		return false;</span>
 	}
 
 	private static final boolean EntryFromYield (
@@ -128,17 +140,17 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 		final java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapZeroRate)
 	{
 		try {
-<span class="fc" id="L131">			mapDF.put (iDate, org.drip.analytics.support.Helper.Yield2DF (iFreq, dblShiftedYield,</span>
+<span class="fc" id="L143">			mapDF.put (iDate, org.drip.analytics.support.Helper.Yield2DF (iFreq, dblShiftedYield,</span>
 				dblYearFraction));
 
-<span class="fc" id="L134">			mapZeroRate.put (iDate, dblShiftedYield);</span>
+<span class="fc" id="L146">			mapZeroRate.put (iDate, dblShiftedYield);</span>
 
-<span class="fc" id="L136">			return true;</span>
-<span class="nc" id="L137">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L138">			e.printStackTrace();</span>
+<span class="fc" id="L148">			return true;</span>
+<span class="nc" id="L149">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L150">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L141">		return false;</span>
+<span class="nc" id="L153">		return false;</span>
 	}
 
 	/**
@@ -174,113 +186,113 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
 	{
-<span class="pc bpc" id="L177" title="3 of 6 branches missed.">		if (null == lsCouponPeriod || 2 &gt; lsCouponPeriod.size() || null == dc ||</span>
-<span class="pc bpc" id="L178" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblZCBump) || null == scbc)</span>
-<span class="nc" id="L179">			return null;</span>
+<span class="pc bpc" id="L189" title="3 of 6 branches missed.">		if (null == lsCouponPeriod || 2 &gt; lsCouponPeriod.size() || null == dc ||</span>
+<span class="pc bpc" id="L190" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblZCBump) || null == scbc)</span>
+<span class="nc" id="L191">			return null;</span>
 
-<span class="pc bpc" id="L181" title="1 of 2 branches missed.">		int iFreq = 0 == iFreqZC ? 2 : iFreqZC;</span>
-<span class="fc" id="L182">		java.lang.String strCalendar = strCalendarZC;</span>
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">		int iFreq = 0 == iFreqZC ? 2 : iFreqZC;</span>
+<span class="fc" id="L194">		java.lang.String strCalendar = strCalendarZC;</span>
 
-<span class="pc bpc" id="L184" title="2 of 4 branches missed.">		java.lang.String strDC = null == strDCZC || strDCZC.isEmpty() ? &quot;30/360&quot; : strDCZC;</span>
+<span class="pc bpc" id="L196" title="2 of 4 branches missed.">		java.lang.String strDC = null == strDCZC || strDCZC.isEmpty() ? &quot;30/360&quot; : strDCZC;</span>
 
-<span class="pc bpc" id="L186" title="1 of 2 branches missed.">		if (null != vcp) {</span>
-<span class="nc" id="L187">			strDC = vcp.yieldDayCount();</span>
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">		if (null != vcp) {</span>
+<span class="nc" id="L199">			strDC = vcp.yieldDayCount();</span>
 
-<span class="nc" id="L189">			iFreq = vcp.yieldFreq();</span>
+<span class="nc" id="L201">			iFreq = vcp.yieldFreq();</span>
 
-<span class="nc" id="L191">			strCalendar = vcp.yieldCalendar();</span>
+<span class="nc" id="L203">			strCalendar = vcp.yieldCalendar();</span>
 		}
 
-<span class="fc" id="L194">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapDF = new java.util.TreeMap&lt;java.lang.Integer,</span>
+<span class="fc" id="L206">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapDF = new java.util.TreeMap&lt;java.lang.Integer,</span>
 			java.lang.Double&gt;();
 
-<span class="fc" id="L197">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapZeroRate = new</span>
+<span class="fc" id="L209">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapZeroRate = new</span>
 			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
-<span class="fc" id="L200">		mapDF.put (iValueDate, 1.);</span>
+<span class="fc" id="L212">		mapDF.put (iValueDate, 1.);</span>
 
-<span class="fc" id="L202">		mapZeroRate.put (iValueDate, 0.);</span>
+<span class="fc" id="L214">		mapZeroRate.put (iValueDate, 0.);</span>
 
-<span class="fc bfc" id="L204" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod period : lsCouponPeriod) {</span>
-<span class="fc" id="L205">			int iPeriodPayDate = period.payDate();</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod period : lsCouponPeriod) {</span>
+<span class="fc" id="L217">			int iPeriodPayDate = period.payDate();</span>
 
-<span class="fc bfc" id="L207" title="All 2 branches covered.">			if (iValueDate &gt;= iPeriodPayDate) continue;</span>
+<span class="fc bfc" id="L219" title="All 2 branches covered.">			if (iValueDate &gt;= iPeriodPayDate) continue;</span>
 
-<span class="fc" id="L209">			int iPeriodStartDate = period.startDate();</span>
+<span class="fc" id="L221">			int iPeriodStartDate = period.startDate();</span>
 
-<span class="fc" id="L211">			int iPeriodEndDate = period.endDate();</span>
+<span class="fc" id="L223">			int iPeriodEndDate = period.endDate();</span>
 
 			try {
-<span class="pc bpc" id="L214" title="1 of 2 branches missed.">				if (!EntryFromDiscountCurve (dc, iPeriodPayDate, iFreq,</span>
-<span class="fc" id="L215">					org.drip.analytics.daycount.Convention.YearFraction (iValueDate, iPeriodPayDate, strDC,</span>
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">				if (!EntryFromDiscountCurve (dc, iPeriodPayDate, iFreq,</span>
+<span class="fc" id="L227">					org.drip.analytics.daycount.Convention.YearFraction (iValueDate, iPeriodPayDate, strDC,</span>
 						true, new org.drip.analytics.daycount.ActActDCParams (iFreq, iPeriodEndDate -
 							iPeriodStartDate), strCalendar), dblZCBump, mapDF, mapZeroRate))
-<span class="nc" id="L218">					return null;</span>
-<span class="nc" id="L219">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L220">				e.printStackTrace();</span>
+<span class="nc" id="L230">					return null;</span>
+<span class="nc" id="L231">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L232">				e.printStackTrace();</span>
 
-<span class="nc" id="L222">				return null;</span>
-<span class="fc" id="L223">			}</span>
-<span class="fc" id="L224">		}</span>
+<span class="nc" id="L234">				return null;</span>
+<span class="fc" id="L235">			}</span>
+<span class="fc" id="L236">		}</span>
 
-<span class="fc" id="L226">		org.drip.analytics.daycount.ActActDCParams aap =</span>
-<span class="fc" id="L227">			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);</span>
+<span class="fc" id="L238">		org.drip.analytics.daycount.ActActDCParams aap =</span>
+<span class="fc" id="L239">			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);</span>
 
 		try {
-<span class="pc bpc" id="L230" title="1 of 2 branches missed.">			if (!EntryFromDiscountCurve (dc, iWorkoutDate, iFreq,</span>
-<span class="fc" id="L231">				org.drip.analytics.daycount.Convention.YearFraction (iValueDate, iWorkoutDate, strDC, true,</span>
+<span class="pc bpc" id="L242" title="1 of 2 branches missed.">			if (!EntryFromDiscountCurve (dc, iWorkoutDate, iFreq,</span>
+<span class="fc" id="L243">				org.drip.analytics.daycount.Convention.YearFraction (iValueDate, iWorkoutDate, strDC, true,</span>
 					aap, strCalendar), dblZCBump, mapDF, mapZeroRate))
-<span class="nc" id="L233">				return null;</span>
+<span class="nc" id="L245">				return null;</span>
 
-<span class="fc bfc" id="L235" title="All 2 branches covered.">			if (iValueDate != iCashPayDate) {</span>
-<span class="pc bpc" id="L236" title="1 of 2 branches missed.">				if (!EntryFromDiscountCurve (dc, iCashPayDate, iFreq,</span>
-<span class="fc" id="L237">					org.drip.analytics.daycount.Convention.YearFraction (iValueDate, iCashPayDate, strDC,</span>
+<span class="fc bfc" id="L247" title="All 2 branches covered.">			if (iValueDate != iCashPayDate) {</span>
+<span class="pc bpc" id="L248" title="1 of 2 branches missed.">				if (!EntryFromDiscountCurve (dc, iCashPayDate, iFreq,</span>
+<span class="fc" id="L249">					org.drip.analytics.daycount.Convention.YearFraction (iValueDate, iCashPayDate, strDC,</span>
 						true, aap, strCalendar), dblZCBump, mapDF, mapZeroRate))
-<span class="nc" id="L239">					return null;</span>
+<span class="nc" id="L251">					return null;</span>
 			}
-<span class="nc" id="L241">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L242">			e.printStackTrace();</span>
+<span class="nc" id="L253">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L254">			e.printStackTrace();</span>
 
-<span class="nc" id="L244">			return null;</span>
-<span class="fc" id="L245">		}</span>
+<span class="nc" id="L256">			return null;</span>
+<span class="fc" id="L257">		}</span>
 
-<span class="fc" id="L247">		int iNumNode = mapDF.size();</span>
+<span class="fc" id="L259">		int iNumNode = mapDF.size();</span>
 
-<span class="fc" id="L249">		int iNode = 0;</span>
-<span class="fc" id="L250">		double[] adblDF = new double[iNumNode];</span>
-<span class="fc" id="L251">		double[] aiDate = new double[iNumNode];</span>
-<span class="fc" id="L252">		double[] adblZeroRate = new double[iNumNode];</span>
+<span class="fc" id="L261">		int iNode = 0;</span>
+<span class="fc" id="L262">		double[] adblDF = new double[iNumNode];</span>
+<span class="fc" id="L263">		double[] aiDate = new double[iNumNode];</span>
+<span class="fc" id="L264">		double[] adblZeroRate = new double[iNumNode];</span>
 
-<span class="fc bfc" id="L254" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt; me : mapDF.entrySet()) {</span>
-<span class="fc" id="L255">			adblDF[iNode] = me.getValue();</span>
+<span class="fc bfc" id="L266" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt; me : mapDF.entrySet()) {</span>
+<span class="fc" id="L267">			adblDF[iNode] = me.getValue();</span>
 
-<span class="fc" id="L257">			aiDate[iNode] = me.getKey();</span>
+<span class="fc" id="L269">			aiDate[iNode] = me.getKey();</span>
 
-<span class="fc" id="L259">			adblZeroRate[iNode++] = mapZeroRate.get (me.getKey());</span>
-<span class="fc" id="L260">		}</span>
+<span class="fc" id="L271">			adblZeroRate[iNode++] = mapZeroRate.get (me.getKey());</span>
+<span class="fc" id="L272">		}</span>
 
-<span class="fc" id="L262">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
+<span class="fc" id="L274">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
 			org.drip.spline.params.SegmentCustomBuilderControl[adblDF.length - 1]; 
 
-<span class="fc bfc" id="L265" title="All 2 branches covered.">		for (int i = 0; i &lt; adblDF.length - 1; ++i)</span>
-<span class="fc" id="L266">			aSCBC[i] = scbc;</span>
+<span class="fc bfc" id="L277" title="All 2 branches covered.">		for (int i = 0; i &lt; adblDF.length - 1; ++i)</span>
+<span class="fc" id="L278">			aSCBC[i] = scbc;</span>
 
 		org.drip.spline.stretch.BoundarySettings bsNatural =
-<span class="fc" id="L269">			org.drip.spline.stretch.BoundarySettings.NaturalStandard();</span>
+<span class="fc" id="L281">			org.drip.spline.stretch.BoundarySettings.NaturalStandard();</span>
 
 		try{
-<span class="fc" id="L272">			return new DerivedZeroRate (dc,</span>
+<span class="fc" id="L284">			return new DerivedZeroRate (dc,</span>
 				org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-<span class="fc" id="L274">					(&quot;DF_STRETCH&quot;, aiDate, adblDF, aSCBC, null, bsNatural,</span>
+<span class="fc" id="L286">					(&quot;DF_STRETCH&quot;, aiDate, adblDF, aSCBC, null, bsNatural,</span>
 						org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE),
 							org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-<span class="fc" id="L277">				(&quot;ZERO_RATE_STRETCH&quot;, aiDate, adblZeroRate, aSCBC, null, bsNatural,</span>
+<span class="fc" id="L289">				(&quot;ZERO_RATE_STRETCH&quot;, aiDate, adblZeroRate, aSCBC, null, bsNatural,</span>
 					org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE));
-<span class="nc" id="L279">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L280">			e.printStackTrace();</span>
+<span class="nc" id="L291">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L292">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L283">		return null;</span>
+<span class="nc" id="L295">		return null;</span>
 	}
 
 	/**
@@ -316,126 +328,126 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
 	{
-<span class="pc bpc" id="L319" title="3 of 6 branches missed.">		if (null == lsCouponPeriod || 2 &gt; lsCouponPeriod.size() || null == gc ||</span>
-<span class="pc bpc" id="L320" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblZCBump) || null == scbc)</span>
-<span class="nc" id="L321">			return null;</span>
+<span class="pc bpc" id="L331" title="3 of 6 branches missed.">		if (null == lsCouponPeriod || 2 &gt; lsCouponPeriod.size() || null == gc ||</span>
+<span class="pc bpc" id="L332" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblZCBump) || null == scbc)</span>
+<span class="nc" id="L333">			return null;</span>
 
-<span class="pc bpc" id="L323" title="1 of 2 branches missed.">		int iFreq = 0 == iFreqZC ? 2 : iFreqZC;</span>
-<span class="fc" id="L324">		boolean bApplyCpnEOMAdj = bApplyEOMAdjZC;</span>
-<span class="fc" id="L325">		java.lang.String strCalendar = strCalendarZC;</span>
-<span class="fc" id="L326">		double dblShiftedYield = java.lang.Double.NaN;</span>
+<span class="pc bpc" id="L335" title="1 of 2 branches missed.">		int iFreq = 0 == iFreqZC ? 2 : iFreqZC;</span>
+<span class="fc" id="L336">		boolean bApplyCpnEOMAdj = bApplyEOMAdjZC;</span>
+<span class="fc" id="L337">		java.lang.String strCalendar = strCalendarZC;</span>
+<span class="fc" id="L338">		double dblShiftedYield = java.lang.Double.NaN;</span>
 
 		try {
-<span class="fc" id="L329">			dblShiftedYield = gc.yield (iWorkoutDate) + dblZCBump;</span>
-<span class="nc" id="L330">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L331">			e.printStackTrace();</span>
+<span class="fc" id="L341">			dblShiftedYield = gc.yield (iWorkoutDate) + dblZCBump;</span>
+<span class="nc" id="L342">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L343">			e.printStackTrace();</span>
 
-<span class="nc" id="L333">			return null;</span>
-<span class="fc" id="L334">		}</span>
+<span class="nc" id="L345">			return null;</span>
+<span class="fc" id="L346">		}</span>
 
-<span class="pc bpc" id="L336" title="2 of 4 branches missed.">		java.lang.String strDC = null == strDCZC || strDCZC.isEmpty() ? &quot;30/360&quot; : strDCZC;</span>
+<span class="pc bpc" id="L348" title="2 of 4 branches missed.">		java.lang.String strDC = null == strDCZC || strDCZC.isEmpty() ? &quot;30/360&quot; : strDCZC;</span>
 
-<span class="pc bpc" id="L338" title="1 of 2 branches missed.">		if (null != vcp) {</span>
-<span class="nc" id="L339">			strDC = vcp.yieldDayCount();</span>
+<span class="pc bpc" id="L350" title="1 of 2 branches missed.">		if (null != vcp) {</span>
+<span class="nc" id="L351">			strDC = vcp.yieldDayCount();</span>
 
-<span class="nc" id="L341">			iFreq = vcp.yieldFreq();</span>
+<span class="nc" id="L353">			iFreq = vcp.yieldFreq();</span>
 
-<span class="nc" id="L343">			bApplyCpnEOMAdj = vcp.applyYieldEOMAdj();</span>
+<span class="nc" id="L355">			bApplyCpnEOMAdj = vcp.applyYieldEOMAdj();</span>
 
-<span class="nc" id="L345">			strCalendar = vcp.yieldCalendar();</span>
+<span class="nc" id="L357">			strCalendar = vcp.yieldCalendar();</span>
 		}
 
-<span class="fc" id="L348">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapDF = new java.util.TreeMap&lt;java.lang.Integer,</span>
+<span class="fc" id="L360">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapDF = new java.util.TreeMap&lt;java.lang.Integer,</span>
 			java.lang.Double&gt;();
 
-<span class="fc" id="L351">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapZeroRate = new</span>
+<span class="fc" id="L363">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapZeroRate = new</span>
 			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
-<span class="fc" id="L354">		mapDF.put (iValueDate, 1.);</span>
+<span class="fc" id="L366">		mapDF.put (iValueDate, 1.);</span>
 
-<span class="fc" id="L356">		mapZeroRate.put (iValueDate, 0.);</span>
+<span class="fc" id="L368">		mapZeroRate.put (iValueDate, 0.);</span>
 
-<span class="fc bfc" id="L358" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod period : lsCouponPeriod) {</span>
-<span class="fc" id="L359">			int iPeriodPayDate = period.payDate();</span>
+<span class="fc bfc" id="L370" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod period : lsCouponPeriod) {</span>
+<span class="fc" id="L371">			int iPeriodPayDate = period.payDate();</span>
 
-<span class="fc bfc" id="L361" title="All 2 branches covered.">			if (iValueDate &gt;= iPeriodPayDate) continue;</span>
+<span class="fc bfc" id="L373" title="All 2 branches covered.">			if (iValueDate &gt;= iPeriodPayDate) continue;</span>
 
-<span class="fc" id="L363">			int iPeriodStartDate = period.startDate();</span>
+<span class="fc" id="L375">			int iPeriodStartDate = period.startDate();</span>
 
-<span class="fc" id="L365">			int iPeriodEndDate = period.endDate();</span>
+<span class="fc" id="L377">			int iPeriodEndDate = period.endDate();</span>
 
 			try {
-<span class="pc bpc" id="L368" title="1 of 2 branches missed.">				if (!EntryFromYield (iPeriodPayDate, iFreq,</span>
-<span class="fc" id="L369">					org.drip.analytics.daycount.Convention.YearFraction (iValueDate, iPeriodPayDate, strDC,</span>
+<span class="pc bpc" id="L380" title="1 of 2 branches missed.">				if (!EntryFromYield (iPeriodPayDate, iFreq,</span>
+<span class="fc" id="L381">					org.drip.analytics.daycount.Convention.YearFraction (iValueDate, iPeriodPayDate, strDC,</span>
 						bApplyCpnEOMAdj, new org.drip.analytics.daycount.ActActDCParams (iFreq,
 							iPeriodEndDate - iPeriodStartDate), strCalendar), dblShiftedYield, mapDF,
 								mapZeroRate))
-<span class="nc" id="L373">					return null;</span>
-<span class="nc" id="L374">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L375">				e.printStackTrace();</span>
+<span class="nc" id="L385">					return null;</span>
+<span class="nc" id="L386">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L387">				e.printStackTrace();</span>
 
-<span class="nc" id="L377">				return null;</span>
-<span class="fc" id="L378">			}</span>
-<span class="fc" id="L379">		}</span>
+<span class="nc" id="L389">				return null;</span>
+<span class="fc" id="L390">			}</span>
+<span class="fc" id="L391">		}</span>
 
-<span class="fc" id="L381">		org.drip.analytics.daycount.ActActDCParams aap =</span>
-<span class="fc" id="L382">			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);</span>
+<span class="fc" id="L393">		org.drip.analytics.daycount.ActActDCParams aap =</span>
+<span class="fc" id="L394">			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);</span>
 
 		try {
-<span class="pc bpc" id="L385" title="1 of 2 branches missed.">			if (!EntryFromYield (iWorkoutDate, iFreq, org.drip.analytics.daycount.Convention.YearFraction</span>
-<span class="fc" id="L386">				(iValueDate, iWorkoutDate, strDC, bApplyCpnEOMAdj, aap, strCalendar), dblShiftedYield, mapDF,</span>
+<span class="pc bpc" id="L397" title="1 of 2 branches missed.">			if (!EntryFromYield (iWorkoutDate, iFreq, org.drip.analytics.daycount.Convention.YearFraction</span>
+<span class="fc" id="L398">				(iValueDate, iWorkoutDate, strDC, bApplyCpnEOMAdj, aap, strCalendar), dblShiftedYield, mapDF,</span>
 					mapZeroRate))
-<span class="nc" id="L388">				return null;</span>
+<span class="nc" id="L400">				return null;</span>
 
-<span class="fc bfc" id="L390" title="All 2 branches covered.">			if (iCashPayDate != iValueDate) {</span>
-<span class="pc bpc" id="L391" title="1 of 2 branches missed.">				if (!EntryFromYield (iCashPayDate, iFreq, org.drip.analytics.daycount.Convention.YearFraction</span>
-<span class="fc" id="L392">					(iValueDate, iCashPayDate, strDC, bApplyCpnEOMAdj, aap, strCalendar), dblShiftedYield,</span>
+<span class="fc bfc" id="L402" title="All 2 branches covered.">			if (iCashPayDate != iValueDate) {</span>
+<span class="pc bpc" id="L403" title="1 of 2 branches missed.">				if (!EntryFromYield (iCashPayDate, iFreq, org.drip.analytics.daycount.Convention.YearFraction</span>
+<span class="fc" id="L404">					(iValueDate, iCashPayDate, strDC, bApplyCpnEOMAdj, aap, strCalendar), dblShiftedYield,</span>
 						mapDF, mapZeroRate))
-<span class="nc" id="L394">					return null;</span>
+<span class="nc" id="L406">					return null;</span>
 			}
-<span class="nc" id="L396">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L397">			e.printStackTrace();</span>
+<span class="nc" id="L408">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L409">			e.printStackTrace();</span>
 
-<span class="nc" id="L399">			return null;</span>
-<span class="fc" id="L400">		}</span>
+<span class="nc" id="L411">			return null;</span>
+<span class="fc" id="L412">		}</span>
 
-<span class="fc" id="L402">		int iNumNode = mapDF.size();</span>
+<span class="fc" id="L414">		int iNumNode = mapDF.size();</span>
 
-<span class="fc" id="L404">		int iNode = 0;</span>
-<span class="fc" id="L405">		double[] adblDF = new double[iNumNode];</span>
-<span class="fc" id="L406">		double[] aiDate = new double[iNumNode];</span>
-<span class="fc" id="L407">		double[] adblZeroRate = new double[iNumNode];</span>
+<span class="fc" id="L416">		int iNode = 0;</span>
+<span class="fc" id="L417">		double[] adblDF = new double[iNumNode];</span>
+<span class="fc" id="L418">		double[] aiDate = new double[iNumNode];</span>
+<span class="fc" id="L419">		double[] adblZeroRate = new double[iNumNode];</span>
 
-<span class="fc bfc" id="L409" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt; me : mapDF.entrySet()) {</span>
-<span class="fc" id="L410">			adblDF[iNode] = me.getValue();</span>
+<span class="fc bfc" id="L421" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt; me : mapDF.entrySet()) {</span>
+<span class="fc" id="L422">			adblDF[iNode] = me.getValue();</span>
 
-<span class="fc" id="L412">			aiDate[iNode] = me.getKey();</span>
+<span class="fc" id="L424">			aiDate[iNode] = me.getKey();</span>
 
-<span class="fc" id="L414">			adblZeroRate[iNode++] = mapZeroRate.get (me.getKey());</span>
-<span class="fc" id="L415">		}</span>
+<span class="fc" id="L426">			adblZeroRate[iNode++] = mapZeroRate.get (me.getKey());</span>
+<span class="fc" id="L427">		}</span>
 
-<span class="fc" id="L417">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
+<span class="fc" id="L429">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
 			org.drip.spline.params.SegmentCustomBuilderControl[adblDF.length - 1]; 
 
-<span class="fc bfc" id="L420" title="All 2 branches covered.">		for (int i = 0; i &lt; adblDF.length - 1; ++i)</span>
-<span class="fc" id="L421">			aSCBC[i] = scbc;</span>
+<span class="fc bfc" id="L432" title="All 2 branches covered.">		for (int i = 0; i &lt; adblDF.length - 1; ++i)</span>
+<span class="fc" id="L433">			aSCBC[i] = scbc;</span>
 
 		org.drip.spline.stretch.BoundarySettings bsNatural =
-<span class="fc" id="L424">			org.drip.spline.stretch.BoundarySettings.NaturalStandard();</span>
+<span class="fc" id="L436">			org.drip.spline.stretch.BoundarySettings.NaturalStandard();</span>
 
 		try {
-<span class="fc" id="L427">			return new DerivedZeroRate (gc,</span>
+<span class="fc" id="L439">			return new DerivedZeroRate (gc,</span>
 				org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-<span class="fc" id="L429">					(&quot;DF_STRETCH&quot;, aiDate, adblDF, aSCBC, null, bsNatural,</span>
+<span class="fc" id="L441">					(&quot;DF_STRETCH&quot;, aiDate, adblDF, aSCBC, null, bsNatural,</span>
 						org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE),
 							org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-<span class="fc" id="L432">				(&quot;ZERO_RATE_STRETCH&quot;, aiDate, adblZeroRate, aSCBC, null, bsNatural,</span>
+<span class="fc" id="L444">				(&quot;ZERO_RATE_STRETCH&quot;, aiDate, adblZeroRate, aSCBC, null, bsNatural,</span>
 					org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE));
-<span class="nc" id="L434">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L435">			e.printStackTrace();</span>
+<span class="nc" id="L446">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L447">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L438">		return null;</span>
+<span class="nc" id="L450">		return null;</span>
 	}
 
 	/**
@@ -471,11 +483,11 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
 	{
-<span class="pc bpc" id="L474" title="1 of 2 branches missed.">		if (null == dc) return null;</span>
+<span class="pc bpc" id="L486" title="1 of 2 branches missed.">		if (null == dc) return null;</span>
 
-<span class="fc bfc" id="L476" title="All 2 branches covered.">		return dc instanceof org.drip.state.govvie.GovvieCurve ? FromGovvieCurve (iFreq, strDayCount,</span>
+<span class="fc bfc" id="L488" title="All 2 branches covered.">		return dc instanceof org.drip.state.govvie.GovvieCurve ? FromGovvieCurve (iFreq, strDayCount,</span>
 			strCalendar, bApplyEOMAdj, lsCouponPeriod, iWorkoutDate, iValueDate, iCashPayDate,
-<span class="fc" id="L478">				(org.drip.state.govvie.GovvieCurve) dc, dblBump, vcp, scbc) : FromDiscountCurve (iFreq,</span>
+<span class="fc" id="L490">				(org.drip.state.govvie.GovvieCurve) dc, dblBump, vcp, scbc) : FromDiscountCurve (iFreq,</span>
 					strDayCount, strCalendar, bApplyEOMAdj, lsCouponPeriod, iWorkoutDate, iValueDate,
 						iCashPayDate, dc, dblBump, vcp, scbc);
 	}
@@ -486,60 +498,60 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 		final org.drip.spline.stretch.MultiSegmentSequence mssZeroRate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L489">		super (dc.epoch().julian(), dc.currency());</span>
+<span class="fc" id="L501">		super (dc.epoch().julian(), dc.currency());</span>
 
-<span class="pc bpc" id="L491" title="2 of 4 branches missed.">		if (null == (_mssDF = mssDF) || null == (_mssZeroRate = mssZeroRate))</span>
-<span class="nc" id="L492">			throw new java.lang.Exception (&quot;DerivedZeroRate Constructor: Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L503" title="2 of 4 branches missed.">		if (null == (_mssDF = mssDF) || null == (_mssZeroRate = mssZeroRate))</span>
+<span class="nc" id="L504">			throw new java.lang.Exception (&quot;DerivedZeroRate Constructor: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L494">		_dc = dc;</span>
-<span class="fc" id="L495">	}</span>
+<span class="fc" id="L506">		_dc = dc;</span>
+<span class="fc" id="L507">	}</span>
 
 	@Override public double df (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L501" title="All 2 branches covered.">		if (iDate &lt;= epoch().julian()) return 1.;</span>
+<span class="fc bfc" id="L513" title="All 2 branches covered.">		if (iDate &lt;= epoch().julian()) return 1.;</span>
 
-<span class="fc" id="L503">		return _mssDF.responseValue (iDate);</span>
+<span class="fc" id="L515">		return _mssDF.responseValue (iDate);</span>
 	}
 
 	@Override public double df (
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L510">		return df (epoch().addTenor (strTenor));</span>
+<span class="nc" id="L522">		return df (epoch().addTenor (strTenor));</span>
 	}
 
 	@Override public double zeroRate (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L517" title="All 2 branches covered.">		if (iDate &lt;= epoch().julian()) return 1.;</span>
+<span class="fc bfc" id="L529" title="All 2 branches covered.">		if (iDate &lt;= epoch().julian()) return 1.;</span>
 
-<span class="fc" id="L519">		return _mssZeroRate.responseValue (iDate);</span>
+<span class="fc" id="L531">		return _mssZeroRate.responseValue (iDate);</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; manifestMeasure (
 		final java.lang.String strInstr)
 	{
-<span class="nc" id="L525">		return _dc.manifestMeasure (strInstr);</span>
+<span class="nc" id="L537">		return _dc.manifestMeasure (strInstr);</span>
 	}
 
 	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
 	{
-<span class="nc" id="L530">		return _dc.calibComp();</span>
+<span class="nc" id="L542">		return _dc.calibComp();</span>
 	}
 
 	@Override public org.drip.state.identifier.LatentStateLabel label()
 	{
-<span class="nc" id="L535">		return _dc.label();</span>
+<span class="nc" id="L547">		return _dc.label();</span>
 	}
 
 	@Override public org.drip.analytics.definition.Curve parallelShiftManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc" id="L542">		return null;</span>
+<span class="nc" id="L554">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.definition.Curve shiftManifestMeasure (
@@ -547,41 +559,41 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc" id="L550">		return null;</span>
+<span class="nc" id="L562">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.definition.Curve customTweakManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.definition.ManifestMeasureTweak mmtp)
 	{
-<span class="nc" id="L557">		return null;</span>
+<span class="nc" id="L569">		return null;</span>
 	}
 
 	@Override public boolean setCCIS (
 		final org.drip.analytics.input.CurveConstructionInputSet ccis)
 	{
-<span class="nc" id="L563">		 return _dc.setCCIS (ccis);</span>
+<span class="nc" id="L575">		 return _dc.setCCIS (ccis);</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState parallelShiftQuantificationMetric (
 		final double dblShift)
 	{
-<span class="nc" id="L569">		return _dc.parallelShiftQuantificationMetric (dblShift);</span>
+<span class="nc" id="L581">		return _dc.parallelShiftQuantificationMetric (dblShift);</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState customTweakQuantificationMetric (
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc" id="L575">		return _dc.customTweakQuantificationMetric (rvtp);</span>
+<span class="nc" id="L587">		return _dc.customTweakQuantificationMetric (rvtp);</span>
 	}
 
 	@Override public double df (
 		final org.drip.analytics.date.JulianDate dt)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L582" title="All 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;DerivedZeroRate::df =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L594" title="All 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;DerivedZeroRate::df =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L584">		return df (dt.julian());</span>
+<span class="nc" id="L596">		return df (dt.julian());</span>
 	}
 
 	@Override public double effectiveDF (
@@ -589,21 +601,21 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L592" title="All 2 branches missed.">		if (iDate1 == iDate2) return df (iDate1);</span>
+<span class="nc bnc" id="L604" title="All 2 branches missed.">		if (iDate1 == iDate2) return df (iDate1);</span>
 
-<span class="nc" id="L594">		int iNumQuadratures = 0;</span>
-<span class="nc" id="L595">		double dblEffectiveDF = 0.;</span>
-<span class="nc" id="L596">		int iQuadratureWidth = (iDate2 - iDate1) / NUM_DF_QUADRATURES;</span>
+<span class="nc" id="L606">		int iNumQuadratures = 0;</span>
+<span class="nc" id="L607">		double dblEffectiveDF = 0.;</span>
+<span class="nc" id="L608">		int iQuadratureWidth = (iDate2 - iDate1) / NUM_DF_QUADRATURES;</span>
 
-<span class="nc bnc" id="L598" title="All 2 branches missed.">		if (0 == iQuadratureWidth) iQuadratureWidth = 1;</span>
+<span class="nc bnc" id="L610" title="All 2 branches missed.">		if (0 == iQuadratureWidth) iQuadratureWidth = 1;</span>
 
-<span class="nc bnc" id="L600" title="All 2 branches missed.">		for (int iDate = iDate1; iDate &lt;= iDate2; iDate += iQuadratureWidth) {</span>
-<span class="nc" id="L601">			++iNumQuadratures;</span>
+<span class="nc bnc" id="L612" title="All 2 branches missed.">		for (int iDate = iDate1; iDate &lt;= iDate2; iDate += iQuadratureWidth) {</span>
+<span class="nc" id="L613">			++iNumQuadratures;</span>
 
-<span class="nc" id="L603">			dblEffectiveDF += (df (iDate) + df (iDate + iQuadratureWidth));</span>
+<span class="nc" id="L615">			dblEffectiveDF += (df (iDate) + df (iDate + iQuadratureWidth));</span>
 		}
 
-<span class="nc" id="L606">		return dblEffectiveDF / (2. * iNumQuadratures);</span>
+<span class="nc" id="L618">		return dblEffectiveDF / (2. * iNumQuadratures);</span>
 	}
 
 	@Override public double effectiveDF (
@@ -611,10 +623,10 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 		final org.drip.analytics.date.JulianDate dt2)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L614" title="All 4 branches missed.">		if (null == dt1 || null == dt2)</span>
-<span class="nc" id="L615">			throw new java.lang.Exception (&quot;DerivedZeroRate::effectiveDF =&gt; Got null for date&quot;);</span>
+<span class="nc bnc" id="L626" title="All 4 branches missed.">		if (null == dt1 || null == dt2)</span>
+<span class="nc" id="L627">			throw new java.lang.Exception (&quot;DerivedZeroRate::effectiveDF =&gt; Got null for date&quot;);</span>
 
-<span class="nc" id="L617">		return effectiveDF (dt1.julian(), dt2.julian());</span>
+<span class="nc" id="L629">		return effectiveDF (dt1.julian(), dt2.julian());</span>
 	}
 
 	@Override public double effectiveDF (
@@ -622,12 +634,12 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 		final java.lang.String strTenor2)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L625" title="All 8 branches missed.">		if (null == strTenor1 || strTenor1.isEmpty() || null == strTenor2 || strTenor2.isEmpty())</span>
-<span class="nc" id="L626">			throw new java.lang.Exception (&quot;DerivedZeroRate::effectiveDF =&gt; Got bad tenor&quot;);</span>
+<span class="nc bnc" id="L637" title="All 8 branches missed.">		if (null == strTenor1 || strTenor1.isEmpty() || null == strTenor2 || strTenor2.isEmpty())</span>
+<span class="nc" id="L638">			throw new java.lang.Exception (&quot;DerivedZeroRate::effectiveDF =&gt; Got bad tenor&quot;);</span>
 
-<span class="nc" id="L628">		org.drip.analytics.date.JulianDate dtStart = epoch();</span>
+<span class="nc" id="L640">		org.drip.analytics.date.JulianDate dtStart = epoch();</span>
 
-<span class="nc" id="L630">		return effectiveDF (dtStart.addTenor (strTenor1), dtStart.addTenor (strTenor2));</span>
+<span class="nc" id="L642">		return effectiveDF (dtStart.addTenor (strTenor1), dtStart.addTenor (strTenor2));</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

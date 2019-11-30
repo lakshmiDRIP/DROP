@@ -6,6 +6,7 @@ package org.drip.spline.segment;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -14,39 +15,50 @@ package org.drip.spline.segment;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -75,10 +87,10 @@ package org.drip.spline.segment;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment&quot;&gt;Segment&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md&quot;&gt;Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment/README.md&quot;&gt;Flexure Penalizing Best Fit Segment&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -117,7 +129,7 @@ public class Monotonocity {
 
 	public static final int INFLECTION = 7;
 
-<span class="fc" id="L120">	private int _iMonotoneType = -1;</span>
+<span class="fc" id="L132">	private int _iMonotoneType = -1;</span>
 
 	/**
 	 * Monotonocity constructor
@@ -130,14 +142,14 @@ public class Monotonocity {
 	public Monotonocity (
 		final int iMonotoneType)
 		throws java.lang.Exception
-<span class="fc" id="L133">	{</span>
-<span class="pc bpc" id="L134" title="6 of 10 branches missed.">		if (org.drip.spline.segment.Monotonocity.MONOTONIC != (_iMonotoneType = iMonotoneType) &amp;&amp;</span>
+<span class="fc" id="L145">	{</span>
+<span class="pc bpc" id="L146" title="6 of 10 branches missed.">		if (org.drip.spline.segment.Monotonocity.MONOTONIC != (_iMonotoneType = iMonotoneType) &amp;&amp;</span>
 			org.drip.spline.segment.Monotonocity.NON_MONOTONIC != _iMonotoneType &amp;&amp;
 				org.drip.spline.segment.Monotonocity.MINIMA != _iMonotoneType &amp;&amp;
 					org.drip.spline.segment.Monotonocity.MAXIMA != _iMonotoneType &amp;&amp;
 						org.drip.spline.segment.Monotonocity.INFLECTION != _iMonotoneType)
-<span class="nc" id="L139">			throw new java.lang.Exception (&quot;Monotonocity ctr: Unknown monotone type &quot; + _iMonotoneType);</span>
-<span class="fc" id="L140">	}</span>
+<span class="nc" id="L151">			throw new java.lang.Exception (&quot;Monotonocity ctr: Unknown monotone type &quot; + _iMonotoneType);</span>
+<span class="fc" id="L152">	}</span>
 
 	/**
 	 * Retrieve the Monotone Type
@@ -147,20 +159,20 @@ public class Monotonocity {
 
 	public int type()
 	{
-<span class="fc" id="L150">		return _iMonotoneType;</span>
+<span class="fc" id="L162">		return _iMonotoneType;</span>
 	}
 
 	@Override public java.lang.String toString()
 	{
-<span class="pc bpc" id="L155" title="1 of 2 branches missed.">		if (org.drip.spline.segment.Monotonocity.NON_MONOTONIC == _iMonotoneType) return &quot;NON_MONOTONIC&quot;;</span>
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		if (org.drip.spline.segment.Monotonocity.NON_MONOTONIC == _iMonotoneType) return &quot;NON_MONOTONIC&quot;;</span>
 
-<span class="fc bfc" id="L157" title="All 2 branches covered.">		if (org.drip.spline.segment.Monotonocity.MONOTONIC == _iMonotoneType) return &quot;MONOTONIC    &quot;;</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">		if (org.drip.spline.segment.Monotonocity.MONOTONIC == _iMonotoneType) return &quot;MONOTONIC    &quot;;</span>
 
-<span class="pc bpc" id="L159" title="1 of 2 branches missed.">		if (org.drip.spline.segment.Monotonocity.MINIMA == _iMonotoneType) return &quot;MINIMA       &quot;;</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">		if (org.drip.spline.segment.Monotonocity.MINIMA == _iMonotoneType) return &quot;MINIMA       &quot;;</span>
 
-<span class="nc bnc" id="L161" title="All 2 branches missed.">		if (org.drip.spline.segment.Monotonocity.MAXIMA == _iMonotoneType) return &quot;MAXIMA       &quot;;</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">		if (org.drip.spline.segment.Monotonocity.MAXIMA == _iMonotoneType) return &quot;MAXIMA       &quot;;</span>
 
-<span class="nc" id="L163">		return &quot;INFLECTION   &quot;;</span>
+<span class="nc" id="L175">		return &quot;INFLECTION   &quot;;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,42 +6,54 @@ package org.drip.state.csa;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -69,22 +81,22 @@ package org.drip.state.csa;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/csa&quot;&gt;CSA Numeraire&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md&quot;&gt;Latent State Inference and Creation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/csa/README.md&quot;&gt;Credit Support Annex Latent State&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L82">public class MultilateralBasisCurve implements org.drip.state.csa.CashFlowEstimator</span>
+<span class="nc" id="L94">public class MultilateralBasisCurve implements org.drip.state.csa.CashFlowEstimator</span>
 {
 	private static final int NUM_DF_QUADRATURES = 5;
 
-<span class="nc" id="L86">	private double _dblBasis = java.lang.Double.NaN;</span>
-<span class="nc" id="L87">	private org.drip.state.discount.MergedDiscountForwardCurve _mdfcOvernight = null;</span>
+<span class="nc" id="L98">	private double _dblBasis = java.lang.Double.NaN;</span>
+<span class="nc" id="L99">	private org.drip.state.discount.MergedDiscountForwardCurve _mdfcOvernight = null;</span>
 
 	/**
 	 * Retrieve the Overnight Curve
@@ -94,7 +106,7 @@ package org.drip.state.csa;
 
 	public org.drip.state.discount.MergedDiscountForwardCurve overnightCurve()
 	{
-<span class="nc" id="L97">		return _mdfcOvernight;</span>
+<span class="nc" id="L109">		return _mdfcOvernight;</span>
 	}
 
 	/**
@@ -105,40 +117,40 @@ package org.drip.state.csa;
 
 	public double basis()
 	{
-<span class="nc" id="L108">		return _dblBasis;</span>
+<span class="nc" id="L120">		return _dblBasis;</span>
 	}
 
 	@Override public org.drip.analytics.date.JulianDate epoch()
 	{
-<span class="nc" id="L113">		return _mdfcOvernight.epoch();</span>
+<span class="nc" id="L125">		return _mdfcOvernight.epoch();</span>
 	}
 
 	@Override public double df (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L120">		int iEpochDate = epoch().julian();</span>
+<span class="nc" id="L132">		int iEpochDate = epoch().julian();</span>
 
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (iEpochDate &gt;= iDate)</span>
-<span class="nc" id="L123">			throw new java.lang.Exception (&quot;MultilateralBasisCurve::df =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">		if (iEpochDate &gt;= iDate)</span>
+<span class="nc" id="L135">			throw new java.lang.Exception (&quot;MultilateralBasisCurve::df =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L125">		return _mdfcOvernight.df (iDate) * java.lang.Math.exp (_dblBasis * (iEpochDate - iDate) / 365.25);</span>
+<span class="nc" id="L137">		return _mdfcOvernight.df (iDate) * java.lang.Math.exp (_dblBasis * (iEpochDate - iDate) / 365.25);</span>
 	}
 
 	@Override public double df (
 		final org.drip.analytics.date.JulianDate dt)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;MultilateralBasisCurve::df =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;MultilateralBasisCurve::df =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L134">		return df (dt.julian());</span>
+<span class="nc" id="L146">		return df (dt.julian());</span>
 	}
 
 	@Override public double df (
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L141">		return df (epoch().addTenor (strTenor));</span>
+<span class="nc" id="L153">		return df (epoch().addTenor (strTenor));</span>
 	}
 
 	@Override public double effectiveDF (
@@ -146,22 +158,22 @@ package org.drip.state.csa;
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L149" title="All 4 branches missed.">		if (epoch().julian() &gt; iDate1 || iDate1 &gt;= iDate2)</span>
-<span class="nc" id="L150">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::effectiveDF =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L161" title="All 4 branches missed.">		if (epoch().julian() &gt; iDate1 || iDate1 &gt;= iDate2)</span>
+<span class="nc" id="L162">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::effectiveDF =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L152">		int iNumQuadratures = 0;</span>
-<span class="nc" id="L153">		double dblEffectiveDF = 0.;</span>
-<span class="nc" id="L154">		int iQuadratureWidth = (iDate2 - iDate1) / NUM_DF_QUADRATURES;</span>
+<span class="nc" id="L164">		int iNumQuadratures = 0;</span>
+<span class="nc" id="L165">		double dblEffectiveDF = 0.;</span>
+<span class="nc" id="L166">		int iQuadratureWidth = (iDate2 - iDate1) / NUM_DF_QUADRATURES;</span>
 
-<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (0 == iQuadratureWidth) iQuadratureWidth = 1;</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">		if (0 == iQuadratureWidth) iQuadratureWidth = 1;</span>
 
-<span class="nc bnc" id="L158" title="All 2 branches missed.">		for (int iDate = iDate1; iDate &lt;= iDate2; iDate += iQuadratureWidth) {</span>
-<span class="nc" id="L159">			++iNumQuadratures;</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">		for (int iDate = iDate1; iDate &lt;= iDate2; iDate += iQuadratureWidth) {</span>
+<span class="nc" id="L171">			++iNumQuadratures;</span>
 
-<span class="nc" id="L161">			dblEffectiveDF += (df (iDate) + df (iDate + iQuadratureWidth));</span>
+<span class="nc" id="L173">			dblEffectiveDF += (df (iDate) + df (iDate + iQuadratureWidth));</span>
 		}
 
-<span class="nc" id="L164">		return dblEffectiveDF / (2. * iNumQuadratures);</span>
+<span class="nc" id="L176">		return dblEffectiveDF / (2. * iNumQuadratures);</span>
 	}
 
 	@Override public double effectiveDF (
@@ -169,12 +181,12 @@ package org.drip.state.csa;
 		final org.drip.analytics.date.JulianDate dt2)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L172" title="All 4 branches missed.">		if (null == dt1 || null == dt2)</span>
-<span class="nc" id="L173">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::effectiveDF =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L184" title="All 4 branches missed.">		if (null == dt1 || null == dt2)</span>
+<span class="nc" id="L185">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::effectiveDF =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L175">		return effectiveDF (</span>
-<span class="nc" id="L176">			dt1.julian(),</span>
-<span class="nc" id="L177">			dt2.julian()</span>
+<span class="nc" id="L187">		return effectiveDF (</span>
+<span class="nc" id="L188">			dt1.julian(),</span>
+<span class="nc" id="L189">			dt2.julian()</span>
 		);
 	}
 
@@ -183,11 +195,11 @@ package org.drip.state.csa;
 		final java.lang.String strTenor2)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L186">		org.drip.analytics.date.JulianDate dtEpoch = epoch();</span>
+<span class="nc" id="L198">		org.drip.analytics.date.JulianDate dtEpoch = epoch();</span>
 
-<span class="nc" id="L188">		return effectiveDF (</span>
-<span class="nc" id="L189">			dtEpoch.addTenor (strTenor1),</span>
-<span class="nc" id="L190">			dtEpoch.addTenor (strTenor2)</span>
+<span class="nc" id="L200">		return effectiveDF (</span>
+<span class="nc" id="L201">			dtEpoch.addTenor (strTenor1),</span>
+<span class="nc" id="L202">			dtEpoch.addTenor (strTenor2)</span>
 		);
 	}
 
@@ -195,29 +207,29 @@ package org.drip.state.csa;
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L198">		int iEpochDate = epoch().julian();</span>
+<span class="nc" id="L210">		int iEpochDate = epoch().julian();</span>
 
-<span class="nc bnc" id="L200" title="All 2 branches missed.">		if (iEpochDate &gt;= iDate)</span>
-<span class="nc" id="L201">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">		if (iEpochDate &gt;= iDate)</span>
+<span class="nc" id="L213">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L203">		return 365.25 * java.lang.Math.log (df (iEpochDate) / df (iDate)) / (iEpochDate - iDate);</span>
+<span class="nc" id="L215">		return 365.25 * java.lang.Math.log (df (iEpochDate) / df (iDate)) / (iEpochDate - iDate);</span>
 	}
 
 	@Override public double rate (
 		final org.drip.analytics.date.JulianDate dt)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L210" title="All 2 branches missed.">		if (null == dt)</span>
-<span class="nc" id="L211">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">		if (null == dt)</span>
+<span class="nc" id="L223">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L213">		return rate (dt.julian());</span>
+<span class="nc" id="L225">		return rate (dt.julian());</span>
 	}
 
 	@Override public double rate (
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L220">		return rate (epoch().addTenor (strTenor));</span>
+<span class="nc" id="L232">		return rate (epoch().addTenor (strTenor));</span>
 	}
 
 	@Override public double rate (
@@ -225,12 +237,12 @@ package org.drip.state.csa;
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L228">		int iEpochDate = epoch().julian();</span>
+<span class="nc" id="L240">		int iEpochDate = epoch().julian();</span>
 
-<span class="nc bnc" id="L230" title="All 4 branches missed.">		if (iEpochDate &gt; iDate1 || iDate1 &gt;= iDate2)</span>
-<span class="nc" id="L231">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L242" title="All 4 branches missed.">		if (iEpochDate &gt; iDate1 || iDate1 &gt;= iDate2)</span>
+<span class="nc" id="L243">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L233">		return 365.25 * java.lang.Math.log (df (iDate1) / df (iDate2)) / (iDate2 - iDate1);</span>
+<span class="nc" id="L245">		return 365.25 * java.lang.Math.log (df (iDate1) / df (iDate2)) / (iDate2 - iDate1);</span>
 	}
 
 	@Override public double rate (
@@ -238,12 +250,12 @@ package org.drip.state.csa;
 		final org.drip.analytics.date.JulianDate dt2)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L241" title="All 4 branches missed.">		if (null == dt1 || null == dt2)</span>
-<span class="nc" id="L242">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L253" title="All 4 branches missed.">		if (null == dt1 || null == dt2)</span>
+<span class="nc" id="L254">			throw new java.lang.Exception (&quot;MultilateralFlatForwardCurve::rate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L244">		return rate (</span>
-<span class="nc" id="L245">			dt1.julian(),</span>
-<span class="nc" id="L246">			dt2.julian()</span>
+<span class="nc" id="L256">		return rate (</span>
+<span class="nc" id="L257">			dt1.julian(),</span>
+<span class="nc" id="L258">			dt2.julian()</span>
 		);
 	}
 
@@ -252,11 +264,11 @@ package org.drip.state.csa;
 		final java.lang.String strTenor2)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L255">		org.drip.analytics.date.JulianDate dtEpoch = epoch();</span>
+<span class="nc" id="L267">		org.drip.analytics.date.JulianDate dtEpoch = epoch();</span>
 
-<span class="nc" id="L257">		return rate (</span>
-<span class="nc" id="L258">			dtEpoch.addTenor (strTenor1),</span>
-<span class="nc" id="L259">			dtEpoch.addTenor (strTenor2)</span>
+<span class="nc" id="L269">		return rate (</span>
+<span class="nc" id="L270">			dtEpoch.addTenor (strTenor1),</span>
+<span class="nc" id="L271">			dtEpoch.addTenor (strTenor2)</span>
 		);
 	}
 }

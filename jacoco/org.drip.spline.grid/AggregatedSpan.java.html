@@ -6,6 +6,7 @@ package org.drip.spline.grid;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -13,39 +14,50 @@ package org.drip.spline.grid;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -74,10 +86,10 @@ package org.drip.spline.grid;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/grid&quot;&gt;Grid&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md&quot;&gt;Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/grid/README.md&quot;&gt;Aggregated/Overlapping Stretch/Span Grids&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -85,8 +97,8 @@ package org.drip.spline.grid;
  */
 
 public class AggregatedSpan implements org.drip.spline.grid.Span {
-<span class="fc" id="L88">	private java.util.List&lt;java.lang.Double&gt; _lsWeight = null;</span>
-<span class="fc" id="L89">	private java.util.List&lt;org.drip.spline.grid.Span&gt; _lsSpan = null;</span>
+<span class="fc" id="L100">	private java.util.List&lt;java.lang.Double&gt; _lsWeight = null;</span>
+<span class="fc" id="L101">	private java.util.List&lt;org.drip.spline.grid.Span&gt; _lsSpan = null;</span>
 
 	/**
 	 * AggregatedSpan Constructor
@@ -101,76 +113,76 @@ public class AggregatedSpan implements org.drip.spline.grid.Span {
 		final java.util.List&lt;org.drip.spline.grid.Span&gt; lsSpan,
 		final java.util.List&lt;java.lang.Double&gt; lsWeight)
 		throws java.lang.Exception
-<span class="fc" id="L104">	{</span>
-<span class="pc bpc" id="L105" title="2 of 4 branches missed.">		if (null == (_lsSpan = lsSpan) || null == (_lsWeight = lsWeight))</span>
-<span class="nc" id="L106">			throw new java.lang.Exception (&quot;AggregatedSpan ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L116">	{</span>
+<span class="pc bpc" id="L117" title="2 of 4 branches missed.">		if (null == (_lsSpan = lsSpan) || null == (_lsWeight = lsWeight))</span>
+<span class="nc" id="L118">			throw new java.lang.Exception (&quot;AggregatedSpan ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L108">		int iNumSpan = _lsSpan.size();</span>
+<span class="fc" id="L120">		int iNumSpan = _lsSpan.size();</span>
 
-<span class="pc bpc" id="L110" title="2 of 4 branches missed.">		if (0 == iNumSpan || iNumSpan != _lsWeight.size())</span>
-<span class="nc" id="L111">			throw new java.lang.Exception (&quot;AggregatedSpan ctr: Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L122" title="2 of 4 branches missed.">		if (0 == iNumSpan || iNumSpan != _lsWeight.size())</span>
+<span class="nc" id="L123">			throw new java.lang.Exception (&quot;AggregatedSpan ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L113" title="All 2 branches covered.">		for (org.drip.spline.grid.Span span : _lsSpan) {</span>
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">			if (null == span) throw new java.lang.Exception (&quot;AggregatedSpan ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L115">		}</span>
-<span class="fc" id="L116">	}</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">		for (org.drip.spline.grid.Span span : _lsSpan) {</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">			if (null == span) throw new java.lang.Exception (&quot;AggregatedSpan ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L127">		}</span>
+<span class="fc" id="L128">	}</span>
 
 	@Override public boolean addStretch (
 		final org.drip.spline.stretch.MultiSegmentSequence mss)
 	{
-<span class="nc" id="L121">		return false;</span>
+<span class="nc" id="L133">		return false;</span>
 	}
 
 	@Override public org.drip.spline.stretch.MultiSegmentSequence getContainingStretch (
 		final double dblPredictorOrdinate)
 	{
-<span class="nc bnc" id="L127" title="All 2 branches missed.">		for (org.drip.spline.grid.Span span : _lsSpan) {</span>
-<span class="nc" id="L128">			org.drip.spline.stretch.MultiSegmentSequence mss = span.getContainingStretch</span>
-<span class="nc" id="L129">				(dblPredictorOrdinate);</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">		for (org.drip.spline.grid.Span span : _lsSpan) {</span>
+<span class="nc" id="L140">			org.drip.spline.stretch.MultiSegmentSequence mss = span.getContainingStretch</span>
+<span class="nc" id="L141">				(dblPredictorOrdinate);</span>
 
-<span class="nc bnc" id="L131" title="All 2 branches missed.">			if (null != mss) return mss;</span>
-<span class="nc" id="L132">		}</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">			if (null != mss) return mss;</span>
+<span class="nc" id="L144">		}</span>
 
-<span class="nc" id="L134">		return null;</span>
+<span class="nc" id="L146">		return null;</span>
 	}
 
 	@Override public org.drip.spline.stretch.MultiSegmentSequence getStretch (
 		final java.lang.String strName)
 	{
-<span class="nc bnc" id="L140" title="All 4 branches missed.">		if (null == strName || strName.isEmpty()) return null;</span>
+<span class="nc bnc" id="L152" title="All 4 branches missed.">		if (null == strName || strName.isEmpty()) return null;</span>
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">		for (org.drip.spline.grid.Span span : _lsSpan) {</span>
-<span class="nc" id="L143">			org.drip.spline.stretch.MultiSegmentSequence mss = span.getStretch (strName);</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">		for (org.drip.spline.grid.Span span : _lsSpan) {</span>
+<span class="nc" id="L155">			org.drip.spline.stretch.MultiSegmentSequence mss = span.getStretch (strName);</span>
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">			if (null != mss) return mss;</span>
-<span class="nc" id="L146">		}</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">			if (null != mss) return mss;</span>
+<span class="nc" id="L158">		}</span>
 
-<span class="nc" id="L148">		return null;</span>
+<span class="nc" id="L160">		return null;</span>
 	}
 
 	@Override public double left()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L154">		return _lsSpan.get (0).left();</span>
+<span class="fc" id="L166">		return _lsSpan.get (0).left();</span>
 	}
 
 	@Override public double right()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L160">		return _lsSpan.get (_lsSpan.size() - 1).right();</span>
+<span class="fc" id="L172">		return _lsSpan.get (_lsSpan.size() - 1).right();</span>
 	}
 
 	@Override public double calcResponseValue (
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L167">		int i = 0;</span>
-<span class="fc" id="L168">		double dblResponseValue = 0.;</span>
+<span class="fc" id="L179">		int i = 0;</span>
+<span class="fc" id="L180">		double dblResponseValue = 0.;</span>
 
-<span class="fc bfc" id="L170" title="All 2 branches covered.">		for (org.drip.spline.grid.Span span : _lsSpan)</span>
-<span class="fc" id="L171">			dblResponseValue += span.calcResponseValue (dblPredictorOrdinate) * _lsWeight.get (i++);</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">		for (org.drip.spline.grid.Span span : _lsSpan)</span>
+<span class="fc" id="L183">			dblResponseValue += span.calcResponseValue (dblPredictorOrdinate) * _lsWeight.get (i++);</span>
 
-<span class="fc" id="L173">		return dblResponseValue;</span>
+<span class="fc" id="L185">		return dblResponseValue;</span>
 	}
 
 	@Override public double calcResponseValueDerivative (
@@ -178,25 +190,25 @@ public class AggregatedSpan implements org.drip.spline.grid.Span {
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L181">		int i = 0;</span>
-<span class="fc" id="L182">		double dblResponseValueDerivative = 0.;</span>
+<span class="fc" id="L193">		int i = 0;</span>
+<span class="fc" id="L194">		double dblResponseValueDerivative = 0.;</span>
 
-<span class="fc bfc" id="L184" title="All 2 branches covered.">		for (org.drip.spline.grid.Span span : _lsSpan)</span>
-<span class="fc" id="L185">			dblResponseValueDerivative += span.calcResponseValueDerivative (dblPredictorOrdinate,iOrder) *</span>
-<span class="fc" id="L186">				_lsWeight.get (i++);</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">		for (org.drip.spline.grid.Span span : _lsSpan)</span>
+<span class="fc" id="L197">			dblResponseValueDerivative += span.calcResponseValueDerivative (dblPredictorOrdinate,iOrder) *</span>
+<span class="fc" id="L198">				_lsWeight.get (i++);</span>
 
-<span class="fc" id="L188">		return dblResponseValueDerivative;</span>
+<span class="fc" id="L200">		return dblResponseValueDerivative;</span>
 	}
 
 	@Override public boolean isMergeState (
 		final double dblPredictorOrdinate,
 		final org.drip.state.identifier.LatentStateLabel lsl)
 	{
-<span class="nc bnc" id="L195" title="All 2 branches missed.">		for (org.drip.spline.grid.Span span : _lsSpan) {</span>
-<span class="nc bnc" id="L196" title="All 2 branches missed.">			if (span.isMergeState (dblPredictorOrdinate, lsl)) return true;</span>
-<span class="nc" id="L197">		}</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">		for (org.drip.spline.grid.Span span : _lsSpan) {</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">			if (span.isMergeState (dblPredictorOrdinate, lsl)) return true;</span>
+<span class="nc" id="L209">		}</span>
 
-<span class="nc" id="L199">		return false;</span>
+<span class="nc" id="L211">		return false;</span>
 	}
 
 	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDManifestMeasure (
@@ -204,46 +216,46 @@ public class AggregatedSpan implements org.drip.spline.grid.Span {
 		final double dblPredictorOrdinate,
 		final int iOrder)
 	{
-<span class="nc" id="L207">		int i = 0;</span>
-<span class="nc" id="L208">		org.drip.numerical.differentiation.WengertJacobian wjAggregate = null;</span>
+<span class="nc" id="L219">		int i = 0;</span>
+<span class="nc" id="L220">		org.drip.numerical.differentiation.WengertJacobian wjAggregate = null;</span>
 
-<span class="nc bnc" id="L210" title="All 2 branches missed.">		for (org.drip.spline.grid.Span span : _lsSpan) {</span>
-<span class="nc" id="L211">			org.drip.numerical.differentiation.WengertJacobian wj = span.jackDResponseDManifestMeasure</span>
-<span class="nc" id="L212">				(strManifestMeasure, dblPredictorOrdinate, iOrder);</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">		for (org.drip.spline.grid.Span span : _lsSpan) {</span>
+<span class="nc" id="L223">			org.drip.numerical.differentiation.WengertJacobian wj = span.jackDResponseDManifestMeasure</span>
+<span class="nc" id="L224">				(strManifestMeasure, dblPredictorOrdinate, iOrder);</span>
 
-<span class="nc bnc" id="L214" title="All 2 branches missed.">			if (null == wj) return null;</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">			if (null == wj) return null;</span>
 
-<span class="nc bnc" id="L216" title="All 2 branches missed.">			if (null == wjAggregate) {</span>
-<span class="nc bnc" id="L217" title="All 2 branches missed.">				if (!(wjAggregate = wj).scale (_lsWeight.get (i++))) return null;</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">			if (null == wjAggregate) {</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">				if (!(wjAggregate = wj).scale (_lsWeight.get (i++))) return null;</span>
 			} else {
-<span class="nc bnc" id="L219" title="All 2 branches missed.">				if (!wjAggregate.cumulativeMerge (wj, _lsWeight.get (i++))) return null;</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">				if (!wjAggregate.cumulativeMerge (wj, _lsWeight.get (i++))) return null;</span>
 			}
-<span class="nc" id="L221">		}</span>
+<span class="nc" id="L233">		}</span>
 
-<span class="nc" id="L223">		return wjAggregate;</span>
+<span class="nc" id="L235">		return wjAggregate;</span>
 	}
 
 	@Override public boolean in (
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L230" title="All 2 branches missed.">		for (org.drip.spline.grid.Span span : _lsSpan) {</span>
-<span class="nc bnc" id="L231" title="All 2 branches missed.">			if (span.in (dblPredictorOrdinate)) return true;</span>
-<span class="nc" id="L232">		}</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">		for (org.drip.spline.grid.Span span : _lsSpan) {</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">			if (span.in (dblPredictorOrdinate)) return true;</span>
+<span class="nc" id="L244">		}</span>
 
-<span class="nc" id="L234">		return false;</span>
+<span class="nc" id="L246">		return false;</span>
 	}
 
 	@Override public java.lang.String displayString()
 	{
-<span class="nc" id="L239">		int i = 0;</span>
+<span class="nc" id="L251">		int i = 0;</span>
 
-<span class="nc" id="L241">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
+<span class="nc" id="L253">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
 
-<span class="nc bnc" id="L243" title="All 2 branches missed.">		for (org.drip.spline.grid.Span span : _lsSpan)</span>
-<span class="nc" id="L244">			sb.append (span.displayString() + &quot; | &quot; + _lsWeight.get (i++));</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">		for (org.drip.spline.grid.Span span : _lsSpan)</span>
+<span class="nc" id="L256">			sb.append (span.displayString() + &quot; | &quot; + _lsWeight.get (i++));</span>
 
-<span class="nc" id="L246">		return sb.toString();</span>
+<span class="nc" id="L258">		return sb.toString();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

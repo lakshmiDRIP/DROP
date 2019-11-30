@@ -6,6 +6,8 @@ package org.drip.spline.stretch;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
@@ -13,29 +15,57 @@ package org.drip.spline.stretch;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -59,10 +89,10 @@ package org.drip.spline.stretch;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md&quot;&gt;Spline Builder Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline&quot;&gt;Spline&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch&quot;&gt;Stretch&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md&quot;&gt;Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch/README.md&quot;&gt;Multi-Segment Sequence Spline Stretch&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -75,66 +105,66 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 	private static final int MINIMA_PREDICTOR_ORDINATE_NODE = 2;
 	private static final int MONOTONE_PREDICTOR_ORDINATE_NODE = 4;
 
-<span class="fc" id="L78">	private java.lang.String _strName = &quot;&quot;;</span>
-<span class="fc" id="L79">	private org.drip.spline.stretch.SegmentSequenceBuilder _ssb = null;</span>
-<span class="fc" id="L80">	private org.drip.spline.segment.LatentStateResponseModel[] _aLSRM = null;</span>
-<span class="fc" id="L81">	private org.drip.spline.params.SegmentCustomBuilderControl[] _aSCBC = null;</span>
-<span class="fc" id="L82">	private org.drip.numerical.differentiation.WengertJacobian _wjDCoeffDEdgeParams = null;</span>
+<span class="fc" id="L108">	private java.lang.String _strName = &quot;&quot;;</span>
+<span class="fc" id="L109">	private org.drip.spline.stretch.SegmentSequenceBuilder _ssb = null;</span>
+<span class="fc" id="L110">	private org.drip.spline.segment.LatentStateResponseModel[] _aLSRM = null;</span>
+<span class="fc" id="L111">	private org.drip.spline.params.SegmentCustomBuilderControl[] _aSCBC = null;</span>
+<span class="fc" id="L112">	private org.drip.numerical.differentiation.WengertJacobian _wjDCoeffDEdgeParams = null;</span>
 
 	private boolean setDCoeffDEdgeParams (
 		final int iNodeIndex,
 		final org.drip.numerical.differentiation.WengertJacobian wjDCoeffDEdgeParams)
 	{
-<span class="fc bfc" id="L88" title="All 2 branches covered.">		if (null == wjDCoeffDEdgeParams) return false;</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">		if (null == wjDCoeffDEdgeParams) return false;</span>
 
-<span class="fc bfc" id="L90" title="All 2 branches covered.">		int iParameterIndex = 0 == iNodeIndex ? 0 : 2;</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">		int iParameterIndex = 0 == iNodeIndex ? 0 : 2;</span>
 
-<span class="pc bpc" id="L92" title="1 of 2 branches missed.">		if (!_wjDCoeffDEdgeParams.accumulatePartialFirstDerivative (0, iNodeIndex,</span>
-<span class="fc" id="L93">			wjDCoeffDEdgeParams.firstDerivative (0, iParameterIndex)))</span>
-<span class="nc" id="L94">			return false;</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (!_wjDCoeffDEdgeParams.accumulatePartialFirstDerivative (0, iNodeIndex,</span>
+<span class="fc" id="L123">			wjDCoeffDEdgeParams.firstDerivative (0, iParameterIndex)))</span>
+<span class="nc" id="L124">			return false;</span>
 
-<span class="pc bpc" id="L96" title="1 of 2 branches missed.">		if (!_wjDCoeffDEdgeParams.accumulatePartialFirstDerivative (1, iNodeIndex,</span>
-<span class="fc" id="L97">			wjDCoeffDEdgeParams.firstDerivative (1, iParameterIndex)))</span>
-<span class="nc" id="L98">			return false;</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (!_wjDCoeffDEdgeParams.accumulatePartialFirstDerivative (1, iNodeIndex,</span>
+<span class="fc" id="L127">			wjDCoeffDEdgeParams.firstDerivative (1, iParameterIndex)))</span>
+<span class="nc" id="L128">			return false;</span>
 
-<span class="pc bpc" id="L100" title="1 of 2 branches missed.">		if (!_wjDCoeffDEdgeParams.accumulatePartialFirstDerivative (2, iNodeIndex,</span>
-<span class="fc" id="L101">			wjDCoeffDEdgeParams.firstDerivative (2, iParameterIndex)))</span>
-<span class="nc" id="L102">			return false;</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		if (!_wjDCoeffDEdgeParams.accumulatePartialFirstDerivative (2, iNodeIndex,</span>
+<span class="fc" id="L131">			wjDCoeffDEdgeParams.firstDerivative (2, iParameterIndex)))</span>
+<span class="nc" id="L132">			return false;</span>
 
-<span class="fc" id="L104">		return _wjDCoeffDEdgeParams.accumulatePartialFirstDerivative (3, iNodeIndex,</span>
-<span class="fc" id="L105">			wjDCoeffDEdgeParams.firstDerivative (3, iParameterIndex));</span>
+<span class="fc" id="L134">		return _wjDCoeffDEdgeParams.accumulatePartialFirstDerivative (3, iNodeIndex,</span>
+<span class="fc" id="L135">			wjDCoeffDEdgeParams.firstDerivative (3, iParameterIndex));</span>
 	}
 
 	private final org.drip.numerical.differentiation.WengertJacobian setDResponseDEdgeResponse (
 		final int iNodeIndex,
 		final org.drip.numerical.differentiation.WengertJacobian wjDResponseDEdgeParams)
 	{
-<span class="pc bpc" id="L112" title="1 of 2 branches missed.">		if (null == wjDResponseDEdgeParams) return null;</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		if (null == wjDResponseDEdgeParams) return null;</span>
 
-<span class="fc" id="L114">		int iNumSegment = _aLSRM.length;</span>
-<span class="fc" id="L115">		org.drip.numerical.differentiation.WengertJacobian wjDResponseDEdgeResponse = null;</span>
+<span class="fc" id="L144">		int iNumSegment = _aLSRM.length;</span>
+<span class="fc" id="L145">		org.drip.numerical.differentiation.WengertJacobian wjDResponseDEdgeResponse = null;</span>
 
 		try {
-<span class="fc" id="L118">			wjDResponseDEdgeResponse = new org.drip.numerical.differentiation.WengertJacobian (1, iNumSegment + 1);</span>
-<span class="nc" id="L119">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L120">			e.printStackTrace();</span>
+<span class="fc" id="L148">			wjDResponseDEdgeResponse = new org.drip.numerical.differentiation.WengertJacobian (1, iNumSegment + 1);</span>
+<span class="nc" id="L149">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L150">			e.printStackTrace();</span>
 
-<span class="nc" id="L122">			return null;</span>
-<span class="fc" id="L123">		}</span>
+<span class="nc" id="L152">			return null;</span>
+<span class="fc" id="L153">		}</span>
 
-<span class="fc bfc" id="L125" title="All 2 branches covered.">		for (int i = 0; i &lt;= iNumSegment; ++i) {</span>
-<span class="fc bfc" id="L126" title="All 2 branches covered.">			if (i == iNodeIndex) {</span>
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">				if (!wjDResponseDEdgeResponse.accumulatePartialFirstDerivative (0, i,</span>
-<span class="fc" id="L128">					wjDResponseDEdgeParams.firstDerivative (0,</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">		for (int i = 0; i &lt;= iNumSegment; ++i) {</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">			if (i == iNodeIndex) {</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">				if (!wjDResponseDEdgeResponse.accumulatePartialFirstDerivative (0, i,</span>
+<span class="fc" id="L158">					wjDResponseDEdgeParams.firstDerivative (0,</span>
 						org.drip.spline.segment.LatentStateResponseModel.LEFT_NODE_VALUE_PARAMETER_INDEX)) ||
-<span class="pc bpc" id="L130" title="1 of 2 branches missed.">							!wjDResponseDEdgeResponse.accumulatePartialFirstDerivative (0, i + 1,</span>
-<span class="fc" id="L131">								wjDResponseDEdgeParams.firstDerivative (0,</span>
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">							!wjDResponseDEdgeResponse.accumulatePartialFirstDerivative (0, i + 1,</span>
+<span class="fc" id="L161">								wjDResponseDEdgeParams.firstDerivative (0,</span>
 									org.drip.spline.segment.LatentStateResponseModel.RIGHT_NODE_VALUE_PARAMETER_INDEX)))
-<span class="nc" id="L133">					return null;</span>
+<span class="nc" id="L163">					return null;</span>
 			}
 		}
 
-<span class="fc" id="L137">		return wjDResponseDEdgeResponse;</span>
+<span class="fc" id="L167">		return wjDResponseDEdgeResponse;</span>
 	}
 
 	/**
@@ -153,95 +183,95 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 		final org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L156">		super (null);</span>
+<span class="fc" id="L186">		super (null);</span>
 
-<span class="pc bpc" id="L158" title="4 of 8 branches missed.">		if (null == aCS || null == aSCBC || null == (_strName = strName) || _strName.isEmpty())</span>
-<span class="nc" id="L159">			throw new java.lang.Exception (&quot;CalibratableMultiSegmentSequence ctr =&gt; Invalid inputs!&quot;);</span>
+<span class="pc bpc" id="L188" title="4 of 8 branches missed.">		if (null == aCS || null == aSCBC || null == (_strName = strName) || _strName.isEmpty())</span>
+<span class="nc" id="L189">			throw new java.lang.Exception (&quot;CalibratableMultiSegmentSequence ctr =&gt; Invalid inputs!&quot;);</span>
 
-<span class="fc" id="L161">		int iNumSegment = aCS.length;</span>
-<span class="fc" id="L162">		_aLSRM = new org.drip.spline.segment.LatentStateResponseModel[iNumSegment];</span>
-<span class="fc" id="L163">		_aSCBC = new org.drip.spline.params.SegmentCustomBuilderControl[iNumSegment];</span>
+<span class="fc" id="L191">		int iNumSegment = aCS.length;</span>
+<span class="fc" id="L192">		_aLSRM = new org.drip.spline.segment.LatentStateResponseModel[iNumSegment];</span>
+<span class="fc" id="L193">		_aSCBC = new org.drip.spline.params.SegmentCustomBuilderControl[iNumSegment];</span>
 
-<span class="pc bpc" id="L165" title="2 of 4 branches missed.">		if (0 == iNumSegment || iNumSegment != aSCBC.length)</span>
-<span class="nc" id="L166">			throw new java.lang.Exception (&quot;CalibratableMultiSegmentSequence ctr =&gt; Invalid inputs!&quot;);</span>
+<span class="pc bpc" id="L195" title="2 of 4 branches missed.">		if (0 == iNumSegment || iNumSegment != aSCBC.length)</span>
+<span class="nc" id="L196">			throw new java.lang.Exception (&quot;CalibratableMultiSegmentSequence ctr =&gt; Invalid inputs!&quot;);</span>
 
-<span class="fc bfc" id="L168" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i) {</span>
-<span class="pc bpc" id="L169" title="2 of 4 branches missed.">			if (null == (_aLSRM[i] = aCS[i]) || null == (_aSCBC[i] = aSCBC[i]))</span>
-<span class="nc" id="L170">				throw new java.lang.Exception (&quot;CalibratableMultiSegmentSequence ctr =&gt; Invalid inputs!&quot;);</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i) {</span>
+<span class="pc bpc" id="L199" title="2 of 4 branches missed.">			if (null == (_aLSRM[i] = aCS[i]) || null == (_aSCBC[i] = aSCBC[i]))</span>
+<span class="nc" id="L200">				throw new java.lang.Exception (&quot;CalibratableMultiSegmentSequence ctr =&gt; Invalid inputs!&quot;);</span>
 		}
-<span class="fc" id="L172">	}</span>
+<span class="fc" id="L202">	}</span>
 
 	@Override public java.lang.String name()
 	{
-<span class="fc" id="L176">		return _strName;</span>
+<span class="fc" id="L206">		return _strName;</span>
 	}
 
 	@Override public org.drip.spline.segment.LatentStateResponseModel[] segments()
 	{
-<span class="fc" id="L181">		return _aLSRM;</span>
+<span class="fc" id="L211">		return _aLSRM;</span>
 	}
 
 	@Override public org.drip.spline.params.SegmentCustomBuilderControl[] segmentBuilderControl()
 	{
-<span class="fc" id="L186">		return _aSCBC;</span>
+<span class="fc" id="L216">		return _aSCBC;</span>
 	}
 
 	@Override public boolean setup (
 		final org.drip.spline.stretch.SegmentSequenceBuilder ssb,
 		final int iCalibrationDetail)
 	{
-<span class="pc bpc" id="L193" title="2 of 4 branches missed.">		if (null == (_ssb = ssb) || !_ssb.setStretch (this)) return false;</span>
+<span class="pc bpc" id="L223" title="2 of 4 branches missed.">		if (null == (_ssb = ssb) || !_ssb.setStretch (this)) return false;</span>
 
-<span class="fc" id="L195">		if (org.drip.spline.stretch.BoundarySettings.BOUNDARY_CONDITION_FLOATING ==</span>
-<span class="fc bfc" id="L196" title="All 2 branches covered.">			_ssb.getCalibrationBoundaryCondition().boundaryCondition()) {</span>
-<span class="pc bpc" id="L197" title="2 of 4 branches missed.">			if (!_ssb.calibStartingSegment (0.) || !_ssb.calibSegmentSequence (1) ||</span>
-<span class="pc bpc" id="L198" title="1 of 2 branches missed.">				!_ssb.manifestMeasureSensitivity (0.))</span>
-<span class="nc" id="L199">				return false;</span>
-<span class="pc bpc" id="L200" title="1 of 2 branches missed.">		} else if (0 != (org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE &amp; iCalibrationDetail)) {</span>
-<span class="fc" id="L201">			org.drip.function.r1tor1solver.FixedPointFinderOutput fpop = null;</span>
+<span class="fc" id="L225">		if (org.drip.spline.stretch.BoundarySettings.BOUNDARY_CONDITION_FLOATING ==</span>
+<span class="fc bfc" id="L226" title="All 2 branches covered.">			_ssb.getCalibrationBoundaryCondition().boundaryCondition()) {</span>
+<span class="pc bpc" id="L227" title="2 of 4 branches missed.">			if (!_ssb.calibStartingSegment (0.) || !_ssb.calibSegmentSequence (1) ||</span>
+<span class="pc bpc" id="L228" title="1 of 2 branches missed.">				!_ssb.manifestMeasureSensitivity (0.))</span>
+<span class="nc" id="L229">				return false;</span>
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">		} else if (0 != (org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE &amp; iCalibrationDetail)) {</span>
+<span class="fc" id="L231">			org.drip.function.r1tor1solver.FixedPointFinderOutput fpop = null;</span>
 
-<span class="pc bpc" id="L203" title="3 of 4 branches missed.">			if (null == fpop || !fpop.containsRoot()) {</span>
+<span class="pc bpc" id="L233" title="3 of 4 branches missed.">			if (null == fpop || !fpop.containsRoot()) {</span>
 				try {
-<span class="fc" id="L205">					fpop = new org.drip.function.r1tor1solver.FixedPointFinderZheng (0., this,</span>
-<span class="fc" id="L206">						true).findRoot();</span>
-<span class="nc" id="L207">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L208">					e.printStackTrace();</span>
+<span class="fc" id="L235">					fpop = new org.drip.function.r1tor1solver.FixedPointFinderZheng (0., this,</span>
+<span class="fc" id="L236">						true).findRoot();</span>
+<span class="nc" id="L237">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L238">					e.printStackTrace();</span>
 
-<span class="nc" id="L210">					return false;</span>
-<span class="fc" id="L211">				}</span>
+<span class="nc" id="L240">					return false;</span>
+<span class="fc" id="L241">				}</span>
 			}
 
-<span class="pc bpc" id="L214" title="2 of 4 branches missed.">			if (null == fpop || !org.drip.numerical.common.NumberUtil.IsValid (fpop.getRoot()) ||</span>
-<span class="pc bpc" id="L215" title="1 of 2 branches missed.">				!_ssb.manifestMeasureSensitivity (0.)) {</span>
-<span class="nc" id="L216">				System.out.println (&quot;FPOP: &quot; + fpop);</span>
+<span class="pc bpc" id="L244" title="2 of 4 branches missed.">			if (null == fpop || !org.drip.numerical.common.NumberUtil.IsValid (fpop.getRoot()) ||</span>
+<span class="pc bpc" id="L245" title="1 of 2 branches missed.">				!_ssb.manifestMeasureSensitivity (0.)) {</span>
+<span class="nc" id="L246">				System.out.println (&quot;FPOP: &quot; + fpop);</span>
 
-<span class="nc" id="L218">				return false;</span>
+<span class="nc" id="L248">				return false;</span>
 			}
 		}
 
-<span class="pc bpc" id="L222" title="1 of 2 branches missed.">		if (0 != (org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE_JACOBIAN &amp; iCalibrationDetail)) {</span>
-<span class="nc" id="L223">			int iNumSegment = _aLSRM.length;</span>
+<span class="pc bpc" id="L252" title="1 of 2 branches missed.">		if (0 != (org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE_JACOBIAN &amp; iCalibrationDetail)) {</span>
+<span class="nc" id="L253">			int iNumSegment = _aLSRM.length;</span>
 
 			try {
-<span class="nc" id="L226">				if (null == (_wjDCoeffDEdgeParams = new org.drip.numerical.differentiation.WengertJacobian</span>
-<span class="nc bnc" id="L227" title="All 2 branches missed.">					(_aLSRM[0].basisEvaluator().numBasis(), iNumSegment + 1)))</span>
-<span class="nc" id="L228">					return false;</span>
-<span class="nc" id="L229">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L230">				e.printStackTrace();</span>
+<span class="nc" id="L256">				if (null == (_wjDCoeffDEdgeParams = new org.drip.numerical.differentiation.WengertJacobian</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">					(_aLSRM[0].basisEvaluator().numBasis(), iNumSegment + 1)))</span>
+<span class="nc" id="L258">					return false;</span>
+<span class="nc" id="L259">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L260">				e.printStackTrace();</span>
 
-<span class="nc" id="L232">				return false;</span>
-<span class="nc" id="L233">			}</span>
+<span class="nc" id="L262">				return false;</span>
+<span class="nc" id="L263">			}</span>
 
-<span class="nc" id="L235">			org.drip.numerical.differentiation.WengertJacobian wjHead = _aLSRM[0].jackDCoeffDEdgeInputs();</span>
+<span class="nc" id="L265">			org.drip.numerical.differentiation.WengertJacobian wjHead = _aLSRM[0].jackDCoeffDEdgeInputs();</span>
 
-<span class="nc bnc" id="L237" title="All 4 branches missed.">			if (!setDCoeffDEdgeParams (0, wjHead) || !setDCoeffDEdgeParams (1, wjHead)) return false;</span>
+<span class="nc bnc" id="L267" title="All 4 branches missed.">			if (!setDCoeffDEdgeParams (0, wjHead) || !setDCoeffDEdgeParams (1, wjHead)) return false;</span>
 
-<span class="nc bnc" id="L239" title="All 2 branches missed.">			for (int i = 1; i &lt; iNumSegment; ++i) {</span>
-<span class="nc bnc" id="L240" title="All 2 branches missed.">				if (!setDCoeffDEdgeParams (i + 1, _aLSRM[i].jackDCoeffDEdgeInputs())) return false;</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">			for (int i = 1; i &lt; iNumSegment; ++i) {</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">				if (!setDCoeffDEdgeParams (i + 1, _aLSRM[i].jackDCoeffDEdgeInputs())) return false;</span>
 			}
 		}
 
-<span class="fc" id="L244">		return true;</span>
+<span class="fc" id="L274">		return true;</span>
 	}
 
 	@Override public boolean setup (
@@ -252,13 +282,13 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 		final int iCalibrationDetail)
 	{
 		try {
-<span class="fc" id="L255">			return setup (new org.drip.spline.stretch.CkSegmentSequenceBuilder (srvcLeading, aSRVC, sbfr,</span>
+<span class="fc" id="L285">			return setup (new org.drip.spline.stretch.CkSegmentSequenceBuilder (srvcLeading, aSRVC, sbfr,</span>
 				bs), iCalibrationDetail);
-<span class="nc" id="L257">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L258">			e.printStackTrace();</span>
+<span class="nc" id="L287">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L288">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L261">		return false;</span>
+<span class="nc" id="L291">		return false;</span>
 	}
 
 	@Override public boolean setup (
@@ -268,8 +298,8 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 		final org.drip.spline.stretch.BoundarySettings bs,
 		final int iCalibrationDetail)
 	{
-<span class="fc" id="L271">		return setup (org.drip.spline.params.SegmentResponseValueConstraint.FromPredictorResponsePair</span>
-<span class="fc" id="L272">			(getLeftPredictorOrdinateEdge(), dblLeftStretchResponseValue), aSRVC, sbfr, bs,</span>
+<span class="fc" id="L301">		return setup (org.drip.spline.params.SegmentResponseValueConstraint.FromPredictorResponsePair</span>
+<span class="fc" id="L302">			(getLeftPredictorOrdinateEdge(), dblLeftStretchResponseValue), aSRVC, sbfr, bs,</span>
 				iCalibrationDetail);
 	}
 
@@ -280,23 +310,23 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 		final org.drip.spline.stretch.BoundarySettings bs,
 		final int iCalibrationDetail)
 	{
-<span class="fc" id="L283">		int iNumSegment = _aLSRM.length;</span>
-<span class="fc" id="L284">		org.drip.spline.params.SegmentResponseValueConstraint[] aSRVCRight = new</span>
+<span class="fc" id="L313">		int iNumSegment = _aLSRM.length;</span>
+<span class="fc" id="L314">		org.drip.spline.params.SegmentResponseValueConstraint[] aSRVCRight = new</span>
 			org.drip.spline.params.SegmentResponseValueConstraint[iNumSegment];
 
-<span class="pc bpc" id="L287" title="2 of 4 branches missed.">		if (0 == iNumSegment || iNumSegment != adblSegmentRightResponseValue.length) return false;</span>
+<span class="pc bpc" id="L317" title="2 of 4 branches missed.">		if (0 == iNumSegment || iNumSegment != adblSegmentRightResponseValue.length) return false;</span>
 
 		try {
-<span class="fc bfc" id="L290" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumSegment; ++i)</span>
-<span class="fc" id="L291">				aSRVCRight[i] = new org.drip.spline.params.SegmentResponseValueConstraint (new double[]</span>
-<span class="fc" id="L292">					{_aLSRM[i].right()}, new double[] {1.}, adblSegmentRightResponseValue[i]);</span>
-<span class="nc" id="L293">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L294">			e.printStackTrace();</span>
+<span class="fc bfc" id="L320" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumSegment; ++i)</span>
+<span class="fc" id="L321">				aSRVCRight[i] = new org.drip.spline.params.SegmentResponseValueConstraint (new double[]</span>
+<span class="fc" id="L322">					{_aLSRM[i].right()}, new double[] {1.}, adblSegmentRightResponseValue[i]);</span>
+<span class="nc" id="L323">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L324">			e.printStackTrace();</span>
 
-<span class="nc" id="L296">			return false;</span>
-<span class="fc" id="L297">		}</span>
+<span class="nc" id="L326">			return false;</span>
+<span class="fc" id="L327">		}</span>
 
-<span class="fc" id="L299">		return setup (dblLeftStretchResponseValue, aSRVCRight, sbfr, bs, iCalibrationDetail);</span>
+<span class="fc" id="L329">		return setup (dblLeftStretchResponseValue, aSRVCRight, sbfr, bs, iCalibrationDetail);</span>
 	}
 
 	@Override public boolean setupHermite (
@@ -306,94 +336,94 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 		final org.drip.spline.params.StretchBestFitResponse sbfr,
 		final int iSetupMode)
 	{
-<span class="pc bpc" id="L309" title="2 of 4 branches missed.">		if (null == aSPRDLeft || null == aSPRDRight) return false;</span>
+<span class="pc bpc" id="L339" title="2 of 4 branches missed.">		if (null == aSPRDLeft || null == aSPRDRight) return false;</span>
 
-<span class="fc" id="L311">		int iNumSegment = _aLSRM.length;</span>
+<span class="fc" id="L341">		int iNumSegment = _aLSRM.length;</span>
 
-<span class="pc bpc" id="L313" title="5 of 8 branches missed.">		if (iNumSegment != aSPRDLeft.length || iNumSegment != aSPRDRight.length || (null != aaSRVC &amp;&amp;</span>
+<span class="pc bpc" id="L343" title="5 of 8 branches missed.">		if (iNumSegment != aSPRDLeft.length || iNumSegment != aSPRDRight.length || (null != aaSRVC &amp;&amp;</span>
 			iNumSegment != aaSRVC.length))
-<span class="nc" id="L315">			return false;</span>
+<span class="nc" id="L345">			return false;</span>
 
-<span class="fc bfc" id="L317" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i) {</span>
+<span class="fc bfc" id="L347" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i) {</span>
 			try {
-<span class="fc" id="L319">				int iNumSegmentConstraint = 0;</span>
-<span class="fc" id="L320">				org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFC = null;</span>
+<span class="fc" id="L349">				int iNumSegmentConstraint = 0;</span>
+<span class="fc" id="L350">				org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFC = null;</span>
 
-<span class="pc bpc" id="L322" title="3 of 4 branches missed.">				if (null != aaSRVC &amp;&amp; null != aaSRVC[i]) {</span>
-<span class="nc" id="L323">					aSBFC = new org.drip.spline.params.SegmentBasisFlexureConstraint[iNumSegmentConstraint =</span>
+<span class="pc bpc" id="L352" title="3 of 4 branches missed.">				if (null != aaSRVC &amp;&amp; null != aaSRVC[i]) {</span>
+<span class="nc" id="L353">					aSBFC = new org.drip.spline.params.SegmentBasisFlexureConstraint[iNumSegmentConstraint =</span>
 						aaSRVC[i].length];
 
-<span class="nc bnc" id="L326" title="All 2 branches missed.">					for (int j = 0; i &lt; iNumSegmentConstraint; ++j)</span>
-<span class="nc bnc" id="L327" title="All 2 branches missed.">						aSBFC[j] = null == aaSRVC[i][j] ? null : aaSRVC[i][j].responseIndexedBasisConstraint</span>
-<span class="nc" id="L328">							(_aLSRM[i].basisEvaluator(), _aLSRM[i]);</span>
+<span class="nc bnc" id="L356" title="All 2 branches missed.">					for (int j = 0; i &lt; iNumSegmentConstraint; ++j)</span>
+<span class="nc bnc" id="L357" title="All 2 branches missed.">						aSBFC[j] = null == aaSRVC[i][j] ? null : aaSRVC[i][j].responseIndexedBasisConstraint</span>
+<span class="nc" id="L358">							(_aLSRM[i].basisEvaluator(), _aLSRM[i]);</span>
 				}
 
-<span class="fc bfc" id="L331" title="All 2 branches covered.">				if (0 != (org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE &amp; iSetupMode) &amp;&amp;</span>
-<span class="pc bpc" id="L332" title="1 of 2 branches missed.">					!_aLSRM[i].calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (new</span>
-<span class="fc" id="L333">						double[] {_aLSRM[i].left(), _aLSRM[i].right()}, new double[]</span>
-<span class="fc" id="L334">							{aSPRDLeft[i].responseValue(), aSPRDRight[i].responseValue()},</span>
-<span class="fc" id="L335">								aSPRDLeft[i].getDResponseDPredictorOrdinate(),</span>
-<span class="pc bpc" id="L336" title="1 of 2 branches missed.">									aSPRDRight[i].getDResponseDPredictorOrdinate(), aSBFC, null == sbfr ?</span>
-<span class="pc" id="L337">										null : sbfr.sizeToSegment (_aLSRM[i]))))</span>
-<span class="nc" id="L338">					return false;</span>
-<span class="nc" id="L339">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L340">				e.printStackTrace();</span>
+<span class="fc bfc" id="L361" title="All 2 branches covered.">				if (0 != (org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE &amp; iSetupMode) &amp;&amp;</span>
+<span class="pc bpc" id="L362" title="1 of 2 branches missed.">					!_aLSRM[i].calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (new</span>
+<span class="fc" id="L363">						double[] {_aLSRM[i].left(), _aLSRM[i].right()}, new double[]</span>
+<span class="fc" id="L364">							{aSPRDLeft[i].responseValue(), aSPRDRight[i].responseValue()},</span>
+<span class="fc" id="L365">								aSPRDLeft[i].getDResponseDPredictorOrdinate(),</span>
+<span class="pc bpc" id="L366" title="1 of 2 branches missed.">									aSPRDRight[i].getDResponseDPredictorOrdinate(), aSBFC, null == sbfr ?</span>
+<span class="pc" id="L367">										null : sbfr.sizeToSegment (_aLSRM[i]))))</span>
+<span class="nc" id="L368">					return false;</span>
+<span class="nc" id="L369">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L370">				e.printStackTrace();</span>
 
-<span class="nc" id="L342">				return false;</span>
-<span class="fc" id="L343">			}</span>
+<span class="nc" id="L372">				return false;</span>
+<span class="fc" id="L373">			}</span>
 		}
 
-<span class="fc bfc" id="L346" title="All 2 branches covered.">		if (0 != (org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE_JACOBIAN &amp; iSetupMode)) {</span>
+<span class="fc bfc" id="L376" title="All 2 branches covered.">		if (0 != (org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE_JACOBIAN &amp; iSetupMode)) {</span>
 			try {
-<span class="fc" id="L348">				if (null == (_wjDCoeffDEdgeParams = new org.drip.numerical.differentiation.WengertJacobian</span>
-<span class="pc bpc" id="L349" title="1 of 2 branches missed.">					(_aLSRM[0].basisEvaluator().numBasis(), iNumSegment + 1)))</span>
-<span class="nc" id="L350">					return false;</span>
-<span class="nc" id="L351">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L352">				e.printStackTrace();</span>
+<span class="fc" id="L378">				if (null == (_wjDCoeffDEdgeParams = new org.drip.numerical.differentiation.WengertJacobian</span>
+<span class="pc bpc" id="L379" title="1 of 2 branches missed.">					(_aLSRM[0].basisEvaluator().numBasis(), iNumSegment + 1)))</span>
+<span class="nc" id="L380">					return false;</span>
+<span class="nc" id="L381">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L382">				e.printStackTrace();</span>
 
-<span class="nc" id="L354">				return false;</span>
-<span class="fc" id="L355">			}</span>
+<span class="nc" id="L384">				return false;</span>
+<span class="fc" id="L385">			}</span>
 
-<span class="fc" id="L357">			org.drip.numerical.differentiation.WengertJacobian wjDCoeffDEdgeParamsHead =</span>
-<span class="fc" id="L358">				_aLSRM[0].jackDCoeffDEdgeInputs();</span>
+<span class="fc" id="L387">			org.drip.numerical.differentiation.WengertJacobian wjDCoeffDEdgeParamsHead =</span>
+<span class="fc" id="L388">				_aLSRM[0].jackDCoeffDEdgeInputs();</span>
 
-<span class="pc bpc" id="L360" title="1 of 4 branches missed.">			if (!setDCoeffDEdgeParams (0, wjDCoeffDEdgeParamsHead) || !setDCoeffDEdgeParams (1,</span>
+<span class="pc bpc" id="L390" title="1 of 4 branches missed.">			if (!setDCoeffDEdgeParams (0, wjDCoeffDEdgeParamsHead) || !setDCoeffDEdgeParams (1,</span>
 				wjDCoeffDEdgeParamsHead))
-<span class="fc" id="L362">				return false;</span>
+<span class="fc" id="L392">				return false;</span>
 
-<span class="fc bfc" id="L364" title="All 2 branches covered.">			for (int i = 1; i &lt; iNumSegment; ++i) {</span>
-<span class="fc bfc" id="L365" title="All 2 branches covered.">				if (!setDCoeffDEdgeParams (i + 1, _aLSRM[i].jackDCoeffDEdgeInputs())) return false;</span>
+<span class="fc bfc" id="L394" title="All 2 branches covered.">			for (int i = 1; i &lt; iNumSegment; ++i) {</span>
+<span class="fc bfc" id="L395" title="All 2 branches covered.">				if (!setDCoeffDEdgeParams (i + 1, _aLSRM[i].jackDCoeffDEdgeInputs())) return false;</span>
 			}
 		}
 
-<span class="fc" id="L369">		return true;</span>
+<span class="fc" id="L399">		return true;</span>
 	}
 
 	@Override public double evaluate (
 		final double dblLeftSlope)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L376" title="3 of 6 branches missed.">		if (null == _ssb || !_ssb.calibStartingSegment (dblLeftSlope) || !_ssb.calibSegmentSequence (1))</span>
-<span class="nc" id="L377">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L406" title="3 of 6 branches missed.">		if (null == _ssb || !_ssb.calibStartingSegment (dblLeftSlope) || !_ssb.calibSegmentSequence (1))</span>
+<span class="nc" id="L407">			throw new java.lang.Exception</span>
 				(&quot;CalibratableMultiSegmentSequence::evaluate =&gt; cannot set up segments!&quot;);
 
-<span class="fc" id="L380">		org.drip.spline.stretch.BoundarySettings bs = _ssb.getCalibrationBoundaryCondition();</span>
+<span class="fc" id="L410">		org.drip.spline.stretch.BoundarySettings bs = _ssb.getCalibrationBoundaryCondition();</span>
 
-<span class="fc" id="L382">		int iBC = bs.boundaryCondition();</span>
+<span class="fc" id="L412">		int iBC = bs.boundaryCondition();</span>
 
-<span class="fc bfc" id="L384" title="All 2 branches covered.">		if (org.drip.spline.stretch.BoundarySettings.BOUNDARY_CONDITION_NATURAL == iBC)</span>
-<span class="fc" id="L385">			return calcRightEdgeDerivative (bs.rightDerivOrder());</span>
+<span class="fc bfc" id="L414" title="All 2 branches covered.">		if (org.drip.spline.stretch.BoundarySettings.BOUNDARY_CONDITION_NATURAL == iBC)</span>
+<span class="fc" id="L415">			return calcRightEdgeDerivative (bs.rightDerivOrder());</span>
 
-<span class="fc bfc" id="L387" title="All 2 branches covered.">		if (org.drip.spline.stretch.BoundarySettings.BOUNDARY_CONDITION_FINANCIAL == iBC)</span>
+<span class="fc bfc" id="L417" title="All 2 branches covered.">		if (org.drip.spline.stretch.BoundarySettings.BOUNDARY_CONDITION_FINANCIAL == iBC)</span>
 		{
-<span class="fc" id="L389">			return calcRightEdgeDerivative (bs.rightDerivOrder());</span>
+<span class="fc" id="L419">			return calcRightEdgeDerivative (bs.rightDerivOrder());</span>
 		}
 
-<span class="pc bpc" id="L392" title="1 of 2 branches missed.">		if (org.drip.spline.stretch.BoundarySettings.BOUNDARY_CONDITION_NOT_A_KNOT == iBC)</span>
-<span class="fc" id="L393">			return calcRightEdgeDerivative (bs.rightDerivOrder()) - calcLeftEdgeDerivative</span>
-<span class="fc" id="L394">				(bs.leftDerivOrder());</span>
+<span class="pc bpc" id="L422" title="1 of 2 branches missed.">		if (org.drip.spline.stretch.BoundarySettings.BOUNDARY_CONDITION_NOT_A_KNOT == iBC)</span>
+<span class="fc" id="L423">			return calcRightEdgeDerivative (bs.rightDerivOrder()) - calcLeftEdgeDerivative</span>
+<span class="fc" id="L424">				(bs.leftDerivOrder());</span>
 
-<span class="nc" id="L396">		throw new java.lang.Exception (&quot;CalibratableMultiSegmentSequence::evaluate =&gt; Boundary Condition &quot; +</span>
+<span class="nc" id="L426">		throw new java.lang.Exception (&quot;CalibratableMultiSegmentSequence::evaluate =&gt; Boundary Condition &quot; +</span>
 			iBC + &quot; unknown&quot;);
 	}
 
@@ -402,11 +432,11 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L405" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L406" title="All 2 branches missed.">			(dblEnd))</span>
-<span class="nc" id="L407">			throw new java.lang.Exception (&quot;CalibratableMultiSegmentSequence::integrate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L435" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L436" title="All 2 branches missed.">			(dblEnd))</span>
+<span class="nc" id="L437">			throw new java.lang.Exception (&quot;CalibratableMultiSegmentSequence::integrate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L409">		return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="nc" id="L439">		return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 	}
 
 	@Override public boolean setLeftNode (
@@ -415,20 +445,20 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 		final double dblStretchRightResponse,
 		final org.drip.spline.params.StretchBestFitResponse sbfr)
 	{
-<span class="nc" id="L418">		return _aLSRM[0].calibrate</span>
-<span class="nc" id="L419">			(org.drip.spline.params.SegmentResponseValueConstraint.FromPredictorResponsePair</span>
-<span class="nc" id="L420">				(getLeftPredictorOrdinateEdge(), dblStretchLeftResponse), dblStretchLeftResponseSlope,</span>
+<span class="nc" id="L448">		return _aLSRM[0].calibrate</span>
+<span class="nc" id="L449">			(org.drip.spline.params.SegmentResponseValueConstraint.FromPredictorResponsePair</span>
+<span class="nc" id="L450">				(getLeftPredictorOrdinateEdge(), dblStretchLeftResponse), dblStretchLeftResponseSlope,</span>
 					org.drip.spline.params.SegmentResponseValueConstraint.FromPredictorResponsePair
-<span class="nc bnc" id="L422" title="All 2 branches missed.">						(getRightPredictorOrdinateEdge(), dblStretchRightResponse), null == sbfr ? null :</span>
-<span class="nc" id="L423">							sbfr.sizeToSegment (_aLSRM[0]));</span>
+<span class="nc bnc" id="L452" title="All 2 branches missed.">						(getRightPredictorOrdinateEdge(), dblStretchRightResponse), null == sbfr ? null :</span>
+<span class="nc" id="L453">							sbfr.sizeToSegment (_aLSRM[0]));</span>
 	}
 
 	@Override public double responseValue (
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L430">		return _aLSRM[containingIndex (dblPredictorOrdinate, true, true)].responseValue</span>
-<span class="fc" id="L431">			(dblPredictorOrdinate);</span>
+<span class="fc" id="L460">		return _aLSRM[containingIndex (dblPredictorOrdinate, true, true)].responseValue</span>
+<span class="fc" id="L461">			(dblPredictorOrdinate);</span>
 	}
 
 	@Override public double responseValueDerivative (
@@ -436,56 +466,56 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L439">		return _aLSRM[containingIndex (dblPredictorOrdinate, true, true)].calcResponseValueDerivative</span>
-<span class="fc" id="L440">			(dblPredictorOrdinate, iOrder);</span>
+<span class="fc" id="L469">		return _aLSRM[containingIndex (dblPredictorOrdinate, true, true)].calcResponseValueDerivative</span>
+<span class="fc" id="L470">			(dblPredictorOrdinate, iOrder);</span>
 	}
 
 	@Override public org.drip.spline.params.SegmentPredictorResponseDerivative calcSPRD (
 		final double dblPredictorOrdinate)
 	{
-<span class="fc" id="L446">		int iIndex = -1;</span>
+<span class="fc" id="L476">		int iIndex = -1;</span>
 
 		try {
-<span class="fc" id="L449">			iIndex = containingIndex (dblPredictorOrdinate, true, true);</span>
-<span class="nc" id="L450">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L451">			e.printStackTrace();</span>
+<span class="fc" id="L479">			iIndex = containingIndex (dblPredictorOrdinate, true, true);</span>
+<span class="nc" id="L480">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L481">			e.printStackTrace();</span>
 
-<span class="nc" id="L453">			return null;</span>
-<span class="fc" id="L454">		}</span>
+<span class="nc" id="L483">			return null;</span>
+<span class="fc" id="L484">		}</span>
 
-<span class="fc" id="L456">		int iCk = _aSCBC[iIndex].inelasticParams().Ck();</span>
+<span class="fc" id="L486">		int iCk = _aSCBC[iIndex].inelasticParams().Ck();</span>
 
-<span class="fc" id="L458">		double adblDeriv[] = new double[iCk];</span>
+<span class="fc" id="L488">		double adblDeriv[] = new double[iCk];</span>
 
 		try {
-<span class="fc bfc" id="L461" title="All 2 branches covered.">			for (int i = 0; i &lt; iCk; ++i)</span>
-<span class="fc" id="L462">				adblDeriv[i] = _aLSRM[iIndex].calcResponseValueDerivative (dblPredictorOrdinate, i);</span>
+<span class="fc bfc" id="L491" title="All 2 branches covered.">			for (int i = 0; i &lt; iCk; ++i)</span>
+<span class="fc" id="L492">				adblDeriv[i] = _aLSRM[iIndex].calcResponseValueDerivative (dblPredictorOrdinate, i);</span>
 
-<span class="fc" id="L464">			return new org.drip.spline.params.SegmentPredictorResponseDerivative</span>
-<span class="fc" id="L465">				(_aLSRM[iIndex].responseValue (dblPredictorOrdinate), adblDeriv);</span>
-<span class="nc" id="L466">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L467">			e.printStackTrace();</span>
+<span class="fc" id="L494">			return new org.drip.spline.params.SegmentPredictorResponseDerivative</span>
+<span class="fc" id="L495">				(_aLSRM[iIndex].responseValue (dblPredictorOrdinate), adblDeriv);</span>
+<span class="nc" id="L496">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L497">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L470">		return null;</span>
+<span class="nc" id="L500">		return null;</span>
 	}
 
 	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDCalibrationInput (
 		final double dblPredictorOrdinate,
 		final int iOrder)
 	{
-<span class="fc" id="L477">		int iIndex = -1;</span>
+<span class="fc" id="L507">		int iIndex = -1;</span>
 
 		try {
-<span class="fc" id="L480">			iIndex = containingIndex (dblPredictorOrdinate, true, true);</span>
-<span class="nc" id="L481">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L482">			e.printStackTrace();</span>
+<span class="fc" id="L510">			iIndex = containingIndex (dblPredictorOrdinate, true, true);</span>
+<span class="nc" id="L511">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L512">			e.printStackTrace();</span>
 
-<span class="nc" id="L484">			return null;</span>
-<span class="fc" id="L485">		}</span>
+<span class="nc" id="L514">			return null;</span>
+<span class="fc" id="L515">		}</span>
 
-<span class="fc" id="L487">		return setDResponseDEdgeResponse (iIndex, _aLSRM[iIndex].jackDResponseDEdgeInput</span>
-<span class="fc" id="L488">			(dblPredictorOrdinate, iOrder));</span>
+<span class="fc" id="L517">		return setDResponseDEdgeResponse (iIndex, _aLSRM[iIndex].jackDResponseDEdgeInput</span>
+<span class="fc" id="L518">			(dblPredictorOrdinate, iOrder));</span>
 	}
 
 	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDManifestMeasure (
@@ -493,177 +523,177 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 		final double dblPredictorOrdinate,
 		final int iOrder)
 	{
-<span class="fc" id="L496">		int iPriorImpactFadeIndex = 0;</span>
-<span class="fc" id="L497">		int iNumSegment = _aLSRM.length;</span>
+<span class="fc" id="L526">		int iPriorImpactFadeIndex = 0;</span>
+<span class="fc" id="L527">		int iNumSegment = _aLSRM.length;</span>
 
 		try {
-<span class="fc" id="L500">			int iIndex = containingIndex (dblPredictorOrdinate, true, true);</span>
+<span class="fc" id="L530">			int iIndex = containingIndex (dblPredictorOrdinate, true, true);</span>
 
-<span class="fc" id="L502">			boolean bContainingSegmentImpactFade = _aLSRM[iIndex].impactFade (strManifestMeasure);</span>
+<span class="fc" id="L532">			boolean bContainingSegmentImpactFade = _aLSRM[iIndex].impactFade (strManifestMeasure);</span>
 
-<span class="pc bpc" id="L504" title="3 of 4 branches missed.">			if (!bContainingSegmentImpactFade &amp;&amp; 0 != iIndex) {</span>
-<span class="nc bnc" id="L505" title="All 2 branches missed.">				for (int i = iIndex - 1; i &gt;= 0; --i) {</span>
-<span class="nc bnc" id="L506" title="All 2 branches missed.">					if (_aLSRM[i].impactFade (strManifestMeasure)) {</span>
-<span class="nc" id="L507">						iPriorImpactFadeIndex = i;</span>
-<span class="nc" id="L508">						break;</span>
+<span class="pc bpc" id="L534" title="3 of 4 branches missed.">			if (!bContainingSegmentImpactFade &amp;&amp; 0 != iIndex) {</span>
+<span class="nc bnc" id="L535" title="All 2 branches missed.">				for (int i = iIndex - 1; i &gt;= 0; --i) {</span>
+<span class="nc bnc" id="L536" title="All 2 branches missed.">					if (_aLSRM[i].impactFade (strManifestMeasure)) {</span>
+<span class="nc" id="L537">						iPriorImpactFadeIndex = i;</span>
+<span class="nc" id="L538">						break;</span>
 					}
 				}
 			}
 
-<span class="fc" id="L513">			org.drip.numerical.differentiation.WengertJacobian wjDResponseDManifestMeasure = new</span>
+<span class="fc" id="L543">			org.drip.numerical.differentiation.WengertJacobian wjDResponseDManifestMeasure = new</span>
 				org.drip.numerical.differentiation.WengertJacobian (1, iNumSegment);
 
-<span class="fc bfc" id="L516" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumSegment; ++i) {</span>
-<span class="fc" id="L517">				double dblDResponseDManifestMeasurei = 0.;</span>
+<span class="fc bfc" id="L546" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumSegment; ++i) {</span>
+<span class="fc" id="L547">				double dblDResponseDManifestMeasurei = 0.;</span>
 
-<span class="fc bfc" id="L519" title="All 2 branches covered.">				if (i == iIndex)</span>
-<span class="fc" id="L520">					dblDResponseDManifestMeasurei = _aLSRM[i].calcDResponseDManifest (strManifestMeasure,</span>
+<span class="fc bfc" id="L549" title="All 2 branches covered.">				if (i == iIndex)</span>
+<span class="fc" id="L550">					dblDResponseDManifestMeasurei = _aLSRM[i].calcDResponseDManifest (strManifestMeasure,</span>
 						dblPredictorOrdinate, iOrder);
-<span class="fc bfc" id="L522" title="All 2 branches covered.">				else if (i == iIndex - 1)</span>
-<span class="fc" id="L523">					dblDResponseDManifestMeasurei = _aLSRM[i + 1].calcDResponseDPreceedingManifest</span>
-<span class="fc" id="L524">						(strManifestMeasure, dblPredictorOrdinate, iOrder);</span>
-<span class="pc bpc" id="L525" title="5 of 6 branches missed.">				else if (!bContainingSegmentImpactFade &amp;&amp; i &gt;= iPriorImpactFadeIndex &amp;&amp; i &lt; iIndex - 1)</span>
-<span class="nc" id="L526">					dblDResponseDManifestMeasurei = _aLSRM[i].calcDResponseDManifest (strManifestMeasure,</span>
-<span class="nc" id="L527">						_aLSRM[i].right(), iOrder);</span>
+<span class="fc bfc" id="L552" title="All 2 branches covered.">				else if (i == iIndex - 1)</span>
+<span class="fc" id="L553">					dblDResponseDManifestMeasurei = _aLSRM[i + 1].calcDResponseDPreceedingManifest</span>
+<span class="fc" id="L554">						(strManifestMeasure, dblPredictorOrdinate, iOrder);</span>
+<span class="pc bpc" id="L555" title="5 of 6 branches missed.">				else if (!bContainingSegmentImpactFade &amp;&amp; i &gt;= iPriorImpactFadeIndex &amp;&amp; i &lt; iIndex - 1)</span>
+<span class="nc" id="L556">					dblDResponseDManifestMeasurei = _aLSRM[i].calcDResponseDManifest (strManifestMeasure,</span>
+<span class="nc" id="L557">						_aLSRM[i].right(), iOrder);</span>
 
-<span class="pc bpc" id="L529" title="1 of 2 branches missed.">				if (!wjDResponseDManifestMeasure.accumulatePartialFirstDerivative (0, i,</span>
+<span class="pc bpc" id="L559" title="1 of 2 branches missed.">				if (!wjDResponseDManifestMeasure.accumulatePartialFirstDerivative (0, i,</span>
 					dblDResponseDManifestMeasurei))
-<span class="nc" id="L531">					return null;</span>
+<span class="nc" id="L561">					return null;</span>
 			}
 
-<span class="fc" id="L534">			return wjDResponseDManifestMeasure;</span>
-<span class="fc" id="L535">		} catch (java.lang.Exception e) {</span>
+<span class="fc" id="L564">			return wjDResponseDManifestMeasure;</span>
+<span class="fc" id="L565">		} catch (java.lang.Exception e) {</span>
 			// e.printStackTrace();
 		}
 
-<span class="fc" id="L539">		return null;</span>
+<span class="fc" id="L569">		return null;</span>
 	}
 
 	@Override public org.drip.spline.segment.Monotonocity monotoneType (
 		final double dblPredictorOrdinate)
 	{
-<span class="fc" id="L545">		int iIndex = -1;</span>
+<span class="fc" id="L575">		int iIndex = -1;</span>
 
 		try {
-<span class="fc" id="L548">			iIndex = containingIndex (dblPredictorOrdinate, true, true);</span>
-<span class="nc" id="L549">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L550">			e.printStackTrace();</span>
+<span class="fc" id="L578">			iIndex = containingIndex (dblPredictorOrdinate, true, true);</span>
+<span class="nc" id="L579">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L580">			e.printStackTrace();</span>
 
-<span class="nc" id="L552">			return null;</span>
-<span class="fc" id="L553">		}</span>
+<span class="nc" id="L582">			return null;</span>
+<span class="fc" id="L583">		}</span>
 
-<span class="fc" id="L555">		return _aLSRM[iIndex].monotoneType();</span>
+<span class="fc" id="L585">		return _aLSRM[iIndex].monotoneType();</span>
 	}
 
 	@Override public boolean isLocallyMonotone()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L561">		int iNumSegment = _aLSRM.length;</span>
+<span class="nc" id="L591">		int iNumSegment = _aLSRM.length;</span>
 
-<span class="nc bnc" id="L563" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSegment; ++i) {</span>
-<span class="nc" id="L564">			org.drip.spline.segment.Monotonocity mono = null;</span>
+<span class="nc bnc" id="L593" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSegment; ++i) {</span>
+<span class="nc" id="L594">			org.drip.spline.segment.Monotonocity mono = null;</span>
 
 			try {
-<span class="nc" id="L567">				mono = _aLSRM[i].monotoneType();</span>
-<span class="nc" id="L568">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L569">				e.printStackTrace();</span>
-<span class="nc" id="L570">			}</span>
+<span class="nc" id="L597">				mono = _aLSRM[i].monotoneType();</span>
+<span class="nc" id="L598">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L599">				e.printStackTrace();</span>
+<span class="nc" id="L600">			}</span>
 
-<span class="nc bnc" id="L572" title="All 4 branches missed.">			if (null == mono || org.drip.spline.segment.Monotonocity.MONOTONIC != mono.type()) return false;</span>
+<span class="nc bnc" id="L602" title="All 4 branches missed.">			if (null == mono || org.drip.spline.segment.Monotonocity.MONOTONIC != mono.type()) return false;</span>
 		}
 
-<span class="nc" id="L575">		return true;</span>
+<span class="nc" id="L605">		return true;</span>
 	}
 
 	@Override public boolean isCoMonotone (
 		final double[] adblMeasuredResponse)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L582">		int iNumSegment = _aLSRM.length;</span>
-<span class="nc" id="L583">		int[] aiMonotoneType = new int[iNumSegment];</span>
-<span class="nc" id="L584">		int[] aiNodeMiniMax = new int[iNumSegment + 1];</span>
+<span class="nc" id="L612">		int iNumSegment = _aLSRM.length;</span>
+<span class="nc" id="L613">		int[] aiMonotoneType = new int[iNumSegment];</span>
+<span class="nc" id="L614">		int[] aiNodeMiniMax = new int[iNumSegment + 1];</span>
 
-<span class="nc bnc" id="L586" title="All 4 branches missed.">		if (null == adblMeasuredResponse || adblMeasuredResponse.length != iNumSegment + 1)</span>
-<span class="nc" id="L587">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L616" title="All 4 branches missed.">		if (null == adblMeasuredResponse || adblMeasuredResponse.length != iNumSegment + 1)</span>
+<span class="nc" id="L617">			throw new java.lang.Exception</span>
 				(&quot;CalibratableMultiSegmentSequence::isCoMonotone =&gt; Data input inconsistent with the segment&quot;);
 
-<span class="nc bnc" id="L590" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSegment + 1; ++i) {</span>
-<span class="nc bnc" id="L591" title="All 4 branches missed.">			if (0 == i || iNumSegment == i)</span>
-<span class="nc" id="L592">				aiNodeMiniMax[i] = MONOTONE_PREDICTOR_ORDINATE_NODE;</span>
+<span class="nc bnc" id="L620" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSegment + 1; ++i) {</span>
+<span class="nc bnc" id="L621" title="All 4 branches missed.">			if (0 == i || iNumSegment == i)</span>
+<span class="nc" id="L622">				aiNodeMiniMax[i] = MONOTONE_PREDICTOR_ORDINATE_NODE;</span>
 			else {
-<span class="nc bnc" id="L594" title="All 4 branches missed.">				if (adblMeasuredResponse[i - 1] &lt; adblMeasuredResponse[i] &amp;&amp; adblMeasuredResponse[i + 1] &lt;</span>
+<span class="nc bnc" id="L624" title="All 4 branches missed.">				if (adblMeasuredResponse[i - 1] &lt; adblMeasuredResponse[i] &amp;&amp; adblMeasuredResponse[i + 1] &lt;</span>
 					adblMeasuredResponse[i])
-<span class="nc" id="L596">					aiNodeMiniMax[i] = MAXIMA_PREDICTOR_ORDINATE_NODE;</span>
-<span class="nc bnc" id="L597" title="All 4 branches missed.">				else if (adblMeasuredResponse[i - 1] &gt; adblMeasuredResponse[i] &amp;&amp; adblMeasuredResponse[i + 1]</span>
+<span class="nc" id="L626">					aiNodeMiniMax[i] = MAXIMA_PREDICTOR_ORDINATE_NODE;</span>
+<span class="nc bnc" id="L627" title="All 4 branches missed.">				else if (adblMeasuredResponse[i - 1] &gt; adblMeasuredResponse[i] &amp;&amp; adblMeasuredResponse[i + 1]</span>
 					&gt; adblMeasuredResponse[i])
-<span class="nc" id="L599">					aiNodeMiniMax[i] = MINIMA_PREDICTOR_ORDINATE_NODE;</span>
+<span class="nc" id="L629">					aiNodeMiniMax[i] = MINIMA_PREDICTOR_ORDINATE_NODE;</span>
 				else
-<span class="nc" id="L601">					aiNodeMiniMax[i] = MONOTONE_PREDICTOR_ORDINATE_NODE;</span>
+<span class="nc" id="L631">					aiNodeMiniMax[i] = MONOTONE_PREDICTOR_ORDINATE_NODE;</span>
 			}
 
-<span class="nc bnc" id="L604" title="All 2 branches missed.">			if (i &lt; iNumSegment) {</span>
-<span class="nc" id="L605">				org.drip.spline.segment.Monotonocity mono = _aLSRM[i].monotoneType();</span>
+<span class="nc bnc" id="L634" title="All 2 branches missed.">			if (i &lt; iNumSegment) {</span>
+<span class="nc" id="L635">				org.drip.spline.segment.Monotonocity mono = _aLSRM[i].monotoneType();</span>
 
-<span class="nc bnc" id="L607" title="All 2 branches missed.">				if (null != mono) aiMonotoneType[i] = mono.type();</span>
+<span class="nc bnc" id="L637" title="All 2 branches missed.">				if (null != mono) aiMonotoneType[i] = mono.type();</span>
 			}
 		}
 
-<span class="nc bnc" id="L611" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumSegment; ++i) {</span>
-<span class="nc bnc" id="L612" title="All 2 branches missed.">			if (MAXIMA_PREDICTOR_ORDINATE_NODE == aiNodeMiniMax[i]) {</span>
-<span class="nc bnc" id="L613" title="All 4 branches missed.">				if (org.drip.spline.segment.Monotonocity.MAXIMA != aiMonotoneType[i] &amp;&amp;</span>
+<span class="nc bnc" id="L641" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumSegment; ++i) {</span>
+<span class="nc bnc" id="L642" title="All 2 branches missed.">			if (MAXIMA_PREDICTOR_ORDINATE_NODE == aiNodeMiniMax[i]) {</span>
+<span class="nc bnc" id="L643" title="All 4 branches missed.">				if (org.drip.spline.segment.Monotonocity.MAXIMA != aiMonotoneType[i] &amp;&amp;</span>
 					org.drip.spline.segment.Monotonocity.MAXIMA != aiMonotoneType[i - 1])
-<span class="nc" id="L615">					return false;</span>
-<span class="nc bnc" id="L616" title="All 2 branches missed.">			} else if (MINIMA_PREDICTOR_ORDINATE_NODE == aiNodeMiniMax[i]) {</span>
-<span class="nc bnc" id="L617" title="All 4 branches missed.">				if (org.drip.spline.segment.Monotonocity.MINIMA != aiMonotoneType[i] &amp;&amp;</span>
+<span class="nc" id="L645">					return false;</span>
+<span class="nc bnc" id="L646" title="All 2 branches missed.">			} else if (MINIMA_PREDICTOR_ORDINATE_NODE == aiNodeMiniMax[i]) {</span>
+<span class="nc bnc" id="L647" title="All 4 branches missed.">				if (org.drip.spline.segment.Monotonocity.MINIMA != aiMonotoneType[i] &amp;&amp;</span>
 					org.drip.spline.segment.Monotonocity.MINIMA != aiMonotoneType[i - 1])
-<span class="nc" id="L619">					return false;</span>
+<span class="nc" id="L649">					return false;</span>
 			}
 		}
 
-<span class="nc" id="L623">		return true;</span>
+<span class="nc" id="L653">		return true;</span>
 	}
 
 	@Override public boolean isKnot (
 		final double dblPredictorOrdinate)
 	{
-<span class="pc bpc" id="L629" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate)) return false;</span>
+<span class="pc bpc" id="L659" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate)) return false;</span>
 
-<span class="fc" id="L631">		int iNumSegment = _aLSRM.length;</span>
+<span class="fc" id="L661">		int iNumSegment = _aLSRM.length;</span>
 
-<span class="fc bfc" id="L633" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i) {</span>
-<span class="pc bpc" id="L634" title="1 of 2 branches missed.">			if (dblPredictorOrdinate == _aLSRM[i].left()) return false;</span>
+<span class="fc bfc" id="L663" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i) {</span>
+<span class="pc bpc" id="L664" title="1 of 2 branches missed.">			if (dblPredictorOrdinate == _aLSRM[i].left()) return false;</span>
 		}
 
-<span class="pc bpc" id="L637" title="1 of 2 branches missed.">		return dblPredictorOrdinate == _aLSRM[iNumSegment - 1].left();</span>
+<span class="pc bpc" id="L667" title="1 of 2 branches missed.">		return dblPredictorOrdinate == _aLSRM[iNumSegment - 1].left();</span>
 	}
 
 	@Override public double calcLeftEdgeDerivative (
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L644">		org.drip.spline.segment.LatentStateResponseModel lsrm = _aLSRM[0];</span>
+<span class="fc" id="L674">		org.drip.spline.segment.LatentStateResponseModel lsrm = _aLSRM[0];</span>
 
-<span class="fc" id="L646">		return lsrm.calcResponseValueDerivative (lsrm.left(), iOrder);</span>
+<span class="fc" id="L676">		return lsrm.calcResponseValueDerivative (lsrm.left(), iOrder);</span>
 	}
 
 	@Override public double calcRightEdgeDerivative (
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L653">		org.drip.spline.segment.LatentStateResponseModel lsrm = _aLSRM[_aLSRM.length - 1];</span>
+<span class="fc" id="L683">		org.drip.spline.segment.LatentStateResponseModel lsrm = _aLSRM[_aLSRM.length - 1];</span>
 
-<span class="fc" id="L655">		return lsrm.calcResponseValueDerivative (lsrm.right(), iOrder);</span>
+<span class="fc" id="L685">		return lsrm.calcResponseValueDerivative (lsrm.right(), iOrder);</span>
 	}
 
 	@Override public boolean resetNode (
 		final int iPredictorOrdinateIndex,
 		final double dblResponseReset)
 	{
-<span class="nc bnc" id="L662" title="All 6 branches missed.">		if (0 == iPredictorOrdinateIndex || 1 == iPredictorOrdinateIndex || _aLSRM.length &lt;</span>
-<span class="nc bnc" id="L663" title="All 2 branches missed.">			iPredictorOrdinateIndex || !org.drip.numerical.common.NumberUtil.IsValid (dblResponseReset))</span>
-<span class="nc" id="L664">			return false;</span>
+<span class="nc bnc" id="L692" title="All 6 branches missed.">		if (0 == iPredictorOrdinateIndex || 1 == iPredictorOrdinateIndex || _aLSRM.length &lt;</span>
+<span class="nc bnc" id="L693" title="All 2 branches missed.">			iPredictorOrdinateIndex || !org.drip.numerical.common.NumberUtil.IsValid (dblResponseReset))</span>
+<span class="nc" id="L694">			return false;</span>
 
-<span class="nc" id="L666">		return _aLSRM[iPredictorOrdinateIndex - 1].calibrate (_aLSRM[iPredictorOrdinateIndex - 2],</span>
+<span class="nc" id="L696">		return _aLSRM[iPredictorOrdinateIndex - 1].calibrate (_aLSRM[iPredictorOrdinateIndex - 2],</span>
 			dblResponseReset, null);
 	}
 
@@ -671,24 +701,24 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 		final int iPredictorOrdinateIndex,
 		final org.drip.spline.params.SegmentResponseValueConstraint srvcReset)
 	{
-<span class="nc bnc" id="L674" title="All 8 branches missed.">		if (0 == iPredictorOrdinateIndex || 1 == iPredictorOrdinateIndex || _aLSRM.length &lt;</span>
+<span class="nc bnc" id="L704" title="All 8 branches missed.">		if (0 == iPredictorOrdinateIndex || 1 == iPredictorOrdinateIndex || _aLSRM.length &lt;</span>
 			iPredictorOrdinateIndex || null == srvcReset)
-<span class="nc" id="L676">			return false;</span>
+<span class="nc" id="L706">			return false;</span>
 
-<span class="nc" id="L678">		return _aLSRM[iPredictorOrdinateIndex - 1].calibrate (_aLSRM[iPredictorOrdinateIndex - 2], srvcReset,</span>
+<span class="nc" id="L708">		return _aLSRM[iPredictorOrdinateIndex - 1].calibrate (_aLSRM[iPredictorOrdinateIndex - 2], srvcReset,</span>
 			null);
 	}
 
 	@Override public org.drip.function.definition.R1ToR1 toAU()
 	{
-<span class="nc" id="L684">		org.drip.function.definition.R1ToR1 au = new</span>
+<span class="nc" id="L714">		org.drip.function.definition.R1ToR1 au = new</span>
 			org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L686">		{</span>
+<span class="nc" id="L716">		{</span>
 			@Override public double evaluate (
 				final double dblVariate)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L691">				return responseValue (dblVariate);</span>
+<span class="nc" id="L721">				return responseValue (dblVariate);</span>
 			}
 
 			@Override public double derivative (
@@ -696,32 +726,32 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 				final int iOrder)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L699">				return responseValueDerivative (dblVariate, iOrder);</span>
+<span class="nc" id="L729">				return responseValueDerivative (dblVariate, iOrder);</span>
 			}
 		};
 
-<span class="nc" id="L703">		return au;</span>
+<span class="nc" id="L733">		return au;</span>
 	}
 
 	@Override public boolean in (
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L710" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
-<span class="nc" id="L711">			throw new java.lang.Exception (&quot;CalibratableMultiSegmentSequence::in =&gt; Invalid inputs&quot;);</span>
+<span class="pc bpc" id="L740" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
+<span class="nc" id="L741">			throw new java.lang.Exception (&quot;CalibratableMultiSegmentSequence::in =&gt; Invalid inputs&quot;);</span>
 
-<span class="fc bfc" id="L713" title="All 2 branches covered.">		return dblPredictorOrdinate &gt;= getLeftPredictorOrdinateEdge() &amp;&amp; dblPredictorOrdinate &lt;=</span>
-<span class="fc bfc" id="L714" title="All 2 branches covered.">			getRightPredictorOrdinateEdge();</span>
+<span class="fc bfc" id="L743" title="All 2 branches covered.">		return dblPredictorOrdinate &gt;= getLeftPredictorOrdinateEdge() &amp;&amp; dblPredictorOrdinate &lt;=</span>
+<span class="fc bfc" id="L744" title="All 2 branches covered.">			getRightPredictorOrdinateEdge();</span>
 	}
 
 	@Override public double getLeftPredictorOrdinateEdge()
 	{
-<span class="fc" id="L719">		return _aLSRM[0].left();</span>
+<span class="fc" id="L749">		return _aLSRM[0].left();</span>
 	}
 
 	@Override public double getRightPredictorOrdinateEdge()
 	{
-<span class="fc" id="L724">		return _aLSRM[_aLSRM.length - 1].right();</span>
+<span class="fc" id="L754">		return _aLSRM[_aLSRM.length - 1].right();</span>
 	}
 
 	@Override public int containingIndex (
@@ -730,23 +760,23 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 		final boolean bIncludeRight)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L733" title="1 of 2 branches missed.">		if (!in (dblPredictorOrdinate))</span>
-<span class="nc" id="L734">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L763" title="1 of 2 branches missed.">		if (!in (dblPredictorOrdinate))</span>
+<span class="nc" id="L764">			throw new java.lang.Exception</span>
 				(&quot;CalibratableMultiSegmentSequence::containingIndex =&gt; Predictor Ordinate not in the Stretch Range&quot;);
 
-<span class="fc" id="L737">		int iNumSegment = _aLSRM.length;</span>
+<span class="fc" id="L767">		int iNumSegment = _aLSRM.length;</span>
 
-<span class="pc bpc" id="L739" title="1 of 2 branches missed.">		for (int i = 0 ; i &lt; iNumSegment; ++i) {</span>
-<span class="pc bpc" id="L740" title="2 of 6 branches missed.">			boolean bLeftValid = bIncludeLeft ? _aLSRM[i].left() &lt;= dblPredictorOrdinate : _aLSRM[i].left() &lt;</span>
+<span class="pc bpc" id="L769" title="1 of 2 branches missed.">		for (int i = 0 ; i &lt; iNumSegment; ++i) {</span>
+<span class="pc bpc" id="L770" title="2 of 6 branches missed.">			boolean bLeftValid = bIncludeLeft ? _aLSRM[i].left() &lt;= dblPredictorOrdinate : _aLSRM[i].left() &lt;</span>
 				dblPredictorOrdinate;
 
-<span class="fc bfc" id="L743" title="All 4 branches covered.">			boolean bRightValid = bIncludeRight ? _aLSRM[i].right() &gt;= dblPredictorOrdinate :</span>
-<span class="fc bfc" id="L744" title="All 2 branches covered.">				_aLSRM[i].right() &gt; dblPredictorOrdinate;</span>
+<span class="fc bfc" id="L773" title="All 4 branches covered.">			boolean bRightValid = bIncludeRight ? _aLSRM[i].right() &gt;= dblPredictorOrdinate :</span>
+<span class="fc bfc" id="L774" title="All 2 branches covered.">				_aLSRM[i].right() &gt; dblPredictorOrdinate;</span>
 
-<span class="pc bpc" id="L746" title="1 of 4 branches missed.">			if (bLeftValid &amp;&amp; bRightValid) return i;</span>
+<span class="pc bpc" id="L776" title="1 of 4 branches missed.">			if (bLeftValid &amp;&amp; bRightValid) return i;</span>
 		}
 
-<span class="nc" id="L749">		throw new java.lang.Exception</span>
+<span class="nc" id="L779">		throw new java.lang.Exception</span>
 			(&quot;CalibratableMultiSegmentSequence::containingIndex =&gt; Cannot locate Containing Index&quot;);
 	}
 
@@ -754,127 +784,127 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 		final java.lang.String strName,
 		final double dblPredictorOrdinate)
 	{
-<span class="fc" id="L757">		int iNumSegment = _aLSRM.length;</span>
-<span class="fc" id="L758">		int iContainingPredictorOrdinateIndex = 0;</span>
+<span class="fc" id="L787">		int iNumSegment = _aLSRM.length;</span>
+<span class="fc" id="L788">		int iContainingPredictorOrdinateIndex = 0;</span>
 
 		try {
-<span class="fc" id="L761">			iContainingPredictorOrdinateIndex = containingIndex (dblPredictorOrdinate, true, false);</span>
-<span class="nc" id="L762">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L763">			e.printStackTrace();</span>
+<span class="fc" id="L791">			iContainingPredictorOrdinateIndex = containingIndex (dblPredictorOrdinate, true, false);</span>
+<span class="nc" id="L792">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L793">			e.printStackTrace();</span>
 
-<span class="nc" id="L765">			return null;</span>
-<span class="fc" id="L766">		}</span>
+<span class="nc" id="L795">			return null;</span>
+<span class="fc" id="L796">		}</span>
 
-<span class="fc" id="L768">		int iNumClippedSegment = iNumSegment - iContainingPredictorOrdinateIndex;</span>
-<span class="fc" id="L769">		org.drip.spline.segment.LatentStateResponseModel[] aCS = new</span>
+<span class="fc" id="L798">		int iNumClippedSegment = iNumSegment - iContainingPredictorOrdinateIndex;</span>
+<span class="fc" id="L799">		org.drip.spline.segment.LatentStateResponseModel[] aCS = new</span>
 			org.drip.spline.segment.LatentStateResponseModel[iNumClippedSegment];
-<span class="fc" id="L771">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
+<span class="fc" id="L801">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
 			org.drip.spline.params.SegmentCustomBuilderControl[iNumClippedSegment];
 
-<span class="fc bfc" id="L774" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumClippedSegment; ++i) {</span>
-<span class="fc bfc" id="L775" title="All 2 branches covered.">			if (null == (aCS[i] = 0 == i ?</span>
-<span class="pc bpc" id="L776" title="1 of 2 branches missed.">				_aLSRM[iContainingPredictorOrdinateIndex].clipLeftOfPredictorOrdinate (dblPredictorOrdinate)</span>
+<span class="fc bfc" id="L804" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumClippedSegment; ++i) {</span>
+<span class="fc bfc" id="L805" title="All 2 branches covered.">			if (null == (aCS[i] = 0 == i ?</span>
+<span class="pc bpc" id="L806" title="1 of 2 branches missed.">				_aLSRM[iContainingPredictorOrdinateIndex].clipLeftOfPredictorOrdinate (dblPredictorOrdinate)</span>
 					: _aLSRM[i + iContainingPredictorOrdinateIndex]))
-<span class="nc" id="L778">				return null;</span>
+<span class="nc" id="L808">				return null;</span>
 
-<span class="fc" id="L780">			aSCBC[i] = _aSCBC[i + iContainingPredictorOrdinateIndex];</span>
+<span class="fc" id="L810">			aSCBC[i] = _aSCBC[i + iContainingPredictorOrdinateIndex];</span>
 		}
 
 		try {
-<span class="fc" id="L784">			return new CalibratableMultiSegmentSequence (strName, aCS, aSCBC);</span>
-<span class="nc" id="L785">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L786">			e.printStackTrace();</span>
+<span class="fc" id="L814">			return new CalibratableMultiSegmentSequence (strName, aCS, aSCBC);</span>
+<span class="nc" id="L815">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L816">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L789">		return null;</span>
+<span class="nc" id="L819">		return null;</span>
 	}
 
 	@Override public CalibratableMultiSegmentSequence clipRight (
 		final java.lang.String strName,
 		final double dblPredictorOrdinate)
 	{
-<span class="fc" id="L796">		int iContainingPredictorOrdinateIndex = 0;</span>
+<span class="fc" id="L826">		int iContainingPredictorOrdinateIndex = 0;</span>
 
 		try {
-<span class="fc" id="L799">			iContainingPredictorOrdinateIndex = containingIndex (dblPredictorOrdinate, false, true);</span>
-<span class="nc" id="L800">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L801">			e.printStackTrace();</span>
+<span class="fc" id="L829">			iContainingPredictorOrdinateIndex = containingIndex (dblPredictorOrdinate, false, true);</span>
+<span class="nc" id="L830">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L831">			e.printStackTrace();</span>
 
-<span class="nc" id="L803">			return null;</span>
-<span class="fc" id="L804">		}</span>
+<span class="nc" id="L833">			return null;</span>
+<span class="fc" id="L834">		}</span>
 
-<span class="fc" id="L806">		org.drip.spline.segment.LatentStateResponseModel[] aCS = new</span>
+<span class="fc" id="L836">		org.drip.spline.segment.LatentStateResponseModel[] aCS = new</span>
 			org.drip.spline.segment.LatentStateResponseModel[iContainingPredictorOrdinateIndex + 1];
-<span class="fc" id="L808">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
+<span class="fc" id="L838">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
 			org.drip.spline.params.SegmentCustomBuilderControl[iContainingPredictorOrdinateIndex + 1];
 
-<span class="fc bfc" id="L811" title="All 2 branches covered.">		for (int i = 0; i &lt;= iContainingPredictorOrdinateIndex; ++i) {</span>
-<span class="fc bfc" id="L812" title="All 2 branches covered.">			if (null == (aCS[i] = iContainingPredictorOrdinateIndex == i ?</span>
-<span class="pc bpc" id="L813" title="1 of 2 branches missed.">				_aLSRM[iContainingPredictorOrdinateIndex].clipRightOfPredictorOrdinate (dblPredictorOrdinate)</span>
+<span class="fc bfc" id="L841" title="All 2 branches covered.">		for (int i = 0; i &lt;= iContainingPredictorOrdinateIndex; ++i) {</span>
+<span class="fc bfc" id="L842" title="All 2 branches covered.">			if (null == (aCS[i] = iContainingPredictorOrdinateIndex == i ?</span>
+<span class="pc bpc" id="L843" title="1 of 2 branches missed.">				_aLSRM[iContainingPredictorOrdinateIndex].clipRightOfPredictorOrdinate (dblPredictorOrdinate)</span>
 					: _aLSRM[i]))
-<span class="nc" id="L815">				return null;</span>
+<span class="nc" id="L845">				return null;</span>
 
-<span class="fc" id="L817">			aSCBC[i] = _aSCBC[i];</span>
+<span class="fc" id="L847">			aSCBC[i] = _aSCBC[i];</span>
 		}
 
 		try {
-<span class="fc" id="L821">			return new CalibratableMultiSegmentSequence (strName, aCS, aSCBC);</span>
-<span class="nc" id="L822">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L823">			e.printStackTrace();</span>
+<span class="fc" id="L851">			return new CalibratableMultiSegmentSequence (strName, aCS, aSCBC);</span>
+<span class="nc" id="L852">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L853">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L826">		return null;</span>
+<span class="nc" id="L856">		return null;</span>
 	}
 
 	@Override public double curvatureDPE()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L832">		double dblDPE = 0.;</span>
+<span class="fc" id="L862">		double dblDPE = 0.;</span>
 
-<span class="fc bfc" id="L834" title="All 2 branches covered.">		for (org.drip.spline.segment.LatentStateResponseModel lsrm : _aLSRM)</span>
-<span class="fc" id="L835">			dblDPE += lsrm.curvatureDPE();</span>
+<span class="fc bfc" id="L864" title="All 2 branches covered.">		for (org.drip.spline.segment.LatentStateResponseModel lsrm : _aLSRM)</span>
+<span class="fc" id="L865">			dblDPE += lsrm.curvatureDPE();</span>
 
-<span class="fc" id="L837">		return dblDPE;</span>
+<span class="fc" id="L867">		return dblDPE;</span>
 	}
 
 	@Override public double lengthDPE()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L843">		double dblDPE = 0.;</span>
+<span class="fc" id="L873">		double dblDPE = 0.;</span>
 
-<span class="fc bfc" id="L845" title="All 2 branches covered.">		for (org.drip.spline.segment.LatentStateResponseModel lsrm : _aLSRM)</span>
-<span class="fc" id="L846">			dblDPE += lsrm.lengthDPE();</span>
+<span class="fc bfc" id="L875" title="All 2 branches covered.">		for (org.drip.spline.segment.LatentStateResponseModel lsrm : _aLSRM)</span>
+<span class="fc" id="L876">			dblDPE += lsrm.lengthDPE();</span>
 
-<span class="fc" id="L848">		return dblDPE;</span>
+<span class="fc" id="L878">		return dblDPE;</span>
 	}
 
 	@Override public double bestFitDPE (
 		final org.drip.spline.params.StretchBestFitResponse rbfr)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L855" title="1 of 2 branches missed.">		if (null == rbfr) return 0.;</span>
+<span class="pc bpc" id="L885" title="1 of 2 branches missed.">		if (null == rbfr) return 0.;</span>
 
-<span class="fc" id="L857">		double dblDPE = 0.;</span>
+<span class="fc" id="L887">		double dblDPE = 0.;</span>
 
-<span class="fc bfc" id="L859" title="All 2 branches covered.">		for (org.drip.spline.segment.LatentStateResponseModel lsrm : _aLSRM)</span>
-<span class="fc" id="L860">			dblDPE += lsrm.bestFitDPE (rbfr.sizeToSegment (lsrm));</span>
+<span class="fc bfc" id="L889" title="All 2 branches covered.">		for (org.drip.spline.segment.LatentStateResponseModel lsrm : _aLSRM)</span>
+<span class="fc" id="L890">			dblDPE += lsrm.bestFitDPE (rbfr.sizeToSegment (lsrm));</span>
 
-<span class="fc" id="L862">		return dblDPE;</span>
+<span class="fc" id="L892">		return dblDPE;</span>
 	}
 
 	@Override public org.drip.state.representation.MergeSubStretchManager msm()
 	{
-<span class="nc" id="L867">		return null;</span>
+<span class="nc" id="L897">		return null;</span>
 	}
 
 	@Override public java.lang.String displayString()
 	{
-<span class="nc" id="L872">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
+<span class="nc" id="L902">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
 
-<span class="nc bnc" id="L874" title="All 2 branches missed.">		for (int i = 0; i &lt; _aLSRM.length; ++i)</span>
-<span class="nc" id="L875">			sb.append (_aLSRM[i].displayString() + &quot; \n&quot;);</span>
+<span class="nc bnc" id="L904" title="All 2 branches missed.">		for (int i = 0; i &lt; _aLSRM.length; ++i)</span>
+<span class="nc" id="L905">			sb.append (_aLSRM[i].displayString() + &quot; \n&quot;);</span>
 
-<span class="nc" id="L877">		return sb.toString();</span>
+<span class="nc" id="L907">		return sb.toString();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

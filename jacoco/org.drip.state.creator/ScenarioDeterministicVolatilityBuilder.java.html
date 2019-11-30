@@ -6,6 +6,7 @@ package org.drip.state.creator;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -13,39 +14,50 @@ package org.drip.state.creator;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -74,17 +86,17 @@ package org.drip.state.creator;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator&quot;&gt;Creator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md&quot;&gt;Latent State Inference and Creation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md&quot;&gt;Scenario State Curve/Surface Builders&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L87">public class ScenarioDeterministicVolatilityBuilder {</span>
+<span class="nc" id="L99">public class ScenarioDeterministicVolatilityBuilder {</span>
 
 	/**
 	 * Construct the Deterministic Volatility Term Structure Instance using the specified Custom Spline
@@ -107,32 +119,32 @@ package org.drip.state.creator;
 		final double[] adblImpliedVolatility,
 		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
 	{
-<span class="pc bpc" id="L110" title="6 of 12 branches missed.">		if (null == strName || strName.isEmpty() || null == dtStart || null == aiDate || null ==</span>
+<span class="pc bpc" id="L122" title="6 of 12 branches missed.">		if (null == strName || strName.isEmpty() || null == dtStart || null == aiDate || null ==</span>
 			adblImpliedVolatility || null == scbc)
-<span class="nc" id="L112">			return null;</span>
+<span class="nc" id="L124">			return null;</span>
 
-<span class="fc" id="L114">		int iNumDate = aiDate.length;</span>
-<span class="fc" id="L115">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
+<span class="fc" id="L126">		int iNumDate = aiDate.length;</span>
+<span class="fc" id="L127">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
 			org.drip.spline.params.SegmentCustomBuilderControl[iNumDate - 1];
 
-<span class="pc bpc" id="L118" title="2 of 4 branches missed.">		if (0 == iNumDate || iNumDate != adblImpliedVolatility.length) return null;</span>
+<span class="pc bpc" id="L130" title="2 of 4 branches missed.">		if (0 == iNumDate || iNumDate != adblImpliedVolatility.length) return null;</span>
 
-<span class="fc bfc" id="L120" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDate - 1; ++i)</span>
-<span class="fc" id="L121">			aSCBC[i] = scbc;</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDate - 1; ++i)</span>
+<span class="fc" id="L133">			aSCBC[i] = scbc;</span>
 
 		try {
-<span class="fc" id="L124">			return new org.drip.state.curve.BasisSplineDeterministicVolatility (dtStart.julian(),</span>
-<span class="fc" id="L125">				org.drip.state.identifier.CustomLabel.Standard (strName), strCurrency, new</span>
+<span class="fc" id="L136">			return new org.drip.state.curve.BasisSplineDeterministicVolatility (dtStart.julian(),</span>
+<span class="fc" id="L137">				org.drip.state.identifier.CustomLabel.Standard (strName), strCurrency, new</span>
 					org.drip.spline.grid.OverlappingStretchSpan
 						(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-<span class="fc" id="L128">							(strName, aiDate, adblImpliedVolatility, aSCBC, null,</span>
-<span class="fc" id="L129">								org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
+<span class="fc" id="L140">							(strName, aiDate, adblImpliedVolatility, aSCBC, null,</span>
+<span class="fc" id="L141">								org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
 									org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE)));
-<span class="nc" id="L131">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L132">			e.printStackTrace();</span>
+<span class="nc" id="L143">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L144">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L135">		return null;</span>
+<span class="nc" id="L147">		return null;</span>
 	}
 
 	/**
@@ -154,27 +166,27 @@ package org.drip.state.creator;
 		final java.lang.String[] astrTenor,
 		final double[] adblImpliedVolatility)
 	{
-<span class="pc bpc" id="L157" title="2 of 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
+<span class="pc bpc" id="L169" title="2 of 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
 
-<span class="fc" id="L159">		int iNumTenor = astrTenor.length;</span>
-<span class="fc" id="L160">		int[] aiDate = new int[iNumTenor];</span>
+<span class="fc" id="L171">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L172">		int[] aiDate = new int[iNumTenor];</span>
 
-<span class="pc bpc" id="L162" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="fc bfc" id="L164" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
-<span class="fc" id="L165">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="fc" id="L177">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
 
 		try {
-<span class="fc" id="L168">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
+<span class="fc" id="L180">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
 				new org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
 						org.drip.spline.basis.PolynomialFunctionSetParams (4),
-<span class="fc" id="L172">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L173">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L174">			e.printStackTrace();</span>
+<span class="fc" id="L184">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L185">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L186">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L177">		return null;</span>
+<span class="nc" id="L189">		return null;</span>
 	}
 
 	/**
@@ -197,27 +209,27 @@ package org.drip.state.creator;
 		final java.lang.String[] astrTenor,
 		final double[] adblImpliedVolatility)
 	{
-<span class="pc bpc" id="L200" title="2 of 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
+<span class="pc bpc" id="L212" title="2 of 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
 
-<span class="fc" id="L202">		int iNumTenor = astrTenor.length;</span>
-<span class="fc" id="L203">		int[] aiDate = new int[iNumTenor];</span>
+<span class="fc" id="L214">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L215">		int[] aiDate = new int[iNumTenor];</span>
 
-<span class="pc bpc" id="L205" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="fc bfc" id="L207" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
-<span class="fc" id="L208">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+<span class="fc bfc" id="L219" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="fc" id="L220">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
 
 		try {
-<span class="fc" id="L211">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
+<span class="fc" id="L223">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
 				new org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
 						org.drip.spline.basis.PolynomialFunctionSetParams (5),
-<span class="fc" id="L215">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L216">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L217">			e.printStackTrace();</span>
+<span class="fc" id="L227">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L228">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L229">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L220">		return null;</span>
+<span class="nc" id="L232">		return null;</span>
 	}
 
 	/**
@@ -241,27 +253,27 @@ package org.drip.state.creator;
 		final java.lang.String[] astrTenor,
 		final double[] adblImpliedVolatility)
 	{
-<span class="pc bpc" id="L244" title="2 of 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
+<span class="pc bpc" id="L256" title="2 of 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
 
-<span class="fc" id="L246">		int iNumTenor = astrTenor.length;</span>
-<span class="fc" id="L247">		int[] aiDate = new int[iNumTenor];</span>
+<span class="fc" id="L258">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L259">		int[] aiDate = new int[iNumTenor];</span>
 
-<span class="pc bpc" id="L249" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="pc bpc" id="L261" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="fc bfc" id="L251" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
-<span class="fc" id="L252">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="fc" id="L264">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
 
 		try {
-<span class="fc" id="L255">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
+<span class="fc" id="L267">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
 				new org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS, new
 						org.drip.spline.basis.KaklisPandelisSetParams (2),
-<span class="fc" id="L259">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L260">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L261">			e.printStackTrace();</span>
+<span class="fc" id="L271">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L272">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L273">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L264">		return null;</span>
+<span class="nc" id="L276">		return null;</span>
 	}
 
 	/**
@@ -287,27 +299,27 @@ package org.drip.state.creator;
 		final double[] adblImpliedVolatility,
 		final double dblTension)
 	{
-<span class="pc bpc" id="L290" title="2 of 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
+<span class="pc bpc" id="L302" title="2 of 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
 
-<span class="fc" id="L292">		int iNumTenor = astrTenor.length;</span>
-<span class="fc" id="L293">		int[] aiDate = new int[iNumTenor];</span>
+<span class="fc" id="L304">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L305">		int[] aiDate = new int[iNumTenor];</span>
 
-<span class="pc bpc" id="L295" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="pc bpc" id="L307" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="fc bfc" id="L297" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
-<span class="fc" id="L298">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+<span class="fc bfc" id="L309" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="fc" id="L310">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
 
 		try {
-<span class="fc" id="L301">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
+<span class="fc" id="L313">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
 				new org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
 						new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="fc" id="L305">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L306">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L307">			e.printStackTrace();</span>
+<span class="fc" id="L317">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L318">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L319">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L310">		return null;</span>
+<span class="nc" id="L322">		return null;</span>
 	}
 
 	/**
@@ -333,27 +345,27 @@ package org.drip.state.creator;
 		final double[] adblImpliedVolatility,
 		final double dblTension)
 	{
-<span class="pc bpc" id="L336" title="2 of 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
+<span class="pc bpc" id="L348" title="2 of 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
 
-<span class="fc" id="L338">		int iNumTenor = astrTenor.length;</span>
-<span class="fc" id="L339">		int[] aiDate = new int[iNumTenor];</span>
+<span class="fc" id="L350">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L351">		int[] aiDate = new int[iNumTenor];</span>
 
-<span class="pc bpc" id="L341" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="pc bpc" id="L353" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="fc bfc" id="L343" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
-<span class="fc" id="L344">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+<span class="fc bfc" id="L355" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="fc" id="L356">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
 
 		try {
-<span class="fc" id="L347">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
+<span class="fc" id="L359">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
 				new org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
 						new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="fc" id="L351">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L352">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L353">			e.printStackTrace();</span>
+<span class="fc" id="L363">							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L364">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L365">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L356">		return null;</span>
+<span class="nc" id="L368">		return null;</span>
 	}
 
 	/**
@@ -380,27 +392,27 @@ package org.drip.state.creator;
 			final double[] adblImpliedVolatility,
 			final double dblTension)
 	{
-<span class="pc bpc" id="L383" title="2 of 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
+<span class="pc bpc" id="L395" title="2 of 4 branches missed.">		if (null == dtStart || null == astrTenor) return null;</span>
 
-<span class="fc" id="L385">		int iNumTenor = astrTenor.length;</span>
-<span class="fc" id="L386">		int[] aiDate = new int[iNumTenor];</span>
+<span class="fc" id="L397">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L398">		int[] aiDate = new int[iNumTenor];</span>
 
-<span class="pc bpc" id="L388" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="pc bpc" id="L400" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="fc bfc" id="L390" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
-<span class="fc" id="L391">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+<span class="fc bfc" id="L402" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="fc" id="L403">			aiDate[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
 
 		try {
-<span class="fc" id="L394">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
+<span class="fc" id="L406">			return CustomSplineTermStructure (strName, dtStart, strCurrency, aiDate, adblImpliedVolatility,</span>
 				new org.drip.spline.params.SegmentCustomBuilderControl
 					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
 				new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="fc" id="L398">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
-<span class="nc" id="L399">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L400">			e.printStackTrace();</span>
+<span class="fc" id="L410">					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));</span>
+<span class="nc" id="L411">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L412">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L403">		return null;</span>
+<span class="nc" id="L415">		return null;</span>
 	}
 
 	/**
@@ -421,13 +433,13 @@ package org.drip.state.creator;
 		final double dblFlatVolatility)
 	{
 		try {
-<span class="fc" id="L424">			return new org.drip.state.nonlinear.FlatForwardVolatilityCurve (iEpochDate, label, strCurrency,</span>
+<span class="fc" id="L436">			return new org.drip.state.nonlinear.FlatForwardVolatilityCurve (iEpochDate, label, strCurrency,</span>
 				new int[] {iEpochDate}, new double[] {dblFlatVolatility});
-<span class="nc" id="L426">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L427">			e.printStackTrace();</span>
+<span class="nc" id="L438">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L439">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L430">		return null;</span>
+<span class="nc" id="L442">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

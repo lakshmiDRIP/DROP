@@ -6,6 +6,7 @@ package org.drip.state.creator;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -13,39 +14,50 @@ package org.drip.state.creator;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -74,17 +86,17 @@ package org.drip.state.creator;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator&quot;&gt;Creator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md&quot;&gt;Latent State Inference and Creation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md&quot;&gt;Scenario State Curve/Surface Builders&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L87">public class ScenarioMarketSurfaceBuilder {</span>
+<span class="nc" id="L99">public class ScenarioMarketSurfaceBuilder {</span>
 
 	/**
 	 * Build an Instance of the Market Node Surface using Custom Wire Span and Surface Splines.
@@ -111,61 +123,61 @@ package org.drip.state.creator;
 		final org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan,
 		final org.drip.spline.params.SegmentCustomBuilderControl scbcSurface)
 	{
-<span class="pc bpc" id="L114" title="4 of 8 branches missed.">		if (null == dtStart || null == strName || strName.isEmpty() || null == strCurrency ||</span>
-<span class="pc bpc" id="L115" title="6 of 12 branches missed.">			strCurrency.isEmpty() || null == adblX || null == adblY || null == aadblNode || null ==</span>
+<span class="pc bpc" id="L126" title="4 of 8 branches missed.">		if (null == dtStart || null == strName || strName.isEmpty() || null == strCurrency ||</span>
+<span class="pc bpc" id="L127" title="6 of 12 branches missed.">			strCurrency.isEmpty() || null == adblX || null == adblY || null == aadblNode || null ==</span>
 				scbcWireSpan || null == scbcSurface)
-<span class="nc" id="L117">			return null;</span>
+<span class="nc" id="L129">			return null;</span>
 
-<span class="fc" id="L119">		int iNumX = adblX.length;</span>
-<span class="fc" id="L120">		int iNumMaturity = adblY.length;</span>
-<span class="fc" id="L121">		int iNumOuterNode = aadblNode.length;</span>
+<span class="fc" id="L131">		int iNumX = adblX.length;</span>
+<span class="fc" id="L132">		int iNumMaturity = adblY.length;</span>
+<span class="fc" id="L133">		int iNumOuterNode = aadblNode.length;</span>
 
-<span class="pc bpc" id="L123" title="3 of 6 branches missed.">		if (0 == iNumX || 0 == iNumMaturity || iNumX != iNumOuterNode) return null;</span>
+<span class="pc bpc" id="L135" title="3 of 6 branches missed.">		if (0 == iNumX || 0 == iNumMaturity || iNumX != iNumOuterNode) return null;</span>
 
-<span class="fc bfc" id="L125" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumX; ++i) {</span>
-<span class="fc" id="L126">			double[] adblInner = aadblNode[i];</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumX; ++i) {</span>
+<span class="fc" id="L138">			double[] adblInner = aadblNode[i];</span>
 
-<span class="pc bpc" id="L128" title="2 of 4 branches missed.">			if (null == adblInner || iNumMaturity != adblInner.length) return null;</span>
+<span class="pc bpc" id="L140" title="2 of 4 branches missed.">			if (null == adblInner || iNumMaturity != adblInner.length) return null;</span>
 		}
 
-<span class="fc" id="L131">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBCWireSpan = new</span>
+<span class="fc" id="L143">		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBCWireSpan = new</span>
 			org.drip.spline.params.SegmentCustomBuilderControl[iNumX - 1];
 
-<span class="fc bfc" id="L134" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumX - 1; ++i)</span>
-<span class="fc" id="L135">			aSCBCWireSpan[i] = scbcWireSpan;</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumX - 1; ++i)</span>
+<span class="fc" id="L147">			aSCBCWireSpan[i] = scbcWireSpan;</span>
 
-<span class="fc" id="L137">		java.util.TreeMap&lt;java.lang.Double, org.drip.spline.grid.Span&gt; mapWireSpan = new</span>
+<span class="fc" id="L149">		java.util.TreeMap&lt;java.lang.Double, org.drip.spline.grid.Span&gt; mapWireSpan = new</span>
 			java.util.TreeMap&lt;java.lang.Double, org.drip.spline.grid.Span&gt;();
 
-<span class="fc bfc" id="L140" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumX; ++i) {</span>
-<span class="fc" id="L141">			org.drip.spline.stretch.MultiSegmentSequence mssWire =</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumX; ++i) {</span>
+<span class="fc" id="L153">			org.drip.spline.stretch.MultiSegmentSequence mssWire =</span>
 				org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-<span class="fc" id="L143">					(&quot;Stretch@&quot; + strName + &quot;@&quot; + org.drip.numerical.common.StringUtil.GUID(), adblY,</span>
+<span class="fc" id="L155">					(&quot;Stretch@&quot; + strName + &quot;@&quot; + org.drip.numerical.common.StringUtil.GUID(), adblY,</span>
 						aadblNode[i], aSCBCWireSpan, null,
-<span class="fc" id="L145">							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
+<span class="fc" id="L157">							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
 								org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE);
 
-<span class="pc bpc" id="L148" title="1 of 2 branches missed.">			if (null == mssWire) return null;</span>
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">			if (null == mssWire) return null;</span>
 
 			try {
-<span class="fc" id="L151">				mapWireSpan.put (adblX[i], new org.drip.spline.grid.OverlappingStretchSpan (mssWire));</span>
-<span class="nc" id="L152">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L153">				e.printStackTrace();</span>
+<span class="fc" id="L163">				mapWireSpan.put (adblX[i], new org.drip.spline.grid.OverlappingStretchSpan (mssWire));</span>
+<span class="nc" id="L164">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L165">				e.printStackTrace();</span>
 
-<span class="nc" id="L155">				return null;</span>
-<span class="fc" id="L156">			}</span>
+<span class="nc" id="L167">				return null;</span>
+<span class="fc" id="L168">			}</span>
 		}
 
 		try {
-<span class="fc" id="L160">			return new org.drip.state.curve.BasisSplineMarketSurface (dtStart.julian(),</span>
-<span class="fc" id="L161">				org.drip.state.identifier.CustomLabel.Standard (strName), strCurrency, new</span>
+<span class="fc" id="L172">			return new org.drip.state.curve.BasisSplineMarketSurface (dtStart.julian(),</span>
+<span class="fc" id="L173">				org.drip.state.identifier.CustomLabel.Standard (strName), strCurrency, new</span>
 					org.drip.spline.multidimensional.WireSurfaceStretch (&quot;WireSurfaceStretch@&quot; + strName +
-<span class="fc" id="L163">						&quot;@&quot; + org.drip.numerical.common.StringUtil.GUID(), scbcSurface, mapWireSpan));</span>
-<span class="nc" id="L164">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L165">			e.printStackTrace();</span>
+<span class="fc" id="L175">						&quot;@&quot; + org.drip.numerical.common.StringUtil.GUID(), scbcSurface, mapWireSpan));</span>
+<span class="nc" id="L176">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L177">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L168">		return null;</span>
+<span class="nc" id="L180">		return null;</span>
 	}
 
 	/**
@@ -190,35 +202,35 @@ package org.drip.state.creator;
 		final java.lang.String[] astrTenor,
 		final double[][] aadblNode)
 	{
-<span class="pc bpc" id="L193" title="1 of 2 branches missed.">		if (null == astrTenor) return null;</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">		if (null == astrTenor) return null;</span>
 
-<span class="fc" id="L195">		int iNumTenor = astrTenor.length;</span>
-<span class="fc" id="L196">		double[] adblY = new double[iNumTenor];</span>
-<span class="fc" id="L197">		org.drip.spline.params.SegmentCustomBuilderControl scbcSurface = null;</span>
-<span class="fc" id="L198">		org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan = null;</span>
+<span class="fc" id="L207">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L208">		double[] adblY = new double[iNumTenor];</span>
+<span class="fc" id="L209">		org.drip.spline.params.SegmentCustomBuilderControl scbcSurface = null;</span>
+<span class="fc" id="L210">		org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan = null;</span>
 
-<span class="pc bpc" id="L200" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="fc bfc" id="L202" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
-<span class="fc" id="L203">			adblY[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="fc" id="L215">			adblY[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
 
 		try {
-<span class="fc" id="L206">			scbcWireSpan = new org.drip.spline.params.SegmentCustomBuilderControl</span>
+<span class="fc" id="L218">			scbcWireSpan = new org.drip.spline.params.SegmentCustomBuilderControl</span>
 				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
 					org.drip.spline.basis.PolynomialFunctionSetParams (4),
-<span class="fc" id="L209">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
+<span class="fc" id="L221">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
 
-<span class="fc" id="L211">			scbcSurface = new org.drip.spline.params.SegmentCustomBuilderControl</span>
+<span class="fc" id="L223">			scbcSurface = new org.drip.spline.params.SegmentCustomBuilderControl</span>
 				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
 					org.drip.spline.basis.PolynomialFunctionSetParams (4),
-<span class="fc" id="L214">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
-<span class="nc" id="L215">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L216">			e.printStackTrace();</span>
+<span class="fc" id="L226">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
+<span class="nc" id="L227">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L228">			e.printStackTrace();</span>
 
-<span class="nc" id="L218">			return null;</span>
-<span class="fc" id="L219">		}</span>
+<span class="nc" id="L230">			return null;</span>
+<span class="fc" id="L231">		}</span>
 
-<span class="fc" id="L221">		return CustomSplineWireSurface (strName, dtStart, strCurrency, adblX, adblY, aadblNode, scbcWireSpan,</span>
+<span class="fc" id="L233">		return CustomSplineWireSurface (strName, dtStart, strCurrency, adblX, adblY, aadblNode, scbcWireSpan,</span>
 			scbcSurface);
 	}
 
@@ -244,35 +256,35 @@ package org.drip.state.creator;
 		final java.lang.String[] astrTenor,
 		final double[][] aadblNode)
 	{
-<span class="pc bpc" id="L247" title="1 of 2 branches missed.">		if (null == astrTenor) return null;</span>
+<span class="pc bpc" id="L259" title="1 of 2 branches missed.">		if (null == astrTenor) return null;</span>
 
-<span class="fc" id="L249">		int iNumTenor = astrTenor.length;</span>
-<span class="fc" id="L250">		double[] adblY = new double[iNumTenor];</span>
-<span class="fc" id="L251">		org.drip.spline.params.SegmentCustomBuilderControl scbcSurface = null;</span>
-<span class="fc" id="L252">		org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan = null;</span>
+<span class="fc" id="L261">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L262">		double[] adblY = new double[iNumTenor];</span>
+<span class="fc" id="L263">		org.drip.spline.params.SegmentCustomBuilderControl scbcSurface = null;</span>
+<span class="fc" id="L264">		org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan = null;</span>
 
-<span class="pc bpc" id="L254" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="pc bpc" id="L266" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="fc bfc" id="L256" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
-<span class="fc" id="L257">			adblY[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+<span class="fc bfc" id="L268" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="fc" id="L269">			adblY[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
 
 		try {
-<span class="fc" id="L260">			scbcWireSpan = new org.drip.spline.params.SegmentCustomBuilderControl</span>
+<span class="fc" id="L272">			scbcWireSpan = new org.drip.spline.params.SegmentCustomBuilderControl</span>
 				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
 					org.drip.spline.basis.PolynomialFunctionSetParams (5),
-<span class="fc" id="L263">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
+<span class="fc" id="L275">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
 
-<span class="fc" id="L265">			scbcSurface = new org.drip.spline.params.SegmentCustomBuilderControl</span>
+<span class="fc" id="L277">			scbcSurface = new org.drip.spline.params.SegmentCustomBuilderControl</span>
 				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
 					org.drip.spline.basis.PolynomialFunctionSetParams (5),
-<span class="fc" id="L268">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
-<span class="nc" id="L269">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L270">			e.printStackTrace();</span>
+<span class="fc" id="L280">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
+<span class="nc" id="L281">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L282">			e.printStackTrace();</span>
 
-<span class="nc" id="L272">			return null;</span>
-<span class="fc" id="L273">		}</span>
+<span class="nc" id="L284">			return null;</span>
+<span class="fc" id="L285">		}</span>
 
-<span class="fc" id="L275">		return CustomSplineWireSurface (strName, dtStart, strCurrency, adblX, adblY, aadblNode, scbcWireSpan,</span>
+<span class="fc" id="L287">		return CustomSplineWireSurface (strName, dtStart, strCurrency, adblX, adblY, aadblNode, scbcWireSpan,</span>
 			scbcSurface);
 	}
 
@@ -298,35 +310,35 @@ package org.drip.state.creator;
 		final java.lang.String[] astrTenor,
 		final double[][] aadblNode)
 	{
-<span class="pc bpc" id="L301" title="1 of 2 branches missed.">		if (null == astrTenor) return null;</span>
+<span class="pc bpc" id="L313" title="1 of 2 branches missed.">		if (null == astrTenor) return null;</span>
 
-<span class="fc" id="L303">		int iNumTenor = astrTenor.length;</span>
-<span class="fc" id="L304">		double[] adblY = new double[iNumTenor];</span>
-<span class="fc" id="L305">		org.drip.spline.params.SegmentCustomBuilderControl scbcSurface = null;</span>
-<span class="fc" id="L306">		org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan = null;</span>
+<span class="fc" id="L315">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L316">		double[] adblY = new double[iNumTenor];</span>
+<span class="fc" id="L317">		org.drip.spline.params.SegmentCustomBuilderControl scbcSurface = null;</span>
+<span class="fc" id="L318">		org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan = null;</span>
 
-<span class="pc bpc" id="L308" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="pc bpc" id="L320" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="fc bfc" id="L310" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
-<span class="fc" id="L311">			adblY[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+<span class="fc bfc" id="L322" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="fc" id="L323">			adblY[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
 
 		try {
-<span class="fc" id="L314">			scbcWireSpan = new org.drip.spline.params.SegmentCustomBuilderControl</span>
+<span class="fc" id="L326">			scbcWireSpan = new org.drip.spline.params.SegmentCustomBuilderControl</span>
 				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS, new
 					org.drip.spline.basis.KaklisPandelisSetParams (2),
-<span class="fc" id="L317">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
+<span class="fc" id="L329">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
 
-<span class="fc" id="L319">			scbcSurface = new org.drip.spline.params.SegmentCustomBuilderControl</span>
+<span class="fc" id="L331">			scbcSurface = new org.drip.spline.params.SegmentCustomBuilderControl</span>
 				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS, new
 					org.drip.spline.basis.KaklisPandelisSetParams (2),
-<span class="fc" id="L322">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
-<span class="nc" id="L323">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L324">			e.printStackTrace();</span>
+<span class="fc" id="L334">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
+<span class="nc" id="L335">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L336">			e.printStackTrace();</span>
 
-<span class="nc" id="L326">			return null;</span>
-<span class="fc" id="L327">		}</span>
+<span class="nc" id="L338">			return null;</span>
+<span class="fc" id="L339">		}</span>
 
-<span class="fc" id="L329">		return CustomSplineWireSurface (strName, dtStart, strCurrency, adblX, adblY, aadblNode, scbcWireSpan,</span>
+<span class="fc" id="L341">		return CustomSplineWireSurface (strName, dtStart, strCurrency, adblX, adblY, aadblNode, scbcWireSpan,</span>
 			scbcSurface);
 	}
 
@@ -354,35 +366,35 @@ package org.drip.state.creator;
 		final double[][] aadblNode,
 		final double dblTension)
 	{
-<span class="pc bpc" id="L357" title="1 of 2 branches missed.">		if (null == astrTenor) return null;</span>
+<span class="pc bpc" id="L369" title="1 of 2 branches missed.">		if (null == astrTenor) return null;</span>
 
-<span class="fc" id="L359">		int iNumTenor = astrTenor.length;</span>
-<span class="fc" id="L360">		double[] adblY = new double[iNumTenor];</span>
-<span class="fc" id="L361">		org.drip.spline.params.SegmentCustomBuilderControl scbcSurface = null;</span>
-<span class="fc" id="L362">		org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan = null;</span>
+<span class="fc" id="L371">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L372">		double[] adblY = new double[iNumTenor];</span>
+<span class="fc" id="L373">		org.drip.spline.params.SegmentCustomBuilderControl scbcSurface = null;</span>
+<span class="fc" id="L374">		org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan = null;</span>
 
-<span class="pc bpc" id="L364" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="pc bpc" id="L376" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="fc bfc" id="L366" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
-<span class="fc" id="L367">			adblY[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+<span class="fc bfc" id="L378" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="fc" id="L379">			adblY[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
 
 		try {
-<span class="fc" id="L370">			scbcWireSpan = new org.drip.spline.params.SegmentCustomBuilderControl</span>
+<span class="fc" id="L382">			scbcWireSpan = new org.drip.spline.params.SegmentCustomBuilderControl</span>
 				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION, new
 					org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="fc" id="L373">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
+<span class="fc" id="L385">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
 
-<span class="fc" id="L375">			scbcSurface = new org.drip.spline.params.SegmentCustomBuilderControl</span>
+<span class="fc" id="L387">			scbcSurface = new org.drip.spline.params.SegmentCustomBuilderControl</span>
 				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION, new
 					org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="fc" id="L378">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
-<span class="nc" id="L379">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L380">			e.printStackTrace();</span>
+<span class="fc" id="L390">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
+<span class="nc" id="L391">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L392">			e.printStackTrace();</span>
 
-<span class="nc" id="L382">			return null;</span>
-<span class="fc" id="L383">		}</span>
+<span class="nc" id="L394">			return null;</span>
+<span class="fc" id="L395">		}</span>
 
-<span class="fc" id="L385">		return CustomSplineWireSurface (strName, dtStart, strCurrency, adblX, adblY, aadblNode, scbcWireSpan,</span>
+<span class="fc" id="L397">		return CustomSplineWireSurface (strName, dtStart, strCurrency, adblX, adblY, aadblNode, scbcWireSpan,</span>
 			scbcSurface);
 	}
 
@@ -410,35 +422,35 @@ package org.drip.state.creator;
 		final double[][] aadblNode,
 		final double dblTension)
 	{
-<span class="pc bpc" id="L413" title="1 of 2 branches missed.">		if (null == astrTenor) return null;</span>
+<span class="pc bpc" id="L425" title="1 of 2 branches missed.">		if (null == astrTenor) return null;</span>
 
-<span class="fc" id="L415">		int iNumTenor = astrTenor.length;</span>
-<span class="fc" id="L416">		double[] adblY = new double[iNumTenor];</span>
-<span class="fc" id="L417">		org.drip.spline.params.SegmentCustomBuilderControl scbcSurface = null;</span>
-<span class="fc" id="L418">		org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan = null;</span>
+<span class="fc" id="L427">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L428">		double[] adblY = new double[iNumTenor];</span>
+<span class="fc" id="L429">		org.drip.spline.params.SegmentCustomBuilderControl scbcSurface = null;</span>
+<span class="fc" id="L430">		org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan = null;</span>
 
-<span class="pc bpc" id="L420" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="pc bpc" id="L432" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="fc bfc" id="L422" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
-<span class="fc" id="L423">			adblY[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+<span class="fc bfc" id="L434" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="fc" id="L435">			adblY[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
 
 		try {
-<span class="fc" id="L426">			scbcWireSpan = new org.drip.spline.params.SegmentCustomBuilderControl</span>
+<span class="fc" id="L438">			scbcWireSpan = new org.drip.spline.params.SegmentCustomBuilderControl</span>
 				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
 					new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="fc" id="L429">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
+<span class="fc" id="L441">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
 
-<span class="fc" id="L431">			scbcSurface = new org.drip.spline.params.SegmentCustomBuilderControl</span>
+<span class="fc" id="L443">			scbcSurface = new org.drip.spline.params.SegmentCustomBuilderControl</span>
 				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
 					new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="fc" id="L434">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
-<span class="nc" id="L435">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L436">			e.printStackTrace();</span>
+<span class="fc" id="L446">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
+<span class="nc" id="L447">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L448">			e.printStackTrace();</span>
 
-<span class="nc" id="L438">			return null;</span>
-<span class="fc" id="L439">		}</span>
+<span class="nc" id="L450">			return null;</span>
+<span class="fc" id="L451">		}</span>
 
-<span class="fc" id="L441">		return CustomSplineWireSurface (strName, dtStart, strCurrency, adblX, adblY, aadblNode, scbcWireSpan,</span>
+<span class="fc" id="L453">		return CustomSplineWireSurface (strName, dtStart, strCurrency, adblX, adblY, aadblNode, scbcWireSpan,</span>
 			scbcSurface);
 	}
 
@@ -466,35 +478,35 @@ package org.drip.state.creator;
 		final double[][] aadblNode,
 		final double dblTension)
 	{
-<span class="pc bpc" id="L469" title="1 of 2 branches missed.">		if (null == astrTenor) return null;</span>
+<span class="pc bpc" id="L481" title="1 of 2 branches missed.">		if (null == astrTenor) return null;</span>
 
-<span class="fc" id="L471">		int iNumTenor = astrTenor.length;</span>
-<span class="fc" id="L472">		double[] adblY = new double[iNumTenor];</span>
-<span class="fc" id="L473">		org.drip.spline.params.SegmentCustomBuilderControl scbcSurface = null;</span>
-<span class="fc" id="L474">		org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan = null;</span>
+<span class="fc" id="L483">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L484">		double[] adblY = new double[iNumTenor];</span>
+<span class="fc" id="L485">		org.drip.spline.params.SegmentCustomBuilderControl scbcSurface = null;</span>
+<span class="fc" id="L486">		org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan = null;</span>
 
-<span class="pc bpc" id="L476" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="pc bpc" id="L488" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="fc bfc" id="L478" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
-<span class="fc" id="L479">			adblY[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+<span class="fc bfc" id="L490" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="fc" id="L491">			adblY[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
 
 		try {
-<span class="fc" id="L482">			scbcWireSpan = new org.drip.spline.params.SegmentCustomBuilderControl</span>
+<span class="fc" id="L494">			scbcWireSpan = new org.drip.spline.params.SegmentCustomBuilderControl</span>
 				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
 					new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="fc" id="L485">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
+<span class="fc" id="L497">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
 
-<span class="fc" id="L487">			scbcSurface = new org.drip.spline.params.SegmentCustomBuilderControl</span>
+<span class="fc" id="L499">			scbcSurface = new org.drip.spline.params.SegmentCustomBuilderControl</span>
 				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
 					new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-<span class="fc" id="L490">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
-<span class="nc" id="L491">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L492">			e.printStackTrace();</span>
+<span class="fc" id="L502">						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);</span>
+<span class="nc" id="L503">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L504">			e.printStackTrace();</span>
 
-<span class="nc" id="L494">			return null;</span>
-<span class="fc" id="L495">		}</span>
+<span class="nc" id="L506">			return null;</span>
+<span class="fc" id="L507">		}</span>
 
-<span class="fc" id="L497">		return CustomSplineWireSurface (strName, dtStart, strCurrency, adblX, adblY, aadblNode, scbcWireSpan,</span>
+<span class="fc" id="L509">		return CustomSplineWireSurface (strName, dtStart, strCurrency, adblX, adblY, aadblNode, scbcWireSpan,</span>
 			scbcSurface);
 	}
 
@@ -523,17 +535,17 @@ package org.drip.state.creator;
 		final org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan,
 		final org.drip.spline.params.SegmentCustomBuilderControl scbcSurface)
 	{
-<span class="pc bpc" id="L526" title="1 of 2 branches missed.">		if (null == astrTenor) return null;</span>
+<span class="pc bpc" id="L538" title="1 of 2 branches missed.">		if (null == astrTenor) return null;</span>
 
-<span class="fc" id="L528">		int iNumTenor = astrTenor.length;</span>
-<span class="fc" id="L529">		double[] adblY = new double[iNumTenor];</span>
+<span class="fc" id="L540">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L541">		double[] adblY = new double[iNumTenor];</span>
 
-<span class="pc bpc" id="L531" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="pc bpc" id="L543" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="fc bfc" id="L533" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
-<span class="fc" id="L534">			adblY[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
+<span class="fc bfc" id="L545" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i)</span>
+<span class="fc" id="L546">			adblY[i] = dtStart.addTenor (astrTenor[i]).julian();</span>
 
-<span class="fc" id="L536">		return CustomSplineWireSurface (strName, dtStart, strCurrency, adblX, adblY, aadblNode, scbcWireSpan,</span>
+<span class="fc" id="L548">		return CustomSplineWireSurface (strName, dtStart, strCurrency, adblX, adblY, aadblNode, scbcWireSpan,</span>
 			scbcSurface);
 	}
 
@@ -572,56 +584,56 @@ package org.drip.state.creator;
 		final org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan,
 		final org.drip.spline.params.SegmentCustomBuilderControl scbcSurface)
 	{
-<span class="pc bpc" id="L575" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblRiskFreeRate) ||</span>
-<span class="pc bpc" id="L576" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblUnderlier) ||</span>
-<span class="pc bpc" id="L577" title="4 of 8 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblInitialVolatility) || null == adblStrike ||</span>
+<span class="pc bpc" id="L587" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblRiskFreeRate) ||</span>
+<span class="pc bpc" id="L588" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblUnderlier) ||</span>
+<span class="pc bpc" id="L589" title="4 of 8 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblInitialVolatility) || null == adblStrike ||</span>
 					null == astrTenor || null == fphp)
-<span class="nc" id="L579">			return null;</span>
+<span class="nc" id="L591">			return null;</span>
 
-<span class="fc" id="L581">		int iStrike = 0;</span>
-<span class="fc" id="L582">		int iNumTenor = astrTenor.length;</span>
-<span class="fc" id="L583">		int iNumStrike = adblStrike.length;</span>
-<span class="fc" id="L584">		double[][] aadblImpliedNode = new double[iNumStrike][iNumTenor];</span>
-<span class="fc" id="L585">		org.drip.pricer.option.HestonStochasticVolatilityAlgorithm hsva = null;</span>
+<span class="fc" id="L593">		int iStrike = 0;</span>
+<span class="fc" id="L594">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L595">		int iNumStrike = adblStrike.length;</span>
+<span class="fc" id="L596">		double[][] aadblImpliedNode = new double[iNumStrike][iNumTenor];</span>
+<span class="fc" id="L597">		org.drip.pricer.option.HestonStochasticVolatilityAlgorithm hsva = null;</span>
 
 		try {
-<span class="fc" id="L588">			hsva = new org.drip.pricer.option.HestonStochasticVolatilityAlgorithm (fphp);</span>
-<span class="nc" id="L589">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L590">			e.printStackTrace();</span>
+<span class="fc" id="L600">			hsva = new org.drip.pricer.option.HestonStochasticVolatilityAlgorithm (fphp);</span>
+<span class="nc" id="L601">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L602">			e.printStackTrace();</span>
 
-<span class="nc" id="L592">			return null;</span>
-<span class="fc" id="L593">		}</span>
+<span class="nc" id="L604">			return null;</span>
+<span class="fc" id="L605">		}</span>
 
-<span class="pc bpc" id="L595" title="2 of 4 branches missed.">		if (0 == iNumTenor || 0 == iNumStrike) return null;</span>
+<span class="pc bpc" id="L607" title="2 of 4 branches missed.">		if (0 == iNumTenor || 0 == iNumStrike) return null;</span>
 
-<span class="fc bfc" id="L597" title="All 2 branches covered.">		for (double dblStrike : adblStrike) {</span>
-<span class="fc" id="L598">			int iTenor = 0;</span>
+<span class="fc bfc" id="L609" title="All 2 branches covered.">		for (double dblStrike : adblStrike) {</span>
+<span class="fc" id="L610">			int iTenor = 0;</span>
 
-<span class="fc bfc" id="L600" title="All 2 branches covered.">			for (java.lang.String strTenor : astrTenor) {</span>
+<span class="fc bfc" id="L612" title="All 2 branches covered.">			for (java.lang.String strTenor : astrTenor) {</span>
 				try {
-<span class="fc" id="L602">					double dblTimeToExpiry = org.drip.analytics.support.Helper.TenorToYearFraction</span>
-<span class="fc" id="L603">						(strTenor);</span>
+<span class="fc" id="L614">					double dblTimeToExpiry = org.drip.analytics.support.Helper.TenorToYearFraction</span>
+<span class="fc" id="L615">						(strTenor);</span>
 
-<span class="fc" id="L605">					org.drip.pricer.option.Greeks callGreeks = hsva.greeks (dblStrike, dblTimeToExpiry,</span>
+<span class="fc" id="L617">					org.drip.pricer.option.Greeks callGreeks = hsva.greeks (dblStrike, dblTimeToExpiry,</span>
 						dblRiskFreeRate, dblUnderlier, false, bIsForward, dblInitialVolatility);
 
-<span class="pc bpc" id="L608" title="1 of 2 branches missed.">					if (null == callGreeks) return null;</span>
+<span class="pc bpc" id="L620" title="1 of 2 branches missed.">					if (null == callGreeks) return null;</span>
 
-<span class="fc bfc" id="L610" title="All 2 branches covered.">					aadblImpliedNode[iStrike][iTenor++] = bPriceSurface ? callGreeks.price() : new</span>
+<span class="fc bfc" id="L622" title="All 2 branches covered.">					aadblImpliedNode[iStrike][iTenor++] = bPriceSurface ? callGreeks.price() : new</span>
 						org.drip.pricer.option.BlackScholesAlgorithm().impliedVolatilityFromPrice
-<span class="fc" id="L612">							(dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblUnderlier, false, false,</span>
-<span class="fc" id="L613">								callGreeks.price());</span>
-<span class="nc" id="L614">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L615">					e.printStackTrace();</span>
+<span class="fc" id="L624">							(dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblUnderlier, false, false,</span>
+<span class="fc" id="L625">								callGreeks.price());</span>
+<span class="nc" id="L626">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L627">					e.printStackTrace();</span>
 
-<span class="nc" id="L617">					return null;</span>
-<span class="fc" id="L618">				}</span>
+<span class="nc" id="L629">					return null;</span>
+<span class="fc" id="L630">				}</span>
 			}
 
-<span class="fc" id="L621">			++iStrike;</span>
+<span class="fc" id="L633">			++iStrike;</span>
 		}
 
-<span class="fc" id="L624">		return CustomWireSurface (strName, dtStart, strCurrency, adblStrike, astrTenor, aadblImpliedNode,</span>
+<span class="fc" id="L636">		return CustomWireSurface (strName, dtStart, strCurrency, adblStrike, astrTenor, aadblImpliedNode,</span>
 			scbcWireSpan, scbcSurface);
 	}
 }
