@@ -7,13 +7,13 @@ DROP Special Function Scaled Exponential Package implements the Scaled Exponenti
 
 ## Class Components
 
- * [***RelaxationTimeDistributionSeries***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/specialfunction/RelaxationTimeDistributionSeries.java)
+ * [***RelaxationTimeDistributionSeries***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/scaledexponential/RelaxationTimeDistributionSeries.java)
  <i>RelaxationTimeDistributionSeries</i> implements the Series Expansion of the Relaxation Time Distribution Function.
 
- * [***RelaxationTimeDistributionSeriesEstimator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/specialfunction/RelaxationTimeDistributionSeriesEstimator.java)
+ * [***RelaxationTimeDistributionSeriesEstimator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/scaledexponential/RelaxationTimeDistributionSeriesEstimator.java)
  <i>RelaxationTimeDistributionSeriesEstimator</i> exposes the Series-based Estimator for the Relaxation Time Distribution Function.
 
- * [***RelaxationTimeDistributionSeriesTerm***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/specialfunction/RelaxationTimeDistributionSeriesTerm.java)
+ * [***RelaxationTimeDistributionSeriesTerm***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/scaledexponential/RelaxationTimeDistributionSeriesTerm.java)
  <i>RelaxationTimeDistributionSeriesTerm</i> implements the Series Term in the Expansion of the Relaxation Time Distribution Function.
 
 
