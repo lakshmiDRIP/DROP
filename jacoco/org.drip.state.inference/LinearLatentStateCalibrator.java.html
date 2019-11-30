@@ -6,6 +6,7 @@ package org.drip.state.inference;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -13,39 +14,50 @@ package org.drip.state.inference;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -75,10 +87,10 @@ package org.drip.state.inference;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/inference&quot;&gt;Inference&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md&quot;&gt;Latent State Inference and Creation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/inference/README.md&quot;&gt;Latent State Stretch Sequence Inference&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -107,8 +119,8 @@ public class LinearLatentStateCalibrator extends org.drip.state.estimator.Global
 		final org.drip.spline.params.StretchBestFitResponse sbfrSensitivity)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L110">		super (&quot;&quot;, scbc, bs, iCalibrationDetail, sbfr, sbfrSensitivity);</span>
-<span class="fc" id="L111">	}</span>
+<span class="fc" id="L122">		super (&quot;&quot;, scbc, bs, iCalibrationDetail, sbfr, sbfrSensitivity);</span>
+<span class="fc" id="L123">	}</span>
 
 	/**
 	 * Calibrate the Span from the Instruments in the Stretches and their Details.
@@ -131,65 +143,65 @@ public class LinearLatentStateCalibrator extends org.drip.state.estimator.Global
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
 	{
-<span class="pc bpc" id="L134" title="2 of 4 branches missed.">		if (null == aStretchSpec || null == valParams) return null;</span>
+<span class="pc bpc" id="L146" title="2 of 4 branches missed.">		if (null == aStretchSpec || null == valParams) return null;</span>
 
-<span class="fc" id="L136">		int iNumStretch = aStretchSpec.length;</span>
-<span class="fc" id="L137">		org.drip.spline.grid.OverlappingStretchSpan oss = null;</span>
+<span class="fc" id="L148">		int iNumStretch = aStretchSpec.length;</span>
+<span class="fc" id="L149">		org.drip.spline.grid.OverlappingStretchSpan oss = null;</span>
 
-<span class="pc bpc" id="L139" title="1 of 2 branches missed.">		if (0 == iNumStretch) return null;</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">		if (0 == iNumStretch) return null;</span>
 
-<span class="fc bfc" id="L141" title="All 2 branches covered.">		for (org.drip.state.inference.LatentStateStretchSpec stretchSpec : aStretchSpec) {</span>
-<span class="fc bfc" id="L142" title="All 2 branches covered.">			if (null == stretchSpec) continue;</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">		for (org.drip.state.inference.LatentStateStretchSpec stretchSpec : aStretchSpec) {</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">			if (null == stretchSpec) continue;</span>
 
-<span class="fc" id="L144">			org.drip.state.inference.LatentStateSegmentSpec[] aSegmentSpec = stretchSpec.segmentSpec();</span>
+<span class="fc" id="L156">			org.drip.state.inference.LatentStateSegmentSpec[] aSegmentSpec = stretchSpec.segmentSpec();</span>
 
-<span class="fc" id="L146">			int iNumCalibComp = aSegmentSpec.length;</span>
-<span class="fc" id="L147">			org.drip.state.estimator.CurveStretch cs = null;</span>
-<span class="fc" id="L148">			double[] adblPredictorOrdinate = new double[iNumCalibComp + 1];</span>
-<span class="fc" id="L149">			org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
+<span class="fc" id="L158">			int iNumCalibComp = aSegmentSpec.length;</span>
+<span class="fc" id="L159">			org.drip.state.estimator.CurveStretch cs = null;</span>
+<span class="fc" id="L160">			double[] adblPredictorOrdinate = new double[iNumCalibComp + 1];</span>
+<span class="fc" id="L161">			org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new</span>
 				org.drip.spline.params.SegmentCustomBuilderControl[iNumCalibComp];
 
-<span class="fc bfc" id="L152" title="All 2 branches covered.">			for (int i = 0; i &lt;= iNumCalibComp; ++i) {</span>
-<span class="fc bfc" id="L153" title="All 2 branches covered.">				adblPredictorOrdinate[i] = 0 == i ? valParams.valueDate() :</span>
-<span class="fc" id="L154">					aSegmentSpec[i - 1].component().maturityDate().julian();</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">			for (int i = 0; i &lt;= iNumCalibComp; ++i) {</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">				adblPredictorOrdinate[i] = 0 == i ? valParams.valueDate() :</span>
+<span class="fc" id="L166">					aSegmentSpec[i - 1].component().maturityDate().julian();</span>
 
-<span class="fc bfc" id="L156" title="All 2 branches covered.">				if (i != iNumCalibComp) aSCBC[i] = segmentBuilderControl (stretchSpec.name());</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">				if (i != iNumCalibComp) aSCBC[i] = segmentBuilderControl (stretchSpec.name());</span>
 			}
 
 			try {
-<span class="fc" id="L160">				cs = new org.drip.state.estimator.CurveStretch (stretchSpec.name(),</span>
+<span class="fc" id="L172">				cs = new org.drip.state.estimator.CurveStretch (stretchSpec.name(),</span>
 					org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateSegmentSet
-<span class="fc" id="L162">						(adblPredictorOrdinate, aSCBC), aSCBC);</span>
+<span class="fc" id="L174">						(adblPredictorOrdinate, aSCBC), aSCBC);</span>
 
-<span class="pc bpc" id="L164" title="1 of 2 branches missed.">				if (!cs.setup (new org.drip.state.inference.LatentStateSequenceBuilder (dblEpochResponse,</span>
-<span class="fc" id="L165">					stretchSpec, valParams, pricerParams, csqs, vcp, oss, bestFitWeightedResponse(), new</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">				if (!cs.setup (new org.drip.state.inference.LatentStateSequenceBuilder (dblEpochResponse,</span>
+<span class="fc" id="L177">					stretchSpec, valParams, pricerParams, csqs, vcp, oss, bestFitWeightedResponse(), new</span>
 						org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.spline.params.PreceedingManifestSensitivityControl&gt;(),
-<span class="fc" id="L167">					bestFitWeightedResponseSensitivity(), calibrationBoundaryCondition()),</span>
-<span class="fc" id="L168">						calibrationDetail())) {</span>
-<span class="nc" id="L169">					System.out.println (&quot;\tMSS Setup Failed!&quot;);</span>
+<span class="fc" id="L179">					bestFitWeightedResponseSensitivity(), calibrationBoundaryCondition()),</span>
+<span class="fc" id="L180">						calibrationDetail())) {</span>
+<span class="nc" id="L181">					System.out.println (&quot;\tMSS Setup Failed!&quot;);</span>
 
-<span class="nc" id="L171">					return null;</span>
+<span class="nc" id="L183">					return null;</span>
 				}
-<span class="nc" id="L173">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L174">				e.printStackTrace();</span>
+<span class="nc" id="L185">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L186">				e.printStackTrace();</span>
 
-<span class="nc" id="L176">				return null;</span>
-<span class="fc" id="L177">			}</span>
+<span class="nc" id="L188">				return null;</span>
+<span class="fc" id="L189">			}</span>
 
-<span class="fc bfc" id="L179" title="All 2 branches covered.">			if (null == oss) {</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">			if (null == oss) {</span>
 				try {
-<span class="fc" id="L181">					oss = new org.drip.spline.grid.OverlappingStretchSpan (cs);</span>
-<span class="nc" id="L182">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L183">					e.printStackTrace();</span>
+<span class="fc" id="L193">					oss = new org.drip.spline.grid.OverlappingStretchSpan (cs);</span>
+<span class="nc" id="L194">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L195">					e.printStackTrace();</span>
 
-<span class="nc" id="L185">					return null;</span>
-<span class="fc" id="L186">				}</span>
+<span class="nc" id="L197">					return null;</span>
+<span class="fc" id="L198">				}</span>
 			} else {
-<span class="pc bpc" id="L188" title="1 of 2 branches missed.">				if (!oss.addStretch (cs)) return null;</span>
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">				if (!oss.addStretch (cs)) return null;</span>
 			}
 		}
 
-<span class="fc" id="L192">		return oss;</span>
+<span class="fc" id="L204">		return oss;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

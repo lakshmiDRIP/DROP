@@ -12,45 +12,57 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -78,32 +90,32 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template&quot;&gt;Template&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md&quot;&gt;Pricing/Risk Templates for Fixed Income Component Products&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/state/README.md&quot;&gt;Standard Latent State Construction Template&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L91">public class FundingState {</span>
+<span class="nc" id="L103">public class FundingState {</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L97">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L109">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L99">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L111">		String strCurrency = &quot;USD&quot;;</span>
 
-<span class="fc" id="L101">		JulianDate dtSpot = DateUtil.Today().addBusDays (</span>
+<span class="fc" id="L113">		JulianDate dtSpot = DateUtil.Today().addBusDays (</span>
 			0,
 			strCurrency
 		);
 
-<span class="fc" id="L106">		String[] astrDepositMaturityTenor = new String[] {</span>
+<span class="fc" id="L118">		String[] astrDepositMaturityTenor = new String[] {</span>
 			&quot;01D&quot;,
 			&quot;04D&quot;,
 			&quot;07D&quot;,
@@ -112,7 +124,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;60D&quot;
 		};
 
-<span class="fc" id="L115">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L127">		double[] adblDepositQuote = new double[] {</span>
 			0.0013,		//  1D
 			0.0017,		//  2D
 			0.0017,		//  7D
@@ -121,7 +133,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			0.0023		// 60D
 		};
 
-<span class="fc" id="L124">		double[] adblFuturesQuote = new double[] {</span>
+<span class="fc" id="L136">		double[] adblFuturesQuote = new double[] {</span>
 			0.0027,
 			0.0032,
 			0.0041,
@@ -132,7 +144,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			0.0160
 		};
 
-<span class="fc" id="L135">		String[] astrFixFloatMaturityTenor = new String[] {</span>
+<span class="fc" id="L147">		String[] astrFixFloatMaturityTenor = new String[] {</span>
 			&quot;04Y&quot;,
 			&quot;05Y&quot;,
 			&quot;06Y&quot;,
@@ -150,7 +162,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;50Y&quot;
 		};
 
-<span class="fc" id="L153">		double[] adblFixFloatQuote = new double[] {</span>
+<span class="fc" id="L165">		double[] adblFixFloatQuote = new double[] {</span>
 			0.0166,		//   4Y
 			0.0206,		//   5Y
 			0.0241,		//   6Y
@@ -168,7 +180,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			0.0409		//  50Y
 		};
 
-<span class="fc" id="L171">		MergedDiscountForwardCurve dcFunding = LatentMarketStateBuilder.SmoothFundingCurve (</span>
+<span class="fc" id="L183">		MergedDiscountForwardCurve dcFunding = LatentMarketStateBuilder.SmoothFundingCurve (</span>
 			dtSpot,
 			strCurrency,
 			astrDepositMaturityTenor,
@@ -181,48 +193,48 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;SwapRate&quot;
 		);
 
-<span class="fc" id="L184">		String strLatentStateLabel = dcFunding.label().fullyQualifiedName();</span>
+<span class="fc" id="L196">		String strLatentStateLabel = dcFunding.label().fullyQualifiedName();</span>
 
-<span class="fc" id="L186">		System.out.println (&quot;\n\n\t||---------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L198">		System.out.println (&quot;\n\n\t||---------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L188" title="All 2 branches covered.">		for (int i = 0; i &lt; adblDepositQuote.length; ++i)</span>
-<span class="fc" id="L189">			System.out.println (</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">		for (int i = 0; i &lt; adblDepositQuote.length; ++i)</span>
+<span class="fc" id="L201">			System.out.println (</span>
 				&quot;\t||  &quot; + strLatentStateLabel +
 				&quot; |  DEPOSIT  | &quot; + astrDepositMaturityTenor[i] + &quot;  | &quot; +
-<span class="fc" id="L192">				FormatUtil.FormatDouble (adblDepositQuote[i], 1, 4, 1.) +</span>
+<span class="fc" id="L204">				FormatUtil.FormatDouble (adblDepositQuote[i], 1, 4, 1.) +</span>
 				&quot; | Forward Rate | &quot; +
-<span class="fc" id="L194">				FormatUtil.FormatDouble (dcFunding.df (astrDepositMaturityTenor[i]), 1, 6, 1.) +</span>
+<span class="fc" id="L206">				FormatUtil.FormatDouble (dcFunding.df (astrDepositMaturityTenor[i]), 1, 6, 1.) +</span>
 				&quot;  ||&quot;
 			);
 
-<span class="fc" id="L198">		System.out.println (&quot;\t||---------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L210">		System.out.println (&quot;\t||---------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L200">		System.out.println (&quot;\n\n\t||--------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L212">		System.out.println (&quot;\n\n\t||--------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L202" title="All 2 branches covered.">		for (int i = 0; i &lt; adblFuturesQuote.length; ++i)</span>
-<span class="fc" id="L203">			System.out.println (</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">		for (int i = 0; i &lt; adblFuturesQuote.length; ++i)</span>
+<span class="fc" id="L215">			System.out.println (</span>
 				&quot;\t||  &quot; + strLatentStateLabel + &quot; |  FUTURES  | &quot; +
-<span class="fc" id="L205">				FormatUtil.FormatDouble (adblFuturesQuote[i], 1, 4, 1.) +</span>
+<span class="fc" id="L217">				FormatUtil.FormatDouble (adblFuturesQuote[i], 1, 4, 1.) +</span>
 				&quot; | Forward Rate | &quot; +
-<span class="fc" id="L207">				FormatUtil.FormatDouble (dcFunding.df ((3 + 3 * i) + &quot;M&quot;), 1, 6, 1.) +</span>
+<span class="fc" id="L219">				FormatUtil.FormatDouble (dcFunding.df ((3 + 3 * i) + &quot;M&quot;), 1, 6, 1.) +</span>
 				&quot;  ||&quot;
 			);
 
-<span class="fc" id="L211">		System.out.println (&quot;\t||--------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L223">		System.out.println (&quot;\t||--------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L213">		System.out.println (&quot;\n\n\t||--------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L225">		System.out.println (&quot;\n\n\t||--------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L215" title="All 2 branches covered.">		for (int i = 0; i &lt; adblFixFloatQuote.length; ++i)</span>
-<span class="fc" id="L216">			System.out.println (</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">		for (int i = 0; i &lt; adblFixFloatQuote.length; ++i)</span>
+<span class="fc" id="L228">			System.out.println (</span>
 				&quot;\t||  &quot; + strLatentStateLabel +
 				&quot; |  FIX FLOAT  | &quot; + astrFixFloatMaturityTenor[i] + &quot;  | &quot; +
-<span class="fc" id="L219">				FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 4, 1.) +</span>
+<span class="fc" id="L231">				FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 4, 1.) +</span>
 				&quot; | Swap Rate | &quot; +
-<span class="fc" id="L221">				FormatUtil.FormatDouble (dcFunding.df (astrFixFloatMaturityTenor[i]), 1, 6, 1.) +</span>
+<span class="fc" id="L233">				FormatUtil.FormatDouble (dcFunding.df (astrFixFloatMaturityTenor[i]), 1, 6, 1.) +</span>
 				&quot;  ||&quot;
 			);
 
-<span class="fc" id="L225">		System.out.println (&quot;\t||--------------------------------------------------------------||\n&quot;);</span>
-<span class="fc" id="L226">	}</span>
+<span class="fc" id="L237">		System.out.println (&quot;\t||--------------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L238">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

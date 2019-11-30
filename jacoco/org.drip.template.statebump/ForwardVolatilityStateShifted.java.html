@@ -21,45 +21,57 @@ import org.drip.state.volatility.VolatilityCurve;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -88,41 +100,41 @@ import org.drip.state.volatility.VolatilityCurve;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template&quot;&gt;Template&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/statebump&quot;&gt;State Bump&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md&quot;&gt;Pricing/Risk Templates for Fixed Income Component Products&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/statebump/README.md&quot;&gt;Shifted Latent State Construction Template&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L101">public class ForwardVolatilityStateShifted {</span>
+<span class="nc" id="L113">public class ForwardVolatilityStateShifted {</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L107">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L119">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L109">		String strFRATenor = &quot;3M&quot;;</span>
-<span class="fc" id="L110">		String strCurrency = &quot;GBP&quot;;</span>
-<span class="fc" id="L111">		double dblBump = 0.0000001;</span>
-<span class="fc" id="L112">		boolean bIsBumpProportional = false;</span>
+<span class="fc" id="L121">		String strFRATenor = &quot;3M&quot;;</span>
+<span class="fc" id="L122">		String strCurrency = &quot;GBP&quot;;</span>
+<span class="fc" id="L123">		double dblBump = 0.0000001;</span>
+<span class="fc" id="L124">		boolean bIsBumpProportional = false;</span>
 
-<span class="fc" id="L114">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L126">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.DECEMBER,
 			21
 		);
 
-<span class="fc" id="L120">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
+<span class="fc" id="L132">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
 			strCurrency,
 			strFRATenor
 		);
 
-<span class="fc" id="L125">		MergedDiscountForwardCurve dcFunding = LatentMarketStateBuilder.SmoothFundingCurve (</span>
+<span class="fc" id="L137">		MergedDiscountForwardCurve dcFunding = LatentMarketStateBuilder.SmoothFundingCurve (</span>
 			dtSpot,
 			strCurrency,
 			new String[] {
@@ -161,7 +173,7 @@ import org.drip.state.volatility.VolatilityCurve;
 			&quot;SwapRate&quot;
 		);
 
-<span class="fc" id="L164">		String[] astrMaturityTenor = new String[] {</span>
+<span class="fc" id="L176">		String[] astrMaturityTenor = new String[] {</span>
 			&quot;01Y&quot;,
 			&quot;02Y&quot;,
 			&quot;03Y&quot;,
@@ -171,7 +183,7 @@ import org.drip.state.volatility.VolatilityCurve;
 			&quot;10Y&quot;
 		};
 
-<span class="fc" id="L174">		double[] adblStrike = new double[] {</span>
+<span class="fc" id="L186">		double[] adblStrike = new double[] {</span>
 			0.0788, //  &quot;1Y&quot;,
 			0.0839, // 	&quot;2Y&quot;,
 			0.0864, //  &quot;3Y&quot;,
@@ -181,7 +193,7 @@ import org.drip.state.volatility.VolatilityCurve;
 			0.0889  // &quot;10Y&quot;
 		};
 
-<span class="fc" id="L184">		double[] adblPrice = new double[] {</span>
+<span class="fc" id="L196">		double[] adblPrice = new double[] {</span>
 			0.0017, //  &quot;1Y&quot;,
 			0.0132, // 	&quot;2Y&quot;,
 			0.0234, //  &quot;3Y&quot;,
@@ -191,9 +203,9 @@ import org.drip.state.volatility.VolatilityCurve;
 			0.1625  // &quot;10Y&quot;
 		};
 
-<span class="fc" id="L194">		ForwardCurve fc = dcFunding.nativeForwardCurve (strFRATenor);</span>
+<span class="fc" id="L206">		ForwardCurve fc = dcFunding.nativeForwardCurve (strFRATenor);</span>
 
-<span class="fc" id="L196">		Map&lt;String, VolatilityCurve&gt; bumpedForwardVolatilityCurve = LatentMarketStateBuilder.BumpedForwardVolatilityCurve (</span>
+<span class="fc" id="L208">		Map&lt;String, VolatilityCurve&gt; bumpedForwardVolatilityCurve = LatentMarketStateBuilder.BumpedForwardVolatilityCurve (</span>
 			dtSpot,
 			forwardLabel,
 			true,
@@ -207,7 +219,7 @@ import org.drip.state.volatility.VolatilityCurve;
 			bIsBumpProportional
 		);
 
-<span class="fc" id="L210">		FRAStandardCapFloor[] aFRACapFloor = OTCInstrumentBuilder.CapFloor (</span>
+<span class="fc" id="L222">		FRAStandardCapFloor[] aFRACapFloor = OTCInstrumentBuilder.CapFloor (</span>
 			dtSpot,
 			forwardLabel,
 			astrMaturityTenor,
@@ -215,27 +227,27 @@ import org.drip.state.volatility.VolatilityCurve;
 			true
 		);
 
-<span class="fc" id="L218">		System.out.println (&quot;\n\t|---------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L230">		System.out.println (&quot;\n\t|---------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L220">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
+<span class="fc" id="L232">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
 
-<span class="fc bfc" id="L222" title="All 2 branches covered.">		for (Map.Entry&lt;String, VolatilityCurve&gt; meForwardVolatility : bumpedForwardVolatilityCurve.entrySet()) {</span>
-<span class="fc" id="L223">			String strKey = meForwardVolatility.getKey();</span>
+<span class="fc bfc" id="L234" title="All 2 branches covered.">		for (Map.Entry&lt;String, VolatilityCurve&gt; meForwardVolatility : bumpedForwardVolatilityCurve.entrySet()) {</span>
+<span class="fc" id="L235">			String strKey = meForwardVolatility.getKey();</span>
 
-<span class="fc bfc" id="L225" title="All 2 branches covered.">			if (!strKey.startsWith (&quot;capfloor&quot;)) continue;</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">			if (!strKey.startsWith (&quot;capfloor&quot;)) continue;</span>
 
-<span class="fc" id="L227">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L239">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
 
-<span class="fc" id="L229">			csqc.setFundingState (dcFunding);</span>
+<span class="fc" id="L241">			csqc.setFundingState (dcFunding);</span>
 
-<span class="fc" id="L231">			csqc.setForwardState (fc);</span>
+<span class="fc" id="L243">			csqc.setForwardState (fc);</span>
 
-<span class="fc" id="L233">			csqc.setForwardVolatility (meForwardVolatility.getValue());</span>
+<span class="fc" id="L245">			csqc.setForwardVolatility (meForwardVolatility.getValue());</span>
 
-<span class="fc" id="L235">			System.out.print (&quot;\t|  [&quot; + meForwardVolatility.getKey() + &quot;] =&gt; &quot;);</span>
+<span class="fc" id="L247">			System.out.print (&quot;\t|  [&quot; + meForwardVolatility.getKey() + &quot;] =&gt; &quot;);</span>
 
-<span class="fc bfc" id="L237" title="All 2 branches covered.">			for (Component comp : aFRACapFloor)</span>
-<span class="fc" id="L238">				System.out.print (FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">			for (Component comp : aFRACapFloor)</span>
+<span class="fc" id="L250">				System.out.print (FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqc,
@@ -243,41 +255,41 @@ import org.drip.state.volatility.VolatilityCurve;
 					&quot;Price&quot;
 				), 1, 8, 1.) + &quot; |&quot;);
 
-<span class="fc" id="L246">			System.out.print (&quot;|\n&quot;);</span>
-<span class="fc" id="L247">		}</span>
+<span class="fc" id="L258">			System.out.print (&quot;|\n&quot;);</span>
+<span class="fc" id="L259">		}</span>
 
-<span class="fc" id="L249">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L261">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L251">		System.out.println (&quot;\n\t|-------------------------------------------------||&quot;);</span>
+<span class="fc" id="L263">		System.out.println (&quot;\n\t|-------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L253">		CurveSurfaceQuoteContainer csqcBase = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L265">		CurveSurfaceQuoteContainer csqcBase = new CurveSurfaceQuoteContainer();</span>
 
-<span class="fc" id="L255">		csqcBase.setFundingState (dcFunding);</span>
+<span class="fc" id="L267">		csqcBase.setFundingState (dcFunding);</span>
 
-<span class="fc" id="L257">		csqcBase.setForwardState (fc);</span>
+<span class="fc" id="L269">		csqcBase.setForwardState (fc);</span>
 
-<span class="fc" id="L259">		csqcBase.setForwardVolatility (bumpedForwardVolatilityCurve.get (&quot;Base&quot;));</span>
+<span class="fc" id="L271">		csqcBase.setForwardVolatility (bumpedForwardVolatilityCurve.get (&quot;Base&quot;));</span>
 
-<span class="fc" id="L261">		CurveSurfaceQuoteContainer csqcBump = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L273">		CurveSurfaceQuoteContainer csqcBump = new CurveSurfaceQuoteContainer();</span>
 
-<span class="fc" id="L263">		csqcBump.setFundingState (dcFunding);</span>
+<span class="fc" id="L275">		csqcBump.setFundingState (dcFunding);</span>
 
-<span class="fc" id="L265">		csqcBump.setForwardState (fc);</span>
+<span class="fc" id="L277">		csqcBump.setForwardState (fc);</span>
 
-<span class="fc" id="L267">		csqcBump.setForwardVolatility (bumpedForwardVolatilityCurve.get (&quot;Bump&quot;));</span>
+<span class="fc" id="L279">		csqcBump.setForwardVolatility (bumpedForwardVolatilityCurve.get (&quot;Bump&quot;));</span>
 
-<span class="fc bfc" id="L269" title="All 2 branches covered.">		for (Component comp : aFRACapFloor)</span>
-<span class="fc" id="L270">			System.out.println (</span>
+<span class="fc bfc" id="L281" title="All 2 branches covered.">		for (Component comp : aFRACapFloor)</span>
+<span class="fc" id="L282">			System.out.println (</span>
 				&quot;\t| PRICE =&gt; &quot; +
-<span class="fc" id="L272">				comp.maturityDate() + &quot; | &quot; +</span>
-<span class="fc" id="L273">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L284">				comp.maturityDate() + &quot; | &quot; +</span>
+<span class="fc" id="L285">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBase,
 					null,
 					&quot;Price&quot;
 				), 1, 8, 1.) + &quot; | &quot; +
-<span class="fc" id="L280">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L292">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBump,
@@ -286,7 +298,7 @@ import org.drip.state.volatility.VolatilityCurve;
 				), 1, 8, 1.) + &quot; ||&quot;
 			);
 
-<span class="fc" id="L289">		System.out.println (&quot;\t|-------------------------------------------------||&quot;);</span>
-<span class="fc" id="L290">	}</span>
+<span class="fc" id="L301">		System.out.println (&quot;\t|-------------------------------------------------||&quot;);</span>
+<span class="fc" id="L302">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

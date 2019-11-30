@@ -6,43 +6,55 @@ package org.drip.state.sequence;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -71,10 +83,10 @@ package org.drip.state.sequence;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md&quot;&gt;Latent State Inference and Creation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/sequence/README.md&quot;&gt;Monte Carlo Path State Realizations&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -82,13 +94,13 @@ package org.drip.state.sequence;
  */
 
 public class GovvieBuilderSettings {
-<span class="fc" id="L85">	private double[] _adblTreasuryYield = null;</span>
-<span class="fc" id="L86">	private double[] _adblTreasuryCoupon = null;</span>
-<span class="fc" id="L87">	private java.lang.String[] _astrTenor = null;</span>
-<span class="fc" id="L88">	private java.lang.String _strTreasuryCode = &quot;&quot;;</span>
-<span class="fc" id="L89">	private double[] _adblForwardYieldGround = null;</span>
-<span class="fc" id="L90">	private org.drip.analytics.date.JulianDate _dtSpot = null;</span>
-<span class="fc" id="L91">	private org.drip.state.curve.BasisSplineGovvieYield _bsgyGround = null;</span>
+<span class="fc" id="L97">	private double[] _adblTreasuryYield = null;</span>
+<span class="fc" id="L98">	private double[] _adblTreasuryCoupon = null;</span>
+<span class="fc" id="L99">	private java.lang.String[] _astrTenor = null;</span>
+<span class="fc" id="L100">	private java.lang.String _strTreasuryCode = &quot;&quot;;</span>
+<span class="fc" id="L101">	private double[] _adblForwardYieldGround = null;</span>
+<span class="fc" id="L102">	private org.drip.analytics.date.JulianDate _dtSpot = null;</span>
+<span class="fc" id="L103">	private org.drip.state.curve.BasisSplineGovvieYield _bsgyGround = null;</span>
 
 	protected static final org.drip.state.curve.BasisSplineGovvieYield GovvieCurve (
 		final org.drip.analytics.date.JulianDate dtSpot,
@@ -98,17 +110,17 @@ public class GovvieBuilderSettings {
 		final double[] adblYield)
 		throws Exception
 	{
-<span class="fc" id="L101">		int iNumInstrument = astrTenor.length;</span>
-<span class="fc" id="L102">		org.drip.analytics.date.JulianDate[] adtMaturity = new</span>
+<span class="fc" id="L113">		int iNumInstrument = astrTenor.length;</span>
+<span class="fc" id="L114">		org.drip.analytics.date.JulianDate[] adtMaturity = new</span>
 			org.drip.analytics.date.JulianDate[iNumInstrument];
-<span class="fc" id="L104">		org.drip.analytics.date.JulianDate[] adtEffective = new</span>
+<span class="fc" id="L116">		org.drip.analytics.date.JulianDate[] adtEffective = new</span>
 			org.drip.analytics.date.JulianDate[iNumInstrument];
 
-<span class="fc bfc" id="L107" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInstrument; ++i)</span>
-<span class="fc" id="L108">			adtMaturity[i] = (adtEffective[i] = dtSpot).addTenor (astrTenor[i]);</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInstrument; ++i)</span>
+<span class="fc" id="L120">			adtMaturity[i] = (adtEffective[i] = dtSpot).addTenor (astrTenor[i]);</span>
 
-<span class="fc" id="L110">		return (org.drip.state.curve.BasisSplineGovvieYield)</span>
-<span class="fc" id="L111">			org.drip.service.template.LatentMarketStateBuilder.GovvieCurve (strCode, dtSpot, adtEffective,</span>
+<span class="fc" id="L122">		return (org.drip.state.curve.BasisSplineGovvieYield)</span>
+<span class="fc" id="L123">			org.drip.service.template.LatentMarketStateBuilder.GovvieCurve (strCode, dtSpot, adtEffective,</span>
 				adtMaturity, adblCoupon, adblYield, &quot;Yield&quot;,
 					org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);
 	}
@@ -132,17 +144,17 @@ public class GovvieBuilderSettings {
 		final double[] adblTreasuryCoupon,
 		final double[] adblTreasuryYield)
 		throws java.lang.Exception
-<span class="fc" id="L135">	{</span>
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">		if (null == (_bsgyGround = GovvieCurve (_dtSpot = dtSpot, _strTreasuryCode = strTreasuryCode,</span>
+<span class="fc" id="L147">	{</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">		if (null == (_bsgyGround = GovvieCurve (_dtSpot = dtSpot, _strTreasuryCode = strTreasuryCode,</span>
 			_astrTenor = astrTenor, _adblTreasuryCoupon = adblTreasuryCoupon, _adblTreasuryYield =
 				adblTreasuryYield)))
-<span class="nc" id="L139">			throw new java.lang.Exception (&quot;GovvieBuilderSettings Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L151">			throw new java.lang.Exception (&quot;GovvieBuilderSettings Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L141">		org.drip.state.nonlinear.FlatForwardDiscountCurve ffdcGround = _bsgyGround.flatForward (_astrTenor);</span>
+<span class="fc" id="L153">		org.drip.state.nonlinear.FlatForwardDiscountCurve ffdcGround = _bsgyGround.flatForward (_astrTenor);</span>
 
-<span class="pc bpc" id="L143" title="2 of 4 branches missed.">		if (null == ffdcGround || null == (_adblForwardYieldGround = ffdcGround.nodeValues()))</span>
-<span class="nc" id="L144">			throw new java.lang.Exception (&quot;GovvieBuilderSettings Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L145">	}</span>
+<span class="pc bpc" id="L155" title="2 of 4 branches missed.">		if (null == ffdcGround || null == (_adblForwardYieldGround = ffdcGround.nodeValues()))</span>
+<span class="nc" id="L156">			throw new java.lang.Exception (&quot;GovvieBuilderSettings Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L157">	}</span>
 
 	/**
 	 * Retrieve the Spot Date
@@ -152,7 +164,7 @@ public class GovvieBuilderSettings {
 
 	public org.drip.analytics.date.JulianDate spot()
 	{
-<span class="fc" id="L155">		return _dtSpot;</span>
+<span class="fc" id="L167">		return _dtSpot;</span>
 	}
 
 	/**
@@ -163,7 +175,7 @@ public class GovvieBuilderSettings {
 
 	public java.lang.String code()
 	{
-<span class="fc" id="L166">		return _strTreasuryCode;</span>
+<span class="fc" id="L178">		return _strTreasuryCode;</span>
 	}
 
 	/**
@@ -174,7 +186,7 @@ public class GovvieBuilderSettings {
 
 	public java.lang.String[] tenors()
 	{
-<span class="fc" id="L177">		return _astrTenor;</span>
+<span class="fc" id="L189">		return _astrTenor;</span>
 	}
 
 	/**
@@ -185,7 +197,7 @@ public class GovvieBuilderSettings {
 
 	public double[] coupon()
 	{
-<span class="nc" id="L188">		return _adblTreasuryCoupon;</span>
+<span class="nc" id="L200">		return _adblTreasuryCoupon;</span>
 	}
 
 	/**
@@ -196,7 +208,7 @@ public class GovvieBuilderSettings {
 
 	public double[] yield()
 	{
-<span class="nc" id="L199">		return _adblTreasuryYield;</span>
+<span class="nc" id="L211">		return _adblTreasuryYield;</span>
 	}
 
 	/**
@@ -207,7 +219,7 @@ public class GovvieBuilderSettings {
 
 	public org.drip.state.curve.BasisSplineGovvieYield groundState()
 	{
-<span class="fc" id="L210">		return _bsgyGround;</span>
+<span class="fc" id="L222">		return _bsgyGround;</span>
 	}
 
 	/**
@@ -218,7 +230,7 @@ public class GovvieBuilderSettings {
 
 	public double[] groundForwardYield()
 	{
-<span class="fc" id="L221">		return _adblForwardYieldGround;</span>
+<span class="fc" id="L233">		return _adblForwardYieldGround;</span>
 	}
 
 	/**
@@ -229,7 +241,7 @@ public class GovvieBuilderSettings {
 
 	public int dimension()
 	{
-<span class="fc" id="L232">		return _astrTenor.length;</span>
+<span class="fc" id="L244">		return _astrTenor.length;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -19,45 +19,57 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -85,50 +97,50 @@ import org.drip.state.identifier.ForwardLabel;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template&quot;&gt;Template&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/statebump&quot;&gt;State Bump&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md&quot;&gt;Pricing/Risk Templates for Fixed Income Component Products&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/statebump/README.md&quot;&gt;Shifted Latent State Construction Template&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L98">public class ReferenceForwardStateShifted {</span>
+<span class="nc" id="L110">public class ReferenceForwardStateShifted {</span>
 
 	private static final MergedDiscountForwardCurve OvernightCurve (
 		final JulianDate dtSpot,
 		final String strCurrency)
 		throws Exception
 	{
-<span class="fc" id="L105">		String[] astrDepositMaturityTenor = new String[] {</span>
+<span class="fc" id="L117">		String[] astrDepositMaturityTenor = new String[] {</span>
 			&quot;1D&quot;,
 			// &quot;2D&quot;,
 			&quot;3D&quot;
 		};
 
-<span class="fc" id="L111">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L123">		double[] adblDepositQuote = new double[] {</span>
 			0.0004,		// 1D
 			// 0.0004,		// 2D
 			0.0004		// 3D
 		};
 
-<span class="fc" id="L117">		String[] astrShortEndOISMaturityTenor = new String[] {</span>
+<span class="fc" id="L129">		String[] astrShortEndOISMaturityTenor = new String[] {</span>
 			&quot;1W&quot;,
 			&quot;2W&quot;,
 			&quot;3W&quot;,
 			&quot;1M&quot;
 		};
 
-<span class="fc" id="L124">		double[] adblShortEndOISQuote = new double[] {</span>
+<span class="fc" id="L136">		double[] adblShortEndOISQuote = new double[] {</span>
 			0.00070,    //   1W
 			0.00069,    //   2W
 			0.00078,    //   3W
 			0.00074     //   1M
 		};
 
-<span class="fc" id="L131">		String[] astrOISFuturesEffectiveTenor = new String[] {</span>
+<span class="fc" id="L143">		String[] astrOISFuturesEffectiveTenor = new String[] {</span>
 			&quot;1M&quot;,
 			&quot;2M&quot;,
 			&quot;3M&quot;,
@@ -136,7 +148,7 @@ import org.drip.state.identifier.ForwardLabel;
 			&quot;5M&quot;
 		};
 
-<span class="fc" id="L139">		String[] astrOISFuturesMaturityTenor = new String[] {</span>
+<span class="fc" id="L151">		String[] astrOISFuturesMaturityTenor = new String[] {</span>
 			&quot;1M&quot;,
 			&quot;1M&quot;,
 			&quot;1M&quot;,
@@ -144,7 +156,7 @@ import org.drip.state.identifier.ForwardLabel;
 			&quot;1M&quot;
 		};
 
-<span class="fc" id="L147">		double[] adblOISFuturesQuote = new double[] {</span>
+<span class="fc" id="L159">		double[] adblOISFuturesQuote = new double[] {</span>
 			 0.00046,    //   1M x 1M
 			 0.00016,    //   2M x 1M
 			-0.00007,    //   3M x 1M
@@ -152,7 +164,7 @@ import org.drip.state.identifier.ForwardLabel;
 			-0.00014     //   5M x 1M
 		};
 
-<span class="fc" id="L155">		String[] astrLongEndOISMaturityTenor = new String[] {</span>
+<span class="fc" id="L167">		String[] astrLongEndOISMaturityTenor = new String[] {</span>
 			&quot;15M&quot;,
 			&quot;18M&quot;,
 			&quot;21M&quot;,
@@ -173,7 +185,7 @@ import org.drip.state.identifier.ForwardLabel;
 			&quot;30Y&quot;
 		};
 
-<span class="fc" id="L176">		double[] adblLongEndOISQuote = new double[] {</span>
+<span class="fc" id="L188">		double[] adblLongEndOISQuote = new double[] {</span>
 			0.00002,    //  15M
 			0.00008,    //  18M
 			0.00021,    //  21M
@@ -194,7 +206,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.02038     //  30Y
 		};
 
-<span class="fc" id="L197">		return LatentMarketStateBuilder.SmoothOvernightCurve (</span>
+<span class="fc" id="L209">		return LatentMarketStateBuilder.SmoothOvernightCurve (</span>
 			dtSpot,
 			strCurrency,
 			astrDepositMaturityTenor,
@@ -221,30 +233,30 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Initialize the Credit Analytics Library
 		 */
 
-<span class="fc" id="L224">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L236">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L226">		String strCurrency = &quot;GBP&quot;;</span>
-<span class="fc" id="L227">		String strForwardTenor = &quot;6M&quot;;</span>
-<span class="fc" id="L228">		double dblBump = 0.0001;</span>
-<span class="fc" id="L229">		boolean bIsProportional = false;</span>
+<span class="fc" id="L238">		String strCurrency = &quot;GBP&quot;;</span>
+<span class="fc" id="L239">		String strForwardTenor = &quot;6M&quot;;</span>
+<span class="fc" id="L240">		double dblBump = 0.0001;</span>
+<span class="fc" id="L241">		boolean bIsProportional = false;</span>
 
-<span class="fc" id="L231">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L243">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.DECEMBER,
 			21
 		);
 
-<span class="fc" id="L237">		MergedDiscountForwardCurve dcOvernight = OvernightCurve (</span>
+<span class="fc" id="L249">		MergedDiscountForwardCurve dcOvernight = OvernightCurve (</span>
 			dtSpot,
 			strCurrency
 		);
 
-<span class="fc" id="L242">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
+<span class="fc" id="L254">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
 			strCurrency,
 			strForwardTenor
 		);
 
-<span class="fc" id="L247">		String[] astrDepositMaturityTenor = new String[] {</span>
+<span class="fc" id="L259">		String[] astrDepositMaturityTenor = new String[] {</span>
 			&quot;1D&quot;,
 			&quot;1W&quot;,
 			&quot;2W&quot;,
@@ -256,7 +268,7 @@ import org.drip.state.identifier.ForwardLabel;
 			&quot;5M&quot;
 		};
 
-<span class="fc" id="L259">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L271">		double[] adblDepositQuote = new double[] {</span>
 			0.003565,	// 1D
 			0.003858,	// 1W
 			0.003840,	// 2W
@@ -268,7 +280,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.003225	// 5M
 		};
 
-<span class="fc" id="L271">		String[] astrFRAMaturityTenor = new String[] {</span>
+<span class="fc" id="L283">		String[] astrFRAMaturityTenor = new String[] {</span>
 			&quot;00D&quot;,
 			&quot;01M&quot;,
 			&quot;02M&quot;,
@@ -290,7 +302,7 @@ import org.drip.state.identifier.ForwardLabel;
 			&quot;18M&quot;
 		};
 
-<span class="fc" id="L293">		double[] adblFRAQuote = new double[] {</span>
+<span class="fc" id="L305">		double[] adblFRAQuote = new double[] {</span>
 			0.003120,	//  0D
 			0.002930,	//  1M
 			0.002720,	//  2M
@@ -312,7 +324,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.004090	// 18M
 		};
 
-<span class="fc" id="L315">		String[] astrFixFloatMaturityTenor = new String[] {</span>
+<span class="fc" id="L327">		String[] astrFixFloatMaturityTenor = new String[] {</span>
 			&quot;03Y&quot;,
 			&quot;04Y&quot;,
 			&quot;05Y&quot;,
@@ -332,7 +344,7 @@ import org.drip.state.identifier.ForwardLabel;
 			&quot;60Y&quot;
 		};
 
-<span class="fc" id="L335">		double[] adblFixFloatQuote = new double[] {</span>
+<span class="fc" id="L347">		double[] adblFixFloatQuote = new double[] {</span>
 			0.004240,	//  3Y
 			0.005760,	//  4Y			
 			0.007620,	//  5Y
@@ -352,7 +364,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.024630	// 60Y
 		};
 
-<span class="fc" id="L355">		Map&lt;String, ForwardCurve&gt; mapReferenceForwardCurve = LatentMarketStateBuilder.BumpedForwardCurve (</span>
+<span class="fc" id="L367">		Map&lt;String, ForwardCurve&gt; mapReferenceForwardCurve = LatentMarketStateBuilder.BumpedForwardCurve (</span>
 			dtSpot,
 			forwardLabel,
 			astrDepositMaturityTenor,
@@ -377,44 +389,44 @@ import org.drip.state.identifier.ForwardLabel;
 			bIsProportional
 		);
 
-<span class="fc" id="L380">		Component[] aDepositComp = OTCInstrumentBuilder.ForwardRateDeposit (</span>
+<span class="fc" id="L392">		Component[] aDepositComp = OTCInstrumentBuilder.ForwardRateDeposit (</span>
 			dtSpot,
 			astrDepositMaturityTenor,
 			forwardLabel
 		);
 
-<span class="fc" id="L386">		Component[] aFRAComp = OTCInstrumentBuilder.FRAStandard (</span>
+<span class="fc" id="L398">		Component[] aFRAComp = OTCInstrumentBuilder.FRAStandard (</span>
 			dtSpot,
 			forwardLabel,
 			astrFRAMaturityTenor,
 			adblFRAQuote
 		);
 
-<span class="fc" id="L393">		Component[] aFixFloatComp = OTCInstrumentBuilder.FixFloatCustom (</span>
+<span class="fc" id="L405">		Component[] aFixFloatComp = OTCInstrumentBuilder.FixFloatCustom (</span>
 			dtSpot,
 			forwardLabel,
 			astrFixFloatMaturityTenor
 		);
 
-<span class="fc" id="L399">		System.out.println (&quot;\n\t|---------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L411">		System.out.println (&quot;\n\t|---------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L401">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
+<span class="fc" id="L413">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
 
-<span class="fc bfc" id="L403" title="All 2 branches covered.">		for (Map.Entry&lt;String, ForwardCurve&gt; meForward : mapReferenceForwardCurve.entrySet()) {</span>
-<span class="fc" id="L404">			String strKey = meForward.getKey();</span>
+<span class="fc bfc" id="L415" title="All 2 branches covered.">		for (Map.Entry&lt;String, ForwardCurve&gt; meForward : mapReferenceForwardCurve.entrySet()) {</span>
+<span class="fc" id="L416">			String strKey = meForward.getKey();</span>
 
-<span class="fc bfc" id="L406" title="All 2 branches covered.">			if (!strKey.startsWith (&quot;deposit&quot;)) continue;</span>
+<span class="fc bfc" id="L418" title="All 2 branches covered.">			if (!strKey.startsWith (&quot;deposit&quot;)) continue;</span>
 
-<span class="fc" id="L408">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L420">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
 
-<span class="fc" id="L410">			csqc.setFundingState (dcOvernight);</span>
+<span class="fc" id="L422">			csqc.setFundingState (dcOvernight);</span>
 
-<span class="fc" id="L412">			csqc.setForwardState (meForward.getValue());</span>
+<span class="fc" id="L424">			csqc.setForwardState (meForward.getValue());</span>
 
-<span class="fc" id="L414">			System.out.print (&quot;\t|  [&quot; + meForward.getKey() + &quot;] =&gt; &quot;);</span>
+<span class="fc" id="L426">			System.out.print (&quot;\t|  [&quot; + meForward.getKey() + &quot;] =&gt; &quot;);</span>
 
-<span class="fc bfc" id="L416" title="All 2 branches covered.">			for (Component comp : aDepositComp)</span>
-<span class="fc" id="L417">				System.out.print (FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc bfc" id="L428" title="All 2 branches covered.">			for (Component comp : aDepositComp)</span>
+<span class="fc" id="L429">				System.out.print (FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqc,
@@ -422,28 +434,28 @@ import org.drip.state.identifier.ForwardLabel;
 					&quot;ForwardRate&quot;
 				), 1, 6, 1.) + &quot; |&quot;);
 
-<span class="fc" id="L425">			System.out.print (&quot;|\n&quot;);</span>
-<span class="fc" id="L426">		}</span>
+<span class="fc" id="L437">			System.out.print (&quot;|\n&quot;);</span>
+<span class="fc" id="L438">		}</span>
 
-<span class="fc" id="L428">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L440">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L430">		System.out.println (&quot;\n\t|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L442">		System.out.println (&quot;\n\t|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L432" title="All 2 branches covered.">		for (Map.Entry&lt;String, ForwardCurve&gt; meForward : mapReferenceForwardCurve.entrySet()) {</span>
-<span class="fc" id="L433">			String strKey = meForward.getKey();</span>
+<span class="fc bfc" id="L444" title="All 2 branches covered.">		for (Map.Entry&lt;String, ForwardCurve&gt; meForward : mapReferenceForwardCurve.entrySet()) {</span>
+<span class="fc" id="L445">			String strKey = meForward.getKey();</span>
 
-<span class="fc bfc" id="L435" title="All 2 branches covered.">			if (!strKey.startsWith (&quot;fra&quot;)) continue;</span>
+<span class="fc bfc" id="L447" title="All 2 branches covered.">			if (!strKey.startsWith (&quot;fra&quot;)) continue;</span>
 
-<span class="fc" id="L437">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L449">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
 
-<span class="fc" id="L439">			csqc.setFundingState (dcOvernight);</span>
+<span class="fc" id="L451">			csqc.setFundingState (dcOvernight);</span>
 
-<span class="fc" id="L441">			csqc.setForwardState (meForward.getValue());</span>
+<span class="fc" id="L453">			csqc.setForwardState (meForward.getValue());</span>
 
-<span class="fc" id="L443">			System.out.print (&quot;\t|  [&quot; + meForward.getKey() + &quot;] =&gt; &quot;);</span>
+<span class="fc" id="L455">			System.out.print (&quot;\t|  [&quot; + meForward.getKey() + &quot;] =&gt; &quot;);</span>
 
-<span class="fc bfc" id="L445" title="All 2 branches covered.">			for (Component comp : aFRAComp)</span>
-<span class="fc" id="L446">				System.out.print (FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc bfc" id="L457" title="All 2 branches covered.">			for (Component comp : aFRAComp)</span>
+<span class="fc" id="L458">				System.out.print (FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqc,
@@ -451,28 +463,28 @@ import org.drip.state.identifier.ForwardLabel;
 					&quot;ParForwardRate&quot;
 				), 1, 6, 1.) + &quot; |&quot;);
 
-<span class="fc" id="L454">			System.out.print (&quot;|\n&quot;);</span>
-<span class="fc" id="L455">		}</span>
+<span class="fc" id="L466">			System.out.print (&quot;|\n&quot;);</span>
+<span class="fc" id="L467">		}</span>
 
-<span class="fc" id="L457">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L469">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L459">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L471">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L461" title="All 2 branches covered.">		for (Map.Entry&lt;String, ForwardCurve&gt; meForward : mapReferenceForwardCurve.entrySet()) {</span>
-<span class="fc" id="L462">			String strKey = meForward.getKey();</span>
+<span class="fc bfc" id="L473" title="All 2 branches covered.">		for (Map.Entry&lt;String, ForwardCurve&gt; meForward : mapReferenceForwardCurve.entrySet()) {</span>
+<span class="fc" id="L474">			String strKey = meForward.getKey();</span>
 
-<span class="fc bfc" id="L464" title="All 2 branches covered.">			if (!strKey.startsWith (&quot;fixfloat&quot;)) continue;</span>
+<span class="fc bfc" id="L476" title="All 2 branches covered.">			if (!strKey.startsWith (&quot;fixfloat&quot;)) continue;</span>
 
-<span class="fc" id="L466">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L478">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
 
-<span class="fc" id="L468">			csqc.setFundingState (dcOvernight);</span>
+<span class="fc" id="L480">			csqc.setFundingState (dcOvernight);</span>
 
-<span class="fc" id="L470">			csqc.setForwardState (meForward.getValue());</span>
+<span class="fc" id="L482">			csqc.setForwardState (meForward.getValue());</span>
 
-<span class="fc" id="L472">			System.out.print (&quot;\t|  [&quot; + meForward.getKey() + &quot;] =&gt; &quot;);</span>
+<span class="fc" id="L484">			System.out.print (&quot;\t|  [&quot; + meForward.getKey() + &quot;] =&gt; &quot;);</span>
 
-<span class="fc bfc" id="L474" title="All 2 branches covered.">			for (Component comp : aFixFloatComp)</span>
-<span class="fc" id="L475">				System.out.print (FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc bfc" id="L486" title="All 2 branches covered.">			for (Component comp : aFixFloatComp)</span>
+<span class="fc" id="L487">				System.out.print (FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqc,
@@ -480,37 +492,37 @@ import org.drip.state.identifier.ForwardLabel;
 					&quot;SwapRate&quot;
 				), 1, 6, 1.) + &quot; |&quot;);
 
-<span class="fc" id="L483">			System.out.print (&quot;|\n&quot;);</span>
-<span class="fc" id="L484">		}</span>
+<span class="fc" id="L495">			System.out.print (&quot;|\n&quot;);</span>
+<span class="fc" id="L496">		}</span>
 
-<span class="fc" id="L486">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L498">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L488">		System.out.println (&quot;\n\t|-----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L500">		System.out.println (&quot;\n\t|-----------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L490">		CurveSurfaceQuoteContainer csqcBase = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L502">		CurveSurfaceQuoteContainer csqcBase = new CurveSurfaceQuoteContainer();</span>
 
-<span class="fc" id="L492">		csqcBase.setFundingState (dcOvernight);</span>
+<span class="fc" id="L504">		csqcBase.setFundingState (dcOvernight);</span>
 
-<span class="fc" id="L494">		csqcBase.setForwardState (mapReferenceForwardCurve.get (&quot;Base&quot;));</span>
+<span class="fc" id="L506">		csqcBase.setForwardState (mapReferenceForwardCurve.get (&quot;Base&quot;));</span>
 
-<span class="fc" id="L496">		CurveSurfaceQuoteContainer csqcBump = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L508">		CurveSurfaceQuoteContainer csqcBump = new CurveSurfaceQuoteContainer();</span>
 
-<span class="fc" id="L498">		csqcBump.setFundingState (dcOvernight);</span>
+<span class="fc" id="L510">		csqcBump.setFundingState (dcOvernight);</span>
 
-<span class="fc" id="L500">		csqcBump.setForwardState (mapReferenceForwardCurve.get (&quot;Bump&quot;));</span>
+<span class="fc" id="L512">		csqcBump.setForwardState (mapReferenceForwardCurve.get (&quot;Bump&quot;));</span>
 
-<span class="fc bfc" id="L502" title="All 2 branches covered.">		for (Component comp : aDepositComp)</span>
-<span class="fc" id="L503">			System.out.println (</span>
+<span class="fc bfc" id="L514" title="All 2 branches covered.">		for (Component comp : aDepositComp)</span>
+<span class="fc" id="L515">			System.out.println (</span>
 				&quot;\t| FORWARD RATE  =&gt; &quot; +
-<span class="fc" id="L505">				comp.maturityDate() + &quot; | &quot; +</span>
-<span class="fc" id="L506">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L517">				comp.maturityDate() + &quot; | &quot; +</span>
+<span class="fc" id="L518">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBase,
 					null,
 					&quot;ForwardRate&quot;
 				), 1, 6, 1.) + &quot; | &quot; +
-<span class="fc" id="L513">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L525">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBump,
@@ -519,18 +531,18 @@ import org.drip.state.identifier.ForwardLabel;
 				), 1, 6, 1.) + &quot; ||&quot;
 			);
 
-<span class="fc bfc" id="L522" title="All 2 branches covered.">		for (Component comp : aFRAComp)</span>
-<span class="fc" id="L523">			System.out.println (</span>
+<span class="fc bfc" id="L534" title="All 2 branches covered.">		for (Component comp : aFRAComp)</span>
+<span class="fc" id="L535">			System.out.println (</span>
 				&quot;\t| FORWARD RATE  =&gt; &quot; +
-<span class="fc" id="L525">				comp.maturityDate() + &quot; | &quot; +</span>
-<span class="fc" id="L526">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L537">				comp.maturityDate() + &quot; | &quot; +</span>
+<span class="fc" id="L538">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBase,
 					null,
 					&quot;ParForwardRate&quot;
 				), 1, 6, 1.) + &quot; | &quot; +
-<span class="fc" id="L533">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L545">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBump,
@@ -539,18 +551,18 @@ import org.drip.state.identifier.ForwardLabel;
 				), 1, 6, 1.) + &quot; ||&quot;
 			);
 
-<span class="fc bfc" id="L542" title="All 2 branches covered.">		for (Component comp : aFixFloatComp)</span>
-<span class="fc" id="L543">			System.out.println (</span>
+<span class="fc bfc" id="L554" title="All 2 branches covered.">		for (Component comp : aFixFloatComp)</span>
+<span class="fc" id="L555">			System.out.println (</span>
 				&quot;\t|  SWAP   RATE  =&gt; &quot; +
-<span class="fc" id="L545">				comp.maturityDate() + &quot; | &quot; +</span>
-<span class="fc" id="L546">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L557">				comp.maturityDate() + &quot; | &quot; +</span>
+<span class="fc" id="L558">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBase,
 					null,
 					&quot;SwapRate&quot;
 				), 1, 6, 1.) + &quot; | &quot; +
-<span class="fc" id="L553">				FormatUtil.FormatDouble (comp.measureValue (</span>
+<span class="fc" id="L565">				FormatUtil.FormatDouble (comp.measureValue (</span>
 					valParams,
 					null,
 					csqcBump,
@@ -559,7 +571,7 @@ import org.drip.state.identifier.ForwardLabel;
 				), 1, 6, 1.) + &quot; ||&quot;
 			);
 
-<span class="fc" id="L562">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
-<span class="fc" id="L563">	}</span>
+<span class="fc" id="L574">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L575">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

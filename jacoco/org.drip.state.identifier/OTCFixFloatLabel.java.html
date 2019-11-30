@@ -6,43 +6,55 @@ package org.drip.state.identifier;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -71,10 +83,10 @@ package org.drip.state.identifier;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier&quot;&gt;Identifier&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md&quot;&gt;Latent State Inference and Creation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md&quot;&gt;Latent State Identifier Labels&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *  
@@ -83,7 +95,7 @@ package org.drip.state.identifier;
 
 public class OTCFixFloatLabel extends org.drip.state.identifier.FloaterLabel
 {
-<span class="fc" id="L86">	private java.lang.String _strFixFloatTenor = &quot;&quot;;</span>
+<span class="fc" id="L98">	private java.lang.String _strFixFloatTenor = &quot;&quot;;</span>
 
 	/**
 	 * Construct a OTCFixFloatLabel from the corresponding Fully Qualified Name
@@ -96,32 +108,32 @@ public class OTCFixFloatLabel extends org.drip.state.identifier.FloaterLabel
 	public static final OTCFixFloatLabel Standard (
 		final java.lang.String strFullyQualifiedName)
 	{
-<span class="pc bpc" id="L99" title="2 of 4 branches missed.">		if (null == strFullyQualifiedName || strFullyQualifiedName.isEmpty()) return null;</span>
+<span class="pc bpc" id="L111" title="2 of 4 branches missed.">		if (null == strFullyQualifiedName || strFullyQualifiedName.isEmpty()) return null;</span>
 
-<span class="fc" id="L101">		java.lang.String[] astr = strFullyQualifiedName.split (&quot;-&quot;);</span>
+<span class="fc" id="L113">		java.lang.String[] astr = strFullyQualifiedName.split (&quot;-&quot;);</span>
 
-<span class="pc bpc" id="L103" title="2 of 4 branches missed.">		if (null == astr || 3 != astr.length) return null;</span>
+<span class="pc bpc" id="L115" title="2 of 4 branches missed.">		if (null == astr || 3 != astr.length) return null;</span>
 
-<span class="fc" id="L105">		java.lang.String strTenor = astr[1];</span>
-<span class="fc" id="L106">		java.lang.String strCurrency = astr[0];</span>
-<span class="fc" id="L107">		java.lang.String strFixFloatTenor = astr[2];</span>
+<span class="fc" id="L117">		java.lang.String strTenor = astr[1];</span>
+<span class="fc" id="L118">		java.lang.String strCurrency = astr[0];</span>
+<span class="fc" id="L119">		java.lang.String strFixFloatTenor = astr[2];</span>
 
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		org.drip.market.definition.FloaterIndex floaterIndex = &quot;ON&quot;.equalsIgnoreCase (strTenor) ||</span>
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">			&quot;1D&quot;.equalsIgnoreCase (strTenor) ?</span>
-<span class="pc" id="L111">				org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction (strCurrency) :</span>
-<span class="fc" id="L112">					org.drip.market.definition.IBORIndexContainer.IndexFromJurisdiction (strCurrency);</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		org.drip.market.definition.FloaterIndex floaterIndex = &quot;ON&quot;.equalsIgnoreCase (strTenor) ||</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">			&quot;1D&quot;.equalsIgnoreCase (strTenor) ?</span>
+<span class="pc" id="L123">				org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction (strCurrency) :</span>
+<span class="fc" id="L124">					org.drip.market.definition.IBORIndexContainer.IndexFromJurisdiction (strCurrency);</span>
 
 		try {
-<span class="fc" id="L115">			return new OTCFixFloatLabel (</span>
+<span class="fc" id="L127">			return new OTCFixFloatLabel (</span>
 				floaterIndex,
 				strTenor,
 				strFixFloatTenor
 			);
-<span class="nc" id="L120">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L121">			e.printStackTrace();</span>
+<span class="nc" id="L132">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L133">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L124">		return null;</span>
+<span class="nc" id="L136">		return null;</span>
 	}
 
 	/**
@@ -140,11 +152,11 @@ public class OTCFixFloatLabel extends org.drip.state.identifier.FloaterLabel
 		final java.lang.String strFixFloatTenor)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L143">		super (floaterIndex, strForwardTenor);</span>
+<span class="fc" id="L155">		super (floaterIndex, strForwardTenor);</span>
 
-<span class="pc bpc" id="L145" title="2 of 4 branches missed.">		if (null == (_strFixFloatTenor = strFixFloatTenor) || _strFixFloatTenor.isEmpty())</span>
-<span class="nc" id="L146">			throw new java.lang.Exception (&quot;OTCFixFloatLabel Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L147">	}</span>
+<span class="pc bpc" id="L157" title="2 of 4 branches missed.">		if (null == (_strFixFloatTenor = strFixFloatTenor) || _strFixFloatTenor.isEmpty())</span>
+<span class="nc" id="L158">			throw new java.lang.Exception (&quot;OTCFixFloatLabel Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L159">	}</span>
 
 	/**
 	 * Retrieve the Fix Float Tenor
@@ -154,20 +166,20 @@ public class OTCFixFloatLabel extends org.drip.state.identifier.FloaterLabel
 
 	public java.lang.String fixFloatTenor()
 	{
-<span class="fc" id="L157">		return _strFixFloatTenor;</span>
+<span class="fc" id="L169">		return _strFixFloatTenor;</span>
 	}
 
 	@Override public java.lang.String fullyQualifiedName()
 	{
-<span class="fc" id="L162">		return super.fullyQualifiedName() + &quot;::&quot; + _strFixFloatTenor;</span>
+<span class="fc" id="L174">		return super.fullyQualifiedName() + &quot;::&quot; + _strFixFloatTenor;</span>
 	}
 
 	@Override public boolean match (
 		final org.drip.state.identifier.LatentStateLabel lslOther)
 	{
-<span class="nc bnc" id="L168" title="All 2 branches missed.">		if (!(lslOther instanceof org.drip.state.identifier.OTCFixFloatLabel)) return false;</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">		if (!(lslOther instanceof org.drip.state.identifier.OTCFixFloatLabel)) return false;</span>
 
-<span class="nc" id="L170">		return super.match (lslOther);</span>
+<span class="nc" id="L182">		return super.match (lslOther);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

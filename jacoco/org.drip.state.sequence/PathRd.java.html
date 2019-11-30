@@ -6,43 +6,55 @@ package org.drip.state.sequence;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -71,10 +83,10 @@ package org.drip.state.sequence;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/sequence&quot;&gt;Sequence&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md&quot;&gt;Latent State Inference and Creation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/sequence/README.md&quot;&gt;Monte Carlo Path State Realizations&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -82,9 +94,9 @@ package org.drip.state.sequence;
  */
 
 public class PathRd {
-<span class="fc" id="L85">	private double[] _adblMean = null;</span>
-<span class="fc" id="L86">	private boolean _bLogNormal = false;</span>
-<span class="fc" id="L87">	private double _dblVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L97">	private double[] _adblMean = null;</span>
+<span class="fc" id="L98">	private boolean _bLogNormal = false;</span>
+<span class="fc" id="L99">	private double _dblVolatility = java.lang.Double.NaN;</span>
 
 	/**
 	 * PathRd Constructor
@@ -101,14 +113,14 @@ public class PathRd {
 		final double dblVolatility,
 		final boolean bLogNormal)
 		throws java.lang.Exception
-<span class="fc" id="L104">	{</span>
-<span class="pc bpc" id="L105" title="3 of 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_adblMean = adblMean) || null == _adblMean || 0 ==</span>
-<span class="pc bpc" id="L106" title="2 of 4 branches missed.">			_adblMean.length || !org.drip.numerical.common.NumberUtil.IsValid (_dblVolatility = dblVolatility) ||</span>
+<span class="fc" id="L116">	{</span>
+<span class="pc bpc" id="L117" title="3 of 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_adblMean = adblMean) || null == _adblMean || 0 ==</span>
+<span class="pc bpc" id="L118" title="2 of 4 branches missed.">			_adblMean.length || !org.drip.numerical.common.NumberUtil.IsValid (_dblVolatility = dblVolatility) ||</span>
 				0. &gt;= _dblVolatility)
-<span class="nc" id="L108">			throw new java.lang.Exception (&quot;PathRd Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L120">			throw new java.lang.Exception (&quot;PathRd Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L110">		_bLogNormal = bLogNormal;</span>
-<span class="fc" id="L111">	}</span>
+<span class="fc" id="L122">		_bLogNormal = bLogNormal;</span>
+<span class="fc" id="L123">	}</span>
 
 	/**
 	 * Indicate if the Random Numbers are Gaussian/LogNormal
@@ -118,7 +130,7 @@ public class PathRd {
 
 	public boolean logNormal()
 	{
-<span class="nc" id="L121">		return _bLogNormal;</span>
+<span class="nc" id="L133">		return _bLogNormal;</span>
 	}
 
 	/**
@@ -129,7 +141,7 @@ public class PathRd {
 
 	public int dimension()
 	{
-<span class="nc" id="L132">		return _adblMean.length;</span>
+<span class="nc" id="L144">		return _adblMean.length;</span>
 	}
 
 	/**
@@ -140,7 +152,7 @@ public class PathRd {
 
 	public double[] mean()
 	{
-<span class="nc" id="L143">		return _adblMean;</span>
+<span class="nc" id="L155">		return _adblMean;</span>
 	}
 
 	/**
@@ -151,7 +163,7 @@ public class PathRd {
 
 	public double volatility()
 	{
-<span class="nc" id="L154">		return _dblVolatility;</span>
+<span class="nc" id="L166">		return _dblVolatility;</span>
 	}
 
 	/**
@@ -165,25 +177,25 @@ public class PathRd {
 	public double[][] sequence (
 		final int iNumPath)
 	{
-<span class="pc bpc" id="L168" title="1 of 2 branches missed.">		if (0 &gt;= iNumPath) return null;</span>
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">		if (0 &gt;= iNumPath) return null;</span>
 
-<span class="fc" id="L170">		int iNumDimension = _adblMean.length;</span>
-<span class="fc" id="L171">		double[][] aadblSequence = new double[iNumPath][iNumDimension];</span>
+<span class="fc" id="L182">		int iNumDimension = _adblMean.length;</span>
+<span class="fc" id="L183">		double[][] aadblSequence = new double[iNumPath][iNumDimension];</span>
 
-<span class="fc bfc" id="L173" title="All 2 branches covered.">		for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
-<span class="fc" id="L174">			double[] adblRandom = org.drip.measure.discrete.SequenceGenerator.Gaussian (iNumDimension);</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">		for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
+<span class="fc" id="L186">			double[] adblRandom = org.drip.measure.discrete.SequenceGenerator.Gaussian (iNumDimension);</span>
 
-<span class="pc bpc" id="L176" title="2 of 4 branches missed.">			if (null == adblRandom || iNumDimension != adblRandom.length) return null;</span>
+<span class="pc bpc" id="L188" title="2 of 4 branches missed.">			if (null == adblRandom || iNumDimension != adblRandom.length) return null;</span>
 
-<span class="fc bfc" id="L178" title="All 2 branches covered.">			for (int iDimension = 0; iDimension &lt; iNumDimension; ++iDimension) {</span>
-<span class="fc" id="L179">				double dblWander = _dblVolatility * adblRandom[iDimension];</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">			for (int iDimension = 0; iDimension &lt; iNumDimension; ++iDimension) {</span>
+<span class="fc" id="L191">				double dblWander = _dblVolatility * adblRandom[iDimension];</span>
 
-<span class="pc bpc" id="L181" title="1 of 2 branches missed.">				aadblSequence[iPath][iDimension] = _bLogNormal ? _adblMean[iDimension] * java.lang.Math.exp</span>
-<span class="pc" id="L182">					(dblWander) : _adblMean[iDimension] + dblWander;</span>
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">				aadblSequence[iPath][iDimension] = _bLogNormal ? _adblMean[iDimension] * java.lang.Math.exp</span>
+<span class="pc" id="L194">					(dblWander) : _adblMean[iDimension] + dblWander;</span>
 			}
 		}
 
-<span class="fc" id="L186">		return aadblSequence;</span>
+<span class="fc" id="L198">		return aadblSequence;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

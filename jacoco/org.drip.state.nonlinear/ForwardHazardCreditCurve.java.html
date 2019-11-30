@@ -6,6 +6,7 @@ package org.drip.state.nonlinear;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -16,39 +17,50 @@ package org.drip.state.nonlinear;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -103,10 +115,10 @@ package org.drip.state.nonlinear;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear&quot;&gt;Non-Linear&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md&quot;&gt;Latent State Inference and Creation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear/README.md&quot;&gt;Nonlinear (i.e., Boot) Latent State Construction&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -114,27 +126,27 @@ package org.drip.state.nonlinear;
  */
 
 public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBootCreditCurve {
-<span class="fc" id="L117">	private int[] _aiHazardDate = null;</span>
-<span class="fc" id="L118">	private int[] _aiRecoveryDate = null;</span>
-<span class="fc" id="L119">	private double[] _adblHazardRate = null;</span>
-<span class="fc" id="L120">	private double[] _adblRecoveryRate = null;</span>
+<span class="fc" id="L129">	private int[] _aiHazardDate = null;</span>
+<span class="fc" id="L130">	private int[] _aiRecoveryDate = null;</span>
+<span class="fc" id="L131">	private double[] _adblHazardRate = null;</span>
+<span class="fc" id="L132">	private double[] _adblRecoveryRate = null;</span>
 
 	private org.drip.state.credit.CreditCurve createFromBaseMMTP (
 		final org.drip.param.definition.ManifestMeasureTweak mmtp)
 	{
-<span class="nc" id="L125">		double[] adblHazardBumped = org.drip.analytics.support.Helper.TweakManifestMeasure</span>
-<span class="nc" id="L126">			(_adblHazardRate, mmtp);</span>
+<span class="nc" id="L137">		double[] adblHazardBumped = org.drip.analytics.support.Helper.TweakManifestMeasure</span>
+<span class="nc" id="L138">			(_adblHazardRate, mmtp);</span>
 
-<span class="nc bnc" id="L128" title="All 4 branches missed.">		if (null == adblHazardBumped || _adblHazardRate.length != adblHazardBumped.length) return null;</span>
+<span class="nc bnc" id="L140" title="All 4 branches missed.">		if (null == adblHazardBumped || _adblHazardRate.length != adblHazardBumped.length) return null;</span>
 
 		try {
-<span class="nc" id="L131">			return new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, adblHazardBumped,</span>
+<span class="nc" id="L143">			return new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, adblHazardBumped,</span>
 				_aiHazardDate, _adblRecoveryRate, _aiRecoveryDate, _iSpecificDefaultDate);
-<span class="nc" id="L133">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L134">			e.printStackTrace();</span>
+<span class="nc" id="L145">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L146">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L137">		return null;</span>
+<span class="nc" id="L149">		return null;</span>
 	}
 
 	/**
@@ -163,135 +175,135 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 		final int iSpecificDefaultDate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L166">		super (iStartDate, label, strCurrency);</span>
+<span class="fc" id="L178">		super (iStartDate, label, strCurrency);</span>
 
-<span class="pc bpc" id="L168" title="10 of 20 branches missed.">		if (null == adblHazardRate || 0 == adblHazardRate.length || null == aiHazardDate || 0 ==</span>
+<span class="pc bpc" id="L180" title="10 of 20 branches missed.">		if (null == adblHazardRate || 0 == adblHazardRate.length || null == aiHazardDate || 0 ==</span>
 			aiHazardDate.length || adblHazardRate.length != aiHazardDate.length || null ==
 				adblRecoveryRate || 0 == adblRecoveryRate.length || null == aiRecoveryDate || 0 ==
 					aiRecoveryDate.length || adblRecoveryRate.length != aiRecoveryDate.length)
-<span class="nc" id="L172">			throw new java.lang.Exception (&quot;ForwardHazardCreditCurve ctr: Invalid Params!&quot;);</span>
+<span class="nc" id="L184">			throw new java.lang.Exception (&quot;ForwardHazardCreditCurve ctr: Invalid Params!&quot;);</span>
 
-<span class="fc" id="L174">		_iSpecificDefaultDate = iSpecificDefaultDate;</span>
-<span class="fc" id="L175">		_adblHazardRate = new double[adblHazardRate.length];</span>
-<span class="fc" id="L176">		_adblRecoveryRate = new double[adblRecoveryRate.length];</span>
-<span class="fc" id="L177">		_aiHazardDate = new int[aiHazardDate.length];</span>
-<span class="fc" id="L178">		_aiRecoveryDate = new int[aiRecoveryDate.length];</span>
+<span class="fc" id="L186">		_iSpecificDefaultDate = iSpecificDefaultDate;</span>
+<span class="fc" id="L187">		_adblHazardRate = new double[adblHazardRate.length];</span>
+<span class="fc" id="L188">		_adblRecoveryRate = new double[adblRecoveryRate.length];</span>
+<span class="fc" id="L189">		_aiHazardDate = new int[aiHazardDate.length];</span>
+<span class="fc" id="L190">		_aiRecoveryDate = new int[aiRecoveryDate.length];</span>
 
-<span class="fc bfc" id="L180" title="All 2 branches covered.">		for (int i = 0; i &lt; adblHazardRate.length; ++i)</span>
-<span class="fc" id="L181">			_adblHazardRate[i] = adblHazardRate[i];</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">		for (int i = 0; i &lt; adblHazardRate.length; ++i)</span>
+<span class="fc" id="L193">			_adblHazardRate[i] = adblHazardRate[i];</span>
 
-<span class="fc bfc" id="L183" title="All 2 branches covered.">		for (int i = 0; i &lt; _aiHazardDate.length; ++i)</span>
-<span class="fc" id="L184">			_aiHazardDate[i] = aiHazardDate[i];</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">		for (int i = 0; i &lt; _aiHazardDate.length; ++i)</span>
+<span class="fc" id="L196">			_aiHazardDate[i] = aiHazardDate[i];</span>
 
-<span class="fc bfc" id="L186" title="All 2 branches covered.">		for (int i = 0; i &lt; adblRecoveryRate.length; ++i)</span>
-<span class="fc" id="L187">			_adblRecoveryRate[i] = adblRecoveryRate[i];</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">		for (int i = 0; i &lt; adblRecoveryRate.length; ++i)</span>
+<span class="fc" id="L199">			_adblRecoveryRate[i] = adblRecoveryRate[i];</span>
 
-<span class="fc bfc" id="L189" title="All 2 branches covered.">		for (int i = 0; i &lt; aiRecoveryDate.length; ++i)</span>
-<span class="fc" id="L190">			_aiRecoveryDate[i] = aiRecoveryDate[i];</span>
-<span class="fc" id="L191">	}</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">		for (int i = 0; i &lt; aiRecoveryDate.length; ++i)</span>
+<span class="fc" id="L202">			_aiRecoveryDate[i] = aiRecoveryDate[i];</span>
+<span class="fc" id="L203">	}</span>
 
 	@Override public double survival (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L197" title="All 2 branches covered.">		if (iDate &lt;= _iEpochDate) return 1.;</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">		if (iDate &lt;= _iEpochDate) return 1.;</span>
 
-<span class="pc bpc" id="L199" title="3 of 4 branches missed.">		if (java.lang.Integer.MIN_VALUE != _iSpecificDefaultDate &amp;&amp; iDate &gt;= _iSpecificDefaultDate)</span>
-<span class="nc" id="L200">			return 0.;</span>
+<span class="pc bpc" id="L211" title="3 of 4 branches missed.">		if (java.lang.Integer.MIN_VALUE != _iSpecificDefaultDate &amp;&amp; iDate &gt;= _iSpecificDefaultDate)</span>
+<span class="nc" id="L212">			return 0.;</span>
 
-<span class="fc" id="L202">		int i = 0;</span>
-<span class="fc" id="L203">		double dblExpArg = 0.;</span>
-<span class="fc" id="L204">		int iStartDate = _iEpochDate;</span>
+<span class="fc" id="L214">		int i = 0;</span>
+<span class="fc" id="L215">		double dblExpArg = 0.;</span>
+<span class="fc" id="L216">		int iStartDate = _iEpochDate;</span>
 
-<span class="fc bfc" id="L206" title="All 4 branches covered.">		while (i &lt; _adblHazardRate.length &amp;&amp; iDate &gt; _aiHazardDate[i]) {</span>
-<span class="fc" id="L207">			dblExpArg -= _adblHazardRate[i] * (_aiHazardDate[i] - iStartDate);</span>
-<span class="fc" id="L208">			iStartDate = _aiHazardDate[i++];</span>
+<span class="fc bfc" id="L218" title="All 4 branches covered.">		while (i &lt; _adblHazardRate.length &amp;&amp; iDate &gt; _aiHazardDate[i]) {</span>
+<span class="fc" id="L219">			dblExpArg -= _adblHazardRate[i] * (_aiHazardDate[i] - iStartDate);</span>
+<span class="fc" id="L220">			iStartDate = _aiHazardDate[i++];</span>
 		}
 
-<span class="fc bfc" id="L211" title="All 2 branches covered.">		if (i &gt;= _adblHazardRate.length) i = _adblHazardRate.length - 1;</span>
+<span class="fc bfc" id="L223" title="All 2 branches covered.">		if (i &gt;= _adblHazardRate.length) i = _adblHazardRate.length - 1;</span>
 
-<span class="fc" id="L213">		dblExpArg -= _adblHazardRate[i] * (iDate - iStartDate);</span>
+<span class="fc" id="L225">		dblExpArg -= _adblHazardRate[i] * (iDate - iStartDate);</span>
 
-<span class="fc" id="L215">		return java.lang.Math.exp (dblExpArg / 365.25);</span>
+<span class="fc" id="L227">		return java.lang.Math.exp (dblExpArg / 365.25);</span>
 	}
 
 	@Override public double recovery (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L222" title="All 2 branches covered.">		for (int i = 0; i &lt; _aiRecoveryDate.length; ++i) {</span>
-<span class="fc bfc" id="L223" title="All 2 branches covered.">			if (iDate &lt; _aiRecoveryDate[i]) return _adblRecoveryRate[i];</span>
+<span class="fc bfc" id="L234" title="All 2 branches covered.">		for (int i = 0; i &lt; _aiRecoveryDate.length; ++i) {</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">			if (iDate &lt; _aiRecoveryDate[i]) return _adblRecoveryRate[i];</span>
 		}
 
-<span class="fc" id="L226">		return _adblRecoveryRate[_aiRecoveryDate.length - 1];</span>
+<span class="fc" id="L238">		return _adblRecoveryRate[_aiRecoveryDate.length - 1];</span>
 	}
 
 	@Override public ForwardHazardCreditCurve parallelShiftQuantificationMetric (
 		final double dblShift)
 	{
-<span class="pc bpc" id="L232" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift)) return null;</span>
+<span class="pc bpc" id="L244" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift)) return null;</span>
 
-<span class="fc" id="L234">		double[] adblHazard = new double[_adblHazardRate.length];</span>
+<span class="fc" id="L246">		double[] adblHazard = new double[_adblHazardRate.length];</span>
 
-<span class="fc bfc" id="L236" title="All 2 branches covered.">		for (int i = 0; i &lt; _adblHazardRate.length; ++i)</span>
-<span class="fc" id="L237">			adblHazard[i] = _adblHazardRate[i] + dblShift;</span>
+<span class="fc bfc" id="L248" title="All 2 branches covered.">		for (int i = 0; i &lt; _adblHazardRate.length; ++i)</span>
+<span class="fc" id="L249">			adblHazard[i] = _adblHazardRate[i] + dblShift;</span>
 
 		try {
-<span class="fc" id="L240">			return new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, adblHazard,</span>
+<span class="fc" id="L252">			return new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, adblHazard,</span>
 				_aiHazardDate, _adblRecoveryRate, _aiRecoveryDate, _iSpecificDefaultDate);
-<span class="nc" id="L242">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L243">			e.printStackTrace();</span>
+<span class="nc" id="L254">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L255">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L246">		return null;</span>
+<span class="nc" id="L258">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.definition.Curve customTweakQuantificationMetric (
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc" id="L252">		return null;</span>
+<span class="nc" id="L264">		return null;</span>
 	}
 
 	@Override public ForwardHazardCreditCurve parallelShiftManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="pc bpc" id="L259" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift)) return null;</span>
+<span class="pc bpc" id="L271" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift)) return null;</span>
 
-<span class="pc bpc" id="L261" title="8 of 18 branches missed.">		if (null == _valParam || null == _aCalibInst || 0 == _aCalibInst.length || null == _adblCalibQuote ||</span>
+<span class="pc bpc" id="L273" title="8 of 18 branches missed.">		if (null == _valParam || null == _aCalibInst || 0 == _aCalibInst.length || null == _adblCalibQuote ||</span>
 			0 == _adblCalibQuote.length || null == _astrCalibMeasure || 0 == _astrCalibMeasure.length ||
 				_astrCalibMeasure.length != _adblCalibQuote.length || _adblCalibQuote.length !=
 					_aCalibInst.length)
-<span class="fc" id="L265">			return parallelShiftQuantificationMetric (dblShift);</span>
+<span class="fc" id="L277">			return parallelShiftQuantificationMetric (dblShift);</span>
 
-<span class="fc" id="L267">		ForwardHazardCreditCurve cc = null;</span>
-<span class="fc" id="L268">		double[] adblCalibQuote = new double[_adblCalibQuote.length];</span>
+<span class="fc" id="L279">		ForwardHazardCreditCurve cc = null;</span>
+<span class="fc" id="L280">		double[] adblCalibQuote = new double[_adblCalibQuote.length];</span>
 
 		try {
-<span class="fc" id="L271">			cc = new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, _adblHazardRate,</span>
+<span class="fc" id="L283">			cc = new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, _adblHazardRate,</span>
 				_aiHazardDate, _adblRecoveryRate, _aiRecoveryDate, _iSpecificDefaultDate);
-<span class="nc" id="L273">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L274">			e.printStackTrace();</span>
+<span class="nc" id="L285">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L286">			e.printStackTrace();</span>
 
-<span class="nc" id="L276">			return null;</span>
-<span class="fc" id="L277">		}</span>
+<span class="nc" id="L288">			return null;</span>
+<span class="fc" id="L289">		}</span>
 
-<span class="fc bfc" id="L279" title="All 2 branches covered.">		for (int i = 0; i &lt; _adblCalibQuote.length; ++i) {</span>
+<span class="fc bfc" id="L291" title="All 2 branches covered.">		for (int i = 0; i &lt; _adblCalibQuote.length; ++i) {</span>
 			try {
-<span class="fc" id="L281">				org.drip.state.nonlinear.NonlinearCurveBuilder.CreditCurve (_valParam, _aCalibInst[i],</span>
+<span class="fc" id="L293">				org.drip.state.nonlinear.NonlinearCurveBuilder.CreditCurve (_valParam, _aCalibInst[i],</span>
 					adblCalibQuote[i] = _adblCalibQuote[i] + dblShift, _astrCalibMeasure[i], _bFlat, i, cc,
 						_dc, _gc, _pricerParam, _lsfc, _quotingParams, null);
-<span class="nc" id="L284">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L285">				e.printStackTrace();</span>
+<span class="nc" id="L296">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L297">				e.printStackTrace();</span>
 
-<span class="nc" id="L287">				return null;</span>
-<span class="fc" id="L288">			}</span>
+<span class="nc" id="L299">				return null;</span>
+<span class="fc" id="L300">			}</span>
 		}
 
-<span class="fc" id="L291">		cc.setInstrCalibInputs (_valParam, _bFlat, _dc, _gc, _pricerParam, _aCalibInst, adblCalibQuote,</span>
+<span class="fc" id="L303">		cc.setInstrCalibInputs (_valParam, _bFlat, _dc, _gc, _pricerParam, _aCalibInst, adblCalibQuote,</span>
 			_astrCalibMeasure, _lsfc, _quotingParams);
 
-<span class="fc" id="L294">		return cc;</span>
+<span class="fc" id="L306">		return cc;</span>
 	}
 
 	@Override public ForwardHazardCreditCurve shiftManifestMeasure (
@@ -299,45 +311,45 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc bnc" id="L302" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift)) return null;</span>
+<span class="nc bnc" id="L314" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift)) return null;</span>
 
-<span class="nc bnc" id="L304" title="All 18 branches missed.">		if (null == _valParam || null == _aCalibInst || 0 == _aCalibInst.length || null == _adblCalibQuote ||</span>
+<span class="nc bnc" id="L316" title="All 18 branches missed.">		if (null == _valParam || null == _aCalibInst || 0 == _aCalibInst.length || null == _adblCalibQuote ||</span>
 			0 == _adblCalibQuote.length || null == _astrCalibMeasure || 0 == _astrCalibMeasure.length ||
 				_astrCalibMeasure.length != _adblCalibQuote.length || _adblCalibQuote.length !=
 					_aCalibInst.length)
-<span class="nc" id="L308">			return parallelShiftQuantificationMetric (dblShift);</span>
+<span class="nc" id="L320">			return parallelShiftQuantificationMetric (dblShift);</span>
 
-<span class="nc" id="L310">		ForwardHazardCreditCurve cc = null;</span>
-<span class="nc" id="L311">		double[] adblCalibQuote = new double[_adblCalibQuote.length];</span>
+<span class="nc" id="L322">		ForwardHazardCreditCurve cc = null;</span>
+<span class="nc" id="L323">		double[] adblCalibQuote = new double[_adblCalibQuote.length];</span>
 
-<span class="nc bnc" id="L313" title="All 2 branches missed.">		if (iSpanIndex &gt;= _adblCalibQuote.length) return null;</span>
+<span class="nc bnc" id="L325" title="All 2 branches missed.">		if (iSpanIndex &gt;= _adblCalibQuote.length) return null;</span>
 
 		try {
-<span class="nc" id="L316">			cc = new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, _adblHazardRate,</span>
+<span class="nc" id="L328">			cc = new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, _adblHazardRate,</span>
 				_aiHazardDate, _adblRecoveryRate, _aiRecoveryDate, _iSpecificDefaultDate);
-<span class="nc" id="L318">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L319">			e.printStackTrace();</span>
+<span class="nc" id="L330">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L331">			e.printStackTrace();</span>
 
-<span class="nc" id="L321">			return null;</span>
-<span class="nc" id="L322">		}</span>
+<span class="nc" id="L333">			return null;</span>
+<span class="nc" id="L334">		}</span>
 
-<span class="nc bnc" id="L324" title="All 2 branches missed.">		for (int i = 0; i &lt; _adblCalibQuote.length; ++i) {</span>
+<span class="nc bnc" id="L336" title="All 2 branches missed.">		for (int i = 0; i &lt; _adblCalibQuote.length; ++i) {</span>
 			try {
-<span class="nc bnc" id="L326" title="All 2 branches missed.">				org.drip.state.nonlinear.NonlinearCurveBuilder.CreditCurve (_valParam, _aCalibInst[i],</span>
+<span class="nc bnc" id="L338" title="All 2 branches missed.">				org.drip.state.nonlinear.NonlinearCurveBuilder.CreditCurve (_valParam, _aCalibInst[i],</span>
 					adblCalibQuote[i] = _adblCalibQuote[i] + (i == iSpanIndex ? dblShift : 0.),
 						_astrCalibMeasure[i], _bFlat, i, cc, _dc, _gc, _pricerParam, _lsfc,
 							_quotingParams, null);
-<span class="nc" id="L330">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L331">				e.printStackTrace();</span>
+<span class="nc" id="L342">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L343">				e.printStackTrace();</span>
 
-<span class="nc" id="L333">				return null;</span>
-<span class="nc" id="L334">			}</span>
+<span class="nc" id="L345">				return null;</span>
+<span class="nc" id="L346">			}</span>
 		}
 
-<span class="nc" id="L337">		cc.setInstrCalibInputs (_valParam, _bFlat, _dc, _gc, _pricerParam, _aCalibInst, adblCalibQuote,</span>
+<span class="nc" id="L349">		cc.setInstrCalibInputs (_valParam, _bFlat, _dc, _gc, _pricerParam, _aCalibInst, adblCalibQuote,</span>
 			_astrCalibMeasure, _lsfc, _quotingParams);
 
-<span class="nc" id="L340">		return cc;</span>
+<span class="nc" id="L352">		return cc;</span>
 	}
 
 	@Override public org.drip.state.credit.CreditCurve flatCurve (
@@ -345,189 +357,189 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 		final boolean bSingleNode,
 		final double dblRecovery)
 	{
-<span class="pc bpc" id="L348" title="11 of 22 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblFlatNodeValue) || 0. &gt;= dblFlatNodeValue || null ==</span>
+<span class="pc bpc" id="L360" title="11 of 22 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblFlatNodeValue) || 0. &gt;= dblFlatNodeValue || null ==</span>
 			_valParam || null == _aCalibInst || 0 == _aCalibInst.length || null == _adblCalibQuote || 0 ==
 				_adblCalibQuote.length || null == _astrCalibMeasure || 0 == _astrCalibMeasure.length ||
 					_astrCalibMeasure.length != _adblCalibQuote.length || _adblCalibQuote.length !=
 						_aCalibInst.length)
-<span class="nc" id="L353">			return null;</span>
+<span class="nc" id="L365">			return null;</span>
 
-<span class="fc" id="L355">		org.drip.state.credit.ExplicitBootCreditCurve cc = null;</span>
+<span class="fc" id="L367">		org.drip.state.credit.ExplicitBootCreditCurve cc = null;</span>
 
 		try {
-<span class="pc bpc" id="L358" title="1 of 2 branches missed.">			if (bSingleNode)</span>
-<span class="nc" id="L359">				cc = org.drip.state.creator.ScenarioCreditCurveBuilder.Hazard (_iEpochDate,</span>
-<span class="nc" id="L360">					_label.fullyQualifiedName(), _strCurrency, _adblHazardRate[0], _aiHazardDate[0],</span>
-<span class="nc bnc" id="L361" title="All 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (dblRecovery) ? _adblRecoveryRate[0] :</span>
+<span class="pc bpc" id="L370" title="1 of 2 branches missed.">			if (bSingleNode)</span>
+<span class="nc" id="L371">				cc = org.drip.state.creator.ScenarioCreditCurveBuilder.Hazard (_iEpochDate,</span>
+<span class="nc" id="L372">					_label.fullyQualifiedName(), _strCurrency, _adblHazardRate[0], _aiHazardDate[0],</span>
+<span class="nc bnc" id="L373" title="All 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (dblRecovery) ? _adblRecoveryRate[0] :</span>
 							dblRecovery);
 			else
-<span class="fc" id="L364">				cc = new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, _adblHazardRate,</span>
+<span class="fc" id="L376">				cc = new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, _adblHazardRate,</span>
 					_aiHazardDate, _adblRecoveryRate, _aiRecoveryDate, _iSpecificDefaultDate);
-<span class="nc" id="L366">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L367">			e.printStackTrace();</span>
+<span class="nc" id="L378">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L379">			e.printStackTrace();</span>
 
-<span class="nc" id="L369">			return null;</span>
-<span class="fc" id="L370">		}</span>
+<span class="nc" id="L381">			return null;</span>
+<span class="fc" id="L382">		}</span>
 
-<span class="fc bfc" id="L372" title="All 2 branches covered.">		for (int i = 0; i &lt; _adblCalibQuote.length; ++i) {</span>
+<span class="fc bfc" id="L384" title="All 2 branches covered.">		for (int i = 0; i &lt; _adblCalibQuote.length; ++i) {</span>
 			try {
-<span class="fc" id="L374">				org.drip.state.nonlinear.NonlinearCurveBuilder.CreditCurve (_valParam, _aCalibInst[i],</span>
+<span class="fc" id="L386">				org.drip.state.nonlinear.NonlinearCurveBuilder.CreditCurve (_valParam, _aCalibInst[i],</span>
 					dblFlatNodeValue, _astrCalibMeasure[i], true, i, cc, _dc, _gc, _pricerParam, _lsfc,
 						_quotingParams, null);
-<span class="nc" id="L377">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L378">				e.printStackTrace();</span>
+<span class="nc" id="L389">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L390">				e.printStackTrace();</span>
 
-<span class="nc" id="L380">				return null;</span>
-<span class="fc" id="L381">			}</span>
+<span class="nc" id="L392">				return null;</span>
+<span class="fc" id="L393">			}</span>
 		}
 
-<span class="pc bpc" id="L384" title="1 of 2 branches missed.">		if (bSingleNode)</span>
-<span class="nc" id="L385">			cc.setInstrCalibInputs (_valParam, true, _dc, _gc, _pricerParam, new</span>
+<span class="pc bpc" id="L396" title="1 of 2 branches missed.">		if (bSingleNode)</span>
+<span class="nc" id="L397">			cc.setInstrCalibInputs (_valParam, true, _dc, _gc, _pricerParam, new</span>
 				org.drip.product.definition.CalibratableComponent[] {_aCalibInst[0]}, new double[]
 					{dblFlatNodeValue}, _astrCalibMeasure, _lsfc, _quotingParams);
 		else {
-<span class="fc" id="L389">			double[] adblCalibValue = new double[_adblCalibQuote.length];</span>
+<span class="fc" id="L401">			double[] adblCalibValue = new double[_adblCalibQuote.length];</span>
 
-<span class="fc bfc" id="L391" title="All 2 branches covered.">			for (int i = 0; i &lt; _adblCalibQuote.length; ++i)</span>
-<span class="fc" id="L392">				adblCalibValue[i] = dblFlatNodeValue;</span>
+<span class="fc bfc" id="L403" title="All 2 branches covered.">			for (int i = 0; i &lt; _adblCalibQuote.length; ++i)</span>
+<span class="fc" id="L404">				adblCalibValue[i] = dblFlatNodeValue;</span>
 
-<span class="fc" id="L394">			cc.setInstrCalibInputs (_valParam, true, _dc, _gc, _pricerParam, _aCalibInst, adblCalibValue,</span>
+<span class="fc" id="L406">			cc.setInstrCalibInputs (_valParam, true, _dc, _gc, _pricerParam, _aCalibInst, adblCalibValue,</span>
 				_astrCalibMeasure, _lsfc, _quotingParams);
 		}
 
-<span class="fc" id="L398">		return cc;</span>
+<span class="fc" id="L410">		return cc;</span>
 	}
 
 	@Override  public org.drip.state.credit.CreditCurve customTweakManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.definition.ManifestMeasureTweak mmtp)
 	{
-<span class="pc bpc" id="L405" title="1 of 2 branches missed.">		if (null == mmtp) return null;</span>
+<span class="pc bpc" id="L417" title="1 of 2 branches missed.">		if (null == mmtp) return null;</span>
 
-<span class="pc bpc" id="L407" title="1 of 2 branches missed.">		if (!(mmtp instanceof org.drip.param.definition.CreditManifestMeasureTweak))</span>
-<span class="nc" id="L408">			return createFromBaseMMTP (mmtp);</span>
+<span class="pc bpc" id="L419" title="1 of 2 branches missed.">		if (!(mmtp instanceof org.drip.param.definition.CreditManifestMeasureTweak))</span>
+<span class="nc" id="L420">			return createFromBaseMMTP (mmtp);</span>
 
-<span class="fc" id="L410">		org.drip.param.definition.CreditManifestMeasureTweak cmmt =</span>
+<span class="fc" id="L422">		org.drip.param.definition.CreditManifestMeasureTweak cmmt =</span>
 			(org.drip.param.definition.CreditManifestMeasureTweak) mmtp;
 
-<span class="fc" id="L413">		if (org.drip.param.definition.CreditManifestMeasureTweak.CREDIT_TWEAK_NODE_PARAM_RECOVERY.equalsIgnoreCase</span>
-<span class="pc bpc" id="L414" title="1 of 2 branches missed.">			(cmmt.paramType())) {</span>
-<span class="nc" id="L415">			double[] adblRecoveryRateBumped = null;</span>
+<span class="fc" id="L425">		if (org.drip.param.definition.CreditManifestMeasureTweak.CREDIT_TWEAK_NODE_PARAM_RECOVERY.equalsIgnoreCase</span>
+<span class="pc bpc" id="L426" title="1 of 2 branches missed.">			(cmmt.paramType())) {</span>
+<span class="nc" id="L427">			double[] adblRecoveryRateBumped = null;</span>
 
-<span class="nc" id="L417">			if (null == (adblRecoveryRateBumped =</span>
-<span class="nc bnc" id="L418" title="All 4 branches missed.">				org.drip.analytics.support.Helper.TweakManifestMeasure (_adblRecoveryRate, cmmt)) ||</span>
+<span class="nc" id="L429">			if (null == (adblRecoveryRateBumped =</span>
+<span class="nc bnc" id="L430" title="All 4 branches missed.">				org.drip.analytics.support.Helper.TweakManifestMeasure (_adblRecoveryRate, cmmt)) ||</span>
 					adblRecoveryRateBumped.length != _adblRecoveryRate.length)
-<span class="nc" id="L420">				return null;</span>
+<span class="nc" id="L432">				return null;</span>
 
 			try {
-<span class="nc" id="L423">				return new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, _adblHazardRate,</span>
+<span class="nc" id="L435">				return new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, _adblHazardRate,</span>
 					_aiHazardDate, adblRecoveryRateBumped, _aiRecoveryDate, _iSpecificDefaultDate);
-<span class="nc" id="L425">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L426">				e.printStackTrace();</span>
+<span class="nc" id="L437">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L438">				e.printStackTrace();</span>
 			}
-<span class="pc" id="L428">		} else if</span>
+<span class="pc" id="L440">		} else if</span>
 			(org.drip.param.definition.CreditManifestMeasureTweak.CREDIT_TWEAK_NODE_PARAM_QUOTE.equalsIgnoreCase
-<span class="pc bpc" id="L430" title="1 of 2 branches missed.">				(cmmt.paramType())) {</span>
-<span class="fc" id="L431">			if (org.drip.param.definition.CreditManifestMeasureTweak.CREDIT_TWEAK_NODE_MEASURE_HAZARD.equalsIgnoreCase</span>
-<span class="pc bpc" id="L432" title="1 of 2 branches missed.">				(cmmt.measureType())) {</span>
-<span class="nc" id="L433">				double[] adblHazardBumped = null;</span>
+<span class="pc bpc" id="L442" title="1 of 2 branches missed.">				(cmmt.paramType())) {</span>
+<span class="fc" id="L443">			if (org.drip.param.definition.CreditManifestMeasureTweak.CREDIT_TWEAK_NODE_MEASURE_HAZARD.equalsIgnoreCase</span>
+<span class="pc bpc" id="L444" title="1 of 2 branches missed.">				(cmmt.measureType())) {</span>
+<span class="nc" id="L445">				double[] adblHazardBumped = null;</span>
 
-<span class="nc" id="L435">				if (null == (adblHazardBumped =</span>
-<span class="nc bnc" id="L436" title="All 4 branches missed.">					org.drip.analytics.support.Helper.TweakManifestMeasure (_adblHazardRate, cmmt))</span>
+<span class="nc" id="L447">				if (null == (adblHazardBumped =</span>
+<span class="nc bnc" id="L448" title="All 4 branches missed.">					org.drip.analytics.support.Helper.TweakManifestMeasure (_adblHazardRate, cmmt))</span>
 						|| adblHazardBumped.length != _adblHazardRate.length)
-<span class="nc" id="L438">					return null;</span>
+<span class="nc" id="L450">					return null;</span>
 
 				try {
-<span class="nc" id="L441">					return new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency,</span>
+<span class="nc" id="L453">					return new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency,</span>
 						adblHazardBumped, _aiHazardDate, _adblRecoveryRate, _aiRecoveryDate,
 							_iSpecificDefaultDate);
-<span class="nc" id="L444">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L445">					e.printStackTrace();</span>
+<span class="nc" id="L456">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L457">					e.printStackTrace();</span>
 				}
-<span class="pc" id="L447">			} else if</span>
+<span class="pc" id="L459">			} else if</span>
 				(org.drip.param.definition.CreditManifestMeasureTweak.CREDIT_TWEAK_NODE_MEASURE_QUOTE.equalsIgnoreCase
-<span class="pc bpc" id="L449" title="1 of 2 branches missed.">					(cmmt.measureType())) {</span>
-<span class="fc" id="L450">				double[] adblQuoteBumped = null;</span>
+<span class="pc bpc" id="L461" title="1 of 2 branches missed.">					(cmmt.measureType())) {</span>
+<span class="fc" id="L462">				double[] adblQuoteBumped = null;</span>
 
-<span class="fc" id="L452">				if (null == (adblQuoteBumped =</span>
-<span class="pc bpc" id="L453" title="2 of 4 branches missed.">					org.drip.analytics.support.Helper.TweakManifestMeasure (_adblHazardRate, cmmt))</span>
+<span class="fc" id="L464">				if (null == (adblQuoteBumped =</span>
+<span class="pc bpc" id="L465" title="2 of 4 branches missed.">					org.drip.analytics.support.Helper.TweakManifestMeasure (_adblHazardRate, cmmt))</span>
 						|| adblQuoteBumped.length != _adblHazardRate.length)
-<span class="nc" id="L455">					return null;</span>
+<span class="nc" id="L467">					return null;</span>
 
-<span class="fc" id="L457">				org.drip.state.credit.ExplicitBootCreditCurve cc = null;</span>
+<span class="fc" id="L469">				org.drip.state.credit.ExplicitBootCreditCurve cc = null;</span>
 
 				try {
-<span class="pc bpc" id="L460" title="1 of 2 branches missed.">					if (cmmt.singleNodeCalib())</span>
-<span class="nc" id="L461">						cc = org.drip.state.creator.ScenarioCreditCurveBuilder.Hazard (_iEpochDate,</span>
-<span class="nc" id="L462">							_strCurrency, _label.fullyQualifiedName(), _adblHazardRate[0],</span>
+<span class="pc bpc" id="L472" title="1 of 2 branches missed.">					if (cmmt.singleNodeCalib())</span>
+<span class="nc" id="L473">						cc = org.drip.state.creator.ScenarioCreditCurveBuilder.Hazard (_iEpochDate,</span>
+<span class="nc" id="L474">							_strCurrency, _label.fullyQualifiedName(), _adblHazardRate[0],</span>
 								_aiHazardDate[0], _adblRecoveryRate[0]);
 					else
-<span class="fc" id="L465">						cc = new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency,</span>
+<span class="fc" id="L477">						cc = new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency,</span>
 							_adblHazardRate, _aiHazardDate, _adblRecoveryRate, _aiRecoveryDate,
 								_iSpecificDefaultDate);
-<span class="nc" id="L468">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L469">					e.printStackTrace();</span>
+<span class="nc" id="L480">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L481">					e.printStackTrace();</span>
 
-<span class="nc" id="L471">					return null;</span>
-<span class="fc" id="L472">				}</span>
+<span class="nc" id="L483">					return null;</span>
+<span class="fc" id="L484">				}</span>
 
-<span class="fc bfc" id="L474" title="All 2 branches covered.">				for (int i = 0; i &lt; adblQuoteBumped.length; ++i) {</span>
+<span class="fc bfc" id="L486" title="All 2 branches covered.">				for (int i = 0; i &lt; adblQuoteBumped.length; ++i) {</span>
 					try {
-<span class="fc" id="L476">						org.drip.state.nonlinear.NonlinearCurveBuilder.CreditCurve (_valParam,</span>
+<span class="fc" id="L488">						org.drip.state.nonlinear.NonlinearCurveBuilder.CreditCurve (_valParam,</span>
 							_aCalibInst[i], adblQuoteBumped[i], _astrCalibMeasure[i], _bFlat, i, cc, _dc,
 								_gc, _pricerParam, _lsfc, _quotingParams, null);
-<span class="nc" id="L479">					} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L480">						e.printStackTrace();</span>
+<span class="nc" id="L491">					} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L492">						e.printStackTrace();</span>
 
-<span class="nc" id="L482">						return null;</span>
-<span class="fc" id="L483">					}</span>
+<span class="nc" id="L494">						return null;</span>
+<span class="fc" id="L495">					}</span>
 				}
 
-<span class="fc" id="L486">				cc.setInstrCalibInputs (_valParam, _bFlat, _dc, _gc, _pricerParam, _aCalibInst,</span>
+<span class="fc" id="L498">				cc.setInstrCalibInputs (_valParam, _bFlat, _dc, _gc, _pricerParam, _aCalibInst,</span>
 					adblQuoteBumped, _astrCalibMeasure, _lsfc, _quotingParams);
 
-<span class="fc" id="L489">				return cc;</span>
+<span class="fc" id="L501">				return cc;</span>
 			}
 		}
 
-<span class="nc" id="L493">		return null;</span>
+<span class="nc" id="L505">		return null;</span>
 	}
 
 	@Override public boolean setNodeValue (
 		final int iNodeIndex,
 		final double dblValue)
 	{
-<span class="pc bpc" id="L500" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt; _adblHazardRate.length)</span>
-<span class="nc" id="L501">			return false;</span>
+<span class="pc bpc" id="L512" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt; _adblHazardRate.length)</span>
+<span class="nc" id="L513">			return false;</span>
 
-<span class="fc bfc" id="L503" title="All 2 branches covered.">		for (int i = iNodeIndex; i &lt; _adblHazardRate.length; ++i)</span>
-<span class="fc" id="L504">			_adblHazardRate[i] = dblValue;</span>
+<span class="fc bfc" id="L515" title="All 2 branches covered.">		for (int i = iNodeIndex; i &lt; _adblHazardRate.length; ++i)</span>
+<span class="fc" id="L516">			_adblHazardRate[i] = dblValue;</span>
 
-<span class="fc" id="L506">		return true;</span>
+<span class="fc" id="L518">		return true;</span>
 	}
 
 	@Override public boolean bumpNodeValue (
 		final int iNodeIndex,
 		final double dblValue)
 	{
-<span class="nc bnc" id="L513" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt; _adblHazardRate.length)</span>
-<span class="nc" id="L514">			return false;</span>
+<span class="nc bnc" id="L525" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt; _adblHazardRate.length)</span>
+<span class="nc" id="L526">			return false;</span>
 
-<span class="nc bnc" id="L516" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; _adblHazardRate.length; ++i)</span>
-<span class="nc" id="L517">			_adblHazardRate[i] += dblValue;</span>
+<span class="nc bnc" id="L528" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; _adblHazardRate.length; ++i)</span>
+<span class="nc" id="L529">			_adblHazardRate[i] += dblValue;</span>
 
-<span class="nc" id="L519">		return true;</span>
+<span class="nc" id="L531">		return true;</span>
 	}
 
 	@Override public boolean setFlatValue (
 		final double dblValue)
 	{
-<span class="pc bpc" id="L525" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;</span>
+<span class="pc bpc" id="L537" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;</span>
 
-<span class="fc bfc" id="L527" title="All 2 branches covered.">		for (int i = 0; i &lt; _adblHazardRate.length; ++i)</span>
-<span class="fc" id="L528">			_adblHazardRate[i] = dblValue;</span>
+<span class="fc bfc" id="L539" title="All 2 branches covered.">		for (int i = 0; i &lt; _adblHazardRate.length; ++i)</span>
+<span class="fc" id="L540">			_adblHazardRate[i] = dblValue;</span>
 
-<span class="fc" id="L530">		return true;</span>
+<span class="fc" id="L542">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

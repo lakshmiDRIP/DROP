@@ -6,6 +6,7 @@ package org.drip.state.representation;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -14,39 +15,50 @@ package org.drip.state.representation;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -92,10 +104,10 @@ package org.drip.state.representation;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/representation&quot;&gt;Representation&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md&quot;&gt;Latent State Inference and Creation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/representation/README.md&quot;&gt;Latent State Merge Sub-stretch&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -103,9 +115,9 @@ package org.drip.state.representation;
  */
 
 public class LatentStateMergeSubStretch {
-<span class="fc" id="L106">	private double _dblEndDate = java.lang.Double.NaN;</span>
-<span class="fc" id="L107">	private double _dblStartDate = java.lang.Double.NaN;</span>
-<span class="fc" id="L108">	private org.drip.state.identifier.LatentStateLabel _lsl = null;</span>
+<span class="fc" id="L118">	private double _dblEndDate = java.lang.Double.NaN;</span>
+<span class="fc" id="L119">	private double _dblStartDate = java.lang.Double.NaN;</span>
+<span class="fc" id="L120">	private org.drip.state.identifier.LatentStateLabel _lsl = null;</span>
 
 	/**
 	 * LatentStateMergeSubStretch constructor
@@ -122,12 +134,12 @@ public class LatentStateMergeSubStretch {
 		final double dblEndDate,
 		final org.drip.state.identifier.LatentStateLabel lsl)
 		throws java.lang.Exception
-<span class="fc" id="L125">	{</span>
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblStartDate = dblStartDate) ||</span>
-<span class="pc bpc" id="L127" title="3 of 6 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblEndDate = dblEndDate) || _dblStartDate &gt;=</span>
+<span class="fc" id="L137">	{</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblStartDate = dblStartDate) ||</span>
+<span class="pc bpc" id="L139" title="3 of 6 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblEndDate = dblEndDate) || _dblStartDate &gt;=</span>
 				_dblEndDate || null == (_lsl = lsl))
-<span class="nc" id="L129">			throw new java.lang.Exception (&quot;LatentStateMergeSubStretch ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L130">	}</span>
+<span class="nc" id="L141">			throw new java.lang.Exception (&quot;LatentStateMergeSubStretch ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L142">	}</span>
 
 	/**
 	 * Retrieve the Merge Stretch Start Date
@@ -137,7 +149,7 @@ public class LatentStateMergeSubStretch {
 
 	public double start()
 	{
-<span class="fc" id="L140">		return _dblStartDate;</span>
+<span class="fc" id="L152">		return _dblStartDate;</span>
 	}
 
 	/**
@@ -151,10 +163,10 @@ public class LatentStateMergeSubStretch {
 	public boolean shiftStart (
 		final double dblNewStartDate)
 	{
-<span class="nc bnc" id="L154" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNewStartDate)) return false;</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNewStartDate)) return false;</span>
 
-<span class="nc" id="L156">		_dblStartDate = dblNewStartDate;</span>
-<span class="nc" id="L157">		return true;</span>
+<span class="nc" id="L168">		_dblStartDate = dblNewStartDate;</span>
+<span class="nc" id="L169">		return true;</span>
 	}
 
 	/**
@@ -165,7 +177,7 @@ public class LatentStateMergeSubStretch {
 
 	public double end()
 	{
-<span class="fc" id="L168">		return _dblEndDate;</span>
+<span class="fc" id="L180">		return _dblEndDate;</span>
 	}
 
 	/**
@@ -179,10 +191,10 @@ public class LatentStateMergeSubStretch {
 	public boolean shiftEnd (
 		final double dblNewEndDate)
 	{
-<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNewEndDate)) return false;</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNewEndDate)) return false;</span>
 
-<span class="nc" id="L184">		_dblEndDate = dblNewEndDate;</span>
-<span class="nc" id="L185">		return true;</span>
+<span class="nc" id="L196">		_dblEndDate = dblNewEndDate;</span>
+<span class="nc" id="L197">		return true;</span>
 	}
 
 	/**
@@ -193,7 +205,7 @@ public class LatentStateMergeSubStretch {
 
 	public org.drip.state.identifier.LatentStateLabel label()
 	{
-<span class="nc" id="L196">		return _lsl;</span>
+<span class="nc" id="L208">		return _lsl;</span>
 	}
 
 	/**
@@ -207,7 +219,7 @@ public class LatentStateMergeSubStretch {
 	public boolean indexMatch (
 		final LatentStateMergeSubStretch lsmsOther)
 	{
-<span class="nc bnc" id="L210" title="All 6 branches missed.">		return null != _lsl &amp;&amp; null != lsmsOther &amp;&amp; lsmsOther.label().match (label());</span>
+<span class="nc bnc" id="L222" title="All 6 branches missed.">		return null != _lsl &amp;&amp; null != lsmsOther &amp;&amp; lsmsOther.label().match (label());</span>
 	}
 
 	/**
@@ -221,9 +233,9 @@ public class LatentStateMergeSubStretch {
 	public boolean in (
 		final double dblDate)
 	{
-<span class="nc bnc" id="L224" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDate)) return false;</span>
+<span class="nc bnc" id="L236" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDate)) return false;</span>
 
-<span class="nc bnc" id="L226" title="All 4 branches missed.">		return dblDate &gt;= _dblStartDate &amp;&amp; dblDate &lt;= _dblEndDate;</span>
+<span class="nc bnc" id="L238" title="All 4 branches missed.">		return dblDate &gt;= _dblStartDate &amp;&amp; dblDate &lt;= _dblEndDate;</span>
 	}
 
 	/**
@@ -237,7 +249,7 @@ public class LatentStateMergeSubStretch {
 	public boolean overlap (
 		final LatentStateMergeSubStretch lsmlOther)
 	{
-<span class="pc bpc" id="L240" title="4 of 6 branches missed.">		return null == lsmlOther || lsmlOther.start() &gt;= end() || lsmlOther.end() &lt;= start() ? false : true;</span>
+<span class="pc bpc" id="L252" title="4 of 6 branches missed.">		return null == lsmlOther || lsmlOther.start() &gt;= end() || lsmlOther.end() &lt;= start() ? false : true;</span>
 	}
 
 	/**
@@ -251,16 +263,16 @@ public class LatentStateMergeSubStretch {
 	public LatentStateMergeSubStretch coalesce (
 		final LatentStateMergeSubStretch lsmlOther)
 	{
-<span class="pc bpc" id="L254" title="3 of 4 branches missed.">		if (!overlap (lsmlOther) || !indexMatch (lsmlOther)) return null;</span>
+<span class="pc bpc" id="L266" title="3 of 4 branches missed.">		if (!overlap (lsmlOther) || !indexMatch (lsmlOther)) return null;</span>
 
 		try {
-<span class="nc bnc" id="L257" title="All 2 branches missed.">			return new LatentStateMergeSubStretch (start() &lt; lsmlOther.start() ? start() :</span>
-<span class="nc bnc" id="L258" title="All 2 branches missed.">				lsmlOther.start(), end() &gt; lsmlOther.end() ? end() : lsmlOther.end(), label());</span>
-<span class="nc" id="L259">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L260">			e.printStackTrace();</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">			return new LatentStateMergeSubStretch (start() &lt; lsmlOther.start() ? start() :</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">				lsmlOther.start(), end() &gt; lsmlOther.end() ? end() : lsmlOther.end(), label());</span>
+<span class="nc" id="L271">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L272">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L263">		return null;</span>
+<span class="nc" id="L275">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

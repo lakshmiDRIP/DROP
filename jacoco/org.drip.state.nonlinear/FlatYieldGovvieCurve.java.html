@@ -6,44 +6,56 @@ package org.drip.state.nonlinear;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -72,10 +84,10 @@ package org.drip.state.nonlinear;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear&quot;&gt;Non-Linear&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md&quot;&gt;Latent State Inference and Creation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear/README.md&quot;&gt;Nonlinear (i.e., Boot) Latent State Construction&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -83,8 +95,8 @@ package org.drip.state.nonlinear;
  */
 
 public class FlatYieldGovvieCurve extends org.drip.state.govvie.ExplicitBootGovvieCurve {
-<span class="nc" id="L86">	private int[] _aiDate = null;</span>
-<span class="nc" id="L87">	private double[] _adblYield = null;</span>
+<span class="nc" id="L98">	private int[] _aiDate = null;</span>
+<span class="nc" id="L99">	private double[] _adblYield = null;</span>
 
 	/**
 	 * Construct a Govvie curve from an array of dates and Yields
@@ -106,82 +118,82 @@ public class FlatYieldGovvieCurve extends org.drip.state.govvie.ExplicitBootGovv
 		final double[] adblYield)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L109">		super (iEpochDate, strTreasuryCode, strCurrency);</span>
+<span class="nc" id="L121">		super (iEpochDate, strTreasuryCode, strCurrency);</span>
 
-<span class="nc bnc" id="L111" title="All 4 branches missed.">		if (null == (_aiDate = aiDate) || null == (_adblYield = adblYield))</span>
-<span class="nc" id="L112">			throw new java.lang.Exception (&quot;FlatYieldGovvieCurve Constructor =&gt; Invalid Inputs!&quot;);</span>
+<span class="nc bnc" id="L123" title="All 4 branches missed.">		if (null == (_aiDate = aiDate) || null == (_adblYield = adblYield))</span>
+<span class="nc" id="L124">			throw new java.lang.Exception (&quot;FlatYieldGovvieCurve Constructor =&gt; Invalid Inputs!&quot;);</span>
 
-<span class="nc" id="L114">		int iNumNode = _aiDate.length;</span>
+<span class="nc" id="L126">		int iNumNode = _aiDate.length;</span>
 
-<span class="nc bnc" id="L116" title="All 4 branches missed.">		if (0 == iNumNode || iNumNode != _adblYield.length)</span>
-<span class="nc" id="L117">			throw new java.lang.Exception (&quot;FlatYieldGovvieCurve Constructor =&gt; Invalid Inputs!&quot;);</span>
-<span class="nc" id="L118">	}</span>
+<span class="nc bnc" id="L128" title="All 4 branches missed.">		if (0 == iNumNode || iNumNode != _adblYield.length)</span>
+<span class="nc" id="L129">			throw new java.lang.Exception (&quot;FlatYieldGovvieCurve Constructor =&gt; Invalid Inputs!&quot;);</span>
+<span class="nc" id="L130">	}</span>
 
 	@Override public double yield (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L124" title="All 2 branches missed.">		if (iDate &lt;= _iEpochDate) return _adblYield[0];</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">		if (iDate &lt;= _iEpochDate) return _adblYield[0];</span>
 
-<span class="nc" id="L126">		int iNumDate = _aiDate.length;</span>
+<span class="nc" id="L138">		int iNumDate = _aiDate.length;</span>
 
-<span class="nc bnc" id="L128" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumDate; ++i) {</span>
-<span class="nc bnc" id="L129" title="All 4 branches missed.">			if (iDate &gt; _aiDate[i - 1] &amp;&amp; iDate &lt;= _aiDate[i]) return _adblYield[i];</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">		for (int i = 1; i &lt; iNumDate; ++i) {</span>
+<span class="nc bnc" id="L141" title="All 4 branches missed.">			if (iDate &gt; _aiDate[i - 1] &amp;&amp; iDate &lt;= _aiDate[i]) return _adblYield[i];</span>
 		}
 
-<span class="nc" id="L132">		return _adblYield[iNumDate - 1];</span>
+<span class="nc" id="L144">		return _adblYield[iNumDate - 1];</span>
 	}
 
 	@Override public boolean setNodeValue (
 		final int iNodeIndex,
 		final double dblValue)
 	{
-<span class="nc bnc" id="L139" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;</span>
 
-<span class="nc" id="L141">		int iNumDate = _aiDate.length;</span>
+<span class="nc" id="L153">		int iNumDate = _aiDate.length;</span>
 
-<span class="nc bnc" id="L143" title="All 2 branches missed.">		if (iNodeIndex &gt; iNumDate) return false;</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">		if (iNodeIndex &gt; iNumDate) return false;</span>
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; iNumDate; ++i)</span>
-<span class="nc" id="L146">			_adblYield[i] = dblValue;</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; iNumDate; ++i)</span>
+<span class="nc" id="L158">			_adblYield[i] = dblValue;</span>
 
-<span class="nc" id="L148">		return true;</span>
+<span class="nc" id="L160">		return true;</span>
 	}
 
 	@Override public boolean bumpNodeValue (
 		final int iNodeIndex,
 		final double dblValue)
 	{
-<span class="nc bnc" id="L155" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;</span>
 
-<span class="nc" id="L157">		int iNumDate = _aiDate.length;</span>
+<span class="nc" id="L169">		int iNumDate = _aiDate.length;</span>
 
-<span class="nc bnc" id="L159" title="All 2 branches missed.">		if (iNodeIndex &gt; iNumDate) return false;</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (iNodeIndex &gt; iNumDate) return false;</span>
 
-<span class="nc bnc" id="L161" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; iNumDate; ++i)</span>
-<span class="nc" id="L162">			_adblYield[i] += dblValue;</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; iNumDate; ++i)</span>
+<span class="nc" id="L174">			_adblYield[i] += dblValue;</span>
 
-<span class="nc" id="L164">		return true;</span>
+<span class="nc" id="L176">		return true;</span>
 	}
 
 	@Override public boolean setFlatValue (
 		final double dblValue)
 	{
-<span class="nc bnc" id="L170" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;</span>
 
-<span class="nc" id="L172">		int iNumDate = _aiDate.length;</span>
+<span class="nc" id="L184">		int iNumDate = _aiDate.length;</span>
 
-<span class="nc bnc" id="L174" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumDate; ++i)</span>
-<span class="nc" id="L175">			_adblYield[i] = dblValue;</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumDate; ++i)</span>
+<span class="nc" id="L187">			_adblYield[i] = dblValue;</span>
 
-<span class="nc" id="L177">		return true;</span>
+<span class="nc" id="L189">		return true;</span>
 	}
 
 	@Override public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final int iDate)
 	{
-<span class="nc" id="L184">		return null;</span>
+<span class="nc" id="L196">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

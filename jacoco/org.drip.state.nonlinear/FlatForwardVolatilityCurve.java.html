@@ -6,45 +6,57 @@ package org.drip.state.nonlinear;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,10 +85,10 @@ package org.drip.state.nonlinear;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear&quot;&gt;Non-Linear&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md&quot;&gt;Latent State Inference and Creation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear/README.md&quot;&gt;Nonlinear (i.e., Boot) Latent State Construction&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -84,8 +96,8 @@ package org.drip.state.nonlinear;
  */
 
 public class FlatForwardVolatilityCurve extends org.drip.state.volatility.ExplicitBootVolatilityCurve {
-<span class="fc" id="L87">	private int[] _aiPillarDate = null;</span>
-<span class="fc" id="L88">	private double[] _adblImpliedVolatility = null;</span>
+<span class="fc" id="L99">	private int[] _aiPillarDate = null;</span>
+<span class="fc" id="L100">	private double[] _adblImpliedVolatility = null;</span>
 
 	/**
 	 * FlatForwardVolatilityCurve Constructor
@@ -107,46 +119,46 @@ public class FlatForwardVolatilityCurve extends org.drip.state.volatility.Explic
 		final double[] adblImpliedVolatility)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L110">		super (iEpochDate, label, strCurrency);</span>
+<span class="fc" id="L122">		super (iEpochDate, label, strCurrency);</span>
 
-<span class="pc bpc" id="L112" title="2 of 4 branches missed.">		if (null == (_aiPillarDate = aiPillarDate) || null == (_adblImpliedVolatility =</span>
+<span class="pc bpc" id="L124" title="2 of 4 branches missed.">		if (null == (_aiPillarDate = aiPillarDate) || null == (_adblImpliedVolatility =</span>
 			adblImpliedVolatility))
-<span class="nc" id="L114">			throw new java.lang.Exception (&quot;FlatForwardVolatilityCurve ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L126">			throw new java.lang.Exception (&quot;FlatForwardVolatilityCurve ctr =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L116">		int iNumPillar = _aiPillarDate.length;</span>
+<span class="fc" id="L128">		int iNumPillar = _aiPillarDate.length;</span>
 
-<span class="pc bpc" id="L118" title="2 of 4 branches missed.">		if (0 == iNumPillar || iNumPillar != _adblImpliedVolatility.length)</span>
-<span class="nc" id="L119">			throw new java.lang.Exception (&quot;FlatForwardVolatilityCurve ctr =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L120">	}</span>
+<span class="pc bpc" id="L130" title="2 of 4 branches missed.">		if (0 == iNumPillar || iNumPillar != _adblImpliedVolatility.length)</span>
+<span class="nc" id="L131">			throw new java.lang.Exception (&quot;FlatForwardVolatilityCurve ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L132">	}</span>
 
 	@Override public double impliedVol (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L126" title="All 2 branches covered.">		if (iDate &lt;= _aiPillarDate[0]) return _adblImpliedVolatility[0];</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">		if (iDate &lt;= _aiPillarDate[0]) return _adblImpliedVolatility[0];</span>
 
-<span class="fc" id="L128">		int iNumPillar = _adblImpliedVolatility.length;</span>
+<span class="fc" id="L140">		int iNumPillar = _adblImpliedVolatility.length;</span>
 
-<span class="fc bfc" id="L130" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumPillar; ++i) {</span>
-<span class="pc bpc" id="L131" title="1 of 4 branches missed.">			if (_aiPillarDate[i - 1] &lt;= iDate &amp;&amp; _aiPillarDate[i] &gt;= iDate)</span>
-<span class="fc" id="L132">				return _adblImpliedVolatility[i];</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumPillar; ++i) {</span>
+<span class="pc bpc" id="L143" title="1 of 4 branches missed.">			if (_aiPillarDate[i - 1] &lt;= iDate &amp;&amp; _aiPillarDate[i] &gt;= iDate)</span>
+<span class="fc" id="L144">				return _adblImpliedVolatility[i];</span>
 		}
 
-<span class="fc" id="L135">		return _adblImpliedVolatility[iNumPillar - 1];</span>
+<span class="fc" id="L147">		return _adblImpliedVolatility[iNumPillar - 1];</span>
 	}
 
 	@Override public double node (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L142">		return 0.;</span>
+<span class="nc" id="L154">		return 0.;</span>
 	}
 
 	@Override public double vol (
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L149">		return node (iDate);</span>
+<span class="nc" id="L161">		return node (iDate);</span>
 	}
 
 	@Override public double nodeDerivative (
@@ -154,55 +166,55 @@ public class FlatForwardVolatilityCurve extends org.drip.state.volatility.Explic
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L157">		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="nc" id="L169">		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				double dblX)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L162">				return node ((int) dblX);</span>
+<span class="nc" id="L174">				return node ((int) dblX);</span>
 			}
 		};
 
-<span class="nc" id="L166">		return au.derivative (iDate, iOrder);</span>
+<span class="nc" id="L178">		return au.derivative (iDate, iOrder);</span>
 	}
 
 	@Override public boolean setNodeValue (
 		final int iNodeIndex,
 		final double dblValue)
 	{
-<span class="pc bpc" id="L173" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt;</span>
+<span class="pc bpc" id="L185" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt;</span>
 			_adblImpliedVolatility.length)
-<span class="nc" id="L175">			return false;</span>
+<span class="nc" id="L187">			return false;</span>
 
-<span class="fc bfc" id="L177" title="All 2 branches covered.">		for (int i = iNodeIndex; i &lt; _adblImpliedVolatility.length; ++i)</span>
-<span class="fc" id="L178">			_adblImpliedVolatility[i] = dblValue;</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">		for (int i = iNodeIndex; i &lt; _adblImpliedVolatility.length; ++i)</span>
+<span class="fc" id="L190">			_adblImpliedVolatility[i] = dblValue;</span>
 
-<span class="fc" id="L180">		return true;</span>
+<span class="fc" id="L192">		return true;</span>
 	}
 
 	@Override public boolean bumpNodeValue (
 		final int iNodeIndex,
 		final double dblValue)
 	{
-<span class="nc bnc" id="L187" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt;</span>
+<span class="nc bnc" id="L199" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt;</span>
 			_adblImpliedVolatility.length)
-<span class="nc" id="L189">			return false;</span>
+<span class="nc" id="L201">			return false;</span>
 
-<span class="nc bnc" id="L191" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; _adblImpliedVolatility.length; ++i)</span>
-<span class="nc" id="L192">			_adblImpliedVolatility[i] += dblValue;</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; _adblImpliedVolatility.length; ++i)</span>
+<span class="nc" id="L204">			_adblImpliedVolatility[i] += dblValue;</span>
 
-<span class="nc" id="L194">		return true;</span>
+<span class="nc" id="L206">		return true;</span>
 	}
 
 	@Override public boolean setFlatValue (
 		final double dblValue)
 	{
-<span class="nc bnc" id="L200" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;</span>
 
-<span class="nc bnc" id="L202" title="All 2 branches missed.">		for (int i = 0; i &lt; _adblImpliedVolatility.length; ++i)</span>
-<span class="nc" id="L203">			_adblImpliedVolatility[i] = dblValue;</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">		for (int i = 0; i &lt; _adblImpliedVolatility.length; ++i)</span>
+<span class="nc" id="L215">			_adblImpliedVolatility[i] = dblValue;</span>
 
-<span class="nc" id="L205">		return true;</span>
+<span class="nc" id="L217">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

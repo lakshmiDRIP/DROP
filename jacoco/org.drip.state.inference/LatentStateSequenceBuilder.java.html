@@ -6,6 +6,7 @@ package org.drip.state.inference;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -13,39 +14,50 @@ package org.drip.state.inference;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -74,10 +86,10 @@ package org.drip.state.inference;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state&quot;&gt;State&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/inference&quot;&gt;Inference&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md&quot;&gt;Latent State Inference and Creation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/inference/README.md&quot;&gt;Latent State Stretch Sequence Inference&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -88,195 +100,195 @@ package org.drip.state.inference;
  */
 
 public class LatentStateSequenceBuilder implements org.drip.spline.stretch.SegmentSequenceBuilder {
-<span class="fc" id="L91">	private org.drip.spline.grid.Span _span = null;</span>
-<span class="fc" id="L92">	private double _dblEpochResponse = java.lang.Double.NaN;</span>
-<span class="fc" id="L93">	private org.drip.spline.stretch.BoundarySettings _bs = null;</span>
-<span class="fc" id="L94">	private org.drip.state.estimator.CurveStretch _stretch = null;</span>
-<span class="fc" id="L95">	private org.drip.param.pricer.CreditPricerParams _pricerParams = null;</span>
-<span class="fc" id="L96">	private org.drip.param.market.CurveSurfaceQuoteContainer _csqs = null;</span>
-<span class="fc" id="L97">	private org.drip.param.valuation.ValuationParams _valParams = null;</span>
-<span class="fc" id="L98">	private org.drip.spline.params.StretchBestFitResponse _sbfr = null;</span>
-<span class="fc" id="L99">	private org.drip.param.valuation.ValuationCustomizationParams _vcp = null;</span>
-<span class="fc" id="L100">	private org.drip.state.inference.LatentStateStretchSpec _stretchSpec = null;</span>
-<span class="fc" id="L101">	private org.drip.spline.params.StretchBestFitResponse _sbfrQuoteSensitivity = null;</span>
-<span class="fc" id="L102">	private</span>
+<span class="fc" id="L103">	private org.drip.spline.grid.Span _span = null;</span>
+<span class="fc" id="L104">	private double _dblEpochResponse = java.lang.Double.NaN;</span>
+<span class="fc" id="L105">	private org.drip.spline.stretch.BoundarySettings _bs = null;</span>
+<span class="fc" id="L106">	private org.drip.state.estimator.CurveStretch _stretch = null;</span>
+<span class="fc" id="L107">	private org.drip.param.pricer.CreditPricerParams _pricerParams = null;</span>
+<span class="fc" id="L108">	private org.drip.param.market.CurveSurfaceQuoteContainer _csqs = null;</span>
+<span class="fc" id="L109">	private org.drip.param.valuation.ValuationParams _valParams = null;</span>
+<span class="fc" id="L110">	private org.drip.spline.params.StretchBestFitResponse _sbfr = null;</span>
+<span class="fc" id="L111">	private org.drip.param.valuation.ValuationCustomizationParams _vcp = null;</span>
+<span class="fc" id="L112">	private org.drip.state.inference.LatentStateStretchSpec _stretchSpec = null;</span>
+<span class="fc" id="L113">	private org.drip.spline.params.StretchBestFitResponse _sbfrQuoteSensitivity = null;</span>
+<span class="fc" id="L114">	private</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.spline.params.PreceedingManifestSensitivityControl&gt;
 			_mapPMSC = null;
 
-<span class="fc" id="L106">	private java.util.Map&lt;java.lang.Double, org.drip.spline.params.ResponseValueSensitivityConstraint&gt;</span>
+<span class="fc" id="L118">	private java.util.Map&lt;java.lang.Double, org.drip.spline.params.ResponseValueSensitivityConstraint&gt;</span>
 		_mapRVSC = new
 			java.util.HashMap&lt;java.lang.Double, org.drip.spline.params.ResponseValueSensitivityConstraint&gt;();
 
 	private org.drip.spline.params.PreceedingManifestSensitivityControl getPMSC (
 		final java.lang.String strManifestMeasure)
 	{
-<span class="pc bpc" id="L113" title="1 of 2 branches missed.">		return _mapPMSC.containsKey (strManifestMeasure) ? _mapPMSC.get (strManifestMeasure) : null;</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		return _mapPMSC.containsKey (strManifestMeasure) ? _mapPMSC.get (strManifestMeasure) : null;</span>
 	}
 
 	private org.drip.spline.params.SegmentResponseValueConstraint segmentCalibResponseConstraint (
 		final org.drip.state.estimator.PredictorResponseWeightConstraint prwc)
 	{
-<span class="fc" id="L119">		java.util.TreeMap&lt;java.lang.Double, java.lang.Double&gt; mapPredictorLSQMLoading =</span>
-<span class="fc" id="L120">			prwc.getPredictorResponseWeight();</span>
+<span class="fc" id="L131">		java.util.TreeMap&lt;java.lang.Double, java.lang.Double&gt; mapPredictorLSQMLoading =</span>
+<span class="fc" id="L132">			prwc.getPredictorResponseWeight();</span>
 
-<span class="pc bpc" id="L122" title="2 of 4 branches missed.">		if (null == mapPredictorLSQMLoading || 0 == mapPredictorLSQMLoading.size()) return null;</span>
+<span class="pc bpc" id="L134" title="2 of 4 branches missed.">		if (null == mapPredictorLSQMLoading || 0 == mapPredictorLSQMLoading.size()) return null;</span>
 
-<span class="fc" id="L124">		java.util.Set&lt;java.util.Map.Entry&lt;java.lang.Double, java.lang.Double&gt;&gt; esPredictorLSQMLoading =</span>
-<span class="fc" id="L125">			mapPredictorLSQMLoading.entrySet();</span>
+<span class="fc" id="L136">		java.util.Set&lt;java.util.Map.Entry&lt;java.lang.Double, java.lang.Double&gt;&gt; esPredictorLSQMLoading =</span>
+<span class="fc" id="L137">			mapPredictorLSQMLoading.entrySet();</span>
 
-<span class="pc bpc" id="L127" title="2 of 4 branches missed.">		if (null == esPredictorLSQMLoading || 0 == esPredictorLSQMLoading.size()) return null;</span>
+<span class="pc bpc" id="L139" title="2 of 4 branches missed.">		if (null == esPredictorLSQMLoading || 0 == esPredictorLSQMLoading.size()) return null;</span>
 
-<span class="fc" id="L129">		double dblConstraint = 0.;</span>
+<span class="fc" id="L141">		double dblConstraint = 0.;</span>
 
-<span class="fc" id="L131">		java.util.List&lt;java.lang.Double&gt; lsPredictor = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="fc" id="L143">		java.util.List&lt;java.lang.Double&gt; lsPredictor = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
-<span class="fc" id="L133">		java.util.List&lt;java.lang.Double&gt; lsResponseLSQMLoading = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="fc" id="L145">		java.util.List&lt;java.lang.Double&gt; lsResponseLSQMLoading = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
-<span class="fc bfc" id="L135" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Double, java.lang.Double&gt; me : esPredictorLSQMLoading) {</span>
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">			if (null == me) return null;</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Double, java.lang.Double&gt; me : esPredictorLSQMLoading) {</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">			if (null == me) return null;</span>
 
-<span class="fc" id="L138">			double dblPredictorDate = me.getKey();</span>
+<span class="fc" id="L150">			double dblPredictorDate = me.getKey();</span>
 
 			try {
-<span class="fc bfc" id="L141" title="All 4 branches covered.">				if (null != _span &amp;&amp; _span.in (dblPredictorDate))</span>
-<span class="fc" id="L142">					dblConstraint -= _span.calcResponseValue (dblPredictorDate) * me.getValue();</span>
-<span class="fc bfc" id="L143" title="All 2 branches covered.">				else if (_stretch.inBuiltRange (dblPredictorDate))</span>
-<span class="fc" id="L144">					dblConstraint -= _stretch.responseValue (dblPredictorDate) * me.getValue();</span>
+<span class="fc bfc" id="L153" title="All 4 branches covered.">				if (null != _span &amp;&amp; _span.in (dblPredictorDate))</span>
+<span class="fc" id="L154">					dblConstraint -= _span.calcResponseValue (dblPredictorDate) * me.getValue();</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">				else if (_stretch.inBuiltRange (dblPredictorDate))</span>
+<span class="fc" id="L156">					dblConstraint -= _stretch.responseValue (dblPredictorDate) * me.getValue();</span>
 				else {
-<span class="fc" id="L146">					lsPredictor.add (dblPredictorDate);</span>
+<span class="fc" id="L158">					lsPredictor.add (dblPredictorDate);</span>
 
-<span class="fc" id="L148">					lsResponseLSQMLoading.add (me.getValue());</span>
+<span class="fc" id="L160">					lsResponseLSQMLoading.add (me.getValue());</span>
 				}
-<span class="nc" id="L150">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L151">				e.printStackTrace();</span>
+<span class="nc" id="L162">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L163">				e.printStackTrace();</span>
 
-<span class="nc" id="L153">				return null;</span>
-<span class="fc" id="L154">			}</span>
-<span class="fc" id="L155">		}</span>
+<span class="nc" id="L165">				return null;</span>
+<span class="fc" id="L166">			}</span>
+<span class="fc" id="L167">		}</span>
 
-<span class="fc" id="L157">		int iSize = lsPredictor.size();</span>
+<span class="fc" id="L169">		int iSize = lsPredictor.size();</span>
 
-<span class="fc" id="L159">		double[] adblPredictor = new double[iSize];</span>
-<span class="fc" id="L160">		double[] adblResponseLSQMLoading = new double[iSize];</span>
+<span class="fc" id="L171">		double[] adblPredictor = new double[iSize];</span>
+<span class="fc" id="L172">		double[] adblResponseLSQMLoading = new double[iSize];</span>
 
-<span class="fc bfc" id="L162" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="fc" id="L163">			adblPredictor[i] = lsPredictor.get (i);</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc" id="L175">			adblPredictor[i] = lsPredictor.get (i);</span>
 
-<span class="fc" id="L165">			adblResponseLSQMLoading[i] = lsResponseLSQMLoading.get (i);</span>
+<span class="fc" id="L177">			adblResponseLSQMLoading[i] = lsResponseLSQMLoading.get (i);</span>
 		}
 
 		try {
-<span class="fc" id="L169">			return new org.drip.spline.params.SegmentResponseValueConstraint (adblPredictor,</span>
-<span class="fc" id="L170">				adblResponseLSQMLoading, (prwc.getValue()) + dblConstraint);</span>
-<span class="nc" id="L171">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L172">			e.printStackTrace();</span>
+<span class="fc" id="L181">			return new org.drip.spline.params.SegmentResponseValueConstraint (adblPredictor,</span>
+<span class="fc" id="L182">				adblResponseLSQMLoading, (prwc.getValue()) + dblConstraint);</span>
+<span class="nc" id="L183">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L184">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L175">		return null;</span>
+<span class="nc" id="L187">		return null;</span>
 	}
 
 	private org.drip.spline.params.SegmentResponseValueConstraint segmentSensResponseConstraint (
 		final org.drip.state.estimator.PredictorResponseWeightConstraint prwc,
 		final java.lang.String strManifestMeasure)
 	{
-<span class="fc" id="L182">		java.util.TreeMap&lt;java.lang.Double, java.lang.Double&gt; mapPredictorSensLoading =</span>
-<span class="fc" id="L183">			prwc.getDResponseWeightDManifestMeasure (strManifestMeasure);</span>
+<span class="fc" id="L194">		java.util.TreeMap&lt;java.lang.Double, java.lang.Double&gt; mapPredictorSensLoading =</span>
+<span class="fc" id="L195">			prwc.getDResponseWeightDManifestMeasure (strManifestMeasure);</span>
 
-<span class="pc bpc" id="L185" title="2 of 4 branches missed.">		if (null == mapPredictorSensLoading || 0 == mapPredictorSensLoading.size()) return null;</span>
+<span class="pc bpc" id="L197" title="2 of 4 branches missed.">		if (null == mapPredictorSensLoading || 0 == mapPredictorSensLoading.size()) return null;</span>
 
-<span class="fc" id="L187">		java.util.Set&lt;java.util.Map.Entry&lt;java.lang.Double, java.lang.Double&gt;&gt; esPredictorSensLoading =</span>
-<span class="fc" id="L188">			mapPredictorSensLoading.entrySet();</span>
+<span class="fc" id="L199">		java.util.Set&lt;java.util.Map.Entry&lt;java.lang.Double, java.lang.Double&gt;&gt; esPredictorSensLoading =</span>
+<span class="fc" id="L200">			mapPredictorSensLoading.entrySet();</span>
 
-<span class="pc bpc" id="L190" title="2 of 4 branches missed.">		if (null == esPredictorSensLoading || 0 == esPredictorSensLoading.size()) return null;</span>
+<span class="pc bpc" id="L202" title="2 of 4 branches missed.">		if (null == esPredictorSensLoading || 0 == esPredictorSensLoading.size()) return null;</span>
 
-<span class="fc" id="L192">		double dblSensLoadingConstraint = 0.;</span>
+<span class="fc" id="L204">		double dblSensLoadingConstraint = 0.;</span>
 
-<span class="fc" id="L194">		java.util.List&lt;java.lang.Double&gt; lsPredictor = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="fc" id="L206">		java.util.List&lt;java.lang.Double&gt; lsPredictor = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
-<span class="fc" id="L196">		java.util.List&lt;java.lang.Double&gt; lsSensLoading = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="fc" id="L208">		java.util.List&lt;java.lang.Double&gt; lsSensLoading = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
-<span class="fc bfc" id="L198" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Double, java.lang.Double&gt; me : esPredictorSensLoading) {</span>
-<span class="pc bpc" id="L199" title="1 of 2 branches missed.">			if (null == me) return null;</span>
+<span class="fc bfc" id="L210" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Double, java.lang.Double&gt; me : esPredictorSensLoading) {</span>
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">			if (null == me) return null;</span>
 
-<span class="fc" id="L201">			double dblPredictorDate = me.getKey();</span>
+<span class="fc" id="L213">			double dblPredictorDate = me.getKey();</span>
 
 			try {
-<span class="fc bfc" id="L204" title="All 4 branches covered.">				if (null != _span &amp;&amp; _span.in (dblPredictorDate))</span>
-<span class="fc" id="L205">					dblSensLoadingConstraint -= _span.calcResponseValue (dblPredictorDate) * me.getValue();</span>
-<span class="fc bfc" id="L206" title="All 2 branches covered.">				else if (_stretch.inBuiltRange (dblPredictorDate))</span>
-<span class="fc" id="L207">					dblSensLoadingConstraint -= _stretch.responseValue (dblPredictorDate) * me.getValue();</span>
+<span class="fc bfc" id="L216" title="All 4 branches covered.">				if (null != _span &amp;&amp; _span.in (dblPredictorDate))</span>
+<span class="fc" id="L217">					dblSensLoadingConstraint -= _span.calcResponseValue (dblPredictorDate) * me.getValue();</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">				else if (_stretch.inBuiltRange (dblPredictorDate))</span>
+<span class="fc" id="L219">					dblSensLoadingConstraint -= _stretch.responseValue (dblPredictorDate) * me.getValue();</span>
 				else {
-<span class="fc" id="L209">					lsPredictor.add (dblPredictorDate);</span>
+<span class="fc" id="L221">					lsPredictor.add (dblPredictorDate);</span>
 
-<span class="fc" id="L211">					lsSensLoading.add (me.getValue());</span>
+<span class="fc" id="L223">					lsSensLoading.add (me.getValue());</span>
 				}
-<span class="nc" id="L213">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L214">				e.printStackTrace();</span>
+<span class="nc" id="L225">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L226">				e.printStackTrace();</span>
 
-<span class="nc" id="L216">				return null;</span>
-<span class="fc" id="L217">			}</span>
-<span class="fc" id="L218">		}</span>
+<span class="nc" id="L228">				return null;</span>
+<span class="fc" id="L229">			}</span>
+<span class="fc" id="L230">		}</span>
 
-<span class="fc" id="L220">		int iSize = lsPredictor.size();</span>
+<span class="fc" id="L232">		int iSize = lsPredictor.size();</span>
 
-<span class="fc" id="L222">		double[] adblPredictor = new double[iSize];</span>
-<span class="fc" id="L223">		double[] adblSensLoading = new double[iSize];</span>
+<span class="fc" id="L234">		double[] adblPredictor = new double[iSize];</span>
+<span class="fc" id="L235">		double[] adblSensLoading = new double[iSize];</span>
 
-<span class="fc bfc" id="L225" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="fc" id="L226">			adblPredictor[i] = lsPredictor.get (i);</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc" id="L238">			adblPredictor[i] = lsPredictor.get (i);</span>
 
-<span class="fc" id="L228">			adblSensLoading[i] = lsSensLoading.get (i);</span>
+<span class="fc" id="L240">			adblSensLoading[i] = lsSensLoading.get (i);</span>
 		}
 
 		try {
-<span class="fc" id="L232">			return new org.drip.spline.params.SegmentResponseValueConstraint (adblPredictor, adblSensLoading,</span>
-<span class="fc" id="L233">				prwc.getDValueDManifestMeasure (strManifestMeasure) + dblSensLoadingConstraint);</span>
-<span class="nc" id="L234">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L235">			e.printStackTrace();</span>
+<span class="fc" id="L244">			return new org.drip.spline.params.SegmentResponseValueConstraint (adblPredictor, adblSensLoading,</span>
+<span class="fc" id="L245">				prwc.getDValueDManifestMeasure (strManifestMeasure) + dblSensLoadingConstraint);</span>
+<span class="nc" id="L246">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L247">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L238">		return null;</span>
+<span class="nc" id="L250">		return null;</span>
 	}
 
 	private boolean generateSegmentConstraintSet (
 		final double dblSegmentRight,
 		final org.drip.state.estimator.PredictorResponseWeightConstraint prwc)
 	{
-<span class="fc" id="L245">		org.drip.spline.params.SegmentResponseValueConstraint srvcBase = segmentCalibResponseConstraint</span>
-<span class="fc" id="L246">			(prwc);</span>
+<span class="fc" id="L257">		org.drip.spline.params.SegmentResponseValueConstraint srvcBase = segmentCalibResponseConstraint</span>
+<span class="fc" id="L258">			(prwc);</span>
 
-<span class="pc bpc" id="L248" title="1 of 2 branches missed.">		if (null == srvcBase) return false;</span>
+<span class="pc bpc" id="L260" title="1 of 2 branches missed.">		if (null == srvcBase) return false;</span>
 
-<span class="fc" id="L250">		org.drip.spline.params.ResponseValueSensitivityConstraint rvsc = null;</span>
+<span class="fc" id="L262">		org.drip.spline.params.ResponseValueSensitivityConstraint rvsc = null;</span>
 
 		try {
-<span class="fc" id="L253">			rvsc = new org.drip.spline.params.ResponseValueSensitivityConstraint (srvcBase);</span>
-<span class="nc" id="L254">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L255">			e.printStackTrace();</span>
+<span class="fc" id="L265">			rvsc = new org.drip.spline.params.ResponseValueSensitivityConstraint (srvcBase);</span>
+<span class="nc" id="L266">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L267">			e.printStackTrace();</span>
 
-<span class="nc" id="L257">			return false;</span>
-<span class="fc" id="L258">		}</span>
+<span class="nc" id="L269">			return false;</span>
+<span class="fc" id="L270">		}</span>
 
-<span class="fc" id="L260">		java.util.Set&lt;java.lang.String&gt; setstrSensitivity = prwc.sensitivityKeys();</span>
+<span class="fc" id="L272">		java.util.Set&lt;java.lang.String&gt; setstrSensitivity = prwc.sensitivityKeys();</span>
 
-<span class="pc bpc" id="L262" title="2 of 4 branches missed.">		if (null == setstrSensitivity || 0 == setstrSensitivity.size()) {</span>
-<span class="nc" id="L263">			_mapRVSC.put (dblSegmentRight, rvsc);</span>
+<span class="pc bpc" id="L274" title="2 of 4 branches missed.">		if (null == setstrSensitivity || 0 == setstrSensitivity.size()) {</span>
+<span class="nc" id="L275">			_mapRVSC.put (dblSegmentRight, rvsc);</span>
 
-<span class="nc" id="L265">			return true;</span>
+<span class="nc" id="L277">			return true;</span>
 		}
 
-<span class="fc bfc" id="L268" title="All 2 branches covered.">		for (java.lang.String strManifestMeasure : setstrSensitivity) {</span>
-<span class="fc" id="L269">			org.drip.spline.params.SegmentResponseValueConstraint srvcSensitivity =</span>
-<span class="fc" id="L270">				segmentSensResponseConstraint (prwc, strManifestMeasure);</span>
+<span class="fc bfc" id="L280" title="All 2 branches covered.">		for (java.lang.String strManifestMeasure : setstrSensitivity) {</span>
+<span class="fc" id="L281">			org.drip.spline.params.SegmentResponseValueConstraint srvcSensitivity =</span>
+<span class="fc" id="L282">				segmentSensResponseConstraint (prwc, strManifestMeasure);</span>
 
-<span class="pc bpc" id="L272" title="2 of 4 branches missed.">			if (null == srvcSensitivity || !rvsc.addManifestMeasureSensitivity (strManifestMeasure,</span>
+<span class="pc bpc" id="L284" title="2 of 4 branches missed.">			if (null == srvcSensitivity || !rvsc.addManifestMeasureSensitivity (strManifestMeasure,</span>
 				srvcSensitivity))
-<span class="nc" id="L274">				continue;</span>
-<span class="fc" id="L275">		}</span>
+<span class="nc" id="L286">				continue;</span>
+<span class="fc" id="L287">		}</span>
 
-<span class="fc" id="L277">		_mapRVSC.put (dblSegmentRight, rvsc);</span>
+<span class="fc" id="L289">		_mapRVSC.put (dblSegmentRight, rvsc);</span>
 
-<span class="fc" id="L279">		return true;</span>
+<span class="fc" id="L291">		return true;</span>
 	}
 
 	/**
@@ -312,145 +324,145 @@ public class LatentStateSequenceBuilder implements org.drip.spline.stretch.Segme
 		final org.drip.spline.params.StretchBestFitResponse sbfrQuoteSensitivity,
 		final org.drip.spline.stretch.BoundarySettings bs)
 		throws java.lang.Exception
-<span class="fc" id="L315">	{</span>
-<span class="pc bpc" id="L316" title="5 of 10 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblEpochResponse = dblEpochResponse) || null ==</span>
+<span class="fc" id="L327">	{</span>
+<span class="pc bpc" id="L328" title="5 of 10 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblEpochResponse = dblEpochResponse) || null ==</span>
 			(_stretchSpec = stretchSpec) || null == (_valParams = valParams) || null == (_bs = bs) || null ==
 				(_mapPMSC = mapPMSC))
-<span class="nc" id="L319">			throw new java.lang.Exception (&quot;LatentStateSequenceBuilder ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L331">			throw new java.lang.Exception (&quot;LatentStateSequenceBuilder ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L321">		_vcp = vcp;</span>
-<span class="fc" id="L322">		_csqs = csqs;</span>
-<span class="fc" id="L323">		_sbfr = sbfr;</span>
-<span class="fc" id="L324">		_span = span;</span>
-<span class="fc" id="L325">		_pricerParams = pricerParams;</span>
-<span class="fc" id="L326">		_sbfrQuoteSensitivity = sbfrQuoteSensitivity;</span>
-<span class="fc" id="L327">	}</span>
+<span class="fc" id="L333">		_vcp = vcp;</span>
+<span class="fc" id="L334">		_csqs = csqs;</span>
+<span class="fc" id="L335">		_sbfr = sbfr;</span>
+<span class="fc" id="L336">		_span = span;</span>
+<span class="fc" id="L337">		_pricerParams = pricerParams;</span>
+<span class="fc" id="L338">		_sbfrQuoteSensitivity = sbfrQuoteSensitivity;</span>
+<span class="fc" id="L339">	}</span>
 
 	@Override public boolean setStretch (
 		final org.drip.spline.stretch.MultiSegmentSequence mss)
 	{
-<span class="pc bpc" id="L332" title="2 of 4 branches missed.">		if (null == mss || !(mss instanceof org.drip.state.estimator.CurveStretch)) return false;</span>
+<span class="pc bpc" id="L344" title="2 of 4 branches missed.">		if (null == mss || !(mss instanceof org.drip.state.estimator.CurveStretch)) return false;</span>
 
-<span class="fc" id="L334">		_stretch = (org.drip.state.estimator.CurveStretch) mss;</span>
+<span class="fc" id="L346">		_stretch = (org.drip.state.estimator.CurveStretch) mss;</span>
 
-<span class="fc" id="L336">		org.drip.spline.segment.LatentStateResponseModel[] aLSRM = _stretch.segments();</span>
+<span class="fc" id="L348">		org.drip.spline.segment.LatentStateResponseModel[] aLSRM = _stretch.segments();</span>
 
-<span class="pc bpc" id="L338" title="2 of 4 branches missed.">		if (null == aLSRM || aLSRM.length != _stretchSpec.segmentSpec().length) return false;</span>
+<span class="pc bpc" id="L350" title="2 of 4 branches missed.">		if (null == aLSRM || aLSRM.length != _stretchSpec.segmentSpec().length) return false;</span>
 
-<span class="fc" id="L340">		return true;</span>
+<span class="fc" id="L352">		return true;</span>
 	}
 
 	@Override public org.drip.spline.stretch.BoundarySettings getCalibrationBoundaryCondition()
 	{
-<span class="fc" id="L345">		return _bs;</span>
+<span class="fc" id="L357">		return _bs;</span>
 	}
 
 	@Override public boolean calibStartingSegment (
 		final double dblLeftSlope)
 	{
-<span class="pc bpc" id="L351" title="2 of 4 branches missed.">		if (null == _stretch || !_stretch.clearBuiltRange()) return false;</span>
+<span class="pc bpc" id="L363" title="2 of 4 branches missed.">		if (null == _stretch || !_stretch.clearBuiltRange()) return false;</span>
 
-<span class="fc" id="L353">		org.drip.product.definition.CalibratableComponent cfic =</span>
-<span class="fc" id="L354">			_stretchSpec.segmentSpec()[0].component();</span>
+<span class="fc" id="L365">		org.drip.product.definition.CalibratableComponent cfic =</span>
+<span class="fc" id="L366">			_stretchSpec.segmentSpec()[0].component();</span>
 
-<span class="pc bpc" id="L356" title="1 of 2 branches missed.">		if (null == cfic) return false;</span>
+<span class="pc bpc" id="L368" title="1 of 2 branches missed.">		if (null == cfic) return false;</span>
 
-<span class="fc" id="L358">		org.drip.spline.segment.LatentStateResponseModel[] aLSRM = _stretch.segments();</span>
+<span class="fc" id="L370">		org.drip.spline.segment.LatentStateResponseModel[] aLSRM = _stretch.segments();</span>
 
-<span class="pc bpc" id="L360" title="2 of 4 branches missed.">		if (null == aLSRM || 0 == aLSRM.length) return false;</span>
+<span class="pc bpc" id="L372" title="2 of 4 branches missed.">		if (null == aLSRM || 0 == aLSRM.length) return false;</span>
 
-<span class="fc" id="L362">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = cfic.calibPRWC (_valParams,</span>
-<span class="fc" id="L363">			_pricerParams, _csqs, _vcp, _stretchSpec.segmentSpec()[0].manifestMeasures());</span>
+<span class="fc" id="L374">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = cfic.calibPRWC (_valParams,</span>
+<span class="fc" id="L375">			_pricerParams, _csqs, _vcp, _stretchSpec.segmentSpec()[0].manifestMeasures());</span>
 
-<span class="fc" id="L365">		double dblSegmentRight = aLSRM[0].right();</span>
+<span class="fc" id="L377">		double dblSegmentRight = aLSRM[0].right();</span>
 
-<span class="pc bpc" id="L367" title="2 of 4 branches missed.">		if (null == prwc || !generateSegmentConstraintSet (dblSegmentRight, prwc)) return false;</span>
+<span class="pc bpc" id="L379" title="2 of 4 branches missed.">		if (null == prwc || !generateSegmentConstraintSet (dblSegmentRight, prwc)) return false;</span>
 
-<span class="fc" id="L369">		org.drip.spline.params.SegmentResponseValueConstraint rvcLeading =</span>
+<span class="fc" id="L381">		org.drip.spline.params.SegmentResponseValueConstraint rvcLeading =</span>
 			org.drip.spline.params.SegmentResponseValueConstraint.FromPredictorResponsePair
-<span class="fc" id="L371">				(_valParams.valueDate(), _dblEpochResponse);</span>
+<span class="fc" id="L383">				(_valParams.valueDate(), _dblEpochResponse);</span>
 
-<span class="pc bpc" id="L373" title="1 of 2 branches missed.">		if (null == rvcLeading) return false;</span>
+<span class="pc bpc" id="L385" title="1 of 2 branches missed.">		if (null == rvcLeading) return false;</span>
 
-<span class="pc bpc" id="L375" title="2 of 4 branches missed.">		return aLSRM[0].calibrate (rvcLeading, dblLeftSlope, _mapRVSC.get (dblSegmentRight).base(), null ==</span>
-<span class="pc bpc" id="L376" title="1 of 2 branches missed.">			_sbfr ? null : _sbfr.sizeToSegment (aLSRM[0])) &amp;&amp; _stretch.markSegmentBuilt (0,</span>
-<span class="fc" id="L377">				prwc.mergeLabelSet());</span>
+<span class="pc bpc" id="L387" title="2 of 4 branches missed.">		return aLSRM[0].calibrate (rvcLeading, dblLeftSlope, _mapRVSC.get (dblSegmentRight).base(), null ==</span>
+<span class="pc bpc" id="L388" title="1 of 2 branches missed.">			_sbfr ? null : _sbfr.sizeToSegment (aLSRM[0])) &amp;&amp; _stretch.markSegmentBuilt (0,</span>
+<span class="fc" id="L389">				prwc.mergeLabelSet());</span>
 	}
 
 	@Override public boolean calibSegmentSequence (
 		final int iStartingSegment)
 	{
-<span class="fc" id="L383">		org.drip.spline.segment.LatentStateResponseModel[] aLSRM = _stretch.segments();</span>
+<span class="fc" id="L395">		org.drip.spline.segment.LatentStateResponseModel[] aLSRM = _stretch.segments();</span>
 
-<span class="fc" id="L385">		org.drip.state.inference.LatentStateSegmentSpec[] aLSSS = _stretchSpec.segmentSpec();</span>
+<span class="fc" id="L397">		org.drip.state.inference.LatentStateSegmentSpec[] aLSSS = _stretchSpec.segmentSpec();</span>
 
-<span class="fc" id="L387">		int iNumSegment = aLSRM.length;</span>
+<span class="fc" id="L399">		int iNumSegment = aLSRM.length;</span>
 
-<span class="pc bpc" id="L389" title="2 of 4 branches missed.">		if (null == aLSSS || aLSSS.length != iNumSegment) return false;</span>
+<span class="pc bpc" id="L401" title="2 of 4 branches missed.">		if (null == aLSSS || aLSSS.length != iNumSegment) return false;</span>
 
-<span class="fc bfc" id="L391" title="All 2 branches covered.">		for (int iSegment = iStartingSegment; iSegment &lt; iNumSegment; ++iSegment) {</span>
-<span class="fc" id="L392">			org.drip.product.definition.CalibratableComponent cfic = aLSSS[iSegment].component();</span>
+<span class="fc bfc" id="L403" title="All 2 branches covered.">		for (int iSegment = iStartingSegment; iSegment &lt; iNumSegment; ++iSegment) {</span>
+<span class="fc" id="L404">			org.drip.product.definition.CalibratableComponent cfic = aLSSS[iSegment].component();</span>
 
-<span class="pc bpc" id="L394" title="1 of 2 branches missed.">			if (null == cfic) return false;</span>
+<span class="pc bpc" id="L406" title="1 of 2 branches missed.">			if (null == cfic) return false;</span>
 
-<span class="fc" id="L396">			org.drip.state.estimator.PredictorResponseWeightConstraint prwc = cfic.calibPRWC (_valParams,</span>
-<span class="fc" id="L397">				_pricerParams, _csqs, _vcp, aLSSS[iSegment].manifestMeasures());</span>
+<span class="fc" id="L408">			org.drip.state.estimator.PredictorResponseWeightConstraint prwc = cfic.calibPRWC (_valParams,</span>
+<span class="fc" id="L409">				_pricerParams, _csqs, _vcp, aLSSS[iSegment].manifestMeasures());</span>
 
-<span class="fc" id="L399">			double dblSegmentRight = aLSRM[iSegment].right();</span>
+<span class="fc" id="L411">			double dblSegmentRight = aLSRM[iSegment].right();</span>
 
-<span class="pc bpc" id="L401" title="2 of 4 branches missed.">			if (null == prwc || !generateSegmentConstraintSet (dblSegmentRight, prwc)) return false;</span>
+<span class="pc bpc" id="L413" title="2 of 4 branches missed.">			if (null == prwc || !generateSegmentConstraintSet (dblSegmentRight, prwc)) return false;</span>
 
-<span class="pc bpc" id="L403" title="2 of 4 branches missed.">			if (!aLSRM[iSegment].calibrate (0 == iSegment ? null : aLSRM[iSegment - 1], _mapRVSC.get</span>
-<span class="pc bpc" id="L404" title="1 of 2 branches missed.">				(dblSegmentRight).base(), null == _sbfr ? null : _sbfr.sizeToSegment (aLSRM[iSegment])) ||</span>
-<span class="pc bpc" id="L405" title="1 of 2 branches missed.">					!_stretch.markSegmentBuilt (iSegment, prwc.mergeLabelSet()))</span>
-<span class="nc" id="L406">				return false;</span>
+<span class="pc bpc" id="L415" title="2 of 4 branches missed.">			if (!aLSRM[iSegment].calibrate (0 == iSegment ? null : aLSRM[iSegment - 1], _mapRVSC.get</span>
+<span class="pc bpc" id="L416" title="1 of 2 branches missed.">				(dblSegmentRight).base(), null == _sbfr ? null : _sbfr.sizeToSegment (aLSRM[iSegment])) ||</span>
+<span class="pc bpc" id="L417" title="1 of 2 branches missed.">					!_stretch.markSegmentBuilt (iSegment, prwc.mergeLabelSet()))</span>
+<span class="nc" id="L418">				return false;</span>
 		}
 
-<span class="fc" id="L409">		return true;</span>
+<span class="fc" id="L421">		return true;</span>
 	}
 
 	@Override public boolean manifestMeasureSensitivity (
 		final double dblLeftSlopeSensitivity)
 	{
-<span class="fc" id="L415">		org.drip.spline.segment.LatentStateResponseModel[] aLSRM = _stretch.segments();</span>
+<span class="fc" id="L427">		org.drip.spline.segment.LatentStateResponseModel[] aLSRM = _stretch.segments();</span>
 
-<span class="fc" id="L417">		int iNumSegment = aLSRM.length;</span>
+<span class="fc" id="L429">		int iNumSegment = aLSRM.length;</span>
 
-<span class="fc bfc" id="L419" title="All 2 branches covered.">		for (int iSegment = 0; iSegment &lt; iNumSegment; ++iSegment) {</span>
-<span class="fc" id="L420">			double dblSegmentRight = aLSRM[iSegment].right();</span>
+<span class="fc bfc" id="L431" title="All 2 branches covered.">		for (int iSegment = 0; iSegment &lt; iNumSegment; ++iSegment) {</span>
+<span class="fc" id="L432">			double dblSegmentRight = aLSRM[iSegment].right();</span>
 
-<span class="fc" id="L422">			org.drip.spline.params.ResponseValueSensitivityConstraint rvsc = _mapRVSC.get (dblSegmentRight);</span>
+<span class="fc" id="L434">			org.drip.spline.params.ResponseValueSensitivityConstraint rvsc = _mapRVSC.get (dblSegmentRight);</span>
 
-<span class="fc" id="L424">			java.util.Set&lt;java.lang.String&gt; setstrManifestMeasures = rvsc.manifestMeasures();</span>
+<span class="fc" id="L436">			java.util.Set&lt;java.lang.String&gt; setstrManifestMeasures = rvsc.manifestMeasures();</span>
 
-<span class="pc bpc" id="L426" title="2 of 4 branches missed.">			if (null == setstrManifestMeasures || 0 == setstrManifestMeasures.size()) return false;</span>
+<span class="pc bpc" id="L438" title="2 of 4 branches missed.">			if (null == setstrManifestMeasures || 0 == setstrManifestMeasures.size()) return false;</span>
 
-<span class="fc bfc" id="L428" title="All 2 branches covered.">			for (java.lang.String strManifestMeasure : setstrManifestMeasures) {</span>
-<span class="pc bpc" id="L429" title="1 of 2 branches missed.">				if (!aLSRM[iSegment].setPreceedingManifestSensitivityControl (strManifestMeasure, getPMSC</span>
-<span class="fc" id="L430">					(strManifestMeasure)))</span>
-<span class="nc" id="L431">					return false;</span>
+<span class="fc bfc" id="L440" title="All 2 branches covered.">			for (java.lang.String strManifestMeasure : setstrManifestMeasures) {</span>
+<span class="pc bpc" id="L441" title="1 of 2 branches missed.">				if (!aLSRM[iSegment].setPreceedingManifestSensitivityControl (strManifestMeasure, getPMSC</span>
+<span class="fc" id="L442">					(strManifestMeasure)))</span>
+<span class="nc" id="L443">					return false;</span>
 
-<span class="fc bfc" id="L433" title="All 2 branches covered.">				if (0 == iSegment) {</span>
-<span class="pc bpc" id="L434" title="1 of 2 branches missed.">					if (!aLSRM[0].manifestMeasureSensitivity (strManifestMeasure,</span>
+<span class="fc bfc" id="L445" title="All 2 branches covered.">				if (0 == iSegment) {</span>
+<span class="pc bpc" id="L446" title="1 of 2 branches missed.">					if (!aLSRM[0].manifestMeasureSensitivity (strManifestMeasure,</span>
 						org.drip.spline.params.SegmentResponseValueConstraint.FromPredictorResponsePair
-<span class="fc" id="L436">							(_valParams.valueDate(), _dblEpochResponse), rvsc.base(),</span>
+<span class="fc" id="L448">							(_valParams.valueDate(), _dblEpochResponse), rvsc.base(),</span>
 								dblLeftSlopeSensitivity,
 									org.drip.spline.params.SegmentResponseValueConstraint.FromPredictorResponsePair
-<span class="pc bpc" id="L439" title="1 of 2 branches missed.">						(_valParams.valueDate(), 0.), rvsc.manifestMeasureSensitivity (strManifestMeasure),</span>
+<span class="pc bpc" id="L451" title="1 of 2 branches missed.">						(_valParams.valueDate(), 0.), rvsc.manifestMeasureSensitivity (strManifestMeasure),</span>
 							null == _sbfrQuoteSensitivity ? null : _sbfrQuoteSensitivity.sizeToSegment
-<span class="nc" id="L441">								(aLSRM[0])))</span>
-<span class="nc" id="L442">						return false;</span>
+<span class="nc" id="L453">								(aLSRM[0])))</span>
+<span class="nc" id="L454">						return false;</span>
 				} else {
-<span class="pc bpc" id="L444" title="1 of 2 branches missed.">					if (!aLSRM[iSegment].manifestMeasureSensitivity (aLSRM[iSegment - 1], strManifestMeasure,</span>
-<span class="pc bpc" id="L445" title="1 of 2 branches missed.">						rvsc.base(), rvsc.manifestMeasureSensitivity (strManifestMeasure), null ==</span>
+<span class="pc bpc" id="L456" title="1 of 2 branches missed.">					if (!aLSRM[iSegment].manifestMeasureSensitivity (aLSRM[iSegment - 1], strManifestMeasure,</span>
+<span class="pc bpc" id="L457" title="1 of 2 branches missed.">						rvsc.base(), rvsc.manifestMeasureSensitivity (strManifestMeasure), null ==</span>
 							_sbfrQuoteSensitivity ? null : _sbfrQuoteSensitivity.sizeToSegment
-<span class="nc" id="L447">								(aLSRM[iSegment])))</span>
-<span class="nc" id="L448">						return false;</span>
+<span class="nc" id="L459">								(aLSRM[iSegment])))</span>
+<span class="nc" id="L460">						return false;</span>
 				}
-<span class="fc" id="L450">			}</span>
+<span class="fc" id="L462">			}</span>
 		}
 
-<span class="fc" id="L453">		return true;</span>
+<span class="fc" id="L465">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
