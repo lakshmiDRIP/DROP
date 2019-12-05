@@ -19,7 +19,7 @@ DROP Learning R<sup>x</sup> -> R<sup>1</sup> the Suite of Statistical Learning E
  corresponding Covering Numbers.
 
  * [***EmpiricalPenaltySupremum***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/rxtor1/EmpiricalPenaltySupremum.java)
- <i>EmpiricalPenaltySupremum<i> holds the Learning Function that corresponds to the Empirical Supremum, as
+ <i>EmpiricalPenaltySupremum</i> holds the Learning Function that corresponds to the Empirical Supremum, as
  well as the corresponding Supremum Value.
 
  * [***EmpiricalPenaltySupremumEstimator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/rxtor1/EmpiricalPenaltySupremumEstimator.java)

@@ -8,7 +8,7 @@ DROP Measure Process implements the Jump Diffusion Evolver Process Variants.
 ## Class Components
 
  * [***DiffusionEvolver***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/process/DiffusionEvolver.java)
- <i>DiffusionEvolver</i> implements the Functionality that guides the Single Factor R<sup>/<sup> Diffusion
+ <i>DiffusionEvolver</i> implements the Functionality that guides the Single Factor R<sup>1</sup> Diffusion
  Random Process Variable Evolution.
 
  * [***JumpDiffusionEvolver***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/process/JumpDiffusionEvolver.java)

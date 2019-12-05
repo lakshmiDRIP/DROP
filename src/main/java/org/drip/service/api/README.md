@@ -13,8 +13,8 @@ DROP Service API Package implements the Horizon Roll Attribution Service API.
  * [***DateDiscountCurvePair***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api/DateDiscountCurvePair.java)
  <i>DateDiscountCurvePair</i> contains the COB/Discount Curve Pair, and the corresponding computed outputs.
 
- * [***DiscountCuveInputInstrument***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api/DiscountCuveInputInstrument.java)
- <i>DiscountCuveInputInstrument</i> contains the input instruments and their quotes.
+ * [***DiscountCurveInputInstrument***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api/DiscountCurveInputInstrument.java)
+ <i>DiscountCurveInputInstrument</i> contains the input instruments and their quotes.
 
  * [***FixFloatFundingInstrument***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api/FixFloatFundingInstrument.java)
  <i>FixFloatFundingInstrument</i> contains the Fix Float Instrument Inputs for the Funding Curve Construction

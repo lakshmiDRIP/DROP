@@ -8,14 +8,11 @@ DROP Numerical Fourier Package implements the Specific Fourier Transform Functio
 
 ## Class Components
 
- * [***ComplexNumber***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/fourier/ComplexNumber.java)
- <i>ComplexNumber</i> implements the functionality for dealing with Complex Numbers.
-
  * [***PhaseAdjuster***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/fourier/PhaseAdjuster.java)
  <i>PhaseAdjuster</i> implements the functionality specifically meant for enhancing stability of the Fourier
  numerical Routines.
 
- * [***RotationCountPhaseTracker***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant/numerical/RotationCountPhaseTracker.java)
+ * [***RotationCountPhaseTracker***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/fourier/RotationCountPhaseTracker.java)
  <i>RotationCountPhaseTracker</i> implements the standard technique to preserve the trajectory along the
  principal branch in multi-valued complex operations. This is most common in Fourier inversion quadrature
  runs.

@@ -82,7 +82,7 @@ package org.drip.service.api;
  */
 
 /**
- * <i>DiscountCuveInputInstrument</i> contains the input instruments and their quotes.
+ * <i>DiscountCurveInputInstrument</i> contains the input instruments and their quotes.
  * 
  * <br><br>
  *  <ul>

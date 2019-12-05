@@ -21,6 +21,9 @@ DROP Market OTC implements the OTC Dual Stream Option Container.
  <i>CrossFloatStreamConvention</i> contains the Details of the Single Currency Floating Stream of an OTC
  Contact.
 
+ * [***CrossFloatSwapConvention***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/otc/CrossFloatSwapConvention.java)
+ <i>CrossFloatSwapConvention</i> contains the Details of the Cross-Currency Floating Swap of an OTC Contract.
+
  * [***FixedFloatSwapConvention***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/otc/FixedFloatSwapConvention.java)
  <i>FixedFloatSwapConvention</i> contains the Details of the Fixed-Float Swap Component of an OTC contact.
 

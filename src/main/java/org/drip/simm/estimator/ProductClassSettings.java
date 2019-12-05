@@ -77,8 +77,8 @@ package org.drip.simm.estimator;
  */
 
 /**
- * <i>ProductClassSensitivitySettings</i> holds the Settings that govern the Generation of the ISDA SIMM
- * Bucket Sensitivities across Individual Product Classes. The References are:
+ * <i>ProductClassSettings</i> holds the Settings that govern the Generation of the ISDA SIMM Bucket
+ * 	Sensitivities across Individual Product Classes. The References are:
  * 
  * <br><br>
  *  <ul>

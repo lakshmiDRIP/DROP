@@ -22,6 +22,9 @@ DROP Special Function contains the Libraries implementing the Special Function a
  * [***Digamma***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/digamma)
  DROP Special Function Beta Package implements the Estimation Techniques for Digamma Function.
 
+ * [***Gamma***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/gamma)
+ DROP Special Function Gamma Package implements the Analytic/Series/Integral Gamma Estimators.
+
  * [***Generator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/generator)
  DROP Special Function Generator Package implements the Special Function Series Term Generators.
 

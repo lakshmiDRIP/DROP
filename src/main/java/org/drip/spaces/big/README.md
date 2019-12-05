@@ -7,6 +7,9 @@ DROP Spaces Big Package contains Big-data In-place Manipulation Utilities.
 
 ## Class Components
 
+ * [***AnagramMapSet***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/AnagramMapSet.java)
+ <i>AnagramMapSet</i> makes a Set of all the Anagram Groups in the Word Group.
+
  * [***BigC1Array***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/BigC1Array.java)
  <i>BigC1Array</i> contains the Functionality to Process and Manipulate the Character Array backing the Big
  String.

@@ -39,6 +39,9 @@ DROP Portfolio Construction Optimizer Package implements the Core Portfolio Cons
  * [***Scope***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/optimizer/Scope.java)
  <i>Scope</i> holds the Applicability "Zone" for a given Constraint Term.
 
+ * [***SoftConstraint***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/optimizer/SoftConstraint.java)
+ <i>SoftConstraint</i> holds the Details of a Soft Constraint.
+
  * [***Strategy***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/optimizer/Strategy.java)
  <i>Strategy</i> holds the Details of a given Strategy.
 

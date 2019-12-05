@@ -89,7 +89,7 @@ DROP Spline B Spline Package implements the de Boor Rational/Exponential/Tension
  and the corresponding set of ordinates/basis functions. SegmentMonicBasisFunction uses the left/right
  TensionBasisHat instances to achieve its implementation goals.
 
- * [***SegmentMonicBasisFunction***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/SegmentMonicBasisFunction.java)
+ * [***SegmentMulticBasisFunction***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/SegmentMulticBasisFunction.java)
  <i>SegmentMulticBasisFunction</i> implements the local quadratic B Spline that envelopes the predictor
  ordinates, and the corresponding set of ordinates/basis functions. SegmentMulticBasisFunction uses the
  left/right SegmentBasisFunction instances to achieve its implementation goals.

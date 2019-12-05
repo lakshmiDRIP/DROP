@@ -7,41 +7,41 @@ DROP Numerical Integration Package implements the R<sup>1</sup> R<sup>d</sup> Nu
 
 ## Class Components
 
- * [***AbscissaTransform***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integrand/AbscissaTransform.java)
+ * [***AbscissaTransform***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integration/AbscissaTransform.java)
  <i>AbscissaTransform</i> transforms the Abscissa over into Corresponding Integrand Variable.
 
- * [***GaussKronrodQuadratureGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integrand/GaussKronrodQuadratureGenerator.java)
+ * [***GaussKronrodQuadratureGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integration/GaussKronrodQuadratureGenerator.java)
  <i>GaussKronrodQuadratureGenerator</i> generates the Array of Gaussian Quadrature Based Abscissa and their
  corresponding Weights, with the Kronrod Extensions applied.
 
- * [***GaussLegendreQuadratureGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integrand/GaussLegendreQuadratureGenerator.java)
+ * [***GaussLegendreQuadratureGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integration/GaussLegendreQuadratureGenerator.java)
  <i>GaussLegendreQuadratureGenerator</i> generates the Array of Orthogonal Legendre Polynomial Gaussian
  Quadrature Based Abscissa and their corresponding Weights.
 
- * [***GaussLobattoQuadratureGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integrand/GaussLobattoQuadratureGenerator.java)
+ * [***GaussLobattoQuadratureGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integration/GaussLobattoQuadratureGenerator.java)
  <i>GaussLobattoQuadratureGenerator</i> generates the Array of Orthogonal Lobatto Polynomial Gaussian
  Quadrature Based Abscissa and their corresponding Weights.
 
- * [***GeneralizedMidPointQuadrature***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integrand/GeneralizedMidPointQuadrature.java)
+ * [***GeneralizedMidPointQuadrature***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integration/GeneralizedMidPointQuadrature.java)
  <i>GeneralizedMidPointQuadrature</i> computes the R<sup>1</sup> Numerical Estimate of a Function Quadrature
  using the Generalized Mid-Point Scheme.
 
- * [***NestedQuadratureEstimator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integrand/NestedQuadratureEstimator.java)
+ * [***NestedQuadratureEstimator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integration/NestedQuadratureEstimator.java)
  <i>NestedQuadratureEstimator</i> extends the R<sup>1</sup> Quadrature Estimator by providing the Estimation
  Error.
 
- * [***NewtonCotesQuadratureGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integrand/NewtonCotesQuadratureGenerator.java)
+ * [***NewtonCotesQuadratureGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integration/NewtonCotesQuadratureGenerator.java)
  <i>NewtonCotesQuadratureGenerator</i> generates the Array of Newton-Cotes Based Quadrature Abscissa and
  their corresponding Weights.
 
- * [***QuadratureEstimate***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integrand/QuadratureEstimate.java)
+ * [***QuadratureEstimate***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integration/QuadratureEstimate.java)
  <i>QuadratureEstimate</i> contains the Estimate of the Integrand Quadrature and its corresponding Error.
 
- * [***QuadratureEstimator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integrand/QuadratureEstimator.java)
+ * [***QuadratureEstimator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integration/QuadratureEstimator.java)
  <i>QuadratureEstimator</i> estimates an Integrand Quadrature using the Array of Transformed Quadrature
  Abscissa and their corresponding Weights.
 
- * [***R1ToR1Integrator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integrand/R1ToR1Integrator.java)
+ * [***R1ToR1Integrator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integration/R1ToR1Integrator.java)
  <i>R1ToR1Integrator</i> implements the following routines for integrating the R<sup>1</sup> To R<sup>1</sup>
  Objective Function.
  	* Linear Quadrature

@@ -21,9 +21,9 @@ DROP Spaces RxToRd Package contains the R<sup>x</sup> -> R<sup>d</sup> Normed Fu
 
  * [***NormedRdCombinatorialToRdContinuous***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/rxtord/NormedRdCombinatorialToRdContinuous.java)
  <i>NormedRdCombinatorialToR1Continuous</i> implements the f : Validated Normed R<sup>d</sup> Combinatorial
- To Validated Normed R<sup>1</sup> Continuous Function Spaces.
+ To Validated Normed R<sup>d</sup> Continuous Function Spaces.
 
- * [***NormedRdContinuousToR1Continuous***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/rxtord/NormedRdContinuousToR1Continuous.java)
+ * [***NormedRdContinuousToRdContinuous***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/rxtord/NormedRdContinuousToR1Continuous.java)
  <i>NormedRdContinuousToRdContinuous</i> implements the f : Validated Normed R<sup>d</sup> Continuous To
  Validated Normed R<sup>d</sup> Continuous Function Spaces.
 

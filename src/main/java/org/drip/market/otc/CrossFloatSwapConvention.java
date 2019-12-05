@@ -81,7 +81,7 @@ package org.drip.market.otc;
 
 /**
  * <i>CrossFloatSwapConvention</i> contains the Details of the Cross-Currency Floating Swap of an OTC
- * Contact.
+ * Contract.
  *
  *	<br><br>
  *  <ul>

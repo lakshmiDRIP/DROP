@@ -83,9 +83,9 @@ package org.drip.param.quote;
  */
 
 /**
- * <i>ProductMultiMeasureQuote</i> holds the different types of quotes for a given component. It contains a
- * single market field/quote pair, but multiple alternate named quotes (to accommodate quotes on different
- * measure for the component).
+ * <i>ProductMultiMeasure</i> holds the different types of quotes for a given component. It contains a single
+ * market field/quote pair, but multiple alternate named quotes (to accommodate quotes on different measure
+ * for the component).
  *
  *	<br><br>
  *  <ul>

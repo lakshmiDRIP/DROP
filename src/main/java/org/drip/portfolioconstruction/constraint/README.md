@@ -46,6 +46,9 @@ DROP Portfolio Construction Constraint Package implements the Portfolio Construc
  <i>LimitHoldingsTerm</i> holds the Details of a Limit Holdings Constraint Term - Limits can be
  Absolute/Net etc.
 
+ * [***LimitHoldingsTermAbsolute***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint/LimitHoldingsTermAbsolute.java)
+ <i>LimitHoldingsTermAbsolute</i> holds the Details of a Limit Absolute Holdings Constraint Term.
+
  * [***LimitHoldingsTermIssuer***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint/LimitHoldingsTermIssuer.java)
  <i>LimitHoldingsTermIssuer</i> abstracts the Limit Issuer Holdings Constraint Term.
 
@@ -110,6 +113,9 @@ DROP Portfolio Construction Constraint Package implements the Portfolio Construc
 
  * [***LimitTaxTermLongGains***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint/LimitTaxTermLongGains.java)
  <i>LimitTaxTermLongGains</i> holds the Details of a Limit Long Term Tax Gains Constraint Term.
+
+ * [***LimitTaxTermNetGains***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint/LimitTaxTermNetGains.java)
+ <i>LimitTaxTermNetGains</i> holds the Details of a Limit Net Tax Gains Constraint Term.
 
  * [***LimitTaxTermNetLoss***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint/LimitTaxTermNetLoss.java)
  <i>LimitTaxTermNetLoss</i> holds the Details of a Limit Net Tax Loss Constraint Term.

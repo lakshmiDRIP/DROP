@@ -82,7 +82,7 @@ package org.drip.spline.segment;
  */
 
 /**
- * <i>Monotonicity</i> contains the monotonicity details related to the given segment. Indicates whether the
+ * <i>Monotonocity</i> contains the monotonicity details related to the given segment. Indicates whether the
  * segment is monotonic, and if not, whether it contains a maximum, a minimum, or an inflection.
  *
  * <br><br>

@@ -26,6 +26,9 @@ DROP Spline Basis Package contains the Basis Spline Construction/Customization P
  <i>ExponentialRationalSetParams</i> implements per-segment parameters for the exponential rational basis
  set, i.e., the exponential tension and the rational tension parameters.
 
+ * [***ExponentialTensionSetParams***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/basis/ExponentialTensionSetParams.java)
+ <i>ExponentialTensionSetParams</i> implements per-segment parameters for the exponential tension basis set. Currently it only contains the tension parameter.
+
  * [***FunctionSet***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/basis/FunctionSet.java)
  <i>FunctionSet</i> implements the basis spline function set.
 

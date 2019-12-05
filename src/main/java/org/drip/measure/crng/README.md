@@ -22,6 +22,9 @@ DROP Measure CRNG implements the Continuous Random Number Stream Generator.
  <i>MultiStreamGenerator</i> helps generate Multiple Independent (i.e., Non-Overlapping) Streams of Random
  Numbers.
 
+ * [***RandomNumberGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/RandomNumberGenerator.java)
+ <i>RandomNumberGenerator</i> provides the Functionality to generate Random Numbers. Default simply forwards to the Native JRE/JDK Implementation.
+
  * [***RecursiveGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/RecursiveGenerator.java)
  <i>RecursiveGenerator</i> exposes Sequence Generation using Recursive Schemes. The Recursion Schemes can be
  Single or Multiple. The Sequence Numbers can then be used for generating Random Numbers.

@@ -19,6 +19,10 @@ DROP Portfolio Construction Allocator Package implements the MVO Based Portfolio
  <i>CustomRiskUtilitySettings</i> contains the settings used to generate the Risk Objective Utility Function.
  It accommodates both the Risk Tolerance and Risk Aversion Variants.
 
+ * [***EqualityConstraintSettings***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator/EqualityConstraintSettings.java)
+ <i>EqualityConstraintSettings</i> holds the Parameters required to generate the Mandatory
+ Constraints for the Portfolio.
+
  * [***ForwardReverseOptimizationOutput***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator/ForwardReverseOptimizationOutput.java)
  <i>ForwardReverseOptimizationOutput</i> holds the Metrics that result from a Forward/Reverse Optimization
  Run.
@@ -32,10 +36,6 @@ DROP Portfolio Construction Allocator Package implements the MVO Based Portfolio
 
  * [***PortfolioConstructionParameters***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator/PortfolioConstructionParameters.java)
  <i>PortfolioConstructionParameters</i> holds the Parameters needed to construct the Portfolio.
-
- * [***PortfolioEqualityConstraintSettings***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator/PortfolioEqualityConstraintSettings.java)
- <i>PortfolioEqualityConstraintSettings</i> holds the Parameters required to generate the Mandatory
- Constraints for the Portfolio.
 
  * [***QuadraticMeanVarianceOptimizer***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator/QuadraticMeanVarianceOptimizer.java)
  <i>QuadraticMeanVarianceOptimizer</i> builds an Optimal Portfolio Based on MPT Using the Asset Pool

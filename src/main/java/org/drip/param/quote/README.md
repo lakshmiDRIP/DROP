@@ -11,14 +11,18 @@ DROP Param Quote Package implements Multi-sided Multi-Measure Ticks Quotes.
  <i>MultiSided</i> implements the Quote interface, which contains the stubs corresponding to a product quote.
  It contains the quote value, quote instant for the different quote sides (bid/ask/mid).
 
- * [***ProductMultiMeasureQuote***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/quote/ProductMultiMeasureQuote.java)
- <i>ProductMultiMeasureQuote</i> holds the different types of quotes for a given component. It contains a
- single market field/quote pair, but multiple alternate named quotes (to accommodate quotes on different
- measure for the component).
+ * [***ProductMultiMeasure***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/quote/ProductMultiMeasure.java)
+ <i>ProductMultiMeasure</i> holds the different types of quotes for a given component. It contains a single market field/quote pair, but multiple alternate named quotes (to accommodate quotes on different measure for the component).
 
  * [***ProductTick***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/quote/ProductTick.java)
  <i>ProductTick</i> holds the tick related product parameters - it contains the product ID, the quote
  composite, the source, the counter party, and whether the quote can be treated as a mark.
+
+ * [***TickerPriceStatistics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/quote/TickerPriceStatistics.java)
+ <i>TickerPriceStatistics</i> maintains the Running "Thin" Price Statistics for a Single Ticker.
+
+ * [***TickerPriceStatisticsContainer***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/quote/TickerPriceStatisticsContainer.java)
+ <i>TickerPriceStatisticsContainer</i> maintains the Running "Thin" Price Statistics for all Tickers.
 
 
 ## DROP Specifications

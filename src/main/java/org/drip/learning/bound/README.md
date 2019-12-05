@@ -23,7 +23,7 @@ DROP Learning Bound Package implements Covering Numbers, Concentration, Lipschit
  	* 'epsilon' is the Deviation Empirical Mean from the Population Mean
  	* C1 (n) is the sample coefficient function
  	* C2 is an exponent scaling constant
- 	* 'b' an exponent ((i.e., the Epsilon Exponent) that depends on the setting (i.e.,
+ 	* 'b' an exponent (i.e., the Epsilon Exponent) that depends on the setting (i.e.,
  		agnostic/classification/regression/convex etc)
 
  * [***DiagonalOperatorCoveringBound***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/bound/DiagonalOperatorCoveringBound.java)

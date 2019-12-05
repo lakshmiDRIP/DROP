@@ -7,19 +7,19 @@ DROP Special Function Hyper-geometric Package implements the Hyper-geometric Fun
 
 ## Class Components
 
- * [***EulerQuadratureEstimator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hankel/EulerQuadratureEstimator.java)
+ * [***EulerQuadratureEstimator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hypergeometric/EulerQuadratureEstimator.java)
  <i>EulerQuadratureEstimator</i> estimates the Hyper-geometric Function using the Euler Integral Representation.
 
- * [***GaussContiguousRelations***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hankel/GaussContiguousRelations.java)
+ * [***GaussContiguousRelations***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hypergeometric/GaussContiguousRelations.java)
  <i>GaussContiguousRelations</i> holds the Gauss Contiguous 2F1 Relations of the Regular Hyper-geometric Function.
 
- * [***PochhammerSeries***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hankel/PochhammerSeries.java)
+ * [***PochhammerSeries***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hypergeometric/PochhammerSeries.java)
  <i>PochhammerSeries</i> refers to the Estimation of the Hyper-geometric Function using the Pochhammer Series Expansion.
 
- * [***PochhammerSeriesTerm***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hankel/PochhammerSeriesTerm.java)
+ * [***PochhammerSeriesTerm***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hypergeometric/PochhammerSeriesTerm.java)
  <i>PochhammerSeriesTerm</i> refers to a Single Series Term in the Pochhammer Series Expansion of the Hyper-geometric Function.
 
- * [***SeriesEstimator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hankel/SeriesEstimator.java)
+ * [***SeriesEstimator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hypergeometric/SeriesEstimator.java)
  <i>SeriesEstimator</i> estimates the 2F1 Hyper-geometric Function using a Series Expansion.
 
 

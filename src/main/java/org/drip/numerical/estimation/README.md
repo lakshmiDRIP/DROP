@@ -46,6 +46,9 @@ DROP Numerical Estimation Package implements Function Numerical Estimates/Correc
  * [***R3ToR1SeriesTerm***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/estimation/R3ToR1SeriesTerm.java)
  <i>R3ToR1SeriesTerm</i> exposes the R<sup>3</sup> To R<sup>1</sup> Series Expansion Term in the Ordered Series of the Numerical Estimate for a Function.
 
+ * [***RxToR1Series***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/estimation/RxToR1Series.java)
+ <i>RxToR1Series</i> contains the R<sup>x</sup> To R<sup>1</sup> Expansion Terms in the Ordered Series of the Numerical Estimate for a Function.
+
 
 ## References
 

@@ -13,7 +13,7 @@ DROP Portfolio Construction Asset Package contains the Asset Characteristics, Bo
  * [***AssetComponent***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/asset/AssetComponent.java)
  <i>AssetComponent</i> holds the Amount of an Asset given by the corresponding ID.
 
- * [***Assets***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/asset/Assets.java)
+ * [***Portfolio***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/asset/Portfolio.java)
  <i>Portfolio</i> implements an Instance of the Portfolio of Assets.
 
  * [***PortfolioBenchmarkMetrics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/asset/PortfolioBenchmarkMetrics.java)

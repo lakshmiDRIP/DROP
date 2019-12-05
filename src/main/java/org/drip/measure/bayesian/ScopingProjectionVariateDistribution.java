@@ -79,7 +79,7 @@ package org.drip.measure.bayesian;
  */
 
 /**
- * <i>ScopingProjectionVariateContainer</i> holds the Scoping Variate Distribution, the Projection Variate
+ * <i>ScopingProjectionVariateDistribution</i> holds the Scoping Variate Distribution, the Projection Variate
  * Distributions, and the Projection Variate Loadings based off of the Scoping Variates.
  *
  *	<br><br>

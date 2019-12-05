@@ -19,9 +19,8 @@ DROP Measure Bridge implements the Broken Date Brownian Bridge Interpolator.
  <i>BrokenDateInterpolatorLinearT</i> Interpolates using Two Stochastic Value Nodes with Linear Scheme. The
  Scheme is Linear in Time.
 
- * [***BrokenDateInterpolatorLinearT***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bridge/BrokenDateInterpolatorLinearT.java)
- <i>BrokenDateInterpolatorLinearT</i> Interpolates using Two Stochastic Value Nodes with Linear Scheme. The
- Scheme is Linear in Time.
+ * [***BrokenDateInterpolatorSqrtT***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bridge/BrokenDateInterpolatorSqrtT.java)
+ <i>BrokenDateInterpolatorSqrtT</i> Interpolates using Two Stochastic Value Nodes with Linear Scheme. The Scheme is Linear in Square Root of Time.
 
 
 ## DROP Specifications

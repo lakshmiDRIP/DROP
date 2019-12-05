@@ -10,8 +10,8 @@ DROP Loan holds the Asset Backed Borrower and Loan Level Characteristics.
  * [***Borrower***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/loan/borrower)
 DROP Asset Backed Borrower Package holds the Asset Backed Loan Borrower Characteristics.
 
- * [***Loan***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/loan/characteristics)
-DROP Asset Backed Loan Package holds the Asset Backed Loan Level Characteristics.
+ * [***Characteristics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/loan/characteristics)
+DROP Asset Backed Characteristics Package holds the Asset Backed Loan Level Characteristics.
 
 
 ## DROP Specifications

@@ -18,9 +18,8 @@ DROP SIMM Estimator Package implements the ISDA SIMM Core + Add-On Estimator.
  * [***ProductClassSensitivity***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/estimator/ProductClassSensitivity.java)
  <i>ProductClassSensitivity</i> holds the multiple Risk Class Sensitivities for a single Product Class.
 
- * [***ProductClassSensitivitySettings***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/estimator/ProductClassSensitivitySettings.java)
- <i>ProductClassSensitivitySettings</i> holds the Settings that govern the Generation of the ISDA SIMM Bucket
- Sensitivities across Individual Product Classes.
+ * [***ProductClassSettings***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/estimator/ProductClassSettings.java)
+ <i>ProductClassSettings</i> holds the Settings that govern the Generation of the ISDA SIMM Bucket Sensitivities across Individual Product Classes.
 
 
 ## References

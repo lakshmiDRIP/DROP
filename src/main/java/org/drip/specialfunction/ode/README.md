@@ -43,8 +43,8 @@ DROP Special Function ODE Package implements the Special Function Ordinary Diffe
  * [***SecondOrderModifiedBessel***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/SecondOrderModifiedBessel.java)
  <i>SecondOrderModifiedBessel</i> exposes the Coefficient Terms in the Modified Bessel ODE.
 
- * [***SecondOrderModifiedBessel***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/SecondOrderModifiedBessel.java)
- <i>SecondOrderBessel</i> exposes the Coefficient Terms in the Riccati-Bessel ODE.
+ * [***SecondOrderRiccatiBessel***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/SecondOrderRiccatiBessel.java)
+ <i>SecondOrderRiccatiBessel</i> exposes the Coefficient Terms in the Riccati-Bessel ODE.
 
 
 ## References

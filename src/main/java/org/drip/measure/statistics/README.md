@@ -15,6 +15,9 @@ DROP Measure Statistics contains the R<sup>1</sup> R<sup>d</sup> Thin Thick Mome
  <i>MultivariateMoments</i> generates and holds the Specified Multivariate Series Mean, Co-variance, and other
  selected Moments.
 
+ * [***PopulationCentralMeasures***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/statistics/PopulationCentralMeasures.java)
+ <i>PopulationCentralMeasures</i> holds the Population Central Measures (Mean, and Variance) of the Population.
+
  * [***UnivariateDiscreteThin***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/statistics/UnivariateDiscreteThin.java)
  <i>UnivariateDiscreteThin</i> analyzes and computes the "Thin" Statistics for the Realized Univariate
  Sequence.

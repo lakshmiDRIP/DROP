@@ -76,7 +76,8 @@ package org.drip.specialfunction.ode;
  */
 
 /**
- * <i>SecondOrderBessel</i> exposes the Coefficient Terms in the Riccati-Bessel ODE. The References are:
+ * <i>SecondOrderRiccatiBessel</i> exposes the Coefficient Terms in the Riccati-Bessel ODE. The References
+ * 	are:
  * 
  * <br><br>
  * 	<ul>

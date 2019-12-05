@@ -23,13 +23,11 @@ DROP Measure Bayesian contains the Functionality to generate the Prior, Conditio
  <i>ProjectionDistributionLoading</i> contains the Projection Distribution and its Loadings to the Scoping
  Distribution.
 
- * [***ScopingProjectionVariateContainer***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/ScopingProjectionVariateContainer.java)
- <i>ScopingProjectionVariateContainer</i> holds the Scoping Variate Distribution, the Projection Variate
- Distributions, and the Projection Variate Loadings based off of the Scoping Variates.
+ * [***ScopingProjectionVariateDistribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/ScopingProjectionVariateDistribution.java)
+ <i>ScopingProjectionVariateDistribution</i> holds the Scoping Variate Distribution, the Projection Variate Distributions, and the Projection Variate Loadings based off of the Scoping Variates.
 
- * [***ScopingProjectionVariateContainer***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/ScopingProjectionVariateContainer.java)
- <i>TheilMixedEstimationModel</i> implements the Theil's Mixed Model for the Estimation of the Distribution
- Parameters.
+ * [***TheilMixedEstimationModel***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/TheilMixedEstimationModel.java)
+ <i>TheilMixedEstimationModel</i> implements the Theil's Mixed Model for the Estimation of the Distribution Parameters.
 
 
 ## References

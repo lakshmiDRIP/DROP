@@ -23,7 +23,7 @@ DROP Spaces Cover Package implements the Vector Spaces Covering Number Estimator
  <i>FunctionClassCoveringBounds</i> implements the estimate Lower/Upper Bounds and/or Absolute Values of the
  Covering Number for the Function Class.
 
- * [***FunctionClassCoveringBounds***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover/FunctionClassCoveringBounds.java)
+ * [***L1R1CoveringBounds***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover/L1R1CoveringBounds.java)
  <i>L1R1CoveringBounds</i> implements the Lower/Upper Bounds for the Class of Non-decreasing R<sup>1</sup> To
  L<sub>1</sub> R<sup>1</sup> for Functions that are:
  	* Absolutely Bounded
@@ -37,7 +37,7 @@ DROP Spaces Cover Package implements the Vector Spaces Covering Number Estimator
  <i>OperatorClassCoveringBounds</i> implements the estimate Lower/Upper Bounds and/or Absolute Values of the
  Covering Number for the Operator Class.
 
- * [***OperatorClassCoveringBounds***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover/OperatorClassCoveringBounds.java)
+ * [***ScaleSensitiveCoveringBounds***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover/ScaleSensitiveCoveringBounds.java)
  <i>ScaleSensitiveCoveringBounds</i> implements the Lower/Upper Bounds for the General Class of Functions in
  terms of their scale-sensitive dimensions (i.e., the fat shattering coefficients).
 

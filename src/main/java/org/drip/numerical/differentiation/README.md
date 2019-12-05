@@ -15,15 +15,6 @@ DROP Numerical Differentiation Package implements the R<sup>1</sup> To R<sup>1</
  * [***Differential***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/differentiation/Differential.java)
  <i>Differential</i> holds the incremental differentials for the variate and the objective function.
 
- * [***R1ToR1Integrator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/differentiation/R1ToR1Integrator.java)
- <i>R1ToR1Integrator</i> implements the following routines for integrating the R<sup>1</sup> To
- R<sup>1</sup> objective Function.
- 	* Linear Quadrature
- 	* Mid-Point Scheme
- 	* Trapezoidal Scheme
- 	* Simpson/Simpson38 schemes
- 	* Boole Scheme
-
  * [***WengertJacobian***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/differentiation/WengertJacobian.java)
  <i>WengertJacobian</i> contains the Jacobian of the given set of Wengert variables to the set of parameters.
  It exposes the following functionality:

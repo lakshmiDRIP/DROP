@@ -81,9 +81,8 @@ DROP Spline Segment Package holds the Flexure Penalizing Best Fit Segment.
  		constraints the same
  	* Display the string representation for diagnostic purposes
 
- * [***Monotonicity***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment/Monotonicity.java)
- <i>Monotonicity</i> contains the monotonicity details related to the given segment. Indicates whether the
- 	segment is monotonic, and if not, whether it contains a maximum, a minimum, or an inflection.
+ * [***Monotonocity***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment/Monotonocity.java)
+ <i>Monotonocity</i> contains the monotonicity details related to the given segment. Indicates whether the segment is monotonic, and if not, whether it contains a maximum, a minimum, or an inflection.
 
  * [***SegmentBasisEvaluator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment/SegmentBasisEvaluator.java)
  <i>SegmentBasisEvaluator</i> implements the BasisEvaluator interface for the given set of the Segment Basis
