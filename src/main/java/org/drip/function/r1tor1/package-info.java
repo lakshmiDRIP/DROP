@@ -1,6 +1,6 @@
 
 /**
- * Built-in R^1 To R^1 Functions
+ * Built-in R<sup>1</sup> To R<sup>1</sup> Functions
  *
  * @author Lakshmi Krishnamurthy
  */
