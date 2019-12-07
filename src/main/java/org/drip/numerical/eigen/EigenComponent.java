@@ -94,35 +94,57 @@ package org.drip.numerical.eigen;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EigenComponent {
-	private double[] _adblEigenvector = null;
-	private double _dblEigenvalue = java.lang.Double.NaN;
+public class EigenComponent
+{
+	private double[] _eigenVector = null;
+	private double _eigenValue = java.lang.Double.NaN;
 
 	/**
 	 * EigenComponent Constructor
 	 * 
-	 * @param adblEigenvector The Eigenvector
-	 * @param dblEigenvalue The Eigenvalue
+	 * @param eigenVector The Eigenvector
+	 * @param eigenValue The Eigenvalue
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are invalid
 	 */
 
 	public EigenComponent (
-		final double[] adblEigenvector,
-		final double dblEigenvalue)
+		final double[] eigenVector,
+		final double eigenValue)
 		throws java.lang.Exception
 	{
-		if (null == (_adblEigenvector = adblEigenvector) || !org.drip.numerical.common.NumberUtil.IsValid
-			(_dblEigenvalue = dblEigenvalue))
-			throw new java.lang.Exception ("EigenComponent ctr: Invalid Inputs");
+		if (null == (_eigenVector = eigenVector) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (
+				_eigenValue = eigenValue
+			)
+		)
+		{
+			throw new java.lang.Exception (
+				"EigenComponent ctr: Invalid Inputs"
+			);
+		}
 
-		int iNumOrdinate = _adblEigenvector.length;
+		int eigenComponentCount = _eigenVector.length;
 
-		if (0 == iNumOrdinate) throw new java.lang.Exception ("EigenComponent ctr: Invalid Inputs");
+		if (0 == eigenComponentCount)
+		{
+			throw new java.lang.Exception (
+				"EigenComponent ctr: Invalid Inputs"
+			);
+		}
 
-		for (int i = 0; i < iNumOrdinate; ++i) {
-			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblEigenvector[i]))
-				throw new java.lang.Exception ("EigenComponent ctr: Invalid Inputs");
+		for (int eigenComponentIndex = 0;
+			eigenComponentIndex < eigenComponentCount;
+			++eigenComponentIndex)
+		{
+			if (!org.drip.numerical.common.NumberUtil.IsValid (
+				_eigenVector[eigenComponentIndex]
+			))
+			{
+				throw new java.lang.Exception (
+					"EigenComponent ctr: Invalid Inputs"
+				);
+			}
 		}
 	}
 
@@ -132,9 +154,9 @@ public class EigenComponent {
 	 * @return The Eigenvalue
 	 */
 
-	public double eigenvalue()
+	public double eigenValue()
 	{
-		return _dblEigenvalue;
+		return _eigenValue;
 	}
 
 	/**
@@ -143,8 +165,8 @@ public class EigenComponent {
 	 * @return The Eigenvector
 	 */
 
-	public double[] eigenvector()
+	public double[] eigenVector()
 	{
-		return _adblEigenvector;
+		return _eigenVector;
 	}
 }

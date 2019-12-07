@@ -106,9 +106,9 @@ public class PrincipalComponent {
 
 		EigenComponent ec = pice.principalComponent (aadblA);
 
-		double[] adblEigenvector = ec.eigenvector();
+		double[] adblEigenvector = ec.eigenVector();
 
-		java.lang.String strDump = "[" + FormatUtil.FormatDouble (ec.eigenvalue(), 1, 4, 1.) + "] => ";
+		java.lang.String strDump = "[" + FormatUtil.FormatDouble (ec.eigenValue(), 1, 4, 1.) + "] => ";
 
 		for (int i = 0; i < adblEigenvector.length; ++i)
 			strDump += FormatUtil.FormatDouble (adblEigenvector[i], 1, 4, 1.) + " | ";

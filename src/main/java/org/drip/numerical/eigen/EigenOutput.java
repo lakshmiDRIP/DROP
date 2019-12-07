@@ -94,32 +94,44 @@ package org.drip.numerical.eigen;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EigenOutput {
-	private double[] _adblEigenvalue = null;
-	private double[][] _aadblEigenvector = null;
+public class EigenOutput
+{
+	private double[] _eigenValueArray = null;
+	private double[][] _eigenVectorArray = null;
 
 	/**
 	 * EigenOutput Constructor
 	 * 
-	 * @param aadblEigenvector Array of Eigenvectors
-	 * @param adblEigenvalue Array of Eigenvalues
+	 * @param eigenVectorArray Array of Eigenvectors
+	 * @param eigenValueArray Array of Eigenvalues
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public EigenOutput (
-		final double[][] aadblEigenvector,
-		final double[] adblEigenvalue)
+		final double[][] eigenVectorArray,
+		final double[] eigenValueArray)
 		throws java.lang.Exception
 	{
-		if (null == (_aadblEigenvector = aadblEigenvector) || null == (_adblEigenvalue = adblEigenvalue))
-			throw new java.lang.Exception ("EigenOutput ctr: Invalid Inputs");
+		if (null == (_eigenVectorArray = eigenVectorArray) ||
+			null == (_eigenValueArray = eigenValueArray)
+		)
+		{
+			throw new java.lang.Exception (
+				"EigenOutput ctr: Invalid Inputs"
+			);
+		}
 
-		int iNumVector = _adblEigenvalue.length;
+		int eigenComponentCount = _eigenValueArray.length;
 
-		if (0 == iNumVector || iNumVector != _aadblEigenvector.length || null == _aadblEigenvector[0] ||
-			iNumVector != _aadblEigenvector[0].length)
-			throw new java.lang.Exception ("EigenOutput ctr: Invalid Inputs");
+		if (0 == eigenComponentCount || eigenComponentCount != _eigenVectorArray.length ||
+			null == _eigenVectorArray[0] || eigenComponentCount != _eigenVectorArray[0].length
+		)
+		{
+			throw new java.lang.Exception (
+				"EigenOutput ctr: Invalid Inputs"
+			);
+		}
 	}
 
 	/**
@@ -128,9 +140,9 @@ public class EigenOutput {
 	 * @return The Array of Eigenvectors
 	 */
 
-	public double[][] eigenvector()
+	public double[][] eigenVectorArray()
 	{
-		return _aadblEigenvector;
+		return _eigenVectorArray;
 	}
 
 	/**
@@ -139,8 +151,8 @@ public class EigenOutput {
 	 * @return The Array of Eigenvalues
 	 */
 
-	public double[] eigenvalue()
+	public double[] eigenValueArray()
 	{
-		return _adblEigenvalue;
+		return _eigenValueArray;
 	}
 }

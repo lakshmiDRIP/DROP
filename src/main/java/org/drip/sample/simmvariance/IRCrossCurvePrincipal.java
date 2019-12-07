@@ -99,7 +99,7 @@ public class IRCrossCurvePrincipal
 		System.out.println (
 			"\t|| Principal Eigenvalue    => " +
 			FormatUtil.FormatDouble (
-				riskGroupPrincipalCovariance.principalEigenComponent().eigenvalue(), 1, 4, 1.
+				riskGroupPrincipalCovariance.principalEigenComponent().eigenValue(), 1, 4, 1.
 			) + " ||"
 		);
 

@@ -208,9 +208,9 @@ public class RiskGroupPrincipalCovariance
 
 	public double[] scaledPrincipalEigenvector()
 	{
-		double scaleFactor = java.lang.Math.sqrt (_principalEigenComponent.eigenvalue());
+		double scaleFactor = java.lang.Math.sqrt (_principalEigenComponent.eigenValue());
 
-		double[] principalEigenvector = _principalEigenComponent.eigenvector();
+		double[] principalEigenvector = _principalEigenComponent.eigenVector();
 
 		int componentCount = principalEigenvector.length;
 		double[] scaledPrincipalEigenvector = new double[componentCount];

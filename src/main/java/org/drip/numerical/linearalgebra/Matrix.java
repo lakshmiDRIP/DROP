@@ -1183,4 +1183,41 @@ public class Matrix {
 
 		return scaledMatrix;
 	}
+
+    /**
+     * Indicate if the Specified Matrix is Diagonal
+     *
+     * @param matrix The Matrix
+     *
+     * @return TRUE - The Specified Matrix is Diagonal
+     */
+
+    public static final boolean IsDiagonal (
+    	final double[][] matrix)
+    {
+       if (null == matrix)
+       {
+    	   return false;
+       }
+
+       int rowCount = matrix.length;
+       int columnCount = 0 == rowCount || null == matrix[0] ? 0 : matrix[0].length;
+
+       for (int rowIndex = 0;
+    		rowIndex < rowCount;
+            ++rowIndex)
+       {
+    	   for (int columnIndex = 0;
+                columnIndex < columnCount;
+                ++columnIndex)
+           {
+    		   if (rowIndex != columnIndex && 0. != matrix[rowIndex][columnIndex])
+    		   {
+                   return false;
+    		   }
+           }
+       }
+
+       return true;
+    }
 }

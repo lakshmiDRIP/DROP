@@ -95,27 +95,28 @@ package org.drip.numerical.eigen;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface ComponentExtractor {
+public interface ComponentExtractor
+{
 
 	/**
 	 * Compute the Principal Component of the Specified Matrix
 	 * 
-	 * @param aadblA The Input Matrix
+	 * @param a The Input Matrix
 	 * 
 	 * @return The Principal EigenComponent Instance
 	 */
 
 	public abstract org.drip.numerical.eigen.EigenComponent principalComponent (
-		final double[][] aadblA);
+		final double[][] a);
 
 	/**
 	 * Eigenize and Extract the Components of the Specified Matrix
 	 * 
-	 * @param aadblA The Input Matrix
+	 * @param a The Input Matrix
 	 * 
 	 * @return The EigenComponents
 	 */
 
 	public abstract org.drip.numerical.eigen.EigenOutput eigenize (
-		final double[][] aadblA);
+		final double[][] a);
 }

@@ -217,7 +217,7 @@ public class GolubWelsch
 				org.drip.numerical.eigen.QREigenComponentExtractor (
 					100,
 					1.e-06
-				).orderedComponents (symmetricTridiagonal());
+				).orderedEigenComponentArray (symmetricTridiagonal());
 
 			if (null == orderedEigenComponentArray || 0 == orderedEigenComponentArray.length)
 			{
@@ -228,10 +228,10 @@ public class GolubWelsch
 				componentIndex < orderedEigenComponentArray.length;
 				++componentIndex)
 			{
-				nodeArray[componentIndex] = orderedEigenComponentArray[componentIndex].eigenvalue();
+				nodeArray[componentIndex] = orderedEigenComponentArray[componentIndex].eigenValue();
 
 				double leadingEigenComponentCoefficient =
-					orderedEigenComponentArray[componentIndex].eigenvector()[0];
+					orderedEigenComponentArray[componentIndex].eigenVector()[0];
 
 				unscaledWeightArray[componentIndex] = leadingEigenComponentCoefficient *
 					leadingEigenComponentCoefficient;

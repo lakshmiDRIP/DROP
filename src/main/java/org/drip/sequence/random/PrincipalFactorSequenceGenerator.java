@@ -114,7 +114,7 @@ public class PrincipalFactorSequenceGenerator extends org.drip.sequence.random.M
 		org.drip.numerical.eigen.QREigenComponentExtractor qrece = new
 			org.drip.numerical.eigen.QREigenComponentExtractor (80, 0.00001);
 
-		org.drip.numerical.eigen.EigenComponent[] aEC = qrece.orderedComponents (aadblCorrelation);
+		org.drip.numerical.eigen.EigenComponent[] aEC = qrece.orderedEigenComponentArray (aadblCorrelation);
 
 		if (null == aEC || 0 == aEC.length)
 			throw new java.lang.Exception ("PrincipalFactorSequenceGenerator ctr: Invalid Inputs");
@@ -125,9 +125,9 @@ public class PrincipalFactorSequenceGenerator extends org.drip.sequence.random.M
 
 		for (int i = 0; i < iNumFactor; ++i) {
 			for (int j = 0; j < iNumVariate; ++j)
-				_aadblFactor[i] = aEC[i].eigenvector();
+				_aadblFactor[i] = aEC[i].eigenVector();
 
-			_adblFactorWeight[i] = aEC[i].eigenvalue();
+			_adblFactorWeight[i] = aEC[i].eigenValue();
 
 			dblNormalizer += _adblFactorWeight[i] * _adblFactorWeight[i];
 		}

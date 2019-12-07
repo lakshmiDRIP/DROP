@@ -95,32 +95,41 @@ package org.drip.numerical.eigen;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PowerIterationComponentExtractor implements org.drip.numerical.eigen.ComponentExtractor {
-	private int _iMaxIteration = -1;
-	private boolean _bToleranceAbsolute = false;
-	private double _dblTolerance = java.lang.Double.NaN;
+public class PowerIterationComponentExtractor
+	implements org.drip.numerical.eigen.ComponentExtractor
+{
+	private int _maxIterations = -1;
+	private boolean _isToleranceAbsolute = false;
+	private double _tolerance = java.lang.Double.NaN;
 
 	/**
 	 * PowerIterationComponentExtractor Constructor
 	 * 
-	 * @param iMaxIteration Maximum Number of Iterations
-	 * @param dblTolerance Tolerance
-	 * @param bToleranceAbsolute Is Tolerance Absolute
+	 * @param maxIterations Maximum Number of Iterations
+	 * @param tolerance Tolerance
+	 * @param isToleranceAbsolute Is Tolerance Absolute
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PowerIterationComponentExtractor (
-		final int iMaxIteration,
-		final double dblTolerance,
-		final boolean bToleranceAbsolute)
+		final int maxIterations,
+		final double tolerance,
+		final boolean isToleranceAbsolute)
 		throws java.lang.Exception
 	{
-		if (0 >= (_iMaxIteration = iMaxIteration) || !org.drip.numerical.common.NumberUtil.IsValid (_dblTolerance
-			= dblTolerance) || 0. == _dblTolerance)
-			throw new java.lang.Exception ("PowerIterationComponentExtractor ctr: Invalid Inputs!");
+		if (0 >= (_maxIterations = maxIterations) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (
+				_tolerance = tolerance
+			) || 0. == _tolerance
+		)
+		{
+			throw new java.lang.Exception (
+				"PowerIterationComponentExtractor ctr: Invalid Inputs!"
+			);
+		}
 
-		_bToleranceAbsolute = bToleranceAbsolute;
+		_isToleranceAbsolute = isToleranceAbsolute;
 	}
 
 	/**
@@ -131,7 +140,7 @@ public class PowerIterationComponentExtractor implements org.drip.numerical.eige
 
 	public int maxIterations()
 	{
-		return _iMaxIteration;
+		return _maxIterations;
 	}
 
 	/**
@@ -142,7 +151,7 @@ public class PowerIterationComponentExtractor implements org.drip.numerical.eige
 
 	public double tolerance()
 	{
-		return _dblTolerance;
+		return _tolerance;
 	}
 
 	/**
@@ -153,66 +162,103 @@ public class PowerIterationComponentExtractor implements org.drip.numerical.eige
 
 	public boolean isToleranceAbsolute()
 	{
-		return _bToleranceAbsolute;
+		return _isToleranceAbsolute;
 	}
 
 	@Override public org.drip.numerical.eigen.EigenComponent principalComponent (
-		final double[][] aadblA)
+		final double[][] a)
 	{
-		if (null == aadblA) return null;
-
-		int iIter = 0;
-		int iSize = aadblA.length;
-		double dblEigenvalue = iSize;
-		double[] adblEigenvector = new double[iSize];
-		double[] adblUpdatedEigenvector = new double[iSize];
-
-		if (0 == iSize || null == aadblA[0] || iSize != aadblA[0].length) return null;
-
-		for (int i = 0; i < iSize; ++i) {
-			adblEigenvector[i] = 1.;
+		if (null == a)
+		{
+			return null;
 		}
 
-		adblEigenvector = org.drip.numerical.linearalgebra.Matrix.Normalize (adblEigenvector);
+		int iterationIndex = 0;
+		int componentCount = a.length;
+		double eigenValue = componentCount;
+		double[] eigenVector = new double[componentCount];
+		double[] eigenVectorArray = new double[componentCount];
 
-		double dblEigenvalueOld = dblEigenvalue;
-		double dblAbsoluteTolerance = _bToleranceAbsolute ? _dblTolerance : dblEigenvalue * _dblTolerance;
-		dblAbsoluteTolerance = dblAbsoluteTolerance > _dblTolerance ? dblAbsoluteTolerance : _dblTolerance;
+		if (0 == componentCount || null == a[0] || componentCount != a[0].length)
+		{
+			return null;
+		}
 
-		while (iIter < _iMaxIteration) {
-			for (int i = 0; i < iSize; ++i) {
-				adblUpdatedEigenvector[i] = 0.;
+		for (int componentIndex = 0;
+			componentIndex < componentCount;
+			++componentIndex)
+		{
+			eigenVector[componentIndex] = 1.;
+		}
 
-				for (int j = 0; j < iSize; ++j)
-					adblUpdatedEigenvector[i] += aadblA[i][j] * adblEigenvector[j];
+		eigenVector = org.drip.numerical.linearalgebra.Matrix.Normalize (
+			eigenVector
+		);
+
+		double oldEigenValue = eigenValue;
+		double absoluteTolerance = _isToleranceAbsolute ? _tolerance : eigenValue * _tolerance;
+		absoluteTolerance = absoluteTolerance > _tolerance ? absoluteTolerance : _tolerance;
+
+		while (iterationIndex < _maxIterations)
+		{
+			for (int componentIndexI = 0;
+				componentIndexI < componentCount;
+				++componentIndexI)
+			{
+				eigenVectorArray[componentIndexI] = 0.;
+
+				for (int componentIndexJ = 0;
+					componentIndexJ < componentCount;
+					++componentIndexJ)
+				{
+					eigenVectorArray[componentIndexI] +=
+						a[componentIndexI][componentIndexJ] * eigenVector[componentIndexJ];
+				}
 			}
 
-			adblUpdatedEigenvector = org.drip.numerical.linearalgebra.Matrix.Normalize (adblUpdatedEigenvector);
+			eigenVectorArray = org.drip.numerical.linearalgebra.Matrix.Normalize (
+				eigenVectorArray
+			);
 
 			try {
-				dblEigenvalue = org.drip.numerical.linearalgebra.Matrix.RayleighQuotient (
-					aadblA,
-					adblUpdatedEigenvector
+				eigenValue = org.drip.numerical.linearalgebra.Matrix.RayleighQuotient (
+					a,
+					eigenVectorArray
 				);
-			} catch (java.lang.Exception e)
+			}
+			catch (java.lang.Exception e)
 			{
 				e.printStackTrace();
 
 				return null;
 			}
 
-			if (dblAbsoluteTolerance > java.lang.Math.abs (dblEigenvalue - dblEigenvalueOld)) break;
+			if (absoluteTolerance > java.lang.Math.abs (
+				eigenValue - oldEigenValue
+			))
+			{
+				break;
+			}
 
-			adblEigenvector = adblUpdatedEigenvector;
-			dblEigenvalueOld = dblEigenvalue;
-			++iIter;
+			eigenVector = eigenVectorArray;
+			oldEigenValue = eigenValue;
+			++iterationIndex;
 		}
 
-		if (iIter >= _iMaxIteration) return null;
+		if (iterationIndex >= _maxIterations)
+		{
+			return null;
+		}
 
-		try {
-			return new org.drip.numerical.eigen.EigenComponent (adblUpdatedEigenvector, dblEigenvalue);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new org.drip.numerical.eigen.EigenComponent (
+				eigenVectorArray,
+				eigenValue
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -220,7 +266,7 @@ public class PowerIterationComponentExtractor implements org.drip.numerical.eige
 	}
 
 	@Override public org.drip.numerical.eigen.EigenOutput eigenize (
-		final double[][] aadblA)
+		final double[][] a)
 	{
 		return null;
 	}

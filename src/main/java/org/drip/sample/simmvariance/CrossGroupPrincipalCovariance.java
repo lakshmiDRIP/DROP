@@ -129,9 +129,9 @@ public class CrossGroupPrincipalCovariance
 
 		EigenComponent principalComponent = pice.principalComponent (correlationMatrix);
 
-		double[] rawEigenvector = principalComponent.eigenvector();
+		double[] rawEigenvector = principalComponent.eigenVector();
 
-		double rawEigenvalue = principalComponent.eigenvalue();
+		double rawEigenvalue = principalComponent.eigenValue();
 
 		double scaledEigenvalue = Math.sqrt (rawEigenvalue);
 

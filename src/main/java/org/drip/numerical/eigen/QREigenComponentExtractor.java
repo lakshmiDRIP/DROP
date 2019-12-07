@@ -94,27 +94,34 @@ package org.drip.numerical.eigen;
  * @author Lakshmi Krishnamurthy
  */
 
-public class QREigenComponentExtractor implements org.drip.numerical.eigen.ComponentExtractor {
-	private int _iMaxIteration = -1;
-	private double _dblTolerance = java.lang.Double.NaN;
+public class QREigenComponentExtractor
+	implements org.drip.numerical.eigen.ComponentExtractor
+{
+	private int _maxIterations = -1;
+	private double _tolerance = java.lang.Double.NaN;
 
 	/**
 	 * QREigenComponentExtractor Constructor
 	 * 
-	 * @param iMaxIteration Maximum Number of Iterations
-	 * @param dblTolerance Tolerance
+	 * @param maxIterations Maximum Number of Iterations
+	 * @param tolerance Tolerance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public QREigenComponentExtractor (
-		final int iMaxIteration,
-		final double dblTolerance)
+		final int maxIterations,
+		final double tolerance)
 		throws java.lang.Exception
 	{
-		if (0 >= (_iMaxIteration = iMaxIteration) || !org.drip.numerical.common.NumberUtil.IsValid (_dblTolerance
-			= dblTolerance) || 0. == _dblTolerance)
+		if (0 >= (_maxIterations = maxIterations) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (
+				_tolerance = tolerance
+			) || 0. == _tolerance
+		)
+		{
 			throw new java.lang.Exception ("QREigenComponentExtractor ctr: Invalid Inputs!");
+		}
 	}
 
 	/**
@@ -125,7 +132,7 @@ public class QREigenComponentExtractor implements org.drip.numerical.eigen.Compo
 
 	public int maxIterations()
 	{
-		return _iMaxIteration;
+		return _maxIterations;
 	}
 
 	/**
@@ -136,58 +143,109 @@ public class QREigenComponentExtractor implements org.drip.numerical.eigen.Compo
 
 	public double tolerance()
 	{
-		return _dblTolerance;
+		return _tolerance;
 	}
 
 	@Override public org.drip.numerical.eigen.EigenOutput eigenize (
-		final double[][] aadblA)
+		final double[][] a)
 	{
-		org.drip.numerical.linearalgebra.QR qr = org.drip.numerical.linearalgebra.Matrix.QRDecomposition (aadblA);
+		org.drip.numerical.linearalgebra.QR qr = org.drip.numerical.linearalgebra.Matrix.QRDecomposition (
+			a
+		);
 
-		if (null == qr) return null;
+		if (null == qr)
+		{
+			return null;
+		}
 
-		double[][] aadblQ = qr.q();
+		double[][] q = qr.q();
 
-		double[][] aadblQT = org.drip.numerical.linearalgebra.Matrix.Transpose (aadblQ);
+		double[][] qTranspose = org.drip.numerical.linearalgebra.Matrix.Transpose (
+			q
+		);
 
-		if (null == aadblQT) return null;
+		if (null == qTranspose)
+		{
+			return null;
+		}
 
-		int iIter = 0;
-		int iSize = aadblA.length;
-		double[] adblEigenvalue = new double[iSize];
-		double[][] aadblB = new double[iSize][iSize];
-		double[][] aadblV = new double[iSize][iSize];
+		int iterationIndex = 0;
+		int eigenComponentCount = a.length;
+		double[] eigenvalueArray = new double[eigenComponentCount];
+		double[][] b = new double[eigenComponentCount][eigenComponentCount];
+		double[][] v = new double[eigenComponentCount][eigenComponentCount];
 
-		if (0 == iSize || null == aadblQT[0] || iSize != aadblQT[0].length) return null;
+		if (0 == eigenComponentCount || null == qTranspose[0] || eigenComponentCount != qTranspose[0].length)
+		{
+			return null;
+		}
 
-		for (int i = 0; i < iSize; ++i) {
-			for (int j = 0; j < iSize; ++j) {
-				aadblB[i][j] = aadblQ[i][j];
-				aadblV[i][j] = aadblA[i][j];
+		for (int rowIndex = 0;
+			rowIndex < eigenComponentCount;
+			++rowIndex)
+		{
+			for (int columnIndex = 0;
+				columnIndex < eigenComponentCount;
+				++columnIndex)
+			{
+				b[rowIndex][columnIndex] = q[rowIndex][columnIndex];
+				v[rowIndex][columnIndex] = a[rowIndex][columnIndex];
 			}
 		}
 
-		while (iIter++ < _iMaxIteration && org.drip.numerical.linearalgebra.Matrix.NON_TRIANGULAR ==
-			org.drip.numerical.linearalgebra.Matrix.TriangularType (aadblV, _dblTolerance)) {
-			if (null == (qr = org.drip.numerical.linearalgebra.Matrix.QRDecomposition (aadblV =
-				org.drip.numerical.linearalgebra.Matrix.Product (aadblQT,
-					org.drip.numerical.linearalgebra.Matrix.Product (aadblV, aadblQ)))))
+		while (iterationIndex++ < _maxIterations &&
+			org.drip.numerical.linearalgebra.Matrix.NON_TRIANGULAR ==
+			org.drip.numerical.linearalgebra.Matrix.TriangularType (
+				v,
+				_tolerance
+			)
+		)
+		{
+			if (null == (qr = org.drip.numerical.linearalgebra.Matrix.QRDecomposition (
+				v = org.drip.numerical.linearalgebra.Matrix.Product (
+					qTranspose,
+					org.drip.numerical.linearalgebra.Matrix.Product (
+						v,
+						q
+					)
+				)
+			)))
+			{
 				return null;
+			}
 
-			aadblQT = org.drip.numerical.linearalgebra.Matrix.Transpose (aadblQ = qr.q());
+			qTranspose = org.drip.numerical.linearalgebra.Matrix.Transpose (
+				q = qr.q()
+			);
 
-			aadblB = org.drip.numerical.linearalgebra.Matrix.Product (aadblB, aadblQ);
+			b = org.drip.numerical.linearalgebra.Matrix.Product (
+				b,
+				q
+			);
 		}
 
-		if (iIter >= _iMaxIteration) return null;
+		if (iterationIndex >= _maxIterations)
+		{
+			return null;
+		}
 
-		for (int i = 0; i < iSize; ++i)
-			adblEigenvalue[i] = aadblV[i][i];
+		for (int rowIndex = 0;
+			rowIndex < eigenComponentCount;
+			++rowIndex)
+		{
+			eigenvalueArray[rowIndex] = v[rowIndex][rowIndex];
+		}
 
-		try {
-			return new org.drip.numerical.eigen.EigenOutput (org.drip.numerical.linearalgebra.Matrix.Transpose
-				(aadblB), adblEigenvalue);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new org.drip.numerical.eigen.EigenOutput (
+				org.drip.numerical.linearalgebra.Matrix.Transpose (
+					b
+				),
+				eigenvalueArray
+			);
+		} catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -195,98 +253,197 @@ public class QREigenComponentExtractor implements org.drip.numerical.eigen.Compo
 	}
 
 	/**
-	 * Generate the Order List of Eigenvalues for the specified Eigen-output
+	 * Generate the Ordered List of Eigenvalues for the specified Eigen-output
 	 * 
-	 * @param eo The Eigen Output
+	 * @param eigenOutput The Eigen Output
 	 * 
 	 * @return The Order List
 	 */
 
-	public java.util.List<java.lang.Integer> orderedEigenList ( 
-		final org.drip.numerical.eigen.EigenOutput eo)
+	public java.util.List<java.lang.Integer> eigenComponentOrderList ( 
+		final org.drip.numerical.eigen.EigenOutput eigenOutput)
 	{
-		if (null == eo) return null;
+		if (null == eigenOutput)
+		{
+			return null;
+		}
 
-		double[] adblEigenvalue = eo.eigenvalue();
+		double[] eigenvalueArray = eigenOutput.eigenValueArray();
 
-		int iSize = adblEigenvalue.length;
+		int eigenComponentCount = eigenvalueArray.length;
 
-		java.util.List<java.lang.Double> lsEigenValue = new java.util.ArrayList<java.lang.Double>();
+		java.util.List<java.lang.Double> eigenValueList = new java.util.ArrayList<java.lang.Double>();
 
-		java.util.List<java.lang.Integer> lsEigenOrder = new java.util.ArrayList<java.lang.Integer>();
+		java.util.List<java.lang.Integer> eigenValueOrder = new java.util.ArrayList<java.lang.Integer>();
 
-		for (int i = 0; i < iSize; ++i) {
-			int iNumOrder = lsEigenOrder.size();
+		for (int eigenComponentIndex = 0;
+			eigenComponentIndex < eigenComponentCount;
+			++eigenComponentIndex)
+		{
+			int eigenValueOrderSize = eigenValueOrder.size();
 
-			if (0 == iNumOrder) {
-				lsEigenOrder.add (i);
+			if (0 == eigenValueOrderSize)
+			{
+				eigenValueOrder.add (
+					eigenComponentIndex
+				);
 
-				lsEigenValue.add (adblEigenvalue[i]);
-			} else {
-				int iInsertIndex = 0;
+				eigenValueList.add (
+					eigenvalueArray[eigenComponentIndex]
+				);
+			}
+			else
+			{
+				int insertionIndex = 0;
 
-				for (int j = 0; j < iNumOrder; ++j) {
-					if (adblEigenvalue[i] <= lsEigenValue.get (j)) {
-						iInsertIndex = j;
+				for (int eigenValueOrderIndex = 0;
+					eigenValueOrderIndex < eigenValueOrderSize;
+					++eigenValueOrderIndex)
+				{
+					if (eigenvalueArray[eigenComponentIndex] <= eigenValueList.get (
+						eigenValueOrderIndex
+					))
+					{
+						insertionIndex = eigenValueOrderIndex;
 						break;
 					}
 				}
 
-				lsEigenOrder.add (iInsertIndex, i);
+				eigenValueOrder.add (
+					insertionIndex,
+					eigenComponentIndex
+				);
 
-				lsEigenValue.add (iInsertIndex, adblEigenvalue[i]);
+				eigenValueList.add (
+					insertionIndex,
+					eigenvalueArray[eigenComponentIndex]
+				);
 			}
 		}
 
-		return lsEigenOrder;
+		return eigenValueOrder;
 	}
 
 	/**
 	 * Generate the Ordered List of Eigen Components arranged by Ascending Eigenvalue
 	 * 
-	 * @param aadblA Input Matrix
+	 * @param a Input Matrix
 	 * 
 	 * @return The Ordered List of Eigen Components arranged by Ascending Eigenvalue
 	 */
 
-	public org.drip.numerical.eigen.EigenComponent[] orderedComponents (
-		final double[][] aadblA)
+	public org.drip.numerical.eigen.EigenComponent[] orderedEigenComponentArray (
+		final double[][] a)
 	{
-		org.drip.numerical.eigen.EigenOutput eo = eigenize (aadblA);
+		org.drip.numerical.eigen.EigenOutput eigenOutput = eigenize (
+			a
+		);
 
-		java.util.List<java.lang.Integer> lsEigenOrder = orderedEigenList (eo);
+		java.util.List<java.lang.Integer> eigenComponentOrderList = eigenComponentOrderList (
+			eigenOutput
+		);
 
-		if (null == lsEigenOrder) return null;
+		if (null == eigenComponentOrderList)
+		{
+			return null;
+		}
 
-		int iNumComponent = lsEigenOrder.size();
+		double[] eigenValueArray = eigenOutput.eigenValueArray();
 
-		double[] adblEigenvalue = eo.eigenvalue();
+		double[][] eigenVectorArray = eigenOutput.eigenVectorArray();
 
-		double[][] aadblEigenvector = eo.eigenvector();
+		int eigenComponentCount = eigenComponentOrderList.size();
 
-		org.drip.numerical.eigen.EigenComponent[] aEC = new org.drip.numerical.eigen.EigenComponent[iNumComponent];
+		org.drip.numerical.eigen.EigenComponent[] eigenComponentArray =
+			new org.drip.numerical.eigen.EigenComponent[eigenComponentCount];
 
-		for (int i = 0; i < iNumComponent; ++i) {
-			int iIndex = lsEigenOrder.get (i);
+		for (int eigenComponentIndex = 0;
+			eigenComponentIndex < eigenComponentCount;
+			++eigenComponentIndex)
+		{
+			int eigenComponentOrder = eigenComponentOrderList.get (
+				eigenComponentIndex
+			);
 
-			try {
-				aEC[i] = new org.drip.numerical.eigen.EigenComponent (aadblEigenvector[iIndex],
-					adblEigenvalue[iIndex]);
-			} catch (java.lang.Exception e) {
+			try
+			{
+				eigenComponentArray[eigenComponentIndex] = new org.drip.numerical.eigen.EigenComponent (
+					eigenVectorArray[eigenComponentOrder],
+					eigenValueArray[eigenComponentOrder]
+				);
+			}
+			catch (java.lang.Exception e)
+			{
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return aEC;
+		return eigenComponentArray;
 	}
 
 	@Override public org.drip.numerical.eigen.EigenComponent principalComponent (
-		final double[][] aadblA)
+		final double[][] a)
 	{
-		org.drip.numerical.eigen.EigenComponent[] aEC = orderedComponents (aadblA);
+		org.drip.numerical.eigen.EigenComponent[] eigenComponentArray = orderedEigenComponentArray (
+			a
+		);
 
-		return null == aEC ? null : aEC[0];
+		return null == eigenComponentArray ? null : eigenComponentArray[0];
+	}
+
+	/**
+	 * Generate the UD Form of the Input Matrix
+	 * 
+	 * @param a The Input Matrix
+	 * 
+	 * @return The UD Form
+	 */
+
+	public org.drip.numerical.linearalgebra.UD udForm (
+		final double[][] a)
+	{
+		org.drip.numerical.eigen.EigenComponent[] eigenComponentArray = orderedEigenComponentArray (
+			a
+		);
+
+		if (null == eigenComponentArray)
+		{
+			return null;
+		}
+
+		int eigenComponentCount = eigenComponentArray.length;
+		double[][] d = new double[eigenComponentCount][eigenComponentCount];
+		double[][] u = new double[eigenComponentCount][];
+
+		for (int eigenComponentIndexI = 0;
+			eigenComponentIndexI < eigenComponentCount;
+			++eigenComponentIndexI)
+		{
+			u[eigenComponentIndexI] = eigenComponentArray[eigenComponentIndexI].eigenVector();
+
+			for (int eigenComponentIndexJ = 0;
+				eigenComponentIndexJ < eigenComponentCount;
+				++eigenComponentIndexJ)
+			{
+				d[eigenComponentIndexI][eigenComponentIndexJ] = eigenComponentIndexI != eigenComponentIndexJ
+					? 0. : eigenComponentArray[eigenComponentIndexI].eigenValue();
+			}
+		}
+
+		try
+		{
+			return new org.drip.numerical.linearalgebra.UD (
+				u,
+				d
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }
