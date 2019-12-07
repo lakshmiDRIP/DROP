@@ -6,43 +6,55 @@ package org.drip.xva.definition;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -96,10 +108,10 @@ package org.drip.xva.definition;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/definition&quot;&gt;Definition&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/README.md&quot;&gt;Valuation Adjustments that account for Collateral, CC Credit/Debt and Funding Overhead&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/definition/README.md&quot;&gt;XVA Definition - Close Out, Universe&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -108,8 +120,8 @@ package org.drip.xva.definition;
 
 public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 {
-<span class="fc" id="L111">	private double _clientRecovery = java.lang.Double.NaN;;</span>
-<span class="fc" id="L112">	private double _dealerSeniorFundingRecovery = java.lang.Double.NaN;</span>
+<span class="fc" id="L123">	private double _clientRecovery = java.lang.Double.NaN;;</span>
+<span class="fc" id="L124">	private double _dealerSeniorFundingRecovery = java.lang.Double.NaN;</span>
 
 	/**
 	 * Generate the Close Out Bilateral Instance from the Market Vertex
@@ -122,24 +134,24 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 	public static final CloseOutBilateral Market (
 		final org.drip.exposure.universe.MarketVertex marketVertex)
 	{
-<span class="nc bnc" id="L125" title="All 2 branches missed.">		if (null == marketVertex)</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (null == marketVertex)</span>
 		{
-<span class="nc" id="L127">			return null;</span>
+<span class="nc" id="L139">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L132">			return new CloseOutBilateral (</span>
-<span class="nc" id="L133">				marketVertex.dealer().seniorRecoveryRate(),</span>
-<span class="nc" id="L134">				marketVertex.client().seniorRecoveryRate()</span>
+<span class="nc" id="L144">			return new CloseOutBilateral (</span>
+<span class="nc" id="L145">				marketVertex.dealer().seniorRecoveryRate(),</span>
+<span class="nc" id="L146">				marketVertex.client().seniorRecoveryRate()</span>
 			);
 		}
-<span class="nc" id="L137">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L149">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L139">			e.printStackTrace();</span>
+<span class="nc" id="L151">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L142">		return null;</span>
+<span class="nc" id="L154">		return null;</span>
 	}
 
 	/**
@@ -155,14 +167,14 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 		final double dealerSeniorFundingRecovery,
 		final double clientRecovery)
 		throws java.lang.Exception
-<span class="fc" id="L158">	{</span>
-<span class="pc bpc" id="L159" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dealerSeniorFundingRecovery =</span>
+<span class="fc" id="L170">	{</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dealerSeniorFundingRecovery =</span>
 			dealerSeniorFundingRecovery) ||
-<span class="pc bpc" id="L161" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_clientRecovery = clientRecovery))</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_clientRecovery = clientRecovery))</span>
 		{
-<span class="nc" id="L163">			throw new java.lang.Exception (&quot;CloseOutBilateral Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L175">			throw new java.lang.Exception (&quot;CloseOutBilateral Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L165">	}</span>
+<span class="fc" id="L177">	}</span>
 
 	/**
 	 * Retrieve the Dealer Senior Funding Recovery Rate
@@ -172,7 +184,7 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 
 	public double dealerSeniorFundingRecovery()
 	{
-<span class="nc" id="L175">		return _dealerSeniorFundingRecovery;</span>
+<span class="nc" id="L187">		return _dealerSeniorFundingRecovery;</span>
 	}
 
 	/**
@@ -183,7 +195,7 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 
 	public double clientRecovery()
 	{
-<span class="nc" id="L186">		return _clientRecovery;</span>
+<span class="nc" id="L198">		return _clientRecovery;</span>
 	}
 
 	@Override public double dealerDefault (
@@ -191,15 +203,15 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 		final double collateralAmount)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L194" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (uncollateralizedExposure) ||</span>
-<span class="pc bpc" id="L195" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (collateralAmount))</span>
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (uncollateralizedExposure) ||</span>
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (collateralAmount))</span>
 		{
-<span class="nc" id="L197">			throw new java.lang.Exception (&quot;CloseOutBilateral::dealerDefault =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L209">			throw new java.lang.Exception (&quot;CloseOutBilateral::dealerDefault =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L200">		double collateralizedExposure = uncollateralizedExposure - collateralAmount;</span>
+<span class="fc" id="L212">		double collateralizedExposure = uncollateralizedExposure - collateralAmount;</span>
 
-<span class="pc bpc" id="L202" title="1 of 4 branches missed.">		return (collateralizedExposure &gt; 0. ? collateralizedExposure : 0.) + _dealerSeniorFundingRecovery *</span>
+<span class="pc bpc" id="L214" title="1 of 4 branches missed.">		return (collateralizedExposure &gt; 0. ? collateralizedExposure : 0.) + _dealerSeniorFundingRecovery *</span>
 			(collateralizedExposure &lt; 0. ? collateralizedExposure : 0.) + collateralAmount;
 	}
 
@@ -208,15 +220,15 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 		final double collateralAmount)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L211" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (uncollateralizedExposure) ||</span>
-<span class="pc bpc" id="L212" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (collateralAmount))</span>
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (uncollateralizedExposure) ||</span>
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (collateralAmount))</span>
 		{
-<span class="nc" id="L214">			throw new java.lang.Exception (&quot;CloseOutBilateral::clientDefault =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L226">			throw new java.lang.Exception (&quot;CloseOutBilateral::clientDefault =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L217">		double clientCollateralizedExposure = uncollateralizedExposure - collateralAmount;</span>
+<span class="fc" id="L229">		double clientCollateralizedExposure = uncollateralizedExposure - collateralAmount;</span>
 
-<span class="pc bpc" id="L219" title="1 of 4 branches missed.">		return _clientRecovery * (clientCollateralizedExposure &gt; 0. ? clientCollateralizedExposure : 0.) +</span>
+<span class="pc bpc" id="L231" title="1 of 4 branches missed.">		return _clientRecovery * (clientCollateralizedExposure &gt; 0. ? clientCollateralizedExposure : 0.) +</span>
 			(clientCollateralizedExposure &lt; 0. ? clientCollateralizedExposure : 0.) + collateralAmount;
 	}
 }

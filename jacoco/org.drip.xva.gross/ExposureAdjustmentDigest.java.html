@@ -6,43 +6,55 @@ package org.drip.xva.gross;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -96,10 +108,10 @@ package org.drip.xva.gross;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/gross&quot;&gt;Gross&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/README.md&quot;&gt;Valuation Adjustments that account for Collateral, CC Credit/Debt and Funding Overhead&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/gross/README.md&quot;&gt;XVA Gross Adiabat Exposure Aggregation&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -108,45 +120,45 @@ package org.drip.xva.gross;
 
 public class ExposureAdjustmentDigest
 {
-<span class="fc" id="L111">	private org.drip.measure.statistics.UnivariateDiscreteThin _cvaThinStatistics = null;</span>
-<span class="fc" id="L112">	private org.drip.measure.statistics.UnivariateDiscreteThin _dvaThinStatistics = null;</span>
-<span class="fc" id="L113">	private org.drip.measure.statistics.UnivariateDiscreteThin _fbaThinStatistics = null;</span>
-<span class="fc" id="L114">	private org.drip.measure.statistics.UnivariateDiscreteThin _fcaThinStatistics = null;</span>
-<span class="fc" id="L115">	private org.drip.measure.statistics.UnivariateDiscreteThin _fdaThinStatistics = null;</span>
-<span class="fc" id="L116">	private org.drip.measure.statistics.UnivariateDiscreteThin _fvaThinStatistics = null;</span>
-<span class="fc" id="L117">	private org.drip.measure.statistics.UnivariateDiscreteThin _ucvaThinStatistics = null;</span>
-<span class="fc" id="L118">	private org.drip.measure.statistics.UnivariateDiscreteThin _sfvaThinStatistics = null;</span>
-<span class="fc" id="L119">	private org.drip.measure.statistics.UnivariateDiscreteThin _cvaclThinStatistics = null;</span>
-<span class="fc" id="L120">	private org.drip.measure.statistics.UnivariateDiscreteThin _ftdcvaThinStatistics = null;</span>
-<span class="fc" id="L121">	private org.drip.measure.statistics.UnivariateDiscreteThin _ucolvaThinStatistics = null;</span>
-<span class="fc" id="L122">	private org.drip.measure.statistics.UnivariateDiscreteThin _totalvaThinStatistics = null;</span>
-<span class="fc" id="L123">	private org.drip.measure.statistics.UnivariateDiscreteThin _ftdcolvaThinStatistics = null;</span>
-<span class="fc" id="L124">	private org.drip.measure.statistics.UnivariateDiscreteThin[]</span>
-		_collateralizedExposureThinStatistics = null;
-<span class="fc" id="L126">	private org.drip.measure.statistics.UnivariateDiscreteThin[]</span>
-		_uncollateralizedExposureThinStatisticsArray = null;
-<span class="fc" id="L128">	private org.drip.measure.statistics.UnivariateDiscreteThin[]</span>
-		_collateralizedExposureThinStatisticsPV = null;
-<span class="fc" id="L130">	private org.drip.measure.statistics.UnivariateDiscreteThin[]</span>
-		_uncollateralizedExposurePVThinStatisticsArray = null;
-<span class="fc" id="L132">	private org.drip.measure.statistics.UnivariateDiscreteThin[]</span>
-		_collateralizedPositiveExposureThinStatisticsArray = null;
-<span class="fc" id="L134">	private org.drip.measure.statistics.UnivariateDiscreteThin[]</span>
-		_collateralizedNegativeExposureThinStatisticsArray = null;
+<span class="fc" id="L123">	private org.drip.measure.statistics.UnivariateDiscreteThin _cvaThinStatistics = null;</span>
+<span class="fc" id="L124">	private org.drip.measure.statistics.UnivariateDiscreteThin _dvaThinStatistics = null;</span>
+<span class="fc" id="L125">	private org.drip.measure.statistics.UnivariateDiscreteThin _fbaThinStatistics = null;</span>
+<span class="fc" id="L126">	private org.drip.measure.statistics.UnivariateDiscreteThin _fcaThinStatistics = null;</span>
+<span class="fc" id="L127">	private org.drip.measure.statistics.UnivariateDiscreteThin _fdaThinStatistics = null;</span>
+<span class="fc" id="L128">	private org.drip.measure.statistics.UnivariateDiscreteThin _fvaThinStatistics = null;</span>
+<span class="fc" id="L129">	private org.drip.measure.statistics.UnivariateDiscreteThin _ucvaThinStatistics = null;</span>
+<span class="fc" id="L130">	private org.drip.measure.statistics.UnivariateDiscreteThin _sfvaThinStatistics = null;</span>
+<span class="fc" id="L131">	private org.drip.measure.statistics.UnivariateDiscreteThin _cvaclThinStatistics = null;</span>
+<span class="fc" id="L132">	private org.drip.measure.statistics.UnivariateDiscreteThin _ftdcvaThinStatistics = null;</span>
+<span class="fc" id="L133">	private org.drip.measure.statistics.UnivariateDiscreteThin _ucolvaThinStatistics = null;</span>
+<span class="fc" id="L134">	private org.drip.measure.statistics.UnivariateDiscreteThin _totalvaThinStatistics = null;</span>
+<span class="fc" id="L135">	private org.drip.measure.statistics.UnivariateDiscreteThin _ftdcolvaThinStatistics = null;</span>
 <span class="fc" id="L136">	private org.drip.measure.statistics.UnivariateDiscreteThin[]</span>
-		_uncollateralizedPositiveExposureThinStatisticsArray = null;
+		_collateralizedExposureThinStatistics = null;
 <span class="fc" id="L138">	private org.drip.measure.statistics.UnivariateDiscreteThin[]</span>
-		_uncollateralizedNegativeExposureThinStatisticsArray = null;
+		_uncollateralizedExposureThinStatisticsArray = null;
 <span class="fc" id="L140">	private org.drip.measure.statistics.UnivariateDiscreteThin[]</span>
-		_collateralizedPositiveExposurePVThinStatisticsArray = null;
+		_collateralizedExposureThinStatisticsPV = null;
 <span class="fc" id="L142">	private org.drip.measure.statistics.UnivariateDiscreteThin[]</span>
-		_collateralizedNegativeExposurePVThinStatisticsArray = null;
+		_uncollateralizedExposurePVThinStatisticsArray = null;
 <span class="fc" id="L144">	private org.drip.measure.statistics.UnivariateDiscreteThin[]</span>
-		_uncollateralizedPositiveExposurePVThinStatisticsArray = null;
+		_collateralizedPositiveExposureThinStatisticsArray = null;
 <span class="fc" id="L146">	private org.drip.measure.statistics.UnivariateDiscreteThin[]</span>
+		_collateralizedNegativeExposureThinStatisticsArray = null;
+<span class="fc" id="L148">	private org.drip.measure.statistics.UnivariateDiscreteThin[]</span>
+		_uncollateralizedPositiveExposureThinStatisticsArray = null;
+<span class="fc" id="L150">	private org.drip.measure.statistics.UnivariateDiscreteThin[]</span>
+		_uncollateralizedNegativeExposureThinStatisticsArray = null;
+<span class="fc" id="L152">	private org.drip.measure.statistics.UnivariateDiscreteThin[]</span>
+		_collateralizedPositiveExposurePVThinStatisticsArray = null;
+<span class="fc" id="L154">	private org.drip.measure.statistics.UnivariateDiscreteThin[]</span>
+		_collateralizedNegativeExposurePVThinStatisticsArray = null;
+<span class="fc" id="L156">	private org.drip.measure.statistics.UnivariateDiscreteThin[]</span>
+		_uncollateralizedPositiveExposurePVThinStatisticsArray = null;
+<span class="fc" id="L158">	private org.drip.measure.statistics.UnivariateDiscreteThin[]</span>
 		_uncollateralizedNegativeExposurePVThinStatisticsArray = null;
-<span class="fc" id="L148">	private org.drip.measure.statistics.UnivariateDiscreteThin[] _fundingExposureThinStatisticsArray = null;</span>
-<span class="fc" id="L149">	private org.drip.measure.statistics.UnivariateDiscreteThin[] _fundingExposurePVThinStatisticsArray = null;</span>
+<span class="fc" id="L160">	private org.drip.measure.statistics.UnivariateDiscreteThin[] _fundingExposureThinStatisticsArray = null;</span>
+<span class="fc" id="L161">	private org.drip.measure.statistics.UnivariateDiscreteThin[] _fundingExposurePVThinStatisticsArray = null;</span>
 
 	/**
 	 * ExposureAdjustmentDigest Constructor
@@ -211,8 +223,8 @@ public class ExposureAdjustmentDigest
 		final double[][] fundingExposure,
 		final double[][] fundingExposurePV)
 		throws java.lang.Exception
-<span class="fc" id="L214">	{</span>
-<span class="pc bpc" id="L215" title="26 of 52 branches missed.">		if (null == ucolva ||</span>
+<span class="fc" id="L226">	{</span>
+<span class="pc bpc" id="L227" title="26 of 52 branches missed.">		if (null == ucolva ||</span>
 			null == ftdcolva ||
 			null == ucva ||
 			null == ftdcva ||
@@ -239,66 +251,66 @@ public class ExposureAdjustmentDigest
 			null == fundingExposure ||
 			null == fundingExposurePV)
 		{
-<span class="nc" id="L242">			throw new java.lang.Exception (&quot;ExposureAdjustmentDigest Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L254">			throw new java.lang.Exception (&quot;ExposureAdjustmentDigest Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L245">		_ucolvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (ucolva);</span>
+<span class="fc" id="L257">		_ucolvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (ucolva);</span>
 
-<span class="fc" id="L247">		_ftdcolvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (ftdcolva);</span>
+<span class="fc" id="L259">		_ftdcolvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (ftdcolva);</span>
 
-<span class="fc" id="L249">		_ucvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (ucva);</span>
+<span class="fc" id="L261">		_ucvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (ucva);</span>
 
-<span class="fc" id="L251">		_ftdcvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (ftdcva);</span>
+<span class="fc" id="L263">		_ftdcvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (ftdcva);</span>
 
-<span class="fc" id="L253">		_cvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (cva);</span>
+<span class="fc" id="L265">		_cvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (cva);</span>
 
-<span class="fc" id="L255">		_cvaclThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (cvacl);</span>
+<span class="fc" id="L267">		_cvaclThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (cvacl);</span>
 
-<span class="fc" id="L257">		_dvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (dva);</span>
+<span class="fc" id="L269">		_dvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (dva);</span>
 
-<span class="fc" id="L259">		_fvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (fva);</span>
+<span class="fc" id="L271">		_fvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (fva);</span>
 
-<span class="fc" id="L261">		_fdaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (fda);</span>
+<span class="fc" id="L273">		_fdaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (fda);</span>
 
-<span class="fc" id="L263">		_fcaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (fca);</span>
+<span class="fc" id="L275">		_fcaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (fca);</span>
 
-<span class="fc" id="L265">		_fbaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (fba);</span>
+<span class="fc" id="L277">		_fbaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (fba);</span>
 
-<span class="fc" id="L267">		_sfvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (sfva);</span>
+<span class="fc" id="L279">		_sfvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (sfva);</span>
 
-<span class="fc" id="L269">		_totalvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (totalVA);</span>
+<span class="fc" id="L281">		_totalvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (totalVA);</span>
 
-<span class="fc" id="L271">		int vertexCount = collateralizedExposure.length;</span>
-<span class="fc" id="L272">		_collateralizedExposureThinStatistics = new</span>
+<span class="fc" id="L283">		int vertexCount = collateralizedExposure.length;</span>
+<span class="fc" id="L284">		_collateralizedExposureThinStatistics = new</span>
 			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-<span class="fc" id="L274">		_uncollateralizedExposureThinStatisticsArray = new</span>
+<span class="fc" id="L286">		_uncollateralizedExposureThinStatisticsArray = new</span>
 			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-<span class="fc" id="L276">		_collateralizedExposureThinStatisticsPV = new</span>
+<span class="fc" id="L288">		_collateralizedExposureThinStatisticsPV = new</span>
 			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-<span class="fc" id="L278">		_uncollateralizedExposurePVThinStatisticsArray = new</span>
+<span class="fc" id="L290">		_uncollateralizedExposurePVThinStatisticsArray = new</span>
 			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-<span class="fc" id="L280">		_collateralizedPositiveExposureThinStatisticsArray = new</span>
+<span class="fc" id="L292">		_collateralizedPositiveExposureThinStatisticsArray = new</span>
 			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-<span class="fc" id="L282">		_collateralizedPositiveExposurePVThinStatisticsArray = new</span>
+<span class="fc" id="L294">		_collateralizedPositiveExposurePVThinStatisticsArray = new</span>
 			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-<span class="fc" id="L284">		_collateralizedNegativeExposureThinStatisticsArray = new</span>
+<span class="fc" id="L296">		_collateralizedNegativeExposureThinStatisticsArray = new</span>
 			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-<span class="fc" id="L286">		_collateralizedNegativeExposurePVThinStatisticsArray = new</span>
+<span class="fc" id="L298">		_collateralizedNegativeExposurePVThinStatisticsArray = new</span>
 			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-<span class="fc" id="L288">		_uncollateralizedPositiveExposureThinStatisticsArray = new</span>
+<span class="fc" id="L300">		_uncollateralizedPositiveExposureThinStatisticsArray = new</span>
 			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-<span class="fc" id="L290">		_uncollateralizedPositiveExposurePVThinStatisticsArray = new</span>
+<span class="fc" id="L302">		_uncollateralizedPositiveExposurePVThinStatisticsArray = new</span>
 			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-<span class="fc" id="L292">		_uncollateralizedNegativeExposureThinStatisticsArray = new</span>
+<span class="fc" id="L304">		_uncollateralizedNegativeExposureThinStatisticsArray = new</span>
 			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-<span class="fc" id="L294">		_uncollateralizedNegativeExposurePVThinStatisticsArray = new</span>
+<span class="fc" id="L306">		_uncollateralizedNegativeExposurePVThinStatisticsArray = new</span>
 			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-<span class="fc" id="L296">		_fundingExposureThinStatisticsArray = new</span>
+<span class="fc" id="L308">		_fundingExposureThinStatisticsArray = new</span>
 			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-<span class="fc" id="L298">		_fundingExposurePVThinStatisticsArray = new</span>
+<span class="fc" id="L310">		_fundingExposurePVThinStatisticsArray = new</span>
 			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
 
-<span class="pc bpc" id="L301" title="14 of 28 branches missed.">		if (0 == vertexCount ||</span>
+<span class="pc bpc" id="L313" title="14 of 28 branches missed.">		if (0 == vertexCount ||</span>
 			vertexCount != collateralizedExposurePV.length ||
 			vertexCount != collateralizedPositiveExposure.length ||
 			vertexCount != collateralizedPositiveExposurePV.length ||
@@ -313,48 +325,48 @@ public class ExposureAdjustmentDigest
 			vertexCount != fundingExposure.length ||
 			vertexCount != fundingExposurePV.length)
 		{
-<span class="nc" id="L316">			throw new java.lang.Exception (&quot;ExposureAdjustmentDigest Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L328">			throw new java.lang.Exception (&quot;ExposureAdjustmentDigest Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc bfc" id="L319" title="All 2 branches covered.">		for (int i = 0 ; i &lt; vertexCount; ++i)</span>
+<span class="fc bfc" id="L331" title="All 2 branches covered.">		for (int i = 0 ; i &lt; vertexCount; ++i)</span>
 		{
-<span class="fc" id="L321">			_collateralizedExposureThinStatistics[i] = new</span>
+<span class="fc" id="L333">			_collateralizedExposureThinStatistics[i] = new</span>
 				org.drip.measure.statistics.UnivariateDiscreteThin (collateralizedExposure[i]);
 
-<span class="fc" id="L324">			_collateralizedExposureThinStatisticsPV[i] = new</span>
+<span class="fc" id="L336">			_collateralizedExposureThinStatisticsPV[i] = new</span>
 				org.drip.measure.statistics.UnivariateDiscreteThin (collateralizedExposurePV[i]);
 
-<span class="fc" id="L327">			_collateralizedPositiveExposureThinStatisticsArray[i] = new</span>
+<span class="fc" id="L339">			_collateralizedPositiveExposureThinStatisticsArray[i] = new</span>
 				org.drip.measure.statistics.UnivariateDiscreteThin (collateralizedPositiveExposure[i]);
 
-<span class="fc" id="L330">			_collateralizedPositiveExposurePVThinStatisticsArray[i] = new</span>
+<span class="fc" id="L342">			_collateralizedPositiveExposurePVThinStatisticsArray[i] = new</span>
 				org.drip.measure.statistics.UnivariateDiscreteThin (collateralizedPositiveExposurePV[i]);
 
-<span class="fc" id="L333">			_collateralizedNegativeExposureThinStatisticsArray[i] = new</span>
+<span class="fc" id="L345">			_collateralizedNegativeExposureThinStatisticsArray[i] = new</span>
 				org.drip.measure.statistics.UnivariateDiscreteThin (collateralizedNegativeExposure[i]);
 
-<span class="fc" id="L336">			_collateralizedNegativeExposurePVThinStatisticsArray[i] = new</span>
+<span class="fc" id="L348">			_collateralizedNegativeExposurePVThinStatisticsArray[i] = new</span>
 				org.drip.measure.statistics.UnivariateDiscreteThin (collateralizedNegativeExposurePV[i]);
 
-<span class="fc" id="L339">			_uncollateralizedExposureThinStatisticsArray[i] = new</span>
+<span class="fc" id="L351">			_uncollateralizedExposureThinStatisticsArray[i] = new</span>
 				org.drip.measure.statistics.UnivariateDiscreteThin (uncollateralizedExposure[i]);
 
-<span class="fc" id="L342">			_uncollateralizedExposurePVThinStatisticsArray[i] = new</span>
+<span class="fc" id="L354">			_uncollateralizedExposurePVThinStatisticsArray[i] = new</span>
 				org.drip.measure.statistics.UnivariateDiscreteThin (uncollateralizedExposurePV[i]);
 
-<span class="fc" id="L345">			_uncollateralizedPositiveExposureThinStatisticsArray[i] = new</span>
+<span class="fc" id="L357">			_uncollateralizedPositiveExposureThinStatisticsArray[i] = new</span>
 				org.drip.measure.statistics.UnivariateDiscreteThin (uncollateralizedPositiveExposure[i]);
 
-<span class="fc" id="L348">			_uncollateralizedPositiveExposurePVThinStatisticsArray[i] = new</span>
+<span class="fc" id="L360">			_uncollateralizedPositiveExposurePVThinStatisticsArray[i] = new</span>
 				org.drip.measure.statistics.UnivariateDiscreteThin (uncollateralizedPositiveExposurePV[i]);
 
-<span class="fc" id="L351">			_uncollateralizedNegativeExposureThinStatisticsArray[i] = new</span>
+<span class="fc" id="L363">			_uncollateralizedNegativeExposureThinStatisticsArray[i] = new</span>
 				org.drip.measure.statistics.UnivariateDiscreteThin (uncollateralizedNegativeExposure[i]);
 
-<span class="fc" id="L354">			_uncollateralizedNegativeExposurePVThinStatisticsArray[i] = new</span>
+<span class="fc" id="L366">			_uncollateralizedNegativeExposurePVThinStatisticsArray[i] = new</span>
 				org.drip.measure.statistics.UnivariateDiscreteThin (uncollateralizedNegativeExposurePV[i]);
 		}
-<span class="fc" id="L357">	}</span>
+<span class="fc" id="L369">	}</span>
 
 	/**
 	 * Retrieve the Univariate Thin Statistics for the Collateralized Exposure
@@ -364,7 +376,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin[] collateralizedExposure()
 	{
-<span class="fc" id="L367">		return _collateralizedExposureThinStatistics;</span>
+<span class="fc" id="L379">		return _collateralizedExposureThinStatistics;</span>
 	}
 
 	/**
@@ -375,7 +387,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin[] collateralizedExposurePV()
 	{
-<span class="fc" id="L378">		return _collateralizedExposureThinStatisticsPV;</span>
+<span class="fc" id="L390">		return _collateralizedExposureThinStatisticsPV;</span>
 	}
 
 	/**
@@ -386,7 +398,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin[] collateralizedPositiveExposure()
 	{
-<span class="fc" id="L389">		return _collateralizedPositiveExposureThinStatisticsArray;</span>
+<span class="fc" id="L401">		return _collateralizedPositiveExposureThinStatisticsArray;</span>
 	}
 
 	/**
@@ -397,7 +409,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin[] collateralizedPositiveExposurePV()
 	{
-<span class="nc" id="L400">		return _collateralizedPositiveExposurePVThinStatisticsArray;</span>
+<span class="nc" id="L412">		return _collateralizedPositiveExposurePVThinStatisticsArray;</span>
 	}
 
 	/**
@@ -408,7 +420,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin[] collateralizedNegativeExposure()
 	{
-<span class="fc" id="L411">		return _collateralizedNegativeExposureThinStatisticsArray;</span>
+<span class="fc" id="L423">		return _collateralizedNegativeExposureThinStatisticsArray;</span>
 	}
 
 	/**
@@ -419,7 +431,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin[] collateralizedNegativeExposurePV()
 	{
-<span class="nc" id="L422">		return _collateralizedNegativeExposurePVThinStatisticsArray;</span>
+<span class="nc" id="L434">		return _collateralizedNegativeExposurePVThinStatisticsArray;</span>
 	}
 
 	/**
@@ -430,7 +442,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin[] uncollateralizedExposure()
 	{
-<span class="fc" id="L433">		return _uncollateralizedExposureThinStatisticsArray;</span>
+<span class="fc" id="L445">		return _uncollateralizedExposureThinStatisticsArray;</span>
 	}
 
 	/**
@@ -441,7 +453,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin[] uncollateralizedExposurePV()
 	{
-<span class="fc" id="L444">		return _uncollateralizedExposurePVThinStatisticsArray;</span>
+<span class="fc" id="L456">		return _uncollateralizedExposurePVThinStatisticsArray;</span>
 	}
 
 	/**
@@ -452,7 +464,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin[] uncollateralizedPositiveExposure()
 	{
-<span class="fc" id="L455">		return _uncollateralizedPositiveExposureThinStatisticsArray;</span>
+<span class="fc" id="L467">		return _uncollateralizedPositiveExposureThinStatisticsArray;</span>
 	}
 
 	/**
@@ -463,7 +475,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin[] uncollateralizedPositiveExposurePV()
 	{
-<span class="nc" id="L466">		return _uncollateralizedPositiveExposurePVThinStatisticsArray;</span>
+<span class="nc" id="L478">		return _uncollateralizedPositiveExposurePVThinStatisticsArray;</span>
 	}
 
 	/**
@@ -474,7 +486,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin[] uncollateralizedNegativeExposure()
 	{
-<span class="fc" id="L477">		return _uncollateralizedNegativeExposureThinStatisticsArray;</span>
+<span class="fc" id="L489">		return _uncollateralizedNegativeExposureThinStatisticsArray;</span>
 	}
 
 	/**
@@ -485,7 +497,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin[] uncollateralizedNegativeExposurePV()
 	{
-<span class="nc" id="L488">		return _uncollateralizedNegativeExposurePVThinStatisticsArray;</span>
+<span class="nc" id="L500">		return _uncollateralizedNegativeExposurePVThinStatisticsArray;</span>
 	}
 
 	/**
@@ -496,7 +508,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin[] fundingExposure()
 	{
-<span class="nc" id="L499">		return _fundingExposureThinStatisticsArray;</span>
+<span class="nc" id="L511">		return _fundingExposureThinStatisticsArray;</span>
 	}
 
 	/**
@@ -507,7 +519,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin[] fundingExposurePV()
 	{
-<span class="nc" id="L510">		return _fundingExposurePVThinStatisticsArray;</span>
+<span class="nc" id="L522">		return _fundingExposurePVThinStatisticsArray;</span>
 	}
 
 	/**
@@ -518,7 +530,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin ucolva()
 	{
-<span class="nc" id="L521">		return _ucolvaThinStatistics;</span>
+<span class="nc" id="L533">		return _ucolvaThinStatistics;</span>
 	}
 
 	/**
@@ -529,7 +541,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin ftdcolva()
 	{
-<span class="nc" id="L532">		return _ftdcolvaThinStatistics;</span>
+<span class="nc" id="L544">		return _ftdcolvaThinStatistics;</span>
 	}
 
 	/**
@@ -540,7 +552,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin ucva()
 	{
-<span class="fc" id="L543">		return _ucvaThinStatistics;</span>
+<span class="fc" id="L555">		return _ucvaThinStatistics;</span>
 	}
 
 	/**
@@ -551,7 +563,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin ftdcva()
 	{
-<span class="fc" id="L554">		return _ftdcvaThinStatistics;</span>
+<span class="fc" id="L566">		return _ftdcvaThinStatistics;</span>
 	}
 
 	/**
@@ -562,7 +574,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin cva()
 	{
-<span class="fc" id="L565">		return _cvaThinStatistics;</span>
+<span class="fc" id="L577">		return _cvaThinStatistics;</span>
 	}
 
 	/**
@@ -573,7 +585,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin cvacl()
 	{
-<span class="fc" id="L576">		return _cvaclThinStatistics;</span>
+<span class="fc" id="L588">		return _cvaclThinStatistics;</span>
 	}
 
 	/**
@@ -584,7 +596,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin dva()
 	{
-<span class="fc" id="L587">		return _dvaThinStatistics;</span>
+<span class="fc" id="L599">		return _dvaThinStatistics;</span>
 	}
 
 	/**
@@ -595,7 +607,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin fva()
 	{
-<span class="fc" id="L598">		return _fvaThinStatistics;</span>
+<span class="fc" id="L610">		return _fvaThinStatistics;</span>
 	}
 
 	/**
@@ -606,7 +618,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin fda()
 	{
-<span class="fc" id="L609">		return _fdaThinStatistics;</span>
+<span class="fc" id="L621">		return _fdaThinStatistics;</span>
 	}
 
 	/**
@@ -617,7 +629,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin dva2()
 	{
-<span class="nc" id="L620">		return _fdaThinStatistics;</span>
+<span class="nc" id="L632">		return _fdaThinStatistics;</span>
 	}
 
 	/**
@@ -628,7 +640,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin fca()
 	{
-<span class="fc" id="L631">		return _fcaThinStatistics;</span>
+<span class="fc" id="L643">		return _fcaThinStatistics;</span>
 	}
 
 	/**
@@ -639,7 +651,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin fba()
 	{
-<span class="fc" id="L642">		return _fbaThinStatistics;</span>
+<span class="fc" id="L654">		return _fbaThinStatistics;</span>
 	}
 
 	/**
@@ -650,7 +662,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin sfva()
 	{
-<span class="fc" id="L653">		return _sfvaThinStatistics;</span>
+<span class="fc" id="L665">		return _sfvaThinStatistics;</span>
 	}
 
 	/**
@@ -661,7 +673,7 @@ public class ExposureAdjustmentDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin totalVA()
 	{
-<span class="fc" id="L664">		return _totalvaThinStatistics;</span>
+<span class="fc" id="L676">		return _totalvaThinStatistics;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

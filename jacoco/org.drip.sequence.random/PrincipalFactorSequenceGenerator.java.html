@@ -114,7 +114,7 @@ public class PrincipalFactorSequenceGenerator extends org.drip.sequence.random.M
 <span class="fc" id="L114">		org.drip.numerical.eigen.QREigenComponentExtractor qrece = new</span>
 			org.drip.numerical.eigen.QREigenComponentExtractor (80, 0.00001);
 
-<span class="fc" id="L117">		org.drip.numerical.eigen.EigenComponent[] aEC = qrece.orderedComponents (aadblCorrelation);</span>
+<span class="fc" id="L117">		org.drip.numerical.eigen.EigenComponent[] aEC = qrece.orderedEigenComponentArray (aadblCorrelation);</span>
 
 <span class="pc bpc" id="L119" title="2 of 4 branches missed.">		if (null == aEC || 0 == aEC.length)</span>
 <span class="nc" id="L120">			throw new java.lang.Exception (&quot;PrincipalFactorSequenceGenerator ctr: Invalid Inputs&quot;);</span>
@@ -125,9 +125,9 @@ public class PrincipalFactorSequenceGenerator extends org.drip.sequence.random.M
 
 <span class="fc bfc" id="L126" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i) {</span>
 <span class="fc bfc" id="L127" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumVariate; ++j)</span>
-<span class="fc" id="L128">				_aadblFactor[i] = aEC[i].eigenvector();</span>
+<span class="fc" id="L128">				_aadblFactor[i] = aEC[i].eigenVector();</span>
 
-<span class="fc" id="L130">			_adblFactorWeight[i] = aEC[i].eigenvalue();</span>
+<span class="fc" id="L130">			_adblFactorWeight[i] = aEC[i].eigenValue();</span>
 
 <span class="fc" id="L132">			dblNormalizer += _adblFactorWeight[i] * _adblFactorWeight[i];</span>
 		}

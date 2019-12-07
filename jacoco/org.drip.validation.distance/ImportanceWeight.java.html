@@ -6,41 +6,53 @@ package org.drip.validation.distance;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -92,10 +104,10 @@ package org.drip.validation.distance;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation&quot;&gt;Model Validation Suite&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance&quot;&gt;Hypothesis Target Difference Distance Test&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/README.md&quot;&gt;Risk Factor and Hypothesis Validation, Evidence Processing, and Model Testing&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance/README.md&quot;&gt;Hypothesis Target Distance Test Builders&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -104,8 +116,8 @@ package org.drip.validation.distance;
 
 public class ImportanceWeight
 {
-<span class="nc" id="L107">	private double _positiveExpectation = java.lang.Double.NaN;</span>
-<span class="nc" id="L108">	private org.drip.measure.continuous.R1Univariate _r1Univariate = null;</span>
+<span class="nc" id="L119">	private double _positiveExpectation = java.lang.Double.NaN;</span>
+<span class="nc" id="L120">	private org.drip.measure.continuous.R1Univariate _r1Univariate = null;</span>
 
 	/**
 	 * Construct the Importance Weight Version based on Normal Distribution
@@ -118,51 +130,51 @@ public class ImportanceWeight
 	public static final ImportanceWeight Normal (
 		final org.drip.measure.gaussian.R1UnivariateNormal r1UnivariateNormal)
 	{
-<span class="nc bnc" id="L121" title="All 2 branches missed.">		if (null == r1UnivariateNormal)</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		if (null == r1UnivariateNormal)</span>
 		{
-<span class="nc" id="L123">			return null;</span>
+<span class="nc" id="L135">			return null;</span>
 		}
 
-<span class="nc" id="L126">		final double mean = r1UnivariateNormal.mean();</span>
+<span class="nc" id="L138">		final double mean = r1UnivariateNormal.mean();</span>
 
-<span class="nc" id="L128">		final double sigma = r1UnivariateNormal.sigma();</span>
+<span class="nc" id="L140">		final double sigma = r1UnivariateNormal.sigma();</span>
 
 		org.drip.measure.gaussian.R1UnivariateNormal r1UnivariateNormalStandard =
-<span class="nc" id="L131">			org.drip.measure.gaussian.R1UnivariateNormal.Standard();</span>
+<span class="nc" id="L143">			org.drip.measure.gaussian.R1UnivariateNormal.Standard();</span>
 
-<span class="nc" id="L133">		double meanOverSigma = mean / sigma;</span>
+<span class="nc" id="L145">		double meanOverSigma = mean / sigma;</span>
 
 		try
 		{
-<span class="nc" id="L137">			final double positiveExpectation = java.lang.Math.max (</span>
-<span class="nc" id="L138">				mean * r1UnivariateNormalStandard.cumulative (meanOverSigma) +</span>
-<span class="nc" id="L139">					sigma * r1UnivariateNormalStandard.density (meanOverSigma),</span>
+<span class="nc" id="L149">			final double positiveExpectation = java.lang.Math.max (</span>
+<span class="nc" id="L150">				mean * r1UnivariateNormalStandard.cumulative (meanOverSigma) +</span>
+<span class="nc" id="L151">					sigma * r1UnivariateNormalStandard.density (meanOverSigma),</span>
 				0.
 			);
 
-<span class="nc" id="L143">			return new ImportanceWeight (</span>
+<span class="nc" id="L155">			return new ImportanceWeight (</span>
 				r1UnivariateNormal,
 				positiveExpectation
 			)
-<span class="nc" id="L147">			{</span>
+<span class="nc" id="L159">			{</span>
 				@Override public double quantileLoading (
 					final double q)
 					throws java.lang.Exception
 				{
-<span class="nc bnc" id="L152" title="All 2 branches missed.">					return 0. == positiveExpectation ? 0. : java.lang.Math.max (</span>
-<span class="nc" id="L153">						org.drip.function.e2erf.ErrorFunctionInverse.Winitzki2008b().evaluate</span>
-<span class="nc" id="L154">							(2. * q - 1.) * sigma * java.lang.Math.sqrt (2.) + mean,</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">					return 0. == positiveExpectation ? 0. : java.lang.Math.max (</span>
+<span class="nc" id="L165">						org.drip.function.e2erf.ErrorFunctionInverse.Winitzki2008b().evaluate</span>
+<span class="nc" id="L166">							(2. * q - 1.) * sigma * java.lang.Math.sqrt (2.) + mean,</span>
 						0
 					) / positiveExpectation;
 				}
 			};
 		}
-<span class="nc" id="L160">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L172">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L162">			e.printStackTrace();</span>
+<span class="nc" id="L174">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L165">		return null;</span>
+<span class="nc" id="L177">		return null;</span>
 	}
 
 	/**
@@ -178,14 +190,14 @@ public class ImportanceWeight
 		final org.drip.measure.continuous.R1Univariate r1Univariate,
 		final double positiveExpectation)
 		throws java.lang.Exception
-<span class="nc" id="L181">	{</span>
-<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (null == (_r1Univariate = r1Univariate) ||</span>
-<span class="nc bnc" id="L183" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_positiveExpectation = positiveExpectation) ||</span>
+<span class="nc" id="L193">	{</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">		if (null == (_r1Univariate = r1Univariate) ||</span>
+<span class="nc bnc" id="L195" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_positiveExpectation = positiveExpectation) ||</span>
 				0. &gt; _positiveExpectation)
 		{
-<span class="nc" id="L186">			throw new java.lang.Exception (&quot;ImportanceWeight Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L198">			throw new java.lang.Exception (&quot;ImportanceWeight Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L188">	}</span>
+<span class="nc" id="L200">	}</span>
 
 	/**
 	 * Retrieve the Positive Expectation
@@ -195,7 +207,7 @@ public class ImportanceWeight
 
 	public double positiveExpectation()
 	{
-<span class="nc" id="L198">		return _positiveExpectation;</span>
+<span class="nc" id="L210">		return _positiveExpectation;</span>
 	}
 
 	/**
@@ -206,7 +218,7 @@ public class ImportanceWeight
 
 	public org.drip.measure.continuous.R1Univariate r1Univariate()
 	{
-<span class="nc" id="L209">		return _r1Univariate;</span>
+<span class="nc" id="L221">		return _r1Univariate;</span>
 	}
 
 	/**
@@ -223,8 +235,8 @@ public class ImportanceWeight
 		final double q)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L226" title="All 2 branches missed.">		return 0. == _positiveExpectation ? 0. : java.lang.Math.max (</span>
-<span class="nc" id="L227">			_r1Univariate.invCumulative (q),</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">		return 0. == _positiveExpectation ? 0. : java.lang.Math.max (</span>
+<span class="nc" id="L239">			_r1Univariate.invCumulative (q),</span>
 			0
 		) / _positiveExpectation;
 	}

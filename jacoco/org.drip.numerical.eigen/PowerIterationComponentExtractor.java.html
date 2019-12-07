@@ -95,33 +95,42 @@ package org.drip.numerical.eigen;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PowerIterationComponentExtractor implements org.drip.numerical.eigen.ComponentExtractor {
-<span class="fc" id="L99">	private int _iMaxIteration = -1;</span>
-<span class="fc" id="L100">	private boolean _bToleranceAbsolute = false;</span>
-<span class="fc" id="L101">	private double _dblTolerance = java.lang.Double.NaN;</span>
+public class PowerIterationComponentExtractor
+	implements org.drip.numerical.eigen.ComponentExtractor
+{
+<span class="fc" id="L101">	private int _maxIterations = -1;</span>
+<span class="fc" id="L102">	private boolean _isToleranceAbsolute = false;</span>
+<span class="fc" id="L103">	private double _tolerance = java.lang.Double.NaN;</span>
 
 	/**
 	 * PowerIterationComponentExtractor Constructor
 	 * 
-	 * @param iMaxIteration Maximum Number of Iterations
-	 * @param dblTolerance Tolerance
-	 * @param bToleranceAbsolute Is Tolerance Absolute
+	 * @param maxIterations Maximum Number of Iterations
+	 * @param tolerance Tolerance
+	 * @param isToleranceAbsolute Is Tolerance Absolute
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PowerIterationComponentExtractor (
-		final int iMaxIteration,
-		final double dblTolerance,
-		final boolean bToleranceAbsolute)
+		final int maxIterations,
+		final double tolerance,
+		final boolean isToleranceAbsolute)
 		throws java.lang.Exception
-<span class="fc" id="L118">	{</span>
-<span class="pc bpc" id="L119" title="3 of 6 branches missed.">		if (0 &gt;= (_iMaxIteration = iMaxIteration) || !org.drip.numerical.common.NumberUtil.IsValid (_dblTolerance</span>
-			= dblTolerance) || 0. == _dblTolerance)
-<span class="nc" id="L121">			throw new java.lang.Exception (&quot;PowerIterationComponentExtractor ctr: Invalid Inputs!&quot;);</span>
+<span class="fc" id="L120">	{</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (0 &gt;= (_maxIterations = maxIterations) ||</span>
+<span class="pc bpc" id="L122" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (</span>
+				_tolerance = tolerance
+			) || 0. == _tolerance
+		)
+		{
+<span class="nc" id="L127">			throw new java.lang.Exception (</span>
+				&quot;PowerIterationComponentExtractor ctr: Invalid Inputs!&quot;
+			);
+		}
 
-<span class="fc" id="L123">		_bToleranceAbsolute = bToleranceAbsolute;</span>
-<span class="fc" id="L124">	}</span>
+<span class="fc" id="L132">		_isToleranceAbsolute = isToleranceAbsolute;</span>
+<span class="fc" id="L133">	}</span>
 
 	/**
 	 * Retrieve the Maximum Number of Iterations
@@ -131,7 +140,7 @@ public class PowerIterationComponentExtractor implements org.drip.numerical.eige
 
 	public int maxIterations()
 	{
-<span class="nc" id="L134">		return _iMaxIteration;</span>
+<span class="nc" id="L143">		return _maxIterations;</span>
 	}
 
 	/**
@@ -142,7 +151,7 @@ public class PowerIterationComponentExtractor implements org.drip.numerical.eige
 
 	public double tolerance()
 	{
-<span class="nc" id="L145">		return _dblTolerance;</span>
+<span class="nc" id="L154">		return _tolerance;</span>
 	}
 
 	/**
@@ -153,76 +162,113 @@ public class PowerIterationComponentExtractor implements org.drip.numerical.eige
 
 	public boolean isToleranceAbsolute()
 	{
-<span class="nc" id="L156">		return _bToleranceAbsolute;</span>
+<span class="nc" id="L165">		return _isToleranceAbsolute;</span>
 	}
 
 	@Override public org.drip.numerical.eigen.EigenComponent principalComponent (
-		final double[][] aadblA)
+		final double[][] a)
 	{
-<span class="pc bpc" id="L162" title="1 of 2 branches missed.">		if (null == aadblA) return null;</span>
-
-<span class="fc" id="L164">		int iIter = 0;</span>
-<span class="fc" id="L165">		int iSize = aadblA.length;</span>
-<span class="fc" id="L166">		double dblEigenvalue = iSize;</span>
-<span class="fc" id="L167">		double[] adblEigenvector = new double[iSize];</span>
-<span class="fc" id="L168">		double[] adblUpdatedEigenvector = new double[iSize];</span>
-
-<span class="pc bpc" id="L170" title="3 of 6 branches missed.">		if (0 == iSize || null == aadblA[0] || iSize != aadblA[0].length) return null;</span>
-
-<span class="fc bfc" id="L172" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="fc" id="L173">			adblEigenvector[i] = 1.;</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">		if (null == a)</span>
+		{
+<span class="nc" id="L173">			return null;</span>
 		}
 
-<span class="fc" id="L176">		adblEigenvector = org.drip.numerical.linearalgebra.Matrix.Normalize (adblEigenvector);</span>
+<span class="fc" id="L176">		int iterationIndex = 0;</span>
+<span class="fc" id="L177">		int componentCount = a.length;</span>
+<span class="fc" id="L178">		double eigenValue = componentCount;</span>
+<span class="fc" id="L179">		double[] eigenVector = new double[componentCount];</span>
+<span class="fc" id="L180">		double[] eigenVectorArray = new double[componentCount];</span>
 
-<span class="fc" id="L178">		double dblEigenvalueOld = dblEigenvalue;</span>
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">		double dblAbsoluteTolerance = _bToleranceAbsolute ? _dblTolerance : dblEigenvalue * _dblTolerance;</span>
-<span class="pc bpc" id="L180" title="1 of 2 branches missed.">		dblAbsoluteTolerance = dblAbsoluteTolerance &gt; _dblTolerance ? dblAbsoluteTolerance : _dblTolerance;</span>
+<span class="pc bpc" id="L182" title="3 of 6 branches missed.">		if (0 == componentCount || null == a[0] || componentCount != a[0].length)</span>
+		{
+<span class="nc" id="L184">			return null;</span>
+		}
 
-<span class="pc bpc" id="L182" title="1 of 2 branches missed.">		while (iIter &lt; _iMaxIteration) {</span>
-<span class="fc bfc" id="L183" title="All 2 branches covered.">			for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="fc" id="L184">				adblUpdatedEigenvector[i] = 0.;</span>
+<span class="fc" id="L187">		for (int componentIndex = 0;</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">			componentIndex &lt; componentCount;</span>
+<span class="fc" id="L189">			++componentIndex)</span>
+		{
+<span class="fc" id="L191">			eigenVector[componentIndex] = 1.;</span>
+		}
 
-<span class="fc bfc" id="L186" title="All 2 branches covered.">				for (int j = 0; j &lt; iSize; ++j)</span>
-<span class="fc" id="L187">					adblUpdatedEigenvector[i] += aadblA[i][j] * adblEigenvector[j];</span>
+<span class="fc" id="L194">		eigenVector = org.drip.numerical.linearalgebra.Matrix.Normalize (</span>
+			eigenVector
+		);
+
+<span class="fc" id="L198">		double oldEigenValue = eigenValue;</span>
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">		double absoluteTolerance = _isToleranceAbsolute ? _tolerance : eigenValue * _tolerance;</span>
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">		absoluteTolerance = absoluteTolerance &gt; _tolerance ? absoluteTolerance : _tolerance;</span>
+
+<span class="pc bpc" id="L202" title="1 of 2 branches missed.">		while (iterationIndex &lt; _maxIterations)</span>
+		{
+<span class="fc" id="L204">			for (int componentIndexI = 0;</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">				componentIndexI &lt; componentCount;</span>
+<span class="fc" id="L206">				++componentIndexI)</span>
+			{
+<span class="fc" id="L208">				eigenVectorArray[componentIndexI] = 0.;</span>
+
+<span class="fc" id="L210">				for (int componentIndexJ = 0;</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">					componentIndexJ &lt; componentCount;</span>
+<span class="fc" id="L212">					++componentIndexJ)</span>
+				{
+<span class="fc" id="L214">					eigenVectorArray[componentIndexI] +=</span>
+						a[componentIndexI][componentIndexJ] * eigenVector[componentIndexJ];
+				}
 			}
 
-<span class="fc" id="L190">			adblUpdatedEigenvector = org.drip.numerical.linearalgebra.Matrix.Normalize (adblUpdatedEigenvector);</span>
+<span class="fc" id="L219">			eigenVectorArray = org.drip.numerical.linearalgebra.Matrix.Normalize (</span>
+				eigenVectorArray
+			);
 
 			try {
-<span class="fc" id="L193">				dblEigenvalue = org.drip.numerical.linearalgebra.Matrix.RayleighQuotient (</span>
-					aadblA,
-					adblUpdatedEigenvector
+<span class="fc" id="L224">				eigenValue = org.drip.numerical.linearalgebra.Matrix.RayleighQuotient (</span>
+					a,
+					eigenVectorArray
 				);
-<span class="nc" id="L197">			} catch (java.lang.Exception e)</span>
+			}
+<span class="nc" id="L229">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L199">				e.printStackTrace();</span>
+<span class="nc" id="L231">				e.printStackTrace();</span>
 
-<span class="nc" id="L201">				return null;</span>
-<span class="fc" id="L202">			}</span>
+<span class="nc" id="L233">				return null;</span>
+<span class="fc" id="L234">			}</span>
 
-<span class="fc bfc" id="L204" title="All 2 branches covered.">			if (dblAbsoluteTolerance &gt; java.lang.Math.abs (dblEigenvalue - dblEigenvalueOld)) break;</span>
+<span class="fc bfc" id="L236" title="All 2 branches covered.">			if (absoluteTolerance &gt; java.lang.Math.abs (</span>
+				eigenValue - oldEigenValue
+			))
+			{
+<span class="fc" id="L240">				break;</span>
+			}
 
-<span class="fc" id="L206">			adblEigenvector = adblUpdatedEigenvector;</span>
-<span class="fc" id="L207">			dblEigenvalueOld = dblEigenvalue;</span>
-<span class="fc" id="L208">			++iIter;</span>
+<span class="fc" id="L243">			eigenVector = eigenVectorArray;</span>
+<span class="fc" id="L244">			oldEigenValue = eigenValue;</span>
+<span class="fc" id="L245">			++iterationIndex;</span>
 		}
 
-<span class="pc bpc" id="L211" title="1 of 2 branches missed.">		if (iIter &gt;= _iMaxIteration) return null;</span>
-
-		try {
-<span class="fc" id="L214">			return new org.drip.numerical.eigen.EigenComponent (adblUpdatedEigenvector, dblEigenvalue);</span>
-<span class="nc" id="L215">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L216">			e.printStackTrace();</span>
+<span class="pc bpc" id="L248" title="1 of 2 branches missed.">		if (iterationIndex &gt;= _maxIterations)</span>
+		{
+<span class="nc" id="L250">			return null;</span>
 		}
 
-<span class="nc" id="L219">		return null;</span>
+		try
+		{
+<span class="fc" id="L255">			return new org.drip.numerical.eigen.EigenComponent (</span>
+				eigenVectorArray,
+				eigenValue
+			);
+		}
+<span class="nc" id="L260">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L262">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L265">		return null;</span>
 	}
 
 	@Override public org.drip.numerical.eigen.EigenOutput eigenize (
-		final double[][] aadblA)
+		final double[][] a)
 	{
-<span class="nc" id="L225">		return null;</span>
+<span class="nc" id="L271">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

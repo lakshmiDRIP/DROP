@@ -6,41 +6,53 @@ package org.drip.validation.quantile;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -90,10 +102,10 @@ package org.drip.validation.quantile;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation&quot;&gt;Model Validation Suite&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/quantile&quot;&gt;Quantile Based Graphical Numerical Validators&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/README.md&quot;&gt;Risk Factor and Hypothesis Validation, Evidence Processing, and Model Testing&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/quantile/README.md&quot;&gt;Quantile Based Graphical Numerical Validators&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -102,7 +114,7 @@ package org.drip.validation.quantile;
 
 public class QQTestOutcome
 {
-<span class="nc" id="L105">	private org.drip.validation.quantile.QQVertex[] _qqVertexArray = null;</span>
+<span class="nc" id="L117">	private org.drip.validation.quantile.QQVertex[] _qqVertexArray = null;</span>
 
 	/**
 	 * QQTestOutcome Constructor
@@ -115,27 +127,27 @@ public class QQTestOutcome
 	public QQTestOutcome (
 		final org.drip.validation.quantile.QQVertex[] qqVertexArray)
 		throws java.lang.Exception
-<span class="nc" id="L118">	{</span>
-<span class="nc bnc" id="L119" title="All 2 branches missed.">		if (null == (_qqVertexArray = qqVertexArray))</span>
+<span class="nc" id="L130">	{</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">		if (null == (_qqVertexArray = qqVertexArray))</span>
 		{
-<span class="nc" id="L121">			throw new java.lang.Exception (&quot;QQTestOutcome Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L133">			throw new java.lang.Exception (&quot;QQTestOutcome Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L124">		int qqVertexCount = _qqVertexArray.length;</span>
+<span class="nc" id="L136">		int qqVertexCount = _qqVertexArray.length;</span>
 
-<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (0 == qqVertexCount)</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">		if (0 == qqVertexCount)</span>
 		{
-<span class="nc" id="L128">			throw new java.lang.Exception (&quot;QQTestOutcome Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L140">			throw new java.lang.Exception (&quot;QQTestOutcome Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc bnc" id="L131" title="All 2 branches missed.">		for (int qqVertexIndex = 0; qqVertexIndex &lt; qqVertexCount; ++qqVertexIndex)</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">		for (int qqVertexIndex = 0; qqVertexIndex &lt; qqVertexCount; ++qqVertexIndex)</span>
 		{
-<span class="nc bnc" id="L133" title="All 2 branches missed.">			if (null == _qqVertexArray[qqVertexIndex])</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">			if (null == _qqVertexArray[qqVertexIndex])</span>
 			{
-<span class="nc" id="L135">				throw new java.lang.Exception (&quot;QQTestOutcome Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L147">				throw new java.lang.Exception (&quot;QQTestOutcome Constructor =&gt; Invalid Inputs&quot;);</span>
 			}
 		}
-<span class="nc" id="L138">	}</span>
+<span class="nc" id="L150">	}</span>
 
 	/**
 	 * Retrieve the Array of Q-Q Vertexes
@@ -145,7 +157,7 @@ public class QQTestOutcome
 
 	public org.drip.validation.quantile.QQVertex[] qqVertexArray()
 	{
-<span class="nc" id="L148">		return _qqVertexArray;</span>
+<span class="nc" id="L160">		return _qqVertexArray;</span>
 	}
 
 	/**
@@ -159,24 +171,24 @@ public class QQTestOutcome
 	public double probabilityPlotCorrelationCoefficient()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L162">		int vertexCount = _qqVertexArray.length;</span>
-<span class="nc" id="L163">		double[][] orderStatisticsSequence = new double[2][vertexCount];</span>
+<span class="nc" id="L174">		int vertexCount = _qqVertexArray.length;</span>
+<span class="nc" id="L175">		double[][] orderStatisticsSequence = new double[2][vertexCount];</span>
 
-<span class="nc bnc" id="L165" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L167">			orderStatisticsSequence[0][vertexIndex] = _qqVertexArray[vertexIndex].orderStatisticX();</span>
+<span class="nc" id="L179">			orderStatisticsSequence[0][vertexIndex] = _qqVertexArray[vertexIndex].orderStatisticX();</span>
 
-<span class="nc" id="L169">			orderStatisticsSequence[1][vertexIndex] = _qqVertexArray[vertexIndex].orderStatisticY();</span>
+<span class="nc" id="L181">			orderStatisticsSequence[1][vertexIndex] = _qqVertexArray[vertexIndex].orderStatisticY();</span>
 		}
 
-<span class="nc" id="L172">		return org.drip.measure.statistics.MultivariateMoments.Standard (</span>
+<span class="nc" id="L184">		return org.drip.measure.statistics.MultivariateMoments.Standard (</span>
 			new java.lang.String[]
 			{
 				&quot;x&quot;,
 				&quot;y&quot;
 			},
 			orderStatisticsSequence
-<span class="nc" id="L179">		).correlation (</span>
+<span class="nc" id="L191">		).correlation (</span>
 			&quot;x&quot;,
 			&quot;y&quot;
 		);

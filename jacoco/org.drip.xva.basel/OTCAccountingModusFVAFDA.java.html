@@ -6,43 +6,55 @@ package org.drip.xva.basel;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -96,10 +108,10 @@ package org.drip.xva.basel;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/basel&quot;&gt;Basel&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/README.md&quot;&gt;Valuation Adjustments that account for Collateral, CC Credit/Debt and Funding Overhead&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/basel/README.md&quot;&gt;XVA Based Basel Accounting Measures&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -121,61 +133,61 @@ public class OTCAccountingModusFVAFDA extends org.drip.xva.basel.OTCAccountingMo
 		final org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L124">		super (exposureAdjustmentAggregator);</span>
-<span class="nc" id="L125">	}</span>
+<span class="nc" id="L136">		super (exposureAdjustmentAggregator);</span>
+<span class="nc" id="L137">	}</span>
 
 	@Override public double contraAssetAdjustment()
 	{
-<span class="nc" id="L129">		org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();</span>
+<span class="nc" id="L141">		org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();</span>
 
-<span class="nc" id="L131">		return exposureAdjustmentAggregator.ucva().amount() + exposureAdjustmentAggregator.fva().amount();</span>
+<span class="nc" id="L143">		return exposureAdjustmentAggregator.ucva().amount() + exposureAdjustmentAggregator.fva().amount();</span>
 	}
 
 	@Override public double contraLiabilityAdjustment()
 	{
-<span class="nc" id="L136">		org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();</span>
+<span class="nc" id="L148">		org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();</span>
 
-<span class="nc" id="L138">		return exposureAdjustmentAggregator.cvacl().amount() + exposureAdjustmentAggregator.ftddva().amount()</span>
-<span class="nc" id="L139">			+ exposureAdjustmentAggregator.fda().amount();</span>
+<span class="nc" id="L150">		return exposureAdjustmentAggregator.cvacl().amount() + exposureAdjustmentAggregator.ftddva().amount()</span>
+<span class="nc" id="L151">			+ exposureAdjustmentAggregator.fda().amount();</span>
 	}
 
 	@Override public org.drip.xva.basel.OTCAccountingPolicy feePolicy (
 		final org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregatorNext)
 	{
-<span class="nc bnc" id="L145" title="All 2 branches missed.">		if (null == exposureAdjustmentAggregatorNext)</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">		if (null == exposureAdjustmentAggregatorNext)</span>
 		{
-<span class="nc" id="L147">			return null;</span>
+<span class="nc" id="L159">			return null;</span>
 		}
 
-<span class="nc" id="L150">		org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();</span>
+<span class="nc" id="L162">		org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();</span>
 
-<span class="nc" id="L152">		double collateralVAChange = exposureAdjustmentAggregatorNext.colva().amount() -</span>
-<span class="nc" id="L153">			exposureAdjustmentAggregator.colva().amount();</span>
+<span class="nc" id="L164">		double collateralVAChange = exposureAdjustmentAggregatorNext.colva().amount() -</span>
+<span class="nc" id="L165">			exposureAdjustmentAggregator.colva().amount();</span>
 
-<span class="nc" id="L155">		double contraLiabilityChange = exposureAdjustmentAggregatorNext.ftddva().amount() +</span>
-<span class="nc" id="L156">			exposureAdjustmentAggregatorNext.fda().amount() +</span>
-<span class="nc" id="L157">			exposureAdjustmentAggregatorNext.cvacl().amount() -</span>
-<span class="nc" id="L158">			exposureAdjustmentAggregator.ftddva().amount() - exposureAdjustmentAggregator.fda().amount() -</span>
-<span class="nc" id="L159">			exposureAdjustmentAggregator.cvacl().amount();</span>
+<span class="nc" id="L167">		double contraLiabilityChange = exposureAdjustmentAggregatorNext.ftddva().amount() +</span>
+<span class="nc" id="L168">			exposureAdjustmentAggregatorNext.fda().amount() +</span>
+<span class="nc" id="L169">			exposureAdjustmentAggregatorNext.cvacl().amount() -</span>
+<span class="nc" id="L170">			exposureAdjustmentAggregator.ftddva().amount() - exposureAdjustmentAggregator.fda().amount() -</span>
+<span class="nc" id="L171">			exposureAdjustmentAggregator.cvacl().amount();</span>
 
 		try
 		{
-<span class="nc" id="L163">			return new org.drip.xva.basel.OTCAccountingPolicy (</span>
-<span class="nc" id="L164">				exposureAdjustmentAggregatorNext.ucva().amount() +</span>
-<span class="nc" id="L165">				exposureAdjustmentAggregatorNext.fva().amount() -</span>
-<span class="nc" id="L166">				exposureAdjustmentAggregator.ucva().amount() -</span>
-<span class="nc" id="L167">				exposureAdjustmentAggregator.fva().amount() + collateralVAChange,</span>
+<span class="nc" id="L175">			return new org.drip.xva.basel.OTCAccountingPolicy (</span>
+<span class="nc" id="L176">				exposureAdjustmentAggregatorNext.ucva().amount() +</span>
+<span class="nc" id="L177">				exposureAdjustmentAggregatorNext.fva().amount() -</span>
+<span class="nc" id="L178">				exposureAdjustmentAggregator.ucva().amount() -</span>
+<span class="nc" id="L179">				exposureAdjustmentAggregator.fva().amount() + collateralVAChange,</span>
 				0.,
 				contraLiabilityChange,
 				contraLiabilityChange
 			);
 		}
-<span class="nc" id="L173">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L185">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L175">			e.printStackTrace();</span>
+<span class="nc" id="L187">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L178">		return null;</span>
+<span class="nc" id="L190">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

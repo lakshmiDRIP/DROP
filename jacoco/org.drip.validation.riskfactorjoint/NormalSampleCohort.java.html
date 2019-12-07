@@ -6,41 +6,53 @@ package org.drip.validation.riskfactorjoint;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -93,10 +105,10 @@ package org.drip.validation.riskfactorjoint;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation&quot;&gt;Model Validation Suite&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactorjoint&quot;&gt;Joint Risk Factor Aggregate Tests&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/README.md&quot;&gt;Risk Factor and Hypothesis Validation, Evidence Processing, and Model Testing&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactorjoint/README.md&quot;&gt;Joint Risk Factor Aggregate Tests&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -105,9 +117,9 @@ package org.drip.validation.riskfactorjoint;
 
 public class NormalSampleCohort implements org.drip.validation.riskfactorjoint.SampleCohort
 {
-<span class="nc" id="L108">	private double _horizon = java.lang.Double.NaN;</span>
-<span class="nc" id="L109">	private org.drip.measure.stochastic.LabelRdVertex _labelRdVertex = null;</span>
-<span class="nc" id="L110">	private org.drip.measure.stochastic.LabelCovariance _latentStateLabelCovariance = null;</span>
+<span class="nc" id="L120">	private double _horizon = java.lang.Double.NaN;</span>
+<span class="nc" id="L121">	private org.drip.measure.stochastic.LabelRdVertex _labelRdVertex = null;</span>
+<span class="nc" id="L122">	private org.drip.measure.stochastic.LabelCovariance _latentStateLabelCovariance = null;</span>
 
 	/**
 	 * Generate a Correlated NormalSampleCohort
@@ -130,16 +142,16 @@ public class NormalSampleCohort implements org.drip.validation.riskfactorjoint.S
 		final int vertexCount,
 		final double horizon)
 	{
-<span class="nc bnc" id="L133" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (horizon))</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (horizon))</span>
 		{
-<span class="nc" id="L135">			return null;</span>
+<span class="nc" id="L147">			return null;</span>
 		}
 
-<span class="nc" id="L138">		org.drip.measure.discrete.CorrelatedPathVertexDimension correlatedPathVertexDimension = null;</span>
+<span class="nc" id="L150">		org.drip.measure.discrete.CorrelatedPathVertexDimension correlatedPathVertexDimension = null;</span>
 
 		try
 		{
-<span class="nc" id="L142">			correlatedPathVertexDimension = new org.drip.measure.discrete.CorrelatedPathVertexDimension (</span>
+<span class="nc" id="L154">			correlatedPathVertexDimension = new org.drip.measure.discrete.CorrelatedPathVertexDimension (</span>
 				new org.drip.measure.crng.RandomNumberGenerator(),
 				correlationMatrix,
 				vertexCount,
@@ -148,35 +160,35 @@ public class NormalSampleCohort implements org.drip.validation.riskfactorjoint.S
 				null
 			);
 		}
-<span class="nc" id="L151">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L163">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L153">			e.printStackTrace();</span>
+<span class="nc" id="L165">			e.printStackTrace();</span>
 
-<span class="nc" id="L155">			return null;</span>
-<span class="nc" id="L156">		}</span>
+<span class="nc" id="L167">			return null;</span>
+<span class="nc" id="L168">		}</span>
 
-<span class="nc" id="L158">		org.drip.measure.discrete.VertexRd[] vertexRdArray =</span>
-<span class="nc" id="L159">			correlatedPathVertexDimension.straightMultiPathVertexRd();</span>
+<span class="nc" id="L170">		org.drip.measure.discrete.VertexRd[] vertexRdArray =</span>
+<span class="nc" id="L171">			correlatedPathVertexDimension.straightMultiPathVertexRd();</span>
 
-<span class="nc bnc" id="L161" title="All 4 branches missed.">		if (null == vertexRdArray || null == vertexRdArray[0])</span>
+<span class="nc bnc" id="L173" title="All 4 branches missed.">		if (null == vertexRdArray || null == vertexRdArray[0])</span>
 		{
-<span class="nc" id="L163">			return null;</span>
+<span class="nc" id="L175">			return null;</span>
 		}
 
-<span class="nc" id="L166">		double[][] realization = vertexRdArray[0].flatform();</span>
+<span class="nc" id="L178">		double[][] realization = vertexRdArray[0].flatform();</span>
 
-<span class="nc bnc" id="L168" title="All 2 branches missed.">		if (null == realization)</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">		if (null == realization)</span>
 		{
-<span class="nc" id="L170">			return null;</span>
+<span class="nc" id="L182">			return null;</span>
 		}
 
-<span class="nc" id="L173">		double horizonSQRT = Math.sqrt (horizon);</span>
+<span class="nc" id="L185">		double horizonSQRT = Math.sqrt (horizon);</span>
 
-<span class="nc bnc" id="L175" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc bnc" id="L177" title="All 2 branches missed.">			for (int entityIndex = 0; entityIndex &lt; correlationMatrix.length; ++entityIndex)</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">			for (int entityIndex = 0; entityIndex &lt; correlationMatrix.length; ++entityIndex)</span>
 			{
-<span class="nc" id="L179">				realization[vertexIndex][entityIndex] =</span>
+<span class="nc" id="L191">				realization[vertexIndex][entityIndex] =</span>
 					realization[vertexIndex][entityIndex] * annualVolatilityArray[entityIndex] * horizonSQRT +
 					annualMeanArray[entityIndex] * horizon;
 			}
@@ -184,7 +196,7 @@ public class NormalSampleCohort implements org.drip.validation.riskfactorjoint.S
 
 		try
 		{
-<span class="nc" id="L187">			return new NormalSampleCohort (</span>
+<span class="nc" id="L199">			return new NormalSampleCohort (</span>
 				new org.drip.measure.stochastic.LabelRdVertex (
 					labelList,
 					realization
@@ -198,12 +210,12 @@ public class NormalSampleCohort implements org.drip.validation.riskfactorjoint.S
 				horizon
 			);
 		}
-<span class="nc" id="L201">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L213">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L203">			e.printStackTrace();</span>
+<span class="nc" id="L215">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L206">		return null;</span>
+<span class="nc" id="L218">		return null;</span>
 	}
 
 	/**
@@ -221,14 +233,14 @@ public class NormalSampleCohort implements org.drip.validation.riskfactorjoint.S
 		final org.drip.measure.stochastic.LabelCovariance latentStateLabelCovariance,
 		final double horizon)
 		throws java.lang.Exception
-<span class="nc" id="L224">	{</span>
-<span class="nc bnc" id="L225" title="All 4 branches missed.">		if (null == (_labelRdVertex = labelRdVertex) ||</span>
+<span class="nc" id="L236">	{</span>
+<span class="nc bnc" id="L237" title="All 4 branches missed.">		if (null == (_labelRdVertex = labelRdVertex) ||</span>
 			null == (_latentStateLabelCovariance = latentStateLabelCovariance) ||
-<span class="nc bnc" id="L227" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_horizon = horizon) || _horizon &lt;= 0.)</span>
+<span class="nc bnc" id="L239" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_horizon = horizon) || _horizon &lt;= 0.)</span>
 		{
-<span class="nc" id="L229">			throw new java.lang.Exception (&quot;NormalSampleCohort Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L241">			throw new java.lang.Exception (&quot;NormalSampleCohort Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L231">	}</span>
+<span class="nc" id="L243">	}</span>
 
 	/**
 	 * Retrieve the Latent State Label Covariance
@@ -238,7 +250,7 @@ public class NormalSampleCohort implements org.drip.validation.riskfactorjoint.S
 
 	public org.drip.measure.stochastic.LabelCorrelation latentStateLabelCovariance()
 	{
-<span class="nc" id="L241">		return _latentStateLabelCovariance;</span>
+<span class="nc" id="L253">		return _latentStateLabelCovariance;</span>
 	}
 
 	/**
@@ -249,73 +261,73 @@ public class NormalSampleCohort implements org.drip.validation.riskfactorjoint.S
 
 	public double horizon()
 	{
-<span class="nc" id="L252">		return _horizon;</span>
+<span class="nc" id="L264">		return _horizon;</span>
 	}
 
 	@Override public java.util.List&lt;java.lang.String&gt; latentStateLabelList()
 	{
-<span class="nc" id="L257">		return _latentStateLabelCovariance.labelList();</span>
+<span class="nc" id="L269">		return _latentStateLabelCovariance.labelList();</span>
 	}
 
 	@Override public org.drip.measure.stochastic.LabelRdVertex vertexRd()
 	{
-<span class="nc" id="L262">		return _labelRdVertex;</span>
+<span class="nc" id="L274">		return _labelRdVertex;</span>
 	}
 
 	@Override public org.drip.validation.evidence.Sample reduce (
 		final java.lang.String label1,
 		final java.lang.String label2)
 	{
-<span class="nc" id="L269">		double annualMean1 = java.lang.Double.NaN;</span>
-<span class="nc" id="L270">		double annualMean2 = java.lang.Double.NaN;</span>
-<span class="nc" id="L271">		double correlation = java.lang.Double.NaN;</span>
-<span class="nc" id="L272">		double annualPrecision1 = java.lang.Double.NaN;</span>
-<span class="nc" id="L273">		double annualPrecision2 = java.lang.Double.NaN;</span>
-<span class="nc" id="L274">		double annualVolatility1 = java.lang.Double.NaN;</span>
-<span class="nc" id="L275">		double annualVolatility2 = java.lang.Double.NaN;</span>
+<span class="nc" id="L281">		double annualMean1 = java.lang.Double.NaN;</span>
+<span class="nc" id="L282">		double annualMean2 = java.lang.Double.NaN;</span>
+<span class="nc" id="L283">		double correlation = java.lang.Double.NaN;</span>
+<span class="nc" id="L284">		double annualPrecision1 = java.lang.Double.NaN;</span>
+<span class="nc" id="L285">		double annualPrecision2 = java.lang.Double.NaN;</span>
+<span class="nc" id="L286">		double annualVolatility1 = java.lang.Double.NaN;</span>
+<span class="nc" id="L287">		double annualVolatility2 = java.lang.Double.NaN;</span>
 
 		try
 		{
-<span class="nc" id="L279">			correlation = _latentStateLabelCovariance.entry (</span>
+<span class="nc" id="L291">			correlation = _latentStateLabelCovariance.entry (</span>
 				label1,
 				label2
 			);
 
-<span class="nc" id="L284">			annualMean1 = _latentStateLabelCovariance.mean (label1);</span>
+<span class="nc" id="L296">			annualMean1 = _latentStateLabelCovariance.mean (label1);</span>
 
-<span class="nc" id="L286">			annualMean2 = _latentStateLabelCovariance.mean (label2);</span>
+<span class="nc" id="L298">			annualMean2 = _latentStateLabelCovariance.mean (label2);</span>
 
-<span class="nc" id="L288">			annualPrecision1 = (1. / (annualVolatility1 = _latentStateLabelCovariance.volatility (label1)));</span>
+<span class="nc" id="L300">			annualPrecision1 = (1. / (annualVolatility1 = _latentStateLabelCovariance.volatility (label1)));</span>
 
-<span class="nc" id="L290">			annualPrecision2 = (1. / (annualVolatility2 = _latentStateLabelCovariance.volatility (label2)));</span>
+<span class="nc" id="L302">			annualPrecision2 = (1. / (annualVolatility2 = _latentStateLabelCovariance.volatility (label2)));</span>
 		}
-<span class="nc" id="L292">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L304">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L294">			e.printStackTrace();</span>
+<span class="nc" id="L306">			e.printStackTrace();</span>
 
-<span class="nc" id="L296">			return null;</span>
-<span class="nc" id="L297">		}</span>
+<span class="nc" id="L308">			return null;</span>
+<span class="nc" id="L309">		}</span>
 
-<span class="nc" id="L299">		double[] vertexR1_1 = _labelRdVertex.vertexR1 (label1);</span>
+<span class="nc" id="L311">		double[] vertexR1_1 = _labelRdVertex.vertexR1 (label1);</span>
 
-<span class="nc" id="L301">		double[] vertexR1_2 = _labelRdVertex.vertexR1 (label2);</span>
+<span class="nc" id="L313">		double[] vertexR1_2 = _labelRdVertex.vertexR1 (label2);</span>
 
-<span class="nc bnc" id="L303" title="All 4 branches missed.">		if (null == vertexR1_1 || null == vertexR1_2)</span>
+<span class="nc bnc" id="L315" title="All 4 branches missed.">		if (null == vertexR1_1 || null == vertexR1_2)</span>
 		{
-<span class="nc" id="L305">			return null;</span>
+<span class="nc" id="L317">			return null;</span>
 		}
 
-<span class="nc" id="L308">		int cohortCount = vertexR1_1.length;</span>
-<span class="nc" id="L309">		double[] cohortRealization = new double[cohortCount];</span>
-<span class="nc" id="L310">		double cohortScale = java.lang.Math.exp (_horizon * (0.5 * (annualVolatility1 + annualVolatility2) -</span>
+<span class="nc" id="L320">		int cohortCount = vertexR1_1.length;</span>
+<span class="nc" id="L321">		double[] cohortRealization = new double[cohortCount];</span>
+<span class="nc" id="L322">		double cohortScale = java.lang.Math.exp (_horizon * (0.5 * (annualVolatility1 + annualVolatility2) -</span>
 			(1. + correlation) - (annualMean1 * annualPrecision1 + annualMean2 * annualPrecision2)));
 
-<span class="nc bnc" id="L313" title="All 2 branches missed.">		for (int cohortIndex = 0; cohortIndex &lt; cohortCount; ++cohortIndex)</span>
+<span class="nc bnc" id="L325" title="All 2 branches missed.">		for (int cohortIndex = 0; cohortIndex &lt; cohortCount; ++cohortIndex)</span>
 		{
-<span class="nc" id="L315">			cohortRealization[cohortIndex] = cohortScale * java.lang.Math.pow (</span>
+<span class="nc" id="L327">			cohortRealization[cohortIndex] = cohortScale * java.lang.Math.pow (</span>
 				vertexR1_1[cohortIndex],
 				annualPrecision1
-<span class="nc" id="L318">			) * java.lang.Math.pow (</span>
+<span class="nc" id="L330">			) * java.lang.Math.pow (</span>
 				vertexR1_2[cohortIndex],
 				annualPrecision2
 			);
@@ -323,14 +335,14 @@ public class NormalSampleCohort implements org.drip.validation.riskfactorjoint.S
 
 		try
 		{
-<span class="nc" id="L326">			return new org.drip.validation.evidence.Sample (cohortRealization);</span>
+<span class="nc" id="L338">			return new org.drip.validation.evidence.Sample (cohortRealization);</span>
 		}
-<span class="nc" id="L328">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L340">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L330">			e.printStackTrace();</span>
+<span class="nc" id="L342">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L333">		return null;</span>
+<span class="nc" id="L345">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

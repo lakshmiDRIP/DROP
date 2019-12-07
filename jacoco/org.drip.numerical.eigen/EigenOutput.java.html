@@ -94,33 +94,45 @@ package org.drip.numerical.eigen;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EigenOutput {
-<span class="fc" id="L98">	private double[] _adblEigenvalue = null;</span>
-<span class="fc" id="L99">	private double[][] _aadblEigenvector = null;</span>
+public class EigenOutput
+{
+<span class="fc" id="L99">	private double[] _eigenValueArray = null;</span>
+<span class="fc" id="L100">	private double[][] _eigenVectorArray = null;</span>
 
 	/**
 	 * EigenOutput Constructor
 	 * 
-	 * @param aadblEigenvector Array of Eigenvectors
-	 * @param adblEigenvalue Array of Eigenvalues
+	 * @param eigenVectorArray Array of Eigenvectors
+	 * @param eigenValueArray Array of Eigenvalues
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public EigenOutput (
-		final double[][] aadblEigenvector,
-		final double[] adblEigenvalue)
+		final double[][] eigenVectorArray,
+		final double[] eigenValueArray)
 		throws java.lang.Exception
-<span class="fc" id="L114">	{</span>
-<span class="pc bpc" id="L115" title="2 of 4 branches missed.">		if (null == (_aadblEigenvector = aadblEigenvector) || null == (_adblEigenvalue = adblEigenvalue))</span>
-<span class="nc" id="L116">			throw new java.lang.Exception (&quot;EigenOutput ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L115">	{</span>
+<span class="pc bpc" id="L116" title="2 of 4 branches missed.">		if (null == (_eigenVectorArray = eigenVectorArray) ||</span>
+			null == (_eigenValueArray = eigenValueArray)
+		)
+		{
+<span class="nc" id="L120">			throw new java.lang.Exception (</span>
+				&quot;EigenOutput ctr: Invalid Inputs&quot;
+			);
+		}
 
-<span class="fc" id="L118">		int iNumVector = _adblEigenvalue.length;</span>
+<span class="fc" id="L125">		int eigenComponentCount = _eigenValueArray.length;</span>
 
-<span class="pc bpc" id="L120" title="4 of 8 branches missed.">		if (0 == iNumVector || iNumVector != _aadblEigenvector.length || null == _aadblEigenvector[0] ||</span>
-			iNumVector != _aadblEigenvector[0].length)
-<span class="nc" id="L122">			throw new java.lang.Exception (&quot;EigenOutput ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L123">	}</span>
+<span class="pc bpc" id="L127" title="4 of 8 branches missed.">		if (0 == eigenComponentCount || eigenComponentCount != _eigenVectorArray.length ||</span>
+			null == _eigenVectorArray[0] || eigenComponentCount != _eigenVectorArray[0].length
+		)
+		{
+<span class="nc" id="L131">			throw new java.lang.Exception (</span>
+				&quot;EigenOutput ctr: Invalid Inputs&quot;
+			);
+		}
+<span class="fc" id="L135">	}</span>
 
 	/**
 	 * Retrieve the Array of Eigenvectors
@@ -128,9 +140,9 @@ public class EigenOutput {
 	 * @return The Array of Eigenvectors
 	 */
 
-	public double[][] eigenvector()
+	public double[][] eigenVectorArray()
 	{
-<span class="fc" id="L133">		return _aadblEigenvector;</span>
+<span class="fc" id="L145">		return _eigenVectorArray;</span>
 	}
 
 	/**
@@ -139,9 +151,9 @@ public class EigenOutput {
 	 * @return The Array of Eigenvalues
 	 */
 
-	public double[] eigenvalue()
+	public double[] eigenValueArray()
 	{
-<span class="fc" id="L144">		return _adblEigenvalue;</span>
+<span class="fc" id="L156">		return _eigenValueArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

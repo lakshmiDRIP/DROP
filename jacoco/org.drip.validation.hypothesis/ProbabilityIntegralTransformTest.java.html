@@ -6,41 +6,53 @@ package org.drip.validation.hypothesis;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -93,10 +105,10 @@ package org.drip.validation.hypothesis;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation&quot;&gt;Model Validation Suite&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/hypothesis&quot;&gt;Statistical Hypothesis Validation Test Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/README.md&quot;&gt;Risk Factor and Hypothesis Validation, Evidence Processing, and Model Testing&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/hypothesis/README.md&quot;&gt;Statistical Hypothesis Validation Test Suite&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -105,7 +117,7 @@ package org.drip.validation.hypothesis;
 
 public class ProbabilityIntegralTransformTest
 {
-<span class="nc" id="L108">	private org.drip.validation.hypothesis.ProbabilityIntegralTransform _probabilityIntegralTransform = null;</span>
+<span class="nc" id="L120">	private org.drip.validation.hypothesis.ProbabilityIntegralTransform _probabilityIntegralTransform = null;</span>
 
 	/**
 	 * ProbabilityIntegralTransformTest Constructor
@@ -118,12 +130,12 @@ public class ProbabilityIntegralTransformTest
 	public ProbabilityIntegralTransformTest (
 		final org.drip.validation.hypothesis.ProbabilityIntegralTransform probabilityIntegralTransform)
 		throws java.lang.Exception
-<span class="nc" id="L121">	{</span>
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (null == (_probabilityIntegralTransform = probabilityIntegralTransform))</span>
+<span class="nc" id="L133">	{</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">		if (null == (_probabilityIntegralTransform = probabilityIntegralTransform))</span>
 		{
-<span class="nc" id="L124">			throw new java.lang.Exception (&quot;ProbabilityIntegralTransformTest Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L136">			throw new java.lang.Exception (&quot;ProbabilityIntegralTransformTest Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L126">	}</span>
+<span class="nc" id="L138">	}</span>
 
 	/**
 	 * Retrieve the ProbabilityIntegralTransform Instance
@@ -133,7 +145,7 @@ public class ProbabilityIntegralTransformTest
 
 	public org.drip.validation.hypothesis.ProbabilityIntegralTransform probabilityIntegralTransform()
 	{
-<span class="nc" id="L136">		return _probabilityIntegralTransform;</span>
+<span class="nc" id="L148">		return _probabilityIntegralTransform;</span>
 	}
 
 	/**
@@ -149,84 +161,84 @@ public class ProbabilityIntegralTransformTest
 		final double testStatistic,
 		final org.drip.validation.hypothesis.SignificanceTestSetting pTestSetting)
 	{
-<span class="nc bnc" id="L152" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (testStatistic) || null == pTestSetting)</span>
+<span class="nc bnc" id="L164" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (testStatistic) || null == pTestSetting)</span>
 		{
-<span class="nc" id="L154">			return null;</span>
+<span class="nc" id="L166">			return null;</span>
 		}
 
-<span class="nc" id="L157">		double pValue = java.lang.Double.NaN;</span>
+<span class="nc" id="L169">		double pValue = java.lang.Double.NaN;</span>
 
 		try
 		{
-<span class="nc" id="L161">			pValue = _probabilityIntegralTransform.pValue (testStatistic);</span>
+<span class="nc" id="L173">			pValue = _probabilityIntegralTransform.pValue (testStatistic);</span>
 		}
-<span class="nc" id="L163">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L175">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L165">			e.printStackTrace();</span>
+<span class="nc" id="L177">			e.printStackTrace();</span>
 
-<span class="nc" id="L167">			return null;</span>
-<span class="nc" id="L168">		}</span>
+<span class="nc" id="L179">			return null;</span>
+<span class="nc" id="L180">		}</span>
 
-<span class="nc" id="L170">		int tailCheck = pTestSetting.tailCheck();</span>
+<span class="nc" id="L182">		int tailCheck = pTestSetting.tailCheck();</span>
 
-<span class="nc" id="L172">		double threshold = pTestSetting.threshold();</span>
+<span class="nc" id="L184">		double threshold = pTestSetting.threshold();</span>
 
-<span class="nc bnc" id="L174" title="All 2 branches missed.">		if (org.drip.validation.hypothesis.SignificanceTestSetting.LEFT_TAIL_CHECK == tailCheck)</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">		if (org.drip.validation.hypothesis.SignificanceTestSetting.LEFT_TAIL_CHECK == tailCheck)</span>
 		{
 			try
 			{
-<span class="nc bnc" id="L178" title="All 2 branches missed.">				return new SignificanceTestOutcome (</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">				return new SignificanceTestOutcome (</span>
 					testStatistic,
 					1. - pValue,
 					pValue,
 					pValue &gt; threshold
 				);
 			}
-<span class="nc" id="L185">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L197">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L187">				e.printStackTrace();</span>
+<span class="nc" id="L199">				e.printStackTrace();</span>
 
-<span class="nc" id="L189">				return null;</span>
+<span class="nc" id="L201">				return null;</span>
 			}
 		}
 
-<span class="nc bnc" id="L193" title="All 2 branches missed.">		if (org.drip.validation.hypothesis.SignificanceTestSetting.RIGHT_TAIL_CHECK == tailCheck)</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">		if (org.drip.validation.hypothesis.SignificanceTestSetting.RIGHT_TAIL_CHECK == tailCheck)</span>
 		{
 			try
 			{
-<span class="nc bnc" id="L197" title="All 2 branches missed.">				return new SignificanceTestOutcome (</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">				return new SignificanceTestOutcome (</span>
 					testStatistic,
 					1. - pValue,
 					pValue,
 					1. - pValue &gt; threshold
 				);
 			}
-<span class="nc" id="L204">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L216">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L206">				e.printStackTrace();</span>
+<span class="nc" id="L218">				e.printStackTrace();</span>
 
-<span class="nc" id="L208">				return null;</span>
+<span class="nc" id="L220">				return null;</span>
 			}
 		}
 
 		try
 		{
-<span class="nc" id="L214">			return new SignificanceTestOutcome (</span>
+<span class="nc" id="L226">			return new SignificanceTestOutcome (</span>
 				testStatistic,
 				1. - pValue,
 				pValue,
-<span class="nc bnc" id="L218" title="All 2 branches missed.">				2. * java.lang.Math.min (</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">				2. * java.lang.Math.min (</span>
 					pValue,
 					1. - pValue
 				) &gt; threshold
 			);
 		}
-<span class="nc" id="L224">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L236">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L226">			e.printStackTrace();</span>
+<span class="nc" id="L238">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L229">		return null;</span>
+<span class="nc" id="L241">		return null;</span>
 	}
 
 	/**
@@ -242,70 +254,70 @@ public class ProbabilityIntegralTransformTest
 		final org.drip.validation.hypothesis.ProbabilityIntegralTransform samplePIT,
 		final org.drip.validation.distance.GapTestSetting gapTestSetting)
 	{
-<span class="nc bnc" id="L245" title="All 4 branches missed.">		if (null == samplePIT || null == gapTestSetting)</span>
+<span class="nc bnc" id="L257" title="All 4 branches missed.">		if (null == samplePIT || null == gapTestSetting)</span>
 		{
-<span class="nc" id="L247">			return null;</span>
+<span class="nc" id="L259">			return null;</span>
 		}
 
-<span class="nc" id="L250">		double distance = 0.;</span>
-<span class="nc" id="L251">		double hypothesisPValueLeft = 0.;</span>
+<span class="nc" id="L262">		double distance = 0.;</span>
+<span class="nc" id="L263">		double hypothesisPValueLeft = 0.;</span>
 
-<span class="nc" id="L253">		org.drip.validation.distance.GapLossFunction gapLossFunction = gapTestSetting.lossFunction();</span>
+<span class="nc" id="L265">		org.drip.validation.distance.GapLossFunction gapLossFunction = gapTestSetting.lossFunction();</span>
 
-<span class="nc" id="L255">		org.drip.validation.distance.GapLossWeightFunction gapLossWeightFunction =</span>
-<span class="nc" id="L256">			gapTestSetting.lossWeightFunction();</span>
+<span class="nc" id="L267">		org.drip.validation.distance.GapLossWeightFunction gapLossWeightFunction =</span>
+<span class="nc" id="L268">			gapTestSetting.lossWeightFunction();</span>
 
-<span class="nc" id="L258">		org.drip.validation.evidence.TestStatisticAccumulator weightedGapLossAccumulator = new</span>
+<span class="nc" id="L270">		org.drip.validation.evidence.TestStatisticAccumulator weightedGapLossAccumulator = new</span>
 			org.drip.validation.evidence.TestStatisticAccumulator();
 
-<span class="nc" id="L261">		org.drip.validation.evidence.TestStatisticAccumulator unweightedGapLossAccumulator = new</span>
+<span class="nc" id="L273">		org.drip.validation.evidence.TestStatisticAccumulator unweightedGapLossAccumulator = new</span>
 			org.drip.validation.evidence.TestStatisticAccumulator();
 
 		for (java.util.Map.Entry&lt;java.lang.Double, java.lang.Double&gt; testStatisticPValueEntry :
-<span class="nc bnc" id="L265" title="All 2 branches missed.">			samplePIT.testStatisticPValueMap().entrySet())</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">			samplePIT.testStatisticPValueMap().entrySet())</span>
 		{
 			try
 			{
-<span class="nc" id="L269">				double hypothesisPValueRight = _probabilityIntegralTransform.pValue</span>
-<span class="nc" id="L270">					(testStatisticPValueEntry.getKey());</span>
+<span class="nc" id="L281">				double hypothesisPValueRight = _probabilityIntegralTransform.pValue</span>
+<span class="nc" id="L282">					(testStatisticPValueEntry.getKey());</span>
 
-<span class="nc" id="L272">				double gapLoss = gapLossFunction.loss (testStatisticPValueEntry.getValue() -</span>
+<span class="nc" id="L284">				double gapLoss = gapLossFunction.loss (testStatisticPValueEntry.getValue() -</span>
 					hypothesisPValueRight);
 
-<span class="nc" id="L275">				double weightedGapLoss = gapLoss * gapLossWeightFunction.weight (hypothesisPValueRight);</span>
+<span class="nc" id="L287">				double weightedGapLoss = gapLoss * gapLossWeightFunction.weight (hypothesisPValueRight);</span>
 
-<span class="nc" id="L277">				distance = distance + weightedGapLoss * (hypothesisPValueRight - hypothesisPValueLeft);</span>
+<span class="nc" id="L289">				distance = distance + weightedGapLoss * (hypothesisPValueRight - hypothesisPValueLeft);</span>
 
-<span class="nc bnc" id="L279" title="All 2 branches missed.">				if (!unweightedGapLossAccumulator.addTestStatistic (gapLoss) ||</span>
-<span class="nc bnc" id="L280" title="All 2 branches missed.">					!weightedGapLossAccumulator.addTestStatistic (weightedGapLoss))</span>
+<span class="nc bnc" id="L291" title="All 2 branches missed.">				if (!unweightedGapLossAccumulator.addTestStatistic (gapLoss) ||</span>
+<span class="nc bnc" id="L292" title="All 2 branches missed.">					!weightedGapLossAccumulator.addTestStatistic (weightedGapLoss))</span>
 				{
-<span class="nc" id="L282">					return null;</span>
+<span class="nc" id="L294">					return null;</span>
 				}
 
-<span class="nc" id="L285">				hypothesisPValueLeft = hypothesisPValueRight;</span>
+<span class="nc" id="L297">				hypothesisPValueLeft = hypothesisPValueRight;</span>
 			}
-<span class="nc" id="L287">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L299">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L289">				e.printStackTrace();</span>
+<span class="nc" id="L301">				e.printStackTrace();</span>
 
-<span class="nc" id="L291">				return null;</span>
-<span class="nc" id="L292">			}</span>
-<span class="nc" id="L293">		}</span>
+<span class="nc" id="L303">				return null;</span>
+<span class="nc" id="L304">			}</span>
+<span class="nc" id="L305">		}</span>
 
 		try
 		{
-<span class="nc" id="L297">			return new org.drip.validation.distance.GapTestOutcome (</span>
-<span class="nc" id="L298">				unweightedGapLossAccumulator.probabilityIntegralTransform(),</span>
-<span class="nc" id="L299">				weightedGapLossAccumulator.probabilityIntegralTransform(),</span>
+<span class="nc" id="L309">			return new org.drip.validation.distance.GapTestOutcome (</span>
+<span class="nc" id="L310">				unweightedGapLossAccumulator.probabilityIntegralTransform(),</span>
+<span class="nc" id="L311">				weightedGapLossAccumulator.probabilityIntegralTransform(),</span>
 				distance
 			);
 		}
-<span class="nc" id="L303">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L315">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L305">			e.printStackTrace();</span>
+<span class="nc" id="L317">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L308">		return null;</span>
+<span class="nc" id="L320">		return null;</span>
 	}
 
 	/**
@@ -319,76 +331,76 @@ public class ProbabilityIntegralTransformTest
 	public org.drip.validation.hypothesis.HistogramTestOutcome histogramTest (
 		final org.drip.validation.hypothesis.HistogramTestSetting histogramTestSetting)
 	{
-<span class="nc bnc" id="L322" title="All 2 branches missed.">		if (null == histogramTestSetting)</span>
+<span class="nc bnc" id="L334" title="All 2 branches missed.">		if (null == histogramTestSetting)</span>
 		{
-<span class="nc" id="L324">			return null;</span>
+<span class="nc" id="L336">			return null;</span>
 		}
 
-<span class="nc" id="L327">		org.drip.validation.quantile.PlottingPositionGenerator plottingPositionGenerator =</span>
-<span class="nc" id="L328">			histogramTestSetting.plottingPositionGenerator();</span>
+<span class="nc" id="L339">		org.drip.validation.quantile.PlottingPositionGenerator plottingPositionGenerator =</span>
+<span class="nc" id="L340">			histogramTestSetting.plottingPositionGenerator();</span>
 
-<span class="nc" id="L330">		org.drip.validation.quantile.PlottingPosition[] plottingPositionArray =</span>
-<span class="nc" id="L331">			plottingPositionGenerator.generate();</span>
+<span class="nc" id="L342">		org.drip.validation.quantile.PlottingPosition[] plottingPositionArray =</span>
+<span class="nc" id="L343">			plottingPositionGenerator.generate();</span>
 
-<span class="nc" id="L333">		int qqVertexCount = plottingPositionArray.length + 2;</span>
-<span class="nc" id="L334">		double[] testStatisticArray = new double[qqVertexCount];</span>
-<span class="nc" id="L335">		double[] pValueCumulativeArray = new double[qqVertexCount];</span>
-<span class="nc" id="L336">		double[] pValueIncrementalArray = new double[qqVertexCount];</span>
+<span class="nc" id="L345">		int qqVertexCount = plottingPositionArray.length + 2;</span>
+<span class="nc" id="L346">		double[] testStatisticArray = new double[qqVertexCount];</span>
+<span class="nc" id="L347">		double[] pValueCumulativeArray = new double[qqVertexCount];</span>
+<span class="nc" id="L348">		double[] pValueIncrementalArray = new double[qqVertexCount];</span>
 
 		try
 		{
-<span class="nc" id="L340">			pValueIncrementalArray[0] = 0.;</span>
+<span class="nc" id="L352">			pValueIncrementalArray[0] = 0.;</span>
 
-<span class="nc" id="L342">			testStatisticArray[0] = _probabilityIntegralTransform.testStatistic</span>
-<span class="nc" id="L343">				(pValueCumulativeArray[0] = 0.);</span>
+<span class="nc" id="L354">			testStatisticArray[0] = _probabilityIntegralTransform.testStatistic</span>
+<span class="nc" id="L355">				(pValueCumulativeArray[0] = 0.);</span>
 
-<span class="nc" id="L345">			testStatisticArray[qqVertexCount - 1] = _probabilityIntegralTransform.testStatistic</span>
-<span class="nc" id="L346">				(pValueCumulativeArray[qqVertexCount - 1] = 1.);</span>
+<span class="nc" id="L357">			testStatisticArray[qqVertexCount - 1] = _probabilityIntegralTransform.testStatistic</span>
+<span class="nc" id="L358">				(pValueCumulativeArray[qqVertexCount - 1] = 1.);</span>
 		}
-<span class="nc" id="L348">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L360">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L350">			e.printStackTrace();</span>
+<span class="nc" id="L362">			e.printStackTrace();</span>
 
-<span class="nc" id="L352">			return null;</span>
-<span class="nc" id="L353">		}</span>
+<span class="nc" id="L364">			return null;</span>
+<span class="nc" id="L365">		}</span>
 
-<span class="nc bnc" id="L355" title="All 2 branches missed.">		for (int qqVertexIndex = 1; qqVertexIndex &lt; qqVertexCount - 1; ++qqVertexIndex)</span>
+<span class="nc bnc" id="L367" title="All 2 branches missed.">		for (int qqVertexIndex = 1; qqVertexIndex &lt; qqVertexCount - 1; ++qqVertexIndex)</span>
 		{
 			try
 			{
-<span class="nc" id="L359">				testStatisticArray[qqVertexIndex] = _probabilityIntegralTransform.testStatistic</span>
-<span class="nc" id="L360">					(pValueCumulativeArray[qqVertexIndex] =</span>
-<span class="nc" id="L361">						plottingPositionArray[qqVertexIndex - 1].quantile());</span>
+<span class="nc" id="L371">				testStatisticArray[qqVertexIndex] = _probabilityIntegralTransform.testStatistic</span>
+<span class="nc" id="L372">					(pValueCumulativeArray[qqVertexIndex] =</span>
+<span class="nc" id="L373">						plottingPositionArray[qqVertexIndex - 1].quantile());</span>
 
-<span class="nc" id="L363">				pValueIncrementalArray[qqVertexIndex] = pValueCumulativeArray[qqVertexIndex] -</span>
+<span class="nc" id="L375">				pValueIncrementalArray[qqVertexIndex] = pValueCumulativeArray[qqVertexIndex] -</span>
 					pValueCumulativeArray[qqVertexIndex - 1];
 			}
-<span class="nc" id="L366">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L378">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L368">				e.printStackTrace();</span>
+<span class="nc" id="L380">				e.printStackTrace();</span>
 
-<span class="nc" id="L370">				return null;</span>
-<span class="nc" id="L371">			}</span>
+<span class="nc" id="L382">				return null;</span>
+<span class="nc" id="L383">			}</span>
 		}
 
-<span class="nc" id="L374">		pValueIncrementalArray[qqVertexCount - 1] = pValueCumulativeArray[qqVertexCount - 1] -</span>
+<span class="nc" id="L386">		pValueIncrementalArray[qqVertexCount - 1] = pValueCumulativeArray[qqVertexCount - 1] -</span>
 			pValueCumulativeArray[qqVertexCount - 2];
 
 		try
 		{
-<span class="nc" id="L379">			return new org.drip.validation.hypothesis.HistogramTestOutcome (</span>
+<span class="nc" id="L391">			return new org.drip.validation.hypothesis.HistogramTestOutcome (</span>
 				testStatisticArray,
 				pValueCumulativeArray,
 				pValueIncrementalArray,
-<span class="nc" id="L383">				_probabilityIntegralTransform.testStatistic (histogramTestSetting.pValueThreshold())</span>
+<span class="nc" id="L395">				_probabilityIntegralTransform.testStatistic (histogramTestSetting.pValueThreshold())</span>
 			);
 		}
-<span class="nc" id="L386">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L398">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L388">			e.printStackTrace();</span>
+<span class="nc" id="L400">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L391">		return null;</span>
+<span class="nc" id="L403">		return null;</span>
 	}
 
 	/**
@@ -404,53 +416,53 @@ public class ProbabilityIntegralTransformTest
 		final org.drip.validation.hypothesis.ProbabilityIntegralTransform samplePIT,
 		final org.drip.validation.quantile.PlottingPositionGenerator plottingPositionGenerator)
 	{
-<span class="nc bnc" id="L407" title="All 4 branches missed.">		if (null == samplePIT || null == plottingPositionGenerator)</span>
+<span class="nc bnc" id="L419" title="All 4 branches missed.">		if (null == samplePIT || null == plottingPositionGenerator)</span>
 		{
-<span class="nc" id="L409">			return null;</span>
+<span class="nc" id="L421">			return null;</span>
 		}
 
-<span class="nc" id="L412">		org.drip.validation.quantile.PlottingPosition[] plottingPositionArray =</span>
-<span class="nc" id="L413">			plottingPositionGenerator.generate();</span>
+<span class="nc" id="L424">		org.drip.validation.quantile.PlottingPosition[] plottingPositionArray =</span>
+<span class="nc" id="L425">			plottingPositionGenerator.generate();</span>
 
-<span class="nc bnc" id="L415" title="All 2 branches missed.">		if (null == plottingPositionArray)</span>
+<span class="nc bnc" id="L427" title="All 2 branches missed.">		if (null == plottingPositionArray)</span>
 		{
-<span class="nc" id="L417">			return null;</span>
+<span class="nc" id="L429">			return null;</span>
 		}
 
-<span class="nc" id="L420">		int orderStatisticCount = plottingPositionArray.length;</span>
-<span class="nc" id="L421">		org.drip.validation.quantile.QQVertex[] qqVertexArray = new</span>
+<span class="nc" id="L432">		int orderStatisticCount = plottingPositionArray.length;</span>
+<span class="nc" id="L433">		org.drip.validation.quantile.QQVertex[] qqVertexArray = new</span>
 			org.drip.validation.quantile.QQVertex[orderStatisticCount];
 
-<span class="nc bnc" id="L424" title="All 2 branches missed.">		for (int orderStatisticIndex = 0; orderStatisticIndex &lt; orderStatisticCount; ++orderStatisticIndex)</span>
+<span class="nc bnc" id="L436" title="All 2 branches missed.">		for (int orderStatisticIndex = 0; orderStatisticIndex &lt; orderStatisticCount; ++orderStatisticIndex)</span>
 		{
 			try
 			{
-<span class="nc" id="L428">				double pValue = plottingPositionArray[orderStatisticIndex].quantile();</span>
+<span class="nc" id="L440">				double pValue = plottingPositionArray[orderStatisticIndex].quantile();</span>
 		
-<span class="nc" id="L430">				qqVertexArray[orderStatisticIndex] = new org.drip.validation.quantile.QQVertex (</span>
+<span class="nc" id="L442">				qqVertexArray[orderStatisticIndex] = new org.drip.validation.quantile.QQVertex (</span>
 					plottingPositionArray[orderStatisticIndex],
-<span class="nc" id="L432">					samplePIT.testStatistic (pValue),</span>
-<span class="nc" id="L433">					_probabilityIntegralTransform.testStatistic (pValue)</span>
+<span class="nc" id="L444">					samplePIT.testStatistic (pValue),</span>
+<span class="nc" id="L445">					_probabilityIntegralTransform.testStatistic (pValue)</span>
 				);
 			}
-<span class="nc" id="L436">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L448">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L438">				e.printStackTrace();</span>
+<span class="nc" id="L450">				e.printStackTrace();</span>
 
-<span class="nc" id="L440">				return null;</span>
-<span class="nc" id="L441">			}</span>
+<span class="nc" id="L452">				return null;</span>
+<span class="nc" id="L453">			}</span>
 		}
 
 		try
 		{
-<span class="nc" id="L446">			return new org.drip.validation.quantile.QQTestOutcome (qqVertexArray);</span>
+<span class="nc" id="L458">			return new org.drip.validation.quantile.QQTestOutcome (qqVertexArray);</span>
 		}
-<span class="nc" id="L448">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L460">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L450">			e.printStackTrace();</span>
+<span class="nc" id="L462">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L453">		return null;</span>
+<span class="nc" id="L465">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

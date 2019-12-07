@@ -6,41 +6,53 @@ package org.drip.validation.hypothesis;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -90,10 +102,10 @@ package org.drip.validation.hypothesis;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation&quot;&gt;Model Validation Suite&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/hypothesis&quot;&gt;Statistical Hypothesis Validation Test Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/README.md&quot;&gt;Risk Factor and Hypothesis Validation, Evidence Processing, and Model Testing&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/hypothesis/README.md&quot;&gt;Statistical Hypothesis Validation Test Suite&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -102,16 +114,16 @@ package org.drip.validation.hypothesis;
 
 public class TTestOutcome
 {
-<span class="nc" id="L105">	private double _ensembleMean = java.lang.Double.NaN;</span>
-<span class="nc" id="L106">	private double _testStatistic = java.lang.Double.NaN;</span>
-<span class="nc" id="L107">	private int _sampleCount = java.lang.Integer.MIN_VALUE;</span>
-<span class="nc" id="L108">	private double _ensembleVariance = java.lang.Double.NaN;</span>
-<span class="nc" id="L109">	private double _ensembleTStatistics = java.lang.Double.NaN;</span>
-<span class="nc" id="L110">	private double _ensembleStandardError = java.lang.Double.NaN;</span>
-<span class="nc" id="L111">	private double _ensembleStandardDeviation = java.lang.Double.NaN;</span>
-<span class="nc" id="L112">	private double _ensembleStandardErrorOffset = java.lang.Double.NaN;</span>
-<span class="nc" id="L113">	private int _ensembleDegreesOfFreedom = java.lang.Integer.MIN_VALUE;</span>
-<span class="nc" id="L114">	private double _ensemblePredictiveConfidenceInterval = java.lang.Double.NaN;</span>
+<span class="nc" id="L117">	private double _ensembleMean = java.lang.Double.NaN;</span>
+<span class="nc" id="L118">	private double _testStatistic = java.lang.Double.NaN;</span>
+<span class="nc" id="L119">	private int _sampleCount = java.lang.Integer.MIN_VALUE;</span>
+<span class="nc" id="L120">	private double _ensembleVariance = java.lang.Double.NaN;</span>
+<span class="nc" id="L121">	private double _ensembleTStatistics = java.lang.Double.NaN;</span>
+<span class="nc" id="L122">	private double _ensembleStandardError = java.lang.Double.NaN;</span>
+<span class="nc" id="L123">	private double _ensembleStandardDeviation = java.lang.Double.NaN;</span>
+<span class="nc" id="L124">	private double _ensembleStandardErrorOffset = java.lang.Double.NaN;</span>
+<span class="nc" id="L125">	private int _ensembleDegreesOfFreedom = java.lang.Integer.MIN_VALUE;</span>
+<span class="nc" id="L126">	private double _ensemblePredictiveConfidenceInterval = java.lang.Double.NaN;</span>
 
 	/**
 	 * TTestOutcome Constructor
@@ -142,24 +154,24 @@ public class TTestOutcome
 		final double ensembleTStatistics,
 		final double ensembleStandardErrorOffset)
 		throws java.lang.Exception
-<span class="nc" id="L145">	{</span>
-<span class="nc bnc" id="L146" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_testStatistic = testStatistic) ||</span>
+<span class="nc" id="L157">	{</span>
+<span class="nc bnc" id="L158" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_testStatistic = testStatistic) ||</span>
 			0 &gt;= (_sampleCount = sampleCount) ||
-<span class="nc bnc" id="L148" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleMean = ensembleMean) ||</span>
-<span class="nc bnc" id="L149" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleVariance = ensembleVariance) ||</span>
-<span class="nc bnc" id="L150" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleStandardDeviation =</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleMean = ensembleMean) ||</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleVariance = ensembleVariance) ||</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleStandardDeviation =</span>
 				ensembleStandardDeviation) ||
-<span class="nc bnc" id="L152" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleStandardError = ensembleStandardError) ||</span>
+<span class="nc bnc" id="L164" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleStandardError = ensembleStandardError) ||</span>
 			0 &gt; (_ensembleDegreesOfFreedom = ensembleDegreesOfFreedom) ||
-<span class="nc bnc" id="L154" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_ensemblePredictiveConfidenceInterval =</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_ensemblePredictiveConfidenceInterval =</span>
 				ensemblePredictiveConfidenceInterval) ||
-<span class="nc bnc" id="L156" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleTStatistics = ensembleTStatistics) ||</span>
-<span class="nc bnc" id="L157" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleStandardErrorOffset =</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleTStatistics = ensembleTStatistics) ||</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleStandardErrorOffset =</span>
 				ensembleStandardErrorOffset))
 		{
-<span class="nc" id="L160">			throw new java.lang.Exception (&quot;TTestOutcome Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L172">			throw new java.lang.Exception (&quot;TTestOutcome Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L162">	}</span>
+<span class="nc" id="L174">	}</span>
 
 	/**
 	 * Retrieve the Sample Test Statistic
@@ -169,7 +181,7 @@ public class TTestOutcome
 
 	public double testStatistic()
 	{
-<span class="nc" id="L172">		return _testStatistic;</span>
+<span class="nc" id="L184">		return _testStatistic;</span>
 	}
 
 	/**
@@ -180,7 +192,7 @@ public class TTestOutcome
 
 	public int sampleCount()
 	{
-<span class="nc" id="L183">		return _sampleCount;</span>
+<span class="nc" id="L195">		return _sampleCount;</span>
 	}
 
 	/**
@@ -191,7 +203,7 @@ public class TTestOutcome
 
 	public double ensembleMean()
 	{
-<span class="nc" id="L194">		return _ensembleMean;</span>
+<span class="nc" id="L206">		return _ensembleMean;</span>
 	}
 
 	/**
@@ -202,7 +214,7 @@ public class TTestOutcome
 
 	public double ensembleVariance()
 	{
-<span class="nc" id="L205">		return _ensembleVariance;</span>
+<span class="nc" id="L217">		return _ensembleVariance;</span>
 	}
 
 	/**
@@ -213,7 +225,7 @@ public class TTestOutcome
 
 	public double ensembleStandardDeviation()
 	{
-<span class="nc" id="L216">		return _ensembleStandardDeviation;</span>
+<span class="nc" id="L228">		return _ensembleStandardDeviation;</span>
 	}
 
 	/**
@@ -224,7 +236,7 @@ public class TTestOutcome
 
 	public double ensembleStandardError()
 	{
-<span class="nc" id="L227">		return _ensembleStandardError;</span>
+<span class="nc" id="L239">		return _ensembleStandardError;</span>
 	}
 
 	/**
@@ -235,7 +247,7 @@ public class TTestOutcome
 
 	public int ensembleDegreesOfFreedom()
 	{
-<span class="nc" id="L238">		return _ensembleDegreesOfFreedom;</span>
+<span class="nc" id="L250">		return _ensembleDegreesOfFreedom;</span>
 	}
 
 	/**
@@ -246,7 +258,7 @@ public class TTestOutcome
 
 	public double ensemblePredictiveConfidenceInterval()
 	{
-<span class="nc" id="L249">		return _ensemblePredictiveConfidenceInterval;</span>
+<span class="nc" id="L261">		return _ensemblePredictiveConfidenceInterval;</span>
 	}
 
 	/**
@@ -257,7 +269,7 @@ public class TTestOutcome
 
 	public double ensembleTStatistics()
 	{
-<span class="nc" id="L260">		return _ensembleTStatistics;</span>
+<span class="nc" id="L272">		return _ensembleTStatistics;</span>
 	}
 
 	/**
@@ -268,7 +280,7 @@ public class TTestOutcome
 
 	public double ensembleStandardErrorOffset()
 	{
-<span class="nc" id="L271">		return _ensembleStandardErrorOffset;</span>
+<span class="nc" id="L283">		return _ensembleStandardErrorOffset;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LangevinEvolution.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.ckls</a> &gt; <span class="el_source">LangevinEvolution.java</span></div><h1>LangevinEvolution.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.ckls;
+
+import org.drip.dynamics.ito.R1WienerDriver;
+import org.drip.dynamics.physical.LangevinEvolver;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;LangevinEvolver&lt;/i&gt; implements the Noisy Elastic Relaxation Process in a Friction-Thermal Background.
+ * 	The References are:
+ *  
+ * 	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Doob, J. L. (1942): The Brownian Movement and Stochastic Equations &lt;i&gt;Annals of Mathematics&lt;/i&gt;
+ * 				&lt;b&gt;43 (2)&lt;/b&gt; 351-369
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Gardiner, C. W. (2009): &lt;i&gt;Stochastic Methods: A Handbook for the Natural and Social Sciences
+ * 				4&lt;sup&gt;th&lt;/sup&gt; Edition&lt;/i&gt; &lt;b&gt;Springer-Verlag&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kadanoff, L. P. (2000): &lt;i&gt;Statistical Physics: Statics, Dynamics, and Re-normalization&lt;/i&gt;
+ * 				&lt;b&gt;World Scientific&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Karatzas, I., and S. E. Shreve (1991): &lt;i&gt;Brownian Motion and Stochastic Calculus 2&lt;sup&gt;nd&lt;/sup&gt;
+ * 				Edition&lt;/i&gt; &lt;b&gt;Springer-Verlag&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Risken, H., and F. Till (1996): &lt;i&gt;The Fokker-Planck Equation – Methods of Solution and
+ * 				Applications&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm/README.md&quot;&gt;LIBOR Market Model&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L111">public class LangevinEvolution</span>
+{
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L118">		EnvManager.InitEnv (</span>
+			&quot;&quot;
+		);
+
+<span class="nc" id="L122">		double timeWidth = 1.;</span>
+<span class="nc" id="L123">		double temperature = 300.;</span>
+<span class="nc" id="L124">		double restLength = 1.e-10;</span>
+<span class="nc" id="L125">		double initialLength = 3.e-10;</span>
+<span class="nc" id="L126">		double dampingCoefficient = 0.5;</span>
+<span class="nc" id="L127">		double elasticityCoefficient = 1.0;</span>
+<span class="nc" id="L128">		double[] timeArray =</span>
+		{
+			0.0,
+			0.5,
+			1.0,
+			1.5,
+			2.0,
+			2.5,
+			3.0,
+			3.5,
+			4.0,
+			4.5,
+			5.0,
+			5.5,
+			6.0,
+			6.5,
+			7.0,
+			7.5,
+			8.0,
+			8.5,
+			9.0,
+			9.5
+		};
+
+<span class="nc" id="L152">		System.out.println (</span>
+			&quot;\t|-----------------------------------------------------------||&quot;
+		);
+
+<span class="nc" id="L156">		System.out.println (</span>
+			&quot;\t|                 LANGEVIN SYSTEM EVOLUTION                 ||&quot;
+		);
+
+<span class="nc" id="L160">		System.out.println (</span>
+			&quot;\t|-----------------------------------------------------------||&quot;
+		);
+
+<span class="nc" id="L164">		System.out.println (</span>
+			&quot;\t| Temperature             =&gt; &quot; + temperature
+		);
+
+<span class="nc" id="L168">		System.out.println (</span>
+			&quot;\t| Rest Length             =&gt; &quot; + restLength
+		);
+
+<span class="nc" id="L172">		System.out.println (</span>
+			&quot;\t| Damping Coefficient     =&gt; &quot; + dampingCoefficient
+		);
+
+<span class="nc" id="L176">		System.out.println (</span>
+			&quot;\t| Elasticity Coefficient  =&gt; &quot; + elasticityCoefficient
+		);
+
+<span class="nc" id="L180">		System.out.println (</span>
+			&quot;\t|-----------------------------------------------------------||&quot;
+		);
+
+<span class="nc" id="L184">		R1WienerDriver wienerDriver = new R1WienerDriver (</span>
+			timeWidth
+		);
+
+<span class="nc" id="L188">		LangevinEvolver langevinEvolver = new LangevinEvolver (</span>
+			elasticityCoefficient,
+			dampingCoefficient,
+			restLength,
+			temperature,
+			wienerDriver
+		);
+
+<span class="nc" id="L196">		System.out.println (</span>
+<span class="nc" id="L197">			&quot;\t| Correlation Time        =&gt; &quot; + langevinEvolver.correlationTime()</span>
+		);
+
+<span class="nc" id="L200">		System.out.println (</span>
+<span class="nc" id="L201">			&quot;\t| Diffusion Coefficient   =&gt; &quot; + langevinEvolver.stokesEinsteinEffectiveDiffusionCoefficient()</span>
+		);
+
+<span class="nc" id="L204">		System.out.println (</span>
+<span class="nc" id="L205">			&quot;\t| Equi-Partition Energy   =&gt; &quot; + langevinEvolver.equiPartitionEnergy()</span>
+		);
+
+<span class="nc" id="L208">		System.out.println (</span>
+<span class="nc" id="L209">			&quot;\t| Volatility              =&gt; &quot; + langevinEvolver.cklsParameters().volatilityCoefficient()</span>
+		);
+
+<span class="nc" id="L212">		System.out.println (</span>
+<span class="nc" id="L213">			&quot;\t| Mean-Reversion Level    =&gt; &quot; + langevinEvolver.cklsParameters().meanReversionLevel()</span>
+		);
+
+<span class="nc" id="L216">		System.out.println (</span>
+<span class="nc" id="L217">			&quot;\t| Mean-Reversion Speed    =&gt; &quot; + langevinEvolver.cklsParameters().meanReversionSpeed()</span>
+		);
+
+<span class="nc" id="L220">		System.out.println (</span>
+			&quot;\t|-----------------------------------------------------------||&quot;
+		);
+
+<span class="nc" id="L224">		System.out.println();</span>
+
+<span class="nc" id="L226">		System.out.println (</span>
+			&quot;\t|-----------------------------------------------------------||&quot;
+		);
+
+<span class="nc bnc" id="L230" title="All 2 branches missed.">		for (double time : timeArray)</span>
+		{
+<span class="nc" id="L232">			System.out.println (</span>
+<span class="nc" id="L233">				&quot;\t| &quot; + FormatUtil.FormatDouble (time, 1, 1, 1.) + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L234">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L235">					langevinEvolver.fluctuationCorrelation (</span>
+						time
+					), 1, 5, 1.
+<span class="nc" id="L238">				) + &quot; | &quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L239">					langevinEvolver.fluctuationCovariance (</span>
+						time
+					), 1, 25, 1.
+<span class="nc" id="L242">				) + &quot; | &quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L243">					langevinEvolver.mean (</span>
+						initialLength,
+						time
+					), 1, 15, 1.
+				)
+			);
+		}
+
+<span class="nc" id="L251">		System.out.println (</span>
+			&quot;\t|-----------------------------------------------------------||&quot;
+		);
+
+<span class="nc" id="L255">		System.out.println();</span>
+
+<span class="nc" id="L257">		double[][] aitSahaliaMLEAsymptote = langevinEvolver.aitSahaliaMLEAsymptote (</span>
+			1.
+		);
+
+<span class="nc" id="L261">		System.out.println (</span>
+			&quot;\t|---------------------------------||&quot;
+		);
+
+<span class="nc" id="L265">		System.out.println (</span>
+			&quot;\t| AIT SAHALIA MLE ASYMPTOTE ERROR ||&quot;
+		);
+
+<span class="nc" id="L269">		System.out.println (</span>
+			&quot;\t|---------------------------------||&quot;
+		);
+
+<span class="nc" id="L273">		org.drip.numerical.common.NumberUtil.Print2DArray (</span>
+			&quot;\t|\t&quot;,
+			aitSahaliaMLEAsymptote,
+			false
+		);
+
+<span class="nc" id="L279">		System.out.println (</span>
+			&quot;\t|---------------------------------||&quot;
+		);
+
+<span class="nc" id="L283">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L284">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

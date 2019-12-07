@@ -6,41 +6,53 @@ package org.drip.validation.riskfactorsingle;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -93,10 +105,10 @@ package org.drip.validation.riskfactorsingle;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation&quot;&gt;Model Validation Suite&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactorsingle&quot;&gt;Single Risk Factor Aggregate Tests&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/README.md&quot;&gt;Risk Factor and Hypothesis Validation, Evidence Processing, and Model Testing&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactorsingle/README.md&quot;&gt;Single Risk Factor Aggregate Tests&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -105,11 +117,11 @@ package org.drip.validation.riskfactorsingle;
 
 public class DiscriminatoryPowerAnalyzerAggregate
 {
-<span class="nc" id="L108">	private org.drip.validation.distance.GapTestSetting _gapTestSetting = null;</span>
-<span class="nc" id="L109">	private org.drip.validation.riskfactorsingle.EventAggregationWeightFunction _eventAggregationWeightFunction =</span>
+<span class="nc" id="L120">	private org.drip.validation.distance.GapTestSetting _gapTestSetting = null;</span>
+<span class="nc" id="L121">	private org.drip.validation.riskfactorsingle.EventAggregationWeightFunction _eventAggregationWeightFunction =</span>
 		null;
 
-<span class="nc" id="L112">	private java.util.Map&lt;java.lang.String, org.drip.validation.hypothesis.ProbabilityIntegralTransform&gt;</span>
+<span class="nc" id="L124">	private java.util.Map&lt;java.lang.String, org.drip.validation.hypothesis.ProbabilityIntegralTransform&gt;</span>
 		_eventSamplePITMap = new
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.validation.hypothesis.ProbabilityIntegralTransform&gt;();
 
@@ -129,15 +141,15 @@ public class DiscriminatoryPowerAnalyzerAggregate
 		final org.drip.validation.distance.GapTestSetting gapTestSetting,
 		final org.drip.validation.riskfactorsingle.EventAggregationWeightFunction eventAggregationWeightFunction)
 		throws java.lang.Exception
-<span class="nc" id="L132">	{</span>
-<span class="nc bnc" id="L133" title="All 8 branches missed.">		if (null == (_eventSamplePITMap = eventSamplePITMap) || 0 == _eventSamplePITMap.size() ||</span>
+<span class="nc" id="L144">	{</span>
+<span class="nc bnc" id="L145" title="All 8 branches missed.">		if (null == (_eventSamplePITMap = eventSamplePITMap) || 0 == _eventSamplePITMap.size() ||</span>
 			null == (_gapTestSetting = gapTestSetting) ||
 			null == (_eventAggregationWeightFunction = eventAggregationWeightFunction))
 		{
-<span class="nc" id="L137">			throw new java.lang.Exception</span>
+<span class="nc" id="L149">			throw new java.lang.Exception</span>
 				(&quot;DiscriminatoryPowerAnalyzerAggregate Constructor =&gt; Invalid Inputs&quot;);
 		}
-<span class="nc" id="L140">	}</span>
+<span class="nc" id="L152">	}</span>
 
 	/**
 	 * Retrieve the Gap Test Setting
@@ -147,7 +159,7 @@ public class DiscriminatoryPowerAnalyzerAggregate
 
 	public org.drip.validation.distance.GapTestSetting gapTestSetting()
 	{
-<span class="nc" id="L150">		return _gapTestSetting;</span>
+<span class="nc" id="L162">		return _gapTestSetting;</span>
 	}
 
 	/**
@@ -158,7 +170,7 @@ public class DiscriminatoryPowerAnalyzerAggregate
 
 	public org.drip.validation.riskfactorsingle.EventAggregationWeightFunction eventAggregationWeightFunction()
 	{
-<span class="nc" id="L161">		return _eventAggregationWeightFunction;</span>
+<span class="nc" id="L173">		return _eventAggregationWeightFunction;</span>
 	}
 
 	/**
@@ -170,63 +182,63 @@ public class DiscriminatoryPowerAnalyzerAggregate
 	public java.util.Map&lt;java.lang.String, org.drip.validation.hypothesis.ProbabilityIntegralTransform&gt;
 		eventSamplePITMap()
 	{
-<span class="nc" id="L173">		return _eventSamplePITMap;</span>
+<span class="nc" id="L185">		return _eventSamplePITMap;</span>
 	}
 
 	private org.drip.validation.riskfactorsingle.GapTestOutcomeAggregate eventOutcomeAggregate (
 		final java.lang.String hypothesisID,
 		final java.util.Map&lt;java.lang.String, org.drip.validation.evidence.Ensemble&gt; eventEnsembleMap)
 	{
-<span class="nc" id="L180">		double distanceAggregate = 0.;</span>
+<span class="nc" id="L192">		double distanceAggregate = 0.;</span>
 
-<span class="nc" id="L182">		java.util.Map&lt;java.lang.String, org.drip.validation.distance.GapTestOutcome&gt; eventOutcomeMap = new</span>
+<span class="nc" id="L194">		java.util.Map&lt;java.lang.String, org.drip.validation.distance.GapTestOutcome&gt; eventOutcomeMap = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.validation.distance.GapTestOutcome&gt;();
 
 		try
 		{
 			for (java.util.Map.Entry&lt;java.lang.String, org.drip.validation.evidence.Ensemble&gt; eventEnsemble :
-<span class="nc bnc" id="L188" title="All 2 branches missed.">				eventEnsembleMap.entrySet())</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">				eventEnsembleMap.entrySet())</span>
 			{
-<span class="nc" id="L190">				java.lang.String eventID = eventEnsemble.getKey();</span>
+<span class="nc" id="L202">				java.lang.String eventID = eventEnsemble.getKey();</span>
 
-<span class="nc bnc" id="L192" title="All 2 branches missed.">				if (!_eventSamplePITMap.containsKey (eventID))</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">				if (!_eventSamplePITMap.containsKey (eventID))</span>
 				{
-<span class="nc" id="L194">					return null;</span>
+<span class="nc" id="L206">					return null;</span>
 				}
 
-<span class="nc" id="L197">				DiscriminatoryPowerAnalyzer discriminatoryPowerAnalyzer = new DiscriminatoryPowerAnalyzer</span>
+<span class="nc" id="L209">				DiscriminatoryPowerAnalyzer discriminatoryPowerAnalyzer = new DiscriminatoryPowerAnalyzer</span>
 				(
-<span class="nc" id="L199">					_eventSamplePITMap.get (eventID),</span>
+<span class="nc" id="L211">					_eventSamplePITMap.get (eventID),</span>
 					_gapTestSetting
 				);
 
-<span class="nc" id="L203">				org.drip.validation.distance.GapTestOutcome gapTestOutcome =</span>
-<span class="nc" id="L204">					discriminatoryPowerAnalyzer.gapTest (eventEnsemble.getValue());</span>
+<span class="nc" id="L215">				org.drip.validation.distance.GapTestOutcome gapTestOutcome =</span>
+<span class="nc" id="L216">					discriminatoryPowerAnalyzer.gapTest (eventEnsemble.getValue());</span>
 
-<span class="nc bnc" id="L206" title="All 2 branches missed.">				if (null == gapTestOutcome)</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">				if (null == gapTestOutcome)</span>
 				{
-<span class="nc" id="L208">					return null;</span>
+<span class="nc" id="L220">					return null;</span>
 				}
 
-<span class="nc" id="L211">				distanceAggregate = distanceAggregate + gapTestOutcome.distance() *</span>
-<span class="nc" id="L212">					_eventAggregationWeightFunction.loading (eventID);</span>
+<span class="nc" id="L223">				distanceAggregate = distanceAggregate + gapTestOutcome.distance() *</span>
+<span class="nc" id="L224">					_eventAggregationWeightFunction.loading (eventID);</span>
 
-<span class="nc" id="L214">				eventOutcomeMap.put (</span>
+<span class="nc" id="L226">				eventOutcomeMap.put (</span>
 					eventID,
 					gapTestOutcome
 				);
-<span class="nc" id="L218">			}</span>
+<span class="nc" id="L230">			}</span>
 
-<span class="nc" id="L220">			return new org.drip.validation.riskfactorsingle.GapTestOutcomeAggregate (</span>
+<span class="nc" id="L232">			return new org.drip.validation.riskfactorsingle.GapTestOutcomeAggregate (</span>
 				eventOutcomeMap,
 				distanceAggregate
 			);
 		}
-<span class="nc" id="L225">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L237">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L227">			e.printStackTrace();</span>
+<span class="nc" id="L239">			e.printStackTrace();</span>
 
-<span class="nc" id="L229">			return null;</span>
+<span class="nc" id="L241">			return null;</span>
 		}
 	}
 
@@ -241,41 +253,41 @@ public class DiscriminatoryPowerAnalyzerAggregate
 	public org.drip.validation.riskfactorsingle.HypothesisOutcomeSuiteAggregate hypothesisGapTest (
 		final org.drip.validation.riskfactorsingle.HypothesisSuiteAggregate hypothesisSuiteAggregate)
 	{
-<span class="nc bnc" id="L244" title="All 2 branches missed.">		if (null == hypothesisSuiteAggregate)</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">		if (null == hypothesisSuiteAggregate)</span>
 		{
-<span class="nc" id="L246">			return null;</span>
+<span class="nc" id="L258">			return null;</span>
 		}
 
 		java.util.Map&lt;java.lang.String, java.util.Map&lt;java.lang.String,
-<span class="nc" id="L250">			org.drip.validation.evidence.Ensemble&gt;&gt; hypothesisEventMap =</span>
-<span class="nc" id="L251">				hypothesisSuiteAggregate.hypothesisEventMap();</span>
+<span class="nc" id="L262">			org.drip.validation.evidence.Ensemble&gt;&gt; hypothesisEventMap =</span>
+<span class="nc" id="L263">				hypothesisSuiteAggregate.hypothesisEventMap();</span>
 
-<span class="nc bnc" id="L253" title="All 2 branches missed.">		if (0 == hypothesisEventMap.size())</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">		if (0 == hypothesisEventMap.size())</span>
 		{
-<span class="nc" id="L255">			return null;</span>
+<span class="nc" id="L267">			return null;</span>
 		}
 
-<span class="nc" id="L258">		org.drip.validation.riskfactorsingle.HypothesisOutcomeSuiteAggregate hypothesisOutcomeSuiteAggregate = new</span>
+<span class="nc" id="L270">		org.drip.validation.riskfactorsingle.HypothesisOutcomeSuiteAggregate hypothesisOutcomeSuiteAggregate = new</span>
 			org.drip.validation.riskfactorsingle.HypothesisOutcomeSuiteAggregate();
 
 		for (java.util.Map.Entry&lt;java.lang.String, java.util.Map&lt;java.lang.String,
-<span class="nc bnc" id="L262" title="All 2 branches missed.">			org.drip.validation.evidence.Ensemble&gt;&gt; hypothesisEvent : hypothesisEventMap.entrySet())</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">			org.drip.validation.evidence.Ensemble&gt;&gt; hypothesisEvent : hypothesisEventMap.entrySet())</span>
 		{
-<span class="nc" id="L264">			java.lang.String hypothesisID = hypothesisEvent.getKey();</span>
+<span class="nc" id="L276">			java.lang.String hypothesisID = hypothesisEvent.getKey();</span>
 
-<span class="nc bnc" id="L266" title="All 2 branches missed.">			if (!hypothesisOutcomeSuiteAggregate.add (</span>
+<span class="nc bnc" id="L278" title="All 2 branches missed.">			if (!hypothesisOutcomeSuiteAggregate.add (</span>
 				hypothesisID,
-<span class="nc" id="L268">				eventOutcomeAggregate (</span>
+<span class="nc" id="L280">				eventOutcomeAggregate (</span>
 					hypothesisID,
-<span class="nc" id="L270">					hypothesisEvent.getValue()</span>
+<span class="nc" id="L282">					hypothesisEvent.getValue()</span>
 				)
 			))
 			{
-<span class="nc" id="L274">				return null;</span>
+<span class="nc" id="L286">				return null;</span>
 			}
-<span class="nc" id="L276">		}</span>
+<span class="nc" id="L288">		}</span>
 
-<span class="nc" id="L278">		return hypothesisOutcomeSuiteAggregate;</span>
+<span class="nc" id="L290">		return hypothesisOutcomeSuiteAggregate;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1183,5 +1183,42 @@ package org.drip.numerical.linearalgebra;
 
 <span class="nc" id="L1184">		return scaledMatrix;</span>
 	}
+
+    /**
+     * Indicate if the Specified Matrix is Diagonal
+     *
+     * @param matrix The Matrix
+     *
+     * @return TRUE - The Specified Matrix is Diagonal
+     */
+
+    public static final boolean IsDiagonal (
+    	final double[][] matrix)
+    {
+<span class="nc bnc" id="L1198" title="All 2 branches missed.">       if (null == matrix)</span>
+       {
+<span class="nc" id="L1200">    	   return false;</span>
+       }
+
+<span class="nc" id="L1203">       int rowCount = matrix.length;</span>
+<span class="nc bnc" id="L1204" title="All 4 branches missed.">       int columnCount = 0 == rowCount || null == matrix[0] ? 0 : matrix[0].length;</span>
+
+<span class="nc" id="L1206">       for (int rowIndex = 0;</span>
+<span class="nc bnc" id="L1207" title="All 2 branches missed.">    		rowIndex &lt; rowCount;</span>
+<span class="nc" id="L1208">            ++rowIndex)</span>
+       {
+<span class="nc" id="L1210">    	   for (int columnIndex = 0;</span>
+<span class="nc bnc" id="L1211" title="All 2 branches missed.">                columnIndex &lt; columnCount;</span>
+<span class="nc" id="L1212">                ++columnIndex)</span>
+           {
+<span class="nc bnc" id="L1214" title="All 4 branches missed.">    		   if (rowIndex != columnIndex &amp;&amp; 0. != matrix[rowIndex][columnIndex])</span>
+    		   {
+<span class="nc" id="L1216">                   return false;</span>
+    		   }
+           }
+       }
+
+<span class="nc" id="L1221">       return true;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrnsteinUhlenbeckTemporalPDF.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.kolmogorov</a> &gt; <span class="el_source">OrnsteinUhlenbeckTemporalPDF.java</span></div><h1>OrnsteinUhlenbeckTemporalPDF.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.kolmogorov;
+
+import org.drip.dynamics.ito.TimeR1Vertex;
+import org.drip.dynamics.kolmogorov.R1FokkerPlanckOrnsteinUhlenbeck;
+import org.drip.dynamics.meanreverting.CKLSParameters;
+import org.drip.dynamics.process.R1ProbabilityDensityFunction;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;OrnsteinUhlenbeckTemporalPDF&lt;/i&gt; illustrates the Temporal Distribution of an Evolving R&lt;sup&gt;1&lt;/sup&gt;
+ * 	Ornstein Uhlenbeck Process. The References are:
+ *  
+ * 	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bogoliubov, N. N., and D. P. Sankevich (1994): N. N. Bogoliubov and Statistical Mechanics
+ * 				&lt;i&gt;Russian Mathematical Surveys&lt;/i&gt; &lt;b&gt;49 (5)&lt;/b&gt; 19-49
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Holubec, V., K. Kroy, and S. Steffenoni (2019): Physically Consistent Numerical Solver for
+ * 				Time-dependent Fokker-Planck Equations &lt;i&gt;Physical Review E&lt;/i&gt; &lt;b&gt;99 (4)&lt;/b&gt; 032117
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kadanoff, L. P. (2000): &lt;i&gt;Statistical Physics: Statics, Dynamics, and Re-normalization&lt;/i&gt;
+ * 				&lt;b&gt;World Scientific&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Ottinger, H. C. (1996): &lt;i&gt;Stochastic Processes in Polymeric Fluids&lt;/i&gt; &lt;b&gt;Springer-Verlag&lt;/b&gt;
+ * 				Berlin-Heidelberg
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Fokker-Planck Equation
+ * 				https://en.wikipedia.org/wiki/Fokker%E2%80%93Planck_equation
+ * 		&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm/README.md&quot;&gt;LIBOR Market Model&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L113">public class OrnsteinUhlenbeckTemporalPDF</span>
+{
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L120">		EnvManager.InitEnv (</span>
+			&quot;&quot;
+		);
+
+<span class="nc" id="L124">		double[] timeArray =</span>
+		{
+			0.5,
+			1.0,
+			1.5,
+			2.0,
+			2.5,
+			3.0,
+			3.5,
+			4.0,
+			4.5,
+			5.0,
+			5.5,
+			6.0,
+			6.5,
+			7.0,
+			7.5,
+			8.0,
+			8.5,
+			9.0,
+			9.5
+		};
+<span class="nc" id="L146">		double[] xArray =</span>
+		{
+			-2.5,
+			-2.0,
+			-1.5,
+			-1.0,
+			-0.5,
+			 0.0,
+			 0.5,
+			 1.0,
+			 1.5,
+			 2.0,
+			 2.5,
+		};
+
+<span class="nc" id="L161">		double volatility = 2.;</span>
+<span class="nc" id="L162">		double meanReversionSpeed = 0.5;</span>
+
+<span class="nc" id="L164">		R1ProbabilityDensityFunction r1ProbabilityDensityFunction =</span>
+			new R1FokkerPlanckOrnsteinUhlenbeck (
+<span class="nc" id="L166">				CKLSParameters.OrnsteinUhlenbeck (</span>
+					meanReversionSpeed,
+					volatility
+				)
+<span class="nc" id="L170">			).deltaStartTemporalPDF (</span>
+				0.
+			);
+
+<span class="nc" id="L174">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L176">		System.out.println (&quot;\t|                                FOKKER PLANCK ORNSTEIN UHLENBECK MOTION DISTRIBUTION REALIZATIONS OVER TIME                                ||&quot;);</span>
+
+<span class="nc" id="L178">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L180">		System.out.println (&quot;\t|        L -&gt; R:                                                                                                                            ||&quot;);</span>
+
+<span class="nc" id="L182">		System.out.println (&quot;\t|                - Time                                                                                                                     ||&quot;);</span>
+
+<span class="nc" id="L184">		System.out.println (&quot;\t|                - Row of PDF Values over x                                                                                                 ||&quot;);</span>
+
+<span class="nc" id="L186">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L188" title="All 2 branches missed.">		for (double t : timeArray)</span>
+		{
+<span class="nc" id="L190">			java.lang.String dump = &quot;\t| &quot; + FormatUtil.FormatDouble (t, 1, 1, 1.) + &quot; =&gt;&quot;;</span>
+
+<span class="nc bnc" id="L192" title="All 2 branches missed.">			for (double x : xArray)</span>
+			{
+<span class="nc" id="L194">				dump = dump + &quot; &quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L195">					r1ProbabilityDensityFunction.density (</span>
+						new TimeR1Vertex (
+							t,
+							x
+						)
+					), 1, 6, 1.
+				) + &quot; |&quot;;
+			}
+
+<span class="nc" id="L204">			System.out.println (dump + &quot;|&quot;);</span>
+		}
+
+<span class="nc" id="L207">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L209">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L210">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

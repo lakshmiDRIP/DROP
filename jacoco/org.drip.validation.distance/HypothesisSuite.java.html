@@ -6,41 +6,53 @@ package org.drip.validation.distance;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -92,10 +104,10 @@ package org.drip.validation.distance;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation&quot;&gt;Model Validation Suite&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance&quot;&gt;Hypothesis Target Distance Test Builders&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/README.md&quot;&gt;Risk Factor and Hypothesis Validation, Evidence Processing, and Model Testing&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance/README.md&quot;&gt;Hypothesis Target Distance Test Builders&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -104,7 +116,7 @@ package org.drip.validation.distance;
 
 public class HypothesisSuite
 {
-<span class="nc" id="L107">	private java.util.Map&lt;java.lang.String, org.drip.validation.evidence.Ensemble&gt; _hypothesisMap = new</span>
+<span class="nc" id="L119">	private java.util.Map&lt;java.lang.String, org.drip.validation.evidence.Ensemble&gt; _hypothesisMap = new</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.validation.evidence.Ensemble&gt;();
 
 	/**
@@ -112,8 +124,8 @@ public class HypothesisSuite
 	 */
 
 	public HypothesisSuite()
-<span class="nc" id="L115">	{</span>
-<span class="nc" id="L116">	}</span>
+<span class="nc" id="L127">	{</span>
+<span class="nc" id="L128">	}</span>
 
 	/**
 	 * Retrieve the Hypothesis Map
@@ -123,7 +135,7 @@ public class HypothesisSuite
 
 	public java.util.Map&lt;java.lang.String, org.drip.validation.evidence.Ensemble&gt; hypothesisMap()
 	{
-<span class="nc" id="L126">		return _hypothesisMap;</span>
+<span class="nc" id="L138">		return _hypothesisMap;</span>
 	}
 
 	/**
@@ -139,18 +151,18 @@ public class HypothesisSuite
 		final java.lang.String hypothesisID,
 		final org.drip.validation.evidence.Ensemble hypothesis)
 	{
-<span class="nc bnc" id="L142" title="All 6 branches missed.">		if (null == hypothesisID || hypothesisID.isEmpty() ||</span>
+<span class="nc bnc" id="L154" title="All 6 branches missed.">		if (null == hypothesisID || hypothesisID.isEmpty() ||</span>
 			null == hypothesis)
 		{
-<span class="nc" id="L145">			return false;</span>
+<span class="nc" id="L157">			return false;</span>
 		}
 
-<span class="nc" id="L148">		_hypothesisMap.put (</span>
+<span class="nc" id="L160">		_hypothesisMap.put (</span>
 			hypothesisID,
 			hypothesis
 		);
 
-<span class="nc" id="L153">		return true;</span>
+<span class="nc" id="L165">		return true;</span>
 	}
 
 	/**
@@ -164,7 +176,7 @@ public class HypothesisSuite
 	public boolean containsHypothesis (
 		final java.lang.String hypothesisID)
 	{
-<span class="nc bnc" id="L167" title="All 6 branches missed.">		return null != hypothesisID &amp;&amp; !hypothesisID.isEmpty() &amp;&amp; _hypothesisMap.containsKey (hypothesisID);</span>
+<span class="nc bnc" id="L179" title="All 6 branches missed.">		return null != hypothesisID &amp;&amp; !hypothesisID.isEmpty() &amp;&amp; _hypothesisMap.containsKey (hypothesisID);</span>
 	}
 
 	/**
@@ -178,7 +190,7 @@ public class HypothesisSuite
 	public org.drip.validation.evidence.Ensemble hypothesis (
 		final java.lang.String hypothesisID)
 	{
-<span class="nc bnc" id="L181" title="All 2 branches missed.">		return containsHypothesis (hypothesisID) ? _hypothesisMap.get (hypothesisID) : null;</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">		return containsHypothesis (hypothesisID) ? _hypothesisMap.get (hypothesisID) : null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

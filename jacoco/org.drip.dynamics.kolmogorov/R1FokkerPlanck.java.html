@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>R1FokkerPlanck.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.dynamics.kolmogorov</a> &gt; <span class="el_source">R1FokkerPlanck.java</span></div><h1>R1FokkerPlanck.java</h1><pre class="source lang-java linenums">
+package org.drip.dynamics.kolmogorov;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;R1FokkerPlanck&lt;/i&gt; exposes the R&lt;sup&gt;1&lt;/sup&gt; Fokker-Planck Probability Density Function Evolution
+ * 	Equation. The References are:
+ *  
+ * 	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bogoliubov, N. N., and D. P. Sankevich (1994): N. N. Bogoliubov and Statistical Mechanics
+ * 				&lt;i&gt;Russian Mathematical Surveys&lt;/i&gt; &lt;b&gt;49 (5)&lt;/b&gt; 19-49
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Holubec, V., K. Kroy, and S. Steffenoni (2019): Physically Consistent Numerical Solver for
+ * 				Time-dependent Fokker-Planck Equations &lt;i&gt;Physical Review E&lt;/i&gt; &lt;b&gt;99 (4)&lt;/b&gt; 032117
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kadanoff, L. P. (2000): &lt;i&gt;Statistical Physics: Statics, Dynamics, and Re-normalization&lt;/i&gt;
+ * 				&lt;b&gt;World Scientific&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Ottinger, H. C. (1996): &lt;i&gt;Stochastic Processes in Polymeric Fluids&lt;/i&gt; &lt;b&gt;Springer-Verlag&lt;/b&gt;
+ * 				Berlin-Heidelberg
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Fokker-Planck Equation
+ * 				https://en.wikipedia.org/wiki/Fokker%E2%80%93Planck_equation
+ * 		&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;HJM, Hull White, LMM, and SABR Dynamic Evolution Models&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/kolmogorov/README.md&quot;&gt;Fokker Planck Kolmogorov Forward/Backward&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class R1FokkerPlanck
+{
+<span class="nc" id="L119">	private org.drip.dynamics.ito.R1ToR1Drift _driftFunction = null;</span>
+<span class="nc" id="L120">	private org.drip.dynamics.ito.R1ToR1Volatility _volatilityFunction = null;</span>
+
+	/**
+	 * R1FokkerPlanck Constructor
+	 * 
+	 * @param driftFunction The Drift Function
+	 * @param volatilityFunction The Volatility Function
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public R1FokkerPlanck (
+		final org.drip.dynamics.ito.R1ToR1Drift driftFunction,
+		final org.drip.dynamics.ito.R1ToR1Volatility volatilityFunction)
+		throws java.lang.Exception
+<span class="nc" id="L135">	{</span>
+<span class="nc bnc" id="L136" title="All 4 branches missed.">		if (null == (_driftFunction = driftFunction) ||</span>
+			null == (_volatilityFunction = volatilityFunction))
+		{
+<span class="nc" id="L139">			throw new java.lang.Exception (</span>
+				&quot;R1FokkerPlanck Constructor =&gt; Invalid Inputs&quot;
+			);
+		}
+<span class="nc" id="L143">	}</span>
+
+	/**
+	 * Retrieve the Drift Function
+	 * 
+	 * @return The Drift Function
+	 */
+
+	public org.drip.dynamics.ito.R1ToR1Drift driftFunction()
+	{
+<span class="nc" id="L153">		return _driftFunction;</span>
+	}
+
+	/**
+	 * Retrieve the Volatility Function
+	 * 
+	 * @return The Volatility Function
+	 */
+
+	public org.drip.dynamics.ito.R1ToR1Volatility volatilityFunction()
+	{
+<span class="nc" id="L164">		return _volatilityFunction;</span>
+	}
+
+	/**
+	 * Compute the Next Incremental Time Derivative of the PDF
+	 * 
+	 * @param probabilityDensityFunction The PDF
+	 * @param timeR1Vertex The R&lt;sup&gt;1&lt;/sup&gt; Time Vertex
+	 * 
+	 * @return Next Incremental Time Derivative of the PDF
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double pdfDot (
+		final org.drip.dynamics.process.R1ProbabilityDensityFunction probabilityDensityFunction,
+		final org.drip.dynamics.ito.TimeR1Vertex timeR1Vertex)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L183" title="All 4 branches missed.">		if (null == probabilityDensityFunction ||</span>
+			null == timeR1Vertex)
+		{
+<span class="nc" id="L186">			throw new java.lang.Exception (</span>
+				&quot;R1FokkerPlanck::pdfDot =&gt; Invalid Inputs&quot;
+			);
+		}
+
+<span class="nc" id="L191">		final double time = timeR1Vertex.t();</span>
+
+<span class="nc" id="L193">		return new org.drip.function.definition.R1ToR1 (</span>
+			null
+		)
+<span class="nc" id="L196">		{</span>
+			@Override public double evaluate (
+				final double x)
+				throws java.lang.Exception
+			{
+<span class="nc" id="L201">				org.drip.dynamics.ito.TimeR1Vertex localTimeR1Vertex =</span>
+					new org.drip.dynamics.ito.TimeR1Vertex (
+						time,
+						x
+					);
+
+<span class="nc" id="L207">				return _driftFunction.drift (</span>
+					localTimeR1Vertex
+<span class="nc" id="L209">				) * probabilityDensityFunction.density (</span>
+					localTimeR1Vertex
+				);
+			}
+<span class="nc" id="L213">		}.derivative (</span>
+<span class="nc" id="L214">			timeR1Vertex.x(),</span>
+			1
+		) +  new org.drip.function.definition.R1ToR1 (
+			null
+		)
+<span class="nc" id="L219">		{</span>
+			@Override public double evaluate (
+				final double x)
+				throws java.lang.Exception
+			{
+<span class="nc" id="L224">				org.drip.dynamics.ito.TimeR1Vertex localTimeR1Vertex =</span>
+					new org.drip.dynamics.ito.TimeR1Vertex (
+						time,
+						x
+					);
+
+<span class="nc" id="L230">				double volatility = _volatilityFunction.volatility (</span>
+					localTimeR1Vertex
+				);
+
+<span class="nc" id="L234">				return 0.5 * volatility * volatility * probabilityDensityFunction.density (</span>
+					localTimeR1Vertex
+				);
+			}
+<span class="nc" id="L238">		}.derivative (</span>
+<span class="nc" id="L239">			timeR1Vertex.x(),</span>
+			2
+		);
+	}
+
+	/**
+	 * Compute the Temporal Probability Distribution Function, if any
+	 * 
+	 * @param intialProbabilityDensityFunction The Initial Probability Density Function
+	 * 
+	 * @return The Temporal Probability Distribution Function
+	 */
+
+	public org.drip.dynamics.process.R1ProbabilityDensityFunction temporalPDF (
+		final org.drip.function.definition.R1ToR1 intialProbabilityDensityFunction)
+	{
+<span class="nc" id="L255">		return null;</span>
+	}
+
+	/**
+	 * Compute the Steady-State Probability Distribution Function, if any
+	 * 
+	 * @return The Steady-State Probability Distribution Function
+	 */
+
+	public org.drip.function.definition.R1ToR1 steadyStatePDF()
+	{
+<span class="nc" id="L266">		return null;</span>
+	}
+
+	/**
+	 * Compute the Temporal Probability Distribution Function given the Delta 0 Starting PDF
+	 * 
+	 * @param x0 The X Anchor for the Delta Function
+	 * 
+	 * @return The Temporal Probability Distribution Function given the Delta 0 Starting PDF
+	 */
+
+	public org.drip.dynamics.process.R1ProbabilityDensityFunction deltaStartTemporalPDF (
+		final double x0)
+	{
+<span class="nc" id="L280">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

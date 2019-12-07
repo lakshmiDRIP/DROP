@@ -6,41 +6,53 @@ package org.drip.validation.quantile;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -91,10 +103,10 @@ package org.drip.validation.quantile;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation&quot;&gt;Model Validation Suite&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/quantile&quot;&gt;Quantile Based Graphical Numerical Validators&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/README.md&quot;&gt;Risk Factor and Hypothesis Validation, Evidence Processing, and Model Testing&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/quantile/README.md&quot;&gt;Quantile Based Graphical Numerical Validators&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -116,60 +128,60 @@ public class PlottingPositionGeneratorFilliben extends org.drip.validation.quant
 		final int orderStatisticCount)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L119">		super (orderStatisticCount);</span>
-<span class="nc" id="L120">	}</span>
+<span class="nc" id="L131">		super (orderStatisticCount);</span>
+<span class="nc" id="L132">	}</span>
 
 	@Override public org.drip.validation.quantile.PlottingPosition[] generate()
 	{
-<span class="nc" id="L124">		int orderStatisticCount = orderStatisticCount();</span>
+<span class="nc" id="L136">		int orderStatisticCount = orderStatisticCount();</span>
 
-<span class="nc" id="L126">		org.drip.validation.quantile.PlottingPosition[] plottingPositionArray = new</span>
+<span class="nc" id="L138">		org.drip.validation.quantile.PlottingPosition[] plottingPositionArray = new</span>
 			org.drip.validation.quantile.PlottingPosition[orderStatisticCount];
 
-<span class="nc" id="L129">		double terminalQuantile = java.lang.Math.pow (</span>
+<span class="nc" id="L141">		double terminalQuantile = java.lang.Math.pow (</span>
 			0.5,
 			1. / orderStatisticCount
 		);
 
 		try
 		{
-<span class="nc" id="L136">			plottingPositionArray[0] = new org.drip.validation.quantile.PlottingPosition (</span>
+<span class="nc" id="L148">			plottingPositionArray[0] = new org.drip.validation.quantile.PlottingPosition (</span>
 				1,
 				1. - terminalQuantile
 			);
 
-<span class="nc" id="L141">			plottingPositionArray[orderStatisticCount - 1] =</span>
+<span class="nc" id="L153">			plottingPositionArray[orderStatisticCount - 1] =</span>
 				new org.drip.validation.quantile.PlottingPosition (
 					orderStatisticCount,
 					terminalQuantile
 				);
 		}
-<span class="nc" id="L147">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L159">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L149">			e.printStackTrace();</span>
+<span class="nc" id="L161">			e.printStackTrace();</span>
 
-<span class="nc" id="L151">			return null;</span>
-<span class="nc" id="L152">		}</span>
+<span class="nc" id="L163">			return null;</span>
+<span class="nc" id="L164">		}</span>
 
-<span class="nc bnc" id="L154" title="All 2 branches missed.">		for (int orderStatisticIndex = 2; orderStatisticIndex &lt; orderStatisticCount; ++orderStatisticIndex)</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">		for (int orderStatisticIndex = 2; orderStatisticIndex &lt; orderStatisticCount; ++orderStatisticIndex)</span>
 		{
 			try
 			{
-<span class="nc" id="L158">				plottingPositionArray[orderStatisticIndex - 1] =</span>
+<span class="nc" id="L170">				plottingPositionArray[orderStatisticIndex - 1] =</span>
 					new org.drip.validation.quantile.PlottingPosition (
 						orderStatisticIndex,
 						(((double) orderStatisticIndex) - 0.3175) / (0.365 + orderStatisticCount)
 					);
 			}
-<span class="nc" id="L164">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L176">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L166">				e.printStackTrace();</span>
+<span class="nc" id="L178">				e.printStackTrace();</span>
 
-<span class="nc" id="L168">				return null;</span>
-<span class="nc" id="L169">			}</span>
+<span class="nc" id="L180">				return null;</span>
+<span class="nc" id="L181">			}</span>
 		}
 
-<span class="nc" id="L172">		return plottingPositionArray;</span>
+<span class="nc" id="L184">		return plottingPositionArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -76,7 +76,8 @@ package org.drip.specialfunction.ode;
  */
 
 /**
- * &lt;i&gt;SecondOrderBessel&lt;/i&gt; exposes the Coefficient Terms in the Riccati-Bessel ODE. The References are:
+ * &lt;i&gt;SecondOrderRiccatiBessel&lt;/i&gt; exposes the Coefficient Terms in the Riccati-Bessel ODE. The References
+ * 	are:
  * 
  * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
@@ -114,7 +115,7 @@ package org.drip.specialfunction.ode;
 
 public class SecondOrderRiccatiBessel extends org.drip.specialfunction.ode.SecondOrder
 {
-<span class="nc" id="L117">	private double _alpha = java.lang.Double.NaN;</span>
+<span class="nc" id="L118">	private double _alpha = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct the Standard Second Order Riccati-Bessel ODE
@@ -129,50 +130,50 @@ public class SecondOrderRiccatiBessel extends org.drip.specialfunction.ode.Secon
 	{
 		try
 		{
-<span class="nc" id="L132">			return new SecondOrderRiccatiBessel (</span>
+<span class="nc" id="L133">			return new SecondOrderRiccatiBessel (</span>
 				alpha,
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L135">				{</span>
+<span class="nc" id="L136">				{</span>
 					@Override public double evaluate (
 						final double z,
 						final double w)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L141" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 						{
-<span class="nc" id="L143">							throw new java.lang.Exception</span>
+<span class="nc" id="L144">							throw new java.lang.Exception</span>
 								(&quot;SecondOrderRiccatiBessel::SecondOrder::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L147">						return z * z;</span>
+<span class="nc" id="L148">						return z * z;</span>
 					}
 				},
 				null,
 				new org.drip.function.definition.R2ToR1()
-<span class="nc" id="L152">				{</span>
+<span class="nc" id="L153">				{</span>
 					@Override public double evaluate (
 						final double z,
 						final double w)
 						throws java.lang.Exception
 					{
-<span class="nc bnc" id="L158" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||</span>
-<span class="nc bnc" id="L159" title="All 2 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (w))</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (w))</span>
 						{
-<span class="nc" id="L161">							throw new java.lang.Exception</span>
+<span class="nc" id="L162">							throw new java.lang.Exception</span>
 								(&quot;SecondOrderBessel::SecondOrder::evaluate =&gt; Invalid Inputs&quot;);
 						}
 
-<span class="nc" id="L165">						return (z * z - alpha * (alpha + 1.)) * w;</span>
+<span class="nc" id="L166">						return (z * z - alpha * (alpha + 1.)) * w;</span>
 					}
 				}
 			);
 		}
-<span class="nc" id="L170">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L171">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L172">			e.printStackTrace();</span>
+<span class="nc" id="L173">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L175">		return null;</span>
+<span class="nc" id="L176">		return null;</span>
 	}
 
 	private SecondOrderRiccatiBessel (
@@ -182,17 +183,17 @@ public class SecondOrderRiccatiBessel extends org.drip.specialfunction.ode.Secon
 		final org.drip.function.definition.R2ToR1 zeroDerivativeCoefficient)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L185">		super (</span>
+<span class="nc" id="L186">		super (</span>
 			secondDerivativeCoefficient,
 			firstDerivativeCoefficient,
 			zeroDerivativeCoefficient
 		);
 
-<span class="nc bnc" id="L191" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_alpha = alpha))</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_alpha = alpha))</span>
 		{
-<span class="nc" id="L193">			throw new java.lang.Exception (&quot;SecondOrderRiccatiBessel Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L194">			throw new java.lang.Exception (&quot;SecondOrderRiccatiBessel Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L195">	}</span>
+<span class="nc" id="L196">	}</span>
 
 	/**
 	 * Retrieve the Alpha
@@ -202,12 +203,12 @@ public class SecondOrderRiccatiBessel extends org.drip.specialfunction.ode.Secon
 
 	public double alpha()
 	{
-<span class="nc" id="L205">		return _alpha;</span>
+<span class="nc" id="L206">		return _alpha;</span>
 	}
 
 	@Override public java.util.TreeSet&lt;java.lang.Double&gt; orderedRegularSingularPoints()
 	{
-<span class="nc" id="L210">		return null;</span>
+<span class="nc" id="L211">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

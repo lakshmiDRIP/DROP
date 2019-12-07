@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BrownianPopulationCentralMeasures.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.ckls</a> &gt; <span class="el_source">BrownianPopulationCentralMeasures.java</span></div><h1>BrownianPopulationCentralMeasures.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.ckls;
+
+import org.drip.dynamics.meanreverting.R1BrownianStochasticEvolver;
+import org.drip.dynamics.process.R1StochasticEvolver;
+import org.drip.measure.statistics.PopulationCentralMeasures;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;BrownianPopulationCentralMeasures&lt;/i&gt; illustrates the Aging of Population Central Measures, both
+ * 	Temporal and Steady-State, of an Evolving R&lt;sup&gt;1&lt;/sup&gt; Brownian Process. The References are:
+ *  
+ * 	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bogoliubov, N. N., and D. P. Sankevich (1994): N. N. Bogoliubov and Statistical Mechanics
+ * 				&lt;i&gt;Russian Mathematical Surveys&lt;/i&gt; &lt;b&gt;49 (5)&lt;/b&gt; 19-49
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Holubec, V., K. Kroy, and S. Steffenoni (2019): Physically Consistent Numerical Solver for
+ * 				Time-dependent Fokker-Planck Equations &lt;i&gt;Physical Review E&lt;/i&gt; &lt;b&gt;99 (4)&lt;/b&gt; 032117
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kadanoff, L. P. (2000): &lt;i&gt;Statistical Physics: Statics, Dynamics, and Re-normalization&lt;/i&gt;
+ * 				&lt;b&gt;World Scientific&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Ottinger, H. C. (1996): &lt;i&gt;Stochastic Processes in Polymeric Fluids&lt;/i&gt; &lt;b&gt;Springer-Verlag&lt;/b&gt;
+ * 				Berlin-Heidelberg
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Fokker-Planck Equation
+ * 				https://en.wikipedia.org/wiki/Fokker%E2%80%93Planck_equation
+ * 		&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm/README.md&quot;&gt;LIBOR Market Model&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L112">public class BrownianPopulationCentralMeasures</span>
+{
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L119">		EnvManager.InitEnv (</span>
+			&quot;&quot;
+		);
+<span class="nc" id="L122">		double[] tArray =</span>
+		{
+			 1.0,
+			 2.0,
+			 3.0,
+			 4.0,
+			 5.0,
+			 6.0,
+			 7.0,
+		};
+
+<span class="nc" id="L133">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L135">		System.out.println (&quot;\t|                                               BROWNIAN FOKKER-PLANCK PDF TEMPORAL CENTRAL MEASURES                                                ||&quot;);</span>
+
+<span class="nc" id="L137">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L139">		System.out.println (&quot;\t|        L -&gt; R:                                                                                                                                    ||&quot;);</span>
+
+<span class="nc" id="L141">		System.out.println (&quot;\t|                - Row of PDF {Mean | Variance} Tuple over t                                                                                        ||&quot;);</span>
+
+<span class="nc" id="L143">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L145">		R1StochasticEvolver r1StochasticEvolver = R1BrownianStochasticEvolver.Wiener (</span>
+			0.01
+		);
+
+<span class="nc" id="L149">		java.lang.String dump = &quot;\t|&quot;;</span>
+
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		for (double t : tArray)</span>
+		{
+<span class="nc" id="L153">			PopulationCentralMeasures populationCentralMeasures =</span>
+<span class="nc" id="L154">				r1StochasticEvolver.temporalPopulationCentralMeasures (</span>
+					0.,
+					t
+				);
+
+<span class="nc" id="L159">			dump = dump + &quot; {&quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L160">				populationCentralMeasures.mean(), 1, 4, 1.</span>
+<span class="nc" id="L161">			) + &quot; |&quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L162">				populationCentralMeasures.variance(), 1, 4, 1.</span>
+			) + &quot;}&quot;;
+		}
+
+<span class="nc" id="L166">		System.out.println (dump);</span>
+
+<span class="nc" id="L168">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L170">		System.out.println();</span>
+
+<span class="nc" id="L172">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L174">		System.out.println (&quot;\t|                                             BROWNIAN FOKKER-PLANCK PDF STEADY STATE CENTRAL MEASURES                                              ||&quot;);</span>
+
+<span class="nc" id="L176">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L178">		System.out.println (&quot;\t|        L -&gt; R:                                                                                                                                    ||&quot;);</span>
+
+<span class="nc" id="L180">		System.out.println (&quot;\t|                - PDF {Mean | Variance} Tuple                                                                                                      ||&quot;);</span>
+
+<span class="nc" id="L182">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L184">		PopulationCentralMeasures populationCentralMeasures =</span>
+<span class="nc" id="L185">			r1StochasticEvolver.steadyStatePopulationCentralMeasures (</span>
+				0.
+			);
+
+<span class="nc" id="L189">		System.out.println (</span>
+<span class="nc" id="L190">			&quot;\t| {&quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L191">				populationCentralMeasures.mean(), 1, 4, 1.</span>
+<span class="nc" id="L192">			) + &quot; |&quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L193">				populationCentralMeasures.variance(), 1, 4, 1.</span>
+			) + &quot;}&quot;
+		);
+
+<span class="nc" id="L197">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L199">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L200">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

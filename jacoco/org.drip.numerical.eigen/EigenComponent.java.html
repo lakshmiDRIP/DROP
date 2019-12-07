@@ -94,37 +94,59 @@ package org.drip.numerical.eigen;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EigenComponent {
-<span class="fc" id="L98">	private double[] _adblEigenvector = null;</span>
-<span class="fc" id="L99">	private double _dblEigenvalue = java.lang.Double.NaN;</span>
+public class EigenComponent
+{
+<span class="fc" id="L99">	private double[] _eigenVector = null;</span>
+<span class="fc" id="L100">	private double _eigenValue = java.lang.Double.NaN;</span>
 
 	/**
 	 * EigenComponent Constructor
 	 * 
-	 * @param adblEigenvector The Eigenvector
-	 * @param dblEigenvalue The Eigenvalue
+	 * @param eigenVector The Eigenvector
+	 * @param eigenValue The Eigenvalue
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are invalid
 	 */
 
 	public EigenComponent (
-		final double[] adblEigenvector,
-		final double dblEigenvalue)
+		final double[] eigenVector,
+		final double eigenValue)
 		throws java.lang.Exception
-<span class="fc" id="L114">	{</span>
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		if (null == (_adblEigenvector = adblEigenvector) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L116" title="1 of 2 branches missed.">			(_dblEigenvalue = dblEigenvalue))</span>
-<span class="nc" id="L117">			throw new java.lang.Exception (&quot;EigenComponent ctr: Invalid Inputs&quot;);</span>
-
-<span class="fc" id="L119">		int iNumOrdinate = _adblEigenvector.length;</span>
-
-<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (0 == iNumOrdinate) throw new java.lang.Exception (&quot;EigenComponent ctr: Invalid Inputs&quot;);</span>
-
-<span class="fc bfc" id="L123" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumOrdinate; ++i) {</span>
-<span class="pc bpc" id="L124" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblEigenvector[i]))</span>
-<span class="nc" id="L125">				throw new java.lang.Exception (&quot;EigenComponent ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L115">	{</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (null == (_eigenVector = eigenVector) ||</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (</span>
+				_eigenValue = eigenValue
+			)
+		)
+		{
+<span class="nc" id="L122">			throw new java.lang.Exception (</span>
+				&quot;EigenComponent ctr: Invalid Inputs&quot;
+			);
 		}
-<span class="fc" id="L127">	}</span>
+
+<span class="fc" id="L127">		int eigenComponentCount = _eigenVector.length;</span>
+
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		if (0 == eigenComponentCount)</span>
+		{
+<span class="nc" id="L131">			throw new java.lang.Exception (</span>
+				&quot;EigenComponent ctr: Invalid Inputs&quot;
+			);
+		}
+
+<span class="fc" id="L136">		for (int eigenComponentIndex = 0;</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">			eigenComponentIndex &lt; eigenComponentCount;</span>
+<span class="fc" id="L138">			++eigenComponentIndex)</span>
+		{
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (</span>
+				_eigenVector[eigenComponentIndex]
+			))
+			{
+<span class="nc" id="L144">				throw new java.lang.Exception (</span>
+					&quot;EigenComponent ctr: Invalid Inputs&quot;
+				);
+			}
+		}
+<span class="fc" id="L149">	}</span>
 
 	/**
 	 * Retrieve the Eigenvalue
@@ -132,9 +154,9 @@ public class EigenComponent {
 	 * @return The Eigenvalue
 	 */
 
-	public double eigenvalue()
+	public double eigenValue()
 	{
-<span class="fc" id="L137">		return _dblEigenvalue;</span>
+<span class="fc" id="L159">		return _eigenValue;</span>
 	}
 
 	/**
@@ -143,9 +165,9 @@ public class EigenComponent {
 	 * @return The Eigenvector
 	 */
 
-	public double[] eigenvector()
+	public double[] eigenVector()
 	{
-<span class="fc" id="L148">		return _adblEigenvector;</span>
+<span class="fc" id="L170">		return _eigenVector;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

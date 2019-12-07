@@ -6,32 +6,62 @@ package org.drip.xva.hypothecation;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -77,10 +107,10 @@ package org.drip.xva.hypothecation;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/hypothecation&quot;&gt;Hypothecation&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/README.md&quot;&gt;Valuation Adjustments that account for Collateral, CC Credit/Debt and Funding Overhead&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/hypothecation/README.md&quot;&gt;XVA Hypothecation Group Amount Estimation&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -89,8 +119,8 @@ package org.drip.xva.hypothecation;
 
 public class CollateralGroupVertexCloseOut
 {
-<span class="fc" id="L92">	private double _client = java.lang.Double.NaN;</span>
-<span class="fc" id="L93">	private double _dealer = java.lang.Double.NaN;</span>
+<span class="fc" id="L122">	private double _client = java.lang.Double.NaN;</span>
+<span class="fc" id="L123">	private double _dealer = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct a Static Instance of CollateralGroupVertexCloseOut
@@ -107,32 +137,32 @@ public class CollateralGroupVertexCloseOut
 		final double uncollateralizedExposure,
 		final double collateralBalance)
 	{
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">		if (null == closeOutGeneral ||</span>
-<span class="pc bpc" id="L111" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (uncollateralizedExposure) ||</span>
-<span class="pc bpc" id="L112" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (collateralBalance))</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">		if (null == closeOutGeneral ||</span>
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (uncollateralizedExposure) ||</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (collateralBalance))</span>
 		{
-<span class="nc" id="L114">			return null;</span>
+<span class="nc" id="L144">			return null;</span>
 		}
 
 		try
 		{
-<span class="fc" id="L119">			return new CollateralGroupVertexCloseOut (</span>
-<span class="fc" id="L120">				closeOutGeneral.dealerDefault (</span>
+<span class="fc" id="L149">			return new CollateralGroupVertexCloseOut (</span>
+<span class="fc" id="L150">				closeOutGeneral.dealerDefault (</span>
 					uncollateralizedExposure,
 					collateralBalance
 				),
-<span class="fc" id="L124">				closeOutGeneral.clientDefault (</span>
+<span class="fc" id="L154">				closeOutGeneral.clientDefault (</span>
 					uncollateralizedExposure,
 					collateralBalance
 				)
 			);
 		}
-<span class="nc" id="L130">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L160">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L132">			e.printStackTrace();</span>
+<span class="nc" id="L162">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L135">		return null;</span>
+<span class="nc" id="L165">		return null;</span>
 	}
 
 	/**
@@ -148,13 +178,13 @@ public class CollateralGroupVertexCloseOut
 		final double dealer,
 		final double client)
 		throws java.lang.Exception
-<span class="fc" id="L151">	{</span>
-<span class="pc bpc" id="L152" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dealer = dealer) ||</span>
-<span class="pc bpc" id="L153" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_client = client))</span>
+<span class="fc" id="L181">	{</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dealer = dealer) ||</span>
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_client = client))</span>
 		{
-<span class="nc" id="L155">			throw new java.lang.Exception (&quot;CollateralGroupVertexCloseOut Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L185">			throw new java.lang.Exception (&quot;CollateralGroupVertexCloseOut Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L157">	}</span>
+<span class="fc" id="L187">	}</span>
 
 	/**
 	 * Retrieve the Dealer Close Out
@@ -164,7 +194,7 @@ public class CollateralGroupVertexCloseOut
 
 	public double dealer()
 	{
-<span class="fc" id="L167">		return _dealer;</span>
+<span class="fc" id="L197">		return _dealer;</span>
 	}
 
 	/**
@@ -175,7 +205,7 @@ public class CollateralGroupVertexCloseOut
 
 	public double client()
 	{
-<span class="fc" id="L178">		return _client;</span>
+<span class="fc" id="L208">		return _client;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

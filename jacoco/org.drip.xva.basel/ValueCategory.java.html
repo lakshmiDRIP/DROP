@@ -6,43 +6,55 @@ package org.drip.xva.basel;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -95,10 +107,10 @@ package org.drip.xva.basel;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/basel&quot;&gt;Basel&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/README.md&quot;&gt;Valuation Adjustments that account for Collateral, CC Credit/Debt and Funding Overhead&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/basel/README.md&quot;&gt;XVA Based Basel Accounting Measures&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -107,9 +119,9 @@ package org.drip.xva.basel;
 
 public class ValueCategory
 {
-<span class="fc" id="L110">	private java.lang.String _id = &quot;&quot;;</span>
-<span class="fc" id="L111">	private boolean _cet1Contributor = false;</span>
-<span class="fc" id="L112">	private java.lang.String _decription = &quot;&quot;;</span>
+<span class="fc" id="L122">	private java.lang.String _id = &quot;&quot;;</span>
+<span class="fc" id="L123">	private boolean _cet1Contributor = false;</span>
+<span class="fc" id="L124">	private java.lang.String _decription = &quot;&quot;;</span>
 
 	/**
 	 * Retrieve an Instance of the CF1 Cash Flow
@@ -121,18 +133,18 @@ public class ValueCategory
 	{
 		try
 		{
-<span class="nc" id="L124">			return new ValueCategory (</span>
+<span class="nc" id="L136">			return new ValueCategory (</span>
 				&quot;CF1&quot;,
 				&quot;Dealer Trade Contractual Cash Flow&quot;,
 				true
 			);
 		}
-<span class="nc" id="L130">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L142">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L132">			e.printStackTrace();</span>
+<span class="nc" id="L144">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L135">		return null;</span>
+<span class="nc" id="L147">		return null;</span>
 	}
 
 	/**
@@ -145,18 +157,18 @@ public class ValueCategory
 	{
 		try
 		{
-<span class="fc" id="L148">			return new ValueCategory (</span>
+<span class="fc" id="L160">			return new ValueCategory (</span>
 				&quot;CF2&quot;,
 				&quot;Client Default Cash Flow&quot;,
 				true
 			);
 		}
-<span class="nc" id="L154">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L166">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L156">			e.printStackTrace();</span>
+<span class="nc" id="L168">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L159">		return null;</span>
+<span class="nc" id="L171">		return null;</span>
 	}
 
 	/**
@@ -169,18 +181,18 @@ public class ValueCategory
 	{
 		try
 		{
-<span class="fc" id="L172">			return new ValueCategory (</span>
+<span class="fc" id="L184">			return new ValueCategory (</span>
 				&quot;CF3&quot;,
 				&quot;Dealer Default Related Cash Flow&quot;,
 				false
 			);
 		}
-<span class="nc" id="L178">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L190">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L180">			e.printStackTrace();</span>
+<span class="nc" id="L192">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L183">		return null;</span>
+<span class="nc" id="L195">		return null;</span>
 	}
 
 	/**
@@ -193,18 +205,18 @@ public class ValueCategory
 	{
 		try
 		{
-<span class="fc" id="L196">			return new ValueCategory (</span>
+<span class="fc" id="L208">			return new ValueCategory (</span>
 				&quot;CF4&quot;,
 				&quot;Pre Dealer Default Dynamic Flow&quot;,
 				false
 			);
 		}
-<span class="nc" id="L202">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L214">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L204">			e.printStackTrace();</span>
+<span class="nc" id="L216">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L207">		return null;</span>
+<span class="nc" id="L219">		return null;</span>
 	}
 
 	/**
@@ -217,18 +229,18 @@ public class ValueCategory
 	{
 		try
 		{
-<span class="fc" id="L220">			return new ValueCategory (</span>
+<span class="fc" id="L232">			return new ValueCategory (</span>
 				&quot;CF5&quot;,
 				&quot;Post Dealer Default Dynamic Flow&quot;,
 				false
 			);
 		}
-<span class="nc" id="L226">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L238">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L228">			e.printStackTrace();</span>
+<span class="nc" id="L240">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L231">		return null;</span>
+<span class="nc" id="L243">		return null;</span>
 	}
 
 	/**
@@ -241,18 +253,18 @@ public class ValueCategory
 	{
 		try
 		{
-<span class="fc" id="L244">			return new ValueCategory (</span>
+<span class="fc" id="L256">			return new ValueCategory (</span>
 				&quot;CF6&quot;,
 				&quot;CSA Related Cash Flow&quot;,
 				false
 			);
 		}
-<span class="nc" id="L250">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L262">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L252">			e.printStackTrace();</span>
+<span class="nc" id="L264">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L255">		return null;</span>
+<span class="nc" id="L267">		return null;</span>
 	}
 
 	/**
@@ -265,18 +277,18 @@ public class ValueCategory
 	{
 		try
 		{
-<span class="fc" id="L268">			return new ValueCategory (</span>
+<span class="fc" id="L280">			return new ValueCategory (</span>
 				&quot;HYBRID&quot;,
 				&quot;Mixed Cash Flow Types&quot;,
 				false
 			);
 		}
-<span class="nc" id="L274">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L286">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L276">			e.printStackTrace();</span>
+<span class="nc" id="L288">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L279">		return null;</span>
+<span class="nc" id="L291">		return null;</span>
 	}
 
 	/**
@@ -294,15 +306,15 @@ public class ValueCategory
 		final java.lang.String decription,
 		final boolean cet1Contributor)
 		throws java.lang.Exception
-<span class="fc" id="L297">	{</span>
-<span class="pc bpc" id="L298" title="3 of 6 branches missed.">		if (null == (_id = id) || _id.isEmpty() ||</span>
-<span class="pc bpc" id="L299" title="1 of 2 branches missed.">			null == (_decription = decription) || _decription.isEmpty())</span>
+<span class="fc" id="L309">	{</span>
+<span class="pc bpc" id="L310" title="3 of 6 branches missed.">		if (null == (_id = id) || _id.isEmpty() ||</span>
+<span class="pc bpc" id="L311" title="1 of 2 branches missed.">			null == (_decription = decription) || _decription.isEmpty())</span>
 		{
-<span class="nc" id="L301">			throw new java.lang.Exception (&quot;ValueCategory Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L313">			throw new java.lang.Exception (&quot;ValueCategory Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L304">		_cet1Contributor = cet1Contributor;</span>
-<span class="fc" id="L305">	}</span>
+<span class="fc" id="L316">		_cet1Contributor = cet1Contributor;</span>
+<span class="fc" id="L317">	}</span>
 
 	/**
 	 * Retrieve the Category ID
@@ -312,7 +324,7 @@ public class ValueCategory
 
 	public java.lang.String id()
 	{
-<span class="nc" id="L315">		return _id;</span>
+<span class="nc" id="L327">		return _id;</span>
 	}
 
 	/**
@@ -323,7 +335,7 @@ public class ValueCategory
 
 	public java.lang.String description()
 	{
-<span class="nc" id="L326">		return _decription;</span>
+<span class="nc" id="L338">		return _decription;</span>
 	}
 
 	/**
@@ -334,7 +346,7 @@ public class ValueCategory
 
 	public boolean isCET1Contributor()
 	{
-<span class="nc" id="L337">		return _cet1Contributor;</span>
+<span class="nc" id="L349">		return _cet1Contributor;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

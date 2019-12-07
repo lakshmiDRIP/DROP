@@ -6,41 +6,53 @@ package org.drip.validation.quantile;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -91,10 +103,10 @@ package org.drip.validation.quantile;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation&quot;&gt;Model Validation Suite&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/quantile&quot;&gt;Quantile Based Graphical Numerical Validators&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/README.md&quot;&gt;Risk Factor and Hypothesis Validation, Evidence Processing, and Model Testing&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/quantile/README.md&quot;&gt;Quantile Based Graphical Numerical Validators&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -184,17 +196,17 @@ public class PlottingPositionGeneratorHeuristic extends
 	{
 		try
 		{
-<span class="nc" id="L187">			return new PlottingPositionGeneratorHeuristic (</span>
+<span class="nc" id="L199">			return new PlottingPositionGeneratorHeuristic (</span>
 				orderStatisticCount,
 				RELIEF_STANDARD
 			);
 		}
-<span class="nc" id="L192">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L204">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L194">			e.printStackTrace();</span>
+<span class="nc" id="L206">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L197">		return null;</span>
+<span class="nc" id="L209">		return null;</span>
 	}
 
 	/**
@@ -210,17 +222,17 @@ public class PlottingPositionGeneratorHeuristic extends
 	{
 		try
 		{
-<span class="nc" id="L213">			return new PlottingPositionGeneratorHeuristic (</span>
+<span class="nc" id="L225">			return new PlottingPositionGeneratorHeuristic (</span>
 				orderStatisticCount,
 				RELIEF_BERNARD_BOS_LEVENBACH_1953
 			);
 		}
-<span class="nc" id="L218">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L230">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L220">			e.printStackTrace();</span>
+<span class="nc" id="L232">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L223">		return null;</span>
+<span class="nc" id="L235">		return null;</span>
 	}
 
 	/**
@@ -236,17 +248,17 @@ public class PlottingPositionGeneratorHeuristic extends
 	{
 		try
 		{
-<span class="nc" id="L239">			return new PlottingPositionGeneratorHeuristic (</span>
+<span class="nc" id="L251">			return new PlottingPositionGeneratorHeuristic (</span>
 				orderStatisticCount,
 				RELIEF_NIST_2013
 			);
 		}
-<span class="nc" id="L244">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L256">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L246">			e.printStackTrace();</span>
+<span class="nc" id="L258">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L249">		return null;</span>
+<span class="nc" id="L261">		return null;</span>
 	}
 
 	/**
@@ -262,17 +274,17 @@ public class PlottingPositionGeneratorHeuristic extends
 	{
 		try
 		{
-<span class="nc" id="L265">			return new PlottingPositionGeneratorHeuristic (</span>
+<span class="nc" id="L277">			return new PlottingPositionGeneratorHeuristic (</span>
 				orderStatisticCount,
 				RELIEF_YU_HUANG_2001
 			);
 		}
-<span class="nc" id="L270">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L282">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L272">			e.printStackTrace();</span>
+<span class="nc" id="L284">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L275">		return null;</span>
+<span class="nc" id="L287">		return null;</span>
 	}
 
 	/**
@@ -288,17 +300,17 @@ public class PlottingPositionGeneratorHeuristic extends
 	{
 		try
 		{
-<span class="nc" id="L291">			return new PlottingPositionGeneratorHeuristic (</span>
+<span class="nc" id="L303">			return new PlottingPositionGeneratorHeuristic (</span>
 				orderStatisticCount,
 				RELIEF_BMDP_2018
 			);
 		}
-<span class="nc" id="L296">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L308">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L298">			e.printStackTrace();</span>
+<span class="nc" id="L310">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L301">		return null;</span>
+<span class="nc" id="L313">		return null;</span>
 	}
 
 	/**
@@ -314,17 +326,17 @@ public class PlottingPositionGeneratorHeuristic extends
 	{
 		try
 		{
-<span class="nc" id="L317">			return new PlottingPositionGeneratorHeuristic (</span>
+<span class="nc" id="L329">			return new PlottingPositionGeneratorHeuristic (</span>
 				orderStatisticCount,
 				RELIEF_BLOM_1958
 			);
 		}
-<span class="nc" id="L322">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L334">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L324">			e.printStackTrace();</span>
+<span class="nc" id="L336">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L327">		return null;</span>
+<span class="nc" id="L339">		return null;</span>
 	}
 
 	/**
@@ -340,17 +352,17 @@ public class PlottingPositionGeneratorHeuristic extends
 	{
 		try
 		{
-<span class="nc" id="L343">			return new PlottingPositionGeneratorHeuristic (</span>
+<span class="nc" id="L355">			return new PlottingPositionGeneratorHeuristic (</span>
 				orderStatisticCount,
 				RELIEF_CUNNANE_1978
 			);
 		}
-<span class="nc" id="L348">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L360">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L350">			e.printStackTrace();</span>
+<span class="nc" id="L362">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L353">		return null;</span>
+<span class="nc" id="L365">		return null;</span>
 	}
 
 	/**
@@ -366,17 +378,17 @@ public class PlottingPositionGeneratorHeuristic extends
 	{
 		try
 		{
-<span class="nc" id="L369">			return new PlottingPositionGeneratorHeuristic (</span>
+<span class="nc" id="L381">			return new PlottingPositionGeneratorHeuristic (</span>
 				orderStatisticCount,
 				RELIEF_GRINGORTEN_1963
 			);
 		}
-<span class="nc" id="L374">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L386">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L376">			e.printStackTrace();</span>
+<span class="nc" id="L388">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L379">		return null;</span>
+<span class="nc" id="L391">		return null;</span>
 	}
 
 	/**
@@ -392,17 +404,17 @@ public class PlottingPositionGeneratorHeuristic extends
 	{
 		try
 		{
-<span class="nc" id="L395">			return new PlottingPositionGeneratorHeuristic (</span>
+<span class="nc" id="L407">			return new PlottingPositionGeneratorHeuristic (</span>
 				orderStatisticCount,
 				RELIEF_HAZEN_1913
 			);
 		}
-<span class="nc" id="L400">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L412">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L402">			e.printStackTrace();</span>
+<span class="nc" id="L414">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L405">		return null;</span>
+<span class="nc" id="L417">		return null;</span>
 	}
 
 	/**
@@ -418,17 +430,17 @@ public class PlottingPositionGeneratorHeuristic extends
 	{
 		try
 		{
-<span class="nc" id="L421">			return new PlottingPositionGeneratorHeuristic (</span>
+<span class="nc" id="L433">			return new PlottingPositionGeneratorHeuristic (</span>
 				orderStatisticCount,
 				RELIEF_LARSEN_CURRANT_HUNT_1980
 			);
 		}
-<span class="nc" id="L426">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L438">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L428">			e.printStackTrace();</span>
+<span class="nc" id="L440">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L431">		return null;</span>
+<span class="nc" id="L443">		return null;</span>
 	}
 
 	/**
@@ -444,20 +456,20 @@ public class PlottingPositionGeneratorHeuristic extends
 	{
 		try
 		{
-<span class="nc" id="L447">			return new PlottingPositionGeneratorHeuristic (</span>
+<span class="nc" id="L459">			return new PlottingPositionGeneratorHeuristic (</span>
 				orderStatisticCount,
 				RELIEF_FILLIBEN_1975
 			);
 		}
-<span class="nc" id="L452">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L464">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L454">			e.printStackTrace();</span>
+<span class="nc" id="L466">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L457">		return null;</span>
+<span class="nc" id="L469">		return null;</span>
 	}
 
-<span class="nc" id="L460">	private double _relief = java.lang.Double.NaN;</span>
+<span class="nc" id="L472">	private double _relief = java.lang.Double.NaN;</span>
 
 	/**
 	 * PlottingPositionGeneratorHeuristic Constructor
@@ -473,14 +485,14 @@ public class PlottingPositionGeneratorHeuristic extends
 		final double relief)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L476">		super (orderStatisticCount);</span>
+<span class="nc" id="L488">		super (orderStatisticCount);</span>
 
-<span class="nc bnc" id="L478" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_relief = relief) || 0. &gt; _relief || 1. &lt; _relief)</span>
+<span class="nc bnc" id="L490" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_relief = relief) || 0. &gt; _relief || 1. &lt; _relief)</span>
 		{
-<span class="nc" id="L480">			throw new java.lang.Exception</span>
+<span class="nc" id="L492">			throw new java.lang.Exception</span>
 				(&quot;PlottingPositionGeneratorHeuristic Constructor =&gt; Invalid Inputs&quot;);
 		}
-<span class="nc" id="L483">	}</span>
+<span class="nc" id="L495">	}</span>
 
 	/**
 	 * Retrieve the Leading Relief
@@ -490,36 +502,36 @@ public class PlottingPositionGeneratorHeuristic extends
 
 	public double relief()
 	{
-<span class="nc" id="L493">		return _relief;</span>
+<span class="nc" id="L505">		return _relief;</span>
 	}
 
 	@Override public org.drip.validation.quantile.PlottingPosition[] generate()
 	{
-<span class="nc" id="L498">		int orderStatisticCount = orderStatisticCount();</span>
+<span class="nc" id="L510">		int orderStatisticCount = orderStatisticCount();</span>
 
-<span class="nc" id="L500">		org.drip.validation.quantile.PlottingPosition[] plottingPositionArray = new</span>
+<span class="nc" id="L512">		org.drip.validation.quantile.PlottingPosition[] plottingPositionArray = new</span>
 			org.drip.validation.quantile.PlottingPosition[orderStatisticCount];
 
-<span class="nc bnc" id="L503" title="All 2 branches missed.">		for (int orderStatisticIndex = 1; orderStatisticIndex &lt;= orderStatisticCount; ++orderStatisticIndex)</span>
+<span class="nc bnc" id="L515" title="All 2 branches missed.">		for (int orderStatisticIndex = 1; orderStatisticIndex &lt;= orderStatisticCount; ++orderStatisticIndex)</span>
 		{
 			try
 			{
-<span class="nc" id="L507">				plottingPositionArray[orderStatisticIndex - 1] =</span>
+<span class="nc" id="L519">				plottingPositionArray[orderStatisticIndex - 1] =</span>
 					new org.drip.validation.quantile.PlottingPosition (
 						orderStatisticIndex,
 						(((double) orderStatisticIndex) - _relief) /
 							(1. + orderStatisticCount - 2. * _relief)
 					);
 			}
-<span class="nc" id="L514">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L526">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L516">				e.printStackTrace();</span>
+<span class="nc" id="L528">				e.printStackTrace();</span>
 
-<span class="nc" id="L518">				return null;</span>
-<span class="nc" id="L519">			}</span>
+<span class="nc" id="L530">				return null;</span>
+<span class="nc" id="L531">			}</span>
 		}
 
-<span class="nc" id="L522">		return plottingPositionArray;</span>
+<span class="nc" id="L534">		return plottingPositionArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

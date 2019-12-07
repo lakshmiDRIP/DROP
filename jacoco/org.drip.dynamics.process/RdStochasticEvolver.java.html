@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RdStochasticEvolver.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.dynamics.process</a> &gt; <span class="el_source">RdStochasticEvolver.java</span></div><h1>RdStochasticEvolver.java</h1><pre class="source lang-java linenums">
+package org.drip.dynamics.process;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;RdStochasticEvolver&lt;/i&gt; implements the R&lt;sup&gt;d&lt;/sup&gt; Stochastic Evolver. The References are:
+ *  
+ * 	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Doob, J. L. (1942): The Brownian Movement and Stochastic Equations &lt;i&gt;Annals of Mathematics&lt;/i&gt;
+ * 				&lt;b&gt;43 (2)&lt;/b&gt; 351-369
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Gardiner, C. W. (2009): &lt;i&gt;Stochastic Methods: A Handbook for the Natural and Social Sciences
+ * 				4&lt;sup&gt;th&lt;/sup&gt; Edition&lt;/i&gt; &lt;b&gt;Springer-Verlag&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kadanoff, L. P. (2000): &lt;i&gt;Statistical Physics: Statics, Dynamics, and Re-normalization&lt;/i&gt;
+ * 				&lt;b&gt;World Scientific&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Karatzas, I., and S. E. Shreve (1991): &lt;i&gt;Brownian Motion and Stochastic Calculus 2&lt;sup&gt;nd&lt;/sup&gt;
+ * 				Edition&lt;/i&gt; &lt;b&gt;Springer-Verlag&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Risken, H., and F. Till (1996): &lt;i&gt;The Fokker-Planck Equation – Methods of Solution and
+ * 				Applications&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;HJM, Hull White, LMM, and SABR Dynamic Evolution Models&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/process/README.md&quot;&gt;Ito-Dynamics Based Stochastic Process&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class RdStochasticEvolver
+{
+<span class="nc" id="L118">	private org.drip.dynamics.ito.RdToR1Drift[] _driftFunctionArray = null;</span>
+<span class="nc" id="L119">	private org.drip.dynamics.ito.RdStochasticDriver _stochasticDriver = null;</span>
+<span class="nc" id="L120">	private org.drip.dynamics.ito.RdToR1Volatility[][] _volatilityFunctionGrid = null;</span>
+
+	private double[] pointDriftArray (
+		final org.drip.dynamics.ito.TimeRdVertex currentVertex)
+	{
+<span class="nc" id="L125">		int dimension = _driftFunctionArray.length;</span>
+<span class="nc" id="L126">		double[] pointDriftArray = new double[dimension];</span>
+
+<span class="nc" id="L128">		for (int dimensionIndex = 0;</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">			dimensionIndex &lt; dimension;</span>
+<span class="nc" id="L130">			++dimensionIndex)</span>
+		{
+			try
+			{
+<span class="nc" id="L134">				pointDriftArray[dimensionIndex] = _driftFunctionArray[dimensionIndex].drift (</span>
+					currentVertex
+				);
+			}
+<span class="nc" id="L138">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L140">				e.printStackTrace();</span>
+
+<span class="nc" id="L142">				return null;</span>
+<span class="nc" id="L143">			}</span>
+		}
+
+<span class="nc" id="L146">		return pointDriftArray;</span>
+	}
+
+	private double[][] pointVolatilityGrid (
+		final org.drip.dynamics.ito.TimeRdVertex currentVertex)
+	{
+<span class="nc" id="L152">		int dimension = _volatilityFunctionGrid.length;</span>
+<span class="nc" id="L153">		double[][] pointVolatilityGrid = new double[dimension][dimension];</span>
+
+<span class="nc" id="L155">		for (int dimensionIndexI = 0;</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">			dimensionIndexI &lt; dimension;</span>
+<span class="nc" id="L157">			++dimensionIndexI)</span>
+		{
+<span class="nc" id="L159">			for (int dimensionIndexJ = 0;</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">				dimensionIndexJ &lt; dimension;</span>
+<span class="nc" id="L161">				++dimensionIndexJ)</span>
+			{
+				try
+				{
+<span class="nc" id="L165">					pointVolatilityGrid[dimensionIndexI][dimensionIndexJ] =</span>
+<span class="nc" id="L166">						_volatilityFunctionGrid[dimensionIndexI][dimensionIndexJ].volatility (</span>
+							currentVertex
+						);
+				}
+<span class="nc" id="L170">				catch (java.lang.Exception e)</span>
+				{
+<span class="nc" id="L172">					e.printStackTrace();</span>
+
+<span class="nc" id="L174">					return null;</span>
+<span class="nc" id="L175">				}</span>
+			}
+		}
+
+<span class="nc" id="L179">		return pointVolatilityGrid;</span>
+	}
+
+	/**
+	 * RdStochasticEvolver Constructor
+	 * 
+	 * @param driftFunctionArray The Drift Function Array
+	 * @param volatilityFunctionGrid The Volatility Function Grid
+	 * @param stochasticDriver The Stochastic Driver
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public RdStochasticEvolver (
+		final org.drip.dynamics.ito.RdToR1Drift[] driftFunctionArray,
+		final org.drip.dynamics.ito.RdToR1Volatility[][] volatilityFunctionGrid,
+		final org.drip.dynamics.ito.RdStochasticDriver stochasticDriver)
+		throws java.lang.Exception
+<span class="nc" id="L197">	{</span>
+<span class="nc bnc" id="L198" title="All 6 branches missed.">		if (null == (_driftFunctionArray = driftFunctionArray) ||</span>
+			null == (_volatilityFunctionGrid = volatilityFunctionGrid) ||
+			null == (_stochasticDriver = stochasticDriver))
+		{
+<span class="nc" id="L202">			throw new java.lang.Exception (</span>
+				&quot;RdStochasticEvolver Constructor =&gt; Invalid Inputs&quot;
+			);
+		}
+
+<span class="nc" id="L207">		int dimension = _driftFunctionArray.length;</span>
+
+<span class="nc bnc" id="L209" title="All 8 branches missed.">		if (0 == dimension ||</span>
+			dimension != _volatilityFunctionGrid.length ||
+			null == _volatilityFunctionGrid[0] ||
+			dimension != _volatilityFunctionGrid[0].length)
+		{
+<span class="nc" id="L214">			throw new java.lang.Exception (</span>
+				&quot;RdStochasticEvolver Constructor =&gt; Invalid Inputs&quot;
+			);
+		}
+
+<span class="nc" id="L219">		for (int dimensionIndexI = 0;</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">			dimensionIndexI &lt; dimension;</span>
+<span class="nc" id="L221">			++dimensionIndexI)</span>
+		{
+<span class="nc bnc" id="L223" title="All 2 branches missed.">			if (null == _driftFunctionArray[dimensionIndexI])</span>
+			{
+<span class="nc" id="L225">				throw new java.lang.Exception (</span>
+					&quot;RdStochasticEvolver Constructor =&gt; Invalid Inputs&quot;
+				);
+			}
+
+<span class="nc" id="L230">			for (int dimensionIndexJ = 0;</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">				dimensionIndexJ &lt; dimension;</span>
+<span class="nc" id="L232">				++dimensionIndexJ)</span>
+			{
+<span class="nc bnc" id="L234" title="All 2 branches missed.">				if (null == _volatilityFunctionGrid[dimensionIndexI][dimensionIndexJ])</span>
+				{
+<span class="nc" id="L236">					throw new java.lang.Exception (</span>
+						&quot;RdStochasticEvolver Constructor =&gt; Invalid Inputs&quot;
+					);
+				}
+			}
+		}
+<span class="nc" id="L242">	}</span>
+
+	/**
+	 * Retrieve the Drift Function Array
+	 * 
+	 * @return The Drift Function Array
+	 */
+
+	public org.drip.dynamics.ito.RdToR1Drift[] driftFunctionArray()
+	{
+<span class="nc" id="L252">		return _driftFunctionArray;</span>
+	}
+
+	/**
+	 * Retrieve the Volatility Function Grid
+	 * 
+	 * @return The Volatility Function Grid
+	 */
+
+	public org.drip.dynamics.ito.RdToR1Volatility[][] volatilityFunctionGrid()
+	{
+<span class="nc" id="L263">		return _volatilityFunctionGrid;</span>
+	}
+
+	/**
+	 * Retrieve the Stochastic Driver
+	 * 
+	 * @return The Stochastic Driver
+	 */
+
+	public org.drip.dynamics.ito.RdStochasticDriver stochasticDriver()
+	{
+<span class="nc" id="L274">		return _stochasticDriver;</span>
+	}
+
+	/**
+	 * Generate the Next Vertex in the Iteration
+	 * 
+	 * @param currentVertex The Current Vertex
+	 * @param timeIncrement The Time Increment
+	 * 
+	 * @return The Next Vertex
+	 */
+
+	public org.drip.dynamics.ito.TimeRdVertex evolve (
+		final org.drip.dynamics.ito.TimeRdVertex currentVertex,
+		final double timeIncrement)
+	{
+<span class="nc bnc" id="L290" title="All 2 branches missed.">		if (null == currentVertex ||</span>
+<span class="nc bnc" id="L291" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (</span>
+				timeIncrement
+			)
+		)
+		{
+<span class="nc" id="L296">			return null;</span>
+		}
+
+<span class="nc" id="L299">		double[] pointDriftArray = pointDriftArray (</span>
+			currentVertex
+		);
+
+<span class="nc bnc" id="L303" title="All 2 branches missed.">		if (null == pointDriftArray)</span>
+		{
+<span class="nc" id="L305">			return null;</span>
+		}
+
+<span class="nc" id="L308">		double[] volatilityShiftArray = org.drip.numerical.linearalgebra.Matrix.Product (</span>
+<span class="nc" id="L309">			pointVolatilityGrid (</span>
+				currentVertex
+			),
+<span class="nc" id="L312">			_stochasticDriver.emitSingle()</span>
+		);
+
+<span class="nc bnc" id="L315" title="All 2 branches missed.">		if (null == volatilityShiftArray)</span>
+		{
+<span class="nc" id="L317">			return null;</span>
+		}
+
+<span class="nc" id="L320">		int dimension = _driftFunctionArray.length;</span>
+<span class="nc" id="L321">		double[] xNextArray = new double[dimension];</span>
+
+<span class="nc" id="L323">		double[] xCurrentArray = currentVertex.xArray();</span>
+
+<span class="nc" id="L325">		for (int dimensionIndex = 0;</span>
+<span class="nc bnc" id="L326" title="All 2 branches missed.">			dimensionIndex &lt; dimension;</span>
+<span class="nc" id="L327">			++dimensionIndex)</span>
+		{
+<span class="nc" id="L329">			xNextArray[dimensionIndex] = xCurrentArray[dimensionIndex] +</span>
+				pointDriftArray[dimensionIndex] * timeIncrement +
+				volatilityShiftArray[dimensionIndex];
+		}
+
+		try
+		{
+<span class="nc" id="L336">			return new org.drip.dynamics.ito.TimeRdVertex (</span>
+<span class="nc" id="L337">				currentVertex.t() + timeIncrement,</span>
+				xNextArray
+			);
+		}
+<span class="nc" id="L341">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L343">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L346">		return null;</span>
+	}
+
+	/**
+	 * Construct the Fokker Planck PDF Generator corresponding to R&lt;sup&gt;d&lt;/sup&gt; Stochastic Evolver
+	 * 
+	 * @return The Fokker Planck PDF Generator corresponding to R&lt;sup&gt;d&lt;/sup&gt; Stochastic Evolver
+	 */
+
+	public org.drip.dynamics.kolmogorov.RdFokkerPlanck fokkerPlanckGenerator()
+	{
+		try
+		{
+<span class="nc" id="L359">			return new org.drip.dynamics.kolmogorov.RdFokkerPlanck (</span>
+				_driftFunctionArray,
+				new org.drip.dynamics.ito.DiffusionTensor (
+					_volatilityFunctionGrid
+				)
+			);
+		}
+<span class="nc" id="L366">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L368">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L371">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

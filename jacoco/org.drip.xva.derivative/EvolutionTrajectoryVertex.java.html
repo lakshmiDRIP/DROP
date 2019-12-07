@@ -6,43 +6,55 @@ package org.drip.xva.derivative;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -98,10 +110,10 @@ package org.drip.xva.derivative;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/derivative&quot;&gt;Derivative&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/README.md&quot;&gt;Valuation Adjustments that account for Collateral, CC Credit/Debt and Funding Overhead&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/derivative/README.md&quot;&gt;Burgard Kjaer Dynamic Portfolio Replication&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -110,13 +122,13 @@ package org.drip.xva.derivative;
 
 public class EvolutionTrajectoryVertex
 {
-<span class="fc" id="L113">	private double _time = java.lang.Double.NaN;</span>
-<span class="fc" id="L114">	private double _collateral = java.lang.Double.NaN;</span>
-<span class="fc" id="L115">	private double _hedgeError = java.lang.Double.NaN;</span>
-<span class="fc" id="L116">	private double _clientGainOnDealerDefault = java.lang.Double.NaN;</span>
-<span class="fc" id="L117">	private double _dealerGainOnClientDefault = java.lang.Double.NaN;</span>
-<span class="fc" id="L118">	private org.drip.xva.derivative.PositionGreekVertex _positionGreekVertex = null;</span>
-<span class="fc" id="L119">	private org.drip.xva.derivative.ReplicationPortfolioVertex _replicationPortfolioVertex = null;</span>
+<span class="fc" id="L125">	private double _time = java.lang.Double.NaN;</span>
+<span class="fc" id="L126">	private double _collateral = java.lang.Double.NaN;</span>
+<span class="fc" id="L127">	private double _hedgeError = java.lang.Double.NaN;</span>
+<span class="fc" id="L128">	private double _clientGainOnDealerDefault = java.lang.Double.NaN;</span>
+<span class="fc" id="L129">	private double _dealerGainOnClientDefault = java.lang.Double.NaN;</span>
+<span class="fc" id="L130">	private org.drip.xva.derivative.PositionGreekVertex _positionGreekVertex = null;</span>
+<span class="fc" id="L131">	private org.drip.xva.derivative.ReplicationPortfolioVertex _replicationPortfolioVertex = null;</span>
 
 	/**
 	 * EvolutionTrajectoryVertex Constructor
@@ -141,20 +153,20 @@ public class EvolutionTrajectoryVertex
 		final double collateral,
 		final double hedgeError)
 		throws java.lang.Exception
-<span class="fc" id="L144">	{</span>
-<span class="pc bpc" id="L145" title="3 of 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_time = time) ||</span>
+<span class="fc" id="L156">	{</span>
+<span class="pc bpc" id="L157" title="3 of 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_time = time) ||</span>
 			null == (_replicationPortfolioVertex = replicationPortfolioVertex) ||
 			null == (_positionGreekVertex = positionGreekVertex) ||
-<span class="pc bpc" id="L148" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_clientGainOnDealerDefault =</span>
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_clientGainOnDealerDefault =</span>
 				clientGainOnDealerDefault) ||
-<span class="pc bpc" id="L150" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dealerGainOnClientDefault =</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dealerGainOnClientDefault =</span>
 				dealerGainOnClientDefault) ||
-<span class="pc bpc" id="L152" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_collateral = collateral) ||</span>
-<span class="pc bpc" id="L153" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_hedgeError = hedgeError))</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_collateral = collateral) ||</span>
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_hedgeError = hedgeError))</span>
 		{
-<span class="nc" id="L155">			throw new java.lang.Exception (&quot;EvolutionTrajectoryVertex Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L167">			throw new java.lang.Exception (&quot;EvolutionTrajectoryVertex Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L157">	}</span>
+<span class="fc" id="L169">	}</span>
 
 	/**
 	 * Retrieve the Time Instant
@@ -164,7 +176,7 @@ public class EvolutionTrajectoryVertex
 
 	public double time()
 	{
-<span class="fc" id="L167">		return _time;</span>
+<span class="fc" id="L179">		return _time;</span>
 	}
 
 	/**
@@ -175,7 +187,7 @@ public class EvolutionTrajectoryVertex
 
 	public double collateral()
 	{
-<span class="nc" id="L178">		return _collateral;</span>
+<span class="nc" id="L190">		return _collateral;</span>
 	}
 
 	/**
@@ -186,7 +198,7 @@ public class EvolutionTrajectoryVertex
 
 	public double hedgeError()
 	{
-<span class="nc" id="L189">		return _hedgeError;</span>
+<span class="nc" id="L201">		return _hedgeError;</span>
 	}
 
 	/**
@@ -197,7 +209,7 @@ public class EvolutionTrajectoryVertex
 
 	public org.drip.xva.derivative.ReplicationPortfolioVertex replicationPortfolioVertex()
 	{
-<span class="fc" id="L200">		return _replicationPortfolioVertex;</span>
+<span class="fc" id="L212">		return _replicationPortfolioVertex;</span>
 	}
 
 	/**
@@ -208,7 +220,7 @@ public class EvolutionTrajectoryVertex
 
 	public org.drip.xva.derivative.PositionGreekVertex positionGreekVertex()
 	{
-<span class="fc" id="L211">		return _positionGreekVertex;</span>
+<span class="fc" id="L223">		return _positionGreekVertex;</span>
 	}
 
 	/**
@@ -219,7 +231,7 @@ public class EvolutionTrajectoryVertex
 
 	public double gainOnDealerDefault()
 	{
-<span class="fc" id="L222">		return _clientGainOnDealerDefault;</span>
+<span class="fc" id="L234">		return _clientGainOnDealerDefault;</span>
 	}
 
 	/**
@@ -230,7 +242,7 @@ public class EvolutionTrajectoryVertex
 
 	public double gainOnClientDefault()
 	{
-<span class="fc" id="L233">		return _dealerGainOnClientDefault;</span>
+<span class="fc" id="L245">		return _dealerGainOnClientDefault;</span>
 	}
 
 	/**
@@ -248,27 +260,27 @@ public class EvolutionTrajectoryVertex
 		final org.drip.exposure.universe.MarketVertex marketVertex)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L251" title="All 2 branches missed.">		if (null == marketVertex)</span>
+<span class="nc bnc" id="L263" title="All 2 branches missed.">		if (null == marketVertex)</span>
 		{
-<span class="nc" id="L253">			throw new java.lang.Exception</span>
+<span class="nc" id="L265">			throw new java.lang.Exception</span>
 				(&quot;EvolutionTrajectoryVertex::verifyFundingConstraint =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="nc" id="L257">		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();</span>
+<span class="nc" id="L269">		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();</span>
 
-<span class="nc" id="L259">		double fundingConstraint = _positionGreekVertex.derivativeXVAValue() +</span>
-<span class="nc" id="L260">			dealerMarketVertex.seniorFundingReplicator() *</span>
-<span class="nc" id="L261">				_replicationPortfolioVertex.dealerSeniorNumeraireHoldings();</span>
+<span class="nc" id="L271">		double fundingConstraint = _positionGreekVertex.derivativeXVAValue() +</span>
+<span class="nc" id="L272">			dealerMarketVertex.seniorFundingReplicator() *</span>
+<span class="nc" id="L273">				_replicationPortfolioVertex.dealerSeniorNumeraireHoldings();</span>
 
-<span class="nc" id="L263">		double dealerSubordinateFundingMarketVertex = dealerMarketVertex.subordinateFundingReplicator();</span>
+<span class="nc" id="L275">		double dealerSubordinateFundingMarketVertex = dealerMarketVertex.subordinateFundingReplicator();</span>
 
-<span class="nc bnc" id="L265" title="All 2 branches missed.">		if (org.drip.numerical.common.NumberUtil.IsValid (dealerSubordinateFundingMarketVertex))</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">		if (org.drip.numerical.common.NumberUtil.IsValid (dealerSubordinateFundingMarketVertex))</span>
 		{
-<span class="nc" id="L267">			fundingConstraint += dealerSubordinateFundingMarketVertex *</span>
-<span class="nc" id="L268">				_replicationPortfolioVertex.dealerSubordinateNumeraireHoldings();</span>
+<span class="nc" id="L279">			fundingConstraint += dealerSubordinateFundingMarketVertex *</span>
+<span class="nc" id="L280">				_replicationPortfolioVertex.dealerSubordinateNumeraireHoldings();</span>
 		}
 
-<span class="nc" id="L271">		return fundingConstraint;</span>
+<span class="nc" id="L283">		return fundingConstraint;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

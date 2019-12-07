@@ -6,43 +6,55 @@ package org.drip.xva.gross;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -95,10 +107,10 @@ package org.drip.xva.gross;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/gross&quot;&gt;Gross&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/README.md&quot;&gt;Valuation Adjustments that account for Collateral, CC Credit/Debt and Funding Overhead&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/gross/README.md&quot;&gt;XVA Gross Adiabat Exposure Aggregation&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -107,7 +119,7 @@ package org.drip.xva.gross;
 
 public class ExposureAdjustmentAggregator
 {
-<span class="fc" id="L110">	private org.drip.xva.gross.PathExposureAdjustment[] _pathExposureAdjustmentArray = null;</span>
+<span class="fc" id="L122">	private org.drip.xva.gross.PathExposureAdjustment[] _pathExposureAdjustmentArray = null;</span>
 
 	/**
 	 * ExposureAdjustmentAggregator Constructor
@@ -120,13 +132,13 @@ public class ExposureAdjustmentAggregator
 	public ExposureAdjustmentAggregator (
 		final org.drip.xva.gross.PathExposureAdjustment[] pathExposureAdjustmentArray)
 		throws java.lang.Exception
-<span class="fc" id="L123">	{</span>
-<span class="pc bpc" id="L124" title="2 of 4 branches missed.">		if (null == (_pathExposureAdjustmentArray = pathExposureAdjustmentArray) ||</span>
+<span class="fc" id="L135">	{</span>
+<span class="pc bpc" id="L136" title="2 of 4 branches missed.">		if (null == (_pathExposureAdjustmentArray = pathExposureAdjustmentArray) ||</span>
 			0 == _pathExposureAdjustmentArray.length)
 		{
-<span class="nc" id="L127">			throw new java.lang.Exception (&quot;ExposureAdjustmentAggregator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L139">			throw new java.lang.Exception (&quot;ExposureAdjustmentAggregator Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L129">	}</span>
+<span class="fc" id="L141">	}</span>
 
 	/**
 	 * Retrieve the Array of Group Path Exposure Adjustments
@@ -136,7 +148,7 @@ public class ExposureAdjustmentAggregator
 
 	public org.drip.xva.gross.PathExposureAdjustment[] pathExposureAdjustmentArray()
 	{
-<span class="nc" id="L139">		return _pathExposureAdjustmentArray;</span>
+<span class="nc" id="L151">		return _pathExposureAdjustmentArray;</span>
 	}
 
 	/**
@@ -147,7 +159,7 @@ public class ExposureAdjustmentAggregator
 
 	public org.drip.analytics.date.JulianDate[] vertexDates()
 	{
-<span class="fc" id="L150">		return _pathExposureAdjustmentArray[0].vertexDates();</span>
+<span class="fc" id="L162">		return _pathExposureAdjustmentArray[0].vertexDates();</span>
 	}
 
 	/**
@@ -158,33 +170,33 @@ public class ExposureAdjustmentAggregator
 
 	public double[] collateralizedExposure()
 	{
-<span class="fc" id="L161">		int vertexCount = vertexDates().length;</span>
+<span class="fc" id="L173">		int vertexCount = vertexDates().length;</span>
 
-<span class="fc" id="L163">		int pathCount = _pathExposureAdjustmentArray.length;</span>
-<span class="fc" id="L164">		double[] collateralizedExposure = new double[vertexCount];</span>
+<span class="fc" id="L175">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="fc" id="L176">		double[] collateralizedExposure = new double[vertexCount];</span>
 
-<span class="fc bfc" id="L166" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L168">			collateralizedExposure[vertexIndex] = 0.;</span>
+<span class="fc" id="L180">			collateralizedExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L171" title="All 2 branches covered.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="fc" id="L173">			double[] pathCollateralizedExposure =</span>
-<span class="fc" id="L174">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedExposure();</span>
+<span class="fc" id="L185">			double[] pathCollateralizedExposure =</span>
+<span class="fc" id="L186">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedExposure();</span>
 
-<span class="fc bfc" id="L176" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="fc" id="L178">				collateralizedExposure[vertexIndex] += pathCollateralizedExposure[vertexIndex];</span>
+<span class="fc" id="L190">				collateralizedExposure[vertexIndex] += pathCollateralizedExposure[vertexIndex];</span>
 			}
 		}
 
-<span class="fc bfc" id="L182" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L184">			collateralizedExposure[vertexIndex] /= pathCount;</span>
+<span class="fc" id="L196">			collateralizedExposure[vertexIndex] /= pathCount;</span>
 		}
 
-<span class="fc" id="L187">		return collateralizedExposure;</span>
+<span class="fc" id="L199">		return collateralizedExposure;</span>
 	}
 
 	/**
@@ -195,33 +207,33 @@ public class ExposureAdjustmentAggregator
 
 	public double[] collateralizedExposurePV()
 	{
-<span class="fc" id="L198">		int vertexCount = vertexDates().length;</span>
+<span class="fc" id="L210">		int vertexCount = vertexDates().length;</span>
 
-<span class="fc" id="L200">		int pathCount = _pathExposureAdjustmentArray.length;</span>
-<span class="fc" id="L201">		double[] collateralizedExposurePV = new double[vertexCount];</span>
+<span class="fc" id="L212">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="fc" id="L213">		double[] collateralizedExposurePV = new double[vertexCount];</span>
 
-<span class="fc bfc" id="L203" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L215" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L205">			collateralizedExposurePV[vertexIndex] = 0.;</span>
+<span class="fc" id="L217">			collateralizedExposurePV[vertexIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L208" title="All 2 branches covered.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="fc" id="L210">			double[] pathCollateralizedExposurePV =</span>
-<span class="fc" id="L211">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedExposurePV();</span>
+<span class="fc" id="L222">			double[] pathCollateralizedExposurePV =</span>
+<span class="fc" id="L223">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedExposurePV();</span>
 
-<span class="fc bfc" id="L213" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="fc" id="L215">				collateralizedExposurePV[vertexIndex] += pathCollateralizedExposurePV[vertexIndex];</span>
+<span class="fc" id="L227">				collateralizedExposurePV[vertexIndex] += pathCollateralizedExposurePV[vertexIndex];</span>
 			}
 		}
 
-<span class="fc bfc" id="L219" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L231" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L221">			collateralizedExposurePV[vertexIndex] /= pathCount;</span>
+<span class="fc" id="L233">			collateralizedExposurePV[vertexIndex] /= pathCount;</span>
 		}
 
-<span class="fc" id="L224">		return collateralizedExposurePV;</span>
+<span class="fc" id="L236">		return collateralizedExposurePV;</span>
 	}
 
 	/**
@@ -232,31 +244,31 @@ public class ExposureAdjustmentAggregator
 
 	public double[] uncollateralizedExposure()
 	{
-<span class="nc" id="L235">		int vertexCount = vertexDates().length;</span>
+<span class="nc" id="L247">		int vertexCount = vertexDates().length;</span>
 
-<span class="nc" id="L237">		int pathCount = _pathExposureAdjustmentArray.length;</span>
-<span class="nc" id="L238">		double[] uncollateralizedExposure = new double[vertexCount];</span>
+<span class="nc" id="L249">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="nc" id="L250">		double[] uncollateralizedExposure = new double[vertexCount];</span>
 
-<span class="nc bnc" id="L240" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L242">			uncollateralizedExposure[vertexIndex] = 0.;</span>
+<span class="nc" id="L254">			uncollateralizedExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc bnc" id="L245" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="nc" id="L247">			double[] pathUncollateralizedExposure =</span>
-<span class="nc" id="L248">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedExposure();</span>
+<span class="nc" id="L259">			double[] pathUncollateralizedExposure =</span>
+<span class="nc" id="L260">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedExposure();</span>
 
-<span class="nc bnc" id="L250" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L262" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="nc" id="L252">				uncollateralizedExposure[vertexIndex] += pathUncollateralizedExposure[vertexIndex];</span>
+<span class="nc" id="L264">				uncollateralizedExposure[vertexIndex] += pathUncollateralizedExposure[vertexIndex];</span>
 			}
 		}
 
-<span class="nc bnc" id="L256" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
-<span class="nc" id="L257">			uncollateralizedExposure[vertexIndex] /= pathCount;</span>
+<span class="nc bnc" id="L268" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc" id="L269">			uncollateralizedExposure[vertexIndex] /= pathCount;</span>
 
-<span class="nc" id="L259">		return uncollateralizedExposure;</span>
+<span class="nc" id="L271">		return uncollateralizedExposure;</span>
 	}
 
 	/**
@@ -267,34 +279,34 @@ public class ExposureAdjustmentAggregator
 
 	public double[] uncollateralizedExposurePV()
 	{
-<span class="nc" id="L270">		int vertexCount = vertexDates().length;</span>
+<span class="nc" id="L282">		int vertexCount = vertexDates().length;</span>
 
-<span class="nc" id="L272">		int pathCount = _pathExposureAdjustmentArray.length;</span>
-<span class="nc" id="L273">		double[] uncollateralizedExposurePV = new double[vertexCount];</span>
+<span class="nc" id="L284">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="nc" id="L285">		double[] uncollateralizedExposurePV = new double[vertexCount];</span>
 
-<span class="nc bnc" id="L275" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L277">			uncollateralizedExposurePV[vertexIndex] = 0.;</span>
+<span class="nc" id="L289">			uncollateralizedExposurePV[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc bnc" id="L280" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="nc bnc" id="L292" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="nc" id="L282">			double[] pathUncollateralizedExposurePV =</span>
-<span class="nc" id="L283">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedExposurePV();</span>
+<span class="nc" id="L294">			double[] pathUncollateralizedExposurePV =</span>
+<span class="nc" id="L295">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedExposurePV();</span>
 
-<span class="nc bnc" id="L285" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L297" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="nc" id="L287">				uncollateralizedExposurePV[vertexIndex] +=</span>
+<span class="nc" id="L299">				uncollateralizedExposurePV[vertexIndex] +=</span>
 					pathUncollateralizedExposurePV[vertexIndex];
 			}
 		}
 
-<span class="nc bnc" id="L292" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L304" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L294">			uncollateralizedExposurePV[vertexIndex] /= pathCount;</span>
+<span class="nc" id="L306">			uncollateralizedExposurePV[vertexIndex] /= pathCount;</span>
 		}
 
-<span class="nc" id="L297">		return uncollateralizedExposurePV;</span>
+<span class="nc" id="L309">		return uncollateralizedExposurePV;</span>
 	}
 
 	/**
@@ -305,34 +317,34 @@ public class ExposureAdjustmentAggregator
 
 	public double[] collateralizedPositiveExposure()
 	{
-<span class="fc" id="L308">		int vertexCount = vertexDates().length;</span>
+<span class="fc" id="L320">		int vertexCount = vertexDates().length;</span>
 
-<span class="fc" id="L310">		int pathCount = _pathExposureAdjustmentArray.length;</span>
-<span class="fc" id="L311">		double[] collateralizedPositiveExposure = new double[vertexCount];</span>
+<span class="fc" id="L322">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="fc" id="L323">		double[] collateralizedPositiveExposure = new double[vertexCount];</span>
 
-<span class="fc bfc" id="L313" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L325" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L315">			collateralizedPositiveExposure[vertexIndex] = 0.;</span>
+<span class="fc" id="L327">			collateralizedPositiveExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L318" title="All 2 branches covered.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="fc bfc" id="L330" title="All 2 branches covered.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="fc" id="L320">			double[] pathCollateralizedPositiveExposure =</span>
-<span class="fc" id="L321">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedPositiveExposure();</span>
+<span class="fc" id="L332">			double[] pathCollateralizedPositiveExposure =</span>
+<span class="fc" id="L333">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedPositiveExposure();</span>
 
-<span class="fc bfc" id="L323" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L335" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="fc" id="L325">				collateralizedPositiveExposure[vertexIndex] +=</span>
+<span class="fc" id="L337">				collateralizedPositiveExposure[vertexIndex] +=</span>
 					pathCollateralizedPositiveExposure[vertexIndex];
 			}
 		}
 
-<span class="fc bfc" id="L330" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L342" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L332">			collateralizedPositiveExposure[vertexIndex] /= pathCount;</span>
+<span class="fc" id="L344">			collateralizedPositiveExposure[vertexIndex] /= pathCount;</span>
 		}
 
-<span class="fc" id="L335">		return collateralizedPositiveExposure;</span>
+<span class="fc" id="L347">		return collateralizedPositiveExposure;</span>
 	}
 
 	/**
@@ -343,34 +355,34 @@ public class ExposureAdjustmentAggregator
 
 	public double[] collateralizedPositiveExposurePV()
 	{
-<span class="fc" id="L346">		int vertexCount = vertexDates().length;</span>
+<span class="fc" id="L358">		int vertexCount = vertexDates().length;</span>
 
-<span class="fc" id="L348">		int pathCount = _pathExposureAdjustmentArray.length;</span>
-<span class="fc" id="L349">		double[] collateralizedPositiveExposurePV = new double[vertexCount];</span>
+<span class="fc" id="L360">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="fc" id="L361">		double[] collateralizedPositiveExposurePV = new double[vertexCount];</span>
 
-<span class="fc bfc" id="L351" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L363" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L353">			collateralizedPositiveExposurePV[vertexIndex] = 0.;</span>
+<span class="fc" id="L365">			collateralizedPositiveExposurePV[vertexIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L356" title="All 2 branches covered.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="fc bfc" id="L368" title="All 2 branches covered.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="fc" id="L358">			double[] pathCollateralizedPositiveExposurePV =</span>
-<span class="fc" id="L359">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedPositiveExposurePV();</span>
+<span class="fc" id="L370">			double[] pathCollateralizedPositiveExposurePV =</span>
+<span class="fc" id="L371">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedPositiveExposurePV();</span>
 
-<span class="fc bfc" id="L361" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L373" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="fc" id="L363">				collateralizedPositiveExposurePV[vertexIndex] +=</span>
+<span class="fc" id="L375">				collateralizedPositiveExposurePV[vertexIndex] +=</span>
 					pathCollateralizedPositiveExposurePV[vertexIndex];
 			}
 		}
 
-<span class="fc bfc" id="L368" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L380" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L370">			collateralizedPositiveExposurePV[vertexIndex] /= pathCount;</span>
+<span class="fc" id="L382">			collateralizedPositiveExposurePV[vertexIndex] /= pathCount;</span>
 		}
 
-<span class="fc" id="L373">		return collateralizedPositiveExposurePV;</span>
+<span class="fc" id="L385">		return collateralizedPositiveExposurePV;</span>
 	}
 
 	/**
@@ -381,34 +393,34 @@ public class ExposureAdjustmentAggregator
 
 	public double[] uncollateralizedPositiveExposure()
 	{
-<span class="nc" id="L384">		int vertexCount = vertexDates().length;</span>
+<span class="nc" id="L396">		int vertexCount = vertexDates().length;</span>
 
-<span class="nc" id="L386">		int pathCount = _pathExposureAdjustmentArray.length;</span>
-<span class="nc" id="L387">		double[] uncollateralizedPositiveExposure = new double[vertexCount];</span>
+<span class="nc" id="L398">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="nc" id="L399">		double[] uncollateralizedPositiveExposure = new double[vertexCount];</span>
 
-<span class="nc bnc" id="L389" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L401" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L391">			uncollateralizedPositiveExposure[vertexIndex] = 0.;</span>
+<span class="nc" id="L403">			uncollateralizedPositiveExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc bnc" id="L394" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="nc bnc" id="L406" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="nc" id="L396">			double[] pathUncollateralizedPositiveExposure =</span>
-<span class="nc" id="L397">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedPositiveExposure();</span>
+<span class="nc" id="L408">			double[] pathUncollateralizedPositiveExposure =</span>
+<span class="nc" id="L409">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedPositiveExposure();</span>
 
-<span class="nc bnc" id="L399" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L411" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="nc" id="L401">				uncollateralizedPositiveExposure[vertexIndex] +=</span>
+<span class="nc" id="L413">				uncollateralizedPositiveExposure[vertexIndex] +=</span>
 					pathUncollateralizedPositiveExposure[vertexIndex];
 			}
 		}
 
-<span class="nc bnc" id="L406" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L418" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L408">			uncollateralizedPositiveExposure[vertexIndex] /= pathCount;</span>
+<span class="nc" id="L420">			uncollateralizedPositiveExposure[vertexIndex] /= pathCount;</span>
 		}
 
-<span class="nc" id="L411">		return uncollateralizedPositiveExposure;</span>
+<span class="nc" id="L423">		return uncollateralizedPositiveExposure;</span>
 	}
 
 	/**
@@ -419,34 +431,34 @@ public class ExposureAdjustmentAggregator
 
 	public double[] uncollateralizedPositiveExposurePV()
 	{
-<span class="nc" id="L422">		int vertexCount = vertexDates().length;</span>
+<span class="nc" id="L434">		int vertexCount = vertexDates().length;</span>
 
-<span class="nc" id="L424">		int pathCount = _pathExposureAdjustmentArray.length;</span>
-<span class="nc" id="L425">		double[] uncollateralizedPositiveExposurePV = new double[vertexCount];</span>
+<span class="nc" id="L436">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="nc" id="L437">		double[] uncollateralizedPositiveExposurePV = new double[vertexCount];</span>
 
-<span class="nc bnc" id="L427" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L439" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L429">			uncollateralizedPositiveExposurePV[vertexIndex] = 0.;</span>
+<span class="nc" id="L441">			uncollateralizedPositiveExposurePV[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc bnc" id="L432" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="nc bnc" id="L444" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="nc" id="L434">			double[] pathUncollateralizedPositiveExposurePV =</span>
-<span class="nc" id="L435">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedPositiveExposurePV();</span>
+<span class="nc" id="L446">			double[] pathUncollateralizedPositiveExposurePV =</span>
+<span class="nc" id="L447">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedPositiveExposurePV();</span>
 
-<span class="nc bnc" id="L437" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L449" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="nc" id="L439">				uncollateralizedPositiveExposurePV[vertexIndex] +=</span>
+<span class="nc" id="L451">				uncollateralizedPositiveExposurePV[vertexIndex] +=</span>
 					pathUncollateralizedPositiveExposurePV[vertexIndex];
 			}
 		}
 
-<span class="nc bnc" id="L444" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L456" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L446">			uncollateralizedPositiveExposurePV[vertexIndex] /= pathCount;</span>
+<span class="nc" id="L458">			uncollateralizedPositiveExposurePV[vertexIndex] /= pathCount;</span>
 		}
 
-<span class="nc" id="L449">		return uncollateralizedPositiveExposurePV;</span>
+<span class="nc" id="L461">		return uncollateralizedPositiveExposurePV;</span>
 	}
 
 	/**
@@ -457,34 +469,34 @@ public class ExposureAdjustmentAggregator
 
 	public double[] collateralizedNegativeExposure()
 	{
-<span class="fc" id="L460">		int vertexCount = vertexDates().length;</span>
+<span class="fc" id="L472">		int vertexCount = vertexDates().length;</span>
 
-<span class="fc" id="L462">		int pathCount = _pathExposureAdjustmentArray.length;</span>
-<span class="fc" id="L463">		double[] collateralizedNegativeExposure = new double[vertexCount];</span>
+<span class="fc" id="L474">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="fc" id="L475">		double[] collateralizedNegativeExposure = new double[vertexCount];</span>
 
-<span class="fc bfc" id="L465" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L477" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L467">			collateralizedNegativeExposure[vertexIndex] = 0.;</span>
+<span class="fc" id="L479">			collateralizedNegativeExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L470" title="All 2 branches covered.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="fc bfc" id="L482" title="All 2 branches covered.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="fc" id="L472">			double[] pathCollateralizedNegativeExposure =</span>
-<span class="fc" id="L473">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedNegativeExposure();</span>
+<span class="fc" id="L484">			double[] pathCollateralizedNegativeExposure =</span>
+<span class="fc" id="L485">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedNegativeExposure();</span>
 
-<span class="fc bfc" id="L475" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L487" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="fc" id="L477">				collateralizedNegativeExposure[vertexIndex] +=</span>
+<span class="fc" id="L489">				collateralizedNegativeExposure[vertexIndex] +=</span>
 					pathCollateralizedNegativeExposure[vertexIndex];
 			}
 		}
 
-<span class="fc bfc" id="L482" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L494" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L484">			collateralizedNegativeExposure[vertexIndex] /= pathCount;</span>
+<span class="fc" id="L496">			collateralizedNegativeExposure[vertexIndex] /= pathCount;</span>
 		}
 
-<span class="fc" id="L487">		return collateralizedNegativeExposure;</span>
+<span class="fc" id="L499">		return collateralizedNegativeExposure;</span>
 	}
 
 	/**
@@ -495,34 +507,34 @@ public class ExposureAdjustmentAggregator
 
 	public double[] collateralizedNegativeExposurePV()
 	{
-<span class="fc" id="L498">		int vertexCount = vertexDates().length;</span>
+<span class="fc" id="L510">		int vertexCount = vertexDates().length;</span>
 
-<span class="fc" id="L500">		int pathCount = _pathExposureAdjustmentArray.length;</span>
-<span class="fc" id="L501">		double[] collateralizedNegativeExposurePV = new double[vertexCount];</span>
+<span class="fc" id="L512">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="fc" id="L513">		double[] collateralizedNegativeExposurePV = new double[vertexCount];</span>
 
-<span class="fc bfc" id="L503" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L515" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L505">			collateralizedNegativeExposurePV[vertexIndex] = 0.;</span>
+<span class="fc" id="L517">			collateralizedNegativeExposurePV[vertexIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L508" title="All 2 branches covered.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="fc bfc" id="L520" title="All 2 branches covered.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="fc" id="L510">			double[] pathCollateralizedNegativeExposurePV =</span>
-<span class="fc" id="L511">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedNegativeExposurePV();</span>
+<span class="fc" id="L522">			double[] pathCollateralizedNegativeExposurePV =</span>
+<span class="fc" id="L523">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedNegativeExposurePV();</span>
 
-<span class="fc bfc" id="L513" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L525" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="fc" id="L515">				collateralizedNegativeExposurePV[vertexIndex] +=</span>
+<span class="fc" id="L527">				collateralizedNegativeExposurePV[vertexIndex] +=</span>
 					pathCollateralizedNegativeExposurePV[vertexIndex];
 			}
 		}
 
-<span class="fc bfc" id="L520" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L532" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L522">			collateralizedNegativeExposurePV[vertexIndex] /= pathCount;</span>
+<span class="fc" id="L534">			collateralizedNegativeExposurePV[vertexIndex] /= pathCount;</span>
 		}
 
-<span class="fc" id="L525">		return collateralizedNegativeExposurePV;</span>
+<span class="fc" id="L537">		return collateralizedNegativeExposurePV;</span>
 	}
 
 	/**
@@ -533,34 +545,34 @@ public class ExposureAdjustmentAggregator
 
 	public double[] uncollateralizedNegativeExposure()
 	{
-<span class="nc" id="L536">		int vertexCount = vertexDates().length;</span>
+<span class="nc" id="L548">		int vertexCount = vertexDates().length;</span>
 
-<span class="nc" id="L538">		int pathCount = _pathExposureAdjustmentArray.length;</span>
-<span class="nc" id="L539">		double[] uncollateralizedNegativeExposure = new double[vertexCount];</span>
+<span class="nc" id="L550">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="nc" id="L551">		double[] uncollateralizedNegativeExposure = new double[vertexCount];</span>
 
-<span class="nc bnc" id="L541" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L553" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L543">			uncollateralizedNegativeExposure[vertexIndex] = 0.;</span>
+<span class="nc" id="L555">			uncollateralizedNegativeExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc bnc" id="L546" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="nc bnc" id="L558" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="nc" id="L548">			double[] pathUncollateralizedNegativeExposure =</span>
-<span class="nc" id="L549">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedNegativeExposure();</span>
+<span class="nc" id="L560">			double[] pathUncollateralizedNegativeExposure =</span>
+<span class="nc" id="L561">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedNegativeExposure();</span>
 
-<span class="nc bnc" id="L551" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L563" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="nc" id="L553">				uncollateralizedNegativeExposure[vertexIndex] +=</span>
+<span class="nc" id="L565">				uncollateralizedNegativeExposure[vertexIndex] +=</span>
 					pathUncollateralizedNegativeExposure[vertexIndex];
 			}
 		}
 
-<span class="nc bnc" id="L558" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L570" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L560">			uncollateralizedNegativeExposure[vertexIndex] /= pathCount;</span>
+<span class="nc" id="L572">			uncollateralizedNegativeExposure[vertexIndex] /= pathCount;</span>
 		}
 
-<span class="nc" id="L563">		return uncollateralizedNegativeExposure;</span>
+<span class="nc" id="L575">		return uncollateralizedNegativeExposure;</span>
 	}
 
 	/**
@@ -571,34 +583,34 @@ public class ExposureAdjustmentAggregator
 
 	public double[] uncollateralizedNegativeExposurePV()
 	{
-<span class="nc" id="L574">		int vertexCount = vertexDates().length;</span>
+<span class="nc" id="L586">		int vertexCount = vertexDates().length;</span>
 
-<span class="nc" id="L576">		int pathCount = _pathExposureAdjustmentArray.length;</span>
-<span class="nc" id="L577">		double[] uncollateralizedNegativeExposurePV = new double[vertexCount];</span>
+<span class="nc" id="L588">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="nc" id="L589">		double[] uncollateralizedNegativeExposurePV = new double[vertexCount];</span>
 
-<span class="nc bnc" id="L579" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L591" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L581">			uncollateralizedNegativeExposurePV[vertexIndex] = 0.;</span>
+<span class="nc" id="L593">			uncollateralizedNegativeExposurePV[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc bnc" id="L584" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="nc bnc" id="L596" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="nc" id="L586">			double[] pathUncollateralizedNegativeExposurePV =</span>
-<span class="nc" id="L587">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedNegativeExposurePV();</span>
+<span class="nc" id="L598">			double[] pathUncollateralizedNegativeExposurePV =</span>
+<span class="nc" id="L599">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedNegativeExposurePV();</span>
 
-<span class="nc bnc" id="L589" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L601" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="nc" id="L591">				uncollateralizedNegativeExposurePV[vertexIndex] +=</span>
+<span class="nc" id="L603">				uncollateralizedNegativeExposurePV[vertexIndex] +=</span>
 					pathUncollateralizedNegativeExposurePV[vertexIndex];
 			}
 		}
 
-<span class="nc bnc" id="L596" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L608" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L598">			uncollateralizedNegativeExposurePV[vertexIndex] /= pathCount;</span>
+<span class="nc" id="L610">			uncollateralizedNegativeExposurePV[vertexIndex] /= pathCount;</span>
 		}
 
-<span class="nc" id="L601">		return uncollateralizedNegativeExposurePV;</span>
+<span class="nc" id="L613">		return uncollateralizedNegativeExposurePV;</span>
 	}
 
 	/**
@@ -609,32 +621,32 @@ public class ExposureAdjustmentAggregator
 
 	public double[] fundingExposure()
 	{
-<span class="nc" id="L612">		int vertexCount = vertexDates().length;</span>
+<span class="nc" id="L624">		int vertexCount = vertexDates().length;</span>
 
-<span class="nc" id="L614">		double[] fundingExposure = new double[vertexCount];</span>
-<span class="nc" id="L615">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="nc" id="L626">		double[] fundingExposure = new double[vertexCount];</span>
+<span class="nc" id="L627">		int pathCount = _pathExposureAdjustmentArray.length;</span>
 
-<span class="nc bnc" id="L617" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L629" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L619">			fundingExposure[vertexIndex] = 0.;</span>
+<span class="nc" id="L631">			fundingExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc bnc" id="L622" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="nc bnc" id="L634" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="nc" id="L624">			double[] pathFundingExposure = _pathExposureAdjustmentArray[pathIndex].vertexFundingExposure();</span>
+<span class="nc" id="L636">			double[] pathFundingExposure = _pathExposureAdjustmentArray[pathIndex].vertexFundingExposure();</span>
 
-<span class="nc bnc" id="L626" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L638" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="nc" id="L628">				fundingExposure[vertexIndex] += pathFundingExposure[vertexIndex];</span>
+<span class="nc" id="L640">				fundingExposure[vertexIndex] += pathFundingExposure[vertexIndex];</span>
 			}
 		}
 
-<span class="nc bnc" id="L632" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L644" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L634">			fundingExposure[vertexIndex] /= pathCount;</span>
+<span class="nc" id="L646">			fundingExposure[vertexIndex] /= pathCount;</span>
 		}
 
-<span class="nc" id="L637">		return fundingExposure;</span>
+<span class="nc" id="L649">		return fundingExposure;</span>
 	}
 
 	/**
@@ -645,33 +657,33 @@ public class ExposureAdjustmentAggregator
 
 	public double[] fundingExposurePV()
 	{
-<span class="nc" id="L648">		int vertexCount = vertexDates().length;</span>
+<span class="nc" id="L660">		int vertexCount = vertexDates().length;</span>
 
-<span class="nc" id="L650">		int pathCount = _pathExposureAdjustmentArray.length;</span>
-<span class="nc" id="L651">		double[] fundingExposurePV = new double[vertexCount];</span>
+<span class="nc" id="L662">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="nc" id="L663">		double[] fundingExposurePV = new double[vertexCount];</span>
 
-<span class="nc bnc" id="L653" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L665" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L655">			fundingExposurePV[vertexIndex] = 0.;</span>
+<span class="nc" id="L667">			fundingExposurePV[vertexIndex] = 0.;</span>
 		}
 
-<span class="nc bnc" id="L658" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="nc bnc" id="L670" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="nc" id="L660">			double[] pathFundingExposurePV =</span>
-<span class="nc" id="L661">				_pathExposureAdjustmentArray[pathIndex].vertexFundingExposurePV();</span>
+<span class="nc" id="L672">			double[] pathFundingExposurePV =</span>
+<span class="nc" id="L673">				_pathExposureAdjustmentArray[pathIndex].vertexFundingExposurePV();</span>
 
-<span class="nc bnc" id="L663" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L675" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="nc" id="L665">				fundingExposurePV[vertexIndex] += pathFundingExposurePV[vertexIndex];</span>
+<span class="nc" id="L677">				fundingExposurePV[vertexIndex] += pathFundingExposurePV[vertexIndex];</span>
 			}
 		}
 
-<span class="nc bnc" id="L669" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L681" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L671">			fundingExposurePV[vertexIndex] /= pathCount;</span>
+<span class="nc" id="L683">			fundingExposurePV[vertexIndex] /= pathCount;</span>
 		}
 
-<span class="nc" id="L674">		return fundingExposurePV;</span>
+<span class="nc" id="L686">		return fundingExposurePV;</span>
 	}
 
 	/**
@@ -682,24 +694,24 @@ public class ExposureAdjustmentAggregator
 
 	public org.drip.xva.basel.ValueAdjustment ftdcolva()
 	{
-<span class="nc" id="L685">		double ftdcolva = 0.;</span>
-<span class="nc" id="L686">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="nc" id="L697">		double ftdcolva = 0.;</span>
+<span class="nc" id="L698">		int pathCount = _pathExposureAdjustmentArray.length;</span>
 
 		try
 		{
-<span class="nc bnc" id="L690" title="All 2 branches missed.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="nc bnc" id="L702" title="All 2 branches missed.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 			{
-<span class="nc" id="L692">				ftdcolva += _pathExposureAdjustmentArray[pathIndex].bilateralCollateralAdjustment();</span>
+<span class="nc" id="L704">				ftdcolva += _pathExposureAdjustmentArray[pathIndex].bilateralCollateralAdjustment();</span>
 			}
 		}
-<span class="nc" id="L695">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L707">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L697">			e.printStackTrace();</span>
+<span class="nc" id="L709">			e.printStackTrace();</span>
 
-<span class="nc" id="L699">			return null;</span>
-<span class="nc" id="L700">		}</span>
+<span class="nc" id="L711">			return null;</span>
+<span class="nc" id="L712">		}</span>
 
-<span class="nc" id="L702">		return org.drip.xva.basel.ValueAdjustment.COLVA (ftdcolva / pathCount);</span>
+<span class="nc" id="L714">		return org.drip.xva.basel.ValueAdjustment.COLVA (ftdcolva / pathCount);</span>
 	}
 
 	/**
@@ -710,24 +722,24 @@ public class ExposureAdjustmentAggregator
 
 	public org.drip.xva.basel.ValueAdjustment colva()
 	{
-<span class="fc" id="L713">		double colva = 0.;</span>
-<span class="fc" id="L714">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="fc" id="L725">		double colva = 0.;</span>
+<span class="fc" id="L726">		int pathCount = _pathExposureAdjustmentArray.length;</span>
 
 		try
 		{
-<span class="fc bfc" id="L718" title="All 2 branches covered.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="fc bfc" id="L730" title="All 2 branches covered.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 			{
-<span class="fc" id="L720">				colva += _pathExposureAdjustmentArray[pathIndex].bilateralCollateralAdjustment();</span>
+<span class="fc" id="L732">				colva += _pathExposureAdjustmentArray[pathIndex].bilateralCollateralAdjustment();</span>
 			}
 		}
-<span class="nc" id="L723">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L735">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L725">			e.printStackTrace();</span>
+<span class="nc" id="L737">			e.printStackTrace();</span>
 
-<span class="nc" id="L727">			return null;</span>
-<span class="fc" id="L728">		}</span>
+<span class="nc" id="L739">			return null;</span>
+<span class="fc" id="L740">		}</span>
 
-<span class="fc" id="L730">		return org.drip.xva.basel.ValueAdjustment.COLVA (colva / pathCount);</span>
+<span class="fc" id="L742">		return org.drip.xva.basel.ValueAdjustment.COLVA (colva / pathCount);</span>
 	}
 
 	/**
@@ -738,24 +750,24 @@ public class ExposureAdjustmentAggregator
 
 	public org.drip.xva.basel.ValueAdjustment ucva()
 	{
-<span class="fc" id="L741">		double ucva = 0.;</span>
-<span class="fc" id="L742">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="fc" id="L753">		double ucva = 0.;</span>
+<span class="fc" id="L754">		int pathCount = _pathExposureAdjustmentArray.length;</span>
 
 		try
 		{
-<span class="fc bfc" id="L746" title="All 2 branches covered.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="fc bfc" id="L758" title="All 2 branches covered.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 			{
-<span class="fc" id="L748">				ucva += _pathExposureAdjustmentArray[pathIndex].unilateralCreditAdjustment();</span>
+<span class="fc" id="L760">				ucva += _pathExposureAdjustmentArray[pathIndex].unilateralCreditAdjustment();</span>
 			}
 		}
-<span class="nc" id="L751">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L763">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L753">			e.printStackTrace();</span>
+<span class="nc" id="L765">			e.printStackTrace();</span>
 
-<span class="nc" id="L755">			return null;</span>
-<span class="fc" id="L756">		}</span>
+<span class="nc" id="L767">			return null;</span>
+<span class="fc" id="L768">		}</span>
 
-<span class="fc" id="L758">		return org.drip.xva.basel.ValueAdjustment.UCVA (ucva / pathCount);</span>
+<span class="fc" id="L770">		return org.drip.xva.basel.ValueAdjustment.UCVA (ucva / pathCount);</span>
 	}
 
 	/**
@@ -766,24 +778,24 @@ public class ExposureAdjustmentAggregator
 
 	public org.drip.xva.basel.ValueAdjustment ftdcva()
 	{
-<span class="fc" id="L769">		double ftdcva = 0.;</span>
-<span class="fc" id="L770">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="fc" id="L781">		double ftdcva = 0.;</span>
+<span class="fc" id="L782">		int pathCount = _pathExposureAdjustmentArray.length;</span>
 
 		try
 		{
-<span class="fc bfc" id="L774" title="All 2 branches covered.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="fc bfc" id="L786" title="All 2 branches covered.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 			{
-<span class="fc" id="L776">				ftdcva += _pathExposureAdjustmentArray[pathIndex].bilateralCreditAdjustment();</span>
+<span class="fc" id="L788">				ftdcva += _pathExposureAdjustmentArray[pathIndex].bilateralCreditAdjustment();</span>
 			}
 		}
-<span class="nc" id="L779">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L791">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L781">			e.printStackTrace();</span>
+<span class="nc" id="L793">			e.printStackTrace();</span>
 
-<span class="nc" id="L783">			return null;</span>
-<span class="fc" id="L784">		}</span>
+<span class="nc" id="L795">			return null;</span>
+<span class="fc" id="L796">		}</span>
 
-<span class="fc" id="L786">		return org.drip.xva.basel.ValueAdjustment.FTDCVA (ftdcva / pathCount);</span>
+<span class="fc" id="L798">		return org.drip.xva.basel.ValueAdjustment.FTDCVA (ftdcva / pathCount);</span>
 	}
 
 	/**
@@ -794,7 +806,7 @@ public class ExposureAdjustmentAggregator
 
 	public org.drip.xva.basel.ValueAdjustment cva()
 	{
-<span class="fc" id="L797">		return ftdcva();</span>
+<span class="fc" id="L809">		return ftdcva();</span>
 	}
 
 	/**
@@ -805,24 +817,24 @@ public class ExposureAdjustmentAggregator
 
 	public org.drip.xva.basel.ValueAdjustment cvacl()
 	{
-<span class="fc" id="L808">		double cvacl = 0.;</span>
-<span class="fc" id="L809">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="fc" id="L820">		double cvacl = 0.;</span>
+<span class="fc" id="L821">		int pathCount = _pathExposureAdjustmentArray.length;</span>
 
 		try
 		{
-<span class="fc bfc" id="L813" title="All 2 branches covered.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="fc bfc" id="L825" title="All 2 branches covered.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 			{
-<span class="fc" id="L815">				cvacl += _pathExposureAdjustmentArray[pathIndex].contraLiabilityCreditAdjustment();</span>
+<span class="fc" id="L827">				cvacl += _pathExposureAdjustmentArray[pathIndex].contraLiabilityCreditAdjustment();</span>
 			}
 		}
-<span class="nc" id="L818">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L830">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L820">			e.printStackTrace();</span>
+<span class="nc" id="L832">			e.printStackTrace();</span>
 
-<span class="nc" id="L822">			return null;</span>
-<span class="fc" id="L823">		}</span>
+<span class="nc" id="L834">			return null;</span>
+<span class="fc" id="L835">		}</span>
 
-<span class="fc" id="L825">		return org.drip.xva.basel.ValueAdjustment.CVACL (cvacl / pathCount);</span>
+<span class="fc" id="L837">		return org.drip.xva.basel.ValueAdjustment.CVACL (cvacl / pathCount);</span>
 	}
 
 	/**
@@ -833,23 +845,23 @@ public class ExposureAdjustmentAggregator
 
 	public org.drip.xva.basel.ValueAdjustment udva()
 	{
-<span class="nc" id="L836">		double udva = 0.;</span>
-<span class="nc" id="L837">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="nc" id="L848">		double udva = 0.;</span>
+<span class="nc" id="L849">		int pathCount = _pathExposureAdjustmentArray.length;</span>
 
 		try {
-<span class="nc bnc" id="L840" title="All 2 branches missed.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="nc bnc" id="L852" title="All 2 branches missed.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 			{
-<span class="nc" id="L842">				udva += _pathExposureAdjustmentArray[pathIndex].unilateralDebtAdjustment();</span>
+<span class="nc" id="L854">				udva += _pathExposureAdjustmentArray[pathIndex].unilateralDebtAdjustment();</span>
 			}
 		}
-<span class="nc" id="L845">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L857">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L847">			e.printStackTrace();</span>
+<span class="nc" id="L859">			e.printStackTrace();</span>
 
-<span class="nc" id="L849">			return null;</span>
-<span class="nc" id="L850">		}</span>
+<span class="nc" id="L861">			return null;</span>
+<span class="nc" id="L862">		}</span>
 
-<span class="nc" id="L852">		return org.drip.xva.basel.ValueAdjustment.DVA (udva / pathCount);</span>
+<span class="nc" id="L864">		return org.drip.xva.basel.ValueAdjustment.DVA (udva / pathCount);</span>
 	}
 
 	/**
@@ -860,23 +872,23 @@ public class ExposureAdjustmentAggregator
 
 	public org.drip.xva.basel.ValueAdjustment ftddva()
 	{
-<span class="nc" id="L863">		double ftddva = 0.;</span>
-<span class="nc" id="L864">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="nc" id="L875">		double ftddva = 0.;</span>
+<span class="nc" id="L876">		int pathCount = _pathExposureAdjustmentArray.length;</span>
 
 		try {
-<span class="nc bnc" id="L867" title="All 2 branches missed.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="nc bnc" id="L879" title="All 2 branches missed.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 			{
-<span class="nc" id="L869">				ftddva += _pathExposureAdjustmentArray[pathIndex].bilateralDebtAdjustment();</span>
+<span class="nc" id="L881">				ftddva += _pathExposureAdjustmentArray[pathIndex].bilateralDebtAdjustment();</span>
 			}
 		}
-<span class="nc" id="L872">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L884">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L874">			e.printStackTrace();</span>
+<span class="nc" id="L886">			e.printStackTrace();</span>
 
-<span class="nc" id="L876">			return null;</span>
-<span class="nc" id="L877">		}</span>
+<span class="nc" id="L888">			return null;</span>
+<span class="nc" id="L889">		}</span>
 
-<span class="nc" id="L879">		return org.drip.xva.basel.ValueAdjustment.DVA (ftddva / pathCount);</span>
+<span class="nc" id="L891">		return org.drip.xva.basel.ValueAdjustment.DVA (ftddva / pathCount);</span>
 	}
 
 	/**
@@ -887,23 +899,23 @@ public class ExposureAdjustmentAggregator
 
 	public org.drip.xva.basel.ValueAdjustment dva()
 	{
-<span class="fc" id="L890">		double dva = 0.;</span>
-<span class="fc" id="L891">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="fc" id="L902">		double dva = 0.;</span>
+<span class="fc" id="L903">		int pathCount = _pathExposureAdjustmentArray.length;</span>
 
 		try {
-<span class="fc bfc" id="L894" title="All 2 branches covered.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="fc bfc" id="L906" title="All 2 branches covered.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 			{
-<span class="fc" id="L896">				dva += _pathExposureAdjustmentArray[pathIndex].debtAdjustment();</span>
+<span class="fc" id="L908">				dva += _pathExposureAdjustmentArray[pathIndex].debtAdjustment();</span>
 			}
 		}
-<span class="nc" id="L899">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L911">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L901">			e.printStackTrace();</span>
+<span class="nc" id="L913">			e.printStackTrace();</span>
 
-<span class="nc" id="L903">			return null;</span>
-<span class="fc" id="L904">		}</span>
+<span class="nc" id="L915">			return null;</span>
+<span class="fc" id="L916">		}</span>
 
-<span class="fc" id="L906">		return org.drip.xva.basel.ValueAdjustment.DVA (dva / pathCount);</span>
+<span class="fc" id="L918">		return org.drip.xva.basel.ValueAdjustment.DVA (dva / pathCount);</span>
 	}
 
 	/**
@@ -914,24 +926,24 @@ public class ExposureAdjustmentAggregator
 
 	public org.drip.xva.basel.ValueAdjustment fva()
 	{
-<span class="fc" id="L917">		double fva = 0.;</span>
-<span class="fc" id="L918">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="fc" id="L929">		double fva = 0.;</span>
+<span class="fc" id="L930">		int pathCount = _pathExposureAdjustmentArray.length;</span>
 
 		try
 		{
-<span class="fc bfc" id="L922" title="All 2 branches covered.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="fc bfc" id="L934" title="All 2 branches covered.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 			{
-<span class="fc" id="L924">				fva += _pathExposureAdjustmentArray[pathIndex].fundingValueAdjustment();</span>
+<span class="fc" id="L936">				fva += _pathExposureAdjustmentArray[pathIndex].fundingValueAdjustment();</span>
 			}
 		}
-<span class="nc" id="L927">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L939">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L929">			e.printStackTrace();</span>
+<span class="nc" id="L941">			e.printStackTrace();</span>
 
-<span class="nc" id="L931">			return null;</span>
-<span class="fc" id="L932">		}</span>
+<span class="nc" id="L943">			return null;</span>
+<span class="fc" id="L944">		}</span>
 
-<span class="fc" id="L934">		return org.drip.xva.basel.ValueAdjustment.FVA (fva / pathCount);</span>
+<span class="fc" id="L946">		return org.drip.xva.basel.ValueAdjustment.FVA (fva / pathCount);</span>
 	}
 
 	/**
@@ -942,24 +954,24 @@ public class ExposureAdjustmentAggregator
 
 	public org.drip.xva.basel.ValueAdjustment fda()
 	{
-<span class="fc" id="L945">		double fda = 0.;</span>
-<span class="fc" id="L946">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="fc" id="L957">		double fda = 0.;</span>
+<span class="fc" id="L958">		int pathCount = _pathExposureAdjustmentArray.length;</span>
 
 		try
 		{
-<span class="fc bfc" id="L950" title="All 2 branches covered.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="fc bfc" id="L962" title="All 2 branches covered.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 			{
-<span class="fc" id="L952">				fda += _pathExposureAdjustmentArray[pathIndex].fundingDebtAdjustment();</span>
+<span class="fc" id="L964">				fda += _pathExposureAdjustmentArray[pathIndex].fundingDebtAdjustment();</span>
 			}
 		}
-<span class="nc" id="L955">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L967">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L957">			e.printStackTrace();</span>
+<span class="nc" id="L969">			e.printStackTrace();</span>
 
-<span class="nc" id="L959">			return null;</span>
-<span class="fc" id="L960">		}</span>
+<span class="nc" id="L971">			return null;</span>
+<span class="fc" id="L972">		}</span>
 
-<span class="fc" id="L962">		return org.drip.xva.basel.ValueAdjustment.FDA (fda / pathCount);</span>
+<span class="fc" id="L974">		return org.drip.xva.basel.ValueAdjustment.FDA (fda / pathCount);</span>
 	}
 
 	/**
@@ -970,7 +982,7 @@ public class ExposureAdjustmentAggregator
 
 	public org.drip.xva.basel.ValueAdjustment dva2()
 	{
-<span class="nc" id="L973">		return fda();</span>
+<span class="nc" id="L985">		return fda();</span>
 	}
 
 	/**
@@ -981,15 +993,15 @@ public class ExposureAdjustmentAggregator
 
 	public org.drip.xva.basel.ValueAdjustment fca()
 	{
-<span class="fc" id="L984">		double fca = 0.;</span>
-<span class="fc" id="L985">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="fc" id="L996">		double fca = 0.;</span>
+<span class="fc" id="L997">		int pathCount = _pathExposureAdjustmentArray.length;</span>
 
-<span class="fc bfc" id="L987" title="All 2 branches covered.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="fc bfc" id="L999" title="All 2 branches covered.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="fc" id="L989">			fca += _pathExposureAdjustmentArray[pathIndex].fundingCostAdjustment();</span>
+<span class="fc" id="L1001">			fca += _pathExposureAdjustmentArray[pathIndex].fundingCostAdjustment();</span>
 		}
 
-<span class="fc" id="L992">		return org.drip.xva.basel.ValueAdjustment.HYBRID (fca / pathCount);</span>
+<span class="fc" id="L1004">		return org.drip.xva.basel.ValueAdjustment.HYBRID (fca / pathCount);</span>
 	}
 
 	/**
@@ -1000,15 +1012,15 @@ public class ExposureAdjustmentAggregator
 
 	public org.drip.xva.basel.ValueAdjustment fba()
 	{
-<span class="fc" id="L1003">		double fba = 0.;</span>
-<span class="fc" id="L1004">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="fc" id="L1015">		double fba = 0.;</span>
+<span class="fc" id="L1016">		int pathCount = _pathExposureAdjustmentArray.length;</span>
 
-<span class="fc bfc" id="L1006" title="All 2 branches covered.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="fc bfc" id="L1018" title="All 2 branches covered.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="fc" id="L1008">			fba += _pathExposureAdjustmentArray[pathIndex].fundingBenefitAdjustment();</span>
+<span class="fc" id="L1020">			fba += _pathExposureAdjustmentArray[pathIndex].fundingBenefitAdjustment();</span>
 		}
 
-<span class="fc" id="L1011">		return org.drip.xva.basel.ValueAdjustment.HYBRID (fba / pathCount);</span>
+<span class="fc" id="L1023">		return org.drip.xva.basel.ValueAdjustment.HYBRID (fba / pathCount);</span>
 	}
 
 	/**
@@ -1019,15 +1031,15 @@ public class ExposureAdjustmentAggregator
 
 	public org.drip.xva.basel.ValueAdjustment sfva()
 	{
-<span class="fc" id="L1022">		double sfva = 0.;</span>
-<span class="fc" id="L1023">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="fc" id="L1034">		double sfva = 0.;</span>
+<span class="fc" id="L1035">		int pathCount = _pathExposureAdjustmentArray.length;</span>
 
-<span class="fc bfc" id="L1025" title="All 2 branches covered.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="fc bfc" id="L1037" title="All 2 branches covered.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="fc" id="L1027">			sfva += _pathExposureAdjustmentArray[pathIndex].symmetricFundingValueAdjustment();</span>
+<span class="fc" id="L1039">			sfva += _pathExposureAdjustmentArray[pathIndex].symmetricFundingValueAdjustment();</span>
 		}
 
-<span class="fc" id="L1030">		return org.drip.xva.basel.ValueAdjustment.HYBRID (sfva / pathCount);</span>
+<span class="fc" id="L1042">		return org.drip.xva.basel.ValueAdjustment.HYBRID (sfva / pathCount);</span>
 	}
 
 	/**
@@ -1038,7 +1050,7 @@ public class ExposureAdjustmentAggregator
 
 	public double total()
 	{
-<span class="fc" id="L1041">		return cva().amount() + dva().amount() + fva().amount() + colva().amount();</span>
+<span class="fc" id="L1053">		return cva().amount() + dva().amount() + fva().amount() + colva().amount();</span>
 	}
 
 	/**
@@ -1049,172 +1061,172 @@ public class ExposureAdjustmentAggregator
 
 	public org.drip.xva.gross.ExposureAdjustmentDigest digest()
 	{
-<span class="fc" id="L1052">		int vertexCount = vertexDates().length;</span>
+<span class="fc" id="L1064">		int vertexCount = vertexDates().length;</span>
 
-<span class="fc" id="L1054">		int pathCount = _pathExposureAdjustmentArray.length;</span>
-<span class="fc" id="L1055">		double[] pathCVA = new double[pathCount];</span>
-<span class="fc" id="L1056">		double[] pathDVA = new double[pathCount];</span>
-<span class="fc" id="L1057">		double[] pathFBA = new double[pathCount];</span>
-<span class="fc" id="L1058">		double[] pathFCA = new double[pathCount];</span>
-<span class="fc" id="L1059">		double[] pathFDA = new double[pathCount];</span>
-<span class="fc" id="L1060">		double[] pathFVA = new double[pathCount];</span>
-<span class="fc" id="L1061">		double[] pathUCVA = new double[pathCount];</span>
-<span class="fc" id="L1062">		double[] pathSFVA = new double[pathCount];</span>
-<span class="fc" id="L1063">		double[] pathCVACL = new double[pathCount];</span>
-<span class="fc" id="L1064">		double[] pathFTDCVA = new double[pathCount];</span>
-<span class="fc" id="L1065">		double[] pathCOLVA = new double[pathCount];</span>
-<span class="fc" id="L1066">		double[] pathTotalVA = new double[pathCount];</span>
-<span class="fc" id="L1067">		double[] pathFTDCOLVA = new double[pathCount];</span>
-<span class="fc" id="L1068">		double[][] fundingExposure = new double[vertexCount][pathCount];</span>
-<span class="fc" id="L1069">		double[][] fundingExposurePV = new double[vertexCount][pathCount];</span>
-<span class="fc" id="L1070">		double[][] collateralizedExposure = new double[vertexCount][pathCount];</span>
-<span class="fc" id="L1071">		double[][] uncollateralizedExposure = new double[vertexCount][pathCount];</span>
-<span class="fc" id="L1072">		double[][] collateralizedExposurePV = new double[vertexCount][pathCount];</span>
-<span class="fc" id="L1073">		double[][] uncollateralizedExposurePV = new double[vertexCount][pathCount];</span>
-<span class="fc" id="L1074">		double[][] collateralizedPositiveExposure = new double[vertexCount][pathCount];</span>
-<span class="fc" id="L1075">		double[][] collateralizedNegativeExposure = new double[vertexCount][pathCount];</span>
-<span class="fc" id="L1076">		double[][] uncollateralizedPositiveExposure = new double[vertexCount][pathCount];</span>
-<span class="fc" id="L1077">		double[][] uncollateralizedNegativeExposure = new double[vertexCount][pathCount];</span>
-<span class="fc" id="L1078">		double[][] collateralizedPositiveExposurePV = new double[vertexCount][pathCount];</span>
-<span class="fc" id="L1079">		double[][] collateralizedNegativeExposurePV = new double[vertexCount][pathCount];</span>
-<span class="fc" id="L1080">		double[][] uncollateralizedPositiveExposurePV = new double[vertexCount][pathCount];</span>
-<span class="fc" id="L1081">		double[][] uncollateralizedNegativeExposurePV = new double[vertexCount][pathCount];</span>
+<span class="fc" id="L1066">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="fc" id="L1067">		double[] pathCVA = new double[pathCount];</span>
+<span class="fc" id="L1068">		double[] pathDVA = new double[pathCount];</span>
+<span class="fc" id="L1069">		double[] pathFBA = new double[pathCount];</span>
+<span class="fc" id="L1070">		double[] pathFCA = new double[pathCount];</span>
+<span class="fc" id="L1071">		double[] pathFDA = new double[pathCount];</span>
+<span class="fc" id="L1072">		double[] pathFVA = new double[pathCount];</span>
+<span class="fc" id="L1073">		double[] pathUCVA = new double[pathCount];</span>
+<span class="fc" id="L1074">		double[] pathSFVA = new double[pathCount];</span>
+<span class="fc" id="L1075">		double[] pathCVACL = new double[pathCount];</span>
+<span class="fc" id="L1076">		double[] pathFTDCVA = new double[pathCount];</span>
+<span class="fc" id="L1077">		double[] pathCOLVA = new double[pathCount];</span>
+<span class="fc" id="L1078">		double[] pathTotalVA = new double[pathCount];</span>
+<span class="fc" id="L1079">		double[] pathFTDCOLVA = new double[pathCount];</span>
+<span class="fc" id="L1080">		double[][] fundingExposure = new double[vertexCount][pathCount];</span>
+<span class="fc" id="L1081">		double[][] fundingExposurePV = new double[vertexCount][pathCount];</span>
+<span class="fc" id="L1082">		double[][] collateralizedExposure = new double[vertexCount][pathCount];</span>
+<span class="fc" id="L1083">		double[][] uncollateralizedExposure = new double[vertexCount][pathCount];</span>
+<span class="fc" id="L1084">		double[][] collateralizedExposurePV = new double[vertexCount][pathCount];</span>
+<span class="fc" id="L1085">		double[][] uncollateralizedExposurePV = new double[vertexCount][pathCount];</span>
+<span class="fc" id="L1086">		double[][] collateralizedPositiveExposure = new double[vertexCount][pathCount];</span>
+<span class="fc" id="L1087">		double[][] collateralizedNegativeExposure = new double[vertexCount][pathCount];</span>
+<span class="fc" id="L1088">		double[][] uncollateralizedPositiveExposure = new double[vertexCount][pathCount];</span>
+<span class="fc" id="L1089">		double[][] uncollateralizedNegativeExposure = new double[vertexCount][pathCount];</span>
+<span class="fc" id="L1090">		double[][] collateralizedPositiveExposurePV = new double[vertexCount][pathCount];</span>
+<span class="fc" id="L1091">		double[][] collateralizedNegativeExposurePV = new double[vertexCount][pathCount];</span>
+<span class="fc" id="L1092">		double[][] uncollateralizedPositiveExposurePV = new double[vertexCount][pathCount];</span>
+<span class="fc" id="L1093">		double[][] uncollateralizedNegativeExposurePV = new double[vertexCount][pathCount];</span>
 
-<span class="fc bfc" id="L1083" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L1095" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc bfc" id="L1085" title="All 2 branches covered.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="fc bfc" id="L1097" title="All 2 branches covered.">			for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 			{
-<span class="fc" id="L1087">				collateralizedExposure[vertexIndex][pathIndex] = 0.;</span>
-<span class="fc" id="L1088">				uncollateralizedExposure[vertexIndex][pathIndex] = 0.;</span>
-<span class="fc" id="L1089">				collateralizedExposurePV[vertexIndex][pathIndex] = 0.;</span>
-<span class="fc" id="L1090">				uncollateralizedExposurePV[vertexIndex][pathIndex] = 0.;</span>
-<span class="fc" id="L1091">				collateralizedPositiveExposure[vertexIndex][pathIndex] = 0.;</span>
-<span class="fc" id="L1092">				collateralizedNegativeExposure[vertexIndex][pathIndex] = 0.;</span>
-<span class="fc" id="L1093">				uncollateralizedPositiveExposure[vertexIndex][pathIndex] = 0.;</span>
-<span class="fc" id="L1094">				uncollateralizedNegativeExposure[vertexIndex][pathIndex] = 0.;</span>
-<span class="fc" id="L1095">				collateralizedPositiveExposurePV[vertexIndex][pathIndex] = 0.;</span>
-<span class="fc" id="L1096">				collateralizedNegativeExposurePV[vertexIndex][pathIndex] = 0.;</span>
-<span class="fc" id="L1097">				uncollateralizedPositiveExposurePV[vertexIndex][pathIndex] = 0.;</span>
-<span class="fc" id="L1098">				uncollateralizedNegativeExposurePV[vertexIndex][pathIndex] = 0.;</span>
+<span class="fc" id="L1099">				collateralizedExposure[vertexIndex][pathIndex] = 0.;</span>
+<span class="fc" id="L1100">				uncollateralizedExposure[vertexIndex][pathIndex] = 0.;</span>
+<span class="fc" id="L1101">				collateralizedExposurePV[vertexIndex][pathIndex] = 0.;</span>
+<span class="fc" id="L1102">				uncollateralizedExposurePV[vertexIndex][pathIndex] = 0.;</span>
+<span class="fc" id="L1103">				collateralizedPositiveExposure[vertexIndex][pathIndex] = 0.;</span>
+<span class="fc" id="L1104">				collateralizedNegativeExposure[vertexIndex][pathIndex] = 0.;</span>
+<span class="fc" id="L1105">				uncollateralizedPositiveExposure[vertexIndex][pathIndex] = 0.;</span>
+<span class="fc" id="L1106">				uncollateralizedNegativeExposure[vertexIndex][pathIndex] = 0.;</span>
+<span class="fc" id="L1107">				collateralizedPositiveExposurePV[vertexIndex][pathIndex] = 0.;</span>
+<span class="fc" id="L1108">				collateralizedNegativeExposurePV[vertexIndex][pathIndex] = 0.;</span>
+<span class="fc" id="L1109">				uncollateralizedPositiveExposurePV[vertexIndex][pathIndex] = 0.;</span>
+<span class="fc" id="L1110">				uncollateralizedNegativeExposurePV[vertexIndex][pathIndex] = 0.;</span>
 			}
 		}
 
-<span class="fc bfc" id="L1102" title="All 2 branches covered.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="fc bfc" id="L1114" title="All 2 branches covered.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="fc" id="L1104">			double[] pathCollateralizedExposure =</span>
-<span class="fc" id="L1105">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedExposure();</span>
+<span class="fc" id="L1116">			double[] pathCollateralizedExposure =</span>
+<span class="fc" id="L1117">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedExposure();</span>
 
-<span class="fc" id="L1107">			double[] pathCollateralizedExposurePV =</span>
-<span class="fc" id="L1108">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedExposurePV();</span>
+<span class="fc" id="L1119">			double[] pathCollateralizedExposurePV =</span>
+<span class="fc" id="L1120">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedExposurePV();</span>
 
-<span class="fc" id="L1110">			double[] pathCollateralizedPositiveExposure =</span>
-<span class="fc" id="L1111">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedPositiveExposure();</span>
+<span class="fc" id="L1122">			double[] pathCollateralizedPositiveExposure =</span>
+<span class="fc" id="L1123">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedPositiveExposure();</span>
 
-<span class="fc" id="L1113">			double[] pathCollateralizedPositiveExposurePV =</span>
-<span class="fc" id="L1114">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedPositiveExposurePV();</span>
+<span class="fc" id="L1125">			double[] pathCollateralizedPositiveExposurePV =</span>
+<span class="fc" id="L1126">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedPositiveExposurePV();</span>
 
-<span class="fc" id="L1116">			double[] pathCollateralizedNegativeExposure =</span>
-<span class="fc" id="L1117">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedNegativeExposure();</span>
+<span class="fc" id="L1128">			double[] pathCollateralizedNegativeExposure =</span>
+<span class="fc" id="L1129">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedNegativeExposure();</span>
 
-<span class="fc" id="L1119">			double[] pathCollateralizedNegativeExposurePV =</span>
-<span class="fc" id="L1120">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedNegativeExposurePV();</span>
+<span class="fc" id="L1131">			double[] pathCollateralizedNegativeExposurePV =</span>
+<span class="fc" id="L1132">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedNegativeExposurePV();</span>
 
-<span class="fc" id="L1122">			double[] pathUncollateralizedExposure =</span>
-<span class="fc" id="L1123">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedExposure();</span>
+<span class="fc" id="L1134">			double[] pathUncollateralizedExposure =</span>
+<span class="fc" id="L1135">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedExposure();</span>
 
-<span class="fc" id="L1125">			double[] pathUncollateralizedExposurePV =</span>
-<span class="fc" id="L1126">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedExposurePV();</span>
+<span class="fc" id="L1137">			double[] pathUncollateralizedExposurePV =</span>
+<span class="fc" id="L1138">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedExposurePV();</span>
 
-<span class="fc" id="L1128">			double[] pathUncollateralizedPositiveExposure =</span>
-<span class="fc" id="L1129">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedPositiveExposure();</span>
+<span class="fc" id="L1140">			double[] pathUncollateralizedPositiveExposure =</span>
+<span class="fc" id="L1141">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedPositiveExposure();</span>
 
-<span class="fc" id="L1131">			double[] pathUncollateralizedPositiveExposurePV =</span>
-<span class="fc" id="L1132">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedPositiveExposurePV();</span>
+<span class="fc" id="L1143">			double[] pathUncollateralizedPositiveExposurePV =</span>
+<span class="fc" id="L1144">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedPositiveExposurePV();</span>
 
-<span class="fc" id="L1134">			double[] pathUncollateralizedNegativeExposure =</span>
-<span class="fc" id="L1135">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedNegativeExposure();</span>
+<span class="fc" id="L1146">			double[] pathUncollateralizedNegativeExposure =</span>
+<span class="fc" id="L1147">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedNegativeExposure();</span>
 
-<span class="fc" id="L1137">			double[] pathUncollateralizedNegativeExposurePV =</span>
-<span class="fc" id="L1138">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedNegativeExposurePV();</span>
+<span class="fc" id="L1149">			double[] pathUncollateralizedNegativeExposurePV =</span>
+<span class="fc" id="L1150">				_pathExposureAdjustmentArray[pathIndex].vertexUncollateralizedNegativeExposurePV();</span>
 
-<span class="fc" id="L1140">			double[] pathFundingExposure = _pathExposureAdjustmentArray[pathIndex].vertexFundingExposure();</span>
+<span class="fc" id="L1152">			double[] pathFundingExposure = _pathExposureAdjustmentArray[pathIndex].vertexFundingExposure();</span>
 
-<span class="fc" id="L1142">			double[] pathFundingExposurePV =</span>
-<span class="fc" id="L1143">				_pathExposureAdjustmentArray[pathIndex].vertexFundingExposurePV();</span>
+<span class="fc" id="L1154">			double[] pathFundingExposurePV =</span>
+<span class="fc" id="L1155">				_pathExposureAdjustmentArray[pathIndex].vertexFundingExposurePV();</span>
 
 			try
 			{
-<span class="fc" id="L1147">				pathCVA[pathIndex] = _pathExposureAdjustmentArray[pathIndex].creditAdjustment();</span>
+<span class="fc" id="L1159">				pathCVA[pathIndex] = _pathExposureAdjustmentArray[pathIndex].creditAdjustment();</span>
 
-<span class="fc" id="L1149">				pathDVA[pathIndex] = _pathExposureAdjustmentArray[pathIndex].debtAdjustment();</span>
+<span class="fc" id="L1161">				pathDVA[pathIndex] = _pathExposureAdjustmentArray[pathIndex].debtAdjustment();</span>
 
-<span class="fc" id="L1151">				pathFCA[pathIndex] = _pathExposureAdjustmentArray[pathIndex].fundingCostAdjustment();</span>
+<span class="fc" id="L1163">				pathFCA[pathIndex] = _pathExposureAdjustmentArray[pathIndex].fundingCostAdjustment();</span>
 
-<span class="fc" id="L1153">				pathFDA[pathIndex] = _pathExposureAdjustmentArray[pathIndex].fundingDebtAdjustment();</span>
+<span class="fc" id="L1165">				pathFDA[pathIndex] = _pathExposureAdjustmentArray[pathIndex].fundingDebtAdjustment();</span>
 
-<span class="fc" id="L1155">				pathFVA[pathIndex] = _pathExposureAdjustmentArray[pathIndex].fundingValueAdjustment();</span>
+<span class="fc" id="L1167">				pathFVA[pathIndex] = _pathExposureAdjustmentArray[pathIndex].fundingValueAdjustment();</span>
 
-<span class="fc" id="L1157">				pathFBA[pathIndex] = _pathExposureAdjustmentArray[pathIndex].fundingBenefitAdjustment();</span>
+<span class="fc" id="L1169">				pathFBA[pathIndex] = _pathExposureAdjustmentArray[pathIndex].fundingBenefitAdjustment();</span>
 
-<span class="fc" id="L1159">				pathUCVA[pathIndex] = _pathExposureAdjustmentArray[pathIndex].unilateralCreditAdjustment();</span>
+<span class="fc" id="L1171">				pathUCVA[pathIndex] = _pathExposureAdjustmentArray[pathIndex].unilateralCreditAdjustment();</span>
 
-<span class="fc" id="L1161">				pathSFVA[pathIndex] =</span>
-<span class="fc" id="L1162">					_pathExposureAdjustmentArray[pathIndex].symmetricFundingValueAdjustment();</span>
+<span class="fc" id="L1173">				pathSFVA[pathIndex] =</span>
+<span class="fc" id="L1174">					_pathExposureAdjustmentArray[pathIndex].symmetricFundingValueAdjustment();</span>
 
-<span class="fc" id="L1164">				pathCVACL[pathIndex] =</span>
-<span class="fc" id="L1165">					_pathExposureAdjustmentArray[pathIndex].contraLiabilityCreditAdjustment();</span>
+<span class="fc" id="L1176">				pathCVACL[pathIndex] =</span>
+<span class="fc" id="L1177">					_pathExposureAdjustmentArray[pathIndex].contraLiabilityCreditAdjustment();</span>
 
-<span class="fc" id="L1167">				pathFTDCVA[pathIndex] = _pathExposureAdjustmentArray[pathIndex].bilateralCreditAdjustment();</span>
+<span class="fc" id="L1179">				pathFTDCVA[pathIndex] = _pathExposureAdjustmentArray[pathIndex].bilateralCreditAdjustment();</span>
 
-<span class="fc" id="L1169">				pathCOLVA[pathIndex] =</span>
-<span class="fc" id="L1170">					_pathExposureAdjustmentArray[pathIndex].bilateralCollateralAdjustment();</span>
+<span class="fc" id="L1181">				pathCOLVA[pathIndex] =</span>
+<span class="fc" id="L1182">					_pathExposureAdjustmentArray[pathIndex].bilateralCollateralAdjustment();</span>
 
-<span class="fc" id="L1172">				pathFTDCOLVA[pathIndex] =</span>
-<span class="fc" id="L1173">					_pathExposureAdjustmentArray[pathIndex].bilateralCollateralAdjustment();</span>
+<span class="fc" id="L1184">				pathFTDCOLVA[pathIndex] =</span>
+<span class="fc" id="L1185">					_pathExposureAdjustmentArray[pathIndex].bilateralCollateralAdjustment();</span>
 
-<span class="fc" id="L1175">				pathTotalVA[pathIndex] = _pathExposureAdjustmentArray[pathIndex].totalAdjustment();</span>
+<span class="fc" id="L1187">				pathTotalVA[pathIndex] = _pathExposureAdjustmentArray[pathIndex].totalAdjustment();</span>
 			}
-<span class="nc" id="L1177">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L1189">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L1179">				e.printStackTrace();</span>
+<span class="nc" id="L1191">				e.printStackTrace();</span>
 
-<span class="nc" id="L1181">				return null;</span>
-<span class="fc" id="L1182">			}</span>
+<span class="nc" id="L1193">				return null;</span>
+<span class="fc" id="L1194">			}</span>
 
-<span class="fc bfc" id="L1184" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L1196" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="fc" id="L1186">				collateralizedExposure[vertexIndex][pathIndex] =</span>
+<span class="fc" id="L1198">				collateralizedExposure[vertexIndex][pathIndex] =</span>
 					pathCollateralizedExposure[vertexIndex];
-<span class="fc" id="L1188">				collateralizedExposurePV[vertexIndex][pathIndex] =</span>
+<span class="fc" id="L1200">				collateralizedExposurePV[vertexIndex][pathIndex] =</span>
 					pathCollateralizedExposurePV[vertexIndex];
-<span class="fc" id="L1190">				collateralizedPositiveExposure[vertexIndex][pathIndex] =</span>
+<span class="fc" id="L1202">				collateralizedPositiveExposure[vertexIndex][pathIndex] =</span>
 					pathCollateralizedPositiveExposure[vertexIndex];
-<span class="fc" id="L1192">				collateralizedPositiveExposurePV[vertexIndex][pathIndex] =</span>
+<span class="fc" id="L1204">				collateralizedPositiveExposurePV[vertexIndex][pathIndex] =</span>
 					pathCollateralizedPositiveExposurePV[vertexIndex];
-<span class="fc" id="L1194">				collateralizedNegativeExposure[vertexIndex][pathIndex] =</span>
+<span class="fc" id="L1206">				collateralizedNegativeExposure[vertexIndex][pathIndex] =</span>
 					pathCollateralizedNegativeExposure[vertexIndex];
-<span class="fc" id="L1196">				collateralizedNegativeExposurePV[vertexIndex][pathIndex] =</span>
+<span class="fc" id="L1208">				collateralizedNegativeExposurePV[vertexIndex][pathIndex] =</span>
 					pathCollateralizedNegativeExposurePV[vertexIndex];
-<span class="fc" id="L1198">				uncollateralizedExposure[vertexIndex][pathIndex] =</span>
+<span class="fc" id="L1210">				uncollateralizedExposure[vertexIndex][pathIndex] =</span>
 					pathUncollateralizedExposure[vertexIndex];
-<span class="fc" id="L1200">				uncollateralizedExposurePV[vertexIndex][pathIndex] =</span>
+<span class="fc" id="L1212">				uncollateralizedExposurePV[vertexIndex][pathIndex] =</span>
 					pathUncollateralizedExposurePV[vertexIndex];
-<span class="fc" id="L1202">				uncollateralizedPositiveExposure[vertexIndex][pathIndex] =</span>
+<span class="fc" id="L1214">				uncollateralizedPositiveExposure[vertexIndex][pathIndex] =</span>
 					pathUncollateralizedPositiveExposure[vertexIndex];
-<span class="fc" id="L1204">				uncollateralizedPositiveExposurePV[vertexIndex][pathIndex] =</span>
+<span class="fc" id="L1216">				uncollateralizedPositiveExposurePV[vertexIndex][pathIndex] =</span>
 					pathUncollateralizedPositiveExposurePV[vertexIndex];
-<span class="fc" id="L1206">				uncollateralizedNegativeExposure[vertexIndex][pathIndex] =</span>
+<span class="fc" id="L1218">				uncollateralizedNegativeExposure[vertexIndex][pathIndex] =</span>
 					pathUncollateralizedNegativeExposure[vertexIndex];
-<span class="fc" id="L1208">				uncollateralizedNegativeExposurePV[vertexIndex][pathIndex] =</span>
+<span class="fc" id="L1220">				uncollateralizedNegativeExposurePV[vertexIndex][pathIndex] =</span>
 					pathUncollateralizedNegativeExposurePV[vertexIndex];
-<span class="fc" id="L1210">				fundingExposure[vertexIndex][pathIndex] = pathFundingExposure[vertexIndex];</span>
-<span class="fc" id="L1211">				fundingExposurePV[vertexIndex][pathIndex] = pathFundingExposurePV[vertexIndex];</span>
+<span class="fc" id="L1222">				fundingExposure[vertexIndex][pathIndex] = pathFundingExposure[vertexIndex];</span>
+<span class="fc" id="L1223">				fundingExposurePV[vertexIndex][pathIndex] = pathFundingExposurePV[vertexIndex];</span>
 			}
 		}
 
 		try
 		{
-<span class="fc" id="L1217">			return new org.drip.xva.gross.ExposureAdjustmentDigest (</span>
+<span class="fc" id="L1229">			return new org.drip.xva.gross.ExposureAdjustmentDigest (</span>
 				pathCOLVA,
 				pathFTDCOLVA,
 				pathUCVA,
@@ -1244,12 +1256,12 @@ public class ExposureAdjustmentAggregator
 				fundingExposurePV
 			);
 		}
-<span class="nc" id="L1247">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L1259">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L1249">			e.printStackTrace();</span>
+<span class="nc" id="L1261">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1252">		return null;</span>
+<span class="nc" id="L1264">		return null;</span>
 	}
 
 	/**
@@ -1263,69 +1275,69 @@ public class ExposureAdjustmentAggregator
 	public org.drip.xva.gross.BaselExposureDigest baselExposureDigest (
 		final org.drip.xva.settings.StandardizedExposureGeneratorScheme standardizedExposureGeneratorScheme)
 	{
-<span class="nc bnc" id="L1266" title="All 2 branches missed.">		if (null == standardizedExposureGeneratorScheme)</span>
+<span class="nc bnc" id="L1278" title="All 2 branches missed.">		if (null == standardizedExposureGeneratorScheme)</span>
 		{
-<span class="nc" id="L1268">			return null;</span>
+<span class="nc" id="L1280">			return null;</span>
 		}
 
-<span class="nc" id="L1271">		org.drip.analytics.date.JulianDate[] vertexJulianDateArray = vertexDates();</span>
+<span class="nc" id="L1283">		org.drip.analytics.date.JulianDate[] vertexJulianDateArray = vertexDates();</span>
 
-<span class="nc" id="L1273">		int vertexCount = vertexJulianDateArray.length;</span>
-<span class="nc" id="L1274">		int[] vertexDateArray = new int[vertexCount];</span>
-<span class="nc" id="L1275">		int pathCount = _pathExposureAdjustmentArray.length;</span>
-<span class="nc" id="L1276">		double[] collateralizedPositiveExposure = new double[vertexCount];</span>
-<span class="nc" id="L1277">		double[] effectiveCollateralizedPositiveExposure = new double[vertexCount];</span>
-<span class="nc" id="L1278">		org.drip.spline.params.SegmentCustomBuilderControl[] collateralizedExposureSegmentBuilderControlArray</span>
+<span class="nc" id="L1285">		int vertexCount = vertexJulianDateArray.length;</span>
+<span class="nc" id="L1286">		int[] vertexDateArray = new int[vertexCount];</span>
+<span class="nc" id="L1287">		int pathCount = _pathExposureAdjustmentArray.length;</span>
+<span class="nc" id="L1288">		double[] collateralizedPositiveExposure = new double[vertexCount];</span>
+<span class="nc" id="L1289">		double[] effectiveCollateralizedPositiveExposure = new double[vertexCount];</span>
+<span class="nc" id="L1290">		org.drip.spline.params.SegmentCustomBuilderControl[] collateralizedExposureSegmentBuilderControlArray</span>
 			= new org.drip.spline.params.SegmentCustomBuilderControl[vertexCount - 1];
 		org.drip.spline.params.SegmentCustomBuilderControl[]
-<span class="nc" id="L1281">			collateralizedPositiveExposureSegmentBuilderControlArray = new</span>
+<span class="nc" id="L1293">			collateralizedPositiveExposureSegmentBuilderControlArray = new</span>
 				org.drip.spline.params.SegmentCustomBuilderControl[vertexCount - 1];
 
-<span class="nc" id="L1284">		org.drip.spline.params.SegmentCustomBuilderControl collateralizedExposureSegmentBuilderControl =</span>
-<span class="nc" id="L1285">			standardizedExposureGeneratorScheme.collateralizedExposureSegmentBuilderControl();</span>
+<span class="nc" id="L1296">		org.drip.spline.params.SegmentCustomBuilderControl collateralizedExposureSegmentBuilderControl =</span>
+<span class="nc" id="L1297">			standardizedExposureGeneratorScheme.collateralizedExposureSegmentBuilderControl();</span>
 
 		org.drip.spline.params.SegmentCustomBuilderControl
-<span class="nc" id="L1288">			collateralizedPositiveExposureSegmentBuilderControl =</span>
-<span class="nc" id="L1289">				standardizedExposureGeneratorScheme.collateralizedPositiveExposureSegmentBuilderControl();</span>
+<span class="nc" id="L1300">			collateralizedPositiveExposureSegmentBuilderControl =</span>
+<span class="nc" id="L1301">				standardizedExposureGeneratorScheme.collateralizedPositiveExposureSegmentBuilderControl();</span>
 
-<span class="nc bnc" id="L1291" title="All 2 branches missed.">		for (int i = 0; i &lt; vertexCount - 1; ++i)</span>
+<span class="nc bnc" id="L1303" title="All 2 branches missed.">		for (int i = 0; i &lt; vertexCount - 1; ++i)</span>
 		{
-<span class="nc" id="L1293">			collateralizedExposureSegmentBuilderControlArray[i] =</span>
+<span class="nc" id="L1305">			collateralizedExposureSegmentBuilderControlArray[i] =</span>
 				collateralizedExposureSegmentBuilderControl;
-<span class="nc" id="L1295">			collateralizedPositiveExposureSegmentBuilderControlArray[i] =</span>
+<span class="nc" id="L1307">			collateralizedPositiveExposureSegmentBuilderControlArray[i] =</span>
 				collateralizedPositiveExposureSegmentBuilderControl;
 		}
 
-<span class="nc bnc" id="L1299" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L1311" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L1301">			collateralizedPositiveExposure[vertexIndex] = 0.;</span>
+<span class="nc" id="L1313">			collateralizedPositiveExposure[vertexIndex] = 0.;</span>
 
-<span class="nc" id="L1303">			vertexDateArray[vertexIndex] = vertexJulianDateArray[vertexIndex].julian();</span>
+<span class="nc" id="L1315">			vertexDateArray[vertexIndex] = vertexJulianDateArray[vertexIndex].julian();</span>
 		}
 
-<span class="nc bnc" id="L1306" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="nc bnc" id="L1318" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="nc" id="L1308">			double[] pathCollateralizedPositiveExposure =</span>
-<span class="nc" id="L1309">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedPositiveExposure();</span>
+<span class="nc" id="L1320">			double[] pathCollateralizedPositiveExposure =</span>
+<span class="nc" id="L1321">				_pathExposureAdjustmentArray[pathIndex].vertexCollateralizedPositiveExposure();</span>
 
-<span class="nc bnc" id="L1311" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L1323" title="All 2 branches missed.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="nc" id="L1313">				collateralizedPositiveExposure[vertexIndex] +=</span>
+<span class="nc" id="L1325">				collateralizedPositiveExposure[vertexIndex] +=</span>
 					pathCollateralizedPositiveExposure[vertexIndex];
 			}
 		}
 
-<span class="nc bnc" id="L1318" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="nc bnc" id="L1330" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="nc" id="L1320">			collateralizedPositiveExposure[vertexIndex] /= pathCount;</span>
+<span class="nc" id="L1332">			collateralizedPositiveExposure[vertexIndex] /= pathCount;</span>
 
-<span class="nc bnc" id="L1322" title="All 2 branches missed.">			if (0 == vertexIndex)</span>
+<span class="nc bnc" id="L1334" title="All 2 branches missed.">			if (0 == vertexIndex)</span>
 			{
-<span class="nc" id="L1324">				effectiveCollateralizedPositiveExposure[0] = collateralizedPositiveExposure[0];</span>
+<span class="nc" id="L1336">				effectiveCollateralizedPositiveExposure[0] = collateralizedPositiveExposure[0];</span>
 			}
 			else
 			{
-<span class="nc bnc" id="L1328" title="All 2 branches missed.">				effectiveCollateralizedPositiveExposure[vertexIndex] =</span>
+<span class="nc bnc" id="L1340" title="All 2 branches missed.">				effectiveCollateralizedPositiveExposure[vertexIndex] =</span>
 					collateralizedPositiveExposure[vertexIndex] &gt;
 					effectiveCollateralizedPositiveExposure[vertexIndex - 1] ?
 					collateralizedPositiveExposure[vertexIndex] :
@@ -1335,62 +1347,62 @@ public class ExposureAdjustmentAggregator
 
 		try
 		{
-<span class="nc" id="L1338">			org.drip.spline.stretch.MultiSegmentSequence multiSegmentSequenceCollateralizedPositiveExposure =</span>
-<span class="nc" id="L1339">				org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (</span>
+<span class="nc" id="L1350">			org.drip.spline.stretch.MultiSegmentSequence multiSegmentSequenceCollateralizedPositiveExposure =</span>
+<span class="nc" id="L1351">				org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (</span>
 					&quot;CollateralizedPositiveExposure&quot;,
 					vertexDateArray,
 					collateralizedPositiveExposure,
 					collateralizedExposureSegmentBuilderControlArray,
 					null,
-<span class="nc" id="L1345">					org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
+<span class="nc" id="L1357">					org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
 					org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE
 				);
 
 			org.drip.spline.stretch.MultiSegmentSequence
-<span class="nc" id="L1350">				multiSegmentSequenceEffectiveCollateralizedPositiveExposure =</span>
-<span class="nc" id="L1351">					org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (</span>
+<span class="nc" id="L1362">				multiSegmentSequenceEffectiveCollateralizedPositiveExposure =</span>
+<span class="nc" id="L1363">					org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (</span>
 						&quot;EffectiveCollateralizedPositiveExposure&quot;,
 						vertexDateArray,
 						effectiveCollateralizedPositiveExposure,
 						collateralizedPositiveExposureSegmentBuilderControlArray,
 						null,
-<span class="nc" id="L1357">						org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
+<span class="nc" id="L1369">						org.drip.spline.stretch.BoundarySettings.NaturalStandard(),</span>
 						org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE
 					);
 
-<span class="nc bnc" id="L1361" title="All 4 branches missed.">			if (null == multiSegmentSequenceCollateralizedPositiveExposure ||</span>
+<span class="nc bnc" id="L1373" title="All 4 branches missed.">			if (null == multiSegmentSequenceCollateralizedPositiveExposure ||</span>
 				null == multiSegmentSequenceEffectiveCollateralizedPositiveExposure)
 			{
-<span class="nc" id="L1364">				return null;</span>
+<span class="nc" id="L1376">				return null;</span>
 			}
 
-<span class="nc" id="L1367">			int exposureGeneratorTimeIntegrand = standardizedExposureGeneratorScheme.timeIntegrand();</span>
+<span class="nc" id="L1379">			int exposureGeneratorTimeIntegrand = standardizedExposureGeneratorScheme.timeIntegrand();</span>
 
-<span class="nc" id="L1369">			int integrandFinishDate = vertexDateArray[0] + exposureGeneratorTimeIntegrand;</span>
+<span class="nc" id="L1381">			int integrandFinishDate = vertexDateArray[0] + exposureGeneratorTimeIntegrand;</span>
 
-<span class="nc" id="L1371">			double effectiveExpectedPositiveExposure =</span>
-<span class="nc" id="L1372">				multiSegmentSequenceEffectiveCollateralizedPositiveExposure.toAU().integrate (</span>
+<span class="nc" id="L1383">			double effectiveExpectedPositiveExposure =</span>
+<span class="nc" id="L1384">				multiSegmentSequenceEffectiveCollateralizedPositiveExposure.toAU().integrate (</span>
 					vertexDateArray[0],
 					integrandFinishDate
 				) / exposureGeneratorTimeIntegrand;
 
-<span class="nc" id="L1377">			return new BaselExposureDigest (</span>
+<span class="nc" id="L1389">			return new BaselExposureDigest (</span>
 				collateralizedPositiveExposure[0],
-<span class="nc" id="L1379">				multiSegmentSequenceCollateralizedPositiveExposure.toAU().integrate (</span>
+<span class="nc" id="L1391">				multiSegmentSequenceCollateralizedPositiveExposure.toAU().integrate (</span>
 					vertexDateArray[0],
 					integrandFinishDate
 				) / exposureGeneratorTimeIntegrand,
 				effectiveCollateralizedPositiveExposure[vertexCount - 1],
 				effectiveExpectedPositiveExposure,
-<span class="nc" id="L1385">				effectiveExpectedPositiveExposure * standardizedExposureGeneratorScheme.eadMultiplier()</span>
+<span class="nc" id="L1397">				effectiveExpectedPositiveExposure * standardizedExposureGeneratorScheme.eadMultiplier()</span>
 			);
 		}
-<span class="nc" id="L1388">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L1400">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L1390">			e.printStackTrace();</span>
+<span class="nc" id="L1402">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L1393">		return null;</span>
+<span class="nc" id="L1405">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

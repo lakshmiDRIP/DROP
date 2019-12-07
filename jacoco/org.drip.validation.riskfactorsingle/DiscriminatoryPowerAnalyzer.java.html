@@ -6,41 +6,53 @@ package org.drip.validation.riskfactorsingle;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -93,10 +105,10 @@ package org.drip.validation.riskfactorsingle;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation&quot;&gt;Model Validation Suite&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactorsingle&quot;&gt;Single Risk Factor Aggregate Tests&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/README.md&quot;&gt;Risk Factor and Hypothesis Validation, Evidence Processing, and Model Testing&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactorsingle/README.md&quot;&gt;Single Risk Factor Aggregate Tests&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -105,8 +117,8 @@ package org.drip.validation.riskfactorsingle;
 
 public class DiscriminatoryPowerAnalyzer
 {
-<span class="nc" id="L108">	private org.drip.validation.distance.GapTestSetting _gapTestSetting = null;</span>
-<span class="nc" id="L109">	private org.drip.validation.hypothesis.ProbabilityIntegralTransform _sampleProbabilityIntegralTransform =</span>
+<span class="nc" id="L120">	private org.drip.validation.distance.GapTestSetting _gapTestSetting = null;</span>
+<span class="nc" id="L121">	private org.drip.validation.hypothesis.ProbabilityIntegralTransform _sampleProbabilityIntegralTransform =</span>
 		null;
 
 	/**
@@ -124,17 +136,17 @@ public class DiscriminatoryPowerAnalyzer
 	{
 		try
 		{
-<span class="nc bnc" id="L127" title="All 2 branches missed.">			return null == sample ? null : new DiscriminatoryPowerAnalyzer (</span>
-<span class="nc" id="L128">				sample.nativeProbabilityIntegralTransform(),</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">			return null == sample ? null : new DiscriminatoryPowerAnalyzer (</span>
+<span class="nc" id="L140">				sample.nativeProbabilityIntegralTransform(),</span>
 				gapTestSetting
 			);
 		}
-<span class="nc" id="L132">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L144">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L134">			e.printStackTrace();</span>
+<span class="nc" id="L146">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L137">		return null;</span>
+<span class="nc" id="L149">		return null;</span>
 	}
 
 	/**
@@ -150,13 +162,13 @@ public class DiscriminatoryPowerAnalyzer
 		final org.drip.validation.hypothesis.ProbabilityIntegralTransform sampleProbabilityIntegralTransform,
 		final org.drip.validation.distance.GapTestSetting gapTestSetting)
 		throws java.lang.Exception
-<span class="nc" id="L153">	{</span>
-<span class="nc bnc" id="L154" title="All 4 branches missed.">		if (null == (_sampleProbabilityIntegralTransform = sampleProbabilityIntegralTransform) ||</span>
+<span class="nc" id="L165">	{</span>
+<span class="nc bnc" id="L166" title="All 4 branches missed.">		if (null == (_sampleProbabilityIntegralTransform = sampleProbabilityIntegralTransform) ||</span>
 			null == (_gapTestSetting = gapTestSetting))
 		{
-<span class="nc" id="L157">			throw new java.lang.Exception (&quot;DiscriminatoryPowerAnalyzer Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L169">			throw new java.lang.Exception (&quot;DiscriminatoryPowerAnalyzer Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L159">	}</span>
+<span class="nc" id="L171">	}</span>
 
 	/**
 	 * Retrieve the Sample Probability Integral Transform
@@ -166,7 +178,7 @@ public class DiscriminatoryPowerAnalyzer
 
 	public org.drip.validation.hypothesis.ProbabilityIntegralTransform sampleProbabilityIntegralTransform()
 	{
-<span class="nc" id="L169">		return _sampleProbabilityIntegralTransform;</span>
+<span class="nc" id="L181">		return _sampleProbabilityIntegralTransform;</span>
 	}
 
 	/**
@@ -177,7 +189,7 @@ public class DiscriminatoryPowerAnalyzer
 
 	public org.drip.validation.distance.GapTestSetting gapTestSetting()
 	{
-<span class="nc" id="L180">		return _gapTestSetting;</span>
+<span class="nc" id="L192">		return _gapTestSetting;</span>
 	}
 
 	/**
@@ -193,20 +205,20 @@ public class DiscriminatoryPowerAnalyzer
 	{
 		try
 		{
-<span class="nc bnc" id="L196" title="All 2 branches missed.">			return null == hypothesis ? null : new</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">			return null == hypothesis ? null : new</span>
 				org.drip.validation.hypothesis.ProbabilityIntegralTransformTest (
-<span class="nc" id="L198">					hypothesis.nativeProbabilityIntegralTransform()</span>
-<span class="nc" id="L199">				).distanceTest (</span>
+<span class="nc" id="L210">					hypothesis.nativeProbabilityIntegralTransform()</span>
+<span class="nc" id="L211">				).distanceTest (</span>
 					_sampleProbabilityIntegralTransform,
 					_gapTestSetting
 				);
 		}
-<span class="nc" id="L204">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L216">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L206">			e.printStackTrace();</span>
+<span class="nc" id="L218">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L209">		return null;</span>
+<span class="nc" id="L221">		return null;</span>
 	}
 
 	/**
@@ -220,40 +232,40 @@ public class DiscriminatoryPowerAnalyzer
 	public org.drip.validation.distance.HypothesisOutcomeSuite hypothesisGapTest (
 		final org.drip.validation.distance.HypothesisSuite hypothesisSuite)
 	{
-<span class="nc bnc" id="L223" title="All 2 branches missed.">		if (null == hypothesisSuite)</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">		if (null == hypothesisSuite)</span>
 		{
-<span class="nc" id="L225">			return null;</span>
+<span class="nc" id="L237">			return null;</span>
 		}
 
-<span class="nc" id="L228">		java.util.Map&lt;java.lang.String, org.drip.validation.evidence.Ensemble&gt; hypothesisMap =</span>
-<span class="nc" id="L229">			hypothesisSuite.hypothesisMap();</span>
+<span class="nc" id="L240">		java.util.Map&lt;java.lang.String, org.drip.validation.evidence.Ensemble&gt; hypothesisMap =</span>
+<span class="nc" id="L241">			hypothesisSuite.hypothesisMap();</span>
 
-<span class="nc bnc" id="L231" title="All 2 branches missed.">		if (0 == hypothesisMap.size())</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">		if (0 == hypothesisMap.size())</span>
 		{
-<span class="nc" id="L233">			return null;</span>
+<span class="nc" id="L245">			return null;</span>
 		}
 
-<span class="nc" id="L236">		org.drip.validation.distance.HypothesisOutcomeSuite hypothesisOutcomeSuite = new</span>
+<span class="nc" id="L248">		org.drip.validation.distance.HypothesisOutcomeSuite hypothesisOutcomeSuite = new</span>
 			org.drip.validation.distance.HypothesisOutcomeSuite();
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.validation.evidence.Ensemble&gt; hypothesisMapEntry
-<span class="nc bnc" id="L240" title="All 2 branches missed.">			: hypothesisMap.entrySet())</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">			: hypothesisMap.entrySet())</span>
 		{
-<span class="nc" id="L242">			org.drip.validation.distance.GapTestOutcome gapTestOutcome = gapTest</span>
-<span class="nc" id="L243">				(hypothesisMapEntry.getValue());</span>
+<span class="nc" id="L254">			org.drip.validation.distance.GapTestOutcome gapTestOutcome = gapTest</span>
+<span class="nc" id="L255">				(hypothesisMapEntry.getValue());</span>
 
-<span class="nc bnc" id="L245" title="All 2 branches missed.">			if (null == gapTestOutcome)</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">			if (null == gapTestOutcome)</span>
 			{
-<span class="nc" id="L247">				continue;</span>
+<span class="nc" id="L259">				continue;</span>
 			}
 
-<span class="nc" id="L250">			hypothesisOutcomeSuite.add (</span>
-<span class="nc" id="L251">				hypothesisMapEntry.getKey(),</span>
+<span class="nc" id="L262">			hypothesisOutcomeSuite.add (</span>
+<span class="nc" id="L263">				hypothesisMapEntry.getKey(),</span>
 				gapTestOutcome
 			);
-<span class="nc" id="L254">		}</span>
+<span class="nc" id="L266">		}</span>
 
-<span class="nc" id="L256">		return hypothesisOutcomeSuite;</span>
+<span class="nc" id="L268">		return hypothesisOutcomeSuite;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

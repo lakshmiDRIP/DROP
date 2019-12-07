@@ -6,43 +6,55 @@ package org.drip.xva.basel;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -95,10 +107,10 @@ package org.drip.xva.basel;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/basel&quot;&gt;Basel&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/README.md&quot;&gt;Valuation Adjustments that account for Collateral, CC Credit/Debt and Funding Overhead&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/basel/README.md&quot;&gt;XVA Based Basel Accounting Measures&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -107,8 +119,8 @@ package org.drip.xva.basel;
 
 public class BalanceSheetEdge
 {
-<span class="nc" id="L110">	private org.drip.xva.basel.BalanceSheetVertex _headBalanceSheetVertex = null;</span>
-<span class="nc" id="L111">	private org.drip.xva.basel.BalanceSheetVertex _tailBalanceSheetVertex = null;</span>
+<span class="nc" id="L122">	private org.drip.xva.basel.BalanceSheetVertex _headBalanceSheetVertex = null;</span>
+<span class="nc" id="L123">	private org.drip.xva.basel.BalanceSheetVertex _tailBalanceSheetVertex = null;</span>
 
 	/**
 	 * BalanceSheetEdge Constructor
@@ -123,13 +135,13 @@ public class BalanceSheetEdge
 		final org.drip.xva.basel.BalanceSheetVertex headBalanceSheetVertex,
 		final org.drip.xva.basel.BalanceSheetVertex tailBalanceSheetVertex)
 		throws java.lang.Exception
-<span class="nc" id="L126">	{</span>
-<span class="nc bnc" id="L127" title="All 4 branches missed.">		if (null == (_headBalanceSheetVertex = headBalanceSheetVertex) ||</span>
+<span class="nc" id="L138">	{</span>
+<span class="nc bnc" id="L139" title="All 4 branches missed.">		if (null == (_headBalanceSheetVertex = headBalanceSheetVertex) ||</span>
 			null == (_tailBalanceSheetVertex = tailBalanceSheetVertex))
 		{
-<span class="nc" id="L130">			throw new java.lang.Exception (&quot;BalanceSheetEdge Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L142">			throw new java.lang.Exception (&quot;BalanceSheetEdge Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L132">	}</span>
+<span class="nc" id="L144">	}</span>
 
 	/**
 	 * Retrieve the Balance Sheet Account Vertex Head Instance
@@ -139,7 +151,7 @@ public class BalanceSheetEdge
 
 	public org.drip.xva.basel.BalanceSheetVertex head()
 	{
-<span class="nc" id="L142">		return _headBalanceSheetVertex;</span>
+<span class="nc" id="L154">		return _headBalanceSheetVertex;</span>
 	}
 
 	/**
@@ -150,7 +162,7 @@ public class BalanceSheetEdge
 
 	public org.drip.xva.basel.BalanceSheetVertex tail()
 	{
-<span class="nc" id="L153">		return _tailBalanceSheetVertex;</span>
+<span class="nc" id="L165">		return _tailBalanceSheetVertex;</span>
 	}
 
 	/**
@@ -161,8 +173,8 @@ public class BalanceSheetEdge
 
 	public double cet1Change()
 	{
-<span class="nc" id="L164">		return _tailBalanceSheetVertex.retainedEarnings() - _tailBalanceSheetVertex.contraAsset() -</span>
-<span class="nc" id="L165">			_headBalanceSheetVertex.retainedEarnings() + _headBalanceSheetVertex.contraAsset();</span>
+<span class="nc" id="L176">		return _tailBalanceSheetVertex.retainedEarnings() - _tailBalanceSheetVertex.contraAsset() -</span>
+<span class="nc" id="L177">			_headBalanceSheetVertex.retainedEarnings() + _headBalanceSheetVertex.contraAsset();</span>
 	}
 
 	/**
@@ -173,9 +185,9 @@ public class BalanceSheetEdge
 
 	public double income()
 	{
-<span class="nc" id="L176">		return _tailBalanceSheetVertex.retainedEarnings() + _tailBalanceSheetVertex.contraLiability() -</span>
-<span class="nc" id="L177">			_tailBalanceSheetVertex.contraAsset() - _headBalanceSheetVertex.retainedEarnings() +</span>
-<span class="nc" id="L178">			_headBalanceSheetVertex.contraAsset() - _headBalanceSheetVertex.contraLiability();</span>
+<span class="nc" id="L188">		return _tailBalanceSheetVertex.retainedEarnings() + _tailBalanceSheetVertex.contraLiability() -</span>
+<span class="nc" id="L189">			_tailBalanceSheetVertex.contraAsset() - _headBalanceSheetVertex.retainedEarnings() +</span>
+<span class="nc" id="L190">			_headBalanceSheetVertex.contraAsset() - _headBalanceSheetVertex.contraLiability();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

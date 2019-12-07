@@ -6,41 +6,53 @@ package org.drip.validation.evidence;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -92,10 +104,10 @@ package org.drip.validation.evidence;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation&quot;&gt;Model Validation Suite&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/evidence&quot;&gt;Sample and Ensemble Evidence Processors&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/README.md&quot;&gt;Risk Factor and Hypothesis Validation, Evidence Processing, and Model Testing&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/evidence/README.md&quot;&gt;Sample and Ensemble Evidence Processors&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -104,16 +116,16 @@ package org.drip.validation.evidence;
 
 public class TestStatisticAccumulator
 {
-<span class="nc" id="L107">	private int _totalInstanceCount = 0;</span>
-<span class="nc" id="L108">	private java.util.TreeMap&lt;java.lang.Double, java.lang.Integer&gt; _instanceCountMap = null;</span>
+<span class="nc" id="L119">	private int _totalInstanceCount = 0;</span>
+<span class="nc" id="L120">	private java.util.TreeMap&lt;java.lang.Double, java.lang.Integer&gt; _instanceCountMap = null;</span>
 
 	/**
 	 * Empty TestStatisticAccumulator Constructor
 	 */
 
 	public TestStatisticAccumulator()
-<span class="nc" id="L115">	{</span>
-<span class="nc" id="L116">	}</span>
+<span class="nc" id="L127">	{</span>
+<span class="nc" id="L128">	}</span>
 
 	/**
 	 * Retrieve the Instance Counter Map
@@ -123,7 +135,7 @@ public class TestStatisticAccumulator
 
 	public java.util.Map&lt;java.lang.Double, java.lang.Integer&gt; instanceCountMap()
 	{
-<span class="nc" id="L126">		return _instanceCountMap;</span>
+<span class="nc" id="L138">		return _instanceCountMap;</span>
 	}
 
 	/**
@@ -134,7 +146,7 @@ public class TestStatisticAccumulator
 
 	public int totalInstanceCount()
 	{
-<span class="nc" id="L137">		return _totalInstanceCount;</span>
+<span class="nc" id="L149">		return _totalInstanceCount;</span>
 	}
 
 	/**
@@ -148,23 +160,23 @@ public class TestStatisticAccumulator
 	public boolean addTestStatistic (
 		final double testStatistic)
 	{
-<span class="nc bnc" id="L151" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (testStatistic))</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (testStatistic))</span>
 		{
-<span class="nc" id="L153">			return false;</span>
+<span class="nc" id="L165">			return false;</span>
 		}
 
-<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (null == _instanceCountMap)</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">		if (null == _instanceCountMap)</span>
 		{
-<span class="nc" id="L158">			_instanceCountMap = new java.util.TreeMap&lt;java.lang.Double, java.lang.Integer&gt;();</span>
+<span class="nc" id="L170">			_instanceCountMap = new java.util.TreeMap&lt;java.lang.Double, java.lang.Integer&gt;();</span>
 		}
 
-<span class="nc" id="L161">		_instanceCountMap.put (</span>
-<span class="nc" id="L162">			testStatistic,</span>
-<span class="nc bnc" id="L163" title="All 2 branches missed.">			_instanceCountMap.containsKey (testStatistic) ? _instanceCountMap.get (testStatistic) + 1 : 1</span>
+<span class="nc" id="L173">		_instanceCountMap.put (</span>
+<span class="nc" id="L174">			testStatistic,</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">			_instanceCountMap.containsKey (testStatistic) ? _instanceCountMap.get (testStatistic) + 1 : 1</span>
 		);
 
-<span class="nc" id="L166">		++_totalInstanceCount;</span>
-<span class="nc" id="L167">		return true;</span>
+<span class="nc" id="L178">		++_totalInstanceCount;</span>
+<span class="nc" id="L179">		return true;</span>
 	}
 
 	/**
@@ -181,25 +193,25 @@ public class TestStatisticAccumulator
 		final double testStatistic)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L184" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (testStatistic) || 0 == _totalInstanceCount)</span>
+<span class="nc bnc" id="L196" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (testStatistic) || 0 == _totalInstanceCount)</span>
 		{
-<span class="nc" id="L186">			throw new java.lang.Exception</span>
+<span class="nc" id="L198">			throw new java.lang.Exception</span>
 				(&quot;TestStatisticAccumulator::cumulativeProbabilityFromLeft =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="nc" id="L190">		double cumulativeProbabilityFromLeft = 0;</span>
+<span class="nc" id="L202">		double cumulativeProbabilityFromLeft = 0;</span>
 
-<span class="nc bnc" id="L192" title="All 2 branches missed.">		for (double testStatisticKey : _instanceCountMap.keySet())</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">		for (double testStatisticKey : _instanceCountMap.keySet())</span>
 		{
-<span class="nc bnc" id="L194" title="All 2 branches missed.">			if (testStatisticKey &gt; testStatistic)</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">			if (testStatisticKey &gt; testStatistic)</span>
 			{
-<span class="nc" id="L196">				break;</span>
+<span class="nc" id="L208">				break;</span>
 			}
 
-<span class="nc" id="L199">			cumulativeProbabilityFromLeft += _instanceCountMap.get (testStatistic);</span>
-<span class="nc" id="L200">		}</span>
+<span class="nc" id="L211">			cumulativeProbabilityFromLeft += _instanceCountMap.get (testStatistic);</span>
+<span class="nc" id="L212">		}</span>
 
-<span class="nc" id="L202">		return cumulativeProbabilityFromLeft / _totalInstanceCount;</span>
+<span class="nc" id="L214">		return cumulativeProbabilityFromLeft / _totalInstanceCount;</span>
 	}
 
 	/**
@@ -216,25 +228,25 @@ public class TestStatisticAccumulator
 		final double testStatistic)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L219" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (testStatistic) || 0 == _totalInstanceCount)</span>
+<span class="nc bnc" id="L231" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (testStatistic) || 0 == _totalInstanceCount)</span>
 		{
-<span class="nc" id="L221">			throw new java.lang.Exception</span>
+<span class="nc" id="L233">			throw new java.lang.Exception</span>
 				(&quot;TestStatisticAccumulator::cumulativeProbabilityFromRight =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="nc" id="L225">		double cumulativeProbabilityFromRight = 0;</span>
+<span class="nc" id="L237">		double cumulativeProbabilityFromRight = 0;</span>
 
-<span class="nc bnc" id="L227" title="All 2 branches missed.">		for (double testStatisticKey : _instanceCountMap.descendingKeySet())</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">		for (double testStatisticKey : _instanceCountMap.descendingKeySet())</span>
 		{
-<span class="nc bnc" id="L229" title="All 2 branches missed.">			if (testStatisticKey &lt; testStatistic)</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">			if (testStatisticKey &lt; testStatistic)</span>
 			{
-<span class="nc" id="L231">				break;</span>
+<span class="nc" id="L243">				break;</span>
 			}
 
-<span class="nc" id="L234">			cumulativeProbabilityFromRight += _instanceCountMap.get (testStatistic);</span>
-<span class="nc" id="L235">		}</span>
+<span class="nc" id="L246">			cumulativeProbabilityFromRight += _instanceCountMap.get (testStatistic);</span>
+<span class="nc" id="L247">		}</span>
 
-<span class="nc" id="L237">		return cumulativeProbabilityFromRight / _totalInstanceCount;</span>
+<span class="nc" id="L249">		return cumulativeProbabilityFromRight / _totalInstanceCount;</span>
 	}
 
 	/**
@@ -245,32 +257,32 @@ public class TestStatisticAccumulator
 
 	public org.drip.validation.hypothesis.ProbabilityIntegralTransform probabilityIntegralTransform()
 	{
-<span class="nc" id="L248">		int instanceCount = 0;</span>
-<span class="nc" id="L249">		double totalInstanceCountReciprocal = 1. / _totalInstanceCount;</span>
+<span class="nc" id="L260">		int instanceCount = 0;</span>
+<span class="nc" id="L261">		double totalInstanceCountReciprocal = 1. / _totalInstanceCount;</span>
 
-<span class="nc" id="L251">		java.util.Map&lt;java.lang.Double, java.lang.Double&gt; testStatisticPValueMap = new</span>
+<span class="nc" id="L263">		java.util.Map&lt;java.lang.Double, java.lang.Double&gt; testStatisticPValueMap = new</span>
 			java.util.TreeMap&lt;java.lang.Double, java.lang.Double&gt;();
 
-<span class="nc bnc" id="L254" title="All 2 branches missed.">		for (double testStatisticKey : _instanceCountMap.keySet())</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">		for (double testStatisticKey : _instanceCountMap.keySet())</span>
 		{
-<span class="nc" id="L256">			instanceCount += _instanceCountMap.get (testStatisticKey);</span>
+<span class="nc" id="L268">			instanceCount += _instanceCountMap.get (testStatisticKey);</span>
 
-<span class="nc" id="L258">			testStatisticPValueMap.put (</span>
-<span class="nc" id="L259">				testStatisticKey,</span>
-<span class="nc" id="L260">				totalInstanceCountReciprocal * instanceCount</span>
+<span class="nc" id="L270">			testStatisticPValueMap.put (</span>
+<span class="nc" id="L271">				testStatisticKey,</span>
+<span class="nc" id="L272">				totalInstanceCountReciprocal * instanceCount</span>
 			);
-<span class="nc" id="L262">		}</span>
+<span class="nc" id="L274">		}</span>
 
 		try
 		{
-<span class="nc" id="L266">			return new org.drip.validation.hypothesis.ProbabilityIntegralTransform (testStatisticPValueMap);</span>
+<span class="nc" id="L278">			return new org.drip.validation.hypothesis.ProbabilityIntegralTransform (testStatisticPValueMap);</span>
 		}
-<span class="nc" id="L268">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L280">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L270">			e.printStackTrace();</span>
+<span class="nc" id="L282">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L273">		return null;</span>
+<span class="nc" id="L285">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
