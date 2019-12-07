@@ -43,6 +43,16 @@ DROP Dynamics Ito Package implements the Ito Stochastic Process Dynamics Foundat
 
 # References
 
+ * Doob, J. L. (1942): The Brownian Movement and Stochastic Equations <i>Annals of Mathematics</i> <b>43 (2)</b> 351-369
+
+ * Gardiner, C. W. (2009): <i>Stochastic Methods: A Handbook for the Natural and Social Sciences 4<sup>th</sup> Edition</i> <b>Springer Verlag</b>
+
+ * Kadanoff, L. P. (2000): <i>Statistical Physics: Statics, Dynamics, and Renormalization</i> <b>World Scientific</b>
+
+ * Karatzas, I., and S. E. Shreve (1991): <i>Brownian Motion and Stochastic Calculus 2<sup>nd</sup> Edition</i> <b>Springer Verlag</b>
+
+ * Risken, H., and F. Till (1996): <i>The Fokker Planck Equation; Methods of Solution and Applications</i> <b>Springer</b>
+
 
 ## DROP Specifications
 
