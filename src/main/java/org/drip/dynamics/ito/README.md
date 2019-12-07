@@ -35,23 +35,23 @@ DROP Dynamics Ito Package implements the Ito Stochastic Process Dynamics Foundat
  <i>RdWienerDriver</i> exposes the R<sup>d</sup> Wiener Background Emission Function.
 
  * [***TimeR1Vertex***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/ito/TimeR1Vertex.java)
- <i>TimeR1Vertex</i> holds the R<sup>1</sup> "Space" or Property Variate and the Time Coordinate Vertexes.
+ <i>TimeR1Vertex</i> holds the R<sup>1</sup> <i>Space</i> or Property Variate and the Time Coordinate Vertexes.
 
  * [***TimeRdVertex***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/ito/TimeRdVertex.java)
- <i>TimeRdVertex</i> holds the R<sup>d</sup> "Space" or Property Variate and the Time Coordinate Vertexes.
+ <i>TimeRdVertex</i> holds the R<sup>d</sup> <i>Space</i> or Property Variate and the Time Coordinate Vertexes.
 
 
 # References
 
  * Doob, J. L. (1942): The Brownian Movement and Stochastic Equations <i>Annals of Mathematics</i> <b>43 (2)</b> 351-369
 
- * Gardiner, C. W. (2009): <i>Stochastic Methods: A Handbook for the Natural and Social Sciences 4<sup>th</sup> Edition</i> <b>Springer-Verlag</b>
+ * Gardiner, C. W. (2009): <i>Stochastic Methods: A Handbook for the Natural and Social Sciences 4<sup>th</sup> Edition</i> <b>Springer Verlag</b>
 
- * Kadanoff, L. P. (2000): <i>Statistical Physics: Statics, Dynamics, and Re-normalization</i> <b>World Scientific</b>
+ * Kadanoff, L. P. (2000): <i>Statistical Physics: Statics, Dynamics, and Renormalization</i> <b>World Scientific</b>
 
- * Karatzas, I., and S. E. Shreve (1991): <i>Brownian Motion and Stochastic Calculus 2<sup>nd</sup> Edition</i> <b>Springer-Verlag</b>
+ * Karatzas, I., and S. E. Shreve (1991): <i>Brownian Motion and Stochastic Calculus 2<sup>nd</sup> Edition</i> <b>Springer Verlag</b>
 
- * Risken, H., and F. Till (1996): <i>The Fokker-Planck Equation – Methods of Solution and Applications</i> <b>Springer</b>
+ * Risken, H., and F. Till (1996): <i>The Fokker Planck Equation – Methods of Solution and Applications</i> <b>Springer</b>
 
 
 ## DROP Specifications
