@@ -6,43 +6,55 @@ package org.drip.xva.vertex;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -96,10 +108,10 @@ package org.drip.xva.vertex;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/vertex&quot;&gt;Vertex&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/README.md&quot;&gt;Valuation Adjustments that account for Collateral, CC Credit/Debt and Funding Overhead&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/vertex/README.md&quot;&gt;XVA Hypothecation Group Vertex Generators&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -108,10 +120,10 @@ package org.drip.xva.vertex;
 
 public class BurgardKjaerExposure implements org.drip.xva.hypothecation.CollateralGroupVertexExposureComponent
 {
-<span class="fc" id="L111">	private double _debt = java.lang.Double.NaN;</span>
-<span class="fc" id="L112">	private double _credit = java.lang.Double.NaN;</span>
-<span class="fc" id="L113">	private double _funding = java.lang.Double.NaN;</span>
-<span class="fc" id="L114">	private double _collateralBalance = java.lang.Double.NaN;</span>
+<span class="fc" id="L123">	private double _debt = java.lang.Double.NaN;</span>
+<span class="fc" id="L124">	private double _credit = java.lang.Double.NaN;</span>
+<span class="fc" id="L125">	private double _funding = java.lang.Double.NaN;</span>
+<span class="fc" id="L126">	private double _collateralBalance = java.lang.Double.NaN;</span>
 
 	/**
 	 * Generate an Initial Instance of Burgard Kjaer Vertex Exposure
@@ -126,27 +138,27 @@ public class BurgardKjaerExposure implements org.drip.xva.hypothecation.Collater
 		final double uncollateralizedExposure,
 		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut)
 	{
-<span class="pc bpc" id="L129" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (uncollateralizedExposure) ||</span>
+<span class="pc bpc" id="L141" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (uncollateralizedExposure) ||</span>
 			null == collateralGroupVertexCloseOut)
 		{
-<span class="nc" id="L132">			return null;</span>
+<span class="nc" id="L144">			return null;</span>
 		}
 
 		try
 		{
-<span class="fc" id="L137">			return new BurgardKjaerExposure (</span>
-<span class="fc" id="L138">				uncollateralizedExposure - collateralGroupVertexCloseOut.client(),</span>
-<span class="fc" id="L139">				uncollateralizedExposure - collateralGroupVertexCloseOut.dealer(),</span>
+<span class="fc" id="L149">			return new BurgardKjaerExposure (</span>
+<span class="fc" id="L150">				uncollateralizedExposure - collateralGroupVertexCloseOut.client(),</span>
+<span class="fc" id="L151">				uncollateralizedExposure - collateralGroupVertexCloseOut.dealer(),</span>
 				0.,
 				0.
 			);
 		}
-<span class="nc" id="L144">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L156">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L146">			e.printStackTrace();</span>
+<span class="nc" id="L158">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L149">		return null;</span>
+<span class="nc" id="L161">		return null;</span>
 	}
 
 	/**
@@ -166,34 +178,34 @@ public class BurgardKjaerExposure implements org.drip.xva.hypothecation.Collater
 		final double funding,
 		final double collateralBalance)
 		throws java.lang.Exception
-<span class="fc" id="L169">	{</span>
-<span class="pc bpc" id="L170" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_credit = credit) ||</span>
-<span class="pc bpc" id="L171" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_debt = debt) ||</span>
-<span class="pc bpc" id="L172" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_funding = funding) ||</span>
-<span class="pc bpc" id="L173" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_collateralBalance = collateralBalance))</span>
+<span class="fc" id="L181">	{</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_credit = credit) ||</span>
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_debt = debt) ||</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_funding = funding) ||</span>
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_collateralBalance = collateralBalance))</span>
 		{
-<span class="nc" id="L175">			throw new java.lang.Exception (&quot;BurgardKjaerExposure Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L187">			throw new java.lang.Exception (&quot;BurgardKjaerExposure Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L177">	}</span>
+<span class="fc" id="L189">	}</span>
 
 	@Override public double credit()
 	{
-<span class="fc" id="L181">		return _credit;</span>
+<span class="fc" id="L193">		return _credit;</span>
 	}
 
 	@Override public double debt()
 	{
-<span class="fc" id="L186">		return _debt;</span>
+<span class="fc" id="L198">		return _debt;</span>
 	}
 
 	@Override public double funding()
 	{
-<span class="fc" id="L191">		return _funding;</span>
+<span class="fc" id="L203">		return _funding;</span>
 	}
 
 	@Override public double variationMarginPosting()
 	{
-<span class="fc" id="L196">		return _collateralBalance;</span>
+<span class="fc" id="L208">		return _collateralBalance;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

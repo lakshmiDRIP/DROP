@@ -6,6 +6,7 @@ package org.drip.function.r1tor1solver;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -15,33 +16,43 @@ package org.drip.function.r1tor1solver;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -88,59 +99,59 @@ package org.drip.function.r1tor1solver;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Function Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver/README.md&quot;&gt;Built-in R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solvers&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class FixedPointFinderNewton extends org.drip.function.r1tor1solver.FixedPointFinder {
-<span class="fc" id="L101">	private org.drip.function.r1tor1solver.ExecutionInitializer _ei = null;</span>
+<span class="fc" id="L112">	private org.drip.function.r1tor1solver.ExecutionInitializer _ei = null;</span>
 
 	private double calcVariateOFSlope (
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))</span>
-<span class="nc" id="L108">			throw new java.lang.Exception (&quot;FixedPointFinderNewton::calcVariateOFSlope =&gt; Invalid input!&quot;);</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))</span>
+<span class="nc" id="L119">			throw new java.lang.Exception (&quot;FixedPointFinderNewton::calcVariateOFSlope =&gt; Invalid input!&quot;);</span>
 
-<span class="fc" id="L110">		org.drip.numerical.differentiation.Differential diff = _of.differential (dblVariate, 1);</span>
+<span class="fc" id="L121">		org.drip.numerical.differentiation.Differential diff = _of.differential (dblVariate, 1);</span>
 
-<span class="pc bpc" id="L112" title="1 of 2 branches missed.">		if (null == diff)</span>
-<span class="nc" id="L113">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		if (null == diff)</span>
+<span class="nc" id="L124">			throw new java.lang.Exception</span>
 				(&quot;FixedPointFinderNewton::calcVariateTargetSlope =&gt; Cannot evaluate Derivative for variate &quot;
 					+ dblVariate);
 
-<span class="fc" id="L117">		return diff.calcSlope (false);</span>
+<span class="fc" id="L128">		return diff.calcSlope (false);</span>
 	}
 
 	@Override protected boolean iterateVariate (
 		final org.drip.function.r1tor1solver.IteratedVariate vi,
 		final org.drip.function.r1tor1solver.FixedPointFinderOutput rfop)
 	{
-<span class="pc bpc" id="L124" title="2 of 4 branches missed.">		if (null == vi || null == rfop) return false;</span>
+<span class="pc bpc" id="L135" title="2 of 4 branches missed.">		if (null == vi || null == rfop) return false;</span>
 
-<span class="fc" id="L126">		double dblVariate = vi.getVariate();</span>
+<span class="fc" id="L137">		double dblVariate = vi.getVariate();</span>
 
 		try {
-<span class="fc" id="L129">			double dblVariateNext = dblVariate - calcVariateOFSlope (dblVariate) * vi.getOF();</span>
+<span class="fc" id="L140">			double dblVariateNext = dblVariate - calcVariateOFSlope (dblVariate) * vi.getOF();</span>
 
-<span class="pc bpc" id="L131" title="2 of 4 branches missed.">			return vi.setVariate (dblVariateNext) &amp;&amp; vi.setOF (_of.evaluate (dblVariateNext)) &amp;&amp;</span>
-<span class="pc bpc" id="L132" title="2 of 4 branches missed.">				rfop.incrOFDerivCalcs() &amp;&amp; rfop.incrOFCalcs();</span>
-<span class="nc" id="L133">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L134">			e.printStackTrace();</span>
+<span class="pc bpc" id="L142" title="2 of 4 branches missed.">			return vi.setVariate (dblVariateNext) &amp;&amp; vi.setOF (_of.evaluate (dblVariateNext)) &amp;&amp;</span>
+<span class="pc bpc" id="L143" title="2 of 4 branches missed.">				rfop.incrOFDerivCalcs() &amp;&amp; rfop.incrOFCalcs();</span>
+<span class="nc" id="L144">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L145">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L137">		return false;</span>
+<span class="nc" id="L148">		return false;</span>
 	}
 
 	@Override protected org.drip.function.r1tor1solver.ExecutionInitializationOutput initializeVariateZone (
 		final org.drip.function.r1tor1solver.InitializationHeuristics ih)
 	{
-<span class="fc" id="L143">		return _ei.initializeBracket (ih, _dblOFGoal);</span>
+<span class="fc" id="L154">		return _ei.initializeBracket (ih, _dblOFGoal);</span>
 	}
 
 	/**
@@ -159,9 +170,9 @@ public class FixedPointFinderNewton extends org.drip.function.r1tor1solver.Fixed
 		final boolean bWhine)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L162">		super (dblOFGoal, of, null, bWhine);</span>
+<span class="fc" id="L173">		super (dblOFGoal, of, null, bWhine);</span>
 
-<span class="fc" id="L164">		_ei = new org.drip.function.r1tor1solver.ExecutionInitializer (_of, null, true);</span>
-<span class="fc" id="L165">	}</span>
+<span class="fc" id="L175">		_ei = new org.drip.function.r1tor1solver.ExecutionInitializer (_of, null, true);</span>
+<span class="fc" id="L176">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

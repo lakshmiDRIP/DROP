@@ -6,6 +6,7 @@ package org.drip.function.r1tor1solver;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -15,33 +16,43 @@ package org.drip.function.r1tor1solver;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -94,33 +105,33 @@ package org.drip.function.r1tor1solver;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Function Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver/README.md&quot;&gt;Built-in R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solvers&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class VariateIterationSelectorParams {
-<span class="pc" id="L107">	private int _iFastIteratorPrimitive = -1;</span>
-<span class="pc" id="L108">	private int _iRobustIteratorPrimitive = -1;</span>
-<span class="pc" id="L109">	private double _dblRelativeVariateShift = java.lang.Double.NaN;</span>
-<span class="pc" id="L110">	private double _dblVariateShiftLowerBound = java.lang.Double.NaN;</span>
+<span class="pc" id="L118">	private int _iFastIteratorPrimitive = -1;</span>
+<span class="pc" id="L119">	private int _iRobustIteratorPrimitive = -1;</span>
+<span class="pc" id="L120">	private double _dblRelativeVariateShift = java.lang.Double.NaN;</span>
+<span class="pc" id="L121">	private double _dblVariateShiftLowerBound = java.lang.Double.NaN;</span>
 
 	/**
 	 * Default VariateIterationSelectorParams constructor
 	 */
 
 	public VariateIterationSelectorParams()
-<span class="fc" id="L117">	{</span>
-<span class="fc" id="L118">		_dblRelativeVariateShift = 0.5;</span>
-<span class="fc" id="L119">		_dblVariateShiftLowerBound = 0.01;</span>
-<span class="fc" id="L120">		_iRobustIteratorPrimitive = org.drip.function.r1tor1solver.VariateIteratorPrimitive.BISECTION;</span>
-<span class="fc" id="L121">		_iFastIteratorPrimitive =</span>
+<span class="fc" id="L128">	{</span>
+<span class="fc" id="L129">		_dblRelativeVariateShift = 0.5;</span>
+<span class="fc" id="L130">		_dblVariateShiftLowerBound = 0.01;</span>
+<span class="fc" id="L131">		_iRobustIteratorPrimitive = org.drip.function.r1tor1solver.VariateIteratorPrimitive.BISECTION;</span>
+<span class="fc" id="L132">		_iFastIteratorPrimitive =</span>
 			org.drip.function.r1tor1solver.VariateIteratorPrimitive.INVERSE_QUADRATIC_INTERPOLATION;
-<span class="fc" id="L123">	}</span>
+<span class="fc" id="L134">	}</span>
 
 	/**
 	 * VariateIterationSelectorParams constructor
@@ -139,12 +150,12 @@ public class VariateIterationSelectorParams {
 		final int iFastIteratorPrimitive,
 		final int iRobustIteratorPrimitive)
 		throws java.lang.Exception
-<span class="nc" id="L142">	{</span>
-<span class="nc bnc" id="L143" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRelativeVariateShift = dblRelativeVariateShift) ||</span>
-<span class="nc bnc" id="L144" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblVariateShiftLowerBound =</span>
+<span class="nc" id="L153">	{</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRelativeVariateShift = dblRelativeVariateShift) ||</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblVariateShiftLowerBound =</span>
 				dblVariateShiftLowerBound))
-<span class="nc" id="L146">			throw new java.lang.Exception (&quot;VariateIterationSelectorParams constructor: Invalid inputs!&quot;);</span>
-<span class="nc" id="L147">	}</span>
+<span class="nc" id="L157">			throw new java.lang.Exception (&quot;VariateIterationSelectorParams constructor: Invalid inputs!&quot;);</span>
+<span class="nc" id="L158">	}</span>
 
 	/**
 	 * Retrieve the relative variate Shift
@@ -154,7 +165,7 @@ public class VariateIterationSelectorParams {
 
 	public double getRelativeVariateShift()
 	{
-<span class="fc" id="L157">		return _dblRelativeVariateShift;</span>
+<span class="fc" id="L168">		return _dblRelativeVariateShift;</span>
 	}
 
 	/**
@@ -165,7 +176,7 @@ public class VariateIterationSelectorParams {
 
 	public double getVariateShiftLowerBound()
 	{
-<span class="fc" id="L168">		return _dblVariateShiftLowerBound;</span>
+<span class="fc" id="L179">		return _dblVariateShiftLowerBound;</span>
 	}
 
 	/**
@@ -176,7 +187,7 @@ public class VariateIterationSelectorParams {
 
 	public int getFastVariateIteratorPrimitive()
 	{
-<span class="fc" id="L179">		return _iFastIteratorPrimitive;</span>
+<span class="fc" id="L190">		return _iFastIteratorPrimitive;</span>
 	}
 
 	/**
@@ -187,7 +198,7 @@ public class VariateIterationSelectorParams {
 
 	public int getRobustVariateIteratorPrimitive()
 	{
-<span class="fc" id="L190">		return _iRobustIteratorPrimitive;</span>
+<span class="fc" id="L201">		return _iRobustIteratorPrimitive;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

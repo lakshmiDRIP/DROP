@@ -6,43 +6,55 @@ package org.drip.xva.proto;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -95,10 +107,10 @@ package org.drip.xva.proto;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/proto&quot;&gt;Proto&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/README.md&quot;&gt;Valuation Adjustments that account for Collateral, CC Credit/Debt and Funding Overhead&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/proto/README.md&quot;&gt;Collateral, Counter Party, Netting Groups&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -107,13 +119,13 @@ package org.drip.xva.proto;
 
 public class CreditDebtGroupSpecification extends org.drip.xva.proto.ObjectSpecification
 {
-<span class="nc" id="L110">	private boolean _contractual = true;</span>
-<span class="nc" id="L111">	private boolean _enforceable = true;</span>
-<span class="nc" id="L112">	private org.drip.state.identifier.EntityHazardLabel _clientHazardLabel = null;</span>
-<span class="nc" id="L113">	private org.drip.state.identifier.EntityHazardLabel _dealerHazardLabel = null;</span>
-<span class="nc" id="L114">	private org.drip.state.identifier.EntityRecoveryLabel _clientRecoveryLabel = null;</span>
-<span class="nc" id="L115">	private org.drip.state.identifier.EntityRecoveryLabel _dealerSeniorRecoveryLabel = null;</span>
-<span class="nc" id="L116">	private org.drip.state.identifier.EntityRecoveryLabel _dealerSubordinateRecoveryLabel = null;</span>
+<span class="nc" id="L122">	private boolean _contractual = true;</span>
+<span class="nc" id="L123">	private boolean _enforceable = true;</span>
+<span class="nc" id="L124">	private org.drip.state.identifier.EntityHazardLabel _clientHazardLabel = null;</span>
+<span class="nc" id="L125">	private org.drip.state.identifier.EntityHazardLabel _dealerHazardLabel = null;</span>
+<span class="nc" id="L126">	private org.drip.state.identifier.EntityRecoveryLabel _clientRecoveryLabel = null;</span>
+<span class="nc" id="L127">	private org.drip.state.identifier.EntityRecoveryLabel _dealerSeniorRecoveryLabel = null;</span>
+<span class="nc" id="L128">	private org.drip.state.identifier.EntityRecoveryLabel _dealerSubordinateRecoveryLabel = null;</span>
 
 	/**
 	 * Generate a Standard Instance of CreditDebtGroupSpecification
@@ -139,7 +151,7 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ObjectSpeci
 		final org.drip.state.identifier.EntityRecoveryLabel dealerSubordinateRecoveryLabel)
 	{
 		try {
-<span class="nc" id="L142">			return new CreditDebtGroupSpecification (</span>
+<span class="nc" id="L154">			return new CreditDebtGroupSpecification (</span>
 				id,
 				name,
 				dealerHazardLabel,
@@ -151,12 +163,12 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ObjectSpeci
 				true
 			);
 		}
-<span class="nc" id="L154">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L166">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L156">			e.printStackTrace();</span>
+<span class="nc" id="L168">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L159">		return null;</span>
+<span class="nc" id="L171">		return null;</span>
 	}
 
 	/**
@@ -187,23 +199,23 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ObjectSpeci
 		final boolean enforceable)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L190">		super (</span>
+<span class="nc" id="L202">		super (</span>
 			id,
 			name
 		);
 
-<span class="nc bnc" id="L195" title="All 8 branches missed.">		if (null == (_dealerHazardLabel = dealerHazardLabel) ||</span>
+<span class="nc bnc" id="L207" title="All 8 branches missed.">		if (null == (_dealerHazardLabel = dealerHazardLabel) ||</span>
 			null == (_clientHazardLabel = clientHazardLabel) ||
 			null == (_dealerSeniorRecoveryLabel = dealerSeniorRecoveryLabel) ||
 			null == (_clientRecoveryLabel = clientRecoveryLabel))
 		{
-<span class="nc" id="L200">			throw new java.lang.Exception (&quot;CreditDebtGroupSpecification Constructor&quot;);</span>
+<span class="nc" id="L212">			throw new java.lang.Exception (&quot;CreditDebtGroupSpecification Constructor&quot;);</span>
 		}
 
-<span class="nc" id="L203">		_contractual = contractual;</span>
-<span class="nc" id="L204">		_enforceable = enforceable;</span>
-<span class="nc" id="L205">		_dealerSubordinateRecoveryLabel = dealerSubordinateRecoveryLabel;</span>
-<span class="nc" id="L206">	}</span>
+<span class="nc" id="L215">		_contractual = contractual;</span>
+<span class="nc" id="L216">		_enforceable = enforceable;</span>
+<span class="nc" id="L217">		_dealerSubordinateRecoveryLabel = dealerSubordinateRecoveryLabel;</span>
+<span class="nc" id="L218">	}</span>
 
 	/**
 	 * Indicate if the Netting allowed is Contractual
@@ -213,7 +225,7 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ObjectSpeci
 
 	public boolean contractual()
 	{
-<span class="nc" id="L216">		return _contractual;</span>
+<span class="nc" id="L228">		return _contractual;</span>
 	}
 
 	/**
@@ -224,7 +236,7 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ObjectSpeci
 
 	public boolean enforceable()
 	{
-<span class="nc" id="L227">		return _enforceable;</span>
+<span class="nc" id="L239">		return _enforceable;</span>
 	}
 
 	/**
@@ -235,7 +247,7 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ObjectSpeci
 
 	public org.drip.state.identifier.EntityHazardLabel dealerHazardLabel()
 	{
-<span class="nc" id="L238">		return _dealerHazardLabel;</span>
+<span class="nc" id="L250">		return _dealerHazardLabel;</span>
 	}
 
 	/**
@@ -246,7 +258,7 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ObjectSpeci
 
 	public org.drip.state.identifier.EntityHazardLabel clientHazardLabel()
 	{
-<span class="nc" id="L249">		return _clientHazardLabel;</span>
+<span class="nc" id="L261">		return _clientHazardLabel;</span>
 	}
 
 	/**
@@ -257,7 +269,7 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ObjectSpeci
 
 	public org.drip.state.identifier.EntityRecoveryLabel dealerSeniorRecoveryLabel()
 	{
-<span class="nc" id="L260">		return _dealerSeniorRecoveryLabel;</span>
+<span class="nc" id="L272">		return _dealerSeniorRecoveryLabel;</span>
 	}
 
 	/**
@@ -268,7 +280,7 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ObjectSpeci
 
 	public org.drip.state.identifier.EntityRecoveryLabel dealerSubordinateRecoveryLabel()
 	{
-<span class="nc" id="L271">		return _dealerSubordinateRecoveryLabel;</span>
+<span class="nc" id="L283">		return _dealerSubordinateRecoveryLabel;</span>
 	}
 
 	/**
@@ -279,7 +291,7 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ObjectSpeci
 
 	public org.drip.state.identifier.EntityRecoveryLabel clientRecoveryLabel()
 	{
-<span class="nc" id="L282">		return _clientRecoveryLabel;</span>
+<span class="nc" id="L294">		return _clientRecoveryLabel;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,41 +6,53 @@ package org.drip.function.e2erf;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -94,10 +106,10 @@ package org.drip.function.e2erf;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/e2erf/README.md&quot;&gt;E&lt;sub&gt;2&lt;/sub&gt; erf and erf&lt;sup&gt;-1&lt;/sup&gt; Implementations&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Function Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/e2erf/README.md&quot;&gt;E&lt;sub&gt;2&lt;/sub&gt; erf and erf&lt;sup&gt;-1&lt;/sup&gt; Implementations&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -105,8 +117,8 @@ package org.drip.function.e2erf;
 
 public class BuiltInEntry
 {
-<span class="nc" id="L108">	private double _erf = java.lang.Double.NaN;</span>
-<span class="nc" id="L109">	private double _erfc = java.lang.Double.NaN;</span>
+<span class="nc" id="L120">	private double _erf = java.lang.Double.NaN;</span>
+<span class="nc" id="L121">	private double _erfc = java.lang.Double.NaN;</span>
 
 	/**
 	 * Generate a Table of Built-in E&lt;sub&gt;2&lt;/sub&gt; erf/erfc Entries
@@ -116,275 +128,275 @@ public class BuiltInEntry
 
 	public static final java.util.Map&lt;java.lang.Double, BuiltInEntry&gt; Table()
 	{
-<span class="nc" id="L119">		java.util.Map&lt;java.lang.Double, BuiltInEntry&gt; builtInEntryTable = new</span>
+<span class="nc" id="L131">		java.util.Map&lt;java.lang.Double, BuiltInEntry&gt; builtInEntryTable = new</span>
 			java.util.TreeMap&lt;java.lang.Double, BuiltInEntry&gt;();
 
 		try
 		{
-<span class="nc" id="L124">			builtInEntryTable.put (</span>
-<span class="nc" id="L125">				0.00,</span>
+<span class="nc" id="L136">			builtInEntryTable.put (</span>
+<span class="nc" id="L137">				0.00,</span>
 				new BuiltInEntry (
 					0.000000000,
 					1.000000000
 				)
 			);
 
-<span class="nc" id="L132">			builtInEntryTable.put (</span>
-<span class="nc" id="L133">				0.02,</span>
+<span class="nc" id="L144">			builtInEntryTable.put (</span>
+<span class="nc" id="L145">				0.02,</span>
 				new BuiltInEntry (
 					0.022564575,
 					0.977435425
 				)
 			);
 
-<span class="nc" id="L140">			builtInEntryTable.put (</span>
-<span class="nc" id="L141">				0.04,</span>
+<span class="nc" id="L152">			builtInEntryTable.put (</span>
+<span class="nc" id="L153">				0.04,</span>
 				new BuiltInEntry (
 					0.045111106,
 					0.954888894
 				)
 			);
 
-<span class="nc" id="L148">			builtInEntryTable.put (</span>
-<span class="nc" id="L149">				0.06,</span>
+<span class="nc" id="L160">			builtInEntryTable.put (</span>
+<span class="nc" id="L161">				0.06,</span>
 				new BuiltInEntry (
 					0.067621594,
 					0.932378406
 				)
 			);
 
-<span class="nc" id="L156">			builtInEntryTable.put (</span>
-<span class="nc" id="L157">				0.08,</span>
+<span class="nc" id="L168">			builtInEntryTable.put (</span>
+<span class="nc" id="L169">				0.08,</span>
 				new BuiltInEntry (
 					0.090078126,
 					0.909921874
 				)
 			);
 
-<span class="nc" id="L164">			builtInEntryTable.put (</span>
-<span class="nc" id="L165">				0.10,</span>
+<span class="nc" id="L176">			builtInEntryTable.put (</span>
+<span class="nc" id="L177">				0.10,</span>
 				new BuiltInEntry (
 					0.112462916,
 					0.887537084
 				)
 			);
 
-<span class="nc" id="L172">			builtInEntryTable.put (</span>
-<span class="nc" id="L173">				0.20,</span>
+<span class="nc" id="L184">			builtInEntryTable.put (</span>
+<span class="nc" id="L185">				0.20,</span>
 				new BuiltInEntry (
 					0.222792589,
 					0.777297411
 				)
 			);
 
-<span class="nc" id="L180">			builtInEntryTable.put (</span>
-<span class="nc" id="L181">				0.30,</span>
+<span class="nc" id="L192">			builtInEntryTable.put (</span>
+<span class="nc" id="L193">				0.30,</span>
 				new BuiltInEntry (
 					0.328626759,
 					0.671373241
 				)
 			);
 
-<span class="nc" id="L188">			builtInEntryTable.put (</span>
-<span class="nc" id="L189">				0.40,</span>
+<span class="nc" id="L200">			builtInEntryTable.put (</span>
+<span class="nc" id="L201">				0.40,</span>
 				new BuiltInEntry (
 					0.428392355,
 					0.571607645
 				)
 			);
 
-<span class="nc" id="L196">			builtInEntryTable.put (</span>
-<span class="nc" id="L197">				0.50,</span>
+<span class="nc" id="L208">			builtInEntryTable.put (</span>
+<span class="nc" id="L209">				0.50,</span>
 				new BuiltInEntry (
 					0.520499878,
 					0.479500122
 				)
 			);
 
-<span class="nc" id="L204">			builtInEntryTable.put (</span>
-<span class="nc" id="L205">				0.60,</span>
+<span class="nc" id="L216">			builtInEntryTable.put (</span>
+<span class="nc" id="L217">				0.60,</span>
 				new BuiltInEntry (
 					0.603856091,
 					0.396143909
 				)
 			);
 
-<span class="nc" id="L212">			builtInEntryTable.put (</span>
-<span class="nc" id="L213">				0.70,</span>
+<span class="nc" id="L224">			builtInEntryTable.put (</span>
+<span class="nc" id="L225">				0.70,</span>
 				new BuiltInEntry (
 					0.677801194,
 					0.322198806
 				)
 			);
 
-<span class="nc" id="L220">			builtInEntryTable.put (</span>
-<span class="nc" id="L221">				0.80,</span>
+<span class="nc" id="L232">			builtInEntryTable.put (</span>
+<span class="nc" id="L233">				0.80,</span>
 				new BuiltInEntry (
 					0.742100965,
 					0.257899035
 				)
 			);
 
-<span class="nc" id="L228">			builtInEntryTable.put (</span>
-<span class="nc" id="L229">				0.90,</span>
+<span class="nc" id="L240">			builtInEntryTable.put (</span>
+<span class="nc" id="L241">				0.90,</span>
 				new BuiltInEntry (
 					0.796908212,
 					0.203091788
 				)
 			);
 
-<span class="nc" id="L236">			builtInEntryTable.put (</span>
-<span class="nc" id="L237">				1.00,</span>
+<span class="nc" id="L248">			builtInEntryTable.put (</span>
+<span class="nc" id="L249">				1.00,</span>
 				new BuiltInEntry (
 					0.842700793,
 					0.157299207
 				)
 			);
 
-<span class="nc" id="L244">			builtInEntryTable.put (</span>
-<span class="nc" id="L245">				1.10,</span>
+<span class="nc" id="L256">			builtInEntryTable.put (</span>
+<span class="nc" id="L257">				1.10,</span>
 				new BuiltInEntry (
 					0.880205070,
 					0.119794930
 				)
 			);
 
-<span class="nc" id="L252">			builtInEntryTable.put (</span>
-<span class="nc" id="L253">				1.20,</span>
+<span class="nc" id="L264">			builtInEntryTable.put (</span>
+<span class="nc" id="L265">				1.20,</span>
 				new BuiltInEntry (
 					0.910313978,
 					0.089686022
 				)
 			);
 
-<span class="nc" id="L260">			builtInEntryTable.put (</span>
-<span class="nc" id="L261">				1.30,</span>
+<span class="nc" id="L272">			builtInEntryTable.put (</span>
+<span class="nc" id="L273">				1.30,</span>
 				new BuiltInEntry (
 					0.934007945,
 					0.065992055
 				)
 			);
 
-<span class="nc" id="L268">			builtInEntryTable.put (</span>
-<span class="nc" id="L269">				1.40,</span>
+<span class="nc" id="L280">			builtInEntryTable.put (</span>
+<span class="nc" id="L281">				1.40,</span>
 				new BuiltInEntry (
 					0.952285120,
 					0.047714880
 				)
 			);
 
-<span class="nc" id="L276">			builtInEntryTable.put (</span>
-<span class="nc" id="L277">				1.50,</span>
+<span class="nc" id="L288">			builtInEntryTable.put (</span>
+<span class="nc" id="L289">				1.50,</span>
 				new BuiltInEntry (
 					0.966105146,
 					0.033894854
 				)
 			);
 
-<span class="nc" id="L284">			builtInEntryTable.put (</span>
-<span class="nc" id="L285">				1.60,</span>
+<span class="nc" id="L296">			builtInEntryTable.put (</span>
+<span class="nc" id="L297">				1.60,</span>
 				new BuiltInEntry (
 					0.976348383,
 					0.023651617
 				)
 			);
 
-<span class="nc" id="L292">			builtInEntryTable.put (</span>
-<span class="nc" id="L293">				1.70,</span>
+<span class="nc" id="L304">			builtInEntryTable.put (</span>
+<span class="nc" id="L305">				1.70,</span>
 				new BuiltInEntry (
 					0.983790459,
 					0.016209541
 				)
 			);
 
-<span class="nc" id="L300">			builtInEntryTable.put (</span>
-<span class="nc" id="L301">				1.80,</span>
+<span class="nc" id="L312">			builtInEntryTable.put (</span>
+<span class="nc" id="L313">				1.80,</span>
 				new BuiltInEntry (
 					0.989090502,
 					0.010909498
 				)
 			);
 
-<span class="nc" id="L308">			builtInEntryTable.put (</span>
-<span class="nc" id="L309">				1.90,</span>
+<span class="nc" id="L320">			builtInEntryTable.put (</span>
+<span class="nc" id="L321">				1.90,</span>
 				new BuiltInEntry (
 					0.992790429,
 					0.007209571
 				)
 			);
 
-<span class="nc" id="L316">			builtInEntryTable.put (</span>
-<span class="nc" id="L317">				2.00,</span>
+<span class="nc" id="L328">			builtInEntryTable.put (</span>
+<span class="nc" id="L329">				2.00,</span>
 				new BuiltInEntry (
 					0.995322265,
 					0.004677735
 				)
 			);
 
-<span class="nc" id="L324">			builtInEntryTable.put (</span>
-<span class="nc" id="L325">				2.10,</span>
+<span class="nc" id="L336">			builtInEntryTable.put (</span>
+<span class="nc" id="L337">				2.10,</span>
 				new BuiltInEntry (
 					0.997020533,
 					0.002979467
 				)
 			);
 
-<span class="nc" id="L332">			builtInEntryTable.put (</span>
-<span class="nc" id="L333">				2.20,</span>
+<span class="nc" id="L344">			builtInEntryTable.put (</span>
+<span class="nc" id="L345">				2.20,</span>
 				new BuiltInEntry (
 					0.998137154,
 					0.001862846
 				)
 			);
 
-<span class="nc" id="L340">			builtInEntryTable.put (</span>
-<span class="nc" id="L341">				2.30,</span>
+<span class="nc" id="L352">			builtInEntryTable.put (</span>
+<span class="nc" id="L353">				2.30,</span>
 				new BuiltInEntry (
 					0.998856823,
 					0.001143177
 				)
 			);
 
-<span class="nc" id="L348">			builtInEntryTable.put (</span>
-<span class="nc" id="L349">				2.40,</span>
+<span class="nc" id="L360">			builtInEntryTable.put (</span>
+<span class="nc" id="L361">				2.40,</span>
 				new BuiltInEntry (
 					0.999311486,
 					0.000688514
 				)
 			);
 
-<span class="nc" id="L356">			builtInEntryTable.put (</span>
-<span class="nc" id="L357">				2.50,</span>
+<span class="nc" id="L368">			builtInEntryTable.put (</span>
+<span class="nc" id="L369">				2.50,</span>
 				new BuiltInEntry (
 					0.999593048,
 					0.000406952
 				)
 			);
 
-<span class="nc" id="L364">			builtInEntryTable.put (</span>
-<span class="nc" id="L365">				3.00,</span>
+<span class="nc" id="L376">			builtInEntryTable.put (</span>
+<span class="nc" id="L377">				3.00,</span>
 				new BuiltInEntry (
 					0.999977910,
 					0.000022090
 				)
 			);
 
-<span class="nc" id="L372">			builtInEntryTable.put (</span>
-<span class="nc" id="L373">				3.50,</span>
+<span class="nc" id="L384">			builtInEntryTable.put (</span>
+<span class="nc" id="L385">				3.50,</span>
 				new BuiltInEntry (
 					0.999999257,
 					0.000000743
 				)
 			);
 
-<span class="nc" id="L380">			return builtInEntryTable;</span>
+<span class="nc" id="L392">			return builtInEntryTable;</span>
 		}
-<span class="nc" id="L382">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L394">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L384">			e.printStackTrace();</span>
+<span class="nc" id="L396">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L387">		return null;</span>
+<span class="nc" id="L399">		return null;</span>
 	}
 
 	/**
@@ -400,13 +412,13 @@ public class BuiltInEntry
 		final double erf,
 		final double erfc)
 		throws java.lang.Exception
-<span class="nc" id="L403">	{</span>
-<span class="nc bnc" id="L404" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_erf = erf) ||</span>
-<span class="nc bnc" id="L405" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_erfc = erfc))</span>
+<span class="nc" id="L415">	{</span>
+<span class="nc bnc" id="L416" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_erf = erf) ||</span>
+<span class="nc bnc" id="L417" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_erfc = erfc))</span>
 		{
-<span class="nc" id="L407">			throw new java.lang.Exception (&quot;BuiltInE2Entry Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L419">			throw new java.lang.Exception (&quot;BuiltInE2Entry Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L409">	}</span>
+<span class="nc" id="L421">	}</span>
 
 	/**
 	 * Retrieve the E&lt;sub&gt;2&lt;/sub&gt; erf
@@ -416,7 +428,7 @@ public class BuiltInEntry
 
 	public double erf()
 	{
-<span class="nc" id="L419">		return _erf;</span>
+<span class="nc" id="L431">		return _erf;</span>
 	}
 
 	/**
@@ -427,7 +439,7 @@ public class BuiltInEntry
 
 	public double erfc()
 	{
-<span class="nc" id="L430">		return _erfc;</span>
+<span class="nc" id="L442">		return _erfc;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

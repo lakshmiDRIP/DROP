@@ -6,6 +6,7 @@ package org.drip.function.r1tor1solver;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -15,39 +16,50 @@ package org.drip.function.r1tor1solver;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -78,20 +90,20 @@ package org.drip.function.r1tor1solver;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Function Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver/README.md&quot;&gt;Built-in R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solvers&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class BracketingOutput extends org.drip.function.r1tor1solver.ExecutionInitializationOutput {
-<span class="fc" id="L91">	private double _dblOFLeft = java.lang.Double.NaN;</span>
-<span class="fc" id="L92">	private double _dblOFRight = java.lang.Double.NaN;</span>
-<span class="fc" id="L93">	private double _dblVariateLeft = java.lang.Double.NaN;</span>
-<span class="fc" id="L94">	private double _dblVariateRight = java.lang.Double.NaN;</span>
+<span class="fc" id="L103">	private double _dblOFLeft = java.lang.Double.NaN;</span>
+<span class="fc" id="L104">	private double _dblOFRight = java.lang.Double.NaN;</span>
+<span class="fc" id="L105">	private double _dblVariateLeft = java.lang.Double.NaN;</span>
+<span class="fc" id="L106">	private double _dblVariateRight = java.lang.Double.NaN;</span>
 
 	/**
 	 * Default BracketingOutput constructor: Initializes the output
@@ -99,8 +111,8 @@ public class BracketingOutput extends org.drip.function.r1tor1solver.ExecutionIn
 
 	public BracketingOutput()
 	{
-<span class="fc" id="L102">		super();</span>
-<span class="fc" id="L103">	}</span>
+<span class="fc" id="L114">		super();</span>
+<span class="fc" id="L115">	}</span>
 
 	/**
 	 * Return the left Variate
@@ -110,7 +122,7 @@ public class BracketingOutput extends org.drip.function.r1tor1solver.ExecutionIn
 
 	public double getVariateLeft()
 	{
-<span class="fc" id="L113">		return _dblVariateLeft;</span>
+<span class="fc" id="L125">		return _dblVariateLeft;</span>
 	}
 
 	/**
@@ -121,7 +133,7 @@ public class BracketingOutput extends org.drip.function.r1tor1solver.ExecutionIn
 
 	public double getVariateRight()
 	{
-<span class="fc" id="L124">		return _dblVariateRight;</span>
+<span class="fc" id="L136">		return _dblVariateRight;</span>
 	}
 
 	/**
@@ -132,7 +144,7 @@ public class BracketingOutput extends org.drip.function.r1tor1solver.ExecutionIn
 
 	public double getOFLeft()
 	{
-<span class="fc" id="L135">		return _dblOFLeft;</span>
+<span class="fc" id="L147">		return _dblOFLeft;</span>
 	}
 
 	/**
@@ -143,7 +155,7 @@ public class BracketingOutput extends org.drip.function.r1tor1solver.ExecutionIn
 
 	public double getOFRight()
 	{
-<span class="fc" id="L146">		return _dblOFRight;</span>
+<span class="fc" id="L158">		return _dblOFRight;</span>
 	}
 
 	/**
@@ -165,14 +177,14 @@ public class BracketingOutput extends org.drip.function.r1tor1solver.ExecutionIn
 		final double dblOFRight,
 		final double dblStartingVariate)
 	{
-<span class="pc bpc" id="L168" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblVariateLeft = dblVariateLeft) ||</span>
-<span class="pc bpc" id="L169" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblVariateRight = dblVariateRight) ||</span>
-<span class="pc bpc" id="L170" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblOFLeft = dblOFLeft) ||</span>
-<span class="pc bpc" id="L171" title="1 of 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (_dblOFRight = dblOFRight) ||</span>
-<span class="pc bpc" id="L172" title="1 of 2 branches missed.">						!setStartingVariate (dblStartingVariate))</span>
-<span class="nc" id="L173">			return false;</span>
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblVariateLeft = dblVariateLeft) ||</span>
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblVariateRight = dblVariateRight) ||</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblOFLeft = dblOFLeft) ||</span>
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (_dblOFRight = dblOFRight) ||</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">						!setStartingVariate (dblStartingVariate))</span>
+<span class="nc" id="L185">			return false;</span>
 
-<span class="fc" id="L175">		return done();</span>
+<span class="fc" id="L187">		return done();</span>
 	}
 
 	/**
@@ -183,32 +195,32 @@ public class BracketingOutput extends org.drip.function.r1tor1solver.ExecutionIn
 
 	public org.drip.function.r1tor1solver.ConvergenceOutput makeConvergenceVariate()
 	{
-<span class="nc" id="L186">		org.drip.function.r1tor1solver.ConvergenceOutput cop = null;</span>
+<span class="nc" id="L198">		org.drip.function.r1tor1solver.ConvergenceOutput cop = null;</span>
 
 		try {
-<span class="nc" id="L189">			cop = new org.drip.function.r1tor1solver.ConvergenceOutput (this);</span>
-<span class="nc" id="L190">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L191">			e.printStackTrace();</span>
-<span class="nc" id="L192">		}</span>
+<span class="nc" id="L201">			cop = new org.drip.function.r1tor1solver.ConvergenceOutput (this);</span>
+<span class="nc" id="L202">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L203">			e.printStackTrace();</span>
+<span class="nc" id="L204">		}</span>
 
-<span class="nc bnc" id="L194" title="All 2 branches missed.">		return cop.done (getStartingVariate()) ? cop : null;</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">		return cop.done (getStartingVariate()) ? cop : null;</span>
 	}
 
 	@Override public java.lang.String displayString()
 	{
-<span class="fc" id="L199">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
+<span class="fc" id="L211">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
 
-<span class="fc" id="L201">		sb.append (super.displayString());</span>
+<span class="fc" id="L213">		sb.append (super.displayString());</span>
 
-<span class="fc" id="L203">		sb.append (&quot;\n\t\tLeft Bracket: &quot; + getVariateLeft());</span>
+<span class="fc" id="L215">		sb.append (&quot;\n\t\tLeft Bracket: &quot; + getVariateLeft());</span>
 
-<span class="fc" id="L205">		sb.append (&quot;\n\t\tRight Bracket: &quot; + getVariateRight());</span>
+<span class="fc" id="L217">		sb.append (&quot;\n\t\tRight Bracket: &quot; + getVariateRight());</span>
 
-<span class="fc" id="L207">		sb.append (&quot;\n\t\tLeft OF: &quot; + getOFLeft());</span>
+<span class="fc" id="L219">		sb.append (&quot;\n\t\tLeft OF: &quot; + getOFLeft());</span>
 
-<span class="fc" id="L209">		sb.append (&quot;\n\t\tRight OF: &quot; + getOFRight());</span>
+<span class="fc" id="L221">		sb.append (&quot;\n\t\tRight OF: &quot; + getOFRight());</span>
 
-<span class="fc" id="L211">		return sb.toString();</span>
+<span class="fc" id="L223">		return sb.toString();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,41 +6,53 @@ package org.drip.function.e2erf;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -94,16 +106,16 @@ package org.drip.function.e2erf;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/e2erf/README.md&quot;&gt;E&lt;sub&gt;2&lt;/sub&gt; erf and erf&lt;sup&gt;-1&lt;/sup&gt; Implementations&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Function Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/e2erf/README.md&quot;&gt;E&lt;sub&gt;2&lt;/sub&gt; erf and erf&lt;sup&gt;-1&lt;/sup&gt; Implementations&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L106">public class HansHeinrichBurmannSeries</span>
+<span class="nc" id="L118">public class HansHeinrichBurmannSeries</span>
 {
 
 	/**
@@ -114,48 +126,48 @@ package org.drip.function.e2erf;
 
 	public static final org.drip.numerical.estimation.R1ToR1Series Convergent()
 	{
-<span class="nc" id="L117">		java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
+<span class="nc" id="L129">		java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
 			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
-<span class="nc" id="L120">		termWeightMap.put (</span>
-<span class="nc" id="L121">			0,</span>
-<span class="nc" id="L122">			1.</span>
+<span class="nc" id="L132">		termWeightMap.put (</span>
+<span class="nc" id="L133">			0,</span>
+<span class="nc" id="L134">			1.</span>
 		);
 
-<span class="nc" id="L125">		termWeightMap.put (</span>
-<span class="nc" id="L126">			1,</span>
-<span class="nc" id="L127">			-1. / 12.</span>
+<span class="nc" id="L137">		termWeightMap.put (</span>
+<span class="nc" id="L138">			1,</span>
+<span class="nc" id="L139">			-1. / 12.</span>
 		);
 
-<span class="nc" id="L130">		termWeightMap.put (</span>
-<span class="nc" id="L131">			2,</span>
-<span class="nc" id="L132">			-7. / 480.</span>
+<span class="nc" id="L142">		termWeightMap.put (</span>
+<span class="nc" id="L143">			2,</span>
+<span class="nc" id="L144">			-7. / 480.</span>
 		);
 
-<span class="nc" id="L135">		termWeightMap.put (</span>
-<span class="nc" id="L136">			3,</span>
-<span class="nc" id="L137">			-5. / 896.</span>
+<span class="nc" id="L147">		termWeightMap.put (</span>
+<span class="nc" id="L148">			3,</span>
+<span class="nc" id="L149">			-5. / 896.</span>
 		);
 
-<span class="nc" id="L140">		termWeightMap.put (</span>
-<span class="nc" id="L141">			4,</span>
-<span class="nc" id="L142">			-787. / 276480.</span>
+<span class="nc" id="L152">		termWeightMap.put (</span>
+<span class="nc" id="L153">			4,</span>
+<span class="nc" id="L154">			-787. / 276480.</span>
 		);
 
 		try
 		{
-<span class="nc" id="L147">			return new org.drip.numerical.estimation.R1ToR1Series (</span>
-<span class="nc" id="L148">				org.drip.function.e2erf.HansHeinrichBurmannTerm.Convergent(),</span>
+<span class="nc" id="L159">			return new org.drip.numerical.estimation.R1ToR1Series (</span>
+<span class="nc" id="L160">				org.drip.function.e2erf.HansHeinrichBurmannTerm.Convergent(),</span>
 				false,
 				termWeightMap
 			);
 		}
-<span class="nc" id="L153">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L165">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L155">			e.printStackTrace();</span>
+<span class="nc" id="L167">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L158">		return null;</span>
+<span class="nc" id="L170">		return null;</span>
 	}
 
 	/**
@@ -166,38 +178,38 @@ package org.drip.function.e2erf;
 
 	public static final org.drip.numerical.estimation.R1ToR1Series SchopfSupancic2014()
 	{
-<span class="nc" id="L169">		java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
+<span class="nc" id="L181">		java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
 			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
-<span class="nc" id="L172">		termWeightMap.put (</span>
-<span class="nc" id="L173">			0,</span>
-<span class="nc" id="L174">			0.5 * java.lang.Math.sqrt (java.lang.Math.PI)</span>
+<span class="nc" id="L184">		termWeightMap.put (</span>
+<span class="nc" id="L185">			0,</span>
+<span class="nc" id="L186">			0.5 * java.lang.Math.sqrt (java.lang.Math.PI)</span>
 		);
 
-<span class="nc" id="L177">		termWeightMap.put (</span>
-<span class="nc" id="L178">			1,</span>
-<span class="nc" id="L179">			31. / 200.</span>
+<span class="nc" id="L189">		termWeightMap.put (</span>
+<span class="nc" id="L190">			1,</span>
+<span class="nc" id="L191">			31. / 200.</span>
 		);
 
-<span class="nc" id="L182">		termWeightMap.put (</span>
-<span class="nc" id="L183">			2,</span>
-<span class="nc" id="L184">			-341. / 8000.</span>
+<span class="nc" id="L194">		termWeightMap.put (</span>
+<span class="nc" id="L195">			2,</span>
+<span class="nc" id="L196">			-341. / 8000.</span>
 		);
 
 		try
 		{
-<span class="nc" id="L189">			return new org.drip.numerical.estimation.R1ToR1Series (</span>
-<span class="nc" id="L190">				org.drip.function.e2erf.HansHeinrichBurmannTerm.SchopfSupancic2014(),</span>
+<span class="nc" id="L201">			return new org.drip.numerical.estimation.R1ToR1Series (</span>
+<span class="nc" id="L202">				org.drip.function.e2erf.HansHeinrichBurmannTerm.SchopfSupancic2014(),</span>
 				false,
 				termWeightMap
 			);
 		}
-<span class="nc" id="L195">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L207">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L197">			e.printStackTrace();</span>
+<span class="nc" id="L209">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L200">		return null;</span>
+<span class="nc" id="L212">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

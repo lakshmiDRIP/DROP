@@ -6,35 +6,46 @@ package org.drip.function.matrix;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -93,10 +104,10 @@ package org.drip.function.matrix;
  *  
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalSupportLibrary.md&quot;&gt;Numerical Support Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/matrix/README.md&quot;&gt;Linear Algebra and Matrix Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Function Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/matrix/README.md&quot;&gt;Support for Functions of Matrices&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -105,7 +116,7 @@ package org.drip.function.matrix;
 
 public class Square
 {
-<span class="nc" id="L108">	public double[][] _grid = null;</span>
+<span class="nc" id="L119">	public double[][] _grid = null;</span>
 
 	/**
 	 * Square Constructor
@@ -118,40 +129,40 @@ public class Square
 	public Square (
 		final double[][] grid)
 		throws java.lang.Exception
-<span class="nc" id="L121">	{</span>
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (null == (_grid = grid))</span>
+<span class="nc" id="L132">	{</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		if (null == (_grid = grid))</span>
 		{
-<span class="nc" id="L124">			throw new java.lang.Exception (</span>
+<span class="nc" id="L135">			throw new java.lang.Exception (</span>
 				&quot;Square Constructor =&gt; Invalid Inputs&quot;
 			);
 		}
 
-<span class="nc" id="L129">		int dimension = _grid.length;</span>
+<span class="nc" id="L140">		int dimension = _grid.length;</span>
 
-<span class="nc bnc" id="L131" title="All 2 branches missed.">		if (0 == dimension)</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (0 == dimension)</span>
 		{
-<span class="nc" id="L133">			throw new java.lang.Exception (</span>
+<span class="nc" id="L144">			throw new java.lang.Exception (</span>
 				&quot;Square Constructor =&gt; Invalid Inputs&quot;
 			);
 		}
 
-<span class="nc" id="L138">		for (int dimensionIndex = 0;</span>
-<span class="nc bnc" id="L139" title="All 2 branches missed.">			dimensionIndex &lt; dimension;</span>
-<span class="nc" id="L140">			++dimensionIndex)</span>
+<span class="nc" id="L149">		for (int dimensionIndex = 0;</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">			dimensionIndex &lt; dimension;</span>
+<span class="nc" id="L151">			++dimensionIndex)</span>
 		{
-<span class="nc bnc" id="L142" title="All 4 branches missed.">			if (null == _grid[dimensionIndex] ||</span>
+<span class="nc bnc" id="L153" title="All 4 branches missed.">			if (null == _grid[dimensionIndex] ||</span>
 				dimension != _grid[dimensionIndex].length ||
-<span class="nc bnc" id="L144" title="All 2 branches missed.">				org.drip.numerical.common.NumberUtil.IsValid (</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">				org.drip.numerical.common.NumberUtil.IsValid (</span>
 					_grid[dimensionIndex]
 				)
 			)
 			{
-<span class="nc" id="L149">				throw new java.lang.Exception (</span>
+<span class="nc" id="L160">				throw new java.lang.Exception (</span>
 					&quot;Square Constructor =&gt; Invalid Inputs&quot;
 				);
 			}
 		}
-<span class="nc" id="L154">	}</span>
+<span class="nc" id="L165">	}</span>
 
 	/**
 	 * Retrieve the Grid of Elements
@@ -161,7 +172,7 @@ public class Square
 
 	public double[][] grid()
 	{
-<span class="nc" id="L164">		return _grid;</span>
+<span class="nc" id="L175">		return _grid;</span>
 	}
 
 	/**
@@ -172,7 +183,7 @@ public class Square
 
 	public int dimension()
 	{
-<span class="nc" id="L175">		return _grid.length;</span>
+<span class="nc" id="L186">		return _grid.length;</span>
 	}
 
 	/**
@@ -185,19 +196,19 @@ public class Square
 	{
 		try
 		{
-<span class="nc" id="L188">			return new org.drip.numerical.eigen.QREigenComponentExtractor (</span>
+<span class="nc" id="L199">			return new org.drip.numerical.eigen.QREigenComponentExtractor (</span>
 				100,
 				1.e-06
-<span class="nc" id="L191">			).eigenize (</span>
+<span class="nc" id="L202">			).eigenize (</span>
 				_grid
 			);
 		}
-<span class="nc" id="L195">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L206">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L197">			e.printStackTrace();</span>
+<span class="nc" id="L208">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L200">		return null;</span>
+<span class="nc" id="L211">		return null;</span>
 	}
 
 	/**
@@ -208,31 +219,31 @@ public class Square
 
 	public double[][][] eigenShadowArray()
 	{
-<span class="nc" id="L211">		org.drip.numerical.eigen.EigenOutput eigenOutput = eigenize();</span>
+<span class="nc" id="L222">		org.drip.numerical.eigen.EigenOutput eigenOutput = eigenize();</span>
 
-<span class="nc bnc" id="L213" title="All 2 branches missed.">		if (null == eigenOutput)</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">		if (null == eigenOutput)</span>
 		{
-<span class="nc" id="L215">			return null;</span>
+<span class="nc" id="L226">			return null;</span>
 		}
 
-<span class="nc" id="L218">		double[] eigenValueArray = eigenOutput.eigenValueArray();</span>
+<span class="nc" id="L229">		double[] eigenValueArray = eigenOutput.eigenValueArray();</span>
 
-<span class="nc" id="L220">		int dimension = _grid.length;</span>
-<span class="nc" id="L221">		double[][][] eigenShadowArray = new double[dimension][dimension][dimension];</span>
+<span class="nc" id="L231">		int dimension = _grid.length;</span>
+<span class="nc" id="L232">		double[][][] eigenShadowArray = new double[dimension][dimension][dimension];</span>
 
-<span class="nc" id="L223">		for (int componentIndex = 0;</span>
-<span class="nc bnc" id="L224" title="All 2 branches missed.">			componentIndex &lt; dimension;</span>
-<span class="nc" id="L225">			++componentIndex)</span>
+<span class="nc" id="L234">		for (int componentIndex = 0;</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">			componentIndex &lt; dimension;</span>
+<span class="nc" id="L236">			++componentIndex)</span>
 		{
-<span class="nc" id="L227">			for (int dimensionIndexI = 0;</span>
-<span class="nc bnc" id="L228" title="All 2 branches missed.">				dimensionIndexI &lt; dimension;</span>
-<span class="nc" id="L229">				++dimensionIndexI)</span>
+<span class="nc" id="L238">			for (int dimensionIndexI = 0;</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">				dimensionIndexI &lt; dimension;</span>
+<span class="nc" id="L240">				++dimensionIndexI)</span>
 			{
-<span class="nc" id="L231">				for (int dimensionIndexJ = 0;</span>
-<span class="nc bnc" id="L232" title="All 2 branches missed.">					dimensionIndexJ &lt; dimension;</span>
-<span class="nc" id="L233">					++dimensionIndexJ)</span>
+<span class="nc" id="L242">				for (int dimensionIndexJ = 0;</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">					dimensionIndexJ &lt; dimension;</span>
+<span class="nc" id="L244">					++dimensionIndexJ)</span>
 				{
-<span class="nc bnc" id="L235" title="All 2 branches missed.">					eigenShadowArray[componentIndex][dimensionIndexI][dimensionIndexJ] =</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">					eigenShadowArray[componentIndex][dimensionIndexI][dimensionIndexJ] =</span>
 						_grid[dimensionIndexI][dimensionIndexJ] - (
 							dimensionIndexI == dimensionIndexJ ? eigenValueArray[componentIndex] : 0.
 						);
@@ -240,7 +251,7 @@ public class Square
 			}
 		}
 
-<span class="nc" id="L243">		return eigenShadowArray;</span>
+<span class="nc" id="L254">		return eigenShadowArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

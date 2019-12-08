@@ -6,6 +6,7 @@ package org.drip.function.r1tor1solver;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -15,33 +16,43 @@ package org.drip.function.r1tor1solver;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -105,10 +116,10 @@ package org.drip.function.r1tor1solver;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Function Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver/README.md&quot;&gt;Built-in R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solvers&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -152,15 +163,15 @@ public class InitializationHeuristics {
 
 	public static final int BRACKETING_CUSTOM_BCP = 16;
 
-<span class="fc" id="L155">	private int _iDeterminant = BRACKETING_GENERIC_BCP;</span>
-<span class="fc" id="L156">	private double _dblBracketFloor = java.lang.Double.NaN;</span>
-<span class="fc" id="L157">	private double _dblBracketCeiling = java.lang.Double.NaN;</span>
-<span class="fc" id="L158">	private double _dblSearchStartLeft = java.lang.Double.NaN;</span>
-<span class="fc" id="L159">	private double _dblSearchStartRight = java.lang.Double.NaN;</span>
-<span class="fc" id="L160">	private double _dblStartingBracketMid = java.lang.Double.NaN;</span>
-<span class="fc" id="L161">	private double _dblStartingBracketLeft = java.lang.Double.NaN;</span>
-<span class="fc" id="L162">	private double _dblStartingBracketRight = java.lang.Double.NaN;</span>
-<span class="fc" id="L163">	private org.drip.function.r1tor1solver.BracketingControlParams _bcpCustom = null;</span>
+<span class="fc" id="L166">	private int _iDeterminant = BRACKETING_GENERIC_BCP;</span>
+<span class="fc" id="L167">	private double _dblBracketFloor = java.lang.Double.NaN;</span>
+<span class="fc" id="L168">	private double _dblBracketCeiling = java.lang.Double.NaN;</span>
+<span class="fc" id="L169">	private double _dblSearchStartLeft = java.lang.Double.NaN;</span>
+<span class="fc" id="L170">	private double _dblSearchStartRight = java.lang.Double.NaN;</span>
+<span class="fc" id="L171">	private double _dblStartingBracketMid = java.lang.Double.NaN;</span>
+<span class="fc" id="L172">	private double _dblStartingBracketLeft = java.lang.Double.NaN;</span>
+<span class="fc" id="L173">	private double _dblStartingBracketRight = java.lang.Double.NaN;</span>
+<span class="fc" id="L174">	private org.drip.function.r1tor1solver.BracketingControlParams _bcpCustom = null;</span>
 
 	/**
 	 * Construct an Initialization Heuristics Instance from the hard search edges
@@ -176,14 +187,14 @@ public class InitializationHeuristics {
 		final double dblSearchStartRight)
 	{
 		try {
-<span class="fc" id="L179">			return new InitializationHeuristics (SEARCH_HARD_BRACKETS, dblSearchStartLeft,</span>
+<span class="fc" id="L190">			return new InitializationHeuristics (SEARCH_HARD_BRACKETS, dblSearchStartLeft,</span>
 				dblSearchStartRight, java.lang.Double.NaN, java.lang.Double.NaN, java.lang.Double.NaN,
 					java.lang.Double.NaN, java.lang.Double.NaN, null);
-<span class="nc" id="L182">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L183">			e.printStackTrace();</span>
+<span class="nc" id="L193">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L194">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L186">		return null;</span>
+<span class="nc" id="L197">		return null;</span>
 	}
 
 	/**
@@ -200,14 +211,14 @@ public class InitializationHeuristics {
 		final double dblStartingBracketRight)
 	{
 		try {
-<span class="nc" id="L203">			return new InitializationHeuristics (BRACKETING_EDGE_HINTS, java.lang.Double.NaN,</span>
+<span class="nc" id="L214">			return new InitializationHeuristics (BRACKETING_EDGE_HINTS, java.lang.Double.NaN,</span>
 				java.lang.Double.NaN, dblStartingBracketLeft, dblStartingBracketRight, java.lang.Double.NaN,
 					java.lang.Double.NaN, java.lang.Double.NaN, null);
-<span class="nc" id="L206">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L207">			e.printStackTrace();</span>
+<span class="nc" id="L217">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L218">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L210">		return null;</span>
+<span class="nc" id="L221">		return null;</span>
 	}
 
 	/**
@@ -222,14 +233,14 @@ public class InitializationHeuristics {
 		final double dblStartingBracketMid)
 	{
 		try {
-<span class="nc" id="L225">			return new InitializationHeuristics (BRACKETING_MID_HINT, java.lang.Double.NaN,</span>
+<span class="nc" id="L236">			return new InitializationHeuristics (BRACKETING_MID_HINT, java.lang.Double.NaN,</span>
 				java.lang.Double.NaN, java.lang.Double.NaN, java.lang.Double.NaN, dblStartingBracketMid,
 					java.lang.Double.NaN, java.lang.Double.NaN, null);
-<span class="nc" id="L228">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L229">			e.printStackTrace();</span>
+<span class="nc" id="L239">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L240">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L232">		return null;</span>
+<span class="nc" id="L243">		return null;</span>
 	}
 
 	/**
@@ -246,14 +257,14 @@ public class InitializationHeuristics {
 		final double dblBracketCeiling)
 	{
 		try {
-<span class="nc" id="L249">			return new InitializationHeuristics (BRACKETING_FLOOR_CEILING, java.lang.Double.NaN,</span>
+<span class="nc" id="L260">			return new InitializationHeuristics (BRACKETING_FLOOR_CEILING, java.lang.Double.NaN,</span>
 				java.lang.Double.NaN, java.lang.Double.NaN, java.lang.Double.NaN, java.lang.Double.NaN,
 					dblBracketFloor, dblBracketCeiling, null);
-<span class="nc" id="L252">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L253">			e.printStackTrace();</span>
+<span class="nc" id="L263">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L264">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L256">		return null;</span>
+<span class="nc" id="L267">		return null;</span>
 	}
 
 	/**
@@ -268,14 +279,14 @@ public class InitializationHeuristics {
 		final org.drip.function.r1tor1solver.BracketingControlParams bcpCustom)
 	{
 		try {
-<span class="nc" id="L271">			return new InitializationHeuristics (BRACKETING_CUSTOM_BCP, java.lang.Double.NaN,</span>
+<span class="nc" id="L282">			return new InitializationHeuristics (BRACKETING_CUSTOM_BCP, java.lang.Double.NaN,</span>
 				java.lang.Double.NaN, java.lang.Double.NaN, java.lang.Double.NaN, java.lang.Double.NaN,
 					java.lang.Double.NaN, java.lang.Double.NaN, bcpCustom);
-<span class="nc" id="L274">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L275">			e.printStackTrace();</span>
+<span class="nc" id="L285">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L286">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L278">		return null;</span>
+<span class="nc" id="L289">		return null;</span>
 	}
 
 	/**
@@ -305,35 +316,35 @@ public class InitializationHeuristics {
 		final double dblBracketCeiling,
 		final org.drip.function.r1tor1solver.BracketingControlParams bcpCustom)
 		throws java.lang.Exception
-<span class="fc" id="L308">	{</span>
-<span class="pc bpc" id="L309" title="1 of 2 branches missed.">		if (BRACKETING_EDGE_HINTS == (_iDeterminant = iDeterminant)) {</span>
-<span class="nc bnc" id="L310" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (_dblStartingBracketLeft = dblStartingBracketLeft)</span>
-<span class="nc bnc" id="L311" title="All 2 branches missed.">				|| !org.drip.numerical.common.NumberUtil.IsValid (_dblStartingBracketRight =</span>
+<span class="fc" id="L319">	{</span>
+<span class="pc bpc" id="L320" title="1 of 2 branches missed.">		if (BRACKETING_EDGE_HINTS == (_iDeterminant = iDeterminant)) {</span>
+<span class="nc bnc" id="L321" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (_dblStartingBracketLeft = dblStartingBracketLeft)</span>
+<span class="nc bnc" id="L322" title="All 2 branches missed.">				|| !org.drip.numerical.common.NumberUtil.IsValid (_dblStartingBracketRight =</span>
 					dblStartingBracketRight))
-<span class="nc" id="L313">				throw new java.lang.Exception</span>
+<span class="nc" id="L324">				throw new java.lang.Exception</span>
 					(&quot;InitializationHeuristics constructor: Invalid BRACKETING_EDGE_HINTS params!&quot;);
-<span class="pc bpc" id="L315" title="1 of 2 branches missed.">		} else if (BRACKETING_MID_HINT == _iDeterminant) {</span>
-<span class="nc bnc" id="L316" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (_dblStartingBracketMid = dblStartingBracketMid))</span>
-<span class="nc" id="L317">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L326" title="1 of 2 branches missed.">		} else if (BRACKETING_MID_HINT == _iDeterminant) {</span>
+<span class="nc bnc" id="L327" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (_dblStartingBracketMid = dblStartingBracketMid))</span>
+<span class="nc" id="L328">				throw new java.lang.Exception</span>
 					(&quot;InitializationHeuristics constructor: Invalid BRACKETING_MID_HINT params!&quot;);
-<span class="pc bpc" id="L319" title="1 of 2 branches missed.">		} else if (BRACKETING_FLOOR_CEILING == _iDeterminant) {</span>
-<span class="nc bnc" id="L320" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (_dblBracketFloor = dblBracketFloor) ||</span>
-<span class="nc bnc" id="L321" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblBracketCeiling = dblBracketCeiling))</span>
-<span class="nc" id="L322">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L330" title="1 of 2 branches missed.">		} else if (BRACKETING_FLOOR_CEILING == _iDeterminant) {</span>
+<span class="nc bnc" id="L331" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (_dblBracketFloor = dblBracketFloor) ||</span>
+<span class="nc bnc" id="L332" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblBracketCeiling = dblBracketCeiling))</span>
+<span class="nc" id="L333">				throw new java.lang.Exception</span>
 					(&quot;InitializationHeuristics constructor: Invalid BRACKETING_FLOOR_CEILING params!&quot;);
-<span class="pc bpc" id="L324" title="1 of 2 branches missed.">		} else if (SEARCH_HARD_BRACKETS == _iDeterminant) {</span>
-<span class="pc bpc" id="L325" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (_dblSearchStartLeft = dblSearchStartLeft) ||</span>
-<span class="pc bpc" id="L326" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblSearchStartRight = dblSearchStartRight))</span>
-<span class="nc" id="L327">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L335" title="1 of 2 branches missed.">		} else if (SEARCH_HARD_BRACKETS == _iDeterminant) {</span>
+<span class="pc bpc" id="L336" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (_dblSearchStartLeft = dblSearchStartLeft) ||</span>
+<span class="pc bpc" id="L337" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblSearchStartRight = dblSearchStartRight))</span>
+<span class="nc" id="L338">				throw new java.lang.Exception</span>
 					(&quot;InitializationHeuristics constructor: Invalid SEARCH_HARD_BRACKETS params!&quot;);
-<span class="nc bnc" id="L329" title="All 2 branches missed.">		} else if (BRACKETING_CUSTOM_BCP == _iDeterminant) {</span>
-<span class="nc bnc" id="L330" title="All 2 branches missed.">			if (null == (_bcpCustom = bcpCustom))</span>
-<span class="nc" id="L331">				throw new java.lang.Exception</span>
+<span class="nc bnc" id="L340" title="All 2 branches missed.">		} else if (BRACKETING_CUSTOM_BCP == _iDeterminant) {</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">			if (null == (_bcpCustom = bcpCustom))</span>
+<span class="nc" id="L342">				throw new java.lang.Exception</span>
 					(&quot;InitializationHeuristics constructor: Invalid BRACKETING_CUSTOM_BCP params!&quot;);
-<span class="nc bnc" id="L333" title="All 2 branches missed.">		} else if (BRACKETING_GENERIC_BCP != _iDeterminant)</span>
-<span class="nc" id="L334">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L344" title="All 2 branches missed.">		} else if (BRACKETING_GENERIC_BCP != _iDeterminant)</span>
+<span class="nc" id="L345">			throw new java.lang.Exception</span>
 				(&quot;InitializationHeuristics constructor: Invalid BRACKETING_GENERIC_BCP params!&quot;);
-<span class="fc" id="L336">	}</span>
+<span class="fc" id="L347">	}</span>
 
 	/**
 	 * Retrieve the Determinant
@@ -343,7 +354,7 @@ public class InitializationHeuristics {
 
 	public int getDeterminant()
 	{
-<span class="fc" id="L346">		return _iDeterminant;</span>
+<span class="fc" id="L357">		return _iDeterminant;</span>
 	}
 
 	/**
@@ -354,7 +365,7 @@ public class InitializationHeuristics {
 
 	public double getSearchStartLeft()
 	{
-<span class="fc" id="L357">		return _dblSearchStartLeft;</span>
+<span class="fc" id="L368">		return _dblSearchStartLeft;</span>
 	}
 
 	/**
@@ -365,7 +376,7 @@ public class InitializationHeuristics {
 
 	public double getSearchStartRight()
 	{
-<span class="fc" id="L368">		return _dblSearchStartRight;</span>
+<span class="fc" id="L379">		return _dblSearchStartRight;</span>
 	}
 
 	/**
@@ -376,7 +387,7 @@ public class InitializationHeuristics {
 
 	public double getStartingBracketMid()
 	{
-<span class="nc" id="L379">		return _dblStartingBracketMid;</span>
+<span class="nc" id="L390">		return _dblStartingBracketMid;</span>
 	}
 
 	/**
@@ -387,7 +398,7 @@ public class InitializationHeuristics {
 
 	public double getStartingBracketLeft()
 	{
-<span class="nc" id="L390">		return _dblStartingBracketLeft;</span>
+<span class="nc" id="L401">		return _dblStartingBracketLeft;</span>
 	}
 
 	/**
@@ -398,7 +409,7 @@ public class InitializationHeuristics {
 
 	public double getBracketFloor()
 	{
-<span class="nc" id="L401">		return _dblBracketFloor;</span>
+<span class="nc" id="L412">		return _dblBracketFloor;</span>
 	}
 
 	/**
@@ -409,7 +420,7 @@ public class InitializationHeuristics {
 
 	public double getStartingBracketRight()
 	{
-<span class="nc" id="L412">		return _dblStartingBracketRight;</span>
+<span class="nc" id="L423">		return _dblStartingBracketRight;</span>
 	}
 
 	/**
@@ -420,7 +431,7 @@ public class InitializationHeuristics {
 
 	public double getBracketCeiling()
 	{
-<span class="nc" id="L423">		return _dblBracketCeiling;</span>
+<span class="nc" id="L434">		return _dblBracketCeiling;</span>
 	}
 
 	/**
@@ -431,7 +442,7 @@ public class InitializationHeuristics {
 
 	public org.drip.function.r1tor1solver.BracketingControlParams getCustomBCP()
 	{
-<span class="nc" id="L434">		return _bcpCustom;</span>
+<span class="nc" id="L445">		return _bcpCustom;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

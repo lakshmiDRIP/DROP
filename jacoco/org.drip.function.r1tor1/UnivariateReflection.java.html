@@ -6,6 +6,7 @@ package org.drip.function.r1tor1;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -14,33 +15,43 @@ package org.drip.function.r1tor1;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -75,17 +86,17 @@ package org.drip.function.r1tor1;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Function Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1/README.md&quot;&gt;Built-in R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Functions&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class UnivariateReflection extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L88">	private org.drip.function.definition.R1ToR1 _au = null;</span>
+<span class="fc" id="L99">	private org.drip.function.definition.R1ToR1 _au = null;</span>
 
 	/**
 	 * UnivariateReflection constructor
@@ -99,19 +110,19 @@ public class UnivariateReflection extends org.drip.function.definition.R1ToR1 {
 		final org.drip.function.definition.R1ToR1 au)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L102">		super (null);</span>
+<span class="fc" id="L113">		super (null);</span>
 
-<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		if (null == (_au = au)) throw new java.lang.Exception (&quot;UnivariateReflection ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L105">	}</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		if (null == (_au = au)) throw new java.lang.Exception (&quot;UnivariateReflection ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L116">	}</span>
 
 	@Override public double evaluate (
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L111" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))</span>
-<span class="nc" id="L112">			throw new java.lang.Exception (&quot;UnivariateReflection::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))</span>
+<span class="nc" id="L123">			throw new java.lang.Exception (&quot;UnivariateReflection::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L114">		return _au.evaluate (1. - dblVariate);</span>
+<span class="fc" id="L125">		return _au.evaluate (1. - dblVariate);</span>
 	}
 
 	@Override public double derivative (
@@ -119,10 +130,10 @@ public class UnivariateReflection extends org.drip.function.definition.R1ToR1 {
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L122" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate) || 0 &gt;= iOrder)</span>
-<span class="nc" id="L123">			throw new java.lang.Exception (&quot;UnivariateReflection::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L133" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate) || 0 &gt;= iOrder)</span>
+<span class="nc" id="L134">			throw new java.lang.Exception (&quot;UnivariateReflection::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L125">		return java.lang.Math.pow (-1., iOrder) * _au.derivative (1. - dblVariate, iOrder);</span>
+<span class="fc" id="L136">		return java.lang.Math.pow (-1., iOrder) * _au.derivative (1. - dblVariate, iOrder);</span>
 	}
 
 	@Override public double integrate (
@@ -130,30 +141,30 @@ public class UnivariateReflection extends org.drip.function.definition.R1ToR1 {
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L133" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L134" title="All 2 branches missed.">			(dblEnd))</span>
-<span class="nc" id="L135">			throw new java.lang.Exception (&quot;UnivariateReflection::integrate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">			(dblEnd))</span>
+<span class="nc" id="L146">			throw new java.lang.Exception (&quot;UnivariateReflection::integrate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L137">		return -1. * _au.integrate (1. - dblBegin, 1. - dblEnd);</span>
+<span class="nc" id="L148">		return -1. * _au.integrate (1. - dblBegin, 1. - dblEnd);</span>
 	}
 
 	public static final void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L144">		UnivariateReflection ur = new UnivariateReflection (new Polynomial (4));</span>
+<span class="nc" id="L155">		UnivariateReflection ur = new UnivariateReflection (new Polynomial (4));</span>
 
-<span class="nc" id="L146">		System.out.println (&quot;UnivariateReflection[0.0] = &quot; + ur.evaluate (0.0));</span>
+<span class="nc" id="L157">		System.out.println (&quot;UnivariateReflection[0.0] = &quot; + ur.evaluate (0.0));</span>
 
-<span class="nc" id="L148">		System.out.println (&quot;UnivariateReflection[0.5] = &quot; + ur.evaluate (0.5));</span>
+<span class="nc" id="L159">		System.out.println (&quot;UnivariateReflection[0.5] = &quot; + ur.evaluate (0.5));</span>
 
-<span class="nc" id="L150">		System.out.println (&quot;UnivariateReflection[1.0] = &quot; + ur.evaluate (1.0));</span>
+<span class="nc" id="L161">		System.out.println (&quot;UnivariateReflection[1.0] = &quot; + ur.evaluate (1.0));</span>
 
-<span class="nc" id="L152">		System.out.println (&quot;UnivariateReflectionDeriv[0.0] = &quot; + ur.derivative (0.0, 3));</span>
+<span class="nc" id="L163">		System.out.println (&quot;UnivariateReflectionDeriv[0.0] = &quot; + ur.derivative (0.0, 3));</span>
 
-<span class="nc" id="L154">		System.out.println (&quot;UnivariateReflectionDeriv[0.5] = &quot; + ur.derivative (0.5, 3));</span>
+<span class="nc" id="L165">		System.out.println (&quot;UnivariateReflectionDeriv[0.5] = &quot; + ur.derivative (0.5, 3));</span>
 
-<span class="nc" id="L156">		System.out.println (&quot;UnivariateReflectionDeriv[1.0] = &quot; + ur.derivative (1.0, 3));</span>
-<span class="nc" id="L157">	}</span>
+<span class="nc" id="L167">		System.out.println (&quot;UnivariateReflectionDeriv[1.0] = &quot; + ur.derivative (1.0, 3));</span>
+<span class="nc" id="L168">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,43 +6,55 @@ package org.drip.xva.netting;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -96,10 +108,10 @@ package org.drip.xva.netting;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/netting&quot;&gt;Netting&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/README.md&quot;&gt;Valuation Adjustments that account for Collateral, CC Credit/Debt and Funding Overhead&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/netting/README.md&quot;&gt;Credit/Debt/Funding Netting Groups&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -108,20 +120,20 @@ package org.drip.xva.netting;
 
 public abstract class FundingGroupPath
 {
-<span class="fc" id="L111">	private org.drip.exposure.universe.MarketPath _marketPath = null;</span>
-<span class="fc" id="L112">	private org.drip.xva.netting.CreditDebtGroupPath[] _creditDebtGroupPathArray = null;</span>
+<span class="fc" id="L123">	private org.drip.exposure.universe.MarketPath _marketPath = null;</span>
+<span class="fc" id="L124">	private org.drip.xva.netting.CreditDebtGroupPath[] _creditDebtGroupPathArray = null;</span>
 
 	protected FundingGroupPath (
 		final org.drip.xva.netting.CreditDebtGroupPath[] creditDebtGroupPathArray,
 		final org.drip.exposure.universe.MarketPath marketPath)
 		throws java.lang.Exception
-<span class="fc" id="L118">	{</span>
-<span class="pc bpc" id="L119" title="2 of 4 branches missed.">		if (null == (_creditDebtGroupPathArray = creditDebtGroupPathArray) ||</span>
+<span class="fc" id="L130">	{</span>
+<span class="pc bpc" id="L131" title="2 of 4 branches missed.">		if (null == (_creditDebtGroupPathArray = creditDebtGroupPathArray) ||</span>
 			null == (_marketPath = marketPath))
 		{
-<span class="nc" id="L122">			throw new java.lang.Exception (&quot;FundingGroupPath Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L134">			throw new java.lang.Exception (&quot;FundingGroupPath Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L124">	}</span>
+<span class="fc" id="L136">	}</span>
 
 	/**
 	 * Retrieve the Array of CreditDebtGroupPath
@@ -131,7 +143,7 @@ public abstract class FundingGroupPath
 
 	public org.drip.xva.netting.CreditDebtGroupPath[] creditDebtGroupPathArray()
 	{
-<span class="nc" id="L134">		return _creditDebtGroupPathArray;</span>
+<span class="nc" id="L146">		return _creditDebtGroupPathArray;</span>
 	}
 
 	/**
@@ -142,7 +154,7 @@ public abstract class FundingGroupPath
 
 	public org.drip.exposure.universe.MarketPath marketPath()
 	{
-<span class="nc" id="L145">		return _marketPath;</span>
+<span class="nc" id="L157">		return _marketPath;</span>
 	}
 
 	/**
@@ -153,7 +165,7 @@ public abstract class FundingGroupPath
 
 	public org.drip.analytics.date.JulianDate[] vertexDates()
 	{
-<span class="fc" id="L156">		return _creditDebtGroupPathArray[0].vertexDates();</span>
+<span class="fc" id="L168">		return _creditDebtGroupPathArray[0].vertexDates();</span>
 	}
 
 	/**
@@ -164,17 +176,17 @@ public abstract class FundingGroupPath
 
 	public double symmetricFundingValueSpread01()
 	{
-<span class="nc" id="L167">		double symmetricFundingSpread01 = 0.;</span>
-<span class="nc" id="L168">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="nc" id="L179">		double symmetricFundingSpread01 = 0.;</span>
+<span class="nc" id="L180">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
 
-<span class="nc bnc" id="L170" title="All 2 branches missed.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="nc" id="L171">			++creditDebtGroupIndex)</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="nc" id="L183">			++creditDebtGroupIndex)</span>
 		{
-<span class="nc" id="L173">			symmetricFundingSpread01 +=</span>
-<span class="nc" id="L174">				_creditDebtGroupPathArray[creditDebtGroupIndex].symmetricFundingValueSpread01();</span>
+<span class="nc" id="L185">			symmetricFundingSpread01 +=</span>
+<span class="nc" id="L186">				_creditDebtGroupPathArray[creditDebtGroupIndex].symmetricFundingValueSpread01();</span>
 		}
 
-<span class="nc" id="L177">		return symmetricFundingSpread01;</span>
+<span class="nc" id="L189">		return symmetricFundingSpread01;</span>
 	}
 
 	/**
@@ -185,17 +197,17 @@ public abstract class FundingGroupPath
 
 	public double unilateralFundingValueSpread01()
 	{
-<span class="nc" id="L188">		double unilateralFundingValueSpread01 = 0.;</span>
-<span class="nc" id="L189">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="nc" id="L200">		double unilateralFundingValueSpread01 = 0.;</span>
+<span class="nc" id="L201">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
 
-<span class="nc bnc" id="L191" title="All 2 branches missed.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="nc" id="L192">			++creditDebtGroupIndex)</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="nc" id="L204">			++creditDebtGroupIndex)</span>
 		{
-<span class="nc" id="L194">			unilateralFundingValueSpread01 +=</span>
-<span class="nc" id="L195">				_creditDebtGroupPathArray[creditDebtGroupIndex].unilateralFundingValueSpread01();</span>
+<span class="nc" id="L206">			unilateralFundingValueSpread01 +=</span>
+<span class="nc" id="L207">				_creditDebtGroupPathArray[creditDebtGroupIndex].unilateralFundingValueSpread01();</span>
 		}
 
-<span class="nc bnc" id="L198" title="All 2 branches missed.">		return 0. &gt; unilateralFundingValueSpread01 ? 0. : unilateralFundingValueSpread01;</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">		return 0. &gt; unilateralFundingValueSpread01 ? 0. : unilateralFundingValueSpread01;</span>
 	}
 
 	/**
@@ -206,17 +218,17 @@ public abstract class FundingGroupPath
 
 	public double bilateralFundingValueSpread01()
 	{
-<span class="nc" id="L209">		double bilateralFundingValueSpread01 = 0.;</span>
-<span class="nc" id="L210">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="nc" id="L221">		double bilateralFundingValueSpread01 = 0.;</span>
+<span class="nc" id="L222">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
 
-<span class="nc bnc" id="L212" title="All 2 branches missed.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="nc" id="L213">			++creditDebtGroupIndex)</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="nc" id="L225">			++creditDebtGroupIndex)</span>
 		{
-<span class="nc" id="L215">			bilateralFundingValueSpread01 +=</span>
-<span class="nc" id="L216">				_creditDebtGroupPathArray[creditDebtGroupIndex].bilateralFundingValueSpread01();</span>
+<span class="nc" id="L227">			bilateralFundingValueSpread01 +=</span>
+<span class="nc" id="L228">				_creditDebtGroupPathArray[creditDebtGroupIndex].bilateralFundingValueSpread01();</span>
 		}
 
-<span class="nc bnc" id="L219" title="All 2 branches missed.">		return 0. &gt; bilateralFundingValueSpread01 ? 0. : bilateralFundingValueSpread01;</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">		return 0. &gt; bilateralFundingValueSpread01 ? 0. : bilateralFundingValueSpread01;</span>
 	}
 
 	/**
@@ -227,31 +239,31 @@ public abstract class FundingGroupPath
 
 	public double[] periodSymmetricFundingValueSpread01()
 	{
-<span class="fc" id="L230">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L242">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L232">		int periodCount = marketVertexArray.length - 1;</span>
-<span class="fc" id="L233">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
-<span class="fc" id="L234">		double[] periodSymmetricFundingValueSpread01 = new double[periodCount];</span>
+<span class="fc" id="L244">		int periodCount = marketVertexArray.length - 1;</span>
+<span class="fc" id="L245">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L246">		double[] periodSymmetricFundingValueSpread01 = new double[periodCount];</span>
 
-<span class="fc bfc" id="L236" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
+<span class="fc bfc" id="L248" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 		{
-<span class="fc" id="L238">			periodSymmetricFundingValueSpread01[periodIndex] = 0.;</span>
+<span class="fc" id="L250">			periodSymmetricFundingValueSpread01[periodIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L241" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L242">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L253" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L254">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L244">			double[] periodCreditDebtGroupSymmetricFundingValueSpread01 =</span>
-<span class="fc" id="L245">				_creditDebtGroupPathArray[creditDebtGroupIndex].periodSymmetricFundingValueSpread01();</span>
+<span class="fc" id="L256">			double[] periodCreditDebtGroupSymmetricFundingValueSpread01 =</span>
+<span class="fc" id="L257">				_creditDebtGroupPathArray[creditDebtGroupIndex].periodSymmetricFundingValueSpread01();</span>
 
-<span class="fc bfc" id="L247" title="All 2 branches covered.">			for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
+<span class="fc bfc" id="L259" title="All 2 branches covered.">			for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 			{
-<span class="fc" id="L249">				periodSymmetricFundingValueSpread01[periodIndex] +=</span>
+<span class="fc" id="L261">				periodSymmetricFundingValueSpread01[periodIndex] +=</span>
 					periodCreditDebtGroupSymmetricFundingValueSpread01[periodIndex];
 			}
 		}
 
-<span class="fc" id="L254">		return periodSymmetricFundingValueSpread01;</span>
+<span class="fc" id="L266">		return periodSymmetricFundingValueSpread01;</span>
 	}
 
 	/**
@@ -262,39 +274,39 @@ public abstract class FundingGroupPath
 
 	public double[] periodUnilateralFundingValueSpread01()
 	{
-<span class="fc" id="L265">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L277">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L267">		int periodCount = marketVertexArray.length - 1;</span>
-<span class="fc" id="L268">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
-<span class="fc" id="L269">		double[] periodUnilateralFundingValueSpread01 = new double[periodCount];</span>
+<span class="fc" id="L279">		int periodCount = marketVertexArray.length - 1;</span>
+<span class="fc" id="L280">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L281">		double[] periodUnilateralFundingValueSpread01 = new double[periodCount];</span>
 
-<span class="fc bfc" id="L271" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
+<span class="fc bfc" id="L283" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 		{
-<span class="fc" id="L273">			periodUnilateralFundingValueSpread01[periodIndex] = 0.;</span>
+<span class="fc" id="L285">			periodUnilateralFundingValueSpread01[periodIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L276" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L277">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L288" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L289">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L279">			double[] periodCreditDebtGroupUnilateralFundingValueSpread01 =</span>
-<span class="fc" id="L280">				_creditDebtGroupPathArray[creditDebtGroupIndex].periodUnilateralFundingValueSpread01();</span>
+<span class="fc" id="L291">			double[] periodCreditDebtGroupUnilateralFundingValueSpread01 =</span>
+<span class="fc" id="L292">				_creditDebtGroupPathArray[creditDebtGroupIndex].periodUnilateralFundingValueSpread01();</span>
 
-<span class="fc bfc" id="L282" title="All 2 branches covered.">			for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
+<span class="fc bfc" id="L294" title="All 2 branches covered.">			for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 			{
-<span class="fc" id="L284">				periodUnilateralFundingValueSpread01[periodIndex] +=</span>
+<span class="fc" id="L296">				periodUnilateralFundingValueSpread01[periodIndex] +=</span>
 					periodCreditDebtGroupUnilateralFundingValueSpread01[periodIndex];
 			}
 		}
 
-<span class="fc bfc" id="L289" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
+<span class="fc bfc" id="L301" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 		{
-<span class="fc bfc" id="L291" title="All 2 branches covered.">			if (0. &gt; periodUnilateralFundingValueSpread01[periodIndex])</span>
+<span class="fc bfc" id="L303" title="All 2 branches covered.">			if (0. &gt; periodUnilateralFundingValueSpread01[periodIndex])</span>
 			{
-<span class="fc" id="L293">				periodUnilateralFundingValueSpread01[periodIndex] = 0.;</span>
+<span class="fc" id="L305">				periodUnilateralFundingValueSpread01[periodIndex] = 0.;</span>
 			}
 		}
 
-<span class="fc" id="L297">		return periodUnilateralFundingValueSpread01;</span>
+<span class="fc" id="L309">		return periodUnilateralFundingValueSpread01;</span>
 	}
 
 	/**
@@ -305,39 +317,39 @@ public abstract class FundingGroupPath
 
 	public double[] periodBilateralFundingValueSpread01()
 	{
-<span class="fc" id="L308">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L320">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L310">		int periodCount = marketVertexArray.length - 1;</span>
-<span class="fc" id="L311">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
-<span class="fc" id="L312">		double[] periodBilateralFundingValueSpread01 = new double[periodCount];</span>
+<span class="fc" id="L322">		int periodCount = marketVertexArray.length - 1;</span>
+<span class="fc" id="L323">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L324">		double[] periodBilateralFundingValueSpread01 = new double[periodCount];</span>
 
-<span class="fc bfc" id="L314" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
+<span class="fc bfc" id="L326" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 		{
-<span class="fc" id="L316">			periodBilateralFundingValueSpread01[periodIndex] = 0.;</span>
+<span class="fc" id="L328">			periodBilateralFundingValueSpread01[periodIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L319" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L320">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L331" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L332">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L322">			double[] periodCreditDebtGroupBilateralFundingValueSpread01 =</span>
-<span class="fc" id="L323">				_creditDebtGroupPathArray[creditDebtGroupIndex].periodBilateralFundingValueSpread01();</span>
+<span class="fc" id="L334">			double[] periodCreditDebtGroupBilateralFundingValueSpread01 =</span>
+<span class="fc" id="L335">				_creditDebtGroupPathArray[creditDebtGroupIndex].periodBilateralFundingValueSpread01();</span>
 
-<span class="fc bfc" id="L325" title="All 2 branches covered.">			for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
+<span class="fc bfc" id="L337" title="All 2 branches covered.">			for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 			{
-<span class="fc" id="L327">				periodBilateralFundingValueSpread01[periodIndex] +=</span>
+<span class="fc" id="L339">				periodBilateralFundingValueSpread01[periodIndex] +=</span>
 					periodCreditDebtGroupBilateralFundingValueSpread01[periodIndex];
 			}
 		}
 
-<span class="fc bfc" id="L332" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
+<span class="fc bfc" id="L344" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 		{
-<span class="pc bpc" id="L334" title="1 of 2 branches missed.">			if (0. &gt; periodBilateralFundingValueSpread01[periodIndex])</span>
+<span class="pc bpc" id="L346" title="1 of 2 branches missed.">			if (0. &gt; periodBilateralFundingValueSpread01[periodIndex])</span>
 			{
-<span class="nc" id="L336">				periodBilateralFundingValueSpread01[periodIndex] = 0.;</span>
+<span class="nc" id="L348">				periodBilateralFundingValueSpread01[periodIndex] = 0.;</span>
 			}
 		}
 
-<span class="fc" id="L340">		return periodBilateralFundingValueSpread01;</span>
+<span class="fc" id="L352">		return periodBilateralFundingValueSpread01;</span>
 	}
 
 	/**
@@ -348,23 +360,23 @@ public abstract class FundingGroupPath
 
 	public double symmetricFundingValueAdjustment()
 	{
-<span class="fc" id="L351">		double[] periodSymmetricFundingValueSpread01 = periodSymmetricFundingValueSpread01();</span>
+<span class="fc" id="L363">		double[] periodSymmetricFundingValueSpread01 = periodSymmetricFundingValueSpread01();</span>
 
-<span class="fc" id="L353">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L365">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L355">		int periodCount = periodSymmetricFundingValueSpread01.length;</span>
-<span class="fc" id="L356">		double symmetricFundingValueAdjustment = 0.;</span>
+<span class="fc" id="L367">		int periodCount = periodSymmetricFundingValueSpread01.length;</span>
+<span class="fc" id="L368">		double symmetricFundingValueAdjustment = 0.;</span>
 
-<span class="fc bfc" id="L358" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
+<span class="fc bfc" id="L370" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 		{
-<span class="fc" id="L360">			symmetricFundingValueAdjustment +=</span>
+<span class="fc" id="L372">			symmetricFundingValueAdjustment +=</span>
 				0.5 * periodSymmetricFundingValueSpread01[periodIndex] * (
-<span class="fc" id="L362">					marketVertexArray[periodIndex].dealer().seniorFundingSpread() +</span>
-<span class="fc" id="L363">					marketVertexArray[periodIndex + 1].dealer().seniorFundingSpread()</span>
+<span class="fc" id="L374">					marketVertexArray[periodIndex].dealer().seniorFundingSpread() +</span>
+<span class="fc" id="L375">					marketVertexArray[periodIndex + 1].dealer().seniorFundingSpread()</span>
 				);
 		}
 
-<span class="fc" id="L367">		return symmetricFundingValueAdjustment;</span>
+<span class="fc" id="L379">		return symmetricFundingValueAdjustment;</span>
 	}
 
 	/**
@@ -375,23 +387,23 @@ public abstract class FundingGroupPath
 
 	public double unilateralFundingValueAdjustment()
 	{
-<span class="fc" id="L378">		double[] periodUnilateralFundingValueSpread01 = periodUnilateralFundingValueSpread01();</span>
+<span class="fc" id="L390">		double[] periodUnilateralFundingValueSpread01 = periodUnilateralFundingValueSpread01();</span>
 
-<span class="fc" id="L380">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L392">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L382">		int periodCount = periodUnilateralFundingValueSpread01.length;</span>
-<span class="fc" id="L383">		double unilateralFundingValueAdjustment = 0.;</span>
+<span class="fc" id="L394">		int periodCount = periodUnilateralFundingValueSpread01.length;</span>
+<span class="fc" id="L395">		double unilateralFundingValueAdjustment = 0.;</span>
 
-<span class="fc bfc" id="L385" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
+<span class="fc bfc" id="L397" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 		{
-<span class="fc" id="L387">			unilateralFundingValueAdjustment -=</span>
+<span class="fc" id="L399">			unilateralFundingValueAdjustment -=</span>
 				0.5 * periodUnilateralFundingValueSpread01[periodIndex] * (
-<span class="fc" id="L389">					marketVertexArray[periodIndex].dealer().seniorFundingSpread() +</span>
-<span class="fc" id="L390">					marketVertexArray[periodIndex + 1].dealer().seniorFundingSpread()</span>
+<span class="fc" id="L401">					marketVertexArray[periodIndex].dealer().seniorFundingSpread() +</span>
+<span class="fc" id="L402">					marketVertexArray[periodIndex + 1].dealer().seniorFundingSpread()</span>
 				);
 		}
 
-<span class="fc" id="L394">		return unilateralFundingValueAdjustment;</span>
+<span class="fc" id="L406">		return unilateralFundingValueAdjustment;</span>
 	}
 
 	/**
@@ -402,23 +414,23 @@ public abstract class FundingGroupPath
 
 	public double bilateralFundingValueAdjustment()
 	{
-<span class="nc" id="L405">		double[] periodBilateralFundingValueSpread01 = periodBilateralFundingValueSpread01();</span>
+<span class="nc" id="L417">		double[] periodBilateralFundingValueSpread01 = periodBilateralFundingValueSpread01();</span>
 
-<span class="nc" id="L407">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="nc" id="L419">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="nc" id="L409">		int periodCount = periodBilateralFundingValueSpread01.length;</span>
-<span class="nc" id="L410">		double bilateralFundingValueAdjustment = 0.;</span>
+<span class="nc" id="L421">		int periodCount = periodBilateralFundingValueSpread01.length;</span>
+<span class="nc" id="L422">		double bilateralFundingValueAdjustment = 0.;</span>
 
-<span class="nc bnc" id="L412" title="All 2 branches missed.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
+<span class="nc bnc" id="L424" title="All 2 branches missed.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 		{
-<span class="nc" id="L414">			bilateralFundingValueAdjustment -=</span>
+<span class="nc" id="L426">			bilateralFundingValueAdjustment -=</span>
 				0.5 * periodBilateralFundingValueSpread01[periodIndex] * (
-<span class="nc" id="L416">					marketVertexArray[periodIndex].dealer().seniorFundingSpread() +</span>
-<span class="nc" id="L417">					marketVertexArray[periodIndex + 1].dealer().seniorFundingSpread()</span>
+<span class="nc" id="L428">					marketVertexArray[periodIndex].dealer().seniorFundingSpread() +</span>
+<span class="nc" id="L429">					marketVertexArray[periodIndex + 1].dealer().seniorFundingSpread()</span>
 				);
 		}
 
-<span class="nc" id="L421">		return bilateralFundingValueAdjustment;</span>
+<span class="nc" id="L433">		return bilateralFundingValueAdjustment;</span>
 	}
 
 	/**
@@ -429,17 +441,17 @@ public abstract class FundingGroupPath
 
 	public double unilateralFundingDebtAdjustment()
 	{
-<span class="fc" id="L432">		double[] periodUnilateralFundingDebtAdjustment = periodUnilateralFundingDebtAdjustment();</span>
+<span class="fc" id="L444">		double[] periodUnilateralFundingDebtAdjustment = periodUnilateralFundingDebtAdjustment();</span>
 
-<span class="fc" id="L434">		int periodCount = periodUnilateralFundingDebtAdjustment.length;</span>
-<span class="fc" id="L435">		double unilateralFundingDebtAdjustment = 0.;</span>
+<span class="fc" id="L446">		int periodCount = periodUnilateralFundingDebtAdjustment.length;</span>
+<span class="fc" id="L447">		double unilateralFundingDebtAdjustment = 0.;</span>
 
-<span class="fc bfc" id="L437" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
+<span class="fc bfc" id="L449" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 		{
-<span class="fc" id="L439">			unilateralFundingDebtAdjustment += periodUnilateralFundingDebtAdjustment[periodIndex];</span>
+<span class="fc" id="L451">			unilateralFundingDebtAdjustment += periodUnilateralFundingDebtAdjustment[periodIndex];</span>
 		}
 
-<span class="fc" id="L442">		return unilateralFundingDebtAdjustment;</span>
+<span class="fc" id="L454">		return unilateralFundingDebtAdjustment;</span>
 	}
 
 	/**
@@ -450,17 +462,17 @@ public abstract class FundingGroupPath
 
 	public double bilateralFundingDebtAdjustment()
 	{
-<span class="nc" id="L453">		double[] periodBilateralFundingDebtAdjustment = periodBilateralFundingDebtAdjustment();</span>
+<span class="nc" id="L465">		double[] periodBilateralFundingDebtAdjustment = periodBilateralFundingDebtAdjustment();</span>
 
-<span class="nc" id="L455">		int periodCount = periodBilateralFundingDebtAdjustment.length;</span>
-<span class="nc" id="L456">		double bilateralFundingDebtAdjustment = 0.;</span>
+<span class="nc" id="L467">		int periodCount = periodBilateralFundingDebtAdjustment.length;</span>
+<span class="nc" id="L468">		double bilateralFundingDebtAdjustment = 0.;</span>
 
-<span class="nc bnc" id="L458" title="All 2 branches missed.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
+<span class="nc bnc" id="L470" title="All 2 branches missed.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 		{
-<span class="nc" id="L460">			bilateralFundingDebtAdjustment += periodBilateralFundingDebtAdjustment[periodIndex];</span>
+<span class="nc" id="L472">			bilateralFundingDebtAdjustment += periodBilateralFundingDebtAdjustment[periodIndex];</span>
 		}
 
-<span class="nc" id="L463">		return bilateralFundingDebtAdjustment;</span>
+<span class="nc" id="L475">		return bilateralFundingDebtAdjustment;</span>
 	}
 
 	/**
@@ -471,31 +483,31 @@ public abstract class FundingGroupPath
 
 	public double[] vertexCollateralizedExposure()
 	{
-<span class="fc" id="L474">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L486">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L476">		int vertexCount = marketVertexArray.length;</span>
-<span class="fc" id="L477">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
-<span class="fc" id="L478">		double[] vertexCollateralizedExposure = new double[vertexCount];</span>
+<span class="fc" id="L488">		int vertexCount = marketVertexArray.length;</span>
+<span class="fc" id="L489">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L490">		double[] vertexCollateralizedExposure = new double[vertexCount];</span>
 
-<span class="fc bfc" id="L480" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L492" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L482">			vertexCollateralizedExposure[vertexIndex] = 0.;</span>
+<span class="fc" id="L494">			vertexCollateralizedExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L485" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L486">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L497" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L498">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L488">			double[] creditDebtGroupVertexCollateralizedExposure =</span>
-<span class="fc" id="L489">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexCollateralizedExposure();</span>
+<span class="fc" id="L500">			double[] creditDebtGroupVertexCollateralizedExposure =</span>
+<span class="fc" id="L501">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexCollateralizedExposure();</span>
 
-<span class="fc bfc" id="L491" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L503" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="fc" id="L493">				vertexCollateralizedExposure[vertexIndex] +=</span>
+<span class="fc" id="L505">				vertexCollateralizedExposure[vertexIndex] +=</span>
 					creditDebtGroupVertexCollateralizedExposure[vertexIndex];
 			}
 		}
 
-<span class="fc" id="L498">		return vertexCollateralizedExposure;</span>
+<span class="fc" id="L510">		return vertexCollateralizedExposure;</span>
 	}
 
 	/**
@@ -506,31 +518,31 @@ public abstract class FundingGroupPath
 
 	public double[] vertexCollateralizedExposurePV()
 	{
-<span class="fc" id="L509">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L521">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L511">		int vertexCount = marketVertexArray.length;</span>
-<span class="fc" id="L512">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
-<span class="fc" id="L513">		double[] vertexCollateralizedExposurePV = new double[vertexCount];</span>
+<span class="fc" id="L523">		int vertexCount = marketVertexArray.length;</span>
+<span class="fc" id="L524">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L525">		double[] vertexCollateralizedExposurePV = new double[vertexCount];</span>
 
-<span class="fc bfc" id="L515" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L527" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L517">			vertexCollateralizedExposurePV[vertexIndex] = 0.;</span>
+<span class="fc" id="L529">			vertexCollateralizedExposurePV[vertexIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L520" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L521">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L532" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L533">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L523">			double[] creditDebtGroupVertexCollateralizedExposurePV =</span>
-<span class="fc" id="L524">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexCollateralizedExposurePV();</span>
+<span class="fc" id="L535">			double[] creditDebtGroupVertexCollateralizedExposurePV =</span>
+<span class="fc" id="L536">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexCollateralizedExposurePV();</span>
 
-<span class="fc bfc" id="L526" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L538" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="fc" id="L528">				vertexCollateralizedExposurePV[vertexIndex] +=</span>
+<span class="fc" id="L540">				vertexCollateralizedExposurePV[vertexIndex] +=</span>
 					creditDebtGroupVertexCollateralizedExposurePV[vertexIndex];
 			}
 		}
 
-<span class="fc" id="L533">		return vertexCollateralizedExposurePV;</span>
+<span class="fc" id="L545">		return vertexCollateralizedExposurePV;</span>
 	}
 
 	/**
@@ -541,31 +553,31 @@ public abstract class FundingGroupPath
 
 	public double[] vertexCollateralizedPositiveExposure()
 	{
-<span class="fc" id="L544">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L556">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L546">		int vertexCount = marketVertexArray.length;</span>
-<span class="fc" id="L547">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
-<span class="fc" id="L548">		double[] vertexCollateralizedPositiveExposure = new double[vertexCount];</span>
+<span class="fc" id="L558">		int vertexCount = marketVertexArray.length;</span>
+<span class="fc" id="L559">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L560">		double[] vertexCollateralizedPositiveExposure = new double[vertexCount];</span>
 
-<span class="fc bfc" id="L550" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L562" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L552">			vertexCollateralizedPositiveExposure[vertexIndex] = 0.;</span>
+<span class="fc" id="L564">			vertexCollateralizedPositiveExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L555" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L556">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L567" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L568">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L558">			double[] creditDebtGroupVertexCollateralizedPositiveExposure =</span>
-<span class="fc" id="L559">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexCollateralizedPositiveExposure();</span>
+<span class="fc" id="L570">			double[] creditDebtGroupVertexCollateralizedPositiveExposure =</span>
+<span class="fc" id="L571">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexCollateralizedPositiveExposure();</span>
 
-<span class="fc bfc" id="L561" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L573" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="fc" id="L563">				vertexCollateralizedPositiveExposure[vertexIndex] +=</span>
+<span class="fc" id="L575">				vertexCollateralizedPositiveExposure[vertexIndex] +=</span>
 					creditDebtGroupVertexCollateralizedPositiveExposure[vertexIndex];
 			}
 		}
 
-<span class="fc" id="L568">		return vertexCollateralizedPositiveExposure;</span>
+<span class="fc" id="L580">		return vertexCollateralizedPositiveExposure;</span>
 	}
 
 	/**
@@ -576,31 +588,31 @@ public abstract class FundingGroupPath
 
 	public double[] vertexCollateralizedPositiveExposurePV()
 	{
-<span class="fc" id="L579">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L591">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L581">		int vertexCount = marketVertexArray.length;</span>
-<span class="fc" id="L582">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
-<span class="fc" id="L583">		double[] vertexCollateralizedPositiveExposurePV = new double[vertexCount];</span>
+<span class="fc" id="L593">		int vertexCount = marketVertexArray.length;</span>
+<span class="fc" id="L594">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L595">		double[] vertexCollateralizedPositiveExposurePV = new double[vertexCount];</span>
 
-<span class="fc bfc" id="L585" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L597" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L587">			vertexCollateralizedPositiveExposurePV[vertexIndex] = 0.;</span>
+<span class="fc" id="L599">			vertexCollateralizedPositiveExposurePV[vertexIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L590" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L591">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L602" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L603">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L593">			double[] creditDebtGroupVertexCollateralizedPositiveExposurePV =</span>
-<span class="fc" id="L594">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexCollateralizedPositiveExposurePV();</span>
+<span class="fc" id="L605">			double[] creditDebtGroupVertexCollateralizedPositiveExposurePV =</span>
+<span class="fc" id="L606">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexCollateralizedPositiveExposurePV();</span>
 
-<span class="fc bfc" id="L596" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L608" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="fc" id="L598">				vertexCollateralizedPositiveExposurePV[vertexIndex] +=</span>
+<span class="fc" id="L610">				vertexCollateralizedPositiveExposurePV[vertexIndex] +=</span>
 					creditDebtGroupVertexCollateralizedPositiveExposurePV[vertexIndex];
 			}
 		}
 
-<span class="fc" id="L603">		return vertexCollateralizedPositiveExposurePV;</span>
+<span class="fc" id="L615">		return vertexCollateralizedPositiveExposurePV;</span>
 	}
 
 	/**
@@ -611,31 +623,31 @@ public abstract class FundingGroupPath
 
 	public double[] vertexCollateralizedNegativeExposure()
 	{
-<span class="fc" id="L614">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L626">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L616">		int vertexCount = marketVertexArray.length;</span>
-<span class="fc" id="L617">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
-<span class="fc" id="L618">		double[] vertexCollateralizedNegativeExposure = new double[vertexCount];</span>
+<span class="fc" id="L628">		int vertexCount = marketVertexArray.length;</span>
+<span class="fc" id="L629">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L630">		double[] vertexCollateralizedNegativeExposure = new double[vertexCount];</span>
 
-<span class="fc bfc" id="L620" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L632" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L622">			vertexCollateralizedNegativeExposure[vertexIndex] = 0.;</span>
+<span class="fc" id="L634">			vertexCollateralizedNegativeExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L625" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L626">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L637" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L638">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L628">			double[] creditDebtGroupVertexCollateralizedNegativeExposure =</span>
-<span class="fc" id="L629">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexCollateralizedNegativeExposure();</span>
+<span class="fc" id="L640">			double[] creditDebtGroupVertexCollateralizedNegativeExposure =</span>
+<span class="fc" id="L641">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexCollateralizedNegativeExposure();</span>
 
-<span class="fc bfc" id="L631" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L643" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="fc" id="L633">				vertexCollateralizedNegativeExposure[vertexIndex] +=</span>
+<span class="fc" id="L645">				vertexCollateralizedNegativeExposure[vertexIndex] +=</span>
 					creditDebtGroupVertexCollateralizedNegativeExposure[vertexIndex];
 			}
 		}
 
-<span class="fc" id="L638">		return vertexCollateralizedNegativeExposure;</span>
+<span class="fc" id="L650">		return vertexCollateralizedNegativeExposure;</span>
 	}
 
 	/**
@@ -646,31 +658,31 @@ public abstract class FundingGroupPath
 
 	public double[] vertexCollateralizedNegativeExposurePV()
 	{
-<span class="fc" id="L649">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L661">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L651">		int vertexCount = marketVertexArray.length;</span>
-<span class="fc" id="L652">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
-<span class="fc" id="L653">		double[] vertexCollateralizedNegativeExposurePV = new double[vertexCount];</span>
+<span class="fc" id="L663">		int vertexCount = marketVertexArray.length;</span>
+<span class="fc" id="L664">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L665">		double[] vertexCollateralizedNegativeExposurePV = new double[vertexCount];</span>
 
-<span class="fc bfc" id="L655" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L667" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L657">			vertexCollateralizedNegativeExposurePV[vertexIndex] = 0.;</span>
+<span class="fc" id="L669">			vertexCollateralizedNegativeExposurePV[vertexIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L660" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L661">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L672" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L673">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L663">			double[] creditDebtGroupVertexCollateralizedNegativeExposurePV =</span>
-<span class="fc" id="L664">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexCollateralizedNegativeExposurePV();</span>
+<span class="fc" id="L675">			double[] creditDebtGroupVertexCollateralizedNegativeExposurePV =</span>
+<span class="fc" id="L676">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexCollateralizedNegativeExposurePV();</span>
 
-<span class="fc bfc" id="L666" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L678" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="fc" id="L668">				vertexCollateralizedNegativeExposurePV[vertexIndex] +=</span>
+<span class="fc" id="L680">				vertexCollateralizedNegativeExposurePV[vertexIndex] +=</span>
 					creditDebtGroupVertexCollateralizedNegativeExposurePV[vertexIndex];
 			}
 		}
 
-<span class="fc" id="L673">		return vertexCollateralizedNegativeExposurePV;</span>
+<span class="fc" id="L685">		return vertexCollateralizedNegativeExposurePV;</span>
 	}
 
 	/**
@@ -681,31 +693,31 @@ public abstract class FundingGroupPath
 
 	public double[] vertexUncollateralizedExposure()
 	{
-<span class="fc" id="L684">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L696">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L686">		int vertexCount = marketVertexArray.length;</span>
-<span class="fc" id="L687">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
-<span class="fc" id="L688">		double[] vertexUncollateralizedExposure = new double[vertexCount];</span>
+<span class="fc" id="L698">		int vertexCount = marketVertexArray.length;</span>
+<span class="fc" id="L699">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L700">		double[] vertexUncollateralizedExposure = new double[vertexCount];</span>
 
-<span class="fc bfc" id="L690" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L702" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L692">			vertexUncollateralizedExposure[vertexIndex] = 0.;</span>
+<span class="fc" id="L704">			vertexUncollateralizedExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L695" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L696">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L707" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L708">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L698">			double[] creditDebtGroupVertexCollateralizedExposure =</span>
-<span class="fc" id="L699">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexUncollateralizedExposure();</span>
+<span class="fc" id="L710">			double[] creditDebtGroupVertexCollateralizedExposure =</span>
+<span class="fc" id="L711">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexUncollateralizedExposure();</span>
 
-<span class="fc bfc" id="L701" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L713" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="fc" id="L703">				vertexUncollateralizedExposure[vertexIndex] +=</span>
+<span class="fc" id="L715">				vertexUncollateralizedExposure[vertexIndex] +=</span>
 					creditDebtGroupVertexCollateralizedExposure[vertexIndex];
 			}
 		}
 
-<span class="fc" id="L708">		return vertexUncollateralizedExposure;</span>
+<span class="fc" id="L720">		return vertexUncollateralizedExposure;</span>
 	}
 
 	/**
@@ -716,31 +728,31 @@ public abstract class FundingGroupPath
 
 	public double[] vertexUncollateralizedExposurePV()
 	{
-<span class="fc" id="L719">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L731">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L721">		int vertexCount = marketVertexArray.length;</span>
-<span class="fc" id="L722">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
-<span class="fc" id="L723">		double[] vertexUncollateralizedExposurePV = new double[vertexCount];</span>
+<span class="fc" id="L733">		int vertexCount = marketVertexArray.length;</span>
+<span class="fc" id="L734">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L735">		double[] vertexUncollateralizedExposurePV = new double[vertexCount];</span>
 
-<span class="fc bfc" id="L725" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L737" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L727">			vertexUncollateralizedExposurePV[vertexIndex] = 0.;</span>
+<span class="fc" id="L739">			vertexUncollateralizedExposurePV[vertexIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L730" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L731">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L742" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L743">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L733">			double[] creditDebtGroupVertexCollateralizedExposurePV =</span>
-<span class="fc" id="L734">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexUncollateralizedExposurePV();</span>
+<span class="fc" id="L745">			double[] creditDebtGroupVertexCollateralizedExposurePV =</span>
+<span class="fc" id="L746">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexUncollateralizedExposurePV();</span>
 
-<span class="fc bfc" id="L736" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L748" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="fc" id="L738">				vertexUncollateralizedExposurePV[vertexIndex] +=</span>
+<span class="fc" id="L750">				vertexUncollateralizedExposurePV[vertexIndex] +=</span>
 					creditDebtGroupVertexCollateralizedExposurePV[vertexIndex];
 			}
 		}
 
-<span class="fc" id="L743">		return vertexUncollateralizedExposurePV;</span>
+<span class="fc" id="L755">		return vertexUncollateralizedExposurePV;</span>
 	}
 
 	/**
@@ -751,31 +763,31 @@ public abstract class FundingGroupPath
 
 	public double[] vertexUncollateralizedPositiveExposure()
 	{
-<span class="fc" id="L754">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L766">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L756">		int vertexCount = marketVertexArray.length;</span>
-<span class="fc" id="L757">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
-<span class="fc" id="L758">		double[] vertexUncollateralizedPositiveExposure = new double[vertexCount];</span>
+<span class="fc" id="L768">		int vertexCount = marketVertexArray.length;</span>
+<span class="fc" id="L769">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L770">		double[] vertexUncollateralizedPositiveExposure = new double[vertexCount];</span>
 
-<span class="fc bfc" id="L760" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L772" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L762">			vertexUncollateralizedPositiveExposure[vertexIndex] = 0.;</span>
+<span class="fc" id="L774">			vertexUncollateralizedPositiveExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L765" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L766">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L777" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L778">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L768">			double[] creditDebtGroupVertexUncollateralizedPositiveExposure =</span>
-<span class="fc" id="L769">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexUncollateralizedPositiveExposure();</span>
+<span class="fc" id="L780">			double[] creditDebtGroupVertexUncollateralizedPositiveExposure =</span>
+<span class="fc" id="L781">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexUncollateralizedPositiveExposure();</span>
 
-<span class="fc bfc" id="L771" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L783" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="fc" id="L773">				vertexUncollateralizedPositiveExposure[vertexIndex] +=</span>
+<span class="fc" id="L785">				vertexUncollateralizedPositiveExposure[vertexIndex] +=</span>
 					creditDebtGroupVertexUncollateralizedPositiveExposure[vertexIndex];
 			}
 		}
 
-<span class="fc" id="L778">		return vertexUncollateralizedPositiveExposure;</span>
+<span class="fc" id="L790">		return vertexUncollateralizedPositiveExposure;</span>
 	}
 
 	/**
@@ -786,31 +798,31 @@ public abstract class FundingGroupPath
 
 	public double[] vertexUncollateralizedPositiveExposurePV()
 	{
-<span class="fc" id="L789">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L801">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L791">		int vertexCount = marketVertexArray.length;</span>
-<span class="fc" id="L792">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
-<span class="fc" id="L793">		double[] vertexUncollateralizedPositiveExposurePV = new double[vertexCount];</span>
+<span class="fc" id="L803">		int vertexCount = marketVertexArray.length;</span>
+<span class="fc" id="L804">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L805">		double[] vertexUncollateralizedPositiveExposurePV = new double[vertexCount];</span>
 
-<span class="fc bfc" id="L795" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L807" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L797">			vertexUncollateralizedPositiveExposurePV[vertexIndex] = 0.;</span>
+<span class="fc" id="L809">			vertexUncollateralizedPositiveExposurePV[vertexIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L800" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L801">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L812" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L813">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L803">			double[] creditDebtGroupVertexUncollateralizedPositiveExposurePV =</span>
-<span class="fc" id="L804">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexUncollateralizedPositiveExposurePV();</span>
+<span class="fc" id="L815">			double[] creditDebtGroupVertexUncollateralizedPositiveExposurePV =</span>
+<span class="fc" id="L816">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexUncollateralizedPositiveExposurePV();</span>
 
-<span class="fc bfc" id="L806" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L818" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="fc" id="L808">				vertexUncollateralizedPositiveExposurePV[vertexIndex] +=</span>
+<span class="fc" id="L820">				vertexUncollateralizedPositiveExposurePV[vertexIndex] +=</span>
 					creditDebtGroupVertexUncollateralizedPositiveExposurePV[vertexIndex];
 			}
 		}
 
-<span class="fc" id="L813">		return vertexUncollateralizedPositiveExposurePV;</span>
+<span class="fc" id="L825">		return vertexUncollateralizedPositiveExposurePV;</span>
 	}
 
 	/**
@@ -821,31 +833,31 @@ public abstract class FundingGroupPath
 
 	public double[] vertexUncollateralizedNegativeExposure()
 	{
-<span class="fc" id="L824">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L836">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L826">		int vertexCount = marketVertexArray.length;</span>
-<span class="fc" id="L827">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
-<span class="fc" id="L828">		double[] vertexUncollateralizedNegativeExposure = new double[vertexCount];</span>
+<span class="fc" id="L838">		int vertexCount = marketVertexArray.length;</span>
+<span class="fc" id="L839">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L840">		double[] vertexUncollateralizedNegativeExposure = new double[vertexCount];</span>
 
-<span class="fc bfc" id="L830" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L842" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L832">			vertexUncollateralizedNegativeExposure[vertexIndex] = 0.;</span>
+<span class="fc" id="L844">			vertexUncollateralizedNegativeExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L835" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L836">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L847" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L848">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L838">			double[] creditDebtGroupVertexUncollateralizedNegativeExposure =</span>
-<span class="fc" id="L839">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexUncollateralizedNegativeExposure();</span>
+<span class="fc" id="L850">			double[] creditDebtGroupVertexUncollateralizedNegativeExposure =</span>
+<span class="fc" id="L851">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexUncollateralizedNegativeExposure();</span>
 
-<span class="fc bfc" id="L841" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L853" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="fc" id="L843">				vertexUncollateralizedNegativeExposure[vertexIndex] +=</span>
+<span class="fc" id="L855">				vertexUncollateralizedNegativeExposure[vertexIndex] +=</span>
 					creditDebtGroupVertexUncollateralizedNegativeExposure[vertexIndex];
 			}
 		}
 
-<span class="fc" id="L848">		return vertexUncollateralizedNegativeExposure;</span>
+<span class="fc" id="L860">		return vertexUncollateralizedNegativeExposure;</span>
 	}
 
 	/**
@@ -856,31 +868,31 @@ public abstract class FundingGroupPath
 
 	public double[] vertexUncollateralizedNegativeExposurePV()
 	{
-<span class="fc" id="L859">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L871">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L861">		int vertexCount = marketVertexArray.length;</span>
-<span class="fc" id="L862">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
-<span class="fc" id="L863">		double[] vertexUncollateralizedNegativeExposurePV = new double[vertexCount];</span>
+<span class="fc" id="L873">		int vertexCount = marketVertexArray.length;</span>
+<span class="fc" id="L874">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L875">		double[] vertexUncollateralizedNegativeExposurePV = new double[vertexCount];</span>
 
-<span class="fc bfc" id="L865" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L877" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L867">			vertexUncollateralizedNegativeExposurePV[vertexIndex] = 0.;</span>
+<span class="fc" id="L879">			vertexUncollateralizedNegativeExposurePV[vertexIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L870" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L871">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L882" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L883">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L873">			double[] creditDebtGroupVertexUncollateralizedNegativeExposurePV =</span>
-<span class="fc" id="L874">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexUncollateralizedNegativeExposurePV();</span>
+<span class="fc" id="L885">			double[] creditDebtGroupVertexUncollateralizedNegativeExposurePV =</span>
+<span class="fc" id="L886">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexUncollateralizedNegativeExposurePV();</span>
 
-<span class="fc bfc" id="L876" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L888" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="fc" id="L878">				vertexUncollateralizedNegativeExposurePV[vertexIndex] +=</span>
+<span class="fc" id="L890">				vertexUncollateralizedNegativeExposurePV[vertexIndex] +=</span>
 					creditDebtGroupVertexUncollateralizedNegativeExposurePV[vertexIndex];
 			}
 		}
 
-<span class="fc" id="L883">		return vertexUncollateralizedNegativeExposurePV;</span>
+<span class="fc" id="L895">		return vertexUncollateralizedNegativeExposurePV;</span>
 	}
 
 	/**
@@ -891,38 +903,38 @@ public abstract class FundingGroupPath
 
 	public double[] vertexFundingExposure()
 	{
-<span class="fc" id="L894">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L906">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L896">		int vertexCount = marketVertexArray.length;</span>
-<span class="fc" id="L897">		double[] vertexFundingExposure = new double[vertexCount];</span>
-<span class="fc" id="L898">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L908">		int vertexCount = marketVertexArray.length;</span>
+<span class="fc" id="L909">		double[] vertexFundingExposure = new double[vertexCount];</span>
+<span class="fc" id="L910">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
 
-<span class="fc bfc" id="L900" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L912" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L902">			vertexFundingExposure[vertexIndex] = 0.;</span>
+<span class="fc" id="L914">			vertexFundingExposure[vertexIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L905" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L906">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L917" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L918">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L908">			double[] creditDebtGroupVertexFundingExposure =</span>
-<span class="fc" id="L909">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexFundingExposure();</span>
+<span class="fc" id="L920">			double[] creditDebtGroupVertexFundingExposure =</span>
+<span class="fc" id="L921">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexFundingExposure();</span>
 
-<span class="fc bfc" id="L911" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L923" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="fc" id="L913">				vertexFundingExposure[vertexIndex] += creditDebtGroupVertexFundingExposure[vertexIndex];</span>
+<span class="fc" id="L925">				vertexFundingExposure[vertexIndex] += creditDebtGroupVertexFundingExposure[vertexIndex];</span>
 			}
 		}
 
-<span class="fc bfc" id="L917" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L929" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc bfc" id="L919" title="All 2 branches covered.">			if (0. &gt; vertexFundingExposure[vertexIndex])</span>
+<span class="fc bfc" id="L931" title="All 2 branches covered.">			if (0. &gt; vertexFundingExposure[vertexIndex])</span>
 			{
-<span class="fc" id="L921">				vertexFundingExposure[vertexIndex] = 0.;</span>
+<span class="fc" id="L933">				vertexFundingExposure[vertexIndex] = 0.;</span>
 			}
 		}
 
-<span class="fc" id="L925">		return vertexFundingExposure;</span>
+<span class="fc" id="L937">		return vertexFundingExposure;</span>
 	}
 
 	/**
@@ -933,38 +945,38 @@ public abstract class FundingGroupPath
 
 	public double[] vertexFundingExposurePV()
 	{
-<span class="fc" id="L936">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L948">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L938">		int vertexCount = marketVertexArray.length;</span>
-<span class="fc" id="L939">		double[] vertexFundingExposurePV = new double[vertexCount];</span>
-<span class="fc" id="L940">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L950">		int vertexCount = marketVertexArray.length;</span>
+<span class="fc" id="L951">		double[] vertexFundingExposurePV = new double[vertexCount];</span>
+<span class="fc" id="L952">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
 
-<span class="fc bfc" id="L942" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L954" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc" id="L944">			vertexFundingExposurePV[vertexIndex] = 0.;</span>
+<span class="fc" id="L956">			vertexFundingExposurePV[vertexIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L947" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L948">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L959" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L960">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L950">			double[] creditDebtGroupVertexFundingExposurePV =</span>
-<span class="fc" id="L951">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexFundingExposurePV();</span>
+<span class="fc" id="L962">			double[] creditDebtGroupVertexFundingExposurePV =</span>
+<span class="fc" id="L963">				_creditDebtGroupPathArray[creditDebtGroupIndex].vertexFundingExposurePV();</span>
 
-<span class="fc bfc" id="L953" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L965" title="All 2 branches covered.">			for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 			{
-<span class="fc" id="L955">				vertexFundingExposurePV[vertexIndex] += creditDebtGroupVertexFundingExposurePV[vertexIndex];</span>
+<span class="fc" id="L967">				vertexFundingExposurePV[vertexIndex] += creditDebtGroupVertexFundingExposurePV[vertexIndex];</span>
 			}
 		}
 
-<span class="fc bfc" id="L959" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+<span class="fc bfc" id="L971" title="All 2 branches covered.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
 		{
-<span class="fc bfc" id="L961" title="All 2 branches covered.">			if (0. &gt; vertexFundingExposurePV[vertexIndex])</span>
+<span class="fc bfc" id="L973" title="All 2 branches covered.">			if (0. &gt; vertexFundingExposurePV[vertexIndex])</span>
 			{
-<span class="fc" id="L963">				vertexFundingExposurePV[vertexIndex] = 0.;</span>
+<span class="fc" id="L975">				vertexFundingExposurePV[vertexIndex] = 0.;</span>
 			}
 		}
 
-<span class="fc" id="L967">		return vertexFundingExposurePV;</span>
+<span class="fc" id="L979">		return vertexFundingExposurePV;</span>
 	}
 
 	/**
@@ -975,23 +987,23 @@ public abstract class FundingGroupPath
 
 	public double[] periodSymmetricFundingValueAdjustment()
 	{
-<span class="fc" id="L978">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L990">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L980">		double[] periodSymmetricFundingValueSpread01 = periodSymmetricFundingValueSpread01();</span>
+<span class="fc" id="L992">		double[] periodSymmetricFundingValueSpread01 = periodSymmetricFundingValueSpread01();</span>
 
-<span class="fc" id="L982">		int periodCount = periodSymmetricFundingValueSpread01.length;</span>
-<span class="fc" id="L983">		double[] periodSymmetricFundingValueAdjustment = new double[periodCount];</span>
+<span class="fc" id="L994">		int periodCount = periodSymmetricFundingValueSpread01.length;</span>
+<span class="fc" id="L995">		double[] periodSymmetricFundingValueAdjustment = new double[periodCount];</span>
 
-<span class="fc bfc" id="L985" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
+<span class="fc bfc" id="L997" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 		{
-<span class="fc" id="L987">			periodSymmetricFundingValueAdjustment[periodIndex] =</span>
+<span class="fc" id="L999">			periodSymmetricFundingValueAdjustment[periodIndex] =</span>
 				0.5 * periodSymmetricFundingValueSpread01[periodIndex] * (
-<span class="fc" id="L989">					marketVertexArray[periodIndex].dealer().seniorFundingSpread() +</span>
-<span class="fc" id="L990">					marketVertexArray[periodIndex + 1].dealer().seniorFundingSpread()</span>
+<span class="fc" id="L1001">					marketVertexArray[periodIndex].dealer().seniorFundingSpread() +</span>
+<span class="fc" id="L1002">					marketVertexArray[periodIndex + 1].dealer().seniorFundingSpread()</span>
 				);
 		}
 
-<span class="fc" id="L994">		return periodSymmetricFundingValueAdjustment;</span>
+<span class="fc" id="L1006">		return periodSymmetricFundingValueAdjustment;</span>
 	}
 
 	/**
@@ -1002,23 +1014,23 @@ public abstract class FundingGroupPath
 
 	public double[] periodUnilateralFundingValueAdjustment()
 	{
-<span class="fc" id="L1005">		double[] periodUnilateralFundingValueSpread01 = periodUnilateralFundingValueSpread01();</span>
+<span class="fc" id="L1017">		double[] periodUnilateralFundingValueSpread01 = periodUnilateralFundingValueSpread01();</span>
 
-<span class="fc" id="L1007">		int periodCount = periodUnilateralFundingValueSpread01.length;</span>
-<span class="fc" id="L1008">		double[] periodUnilateralFundingValueAdjustment = new double[periodCount];</span>
+<span class="fc" id="L1019">		int periodCount = periodUnilateralFundingValueSpread01.length;</span>
+<span class="fc" id="L1020">		double[] periodUnilateralFundingValueAdjustment = new double[periodCount];</span>
 
-<span class="fc" id="L1010">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L1022">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc bfc" id="L1012" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
+<span class="fc bfc" id="L1024" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 		{
-<span class="fc" id="L1014">			periodUnilateralFundingValueAdjustment[periodIndex] =</span>
+<span class="fc" id="L1026">			periodUnilateralFundingValueAdjustment[periodIndex] =</span>
 				0.5 * periodUnilateralFundingValueSpread01[periodIndex] * (
-<span class="fc" id="L1016">					marketVertexArray[periodIndex].dealer().seniorFundingSpread() +</span>
-<span class="fc" id="L1017">					marketVertexArray[periodIndex + 1].dealer().seniorFundingSpread()</span>
+<span class="fc" id="L1028">					marketVertexArray[periodIndex].dealer().seniorFundingSpread() +</span>
+<span class="fc" id="L1029">					marketVertexArray[periodIndex + 1].dealer().seniorFundingSpread()</span>
 				);
 		}
 
-<span class="fc" id="L1021">		return periodUnilateralFundingValueAdjustment;</span>
+<span class="fc" id="L1033">		return periodUnilateralFundingValueAdjustment;</span>
 	}
 
 	/**
@@ -1029,23 +1041,23 @@ public abstract class FundingGroupPath
 
 	public double[] periodBilateralFundingValueAdjustment()
 	{
-<span class="fc" id="L1032">		double[] periodBilateralFundingValueSpread01 = periodBilateralFundingValueSpread01();</span>
+<span class="fc" id="L1044">		double[] periodBilateralFundingValueSpread01 = periodBilateralFundingValueSpread01();</span>
 
-<span class="fc" id="L1034">		int periodCount = periodBilateralFundingValueSpread01.length;</span>
-<span class="fc" id="L1035">		double[] periodBilateralFundingValueAdjustment = new double[periodCount];</span>
+<span class="fc" id="L1046">		int periodCount = periodBilateralFundingValueSpread01.length;</span>
+<span class="fc" id="L1047">		double[] periodBilateralFundingValueAdjustment = new double[periodCount];</span>
 
-<span class="fc" id="L1037">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L1049">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc bfc" id="L1039" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
+<span class="fc bfc" id="L1051" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 		{
-<span class="fc" id="L1041">			periodBilateralFundingValueAdjustment[periodIndex] =</span>
+<span class="fc" id="L1053">			periodBilateralFundingValueAdjustment[periodIndex] =</span>
 				0.5 * periodBilateralFundingValueSpread01[periodIndex] * (
-<span class="fc" id="L1043">					marketVertexArray[periodIndex].dealer().seniorFundingSpread() +</span>
-<span class="fc" id="L1044">					marketVertexArray[periodIndex + 1].dealer().seniorFundingSpread()</span>
+<span class="fc" id="L1055">					marketVertexArray[periodIndex].dealer().seniorFundingSpread() +</span>
+<span class="fc" id="L1056">					marketVertexArray[periodIndex + 1].dealer().seniorFundingSpread()</span>
 				);
 		}
 
-<span class="fc" id="L1048">		return periodBilateralFundingValueAdjustment;</span>
+<span class="fc" id="L1060">		return periodBilateralFundingValueAdjustment;</span>
 	}
 
 	/**
@@ -1056,31 +1068,31 @@ public abstract class FundingGroupPath
 
 	public double[] periodUnilateralFundingDebtAdjustment()
 	{
-<span class="fc" id="L1059">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L1071">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L1061">		int periodCount = marketVertexArray.length - 1;</span>
-<span class="fc" id="L1062">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
-<span class="fc" id="L1063">		double[] periodUnilateralFundingDebtAdjustment = new double[periodCount];</span>
+<span class="fc" id="L1073">		int periodCount = marketVertexArray.length - 1;</span>
+<span class="fc" id="L1074">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L1075">		double[] periodUnilateralFundingDebtAdjustment = new double[periodCount];</span>
 
-<span class="fc bfc" id="L1065" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
+<span class="fc bfc" id="L1077" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 		{
-<span class="fc" id="L1067">			periodUnilateralFundingDebtAdjustment[periodIndex] = 0.;</span>
+<span class="fc" id="L1079">			periodUnilateralFundingDebtAdjustment[periodIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L1070" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L1071">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L1082" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L1083">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L1073">			double[] periodUnilateralFundingDebtAdjustmentCreditDebtGroup =</span>
-<span class="fc" id="L1074">				_creditDebtGroupPathArray[creditDebtGroupIndex].periodUnilateralFundingDebtAdjustment();</span>
+<span class="fc" id="L1085">			double[] periodUnilateralFundingDebtAdjustmentCreditDebtGroup =</span>
+<span class="fc" id="L1086">				_creditDebtGroupPathArray[creditDebtGroupIndex].periodUnilateralFundingDebtAdjustment();</span>
 
-<span class="fc bfc" id="L1076" title="All 2 branches covered.">			for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
+<span class="fc bfc" id="L1088" title="All 2 branches covered.">			for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 			{
-<span class="fc" id="L1078">				periodUnilateralFundingDebtAdjustment[periodIndex] +=</span>
+<span class="fc" id="L1090">				periodUnilateralFundingDebtAdjustment[periodIndex] +=</span>
 					periodUnilateralFundingDebtAdjustmentCreditDebtGroup[periodIndex];
 			}
 		}
 
-<span class="fc" id="L1083">		return periodUnilateralFundingDebtAdjustment;</span>
+<span class="fc" id="L1095">		return periodUnilateralFundingDebtAdjustment;</span>
 	}
 
 	/**
@@ -1091,31 +1103,31 @@ public abstract class FundingGroupPath
 
 	public double[] periodBilateralFundingDebtAdjustment()
 	{
-<span class="fc" id="L1094">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
+<span class="fc" id="L1106">		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();</span>
 
-<span class="fc" id="L1096">		int periodCount = marketVertexArray.length - 1;</span>
-<span class="fc" id="L1097">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
-<span class="fc" id="L1098">		double[] periodBilateralFundingDebtAdjustment = new double[periodCount];</span>
+<span class="fc" id="L1108">		int periodCount = marketVertexArray.length - 1;</span>
+<span class="fc" id="L1109">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L1110">		double[] periodBilateralFundingDebtAdjustment = new double[periodCount];</span>
 
-<span class="fc bfc" id="L1100" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
+<span class="fc bfc" id="L1112" title="All 2 branches covered.">		for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 		{
-<span class="fc" id="L1102">			periodBilateralFundingDebtAdjustment[periodIndex] = 0.;</span>
+<span class="fc" id="L1114">			periodBilateralFundingDebtAdjustment[periodIndex] = 0.;</span>
 		}
 
-<span class="fc bfc" id="L1105" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L1106">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L1117" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L1118">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L1108">			double[] periodBilateralFundingDebtAdjustmentCreditDebtGroup =</span>
-<span class="fc" id="L1109">				_creditDebtGroupPathArray[creditDebtGroupIndex].periodBilateralFundingDebtAdjustment();</span>
+<span class="fc" id="L1120">			double[] periodBilateralFundingDebtAdjustmentCreditDebtGroup =</span>
+<span class="fc" id="L1121">				_creditDebtGroupPathArray[creditDebtGroupIndex].periodBilateralFundingDebtAdjustment();</span>
 
-<span class="fc bfc" id="L1111" title="All 2 branches covered.">			for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
+<span class="fc bfc" id="L1123" title="All 2 branches covered.">			for (int periodIndex = 0; periodIndex &lt; periodCount; ++periodIndex)</span>
 			{
-<span class="fc" id="L1113">				periodBilateralFundingDebtAdjustment[periodIndex] +=</span>
+<span class="fc" id="L1125">				periodBilateralFundingDebtAdjustment[periodIndex] +=</span>
 					periodBilateralFundingDebtAdjustmentCreditDebtGroup[periodIndex];
 			}
 		}
 
-<span class="fc" id="L1118">		return periodBilateralFundingDebtAdjustment;</span>
+<span class="fc" id="L1130">		return periodBilateralFundingDebtAdjustment;</span>
 	}
 
 	/**
@@ -1126,17 +1138,17 @@ public abstract class FundingGroupPath
 
 	public double unilateralCreditAdjustment()
 	{
-<span class="fc" id="L1129">		double unilateralCreditAdjustment = 0.;</span>
-<span class="fc" id="L1130">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L1141">		double unilateralCreditAdjustment = 0.;</span>
+<span class="fc" id="L1142">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
 
-<span class="fc bfc" id="L1132" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L1133">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L1144" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L1145">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L1135">			unilateralCreditAdjustment +=</span>
-<span class="fc" id="L1136">				_creditDebtGroupPathArray[creditDebtGroupIndex].unilateralCreditAdjustment();</span>
+<span class="fc" id="L1147">			unilateralCreditAdjustment +=</span>
+<span class="fc" id="L1148">				_creditDebtGroupPathArray[creditDebtGroupIndex].unilateralCreditAdjustment();</span>
 		}
 
-<span class="fc" id="L1139">		return unilateralCreditAdjustment;</span>
+<span class="fc" id="L1151">		return unilateralCreditAdjustment;</span>
 	}
 
 	/**
@@ -1147,17 +1159,17 @@ public abstract class FundingGroupPath
 
 	public double bilateralCreditAdjustment()
 	{
-<span class="fc" id="L1150">		double bilateralCreditAdjustment = 0.;</span>
-<span class="fc" id="L1151">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L1162">		double bilateralCreditAdjustment = 0.;</span>
+<span class="fc" id="L1163">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
 
-<span class="fc bfc" id="L1153" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L1154">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L1165" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L1166">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L1156">			bilateralCreditAdjustment +=</span>
-<span class="fc" id="L1157">				_creditDebtGroupPathArray[creditDebtGroupIndex].bilateralCreditAdjustment();</span>
+<span class="fc" id="L1168">			bilateralCreditAdjustment +=</span>
+<span class="fc" id="L1169">				_creditDebtGroupPathArray[creditDebtGroupIndex].bilateralCreditAdjustment();</span>
 		}
 
-<span class="fc" id="L1160">		return bilateralCreditAdjustment;</span>
+<span class="fc" id="L1172">		return bilateralCreditAdjustment;</span>
 	}
 
 	/**
@@ -1168,17 +1180,17 @@ public abstract class FundingGroupPath
 
 	public double contraLiabilityCreditAdjustment()
 	{
-<span class="fc" id="L1171">		double contraLiabilityCreditAdjustment = 0.;</span>
-<span class="fc" id="L1172">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L1183">		double contraLiabilityCreditAdjustment = 0.;</span>
+<span class="fc" id="L1184">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
 
-<span class="fc bfc" id="L1174" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L1175">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L1186" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L1187">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L1177">			contraLiabilityCreditAdjustment +=</span>
-<span class="fc" id="L1178">				_creditDebtGroupPathArray[creditDebtGroupIndex].contraLiabilityCreditAdjustment();</span>
+<span class="fc" id="L1189">			contraLiabilityCreditAdjustment +=</span>
+<span class="fc" id="L1190">				_creditDebtGroupPathArray[creditDebtGroupIndex].contraLiabilityCreditAdjustment();</span>
 		}
 
-<span class="fc" id="L1181">		return contraLiabilityCreditAdjustment;</span>
+<span class="fc" id="L1193">		return contraLiabilityCreditAdjustment;</span>
 	}
 
 	/**
@@ -1189,17 +1201,17 @@ public abstract class FundingGroupPath
 
 	public double unilateralDebtAdjustment()
 	{
-<span class="fc" id="L1192">		double unilateralDebtAdjustment = 0.;</span>
-<span class="fc" id="L1193">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L1204">		double unilateralDebtAdjustment = 0.;</span>
+<span class="fc" id="L1205">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
 
-<span class="fc bfc" id="L1195" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L1196">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L1207" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L1208">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L1198">			unilateralDebtAdjustment +=</span>
-<span class="fc" id="L1199">				_creditDebtGroupPathArray[creditDebtGroupIndex].unilateralDebtAdjustment();</span>
+<span class="fc" id="L1210">			unilateralDebtAdjustment +=</span>
+<span class="fc" id="L1211">				_creditDebtGroupPathArray[creditDebtGroupIndex].unilateralDebtAdjustment();</span>
 		}
 
-<span class="fc" id="L1202">		return unilateralDebtAdjustment;</span>
+<span class="fc" id="L1214">		return unilateralDebtAdjustment;</span>
 	}
 
 	/**
@@ -1210,17 +1222,17 @@ public abstract class FundingGroupPath
 
 	public double bilateralDebtAdjustment()
 	{
-<span class="nc" id="L1213">		double bilateralDebtAdjustment = 0.;</span>
-<span class="nc" id="L1214">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="nc" id="L1225">		double bilateralDebtAdjustment = 0.;</span>
+<span class="nc" id="L1226">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
 
-<span class="nc bnc" id="L1216" title="All 2 branches missed.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="nc" id="L1217">			++creditDebtGroupIndex)</span>
+<span class="nc bnc" id="L1228" title="All 2 branches missed.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="nc" id="L1229">			++creditDebtGroupIndex)</span>
 		{
-<span class="nc" id="L1219">			bilateralDebtAdjustment +=</span>
-<span class="nc" id="L1220">				_creditDebtGroupPathArray[creditDebtGroupIndex].bilateralDebtAdjustment();</span>
+<span class="nc" id="L1231">			bilateralDebtAdjustment +=</span>
+<span class="nc" id="L1232">				_creditDebtGroupPathArray[creditDebtGroupIndex].bilateralDebtAdjustment();</span>
 		}
 
-<span class="nc" id="L1223">		return bilateralDebtAdjustment;</span>
+<span class="nc" id="L1235">		return bilateralDebtAdjustment;</span>
 	}
 
 	/**
@@ -1231,17 +1243,17 @@ public abstract class FundingGroupPath
 
 	public double contraAssetDebtAdjustment()
 	{
-<span class="nc" id="L1234">		double contraAssetDebtAdjustment = 0.;</span>
-<span class="nc" id="L1235">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="nc" id="L1246">		double contraAssetDebtAdjustment = 0.;</span>
+<span class="nc" id="L1247">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
 
-<span class="nc bnc" id="L1237" title="All 2 branches missed.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="nc" id="L1238">			++creditDebtGroupIndex)</span>
+<span class="nc bnc" id="L1249" title="All 2 branches missed.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="nc" id="L1250">			++creditDebtGroupIndex)</span>
 		{
-<span class="nc" id="L1240">			contraAssetDebtAdjustment +=</span>
-<span class="nc" id="L1241">				_creditDebtGroupPathArray[creditDebtGroupIndex].contraAssetDebtAdjustment();</span>
+<span class="nc" id="L1252">			contraAssetDebtAdjustment +=</span>
+<span class="nc" id="L1253">				_creditDebtGroupPathArray[creditDebtGroupIndex].contraAssetDebtAdjustment();</span>
 		}
 
-<span class="nc" id="L1244">		return contraAssetDebtAdjustment;</span>
+<span class="nc" id="L1256">		return contraAssetDebtAdjustment;</span>
 	}
 
 	/**
@@ -1252,17 +1264,17 @@ public abstract class FundingGroupPath
 
 	public double unilateralCollateralAdjustment()
 	{
-<span class="nc" id="L1255">		double unilateralCollateralAdjustment = 0.;</span>
-<span class="nc" id="L1256">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="nc" id="L1267">		double unilateralCollateralAdjustment = 0.;</span>
+<span class="nc" id="L1268">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
 
-<span class="nc bnc" id="L1258" title="All 2 branches missed.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="nc" id="L1259">			++creditDebtGroupIndex)</span>
+<span class="nc bnc" id="L1270" title="All 2 branches missed.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="nc" id="L1271">			++creditDebtGroupIndex)</span>
 		{
-<span class="nc" id="L1261">			unilateralCollateralAdjustment +=</span>
-<span class="nc" id="L1262">				_creditDebtGroupPathArray[creditDebtGroupIndex].unilateralCollateralAdjustment();</span>
+<span class="nc" id="L1273">			unilateralCollateralAdjustment +=</span>
+<span class="nc" id="L1274">				_creditDebtGroupPathArray[creditDebtGroupIndex].unilateralCollateralAdjustment();</span>
 		}
 
-<span class="nc" id="L1265">		return unilateralCollateralAdjustment;</span>
+<span class="nc" id="L1277">		return unilateralCollateralAdjustment;</span>
 	}
 
 	/**
@@ -1273,17 +1285,17 @@ public abstract class FundingGroupPath
 
 	public double bilateralCollateralAdjustment()
 	{
-<span class="fc" id="L1276">		double bilateralCollateralAdjustment = 0.;</span>
-<span class="fc" id="L1277">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
+<span class="fc" id="L1288">		double bilateralCollateralAdjustment = 0.;</span>
+<span class="fc" id="L1289">		int creditDebtGroupCount = _creditDebtGroupPathArray.length;</span>
 
-<span class="fc bfc" id="L1279" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
-<span class="fc" id="L1280">			++creditDebtGroupIndex)</span>
+<span class="fc bfc" id="L1291" title="All 2 branches covered.">		for (int creditDebtGroupIndex = 0; creditDebtGroupIndex &lt; creditDebtGroupCount;</span>
+<span class="fc" id="L1292">			++creditDebtGroupIndex)</span>
 		{
-<span class="fc" id="L1282">			bilateralCollateralAdjustment +=</span>
-<span class="fc" id="L1283">				_creditDebtGroupPathArray[creditDebtGroupIndex].bilateralCollateralAdjustment();</span>
+<span class="fc" id="L1294">			bilateralCollateralAdjustment +=</span>
+<span class="fc" id="L1295">				_creditDebtGroupPathArray[creditDebtGroupIndex].bilateralCollateralAdjustment();</span>
 		}
 
-<span class="fc" id="L1286">		return bilateralCollateralAdjustment;</span>
+<span class="fc" id="L1298">		return bilateralCollateralAdjustment;</span>
 	}
 
 	/**

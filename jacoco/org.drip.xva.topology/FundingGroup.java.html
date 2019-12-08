@@ -6,42 +6,54 @@ package org.drip.xva.topology;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -94,10 +106,10 @@ package org.drip.xva.topology;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/topology&quot;&gt;Topology&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/README.md&quot;&gt;Valuation Adjustments that account for Collateral, CC Credit/Debt and Funding Overhead&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/topology/README.md&quot;&gt;Collateral, Credit/Debt, Funding Topologies&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -106,8 +118,8 @@ package org.drip.xva.topology;
 
 public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 {
-<span class="nc" id="L109">	private org.drip.xva.proto.FundingGroupSpecification _fundingGroupSpecification = null;</span>
-<span class="nc" id="L110">	private java.util.Map&lt;java.lang.String, org.drip.xva.topology.CreditDebtGroup&gt; _creditDebtGroupMap =</span>
+<span class="nc" id="L121">	private org.drip.xva.proto.FundingGroupSpecification _fundingGroupSpecification = null;</span>
+<span class="nc" id="L122">	private java.util.Map&lt;java.lang.String, org.drip.xva.topology.CreditDebtGroup&gt; _creditDebtGroupMap =</span>
 		null;
 
 	/**
@@ -126,19 +138,19 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 		final org.drip.xva.proto.FundingGroupSpecification fundingGroupSpecification)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L129">		super (</span>
+<span class="nc" id="L141">		super (</span>
 			id,
 			name
 		);
 
-<span class="nc bnc" id="L134" title="All 2 branches missed.">		if (null == (_fundingGroupSpecification = fundingGroupSpecification))</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">		if (null == (_fundingGroupSpecification = fundingGroupSpecification))</span>
 		{
-<span class="nc" id="L136">			throw new java.lang.Exception (&quot;FundingGroup Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L148">			throw new java.lang.Exception (&quot;FundingGroup Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L139">		_creditDebtGroupMap = new</span>
+<span class="nc" id="L151">		_creditDebtGroupMap = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.xva.topology.CreditDebtGroup&gt;();
-<span class="nc" id="L141">	}</span>
+<span class="nc" id="L153">	}</span>
 
 	/**
 	 * Retrieve the Funding Group Specification
@@ -148,7 +160,7 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 
 	public org.drip.xva.proto.FundingGroupSpecification fundingGroupSpecification()
 	{
-<span class="nc" id="L151">		return _fundingGroupSpecification;</span>
+<span class="nc" id="L163">		return _fundingGroupSpecification;</span>
 	}
 
 	/**
@@ -159,7 +171,7 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 
 	public java.util.Map&lt;java.lang.String, org.drip.xva.topology.CreditDebtGroup&gt; creditDebtGroupMap()
 	{
-<span class="nc" id="L162">		return _creditDebtGroupMap;</span>
+<span class="nc" id="L174">		return _creditDebtGroupMap;</span>
 	}
 
 	/**
@@ -173,17 +185,17 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	public boolean addCreditDebtGroup (
 		final org.drip.xva.topology.CreditDebtGroup creditDebtGroup)
 	{
-<span class="nc bnc" id="L176" title="All 2 branches missed.">		if (null == creditDebtGroup)</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">		if (null == creditDebtGroup)</span>
 		{
-<span class="nc" id="L178">			return false;</span>
+<span class="nc" id="L190">			return false;</span>
 		}
 
-<span class="nc" id="L181">		_creditDebtGroupMap.put (</span>
-<span class="nc" id="L182">			creditDebtGroup.id(),</span>
+<span class="nc" id="L193">		_creditDebtGroupMap.put (</span>
+<span class="nc" id="L194">			creditDebtGroup.id(),</span>
 			creditDebtGroup
 		);
 
-<span class="nc" id="L186">		return true;</span>
+<span class="nc" id="L198">		return true;</span>
 	}
 
 	/**
@@ -197,8 +209,8 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	public boolean containsCreditDebtGroup (
 		final java.lang.String creditDebtGroupID)
 	{
-<span class="nc bnc" id="L200" title="All 4 branches missed.">		return null == creditDebtGroupID || creditDebtGroupID.isEmpty() ? false :</span>
-<span class="nc" id="L201">			_creditDebtGroupMap.containsKey (creditDebtGroupID);</span>
+<span class="nc bnc" id="L212" title="All 4 branches missed.">		return null == creditDebtGroupID || creditDebtGroupID.isEmpty() ? false :</span>
+<span class="nc" id="L213">			_creditDebtGroupMap.containsKey (creditDebtGroupID);</span>
 	}
 
 	/**
@@ -212,7 +224,7 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	public org.drip.xva.topology.CreditDebtGroup creditDebtGroup (
 		final java.lang.String creditDebtGroupID)
 	{
-<span class="nc bnc" id="L215" title="All 2 branches missed.">		return containsCreditDebtGroup (creditDebtGroupID) ? _creditDebtGroupMap.get (creditDebtGroupID) :</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">		return containsCreditDebtGroup (creditDebtGroupID) ? _creditDebtGroupMap.get (creditDebtGroupID) :</span>
 			null;
 	}
 
@@ -224,7 +236,7 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 
 	public org.drip.state.identifier.EntityFundingLabel dealerSeniorFundingLabel()
 	{
-<span class="nc" id="L227">		return _fundingGroupSpecification.dealerSeniorFundingLabel();</span>
+<span class="nc" id="L239">		return _fundingGroupSpecification.dealerSeniorFundingLabel();</span>
 	}
 
 	/**
@@ -235,7 +247,7 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 
 	public org.drip.state.identifier.EntityFundingLabel clientFundingLabel()
 	{
-<span class="nc" id="L238">		return _fundingGroupSpecification.clientFundingLabel();</span>
+<span class="nc" id="L250">		return _fundingGroupSpecification.clientFundingLabel();</span>
 	}
 
 	/**
@@ -246,7 +258,7 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 
 	public org.drip.state.identifier.EntityFundingLabel dealerSubordinateFundingLabel()
 	{
-<span class="nc" id="L249">		return _fundingGroupSpecification.dealerSubordinateFundingLabel();</span>
+<span class="nc" id="L261">		return _fundingGroupSpecification.dealerSubordinateFundingLabel();</span>
 	}
 
 	/**
@@ -257,34 +269,34 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 
 	public java.util.Map&lt;java.lang.String, org.drip.state.identifier.OvernightLabel&gt; overnightLabelMap()
 	{
-<span class="nc" id="L260">		java.util.Map&lt;java.lang.String, org.drip.state.identifier.OvernightLabel&gt; overnightLabelMap = new</span>
+<span class="nc" id="L272">		java.util.Map&lt;java.lang.String, org.drip.state.identifier.OvernightLabel&gt; overnightLabelMap = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.state.identifier.OvernightLabel&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.xva.topology.CreditDebtGroup&gt;
-<span class="nc bnc" id="L264" title="All 2 branches missed.">			creditDebtGroupEntry : _creditDebtGroupMap.entrySet())</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">			creditDebtGroupEntry : _creditDebtGroupMap.entrySet())</span>
 		{
-<span class="nc" id="L266">			java.util.Map&lt;java.lang.String, org.drip.xva.topology.CollateralGroup&gt; collateralGroupMap =</span>
-<span class="nc" id="L267">				creditDebtGroupEntry.getValue().collateralGroupMap();</span>
+<span class="nc" id="L278">			java.util.Map&lt;java.lang.String, org.drip.xva.topology.CollateralGroup&gt; collateralGroupMap =</span>
+<span class="nc" id="L279">				creditDebtGroupEntry.getValue().collateralGroupMap();</span>
 
 			for (java.util.Map.Entry&lt;java.lang.String, org.drip.xva.topology.CollateralGroup&gt;
-<span class="nc bnc" id="L270" title="All 2 branches missed.">				collateralGroupMapEntry : collateralGroupMap.entrySet())</span>
+<span class="nc bnc" id="L282" title="All 2 branches missed.">				collateralGroupMapEntry : collateralGroupMap.entrySet())</span>
 			{
-<span class="nc" id="L272">				org.drip.state.identifier.OvernightLabel overnightLabel =</span>
-<span class="nc" id="L273">					collateralGroupMapEntry.getValue().overnightLabel();</span>
+<span class="nc" id="L284">				org.drip.state.identifier.OvernightLabel overnightLabel =</span>
+<span class="nc" id="L285">					collateralGroupMapEntry.getValue().overnightLabel();</span>
 
-<span class="nc" id="L275">				java.lang.String overnightLabelFQN = overnightLabel.fullyQualifiedName();</span>
+<span class="nc" id="L287">				java.lang.String overnightLabelFQN = overnightLabel.fullyQualifiedName();</span>
 
-<span class="nc bnc" id="L277" title="All 2 branches missed.">				if (!overnightLabelMap.containsKey (overnightLabelFQN))</span>
+<span class="nc bnc" id="L289" title="All 2 branches missed.">				if (!overnightLabelMap.containsKey (overnightLabelFQN))</span>
 				{
-<span class="nc" id="L279">					overnightLabelMap.put (</span>
+<span class="nc" id="L291">					overnightLabelMap.put (</span>
 						overnightLabelFQN,
 						overnightLabel
 					);
 				}
-<span class="nc" id="L284">			}</span>
-<span class="nc" id="L285">		}</span>
+<span class="nc" id="L296">			}</span>
+<span class="nc" id="L297">		}</span>
 
-<span class="nc" id="L287">		return overnightLabelMap;</span>
+<span class="nc" id="L299">		return overnightLabelMap;</span>
 	}
 
 	/**
@@ -295,33 +307,33 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 
 	public java.util.Map&lt;java.lang.String, org.drip.state.identifier.CSALabel&gt; csaLabelMap()
 	{
-<span class="nc" id="L298">		java.util.Map&lt;java.lang.String, org.drip.state.identifier.CSALabel&gt; csaLabelMap = new</span>
+<span class="nc" id="L310">		java.util.Map&lt;java.lang.String, org.drip.state.identifier.CSALabel&gt; csaLabelMap = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.state.identifier.CSALabel&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.xva.topology.CreditDebtGroup&gt;
-<span class="nc bnc" id="L302" title="All 2 branches missed.">			creditDebtGroupEntry : _creditDebtGroupMap.entrySet())</span>
+<span class="nc bnc" id="L314" title="All 2 branches missed.">			creditDebtGroupEntry : _creditDebtGroupMap.entrySet())</span>
 		{
-<span class="nc" id="L304">			java.util.Map&lt;java.lang.String, org.drip.xva.topology.CollateralGroup&gt; collateralGroupMap =</span>
-<span class="nc" id="L305">				creditDebtGroupEntry.getValue().collateralGroupMap();</span>
+<span class="nc" id="L316">			java.util.Map&lt;java.lang.String, org.drip.xva.topology.CollateralGroup&gt; collateralGroupMap =</span>
+<span class="nc" id="L317">				creditDebtGroupEntry.getValue().collateralGroupMap();</span>
 
 			for (java.util.Map.Entry&lt;java.lang.String, org.drip.xva.topology.CollateralGroup&gt;
-<span class="nc bnc" id="L308" title="All 2 branches missed.">				collateralGroupMapEntry : collateralGroupMap.entrySet())</span>
+<span class="nc bnc" id="L320" title="All 2 branches missed.">				collateralGroupMapEntry : collateralGroupMap.entrySet())</span>
 			{
-<span class="nc" id="L310">				org.drip.state.identifier.CSALabel csaLabel = collateralGroupMapEntry.getValue().csaLabel();</span>
+<span class="nc" id="L322">				org.drip.state.identifier.CSALabel csaLabel = collateralGroupMapEntry.getValue().csaLabel();</span>
 
-<span class="nc" id="L312">				java.lang.String csaLabelFQN = csaLabel.fullyQualifiedName();</span>
+<span class="nc" id="L324">				java.lang.String csaLabelFQN = csaLabel.fullyQualifiedName();</span>
 
-<span class="nc bnc" id="L314" title="All 2 branches missed.">				if (!csaLabelMap.containsKey (csaLabelFQN))</span>
+<span class="nc bnc" id="L326" title="All 2 branches missed.">				if (!csaLabelMap.containsKey (csaLabelFQN))</span>
 				{
-<span class="nc" id="L316">					csaLabelMap.put (</span>
+<span class="nc" id="L328">					csaLabelMap.put (</span>
 						csaLabelFQN,
 						csaLabel
 					);
 				}
-<span class="nc" id="L321">			}</span>
-<span class="nc" id="L322">		}</span>
+<span class="nc" id="L333">			}</span>
+<span class="nc" id="L334">		}</span>
 
-<span class="nc" id="L324">		return csaLabelMap;</span>
+<span class="nc" id="L336">		return csaLabelMap;</span>
 	}
 
 	/**
@@ -333,27 +345,27 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	public java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityHazardLabel&gt;
 		dealerHazardLabelMap()
 	{
-<span class="nc" id="L336">		java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityHazardLabel&gt; dealerHazardLabelMap = new</span>
+<span class="nc" id="L348">		java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityHazardLabel&gt; dealerHazardLabelMap = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.state.identifier.EntityHazardLabel&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.xva.topology.CreditDebtGroup&gt;
-<span class="nc bnc" id="L340" title="All 2 branches missed.">			creditDebtGroupMapEntry : _creditDebtGroupMap.entrySet())</span>
+<span class="nc bnc" id="L352" title="All 2 branches missed.">			creditDebtGroupMapEntry : _creditDebtGroupMap.entrySet())</span>
 		{
-<span class="nc" id="L342">			org.drip.state.identifier.EntityHazardLabel dealerHazardLabel =</span>
-<span class="nc" id="L343">				creditDebtGroupMapEntry.getValue().dealerHazardLabel();</span>
+<span class="nc" id="L354">			org.drip.state.identifier.EntityHazardLabel dealerHazardLabel =</span>
+<span class="nc" id="L355">				creditDebtGroupMapEntry.getValue().dealerHazardLabel();</span>
 
-<span class="nc" id="L345">			java.lang.String dealerHazardLabelFQN = dealerHazardLabel.fullyQualifiedName();</span>
+<span class="nc" id="L357">			java.lang.String dealerHazardLabelFQN = dealerHazardLabel.fullyQualifiedName();</span>
 
-<span class="nc bnc" id="L347" title="All 2 branches missed.">			if (!dealerHazardLabelMap.containsKey (dealerHazardLabelFQN))</span>
+<span class="nc bnc" id="L359" title="All 2 branches missed.">			if (!dealerHazardLabelMap.containsKey (dealerHazardLabelFQN))</span>
 			{
-<span class="nc" id="L349">				dealerHazardLabelMap.put (</span>
+<span class="nc" id="L361">				dealerHazardLabelMap.put (</span>
 					dealerHazardLabelFQN,
 					dealerHazardLabel
 				);
 			}
-<span class="nc" id="L354">		}</span>
+<span class="nc" id="L366">		}</span>
 
-<span class="nc" id="L356">		return dealerHazardLabelMap;</span>
+<span class="nc" id="L368">		return dealerHazardLabelMap;</span>
 	}
 
 	/**
@@ -365,27 +377,27 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	public java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityHazardLabel&gt;
 		clientHazardLabelMap()
 	{
-<span class="nc" id="L368">		java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityHazardLabel&gt; clientHazardLabelMap =</span>
+<span class="nc" id="L380">		java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityHazardLabel&gt; clientHazardLabelMap =</span>
 			new org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.state.identifier.EntityHazardLabel&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.xva.topology.CreditDebtGroup&gt;
-<span class="nc bnc" id="L372" title="All 2 branches missed.">			creditDebtGroupMapEntry : _creditDebtGroupMap.entrySet())</span>
+<span class="nc bnc" id="L384" title="All 2 branches missed.">			creditDebtGroupMapEntry : _creditDebtGroupMap.entrySet())</span>
 		{
-<span class="nc" id="L374">			org.drip.state.identifier.EntityHazardLabel clientHazardLabel =</span>
-<span class="nc" id="L375">				creditDebtGroupMapEntry.getValue().clientPartyHazardLabel();</span>
+<span class="nc" id="L386">			org.drip.state.identifier.EntityHazardLabel clientHazardLabel =</span>
+<span class="nc" id="L387">				creditDebtGroupMapEntry.getValue().clientPartyHazardLabel();</span>
 
-<span class="nc" id="L377">			java.lang.String clientHazardLabelFQN = clientHazardLabel.fullyQualifiedName();</span>
+<span class="nc" id="L389">			java.lang.String clientHazardLabelFQN = clientHazardLabel.fullyQualifiedName();</span>
 
-<span class="nc bnc" id="L379" title="All 2 branches missed.">			if (!clientHazardLabelMap.containsKey (clientHazardLabelFQN))</span>
+<span class="nc bnc" id="L391" title="All 2 branches missed.">			if (!clientHazardLabelMap.containsKey (clientHazardLabelFQN))</span>
 			{
-<span class="nc" id="L381">				clientHazardLabelMap.put (</span>
+<span class="nc" id="L393">				clientHazardLabelMap.put (</span>
 					clientHazardLabelFQN,
 					clientHazardLabel
 				);
 			}
-<span class="nc" id="L386">		}</span>
+<span class="nc" id="L398">		}</span>
 
-<span class="nc" id="L388">		return clientHazardLabelMap;</span>
+<span class="nc" id="L400">		return clientHazardLabelMap;</span>
 	}
 
 	/**
@@ -398,27 +410,27 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 		dealerSeniorRecoveryLabelMap()
 	{
 		java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityRecoveryLabel&gt;
-<span class="nc" id="L401">			dealerSeniorRecoveryLabelMap = new</span>
+<span class="nc" id="L413">			dealerSeniorRecoveryLabelMap = new</span>
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.state.identifier.EntityRecoveryLabel&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.xva.topology.CreditDebtGroup&gt;
-<span class="nc bnc" id="L405" title="All 2 branches missed.">			creditDebtGroupMapEntry : _creditDebtGroupMap.entrySet())</span>
+<span class="nc bnc" id="L417" title="All 2 branches missed.">			creditDebtGroupMapEntry : _creditDebtGroupMap.entrySet())</span>
 		{
-<span class="nc" id="L407">			org.drip.state.identifier.EntityRecoveryLabel dealerSeniorRecoveryLabel =</span>
-<span class="nc" id="L408">				creditDebtGroupMapEntry.getValue().dealerSeniorRecoveryLabel();</span>
+<span class="nc" id="L419">			org.drip.state.identifier.EntityRecoveryLabel dealerSeniorRecoveryLabel =</span>
+<span class="nc" id="L420">				creditDebtGroupMapEntry.getValue().dealerSeniorRecoveryLabel();</span>
 
-<span class="nc" id="L410">			java.lang.String dealerSeniorRecoveryLabelFQN = dealerSeniorRecoveryLabel.fullyQualifiedName();</span>
+<span class="nc" id="L422">			java.lang.String dealerSeniorRecoveryLabelFQN = dealerSeniorRecoveryLabel.fullyQualifiedName();</span>
 
-<span class="nc bnc" id="L412" title="All 2 branches missed.">			if (!dealerSeniorRecoveryLabelMap.containsKey (dealerSeniorRecoveryLabelFQN))</span>
+<span class="nc bnc" id="L424" title="All 2 branches missed.">			if (!dealerSeniorRecoveryLabelMap.containsKey (dealerSeniorRecoveryLabelFQN))</span>
 			{
-<span class="nc" id="L414">				dealerSeniorRecoveryLabelMap.put (</span>
+<span class="nc" id="L426">				dealerSeniorRecoveryLabelMap.put (</span>
 					dealerSeniorRecoveryLabelFQN,
 					dealerSeniorRecoveryLabel
 				);
 			}
-<span class="nc" id="L419">		}</span>
+<span class="nc" id="L431">		}</span>
 
-<span class="nc" id="L421">		return dealerSeniorRecoveryLabelMap;</span>
+<span class="nc" id="L433">		return dealerSeniorRecoveryLabelMap;</span>
 	}
 
 	/**
@@ -430,28 +442,28 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	public java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityRecoveryLabel&gt;
 		clientRecoveryLabelMap()
 	{
-<span class="nc" id="L433">		java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityRecoveryLabel&gt; clientRecoveryLabelMap</span>
+<span class="nc" id="L445">		java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityRecoveryLabel&gt; clientRecoveryLabelMap</span>
 			= new
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.state.identifier.EntityRecoveryLabel&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.xva.topology.CreditDebtGroup&gt;
-<span class="nc bnc" id="L438" title="All 2 branches missed.">			creditDebtGroupMapEntry : _creditDebtGroupMap.entrySet())</span>
+<span class="nc bnc" id="L450" title="All 2 branches missed.">			creditDebtGroupMapEntry : _creditDebtGroupMap.entrySet())</span>
 		{
-<span class="nc" id="L440">			org.drip.state.identifier.EntityRecoveryLabel clientRecoveryLabel =</span>
-<span class="nc" id="L441">				creditDebtGroupMapEntry.getValue().clientRecoveryLabel();</span>
+<span class="nc" id="L452">			org.drip.state.identifier.EntityRecoveryLabel clientRecoveryLabel =</span>
+<span class="nc" id="L453">				creditDebtGroupMapEntry.getValue().clientRecoveryLabel();</span>
 
-<span class="nc" id="L443">			java.lang.String clientRecoveryLabelFQN = clientRecoveryLabel.fullyQualifiedName();</span>
+<span class="nc" id="L455">			java.lang.String clientRecoveryLabelFQN = clientRecoveryLabel.fullyQualifiedName();</span>
 
-<span class="nc bnc" id="L445" title="All 2 branches missed.">			if (!clientRecoveryLabelMap.containsKey (clientRecoveryLabelFQN))</span>
+<span class="nc bnc" id="L457" title="All 2 branches missed.">			if (!clientRecoveryLabelMap.containsKey (clientRecoveryLabelFQN))</span>
 			{
-<span class="nc" id="L447">				clientRecoveryLabelMap.put (</span>
+<span class="nc" id="L459">				clientRecoveryLabelMap.put (</span>
 					clientRecoveryLabelFQN,
 					clientRecoveryLabel
 				);
 			}
-<span class="nc" id="L452">		}</span>
+<span class="nc" id="L464">		}</span>
 
-<span class="nc" id="L454">		return clientRecoveryLabelMap;</span>
+<span class="nc" id="L466">		return clientRecoveryLabelMap;</span>
 	}
 
 	/**
@@ -464,31 +476,31 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 		dealerSubordinateRecoveryLabelMap()
 	{
 		java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityRecoveryLabel&gt;
-<span class="nc" id="L467">			dealerSubordinateRecoveryLabelMap = new</span>
+<span class="nc" id="L479">			dealerSubordinateRecoveryLabelMap = new</span>
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.state.identifier.EntityRecoveryLabel&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.xva.topology.CreditDebtGroup&gt;
-<span class="nc bnc" id="L471" title="All 2 branches missed.">			creditDebtGroupMapEntry : _creditDebtGroupMap.entrySet())</span>
+<span class="nc bnc" id="L483" title="All 2 branches missed.">			creditDebtGroupMapEntry : _creditDebtGroupMap.entrySet())</span>
 		{
-<span class="nc" id="L473">			org.drip.state.identifier.EntityRecoveryLabel dealerSubordinateRecoveryLabel =</span>
-<span class="nc" id="L474">				creditDebtGroupMapEntry.getValue().dealerSubordinateRecoveryLabel();</span>
+<span class="nc" id="L485">			org.drip.state.identifier.EntityRecoveryLabel dealerSubordinateRecoveryLabel =</span>
+<span class="nc" id="L486">				creditDebtGroupMapEntry.getValue().dealerSubordinateRecoveryLabel();</span>
 
-<span class="nc bnc" id="L476" title="All 2 branches missed.">			if (null != dealerSubordinateRecoveryLabel)</span>
+<span class="nc bnc" id="L488" title="All 2 branches missed.">			if (null != dealerSubordinateRecoveryLabel)</span>
 			{
-<span class="nc" id="L478">				java.lang.String dealerSubordinateRecoveryLabelFQN =</span>
-<span class="nc" id="L479">					dealerSubordinateRecoveryLabel.fullyQualifiedName();</span>
+<span class="nc" id="L490">				java.lang.String dealerSubordinateRecoveryLabelFQN =</span>
+<span class="nc" id="L491">					dealerSubordinateRecoveryLabel.fullyQualifiedName();</span>
 
-<span class="nc bnc" id="L481" title="All 2 branches missed.">				if (!dealerSubordinateRecoveryLabelMap.containsKey (dealerSubordinateRecoveryLabelFQN))</span>
+<span class="nc bnc" id="L493" title="All 2 branches missed.">				if (!dealerSubordinateRecoveryLabelMap.containsKey (dealerSubordinateRecoveryLabelFQN))</span>
 				{
-<span class="nc" id="L483">					dealerSubordinateRecoveryLabelMap.put (</span>
+<span class="nc" id="L495">					dealerSubordinateRecoveryLabelMap.put (</span>
 						dealerSubordinateRecoveryLabelFQN,
 						dealerSubordinateRecoveryLabel
 					);
 				}
 			}
-<span class="nc" id="L489">		}</span>
+<span class="nc" id="L501">		}</span>
 
-<span class="nc" id="L491">		return dealerSubordinateRecoveryLabelMap;</span>
+<span class="nc" id="L503">		return dealerSubordinateRecoveryLabelMap;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

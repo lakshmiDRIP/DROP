@@ -6,41 +6,53 @@ package org.drip.function.enerf;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -94,10 +106,10 @@ package org.drip.function.enerf;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/enerf/README.md&quot;&gt;E&lt;sub&gt;n&lt;/sub&gt; erf Series and Generators&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Function Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/enerf/README.md&quot;&gt;E&lt;sub&gt;n&lt;/sub&gt; erf Series and Generators&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -105,8 +117,8 @@ package org.drip.function.enerf;
 
 public abstract class GeneralizedErrorFunction extends org.drip.numerical.estimation.R1ToR1Estimator
 {
-<span class="nc" id="L108">	private int _degree = -1;</span>
-<span class="nc" id="L109">	private org.drip.numerical.estimation.R1ToR1Series _r1ToR1SeriesGenerator = null;</span>
+<span class="nc" id="L120">	private int _degree = -1;</span>
+<span class="nc" id="L121">	private org.drip.numerical.estimation.R1ToR1Series _r1ToR1SeriesGenerator = null;</span>
 
 	/**
 	 * Construct the Euler-MacLaurin Instance of the E&lt;sub&gt;n&lt;/sub&gt; erf
@@ -121,52 +133,52 @@ public abstract class GeneralizedErrorFunction extends org.drip.numerical.estima
 		final int degree,
 		final int termCount)
 	{
-<span class="nc" id="L124">		final org.drip.numerical.estimation.R1ToR1Series r1ToR1SeriesGenerator =</span>
-<span class="nc" id="L125">			org.drip.function.enerf.GeneralizedMacLaurinSeriesGenerator.ERF (</span>
+<span class="nc" id="L136">		final org.drip.numerical.estimation.R1ToR1Series r1ToR1SeriesGenerator =</span>
+<span class="nc" id="L137">			org.drip.function.enerf.GeneralizedMacLaurinSeriesGenerator.ERF (</span>
 				degree,
 				termCount
 			);
 
-<span class="nc bnc" id="L130" title="All 2 branches missed.">		if (null == r1ToR1SeriesGenerator)</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (null == r1ToR1SeriesGenerator)</span>
 		{
-<span class="nc" id="L132">			return null;</span>
+<span class="nc" id="L144">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L137">			return new GeneralizedErrorFunction (</span>
+<span class="nc" id="L149">			return new GeneralizedErrorFunction (</span>
 				r1ToR1SeriesGenerator,
 				null,
 				degree
 			)
-<span class="nc" id="L142">			{</span>
+<span class="nc" id="L154">			{</span>
 				@Override public double evaluate (
 					final double z)
 					throws java.lang.Exception
 				{
-<span class="nc bnc" id="L147" title="All 2 branches missed.">					if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">					if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 					{
-<span class="nc" id="L149">						throw new java.lang.Exception</span>
+<span class="nc" id="L161">						throw new java.lang.Exception</span>
 							(&quot;GeneralizedErrorFunction::MacLaurin::evaluate =&gt; Invalid Inputs&quot;);
 					}
 
-<span class="nc" id="L153">					double erf = org.drip.numerical.common.NumberUtil.Factorial (degree) /</span>
-<span class="nc" id="L154">						java.lang.Math.sqrt (java.lang.Math.PI) *</span>
-<span class="nc" id="L155">						r1ToR1SeriesGenerator.cumulative (</span>
+<span class="nc" id="L165">					double erf = org.drip.numerical.common.NumberUtil.Factorial (degree) /</span>
+<span class="nc" id="L166">						java.lang.Math.sqrt (java.lang.Math.PI) *</span>
+<span class="nc" id="L167">						r1ToR1SeriesGenerator.cumulative (</span>
 							0.,
 							z
 						);
 
-<span class="nc bnc" id="L160" title="All 2 branches missed.">					return erf &gt; 1. ? 1. : erf;</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">					return erf &gt; 1. ? 1. : erf;</span>
 				}
 			};
 		}
-<span class="nc" id="L164">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L176">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L166">			e.printStackTrace();</span>
+<span class="nc" id="L178">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L169">		return null;</span>
+<span class="nc" id="L181">		return null;</span>
 	}
 
 	protected GeneralizedErrorFunction (
@@ -175,15 +187,15 @@ public abstract class GeneralizedErrorFunction extends org.drip.numerical.estima
 		final int degree)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L178">		super (dc);</span>
+<span class="nc" id="L190">		super (dc);</span>
 
-<span class="nc" id="L180">		_r1ToR1SeriesGenerator = r1ToR1SeriesGenerator;</span>
+<span class="nc" id="L192">		_r1ToR1SeriesGenerator = r1ToR1SeriesGenerator;</span>
 
-<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (0 &gt; (_degree = degree))</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">		if (0 &gt; (_degree = degree))</span>
 		{
-<span class="nc" id="L184">			throw new java.lang.Exception (&quot;GeneralizedErrorFunction Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L196">			throw new java.lang.Exception (&quot;GeneralizedErrorFunction Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L186">	}</span>
+<span class="nc" id="L198">	}</span>
 
 	/**
 	 * Retrieve the Degree of the E&lt;sub&gt;n&lt;/sub&gt; erf
@@ -193,19 +205,19 @@ public abstract class GeneralizedErrorFunction extends org.drip.numerical.estima
 
 	public int degree()
 	{
-<span class="nc" id="L196">		return _degree;</span>
+<span class="nc" id="L208">		return _degree;</span>
 	}
 
 	@Override public org.drip.numerical.estimation.R1Estimate seriesEstimateNative (
 		final double x)
 	{
-<span class="nc bnc" id="L202" title="All 2 branches missed.">		return null == _r1ToR1SeriesGenerator ? seriesEstimate (</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">		return null == _r1ToR1SeriesGenerator ? seriesEstimate (</span>
 			x,
 			null,
 			null
-<span class="nc" id="L206">		) : seriesEstimate (</span>
+<span class="nc" id="L218">		) : seriesEstimate (</span>
 			x,
-<span class="nc" id="L208">			_r1ToR1SeriesGenerator.termWeightMap(),</span>
+<span class="nc" id="L220">			_r1ToR1SeriesGenerator.termWeightMap(),</span>
 			_r1ToR1SeriesGenerator
 		);
 	}

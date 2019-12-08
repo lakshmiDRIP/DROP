@@ -6,6 +6,7 @@ package org.drip.function.r1tor1solver;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -15,33 +16,43 @@ package org.drip.function.r1tor1solver;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -91,50 +102,50 @@ package org.drip.function.r1tor1solver;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Function Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver/README.md&quot;&gt;Built-in R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solvers&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public abstract class ExecutionInitializationOutput {
-<span class="pc" id="L104">	private int _iNumOFCalcs = 0;</span>
-<span class="pc" id="L105">	private long _lStartTime = 0L;</span>
-<span class="pc" id="L106">	private boolean _bDone = false;</span>
-<span class="pc" id="L107">	private int _iNumIterations = 0;</span>
-<span class="pc" id="L108">	private int _iNumOFDerivCalcs = 0;</span>
-<span class="pc" id="L109">	private double _dblTime = java.lang.Double.NaN;</span>
-<span class="pc" id="L110">	private double _dblStartingVariate = java.lang.Double.NaN;</span>
+<span class="pc" id="L115">	private int _iNumOFCalcs = 0;</span>
+<span class="pc" id="L116">	private long _lStartTime = 0L;</span>
+<span class="pc" id="L117">	private boolean _bDone = false;</span>
+<span class="pc" id="L118">	private int _iNumIterations = 0;</span>
+<span class="pc" id="L119">	private int _iNumOFDerivCalcs = 0;</span>
+<span class="pc" id="L120">	private double _dblTime = java.lang.Double.NaN;</span>
+<span class="pc" id="L121">	private double _dblStartingVariate = java.lang.Double.NaN;</span>
 
 	protected ExecutionInitializationOutput()
-<span class="fc" id="L113">	{</span>
-<span class="fc" id="L114">		_lStartTime = System.nanoTime();</span>
-<span class="fc" id="L115">	}</span>
+<span class="fc" id="L124">	{</span>
+<span class="fc" id="L125">		_lStartTime = System.nanoTime();</span>
+<span class="fc" id="L126">	}</span>
 
 	protected ExecutionInitializationOutput (
 		final ExecutionInitializationOutput eiopOther)
 		throws java.lang.Exception
-<span class="nc" id="L120">	{</span>
-<span class="nc bnc" id="L121" title="All 2 branches missed.">		if (null == eiopOther)</span>
-<span class="nc" id="L122">			throw new java.lang.Exception (&quot;ExecutionInitializationOutput constructor: Invalid inputs!&quot;);</span>
+<span class="nc" id="L131">	{</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (null == eiopOther)</span>
+<span class="nc" id="L133">			throw new java.lang.Exception (&quot;ExecutionInitializationOutput constructor: Invalid inputs!&quot;);</span>
 
-<span class="nc" id="L124">		_iNumOFCalcs = eiopOther._iNumOFCalcs;</span>
-<span class="nc" id="L125">		_lStartTime = eiopOther._lStartTime;</span>
-<span class="nc" id="L126">		_bDone = eiopOther._bDone;</span>
-<span class="nc" id="L127">		_iNumIterations = eiopOther._iNumIterations;</span>
-<span class="nc" id="L128">		_iNumOFDerivCalcs = eiopOther._iNumOFDerivCalcs;</span>
-<span class="nc" id="L129">		_dblTime = eiopOther._dblTime;</span>
-<span class="nc" id="L130">		_dblStartingVariate = eiopOther._dblStartingVariate;</span>
-<span class="nc" id="L131">	}</span>
+<span class="nc" id="L135">		_iNumOFCalcs = eiopOther._iNumOFCalcs;</span>
+<span class="nc" id="L136">		_lStartTime = eiopOther._lStartTime;</span>
+<span class="nc" id="L137">		_bDone = eiopOther._bDone;</span>
+<span class="nc" id="L138">		_iNumIterations = eiopOther._iNumIterations;</span>
+<span class="nc" id="L139">		_iNumOFDerivCalcs = eiopOther._iNumOFDerivCalcs;</span>
+<span class="nc" id="L140">		_dblTime = eiopOther._dblTime;</span>
+<span class="nc" id="L141">		_dblStartingVariate = eiopOther._dblStartingVariate;</span>
+<span class="nc" id="L142">	}</span>
 
 	protected boolean done()
 	{
-<span class="fc" id="L135">		_dblTime = (System.nanoTime() - _lStartTime) * 0.000001;</span>
+<span class="fc" id="L146">		_dblTime = (System.nanoTime() - _lStartTime) * 0.000001;</span>
 
-<span class="fc" id="L137">		return _bDone = true;</span>
+<span class="fc" id="L148">		return _bDone = true;</span>
 	}
 
 	/**
@@ -145,8 +156,8 @@ public abstract class ExecutionInitializationOutput {
 
 	public final boolean incrIterations()
 	{
-<span class="fc" id="L148">		++_iNumIterations;</span>
-<span class="fc" id="L149">		return true;</span>
+<span class="fc" id="L159">		++_iNumIterations;</span>
+<span class="fc" id="L160">		return true;</span>
 	}
 
 	/**
@@ -157,7 +168,7 @@ public abstract class ExecutionInitializationOutput {
 
 	public final int getNumIterations()
 	{
-<span class="fc" id="L160">		return _iNumIterations;</span>
+<span class="fc" id="L171">		return _iNumIterations;</span>
 	}
 
 	/**
@@ -168,8 +179,8 @@ public abstract class ExecutionInitializationOutput {
 
 	public final boolean incrOFCalcs()
 	{
-<span class="fc" id="L171">		++_iNumOFCalcs;</span>
-<span class="fc" id="L172">		return true;</span>
+<span class="fc" id="L182">		++_iNumOFCalcs;</span>
+<span class="fc" id="L183">		return true;</span>
 	}
 
 	/**
@@ -180,7 +191,7 @@ public abstract class ExecutionInitializationOutput {
 
 	public final int getNumOFCalcs()
 	{
-<span class="fc" id="L183">		return _iNumOFCalcs;</span>
+<span class="fc" id="L194">		return _iNumOFCalcs;</span>
 	}
 
 	/**
@@ -191,8 +202,8 @@ public abstract class ExecutionInitializationOutput {
 
 	public final boolean incrOFDerivCalcs()
 	{
-<span class="nc" id="L194">		++_iNumOFDerivCalcs;</span>
-<span class="nc" id="L195">		return true;</span>
+<span class="nc" id="L205">		++_iNumOFDerivCalcs;</span>
+<span class="nc" id="L206">		return true;</span>
 	}
 
 	/**
@@ -203,7 +214,7 @@ public abstract class ExecutionInitializationOutput {
 
 	public final int getNumOFDerivCalcs()
 	{
-<span class="fc" id="L206">		return _iNumOFDerivCalcs;</span>
+<span class="fc" id="L217">		return _iNumOFDerivCalcs;</span>
 	}
 
 	/**
@@ -214,7 +225,7 @@ public abstract class ExecutionInitializationOutput {
 
 	public final boolean isDone()
 	{
-<span class="fc" id="L217">		return _bDone;</span>
+<span class="fc" id="L228">		return _bDone;</span>
 	}
 
 	/**
@@ -225,7 +236,7 @@ public abstract class ExecutionInitializationOutput {
 
 	public final double time()
 	{
-<span class="fc" id="L228">		return _dblTime;</span>
+<span class="fc" id="L239">		return _dblTime;</span>
 	}
 
 	/**
@@ -239,10 +250,10 @@ public abstract class ExecutionInitializationOutput {
 	public boolean setStartingVariate (
 		final double dblStartingVariate)
 	{
-<span class="pc bpc" id="L242" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblStartingVariate)) return false;</span>
+<span class="pc bpc" id="L253" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblStartingVariate)) return false;</span>
 
-<span class="fc" id="L244">		_dblStartingVariate = dblStartingVariate;</span>
-<span class="fc" id="L245">		return true;</span>
+<span class="fc" id="L255">		_dblStartingVariate = dblStartingVariate;</span>
+<span class="fc" id="L256">		return true;</span>
 	}
 
 	/**
@@ -253,7 +264,7 @@ public abstract class ExecutionInitializationOutput {
 
 	public double getStartingVariate()
 	{
-<span class="fc" id="L256">		return _dblStartingVariate;</span>
+<span class="fc" id="L267">		return _dblStartingVariate;</span>
 	}
 
 	/**
@@ -264,19 +275,19 @@ public abstract class ExecutionInitializationOutput {
 
 	public java.lang.String displayString()
 	{
-<span class="fc" id="L267">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
+<span class="fc" id="L278">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
 
-<span class="fc" id="L269">		sb.append (&quot;\t\tInitialization Done? &quot; + isDone() + &quot; [&quot; + time() + &quot; msec]&quot;);</span>
+<span class="fc" id="L280">		sb.append (&quot;\t\tInitialization Done? &quot; + isDone() + &quot; [&quot; + time() + &quot; msec]&quot;);</span>
 
-<span class="fc" id="L271">		sb.append (&quot;\n\t\tNum Iterations: &quot; + getNumIterations());</span>
+<span class="fc" id="L282">		sb.append (&quot;\n\t\tNum Iterations: &quot; + getNumIterations());</span>
 
-<span class="fc" id="L273">		sb.append (&quot;\n\t\tNum OF Calculations: &quot; + getNumOFCalcs());</span>
+<span class="fc" id="L284">		sb.append (&quot;\n\t\tNum OF Calculations: &quot; + getNumOFCalcs());</span>
 
-<span class="fc" id="L275">		sb.append (&quot;\n\t\tNum OF Derivative Calculations: &quot; + getNumOFDerivCalcs());</span>
+<span class="fc" id="L286">		sb.append (&quot;\n\t\tNum OF Derivative Calculations: &quot; + getNumOFDerivCalcs());</span>
 
-<span class="fc" id="L277">		sb.append (&quot;\n\t\tStarting Variate: &quot; + getStartingVariate());</span>
+<span class="fc" id="L288">		sb.append (&quot;\n\t\tStarting Variate: &quot; + getStartingVariate());</span>
 
-<span class="fc" id="L279">		return sb.toString();</span>
+<span class="fc" id="L290">		return sb.toString();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

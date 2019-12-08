@@ -6,6 +6,7 @@ package org.drip.function.r1tor1solver;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -15,33 +16,43 @@ package org.drip.function.r1tor1solver;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -96,10 +107,10 @@ package org.drip.function.r1tor1solver;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Function Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver/README.md&quot;&gt;Built-in R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solvers&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -108,63 +119,63 @@ package org.drip.function.r1tor1solver;
 public class ExecutionInitializer {
 
 	class StartingVariateOF {
-<span class="fc" id="L111">		public double _dblOF = java.lang.Double.NaN;</span>
-<span class="fc" id="L112">		public double _dblVariate = java.lang.Double.NaN;</span>
+<span class="fc" id="L122">		public double _dblOF = java.lang.Double.NaN;</span>
+<span class="fc" id="L123">		public double _dblVariate = java.lang.Double.NaN;</span>
 
 		public StartingVariateOF (
 			final double dblVariate,
 			final double dblOF)
 			throws java.lang.Exception
-<span class="fc" id="L118">		{</span>
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (_dblOF = dblOF) ||</span>
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblVariate = dblVariate))</span>
-<span class="nc" id="L121">				throw new java.lang.Exception (&quot;StartingVariateOF constructor: Invalid inputs!&quot;);</span>
-<span class="fc" id="L122">		}</span>
+<span class="fc" id="L129">		{</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (_dblOF = dblOF) ||</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblVariate = dblVariate))</span>
+<span class="nc" id="L132">				throw new java.lang.Exception (&quot;StartingVariateOF constructor: Invalid inputs!&quot;);</span>
+<span class="fc" id="L133">		}</span>
 	}
 
-<span class="fc" id="L125">	private boolean _bTrendBracketRight = false;</span>
-<span class="fc" id="L126">	private org.drip.function.definition.R1ToR1 _of = null;</span>
-<span class="fc" id="L127">	private org.drip.function.r1tor1solver.ConvergenceControlParams _ccp = null;</span>
+<span class="fc" id="L136">	private boolean _bTrendBracketRight = false;</span>
+<span class="fc" id="L137">	private org.drip.function.definition.R1ToR1 _of = null;</span>
+<span class="fc" id="L138">	private org.drip.function.r1tor1solver.ConvergenceControlParams _ccp = null;</span>
 
-<span class="fc" id="L129">	private java.util.SortedMap&lt;java.lang.Double, java.lang.Double&gt; _mapOFMap = new</span>
+<span class="fc" id="L140">	private java.util.SortedMap&lt;java.lang.Double, java.lang.Double&gt; _mapOFMap = new</span>
 		java.util.TreeMap&lt;java.lang.Double, java.lang.Double&gt;();
 
 	private double evaluateOF (
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">		if (_mapOFMap.containsKey (dblVariate)) return _mapOFMap.get (dblVariate);</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">		if (_mapOFMap.containsKey (dblVariate)) return _mapOFMap.get (dblVariate);</span>
 
-<span class="fc" id="L138">		double dblOF = _of.evaluate (dblVariate);</span>
+<span class="fc" id="L149">		double dblOF = _of.evaluate (dblVariate);</span>
 
-<span class="fc bfc" id="L140" title="All 2 branches covered.">		if (org.drip.numerical.common.NumberUtil.IsValid (dblOF)) _mapOFMap.put (dblVariate, dblOF);</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">		if (org.drip.numerical.common.NumberUtil.IsValid (dblOF)) _mapOFMap.put (dblVariate, dblOF);</span>
 
-<span class="fc" id="L142">		return dblOF;</span>
+<span class="fc" id="L153">		return dblOF;</span>
 	}
 
 	private StartingVariateOF validateVariate (
 		final double dblVariate,
 		final org.drip.function.r1tor1solver.BracketingOutput bop)
 	{
-<span class="fc" id="L149">		double dblOF = java.lang.Double.NaN;</span>
+<span class="fc" id="L160">		double dblOF = java.lang.Double.NaN;</span>
 
 		try {
-<span class="fc" id="L152">			dblOF = evaluateOF (dblVariate);</span>
-<span class="fc" id="L153">		} catch (java.lang.Exception e) {</span>
-<span class="fc" id="L154">			dblOF = java.lang.Double.NaN;</span>
-<span class="fc" id="L155">		}</span>
+<span class="fc" id="L163">			dblOF = evaluateOF (dblVariate);</span>
+<span class="fc" id="L164">		} catch (java.lang.Exception e) {</span>
+<span class="fc" id="L165">			dblOF = java.lang.Double.NaN;</span>
+<span class="fc" id="L166">		}</span>
 
-<span class="pc bpc" id="L157" title="1 of 4 branches missed.">		if (!bop.incrOFCalcs() || !org.drip.numerical.common.NumberUtil.IsValid (dblOF)) return null;</span>
+<span class="pc bpc" id="L168" title="1 of 4 branches missed.">		if (!bop.incrOFCalcs() || !org.drip.numerical.common.NumberUtil.IsValid (dblOF)) return null;</span>
 
-<span class="fc" id="L159">		_mapOFMap.put (dblVariate, dblOF);</span>
+<span class="fc" id="L170">		_mapOFMap.put (dblVariate, dblOF);</span>
 
 		try {
-<span class="fc" id="L162">			return new StartingVariateOF (dblVariate, dblOF);</span>
-<span class="nc" id="L163">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L164">			e.printStackTrace();</span>
+<span class="fc" id="L173">			return new StartingVariateOF (dblVariate, dblOF);</span>
+<span class="nc" id="L174">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L175">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L167">		return null;</span>
+<span class="nc" id="L178">		return null;</span>
 	}
 
 	private StartingVariateOF initializeBracketingVariate (
@@ -174,33 +185,33 @@ public class ExecutionInitializer {
 		final double dblBracketWidthExpansionFactor,
 		final org.drip.function.r1tor1solver.BracketingOutput bop)
 	{
-<span class="fc" id="L177">		StartingVariateOF sv = validateVariate (dblBracketVariateStart, bop);</span>
+<span class="fc" id="L188">		StartingVariateOF sv = validateVariate (dblBracketVariateStart, bop);</span>
 
-<span class="fc bfc" id="L179" title="All 2 branches covered.">		if (null != sv) return sv;</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">		if (null != sv) return sv;</span>
 
-<span class="fc" id="L181">		double dblVariate = dblBracketVariateStart;</span>
-<span class="fc" id="L182">		int iNumExpansionsCurrent = iNumExpansions;</span>
-<span class="fc" id="L183">		double dblBracketWidth = dblBracketWidthStart;</span>
-<span class="fc" id="L184">		double dblBracketLeft = dblVariate - dblBracketWidth;</span>
-<span class="fc" id="L185">		double dblBracketRight = dblVariate + dblBracketWidth;</span>
+<span class="fc" id="L192">		double dblVariate = dblBracketVariateStart;</span>
+<span class="fc" id="L193">		int iNumExpansionsCurrent = iNumExpansions;</span>
+<span class="fc" id="L194">		double dblBracketWidth = dblBracketWidthStart;</span>
+<span class="fc" id="L195">		double dblBracketLeft = dblVariate - dblBracketWidth;</span>
+<span class="fc" id="L196">		double dblBracketRight = dblVariate + dblBracketWidth;</span>
 
-<span class="fc bfc" id="L187" title="All 2 branches covered.">		while (0 &lt;= iNumExpansionsCurrent--) {</span>
-<span class="pc bpc" id="L188" title="1 of 2 branches missed.">			if (_bTrendBracketRight) {</span>
-<span class="fc bfc" id="L189" title="All 2 branches covered.">				if (null != (sv = validateVariate (dblBracketRight, bop))) return sv;</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">		while (0 &lt;= iNumExpansionsCurrent--) {</span>
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">			if (_bTrendBracketRight) {</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">				if (null != (sv = validateVariate (dblBracketRight, bop))) return sv;</span>
 
-<span class="pc bpc" id="L191" title="1 of 2 branches missed.">				if (null != (sv = validateVariate (dblBracketLeft, bop))) return sv;</span>
+<span class="pc bpc" id="L202" title="1 of 2 branches missed.">				if (null != (sv = validateVariate (dblBracketLeft, bop))) return sv;</span>
 			} else {
-<span class="nc bnc" id="L193" title="All 2 branches missed.">				if (null != (sv = validateVariate (dblBracketLeft, bop))) return sv;</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">				if (null != (sv = validateVariate (dblBracketLeft, bop))) return sv;</span>
 
-<span class="nc bnc" id="L195" title="All 2 branches missed.">				if (null != (sv = validateVariate (dblBracketRight, bop))) return sv;</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">				if (null != (sv = validateVariate (dblBracketRight, bop))) return sv;</span>
 			}
 
-<span class="fc" id="L198">			dblBracketWidth *= dblBracketWidthExpansionFactor;</span>
-<span class="fc" id="L199">			dblBracketLeft = dblVariate - dblBracketWidth;</span>
-<span class="fc" id="L200">			dblBracketRight = dblVariate + dblBracketWidth;</span>
+<span class="fc" id="L209">			dblBracketWidth *= dblBracketWidthExpansionFactor;</span>
+<span class="fc" id="L210">			dblBracketLeft = dblVariate - dblBracketWidth;</span>
+<span class="fc" id="L211">			dblBracketRight = dblVariate + dblBracketWidth;</span>
 		}
 
-<span class="fc" id="L203">		return null;</span>
+<span class="fc" id="L214">		return null;</span>
 	}
 
 	private boolean bracketingDone (
@@ -211,46 +222,46 @@ public class ExecutionInitializer {
 		final double dblOFGoal,
 		final org.drip.function.r1tor1solver.BracketingOutput bop)
 	{
-<span class="fc bfc" id="L214" title="All 2 branches covered.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblOFLeft) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L215" title="1 of 2 branches missed.">			(dblOFRight))</span>
-<span class="fc" id="L216">			return false;</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblOFLeft) || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">			(dblOFRight))</span>
+<span class="fc" id="L227">			return false;</span>
 
-<span class="fc bfc" id="L218" title="All 2 branches covered.">		if (((dblOFLeft - dblOFGoal) * (dblOFRight - dblOFGoal)) &gt; 0.) return false;</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">		if (((dblOFLeft - dblOFGoal) * (dblOFRight - dblOFGoal)) &gt; 0.) return false;</span>
 
-<span class="fc" id="L220">		double dblOF = java.lang.Double.NaN;</span>
-<span class="fc" id="L221">		double dblOFPrev = java.lang.Double.NaN;</span>
-<span class="fc" id="L222">		double dblVariate = java.lang.Double.NaN;</span>
-<span class="fc" id="L223">		double dblVariatePrev = java.lang.Double.NaN;</span>
+<span class="fc" id="L231">		double dblOF = java.lang.Double.NaN;</span>
+<span class="fc" id="L232">		double dblOFPrev = java.lang.Double.NaN;</span>
+<span class="fc" id="L233">		double dblVariate = java.lang.Double.NaN;</span>
+<span class="fc" id="L234">		double dblVariatePrev = java.lang.Double.NaN;</span>
 
-<span class="fc bfc" id="L225" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Double, java.lang.Double&gt; me : _mapOFMap.entrySet()) {</span>
-<span class="fc" id="L226">			dblVariate = me.getKey();</span>
+<span class="fc bfc" id="L236" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.Double, java.lang.Double&gt; me : _mapOFMap.entrySet()) {</span>
+<span class="fc" id="L237">			dblVariate = me.getKey();</span>
 
-<span class="fc" id="L228">			dblOF = me.getValue();</span>
+<span class="fc" id="L239">			dblOF = me.getValue();</span>
 
-<span class="fc bfc" id="L230" title="All 2 branches covered.">			if (org.drip.numerical.common.NumberUtil.IsValid (dblVariatePrev) &amp;&amp;</span>
-<span class="pc bpc" id="L231" title="1 of 4 branches missed.">				org.drip.numerical.common.NumberUtil.IsValid (dblOFPrev) &amp;&amp; (((dblOF - dblOFGoal) * (dblOFPrev -</span>
+<span class="fc bfc" id="L241" title="All 2 branches covered.">			if (org.drip.numerical.common.NumberUtil.IsValid (dblVariatePrev) &amp;&amp;</span>
+<span class="pc bpc" id="L242" title="1 of 4 branches missed.">				org.drip.numerical.common.NumberUtil.IsValid (dblOFPrev) &amp;&amp; (((dblOF - dblOFGoal) * (dblOFPrev -</span>
 					dblOFGoal)) &lt; 0.)) {
 				try {
-<span class="fc" id="L234">					bop.done (dblVariatePrev, dblVariate, dblOFPrev, dblOF,</span>
-<span class="fc" id="L235">						org.drip.function.r1tor1solver.VariateIteratorPrimitive.Bisection (dblVariatePrev,</span>
+<span class="fc" id="L245">					bop.done (dblVariatePrev, dblVariate, dblOFPrev, dblOF,</span>
+<span class="fc" id="L246">						org.drip.function.r1tor1solver.VariateIteratorPrimitive.Bisection (dblVariatePrev,</span>
 							dblVariate));
-<span class="nc" id="L237">				} catch (java.lang.Exception e) {</span>
-<span class="fc" id="L238">				}</span>
+<span class="nc" id="L248">				} catch (java.lang.Exception e) {</span>
+<span class="fc" id="L249">				}</span>
 
-<span class="fc" id="L240">				return true;</span>
+<span class="fc" id="L251">				return true;</span>
 			}
 
-<span class="fc" id="L243">			dblOFPrev = dblOF;</span>
-<span class="fc" id="L244">			dblVariatePrev = dblVariate;</span>
-<span class="fc" id="L245">		}</span>
+<span class="fc" id="L254">			dblOFPrev = dblOF;</span>
+<span class="fc" id="L255">			dblVariatePrev = dblVariate;</span>
+<span class="fc" id="L256">		}</span>
 
 		try {
-<span class="fc" id="L248">			bop.done (dblVariateLeft, dblVariateRight, dblOFLeft, dblOFRight,</span>
-<span class="fc" id="L249">				org.drip.function.r1tor1solver.VariateIteratorPrimitive.Bisection (dblVariateLeft, dblVariateRight));</span>
-<span class="nc" id="L250">		} catch (java.lang.Exception e) {</span>
-<span class="fc" id="L251">		}</span>
+<span class="fc" id="L259">			bop.done (dblVariateLeft, dblVariateRight, dblOFLeft, dblOFRight,</span>
+<span class="fc" id="L260">				org.drip.function.r1tor1solver.VariateIteratorPrimitive.Bisection (dblVariateLeft, dblVariateRight));</span>
+<span class="nc" id="L261">		} catch (java.lang.Exception e) {</span>
+<span class="fc" id="L262">		}</span>
 
-<span class="fc" id="L253">		return true;</span>
+<span class="fc" id="L264">		return true;</span>
 	}
 
 	private boolean isInConvergenceZone (
@@ -259,41 +270,41 @@ public class ExecutionInitializer {
 		final org.drip.function.r1tor1solver.ConvergenceOutput cop)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L262" title="All 2 branches missed.">		if (!cop.incrOFCalcs())</span>
-<span class="nc" id="L263">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L273" title="All 2 branches missed.">		if (!cop.incrOFCalcs())</span>
+<span class="nc" id="L274">			throw new java.lang.Exception</span>
 				(&quot;ExecutionInitializer::isInConvergenceZone =&gt; Cannot increment OF in the output&quot;);
 
-<span class="nc" id="L266">		double dblOFValue = evaluateOF (dblConvergenceZoneVariate) - dblOFGoal;</span>
+<span class="nc" id="L277">		double dblOFValue = evaluateOF (dblConvergenceZoneVariate) - dblOFGoal;</span>
 
-<span class="nc bnc" id="L268" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblOFValue))</span>
-<span class="nc" id="L269">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblOFValue))</span>
+<span class="nc" id="L280">			throw new java.lang.Exception</span>
 				(&quot;ExecutionInitializer::isInConvergenceZone =&gt; Cannot evaluate OF for variate &quot; +
 					dblConvergenceZoneVariate);
 
-<span class="nc bnc" id="L273" title="All 2 branches missed.">		if (!cop.incrOFDerivCalcs())</span>
-<span class="nc" id="L274">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">		if (!cop.incrOFDerivCalcs())</span>
+<span class="nc" id="L285">			throw new java.lang.Exception</span>
 				(&quot;ExecutionInitializer::isInConvergenceZone =&gt; Cannot increment OF deriv count in the output&quot;);
 
-<span class="nc" id="L277">		org.drip.numerical.differentiation.Differential diff1D = _of.differential (dblConvergenceZoneVariate, 1);</span>
+<span class="nc" id="L288">		org.drip.numerical.differentiation.Differential diff1D = _of.differential (dblConvergenceZoneVariate, 1);</span>
 
-<span class="nc bnc" id="L279" title="All 2 branches missed.">		if (null == diff1D)</span>
-<span class="nc" id="L280">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">		if (null == diff1D)</span>
+<span class="nc" id="L291">			throw new java.lang.Exception</span>
 				(&quot;ExecutionInitializer::isInConvergenceZone =&gt; Cannot evaluate OF first deriv for variate &quot; +
 					dblConvergenceZoneVariate);
 
-<span class="nc bnc" id="L284" title="All 4 branches missed.">		if (!cop.incrOFDerivCalcs() &amp;&amp; !cop.incrOFDerivCalcs())</span>
-<span class="nc" id="L285">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L295" title="All 4 branches missed.">		if (!cop.incrOFDerivCalcs() &amp;&amp; !cop.incrOFDerivCalcs())</span>
+<span class="nc" id="L296">			throw new java.lang.Exception</span>
 				(&quot;ExecutionInitializer::isInConvergenceZone =&gt; Cannot increment OF deriv in the output&quot;);
 
-<span class="nc" id="L288">		org.drip.numerical.differentiation.Differential diff2D = _of.differential (dblConvergenceZoneVariate, 2);</span>
+<span class="nc" id="L299">		org.drip.numerical.differentiation.Differential diff2D = _of.differential (dblConvergenceZoneVariate, 2);</span>
 
-<span class="nc bnc" id="L290" title="All 2 branches missed.">		if (null == diff2D)</span>
-<span class="nc" id="L291">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L301" title="All 2 branches missed.">		if (null == diff2D)</span>
+<span class="nc" id="L302">			throw new java.lang.Exception</span>
 				(&quot;ExecutionInitializer::isInConvergenceZone =&gt; Cannot evaluate OF second deriv for variate &quot;
 					+ dblConvergenceZoneVariate);
 
-<span class="nc" id="L295">		return java.lang.Math.abs (dblOFValue * diff2D.calcSlope (false)) &lt; (diff1D.calcSlope (false) *</span>
-<span class="nc bnc" id="L296" title="All 2 branches missed.">			diff1D.calcSlope (false) * _ccp.getConvergenceZoneEdgeLimit());</span>
+<span class="nc" id="L306">		return java.lang.Math.abs (dblOFValue * diff2D.calcSlope (false)) &lt; (diff1D.calcSlope (false) *</span>
+<span class="nc bnc" id="L307" title="All 2 branches missed.">			diff1D.calcSlope (false) * _ccp.getConvergenceZoneEdgeLimit());</span>
 	}
 
 	private boolean leftOFValidityEdgeReached (
@@ -301,9 +312,9 @@ public class ExecutionInitializer {
 		final double dblOFLeft,
 		final org.drip.function.r1tor1solver.InitializationHeuristics ih)
 	{
-<span class="pc bpc" id="L304" title="1 of 4 branches missed.">		return !org.drip.numerical.common.NumberUtil.IsValid (dblOFLeft) || (null != ih &amp;&amp;</span>
-<span class="nc bnc" id="L305" title="All 2 branches missed.">			org.drip.numerical.common.NumberUtil.IsValid (ih.getBracketFloor()) &amp;&amp; dblVariateLeft &lt;</span>
-<span class="pc bnc" id="L306" title="All 2 branches missed.">				ih.getBracketFloor());</span>
+<span class="pc bpc" id="L315" title="1 of 4 branches missed.">		return !org.drip.numerical.common.NumberUtil.IsValid (dblOFLeft) || (null != ih &amp;&amp;</span>
+<span class="nc bnc" id="L316" title="All 2 branches missed.">			org.drip.numerical.common.NumberUtil.IsValid (ih.getBracketFloor()) &amp;&amp; dblVariateLeft &lt;</span>
+<span class="pc bnc" id="L317" title="All 2 branches missed.">				ih.getBracketFloor());</span>
 	}
 
 	private boolean rightOFValidityEdgeReached (
@@ -311,41 +322,41 @@ public class ExecutionInitializer {
 		final double dblOFRight,
 		final org.drip.function.r1tor1solver.InitializationHeuristics ih)
 	{
-<span class="pc bpc" id="L314" title="2 of 4 branches missed.">		return !org.drip.numerical.common.NumberUtil.IsValid (dblOFRight) || (null != ih &amp;&amp;</span>
-<span class="nc bnc" id="L315" title="All 2 branches missed.">			org.drip.numerical.common.NumberUtil.IsValid (ih.getBracketCeiling()) &amp;&amp; dblVariateRight &gt;</span>
-<span class="pc bnc" id="L316" title="All 2 branches missed.">				ih.getBracketCeiling());</span>
+<span class="pc bpc" id="L325" title="2 of 4 branches missed.">		return !org.drip.numerical.common.NumberUtil.IsValid (dblOFRight) || (null != ih &amp;&amp;</span>
+<span class="nc bnc" id="L326" title="All 2 branches missed.">			org.drip.numerical.common.NumberUtil.IsValid (ih.getBracketCeiling()) &amp;&amp; dblVariateRight &gt;</span>
+<span class="pc bnc" id="L327" title="All 2 branches missed.">				ih.getBracketCeiling());</span>
 	}
 
 	private double getStartingBracketVariate (
 		final org.drip.function.r1tor1solver.BracketingControlParams bcp,
 		final org.drip.function.r1tor1solver.InitializationHeuristics ih)
 	{
-<span class="pc bpc" id="L323" title="3 of 4 branches missed.">		if (null != ih &amp;&amp; org.drip.numerical.common.NumberUtil.IsValid (ih.getStartingBracketMid()))</span>
-<span class="nc" id="L324">			return ih.getStartingBracketMid();</span>
+<span class="pc bpc" id="L334" title="3 of 4 branches missed.">		if (null != ih &amp;&amp; org.drip.numerical.common.NumberUtil.IsValid (ih.getStartingBracketMid()))</span>
+<span class="nc" id="L335">			return ih.getStartingBracketMid();</span>
 
-<span class="pc bpc" id="L326" title="3 of 4 branches missed.">		if (null != ih &amp;&amp; org.drip.numerical.common.NumberUtil.IsValid (ih.getStartingBracketLeft()) &amp;&amp;</span>
-<span class="nc bnc" id="L327" title="All 2 branches missed.">			org.drip.numerical.common.NumberUtil.IsValid (ih.getStartingBracketRight()))</span>
-<span class="nc" id="L328">			return 0.5 * (ih.getStartingBracketLeft() + ih.getStartingBracketRight());</span>
+<span class="pc bpc" id="L337" title="3 of 4 branches missed.">		if (null != ih &amp;&amp; org.drip.numerical.common.NumberUtil.IsValid (ih.getStartingBracketLeft()) &amp;&amp;</span>
+<span class="nc bnc" id="L338" title="All 2 branches missed.">			org.drip.numerical.common.NumberUtil.IsValid (ih.getStartingBracketRight()))</span>
+<span class="nc" id="L339">			return 0.5 * (ih.getStartingBracketLeft() + ih.getStartingBracketRight());</span>
 
-<span class="fc" id="L330">		return bcp.getVariateStart();</span>
+<span class="fc" id="L341">		return bcp.getVariateStart();</span>
 	}
 
 	private double getStartingBracketWidth (
 		final org.drip.function.r1tor1solver.BracketingControlParams bcp,
 		final org.drip.function.r1tor1solver.InitializationHeuristics ih)
 	{
-<span class="pc bpc" id="L337" title="1 of 2 branches missed.">		if (null != ih) {</span>
-<span class="nc" id="L338">			double dblBracketStartLeft = ih.getStartingBracketLeft();</span>
+<span class="pc bpc" id="L348" title="1 of 2 branches missed.">		if (null != ih) {</span>
+<span class="nc" id="L349">			double dblBracketStartLeft = ih.getStartingBracketLeft();</span>
 
-<span class="nc" id="L340">			double dblBracketStartRight = ih.getStartingBracketRight();</span>
+<span class="nc" id="L351">			double dblBracketStartRight = ih.getStartingBracketRight();</span>
 
-<span class="nc bnc" id="L342" title="All 2 branches missed.">			if (org.drip.numerical.common.NumberUtil.IsValid (dblBracketStartLeft) &amp;&amp;</span>
-<span class="nc bnc" id="L343" title="All 4 branches missed.">				org.drip.numerical.common.NumberUtil.IsValid (dblBracketStartRight) &amp;&amp; dblBracketStartRight &gt;</span>
+<span class="nc bnc" id="L353" title="All 2 branches missed.">			if (org.drip.numerical.common.NumberUtil.IsValid (dblBracketStartLeft) &amp;&amp;</span>
+<span class="nc bnc" id="L354" title="All 4 branches missed.">				org.drip.numerical.common.NumberUtil.IsValid (dblBracketStartRight) &amp;&amp; dblBracketStartRight &gt;</span>
 					dblBracketStartLeft)
-<span class="nc" id="L345">				return dblBracketStartRight - dblBracketStartLeft;</span>
+<span class="nc" id="L356">				return dblBracketStartRight - dblBracketStartLeft;</span>
 		}
 
-<span class="fc" id="L348">		return bcp.getStartingBracketWidth();</span>
+<span class="fc" id="L359">		return bcp.getStartingBracketWidth();</span>
 	}
 
 	/**
@@ -363,14 +374,14 @@ public class ExecutionInitializer {
 		final org.drip.function.r1tor1solver.ConvergenceControlParams ccp,
 		final boolean bTrendBracketRight)
 		throws java.lang.Exception
-<span class="fc" id="L366">	{</span>
-<span class="pc bpc" id="L367" title="1 of 2 branches missed.">		if (null == (_of = of))</span>
-<span class="nc" id="L368">			throw new java.lang.Exception (&quot;ExecutionInitializer constructor: Invalid inputs&quot;);</span>
+<span class="fc" id="L377">	{</span>
+<span class="pc bpc" id="L378" title="1 of 2 branches missed.">		if (null == (_of = of))</span>
+<span class="nc" id="L379">			throw new java.lang.Exception (&quot;ExecutionInitializer constructor: Invalid inputs&quot;);</span>
 
-<span class="pc bpc" id="L370" title="1 of 2 branches missed.">		if (null == (_ccp = ccp)) _ccp = new org.drip.function.r1tor1solver.ConvergenceControlParams();</span>
+<span class="pc bpc" id="L381" title="1 of 2 branches missed.">		if (null == (_ccp = ccp)) _ccp = new org.drip.function.r1tor1solver.ConvergenceControlParams();</span>
 
-<span class="fc" id="L372">		_bTrendBracketRight = bTrendBracketRight;</span>
-<span class="fc" id="L373">	}</span>
+<span class="fc" id="L383">		_bTrendBracketRight = bTrendBracketRight;</span>
+<span class="fc" id="L384">	}</span>
 
 	/**
 	 * Set up the bracket to be used for the eventual search kick-off
@@ -385,83 +396,83 @@ public class ExecutionInitializer {
 		final org.drip.function.r1tor1solver.InitializationHeuristics ih,
 		final double dblOFGoal)
 	{
-<span class="pc bpc" id="L388" title="3 of 4 branches missed.">		org.drip.function.r1tor1solver.BracketingControlParams bcp = (null != ih &amp;&amp; null != ih.getCustomBCP()) ?</span>
-<span class="pc" id="L389">			ih.getCustomBCP() : new org.drip.function.r1tor1solver.BracketingControlParams();</span>
+<span class="pc bpc" id="L399" title="3 of 4 branches missed.">		org.drip.function.r1tor1solver.BracketingControlParams bcp = (null != ih &amp;&amp; null != ih.getCustomBCP()) ?</span>
+<span class="pc" id="L400">			ih.getCustomBCP() : new org.drip.function.r1tor1solver.BracketingControlParams();</span>
 
-<span class="fc" id="L391">		int iNumExpansions = bcp.getNumExpansions();</span>
+<span class="fc" id="L402">		int iNumExpansions = bcp.getNumExpansions();</span>
 
-<span class="fc" id="L393">		org.drip.function.r1tor1solver.BracketingOutput bop = new</span>
+<span class="fc" id="L404">		org.drip.function.r1tor1solver.BracketingOutput bop = new</span>
 			org.drip.function.r1tor1solver.BracketingOutput();
 
-<span class="fc" id="L396">		StartingVariateOF sv = initializeBracketingVariate (iNumExpansions, getStartingBracketVariate (bcp,</span>
-<span class="fc" id="L397">			ih), getStartingBracketWidth (bcp, ih), bcp.getBracketWidthExpansionFactor(), bop);</span>
+<span class="fc" id="L407">		StartingVariateOF sv = initializeBracketingVariate (iNumExpansions, getStartingBracketVariate (bcp,</span>
+<span class="fc" id="L408">			ih), getStartingBracketWidth (bcp, ih), bcp.getBracketWidthExpansionFactor(), bop);</span>
 
-<span class="fc bfc" id="L399" title="All 2 branches covered.">		if (null == sv) return bop;</span>
+<span class="fc bfc" id="L410" title="All 2 branches covered.">		if (null == sv) return bop;</span>
 
-<span class="fc" id="L401">		double dblOFLeft = sv._dblOF;</span>
-<span class="fc" id="L402">		double dblOFRight = sv._dblOF;</span>
-<span class="fc" id="L403">		double dblPreviousOFLeft = sv._dblOF;</span>
-<span class="fc" id="L404">		double dblPreviousOFRight = sv._dblOF;</span>
-<span class="fc" id="L405">		double dblVariateLeft = sv._dblVariate;</span>
-<span class="fc" id="L406">		double dblVariateRight = sv._dblVariate;</span>
-<span class="fc" id="L407">		boolean bLeftOFValidityEdgeReached = false;</span>
-<span class="fc" id="L408">		boolean bRightOFValidityEdgeReached = false;</span>
-<span class="fc" id="L409">		double dblPreviousVariateLeft = sv._dblVariate;</span>
-<span class="fc" id="L410">		double dblPreviousVariateRight = sv._dblVariate;</span>
+<span class="fc" id="L412">		double dblOFLeft = sv._dblOF;</span>
+<span class="fc" id="L413">		double dblOFRight = sv._dblOF;</span>
+<span class="fc" id="L414">		double dblPreviousOFLeft = sv._dblOF;</span>
+<span class="fc" id="L415">		double dblPreviousOFRight = sv._dblOF;</span>
+<span class="fc" id="L416">		double dblVariateLeft = sv._dblVariate;</span>
+<span class="fc" id="L417">		double dblVariateRight = sv._dblVariate;</span>
+<span class="fc" id="L418">		boolean bLeftOFValidityEdgeReached = false;</span>
+<span class="fc" id="L419">		boolean bRightOFValidityEdgeReached = false;</span>
+<span class="fc" id="L420">		double dblPreviousVariateLeft = sv._dblVariate;</span>
+<span class="fc" id="L421">		double dblPreviousVariateRight = sv._dblVariate;</span>
 
-<span class="fc" id="L412">		double dblBracketWidth = bcp.getStartingBracketWidth();</span>
+<span class="fc" id="L423">		double dblBracketWidth = bcp.getStartingBracketWidth();</span>
 
-<span class="pc bpc" id="L414" title="1 of 2 branches missed.">		while (0 &lt;= iNumExpansions--) {</span>
-<span class="pc bpc" id="L415" title="1 of 2 branches missed.">			if (!bop.incrIterations()) return null;</span>
+<span class="pc bpc" id="L425" title="1 of 2 branches missed.">		while (0 &lt;= iNumExpansions--) {</span>
+<span class="pc bpc" id="L426" title="1 of 2 branches missed.">			if (!bop.incrIterations()) return null;</span>
 
-<span class="pc bpc" id="L417" title="1 of 4 branches missed.">			if (bLeftOFValidityEdgeReached &amp;&amp; bRightOFValidityEdgeReached) return bop;</span>
+<span class="pc bpc" id="L428" title="1 of 4 branches missed.">			if (bLeftOFValidityEdgeReached &amp;&amp; bRightOFValidityEdgeReached) return bop;</span>
 
-<span class="fc bfc" id="L419" title="All 2 branches covered.">			if (!bLeftOFValidityEdgeReached) {</span>
-<span class="fc" id="L420">				dblPreviousVariateLeft = dblVariateLeft;</span>
-<span class="fc" id="L421">				dblVariateLeft -= dblBracketWidth;</span>
-<span class="fc" id="L422">				dblPreviousOFLeft = dblOFLeft;</span>
+<span class="fc bfc" id="L430" title="All 2 branches covered.">			if (!bLeftOFValidityEdgeReached) {</span>
+<span class="fc" id="L431">				dblPreviousVariateLeft = dblVariateLeft;</span>
+<span class="fc" id="L432">				dblVariateLeft -= dblBracketWidth;</span>
+<span class="fc" id="L433">				dblPreviousOFLeft = dblOFLeft;</span>
 
 				try {
-<span class="fc bfc" id="L425" title="All 2 branches covered.">					if (bracketingDone (dblVariateLeft, dblVariateRight, dblOFLeft = evaluateOF</span>
-<span class="pc bpc" id="L426" title="1 of 2 branches missed.">						(dblVariateLeft), dblOFRight, dblOFGoal, bop) &amp;&amp; bop.incrOFCalcs())</span>
-<span class="fc" id="L427">						return bop;</span>
-<span class="nc" id="L428">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L429">					dblOFLeft = java.lang.Double.NaN;</span>
-<span class="fc" id="L430">				}</span>
+<span class="fc bfc" id="L436" title="All 2 branches covered.">					if (bracketingDone (dblVariateLeft, dblVariateRight, dblOFLeft = evaluateOF</span>
+<span class="pc bpc" id="L437" title="1 of 2 branches missed.">						(dblVariateLeft), dblOFRight, dblOFGoal, bop) &amp;&amp; bop.incrOFCalcs())</span>
+<span class="fc" id="L438">						return bop;</span>
+<span class="nc" id="L439">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L440">					dblOFLeft = java.lang.Double.NaN;</span>
+<span class="fc" id="L441">				}</span>
 
-<span class="fc bfc" id="L432" title="All 2 branches covered.">				if (bLeftOFValidityEdgeReached = leftOFValidityEdgeReached (dblVariateLeft, dblOFLeft, ih)) {</span>
-<span class="fc" id="L433">					dblOFLeft = dblPreviousOFLeft;</span>
-<span class="fc" id="L434">					dblVariateLeft = dblPreviousVariateLeft;</span>
+<span class="fc bfc" id="L443" title="All 2 branches covered.">				if (bLeftOFValidityEdgeReached = leftOFValidityEdgeReached (dblVariateLeft, dblOFLeft, ih)) {</span>
+<span class="fc" id="L444">					dblOFLeft = dblPreviousOFLeft;</span>
+<span class="fc" id="L445">					dblVariateLeft = dblPreviousVariateLeft;</span>
 				}
 			}
 
-<span class="pc bpc" id="L438" title="1 of 2 branches missed.">			if (!bRightOFValidityEdgeReached) {</span>
-<span class="fc" id="L439">				dblPreviousVariateRight = dblVariateRight;</span>
-<span class="fc" id="L440">				dblVariateRight += dblBracketWidth;</span>
-<span class="fc" id="L441">				dblPreviousOFRight = dblOFRight;</span>
+<span class="pc bpc" id="L449" title="1 of 2 branches missed.">			if (!bRightOFValidityEdgeReached) {</span>
+<span class="fc" id="L450">				dblPreviousVariateRight = dblVariateRight;</span>
+<span class="fc" id="L451">				dblVariateRight += dblBracketWidth;</span>
+<span class="fc" id="L452">				dblPreviousOFRight = dblOFRight;</span>
 
 				try {
-<span class="fc bfc" id="L444" title="All 2 branches covered.">					if (bracketingDone (dblVariateLeft, dblVariateRight, dblOFLeft, dblOFRight = evaluateOF</span>
-<span class="pc bpc" id="L445" title="1 of 2 branches missed.">						(dblVariateRight), dblOFGoal, bop) &amp;&amp; bop.incrOFCalcs())</span>
-<span class="fc" id="L446">						return bop;</span>
-<span class="nc" id="L447">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L448">					dblOFRight = java.lang.Double.NaN;</span>
-<span class="fc" id="L449">				}</span>
+<span class="fc bfc" id="L455" title="All 2 branches covered.">					if (bracketingDone (dblVariateLeft, dblVariateRight, dblOFLeft, dblOFRight = evaluateOF</span>
+<span class="pc bpc" id="L456" title="1 of 2 branches missed.">						(dblVariateRight), dblOFGoal, bop) &amp;&amp; bop.incrOFCalcs())</span>
+<span class="fc" id="L457">						return bop;</span>
+<span class="nc" id="L458">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L459">					dblOFRight = java.lang.Double.NaN;</span>
+<span class="fc" id="L460">				}</span>
 
-<span class="pc bpc" id="L451" title="1 of 2 branches missed.">				if (bRightOFValidityEdgeReached = rightOFValidityEdgeReached (dblVariateRight, dblOFRight,</span>
+<span class="pc bpc" id="L462" title="1 of 2 branches missed.">				if (bRightOFValidityEdgeReached = rightOFValidityEdgeReached (dblVariateRight, dblOFRight,</span>
 					ih)) {
-<span class="nc" id="L453">					dblOFRight = dblPreviousOFRight;</span>
-<span class="nc" id="L454">					dblVariateRight = dblPreviousVariateRight;</span>
+<span class="nc" id="L464">					dblOFRight = dblPreviousOFRight;</span>
+<span class="nc" id="L465">					dblVariateRight = dblPreviousVariateRight;</span>
 				}
 			}
 
-<span class="pc bpc" id="L458" title="1 of 2 branches missed.">			if (bracketingDone (dblVariateLeft, dblVariateRight, dblOFLeft, dblOFRight, dblOFGoal, bop))</span>
-<span class="nc" id="L459">				return bop;</span>
+<span class="pc bpc" id="L469" title="1 of 2 branches missed.">			if (bracketingDone (dblVariateLeft, dblVariateRight, dblOFLeft, dblOFRight, dblOFGoal, bop))</span>
+<span class="nc" id="L470">				return bop;</span>
 
-<span class="fc" id="L461">			dblBracketWidth *= bcp.getBracketWidthExpansionFactor();</span>
+<span class="fc" id="L472">			dblBracketWidth *= bcp.getBracketWidthExpansionFactor();</span>
 		}
 
-<span class="nc" id="L464">		return null;</span>
+<span class="nc" id="L475">		return null;</span>
 	}
 
 	/**
@@ -477,45 +488,45 @@ public class ExecutionInitializer {
 		final org.drip.function.r1tor1solver.InitializationHeuristics ih,
 		final double dblOFGoal)
 	{
-<span class="nc bnc" id="L480" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblOFGoal)) return null;</span>
+<span class="nc bnc" id="L491" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblOFGoal)) return null;</span>
 
-<span class="nc" id="L482">		org.drip.function.r1tor1solver.ConvergenceOutput cop = new org.drip.function.r1tor1solver.ConvergenceOutput();</span>
+<span class="nc" id="L493">		org.drip.function.r1tor1solver.ConvergenceOutput cop = new org.drip.function.r1tor1solver.ConvergenceOutput();</span>
 
-<span class="nc" id="L484">		org.drip.function.r1tor1solver.BracketingOutput bop = initializeBracket (ih, dblOFGoal);</span>
+<span class="nc" id="L495">		org.drip.function.r1tor1solver.BracketingOutput bop = initializeBracket (ih, dblOFGoal);</span>
 
-<span class="nc bnc" id="L486" title="All 4 branches missed.">		if (null != bop &amp;&amp; bop.done()) return bop.makeConvergenceVariate();</span>
+<span class="nc bnc" id="L497" title="All 4 branches missed.">		if (null != bop &amp;&amp; bop.done()) return bop.makeConvergenceVariate();</span>
 
-<span class="nc" id="L488">		double dblConvergenceZoneVariate = _ccp.getConvergenceZoneVariateBegin();</span>
+<span class="nc" id="L499">		double dblConvergenceZoneVariate = _ccp.getConvergenceZoneVariateBegin();</span>
 
-<span class="nc" id="L490">		int iFixedPointConvergenceIterations = _ccp.getFixedPointConvergenceIterations();</span>
+<span class="nc" id="L501">		int iFixedPointConvergenceIterations = _ccp.getFixedPointConvergenceIterations();</span>
 
-<span class="nc bnc" id="L492" title="All 2 branches missed.">		while (0 != iFixedPointConvergenceIterations--) {</span>
-<span class="nc bnc" id="L493" title="All 2 branches missed.">			if (!cop.incrIterations()) return cop;</span>
-
-			try {
-<span class="nc bnc" id="L496" title="All 2 branches missed.">				if (isInConvergenceZone (dblConvergenceZoneVariate, dblOFGoal, cop)) {</span>
-<span class="nc" id="L497">					cop.done (dblConvergenceZoneVariate);</span>
-
-<span class="nc" id="L499">					return cop;</span>
-				}
-<span class="nc" id="L501">			} catch (java.lang.Exception e) {</span>
-				// e.printStackTrace();
-<span class="nc" id="L503">			}</span>
+<span class="nc bnc" id="L503" title="All 2 branches missed.">		while (0 != iFixedPointConvergenceIterations--) {</span>
+<span class="nc bnc" id="L504" title="All 2 branches missed.">			if (!cop.incrIterations()) return cop;</span>
 
 			try {
-<span class="nc bnc" id="L506" title="All 2 branches missed.">				if (isInConvergenceZone (-1. * dblConvergenceZoneVariate, dblOFGoal, cop)) {</span>
-<span class="nc" id="L507">					cop.done (-1. * dblConvergenceZoneVariate);</span>
+<span class="nc bnc" id="L507" title="All 2 branches missed.">				if (isInConvergenceZone (dblConvergenceZoneVariate, dblOFGoal, cop)) {</span>
+<span class="nc" id="L508">					cop.done (dblConvergenceZoneVariate);</span>
 
-<span class="nc" id="L509">					return cop;</span>
+<span class="nc" id="L510">					return cop;</span>
 				}
-<span class="nc" id="L511">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L512">			} catch (java.lang.Exception e) {</span>
 				// e.printStackTrace();
-<span class="nc" id="L513">			}</span>
+<span class="nc" id="L514">			}</span>
 
-<span class="nc" id="L515">			dblConvergenceZoneVariate *= _ccp.getConvergenceZoneVariateBumpFactor();</span>
+			try {
+<span class="nc bnc" id="L517" title="All 2 branches missed.">				if (isInConvergenceZone (-1. * dblConvergenceZoneVariate, dblOFGoal, cop)) {</span>
+<span class="nc" id="L518">					cop.done (-1. * dblConvergenceZoneVariate);</span>
+
+<span class="nc" id="L520">					return cop;</span>
+				}
+<span class="nc" id="L522">			} catch (java.lang.Exception e) {</span>
+				// e.printStackTrace();
+<span class="nc" id="L524">			}</span>
+
+<span class="nc" id="L526">			dblConvergenceZoneVariate *= _ccp.getConvergenceZoneVariateBumpFactor();</span>
 		}
 
-<span class="nc" id="L518">		return null;</span>
+<span class="nc" id="L529">		return null;</span>
 	}
 
 	/**
@@ -531,23 +542,23 @@ public class ExecutionInitializer {
 		final org.drip.function.r1tor1solver.InitializationHeuristics ih,
 		final double dblOFGoal)
 	{
-<span class="pc bpc" id="L534" title="2 of 4 branches missed.">		if (null == ih || !org.drip.numerical.common.NumberUtil.IsValid (ih.getSearchStartLeft()) ||</span>
-<span class="pc bpc" id="L535" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (ih.getSearchStartRight()) ||</span>
-<span class="pc bpc" id="L536" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblOFGoal))</span>
-<span class="nc" id="L537">			return null;</span>
+<span class="pc bpc" id="L545" title="2 of 4 branches missed.">		if (null == ih || !org.drip.numerical.common.NumberUtil.IsValid (ih.getSearchStartLeft()) ||</span>
+<span class="pc bpc" id="L546" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (ih.getSearchStartRight()) ||</span>
+<span class="pc bpc" id="L547" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblOFGoal))</span>
+<span class="nc" id="L548">			return null;</span>
 
 		try {
-<span class="fc" id="L540">			org.drip.function.r1tor1solver.BracketingOutput bop = new</span>
+<span class="fc" id="L551">			org.drip.function.r1tor1solver.BracketingOutput bop = new</span>
 				org.drip.function.r1tor1solver.BracketingOutput();
 
-<span class="fc bfc" id="L543" title="All 2 branches covered.">			if (bracketingDone (ih.getSearchStartLeft(), ih.getSearchStartRight(), evaluateOF</span>
-<span class="fc" id="L544">				(ih.getSearchStartLeft()), evaluateOF (ih.getSearchStartRight()), dblOFGoal, bop) &amp;&amp;</span>
-<span class="pc bpc" id="L545" title="1 of 2 branches missed.">					bop.incrOFCalcs())</span>
-<span class="fc" id="L546">				return bop;</span>
-<span class="fc" id="L547">		} catch (java.lang.Exception e) {</span>
-<span class="fc" id="L548">		}</span>
+<span class="fc bfc" id="L554" title="All 2 branches covered.">			if (bracketingDone (ih.getSearchStartLeft(), ih.getSearchStartRight(), evaluateOF</span>
+<span class="fc" id="L555">				(ih.getSearchStartLeft()), evaluateOF (ih.getSearchStartRight()), dblOFGoal, bop) &amp;&amp;</span>
+<span class="pc bpc" id="L556" title="1 of 2 branches missed.">					bop.incrOFCalcs())</span>
+<span class="fc" id="L557">				return bop;</span>
+<span class="fc" id="L558">		} catch (java.lang.Exception e) {</span>
+<span class="fc" id="L559">		}</span>
 
-<span class="fc" id="L550">		return null;</span>
+<span class="fc" id="L561">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

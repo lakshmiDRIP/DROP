@@ -6,42 +6,54 @@ package org.drip.xva.topology;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -94,10 +106,10 @@ package org.drip.xva.topology;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/XVAAnalyticsLibrary.md&quot;&gt;XVA Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva&quot;&gt;XVA&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/topology&quot;&gt;Topology&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/README.md&quot;&gt;Valuation Adjustments that account for Collateral, CC Credit/Debt and Funding Overhead&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/xva/topology/README.md&quot;&gt;Collateral, Credit/Debt, Funding Topologies&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -106,24 +118,24 @@ package org.drip.xva.topology;
 
 public class AdiabatMarketParams
 {
-<span class="nc" id="L109">	private java.util.Map&lt;java.lang.String, org.drip.state.identifier.CSALabel&gt; _csaLabelMap = null;</span>
-<span class="nc" id="L110">	private java.util.Map&lt;java.lang.String, org.drip.state.identifier.OvernightLabel&gt; _overnightLabelMap =</span>
+<span class="nc" id="L121">	private java.util.Map&lt;java.lang.String, org.drip.state.identifier.CSALabel&gt; _csaLabelMap = null;</span>
+<span class="nc" id="L122">	private java.util.Map&lt;java.lang.String, org.drip.state.identifier.OvernightLabel&gt; _overnightLabelMap =</span>
 		null;
-<span class="nc" id="L112">	private java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityHazardLabel&gt;</span>
+<span class="nc" id="L124">	private java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityHazardLabel&gt;</span>
 		_clientHazardLabelMap = null;
-<span class="nc" id="L114">	private java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityHazardLabel&gt;</span>
+<span class="nc" id="L126">	private java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityHazardLabel&gt;</span>
 		_dealerHazardLabelMap = null;
-<span class="nc" id="L116">	private java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityRecoveryLabel&gt;</span>
+<span class="nc" id="L128">	private java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityRecoveryLabel&gt;</span>
 		_clientRecoveryLabelMap = null;
-<span class="nc" id="L118">	private java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityRecoveryLabel&gt;</span>
+<span class="nc" id="L130">	private java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityRecoveryLabel&gt;</span>
 		_dealerSeniorRecoveryLabelMap = null;
-<span class="nc" id="L120">	private java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityFundingLabel&gt;</span>
+<span class="nc" id="L132">	private java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityFundingLabel&gt;</span>
 		_clientFundingLabelMap = null;
-<span class="nc" id="L122">	private java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityRecoveryLabel&gt;</span>
+<span class="nc" id="L134">	private java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityRecoveryLabel&gt;</span>
 		_dealerSubordinateRecoveryLabelMap = null;
-<span class="nc" id="L124">	private java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityFundingLabel&gt;</span>
+<span class="nc" id="L136">	private java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityFundingLabel&gt;</span>
 		_dealerSeniorFundingLabelMap = null;
-<span class="nc" id="L126">	private java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityFundingLabel&gt;</span>
+<span class="nc" id="L138">	private java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityFundingLabel&gt;</span>
 		_dealerSubordinateFundingLabelMap = null;
 
 	/**
@@ -163,25 +175,25 @@ public class AdiabatMarketParams
 		final java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityFundingLabel&gt;
 			dealerSubordinateFundingLabelMap)
 		throws java.lang.Exception
-<span class="nc" id="L166">	{</span>
-<span class="nc bnc" id="L167" title="All 6 branches missed.">		if (null == (_overnightLabelMap = overnightLabelMap) || 0 == _overnightLabelMap.size() ||</span>
-<span class="nc bnc" id="L168" title="All 4 branches missed.">			null == (_csaLabelMap = csaLabelMap) || 0 == _csaLabelMap.size() ||</span>
-<span class="nc bnc" id="L169" title="All 4 branches missed.">			null == (_dealerHazardLabelMap = dealerHazardLabelMap) || 0 == _dealerHazardLabelMap.size() ||</span>
-<span class="nc bnc" id="L170" title="All 4 branches missed.">			null == (_clientHazardLabelMap = clientHazardLabelMap) || 0 == _clientHazardLabelMap.size() ||</span>
+<span class="nc" id="L178">	{</span>
+<span class="nc bnc" id="L179" title="All 6 branches missed.">		if (null == (_overnightLabelMap = overnightLabelMap) || 0 == _overnightLabelMap.size() ||</span>
+<span class="nc bnc" id="L180" title="All 4 branches missed.">			null == (_csaLabelMap = csaLabelMap) || 0 == _csaLabelMap.size() ||</span>
+<span class="nc bnc" id="L181" title="All 4 branches missed.">			null == (_dealerHazardLabelMap = dealerHazardLabelMap) || 0 == _dealerHazardLabelMap.size() ||</span>
+<span class="nc bnc" id="L182" title="All 4 branches missed.">			null == (_clientHazardLabelMap = clientHazardLabelMap) || 0 == _clientHazardLabelMap.size() ||</span>
 			null == (_dealerSeniorRecoveryLabelMap = dealerSeniorRecoveryLabelMap) || 0 ==
-<span class="nc bnc" id="L172" title="All 4 branches missed.">				_dealerSeniorRecoveryLabelMap.size() ||</span>
-<span class="nc bnc" id="L173" title="All 4 branches missed.">			null == (_clientRecoveryLabelMap = clientRecoveryLabelMap) || 0 == _clientRecoveryLabelMap.size()</span>
+<span class="nc bnc" id="L184" title="All 4 branches missed.">				_dealerSeniorRecoveryLabelMap.size() ||</span>
+<span class="nc bnc" id="L185" title="All 4 branches missed.">			null == (_clientRecoveryLabelMap = clientRecoveryLabelMap) || 0 == _clientRecoveryLabelMap.size()</span>
 				||
 			null == (_dealerSeniorFundingLabelMap = dealerSeniorFundingLabelMap) || 0 ==
-<span class="nc bnc" id="L176" title="All 4 branches missed.">				_dealerSeniorFundingLabelMap.size() ||</span>
-<span class="nc bnc" id="L177" title="All 2 branches missed.">			null == (_clientFundingLabelMap = clientFundingLabelMap) || 0 == _clientFundingLabelMap.size())</span>
+<span class="nc bnc" id="L188" title="All 4 branches missed.">				_dealerSeniorFundingLabelMap.size() ||</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">			null == (_clientFundingLabelMap = clientFundingLabelMap) || 0 == _clientFundingLabelMap.size())</span>
 		{
-<span class="nc" id="L179">			throw new java.lang.Exception (&quot;AdiabatMarketParams Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L191">			throw new java.lang.Exception (&quot;AdiabatMarketParams Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L182">		_dealerSubordinateFundingLabelMap = dealerSubordinateFundingLabelMap;</span>
-<span class="nc" id="L183">		_dealerSubordinateRecoveryLabelMap = dealerSubordinateRecoveryLabelMap;</span>
-<span class="nc" id="L184">	}</span>
+<span class="nc" id="L194">		_dealerSubordinateFundingLabelMap = dealerSubordinateFundingLabelMap;</span>
+<span class="nc" id="L195">		_dealerSubordinateRecoveryLabelMap = dealerSubordinateRecoveryLabelMap;</span>
+<span class="nc" id="L196">	}</span>
 
 	/**
 	 * Retrieve the Map of Overnight Labels
@@ -191,7 +203,7 @@ public class AdiabatMarketParams
 
 	public java.util.Map&lt;java.lang.String, org.drip.state.identifier.OvernightLabel&gt; overnightLabelMap()
 	{
-<span class="nc" id="L194">		return _overnightLabelMap;</span>
+<span class="nc" id="L206">		return _overnightLabelMap;</span>
 	}
 
 	/**
@@ -202,7 +214,7 @@ public class AdiabatMarketParams
 
 	public java.util.Map&lt;java.lang.String, org.drip.state.identifier.CSALabel&gt; csaLabelMap()
 	{
-<span class="nc" id="L205">		return _csaLabelMap;</span>
+<span class="nc" id="L217">		return _csaLabelMap;</span>
 	}
 
 	/**
@@ -214,7 +226,7 @@ public class AdiabatMarketParams
 	public java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityHazardLabel&gt;
 		dealerHazardLabelMap()
 	{
-<span class="nc" id="L217">		return _dealerHazardLabelMap;</span>
+<span class="nc" id="L229">		return _dealerHazardLabelMap;</span>
 	}
 
 	/**
@@ -226,7 +238,7 @@ public class AdiabatMarketParams
 	public java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityHazardLabel&gt;
 		clientHazardLabelMap()
 	{
-<span class="nc" id="L229">		return _clientHazardLabelMap;</span>
+<span class="nc" id="L241">		return _clientHazardLabelMap;</span>
 	}
 
 	/**
@@ -238,7 +250,7 @@ public class AdiabatMarketParams
 	public java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityRecoveryLabel&gt;
 		dealerSeniorRecoveryLabelMap()
 	{
-<span class="nc" id="L241">		return _dealerSeniorRecoveryLabelMap;</span>
+<span class="nc" id="L253">		return _dealerSeniorRecoveryLabelMap;</span>
 	}
 
 	/**
@@ -250,7 +262,7 @@ public class AdiabatMarketParams
 	public java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityRecoveryLabel&gt;
 		clientRecoveryLabelMap()
 	{
-<span class="nc" id="L253">		return _clientRecoveryLabelMap;</span>
+<span class="nc" id="L265">		return _clientRecoveryLabelMap;</span>
 	}
 
 	/**
@@ -262,7 +274,7 @@ public class AdiabatMarketParams
 	public java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityRecoveryLabel&gt;
 		dealerSubordinateRecoveryLabelMap()
 	{
-<span class="nc" id="L265">		return _dealerSubordinateRecoveryLabelMap;</span>
+<span class="nc" id="L277">		return _dealerSubordinateRecoveryLabelMap;</span>
 	}
 
 	/**
@@ -274,7 +286,7 @@ public class AdiabatMarketParams
 	public java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityFundingLabel&gt;
 		dealerSeniorFundingLabelMap()
 	{
-<span class="nc" id="L277">		return _dealerSeniorFundingLabelMap;</span>
+<span class="nc" id="L289">		return _dealerSeniorFundingLabelMap;</span>
 	}
 
 	/**
@@ -286,7 +298,7 @@ public class AdiabatMarketParams
 	public java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityFundingLabel&gt;
 		clientFundingLabelMap()
 	{
-<span class="nc" id="L289">		return _clientFundingLabelMap;</span>
+<span class="nc" id="L301">		return _clientFundingLabelMap;</span>
 	}
 
 	/**
@@ -298,7 +310,7 @@ public class AdiabatMarketParams
 	public java.util.Map&lt;java.lang.String, org.drip.state.identifier.EntityFundingLabel&gt;
 		dealerSubordinateFundingLabelMap()
 	{
-<span class="nc" id="L301">		return _dealerSubordinateFundingLabelMap;</span>
+<span class="nc" id="L313">		return _dealerSubordinateFundingLabelMap;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

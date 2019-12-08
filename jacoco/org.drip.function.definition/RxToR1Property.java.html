@@ -6,35 +6,46 @@ package org.drip.function.definition;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -70,10 +81,10 @@ package org.drip.function.definition;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/definition/README.md&quot;&gt;Definition&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Function Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/definition/README.md&quot;&gt;Function Implementation Ancillary Support Objects&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -118,20 +129,20 @@ public abstract class RxToR1Property
 
 	public static final java.lang.String GT = &quot;GT&quot;;
 
-<span class="nc" id="L121">	private java.lang.String _type = &quot;&quot;;</span>
-<span class="nc" id="L122">	private double _mismatchTolerance = java.lang.Double.NaN;</span>
+<span class="nc" id="L132">	private java.lang.String _type = &quot;&quot;;</span>
+<span class="nc" id="L133">	private double _mismatchTolerance = java.lang.Double.NaN;</span>
 
 	protected RxToR1Property (
 		final java.lang.String type,
 		final double mismatchTolerance)
 		throws java.lang.Exception
-<span class="nc" id="L128">	{</span>
-<span class="nc bnc" id="L129" title="All 4 branches missed.">		if (null == (_type = type) || _type.isEmpty() ||</span>
-<span class="nc bnc" id="L130" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_mismatchTolerance = mismatchTolerance))</span>
+<span class="nc" id="L139">	{</span>
+<span class="nc bnc" id="L140" title="All 4 branches missed.">		if (null == (_type = type) || _type.isEmpty() ||</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_mismatchTolerance = mismatchTolerance))</span>
 		{
-<span class="nc" id="L132">			throw new java.lang.Exception (&quot;RxToR1Property Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L143">			throw new java.lang.Exception (&quot;RxToR1Property Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L134">	}</span>
+<span class="nc" id="L145">	}</span>
 
 	/**
 	 * Retrieve the Type of the Comparison
@@ -141,7 +152,7 @@ public abstract class RxToR1Property
 
 	public java.lang.String type()
 	{
-<span class="nc" id="L144">		return _type;</span>
+<span class="nc" id="L155">		return _type;</span>
 	}
 
 	/**
@@ -152,7 +163,7 @@ public abstract class RxToR1Property
 
 	public double mismatchTolerance()
 	{
-<span class="nc" id="L155">		return _mismatchTolerance;</span>
+<span class="nc" id="L166">		return _mismatchTolerance;</span>
 	}
 
 	/**
@@ -168,76 +179,76 @@ public abstract class RxToR1Property
 		final double leftValue,
 		final double rightValue)
 	{
-<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (leftValue) ||</span>
-<span class="nc bnc" id="L172" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (rightValue))</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (leftValue) ||</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (rightValue))</span>
 		{
-<span class="nc" id="L174">			return null;</span>
+<span class="nc" id="L185">			return null;</span>
 		}
 
-<span class="nc" id="L177">		java.lang.String type = type();</span>
+<span class="nc" id="L188">		java.lang.String type = type();</span>
 
 		try
 		{
-<span class="nc bnc" id="L181" title="All 2 branches missed.">			if (LT.equalsIgnoreCase (type))</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">			if (LT.equalsIgnoreCase (type))</span>
 			{
-<span class="nc bnc" id="L183" title="All 2 branches missed.">				return new org.drip.function.definition.R1PropertyVerification (</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">				return new org.drip.function.definition.R1PropertyVerification (</span>
 					leftValue,
 					rightValue,
 					leftValue &lt; rightValue
 				);
 			}
 
-<span class="nc bnc" id="L190" title="All 2 branches missed.">			if (GT.equalsIgnoreCase (type))</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">			if (GT.equalsIgnoreCase (type))</span>
 			{
-<span class="nc bnc" id="L192" title="All 2 branches missed.">				return new org.drip.function.definition.R1PropertyVerification (</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">				return new org.drip.function.definition.R1PropertyVerification (</span>
 					leftValue,
 					rightValue,
 					leftValue &gt; rightValue
 				);
 			}
 
-<span class="nc" id="L199">			double mismatchTolerance = mismatchTolerance();</span>
+<span class="nc" id="L210">			double mismatchTolerance = mismatchTolerance();</span>
 
-<span class="nc" id="L201">			double leftTolerance = java.lang.Math.abs (leftValue * mismatchTolerance);</span>
+<span class="nc" id="L212">			double leftTolerance = java.lang.Math.abs (leftValue * mismatchTolerance);</span>
 
-<span class="nc" id="L203">			double rightTolerance = java.lang.Math.abs (rightValue * mismatchTolerance);</span>
+<span class="nc" id="L214">			double rightTolerance = java.lang.Math.abs (rightValue * mismatchTolerance);</span>
 
-<span class="nc bnc" id="L205" title="All 2 branches missed.">			double tolerance = leftTolerance &lt; rightTolerance ? leftTolerance: rightTolerance;</span>
-<span class="nc bnc" id="L206" title="All 2 branches missed.">			tolerance = tolerance &lt; mismatchTolerance ? mismatchTolerance : tolerance;</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">			double tolerance = leftTolerance &lt; rightTolerance ? leftTolerance: rightTolerance;</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">			tolerance = tolerance &lt; mismatchTolerance ? mismatchTolerance : tolerance;</span>
 
-<span class="nc bnc" id="L208" title="All 2 branches missed.">			if (EQ.equalsIgnoreCase (type))</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">			if (EQ.equalsIgnoreCase (type))</span>
 			{
-<span class="nc" id="L210">				return new org.drip.function.definition.R1PropertyVerification (</span>
+<span class="nc" id="L221">				return new org.drip.function.definition.R1PropertyVerification (</span>
 					leftValue,
 					rightValue,
-<span class="nc bnc" id="L213" title="All 2 branches missed.">					java.lang.Math.abs (leftValue - rightValue) &lt; tolerance</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">					java.lang.Math.abs (leftValue - rightValue) &lt; tolerance</span>
 				);
 			}
 
-<span class="nc bnc" id="L217" title="All 2 branches missed.">			if (LTE.equalsIgnoreCase (type))</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">			if (LTE.equalsIgnoreCase (type))</span>
 			{
-<span class="nc bnc" id="L219" title="All 2 branches missed.">				return new org.drip.function.definition.R1PropertyVerification (</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">				return new org.drip.function.definition.R1PropertyVerification (</span>
 					leftValue,
 					rightValue,
-<span class="nc bnc" id="L222" title="All 2 branches missed.">					leftValue &lt; rightValue || java.lang.Math.abs (leftValue - rightValue) &lt; tolerance</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">					leftValue &lt; rightValue || java.lang.Math.abs (leftValue - rightValue) &lt; tolerance</span>
 				);
 			}
 
-<span class="nc bnc" id="L226" title="All 2 branches missed.">			if (GTE.equalsIgnoreCase (type))</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">			if (GTE.equalsIgnoreCase (type))</span>
 			{
-<span class="nc bnc" id="L228" title="All 2 branches missed.">				return new org.drip.function.definition.R1PropertyVerification (</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">				return new org.drip.function.definition.R1PropertyVerification (</span>
 					leftValue,
 					rightValue,
-<span class="nc bnc" id="L231" title="All 2 branches missed.">					leftValue &gt; rightValue || java.lang.Math.abs (leftValue - rightValue) &lt; tolerance</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">					leftValue &gt; rightValue || java.lang.Math.abs (leftValue - rightValue) &lt; tolerance</span>
 				);
 			}
 		}
-<span class="nc" id="L235">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L246">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L237">			e.printStackTrace();</span>
-<span class="nc" id="L238">		}</span>
+<span class="nc" id="L248">			e.printStackTrace();</span>
+<span class="nc" id="L249">		}</span>
 
-<span class="nc" id="L240">		return null;</span>
+<span class="nc" id="L251">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

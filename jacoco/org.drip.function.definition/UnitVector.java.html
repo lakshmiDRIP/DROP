@@ -6,38 +6,49 @@ package org.drip.function.definition;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -72,10 +83,10 @@ package org.drip.function.definition;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/definition/README.md&quot;&gt;Definition&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Function Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/definition/README.md&quot;&gt;Function Implementation Ancillary Support Objects&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -95,35 +106,35 @@ public class UnitVector {
 	public static final UnitVector Standard (
 		final double[] adbl)
 	{
-<span class="nc bnc" id="L98" title="All 2 branches missed.">		if (null == adbl) return null;</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">		if (null == adbl) return null;</span>
 
-<span class="nc" id="L100">		int iDimension = adbl.length;</span>
-<span class="nc" id="L101">		double dblGradientModulus = 0.;</span>
-<span class="nc" id="L102">		double[] adblComponent = new double[iDimension];</span>
+<span class="nc" id="L111">		int iDimension = adbl.length;</span>
+<span class="nc" id="L112">		double dblGradientModulus = 0.;</span>
+<span class="nc" id="L113">		double[] adblComponent = new double[iDimension];</span>
 
-<span class="nc bnc" id="L104" title="All 2 branches missed.">		if (0 == iDimension) return null;</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		if (0 == iDimension) return null;</span>
 
-<span class="nc bnc" id="L106" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
-<span class="nc bnc" id="L107" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (adbl[i])) return null;</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (adbl[i])) return null;</span>
 
-<span class="nc" id="L109">			dblGradientModulus += adbl[i] * adbl[i];</span>
+<span class="nc" id="L120">			dblGradientModulus += adbl[i] * adbl[i];</span>
 		}
 
-<span class="nc bnc" id="L112" title="All 2 branches missed.">		if (0. == dblGradientModulus) return null;</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">		if (0. == dblGradientModulus) return null;</span>
 
-<span class="nc" id="L114">		dblGradientModulus = java.lang.Math.sqrt (dblGradientModulus);</span>
+<span class="nc" id="L125">		dblGradientModulus = java.lang.Math.sqrt (dblGradientModulus);</span>
 
-<span class="nc bnc" id="L116" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="nc" id="L117">			adblComponent[i] = adbl[i] / dblGradientModulus;</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">		for (int i = 0; i &lt; iDimension; ++i)</span>
+<span class="nc" id="L128">			adblComponent[i] = adbl[i] / dblGradientModulus;</span>
 
-<span class="nc" id="L119">		return new UnitVector (adblComponent);</span>
+<span class="nc" id="L130">		return new UnitVector (adblComponent);</span>
 	}
 
 	protected UnitVector (
 		final double[] adblComponent)
-<span class="fc" id="L124">	{</span>
-<span class="fc" id="L125">		_adblComponent = adblComponent;</span>
-<span class="fc" id="L126">	}</span>
+<span class="fc" id="L135">	{</span>
+<span class="fc" id="L136">		_adblComponent = adblComponent;</span>
+<span class="fc" id="L137">	}</span>
 
 	/**
 	 * Retrieve the Unit Vector's Component Array
@@ -133,7 +144,7 @@ public class UnitVector {
 
 	public double[] component()
 	{
-<span class="fc" id="L136">		return _adblComponent;</span>
+<span class="fc" id="L147">		return _adblComponent;</span>
 	}
 
 	/**
@@ -149,20 +160,20 @@ public class UnitVector {
 		final double[] adblVariate,
 		final double dblStepLength)
 	{
-<span class="nc bnc" id="L152" title="All 4 branches missed.">		if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (dblStepLength)) return null;</span>
+<span class="nc bnc" id="L163" title="All 4 branches missed.">		if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (dblStepLength)) return null;</span>
 
-<span class="nc" id="L154">		int iVariateDimension = adblVariate.length;</span>
-<span class="nc" id="L155">		double[] adblIncrementedVariate = new double[iVariateDimension];</span>
+<span class="nc" id="L165">		int iVariateDimension = adblVariate.length;</span>
+<span class="nc" id="L166">		double[] adblIncrementedVariate = new double[iVariateDimension];</span>
 
-<span class="nc bnc" id="L157" title="All 2 branches missed.">		if (iVariateDimension != _adblComponent.length) return null;</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">		if (iVariateDimension != _adblComponent.length) return null;</span>
 
-<span class="nc bnc" id="L159" title="All 2 branches missed.">		for (int i = 0; i &lt; iVariateDimension; ++i) {</span>
-<span class="nc bnc" id="L160" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (adblVariate[i])) return null;</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">		for (int i = 0; i &lt; iVariateDimension; ++i) {</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (adblVariate[i])) return null;</span>
 
-<span class="nc" id="L162">			adblIncrementedVariate[i] = adblVariate[i] + dblStepLength * _adblComponent[i];</span>
+<span class="nc" id="L173">			adblIncrementedVariate[i] = adblVariate[i] + dblStepLength * _adblComponent[i];</span>
 		}
 
-<span class="nc" id="L165">		return adblIncrementedVariate;</span>
+<span class="nc" id="L176">		return adblIncrementedVariate;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

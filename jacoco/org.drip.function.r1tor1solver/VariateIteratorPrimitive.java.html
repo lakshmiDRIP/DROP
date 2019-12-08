@@ -6,6 +6,7 @@ package org.drip.function.r1tor1solver;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -15,33 +16,43 @@ package org.drip.function.r1tor1solver;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -98,46 +109,46 @@ package org.drip.function.r1tor1solver;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1solver/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solver&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Function Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver/README.md&quot;&gt;Built-in R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Solvers&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L110">public class VariateIteratorPrimitive {</span>
+<span class="nc" id="L121">public class VariateIteratorPrimitive {</span>
 
 	/**
 	 * Bisection
 	 */
 
-<span class="fc" id="L116">	public static int BISECTION = 0;</span>
+<span class="fc" id="L127">	public static int BISECTION = 0;</span>
 
 	/**
 	 * False Position
 	 */
 
-<span class="fc" id="L122">	public static int FALSE_POSITION = 1;</span>
+<span class="fc" id="L133">	public static int FALSE_POSITION = 1;</span>
 
 	/**
 	 * Quadratic Interpolation
 	 */
 
-<span class="fc" id="L128">	public static int QUADRATIC_INTERPOLATION = 2;</span>
+<span class="fc" id="L139">	public static int QUADRATIC_INTERPOLATION = 2;</span>
 
 	/**
 	 * Inverse Quadratic Interpolation
 	 */
 
-<span class="fc" id="L134">	public static int INVERSE_QUADRATIC_INTERPOLATION = 3;</span>
+<span class="fc" id="L145">	public static int INVERSE_QUADRATIC_INTERPOLATION = 3;</span>
 
 	/**
 	 * Ridder's Method
 	 */
 
-<span class="fc" id="L140">	public static int RIDDER = 4;</span>
+<span class="fc" id="L151">	public static int RIDDER = 4;</span>
 
 	/**
 	 * Iterate for the next variate using bisection
@@ -155,11 +166,11 @@ package org.drip.function.r1tor1solver;
 		final double dblX2)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX1) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L159" title="1 of 2 branches missed.">			(dblX2))</span>
-<span class="nc" id="L160">			throw new java.lang.Exception (&quot;VariateIteratorPrimitive::Bisection =&gt; Invalid inputs &quot; + dblX2);</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX1) || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">			(dblX2))</span>
+<span class="nc" id="L171">			throw new java.lang.Exception (&quot;VariateIteratorPrimitive::Bisection =&gt; Invalid inputs &quot; + dblX2);</span>
 
-<span class="fc" id="L162">		return 0.5 * (dblX1 + dblX2);</span>
+<span class="fc" id="L173">		return 0.5 * (dblX1 + dblX2);</span>
 	}
 
 	/**
@@ -182,12 +193,12 @@ package org.drip.function.r1tor1solver;
 		final double dblY2)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L185" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX1) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L186" title="2 of 4 branches missed.">			(dblX2) || !org.drip.numerical.common.NumberUtil.IsValid (dblY1) ||</span>
-<span class="pc bpc" id="L187" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblY2))</span>
-<span class="nc" id="L188">			throw new java.lang.Exception (&quot;VariateIteratorPrimitive::FalsePosition =&gt; Invalid inputs&quot;);</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX1) || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L197" title="2 of 4 branches missed.">			(dblX2) || !org.drip.numerical.common.NumberUtil.IsValid (dblY1) ||</span>
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblY2))</span>
+<span class="nc" id="L199">			throw new java.lang.Exception (&quot;VariateIteratorPrimitive::FalsePosition =&gt; Invalid inputs&quot;);</span>
 
-<span class="fc" id="L190">		return dblX1 + ((dblX1 - dblX2) / (dblY2 - dblY1) * dblY1);</span>
+<span class="fc" id="L201">		return dblX1 + ((dblX1 - dblX2) / (dblY2 - dblY1) * dblY1);</span>
 	}
 
 	/**
@@ -214,38 +225,38 @@ package org.drip.function.r1tor1solver;
 		final double dblY3)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L217" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX1) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L218" title="2 of 4 branches missed.">			(dblX2) || !org.drip.numerical.common.NumberUtil.IsValid (dblX3) ||</span>
-<span class="pc bpc" id="L219" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblY1) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L220" title="2 of 4 branches missed.">					(dblY2) || !org.drip.numerical.common.NumberUtil.IsValid (dblY3))</span>
-<span class="nc" id="L221">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L228" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX1) || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L229" title="2 of 4 branches missed.">			(dblX2) || !org.drip.numerical.common.NumberUtil.IsValid (dblX3) ||</span>
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblY1) || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L231" title="2 of 4 branches missed.">					(dblY2) || !org.drip.numerical.common.NumberUtil.IsValid (dblY3))</span>
+<span class="nc" id="L232">			throw new java.lang.Exception</span>
 				(&quot;VariateIteratorPrimitive.QuadraticInterpolation =&gt; Invalid inputs!&quot;);
 
-<span class="fc" id="L224">		double dblA = dblY1 / (dblX1 - dblX2) / (dblX1 - dblX3);</span>
-<span class="fc" id="L225">		dblA       += dblY2 / (dblX2 - dblX3) / (dblX2 - dblX1);</span>
-<span class="fc" id="L226">		dblA       += dblY3 / (dblX3 - dblX1) / (dblX3 - dblX2);</span>
-<span class="fc" id="L227">		double dblB = -1. * (dblX2 + dblX3) * dblY1 / (dblX1 - dblX2) / (dblX1 - dblX3);</span>
-<span class="fc" id="L228">		dblB       -=       (dblX3 + dblX1) * dblY2 / (dblX2 - dblX3) / (dblX2 - dblX1);</span>
-<span class="fc" id="L229">		dblB       -=       (dblX1 + dblX2) * dblY3 / (dblX3 - dblX1) / (dblX3 - dblX2);</span>
-<span class="fc" id="L230">		double dblC = dblX2 * dblX3 * dblY1 / (dblX1 - dblX2) / (dblX1 - dblX3);</span>
-<span class="fc" id="L231">		dblC       += dblX3 * dblX1 * dblY2 / (dblX2 - dblX3) / (dblX2 - dblX1);</span>
-<span class="fc" id="L232">		dblC       += dblX1 * dblX2 * dblY3 / (dblX3 - dblX1) / (dblX3 - dblX2);</span>
-<span class="fc" id="L233">		double dblSQRTArg = dblB * dblB - 4. * dblA * dblC;</span>
+<span class="fc" id="L235">		double dblA = dblY1 / (dblX1 - dblX2) / (dblX1 - dblX3);</span>
+<span class="fc" id="L236">		dblA       += dblY2 / (dblX2 - dblX3) / (dblX2 - dblX1);</span>
+<span class="fc" id="L237">		dblA       += dblY3 / (dblX3 - dblX1) / (dblX3 - dblX2);</span>
+<span class="fc" id="L238">		double dblB = -1. * (dblX2 + dblX3) * dblY1 / (dblX1 - dblX2) / (dblX1 - dblX3);</span>
+<span class="fc" id="L239">		dblB       -=       (dblX3 + dblX1) * dblY2 / (dblX2 - dblX3) / (dblX2 - dblX1);</span>
+<span class="fc" id="L240">		dblB       -=       (dblX1 + dblX2) * dblY3 / (dblX3 - dblX1) / (dblX3 - dblX2);</span>
+<span class="fc" id="L241">		double dblC = dblX2 * dblX3 * dblY1 / (dblX1 - dblX2) / (dblX1 - dblX3);</span>
+<span class="fc" id="L242">		dblC       += dblX3 * dblX1 * dblY2 / (dblX2 - dblX3) / (dblX2 - dblX1);</span>
+<span class="fc" id="L243">		dblC       += dblX1 * dblX2 * dblY3 / (dblX3 - dblX1) / (dblX3 - dblX2);</span>
+<span class="fc" id="L244">		double dblSQRTArg = dblB * dblB - 4. * dblA * dblC;</span>
 
-<span class="pc bpc" id="L235" title="1 of 2 branches missed.">		if (0. &gt; dblSQRTArg)</span>
-<span class="nc" id="L236">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L246" title="1 of 2 branches missed.">		if (0. &gt; dblSQRTArg)</span>
+<span class="nc" id="L247">			throw new java.lang.Exception</span>
 				(&quot;VariateIteratorPrimitive.QuadraticInterpolation =&gt; No real roots!&quot;);
 
-<span class="fc" id="L239">		double dblSQRT = java.lang.Math.sqrt (dblSQRTArg);</span>
+<span class="fc" id="L250">		double dblSQRT = java.lang.Math.sqrt (dblSQRTArg);</span>
 
-<span class="fc" id="L241">		double dblRoot1 = (-1. * dblB + dblSQRT) / 2. / dblA;</span>
-<span class="fc" id="L242">		double dblRoot2 = (-1. * dblB - dblSQRT) / 2. / dblA;</span>
+<span class="fc" id="L252">		double dblRoot1 = (-1. * dblB + dblSQRT) / 2. / dblA;</span>
+<span class="fc" id="L253">		double dblRoot2 = (-1. * dblB - dblSQRT) / 2. / dblA;</span>
 
-<span class="pc bpc" id="L244" title="1 of 4 branches missed.">		if (dblX1 &gt; dblRoot1 || dblX3 &lt; dblRoot1) return dblRoot2;</span>
+<span class="pc bpc" id="L255" title="1 of 4 branches missed.">		if (dblX1 &gt; dblRoot1 || dblX3 &lt; dblRoot1) return dblRoot2;</span>
 
-<span class="pc bpc" id="L246" title="1 of 4 branches missed.">		if (dblX1 &gt; dblRoot2 || dblX3 &lt; dblRoot2) return dblRoot1;</span>
+<span class="pc bpc" id="L257" title="1 of 4 branches missed.">		if (dblX1 &gt; dblRoot2 || dblX3 &lt; dblRoot2) return dblRoot1;</span>
 
-<span class="nc bnc" id="L248" title="All 2 branches missed.">		return java.lang.Math.abs (dblX2 - dblRoot1) &lt; java.lang.Math.abs (dblX2 - dblRoot2) ? dblRoot1 :</span>
+<span class="nc bnc" id="L259" title="All 2 branches missed.">		return java.lang.Math.abs (dblX2 - dblRoot1) &lt; java.lang.Math.abs (dblX2 - dblRoot2) ? dblRoot1 :</span>
 			dblRoot2;
 	}
 
@@ -273,17 +284,17 @@ package org.drip.function.r1tor1solver;
 		final double dblY3)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L276" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX1) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L277" title="2 of 4 branches missed.">			(dblX2) || !org.drip.numerical.common.NumberUtil.IsValid (dblX3) ||</span>
-<span class="pc bpc" id="L278" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblY1) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L279" title="2 of 4 branches missed.">					(dblY2) || !org.drip.numerical.common.NumberUtil.IsValid (dblY3))</span>
-<span class="nc" id="L280">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L287" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX1) || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L288" title="2 of 4 branches missed.">			(dblX2) || !org.drip.numerical.common.NumberUtil.IsValid (dblX3) ||</span>
+<span class="pc bpc" id="L289" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblY1) || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L290" title="2 of 4 branches missed.">					(dblY2) || !org.drip.numerical.common.NumberUtil.IsValid (dblY3))</span>
+<span class="nc" id="L291">			throw new java.lang.Exception</span>
 				(&quot;VariateIteratorPrimitive.InverseQuadraticInterpolation =&gt; Invalid inputs!&quot;);
 
-<span class="fc" id="L283">		double dblNextRoot = (dblY2 * dblY3 * dblX1 / (dblY1 - dblY2) / (dblY1 - dblY3));</span>
-<span class="fc" id="L284">		dblNextRoot       += (dblY3 * dblY1 * dblX2 / (dblY2 - dblY3) / (dblY2 - dblY1));</span>
-<span class="fc" id="L285">		dblNextRoot       += (dblY1 * dblY2 * dblX3 / (dblY3 - dblY1) / (dblY3 - dblY2));</span>
-<span class="fc" id="L286">		return dblNextRoot;</span>
+<span class="fc" id="L294">		double dblNextRoot = (dblY2 * dblY3 * dblX1 / (dblY1 - dblY2) / (dblY1 - dblY3));</span>
+<span class="fc" id="L295">		dblNextRoot       += (dblY3 * dblY1 * dblX2 / (dblY2 - dblY3) / (dblY2 - dblY1));</span>
+<span class="fc" id="L296">		dblNextRoot       += (dblY1 * dblY2 * dblX3 / (dblY3 - dblY1) / (dblY3 - dblY2));</span>
+<span class="fc" id="L297">		return dblNextRoot;</span>
 	}
 
 	/**
@@ -310,19 +321,19 @@ package org.drip.function.r1tor1solver;
 		final double dblY3)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L313" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX1) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L314" title="2 of 4 branches missed.">			(dblX2) || !org.drip.numerical.common.NumberUtil.IsValid (dblX3) ||</span>
-<span class="pc bpc" id="L315" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblY1) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L316" title="2 of 4 branches missed.">					(dblY2) || !org.drip.numerical.common.NumberUtil.IsValid (dblY3))</span>
-<span class="nc" id="L317">			throw new java.lang.Exception (&quot;VariateIteratorPrimitive.Ridder =&gt; Invalid inputs!&quot;);</span>
+<span class="pc bpc" id="L324" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX1) || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L325" title="2 of 4 branches missed.">			(dblX2) || !org.drip.numerical.common.NumberUtil.IsValid (dblX3) ||</span>
+<span class="pc bpc" id="L326" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblY1) || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L327" title="2 of 4 branches missed.">					(dblY2) || !org.drip.numerical.common.NumberUtil.IsValid (dblY3))</span>
+<span class="nc" id="L328">			throw new java.lang.Exception (&quot;VariateIteratorPrimitive.Ridder =&gt; Invalid inputs!&quot;);</span>
 
-<span class="fc" id="L319">		double dblSQRTArg = dblY3 * dblY3 - dblY1 * dblY2;</span>
+<span class="fc" id="L330">		double dblSQRTArg = dblY3 * dblY3 - dblY1 * dblY2;</span>
 
-<span class="pc bpc" id="L321" title="1 of 2 branches missed.">		if (0. &gt; dblSQRTArg)</span>
-<span class="nc" id="L322">			throw new java.lang.Exception (&quot;VariateIteratorPrimitive.Ridder =&gt; No real roots!&quot;);</span>
+<span class="pc bpc" id="L332" title="1 of 2 branches missed.">		if (0. &gt; dblSQRTArg)</span>
+<span class="nc" id="L333">			throw new java.lang.Exception (&quot;VariateIteratorPrimitive.Ridder =&gt; No real roots!&quot;);</span>
 
-<span class="fc" id="L324">		return dblX3 + (dblX3 - dblX1) * dblY3 * java.lang.Math.signum (dblY1 - dblY2) / java.lang.Math.sqrt</span>
-<span class="fc" id="L325">			(dblSQRTArg);</span>
+<span class="fc" id="L335">		return dblX3 + (dblX3 - dblX1) * dblY3 * java.lang.Math.signum (dblY1 - dblY2) / java.lang.Math.sqrt</span>
+<span class="fc" id="L336">			(dblSQRTArg);</span>
 	}
 
 	/**
@@ -355,94 +366,94 @@ package org.drip.function.r1tor1solver;
 		final org.drip.function.r1tor1solver.FixedPointFinderOutput rfop)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L358" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX1) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L359" title="All 4 branches missed.">			(dblX2) || !org.drip.numerical.common.NumberUtil.IsValid (dblX3) ||</span>
-<span class="nc bnc" id="L360" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblY1) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L361" title="All 4 branches missed.">					(dblY2) || !org.drip.numerical.common.NumberUtil.IsValid (dblY3) ||</span>
-<span class="nc bnc" id="L362" title="All 6 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (dblOFTarget) || null == rfop || null == of)</span>
-<span class="nc" id="L363">			throw new java.lang.Exception (&quot;VariateIteratorPrimitive.MultiFunction =&gt; Invalid inputs!&quot;);</span>
+<span class="nc bnc" id="L369" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX1) || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L370" title="All 4 branches missed.">			(dblX2) || !org.drip.numerical.common.NumberUtil.IsValid (dblX3) ||</span>
+<span class="nc bnc" id="L371" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblY1) || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L372" title="All 4 branches missed.">					(dblY2) || !org.drip.numerical.common.NumberUtil.IsValid (dblY3) ||</span>
+<span class="nc bnc" id="L373" title="All 6 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (dblOFTarget) || null == rfop || null == of)</span>
+<span class="nc" id="L374">			throw new java.lang.Exception (&quot;VariateIteratorPrimitive.MultiFunction =&gt; Invalid inputs!&quot;);</span>
 
-<span class="nc" id="L365">		double dblNextRoot = Bisection (dblX1, dblX2);</span>
+<span class="nc" id="L376">		double dblNextRoot = Bisection (dblX1, dblX2);</span>
 
-<span class="nc bnc" id="L367" title="All 2 branches missed.">		if (!rfop.incrOFCalcs())</span>
-<span class="nc" id="L368">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L378" title="All 2 branches missed.">		if (!rfop.incrOFCalcs())</span>
+<span class="nc" id="L379">			throw new java.lang.Exception</span>
 				(&quot;VariateIteratorPrimitive.MultiFunction =&gt; Cannot increment rfop!&quot;);
 
-<span class="nc" id="L371">		double dblTargetDiff = java.lang.Math.abs (of.evaluate (dblNextRoot) - dblOFTarget);</span>
+<span class="nc" id="L382">		double dblTargetDiff = java.lang.Math.abs (of.evaluate (dblNextRoot) - dblOFTarget);</span>
 
 		try {
-<span class="nc" id="L374">			double dblRootSecant = FalsePosition (dblX1, dblX2, dblY1, dblY2);</span>
+<span class="nc" id="L385">			double dblRootSecant = FalsePosition (dblX1, dblX2, dblY1, dblY2);</span>
 
-<span class="nc bnc" id="L376" title="All 2 branches missed.">			if (!rfop.incrOFCalcs())</span>
-<span class="nc" id="L377">				throw new java.lang.Exception</span>
+<span class="nc bnc" id="L387" title="All 2 branches missed.">			if (!rfop.incrOFCalcs())</span>
+<span class="nc" id="L388">				throw new java.lang.Exception</span>
 					(&quot;VariateIteratorPrimitive.MultiFunction =&gt; Cannot increment rfop!&quot;);
 
-<span class="nc" id="L380">			double dblTargetDiffSecant = java.lang.Math.abs (of.evaluate (dblRootSecant) - dblOFTarget);</span>
+<span class="nc" id="L391">			double dblTargetDiffSecant = java.lang.Math.abs (of.evaluate (dblRootSecant) - dblOFTarget);</span>
 
-<span class="nc bnc" id="L382" title="All 2 branches missed.">			if (dblTargetDiffSecant &lt; dblTargetDiff) {</span>
-<span class="nc" id="L383">				dblNextRoot = dblRootSecant;</span>
-<span class="nc" id="L384">				dblTargetDiff = dblTargetDiffSecant;</span>
+<span class="nc bnc" id="L393" title="All 2 branches missed.">			if (dblTargetDiffSecant &lt; dblTargetDiff) {</span>
+<span class="nc" id="L394">				dblNextRoot = dblRootSecant;</span>
+<span class="nc" id="L395">				dblTargetDiff = dblTargetDiffSecant;</span>
 			}
-<span class="nc" id="L386">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L397">		} catch (java.lang.Exception e) {</span>
 			// e.printStackTrace();
-<span class="nc" id="L388">		}</span>
+<span class="nc" id="L399">		}</span>
 
 		try {
-<span class="nc" id="L391">			double dblRootQuadraticInterpolation = QuadraticInterpolation (dblX1, dblX2, dblX3, dblY1, dblY2,</span>
+<span class="nc" id="L402">			double dblRootQuadraticInterpolation = QuadraticInterpolation (dblX1, dblX2, dblX3, dblY1, dblY2,</span>
 				dblY3);
 
-<span class="nc bnc" id="L394" title="All 2 branches missed.">			if (!rfop.incrOFCalcs())</span>
-<span class="nc" id="L395">				throw new java.lang.Exception</span>
+<span class="nc bnc" id="L405" title="All 2 branches missed.">			if (!rfop.incrOFCalcs())</span>
+<span class="nc" id="L406">				throw new java.lang.Exception</span>
 					(&quot;VariateIteratorPrimitive.MultiFunction =&gt; Cannot increment rfop!&quot;);
 
-<span class="nc" id="L398">			double dblTargetDiffQuadraticInterpolation = java.lang.Math.abs (of.evaluate</span>
-<span class="nc" id="L399">				(dblRootQuadraticInterpolation) - dblOFTarget);</span>
+<span class="nc" id="L409">			double dblTargetDiffQuadraticInterpolation = java.lang.Math.abs (of.evaluate</span>
+<span class="nc" id="L410">				(dblRootQuadraticInterpolation) - dblOFTarget);</span>
 
-<span class="nc bnc" id="L401" title="All 2 branches missed.">			if (dblTargetDiffQuadraticInterpolation &lt; dblTargetDiff) {</span>
-<span class="nc" id="L402">				dblNextRoot = dblRootQuadraticInterpolation;</span>
-<span class="nc" id="L403">				dblTargetDiff = dblTargetDiffQuadraticInterpolation;</span>
+<span class="nc bnc" id="L412" title="All 2 branches missed.">			if (dblTargetDiffQuadraticInterpolation &lt; dblTargetDiff) {</span>
+<span class="nc" id="L413">				dblNextRoot = dblRootQuadraticInterpolation;</span>
+<span class="nc" id="L414">				dblTargetDiff = dblTargetDiffQuadraticInterpolation;</span>
 			}
-<span class="nc" id="L405">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L416">		} catch (java.lang.Exception e) {</span>
 			// e.printStackTrace();
-<span class="nc" id="L407">		}</span>
+<span class="nc" id="L418">		}</span>
 
 		try {
-<span class="nc" id="L410">			double dblRootInverseQuadraticInterpolation = QuadraticInterpolation (dblX1, dblX2, dblX3, dblY1,</span>
+<span class="nc" id="L421">			double dblRootInverseQuadraticInterpolation = QuadraticInterpolation (dblX1, dblX2, dblX3, dblY1,</span>
 				dblY2, dblY3);
 
-<span class="nc bnc" id="L413" title="All 2 branches missed.">			if (!rfop.incrOFCalcs())</span>
-<span class="nc" id="L414">				throw new java.lang.Exception</span>
+<span class="nc bnc" id="L424" title="All 2 branches missed.">			if (!rfop.incrOFCalcs())</span>
+<span class="nc" id="L425">				throw new java.lang.Exception</span>
 					(&quot;VariateIteratorPrimitive.MultiFunction =&gt; Cannot increment rfop!&quot;);
 
-<span class="nc" id="L417">			double dblTargetDiffInverseQuadraticInterpolation = java.lang.Math.abs (of.evaluate</span>
-<span class="nc" id="L418">				(dblRootInverseQuadraticInterpolation) - dblOFTarget);</span>
+<span class="nc" id="L428">			double dblTargetDiffInverseQuadraticInterpolation = java.lang.Math.abs (of.evaluate</span>
+<span class="nc" id="L429">				(dblRootInverseQuadraticInterpolation) - dblOFTarget);</span>
 
-<span class="nc bnc" id="L420" title="All 2 branches missed.">			if (dblTargetDiffInverseQuadraticInterpolation &lt; dblTargetDiff) {</span>
-<span class="nc" id="L421">				dblNextRoot = dblRootInverseQuadraticInterpolation;</span>
-<span class="nc" id="L422">				dblTargetDiff = dblTargetDiffInverseQuadraticInterpolation;</span>
+<span class="nc bnc" id="L431" title="All 2 branches missed.">			if (dblTargetDiffInverseQuadraticInterpolation &lt; dblTargetDiff) {</span>
+<span class="nc" id="L432">				dblNextRoot = dblRootInverseQuadraticInterpolation;</span>
+<span class="nc" id="L433">				dblTargetDiff = dblTargetDiffInverseQuadraticInterpolation;</span>
 			}
-<span class="nc" id="L424">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L435">		} catch (java.lang.Exception e) {</span>
 			// e.printStackTrace();
-<span class="nc" id="L426">		}</span>
+<span class="nc" id="L437">		}</span>
 
 		try {
-<span class="nc" id="L429">			double dblRootRidder = Ridder (dblX1, dblX2, dblX3, dblY1, dblY2, dblY3);</span>
+<span class="nc" id="L440">			double dblRootRidder = Ridder (dblX1, dblX2, dblX3, dblY1, dblY2, dblY3);</span>
 
-<span class="nc bnc" id="L431" title="All 2 branches missed.">			if (!rfop.incrOFCalcs())</span>
-<span class="nc" id="L432">				throw new java.lang.Exception</span>
+<span class="nc bnc" id="L442" title="All 2 branches missed.">			if (!rfop.incrOFCalcs())</span>
+<span class="nc" id="L443">				throw new java.lang.Exception</span>
 					(&quot;VariateIteratorPrimitive.MultiFunction =&gt; Cannot increment rfop!&quot;);
 
-<span class="nc" id="L435">			double dblTargetDiffRidder = java.lang.Math.abs (of.evaluate (dblRootRidder) - dblOFTarget);</span>
+<span class="nc" id="L446">			double dblTargetDiffRidder = java.lang.Math.abs (of.evaluate (dblRootRidder) - dblOFTarget);</span>
 
-<span class="nc bnc" id="L437" title="All 2 branches missed.">			if (dblTargetDiffRidder &lt; dblTargetDiff) {</span>
-<span class="nc" id="L438">				dblNextRoot = dblRootRidder;</span>
-<span class="nc" id="L439">				dblTargetDiff = dblTargetDiffRidder;</span>
+<span class="nc bnc" id="L448" title="All 2 branches missed.">			if (dblTargetDiffRidder &lt; dblTargetDiff) {</span>
+<span class="nc" id="L449">				dblNextRoot = dblRootRidder;</span>
+<span class="nc" id="L450">				dblTargetDiff = dblTargetDiffRidder;</span>
 			}
-<span class="nc" id="L441">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L452">		} catch (java.lang.Exception e) {</span>
 			// e.printStackTrace();
-<span class="nc" id="L443">		}</span>
+<span class="nc" id="L454">		}</span>
 
-<span class="nc" id="L445">		return dblNextRoot;</span>
+<span class="nc" id="L456">		return dblNextRoot;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,38 +6,49 @@ package org.drip.function.r1tor1;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -89,18 +100,18 @@ package org.drip.function.r1tor1;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/r1tor1/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Function Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1/README.md&quot;&gt;Built-in R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Functions&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class AlmgrenEnhancedEulerUpdate extends org.drip.function.definition.R1ToR1 {
-<span class="fc" id="L102">	private double _dblA = java.lang.Double.NaN;</span>
-<span class="fc" id="L103">	private double _dblB = java.lang.Double.NaN;</span>
+<span class="fc" id="L113">	private double _dblA = java.lang.Double.NaN;</span>
+<span class="fc" id="L114">	private double _dblB = java.lang.Double.NaN;</span>
 
 	/**
 	 * AlmgrenEnhancedEulerUpdate Constructor
@@ -116,12 +127,12 @@ public class AlmgrenEnhancedEulerUpdate extends org.drip.function.definition.R1T
 		final double dblB)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L119">		super (null);</span>
+<span class="fc" id="L130">		super (null);</span>
 
-<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblA = dblA) ||</span>
-<span class="pc bpc" id="L122" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblB = dblB) || _dblA == _dblB)</span>
-<span class="nc" id="L123">			throw new java.lang.Exception (&quot;AlmgrenEnhancedEulerUpdate Constructor =&gt; Inbalid Inputs&quot;);</span>
-<span class="fc" id="L124">	}</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblA = dblA) ||</span>
+<span class="pc bpc" id="L133" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblB = dblB) || _dblA == _dblB)</span>
+<span class="nc" id="L134">			throw new java.lang.Exception (&quot;AlmgrenEnhancedEulerUpdate Constructor =&gt; Inbalid Inputs&quot;);</span>
+<span class="fc" id="L135">	}</span>
 
 	/**
 	 * Retrieve the &quot;A&quot; Parameter
@@ -131,7 +142,7 @@ public class AlmgrenEnhancedEulerUpdate extends org.drip.function.definition.R1T
 
 	public double a()
 	{
-<span class="nc" id="L134">		return _dblA;</span>
+<span class="nc" id="L145">		return _dblA;</span>
 	}
 
 	/**
@@ -142,21 +153,21 @@ public class AlmgrenEnhancedEulerUpdate extends org.drip.function.definition.R1T
 
 	public double b()
 	{
-<span class="nc" id="L145">		return _dblB;</span>
+<span class="nc" id="L156">		return _dblB;</span>
 	}
 
 	@Override public double evaluate (
 		final double dblT)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L152" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblT))</span>
-<span class="nc" id="L153">			throw new java.lang.Exception (&quot;AlmgrenEnhancedEulerUpdate::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblT))</span>
+<span class="nc" id="L164">			throw new java.lang.Exception (&quot;AlmgrenEnhancedEulerUpdate::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L155">		double dblInvExpAT = java.lang.Math.exp (-1. * _dblA * dblT);</span>
+<span class="fc" id="L166">		double dblInvExpAT = java.lang.Math.exp (-1. * _dblA * dblT);</span>
 
-<span class="fc" id="L157">		double dblInvExpBT = java.lang.Math.exp (-1. * _dblB * dblT);</span>
+<span class="fc" id="L168">		double dblInvExpBT = java.lang.Math.exp (-1. * _dblB * dblT);</span>
 
-<span class="fc" id="L159">		return (_dblA * dblInvExpBT - _dblB * dblInvExpAT) / (dblInvExpBT - dblInvExpAT);</span>
+<span class="fc" id="L170">		return (_dblA * dblInvExpBT - _dblB * dblInvExpAT) / (dblInvExpBT - dblInvExpAT);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
