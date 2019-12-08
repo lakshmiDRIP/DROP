@@ -1,6 +1,6 @@
 
 /**
- * Built-in R^1 To R^1 Solvers
+ * Built-in R<sup>1</sup> To R<sup>1</sup> Solvers
  *
  * @author Lakshmi Krishnamurthy
  */

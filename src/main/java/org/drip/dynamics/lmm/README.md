@@ -57,14 +57,14 @@ DROP Dynamics LMM Package implements the LMM Based Latent State Evolution.
 
 ## References
 
+ * Brace, A., D. Gatarek, and M. Musiela (1997): The Market Model of Interest Rate Dynamics <i>Mathematical
+ 	Finance</i> <b>7 (2)</b> 127-155
+
  * Goldys, B., M. Musiela, and D. Sondermann (1994): <i>Log-normality of Rates and Term Structure Models</i>
  	<b>The University of New South Wales</b>
 
  * Musiela, M. (1994): <i>Nominal Annual Rates and Log-normal Volatility Structure</i> <b>The University of
  	New South Wales</b>
-
- * Brace, A., D. Gatarek, and M. Musiela (1997): The Market Model of Interest Rate Dynamics <i>Mathematical
- 	Finance</i> <b>7 (2)</b> 127-155
 
 
 ## DROP Specifications

@@ -38,6 +38,9 @@ DROP Numerical Linear Algebra Package implements the Linear Algebra Matrix Trans
  * [***QR***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/linearalgebra/QR.java)
  <i>QR</i> holds the Results of QR Decomposition - viz., the Q and the R Matrices.
 
+ * [***UD***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/linearalgebra/UD.java)
+ <i>UD</i> holds the U and the D Matrices that form the Result of the UDU Transpose Decomposition.
+
 
 ## DROP Specifications
 
