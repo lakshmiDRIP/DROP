@@ -25,25 +25,6 @@ DROP Validation Evidence implements the Sample and Ensemble Evidence Processing.
 
 ## References
 
- * Anfuso, F., D. Karyampas, and A. Nawroth (2017): A Sound Basel III Compliant Framework for Back-testing Credit Exposure Models https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2264620 <b>eSSRN</b>
-
- * Bhattacharya, B., and D. Habtzghi (2002): Median of the p-value under the Alternate Hypothesis <i>American Statistician</i> <b>56 (3)</b> 202-206
-
- * Diebold, F. X., T. A. Gunther, and A. S. Tay (1998): Evaluating Density Forecasts with Applications to Financial Risk Management, International Economic Review 39 (4) 863-883
-
- * Head, M. L., L. Holman, R, Lanfear, A. T. Kahn, and M. D. Jennions (2015): The Extent and Consequences of p-Hacking in Science PLoS Biology 13 (3) e1002106
-
- * Kenyon, C., and R. Stamm (2012): <i>Discounting, LIBOR, CVA, and Funding: Interest Rate and Credit Pricing</i> <b>Palgrave Macmillan</b>
-
- * Wasserstein, R. L., and N. A. Lazar (2016): The ASA’s Statement on p-values: Context, Process, and Purpose <i>American Statistician</i> <b>70 (2)</b> 129-133
-
- * Wetzels, R., D. Matzke, M. D. Lee, J. N. Rouder, G, J, Iverson, and E. J. Wagenmakers (2011): Statistical Evidence in Experimental Psychology: An Empirical Comparison using 855 t-Tests <i>Perspectives in Psychological Science</i> <b>6 (3)</b> 291-298
-
- * Wikipedia (2018): Probability Integral Transform https://en.wikipedia.org/wiki/Probability_integral_transform
-
- * Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
-
-
 ## DROP Specifications
 
  * Main                     => https://lakshmidrip.github.io/DROP/
