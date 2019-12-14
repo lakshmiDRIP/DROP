@@ -91,8 +91,8 @@ package org.drip.validation.distance;
  *  			Applications to Financial Risk Management, International Economic Review 39 (4) 863-883
  *  	</li>
  *  	<li>
- *  		Kenyon, C., and R. Stamm (2012): Discounting, LIBOR, CVA, and Funding: Interest Rate and Credit
- *  			Pricing, Palgrave Macmillan
+ *  		Kenyon, C., and R. Stamm (2012): <i>Discounting, LIBOR, CVA, and Funding: Interest Rate and
+ *  			Credit Pricing</i> <b>Palgrave Macmillan</b>
  *  	</li>
  *  	<li>
  *  		Wikipedia (2018): Probability Integral Transform
