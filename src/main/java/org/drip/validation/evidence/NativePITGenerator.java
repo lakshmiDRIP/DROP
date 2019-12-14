@@ -83,20 +83,20 @@ package org.drip.validation.evidence;
  *  <ul>
  *  	<li>
  *  		Bhattacharya, B., and D. Habtzghi (2002): Median of the p-value under the Alternate Hypothesis
- *  			American Statistician 56 (3) 202-206
+ *  			<i>American Statistician</i> <b>56 (3)</b> 202-206
  *  	</li>
  *  	<li>
  *  		Head, M. L., L. Holman, R, Lanfear, A. T. Kahn, and M. D. Jennions (2015): The Extent and
- *  			Consequences of p-Hacking in Science PLoS Biology 13 (3) e1002106
+ *  			<i>Consequences of p-Hacking in Science PLoS Biology</i> <b>13 (3)</b> e1002106
  *  	</li>
  *  	<li>
  *  		Wasserstein, R. L., and N. A. Lazar (2016): The ASA’s Statement on p-values: Context, Process,
- *  			and Purpose American Statistician 70 (2) 129-133
+ *  			and Purpose <i>American Statistician</i> <b>70 (2)</b> 129-133
  *  	</li>
  *  	<li>
  *  		Wetzels, R., D. Matzke, M. D. Lee, J. N. Rouder, G, J, Iverson, and E. J. Wagenmakers (2011):
- *  		Statistical Evidence in Experimental Psychology: An Empirical Comparison using 855 t-Tests
- *  		Perspectives in Psychological Science 6 (3) 291-298
+ *  			Statistical Evidence in Experimental Psychology: An Empirical Comparison using 855 t-Tests
+ *  			<i>Perspectives in Psychological Science</i> <b>6 (3)</b> 291-298
  *  	</li>
  *  	<li>
  *  		Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
