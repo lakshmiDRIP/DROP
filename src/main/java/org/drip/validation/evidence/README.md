@@ -25,6 +25,17 @@ DROP Validation Evidence implements the Sample and Ensemble Evidence Processing.
 
 ## References
 
+ * Anfuso, F., D. Karyampas, and A. Nawroth (2017): A Sound Basel III Compliant Framework for Back-testing Credit Exposure Models https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2264620 <b>eSSRN</b>
+
+ * Bhattacharya, B., and D. Habtzghi (2002): Median of the p-value under the Alternate Hypothesis <i>American Statistician</i> <b>56 (3)</b> 202-206
+
+ * Diebold, F. X., T. A. Gunther, and A. S. Tay (1998): Evaluating Density Forecasts with Applications to Financial Risk Management <i>International Economic Review</i> <b>39 (4)</b> 863-883
+
+ * Head, M. L., L. Holman, R, Lanfear, A. T. Kahn, and M. D. Jennions (2015): The Extent and Consequences of p-Hacking in Science <i>PLoS Biology</i> <b>13 (3)</b> e1002106
+
+ * Kenyon, C., and R. Stamm (2012): <i>Discounting, LIBOR, CVA, and Funding: Interest Rate and Credit Pricing</i> <b>Palgrave Macmillan</b>
+
+
 ## DROP Specifications
 
  * Main                     => https://lakshmidrip.github.io/DROP/
