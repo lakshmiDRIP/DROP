@@ -1,0 +1,727 @@
+
+package org.drip.capital.env;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Quantitative Risk Analytics
+ */
+
+/**
+ * <i>BusinessGroupingFactory</i> instantiates the Built-in Business Groupings. The References are:
+ * 
+ * <br><br>
+ * 	<ul>
+ * 		<li>
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		</li>
+ * 		<li>
+ * 			Glasserman, P. (2004): <i>Monte Carlo Methods in Financial Engineering</i> <b>Springer</b>
+ * 		</li>
+ * 		<li>
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital <i>Risk</i> <b>2 (4)</b> 27-39
+ * 		</li>
+ * 	</ul>
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class BusinessGroupingFactory
+{
+
+	private static final boolean AddBusinessGrouping (
+		final java.util.Map<java.lang.String, org.drip.capital.label.BusinessGrouping>
+			businessGroupingMap,
+		final org.drip.capital.label.BusinessGrouping businessGrouping)
+	{
+		businessGroupingMap.put (
+			businessGrouping.business(),
+			businessGrouping
+		);
+
+		return true;
+	}
+
+	/**
+	 * Instantiate the Built-in BusinessGroupingContext
+	 * 
+	 * @return TRUE - The BusinessGroupingContext Instance
+	 */
+
+	public static org.drip.capital.shell.BusinessGroupingContext Instantiate()
+	{
+		java.util.Map<java.lang.String, org.drip.capital.label.BusinessGrouping> businessGroupingMap =
+			new org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.capital.label.BusinessGrouping>();
+
+		try
+		{
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.G10_RATES,
+					org.drip.capital.definition.Product.G10_RATES,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.G10_FX,
+					org.drip.capital.definition.Product.FX_LOCAL_MARKETS,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.LOCAL_MARKETS,
+					org.drip.capital.definition.Product.FX_LOCAL_MARKETS,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.RISK_TREASURY,
+					org.drip.capital.definition.Product.G10_RISK_TREASURY_RV_FINANCE,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.FINANCE,
+					org.drip.capital.definition.Product.G10_RISK_TREASURY_RV_FINANCE,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.FIMA,
+					org.drip.capital.definition.Product.G10_RISK_TREASURY_RV_FINANCE,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.PECD,
+					org.drip.capital.definition.Product.GSP,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.CREDIT_TRADING,
+					org.drip.capital.definition.Product.GSP,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.EM_CREDIT_TRADING,
+					org.drip.capital.definition.Product.GSP,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.SHORT_TERM,
+					org.drip.capital.definition.Product.GSP,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.CREDIT_MACRO_HEDGE,
+					org.drip.capital.definition.Product.GSP,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.DISTRESSED,
+					org.drip.capital.definition.Product.GSP,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.SECURITIZED_MARKETS,
+					org.drip.capital.definition.Product.GSP,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.GSSG_WEST,
+					org.drip.capital.definition.Product.GSP,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.MUNICIPAL,
+					org.drip.capital.definition.Product.GSP,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.COMMODITIES_HOUSTON,
+					org.drip.capital.definition.Product.COMMODITIES,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.CASH,
+					org.drip.capital.definition.Product.EQUITIES,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.EQUITY_DERIVATIVES,
+					org.drip.capital.definition.Product.EQUITIES,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.CONVERTS,
+					org.drip.capital.definition.Product.EQUITIES,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.PRIME_FINANCE,
+					org.drip.capital.definition.Product.PRIME_FINANCE,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.OTHER_GLOBAL_MARKETS,
+					org.drip.capital.definition.Product.OTHER_GLOBAL_MARKETS,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.NIKKO_INVESTMENTS,
+					org.drip.capital.definition.Product.NIKKO_INVESTMENTS,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.EQUITY_UNDERWRITING,
+					org.drip.capital.definition.Product.EQUITY_UNDERWRITING,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.IG_PRIMARY_LOANS,
+					org.drip.capital.definition.Product.FIXED_INCOME_UNDERWRITING,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.IG_BONDS,
+					org.drip.capital.definition.Product.FIXED_INCOME_UNDERWRITING,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.LEVERAGED_FINANCE,
+					org.drip.capital.definition.Product.FIXED_INCOME_UNDERWRITING,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.EM_PRIMARY_LOANS,
+					org.drip.capital.definition.Product.FIXED_INCOME_UNDERWRITING,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.EM_BONDS,
+					org.drip.capital.definition.Product.FIXED_INCOME_UNDERWRITING,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.PROJECT_FINANCE,
+					org.drip.capital.definition.Product.FIXED_INCOME_UNDERWRITING,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.OTHER_FI_UNDERWRITING,
+					org.drip.capital.definition.Product.FIXED_INCOME_UNDERWRITING,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.EM_ABF,
+					org.drip.capital.definition.Product.EM_ABF,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.CAI,
+					org.drip.capital.definition.Product.CAI,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.ADVISORY,
+					org.drip.capital.definition.Product.ADVISORY,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.GWM,
+					org.drip.capital.definition.Product.GWM,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.GTS,
+					org.drip.capital.definition.Product.GTS,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.CONSUMER_OTHER,
+					org.drip.capital.definition.Product.CONSUMER,
+					org.drip.capital.definition.Group.CITICORP_CONSUMER
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.RETAIL_BANKING,
+					org.drip.capital.definition.Product.CONSUMER,
+					org.drip.capital.definition.Group.CITICORP_CONSUMER
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.CONSUMER_CARDS,
+					org.drip.capital.definition.Product.CONSUMER,
+					org.drip.capital.definition.Group.CITICORP_CONSUMER
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.REAL_ESTATE_LENDING,
+					org.drip.capital.definition.Product.HOLDINGS_CONSUMER,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.STUDENT_LOANS,
+					org.drip.capital.definition.Product.HOLDINGS_CONSUMER,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.RETAIL_PARTNER_CARDS,
+					org.drip.capital.definition.Product.HOLDINGS_CONSUMER,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.RETAIL_AUTO_LENDING,
+					org.drip.capital.definition.Product.HOLDINGS_CONSUMER,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.PRIMERICA_FINANCIAL_SERVICES,
+					org.drip.capital.definition.Product.HOLDINGS_CONSUMER,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.COMMERCIAL_REAL_ESTATE,
+					org.drip.capital.definition.Product.HOLDINGS_CONSUMER,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.CITIFINANCIAL,
+					org.drip.capital.definition.Product.HOLDINGS_CONSUMER,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.INTERNATIONAL_CARDS,
+					org.drip.capital.definition.Product.HOLDINGS_CONSUMER,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.INTERNATIONAL_RETAIL_BANKING,
+					org.drip.capital.definition.Product.HOLDINGS_CONSUMER,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.OTHER_CONSUMER,
+					org.drip.capital.definition.Product.HOLDINGS_CONSUMER,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.SMITH_BARNEY_BAM,
+					org.drip.capital.definition.Product.BAM,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.OTHER_BAM,
+					org.drip.capital.definition.Product.BAM,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.AI,
+					org.drip.capital.definition.Product.SAP,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.CAPITAL_MARKETS_ORGANIZATION,
+					org.drip.capital.definition.Product.SAP,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.CAPITAL_MARKETS_ORIGINATION_LENDING,
+					org.drip.capital.definition.Product.SAP,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.CENTRAL_AMERICA_MORTGAGES,
+					org.drip.capital.definition.Product.SAP,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.COMMODITIES,
+					org.drip.capital.definition.Product.SAP,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.CREDIT_MARKETS,
+					org.drip.capital.definition.Product.SAP,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.EM_ASSET_BACKED_FINANCE,
+					org.drip.capital.definition.Product.SAP,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.EQUITIES,
+					org.drip.capital.definition.Product.SAP,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.GLOBAL_SECURITIZED_MARKETS,
+					org.drip.capital.definition.Product.SAP,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.GLOBAL_CREDIT_MARKETS,
+					org.drip.capital.definition.Product.SAP,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.GTS_HOLDINGS_TRADE,
+					org.drip.capital.definition.Product.SAP,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.LONG_TERM_ASSET_GROUP,
+					org.drip.capital.definition.Product.SAP,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.MUNICIPAL_SECURITIES_CITI_COMMUNITY,
+					org.drip.capital.definition.Product.SAP,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.MUNICIPAL_SECURITIES,
+					org.drip.capital.definition.Product.SAP,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.OTHER_SPECIAL_ASSET_POOL,
+					org.drip.capital.definition.Product.SAP,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.PRIVATE_BANKING,
+					org.drip.capital.definition.Product.SAP,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.RATES_AND_CURRENCIES,
+					org.drip.capital.definition.Product.SAP,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.RUBICON_INDIA,
+					org.drip.capital.definition.Product.SAP,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.SAP_ADMIN,
+					org.drip.capital.definition.Product.SAP,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.US_COMMERCIAL_BANKING,
+					org.drip.capital.definition.Product.SAP,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.US_CONSUMER_INSTALLMENT_LOANS,
+					org.drip.capital.definition.Product.SAP,
+					org.drip.capital.definition.Group.HOLDINGS
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.CORPORATE_CENTER,
+					org.drip.capital.definition.Product.CORPORATE_CENTER,
+					org.drip.capital.definition.Group.CORPORATE_CENTER
+				)
+			);
+
+			AddBusinessGrouping (
+				businessGroupingMap,
+				new org.drip.capital.label.BusinessGrouping (
+					org.drip.capital.definition.Business.OS_B,
+					org.drip.capital.definition.Product.OS_B,
+					org.drip.capital.definition.Group.CITICORP_ICG
+				)
+			);
+
+			return new org.drip.capital.shell.BusinessGroupingContext (businessGroupingMap);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+}

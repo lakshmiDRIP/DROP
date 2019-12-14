@@ -1,6 +1,6 @@
 
 /**
- * R^d To R^1 Gradient Descent Techniques
+ * R<sup>d</sup> To R<sup>1</sup> Gradient Descent Techniques
  *
  * @author Lakshmi Krishnamurthy
  */

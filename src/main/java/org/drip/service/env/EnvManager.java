@@ -258,6 +258,29 @@ public class EnvManager {
 			return null;
 		}
 
+		if (!org.drip.capital.env.CapitalEstimationContextManager.Init())
+		{
+			System.out.println
+				("EnvManager::InitEnv => Cannot Initialize Capital Estimation Context Manager!");
+
+			return null;
+		}
+
+		if (!org.drip.capital.env.GSSTDesignContextManager.Init())
+		{
+			System.out.println ("EnvManager::InitEnv => Cannot Initialize GSST Design Context Manager!");
+
+			return null;
+		}
+
+		if (!org.drip.capital.env.GSSTDefinitionContextManager.Init())
+		{
+			System.out.println
+				("EnvManager::InitEnv => Cannot Initialize GSST Definition Context Manager!");
+
+			return null;
+		}
+
 		if (s_bInvocationCapture)
 		{
 			if (!org.drip.service.env.InvocationManager.Setup())
