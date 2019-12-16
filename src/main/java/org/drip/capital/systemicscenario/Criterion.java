@@ -1,5 +1,5 @@
 
-package org.drip.capital.gsstdesign;
+package org.drip.capital.systemicscenario;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -98,7 +98,7 @@ package org.drip.capital.gsstdesign;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md">Capital Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md">Basel Market Risk and Operational Capital</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/gsstdesign/README.md">Systemic Stress Scenario Design/Construction</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/systemicscenario/README.md">Systemic Stress Scenario Design/Construction</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
@@ -127,7 +127,7 @@ public class Criterion
 			return new Criterion (
 				"Baa Spread Change",
 				"Baa Spread Change",
-				org.drip.capital.gsstdesign.CriterionUnit.BASIS_POINT,
+				org.drip.capital.systemicscenario.CriterionUnit.BASIS_POINT,
 				baaSpreadChange
 			);
 		}
@@ -155,7 +155,7 @@ public class Criterion
 			return new Criterion (
 				"SnP 500 Annual Return",
 				"SnP 500 Annual Return",
-				org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+				org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 				snp500AnnualReturn
 			);
 		}
@@ -183,7 +183,7 @@ public class Criterion
 			return new Criterion (
 				"UST 5Y Absolute Change",
 				"UST 5Y Absolute Change",
-				org.drip.capital.gsstdesign.CriterionUnit.BASIS_POINT,
+				org.drip.capital.systemicscenario.CriterionUnit.BASIS_POINT,
 				ust5YAbsoluteChange
 			);
 		}
@@ -211,7 +211,7 @@ public class Criterion
 			return new Criterion (
 				"UST 10Y - 3M Absolute Change",
 				"UST 10Y - 3M Absolute Change",
-				org.drip.capital.gsstdesign.CriterionUnit.BASIS_POINT,
+				org.drip.capital.systemicscenario.CriterionUnit.BASIS_POINT,
 				ust10YMinus3MAbsoluteChange
 			);
 		}
@@ -239,7 +239,7 @@ public class Criterion
 			return new Criterion (
 				"FX Rate Change",
 				"FX Rate Change in USD/EUR. Prior to 1999 in German DEM/USD",
-				org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+				org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 				fxRateChange
 			);
 		}
@@ -267,7 +267,7 @@ public class Criterion
 			return new Criterion (
 				"WTI Spot Return",
 				"WTI Spot Return from 1946",
-				org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+				org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 				wtiSpotReturn
 			);
 		}
@@ -295,7 +295,7 @@ public class Criterion
 			return new Criterion (
 				"SnP GSCI Non-energy Commodity Index",
 				"SnP GSCI Non-energy Commodity Index",
-				org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+				org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 				snpGSCINonEnergyCommodityIndex
 			);
 		}

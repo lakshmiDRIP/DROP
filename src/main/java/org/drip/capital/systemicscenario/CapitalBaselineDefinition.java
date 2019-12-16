@@ -1,5 +1,5 @@
 
-package org.drip.capital.feed;
+package org.drip.capital.systemicscenario;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,8 +76,8 @@ package org.drip.capital.feed;
  */
 
 /**
- * <i>CapitalUnitCBSSTScenario</i> holds the CBSST Scenario Specifications of a Capital Unit. The References
- * 	are:
+ * <i>CapitalBaselineDefinition</i> holds the Capital Baseline Estimates for the Historical Scenarios. The
+ *	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -98,81 +98,51 @@ package org.drip.capital.feed;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md">Capital Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md">Basel Market Risk and Operational Capital</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/feed/README.md">Risk Capital Estimation - Feed Processors</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/systemicscenario/README.md">Systemic Stress Scenario Design/Construction</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CapitalUnitCBSSTScenario
+public class CapitalBaselineDefinition
 {
-	private java.lang.String _scenarioName = "";
-	private java.lang.String _factorSensitivity = "";
-	private org.drip.capital.shell.SystemicScenarioPnLSeries _scenarioPnL = null;
+	private double _fy1974 = java.lang.Double.NaN;
+	private double _fy2008 = java.lang.Double.NaN;
 
 	/**
-	 * CapitalUnitCBSSTScenario Constructor
+	 * CapitalBaselineDefinition Constructor
 	 * 
-	 * @param factorSensitivity Factor Sensitivity
-	 * @param scenarioName Scenario Name
-	 * @param scenarioPnL Scenario PnL
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @param fy1974 FY 1974 Historical Realization
+	 * @param fy2008 FY 2008 Historical Realization
 	 */
 
-	public CapitalUnitCBSSTScenario (
-		final java.lang.String factorSensitivity,
-		final java.lang.String scenarioName,
-		final org.drip.capital.shell.SystemicScenarioPnLSeries scenarioPnL)
-		throws java.lang.Exception
+	public CapitalBaselineDefinition (
+		final double fy1974,
+		final double fy2008)
 	{
-		if (null == (_factorSensitivity = factorSensitivity) || _factorSensitivity.isEmpty() ||
-			null == (_scenarioName = scenarioName) || _scenarioName.isEmpty() ||
-			null == (_scenarioPnL = scenarioPnL))
-		{
-			throw new java.lang.Exception (
-				"CapitalUnitCBSSTScenario Constructor => Invalid Inputs"
-			);
-		}
+		_fy1974 = fy1974;
+		_fy2008 = fy2008;
 	}
 
 	/**
-	 * Retrieve the Factor Sensitivity
+	 * Retrieve the FY 1974 Historical Realization
 	 * 
-	 * @return The Factor Sensitivity
+	 * @return The FY 1974 Historical Realization
 	 */
 
-	public java.lang.String factorSensitivity()
+	public double fy1974()
 	{
-		return _factorSensitivity;
+		return _fy1974;
 	}
 
 	/**
-	 * Retrieve the Scenario Name
+	 * Retrieve the FY 2008 Historical Realization
 	 * 
-	 * @return The Scenario Name
+	 * @return The FY 2008 Historical Realization
 	 */
 
-	public java.lang.String scenarioName()
+	public double fy2008()
 	{
-		return _scenarioName;
-	}
-
-	/**
-	 * Retrieve the CBSST Scenario PnL
-	 * 
-	 * @return The CBSST Scenario PnL
-	 */
-
-	public org.drip.capital.shell.SystemicScenarioPnLSeries scenarioPnL()
-	{
-		return _scenarioPnL;
-	}
-
-	@Override public java.lang.String toString()
-	{
-		return "[" + _factorSensitivity + " | " +
-			_scenarioName + " | {" +
-			_scenarioPnL.toString() + "}]";
+		return _fy2008;
 	}
 }

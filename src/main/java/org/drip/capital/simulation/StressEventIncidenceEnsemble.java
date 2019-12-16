@@ -199,7 +199,9 @@ public class StressEventIncidenceEnsemble
 				java.lang.String paaCategoryName = stressEventNamePrefix +
 					incidencePAACategoryPnLDecompositionEntry.getKey();
 
-				if (paaCategoryPnLDecomposition.containsKey (paaCategoryName))
+				if (paaCategoryPnLDecomposition.containsKey (
+					paaCategoryName
+				))
 				{
 					paaCategoryPnLDecomposition.put (
 						paaCategoryName,

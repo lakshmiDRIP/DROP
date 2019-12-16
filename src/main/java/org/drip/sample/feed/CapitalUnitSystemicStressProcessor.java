@@ -6,8 +6,8 @@ import java.util.Map;
 import org.drip.capital.entity.CapitalUnitEventContainer;
 import org.drip.capital.feed.CapitalUnitStressScenarioLoader;
 import org.drip.capital.stress.Event;
-import org.drip.capital.stress.GSSTEventContainer;
-import org.drip.capital.stress.IBSSTEventContainer;
+import org.drip.capital.stress.SystemicEventContainer;
+import org.drip.capital.stress.IdiosyncraticEventContainer;
 import org.drip.capital.stress.PnLSeries;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
@@ -78,7 +78,7 @@ public class CapitalUnitSystemicStressProcessor
 				"\t| " + FormatUtil.FormatDouble (++count, 3, 0, 1.) + " => " + capitalUnitCoordinateFQN
 			);
 
-			IBSSTEventContainer iBSSTEventContainer = capitalUnitEventContainer.iBSSTEventContainer();
+			IdiosyncraticEventContainer iBSSTEventContainer = capitalUnitEventContainer.idiosyncraticEventContainer();
 
 			if (null != iBSSTEventContainer)
 			{
@@ -92,9 +92,9 @@ public class CapitalUnitSystemicStressProcessor
 				}
 			}
 
-			GSSTEventContainer gsstEventContainer = capitalUnitEventContainerMap.get (
+			SystemicEventContainer gsstEventContainer = capitalUnitEventContainerMap.get (
 				capitalUnitCoordinateFQN
-			).gsstEventContainer();
+			).systemicEventContainer();
 
 			Map<String, Event> gsstEventMap = gsstEventContainer.eventMap();
 

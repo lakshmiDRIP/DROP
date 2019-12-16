@@ -184,7 +184,7 @@ public class AllocatedPnLAttribution
 			return null;
 		}
 
-		double allocationScale = _entityComponentCapital.gsstStandaloneMultiplier();
+		double allocationScale = _entityComponentCapital.systemicStandaloneMultiplier();
 
 		java.util.Map<java.lang.String, java.lang.Double> paaCategoryDecompositionExplainMap = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
@@ -202,144 +202,144 @@ public class AllocatedPnLAttribution
 		return paaCategoryDecompositionExplainMap;
 	}
 
-	@Override public java.util.Map<java.lang.String, java.lang.Double> gsstPnLExplainMap()
+	@Override public java.util.Map<java.lang.String, java.lang.Double> systemicPnLExplainMap()
 	{
-		java.util.Map<java.lang.String, java.lang.Double> standaloneGSSTPnLExplainMap =
-			_standalonePnLAttribution.gsstPnLExplainMap();
+		java.util.Map<java.lang.String, java.lang.Double> standaloneSystemicPnLExplainMap =
+			_standalonePnLAttribution.systemicPnLExplainMap();
 
-		if (null == standaloneGSSTPnLExplainMap || 0 == standaloneGSSTPnLExplainMap.size())
+		if (null == standaloneSystemicPnLExplainMap || 0 == standaloneSystemicPnLExplainMap.size())
 		{
 			return null;
 		}
 
-		double allocationScale = _entityComponentCapital.gsstStandaloneMultiplier();
+		double allocationScale = _entityComponentCapital.systemicStandaloneMultiplier();
 
-		java.util.Map<java.lang.String, java.lang.Double> gsstPnLExplainMap = new
+		java.util.Map<java.lang.String, java.lang.Double> systemicPnLExplainMap = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> standaloneGSSTPnLExplainMapEntry :
-			standaloneGSSTPnLExplainMap.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> standaloneSystemicPnLExplainMapEntry :
+			standaloneSystemicPnLExplainMap.entrySet())
 		{
-			gsstPnLExplainMap.put (
-				standaloneGSSTPnLExplainMapEntry.getKey(),
-				standaloneGSSTPnLExplainMapEntry.getValue() * allocationScale
+			systemicPnLExplainMap.put (
+				standaloneSystemicPnLExplainMapEntry.getKey(),
+				standaloneSystemicPnLExplainMapEntry.getValue() * allocationScale
 			);
 		}
 
-		return gsstPnLExplainMap;
+		return systemicPnLExplainMap;
 	}
 
-	@Override public java.util.Map<java.lang.String, java.lang.Double> gsstGrossPnLExplainMap()
+	@Override public java.util.Map<java.lang.String, java.lang.Double> systemicGrossPnLExplainMap()
 	{
 		return null;
 	}
 
-	@Override public java.util.Map<java.lang.String, java.lang.Double> cBSSTPnLExplainMap()
+	@Override public java.util.Map<java.lang.String, java.lang.Double> correlatedPnLExplainMap()
 	{
-		java.util.Map<java.lang.String, java.lang.Double> standaloneCBSSTPnLExplainMap =
-			_standalonePnLAttribution.cBSSTPnLExplainMap();
+		java.util.Map<java.lang.String, java.lang.Double> standaloneCorrelatedPnLExplainMap =
+			_standalonePnLAttribution.correlatedPnLExplainMap();
 
-		if (null == standaloneCBSSTPnLExplainMap || 0 == standaloneCBSSTPnLExplainMap.size())
+		if (null == standaloneCorrelatedPnLExplainMap || 0 == standaloneCorrelatedPnLExplainMap.size())
 		{
 			return null;
 		}
 
-		double allocationScale = _entityComponentCapital.cBSSTStandaloneMultiplier();
+		double allocationScale = _entityComponentCapital.correlatedStandaloneMultiplier();
 
-		java.util.Map<java.lang.String, java.lang.Double> cBSSTPnLExplainMap = new
+		java.util.Map<java.lang.String, java.lang.Double> correlatedPnLExplainMap = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> standaloneCBSSTPnLExplainMapEntry :
-			standaloneCBSSTPnLExplainMap.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> standaloneCorrelatedPnLExplainMapEntry :
+			standaloneCorrelatedPnLExplainMap.entrySet())
 		{
-			cBSSTPnLExplainMap.put (
-				standaloneCBSSTPnLExplainMapEntry.getKey(),
-				standaloneCBSSTPnLExplainMapEntry.getValue() * allocationScale
+			correlatedPnLExplainMap.put (
+				standaloneCorrelatedPnLExplainMapEntry.getKey(),
+				standaloneCorrelatedPnLExplainMapEntry.getValue() * allocationScale
 			);
 		}
 
-		return cBSSTPnLExplainMap;
+		return correlatedPnLExplainMap;
 	}
 
-	@Override public java.util.Map<java.lang.String, java.lang.Double> cBSSTPnLWorstMap()
+	@Override public java.util.Map<java.lang.String, java.lang.Double> correlatedPnLWorstMap()
 	{
-		java.util.Map<java.lang.String, java.lang.Double> standaloneCBSSTPnLWorstMap =
-			_standalonePnLAttribution.cBSSTPnLWorstMap();
+		java.util.Map<java.lang.String, java.lang.Double> standaloneCorrelatedPnLWorstMap =
+			_standalonePnLAttribution.correlatedPnLWorstMap();
 
-		if (null == standaloneCBSSTPnLWorstMap || 0 == standaloneCBSSTPnLWorstMap.size())
+		if (null == standaloneCorrelatedPnLWorstMap || 0 == standaloneCorrelatedPnLWorstMap.size())
 		{
 			return null;
 		}
 
-		double allocationScale = _entityComponentCapital.cBSSTStandaloneMultiplier();
+		double allocationScale = _entityComponentCapital.correlatedStandaloneMultiplier();
 
-		java.util.Map<java.lang.String, java.lang.Double> cBSSTPnLWorstMap = new
+		java.util.Map<java.lang.String, java.lang.Double> correlatedPnLWorstMap = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> standaloneCBSSTPnLWorstMapEntry :
-			standaloneCBSSTPnLWorstMap.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> standaloneCorrelatedPnLWorstMapEntry :
+			standaloneCorrelatedPnLWorstMap.entrySet())
 		{
-			cBSSTPnLWorstMap.put (
-				standaloneCBSSTPnLWorstMapEntry.getKey(),
-				standaloneCBSSTPnLWorstMapEntry.getValue() * allocationScale
+			correlatedPnLWorstMap.put (
+				standaloneCorrelatedPnLWorstMapEntry.getKey(),
+				standaloneCorrelatedPnLWorstMapEntry.getValue() * allocationScale
 			);
 		}
 
-		return cBSSTPnLWorstMap;
+		return correlatedPnLWorstMap;
 	}
 
-	@Override public java.util.Map<java.lang.String, java.lang.Double> iBSSTPnLExplainMap()
+	@Override public java.util.Map<java.lang.String, java.lang.Double> idiosyncraticPnLExplainMap()
 	{
-		java.util.Map<java.lang.String, java.lang.Double> standaloneIBSSTPnLExplainMap =
-			_standalonePnLAttribution.iBSSTPnLExplainMap();
+		java.util.Map<java.lang.String, java.lang.Double> standaloneIdiosyncraticPnLExplainMap =
+			_standalonePnLAttribution.idiosyncraticPnLExplainMap();
 
-		if (null == standaloneIBSSTPnLExplainMap || 0 == standaloneIBSSTPnLExplainMap.size())
+		if (null == standaloneIdiosyncraticPnLExplainMap || 0 == standaloneIdiosyncraticPnLExplainMap.size())
 		{
 			return null;
 		}
 
-		double allocationScale = _entityComponentCapital.iBSSTStandaloneMultiplier();
+		double allocationScale = _entityComponentCapital.idiosyncraticStandaloneMultiplier();
 
-		java.util.Map<java.lang.String, java.lang.Double> iBSSTPnLExplainMap = new
+		java.util.Map<java.lang.String, java.lang.Double> idiosyncraticPnLExplainMap = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> standaloneIBSSTPnLExplainMapEntry :
-			standaloneIBSSTPnLExplainMap.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double>
+			standaloneIdiosyncraticPnLExplainMapEntry : standaloneIdiosyncraticPnLExplainMap.entrySet())
 		{
-			iBSSTPnLExplainMap.put (
-				standaloneIBSSTPnLExplainMapEntry.getKey(),
-				standaloneIBSSTPnLExplainMapEntry.getValue() * allocationScale
+			idiosyncraticPnLExplainMap.put (
+				standaloneIdiosyncraticPnLExplainMapEntry.getKey(),
+				standaloneIdiosyncraticPnLExplainMapEntry.getValue() * allocationScale
 			);
 		}
 
-		return iBSSTPnLExplainMap;
+		return idiosyncraticPnLExplainMap;
 	}
 
-	@Override public java.util.Map<java.lang.String, java.lang.Double> iBSSTPnLWorstMap()
+	@Override public java.util.Map<java.lang.String, java.lang.Double> idiosyncraticPnLWorstMap()
 	{
-		java.util.Map<java.lang.String, java.lang.Double> standaloneIBSSTPnLWorstMap =
-			_standalonePnLAttribution.iBSSTPnLWorstMap();
+		java.util.Map<java.lang.String, java.lang.Double> standaloneIdiosyncraticPnLWorstMap =
+			_standalonePnLAttribution.idiosyncraticPnLWorstMap();
 
-		if (null == standaloneIBSSTPnLWorstMap || 0 == standaloneIBSSTPnLWorstMap.size())
+		if (null == standaloneIdiosyncraticPnLWorstMap || 0 == standaloneIdiosyncraticPnLWorstMap.size())
 		{
 			return null;
 		}
 
-		double allocationScale = _entityComponentCapital.iBSSTStandaloneMultiplier();
+		double allocationScale = _entityComponentCapital.idiosyncraticStandaloneMultiplier();
 
-		java.util.Map<java.lang.String, java.lang.Double> iBSSTPnLWorstMap = new
+		java.util.Map<java.lang.String, java.lang.Double> idiosyncraticPnLWorstMap = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> standaloneIBSSTPnLWorstMapEntry :
-			standaloneIBSSTPnLWorstMap.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> standaloneIdiosyncraticPnLWorstMapEntry
+			: standaloneIdiosyncraticPnLWorstMap.entrySet())
 		{
-			iBSSTPnLWorstMap.put (
-				standaloneIBSSTPnLWorstMapEntry.getKey(),
-				standaloneIBSSTPnLWorstMapEntry.getValue() * allocationScale
+			idiosyncraticPnLWorstMap.put (
+				standaloneIdiosyncraticPnLWorstMapEntry.getKey(),
+				standaloneIdiosyncraticPnLWorstMapEntry.getValue() * allocationScale
 			);
 		}
 
-		return iBSSTPnLWorstMap;
+		return idiosyncraticPnLWorstMap;
 	}
 
 	@Override public double var()
@@ -349,22 +349,22 @@ public class AllocatedPnLAttribution
 
 	@Override public double expectedShortfall()
 	{
-		return gsstPnL() + cBSSTPnL() + iBSSTGrossPnL() + fsGrossPnL();
+		return systemicPnL() + correlatedPnL() + idiosyncraticGrossPnL() + fsGrossPnL();
 	}
 
-	@Override public java.util.Map<java.lang.String, java.lang.Integer> gsstInstanceCountMap()
+	@Override public java.util.Map<java.lang.String, java.lang.Integer> systemicInstanceCountMap()
 	{
-		return _standalonePnLAttribution.gsstInstanceCountMap();
+		return _standalonePnLAttribution.systemicInstanceCountMap();
 	}
 
-	@Override public java.util.Map<java.lang.String, java.lang.Integer> cBSSTInstanceCountMap()
+	@Override public java.util.Map<java.lang.String, java.lang.Integer> correlatedInstanceCountMap()
 	{
-		return _standalonePnLAttribution.cBSSTInstanceCountMap();
+		return _standalonePnLAttribution.correlatedInstanceCountMap();
 	}
 
-	@Override public java.util.Map<java.lang.String, java.lang.Integer> iBSSTInstanceCountMap()
+	@Override public java.util.Map<java.lang.String, java.lang.Integer> idiosyncraticInstanceCountMap()
 	{
-		return _standalonePnLAttribution.iBSSTInstanceCountMap();
+		return _standalonePnLAttribution.idiosyncraticInstanceCountMap();
 	}
 
 	@Override public java.util.List<java.lang.Integer> pathIndexList()
@@ -377,25 +377,28 @@ public class AllocatedPnLAttribution
 		return _standalonePnLAttribution.pathCount();
 	}
 
-	@Override public double gsstPnL()
+	@Override public double systemicPnL()
 	{
-		return _entityComponentCapital.gsstStandaloneMultiplier() * _standalonePnLAttribution.gsstPnL();
+		return _entityComponentCapital.systemicStandaloneMultiplier() *
+			_standalonePnLAttribution.systemicPnL();
 	}
 
-	@Override public double gsstGrossPnL()
+	@Override public double systemicGrossPnL()
 	{
-		return _entityComponentCapital.gsstStandaloneMultiplier() * _standalonePnLAttribution.gsstGrossPnL();
+		return _entityComponentCapital.systemicStandaloneMultiplier() *
+			_standalonePnLAttribution.systemicGrossPnL();
 	}
 
-	@Override public double cBSSTPnL()
+	@Override public double correlatedPnL()
 	{
-		return _entityComponentCapital.cBSSTStandaloneMultiplier() * _standalonePnLAttribution.cBSSTPnL();
+		return _entityComponentCapital.correlatedStandaloneMultiplier() *
+			_standalonePnLAttribution.correlatedPnL();
 	}
 
-	@Override public double iBSSTGrossPnL()
+	@Override public double idiosyncraticGrossPnL()
 	{
-		return _entityComponentCapital.iBSSTStandaloneMultiplier() *
-			_standalonePnLAttribution.iBSSTGrossPnL();
+		return _entityComponentCapital.idiosyncraticStandaloneMultiplier() *
+			_standalonePnLAttribution.idiosyncraticGrossPnL();
 	}
 
 	@Override public double fsGrossPnL()

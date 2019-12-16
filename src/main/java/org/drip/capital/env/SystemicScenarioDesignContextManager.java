@@ -76,7 +76,7 @@ package org.drip.capital.env;
  */
 
 /**
- * <i>GSSTDesignContextManager</i> sets up the Credit Spread Event Container. The References are:
+ * <i>SystemicScenarioDesignContextManager</i> sets up the Credit Spread Event Container. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,7 +103,7 @@ package org.drip.capital.env;
  * @author Lakshmi Krishnamurthy
  */
 
-public class GSSTDesignContextManager
+public class SystemicScenarioDesignContextManager
 {
 	private static org.drip.capital.shell.CreditSpreadEventContainer s_CreditSpreadEventContainer = null;
 
@@ -118,7 +118,7 @@ public class GSSTDesignContextManager
 		s_CreditSpreadEventContainer = new org.drip.capital.shell.CreditSpreadEventContainer();
 
 		if (!s_CreditSpreadEventContainer.add (
-			org.drip.capital.gsstdesign.CreditSpreadEvent.Standard (
+			org.drip.capital.systemicscenario.CreditSpreadEvent.Standard (
 				"NOV-2008",
 				 371.,
 				 -39.5,
@@ -127,7 +127,7 @@ public class GSSTDesignContextManager
 				   7.8,
 				 -55.0,
 				 -28.5,
-				org.drip.capital.gsstdesign.SystemicStressShockIndicator.Deflationary()
+				org.drip.capital.systemicscenario.SystemicStressShockIndicator.Deflationary()
 			)
 		))
 		{
@@ -137,7 +137,7 @@ public class GSSTDesignContextManager
 		try
 		{
 			if (!s_CreditSpreadEventContainer.add (
-				org.drip.capital.gsstdesign.CreditSpreadEvent.Standard (
+				org.drip.capital.systemicscenario.CreditSpreadEvent.Standard (
 					"APR-1932",
 					332.,
 					-61.4,
@@ -146,12 +146,12 @@ public class GSSTDesignContextManager
 					java.lang.Double.NaN,
 					 33.8,
 					java.lang.Double.NaN,
-					new org.drip.capital.gsstdesign.SystemicStressShockIndicator (
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.UP,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.DOWN,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.UNSPECIFIED,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.UP,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.UNSPECIFIED
+					new org.drip.capital.systemicscenario.SystemicStressShockIndicator (
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UNSPECIFIED,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UNSPECIFIED
 					)
 				)
 			))
@@ -160,7 +160,7 @@ public class GSSTDesignContextManager
 			}
 
 			if (!s_CreditSpreadEventContainer.add (
-				org.drip.capital.gsstdesign.CreditSpreadEvent.Standard (
+				org.drip.capital.systemicscenario.CreditSpreadEvent.Standard (
 					"JAN-1975",
 					 221.,
 					 -29.7,
@@ -169,7 +169,7 @@ public class GSSTDesignContextManager
 					  -8.5,
 					 159.0,
 					  49.2,
-					org.drip.capital.gsstdesign.SystemicStressShockIndicator.Inflationary()
+					org.drip.capital.systemicscenario.SystemicStressShockIndicator.Inflationary()
 				)
 			))
 			{
@@ -177,7 +177,7 @@ public class GSSTDesignContextManager
 			}
 
 			if (!s_CreditSpreadEventContainer.add (
-				org.drip.capital.gsstdesign.CreditSpreadEvent.Standard (
+				org.drip.capital.systemicscenario.CreditSpreadEvent.Standard (
 					"APR-1938",
 					180.,
 					-40.5,
@@ -186,12 +186,12 @@ public class GSSTDesignContextManager
 					java.lang.Double.NaN,
 					 -4.2,
 					java.lang.Double.NaN,
-					new org.drip.capital.gsstdesign.SystemicStressShockIndicator (
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.UP,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.DOWN,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.DOWN,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.DOWN,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.UNSPECIFIED
+					new org.drip.capital.systemicscenario.SystemicStressShockIndicator (
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UNSPECIFIED
 					)
 				)
 			))
@@ -200,7 +200,7 @@ public class GSSTDesignContextManager
 			}
 
 			if (!s_CreditSpreadEventContainer.add (
-				org.drip.capital.gsstdesign.CreditSpreadEvent.Standard (
+				org.drip.capital.systemicscenario.CreditSpreadEvent.Standard (
 					"AUG-1982",
 					 161.,
 					  -2.7,
@@ -209,7 +209,7 @@ public class GSSTDesignContextManager
 					  -0.8,
 					  -6.0,
 					  -7.8,
-					org.drip.capital.gsstdesign.SystemicStressShockIndicator.Deflationary()
+					org.drip.capital.systemicscenario.SystemicStressShockIndicator.Deflationary()
 				)
 			))
 			{
@@ -217,7 +217,7 @@ public class GSSTDesignContextManager
 			}
 
 			if (!s_CreditSpreadEventContainer.add (
-				org.drip.capital.gsstdesign.CreditSpreadEvent.Standard (
+				org.drip.capital.systemicscenario.CreditSpreadEvent.Standard (
 					"APR-1980",
 					 147.,
 					   4.5,
@@ -226,7 +226,7 @@ public class GSSTDesignContextManager
 					  -1.0,
 					 149.0,
 					   4.1,
-					org.drip.capital.gsstdesign.SystemicStressShockIndicator.Inflationary()
+					org.drip.capital.systemicscenario.SystemicStressShockIndicator.Inflationary()
 				)
 			))
 			{
@@ -234,7 +234,7 @@ public class GSSTDesignContextManager
 			}
 
 			if (!s_CreditSpreadEventContainer.add (
-				org.drip.capital.gsstdesign.CreditSpreadEvent.Standard (
+				org.drip.capital.systemicscenario.CreditSpreadEvent.Standard (
 					"NOV-1970",
 					 140.,
 					  -7.0,
@@ -243,12 +243,12 @@ public class GSSTDesignContextManager
 					java.lang.Double.NaN,
 					  -1.0,
 					   3.9,
-					new org.drip.capital.gsstdesign.SystemicStressShockIndicator (
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.UP,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.DOWN,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.DOWN,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.DOWN,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.UP
+					new org.drip.capital.systemicscenario.SystemicStressShockIndicator (
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP
 					)
 				)
 			))
@@ -257,7 +257,7 @@ public class GSSTDesignContextManager
 			}
 
 			if (!s_CreditSpreadEventContainer.add (
-				org.drip.capital.gsstdesign.CreditSpreadEvent.Standard (
+				org.drip.capital.systemicscenario.CreditSpreadEvent.Standard (
 					"JAN-2001",
 					 125.,
 					  -2.0,
@@ -266,12 +266,12 @@ public class GSSTDesignContextManager
 					   8.1,
 					   9.0,
 					   3.2,
-					new org.drip.capital.gsstdesign.SystemicStressShockIndicator (
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.UP,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.DOWN,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.UNSPECIFIED,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.UP,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.UP
+					new org.drip.capital.systemicscenario.SystemicStressShockIndicator (
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UNSPECIFIED,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP
 					)
 				)
 			))
@@ -280,7 +280,7 @@ public class GSSTDesignContextManager
 			}
 
 			if (!s_CreditSpreadEventContainer.add (
-				org.drip.capital.gsstdesign.CreditSpreadEvent.Standard (
+				org.drip.capital.systemicscenario.CreditSpreadEvent.Standard (
 					"APR-1931",
 					 113.,
 					 -39.4,
@@ -289,12 +289,12 @@ public class GSSTDesignContextManager
 					java.lang.Double.NaN,
 					 -45.4,
 					java.lang.Double.NaN,
-					new org.drip.capital.gsstdesign.SystemicStressShockIndicator (
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.UP,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.DOWN,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.UNSPECIFIED,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.DOWN,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.UNSPECIFIED
+					new org.drip.capital.systemicscenario.SystemicStressShockIndicator (
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UNSPECIFIED,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UNSPECIFIED
 					)
 				)
 			))
@@ -303,7 +303,7 @@ public class GSSTDesignContextManager
 			}
 
 			if (!s_CreditSpreadEventContainer.add (
-				org.drip.capital.gsstdesign.CreditSpreadEvent.Standard (
+				org.drip.capital.systemicscenario.CreditSpreadEvent.Standard (
 					"DEC-1966",
 					  94.,
 					 -13.1,
@@ -312,12 +312,12 @@ public class GSSTDesignContextManager
 					java.lang.Double.NaN,
 					   2.0,
 					java.lang.Double.NaN,
-					new org.drip.capital.gsstdesign.SystemicStressShockIndicator (
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.UP,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.DOWN,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.UP,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.UP,
-						org.drip.capital.gsstdesign.SystemicStressShockIndicator.UNSPECIFIED
+					new org.drip.capital.systemicscenario.SystemicStressShockIndicator (
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UNSPECIFIED
 					)
 				)
 			))

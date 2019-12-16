@@ -108,9 +108,9 @@ public class CreditSpreadEventContainer
 {
 	private int _count = 0;
 
-	private java.util.Map<java.lang.Integer, org.drip.capital.gsstdesign.CreditSpreadEvent>
+	private java.util.Map<java.lang.Integer, org.drip.capital.systemicscenario.CreditSpreadEvent>
 		_creditSpreadEventMap =
-			new java.util.TreeMap<java.lang.Integer, org.drip.capital.gsstdesign.CreditSpreadEvent>();
+			new java.util.TreeMap<java.lang.Integer, org.drip.capital.systemicscenario.CreditSpreadEvent>();
 
 	/**
 	 * Empty CreditSpreadEventContainer Constructor
@@ -126,7 +126,7 @@ public class CreditSpreadEventContainer
 	 * @return Credit Spread Event Map
 	 */
 
-	public java.util.Map<java.lang.Integer, org.drip.capital.gsstdesign.CreditSpreadEvent>
+	public java.util.Map<java.lang.Integer, org.drip.capital.systemicscenario.CreditSpreadEvent>
 		creditSpreadEventMap()
 	{
 		return _creditSpreadEventMap;
@@ -152,7 +152,7 @@ public class CreditSpreadEventContainer
 	 */
 
 	public boolean add (
-		final org.drip.capital.gsstdesign.CreditSpreadEvent creditSpreadEvent)
+		final org.drip.capital.systemicscenario.CreditSpreadEvent creditSpreadEvent)
 	{
 		if (null == creditSpreadEvent)
 		{

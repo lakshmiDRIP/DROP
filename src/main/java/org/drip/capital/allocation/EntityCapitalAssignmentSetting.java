@@ -1,6 +1,80 @@
 
 package org.drip.capital.allocation;
 
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     => https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   => https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     => https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  => https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications => https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         => https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        => https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           => https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    => https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   => https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an "AS IS" BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
 /**
  * <i>EntityCapitalAssignmentSetting</i> holds the Correlation Elasticities for the different Capital
  * 	Components as well as the Entity's Correlation Category. The References are:
@@ -18,30 +92,38 @@ package org.drip.capital.allocation;
  * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital <i>Risk</i> <b>2 (4)</b> 27-39
  * 		</li>
  * 	</ul>
+ *
+ *	<br><br>
+ *  <ul>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md">Capital Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md">Basel Market Risk and Operational Capital</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/allocation/README.md">Economic Risk Capital Entity Allocation</a></li>
+ *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class EntityCapitalAssignmentSetting
 {
-	private int _gsstAllocationScheme = java.lang.Integer.MIN_VALUE;
-	private int _cBSSTAllocationScheme = java.lang.Integer.MIN_VALUE;
-	private int _iBSSTAllocationScheme = java.lang.Integer.MIN_VALUE;
-	private int _gsstAllocationCategory = java.lang.Integer.MIN_VALUE;
-	private int _cBSSTAllocationCategory = java.lang.Integer.MIN_VALUE;
-	private int _iBSSTAllocationCategory = java.lang.Integer.MIN_VALUE;
 	private int _noStressAllocationScheme = java.lang.Integer.MIN_VALUE;
+	private int _systemicAllocationScheme = java.lang.Integer.MIN_VALUE;
 	private int _noStressAllocationCategory = java.lang.Integer.MIN_VALUE;
+	private int _correlatedAllocationScheme = java.lang.Integer.MIN_VALUE;
+	private int _systemicAllocationCategory = java.lang.Integer.MIN_VALUE;
+	private int _correlatedAllocationCategory = java.lang.Integer.MIN_VALUE;
 	private int _allocationCorrelationCategory = java.lang.Integer.MIN_VALUE;
+	private int _idiosyncraticAllocationScheme = java.lang.Integer.MIN_VALUE;
+	private int _idiosyncraticAllocationCategory = java.lang.Integer.MIN_VALUE;
 
 	/**
 	 * Construct the Uniform Beta Instance of EntityCapitalAssignmentSetting
 	 * 
 	 * @param allocationCorrelationCategory Allocation Correlation Category of the Capital Entity
 	 * @param noStressAllocationCategory Allocation Category for the "No-Stress" Capital Component
-	 * @param gsstAllocationCategory Allocation Category for the GSST Capital Component
-	 * @param cBSSTAllocationCategory Allocation Category for the cBSST Capital Component
-	 * @param iBSSTAllocationCategory Allocation Category for the iBSST Capital Component
+	 * @param systemicAllocationCategory Allocation Category for the Systemic Capital Component
+	 * @param correlatedAllocationCategory Allocation Category for the Correlated Capital Component
+	 * @param idiosyncraticAllocationCategory Allocation Category for the Idiosyncratic Capital Component
 	 * 
 	 * @return Uniform Beta Instance of EntityCapitalAssignmentSetting
 	 */
@@ -49,9 +131,9 @@ public class EntityCapitalAssignmentSetting
 	public static final EntityCapitalAssignmentSetting UniformBeta (
 		final int allocationCorrelationCategory,
 		final int noStressAllocationCategory,
-		final int gsstAllocationCategory,
-		final int cBSSTAllocationCategory,
-		final int iBSSTAllocationCategory)
+		final int systemicAllocationCategory,
+		final int correlatedAllocationCategory,
+		final int idiosyncraticAllocationCategory)
 	{
 		try
 		{
@@ -59,11 +141,11 @@ public class EntityCapitalAssignmentSetting
 				allocationCorrelationCategory,
 				noStressAllocationCategory,
 				org.drip.capital.allocation.EntityComponentAssignmentScheme.BETA,
-				gsstAllocationCategory,
+				systemicAllocationCategory,
 				org.drip.capital.allocation.EntityComponentAssignmentScheme.BETA,
-				cBSSTAllocationCategory,
+				correlatedAllocationCategory,
 				org.drip.capital.allocation.EntityComponentAssignmentScheme.BETA,
-				iBSSTAllocationCategory,
+				idiosyncraticAllocationCategory,
 				org.drip.capital.allocation.EntityComponentAssignmentScheme.BETA
 			);
 		}
@@ -76,23 +158,23 @@ public class EntityCapitalAssignmentSetting
 	}
 
 	/**
-	 * Construct the iBSST Pro-Rata + Others Beta Instance of EntityCapitalAssignmentSetting
+	 * Construct the Idiosyncratic Pro-Rata + Others Beta Instance of EntityCapitalAssignmentSetting
 	 * 
 	 * @param allocationCorrelationCategory Allocation Correlation Category of the Capital Entity
 	 * @param noStressAllocationCategory Allocation Category for the "No-Stress" Capital Component
-	 * @param gsstAllocationCategory Allocation Category for the GSST Capital Component
-	 * @param cBSSTAllocationCategory Allocation Category for the cBSST Capital Component
-	 * @param iBSSTAllocationCategory Allocation Category for the iBSST Capital Component
+	 * @param systemicAllocationCategory Allocation Category for the Systemic Capital Component
+	 * @param correlatedAllocationCategory Allocation Category for the Correlated Capital Component
+	 * @param idiosyncraticAllocationCategory Allocation Category for the Idiosyncratic Capital Component
 	 * 
-	 * @return iBSST Pro-Rata + Others Beta Instance of EntityCapitalAssignmentSetting
+	 * @return Idiosyncratic Pro-Rata + Others Beta Instance of EntityCapitalAssignmentSetting
 	 */
 
-	public static final EntityCapitalAssignmentSetting UniformBetaIBSSTProRata (
+	public static final EntityCapitalAssignmentSetting UniformBetaIdiosyncraticProRata (
 		final int allocationCorrelationCategory,
 		final int noStressAllocationCategory,
-		final int gsstAllocationCategory,
-		final int cBSSTAllocationCategory,
-		final int iBSSTAllocationCategory)
+		final int systemicAllocationCategory,
+		final int correlatedAllocationCategory,
+		final int idiosyncraticAllocationCategory)
 	{
 		try
 		{
@@ -100,11 +182,11 @@ public class EntityCapitalAssignmentSetting
 				allocationCorrelationCategory,
 				noStressAllocationCategory,
 				org.drip.capital.allocation.EntityComponentAssignmentScheme.BETA,
-				gsstAllocationCategory,
+				systemicAllocationCategory,
 				org.drip.capital.allocation.EntityComponentAssignmentScheme.BETA,
-				cBSSTAllocationCategory,
+				correlatedAllocationCategory,
 				org.drip.capital.allocation.EntityComponentAssignmentScheme.BETA,
-				iBSSTAllocationCategory,
+				idiosyncraticAllocationCategory,
 				org.drip.capital.allocation.EntityComponentAssignmentScheme.PRO_RATA
 			);
 		}
@@ -122,12 +204,12 @@ public class EntityCapitalAssignmentSetting
 	 * @param allocationCorrelationCategory Allocation Correlation Category of the Capital Entity
 	 * @param noStressAllocationCategory Allocation Category for the "No-Stress" Capital Component
 	 * @param noStressAllocationScheme Allocation Scheme for the "No-Stress" Capital Component
-	 * @param gsstAllocationCategory Allocation Category for the GSST Capital Component
-	 * @param gsstAllocationScheme Allocation Scheme for the GSST Capital Component
-	 * @param cBSSTAllocationCategory Allocation Category for the cBSST Capital Component
-	 * @param cBSSTAllocationScheme Allocation Scheme for the cBSST Capital Component
-	 * @param iBSSTAllocationCategory Allocation Category for the iBSST Capital Component
-	 * @param iBSSTAllocationScheme Allocation Scheme for the iBSST Capital Component
+	 * @param systemicAllocationCategory Allocation Category for the Systemic Capital Component
+	 * @param gsstAllocationScheme Allocation Scheme for the Systemic Capital Component
+	 * @param correlatedAllocationCategory Allocation Category for the Correlated Capital Component
+	 * @param correlatedAllocationScheme Allocation Scheme for the Correlated Capital Component
+	 * @param idiosyncraticAllocationCategory Allocation Category for the Idiosyncratic Capital Component
+	 * @param idiosyncraticAllocationScheme Allocation Scheme for the Idiosyncratic Capital Component
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -136,12 +218,12 @@ public class EntityCapitalAssignmentSetting
 		final int allocationCorrelationCategory,
 		final int noStressAllocationCategory,
 		final int noStressAllocationScheme,
-		final int gsstAllocationCategory,
+		final int systemicAllocationCategory,
 		final int gsstAllocationScheme,
-		final int cBSSTAllocationCategory,
-		final int cBSSTAllocationScheme,
-		final int iBSSTAllocationCategory,
-		final int iBSSTAllocationScheme)
+		final int correlatedAllocationCategory,
+		final int correlatedAllocationScheme,
+		final int idiosyncraticAllocationCategory,
+		final int idiosyncraticAllocationScheme)
 		throws java.lang.Exception
 	{
 		if (java.lang.Integer.MIN_VALUE == (
@@ -151,17 +233,17 @@ public class EntityCapitalAssignmentSetting
 			) || java.lang.Integer.MIN_VALUE == (
 				_noStressAllocationScheme = noStressAllocationScheme
 			) || java.lang.Integer.MIN_VALUE == (
-				_gsstAllocationCategory = gsstAllocationCategory
+				_systemicAllocationCategory = systemicAllocationCategory
 			) || java.lang.Integer.MIN_VALUE == (
-				_gsstAllocationScheme = gsstAllocationScheme
+				_systemicAllocationScheme = gsstAllocationScheme
 			) || java.lang.Integer.MIN_VALUE == (
-				_cBSSTAllocationCategory = cBSSTAllocationCategory
+				_correlatedAllocationCategory = correlatedAllocationCategory
 			) || java.lang.Integer.MIN_VALUE == (
-				_cBSSTAllocationScheme = cBSSTAllocationScheme
+				_correlatedAllocationScheme = correlatedAllocationScheme
 			) || java.lang.Integer.MIN_VALUE == (
-				_iBSSTAllocationCategory = iBSSTAllocationCategory
+				_idiosyncraticAllocationCategory = idiosyncraticAllocationCategory
 			) || java.lang.Integer.MIN_VALUE == (
-				_iBSSTAllocationScheme = iBSSTAllocationScheme
+				_idiosyncraticAllocationScheme = idiosyncraticAllocationScheme
 			) || org.drip.capital.allocation.EntityComponentCorrelationCategory.ENTITY_CORRELATION ==
 				_allocationCorrelationCategory
 		)
@@ -213,89 +295,90 @@ public class EntityCapitalAssignmentSetting
 	}
 
 	/**
-	 * Retrieve the GSST Allocation Category of the Capital Entity
+	 * Retrieve the Systemic Allocation Category of the Capital Entity
 	 * 
-	 * @return TRUE - The GSST Allocation Category of the Capital Entity
+	 * @return TRUE - The Systemic Allocation Category of the Capital Entity
 	 */
 
-	public int gsstAllocationCategory()
+	public int systemicAllocationCategory()
 	{
-		if (org.drip.capital.allocation.EntityComponentAssignmentScheme.BETA == _gsstAllocationScheme &&
+		if (org.drip.capital.allocation.EntityComponentAssignmentScheme.BETA == _systemicAllocationScheme &&
 			org.drip.capital.allocation.EntityComponentCorrelationCategory.ENTITY_CORRELATION ==
-				_gsstAllocationCategory)
+				_systemicAllocationCategory)
 		{
 			return _allocationCorrelationCategory;
 		}
 
-		return _gsstAllocationCategory;
+		return _systemicAllocationCategory;
 	}
 
 	/**
-	 * Retrieve the Allocation Scheme for the GSST Capital Component
+	 * Retrieve the Allocation Scheme for the Systemic Capital Component
 	 * 
-	 * @return The Allocation Scheme for the GSST Capital Component
+	 * @return The Allocation Scheme for the Systemic Capital Component
 	 */
 
-	public int gsstAllocationScheme()
+	public int systemicAllocationScheme()
 	{
-		return _gsstAllocationScheme;
+		return _systemicAllocationScheme;
 	}
 
 	/**
-	 * Retrieve the Allocation Category for the cBSST Capital Component
+	 * Retrieve the Allocation Category for the Correlated Capital Component
 	 * 
-	 * @return The Allocation Category for the cBSST Capital Component
+	 * @return The Allocation Category for the Correlated Capital Component
 	 */
 
-	public int cBSSTAllocationCategory()
+	public int correlatedAllocationCategory()
 	{
-		if (org.drip.capital.allocation.EntityComponentAssignmentScheme.BETA == _cBSSTAllocationScheme &&
-			org.drip.capital.allocation.EntityComponentCorrelationCategory.ENTITY_CORRELATION ==
-				_cBSSTAllocationCategory)
+		if (org.drip.capital.allocation.EntityComponentAssignmentScheme.BETA == _correlatedAllocationScheme
+			&& org.drip.capital.allocation.EntityComponentCorrelationCategory.ENTITY_CORRELATION ==
+				_correlatedAllocationCategory)
 		{
 			return _allocationCorrelationCategory;
 		}
 
-		return _cBSSTAllocationCategory;
+		return _correlatedAllocationCategory;
 	}
 
 	/**
-	 * Retrieve the Allocation Scheme for the cBSST Capital Component
+	 * Retrieve the Allocation Scheme for the Correlated Capital Component
 	 * 
-	 * @return The Allocation Scheme for the cBSST Capital Component
+	 * @return The Allocation Scheme for the Correlated Capital Component
 	 */
 
-	public int cBSSTAllocationScheme()
+	public int correlatedAllocationScheme()
 	{
-		return _cBSSTAllocationScheme;
+		return _correlatedAllocationScheme;
 	}
 
 	/**
-	 * Retrieve the Allocation Category for the iBSST Capital Component
+	 * Retrieve the Allocation Category for the Idiosyncratic Capital Component
 	 * 
-	 * @return The Allocation Category for the iBSST Capital Component
+	 * @return The Allocation Category for the Idiosyncratic Capital Component
 	 */
 
-	public int iBSSTAllocationCategory()
+	public int idiosyncraticAllocationCategory()
 	{
-		if (org.drip.capital.allocation.EntityComponentAssignmentScheme.BETA == _iBSSTAllocationScheme &&
+		if (org.drip.capital.allocation.EntityComponentAssignmentScheme.BETA ==
+				_idiosyncraticAllocationScheme &&
 			org.drip.capital.allocation.EntityComponentCorrelationCategory.ENTITY_CORRELATION ==
-				_iBSSTAllocationCategory)
+				_idiosyncraticAllocationCategory)
 		{
 			return _allocationCorrelationCategory;
 		}
 
-		return _iBSSTAllocationCategory;
+		return _idiosyncraticAllocationCategory;
 	}
 
 	/**
-	 * Retrieve the Allocation Scheme for the iBSST Capital Component
+	 * Retrieve the Allocation Scheme for the Idiosyncratic Capital Component
 	 * 
-	 * @return The Allocation Scheme for the iBSST Capital Component
+	 * @return The Allocation Scheme for the Idiosyncratic Capital Component
 	 */
 
-	public int iBSSTAllocationScheme()
+	public int idiosyncraticAllocationScheme()
 	{
-		return _iBSSTAllocationScheme;
+		return _idiosyncraticAllocationScheme;
 	}
 }

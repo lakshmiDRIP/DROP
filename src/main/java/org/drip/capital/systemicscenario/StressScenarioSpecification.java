@@ -1,5 +1,5 @@
 
-package org.drip.capital.gsstdesign;
+package org.drip.capital.systemicscenario;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,7 +76,8 @@ package org.drip.capital.gsstdesign;
  */
 
 /**
- * <i>CriterionUnit</i> maintains a List of the Possible Criterion Units. The References are:
+ * <i>StressScenarioSpecification</i> specifies the Full Stress Scenario Specification for the given Market
+ *	Factor/Applicability Combination. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -97,43 +98,90 @@ package org.drip.capital.gsstdesign;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md">Capital Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md">Basel Market Risk and Operational Capital</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/gsstdesign/README.md">Systemic Stress Scenario Design/Construction</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/systemicscenario/README.md">Systemic Stress Scenario Design/Construction</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CriterionUnit
+public class StressScenarioSpecification
 {
+	private org.drip.capital.systemicscenario.CapitalBaselineDefinition _capitalBaselineDefinition = null;
+	private org.drip.capital.systemicscenario.HistoricalScenarioDefinition _historicalScenarioDefinition = null;
+	private org.drip.capital.systemicscenario.StressScenarioQuantification _stressScenarioQuantification = null;
+	private org.drip.capital.systemicscenario.HypotheticalScenarioDefinition _hypotheticalScenarioDefinition =
+		null;
 
 	/**
-	 * The BASIS POINT Criterion Unit
+	 * StressScenarioSpecification Constructor
+	 * 
+	 * @param stressScenarioQuantification Stress Scenario Quantification
+	 * @param hypotheticalScenarioDefinition Hypothetical Scenario Definition
+	 * @param historicalScenarioDefinition Historical Scenario Definition
+	 * @param capitalBaselineDefinition Capital Baseline Definition
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final int BASIS_POINT = 1;
+	public StressScenarioSpecification (
+		final org.drip.capital.systemicscenario.StressScenarioQuantification stressScenarioQuantification,
+		final org.drip.capital.systemicscenario.HypotheticalScenarioDefinition hypotheticalScenarioDefinition,
+		final org.drip.capital.systemicscenario.HistoricalScenarioDefinition historicalScenarioDefinition,
+		final org.drip.capital.systemicscenario.CapitalBaselineDefinition capitalBaselineDefinition)
+		throws java.lang.Exception
+	{
+		if (null == (_stressScenarioQuantification = stressScenarioQuantification) ||
+			null == (_hypotheticalScenarioDefinition = hypotheticalScenarioDefinition) ||
+			null == (_historicalScenarioDefinition = historicalScenarioDefinition) ||
+			null == (_capitalBaselineDefinition = capitalBaselineDefinition))
+		{
+			throw new java.lang.Exception (
+				"StressScenarioSpecification Constructor => Invalid Inputs"
+			);
+		}
+	}
 
 	/**
-	 * The PERCENT Criterion Unit
+	 * Retrieve the Stress Scenario Quantification
+	 * 
+	 * @return The Stress Scenario Quantification
 	 */
 
-	public static final int PERCENT = 2;
+	public org.drip.capital.systemicscenario.StressScenarioQuantification stressScenarioQuantification()
+	{
+		return _stressScenarioQuantification;
+	}
 
 	/**
-	 * The ABSOLUTE Criterion Unit
+	 * Retrieve the Hypothetical Scenario Definition
+	 * 
+	 * @return The Hypothetical Scenario Definition
 	 */
 
-	public static final int ABSOLUTE = 4;
+	public org.drip.capital.systemicscenario.HypotheticalScenarioDefinition hypotheticalScenarioDefinition()
+	{
+		return _hypotheticalScenarioDefinition;
+	}
 
 	/**
-	 * The PERCENTAGE POINT Criterion Unit
+	 * Retrieve the Historical Scenario Definition
+	 * 
+	 * @return The Historical Scenario Definition
 	 */
 
-	public static final int PERCENT_POINT = 8;
+	public org.drip.capital.systemicscenario.HistoricalScenarioDefinition historicalScenarioDefinition()
+	{
+		return _historicalScenarioDefinition;
+	}
 
 	/**
-	 * The VOLATILITY POINT Criterion Unit
+	 * Retrieve the Capital Baseline Definition
+	 * 
+	 * @return The Capital Baseline Definition
 	 */
 
-	public static final int VOLATILITY_POINT = 16;
-
+	public org.drip.capital.systemicscenario.CapitalBaselineDefinition capitalBaselineDefinition()
+	{
+		return _capitalBaselineDefinition;
+	}
 }

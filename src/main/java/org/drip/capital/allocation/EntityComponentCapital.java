@@ -6,7 +6,73 @@ package org.drip.capital.allocation;
  */
 
 /*!
- * Copyright (C) 2019 Quantitative Risk Analytics
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     => https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   => https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     => https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  => https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications => https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         => https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        => https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           => https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    => https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   => https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an "AS IS" BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
  */
 
 /**
@@ -25,20 +91,28 @@ package org.drip.capital.allocation;
  * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital <i>Risk</i> <b>2 (4)</b> 27-39
  * 		</li>
  * 	</ul>
+ *
+ *	<br><br>
+ *  <ul>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md">Capital Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md">Basel Market Risk and Operational Capital</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/allocation/README.md">Economic Risk Capital Entity Allocation</a></li>
+ *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class EntityComponentCapital
 {
-	private double _gsstStandaloneMultiplier = java.lang.Double.NaN;
-	private org.drip.capital.allocation.EntityCapital _gsst = null;
-	private double _cBSSTStandaloneMultiplier = java.lang.Double.NaN;
-	private double _iBSSTStandaloneMultiplier = java.lang.Double.NaN;
-	private org.drip.capital.allocation.EntityCapital _cBSST = null;
-	private org.drip.capital.allocation.EntityCapital _iBSST = null;
-	private double _noStressStandaloneMultiplier = java.lang.Double.NaN;
 	private org.drip.capital.allocation.EntityCapital _noStress = null;
+	private org.drip.capital.allocation.EntityCapital _systemic = null;
+	private double _noStressStandaloneMultiplier = java.lang.Double.NaN;
+	private double _systemicStandaloneMultiplier = java.lang.Double.NaN;
+	private org.drip.capital.allocation.EntityCapital _correlated = null;
+	private double _correlatedStandaloneMultiplier = java.lang.Double.NaN;
+	private org.drip.capital.allocation.EntityCapital _idiosyncratic = null;
+	private double _idiosyncraticStandaloneMultiplier = java.lang.Double.NaN;
 
 	private static final double NoStressComponentCapitalMultiplier (
 		final org.drip.capital.allocation.CorrelationCategoryBetaManager correlationCategoryBetaManager,
@@ -76,25 +150,25 @@ public class EntityComponentCapital
 		return 0.;
 	}
 
-	private static final double GSSTComponentCapitalMultiplier (
+	private static final double SystemicComponentCapitalMultiplier (
 		final org.drip.capital.allocation.CorrelationCategoryBetaManager correlationCategoryBetaManager,
 		final org.drip.capital.allocation.EntityCapitalAssignmentSetting entityCapitalAssignmentSetting,
 		final java.util.Map<java.lang.String, java.lang.Double> proRataNormalizerMap,
 		final double unitFloatBeta)
 	{
 		if (org.drip.capital.allocation.EntityComponentAssignmentScheme.PRO_RATA ==
-			entityCapitalAssignmentSetting.gsstAllocationScheme())
+			entityCapitalAssignmentSetting.systemicAllocationScheme())
 		{
 			return null == proRataNormalizerMap || !proRataNormalizerMap.containsKey (
-				"GSST"
+				"Systemic"
 			) ? 0. : proRataNormalizerMap.get (
-				"GSST"
+				"Systemic"
 			);
 		}
 
 		org.drip.capital.allocation.CorrelationCategoryBeta betaLoading =
 			correlationCategoryBetaManager.correlationCategoryBeta (
-				entityCapitalAssignmentSetting.gsstAllocationCategory()
+				entityCapitalAssignmentSetting.systemicAllocationCategory()
 			);
 
 		int elasticity = betaLoading.elasticity();
@@ -112,25 +186,25 @@ public class EntityComponentCapital
 		return 0.;
 	}
 
-	private static final double CBSSTComponentCapitalMultiplier (
+	private static final double CorrelatedComponentCapitalMultiplier (
 		final org.drip.capital.allocation.CorrelationCategoryBetaManager correlationCategoryBetaManager,
 		final org.drip.capital.allocation.EntityCapitalAssignmentSetting entityCapitalAssignmentSetting,
 		final java.util.Map<java.lang.String, java.lang.Double> proRataNormalizerMap,
 		final double unitFloatBeta)
 	{
 		if (org.drip.capital.allocation.EntityComponentAssignmentScheme.PRO_RATA ==
-			entityCapitalAssignmentSetting.cBSSTAllocationScheme())
+			entityCapitalAssignmentSetting.correlatedAllocationScheme())
 		{
 			return null == proRataNormalizerMap || !proRataNormalizerMap.containsKey (
-				"CBSST"
+				"Correlated"
 			) ? 0. : proRataNormalizerMap.get (
-				"CBSST"
+				"Correlated"
 			);
 		}
 
 		org.drip.capital.allocation.CorrelationCategoryBeta betaLoading =
 			correlationCategoryBetaManager.correlationCategoryBeta (
-				entityCapitalAssignmentSetting.cBSSTAllocationCategory()
+				entityCapitalAssignmentSetting.correlatedAllocationCategory()
 			);
 
 		int elasticity = betaLoading.elasticity();
@@ -148,25 +222,25 @@ public class EntityComponentCapital
 		return 0.;
 	}
 
-	private static final double IBSSTComponentCapitalMultiplier (
+	private static final double IdiosyncraticComponentCapitalMultiplier (
 		final org.drip.capital.allocation.CorrelationCategoryBetaManager correlationCategoryBetaManager,
 		final org.drip.capital.allocation.EntityCapitalAssignmentSetting entityCapitalAssignmentSetting,
 		final java.util.Map<java.lang.String, java.lang.Double> proRataNormalizerMap,
 		final double unitFloatBeta)
 	{
 		if (org.drip.capital.allocation.EntityComponentAssignmentScheme.PRO_RATA ==
-			entityCapitalAssignmentSetting.iBSSTAllocationScheme())
+			entityCapitalAssignmentSetting.idiosyncraticAllocationScheme())
 		{
 			return null == proRataNormalizerMap || !proRataNormalizerMap.containsKey (
-				"IBSST"
+				"Idiosyncratic"
 			) ? 0. : proRataNormalizerMap.get (
-				"IBSST"
+				"Idiosyncratic"
 			);
 		}
 
 		org.drip.capital.allocation.CorrelationCategoryBeta betaLoading =
 			correlationCategoryBetaManager.correlationCategoryBeta (
-				entityCapitalAssignmentSetting.iBSSTAllocationCategory()
+				entityCapitalAssignmentSetting.idiosyncraticAllocationCategory()
 			);
 
 		int elasticity = betaLoading.elasticity();
@@ -189,12 +263,12 @@ public class EntityComponentCapital
 	 * 
 	 * @param noStressComponentCapital No Stress Capital Component
 	 * @param noStressStandaloneMultiplier No-Stress Stand-alone Multiplier
-	 * @param gsstComponentCapital GSST Capital Component
-	 * @param gsstStandaloneMultiplier GSST Stand-alone Multiplier
-	 * @param cBSSTComponentCapital cBSST Capital Component
-	 * @param cBSSTStandaloneMultiplier cBSST Stand-alone Multiplier
-	 * @param iBSSTComponentCapital iBSST Capital Component
-	 * @param iBSSTStandaloneMultiplier iBSST Stand-alone Multiplier
+	 * @param systemicComponentCapital Systemic Capital Component
+	 * @param systemicStandaloneMultiplier Systemic Stand-alone Multiplier
+	 * @param correlatedComponentCapital Correlated Capital Component
+	 * @param correlatedStandaloneMultiplier Correlated Stand-alone Multiplier
+	 * @param idiosyncraticComponentCapital Idiosyncratic Capital Component
+	 * @param idiosyncraticStandaloneMultiplier Idiosyncratic Stand-alone Multiplier
 	 * @param grossEntityAllocation Entity Gross Capital Allocation
 	 * 
 	 * @return The Entity Component Capital Instance from the Individual Component Capital
@@ -203,12 +277,12 @@ public class EntityComponentCapital
 	public static final EntityComponentCapital FromComponentCapital (
 		final double noStressComponentCapital,
 		final double noStressStandaloneMultiplier,
-		final double gsstComponentCapital,
-		final double gsstStandaloneMultiplier,
-		final double cBSSTComponentCapital,
-		final double cBSSTStandaloneMultiplier,
-		final double iBSSTComponentCapital,
-		final double iBSSTStandaloneMultiplier,
+		final double systemicComponentCapital,
+		final double systemicStandaloneMultiplier,
+		final double correlatedComponentCapital,
+		final double correlatedStandaloneMultiplier,
+		final double idiosyncraticComponentCapital,
+		final double idiosyncraticStandaloneMultiplier,
 		final double grossEntityAllocation)
 	{
 		try
@@ -220,20 +294,20 @@ public class EntityComponentCapital
 				),
 				noStressStandaloneMultiplier,
 				new org.drip.capital.allocation.EntityCapital (
-					gsstComponentCapital,
-					gsstComponentCapital / grossEntityAllocation
+					systemicComponentCapital,
+					systemicComponentCapital / grossEntityAllocation
 				),
-				gsstStandaloneMultiplier,
+				systemicStandaloneMultiplier,
 				new org.drip.capital.allocation.EntityCapital (
-					cBSSTComponentCapital,
-					cBSSTComponentCapital / grossEntityAllocation
+					correlatedComponentCapital,
+					correlatedComponentCapital / grossEntityAllocation
 				),
-				cBSSTStandaloneMultiplier,
+				correlatedStandaloneMultiplier,
 				new org.drip.capital.allocation.EntityCapital (
-					iBSSTComponentCapital,
-					iBSSTComponentCapital / grossEntityAllocation
+					idiosyncraticComponentCapital,
+					idiosyncraticComponentCapital / grossEntityAllocation
 				),
-				iBSSTStandaloneMultiplier
+				idiosyncraticStandaloneMultiplier
 			);
 		}
 		catch (java.lang.Exception e)
@@ -272,21 +346,21 @@ public class EntityComponentCapital
 			unitFloatBeta
 		);
 
-		double gsstStandaloneMultiplier = GSSTComponentCapitalMultiplier (
+		double systemicStandaloneMultiplier = SystemicComponentCapitalMultiplier (
 			correlationCategoryBetaManager,
 			entityCapitalAssignmentSetting,
 			proRataNormalizerMap,
 			unitFloatBeta
 		);
 
-		double cBSSTStandaloneMultiplier = CBSSTComponentCapitalMultiplier (
+		double correlatedStandaloneMultiplier = CorrelatedComponentCapitalMultiplier (
 			correlationCategoryBetaManager,
 			entityCapitalAssignmentSetting,
 			proRataNormalizerMap,
 			unitFloatBeta
 		);
 
-		double iBSSTStandaloneMultiplier = IBSSTComponentCapitalMultiplier (
+		double idiosyncraticStandaloneMultiplier = IdiosyncraticComponentCapitalMultiplier (
 			correlationCategoryBetaManager,
 			entityCapitalAssignmentSetting,
 			proRataNormalizerMap,
@@ -299,12 +373,12 @@ public class EntityComponentCapital
 			FromComponentCapital (
 				noStressStandaloneMultiplier * pnlAttribution.fsGrossPnL(),
 				noStressStandaloneMultiplier,
-				gsstStandaloneMultiplier * pnlAttribution.gsstPnL(),
-				gsstStandaloneMultiplier,
-				cBSSTStandaloneMultiplier * pnlAttribution.cBSSTPnL(),
-				cBSSTStandaloneMultiplier,
-				iBSSTStandaloneMultiplier * pnlAttribution.iBSSTGrossPnL(),
-				iBSSTStandaloneMultiplier,
+				systemicStandaloneMultiplier * pnlAttribution.systemicPnL(),
+				systemicStandaloneMultiplier,
+				correlatedStandaloneMultiplier * pnlAttribution.correlatedPnL(),
+				correlatedStandaloneMultiplier,
+				idiosyncraticStandaloneMultiplier * pnlAttribution.idiosyncraticGrossPnL(),
+				idiosyncraticStandaloneMultiplier,
 				grossEntityAllocation
 			);
 	}
@@ -314,12 +388,12 @@ public class EntityComponentCapital
 	 * 
 	 * @param noStress Entity No Stress Capital
 	 * @param noStressStandaloneMultiplier No-Stress Stand-alone Multiplier
-	 * @param gsst Entity GSST Capital
-	 * @param gsstStandaloneMultiplier GSST Stand-alone Multiplier
-	 * @param cBSST Entity cBSST Capital
-	 * @param cBSSTStandaloneMultiplier cBSST Stand-alone Multiplier
-	 * @param iBSST Entity iBSST Capital
-	 * @param iBSSTStandaloneMultiplier iBSST Stand-alone Multiplier
+	 * @param systemic Entity Systemic Capital
+	 * @param systemicStandaloneMultiplier Systemic Stand-alone Multiplier
+	 * @param correlated Entity cBSST Capital
+	 * @param correlatedStandaloneMultiplier Correlated Stand-alone Multiplier
+	 * @param idiosyncratic Entity Idiosyncratic Capital
+	 * @param idiosyncraticStandaloneMultiplier Idiosyncratic Stand-alone Multiplier
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -327,22 +401,22 @@ public class EntityComponentCapital
 	public EntityComponentCapital (
 		final org.drip.capital.allocation.EntityCapital noStress,
 		final double noStressStandaloneMultiplier,
-		final org.drip.capital.allocation.EntityCapital gsst,
-		final double gsstStandaloneMultiplier,
-		final org.drip.capital.allocation.EntityCapital cBSST,
-		final double cBSSTStandaloneMultiplier,
-		final org.drip.capital.allocation.EntityCapital iBSST,
-		final double iBSSTStandaloneMultiplier)
+		final org.drip.capital.allocation.EntityCapital systemic,
+		final double systemicStandaloneMultiplier,
+		final org.drip.capital.allocation.EntityCapital correlated,
+		final double correlatedStandaloneMultiplier,
+		final org.drip.capital.allocation.EntityCapital idiosyncratic,
+		final double idiosyncraticStandaloneMultiplier)
 		throws java.lang.Exception
 	{
 		if (null == (_noStress = noStress) || !org.drip.numerical.common.NumberUtil.IsValid (
 				_noStressStandaloneMultiplier = noStressStandaloneMultiplier
-			) || null == (_gsst = gsst) || !org.drip.numerical.common.NumberUtil.IsValid (
-				_gsstStandaloneMultiplier = gsstStandaloneMultiplier
-			) || null == (_cBSST = cBSST) || !org.drip.numerical.common.NumberUtil.IsValid (
-				_cBSSTStandaloneMultiplier = cBSSTStandaloneMultiplier
-			) || null == (_iBSST = iBSST) || !org.drip.numerical.common.NumberUtil.IsValid (
-				_iBSSTStandaloneMultiplier = iBSSTStandaloneMultiplier
+			) || null == (_systemic = systemic) || !org.drip.numerical.common.NumberUtil.IsValid (
+				_systemicStandaloneMultiplier = systemicStandaloneMultiplier
+			) || null == (_correlated = correlated) || !org.drip.numerical.common.NumberUtil.IsValid (
+				_correlatedStandaloneMultiplier = correlatedStandaloneMultiplier
+			) || null == (_idiosyncratic = idiosyncratic) || !org.drip.numerical.common.NumberUtil.IsValid (
+				_idiosyncraticStandaloneMultiplier = idiosyncraticStandaloneMultiplier
 			)
 		)
 		{
@@ -364,47 +438,47 @@ public class EntityComponentCapital
 	}
 
 	/**
-	 * Retrieve the Entity GSST Capital
+	 * Retrieve the Entity Systemic Capital
 	 * 
-	 * @return The Entity GSST Capital
+	 * @return The Entity Systemic Capital
 	 */
 
-	public org.drip.capital.allocation.EntityCapital gsst()
+	public org.drip.capital.allocation.EntityCapital systemic()
 	{
-		return _gsst;
+		return _systemic;
 	}
 
 	/**
-	 * Retrieve the GSST Stand-alone Multiplier
+	 * Retrieve the Systemic Stand-alone Multiplier
 	 * 
-	 * @return The GSST Stand-alone Multiplier
+	 * @return The Systemic Stand-alone Multiplier
 	 */
 
-	public double gsstStandaloneMultiplier()
+	public double systemicStandaloneMultiplier()
 	{
-		return _gsstStandaloneMultiplier;
+		return _systemicStandaloneMultiplier;
 	}
 
 	/**
-	 * Retrieve the cBSST Stand-alone Multiplier
+	 * Retrieve the Correlated Stand-alone Multiplier
 	 * 
-	 * @return The cBSST Stand-alone Multiplier
+	 * @return The Correlated Stand-alone Multiplier
 	 */
 
-	public double cBSSTStandaloneMultiplier()
+	public double correlatedStandaloneMultiplier()
 	{
-		return _cBSSTStandaloneMultiplier;
+		return _correlatedStandaloneMultiplier;
 	}
 
 	/**
-	 * Retrieve the iBSST Stand-alone Multiplier
+	 * Retrieve the Idiosyncratic Stand-alone Multiplier
 	 * 
-	 * @return The iBSST Stand-alone Multiplier
+	 * @return The Idiosyncratic Stand-alone Multiplier
 	 */
 
-	public double iBSSTStandaloneMultiplier()
+	public double idiosyncraticStandaloneMultiplier()
 	{
-		return _iBSSTStandaloneMultiplier;
+		return _idiosyncraticStandaloneMultiplier;
 	}
 
 	/**
@@ -419,25 +493,25 @@ public class EntityComponentCapital
 	}
 
 	/**
-	 * Retrieve the Entity cBSST Capital
+	 * Retrieve the Entity Correlated Capital
 	 * 
-	 * @return The Entity cBSST Capital
+	 * @return The Entity Correlated Capital
 	 */
 
-	public org.drip.capital.allocation.EntityCapital cBSST()
+	public org.drip.capital.allocation.EntityCapital correlated()
 	{
-		return _cBSST;
+		return _correlated;
 	}
 
 	/**
-	 * Retrieve the Entity iBSST Capital
+	 * Retrieve the Entity Idiosyncratic Capital
 	 * 
-	 * @return The Entity iBSST Capital
+	 * @return The Entity Idiosyncratic Capital
 	 */
 
-	public org.drip.capital.allocation.EntityCapital iBSST()
+	public org.drip.capital.allocation.EntityCapital idiosyncratic()
 	{
-		return _iBSST;
+		return _idiosyncratic;
 	}
 
 	/**
@@ -451,8 +525,10 @@ public class EntityComponentCapital
 		try
 		{
 			return new org.drip.capital.allocation.EntityCapital (
-				_noStress.absolute() + _gsst.absolute() + _cBSST.absolute() + _iBSST.absolute(),
-				_noStress.fractional() + _gsst.fractional() + _cBSST.fractional() + _iBSST.fractional()
+				_noStress.absolute() + _systemic.absolute() + _correlated.absolute() +
+					_idiosyncratic.absolute(),
+				_noStress.fractional() + _systemic.fractional() + _correlated.fractional() +
+					_idiosyncratic.fractional()
 			);
 		}
 		catch (java.lang.Exception e)

@@ -124,7 +124,9 @@ public class RiskTypeContext
 	{
 		if (null == (_rbcRiskTypeMap = rbcRiskTypeMap) || 0 == _rbcRiskTypeMap.size())
 		{
-			throw new java.lang.Exception ("RiskTypeContext Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"RiskTypeContext Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -139,7 +141,9 @@ public class RiskTypeContext
 	public boolean containsRBC (
 		final java.lang.String rbc)
 	{
-		return null != rbc && !rbc.isEmpty() && _rbcRiskTypeMap.containsKey (rbc);
+		return null != rbc && !rbc.isEmpty() && _rbcRiskTypeMap.containsKey (
+			rbc
+		);
 	}
 
 	/**
@@ -153,7 +157,11 @@ public class RiskTypeContext
 	public java.lang.String riskType (
 		final java.lang.String rbc)
 	{
-		return containsRBC (rbc) ? _rbcRiskTypeMap.get (rbc) : "";
+		return containsRBC (
+			rbc
+		) ? _rbcRiskTypeMap.get (
+			rbc
+		) : "";
 	}
 
 	/**
@@ -167,7 +175,11 @@ public class RiskTypeContext
 	public boolean rbcExclusionCheck (
 		final java.lang.String rbc)
 	{
-		return "".equalsIgnoreCase (riskType (rbc));
+		return "".equalsIgnoreCase (
+			riskType (
+				rbc
+			)
+		);
 	}
 
 	/**

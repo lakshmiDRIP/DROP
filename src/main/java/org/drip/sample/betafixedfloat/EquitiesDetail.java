@@ -95,19 +95,19 @@ public class EquitiesDetail
 		final PnLAttribution pnlAttribution)
 		throws Exception
 	{
-		Map<String, Double> gsstPnLExplainMap = pnlAttribution.gsstPnLExplainMap();
+		Map<String, Double> gsstPnLExplainMap = pnlAttribution.systemicPnLExplainMap();
 
-		Map<String, Double> cBSSTPnLExplainMap = pnlAttribution.cBSSTPnLExplainMap();
+		Map<String, Double> cBSSTPnLExplainMap = pnlAttribution.correlatedPnLExplainMap();
 
-		Map<String, Double> iBSSTPnLExplainMap = pnlAttribution.iBSSTPnLExplainMap();
+		Map<String, Double> iBSSTPnLExplainMap = pnlAttribution.idiosyncraticPnLExplainMap();
 
-		Map<String, Integer> gsstInstanceCountMap = pnlAttribution.gsstInstanceCountMap();
+		Map<String, Integer> gsstInstanceCountMap = pnlAttribution.systemicInstanceCountMap();
 
-		Map<String, Integer> cBSSTInstanceCountMap = pnlAttribution.cBSSTInstanceCountMap();
+		Map<String, Integer> cBSSTInstanceCountMap = pnlAttribution.correlatedInstanceCountMap();
 
-		Map<String, Integer> iBSSTInstanceCountMap = pnlAttribution.iBSSTInstanceCountMap();
+		Map<String, Integer> iBSSTInstanceCountMap = pnlAttribution.idiosyncraticInstanceCountMap();
 
-		Map<String, Double> gsstGrossPnLExplainMap = pnlAttribution.gsstGrossPnLExplainMap();
+		Map<String, Double> gsstGrossPnLExplainMap = pnlAttribution.systemicGrossPnLExplainMap();
 
 		Map<String, Double> fsPnLDecompositionExplainMap = pnlAttribution.fsPnLDecompositionExplainMap();
 
@@ -191,17 +191,17 @@ public class EquitiesDetail
 
 		System.out.println (
 			"\t|\t GSST         => " +
-			FormatUtil.FormatDouble (pnlAttribution.gsstPnL(), 10, 2, 1.)
+			FormatUtil.FormatDouble (pnlAttribution.systemicPnL(), 10, 2, 1.)
 		);
 
 		System.out.println (
 			"\t|\t Gross cBSST  => " +
-			FormatUtil.FormatDouble (pnlAttribution.cBSSTPnL(), 10, 2, 1.)
+			FormatUtil.FormatDouble (pnlAttribution.correlatedPnL(), 10, 2, 1.)
 		);
 
 		System.out.println (
 			"\t|\t Gross iBSST  => " +
-			FormatUtil.FormatDouble (pnlAttribution.iBSSTGrossPnL(), 10, 2, 1.)
+			FormatUtil.FormatDouble (pnlAttribution.idiosyncraticGrossPnL(), 10, 2, 1.)
 		);
 
 		System.out.println (
@@ -375,11 +375,11 @@ public class EquitiesDetail
 
 			EntityCapital entityComponentCapitalTotal = entityComponentCapital.total();
 
-			EntityCapital entityComponentCapitalIBSST = entityComponentCapital.iBSST();
+			EntityCapital entityComponentCapitalIBSST = entityComponentCapital.idiosyncratic();
 
-			EntityCapital entityComponentCapitalCBSST = entityComponentCapital.cBSST();
+			EntityCapital entityComponentCapitalCBSST = entityComponentCapital.correlated();
 
-			EntityCapital entityComponentCapitalGSST = entityComponentCapital.gsst();
+			EntityCapital entityComponentCapitalGSST = entityComponentCapital.systemic();
 
 			System.out.println (
 				"\t|    " +
@@ -401,11 +401,11 @@ public class EquitiesDetail
 			"\t|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||"
 		);
 
-		EntityCapital entityCapitalGSST = entityComponentCapitalAssignment.gsst();
+		EntityCapital entityCapitalGSST = entityComponentCapitalAssignment.systemic();
 
-		EntityCapital entityCapitalCBSST = entityComponentCapitalAssignment.cBSST();
+		EntityCapital entityCapitalCBSST = entityComponentCapitalAssignment.correlated();
 
-		EntityCapital entityCapitalIBSST = entityComponentCapitalAssignment.iBSST();
+		EntityCapital entityCapitalIBSST = entityComponentCapitalAssignment.idiosyncratic();
 
 		EntityCapital entityCapitalNoStress = entityComponentCapitalAssignment.noStress();
 

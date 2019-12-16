@@ -6,7 +6,73 @@ package org.drip.capital.allocation;
  */
 
 /*!
- * Copyright (C) 2019 Quantitative Risk Analytics
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     => https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   => https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     => https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  => https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications => https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         => https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        => https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           => https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    => https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   => https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an "AS IS" BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
  */
 
 /**
@@ -26,16 +92,24 @@ package org.drip.capital.allocation;
  * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital <i>Risk</i> <b>2 (4)</b> 27-39
  * 		</li>
  * 	</ul>
+ *
+ *	<br><br>
+ *  <ul>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md">Capital Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md">Basel Market Risk and Operational Capital</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/allocation/README.md">Economic Risk Capital Entity Allocation</a></li>
+ *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class EntityElasticityAttribution
 {
-	private org.drip.capital.allocation.EntityComponentElasticityAttribution _gsst = null;
-	private org.drip.capital.allocation.EntityComponentElasticityAttribution _cBSST = null;
-	private org.drip.capital.allocation.EntityComponentElasticityAttribution _iBSST = null;
 	private org.drip.capital.allocation.EntityComponentElasticityAttribution _noStress = null;
+	private org.drip.capital.allocation.EntityComponentElasticityAttribution _systemic = null;
+	private org.drip.capital.allocation.EntityComponentElasticityAttribution _correlated = null;
+	private org.drip.capital.allocation.EntityComponentElasticityAttribution _idiosyncratic = null;
 
 	/**
 	 * EntityElasticityAttribution Constructor
@@ -51,17 +125,17 @@ public class EntityElasticityAttribution
 		final boolean unitLoading)
 		throws java.lang.Exception
 	{
-		_gsst = new org.drip.capital.allocation.EntityComponentElasticityAttribution (
+		_systemic = new org.drip.capital.allocation.EntityComponentElasticityAttribution (
 			correlationCategoryBetaManager,
 			unitLoading
 		);
 
-		_cBSST = new org.drip.capital.allocation.EntityComponentElasticityAttribution (
+		_correlated = new org.drip.capital.allocation.EntityComponentElasticityAttribution (
 			correlationCategoryBetaManager,
 			unitLoading
 		);
 
-		_iBSST = new org.drip.capital.allocation.EntityComponentElasticityAttribution (
+		_idiosyncratic = new org.drip.capital.allocation.EntityComponentElasticityAttribution (
 			correlationCategoryBetaManager,
 			unitLoading
 		);
@@ -73,36 +147,36 @@ public class EntityElasticityAttribution
 	}
 
 	/**
-	 * Retrieve the GSST Elasticity Attribution
+	 * Retrieve the Systemic Elasticity Attribution
 	 * 
-	 * @return The GSST Elasticity Attribution
+	 * @return The Systemic Elasticity Attribution
 	 */
 
-	public org.drip.capital.allocation.EntityComponentElasticityAttribution gsst()
+	public org.drip.capital.allocation.EntityComponentElasticityAttribution systemic()
 	{
-		return _gsst;
+		return _systemic;
 	}
 
 	/**
-	 * Retrieve the cBSST Elasticity Attribution
+	 * Retrieve the Correlated Elasticity Attribution
 	 * 
-	 * @return The cBSST Elasticity Attribution
+	 * @return The Correlated Elasticity Attribution
 	 */
 
-	public org.drip.capital.allocation.EntityComponentElasticityAttribution cBSST()
+	public org.drip.capital.allocation.EntityComponentElasticityAttribution correlated()
 	{
-		return _cBSST;
+		return _correlated;
 	}
 
 	/**
-	 * Retrieve the iBSST Elasticity Attribution
+	 * Retrieve the Idiosyncratic Elasticity Attribution
 	 * 
-	 * @return The iBSST Elasticity Attribution
+	 * @return The Idiosyncratic Elasticity Attribution
 	 */
 
-	public org.drip.capital.allocation.EntityComponentElasticityAttribution iBSST()
+	public org.drip.capital.allocation.EntityComponentElasticityAttribution idiosyncratic()
 	{
-		return _iBSST;
+		return _idiosyncratic;
 	}
 
 	/**
@@ -117,50 +191,50 @@ public class EntityElasticityAttribution
 	}
 
 	/**
-	 * Accumulate the GSST Fixed Attribution
+	 * Accumulate the Systemic Fixed Attribution
 	 * 
-	 * @param gsstFixedAttribution GSST Fixed Attribution
+	 * @param systemicFixedAttribution Systemic Fixed Attribution
 	 * 
-	 * @return TRUE - The GSST Fixed Attribution successfully updated
+	 * @return TRUE - The Systemic Fixed Attribution successfully updated
 	 */
 
-	public boolean accumulateGSSTFixed (
-		final double gsstFixedAttribution)
+	public boolean accumulateSystemicFixed (
+		final double systemicFixedAttribution)
 	{
-		return _gsst.accumulateFixed (
-			gsstFixedAttribution
+		return _systemic.accumulateFixed (
+			systemicFixedAttribution
 		);
 	}
 
 	/**
-	 * Accumulate the cBSST Fixed Attribution
+	 * Accumulate the Correlated Fixed Attribution
 	 * 
-	 * @param cBSSTFixedAttribution cBSST Fixed Attribution
+	 * @param correlatedFixedAttribution Correlated Fixed Attribution
 	 * 
-	 * @return TRUE - The cBSST Fixed Attribution successfully updated
+	 * @return TRUE - The Correlated Fixed Attribution successfully updated
 	 */
 
-	public boolean accumulateCBSSTFixed (
-		final double cBSSTFixedAttribution)
+	public boolean accumulateCorrelatedFixed (
+		final double correlatedFixedAttribution)
 	{
-		return _cBSST.accumulateFixed (
-			cBSSTFixedAttribution
+		return _correlated.accumulateFixed (
+			correlatedFixedAttribution
 		);
 	}
 
 	/**
-	 * Accumulate the iBSST Fixed Attribution
+	 * Accumulate the Idiosyncratic Fixed Attribution
 	 * 
-	 * @param iBSSTFixedAttribution cBSST Fixed Attribution
+	 * @param idiosyncraticFixedAttribution Idiosyncratic Fixed Attribution
 	 * 
-	 * @return TRUE - The iBSST Fixed Attribution successfully updated
+	 * @return TRUE - The Idiosyncratic Fixed Attribution successfully updated
 	 */
 
-	public boolean accumulateIBSSTFixed (
-		final double iBSSTFixedAttribution)
+	public boolean accumulateIdiosyncraticFixed (
+		final double idiosyncraticFixedAttribution)
 	{
-		return _iBSST.accumulateFixed (
-			iBSSTFixedAttribution
+		return _idiosyncratic.accumulateFixed (
+			idiosyncraticFixedAttribution
 		);
 	}
 
@@ -181,50 +255,50 @@ public class EntityElasticityAttribution
 	}
 
 	/**
-	 * Accumulate the GSST Floating Attribution
+	 * Accumulate the Systemic Floating Attribution
 	 * 
-	 * @param gsstFloatingAttribution GSST Floating Attribution
+	 * @param systemicFloatingAttribution Systemic Floating Attribution
 	 * 
-	 * @return TRUE - The GSST Floating Attribution successfully updated
+	 * @return TRUE - The Systemic Floating Attribution successfully updated
 	 */
 
-	public boolean accumulateGSSTFloating (
-		final double gsstFloatingAttribution)
+	public boolean accumulateSystemicFloating (
+		final double systemicFloatingAttribution)
 	{
-		return _gsst.accumulateFloating (
-			gsstFloatingAttribution
+		return _systemic.accumulateFloating (
+			systemicFloatingAttribution
 		);
 	}
 
 	/**
-	 * Accumulate the cBSST Floating Attribution
+	 * Accumulate the Correlated Floating Attribution
 	 * 
-	 * @param cBSSTFloatingAttribution cBSST Floating Attribution
+	 * @param correlatedFloatingAttribution Correlated Floating Attribution
 	 * 
-	 * @return TRUE - The cBSST Floating Attribution successfully updated
+	 * @return TRUE - The Correlated Floating Attribution successfully updated
 	 */
 
-	public boolean accumulateCBSSTFloating (
-		final double cBSSTFloatingAttribution)
+	public boolean accumulateCorrelatedFloating (
+		final double correlatedFloatingAttribution)
 	{
-		return _cBSST.accumulateFloating (
-			cBSSTFloatingAttribution
+		return _correlated.accumulateFloating (
+			correlatedFloatingAttribution
 		);
 	}
 
 	/**
-	 * Accumulate the iBSST Floating Attribution
+	 * Accumulate the Idiosyncratic Floating Attribution
 	 * 
-	 * @param iBSSTFloatingAttribution cBSST Floating Attribution
+	 * @param idiosyncraticFloatingAttribution Idiosyncratic Floating Attribution
 	 * 
-	 * @return TRUE - The iBSST Floating Attribution successfully updated
+	 * @return TRUE - The Idiosyncratic Floating Attribution successfully updated
 	 */
 
-	public boolean accumulateIBSSTFloating (
-		final double iBSSTFloatingAttribution)
+	public boolean accumulateIdiosyncraticFloating (
+		final double idiosyncraticFloatingAttribution)
 	{
-		return _iBSST.accumulateFloating (
-			iBSSTFloatingAttribution
+		return _idiosyncratic.accumulateFloating (
+			idiosyncraticFloatingAttribution
 		);
 	}
 
@@ -245,50 +319,50 @@ public class EntityElasticityAttribution
 	}
 
 	/**
-	 * Accumulate the GSST Pro-Rata Attribution
+	 * Accumulate the Systemic Pro-Rata Attribution
 	 * 
-	 * @param gsstProRataAttribution GSST Pro-Rata Attribution
+	 * @param systemicProRataAttribution Systemic Pro-Rata Attribution
 	 * 
-	 * @return TRUE - The GSST Pro-Rata Attribution successfully updated
+	 * @return TRUE - The Systemic Pro-Rata Attribution successfully updated
 	 */
 
-	public boolean accumulateGSSTProRata (
-		final double gsstProRataAttribution)
+	public boolean accumulateSystemicProRata (
+		final double systemicProRataAttribution)
 	{
-		return _gsst.accumulateProRata (
-			gsstProRataAttribution
+		return _systemic.accumulateProRata (
+			systemicProRataAttribution
 		);
 	}
 
 	/**
-	 * Accumulate the cBSST Pro-Rata Attribution
+	 * Accumulate the Correlated Pro-Rata Attribution
 	 * 
-	 * @param cBSSTProRataAttribution cBSST Pro-Rata Attribution
+	 * @param correlatedProRataAttribution Correlated Pro-Rata Attribution
 	 * 
-	 * @return TRUE - The cBSST Pro-Rata Attribution successfully updated
+	 * @return TRUE - The Correlated Pro-Rata Attribution successfully updated
 	 */
 
-	public boolean accumulateCBSSTProRata (
-		final double cBSSTProRataAttribution)
+	public boolean accumulateCorrelatedProRata (
+		final double correlatedProRataAttribution)
 	{
-		return _cBSST.accumulateProRata (
-			cBSSTProRataAttribution
+		return _correlated.accumulateProRata (
+			correlatedProRataAttribution
 		);
 	}
 
 	/**
-	 * Accumulate the iBSST Pro-Rata Attribution
+	 * Accumulate the Idiosyncratic Pro-Rata Attribution
 	 * 
-	 * @param iBSSTProRataAttribution cBSST Pro-Rata Attribution
+	 * @param idiosyncraticProRataAttribution Idiosyncratic Pro-Rata Attribution
 	 * 
-	 * @return TRUE - The iBSST Pro-Rata Attribution successfully updated
+	 * @return TRUE - The Idiosyncratic Pro-Rata Attribution successfully updated
 	 */
 
-	public boolean accumulateIBSSTProRata (
-		final double iBSSTProRataAttribution)
+	public boolean accumulateIdiosyncraticProRata (
+		final double idiosyncraticProRataAttribution)
 	{
-		return _iBSST.accumulateProRata (
-			iBSSTProRataAttribution
+		return _idiosyncratic.accumulateProRata (
+			idiosyncraticProRataAttribution
 		);
 	}
 
@@ -309,68 +383,68 @@ public class EntityElasticityAttribution
 	}
 
 	/**
-	 * Accumulate the GSST Attribution with the Beta-Adjusted Component Attribution
+	 * Accumulate the Systemic Attribution with the Beta-Adjusted Component Attribution
 	 * 
-	 * @param gsstAttribution The GSST Attribution
-	 * @param gsstAllocationCategory The GSST Allocation Category
-	 * @param gsstAllocationScheme The GSST Allocation Scheme
+	 * @param systemicAttribution The Systemic Attribution
+	 * @param systemicAllocationCategory The Systemic Allocation Category
+	 * @param systemicAllocationScheme The Systemic Allocation Scheme
 	 * 
-	 * @return TRUE - The GSST Partition with the Beta-Adjusted Increment
+	 * @return TRUE - The Systemic Partition with the Beta-Adjusted Increment
 	 */
 
-	public boolean accumulateGSST (
-		final double gsstAttribution,
-		final int gsstAllocationCategory,
-		final int gsstAllocationScheme)
+	public boolean accumulateSystemic (
+		final double systemicAttribution,
+		final int systemicAllocationCategory,
+		final int systemicAllocationScheme)
 	{
-		return _gsst.accumulate (
-			gsstAttribution,
-			gsstAllocationCategory,
-			gsstAllocationScheme
+		return _systemic.accumulate (
+			systemicAttribution,
+			systemicAllocationCategory,
+			systemicAllocationScheme
 		);
 	}
 
 	/**
-	 * Accumulate the cBSST Attribution with the Beta-Adjusted Component Attribution
+	 * Accumulate the Correlated Attribution with the Beta-Adjusted Component Attribution
 	 * 
-	 * @param cBSSTAttribution The cBSST Attribution
-	 * @param cBSSTAllocationCategory The cBSST Allocation Category
-	 * @param cBSSTAllocationScheme The cBSST Allocation Scheme
+	 * @param correlatedAttribution The Correlated Attribution
+	 * @param correlatedAllocationCategory The Correlated Allocation Category
+	 * @param correlatedAllocationScheme The Correlated Allocation Scheme
 	 * 
-	 * @return TRUE - The cBSST Partition with the Beta-Adjusted Increment
+	 * @return TRUE - The Correlated Partition with the Beta-Adjusted Increment
 	 */
 
-	public boolean accumulateCBSST (
-		final double cBSSTAttribution,
-		final int cBSSTAllocationCategory,
-		final int cBSSTAllocationScheme)
+	public boolean accumulateCorrelated (
+		final double correlatedAttribution,
+		final int correlatedAllocationCategory,
+		final int correlatedAllocationScheme)
 	{
-		return _cBSST.accumulate (
-			cBSSTAttribution,
-			cBSSTAllocationCategory,
-			cBSSTAllocationScheme
+		return _correlated.accumulate (
+			correlatedAttribution,
+			correlatedAllocationCategory,
+			correlatedAllocationScheme
 		);
 	}
 
 	/**
-	 * Accumulate the iBSST Attribution with the Beta-Adjusted Component Attribution
+	 * Accumulate the Idiosyncratic Attribution with the Beta-Adjusted Component Attribution
 	 * 
-	 * @param iBSSTAttribution The iBSST Attribution
-	 * @param iBSSTAllocationCategory The iBSST Allocation Category
-	 * @param iBSSTAllocationScheme The iBSST Allocation Scheme
+	 * @param idiosyncraticAttribution The Idiosyncratic Attribution
+	 * @param idiosyncraticAllocationCategory The Idiosyncratic Allocation Category
+	 * @param idiosyncraticAllocationScheme The Idiosyncratic Allocation Scheme
 	 * 
-	 * @return TRUE - The iBSST Partition with the Beta-Adjusted Increment
+	 * @return TRUE - The Idiosyncratic Partition with the Beta-Adjusted Increment
 	 */
 
-	public boolean accumulateIBSST (
-		final double iBSSTAttribution,
-		final int iBSSTAllocationCategory,
-		final int iBSSTAllocationScheme)
+	public boolean accumulateIdiosyncratic (
+		final double idiosyncraticAttribution,
+		final int idiosyncraticAllocationCategory,
+		final int idiosyncraticAllocationScheme)
 	{
-		return _iBSST.accumulate (
-			iBSSTAttribution,
-			iBSSTAllocationCategory,
-			iBSSTAllocationScheme
+		return _idiosyncratic.accumulate (
+			idiosyncraticAttribution,
+			idiosyncraticAllocationCategory,
+			idiosyncraticAllocationScheme
 		);
 	}
 
@@ -415,28 +489,28 @@ public class EntityElasticityAttribution
 			return false;
 		}
 
-		if (!accumulateGSST (
-			pnlAttribution.gsstPnL(),
-			entityCapitalAssignmentSetting.gsstAllocationCategory(),
-			entityCapitalAssignmentSetting.gsstAllocationScheme()
+		if (!accumulateSystemic (
+			pnlAttribution.systemicPnL(),
+			entityCapitalAssignmentSetting.systemicAllocationCategory(),
+			entityCapitalAssignmentSetting.systemicAllocationScheme()
 		))
 		{
 			return false;
 		}
 
-		if (!accumulateCBSST (
-			pnlAttribution.cBSSTPnL(),
-			entityCapitalAssignmentSetting.cBSSTAllocationCategory(),
-			entityCapitalAssignmentSetting.cBSSTAllocationScheme()
+		if (!accumulateCorrelated (
+			pnlAttribution.correlatedPnL(),
+			entityCapitalAssignmentSetting.correlatedAllocationCategory(),
+			entityCapitalAssignmentSetting.correlatedAllocationScheme()
 		))
 		{
 			return false;
 		}
 
-		if (!accumulateIBSST (
-			pnlAttribution.iBSSTGrossPnL(),
-			entityCapitalAssignmentSetting.iBSSTAllocationCategory(),
-			entityCapitalAssignmentSetting.iBSSTAllocationScheme()
+		if (!accumulateIdiosyncratic (
+			pnlAttribution.idiosyncraticGrossPnL(),
+			entityCapitalAssignmentSetting.idiosyncraticAllocationCategory(),
+			entityCapitalAssignmentSetting.idiosyncraticAllocationScheme()
 		))
 		{
 			return false;
@@ -455,36 +529,36 @@ public class EntityElasticityAttribution
 	}
 
 	/**
-	 * Retrieve the Total GSST Component Capital
+	 * Retrieve the Total Systemic Component Capital
 	 * 
-	 * @return The Total GSST Component Capital
+	 * @return The Total Systemic Component Capital
 	 */
 
-	public double gsstTotal()
+	public double systemicTotal()
 	{
-		return _gsst.fixed() + _gsst.floating() + _gsst.proRata();
+		return _systemic.fixed() + _systemic.floating() + _systemic.proRata();
 	}
 
 	/**
-	 * Retrieve the Total cBSST Component Capital
+	 * Retrieve the Total Correlated Component Capital
 	 * 
-	 * @return The Total cBSST Component Capital
+	 * @return The Total Correlated Component Capital
 	 */
 
-	public double cBSSTTotal()
+	public double correlatedTotal()
 	{
-		return _cBSST.fixed() + _cBSST.floating() + _cBSST.proRata();
+		return _correlated.fixed() + _correlated.floating() + _correlated.proRata();
 	}
 
 	/**
-	 * Retrieve the Total iBSST Component Capital
+	 * Retrieve the Total Idiosyncratic Component Capital
 	 * 
-	 * @return The Total iBSST Component Capital
+	 * @return The Total Idiosyncratic Component Capital
 	 */
 
-	public double iBSSTTotal()
+	public double idiosyncraticTotal()
 	{
-		return _iBSST.fixed() + _iBSST.floating() + _iBSST.proRata();
+		return _idiosyncratic.fixed() + _idiosyncratic.floating() + _idiosyncratic.proRata();
 	}
 
 	/**
@@ -506,7 +580,7 @@ public class EntityElasticityAttribution
 
 	public double fixed()
 	{
-		return _gsst.fixed() + _cBSST.fixed() + _iBSST.fixed() + _noStress.fixed();
+		return _systemic.fixed() + _correlated.fixed() + _idiosyncratic.fixed() + _noStress.fixed();
 	}
 
 	/**
@@ -517,7 +591,8 @@ public class EntityElasticityAttribution
 
 	public double floating()
 	{
-		return _gsst.floating() + _cBSST.floating() + _iBSST.floating() + _noStress.floating();
+		return _systemic.floating() + _correlated.floating() + _idiosyncratic.floating() +
+			_noStress.floating();
 	}
 
 	/**
@@ -528,40 +603,40 @@ public class EntityElasticityAttribution
 
 	public double proRata()
 	{
-		return _gsst.proRata() + _cBSST.proRata() + _iBSST.proRata() + _noStress.proRata();
+		return _systemic.proRata() + _correlated.proRata() + _idiosyncratic.proRata() + _noStress.proRata();
 	}
 
 	/**
-	 * Retrieve the Pro-Rata GSST Capital
+	 * Retrieve the Pro-Rata Systemic Capital
 	 *  
-	 * @return The Pro-Rata GSST Capital
+	 * @return The Pro-Rata Systemic Capital
 	 */
 
-	public double gsstProRata()
+	public double systemicProRata()
 	{
-		return _gsst.proRata();
+		return _systemic.proRata();
 	}
 
 	/**
-	 * Retrieve the Pro-Rata cBSST Capital
+	 * Retrieve the Pro-Rata Correlated Capital
 	 *  
-	 * @return The Pro-Rata cBSST Capital
+	 * @return The Pro-Rata Correlated Capital
 	 */
 
-	public double cBSSTProRata()
+	public double correlatedProRata()
 	{
-		return _cBSST.proRata();
+		return _correlated.proRata();
 	}
 
 	/**
-	 * Retrieve the Pro-Rata iBSST Capital
+	 * Retrieve the Pro-Rata Idiosyncratic Capital
 	 *  
-	 * @return The Pro-Rata iBSST Capital
+	 * @return The Pro-Rata Idiosyncratic Capital
 	 */
 
-	public double iBSSTProRata()
+	public double idiosyncraticProRata()
 	{
-		return _iBSST.proRata();
+		return _idiosyncratic.proRata();
 	}
 
 	/**

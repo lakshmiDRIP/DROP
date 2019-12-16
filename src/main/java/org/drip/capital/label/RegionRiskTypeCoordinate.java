@@ -171,7 +171,9 @@ public class RegionRiskTypeCoordinate
 
 		if (null == (_region = region) || _region.isEmpty())
 		{
-			throw new java.lang.Exception ("RegionRiskTypeCoordinate Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"RegionRiskTypeCoordinate Constructor => Invalid Inputs"
+			);
 		}
 	}
 

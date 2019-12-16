@@ -162,7 +162,9 @@ public class SimulationControl
 		if (0 >= (_pathCount = pathCount) ||
 			0 >= (_systemicStressIncidenceSampling = systemicStressIncidenceSampling))
 		{
-			throw new java.lang.Exception ("SimulationControl Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"SimulationControl Constructor => Invalid Inputs"
+			);
 		}
 	}
 

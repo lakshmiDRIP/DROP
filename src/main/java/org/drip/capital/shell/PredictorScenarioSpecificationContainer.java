@@ -108,7 +108,7 @@ public class PredictorScenarioSpecificationContainer
 {
 	private java.util.Map<java.lang.String, java.util.List<java.lang.String>>
 		_categoryPredictorListMap = null;
-	private java.util.Map<java.lang.String, org.drip.capital.gsstdesign.PredictorScenarioSpecification>
+	private java.util.Map<java.lang.String, org.drip.capital.systemicscenario.PredictorScenarioSpecification>
 		_predictorScenarioSpecificationMap = null;
 
 	/**
@@ -125,7 +125,7 @@ public class PredictorScenarioSpecificationContainer
 	 * @return The Predictor Stress Scenario Specification Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.capital.gsstdesign.PredictorScenarioSpecification>
+	public java.util.Map<java.lang.String, org.drip.capital.systemicscenario.PredictorScenarioSpecification>
 		predictorScenarioSpecificationMap()
 	{
 		return _predictorScenarioSpecificationMap;
@@ -151,7 +151,8 @@ public class PredictorScenarioSpecificationContainer
 	 */
 
 	public boolean addPredictorScenarioSpecification (
-		final org.drip.capital.gsstdesign.PredictorScenarioSpecification predictorScenarioSpecification)
+		final org.drip.capital.systemicscenario.PredictorScenarioSpecification
+			predictorScenarioSpecification)
 	{
 		if (null == predictorScenarioSpecification)
 		{
@@ -165,7 +166,7 @@ public class PredictorScenarioSpecificationContainer
 		if (null == _predictorScenarioSpecificationMap)
 		{
 			_predictorScenarioSpecificationMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.capital.gsstdesign.PredictorScenarioSpecification>();
+				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.capital.systemicscenario.PredictorScenarioSpecification>();
 		}
 
 		_predictorScenarioSpecificationMap.put (
@@ -249,7 +250,7 @@ public class PredictorScenarioSpecificationContainer
 	 * @return The Predictor Scenario Specification
 	 */
 
-	public org.drip.capital.gsstdesign.PredictorScenarioSpecification predictorScenarioSpecification (
+	public org.drip.capital.systemicscenario.PredictorScenarioSpecification predictorScenarioSpecification (
 		final java.lang.String predictorName)
 	{
 		return containsPredictor (

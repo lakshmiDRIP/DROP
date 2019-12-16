@@ -118,7 +118,9 @@ public class FSPnLDecomposition
 	public static final FSPnLDecomposition Standard (
 		final double notional)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (notional))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+			notional
+		))
 		{
 			return null;
 		}
@@ -155,7 +157,9 @@ public class FSPnLDecomposition
 								sum = sum + outcome;
 							}
 	
-							return sum / java.lang.Math.sqrt (outcomeArray.length);
+							return sum / java.lang.Math.sqrt (
+								outcomeArray.length
+							);
 						}
 					}
 				);
@@ -170,7 +174,9 @@ public class FSPnLDecomposition
 
 		try
 		{
-			return new FSPnLDecomposition (fsMap);
+			return new FSPnLDecomposition (
+				fsMap
+			);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -194,7 +200,9 @@ public class FSPnLDecomposition
 	{
 		if (null == (_fsMap = fsMap))
 		{
-			throw new java.lang.Exception ("FSPnLDecomposition Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"FSPnLDecomposition Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -247,7 +255,10 @@ public class FSPnLDecomposition
 		final double pnlScaler)
 	{
 		if (null == fsTypeAdjustmentMap || 0 == fsTypeAdjustmentMap.size() ||
-			!org.drip.numerical.common.NumberUtil.IsValid (pnlScaler))
+			!org.drip.numerical.common.NumberUtil.IsValid (
+				pnlScaler
+			)
+		)
 		{
 			return null;
 		}
@@ -260,14 +271,18 @@ public class FSPnLDecomposition
 		{
 			java.lang.String fsType = fsMapEntry.getKey();
 
-			if (!fsTypeAdjustmentMap.containsKey (fsType))
+			if (!fsTypeAdjustmentMap.containsKey (
+				fsType
+			))
 			{
 				return null;
 			}
 
 			volatilityAdjustedFSMap.put (
 				fsType,
-				fsMapEntry.getValue().composite() * fsTypeAdjustmentMap.get (fsType) * pnlScaler
+				fsMapEntry.getValue().composite() * fsTypeAdjustmentMap.get (
+					fsType
+				) * pnlScaler
 			);
 		}
 

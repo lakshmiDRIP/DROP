@@ -104,7 +104,8 @@ package org.drip.capital.entity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ManagedSegmentL1 extends org.drip.capital.entity.CapitalSegment
+public class ManagedSegmentL1
+	extends org.drip.capital.entity.CapitalSegment
 {
 	private org.drip.capital.entity.CapitalUnit[] _capitalUnitArray = null;
 
@@ -122,25 +123,35 @@ public class ManagedSegmentL1 extends org.drip.capital.entity.CapitalSegment
 		final org.drip.capital.entity.CapitalUnit[] capitalUnitArray)
 		throws java.lang.Exception
 	{
-		super (managedSegmentCoordinate);
+		super (
+			managedSegmentCoordinate
+		);
 
 		if (null == (_capitalUnitArray = capitalUnitArray))
 		{
-			throw new java.lang.Exception ("ManagedSegmentL1 Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"ManagedSegmentL1 Constructor => Invalid Inputs"
+			);
 		}
 
 		int capitalUnitCount = _capitalUnitArray.length;
 
 		if (0 == capitalUnitCount)
 		{
-			throw new java.lang.Exception ("ManagedSegment Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"ManagedSegment Constructor => Invalid Inputs"
+			);
 		}
 
-		for (int capitalUnitIndex = 0; capitalUnitIndex < capitalUnitCount; ++capitalUnitIndex)
+		for (int capitalUnitIndex = 0;
+			capitalUnitIndex < capitalUnitCount;
+			++capitalUnitIndex)
 		{
 			if (null == _capitalUnitArray[capitalUnitIndex])
 			{
-				throw new java.lang.Exception ("ManagedSegmentL1 Constructor => Invalid Inputs");
+				throw new java.lang.Exception (
+					"ManagedSegmentL1 Constructor => Invalid Inputs"
+				);
 			}
 		}
 	}

@@ -134,14 +134,18 @@ public class SystemicScenarioPnLSeriesPAA
 		final java.lang.String key,
 		final double value)
 	{
-		if (map.containsKey (key))
+		if (map.containsKey (
+			key
+		))
 		{
 			return false;
 		}
 
 		map.put (
 			key,
-			org.drip.capital.stress.PnLSeries.SingleOutcome (value)
+			org.drip.capital.stress.PnLSeries.SingleOutcome (
+				value
+			)
 		);
 
 		return true;
@@ -167,7 +171,7 @@ public class SystemicScenarioPnLSeriesPAA
 	}
 
 	/**
-	 * Empty SystemicScenaSystemicScenarioPnLSeriesPAArioPnLPAA Constructor
+	 * Empty SystemicScenarioPnLSeriesPAA Constructor
 	 */
 
 	public SystemicScenarioPnLSeriesPAA()
@@ -246,9 +250,9 @@ public class SystemicScenarioPnLSeriesPAA
 	}
 
 	/**
-	 * Add a Decomposed PnL Entry for the Specified GSST Scenario and PAA Category
+	 * Add a Decomposed PnL Entry for the Specified Systemic Scenario and PAA Category
 	 *  
-	 * @param gsstScenarioName GSST Scenario Name
+	 * @param systemicScenarioName Systemic Scenario Name
 	 * @param paaCategoryName PAA Category Name
 	 * @param pnlDecomposition PnL Entry
 	 * 
@@ -256,18 +260,23 @@ public class SystemicScenarioPnLSeriesPAA
 	 */
 
 	public boolean addDecompositionEntry (
-		final java.lang.String gsstScenarioName,
+		final java.lang.String systemicScenarioName,
 		final java.lang.String paaCategoryName,
 		final double pnlDecomposition)
 	{
-		if (null == gsstScenarioName || gsstScenarioName.isEmpty() ||
+		if (null == systemicScenarioName || systemicScenarioName.isEmpty() ||
 			null == paaCategoryName || paaCategoryName.isEmpty() ||
-			!org.drip.numerical.common.NumberUtil.IsValid (pnlDecomposition))
+			!org.drip.numerical.common.NumberUtil.IsValid (
+				pnlDecomposition
+			)
+		)
 		{
 			return false;
 		}
 
-		if (org.drip.capital.definition.GSSTDefinition.BASELINE_1974.equalsIgnoreCase (gsstScenarioName))
+		if (org.drip.capital.definition.SystemicScenarioDefinition.BASELINE_1974.equalsIgnoreCase (
+			systemicScenarioName
+		))
 		{
 			return UpdateMap (
 				_baseline1974DecompositionMap,
@@ -276,7 +285,9 @@ public class SystemicScenarioPnLSeriesPAA
 			);
 		}
 
-		if (org.drip.capital.definition.GSSTDefinition.BASELINE_2008.equalsIgnoreCase (gsstScenarioName))
+		if (org.drip.capital.definition.SystemicScenarioDefinition.BASELINE_2008.equalsIgnoreCase (
+			systemicScenarioName
+		))
 		{
 			return UpdateMap (
 				_baseline2008DecompositionMap,
@@ -285,7 +296,9 @@ public class SystemicScenarioPnLSeriesPAA
 			);
 		}
 
-		if (org.drip.capital.definition.GSSTDefinition.DEEP_DOWNTURN.equalsIgnoreCase (gsstScenarioName))
+		if (org.drip.capital.definition.SystemicScenarioDefinition.DEEP_DOWNTURN.equalsIgnoreCase (
+			systemicScenarioName
+		))
 		{
 			return UpdateMap (
 				_deepDownturnDecompositionMap,
@@ -294,7 +307,9 @@ public class SystemicScenarioPnLSeriesPAA
 			);
 		}
 
-		if (org.drip.capital.definition.GSSTDefinition.DOLLAR_DECLINE.equalsIgnoreCase (gsstScenarioName))
+		if (org.drip.capital.definition.SystemicScenarioDefinition.DOLLAR_DECLINE.equalsIgnoreCase (
+			systemicScenarioName
+		))
 		{
 			return UpdateMap (
 				_dollarDeclineDecompositionMap,
@@ -303,7 +318,9 @@ public class SystemicScenarioPnLSeriesPAA
 			);
 		}
 
-		if (org.drip.capital.definition.GSSTDefinition.INTEREST_RATE_SHOCK.equalsIgnoreCase (gsstScenarioName))
+		if (org.drip.capital.definition.SystemicScenarioDefinition.INTEREST_RATE_SHOCK.equalsIgnoreCase (
+			systemicScenarioName
+		))
 		{
 			return UpdateMap (
 				_interestRateShockDecompositionMap,
@@ -312,7 +329,9 @@ public class SystemicScenarioPnLSeriesPAA
 			);
 		}
 
-		if (org.drip.capital.definition.GSSTDefinition.LOST_DECADE.equalsIgnoreCase (gsstScenarioName))
+		if (org.drip.capital.definition.SystemicScenarioDefinition.LOST_DECADE.equalsIgnoreCase (
+			systemicScenarioName
+		))
 		{
 			return UpdateMap (
 				_lostDecadeDecompositionMap,

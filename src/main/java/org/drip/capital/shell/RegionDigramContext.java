@@ -123,7 +123,9 @@ public class RegionDigramContext
 	{
 		if (null == (_regionDigramMap = regionDigramMap) || 0 == _regionDigramMap.size())
 		{
-			throw new java.lang.Exception ("RegionDigramContext Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"RegionDigramContext Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -138,7 +140,9 @@ public class RegionDigramContext
 	public boolean containsDigram (
 		final java.lang.String digram)
 	{
-		return null != digram && !digram.isEmpty() && _regionDigramMap.containsKey (digram);
+		return null != digram && !digram.isEmpty() && _regionDigramMap.containsKey (
+			digram
+		);
 	}
 
 	/**
@@ -152,7 +156,11 @@ public class RegionDigramContext
 	public java.lang.String region (
 		final java.lang.String digram)
 	{
-		return containsDigram (digram) ? _regionDigramMap.get (digram) : "";
+		return containsDigram (
+			digram
+		) ? _regionDigramMap.get (
+			digram
+		) : "";
 	}
 
 	/**

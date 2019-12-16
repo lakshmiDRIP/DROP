@@ -125,7 +125,9 @@ public class BusinessGroupingContext
 	{
 		if (null == (_businessGroupingMap = businessGroupingMap) || 0 == _businessGroupingMap.size())
 		{
-			throw new java.lang.Exception ("BusinessGroupingContext Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"BusinessGroupingContext Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -140,7 +142,9 @@ public class BusinessGroupingContext
 	public boolean containsBusiness (
 		final java.lang.String business)
 	{
-		return null == business || business.isEmpty() ? false : _businessGroupingMap.containsKey (business);
+		return null == business || business.isEmpty() ? false : _businessGroupingMap.containsKey (
+			business
+		);
 	}
 
 	/**
@@ -154,7 +158,11 @@ public class BusinessGroupingContext
 	public org.drip.capital.label.BusinessGrouping businessGrouping (
 		final java.lang.String business)
 	{
-		return containsBusiness (business) ? _businessGroupingMap.get (business) : null;
+		return containsBusiness (
+			business
+		) ? _businessGroupingMap.get (
+			business
+		) : null;
 	}
 
 	/**
@@ -181,9 +189,13 @@ public class BusinessGroupingContext
 			org.drip.capital.label.BusinessGrouping businessGrouping =
 				businessGroupingEntry.getValue();
 
-			if (group.equalsIgnoreCase (businessGrouping.group()))
+			if (group.equalsIgnoreCase (
+				businessGrouping.group()
+			))
 			{
-				businessSet.add (businessGroupingEntry.getKey());
+				businessSet.add (
+					businessGroupingEntry.getKey()
+				);
 			}
 		}
 
@@ -214,9 +226,13 @@ public class BusinessGroupingContext
 			org.drip.capital.label.BusinessGrouping businessGrouping =
 				businessGroupingEntry.getValue();
 
-			if (product.equalsIgnoreCase (businessGrouping.product()))
+			if (product.equalsIgnoreCase (
+				businessGrouping.product()
+			))
 			{
-				businessSet.add (businessGroupingEntry.getKey());
+				businessSet.add (
+					businessGroupingEntry.getKey()
+				);
 			}
 		}
 

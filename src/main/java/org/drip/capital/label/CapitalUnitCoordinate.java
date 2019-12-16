@@ -167,7 +167,9 @@ public class CapitalUnitCoordinate
 		if (null == (_id = id) || _id.isEmpty() ||
 			null == (_riskType = riskType) || _riskType.isEmpty())
 		{
-			throw new java.lang.Exception ("CapitalUnitCoordinate Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"CapitalUnitCoordinate Constructor => Invalid Inputs"
+			);
 		}
 	}
 

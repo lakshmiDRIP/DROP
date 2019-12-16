@@ -1,5 +1,5 @@
 
-package org.drip.capital.feed;
+package org.drip.capital.systemicscenario;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,8 +76,8 @@ package org.drip.capital.feed;
  */
 
 /**
- * <i>CapitalUnitIBSSTScenario</i> holds the iBSST Scenario Specifications of a Capital Unit. The References
- * 	are:
+ * <i>HistoricalScenarioDefinition</i> holds the Realizations of the Historical Stress Scenarios. The
+ *	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -98,95 +98,63 @@ package org.drip.capital.feed;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md">Capital Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md">Basel Market Risk and Operational Capital</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/feed/README.md">Risk Capital Estimation - Feed Processors</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/systemicscenario/README.md">Systemic Stress Scenario Design/Construction</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CapitalUnitIBSSTScenario
+public class HistoricalScenarioDefinition
 {
-	private double _pnl = java.lang.Double.NaN;
-	private java.lang.String _scenarioName = "";
-	private java.lang.String _factorSensitivity = "";
-	private double _probability = java.lang.Double.NaN;
+	private double _fy1974 = java.lang.Double.NaN;
+	private double _fy2008 = java.lang.Double.NaN;
 
 	/**
-	 * CapitalUnitIBSSTScenario Constructor
+	 * HistoricalScenarioDefinition Constructor
 	 * 
-	 * @param factorSensitivity Factor Sensitivity
-	 * @param scenarioName Scenario Name
-	 * @param pnl Scenario PnL
-	 * @param probability Scenario Probability
+	 * @param fy1974 FY 1974 Historical Realization
+	 * @param fy2008 FY 2008 Historical Realization
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CapitalUnitIBSSTScenario (
-		final java.lang.String factorSensitivity,
-		final java.lang.String scenarioName,
-		final double pnl,
-		final double probability)
+	public HistoricalScenarioDefinition (
+		final double fy1974,
+		final double fy2008)
 		throws java.lang.Exception
 	{
-		if (null == (_factorSensitivity = factorSensitivity) || _factorSensitivity.isEmpty() ||
-			null == (_scenarioName = scenarioName) || _scenarioName.isEmpty() ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_pnl = pnl) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_probability = probability))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+				_fy1974 = fy1974
+			) || !org.drip.numerical.common.NumberUtil.IsValid (
+				_fy2008 = fy2008
+			)
+		)
 		{
-			throw new java.lang.Exception ("CapitalUnitIBSSTScenario Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"HistoricalScenarioDefinition Constructor => Invalid Inputs"
+			);
 		}
 	}
 
 	/**
-	 * Retrieve the Factor Sensitivity
+	 * Retrieve the FY 1974 Historical Realization
 	 * 
-	 * @return The Factor Sensitivity
+	 * @return The FY 1974 Historical Realization
 	 */
 
-	public java.lang.String factorSensitivity()
+	public double fy1974()
 	{
-		return _factorSensitivity;
+		return _fy1974;
 	}
 
 	/**
-	 * Retrieve the Scenario Name
+	 * Retrieve the FY 2008 Historical Realization
 	 * 
-	 * @return The Scenario Name
+	 * @return The FY 2008 Historical Realization
 	 */
 
-	public java.lang.String scenarioName()
+	public double fy2008()
 	{
-		return _scenarioName;
-	}
-
-	/**
-	 * Retrieve the Scenario PnL
-	 * 
-	 * @return The Scenario PnL
-	 */
-
-	public double pnl()
-	{
-		return _pnl;
-	}
-
-	/**
-	 * Retrieve the Scenario Probability
-	 * 
-	 * @return The Scenario Probability
-	 */
-
-	public double probability()
-	{
-		return _probability;
-	}
-
-	@Override public java.lang.String toString()
-	{
-		return "[" + _factorSensitivity + " | " +
-			_scenarioName + " | " +
-			_pnl + " | " +
-			_probability + "]";
+		return _fy2008;
 	}
 }

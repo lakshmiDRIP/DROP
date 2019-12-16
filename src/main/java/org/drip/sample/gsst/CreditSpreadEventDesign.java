@@ -3,9 +3,9 @@ package org.drip.sample.gsst;
 
 import java.util.Map;
 
-import org.drip.capital.env.GSSTDesignContextManager;
-import org.drip.capital.gsstdesign.CreditSpreadEvent;
-import org.drip.capital.gsstdesign.Criterion;
+import org.drip.capital.env.SystemicScenarioDesignContextManager;
+import org.drip.capital.systemicscenario.CreditSpreadEvent;
+import org.drip.capital.systemicscenario.Criterion;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.service.env.EnvManager;
@@ -76,7 +76,7 @@ public class CreditSpreadEventDesign
 		boolean headerPass = true;
 
 		for (Map.Entry<Integer, CreditSpreadEvent> creditSpreadEventMapEntry :
-			GSSTDesignContextManager.CreditSpreadEventContainer().creditSpreadEventMap().entrySet())
+			SystemicScenarioDesignContextManager.CreditSpreadEventContainer().creditSpreadEventMap().entrySet())
 		{
 			CreditSpreadEvent creditSpreadEvent = creditSpreadEventMapEntry.getValue();
 

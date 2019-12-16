@@ -115,7 +115,9 @@ public abstract class CapitalSegment
 	{
 		if (null == (_coordinate = coordinate))
 		{
-			throw new java.lang.Exception ("CapitalSegment Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"CapitalSegment Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -196,12 +198,16 @@ public abstract class CapitalSegment
 		org.drip.capital.simulation.PathPnLRealization[] pathPnLRealizationArray =
 			new org.drip.capital.simulation.PathPnLRealization[pathCount];
 
-		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
+		for (int pathIndex = 0;
+			pathIndex < pathCount;
+			++pathIndex)
 		{
 			org.drip.capital.simulation.PathPnLRealization[] singlePathPnLRealizationArray =
 				new org.drip.capital.simulation.PathPnLRealization[capitalUnitCount];
 
-			for (int capitalUnitIndex = 0; capitalUnitIndex < capitalUnitCount; ++capitalUnitIndex)
+			for (int capitalUnitIndex = 0;
+				capitalUnitIndex < capitalUnitCount;
+				++capitalUnitIndex)
 			{
 				singlePathPnLRealizationArray[capitalUnitIndex] =
 					capitalUnitPathPnLRealizationGrid[capitalUnitIndex][pathIndex];
@@ -248,7 +254,9 @@ public abstract class CapitalSegment
 		org.drip.capital.simulation.PathPnLRealization[] pathPnLRealizationArray = new
 			org.drip.capital.simulation.PathPnLRealization[pathCount];
 
-		for (int capitalUnitIndex = 0; capitalUnitIndex < capitalUnitCount; ++capitalUnitIndex)
+		for (int capitalUnitIndex = 0;
+			capitalUnitIndex < capitalUnitCount;
+			++capitalUnitIndex)
 		{
 			org.drip.capital.simulation.CapitalUnitPathEnsemble capitalUnitPathEnsemble =
 				new org.drip.capital.simulation.CapitalUnitPathEnsemble();
@@ -281,12 +289,16 @@ public abstract class CapitalSegment
 			return null;
 		}
 
-		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
+		for (int pathIndex = 0;
+			pathIndex < pathCount;
+			++pathIndex)
 		{
 			org.drip.capital.simulation.PathPnLRealization[] singlePathPnLRealizationArray =
 				new org.drip.capital.simulation.PathPnLRealization[capitalUnitCount];
 
-			for (int capitalUnitIndex = 0; capitalUnitIndex < capitalUnitCount; ++capitalUnitIndex)
+			for (int capitalUnitIndex = 0;
+				capitalUnitIndex < capitalUnitCount;
+				++capitalUnitIndex)
 			{
 				singlePathPnLRealizationArray[capitalUnitIndex] =
 					capitalUnitPathPnLRealizationGrid[capitalUnitIndex][pathIndex];
@@ -305,7 +317,9 @@ public abstract class CapitalSegment
 
 		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : pathPnLRealizationArray)
 		{
-			if (!capitalSegmentPathEnsemble.addPathPnLRealization (pathPnLRealization))
+			if (!capitalSegmentPathEnsemble.addPathPnLRealization (
+				pathPnLRealization
+			))
 			{
 				return null;
 			}
@@ -343,12 +357,16 @@ public abstract class CapitalSegment
 		org.drip.capital.simulation.CapitalSegmentPathEnsemble constrictedCapitalSegmentPathEnsemble =
 			null;
 
-		for (int capitalUnitIndex = 0; capitalUnitIndex < capitalUnitCount; ++capitalUnitIndex)
+		for (int capitalUnitIndex = 0;
+			capitalUnitIndex < capitalUnitCount;
+			++capitalUnitIndex)
 		{
 			java.lang.String capitalUnitCoordinateFQN =
 				capitalUnitArray[capitalUnitIndex].coordinate().fullyQualifiedName();
 
-			if (!pathEnsembleMap.containsKey (capitalUnitCoordinateFQN))
+			if (!pathEnsembleMap.containsKey (
+				capitalUnitCoordinateFQN
+			))
 			{
 				return null;
 			}
@@ -389,12 +407,16 @@ public abstract class CapitalSegment
 		org.drip.capital.simulation.PathPnLRealization[] pathPnLRealizationArray =
 			new org.drip.capital.simulation.PathPnLRealization[pathCount];
 
-		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
+		for (int pathIndex = 0;
+			pathIndex < pathCount;
+			++pathIndex)
 		{
 			org.drip.capital.simulation.PathPnLRealization[] singlePathPnLRealizationArray =
 				new org.drip.capital.simulation.PathPnLRealization[capitalUnitCount];
 
-			for (int capitalUnitIndex = 0; capitalUnitIndex < capitalUnitCount; ++capitalUnitIndex)
+			for (int capitalUnitIndex = 0;
+				capitalUnitIndex < capitalUnitCount;
+				++capitalUnitIndex)
 			{
 				singlePathPnLRealizationArray[capitalUnitIndex] =
 					capitalUnitPathPnLRealizationGrid[capitalUnitIndex][pathIndex];
@@ -413,7 +435,9 @@ public abstract class CapitalSegment
 
 		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : pathPnLRealizationArray)
 		{
-			if (!constrictedCapitalSegmentPathEnsemble.addPathPnLRealization (pathPnLRealization))
+			if (!constrictedCapitalSegmentPathEnsemble.addPathPnLRealization (
+				pathPnLRealization
+			))
 			{
 				return null;
 			}

@@ -1,5 +1,5 @@
 
-package org.drip.capital.gsstdesign;
+package org.drip.capital.systemicscenario;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,8 +76,8 @@ package org.drip.capital.gsstdesign;
  */
 
 /**
- * <i>HistoricalScenarioDefinition</i> holds the Realizations of the Historical Stress Scenarios. The
- *	References are:
+ * <i>PredictorScenarioSpecification</i> specifies the Full Stress Scenario Specification for the given
+ * 	Predictor across Market Segments. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -98,57 +98,141 @@ package org.drip.capital.gsstdesign;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md">Capital Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md">Basel Market Risk and Operational Capital</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/gsstdesign/README.md">Systemic Stress Scenario Design/Construction</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/systemicscenario/README.md">Systemic Stress Scenario Design/Construction</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class HistoricalScenarioDefinition
+public class PredictorScenarioSpecification
 {
-	private double _fy1974 = java.lang.Double.NaN;
-	private double _fy2008 = java.lang.Double.NaN;
+	private java.lang.String _name = "";
+	private java.lang.String _category = "";
+	private java.util.Map<java.lang.String, org.drip.capital.systemicscenario.StressScenarioSpecification>
+		_segmentScenarioSpecificationMap = null;
 
 	/**
-	 * HistoricalScenarioDefinition Constructor
+	 * PredictorScenarioSpecification Constructor
 	 * 
-	 * @param fy1974 FY 1974 Historical Realization
-	 * @param fy2008 FY 2008 Historical Realization
+	 * @param name Predictor Name
+	 * @param category Predictor Category
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public HistoricalScenarioDefinition (
-		final double fy1974,
-		final double fy2008)
+	public PredictorScenarioSpecification (
+		final java.lang.String name,
+		final java.lang.String category)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_fy1974 = fy1974) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_fy2008 = fy2008))
+		if (null == (_name = name) || _name.isEmpty() ||
+			null == (_category = category) || _category.isEmpty())
 		{
-			throw new java.lang.Exception ("HistoricalScenarioDefinition Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"PredictorScenarioSpecification Constructor => Invalid Inputs"
+			);
 		}
 	}
 
 	/**
-	 * Retrieve the FY 1974 Historical Realization
+	 * Retrieve the Predictor Name
 	 * 
-	 * @return The FY 1974 Historical Realization
+	 * @return The Predictor Name
 	 */
 
-	public double fy1974()
+	public java.lang.String name()
 	{
-		return _fy1974;
+		return _name;
 	}
 
 	/**
-	 * Retrieve the FY 2008 Historical Realization
+	 * Retrieve the Predictor Category
 	 * 
-	 * @return The FY 2008 Historical Realization
+	 * @return The Predictor Category
 	 */
 
-	public double fy2008()
+	public java.lang.String category()
 	{
-		return _fy2008;
+		return _category;
+	}
+
+	/**
+	 * Retrieve the Market Segment Stress Scenario Specification Map
+	 * 
+	 * @return The Market Segment Stress Scenario Specification Map
+	 */
+
+	public java.util.Map<java.lang.String, org.drip.capital.systemicscenario.StressScenarioSpecification>
+		segmentScenarioSpecificationMap()
+	{
+		return _segmentScenarioSpecificationMap;
+	}
+
+	/**
+	 * Add the Stress Scenario Specification
+	 * 
+	 * @param marketSegment The Market Segment
+	 * @param segmentScenarioSpecification The Stress Scenario Specification
+	 * 
+	 * @return TRUE - The Stress Scenario Specification successfully added
+	 */
+
+	public boolean addStressScenarioSpecification (
+		final java.lang.String marketSegment,
+		final org.drip.capital.systemicscenario.StressScenarioSpecification segmentScenarioSpecification)
+	{
+		if (null == marketSegment || marketSegment.isEmpty() ||
+			null == segmentScenarioSpecification)
+		{
+			return false;
+		}
+
+		if (null == _segmentScenarioSpecificationMap)
+		{
+			_segmentScenarioSpecificationMap = new
+				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.capital.systemicscenario.StressScenarioSpecification>();
+		}
+
+		_segmentScenarioSpecificationMap.put (
+			marketSegment,
+			segmentScenarioSpecification
+		);
+
+		return true;
+	}
+
+	/**
+	 * Indicate the Presence of the Market Segment
+	 * 
+	 * @param marketSegment Market Segment
+	 * 
+	 * @return TRUE - The Market Segment is Present
+	 */
+
+	public boolean containsStressScenarioSpecification (
+		final java.lang.String marketSegment)
+	{
+		return null != marketSegment && !marketSegment.isEmpty() &&
+			_segmentScenarioSpecificationMap.containsKey (
+				marketSegment
+			);
+	}
+
+	/**
+	 * Retrieve the Stress Scenario Specification given the Market Segment
+	 * 
+	 * @param marketSegment Market Segment
+	 * 
+	 * @return The Stress Scenario Specification
+	 */
+
+	public org.drip.capital.systemicscenario.StressScenarioSpecification stressScenarioSpecification (
+		final java.lang.String marketSegment)
+	{
+		return containsStressScenarioSpecification (
+			marketSegment
+		) ? _segmentScenarioSpecificationMap.get (
+			marketSegment
+		) : null;
 	}
 }

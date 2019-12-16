@@ -77,8 +77,7 @@ package org.drip.capital.entity;
 
 /**
  * <i>CapitalUnitEventContainer</i> contains all the Stress Event Specifications across all of the Event Types that
- * belong inside of the a Capital Unit. The References
- * 	are:
+ * 	belong inside of the a Capital Unit. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -107,8 +106,8 @@ package org.drip.capital.entity;
 
 public class CapitalUnitEventContainer
 {
-	private org.drip.capital.stress.GSSTEventContainer _gsstEventContainer = null;
-	private org.drip.capital.stress.IBSSTEventContainer _iBSSTEventContainer = null;
+	private org.drip.capital.stress.SystemicEventContainer _systemicEventContainer = null;
+	private org.drip.capital.stress.IdiosyncraticEventContainer _idiosyncraticEventContainer = null;
 
 	/**
 	 * Empty CapitalUnitEventContainer Constructor
@@ -119,190 +118,214 @@ public class CapitalUnitEventContainer
 	}
 
 	/**
-	 * Add GSST Event
+	 * Add Systemic Event
 	 * 
-	 * @param gsstEvent The GSST Event
+	 * @param systemicEvent The Systemic Event
 	 * 
-	 * @return TRUE - The GSST Event successfully added
+	 * @return TRUE - The Systemic Event successfully added
 	 */
 
-	public boolean addGSSTEvent (
-		final org.drip.capital.stress.Event gsstEvent)
+	public boolean addSystemicEvent (
+		final org.drip.capital.stress.Event systemicEvent)
 	{
-		if (null == _gsstEventContainer)
+		if (null == _systemicEventContainer)
 		{
-			_gsstEventContainer = new org.drip.capital.stress.GSSTEventContainer();
+			_systemicEventContainer = new org.drip.capital.stress.SystemicEventContainer();
 		}
 
-		return _gsstEventContainer.addEvent (gsstEvent);
-	}
-
-	/**
-	 * Indicate if the GSST Event is Available
-	 * 
-	 * @param gsstEventName GSST Event Name
-	 * 
-	 * @return TRUE - The GSST Event is Available
-	 */
-
-	public boolean containsGSSTEvent (
-		final java.lang.String gsstEventName)
-	{
-		return null == _gsstEventContainer ? false : _gsstEventContainer.containsEvent (gsstEventName);
-	}
-
-	/**
-	 * Retrieve the GSST Event by Name
-	 * 
-	 * @param gsstEventName GSST Event by Name
-	 * 
-	 * @return The GSST Event
-	 */
-
-	public org.drip.capital.stress.Event gsstEvent (
-		final java.lang.String gsstEventName)
-	{
-		return null == _gsstEventContainer ? null : _gsstEventContainer.event (gsstEventName);
-	}
-
-	/**
-	 * Add iBSST Event
-	 * 
-	 * @param iBSSTEvent The iBSST Event
-	 * 
-	 * @return TRUE - The iBSST Event successfully added
-	 */
-
-	public boolean addIBSSTEvent (
-		final org.drip.capital.stress.Event iBSSTEvent)
-	{
-		if (null == _iBSSTEventContainer)
-		{
-			_iBSSTEventContainer = new org.drip.capital.stress.IBSSTEventContainer();
-		}
-
-		return _iBSSTEventContainer.addEvent (iBSSTEvent);
-	}
-
-	/**
-	 * Indicate if the iBSST Event is Available
-	 * 
-	 * @param iBSSTEventName iBSST Event Name
-	 * 
-	 * @return TRUE - The iBSST Event is Available
-	 */
-
-	public boolean containsIBSSTEvent (
-		final java.lang.String iBSSTEventName)
-	{
-		return null == _iBSSTEventContainer ? false : _iBSSTEventContainer.containsEvent (iBSSTEventName);
-	}
-
-	/**
-	 * Retrieve the iBSST Event by Name
-	 * 
-	 * @param iBSSTEventName iBSST Event by Name
-	 * 
-	 * @return The iBSST Event
-	 */
-
-	public org.drip.capital.stress.Event iBSSTEvent (
-		final java.lang.String iBSSTEventName)
-	{
-		return null == _iBSSTEventContainer ? null : _iBSSTEventContainer.event (iBSSTEventName);
-	}
-
-	/**
-	 * Retrieve the GSST Event Container
-	 * 
-	 * @return The GSST Event Container
-	 */
-
-	public org.drip.capital.stress.GSSTEventContainer gsstEventContainer()
-	{
-		return _gsstEventContainer;
-	}
-
-	/**
-	 * Retrieve the iBSST Event Container
-	 * 
-	 * @return The iBSST Event Container
-	 */
-
-	public org.drip.capital.stress.IBSSTEventContainer iBSSTEventContainer()
-	{
-		return _iBSSTEventContainer;
-	}
-
-	/**
-	 * Add cBSST Stress Event PnL Series
-	 * 
-	 * @param gsstEventName GSST Stress Event Name
-	 * @param cbsstEventName cBSST Stress Event Name
-	 * @param cbsstEventPnLSeries cBSST Stress Event PnL Series
-	 * 
-	 * @return TRUE - The cBSST Stress Event PnL Series successfully added
-	 */
-
-	public boolean addCBSSTEvent (
-		final java.lang.String gsstEventName,
-		final java.lang.String cbsstEventName,
-		final org.drip.capital.stress.PnLSeries cbsstEventPnLSeries)
-	{
-		if (null == _gsstEventContainer)
-		{
-			return false;
-		}
-
-		org.drip.capital.stress.Event gsstEvent = _gsstEventContainer.event (gsstEventName);
-
-		if (null == gsstEvent)
-		{
-			return false;
-		}
-
-		return gsstEvent.attachStressEventPnL (
-			cbsstEventName,
-			cbsstEventPnLSeries
+		return _systemicEventContainer.addEvent (
+			systemicEvent
 		);
 	}
 
 	/**
-	 * Indicate if the cBSST Event is Available
+	 * Indicate if the Systemic Event is Available
 	 * 
-	 * @param gsstEventName GSST Stress Event Name
-	 * @param cBSSTEventName cBSST Stress Event Name
+	 * @param systemicEventName Systemic Event Name
 	 * 
-	 * @return TRUE - The cBSST Event is Available
+	 * @return TRUE - The Systemic Event is Available
 	 */
 
-	public boolean containsCBSSTEvent (
-		final java.lang.String gsstEventName,
-		final java.lang.String cBSSTEventName)
+	public boolean containsSystemicEvent (
+		final java.lang.String systemicEventName)
 	{
-		if (null == _gsstEventContainer)
+		return null == _systemicEventContainer ? false : _systemicEventContainer.containsEvent (
+			systemicEventName
+		);
+	}
+
+	/**
+	 * Retrieve the Systemic Event by Name
+	 * 
+	 * @param systemicEventName Systemic Event by Name
+	 * 
+	 * @return The Systemic Event
+	 */
+
+	public org.drip.capital.stress.Event systemicEvent (
+		final java.lang.String systemicEventName)
+	{
+		return null == _systemicEventContainer ? null : _systemicEventContainer.event (
+			systemicEventName
+		);
+	}
+
+	/**
+	 * Add Idiosyncratic Event
+	 * 
+	 * @param idiosyncraticEvent The Idiosyncratic Event
+	 * 
+	 * @return TRUE - The Idiosyncratic Event successfully added
+	 */
+
+	public boolean addIdiosyncraticEvent (
+		final org.drip.capital.stress.Event idiosyncraticEvent)
+	{
+		if (null == _idiosyncraticEventContainer)
+		{
+			_idiosyncraticEventContainer = new org.drip.capital.stress.IdiosyncraticEventContainer();
+		}
+
+		return _idiosyncraticEventContainer.addEvent (
+			idiosyncraticEvent
+		);
+	}
+
+	/**
+	 * Indicate if the Idiosyncratic Event is Available
+	 * 
+	 * @param idiosyncraticEventName Idiosyncratic Event Name
+	 * 
+	 * @return TRUE - The Idiosyncratic Event is Available
+	 */
+
+	public boolean containsIdiosyncraticEvent (
+		final java.lang.String idiosyncraticEventName)
+	{
+		return null == _idiosyncraticEventContainer ? false : _idiosyncraticEventContainer.containsEvent (
+			idiosyncraticEventName
+		);
+	}
+
+	/**
+	 * Retrieve the Idiosyncratic Event by Name
+	 * 
+	 * @param idiosyncraticEventName Idiosyncratic Event by Name
+	 * 
+	 * @return The Idiosyncratic Event
+	 */
+
+	public org.drip.capital.stress.Event idiosyncraticEvent (
+		final java.lang.String idiosyncraticEventName)
+	{
+		return null == _idiosyncraticEventContainer ? null : _idiosyncraticEventContainer.event (
+			idiosyncraticEventName
+		);
+	}
+
+	/**
+	 * Retrieve the Systemic Event Container
+	 * 
+	 * @return The Systemic Event Container
+	 */
+
+	public org.drip.capital.stress.SystemicEventContainer systemicEventContainer()
+	{
+		return _systemicEventContainer;
+	}
+
+	/**
+	 * Retrieve the Idiosyncratic Event Container
+	 * 
+	 * @return The Idiosyncratic Event Container
+	 */
+
+	public org.drip.capital.stress.IdiosyncraticEventContainer idiosyncraticEventContainer()
+	{
+		return _idiosyncraticEventContainer;
+	}
+
+	/**
+	 * Add Correlated Stress Event PnL Series
+	 * 
+	 * @param systemicEventName Systemic Stress Event Name
+	 * @param correlatedEventName Correlated Stress Event Name
+	 * @param correlatedEventPnLSeries Correlated Stress Event PnL Series
+	 * 
+	 * @return TRUE - The Correlated Stress Event PnL Series successfully added
+	 */
+
+	public boolean addCorrelatedEvent (
+		final java.lang.String systemicEventName,
+		final java.lang.String correlatedEventName,
+		final org.drip.capital.stress.PnLSeries correlatedEventPnLSeries)
+	{
+		if (null == _systemicEventContainer)
 		{
 			return false;
 		}
 
-		return !_gsstEventContainer.containsEvent (gsstEventName) ? false :
-			_gsstEventContainer.event (gsstEventName).containsAttachedEvent (cBSSTEventName);
+		org.drip.capital.stress.Event systemicEvent = _systemicEventContainer.event (
+			systemicEventName
+		);
+
+		if (null == systemicEvent)
+		{
+			return false;
+		}
+
+		return systemicEvent.attachStressEventPnL (
+			correlatedEventName,
+			correlatedEventPnLSeries
+		);
 	}
 
 	/**
-	 * Retrieve the cBSST Stress Event PnL
+	 * Indicate if the Correlated Event is Available
 	 * 
-	 * @param gsstEventName GSST Stress Event Name
-	 * @param cBSSTEventName cBSST Stress Event Name
+	 * @param systemicEventName Systemic Stress Event Name
+	 * @param correlatedEventName Correlated Stress Event Name
 	 * 
-	 * @return TRUE - The cBSST Stress Event PnL
+	 * @return TRUE - The Correlated Event is Available
 	 */
 
-	public org.drip.capital.stress.PnLSeries cBSSTEvent (
-		final java.lang.String gsstEventName,
-		final java.lang.String cBSSTEventName)
+	public boolean containsCorrelatedEvent (
+		final java.lang.String systemicEventName,
+		final java.lang.String correlatedEventName)
 	{
-		return !_gsstEventContainer.containsEvent (gsstEventName) ? null :
-			_gsstEventContainer.event (gsstEventName).attachedEventPnL (cBSSTEventName);
+		if (null == _systemicEventContainer)
+		{
+			return false;
+		}
+
+		return !_systemicEventContainer.containsEvent (
+			systemicEventName
+		) ? false : _systemicEventContainer.event (
+			systemicEventName
+		).containsAttachedEvent (
+			correlatedEventName
+		);
+	}
+
+	/**
+	 * Retrieve the Correlated Stress Event PnL
+	 * 
+	 * @param systemicEventName Systemic Stress Event Name
+	 * @param correlatedEventName Correlated Stress Event Name
+	 * 
+	 * @return TRUE - The Correlated Stress Event PnL
+	 */
+
+	public org.drip.capital.stress.PnLSeries correlatedEvent (
+		final java.lang.String systemicEventName,
+		final java.lang.String correlatedEventName)
+	{
+		return !_systemicEventContainer.containsEvent (
+			systemicEventName
+		) ? null : _systemicEventContainer.event (
+			systemicEventName
+		).attachedEventPnL (
+			correlatedEventName
+		);
 	}
 }

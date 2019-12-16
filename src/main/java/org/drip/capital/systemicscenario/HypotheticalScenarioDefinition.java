@@ -1,5 +1,5 @@
 
-package org.drip.capital.gsstdesign;
+package org.drip.capital.systemicscenario;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,8 +76,8 @@ package org.drip.capital.gsstdesign;
  */
 
 /**
- * <i>StressScenarioQuantification</i> specifies the Unit and the Type of Change for the given Market
- *	Factor/Applicability Combination. The References are:
+ * <i>HypotheticalScenarioDefinition</i> holds the Realizations of the Hypothetical Stress Scenarios. The
+ *	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -98,57 +98,95 @@ package org.drip.capital.gsstdesign;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md">Capital Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md">Basel Market Risk and Operational Capital</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/gsstdesign/README.md">Systemic Stress Scenario Design/Construction</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/systemicscenario/README.md">Systemic Stress Scenario Design/Construction</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class StressScenarioQuantification
+public class HypotheticalScenarioDefinition
 {
-	private java.lang.String _typeOfChange = "";
-	private int _unit = java.lang.Integer.MIN_VALUE;
+	private double _lostDecade = java.lang.Double.NaN;
+	private double _deepDownturn = java.lang.Double.NaN;
+	private double _dollarDecline = java.lang.Double.NaN;
+	private double _interestRateShock = java.lang.Double.NaN;
 
 	/**
-	 * StressScenarioQuantification Constructor
+	 * HypotheticalScenarioDefinition Constructor
 	 * 
-	 * @param typeOfChange Type of Change
-	 * @param unit Unit of Change
+	 * @param dollarDecline Dollar Decline Scenario Realization
+	 * @param lostDecade Lost Decade Scenario Realization
+	 * @param interestRateShock Interest Rate Shock Scenario Realization
+	 * @param deepDownturn Deep Down-turn Scenario Realization
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public StressScenarioQuantification (
-		final java.lang.String typeOfChange,
-		final int unit)
+	public HypotheticalScenarioDefinition (
+		final double dollarDecline,
+		final double lostDecade,
+		final double interestRateShock,
+		final double deepDownturn)
 		throws java.lang.Exception
 	{
-		if (null == (_typeOfChange = typeOfChange) || _typeOfChange.isEmpty() ||
-			-1 >= (_unit = unit))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+				_dollarDecline = dollarDecline
+			) || !org.drip.numerical.common.NumberUtil.IsValid (
+				_lostDecade = lostDecade
+			) || !org.drip.numerical.common.NumberUtil.IsValid (
+				_interestRateShock = interestRateShock
+			) || !org.drip.numerical.common.NumberUtil.IsValid (
+				_deepDownturn = deepDownturn
+			)
+		)
 		{
-			throw new java.lang.Exception ("StressScenarioQuantification Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"HypotheticalScenarioDefinition Constructor => Invalid Inputs"
+			);
 		}
 	}
 
 	/**
-	 * Retrieve the Unit of Change
+	 * Retrieve the Dollar Decline Scenario Realization
 	 * 
-	 * @return The Unit of Change
+	 * @return The Dollar Decline Scenario Realization
 	 */
 
-	public int unit()
+	public double dollarDecline()
 	{
-		return _unit;
+		return _dollarDecline;
 	}
 
 	/**
-	 * Retrieve the Type of Change
+	 * Retrieve the Lost Decade Scenario Realization
 	 * 
-	 * @return The Type of Change
+	 * @return The Lost Decade Scenario Realization
 	 */
 
-	public java.lang.String typeOfChange()
+	public double lostDecade()
 	{
-		return _typeOfChange;
+		return _lostDecade;
+	}
+
+	/**
+	 * Retrieve the Interest Rate Shock Scenario Realization
+	 * 
+	 * @return The Interest Rate Shock Scenario Realization
+	 */
+
+	public double interestRateShock()
+	{
+		return _interestRateShock;
+	}
+
+	/**
+	 * Retrieve the Deep Down-turn Scenario Realization
+	 * 
+	 * @return The Deep Down-turn Scenario Realization
+	 */
+
+	public double deepDownturn()
+	{
+		return _deepDownturn;
 	}
 }

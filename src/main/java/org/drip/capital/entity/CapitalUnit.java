@@ -124,11 +124,11 @@ public class CapitalUnit
 			return null;
 		}
 
-		org.drip.capital.stress.GSSTEventContainer gsstEventContainer =
-			_stressEventContainer.gsstEventContainer();
+		org.drip.capital.stress.SystemicEventContainer gsstEventContainer =
+			_stressEventContainer.systemicEventContainer();
 
-		org.drip.capital.stress.IBSSTEventContainer iBSSTEventContainer =
-			_stressEventContainer.iBSSTEventContainer();
+		org.drip.capital.stress.IdiosyncraticEventContainer iBSSTEventContainer =
+			_stressEventContainer.idiosyncraticEventContainer();
 
 		try
 		{
@@ -174,9 +174,14 @@ public class CapitalUnit
 	{
 		if (null == (_coordinate = coordinate) ||
 			null == (_stressEventContainer = stressEventContainer) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_notional = notional))
+			!org.drip.numerical.common.NumberUtil.IsValid (
+				_notional = notional
+			)
+		)
 		{
-			throw new java.lang.Exception ("CapitalUnit Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"CapitalUnit Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -223,11 +228,11 @@ public class CapitalUnit
 			return null;
 		}
 
-		org.drip.capital.stress.IBSSTEventContainer iBSSTEventContainer =
-			_stressEventContainer.iBSSTEventContainer();
+		org.drip.capital.stress.IdiosyncraticEventContainer idiosyncraticEventContainer =
+			_stressEventContainer.idiosyncraticEventContainer();
 
-		java.util.Set<java.lang.String> iBSSTEventSet = null == iBSSTEventContainer ? null :
-			iBSSTEventContainer.eventMap().keySet();
+		java.util.Set<java.lang.String> idiosyncraticEventSet = null == idiosyncraticEventContainer ? null :
+			idiosyncraticEventContainer.eventMap().keySet();
 
 		org.drip.capital.setting.HorizonTailFSPnLControl pnlControl = simulationPnLControl.noStress();
 
@@ -245,21 +250,25 @@ public class CapitalUnit
 		org.drip.capital.simulation.PathPnLRealization[] pathPnLRealizationArray =
 			new org.drip.capital.simulation.PathPnLRealization[pathCount];
 
-		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
+		for (int pathIndex = 0;
+			pathIndex < pathCount;
+			++pathIndex)
 		{
 			if (null == (
 				pathPnLRealizationArray[pathIndex] = pathPnLRealization (
 					pathIndex,
 					pnlScaler,
-					org.drip.capital.simulation.FSPnLDecomposition.Standard (_notional),
+					org.drip.capital.simulation.FSPnLDecomposition.Standard (
+						_notional
+					),
 					fsTypeVolatilityAjustmentMap,
 					stressPnLScaler,
 					org.drip.capital.setting.SimulationControl.SYSTEMIC_STRESS_INCIDENCE_RANDOM_SAMPLING
 						== systemicStressIncidenceSampling ?
 						org.drip.capital.simulation.StressEventIndicator.RandomSystemic (
-							iBSSTEventSet
+							idiosyncraticEventSet
 						) : org.drip.capital.simulation.StressEventIndicator.CustomSystemic (
-							iBSSTEventSet,
+							idiosyncraticEventSet,
 							((double) pathIndex) / ((double) pathCount)
 						)
 					)
@@ -292,7 +301,9 @@ public class CapitalUnit
 
 		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : pathPnLRealizationArray)
 		{
-			if (!capitalUnitPathEnsemble.addPathPnLRealization (pathPnLRealization))
+			if (!capitalUnitPathEnsemble.addPathPnLRealization (
+				pathPnLRealization
+			))
 			{
 				return null;
 			}

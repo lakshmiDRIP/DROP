@@ -1,5 +1,5 @@
 
-package org.drip.capital.gsstdesign;
+package org.drip.capital.systemicscenario;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,7 +76,7 @@ package org.drip.capital.gsstdesign;
  */
 
 /**
- * <i>MarketSegment</i> maintains a List of the Applicable Market Segments. The References are:
+ * <i>TypeOfChange</i> maintains a List of the Possible Types of Change. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -97,49 +97,57 @@ package org.drip.capital.gsstdesign;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md">Capital Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md">Basel Market Risk and Operational Capital</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/gsstdesign/README.md">Systemic Stress Scenario Design/Construction</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/systemicscenario/README.md">Systemic Stress Scenario Design/Construction</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketSegment
+public class TypeOfChange
 {
 
 	/**
-	 * The DM Market Segment
+	 * No CHange
 	 */
 
-	public static final java.lang.String DM = "DM";
+	public static final java.lang.String NONE = "None";
 
 	/**
-	 * The EM Market Segment
+	 * Scenario GDP Growth Q/Q-4 Change Type
 	 */
 
-	public static final java.lang.String EM = "EM";
+	public static final java.lang.String SCENARIO_GDP_GROWTH = "Scenario GDP Growth Q/Q-4";
 
 	/**
-	 * The DM Low Volatility Market Segment
+	 * Peak vs. Current Level Change Type
 	 */
 
-	public static final java.lang.String DM_LO_VOL = "DM_LO_VOL";
+	public static final java.lang.String PEAK_VS_CURRENT_LEVEL = "Peak vs. Current Level";
 
 	/**
-	 * The DM High Volatility Market Segment
+	 * Change vs. Current Q/Q-4 Change Type
 	 */
 
-	public static final java.lang.String DM_HI_VOL = "DM_HI_VOL";
+	public static final java.lang.String CHANGE_VS_CURRENT = "Change vs. Current Q/Q-4";
 
 	/**
-	 * The EM Low Volatility Market Segment
+	 * Change vs. 4 Q Forward Change Type
 	 */
 
-	public static final java.lang.String EM_LO_VOL = "EM_LO_VOL";
+	public static final java.lang.String CHANGE_VS_4_Q_FORWARD = "Change vs. 4 Q Forward";
 
 	/**
-	 * The EM High Volatility Market Segment
+	 * Change as % of Calendar 2008 Spread Widening Change Type
 	 */
 
-	public static final java.lang.String EM_HI_VOL = "EM_HI_VOL";
+	public static final java.lang.String CHANGE_AS_PERCENT_OF_CALENDAR_2008_SPREAD_WIDENING =
+		"Change as % of Calendar 2008 Spread Widening";
+
+	/**
+	 * Volatility Point Change as % Calendar 2008 Volatility Point Change Type
+	 */
+
+	public static final java.lang.String VOLATILITY_POINT_CHANGE_AS_PERCENT_OF_2008_VOLATILITY_POINT_CHANGE =
+		"Volatility Point Change as % Calendar 2008 Volatility Point Change";
 
 }

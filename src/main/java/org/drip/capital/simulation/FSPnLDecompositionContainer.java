@@ -128,16 +128,22 @@ public class FSPnLDecompositionContainer
 		java.util.List<org.drip.capital.simulation.FSPnLDecomposition> fsPnLDecompositionList = new
 			java.util.ArrayList<org.drip.capital.simulation.FSPnLDecomposition>();
 
-		for (int index = 0; index < count; ++index)
+		for (int index = 0;
+			index < count;
+			++index)
 		{
 			fsPnLDecompositionList.add (
-				org.drip.capital.simulation.FSPnLDecomposition.Standard (notional)
+				org.drip.capital.simulation.FSPnLDecomposition.Standard (
+					notional
+				)
 			);
 		}
 
 		try
 		{
-			return new FSPnLDecompositionContainer (fsPnLDecompositionList);
+			return new FSPnLDecompositionContainer (
+				fsPnLDecompositionList
+			);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -161,7 +167,9 @@ public class FSPnLDecompositionContainer
 	{
 		if (null == (_fsPnLDecompositionList = fsPnLDecompositionList))
 		{
-			throw new java.lang.Exception ("FSPnLDecompositionContainer Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"FSPnLDecompositionContainer Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -215,7 +223,9 @@ public class FSPnLDecompositionContainer
 				return null;
 			}
 
-			volatilityAdjustedFSPnLDecompositionList.add (volatilityAdjustedFSPnLDecomposition);
+			volatilityAdjustedFSPnLDecompositionList.add (
+				volatilityAdjustedFSPnLDecomposition
+			);
 		}
 
 		return volatilityAdjustedFSPnLDecompositionList;

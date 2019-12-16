@@ -134,7 +134,9 @@ public class EnsemblePnLDistribution
 			null == (_grossFSPnLList = grossFSPnLList) ||
 			null == (_grossPnLList = grossPnLList))
 		{
-			throw new java.lang.Exception ("EnsemblePnLDistribution Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"EnsemblePnLDistribution Constructor => Invalid Inputs"
+			);
 		}
 
 		int realizationCount = _grossSystemicStressPnLList.size();
@@ -144,7 +146,9 @@ public class EnsemblePnLDistribution
 			realizationCount != _grossFSPnLList.size() ||
 			realizationCount != _grossPnLList.size())
 		{
-			throw new java.lang.Exception ("EnsemblePnLDistribution Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"EnsemblePnLDistribution Constructor => Invalid Inputs"
+			);
 		}
 	}
 

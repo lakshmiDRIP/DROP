@@ -104,7 +104,8 @@ package org.drip.capital.entity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ManagedSegmentLn extends org.drip.capital.entity.ManagedSegmentL1
+public class ManagedSegmentLn
+	extends org.drip.capital.entity.ManagedSegmentL1
 {
 	private java.util.Map<java.lang.String, java.util.List<org.drip.capital.entity.ManagedSegmentL1>>
 		_managedSegmentL1ListMap = null;
@@ -113,23 +114,21 @@ public class ManagedSegmentLn extends org.drip.capital.entity.ManagedSegmentL1
 	 * Construct a Standard Instance of ManagedSegmentLn
 	 * 
 	 * @param managedSegmentCoordinate Managed Segment Coordinate
-	 * @param gocArray Array of GOC's
+	 * @param capitalUnitArray Array of Capital Units
 	 * 
 	 * @return Standard Instance of ManagedSegmentLn
 	 */
 
 	public static final ManagedSegmentLn Standard (
 		final org.drip.capital.label.CapitalSegmentCoordinate managedSegmentCoordinate,
-		final org.drip.capital.entity.CapitalUnit[] gocArray)
+		final org.drip.capital.entity.CapitalUnit[] capitalUnitArray)
 	{
-		if (null == gocArray)
+		if (null == capitalUnitArray)
 		{
 			return null;
 		}
 
-		int gocCount = gocArray.length;
-
-		if (0 == gocCount)
+		if (0 == capitalUnitArray.length)
 		{
 			return null;
 		}
@@ -143,7 +142,7 @@ public class ManagedSegmentLn extends org.drip.capital.entity.ManagedSegmentL1
 			return new ManagedSegmentLn (
 				managedSegmentL1ListMap,
 				managedSegmentCoordinate,
-				gocArray
+				capitalUnitArray
 			);
 		}
 		catch (java.lang.Exception e)
@@ -159,7 +158,7 @@ public class ManagedSegmentLn extends org.drip.capital.entity.ManagedSegmentL1
 	 * 
 	 * @param managedSegmentL1ListMap L1 Managed Segment List Map
 	 * @param managedSegmentCoordinate Managed Segment Coordinate
-	 * @param gocArray Array of GOC's
+	 * @param capitalUnitArray Array of Capital Units
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -168,17 +167,19 @@ public class ManagedSegmentLn extends org.drip.capital.entity.ManagedSegmentL1
 		final java.util.Map<java.lang.String, java.util.List<org.drip.capital.entity.ManagedSegmentL1>>
 			managedSegmentL1ListMap,
 		final org.drip.capital.label.CapitalSegmentCoordinate managedSegmentCoordinate,
-		final org.drip.capital.entity.CapitalUnit[] gocArray)
+		final org.drip.capital.entity.CapitalUnit[] capitalUnitArray)
 		throws java.lang.Exception
 	{
 		super (
 			managedSegmentCoordinate,
-			gocArray
+			capitalUnitArray
 		);
 
 		if (null == (_managedSegmentL1ListMap = managedSegmentL1ListMap))
 		{
-			throw new java.lang.Exception ("ManagedSegmentLn Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"ManagedSegmentLn Constructor => Invalid Inputs"
+			);
 		}
 	}
 

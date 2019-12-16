@@ -76,7 +76,7 @@ package org.drip.capital.shell;
  */
 
 /**
- * <i>CapitalEstimationContextContainer</i> maintains all the Context Entities needed for a Full iVAST
+ * <i>CapitalEstimationContextContainer</i> maintains all the Context Entities needed for a Full Economic
  * 	Capital Estimation Run. The References are:
  * 
  * <br><br>
@@ -142,7 +142,9 @@ public class CapitalEstimationContextContainer
 			null == (_riskTypeContext = riskTypeContext) ||
 			null == (_volatilityScaleContext = volatilityScaleContext))
 		{
-			throw new java.lang.Exception ("CapitalEstimationContextContainer Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"CapitalEstimationContextContainer Constructor => Invalid Inputs"
+			);
 		}
 	}
 

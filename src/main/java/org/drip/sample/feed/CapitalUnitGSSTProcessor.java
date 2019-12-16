@@ -49,7 +49,7 @@ public class CapitalUnitGSSTProcessor
 			"I:\\CapitalUnitRuns\\GSST_Production_Citigroup_201903_PAA Buckets.csv";
 
 		Map<String, SystemicScenarioPnLSeriesPAA> capitalUnitGSSTScenarioMap =
-			CapitalUnitStressScenarioLoader.LoadGSST (
+			CapitalUnitStressScenarioLoader.LoadSystemic (
 				capitalUnitGSSTInputFile,
 				true
 			);

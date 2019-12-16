@@ -1,5 +1,5 @@
 
-package org.drip.capital.gsstdesign;
+package org.drip.capital.systemicscenario;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -98,7 +98,7 @@ package org.drip.capital.gsstdesign;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md">Capital Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md">Basel Market Risk and Operational Capital</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/gsstdesign/README.md">Systemic Stress Scenario Design/Construction</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/systemicscenario/README.md">Systemic Stress Scenario Design/Construction</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
@@ -227,13 +227,22 @@ public class SystemicStressShockIndicator
 		final int energy)
 		throws java.lang.Exception
 	{
-		if (!VerifyIndicator (_creditSpreads = creditSpreads) ||
-			!VerifyIndicator (_equityMarkets = equityMarkets) ||
-			!VerifyIndicator (_yieldCurveLevel = yieldCurveLevel) ||
-			!VerifyIndicator (_commodities = commodities) ||
-			!VerifyIndicator (_energy = energy))
+		if (!VerifyIndicator (
+				_creditSpreads = creditSpreads
+			) || !VerifyIndicator (
+				_equityMarkets = equityMarkets
+			) || !VerifyIndicator (
+				_yieldCurveLevel = yieldCurveLevel
+			) || !VerifyIndicator (
+				_commodities = commodities
+			) || !VerifyIndicator (
+				_energy = energy
+			)
+		)
 		{
-			throw new java.lang.Exception ("SystemicStressShockIndicator Cnstructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"SystemicStressShockIndicator Cnstructor => Invalid Inputs"
+			);
 		}
 	}
 

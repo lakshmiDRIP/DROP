@@ -5,4 +5,4 @@
  * @author Lakshmi Krishnamurthy
  */
 
-package org.drip.capital.gsstdesign;
+package org.drip.capital.systemicscenario;

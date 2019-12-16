@@ -76,7 +76,8 @@ package org.drip.capital.definition;
  */
 
 /**
- * <i>StressScenarioType</i> contains the Stress Scenario Types - GSST, cBSST, and iBSST. The References are:
+ * <i>StressScenarioType</i> contains the Stress Scenario Types - Systemic, Correlated, and Idiosyncratic.
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -107,21 +108,21 @@ public class StressScenarioType
 {
 
 	/**
-	 * Stress Scenario Type - GSST
+	 * Stress Scenario Type - CORRELATED
 	 */
 
-	public static final java.lang.String GSST = "GSST";
+	public static final java.lang.String CORRELATED = "CORRELATED";
 
 	/**
-	 * Stress Scenario Type - cBSST
+	 * Stress Scenario Type - IDIOSYNCRATIC
 	 */
 
-	public static final java.lang.String CBSST = "cBSST";
+	public static final java.lang.String IDIOSYNCRATIC = "IDIOSYNCRATIC";
 
 	/**
-	 * Stress Scenario Type - iBSST
+	 * Stress Scenario Type - SYSTEMIC
 	 */
 
-	public static final java.lang.String IBSST = "iBSST";
+	public static final java.lang.String SYSTEMIC = "SYSTEMIC";
 
 }

@@ -4,14 +4,14 @@ package org.drip.sample.gsst;
 import java.util.List;
 import java.util.Map;
 
-import org.drip.capital.env.GSSTDefinitionContextManager;
-import org.drip.capital.gsstdesign.CapitalBaselineDefinition;
-import org.drip.capital.gsstdesign.HistoricalScenarioDefinition;
-import org.drip.capital.gsstdesign.HypotheticalScenarioDefinition;
-import org.drip.capital.gsstdesign.PredictorScenarioSpecification;
-import org.drip.capital.gsstdesign.StressScenarioQuantification;
-import org.drip.capital.gsstdesign.StressScenarioSpecification;
+import org.drip.capital.env.SystemicScenarioDefinitionContextManager;
 import org.drip.capital.shell.PredictorScenarioSpecificationContainer;
+import org.drip.capital.systemicscenario.CapitalBaselineDefinition;
+import org.drip.capital.systemicscenario.HistoricalScenarioDefinition;
+import org.drip.capital.systemicscenario.HypotheticalScenarioDefinition;
+import org.drip.capital.systemicscenario.PredictorScenarioSpecification;
+import org.drip.capital.systemicscenario.StressScenarioQuantification;
+import org.drip.capital.systemicscenario.StressScenarioSpecification;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -54,7 +54,7 @@ public class StressScenarioDefinition
 		EnvManager.InitEnv ("");
 
 		PredictorScenarioSpecificationContainer predictorScenarioSpecificationContainer =
-			GSSTDefinitionContextManager.PredictorScenarioSpecificationContainer();
+			SystemicScenarioDefinitionContextManager.PredictorScenarioSpecificationContainer();
 
 		Map<String, List<String>> categoryPredictorListMap =
 			predictorScenarioSpecificationContainer.categoryPredictorListMap();

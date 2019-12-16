@@ -107,16 +107,16 @@ public abstract class PnLAttribution
 {
 	protected double _var = java.lang.Double.NaN;
 	protected double _expectedShortfall = java.lang.Double.NaN;
-	protected java.util.Map<java.lang.String, java.lang.Double> _cBSSTPnLWorstMap = null;
-	protected java.util.Map<java.lang.String, java.lang.Double> _iBSSTPnLWorstMap = null;
-	protected java.util.Map<java.lang.String, java.lang.Double> _gsstPnLExplainMap = null;
-	protected java.util.Map<java.lang.String, java.lang.Double> _cBSSTPnLExplainMap = null;
-	protected java.util.Map<java.lang.String, java.lang.Double> _iBSSTPnLExplainMap = null;
-	protected java.util.Map<java.lang.String, java.lang.Integer> _gsstInstanceCountMap = null;
-	protected java.util.Map<java.lang.String, java.lang.Double> _gsstGrossPnLExplainMap = null;
-	protected java.util.Map<java.lang.String, java.lang.Integer> _cBSSTInstanceCountMap = null;
-	protected java.util.Map<java.lang.String, java.lang.Integer> _iBSSTInstanceCountMap = null;
+	protected java.util.Map<java.lang.String, java.lang.Double> _correlatedPnLWorstMap = null;
+	protected java.util.Map<java.lang.String, java.lang.Double> _systemicPnLExplainMap = null;
+	protected java.util.Map<java.lang.String, java.lang.Double> _correlatedPnLExplainMap = null;
+	protected java.util.Map<java.lang.String, java.lang.Double> _idiosyncraticPnLWorstMap = null;
+	protected java.util.Map<java.lang.String, java.lang.Integer> _systemicInstanceCountMap = null;
+	protected java.util.Map<java.lang.String, java.lang.Double> _idiosyncraticPnLExplainMap = null;
+	protected java.util.Map<java.lang.String, java.lang.Double> _systemicGrossPnLExplainMap = null;
+	protected java.util.Map<java.lang.String, java.lang.Integer> _correlatedInstanceCountMap = null;
 	protected java.util.Map<java.lang.String, java.lang.Double> _fsPnLDecompositionExplainMap = null;
+	protected java.util.Map<java.lang.String, java.lang.Integer> _idiosyncraticInstanceCountMap = null;
 	protected java.util.Map<java.lang.String, java.lang.Double> _paaCategoryDecompositionExplainMap = null;
 
 	/**
@@ -142,69 +142,69 @@ public abstract class PnLAttribution
 	}
 
 	/**
-	 * Retrieve the GSST PnL Explain Map
+	 * Retrieve the Systemic PnL Explain Map
 	 * 
-	 * @return The GSST PnL Explain Map
+	 * @return The Systemic PnL Explain Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> gsstPnLExplainMap()
+	public java.util.Map<java.lang.String, java.lang.Double> systemicPnLExplainMap()
 	{
-		return _gsstPnLExplainMap;
+		return _systemicPnLExplainMap;
 	}
 
 	/**
-	 * Retrieve the GSST Gross PnL Explain Map
+	 * Retrieve the Systemic Gross PnL Explain Map
 	 * 
-	 * @return The GSST Gross PnL Explain Map
+	 * @return The Systemic Gross PnL Explain Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> gsstGrossPnLExplainMap()
+	public java.util.Map<java.lang.String, java.lang.Double> systemicGrossPnLExplainMap()
 	{
-		return _gsstGrossPnLExplainMap;
+		return _systemicGrossPnLExplainMap;
 	}
 
 	/**
-	 * Retrieve the cBSST PnL Explain Map
+	 * Retrieve the Correlated PnL Explain Map
 	 * 
-	 * @return The cBSST PnL Explain Map
+	 * @return The Correlated PnL Explain Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> cBSSTPnLExplainMap()
+	public java.util.Map<java.lang.String, java.lang.Double> correlatedPnLExplainMap()
 	{
-		return _cBSSTPnLExplainMap;
+		return _correlatedPnLExplainMap;
 	}
 
 	/**
-	 * Retrieve the cBSST Worst PnL Map
+	 * Retrieve the Correlated Worst PnL Map
 	 * 
-	 * @return The cBSST Worst PnL Map
+	 * @return The Correlated Worst PnL Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> cBSSTPnLWorstMap()
+	public java.util.Map<java.lang.String, java.lang.Double> correlatedPnLWorstMap()
 	{
-		return _cBSSTPnLWorstMap;
+		return _correlatedPnLWorstMap;
 	}
 
 	/**
-	 * Retrieve the iBSST PnL Explain Map
+	 * Retrieve the Idiosyncratic PnL Explain Map
 	 * 
-	 * @return The iBSST PnL Explain Map
+	 * @return The Idiosyncratic PnL Explain Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> iBSSTPnLExplainMap()
+	public java.util.Map<java.lang.String, java.lang.Double> idiosyncraticPnLExplainMap()
 	{
-		return _iBSSTPnLExplainMap;
+		return _idiosyncraticPnLExplainMap;
 	}
 
 	/**
-	 * Retrieve the iBSST Worst PnL Map
+	 * Retrieve the Idiosyncratic Worst PnL Map
 	 * 
-	 * @return The iBSST Worst PnL Map
+	 * @return The Idiosyncratic Worst PnL Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> iBSSTPnLWorstMap()
+	public java.util.Map<java.lang.String, java.lang.Double> idiosyncraticPnLWorstMap()
 	{
-		return _iBSSTPnLWorstMap;
+		return _idiosyncraticPnLWorstMap;
 	}
 
 	/**
@@ -230,36 +230,36 @@ public abstract class PnLAttribution
 	}
 
 	/**
-	 * Retrieve the GSST Instance Count Map
+	 * Retrieve the Systemic Instance Count Map
 	 * 
-	 * @return The GSST Instance Count Map
+	 * @return The Systemic Instance Count Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Integer> gsstInstanceCountMap()
+	public java.util.Map<java.lang.String, java.lang.Integer> systemicInstanceCountMap()
 	{
-		return _gsstInstanceCountMap;
+		return _systemicInstanceCountMap;
 	}
 
 	/**
-	 * Retrieve the cBSST Instance Count Map
+	 * Retrieve the Correlated Instance Count Map
 	 * 
-	 * @return The cBSST Instance Count Map
+	 * @return The Correlated Instance Count Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Integer> cBSSTInstanceCountMap()
+	public java.util.Map<java.lang.String, java.lang.Integer> correlatedInstanceCountMap()
 	{
-		return _cBSSTInstanceCountMap;
+		return _correlatedInstanceCountMap;
 	}
 
 	/**
-	 * Retrieve the iBSST Instance Count Map
+	 * Retrieve the Idiosyncratic Instance Count Map
 	 * 
-	 * @return The iBSST Instance Count Map
+	 * @return The Idiosyncratic Instance Count Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Integer> iBSSTInstanceCountMap()
+	public java.util.Map<java.lang.String, java.lang.Integer> idiosyncraticInstanceCountMap()
 	{
-		return _iBSSTInstanceCountMap;
+		return _idiosyncraticInstanceCountMap;
 	}
 
 	/**
@@ -279,99 +279,99 @@ public abstract class PnLAttribution
 	public abstract int pathCount();
 
 	/**
-	 * Retrieve the GSST PnL
+	 * Retrieve the Systemic PnL
 	 * 
-	 * @return The GSST PnL
+	 * @return The Systemic PnL
 	 */
 
-	public double gsstPnL()
+	public double systemicPnL()
 	{
-		if (null == _gsstPnLExplainMap || 0 == _gsstPnLExplainMap.size())
+		if (null == _systemicPnLExplainMap || 0 == _systemicPnLExplainMap.size())
 		{
 			return 0.;
 		}
 
-		double gsstPnL = 0.;
+		double systemicPnL = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> gsstPnLExplainEntry :
-			_gsstPnLExplainMap.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> systemicPnLExplainEntry :
+			_systemicPnLExplainMap.entrySet())
 		{
-			gsstPnL = gsstPnL + gsstPnLExplainEntry.getValue();
+			systemicPnL = systemicPnL + systemicPnLExplainEntry.getValue();
 		}
 
-		return gsstPnL;
+		return systemicPnL;
 	}
 
 	/**
-	 * Retrieve the GSST Gross PnL
+	 * Retrieve the Systemic Gross PnL
 	 * 
-	 * @return The GSST Gross PnL
+	 * @return The Systemic Gross PnL
 	 */
 
-	public double gsstGrossPnL()
+	public double systemicGrossPnL()
 	{
-		if (null == _gsstGrossPnLExplainMap || 0 == _gsstGrossPnLExplainMap.size())
+		if (null == _systemicGrossPnLExplainMap || 0 == _systemicGrossPnLExplainMap.size())
 		{
 			return 0.;
 		}
 
-		double gsstGrossPnL = 0.;
+		double systemicGrossPnL = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> gsstGrossPnLExplainEntry :
-			_gsstGrossPnLExplainMap.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> systemicGrossPnLExplainEntry :
+			_systemicGrossPnLExplainMap.entrySet())
 		{
-			gsstGrossPnL = gsstGrossPnL + gsstGrossPnLExplainEntry.getValue();
+			systemicGrossPnL = systemicGrossPnL + systemicGrossPnLExplainEntry.getValue();
 		}
 
-		return gsstGrossPnL;
+		return systemicGrossPnL;
 	}
 
 	/**
-	 * Retrieve the cBSST PnL
+	 * Retrieve the Correlated PnL
 	 * 
-	 * @return The cBSST PnL
+	 * @return The Correlated PnL
 	 */
 
-	public double cBSSTPnL()
+	public double correlatedPnL()
 	{
-		if (null == _cBSSTPnLExplainMap || 0 == _cBSSTPnLExplainMap.size())
+		if (null == _correlatedPnLExplainMap || 0 == _correlatedPnLExplainMap.size())
 		{
 			return 0.;
 		}
 
-		double cBSSTPnL = 0.;
+		double correlatedPnL = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> cBSSTPnLExplainEntry :
-			_cBSSTPnLExplainMap.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> correlatedPnLExplainEntry :
+			_correlatedPnLExplainMap.entrySet())
 		{
-			cBSSTPnL = cBSSTPnL + cBSSTPnLExplainEntry.getValue();
+			correlatedPnL = correlatedPnL + correlatedPnLExplainEntry.getValue();
 		}
 
-		return cBSSTPnL;
+		return correlatedPnL;
 	}
 
 	/**
-	 * Retrieve the iBSST Gross PnL
+	 * Retrieve the Idiosyncratic Gross PnL
 	 * 
-	 * @return The iBSST Gross PnL
+	 * @return The Idiosyncratic Gross PnL
 	 */
 
-	public double iBSSTGrossPnL()
+	public double idiosyncraticGrossPnL()
 	{
-		if (null == _iBSSTPnLExplainMap || 0 == _iBSSTPnLExplainMap.size())
+		if (null == _idiosyncraticPnLExplainMap || 0 == _idiosyncraticPnLExplainMap.size())
 		{
 			return 0.;
 		}
 
-		double iBSSTGrossPnL = 0.;
+		double idiosyncraticGrossPnL = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> iBSSTPnLExplainEntry :
-			_iBSSTPnLExplainMap.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> idiosyncraticPnLExplainEntry :
+			_idiosyncraticPnLExplainMap.entrySet())
 		{
-			iBSSTGrossPnL = iBSSTGrossPnL + iBSSTPnLExplainEntry.getValue();
+			idiosyncraticGrossPnL = idiosyncraticGrossPnL + idiosyncraticPnLExplainEntry.getValue();
 		}
 
-		return iBSSTGrossPnL;
+		return idiosyncraticGrossPnL;
 	}
 
 	/**

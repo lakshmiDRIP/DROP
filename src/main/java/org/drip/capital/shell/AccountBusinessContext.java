@@ -122,7 +122,9 @@ public class AccountBusinessContext
 	{
 		if (null == (_accountBusinessMap = accountBusinessMap) || 0 == _accountBusinessMap.size())
 		{
-			throw new java.lang.Exception ("AccountBusinessContext Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"AccountBusinessContext Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -137,7 +139,9 @@ public class AccountBusinessContext
 	public boolean containsAccount (
 		final java.lang.String account)
 	{
-		return null != account && !account.isEmpty() && _accountBusinessMap.containsKey (account);
+		return null != account && !account.isEmpty() && _accountBusinessMap.containsKey (
+			account
+		);
 	}
 
 	/**
@@ -151,7 +155,11 @@ public class AccountBusinessContext
 	public java.lang.String business (
 		final java.lang.String account)
 	{
-		return containsAccount (account) ? _accountBusinessMap.get (account) : "";
+		return containsAccount (
+			account
+		) ? _accountBusinessMap.get (
+			account
+		) : "";
 	}
 
 	/**
@@ -177,9 +185,13 @@ public class AccountBusinessContext
 		{
 			java.lang.String accountBusiness = accountBusinessEntry.getValue();
 
-			if (business.equalsIgnoreCase (accountBusiness))
+			if (business.equalsIgnoreCase (
+				accountBusiness
+			))
 			{
-				accountSet.add (accountBusinessEntry.getKey());
+				accountSet.add (
+					accountBusinessEntry.getKey()
+				);
 			}
 		}
 

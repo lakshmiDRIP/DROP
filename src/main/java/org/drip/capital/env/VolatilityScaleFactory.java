@@ -220,7 +220,9 @@ public class VolatilityScaleFactory
 
 		try
 		{
-			return new org.drip.capital.shell.VolatilityScaleContext (fsTypeAdjustmentMap);
+			return new org.drip.capital.shell.VolatilityScaleContext (
+				fsTypeAdjustmentMap
+			);
 		}
 		catch (java.lang.Exception e)
 		{

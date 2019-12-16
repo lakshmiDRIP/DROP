@@ -120,6 +120,12 @@ public class Business
 	public static final java.lang.String AI = "AI";
 
 	/**
+	 * BHC Financial Business
+	 */
+
+	public static final java.lang.String BHCFINANCIAL = "BHCFinancial";
+
+	/**
 	 * CAI Business
 	 */
 
@@ -155,12 +161,6 @@ public class Business
 	 */
 
 	public static final java.lang.String CENTRAL_AMERICA_MORTGAGES = "Central America Mortgages";
-
-	/**
-	 * CitiFinancial Business
-	 */
-
-	public static final java.lang.String CITIFINANCIAL = "CitiFinancial";
 
 	/**
 	 * CLP Business
@@ -397,11 +397,11 @@ public class Business
 	public static final java.lang.String MUNICIPAL_SECURITIES = "Municipal Securities";
 
 	/**
-	 * Municipal Securities - Citi Community Business
+	 * Municipal Securities - Community Business
 	 */
 
-	public static final java.lang.String MUNICIPAL_SECURITIES_CITI_COMMUNITY =
-		"Municipal Securities - Citi Community";
+	public static final java.lang.String MUNICIPAL_SECURITIES_BHC_COMMUNITY =
+		"Municipal Securities - BHC Community";
 
 	/**
 	 * Municipal Business

@@ -124,7 +124,9 @@ public class CapitalSegmentPathEnsemble
 	{
 		if (null == (_pathEnsembleMap = pathEnsembleMap))
 		{
-			throw new java.lang.Exception ("CapitalSegmentPathEnsemble Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"CapitalSegmentPathEnsemble Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -169,7 +171,9 @@ public class CapitalSegmentPathEnsemble
 		for (java.lang.String capitalUnitCoordinate : capitalUnitCoordinateSet)
 		{
 			org.drip.capital.explain.CapitalUnitPnLAttribution capitalUnitPnLAttribution =
-				_pathEnsembleMap.get (capitalUnitCoordinate).pnlAttribution (
+				_pathEnsembleMap.get (
+					capitalUnitCoordinate
+				).pnlAttribution (
 					pathIndexList
 				);
 
@@ -211,13 +215,17 @@ public class CapitalSegmentPathEnsemble
 	public org.drip.capital.explain.CapitalSegmentStandaloneMarginal marginalPnLAttribution (
 		final double confidenceLevel)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (confidenceLevel) ||
-			0. >= confidenceLevel || 1. <= confidenceLevel)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+				confidenceLevel
+			) || 0. >= confidenceLevel || 1. <= confidenceLevel
+		)
 		{
 			return null;
 		}
 
-		return marginalPnLAttribution ((int) (count() * (1. - confidenceLevel)));
+		return marginalPnLAttribution (
+			(int) (count() * (1. - confidenceLevel))
+		);
 	}
 
 	/**
@@ -242,8 +250,13 @@ public class CapitalSegmentPathEnsemble
 		{
 			if (null == (
 				capitalUnitPathAttributionArray[capitalUnitIndex++] =
-					_pathEnsembleMap.get (capitalUnitCoordinate).pnlAttribution (confidenceCount)
-			))
+					_pathEnsembleMap.get (
+						capitalUnitCoordinate
+					).pnlAttribution (
+						confidenceCount
+					)
+				)
+			)
 			{
 				return null;
 			}
@@ -274,13 +287,17 @@ public class CapitalSegmentPathEnsemble
 	public org.drip.capital.explain.CapitalSegmentPnLAttribution standalonePnLAttribution (
 		final double confidenceLevel)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (confidenceLevel) ||
-			0. >= confidenceLevel || 1. <= confidenceLevel)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+				confidenceLevel
+			) || 0. >= confidenceLevel || 1. <= confidenceLevel
+		)
 		{
 			return null;
 		}
 
-		return standalonePnLAttribution ((int) (count() * (1. - confidenceLevel)));
+		return standalonePnLAttribution (
+			(int) (count() * (1. - confidenceLevel))
+		);
 	}
 
 	/**
@@ -296,7 +313,9 @@ public class CapitalSegmentPathEnsemble
 		final int confidenceCount)
 	{
 		org.drip.capital.explain.CapitalUnitPnLAttribution segmentCapitalUnitPnLAttribution =
-			super.pnlAttribution (confidenceCount);
+			super.pnlAttribution (
+				confidenceCount
+			);
 
 		if (null == segmentCapitalUnitPnLAttribution)
 		{
@@ -334,7 +353,11 @@ public class CapitalSegmentPathEnsemble
 			);
 
 			org.drip.capital.explain.CapitalUnitPnLAttribution capitalUnitStandaloneAttribution =
-				_pathEnsembleMap.get (capitalUnitCoordinate).pnlAttribution (confidenceCount);
+				_pathEnsembleMap.get (
+					capitalUnitCoordinate
+				).pnlAttribution (
+					confidenceCount
+				);
 
 			if (null == capitalUnitStandaloneAttribution)
 			{
@@ -375,12 +398,16 @@ public class CapitalSegmentPathEnsemble
 	public org.drip.capital.explain.CapitalSegmentStandaloneMarginal marginalStandalonePnLAttribution (
 		final double confidenceLevel)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (confidenceLevel) ||
-			0. >= confidenceLevel || 1. <= confidenceLevel)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+				confidenceLevel
+			) || 0. >= confidenceLevel || 1. <= confidenceLevel
+		)
 		{
 			return null;
 		}
 
-		return marginalStandalonePnLAttribution ((int) (count() * (1. - confidenceLevel)));
+		return marginalStandalonePnLAttribution (
+			(int) (count() * (1. - confidenceLevel))
+		);
 	}
 }

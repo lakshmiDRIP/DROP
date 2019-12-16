@@ -266,14 +266,14 @@ public class EnvManager {
 			return null;
 		}
 
-		if (!org.drip.capital.env.GSSTDesignContextManager.Init())
+		if (!org.drip.capital.env.SystemicScenarioDesignContextManager.Init())
 		{
 			System.out.println ("EnvManager::InitEnv => Cannot Initialize GSST Design Context Manager!");
 
 			return null;
 		}
 
-		if (!org.drip.capital.env.GSSTDefinitionContextManager.Init())
+		if (!org.drip.capital.env.SystemicScenarioDefinitionContextManager.Init())
 		{
 			System.out.println
 				("EnvManager::InitEnv => Cannot Initialize GSST Definition Context Manager!");

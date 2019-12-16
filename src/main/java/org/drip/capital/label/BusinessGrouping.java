@@ -129,7 +129,9 @@ public class BusinessGrouping
 			null == (_product = product) || _product.isEmpty() ||
 			null == (_group = group) || _group.isEmpty())
 		{
-			throw new java.lang.Exception ("BusinessGrouping Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"BusinessGrouping Constructor => Invalid Inputs"
+			);
 		}
 	}
 

@@ -131,9 +131,14 @@ public class StressEventIncidence
 	{
 		if (null == (_name = name) || _name.isEmpty() ||
 			null == (_type = type) || _type.isEmpty() ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_pnl = pnl))
+			!org.drip.numerical.common.NumberUtil.IsValid (
+				_pnl = pnl
+			)
+		)
 		{
-			throw new java.lang.Exception ("StressEventIncidence Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"StressEventIncidence Constructor => Invalid Inputs"
+			);
 		}
 
 		_paaCategoryPnLDecomposition = paaCategoryPnLDecomposition;

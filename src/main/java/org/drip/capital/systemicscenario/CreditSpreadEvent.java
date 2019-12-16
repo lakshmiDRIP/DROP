@@ -1,5 +1,5 @@
 
-package org.drip.capital.gsstdesign;
+package org.drip.capital.systemicscenario;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -98,7 +98,7 @@ package org.drip.capital.gsstdesign;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md">Capital Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md">Basel Market Risk and Operational Capital</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/gsstdesign/README.md">Systemic Stress Scenario Design/Construction</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/systemicscenario/README.md">Systemic Stress Scenario Design/Construction</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
@@ -107,14 +107,15 @@ package org.drip.capital.gsstdesign;
 public class CreditSpreadEvent
 {
 	private java.lang.String _scenario = "";
-	private org.drip.capital.gsstdesign.Criterion _snpGSCI = null;
-	private org.drip.capital.gsstdesign.Criterion _fxChange = null;
-	private org.drip.capital.gsstdesign.Criterion _ust5YChange = null;
-	private org.drip.capital.gsstdesign.Criterion _snp500Return = null;
-	private org.drip.capital.gsstdesign.Criterion _wtiSpotReturn = null;
-	private org.drip.capital.gsstdesign.Criterion _baaSpreadChange = null;
-	private org.drip.capital.gsstdesign.Criterion _ust10YMinus3MChange = null;
-	private org.drip.capital.gsstdesign.SystemicStressShockIndicator _systemicStressShockIndicator = null;
+	private org.drip.capital.systemicscenario.Criterion _snpGSCI = null;
+	private org.drip.capital.systemicscenario.Criterion _fxChange = null;
+	private org.drip.capital.systemicscenario.Criterion _ust5YChange = null;
+	private org.drip.capital.systemicscenario.Criterion _snp500Return = null;
+	private org.drip.capital.systemicscenario.Criterion _wtiSpotReturn = null;
+	private org.drip.capital.systemicscenario.Criterion _baaSpreadChange = null;
+	private org.drip.capital.systemicscenario.Criterion _ust10YMinus3MChange = null;
+	private org.drip.capital.systemicscenario.SystemicStressShockIndicator _systemicStressShockIndicator =
+		null;
 
 	/**
 	 * Construct a Standard CreditSpreadEvent Instance
@@ -141,31 +142,31 @@ public class CreditSpreadEvent
 		final double fxRateChange,
 		final double wtiSpotReturn,
 		final double snpGSCINonEnergyCommodityIndex,
-		final org.drip.capital.gsstdesign.SystemicStressShockIndicator systemicStressShockIndicator)
+		final org.drip.capital.systemicscenario.SystemicStressShockIndicator systemicStressShockIndicator)
 	{
 		try
 		{
 			return new CreditSpreadEvent (
 				scenario,
-				org.drip.capital.gsstdesign.Criterion.BaaSpreadChange (
+				org.drip.capital.systemicscenario.Criterion.BaaSpreadChange (
 					baaSpreadChange
 				),
-				org.drip.capital.gsstdesign.Criterion.SnP500AnnualReturn (
+				org.drip.capital.systemicscenario.Criterion.SnP500AnnualReturn (
 					snp500AnnualReturn
 				),
-				org.drip.capital.gsstdesign.Criterion.UST5YAbsoluteChange (
+				org.drip.capital.systemicscenario.Criterion.UST5YAbsoluteChange (
 					ust5YAbsoluteChange
 				),
-				org.drip.capital.gsstdesign.Criterion.UST10YMinus3MAbsoluteChange (
+				org.drip.capital.systemicscenario.Criterion.UST10YMinus3MAbsoluteChange (
 					ust10YMinus3MAbsoluteChange
 				),
-				org.drip.capital.gsstdesign.Criterion.FXRateChange (
+				org.drip.capital.systemicscenario.Criterion.FXRateChange (
 					fxRateChange
 				),
-				org.drip.capital.gsstdesign.Criterion.WTISpotReturn (
+				org.drip.capital.systemicscenario.Criterion.WTISpotReturn (
 					wtiSpotReturn
 				),
-				org.drip.capital.gsstdesign.Criterion.SnPGSCINonEnergyCommodityIndex (
+				org.drip.capital.systemicscenario.Criterion.SnPGSCINonEnergyCommodityIndex (
 					snpGSCINonEnergyCommodityIndex
 				),
 				systemicStressShockIndicator
@@ -197,14 +198,14 @@ public class CreditSpreadEvent
 
 	public CreditSpreadEvent (
 		final java.lang.String scenario,
-		final org.drip.capital.gsstdesign.Criterion baaSpreadChange,
-		final org.drip.capital.gsstdesign.Criterion snp500Return,
-		final org.drip.capital.gsstdesign.Criterion ust5YChange,
-		final org.drip.capital.gsstdesign.Criterion ust10YMinus3MChange,
-		final org.drip.capital.gsstdesign.Criterion fxChange,
-		final org.drip.capital.gsstdesign.Criterion wtiSpotReturn,
-		final org.drip.capital.gsstdesign.Criterion snpGSCI,
-		final org.drip.capital.gsstdesign.SystemicStressShockIndicator systemicStressShockIndicator)
+		final org.drip.capital.systemicscenario.Criterion baaSpreadChange,
+		final org.drip.capital.systemicscenario.Criterion snp500Return,
+		final org.drip.capital.systemicscenario.Criterion ust5YChange,
+		final org.drip.capital.systemicscenario.Criterion ust10YMinus3MChange,
+		final org.drip.capital.systemicscenario.Criterion fxChange,
+		final org.drip.capital.systemicscenario.Criterion wtiSpotReturn,
+		final org.drip.capital.systemicscenario.Criterion snpGSCI,
+		final org.drip.capital.systemicscenario.SystemicStressShockIndicator systemicStressShockIndicator)
 		throws java.lang.Exception
 	{
 		if (null == (_scenario = scenario) || _scenario.isEmpty() ||
@@ -238,7 +239,7 @@ public class CreditSpreadEvent
 	 * @return The Baa Spread Change Criterion
 	 */
 
-	public org.drip.capital.gsstdesign.Criterion baaSpreadChange()
+	public org.drip.capital.systemicscenario.Criterion baaSpreadChange()
 	{
 		return _baaSpreadChange;
 	}
@@ -249,7 +250,7 @@ public class CreditSpreadEvent
 	 * @return The SnP 500 Return Criterion
 	 */
 
-	public org.drip.capital.gsstdesign.Criterion snp500Return()
+	public org.drip.capital.systemicscenario.Criterion snp500Return()
 	{
 		return _snp500Return;
 	}
@@ -260,7 +261,7 @@ public class CreditSpreadEvent
 	 * @return The 5Y UST Change Criterion
 	 */
 
-	public org.drip.capital.gsstdesign.Criterion ust5YChange()
+	public org.drip.capital.systemicscenario.Criterion ust5YChange()
 	{
 		return _ust5YChange;
 	}
@@ -271,7 +272,7 @@ public class CreditSpreadEvent
 	 * @return The 10Y - 3M UST Change Criterion
 	 */
 
-	public org.drip.capital.gsstdesign.Criterion ust10YMinus3MChange()
+	public org.drip.capital.systemicscenario.Criterion ust10YMinus3MChange()
 	{
 		return _ust10YMinus3MChange;
 	}
@@ -282,7 +283,7 @@ public class CreditSpreadEvent
 	 * @return The FX Change Criterion
 	 */
 
-	public org.drip.capital.gsstdesign.Criterion fxChange()
+	public org.drip.capital.systemicscenario.Criterion fxChange()
 	{
 		return _fxChange;
 	}
@@ -293,7 +294,7 @@ public class CreditSpreadEvent
 	 * @return The WTI Spot Return Criterion
 	 */
 
-	public org.drip.capital.gsstdesign.Criterion wtiSpotReturn()
+	public org.drip.capital.systemicscenario.Criterion wtiSpotReturn()
 	{
 		return _wtiSpotReturn;
 	}
@@ -304,7 +305,7 @@ public class CreditSpreadEvent
 	 * @return The SnP GSCI Criterion
 	 */
 
-	public org.drip.capital.gsstdesign.Criterion snpGSCI()
+	public org.drip.capital.systemicscenario.Criterion snpGSCI()
 	{
 		return _snpGSCI;
 	}
@@ -315,7 +316,7 @@ public class CreditSpreadEvent
 	 * @return The Systemic Stress Shock Indicator
 	 */
 
-	public org.drip.capital.gsstdesign.SystemicStressShockIndicator systemicStressShockIndicator()
+	public org.drip.capital.systemicscenario.SystemicStressShockIndicator systemicStressShockIndicator()
 	{
 		return _systemicStressShockIndicator;
 	}

@@ -159,7 +159,9 @@ public class RegionDigramFactory
 
 		try
 		{
-			return new org.drip.capital.shell.RegionDigramContext (regionDigramMap);
+			return new org.drip.capital.shell.RegionDigramContext (
+				regionDigramMap
+			);
 		}
 		catch (java.lang.Exception e)
 		{

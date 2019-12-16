@@ -265,7 +265,9 @@ public class RiskTypeFactory
 
 		try
 		{
-			return new org.drip.capital.shell.RiskTypeContext (rbcRiskTypeMap);
+			return new org.drip.capital.shell.RiskTypeContext (
+				rbcRiskTypeMap
+			);
 		}
 		catch (java.lang.Exception e)
 		{

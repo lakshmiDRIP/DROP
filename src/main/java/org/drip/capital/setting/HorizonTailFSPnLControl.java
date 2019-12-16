@@ -104,7 +104,8 @@ package org.drip.capital.setting;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class HorizonTailFSPnLControl extends org.drip.capital.setting.HorizonTailPnLControl
+public abstract class HorizonTailFSPnLControl
+	extends org.drip.capital.setting.HorizonTailPnLControl
 {
 	private java.util.Map<java.lang.String, java.lang.Double> _fsTypeVolatilityAjustmentMap = null;
 
@@ -174,7 +175,9 @@ public abstract class HorizonTailFSPnLControl extends org.drip.capital.setting.H
 
 		if (null == (_fsTypeVolatilityAjustmentMap = fsTypeVolatilityAjustmentMap))
 		{
-			throw new java.lang.Exception ("HorizonTailFSPnLControl Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"HorizonTailFSPnLControl Constructor => Invalid Inputs"
+			);
 		}
 	}
 

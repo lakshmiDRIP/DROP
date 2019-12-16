@@ -1,5 +1,5 @@
 
-package org.drip.capital.gsstdesign;
+package org.drip.capital.feed;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,8 +76,8 @@ package org.drip.capital.gsstdesign;
  */
 
 /**
- * <i>StressScenarioSpecification</i> specifies the Full Stress Scenario Specification for the given Market
- *	Factor/Applicability Combination. The References are:
+ * <i>CapitalUnitCorrelatedScenario</i> holds the Correlated Scenario Specifications of a Capital Unit. The
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -98,88 +98,81 @@ package org.drip.capital.gsstdesign;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md">Capital Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md">Basel Market Risk and Operational Capital</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/gsstdesign/README.md">Systemic Stress Scenario Design/Construction</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/feed/README.md">Risk Capital Estimation - Feed Processors</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class StressScenarioSpecification
+public class CapitalUnitCorrelatedScenario
 {
-	private org.drip.capital.gsstdesign.CapitalBaselineDefinition _capitalBaselineDefinition = null;
-	private org.drip.capital.gsstdesign.HistoricalScenarioDefinition _historicalScenarioDefinition = null;
-	private org.drip.capital.gsstdesign.StressScenarioQuantification _stressScenarioQuantification = null;
-	private org.drip.capital.gsstdesign.HypotheticalScenarioDefinition _hypotheticalScenarioDefinition =
-		null;
+	private java.lang.String _scenarioName = "";
+	private java.lang.String _factorSensitivity = "";
+	private org.drip.capital.shell.SystemicScenarioPnLSeries _scenarioPnL = null;
 
 	/**
-	 * StressScenarioSpecification Constructor
+	 * CapitalUnitCorrelatedScenario Constructor
 	 * 
-	 * @param stressScenarioQuantification Stress Scenario Quantification
-	 * @param hypotheticalScenarioDefinition Hypothetical Scenario Definition
-	 * @param historicalScenarioDefinition Historical Scenario Definition
-	 * @param capitalBaselineDefinition Capital Baseline Definition
+	 * @param factorSensitivity Factor Sensitivity
+	 * @param scenarioName Scenario Name
+	 * @param scenarioPnL Scenario PnL
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public StressScenarioSpecification (
-		final org.drip.capital.gsstdesign.StressScenarioQuantification stressScenarioQuantification,
-		final org.drip.capital.gsstdesign.HypotheticalScenarioDefinition hypotheticalScenarioDefinition,
-		final org.drip.capital.gsstdesign.HistoricalScenarioDefinition historicalScenarioDefinition,
-		final org.drip.capital.gsstdesign.CapitalBaselineDefinition capitalBaselineDefinition)
+	public CapitalUnitCorrelatedScenario (
+		final java.lang.String factorSensitivity,
+		final java.lang.String scenarioName,
+		final org.drip.capital.shell.SystemicScenarioPnLSeries scenarioPnL)
 		throws java.lang.Exception
 	{
-		if (null == (_stressScenarioQuantification = stressScenarioQuantification) ||
-			null == (_hypotheticalScenarioDefinition = hypotheticalScenarioDefinition) ||
-			null == (_historicalScenarioDefinition = historicalScenarioDefinition) ||
-			null == (_capitalBaselineDefinition = capitalBaselineDefinition))
+		if (null == (_factorSensitivity = factorSensitivity) || _factorSensitivity.isEmpty() ||
+			null == (_scenarioName = scenarioName) || _scenarioName.isEmpty() ||
+			null == (_scenarioPnL = scenarioPnL))
 		{
-			throw new java.lang.Exception ("StressScenarioSpecification Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"CapitalUnitCorrelatedScenario Constructor => Invalid Inputs"
+			);
 		}
 	}
 
 	/**
-	 * Retrieve the Stress Scenario Quantification
+	 * Retrieve the Factor Sensitivity
 	 * 
-	 * @return The Stress Scenario Quantification
+	 * @return The Factor Sensitivity
 	 */
 
-	public org.drip.capital.gsstdesign.StressScenarioQuantification stressScenarioQuantification()
+	public java.lang.String factorSensitivity()
 	{
-		return _stressScenarioQuantification;
+		return _factorSensitivity;
 	}
 
 	/**
-	 * Retrieve the Hypothetical Scenario Definition
+	 * Retrieve the Scenario Name
 	 * 
-	 * @return The Hypothetical Scenario Definition
+	 * @return The Scenario Name
 	 */
 
-	public org.drip.capital.gsstdesign.HypotheticalScenarioDefinition hypotheticalScenarioDefinition()
+	public java.lang.String scenarioName()
 	{
-		return _hypotheticalScenarioDefinition;
+		return _scenarioName;
 	}
 
 	/**
-	 * Retrieve the Historical Scenario Definition
+	 * Retrieve the CBSST Scenario PnL
 	 * 
-	 * @return The Historical Scenario Definition
+	 * @return The CBSST Scenario PnL
 	 */
 
-	public org.drip.capital.gsstdesign.HistoricalScenarioDefinition historicalScenarioDefinition()
+	public org.drip.capital.shell.SystemicScenarioPnLSeries scenarioPnL()
 	{
-		return _historicalScenarioDefinition;
+		return _scenarioPnL;
 	}
 
-	/**
-	 * Retrieve the Capital Baseline Definition
-	 * 
-	 * @return The Capital Baseline Definition
-	 */
-
-	public org.drip.capital.gsstdesign.CapitalBaselineDefinition capitalBaselineDefinition()
+	@Override public java.lang.String toString()
 	{
-		return _capitalBaselineDefinition;
+		return "[" + _factorSensitivity + " | " +
+			_scenarioName + " | {" +
+			_scenarioPnL.toString() + "}]";
 	}
 }

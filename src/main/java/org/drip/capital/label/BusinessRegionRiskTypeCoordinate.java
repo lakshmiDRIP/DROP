@@ -174,7 +174,9 @@ public class BusinessRegionRiskTypeCoordinate
 
 		if (null == (_business = business) || _business .isEmpty())
 		{
-			throw new java.lang.Exception ("BusinessRegionRiskTypeCoordinate Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"BusinessRegionRiskTypeCoordinate Constructor => Invalid Inputs"
+			);
 		}
 	}
 

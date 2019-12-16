@@ -1,5 +1,5 @@
 
-package org.drip.capital.gsstdesign;
+package org.drip.capital.systemicscenario;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,8 +76,7 @@ package org.drip.capital.gsstdesign;
  */
 
 /**
- * <i>PredictorScenarioSpecification</i> specifies the Full Stress Scenario Specification for the given
- * 	Predictor across Market Segments. The References are:
+ * <i>CriterionUnit</i> maintains a List of the Possible Criterion Units. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -98,134 +97,43 @@ package org.drip.capital.gsstdesign;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md">Capital Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md">Basel Market Risk and Operational Capital</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/gsstdesign/README.md">Systemic Stress Scenario Design/Construction</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/systemicscenario/README.md">Systemic Stress Scenario Design/Construction</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class PredictorScenarioSpecification
+public class CriterionUnit
 {
-	private java.lang.String _name = "";
-	private java.lang.String _category = "";
-	private java.util.Map<java.lang.String, org.drip.capital.gsstdesign.StressScenarioSpecification>
-		_segmentScenarioSpecificationMap = null;
 
 	/**
-	 * PredictorScenarioSpecification Constructor
-	 * 
-	 * @param name Predictor Name
-	 * @param category Predictor Category
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * The BASIS POINT Criterion Unit
 	 */
 
-	public PredictorScenarioSpecification (
-		final java.lang.String name,
-		final java.lang.String category)
-		throws java.lang.Exception
-	{
-		if (null == (_name = name) || _name.isEmpty() ||
-			null == (_category = category) || _category.isEmpty())
-		{
-			throw new java.lang.Exception ("PredictorScenarioSpecification Constructor => Invalid Inputs");
-		}
-	}
+	public static final int BASIS_POINT = 1;
 
 	/**
-	 * Retrieve the Predictor Name
-	 * 
-	 * @return The Predictor Name
+	 * The PERCENT Criterion Unit
 	 */
 
-	public java.lang.String name()
-	{
-		return _name;
-	}
+	public static final int PERCENT = 2;
 
 	/**
-	 * Retrieve the Predictor Category
-	 * 
-	 * @return The Predictor Category
+	 * The ABSOLUTE Criterion Unit
 	 */
 
-	public java.lang.String category()
-	{
-		return _category;
-	}
+	public static final int ABSOLUTE = 4;
 
 	/**
-	 * Retrieve the Market Segment Stress Scenario Specification Map
-	 * 
-	 * @return The Market Segment Stress Scenario Specification Map
+	 * The PERCENTAGE POINT Criterion Unit
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.capital.gsstdesign.StressScenarioSpecification>
-		segmentScenarioSpecificationMap()
-	{
-		return _segmentScenarioSpecificationMap;
-	}
+	public static final int PERCENT_POINT = 8;
 
 	/**
-	 * Add the Stress Scenario Specification
-	 * 
-	 * @param marketSegment The Market Segment
-	 * @param segmentScenarioSpecification The Stress Scenario Specification
-	 * 
-	 * @return TRUE - The Stress Scenario Specification successfully added
+	 * The VOLATILITY POINT Criterion Unit
 	 */
 
-	public boolean addStressScenarioSpecification (
-		final java.lang.String marketSegment,
-		final org.drip.capital.gsstdesign.StressScenarioSpecification segmentScenarioSpecification)
-	{
-		if (null == marketSegment || marketSegment.isEmpty() ||
-			null == segmentScenarioSpecification)
-		{
-			return false;
-		}
+	public static final int VOLATILITY_POINT = 16;
 
-		if (null == _segmentScenarioSpecificationMap)
-		{
-			_segmentScenarioSpecificationMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.capital.gsstdesign.StressScenarioSpecification>();
-		}
-
-		_segmentScenarioSpecificationMap.put (
-			marketSegment,
-			segmentScenarioSpecification
-		);
-
-		return true;
-	}
-
-	/**
-	 * Indicate the Presence of the Market Segment
-	 * 
-	 * @param marketSegment Market Segment
-	 * 
-	 * @return TRUE - The Market Segment is Present
-	 */
-
-	public boolean containsStressScenarioSpecification (
-		final java.lang.String marketSegment)
-	{
-		return null != marketSegment && !marketSegment.isEmpty() &&
-			_segmentScenarioSpecificationMap.containsKey (marketSegment);
-	}
-
-	/**
-	 * Retrieve the Stress Scenario Specification given the Market Segment
-	 * 
-	 * @param marketSegment Market Segment
-	 * 
-	 * @return The Stress Scenario Specification
-	 */
-
-	public org.drip.capital.gsstdesign.StressScenarioSpecification stressScenarioSpecification (
-		final java.lang.String marketSegment)
-	{
-		return containsStressScenarioSpecification (marketSegment) ?
-			_segmentScenarioSpecificationMap.get (marketSegment) : null;
-	}
 }

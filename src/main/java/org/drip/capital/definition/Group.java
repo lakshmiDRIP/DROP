@@ -107,16 +107,16 @@ public class Group
 {
 
 	/**
-	 * CitiCorp - Consumer Group
+	 * BHC - Consumer Group
 	 */
 
-	public static final java.lang.String CITICORP_CONSUMER = "CitiCorp - Consumer";
+	public static final java.lang.String BHCCORP_CONSUMER = "BHC - Consumer";
 
 	/**
-	 * CitiCorp - ICG Group
+	 * BHC - ICG Group
 	 */
 
-	public static final java.lang.String CITICORP_ICG = "CitiCorp - ICG";
+	public static final java.lang.String BHCCORP_ICG = "BHC - ICG";
 
 	/**
 	 * CorpCtr Group

@@ -76,7 +76,7 @@ package org.drip.capital.definition;
  */
 
 /**
- * <i>GSSTDefinition</i> holds the various GSST Definitions. The References are:
+ * <i>SystemicScenarioDefinition</i> holds the various SYSTEMIC Definitions. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,41 +103,41 @@ package org.drip.capital.definition;
  * @author Lakshmi Krishnamurthy
  */
 
-public class GSSTDefinition
+public class SystemicScenarioDefinition
 {
 
 	/**
-	 * 2008 Baseline GSST Scenario
+	 * 2008 Baseline SYSTEMIC Scenario
 	 */
 
 	public static final java.lang.String BASELINE_2008 = "2008 Baseline";
 
 	/**
-	 * 1974 Baseline GSST Scenario
+	 * 1974 Baseline SYSTEMIC Scenario
 	 */
 
 	public static final java.lang.String BASELINE_1974 = "1974 Baseline";
 
 	/**
-	 * Deep Down-turn GSST Scenario
+	 * Deep Down-turn SYSTEMIC Scenario
 	 */
 
 	public static final java.lang.String DEEP_DOWNTURN = "Deep Downturn";
 
 	/**
-	 * Dollar Decline GSST Scenario
+	 * Dollar Decline SYSTEMIC Scenario
 	 */
 
 	public static final java.lang.String DOLLAR_DECLINE = "Dollar Decline";
 
 	/**
-	 * Interest-Rate Shock GSST Scenario
+	 * Interest-Rate Shock SYSTEMIC Scenario
 	 */
 
 	public static final java.lang.String INTEREST_RATE_SHOCK = "Interest Rate Shock";
 
 	/**
-	 * Lost Decade GSST Scenario
+	 * Lost Decade SYSTEMIC Scenario
 	 */
 
 	public static final java.lang.String LOST_DECADE = "Lost Decade";

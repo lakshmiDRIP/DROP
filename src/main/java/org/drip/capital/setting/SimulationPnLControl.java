@@ -149,7 +149,9 @@ public class SimulationPnLControl
 		if (null == (_noStress = noStress) ||
 			null == (_stress = stress))
 		{
-			throw new java.lang.Exception ("SimulationPnLControl Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"SimulationPnLControl Constructor => Invalid Inputs"
+			);
 		}
 	}
 

@@ -7,7 +7,7 @@ import org.drip.capital.entity.CapitalUnitEventContainer;
 import org.drip.capital.env.CapitalEstimationContextManager;
 import org.drip.capital.shell.CapitalUnitStressEventContext;
 import org.drip.capital.stress.Event;
-import org.drip.capital.stress.GSSTEventContainer;
+import org.drip.capital.stress.SystemicEventContainer;
 import org.drip.capital.stress.PnLSeries;
 import org.drip.capital.stress.EventSpecification;
 import org.drip.numerical.common.FormatUtil;
@@ -70,8 +70,8 @@ public class AFSNORTHAMERICA
 		final java.lang.String coordinateFQN)
 		throws Exception
 	{
-		GSSTEventContainer coordinateStressScenarioEvents =
-			coordinateStressScenarioMap.get (coordinateFQN).gsstEventContainer();
+		SystemicEventContainer coordinateStressScenarioEvents =
+			coordinateStressScenarioMap.get (coordinateFQN).systemicEventContainer();
 
 		System.out.println ("\t|----------------------------------||");
 

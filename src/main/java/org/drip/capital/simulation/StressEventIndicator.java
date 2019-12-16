@@ -207,10 +207,14 @@ public class StressEventIndicator
 		final java.util.Map<java.lang.String, java.lang.Double> idiosyncraticMap)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_systemic = systemic) ||
-			0. > _systemic || 1. < _systemic)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+				_systemic = systemic
+			) || 0. > _systemic || 1. < _systemic
+		)
 		{
-			throw new java.lang.Exception ("StressEventIndicator Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"StressEventIndicator Constructor => Invalid Inputs"
+			);
 		}
 
 		_idiosyncraticMap = idiosyncraticMap;
@@ -250,7 +254,9 @@ public class StressEventIndicator
 		final java.lang.String eventName)
 	{
 		return null != eventName && !eventName.isEmpty() &&
-			null != _idiosyncraticMap && _idiosyncraticMap.containsKey (eventName);
+			null != _idiosyncraticMap && _idiosyncraticMap.containsKey (
+				eventName
+			);
 	}
 
 	/**
@@ -267,11 +273,17 @@ public class StressEventIndicator
 		final java.lang.String eventName)
 		throws java.lang.Exception
 	{
-		if (!containsIdiosyncratic (eventName))
+		if (!containsIdiosyncratic (
+			eventName
+		))
 		{
-			throw new java.lang.Exception ("StressEventIndicator::idiosyncratic => Invalid Input");
+			throw new java.lang.Exception (
+				"StressEventIndicator::idiosyncratic => Invalid Input"
+			);
 		}
 
-		return _idiosyncraticMap.get (eventName);
+		return _idiosyncraticMap.get (
+			eventName
+		);
 	}
 }

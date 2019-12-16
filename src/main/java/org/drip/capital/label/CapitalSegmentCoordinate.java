@@ -122,7 +122,9 @@ public class CapitalSegmentCoordinate
 	{
 		if (null == (_id = id) || _id.isEmpty())
 		{
-			throw new java.lang.Exception ("CapitalSegmentCoordinate Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"CapitalSegmentCoordinate Constructor => Invalid Inputs"
+			);
 		}
 	}
 

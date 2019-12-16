@@ -108,8 +108,8 @@ public class PathPnLRealization
 {
 	private int _pathIndex = -1;
 	private org.drip.capital.simulation.StressEventIncidenceEnsemble _systemic = null;
-	private java.util.Map<java.lang.String, java.lang.Double> _fsPnLDecompositionMap = null;
 	private org.drip.capital.simulation.StressEventIncidenceEnsemble _idiosyncratic = null;
+	private java.util.Map<java.lang.String, java.lang.Double> _fsPnLDecompositionMap = null;
 
 	/**
 	 * Combine the Path Realizations onto One
@@ -161,19 +161,26 @@ public class PathPnLRealization
 
 				for (java.lang.String fsPnLDecompositionKey : fsPnLDecompositionKeySet)
 				{
-					if (fsPnLDecompositionMap.containsKey (fsPnLDecompositionKey))
+					if (fsPnLDecompositionMap.containsKey (
+						fsPnLDecompositionKey
+					))
 					{
 						fsPnLDecompositionMap.put (
 							fsPnLDecompositionKey,
-							fsPnLDecompositionMap.get (fsPnLDecompositionKey) +
-								pathFSPnLDecompositionMap.get (fsPnLDecompositionKey)
+							fsPnLDecompositionMap.get (
+								fsPnLDecompositionKey
+							) + pathFSPnLDecompositionMap.get (
+								fsPnLDecompositionKey
+							)
 						);
 					}
 					else
 					{
 						fsPnLDecompositionMap.put (
 							fsPnLDecompositionKey,
-							pathFSPnLDecompositionMap.get (fsPnLDecompositionKey)
+							pathFSPnLDecompositionMap.get (
+								fsPnLDecompositionKey
+							)
 						);
 					}
 				}
@@ -255,7 +262,9 @@ public class PathPnLRealization
 	{
 		if (-1 >= (_pathIndex = pathIndex))
 		{
-			throw new java.lang.Exception ("PathPnLRealization Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"PathPnLRealization Constructor => Invalid Inputs"
+			);
 		}
 
 		_systemic = systemic;

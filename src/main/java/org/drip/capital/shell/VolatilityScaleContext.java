@@ -123,7 +123,9 @@ public class VolatilityScaleContext
 	{
 		if (null == (_fsTypeAdjustmentMap = fsTypeAdjustmentMap) || 0 == _fsTypeAdjustmentMap.size())
 		{
-			throw new java.lang.Exception ("VolatilityScaleContext Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"VolatilityScaleContext Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -138,7 +140,9 @@ public class VolatilityScaleContext
 	public boolean containsFSType (
 		final java.lang.String fsType)
 	{
-		return null != fsType && !fsType.isEmpty() && _fsTypeAdjustmentMap.containsKey (fsType);
+		return null != fsType && !fsType.isEmpty() && _fsTypeAdjustmentMap.containsKey (
+			fsType
+		);
 	}
 
 	/**
@@ -155,12 +159,18 @@ public class VolatilityScaleContext
 		final java.lang.String fsType)
 		throws java.lang.Exception
 	{
-		if (!containsFSType (fsType))
+		if (!containsFSType (
+			fsType
+		))
 		{
-			throw new java.lang.Exception ("VolatilityScaleContext::volatilityAdjustment => Invalid Inputs");
+			throw new java.lang.Exception (
+				"VolatilityScaleContext::volatilityAdjustment => Invalid Inputs"
+			);
 		}
 
-		return _fsTypeAdjustmentMap.get (fsType);
+		return _fsTypeAdjustmentMap.get (
+			fsType
+		);
 	}
 
 	/**

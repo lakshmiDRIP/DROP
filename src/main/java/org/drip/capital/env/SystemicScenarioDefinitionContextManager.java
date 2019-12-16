@@ -76,8 +76,8 @@ package org.drip.capital.env;
  */
 
 /**
- * <i>GSSTDefinitionContextManager</i> sets up the Predictor Scenario Specification Container. The References
- * 	are:
+ * <i>SystemicScenarioDefinitionContextManager</i> sets up the Predictor Scenario Specification Container.
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -104,7 +104,7 @@ package org.drip.capital.env;
  * @author Lakshmi Krishnamurthy
  */
 
-public class GSSTDefinitionContextManager
+public class SystemicScenarioDefinitionContextManager
 {
 	private static org.drip.capital.shell.PredictorScenarioSpecificationContainer
 		s_PredictorScenarioSpecificationContainer = null;
@@ -124,7 +124,7 @@ public class GSSTDefinitionContextManager
 		final double capitalBaseline1974FY,
 		final double capitalBaseline2008FY)
 	{
-		org.drip.capital.gsstdesign.PredictorScenarioSpecification predictorScenarioSpecification = null;
+		org.drip.capital.systemicscenario.PredictorScenarioSpecification predictorScenarioSpecification = null;
 
 		boolean predictorAvailable = s_PredictorScenarioSpecificationContainer.containsPredictor (
 			predictor
@@ -142,7 +142,7 @@ public class GSSTDefinitionContextManager
 			try
 			{
 				predictorScenarioSpecification =
-					new org.drip.capital.gsstdesign.PredictorScenarioSpecification (
+					new org.drip.capital.systemicscenario.PredictorScenarioSpecification (
 						predictor,
 						category
 					);
@@ -157,23 +157,23 @@ public class GSSTDefinitionContextManager
 
 		try
 		{
-			org.drip.capital.gsstdesign.StressScenarioSpecification stressScenarioSpecification =
-				new org.drip.capital.gsstdesign.StressScenarioSpecification (
-					new org.drip.capital.gsstdesign.StressScenarioQuantification (
+			org.drip.capital.systemicscenario.StressScenarioSpecification stressScenarioSpecification =
+				new org.drip.capital.systemicscenario.StressScenarioSpecification (
+					new org.drip.capital.systemicscenario.StressScenarioQuantification (
 						stressScenarioTypeOfChange,
 						stressScenarioUnit
 					),
-					new org.drip.capital.gsstdesign.HypotheticalScenarioDefinition (
+					new org.drip.capital.systemicscenario.HypotheticalScenarioDefinition (
 						dollarDecline,
 						lostDecade,
 						interestRateShock,
 						deepDownturn
 					),
-					new org.drip.capital.gsstdesign.HistoricalScenarioDefinition (
+					new org.drip.capital.systemicscenario.HistoricalScenarioDefinition (
 						historical1974FY,
 						historical2008FY
 					),
-					new org.drip.capital.gsstdesign.CapitalBaselineDefinition (
+					new org.drip.capital.systemicscenario.CapitalBaselineDefinition (
 						capitalBaseline1974FY,
 						capitalBaseline2008FY
 					)
@@ -223,11 +223,11 @@ public class GSSTDefinitionContextManager
 			"Macro-economic variables",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.DM,
-				org.drip.capital.gsstdesign.MarketSegment.EM
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.SCENARIO_GDP_GROWTH,
-			org.drip.capital.gsstdesign.CriterionUnit.PERCENT_POINT,
+			org.drip.capital.systemicscenario.TypeOfChange.SCENARIO_GDP_GROWTH,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT_POINT,
 			-0.8,
 			-0.8,
 			-1.5,
@@ -246,11 +246,11 @@ public class GSSTDefinitionContextManager
 			"Macro-economic variables",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.DM,
-				org.drip.capital.gsstdesign.MarketSegment.EM
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.PEAK_VS_CURRENT_LEVEL,
-			org.drip.capital.gsstdesign.CriterionUnit.PERCENT_POINT,
+			org.drip.capital.systemicscenario.TypeOfChange.PEAK_VS_CURRENT_LEVEL,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT_POINT,
 			1.7,
 			1.8,
 			2.0,
@@ -269,11 +269,11 @@ public class GSSTDefinitionContextManager
 			"Macro-economic variables",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.DM,
-				org.drip.capital.gsstdesign.MarketSegment.EM
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.CHANGE_VS_CURRENT,
-			org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 			 -7.7,
 			-13.3,
 			-16.0,
@@ -292,11 +292,11 @@ public class GSSTDefinitionContextManager
 			"Market factors",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.DM_LO_VOL,
-				org.drip.capital.gsstdesign.MarketSegment.EM_LO_VOL
+				org.drip.capital.systemicscenario.MarketSegment.DM_LO_VOL,
+				org.drip.capital.systemicscenario.MarketSegment.EM_LO_VOL
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.CHANGE_VS_4_Q_FORWARD,
-			org.drip.capital.gsstdesign.CriterionUnit.BASIS_POINT,
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_4_Q_FORWARD,
+			org.drip.capital.systemicscenario.CriterionUnit.BASIS_POINT,
 			  86,
 			 -64,
 			 175,
@@ -315,10 +315,10 @@ public class GSSTDefinitionContextManager
 			"Market factors",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.EM_HI_VOL
+				org.drip.capital.systemicscenario.MarketSegment.EM_HI_VOL
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.CHANGE_VS_4_Q_FORWARD,
-			org.drip.capital.gsstdesign.CriterionUnit.BASIS_POINT,
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_4_Q_FORWARD,
+			org.drip.capital.systemicscenario.CriterionUnit.BASIS_POINT,
 			  86,
 			  50,
 			 275,
@@ -337,11 +337,11 @@ public class GSSTDefinitionContextManager
 			"Market factors",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.DM_LO_VOL,
-				org.drip.capital.gsstdesign.MarketSegment.EM_LO_VOL
+				org.drip.capital.systemicscenario.MarketSegment.DM_LO_VOL,
+				org.drip.capital.systemicscenario.MarketSegment.EM_LO_VOL
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.CHANGE_VS_4_Q_FORWARD,
-			org.drip.capital.gsstdesign.CriterionUnit.BASIS_POINT,
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_4_Q_FORWARD,
+			org.drip.capital.systemicscenario.CriterionUnit.BASIS_POINT,
 			-124,
 			 -42,
 			 -50,
@@ -360,10 +360,10 @@ public class GSSTDefinitionContextManager
 			"Market factors",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.EM_HI_VOL
+				org.drip.capital.systemicscenario.MarketSegment.EM_HI_VOL
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.CHANGE_VS_4_Q_FORWARD,
-			org.drip.capital.gsstdesign.CriterionUnit.BASIS_POINT,
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_4_Q_FORWARD,
+			org.drip.capital.systemicscenario.CriterionUnit.BASIS_POINT,
 			-124,
 			 -54,
 			 -50,
@@ -382,11 +382,11 @@ public class GSSTDefinitionContextManager
 			"Market factors",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.DM,
-				org.drip.capital.gsstdesign.MarketSegment.EM
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.CHANGE_AS_PERCENT_OF_CALENDAR_2008_SPREAD_WIDENING,
-			org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_AS_PERCENT_OF_CALENDAR_2008_SPREAD_WIDENING,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 			 30,
 			 25,
 			 40,
@@ -405,11 +405,11 @@ public class GSSTDefinitionContextManager
 			"Market factors",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.DM_LO_VOL,
-				org.drip.capital.gsstdesign.MarketSegment.EM_LO_VOL
+				org.drip.capital.systemicscenario.MarketSegment.DM_LO_VOL,
+				org.drip.capital.systemicscenario.MarketSegment.EM_LO_VOL
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.CHANGE_VS_CURRENT,
-			org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 			-7.0,
 			 4.8,
 			 3.0,
@@ -428,10 +428,10 @@ public class GSSTDefinitionContextManager
 			"Market factors",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.EM_HI_VOL
+				org.drip.capital.systemicscenario.MarketSegment.EM_HI_VOL
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.CHANGE_VS_CURRENT,
-			org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 			-10.0,
 			  4.8,
 			  6.0,
@@ -450,10 +450,10 @@ public class GSSTDefinitionContextManager
 			"Market factors",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.DM
+				org.drip.capital.systemicscenario.MarketSegment.DM
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.CHANGE_VS_CURRENT,
-			org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 			-15.1,
 			-17.0,
 			-25.0,
@@ -472,10 +472,10 @@ public class GSSTDefinitionContextManager
 			"Market factors",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.EM
+				org.drip.capital.systemicscenario.MarketSegment.EM
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.CHANGE_VS_CURRENT,
-			org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 			-18.9,
 			-21.0,
 			-35.0,
@@ -494,10 +494,10 @@ public class GSSTDefinitionContextManager
 			"Market factors",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.DM
+				org.drip.capital.systemicscenario.MarketSegment.DM
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.CHANGE_VS_CURRENT,
-			org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 			-12.1,
 			-13.6,
 			-20.0,
@@ -516,10 +516,10 @@ public class GSSTDefinitionContextManager
 			"Market factors",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.EM
+				org.drip.capital.systemicscenario.MarketSegment.EM
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.CHANGE_VS_CURRENT,
-			org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 			-15.1,
 			-17.0,
 			-28.0,
@@ -538,11 +538,11 @@ public class GSSTDefinitionContextManager
 			"Market factors",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.DM,
-				org.drip.capital.gsstdesign.MarketSegment.EM
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.CHANGE_VS_CURRENT,
-			org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 			 -6.1,
 			 -6.0,
 			-10.0,
@@ -561,11 +561,11 @@ public class GSSTDefinitionContextManager
 			"Market factors",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.DM,
-				org.drip.capital.gsstdesign.MarketSegment.EM
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.CHANGE_VS_CURRENT,
-			org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 			-17.0,
 			-10.0,
 			-10.8,
@@ -584,11 +584,11 @@ public class GSSTDefinitionContextManager
 			"Market factors",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.DM,
-				org.drip.capital.gsstdesign.MarketSegment.EM
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.CHANGE_VS_CURRENT,
-			org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 			 59.6,
 			-14.9,
 			 20.0,
@@ -607,11 +607,11 @@ public class GSSTDefinitionContextManager
 			"Market factors",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.DM,
-				org.drip.capital.gsstdesign.MarketSegment.EM
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.CHANGE_VS_CURRENT,
-			org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 			 55.6,
 			-15.6,
 			 18.5,
@@ -630,11 +630,11 @@ public class GSSTDefinitionContextManager
 			"Market factors",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.DM,
-				org.drip.capital.gsstdesign.MarketSegment.EM
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.CHANGE_VS_CURRENT,
-			org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 			 51.9,
 			-20.0,
 			 17.3,
@@ -653,11 +653,11 @@ public class GSSTDefinitionContextManager
 			"Market factors",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.DM,
-				org.drip.capital.gsstdesign.MarketSegment.EM
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.CHANGE_VS_CURRENT,
-			org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 			 45.6,
 			 -8.3,
 			 20.0,
@@ -676,11 +676,11 @@ public class GSSTDefinitionContextManager
 			"Market factors",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.DM,
-				org.drip.capital.gsstdesign.MarketSegment.EM
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.CHANGE_VS_CURRENT,
-			org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 			 33.1,
 			-11.7,
 			 11.0,
@@ -699,11 +699,11 @@ public class GSSTDefinitionContextManager
 			"Market factors",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.DM,
-				org.drip.capital.gsstdesign.MarketSegment.EM
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.CHANGE_VS_CURRENT,
-			org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 			 30,
 			-10,
 			 10,
@@ -722,11 +722,11 @@ public class GSSTDefinitionContextManager
 			"Market factors",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.DM,
-				org.drip.capital.gsstdesign.MarketSegment.EM
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.VOLATILITY_POINT_CHANGE_AS_PERCENT_OF_2008_VOLATILITY_POINT_CHANGE,
-			org.drip.capital.gsstdesign.CriterionUnit.VOLATILITY_POINT,
+			org.drip.capital.systemicscenario.TypeOfChange.VOLATILITY_POINT_CHANGE_AS_PERCENT_OF_2008_VOLATILITY_POINT_CHANGE,
+			org.drip.capital.systemicscenario.CriterionUnit.VOLATILITY_POINT,
 			 37.9,
 			 42.6,
 			 67.5,
@@ -745,11 +745,11 @@ public class GSSTDefinitionContextManager
 			"Market factors",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.DM,
-				org.drip.capital.gsstdesign.MarketSegment.EM
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.CHANGE_VS_CURRENT,
-			org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 			21.5,
 			16.0,
 			30.0,
@@ -768,11 +768,11 @@ public class GSSTDefinitionContextManager
 			"Other",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.DM,
-				org.drip.capital.gsstdesign.MarketSegment.EM
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.NONE,
-			org.drip.capital.gsstdesign.CriterionUnit.PERCENT,
+			org.drip.capital.systemicscenario.TypeOfChange.NONE,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
 			35,
 			35,
 			50,
@@ -791,11 +791,11 @@ public class GSSTDefinitionContextManager
 			"Other",
 			new java.lang.String[]
 			{
-				org.drip.capital.gsstdesign.MarketSegment.DM,
-				org.drip.capital.gsstdesign.MarketSegment.EM
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
 			},
-			org.drip.capital.gsstdesign.TypeOfChange.NONE,
-			org.drip.capital.gsstdesign.CriterionUnit.ABSOLUTE,
+			org.drip.capital.systemicscenario.TypeOfChange.NONE,
+			org.drip.capital.systemicscenario.CriterionUnit.ABSOLUTE,
 			0.02,
 			0.02,
 			0.02,

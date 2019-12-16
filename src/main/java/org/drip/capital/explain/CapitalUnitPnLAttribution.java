@@ -142,11 +142,15 @@ public class CapitalUnitPnLAttribution
 		{
 			java.lang.String fsType = fsPnLEntry.getKey();
 
-			if (_fsPnLDecompositionExplainMap.containsKey (fsType))
+			if (_fsPnLDecompositionExplainMap.containsKey (
+				fsType
+			))
 			{
 				_fsPnLDecompositionExplainMap.put (
 					fsType,
-					_fsPnLDecompositionExplainMap.get (fsType) + fsPnLEntry.getValue()
+					_fsPnLDecompositionExplainMap.get (
+						fsType
+					) + fsPnLEntry.getValue()
 				);
 			}
 			else
@@ -175,7 +179,9 @@ public class CapitalUnitPnLAttribution
 		{
 			java.lang.String paaCategoryName = paaCategoryPnLEntry.getKey();
 
-			if (_paaCategoryDecompositionExplainMap.containsKey (paaCategoryName))
+			if (_paaCategoryDecompositionExplainMap.containsKey (
+				paaCategoryName
+			))
 			{
 				_paaCategoryDecompositionExplainMap.put (
 					paaCategoryName,
@@ -211,7 +217,9 @@ public class CapitalUnitPnLAttribution
 
 		if (null != fsPnLDecompositionMap)
 		{
-			if (!updateFSDecompositionMap (fsPnLDecompositionMap))
+			if (!updateFSDecompositionMap (
+				fsPnLDecompositionMap
+			))
 			{
 				return false;
 			}
@@ -229,139 +237,167 @@ public class CapitalUnitPnLAttribution
 
 				java.lang.String eventType = stressEventIncidence.type();
 
-				if (org.drip.capital.definition.StressScenarioType.GSST.equalsIgnoreCase (eventType))
+				if (org.drip.capital.definition.StressScenarioType.SYSTEMIC.equalsIgnoreCase (
+					eventType
+				))
 				{
-					if (null == _gsstPnLExplainMap)
+					if (null == _systemicPnLExplainMap)
 					{
-						_gsstPnLExplainMap = new
+						_systemicPnLExplainMap = new
 							org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
-						_gsstGrossPnLExplainMap = new
+						_systemicGrossPnLExplainMap = new
 							org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 					}
 
-					double gsstPnL = stressEventIncidence.pnl();
+					double systemicPnL = stressEventIncidence.pnl();
 
-					if (_gsstPnLExplainMap.containsKey (eventName))
+					if (_systemicPnLExplainMap.containsKey (
+						eventName
+					))
 					{
-						_gsstPnLExplainMap.put (
+						_systemicPnLExplainMap.put (
 							eventName,
-							_gsstPnLExplainMap.get (eventName) + gsstPnL
+							_systemicPnLExplainMap.get (
+								eventName
+							) + systemicPnL
 						);
 
-						_gsstGrossPnLExplainMap.put (
+						_systemicGrossPnLExplainMap.put (
 							eventName,
-							_gsstGrossPnLExplainMap.get (eventName) + gsstPnL
+							_systemicGrossPnLExplainMap.get (
+								eventName
+							) + systemicPnL
 						);
 					}
 					else
 					{
-						_gsstPnLExplainMap.put (
+						_systemicPnLExplainMap.put (
 							eventName,
-							gsstPnL
+							systemicPnL
 						);
 
-						_gsstGrossPnLExplainMap.put (
+						_systemicGrossPnLExplainMap.put (
 							eventName,
-							gsstPnL
+							systemicPnL
 						);
 					}
 
-					if (null == _gsstInstanceCountMap)
+					if (null == _systemicInstanceCountMap)
 					{
-						_gsstInstanceCountMap = new
+						_systemicInstanceCountMap = new
 							org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Integer>();
 					}
 
-					if (_gsstInstanceCountMap.containsKey (eventName))
+					if (_systemicInstanceCountMap.containsKey (
+						eventName
+					))
 					{
-						_gsstInstanceCountMap.put (
+						_systemicInstanceCountMap.put (
 							eventName,
-							_gsstInstanceCountMap.get (eventName) + 1
+							_systemicInstanceCountMap.get (
+								eventName
+							) + 1
 						);
 					}
 					else
 					{
-						_gsstInstanceCountMap.put (
+						_systemicInstanceCountMap.put (
 							eventName,
 							1
 						);
 					}
 				}
-				else if (org.drip.capital.definition.StressScenarioType.CBSST.equalsIgnoreCase (eventType))
+				else if (org.drip.capital.definition.StressScenarioType.CORRELATED.equalsIgnoreCase (
+					eventType
+				))
 				{
-					if (null == _cBSSTPnLExplainMap)
+					if (null == _correlatedPnLExplainMap)
 					{
-						_cBSSTPnLExplainMap = new
+						_correlatedPnLExplainMap = new
 							org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 					}
 
-					if (null == _cBSSTPnLWorstMap)
+					if (null == _correlatedPnLWorstMap)
 					{
-						_cBSSTPnLWorstMap = new
+						_correlatedPnLWorstMap = new
 							org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 					}
 
-					double cBSSTPnL = stressEventIncidence.pnl();
+					double correlatedPnL = stressEventIncidence.pnl();
 
-					if (_cBSSTPnLExplainMap.containsKey (eventName))
+					if (_correlatedPnLExplainMap.containsKey (
+						eventName
+					))
 					{
-						_cBSSTPnLExplainMap.put (
+						_correlatedPnLExplainMap.put (
 							eventName,
-							_cBSSTPnLExplainMap.get (eventName) + cBSSTPnL
+							_correlatedPnLExplainMap.get (
+								eventName
+							) + correlatedPnL
 						);
 					}
 					else
 					{
-						_cBSSTPnLExplainMap.put (
+						_correlatedPnLExplainMap.put (
 							eventName,
-							cBSSTPnL
+							correlatedPnL
 						);
 					}
 
-					if (_cBSSTPnLWorstMap.containsKey (eventName))
+					if (_correlatedPnLWorstMap.containsKey (
+						eventName
+					))
 					{
-						double cBSSTWorstPnL = _cBSSTPnLWorstMap.get (eventName);
+						double correlatedWorstPnL = _correlatedPnLWorstMap.get (
+							eventName
+						);
 
-						_cBSSTPnLWorstMap.put (
+						_correlatedPnLWorstMap.put (
 							eventName,
-							cBSSTWorstPnL < cBSSTPnL ? cBSSTWorstPnL : cBSSTPnL
+							correlatedWorstPnL < correlatedPnL ? correlatedWorstPnL : correlatedPnL
 						);
 					}
 					else
 					{
-						_cBSSTPnLWorstMap.put (
+						_correlatedPnLWorstMap.put (
 							eventName,
-							cBSSTPnL
+							correlatedPnL
 						);
 					}
 
-					java.lang.String parentGSSTEventName = org.drip.numerical.common.StringUtil.Split (
+					java.lang.String parentSystemicEventName = org.drip.numerical.common.StringUtil.Split (
 						eventName,
 						"::"
 					)[0];
 
-					_gsstGrossPnLExplainMap.put (
-						parentGSSTEventName,
-						_gsstGrossPnLExplainMap.get (parentGSSTEventName) + cBSSTPnL
+					_systemicGrossPnLExplainMap.put (
+						parentSystemicEventName,
+						_systemicGrossPnLExplainMap.get (
+							parentSystemicEventName
+						) + correlatedPnL
 					);
 
-					if (null == _cBSSTInstanceCountMap)
+					if (null == _correlatedInstanceCountMap)
 					{
-						_cBSSTInstanceCountMap = new
+						_correlatedInstanceCountMap = new
 							org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Integer>();
 					}
 
-					if (_cBSSTInstanceCountMap.containsKey (eventName))
+					if (_correlatedInstanceCountMap.containsKey (
+						eventName
+					))
 					{
-						_cBSSTInstanceCountMap.put (
+						_correlatedInstanceCountMap.put (
 							eventName,
-							_cBSSTInstanceCountMap.get (eventName) + 1
+							_correlatedInstanceCountMap.get (
+								eventName
+							) + 1
 						);
 					}
 					else
 					{
-						_cBSSTInstanceCountMap.put (
+						_correlatedInstanceCountMap.put (
 							eventName,
 							1
 						);
@@ -374,7 +410,9 @@ public class CapitalUnitPnLAttribution
 
 			if (null != paaCategoryPnLDecomposition && 0 != paaCategoryPnLDecomposition.size())
 			{
-				if (!updatePAACategoryDecompositionMap (paaCategoryPnLDecomposition))
+				if (!updatePAACategoryDecompositionMap (
+					paaCategoryPnLDecomposition
+				))
 				{
 					return false;
 				}
@@ -391,68 +429,80 @@ public class CapitalUnitPnLAttribution
 			{
 				java.lang.String eventName = stressEventIncidence.name();
 
-				if (null == _iBSSTPnLExplainMap)
+				if (null == _idiosyncraticPnLExplainMap)
 				{
-					_iBSSTPnLExplainMap = new
+					_idiosyncraticPnLExplainMap = new
 						org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 				}
 
-				if (null == _iBSSTPnLWorstMap)
+				if (null == _idiosyncraticPnLWorstMap)
 				{
-					_iBSSTPnLWorstMap = new
+					_idiosyncraticPnLWorstMap = new
 						org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 				}
 
-				double iBSSTPnL = stressEventIncidence.pnl();
+				double idiosyncraticPnL = stressEventIncidence.pnl();
 
-				if (_iBSSTPnLExplainMap.containsKey (eventName))
+				if (_idiosyncraticPnLExplainMap.containsKey (
+					eventName
+				))
 				{
-					_iBSSTPnLExplainMap.put (
+					_idiosyncraticPnLExplainMap.put (
 						eventName,
-						_iBSSTPnLExplainMap.get (eventName) + iBSSTPnL
+						_idiosyncraticPnLExplainMap.get (
+							eventName
+						) + idiosyncraticPnL
 					);
 				}
 				else
 				{
-					_iBSSTPnLExplainMap.put (
+					_idiosyncraticPnLExplainMap.put (
 						eventName,
-						iBSSTPnL
+						idiosyncraticPnL
 					);
 				}
 
-				if (_iBSSTPnLWorstMap.containsKey (eventName))
+				if (_idiosyncraticPnLWorstMap.containsKey (
+					eventName
+				))
 				{
-					double iBSSTPnLWorst = _iBSSTPnLWorstMap.get (eventName);
+					double idiosyncraticPnLWorst = _idiosyncraticPnLWorstMap.get (
+						eventName
+					);
 
-					_iBSSTPnLWorstMap.put (
+					_idiosyncraticPnLWorstMap.put (
 						eventName,
-						iBSSTPnLWorst < iBSSTPnL ? iBSSTPnLWorst : iBSSTPnL
+						idiosyncraticPnLWorst < idiosyncraticPnL ? idiosyncraticPnLWorst : idiosyncraticPnL
 					);
 				}
 				else
 				{
-					_iBSSTPnLWorstMap.put (
+					_idiosyncraticPnLWorstMap.put (
 						eventName,
-						iBSSTPnL
+						idiosyncraticPnL
 					);
 				}
 
-				if (null == _iBSSTInstanceCountMap)
+				if (null == _idiosyncraticInstanceCountMap)
 				{
-					_iBSSTInstanceCountMap = new
+					_idiosyncraticInstanceCountMap = new
 						org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Integer>();
 				}
 
-				if (_iBSSTInstanceCountMap.containsKey (eventName))
+				if (_idiosyncraticInstanceCountMap.containsKey (
+					eventName
+				))
 				{
-					_iBSSTInstanceCountMap.put (
+					_idiosyncraticInstanceCountMap.put (
 						eventName,
-						_iBSSTInstanceCountMap.get (eventName) + 1
+						_idiosyncraticInstanceCountMap.get (
+							eventName
+						) + 1
 					);
 				}
 				else
 				{
-					_iBSSTInstanceCountMap.put (
+					_idiosyncraticInstanceCountMap.put (
 						eventName,
 						1
 					);
@@ -477,43 +527,51 @@ public class CapitalUnitPnLAttribution
 	{
 		if (null == (_pathPnLRealizationList = pathPnLRealizationList))
 		{
-			throw new java.lang.Exception ("CapitalUnitPnLAttribution Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"CapitalUnitPnLAttribution Constructor => Invalid Inputs"
+			);
 		}
 
 		int pathCount = _pathPnLRealizationList.size();
 
 		if (0 == pathCount)
 		{
-			throw new java.lang.Exception ("CapitalUnitPnLAttribution Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"CapitalUnitPnLAttribution Constructor => Invalid Inputs"
+			);
 		}
 
 		_expectedShortfall = 0.;
 
 		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : _pathPnLRealizationList)
 		{
-			if (!addPathPnLRealization (pathPnLRealization))
+			if (!addPathPnLRealization (
+				pathPnLRealization
+			))
 			{
-				throw new java.lang.Exception ("CapitalUnitPnLAttribution Constructor => Invalid Inputs");
+				throw new java.lang.Exception (
+					"CapitalUnitPnLAttribution Constructor => Invalid Inputs"
+				);
 			}
 		}
 
 		NormalizeExplainMap (
-			_gsstPnLExplainMap,
+			_systemicPnLExplainMap,
 			pathCount
 		);
 
 		NormalizeExplainMap (
-			_gsstGrossPnLExplainMap,
+			_systemicGrossPnLExplainMap,
 			pathCount
 		);
 
 		NormalizeExplainMap (
-			_cBSSTPnLExplainMap,
+			_correlatedPnLExplainMap,
 			pathCount
 		);
 
 		NormalizeExplainMap (
-			_iBSSTPnLExplainMap,
+			_idiosyncraticPnLExplainMap,
 			pathCount
 		);
 
@@ -547,7 +605,9 @@ public class CapitalUnitPnLAttribution
 
 		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : _pathPnLRealizationList)
 		{
-			pathIndexList.add (pathPnLRealization.pathIndex());
+			pathIndexList.add (
+				pathPnLRealization.pathIndex()
+			);
 		}
 
 		return pathIndexList;
@@ -565,7 +625,9 @@ public class CapitalUnitPnLAttribution
 
 		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : _pathPnLRealizationList)
 		{
-			grossSystemicStressPnLList.add (pathPnLRealization.grossSystemicStressPnL());
+			grossSystemicStressPnLList.add (
+				pathPnLRealization.grossSystemicStressPnL()
+			);
 		}
 
 		return grossSystemicStressPnLList;
@@ -578,7 +640,9 @@ public class CapitalUnitPnLAttribution
 
 		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : _pathPnLRealizationList)
 		{
-			grossIdiosyncraticStressPnLList.add (pathPnLRealization.grossIdiosyncraticStressPnL());
+			grossIdiosyncraticStressPnLList.add (
+				pathPnLRealization.grossIdiosyncraticStressPnL()
+			);
 		}
 
 		return grossIdiosyncraticStressPnLList;
@@ -590,7 +654,9 @@ public class CapitalUnitPnLAttribution
 
 		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : _pathPnLRealizationList)
 		{
-			grossFSPnLList.add (pathPnLRealization.grossFSPnL());
+			grossFSPnLList.add (
+				pathPnLRealization.grossFSPnL()
+			);
 		}
 
 		return grossFSPnLList;
@@ -602,7 +668,9 @@ public class CapitalUnitPnLAttribution
 
 		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : _pathPnLRealizationList)
 		{
-			grossPnLList.add (pathPnLRealization.grossPnL());
+			grossPnLList.add (
+				pathPnLRealization.grossPnL()
+			);
 		}
 
 		return grossPnLList;

@@ -83,7 +83,7 @@ package org.drip.capital.explain;
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 			Bank for International Supervision (2005): Stress Testing at Major Financial Institutions: Survey
  * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
  * 		</li>
  * 		<li>
@@ -130,11 +130,15 @@ public class CapitalSegmentPnLAttribution
 		{
 			java.lang.String fsType = fsPnLDecompositionExplainEntry.getKey();
 
-			if (_fsPnLDecompositionExplainMap.containsKey (fsType))
+			if (_fsPnLDecompositionExplainMap.containsKey (
+				fsType
+			))
 			{
 				_fsPnLDecompositionExplainMap.put (
 					fsType,
-					_fsPnLDecompositionExplainMap.get (fsType) + fsPnLDecompositionExplainEntry.getValue()
+					_fsPnLDecompositionExplainMap.get (
+						fsType
+					) + fsPnLDecompositionExplainEntry.getValue()
 				);
 			}
 			else
@@ -149,37 +153,41 @@ public class CapitalSegmentPnLAttribution
 		return true;
 	}
 
-	private boolean updateGSSTPnLExplainMap (
-		final java.util.Map<java.lang.String, java.lang.Double> unitGSSTPnLExplainMap)
+	private boolean updateSystemicEventNamePnLExplainMap (
+		final java.util.Map<java.lang.String, java.lang.Double> unitSystemicPnLExplainMap)
 	{
-		if (null == unitGSSTPnLExplainMap)
+		if (null == unitSystemicPnLExplainMap)
 		{
 			return true;
 		}
 
-		if (null == _gsstPnLExplainMap)
+		if (null == _systemicPnLExplainMap)
 		{
-			_gsstPnLExplainMap = new
+			_systemicPnLExplainMap = new
 				org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 		}
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> gsstExplainEntry :
-			unitGSSTPnLExplainMap.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> systemicExplainEntry :
+			unitSystemicPnLExplainMap.entrySet())
 		{
-			java.lang.String gsstEventName = gsstExplainEntry.getKey();
+			java.lang.String systemicEventName = systemicExplainEntry.getKey();
 
-			if (_gsstPnLExplainMap.containsKey (gsstEventName))
+			if (_systemicPnLExplainMap.containsKey (
+				systemicEventName
+			))
 			{
-				_gsstPnLExplainMap.put (
-					gsstEventName,
-					_gsstPnLExplainMap.get (gsstEventName) + gsstExplainEntry.getValue()
+				_systemicPnLExplainMap.put (
+					systemicEventName,
+					_systemicPnLExplainMap.get (
+						systemicEventName
+					) + systemicExplainEntry.getValue()
 				);
 			}
 			else
 			{
-				_gsstPnLExplainMap.put (
-					gsstEventName,
-					gsstExplainEntry.getValue()
+				_systemicPnLExplainMap.put (
+					systemicEventName,
+					systemicExplainEntry.getValue()
 				);
 			}
 		}
@@ -187,37 +195,41 @@ public class CapitalSegmentPnLAttribution
 		return true;
 	}
 
-	private boolean updateGSSTGrossPnLExplainMap (
-		final java.util.Map<java.lang.String, java.lang.Double> unitGSSTGrossPnLExplainMap)
+	private boolean updateSystemicGrossPnLExplainMap (
+		final java.util.Map<java.lang.String, java.lang.Double> unitSystemicGrossPnLExplainMap)
 	{
-		if (null == unitGSSTGrossPnLExplainMap)
+		if (null == unitSystemicGrossPnLExplainMap)
 		{
 			return true;
 		}
 
-		if (null == _gsstGrossPnLExplainMap)
+		if (null == _systemicGrossPnLExplainMap)
 		{
-			_gsstGrossPnLExplainMap = new
+			_systemicGrossPnLExplainMap = new
 				org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 		}
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> gsstGrossExplainEntry :
-			unitGSSTGrossPnLExplainMap.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> systemicGrossExplainEntry :
+			unitSystemicGrossPnLExplainMap.entrySet())
 		{
-			java.lang.String gsstEventName = gsstGrossExplainEntry.getKey();
+			java.lang.String systemicEventName = systemicGrossExplainEntry.getKey();
 
-			if (_gsstGrossPnLExplainMap.containsKey (gsstEventName))
+			if (_systemicGrossPnLExplainMap.containsKey (
+				systemicEventName
+			))
 			{
-				_gsstGrossPnLExplainMap.put (
-					gsstEventName,
-					_gsstGrossPnLExplainMap.get (gsstEventName) + gsstGrossExplainEntry.getValue()
+				_systemicGrossPnLExplainMap.put (
+					systemicEventName,
+					_systemicGrossPnLExplainMap.get (
+						systemicEventName
+					) + systemicGrossExplainEntry.getValue()
 				);
 			}
 			else
 			{
-				_gsstGrossPnLExplainMap.put (
-					gsstEventName,
-					gsstGrossExplainEntry.getValue()
+				_systemicGrossPnLExplainMap.put (
+					systemicEventName,
+					systemicGrossExplainEntry.getValue()
 				);
 			}
 		}
@@ -225,37 +237,41 @@ public class CapitalSegmentPnLAttribution
 		return true;
 	}
 
-	private boolean updateGSSTInstanceCountMap (
-		final java.util.Map<java.lang.String, java.lang.Integer> unitGSSTInstanceCountMap)
+	private boolean updateSystemicInstanceCountMap (
+		final java.util.Map<java.lang.String, java.lang.Integer> unitSystemicInstanceCountMap)
 	{
-		if (null == unitGSSTInstanceCountMap)
+		if (null == unitSystemicInstanceCountMap)
 		{
 			return true;
 		}
 
-		if (null == _gsstInstanceCountMap)
+		if (null == _systemicInstanceCountMap)
 		{
-			_gsstInstanceCountMap = new
+			_systemicInstanceCountMap = new
 				org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Integer>();
 		}
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Integer> gsstInstanceCountEntry :
-			unitGSSTInstanceCountMap.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Integer> systemicInstanceCountEntry :
+			unitSystemicInstanceCountMap.entrySet())
 		{
-			java.lang.String gsstEventName = gsstInstanceCountEntry.getKey();
+			java.lang.String systemicEventName = systemicInstanceCountEntry.getKey();
 
-			if (_gsstInstanceCountMap.containsKey (gsstEventName))
+			if (_systemicInstanceCountMap.containsKey (
+				systemicEventName
+			))
 			{
-				_gsstInstanceCountMap.put (
-					gsstEventName,
-					_gsstInstanceCountMap.get (gsstEventName) + gsstInstanceCountEntry.getValue()
+				_systemicInstanceCountMap.put (
+					systemicEventName,
+					_systemicInstanceCountMap.get (
+						systemicEventName
+					) + systemicInstanceCountEntry.getValue()
 				);
 			}
 			else
 			{
-				_gsstInstanceCountMap.put (
-					gsstEventName,
-					gsstInstanceCountEntry.getValue()
+				_systemicInstanceCountMap.put (
+					systemicEventName,
+					systemicInstanceCountEntry.getValue()
 				);
 			}
 		}
@@ -263,37 +279,41 @@ public class CapitalSegmentPnLAttribution
 		return true;
 	}
 
-	private boolean updateCBSSTPnLExplainMap (
-		final java.util.Map<java.lang.String, java.lang.Double> unitCBSSTPnLExplainMap)
+	private boolean updateCorrelatedPnLExplainMap (
+		final java.util.Map<java.lang.String, java.lang.Double> unitCorrelatedPnLExplainMap)
 	{
-		if (null == unitCBSSTPnLExplainMap)
+		if (null == unitCorrelatedPnLExplainMap)
 		{
 			return true;
 		}
 
-		if (null == _cBSSTPnLExplainMap)
+		if (null == _correlatedPnLExplainMap)
 		{
-			_cBSSTPnLExplainMap = new
+			_correlatedPnLExplainMap = new
 				org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 		}
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> cBSSTExplainEntry :
-			unitCBSSTPnLExplainMap.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> correlatedExplainEntry :
+			unitCorrelatedPnLExplainMap.entrySet())
 		{
-			java.lang.String cBSSTEventName = cBSSTExplainEntry.getKey();
+			java.lang.String correlatedEventName = correlatedExplainEntry.getKey();
 
-			if (_cBSSTPnLExplainMap.containsKey (cBSSTEventName))
+			if (_correlatedPnLExplainMap.containsKey (
+				correlatedEventName
+			))
 			{
-				_cBSSTPnLExplainMap.put (
-					cBSSTEventName,
-					_cBSSTPnLExplainMap.get (cBSSTEventName) + cBSSTExplainEntry.getValue()
+				_correlatedPnLExplainMap.put (
+					correlatedEventName,
+					_correlatedPnLExplainMap.get (
+						correlatedEventName
+					) + correlatedExplainEntry.getValue()
 				);
 			}
 			else
 			{
-				_cBSSTPnLExplainMap.put (
-					cBSSTEventName,
-					cBSSTExplainEntry.getValue()
+				_correlatedPnLExplainMap.put (
+					correlatedEventName,
+					correlatedExplainEntry.getValue()
 				);
 			}
 		}
@@ -301,37 +321,41 @@ public class CapitalSegmentPnLAttribution
 		return true;
 	}
 
-	private boolean updateCBSSTInstanceCountMap (
-		final java.util.Map<java.lang.String, java.lang.Integer> unitCBSSTInstanceCountMap)
+	private boolean updateCorrelatedInstanceCountMap (
+		final java.util.Map<java.lang.String, java.lang.Integer> unitCorrelatedInstanceCountMap)
 	{
-		if (null == unitCBSSTInstanceCountMap)
+		if (null == unitCorrelatedInstanceCountMap)
 		{
 			return true;
 		}
 
-		if (null == _cBSSTInstanceCountMap)
+		if (null == _correlatedInstanceCountMap)
 		{
-			_cBSSTInstanceCountMap = new
+			_correlatedInstanceCountMap = new
 				org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Integer>();
 		}
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Integer> cBSSTInstanceCountEntry :
-			unitCBSSTInstanceCountMap.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Integer> correlatedInstanceCountEntry :
+			unitCorrelatedInstanceCountMap.entrySet())
 		{
-			java.lang.String cBSSTEventName = cBSSTInstanceCountEntry.getKey();
+			java.lang.String correlatedEventName = correlatedInstanceCountEntry.getKey();
 
-			if (_cBSSTInstanceCountMap.containsKey (cBSSTEventName))
+			if (_correlatedInstanceCountMap.containsKey (
+				correlatedEventName
+			))
 			{
-				_cBSSTInstanceCountMap.put (
-					cBSSTEventName,
-					_cBSSTInstanceCountMap.get (cBSSTEventName) + cBSSTInstanceCountEntry.getValue()
+				_correlatedInstanceCountMap.put (
+					correlatedEventName,
+					_correlatedInstanceCountMap.get (
+						correlatedEventName
+					) + correlatedInstanceCountEntry.getValue()
 				);
 			}
 			else
 			{
-				_cBSSTInstanceCountMap.put (
-					cBSSTEventName,
-					cBSSTInstanceCountEntry.getValue()
+				_correlatedInstanceCountMap.put (
+					correlatedEventName,
+					correlatedInstanceCountEntry.getValue()
 				);
 			}
 		}
@@ -339,37 +363,41 @@ public class CapitalSegmentPnLAttribution
 		return true;
 	}
 
-	private boolean updateIBSSTPnLExplainMap (
-		final java.util.Map<java.lang.String, java.lang.Double> unitIBSSTPnLExplainMap)
+	private boolean updateIdiosyncraticPnLExplainMap (
+		final java.util.Map<java.lang.String, java.lang.Double> unitIdiosyncraticPnLExplainMap)
 	{
-		if (null == unitIBSSTPnLExplainMap)
+		if (null == unitIdiosyncraticPnLExplainMap)
 		{
 			return true;
 		}
 
-		if (null == _iBSSTPnLExplainMap)
+		if (null == _idiosyncraticPnLExplainMap)
 		{
-			_iBSSTPnLExplainMap = new
+			_idiosyncraticPnLExplainMap = new
 				org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 		}
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> iBSSTExplainEntry :
-			unitIBSSTPnLExplainMap.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> idiosyncraticExplainEntry :
+			unitIdiosyncraticPnLExplainMap.entrySet())
 		{
-			java.lang.String iBSSTEventName = iBSSTExplainEntry.getKey();
+			java.lang.String idiosyncraticEventName = idiosyncraticExplainEntry.getKey();
 
-			if (_iBSSTPnLExplainMap.containsKey (iBSSTEventName))
+			if (_idiosyncraticPnLExplainMap.containsKey (
+				idiosyncraticEventName
+			))
 			{
-				_iBSSTPnLExplainMap.put (
-					iBSSTEventName,
-					_iBSSTPnLExplainMap.get (iBSSTEventName) + iBSSTExplainEntry.getValue()
+				_idiosyncraticPnLExplainMap.put (
+					idiosyncraticEventName,
+					_idiosyncraticPnLExplainMap.get (
+						idiosyncraticEventName
+					) + idiosyncraticExplainEntry.getValue()
 				);
 			}
 			else
 			{
-				_iBSSTPnLExplainMap.put (
-					iBSSTEventName,
-					iBSSTExplainEntry.getValue()
+				_idiosyncraticPnLExplainMap.put (
+					idiosyncraticEventName,
+					idiosyncraticExplainEntry.getValue()
 				);
 			}
 		}
@@ -377,37 +405,41 @@ public class CapitalSegmentPnLAttribution
 		return true;
 	}
 
-	private boolean updateIBSSTInstanceCountMap (
-		final java.util.Map<java.lang.String, java.lang.Integer> unitIBSSTInstanceCountMap)
+	private boolean updateIdiosyncraticInstanceCountMap (
+		final java.util.Map<java.lang.String, java.lang.Integer> unitIdiosyncraticInstanceCountMap)
 	{
-		if (null == unitIBSSTInstanceCountMap)
+		if (null == unitIdiosyncraticInstanceCountMap)
 		{
 			return true;
 		}
 
-		if (null == _iBSSTInstanceCountMap)
+		if (null == _idiosyncraticInstanceCountMap)
 		{
-			_iBSSTInstanceCountMap = new
+			_idiosyncraticInstanceCountMap = new
 				org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Integer>();
 		}
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Integer> iBSSTInstanceCountEntry :
-			unitIBSSTInstanceCountMap.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.lang.Integer> idiosyncraticInstanceCountEntry :
+			unitIdiosyncraticInstanceCountMap.entrySet())
 		{
-			java.lang.String iBSSTEventName = iBSSTInstanceCountEntry.getKey();
+			java.lang.String idiosyncraticEventName = idiosyncraticInstanceCountEntry.getKey();
 
-			if (_iBSSTInstanceCountMap.containsKey (iBSSTEventName))
+			if (_idiosyncraticInstanceCountMap.containsKey (
+				idiosyncraticEventName
+			))
 			{
-				_iBSSTInstanceCountMap.put (
-					iBSSTEventName,
-					_iBSSTInstanceCountMap.get (iBSSTEventName) + iBSSTInstanceCountEntry.getValue()
+				_idiosyncraticInstanceCountMap.put (
+					idiosyncraticEventName,
+					_idiosyncraticInstanceCountMap.get (
+						idiosyncraticEventName
+					) + idiosyncraticInstanceCountEntry.getValue()
 				);
 			}
 			else
 			{
-				_iBSSTInstanceCountMap.put (
-					iBSSTEventName,
-					iBSSTInstanceCountEntry.getValue()
+				_idiosyncraticInstanceCountMap.put (
+					idiosyncraticEventName,
+					idiosyncraticInstanceCountEntry.getValue()
 				);
 			}
 		}
@@ -418,42 +450,58 @@ public class CapitalSegmentPnLAttribution
 	private boolean accumulateUnitAttribution (
 		final org.drip.capital.explain.PnLAttribution pnlAttribution)
 	{
-		if (!updateFSDecompositionExplainMap (pnlAttribution.fsPnLDecompositionExplainMap()))
+		if (!updateFSDecompositionExplainMap (
+			pnlAttribution.fsPnLDecompositionExplainMap()
+		))
 		{
 			return false;
 		}
 
-		if (!updateGSSTPnLExplainMap (pnlAttribution.gsstPnLExplainMap()))
+		if (!updateSystemicEventNamePnLExplainMap (
+			pnlAttribution.systemicPnLExplainMap()
+		))
 		{
 			return false;
 		}
 
-		if (!updateGSSTGrossPnLExplainMap (pnlAttribution.gsstGrossPnLExplainMap()))
+		if (!updateSystemicGrossPnLExplainMap (
+			pnlAttribution.systemicGrossPnLExplainMap()
+		))
 		{
 			return false;
 		}
 
-		if (!updateGSSTInstanceCountMap (pnlAttribution.gsstInstanceCountMap()))
+		if (!updateSystemicInstanceCountMap (
+			pnlAttribution.systemicInstanceCountMap()
+		))
 		{
 			return false;
 		}
 
-		if (!updateCBSSTPnLExplainMap (pnlAttribution.cBSSTPnLExplainMap()))
+		if (!updateCorrelatedPnLExplainMap (
+			pnlAttribution.correlatedPnLExplainMap()
+		))
 		{
 			return false;
 		}
 
-		if (!updateCBSSTInstanceCountMap (pnlAttribution.cBSSTInstanceCountMap()))
+		if (!updateCorrelatedInstanceCountMap (
+			pnlAttribution.correlatedInstanceCountMap()
+		))
 		{
 			return false;
 		}
 
-		if (!updateIBSSTPnLExplainMap (pnlAttribution.iBSSTPnLExplainMap()))
+		if (!updateIdiosyncraticPnLExplainMap (
+			pnlAttribution.idiosyncraticPnLExplainMap()
+		))
 		{
 			return false;
 		}
 
-		if (!updateIBSSTInstanceCountMap (pnlAttribution.iBSSTInstanceCountMap()))
+		if (!updateIdiosyncraticInstanceCountMap (
+			pnlAttribution.idiosyncraticInstanceCountMap()
+		))
 		{
 			return false;
 		}
@@ -475,14 +523,18 @@ public class CapitalSegmentPnLAttribution
 	{
 		if (null == pnlAttributionArray)
 		{
-			throw new java.lang.Exception ("CapitalSegmentPnLAttribution Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"CapitalSegmentPnLAttribution Constructor => Invalid Inputs"
+			);
 		}
 
 		int capitalUnitCount = pnlAttributionArray.length;
 
 		if (0 >= capitalUnitCount)
 		{
-			throw new java.lang.Exception ("CapitalSegmentPnLAttribution Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"CapitalSegmentPnLAttribution Constructor => Invalid Inputs"
+			);
 		}
 
 		_var = 0.;
@@ -494,7 +546,9 @@ public class CapitalSegmentPnLAttribution
 		{
 			if (null == pnlAttributionArray[capitalUnitIndex])
 			{
-				throw new java.lang.Exception ("CapitalSegmentPnLAttribution Constructor => Invalid Inputs");
+				throw new java.lang.Exception (
+					"CapitalSegmentPnLAttribution Constructor => Invalid Inputs"
+				);
 			}
 
 			_var = _var + pnlAttributionArray[capitalUnitIndex].var();
@@ -502,9 +556,13 @@ public class CapitalSegmentPnLAttribution
 			_expectedShortfall = _expectedShortfall +
 				pnlAttributionArray[capitalUnitIndex].expectedShortfall();
 
-			if (!accumulateUnitAttribution (pnlAttributionArray[capitalUnitIndex]))
+			if (!accumulateUnitAttribution (
+				pnlAttributionArray[capitalUnitIndex]
+			))
 			{
-				throw new java.lang.Exception ("CapitalSegmentPnLAttribution Constructor => Invalid Inputs");
+				throw new java.lang.Exception (
+					"CapitalSegmentPnLAttribution Constructor => Invalid Inputs"
+				);
 			}
 		}
 

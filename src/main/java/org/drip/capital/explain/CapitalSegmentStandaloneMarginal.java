@@ -122,33 +122,36 @@ public class CapitalSegmentStandaloneMarginal
 		java.util.Map<java.lang.String, java.lang.Double> proRataNormalizerMap =
 			new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
-		double gsstProRataStandalone = standaloneEntityCapitalElasticityAttribution.gsstProRata();
+		double systemicProRataStandalone = standaloneEntityCapitalElasticityAttribution.systemicProRata();
 
-		if (0. != gsstProRataStandalone)
+		if (0. != systemicProRataStandalone)
 		{
 			proRataNormalizerMap.put (
-				"GSST",
-				marginalEntityCapitalElasticityAttribution.gsstProRata() / gsstProRataStandalone
+				"Systemic",
+				marginalEntityCapitalElasticityAttribution.systemicProRata() / systemicProRataStandalone
 			);
 		}
 
-		double cBSSTProRataStandalone = standaloneEntityCapitalElasticityAttribution.cBSSTProRata();
+		double correlatedProRataStandalone =
+			standaloneEntityCapitalElasticityAttribution.correlatedProRata();
 
-		if (0. != cBSSTProRataStandalone)
+		if (0. != correlatedProRataStandalone)
 		{
 			proRataNormalizerMap.put (
-				"CBSST",
-				marginalEntityCapitalElasticityAttribution.cBSSTProRata() / cBSSTProRataStandalone
+				"Correlated",
+				marginalEntityCapitalElasticityAttribution.correlatedProRata() / correlatedProRataStandalone
 			);
 		}
 
-		double iBSSTProRataStandalone = standaloneEntityCapitalElasticityAttribution.iBSSTProRata();
+		double idiosyncraticProRataStandalone =
+			standaloneEntityCapitalElasticityAttribution.idiosyncraticProRata();
 
-		if (0. != iBSSTProRataStandalone)
+		if (0. != idiosyncraticProRataStandalone)
 		{
 			proRataNormalizerMap.put (
-				"IBSST",
-				marginalEntityCapitalElasticityAttribution.iBSSTProRata() / iBSSTProRataStandalone
+				"Idiosyncratic",
+				marginalEntityCapitalElasticityAttribution.idiosyncraticProRata() /
+					idiosyncraticProRataStandalone
 			);
 		}
 
@@ -323,9 +326,9 @@ public class CapitalSegmentStandaloneMarginal
 		}
 
 		double allocatedProRataCapital = marginalEntityCapitalElasticityAttribution.noStressProRata() +
-			marginalEntityCapitalElasticityAttribution.gsstProRata() +
-			marginalEntityCapitalElasticityAttribution.cBSSTProRata() +
-			marginalEntityCapitalElasticityAttribution.iBSSTProRata();
+			marginalEntityCapitalElasticityAttribution.systemicProRata() +
+			marginalEntityCapitalElasticityAttribution.correlatedProRata() +
+			marginalEntityCapitalElasticityAttribution.idiosyncraticProRata();
 
 		java.util.Map<java.lang.String, org.drip.capital.allocation.EntityComponentCapital>
 			entityComponentCapitalMap = new

@@ -165,14 +165,20 @@ public abstract class HorizonTailPnLControl
 		throws java.lang.Exception
 	{
 		if (0 >= (_horizon = horizon) ||
-			java.lang.Double.isNaN (_degreesOfFreedom = degreesOfFreedom) || 0. >= _degreesOfFreedom ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_varConfidenceLevel = varConfidenceLevel) ||
-				0. >= _varConfidenceLevel || 1. <= _varConfidenceLevel ||
-			!org.drip.numerical.common.NumberUtil.IsValid
-				(_expectedShortfallConfidenceLevel = expectedShortfallConfidenceLevel) ||
-				0. >= _expectedShortfallConfidenceLevel || 1. <= _expectedShortfallConfidenceLevel)
+			java.lang.Double.isNaN (
+				_degreesOfFreedom = degreesOfFreedom
+			) || 0. >= _degreesOfFreedom ||
+			!org.drip.numerical.common.NumberUtil.IsValid (
+				_varConfidenceLevel = varConfidenceLevel
+			) || 0. >= _varConfidenceLevel || 1. <= _varConfidenceLevel ||
+			!org.drip.numerical.common.NumberUtil.IsValid (
+				_expectedShortfallConfidenceLevel = expectedShortfallConfidenceLevel
+			) || 0. >= _expectedShortfallConfidenceLevel || 1. <= _expectedShortfallConfidenceLevel
+		)
 		{
-			throw new java.lang.Exception ("HorizonTailPnLControl Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"HorizonTailPnLControl Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -228,7 +234,9 @@ public abstract class HorizonTailPnLControl
 
 	public double horizonScaler()
 	{
-		return java.lang.Math.sqrt (_horizon);
+		return java.lang.Math.sqrt (
+			_horizon
+		);
 	}
 
 	/**

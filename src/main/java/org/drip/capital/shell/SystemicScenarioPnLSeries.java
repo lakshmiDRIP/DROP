@@ -307,7 +307,9 @@ public class SystemicScenarioPnLSeries
 			null == (_interestRateShock = interestRateShock) ||
 			null == (_lostDecade = lostDecade))
 		{
-			throw new java.lang.Exception ("SystemicScenarioPnLSeries Constructor => Invalid inputs");
+			throw new java.lang.Exception (
+				"SystemicScenarioPnLSeries Constructor => Invalid inputs"
+			);
 		}
 	}
 

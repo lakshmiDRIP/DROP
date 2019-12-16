@@ -109,8 +109,8 @@ public class CapitalUnitPathEnsemble
 {
 	private java.util.Map<java.lang.Double, java.util.List<java.lang.Integer>> _pnlListMap = null;
 	private java.util.Map<java.lang.String, java.lang.Integer> _systemicEventIncidenceCountMap = null;
-	private java.util.Map<java.lang.String, java.lang.Integer> _idiosyncraticEventIncidenceCountMap = null;
 	private java.util.List<org.drip.capital.simulation.PathPnLRealization> _pathPnLRealizationList = null;
+	private java.util.Map<java.lang.String, java.lang.Integer> _idiosyncraticEventIncidenceCountMap = null;
 
 	/**
 	 * CapitalUnitPathEnsemble Constructor
@@ -154,7 +154,9 @@ public class CapitalUnitPathEnsemble
 
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
 		{
-			pathPnLRealizationArray[pathIndex] = _pathPnLRealizationList.get (pathIndex);
+			pathPnLRealizationArray[pathIndex] = _pathPnLRealizationList.get (
+				pathIndex
+			);
 		}
 
 		return pathPnLRealizationArray;
@@ -168,19 +170,29 @@ public class CapitalUnitPathEnsemble
 			return false;
 		}
 
-		_pathPnLRealizationList.add (pathPnLRealization);
+		_pathPnLRealizationList.add (
+			pathPnLRealization
+		);
 
 		double grossPnL = pathPnLRealization.grossPnL();
 
-		if (_pnlListMap.containsKey (grossPnL))
+		if (_pnlListMap.containsKey (
+			grossPnL
+		))
 		{
-			_pnlListMap.get (grossPnL).add (_pathPnLRealizationList.size() - 1);
+			_pnlListMap.get (
+				grossPnL
+			).add (
+				_pathPnLRealizationList.size() - 1
+			);
 		}
 		else
 		{
 			java.util.List<java.lang.Integer> instanceList = new java.util.ArrayList<java.lang.Integer>();
 
-			instanceList.add (_pathPnLRealizationList.size() - 1);
+			instanceList.add (
+				_pathPnLRealizationList.size() - 1
+			);
 
 			_pnlListMap.put (
 				grossPnL,
@@ -198,11 +210,15 @@ public class CapitalUnitPathEnsemble
 			{
 				java.lang.String event = stressEventIncidence.name();
 
-				if (_systemicEventIncidenceCountMap.containsKey (event))
+				if (_systemicEventIncidenceCountMap.containsKey (
+					event
+				))
 				{
 					_systemicEventIncidenceCountMap.put (
 						event,
-						_systemicEventIncidenceCountMap.get (event) + 1
+						_systemicEventIncidenceCountMap.get (
+							event
+						) + 1
 					);
 				}
 				else
@@ -225,11 +241,15 @@ public class CapitalUnitPathEnsemble
 			{
 				java.lang.String event = stressEventIncidence.name();
 
-				if (_idiosyncraticEventIncidenceCountMap.containsKey (event))
+				if (_idiosyncraticEventIncidenceCountMap.containsKey (
+					event
+				))
 				{
 					_idiosyncraticEventIncidenceCountMap.put (
 						event,
-						_idiosyncraticEventIncidenceCountMap.get (event) + 1
+						_idiosyncraticEventIncidenceCountMap.get (
+							event
+						) + 1
 					);
 				}
 				else
@@ -268,16 +288,21 @@ public class CapitalUnitPathEnsemble
 	@Override public int systemicEventIncidenceCount (
 		final java.lang.String event)
 	{
-		return null == event || event.isEmpty() || !_systemicEventIncidenceCountMap.containsKey (event) ? 0 :
-			_systemicEventIncidenceCountMap.get (event);
+		return null == event || event.isEmpty() || !_systemicEventIncidenceCountMap.containsKey (
+			event
+		) ? 0 : _systemicEventIncidenceCountMap.get (
+			event
+		);
 	}
 
 	@Override public int idiosyncraticEventIncidenceCount (
 		final java.lang.String event)
 	{
-		return null == event || event.isEmpty() ||
-			!_idiosyncraticEventIncidenceCountMap.containsKey (event) ? 0 :
-			_idiosyncraticEventIncidenceCountMap.get (event);
+		return null == event || event.isEmpty() || !_idiosyncraticEventIncidenceCountMap.containsKey (
+			event
+		) ? 0 : _idiosyncraticEventIncidenceCountMap.get (
+			event
+		);
 	}
 
 	@Override public double var (
@@ -286,7 +311,9 @@ public class CapitalUnitPathEnsemble
 	{
 		if (0 >= confidenceCount || _pathPnLRealizationList.size() <= confidenceCount)
 		{
-			throw new java.lang.Exception ("CapitalUnitPathEnsemble::var => Invalid Inputs!");
+			throw new java.lang.Exception (
+				"CapitalUnitPathEnsemble::var => Invalid Inputs!"
+			);
 		}
 
 		int cumulativeInstanceCount = 0;
@@ -301,20 +328,27 @@ public class CapitalUnitPathEnsemble
 			}
 		}
 
-		throw new java.lang.Exception ("CapitalUnitPathEnsemble::var => Confidence Count Too High!");
+		throw new java.lang.Exception (
+			"CapitalUnitPathEnsemble::var => Confidence Count Too High!"
+		);
 	}
 
 	@Override public double var (
 		final double confidenceLevel)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (confidenceLevel) ||
-			0. >= confidenceLevel || 1. <= confidenceLevel)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+				confidenceLevel
+			) || 0. >= confidenceLevel || 1. <= confidenceLevel)
 		{
-			throw new java.lang.Exception ("CapitalUnitPathEnsemble::var => Invalid Inputs!");
+			throw new java.lang.Exception (
+				"CapitalUnitPathEnsemble::var => Invalid Inputs!"
+			);
 		}
 
-		return var ((int) (_pathPnLRealizationList.size() * (1. - confidenceLevel)));
+		return var (
+			(int) (_pathPnLRealizationList.size() * (1. - confidenceLevel))
+		);
 	}
 
 	@Override public double expectedShortfall (
@@ -323,7 +357,9 @@ public class CapitalUnitPathEnsemble
 	{
 		if (0 >= confidenceCount || _pathPnLRealizationList.size() <= confidenceCount)
 		{
-			throw new java.lang.Exception ("CapitalUnitPathEnsemble::expectedShortfall => Invalid Inputs!");
+			throw new java.lang.Exception (
+				"CapitalUnitPathEnsemble::expectedShortfall => Invalid Inputs!"
+			);
 		}
 
 		int instanceCount = 0;
@@ -336,7 +372,9 @@ public class CapitalUnitPathEnsemble
 
 			int entrySize = pnlListEntry.getValue().size();
 
-			for (int entryIndex = 0; entryIndex < entrySize; ++entryIndex)
+			for (int entryIndex = 0;
+				entryIndex < entrySize;
+				++entryIndex)
 			{
 				cumulativeShortfall = cumulativeShortfall + pnl;
 
@@ -347,21 +385,28 @@ public class CapitalUnitPathEnsemble
 			}
 		}
 
-		throw new java.lang.Exception
-			("CapitalUnitPathEnsemble::expectedShortfall => Confidence Count Too High!");
+		throw new java.lang.Exception (
+			"CapitalUnitPathEnsemble::expectedShortfall => Confidence Count Too High!"
+		);
 	}
 
 	@Override public double expectedShortfall (
 		final double confidenceLevel)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (confidenceLevel) ||
-			0. >= confidenceLevel || 1. <= confidenceLevel)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+				confidenceLevel
+			) || 0. >= confidenceLevel || 1. <= confidenceLevel
+		)
 		{
-			throw new java.lang.Exception ("CapitalUnitPathEnsemble::expectedShortfall => Invalid Inputs!");
+			throw new java.lang.Exception (
+				"CapitalUnitPathEnsemble::expectedShortfall => Invalid Inputs!"
+			);
 		}
 
-		return expectedShortfall ((int) (_pathPnLRealizationList.size() * (1. - confidenceLevel)));
+		return expectedShortfall (
+			(int) (_pathPnLRealizationList.size() * (1. - confidenceLevel))
+		);
 	}
 
 	@Override public org.drip.capital.explain.CapitalUnitPnLAttribution pnlAttribution (
@@ -382,7 +427,11 @@ public class CapitalUnitPathEnsemble
 		{
 			for (int listIndex : pnlListEntry.getValue())
 			{
-				selectedPathPnLRealizationList.add (_pathPnLRealizationList.get (listIndex));
+				selectedPathPnLRealizationList.add (
+					_pathPnLRealizationList.get (
+						listIndex
+					)
+				);
 
 				if (++instanceCount == confidenceCount)
 				{
@@ -413,13 +462,17 @@ public class CapitalUnitPathEnsemble
 	@Override public org.drip.capital.explain.CapitalUnitPnLAttribution pnlAttribution (
 		final double confidenceLevel)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (confidenceLevel) ||
-			0. >= confidenceLevel || 1. <= confidenceLevel)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+				confidenceLevel
+			) || 0. >= confidenceLevel || 1. <= confidenceLevel
+		)
 		{
 			return null;
 		}
 
-		return pnlAttribution ((int) (_pathPnLRealizationList.size() * (1. - confidenceLevel)));
+		return pnlAttribution (
+			(int) (_pathPnLRealizationList.size() * (1. - confidenceLevel))
+		);
 	}
 
 	@Override public org.drip.capital.explain.CapitalUnitPnLAttribution pnlAttribution (
@@ -435,7 +488,11 @@ public class CapitalUnitPathEnsemble
 
 		for (int pathIndex : pathIndexList)
 		{
-			selectedPathPnLRealizationList.add (_pathPnLRealizationList.get (pathIndex));
+			selectedPathPnLRealizationList.add (
+				_pathPnLRealizationList.get (
+					pathIndex
+				)
+			);
 		}
 
 		try
@@ -459,7 +516,9 @@ public class CapitalUnitPathEnsemble
 
 		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : _pathPnLRealizationList)
 		{
-			grossSystemicStressPnLList.add (pathPnLRealization.grossSystemicStressPnL());
+			grossSystemicStressPnLList.add (
+				pathPnLRealization.grossSystemicStressPnL()
+			);
 		}
 
 		return grossSystemicStressPnLList;
@@ -472,7 +531,9 @@ public class CapitalUnitPathEnsemble
 
 		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : _pathPnLRealizationList)
 		{
-			grossIdiosyncraticStressPnLList.add (pathPnLRealization.grossIdiosyncraticStressPnL());
+			grossIdiosyncraticStressPnLList.add (
+				pathPnLRealization.grossIdiosyncraticStressPnL()
+			);
 		}
 
 		return grossIdiosyncraticStressPnLList;
@@ -484,7 +545,9 @@ public class CapitalUnitPathEnsemble
 
 		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : _pathPnLRealizationList)
 		{
-			grossFSPnLList.add (pathPnLRealization.grossFSPnL());
+			grossFSPnLList.add (
+				pathPnLRealization.grossFSPnL()
+			);
 		}
 
 		return grossFSPnLList;
@@ -496,7 +559,9 @@ public class CapitalUnitPathEnsemble
 
 		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : _pathPnLRealizationList)
 		{
-			grossPnLList.add (pathPnLRealization.grossPnL());
+			grossPnLList.add (
+				pathPnLRealization.grossPnL()
+			);
 		}
 
 		return grossPnLList;
@@ -516,13 +581,21 @@ public class CapitalUnitPathEnsemble
 
 		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : _pathPnLRealizationList)
 		{
-			grossSystemicStressPnLList.add (pathPnLRealization.grossSystemicStressPnL());
+			grossSystemicStressPnLList.add (
+				pathPnLRealization.grossSystemicStressPnL()
+			);
 
-			grossIdiosyncraticStressPnLList.add (pathPnLRealization.grossIdiosyncraticStressPnL());
+			grossIdiosyncraticStressPnLList.add (
+				pathPnLRealization.grossIdiosyncraticStressPnL()
+			);
 
-			grossFSPnLList.add (pathPnLRealization.grossFSPnL());
+			grossFSPnLList.add (
+				pathPnLRealization.grossFSPnL()
+			);
 
-			grossPnLList.add (pathPnLRealization.grossPnL());
+			grossPnLList.add (
+				pathPnLRealization.grossPnL()
+			);
 		}
 
 		try

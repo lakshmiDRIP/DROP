@@ -4,7 +4,7 @@ package org.drip.sample.feed;
 import java.util.Map;
 
 import org.drip.capital.feed.CapitalUnitStressScenarioLoader;
-import org.drip.capital.feed.CapitalUnitIBSSTScenario;
+import org.drip.capital.feed.CapitalUnitIdiosyncraticScenario;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -47,13 +47,13 @@ public class CapitalUnitIBSSTProcessor
 
 		String capitalUnitIBSSTInputFile = "I:\\CapitalUnitRuns\\IBSST_Input_Sample.csv";
 
-		Map<String, CapitalUnitIBSSTScenario> capitalUnitIBSSTScenarioMap =
-			CapitalUnitStressScenarioLoader.LoadIBSST (
+		Map<String, CapitalUnitIdiosyncraticScenario> capitalUnitIBSSTScenarioMap =
+			CapitalUnitStressScenarioLoader.LoadIdiosyncratic (
 				capitalUnitIBSSTInputFile,
 				true
 			);
 
-		for (Map.Entry<String, CapitalUnitIBSSTScenario> capitalUnitIBSSTScenarioEntry :
+		for (Map.Entry<String, CapitalUnitIdiosyncraticScenario> capitalUnitIBSSTScenarioEntry :
 			capitalUnitIBSSTScenarioMap.entrySet())
 		{
 			System.out.println (
