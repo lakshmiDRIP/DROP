@@ -81,12 +81,12 @@ package org.drip.validation.quantile;
  *  <br><br>
  *  <ul>
  *  	<li>
- *  		Gibbons, J. D., and S. Chakraborti (2003): <i>Non-parametric Statistical Inference 4th
- *  			Edition</i> <b>CRC Press</b>
- *  	</li>
- *  	<li>
  *  		Filliben, J. J. (1975): The Probability Plot Correlation Coefficient Test for Normality
  *  			<i>Technometrics, American Society for Quality</i> <b>17 (1)</b> 111-117
+ *  	</li>
+ *  	<li>
+ *  		Gibbons, J. D., and S. Chakraborti (2003): <i>Non-parametric Statistical Inference 4th
+ *  			Edition</i> <b>CRC Press</b>
  *  	</li>
  *  	<li>
  *  		Gnanadesikan, R. (1977): <i>Methods for Statistical Analysis of Multivariate Observations</i>
