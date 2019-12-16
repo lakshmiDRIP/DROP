@@ -87,11 +87,12 @@ package org.drip.validation.riskfactorsingle;
  *  	</li>
  *  	<li>
  *  		Diebold, F. X., T. A. Gunther, and A. S. Tay (1998): Evaluating Density Forecasts with
- *  			Applications to Financial Risk Management, International Economic Review 39 (4) 863-883
+ *  			Applications to Financial Risk Management <i>International Economic Review</i> <b>39 (4)</b>
+ *  			863-883
  *  	</li>
  *  	<li>
- *  		Kenyon, C., and R. Stamm (2012): Discounting, LIBOR, CVA, and Funding: Interest Rate and Credit
- *  			Pricing, Palgrave Macmillan
+ *  		Kenyon, C., and R. Stamm (2012): <i>Discounting, LIBOR, CVA, and Funding: Interest Rate and
+ *  			Credit Pricing</i> <b>Palgrave Macmillan</b>
  *  	</li>
  *  	<li>
  *  		Wikipedia (2018): Probability Integral Transform
