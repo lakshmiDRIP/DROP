@@ -77,7 +77,7 @@ package org.drip.measure.continuous;
 
 /**
  * <i>R1UnivariateExponential</i> implements the Univariate R<sup>1</sup> Exponential Distribution. It
- * implements the Incremental, the Cumulative, and the Inverse Cumulative Distribution Densities.
+ * 	implements the Incremental, the Cumulative, and the Inverse Cumulative Distribution Densities.
  *
  *	<br><br>
  *  <ul>

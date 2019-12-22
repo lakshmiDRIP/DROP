@@ -295,7 +295,7 @@ public class BlackLittermanCombinationEngine
 			return null;
 		}
 
-		org.drip.measure.bayesian.JointPosteriorMetrics jointPosteriorMetrics =
+		org.drip.measure.bayesian.R1MultivariateConvolutionMetrics jointPosteriorMetrics =
 			org.drip.measure.bayesian.TheilMixedEstimationModel.GenerateComposite (
 				scopingProjectionVariateDistribution,
 				"VIEW",
@@ -460,7 +460,7 @@ public class BlackLittermanCombinationEngine
 			return null;
 		}
 
-		org.drip.measure.bayesian.JointPosteriorMetrics jointPosteriorMetrics =
+		org.drip.measure.bayesian.R1MultivariateConvolutionMetrics jointPosteriorMetrics =
 			org.drip.measure.bayesian.TheilMixedEstimationModel.GenerateComposite (
 				scopingProjectionVariateDistribution,
 				"VIEW",

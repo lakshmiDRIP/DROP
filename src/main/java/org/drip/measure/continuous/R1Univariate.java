@@ -82,8 +82,8 @@ package org.drip.measure.continuous;
  */
 
 /**
- * <i>R1Univariate</i> implements the Base Abstract Class behind R<sup>1</sup> Univariate Distributions. It
- * exports the Methods for incremental, cumulative, and inverse cumulative distribution densities.
+ * <i>R1Univariate</i> exposes the Base Abstract Class behind Univariate R<sup>1</sup> Distributions. It
+ * 	exports the Methods for incremental, cumulative, and inverse cumulative distribution densities.
  *
  *	<br><br>
  *  <ul>

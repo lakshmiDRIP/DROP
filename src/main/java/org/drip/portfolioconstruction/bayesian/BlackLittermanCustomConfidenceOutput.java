@@ -108,7 +108,7 @@ package org.drip.portfolioconstruction.bayesian;
 public class BlackLittermanCustomConfidenceOutput
 	extends org.drip.portfolioconstruction.bayesian.BlackLittermanOutput
 {
-	private org.drip.measure.bayesian.JointPosteriorMetrics _jointPosteriorMetrics = null;
+	private org.drip.measure.bayesian.R1MultivariateConvolutionMetrics _jointPosteriorMetrics = null;
 
 	/**
 	 * BlackLittermanCustomConfidenceOutput Constructor
@@ -124,7 +124,7 @@ public class BlackLittermanCustomConfidenceOutput
 		final org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
 			forwardReverseOptimizationOutput,
 		final double[] allocationAdjustmentTiltArray,
-		final org.drip.measure.bayesian.JointPosteriorMetrics jointPosteriorMetrics)
+		final org.drip.measure.bayesian.R1MultivariateConvolutionMetrics jointPosteriorMetrics)
 		throws java.lang.Exception
 	{
 		super (
@@ -145,7 +145,7 @@ public class BlackLittermanCustomConfidenceOutput
 	 * @return The Bayesian Joint/Posterior Metrics
 	 */
 
-	public org.drip.measure.bayesian.JointPosteriorMetrics jointPosteriorMetrics()
+	public org.drip.measure.bayesian.R1MultivariateConvolutionMetrics jointPosteriorMetrics()
 	{
 		return _jointPosteriorMetrics;
 	}

@@ -114,7 +114,7 @@ package org.drip.measure.gamma;
  */
 
 public class ErlangDistribution
-	extends org.drip.measure.gamma.ShapeScaleDistribution
+	extends org.drip.measure.gamma.R1ShapeScaleDistribution
 {
 
 	/**
@@ -138,8 +138,10 @@ public class ErlangDistribution
 		throws java.lang.Exception
 	{
 		super (
-			shapeParameter,
-			scaleParameter,
+			new org.drip.measure.gamma.ShapeScaleParameters (
+				shapeParameter,
+				scaleParameter
+			),
 			gammaEstimator,
 			digammaEstimator,
 			lowerIncompleteGammaEstimator
@@ -159,15 +161,17 @@ public class ErlangDistribution
 			);
 		}
 
-		int shapeParameter = (int) shapeParameter();
+		org.drip.measure.gamma.ShapeScaleParameters shapeScaleParameters = shapeScaleParameters();
 
-		double rate = (double) rateParameter();
+		double rate = (double) shapeScaleParameters.rate();
+
+		int shape = (int) shapeScaleParameters.shape();
 
 		double betaX = rate * x;
 		double idf = 0.;
 
 		for (int index = 0;
-			index < shapeParameter;
+			index < shape;
 			++index)
 		{
 			idf = idf + java.lang.Math.pow (
@@ -181,5 +185,16 @@ public class ErlangDistribution
 		return 1. - java.lang.Math.exp (
 			-1. * betaX
 		) * idf;
+	}
+
+	/**
+	 * Compute the k<sup>th</sup> Arrival Poisson Waiting Time
+	 * 
+	 * @return The k<sup>th</sup> Arrival Poisson Waiting Time
+	 */
+
+	public double waitingTime()
+	{
+		return 1. / shapeScaleParameters().rate();
 	}
 }

@@ -165,7 +165,7 @@ public class BlackLittermanProcessor {
 
 		if (null == blo) return null;
 
-		org.drip.measure.bayesian.JointPosteriorMetrics jpm = blo.jointPosteriorMetrics();
+		org.drip.measure.bayesian.R1MultivariateConvolutionMetrics jpm = blo.jointPosteriorMetrics();
 
 		org.drip.measure.continuous.R1Multivariate r1mPrior = jpm.prior();
 

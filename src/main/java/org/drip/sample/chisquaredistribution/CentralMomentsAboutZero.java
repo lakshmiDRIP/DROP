@@ -3,7 +3,7 @@ package org.drip.sample.chisquaredistribution;
 
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.definition.R2ToR1;
-import org.drip.measure.chisquare.R1UnivariateCentral;
+import org.drip.measure.chisquare.R1Central;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
@@ -170,7 +170,7 @@ public class CentralMomentsAboutZero
 
 		for (int dof : dofArray)
 		{
-			R1UnivariateCentral r1Univariate = new R1UnivariateCentral (
+			R1Central r1Univariate = new R1Central (
 				dof,
 				gammaEstimator,
 				digammaEstimator,

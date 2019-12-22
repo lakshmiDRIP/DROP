@@ -1,7 +1,7 @@
 
 package org.drip.sample.chisquaredistribution;
 
-import org.drip.measure.chisquare.R1UnivariateCLTProxy;
+import org.drip.measure.chisquare.R1CentralCLTProxy;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -157,7 +157,7 @@ public class CLTProxyPDFEstimate
 
 		for (int dof : dofArray)
 		{
-			R1UnivariateCLTProxy r1UnivariateCLTProxy = new R1UnivariateCLTProxy (dof);
+			R1CentralCLTProxy r1UnivariateCLTProxy = new R1CentralCLTProxy (dof);
 
 			String display = "\t| [" + FormatUtil.FormatDouble (dof, 1, 0, 1., false) + "] =>";
 
@@ -191,7 +191,7 @@ public class CLTProxyPDFEstimate
 
 		for (int dof : dofArray)
 		{
-			R1UnivariateCLTProxy r1UnivariateCLTProxy = new R1UnivariateCLTProxy (dof);
+			R1CentralCLTProxy r1UnivariateCLTProxy = new R1CentralCLTProxy (dof);
 
 			String display = "\t| [" + FormatUtil.FormatDouble (dof, 1, 0, 1., false) + "] =>";
 
@@ -225,7 +225,7 @@ public class CLTProxyPDFEstimate
 
 		for (int dof : dofArray)
 		{
-			R1UnivariateCLTProxy r1UnivariateCLTProxy = new R1UnivariateCLTProxy (dof);
+			R1CentralCLTProxy r1UnivariateCLTProxy = new R1CentralCLTProxy (dof);
 
 			String display = "\t| [" + FormatUtil.FormatDouble (dof, 1, 0, 1., false) + "] =>";
 

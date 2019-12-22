@@ -1,7 +1,7 @@
 
 package org.drip.sample.chisquaredistribution;
 
-import org.drip.measure.chisquare.R1UnivariateWilsonHilferty;
+import org.drip.measure.chisquare.R1CentralWilsonHilferty;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -158,7 +158,7 @@ public class WilsonHilfertyPDFEstimate
 
 		for (int dof : dofArray)
 		{
-			R1UnivariateWilsonHilferty r1UnivariateWilsonHilferty = new R1UnivariateWilsonHilferty (dof);
+			R1CentralWilsonHilferty r1UnivariateWilsonHilferty = new R1CentralWilsonHilferty (dof);
 
 			String display = "\t| [" + FormatUtil.FormatDouble (dof, 1, 0, 1., false) + "] =>";
 
@@ -192,7 +192,7 @@ public class WilsonHilfertyPDFEstimate
 
 		for (int dof : dofArray)
 		{
-			R1UnivariateWilsonHilferty r1UnivariateWilsonHilferty = new R1UnivariateWilsonHilferty (dof);
+			R1CentralWilsonHilferty r1UnivariateWilsonHilferty = new R1CentralWilsonHilferty (dof);
 
 			String display = "\t| [" + FormatUtil.FormatDouble (dof, 1, 0, 1., false) + "] =>";
 
@@ -226,7 +226,7 @@ public class WilsonHilfertyPDFEstimate
 
 		for (int dof : dofArray)
 		{
-			R1UnivariateWilsonHilferty r1UnivariateWilsonHilferty = new R1UnivariateWilsonHilferty (dof);
+			R1CentralWilsonHilferty r1UnivariateWilsonHilferty = new R1CentralWilsonHilferty (dof);
 
 			String display = "\t| [" + FormatUtil.FormatDouble (dof, 1, 0, 1., false) + "] =>";
 

@@ -292,7 +292,7 @@ public class PriorPosteriorMetricsComparison
 			projectionExcessReturnsCovarianceMatrix
 		);
 
-		JointPosteriorMetrics jointPosteriorMetrics = new BlackLittermanCombinationEngine (
+		R1MultivariateConvolutionMetrics jointPosteriorMetrics = new BlackLittermanCombinationEngine (
 			ForwardReverseOptimizationOutput.Reverse (
 				Portfolio.Standard (
 					assetIDArray,

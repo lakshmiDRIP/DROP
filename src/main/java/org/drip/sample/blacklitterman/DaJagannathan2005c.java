@@ -171,7 +171,7 @@ public class DaJagannathan2005c {
 			)
 		);
 
-		JointPosteriorMetrics jpm = TheilMixedEstimationModel.GenerateComposite (
+		R1MultivariateConvolutionMetrics jpm = TheilMixedEstimationModel.GenerateComposite (
 			spvd,
 			"VIEW",
 			r1mnScoping

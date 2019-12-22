@@ -3,7 +3,7 @@ package org.drip.sample.gammadistribution;
 
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.definition.R2ToR1;
-import org.drip.measure.gamma.ShapeScaleDistribution;
+import org.drip.measure.gamma.R1ShapeScaleDistribution;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
@@ -240,7 +240,7 @@ public class ShapeScalePDFEstimate
 		{
 			for (int k : kArray)
 			{
-				ShapeScaleDistribution gammaDistribution = new ShapeScaleDistribution (
+				R1ShapeScaleDistribution gammaDistribution = R1ShapeScaleDistribution.Standard (
 					k,
 					theta,
 					gammaEstimator,
@@ -288,7 +288,7 @@ public class ShapeScalePDFEstimate
 		{
 			for (int k : kArray)
 			{
-				ShapeScaleDistribution gammaDistribution = new ShapeScaleDistribution (
+				R1ShapeScaleDistribution gammaDistribution = R1ShapeScaleDistribution.Standard (
 					k,
 					theta,
 					gammaEstimator,
@@ -334,7 +334,7 @@ public class ShapeScalePDFEstimate
 		{
 			for (int k : kArray)
 			{
-				ShapeScaleDistribution gammaDistribution = new ShapeScaleDistribution (
+				R1ShapeScaleDistribution gammaDistribution = R1ShapeScaleDistribution.Standard (
 					k,
 					theta,
 					gammaEstimator,

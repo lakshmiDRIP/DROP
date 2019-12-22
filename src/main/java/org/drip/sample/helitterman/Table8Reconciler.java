@@ -1,7 +1,7 @@
 
 package org.drip.sample.helitterman;
 
-import org.drip.measure.bayesian.JointPosteriorMetrics;
+import org.drip.measure.bayesian.R1MultivariateConvolutionMetrics;
 import org.drip.measure.continuous.MultivariateMeta;
 import org.drip.measure.gaussian.*;
 import org.drip.measure.statistics.MultivariateMoments;
@@ -262,7 +262,7 @@ public class Table8Reconciler
 				)
 			);
 
-		JointPosteriorMetrics jointPosteriorMetrics =
+		R1MultivariateConvolutionMetrics jointPosteriorMetrics =
 			blackLittermanCombinationEngine.customConfidenceRun().jointPosteriorMetrics();
 
 		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jointPosteriorMetrics.joint();

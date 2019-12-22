@@ -1,6 +1,15 @@
 
 package org.drip.sample.gammadistribution;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R2ToR1;
+import org.drip.measure.gamma.ErlangDistribution;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
+import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
+import org.drip.specialfunction.incompletegamma.LowerEulerIntegral;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -116,4 +125,241 @@ package org.drip.sample.gammadistribution;
 public class ErlangPDFEstimate
 {
 
+	private static final R2ToR1 LowerIncompleteGamma()
+		throws Exception
+	{
+		return new R2ToR1()
+		{
+			@Override public double evaluate (
+				final double s,
+				final double t)
+				throws Exception
+			{
+				return new LowerEulerIntegral (
+					null,
+					t
+				).evaluate (
+					s
+				);
+			}
+		};
+	}
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+		EnvManager.InitEnv (
+			""
+		);
+
+		int digammaTermCount = 1000;
+		double[] thetaArray =
+		{
+			 1.0,
+			 2.0,
+			 3.0,
+			 4.0,
+			 5.0,
+		};
+		double[] tArray =
+		{
+			 0.1,
+			 1.0,
+			 2.0,
+			 3.0,
+			 4.0,
+			 5.0,
+			 6.0,
+			 7.0,
+			 8.0,
+			 9.0,
+			10.0,
+			12.0,
+		};
+		int[] kArray =
+		{
+			 // 1,
+			 2,
+			 3,
+			 4,
+			 5,
+			 6,
+			 7,
+			 8,
+		};
+		double[] pValueArray =
+		{
+			 0.05,
+			 0.10,
+			 0.15,
+			 0.20,
+			 0.25,
+			 0.30,
+			 0.35,
+			 0.40,
+			 0.45,
+			 0.50,
+			 0.55,
+			 0.60,
+			 0.65,
+			 0.70,
+			 0.75,
+			 0.80,
+			 0.85,
+			 0.90,
+			 0.95,
+			 0.99,
+		};
+
+		R1ToR1 gammaEstimator = new EulerIntegralSecondKind (
+			null
+		);
+
+		R2ToR1 lowerIncompleteGammaEstimator = LowerIncompleteGamma();
+
+		R1ToR1 digammaEstimator = CumulativeSeriesEstimator.AbramowitzStegun2007 (
+			digammaTermCount
+		);
+
+		System.out.println ("\t|---------------------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println ("\t|                                               PROBABILITY DENSITY FUNCTION ESTIMATE                                             ||");
+
+		System.out.println ("\t|---------------------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println ("\t|        L -> R:                                                                                                                  ||");
+
+		System.out.println ("\t|                - Shape, Scale                                                                                                   ||");
+
+		System.out.println ("\t|                - Values for different t                                                                                         ||");
+
+		System.out.println ("\t|---------------------------------------------------------------------------------------------------------------------------------||");
+
+		for (double theta : thetaArray)
+		{
+			for (int k : kArray)
+			{
+				ErlangDistribution erlangDistribution = new ErlangDistribution (
+					k,
+					theta,
+					gammaEstimator,
+					digammaEstimator,
+					lowerIncompleteGammaEstimator
+				);
+
+				String display = "\t| [" +
+					FormatUtil.FormatDouble (k, 1, 0, 1., false) + ", " +
+					FormatUtil.FormatDouble (theta, 1, 0, 1., false) +
+				"] =>";
+
+				for (double t : tArray)
+				{
+					display = display + " " + FormatUtil.FormatDouble (
+						erlangDistribution.density (
+							t
+						), 1, 5, 1., false
+					) + " |";
+				}
+
+				System.out.println (display + "|");
+			}
+		}
+
+		System.out.println ("\t|---------------------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println();
+
+		System.out.println ("\t|---------------------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println ("\t|                                             CUMULATIVE DISTRIBUTION FUNCTION ESTIMATE                                           ||");
+
+		System.out.println ("\t|---------------------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println ("\t|        L -> R:                                                                                                                  ||");
+
+		System.out.println ("\t|                - Shape, Scale                                                                                                   ||");
+
+		System.out.println ("\t|                - Values for different t                                                                                         ||");
+
+		System.out.println ("\t|---------------------------------------------------------------------------------------------------------------------------------||");
+
+		for (double theta : thetaArray)
+		{
+			for (int k : kArray)
+			{
+				ErlangDistribution erlangDistribution = new ErlangDistribution (
+					k,
+					theta,
+					gammaEstimator,
+					digammaEstimator,
+					lowerIncompleteGammaEstimator
+				);
+
+				String display = "\t| [" +
+					FormatUtil.FormatDouble (k, 1, 0, 1., false) + ", " +
+					FormatUtil.FormatDouble (theta, 1, 0, 1., false) +
+				"] =>";
+
+				for (double t : tArray)
+				{
+					display = display + " " + FormatUtil.FormatDouble (
+						erlangDistribution.cumulative (t), 1, 5, 1., false
+					) + " |";
+				}
+
+				System.out.println (display + "|");
+			}
+		}
+
+		System.out.println ("\t|---------------------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println();
+
+		System.out.println ("\t|---------------------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println ("\t|                                         INVERSE CUMULATIVE DISTRIBUTION FUNCTION ESTIMATE                                       ||");
+
+		System.out.println ("\t|---------------------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println ("\t|        L -> R:                                                                                                                  ||");
+
+		System.out.println ("\t|                - Shape, Scale                                                                                                   ||");
+
+		System.out.println ("\t|                - Values for different p                                                                                         ||");
+
+		System.out.println ("\t|---------------------------------------------------------------------------------------------------------------------------------||");
+
+		for (double theta : thetaArray)
+		{
+			for (int k : kArray)
+			{
+				ErlangDistribution erlangDistribution = new ErlangDistribution (
+					k,
+					theta,
+					gammaEstimator,
+					digammaEstimator,
+					lowerIncompleteGammaEstimator
+				);
+
+				String display = "\t| [" +
+					FormatUtil.FormatDouble (k, 1, 0, 1., false) + ", " +
+					FormatUtil.FormatDouble (theta, 1, 0, 1., false) +
+				"] =>";
+
+				for (double p : pValueArray)
+				{
+					display = display + " " + FormatUtil.FormatDouble (
+						erlangDistribution.invCumulative (p), 1, 2, 1., false
+					) + " |";
+				}
+
+				System.out.println (display + "|");
+			}
+		}
+
+		System.out.println ("\t|---------------------------------------------------------------------------------------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
+	}
 }

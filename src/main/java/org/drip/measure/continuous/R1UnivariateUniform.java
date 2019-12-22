@@ -77,7 +77,7 @@ package org.drip.measure.continuous;
 
 /**
  * <i>R1UnivariateUniform</i> implements the Univariate R<sup>1</sup> Uniform Distribution. It implements the
- * Incremental, the Cumulative, and the Inverse Cumulative Distribution Densities.
+ * 	Incremental, the Cumulative, and the Inverse Cumulative Distribution Densities.
  *
  *	<br><br>
  *  <ul>
@@ -96,9 +96,9 @@ public class R1UnivariateUniform extends org.drip.measure.continuous.R1Univariat
 	private double _rightSupport = java.lang.Double.NaN;
 
 	/**
-	 * Construct a Standard (0, 1) R^1 Uniform Distribution
+	 * Construct a Standard (0, 1) R<sup>1</sup> Univariate Uniform Distribution
 	 * 
-	 * @return Standard (0, 1) R^1 Uniform Distribution
+	 * @return Standard (0, 1) R<sup>1</sup> Univariate Uniform Distribution
 	 */
 
 	public static final R1UnivariateUniform Standard()

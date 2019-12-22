@@ -79,7 +79,7 @@ package org.drip.measure.continuous;
  */
 
 /**
- * <i>R1Multivariate</i> contains the Generalized Joint Multivariate R<sup>1</sup> Distributions.
+ * <i>R1Multivariate</i> contains the Generalized R<sup>1</sup> Multivariate Distributions.
  *
  *	<br><br>
  *  <ul>

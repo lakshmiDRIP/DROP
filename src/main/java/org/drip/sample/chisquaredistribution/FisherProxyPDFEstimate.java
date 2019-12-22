@@ -1,7 +1,7 @@
 
 package org.drip.sample.chisquaredistribution;
 
-import org.drip.measure.chisquare.R1UnivariateFisherProxy;
+import org.drip.measure.chisquare.R1CentralFisherProxy;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -158,7 +158,7 @@ public class FisherProxyPDFEstimate
 
 		for (int dof : dofArray)
 		{
-			R1UnivariateFisherProxy r1UnivariateFisherProxy = new R1UnivariateFisherProxy (dof);
+			R1CentralFisherProxy r1UnivariateFisherProxy = new R1CentralFisherProxy (dof);
 
 			String display = "\t| [" + FormatUtil.FormatDouble (dof, 1, 0, 1., false) + "] =>";
 
@@ -192,7 +192,7 @@ public class FisherProxyPDFEstimate
 
 		for (int dof : dofArray)
 		{
-			R1UnivariateFisherProxy r1UnivariateFisherProxy = new R1UnivariateFisherProxy (dof);
+			R1CentralFisherProxy r1UnivariateFisherProxy = new R1CentralFisherProxy (dof);
 
 			String display = "\t| [" + FormatUtil.FormatDouble (dof, 1, 0, 1., false) + "] =>";
 
@@ -226,7 +226,7 @@ public class FisherProxyPDFEstimate
 
 		for (int dof : dofArray)
 		{
-			R1UnivariateFisherProxy r1UnivariateFisherProxy = new R1UnivariateFisherProxy (dof);
+			R1CentralFisherProxy r1UnivariateFisherProxy = new R1CentralFisherProxy (dof);
 
 			String display = "\t| [" + FormatUtil.FormatDouble (dof, 1, 0, 1., false) + "] =>";
 

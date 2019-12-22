@@ -1,7 +1,7 @@
 
 package org.drip.sample.blacklitterman;
 
-import org.drip.measure.bayesian.JointPosteriorMetrics;
+import org.drip.measure.bayesian.R1MultivariateConvolutionMetrics;
 import org.drip.measure.continuous.MultivariateMeta;
 import org.drip.measure.gaussian.*;
 import org.drip.numerical.common.FormatUtil;
@@ -223,7 +223,7 @@ public class DaJagannathan2005e {
 			)
 		);
 
-		JointPosteriorMetrics jpm = blce.customConfidenceRun().jointPosteriorMetrics();
+		R1MultivariateConvolutionMetrics jpm = blce.customConfidenceRun().jointPosteriorMetrics();
 
 		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jpm.joint();
 

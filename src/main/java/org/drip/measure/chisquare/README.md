@@ -7,21 +7,20 @@ DROP Measure Chi-Square implements the Chi-Square Distribution Implementation/Pr
 
 ## Class Components
 
- * [***R1UnivariateCentral***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/R1UnivariateCentral.java)
- <i>R1UnivariateCentral</i> implements the Probability Density Function for the Central Chi-Square
- Distribution.
+ * [***R1Central***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/R1Central.java)
+ <i>R1Central</i> implements the Probability Density Function for the R<sup>1</sup> Central Chi-Square Distribution.
 
- * [***R1UnivariateCLTProxy***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/R1UnivariateCLTProxy.java)
- <i>R1UnivariateCLTProxy</i> implements the implements the N (0, 1) CLT Proxy Version for the Chi-Square
- Distribution.
+ * [***R1CentralCLTProxy***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/R1CentralCLTProxy.java)
+ <i>R1CentralCLTProxy</i> implements the N (0, 1) CLT Proxy Version for the R<sup>1</sup> Chi-Square Distribution.
 
- * [***R1UnivariateFisherProxy***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/R1UnivariateFisherProxy.java)
- <i>R1UnivariateFisherProxy</i> implements the Univariate Normal Proxy Version using the Fisher
- Transformation for the Chi-Square Distribution.
+ * [***R1CentralFisherProxy***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/R1CentralFisherProxy.java)
+ <i>R1CentralFisherProxy</i> implements the Univariate Normal Proxy Version using the Fisher Transformation for the R<sup>1</sup> Chi-Square Distribution.
 
- * [***R1UnivariateWilsonHilferty***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/R1UnivariateWilsonHilferty.java)
- <i>R1UnivariateWilsonHilferty</i> implements the Univariate Normal Proxy Version for the Chi-Square
- Distribution using the Wilson-Hilferty Transfomation.
+ * [***R1CentralWilsonHilferty***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/R1CentralWilsonHilferty.java)
+ <i>R1CentralWilsonHilferty</i> implements the Normal Proxy Version for the R<sup>1</sup> Chi-Square Distribution using the Wilson-Hilferty Transfomation.
+
+ * [***R1NonCentral***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/R1NonCentral.java)
+ <i>R1NonCentral</i> implements the Distribution Table for the R<sup>1</sup> Non-central Chi-Square Distribution.
 
 
 ## References
@@ -38,8 +37,16 @@ DROP Measure Chi-Square implements the Chi-Square Distribution Implementation/Pr
  * Johnson, N. L., S. Kotz, and N. Balakrishnan (1994): <i>Continuous Univariate Distributions 2<sup>nd</sup>
  Edition</i> <b>John Wiley and Sons</b>
 
+ * Muirhead, R. (2005): <i>Aspects of Multivariate Statistical Theory 2<sup>nd</sup> Edition</i> <b>Wiley</b>
+
  * National Institute of Standards and Technology (2019): Chi-Squared Distribution
  https://www.itl.nist.gov/div898/handbook/eda/section3/eda3666.htm
+
+ * Non-central Chi-Squared Distribution (2019): Chi-Squared Function https://en.wikipedia.org/wiki/Noncentral_chi-squared_distribution
+
+ * Sankaran, M. (1963): Approximations to the Non-Central Chi-Square Distribution <i>Biometrika</i> <b>50 (1-2)</b> 199-204
+
+ * Young, D. S. (2010): tolerance: An R Package for Estimating Tolerance Intervals <i>Journal of Statistical Software</i> <b>36 (5)</b> 1-39
 
 
 ## DROP Specifications

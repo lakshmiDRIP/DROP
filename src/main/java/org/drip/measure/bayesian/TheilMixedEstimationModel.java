@@ -112,7 +112,7 @@ public class TheilMixedEstimationModel {
 	 * @return The Joint Mixed Estimation Model Joint/Posterior Metrics
 	 */
 
-	public static final org.drip.measure.bayesian.JointPosteriorMetrics GenerateComposite (
+	public static final org.drip.measure.bayesian.R1MultivariateConvolutionMetrics GenerateComposite (
 		final org.drip.measure.continuous.MultivariateMeta meta,
 		final org.drip.measure.bayesian.ProjectionDistributionLoading pdl1,
 		final org.drip.measure.bayesian.ProjectionDistributionLoading pdl2,
@@ -194,7 +194,7 @@ public class TheilMixedEstimationModel {
 		}
 
 		try {
-			return new org.drip.measure.bayesian.JointPosteriorMetrics (r1mn1, r1mnUnconditional, r1mn2, new
+			return new org.drip.measure.bayesian.R1MultivariateConvolutionMetrics (r1mn1, r1mnUnconditional, r1mn2, new
 				org.drip.measure.gaussian.R1MultivariateNormal (meta, adblJointPosteriorMean, new
 					org.drip.measure.gaussian.Covariance (aadblJointCovariance)), new
 						org.drip.measure.gaussian.R1MultivariateNormal (meta, adblJointPosteriorMean, new
@@ -217,7 +217,7 @@ public class TheilMixedEstimationModel {
 	 * @return The Combined R^1 Multivariate Normal Distribution
 	 */
 
-	public static final org.drip.measure.bayesian.JointPosteriorMetrics GenerateComposite (
+	public static final org.drip.measure.bayesian.R1MultivariateConvolutionMetrics GenerateComposite (
 		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
 		final java.lang.String strProjection1,
 		final java.lang.String strProjection2,
@@ -239,7 +239,7 @@ public class TheilMixedEstimationModel {
 	 * @return The Combined R^1 Multivariate Normal Distribution
 	 */
 
-	public static final org.drip.measure.bayesian.JointPosteriorMetrics GenerateComposite (
+	public static final org.drip.measure.bayesian.R1MultivariateConvolutionMetrics GenerateComposite (
 		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
 		final java.lang.String strProjection,
 		final org.drip.measure.gaussian.R1MultivariateNormal r1mnUnconditional)

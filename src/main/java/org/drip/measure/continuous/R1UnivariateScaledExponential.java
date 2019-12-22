@@ -76,8 +76,8 @@ package org.drip.measure.continuous;
  */
 
 /**
- * <i>R1UnivariateScaledExponential</i> implements the Probability Density Function for the Scaled
- * Exponential Function. The References are:
+ * <i>R1UnivariateScaledExponential</i> implements the Probability Density Function for the Scaled Univariate
+ * 	R<sup>1</sup> Exponential Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -123,7 +123,7 @@ public class R1UnivariateScaledExponential extends org.drip.measure.continuous.R
 		null;
 
 	/**
-	 * R1UnivariateScaledExponential Constructor
+	 * UnivariateScaledExponential Constructor
 	 * 
 	 * @param scaledExponentialEstimator Scaled Exponential Estimator
 	 * @param gammaEstimator Gamma Estimator
