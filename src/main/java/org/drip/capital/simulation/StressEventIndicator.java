@@ -77,7 +77,7 @@ package org.drip.capital.simulation;
 
 /**
  * <i>StressEventIndicator</i> holds the Systemic and the Idiosyncratic Stress Event Indicators corresponding
- * to the specified Entity. The References are:
+ * 	to the specified Entity. The References are:
  * 
  * <br><br>
  * 	<ul>

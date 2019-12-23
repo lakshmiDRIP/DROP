@@ -77,7 +77,7 @@ package org.drip.capital.systemicscenario;
 
 /**
  * <i>SystemicStressShockIndicator</i> holds the Directional Indicator Settings for a given Systemic Stress
- * Shock Event. The References are:
+ * 	Shock Event. The References are:
  * 
  * <br><br>
  * 	<ul>

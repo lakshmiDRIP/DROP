@@ -145,6 +145,7 @@ public class R1ShapeScaleDiscrete
 	 * @param gammaEstimator Gamma Estimator
 	 * @param digammaEstimator Digamma Estimator
 	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
+	 * @param randomGenerationScheme Scheme for the Random Gamma NUmber Generator
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */

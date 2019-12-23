@@ -77,7 +77,7 @@ package org.drip.capital.setting;
 
 /**
  * <i>HorizonTailFSPnLControl</i> holds the Horizon, Tail, and Risk Factor FS Volatility Adjustment Control
- * Parameters. The References are:
+ * 	Parameters. The References are:
  * 
  * <br><br>
  * 	<ul>

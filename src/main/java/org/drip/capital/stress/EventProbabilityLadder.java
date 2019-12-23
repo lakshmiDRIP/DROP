@@ -77,7 +77,7 @@ package org.drip.capital.stress;
 
 /**
  * <i>EventProbabilityLadder</i> contains the Probabilities and their corresponding Event Steps in a Ladder
- * Progression. The References are:
+ * 	Progression. The References are:
  * 
  * <br><br>
  * 	<ul>

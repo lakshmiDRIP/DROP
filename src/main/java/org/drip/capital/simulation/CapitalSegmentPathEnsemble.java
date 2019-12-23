@@ -77,7 +77,7 @@ package org.drip.capital.simulation;
 
 /**
  * <i>CapitalSegmentPathEnsemble</i> generates the Ensemble of Capital Paths from the Simulation PnL
- * Realizations for the Capital Units under the specified Capital Segments. The References are:
+ * 	Realizations for the Capital Units under the specified Capital Segments. The References are:
  * 
  * <br><br>
  * 	<ul>

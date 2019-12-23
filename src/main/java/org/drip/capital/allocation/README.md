@@ -7,37 +7,37 @@ DROP Analytics Support Package contains Assorted Support and Helper Utilities.
 
 ## Class Components
 
- * [***CorrelationCategoryBeta***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support/CorrelationCategoryBeta.java)
+ * [***CorrelationCategoryBeta***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/allocation/CorrelationCategoryBeta.java)
  <i>CorrelationCategoryBeta</i> exposes the Correlation Category Beta Loading and its Elasticity (FIXED/FLOAT).
 
- * [***CorrelationCategoryBetaManager***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support/CorrelationCategoryBetaManager.java)
+ * [***CorrelationCategoryBetaManager***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/allocation/CorrelationCategoryBetaManager.java)
  <i>CorrelationCategoryBetaManager</i> holds the Beta Loading Map Scheme for the different Correlation Categories.
 
- * [***EntityCapital***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support/EntityCapital.java)
+ * [***EntityCapital***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/allocation/EntityCapital.java)
  <i>EntityCapital</i> holds the Capital for each Entity.
 
- * [***EntityCapitalAssignmentSetting***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support/EntityCapitalAssignmentSetting.java)
+ * [***EntityCapitalAssignmentSetting***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/allocation/EntityCapitalAssignmentSetting.java)
  <i>EntityCapitalAssignmentSetting</i> holds the Correlation Elasticities for the different Capital Components as well as the Entity's Correlation Category.
 
- * [***EntityComponentAssignmentScheme***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support/EntityComponentAssignmentScheme.java)
+ * [***EntityComponentAssignmentScheme***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/allocation/EntityComponentAssignmentScheme.java)
  <i>EntityComponentAssignmentScheme</i> holds the Indicators for the BETA and the PRO RATA Capital Allocation Schemes.
 
- * [***EntityComponentCapital***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support/EntityComponentCapital.java)
+ * [***EntityComponentCapital***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/allocation/EntityComponentCapital.java)
  <i>EntityComponentCapital</i> holds the Component Capital for each Entity.
 
- * [***EntityComponentCapitalAssignment***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support/EntityComponentCapitalAssignment.java)
+ * [***EntityComponentCapitalAssignment***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/allocation/EntityComponentCapitalAssignment.java)
  <i>EntityComponentCapitalAssignment</i> contains the Capital Assignment for each Entity and its Component.
 
- * [***EntityComponentCorrelationCategory***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support/EntityComponentCorrelationCategory.java)
+ * [***EntityComponentCorrelationCategory***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/allocation/EntityComponentCorrelationCategory.java)
  <i>EntityComponentCorrelationCategory</i> holds the Indicators of different Correlation Categories used under the BETA Capital Allocation Scheme.
 
- * [***EntityComponentElasticityAttribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support/EntityComponentElasticityAttribution.java)
+ * [***EntityComponentElasticityAttribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/allocation/EntityComponentElasticityAttribution.java)
  <i>EntityComponentElasticityAttribution</i> holds the Attributions of a single Individual Entity Component into Fixed, Float, and Pro-rata Elasticities.
 
- * [***EntityComponentProRataCategory***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support/EntityComponentProRataCategory.java)
+ * [***EntityComponentProRataCategory***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/allocation/EntityComponentProRataCategory.java)
  <i>EntityComponentProRataCategory</i> holds the Indicators of different Pro-Rata Categories used under the PRO-RATA Capital Allocation Scheme.
 
- * [***EntityElasticityAttribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support/EntityElasticityAttribution.java)
+ * [***EntityElasticityAttribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/allocation/EntityElasticityAttribution.java)
  <i>EntityElasticityAttribution</i> holds the Attributions across all Entity Components into Fixed, Float, and Pro-rata Elasticities.
 
 

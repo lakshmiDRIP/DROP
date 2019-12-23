@@ -76,8 +76,8 @@ package org.drip.capital.env;
  */
 
 /**
- * <i>RiskTypeFactory</i> instantiates the Built-in Mapping between RBC Code and iVAST Risk Type. Unmapped
- * RBC's will be excluded. The References are:
+ * <i>RiskTypeFactory</i> instantiates the Built-in Mapping between Risk Code and Risk Type. Unmapped Risk
+ * 	Codes will be excluded. The References are:
  * 
  * <br><br>
  * 	<ul>

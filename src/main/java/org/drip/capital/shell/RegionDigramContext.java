@@ -76,8 +76,7 @@ package org.drip.capital.shell;
  */
 
 /**
- * <i>RegionDigramContext</i> maintains the Loaded Region Digram Mapping. The References
- * 	are:
+ * <i>RegionDigramContext</i> maintains the Loaded Region Digram Mapping. The References are:
  * 
  * <br><br>
  * 	<ul>

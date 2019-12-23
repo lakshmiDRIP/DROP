@@ -77,7 +77,7 @@ package org.drip.capital.simulation;
 
 /**
  * <i>EnsemblePnLDistributionGenerator</i> exposes the Functionality to generate the PnL Distribution from
- * the Realized Path Ensemble. The References are:
+ * 	the Realized Path Ensemble. The References are:
  * 
  * <br><br>
  * 	<ul>

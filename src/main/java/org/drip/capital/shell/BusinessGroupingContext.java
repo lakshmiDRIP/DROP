@@ -76,8 +76,7 @@ package org.drip.capital.shell;
  */
 
 /**
- * <i>BusinessGroupingContext</i> maintains the Loaded Business Groupings. The References
- * 	are:
+ * <i>BusinessGroupingContext</i> maintains the Loaded Business Groupings. The References are:
  * 
  * <br><br>
  * 	<ul>

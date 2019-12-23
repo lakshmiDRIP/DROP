@@ -76,7 +76,7 @@ package org.drip.capital.feed;
  */
 
 /**
- * <i>CapitalUnitIdiosyncraticScenario</i> holds the Idiosyncratic Scenario Specifications of a Capital Unit.]
+ * <i>CapitalUnitIdiosyncraticScenario</i> holds the Idiosyncratic Scenario Specifications of a Capital Unit.
  * 	The References are:
  * 
  * <br><br>

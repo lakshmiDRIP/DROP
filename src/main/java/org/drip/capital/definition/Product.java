@@ -76,7 +76,8 @@ package org.drip.capital.definition;
  */
 
 /**
- * <i>Product</i> maintains the C<sup>1</sup> Fixings for the Product Categorical Variate. The References are:
+ * <i>Product</i> maintains the C<sup>1</sup> Fixings for the Product Categorical Variate. The References
+ * 	are:
  * 
  * <br><br>
  * 	<ul>

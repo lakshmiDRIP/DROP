@@ -77,7 +77,7 @@ package org.drip.capital.explain;
 
 /**
  * <i>CapitalUnitPnLAttribution</i> holds the Attributions of the PnL from the Contributing Paths for a Single
- * Capital Unit. The References are:
+ * 	Capital Unit. The References are:
  * 
  * <br><br>
  * 	<ul>

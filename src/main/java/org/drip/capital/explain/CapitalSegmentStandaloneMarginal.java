@@ -77,7 +77,7 @@ package org.drip.capital.explain;
 
 /**
  * <i>CapitalSegmentStandaloneMarginal</i> holds the Top-of-the-House Capital Attributions as well the
- * Segment-Level Contributions from the Stand-alone Capital Units. The References are:
+ * 	Segment-Level Contributions from the Stand-alone Capital Units. The References are:
  * 
  * <br><br>
  * 	<ul>

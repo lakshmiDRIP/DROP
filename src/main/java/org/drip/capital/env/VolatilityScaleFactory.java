@@ -77,7 +77,7 @@ package org.drip.capital.env;
 
 /**
  * <i>VolatilityScaleFactory</i> instantiates the Built-in Risk-Factor Volatility Scale Mappings. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>

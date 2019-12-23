@@ -76,8 +76,8 @@ package org.drip.capital.env;
  */
 
 /**
- * <i>CapitalEstimationContextManager</i> initializes the iVAST Capital Estimation Context Settings. The
- * 	References are:
+ * <i>CapitalEstimationContextManager</i> initializes the Capital Estimation Context Settings. The References
+ * 	are:
  * 
  * <br><br>
  * 	<ul>

@@ -76,9 +76,8 @@ package org.drip.capital.shell;
  */
 
 /**
- * <i>RiskTypeContext</i> maintains the Loaded Mapping between RBC Code and iVAST Risk Type. Unmapped RBC's
- * will be excluded. The References
- * 	are:
+ * <i>RiskTypeContext</i> maintains the Loaded Mapping between Risk Code and Risk Type. Unmapped RBC's will
+ * 	be excluded. The References are:
  * 
  * <br><br>
  * 	<ul>

@@ -77,7 +77,7 @@ package org.drip.capital.simulation;
 
 /**
  * <i>CapitalUnitPathEnsemble</i> generates the Ensemble of Capital Paths from the Simulation PnL
- * Realizations for the specified Capital Unit. The References are:
+ * 	Realizations for the specified Capital Unit. The References are:
  * 
  * <br><br>
  * 	<ul>

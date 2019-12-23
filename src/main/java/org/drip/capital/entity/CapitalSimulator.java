@@ -77,7 +77,7 @@ package org.drip.capital.entity;
 
 /**
  * <i>CapitalSimulator</i> exposes the Simulator for the VaR and the Stress Functionality for a given Capital
- * Entity - Segment or Unit. The References are:
+ * 	Entity - Segment or Unit. The References are:
  * 
  * <br><br>
  * 	<ul>

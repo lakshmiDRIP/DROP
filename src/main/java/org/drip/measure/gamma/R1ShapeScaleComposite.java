@@ -223,8 +223,6 @@ public class R1ShapeScaleComposite
 	 * @param gammaDistributionArray Gamma Distribution Array
 	 * 
 	 * @return Random Vector that follows the Dirichlet Distribution
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double[] RandomDirichletVector (

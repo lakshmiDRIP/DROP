@@ -133,7 +133,6 @@ public class R1NonCentralAbdelAty
 	public static final R1NonCentralAbdelAty Standard (
 		final int degreesOfFreedom,
 		final double nonCentralityParameter)
-		throws java.lang.Exception
 	{
 		if (0 >= degreesOfFreedom || !org.drip.numerical.common.NumberUtil.IsValid (
 				nonCentralityParameter
