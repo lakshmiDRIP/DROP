@@ -2,13 +2,49 @@
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Capital implements the Basel Market Risk and Operational Capital Analytics.
+DROP Capital implements the Basel Economic Risk Capital and Operational Capital Analytics.
 
 
 ## Component Packages
 
+ * [***Allocation***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/allocation)
+ DROP Capital Allocation Package implements the Economic Risk Capital Entity Allocation.
+
  * [***BCBS***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/bcbs)
  DROP Capital BCBS Package implements the BCBS and Jurisdictional Capital Ratios.
+
+ * [***Definition***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/definition)
+ DROP Capital Definition Package holds the Economic Risk Capital Categorical Definitions.
+
+ * [***Entity***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/entity)
+ DROP Capital Entity Package contains the Economic Risk Capital Estimation Nodes.
+
+ * [***Env***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/env)
+ DROP Capital Env Package implements the Economic Risk Capital Parameter Factories.
+
+ * [***Explain***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/explain)
+ DROP Capital Explain Package implements the Economic Risk Capital Attribution Explain.
+
+ * [***Feed***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/feed)
+ DROP Capital Feed Package holds the Risk Capital Estimation Feed Processors.
+
+ * [***Label***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/label)
+ DROP Capital Label Package contains the Economic Risk Capital Entity Labels.
+
+ * [***Setting***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/setting)
+ DROP Capital Setting Package maintains the Economic Risk Capital Simulation Settings.
+
+ * [***Shell***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/shell)
+ DROP Capital Shell Package implements the Economic Risk Capital Parameter Contexts.
+
+ * [***Simulation***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/simulation)
+ DROP Capital Simulation Package holds the Economic Risk Capital Simulation Ensemble.
+
+ * [***Stress***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/stress)
+ DROP Capital Stress Package contains the Economic Risk Capital Stress Event Settings.
+
+ * [***Systemic Scenario***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/systemicscenario)
+ DROP Capital Stress Scenario Package implements the Systemic Stress Scenario Design/Construction.
 
 
 ## References
