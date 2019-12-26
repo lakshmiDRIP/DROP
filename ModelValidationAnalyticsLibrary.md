@@ -1,17 +1,17 @@
 ﻿
-# Model Validation Library
+# Model Validation Analytics Library
 
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-Model Validation Library contains Statistical Hypotheses Validation and Testing Functionality.
+Model Validation Analytics Library contains Statistical Hypotheses Validation and Testing Functionality.
 
 
 ## Documentation
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ModelValidation/ModelValidationAnalytics_v4.12.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ModelValidation) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ModelValidationAnalytics/ModelValidationAnalytics_v4.61.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ModelValidationAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
