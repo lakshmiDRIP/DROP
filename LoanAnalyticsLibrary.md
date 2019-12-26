@@ -4,7 +4,7 @@
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-Asset Backed Analytics Library contains the Valuation and Risk Functionality for Asset Backed Borrower and Loan Level Characteristics.
+Loan Analytics Library contains the Valuation and Risk Functionality for Asset Backed Borrower and Loan Level Characteristics.
 
 
 ## Documentation

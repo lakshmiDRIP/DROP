@@ -4,7 +4,7 @@
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-Asset Allocation Analytics Library implements Asset Liability Management Analytics Functionality.
+Asset Allocation Analytics Library implements Asset Liability Analytics Functionality.
 
 
 ## Documentation
@@ -18,7 +18,7 @@ Asset Allocation Analytics Library implements Asset Liability Management Analyti
 
 ## Component Projects
 
- * *ALM* => Asset Liability Management Analytics Functionality.
+ * *ALM* => Asset Liability Analytics Functionality.
 	* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/alm/README.md) | 
 	[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aalm) }
 
