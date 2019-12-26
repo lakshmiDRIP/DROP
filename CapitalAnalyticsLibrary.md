@@ -4,7 +4,7 @@
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-Capital Analytics Library computes the Basel Market Risk and Operational Capital Analytics.
+Capital Analytics Library computes the Economic Risk Capital and Basel Operational Capital Analytics.
 
 
 ## Documentation

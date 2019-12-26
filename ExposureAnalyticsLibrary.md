@@ -11,7 +11,7 @@ Exposure Analytics Library computes the Scenario Exposures at the specified Trad
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/Exposure/ExposureAnalytics_v4.01.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/Exposure) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ExposureAnalytics/ExposureAnalytics_v4.53.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ExposureAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -21,12 +21,6 @@ Exposure Analytics Library computes the Scenario Exposures at the specified Trad
  * *Exposure* => Exposure Group Level Collateralized/Uncollateralized Exposure.
 	* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md) | 
 	[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aexposure) }
- * *SIMM* => Initial Margin Analytics based on ISDA SIMM and its Variants.
-	* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md) | 
-	[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Asimm) }
- * *BCBS* => Basel Capital, Funding, and Liquidity Metrics.
-	* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/bcbs/README.md) | 
-	[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Abcbs) }
 
 
 ## Coverage
@@ -67,107 +61,7 @@ Exposure Analytics Library computes the Scenario Exposures at the specified Trad
 	* Initial Margin
 	* Conclusion
 	* References
- * Regression Sensitivities in Margin Calculations
-	* Abstract
-	* Methodology
-	* References
- * Principles Behind ISDA SIMM Specification
-	* Introduction
-	* Background
-	* Objective
-	* Criteria
-	* Modeling Constraints
-	* Selecting the Model Specification
-	* Scanning the Existing Industry Solutions
-	* SIMM Specification
-	* Non Procyclicality
-	* Data Needs, Costs, and Maintenance
-	* Transparency and Implementation Costs
-	* Evolution of SIMM Through the Regulatory Process
-	* SIMM and the Nested Variance/Covariance Formulas
-	* Rationale Behind the Nested Sequence Approach
-	* Explicit Expression for S<sub>a</sub>
-	* FRTB Approximation
-	* SIMM Approximation
-	* Testing the Approximations
-	* Explicit Large Correlation Matrix
-	* Proof that the Elements of the Eigenvectors are smaller than One in Magnitude
-	* Numerical Example – Global Interest Rate Risk (GIRR)
-	* SIMM Curvature Formulas – Introduction
-	* ISDA SIMM Curvature Formula
-	* Numerical Tests
-	* References
- * ISDA SIMM Methodology
-	* Contextual Considerations
-	* General Provisions
-	* Definition of the Interest Rate Risk
-	* Definition of Sensitivity for Delta Margin Calculation
-	* Interest Rate Risk Weight
-	* Credit Qualifying: Risk Weights
-	* Credit Qualifying: Correlations
-	* Credit Non-Qualifying Risk
-	* Credit Non-Qualifying Correlations
-	* Equity Risk Weights
-	* Equity Correlations
-	* Commodity Risk Weights
-	* Commodity Correlations
-	* Foreign Exchange Risk
-	* Concentration Thresholds
-	* Additional Initial Margin Expressions
-	* Structure of the Methodology
-	* Interest Rate Risk Delta Margin
-	* Non Interest Rate Risk Classes
-	* References
- * Dynamic Initial Margin Impact on Exposure
-	* Abstract
-	* Introduction
-	* Exposure in the Presence of IM and VM
-	* Modeling VM
-	* Modeling U
-	* Modeling IM
-	* Summary and Calibration
-	* The Impact of IM: No Trade Flows within the MPoR
-	* Local Gaussian Approximation
-	* Numerical Tests
-	* The Impact of IM: Trade Flows within the MPoR
-	* Expected Exposure – Numerical Example #1
-	* Expected Exposure – Numerical Example #2
-	* The Impact of IM on CVA
-	* Numerical Techniques – Daily Time Grid
-	* Calculation of the Path-wise IM
-	* Calculation of the Path-wise Exposure
-	* Numerical Example
-	* Conclusion
-	* References
- * CCP and SIMM Initial Margin
-	* Initial Margin
-	* CCP IM
-	* Interest Rate Swap Methodology
-	* Interest Rate Swap Calculation
-	* Credit Default Swap Methodology
-	* SIMM
-	* MVA
-	* Summary
- * Basel II
-	* Overview
-	* Objective
-	* The Accord in Operation: Three Pillars
-	* The First Pillar: Minimum Capital Requirements
-	* The Second Pillar: The Supervisory Review
-	* The Third Pillar: Market Discipline
-	* Chronological Updates
-	* References
- * Basel III
-	* Overview
-	* Key Principles - Capital Requirements
-	* Key Principles - Leverage Ratio
-	* Liquidity Requirements
-	* US Version of the Basel Liquidity Coverage Ratio Requirements
-	* Summary of Originally Proposed Changes (2010) in the Basel Committee Language
-	* US Implementation
-	* Europe Implementation
-	* Key Milestones
-	* References
+
 
 ## DROP Specifications
 
