@@ -1,20 +1,38 @@
 ﻿
-# Numerical Core Module
+# Computational Core Module
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-Numerical Core Module contains libraries the implement Spline Builder, Statistical Learning, Numerical Optimizer, and Algorithm Support Libraries.
+Computational Core Module contains libraries the implement Algorithm/Computation Support, Function Analysis, Model Validation, Numerical Analysis, Numerical Optimizer, Spline Builder, and Statistical Learning.
 
 
 ## Component Libraries
 
- * [*Model Validation*](https://github.com/lakshmiDRIP/DROP/blob/master/ModelValidationLibrary.md) => Functionality for Statistical Hypotheses Validation and Testing.
+ * [*Function Analysis*](https://github.com/lakshmiDRIP/DROP/blob/master/FunctionAnalysisLibrary.md) => Special Function and their Analysis.
+
+ * [*Model Validation*](https://github.com/lakshmiDRIP/DROP/blob/master/ModelValidationAnalyticsLibrary.md) => Functionality for Statistical Hypotheses Validation and Testing.
+
+ * [*Numerical Analysis*](https://github.com/lakshmiDRIP/DROP/blob/master/NumericalAnalysisLibrary.md) => Functionality for Numerical Methods - including R<sup>x</sup> Solvers, Linear Algebra, and Statistical Measure Distributions.
+
+ * [*Numerical Optimizer*](https://github.com/lakshmiDRIP/DROP/blob/master/NumericalOptimizerLibrary.md) => Functionality for Numerical Optimization - including Constrained and Mixed Integer Non-Linear Optimizers.
 
  * [*Spline Builder*](https://github.com/lakshmiDRIP/DROP/blob/master/SplineBuilderLibrary.md) => Functionality for constructing Spline Based Curves and Surfaces.
 
  * [*Statistical Learning*](https://github.com/lakshmiDRIP/DROP/blob/master/StatisticalLearningLibrary.md) => Statistical Learning Analyzers and Machine Learning Schemes.
 
- * [*Numerical Optimizer*](https://github.com/lakshmiDRIP/DROP/blob/master/NumericalOptimizerLibrary.md) => Functionality for Numerical Methods - including R<sup>x</sup> Solvers, Linear Algebra, and Constrained Optimizers.
+
+## Function Analysis Coverage
+
+ * Gamma Function
+ * Stirling's Approximation
+ * Lanczos Approximation
+ * Incomplete Gamma Function
+ * Digamma Function
+ * Beta Function
+ * Hypergeometric Function
+ * Bessel Function
+ * Stretched Exponential Function
+ * Error Function
 
 
 ## Model Validation Coverage
@@ -26,6 +44,41 @@ Numerical Core Module contains libraries the implement Spline Builder, Statistic
  * Basel III Framework for Backtesting Exposure Models
  * Initial Margin Backtesting Framework
  * Model Risk Management Framework
+
+
+## Numerical Analysis Coverage
+
+ * Introduction
+ * Framework
+ * Search Initialization
+ * Numerical Challenges in Search
+ * Variate Iteration
+ * Open Search Method: Newton Method
+ * Closed Search Methods
+ * Polynomial Root Search
+ * Meta-heuristics
+ * Multivariate Distribution
+ * Linear Systems Analysis and Transformation
+ * Rayleigh Quotient Iteration
+ * Power Iteration
+ * Sylvester's Formula
+ * Numerical Integration
+ * Gaussian Quadrature
+ * Gauss-Kronrod Quadrature
+ * Chi Square Distribution
+ * Non-central Chi-Square Distribution
+
+
+## Numerical Optimizer Coverage
+
+ * Convex Optimization - Introduction and Overview
+ * Newton’s Method in Optimization
+ * Constrained Optimization
+ * Lagrange Multipliers
+ * Spline Optimizer
+ * Karush-Kuhn-Tucker Conditions
+ * Interior Point Method
+ * Portfolio Selection with Cardinality and Bound Constraints
 
 
 ## Spline Builder Coverage
@@ -114,42 +167,6 @@ Numerical Core Module contains libraries the implement Spline Builder, Statistic
  * Maximum Entropy Markov Models (MEMM)
  * Probabilistic Grammar and Parsing
  * Bayesian Analysis: Concepts, Formulation, Usage, and Application
-
-
-## Numerical Optimizer Coverage
-
- * Introduction
- * Framework
- * Search Initialization
- * Numerical Challenges in Search
- * Variate Iteration
- * Open Search Method: Newton Method
- * Closed Search Methods
- * Polynomial Root Search
- * Meta-heuristics
- * Introduction and Overview
- * Newton’s Method in Optimization
- * Constrained Optimization
- * Lagrange Multipliers
- * Karush-Kuhn-Tucker Conditions
- * Interior Point Method
- * Optimizer
- * Multivariate Distribution
- * Linear Systems Analysis and Transformation
- * Rayleigh Quotient Iteration
- * Power Iteration
- * Numerical Integration
- * Gaussian Quadrature
- * Gauss-Kronrod Quadrature
- * Gamma Function
- * Stirling's Approximation
- * Lanczos Approximation
- * Incomplete Gamma Function
- * Digamma Function
- * Beta Function
- * Hypergeometric Function
- * Bessel Function
- * Error Function
 
 
 ## Algorithm Support Coverage

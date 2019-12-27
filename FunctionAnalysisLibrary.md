@@ -4,7 +4,7 @@
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-Function Analysis Library contains the Libraries implementing the Special Function and their Analysis.
+Function Analysis Library contains the Libraries implementing the Special Functions and their Analysis.
 
 
 ## Documentation
