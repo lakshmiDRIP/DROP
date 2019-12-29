@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IdiosyncraticEventContainer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.stress</a> &gt; <span class="el_source">IdiosyncraticEventContainer.java</span></div><h1>IdiosyncraticEventContainer.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.stress;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;IdiosyncraticEventContainer&lt;/i&gt; contains the Scenario Stress Events' Specifications of the
+ * 	Idiosyncratic Stress Scenario Event Type that belong inside of a single Coordinate. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/stress/README.md&quot;&gt;Economic Risk Capital Stress Event Settings&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class IdiosyncraticEventContainer
+{
+<span class="fc" id="L109">	private org.drip.capital.stress.EventProbabilityContainer _eventProbabilityContainer =</span>
+		new org.drip.capital.stress.EventProbabilityContainer();
+
+<span class="fc" id="L112">	private java.util.Map&lt;java.lang.String, org.drip.capital.stress.Event&gt; _eventMap =</span>
+		new org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.capital.stress.Event&gt;();
+
+	/**
+	 * Empty IdiosyncraticEventContainer Constructor
+	 */
+
+	public IdiosyncraticEventContainer()
+<span class="fc" id="L120">	{</span>
+<span class="fc" id="L121">	}</span>
+
+	/**
+	 * Retrieve the Stress Event Type
+	 * 
+	 * @return The Stress Event Type
+	 */
+
+	public java.lang.String eventType()
+	{
+<span class="nc" id="L131">		return org.drip.capital.definition.StressScenarioType.IDIOSYNCRATIC;</span>
+	}
+
+	/**
+	 * Add the Specified Stress Event Specification
+	 * 
+	 * @param event The Stress Event Specification
+	 * 
+	 * @return TRUE - The Stress Event Specification successfully added
+	 */
+
+	public boolean addEvent (
+		final org.drip.capital.stress.Event event)
+	{
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">		if (null == event)</span>
+		{
+<span class="nc" id="L147">			return false;</span>
+		}
+
+<span class="fc" id="L150">		_eventMap.put (</span>
+<span class="fc" id="L151">			event.specification().name(),</span>
+			event
+		);
+
+<span class="fc" id="L155">		return _eventProbabilityContainer.addEvent (</span>
+			event
+		);
+	}
+
+	/**
+	 * Check if the Stress Event Exists
+	 * 
+	 * @param stressEventName The Stress Event Name
+	 * 
+	 * @return TRUE - The Stress Event exists
+	 */
+
+	public boolean containsEvent (
+		final java.lang.String stressEventName)
+	{
+<span class="nc bnc" id="L171" title="All 6 branches missed.">		return null != stressEventName &amp;&amp; !stressEventName.isEmpty() &amp;&amp; _eventMap.containsKey (</span>
+			stressEventName
+		);
+	}
+
+	/**
+	 * Retrieve the Stress Event
+	 * 
+	 * @param eventName The Stress Event Name
+	 * 
+	 * @return The Stress Event
+	 */
+
+	public org.drip.capital.stress.Event event (
+		final java.lang.String eventName)
+	{
+<span class="nc bnc" id="L187" title="All 2 branches missed.">		return containsEvent (</span>
+			eventName
+<span class="nc" id="L189">		) ? _eventMap.get (</span>
+			eventName
+		) : null;
+	}
+
+	/**
+	 * Retrieve the Stress Event Set
+	 * 
+	 * @return The Stress Event Set
+	 */
+
+	public java.util.Set&lt;java.lang.String&gt; eventSet()
+	{
+<span class="nc" id="L202">		return _eventMap.keySet();</span>
+	}
+
+	/**
+	 * Realize the Event Set in accordance with the Event Indicator Map
+	 * 
+	 * @param stressPnLScaler The Stress PnL Scaler
+	 * @param eventIndicatorMap The Event Indicator Map
+	 * 
+	 * @return The Realized Event Set
+	 */
+
+	public org.drip.capital.simulation.StressEventIncidenceEnsemble realizeIncidenceEnsemble (
+		final double stressPnLScaler,
+		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; eventIndicatorMap)
+	{
+<span class="nc bnc" id="L218" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (</span>
+			stressPnLScaler
+		))
+		{
+<span class="nc" id="L222">			return null;</span>
+		}
+
+<span class="nc" id="L225">		java.util.Set&lt;java.lang.String&gt; eventSet = _eventProbabilityContainer.realizeEventSet (</span>
+			eventIndicatorMap
+		);
+
+<span class="nc bnc" id="L229" title="All 4 branches missed.">		if (null == eventSet || 0 == eventSet.size())</span>
+		{
+<span class="nc" id="L231">			return null;</span>
+		}
+
+<span class="nc" id="L234">		org.drip.capital.simulation.StressEventIncidenceEnsemble stressEventIncidenceEnsemble = new</span>
+			org.drip.capital.simulation.StressEventIncidenceEnsemble();
+
+<span class="nc bnc" id="L237" title="All 2 branches missed.">		for (java.lang.String event : eventSet)</span>
+		{
+<span class="nc bnc" id="L239" title="All 2 branches missed.">			if (!_eventMap.containsKey (</span>
+				event
+			))
+			{
+<span class="nc" id="L243">				continue;</span>
+			}
+
+			try
+			{
+<span class="nc bnc" id="L248" title="All 2 branches missed.">				if (!stressEventIncidenceEnsemble.addStressEventIncidence (</span>
+					new org.drip.capital.simulation.StressEventIncidence (
+						event,
+						org.drip.capital.definition.StressScenarioType.IDIOSYNCRATIC,
+<span class="nc" id="L252">						stressPnLScaler * _eventMap.get (</span>
+							event
+<span class="nc" id="L254">						).aggregatePnLSeries().composite(),</span>
+						null
+					)
+				))
+				{
+<span class="nc" id="L259">					return null;</span>
+				}
+			}
+<span class="nc" id="L262">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L264">				e.printStackTrace();</span>
+
+<span class="nc" id="L266">				return null;</span>
+<span class="nc" id="L267">			}</span>
+<span class="nc" id="L268">		}</span>
+
+<span class="nc" id="L270">		return stressEventIncidenceEnsemble;</span>
+	}
+
+	/**
+	 * Retrieve the Stress Event Specification Map
+	 * 
+	 * @return The Stress Event Specification Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.capital.stress.Event&gt; eventMap()
+	{
+<span class="nc" id="L281">		return _eventMap;</span>
+	}
+
+	/**
+	 * Retrieve the Scenario Probability Event Container
+	 * 
+	 * @return The Scenario Probability Event Container
+	 */
+
+	public org.drip.capital.stress.EventProbabilityContainer eventProbabilityContainer()
+	{
+<span class="nc" id="L292">		return _eventProbabilityContainer;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

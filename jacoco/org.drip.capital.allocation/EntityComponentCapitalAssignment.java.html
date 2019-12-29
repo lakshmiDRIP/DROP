@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EntityComponentCapitalAssignment.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.allocation</a> &gt; <span class="el_source">EntityComponentCapitalAssignment.java</span></div><h1>EntityComponentCapitalAssignment.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.allocation;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;EntityComponentCapitalAssignment&lt;/i&gt; contains the Capital Assignment for each Entity and its Component.
+ *  The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/allocation/README.md&quot;&gt;Economic Risk Capital Entity Allocation&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class EntityComponentCapitalAssignment
+{
+<span class="nc" id="L109">	private double _unitFloatBeta = java.lang.Double.NaN;</span>
+<span class="nc" id="L110">	private double _allocatedBetaCapital = java.lang.Double.NaN;</span>
+<span class="nc" id="L111">	private double _allocatedProRataCapital = java.lang.Double.NaN;</span>
+<span class="nc" id="L112">	private org.drip.capital.allocation.EntityElasticityAttribution _elasticityAttribution = null;</span>
+<span class="nc" id="L113">	private java.util.Map&lt;java.lang.String, org.drip.capital.allocation.EntityComponentCapital&gt;</span>
+		_entityComponentCapitalMap = null;
+
+	/**
+	 * EntityComponentCapitalAssignment Constructor
+	 * 
+	 * @param elasticityAttribution Entity Elasticity Attribution 
+	 * @param entityComponentCapitalMap Entity Component Capital Assignment Map
+	 * @param unitFloatBeta Unit Float Beta
+	 * @param allocatedBetaCapital Allocated Beta Capital
+	 * @param allocatedProRataCapital Allocated Pro-Rata Capital
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 */
+
+	public EntityComponentCapitalAssignment (
+		final org.drip.capital.allocation.EntityElasticityAttribution elasticityAttribution,
+		final java.util.Map&lt;java.lang.String, org.drip.capital.allocation.EntityComponentCapital&gt;
+			entityComponentCapitalMap,
+		final double unitFloatBeta,
+		final double allocatedBetaCapital,
+		final double allocatedProRataCapital)
+		throws java.lang.Exception
+<span class="nc" id="L136">	{</span>
+<span class="nc bnc" id="L137" title="All 4 branches missed.">		if (null == (_elasticityAttribution = elasticityAttribution) ||</span>
+			null == (_entityComponentCapitalMap = entityComponentCapitalMap) ||
+<span class="nc bnc" id="L139" title="All 2 branches missed.">				0 == _entityComponentCapitalMap.size() ||</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (</span>
+				_unitFloatBeta = unitFloatBeta
+<span class="nc bnc" id="L142" title="All 2 branches missed.">			) || !org.drip.numerical.common.NumberUtil.IsValid (</span>
+				_allocatedBetaCapital = allocatedBetaCapital
+<span class="nc bnc" id="L144" title="All 2 branches missed.">			) || !org.drip.numerical.common.NumberUtil.IsValid (</span>
+				_allocatedProRataCapital = allocatedProRataCapital
+			)
+		)
+		{
+<span class="nc" id="L149">			throw new java.lang.Exception (</span>
+				&quot;EntityComponentCapitalAssignment Constructor =&gt; Invalid Inputs&quot;
+			);
+		}
+<span class="nc" id="L153">	}</span>
+
+	/**
+	 * Retrieve the Entity Elasticity Attribution
+	 * 
+	 * @return The Entity Elasticity Attribution
+	 */
+
+	public org.drip.capital.allocation.EntityElasticityAttribution elasticityAttribution()
+	{
+<span class="nc" id="L163">		return _elasticityAttribution;</span>
+	}
+
+	/**
+	 * Retrieve the Entity Component Capital Assignment Map
+	 * 
+	 * @return The Entity Component Capital Assignment Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.capital.allocation.EntityComponentCapital&gt;
+		entityComponentCapitalMap()
+	{
+<span class="nc" id="L175">		return _entityComponentCapitalMap;</span>
+	}
+
+	/**
+	 * Retrieve the Unit Float Beta
+	 * 
+	 * @return The Unit Float Beta
+	 */
+
+	public double unitFloatBeta()
+	{
+<span class="nc" id="L186">		return _unitFloatBeta;</span>
+	}
+
+	/**
+	 * Retrieve the Allocated Beta Capital
+	 * 
+	 * @return The Allocated Beta Capital
+	 */
+
+	public double allocatedBetaCapital()
+	{
+<span class="nc" id="L197">		return _allocatedBetaCapital;</span>
+	}
+
+	/**
+	 * Retrieve the Allocated Pro-Rata Capital
+	 * 
+	 * @return The Allocated Pro-Rata Capital
+	 */
+
+	public double allocatedProRataCapital()
+	{
+<span class="nc" id="L208">		return _allocatedProRataCapital;</span>
+	}
+
+	/**
+	 * Retrieve the Allocated Total Capital
+	 * 
+	 * @return The Allocated Total Capital
+	 */
+
+	public double allocatedTotalCapital()
+	{
+<span class="nc" id="L219">		return _allocatedBetaCapital + _allocatedProRataCapital;</span>
+	}
+
+	/**
+	 * Retrieve the Total Systemic Entity Capital
+	 * 
+	 * @return Total Systemic Entity Capital
+	 */
+
+	public org.drip.capital.allocation.EntityCapital systemic()
+	{
+<span class="nc" id="L230">		double systemic = 0.;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.String, org.drip.capital.allocation.EntityComponentCapital&gt;
+<span class="nc bnc" id="L233" title="All 2 branches missed.">			entityComponentCapitalEntry : _entityComponentCapitalMap.entrySet())</span>
+		{
+<span class="nc" id="L235">			systemic = systemic + entityComponentCapitalEntry.getValue().systemic().absolute();</span>
+<span class="nc" id="L236">		}</span>
+
+		try
+		{
+<span class="nc" id="L240">			return new org.drip.capital.allocation.EntityCapital (</span>
+				systemic,
+				systemic / (_allocatedBetaCapital + _allocatedProRataCapital)
+			);
+		}
+<span class="nc" id="L245">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L247">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L250">		return null;</span>
+	}
+
+	/**
+	 * Retrieve the Total Correlated Entity Capital
+	 * 
+	 * @return Total Correlated Entity Capital
+	 */
+
+	public org.drip.capital.allocation.EntityCapital correlated()
+	{
+<span class="nc" id="L261">		double correlated = 0.;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.String, org.drip.capital.allocation.EntityComponentCapital&gt;
+<span class="nc bnc" id="L264" title="All 2 branches missed.">			entityComponentCapitalEntry : _entityComponentCapitalMap.entrySet())</span>
+		{
+<span class="nc" id="L266">			correlated = correlated + entityComponentCapitalEntry.getValue().correlated().absolute();</span>
+<span class="nc" id="L267">		}</span>
+
+		try
+		{
+<span class="nc" id="L271">			return new org.drip.capital.allocation.EntityCapital (</span>
+				correlated,
+				correlated / (_allocatedBetaCapital + _allocatedProRataCapital)
+			);
+		}
+<span class="nc" id="L276">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L278">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L281">		return null;</span>
+	}
+
+	/**
+	 * Retrieve the Total Idiosyncratic Entity Capital
+	 * 
+	 * @return Total Idiosyncratic Entity Capital
+	 */
+
+	public org.drip.capital.allocation.EntityCapital idiosyncratic()
+	{
+<span class="nc" id="L292">		double idiosyncratic = 0.;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.String, org.drip.capital.allocation.EntityComponentCapital&gt;
+<span class="nc bnc" id="L295" title="All 2 branches missed.">			entityComponentCapitalEntry : _entityComponentCapitalMap.entrySet())</span>
+		{
+<span class="nc" id="L297">			idiosyncratic = idiosyncratic + entityComponentCapitalEntry.getValue().idiosyncratic().absolute();</span>
+<span class="nc" id="L298">		}</span>
+
+		try
+		{
+<span class="nc" id="L302">			return new org.drip.capital.allocation.EntityCapital (</span>
+				idiosyncratic,
+				idiosyncratic / (_allocatedBetaCapital + _allocatedProRataCapital)
+			);
+		}
+<span class="nc" id="L307">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L309">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L312">		return null;</span>
+	}
+
+	/**
+	 * Retrieve the Total No Stress Entity Capital
+	 * 
+	 * @return Total No Stress Entity Capital
+	 */
+
+	public org.drip.capital.allocation.EntityCapital noStress()
+	{
+<span class="nc" id="L323">		double noStress = 0.;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.String, org.drip.capital.allocation.EntityComponentCapital&gt;
+<span class="nc bnc" id="L326" title="All 2 branches missed.">			entityComponentCapitalEntry : _entityComponentCapitalMap.entrySet())</span>
+		{
+<span class="nc" id="L328">			noStress = noStress + entityComponentCapitalEntry.getValue().noStress().absolute();</span>
+<span class="nc" id="L329">		}</span>
+
+		try
+		{
+<span class="nc" id="L333">			return new org.drip.capital.allocation.EntityCapital (</span>
+				noStress,
+				noStress / (_allocatedBetaCapital + _allocatedProRataCapital)
+			);
+		}
+<span class="nc" id="L338">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L340">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L343">		return null;</span>
+	}
+
+	/**
+	 * Retrieve the Total Fixed Elasticity Capital
+	 * 
+	 * @return Total Fixed Elasticity Capital
+	 */
+
+	public org.drip.capital.allocation.EntityCapital fixed()
+	{
+<span class="nc" id="L354">		double fixed = _elasticityAttribution.fixed();</span>
+
+		try
+		{
+<span class="nc" id="L358">			return new org.drip.capital.allocation.EntityCapital (</span>
+				fixed,
+				fixed / (_allocatedBetaCapital + _allocatedProRataCapital)
+			);
+		}
+<span class="nc" id="L363">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L365">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L368">		return null;</span>
+	}
+
+	/**
+	 * Retrieve the Total Floating Elasticity Capital
+	 * 
+	 * @return Total Floating Elasticity Capital
+	 */
+
+	public org.drip.capital.allocation.EntityCapital floating()
+	{
+<span class="nc" id="L379">		double floating = _elasticityAttribution.floating();</span>
+
+		try
+		{
+<span class="nc" id="L383">			return new org.drip.capital.allocation.EntityCapital (</span>
+				floating,
+				floating / (_allocatedBetaCapital + _allocatedProRataCapital)
+			);
+		}
+<span class="nc" id="L388">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L390">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L393">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

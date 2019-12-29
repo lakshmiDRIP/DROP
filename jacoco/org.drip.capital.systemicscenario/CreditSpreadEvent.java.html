@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CreditSpreadEvent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.systemicscenario</a> &gt; <span class="el_source">CreditSpreadEvent.java</span></div><h1>CreditSpreadEvent.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.systemicscenario;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;CreditSpreadEvent&lt;/i&gt; contains the Specifications of Criteria corresponding to a Credit Spread Event.
+ * 	The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/systemicscenario/README.md&quot;&gt;Systemic Stress Scenario Design/Construction&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class CreditSpreadEvent
+{
+<span class="fc" id="L109">	private java.lang.String _scenario = &quot;&quot;;</span>
+<span class="fc" id="L110">	private org.drip.capital.systemicscenario.Criterion _snpGSCI = null;</span>
+<span class="fc" id="L111">	private org.drip.capital.systemicscenario.Criterion _fxChange = null;</span>
+<span class="fc" id="L112">	private org.drip.capital.systemicscenario.Criterion _ust5YChange = null;</span>
+<span class="fc" id="L113">	private org.drip.capital.systemicscenario.Criterion _snp500Return = null;</span>
+<span class="fc" id="L114">	private org.drip.capital.systemicscenario.Criterion _wtiSpotReturn = null;</span>
+<span class="fc" id="L115">	private org.drip.capital.systemicscenario.Criterion _baaSpreadChange = null;</span>
+<span class="fc" id="L116">	private org.drip.capital.systemicscenario.Criterion _ust10YMinus3MChange = null;</span>
+<span class="fc" id="L117">	private org.drip.capital.systemicscenario.SystemicStressShockIndicator _systemicStressShockIndicator =</span>
+		null;
+
+	/**
+	 * Construct a Standard CreditSpreadEvent Instance
+	 * 
+	 * @param scenario Credit Spread Event Scenario
+	 * @param baaSpreadChange Baa Spread Change in Basis Points
+	 * @param snp500AnnualReturn SnP 500 Annual Return in Percentage
+	 * @param ust5YAbsoluteChange UST 5Y Absolute Change in Basis Points
+	 * @param ust10YMinus3MAbsoluteChange UST 10Y - 3M Absolute Change in Basis Points
+	 * @param fxRateChange FX Rate Change in Percentage
+	 * @param wtiSpotReturn WTI Spot Return in Percentage
+	 * @param snpGSCINonEnergyCommodityIndex SnP GSCI Non-energy Commodity Index in Percentage
+	 * @param systemicStressShockIndicator Credit Event Systemic Stress Shock Indicator
+	 * 
+	 * @return CreditSpreadEvent Instance
+	 */
+
+	public static final CreditSpreadEvent Standard (
+		final java.lang.String scenario,
+		final double baaSpreadChange,
+		final double snp500AnnualReturn,
+		final double ust5YAbsoluteChange,
+		final double ust10YMinus3MAbsoluteChange,
+		final double fxRateChange,
+		final double wtiSpotReturn,
+		final double snpGSCINonEnergyCommodityIndex,
+		final org.drip.capital.systemicscenario.SystemicStressShockIndicator systemicStressShockIndicator)
+	{
+		try
+		{
+<span class="fc" id="L149">			return new CreditSpreadEvent (</span>
+				scenario,
+<span class="fc" id="L151">				org.drip.capital.systemicscenario.Criterion.BaaSpreadChange (</span>
+					baaSpreadChange
+				),
+<span class="fc" id="L154">				org.drip.capital.systemicscenario.Criterion.SnP500AnnualReturn (</span>
+					snp500AnnualReturn
+				),
+<span class="fc" id="L157">				org.drip.capital.systemicscenario.Criterion.UST5YAbsoluteChange (</span>
+					ust5YAbsoluteChange
+				),
+<span class="fc" id="L160">				org.drip.capital.systemicscenario.Criterion.UST10YMinus3MAbsoluteChange (</span>
+					ust10YMinus3MAbsoluteChange
+				),
+<span class="fc" id="L163">				org.drip.capital.systemicscenario.Criterion.FXRateChange (</span>
+					fxRateChange
+				),
+<span class="fc" id="L166">				org.drip.capital.systemicscenario.Criterion.WTISpotReturn (</span>
+					wtiSpotReturn
+				),
+<span class="fc" id="L169">				org.drip.capital.systemicscenario.Criterion.SnPGSCINonEnergyCommodityIndex (</span>
+					snpGSCINonEnergyCommodityIndex
+				),
+				systemicStressShockIndicator
+			);
+		}
+<span class="nc" id="L175">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L177">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L180">		return null;</span>
+	}
+
+	/**
+	 * CreditSpreadEvent Constructor
+	 * 
+	 * @param scenario Credit Spread Event Scenario
+	 * @param baaSpreadChange Baa Spread Change Criterion
+	 * @param snp500Return SnP 500 Return Criterion
+	 * @param ust5YChange 5Y UST Change Criterion
+	 * @param ust10YMinus3MChange 10Y - 3M UST Change Criterion
+	 * @param fxChange FX Change Criterion
+	 * @param wtiSpotReturn WTI Spot Return Criterion
+	 * @param snpGSCI SnP GSCI Criterion
+	 * @param systemicStressShockIndicator Credit Event Systemic Stress Shock Indicator
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public CreditSpreadEvent (
+		final java.lang.String scenario,
+		final org.drip.capital.systemicscenario.Criterion baaSpreadChange,
+		final org.drip.capital.systemicscenario.Criterion snp500Return,
+		final org.drip.capital.systemicscenario.Criterion ust5YChange,
+		final org.drip.capital.systemicscenario.Criterion ust10YMinus3MChange,
+		final org.drip.capital.systemicscenario.Criterion fxChange,
+		final org.drip.capital.systemicscenario.Criterion wtiSpotReturn,
+		final org.drip.capital.systemicscenario.Criterion snpGSCI,
+		final org.drip.capital.systemicscenario.SystemicStressShockIndicator systemicStressShockIndicator)
+		throws java.lang.Exception
+<span class="fc" id="L210">	{</span>
+<span class="pc bpc" id="L211" title="10 of 20 branches missed.">		if (null == (_scenario = scenario) || _scenario.isEmpty() ||</span>
+			null == (_baaSpreadChange = baaSpreadChange) ||
+			null == (_snp500Return = snp500Return) ||
+			null == (_ust5YChange = ust5YChange) ||
+			null == (_ust10YMinus3MChange = ust10YMinus3MChange) ||
+			null == (_fxChange = fxChange) ||
+			null == (_wtiSpotReturn = wtiSpotReturn) ||
+			null == (_snpGSCI = snpGSCI) ||
+			null == (_systemicStressShockIndicator = systemicStressShockIndicator))
+		{
+<span class="nc" id="L221">			throw new java.lang.Exception (&quot;CreditSpreadEvent Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="fc" id="L223">	}</span>
+
+	/**
+	 * Retrieve the Credit Spread Event Scenario
+	 * 
+	 * @return The Credit Spread Event Scenario
+	 */
+
+	public java.lang.String scenario()
+	{
+<span class="nc" id="L233">		return _scenario;</span>
+	}
+
+	/**
+	 * Retrieve the Baa Spread Change Criterion
+	 * 
+	 * @return The Baa Spread Change Criterion
+	 */
+
+	public org.drip.capital.systemicscenario.Criterion baaSpreadChange()
+	{
+<span class="nc" id="L244">		return _baaSpreadChange;</span>
+	}
+
+	/**
+	 * Retrieve the SnP 500 Return Criterion
+	 * 
+	 * @return The SnP 500 Return Criterion
+	 */
+
+	public org.drip.capital.systemicscenario.Criterion snp500Return()
+	{
+<span class="nc" id="L255">		return _snp500Return;</span>
+	}
+
+	/**
+	 * Retrieve the 5Y UST Change Criterion
+	 * 
+	 * @return The 5Y UST Change Criterion
+	 */
+
+	public org.drip.capital.systemicscenario.Criterion ust5YChange()
+	{
+<span class="nc" id="L266">		return _ust5YChange;</span>
+	}
+
+	/**
+	 * Retrieve the 10Y - 3M UST Change Criterion
+	 * 
+	 * @return The 10Y - 3M UST Change Criterion
+	 */
+
+	public org.drip.capital.systemicscenario.Criterion ust10YMinus3MChange()
+	{
+<span class="nc" id="L277">		return _ust10YMinus3MChange;</span>
+	}
+
+	/**
+	 * Retrieve the FX Change Criterion
+	 * 
+	 * @return The FX Change Criterion
+	 */
+
+	public org.drip.capital.systemicscenario.Criterion fxChange()
+	{
+<span class="nc" id="L288">		return _fxChange;</span>
+	}
+
+	/**
+	 * Retrieve the WTI Spot Return Criterion
+	 * 
+	 * @return The WTI Spot Return Criterion
+	 */
+
+	public org.drip.capital.systemicscenario.Criterion wtiSpotReturn()
+	{
+<span class="nc" id="L299">		return _wtiSpotReturn;</span>
+	}
+
+	/**
+	 * Retrieve the SnP GSCI Criterion
+	 * 
+	 * @return The SnP GSCI Criterion
+	 */
+
+	public org.drip.capital.systemicscenario.Criterion snpGSCI()
+	{
+<span class="nc" id="L310">		return _snpGSCI;</span>
+	}
+
+	/**
+	 * Retrieve the Systemic Stress Shock Indicator
+	 * 
+	 * @return The Systemic Stress Shock Indicator
+	 */
+
+	public org.drip.capital.systemicscenario.SystemicStressShockIndicator systemicStressShockIndicator()
+	{
+<span class="nc" id="L321">		return _systemicStressShockIndicator;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

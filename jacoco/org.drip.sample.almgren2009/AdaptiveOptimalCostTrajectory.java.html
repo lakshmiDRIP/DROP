@@ -14,38 +14,49 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -106,102 +117,102 @@ import org.drip.service.env.EnvManager;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/almgren2009/README.md&quot;&gt;Almgren (2009)&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/almgren2009/README.md&quot;&gt;Almgren (2009) Optimal Adaptive HJB&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L119">public class AdaptiveOptimalCostTrajectory {</span>
+<span class="nc" id="L130">public class AdaptiveOptimalCostTrajectory {</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L125">		EnvManager.InitEnv (</span>
+<span class="fc" id="L136">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L130">		double dblTime = 0.;</span>
-<span class="fc" id="L131">		double dblBurstiness = 1.;</span>
-<span class="fc" id="L132">		double dblDimensionlessRiskAversion = 0.1;</span>
-<span class="fc" id="L133">		double dblRelaxationTime = 1.;</span>
-<span class="fc" id="L134">		double dblSimulationTime = 10.;</span>
-<span class="fc" id="L135">		double dblTimeInterval = 0.25;</span>
-<span class="fc" id="L136">		double dblInitialMarketState = -0.5;</span>
+<span class="fc" id="L141">		double dblTime = 0.;</span>
+<span class="fc" id="L142">		double dblBurstiness = 1.;</span>
+<span class="fc" id="L143">		double dblDimensionlessRiskAversion = 0.1;</span>
+<span class="fc" id="L144">		double dblRelaxationTime = 1.;</span>
+<span class="fc" id="L145">		double dblSimulationTime = 10.;</span>
+<span class="fc" id="L146">		double dblTimeInterval = 0.25;</span>
+<span class="fc" id="L147">		double dblInitialMarketState = -0.5;</span>
 
-<span class="fc" id="L138">		double dblNonDimensionalHoldings = 1.;</span>
-<span class="fc" id="L139">		int iNumTimeNode = (int) (dblSimulationTime / dblTimeInterval);</span>
-<span class="fc" id="L140">		MarketStateSystemic[] aMSS = new MarketStateSystemic[iNumTimeNode + 1];</span>
+<span class="fc" id="L149">		double dblNonDimensionalHoldings = 1.;</span>
+<span class="fc" id="L150">		int iNumTimeNode = (int) (dblSimulationTime / dblTimeInterval);</span>
+<span class="fc" id="L151">		MarketStateSystemic[] aMSS = new MarketStateSystemic[iNumTimeNode + 1];</span>
 
-<span class="fc" id="L142">		aMSS[0] = new MarketStateSystemic (dblInitialMarketState);</span>
+<span class="fc" id="L153">		aMSS[0] = new MarketStateSystemic (dblInitialMarketState);</span>
 
-<span class="fc" id="L144">		DiffusionEvaluatorOrnsteinUhlenbeck deou = DiffusionEvaluatorOrnsteinUhlenbeck.ZeroMean (</span>
+<span class="fc" id="L155">		DiffusionEvaluatorOrnsteinUhlenbeck deou = DiffusionEvaluatorOrnsteinUhlenbeck.ZeroMean (</span>
 			dblBurstiness,
 			dblRelaxationTime
 		);
 
-<span class="fc" id="L149">		DiffusionEvolver oup1D = new DiffusionEvolver (deou);</span>
+<span class="fc" id="L160">		DiffusionEvolver oup1D = new DiffusionEvolver (deou);</span>
 
-<span class="fc bfc" id="L151" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTimeNode; ++i) {</span>
-<span class="fc" id="L152">			JumpDiffusionEdge gi = oup1D.weinerIncrement (</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTimeNode; ++i) {</span>
+<span class="fc" id="L163">			JumpDiffusionEdge gi = oup1D.weinerIncrement (</span>
 				new JumpDiffusionVertex (
 					dblTime,
-<span class="fc" id="L155">					aMSS[i].common(),</span>
+<span class="fc" id="L166">					aMSS[i].common(),</span>
 					0.,
 					false
 				),
 				dblTimeInterval
 			);
 
-<span class="fc" id="L162">			dblTime += dblTimeInterval;</span>
+<span class="fc" id="L173">			dblTime += dblTimeInterval;</span>
 
-<span class="fc" id="L164">			aMSS[i + 1] = new MarketStateSystemic (aMSS[i].common() + gi.deterministic() + gi.diffusionStochastic());</span>
+<span class="fc" id="L175">			aMSS[i + 1] = new MarketStateSystemic (aMSS[i].common() + gi.deterministic() + gi.diffusionStochastic());</span>
 		}
 
-<span class="fc" id="L167">		NonDimensionalCostEvolverSystemic ndces = NonDimensionalCostEvolverSystemic.Standard (deou);</span>
+<span class="fc" id="L178">		NonDimensionalCostEvolverSystemic ndces = NonDimensionalCostEvolverSystemic.Standard (deou);</span>
 
-<span class="fc" id="L169">		NonDimensionalCostSystemic ndcs = NonDimensionalCostSystemic.Zero();</span>
+<span class="fc" id="L180">		NonDimensionalCostSystemic ndcs = NonDimensionalCostSystemic.Zero();</span>
 
-<span class="fc" id="L171">		System.out.println();</span>
+<span class="fc" id="L182">		System.out.println();</span>
 
-<span class="fc" id="L173">		System.out.println (&quot;\t||-------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L184">		System.out.println (&quot;\t||-------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L175">		System.out.println (&quot;\t||      L -&gt; R:                                                      ||&quot;);</span>
+<span class="fc" id="L186">		System.out.println (&quot;\t||      L -&gt; R:                                                      ||&quot;);</span>
 
-<span class="fc" id="L177">		System.out.println (&quot;\t||              - Non Dimensional Time                               ||&quot;);</span>
+<span class="fc" id="L188">		System.out.println (&quot;\t||              - Non Dimensional Time                               ||&quot;);</span>
 
-<span class="fc" id="L179">		System.out.println (&quot;\t||              - Realized Market State                              ||&quot;);</span>
+<span class="fc" id="L190">		System.out.println (&quot;\t||              - Realized Market State                              ||&quot;);</span>
 
-<span class="fc" id="L181">		System.out.println (&quot;\t||              - Non Dimensional Cost                               ||&quot;);</span>
+<span class="fc" id="L192">		System.out.println (&quot;\t||              - Non Dimensional Cost                               ||&quot;);</span>
 
-<span class="fc" id="L183">		System.out.println (&quot;\t||              - Non Dimensional Cost Gradient                      ||&quot;);</span>
+<span class="fc" id="L194">		System.out.println (&quot;\t||              - Non Dimensional Cost Gradient                      ||&quot;);</span>
 
-<span class="fc" id="L185">		System.out.println (&quot;\t||              - Non Dimensional Cost Jacobian                      ||&quot;);</span>
+<span class="fc" id="L196">		System.out.println (&quot;\t||              - Non Dimensional Cost Jacobian                      ||&quot;);</span>
 
-<span class="fc" id="L187">		System.out.println (&quot;\t||              - Non Dimensional Cost Trade Velocity                ||&quot;);</span>
+<span class="fc" id="L198">		System.out.println (&quot;\t||              - Non Dimensional Cost Trade Velocity                ||&quot;);</span>
 
-<span class="fc" id="L189">		System.out.println (&quot;\t||              - Non Dimensional Outstanding Holdings               ||&quot;);</span>
+<span class="fc" id="L200">		System.out.println (&quot;\t||              - Non Dimensional Outstanding Holdings               ||&quot;);</span>
 
-<span class="fc" id="L191">		System.out.println (&quot;\t||-------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L202">		System.out.println (&quot;\t||-------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L193">		System.out.println (&quot;\t||&quot; + </span>
-<span class="fc" id="L194">			FormatUtil.FormatDouble (0., 1, 2, 1.) + &quot; =&gt; &quot; +</span>
-<span class="fc" id="L195">			FormatUtil.FormatDouble (aMSS[0].common(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L196">			FormatUtil.FormatDouble (ndcs.realization(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L197">			FormatUtil.FormatDouble (ndcs.gradient(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L198">			FormatUtil.FormatDouble (ndcs.jacobian(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L199">			FormatUtil.FormatDouble (ndcs.nonDimensionalTradeRate(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L200">			FormatUtil.FormatDouble (dblNonDimensionalHoldings, 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L204">		System.out.println (&quot;\t||&quot; + </span>
+<span class="fc" id="L205">			FormatUtil.FormatDouble (0., 1, 2, 1.) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L206">			FormatUtil.FormatDouble (aMSS[0].common(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L207">			FormatUtil.FormatDouble (ndcs.realization(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L208">			FormatUtil.FormatDouble (ndcs.gradient(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L209">			FormatUtil.FormatDouble (ndcs.jacobian(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L210">			FormatUtil.FormatDouble (ndcs.nonDimensionalTradeRate(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L211">			FormatUtil.FormatDouble (dblNonDimensionalHoldings, 1, 4, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc bfc" id="L203" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
-<span class="fc" id="L204">			ndcs = (NonDimensionalCostSystemic) ndces.evolve (</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumTimeNode; ++i) {</span>
+<span class="fc" id="L215">			ndcs = (NonDimensionalCostSystemic) ndces.evolve (</span>
 				ndcs,
 				aMSS[i],
 				dblDimensionlessRiskAversion,
@@ -209,24 +220,24 @@ import org.drip.service.env.EnvManager;
 				dblTimeInterval
 			);
 
-<span class="fc" id="L212">			double dblNonDimensionalTradeRate = dblNonDimensionalHoldings * ndcs.nonDimensionalTradeRate();</span>
+<span class="fc" id="L223">			double dblNonDimensionalTradeRate = dblNonDimensionalHoldings * ndcs.nonDimensionalTradeRate();</span>
 
-<span class="fc" id="L214">			dblNonDimensionalHoldings = dblNonDimensionalHoldings - dblNonDimensionalTradeRate * dblTimeInterval;</span>
+<span class="fc" id="L225">			dblNonDimensionalHoldings = dblNonDimensionalHoldings - dblNonDimensionalTradeRate * dblTimeInterval;</span>
 
-<span class="fc" id="L216">			System.out.println (&quot;\t||&quot; + </span>
-<span class="fc" id="L217">				FormatUtil.FormatDouble (dblTimeInterval * i, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
-<span class="fc" id="L218">				FormatUtil.FormatDouble (aMSS[i].common(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L219">				FormatUtil.FormatDouble (ndcs.realization(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L220">				FormatUtil.FormatDouble (ndcs.gradient(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L221">				FormatUtil.FormatDouble (ndcs.jacobian(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L222">				FormatUtil.FormatDouble (dblNonDimensionalTradeRate, 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L223">				FormatUtil.FormatDouble (dblNonDimensionalHoldings, 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L227">			System.out.println (&quot;\t||&quot; + </span>
+<span class="fc" id="L228">				FormatUtil.FormatDouble (dblTimeInterval * i, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L229">				FormatUtil.FormatDouble (aMSS[i].common(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L230">				FormatUtil.FormatDouble (ndcs.realization(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L231">				FormatUtil.FormatDouble (ndcs.gradient(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L232">				FormatUtil.FormatDouble (ndcs.jacobian(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L233">				FormatUtil.FormatDouble (dblNonDimensionalTradeRate, 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L234">				FormatUtil.FormatDouble (dblNonDimensionalHoldings, 1, 4, 1.) + &quot; ||&quot;</span>
 			);
 		}
 
-<span class="fc" id="L227">		System.out.println (&quot;\t||-------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L238">		System.out.println (&quot;\t||-------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L229">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L230">	}</span>
+<span class="fc" id="L240">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L241">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

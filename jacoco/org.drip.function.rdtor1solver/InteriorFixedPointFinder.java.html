@@ -6,44 +6,56 @@ package org.drip.function.rdtor1solver;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -84,170 +96,170 @@ package org.drip.function.rdtor1solver;
 public class InteriorFixedPointFinder
 	extends org.drip.function.rdtor1solver.FixedRdFinder
 {
-<span class="fc" id="L87">	private double _barrierStrength = java.lang.Double.NaN;</span>
-<span class="fc" id="L88">	private org.drip.function.rdtor1.BoundMultivariate[] _boundMultivariateFunctionArray = null;</span>
-<span class="fc" id="L89">	private org.drip.function.definition.RdToR1[] _inequalityConstraintMultivariateFunctionArray = null;</span>
+<span class="fc" id="L99">	private double _barrierStrength = java.lang.Double.NaN;</span>
+<span class="fc" id="L100">	private org.drip.function.rdtor1.BoundMultivariate[] _boundMultivariateFunctionArray = null;</span>
+<span class="fc" id="L101">	private org.drip.function.definition.RdToR1[] _inequalityConstraintMultivariateFunctionArray = null;</span>
 
 	private org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier incremental (
 		final org.drip.function.rdtor1solver.ObjectiveFunctionPointMetrics objectiveFunctionPointMetrics,
 		final org.drip.function.rdtor1solver.ConstraintFunctionPointMetrics
 			inequalityConstraintFunctionPointMetrics)
 	{
-<span class="pc bpc" id="L96" title="2 of 4 branches missed.">		if (null == objectiveFunctionPointMetrics ||</span>
+<span class="pc bpc" id="L108" title="2 of 4 branches missed.">		if (null == objectiveFunctionPointMetrics ||</span>
 			null == inequalityConstraintFunctionPointMetrics)
 		{
-<span class="nc" id="L99">			return null;</span>
+<span class="nc" id="L111">			return null;</span>
 		}
 
-<span class="fc" id="L102">		int objectiveFunctionDimension = objectiveFunctionPointMetrics.dimension();</span>
+<span class="fc" id="L114">		int objectiveFunctionDimension = objectiveFunctionPointMetrics.dimension();</span>
 
-<span class="fc" id="L104">		double[] objectiveFunctionJacobian = objectiveFunctionPointMetrics.jacobian();</span>
+<span class="fc" id="L116">		double[] objectiveFunctionJacobian = objectiveFunctionPointMetrics.jacobian();</span>
 
-<span class="fc" id="L106">		double[][] objectiveFunctionHessian = objectiveFunctionPointMetrics.hessian();</span>
+<span class="fc" id="L118">		double[][] objectiveFunctionHessian = objectiveFunctionPointMetrics.hessian();</span>
 
-<span class="fc" id="L108">		int inequalityConstraintCount = inequalityConstraintFunctionPointMetrics.count();</span>
+<span class="fc" id="L120">		int inequalityConstraintCount = inequalityConstraintFunctionPointMetrics.count();</span>
 
-<span class="fc" id="L110">		double[] variateIncrementArray = new double[objectiveFunctionDimension];</span>
-<span class="fc" id="L111">		double[] inequalityConstraintIncrementCount = new double[inequalityConstraintCount];</span>
-<span class="fc" id="L112">		int constrainedObjectiveFunctionDimension = objectiveFunctionDimension + inequalityConstraintCount;</span>
-<span class="fc" id="L113">		double[][] constrainedObjectiveFunctionJacobianArray =</span>
+<span class="fc" id="L122">		double[] variateIncrementArray = new double[objectiveFunctionDimension];</span>
+<span class="fc" id="L123">		double[] inequalityConstraintIncrementCount = new double[inequalityConstraintCount];</span>
+<span class="fc" id="L124">		int constrainedObjectiveFunctionDimension = objectiveFunctionDimension + inequalityConstraintCount;</span>
+<span class="fc" id="L125">		double[][] constrainedObjectiveFunctionJacobianArray =</span>
 			new double[constrainedObjectiveFunctionDimension][constrainedObjectiveFunctionDimension];
-<span class="fc" id="L115">		double[] constrainedObjectiveFunctionRHSArray = new double[constrainedObjectiveFunctionDimension];</span>
+<span class="fc" id="L127">		double[] constrainedObjectiveFunctionRHSArray = new double[constrainedObjectiveFunctionDimension];</span>
 
-<span class="pc bpc" id="L117" title="1 of 2 branches missed.">		if (0 == objectiveFunctionDimension ||</span>
-<span class="pc bpc" id="L118" title="1 of 2 branches missed.">			objectiveFunctionDimension != inequalityConstraintFunctionPointMetrics.dimension())</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		if (0 == objectiveFunctionDimension ||</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">			objectiveFunctionDimension != inequalityConstraintFunctionPointMetrics.dimension())</span>
 		{
-<span class="nc" id="L120">			return null;</span>
+<span class="nc" id="L132">			return null;</span>
 		}
 
-<span class="fc" id="L123">		double[] inequalityConstraintFunctionMultiplierArray =</span>
-<span class="fc" id="L124">			inequalityConstraintFunctionPointMetrics.constraintFunctionMultiplierArray();</span>
+<span class="fc" id="L135">		double[] inequalityConstraintFunctionMultiplierArray =</span>
+<span class="fc" id="L136">			inequalityConstraintFunctionPointMetrics.constraintFunctionMultiplierArray();</span>
 
-<span class="fc" id="L126">		double[][] inequalityConstraintFunctionJacobianArray =</span>
-<span class="fc" id="L127">			inequalityConstraintFunctionPointMetrics.constraintFunctionJacobianArray();</span>
+<span class="fc" id="L138">		double[][] inequalityConstraintFunctionJacobianArray =</span>
+<span class="fc" id="L139">			inequalityConstraintFunctionPointMetrics.constraintFunctionJacobianArray();</span>
 
-<span class="fc" id="L129">		double[] inequalityConstraintFunctionValueArray =</span>
-<span class="fc" id="L130">			inequalityConstraintFunctionPointMetrics.constraintFunctionValueArray();</span>
+<span class="fc" id="L141">		double[] inequalityConstraintFunctionValueArray =</span>
+<span class="fc" id="L142">			inequalityConstraintFunctionPointMetrics.constraintFunctionValueArray();</span>
 
-<span class="fc" id="L132">		for (int objectiveFunctionDimensionIndexI = 0;</span>
-<span class="fc bfc" id="L133" title="All 2 branches covered.">			objectiveFunctionDimensionIndexI &lt; objectiveFunctionDimension;</span>
-<span class="fc" id="L134">			++objectiveFunctionDimensionIndexI)</span>
+<span class="fc" id="L144">		for (int objectiveFunctionDimensionIndexI = 0;</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">			objectiveFunctionDimensionIndexI &lt; objectiveFunctionDimension;</span>
+<span class="fc" id="L146">			++objectiveFunctionDimensionIndexI)</span>
 		{
-<span class="fc" id="L136">			for (int objectiveFunctionDimensionIndexJ = 0;</span>
-<span class="fc bfc" id="L137" title="All 2 branches covered.">				objectiveFunctionDimensionIndexJ &lt; objectiveFunctionDimension;</span>
-<span class="fc" id="L138">				++objectiveFunctionDimensionIndexJ)</span>
+<span class="fc" id="L148">			for (int objectiveFunctionDimensionIndexJ = 0;</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">				objectiveFunctionDimensionIndexJ &lt; objectiveFunctionDimension;</span>
+<span class="fc" id="L150">				++objectiveFunctionDimensionIndexJ)</span>
 			{
-<span class="fc" id="L140">				constrainedObjectiveFunctionJacobianArray[objectiveFunctionDimensionIndexI][objectiveFunctionDimensionIndexJ]</span>
+<span class="fc" id="L152">				constrainedObjectiveFunctionJacobianArray[objectiveFunctionDimensionIndexI][objectiveFunctionDimensionIndexJ]</span>
 					= objectiveFunctionHessian[objectiveFunctionDimensionIndexI][objectiveFunctionDimensionIndexJ];
 			}
 
-<span class="fc" id="L144">			for (int inequalityConstraintIndex = 0;</span>
-<span class="fc bfc" id="L145" title="All 2 branches covered.">				inequalityConstraintIndex &lt; inequalityConstraintCount;</span>
-<span class="fc" id="L146">				++inequalityConstraintIndex)</span>
+<span class="fc" id="L156">			for (int inequalityConstraintIndex = 0;</span>
+<span class="fc bfc" id="L157" title="All 2 branches covered.">				inequalityConstraintIndex &lt; inequalityConstraintCount;</span>
+<span class="fc" id="L158">				++inequalityConstraintIndex)</span>
 			{
-<span class="fc" id="L148">				constrainedObjectiveFunctionJacobianArray[objectiveFunctionDimensionIndexI][inequalityConstraintIndex + objectiveFunctionDimension] =</span>
+<span class="fc" id="L160">				constrainedObjectiveFunctionJacobianArray[objectiveFunctionDimensionIndexI][inequalityConstraintIndex + objectiveFunctionDimension] =</span>
 					-1. * inequalityConstraintFunctionJacobianArray[objectiveFunctionDimensionIndexI][inequalityConstraintIndex];
 			}
 		}
 
-<span class="fc" id="L153">		for (int inequalityConstraintIndexI = 0;</span>
-<span class="fc bfc" id="L154" title="All 2 branches covered.">			inequalityConstraintIndexI &lt; inequalityConstraintCount;</span>
-<span class="fc" id="L155">			++inequalityConstraintIndexI)</span>
+<span class="fc" id="L165">		for (int inequalityConstraintIndexI = 0;</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">			inequalityConstraintIndexI &lt; inequalityConstraintCount;</span>
+<span class="fc" id="L167">			++inequalityConstraintIndexI)</span>
 		{
-<span class="fc" id="L157">			for (int inequalityConstraintIndexJ = 0;</span>
-<span class="fc bfc" id="L158" title="All 2 branches covered.">				inequalityConstraintIndexJ &lt; inequalityConstraintCount;</span>
-<span class="fc" id="L159">				++inequalityConstraintIndexJ)</span>
+<span class="fc" id="L169">			for (int inequalityConstraintIndexJ = 0;</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">				inequalityConstraintIndexJ &lt; inequalityConstraintCount;</span>
+<span class="fc" id="L171">				++inequalityConstraintIndexJ)</span>
 			{
-<span class="fc bfc" id="L161" title="All 2 branches covered.">				constrainedObjectiveFunctionJacobianArray[inequalityConstraintIndexI + objectiveFunctionDimension][inequalityConstraintIndexJ + objectiveFunctionDimension]</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">				constrainedObjectiveFunctionJacobianArray[inequalityConstraintIndexI + objectiveFunctionDimension][inequalityConstraintIndexJ + objectiveFunctionDimension]</span>
 					= inequalityConstraintIndexI == inequalityConstraintIndexJ ? inequalityConstraintFunctionValueArray[inequalityConstraintIndexI] : 0.;
 			}
 
-<span class="fc" id="L165">			for (int objectiveFunctionIndex = 0;</span>
-<span class="fc bfc" id="L166" title="All 2 branches covered.">				objectiveFunctionIndex &lt; objectiveFunctionDimension;</span>
-<span class="fc" id="L167">				++objectiveFunctionIndex)</span>
+<span class="fc" id="L177">			for (int objectiveFunctionIndex = 0;</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">				objectiveFunctionIndex &lt; objectiveFunctionDimension;</span>
+<span class="fc" id="L179">				++objectiveFunctionIndex)</span>
 			{
-<span class="fc" id="L169">				constrainedObjectiveFunctionJacobianArray[inequalityConstraintIndexI + objectiveFunctionDimension][objectiveFunctionIndex] =</span>
+<span class="fc" id="L181">				constrainedObjectiveFunctionJacobianArray[inequalityConstraintIndexI + objectiveFunctionDimension][objectiveFunctionIndex] =</span>
 					inequalityConstraintFunctionMultiplierArray[inequalityConstraintIndexI] *
 					inequalityConstraintFunctionJacobianArray[objectiveFunctionIndex][inequalityConstraintIndexI];
 			}
 		}
 
-<span class="fc" id="L175">		for (int constrainedObjectiveFunctionIndex = 0;</span>
-<span class="fc bfc" id="L176" title="All 2 branches covered.">			constrainedObjectiveFunctionIndex &lt; constrainedObjectiveFunctionDimension;</span>
-<span class="fc" id="L177">			++constrainedObjectiveFunctionIndex)</span>
+<span class="fc" id="L187">		for (int constrainedObjectiveFunctionIndex = 0;</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">			constrainedObjectiveFunctionIndex &lt; constrainedObjectiveFunctionDimension;</span>
+<span class="fc" id="L189">			++constrainedObjectiveFunctionIndex)</span>
 		{
-<span class="fc bfc" id="L179" title="All 2 branches covered.">			if (constrainedObjectiveFunctionIndex &lt; objectiveFunctionDimension)</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">			if (constrainedObjectiveFunctionIndex &lt; objectiveFunctionDimension)</span>
 			{
-<span class="fc" id="L181">				constrainedObjectiveFunctionRHSArray[constrainedObjectiveFunctionIndex] =</span>
+<span class="fc" id="L193">				constrainedObjectiveFunctionRHSArray[constrainedObjectiveFunctionIndex] =</span>
 					-1. * objectiveFunctionJacobian[constrainedObjectiveFunctionIndex];
 
-<span class="fc" id="L184">				for (int inequalityConstraintIndex = 0;</span>
-<span class="fc bfc" id="L185" title="All 2 branches covered.">					inequalityConstraintIndex &lt; inequalityConstraintCount;</span>
-<span class="fc" id="L186">					++inequalityConstraintIndex)</span>
+<span class="fc" id="L196">				for (int inequalityConstraintIndex = 0;</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">					inequalityConstraintIndex &lt; inequalityConstraintCount;</span>
+<span class="fc" id="L198">					++inequalityConstraintIndex)</span>
 				{
-<span class="fc" id="L188">					constrainedObjectiveFunctionRHSArray[constrainedObjectiveFunctionIndex] +=</span>
+<span class="fc" id="L200">					constrainedObjectiveFunctionRHSArray[constrainedObjectiveFunctionIndex] +=</span>
 						inequalityConstraintFunctionJacobianArray[constrainedObjectiveFunctionIndex][inequalityConstraintIndex]
 						* inequalityConstraintFunctionMultiplierArray[inequalityConstraintIndex];
 				}
 			}
 			else
 			{
-<span class="fc" id="L195">				int constraintIndex = constrainedObjectiveFunctionIndex - objectiveFunctionDimension;</span>
-<span class="fc" id="L196">				constrainedObjectiveFunctionRHSArray[constrainedObjectiveFunctionIndex] =</span>
+<span class="fc" id="L207">				int constraintIndex = constrainedObjectiveFunctionIndex - objectiveFunctionDimension;</span>
+<span class="fc" id="L208">				constrainedObjectiveFunctionRHSArray[constrainedObjectiveFunctionIndex] =</span>
 					_barrierStrength - inequalityConstraintFunctionValueArray[constraintIndex] *
 					inequalityConstraintFunctionMultiplierArray[constraintIndex];
 			}
 		}
 
-<span class="fc" id="L202">		org.drip.numerical.linearalgebra.LinearizationOutput linearizationOutput =</span>
-<span class="fc" id="L203">			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion (</span>
+<span class="fc" id="L214">		org.drip.numerical.linearalgebra.LinearizationOutput linearizationOutput =</span>
+<span class="fc" id="L215">			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion (</span>
 				constrainedObjectiveFunctionJacobianArray,
 				constrainedObjectiveFunctionRHSArray
 			);
 
-<span class="fc bfc" id="L208" title="All 2 branches covered.">		if (null == linearizationOutput)</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">		if (null == linearizationOutput)</span>
 		{
-<span class="fc" id="L210">			return null;</span>
+<span class="fc" id="L222">			return null;</span>
 		}
 
-<span class="fc" id="L213">		double[] variateConstraintIncrementArray = linearizationOutput.getTransformedRHS();</span>
+<span class="fc" id="L225">		double[] variateConstraintIncrementArray = linearizationOutput.getTransformedRHS();</span>
 
-<span class="pc bpc" id="L215" title="2 of 4 branches missed.">		if (null == variateConstraintIncrementArray ||</span>
+<span class="pc bpc" id="L227" title="2 of 4 branches missed.">		if (null == variateConstraintIncrementArray ||</span>
 			variateConstraintIncrementArray.length != constrainedObjectiveFunctionDimension)
 		{
-<span class="nc" id="L218">			return null;</span>
+<span class="nc" id="L230">			return null;</span>
 		}
 
-<span class="fc" id="L221">		for (int constrainedObjectiveFunctionIndex = 0;</span>
-<span class="fc bfc" id="L222" title="All 2 branches covered.">			constrainedObjectiveFunctionIndex &lt; constrainedObjectiveFunctionDimension;</span>
-<span class="fc" id="L223">			++constrainedObjectiveFunctionIndex)</span>
+<span class="fc" id="L233">		for (int constrainedObjectiveFunctionIndex = 0;</span>
+<span class="fc bfc" id="L234" title="All 2 branches covered.">			constrainedObjectiveFunctionIndex &lt; constrainedObjectiveFunctionDimension;</span>
+<span class="fc" id="L235">			++constrainedObjectiveFunctionIndex)</span>
 		{
-<span class="fc bfc" id="L225" title="All 2 branches covered.">			if (constrainedObjectiveFunctionIndex &lt; objectiveFunctionDimension)</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">			if (constrainedObjectiveFunctionIndex &lt; objectiveFunctionDimension)</span>
 			{
-<span class="fc" id="L227">				variateIncrementArray[constrainedObjectiveFunctionIndex] =</span>
+<span class="fc" id="L239">				variateIncrementArray[constrainedObjectiveFunctionIndex] =</span>
 					variateConstraintIncrementArray[constrainedObjectiveFunctionIndex];
 			}
 			else
 			{
-<span class="fc" id="L232">				inequalityConstraintIncrementCount[constrainedObjectiveFunctionIndex - objectiveFunctionDimension]</span>
+<span class="fc" id="L244">				inequalityConstraintIncrementCount[constrainedObjectiveFunctionIndex - objectiveFunctionDimension]</span>
 					= variateConstraintIncrementArray[constrainedObjectiveFunctionIndex];
 			}
 		}
 
 		try
 		{
-<span class="fc" id="L239">			return new org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier (</span>
+<span class="fc" id="L251">			return new org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier (</span>
 				true,
 				variateIncrementArray,
 				inequalityConstraintIncrementCount
 			);
 		}
-<span class="nc" id="L245">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L257">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L247">			e.printStackTrace();</span>
+<span class="nc" id="L259">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L250">		return null;</span>
+<span class="nc" id="L262">		return null;</span>
 	}
 
 	/**
@@ -270,45 +282,45 @@ public class InteriorFixedPointFinder
 		final double barrierStrength)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L273">		super (</span>
+<span class="fc" id="L285">		super (</span>
 			rdToR1ObjectiveFunction,
 			lsec,
 			cc
 		);
 
-<span class="pc bpc" id="L279" title="1 of 2 branches missed.">		if (null == (_inequalityConstraintMultivariateFunctionArray = inequalityConstraintMultivariateFunctionArray) ||</span>
-<span class="pc bpc" id="L280" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_barrierStrength = barrierStrength))</span>
+<span class="pc bpc" id="L291" title="1 of 2 branches missed.">		if (null == (_inequalityConstraintMultivariateFunctionArray = inequalityConstraintMultivariateFunctionArray) ||</span>
+<span class="pc bpc" id="L292" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_barrierStrength = barrierStrength))</span>
 		{
-<span class="nc" id="L282">			throw new java.lang.Exception (&quot;InteriorFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L294">			throw new java.lang.Exception (&quot;InteriorFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L285">		int inequalityConstraintCount = _inequalityConstraintMultivariateFunctionArray.length;</span>
-<span class="pc bpc" id="L286" title="1 of 2 branches missed.">		_boundMultivariateFunctionArray = 0 == inequalityConstraintCount ? null : new</span>
+<span class="fc" id="L297">		int inequalityConstraintCount = _inequalityConstraintMultivariateFunctionArray.length;</span>
+<span class="pc bpc" id="L298" title="1 of 2 branches missed.">		_boundMultivariateFunctionArray = 0 == inequalityConstraintCount ? null : new</span>
 			org.drip.function.rdtor1.BoundMultivariate[inequalityConstraintCount];
 
-<span class="pc bpc" id="L289" title="1 of 2 branches missed.">		if (0 == inequalityConstraintCount)</span>
+<span class="pc bpc" id="L301" title="1 of 2 branches missed.">		if (0 == inequalityConstraintCount)</span>
 		{
-<span class="nc" id="L291">			throw new java.lang.Exception (&quot;InteriorFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L303">			throw new java.lang.Exception (&quot;InteriorFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L294">		for (int inequalityConstraintIndex = 0;</span>
-<span class="fc bfc" id="L295" title="All 2 branches covered.">			inequalityConstraintIndex &lt; inequalityConstraintCount;</span>
-<span class="fc" id="L296">			++inequalityConstraintIndex)</span>
+<span class="fc" id="L306">		for (int inequalityConstraintIndex = 0;</span>
+<span class="fc bfc" id="L307" title="All 2 branches covered.">			inequalityConstraintIndex &lt; inequalityConstraintCount;</span>
+<span class="fc" id="L308">			++inequalityConstraintIndex)</span>
 		{
-<span class="pc bpc" id="L298" title="1 of 2 branches missed.">			if (null == _inequalityConstraintMultivariateFunctionArray[inequalityConstraintIndex])</span>
+<span class="pc bpc" id="L310" title="1 of 2 branches missed.">			if (null == _inequalityConstraintMultivariateFunctionArray[inequalityConstraintIndex])</span>
 			{
-<span class="nc" id="L300">				throw new java.lang.Exception (&quot;InteriorFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L312">				throw new java.lang.Exception (&quot;InteriorFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
 			}
 
-<span class="fc bfc" id="L303" title="All 2 branches covered.">			if (_inequalityConstraintMultivariateFunctionArray[inequalityConstraintIndex] instanceof</span>
+<span class="fc bfc" id="L315" title="All 2 branches covered.">			if (_inequalityConstraintMultivariateFunctionArray[inequalityConstraintIndex] instanceof</span>
 				org.drip.function.rdtor1.BoundMultivariate)
 			{
-<span class="fc" id="L306">				_boundMultivariateFunctionArray[inequalityConstraintIndex] =</span>
+<span class="fc" id="L318">				_boundMultivariateFunctionArray[inequalityConstraintIndex] =</span>
 					(org.drip.function.rdtor1.BoundMultivariate)
 					_inequalityConstraintMultivariateFunctionArray[inequalityConstraintIndex];
 			}
 		}
-<span class="fc" id="L311">	}</span>
+<span class="fc" id="L323">	}</span>
 
 	/**
 	 * Retrieve the Array of Inequality Constraint Function
@@ -318,7 +330,7 @@ public class InteriorFixedPointFinder
 
 	public org.drip.function.definition.RdToR1[] inequalityConstraintMultivariateFunctionArray()
 	{
-<span class="nc" id="L321">		return _inequalityConstraintMultivariateFunctionArray;</span>
+<span class="nc" id="L333">		return _inequalityConstraintMultivariateFunctionArray;</span>
 	}
 
 	/**
@@ -329,91 +341,91 @@ public class InteriorFixedPointFinder
 
 	public double barrierStrength()
 	{
-<span class="nc" id="L332">		return _barrierStrength;</span>
+<span class="nc" id="L344">		return _barrierStrength;</span>
 	}
 
 	@Override public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier increment (
 		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier currentVariateConstraint)
 	{
-<span class="pc bpc" id="L338" title="1 of 2 branches missed.">		if (null == currentVariateConstraint)</span>
-		{
-<span class="nc" id="L340">			return null;</span>
-		}
-
-<span class="fc" id="L343">		double[] variateArray = currentVariateConstraint.variateArray();</span>
-
-<span class="fc" id="L345">		int variateCount = variateArray.length;</span>
-<span class="fc" id="L346">		int constraintCount = _inequalityConstraintMultivariateFunctionArray.length;</span>
-<span class="fc" id="L347">		double[][] constraintJacobianArray = new double[variateCount][constraintCount];</span>
-<span class="fc" id="L348">		double[] constraintValueArray = new double[constraintCount];</span>
-
-<span class="pc bpc" id="L350" title="1 of 2 branches missed.">		if (0 == constraintCount)</span>
+<span class="pc bpc" id="L350" title="1 of 2 branches missed.">		if (null == currentVariateConstraint)</span>
 		{
 <span class="nc" id="L352">			return null;</span>
 		}
 
-<span class="fc" id="L355">		for (int constraintIndex = 0;</span>
-<span class="fc bfc" id="L356" title="All 2 branches covered.">			constraintIndex &lt; constraintCount;</span>
-<span class="fc" id="L357">			++constraintIndex)</span>
+<span class="fc" id="L355">		double[] variateArray = currentVariateConstraint.variateArray();</span>
+
+<span class="fc" id="L357">		int variateCount = variateArray.length;</span>
+<span class="fc" id="L358">		int constraintCount = _inequalityConstraintMultivariateFunctionArray.length;</span>
+<span class="fc" id="L359">		double[][] constraintJacobianArray = new double[variateCount][constraintCount];</span>
+<span class="fc" id="L360">		double[] constraintValueArray = new double[constraintCount];</span>
+
+<span class="pc bpc" id="L362" title="1 of 2 branches missed.">		if (0 == constraintCount)</span>
+		{
+<span class="nc" id="L364">			return null;</span>
+		}
+
+<span class="fc" id="L367">		for (int constraintIndex = 0;</span>
+<span class="fc bfc" id="L368" title="All 2 branches covered.">			constraintIndex &lt; constraintCount;</span>
+<span class="fc" id="L369">			++constraintIndex)</span>
 		{
 			try
 			{
-<span class="fc" id="L361">				constraintValueArray[constraintIndex] =</span>
-<span class="fc" id="L362">					_inequalityConstraintMultivariateFunctionArray[constraintIndex].evaluate (</span>
+<span class="fc" id="L373">				constraintValueArray[constraintIndex] =</span>
+<span class="fc" id="L374">					_inequalityConstraintMultivariateFunctionArray[constraintIndex].evaluate (</span>
 						variateArray
 					);
 			}
-<span class="nc" id="L366">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L378">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L368">				e.printStackTrace();</span>
+<span class="nc" id="L380">				e.printStackTrace();</span>
 
-<span class="nc" id="L370">				return null;</span>
-<span class="fc" id="L371">			}</span>
+<span class="nc" id="L382">				return null;</span>
+<span class="fc" id="L383">			}</span>
 
-<span class="fc" id="L373">			double[] constraintJacobian =</span>
-<span class="fc" id="L374">				_inequalityConstraintMultivariateFunctionArray[constraintIndex].jacobian (</span>
+<span class="fc" id="L385">			double[] constraintJacobian =</span>
+<span class="fc" id="L386">				_inequalityConstraintMultivariateFunctionArray[constraintIndex].jacobian (</span>
 					variateArray
 				);
 
-<span class="pc bpc" id="L378" title="1 of 2 branches missed.">			if (null == constraintJacobian)</span>
+<span class="pc bpc" id="L390" title="1 of 2 branches missed.">			if (null == constraintJacobian)</span>
 			{
-<span class="nc" id="L380">				return null;</span>
+<span class="nc" id="L392">				return null;</span>
 			}
 
-<span class="fc" id="L383">			for (int variateIndex = 0;</span>
-<span class="fc bfc" id="L384" title="All 2 branches covered.">				variateIndex &lt; variateCount;</span>
-<span class="fc" id="L385">				++variateIndex)</span>
+<span class="fc" id="L395">			for (int variateIndex = 0;</span>
+<span class="fc bfc" id="L396" title="All 2 branches covered.">				variateIndex &lt; variateCount;</span>
+<span class="fc" id="L397">				++variateIndex)</span>
 			{
-<span class="fc" id="L387">				constraintJacobianArray[variateIndex][constraintIndex] = constraintJacobian[variateIndex];</span>
+<span class="fc" id="L399">				constraintJacobianArray[variateIndex][constraintIndex] = constraintJacobian[variateIndex];</span>
 			}
 		}
 
-<span class="fc" id="L391">		org.drip.function.definition.RdToR1 objectiveFunction = objectiveFunction();</span>
+<span class="fc" id="L403">		org.drip.function.definition.RdToR1 objectiveFunction = objectiveFunction();</span>
 
 		try
 		{
-<span class="fc" id="L395">			return incremental (</span>
+<span class="fc" id="L407">			return incremental (</span>
 				new org.drip.function.rdtor1solver.ObjectiveFunctionPointMetrics (
-<span class="fc" id="L397">					objectiveFunction.jacobian (</span>
+<span class="fc" id="L409">					objectiveFunction.jacobian (</span>
 						variateArray
 					),
-<span class="fc" id="L400">					objectiveFunction.hessian (</span>
+<span class="fc" id="L412">					objectiveFunction.hessian (</span>
 						variateArray
 					)
 				),
 				new org.drip.function.rdtor1solver.ConstraintFunctionPointMetrics (
 					constraintValueArray,
 					constraintJacobianArray,
-<span class="fc" id="L407">					currentVariateConstraint.constraintMultiplierArray()</span>
+<span class="fc" id="L419">					currentVariateConstraint.constraintMultiplierArray()</span>
 				)
 			);
 		}
-<span class="nc" id="L411">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L423">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L413">			e.printStackTrace();</span>
+<span class="nc" id="L425">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L416">		return null;</span>
+<span class="nc" id="L428">		return null;</span>
 	}
 
 	@Override public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier next (
@@ -422,7 +434,7 @@ public class InteriorFixedPointFinder
 			incrementalVariateConstraint,
 		final double incrementFraction)
 	{
-<span class="fc" id="L425">		return org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier.Add (</span>
+<span class="fc" id="L437">		return org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier.Add (</span>
 			currentVariateConstraint,
 			incrementalVariateConstraint,
 			incrementFraction,

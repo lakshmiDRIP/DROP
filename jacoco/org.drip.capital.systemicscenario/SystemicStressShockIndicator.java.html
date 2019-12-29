@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SystemicStressShockIndicator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.systemicscenario</a> &gt; <span class="el_source">SystemicStressShockIndicator.java</span></div><h1>SystemicStressShockIndicator.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.systemicscenario;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;SystemicStressShockIndicator&lt;/i&gt; holds the Directional Indicator Settings for a given Systemic Stress
+ * 	Shock Event. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/systemicscenario/README.md&quot;&gt;Systemic Stress Scenario Design/Construction&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class SystemicStressShockIndicator
+{
+
+	/**
+	 * Systemic Stress Shock Direction UP
+	 */
+
+	public static final int UP = 1;
+
+	/**
+	 * Systemic Stress Shock Direction DOWN
+	 */
+
+	public static final int DOWN = -1;
+
+	/**
+	 * Systemic Stress Shock Direction UNSPECIFIED
+	 */
+
+	public static final int UNSPECIFIED = 0;
+
+	/**
+	 * DEFLATIONARY Systemic Stress Scenario
+	 */
+
+	public static final java.lang.String DEFLATIONARY = &quot;DEFLATIONARY&quot;;
+
+	/**
+	 * INFLATIONARY Systemic Stress Scenario
+	 */
+
+	public static final java.lang.String INFLATIONARY = &quot;INFLATIONARY&quot;;
+
+	/**
+	 * Neither DEFLATIONARY nor INFLATIONARY Systemic Stress Scenario
+	 */
+
+	public static final java.lang.String NEITHER = &quot;NEITHER&quot;;
+
+<span class="fc" id="L146">	private int _energy = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L147">	private int _commodities = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L148">	private int _creditSpreads = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L149">	private int _equityMarkets = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L150">	private int _yieldCurveLevel = java.lang.Integer.MIN_VALUE;</span>
+
+	private static final boolean VerifyIndicator (
+		final int indicator)
+	{
+<span class="pc bpc" id="L155" title="1 of 6 branches missed.">		return DOWN == indicator || UP == indicator || UNSPECIFIED == indicator;</span>
+	}
+
+	/**
+	 * Construct a Deflationary Systemic Stress Shock Indicator
+	 * 
+	 * @return Deflationary Systemic Stress Shock Indicator
+	 */
+
+	public static final SystemicStressShockIndicator Deflationary()
+	{
+		try
+		{
+<span class="fc" id="L168">			return new SystemicStressShockIndicator (</span>
+				UP,
+				DOWN,
+				DOWN,
+				DOWN,
+				DOWN
+			);
+		}
+<span class="nc" id="L176">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L178">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L181">		return null;</span>
+	}
+
+	/**
+	 * Construct a Inflationary Systemic Stress Shock Indicator
+	 * 
+	 * @return Inflationary Systemic Stress Shock Indicator
+	 */
+
+	public static final SystemicStressShockIndicator Inflationary()
+	{
+		try
+		{
+<span class="fc" id="L194">			return new SystemicStressShockIndicator (</span>
+				UP,
+				DOWN,
+				UP,
+				UP,
+				UP
+			);
+		}
+<span class="nc" id="L202">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L204">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L207">		return null;</span>
+	}
+
+	/**
+	 * SystemicStressShockIndicator Constructor
+	 * 
+	 * @param creditSpreads Credit Spreads Directional Indicator
+	 * @param equityMarkets Equity Markets Directional Indicator
+	 * @param yieldCurveLevel Yield Curve Level Directional Indicator
+	 * @param commodities Commodities Directional Indicator
+	 * @param energy Energy Directional Indicator
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public SystemicStressShockIndicator (
+		final int creditSpreads,
+		final int equityMarkets,
+		final int yieldCurveLevel,
+		final int commodities,
+		final int energy)
+		throws java.lang.Exception
+<span class="fc" id="L229">	{</span>
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">		if (!VerifyIndicator (</span>
+				_creditSpreads = creditSpreads
+<span class="pc bpc" id="L232" title="1 of 2 branches missed.">			) || !VerifyIndicator (</span>
+				_equityMarkets = equityMarkets
+<span class="pc bpc" id="L234" title="1 of 2 branches missed.">			) || !VerifyIndicator (</span>
+				_yieldCurveLevel = yieldCurveLevel
+<span class="pc bpc" id="L236" title="1 of 2 branches missed.">			) || !VerifyIndicator (</span>
+				_commodities = commodities
+<span class="pc bpc" id="L238" title="1 of 2 branches missed.">			) || !VerifyIndicator (</span>
+				_energy = energy
+			)
+		)
+		{
+<span class="nc" id="L243">			throw new java.lang.Exception (</span>
+				&quot;SystemicStressShockIndicator Cnstructor =&gt; Invalid Inputs&quot;
+			);
+		}
+<span class="fc" id="L247">	}</span>
+
+	/**
+	 * Retrieve the Credit Spreads Directional Indicator
+	 * 
+	 * @return The Credit Spreads Directional Indicator
+	 */
+
+	public int creditSpreads()
+	{
+<span class="nc" id="L257">		return _creditSpreads;</span>
+	}
+
+	/**
+	 * Retrieve the Equity Markets Directional Indicator
+	 * 
+	 * @return The Equity Markets Directional Indicator
+	 */
+
+	public int equityMarkets()
+	{
+<span class="nc" id="L268">		return _equityMarkets;</span>
+	}
+
+	/**
+	 * Retrieve the Yield Curve Level Directional Indicator
+	 * 
+	 * @return The Yield Curve Level Directional Indicator
+	 */
+
+	public int yieldCurveLevel()
+	{
+<span class="nc" id="L279">		return _yieldCurveLevel;</span>
+	}
+
+	/**
+	 * Retrieve the Commodities Directional Indicator
+	 * 
+	 * @return The Commodities Directional Indicator
+	 */
+
+	public int commodities()
+	{
+<span class="nc" id="L290">		return _commodities;</span>
+	}
+
+	/**
+	 * Retrieve the Energy Directional Indicator
+	 * 
+	 * @return The Energy Directional Indicator
+	 */
+
+	public int energy()
+	{
+<span class="nc" id="L301">		return _energy;</span>
+	}
+
+	/**
+	 * Indicate if the Scenario is DEFLATIONARY
+	 * 
+	 * @return TRUE - The Scenario is DEFLATIONARY
+	 */
+
+	public boolean isDeflationary()
+	{
+<span class="nc bnc" id="L312" title="All 10 branches missed.">		return UP == _creditSpreads &amp;&amp;</span>
+			DOWN == _equityMarkets &amp;&amp;
+			DOWN == _yieldCurveLevel &amp;&amp; 
+			DOWN == _commodities &amp;&amp;
+			DOWN == _energy;
+	}
+
+	/**
+	 * Indicate if the Scenario is INFLATIONARY
+	 * 
+	 * @return TRUE - The Scenario is INFLATIONARY
+	 */
+
+	public boolean isInflationary()
+	{
+<span class="nc bnc" id="L327" title="All 10 branches missed.">		return UP == _creditSpreads &amp;&amp;</span>
+			DOWN == _equityMarkets &amp;&amp;
+			UP == _yieldCurveLevel &amp;&amp; 
+			UP == _commodities &amp;&amp;
+			UP == _energy;
+	}
+
+	/**
+	 * Indicate the Inflation Type
+	 * 
+	 * @return The Inflation Type
+	 */
+
+	public java.lang.String inflationType()
+	{
+<span class="nc bnc" id="L342" title="All 2 branches missed.">		if (isDeflationary())</span>
+		{
+<span class="nc" id="L344">			return DEFLATIONARY;</span>
+		}
+
+<span class="nc bnc" id="L347" title="All 2 branches missed.">		return isInflationary() ? INFLATIONARY : NEITHER;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

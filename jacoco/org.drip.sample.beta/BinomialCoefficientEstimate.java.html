@@ -12,41 +12,53 @@ import org.drip.specialfunction.beta.SummationSeriesEstimator;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -97,32 +109,32 @@ import org.drip.specialfunction.beta.SummationSeriesEstimator;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/beta/README.md&quot;&gt;Estimation Techniques for Beta Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md&quot;&gt;Function Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/beta/README.md&quot;&gt;Estimates of the Beta Functions&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L109">public class BinomialCoefficientEstimate</span>
+<span class="nc" id="L121">public class BinomialCoefficientEstimate</span>
 {
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L116">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L128">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L118">		double[] nArray =</span>
+<span class="nc" id="L130">		double[] nArray =</span>
 		{
 			8.,
 			7.,
 			6.,
 			5.,
 		};
-<span class="nc" id="L125">		double[] kArray =</span>
+<span class="nc" id="L137">		double[] kArray =</span>
 		{
 			5.,
 			4.,
@@ -130,43 +142,43 @@ import org.drip.specialfunction.beta.SummationSeriesEstimator;
 			2.,
 			1.,
 		};
-<span class="nc" id="L133">		int summationTermCount = 1000000;</span>
+<span class="nc" id="L145">		int summationTermCount = 1000000;</span>
 
-<span class="nc" id="L135">		SummationSeriesEstimator summationSeriesEstimator = SummationSeriesEstimator.AbramowitzStegun2007</span>
-<span class="nc" id="L136">			(summationTermCount);</span>
+<span class="nc" id="L147">		SummationSeriesEstimator summationSeriesEstimator = SummationSeriesEstimator.AbramowitzStegun2007</span>
+<span class="nc" id="L148">			(summationTermCount);</span>
 
-<span class="nc" id="L138">		System.out.println (&quot;\t|------------------||&quot;);</span>
+<span class="nc" id="L150">		System.out.println (&quot;\t|------------------||&quot;);</span>
 
-<span class="nc" id="L140">		System.out.println (&quot;\t|  BETA BINOMIAL   ||&quot;);</span>
+<span class="nc" id="L152">		System.out.println (&quot;\t|  BETA BINOMIAL   ||&quot;);</span>
 
-<span class="nc" id="L142">		System.out.println (&quot;\t|------------------||&quot;);</span>
+<span class="nc" id="L154">		System.out.println (&quot;\t|------------------||&quot;);</span>
 
-<span class="nc" id="L144">		System.out.println (&quot;\t|  L -&gt; R:         ||&quot;);</span>
+<span class="nc" id="L156">		System.out.println (&quot;\t|  L -&gt; R:         ||&quot;);</span>
 
-<span class="nc" id="L146">		System.out.println (&quot;\t|    - nCk         ||&quot;);</span>
+<span class="nc" id="L158">		System.out.println (&quot;\t|    - nCk         ||&quot;);</span>
 
-<span class="nc" id="L148">		System.out.println (&quot;\t|    - Value       ||&quot;);</span>
+<span class="nc" id="L160">		System.out.println (&quot;\t|    - Value       ||&quot;);</span>
 
-<span class="nc" id="L150">		System.out.println (&quot;\t|    - Estimate    ||&quot;);</span>
+<span class="nc" id="L162">		System.out.println (&quot;\t|    - Estimate    ||&quot;);</span>
 
-<span class="nc" id="L152">		System.out.println (&quot;\t|------------------||&quot;);</span>
+<span class="nc" id="L164">		System.out.println (&quot;\t|------------------||&quot;);</span>
 
-<span class="nc bnc" id="L154" title="All 2 branches missed.">		for (double n : nArray)</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">		for (double n : nArray)</span>
 		{
-<span class="nc bnc" id="L156" title="All 2 branches missed.">			for (double k : kArray)</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">			for (double k : kArray)</span>
 			{
-<span class="nc" id="L158">				System.out.println (</span>
-<span class="nc" id="L159">					&quot;\t|&quot; + FormatUtil.FormatDouble (n, 1, 0, 1.) + &quot;C&quot; +</span>
-<span class="nc" id="L160">					FormatUtil.FormatDouble (k, 1, 0, 1., false) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L161">					FormatUtil.FormatDouble (</span>
-<span class="nc" id="L162">						NumberUtil.NCK (</span>
+<span class="nc" id="L170">				System.out.println (</span>
+<span class="nc" id="L171">					&quot;\t|&quot; + FormatUtil.FormatDouble (n, 1, 0, 1.) + &quot;C&quot; +</span>
+<span class="nc" id="L172">					FormatUtil.FormatDouble (k, 1, 0, 1., false) + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L173">					FormatUtil.FormatDouble (</span>
+<span class="nc" id="L174">						NumberUtil.NCK (</span>
 							(int) n,
 							(int) k
 						),
 						2, 0, 1.
 					) + &quot; | &quot; +
-<span class="nc" id="L168">					FormatUtil.FormatDouble (</span>
-<span class="nc" id="L169">						CombinatorialEstimate.BetaBinomial (</span>
+<span class="nc" id="L180">					FormatUtil.FormatDouble (</span>
+<span class="nc" id="L181">						CombinatorialEstimate.BetaBinomial (</span>
 							n,
 							k,
 							summationSeriesEstimator
@@ -177,9 +189,9 @@ import org.drip.specialfunction.beta.SummationSeriesEstimator;
 			}
 		}
 
-<span class="nc" id="L180">		System.out.println (&quot;\t|------------------||&quot;);</span>
+<span class="nc" id="L192">		System.out.println (&quot;\t|------------------||&quot;);</span>
 
-<span class="nc" id="L182">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L183">	}</span>
+<span class="nc" id="L194">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L195">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

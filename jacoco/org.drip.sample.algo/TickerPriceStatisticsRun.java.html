@@ -11,35 +11,46 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -74,83 +85,83 @@ import org.drip.service.env.EnvManager;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/README.md&quot;&gt;&quot;Big&quot; Algorithm Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/README.md&quot;&gt;C&lt;sup&gt;x&lt;/sup&gt; R&lt;sup&gt;x&lt;/sup&gt; In-Place Manipulation&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L87">public class TickerPriceStatisticsRun</span>
+<span class="nc" id="L98">public class TickerPriceStatisticsRun</span>
 {
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L94">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L105">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L96">		TickerPriceStatisticsContainer tickerPriceStatisticsContainer = new TickerPriceStatisticsContainer();</span>
+<span class="nc" id="L107">		TickerPriceStatisticsContainer tickerPriceStatisticsContainer = new TickerPriceStatisticsContainer();</span>
 
-<span class="nc" id="L98">		@SuppressWarnings (&quot;resource&quot;) Scanner scanner = new Scanner (System.in);</span>
+<span class="nc" id="L109">		@SuppressWarnings (&quot;resource&quot;) Scanner scanner = new Scanner (System.in);</span>
 
-<span class="nc" id="L100">		boolean quit = false;</span>
+<span class="nc" id="L111">		boolean quit = false;</span>
 
-<span class="nc bnc" id="L102" title="All 2 branches missed.">		while (!quit)</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">		while (!quit)</span>
 		{
-<span class="nc" id="L104">			String line = scanner.nextLine();</span>
+<span class="nc" id="L115">			String line = scanner.nextLine();</span>
 
-<span class="nc bnc" id="L106" title="All 4 branches missed.">			if (line.equalsIgnoreCase (&quot;exit&quot;) || line.equalsIgnoreCase(&quot;quit&quot;))</span>
+<span class="nc bnc" id="L117" title="All 4 branches missed.">			if (line.equalsIgnoreCase (&quot;exit&quot;) || line.equalsIgnoreCase(&quot;quit&quot;))</span>
 			{
-<span class="nc" id="L108">				quit = true;</span>
+<span class="nc" id="L119">				quit = true;</span>
 			}
 			else
 			{
-<span class="nc" id="L112">				String[] tickerQuote = line.split (&quot; &quot;);</span>
+<span class="nc" id="L123">				String[] tickerQuote = line.split (&quot; &quot;);</span>
 
-<span class="nc bnc" id="L114" title="All 4 branches missed.">				if (null == tickerQuote || 2 != tickerQuote.length)</span>
+<span class="nc bnc" id="L125" title="All 4 branches missed.">				if (null == tickerQuote || 2 != tickerQuote.length)</span>
 				{
-<span class="nc" id="L116">					System.out.println (&quot;Bad {TICKER} {PRICE}&quot;);</span>
+<span class="nc" id="L127">					System.out.println (&quot;Bad {TICKER} {PRICE}&quot;);</span>
 				}
 				else
 				{
-<span class="nc" id="L120">					double price = Double.NaN;</span>
-<span class="nc" id="L121">					String ticker = tickerQuote[0];</span>
+<span class="nc" id="L131">					double price = Double.NaN;</span>
+<span class="nc" id="L132">					String ticker = tickerQuote[0];</span>
 
-<span class="nc bnc" id="L123" title="All 4 branches missed.">					if (null == ticker || ticker.isEmpty())</span>
+<span class="nc bnc" id="L134" title="All 4 branches missed.">					if (null == ticker || ticker.isEmpty())</span>
 					{
-<span class="nc" id="L125">						System.out.println (&quot;Cannot Parse Ticker in &quot; + ticker);</span>
+<span class="nc" id="L136">						System.out.println (&quot;Cannot Parse Ticker in &quot; + ticker);</span>
 					}
 					else
 					{
 						try
 						{
-<span class="nc" id="L131">							price = Double.parseDouble (tickerQuote[1]);</span>
+<span class="nc" id="L142">							price = Double.parseDouble (tickerQuote[1]);</span>
 						}
-<span class="nc" id="L133">						catch (Exception e)</span>
+<span class="nc" id="L144">						catch (Exception e)</span>
 						{
-<span class="nc" id="L135">							System.out.println (&quot;Cannot Parse Price in &quot; + line);</span>
+<span class="nc" id="L146">							System.out.println (&quot;Cannot Parse Price in &quot; + line);</span>
 
-<span class="nc" id="L137">							continue;</span>
-<span class="nc" id="L138">						}</span>
+<span class="nc" id="L148">							continue;</span>
+<span class="nc" id="L149">						}</span>
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">						if (!tickerPriceStatisticsContainer.addInstance (ticker.toUpperCase(), price))</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">						if (!tickerPriceStatisticsContainer.addInstance (ticker.toUpperCase(), price))</span>
 						{
-<span class="nc" id="L142">							System.out.println (&quot;Cannot Process &quot; + line);</span>
+<span class="nc" id="L153">							System.out.println (&quot;Cannot Process &quot; + line);</span>
 						}
 						else
 						{
-<span class="nc" id="L146">							System.out.println (tickerPriceStatisticsContainer);</span>
+<span class="nc" id="L157">							System.out.println (tickerPriceStatisticsContainer);</span>
 						}
 					}
 				}
 			}
-<span class="nc" id="L151">		}</span>
+<span class="nc" id="L162">		}</span>
 
-<span class="nc" id="L153">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L154">	}</span>
+<span class="nc" id="L164">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L165">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

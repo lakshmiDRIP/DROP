@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ShapeScaleLaplacianEstimate.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.gammadistribution</a> &gt; <span class="el_source">ShapeScaleLaplacianEstimate.java</span></div><h1>ShapeScaleLaplacianEstimate.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.gammadistribution;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R2ToR1;
+import org.drip.measure.gamma.R1ShapeScaleDistribution;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
+import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
+import org.drip.specialfunction.incompletegamma.LowerEulerIntegral;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;ShapeScaleLaplacianEstimate&lt;/i&gt; demonstrates the Laplacian Estimate of the R&lt;sup&gt;1&lt;/sup&gt; Gamma
+ * 	Distribution using the Shape/Scale Parameterization. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Devroye, L. (1986): &lt;i&gt;Non-Uniform Random Variate Generation&lt;/i&gt; &lt;b&gt;Springer-Verlag&lt;/b&gt; New York
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Gamma Distribution (2019): Gamma Distribution
+ * 				https://en.wikipedia.org/wiki/Chi-squared_distribution
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Louzada, F., P. L. Ramos, and E. Ramos (2019): A Note on Bias of Closed-Form Estimators for the
+ * 				Gamma Distribution Derived From Likelihood Equations &lt;i&gt;The American Statistician&lt;/i&gt; &lt;b&gt;73
+ * 				(2)&lt;/b&gt; 195-199
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Minka, T. (2002): Estimating a Gamma distribution https://tminka.github.io/papers/minka-gamma.pdf
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Ye, Z. S., and N. Chen (2017): Closed-Form Estimators for the Gamma Distribution Derived from
+ * 				Likelihood Equations &lt;i&gt;The American Statistician&lt;/i&gt; &lt;b&gt;71 (2)&lt;/b&gt; 177-181
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/dynamics/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; Gamma Distribution Implementation/Properties&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L125">public class ShapeScaleLaplacianEstimate</span>
+{
+
+	private static final R2ToR1 LowerIncompleteGamma()
+		throws Exception
+	{
+<span class="nc" id="L131">		return new R2ToR1()</span>
+<span class="nc" id="L132">		{</span>
+			@Override public double evaluate (
+				final double s,
+				final double t)
+				throws Exception
+			{
+<span class="nc" id="L138">				return new LowerEulerIntegral (</span>
+					null,
+					t
+<span class="nc" id="L141">				).evaluate (</span>
+					s
+				);
+			}
+		};
+	}
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L152">		EnvManager.InitEnv (</span>
+			&quot;&quot;
+		);
+
+<span class="nc" id="L156">		int digammaTermCount = 1000;</span>
+<span class="nc" id="L157">		double[] thetaArray =</span>
+		{
+			 1.0,
+			 2.0,
+			 3.0,
+			 4.0,
+			 5.0,
+		};
+<span class="nc" id="L165">		double[] sArray =</span>
+		{
+			 0.1,
+			 0.5,
+			 1.0,
+			 1.5,
+			 2.0,
+			 2.5,
+			 3.0,
+			 3.5,
+			 4.0,
+			 4.5,
+			 5.0,
+			 6.0,
+		};
+<span class="nc" id="L180">		int[] kArray =</span>
+		{
+			 // 1,
+			 2,
+			 3,
+			 4,
+			 5,
+			 6,
+			 7,
+			 8,
+		};
+
+<span class="nc" id="L192">		R1ToR1 gammaEstimator = new EulerIntegralSecondKind (</span>
+			null
+		);
+
+<span class="nc" id="L196">		R2ToR1 lowerIncompleteGammaEstimator = LowerIncompleteGamma();</span>
+
+<span class="nc" id="L198">		R1ToR1 digammaEstimator = CumulativeSeriesEstimator.AbramowitzStegun2007 (</span>
+			digammaTermCount
+		);
+
+<span class="nc" id="L202">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L204">		System.out.println (&quot;\t|                                                 GAMMA FUNCTION LAPLACIAN ESTIMATE                                               ||&quot;);</span>
+
+<span class="nc" id="L206">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L208">		System.out.println (&quot;\t|        L -&gt; R:                                                                                                                  ||&quot;);</span>
+
+<span class="nc" id="L210">		System.out.println (&quot;\t|                - Shape, Scale                                                                                                   ||&quot;);</span>
+
+<span class="nc" id="L212">		System.out.println (&quot;\t|                - Values for different s                                                                                         ||&quot;);</span>
+
+<span class="nc" id="L214">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L216" title="All 2 branches missed.">		for (double theta : thetaArray)</span>
+		{
+<span class="nc bnc" id="L218" title="All 2 branches missed.">			for (int k : kArray)</span>
+			{
+<span class="nc" id="L220">				R1ShapeScaleDistribution gammaDistribution = R1ShapeScaleDistribution.Standard (</span>
+					k,
+					theta,
+					gammaEstimator,
+					digammaEstimator,
+					lowerIncompleteGammaEstimator
+				);
+
+<span class="nc" id="L228">				String display = &quot;\t| [&quot; +</span>
+<span class="nc" id="L229">					FormatUtil.FormatDouble (k, 1, 0, 1., false) + &quot;, &quot; +</span>
+<span class="nc" id="L230">					FormatUtil.FormatDouble (theta, 1, 0, 1., false) +</span>
+				&quot;] =&gt;&quot;;
+
+<span class="nc bnc" id="L233" title="All 2 branches missed.">				for (double s : sArray)</span>
+				{
+<span class="nc" id="L235">					display = display + &quot; &quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L236">						gammaDistribution.laplacian (</span>
+							s
+						), 1, 5, 1., false
+					) + &quot; |&quot;;
+				}
+
+<span class="nc" id="L242">				System.out.println (display + &quot;|&quot;);</span>
+			}
+		}
+
+<span class="nc" id="L246">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L248">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L249">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

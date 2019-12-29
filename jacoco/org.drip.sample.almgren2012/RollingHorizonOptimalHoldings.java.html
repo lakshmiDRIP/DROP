@@ -16,38 +16,49 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -109,36 +120,36 @@ import org.drip.service.env.EnvManager;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/almgren2012/README.md&quot;&gt;Almgren (2012)&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/almgren2012/README.md&quot;&gt;Almgren (2012) Dynamic Optimal Adaptive&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L122">public class RollingHorizonOptimalHoldings {</span>
+<span class="nc" id="L133">public class RollingHorizonOptimalHoldings {</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L128">		EnvManager.InitEnv (</span>
+<span class="fc" id="L139">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L133">		double dblSize = 1.;</span>
-<span class="fc" id="L134">		int iNumTimeNode = 51;</span>
-<span class="fc" id="L135">		double dblBurstiness = 1.;</span>
-<span class="fc" id="L136">		double dblExecutionTime = 10.;</span>
-<span class="fc" id="L137">		double dblRelaxationTime = 1.;</span>
-<span class="fc" id="L138">		double dblReferenceLiquidity = 1.;</span>
-<span class="fc" id="L139">		double dblReferenceVolatility = 1.;</span>
-<span class="fc" id="L140">		double dblInitialMarketState = -0.5;</span>
-<span class="fc" id="L141">		double[] adblRiskAversion = new double[] {</span>
+<span class="fc" id="L144">		double dblSize = 1.;</span>
+<span class="fc" id="L145">		int iNumTimeNode = 51;</span>
+<span class="fc" id="L146">		double dblBurstiness = 1.;</span>
+<span class="fc" id="L147">		double dblExecutionTime = 10.;</span>
+<span class="fc" id="L148">		double dblRelaxationTime = 1.;</span>
+<span class="fc" id="L149">		double dblReferenceLiquidity = 1.;</span>
+<span class="fc" id="L150">		double dblReferenceVolatility = 1.;</span>
+<span class="fc" id="L151">		double dblInitialMarketState = -0.5;</span>
+<span class="fc" id="L152">		double[] adblRiskAversion = new double[] {</span>
 			0.01,
 			0.04,
 			0.09,
@@ -148,73 +159,73 @@ import org.drip.service.env.EnvManager;
 			1.00
 		};
 
-<span class="fc" id="L151">		double dblNonDimensionalTimeInterval = dblExecutionTime / (iNumTimeNode - 1) / dblRelaxationTime;</span>
-<span class="fc" id="L152">		double[][] aadblAdjustedNonDimensionalHoldings = new double[adblRiskAversion.length][];</span>
+<span class="fc" id="L162">		double dblNonDimensionalTimeInterval = dblExecutionTime / (iNumTimeNode - 1) / dblRelaxationTime;</span>
+<span class="fc" id="L163">		double[][] aadblAdjustedNonDimensionalHoldings = new double[adblRiskAversion.length][];</span>
 
-<span class="fc" id="L154">		OrderSpecification os = new OrderSpecification (</span>
+<span class="fc" id="L165">		OrderSpecification os = new OrderSpecification (</span>
 			dblSize,
 			dblExecutionTime
 		);
 
-<span class="fc" id="L159">		CoordinatedVariation cv = new CoordinatedVariation (</span>
+<span class="fc" id="L170">		CoordinatedVariation cv = new CoordinatedVariation (</span>
 			dblReferenceVolatility,
 			dblReferenceLiquidity
 		);
 
-<span class="fc" id="L164">		DiffusionEvaluatorOrnsteinUhlenbeck oup1D = DiffusionEvaluatorOrnsteinUhlenbeck.ZeroMean (</span>
+<span class="fc" id="L175">		DiffusionEvaluatorOrnsteinUhlenbeck oup1D = DiffusionEvaluatorOrnsteinUhlenbeck.ZeroMean (</span>
 			dblBurstiness,
 			dblRelaxationTime
 		);
 
-<span class="fc" id="L169">		MarketState[] aMS = OrnsteinUhlenbeckSequence.Systemic (</span>
+<span class="fc" id="L180">		MarketState[] aMS = OrnsteinUhlenbeckSequence.Systemic (</span>
 			oup1D,
 			dblNonDimensionalTimeInterval * dblRelaxationTime,
 			dblInitialMarketState,
 			iNumTimeNode
-<span class="fc" id="L174">		).realizedMarketState();</span>
+<span class="fc" id="L185">		).realizedMarketState();</span>
 
-<span class="fc bfc" id="L176" title="All 2 branches covered.">		for (int i = 0; i &lt; adblRiskAversion.length; ++i)</span>
-<span class="fc" id="L177">			aadblAdjustedNonDimensionalHoldings[i] = new CoordinatedVariationTrajectoryGenerator (</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">		for (int i = 0; i &lt; adblRiskAversion.length; ++i)</span>
+<span class="fc" id="L188">			aadblAdjustedNonDimensionalHoldings[i] = new CoordinatedVariationTrajectoryGenerator (</span>
 				os,
 				cv,
 				new MeanVarianceObjectiveUtility (adblRiskAversion[i]),
-<span class="fc" id="L181">				NonDimensionalCostEvolverSystemic.Standard (oup1D),</span>
+<span class="fc" id="L192">				NonDimensionalCostEvolverSystemic.Standard (oup1D),</span>
 				CoordinatedVariationTrajectoryGenerator.TRADE_RATE_ZERO_INITIALIZATION
-<span class="fc" id="L183">			).rollingHorizon (aMS).nonDimensionalHoldings();</span>
+<span class="fc" id="L194">			).rollingHorizon (aMS).nonDimensionalHoldings();</span>
 
-<span class="fc" id="L185">		System.out.println();</span>
+<span class="fc" id="L196">		System.out.println();</span>
 
-<span class="fc" id="L187">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L198">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L189">		System.out.println (&quot;\t||                 ROLLING HORIZON OPTIMAL TRAJECTORY HOLDINGS                 ||&quot;);</span>
+<span class="fc" id="L200">		System.out.println (&quot;\t||                 ROLLING HORIZON OPTIMAL TRAJECTORY HOLDINGS                 ||&quot;);</span>
 
-<span class="fc" id="L191">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L202">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L193">		System.out.println (&quot;\t||     L -&gt; R:                                                                 ||&quot;);</span>
+<span class="fc" id="L204">		System.out.println (&quot;\t||     L -&gt; R:                                                                 ||&quot;);</span>
 
-<span class="fc" id="L195">		System.out.println (&quot;\t||             - Time                                                          ||&quot;);</span>
+<span class="fc" id="L206">		System.out.println (&quot;\t||             - Time                                                          ||&quot;);</span>
 
-<span class="fc bfc" id="L197" title="All 2 branches covered.">		for (int j = 0; j &lt; adblRiskAversion.length; ++j)</span>
-<span class="fc" id="L198">			System.out.println (</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">		for (int j = 0; j &lt; adblRiskAversion.length; ++j)</span>
+<span class="fc" id="L209">			System.out.println (</span>
 				&quot;\t||             - Non Dimensional Risk Aversion =&gt;&quot; +
-<span class="fc" id="L200">				FormatUtil.FormatDouble (dblRelaxationTime * dblReferenceVolatility * Math.sqrt (adblRiskAversion[j] / dblReferenceLiquidity), 1, 2, 1.) +</span>
+<span class="fc" id="L211">				FormatUtil.FormatDouble (dblRelaxationTime * dblReferenceVolatility * Math.sqrt (adblRiskAversion[j] / dblReferenceLiquidity), 1, 2, 1.) +</span>
 				&quot;                         ||&quot;
 			);
 
-<span class="fc" id="L204">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||&quot;);</span>
-
-<span class="fc bfc" id="L206" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTimeNode - 1; ++i) {</span>
-<span class="fc" id="L207">			String strDump = &quot;\t|| &quot; + FormatUtil.FormatDouble (i * dblNonDimensionalTimeInterval * dblRelaxationTime, 1, 2, 1.);</span>
-
-<span class="fc bfc" id="L209" title="All 2 branches covered.">			for (int j = 0; j &lt; adblRiskAversion.length; ++j)</span>
-<span class="fc" id="L210">				strDump = strDump + &quot; | &quot; + FormatUtil.FormatDouble (aadblAdjustedNonDimensionalHoldings[j][i], 1, 4, 1.);</span>
-
-<span class="fc" id="L212">			System.out.println (strDump + &quot; ||&quot;);</span>
-		}
-
 <span class="fc" id="L215">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L217">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L218">	}</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTimeNode - 1; ++i) {</span>
+<span class="fc" id="L218">			String strDump = &quot;\t|| &quot; + FormatUtil.FormatDouble (i * dblNonDimensionalTimeInterval * dblRelaxationTime, 1, 2, 1.);</span>
+
+<span class="fc bfc" id="L220" title="All 2 branches covered.">			for (int j = 0; j &lt; adblRiskAversion.length; ++j)</span>
+<span class="fc" id="L221">				strDump = strDump + &quot; | &quot; + FormatUtil.FormatDouble (aadblAdjustedNonDimensionalHoldings[j][i], 1, 4, 1.);</span>
+
+<span class="fc" id="L223">			System.out.println (strDump + &quot; ||&quot;);</span>
+		}
+
+<span class="fc" id="L226">		System.out.println (&quot;\t||-----------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L228">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L229">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

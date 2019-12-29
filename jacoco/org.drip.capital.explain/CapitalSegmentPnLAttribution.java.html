@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CapitalSegmentPnLAttribution.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.explain</a> &gt; <span class="el_source">CapitalSegmentPnLAttribution.java</span></div><h1>CapitalSegmentPnLAttribution.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.explain;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;CapitalSegmentPnLAttribution&lt;/i&gt; holds the Scenario-Level Cumulative Capital Attributions from the
+ * 	Contributing Paths of the Stand-alone Capital Units corresponding to a Capital Segment. The References
+ * 	are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision (2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/explain/README.md&quot;&gt;Economic Risk Capital Attribution Explain&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class CapitalSegmentPnLAttribution
+	extends org.drip.capital.explain.PnLAttribution
+{
+<span class="nc" id="L111">	private int _pathCount = -1;</span>
+<span class="nc" id="L112">	private java.util.List&lt;java.lang.Integer&gt; _pathIndexList = null;</span>
+
+	private boolean updateFSDecompositionExplainMap (
+		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; unitFSPnLDecompositionExplainMap)
+	{
+<span class="nc bnc" id="L117" title="All 2 branches missed.">		if (null == unitFSPnLDecompositionExplainMap)</span>
+		{
+<span class="nc" id="L119">			return true;</span>
+		}
+
+<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (null == _fsPnLDecompositionExplainMap)</span>
+		{
+<span class="nc" id="L124">			_fsPnLDecompositionExplainMap = new</span>
+				org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
+		}
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; fsPnLDecompositionExplainEntry :
+<span class="nc bnc" id="L129" title="All 2 branches missed.">			unitFSPnLDecompositionExplainMap.entrySet())</span>
+		{
+<span class="nc" id="L131">			java.lang.String fsType = fsPnLDecompositionExplainEntry.getKey();</span>
+
+<span class="nc bnc" id="L133" title="All 2 branches missed.">			if (_fsPnLDecompositionExplainMap.containsKey (</span>
+				fsType
+			))
+			{
+<span class="nc" id="L137">				_fsPnLDecompositionExplainMap.put (</span>
+					fsType,
+<span class="nc" id="L139">					_fsPnLDecompositionExplainMap.get (</span>
+						fsType
+<span class="nc" id="L141">					) + fsPnLDecompositionExplainEntry.getValue()</span>
+				);
+			}
+			else
+			{
+<span class="nc" id="L146">				_fsPnLDecompositionExplainMap.put (</span>
+					fsType,
+<span class="nc" id="L148">					fsPnLDecompositionExplainEntry.getValue()</span>
+				);
+			}
+<span class="nc" id="L151">		}</span>
+
+<span class="nc" id="L153">		return true;</span>
+	}
+
+	private boolean updateSystemicEventNamePnLExplainMap (
+		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; unitSystemicPnLExplainMap)
+	{
+<span class="nc bnc" id="L159" title="All 2 branches missed.">		if (null == unitSystemicPnLExplainMap)</span>
+		{
+<span class="nc" id="L161">			return true;</span>
+		}
+
+<span class="nc bnc" id="L164" title="All 2 branches missed.">		if (null == _systemicPnLExplainMap)</span>
+		{
+<span class="nc" id="L166">			_systemicPnLExplainMap = new</span>
+				org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
+		}
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; systemicExplainEntry :
+<span class="nc bnc" id="L171" title="All 2 branches missed.">			unitSystemicPnLExplainMap.entrySet())</span>
+		{
+<span class="nc" id="L173">			java.lang.String systemicEventName = systemicExplainEntry.getKey();</span>
+
+<span class="nc bnc" id="L175" title="All 2 branches missed.">			if (_systemicPnLExplainMap.containsKey (</span>
+				systemicEventName
+			))
+			{
+<span class="nc" id="L179">				_systemicPnLExplainMap.put (</span>
+					systemicEventName,
+<span class="nc" id="L181">					_systemicPnLExplainMap.get (</span>
+						systemicEventName
+<span class="nc" id="L183">					) + systemicExplainEntry.getValue()</span>
+				);
+			}
+			else
+			{
+<span class="nc" id="L188">				_systemicPnLExplainMap.put (</span>
+					systemicEventName,
+<span class="nc" id="L190">					systemicExplainEntry.getValue()</span>
+				);
+			}
+<span class="nc" id="L193">		}</span>
+
+<span class="nc" id="L195">		return true;</span>
+	}
+
+	private boolean updateSystemicGrossPnLExplainMap (
+		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; unitSystemicGrossPnLExplainMap)
+	{
+<span class="nc bnc" id="L201" title="All 2 branches missed.">		if (null == unitSystemicGrossPnLExplainMap)</span>
+		{
+<span class="nc" id="L203">			return true;</span>
+		}
+
+<span class="nc bnc" id="L206" title="All 2 branches missed.">		if (null == _systemicGrossPnLExplainMap)</span>
+		{
+<span class="nc" id="L208">			_systemicGrossPnLExplainMap = new</span>
+				org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
+		}
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; systemicGrossExplainEntry :
+<span class="nc bnc" id="L213" title="All 2 branches missed.">			unitSystemicGrossPnLExplainMap.entrySet())</span>
+		{
+<span class="nc" id="L215">			java.lang.String systemicEventName = systemicGrossExplainEntry.getKey();</span>
+
+<span class="nc bnc" id="L217" title="All 2 branches missed.">			if (_systemicGrossPnLExplainMap.containsKey (</span>
+				systemicEventName
+			))
+			{
+<span class="nc" id="L221">				_systemicGrossPnLExplainMap.put (</span>
+					systemicEventName,
+<span class="nc" id="L223">					_systemicGrossPnLExplainMap.get (</span>
+						systemicEventName
+<span class="nc" id="L225">					) + systemicGrossExplainEntry.getValue()</span>
+				);
+			}
+			else
+			{
+<span class="nc" id="L230">				_systemicGrossPnLExplainMap.put (</span>
+					systemicEventName,
+<span class="nc" id="L232">					systemicGrossExplainEntry.getValue()</span>
+				);
+			}
+<span class="nc" id="L235">		}</span>
+
+<span class="nc" id="L237">		return true;</span>
+	}
+
+	private boolean updateSystemicInstanceCountMap (
+		final java.util.Map&lt;java.lang.String, java.lang.Integer&gt; unitSystemicInstanceCountMap)
+	{
+<span class="nc bnc" id="L243" title="All 2 branches missed.">		if (null == unitSystemicInstanceCountMap)</span>
+		{
+<span class="nc" id="L245">			return true;</span>
+		}
+
+<span class="nc bnc" id="L248" title="All 2 branches missed.">		if (null == _systemicInstanceCountMap)</span>
+		{
+<span class="nc" id="L250">			_systemicInstanceCountMap = new</span>
+				org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Integer&gt;();
+		}
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Integer&gt; systemicInstanceCountEntry :
+<span class="nc bnc" id="L255" title="All 2 branches missed.">			unitSystemicInstanceCountMap.entrySet())</span>
+		{
+<span class="nc" id="L257">			java.lang.String systemicEventName = systemicInstanceCountEntry.getKey();</span>
+
+<span class="nc bnc" id="L259" title="All 2 branches missed.">			if (_systemicInstanceCountMap.containsKey (</span>
+				systemicEventName
+			))
+			{
+<span class="nc" id="L263">				_systemicInstanceCountMap.put (</span>
+					systemicEventName,
+<span class="nc" id="L265">					_systemicInstanceCountMap.get (</span>
+						systemicEventName
+<span class="nc" id="L267">					) + systemicInstanceCountEntry.getValue()</span>
+				);
+			}
+			else
+			{
+<span class="nc" id="L272">				_systemicInstanceCountMap.put (</span>
+					systemicEventName,
+<span class="nc" id="L274">					systemicInstanceCountEntry.getValue()</span>
+				);
+			}
+<span class="nc" id="L277">		}</span>
+
+<span class="nc" id="L279">		return true;</span>
+	}
+
+	private boolean updateCorrelatedPnLExplainMap (
+		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; unitCorrelatedPnLExplainMap)
+	{
+<span class="nc bnc" id="L285" title="All 2 branches missed.">		if (null == unitCorrelatedPnLExplainMap)</span>
+		{
+<span class="nc" id="L287">			return true;</span>
+		}
+
+<span class="nc bnc" id="L290" title="All 2 branches missed.">		if (null == _correlatedPnLExplainMap)</span>
+		{
+<span class="nc" id="L292">			_correlatedPnLExplainMap = new</span>
+				org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
+		}
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; correlatedExplainEntry :
+<span class="nc bnc" id="L297" title="All 2 branches missed.">			unitCorrelatedPnLExplainMap.entrySet())</span>
+		{
+<span class="nc" id="L299">			java.lang.String correlatedEventName = correlatedExplainEntry.getKey();</span>
+
+<span class="nc bnc" id="L301" title="All 2 branches missed.">			if (_correlatedPnLExplainMap.containsKey (</span>
+				correlatedEventName
+			))
+			{
+<span class="nc" id="L305">				_correlatedPnLExplainMap.put (</span>
+					correlatedEventName,
+<span class="nc" id="L307">					_correlatedPnLExplainMap.get (</span>
+						correlatedEventName
+<span class="nc" id="L309">					) + correlatedExplainEntry.getValue()</span>
+				);
+			}
+			else
+			{
+<span class="nc" id="L314">				_correlatedPnLExplainMap.put (</span>
+					correlatedEventName,
+<span class="nc" id="L316">					correlatedExplainEntry.getValue()</span>
+				);
+			}
+<span class="nc" id="L319">		}</span>
+
+<span class="nc" id="L321">		return true;</span>
+	}
+
+	private boolean updateCorrelatedInstanceCountMap (
+		final java.util.Map&lt;java.lang.String, java.lang.Integer&gt; unitCorrelatedInstanceCountMap)
+	{
+<span class="nc bnc" id="L327" title="All 2 branches missed.">		if (null == unitCorrelatedInstanceCountMap)</span>
+		{
+<span class="nc" id="L329">			return true;</span>
+		}
+
+<span class="nc bnc" id="L332" title="All 2 branches missed.">		if (null == _correlatedInstanceCountMap)</span>
+		{
+<span class="nc" id="L334">			_correlatedInstanceCountMap = new</span>
+				org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Integer&gt;();
+		}
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Integer&gt; correlatedInstanceCountEntry :
+<span class="nc bnc" id="L339" title="All 2 branches missed.">			unitCorrelatedInstanceCountMap.entrySet())</span>
+		{
+<span class="nc" id="L341">			java.lang.String correlatedEventName = correlatedInstanceCountEntry.getKey();</span>
+
+<span class="nc bnc" id="L343" title="All 2 branches missed.">			if (_correlatedInstanceCountMap.containsKey (</span>
+				correlatedEventName
+			))
+			{
+<span class="nc" id="L347">				_correlatedInstanceCountMap.put (</span>
+					correlatedEventName,
+<span class="nc" id="L349">					_correlatedInstanceCountMap.get (</span>
+						correlatedEventName
+<span class="nc" id="L351">					) + correlatedInstanceCountEntry.getValue()</span>
+				);
+			}
+			else
+			{
+<span class="nc" id="L356">				_correlatedInstanceCountMap.put (</span>
+					correlatedEventName,
+<span class="nc" id="L358">					correlatedInstanceCountEntry.getValue()</span>
+				);
+			}
+<span class="nc" id="L361">		}</span>
+
+<span class="nc" id="L363">		return true;</span>
+	}
+
+	private boolean updateIdiosyncraticPnLExplainMap (
+		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; unitIdiosyncraticPnLExplainMap)
+	{
+<span class="nc bnc" id="L369" title="All 2 branches missed.">		if (null == unitIdiosyncraticPnLExplainMap)</span>
+		{
+<span class="nc" id="L371">			return true;</span>
+		}
+
+<span class="nc bnc" id="L374" title="All 2 branches missed.">		if (null == _idiosyncraticPnLExplainMap)</span>
+		{
+<span class="nc" id="L376">			_idiosyncraticPnLExplainMap = new</span>
+				org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
+		}
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; idiosyncraticExplainEntry :
+<span class="nc bnc" id="L381" title="All 2 branches missed.">			unitIdiosyncraticPnLExplainMap.entrySet())</span>
+		{
+<span class="nc" id="L383">			java.lang.String idiosyncraticEventName = idiosyncraticExplainEntry.getKey();</span>
+
+<span class="nc bnc" id="L385" title="All 2 branches missed.">			if (_idiosyncraticPnLExplainMap.containsKey (</span>
+				idiosyncraticEventName
+			))
+			{
+<span class="nc" id="L389">				_idiosyncraticPnLExplainMap.put (</span>
+					idiosyncraticEventName,
+<span class="nc" id="L391">					_idiosyncraticPnLExplainMap.get (</span>
+						idiosyncraticEventName
+<span class="nc" id="L393">					) + idiosyncraticExplainEntry.getValue()</span>
+				);
+			}
+			else
+			{
+<span class="nc" id="L398">				_idiosyncraticPnLExplainMap.put (</span>
+					idiosyncraticEventName,
+<span class="nc" id="L400">					idiosyncraticExplainEntry.getValue()</span>
+				);
+			}
+<span class="nc" id="L403">		}</span>
+
+<span class="nc" id="L405">		return true;</span>
+	}
+
+	private boolean updateIdiosyncraticInstanceCountMap (
+		final java.util.Map&lt;java.lang.String, java.lang.Integer&gt; unitIdiosyncraticInstanceCountMap)
+	{
+<span class="nc bnc" id="L411" title="All 2 branches missed.">		if (null == unitIdiosyncraticInstanceCountMap)</span>
+		{
+<span class="nc" id="L413">			return true;</span>
+		}
+
+<span class="nc bnc" id="L416" title="All 2 branches missed.">		if (null == _idiosyncraticInstanceCountMap)</span>
+		{
+<span class="nc" id="L418">			_idiosyncraticInstanceCountMap = new</span>
+				org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Integer&gt;();
+		}
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Integer&gt; idiosyncraticInstanceCountEntry :
+<span class="nc bnc" id="L423" title="All 2 branches missed.">			unitIdiosyncraticInstanceCountMap.entrySet())</span>
+		{
+<span class="nc" id="L425">			java.lang.String idiosyncraticEventName = idiosyncraticInstanceCountEntry.getKey();</span>
+
+<span class="nc bnc" id="L427" title="All 2 branches missed.">			if (_idiosyncraticInstanceCountMap.containsKey (</span>
+				idiosyncraticEventName
+			))
+			{
+<span class="nc" id="L431">				_idiosyncraticInstanceCountMap.put (</span>
+					idiosyncraticEventName,
+<span class="nc" id="L433">					_idiosyncraticInstanceCountMap.get (</span>
+						idiosyncraticEventName
+<span class="nc" id="L435">					) + idiosyncraticInstanceCountEntry.getValue()</span>
+				);
+			}
+			else
+			{
+<span class="nc" id="L440">				_idiosyncraticInstanceCountMap.put (</span>
+					idiosyncraticEventName,
+<span class="nc" id="L442">					idiosyncraticInstanceCountEntry.getValue()</span>
+				);
+			}
+<span class="nc" id="L445">		}</span>
+
+<span class="nc" id="L447">		return true;</span>
+	}
+
+	private boolean accumulateUnitAttribution (
+		final org.drip.capital.explain.PnLAttribution pnlAttribution)
+	{
+<span class="nc bnc" id="L453" title="All 2 branches missed.">		if (!updateFSDecompositionExplainMap (</span>
+<span class="nc" id="L454">			pnlAttribution.fsPnLDecompositionExplainMap()</span>
+		))
+		{
+<span class="nc" id="L457">			return false;</span>
+		}
+
+<span class="nc bnc" id="L460" title="All 2 branches missed.">		if (!updateSystemicEventNamePnLExplainMap (</span>
+<span class="nc" id="L461">			pnlAttribution.systemicPnLExplainMap()</span>
+		))
+		{
+<span class="nc" id="L464">			return false;</span>
+		}
+
+<span class="nc bnc" id="L467" title="All 2 branches missed.">		if (!updateSystemicGrossPnLExplainMap (</span>
+<span class="nc" id="L468">			pnlAttribution.systemicGrossPnLExplainMap()</span>
+		))
+		{
+<span class="nc" id="L471">			return false;</span>
+		}
+
+<span class="nc bnc" id="L474" title="All 2 branches missed.">		if (!updateSystemicInstanceCountMap (</span>
+<span class="nc" id="L475">			pnlAttribution.systemicInstanceCountMap()</span>
+		))
+		{
+<span class="nc" id="L478">			return false;</span>
+		}
+
+<span class="nc bnc" id="L481" title="All 2 branches missed.">		if (!updateCorrelatedPnLExplainMap (</span>
+<span class="nc" id="L482">			pnlAttribution.correlatedPnLExplainMap()</span>
+		))
+		{
+<span class="nc" id="L485">			return false;</span>
+		}
+
+<span class="nc bnc" id="L488" title="All 2 branches missed.">		if (!updateCorrelatedInstanceCountMap (</span>
+<span class="nc" id="L489">			pnlAttribution.correlatedInstanceCountMap()</span>
+		))
+		{
+<span class="nc" id="L492">			return false;</span>
+		}
+
+<span class="nc bnc" id="L495" title="All 2 branches missed.">		if (!updateIdiosyncraticPnLExplainMap (</span>
+<span class="nc" id="L496">			pnlAttribution.idiosyncraticPnLExplainMap()</span>
+		))
+		{
+<span class="nc" id="L499">			return false;</span>
+		}
+
+<span class="nc bnc" id="L502" title="All 2 branches missed.">		if (!updateIdiosyncraticInstanceCountMap (</span>
+<span class="nc" id="L503">			pnlAttribution.idiosyncraticInstanceCountMap()</span>
+		))
+		{
+<span class="nc" id="L506">			return false;</span>
+		}
+
+<span class="nc" id="L509">		return true;</span>
+	}
+
+	/**
+	 * CapitalSegmentPnLAttribution Constructor
+	 * 
+	 * @param pnlAttributionArray Array of PnL Attributions
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public CapitalSegmentPnLAttribution (
+		final org.drip.capital.explain.PnLAttribution[] pnlAttributionArray)
+		throws java.lang.Exception
+<span class="nc" id="L523">	{</span>
+<span class="nc bnc" id="L524" title="All 2 branches missed.">		if (null == pnlAttributionArray)</span>
+		{
+<span class="nc" id="L526">			throw new java.lang.Exception (</span>
+				&quot;CapitalSegmentPnLAttribution Constructor =&gt; Invalid Inputs&quot;
+			);
+		}
+
+<span class="nc" id="L531">		int capitalUnitCount = pnlAttributionArray.length;</span>
+
+<span class="nc bnc" id="L533" title="All 2 branches missed.">		if (0 &gt;= capitalUnitCount)</span>
+		{
+<span class="nc" id="L535">			throw new java.lang.Exception (</span>
+				&quot;CapitalSegmentPnLAttribution Constructor =&gt; Invalid Inputs&quot;
+			);
+		}
+
+<span class="nc" id="L540">		_var = 0.;</span>
+<span class="nc" id="L541">		_expectedShortfall = 0.;</span>
+
+<span class="nc" id="L543">		_pathCount = pnlAttributionArray[0].pathCount();</span>
+
+<span class="nc bnc" id="L545" title="All 2 branches missed.">		for (int capitalUnitIndex = 0; capitalUnitIndex &lt; capitalUnitCount; ++capitalUnitIndex)</span>
+		{
+<span class="nc bnc" id="L547" title="All 2 branches missed.">			if (null == pnlAttributionArray[capitalUnitIndex])</span>
+			{
+<span class="nc" id="L549">				throw new java.lang.Exception (</span>
+					&quot;CapitalSegmentPnLAttribution Constructor =&gt; Invalid Inputs&quot;
+				);
+			}
+
+<span class="nc" id="L554">			_var = _var + pnlAttributionArray[capitalUnitIndex].var();</span>
+
+<span class="nc" id="L556">			_expectedShortfall = _expectedShortfall +</span>
+<span class="nc" id="L557">				pnlAttributionArray[capitalUnitIndex].expectedShortfall();</span>
+
+<span class="nc bnc" id="L559" title="All 2 branches missed.">			if (!accumulateUnitAttribution (</span>
+				pnlAttributionArray[capitalUnitIndex]
+			))
+			{
+<span class="nc" id="L563">				throw new java.lang.Exception (</span>
+					&quot;CapitalSegmentPnLAttribution Constructor =&gt; Invalid Inputs&quot;
+				);
+			}
+		}
+
+<span class="nc" id="L569">		_pathIndexList = pnlAttributionArray[0].pathIndexList();</span>
+<span class="nc" id="L570">	}</span>
+
+	@Override public java.util.List&lt;java.lang.Integer&gt; pathIndexList()
+	{
+<span class="nc" id="L574">		return _pathIndexList;</span>
+	}
+
+	@Override public int pathCount()
+	{
+<span class="nc" id="L579">		return _pathCount;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

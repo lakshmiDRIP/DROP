@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CapitalUnitStressEventContext.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.shell</a> &gt; <span class="el_source">CapitalUnitStressEventContext.java</span></div><h1>CapitalUnitStressEventContext.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.shell;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;CapitalUnitStressEventContext&lt;/i&gt; maintains the Systemic, Idiosyncratic, and Correlated Scenarios at
+ * 	the Capital Unit Coordinate Level. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/shell/README.md&quot;&gt;Economic Risk Capital Parameter Contexts&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class CapitalUnitStressEventContext
+{
+<span class="fc" id="L109">	private java.util.Map&lt;java.lang.String, org.drip.capital.entity.CapitalUnitEventContainer&gt;</span>
+		_capitalUnitEventMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.capital.entity.CapitalUnitEventContainer&gt;();
+
+	/**
+	 * Empty CapitalUnitStressEventContext Constructor
+	 */
+
+	public CapitalUnitStressEventContext()
+<span class="fc" id="L118">	{</span>
+<span class="fc" id="L119">	}</span>
+
+	/**
+	 * Add a Systemic Event to the Capital Unit Coordinate
+	 * 
+	 * @param capitalCoordinateFQN The Capital Coordinate FQN
+	 * @param systemicScenarioPnLSeries Systemic Scenario PnL Series
+	 * @param systemicScenarioPnLSeriesPAA Systemic Scenario PnL Series PAA
+	 * 
+	 * @return TRUE - Systemic Event successfully created and added to the Capital Unit Event Map
+	 */
+
+	public boolean addSystemic (
+		final java.lang.String capitalCoordinateFQN,
+		final org.drip.capital.shell.SystemicScenarioPnLSeries systemicScenarioPnLSeries,
+		final org.drip.capital.shell.SystemicScenarioPnLSeriesPAA systemicScenarioPnLSeriesPAA)
+	{
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">		if (null == systemicScenarioPnLSeries)</span>
+		{
+<span class="nc" id="L138">			return false;</span>
+		}
+
+<span class="fc" id="L141">		org.drip.capital.entity.CapitalUnitEventContainer capitalUnitEventContainer =</span>
+			new org.drip.capital.entity.CapitalUnitEventContainer();
+
+		try
+		{
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">			if (!capitalUnitEventContainer.addSystemicEvent (</span>
+				new org.drip.capital.stress.Event (
+<span class="fc" id="L148">					org.drip.capital.stress.EventSpecification.Systemic1974Baseline(),</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">					systemicScenarioPnLSeries.baseline1974(),</span>
+					null == systemicScenarioPnLSeriesPAA ?
+<span class="pc" id="L151">						null : systemicScenarioPnLSeriesPAA.baseline1974DecompositionMap()</span>
+				)
+			))
+			{
+<span class="nc" id="L155">				return false;</span>
+			}
+
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">			if (!capitalUnitEventContainer.addSystemicEvent (</span>
+				new org.drip.capital.stress.Event (
+<span class="fc" id="L160">					org.drip.capital.stress.EventSpecification.Systemic2008Baseline(),</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">					systemicScenarioPnLSeries.baseline2008(),</span>
+					null == systemicScenarioPnLSeriesPAA ?
+<span class="pc" id="L163">						null : systemicScenarioPnLSeriesPAA.baseline2008DecompositionMap()</span>
+				)
+			))
+			{
+<span class="nc" id="L167">				return false;</span>
+			}
+
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">			if (!capitalUnitEventContainer.addSystemicEvent (</span>
+				new org.drip.capital.stress.Event (
+<span class="fc" id="L172">					org.drip.capital.stress.EventSpecification.SystemicDeepDownturn(),</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">					systemicScenarioPnLSeries.deepDownturn(),</span>
+					null == systemicScenarioPnLSeriesPAA ?
+<span class="pc" id="L175">						null : systemicScenarioPnLSeriesPAA.deepDownturnDecompositionMap()</span>
+				)
+			))
+			{
+<span class="nc" id="L179">				return false;</span>
+			}
+
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">			if (!capitalUnitEventContainer.addSystemicEvent (</span>
+				new org.drip.capital.stress.Event (
+<span class="fc" id="L184">					org.drip.capital.stress.EventSpecification.SystemicDollarDecline(),</span>
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">					systemicScenarioPnLSeries.dollarDecline(),</span>
+					null == systemicScenarioPnLSeriesPAA ?
+<span class="pc" id="L187">						null : systemicScenarioPnLSeriesPAA.dollarDeclineDecompositionMap()</span>
+				)
+			))
+			{
+<span class="nc" id="L191">				return false;</span>
+			}
+
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">			if (!capitalUnitEventContainer.addSystemicEvent (</span>
+				new org.drip.capital.stress.Event (
+<span class="fc" id="L196">					org.drip.capital.stress.EventSpecification.SystemicInterestRateShock(),</span>
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">					systemicScenarioPnLSeries.interestRateShock(),</span>
+					null == systemicScenarioPnLSeriesPAA ?
+<span class="pc" id="L199">						null : systemicScenarioPnLSeriesPAA.interestRateShockDecompositionMap()</span>
+				)
+			))
+			{
+<span class="nc" id="L203">				return false;</span>
+			}
+
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">			if (!capitalUnitEventContainer.addSystemicEvent (</span>
+				new org.drip.capital.stress.Event (
+<span class="fc" id="L208">					org.drip.capital.stress.EventSpecification.SystemicLostDecade(),</span>
+<span class="pc bpc" id="L209" title="1 of 2 branches missed.">					systemicScenarioPnLSeries.lostDecade(),</span>
+					null == systemicScenarioPnLSeriesPAA ?
+<span class="pc" id="L211">						null : systemicScenarioPnLSeriesPAA.lostDecadeDecompositionMap()</span>
+				)
+			))
+			{
+<span class="nc" id="L215">				return false;</span>
+			}
+
+<span class="fc" id="L218">			_capitalUnitEventMap.put (</span>
+				new org.drip.capital.label.CapitalSegmentCoordinate (
+					capitalCoordinateFQN
+<span class="fc" id="L221">				).fullyQualifiedName(),</span>
+				capitalUnitEventContainer
+			);
+
+<span class="fc" id="L225">			return true;</span>
+		}
+<span class="nc" id="L227">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L229">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L232">		return false;</span>
+	}
+
+	/**
+	 * Add a Correlated Event to the Capital Unit Coordinate
+	 * 
+	 * @param capitalCoordinateFQN The Capital Coordinate FQN
+	 * @param correlatedEventName Correlated Event Name
+	 * @param correlatedSystemicScenarioPnLSeries Correlated Systemic Scenario PnL Series
+	 * 
+	 * @return TRUE - Correlated Event successfully created and added to the Capital Unit Event Map
+	 */
+
+	public boolean addCorrelated (
+		final java.lang.String capitalCoordinateFQN,
+		final java.lang.String correlatedEventName,
+		final org.drip.capital.shell.SystemicScenarioPnLSeries correlatedSystemicScenarioPnLSeries)
+	{
+		try
+		{
+<span class="fc bfc" id="L252" title="All 2 branches covered.">			if (!_capitalUnitEventMap.containsKey (</span>
+				capitalCoordinateFQN
+			))
+			{
+<span class="fc" id="L256">				addSystemic (</span>
+					capitalCoordinateFQN,
+<span class="fc" id="L258">					org.drip.capital.shell.SystemicScenarioPnLSeries.ZERO(),</span>
+					null
+				);
+			}
+
+<span class="fc" id="L263">			org.drip.capital.entity.CapitalUnitEventContainer capitalUnitEventContainer =</span>
+<span class="fc" id="L264">				_capitalUnitEventMap.get (</span>
+					capitalCoordinateFQN
+				);
+
+<span class="pc bpc" id="L268" title="1 of 2 branches missed.">			if (!capitalUnitEventContainer.addCorrelatedEvent (</span>
+				org.drip.capital.definition.SystemicScenarioDefinition.BASELINE_1974,
+				correlatedEventName,
+<span class="fc" id="L271">				correlatedSystemicScenarioPnLSeries.baseline1974()</span>
+			))
+			{
+<span class="nc" id="L274">				return false;</span>
+			}
+
+<span class="pc bpc" id="L277" title="1 of 2 branches missed.">			if (!capitalUnitEventContainer.addCorrelatedEvent (</span>
+				org.drip.capital.definition.SystemicScenarioDefinition.BASELINE_2008,
+				correlatedEventName,
+<span class="fc" id="L280">				correlatedSystemicScenarioPnLSeries.baseline2008()</span>
+			))
+			{
+<span class="nc" id="L283">				return false;</span>
+			}
+
+<span class="pc bpc" id="L286" title="1 of 2 branches missed.">			if (!capitalUnitEventContainer.addCorrelatedEvent (</span>
+				org.drip.capital.definition.SystemicScenarioDefinition.DEEP_DOWNTURN,
+				correlatedEventName,
+<span class="fc" id="L289">				correlatedSystemicScenarioPnLSeries.deepDownturn()</span>
+			))
+			{
+<span class="nc" id="L292">				return false;</span>
+			}
+
+<span class="pc bpc" id="L295" title="1 of 2 branches missed.">			if (!capitalUnitEventContainer.addCorrelatedEvent (</span>
+				org.drip.capital.definition.SystemicScenarioDefinition.DOLLAR_DECLINE,
+				correlatedEventName,
+<span class="fc" id="L298">				correlatedSystemicScenarioPnLSeries.dollarDecline()</span>
+			))
+			{
+<span class="nc" id="L301">				return false;</span>
+			}
+
+<span class="pc bpc" id="L304" title="1 of 2 branches missed.">			if (!capitalUnitEventContainer.addCorrelatedEvent (</span>
+				org.drip.capital.definition.SystemicScenarioDefinition.INTEREST_RATE_SHOCK,
+				correlatedEventName,
+<span class="fc" id="L307">				correlatedSystemicScenarioPnLSeries.interestRateShock()</span>
+			))
+			{
+<span class="nc" id="L310">				return false;</span>
+			}
+
+<span class="pc bpc" id="L313" title="1 of 2 branches missed.">			if (!capitalUnitEventContainer.addCorrelatedEvent (</span>
+				org.drip.capital.definition.SystemicScenarioDefinition.LOST_DECADE,
+				correlatedEventName,
+<span class="fc" id="L316">				correlatedSystemicScenarioPnLSeries.lostDecade()</span>
+			))
+			{
+<span class="nc" id="L319">				return false;</span>
+			}
+
+<span class="fc" id="L322">			return true;</span>
+		}
+<span class="nc" id="L324">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L326">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L329">		return false;</span>
+	}
+
+	/**
+	 * Add a Idiosyncratic Event to the Capital Unit Coordinate
+	 * 
+	 * @param capitalUnitCoordinateFQN The Capital Unit Coordinate FQN
+	 * @param scenarioName Scenario Name
+	 * @param scenarioProbability Scenario Probability
+	 * @param scenarioPnL Scenario PnL
+	 * 
+	 * @return TRUE - Idiosyncratic Event successfully created and added to the Capital Unit Event Map
+	 */
+
+	public boolean addIdiosyncratic (
+		final java.lang.String capitalUnitCoordinateFQN,
+		final java.lang.String scenarioName,
+		final double scenarioProbability,
+		final double scenarioPnL)
+	{
+		try
+		{
+<span class="pc bpc" id="L351" title="1 of 2 branches missed.">			if (!_capitalUnitEventMap.containsKey (</span>
+				capitalUnitCoordinateFQN
+			))
+			{
+<span class="nc" id="L355">				addSystemic (</span>
+					capitalUnitCoordinateFQN,
+<span class="nc" id="L357">					org.drip.capital.shell.SystemicScenarioPnLSeries.ZERO(),</span>
+					null
+				);
+			}
+
+<span class="fc" id="L362">			org.drip.capital.entity.CapitalUnitEventContainer capitalUnitEventContainer =</span>
+<span class="fc" id="L363">				_capitalUnitEventMap.get (</span>
+					capitalUnitCoordinateFQN
+				);
+
+<span class="pc bpc" id="L367" title="1 of 2 branches missed.">			if (!capitalUnitEventContainer.addIdiosyncraticEvent (</span>
+				new org.drip.capital.stress.Event (
+					new org.drip.capital.stress.EventSpecification (
+						scenarioName,
+						scenarioProbability
+					),
+<span class="fc" id="L373">					org.drip.capital.stress.PnLSeries.SingleOutcome (</span>
+						scenarioPnL
+					),
+					null
+				)
+			))
+			{
+<span class="nc" id="L380">				return false;</span>
+			}
+
+<span class="pc bpc" id="L383" title="1 of 2 branches missed.">			if (!_capitalUnitEventMap.containsKey (</span>
+				capitalUnitCoordinateFQN
+			))
+			{
+<span class="nc" id="L387">				_capitalUnitEventMap.put (</span>
+					capitalUnitCoordinateFQN,
+					capitalUnitEventContainer
+				);
+			}
+
+<span class="fc" id="L393">			return true;</span>
+		}
+<span class="nc" id="L395">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L397">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L400">		return false;</span>
+	}
+
+	/**
+	 * Retrieve all the Capital Unit Coordinates that have Entries in the Coordinate Scenario Stress Map for the
+	 *  specified Risk Type and Region
+	 * 
+	 * @param region Region
+	 * @param riskType Risk Type
+	 * 
+	 * @return The Capital Unit Coordinate Set
+	 */
+
+	public java.util.Set&lt;java.lang.String&gt; matchingCapitalUnitCoordinateSet (
+		final java.lang.String region,
+		final java.lang.String riskType)
+	{
+<span class="nc bnc" id="L417" title="All 6 branches missed.">		if (null == region || region.isEmpty() ||</span>
+<span class="nc bnc" id="L418" title="All 2 branches missed.">			null == riskType || riskType.isEmpty())</span>
+		{
+<span class="nc" id="L420">			return null;</span>
+		}
+
+<span class="nc" id="L423">		java.util.Set&lt;java.lang.String&gt; matchingCapitalUnitCoordinateFQNSet =</span>
+			new java.util.HashSet&lt;java.lang.String&gt;();
+
+<span class="nc" id="L426">		java.util.Set&lt;java.lang.String&gt; capitalUnitCoordinateFQNSet = _capitalUnitEventMap.keySet();</span>
+
+<span class="nc bnc" id="L428" title="All 2 branches missed.">		for (java.lang.String capitalUnitCoordinateFQN : capitalUnitCoordinateFQNSet)</span>
+		{
+<span class="nc" id="L430">			org.drip.capital.label.BusinessRegionRiskTypeCoordinate capitalUnitCoordinate =</span>
+<span class="nc" id="L431">				org.drip.capital.label.BusinessRegionRiskTypeCoordinate.Standard (</span>
+					capitalUnitCoordinateFQN
+				);
+
+<span class="nc bnc" id="L435" title="All 2 branches missed.">			if (null == capitalUnitCoordinate)</span>
+			{
+<span class="nc" id="L437">				return null;</span>
+			}
+
+<span class="nc bnc" id="L440" title="All 2 branches missed.">			if (region.equalsIgnoreCase (</span>
+<span class="nc" id="L441">					capitalUnitCoordinate.region()</span>
+<span class="nc bnc" id="L442" title="All 2 branches missed.">				) &amp;&amp; riskType.equalsIgnoreCase (</span>
+<span class="nc" id="L443">					capitalUnitCoordinate.riskType()</span>
+				)
+			)
+			{
+<span class="nc" id="L447">				matchingCapitalUnitCoordinateFQNSet.add (</span>
+					capitalUnitCoordinateFQN
+				);
+			}
+<span class="nc" id="L451">		}</span>
+
+<span class="nc" id="L453">		return matchingCapitalUnitCoordinateFQNSet;</span>
+	}
+
+	/**
+	 * Retrieve all the Capital Unit Coordinates that have Entries in the Coordinate Scenario Stress Map for the
+	 *  specified Region
+	 * 
+	 * @param region Region
+	 * 
+	 * @return The Child Coordinate Set
+	 */
+
+	public java.util.Set&lt;java.lang.String&gt; matchingCapitalUnitCoordinateSet (
+		final java.lang.String region)
+	{
+<span class="nc bnc" id="L468" title="All 4 branches missed.">		if (null == region || region.isEmpty())</span>
+		{
+<span class="nc" id="L470">			return null;</span>
+		}
+
+<span class="nc" id="L473">		java.util.Set&lt;java.lang.String&gt; matchingCapitalUnitCoordinateFQNSet =</span>
+			new java.util.HashSet&lt;java.lang.String&gt;();
+
+<span class="nc" id="L476">		java.util.Set&lt;java.lang.String&gt; capitalUnitCoordinateFQNSet = _capitalUnitEventMap.keySet();</span>
+
+<span class="nc bnc" id="L478" title="All 2 branches missed.">		for (java.lang.String capitalUnitCoordinateFQN : capitalUnitCoordinateFQNSet)</span>
+		{
+<span class="nc" id="L480">			org.drip.capital.label.BusinessRegionRiskTypeCoordinate capitalUnitCoordinate =</span>
+<span class="nc" id="L481">				org.drip.capital.label.BusinessRegionRiskTypeCoordinate.Standard (</span>
+					capitalUnitCoordinateFQN
+				);
+
+<span class="nc bnc" id="L485" title="All 2 branches missed.">			if (null == capitalUnitCoordinate)</span>
+			{
+<span class="nc" id="L487">				return null;</span>
+			}
+
+<span class="nc bnc" id="L490" title="All 2 branches missed.">			if (region.equalsIgnoreCase (</span>
+<span class="nc" id="L491">				capitalUnitCoordinate.region()</span>
+			))
+			{
+<span class="nc" id="L494">				matchingCapitalUnitCoordinateFQNSet.add (</span>
+					capitalUnitCoordinateFQN
+				);
+			}
+<span class="nc" id="L498">		}</span>
+
+<span class="nc" id="L500">		return matchingCapitalUnitCoordinateFQNSet;</span>
+	}
+
+	/**
+	 * Retrieve the Capital Unit Stress Map
+	 * 
+	 * @return The Capital Unit Stress Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.capital.entity.CapitalUnitEventContainer&gt;
+		capitalUnitEventMap()
+	{
+<span class="nc" id="L512">		return _capitalUnitEventMap;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

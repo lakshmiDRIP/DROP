@@ -12,35 +12,46 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -100,130 +111,130 @@ import org.drip.service.env.EnvManager;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/bcbs/README.md&quot;&gt;BCBS&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/bcbs/README.md&quot;&gt;BCBS/Jurisdictional Capital/Leverage Compliance Checks&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L112">public class HighQualityLiquidAssetCompliance</span>
+<span class="nc" id="L123">public class HighQualityLiquidAssetCompliance</span>
 {
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L119">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L130">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L121">		HighQualityLiquidAssetStandard hqlaStandardFed = HighQualityLiquidAssetStandard.FederalReserve();</span>
+<span class="nc" id="L132">		HighQualityLiquidAssetStandard hqlaStandardFed = HighQualityLiquidAssetStandard.FederalReserve();</span>
 
 		HighQualityLiquidAssetSettings hqlaSettings =
-<span class="nc" id="L124">			HighQualityLiquidAssetSettings.FederalReserveStandard();</span>
+<span class="nc" id="L135">			HighQualityLiquidAssetSettings.FederalReserveStandard();</span>
 
-<span class="nc" id="L126">		double level1 = 60.;</span>
-<span class="nc" id="L127">		double level2A = 25.;</span>
-<span class="nc" id="L128">		double level2B = 15.;</span>
+<span class="nc" id="L137">		double level1 = 60.;</span>
+<span class="nc" id="L138">		double level2A = 25.;</span>
+<span class="nc" id="L139">		double level2B = 15.;</span>
 
-<span class="nc" id="L130">		HighQualityLiquidAsset hqla = new HighQualityLiquidAsset (</span>
+<span class="nc" id="L141">		HighQualityLiquidAsset hqla = new HighQualityLiquidAsset (</span>
 			level1,
 			level2A,
 			level2B
 		);
 
-<span class="nc" id="L136">		System.out.println (&quot;\t|-------------------------|&quot;);</span>
+<span class="nc" id="L147">		System.out.println (&quot;\t|-------------------------|&quot;);</span>
 
-<span class="nc" id="L138">		System.out.println (&quot;\t| HQLA Compliance Ratios  |&quot;);</span>
+<span class="nc" id="L149">		System.out.println (&quot;\t| HQLA Compliance Ratios  |&quot;);</span>
 
-<span class="nc" id="L140">		System.out.println (&quot;\t|-------------------------|&quot;);</span>
+<span class="nc" id="L151">		System.out.println (&quot;\t|-------------------------|&quot;);</span>
 
-<span class="nc" id="L142">		System.out.println (&quot;\t| Level 2 Ratio  =&gt; &quot; +</span>
-<span class="nc" id="L143">			FormatUtil.FormatDouble (hqlaStandardFed.level2Ratio(), 1, 2, 1.) + &quot; |&quot;</span>
+<span class="nc" id="L153">		System.out.println (&quot;\t| Level 2 Ratio  =&gt; &quot; +</span>
+<span class="nc" id="L154">			FormatUtil.FormatDouble (hqlaStandardFed.level2Ratio(), 1, 2, 1.) + &quot; |&quot;</span>
 		);
 
-<span class="nc" id="L146">		System.out.println (&quot;\t| Level 2B Ratio =&gt; &quot; +</span>
-<span class="nc" id="L147">			FormatUtil.FormatDouble (hqlaStandardFed.level2BRatio(), 1, 2, 1.) + &quot; |&quot;</span>
+<span class="nc" id="L157">		System.out.println (&quot;\t| Level 2B Ratio =&gt; &quot; +</span>
+<span class="nc" id="L158">			FormatUtil.FormatDouble (hqlaStandardFed.level2BRatio(), 1, 2, 1.) + &quot; |&quot;</span>
 		);
 
-<span class="nc" id="L150">		System.out.println (&quot;\t|-------------------------|&quot;);</span>
+<span class="nc" id="L161">		System.out.println (&quot;\t|-------------------------|&quot;);</span>
 
-<span class="nc" id="L152">		System.out.println();</span>
+<span class="nc" id="L163">		System.out.println();</span>
 
-<span class="nc" id="L154">		System.out.println (&quot;\t|-------------------------------|&quot;);</span>
+<span class="nc" id="L165">		System.out.println (&quot;\t|-------------------------------|&quot;);</span>
 
-<span class="nc" id="L156">		System.out.println (&quot;\t|       HQLA Fed Settings       |&quot;);</span>
+<span class="nc" id="L167">		System.out.println (&quot;\t|       HQLA Fed Settings       |&quot;);</span>
 
-<span class="nc" id="L158">		System.out.println (&quot;\t|-------------------------------|&quot;);</span>
+<span class="nc" id="L169">		System.out.println (&quot;\t|-------------------------------|&quot;);</span>
 
-<span class="nc" id="L160">		System.out.println (&quot;\t| Level 1 Hair Cut     =&gt; &quot; +</span>
-<span class="nc" id="L161">			FormatUtil.FormatDouble (hqlaSettings.level1Haircut(), 1, 2, 1.) + &quot; |&quot;</span>
+<span class="nc" id="L171">		System.out.println (&quot;\t| Level 1 Hair Cut     =&gt; &quot; +</span>
+<span class="nc" id="L172">			FormatUtil.FormatDouble (hqlaSettings.level1Haircut(), 1, 2, 1.) + &quot; |&quot;</span>
 		);
 
-<span class="nc" id="L164">		System.out.println (&quot;\t| Level 1 Risk Weight  =&gt; &quot; +</span>
-<span class="nc" id="L165">			FormatUtil.FormatDouble (hqlaSettings.level1RiskWeight(), 1, 2, 1.) + &quot; |&quot;</span>
+<span class="nc" id="L175">		System.out.println (&quot;\t| Level 1 Risk Weight  =&gt; &quot; +</span>
+<span class="nc" id="L176">			FormatUtil.FormatDouble (hqlaSettings.level1RiskWeight(), 1, 2, 1.) + &quot; |&quot;</span>
 		);
 
-<span class="nc" id="L168">		System.out.println (&quot;\t| Level 2A Hair Cut    =&gt; &quot; +</span>
-<span class="nc" id="L169">			FormatUtil.FormatDouble (hqlaSettings.level2AHaircut(), 1, 2, 1.) + &quot; |&quot;</span>
+<span class="nc" id="L179">		System.out.println (&quot;\t| Level 2A Hair Cut    =&gt; &quot; +</span>
+<span class="nc" id="L180">			FormatUtil.FormatDouble (hqlaSettings.level2AHaircut(), 1, 2, 1.) + &quot; |&quot;</span>
 		);
 
-<span class="nc" id="L172">		System.out.println (&quot;\t| Level 2A Risk Weight =&gt; &quot; +</span>
-<span class="nc" id="L173">			FormatUtil.FormatDouble (hqlaSettings.level2ARiskWeight(), 1, 2, 1.) + &quot; |&quot;</span>
+<span class="nc" id="L183">		System.out.println (&quot;\t| Level 2A Risk Weight =&gt; &quot; +</span>
+<span class="nc" id="L184">			FormatUtil.FormatDouble (hqlaSettings.level2ARiskWeight(), 1, 2, 1.) + &quot; |&quot;</span>
 		);
 
-<span class="nc" id="L176">		System.out.println (&quot;\t| Level 2B Hair Cut    =&gt; &quot; +</span>
-<span class="nc" id="L177">			FormatUtil.FormatDouble (hqlaSettings.level2BHaircut(), 1, 2, 1.) + &quot; |&quot;</span>
+<span class="nc" id="L187">		System.out.println (&quot;\t| Level 2B Hair Cut    =&gt; &quot; +</span>
+<span class="nc" id="L188">			FormatUtil.FormatDouble (hqlaSettings.level2BHaircut(), 1, 2, 1.) + &quot; |&quot;</span>
 		);
 
-<span class="nc" id="L180">		System.out.println (&quot;\t| Level 2B Risk Weight =&gt; &quot; +</span>
-<span class="nc" id="L181">			FormatUtil.FormatDouble (hqlaSettings.level2BRiskWeight(), 1, 2, 1.) + &quot; |&quot;</span>
+<span class="nc" id="L191">		System.out.println (&quot;\t| Level 2B Risk Weight =&gt; &quot; +</span>
+<span class="nc" id="L192">			FormatUtil.FormatDouble (hqlaSettings.level2BRiskWeight(), 1, 2, 1.) + &quot; |&quot;</span>
 		);
 
-<span class="nc" id="L184">		System.out.println (&quot;\t|-------------------------------|&quot;);</span>
+<span class="nc" id="L195">		System.out.println (&quot;\t|-------------------------------|&quot;);</span>
 
-<span class="nc" id="L186">		System.out.println();</span>
+<span class="nc" id="L197">		System.out.println();</span>
 
-<span class="nc" id="L188">		System.out.println (&quot;\t|-------------------------------|&quot;);</span>
+<span class="nc" id="L199">		System.out.println (&quot;\t|-------------------------------|&quot;);</span>
 
-<span class="nc" id="L190">		System.out.println (&quot;\t|    HQLA Composite Metrics     |&quot;);</span>
+<span class="nc" id="L201">		System.out.println (&quot;\t|    HQLA Composite Metrics     |&quot;);</span>
 
-<span class="nc" id="L192">		System.out.println (&quot;\t|-------------------------------|&quot;);</span>
+<span class="nc" id="L203">		System.out.println (&quot;\t|-------------------------------|&quot;);</span>
 
-<span class="nc" id="L194">		System.out.println (&quot;\t| Level 1             =&gt; &quot; +</span>
-<span class="nc" id="L195">			FormatUtil.FormatDouble (hqla.level1(), 3, 1, 1.) + &quot; |&quot;</span>
+<span class="nc" id="L205">		System.out.println (&quot;\t| Level 1             =&gt; &quot; +</span>
+<span class="nc" id="L206">			FormatUtil.FormatDouble (hqla.level1(), 3, 1, 1.) + &quot; |&quot;</span>
 		);
 
-<span class="nc" id="L198">		System.out.println (&quot;\t| Level 2A            =&gt; &quot; +</span>
-<span class="nc" id="L199">			FormatUtil.FormatDouble (hqla.level2A(), 3, 1, 1.) + &quot; |&quot;</span>
+<span class="nc" id="L209">		System.out.println (&quot;\t| Level 2A            =&gt; &quot; +</span>
+<span class="nc" id="L210">			FormatUtil.FormatDouble (hqla.level2A(), 3, 1, 1.) + &quot; |&quot;</span>
 		);
 
-<span class="nc" id="L202">		System.out.println (&quot;\t| Level 2B            =&gt; &quot; +</span>
-<span class="nc" id="L203">			FormatUtil.FormatDouble (hqla.level2B(), 3, 1, 1.) + &quot; |&quot;</span>
+<span class="nc" id="L213">		System.out.println (&quot;\t| Level 2B            =&gt; &quot; +</span>
+<span class="nc" id="L214">			FormatUtil.FormatDouble (hqla.level2B(), 3, 1, 1.) + &quot; |&quot;</span>
 		);
 
-<span class="nc" id="L206">		System.out.println (&quot;\t| Total               =&gt; &quot; +</span>
-<span class="nc" id="L207">			FormatUtil.FormatDouble (hqla.total(), 3, 1, 1.) + &quot; |&quot;</span>
+<span class="nc" id="L217">		System.out.println (&quot;\t| Total               =&gt; &quot; +</span>
+<span class="nc" id="L218">			FormatUtil.FormatDouble (hqla.total(), 3, 1, 1.) + &quot; |&quot;</span>
 		);
 
-<span class="nc" id="L210">		System.out.println (&quot;\t| Level 2 Ratio       =&gt; &quot; +</span>
-<span class="nc" id="L211">			FormatUtil.FormatDouble (hqla.level2Ratio(), 1, 2, 1.) + &quot;  |&quot;</span>
+<span class="nc" id="L221">		System.out.println (&quot;\t| Level 2 Ratio       =&gt; &quot; +</span>
+<span class="nc" id="L222">			FormatUtil.FormatDouble (hqla.level2Ratio(), 1, 2, 1.) + &quot;  |&quot;</span>
 		);
 
-<span class="nc" id="L214">		System.out.println (&quot;\t| Level 2B Ratio      =&gt; &quot; +</span>
-<span class="nc" id="L215">			FormatUtil.FormatDouble (hqla.level2BRatio(), 1, 2, 1.) + &quot;  |&quot;</span>
+<span class="nc" id="L225">		System.out.println (&quot;\t| Level 2B Ratio      =&gt; &quot; +</span>
+<span class="nc" id="L226">			FormatUtil.FormatDouble (hqla.level2BRatio(), 1, 2, 1.) + &quot;  |&quot;</span>
 		);
 
-<span class="nc" id="L218">		System.out.println (&quot;\t| Fed HQLA Compliant  =&gt;  &quot; + hqla.isCompliant (hqlaStandardFed) + &quot;  |&quot;);</span>
+<span class="nc" id="L229">		System.out.println (&quot;\t| Fed HQLA Compliant  =&gt;  &quot; + hqla.isCompliant (hqlaStandardFed) + &quot;  |&quot;);</span>
 
-<span class="nc" id="L220">		System.out.println (&quot;\t| HQLA Adjusted Total =&gt; &quot; +</span>
-<span class="nc" id="L221">			FormatUtil.FormatDouble (hqla.totalRiskWeightAndHaircut (hqlaSettings), 3, 1, 1.) + &quot; |&quot;</span>
+<span class="nc" id="L231">		System.out.println (&quot;\t| HQLA Adjusted Total =&gt; &quot; +</span>
+<span class="nc" id="L232">			FormatUtil.FormatDouble (hqla.totalRiskWeightAndHaircut (hqlaSettings), 3, 1, 1.) + &quot; |&quot;</span>
 		);
 
-<span class="nc" id="L224">		System.out.println (&quot;\t|-------------------------------|&quot;);</span>
+<span class="nc" id="L235">		System.out.println (&quot;\t|-------------------------------|&quot;);</span>
 
-<span class="nc" id="L226">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L227">	}</span>
+<span class="nc" id="L237">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L238">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

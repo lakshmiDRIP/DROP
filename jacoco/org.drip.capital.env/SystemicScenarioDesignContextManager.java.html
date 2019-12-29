@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SystemicScenarioDesignContextManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.env</a> &gt; <span class="el_source">SystemicScenarioDesignContextManager.java</span></div><h1>SystemicScenarioDesignContextManager.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.env;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;SystemicScenarioDesignContextManager&lt;/i&gt; sets up the Credit Spread Event Container. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/env/README.md&quot;&gt;Economic Risk Capital Parameter Factories&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L106">public class SystemicScenarioDesignContextManager</span>
+{
+<span class="fc" id="L108">	private static org.drip.capital.shell.CreditSpreadEventContainer s_CreditSpreadEventContainer = null;</span>
+
+	/**
+	 * Initialize the GSST Design Context Manager
+	 * 
+	 * @return TRUE - The GSST Design Context Manager successfully initialized
+	 */
+
+	public static final boolean Init()
+	{
+<span class="fc" id="L118">		s_CreditSpreadEventContainer = new org.drip.capital.shell.CreditSpreadEventContainer();</span>
+
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		if (!s_CreditSpreadEventContainer.add (</span>
+<span class="fc" id="L121">			org.drip.capital.systemicscenario.CreditSpreadEvent.Standard (</span>
+				&quot;NOV-2008&quot;,
+				 371.,
+				 -39.5,
+				-197.,
+				 129.,
+				   7.8,
+				 -55.0,
+				 -28.5,
+<span class="fc" id="L130">				org.drip.capital.systemicscenario.SystemicStressShockIndicator.Deflationary()</span>
+			)
+		))
+		{
+<span class="nc" id="L134">			return false;</span>
+		}
+
+		try
+		{
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">			if (!s_CreditSpreadEventContainer.add (</span>
+<span class="fc" id="L140">				org.drip.capital.systemicscenario.CreditSpreadEvent.Standard (</span>
+					&quot;APR-1932&quot;,
+					332.,
+					-61.4,
+					 42.,
+					 96.,
+					java.lang.Double.NaN,
+					 33.8,
+					java.lang.Double.NaN,
+					new org.drip.capital.systemicscenario.SystemicStressShockIndicator (
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UNSPECIFIED,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UNSPECIFIED
+					)
+				)
+			))
+			{
+<span class="nc" id="L159">				return false;</span>
+			}
+
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">			if (!s_CreditSpreadEventContainer.add (</span>
+<span class="fc" id="L163">				org.drip.capital.systemicscenario.CreditSpreadEvent.Standard (</span>
+					&quot;JAN-1975&quot;,
+					 221.,
+					 -29.7,
+					 183.,
+					 -53.,
+					  -8.5,
+					 159.0,
+					  49.2,
+<span class="fc" id="L172">					org.drip.capital.systemicscenario.SystemicStressShockIndicator.Inflationary()</span>
+				)
+			))
+			{
+<span class="nc" id="L176">				return false;</span>
+			}
+
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">			if (!s_CreditSpreadEventContainer.add (</span>
+<span class="fc" id="L180">				org.drip.capital.systemicscenario.CreditSpreadEvent.Standard (</span>
+					&quot;APR-1938&quot;,
+					180.,
+					-40.5,
+					-17.,
+					 30.,
+					java.lang.Double.NaN,
+					 -4.2,
+					java.lang.Double.NaN,
+					new org.drip.capital.systemicscenario.SystemicStressShockIndicator (
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UNSPECIFIED
+					)
+				)
+			))
+			{
+<span class="nc" id="L199">				return false;</span>
+			}
+
+<span class="pc bpc" id="L202" title="1 of 2 branches missed.">			if (!s_CreditSpreadEventContainer.add (</span>
+<span class="fc" id="L203">				org.drip.capital.systemicscenario.CreditSpreadEvent.Standard (</span>
+					&quot;AUG-1982&quot;,
+					 161.,
+					  -2.7,
+					-256.,
+					 520.,
+					  -0.8,
+					  -6.0,
+					  -7.8,
+<span class="fc" id="L212">					org.drip.capital.systemicscenario.SystemicStressShockIndicator.Deflationary()</span>
+				)
+			))
+			{
+<span class="nc" id="L216">				return false;</span>
+			}
+
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">			if (!s_CreditSpreadEventContainer.add (</span>
+<span class="fc" id="L220">				org.drip.capital.systemicscenario.CreditSpreadEvent.Standard (</span>
+					&quot;APR-1980&quot;,
+					 147.,
+					   4.5,
+					 259.,
+					-135.,
+					  -1.0,
+					 149.0,
+					   4.1,
+<span class="fc" id="L229">					org.drip.capital.systemicscenario.SystemicStressShockIndicator.Inflationary()</span>
+				)
+			))
+			{
+<span class="nc" id="L233">				return false;</span>
+			}
+
+<span class="pc bpc" id="L236" title="1 of 2 branches missed.">			if (!s_CreditSpreadEventContainer.add (</span>
+<span class="fc" id="L237">				org.drip.capital.systemicscenario.CreditSpreadEvent.Standard (</span>
+					&quot;NOV-1970&quot;,
+					 140.,
+					  -7.0,
+					-106.,
+					 169.,
+					java.lang.Double.NaN,
+					  -1.0,
+					   3.9,
+					new org.drip.capital.systemicscenario.SystemicStressShockIndicator (
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP
+					)
+				)
+			))
+			{
+<span class="nc" id="L256">				return false;</span>
+			}
+
+<span class="pc bpc" id="L259" title="1 of 2 branches missed.">			if (!s_CreditSpreadEventContainer.add (</span>
+<span class="fc" id="L260">				org.drip.capital.systemicscenario.CreditSpreadEvent.Standard (</span>
+					&quot;JAN-2001&quot;,
+					 125.,
+					  -2.0,
+					-172.,
+					-148.,
+					   8.1,
+					   9.0,
+					   3.2,
+					new org.drip.capital.systemicscenario.SystemicStressShockIndicator (
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UNSPECIFIED,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP
+					)
+				)
+			))
+			{
+<span class="nc" id="L279">				return false;</span>
+			}
+
+<span class="pc bpc" id="L282" title="1 of 2 branches missed.">			if (!s_CreditSpreadEventContainer.add (</span>
+<span class="fc" id="L283">				org.drip.capital.systemicscenario.CreditSpreadEvent.Standard (</span>
+					&quot;APR-1931&quot;,
+					 113.,
+					 -39.4,
+					 -11.,
+					java.lang.Double.NaN,
+					java.lang.Double.NaN,
+					 -45.4,
+					java.lang.Double.NaN,
+					new org.drip.capital.systemicscenario.SystemicStressShockIndicator (
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UNSPECIFIED,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UNSPECIFIED
+					)
+				)
+			))
+			{
+<span class="nc" id="L302">				return false;</span>
+			}
+
+<span class="pc bpc" id="L305" title="1 of 2 branches missed.">			if (!s_CreditSpreadEventContainer.add (</span>
+<span class="fc" id="L306">				org.drip.capital.systemicscenario.CreditSpreadEvent.Standard (</span>
+					&quot;DEC-1966&quot;,
+					  94.,
+					 -13.1,
+					  28.,
+					 -36.,
+					java.lang.Double.NaN,
+					   2.0,
+					java.lang.Double.NaN,
+					new org.drip.capital.systemicscenario.SystemicStressShockIndicator (
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.DOWN,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UP,
+						org.drip.capital.systemicscenario.SystemicStressShockIndicator.UNSPECIFIED
+					)
+				)
+			))
+			{
+<span class="nc" id="L325">				return false;</span>
+			}
+		}
+<span class="nc" id="L328">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L330">			e.printStackTrace();</span>
+
+<span class="nc" id="L332">			return false;</span>
+<span class="fc" id="L333">		}</span>
+
+<span class="fc" id="L335">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Built-in Credit Spread Event Container
+	 * 
+	 * @return The Built-in Credit Spread Event Container
+	 */
+
+	public static final org.drip.capital.shell.CreditSpreadEventContainer CreditSpreadEventContainer()
+	{
+<span class="nc" id="L346">		return s_CreditSpreadEventContainer;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

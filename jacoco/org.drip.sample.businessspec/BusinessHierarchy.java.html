@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BusinessHierarchy.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.businessspec</a> &gt; <span class="el_source">BusinessHierarchy.java</span></div><h1>BusinessHierarchy.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.businessspec;
+
+import java.util.Set;
+
+import org.drip.capital.definition.Business;
+import org.drip.capital.env.CapitalEstimationContextManager;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Quantitative Risk Analytics
+ */
+
+/**
+ * &lt;i&gt;BusinessHierarchy&lt;/i&gt; zeds the Accounts belonging to a Business. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L38">public class BusinessHierarchy</span>
+{
+
+	private static final void ListAccountSet (
+		final String business)
+		throws Exception
+	{
+<span class="nc" id="L45">		Set&lt;String&gt; accountset = CapitalEstimationContextManager.ContextContainer().accountBusinessContext().accountSet (business);</span>
+
+<span class="nc" id="L47">		System.out.println (</span>
+<span class="nc" id="L48">			&quot;\t| &quot;+ business + &quot; =&gt; &quot; + accountset.size() + &quot; | &quot; + accountset</span>
+		);
+<span class="nc" id="L50">	}</span>
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L56">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L58">		String[] businessArray =</span>
+		{
+			Business.ADVISORY,
+			Business.AI,
+			Business.CAI,
+			Business.CAPITAL_MARKETS_ORGANIZATION,
+			Business.CAPITAL_MARKETS_ORIGINATION_LENDING,
+			Business.CASH,
+			Business.CENTRAL_AMERICA_MORTGAGES,
+			Business.BHCFINANCIAL,
+			Business.COMMERCIAL_REAL_ESTATE,
+			Business.COMMODITIES,
+			Business.COMMODITIES_HOUSTON,
+			Business.CONSUMER_CARDS,
+			Business.CONSUMER_OTHER,
+			Business.CONVERTS,
+			Business.CORPORATE_CENTER,
+			Business.CREDIT_MACRO_HEDGE,
+			Business.CREDIT_MARKETS,
+			Business.CREDIT_TRADING,
+			Business.DISTRESSED,
+			Business.EM_ABF,
+			Business.EM_ASSET_BACKED_FINANCE,
+			Business.EM_BONDS,
+			Business.EM_CREDIT_TRADING,
+			Business.EM_PRIMARY_LOANS,
+			Business.EQUITIES,
+			Business.EQUITY_DERIVATIVES,
+			Business.EQUITY_UNDERWRITING,
+			Business.FIMA,
+			Business.FINANCE,
+			Business.G10_FX,
+			Business.G10_RATES,
+			Business.GLOBAL_CREDIT_MARKETS,
+			Business.GLOBAL_SECURITIZED_MARKETS,
+			Business.GSSG_WEST,
+			Business.GTS,
+			Business.GTS_HOLDINGS_TRADE,
+			Business.GWM,
+			Business.IG_BONDS,
+			Business.IG_PRIMARY_LOANS,
+			Business.INTERNATIONAL_CARDS,
+			Business.INTERNATIONAL_RETAIL_BANKING,
+			Business.LEVERAGED_FINANCE,
+			Business.LOCAL_MARKETS,
+			Business.LONG_TERM_ASSET_GROUP,
+			Business.MUNICIPAL,
+			Business.MUNICIPAL_SECURITIES,
+			Business.MUNICIPAL_SECURITIES_BHC_COMMUNITY,
+			Business.NIKKO_INVESTMENTS,
+			Business.OS_B,
+			Business.OTHER_BAM,
+			Business.OTHER_CONSUMER,
+			Business.OTHER_FI_UNDERWRITING,
+			Business.OTHER_GLOBAL_MARKETS,
+			Business.OTHER_SPECIAL_ASSET_POOL,
+			Business.PECD,
+			Business.PRIME_FINANCE,
+			Business.PRIMERICA_FINANCIAL_SERVICES,
+			Business.PRIVATE_BANKING,
+			Business.PROJECT_FINANCE, // Start
+			Business.RATES_AND_CURRENCIES,
+			Business.REAL_ESTATE_LENDING,
+			Business.RETAIL_AUTO_LENDING,
+			Business.RETAIL_BANKING,
+			Business.RETAIL_PARTNER_CARDS,
+			Business.RISK_TREASURY,
+			Business.RUBICON_INDIA,
+			Business.SAP_ADMIN,
+			Business.SECURITIZED_MARKETS,
+			Business.SHORT_TERM,
+			Business.SMITH_BARNEY_BAM,
+			Business.STUDENT_LOANS,
+			Business.US_COMMERCIAL_BANKING,
+			Business.US_CONSUMER_INSTALLMENT_LOANS,
+		};
+
+<span class="nc" id="L135">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L137">		System.out.println (&quot;\t|                           BUSINESS HIERARCHY - ACCOUNTS BELONGING TO A BUSINESS                           ||&quot;);</span>
+
+<span class="nc" id="L139">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L141">		System.out.println (&quot;\t|        L -&gt; R:                                                                                            ||&quot;);</span>
+
+<span class="nc" id="L143">		System.out.println (&quot;\t|                - Business                                                                                 ||&quot;);</span>
+
+<span class="nc" id="L145">		System.out.println (&quot;\t|                - Account Set Count                                                                        ||&quot;);</span>
+
+<span class="nc" id="L147">		System.out.println (&quot;\t|                - Account Set                                                                              ||&quot;);</span>
+
+<span class="nc" id="L149">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		for (String business : businessArray)</span>
+		{
+<span class="nc" id="L153">			ListAccountSet (business);</span>
+		}
+
+<span class="nc" id="L156">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L158">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L159">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

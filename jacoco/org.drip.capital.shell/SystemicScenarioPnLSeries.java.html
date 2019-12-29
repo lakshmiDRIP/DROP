@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SystemicScenarioPnLSeries.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.shell</a> &gt; <span class="el_source">SystemicScenarioPnLSeries.java</span></div><h1>SystemicScenarioPnLSeries.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.shell;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;SystemicScenarioPnLSeries&lt;/i&gt; contains the PnL Series of a Systemic Stress Scenario. The References
+ *	are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/shell/README.md&quot;&gt;Economic Risk Capital Parameter Contexts&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class SystemicScenarioPnLSeries
+{
+<span class="fc" id="L109">	private org.drip.capital.stress.PnLSeries _lostDecade = null;</span>
+<span class="fc" id="L110">	private org.drip.capital.stress.PnLSeries _baseline1974 = null;</span>
+<span class="fc" id="L111">	private org.drip.capital.stress.PnLSeries _baseline2008 = null;</span>
+<span class="fc" id="L112">	private org.drip.capital.stress.PnLSeries _deepDownturn = null;</span>
+<span class="fc" id="L113">	private org.drip.capital.stress.PnLSeries _dollarDecline = null;</span>
+<span class="fc" id="L114">	private org.drip.capital.stress.PnLSeries _interestRateShock = null;</span>
+
+	/**
+	 * Construct the SystemicScenarioPnLSeries with Zeros
+	 * 
+	 * @return The SystemicScenarioPnLSeries with Zeros
+	 */
+
+	public static final SystemicScenarioPnLSeries ZERO()
+	{
+		try
+		{
+<span class="fc" id="L126">			return new SystemicScenarioPnLSeries (</span>
+<span class="fc" id="L127">				org.drip.capital.stress.PnLSeries.SingleZeroOutcome(),</span>
+<span class="fc" id="L128">				org.drip.capital.stress.PnLSeries.SingleZeroOutcome(),</span>
+<span class="fc" id="L129">				org.drip.capital.stress.PnLSeries.SingleZeroOutcome(),</span>
+<span class="fc" id="L130">				org.drip.capital.stress.PnLSeries.SingleZeroOutcome(),</span>
+<span class="fc" id="L131">				org.drip.capital.stress.PnLSeries.SingleZeroOutcome(),</span>
+<span class="fc" id="L132">				org.drip.capital.stress.PnLSeries.SingleZeroOutcome()</span>
+			);
+		}
+<span class="nc" id="L135">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L137">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L140">		return null;</span>
+	}
+
+	/**
+	 * Construct the SystemicScenarioPnLSeries with Single Outcome
+	 * 
+	 * @param baseline1974PnL 1974 Baseline PnL
+	 * @param baseline2008PnL 2008 Baseline PnL
+	 * @param deepDownturnPnL Deep Down-turn PnL
+	 * @param dollarDeclinePnL Dollar Decline PnL
+	 * @param interestRateShockPnL Interest Rate Shock PnL
+	 * @param lostDecadePnL Lost Decade PnL
+	 * 
+	 * @return The SystemicScenarioPnLSeries with Single Outcome
+	 */
+
+	public static final SystemicScenarioPnLSeries SingleOutcome (
+		final double baseline1974PnL,
+		final double baseline2008PnL,
+		final double deepDownturnPnL,
+		final double dollarDeclinePnL,
+		final double interestRateShockPnL,
+		final double lostDecadePnL)
+	{
+		try
+		{
+<span class="nc" id="L166">			return new SystemicScenarioPnLSeries (</span>
+<span class="nc" id="L167">				org.drip.capital.stress.PnLSeries.SingleOutcome (</span>
+					baseline1974PnL
+				),
+<span class="nc" id="L170">				org.drip.capital.stress.PnLSeries.SingleOutcome (</span>
+					baseline2008PnL
+				),
+<span class="nc" id="L173">				org.drip.capital.stress.PnLSeries.SingleOutcome (</span>
+					deepDownturnPnL
+				),
+<span class="nc" id="L176">				org.drip.capital.stress.PnLSeries.SingleOutcome (</span>
+					dollarDeclinePnL
+				),
+<span class="nc" id="L179">				org.drip.capital.stress.PnLSeries.SingleOutcome (</span>
+					interestRateShockPnL
+				),
+<span class="nc" id="L182">				org.drip.capital.stress.PnLSeries.SingleOutcome (</span>
+					lostDecadePnL
+				)
+			);
+		}
+<span class="nc" id="L187">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L189">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L192">		return null;</span>
+	}
+
+	/**
+	 * Aggregate the Array of SystemicScenarioPnLSeries onto a Composite SystemicScenarioPnLSeries
+	 * 
+	 * @param systemicScenarioPnLSeriesArray Array of SystemicScenarioPnLSeries
+	 * 
+	 * @return The Aggregated, Composite SystemicScenarioPnLSeries
+	 */
+
+	public static final SystemicScenarioPnLSeries AggregateComposite (
+		final SystemicScenarioPnLSeries[] systemicScenarioPnLSeriesArray)
+	{
+<span class="nc bnc" id="L206" title="All 2 branches missed.">		if (null == systemicScenarioPnLSeriesArray)</span>
+		{
+<span class="nc" id="L208">			return null;</span>
+		}
+
+<span class="nc" id="L211">		double lostDecadePnLComposite = 0.;</span>
+<span class="nc" id="L212">		double baseline1974PnLComposite = 0.;</span>
+<span class="nc" id="L213">		double baseline2008PnLComposite = 0.;</span>
+<span class="nc" id="L214">		double deepDownturnPnLComposite = 0.;</span>
+<span class="nc" id="L215">		double dollarDeclinePnLComposite = 0.;</span>
+<span class="nc" id="L216">		double interestRateShockPnLComposite = 0.;</span>
+<span class="nc" id="L217">		int pnlCount = systemicScenarioPnLSeriesArray.length;</span>
+
+<span class="nc bnc" id="L219" title="All 2 branches missed.">		if (0 == pnlCount)</span>
+		{
+<span class="nc" id="L221">			return null;</span>
+		}
+
+<span class="nc" id="L224">		for (int pnlIndex = 0;</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">			pnlIndex &lt; pnlCount;</span>
+<span class="nc" id="L226">			++pnlIndex)</span>
+		{
+<span class="nc bnc" id="L228" title="All 2 branches missed.">			if (null != systemicScenarioPnLSeriesArray[pnlIndex])</span>
+			{
+<span class="nc" id="L230">				lostDecadePnLComposite = lostDecadePnLComposite +</span>
+<span class="nc" id="L231">					systemicScenarioPnLSeriesArray[pnlIndex].lostDecade().composite();</span>
+
+<span class="nc" id="L233">				baseline1974PnLComposite = baseline1974PnLComposite +</span>
+<span class="nc" id="L234">					systemicScenarioPnLSeriesArray[pnlIndex].baseline1974().composite();</span>
+
+<span class="nc" id="L236">				baseline2008PnLComposite = baseline2008PnLComposite +</span>
+<span class="nc" id="L237">					systemicScenarioPnLSeriesArray[pnlIndex].baseline2008().composite();</span>
+
+<span class="nc" id="L239">				deepDownturnPnLComposite = deepDownturnPnLComposite +</span>
+<span class="nc" id="L240">					systemicScenarioPnLSeriesArray[pnlIndex].deepDownturn().composite();</span>
+
+<span class="nc" id="L242">				dollarDeclinePnLComposite = dollarDeclinePnLComposite +</span>
+<span class="nc" id="L243">					systemicScenarioPnLSeriesArray[pnlIndex].dollarDecline().composite();</span>
+
+<span class="nc" id="L245">				interestRateShockPnLComposite = interestRateShockPnLComposite +</span>
+<span class="nc" id="L246">					systemicScenarioPnLSeriesArray[pnlIndex].interestRateShock().composite();</span>
+			}
+		}
+
+		try
+		{
+<span class="nc" id="L252">			return new SystemicScenarioPnLSeries (</span>
+<span class="nc" id="L253">				org.drip.capital.stress.PnLSeries.SingleOutcome (</span>
+					baseline1974PnLComposite
+				),
+<span class="nc" id="L256">				org.drip.capital.stress.PnLSeries.SingleOutcome (</span>
+					baseline2008PnLComposite
+				),
+<span class="nc" id="L259">				org.drip.capital.stress.PnLSeries.SingleOutcome (</span>
+					deepDownturnPnLComposite
+				),
+<span class="nc" id="L262">				org.drip.capital.stress.PnLSeries.SingleOutcome (</span>
+					dollarDeclinePnLComposite
+				),
+<span class="nc" id="L265">				org.drip.capital.stress.PnLSeries.SingleOutcome (</span>
+					interestRateShockPnLComposite
+				),
+<span class="nc" id="L268">				org.drip.capital.stress.PnLSeries.SingleOutcome (</span>
+					lostDecadePnLComposite
+				)
+			);
+		}
+<span class="nc" id="L273">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L275">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L278">		return null;</span>
+	}
+
+	/**
+	 * SystemicScenarioPnLSeries Constructor
+	 * 
+	 * @param baseline1974 1974 Baseline PnL Series
+	 * @param baseline2008 2008 Baseline PnL Series
+	 * @param deepDownturn Deep Down-turn PnL Series
+	 * @param dollarDecline Dollar Decline PnL Series
+	 * @param interestRateShock Interest Rate Shock PnL Series
+	 * @param lostDecade Lost Decade PnL Series
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public SystemicScenarioPnLSeries (
+		final org.drip.capital.stress.PnLSeries baseline1974,
+		final org.drip.capital.stress.PnLSeries baseline2008,
+		final org.drip.capital.stress.PnLSeries deepDownturn,
+		final org.drip.capital.stress.PnLSeries dollarDecline,
+		final org.drip.capital.stress.PnLSeries interestRateShock,
+		final org.drip.capital.stress.PnLSeries lostDecade)
+		throws java.lang.Exception
+<span class="fc" id="L302">	{</span>
+<span class="pc bpc" id="L303" title="6 of 12 branches missed.">		if (null == (_baseline1974 = baseline1974) ||</span>
+			null == (_baseline2008 = baseline2008) ||
+			null == (_deepDownturn = deepDownturn) ||
+			null == (_dollarDecline = dollarDecline) ||
+			null == (_interestRateShock = interestRateShock) ||
+			null == (_lostDecade = lostDecade))
+		{
+<span class="nc" id="L310">			throw new java.lang.Exception (</span>
+				&quot;SystemicScenarioPnLSeries Constructor =&gt; Invalid inputs&quot;
+			);
+		}
+<span class="fc" id="L314">	}</span>
+
+	/**
+	 * Retrieve the 1974 Baseline PnL Series
+	 * 
+	 * @return The 1974 Baseline PnL Series
+	 */
+
+	public org.drip.capital.stress.PnLSeries baseline1974()
+	{
+<span class="fc" id="L324">		return _baseline1974;</span>
+	}
+
+	/**
+	 * Retrieve the 2008 Baseline PnL Series
+	 * 
+	 * @return The 2008 Baseline PnL Series
+	 */
+
+	public org.drip.capital.stress.PnLSeries baseline2008()
+	{
+<span class="fc" id="L335">		return _baseline2008;</span>
+	}
+
+	/**
+	 * Retrieve the Deep Down-turn PnL Series
+	 * 
+	 * @return The Deep Down-turn PnL Series
+	 */
+
+	public org.drip.capital.stress.PnLSeries deepDownturn()
+	{
+<span class="fc" id="L346">		return _deepDownturn;</span>
+	}
+
+	/**
+	 * Retrieve the Dollar Decline PnL Series
+	 * 
+	 * @return The Dollar Decline PnL Series
+	 */
+
+	public org.drip.capital.stress.PnLSeries dollarDecline()
+	{
+<span class="fc" id="L357">		return _dollarDecline;</span>
+	}
+
+	/**
+	 * Retrieve the Interest Rate Shock PnL Series
+	 * 
+	 * @return The Interest Rate Shock PnL Series
+	 */
+
+	public org.drip.capital.stress.PnLSeries interestRateShock()
+	{
+<span class="fc" id="L368">		return _interestRateShock;</span>
+	}
+
+	/**
+	 * Retrieve the Lost Decade PnL Series
+	 * 
+	 * @return The Lost Decade PnL Series
+	 */
+
+	public org.drip.capital.stress.PnLSeries lostDecade()
+	{
+<span class="fc" id="L379">		return _lostDecade;</span>
+	}
+
+	@Override public java.lang.String toString()
+	{
+<span class="nc" id="L384">		return &quot;[&quot; + _baseline1974.toString() + &quot; | &quot; +</span>
+<span class="nc" id="L385">			_baseline2008.toString() + &quot; | &quot; +</span>
+<span class="nc" id="L386">			_deepDownturn.toString() + &quot; | &quot; +</span>
+<span class="nc" id="L387">			_dollarDecline.toString() + &quot; | &quot; +</span>
+<span class="nc" id="L388">			_interestRateShock.toString() + &quot; | &quot; +</span>
+<span class="nc" id="L389">			_lostDecade.toString() + &quot;]&quot;;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

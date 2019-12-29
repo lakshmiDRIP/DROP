@@ -12,41 +12,53 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -98,16 +110,16 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Project&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md&quot;&gt;Special Function Ordinary Differential Equations&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md&quot;&gt;Function Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/bessel/README.md&quot;&gt;Estimates of the Bessel Functions&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L110">public class AlphaZeroNegativeZFirstAsymptote</span>
+<span class="nc" id="L122">public class AlphaZeroNegativeZFirstAsymptote</span>
 {
 
 	private static final void BesselJ (
@@ -116,55 +128,55 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
 		final double[] zArray)
 		throws Exception
 	{
-<span class="nc" id="L119">		System.out.println (&quot;\t|-----------------------------------------------||&quot;);</span>
+<span class="nc" id="L131">		System.out.println (&quot;\t|-----------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L121">		System.out.println (&quot;\t|   ALPHA 0 NEGATIVE z BESSEL FIRST ASYMPTOTE   ||&quot;);</span>
+<span class="nc" id="L133">		System.out.println (&quot;\t|   ALPHA 0 NEGATIVE z BESSEL FIRST ASYMPTOTE   ||&quot;);</span>
 
-<span class="nc" id="L123">		System.out.println (&quot;\t|-----------------------------------------------||&quot;);</span>
+<span class="nc" id="L135">		System.out.println (&quot;\t|-----------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L125">		System.out.println (&quot;\t|        L -&gt; R:                                ||&quot;);</span>
+<span class="nc" id="L137">		System.out.println (&quot;\t|        L -&gt; R:                                ||&quot;);</span>
 
-<span class="nc" id="L127">		System.out.println (&quot;\t|                - z                            ||&quot;);</span>
+<span class="nc" id="L139">		System.out.println (&quot;\t|                - z                            ||&quot;);</span>
 
-<span class="nc" id="L129">		System.out.println (&quot;\t|                - Bessel Asymptote             ||&quot;);</span>
+<span class="nc" id="L141">		System.out.println (&quot;\t|                - Bessel Asymptote             ||&quot;);</span>
 
-<span class="nc" id="L131">		System.out.println (&quot;\t|                - Bessel Frobenius             ||&quot;);</span>
+<span class="nc" id="L143">		System.out.println (&quot;\t|                - Bessel Frobenius             ||&quot;);</span>
 
-<span class="nc" id="L133">		System.out.println (&quot;\t|-----------------------------------------------||&quot;);</span>
+<span class="nc" id="L145">		System.out.println (&quot;\t|-----------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L135" title="All 2 branches missed.">		for (double z : zArray)</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		for (double z : zArray)</span>
 		{
-<span class="nc" id="L137">			String display = &quot;\t| [&quot; +</span>
-<span class="nc" id="L138">				FormatUtil.FormatDouble (z, 2, 1, 1., false) + &quot;] =&gt; &quot; +</span>
-<span class="nc" id="L139">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L140">					besselFirstKindEstimatorAsymptote.bigJ (</span>
+<span class="nc" id="L149">			String display = &quot;\t| [&quot; +</span>
+<span class="nc" id="L150">				FormatUtil.FormatDouble (z, 2, 1, 1., false) + &quot;] =&gt; &quot; +</span>
+<span class="nc" id="L151">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L152">					besselFirstKindEstimatorAsymptote.bigJ (</span>
 						0.,
 						z
 					), 1, 10, 1.
 				) + &quot; | &quot; +
-<span class="nc" id="L145">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L146">					besselFirstKindEstimator.bigJ (</span>
+<span class="nc" id="L157">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L158">					besselFirstKindEstimator.bigJ (</span>
 						0.,
 						z
 					), 1, 10, 1.
 				) + &quot; |&quot;;
 
-<span class="nc" id="L152">			System.out.println (display + &quot;|&quot;);</span>
+<span class="nc" id="L164">			System.out.println (display + &quot;|&quot;);</span>
 		}
 
-<span class="nc" id="L155">		System.out.println (&quot;\t|-----------------------------------------------||&quot;);</span>
+<span class="nc" id="L167">		System.out.println (&quot;\t|-----------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L157">		System.out.println();</span>
-<span class="nc" id="L158">	}</span>
+<span class="nc" id="L169">		System.out.println();</span>
+<span class="nc" id="L170">	}</span>
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L164">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L176">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L166">		int frobeniusTermCount = 100;</span>
-<span class="nc" id="L167">		double[] zArray =</span>
+<span class="nc" id="L178">		int frobeniusTermCount = 100;</span>
+<span class="nc" id="L179">		double[] zArray =</span>
 		{
 			  0.,
 			 -1.,
@@ -199,16 +211,16 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
 			-30.,
 		};
 
-<span class="nc" id="L202">		BesselJ (</span>
-<span class="nc" id="L203">			BesselFirstKindEstimator.AlphaZeroNegativeZAsymptote(),</span>
-<span class="nc" id="L204">			FirstFrobeniusSeriesEstimator.Standard (</span>
+<span class="nc" id="L214">		BesselJ (</span>
+<span class="nc" id="L215">			BesselFirstKindEstimator.AlphaZeroNegativeZAsymptote(),</span>
+<span class="nc" id="L216">			FirstFrobeniusSeriesEstimator.Standard (</span>
 				new EulerIntegralSecondKind (null),
 				frobeniusTermCount
 			),
 			zArray
 		);
 
-<span class="nc" id="L211">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L212">	}</span>
+<span class="nc" id="L223">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L224">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

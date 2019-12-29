@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CapitalSegmentPathEnsemble.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.simulation</a> &gt; <span class="el_source">CapitalSegmentPathEnsemble.java</span></div><h1>CapitalSegmentPathEnsemble.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.simulation;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;CapitalSegmentPathEnsemble&lt;/i&gt; generates the Ensemble of Capital Paths from the Simulation PnL
+ * 	Realizations for the Capital Units under the specified Capital Segments. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/simulation/README.md&quot;&gt;Economic Risk Capital Simulation Ensemble&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class CapitalSegmentPathEnsemble
+	extends org.drip.capital.simulation.CapitalUnitPathEnsemble
+{
+<span class="nc" id="L110">	private java.util.Map&lt;java.lang.String, org.drip.capital.simulation.PathEnsemble&gt; _pathEnsembleMap =</span>
+		null;
+
+	/**
+	 * CapitalSegmentPathEnsemble Constructor
+	 * 
+	 * @param pathEnsembleMap Map of Path Ensemble
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public CapitalSegmentPathEnsemble (
+		final java.util.Map&lt;java.lang.String, org.drip.capital.simulation.PathEnsemble&gt; pathEnsembleMap)
+		throws java.lang.Exception
+<span class="nc" id="L124">	{</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">		if (null == (_pathEnsembleMap = pathEnsembleMap))</span>
+		{
+<span class="nc" id="L127">			throw new java.lang.Exception (</span>
+				&quot;CapitalSegmentPathEnsemble Constructor =&gt; Invalid Inputs&quot;
+			);
+		}
+<span class="nc" id="L131">	}</span>
+
+	/**
+	 * Retrieve the Map of Path Ensembles
+	 * 
+	 * @return The Map of Path Ensembles
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.capital.simulation.PathEnsemble&gt; pathEnsembleMap()
+	{
+<span class="nc" id="L141">		return _pathEnsembleMap;</span>
+	}
+
+	/**
+	 * Construct the Contributing Marginal PnL Attribution given the Confidence Level by Count
+	 * 
+	 * @param confidenceCount Confidence Level by Count
+	 * 
+	 * @return The Contributing Marginal PnL Attribution
+	 */
+
+	public org.drip.capital.explain.CapitalSegmentStandaloneMarginal marginalPnLAttribution (
+		final int confidenceCount)
+	{
+<span class="nc" id="L155">		org.drip.capital.explain.CapitalUnitPnLAttribution segmentCapitalUnitPnLAttribution =</span>
+<span class="nc" id="L156">			super.pnlAttribution (confidenceCount);</span>
+
+<span class="nc bnc" id="L158" title="All 2 branches missed.">		if (null == segmentCapitalUnitPnLAttribution)</span>
+		{
+<span class="nc" id="L160">			return null;</span>
+		}
+
+<span class="nc" id="L163">		java.util.List&lt;java.lang.Integer&gt; pathIndexList = segmentCapitalUnitPnLAttribution.pathIndexList();</span>
+
+		java.util.Map&lt;java.lang.String, org.drip.capital.explain.PnLAttribution&gt;
+<span class="nc" id="L166">			marginalPnLAttributionMap = new</span>
+				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.capital.explain.PnLAttribution&gt;();
+
+<span class="nc" id="L169">		java.util.Set&lt;java.lang.String&gt; capitalUnitCoordinateSet = _pathEnsembleMap.keySet();</span>
+
+<span class="nc bnc" id="L171" title="All 2 branches missed.">		for (java.lang.String capitalUnitCoordinate : capitalUnitCoordinateSet)</span>
+		{
+<span class="nc" id="L173">			org.drip.capital.explain.CapitalUnitPnLAttribution capitalUnitPnLAttribution =</span>
+<span class="nc" id="L174">				_pathEnsembleMap.get (</span>
+					capitalUnitCoordinate
+<span class="nc" id="L176">				).pnlAttribution (</span>
+					pathIndexList
+				);
+
+<span class="nc bnc" id="L180" title="All 2 branches missed.">			if (null == capitalUnitPnLAttribution)</span>
+			{
+<span class="nc" id="L182">				return null;</span>
+			}
+
+<span class="nc" id="L185">			marginalPnLAttributionMap.put (</span>
+				capitalUnitCoordinate,
+				capitalUnitPnLAttribution
+			);
+<span class="nc" id="L189">		}</span>
+
+		try
+		{
+<span class="nc" id="L193">			return new org.drip.capital.explain.CapitalSegmentStandaloneMarginal (</span>
+<span class="nc" id="L194">				segmentCapitalUnitPnLAttribution.pathPnLRealizationList(),</span>
+				marginalPnLAttributionMap,
+				null
+			);
+		}
+<span class="nc" id="L199">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L201">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L204">		return null;</span>
+	}
+
+	/**
+	 * Construct the Contributing Marginal PnL Attribution given the Confidence Level by Percentage
+	 * 
+	 * @param confidenceLevel Confidence Level by Percentage
+	 * 
+	 * @return The Contributing Marginal PnL Attribution
+	 */
+
+	public org.drip.capital.explain.CapitalSegmentStandaloneMarginal marginalPnLAttribution (
+		final double confidenceLevel)
+	{
+<span class="nc bnc" id="L218" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (</span>
+				confidenceLevel
+			) || 0. &gt;= confidenceLevel || 1. &lt;= confidenceLevel
+		)
+		{
+<span class="nc" id="L223">			return null;</span>
+		}
+
+<span class="nc" id="L226">		return marginalPnLAttribution (</span>
+<span class="nc" id="L227">			(int) (count() * (1. - confidenceLevel))</span>
+		);
+	}
+
+	/**
+	 * Construct the Capital Segment Stand-alone PnL Attribution given the Confidence Level by Count
+	 * 
+	 * @param confidenceCount Confidence Level by Count
+	 * 
+	 * @return The Capital Segment Stand-alone PnL Attribution
+	 */
+
+	public org.drip.capital.explain.CapitalSegmentPnLAttribution standalonePnLAttribution (
+		final int confidenceCount)
+	{
+<span class="nc" id="L242">		int capitalUnitIndex = 0;</span>
+
+<span class="nc" id="L244">		org.drip.capital.explain.CapitalUnitPnLAttribution[] capitalUnitPathAttributionArray =</span>
+<span class="nc" id="L245">			new org.drip.capital.explain.CapitalUnitPnLAttribution[_pathEnsembleMap.size()];</span>
+
+<span class="nc" id="L247">		java.util.Set&lt;java.lang.String&gt; capitalUnitCoordinateSet = _pathEnsembleMap.keySet();</span>
+
+<span class="nc bnc" id="L249" title="All 2 branches missed.">		for (java.lang.String capitalUnitCoordinate : capitalUnitCoordinateSet)</span>
+		{
+<span class="nc" id="L251">			if (null == (</span>
+				capitalUnitPathAttributionArray[capitalUnitIndex++] =
+<span class="nc" id="L253">					_pathEnsembleMap.get (</span>
+						capitalUnitCoordinate
+<span class="nc bnc" id="L255" title="All 2 branches missed.">					).pnlAttribution (</span>
+						confidenceCount
+					)
+				)
+			)
+			{
+<span class="nc" id="L261">				return null;</span>
+			}
+<span class="nc" id="L263">		}</span>
+
+		try
+		{
+<span class="nc" id="L267">			return new org.drip.capital.explain.CapitalSegmentPnLAttribution (</span>
+				capitalUnitPathAttributionArray
+			);
+		}
+<span class="nc" id="L271">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L273">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L276">		return null;</span>
+	}
+
+	/**
+	 * Construct the Capital Segment Stand-alone PnL Attribution given the Confidence Level by Percentage
+	 * 
+	 * @param confidenceLevel Confidence Level by Percentage
+	 * 
+	 * @return The Capital Segment Stand-alone PnL Attribution
+	 */
+
+	public org.drip.capital.explain.CapitalSegmentPnLAttribution standalonePnLAttribution (
+		final double confidenceLevel)
+	{
+<span class="nc bnc" id="L290" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (</span>
+				confidenceLevel
+			) || 0. &gt;= confidenceLevel || 1. &lt;= confidenceLevel
+		)
+		{
+<span class="nc" id="L295">			return null;</span>
+		}
+
+<span class="nc" id="L298">		return standalonePnLAttribution (</span>
+<span class="nc" id="L299">			(int) (count() * (1. - confidenceLevel))</span>
+		);
+	}
+
+	/**
+	 * Construct the Contributing Marginal and Stand-alone PnL Attribution given the Confidence Level by
+	 * 	Count
+	 * 
+	 * @param confidenceCount Confidence Level by Count
+	 * 
+	 * @return The Contributing Marginal and Stand-alone PnL Attribution
+	 */
+
+	public org.drip.capital.explain.CapitalSegmentStandaloneMarginal marginalStandalonePnLAttribution (
+		final int confidenceCount)
+	{
+<span class="nc" id="L315">		org.drip.capital.explain.CapitalUnitPnLAttribution segmentCapitalUnitPnLAttribution =</span>
+<span class="nc" id="L316">			super.pnlAttribution (</span>
+				confidenceCount
+			);
+
+<span class="nc bnc" id="L320" title="All 2 branches missed.">		if (null == segmentCapitalUnitPnLAttribution)</span>
+		{
+<span class="nc" id="L322">			return null;</span>
+		}
+
+<span class="nc" id="L325">		java.util.List&lt;java.lang.Integer&gt; pathIndexList = segmentCapitalUnitPnLAttribution.pathIndexList();</span>
+
+<span class="nc" id="L327">		java.util.Map&lt;java.lang.String, org.drip.capital.explain.PnLAttribution&gt; marginalPnLAttributionMap</span>
+			= new org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.capital.explain.PnLAttribution&gt;();
+
+		java.util.Map&lt;java.lang.String, org.drip.capital.explain.PnLAttribution&gt;
+<span class="nc" id="L331">			standalonePnLAttributionMap = new</span>
+				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.capital.explain.PnLAttribution&gt;();
+
+<span class="nc" id="L334">		java.util.Set&lt;java.lang.String&gt; capitalUnitCoordinateSet = _pathEnsembleMap.keySet();</span>
+
+<span class="nc bnc" id="L336" title="All 2 branches missed.">		for (java.lang.String capitalUnitCoordinate : capitalUnitCoordinateSet)</span>
+		{
+<span class="nc" id="L338">			org.drip.capital.explain.CapitalUnitPnLAttribution capitalUnitMarginalAttribution =</span>
+<span class="nc" id="L339">				_pathEnsembleMap.get (</span>
+					capitalUnitCoordinate
+<span class="nc" id="L341">				).pnlAttribution (</span>
+					pathIndexList
+				);
+
+<span class="nc bnc" id="L345" title="All 2 branches missed.">			if (null == capitalUnitMarginalAttribution)</span>
+			{
+<span class="nc" id="L347">				return null;</span>
+			}
+
+<span class="nc" id="L350">			marginalPnLAttributionMap.put (</span>
+				capitalUnitCoordinate,
+				capitalUnitMarginalAttribution
+			);
+
+<span class="nc" id="L355">			org.drip.capital.explain.CapitalUnitPnLAttribution capitalUnitStandaloneAttribution =</span>
+<span class="nc" id="L356">				_pathEnsembleMap.get (</span>
+					capitalUnitCoordinate
+<span class="nc" id="L358">				).pnlAttribution (</span>
+					confidenceCount
+				);
+
+<span class="nc bnc" id="L362" title="All 2 branches missed.">			if (null == capitalUnitStandaloneAttribution)</span>
+			{
+<span class="nc" id="L364">				return null;</span>
+			}
+
+<span class="nc" id="L367">			standalonePnLAttributionMap.put (</span>
+				capitalUnitCoordinate,
+				capitalUnitStandaloneAttribution
+			);
+<span class="nc" id="L371">		}</span>
+
+		try
+		{
+<span class="nc" id="L375">			return new org.drip.capital.explain.CapitalSegmentStandaloneMarginal (</span>
+<span class="nc" id="L376">				segmentCapitalUnitPnLAttribution.pathPnLRealizationList(),</span>
+				marginalPnLAttributionMap,
+				standalonePnLAttributionMap
+			);
+		}
+<span class="nc" id="L381">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L383">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L386">		return null;</span>
+	}
+
+	/**
+	 * Construct the Contributing Marginal and Stand-alone PnL Attribution given the Confidence Level by
+	 * 	Percentage
+	 * 
+	 * @param confidenceLevel Confidence Level by Count
+	 * 
+	 * @return The Contributing Marginal and Stand-alone PnL Attribution
+	 */
+
+	public org.drip.capital.explain.CapitalSegmentStandaloneMarginal marginalStandalonePnLAttribution (
+		final double confidenceLevel)
+	{
+<span class="nc bnc" id="L401" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (</span>
+				confidenceLevel
+			) || 0. &gt;= confidenceLevel || 1. &lt;= confidenceLevel
+		)
+		{
+<span class="nc" id="L406">			return null;</span>
+		}
+
+<span class="nc" id="L409">		return marginalStandalonePnLAttribution (</span>
+<span class="nc" id="L410">			(int) (count() * (1. - confidenceLevel))</span>
+		);
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

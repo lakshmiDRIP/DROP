@@ -120,7 +120,7 @@ public class R1FokkerPlanckCIR
 
 	/**
 	 * R1FokkerPlanckCIR Constructor
-	 * 
+	 *
 	 * @param cklsParameters The CKLS Parameters
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -134,5 +134,36 @@ public class R1FokkerPlanckCIR
 			cklsParameters
 		);
 <span class="nc" id="L136">	}</span>
+
+	@Override public org.drip.function.definition.R1ToR1 steadyStatePDF()
+	{
+<span class="nc" id="L140">		return org.drip.function.r1tor1.R1UnivariateCIRPDF.Standard (</span>
+<span class="nc" id="L141">			cklsParameters()</span>
+		);
+	}
+
+	@Override public org.drip.dynamics.process.R1ProbabilityDensityFunction deltaStartTemporalPDF (
+		final double r0)
+	{
+		try
+		{
+<span class="nc" id="L150">			return new org.drip.dynamics.process.R1ProbabilityDensityFunctionCIR (</span>
+				r0,
+<span class="nc" id="L152">				cklsParameters(),</span>
+<span class="nc" id="L153">				org.drip.specialfunction.bessel.ModifiedFirstFrobeniusSeriesEstimator.Standard (</span>
+					new org.drip.specialfunction.gamma.EulerIntegralSecondKind (
+						null
+					),
+					20
+				)
+			);
+		}
+<span class="nc" id="L161">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L163">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L166">		return null;</span>
+	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

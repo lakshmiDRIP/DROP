@@ -17,38 +17,49 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -109,198 +120,198 @@ import org.drip.service.env.EnvManager;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/almgren2009/README.md&quot;&gt;Almgren (2009)&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/almgren2009/README.md&quot;&gt;Almgren (2009) Optimal Adaptive HJB&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L122">public class AdaptiveOptimalStaticTrajectory {</span>
+<span class="nc" id="L133">public class AdaptiveOptimalStaticTrajectory {</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L128">		EnvManager.InitEnv (</span>
+<span class="fc" id="L139">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L133">		double dblSize = 1.;</span>
-<span class="fc" id="L134">		int iNumTimeNode = 41;</span>
-<span class="fc" id="L135">		double dblBurstiness = 1.;</span>
-<span class="fc" id="L136">		double dblExecutionTime = 10.;</span>
-<span class="fc" id="L137">		double dblRelaxationTime = 1.;</span>
-<span class="fc" id="L138">		double dblReferenceLiquidity = 1.;</span>
-<span class="fc" id="L139">		double dblReferenceVolatility = 1.;</span>
-<span class="fc" id="L140">		double dblRiskAversion = 0.5;</span>
+<span class="fc" id="L144">		double dblSize = 1.;</span>
+<span class="fc" id="L145">		int iNumTimeNode = 41;</span>
+<span class="fc" id="L146">		double dblBurstiness = 1.;</span>
+<span class="fc" id="L147">		double dblExecutionTime = 10.;</span>
+<span class="fc" id="L148">		double dblRelaxationTime = 1.;</span>
+<span class="fc" id="L149">		double dblReferenceLiquidity = 1.;</span>
+<span class="fc" id="L150">		double dblReferenceVolatility = 1.;</span>
+<span class="fc" id="L151">		double dblRiskAversion = 0.5;</span>
 
-<span class="fc" id="L142">		System.out.println();</span>
+<span class="fc" id="L153">		System.out.println();</span>
 
-<span class="fc" id="L144">		System.out.println (&quot;\t||--------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L155">		System.out.println (&quot;\t||--------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L146">		System.out.println (&quot;\t||     ADAPTIVE OPTIMAL TRAJECTORY GENERATION INPUTS      ||&quot;);</span>
+<span class="fc" id="L157">		System.out.println (&quot;\t||     ADAPTIVE OPTIMAL TRAJECTORY GENERATION INPUTS      ||&quot;);</span>
 
-<span class="fc" id="L148">		System.out.println (&quot;\t||--------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L159">		System.out.println (&quot;\t||--------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L150">		System.out.println (</span>
+<span class="fc" id="L161">		System.out.println (</span>
 			&quot;\t|| Order Size                                 =&gt;  &quot; +
-<span class="fc" id="L152">			FormatUtil.FormatDouble (dblSize, 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L163">			FormatUtil.FormatDouble (dblSize, 1, 4, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L155">		System.out.println (</span>
+<span class="fc" id="L166">		System.out.println (</span>
 			&quot;\t|| Order Execution Time                       =&gt; &quot; +
-<span class="fc" id="L157">			FormatUtil.FormatDouble (dblExecutionTime, 2, 0, 1.) + &quot;      ||&quot;</span>
+<span class="fc" id="L168">			FormatUtil.FormatDouble (dblExecutionTime, 2, 0, 1.) + &quot;      ||&quot;</span>
 		);
 
-<span class="fc" id="L160">		System.out.println (</span>
+<span class="fc" id="L171">		System.out.println (</span>
 			&quot;\t|| Ornstein Uhlenbeck Burstiness              =&gt;  &quot; +
-<span class="fc" id="L162">			FormatUtil.FormatDouble (dblBurstiness, 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L173">			FormatUtil.FormatDouble (dblBurstiness, 1, 4, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L165">		System.out.println (</span>
+<span class="fc" id="L176">		System.out.println (</span>
 			&quot;\t|| Ornstein Uhlenbeck Relaxation Time         =&gt;  &quot; +
-<span class="fc" id="L167">			FormatUtil.FormatDouble (dblRelaxationTime, 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L178">			FormatUtil.FormatDouble (dblRelaxationTime, 1, 4, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L170">		System.out.println (</span>
+<span class="fc" id="L181">		System.out.println (</span>
 			&quot;\t|| Coordinated Variation Reference Liquidity  =&gt;  &quot; +
-<span class="fc" id="L172">			FormatUtil.FormatDouble (dblReferenceLiquidity, 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L183">			FormatUtil.FormatDouble (dblReferenceLiquidity, 1, 4, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L175">		System.out.println (</span>
+<span class="fc" id="L186">		System.out.println (</span>
 			&quot;\t|| Coordinated Variation Reference Volatility =&gt;  &quot; +
-<span class="fc" id="L177">			FormatUtil.FormatDouble (dblReferenceVolatility, 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L188">			FormatUtil.FormatDouble (dblReferenceVolatility, 1, 4, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L180">		System.out.println (</span>
+<span class="fc" id="L191">		System.out.println (</span>
 			&quot;\t|| Mean Variance Risk Aversion                =&gt;  &quot; +
-<span class="fc" id="L182">			FormatUtil.FormatDouble (dblReferenceVolatility, 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L193">			FormatUtil.FormatDouble (dblReferenceVolatility, 1, 4, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L185">		System.out.println (</span>
+<span class="fc" id="L196">		System.out.println (</span>
 			&quot;\t|| Number of Evolution Nodes                  =&gt; &quot; +
-<span class="fc" id="L187">			FormatUtil.FormatDouble (iNumTimeNode - 1, 2, 0, 1.) + &quot;      ||&quot;</span>
+<span class="fc" id="L198">			FormatUtil.FormatDouble (iNumTimeNode - 1, 2, 0, 1.) + &quot;      ||&quot;</span>
 		);
 
-<span class="fc" id="L190">		System.out.println (&quot;\t||--------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L201">		System.out.println (&quot;\t||--------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L192">		System.out.println();</span>
+<span class="fc" id="L203">		System.out.println();</span>
 
-<span class="fc" id="L194">		double dblNonDimensionalTimeInterval = dblExecutionTime / (iNumTimeNode - 1) / dblRelaxationTime;</span>
+<span class="fc" id="L205">		double dblNonDimensionalTimeInterval = dblExecutionTime / (iNumTimeNode - 1) / dblRelaxationTime;</span>
 
-<span class="fc" id="L196">		OrderSpecification os = new OrderSpecification (</span>
+<span class="fc" id="L207">		OrderSpecification os = new OrderSpecification (</span>
 			dblSize,
 			dblExecutionTime
 		);
 
-<span class="fc" id="L201">		CoordinatedVariation cv = new CoordinatedVariation (</span>
+<span class="fc" id="L212">		CoordinatedVariation cv = new CoordinatedVariation (</span>
 			dblReferenceVolatility,
 			dblReferenceLiquidity
 		);
 
-<span class="fc" id="L206">		DiffusionEvaluatorOrnsteinUhlenbeck oup1D = DiffusionEvaluatorOrnsteinUhlenbeck.ZeroMean (</span>
+<span class="fc" id="L217">		DiffusionEvaluatorOrnsteinUhlenbeck oup1D = DiffusionEvaluatorOrnsteinUhlenbeck.ZeroMean (</span>
 			dblBurstiness,
 			dblRelaxationTime
 		);
 
-<span class="fc" id="L211">		CoordinatedVariationStatic cvs = new CoordinatedVariationTrajectoryGenerator (</span>
+<span class="fc" id="L222">		CoordinatedVariationStatic cvs = new CoordinatedVariationTrajectoryGenerator (</span>
 			os,
 			cv,
 			new MeanVarianceObjectiveUtility (dblRiskAversion),
-<span class="fc" id="L215">			NonDimensionalCostEvolverSystemic.Standard (oup1D),</span>
+<span class="fc" id="L226">			NonDimensionalCostEvolverSystemic.Standard (oup1D),</span>
 			CoordinatedVariationTrajectoryGenerator.TRADE_RATE_STATIC_INITIALIZATION
-<span class="fc" id="L217">		).nonAdaptive();</span>
+<span class="fc" id="L228">		).nonAdaptive();</span>
 
-<span class="fc" id="L219">		EfficientTradingTrajectoryContinuous ettc = cvs.trajectory();</span>
+<span class="fc" id="L230">		EfficientTradingTrajectoryContinuous ettc = cvs.trajectory();</span>
 
-<span class="fc" id="L221">		R1ToR1 r1ToR1Holdings = ettc.holdings();</span>
+<span class="fc" id="L232">		R1ToR1 r1ToR1Holdings = ettc.holdings();</span>
 
-<span class="fc" id="L223">		R1ToR1 r1ToR1TradeRate = ettc.tradeRate();</span>
+<span class="fc" id="L234">		R1ToR1 r1ToR1TradeRate = ettc.tradeRate();</span>
 
-<span class="fc" id="L225">		R1ToR1 r1ToR1TransactionCostExpectation = ettc.transactionCostExpectationFunction();</span>
+<span class="fc" id="L236">		R1ToR1 r1ToR1TransactionCostExpectation = ettc.transactionCostExpectationFunction();</span>
 
-<span class="fc" id="L227">		System.out.println (&quot;\t||-------------------------------------||&quot;);</span>
+<span class="fc" id="L238">		System.out.println (&quot;\t||-------------------------------------||&quot;);</span>
 
-<span class="fc" id="L229">		System.out.println (&quot;\t||     ADAPTIVE OPTIMAL TRAJECTORY     ||&quot;);</span>
+<span class="fc" id="L240">		System.out.println (&quot;\t||     ADAPTIVE OPTIMAL TRAJECTORY     ||&quot;);</span>
 
-<span class="fc" id="L231">		System.out.println (&quot;\t||-------------------------------------||&quot;);</span>
+<span class="fc" id="L242">		System.out.println (&quot;\t||-------------------------------------||&quot;);</span>
 
-<span class="fc" id="L233">		System.out.println (&quot;\t||     L -&gt; R:                         ||&quot;);</span>
+<span class="fc" id="L244">		System.out.println (&quot;\t||     L -&gt; R:                         ||&quot;);</span>
 
-<span class="fc" id="L235">		System.out.println (&quot;\t||             - Time                  ||&quot;);</span>
+<span class="fc" id="L246">		System.out.println (&quot;\t||             - Time                  ||&quot;);</span>
 
-<span class="fc" id="L237">		System.out.println (&quot;\t||             - Holdings              ||&quot;);</span>
+<span class="fc" id="L248">		System.out.println (&quot;\t||             - Holdings              ||&quot;);</span>
 
-<span class="fc" id="L239">		System.out.println (&quot;\t||             - Trade Rate            ||&quot;);</span>
+<span class="fc" id="L250">		System.out.println (&quot;\t||             - Trade Rate            ||&quot;);</span>
 
-<span class="fc" id="L241">		System.out.println (&quot;\t||             - Realized Cost         ||&quot;);</span>
+<span class="fc" id="L252">		System.out.println (&quot;\t||             - Realized Cost         ||&quot;);</span>
 
-<span class="fc" id="L243">		System.out.println (&quot;\t||-------------------------------------||&quot;);</span>
+<span class="fc" id="L254">		System.out.println (&quot;\t||-------------------------------------||&quot;);</span>
 
-<span class="fc" id="L245">		double dblInitialNonDimensionalCost = r1ToR1TransactionCostExpectation.evaluate (0.);</span>
+<span class="fc" id="L256">		double dblInitialNonDimensionalCost = r1ToR1TransactionCostExpectation.evaluate (0.);</span>
 
-<span class="fc bfc" id="L247" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTimeNode - 1; ++i) {</span>
-<span class="fc" id="L248">			String strDump = &quot;\t|| &quot; + FormatUtil.FormatDouble (i * dblNonDimensionalTimeInterval * dblRelaxationTime, 1, 2, 1.);</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTimeNode - 1; ++i) {</span>
+<span class="fc" id="L259">			String strDump = &quot;\t|| &quot; + FormatUtil.FormatDouble (i * dblNonDimensionalTimeInterval * dblRelaxationTime, 1, 2, 1.);</span>
 
-<span class="fc" id="L250">			strDump = strDump + &quot; | &quot; + FormatUtil.FormatDouble (r1ToR1Holdings.evaluate (i * dblNonDimensionalTimeInterval), 1, 4, 1.);</span>
+<span class="fc" id="L261">			strDump = strDump + &quot; | &quot; + FormatUtil.FormatDouble (r1ToR1Holdings.evaluate (i * dblNonDimensionalTimeInterval), 1, 4, 1.);</span>
 
-<span class="fc" id="L252">			strDump = strDump + &quot; | &quot; + FormatUtil.FormatDouble (r1ToR1TradeRate.evaluate (i * dblNonDimensionalTimeInterval), 1, 4, 1.);</span>
+<span class="fc" id="L263">			strDump = strDump + &quot; | &quot; + FormatUtil.FormatDouble (r1ToR1TradeRate.evaluate (i * dblNonDimensionalTimeInterval), 1, 4, 1.);</span>
 
-<span class="fc" id="L254">			strDump = strDump + &quot; | &quot; + FormatUtil.FormatDouble (dblInitialNonDimensionalCost - r1ToR1TransactionCostExpectation.evaluate (i * dblNonDimensionalTimeInterval), 1, 4, 1.);</span>
+<span class="fc" id="L265">			strDump = strDump + &quot; | &quot; + FormatUtil.FormatDouble (dblInitialNonDimensionalCost - r1ToR1TransactionCostExpectation.evaluate (i * dblNonDimensionalTimeInterval), 1, 4, 1.);</span>
 
-<span class="fc" id="L256">			System.out.println (strDump + &quot; ||&quot;);</span>
+<span class="fc" id="L267">			System.out.println (strDump + &quot; ||&quot;);</span>
 		}
 
-<span class="fc" id="L259">		System.out.println (&quot;\t||-------------------------------------||&quot;);</span>
+<span class="fc" id="L270">		System.out.println (&quot;\t||-------------------------------------||&quot;);</span>
 
-<span class="fc" id="L261">		System.out.println();</span>
+<span class="fc" id="L272">		System.out.println();</span>
 
-<span class="fc" id="L263">		CoordinatedVariationTrajectoryDeterminant cvtd = cvs.trajectoryDeterminant();</span>
+<span class="fc" id="L274">		CoordinatedVariationTrajectoryDeterminant cvtd = cvs.trajectoryDeterminant();</span>
 
-<span class="fc" id="L265">		System.out.println (&quot;\t||---------------------------------||&quot;);</span>
+<span class="fc" id="L276">		System.out.println (&quot;\t||---------------------------------||&quot;);</span>
 
-<span class="fc" id="L267">		System.out.println (&quot;\t||    OPTIMAL TRAJECTORY OUTPUTS   ||&quot;);</span>
+<span class="fc" id="L278">		System.out.println (&quot;\t||    OPTIMAL TRAJECTORY OUTPUTS   ||&quot;);</span>
 
-<span class="fc" id="L269">		System.out.println (&quot;\t||---------------------------------||&quot;);</span>
+<span class="fc" id="L280">		System.out.println (&quot;\t||---------------------------------||&quot;);</span>
 
-<span class="fc" id="L271">		System.out.println (</span>
+<span class="fc" id="L282">		System.out.println (</span>
 			&quot;\t|| Time Scale          =&gt;  &quot; +
-<span class="fc" id="L273">			FormatUtil.FormatDouble (cvtd.timeScale(), 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L284">			FormatUtil.FormatDouble (cvtd.timeScale(), 1, 4, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L276">		System.out.println (</span>
+<span class="fc" id="L287">		System.out.println (</span>
 			&quot;\t|| Trade Rate Scale    =&gt;  &quot; +
-<span class="fc" id="L278">			FormatUtil.FormatDouble (cvtd.tradeRateScale(), 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L289">			FormatUtil.FormatDouble (cvtd.tradeRateScale(), 1, 4, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L281">		System.out.println (</span>
+<span class="fc" id="L292">		System.out.println (</span>
 			&quot;\t|| Cost Scale          =&gt;  &quot; +
-<span class="fc" id="L283">			FormatUtil.FormatDouble (cvtd.costScale(), 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L294">			FormatUtil.FormatDouble (cvtd.costScale(), 1, 4, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L286">		System.out.println (</span>
+<span class="fc" id="L297">		System.out.println (</span>
 			&quot;\t|| Mean Market Urgency =&gt;  &quot; +
-<span class="fc" id="L288">			FormatUtil.FormatDouble (cvtd.meanMarketUrgency(), 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L299">			FormatUtil.FormatDouble (cvtd.meanMarketUrgency(), 1, 4, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L291">		System.out.println (</span>
+<span class="fc" id="L302">		System.out.println (</span>
 			&quot;\t|| Market Power        =&gt;  &quot; +
-<span class="fc" id="L293">			FormatUtil.FormatDouble (cvtd.marketPower(), 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L304">			FormatUtil.FormatDouble (cvtd.marketPower(), 1, 4, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L296">		System.out.println (</span>
+<span class="fc" id="L307">		System.out.println (</span>
 			&quot;\t|| Risk Aversion Scale =&gt;  &quot; +
-<span class="fc" id="L298">			FormatUtil.FormatDouble (cvtd.nonDimensionalRiskAversion(), 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L309">			FormatUtil.FormatDouble (cvtd.nonDimensionalRiskAversion(), 1, 4, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L301">		System.out.println (&quot;\t||---------------------------------||&quot;);</span>
+<span class="fc" id="L312">		System.out.println (&quot;\t||---------------------------------||&quot;);</span>
 
-<span class="fc" id="L303">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L304">	}</span>
+<span class="fc" id="L314">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L315">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

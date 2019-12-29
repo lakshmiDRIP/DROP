@@ -10,39 +10,50 @@ import org.drip.spaces.big.BigR2Array;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -78,134 +89,134 @@ import org.drip.spaces.big.BigR2Array;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/README.md&quot;&gt;&quot;Big&quot; Algorithm Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/README.md&quot;&gt;C&lt;sup&gt;x&lt;/sup&gt; R&lt;sup&gt;x&lt;/sup&gt; In-Place Manipulation&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L91">public class R2ArrayPathwiseProcessing {</span>
+<span class="nc" id="L102">public class R2ArrayPathwiseProcessing {</span>
 
 	private static final void MaxPathwiseProduct (
 		final int iSize,
 		final int iNumSim)
 		throws Exception
 	{
-<span class="fc" id="L98">		double dblExpectedMaxPathResponse = 0.;</span>
-<span class="fc" id="L99">		final double[][] aadblA = new double[iSize][iSize];</span>
+<span class="fc" id="L109">		double dblExpectedMaxPathResponse = 0.;</span>
+<span class="fc" id="L110">		final double[][] aadblA = new double[iSize][iSize];</span>
 
-<span class="fc bfc" id="L101" title="All 2 branches covered.">		for (int iRun = 0; iRun &lt; iNumSim; ++iRun) {</span>
-<span class="fc bfc" id="L102" title="All 2 branches covered.">			for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="fc bfc" id="L103" title="All 2 branches covered.">				for (int j = 0; j &lt; iSize; ++j)</span>
-<span class="fc" id="L104">					aadblA[i][j] = Math.random();</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">		for (int iRun = 0; iRun &lt; iNumSim; ++iRun) {</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">			for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">				for (int j = 0; j &lt; iSize; ++j)</span>
+<span class="fc" id="L115">					aadblA[i][j] = Math.random();</span>
 			}
 
-<span class="fc" id="L107">			dblExpectedMaxPathResponse += new BigR2Array (aadblA) {</span>
+<span class="fc" id="L118">			dblExpectedMaxPathResponse += new BigR2Array (aadblA) {</span>
 				@Override public double pathResponse (
 					final int iX,
 					final int iY,
 					final double dblPriorPathResponse)
 					throws Exception
 				{
-<span class="fc" id="L114">					return dblPriorPathResponse * aadblA[iX][iY];</span>
+<span class="fc" id="L125">					return dblPriorPathResponse * aadblA[iX][iY];</span>
 				}
 
 				@Override public double maxPathResponse()
 					throws Exception
 				{
-<span class="fc" id="L120">					return maxPathResponse (</span>
+<span class="fc" id="L131">					return maxPathResponse (</span>
 						0,
 						0,
 						1.
 					);
 				}
-<span class="fc" id="L126">			}.maxPathResponse();</span>
+<span class="fc" id="L137">			}.maxPathResponse();</span>
 		}
 
-<span class="fc" id="L129">		System.out.println (</span>
+<span class="fc" id="L140">		System.out.println (</span>
 			&quot;\t|| EXPECTED MAX PATH PRODUCT =&gt; &quot; +
-<span class="fc" id="L131">			FormatUtil.FormatDouble (dblExpectedMaxPathResponse / iNumSim, 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L142">			FormatUtil.FormatDouble (dblExpectedMaxPathResponse / iNumSim, 1, 4, 1.) + &quot; ||&quot;</span>
 		);
-<span class="fc" id="L133">	}</span>
+<span class="fc" id="L144">	}</span>
 
 	private static final void MaxPathwiseSum (
 		final int iSize,
 		final int iNumSim)
 		throws Exception
 	{
-<span class="fc" id="L140">		double dblExpectedMaxPathResponse = 0.;</span>
-<span class="fc" id="L141">		final double[][] aadblA = new double[iSize][iSize];</span>
+<span class="fc" id="L151">		double dblExpectedMaxPathResponse = 0.;</span>
+<span class="fc" id="L152">		final double[][] aadblA = new double[iSize][iSize];</span>
 
-<span class="fc bfc" id="L143" title="All 2 branches covered.">		for (int iRun = 0; iRun &lt; iNumSim; ++iRun) {</span>
-<span class="fc bfc" id="L144" title="All 2 branches covered.">			for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="fc bfc" id="L145" title="All 2 branches covered.">				for (int j = 0; j &lt; iSize; ++j)</span>
-<span class="fc" id="L146">					aadblA[i][j] = Math.random();</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">		for (int iRun = 0; iRun &lt; iNumSim; ++iRun) {</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">			for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">				for (int j = 0; j &lt; iSize; ++j)</span>
+<span class="fc" id="L157">					aadblA[i][j] = Math.random();</span>
 			}
 
-<span class="fc" id="L149">			dblExpectedMaxPathResponse += new BigR2Array (aadblA) {</span>
+<span class="fc" id="L160">			dblExpectedMaxPathResponse += new BigR2Array (aadblA) {</span>
 				@Override public double pathResponse (
 					final int iX,
 					final int iY,
 					final double dblPriorPathResponse)
 					throws Exception
 				{
-<span class="fc" id="L156">					return dblPriorPathResponse + aadblA[iX][iY];</span>
+<span class="fc" id="L167">					return dblPriorPathResponse + aadblA[iX][iY];</span>
 				}
 
 				@Override public double maxPathResponse()
 					throws Exception
 				{
-<span class="fc" id="L162">					return maxPathResponse (</span>
+<span class="fc" id="L173">					return maxPathResponse (</span>
 						0,
 						0,
 						0.
 					);
 				}
-<span class="fc" id="L168">			}.maxPathResponse();</span>
+<span class="fc" id="L179">			}.maxPathResponse();</span>
 		}
 
-<span class="fc" id="L171">		System.out.println (</span>
+<span class="fc" id="L182">		System.out.println (</span>
 			&quot;\t|| EXPECTED MAX PATH SUM     =&gt; &quot; +
-<span class="fc" id="L173">			FormatUtil.FormatDouble (dblExpectedMaxPathResponse / iNumSim, 1, 4, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L184">			FormatUtil.FormatDouble (dblExpectedMaxPathResponse / iNumSim, 1, 4, 1.) + &quot; ||&quot;</span>
 		);
-<span class="fc" id="L175">	}</span>
+<span class="fc" id="L186">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L181">		EnvManager.InitEnv (</span>
+<span class="fc" id="L192">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L186">		int iSize = 5;</span>
-<span class="fc" id="L187">		int iNumSim = 1000000;</span>
-<span class="fc" id="L188">		int iNumRunSet = 5;</span>
+<span class="fc" id="L197">		int iSize = 5;</span>
+<span class="fc" id="L198">		int iNumSim = 1000000;</span>
+<span class="fc" id="L199">		int iNumRunSet = 5;</span>
 
-<span class="fc" id="L190">		System.out.println ();</span>
+<span class="fc" id="L201">		System.out.println ();</span>
 
-<span class="fc bfc" id="L192" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRunSet; ++i) {</span>
-<span class="fc" id="L193">			System.out.println (&quot;\t||--------------------------------------||&quot;);</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumRunSet; ++i) {</span>
+<span class="fc" id="L204">			System.out.println (&quot;\t||--------------------------------------||&quot;);</span>
 
-<span class="fc" id="L195">			MaxPathwiseProduct (</span>
+<span class="fc" id="L206">			MaxPathwiseProduct (</span>
 				iSize,
 				iNumSim
 			);
 
-<span class="fc" id="L200">			MaxPathwiseSum (</span>
+<span class="fc" id="L211">			MaxPathwiseSum (</span>
 				iSize,
 				iNumSim
 			);
 
-<span class="fc" id="L205">			System.out.println (&quot;\t||--------------------------------------||&quot;);</span>
+<span class="fc" id="L216">			System.out.println (&quot;\t||--------------------------------------||&quot;);</span>
 		}
 
-<span class="fc" id="L208">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L209">	}</span>
+<span class="fc" id="L219">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L220">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

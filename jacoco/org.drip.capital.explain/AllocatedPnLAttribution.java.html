@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AllocatedPnLAttribution.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.explain</a> &gt; <span class="el_source">AllocatedPnLAttribution.java</span></div><h1>AllocatedPnLAttribution.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.explain;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;AllocatedPnLAttribution&lt;/i&gt; exposes the Path-Level Capital Component Attributions Post Allocation
+ * 	Adjustments. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/explain/README.md&quot;&gt;Economic Risk Capital Attribution Explain&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class AllocatedPnLAttribution
+	extends org.drip.capital.explain.PnLAttribution
+{
+<span class="nc" id="L110">	private org.drip.capital.explain.PnLAttribution _standalonePnLAttribution = null;</span>
+<span class="nc" id="L111">	private org.drip.capital.allocation.EntityComponentCapital _entityComponentCapital = null;</span>
+
+	/**
+	 * AllocatedPnLAttribution Constructor
+	 * 
+	 * @param standalonePnLAttribution The Stand-alone PnL Attribution
+	 * @param entityComponentCapital The Entity Component Capital
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 */
+
+	public AllocatedPnLAttribution (
+		final org.drip.capital.explain.PnLAttribution standalonePnLAttribution,
+		final org.drip.capital.allocation.EntityComponentCapital entityComponentCapital)
+		throws java.lang.Exception
+<span class="nc" id="L126">	{</span>
+<span class="nc bnc" id="L127" title="All 4 branches missed.">		if (null == (_standalonePnLAttribution = standalonePnLAttribution) ||</span>
+			null == (_entityComponentCapital = entityComponentCapital)
+		)
+		{
+<span class="nc" id="L131">			throw new java.lang.Exception (</span>
+				&quot;AllocatedPnLAttribution Constructor =&gt; Invalid Inputs&quot;
+			);
+		}
+<span class="nc" id="L135">	}</span>
+
+	/**
+	 * Retrieve the Entity Component Capital
+	 * 
+	 * @return The Entity Component Capital
+	 */
+
+	public org.drip.capital.allocation.EntityComponentCapital entityComponentCapital()
+	{
+<span class="nc" id="L145">		return _entityComponentCapital;</span>
+	}
+
+	@Override public java.util.Map&lt;java.lang.String, java.lang.Double&gt; fsPnLDecompositionExplainMap()
+	{
+<span class="nc" id="L150">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; standaloneFSPnLDecompositionExplainMap =</span>
+<span class="nc" id="L151">			_standalonePnLAttribution.fsPnLDecompositionExplainMap();</span>
+
+<span class="nc bnc" id="L153" title="All 2 branches missed.">		if (null == standaloneFSPnLDecompositionExplainMap ||</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">			0 == standaloneFSPnLDecompositionExplainMap.size())</span>
+		{
+<span class="nc" id="L156">			return null;</span>
+		}
+
+<span class="nc" id="L159">		double allocationScale = _entityComponentCapital.noStressStandaloneMultiplier();</span>
+
+<span class="nc" id="L161">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; fsPnLDecompositionExplainMap = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt;
+<span class="nc bnc" id="L165" title="All 2 branches missed.">			standaloneFSPnLDecompositionExplainMapEntry : standaloneFSPnLDecompositionExplainMap.entrySet())</span>
+		{
+<span class="nc" id="L167">			fsPnLDecompositionExplainMap.put (</span>
+<span class="nc" id="L168">				standaloneFSPnLDecompositionExplainMapEntry.getKey(),</span>
+<span class="nc" id="L169">				standaloneFSPnLDecompositionExplainMapEntry.getValue() * allocationScale</span>
+			);
+<span class="nc" id="L171">		}</span>
+
+<span class="nc" id="L173">		return fsPnLDecompositionExplainMap;</span>
+	}
+
+	@Override public java.util.Map&lt;java.lang.String, java.lang.Double&gt; paaCategoryDecompositionExplainMap()
+	{
+<span class="nc" id="L178">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; standalonePAACategoryDecompositionExplainMap =</span>
+<span class="nc" id="L179">			_standalonePnLAttribution.paaCategoryDecompositionExplainMap();</span>
+
+<span class="nc bnc" id="L181" title="All 2 branches missed.">		if (null == standalonePAACategoryDecompositionExplainMap ||</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">			0 == standalonePAACategoryDecompositionExplainMap.size())</span>
+		{
+<span class="nc" id="L184">			return null;</span>
+		}
+
+<span class="nc" id="L187">		double allocationScale = _entityComponentCapital.systemicStandaloneMultiplier();</span>
+
+<span class="nc" id="L189">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; paaCategoryDecompositionExplainMap = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt;
+			standalonePAACategoryDecompositionExplainMapEntry :
+<span class="nc bnc" id="L194" title="All 2 branches missed.">				standalonePAACategoryDecompositionExplainMap.entrySet())</span>
+		{
+<span class="nc" id="L196">			paaCategoryDecompositionExplainMap.put (</span>
+<span class="nc" id="L197">				standalonePAACategoryDecompositionExplainMapEntry.getKey(),</span>
+<span class="nc" id="L198">				standalonePAACategoryDecompositionExplainMapEntry.getValue() * allocationScale</span>
+			);
+<span class="nc" id="L200">		}</span>
+
+<span class="nc" id="L202">		return paaCategoryDecompositionExplainMap;</span>
+	}
+
+	@Override public java.util.Map&lt;java.lang.String, java.lang.Double&gt; systemicPnLExplainMap()
+	{
+<span class="nc" id="L207">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; standaloneSystemicPnLExplainMap =</span>
+<span class="nc" id="L208">			_standalonePnLAttribution.systemicPnLExplainMap();</span>
+
+<span class="nc bnc" id="L210" title="All 4 branches missed.">		if (null == standaloneSystemicPnLExplainMap || 0 == standaloneSystemicPnLExplainMap.size())</span>
+		{
+<span class="nc" id="L212">			return null;</span>
+		}
+
+<span class="nc" id="L215">		double allocationScale = _entityComponentCapital.systemicStandaloneMultiplier();</span>
+
+<span class="nc" id="L217">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; systemicPnLExplainMap = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; standaloneSystemicPnLExplainMapEntry :
+<span class="nc bnc" id="L221" title="All 2 branches missed.">			standaloneSystemicPnLExplainMap.entrySet())</span>
+		{
+<span class="nc" id="L223">			systemicPnLExplainMap.put (</span>
+<span class="nc" id="L224">				standaloneSystemicPnLExplainMapEntry.getKey(),</span>
+<span class="nc" id="L225">				standaloneSystemicPnLExplainMapEntry.getValue() * allocationScale</span>
+			);
+<span class="nc" id="L227">		}</span>
+
+<span class="nc" id="L229">		return systemicPnLExplainMap;</span>
+	}
+
+	@Override public java.util.Map&lt;java.lang.String, java.lang.Double&gt; systemicGrossPnLExplainMap()
+	{
+<span class="nc" id="L234">		return null;</span>
+	}
+
+	@Override public java.util.Map&lt;java.lang.String, java.lang.Double&gt; correlatedPnLExplainMap()
+	{
+<span class="nc" id="L239">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; standaloneCorrelatedPnLExplainMap =</span>
+<span class="nc" id="L240">			_standalonePnLAttribution.correlatedPnLExplainMap();</span>
+
+<span class="nc bnc" id="L242" title="All 4 branches missed.">		if (null == standaloneCorrelatedPnLExplainMap || 0 == standaloneCorrelatedPnLExplainMap.size())</span>
+		{
+<span class="nc" id="L244">			return null;</span>
+		}
+
+<span class="nc" id="L247">		double allocationScale = _entityComponentCapital.correlatedStandaloneMultiplier();</span>
+
+<span class="nc" id="L249">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; correlatedPnLExplainMap = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; standaloneCorrelatedPnLExplainMapEntry :
+<span class="nc bnc" id="L253" title="All 2 branches missed.">			standaloneCorrelatedPnLExplainMap.entrySet())</span>
+		{
+<span class="nc" id="L255">			correlatedPnLExplainMap.put (</span>
+<span class="nc" id="L256">				standaloneCorrelatedPnLExplainMapEntry.getKey(),</span>
+<span class="nc" id="L257">				standaloneCorrelatedPnLExplainMapEntry.getValue() * allocationScale</span>
+			);
+<span class="nc" id="L259">		}</span>
+
+<span class="nc" id="L261">		return correlatedPnLExplainMap;</span>
+	}
+
+	@Override public java.util.Map&lt;java.lang.String, java.lang.Double&gt; correlatedPnLWorstMap()
+	{
+<span class="nc" id="L266">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; standaloneCorrelatedPnLWorstMap =</span>
+<span class="nc" id="L267">			_standalonePnLAttribution.correlatedPnLWorstMap();</span>
+
+<span class="nc bnc" id="L269" title="All 4 branches missed.">		if (null == standaloneCorrelatedPnLWorstMap || 0 == standaloneCorrelatedPnLWorstMap.size())</span>
+		{
+<span class="nc" id="L271">			return null;</span>
+		}
+
+<span class="nc" id="L274">		double allocationScale = _entityComponentCapital.correlatedStandaloneMultiplier();</span>
+
+<span class="nc" id="L276">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; correlatedPnLWorstMap = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; standaloneCorrelatedPnLWorstMapEntry :
+<span class="nc bnc" id="L280" title="All 2 branches missed.">			standaloneCorrelatedPnLWorstMap.entrySet())</span>
+		{
+<span class="nc" id="L282">			correlatedPnLWorstMap.put (</span>
+<span class="nc" id="L283">				standaloneCorrelatedPnLWorstMapEntry.getKey(),</span>
+<span class="nc" id="L284">				standaloneCorrelatedPnLWorstMapEntry.getValue() * allocationScale</span>
+			);
+<span class="nc" id="L286">		}</span>
+
+<span class="nc" id="L288">		return correlatedPnLWorstMap;</span>
+	}
+
+	@Override public java.util.Map&lt;java.lang.String, java.lang.Double&gt; idiosyncraticPnLExplainMap()
+	{
+<span class="nc" id="L293">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; standaloneIdiosyncraticPnLExplainMap =</span>
+<span class="nc" id="L294">			_standalonePnLAttribution.idiosyncraticPnLExplainMap();</span>
+
+<span class="nc bnc" id="L296" title="All 4 branches missed.">		if (null == standaloneIdiosyncraticPnLExplainMap || 0 == standaloneIdiosyncraticPnLExplainMap.size())</span>
+		{
+<span class="nc" id="L298">			return null;</span>
+		}
+
+<span class="nc" id="L301">		double allocationScale = _entityComponentCapital.idiosyncraticStandaloneMultiplier();</span>
+
+<span class="nc" id="L303">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; idiosyncraticPnLExplainMap = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt;
+<span class="nc bnc" id="L307" title="All 2 branches missed.">			standaloneIdiosyncraticPnLExplainMapEntry : standaloneIdiosyncraticPnLExplainMap.entrySet())</span>
+		{
+<span class="nc" id="L309">			idiosyncraticPnLExplainMap.put (</span>
+<span class="nc" id="L310">				standaloneIdiosyncraticPnLExplainMapEntry.getKey(),</span>
+<span class="nc" id="L311">				standaloneIdiosyncraticPnLExplainMapEntry.getValue() * allocationScale</span>
+			);
+<span class="nc" id="L313">		}</span>
+
+<span class="nc" id="L315">		return idiosyncraticPnLExplainMap;</span>
+	}
+
+	@Override public java.util.Map&lt;java.lang.String, java.lang.Double&gt; idiosyncraticPnLWorstMap()
+	{
+<span class="nc" id="L320">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; standaloneIdiosyncraticPnLWorstMap =</span>
+<span class="nc" id="L321">			_standalonePnLAttribution.idiosyncraticPnLWorstMap();</span>
+
+<span class="nc bnc" id="L323" title="All 4 branches missed.">		if (null == standaloneIdiosyncraticPnLWorstMap || 0 == standaloneIdiosyncraticPnLWorstMap.size())</span>
+		{
+<span class="nc" id="L325">			return null;</span>
+		}
+
+<span class="nc" id="L328">		double allocationScale = _entityComponentCapital.idiosyncraticStandaloneMultiplier();</span>
+
+<span class="nc" id="L330">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; idiosyncraticPnLWorstMap = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; standaloneIdiosyncraticPnLWorstMapEntry
+<span class="nc bnc" id="L334" title="All 2 branches missed.">			: standaloneIdiosyncraticPnLWorstMap.entrySet())</span>
+		{
+<span class="nc" id="L336">			idiosyncraticPnLWorstMap.put (</span>
+<span class="nc" id="L337">				standaloneIdiosyncraticPnLWorstMapEntry.getKey(),</span>
+<span class="nc" id="L338">				standaloneIdiosyncraticPnLWorstMapEntry.getValue() * allocationScale</span>
+			);
+<span class="nc" id="L340">		}</span>
+
+<span class="nc" id="L342">		return idiosyncraticPnLWorstMap;</span>
+	}
+
+	@Override public double var()
+	{
+<span class="nc" id="L347">		return _entityComponentCapital.noStressStandaloneMultiplier() * super.var();</span>
+	}
+
+	@Override public double expectedShortfall()
+	{
+<span class="nc" id="L352">		return systemicPnL() + correlatedPnL() + idiosyncraticGrossPnL() + fsGrossPnL();</span>
+	}
+
+	@Override public java.util.Map&lt;java.lang.String, java.lang.Integer&gt; systemicInstanceCountMap()
+	{
+<span class="nc" id="L357">		return _standalonePnLAttribution.systemicInstanceCountMap();</span>
+	}
+
+	@Override public java.util.Map&lt;java.lang.String, java.lang.Integer&gt; correlatedInstanceCountMap()
+	{
+<span class="nc" id="L362">		return _standalonePnLAttribution.correlatedInstanceCountMap();</span>
+	}
+
+	@Override public java.util.Map&lt;java.lang.String, java.lang.Integer&gt; idiosyncraticInstanceCountMap()
+	{
+<span class="nc" id="L367">		return _standalonePnLAttribution.idiosyncraticInstanceCountMap();</span>
+	}
+
+	@Override public java.util.List&lt;java.lang.Integer&gt; pathIndexList()
+	{
+<span class="nc" id="L372">		return _standalonePnLAttribution.pathIndexList();</span>
+	}
+
+	@Override public int pathCount()
+	{
+<span class="nc" id="L377">		return _standalonePnLAttribution.pathCount();</span>
+	}
+
+	@Override public double systemicPnL()
+	{
+<span class="nc" id="L382">		return _entityComponentCapital.systemicStandaloneMultiplier() *</span>
+<span class="nc" id="L383">			_standalonePnLAttribution.systemicPnL();</span>
+	}
+
+	@Override public double systemicGrossPnL()
+	{
+<span class="nc" id="L388">		return _entityComponentCapital.systemicStandaloneMultiplier() *</span>
+<span class="nc" id="L389">			_standalonePnLAttribution.systemicGrossPnL();</span>
+	}
+
+	@Override public double correlatedPnL()
+	{
+<span class="nc" id="L394">		return _entityComponentCapital.correlatedStandaloneMultiplier() *</span>
+<span class="nc" id="L395">			_standalonePnLAttribution.correlatedPnL();</span>
+	}
+
+	@Override public double idiosyncraticGrossPnL()
+	{
+<span class="nc" id="L400">		return _entityComponentCapital.idiosyncraticStandaloneMultiplier() *</span>
+<span class="nc" id="L401">			_standalonePnLAttribution.idiosyncraticGrossPnL();</span>
+	}
+
+	@Override public double fsGrossPnL()
+	{
+<span class="nc" id="L406">		return _entityComponentCapital.noStressStandaloneMultiplier() *</span>
+<span class="nc" id="L407">			_standalonePnLAttribution.fsGrossPnL();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

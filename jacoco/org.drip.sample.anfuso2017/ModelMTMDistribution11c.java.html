@@ -12,41 +12,53 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -99,17 +111,17 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationLibrary.md&quot;&gt;Model Validation Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/anfuso2013&quot;&gt;Anfuso, Karyampas, and Nawroth (2013) Replications&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/anfuso2017/README.md&quot;&gt;Anfuso, Karyampas, and Nawroth (2013) Replications&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L112">public class ModelMTMDistribution11c</span>
+<span class="nc" id="L124">public class ModelMTMDistribution11c</span>
 {
 
 	private static final double UnivariateRandom (
@@ -117,10 +129,10 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
 		final double sigma)
 		throws Exception
 	{
-<span class="nc" id="L120">		return new R1UnivariateNormal (</span>
+<span class="nc" id="L132">		return new R1UnivariateNormal (</span>
 			mean,
 			sigma
-<span class="nc" id="L123">		).random();</span>
+<span class="nc" id="L135">		).random();</span>
 	}
 
 	private static final Sample GenerateSample (
@@ -129,17 +141,17 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
 		final int drawCount)
 		throws Exception
 	{
-<span class="nc" id="L132">		double[] univariateRandomArray = new double[drawCount];</span>
+<span class="nc" id="L144">		double[] univariateRandomArray = new double[drawCount];</span>
 
-<span class="nc bnc" id="L134" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; drawCount; ++drawIndex)</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; drawCount; ++drawIndex)</span>
 		{
-<span class="nc" id="L136">			univariateRandomArray[drawIndex] = UnivariateRandom (</span>
+<span class="nc" id="L148">			univariateRandomArray[drawIndex] = UnivariateRandom (</span>
 				mean,
 				sigma
 			);
 		}
 
-<span class="nc" id="L142">		return new Sample (univariateRandomArray);</span>
+<span class="nc" id="L154">		return new Sample (univariateRandomArray);</span>
 	}
 
 	private static final void ProbabilityPlot (
@@ -151,95 +163,95 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
 		final double xWidth)
 		throws Exception
 	{
-<span class="nc" id="L154">		double leftProbabilityTooHighDrift = 0.;</span>
-<span class="nc" id="L155">		double leftProbabilityCorrectDrift = 0.;</span>
-<span class="nc" id="L156">		double leftProbabilityTooLowDrift = 0.;</span>
+<span class="nc" id="L166">		double leftProbabilityTooHighDrift = 0.;</span>
+<span class="nc" id="L167">		double leftProbabilityCorrectDrift = 0.;</span>
+<span class="nc" id="L168">		double leftProbabilityTooLowDrift = 0.;</span>
 
-<span class="nc bnc" id="L158" title="All 2 branches missed.">		for (double x = xLeft; x &lt;= xRight; x += xWidth)</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">		for (double x = xLeft; x &lt;= xRight; x += xWidth)</span>
 		{
-<span class="nc" id="L160">			double probabilityTooHighDrift = pitTooHighDrift.pValue (x);</span>
+<span class="nc" id="L172">			double probabilityTooHighDrift = pitTooHighDrift.pValue (x);</span>
 
-<span class="nc" id="L162">			double probabilityCorrectDrift = pitCorrectDrift.pValue (x);</span>
+<span class="nc" id="L174">			double probabilityCorrectDrift = pitCorrectDrift.pValue (x);</span>
 
-<span class="nc" id="L164">			double probabilityTooLowDrift = pitTooLowDrift.pValue (x);</span>
+<span class="nc" id="L176">			double probabilityTooLowDrift = pitTooLowDrift.pValue (x);</span>
 
-<span class="nc" id="L166">			System.out.println (</span>
+<span class="nc" id="L178">			System.out.println (</span>
 				&quot;\t| &quot; +
-<span class="nc" id="L168">				FormatUtil.FormatDouble (x, 1, 2, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L169">				FormatUtil.FormatDouble (probabilityTooHighDrift - leftProbabilityTooHighDrift, 1, 8, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L170">				FormatUtil.FormatDouble (probabilityCorrectDrift - leftProbabilityCorrectDrift, 1, 8, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L171">				FormatUtil.FormatDouble (probabilityTooLowDrift - leftProbabilityTooLowDrift, 1, 8, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L180">				FormatUtil.FormatDouble (x, 1, 2, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L181">				FormatUtil.FormatDouble (probabilityTooHighDrift - leftProbabilityTooHighDrift, 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L182">				FormatUtil.FormatDouble (probabilityCorrectDrift - leftProbabilityCorrectDrift, 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L183">				FormatUtil.FormatDouble (probabilityTooLowDrift - leftProbabilityTooLowDrift, 1, 8, 1.) + &quot; ||&quot;</span>
 			);
 
-<span class="nc" id="L174">			leftProbabilityTooHighDrift = probabilityTooHighDrift;</span>
-<span class="nc" id="L175">			leftProbabilityCorrectDrift = probabilityCorrectDrift;</span>
-<span class="nc" id="L176">			leftProbabilityTooLowDrift = probabilityTooLowDrift;</span>
+<span class="nc" id="L186">			leftProbabilityTooHighDrift = probabilityTooHighDrift;</span>
+<span class="nc" id="L187">			leftProbabilityCorrectDrift = probabilityCorrectDrift;</span>
+<span class="nc" id="L188">			leftProbabilityTooLowDrift = probabilityTooLowDrift;</span>
 		}
-<span class="nc" id="L178">	}</span>
+<span class="nc" id="L190">	}</span>
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L184">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L196">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L186">		int drawCount = 1000000;</span>
-<span class="nc" id="L187">		double driftTooHigh =  0.25;</span>
-<span class="nc" id="L188">		double driftCorrect =  0.00;</span>
-<span class="nc" id="L189">		double driftTooLow  = -0.25;</span>
-<span class="nc" id="L190">		double volatility = 1.;</span>
-<span class="nc" id="L191">		double xLeft = -7.00;</span>
-<span class="nc" id="L192">		double xRight = 7.00;</span>
-<span class="nc" id="L193">		double xWidth = 0.50;</span>
+<span class="nc" id="L198">		int drawCount = 1000000;</span>
+<span class="nc" id="L199">		double driftTooHigh =  0.25;</span>
+<span class="nc" id="L200">		double driftCorrect =  0.00;</span>
+<span class="nc" id="L201">		double driftTooLow  = -0.25;</span>
+<span class="nc" id="L202">		double volatility = 1.;</span>
+<span class="nc" id="L203">		double xLeft = -7.00;</span>
+<span class="nc" id="L204">		double xRight = 7.00;</span>
+<span class="nc" id="L205">		double xWidth = 0.50;</span>
 
-<span class="nc" id="L195">		Sample sampleDriftTooHigh = GenerateSample (</span>
+<span class="nc" id="L207">		Sample sampleDriftTooHigh = GenerateSample (</span>
 			driftTooHigh,
 			volatility,
 			drawCount
 		);
 
-<span class="nc" id="L201">		Sample sampleDriftCorrect = GenerateSample (</span>
+<span class="nc" id="L213">		Sample sampleDriftCorrect = GenerateSample (</span>
 			driftCorrect,
 			volatility,
 			drawCount
 		);
 
-<span class="nc" id="L207">		Sample sampleDriftTooLow = GenerateSample (</span>
+<span class="nc" id="L219">		Sample sampleDriftTooLow = GenerateSample (</span>
 			driftTooLow,
 			volatility,
 			drawCount
 		);
 
-<span class="nc" id="L213">		System.out.println (&quot;\t|-------------------------------------------------||&quot;);</span>
+<span class="nc" id="L225">		System.out.println (&quot;\t|-------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L215">		System.out.println (&quot;\t|        MODEL MTM DISTRIBUTION COMPARISON        ||&quot;);</span>
-
-<span class="nc" id="L217">		System.out.println (&quot;\t|-------------------------------------------------||&quot;);</span>
-
-<span class="nc" id="L219">		System.out.println (&quot;\t|     L -&gt; R:                                     ||&quot;);</span>
-
-<span class="nc" id="L221">		System.out.println (&quot;\t|          - Ordinate                             ||&quot;);</span>
-
-<span class="nc" id="L223">		System.out.println (&quot;\t|          - p-Value (Volatility Too High)        ||&quot;);</span>
-
-<span class="nc" id="L225">		System.out.println (&quot;\t|          - p-Value (Volatility Correct)         ||&quot;);</span>
-
-<span class="nc" id="L227">		System.out.println (&quot;\t|          - p-Value (Volatility Too Low)         ||&quot;);</span>
+<span class="nc" id="L227">		System.out.println (&quot;\t|        MODEL MTM DISTRIBUTION COMPARISON        ||&quot;);</span>
 
 <span class="nc" id="L229">		System.out.println (&quot;\t|-------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L231">		ProbabilityPlot (</span>
-<span class="nc" id="L232">			sampleDriftTooHigh.nativeProbabilityIntegralTransform(),</span>
-<span class="nc" id="L233">			sampleDriftCorrect.nativeProbabilityIntegralTransform(),</span>
-<span class="nc" id="L234">			sampleDriftTooLow.nativeProbabilityIntegralTransform(),</span>
+<span class="nc" id="L231">		System.out.println (&quot;\t|     L -&gt; R:                                     ||&quot;);</span>
+
+<span class="nc" id="L233">		System.out.println (&quot;\t|          - Ordinate                             ||&quot;);</span>
+
+<span class="nc" id="L235">		System.out.println (&quot;\t|          - p-Value (Volatility Too High)        ||&quot;);</span>
+
+<span class="nc" id="L237">		System.out.println (&quot;\t|          - p-Value (Volatility Correct)         ||&quot;);</span>
+
+<span class="nc" id="L239">		System.out.println (&quot;\t|          - p-Value (Volatility Too Low)         ||&quot;);</span>
+
+<span class="nc" id="L241">		System.out.println (&quot;\t|-------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L243">		ProbabilityPlot (</span>
+<span class="nc" id="L244">			sampleDriftTooHigh.nativeProbabilityIntegralTransform(),</span>
+<span class="nc" id="L245">			sampleDriftCorrect.nativeProbabilityIntegralTransform(),</span>
+<span class="nc" id="L246">			sampleDriftTooLow.nativeProbabilityIntegralTransform(),</span>
 			xLeft,
 			xRight,
 			xWidth
 		);
 
-<span class="nc" id="L240">		System.out.println (&quot;\t|-------------------------------------------------||&quot;);</span>
+<span class="nc" id="L252">		System.out.println (&quot;\t|-------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L242">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L243">	}</span>
+<span class="nc" id="L254">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L255">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

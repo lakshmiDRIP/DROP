@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Business.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.definition</a> &gt; <span class="el_source">Business.java</span></div><h1>Business.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.definition;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;Business&lt;/i&gt; maintains the C&lt;sup&gt;1&lt;/sup&gt; Fixings for the Business Categorical Variate. The References
+ * 	are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/definition/README.md&quot;&gt;Economic Risk Capital Categorical Definitions&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L107">public class Business</span>
+{
+
+	/**
+	 * Advisory Business
+	 */
+
+	public static final java.lang.String ADVISORY = &quot;Advisory&quot;;
+
+	/**
+	 * AI Business
+	 */
+
+	public static final java.lang.String AI = &quot;AI&quot;;
+
+	/**
+	 * BHC Financial Business
+	 */
+
+	public static final java.lang.String BHCFINANCIAL = &quot;BHCFinancial&quot;;
+
+	/**
+	 * CAI Business
+	 */
+
+	public static final java.lang.String CAI = &quot;CAI&quot;;
+
+	/**
+	 * Capital Markets Organization Business
+	 */
+
+	public static final java.lang.String CAPITAL_MARKETS_ORGANIZATION = &quot;Capital Markets Organization&quot;;
+
+	/**
+	 * Capital Markets Origination Lending Business
+	 */
+
+	public static final java.lang.String CAPITAL_MARKETS_ORIGINATION_LENDING =
+		&quot;Capital Markets Origination Lending&quot;;
+
+	/**
+	 * Cards Business
+	 */
+
+	public static final java.lang.String CARDS = &quot;Cards&quot;;
+
+	/**
+	 * Cash Business
+	 */
+
+	public static final java.lang.String CASH = &quot;Cash&quot;;
+
+	/**
+	 * Central America Mortgages Business
+	 */
+
+	public static final java.lang.String CENTRAL_AMERICA_MORTGAGES = &quot;Central America Mortgages&quot;;
+
+	/**
+	 * CLP Business
+	 */
+
+	public static final java.lang.String CLP = &quot;CLP&quot;;
+
+	/**
+	 * Commercial Real Estate Business
+	 */
+
+	public static final java.lang.String COMMERCIAL_REAL_ESTATE = &quot;Commercial Real Estate&quot;;
+
+	/**
+	 * Commodities Business
+	 */
+
+	public static final java.lang.String COMMODITIES = &quot;Commodities&quot;;
+
+	/**
+	 * Houston Commodities Business
+	 */
+
+	public static final java.lang.String COMMODITIES_HOUSTON = &quot;Commodts Houston&quot;;
+
+	/**
+	 * Consumer Cards Business
+	 */
+
+	public static final java.lang.String CONSUMER_CARDS = &quot;Consumer_Cards&quot;;
+
+	/**
+	 * Consumer Other Business
+	 */
+
+	public static final java.lang.String CONSUMER_OTHER = &quot;Consumer_Other&quot;;
+
+	/**
+	 * Converts Business
+	 */
+
+	public static final java.lang.String CONVERTS = &quot;Converts&quot;;
+
+	/**
+	 * Corporate Center Business
+	 */
+
+	public static final java.lang.String CORPORATE_CENTER = &quot;CorpCtr&quot;;
+
+	/**
+	 * Credit Macro Hedge Business
+	 */
+
+	public static final java.lang.String CREDIT_MACRO_HEDGE = &quot;Credit Macro Hedge&quot;;
+
+	/**
+	 * Credit Markets Business
+	 */
+
+	public static final java.lang.String CREDIT_MARKETS = &quot;Credit Markets&quot;;
+
+	/**
+	 * Credit Trading Business
+	 */
+
+	public static final java.lang.String CREDIT_TRADING = &quot;Credit Trading&quot;;
+
+	/**
+	 * Distressed Business
+	 */
+
+	public static final java.lang.String DISTRESSED = &quot;Distressed&quot;;
+
+	/**
+	 * EM ABF Business
+	 */
+
+	public static final java.lang.String EM_ABF = &quot;EM ABF&quot;;
+
+	/**
+	 * EM Asset Backed Finance Business
+	 */
+
+	public static final java.lang.String EM_ASSET_BACKED_FINANCE = &quot;EM Asset Backed Finance&quot;;
+
+	/**
+	 * EM Bonds Business
+	 */
+
+	public static final java.lang.String EM_BONDS = &quot;EM Bonds&quot;;
+
+	/**
+	 * EM Credit Trading Business
+	 */
+
+	public static final java.lang.String EM_CREDIT_TRADING = &quot;EM Credit Trading&quot;;
+
+	/**
+	 * EM Prm Loans Business
+	 */
+
+	public static final java.lang.String EM_PRIMARY_LOANS = &quot;EM Prm Loans&quot;;
+
+	/**
+	 * Equities Business
+	 */
+
+	public static final java.lang.String EQUITIES = &quot;Equities&quot;;
+
+	/**
+	 * Equity Derivatives Business
+	 */
+
+	public static final java.lang.String EQUITY_DERIVATIVES = &quot;Equity Derivative&quot;;
+
+	/**
+	 * Equity Underwriting Business
+	 */
+
+	public static final java.lang.String EQUITY_UNDERWRITING = &quot;Equity Undwrt&quot;;
+
+	/**
+	 * FIMA Business
+	 */
+
+	public static final java.lang.String FIMA = &quot;FIMA&quot;;
+
+	/**
+	 * Finance Business
+	 */
+
+	public static final java.lang.String FINANCE = &quot;Finance&quot;;
+
+	/**
+	 * G10 FX Business
+	 */
+
+	public static final java.lang.String G10_FX = &quot;G10 FX&quot;;
+
+	/**
+	 * G10 Rates Business
+	 */
+
+	public static final java.lang.String G10_RATES = &quot;G10 Rates&quot;;
+
+	/**
+	 * Glbl Securitized Markets Business
+	 */
+
+	public static final java.lang.String GLOBAL_SECURITIZED_MARKETS = &quot;Glbl Securitized Markets&quot;;
+
+	/**
+	 * Global Credit Markets Business
+	 */
+
+	public static final java.lang.String GLOBAL_CREDIT_MARKETS = &quot;Global Credit Markets&quot;;
+
+	/**
+	 * GSSG West Business
+	 */
+
+	public static final java.lang.String GSSG_WEST = &quot;GSSG West&quot;;
+
+	/**
+	 * GTS Business
+	 */
+
+	public static final java.lang.String GTS = &quot;GTS&quot;;
+
+	/**
+	 * GTS Holdings-Trade Business
+	 */
+
+	public static final java.lang.String GTS_HOLDINGS_TRADE = &quot;GTS Holdings-Trade&quot;;
+
+	/**
+	 * GWM Business
+	 */
+
+	public static final java.lang.String GWM = &quot;GWM&quot;;
+
+	/**
+	 * IG Bonds Business
+	 */
+
+	public static final java.lang.String IG_BONDS = &quot;IG Bonds&quot;;
+
+	/**
+	 * IG Prmry Loans Business
+	 */
+
+	public static final java.lang.String IG_PRIMARY_LOANS = &quot;IG Prmry Loans&quot;;
+
+	/**
+	 * International Cards Business
+	 */
+
+	public static final java.lang.String INTERNATIONAL_CARDS = &quot;International Cards&quot;;
+
+	/**
+	 * International Retail Banking Business
+	 */
+
+	public static final java.lang.String INTERNATIONAL_RETAIL_BANKING = &quot;International Retail Banking&quot;;
+
+	/**
+	 * Lev Fin Business
+	 */
+
+	public static final java.lang.String LEVERAGED_FINANCE = &quot;Lev Fin&quot;;
+
+	/**
+	 * Local Markets Business
+	 */
+
+	public static final java.lang.String LOAN_PORTFOLIO_MANAGEMENT = &quot;Loan Portfolio Management&quot;;
+
+	/**
+	 * Local Markets Business
+	 */
+
+	public static final java.lang.String LOCAL_MARKETS = &quot;Local Mkts&quot;;
+
+	/**
+	 * Long Term Asset Group Business
+	 */
+
+	public static final java.lang.String LONG_TERM_ASSET_GROUP = &quot;Long Term Asset Group&quot;;
+
+	/**
+	 * Municipal Securities Business
+	 */
+
+	public static final java.lang.String MUNICIPAL_SECURITIES = &quot;Municipal Securities&quot;;
+
+	/**
+	 * Municipal Securities - Community Business
+	 */
+
+	public static final java.lang.String MUNICIPAL_SECURITIES_BHC_COMMUNITY =
+		&quot;Municipal Securities - BHC Community&quot;;
+
+	/**
+	 * Municipal Business
+	 */
+
+	public static final java.lang.String MUNICIPAL = &quot;Munis&quot;;
+
+	/**
+	 * Nikko Investments Business
+	 */
+
+	public static final java.lang.String NIKKO_INVESTMENTS = &quot;Nikko Investments&quot;;
+
+	/**
+	 * OS and B Business
+	 */
+
+	public static final java.lang.String OS_B = &quot;OS&amp;B&quot;;
+
+	/**
+	 * Other FI Undwrtng Business
+	 */
+
+	public static final java.lang.String OTHER_FI_UNDERWRITING = &quot;Other FI Undwrtng&quot;;
+
+	/**
+	 * Other FI Glbl Mkts Business
+	 */
+
+	public static final java.lang.String OTHER_GLOBAL_MARKETS = &quot;Other Glbl Mkts&quot;;
+
+	/**
+	 * Other Special Asset Pool Business
+	 */
+
+	public static final java.lang.String OTHER_SPECIAL_ASSET_POOL = &quot;Other Special Asset Pool&quot;;
+
+	/**
+	 * Other_BAM Business
+	 */
+
+	public static final java.lang.String OTHER_BAM = &quot;Other_BAM&quot;;
+
+	/**
+	 * PECD Business
+	 */
+
+	public static final java.lang.String PECD = &quot;PECD&quot;;
+
+	/**
+	 * Other_Consumer Business
+	 */
+
+	public static final java.lang.String OTHER_CONSUMER = &quot;Other_Consumer&quot;;
+
+	/**
+	 * Prime Finance Business
+	 */
+
+	public static final java.lang.String PRIME_FINANCE = &quot;Prime Finance&quot;;
+
+	/**
+	 * Primerica Financial Services Business
+	 */
+
+	public static final java.lang.String PRIMERICA_FINANCIAL_SERVICES = &quot;Primerica Financial Services&quot;;
+
+	/**
+	 * Private Banking Business
+	 */
+
+	public static final java.lang.String PRIVATE_BANKING = &quot;Private Banking&quot;;
+
+	/**
+	 * Project Finance Business
+	 */
+
+	public static final java.lang.String PROJECT_FINANCE = &quot;Project Finance&quot;;
+
+	/**
+	 * Rates and Currencies Business
+	 */
+
+	public static final java.lang.String RATES_AND_CURRENCIES = &quot;Rates and Currencies&quot;;
+
+	/**
+	 * Real Estate Lending Business
+	 */
+
+	public static final java.lang.String REAL_ESTATE_LENDING = &quot;Real Estate Lending&quot;;
+
+	/**
+	 * Retail Auto Lending Business
+	 */
+
+	public static final java.lang.String RETAIL_AUTO_LENDING = &quot;Retail Auto Lending&quot;;
+
+	/**
+	 * Retail Banking Business
+	 */
+
+	public static final java.lang.String RETAIL_BANKING = &quot;Retail Banking&quot;;
+
+	/**
+	 * Retail Partner Cards Business
+	 */
+
+	public static final java.lang.String RETAIL_PARTNER_CARDS = &quot;Retail Partner Cards&quot;;
+
+	/**
+	 * Risk Treasury Business
+	 */
+
+	public static final java.lang.String RISK_TREASURY = &quot;Risk Treasury&quot;;
+
+	/**
+	 * Rubicon - India Business
+	 */
+
+	public static final java.lang.String RUBICON_INDIA = &quot;Rubicon - India&quot;;
+
+	/**
+	 * SAP Admin Business
+	 */
+
+	public static final java.lang.String SAP_ADMIN = &quot;SAP Admin&quot;;
+
+	/**
+	 * Securitized Markets Business
+	 */
+
+	public static final java.lang.String SECURITIZED_MARKETS = &quot;Securitized Mkts&quot;;
+
+	/**
+	 * Short Term Business
+	 */
+
+	public static final java.lang.String SHORT_TERM = &quot;Short Term&quot;;
+
+	/**
+	 * Smith_Barney_BAM Business
+	 */
+
+	public static final java.lang.String SMITH_BARNEY_BAM = &quot;Smith_Barney_BAM&quot;;
+
+	/**
+	 * Student Loans Business
+	 */
+
+	public static final java.lang.String STUDENT_LOANS = &quot;Student Loans&quot;;
+
+	/**
+	 * US Commercial Banking Business
+	 */
+
+	public static final java.lang.String US_COMMERCIAL_BANKING = &quot;US Commercial Banking&quot;;
+
+	/**
+	 * US Consumer Installment Loans Business
+	 */
+
+	public static final java.lang.String US_CONSUMER_INSTALLMENT_LOANS = &quot;US Consumer Installment Loans&quot;;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -13,41 +13,53 @@ import org.drip.specialfunction.beta.IntegrandEstimator;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -98,16 +110,16 @@ import org.drip.specialfunction.beta.IntegrandEstimator;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/beta/README.md&quot;&gt;Estimation Techniques for Beta Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md&quot;&gt;Function Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/beta/README.md&quot;&gt;Estimates of the Beta Functions&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L110">public class RegularizedIncompleteEstimate</span>
+<span class="nc" id="L122">public class RegularizedIncompleteEstimate</span>
 {
 
 	private static final void Estimate (
@@ -117,16 +129,16 @@ import org.drip.specialfunction.beta.IntegrandEstimator;
 		final R3ToR1 regularizedIncompleteBetaEstimator)
 		throws Exception
 	{
-<span class="nc" id="L120">		String display =</span>
+<span class="nc" id="L132">		String display =</span>
 			&quot;\t| [&quot; +
-<span class="nc" id="L122">			FormatUtil.FormatDouble (a, 1, 1, 1., false) + &quot;, &quot; +</span>
-<span class="nc" id="L123">			FormatUtil.FormatDouble (b, 1, 1, 1., false) + &quot;] =&gt; &quot;;</span>
+<span class="nc" id="L134">			FormatUtil.FormatDouble (a, 1, 1, 1., false) + &quot;, &quot; +</span>
+<span class="nc" id="L135">			FormatUtil.FormatDouble (b, 1, 1, 1., false) + &quot;] =&gt; &quot;;</span>
 
-<span class="nc bnc" id="L125" title="All 2 branches missed.">		for (double x : xArray)</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		for (double x : xArray)</span>
 		{
-<span class="nc" id="L127">			display = display +</span>
-<span class="nc" id="L128">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L129">					regularizedIncompleteBetaEstimator.evaluate (</span>
+<span class="nc" id="L139">			display = display +</span>
+<span class="nc" id="L140">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L141">					regularizedIncompleteBetaEstimator.evaluate (</span>
 						x,
 						a,
 						b
@@ -134,16 +146,16 @@ import org.drip.specialfunction.beta.IntegrandEstimator;
 				) + &quot; |&quot;;
 		}
 
-<span class="nc" id="L137">		System.out.println (display + &quot;|&quot;);</span>
-<span class="nc" id="L138">	}</span>
+<span class="nc" id="L149">		System.out.println (display + &quot;|&quot;);</span>
+<span class="nc" id="L150">	}</span>
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L144">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L156">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L146">		double[] xArray =</span>
+<span class="nc" id="L158">		double[] xArray =</span>
 		{
 			1.00,
 			0.90,
@@ -157,7 +169,7 @@ import org.drip.specialfunction.beta.IntegrandEstimator;
 			0.10,
 			0.00,
 		};
-<span class="nc" id="L160">		double[] aArray =</span>
+<span class="nc" id="L172">		double[] aArray =</span>
 		{
 			1.,
 			2.,
@@ -166,7 +178,7 @@ import org.drip.specialfunction.beta.IntegrandEstimator;
 			5.,
 			6.,
 		};
-<span class="nc" id="L169">		double[] bArray =</span>
+<span class="nc" id="L181">		double[] bArray =</span>
 		{
 			1.,
 			2.,
@@ -176,35 +188,35 @@ import org.drip.specialfunction.beta.IntegrandEstimator;
 			6.,
 		};
 
-<span class="nc" id="L179">		int eulerIntegrandBetaTermCount = 1000;</span>
-<span class="nc" id="L180">		int eulerIntegrandIncompleteBetaTermCount = 1000;</span>
+<span class="nc" id="L191">		int eulerIntegrandBetaTermCount = 1000;</span>
+<span class="nc" id="L192">		int eulerIntegrandIncompleteBetaTermCount = 1000;</span>
 
-<span class="nc" id="L182">		IncompleteRegularizedEstimator incompleteRegularizedEstimator = new IncompleteRegularizedEstimator (</span>
-<span class="nc" id="L183">			IncompleteIntegrandEstimator.EulerFirst (eulerIntegrandIncompleteBetaTermCount),</span>
-<span class="nc" id="L184">			IntegrandEstimator.EulerFirstRightPlane (eulerIntegrandBetaTermCount)</span>
+<span class="nc" id="L194">		IncompleteRegularizedEstimator incompleteRegularizedEstimator = new IncompleteRegularizedEstimator (</span>
+<span class="nc" id="L195">			IncompleteIntegrandEstimator.EulerFirst (eulerIntegrandIncompleteBetaTermCount),</span>
+<span class="nc" id="L196">			IntegrandEstimator.EulerFirstRightPlane (eulerIntegrandBetaTermCount)</span>
 		);
 
-<span class="nc" id="L187">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L199">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L189">		System.out.println (&quot;\t|                                             REGULARIZED INCOMPLETE BETA FUNCTION ESTIMATE                                             ||&quot;);</span>
+<span class="nc" id="L201">		System.out.println (&quot;\t|                                             REGULARIZED INCOMPLETE BETA FUNCTION ESTIMATE                                             ||&quot;);</span>
 
-<span class="nc" id="L191">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L203">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L193">		System.out.println (&quot;\t|        L -&gt; R:                                                                                                                        ||&quot;);</span>
+<span class="nc" id="L205">		System.out.println (&quot;\t|        L -&gt; R:                                                                                                                        ||&quot;);</span>
 
-<span class="nc" id="L195">		System.out.println (&quot;\t|                - a                                                                                                                    ||&quot;);</span>
+<span class="nc" id="L207">		System.out.println (&quot;\t|                - a                                                                                                                    ||&quot;);</span>
 
-<span class="nc" id="L197">		System.out.println (&quot;\t|                - b                                                                                                                    ||&quot;);</span>
+<span class="nc" id="L209">		System.out.println (&quot;\t|                - b                                                                                                                    ||&quot;);</span>
 
-<span class="nc" id="L199">		System.out.println (&quot;\t|                - Regularized Incomplete Beta Estimates for x E (1 ... 0)                                                              ||&quot;);</span>
+<span class="nc" id="L211">		System.out.println (&quot;\t|                - Regularized Incomplete Beta Estimates for x E (1 ... 0)                                                              ||&quot;);</span>
 
-<span class="nc" id="L201">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L213">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L203" title="All 2 branches missed.">		for (double a : aArray)</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">		for (double a : aArray)</span>
 		{
-<span class="nc bnc" id="L205" title="All 2 branches missed.">			for (double b : bArray)</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">			for (double b : bArray)</span>
 			{
-<span class="nc" id="L207">				Estimate (</span>
+<span class="nc" id="L219">				Estimate (</span>
 					xArray,
 					a,
 					b,
@@ -213,9 +225,9 @@ import org.drip.specialfunction.beta.IntegrandEstimator;
 			}
 		}
 
-<span class="nc" id="L216">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L228">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L218">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L219">	}</span>
+<span class="nc" id="L230">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L231">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

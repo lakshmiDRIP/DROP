@@ -1,0 +1,731 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>R1Central.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.measure.chisquare</a> &gt; <span class="el_source">R1Central.java</span></div><h1>R1Central.java</h1><pre class="source lang-java linenums">
+package org.drip.measure.chisquare;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;R1Central&lt;/i&gt; implements the Probability Density Function for the R&lt;sup&gt;1&lt;/sup&gt; Central Chi-Square
+ * 	Distribution. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Abramowitz, M., and I. A. Stegun (2007): &lt;i&gt;Handbook of Mathematics Functions&lt;/i&gt; &lt;b&gt;Dover Book
+ * 				on Mathematics&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Backstrom, T., and J. Fischer (2018): Fast Randomization for Distributed Low Bit-rate Coding of
+ * 				Speech and Audio &lt;i&gt;IEEE/ACM Transactions on Audio, Speech, and Language Processing&lt;/i&gt; &lt;b&gt;26
+ * 				(1)&lt;/b&gt; 19-30
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Chi-Squared Distribution (2019): Chi-Squared Function
+ * 				https://en.wikipedia.org/wiki/Chi-squared_distribution
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Johnson, N. L., S. Kotz, and N. Balakrishnan (1994): &lt;i&gt;Continuous Univariate Distributions
+ * 				2&lt;sup&gt;nd&lt;/sup&gt; Edition&lt;/i&gt; &lt;b&gt;John Wiley and Sons&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			National Institute of Standards and Technology (2019): Chi-Squared Distribution
+ * 				https://www.itl.nist.gov/div898/handbook/eda/section3/eda3666.htm
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md&quot;&gt;Chi-Square Distribution Implementation/Properties&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class R1Central extends org.drip.measure.continuous.R1Univariate
+{
+<span class="nc" id="L120">	private double _degreesOfFreedom = -1;</span>
+<span class="nc" id="L121">	private double _cdfScaler = java.lang.Double.NaN;</span>
+<span class="nc" id="L122">	private double _normalizer = java.lang.Double.NaN;</span>
+<span class="nc" id="L123">	private org.drip.function.definition.R1ToR1 _gammaEstimator = null;</span>
+<span class="nc" id="L124">	private org.drip.function.definition.R1ToR1 _digammaEstimator = null;</span>
+<span class="nc" id="L125">	private org.drip.function.definition.R2ToR1 _lowerIncompleteGammaEstimator = null;</span>
+
+	/**
+	 * Generate a Consolidated Chi-squared Distribution from Independent Component Distributions
+	 * 
+	 * @param chiSquaredDistributionArray Independent Component Distribution Array
+	 * 
+	 * @return Consolidated Chi-squared Distribution
+	 */
+
+	public static final R1Central FromIndependentChiSquared (
+		final org.drip.measure.chisquare.R1Central[] chiSquaredDistributionArray)
+	{
+<span class="nc bnc" id="L138" title="All 4 branches missed.">		if (null == chiSquaredDistributionArray || 0 == chiSquaredDistributionArray.length)</span>
+		{
+<span class="nc" id="L140">			return null;</span>
+		}
+
+<span class="nc" id="L143">		double degreesOfFreedom = 0;</span>
+
+		for (org.drip.measure.chisquare.R1Central chiSquaredDistribution :
+<span class="nc bnc" id="L146" title="All 2 branches missed.">			chiSquaredDistributionArray)</span>
+		{
+<span class="nc bnc" id="L148" title="All 2 branches missed.">			if (null == chiSquaredDistribution)</span>
+			{
+<span class="nc" id="L150">				return null;</span>
+			}
+
+<span class="nc" id="L153">			degreesOfFreedom = degreesOfFreedom + chiSquaredDistribution.degreesOfFreedom();</span>
+		}
+
+		try
+		{
+<span class="nc" id="L158">			return new R1Central (</span>
+				degreesOfFreedom,
+<span class="nc" id="L160">				chiSquaredDistributionArray[0].gammaEstimator(),</span>
+<span class="nc" id="L161">				chiSquaredDistributionArray[0].digammaEstimator(),</span>
+<span class="nc" id="L162">				chiSquaredDistributionArray[0].lowerIncompleteGammaEstimator()</span>
+			);
+		}
+<span class="nc" id="L165">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L167">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L170">		return null;</span>
+	}
+
+	/**
+	 * R1Central Constructor
+	 * 
+	 * @param degreesOfFreedom Degrees of Freedom
+	 * @param gammaEstimator Gamma Estimator
+	 * @param digammaEstimator Digamma Estimator
+	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public R1Central (
+		final double degreesOfFreedom,
+		final org.drip.function.definition.R1ToR1 gammaEstimator,
+		final org.drip.function.definition.R1ToR1 digammaEstimator,
+		final org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator)
+		throws java.lang.Exception
+<span class="nc" id="L190">	{</span>
+<span class="nc bnc" id="L191" title="All 10 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (</span>
+				_degreesOfFreedom = degreesOfFreedom
+			) || 0. &gt;= _degreesOfFreedom ||
+			null == (_gammaEstimator = gammaEstimator) ||
+			null == (_digammaEstimator = digammaEstimator) ||
+			null == (_lowerIncompleteGammaEstimator = lowerIncompleteGammaEstimator))
+		{
+<span class="nc" id="L198">			throw new java.lang.Exception (&quot;R1Central Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L201">		double halfDOF = 0.5 * _degreesOfFreedom;</span>
+
+<span class="nc" id="L203">		_normalizer = (_cdfScaler = 1. / _gammaEstimator.evaluate (halfDOF)) * java.lang.Math.pow (</span>
+			2.,
+			-1. * halfDOF
+		);
+<span class="nc" id="L207">	}</span>
+
+	/**
+	 * Retrieve the Degrees of Freedom
+	 * 
+	 * @return The Degrees of Freedom
+	 */
+
+	public double degreesOfFreedom()
+	{
+<span class="nc" id="L217">		return _degreesOfFreedom;</span>
+	}
+
+	/**
+	 * Retrieve the Gamma Estimator
+	 * 
+	 * @return Gamma Estimator
+	 */
+
+	public org.drip.function.definition.R1ToR1 gammaEstimator()
+	{
+<span class="nc" id="L228">		return _gammaEstimator;</span>
+	}
+
+	/**
+	 * Retrieve the Digamma Estimator
+	 * 
+	 * @return Digamma Estimator
+	 */
+
+	public org.drip.function.definition.R1ToR1 digammaEstimator()
+	{
+<span class="nc" id="L239">		return _digammaEstimator;</span>
+	}
+
+	/**
+	 * Retrieve the Lower Incomplete Gamma Estimator
+	 * 
+	 * @return Lower Incomplete Gamma Estimator
+	 */
+
+	public org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator()
+	{
+<span class="nc" id="L250">		return _lowerIncompleteGammaEstimator;</span>
+	}
+
+	@Override public double[] support()
+	{
+<span class="nc" id="L255">		return new double[]</span>
+		{
+			0.,
+			java.lang.Double.POSITIVE_INFINITY
+		};
+	}
+
+	@Override public double density (
+		final double t)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L266" title="All 2 branches missed.">		if (!supported (t))</span>
+		{
+<span class="nc" id="L268">			throw new java.lang.Exception (&quot;R1Central::density =&gt; Variate not in Range&quot;);</span>
+		}
+
+<span class="nc" id="L271">		return _normalizer * java.lang.Math.pow (</span>
+			t,
+			0.5 * _degreesOfFreedom - 1.
+<span class="nc" id="L274">		) * java.lang.Math.exp (-0.5 * t);</span>
+	}
+
+	@Override public double cumulative (
+		final double t)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L281" title="All 2 branches missed.">		if (!supported (t))</span>
+		{
+<span class="nc" id="L283">			throw new java.lang.Exception (&quot;R1Central::cumulative =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L286">		return _cdfScaler * _lowerIncompleteGammaEstimator.evaluate (</span>
+			0.5 * _degreesOfFreedom,
+			0.5 * t
+		);
+	}
+
+	@Override public double mean()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L295">		return _degreesOfFreedom;</span>
+	}
+
+	@Override public double median()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L301">		double oneMinus_twoOver_9dof__ = 1. - (2. / (9. * _degreesOfFreedom));</span>
+
+<span class="nc" id="L303">		return _degreesOfFreedom * oneMinus_twoOver_9dof__ * oneMinus_twoOver_9dof__ *</span>
+			oneMinus_twoOver_9dof__;
+	}
+
+	@Override public double mode()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L310">		return java.lang.Math.max (</span>
+			_degreesOfFreedom - 2.,
+			0.
+		);
+	}
+
+	@Override public double variance()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L319">		return 2. * _degreesOfFreedom;</span>
+	}
+
+	@Override public double skewness()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L325">		return java.lang.Math.sqrt (8. / _degreesOfFreedom);</span>
+	}
+
+	@Override public double excessKurtosis()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L331">		return 12. / _degreesOfFreedom;</span>
+	}
+
+	@Override public double differentialEntropy()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L337">		double halfDOF = 0.5 * _degreesOfFreedom;</span>
+
+<span class="nc" id="L339">		return halfDOF + java.lang.Math.log (2. * _gammaEstimator.evaluate (halfDOF)) +</span>
+<span class="nc" id="L340">			(1. - halfDOF) * _digammaEstimator.evaluate (halfDOF);</span>
+	}
+
+	@Override public org.drip.function.definition.R1ToR1 momentGeneratingFunction()
+	{
+<span class="nc" id="L345">		return new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="nc" id="L346">		{</span>
+			@Override public double evaluate (
+				final double t)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L351" title="All 4 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (t) || t &gt; 0.5)</span>
+				{
+<span class="nc" id="L353">					throw new java.lang.Exception</span>
+						(&quot;R1Central::momentGeneratingFunction::evaluate =&gt; Invalid Input&quot;);
+				}
+
+<span class="nc" id="L357">				return java.lang.Math.pow (</span>
+					1. - 2. * t,
+<span class="nc" id="L359">					-0.5 * _degreesOfFreedom</span>
+				);
+			}
+		};
+	}
+
+	@Override public org.drip.function.definition.R1ToR1 probabilityGeneratingFunction()
+	{
+<span class="nc" id="L367">		return new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="nc" id="L368">		{</span>
+			@Override public double evaluate (
+				final double t)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L373" title="All 4 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (t) ||</span>
+<span class="nc bnc" id="L374" title="All 2 branches missed.">					t &lt;= 0. || t &gt; java.lang.Math.sqrt (java.lang.Math.E))</span>
+				{
+<span class="nc" id="L376">					throw new java.lang.Exception</span>
+						(&quot;R1Central::probabilityGeneratingFunction::evaluate =&gt; Invalid Input&quot;);
+				}
+
+<span class="nc" id="L380">				return java.lang.Math.pow (</span>
+<span class="nc" id="L381">					1. - 2. * java.lang.Math.log (t),</span>
+<span class="nc" id="L382">					-0.5 * _degreesOfFreedom</span>
+				);
+			}
+		};
+	}
+
+	@Override public double random()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L391">		double sumOfStandardNormalSquares = 0.;</span>
+
+<span class="nc bnc" id="L393" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; _degreesOfFreedom; ++drawIndex)</span>
+		{
+			double randomStandardNormal = org.drip.measure.gaussian.NormalQuadrature.InverseCDF
+<span class="nc" id="L396">				(java.lang.Math.random());</span>
+
+<span class="nc" id="L398">			sumOfStandardNormalSquares = sumOfStandardNormalSquares +</span>
+				randomStandardNormal * randomStandardNormal;
+		}
+
+<span class="nc" id="L402">		return sumOfStandardNormalSquares;</span>
+	}
+
+	/**
+	 * Retrieve the Normalizer
+	 * 
+	 * @return Normalizer
+	 */
+
+	public double normalizer()
+	{
+<span class="nc" id="L413">		return _normalizer;</span>
+	}
+
+	/**
+	 * Retrieve the CDF Scaler
+	 * 
+	 * @return CDF Scaler
+	 */
+
+	public double cdfScaler()
+	{
+<span class="nc" id="L424">		return _cdfScaler;</span>
+	}
+
+	/**
+	 * Compute the Chernoff Upper Bound
+	 * 
+	 * @param x A
+	 * 
+	 * @return The Chernoff Upper Bound
+	 * 
+	 * @throws java.lang.Exception Thrown if the Chernoff Upper Bound cannot be calculated
+	 */
+
+	public double chernoffBound (
+		final double x)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L441" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x)</span>
+		{
+<span class="nc" id="L443">			throw new java.lang.Exception (&quot;R1Central::chernoffBound =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L446">		double z = x / _degreesOfFreedom;</span>
+
+<span class="nc bnc" id="L448" title="All 2 branches missed.">		if (1. == z)</span>
+		{
+<span class="nc" id="L450">			throw new java.lang.Exception (&quot;R1Central::chernoffBound =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L453">		double _zExponent_OneMinusZ__powerHalfDegreesOfFreedom = java.lang.Math.pow (</span>
+<span class="nc" id="L454">			z * java.lang.Math.exp (1. - z),</span>
+			0.5 * _degreesOfFreedom
+		);
+
+<span class="nc bnc" id="L458" title="All 2 branches missed.">		return 1. &gt; z ? _zExponent_OneMinusZ__powerHalfDegreesOfFreedom : 1. -</span>
+			_zExponent_OneMinusZ__powerHalfDegreesOfFreedom;
+	}
+
+	/**
+	 * Compute the Non-central Moment about Zero
+	 * 
+	 * @param m Non-central Moment Index
+	 * 
+	 * @return The Non-central Moment about Zero
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double nonCentralMoment (
+		final int m)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L476" title="All 2 branches missed.">		if (0 &gt; m)</span>
+		{
+<span class="nc" id="L478">			throw new java.lang.Exception (&quot;R1Central::nonCentralMoment =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L481">		double halfDOF = 0.5 * _degreesOfFreedom;</span>
+
+<span class="nc" id="L483">		return java.lang.Math.pow (</span>
+			2.,
+			m
+<span class="nc" id="L486">		) * _gammaEstimator.evaluate (m + halfDOF) / _gammaEstimator.evaluate (halfDOF);</span>
+	}
+
+	/**
+	 * Compute the Cumulant
+	 * 
+	 * @param n Cumulant Index
+	 * 
+	 * @return The Cumulant
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double cumulant (
+		final int n)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L503" title="All 2 branches missed.">		if (0 &gt; n)</span>
+		{
+<span class="nc" id="L505">			throw new java.lang.Exception (&quot;R1Central::cumulant =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L508">		return _degreesOfFreedom * java.lang.Math.pow (</span>
+			2.,
+			n - 1.
+<span class="nc" id="L511">		) * _gammaEstimator.evaluate (n);</span>
+	}
+
+	/**
+	 * Retrieve the Central Limit Theorem Equivalent Normal Distribution Proxy
+	 * 
+	 * @return The Central Limit Theorem Equivalent Normal Distribution Proxy
+	 */
+
+	public org.drip.measure.gaussian.R1UnivariateNormal cltProxy()
+	{
+		try
+		{
+<span class="nc" id="L524">			return new org.drip.measure.gaussian.R1UnivariateNormal (</span>
+				_degreesOfFreedom,
+				2. * _degreesOfFreedom
+			);
+		}
+<span class="nc" id="L529">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L531">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L534">		return null;</span>
+	}
+
+	/**
+	 * Indicate if the Current Distribution is a Valid Proxy as a CLT
+	 * 
+	 * @return TRUE - The Current Distribution is a Valid Proxy as a CLT
+	 */
+
+	public boolean validCLTProxy()
+	{
+<span class="nc bnc" id="L545" title="All 2 branches missed.">		return 50. &lt;= _degreesOfFreedom;</span>
+	}
+
+	/**
+	 * Generate a Gamma-distribution off of the Scaled Chi-Square Distribution
+	 * 
+	 * @param scale The Scale
+	 * 
+	 * @return The Gamma Distribution
+	 */
+
+	public org.drip.measure.gamma.R1ShapeScaleDistribution gammaDistribution (
+		final double scale)
+	{
+		try
+		{
+<span class="nc" id="L561">			return new org.drip.measure.gamma.R1ShapeScaleDistribution (</span>
+				new org.drip.measure.gamma.ShapeScaleParameters (
+					0.5 * _degreesOfFreedom,
+					2. * scale
+				),
+				_gammaEstimator,
+				_digammaEstimator,
+				_lowerIncompleteGammaEstimator
+			);
+		}
+<span class="nc" id="L571">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L573">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L576">		return null;</span>
+	}
+
+	/**
+	 * Generate Logarithm Proxy Based Random Number - Proxy to Univariate Normal Distribution
+	 * 
+	 * @return Logarithm Proxy Based Random Number - Proxy to Univariate Normal Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double randomLogProxy()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L590">		return java.lang.Math.log (_degreesOfFreedom);</span>
+	}
+
+	/**
+	 * Generate CLT Proxy Based Random Number - Proxy to Univariate Normal Distribution
+	 * 
+	 * @return CLT Proxy Based Random Number - Proxy to Univariate Normal Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double randomCLTProxy()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L604">		return (random() - _degreesOfFreedom) / java.lang.Math.sqrt (2. * _degreesOfFreedom);</span>
+	}
+
+	/**
+	 * Generate Fisher Proxy Random Number - Proxy to Univariate Normal Distribution
+	 * 
+	 * @return Fisher Proxy Random Number - Proxy to Univariate Normal Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double randomFisherProxy()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L618">		return java.lang.Math.sqrt (2. * random());</span>
+	}
+
+	/**
+	 * Generate Wilson-Hilferty Proxy Random Number - Proxy to Univariate Normal Distribution
+	 * 
+	 * @return Wilson-Hilferty Proxy Random Number - Proxy to Univariate Normal Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double randomWilsonHilferty()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L632">		return java.lang.Math.pow (</span>
+<span class="nc" id="L633">			random() / _degreesOfFreedom,</span>
+			1. / 3.
+		);
+	}
+
+	/**
+	 * Generate Gamma Distributed Random Number
+	 * 
+	 * @param c The Scale Parameter
+	 * 
+	 * @return Gamma Distributed Random Number
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double randomGamma (
+		final double c)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L652" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (c) || 0. &gt;= c)</span>
+		{
+<span class="nc" id="L654">			throw new java.lang.Exception (&quot;R1Central::randomGamma =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L657">		return random() * c;</span>
+	}
+
+	/**
+	 * Generate the Chi Distributed Random Number
+	 * 
+	 * @return Chi Distributed Random Number
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double randomChi()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L671">		return java.lang.Math.sqrt (random());</span>
+	}
+
+	/**
+	 * Generate Exponential (0.5) Distributed Random Number
+	 * 
+	 * @return Exponential (0.5) Distributed Random Number
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double randomExponentialHalf()
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L685" title="All 2 branches missed.">		if (2. != _degreesOfFreedom)</span>
+		{
+<span class="nc" id="L687">			throw new java.lang.Exception (&quot;R1Central::randomExponentialHalf =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L690">		return random();</span>
+	}
+
+	/**
+	 * Generate Rayleigh (1) Distributed Random Number
+	 * 
+	 * @return Rayleigh (1) Distributed Random Number
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double randomRayleigh1()
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L704" title="All 2 branches missed.">		if (2. != _degreesOfFreedom)</span>
+		{
+<span class="nc" id="L706">			throw new java.lang.Exception (&quot;R1Central::randomRayleigh1 =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L709">		return random();</span>
+	}
+
+	/**
+	 * Generate Maxwell (1) Distributed Random Number
+	 * 
+	 * @return Maxwell (1) Distributed Random Number
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double randomMaxwell1()
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L723" title="All 2 branches missed.">		if (3. != _degreesOfFreedom)</span>
+		{
+<span class="nc" id="L725">			throw new java.lang.Exception (&quot;R1Central::randomMaxwell1 =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L728">		return random();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
