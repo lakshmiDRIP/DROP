@@ -47,6 +47,13 @@ Portfolio Core Module contains libraries that implement Portfolio Contruction an
 
  * Basel II
  * Basel III
+ * VaR and Stress Methodology – Integration and Testing
+ * Integrated VaR and Stress Testing Risk Capital Methodology
+ * Trading Risk Capital Beta Allocation
+ * Two-Beta Allocation of Trading Capital
+ * Reporting Flow
+ * Enhanced Business Hierarchy for VaR Stress Estimation
+ * Comparison of Hierarchies
 
 
 ## Exposure Analytics Coverage
