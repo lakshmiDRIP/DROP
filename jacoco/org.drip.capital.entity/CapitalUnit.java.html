@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CapitalUnit.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.entity</a> &gt; <span class="el_source">CapitalUnit.java</span></div><h1>CapitalUnit.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.entity;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;CapitalUnit&lt;/i&gt; implements the VaR and the Stress Functionality for the specified Capital Unit. The
+ * 	References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/entity/README.md&quot;&gt;Economic Risk Capital Estimation Nodes&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class CapitalUnit
+	implements org.drip.capital.entity.CapitalSimulator
+{
+<span class="nc" id="L110">	private double _notional = java.lang.Double.NaN;</span>
+<span class="nc" id="L111">	private org.drip.capital.label.Coordinate _coordinate = null;</span>
+<span class="nc" id="L112">	private org.drip.capital.entity.CapitalUnitEventContainer _stressEventContainer = null;</span>
+
+	private org.drip.capital.simulation.PathPnLRealization pathPnLRealization (
+		final int pathIndex,
+		final double pnlScaler,
+		final org.drip.capital.simulation.FSPnLDecomposition fsPnLDecomposition,
+		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; fsTypeVolatilityAjustmentMap,
+		final double stressPnLScaler,
+		final org.drip.capital.simulation.StressEventIndicator stressEventIndicator)
+	{
+<span class="nc bnc" id="L122" title="All 4 branches missed.">		if (null == fsPnLDecomposition || null == stressEventIndicator)</span>
+		{
+<span class="nc" id="L124">			return null;</span>
+		}
+
+<span class="nc" id="L127">		org.drip.capital.stress.SystemicEventContainer gsstEventContainer =</span>
+<span class="nc" id="L128">			_stressEventContainer.systemicEventContainer();</span>
+
+<span class="nc" id="L130">		org.drip.capital.stress.IdiosyncraticEventContainer iBSSTEventContainer =</span>
+<span class="nc" id="L131">			_stressEventContainer.idiosyncraticEventContainer();</span>
+
+		try
+		{
+<span class="nc" id="L135">			return new org.drip.capital.simulation.PathPnLRealization (</span>
+				pathIndex,
+<span class="nc bnc" id="L137" title="All 2 branches missed.">				fsPnLDecomposition.applyVolatilityAdjustment (</span>
+					fsTypeVolatilityAjustmentMap,
+					pnlScaler
+				),
+<span class="nc bnc" id="L141" title="All 2 branches missed.">				null == gsstEventContainer ? null : gsstEventContainer.realizeIncidenceEnsemble (</span>
+					stressPnLScaler,
+<span class="nc" id="L143">					stressEventIndicator.systemic()</span>
+				),
+<span class="nc" id="L145">				null == iBSSTEventContainer ? null : iBSSTEventContainer.realizeIncidenceEnsemble (</span>
+					stressPnLScaler,
+<span class="nc" id="L147">					stressEventIndicator.idiosyncraticMap()</span>
+				)
+			);
+		}
+<span class="nc" id="L151">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L153">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L156">		return null;</span>
+	}
+
+	/**
+	 * CapitalUnit Constructor
+	 * 
+	 * @param coordinate Capital Unit Coordinate
+	 * @param stressEventContainer Capital Unit Stress Event Container
+	 * @param notional The Capital Unit Notional
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public CapitalUnit (
+		final org.drip.capital.label.Coordinate coordinate,
+		final org.drip.capital.entity.CapitalUnitEventContainer stressEventContainer,
+		final double notional)
+		throws java.lang.Exception
+<span class="nc" id="L174">	{</span>
+<span class="nc bnc" id="L175" title="All 4 branches missed.">		if (null == (_coordinate = coordinate) ||</span>
+			null == (_stressEventContainer = stressEventContainer) ||
+<span class="nc bnc" id="L177" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (</span>
+				_notional = notional
+			)
+		)
+		{
+<span class="nc" id="L182">			throw new java.lang.Exception (</span>
+				&quot;CapitalUnit Constructor =&gt; Invalid Inputs&quot;
+			);
+		}
+<span class="nc" id="L186">	}</span>
+
+	/**
+	 * Retrieve the Capital Unit Coordinate
+	 * 
+	 * @return The Capital Unit Coordinate
+	 */
+
+	public org.drip.capital.label.Coordinate coordinate()
+	{
+<span class="nc" id="L196">		return _coordinate;</span>
+	}
+
+	/**
+	 * Retrieve the Capital Unit Stress Event Container
+	 * 
+	 * @return The Capital Unit Stress Event Container
+	 */
+
+	public org.drip.capital.entity.CapitalUnitEventContainer stressEventContainer()
+	{
+<span class="nc" id="L207">		return _stressEventContainer;</span>
+	}
+
+	/**
+	 * Retrieve the Capital Unit Notional
+	 * 
+	 * @return The Capital Unit Notional
+	 */
+
+	public double notional()
+	{
+<span class="nc" id="L218">		return _notional;</span>
+	}
+
+	@Override public org.drip.capital.simulation.PathPnLRealization[] pathPnLRealizationArray (
+		final org.drip.capital.setting.SimulationControl simulationControl,
+		final org.drip.capital.setting.SimulationPnLControl simulationPnLControl)
+	{
+<span class="nc bnc" id="L225" title="All 4 branches missed.">		if (null == simulationControl ||</span>
+			null == simulationPnLControl)
+		{
+<span class="nc" id="L228">			return null;</span>
+		}
+
+<span class="nc" id="L231">		org.drip.capital.stress.IdiosyncraticEventContainer idiosyncraticEventContainer =</span>
+<span class="nc" id="L232">			_stressEventContainer.idiosyncraticEventContainer();</span>
+
+<span class="nc bnc" id="L234" title="All 2 branches missed.">		java.util.Set&lt;java.lang.String&gt; idiosyncraticEventSet = null == idiosyncraticEventContainer ? null :</span>
+<span class="nc" id="L235">			idiosyncraticEventContainer.eventMap().keySet();</span>
+
+<span class="nc" id="L237">		org.drip.capital.setting.HorizonTailFSPnLControl pnlControl = simulationPnLControl.noStress();</span>
+
+<span class="nc" id="L239">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; fsTypeVolatilityAjustmentMap =</span>
+<span class="nc" id="L240">			pnlControl.fsTypeVolatilityAjustmentMap();</span>
+
+<span class="nc" id="L242">		int systemicStressIncidenceSampling = simulationControl.systemicStressIncidenceSampling();</span>
+
+<span class="nc" id="L244">		double stressPnLScaler = simulationPnLControl.stress().grossScaler();</span>
+
+<span class="nc" id="L246">		int pathCount = simulationControl.pathCount();</span>
+
+<span class="nc" id="L248">		double pnlScaler = pnlControl.grossScaler();</span>
+
+<span class="nc" id="L250">		org.drip.capital.simulation.PathPnLRealization[] pathPnLRealizationArray =</span>
+			new org.drip.capital.simulation.PathPnLRealization[pathCount];
+
+<span class="nc" id="L253">		for (int pathIndex = 0;</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">			pathIndex &lt; pathCount;</span>
+<span class="nc" id="L255">			++pathIndex)</span>
+		{
+<span class="nc" id="L257">			if (null == (</span>
+<span class="nc bnc" id="L258" title="All 2 branches missed.">				pathPnLRealizationArray[pathIndex] = pathPnLRealization (</span>
+					pathIndex,
+					pnlScaler,
+<span class="nc bnc" id="L261" title="All 2 branches missed.">					org.drip.capital.simulation.FSPnLDecomposition.Standard (</span>
+						_notional
+					),
+					fsTypeVolatilityAjustmentMap,
+					stressPnLScaler,
+					org.drip.capital.setting.SimulationControl.SYSTEMIC_STRESS_INCIDENCE_RANDOM_SAMPLING
+						== systemicStressIncidenceSampling ?
+<span class="nc" id="L268">						org.drip.capital.simulation.StressEventIndicator.RandomSystemic (</span>
+							idiosyncraticEventSet
+<span class="nc" id="L270">						) : org.drip.capital.simulation.StressEventIndicator.CustomSystemic (</span>
+							idiosyncraticEventSet,
+							((double) pathIndex) / ((double) pathCount)
+						)
+					)
+				))
+			{
+<span class="nc" id="L277">				return null;</span>
+			}
+		}
+
+<span class="nc" id="L281">		return pathPnLRealizationArray;</span>
+	}
+
+	@Override public org.drip.capital.simulation.CapitalUnitPathEnsemble pathEnsemble (
+		final org.drip.capital.setting.SimulationControl simulationControl,
+		final org.drip.capital.setting.SimulationPnLControl simulationPnLControl)
+	{
+<span class="nc" id="L288">		org.drip.capital.simulation.PathPnLRealization[] pathPnLRealizationArray = pathPnLRealizationArray</span>
+<span class="nc" id="L289">		(</span>
+			simulationControl,
+			simulationPnLControl
+		);
+
+<span class="nc bnc" id="L294" title="All 2 branches missed.">		if (null == pathPnLRealizationArray)</span>
+		{
+<span class="nc" id="L296">			return null;</span>
+		}
+
+<span class="nc" id="L299">		org.drip.capital.simulation.CapitalUnitPathEnsemble capitalUnitPathEnsemble =</span>
+			new org.drip.capital.simulation.CapitalUnitPathEnsemble();
+
+<span class="nc bnc" id="L302" title="All 2 branches missed.">		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : pathPnLRealizationArray)</span>
+		{
+<span class="nc bnc" id="L304" title="All 2 branches missed.">			if (!capitalUnitPathEnsemble.addPathPnLRealization (</span>
+				pathPnLRealization
+			))
+			{
+<span class="nc" id="L308">				return null;</span>
+			}
+		}
+
+<span class="nc" id="L312">		return capitalUnitPathEnsemble;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

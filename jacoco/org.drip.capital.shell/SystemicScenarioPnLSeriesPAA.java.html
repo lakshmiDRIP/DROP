@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SystemicScenarioPnLSeriesPAA.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.shell</a> &gt; <span class="el_source">SystemicScenarioPnLSeriesPAA.java</span></div><h1>SystemicScenarioPnLSeriesPAA.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.shell;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;SystemicScenarioPnLSeriesPAA&lt;/i&gt; contains the PAA Category Decomposition of the PnL Series of a
+ * 	Systemic Stress Scenario. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/shell/README.md&quot;&gt;Economic Risk Capital Parameter Contexts&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class SystemicScenarioPnLSeriesPAA
+{
+<span class="nc" id="L109">	private java.util.Map&lt;java.lang.String, org.drip.capital.stress.PnLSeries&gt; _lostDecadeDecompositionMap</span>
+		= new org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.capital.stress.PnLSeries&gt;();
+
+<span class="nc" id="L112">	private java.util.Map&lt;java.lang.String, org.drip.capital.stress.PnLSeries&gt;</span>
+		_baseline1974DecompositionMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.capital.stress.PnLSeries&gt;();
+
+<span class="nc" id="L116">	private java.util.Map&lt;java.lang.String, org.drip.capital.stress.PnLSeries&gt;</span>
+		_baseline2008DecompositionMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.capital.stress.PnLSeries&gt;();
+
+<span class="nc" id="L120">	private java.util.Map&lt;java.lang.String, org.drip.capital.stress.PnLSeries&gt;</span>
+		_deepDownturnDecompositionMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.capital.stress.PnLSeries&gt;();
+
+<span class="nc" id="L124">	private java.util.Map&lt;java.lang.String, org.drip.capital.stress.PnLSeries&gt;</span>
+		_dollarDeclineDecompositionMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.capital.stress.PnLSeries&gt;();
+
+<span class="nc" id="L128">	private java.util.Map&lt;java.lang.String, org.drip.capital.stress.PnLSeries&gt;</span>
+		_interestRateShockDecompositionMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.capital.stress.PnLSeries&gt;();
+
+	private static final boolean UpdateMap (
+		final java.util.Map&lt;java.lang.String, org.drip.capital.stress.PnLSeries&gt; map,
+		final java.lang.String key,
+		final double value)
+	{
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (map.containsKey (</span>
+			key
+		))
+		{
+<span class="nc" id="L141">			return false;</span>
+		}
+
+<span class="nc" id="L144">		map.put (</span>
+			key,
+<span class="nc" id="L146">			org.drip.capital.stress.PnLSeries.SingleOutcome (</span>
+				value
+			)
+		);
+
+<span class="nc" id="L151">		return true;</span>
+	}
+
+	private static final double AggregateEntryValues (
+		final java.util.Map&lt;java.lang.String, org.drip.capital.stress.PnLSeries&gt; map)
+	{
+<span class="nc bnc" id="L157" title="All 2 branches missed.">		if (0 == map.size())</span>
+		{
+<span class="nc" id="L159">			return 0.;</span>
+		}
+
+<span class="nc" id="L162">		double aggregate = 0.;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.String, org.drip.capital.stress.PnLSeries&gt; entry :
+<span class="nc bnc" id="L165" title="All 2 branches missed.">			map.entrySet())</span>
+		{
+<span class="nc" id="L167">			aggregate = aggregate + entry.getValue().composite();</span>
+<span class="nc" id="L168">		}</span>
+
+<span class="nc" id="L170">		return aggregate;</span>
+	}
+
+	/**
+	 * Empty SystemicScenarioPnLSeriesPAA Constructor
+	 */
+
+	public SystemicScenarioPnLSeriesPAA()
+<span class="nc" id="L178">	{</span>
+<span class="nc" id="L179">	}</span>
+
+	/**
+	 * Retrieve the 1974 Baseline PAA Category PnL Decomposition Map
+	 * 
+	 * @return 1974 Baseline PAA Category PnL Decomposition Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.capital.stress.PnLSeries&gt;
+		baseline1974DecompositionMap()
+	{
+<span class="nc" id="L190">		return _baseline1974DecompositionMap;</span>
+	}
+
+	/**
+	 * Retrieve the 2008 Baseline PAA Category PnL Decomposition Map
+	 * 
+	 * @return 2008 Baseline PAA Category PnL Decomposition Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.capital.stress.PnLSeries&gt;
+		baseline2008DecompositionMap()
+	{
+<span class="nc" id="L202">		return _baseline2008DecompositionMap;</span>
+	}
+
+	/**
+	 * Retrieve the Deep Down-turn PAA Category PnL Decomposition Map
+	 * 
+	 * @return Deep Down-turn PAA Category PnL Decomposition Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.capital.stress.PnLSeries&gt;
+		deepDownturnDecompositionMap()
+	{
+<span class="nc" id="L214">		return _deepDownturnDecompositionMap;</span>
+	}
+
+	/**
+	 * Retrieve the Dollar Decline PAA Category PnL Decomposition Map
+	 * 
+	 * @return Dollar Decline PAA Category PnL Decomposition Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.capital.stress.PnLSeries&gt;
+		dollarDeclineDecompositionMap()
+	{
+<span class="nc" id="L226">		return _dollarDeclineDecompositionMap;</span>
+	}
+
+	/**
+	 * Retrieve the Interest Rate Shock PAA Category PnL Decomposition Map
+	 * 
+	 * @return Interest Rate Shock PAA Category PnL Decomposition Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.capital.stress.PnLSeries&gt;
+		interestRateShockDecompositionMap()
+	{
+<span class="nc" id="L238">		return _interestRateShockDecompositionMap;</span>
+	}
+
+	/**
+	 * Retrieve the Lost Decade PAA Category PnL Decomposition Map
+	 * 
+	 * @return Lost Decade PAA Category PnL Decomposition Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.capital.stress.PnLSeries&gt; lostDecadeDecompositionMap()
+	{
+<span class="nc" id="L249">		return _lostDecadeDecompositionMap;</span>
+	}
+
+	/**
+	 * Add a Decomposed PnL Entry for the Specified Systemic Scenario and PAA Category
+	 *  
+	 * @param systemicScenarioName Systemic Scenario Name
+	 * @param paaCategoryName PAA Category Name
+	 * @param pnlDecomposition PnL Entry
+	 * 
+	 * @return TRUE - The Entry is successfully added
+	 */
+
+	public boolean addDecompositionEntry (
+		final java.lang.String systemicScenarioName,
+		final java.lang.String paaCategoryName,
+		final double pnlDecomposition)
+	{
+<span class="nc bnc" id="L267" title="All 6 branches missed.">		if (null == systemicScenarioName || systemicScenarioName.isEmpty() ||</span>
+<span class="nc bnc" id="L268" title="All 2 branches missed.">			null == paaCategoryName || paaCategoryName.isEmpty() ||</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (</span>
+				pnlDecomposition
+			)
+		)
+		{
+<span class="nc" id="L274">			return false;</span>
+		}
+
+<span class="nc bnc" id="L277" title="All 2 branches missed.">		if (org.drip.capital.definition.SystemicScenarioDefinition.BASELINE_1974.equalsIgnoreCase (</span>
+			systemicScenarioName
+		))
+		{
+<span class="nc" id="L281">			return UpdateMap (</span>
+				_baseline1974DecompositionMap,
+				paaCategoryName,
+				pnlDecomposition
+			);
+		}
+
+<span class="nc bnc" id="L288" title="All 2 branches missed.">		if (org.drip.capital.definition.SystemicScenarioDefinition.BASELINE_2008.equalsIgnoreCase (</span>
+			systemicScenarioName
+		))
+		{
+<span class="nc" id="L292">			return UpdateMap (</span>
+				_baseline2008DecompositionMap,
+				paaCategoryName,
+				pnlDecomposition
+			);
+		}
+
+<span class="nc bnc" id="L299" title="All 2 branches missed.">		if (org.drip.capital.definition.SystemicScenarioDefinition.DEEP_DOWNTURN.equalsIgnoreCase (</span>
+			systemicScenarioName
+		))
+		{
+<span class="nc" id="L303">			return UpdateMap (</span>
+				_deepDownturnDecompositionMap,
+				paaCategoryName,
+				pnlDecomposition
+			);
+		}
+
+<span class="nc bnc" id="L310" title="All 2 branches missed.">		if (org.drip.capital.definition.SystemicScenarioDefinition.DOLLAR_DECLINE.equalsIgnoreCase (</span>
+			systemicScenarioName
+		))
+		{
+<span class="nc" id="L314">			return UpdateMap (</span>
+				_dollarDeclineDecompositionMap,
+				paaCategoryName,
+				pnlDecomposition
+			);
+		}
+
+<span class="nc bnc" id="L321" title="All 2 branches missed.">		if (org.drip.capital.definition.SystemicScenarioDefinition.INTEREST_RATE_SHOCK.equalsIgnoreCase (</span>
+			systemicScenarioName
+		))
+		{
+<span class="nc" id="L325">			return UpdateMap (</span>
+				_interestRateShockDecompositionMap,
+				paaCategoryName,
+				pnlDecomposition
+			);
+		}
+
+<span class="nc bnc" id="L332" title="All 2 branches missed.">		if (org.drip.capital.definition.SystemicScenarioDefinition.LOST_DECADE.equalsIgnoreCase (</span>
+			systemicScenarioName
+		))
+		{
+<span class="nc" id="L336">			return UpdateMap (</span>
+				_lostDecadeDecompositionMap,
+				paaCategoryName,
+				pnlDecomposition
+			);
+		}
+
+<span class="nc" id="L343">		return false;</span>
+	}
+
+	/**
+	 * Generate the Aggregated GSST PnL
+	 * 
+	 * @return Aggregated GSST PnL
+	 */
+
+	public org.drip.capital.shell.SystemicScenarioPnLSeries aggregatePnL()
+	{
+<span class="nc" id="L354">		return SystemicScenarioPnLSeries.SingleOutcome (</span>
+<span class="nc" id="L355">			AggregateEntryValues (</span>
+				_baseline1974DecompositionMap
+			),
+<span class="nc" id="L358">			AggregateEntryValues (</span>
+				_baseline2008DecompositionMap
+			),
+<span class="nc" id="L361">			AggregateEntryValues (</span>
+				_deepDownturnDecompositionMap
+			),
+<span class="nc" id="L364">			AggregateEntryValues (</span>
+				_dollarDeclineDecompositionMap
+			),
+<span class="nc" id="L367">			AggregateEntryValues (</span>
+				_interestRateShockDecompositionMap
+			),
+<span class="nc" id="L370">			AggregateEntryValues (</span>
+				_lostDecadeDecompositionMap
+			)
+		);
+	}
+
+	@Override public java.lang.String toString()
+	{
+<span class="nc" id="L378">		return &quot;[&quot; +</span>
+<span class="nc" id="L379">			&quot;{&quot; + _baseline1974DecompositionMap.toString() + &quot;} | &quot; +</span>
+<span class="nc" id="L380">			&quot;{&quot; + _baseline2008DecompositionMap.toString() + &quot;} | &quot; +</span>
+<span class="nc" id="L381">			&quot;{&quot; + _deepDownturnDecompositionMap.toString() + &quot;} | &quot; +</span>
+<span class="nc" id="L382">			&quot;{&quot; + _dollarDeclineDecompositionMap.toString() + &quot;} | &quot; +</span>
+<span class="nc" id="L383">			&quot;{&quot; + _interestRateShockDecompositionMap.toString() + &quot;} | &quot; +</span>
+<span class="nc" id="L384">			&quot;{&quot; + _lostDecadeDecompositionMap.toString() + &quot;} | &quot; +</span>
+		&quot;]&quot;;
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

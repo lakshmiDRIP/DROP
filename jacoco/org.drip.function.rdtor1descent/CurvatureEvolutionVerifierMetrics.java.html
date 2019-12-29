@@ -6,44 +6,56 @@ package org.drip.function.rdtor1descent;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -84,10 +96,10 @@ package org.drip.function.rdtor1descent;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/rdtor1descent/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Function Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/rdtor1descent/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Gradient Descent Techniques&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -96,9 +108,9 @@ package org.drip.function.rdtor1descent;
 public class CurvatureEvolutionVerifierMetrics
 	extends org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics
 {
-<span class="fc" id="L99">	private boolean _strongCurvatureCriterion = false;</span>
-<span class="fc" id="L100">	private double[] _nextVariateFunctionJacobian = null;</span>
-<span class="fc" id="L101">	private double _curvatureParameter = java.lang.Double.NaN;</span>
+<span class="fc" id="L111">	private boolean _strongCurvatureCriterion = false;</span>
+<span class="fc" id="L112">	private double[] _nextVariateFunctionJacobian = null;</span>
+<span class="fc" id="L113">	private double _curvatureParameter = java.lang.Double.NaN;</span>
 
 	/**
 	 * CurvatureEvolutionVerifierMetrics Constructor
@@ -124,23 +136,23 @@ public class CurvatureEvolutionVerifierMetrics
 		final double[] nextVariateFunctionJacobian)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L127">		super (</span>
+<span class="fc" id="L139">		super (</span>
 			targetDirectionUnitVector,
 			currentVariateArray,
 			stepLength,
 			currentVariateFunctionJacobian
 		);
 
-<span class="pc bpc" id="L134" title="3 of 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_curvatureParameter = curvatureParameter) ||</span>
+<span class="pc bpc" id="L146" title="3 of 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_curvatureParameter = curvatureParameter) ||</span>
 			null == (_nextVariateFunctionJacobian = nextVariateFunctionJacobian) ||
 			currentVariateArray.length != _nextVariateFunctionJacobian.length)
 		{
-<span class="nc" id="L138">			throw new java.lang.Exception</span>
+<span class="nc" id="L150">			throw new java.lang.Exception</span>
 				(&quot;CurvatureEvolutionVerifierMetrics Constructor =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="fc" id="L142">		_strongCurvatureCriterion = strongCurvatureCriterion;</span>
-<span class="fc" id="L143">	}</span>
+<span class="fc" id="L154">		_strongCurvatureCriterion = strongCurvatureCriterion;</span>
+<span class="fc" id="L155">	}</span>
 
 	/**
 	 * Retrieve the Curvature Parameter
@@ -150,7 +162,7 @@ public class CurvatureEvolutionVerifierMetrics
 
 	public double curvatureParameter()
 	{
-<span class="nc" id="L153">		return _curvatureParameter;</span>
+<span class="nc" id="L165">		return _curvatureParameter;</span>
 	}
 
 	/**
@@ -161,7 +173,7 @@ public class CurvatureEvolutionVerifierMetrics
 
 	public boolean strongCurvatureCriterion()
 	{
-<span class="nc" id="L164">		return _strongCurvatureCriterion;</span>
+<span class="nc" id="L176">		return _strongCurvatureCriterion;</span>
 	}
 
 	/**
@@ -172,7 +184,7 @@ public class CurvatureEvolutionVerifierMetrics
 
 	public double[] nextVariateFunctionJacobian()
 	{
-<span class="nc" id="L175">		return _nextVariateFunctionJacobian;</span>
+<span class="nc" id="L187">		return _nextVariateFunctionJacobian;</span>
 	}
 
 	/**
@@ -183,34 +195,34 @@ public class CurvatureEvolutionVerifierMetrics
 
 	public boolean verify()
 	{
-<span class="fc" id="L186">		double[] targetDirectionVector = targetDirection().component();</span>
+<span class="fc" id="L198">		double[] targetDirectionVector = targetDirection().component();</span>
 
 		try
 		{
-<span class="fc" id="L190">			double nextFunctionIncrement = org.drip.numerical.linearalgebra.Matrix.DotProduct (</span>
+<span class="fc" id="L202">			double nextFunctionIncrement = org.drip.numerical.linearalgebra.Matrix.DotProduct (</span>
 				targetDirectionVector,
 				_nextVariateFunctionJacobian
 			);
 
-<span class="fc" id="L195">			double parametrizedCurrentFunctionIncrement =</span>
-<span class="fc" id="L196">				_curvatureParameter * org.drip.numerical.linearalgebra.Matrix.DotProduct (</span>
+<span class="fc" id="L207">			double parametrizedCurrentFunctionIncrement =</span>
+<span class="fc" id="L208">				_curvatureParameter * org.drip.numerical.linearalgebra.Matrix.DotProduct (</span>
 					targetDirectionVector,
-<span class="fc" id="L198">					currentVariateFunctionJacobian()</span>
+<span class="fc" id="L210">					currentVariateFunctionJacobian()</span>
 				);
 
-<span class="fc bfc" id="L201" title="All 2 branches covered.">			return _strongCurvatureCriterion ?</span>
-<span class="fc" id="L202">				java.lang.Math.abs (</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">			return _strongCurvatureCriterion ?</span>
+<span class="fc" id="L214">				java.lang.Math.abs (</span>
 					nextFunctionIncrement
-<span class="fc bfc" id="L204" title="All 4 branches covered.">				) &lt;= java.lang.Math.abs (</span>
+<span class="fc bfc" id="L216" title="All 4 branches covered.">				) &lt;= java.lang.Math.abs (</span>
 					parametrizedCurrentFunctionIncrement
 				) : nextFunctionIncrement &gt;= parametrizedCurrentFunctionIncrement;
 		}
-<span class="nc" id="L208">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L220">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L210">			e.printStackTrace();</span>
+<span class="nc" id="L222">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L213">		return false;</span>
+<span class="nc" id="L225">		return false;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

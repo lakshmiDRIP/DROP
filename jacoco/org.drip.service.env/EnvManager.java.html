@@ -258,17 +258,40 @@ package org.drip.service.env;
 <span class="nc" id="L258">			return null;</span>
 		}
 
-<span class="pc bpc" id="L261" title="1 of 2 branches missed.">		if (s_bInvocationCapture)</span>
+<span class="pc bpc" id="L261" title="1 of 2 branches missed.">		if (!org.drip.capital.env.CapitalEstimationContextManager.Init())</span>
 		{
-<span class="pc bpc" id="L263" title="1 of 2 branches missed.">			if (!org.drip.service.env.InvocationManager.Setup())</span>
-			{
-<span class="nc" id="L265">				System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Setup Invocation Manager!&quot;);</span>
+<span class="nc" id="L263">			System.out.println</span>
+<span class="nc" id="L264">				(&quot;EnvManager::InitEnv =&gt; Cannot Initialize Capital Estimation Context Manager!&quot;);</span>
 
-<span class="nc" id="L267">				return null;</span>
+<span class="nc" id="L266">			return null;</span>
+		}
+
+<span class="pc bpc" id="L269" title="1 of 2 branches missed.">		if (!org.drip.capital.env.SystemicScenarioDesignContextManager.Init())</span>
+		{
+<span class="nc" id="L271">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize GSST Design Context Manager!&quot;);</span>
+
+<span class="nc" id="L273">			return null;</span>
+		}
+
+<span class="pc bpc" id="L276" title="1 of 2 branches missed.">		if (!org.drip.capital.env.SystemicScenarioDefinitionContextManager.Init())</span>
+		{
+<span class="nc" id="L278">			System.out.println</span>
+<span class="nc" id="L279">				(&quot;EnvManager::InitEnv =&gt; Cannot Initialize GSST Definition Context Manager!&quot;);</span>
+
+<span class="nc" id="L281">			return null;</span>
+		}
+
+<span class="pc bpc" id="L284" title="1 of 2 branches missed.">		if (s_bInvocationCapture)</span>
+		{
+<span class="pc bpc" id="L286" title="1 of 2 branches missed.">			if (!org.drip.service.env.InvocationManager.Setup())</span>
+			{
+<span class="nc" id="L288">				System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Setup Invocation Manager!&quot;);</span>
+
+<span class="nc" id="L290">				return null;</span>
 			}
 		}
 
-<span class="fc" id="L271">		return org.drip.param.config.ConfigLoader.OracleInit (strConfig);</span>
+<span class="fc" id="L294">		return org.drip.param.config.ConfigLoader.OracleInit (strConfig);</span>
 	}
 
 	/**
@@ -282,7 +305,7 @@ package org.drip.service.env;
 	public static final java.sql.Statement InitEnv (
 		final java.lang.String strConfig)
 	{
-<span class="fc" id="L285">		return InitEnv (</span>
+<span class="fc" id="L308">		return InitEnv (</span>
 			strConfig,
 			true
 		);
@@ -296,7 +319,7 @@ package org.drip.service.env;
 
 	public static final boolean TerminateEnv()
 	{
-<span class="pc bpc" id="L299" title="1 of 2 branches missed.">		return s_bInvocationCapture ? org.drip.service.env.InvocationManager.Terminate() : true;</span>
+<span class="pc bpc" id="L322" title="1 of 2 branches missed.">		return s_bInvocationCapture ? org.drip.service.env.InvocationManager.Terminate() : true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

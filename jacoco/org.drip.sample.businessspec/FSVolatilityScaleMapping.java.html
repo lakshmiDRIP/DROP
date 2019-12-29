@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FSVolatilityScaleMapping.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.businessspec</a> &gt; <span class="el_source">FSVolatilityScaleMapping.java</span></div><h1>FSVolatilityScaleMapping.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.businessspec;
+
+import org.drip.capital.env.CapitalEstimationContextManager;
+import org.drip.capital.shell.VolatilityScaleContext;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Quantitative Risk Analytics
+ */
+
+/**
+ * &lt;i&gt;FSVolatilityScaleMapping&lt;/i&gt; zeds the FS Type to their Volatility Scales. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L37">public class FSVolatilityScaleMapping</span>
+{
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L44">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L46">		String[] fsTypeArray =</span>
+		{
+			&quot;CMDL&quot;,
+			&quot;CMVG&quot;,
+			&quot;CSVG&quot;,
+			&quot;EBID&quot;,
+			&quot;EBSY&quot;,
+			&quot;ECVG&quot;,
+			&quot;EQDL&quot;,
+			&quot;EQVG&quot;,
+			&quot;FXDL&quot;,
+			&quot;FXRR&quot;,
+			&quot;FXST&quot;,
+			&quot;FXVG&quot;,
+			&quot;IDIO&quot;,
+			&quot;IRDL&quot;,
+			&quot;IRVG&quot;,
+			&quot;ISDL&quot;,
+			&quot;LODL&quot;,
+			&quot;OMDL&quot;,
+			&quot;OSDL&quot;,
+			&quot;PPDL&quot;,
+		};
+
+<span class="nc" id="L70">		VolatilityScaleContext volatilityScaleContext = CapitalEstimationContextManager.ContextContainer().volatilityScaleContext();</span>
+
+<span class="nc" id="L72">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+
+<span class="nc" id="L74">		System.out.println (&quot;\t| FS TYPE VOL ADJUST MAP ||&quot;);</span>
+
+<span class="nc" id="L76">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+
+<span class="nc" id="L78">		System.out.println (&quot;\t|    L -&gt; R:             ||&quot;);</span>
+
+<span class="nc" id="L80">		System.out.println (&quot;\t|        - FS Type       ||&quot;);</span>
+
+<span class="nc" id="L82">		System.out.println (&quot;\t|        - Vol Adjust    ||&quot;);</span>
+
+<span class="nc" id="L84">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L86" title="All 2 branches missed.">		for (String fsType : fsTypeArray)</span>
+		{
+<span class="nc" id="L88">			System.out.println (</span>
+				&quot;\t| &quot; + fsType + &quot; =&gt; &quot; +
+<span class="nc" id="L90">				FormatUtil.FormatDouble (volatilityScaleContext.volatilityAdjustment (fsType), 1, 2, 1.) +</span>
+				&quot;          ||&quot;
+			);
+		}
+
+<span class="nc" id="L95">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+
+<span class="nc" id="L97">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L98">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

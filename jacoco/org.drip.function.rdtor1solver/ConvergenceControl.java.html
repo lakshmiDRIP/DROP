@@ -6,44 +6,56 @@ package org.drip.function.rdtor1solver;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -96,10 +108,10 @@ public class ConvergenceControl
 
 	public static final int VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE = 2;
 
-<span class="fc" id="L99">	private int _finderStepCount = -1;</span>
-<span class="fc" id="L100">	private double _absoluteTolerance = java.lang.Double.NaN;</span>
-<span class="fc" id="L101">	private double _relativeTolerance = java.lang.Double.NaN;</span>
-<span class="fc" id="L102">	private int _convergenceType = VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE;</span>
+<span class="fc" id="L111">	private int _finderStepCount = -1;</span>
+<span class="fc" id="L112">	private double _absoluteTolerance = java.lang.Double.NaN;</span>
+<span class="fc" id="L113">	private double _relativeTolerance = java.lang.Double.NaN;</span>
+<span class="fc" id="L114">	private int _convergenceType = VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE;</span>
 
 	/**
 	 * Construct a Standard ConvergenceControl Instance
@@ -111,19 +123,19 @@ public class ConvergenceControl
 	{
 		try
 		{
-<span class="fc" id="L114">			return new ConvergenceControl (</span>
+<span class="fc" id="L126">			return new ConvergenceControl (</span>
 				VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE,
 				5.0e-02,
 				1.0e-06,
 				70
 			);
 		}
-<span class="nc" id="L121">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L133">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L123">			e.printStackTrace();</span>
+<span class="nc" id="L135">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L126">		return null;</span>
+<span class="nc" id="L138">		return null;</span>
 	}
 
 	/**
@@ -143,16 +155,16 @@ public class ConvergenceControl
 		final double absoluteTolerance,
 		final int finderStepCount)
 		throws java.lang.Exception
-<span class="fc" id="L146">	{</span>
-<span class="pc bpc" id="L147" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_relativeTolerance = relativeTolerance) ||</span>
-<span class="pc bpc" id="L148" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_absoluteTolerance = absoluteTolerance) ||</span>
+<span class="fc" id="L158">	{</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_relativeTolerance = relativeTolerance) ||</span>
+<span class="pc bpc" id="L160" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_absoluteTolerance = absoluteTolerance) ||</span>
 			1 &gt; (_finderStepCount = finderStepCount))
 		{
-<span class="nc" id="L151">			throw new java.lang.Exception (&quot;ConvergenceControl Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L163">			throw new java.lang.Exception (&quot;ConvergenceControl Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L154">		_convergenceType = convergenceType;</span>
-<span class="fc" id="L155">	}</span>
+<span class="fc" id="L166">		_convergenceType = convergenceType;</span>
+<span class="fc" id="L167">	}</span>
 
 	/**
 	 * Retrieve the Convergence Type
@@ -162,7 +174,7 @@ public class ConvergenceControl
 
 	public int convergenceType()
 	{
-<span class="fc" id="L165">		return _convergenceType;</span>
+<span class="fc" id="L177">		return _convergenceType;</span>
 	}
 
 	/**
@@ -173,7 +185,7 @@ public class ConvergenceControl
 
 	public int finderStepCount()
 	{
-<span class="nc" id="L176">		return _finderStepCount;</span>
+<span class="nc" id="L188">		return _finderStepCount;</span>
 	}
 
 	/**
@@ -184,7 +196,7 @@ public class ConvergenceControl
 
 	public double relativeTolerance()
 	{
-<span class="fc" id="L187">		return _relativeTolerance;</span>
+<span class="fc" id="L199">		return _relativeTolerance;</span>
 	}
 
 	/**
@@ -195,7 +207,7 @@ public class ConvergenceControl
 
 	public double absoluteTolerance()
 	{
-<span class="fc" id="L198">		return _absoluteTolerance;</span>
+<span class="fc" id="L210">		return _absoluteTolerance;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

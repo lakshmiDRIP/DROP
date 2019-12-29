@@ -14,38 +14,49 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -107,17 +118,17 @@ import org.drip.service.env.EnvManager;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/almgren2003/README.md&quot;&gt;Almgren (2003)&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/almgren2003/README.md&quot;&gt;Almgren (2003) Power Law Liquidity&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L120">public class LinearLiquidityVolatility {</span>
+<span class="nc" id="L131">public class LinearLiquidityVolatility {</span>
 
 	private static final void BetaRun (
 		final double dblBeta,
@@ -125,14 +136,14 @@ import org.drip.service.env.EnvManager;
 		final int iNumInterval)
 		throws Exception
 	{
-<span class="fc" id="L128">		double dblEta = 5.e-06;</span>
-<span class="fc" id="L129">		double dblSigma = 1.;</span>
-<span class="fc" id="L130">		double dblLambda = 1.e-05;</span>
-<span class="fc" id="L131">		double dblX = 100000.;</span>
+<span class="fc" id="L139">		double dblEta = 5.e-06;</span>
+<span class="fc" id="L140">		double dblSigma = 1.;</span>
+<span class="fc" id="L141">		double dblLambda = 1.e-05;</span>
+<span class="fc" id="L142">		double dblX = 100000.;</span>
 
-<span class="fc" id="L133">		ArithmeticPriceEvolutionParameters apep = ArithmeticPriceEvolutionParametersBuilder.TradingEnhancedVolatility (</span>
+<span class="fc" id="L144">		ArithmeticPriceEvolutionParameters apep = ArithmeticPriceEvolutionParametersBuilder.TradingEnhancedVolatility (</span>
 			dblSigma,
-<span class="fc" id="L135">			new UniformParticipationRateLinear (ParticipationRateLinear.SlopeOnly (dblEta)),</span>
+<span class="fc" id="L146">			new UniformParticipationRateLinear (ParticipationRateLinear.SlopeOnly (dblEta)),</span>
 			new UniformParticipationRateLinear (
 				new ParticipationRateLinear (
 					0.,
@@ -141,7 +152,7 @@ import org.drip.service.env.EnvManager;
 			)
 		);
 
-<span class="fc" id="L144">		DiscreteLinearTradingEnhanced dlte = DiscreteLinearTradingEnhanced.Standard (</span>
+<span class="fc" id="L155">		DiscreteLinearTradingEnhanced dlte = DiscreteLinearTradingEnhanced.Standard (</span>
 			dblX,
 			dblT,
 			iNumInterval,
@@ -149,41 +160,41 @@ import org.drip.service.env.EnvManager;
 			dblLambda
 		);
 
-<span class="fc" id="L152">		TradingEnhancedDiscrete ted = (TradingEnhancedDiscrete) dlte.generate();</span>
+<span class="fc" id="L163">		TradingEnhancedDiscrete ted = (TradingEnhancedDiscrete) dlte.generate();</span>
 
-<span class="fc" id="L154">		double[] adblExecutionTimeNode = ted.executionTimeNode();</span>
+<span class="fc" id="L165">		double[] adblExecutionTimeNode = ted.executionTimeNode();</span>
 
-<span class="fc" id="L156">		double[] adblHoldings = ted.holdings();</span>
+<span class="fc" id="L167">		double[] adblHoldings = ted.holdings();</span>
 
-<span class="fc" id="L158">		String strDump = &quot;\t|&quot; + FormatUtil.FormatDouble (dblBeta, 1, 1, 1.e+06) + &quot; =&gt;&quot;;</span>
+<span class="fc" id="L169">		String strDump = &quot;\t|&quot; + FormatUtil.FormatDouble (dblBeta, 1, 1, 1.e+06) + &quot; =&gt;&quot;;</span>
 
-<span class="fc bfc" id="L160" title="All 2 branches covered.">		for (int i = 0; i &lt; adblExecutionTimeNode.length; ++i)</span>
-<span class="fc" id="L161">			strDump = strDump + FormatUtil.FormatDouble (adblHoldings[i] / dblX, 2, 1, 100.) + &quot;% &quot;;</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">		for (int i = 0; i &lt; adblExecutionTimeNode.length; ++i)</span>
+<span class="fc" id="L172">			strDump = strDump + FormatUtil.FormatDouble (adblHoldings[i] / dblX, 2, 1, 100.) + &quot;% &quot;;</span>
 
-<span class="fc" id="L163">		strDump = strDump + FormatUtil.FormatDouble (ted.transactionCostExpectation(), 5, 0, 1.) + &quot; | &quot;;</span>
+<span class="fc" id="L174">		strDump = strDump + FormatUtil.FormatDouble (ted.transactionCostExpectation(), 5, 0, 1.) + &quot; | &quot;;</span>
 
-<span class="fc" id="L165">		strDump = strDump + FormatUtil.FormatDouble (ted.transactionCostVariance(), 5, 0, 1.e-06) + &quot; | &quot;;</span>
+<span class="fc" id="L176">		strDump = strDump + FormatUtil.FormatDouble (ted.transactionCostVariance(), 5, 0, 1.e-06) + &quot; | &quot;;</span>
 
-<span class="fc" id="L167">		strDump = strDump + FormatUtil.FormatDouble (ted.characteristicTime(), 1, 3, 1.) + &quot; | &quot;;</span>
+<span class="fc" id="L178">		strDump = strDump + FormatUtil.FormatDouble (ted.characteristicTime(), 1, 3, 1.) + &quot; | &quot;;</span>
 
-<span class="fc" id="L169">		strDump = strDump + FormatUtil.FormatDouble (ted.characteristicSize(), 6, 0, 1.) + &quot; ||&quot;;</span>
+<span class="fc" id="L180">		strDump = strDump + FormatUtil.FormatDouble (ted.characteristicSize(), 6, 0, 1.) + &quot; ||&quot;;</span>
 
-<span class="fc" id="L171">		System.out.println (strDump);</span>
-<span class="fc" id="L172">	}</span>
+<span class="fc" id="L182">		System.out.println (strDump);</span>
+<span class="fc" id="L183">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L178">		EnvManager.InitEnv (</span>
+<span class="fc" id="L189">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L183">		double dblT = 5.;</span>
-<span class="fc" id="L184">		int iNumInterval = 10;</span>
+<span class="fc" id="L194">		double dblT = 5.;</span>
+<span class="fc" id="L195">		int iNumInterval = 10;</span>
 
-<span class="fc" id="L186">		double[] adblBeta = new double[] {</span>
+<span class="fc" id="L197">		double[] adblBeta = new double[] {</span>
 			0.1,
 			0.2,
 			0.3,
@@ -206,49 +217,49 @@ import org.drip.service.env.EnvManager;
 			2.0
 		};
 
-<span class="fc" id="L209">		System.out.println();</span>
+<span class="fc" id="L220">		System.out.println();</span>
 
-<span class="fc" id="L211">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L222">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L213">		System.out.println (&quot;\t|                        ALMGREN (2003) LINEAR TEMPORARY IMPACT VOLATILITY - OFFSET DEPENDENCE                           ||&quot;);</span>
+<span class="fc" id="L224">		System.out.println (&quot;\t|                        ALMGREN (2003) LINEAR TEMPORARY IMPACT VOLATILITY - OFFSET DEPENDENCE                           ||&quot;);</span>
 
-<span class="fc" id="L215">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L226">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L217">		System.out.println (&quot;\t|      L -&gt; R:                                                                                                           ||&quot;);</span>
+<span class="fc" id="L228">		System.out.println (&quot;\t|      L -&gt; R:                                                                                                           ||&quot;);</span>
 
-<span class="fc" id="L219">		System.out.println (&quot;\t|              Beta Level (X 10^06)                                                                                      ||&quot;);</span>
+<span class="fc" id="L230">		System.out.println (&quot;\t|              Beta Level (X 10^06)                                                                                      ||&quot;);</span>
 
-<span class="fc" id="L221">		System.out.println (&quot;\t|              Outstanding Trajectory (%)                                                                                ||&quot;);</span>
+<span class="fc" id="L232">		System.out.println (&quot;\t|              Outstanding Trajectory (%)                                                                                ||&quot;);</span>
 
-<span class="fc" id="L223">		System.out.println (&quot;\t|              Transaction Cost Expectation                                                                              ||&quot;);</span>
+<span class="fc" id="L234">		System.out.println (&quot;\t|              Transaction Cost Expectation                                                                              ||&quot;);</span>
 
-<span class="fc" id="L225">		System.out.println (&quot;\t|              Transaction Cost Variance (X 10^-06)                                                                      ||&quot;);</span>
+<span class="fc" id="L236">		System.out.println (&quot;\t|              Transaction Cost Variance (X 10^-06)                                                                      ||&quot;);</span>
 
-<span class="fc" id="L227">		System.out.println (&quot;\t|              Characteristic Time (Days)                                                                                ||&quot;);</span>
+<span class="fc" id="L238">		System.out.println (&quot;\t|              Characteristic Time (Days)                                                                                ||&quot;);</span>
 
-<span class="fc" id="L229">		System.out.println (&quot;\t|              Characteristic Size                                                                                       ||&quot;);</span>
+<span class="fc" id="L240">		System.out.println (&quot;\t|              Characteristic Size                                                                                       ||&quot;);</span>
 
-<span class="fc" id="L231">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L242">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L233">		String strTimeNode = &quot;\t|        &quot;;</span>
+<span class="fc" id="L244">		String strTimeNode = &quot;\t|        &quot;;</span>
 
-<span class="fc bfc" id="L235" title="All 2 branches covered.">		for (int i = 0; i &lt;= iNumInterval; ++i)</span>
-<span class="fc" id="L236">			strTimeNode = strTimeNode + FormatUtil.FormatDouble (dblT * i / iNumInterval, 1, 2, 1.) + &quot;  &quot;;</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">		for (int i = 0; i &lt;= iNumInterval; ++i)</span>
+<span class="fc" id="L247">			strTimeNode = strTimeNode + FormatUtil.FormatDouble (dblT * i / iNumInterval, 1, 2, 1.) + &quot;  &quot;;</span>
 
-<span class="fc" id="L238">		System.out.println (strTimeNode);</span>
+<span class="fc" id="L249">		System.out.println (strTimeNode);</span>
 
-<span class="fc" id="L240">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L251">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L242" title="All 2 branches covered.">		for (double dblBeta : adblBeta)</span>
-<span class="fc" id="L243">			BetaRun (</span>
+<span class="fc bfc" id="L253" title="All 2 branches covered.">		for (double dblBeta : adblBeta)</span>
+<span class="fc" id="L254">			BetaRun (</span>
 				dblBeta * 1.e-06,
 				dblT,
 				iNumInterval
 			);
 
-<span class="fc" id="L249">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L260">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L251">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L252">	}</span>
+<span class="fc" id="L262">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L263">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

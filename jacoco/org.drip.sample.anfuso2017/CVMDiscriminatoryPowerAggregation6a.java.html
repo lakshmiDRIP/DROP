@@ -27,41 +27,53 @@ import org.drip.validation.riskfactorsingle.HypothesisSuiteAggregate;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -114,17 +126,17 @@ import org.drip.validation.riskfactorsingle.HypothesisSuiteAggregate;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationLibrary.md&quot;&gt;Model Validation Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/anfuso2013&quot;&gt;Anfuso, Karyampas, and Nawroth (2013) Replications&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/anfuso2017/README.md&quot;&gt;Anfuso, Karyampas, and Nawroth (2013) Replications&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L127">public class CVMDiscriminatoryPowerAggregation6a</span>
+<span class="nc" id="L139">public class CVMDiscriminatoryPowerAggregation6a</span>
 {
 
 	private static final double UnivariateRandom (
@@ -132,10 +144,10 @@ import org.drip.validation.riskfactorsingle.HypothesisSuiteAggregate;
 		final double volatility)
 		throws Exception
 	{
-<span class="nc" id="L135">		return new R1UnivariateNormal (</span>
+<span class="nc" id="L147">		return new R1UnivariateNormal (</span>
 			mean,
 			volatility
-<span class="nc" id="L138">		).random();</span>
+<span class="nc" id="L150">		).random();</span>
 	}
 
 	private static final Sample GenerateSample (
@@ -145,21 +157,21 @@ import org.drip.validation.riskfactorsingle.HypothesisSuiteAggregate;
 		final int drawCount)
 		throws Exception
 	{
-<span class="nc" id="L148">		double[] univariateRandomArray = new double[drawCount];</span>
+<span class="nc" id="L160">		double[] univariateRandomArray = new double[drawCount];</span>
 
-<span class="nc" id="L150">		double horizonYF = Helper.TenorToYearFraction (horizonTenor);</span>
+<span class="nc" id="L162">		double horizonYF = Helper.TenorToYearFraction (horizonTenor);</span>
 
-<span class="nc" id="L152">		double horizonYFSQRT = Math.sqrt (horizonYF);</span>
+<span class="nc" id="L164">		double horizonYFSQRT = Math.sqrt (horizonYF);</span>
 
-<span class="nc bnc" id="L154" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; drawCount; ++drawIndex)</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; drawCount; ++drawIndex)</span>
 		{
-<span class="nc" id="L156">			univariateRandomArray[drawIndex] = UnivariateRandom (</span>
+<span class="nc" id="L168">			univariateRandomArray[drawIndex] = UnivariateRandom (</span>
 				annualMean * horizonYF,
 				annualVolatility * horizonYFSQRT
 			);
 		}
 
-<span class="nc" id="L162">		return new Sample (univariateRandomArray);</span>
+<span class="nc" id="L174">		return new Sample (univariateRandomArray);</span>
 	}
 
 	private static final Map&lt;String, ProbabilityIntegralTransform&gt; EventSamplePITMap (
@@ -169,23 +181,23 @@ import org.drip.validation.riskfactorsingle.HypothesisSuiteAggregate;
 		final int drawCount)
 		throws Exception
 	{
-<span class="nc" id="L172">		Map&lt;String, ProbabilityIntegralTransform&gt; eventSamplePITMap = new</span>
+<span class="nc" id="L184">		Map&lt;String, ProbabilityIntegralTransform&gt; eventSamplePITMap = new</span>
 			CaseInsensitiveHashMap&lt;ProbabilityIntegralTransform&gt;();
 
-<span class="nc bnc" id="L175" title="All 2 branches missed.">		for (int horizonIndex = 0; horizonIndex &lt; horizonTenorArray.length; ++horizonIndex)</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">		for (int horizonIndex = 0; horizonIndex &lt; horizonTenorArray.length; ++horizonIndex)</span>
 		{
-<span class="nc" id="L177">			eventSamplePITMap.put (</span>
+<span class="nc" id="L189">			eventSamplePITMap.put (</span>
 				horizonTenorArray[horizonIndex],
-<span class="nc" id="L179">				GenerateSample (</span>
+<span class="nc" id="L191">				GenerateSample (</span>
 					annualMean,
 					annualVolatility,
 					horizonTenorArray[horizonIndex],
 					drawCount
-<span class="nc" id="L184">				).nativeProbabilityIntegralTransform()</span>
+<span class="nc" id="L196">				).nativeProbabilityIntegralTransform()</span>
 			);
 		}
 
-<span class="nc" id="L188">		return eventSamplePITMap;</span>
+<span class="nc" id="L200">		return eventSamplePITMap;</span>
 	}
 
 	private static final Sample[] GenerateSampleArray (
@@ -196,11 +208,11 @@ import org.drip.validation.riskfactorsingle.HypothesisSuiteAggregate;
 		final int sampleCount)
 		throws Exception
 	{
-<span class="nc" id="L199">		Sample[] sampleArray = new Sample[sampleCount];</span>
+<span class="nc" id="L211">		Sample[] sampleArray = new Sample[sampleCount];</span>
 
-<span class="nc bnc" id="L201" title="All 2 branches missed.">		for (int sampleIndex = 0; sampleIndex &lt; sampleCount; ++sampleIndex)</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">		for (int sampleIndex = 0; sampleIndex &lt; sampleCount; ++sampleIndex)</span>
 		{
-<span class="nc" id="L203">			sampleArray[sampleIndex] = GenerateSample (</span>
+<span class="nc" id="L215">			sampleArray[sampleIndex] = GenerateSample (</span>
 				annualMean,
 				annualVolatility,
 				horizonTenor,
@@ -208,7 +220,7 @@ import org.drip.validation.riskfactorsingle.HypothesisSuiteAggregate;
 			);
 		}
 
-<span class="nc" id="L211">		return sampleArray;</span>
+<span class="nc" id="L223">		return sampleArray;</span>
 	}
 
 	private static final Ensemble GenerateEnsemble (
@@ -219,8 +231,8 @@ import org.drip.validation.riskfactorsingle.HypothesisSuiteAggregate;
 		final int sampleCount)
 		throws Exception
 	{
-<span class="nc" id="L222">		return new Ensemble (</span>
-<span class="nc" id="L223">			GenerateSampleArray (</span>
+<span class="nc" id="L234">		return new Ensemble (</span>
+<span class="nc" id="L235">			GenerateSampleArray (</span>
 				hypothesisAnnualMean,
 				hypothesisAnnualVolatility,
 				horizonTenor,
@@ -230,12 +242,12 @@ import org.drip.validation.riskfactorsingle.HypothesisSuiteAggregate;
 			new TestStatisticEvaluator[]
 			{
 				new TestStatisticEvaluator()
-<span class="nc" id="L233">				{</span>
+<span class="nc" id="L245">				{</span>
 					public double evaluate (
 						final double[] drawArray)
 						throws Exception
 					{
-<span class="nc" id="L238">						return 1.;</span>
+<span class="nc" id="L250">						return 1.;</span>
 					}
 				}
 			}
@@ -250,22 +262,22 @@ import org.drip.validation.riskfactorsingle.HypothesisSuiteAggregate;
 		final int sampleCount)
 		throws Exception
 	{
-<span class="nc" id="L253">		HypothesisSuiteAggregate hypothesisSuiteAggregate = new HypothesisSuiteAggregate();</span>
+<span class="nc" id="L265">		HypothesisSuiteAggregate hypothesisSuiteAggregate = new HypothesisSuiteAggregate();</span>
 
-<span class="nc bnc" id="L255" title="All 2 branches missed.">		for (double hypothesisAnnualMean : hypothesisAnnualMeanArray)</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">		for (double hypothesisAnnualMean : hypothesisAnnualMeanArray)</span>
 		{
-<span class="nc bnc" id="L257" title="All 2 branches missed.">			for (double hypothesisAnnualVolatility : hypothesisAnnualVolatilityArray)</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">			for (double hypothesisAnnualVolatility : hypothesisAnnualVolatilityArray)</span>
 			{
-<span class="nc" id="L259">				String hypothesisID = &quot;HYPOTHESIS_&quot; +</span>
-<span class="nc" id="L260">					FormatUtil.FormatDouble (hypothesisAnnualMean, 2, 4, 1.) + &quot;_&quot; +</span>
-<span class="nc" id="L261">					FormatUtil.FormatDouble (hypothesisAnnualVolatility, 2, 4, 1.);</span>
+<span class="nc" id="L271">				String hypothesisID = &quot;HYPOTHESIS_&quot; +</span>
+<span class="nc" id="L272">					FormatUtil.FormatDouble (hypothesisAnnualMean, 2, 4, 1.) + &quot;_&quot; +</span>
+<span class="nc" id="L273">					FormatUtil.FormatDouble (hypothesisAnnualVolatility, 2, 4, 1.);</span>
 
-<span class="nc bnc" id="L263" title="All 2 branches missed.">				for (String horizonTenor : horizonTenorArray)</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">				for (String horizonTenor : horizonTenorArray)</span>
 				{
-<span class="nc" id="L265">					hypothesisSuiteAggregate.add (</span>
+<span class="nc" id="L277">					hypothesisSuiteAggregate.add (</span>
 						hypothesisID,
 						horizonTenor,
-<span class="nc" id="L268">						GenerateEnsemble (</span>
+<span class="nc" id="L280">						GenerateEnsemble (</span>
 							hypothesisAnnualMean,
 							hypothesisAnnualVolatility,
 							horizonTenor,
@@ -277,33 +289,33 @@ import org.drip.validation.riskfactorsingle.HypothesisSuiteAggregate;
 			}
 		}
 
-<span class="nc" id="L280">		return hypothesisSuiteAggregate;</span>
+<span class="nc" id="L292">		return hypothesisSuiteAggregate;</span>
 	}
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L287">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L299">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L289">		int drawCount = 390;</span>
-<span class="nc" id="L290">		int sampleCount = 1000;</span>
-<span class="nc" id="L291">		double sampleAnnualMean = 0.;</span>
-<span class="nc" id="L292">		double sampleAnnualVolatility = 0.1;</span>
-<span class="nc" id="L293">		String[] horizonTenorArray =</span>
+<span class="nc" id="L301">		int drawCount = 390;</span>
+<span class="nc" id="L302">		int sampleCount = 1000;</span>
+<span class="nc" id="L303">		double sampleAnnualMean = 0.;</span>
+<span class="nc" id="L304">		double sampleAnnualVolatility = 0.1;</span>
+<span class="nc" id="L305">		String[] horizonTenorArray =</span>
 		{
 			&quot;3M&quot;,
 			&quot;6M&quot;,
 			&quot;1Y&quot;
 		};
-<span class="nc" id="L299">		double[] hypothesisAnnualMeanArray = {</span>
+<span class="nc" id="L311">		double[] hypothesisAnnualMeanArray = {</span>
 			-0.050,
 			-0.025,
 			 0.000,
 			 0.025,
 			 0.050
 		};
-<span class="nc" id="L306">		double[] hypothesisAnnualVolatilityArray = {</span>
+<span class="nc" id="L318">		double[] hypothesisAnnualVolatilityArray = {</span>
 			0.050,
 			0.075,
 			0.100,
@@ -312,25 +324,25 @@ import org.drip.validation.riskfactorsingle.HypothesisSuiteAggregate;
 		};
 
 		EventAggregationWeightFunction eventAggregationWeightFunction =
-<span class="nc" id="L315">			EventAggregationWeightFunction.AnfusoKaryampasNawroth();</span>
+<span class="nc" id="L327">			EventAggregationWeightFunction.AnfusoKaryampasNawroth();</span>
 
-<span class="nc" id="L317">		Map&lt;String, ProbabilityIntegralTransform&gt; eventSamplePITMap = EventSamplePITMap (</span>
+<span class="nc" id="L329">		Map&lt;String, ProbabilityIntegralTransform&gt; eventSamplePITMap = EventSamplePITMap (</span>
 			sampleAnnualMean,
 			sampleAnnualVolatility,
 			horizonTenorArray,
 			drawCount
 		);
 
-<span class="nc" id="L324">		DiscriminatoryPowerAnalyzerAggregate discriminatoryPowerAnalyzerAggregate = new</span>
+<span class="nc" id="L336">		DiscriminatoryPowerAnalyzerAggregate discriminatoryPowerAnalyzerAggregate = new</span>
 			DiscriminatoryPowerAnalyzerAggregate (
 				eventSamplePITMap,
-<span class="nc" id="L327">				GapTestSetting.RiskFactorLossTest (</span>
-<span class="nc" id="L328">					GapLossWeightFunction.AndersonDarling()</span>
+<span class="nc" id="L339">				GapTestSetting.RiskFactorLossTest (</span>
+<span class="nc" id="L340">					GapLossWeightFunction.AndersonDarling()</span>
 				),
 				eventAggregationWeightFunction
 			);
 
-<span class="nc" id="L333">		HypothesisSuiteAggregate hypothesisSuiteAggregate = HypothesisEventMap (</span>
+<span class="nc" id="L345">		HypothesisSuiteAggregate hypothesisSuiteAggregate = HypothesisEventMap (</span>
 			hypothesisAnnualMeanArray,
 			hypothesisAnnualVolatilityArray,
 			horizonTenorArray,
@@ -338,91 +350,91 @@ import org.drip.validation.riskfactorsingle.HypothesisSuiteAggregate;
 			sampleCount
 		);
 
-<span class="nc" id="L341">		HypothesisOutcomeSuiteAggregate hypothesisOutcomeSuiteAggregate =</span>
-<span class="nc" id="L342">			discriminatoryPowerAnalyzerAggregate.hypothesisGapTest (hypothesisSuiteAggregate);</span>
+<span class="nc" id="L353">		HypothesisOutcomeSuiteAggregate hypothesisOutcomeSuiteAggregate =</span>
+<span class="nc" id="L354">			discriminatoryPowerAnalyzerAggregate.hypothesisGapTest (hypothesisSuiteAggregate);</span>
 
-<span class="nc" id="L344">		Map&lt;String, GapTestOutcomeAggregate&gt; hypothesisOutcomeAggregateMap =</span>
-<span class="nc" id="L345">			hypothesisOutcomeSuiteAggregate.hypothesisOutcomeAggregate();</span>
+<span class="nc" id="L356">		Map&lt;String, GapTestOutcomeAggregate&gt; hypothesisOutcomeAggregateMap =</span>
+<span class="nc" id="L357">			hypothesisOutcomeSuiteAggregate.hypothesisOutcomeAggregate();</span>
 
-<span class="nc" id="L347">		HypothesisOutcomeAggregate leadingHypothesis = hypothesisOutcomeSuiteAggregate.leadingHypothesis();</span>
+<span class="nc" id="L359">		HypothesisOutcomeAggregate leadingHypothesis = hypothesisOutcomeSuiteAggregate.leadingHypothesis();</span>
 
-<span class="nc" id="L349">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L361">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L351">		System.out.println (&quot;\t|                     Disciminatory Power Analysis Multi Horizon Distance Test                      ||&quot;);</span>
-
-<span class="nc" id="L353">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="nc" id="L355">		System.out.println (&quot;\t|    L -&gt; R:                                                                                        ||&quot;);</span>
-
-<span class="nc" id="L357">		System.out.println (&quot;\t|                                                                                                   ||&quot;);</span>
-
-<span class="nc" id="L359">		System.out.println (&quot;\t|            - Hypothesis Key                                                                       ||&quot;);</span>
-
-<span class="nc" id="L361">		System.out.println (&quot;\t|            - Hypothesis Distance Metric                                                           ||&quot;);</span>
-
-<span class="nc" id="L363">		System.out.println (&quot;\t|            - Horizon Gap Outcomes [ Horizon1 = Distance1 | ... ]                                  ||&quot;);</span>
+<span class="nc" id="L363">		System.out.println (&quot;\t|                     Disciminatory Power Analysis Multi Horizon Distance Test                      ||&quot;);</span>
 
 <span class="nc" id="L365">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
 
-		for (Map.Entry&lt;String, GapTestOutcomeAggregate&gt; gapTestOutcomeAggregateEntry :
-<span class="nc bnc" id="L368" title="All 2 branches missed.">			hypothesisOutcomeAggregateMap.entrySet())</span>
-		{
-<span class="nc" id="L370">			GapTestOutcomeAggregate gapTestOutcomeAggregate = gapTestOutcomeAggregateEntry.getValue();</span>
+<span class="nc" id="L367">		System.out.println (&quot;\t|    L -&gt; R:                                                                                        ||&quot;);</span>
 
-<span class="nc" id="L372">			String gapTestOutcomeAggregateDisplay = &quot;\t| &quot; + gapTestOutcomeAggregateEntry.getKey() + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L373">				FormatUtil.FormatDouble (gapTestOutcomeAggregate.distance(), 1, 6, 1.) + &quot; | [&quot;;</span>
+<span class="nc" id="L369">		System.out.println (&quot;\t|                                                                                                   ||&quot;);</span>
+
+<span class="nc" id="L371">		System.out.println (&quot;\t|            - Hypothesis Key                                                                       ||&quot;);</span>
+
+<span class="nc" id="L373">		System.out.println (&quot;\t|            - Hypothesis Distance Metric                                                           ||&quot;);</span>
+
+<span class="nc" id="L375">		System.out.println (&quot;\t|            - Horizon Gap Outcomes [ Horizon1 = Distance1 | ... ]                                  ||&quot;);</span>
+
+<span class="nc" id="L377">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
+
+		for (Map.Entry&lt;String, GapTestOutcomeAggregate&gt; gapTestOutcomeAggregateEntry :
+<span class="nc bnc" id="L380" title="All 2 branches missed.">			hypothesisOutcomeAggregateMap.entrySet())</span>
+		{
+<span class="nc" id="L382">			GapTestOutcomeAggregate gapTestOutcomeAggregate = gapTestOutcomeAggregateEntry.getValue();</span>
+
+<span class="nc" id="L384">			String gapTestOutcomeAggregateDisplay = &quot;\t| &quot; + gapTestOutcomeAggregateEntry.getKey() + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L385">				FormatUtil.FormatDouble (gapTestOutcomeAggregate.distance(), 1, 6, 1.) + &quot; | [&quot;;</span>
 
 			for (Map.Entry&lt;String, GapTestOutcome&gt; gapTestOutcomeEntry :
-<span class="nc bnc" id="L376" title="All 2 branches missed.">				gapTestOutcomeAggregate.eventOutcomeMap().entrySet())</span>
+<span class="nc bnc" id="L388" title="All 2 branches missed.">				gapTestOutcomeAggregate.eventOutcomeMap().entrySet())</span>
 			{
-<span class="nc" id="L378">				gapTestOutcomeAggregateDisplay = gapTestOutcomeAggregateDisplay + &quot; &quot; +</span>
-<span class="nc" id="L379">					gapTestOutcomeEntry.getKey() + &quot; = &quot; +</span>
-<span class="nc" id="L380">					FormatUtil.FormatDouble (gapTestOutcomeEntry.getValue().distance(), 1, 6, 1.) + &quot; |&quot;;</span>
-<span class="nc" id="L381">			}</span>
+<span class="nc" id="L390">				gapTestOutcomeAggregateDisplay = gapTestOutcomeAggregateDisplay + &quot; &quot; +</span>
+<span class="nc" id="L391">					gapTestOutcomeEntry.getKey() + &quot; = &quot; +</span>
+<span class="nc" id="L392">					FormatUtil.FormatDouble (gapTestOutcomeEntry.getValue().distance(), 1, 6, 1.) + &quot; |&quot;;</span>
+<span class="nc" id="L393">			}</span>
 
-<span class="nc" id="L383">			System.out.println (gapTestOutcomeAggregateDisplay + &quot;] ||&quot;);</span>
-<span class="nc" id="L384">		}</span>
+<span class="nc" id="L395">			System.out.println (gapTestOutcomeAggregateDisplay + &quot;] ||&quot;);</span>
+<span class="nc" id="L396">		}</span>
 
-<span class="nc" id="L386">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L398">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L388">		System.out.println();</span>
+<span class="nc" id="L400">		System.out.println();</span>
 
-<span class="nc" id="L390">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L402">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L392">		System.out.println (&quot;\t|            Leading Hypothesis Disciminatory Power Analysis Multi Horizon Distance Test            ||&quot;);</span>
-
-<span class="nc" id="L394">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="nc" id="L396">		System.out.println (&quot;\t|    L -&gt; R:                                                                                        ||&quot;);</span>
-
-<span class="nc" id="L398">		System.out.println (&quot;\t|                                                                                                   ||&quot;);</span>
-
-<span class="nc" id="L400">		System.out.println (&quot;\t|            - Hypothesis Key                                                                       ||&quot;);</span>
-
-<span class="nc" id="L402">		System.out.println (&quot;\t|            - Hypothesis Distance Metric                                                           ||&quot;);</span>
-
-<span class="nc" id="L404">		System.out.println (&quot;\t|            - Horizon Gap Outcomes [ Horizon1 = Distance1 | ... ]                                  ||&quot;);</span>
+<span class="nc" id="L404">		System.out.println (&quot;\t|            Leading Hypothesis Disciminatory Power Analysis Multi Horizon Distance Test            ||&quot;);</span>
 
 <span class="nc" id="L406">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L408">		GapTestOutcomeAggregate gapTestOutcomeAggregate = leadingHypothesis.gapTestOutcomeAggregate();</span>
+<span class="nc" id="L408">		System.out.println (&quot;\t|    L -&gt; R:                                                                                        ||&quot;);</span>
 
-<span class="nc" id="L410">		String gapTestOutcomeAggregateDisplay = &quot;\t| &quot; + leadingHypothesis.hypothesisID() + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L411">			FormatUtil.FormatDouble (gapTestOutcomeAggregate.distance(), 1, 6, 1.) + &quot; | [&quot;;</span>
+<span class="nc" id="L410">		System.out.println (&quot;\t|                                                                                                   ||&quot;);</span>
+
+<span class="nc" id="L412">		System.out.println (&quot;\t|            - Hypothesis Key                                                                       ||&quot;);</span>
+
+<span class="nc" id="L414">		System.out.println (&quot;\t|            - Hypothesis Distance Metric                                                           ||&quot;);</span>
+
+<span class="nc" id="L416">		System.out.println (&quot;\t|            - Horizon Gap Outcomes [ Horizon1 = Distance1 | ... ]                                  ||&quot;);</span>
+
+<span class="nc" id="L418">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L420">		GapTestOutcomeAggregate gapTestOutcomeAggregate = leadingHypothesis.gapTestOutcomeAggregate();</span>
+
+<span class="nc" id="L422">		String gapTestOutcomeAggregateDisplay = &quot;\t| &quot; + leadingHypothesis.hypothesisID() + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L423">			FormatUtil.FormatDouble (gapTestOutcomeAggregate.distance(), 1, 6, 1.) + &quot; | [&quot;;</span>
 
 		for (Map.Entry&lt;String, GapTestOutcome&gt; gapTestOutcomeEntry :
-<span class="nc bnc" id="L414" title="All 2 branches missed.">			gapTestOutcomeAggregate.eventOutcomeMap().entrySet())</span>
+<span class="nc bnc" id="L426" title="All 2 branches missed.">			gapTestOutcomeAggregate.eventOutcomeMap().entrySet())</span>
 		{
-<span class="nc" id="L416">			gapTestOutcomeAggregateDisplay = gapTestOutcomeAggregateDisplay + &quot; &quot; +</span>
-<span class="nc" id="L417">				gapTestOutcomeEntry.getKey() + &quot; = &quot; +</span>
-<span class="nc" id="L418">				FormatUtil.FormatDouble (gapTestOutcomeEntry.getValue().distance(), 1, 6, 1.) + &quot; |&quot;;</span>
-<span class="nc" id="L419">		}</span>
+<span class="nc" id="L428">			gapTestOutcomeAggregateDisplay = gapTestOutcomeAggregateDisplay + &quot; &quot; +</span>
+<span class="nc" id="L429">				gapTestOutcomeEntry.getKey() + &quot; = &quot; +</span>
+<span class="nc" id="L430">				FormatUtil.FormatDouble (gapTestOutcomeEntry.getValue().distance(), 1, 6, 1.) + &quot; |&quot;;</span>
+<span class="nc" id="L431">		}</span>
 
-<span class="nc" id="L421">		System.out.println (gapTestOutcomeAggregateDisplay + &quot;] ||&quot;);</span>
+<span class="nc" id="L433">		System.out.println (gapTestOutcomeAggregateDisplay + &quot;] ||&quot;);</span>
 
-<span class="nc" id="L423">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L435">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L425">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L426">	}</span>
+<span class="nc" id="L437">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L438">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

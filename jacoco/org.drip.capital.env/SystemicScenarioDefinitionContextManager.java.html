@@ -1,0 +1,827 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SystemicScenarioDefinitionContextManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.env</a> &gt; <span class="el_source">SystemicScenarioDefinitionContextManager.java</span></div><h1>SystemicScenarioDefinitionContextManager.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.env;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;SystemicScenarioDefinitionContextManager&lt;/i&gt; sets up the Predictor Scenario Specification Container.
+ * 	The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/env/README.md&quot;&gt;Economic Risk Capital Parameter Factories&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L107">public class SystemicScenarioDefinitionContextManager</span>
+{
+	private static org.drip.capital.shell.PredictorScenarioSpecificationContainer
+<span class="fc" id="L110">		s_PredictorScenarioSpecificationContainer = null;</span>
+
+	private static final boolean UpdatePredictorScenarioSpecification (
+		final java.lang.String predictor,
+		final java.lang.String category,
+		final java.lang.String[] marketSegmentArray,
+		final java.lang.String stressScenarioTypeOfChange,
+		final int stressScenarioUnit,
+		final double dollarDecline,
+		final double lostDecade,
+		final double interestRateShock,
+		final double deepDownturn,
+		final double historical1974FY,
+		final double historical2008FY,
+		final double capitalBaseline1974FY,
+		final double capitalBaseline2008FY)
+	{
+<span class="fc" id="L127">		org.drip.capital.systemicscenario.PredictorScenarioSpecification predictorScenarioSpecification = null;</span>
+
+<span class="fc" id="L129">		boolean predictorAvailable = s_PredictorScenarioSpecificationContainer.containsPredictor (</span>
+			predictor
+		);
+
+<span class="fc bfc" id="L133" title="All 2 branches covered.">		if (predictorAvailable)</span>
+		{
+<span class="fc" id="L135">			predictorScenarioSpecification =</span>
+<span class="fc" id="L136">				s_PredictorScenarioSpecificationContainer.predictorScenarioSpecification (</span>
+					predictor
+				);
+		}
+		else
+		{
+			try
+			{
+<span class="fc" id="L144">				predictorScenarioSpecification =</span>
+					new org.drip.capital.systemicscenario.PredictorScenarioSpecification (
+						predictor,
+						category
+					);
+			}
+<span class="nc" id="L150">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L152">				e.printStackTrace();</span>
+
+<span class="nc" id="L154">				return false;</span>
+<span class="fc" id="L155">			}</span>
+		}
+
+		try
+		{
+<span class="fc" id="L160">			org.drip.capital.systemicscenario.StressScenarioSpecification stressScenarioSpecification =</span>
+				new org.drip.capital.systemicscenario.StressScenarioSpecification (
+					new org.drip.capital.systemicscenario.StressScenarioQuantification (
+						stressScenarioTypeOfChange,
+						stressScenarioUnit
+					),
+					new org.drip.capital.systemicscenario.HypotheticalScenarioDefinition (
+						dollarDecline,
+						lostDecade,
+						interestRateShock,
+						deepDownturn
+					),
+					new org.drip.capital.systemicscenario.HistoricalScenarioDefinition (
+						historical1974FY,
+						historical2008FY
+					),
+					new org.drip.capital.systemicscenario.CapitalBaselineDefinition (
+						capitalBaseline1974FY,
+						capitalBaseline2008FY
+					)
+				);
+
+<span class="fc bfc" id="L182" title="All 2 branches covered.">			for (java.lang.String marketSegment : marketSegmentArray)</span>
+			{
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">				if (!predictorScenarioSpecification.addStressScenarioSpecification (</span>
+					marketSegment,
+					stressScenarioSpecification
+				))
+				{
+<span class="nc" id="L189">					return false;</span>
+				}
+			}
+		}
+<span class="nc" id="L193">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L195">			e.printStackTrace();</span>
+
+<span class="nc" id="L197">			return false;</span>
+<span class="fc" id="L198">		}</span>
+
+<span class="fc bfc" id="L200" title="All 2 branches covered.">		if (!predictorAvailable)</span>
+		{
+<span class="fc" id="L202">			s_PredictorScenarioSpecificationContainer.addPredictorScenarioSpecification (</span>
+				predictorScenarioSpecification
+			);
+		}
+
+<span class="fc" id="L207">		return true;</span>
+	}
+
+	/**
+	 * Initialize the GSST Design Context Manager
+	 * 
+	 * @return TRUE - The GSST Design Context Manager successfully initialized
+	 */
+
+	public static final boolean Init()
+	{
+<span class="fc" id="L218">		s_PredictorScenarioSpecificationContainer =</span>
+			new org.drip.capital.shell.PredictorScenarioSpecificationContainer();
+
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;GDP&quot;,
+			&quot;Macro-economic variables&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.SCENARIO_GDP_GROWTH,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT_POINT,
+			-0.8,
+			-0.8,
+			-1.5,
+			-1.6,
+			-2.3,
+			-5.0,
+			java.lang.Double.NaN,
+			java.lang.Double.NaN
+		))
+		{
+<span class="nc" id="L241">			return false;</span>
+		}
+
+<span class="pc bpc" id="L244" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;Unemployment&quot;,
+			&quot;Macro-economic variables&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.PEAK_VS_CURRENT_LEVEL,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT_POINT,
+			1.7,
+			1.8,
+			2.0,
+			2.3,
+			3.7,
+			4.0,
+			java.lang.Double.NaN,
+			java.lang.Double.NaN
+		))
+		{
+<span class="nc" id="L264">			return false;</span>
+		}
+
+<span class="pc bpc" id="L267" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;House Prices (Case/Shiller)&quot;,
+			&quot;Macro-economic variables&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
+			 -7.7,
+			-13.3,
+			-16.0,
+			-17.2,
+			 -5.0,
+			-20.0,
+			java.lang.Double.NaN,
+			java.lang.Double.NaN
+		))
+		{
+<span class="nc" id="L287">			return false;</span>
+		}
+
+<span class="pc bpc" id="L290" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;IR Level&quot;,
+			&quot;Market factors&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.DM_LO_VOL,
+				org.drip.capital.systemicscenario.MarketSegment.EM_LO_VOL
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_4_Q_FORWARD,
+			org.drip.capital.systemicscenario.CriterionUnit.BASIS_POINT,
+			  86,
+			 -64,
+			 175,
+			-134,
+			 183,
+			-200,
+			 150,
+			-100
+		))
+		{
+<span class="nc" id="L310">			return false;</span>
+		}
+
+<span class="pc bpc" id="L313" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;IR Level&quot;,
+			&quot;Market factors&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.EM_HI_VOL
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_4_Q_FORWARD,
+			org.drip.capital.systemicscenario.CriterionUnit.BASIS_POINT,
+			  86,
+			  50,
+			 275,
+			 100,
+			 112,
+			 200,
+			 112,
+			 200
+		))
+		{
+<span class="nc" id="L332">			return false;</span>
+		}
+
+<span class="pc bpc" id="L335" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;IR Slope (10y-3mo, bps)&quot;,
+			&quot;Market factors&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.DM_LO_VOL,
+				org.drip.capital.systemicscenario.MarketSegment.EM_LO_VOL
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_4_Q_FORWARD,
+			org.drip.capital.systemicscenario.CriterionUnit.BASIS_POINT,
+			-124,
+			 -42,
+			 -50,
+			-102,
+			 -53,
+			 129,
+			-100,
+			 100
+		))
+		{
+<span class="nc" id="L355">			return false;</span>
+		}
+
+<span class="pc bpc" id="L358" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;IR Slope (10y-3mo, bps)&quot;,
+			&quot;Market factors&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.EM_HI_VOL
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_4_Q_FORWARD,
+			org.drip.capital.systemicscenario.CriterionUnit.BASIS_POINT,
+			-124,
+			 -54,
+			 -50,
+			-109,
+			-122,
+			-218,
+			-174,
+			-218
+		))
+		{
+<span class="nc" id="L377">			return false;</span>
+		}
+
+<span class="pc bpc" id="L380" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;Credit Spread including Munis&quot;,
+			&quot;Market factors&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_AS_PERCENT_OF_CALENDAR_2008_SPREAD_WIDENING,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
+			 30,
+			 25,
+			 40,
+			 50,
+			 56,
+			100,
+			 80,
+			100
+		))
+		{
+<span class="nc" id="L400">			return false;</span>
+		}
+
+<span class="pc bpc" id="L403" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;Spot FX (USD vs. all other currencies)&quot;,
+			&quot;Market factors&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.DM_LO_VOL,
+				org.drip.capital.systemicscenario.MarketSegment.EM_LO_VOL
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
+			-7.0,
+			 4.8,
+			 3.0,
+			12.0,
+			-8.0,
+			 8.0,
+			-8.0,
+			 8.0
+		))
+		{
+<span class="nc" id="L423">			return false;</span>
+		}
+
+<span class="pc bpc" id="L426" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;Spot FX (USD vs. all other currencies)&quot;,
+			&quot;Market factors&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.EM_HI_VOL
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
+			-10.0,
+			  4.8,
+			  6.0,
+			 24.0,
+			 -8.0,
+			 24.0,
+			 -8.0,
+			 24.0
+		))
+		{
+<span class="nc" id="L445">			return false;</span>
+		}
+
+<span class="pc bpc" id="L448" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;Equity and Equity Indices&quot;,
+			&quot;Market factors&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.DM
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
+			-15.1,
+			-17.0,
+			-25.0,
+			-30.2,
+			-30.0,
+			-40.0,
+			-25.5,
+			-32.0
+		))
+		{
+<span class="nc" id="L467">			return false;</span>
+		}
+
+<span class="pc bpc" id="L470" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;Equity and Equity Indices&quot;,
+			&quot;Market factors&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.EM
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
+			-18.9,
+			-21.0,
+			-35.0,
+			-37.8,
+			-40.0,
+			-55.0,
+			-30.5,
+			-40.0
+		))
+		{
+<span class="nc" id="L489">			return false;</span>
+		}
+
+<span class="pc bpc" id="L492" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;Private Equity&quot;,
+			&quot;Market factors&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.DM
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
+			-12.1,
+			-13.6,
+			-20.0,
+			-24.2,
+			-24.0,
+			-32.0,
+			java.lang.Double.NaN,
+			java.lang.Double.NaN
+		))
+		{
+<span class="nc" id="L511">			return false;</span>
+		}
+
+<span class="pc bpc" id="L514" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;Private Equity&quot;,
+			&quot;Market factors&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.EM
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
+			-15.1,
+			-17.0,
+			-28.0,
+			-30.2,
+			-32.0,
+			-44.0,
+			java.lang.Double.NaN,
+			java.lang.Double.NaN
+		))
+		{
+<span class="nc" id="L533">			return false;</span>
+		}
+
+<span class="pc bpc" id="L536" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;Hedge Funds&quot;,
+			&quot;Market factors&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
+			 -6.1,
+			 -6.0,
+			-10.0,
+			-12.1,
+			-12.0,
+			-16.0,
+			java.lang.Double.NaN,
+			java.lang.Double.NaN
+		))
+		{
+<span class="nc" id="L556">			return false;</span>
+		}
+
+<span class="pc bpc" id="L559" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;ABX index 07-1 AAA&quot;,
+			&quot;Market factors&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
+			-17.0,
+			-10.0,
+			-10.8,
+			-25.0,
+			-15.0,
+			-55.0,
+			-20.0,
+			-40.0
+		))
+		{
+<span class="nc" id="L579">			return false;</span>
+		}
+
+<span class="pc bpc" id="L582" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;Energy (WTI, 1MFt)&quot;,
+			&quot;Market factors&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
+			 59.6,
+			-14.9,
+			 20.0,
+			-36.2,
+			160.0,
+			-55.0,
+			112.0,
+			-32.0
+		))
+		{
+<span class="nc" id="L602">			return false;</span>
+		}
+
+<span class="pc bpc" id="L605" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;Natural Gas (NYMEX, 3MFt)&quot;,
+			&quot;Market factors&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
+			 55.6,
+			-15.6,
+			 18.5,
+			-31.1,
+			 90.9,
+			-20.0,
+			 89.0,
+			-28.0
+		))
+		{
+<span class="nc" id="L625">			return false;</span>
+		}
+
+<span class="pc bpc" id="L628" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;Copper (Spot)&quot;,
+			&quot;Market factors&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
+			 51.9,
+			-20.0,
+			 17.3,
+			-40.0,
+			 84.7,
+			-53.0,
+			 83.0,
+			-36.0
+		))
+		{
+<span class="nc" id="L648">			return false;</span>
+		}
+
+<span class="pc bpc" id="L651" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;Gold (Spot)&quot;,
+			&quot;Market factors&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
+			 45.6,
+			 -8.3,
+			 20.0,
+			-16.7,
+			 72.0,
+			  2.0,
+			 73.0,
+			-15.0
+		))
+		{
+<span class="nc" id="L671">			return false;</span>
+		}
+
+<span class="pc bpc" id="L674" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;Corn (3MFt)&quot;,
+			&quot;Market factors&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
+			 33.1,
+			-11.7,
+			 11.0,
+			-23.3,
+			 54.1,
+			-14.0,
+			 53.0,
+			-21.0
+		))
+		{
+<span class="nc" id="L694">			return false;</span>
+		}
+
+<span class="pc bpc" id="L697" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;Other Commodities&quot;,
+			&quot;Market factors&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
+			 30,
+			-10,
+			 10,
+			-20,
+			 49,
+			-29,
+			 48,
+			-18
+		))
+		{
+<span class="nc" id="L717">			return false;</span>
+		}
+
+<span class="pc bpc" id="L720" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;Equity Implied Vols (VIX)&quot;,
+			&quot;Market factors&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.VOLATILITY_POINT_CHANGE_AS_PERCENT_OF_2008_VOLATILITY_POINT_CHANGE,
+			org.drip.capital.systemicscenario.CriterionUnit.VOLATILITY_POINT,
+			 37.9,
+			 42.6,
+			 67.5,
+			 75.6,
+			 75.0,
+			100.0,
+			 63.8,
+			 80.0
+		))
+		{
+<span class="nc" id="L740">			return false;</span>
+		}
+
+<span class="pc bpc" id="L743" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;Implied Vols - Other&quot;,
+			&quot;Market factors&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.CHANGE_VS_CURRENT,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
+			21.5,
+			16.0,
+			30.0,
+			33.5,
+			45.0,
+			50.0,
+			40.0,
+			25.0
+		))
+		{
+<span class="nc" id="L763">			return false;</span>
+		}
+
+<span class="pc bpc" id="L766" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;Wholesale LGD&quot;,
+			&quot;Other&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.NONE,
+			org.drip.capital.systemicscenario.CriterionUnit.PERCENT,
+			35,
+			35,
+			50,
+			50,
+			50,
+			50,
+			50,
+			50
+		))
+		{
+<span class="nc" id="L786">			return false;</span>
+		}
+
+<span class="pc bpc" id="L789" title="1 of 2 branches missed.">		if (!UpdatePredictorScenarioSpecification (</span>
+			&quot;Likelihood of scenario&quot;,
+			&quot;Other&quot;,
+			new java.lang.String[]
+			{
+				org.drip.capital.systemicscenario.MarketSegment.DM,
+				org.drip.capital.systemicscenario.MarketSegment.EM
+			},
+			org.drip.capital.systemicscenario.TypeOfChange.NONE,
+			org.drip.capital.systemicscenario.CriterionUnit.ABSOLUTE,
+			0.02,
+			0.02,
+			0.02,
+			0.02,
+			0.02,
+			0.02,
+			0.02,
+			0.02
+		))
+		{
+<span class="nc" id="L809">			return false;</span>
+		}
+
+<span class="fc" id="L812">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Predictor Scenario Specification Container
+	 * 
+	 * @return The Predictor Scenario Specification Container
+	 */
+
+	public static final org.drip.capital.shell.PredictorScenarioSpecificationContainer
+		PredictorScenarioSpecificationContainer()
+	{
+<span class="nc" id="L824">		return s_PredictorScenarioSpecificationContainer;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RBCRiskTypeMapping.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.businessspec</a> &gt; <span class="el_source">RBCRiskTypeMapping.java</span></div><h1>RBCRiskTypeMapping.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.businessspec;
+
+import org.drip.capital.env.CapitalEstimationContextManager;
+import org.drip.capital.shell.RiskTypeContext;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Quantitative Risk Analytics
+ */
+
+/**
+ * &lt;i&gt;RBCRiskTypeMapping&lt;/i&gt; zeds the RBC to the iVAST Risk Type Mapping. It also indicates if the RBC is to
+ * be excluded from Consideration. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L37">public class RBCRiskTypeMapping</span>
+{
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L44">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L46">		String[] rbcArray =</span>
+		{
+			&quot;CGM_ACC&quot;,
+			&quot;CGM_AFS&quot;,
+			&quot;CGM_CVAA_MTM&quot;,
+			&quot;CGM_CVAL_MTM&quot;,
+			&quot;CGM_CVA_MTM&quot;,
+			&quot;CGM_HFS&quot;, 
+			&quot;CGM_MTM&quot;,
+			&quot;CITIB_ACC&quot;,
+			&quot;CITIB_AFS&quot;,
+			&quot;CITIB_CRDT_MTM&quot;,
+			&quot;CITIB_CVAA_MTM&quot;,
+			&quot;CITIB_CVAL_MTM&quot;,
+			&quot;CITIB_CVA_MTM&quot;,
+			&quot;CITIB_HFI&quot;,
+			&quot;CITIB_HTM&quot;,
+			&quot;CITIB_IVAST_ACC&quot;,
+			&quot;CITIB_IVAST_AFS&quot;,
+			&quot;CITIB_MTM&quot;,
+			&quot;CITIB_NT_MTM&quot;,
+			&quot;CITIG_ACC&quot;,
+			&quot;CITIG_AFS&quot;,
+			&quot;CITIG_CVAA_MTM&quot;,
+			&quot;CITIG_CVAL_MTM&quot;,
+			&quot;CITIG_CVA_MTM&quot;,
+			&quot;CITIG_HFS&quot;,
+			&quot;CITIG_HTM&quot;,
+			&quot;CITIG_IVAST_ACC&quot;,
+			&quot;CITIG_MTM&quot;,
+			&quot;CITIG_NT_MTM&quot;,
+		};
+
+<span class="nc" id="L79">		RiskTypeContext riskTypeContext = CapitalEstimationContextManager.ContextContainer().riskTypeContext();</span>
+
+<span class="nc" id="L81">		System.out.println (&quot;\t|---------------------------------------||&quot;);</span>
+
+<span class="nc" id="L83">		System.out.println (&quot;\t|        RBC CODE RISK TYPE MAP         ||&quot;);</span>
+
+<span class="nc" id="L85">		System.out.println (&quot;\t|---------------------------------------||&quot;);</span>
+
+<span class="nc" id="L87">		System.out.println (&quot;\t|    L -&gt; R:                            ||&quot;);</span>
+
+<span class="nc" id="L89">		System.out.println (&quot;\t|        - RBC                          ||&quot;);</span>
+
+<span class="nc" id="L91">		System.out.println (&quot;\t|        - Exclude/Include              ||&quot;);</span>
+
+<span class="nc" id="L93">		System.out.println (&quot;\t|        - Risk Type                    ||&quot;);</span>
+
+<span class="nc" id="L95">		System.out.println (&quot;\t|---------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L97" title="All 2 branches missed.">		for (String rbc : rbcArray)</span>
+		{
+<span class="nc" id="L99">			System.out.println (</span>
+				&quot;\t| &quot; + rbc + &quot; =&gt; &quot; +
+<span class="nc bnc" id="L101" title="All 2 branches missed.">				(riskTypeContext.rbcExclusionCheck (rbc) ? &quot;EXCLUDE&quot; : &quot;INCLUDE&quot;) + &quot; | &quot; +</span>
+<span class="nc" id="L102">				riskTypeContext.riskType (rbc) + &quot; ||&quot;</span>
+			);
+		}
+
+<span class="nc" id="L106">		System.out.println (&quot;\t|---------------------------------------||&quot;);</span>
+
+<span class="nc" id="L108">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L109">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

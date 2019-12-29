@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NonCentralCumulantMoments.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.chisquaredistribution</a> &gt; <span class="el_source">NonCentralCumulantMoments.java</span></div><h1>NonCentralCumulantMoments.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.chisquaredistribution;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R2ToR1;
+import org.drip.measure.chisquare.R1NonCentral;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.bessel.ModifiedFirstFrobeniusSeriesEstimator;
+import org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator;
+import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
+import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
+import org.drip.specialfunction.incompletegamma.LowerEulerIntegral;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;NonCentralCumulantMoments&lt;/i&gt; illustrates the Computation of the Leading Cumulants and the Non-Central
+ * 	Moments. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Johnson, N. L., S. Kotz, and N. Balakrishnan (1995): &lt;i&gt;Continuous Univariate Distributions
+ * 				2&lt;sup&gt;nd&lt;/sup&gt; Edition&lt;/i&gt; &lt;b&gt;John Wiley and Sons&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Muirhead, R. (2005): &lt;i&gt;Aspects of Multivariate Statistical Theory 2&lt;sup&gt;nd&lt;/sup&gt; Edition&lt;/i&gt;
+ * 				&lt;b&gt;Wiley&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Non-central Chi-Squared Distribution (2019): Chi-Squared Function
+ * 				https://en.wikipedia.org/wiki/Noncentral_chi-squared_distribution
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Sankaran, M. (1963): Approximations to the Non-Central Chi-Square Distribution &lt;i&gt;Biometrika&lt;/i&gt;
+ * 				&lt;b&gt;50 (1-2)&lt;/b&gt; 199-204
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Young, D. S. (2010): tolerance: An R Package for Estimating Tolerance Intervals &lt;i&gt;Journal of
+ * 				Statistical Software&lt;/i&gt; &lt;b&gt;36 (5)&lt;/b&gt; 1-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md&quot;&gt;Chi-Square Distribution Implementation/Properties&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L128">public class NonCentralCumulantMoments</span>
+{
+
+	private static final R2ToR1 LowerIncompleteGamma()
+		throws Exception
+	{
+<span class="nc" id="L134">		return new R2ToR1()</span>
+<span class="nc" id="L135">		{</span>
+			@Override public double evaluate (
+				final double s,
+				final double t)
+				throws Exception
+			{
+<span class="nc" id="L141">				return new LowerEulerIntegral (</span>
+					null,
+					t
+<span class="nc" id="L144">				).evaluate (</span>
+					s
+				);
+			}
+		};
+	}
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L155">		EnvManager.InitEnv (</span>
+			&quot;&quot;
+		);
+
+<span class="nc" id="L159">		int digammaTermCount = 1000;</span>
+<span class="nc" id="L160">		int besselFirstTermCount = 20;</span>
+<span class="nc" id="L161">		double[] nonCentralityParameterArray =</span>
+		{
+			0.5,
+			1.0,
+			1.5,
+			2.0,
+			2.5,
+			3.0,
+			3.5,
+			4.0,
+		};
+<span class="nc" id="L172">		int[] dofArray =</span>
+		{
+			 2,
+			 3,
+			 4,
+			 5,
+			 6,
+			 7,
+			 8,
+			 9,
+		};
+<span class="nc" id="L183">		int[] nArray =</span>
+		{
+			1,
+			2,
+			3,
+			4,
+			5,
+			6,
+		};
+
+<span class="nc" id="L193">		R1ToR1 gammaEstimator = new EulerIntegralSecondKind (</span>
+			null
+		);
+
+<span class="nc" id="L197">		R2ToR1 lowerIncompleteGammaEstimator = LowerIncompleteGamma();</span>
+
+<span class="nc" id="L199">		R1ToR1 digammaEstimator = CumulativeSeriesEstimator.AbramowitzStegun2007 (</span>
+			digammaTermCount
+		);
+
+<span class="nc" id="L203">		ModifiedBesselFirstKindEstimator modifiedBesselFirstKindEstimator =</span>
+<span class="nc" id="L204">			ModifiedFirstFrobeniusSeriesEstimator.Standard (</span>
+				gammaEstimator,
+				besselFirstTermCount
+			);
+
+<span class="nc" id="L209">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L211">		System.out.println (&quot;\t|                                   NON CENTRAL CHI-SQUARE CUMULANTS AND NON-CENTRAL MOMENTS                                   ||&quot;);</span>
+
+<span class="nc" id="L213">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L215">		System.out.println (&quot;\t|        L -&gt; R:                                                                                                               ||&quot;);</span>
+
+<span class="nc" id="L217">		System.out.println (&quot;\t|                - Degrees of Freedom; Non Centrality Parameter                                                                ||&quot;);</span>
+
+<span class="nc" id="L219">		System.out.println (&quot;\t|                - Cumulant                                                                                                    ||&quot;);</span>
+
+<span class="nc" id="L221">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L223" title="All 2 branches missed.">		for (double nonCentralityParameter : nonCentralityParameterArray)</span>
+		{
+<span class="nc bnc" id="L225" title="All 2 branches missed.">			for (int dof : dofArray)</span>
+			{
+<span class="nc" id="L227">				R1NonCentral r1UnivariateNonCentral = R1NonCentral.Standard (</span>
+					dof,
+					nonCentralityParameter,
+					gammaEstimator,
+					digammaEstimator,
+					lowerIncompleteGammaEstimator,
+					modifiedBesselFirstKindEstimator
+				);
+
+<span class="nc" id="L236">				String display = &quot;\t| [&quot; +</span>
+<span class="nc" id="L237">					FormatUtil.FormatDouble (dof, 2, 0, 1., false) + &quot; | &quot; +</span>
+<span class="nc" id="L238">					FormatUtil.FormatDouble (nonCentralityParameter, 1, 1, 1., false) +</span>
+				&quot;] =&gt;&quot;;
+
+<span class="nc bnc" id="L241" title="All 2 branches missed.">				for (int n : nArray)</span>
+				{
+<span class="nc" id="L243">					display = display + &quot; &quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L244">						r1UnivariateNonCentral.cumulant (</span>
+							n
+						), 6, 0, 1., false
+					) + &quot; |&quot;;
+				}
+
+<span class="nc" id="L250">				System.out.println (display + &quot;|&quot;);</span>
+			}
+
+<span class="nc" id="L253">			System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+		}
+
+<span class="nc" id="L256">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L258">		System.out.println();</span>
+
+<span class="nc" id="L260">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L262">		System.out.println (&quot;\t|                                   NON CENTRAL CHI-SQUARE CUMULANTS AND NON-CENTRAL MOMENTS                                   ||&quot;);</span>
+
+<span class="nc" id="L264">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L266">		System.out.println (&quot;\t|        L -&gt; R:                                                                                                               ||&quot;);</span>
+
+<span class="nc" id="L268">		System.out.println (&quot;\t|                - Degrees of Freedom; Non Centrality Parameter                                                                ||&quot;);</span>
+
+<span class="nc" id="L270">		System.out.println (&quot;\t|                - Non-central Moment                                                                                          ||&quot;);</span>
+
+<span class="nc" id="L272">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L274" title="All 2 branches missed.">		for (double nonCentralityParameter : nonCentralityParameterArray)</span>
+		{
+<span class="nc bnc" id="L276" title="All 2 branches missed.">			for (int dof : dofArray)</span>
+			{
+<span class="nc" id="L278">				R1NonCentral r1UnivariateNonCentral = R1NonCentral.Standard (</span>
+					dof,
+					nonCentralityParameter,
+					gammaEstimator,
+					digammaEstimator,
+					lowerIncompleteGammaEstimator,
+					modifiedBesselFirstKindEstimator
+				);
+
+<span class="nc" id="L287">				String display = &quot;\t| [&quot; +</span>
+<span class="nc" id="L288">					FormatUtil.FormatDouble (dof, 2, 0, 1., false) + &quot; | &quot; +</span>
+<span class="nc" id="L289">					FormatUtil.FormatDouble (nonCentralityParameter, 1, 1, 1., false) +</span>
+				&quot;] =&gt;&quot;;
+
+<span class="nc bnc" id="L292" title="All 2 branches missed.">				for (int n : nArray)</span>
+				{
+<span class="nc" id="L294">					display = display + &quot; &quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L295">						r1UnivariateNonCentral.nonCentralMoment (</span>
+							n
+						), 8, 0, 1., false
+					) + &quot; |&quot;;
+				}
+
+<span class="nc" id="L301">				System.out.println (display + &quot;|&quot;);</span>
+			}
+
+<span class="nc" id="L304">			System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+		}
+
+<span class="nc" id="L307">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L309">		System.out.println();</span>
+
+<span class="nc" id="L311">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L312">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

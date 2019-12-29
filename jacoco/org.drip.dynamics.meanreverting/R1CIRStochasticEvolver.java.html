@@ -321,5 +321,89 @@ public class R1CIRStochasticEvolver
 
 <span class="nc" id="L322">		return null;</span>
 	}
+
+	@Override public org.drip.measure.chisquare.R1NonCentral futureValueDistribution (
+		final double r0,
+		final double t)
+	{
+<span class="nc bnc" id="L329" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (</span>
+				r0
+<span class="nc bnc" id="L331" title="All 4 branches missed.">			) || !org.drip.numerical.common.NumberUtil.IsValid (</span>
+				t
+			) || 0. &gt; t
+		)
+		{
+<span class="nc" id="L336">			return null;</span>
+		}
+
+<span class="nc" id="L339">		int digammaTermCount = 1000;</span>
+<span class="nc" id="L340">		int besselFirstTermCount = 20;</span>
+
+<span class="nc" id="L342">		org.drip.dynamics.meanreverting.CKLSParameters cklsParameters = cklsParameters();</span>
+
+<span class="nc" id="L344">		double ePowerMinusAT = java.lang.Math.exp (</span>
+<span class="nc" id="L345">			-1. * cklsParameters.meanReversionSpeed() * t</span>
+		);
+
+<span class="nc" id="L348">		org.drip.function.definition.R1ToR1 gammaEstimator =</span>
+			new org.drip.specialfunction.gamma.EulerIntegralSecondKind (
+				null
+			);
+
+		try
+		{
+<span class="nc" id="L355">			return new org.drip.measure.chisquare.R1NonCentral (</span>
+				new org.drip.measure.chisquare.R1NonCentralParameters (
+<span class="nc" id="L357">					cklsParameters.meanReversionLevel() * (1. - ePowerMinusAT),</span>
+					r0 * ePowerMinusAT
+				),
+				gammaEstimator,
+<span class="nc" id="L361">				org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (</span>
+					digammaTermCount
+				),
+				new org.drip.function.definition.R2ToR1()
+<span class="nc" id="L365">				{</span>
+					@Override public double evaluate (
+						final double s,
+						final double t)
+						throws Exception
+					{
+<span class="nc" id="L371">						return new org.drip.specialfunction.incompletegamma.LowerEulerIntegral (</span>
+							null,
+							t
+<span class="nc" id="L374">						).evaluate (</span>
+							s
+						);
+					}
+				},
+<span class="nc" id="L379">				org.drip.specialfunction.bessel.ModifiedFirstFrobeniusSeriesEstimator.Standard (</span>
+					gammaEstimator,
+					besselFirstTermCount
+				)
+			);
+		}
+<span class="nc" id="L385">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L387">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L390">		return null;</span>
+	}
+
+	@Override public org.drip.dynamics.kolmogorov.R1FokkerPlanckCIR fokkerPlanckGenerator()
+	{
+		try
+		{
+<span class="nc" id="L397">			return new org.drip.dynamics.kolmogorov.R1FokkerPlanckCIR (</span>
+<span class="nc" id="L398">				cklsParameters()</span>
+			);
+		}
+<span class="nc" id="L401">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L403">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L406">		return null;</span>
+	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

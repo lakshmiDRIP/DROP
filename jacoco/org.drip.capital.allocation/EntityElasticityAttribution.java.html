@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EntityElasticityAttribution.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.allocation</a> &gt; <span class="el_source">EntityElasticityAttribution.java</span></div><h1>EntityElasticityAttribution.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.allocation;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;EntityElasticityAttribution&lt;/i&gt; holds the Attributions across all Entity Components into Fixed, Float,
+ * 	and Pro-rata Elasticities. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision (2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/allocation/README.md&quot;&gt;Economic Risk Capital Entity Allocation&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class EntityElasticityAttribution
+{
+<span class="nc" id="L109">	private org.drip.capital.allocation.EntityComponentElasticityAttribution _noStress = null;</span>
+<span class="nc" id="L110">	private org.drip.capital.allocation.EntityComponentElasticityAttribution _systemic = null;</span>
+<span class="nc" id="L111">	private org.drip.capital.allocation.EntityComponentElasticityAttribution _correlated = null;</span>
+<span class="nc" id="L112">	private org.drip.capital.allocation.EntityComponentElasticityAttribution _idiosyncratic = null;</span>
+
+	/**
+	 * EntityElasticityAttribution Constructor
+	 * 
+	 * @param correlationCategoryBetaManager The Correlation Category Beta Manager
+	 * @param unitLoading The Unit Loading Flag
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public EntityElasticityAttribution (
+		final org.drip.capital.allocation.CorrelationCategoryBetaManager correlationCategoryBetaManager,
+		final boolean unitLoading)
+		throws java.lang.Exception
+<span class="nc" id="L127">	{</span>
+<span class="nc" id="L128">		_systemic = new org.drip.capital.allocation.EntityComponentElasticityAttribution (</span>
+			correlationCategoryBetaManager,
+			unitLoading
+		);
+
+<span class="nc" id="L133">		_correlated = new org.drip.capital.allocation.EntityComponentElasticityAttribution (</span>
+			correlationCategoryBetaManager,
+			unitLoading
+		);
+
+<span class="nc" id="L138">		_idiosyncratic = new org.drip.capital.allocation.EntityComponentElasticityAttribution (</span>
+			correlationCategoryBetaManager,
+			unitLoading
+		);
+
+<span class="nc" id="L143">		_noStress = new org.drip.capital.allocation.EntityComponentElasticityAttribution (</span>
+			correlationCategoryBetaManager,
+			unitLoading
+		);
+<span class="nc" id="L147">	}</span>
+
+	/**
+	 * Retrieve the Systemic Elasticity Attribution
+	 * 
+	 * @return The Systemic Elasticity Attribution
+	 */
+
+	public org.drip.capital.allocation.EntityComponentElasticityAttribution systemic()
+	{
+<span class="nc" id="L157">		return _systemic;</span>
+	}
+
+	/**
+	 * Retrieve the Correlated Elasticity Attribution
+	 * 
+	 * @return The Correlated Elasticity Attribution
+	 */
+
+	public org.drip.capital.allocation.EntityComponentElasticityAttribution correlated()
+	{
+<span class="nc" id="L168">		return _correlated;</span>
+	}
+
+	/**
+	 * Retrieve the Idiosyncratic Elasticity Attribution
+	 * 
+	 * @return The Idiosyncratic Elasticity Attribution
+	 */
+
+	public org.drip.capital.allocation.EntityComponentElasticityAttribution idiosyncratic()
+	{
+<span class="nc" id="L179">		return _idiosyncratic;</span>
+	}
+
+	/**
+	 * Retrieve the &quot;No Stress&quot; Elasticity Attribution
+	 * 
+	 * @return The &quot;No Stress&quot; Elasticity Attribution
+	 */
+
+	public org.drip.capital.allocation.EntityComponentElasticityAttribution noStress()
+	{
+<span class="nc" id="L190">		return _noStress;</span>
+	}
+
+	/**
+	 * Accumulate the Systemic Fixed Attribution
+	 * 
+	 * @param systemicFixedAttribution Systemic Fixed Attribution
+	 * 
+	 * @return TRUE - The Systemic Fixed Attribution successfully updated
+	 */
+
+	public boolean accumulateSystemicFixed (
+		final double systemicFixedAttribution)
+	{
+<span class="nc" id="L204">		return _systemic.accumulateFixed (</span>
+			systemicFixedAttribution
+		);
+	}
+
+	/**
+	 * Accumulate the Correlated Fixed Attribution
+	 * 
+	 * @param correlatedFixedAttribution Correlated Fixed Attribution
+	 * 
+	 * @return TRUE - The Correlated Fixed Attribution successfully updated
+	 */
+
+	public boolean accumulateCorrelatedFixed (
+		final double correlatedFixedAttribution)
+	{
+<span class="nc" id="L220">		return _correlated.accumulateFixed (</span>
+			correlatedFixedAttribution
+		);
+	}
+
+	/**
+	 * Accumulate the Idiosyncratic Fixed Attribution
+	 * 
+	 * @param idiosyncraticFixedAttribution Idiosyncratic Fixed Attribution
+	 * 
+	 * @return TRUE - The Idiosyncratic Fixed Attribution successfully updated
+	 */
+
+	public boolean accumulateIdiosyncraticFixed (
+		final double idiosyncraticFixedAttribution)
+	{
+<span class="nc" id="L236">		return _idiosyncratic.accumulateFixed (</span>
+			idiosyncraticFixedAttribution
+		);
+	}
+
+	/**
+	 * Accumulate the No-Stress Fixed Attribution
+	 * 
+	 * @param noStressFixedAttribution No-Stress Fixed Attribution
+	 * 
+	 * @return TRUE - The No-Stress Fixed Attribution successfully updated
+	 */
+
+	public boolean accumulateNoStressFixed (
+		final double noStressFixedAttribution)
+	{
+<span class="nc" id="L252">		return _noStress.accumulateFixed (</span>
+			noStressFixedAttribution
+		);
+	}
+
+	/**
+	 * Accumulate the Systemic Floating Attribution
+	 * 
+	 * @param systemicFloatingAttribution Systemic Floating Attribution
+	 * 
+	 * @return TRUE - The Systemic Floating Attribution successfully updated
+	 */
+
+	public boolean accumulateSystemicFloating (
+		final double systemicFloatingAttribution)
+	{
+<span class="nc" id="L268">		return _systemic.accumulateFloating (</span>
+			systemicFloatingAttribution
+		);
+	}
+
+	/**
+	 * Accumulate the Correlated Floating Attribution
+	 * 
+	 * @param correlatedFloatingAttribution Correlated Floating Attribution
+	 * 
+	 * @return TRUE - The Correlated Floating Attribution successfully updated
+	 */
+
+	public boolean accumulateCorrelatedFloating (
+		final double correlatedFloatingAttribution)
+	{
+<span class="nc" id="L284">		return _correlated.accumulateFloating (</span>
+			correlatedFloatingAttribution
+		);
+	}
+
+	/**
+	 * Accumulate the Idiosyncratic Floating Attribution
+	 * 
+	 * @param idiosyncraticFloatingAttribution Idiosyncratic Floating Attribution
+	 * 
+	 * @return TRUE - The Idiosyncratic Floating Attribution successfully updated
+	 */
+
+	public boolean accumulateIdiosyncraticFloating (
+		final double idiosyncraticFloatingAttribution)
+	{
+<span class="nc" id="L300">		return _idiosyncratic.accumulateFloating (</span>
+			idiosyncraticFloatingAttribution
+		);
+	}
+
+	/**
+	 * Accumulate the No-Stress Floating Attribution
+	 * 
+	 * @param noStressFloatingAttribution No-Stress Floating Attribution
+	 * 
+	 * @return TRUE - The No-Stress Floating Attribution successfully updated
+	 */
+
+	public boolean accumulateNoStressFloating (
+		final double noStressFloatingAttribution)
+	{
+<span class="nc" id="L316">		return _noStress.accumulateFloating (</span>
+			noStressFloatingAttribution
+		);
+	}
+
+	/**
+	 * Accumulate the Systemic Pro-Rata Attribution
+	 * 
+	 * @param systemicProRataAttribution Systemic Pro-Rata Attribution
+	 * 
+	 * @return TRUE - The Systemic Pro-Rata Attribution successfully updated
+	 */
+
+	public boolean accumulateSystemicProRata (
+		final double systemicProRataAttribution)
+	{
+<span class="nc" id="L332">		return _systemic.accumulateProRata (</span>
+			systemicProRataAttribution
+		);
+	}
+
+	/**
+	 * Accumulate the Correlated Pro-Rata Attribution
+	 * 
+	 * @param correlatedProRataAttribution Correlated Pro-Rata Attribution
+	 * 
+	 * @return TRUE - The Correlated Pro-Rata Attribution successfully updated
+	 */
+
+	public boolean accumulateCorrelatedProRata (
+		final double correlatedProRataAttribution)
+	{
+<span class="nc" id="L348">		return _correlated.accumulateProRata (</span>
+			correlatedProRataAttribution
+		);
+	}
+
+	/**
+	 * Accumulate the Idiosyncratic Pro-Rata Attribution
+	 * 
+	 * @param idiosyncraticProRataAttribution Idiosyncratic Pro-Rata Attribution
+	 * 
+	 * @return TRUE - The Idiosyncratic Pro-Rata Attribution successfully updated
+	 */
+
+	public boolean accumulateIdiosyncraticProRata (
+		final double idiosyncraticProRataAttribution)
+	{
+<span class="nc" id="L364">		return _idiosyncratic.accumulateProRata (</span>
+			idiosyncraticProRataAttribution
+		);
+	}
+
+	/**
+	 * Accumulate the No-Stress Pro-Rata Attribution
+	 * 
+	 * @param noStressProRataAttribution No-Stress Pro-Rata Attribution
+	 * 
+	 * @return TRUE - The No-Stress Pro-Rata Attribution successfully updated
+	 */
+
+	public boolean accumulateNoStressProRata (
+		final double noStressProRataAttribution)
+	{
+<span class="nc" id="L380">		return _noStress.accumulateProRata (</span>
+			noStressProRataAttribution
+		);
+	}
+
+	/**
+	 * Accumulate the Systemic Attribution with the Beta-Adjusted Component Attribution
+	 * 
+	 * @param systemicAttribution The Systemic Attribution
+	 * @param systemicAllocationCategory The Systemic Allocation Category
+	 * @param systemicAllocationScheme The Systemic Allocation Scheme
+	 * 
+	 * @return TRUE - The Systemic Partition with the Beta-Adjusted Increment
+	 */
+
+	public boolean accumulateSystemic (
+		final double systemicAttribution,
+		final int systemicAllocationCategory,
+		final int systemicAllocationScheme)
+	{
+<span class="nc" id="L400">		return _systemic.accumulate (</span>
+			systemicAttribution,
+			systemicAllocationCategory,
+			systemicAllocationScheme
+		);
+	}
+
+	/**
+	 * Accumulate the Correlated Attribution with the Beta-Adjusted Component Attribution
+	 * 
+	 * @param correlatedAttribution The Correlated Attribution
+	 * @param correlatedAllocationCategory The Correlated Allocation Category
+	 * @param correlatedAllocationScheme The Correlated Allocation Scheme
+	 * 
+	 * @return TRUE - The Correlated Partition with the Beta-Adjusted Increment
+	 */
+
+	public boolean accumulateCorrelated (
+		final double correlatedAttribution,
+		final int correlatedAllocationCategory,
+		final int correlatedAllocationScheme)
+	{
+<span class="nc" id="L422">		return _correlated.accumulate (</span>
+			correlatedAttribution,
+			correlatedAllocationCategory,
+			correlatedAllocationScheme
+		);
+	}
+
+	/**
+	 * Accumulate the Idiosyncratic Attribution with the Beta-Adjusted Component Attribution
+	 * 
+	 * @param idiosyncraticAttribution The Idiosyncratic Attribution
+	 * @param idiosyncraticAllocationCategory The Idiosyncratic Allocation Category
+	 * @param idiosyncraticAllocationScheme The Idiosyncratic Allocation Scheme
+	 * 
+	 * @return TRUE - The Idiosyncratic Partition with the Beta-Adjusted Increment
+	 */
+
+	public boolean accumulateIdiosyncratic (
+		final double idiosyncraticAttribution,
+		final int idiosyncraticAllocationCategory,
+		final int idiosyncraticAllocationScheme)
+	{
+<span class="nc" id="L444">		return _idiosyncratic.accumulate (</span>
+			idiosyncraticAttribution,
+			idiosyncraticAllocationCategory,
+			idiosyncraticAllocationScheme
+		);
+	}
+
+	/**
+	 * Accumulate the No Stress Attribution with the Beta-Adjusted Component Attribution
+	 * 
+	 * @param noStressAttribution The No Stress Attribution
+	 * @param noStressAllocationCategory The No Stress Allocation Category
+	 * @param noStressAllocationScheme The No Stress Allocation Scheme
+	 * 
+	 * @return TRUE - The No Stress Partition with the Beta-Adjusted Increment
+	 */
+
+	public boolean accumulateNoStress (
+		final double noStressAttribution,
+		final int noStressAllocationCategory,
+		final int noStressAllocationScheme)
+	{
+<span class="nc" id="L466">		return _noStress.accumulate (</span>
+			noStressAttribution,
+			noStressAllocationCategory,
+			noStressAllocationScheme
+		);
+	}
+
+	/**
+	 * Accumulate with the Beta-Adjusted Component Attribution
+	 * 
+	 * @param pnlAttribution PnL Attribution
+	 * @param entityCapitalAssignmentSetting Entity Capital Assignment Setting
+	 * 
+	 * @return TRUE - The Accumulation is successful
+	 */
+
+	public boolean accumulate (
+		final org.drip.capital.explain.PnLAttribution pnlAttribution,
+		final org.drip.capital.allocation.EntityCapitalAssignmentSetting entityCapitalAssignmentSetting)
+	{
+<span class="nc bnc" id="L486" title="All 4 branches missed.">		if (null == pnlAttribution ||</span>
+			null == entityCapitalAssignmentSetting)
+		{
+<span class="nc" id="L489">			return false;</span>
+		}
+
+<span class="nc bnc" id="L492" title="All 2 branches missed.">		if (!accumulateSystemic (</span>
+<span class="nc" id="L493">			pnlAttribution.systemicPnL(),</span>
+<span class="nc" id="L494">			entityCapitalAssignmentSetting.systemicAllocationCategory(),</span>
+<span class="nc" id="L495">			entityCapitalAssignmentSetting.systemicAllocationScheme()</span>
+		))
+		{
+<span class="nc" id="L498">			return false;</span>
+		}
+
+<span class="nc bnc" id="L501" title="All 2 branches missed.">		if (!accumulateCorrelated (</span>
+<span class="nc" id="L502">			pnlAttribution.correlatedPnL(),</span>
+<span class="nc" id="L503">			entityCapitalAssignmentSetting.correlatedAllocationCategory(),</span>
+<span class="nc" id="L504">			entityCapitalAssignmentSetting.correlatedAllocationScheme()</span>
+		))
+		{
+<span class="nc" id="L507">			return false;</span>
+		}
+
+<span class="nc bnc" id="L510" title="All 2 branches missed.">		if (!accumulateIdiosyncratic (</span>
+<span class="nc" id="L511">			pnlAttribution.idiosyncraticGrossPnL(),</span>
+<span class="nc" id="L512">			entityCapitalAssignmentSetting.idiosyncraticAllocationCategory(),</span>
+<span class="nc" id="L513">			entityCapitalAssignmentSetting.idiosyncraticAllocationScheme()</span>
+		))
+		{
+<span class="nc" id="L516">			return false;</span>
+		}
+
+<span class="nc bnc" id="L519" title="All 2 branches missed.">		if (!accumulateNoStress (</span>
+<span class="nc" id="L520">			pnlAttribution.fsGrossPnL(),</span>
+<span class="nc" id="L521">			entityCapitalAssignmentSetting.noStressAllocationCategory(),</span>
+<span class="nc" id="L522">			entityCapitalAssignmentSetting.noStressAllocationScheme()</span>
+		))
+		{
+<span class="nc" id="L525">			return false;</span>
+		}
+
+<span class="nc" id="L528">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Total Systemic Component Capital
+	 * 
+	 * @return The Total Systemic Component Capital
+	 */
+
+	public double systemicTotal()
+	{
+<span class="nc" id="L539">		return _systemic.fixed() + _systemic.floating() + _systemic.proRata();</span>
+	}
+
+	/**
+	 * Retrieve the Total Correlated Component Capital
+	 * 
+	 * @return The Total Correlated Component Capital
+	 */
+
+	public double correlatedTotal()
+	{
+<span class="nc" id="L550">		return _correlated.fixed() + _correlated.floating() + _correlated.proRata();</span>
+	}
+
+	/**
+	 * Retrieve the Total Idiosyncratic Component Capital
+	 * 
+	 * @return The Total Idiosyncratic Component Capital
+	 */
+
+	public double idiosyncraticTotal()
+	{
+<span class="nc" id="L561">		return _idiosyncratic.fixed() + _idiosyncratic.floating() + _idiosyncratic.proRata();</span>
+	}
+
+	/**
+	 * Retrieve the Total No Stress Component Capital
+	 * 
+	 * @return The Total No Stress Component Capital
+	 */
+
+	public double noStressTotal()
+	{
+<span class="nc" id="L572">		return _noStress.fixed() + _noStress.floating() + _noStress.proRata();</span>
+	}
+
+	/**
+	 * Retrieve the Fixed Beta Capital Component
+	 * 
+	 * @return The Fixed Beta Capital Component
+	 */
+
+	public double fixed()
+	{
+<span class="nc" id="L583">		return _systemic.fixed() + _correlated.fixed() + _idiosyncratic.fixed() + _noStress.fixed();</span>
+	}
+
+	/**
+	 * Retrieve the Floating Beta Capital Component
+	 * 
+	 * @return The Floating Beta Capital Component
+	 */
+
+	public double floating()
+	{
+<span class="nc" id="L594">		return _systemic.floating() + _correlated.floating() + _idiosyncratic.floating() +</span>
+<span class="nc" id="L595">			_noStress.floating();</span>
+	}
+
+	/**
+	 * Retrieve the Pro-Rata Beta Capital Component
+	 * 
+	 * @return The Pro-Rata Beta Capital Component
+	 */
+
+	public double proRata()
+	{
+<span class="nc" id="L606">		return _systemic.proRata() + _correlated.proRata() + _idiosyncratic.proRata() + _noStress.proRata();</span>
+	}
+
+	/**
+	 * Retrieve the Pro-Rata Systemic Capital
+	 *  
+	 * @return The Pro-Rata Systemic Capital
+	 */
+
+	public double systemicProRata()
+	{
+<span class="nc" id="L617">		return _systemic.proRata();</span>
+	}
+
+	/**
+	 * Retrieve the Pro-Rata Correlated Capital
+	 *  
+	 * @return The Pro-Rata Correlated Capital
+	 */
+
+	public double correlatedProRata()
+	{
+<span class="nc" id="L628">		return _correlated.proRata();</span>
+	}
+
+	/**
+	 * Retrieve the Pro-Rata Idiosyncratic Capital
+	 *  
+	 * @return The Pro-Rata Idiosyncratic Capital
+	 */
+
+	public double idiosyncraticProRata()
+	{
+<span class="nc" id="L639">		return _idiosyncratic.proRata();</span>
+	}
+
+	/**
+	 * Retrieve the Pro-Rata No-Stress Capital
+	 *  
+	 * @return The Pro-Rata No-Stress Capital
+	 */
+
+	public double noStressProRata()
+	{
+<span class="nc" id="L650">		return _noStress.proRata();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

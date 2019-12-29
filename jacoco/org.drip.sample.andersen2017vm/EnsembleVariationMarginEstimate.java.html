@@ -47,36 +47,47 @@ import org.drip.state.identifier.OvernightLabel;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -136,17 +147,17 @@ import org.drip.state.identifier.OvernightLabel;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/andersen2017vm/README.md&quot;&gt;Andersen, Pykhtin, and Sokol (2017)&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/andersen2017vm/README.md&quot;&gt;Andersen Pykhtin Sokol Regression VM&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L149">public class EnsembleVariationMarginEstimate</span>
+<span class="nc" id="L160">public class EnsembleVariationMarginEstimate</span>
 {
 
 	private static final FixFloatComponent OTCIRS (
@@ -155,14 +166,14 @@ import org.drip.state.identifier.OvernightLabel;
 		final String maturityTenor,
 		final double coupon)
 	{
-<span class="nc" id="L158">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+<span class="nc" id="L169">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
 			currency,
 			&quot;ALL&quot;,
 			maturityTenor,
 			&quot;MAIN&quot;
 		);
 
-<span class="nc" id="L165">		return ffConv.createFixFloatComponent (</span>
+<span class="nc" id="L176">		return ffConv.createFixFloatComponent (</span>
 			spotDate,
 			maturityTenor,
 			coupon,
@@ -176,19 +187,19 @@ import org.drip.state.identifier.OvernightLabel;
 		final List&lt;LatentStateLabel&gt; latentStateLabelList)
 		throws Exception
 	{
-<span class="nc" id="L179">		double overnightReplicatorDrift = 0.0025;</span>
-<span class="nc" id="L180">		double overnightReplicatorVolatility = 0.001;</span>
-<span class="nc" id="L181">		double overnightReplicatorRepo = 0.0;</span>
+<span class="nc" id="L190">		double overnightReplicatorDrift = 0.0025;</span>
+<span class="nc" id="L191">		double overnightReplicatorVolatility = 0.001;</span>
+<span class="nc" id="L192">		double overnightReplicatorRepo = 0.0;</span>
 
-<span class="nc" id="L183">		LatentStateLabel overnightLabel = OvernightLabel.Create (currency);</span>
+<span class="nc" id="L194">		LatentStateLabel overnightLabel = OvernightLabel.Create (currency);</span>
 
-<span class="nc" id="L185">		latentStateLabelList.add (overnightLabel);</span>
+<span class="nc" id="L196">		latentStateLabelList.add (overnightLabel);</span>
 
-<span class="nc" id="L187">		return new PrimarySecurity (</span>
+<span class="nc" id="L198">		return new PrimarySecurity (</span>
 			currency + &quot;_OVERNIGHT&quot;,
 			overnightLabel,
 			new DiffusionEvolver (
-<span class="nc" id="L191">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="nc" id="L202">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					overnightReplicatorDrift,
 					overnightReplicatorVolatility
 				)
@@ -202,19 +213,19 @@ import org.drip.state.identifier.OvernightLabel;
 		final List&lt;LatentStateLabel&gt; latentStateLabelList)
 		throws Exception
 	{
-<span class="nc" id="L205">		double csaReplicatorDrift = 0.01;</span>
-<span class="nc" id="L206">		double csaReplicatorVolatility = 0.002;</span>
-<span class="nc" id="L207">		double csaReplicatorRepo = 0.005;</span>
+<span class="nc" id="L216">		double csaReplicatorDrift = 0.01;</span>
+<span class="nc" id="L217">		double csaReplicatorVolatility = 0.002;</span>
+<span class="nc" id="L218">		double csaReplicatorRepo = 0.005;</span>
 
-<span class="nc" id="L209">		LatentStateLabel csaLabel = CSALabel.ISDA (currency);</span>
+<span class="nc" id="L220">		LatentStateLabel csaLabel = CSALabel.ISDA (currency);</span>
 
-<span class="nc" id="L211">		latentStateLabelList.add (csaLabel);</span>
+<span class="nc" id="L222">		latentStateLabelList.add (csaLabel);</span>
 
-<span class="nc" id="L213">		return new PrimarySecurity (</span>
+<span class="nc" id="L224">		return new PrimarySecurity (</span>
 			currency + &quot;_CSA&quot;,
 			csaLabel,
 			new DiffusionEvolver (
-<span class="nc" id="L217">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="nc" id="L228">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					csaReplicatorDrift,
 					csaReplicatorVolatility
 				)
@@ -229,26 +240,26 @@ import org.drip.state.identifier.OvernightLabel;
 		final List&lt;LatentStateLabel&gt; latentStateLabelList)
 		throws Exception
 	{
-<span class="nc" id="L232">		double dealerSeniorFundingReplicatorDrift = 0.03;</span>
-<span class="nc" id="L233">		double dealerSeniorFundingReplicatorVolatility = 0.002;</span>
-<span class="nc" id="L234">		double dealerSeniorFundingReplicatorRepo = 0.028;</span>
+<span class="nc" id="L243">		double dealerSeniorFundingReplicatorDrift = 0.03;</span>
+<span class="nc" id="L244">		double dealerSeniorFundingReplicatorVolatility = 0.002;</span>
+<span class="nc" id="L245">		double dealerSeniorFundingReplicatorRepo = 0.028;</span>
 
-<span class="nc" id="L236">		LatentStateLabel dealerSeniorFundingLabel = EntityFundingLabel.Senior (</span>
+<span class="nc" id="L247">		LatentStateLabel dealerSeniorFundingLabel = EntityFundingLabel.Senior (</span>
 			dealer,
 			currency
 		);
 
-<span class="nc" id="L241">		latentStateLabelList.add (dealerSeniorFundingLabel);</span>
+<span class="nc" id="L252">		latentStateLabelList.add (dealerSeniorFundingLabel);</span>
 
-<span class="nc" id="L243">		return new PrimarySecurity (</span>
+<span class="nc" id="L254">		return new PrimarySecurity (</span>
 			dealer + &quot;_&quot; + currency + &quot;_SENIOR_ZERO&quot;,
 			dealerSeniorFundingLabel,
 			new JumpDiffusionEvolver (
-<span class="nc" id="L247">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="nc" id="L258">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					dealerSeniorFundingReplicatorDrift,
 					dealerSeniorFundingReplicatorVolatility
 				),
-<span class="nc" id="L251">				HazardJumpEvaluator.Standard (</span>
+<span class="nc" id="L262">				HazardJumpEvaluator.Standard (</span>
 					0.3,
 					0.45
 				)
@@ -263,26 +274,26 @@ import org.drip.state.identifier.OvernightLabel;
 		final List&lt;LatentStateLabel&gt; latentStateLabelList)
 		throws Exception
 	{
-<span class="nc" id="L266">		double dealerSubordinateFundingReplicatorDrift = 0.045;</span>
-<span class="nc" id="L267">		double dealerSubordinateFundingReplicatorVolatility = 0.002;</span>
-<span class="nc" id="L268">		double dealerSubordinateFundingReplicatorRepo = 0.028;</span>
+<span class="nc" id="L277">		double dealerSubordinateFundingReplicatorDrift = 0.045;</span>
+<span class="nc" id="L278">		double dealerSubordinateFundingReplicatorVolatility = 0.002;</span>
+<span class="nc" id="L279">		double dealerSubordinateFundingReplicatorRepo = 0.028;</span>
 
-<span class="nc" id="L270">		LatentStateLabel dealerSubordinateFundingLabel = EntityFundingLabel.Subordinate (</span>
+<span class="nc" id="L281">		LatentStateLabel dealerSubordinateFundingLabel = EntityFundingLabel.Subordinate (</span>
 			dealer,
 			currency
 		);
 
-<span class="nc" id="L275">		latentStateLabelList.add (dealerSubordinateFundingLabel);</span>
+<span class="nc" id="L286">		latentStateLabelList.add (dealerSubordinateFundingLabel);</span>
 
-<span class="nc" id="L277">		return new PrimarySecurity (</span>
+<span class="nc" id="L288">		return new PrimarySecurity (</span>
 			dealer + &quot;_&quot; + currency + &quot;_SUBORDINATE_ZERO&quot;,
 			dealerSubordinateFundingLabel,
 			new JumpDiffusionEvolver (
-<span class="nc" id="L281">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="nc" id="L292">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					dealerSubordinateFundingReplicatorDrift,
 					dealerSubordinateFundingReplicatorVolatility
 				),
-<span class="nc" id="L285">				HazardJumpEvaluator.Standard (</span>
+<span class="nc" id="L296">				HazardJumpEvaluator.Standard (</span>
 					0.3,
 					0.25
 				)
@@ -297,26 +308,26 @@ import org.drip.state.identifier.OvernightLabel;
 		final List&lt;LatentStateLabel&gt; latentStateLabelList)
 		throws Exception
 	{
-<span class="nc" id="L300">		double clientFundingReplicatorDrift = 0.03;</span>
-<span class="nc" id="L301">		double clientFundingReplicatorVolatility = 0.003;</span>
-<span class="nc" id="L302">		double clientFundingReplicatorRepo = 0.028;</span>
+<span class="nc" id="L311">		double clientFundingReplicatorDrift = 0.03;</span>
+<span class="nc" id="L312">		double clientFundingReplicatorVolatility = 0.003;</span>
+<span class="nc" id="L313">		double clientFundingReplicatorRepo = 0.028;</span>
 
-<span class="nc" id="L304">		LatentStateLabel clientFundingLabel = EntityFundingLabel.Senior (</span>
+<span class="nc" id="L315">		LatentStateLabel clientFundingLabel = EntityFundingLabel.Senior (</span>
 			client,
 			currency
 		);
 
-<span class="nc" id="L309">		latentStateLabelList.add (clientFundingLabel);</span>
+<span class="nc" id="L320">		latentStateLabelList.add (clientFundingLabel);</span>
 
-<span class="nc" id="L311">		return new PrimarySecurity (</span>
+<span class="nc" id="L322">		return new PrimarySecurity (</span>
 			client + &quot;_&quot; + currency + &quot;_SENIOR_ZERO&quot;,
 			clientFundingLabel,
 			new JumpDiffusionEvolver (
-<span class="nc" id="L315">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="nc" id="L326">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					clientFundingReplicatorDrift,
 					clientFundingReplicatorVolatility
 				),
-<span class="nc" id="L319">				HazardJumpEvaluator.Standard (</span>
+<span class="nc" id="L330">				HazardJumpEvaluator.Standard (</span>
 					0.5,
 					0.30
 				)
@@ -331,20 +342,20 @@ import org.drip.state.identifier.OvernightLabel;
 		final List&lt;LatentStateLabel&gt; latentStateLabelList)
 		throws Exception
 	{
-<span class="nc" id="L334">		double dealerHazardDrift = 0.0002;</span>
-<span class="nc" id="L335">		double dealerHazardVolatility = 0.02;</span>
+<span class="nc" id="L345">		double dealerHazardDrift = 0.0002;</span>
+<span class="nc" id="L346">		double dealerHazardVolatility = 0.02;</span>
 
-<span class="nc" id="L337">		LatentStateLabel dealerHazardLabel = EntityHazardLabel.Standard (</span>
+<span class="nc" id="L348">		LatentStateLabel dealerHazardLabel = EntityHazardLabel.Standard (</span>
 			dealer,
 			currency
 		);
 
-<span class="nc" id="L342">		latentStateLabelList.add (dealerHazardLabel);</span>
+<span class="nc" id="L353">		latentStateLabelList.add (dealerHazardLabel);</span>
 
-<span class="nc" id="L344">		return new TerminalLatentState (</span>
+<span class="nc" id="L355">		return new TerminalLatentState (</span>
 			dealerHazardLabel,
 			new DiffusionEvolver (
-<span class="nc" id="L347">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="nc" id="L358">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					dealerHazardDrift,
 					dealerHazardVolatility
 				)
@@ -358,20 +369,20 @@ import org.drip.state.identifier.OvernightLabel;
 		final List&lt;LatentStateLabel&gt; latentStateLabelList)
 		throws Exception
 	{
-<span class="nc" id="L361">		double dealerRecoveryDrift = 0.0002;</span>
-<span class="nc" id="L362">		double dealerRecoveryVolatility = 0.02;</span>
+<span class="nc" id="L372">		double dealerRecoveryDrift = 0.0002;</span>
+<span class="nc" id="L373">		double dealerRecoveryVolatility = 0.02;</span>
 
-<span class="nc" id="L364">		LatentStateLabel dealerRecoveryLabel = EntityRecoveryLabel.Senior (</span>
+<span class="nc" id="L375">		LatentStateLabel dealerRecoveryLabel = EntityRecoveryLabel.Senior (</span>
 			dealer,
 			currency
 		);
 
-<span class="nc" id="L369">		latentStateLabelList.add (dealerRecoveryLabel);</span>
+<span class="nc" id="L380">		latentStateLabelList.add (dealerRecoveryLabel);</span>
 
-<span class="nc" id="L371">		return new TerminalLatentState (</span>
+<span class="nc" id="L382">		return new TerminalLatentState (</span>
 			dealerRecoveryLabel,
 			new DiffusionEvolver (
-<span class="nc" id="L374">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="nc" id="L385">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					dealerRecoveryDrift,
 					dealerRecoveryVolatility
 				)
@@ -385,20 +396,20 @@ import org.drip.state.identifier.OvernightLabel;
 		final List&lt;LatentStateLabel&gt; latentStateLabelList)
 		throws Exception
 	{
-<span class="nc" id="L388">		double clientHazardDrift = 0.0002;</span>
-<span class="nc" id="L389">		double clientHazardVolatility = 0.02;</span>
+<span class="nc" id="L399">		double clientHazardDrift = 0.0002;</span>
+<span class="nc" id="L400">		double clientHazardVolatility = 0.02;</span>
 
-<span class="nc" id="L391">		LatentStateLabel clientHazardLabel = EntityHazardLabel.Standard (</span>
+<span class="nc" id="L402">		LatentStateLabel clientHazardLabel = EntityHazardLabel.Standard (</span>
 			client,
 			currency
 		);
 
-<span class="nc" id="L396">		latentStateLabelList.add (clientHazardLabel);</span>
+<span class="nc" id="L407">		latentStateLabelList.add (clientHazardLabel);</span>
 
-<span class="nc" id="L398">		return new TerminalLatentState (</span>
+<span class="nc" id="L409">		return new TerminalLatentState (</span>
 			clientHazardLabel,
 			new DiffusionEvolver (
-<span class="nc" id="L401">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="nc" id="L412">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					clientHazardDrift,
 					clientHazardVolatility
 				)
@@ -412,20 +423,20 @@ import org.drip.state.identifier.OvernightLabel;
 		final List&lt;LatentStateLabel&gt; latentStateLabelList)
 		throws Exception
 	{
-<span class="nc" id="L415">		double clientRecoveryDrift = 0.0002;</span>
-<span class="nc" id="L416">		double clientRecoveryVolatility = 0.02;</span>
+<span class="nc" id="L426">		double clientRecoveryDrift = 0.0002;</span>
+<span class="nc" id="L427">		double clientRecoveryVolatility = 0.02;</span>
 
-<span class="nc" id="L418">		LatentStateLabel clientRecoveryLabel = EntityRecoveryLabel.Senior (</span>
+<span class="nc" id="L429">		LatentStateLabel clientRecoveryLabel = EntityRecoveryLabel.Senior (</span>
 			client,
 			currency
 		);
 
-<span class="nc" id="L423">		latentStateLabelList.add (clientRecoveryLabel);</span>
+<span class="nc" id="L434">		latentStateLabelList.add (clientRecoveryLabel);</span>
 
-<span class="nc" id="L425">		return new TerminalLatentState (</span>
+<span class="nc" id="L436">		return new TerminalLatentState (</span>
 			clientRecoveryLabel,
 			new DiffusionEvolver (
-<span class="nc" id="L428">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="nc" id="L439">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					clientRecoveryDrift,
 					clientRecoveryVolatility
 				)
@@ -440,24 +451,24 @@ import org.drip.state.identifier.OvernightLabel;
 		final List&lt;LatentStateLabel&gt; latentStateLabelList)
 		throws Exception
 	{
-<span class="nc" id="L443">		return new EntityDynamicsContainer (</span>
-<span class="nc" id="L444">			DealerHazard (</span>
+<span class="nc" id="L454">		return new EntityDynamicsContainer (</span>
+<span class="nc" id="L455">			DealerHazard (</span>
 				currency,
 				dealer,
 				latentStateLabelList
 			),
-<span class="nc" id="L449">			DealerRecovery (</span>
+<span class="nc" id="L460">			DealerRecovery (</span>
 				currency,
 				dealer,
 				latentStateLabelList
 			),
 			null,
-<span class="nc" id="L455">			ClientHazard (</span>
+<span class="nc" id="L466">			ClientHazard (</span>
 				currency,
 				client,
 				latentStateLabelList
 			),
-<span class="nc" id="L460">			ClientRecovery (</span>
+<span class="nc" id="L471">			ClientRecovery (</span>
 				currency,
 				client,
 				latentStateLabelList
@@ -472,27 +483,27 @@ import org.drip.state.identifier.OvernightLabel;
 		final List&lt;LatentStateLabel&gt; latentStateLabelList)
 		throws Exception
 	{
-<span class="nc" id="L475">		return new PrimarySecurityDynamicsContainer (</span>
+<span class="nc" id="L486">		return new PrimarySecurityDynamicsContainer (</span>
 			null,
-<span class="nc" id="L477">			OvernightReplicator (</span>
+<span class="nc" id="L488">			OvernightReplicator (</span>
 				currency,
 				latentStateLabelList
 			),
-<span class="nc" id="L481">			CSAReplicator (</span>
+<span class="nc" id="L492">			CSAReplicator (</span>
 				currency,
 				latentStateLabelList
 			),
-<span class="nc" id="L485">			DealerSeniorFundingReplicator (</span>
-				currency,
-				dealer,
-				latentStateLabelList
-			),
-<span class="nc" id="L490">			DealerSubordinateFundingReplicator (</span>
+<span class="nc" id="L496">			DealerSeniorFundingReplicator (</span>
 				currency,
 				dealer,
 				latentStateLabelList
 			),
-<span class="nc" id="L495">			ClientFundingReplicator (</span>
+<span class="nc" id="L501">			DealerSubordinateFundingReplicator (</span>
+				currency,
+				dealer,
+				latentStateLabelList
+			),
+<span class="nc" id="L506">			ClientFundingReplicator (</span>
 				currency,
 				client,
 				latentStateLabelList
@@ -505,18 +516,18 @@ import org.drip.state.identifier.OvernightLabel;
 		final List&lt;LatentStateLabel&gt; latentStateLabelList)
 		throws Exception
 	{
-<span class="nc" id="L508">		double otcFixFloatNumeraireDrift = 0.0;</span>
-<span class="nc" id="L509">		double otcFixFloatNumeraireVolatility = 0.10;</span>
+<span class="nc" id="L519">		double otcFixFloatNumeraireDrift = 0.0;</span>
+<span class="nc" id="L520">		double otcFixFloatNumeraireVolatility = 0.10;</span>
 
-<span class="nc" id="L511">		latentStateLabelList.add (forwardLabel);</span>
+<span class="nc" id="L522">		latentStateLabelList.add (forwardLabel);</span>
 
-<span class="nc" id="L513">		LatentStateDynamicsContainer latentStateDynamicsContainer = new LatentStateDynamicsContainer();</span>
+<span class="nc" id="L524">		LatentStateDynamicsContainer latentStateDynamicsContainer = new LatentStateDynamicsContainer();</span>
 
-<span class="nc" id="L515">		latentStateDynamicsContainer.addForward (</span>
+<span class="nc" id="L526">		latentStateDynamicsContainer.addForward (</span>
 			new TerminalLatentState (
 				forwardLabel,
 				new DiffusionEvolver (
-<span class="nc" id="L519">					DiffusionEvaluatorLinear.Standard (</span>
+<span class="nc" id="L530">					DiffusionEvaluatorLinear.Standard (</span>
 						otcFixFloatNumeraireDrift,
 						otcFixFloatNumeraireVolatility
 					)
@@ -524,7 +535,7 @@ import org.drip.state.identifier.OvernightLabel;
 			)
 		);
 
-<span class="nc" id="L527">		return latentStateDynamicsContainer;</span>
+<span class="nc" id="L538">		return latentStateDynamicsContainer;</span>
 	}
 
 	private static final MarketVertexGenerator ConstructMarketVertexGenerator (
@@ -538,32 +549,32 @@ import org.drip.state.identifier.OvernightLabel;
 		final List&lt;LatentStateLabel&gt; latentStateLabelList)
 		throws Exception
 	{
-<span class="nc" id="L541">		JulianDate terminationDate = spotDate;</span>
-<span class="nc" id="L542">		int[] eventVertexArray = new int[exposureSamplingNodeCount];</span>
+<span class="nc" id="L552">		JulianDate terminationDate = spotDate;</span>
+<span class="nc" id="L553">		int[] eventVertexArray = new int[exposureSamplingNodeCount];</span>
 
-<span class="nc bnc" id="L544" title="All 2 branches missed.">		for (int i = 0; i &lt; exposureSamplingNodeCount; ++i)</span>
+<span class="nc bnc" id="L555" title="All 2 branches missed.">		for (int i = 0; i &lt; exposureSamplingNodeCount; ++i)</span>
 		{
-<span class="nc" id="L546">			terminationDate = terminationDate.addTenor (exposureSamplingTenor);</span>
+<span class="nc" id="L557">			terminationDate = terminationDate.addTenor (exposureSamplingTenor);</span>
 
-<span class="nc" id="L548">			eventVertexArray[i] = terminationDate.julian();</span>
+<span class="nc" id="L559">			eventVertexArray[i] = terminationDate.julian();</span>
 		}
 
-<span class="nc" id="L551">		return new MarketVertexGenerator (</span>
-<span class="nc" id="L552">			spotDate.julian(),</span>
+<span class="nc" id="L562">		return new MarketVertexGenerator (</span>
+<span class="nc" id="L563">			spotDate.julian(),</span>
 			eventVertexArray,
-<span class="nc" id="L554">			EntityEvolver (</span>
+<span class="nc" id="L565">			EntityEvolver (</span>
 				currency,
 				dealer,
 				client,
 				latentStateLabelList
 			),
-<span class="nc" id="L560">			PrimarySecurityEvolver (</span>
+<span class="nc" id="L571">			PrimarySecurityEvolver (</span>
 				currency,
 				dealer,
 				client,
 				latentStateLabelList
 			),
-<span class="nc" id="L566">			LatentStateEvolver (</span>
+<span class="nc" id="L577">			LatentStateEvolver (</span>
 				forwardLabel,
 				latentStateLabelList
 			)
@@ -574,22 +585,22 @@ import org.drip.state.identifier.OvernightLabel;
 		final String[] args)
 		throws Exception
 	{
-<span class="nc" id="L577">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L588">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L579">		JulianDate spotDate = DateUtil.CreateFromYMD (</span>
+<span class="nc" id="L590">		JulianDate spotDate = DateUtil.CreateFromYMD (</span>
 			2018,
 			DateUtil.APRIL,
 			19
 		);
 
-<span class="nc" id="L585">		int pathCount = 100;</span>
-<span class="nc" id="L586">		String latentStateGenerationTenor = &quot;1D&quot;;</span>
-<span class="nc" id="L587">		int latentStateGenerationCount = 390;</span>
-<span class="nc" id="L588">		int latentStateVertexCount = latentStateGenerationCount + 10;</span>
-<span class="nc" id="L589">		String currency = &quot;USD&quot;;</span>
-<span class="nc" id="L590">		String dealer = &quot;NOM&quot;;</span>
-<span class="nc" id="L591">		String client = &quot;SSGA&quot;;</span>
-<span class="nc" id="L592">		double[][] correlationMatrix = new double[][]</span>
+<span class="nc" id="L596">		int pathCount = 100;</span>
+<span class="nc" id="L597">		String latentStateGenerationTenor = &quot;1D&quot;;</span>
+<span class="nc" id="L598">		int latentStateGenerationCount = 390;</span>
+<span class="nc" id="L599">		int latentStateVertexCount = latentStateGenerationCount + 10;</span>
+<span class="nc" id="L600">		String currency = &quot;USD&quot;;</span>
+<span class="nc" id="L601">		String dealer = &quot;NOM&quot;;</span>
+<span class="nc" id="L602">		String client = &quot;SSGA&quot;;</span>
+<span class="nc" id="L603">		double[][] correlationMatrix = new double[][]</span>
 		{
 			{1.00, 0.00, 0.20, 0.15, 0.05, 0.00, 0.00, 0.00, 0.00, 0.00}, // #0  DEALER HAZARD
 			{0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00}, // #1  DEALER SENIOR RECOVERY
@@ -602,26 +613,26 @@ import org.drip.state.identifier.OvernightLabel;
 			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00}, // #8  CLIENT FUNDING REPLICATOR
 			{0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.00}, // #9  FORWARD NUMERAIRE
 		};
-<span class="nc" id="L605">		String sparseFixFloatExposureTenor = &quot;3M&quot;;</span>
-<span class="nc" id="L606">		int sparseFixFloatExposureDateCount = 4;</span>
-<span class="nc" id="L607">		String fixFloatMaturityTenor = &quot;1Y&quot;;</span>
-<span class="nc" id="L608">		double fixFloatCoupon = 0.02;</span>
-<span class="nc" id="L609">		double fixFloatNotional = -1.e+06;</span>
+<span class="nc" id="L616">		String sparseFixFloatExposureTenor = &quot;3M&quot;;</span>
+<span class="nc" id="L617">		int sparseFixFloatExposureDateCount = 4;</span>
+<span class="nc" id="L618">		String fixFloatMaturityTenor = &quot;1Y&quot;;</span>
+<span class="nc" id="L619">		double fixFloatCoupon = 0.02;</span>
+<span class="nc" id="L620">		double fixFloatNotional = -1.e+06;</span>
 
-<span class="nc" id="L611">		LocalVolatilityGenerationControl localVolatilityGenerationControl =</span>
-<span class="nc" id="L612">			LocalVolatilityGenerationControl.Standard (pathCount);</span>
+<span class="nc" id="L622">		LocalVolatilityGenerationControl localVolatilityGenerationControl =</span>
+<span class="nc" id="L623">			LocalVolatilityGenerationControl.Standard (pathCount);</span>
 
-<span class="nc" id="L614">		LatentStateVertexContainer latentStateVertexContainer = new LatentStateVertexContainer();</span>
+<span class="nc" id="L625">		LatentStateVertexContainer latentStateVertexContainer = new LatentStateVertexContainer();</span>
 
-<span class="nc" id="L616">		latentStateVertexContainer.add (</span>
-<span class="nc" id="L617">			ForwardLabel.Create (</span>
+<span class="nc" id="L627">		latentStateVertexContainer.add (</span>
+<span class="nc" id="L628">			ForwardLabel.Create (</span>
 				currency,
 				&quot;3M&quot;
 			),
 			0.02
 		);
 
-<span class="nc" id="L624">		MarketVertex initialMarketVertex = MarketVertex.Epochal (</span>
+<span class="nc" id="L635">		MarketVertex initialMarketVertex = MarketVertex.Epochal (</span>
 			spotDate,
 			1.000, 				// dblOvernightNumeraireInitial
 			1.000, 				// dblCSANumeraire
@@ -634,14 +645,14 @@ import org.drip.state.identifier.OvernightLabel;
 			latentStateVertexContainer
 		);
 
-<span class="nc" id="L637">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
+<span class="nc" id="L648">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
 			currency,
 			&quot;3M&quot;
 		);
 
-<span class="nc" id="L642">		List&lt;LatentStateLabel&gt; latentStateLabelList = new ArrayList&lt;LatentStateLabel&gt;();</span>
+<span class="nc" id="L653">		List&lt;LatentStateLabel&gt; latentStateLabelList = new ArrayList&lt;LatentStateLabel&gt;();</span>
 
-<span class="nc" id="L644">		MarketVertexGenerator marketVertexGenerator = ConstructMarketVertexGenerator (</span>
+<span class="nc" id="L655">		MarketVertexGenerator marketVertexGenerator = ConstructMarketVertexGenerator (</span>
 			spotDate,
 			latentStateGenerationTenor,
 			latentStateVertexCount,
@@ -652,19 +663,19 @@ import org.drip.state.identifier.OvernightLabel;
 			latentStateLabelList
 		);
 
-<span class="nc" id="L655">		FixFloatComponent fixFloatComponent = OTCIRS (</span>
+<span class="nc" id="L666">		FixFloatComponent fixFloatComponent = OTCIRS (</span>
 			spotDate,
 			currency,
 			fixFloatMaturityTenor,
 			fixFloatCoupon
 		);
 
-<span class="nc" id="L662">		FixFloatMPoR fixFloatMPoR = new FixFloatMPoR (</span>
+<span class="nc" id="L673">		FixFloatMPoR fixFloatMPoR = new FixFloatMPoR (</span>
 			fixFloatComponent,
 			fixFloatNotional
 		);
 
-<span class="nc" id="L667">		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (</span>
+<span class="nc" id="L678">		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (</span>
 			new RandomNumberGenerator(),
 			correlationMatrix,
 			latentStateVertexCount,
@@ -673,97 +684,97 @@ import org.drip.state.identifier.OvernightLabel;
 			null
 		);
 
-<span class="nc" id="L676">		JulianDate sparseFixFloatExposureDate = spotDate;</span>
-<span class="nc" id="L677">		int[] sparseFixFloatExposureDateArray = new int[sparseFixFloatExposureDateCount + 1];</span>
-<span class="nc" id="L678">		MarketPath[] marketPathArray = new MarketPath[pathCount];</span>
+<span class="nc" id="L687">		JulianDate sparseFixFloatExposureDate = spotDate;</span>
+<span class="nc" id="L688">		int[] sparseFixFloatExposureDateArray = new int[sparseFixFloatExposureDateCount + 1];</span>
+<span class="nc" id="L689">		MarketPath[] marketPathArray = new MarketPath[pathCount];</span>
 
-<span class="nc" id="L680">		for (int sparseFixFloatExposureDateIndex = 0;</span>
-<span class="nc bnc" id="L681" title="All 2 branches missed.">			sparseFixFloatExposureDateIndex &lt;= sparseFixFloatExposureDateCount;</span>
-<span class="nc" id="L682">			++sparseFixFloatExposureDateIndex)</span>
+<span class="nc" id="L691">		for (int sparseFixFloatExposureDateIndex = 0;</span>
+<span class="nc bnc" id="L692" title="All 2 branches missed.">			sparseFixFloatExposureDateIndex &lt;= sparseFixFloatExposureDateCount;</span>
+<span class="nc" id="L693">			++sparseFixFloatExposureDateIndex)</span>
 		{
-<span class="nc" id="L684">			sparseFixFloatExposureDateArray[sparseFixFloatExposureDateIndex] =</span>
-<span class="nc" id="L685">				sparseFixFloatExposureDate.julian();</span>
+<span class="nc" id="L695">			sparseFixFloatExposureDateArray[sparseFixFloatExposureDateIndex] =</span>
+<span class="nc" id="L696">				sparseFixFloatExposureDate.julian();</span>
 
-<span class="nc" id="L687">			sparseFixFloatExposureDate = sparseFixFloatExposureDate.addTenor (sparseFixFloatExposureTenor);</span>
+<span class="nc" id="L698">			sparseFixFloatExposureDate = sparseFixFloatExposureDate.addTenor (sparseFixFloatExposureTenor);</span>
 		}
 
-<span class="nc" id="L690">		int denseExposureDateCount = sparseFixFloatExposureDateArray[sparseFixFloatExposureDateCount] -</span>
+<span class="nc" id="L701">		int denseExposureDateCount = sparseFixFloatExposureDateArray[sparseFixFloatExposureDateCount] -</span>
 			sparseFixFloatExposureDateArray[0] + 1;
-<span class="nc" id="L692">		double[][] wanderEnsemble = new double[pathCount][denseExposureDateCount];</span>
+<span class="nc" id="L703">		double[][] wanderEnsemble = new double[pathCount][denseExposureDateCount];</span>
 
-<span class="nc bnc" id="L694" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+<span class="nc bnc" id="L705" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
 		{
-<span class="nc" id="L696">			marketPathArray[pathIndex] = new MarketPath (</span>
-<span class="nc" id="L697">				marketVertexGenerator.marketVertex (</span>
+<span class="nc" id="L707">			marketPathArray[pathIndex] = new MarketPath (</span>
+<span class="nc" id="L708">				marketVertexGenerator.marketVertex (</span>
 					initialMarketVertex,
-<span class="nc" id="L699">					LatentStateWeiner.FromUnitRandom (</span>
+<span class="nc" id="L710">					LatentStateWeiner.FromUnitRandom (</span>
 						latentStateLabelList,
-<span class="nc" id="L701">						Matrix.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())</span>
+<span class="nc" id="L712">						Matrix.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())</span>
 					)
 				)
 			);
 
-<span class="nc bnc" id="L706" title="All 2 branches missed.">			for (int denseExposureDate = 0; denseExposureDate &lt; denseExposureDateCount; ++denseExposureDate)</span>
+<span class="nc bnc" id="L717" title="All 2 branches missed.">			for (int denseExposureDate = 0; denseExposureDate &lt; denseExposureDateCount; ++denseExposureDate)</span>
 			{
-<span class="nc" id="L708">				wanderEnsemble[pathIndex][denseExposureDate] = NormalQuadrature.Random();</span>
+<span class="nc" id="L719">				wanderEnsemble[pathIndex][denseExposureDate] = NormalQuadrature.Random();</span>
 			}
 		}
 
-<span class="nc" id="L712">		AndersenPykhtinSokolEnsemble andersenPykhtinSokolEnsemble = new AndersenPykhtinSokolEnsemble (</span>
+<span class="nc" id="L723">		AndersenPykhtinSokolEnsemble andersenPykhtinSokolEnsemble = new AndersenPykhtinSokolEnsemble (</span>
 			fixFloatMPoR,
 			marketPathArray,
 			sparseFixFloatExposureDateArray
 		);
 
-<span class="nc" id="L718">		double[][] denseVariationMargin = andersenPykhtinSokolEnsemble.denseVariationMargin (</span>
+<span class="nc" id="L729">		double[][] denseVariationMargin = andersenPykhtinSokolEnsemble.denseVariationMargin (</span>
 			localVolatilityGenerationControl,
 			wanderEnsemble
 		);
 
-<span class="nc" id="L723">		double[][] denseVariationMarginTranspose = Matrix.Transpose (denseVariationMargin);</span>
+<span class="nc" id="L734">		double[][] denseVariationMarginTranspose = Matrix.Transpose (denseVariationMargin);</span>
 
-<span class="nc" id="L725">		System.out.println (&quot;\t||--------------------------------------------------||&quot;);</span>
+<span class="nc" id="L736">		System.out.println (&quot;\t||--------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L727">		System.out.println (&quot;\t||        ENSEMBLE VARIATION MARGIN ESTIMATE        ||&quot;);</span>
+<span class="nc" id="L738">		System.out.println (&quot;\t||        ENSEMBLE VARIATION MARGIN ESTIMATE        ||&quot;);</span>
 
-<span class="nc" id="L729">		System.out.println (&quot;\t||--------------------------------------------------||&quot;);</span>
+<span class="nc" id="L740">		System.out.println (&quot;\t||--------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L731">		System.out.println (&quot;\t||                                                  ||&quot;);</span>
+<span class="nc" id="L742">		System.out.println (&quot;\t||                                                  ||&quot;);</span>
 
-<span class="nc" id="L733">		System.out.println (&quot;\t||    L -&gt; R:                                       ||&quot;);</span>
+<span class="nc" id="L744">		System.out.println (&quot;\t||    L -&gt; R:                                       ||&quot;);</span>
 
-<span class="nc" id="L735">		System.out.println (&quot;\t||          - Exposure Date                         ||&quot;);</span>
+<span class="nc" id="L746">		System.out.println (&quot;\t||          - Exposure Date                         ||&quot;);</span>
 
-<span class="nc" id="L737">		System.out.println (&quot;\t||          - Variation Margin Average              ||&quot;);</span>
+<span class="nc" id="L748">		System.out.println (&quot;\t||          - Variation Margin Average              ||&quot;);</span>
 
-<span class="nc" id="L739">		System.out.println (&quot;\t||          - Variation Margin Minimum              ||&quot;);</span>
+<span class="nc" id="L750">		System.out.println (&quot;\t||          - Variation Margin Minimum              ||&quot;);</span>
 
-<span class="nc" id="L741">		System.out.println (&quot;\t||          - Variation Margin Maximum              ||&quot;);</span>
+<span class="nc" id="L752">		System.out.println (&quot;\t||          - Variation Margin Maximum              ||&quot;);</span>
 
-<span class="nc" id="L743">		System.out.println (&quot;\t||          - Variation Margin Error                ||&quot;);</span>
+<span class="nc" id="L754">		System.out.println (&quot;\t||          - Variation Margin Error                ||&quot;);</span>
 
-<span class="nc" id="L745">		System.out.println (&quot;\t||--------------------------------------------------||&quot;);</span>
+<span class="nc" id="L756">		System.out.println (&quot;\t||--------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L747">		for (int denseExposureDateIndex = 0;</span>
-<span class="nc bnc" id="L748" title="All 2 branches missed.">			denseExposureDateIndex &lt; denseExposureDateCount;</span>
-<span class="nc" id="L749">			++denseExposureDateIndex)</span>
+<span class="nc" id="L758">		for (int denseExposureDateIndex = 0;</span>
+<span class="nc bnc" id="L759" title="All 2 branches missed.">			denseExposureDateIndex &lt; denseExposureDateCount;</span>
+<span class="nc" id="L760">			++denseExposureDateIndex)</span>
 		{
-<span class="nc" id="L751">			UnivariateDiscreteThin denseVMThinStatistics = new UnivariateDiscreteThin</span>
+<span class="nc" id="L762">			UnivariateDiscreteThin denseVMThinStatistics = new UnivariateDiscreteThin</span>
 				(denseVariationMarginTranspose[denseExposureDateIndex]);
 
-<span class="nc" id="L754">			System.out.println (</span>
+<span class="nc" id="L765">			System.out.println (</span>
 				&quot;\t|| &quot; +
-<span class="nc" id="L756">				new JulianDate (spotDate.julian() + denseExposureDateIndex) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L757">				FormatUtil.FormatDouble (denseVMThinStatistics.average(), 5, 0, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L758">				FormatUtil.FormatDouble (denseVMThinStatistics.minimum(), 5, 0, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L759">				FormatUtil.FormatDouble (denseVMThinStatistics.maximum(), 5, 0, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L760">				FormatUtil.FormatDouble (denseVMThinStatistics.error(), 5, 0, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L767">				new JulianDate (spotDate.julian() + denseExposureDateIndex) + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L768">				FormatUtil.FormatDouble (denseVMThinStatistics.average(), 5, 0, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L769">				FormatUtil.FormatDouble (denseVMThinStatistics.minimum(), 5, 0, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L770">				FormatUtil.FormatDouble (denseVMThinStatistics.maximum(), 5, 0, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L771">				FormatUtil.FormatDouble (denseVMThinStatistics.error(), 5, 0, 1.) + &quot; ||&quot;</span>
 			);
 		}
 
-<span class="nc" id="L764">		System.out.println (&quot;\t||--------------------------------------------------||&quot;);</span>
+<span class="nc" id="L775">		System.out.println (&quot;\t||--------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L766">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L767">	}</span>
+<span class="nc" id="L777">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L778">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

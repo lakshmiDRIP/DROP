@@ -11,41 +11,53 @@ import org.drip.validation.distance.ImportanceWeight;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -98,28 +110,28 @@ import org.drip.validation.distance.ImportanceWeight;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationLibrary.md&quot;&gt;Model Validation Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/anfuso2013&quot;&gt;Anfuso, Karyampas, and Nawroth (2013) Replications&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/anfuso2017/README.md&quot;&gt;Anfuso, Karyampas, and Nawroth (2013) Replications&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L111">public class ImportanceWeight13e</span>
+<span class="nc" id="L123">public class ImportanceWeight13e</span>
 {
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L118">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L130">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L120">		double mean = 1.;</span>
-<span class="nc" id="L121">		double sigma = 1.;</span>
-<span class="nc" id="L122">		double[] quantileArray =</span>
+<span class="nc" id="L132">		double mean = 1.;</span>
+<span class="nc" id="L133">		double sigma = 1.;</span>
+<span class="nc" id="L134">		double[] quantileArray =</span>
 		{
 			0.001,
 			0.050,
@@ -144,49 +156,49 @@ import org.drip.validation.distance.ImportanceWeight;
 			0.999
 		};
 
-<span class="nc" id="L147">		ImportanceWeight importanceWeight = ImportanceWeight.Normal (</span>
+<span class="nc" id="L159">		ImportanceWeight importanceWeight = ImportanceWeight.Normal (</span>
 			new R1UnivariateNormal (
 				mean,
 				sigma
 			)
 		);
 
-<span class="nc" id="L154">		System.out.println (&quot;\t|--------------------||&quot;);</span>
-
-<span class="nc" id="L156">		System.out.println (&quot;\t|  QUANTILE WEIGHTS  ||&quot;);</span>
-
-<span class="nc" id="L158">		System.out.println (&quot;\t|--------------------||&quot;);</span>
-
-<span class="nc" id="L160">		System.out.println (&quot;\t|    L -&gt; R:         ||&quot;);</span>
-
-<span class="nc" id="L162">		System.out.println (&quot;\t|        - Quantile  ||&quot;);</span>
-
-<span class="nc" id="L164">		System.out.println (&quot;\t|        - Weight    ||&quot;);</span>
-
 <span class="nc" id="L166">		System.out.println (&quot;\t|--------------------||&quot;);</span>
 
-<span class="nc bnc" id="L168" title="All 2 branches missed.">		for (double quantile : quantileArray)</span>
+<span class="nc" id="L168">		System.out.println (&quot;\t|  QUANTILE WEIGHTS  ||&quot;);</span>
+
+<span class="nc" id="L170">		System.out.println (&quot;\t|--------------------||&quot;);</span>
+
+<span class="nc" id="L172">		System.out.println (&quot;\t|    L -&gt; R:         ||&quot;);</span>
+
+<span class="nc" id="L174">		System.out.println (&quot;\t|        - Quantile  ||&quot;);</span>
+
+<span class="nc" id="L176">		System.out.println (&quot;\t|        - Weight    ||&quot;);</span>
+
+<span class="nc" id="L178">		System.out.println (&quot;\t|--------------------||&quot;);</span>
+
+<span class="nc bnc" id="L180" title="All 2 branches missed.">		for (double quantile : quantileArray)</span>
 		{
-<span class="nc" id="L170">			System.out.println (</span>
-<span class="nc" id="L171">				&quot;\t|&quot; + FormatUtil.FormatDouble (quantile, 1, 3, 1.) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L172">				FormatUtil.FormatDouble (importanceWeight.quantileLoading (quantile), 1, 6, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L182">			System.out.println (</span>
+<span class="nc" id="L183">				&quot;\t|&quot; + FormatUtil.FormatDouble (quantile, 1, 3, 1.) + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L184">				FormatUtil.FormatDouble (importanceWeight.quantileLoading (quantile), 1, 6, 1.) + &quot; ||&quot;</span>
 			);
 		}
 
-<span class="nc" id="L176">		System.out.println (&quot;\t|--------------------||&quot;);</span>
+<span class="nc" id="L188">		System.out.println (&quot;\t|--------------------||&quot;);</span>
 
-<span class="nc" id="L178">		System.out.println();</span>
+<span class="nc" id="L190">		System.out.println();</span>
 
-<span class="nc" id="L180">		System.out.println (&quot;\t|---------------------------------||&quot;);</span>
+<span class="nc" id="L192">		System.out.println (&quot;\t|---------------------------------||&quot;);</span>
 
-<span class="nc" id="L182">		System.out.println (</span>
+<span class="nc" id="L194">		System.out.println (</span>
 			&quot;\t| Positive Exposure =&gt; &quot; +
-<span class="nc" id="L184">			FormatUtil.FormatDouble (importanceWeight.positiveExpectation(), 2, 6, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L196">			FormatUtil.FormatDouble (importanceWeight.positiveExpectation(), 2, 6, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="nc" id="L187">		System.out.println (&quot;\t|---------------------------------||&quot;);</span>
+<span class="nc" id="L199">		System.out.println (&quot;\t|---------------------------------||&quot;);</span>
 
-<span class="nc" id="L189">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L190">	}</span>
+<span class="nc" id="L201">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L202">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

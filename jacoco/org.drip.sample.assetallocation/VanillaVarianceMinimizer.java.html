@@ -14,38 +14,49 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -82,16 +93,16 @@ import org.drip.service.env.EnvManager;
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/assetallocation/README.md&quot;&gt;Asset Allocation&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/assetallocation/README.md&quot;&gt;MVO Based Constrained Optimal Allocator&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L94">public class VanillaVarianceMinimizer</span>
+<span class="nc" id="L105">public class VanillaVarianceMinimizer</span>
 {
 
 	private static final void RiskTolerancePortfolio (
@@ -100,10 +111,10 @@ import org.drip.service.env.EnvManager;
 		final double riskTolerance)
 		throws Exception
 	{
-<span class="nc" id="L103">		OptimizationOutput optimizationOutput = new QuadraticMeanVarianceOptimizer().allocate (</span>
+<span class="nc" id="L114">		OptimizationOutput optimizationOutput = new QuadraticMeanVarianceOptimizer().allocate (</span>
 			new PortfolioConstructionParameters (
 				assetIDArray,
-<span class="nc" id="L106">				CustomRiskUtilitySettings.VarianceMinimizer(),</span>
+<span class="nc" id="L117">				CustomRiskUtilitySettings.VarianceMinimizer(),</span>
 				new EqualityConstraintSettings (
 					EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
 					Double.NaN
@@ -112,77 +123,77 @@ import org.drip.service.env.EnvManager;
 			assetUniverseStatisticalProperties
 		);
 
-<span class="nc" id="L115">		System.out.println (&quot;\n\n\t|---------------||&quot;);</span>
+<span class="nc" id="L126">		System.out.println (&quot;\n\n\t|---------------||&quot;);</span>
 
-<span class="nc bnc" id="L117" title="All 2 branches missed.">		for (AssetComponent assetComponent : optimizationOutput.optimalPortfolio().assetComponentArray())</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">		for (AssetComponent assetComponent : optimizationOutput.optimalPortfolio().assetComponentArray())</span>
 		{
-<span class="nc" id="L119">			System.out.println (</span>
-<span class="nc" id="L120">				&quot;\t| &quot; + assetComponent.id() + &quot; | &quot; + FormatUtil.FormatDouble (</span>
-<span class="nc" id="L121">					assetComponent.amount(), 2, 2, 100.</span>
+<span class="nc" id="L130">			System.out.println (</span>
+<span class="nc" id="L131">				&quot;\t| &quot; + assetComponent.id() + &quot; | &quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L132">					assetComponent.amount(), 2, 2, 100.</span>
 				) + &quot;% ||&quot;
 			);
 		}
 
-<span class="nc" id="L126">		System.out.println (&quot;\t|---------------||&quot;);</span>
+<span class="nc" id="L137">		System.out.println (&quot;\t|---------------||&quot;);</span>
 
-<span class="nc" id="L128">		System.out.println (&quot;\t|---------------------------------------||&quot;);</span>
+<span class="nc" id="L139">		System.out.println (&quot;\t|---------------------------------------||&quot;);</span>
 
-<span class="nc" id="L130">		System.out.println (</span>
-<span class="nc" id="L131">			&quot;\t| Portfolio Notional           : &quot; + FormatUtil.FormatDouble (</span>
-<span class="nc" id="L132">				optimizationOutput.optimalPortfolio().notional(), 1, 3, 1.</span>
+<span class="nc" id="L141">		System.out.println (</span>
+<span class="nc" id="L142">			&quot;\t| Portfolio Notional           : &quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L143">				optimizationOutput.optimalPortfolio().notional(), 1, 3, 1.</span>
 			) + &quot; ||&quot;
 		);
 
-<span class="nc" id="L136">		System.out.println (</span>
-<span class="nc" id="L137">			&quot;\t| Portfolio Expected Return    : &quot; + FormatUtil.FormatDouble (</span>
-<span class="nc" id="L138">				optimizationOutput.optimalMetrics().excessReturnsMean(), 1, 2, 100.</span>
+<span class="nc" id="L147">		System.out.println (</span>
+<span class="nc" id="L148">			&quot;\t| Portfolio Expected Return    : &quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L149">				optimizationOutput.optimalMetrics().excessReturnsMean(), 1, 2, 100.</span>
 			) + &quot;% ||&quot;
 		);
 
-<span class="nc" id="L142">		System.out.println (</span>
-<span class="nc" id="L143">			&quot;\t| Portfolio Standard Deviation : &quot; + FormatUtil.FormatDouble (</span>
-<span class="nc" id="L144">				optimizationOutput.optimalMetrics().excessReturnsStandardDeviation(), 1, 2, 100.</span>
+<span class="nc" id="L153">		System.out.println (</span>
+<span class="nc" id="L154">			&quot;\t| Portfolio Standard Deviation : &quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L155">				optimizationOutput.optimalMetrics().excessReturnsStandardDeviation(), 1, 2, 100.</span>
 			) + &quot;% ||&quot;
 		);
 
-<span class="nc" id="L148">		System.out.println (&quot;\t|---------------------------------------||\n&quot;);</span>
-<span class="nc" id="L149">	}</span>
+<span class="nc" id="L159">		System.out.println (&quot;\t|---------------------------------------||\n&quot;);</span>
+<span class="nc" id="L160">	}</span>
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L155">		EnvManager.InitEnv (</span>
+<span class="nc" id="L166">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="nc" id="L160">		String seriesPath = &quot;T:\\Lakshmi\\DROP\\Daemons\\Feeds\\MeanVarianceOptimizer\\FormattedSeries1.csv&quot;;</span>
+<span class="nc" id="L171">		String seriesPath = &quot;C:\\DROP\\Daemons\\Feeds\\MeanVarianceOptimizer\\FormattedSeries1.csv&quot;;</span>
 
-<span class="nc" id="L162">		CSVGrid csvGrid = CSVParser.NamedStringGrid (</span>
+<span class="nc" id="L173">		CSVGrid csvGrid = CSVParser.NamedStringGrid (</span>
 			seriesPath
 		);
 
-<span class="nc" id="L166">		String[] variateHeaderArray = csvGrid.headers();</span>
+<span class="nc" id="L177">		String[] variateHeaderArray = csvGrid.headers();</span>
 
-<span class="nc" id="L168">		String[] assetIDArray = new String[variateHeaderArray.length - 1];</span>
-<span class="nc" id="L169">		double[][] variateSampleGrid = new double[variateHeaderArray.length - 1][];</span>
+<span class="nc" id="L179">		String[] assetIDArray = new String[variateHeaderArray.length - 1];</span>
+<span class="nc" id="L180">		double[][] variateSampleGrid = new double[variateHeaderArray.length - 1][];</span>
 
-<span class="nc" id="L171">		for (int assetIndex = 0;</span>
-<span class="nc bnc" id="L172" title="All 2 branches missed.">			assetIndex &lt; assetIDArray.length;</span>
-<span class="nc" id="L173">			++assetIndex)</span>
+<span class="nc" id="L182">		for (int assetIndex = 0;</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">			assetIndex &lt; assetIDArray.length;</span>
+<span class="nc" id="L184">			++assetIndex)</span>
 		{
-<span class="nc" id="L175">			assetIDArray[assetIndex] = variateHeaderArray[assetIndex + 1];</span>
+<span class="nc" id="L186">			assetIDArray[assetIndex] = variateHeaderArray[assetIndex + 1];</span>
 
-<span class="nc" id="L177">			variateSampleGrid[assetIndex] = csvGrid.doubleArrayAtColumn (</span>
+<span class="nc" id="L188">			variateSampleGrid[assetIndex] = csvGrid.doubleArrayAtColumn (</span>
 				assetIndex + 1
 			);
 		}
 
-<span class="nc" id="L182">		RiskTolerancePortfolio (</span>
+<span class="nc" id="L193">		RiskTolerancePortfolio (</span>
 			assetIDArray,
-<span class="nc" id="L184">			AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
-<span class="nc" id="L185">				MultivariateMoments.Standard (</span>
+<span class="nc" id="L195">			AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
+<span class="nc" id="L196">				MultivariateMoments.Standard (</span>
 					assetIDArray,
 					variateSampleGrid
 				)
@@ -190,7 +201,7 @@ import org.drip.service.env.EnvManager;
 			0.
 		);
 
-<span class="nc" id="L193">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L194">	}</span>
+<span class="nc" id="L204">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L205">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

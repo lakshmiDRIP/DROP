@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AccountBusinessContext.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.shell</a> &gt; <span class="el_source">AccountBusinessContext.java</span></div><h1>AccountBusinessContext.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.shell;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;AccountBusinessContext&lt;/i&gt; maintains the Account To Business Mappings. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/shell/README.md&quot;&gt;Economic Risk Capital Parameter Contexts&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class AccountBusinessContext
+{
+<span class="fc" id="L108">	private java.util.Map&lt;java.lang.String, java.lang.String&gt; _accountBusinessMap =</span>
+		new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.String&gt;();
+
+	/**
+	 * AccountBusinessContext Constructor
+	 * 
+	 * @param accountBusinessMap Account To Business Map
+	 * 
+	 * @throws java.lang.Exception Thrwn if the Inputs are Invalid
+	 */
+
+	public AccountBusinessContext (
+		final java.util.Map&lt;java.lang.String, java.lang.String&gt; accountBusinessMap)
+		throws java.lang.Exception
+<span class="fc" id="L122">	{</span>
+<span class="pc bpc" id="L123" title="2 of 4 branches missed.">		if (null == (_accountBusinessMap = accountBusinessMap) || 0 == _accountBusinessMap.size())</span>
+		{
+<span class="nc" id="L125">			throw new java.lang.Exception (</span>
+				&quot;AccountBusinessContext Constructor =&gt; Invalid Inputs&quot;
+			);
+		}
+<span class="fc" id="L129">	}</span>
+
+	/**
+	 * Check if the Account Exists
+	 * 
+	 * @param account The Account
+	 * 
+	 * @return TRUE - The Account Exists
+	 */
+
+	public boolean containsAccount (
+		final java.lang.String account)
+	{
+<span class="nc bnc" id="L142" title="All 6 branches missed.">		return null != account &amp;&amp; !account.isEmpty() &amp;&amp; _accountBusinessMap.containsKey (</span>
+			account
+		);
+	}
+
+	/**
+	 * Retrieve the Business corresponding to the Account
+	 * 
+	 * @param account The Account
+	 * 
+	 * @return The Business corresponding to the Account
+	 */
+
+	public java.lang.String business (
+		final java.lang.String account)
+	{
+<span class="nc bnc" id="L158" title="All 2 branches missed.">		return containsAccount (</span>
+			account
+<span class="nc" id="L160">		) ? _accountBusinessMap.get (</span>
+			account
+		) : &quot;&quot;;
+	}
+
+	/**
+	 * Retrieve the Set of Accounts corresponding to the given Business
+	 * 
+	 * @param business The Business
+	 * 
+	 * @return The Set of Accounts
+	 */
+
+	public java.util.Set&lt;java.lang.String&gt; accountSet (
+		final java.lang.String business)
+	{
+<span class="nc bnc" id="L176" title="All 4 branches missed.">		if (null == business || business.isEmpty())</span>
+		{
+<span class="nc" id="L178">			return null;</span>
+		}
+
+<span class="nc" id="L181">		java.util.Set&lt;java.lang.String&gt; accountSet = new java.util.HashSet&lt;java.lang.String&gt;();</span>
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.String&gt; accountBusinessEntry :
+<span class="nc bnc" id="L184" title="All 2 branches missed.">			_accountBusinessMap.entrySet())</span>
+		{
+<span class="nc" id="L186">			java.lang.String accountBusiness = accountBusinessEntry.getValue();</span>
+
+<span class="nc bnc" id="L188" title="All 2 branches missed.">			if (business.equalsIgnoreCase (</span>
+				accountBusiness
+			))
+			{
+<span class="nc" id="L192">				accountSet.add (</span>
+<span class="nc" id="L193">					accountBusinessEntry.getKey()</span>
+				);
+			}
+<span class="nc" id="L196">		}</span>
+
+<span class="nc" id="L198">		return accountSet;</span>
+	}
+
+	/**
+	 * Retrieve the Account To Business Map
+	 * 
+	 * @return The Account To Business Map
+	 */
+
+	public final java.util.Map&lt;java.lang.String, java.lang.String&gt; accountBusinessMap()
+	{
+<span class="nc" id="L209">		return _accountBusinessMap;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

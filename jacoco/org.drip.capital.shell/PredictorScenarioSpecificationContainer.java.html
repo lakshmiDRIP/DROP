@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PredictorScenarioSpecificationContainer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.shell</a> &gt; <span class="el_source">PredictorScenarioSpecificationContainer.java</span></div><h1>PredictorScenarioSpecificationContainer.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.shell;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;PredictorScenarioSpecificationContainer&lt;/i&gt; maintains the Map of Predictors and their Scenario Stress
+ * 	Specification as well the Map of Predictors and their Categories. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte-Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/shell/README.md&quot;&gt;Economic Risk Capital Parameter Contexts&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class PredictorScenarioSpecificationContainer
+{
+<span class="fc" id="L109">	private java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt;</span>
+		_categoryPredictorListMap = null;
+<span class="fc" id="L111">	private java.util.Map&lt;java.lang.String, org.drip.capital.systemicscenario.PredictorScenarioSpecification&gt;</span>
+		_predictorScenarioSpecificationMap = null;
+
+	/**
+	 * Empty PredictorScenarioSpecificationContainer Constructor
+	 */
+
+	public PredictorScenarioSpecificationContainer()
+<span class="fc" id="L119">	{</span>
+<span class="fc" id="L120">	}</span>
+
+	/**
+	 * Retrieve the Predictor Stress Scenario Specification Map
+	 * 
+	 * @return The Predictor Stress Scenario Specification Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.capital.systemicscenario.PredictorScenarioSpecification&gt;
+		predictorScenarioSpecificationMap()
+	{
+<span class="nc" id="L131">		return _predictorScenarioSpecificationMap;</span>
+	}
+
+	/**
+	 * Retrieve the Map of the Categories to their corresponding Predictor Lists
+	 * 
+	 * @return Map of the Categories to their corresponding Predictor Lists
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt; categoryPredictorListMap()
+	{
+<span class="nc" id="L142">		return _categoryPredictorListMap;</span>
+	}
+
+	/**
+	 * Add the specified Predictor Scenario Specification
+	 * 
+	 * @param predictorScenarioSpecification The Predictor Scenario Specification
+	 * 
+	 * @return TRUE - The Predictor Scenario Specification successfully added
+	 */
+
+	public boolean addPredictorScenarioSpecification (
+		final org.drip.capital.systemicscenario.PredictorScenarioSpecification
+			predictorScenarioSpecification)
+	{
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">		if (null == predictorScenarioSpecification)</span>
+		{
+<span class="nc" id="L159">			return false;</span>
+		}
+
+<span class="fc" id="L162">		java.lang.String name = predictorScenarioSpecification.name();</span>
+
+<span class="fc" id="L164">		java.lang.String category = predictorScenarioSpecification.category();</span>
+
+<span class="fc bfc" id="L166" title="All 2 branches covered.">		if (null == _predictorScenarioSpecificationMap)</span>
+		{
+<span class="fc" id="L168">			_predictorScenarioSpecificationMap = new</span>
+				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.capital.systemicscenario.PredictorScenarioSpecification&gt;();
+		}
+
+<span class="fc" id="L172">		_predictorScenarioSpecificationMap.put (</span>
+			name,
+			predictorScenarioSpecification
+		);
+
+<span class="fc bfc" id="L177" title="All 2 branches covered.">		if (null == _categoryPredictorListMap)</span>
+		{
+<span class="fc" id="L179">			_categoryPredictorListMap =</span>
+				new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.util.List&lt;java.lang.String&gt;&gt;();
+		}
+
+<span class="fc bfc" id="L183" title="All 2 branches covered.">		if (_categoryPredictorListMap.containsKey (</span>
+			category
+		))
+		{
+<span class="fc" id="L187">			_categoryPredictorListMap.get (</span>
+				category
+<span class="fc" id="L189">			).add (</span>
+				name
+			);
+		}
+		else
+		{
+<span class="fc" id="L195">			java.util.List&lt;java.lang.String&gt; nameList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
+
+<span class="fc" id="L197">			nameList.add (</span>
+				name
+			);
+
+<span class="fc" id="L201">			_categoryPredictorListMap.put (</span>
+				category,
+				nameList
+			);
+		}
+
+<span class="fc" id="L207">		return true;</span>
+	}
+
+	/**
+	 * Indicate if the Predictor has a Stress Specification Available
+	 * 
+	 * @param predictorName The Predictor
+	 * 
+	 * @return TRUE - The Predictor has a Stress Specification Available
+	 */
+
+	public boolean containsPredictor (
+		final java.lang.String predictorName)
+	{
+<span class="pc bpc" id="L221" title="2 of 6 branches missed.">		return null != predictorName &amp;&amp; !predictorName.isEmpty() &amp;&amp;</span>
+			null != _predictorScenarioSpecificationMap &amp;&amp;
+<span class="fc bfc" id="L223" title="All 2 branches covered.">			_predictorScenarioSpecificationMap.containsKey (</span>
+				predictorName
+			);
+	}
+
+	/**
+	 * Indicate if the Category has Predictor(s) Available
+	 * 
+	 * @param category The Category
+	 * 
+	 * @return TRUE - The Category has Predictor(s) Available
+	 */
+
+	public boolean containsCategory (
+		final java.lang.String category)
+	{
+<span class="nc bnc" id="L239" title="All 6 branches missed.">		return null != category &amp;&amp; !category.isEmpty() &amp;&amp; null != _categoryPredictorListMap &amp;&amp;</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">			_categoryPredictorListMap.containsKey (</span>
+				category
+			);
+	}
+
+	/**
+	 * Retrieve the Predictor Scenario Specification
+	 * 
+	 * @param predictorName The Predictor
+	 * 
+	 * @return The Predictor Scenario Specification
+	 */
+
+	public org.drip.capital.systemicscenario.PredictorScenarioSpecification predictorScenarioSpecification (
+		final java.lang.String predictorName)
+	{
+<span class="pc bpc" id="L256" title="1 of 2 branches missed.">		return containsPredictor (</span>
+			predictorName
+<span class="pc" id="L258">		) ? _predictorScenarioSpecificationMap.get (</span>
+			predictorName
+		) : null;
+	}
+
+	/**
+	 * Retrieve the Predictors corresponding to the Category
+	 * 
+	 * @param category The Category
+	 * 
+	 * @return The Predictors corresponding to the Category
+	 */
+
+	public java.util.List&lt;java.lang.String&gt; predictorList (
+		final java.lang.String category)
+	{
+<span class="nc bnc" id="L274" title="All 2 branches missed.">		return containsCategory (</span>
+			category
+<span class="nc" id="L276">		) ? _categoryPredictorListMap.get (</span>
+			category
+		) : null;
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

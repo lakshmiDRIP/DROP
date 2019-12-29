@@ -1,0 +1,698 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CreditMacroHedgeDetail.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.betafixedfloat</a> &gt; <span class="el_source">CreditMacroHedgeDetail.java</span></div><h1>CreditMacroHedgeDetail.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.betafixedfloat;
+
+import java.util.Map;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.capital.allocation.CorrelationCategoryBeta;
+import org.drip.capital.allocation.CorrelationCategoryBetaManager;
+import org.drip.capital.allocation.EntityCapital;
+import org.drip.capital.allocation.EntityCapitalAssignmentSetting;
+import org.drip.capital.allocation.EntityComponentCapital;
+import org.drip.capital.allocation.EntityComponentCapitalAssignment;
+import org.drip.capital.allocation.EntityComponentCorrelationCategory;
+import org.drip.capital.allocation.EntityElasticityAttribution;
+import org.drip.capital.entity.CapitalUnit;
+import org.drip.capital.entity.ManagedSegmentL1;
+import org.drip.capital.env.CapitalEstimationContextManager;
+import org.drip.capital.explain.AllocatedPnLAttribution;
+import org.drip.capital.explain.CapitalSegmentStandaloneMarginal;
+import org.drip.capital.explain.PnLAttribution;
+import org.drip.capital.label.BusinessRegionRiskTypeCoordinate;
+import org.drip.capital.label.CapitalSegmentCoordinate;
+import org.drip.capital.label.Coordinate;
+import org.drip.capital.setting.CapitalAllocationControl;
+import org.drip.capital.setting.SimulationControl;
+import org.drip.capital.setting.SimulationPnLControl;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;CreditMacroHedgeDetail&lt;/i&gt; zeds the Managed Sub-segment Level Allocation for the Specified Managed
+ * 	Segment using the Two Beta Scheme.
+ * 
+ *     MANAGED SEGMENT  - Credit Macro Hedge
+ * 
+
+ *     HIGH   - Fixed    Beta
+ *     LOW    - Floating Beta
+ *     
+ * The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision (2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/betafixedfloat/README.md&quot;&gt;Two Beta Float Float Scheme&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *     
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L141">public class CreditMacroHedgeDetail</span>
+{
+
+	private static final CapitalUnit MakeCapitalUnit (
+		final String business,
+		final String region,
+		final String riskType,
+		final double varNotional)
+		throws Exception
+	{
+<span class="nc" id="L151">		Coordinate capitalUnitCoordinate = new BusinessRegionRiskTypeCoordinate (</span>
+			business,
+			region,
+			riskType
+		);
+
+<span class="nc" id="L157">		return new CapitalUnit (</span>
+			capitalUnitCoordinate,
+<span class="nc" id="L159">			CapitalEstimationContextManager.ContextContainer().capitalUnitStressEventContext().capitalUnitEventMap().get</span>
+<span class="nc" id="L160">			(</span>
+<span class="nc" id="L161">				capitalUnitCoordinate.fullyQualifiedName()</span>
+			),
+			varNotional
+		);
+	}
+
+	private static final void DisplayPnLAttribution (
+		final String capitalSegmentFQN,
+		final PnLAttribution pnlAttribution)
+		throws Exception
+	{
+<span class="nc" id="L172">		Map&lt;String, Double&gt; gsstPnLExplainMap = pnlAttribution.systemicPnLExplainMap();</span>
+
+<span class="nc" id="L174">		Map&lt;String, Double&gt; cBSSTPnLExplainMap = pnlAttribution.correlatedPnLExplainMap();</span>
+
+<span class="nc" id="L176">		Map&lt;String, Double&gt; iBSSTPnLExplainMap = pnlAttribution.idiosyncraticPnLExplainMap();</span>
+
+<span class="nc" id="L178">		Map&lt;String, Integer&gt; gsstInstanceCountMap = pnlAttribution.systemicInstanceCountMap();</span>
+
+<span class="nc" id="L180">		Map&lt;String, Integer&gt; cBSSTInstanceCountMap = pnlAttribution.correlatedInstanceCountMap();</span>
+
+<span class="nc" id="L182">		Map&lt;String, Integer&gt; iBSSTInstanceCountMap = pnlAttribution.idiosyncraticInstanceCountMap();</span>
+
+<span class="nc" id="L184">		Map&lt;String, Double&gt; gsstGrossPnLExplainMap = pnlAttribution.systemicGrossPnLExplainMap();</span>
+
+<span class="nc" id="L186">		Map&lt;String, Double&gt; fsPnLDecompositionExplainMap = pnlAttribution.fsPnLDecompositionExplainMap();</span>
+
+<span class="nc" id="L188">		System.out.println (&quot;\t|---------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L190">		System.out.println (&quot;\t|              CONTRIBUTORY PnL ATTRIBUTION               ||&quot;);</span>
+
+<span class="nc" id="L192">		System.out.println (&quot;\t|---------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L194">		System.out.println (&quot;\t|    Capital Segment FQN =&gt; &quot; + capitalSegmentFQN);</span>
+
+<span class="nc" id="L196">		System.out.println (&quot;\t|    Expected Short-fall =&gt; &quot; +</span>
+<span class="nc" id="L197">			FormatUtil.FormatDouble (pnlAttribution.expectedShortfall(), 10, 2, 1.)</span>
+		);
+
+<span class="nc bnc" id="L200" title="All 2 branches missed.">		if (null != gsstPnLExplainMap)</span>
+		{
+<span class="nc" id="L202">			System.out.println (&quot;\t|---------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L204" title="All 2 branches missed.">			for (Map.Entry&lt;String, Double&gt; gsstPnLExplainEntry : gsstPnLExplainMap.entrySet())</span>
+			{
+<span class="nc" id="L206">				System.out.println (</span>
+<span class="nc" id="L207">					&quot;\t|\t GSST | &quot; + gsstPnLExplainEntry.getKey() + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L208">					FormatUtil.FormatDouble (gsstPnLExplainEntry.getValue(), 10, 2, 1.)</span>
+				);
+<span class="nc" id="L210">			}</span>
+		}
+
+<span class="nc bnc" id="L213" title="All 2 branches missed.">		if (null != cBSSTPnLExplainMap)</span>
+		{
+<span class="nc" id="L215">			System.out.println (&quot;\t|---------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L217" title="All 2 branches missed.">			for (Map.Entry&lt;String, Double&gt; cBSSTPnLExplainEntry : cBSSTPnLExplainMap.entrySet())</span>
+			{
+<span class="nc" id="L219">				System.out.println (</span>
+<span class="nc" id="L220">					&quot;\t|\tcBSST | &quot; + cBSSTPnLExplainEntry.getKey() + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L221">					FormatUtil.FormatDouble (cBSSTPnLExplainEntry.getValue(), 10, 2, 1.)</span>
+				);
+<span class="nc" id="L223">			}</span>
+		}
+
+<span class="nc bnc" id="L226" title="All 2 branches missed.">		if (null != iBSSTPnLExplainMap)</span>
+		{
+<span class="nc" id="L228">			System.out.println (&quot;\t|---------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L230" title="All 2 branches missed.">			for (Map.Entry&lt;String, Double&gt; iBSSTPnLExplainEntry : iBSSTPnLExplainMap.entrySet())</span>
+			{
+<span class="nc" id="L232">				System.out.println (</span>
+<span class="nc" id="L233">					&quot;\t|\tiBSST | &quot; + iBSSTPnLExplainEntry.getKey() + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L234">					FormatUtil.FormatDouble (iBSSTPnLExplainEntry.getValue(), 10, 2, 1.)</span>
+				);
+<span class="nc" id="L236">			}</span>
+		}
+
+<span class="nc bnc" id="L239" title="All 2 branches missed.">		if (null != fsPnLDecompositionExplainMap)</span>
+		{
+<span class="nc" id="L241">			System.out.println (&quot;\t|---------------------------------------------------------||&quot;);</span>
+
+			for (Map.Entry&lt;String, Double&gt; fsPnLDecompositionExplainEntry :
+<span class="nc bnc" id="L244" title="All 2 branches missed.">				fsPnLDecompositionExplainMap.entrySet())</span>
+			{
+<span class="nc" id="L246">				System.out.println (</span>
+<span class="nc" id="L247">					&quot;\t|\t cVaR  | &quot; + fsPnLDecompositionExplainEntry.getKey() + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L248">					FormatUtil.FormatDouble (fsPnLDecompositionExplainEntry.getValue(), 10, 2, 1.)</span>
+				);
+<span class="nc" id="L250">			}</span>
+		}
+
+<span class="nc" id="L253">		System.out.println (&quot;\t|---------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L255" title="All 2 branches missed.">		if (null != gsstGrossPnLExplainMap)</span>
+		{
+<span class="nc bnc" id="L257" title="All 2 branches missed.">			for (Map.Entry&lt;String, Double&gt; gsstGrossPnLExplainEntry : gsstGrossPnLExplainMap.entrySet())</span>
+			{
+<span class="nc" id="L259">				System.out.println (</span>
+<span class="nc" id="L260">					&quot;\t|\t Gross  GSST | &quot; + gsstGrossPnLExplainEntry.getKey() + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L261">					FormatUtil.FormatDouble (gsstGrossPnLExplainEntry.getValue(), 10, 2, 1.)</span>
+				);
+<span class="nc" id="L263">			}</span>
+		}
+
+<span class="nc" id="L266">		System.out.println (</span>
+			&quot;\t|\t GSST         =&gt; &quot; +
+<span class="nc" id="L268">			FormatUtil.FormatDouble (pnlAttribution.systemicPnL(), 10, 2, 1.)</span>
+		);
+
+<span class="nc" id="L271">		System.out.println (</span>
+			&quot;\t|\t Gross cBSST  =&gt; &quot; +
+<span class="nc" id="L273">			FormatUtil.FormatDouble (pnlAttribution.correlatedPnL(), 10, 2, 1.)</span>
+		);
+
+<span class="nc" id="L276">		System.out.println (</span>
+			&quot;\t|\t Gross iBSST  =&gt; &quot; +
+<span class="nc" id="L278">			FormatUtil.FormatDouble (pnlAttribution.idiosyncraticGrossPnL(), 10, 2, 1.)</span>
+		);
+
+<span class="nc" id="L281">		System.out.println (</span>
+			&quot;\t|\t Gross cVaR   =&gt; &quot; +
+<span class="nc" id="L283">			FormatUtil.FormatDouble (pnlAttribution.fsGrossPnL(), 10, 2, 1.)</span>
+		);
+
+<span class="nc" id="L286">		System.out.println (&quot;\t|---------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L288" title="All 2 branches missed.">		if (null != gsstInstanceCountMap)</span>
+		{
+<span class="nc bnc" id="L290" title="All 2 branches missed.">			for (Map.Entry&lt;String, Integer&gt; gsstInstanceCountEntry : gsstInstanceCountMap.entrySet())</span>
+			{
+<span class="nc" id="L292">				System.out.println (</span>
+<span class="nc" id="L293">					&quot;\t|\t GSST  Instance Count | &quot; + gsstInstanceCountEntry.getKey() + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L294">					FormatUtil.FormatDouble (gsstInstanceCountEntry.getValue(), 6, 0, 1.)</span>
+				);
+<span class="nc" id="L296">			}</span>
+		}
+
+<span class="nc bnc" id="L299" title="All 2 branches missed.">		if (null != cBSSTInstanceCountMap)</span>
+		{
+<span class="nc bnc" id="L301" title="All 2 branches missed.">			for (Map.Entry&lt;String, Integer&gt; cBSSTInstanceCountEntry : cBSSTInstanceCountMap.entrySet())</span>
+			{
+<span class="nc" id="L303">				System.out.println (</span>
+<span class="nc" id="L304">					&quot;\t|\t cBSST Instance Count | &quot; + cBSSTInstanceCountEntry.getKey() + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L305">					FormatUtil.FormatDouble (cBSSTInstanceCountEntry.getValue(), 6, 0, 1.)</span>
+				);
+<span class="nc" id="L307">			}</span>
+		}
+
+<span class="nc bnc" id="L310" title="All 2 branches missed.">		if (null != iBSSTInstanceCountMap)</span>
+		{
+<span class="nc bnc" id="L312" title="All 2 branches missed.">			for (Map.Entry&lt;String, Integer&gt; iBSSTInstanceCountEntry : iBSSTInstanceCountMap.entrySet())</span>
+			{
+<span class="nc" id="L314">				System.out.println (</span>
+<span class="nc" id="L315">					&quot;\t|\t iBSST Instance Count | &quot; + iBSSTInstanceCountEntry.getKey() + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L316">					FormatUtil.FormatDouble (iBSSTInstanceCountEntry.getValue(), 6, 0, 1.)</span>
+				);
+<span class="nc" id="L318">			}</span>
+		}
+
+<span class="nc" id="L321">		System.out.println (&quot;\t|---------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L323">		System.out.println();</span>
+<span class="nc" id="L324">	}</span>
+
+	private static final EntityCapitalAssignmentSetting LowUniformBeta()
+	{
+<span class="nc" id="L328">		return EntityCapitalAssignmentSetting.UniformBeta (</span>
+			EntityComponentCorrelationCategory.LOW_CORRELATION,
+			EntityComponentCorrelationCategory.LOW_CORRELATION,
+			EntityComponentCorrelationCategory.LOW_CORRELATION,
+			EntityComponentCorrelationCategory.LOW_CORRELATION,
+			EntityComponentCorrelationCategory.LOW_CORRELATION
+		);
+	}
+
+	private static final EntityCapitalAssignmentSetting HighUniformBeta()
+	{
+<span class="nc" id="L339">		return EntityCapitalAssignmentSetting.UniformBeta (</span>
+			EntityComponentCorrelationCategory.HIGH_CORRELATION,
+			EntityComponentCorrelationCategory.HIGH_CORRELATION,
+			EntityComponentCorrelationCategory.HIGH_CORRELATION,
+			EntityComponentCorrelationCategory.HIGH_CORRELATION,
+			EntityComponentCorrelationCategory.HIGH_CORRELATION
+		);
+	}
+
+	private static final EntityCapitalAssignmentSetting HighLowUniformBeta()
+	{
+<span class="nc bnc" id="L350" title="All 2 branches missed.">		return Math.random() &lt; 13. / 34. ? HighUniformBeta() : LowUniformBeta();</span>
+	}
+
+	private static final void Allocate (
+		final CapitalUnit[] capitalUnitArray,
+		final EntityComponentCapitalAssignment entityComponentCapitalAssignment)
+		throws Exception
+	{
+
+<span class="nc" id="L359">		double unitFloatBeta = entityComponentCapitalAssignment.unitFloatBeta();</span>
+
+<span class="nc" id="L361">		double allocatedBetaCapital = entityComponentCapitalAssignment.allocatedTotalCapital();</span>
+
+<span class="nc" id="L363">		Map&lt;String, EntityComponentCapital&gt; entityComponentCapitalMap =</span>
+<span class="nc" id="L364">			entityComponentCapitalAssignment.entityComponentCapitalMap();</span>
+
+<span class="nc" id="L366">		System.out.println (</span>
+			&quot;\t|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;
+		);
+
+<span class="nc" id="L370">		System.out.println (</span>
+			&quot;\t|                                                                         THREE BETA CAPITAL ALLOCATION                                                                            ||&quot;
+		);
+
+<span class="nc" id="L374">		System.out.println (</span>
+			&quot;\t|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;
+		);
+
+<span class="nc" id="L378">		System.out.println (</span>
+			&quot;\t|      L -&gt; R:                                                                                                                                                                     ||&quot;
+		);
+
+<span class="nc" id="L382">		System.out.println (</span>
+			&quot;\t|            - Capital Segment Allocation Fraction  - GSST                                                                                                                         ||&quot;
+		);
+
+<span class="nc" id="L386">		System.out.println (</span>
+			&quot;\t|            - Capital Segment Allocation Fraction  - cBSST                                                                                                                        ||&quot;
+		);
+
+<span class="nc" id="L390">		System.out.println (</span>
+			&quot;\t|            - Capital Segment Allocation Fraction  - iBSST                                                                                                                        ||&quot;
+		);
+
+<span class="nc" id="L394">		System.out.println (</span>
+			&quot;\t|            - Capital Segment Allocation Fraction  - No Stress                                                                                                                    ||&quot;
+		);
+
+<span class="nc" id="L398">		System.out.println (</span>
+			&quot;\t|            - Capital Segment Allocation Fraction  - Total                                                                                                                        ||&quot;
+		);
+
+<span class="nc" id="L402">		System.out.println (</span>
+			&quot;\t|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;
+		);
+
+<span class="nc" id="L406">		System.out.println (</span>
+			&quot;\t|            - Capital Segment Allocation Absolute  - GSST                                                                                                                         ||&quot;
+		);
+
+<span class="nc" id="L410">		System.out.println (</span>
+			&quot;\t|            - Capital Segment Allocation Absolute  - cBSST                                                                                                                        ||&quot;
+		);
+
+<span class="nc" id="L414">		System.out.println (</span>
+			&quot;\t|            - Capital Segment Allocation Absolute  - iBSST                                                                                                                        ||&quot;
+		);
+
+<span class="nc" id="L418">		System.out.println (</span>
+			&quot;\t|            - Capital Segment Allocation Absolute  - No Stress                                                                                                                    ||&quot;
+		);
+
+<span class="nc" id="L422">		System.out.println (</span>
+			&quot;\t|            - Capital Segment Allocation Absolute  - Total                                                                                                                        ||&quot;
+		);
+
+<span class="nc" id="L426">		System.out.println (</span>
+			&quot;\t|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;
+		);
+
+<span class="nc" id="L430">		System.out.println (</span>
+			&quot;\t|            - Capital Segment Coordinate                                                                                                                                          ||&quot;
+		);
+
+<span class="nc" id="L434">		System.out.println (</span>
+			&quot;\t|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;
+		);
+
+<span class="nc" id="L438">		for (int capitalUnitIndex = 0;</span>
+<span class="nc bnc" id="L439" title="All 2 branches missed.">			capitalUnitIndex &lt; capitalUnitArray.length;</span>
+<span class="nc" id="L440">			++capitalUnitIndex)</span>
+		{
+<span class="nc" id="L442">			String capitalUnitFQN = capitalUnitArray[capitalUnitIndex].coordinate().fullyQualifiedName();</span>
+
+<span class="nc" id="L444">			EntityComponentCapital entityComponentCapital = entityComponentCapitalMap.get (</span>
+				capitalUnitFQN
+			);
+
+<span class="nc" id="L448">			EntityCapital entityComponentCapitalNoStress = entityComponentCapital.noStress();</span>
+
+<span class="nc" id="L450">			EntityCapital entityComponentCapitalTotal = entityComponentCapital.total();</span>
+
+<span class="nc" id="L452">			EntityCapital entityComponentCapitalIBSST = entityComponentCapital.idiosyncratic();</span>
+
+<span class="nc" id="L454">			EntityCapital entityComponentCapitalCBSST = entityComponentCapital.correlated();</span>
+
+<span class="nc" id="L456">			EntityCapital entityComponentCapitalGSST = entityComponentCapital.systemic();</span>
+
+<span class="nc" id="L458">			System.out.println (</span>
+				&quot;\t|    &quot; +
+<span class="nc" id="L460">				FormatUtil.FormatDouble (entityComponentCapitalGSST.fractional(), 2, 2, 100.) + &quot;% |&quot; +</span>
+<span class="nc" id="L461">				FormatUtil.FormatDouble (entityComponentCapitalCBSST.fractional(), 2, 2, 100.) + &quot;% |&quot; +</span>
+<span class="nc" id="L462">				FormatUtil.FormatDouble (entityComponentCapitalIBSST.fractional(), 2, 2, 100.) + &quot;% |&quot; +</span>
+<span class="nc" id="L463">				FormatUtil.FormatDouble (entityComponentCapitalNoStress.fractional(), 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L464">				FormatUtil.FormatDouble (entityComponentCapitalTotal.fractional(), 2, 2, 100.) + &quot;% || &quot; +</span>
+<span class="nc" id="L465">				FormatUtil.FormatDouble (entityComponentCapitalGSST.absolute(), 10, 2, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L466">				FormatUtil.FormatDouble (entityComponentCapitalCBSST.absolute(), 10, 2, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L467">				FormatUtil.FormatDouble (entityComponentCapitalIBSST.absolute(), 10, 2, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L468">				FormatUtil.FormatDouble (entityComponentCapitalNoStress.absolute(), 10, 2, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L469">				FormatUtil.FormatDouble (entityComponentCapitalTotal.absolute(), 10, 2, 1.) +</span>
+					&quot; &lt;= &quot; + capitalUnitFQN
+			);
+		}
+
+<span class="nc" id="L474">		System.out.println (</span>
+			&quot;\t|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;
+		);
+
+<span class="nc" id="L478">		EntityCapital entityCapitalGSST = entityComponentCapitalAssignment.systemic();</span>
+
+<span class="nc" id="L480">		EntityCapital entityCapitalCBSST = entityComponentCapitalAssignment.correlated();</span>
+
+<span class="nc" id="L482">		EntityCapital entityCapitalIBSST = entityComponentCapitalAssignment.idiosyncratic();</span>
+
+<span class="nc" id="L484">		EntityCapital entityCapitalNoStress = entityComponentCapitalAssignment.noStress();</span>
+
+<span class="nc" id="L486">		System.out.println (</span>
+			&quot;\t|    &quot; +
+<span class="nc" id="L488">			FormatUtil.FormatDouble (entityCapitalGSST.fractional(), 2, 2, 100.) + &quot;% |&quot; +</span>
+<span class="nc" id="L489">			FormatUtil.FormatDouble (entityCapitalCBSST.fractional(), 2, 2, 100.) + &quot;% |&quot; +</span>
+<span class="nc" id="L490">			FormatUtil.FormatDouble (entityCapitalIBSST.fractional(), 2, 2, 100.) + &quot;% |&quot; +</span>
+<span class="nc" id="L491">			FormatUtil.FormatDouble (entityCapitalNoStress.fractional(), 2, 2, 100.) + &quot;% |&quot; +</span>
+<span class="nc" id="L492">			FormatUtil.FormatDouble (1., 2, 2, 100.) + &quot;% || &quot; +</span>
+<span class="nc" id="L493">			FormatUtil.FormatDouble (entityCapitalGSST.absolute(), 10, 2, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L494">			FormatUtil.FormatDouble (entityCapitalCBSST.absolute(), 10, 2, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L495">			FormatUtil.FormatDouble (entityCapitalIBSST.absolute(), 10, 2, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L496">			FormatUtil.FormatDouble (entityCapitalNoStress.absolute(), 10, 2, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L497">			FormatUtil.FormatDouble (entityComponentCapitalAssignment.allocatedTotalCapital(), 10, 2, 1.) +</span>
+			&quot; &lt;= TOTAL&quot;
+		);
+
+<span class="nc" id="L501">		System.out.println (</span>
+			&quot;\t|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;
+		);
+
+<span class="nc" id="L505">		System.out.println();</span>
+
+<span class="nc" id="L507">		EntityElasticityAttribution elasticityAttribution =</span>
+<span class="nc" id="L508">			entityComponentCapitalAssignment.elasticityAttribution();</span>
+
+<span class="nc" id="L510">		double fixedEntityCapital = elasticityAttribution.fixed();</span>
+
+<span class="nc" id="L512">		double floatingEntityCapital = elasticityAttribution.floating() * unitFloatBeta;</span>
+
+<span class="nc" id="L514">		System.out.println (</span>
+			&quot;\t|-----------------------------------------------------------------------------||&quot;
+		);
+
+<span class="nc" id="L518">		System.out.println (</span>
+			&quot;\t| FIXED    Entity Capital                =&gt;  &quot; +
+<span class="nc" id="L520">			FormatUtil.FormatDouble (fixedEntityCapital, 10, 2, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L521">			FormatUtil.FormatDouble (fixedEntityCapital / allocatedBetaCapital, 2, 2, 100.) + &quot;%&quot;</span>
+		);
+
+<span class="nc" id="L524">		System.out.println (</span>
+			&quot;\t| FLOATING Entity Capital                =&gt;  &quot; +
+<span class="nc" id="L526">			FormatUtil.FormatDouble (floatingEntityCapital, 10, 2, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L527">			FormatUtil.FormatDouble (floatingEntityCapital / allocatedBetaCapital, 2, 2, 100.) + &quot;%&quot;</span>
+		);
+
+<span class="nc" id="L530">		System.out.println (</span>
+			&quot;\t|-----------------------------------------------------------------------------||&quot;
+		);
+
+<span class="nc" id="L534">		System.out.println (</span>
+			&quot;\t| Allocated Beta Capital                 =&gt;  &quot; +
+<span class="nc" id="L536">			FormatUtil.FormatDouble (allocatedBetaCapital, 10, 2, 1.)</span>
+		);
+
+<span class="nc" id="L539">		System.out.println (</span>
+			&quot;\t| Unit Float Beta                        =&gt;  &quot; +
+<span class="nc" id="L541">			FormatUtil.FormatDouble (unitFloatBeta, 1, 4, 1.)</span>
+		);
+
+<span class="nc" id="L544">		System.out.println (</span>
+			&quot;\t|-----------------------------------------------------------------------------||&quot;
+		);
+
+<span class="nc" id="L548">		System.out.println();</span>
+<span class="nc" id="L549">	}</span>
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L555">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L557">		double capitalUnitNotional = 10000.;</span>
+<span class="nc" id="L558">		String capitalSegmentFQN = &quot;Credit Macro Hedge&quot;;</span>
+<span class="nc" id="L559">		String[] regionArray =</span>
+		{
+			&quot;NORTH AMERICA&quot;,
+		};
+<span class="nc" id="L563">		String[] riskTypeArray =</span>
+		{
+			&quot;Trading&quot;,
+		};
+
+<span class="nc" id="L568">		CorrelationCategoryBetaManager correlationCategoryBetaManager =</span>
+<span class="nc" id="L569">			CorrelationCategoryBetaManager.TwoBetaFixedFloat (</span>
+				1.0
+			);
+
+<span class="nc" id="L573">		SimulationControl simulationControl = SimulationControl.Standard();</span>
+
+<span class="nc" id="L575">		SimulationPnLControl simulationPnLControl = SimulationPnLControl.Standard();</span>
+
+<span class="nc" id="L577">		Map&lt;String, EntityCapitalAssignmentSetting&gt; entityCapitalAssignmentSettingMap =</span>
+			new CaseInsensitiveHashMap&lt;EntityCapitalAssignmentSetting&gt;();
+
+<span class="nc" id="L580">		CapitalUnit[] capitalUnitArray = new CapitalUnit[riskTypeArray.length];</span>
+
+<span class="nc" id="L582">		for (int capitalUnitIndex = 0;</span>
+<span class="nc bnc" id="L583" title="All 2 branches missed.">			capitalUnitIndex &lt; riskTypeArray.length;</span>
+<span class="nc" id="L584">			++capitalUnitIndex)</span>
+		{
+<span class="nc" id="L586">			capitalUnitArray[capitalUnitIndex] = MakeCapitalUnit (</span>
+				capitalSegmentFQN,
+				regionArray[capitalUnitIndex],
+				riskTypeArray[capitalUnitIndex],
+				capitalUnitNotional
+			);
+
+<span class="nc" id="L593">			entityCapitalAssignmentSettingMap.put (</span>
+<span class="nc" id="L594">				capitalUnitArray[capitalUnitIndex].coordinate().fullyQualifiedName(),</span>
+<span class="nc" id="L595">				HighLowUniformBeta()</span>
+			);
+		}
+
+<span class="nc" id="L599">		System.out.println (&quot;\t|------------------------------------------------------------------&quot;);</span>
+
+<span class="nc" id="L601">		System.out.println (&quot;\t|     3 Beta Fixed/Float/Float Segment Capital Unit Coordinates    &quot;);</span>
+
+<span class="nc" id="L603">		System.out.println (&quot;\t|------------------------------------------------------------------&quot;);</span>
+
+<span class="nc" id="L605">		System.out.println (&quot;\t|    L -&gt; R:&quot;);</span>
+
+<span class="nc" id="L607">		System.out.println (&quot;\t|           - Correlation Category (1=HIGH; 2=MEDIUM; 3=LOW)&quot;);</span>
+
+<span class="nc" id="L609">		System.out.println (&quot;\t|           - Beta Type (0=FIXED; 1=FLOAT)&quot;);</span>
+
+<span class="nc" id="L611">		System.out.println (&quot;\t|           - Beta Value&quot;);</span>
+
+<span class="nc" id="L613">		System.out.println (&quot;\t|------------------------------------------------------------------&quot;);</span>
+
+<span class="nc" id="L615">		for (int capitalUnitIndex = 0;</span>
+<span class="nc bnc" id="L616" title="All 2 branches missed.">			capitalUnitIndex &lt; riskTypeArray.length;</span>
+<span class="nc" id="L617">			++capitalUnitIndex)</span>
+		{
+<span class="nc" id="L619">			String capitalUnitFQN = capitalUnitArray[capitalUnitIndex].coordinate().fullyQualifiedName();</span>
+
+<span class="nc" id="L621">			int capitalEntityCorrelationCategory = entityCapitalAssignmentSettingMap.get (</span>
+				capitalUnitFQN
+<span class="nc" id="L623">			).allocationCorrelationCategory();</span>
+
+<span class="nc" id="L625">			CorrelationCategoryBeta correlationCategoryBeta =</span>
+<span class="nc" id="L626">				correlationCategoryBetaManager.correlationCategoryBeta (</span>
+					capitalEntityCorrelationCategory
+				);
+
+<span class="nc" id="L630">			System.out.println (</span>
+				&quot;\t|    &quot; + capitalEntityCorrelationCategory + &quot; | &quot; +
+<span class="nc" id="L632">				correlationCategoryBeta.elasticity() + &quot; | &quot; +</span>
+<span class="nc" id="L633">				FormatUtil.FormatDouble (correlationCategoryBeta.loading(), 1, 1, 1.) + &quot; &lt;= &quot; +</span>
+				capitalUnitFQN
+			);
+		}
+
+<span class="nc" id="L638">		System.out.println (&quot;\t|------------------------------------------------------------------&quot;);</span>
+
+<span class="nc" id="L640">		System.out.println (&quot;\t|    [CAPITAL SEGMENT] =&gt; &quot; + capitalSegmentFQN);</span>
+
+<span class="nc" id="L642">		System.out.println (&quot;\t|------------------------------------------------------------------&quot;);</span>
+
+<span class="nc" id="L644">		System.out.println();</span>
+
+<span class="nc" id="L646">		CapitalSegmentStandaloneMarginal capitalSegmentStandaloneMarginal = new ManagedSegmentL1 (</span>
+			new CapitalSegmentCoordinate (
+				capitalSegmentFQN
+			),
+			capitalUnitArray
+<span class="nc" id="L651">		).pathEnsemble (</span>
+			simulationControl,
+			simulationPnLControl
+<span class="nc" id="L654">		).marginalStandalonePnLAttribution (</span>
+<span class="nc" id="L655">			simulationPnLControl.stress().expectedShortfallConfidenceLevel()</span>
+		);
+
+<span class="nc" id="L658">		EntityComponentCapitalAssignment entityComponentCapitalAssignment =</span>
+<span class="nc" id="L659">			capitalSegmentStandaloneMarginal.betaAllocation (</span>
+				new CapitalAllocationControl (
+					false,
+					null,
+					correlationCategoryBetaManager,
+					entityCapitalAssignmentSettingMap
+				)
+			);
+
+<span class="nc" id="L668">		Map&lt;String, EntityComponentCapital&gt; entityComponentCapitalMap =</span>
+<span class="nc" id="L669">			entityComponentCapitalAssignment.entityComponentCapitalMap();</span>
+
+<span class="nc" id="L671">		Map&lt;String, PnLAttribution&gt; standalonePnLAttributionMap =</span>
+<span class="nc" id="L672">			capitalSegmentStandaloneMarginal.standalonePnLAttributionMap();</span>
+
+		for (Map.Entry&lt;String, PnLAttribution&gt; standalonePnLAttributionEntry :
+<span class="nc bnc" id="L675" title="All 2 branches missed.">			standalonePnLAttributionMap.entrySet())</span>
+		{
+<span class="nc" id="L677">			String capitalUnitCoordinate = standalonePnLAttributionEntry.getKey();</span>
+
+<span class="nc" id="L679">			DisplayPnLAttribution (</span>
+				capitalUnitCoordinate,
+				new AllocatedPnLAttribution (
+<span class="nc" id="L682">					standalonePnLAttributionEntry.getValue(),</span>
+<span class="nc" id="L683">					entityComponentCapitalMap.get (</span>
+						capitalUnitCoordinate
+					)
+				)
+			);
+<span class="nc" id="L688">		}</span>
+
+<span class="nc" id="L690">		Allocate (</span>
+			capitalUnitArray,
+			entityComponentCapitalAssignment
+		);
+
+<span class="nc" id="L695">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L696">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

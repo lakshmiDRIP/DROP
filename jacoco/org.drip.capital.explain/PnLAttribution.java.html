@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PnLAttribution.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.explain</a> &gt; <span class="el_source">PnLAttribution.java</span></div><h1>PnLAttribution.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.explain;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;PnLAttribution&lt;/i&gt; exposes the Path-Level Capital Component Attributions. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/explain/README.md&quot;&gt;Economic Risk Capital Attribution Explain&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L106">public abstract class PnLAttribution</span>
+{
+<span class="nc" id="L108">	protected double _var = java.lang.Double.NaN;</span>
+<span class="nc" id="L109">	protected double _expectedShortfall = java.lang.Double.NaN;</span>
+<span class="nc" id="L110">	protected java.util.Map&lt;java.lang.String, java.lang.Double&gt; _correlatedPnLWorstMap = null;</span>
+<span class="nc" id="L111">	protected java.util.Map&lt;java.lang.String, java.lang.Double&gt; _systemicPnLExplainMap = null;</span>
+<span class="nc" id="L112">	protected java.util.Map&lt;java.lang.String, java.lang.Double&gt; _correlatedPnLExplainMap = null;</span>
+<span class="nc" id="L113">	protected java.util.Map&lt;java.lang.String, java.lang.Double&gt; _idiosyncraticPnLWorstMap = null;</span>
+<span class="nc" id="L114">	protected java.util.Map&lt;java.lang.String, java.lang.Integer&gt; _systemicInstanceCountMap = null;</span>
+<span class="nc" id="L115">	protected java.util.Map&lt;java.lang.String, java.lang.Double&gt; _idiosyncraticPnLExplainMap = null;</span>
+<span class="nc" id="L116">	protected java.util.Map&lt;java.lang.String, java.lang.Double&gt; _systemicGrossPnLExplainMap = null;</span>
+<span class="nc" id="L117">	protected java.util.Map&lt;java.lang.String, java.lang.Integer&gt; _correlatedInstanceCountMap = null;</span>
+<span class="nc" id="L118">	protected java.util.Map&lt;java.lang.String, java.lang.Double&gt; _fsPnLDecompositionExplainMap = null;</span>
+<span class="nc" id="L119">	protected java.util.Map&lt;java.lang.String, java.lang.Integer&gt; _idiosyncraticInstanceCountMap = null;</span>
+<span class="nc" id="L120">	protected java.util.Map&lt;java.lang.String, java.lang.Double&gt; _paaCategoryDecompositionExplainMap = null;</span>
+
+	/**
+	 * Retrieve the FS PnL Decomposition Explain Map
+	 * 
+	 * @return The FS PnL Decomposition Explain Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; fsPnLDecompositionExplainMap()
+	{
+<span class="nc" id="L130">		return _fsPnLDecompositionExplainMap;</span>
+	}
+
+	/**
+	 * Retrieve the PAA Category Decomposition Explain Map
+	 * 
+	 * @return The PAA Category Decomposition Explain Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; paaCategoryDecompositionExplainMap()
+	{
+<span class="nc" id="L141">		return _paaCategoryDecompositionExplainMap;</span>
+	}
+
+	/**
+	 * Retrieve the Systemic PnL Explain Map
+	 * 
+	 * @return The Systemic PnL Explain Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; systemicPnLExplainMap()
+	{
+<span class="nc" id="L152">		return _systemicPnLExplainMap;</span>
+	}
+
+	/**
+	 * Retrieve the Systemic Gross PnL Explain Map
+	 * 
+	 * @return The Systemic Gross PnL Explain Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; systemicGrossPnLExplainMap()
+	{
+<span class="nc" id="L163">		return _systemicGrossPnLExplainMap;</span>
+	}
+
+	/**
+	 * Retrieve the Correlated PnL Explain Map
+	 * 
+	 * @return The Correlated PnL Explain Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; correlatedPnLExplainMap()
+	{
+<span class="nc" id="L174">		return _correlatedPnLExplainMap;</span>
+	}
+
+	/**
+	 * Retrieve the Correlated Worst PnL Map
+	 * 
+	 * @return The Correlated Worst PnL Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; correlatedPnLWorstMap()
+	{
+<span class="nc" id="L185">		return _correlatedPnLWorstMap;</span>
+	}
+
+	/**
+	 * Retrieve the Idiosyncratic PnL Explain Map
+	 * 
+	 * @return The Idiosyncratic PnL Explain Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; idiosyncraticPnLExplainMap()
+	{
+<span class="nc" id="L196">		return _idiosyncraticPnLExplainMap;</span>
+	}
+
+	/**
+	 * Retrieve the Idiosyncratic Worst PnL Map
+	 * 
+	 * @return The Idiosyncratic Worst PnL Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; idiosyncraticPnLWorstMap()
+	{
+<span class="nc" id="L207">		return _idiosyncraticPnLWorstMap;</span>
+	}
+
+	/**
+	 * Retrieve the VaR
+	 * 
+	 * @return VaR
+	 */
+
+	public double var()
+	{
+<span class="nc" id="L218">		return _var;</span>
+	}
+
+	/**
+	 * Retrieve the Expected Short-fall
+	 * 
+	 * @return Expected Short-fall
+	 */
+
+	public double expectedShortfall()
+	{
+<span class="nc" id="L229">		return _expectedShortfall;</span>
+	}
+
+	/**
+	 * Retrieve the Systemic Instance Count Map
+	 * 
+	 * @return The Systemic Instance Count Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Integer&gt; systemicInstanceCountMap()
+	{
+<span class="nc" id="L240">		return _systemicInstanceCountMap;</span>
+	}
+
+	/**
+	 * Retrieve the Correlated Instance Count Map
+	 * 
+	 * @return The Correlated Instance Count Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Integer&gt; correlatedInstanceCountMap()
+	{
+<span class="nc" id="L251">		return _correlatedInstanceCountMap;</span>
+	}
+
+	/**
+	 * Retrieve the Idiosyncratic Instance Count Map
+	 * 
+	 * @return The Idiosyncratic Instance Count Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.lang.Integer&gt; idiosyncraticInstanceCountMap()
+	{
+<span class="nc" id="L262">		return _idiosyncraticInstanceCountMap;</span>
+	}
+
+	/**
+	 * Generate the Contributing Path Index List
+	 * 
+	 * @return Contributing Path Index List
+	 */
+
+	public abstract java.util.List&lt;java.lang.Integer&gt; pathIndexList();
+
+	/**
+	 * Retrieve the Number of Contributing Paths
+	 * 
+	 * @return The Number of Contributing Paths
+	 */
+
+	public abstract int pathCount();
+
+	/**
+	 * Retrieve the Systemic PnL
+	 * 
+	 * @return The Systemic PnL
+	 */
+
+	public double systemicPnL()
+	{
+<span class="nc bnc" id="L289" title="All 4 branches missed.">		if (null == _systemicPnLExplainMap || 0 == _systemicPnLExplainMap.size())</span>
+		{
+<span class="nc" id="L291">			return 0.;</span>
+		}
+
+<span class="nc" id="L294">		double systemicPnL = 0.;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; systemicPnLExplainEntry :
+<span class="nc bnc" id="L297" title="All 2 branches missed.">			_systemicPnLExplainMap.entrySet())</span>
+		{
+<span class="nc" id="L299">			systemicPnL = systemicPnL + systemicPnLExplainEntry.getValue();</span>
+<span class="nc" id="L300">		}</span>
+
+<span class="nc" id="L302">		return systemicPnL;</span>
+	}
+
+	/**
+	 * Retrieve the Systemic Gross PnL
+	 * 
+	 * @return The Systemic Gross PnL
+	 */
+
+	public double systemicGrossPnL()
+	{
+<span class="nc bnc" id="L313" title="All 4 branches missed.">		if (null == _systemicGrossPnLExplainMap || 0 == _systemicGrossPnLExplainMap.size())</span>
+		{
+<span class="nc" id="L315">			return 0.;</span>
+		}
+
+<span class="nc" id="L318">		double systemicGrossPnL = 0.;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; systemicGrossPnLExplainEntry :
+<span class="nc bnc" id="L321" title="All 2 branches missed.">			_systemicGrossPnLExplainMap.entrySet())</span>
+		{
+<span class="nc" id="L323">			systemicGrossPnL = systemicGrossPnL + systemicGrossPnLExplainEntry.getValue();</span>
+<span class="nc" id="L324">		}</span>
+
+<span class="nc" id="L326">		return systemicGrossPnL;</span>
+	}
+
+	/**
+	 * Retrieve the Correlated PnL
+	 * 
+	 * @return The Correlated PnL
+	 */
+
+	public double correlatedPnL()
+	{
+<span class="nc bnc" id="L337" title="All 4 branches missed.">		if (null == _correlatedPnLExplainMap || 0 == _correlatedPnLExplainMap.size())</span>
+		{
+<span class="nc" id="L339">			return 0.;</span>
+		}
+
+<span class="nc" id="L342">		double correlatedPnL = 0.;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; correlatedPnLExplainEntry :
+<span class="nc bnc" id="L345" title="All 2 branches missed.">			_correlatedPnLExplainMap.entrySet())</span>
+		{
+<span class="nc" id="L347">			correlatedPnL = correlatedPnL + correlatedPnLExplainEntry.getValue();</span>
+<span class="nc" id="L348">		}</span>
+
+<span class="nc" id="L350">		return correlatedPnL;</span>
+	}
+
+	/**
+	 * Retrieve the Idiosyncratic Gross PnL
+	 * 
+	 * @return The Idiosyncratic Gross PnL
+	 */
+
+	public double idiosyncraticGrossPnL()
+	{
+<span class="nc bnc" id="L361" title="All 4 branches missed.">		if (null == _idiosyncraticPnLExplainMap || 0 == _idiosyncraticPnLExplainMap.size())</span>
+		{
+<span class="nc" id="L363">			return 0.;</span>
+		}
+
+<span class="nc" id="L366">		double idiosyncraticGrossPnL = 0.;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; idiosyncraticPnLExplainEntry :
+<span class="nc bnc" id="L369" title="All 2 branches missed.">			_idiosyncraticPnLExplainMap.entrySet())</span>
+		{
+<span class="nc" id="L371">			idiosyncraticGrossPnL = idiosyncraticGrossPnL + idiosyncraticPnLExplainEntry.getValue();</span>
+<span class="nc" id="L372">		}</span>
+
+<span class="nc" id="L374">		return idiosyncraticGrossPnL;</span>
+	}
+
+	/**
+	 * Retrieve the Gross VaR FS PnL
+	 * 
+	 * @return The Gross VaR FS PnL
+	 */
+
+	public double fsGrossPnL()
+	{
+<span class="nc bnc" id="L385" title="All 4 branches missed.">		if (null == _fsPnLDecompositionExplainMap || 0 == _fsPnLDecompositionExplainMap.size())</span>
+		{
+<span class="nc" id="L387">			return 0.;</span>
+		}
+
+<span class="nc" id="L390">		double fsGrossPnL = 0.;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; fsPnLDecompositionExplainEntry :
+<span class="nc bnc" id="L393" title="All 2 branches missed.">			_fsPnLDecompositionExplainMap.entrySet())</span>
+		{
+<span class="nc" id="L395">			fsGrossPnL = fsGrossPnL + fsPnLDecompositionExplainEntry.getValue();</span>
+<span class="nc" id="L396">		}</span>
+
+<span class="nc" id="L398">		return fsGrossPnL;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

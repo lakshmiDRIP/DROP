@@ -6,44 +6,56 @@ package org.drip.function.rdtor1descent;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -79,10 +91,10 @@ package org.drip.function.rdtor1descent;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/rdtor1descent/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Function Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/rdtor1descent/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Gradient Descent Techniques&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -98,8 +110,8 @@ public class ArmijoEvolutionVerifier
 
 	public static final double NOCEDAL_WRIGHT_ARMIJO_PARAMETER = 0.0001;
 
-<span class="fc" id="L101">	private boolean _maximizerCheck = false;</span>
-<span class="fc" id="L102">	private double _armijoParameter = java.lang.Double.NaN;</span>
+<span class="fc" id="L113">	private boolean _maximizerCheck = false;</span>
+<span class="fc" id="L114">	private double _armijoParameter = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct the Nocedal-Wright Armijo Evolution Verifier
@@ -114,17 +126,17 @@ public class ArmijoEvolutionVerifier
 	{
 		try
 		{
-<span class="fc" id="L117">			return new ArmijoEvolutionVerifier (</span>
+<span class="fc" id="L129">			return new ArmijoEvolutionVerifier (</span>
 				NOCEDAL_WRIGHT_ARMIJO_PARAMETER,
 				maximizerCheck
 			);
 		}
-<span class="nc" id="L122">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L134">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L124">			e.printStackTrace();</span>
+<span class="nc" id="L136">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L127">		return null;</span>
+<span class="nc" id="L139">		return null;</span>
 	}
 
 	/**
@@ -140,14 +152,14 @@ public class ArmijoEvolutionVerifier
 		final double armijoParameter,
 		final boolean maximizerCheck)
 		throws java.lang.Exception
-<span class="fc" id="L143">	{</span>
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_armijoParameter = armijoParameter))</span>
+<span class="fc" id="L155">	{</span>
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_armijoParameter = armijoParameter))</span>
 		{
-<span class="nc" id="L146">			throw new java.lang.Exception (&quot;ArmijoEvolutionVerifier Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L158">			throw new java.lang.Exception (&quot;ArmijoEvolutionVerifier Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L149">		_maximizerCheck = maximizerCheck;</span>
-<span class="fc" id="L150">	}</span>
+<span class="fc" id="L161">		_maximizerCheck = maximizerCheck;</span>
+<span class="fc" id="L162">	}</span>
 
 	/**
 	 * Indicate if the Check is for Minimizer/Maximizer
@@ -157,7 +169,7 @@ public class ArmijoEvolutionVerifier
 
 	public boolean maximizerCheck()
 	{
-<span class="nc" id="L160">		return _maximizerCheck;</span>
+<span class="nc" id="L172">		return _maximizerCheck;</span>
 	}
 
 	/**
@@ -168,7 +180,7 @@ public class ArmijoEvolutionVerifier
 
 	public double armijoParameter()
 	{
-<span class="nc" id="L171">		return _armijoParameter;</span>
+<span class="nc" id="L183">		return _armijoParameter;</span>
 	}
 
 	@Override public org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics metrics (
@@ -179,34 +191,34 @@ public class ArmijoEvolutionVerifier
 	{
 		try
 		{
-<span class="pc bpc" id="L182" title="1 of 2 branches missed.">			return null == multivariateFunction ? null :</span>
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">			return null == multivariateFunction ? null :</span>
 				new org.drip.function.rdtor1descent.ArmijoEvolutionVerifierMetrics (
 					_armijoParameter,
 					_maximizerCheck,
 					targetDirectionUnitVector,
 					currentVariateArray,
 					stepLength,
-<span class="fc" id="L189">					multivariateFunction.evaluate (</span>
+<span class="fc" id="L201">					multivariateFunction.evaluate (</span>
 						currentVariateArray
 					),
-<span class="fc" id="L192">					multivariateFunction.evaluate (</span>
-<span class="fc" id="L193">						NextVariateArray (</span>
+<span class="fc" id="L204">					multivariateFunction.evaluate (</span>
+<span class="fc" id="L205">						NextVariateArray (</span>
 							targetDirectionUnitVector,
 							currentVariateArray,
 							stepLength
 						)
 					),
-<span class="fc" id="L199">					multivariateFunction.jacobian (</span>
+<span class="fc" id="L211">					multivariateFunction.jacobian (</span>
 						currentVariateArray
 					)
 				);
 		}
-<span class="nc" id="L204">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L216">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L206">			e.printStackTrace();</span>
+<span class="nc" id="L218">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L209">		return null;</span>
+<span class="nc" id="L221">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

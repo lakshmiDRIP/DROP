@@ -21,41 +21,53 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -108,17 +120,17 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationLibrary.md&quot;&gt;Model Validation Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/anfuso2013&quot;&gt;Anfuso, Karyampas, and Nawroth (2013) Replications&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/anfuso2017/README.md&quot;&gt;Anfuso, Karyampas, and Nawroth (2013) Replications&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L121">public class MTMVolatilityComparison11b</span>
+<span class="nc" id="L133">public class MTMVolatilityComparison11b</span>
 {
 
 	private static final double UnivariateRandom (
@@ -126,10 +138,10 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 		final double sigma)
 		throws Exception
 	{
-<span class="nc" id="L129">		return new R1UnivariateNormal (</span>
+<span class="nc" id="L141">		return new R1UnivariateNormal (</span>
 			mean,
 			sigma
-<span class="nc" id="L132">		).random();</span>
+<span class="nc" id="L144">		).random();</span>
 	}
 
 	private static final Sample GenerateSample (
@@ -138,17 +150,17 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 		final int drawCount)
 		throws Exception
 	{
-<span class="nc" id="L141">		double[] univariateRandomArray = new double[drawCount];</span>
+<span class="nc" id="L153">		double[] univariateRandomArray = new double[drawCount];</span>
 
-<span class="nc bnc" id="L143" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; drawCount; ++drawIndex)</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; drawCount; ++drawIndex)</span>
 		{
-<span class="nc" id="L145">			univariateRandomArray[drawIndex] = UnivariateRandom (</span>
+<span class="nc" id="L157">			univariateRandomArray[drawIndex] = UnivariateRandom (</span>
 				mean,
 				sigma
 			);
 		}
 
-<span class="nc" id="L151">		return new Sample (univariateRandomArray);</span>
+<span class="nc" id="L163">		return new Sample (univariateRandomArray);</span>
 	}
 
 	private static final Sample[] GenerateSampleArray (
@@ -158,18 +170,18 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 		final int sampleCount)
 		throws Exception
 	{
-<span class="nc" id="L161">		Sample[] sampleArray = new Sample[sampleCount];</span>
+<span class="nc" id="L173">		Sample[] sampleArray = new Sample[sampleCount];</span>
 
-<span class="nc bnc" id="L163" title="All 2 branches missed.">		for (int sampleIndex = 0; sampleIndex &lt; sampleCount; ++sampleIndex)</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">		for (int sampleIndex = 0; sampleIndex &lt; sampleCount; ++sampleIndex)</span>
 		{
-<span class="nc" id="L165">			sampleArray[sampleIndex] = GenerateSample (</span>
+<span class="nc" id="L177">			sampleArray[sampleIndex] = GenerateSample (</span>
 				mean,
 				sigma,
 				drawCount
 			);
 		}
 
-<span class="nc" id="L172">		return sampleArray;</span>
+<span class="nc" id="L184">		return sampleArray;</span>
 	}
 
 	private static final Ensemble GenerateEnsemble (
@@ -179,8 +191,8 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 		final int sampleCount)
 		throws Exception
 	{
-<span class="nc" id="L182">		return new Ensemble (</span>
-<span class="nc" id="L183">			GenerateSampleArray (</span>
+<span class="nc" id="L194">		return new Ensemble (</span>
+<span class="nc" id="L195">			GenerateSampleArray (</span>
 				mean,
 				sigma,
 				drawCount,
@@ -189,12 +201,12 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 			new TestStatisticEvaluator[]
 			{
 				new TestStatisticEvaluator()
-<span class="nc" id="L192">				{</span>
+<span class="nc" id="L204">				{</span>
 					public double evaluate (
 						final double[] drawArray)
 						throws Exception
 					{
-<span class="nc" id="L197">						return 1.;</span>
+<span class="nc" id="L209">						return 1.;</span>
 					}
 				}
 			}
@@ -206,64 +218,64 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 		final int orderStatisticsCount)
 		throws Exception
 	{
-<span class="nc" id="L209">		HistogramTestOutcome histogram = new ProbabilityIntegralTransformTest (</span>
-<span class="nc" id="L210">			gapTestOutcome.probabilityIntegralTransformWeighted()</span>
-<span class="nc" id="L211">		).histogramTest (</span>
-<span class="nc" id="L212">			HistogramTestSetting.AnfusoKaryampasNawroth2017 (</span>
-<span class="nc" id="L213">				PlottingPositionGeneratorHeuristic.NIST2013 (orderStatisticsCount)</span>
+<span class="nc" id="L221">		HistogramTestOutcome histogram = new ProbabilityIntegralTransformTest (</span>
+<span class="nc" id="L222">			gapTestOutcome.probabilityIntegralTransformWeighted()</span>
+<span class="nc" id="L223">		).histogramTest (</span>
+<span class="nc" id="L224">			HistogramTestSetting.AnfusoKaryampasNawroth2017 (</span>
+<span class="nc" id="L225">				PlottingPositionGeneratorHeuristic.NIST2013 (orderStatisticsCount)</span>
 			)
 		);
 
-<span class="nc" id="L217">		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();</span>
+<span class="nc" id="L229">		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();</span>
 
-<span class="nc" id="L219">		double[] gapArray = histogram.testStatisticArray();</span>
+<span class="nc" id="L231">		double[] gapArray = histogram.testStatisticArray();</span>
 
-<span class="nc" id="L221">		System.out.println (&quot;\t|----------------------------||&quot;);</span>
+<span class="nc" id="L233">		System.out.println (&quot;\t|----------------------------||&quot;);</span>
 
-<span class="nc" id="L223">		System.out.println (&quot;\t| CPT Integrand Distribution ||&quot;);</span>
+<span class="nc" id="L235">		System.out.println (&quot;\t| CPT Integrand Distribution ||&quot;);</span>
 
-<span class="nc" id="L225">		System.out.println (&quot;\t|----------------------------||&quot;);</span>
+<span class="nc" id="L237">		System.out.println (&quot;\t|----------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L227" title="All 2 branches missed.">		for (int histogramIndex = 0; histogramIndex &lt;= orderStatisticsCount + 1; ++histogramIndex)</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">		for (int histogramIndex = 0; histogramIndex &lt;= orderStatisticsCount + 1; ++histogramIndex)</span>
 		{
-<span class="nc" id="L229">			System.out.println (</span>
+<span class="nc" id="L241">			System.out.println (</span>
 				&quot;\t|&quot; +
-<span class="nc" id="L231">				FormatUtil.FormatDouble (gapArray[histogramIndex], 1, 9, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L232">				FormatUtil.FormatDouble (pValueIncrementalArray[histogramIndex], 1, 9, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L243">				FormatUtil.FormatDouble (gapArray[histogramIndex], 1, 9, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L244">				FormatUtil.FormatDouble (pValueIncrementalArray[histogramIndex], 1, 9, 1.) + &quot; ||&quot;</span>
 			);
 		}
 
-<span class="nc" id="L236">		System.out.println (&quot;\t|----------------------------||&quot;);</span>
-<span class="nc" id="L237">	}</span>
+<span class="nc" id="L248">		System.out.println (&quot;\t|----------------------------||&quot;);</span>
+<span class="nc" id="L249">	}</span>
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L243">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L255">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L245">		int drawCount = 100000;</span>
-<span class="nc" id="L246">		int sampleCount = 10;</span>
-<span class="nc" id="L247">		double mean = 0.;</span>
-<span class="nc" id="L248">		double sampleVolatility = 2.;</span>
-<span class="nc" id="L249">		int orderStatisticsCount = 20;</span>
-<span class="nc" id="L250">		double hypothesis1Volatility = 1.;</span>
-<span class="nc" id="L251">		double hypothesis2Volatility = 3.;</span>
+<span class="nc" id="L257">		int drawCount = 100000;</span>
+<span class="nc" id="L258">		int sampleCount = 10;</span>
+<span class="nc" id="L259">		double mean = 0.;</span>
+<span class="nc" id="L260">		double sampleVolatility = 2.;</span>
+<span class="nc" id="L261">		int orderStatisticsCount = 20;</span>
+<span class="nc" id="L262">		double hypothesis1Volatility = 1.;</span>
+<span class="nc" id="L263">		double hypothesis2Volatility = 3.;</span>
 
-<span class="nc" id="L253">		Sample sample = GenerateSample (</span>
+<span class="nc" id="L265">		Sample sample = GenerateSample (</span>
 			mean,
 			sampleVolatility,
 			drawCount
 		);
 
-<span class="nc" id="L259">		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (</span>
+<span class="nc" id="L271">		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (</span>
 			sample,
-<span class="nc" id="L261">			GapTestSetting.ConservativePortfolioLossTest (GapLossWeightFunction.CramersVonMises())</span>
+<span class="nc" id="L273">			GapTestSetting.ConservativePortfolioLossTest (GapLossWeightFunction.CramersVonMises())</span>
 		);
 
-<span class="nc" id="L264">		DistanceTest (</span>
-<span class="nc" id="L265">			discriminatoryPowerAnalysis.gapTest (</span>
-<span class="nc" id="L266">				GenerateEnsemble (</span>
+<span class="nc" id="L276">		DistanceTest (</span>
+<span class="nc" id="L277">			discriminatoryPowerAnalysis.gapTest (</span>
+<span class="nc" id="L278">				GenerateEnsemble (</span>
 					mean,
 					hypothesis1Volatility,
 					drawCount,
@@ -273,9 +285,9 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 			orderStatisticsCount
 		);
 
-<span class="nc" id="L276">		DistanceTest (</span>
-<span class="nc" id="L277">			discriminatoryPowerAnalysis.gapTest (</span>
-<span class="nc" id="L278">				GenerateEnsemble (</span>
+<span class="nc" id="L288">		DistanceTest (</span>
+<span class="nc" id="L289">			discriminatoryPowerAnalysis.gapTest (</span>
+<span class="nc" id="L290">				GenerateEnsemble (</span>
 					mean,
 					hypothesis2Volatility,
 					drawCount,
@@ -285,7 +297,7 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 			orderStatisticsCount
 		);
 
-<span class="nc" id="L288">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L289">	}</span>
+<span class="nc" id="L300">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L301">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

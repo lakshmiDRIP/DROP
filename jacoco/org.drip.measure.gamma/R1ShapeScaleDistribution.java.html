@@ -1,0 +1,834 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>R1ShapeScaleDistribution.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.measure.gamma</a> &gt; <span class="el_source">R1ShapeScaleDistribution.java</span></div><h1>R1ShapeScaleDistribution.java</h1><pre class="source lang-java linenums">
+package org.drip.measure.gamma;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;R1ShapeScaleDistribution&lt;/i&gt; implements the Shape and Scale Parameterization of the R&lt;sup&gt;1&lt;/sup&gt; Gamma
+ * 	Distribution. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Devroye, L. (1986): &lt;i&gt;Non-Uniform Random Variate Generation&lt;/i&gt; &lt;b&gt;Springer-Verlag&lt;/b&gt; New York
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Gamma Distribution (2019): Gamma Distribution
+ * 				https://en.wikipedia.org/wiki/Chi-squared_distribution
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Louzada, F., P. L. Ramos, and E. Ramos (2019): A Note on Bias of Closed-Form Estimators for the
+ * 				Gamma Distribution Derived From Likelihood Equations &lt;i&gt;The American Statistician&lt;/i&gt; &lt;b&gt;73
+ * 				(2)&lt;/b&gt; 195-199
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Minka, T. (2002): Estimating a Gamma distribution https://tminka.github.io/papers/minka-gamma.pdf
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Ye, Z. S., and N. Chen (2017): Closed-Form Estimators for the Gamma Distribution Derived from
+ * 				Likelihood Equations &lt;i&gt;The American Statistician&lt;/i&gt; &lt;b&gt;71 (2)&lt;/b&gt; 177-181
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; Gamma Distribution Implementation/Properties&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class R1ShapeScaleDistribution
+	extends org.drip.measure.continuous.R1Univariate
+{
+<span class="nc" id="L119">	private double _cdfScaler = java.lang.Double.NaN;</span>
+<span class="nc" id="L120">	private double _pdfScaler = java.lang.Double.NaN;</span>
+<span class="nc" id="L121">	private org.drip.function.definition.R1ToR1 _gammaEstimator = null;</span>
+<span class="nc" id="L122">	private org.drip.function.definition.R1ToR1 _digammaEstimator = null;</span>
+<span class="nc" id="L123">	private org.drip.measure.gamma.ShapeScaleParameters _shapeScaleParameters = null;</span>
+<span class="nc" id="L124">	private org.drip.function.definition.R2ToR1 _lowerIncompleteGammaEstimator = null;</span>
+
+	/**
+	 * Construct a Gamma Distribution from Shape and Rate Parameters
+	 * 
+	 * @param shapeParameter Shape Parameter
+	 * @param rateParameter Rate Parameter
+	 * @param gammaEstimator Gamma Estimator
+	 * @param digammaEstimator Digamma Estimator
+	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
+	 * 
+	 * @return Gamma Distribution from Shape Alpha and Rate Beta Parameters
+	 */
+
+	public static final R1ShapeScaleDistribution ShapeRate (
+		final double shapeParameter,
+		final double rateParameter,
+		final org.drip.function.definition.R1ToR1 gammaEstimator,
+		final org.drip.function.definition.R1ToR1 digammaEstimator,
+		final org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator)
+	{
+<span class="nc" id="L145">		return R1ShapeScaleDistribution.Standard (</span>
+			shapeParameter,
+			1. / rateParameter,
+			gammaEstimator,
+			digammaEstimator,
+			lowerIncompleteGammaEstimator
+		);
+	}
+
+	/**
+	 * Shape Summation Based ShapeScaleDistribution
+	 * 
+	 * @param shapeParameterArray Shape Parameter Array
+	 * @param scaleParameter Scale Parameter
+	 * @param gammaEstimator Gamma Estimator
+	 * @param digammaEstimator Digamma Estimator
+	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
+	 * 
+	 * @return Shape Summation Based ShapeScaleDistribution
+	 */
+
+	public static final R1ShapeScaleDistribution ShapeSummation (
+		final double[] shapeParameterArray,
+		final double scaleParameter,
+		final org.drip.function.definition.R1ToR1 gammaEstimator,
+		final org.drip.function.definition.R1ToR1 digammaEstimator,
+		final org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator)
+	{
+<span class="nc bnc" id="L173" title="All 2 branches missed.">		if (null == shapeParameterArray)</span>
+		{
+<span class="nc" id="L175">			return null;</span>
+		}
+
+<span class="nc" id="L178">		double shapeParameter = 0.;</span>
+<span class="nc" id="L179">		int shapeParameterArraySize = shapeParameterArray.length;</span>
+
+<span class="nc bnc" id="L181" title="All 2 branches missed.">		if (0 == shapeParameterArraySize)</span>
+		{
+<span class="nc" id="L183">			return null;</span>
+		}
+
+<span class="nc" id="L186">		for (int shapeParameterIndex = 0;</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">			shapeParameterIndex &lt; shapeParameterArraySize;</span>
+<span class="nc" id="L188">			++shapeParameterIndex)</span>
+		{
+<span class="nc bnc" id="L190" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (</span>
+				shapeParameterArray[shapeParameterIndex]
+			))
+			{
+<span class="nc" id="L194">				return null;</span>
+			}
+
+<span class="nc" id="L197">			shapeParameter += shapeParameterArray[shapeParameterIndex];</span>
+		}
+
+<span class="nc" id="L200">		return R1ShapeScaleDistribution.Standard (</span>
+			shapeParameter,
+			scaleParameter,
+			gammaEstimator,
+			digammaEstimator,
+			lowerIncompleteGammaEstimator
+		);
+	}
+
+	/**
+	 * Construct the Standard R1ShapeScaleDistribution Instance
+	 * 
+	 * @param shapeParameter Shape Parameter
+	 * @param scaleParameter Scale Parameter
+	 * @param gammaEstimator Gamma Estimator
+	 * @param digammaEstimator Digamma Estimator
+	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
+	 * 
+	 * @return The R1ShapeScaleDistribution Instance
+	 */
+
+	public static final R1ShapeScaleDistribution Standard (
+		final double shapeParameter,
+		final double scaleParameter,
+		final org.drip.function.definition.R1ToR1 gammaEstimator,
+		final org.drip.function.definition.R1ToR1 digammaEstimator,
+		final org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator)
+	{
+		try
+		{
+<span class="nc" id="L230">			return new R1ShapeScaleDistribution (</span>
+				new org.drip.measure.gamma.ShapeScaleParameters (
+					shapeParameter,
+					scaleParameter
+				),
+				gammaEstimator,
+				digammaEstimator,
+				lowerIncompleteGammaEstimator
+			);
+		}
+<span class="nc" id="L240">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L242">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L245">		return null;</span>
+	}
+
+	private double randomMarsaglia1977 (
+		final double shapeParameterIn)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L252" title="All 2 branches missed.">		double shapeParameter = shapeParameterIn &lt; 1. ? shapeParameterIn + 1. : shapeParameterIn;</span>
+<span class="nc" id="L253">		double d = shapeParameter - 1. / 3.;</span>
+<span class="nc" id="L254">		double v = 0.;</span>
+<span class="nc" id="L255">		double u = 0.;</span>
+
+<span class="nc" id="L257">		double c = 1. / java.lang.Math.sqrt (</span>
+			9. * d
+		);
+
+		while (true)
+		{
+<span class="nc" id="L263">			double x = org.drip.measure.gaussian.NormalQuadrature.Random();</span>
+
+<span class="nc" id="L265">			u = java.lang.Math.random();</span>
+
+<span class="nc" id="L267">			v = 1. + c * x;</span>
+<span class="nc" id="L268">			v = v * v * v;</span>
+
+<span class="nc bnc" id="L270" title="All 2 branches missed.">			if (v &gt; 0. &amp;&amp;</span>
+<span class="nc" id="L271">				0.5 * x * x + d - d * v + d * java.lang.Math.log (</span>
+					v
+<span class="nc bnc" id="L273" title="All 2 branches missed.">				) &gt; java.lang.Math.log (</span>
+					u
+				)
+			)
+			{
+<span class="nc" id="L278">				double marsagliaRandom =_shapeScaleParameters.scale() * d * v;</span>
+
+<span class="nc bnc" id="L280" title="All 2 branches missed.">				return shapeParameter != shapeParameterIn ?</span>
+<span class="nc" id="L281">					marsagliaRandom * java.lang.Math.pow (</span>
+						u,
+						1. / shapeParameterIn
+					) : marsagliaRandom;
+			}
+<span class="nc" id="L286">		}</span>
+	}
+
+	/**
+	 * R1ShapeScaleDistribution Constructor
+	 * 
+	 * @param shapeScaleParameters Shape-Scale Parameters
+	 * @param gammaEstimator Gamma Estimator
+	 * @param digammaEstimator Digamma Estimator
+	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public R1ShapeScaleDistribution (
+		final org.drip.measure.gamma.ShapeScaleParameters shapeScaleParameters,
+		final org.drip.function.definition.R1ToR1 gammaEstimator,
+		final org.drip.function.definition.R1ToR1 digammaEstimator,
+		final org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator)
+		throws java.lang.Exception
+<span class="nc" id="L306">	{</span>
+<span class="nc bnc" id="L307" title="All 8 branches missed.">		if (null == (_shapeScaleParameters = shapeScaleParameters) ||</span>
+			null == (_gammaEstimator = gammaEstimator) ||
+			null == (_digammaEstimator = digammaEstimator) ||
+			null == (_lowerIncompleteGammaEstimator = lowerIncompleteGammaEstimator)
+		)
+		{
+<span class="nc" id="L313">			throw new java.lang.Exception (</span>
+				&quot;R1ShapeScaleDistribution Constructor =&gt; Invalid Inputs&quot;
+			);
+		}
+
+<span class="nc" id="L318">		double shape = _shapeScaleParameters.shape();</span>
+
+<span class="nc" id="L320">		_pdfScaler = (</span>
+<span class="nc" id="L321">			_cdfScaler = 1. / _gammaEstimator.evaluate (</span>
+				shape
+			)
+<span class="nc" id="L324">		) * java.lang.Math.pow (</span>
+<span class="nc" id="L325">			_shapeScaleParameters.scale(),</span>
+			-1. * shape
+		);
+<span class="nc" id="L328">	}</span>
+
+	/**
+	 * Retrieve the Shape-Scale Parameters
+	 * 
+	 * @return The Shape-Scale Parameters
+	 */
+
+	public org.drip.measure.gamma.ShapeScaleParameters shapeScaleParameters()
+	{
+<span class="nc" id="L338">		return _shapeScaleParameters;</span>
+	}
+
+	/**
+	 * Retrieve the Gamma Estimator
+	 * 
+	 * @return Gamma Estimator
+	 */
+
+	public org.drip.function.definition.R1ToR1 gammaEstimator()
+	{
+<span class="nc" id="L349">		return _gammaEstimator;</span>
+	}
+
+	/**
+	 * Retrieve the Digamma Estimator
+	 * 
+	 * @return Digamma Estimator
+	 */
+
+	public org.drip.function.definition.R1ToR1 digammaEstimator()
+	{
+<span class="nc" id="L360">		return _digammaEstimator;</span>
+	}
+
+	/**
+	 * Retrieve the Lower Incomplete Gamma Estimator
+	 * 
+	 * @return Lower Incomplete Gamma Estimator
+	 */
+
+	public org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator()
+	{
+<span class="nc" id="L371">		return _lowerIncompleteGammaEstimator;</span>
+	}
+
+	@Override public double[] support()
+	{
+<span class="nc" id="L376">		return new double[]</span>
+		{
+			0.,
+			java.lang.Double.POSITIVE_INFINITY
+		};
+	}
+
+	@Override public double density (
+		final double t)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L387" title="All 2 branches missed.">		if (!supported (</span>
+			t
+		))
+		{
+<span class="nc" id="L391">			throw new java.lang.Exception (</span>
+				&quot;ShapeScaleDistribution::density =&gt; Variate not in Range&quot;
+			);
+		}
+
+<span class="nc" id="L396">		return _pdfScaler * java.lang.Math.pow (</span>
+			t,
+<span class="nc" id="L398">			_shapeScaleParameters.shape() - 1.</span>
+<span class="nc" id="L399">		) * java.lang.Math.exp (</span>
+<span class="nc" id="L400">			-1. * t / _shapeScaleParameters.scale()</span>
+		);
+	}
+
+	@Override public double cumulative (
+		final double t)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L408" title="All 2 branches missed.">		if (!supported (</span>
+			t
+		))
+		{
+<span class="nc" id="L412">			throw new java.lang.Exception (</span>
+				&quot;ShapeScaleDistribution::cumulative =&gt; Invalid Inputs&quot;
+			);
+		}
+
+<span class="nc" id="L417">		return _cdfScaler * _lowerIncompleteGammaEstimator.evaluate (</span>
+<span class="nc" id="L418">			_shapeScaleParameters.shape(),</span>
+<span class="nc" id="L419">			t / _shapeScaleParameters.scale()</span>
+		);
+	}
+
+	@Override public double mean()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L426">		return _shapeScaleParameters.shape() * _shapeScaleParameters.scale();</span>
+	}
+
+	@Override public double mode()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L432">		double shape = _shapeScaleParameters.shape();</span>
+
+<span class="nc bnc" id="L434" title="All 2 branches missed.">		if (shape &lt; 1.)</span>
+		{
+<span class="nc" id="L436">			throw new java.lang.Exception (</span>
+				&quot;ShapeScaleDistribution::mode =&gt; No Closed Form Available&quot;
+			);
+		}
+
+<span class="nc" id="L441">		return (shape - 1.) * _shapeScaleParameters.scale();</span>
+	}
+
+	@Override public double variance()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L447">		double scale = _shapeScaleParameters.scale();</span>
+
+<span class="nc" id="L449">		return _shapeScaleParameters.shape() * scale * scale;</span>
+	}
+
+	@Override public double skewness()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L455">		return 2. * java.lang.Math.sqrt (1. / _shapeScaleParameters.shape());</span>
+	}
+
+	@Override public double excessKurtosis()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L461">		return 6. / _shapeScaleParameters.shape();</span>
+	}
+
+	@Override public double differentialEntropy()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L467">		double shape = _shapeScaleParameters.shape();</span>
+
+<span class="nc" id="L469">		return shape + java.lang.Math.log (</span>
+<span class="nc" id="L470">			_shapeScaleParameters.scale() / _cdfScaler</span>
+<span class="nc" id="L471">		) + (1. - shape) * _digammaEstimator.evaluate (</span>
+			shape
+		);
+	}
+
+	@Override public org.drip.function.definition.R1ToR1 momentGeneratingFunction()
+	{
+<span class="nc" id="L478">		final double scale = _shapeScaleParameters.scale();</span>
+
+<span class="nc" id="L480">		return new org.drip.function.definition.R1ToR1 (</span>
+			null
+		)
+<span class="nc" id="L483">		{</span>
+			@Override public double evaluate (
+				final double t)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L488" title="All 4 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (</span>
+						t
+					) || t &gt;= 1. / scale
+				)
+				{
+<span class="nc" id="L493">					throw new java.lang.Exception (</span>
+						&quot;ShapeScaleDistribution::momentGeneratingFunction::evaluate =&gt; Invalid Input&quot;
+					);
+				}
+
+<span class="nc" id="L498">				return java.lang.Math.pow (</span>
+					1. - scale * t,
+<span class="nc" id="L500">					-1. * _shapeScaleParameters.shape()</span>
+				);
+			}
+		};
+	}
+
+	/**
+	 * Retrieve the Central Limit Theorem Equivalent Normal Distribution Proxy
+	 * 
+	 * @return The Central Limit Theorem Equivalent Normal Distribution Proxy
+	 */
+
+	public org.drip.measure.gaussian.R1UnivariateNormal cltProxy()
+	{
+<span class="nc" id="L514">		double scale = _shapeScaleParameters.scale();</span>
+
+<span class="nc" id="L516">		double shape = _shapeScaleParameters.shape();</span>
+
+		try
+		{
+<span class="nc" id="L520">			return new org.drip.measure.gaussian.R1UnivariateNormal (</span>
+				shape * scale,
+<span class="nc" id="L522">				scale * java.lang.Math.sqrt (</span>
+					shape
+				)
+			);
+		}
+<span class="nc" id="L527">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L529">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L532">		return null;</span>
+	}
+
+	/**
+	 * Compute the Logarithmic Expectation
+	 * 
+	 * @return The Logarithmic Expectation
+	 * 
+	 * @throws java.lang.Exception Thrown if the Logarithmic Expectation cannot be computed
+	 */
+
+	public double logarithmicExpectation()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L546">		return _digammaEstimator.evaluate (</span>
+<span class="nc" id="L547">			_shapeScaleParameters.shape()</span>
+<span class="nc" id="L548">		) - java.lang.Math.log (</span>
+<span class="nc" id="L549">			_shapeScaleParameters.scale()</span>
+		);
+	}
+
+	/**
+	 * Compute the Banneheke-Ekayanake Approximation for the Median when k gte 1
+	 * 
+	 * @return The Banneheke-Ekayanake Approximation for the Median
+	 * 
+	 * @throws java.lang.Exception Thrown if the Median cannot be computed
+	 */
+
+	public double bannehekeEkayanakeMedianApproximation()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L564">		double shape = _shapeScaleParameters.shape();</span>
+
+<span class="nc bnc" id="L566" title="All 2 branches missed.">		if (1. &gt; shape)</span>
+		{
+<span class="nc" id="L568">			throw new java.lang.Exception (</span>
+				&quot;ShapeScaleDistribution::bannehekeEkayanakeMedianApproximation =&gt; Invalid Shape Parameter&quot;
+			);
+		}
+
+<span class="nc" id="L573">		return (3. * shape - 0.8) / (3. * shape - 0.2) * mean();</span>
+	}
+
+	/**
+	 * Compute the Ramanujan-Choi Approximation for the Median
+	 * 
+	 * @return The Ramanujan-Choi Approximation for the Median
+	 */
+
+	public double ramanujanChoiMedianApproximation()
+	{
+<span class="nc" id="L584">		double shape = _shapeScaleParameters.shape();</span>
+
+<span class="nc" id="L586">		double inverseShapeParameter = 1. / shape;</span>
+
+<span class="nc" id="L588">		return shape - 1. / 3. +</span>
+			8. * inverseShapeParameter / 405. +
+			184. * inverseShapeParameter * inverseShapeParameter / 25515. +
+			2248. * inverseShapeParameter * inverseShapeParameter * inverseShapeParameter / 3444525.;
+	}
+
+	/**
+	 * Compute the Chen-Rubin Median Lower Bound
+	 * 
+	 * @return The Chen-Rubin Median Lower Bound
+	 */
+
+	public double chenRubinMedianLowerBound()
+	{
+<span class="nc" id="L602">		return _shapeScaleParameters.shape() - 1. / 3.;</span>
+	}
+
+	/**
+	 * Compute the Chen-Rubin Median Upper Bound
+	 * 
+	 * @return The Chen-Rubin Median Upper Bound
+	 */
+
+	public double chenRubinMedianUpperBound()
+	{
+<span class="nc" id="L613">		return _shapeScaleParameters.shape();</span>
+	}
+
+	/**
+	 * Generate a Scaled Gamma Distribution
+	 * 
+	 * @param scaleFactor The Gamma Distribution Scale Factor
+	 * 
+	 * @return Scaled Gamma Distribution
+	 */
+
+	public R1ShapeScaleDistribution scale (
+		final double scaleFactor)
+	{
+		try
+		{
+<span class="nc" id="L629">			return new R1ShapeScaleDistribution (</span>
+				new org.drip.measure.gamma.ShapeScaleParameters (
+<span class="nc" id="L631">					_shapeScaleParameters.shape(),</span>
+<span class="nc" id="L632">					_shapeScaleParameters.scale() * scaleFactor</span>
+				),
+				_gammaEstimator,
+				_digammaEstimator,
+				_lowerIncompleteGammaEstimator
+			);
+		}
+<span class="nc" id="L639">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L641">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L644">		return null;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Natural Parameters
+	 * 
+	 * @return Array of Natural Parameters
+	 */
+
+	public double[] naturalParameters()
+	{
+<span class="nc" id="L655">		return new double[]</span>
+		{
+<span class="nc" id="L657">			_shapeScaleParameters.shape() - 1,</span>
+<span class="nc" id="L658">			-1. / _shapeScaleParameters.scale()</span>
+		};
+	}
+
+	/**
+	 * Retrieve the Array of Natural Statistics
+	 * 
+	 * @param x X
+	 * 
+	 * @return Array of Natural Statistics
+	 */
+
+	public double[] naturalStatistics (
+		final double x)
+	{
+<span class="nc bnc" id="L673" title="All 2 branches missed.">		return org.drip.numerical.common.NumberUtil.IsValid (</span>
+			x
+		) ? new double[]
+		{
+			x,
+<span class="nc" id="L678">			java.lang.Math.log (</span>
+				x
+			)
+		} : null;
+	}
+
+	/**
+	 * Generate the Exponential Family Representation
+	 * 
+	 * @param x X
+	 * 
+	 * @return Exponential Family Representation
+	 */
+
+	public org.drip.measure.gamma.ExponentialFamilyRepresentation exponentialFamilyRepresentation (
+		final double x)
+	{
+		try
+		{
+<span class="nc" id="L697">			return new org.drip.measure.gamma.ExponentialFamilyRepresentation (</span>
+<span class="nc" id="L698">				naturalParameters(),</span>
+<span class="nc" id="L699">				naturalStatistics (</span>
+					x
+				)
+			);
+		}
+<span class="nc" id="L704">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L706">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L709">		return null;</span>
+	}
+
+	/**
+	 * Compute the Laplacian
+	 * 
+	 * @param s S
+	 * 
+	 * @return The Laplacian
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double laplacian (
+		final double s)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L726" title="All 2 branches missed.">		if (0. &gt; s)</span>
+		{
+<span class="nc" id="L728">			throw new java.lang.Exception (</span>
+				&quot;ShapeScaleDistribution::laplacian =&gt; Invalid Shape Parameter&quot;
+			);
+		}
+
+<span class="nc" id="L733">		return java.lang.Math.pow (</span>
+<span class="nc" id="L734">			1. + s * _shapeScaleParameters.scale(),</span>
+<span class="nc" id="L735">			-1. * _shapeScaleParameters.shape()</span>
+		);
+	}
+
+	/**
+	 * Generate a Random Variable using the Ahrens-Dieter (1982) Scheme
+	 * 
+	 * @return Random Variable using the Ahrens-Dieter (1982) Scheme
+	 * 
+	 * @throws java.lang.Exception Thrown if the Random Instance cannot be estimated
+	 */
+
+	public double randomAhrensDieter1982()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L750">		double shape = _shapeScaleParameters.shape();</span>
+
+<span class="nc" id="L752">		double eta = 0.;</span>
+<span class="nc" id="L753">		double random = 0.;</span>
+<span class="nc" id="L754">		double epsilon = 0.;</span>
+<span class="nc" id="L755">		int k = (int) shape;</span>
+<span class="nc" id="L756">		double delta = shape - k;</span>
+
+<span class="nc" id="L758">		for (int index = 0;</span>
+<span class="nc bnc" id="L759" title="All 2 branches missed.">			index &lt; k;</span>
+<span class="nc" id="L760">			++index)</span>
+		{
+<span class="nc" id="L762">			random = random - java.lang.Math.log (</span>
+<span class="nc" id="L763">				java.lang.Math.random()</span>
+			);
+		}
+
+<span class="nc bnc" id="L767" title="All 2 branches missed.">		if (0. == delta)</span>
+		{
+<span class="nc" id="L769">			return random;</span>
+		}
+
+		while (true)
+		{
+<span class="nc" id="L774">			double u = java.lang.Math.random();</span>
+
+<span class="nc" id="L776">			double v = java.lang.Math.random();</span>
+
+<span class="nc" id="L778">			double w = java.lang.Math.random();</span>
+
+<span class="nc bnc" id="L780" title="All 2 branches missed.">			if (u &lt;= java.lang.Math.E / (java.lang.Math.E + delta))</span>
+			{
+<span class="nc" id="L782">				epsilon = java.lang.Math.pow (</span>
+					v,
+					1. / delta
+				);
+
+<span class="nc" id="L787">				eta = w * java.lang.Math.pow (</span>
+					epsilon,
+					delta - 1.
+				);
+			}
+			else
+			{
+<span class="nc" id="L794">				epsilon = 1. - java.lang.Math.log (</span>
+					v
+				);
+
+<span class="nc" id="L798">				eta = w * java.lang.Math.exp (</span>
+					-1. * epsilon
+				);
+			}
+
+<span class="nc" id="L803">			if (eta &lt;= java.lang.Math.pow (</span>
+				epsilon,
+				delta - 1.
+<span class="nc bnc" id="L806" title="All 2 branches missed.">			) * java.lang.Math.exp (</span>
+				-1. * epsilon
+				)
+			)
+			{
+<span class="nc" id="L811">				break;</span>
+			}
+<span class="nc" id="L813">		}</span>
+
+<span class="nc" id="L815">		return _shapeScaleParameters.scale() * (random + epsilon);</span>
+	}
+
+	/**
+	 * Generate a Random Variable using the Marsaglia (1977) Scheme
+	 * 
+	 * @return Random Variable using the Marsaglia (1977) Scheme
+	 * 
+	 * @throws java.lang.Exception Thrown if the Random Instance cannot be estimated
+	 */
+
+	public double randomMarsaglia1977()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L829">		return randomMarsaglia1977 (</span>
+<span class="nc" id="L830">			_shapeScaleParameters.shape()</span>
+		);
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

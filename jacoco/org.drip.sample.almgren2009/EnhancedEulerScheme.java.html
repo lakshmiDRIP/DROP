@@ -10,38 +10,49 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -101,94 +112,94 @@ import org.drip.service.env.EnvManager;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/almgren2009/README.md&quot;&gt;Almgren (2009)&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/almgren2009/README.md&quot;&gt;Almgren (2009) Optimal Adaptive HJB&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L114">public class EnhancedEulerScheme {</span>
+<span class="nc" id="L125">public class EnhancedEulerScheme {</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L120">		EnvManager.InitEnv (</span>
+<span class="fc" id="L131">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L125">		double dblA = 2.;</span>
-<span class="fc" id="L126">		double dblB = 1.;</span>
-<span class="fc" id="L127">		double dblTimeIncrement = 0.1;</span>
-<span class="fc" id="L128">		double dblSimulationTime = 1.0;</span>
-<span class="fc" id="L129">		int iK = 2;</span>
+<span class="fc" id="L136">		double dblA = 2.;</span>
+<span class="fc" id="L137">		double dblB = 1.;</span>
+<span class="fc" id="L138">		double dblTimeIncrement = 0.1;</span>
+<span class="fc" id="L139">		double dblSimulationTime = 1.0;</span>
+<span class="fc" id="L140">		int iK = 2;</span>
 
-<span class="fc" id="L131">		int iNumSimulationSteps = (int) (dblSimulationTime / dblTimeIncrement);</span>
-<span class="fc" id="L132">		double dblInitialOrder0 = 1. / (iK * dblTimeIncrement);</span>
-<span class="fc" id="L133">		double dblInitialOrder1 = dblInitialOrder0 + 0.5 * (dblA + dblB);</span>
-<span class="fc" id="L134">		double dblOrder0Euler = dblInitialOrder0;</span>
-<span class="fc" id="L135">		double dblOrder1Euler = dblInitialOrder1;</span>
-<span class="fc" id="L136">		double dblOrder0EnhancedEuler = dblInitialOrder0;</span>
-<span class="fc" id="L137">		double dblOrder1EnhancedEuler = dblInitialOrder1;</span>
+<span class="fc" id="L142">		int iNumSimulationSteps = (int) (dblSimulationTime / dblTimeIncrement);</span>
+<span class="fc" id="L143">		double dblInitialOrder0 = 1. / (iK * dblTimeIncrement);</span>
+<span class="fc" id="L144">		double dblInitialOrder1 = dblInitialOrder0 + 0.5 * (dblA + dblB);</span>
+<span class="fc" id="L145">		double dblOrder0Euler = dblInitialOrder0;</span>
+<span class="fc" id="L146">		double dblOrder1Euler = dblInitialOrder1;</span>
+<span class="fc" id="L147">		double dblOrder0EnhancedEuler = dblInitialOrder0;</span>
+<span class="fc" id="L148">		double dblOrder1EnhancedEuler = dblInitialOrder1;</span>
 
-<span class="fc" id="L139">		AlmgrenEnhancedEulerUpdate aeeu = new AlmgrenEnhancedEulerUpdate (</span>
+<span class="fc" id="L150">		AlmgrenEnhancedEulerUpdate aeeu = new AlmgrenEnhancedEulerUpdate (</span>
 			dblA,
 			dblB
 		);
 
-<span class="fc" id="L144">		System.out.println();</span>
+<span class="fc" id="L155">		System.out.println();</span>
 
-<span class="fc" id="L146">		System.out.println (&quot;\t||----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L157">		System.out.println (&quot;\t||----------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L148">		System.out.println (&quot;\t||      L -&gt; R:                                       ||&quot;);</span>
+<span class="fc" id="L159">		System.out.println (&quot;\t||      L -&gt; R:                                       ||&quot;);</span>
 
-<span class="fc" id="L150">		System.out.println (&quot;\t||            - Time                                  ||&quot;);</span>
+<span class="fc" id="L161">		System.out.println (&quot;\t||            - Time                                  ||&quot;);</span>
 
-<span class="fc" id="L152">		System.out.println (&quot;\t||            - Exact Solution                        ||&quot;);</span>
+<span class="fc" id="L163">		System.out.println (&quot;\t||            - Exact Solution                        ||&quot;);</span>
 
-<span class="fc" id="L154">		System.out.println (&quot;\t||            - Order 1 Initial + Enhanced Euler      ||&quot;);</span>
+<span class="fc" id="L165">		System.out.println (&quot;\t||            - Order 1 Initial + Enhanced Euler      ||&quot;);</span>
 
-<span class="fc" id="L156">		System.out.println (&quot;\t||            - Order 0 Initial + Enhanced Euler      ||&quot;);</span>
+<span class="fc" id="L167">		System.out.println (&quot;\t||            - Order 0 Initial + Enhanced Euler      ||&quot;);</span>
 
-<span class="fc" id="L158">		System.out.println (&quot;\t||            - Order 1 Initial + Regular Euler       ||&quot;);</span>
+<span class="fc" id="L169">		System.out.println (&quot;\t||            - Order 1 Initial + Regular Euler       ||&quot;);</span>
 
-<span class="fc" id="L160">		System.out.println (&quot;\t||            - Order 0 Initial + Regular Euler       ||&quot;);</span>
+<span class="fc" id="L171">		System.out.println (&quot;\t||            - Order 0 Initial + Regular Euler       ||&quot;);</span>
 
-<span class="fc" id="L162">		System.out.println (&quot;\t||----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L173">		System.out.println (&quot;\t||----------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L164" title="All 2 branches covered.">		for (int i = iK; i &lt;= iNumSimulationSteps; ++i) {</span>
-<span class="fc" id="L165">			double dblTime = i * dblTimeIncrement;</span>
+<span class="fc bfc" id="L175" title="All 2 branches covered.">		for (int i = iK; i &lt;= iNumSimulationSteps; ++i) {</span>
+<span class="fc" id="L176">			double dblTime = i * dblTimeIncrement;</span>
 
-<span class="fc" id="L167">			System.out.println (</span>
+<span class="fc" id="L178">			System.out.println (</span>
 				&quot;\t|| &quot; +
-<span class="fc" id="L169">				FormatUtil.FormatDouble (dblTime, 1, 1, 1.) + &quot; =&gt; &quot; +</span>
-<span class="fc" id="L170">				FormatUtil.FormatDouble (aeeu.evaluate (dblTime), 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L171">				FormatUtil.FormatDouble (dblOrder1EnhancedEuler, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L172">				FormatUtil.FormatDouble (dblOrder0EnhancedEuler, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L173">				FormatUtil.FormatDouble (dblOrder1Euler, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L174">				FormatUtil.FormatDouble (dblOrder0Euler, 1, 3, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L180">				FormatUtil.FormatDouble (dblTime, 1, 1, 1.) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L181">				FormatUtil.FormatDouble (aeeu.evaluate (dblTime), 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L182">				FormatUtil.FormatDouble (dblOrder1EnhancedEuler, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L183">				FormatUtil.FormatDouble (dblOrder0EnhancedEuler, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L184">				FormatUtil.FormatDouble (dblOrder1Euler, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L185">				FormatUtil.FormatDouble (dblOrder0Euler, 1, 3, 1.) + &quot; ||&quot;</span>
 			);
 
-<span class="fc" id="L177">			double dblOrder0EulerIncrement = -1. * (dblOrder0Euler - dblA) * (dblOrder0Euler - dblB) * dblTimeIncrement;</span>
-<span class="fc" id="L178">			double dblOrder1EulerIncrement = -1. * (dblOrder1Euler - dblA) * (dblOrder1Euler - dblB) * dblTimeIncrement;</span>
-<span class="fc" id="L179">			dblOrder0Euler = dblOrder0Euler + dblOrder0EulerIncrement;</span>
-<span class="fc" id="L180">			dblOrder1Euler = dblOrder1Euler + dblOrder1EulerIncrement;</span>
-<span class="fc" id="L181">			double dblOrder0EnhancedEulerIncrement = -1. * (dblOrder0EnhancedEuler - dblA) * (dblOrder0EnhancedEuler - dblB)</span>
+<span class="fc" id="L188">			double dblOrder0EulerIncrement = -1. * (dblOrder0Euler - dblA) * (dblOrder0Euler - dblB) * dblTimeIncrement;</span>
+<span class="fc" id="L189">			double dblOrder1EulerIncrement = -1. * (dblOrder1Euler - dblA) * (dblOrder1Euler - dblB) * dblTimeIncrement;</span>
+<span class="fc" id="L190">			dblOrder0Euler = dblOrder0Euler + dblOrder0EulerIncrement;</span>
+<span class="fc" id="L191">			dblOrder1Euler = dblOrder1Euler + dblOrder1EulerIncrement;</span>
+<span class="fc" id="L192">			double dblOrder0EnhancedEulerIncrement = -1. * (dblOrder0EnhancedEuler - dblA) * (dblOrder0EnhancedEuler - dblB)</span>
 				* dblTimeIncrement * iK / (iK + 1);
-<span class="fc" id="L183">			dblOrder0EnhancedEuler = dblOrder0EnhancedEuler + dblOrder0EnhancedEulerIncrement;</span>
-<span class="fc" id="L184">			double dblOrder1EnhancedEulerIncrement = -1. * (dblOrder1EnhancedEuler - dblA) * (dblOrder1EnhancedEuler - dblB)</span>
+<span class="fc" id="L194">			dblOrder0EnhancedEuler = dblOrder0EnhancedEuler + dblOrder0EnhancedEulerIncrement;</span>
+<span class="fc" id="L195">			double dblOrder1EnhancedEulerIncrement = -1. * (dblOrder1EnhancedEuler - dblA) * (dblOrder1EnhancedEuler - dblB)</span>
 				* dblTimeIncrement * iK / (iK + 1);
-<span class="fc" id="L186">			dblOrder1EnhancedEuler = dblOrder1EnhancedEuler + dblOrder1EnhancedEulerIncrement;</span>
+<span class="fc" id="L197">			dblOrder1EnhancedEuler = dblOrder1EnhancedEuler + dblOrder1EnhancedEulerIncrement;</span>
 		}
 
-<span class="fc" id="L189">		System.out.println (&quot;\t||----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L200">		System.out.println (&quot;\t||----------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L191">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L192">	}</span>
+<span class="fc" id="L202">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L203">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

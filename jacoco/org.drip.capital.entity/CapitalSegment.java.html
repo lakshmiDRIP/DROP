@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CapitalSegment.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.entity</a> &gt; <span class="el_source">CapitalSegment.java</span></div><h1>CapitalSegment.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.entity;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;CapitalSegment&lt;/i&gt; exposes the VaR and the Stress Functionality for a Capital Segment. The References
+ * 	are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/entity/README.md&quot;&gt;Economic Risk Capital Estimation Nodes&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public abstract class CapitalSegment
+	implements org.drip.capital.entity.CapitalSimulator
+{
+<span class="nc" id="L110">	private org.drip.capital.label.CapitalSegmentCoordinate _coordinate = null;</span>
+
+	protected CapitalSegment (
+		final org.drip.capital.label.CapitalSegmentCoordinate coordinate)
+		throws java.lang.Exception
+<span class="nc" id="L115">	{</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">		if (null == (_coordinate = coordinate))</span>
+		{
+<span class="nc" id="L118">			throw new java.lang.Exception (</span>
+				&quot;CapitalSegment Constructor =&gt; Invalid Inputs&quot;
+			);
+		}
+<span class="nc" id="L122">	}</span>
+
+	/**
+	 * Retrieve the Capital Segment Coordinate
+	 * 
+	 * @return Capital Segment Coordinate
+	 */
+
+	public org.drip.capital.label.CapitalSegmentCoordinate coordinate()
+	{
+<span class="nc" id="L132">		return _coordinate;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Capital Units
+	 * 
+	 * @return Array of Capital Units
+	 */
+
+	public abstract org.drip.capital.entity.CapitalUnit[] capitalUnitArray();
+
+	/**
+	 * Generate the Grid of Capital Unit Path Realizations
+	 * 
+	 * @param simulationControl Simulation Settings
+	 * @param simulationPnLControl PnL Settings
+	 * 
+	 * @return Grid of Capital Unit Path Realizations
+	 */
+
+	public org.drip.capital.simulation.PathPnLRealization[][] capitalUnitPathPnLRealizationGrid (
+		final org.drip.capital.setting.SimulationControl simulationControl,
+		final org.drip.capital.setting.SimulationPnLControl simulationPnLControl)
+	{
+<span class="nc" id="L156">		org.drip.capital.entity.CapitalUnit[] capitalUnitArray = capitalUnitArray();</span>
+
+<span class="nc" id="L158">		int capitalUnitCount = capitalUnitArray.length;</span>
+<span class="nc" id="L159">		org.drip.capital.simulation.PathPnLRealization[][] capitalUnitPathPnLRealizationGrid = new</span>
+			org.drip.capital.simulation.PathPnLRealization[capitalUnitCount][];
+
+<span class="nc bnc" id="L162" title="All 2 branches missed.">		for (int capitalUnitIndex = 0; capitalUnitIndex &lt; capitalUnitCount; ++capitalUnitIndex)</span>
+		{
+<span class="nc" id="L164">			if (null == (capitalUnitPathPnLRealizationGrid[capitalUnitIndex] =</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">				capitalUnitArray[capitalUnitIndex].pathPnLRealizationArray (</span>
+					simulationControl,
+					simulationPnLControl
+				)
+			))
+			{
+<span class="nc" id="L171">				return null;</span>
+			}
+		}
+
+<span class="nc" id="L175">		return capitalUnitPathPnLRealizationGrid;</span>
+	}
+
+	@Override public org.drip.capital.simulation.PathPnLRealization[] pathPnLRealizationArray (
+		final org.drip.capital.setting.SimulationControl simulationControl,
+		final org.drip.capital.setting.SimulationPnLControl simulationPnLControl)
+	{
+<span class="nc" id="L182">		int pathCount = simulationControl.pathCount();</span>
+
+<span class="nc" id="L184">		org.drip.capital.simulation.PathPnLRealization[][] capitalUnitPathPnLRealizationGrid =</span>
+<span class="nc" id="L185">			capitalUnitPathPnLRealizationGrid (</span>
+				simulationControl,
+				simulationPnLControl
+			);
+
+<span class="nc bnc" id="L190" title="All 2 branches missed.">		if (null == capitalUnitPathPnLRealizationGrid)</span>
+		{
+<span class="nc" id="L192">			return null;</span>
+		}
+
+<span class="nc" id="L195">		org.drip.capital.entity.CapitalUnit[] capitalUnitArray = capitalUnitArray();</span>
+
+<span class="nc" id="L197">		int capitalUnitCount = capitalUnitArray.length;</span>
+<span class="nc" id="L198">		org.drip.capital.simulation.PathPnLRealization[] pathPnLRealizationArray =</span>
+			new org.drip.capital.simulation.PathPnLRealization[pathCount];
+
+<span class="nc" id="L201">		for (int pathIndex = 0;</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">			pathIndex &lt; pathCount;</span>
+<span class="nc" id="L203">			++pathIndex)</span>
+		{
+<span class="nc" id="L205">			org.drip.capital.simulation.PathPnLRealization[] singlePathPnLRealizationArray =</span>
+				new org.drip.capital.simulation.PathPnLRealization[capitalUnitCount];
+
+<span class="nc" id="L208">			for (int capitalUnitIndex = 0;</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">				capitalUnitIndex &lt; capitalUnitCount;</span>
+<span class="nc" id="L210">				++capitalUnitIndex)</span>
+			{
+<span class="nc" id="L212">				singlePathPnLRealizationArray[capitalUnitIndex] =</span>
+					capitalUnitPathPnLRealizationGrid[capitalUnitIndex][pathIndex];
+			}
+
+<span class="nc" id="L216">			if (null == (pathPnLRealizationArray[pathIndex] =</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">					org.drip.capital.simulation.PathPnLRealization.Combine (</span>
+						singlePathPnLRealizationArray
+					)
+				)
+			)
+			{
+<span class="nc" id="L223">				return null;</span>
+			}
+		}
+
+<span class="nc" id="L227">		return pathPnLRealizationArray;</span>
+	}
+
+	@Override public org.drip.capital.simulation.CapitalSegmentPathEnsemble pathEnsemble (
+		final org.drip.capital.setting.SimulationControl simulationControl,
+		final org.drip.capital.setting.SimulationPnLControl simulationPnLControl)
+	{
+<span class="nc" id="L234">		org.drip.capital.simulation.PathPnLRealization[][] capitalUnitPathPnLRealizationGrid =</span>
+<span class="nc" id="L235">			capitalUnitPathPnLRealizationGrid (</span>
+				simulationControl,
+				simulationPnLControl
+			);
+
+<span class="nc bnc" id="L240" title="All 2 branches missed.">		if (null == capitalUnitPathPnLRealizationGrid)</span>
+		{
+<span class="nc" id="L242">			return null;</span>
+		}
+
+<span class="nc" id="L245">		int pathCount = simulationControl.pathCount();</span>
+
+<span class="nc" id="L247">		java.util.Map&lt;java.lang.String, org.drip.capital.simulation.PathEnsemble&gt; pathEnsembleMap = new</span>
+			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.capital.simulation.PathEnsemble&gt;();
+
+<span class="nc" id="L250">		org.drip.capital.entity.CapitalUnit[] capitalUnitArray = capitalUnitArray();</span>
+
+<span class="nc" id="L252">		int capitalUnitCount = capitalUnitArray.length;</span>
+<span class="nc" id="L253">		org.drip.capital.simulation.CapitalSegmentPathEnsemble capitalSegmentPathEnsemble = null;</span>
+<span class="nc" id="L254">		org.drip.capital.simulation.PathPnLRealization[] pathPnLRealizationArray = new</span>
+			org.drip.capital.simulation.PathPnLRealization[pathCount];
+
+<span class="nc" id="L257">		for (int capitalUnitIndex = 0;</span>
+<span class="nc bnc" id="L258" title="All 2 branches missed.">			capitalUnitIndex &lt; capitalUnitCount;</span>
+<span class="nc" id="L259">			++capitalUnitIndex)</span>
+		{
+<span class="nc" id="L261">			org.drip.capital.simulation.CapitalUnitPathEnsemble capitalUnitPathEnsemble =</span>
+				new org.drip.capital.simulation.CapitalUnitPathEnsemble();
+
+			for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization :
+<span class="nc bnc" id="L265" title="All 2 branches missed.">				capitalUnitPathPnLRealizationGrid[capitalUnitIndex])</span>
+			{
+<span class="nc bnc" id="L267" title="All 2 branches missed.">				if (!capitalUnitPathEnsemble.addPathPnLRealization (pathPnLRealization))</span>
+				{
+<span class="nc" id="L269">					return null;</span>
+				}
+			}
+
+<span class="nc" id="L273">			pathEnsembleMap.put (</span>
+<span class="nc" id="L274">				capitalUnitArray[capitalUnitIndex].coordinate().fullyQualifiedName(),</span>
+				capitalUnitPathEnsemble
+			);
+		}
+
+		try
+		{
+<span class="nc" id="L281">			capitalSegmentPathEnsemble = new org.drip.capital.simulation.CapitalSegmentPathEnsemble (</span>
+				pathEnsembleMap
+			);
+		}
+<span class="nc" id="L285">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L287">			e.printStackTrace();</span>
+
+<span class="nc" id="L289">			return null;</span>
+<span class="nc" id="L290">		}</span>
+
+<span class="nc" id="L292">		for (int pathIndex = 0;</span>
+<span class="nc bnc" id="L293" title="All 2 branches missed.">			pathIndex &lt; pathCount;</span>
+<span class="nc" id="L294">			++pathIndex)</span>
+		{
+<span class="nc" id="L296">			org.drip.capital.simulation.PathPnLRealization[] singlePathPnLRealizationArray =</span>
+				new org.drip.capital.simulation.PathPnLRealization[capitalUnitCount];
+
+<span class="nc" id="L299">			for (int capitalUnitIndex = 0;</span>
+<span class="nc bnc" id="L300" title="All 2 branches missed.">				capitalUnitIndex &lt; capitalUnitCount;</span>
+<span class="nc" id="L301">				++capitalUnitIndex)</span>
+			{
+<span class="nc" id="L303">				singlePathPnLRealizationArray[capitalUnitIndex] =</span>
+					capitalUnitPathPnLRealizationGrid[capitalUnitIndex][pathIndex];
+			}
+
+<span class="nc" id="L307">			if (null == (pathPnLRealizationArray[pathIndex] =</span>
+<span class="nc bnc" id="L308" title="All 2 branches missed.">					org.drip.capital.simulation.PathPnLRealization.Combine (</span>
+						singlePathPnLRealizationArray
+					)
+				)
+			)
+			{
+<span class="nc" id="L314">				return null;</span>
+			}
+		}
+
+<span class="nc bnc" id="L318" title="All 2 branches missed.">		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : pathPnLRealizationArray)</span>
+		{
+<span class="nc bnc" id="L320" title="All 2 branches missed.">			if (!capitalSegmentPathEnsemble.addPathPnLRealization (</span>
+				pathPnLRealization
+			))
+			{
+<span class="nc" id="L324">				return null;</span>
+			}
+		}
+
+<span class="nc" id="L328">		return capitalSegmentPathEnsemble;</span>
+	}
+
+	/**
+	 * Generate the Simulation Path Ensemble Constricted to the specified Path Ensemble Map
+	 * 
+	 * @param pathEnsembleMap The Path Ensemble Constriction Map
+	 * 
+	 * @return The Constricted Simulation Path Ensemble
+	 */
+
+	public org.drip.capital.simulation.CapitalSegmentPathEnsemble pathEnsemble (
+		final java.util.Map&lt;java.lang.String, org.drip.capital.simulation.PathEnsemble&gt; pathEnsembleMap)
+	{
+<span class="nc bnc" id="L342" title="All 4 branches missed.">		if (null == pathEnsembleMap || 0 == pathEnsembleMap.size())</span>
+		{
+<span class="nc" id="L344">			return null;</span>
+		}
+
+		java.util.Map&lt;java.lang.String, org.drip.capital.simulation.PathEnsemble&gt;
+<span class="nc" id="L348">			constrictedPathEnsembleMap = new</span>
+				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.capital.simulation.PathEnsemble&gt;();
+
+<span class="nc" id="L351">		org.drip.capital.entity.CapitalUnit[] capitalUnitArray = capitalUnitArray();</span>
+
+<span class="nc" id="L353">		int pathCount = -1;</span>
+<span class="nc" id="L354">		int capitalUnitCount = capitalUnitArray.length;</span>
+<span class="nc" id="L355">		org.drip.capital.simulation.PathPnLRealization[][] capitalUnitPathPnLRealizationGrid =</span>
+			new org.drip.capital.simulation.PathPnLRealization[capitalUnitCount][];
+<span class="nc" id="L357">		org.drip.capital.simulation.CapitalSegmentPathEnsemble constrictedCapitalSegmentPathEnsemble =</span>
+			null;
+
+<span class="nc" id="L360">		for (int capitalUnitIndex = 0;</span>
+<span class="nc bnc" id="L361" title="All 2 branches missed.">			capitalUnitIndex &lt; capitalUnitCount;</span>
+<span class="nc" id="L362">			++capitalUnitIndex)</span>
+		{
+<span class="nc" id="L364">			java.lang.String capitalUnitCoordinateFQN =</span>
+<span class="nc" id="L365">				capitalUnitArray[capitalUnitIndex].coordinate().fullyQualifiedName();</span>
+
+<span class="nc bnc" id="L367" title="All 2 branches missed.">			if (!pathEnsembleMap.containsKey (</span>
+				capitalUnitCoordinateFQN
+			))
+			{
+<span class="nc" id="L371">				return null;</span>
+			}
+
+<span class="nc" id="L374">			org.drip.capital.simulation.PathEnsemble pathEnsemble = pathEnsembleMap.get (</span>
+				capitalUnitCoordinateFQN
+			);
+
+<span class="nc" id="L378">			constrictedPathEnsembleMap.put (</span>
+				capitalUnitCoordinateFQN,
+				pathEnsemble
+			);
+
+<span class="nc" id="L383">			capitalUnitPathPnLRealizationGrid[capitalUnitIndex] = (</span>
+				(org.drip.capital.simulation.CapitalUnitPathEnsemble) pathEnsemble
+<span class="nc" id="L385">			).pathPnLRealizationArray();</span>
+
+<span class="nc bnc" id="L387" title="All 2 branches missed.">			if (0 == capitalUnitIndex)</span>
+			{
+<span class="nc" id="L389">				pathCount = pathEnsemble.count();</span>
+			}
+		}
+
+		try
+		{
+<span class="nc" id="L395">			constrictedCapitalSegmentPathEnsemble = new</span>
+				org.drip.capital.simulation.CapitalSegmentPathEnsemble (
+					constrictedPathEnsembleMap
+				);
+		}
+<span class="nc" id="L400">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L402">			e.printStackTrace();</span>
+
+<span class="nc" id="L404">			return null;</span>
+<span class="nc" id="L405">		}</span>
+
+<span class="nc" id="L407">		org.drip.capital.simulation.PathPnLRealization[] pathPnLRealizationArray =</span>
+			new org.drip.capital.simulation.PathPnLRealization[pathCount];
+
+<span class="nc" id="L410">		for (int pathIndex = 0;</span>
+<span class="nc bnc" id="L411" title="All 2 branches missed.">			pathIndex &lt; pathCount;</span>
+<span class="nc" id="L412">			++pathIndex)</span>
+		{
+<span class="nc" id="L414">			org.drip.capital.simulation.PathPnLRealization[] singlePathPnLRealizationArray =</span>
+				new org.drip.capital.simulation.PathPnLRealization[capitalUnitCount];
+
+<span class="nc" id="L417">			for (int capitalUnitIndex = 0;</span>
+<span class="nc bnc" id="L418" title="All 2 branches missed.">				capitalUnitIndex &lt; capitalUnitCount;</span>
+<span class="nc" id="L419">				++capitalUnitIndex)</span>
+			{
+<span class="nc" id="L421">				singlePathPnLRealizationArray[capitalUnitIndex] =</span>
+					capitalUnitPathPnLRealizationGrid[capitalUnitIndex][pathIndex];
+			}
+
+<span class="nc" id="L425">			if (null == (pathPnLRealizationArray[pathIndex] =</span>
+<span class="nc bnc" id="L426" title="All 2 branches missed.">					org.drip.capital.simulation.PathPnLRealization.Combine (</span>
+						singlePathPnLRealizationArray
+					)
+				)
+			)
+			{
+<span class="nc" id="L432">				return null;</span>
+			}
+		}
+
+<span class="nc bnc" id="L436" title="All 2 branches missed.">		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : pathPnLRealizationArray)</span>
+		{
+<span class="nc bnc" id="L438" title="All 2 branches missed.">			if (!constrictedCapitalSegmentPathEnsemble.addPathPnLRealization (</span>
+				pathPnLRealization
+			))
+			{
+<span class="nc" id="L442">				return null;</span>
+			}
+		}
+
+<span class="nc" id="L446">		return constrictedCapitalSegmentPathEnsemble;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

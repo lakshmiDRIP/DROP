@@ -10,41 +10,53 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -97,17 +109,17 @@ import org.drip.service.env.EnvManager;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationLibrary.md&quot;&gt;Model Validation Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/anfuso2013&quot;&gt;Anfuso, Karyampas, and Nawroth (2013) Replications&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/anfuso2017/README.md&quot;&gt;Anfuso, Karyampas, and Nawroth (2013) Replications&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L110">public class ExpectedPositiveExposure12</span>
+<span class="nc" id="L122">public class ExpectedPositiveExposure12</span>
 {
 
 	private static final double ExpectedPositiveRealization (
@@ -116,20 +128,20 @@ import org.drip.service.env.EnvManager;
 		final int drawCount)
 		throws Exception
 	{
-<span class="nc" id="L119">		double expectedPositiveRealization = 0.;</span>
+<span class="nc" id="L131">		double expectedPositiveRealization = 0.;</span>
 
-<span class="nc bnc" id="L121" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; drawCount; ++drawIndex)</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; drawCount; ++drawIndex)</span>
 		{
-<span class="nc" id="L123">			double realization = new R1UnivariateNormal (</span>
+<span class="nc" id="L135">			double realization = new R1UnivariateNormal (</span>
 				mean,
 				sigma
-<span class="nc" id="L126">			).random();</span>
+<span class="nc" id="L138">			).random();</span>
 
-<span class="nc bnc" id="L128" title="All 2 branches missed.">			expectedPositiveRealization = expectedPositiveRealization +</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">			expectedPositiveRealization = expectedPositiveRealization +</span>
 				(realization &gt; 0. ? realization : 0.);
 		}
 
-<span class="nc" id="L132">		return expectedPositiveRealization / drawCount;</span>
+<span class="nc" id="L144">		return expectedPositiveRealization / drawCount;</span>
 	}
 
 	private static final void ExpectedPositiveRealization (
@@ -138,14 +150,14 @@ import org.drip.service.env.EnvManager;
 		final int drawCount)
 		throws Exception
 	{
-<span class="nc bnc" id="L141" title="All 2 branches missed.">		for (double sigma : sigmaArray)</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">		for (double sigma : sigmaArray)</span>
 		{
-<span class="nc" id="L143">			System.out.println (</span>
+<span class="nc" id="L155">			System.out.println (</span>
 				&quot;\t| &quot; +
-<span class="nc" id="L145">				FormatUtil.FormatDouble (mean, 1, 1, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L146">				FormatUtil.FormatDouble (sigma, 1, 2, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L147">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L148">					ExpectedPositiveRealization (</span>
+<span class="nc" id="L157">				FormatUtil.FormatDouble (mean, 1, 1, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L158">				FormatUtil.FormatDouble (sigma, 1, 2, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L159">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L160">					ExpectedPositiveRealization (</span>
 						mean,
 						sigma,
 						drawCount
@@ -154,23 +166,23 @@ import org.drip.service.env.EnvManager;
 			);
 		}
 
-<span class="nc" id="L157">		System.out.println (&quot;\t|------------------------||&quot;);</span>
-<span class="nc" id="L158">	}</span>
+<span class="nc" id="L169">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="nc" id="L170">	}</span>
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L164">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L176">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L166">		int drawCount = 100000;</span>
-<span class="nc" id="L167">		double[] meanArray =</span>
+<span class="nc" id="L178">		int drawCount = 100000;</span>
+<span class="nc" id="L179">		double[] meanArray =</span>
 		{
 			-5.0,
 			 0.0,
 			 5.0
 		};
-<span class="nc" id="L173">		double[] sigmaArray = {</span>
+<span class="nc" id="L185">		double[] sigmaArray = {</span>
 			1.0,
 			2.0,
 			3.0,
@@ -178,32 +190,32 @@ import org.drip.service.env.EnvManager;
 			5.0
 		};
 
-<span class="nc" id="L181">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="nc" id="L193">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
-<span class="nc" id="L183">		System.out.println (&quot;\t|  EPE for Model Params  ||&quot;);</span>
+<span class="nc" id="L195">		System.out.println (&quot;\t|  EPE for Model Params  ||&quot;);</span>
 
-<span class="nc" id="L185">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="nc" id="L197">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
-<span class="nc" id="L187">		System.out.println (&quot;\t|    L -&gt; R:             ||&quot;);</span>
+<span class="nc" id="L199">		System.out.println (&quot;\t|    L -&gt; R:             ||&quot;);</span>
 
-<span class="nc" id="L189">		System.out.println (&quot;\t|        - Mean          ||&quot;);</span>
+<span class="nc" id="L201">		System.out.println (&quot;\t|        - Mean          ||&quot;);</span>
 
-<span class="nc" id="L191">		System.out.println (&quot;\t|        - Volatility    ||&quot;);</span>
+<span class="nc" id="L203">		System.out.println (&quot;\t|        - Volatility    ||&quot;);</span>
 
-<span class="nc" id="L193">		System.out.println (&quot;\t|        - EPE           ||&quot;);</span>
+<span class="nc" id="L205">		System.out.println (&quot;\t|        - EPE           ||&quot;);</span>
 
-<span class="nc" id="L195">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="nc" id="L207">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L197" title="All 2 branches missed.">		for (double mean : meanArray)</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">		for (double mean : meanArray)</span>
 		{
-<span class="nc" id="L199">			ExpectedPositiveRealization (</span>
+<span class="nc" id="L211">			ExpectedPositiveRealization (</span>
 				mean,
 				sigmaArray,
 				drawCount
 			);
 		}
 
-<span class="nc" id="L206">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L207">	}</span>
+<span class="nc" id="L218">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L219">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

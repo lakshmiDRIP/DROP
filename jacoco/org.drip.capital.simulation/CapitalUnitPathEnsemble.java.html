@@ -1,0 +1,618 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CapitalUnitPathEnsemble.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.simulation</a> &gt; <span class="el_source">CapitalUnitPathEnsemble.java</span></div><h1>CapitalUnitPathEnsemble.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.simulation;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;CapitalUnitPathEnsemble&lt;/i&gt; generates the Ensemble of Capital Paths from the Simulation PnL
+ * 	Realizations for the specified Capital Unit. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/simulation/README.md&quot;&gt;Economic Risk Capital Simulation Ensemble&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class CapitalUnitPathEnsemble
+	implements org.drip.capital.simulation.PathEnsemble
+{
+<span class="nc" id="L110">	private java.util.Map&lt;java.lang.Double, java.util.List&lt;java.lang.Integer&gt;&gt; _pnlListMap = null;</span>
+<span class="nc" id="L111">	private java.util.Map&lt;java.lang.String, java.lang.Integer&gt; _systemicEventIncidenceCountMap = null;</span>
+<span class="nc" id="L112">	private java.util.List&lt;org.drip.capital.simulation.PathPnLRealization&gt; _pathPnLRealizationList = null;</span>
+<span class="nc" id="L113">	private java.util.Map&lt;java.lang.String, java.lang.Integer&gt; _idiosyncraticEventIncidenceCountMap = null;</span>
+
+	/**
+	 * CapitalUnitPathEnsemble Constructor
+	 */
+
+	public CapitalUnitPathEnsemble()
+<span class="nc" id="L120">	{</span>
+<span class="nc" id="L121">		_pnlListMap = new java.util.TreeMap&lt;java.lang.Double, java.util.List&lt;java.lang.Integer&gt;&gt;();</span>
+
+<span class="nc" id="L123">		_systemicEventIncidenceCountMap = new java.util.HashMap&lt;java.lang.String, java.lang.Integer&gt;();</span>
+
+<span class="nc" id="L125">		_idiosyncraticEventIncidenceCountMap = new java.util.HashMap&lt;java.lang.String, java.lang.Integer&gt;();</span>
+
+<span class="nc" id="L127">		_pathPnLRealizationList = new</span>
+			java.util.ArrayList&lt;org.drip.capital.simulation.PathPnLRealization&gt;();
+<span class="nc" id="L129">	}</span>
+
+	/**
+	 * Retrieve the Path PnL Realization List
+	 * 
+	 * @return The Path PnL Realization List
+	 */
+
+	public java.util.List&lt;org.drip.capital.simulation.PathPnLRealization&gt; pathPnLRealizationList()
+	{
+<span class="nc" id="L139">		return _pathPnLRealizationList;</span>
+	}
+
+	/**
+	 * Retrieve the Path PnL Realization Array
+	 * 
+	 * @return The Path PnL Realization Array
+	 */
+
+	public org.drip.capital.simulation.PathPnLRealization[] pathPnLRealizationArray()
+	{
+<span class="nc" id="L150">		int pathCount = _pathPnLRealizationList.size();</span>
+
+<span class="nc" id="L152">		org.drip.capital.simulation.PathPnLRealization[] pathPnLRealizationArray =</span>
+			new org.drip.capital.simulation.PathPnLRealization[pathCount];
+
+<span class="nc bnc" id="L155" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; pathCount; ++pathIndex)</span>
+		{
+<span class="nc" id="L157">			pathPnLRealizationArray[pathIndex] = _pathPnLRealizationList.get (</span>
+				pathIndex
+			);
+		}
+
+<span class="nc" id="L162">		return pathPnLRealizationArray;</span>
+	}
+
+	@Override public boolean addPathPnLRealization (
+		final org.drip.capital.simulation.PathPnLRealization pathPnLRealization)
+	{
+<span class="nc bnc" id="L168" title="All 2 branches missed.">		if (null == pathPnLRealization)</span>
+		{
+<span class="nc" id="L170">			return false;</span>
+		}
+
+<span class="nc" id="L173">		_pathPnLRealizationList.add (</span>
+			pathPnLRealization
+		);
+
+<span class="nc" id="L177">		double grossPnL = pathPnLRealization.grossPnL();</span>
+
+<span class="nc bnc" id="L179" title="All 2 branches missed.">		if (_pnlListMap.containsKey (</span>
+<span class="nc" id="L180">			grossPnL</span>
+		))
+		{
+<span class="nc" id="L183">			_pnlListMap.get (</span>
+<span class="nc" id="L184">				grossPnL</span>
+<span class="nc" id="L185">			).add (</span>
+<span class="nc" id="L186">				_pathPnLRealizationList.size() - 1</span>
+			);
+		}
+		else
+		{
+<span class="nc" id="L191">			java.util.List&lt;java.lang.Integer&gt; instanceList = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+
+<span class="nc" id="L193">			instanceList.add (</span>
+<span class="nc" id="L194">				_pathPnLRealizationList.size() - 1</span>
+			);
+
+<span class="nc" id="L197">			_pnlListMap.put (</span>
+<span class="nc" id="L198">				grossPnL,</span>
+				instanceList
+			);
+		}
+
+<span class="nc" id="L203">		org.drip.capital.simulation.StressEventIncidenceEnsemble systemicStressEventIncidenceEnsemble =</span>
+<span class="nc" id="L204">			pathPnLRealization.systemic();</span>
+
+<span class="nc bnc" id="L206" title="All 2 branches missed.">		if (null != systemicStressEventIncidenceEnsemble)</span>
+		{
+			for (org.drip.capital.simulation.StressEventIncidence stressEventIncidence :
+<span class="nc bnc" id="L209" title="All 2 branches missed.">				systemicStressEventIncidenceEnsemble.stressEventIncidenceList())</span>
+			{
+<span class="nc" id="L211">				java.lang.String event = stressEventIncidence.name();</span>
+
+<span class="nc bnc" id="L213" title="All 2 branches missed.">				if (_systemicEventIncidenceCountMap.containsKey (</span>
+					event
+				))
+				{
+<span class="nc" id="L217">					_systemicEventIncidenceCountMap.put (</span>
+						event,
+<span class="nc" id="L219">						_systemicEventIncidenceCountMap.get (</span>
+							event
+						) + 1
+					);
+				}
+				else
+				{
+<span class="nc" id="L226">					_systemicEventIncidenceCountMap.put (</span>
+						event,
+<span class="nc" id="L228">						1</span>
+					);
+				}
+<span class="nc" id="L231">			}</span>
+		}
+
+<span class="nc" id="L234">		org.drip.capital.simulation.StressEventIncidenceEnsemble idiosyncraticStressEventIncidenceEnsemble</span>
+<span class="nc" id="L235">			= pathPnLRealization.idiosyncratic();</span>
+
+<span class="nc bnc" id="L237" title="All 2 branches missed.">		if (null != idiosyncraticStressEventIncidenceEnsemble)</span>
+		{
+			for (org.drip.capital.simulation.StressEventIncidence stressEventIncidence :
+<span class="nc bnc" id="L240" title="All 2 branches missed.">				idiosyncraticStressEventIncidenceEnsemble.stressEventIncidenceList())</span>
+			{
+<span class="nc" id="L242">				java.lang.String event = stressEventIncidence.name();</span>
+
+<span class="nc bnc" id="L244" title="All 2 branches missed.">				if (_idiosyncraticEventIncidenceCountMap.containsKey (</span>
+					event
+				))
+				{
+<span class="nc" id="L248">					_idiosyncraticEventIncidenceCountMap.put (</span>
+						event,
+<span class="nc" id="L250">						_idiosyncraticEventIncidenceCountMap.get (</span>
+							event
+						) + 1
+					);
+				}
+				else
+				{
+<span class="nc" id="L257">					_idiosyncraticEventIncidenceCountMap.put (</span>
+						event,
+<span class="nc" id="L259">						1</span>
+					);
+				}
+<span class="nc" id="L262">			}</span>
+		}
+
+<span class="nc" id="L265">		return true;</span>
+	}
+
+	@Override public java.util.Map&lt;java.lang.Double, java.util.List&lt;java.lang.Integer&gt;&gt; pnlListMap()
+	{
+<span class="nc" id="L270">		return _pnlListMap;</span>
+	}
+
+	@Override public java.util.Map&lt;java.lang.String, java.lang.Integer&gt; systemicEventIncidenceCountMap()
+	{
+<span class="nc" id="L275">		return _systemicEventIncidenceCountMap;</span>
+	}
+
+	@Override public java.util.Map&lt;java.lang.String, java.lang.Integer&gt; idiosyncraticEventIncidenceCountMap()
+	{
+<span class="nc" id="L280">		return _idiosyncraticEventIncidenceCountMap;</span>
+	}
+
+	@Override public int count()
+	{
+<span class="nc" id="L285">		return _pathPnLRealizationList.size();</span>
+	}
+
+	@Override public int systemicEventIncidenceCount (
+		final java.lang.String event)
+	{
+<span class="nc bnc" id="L291" title="All 6 branches missed.">		return null == event || event.isEmpty() || !_systemicEventIncidenceCountMap.containsKey (</span>
+			event
+<span class="nc" id="L293">		) ? 0 : _systemicEventIncidenceCountMap.get (</span>
+			event
+		);
+	}
+
+	@Override public int idiosyncraticEventIncidenceCount (
+		final java.lang.String event)
+	{
+<span class="nc bnc" id="L301" title="All 6 branches missed.">		return null == event || event.isEmpty() || !_idiosyncraticEventIncidenceCountMap.containsKey (</span>
+			event
+<span class="nc" id="L303">		) ? 0 : _idiosyncraticEventIncidenceCountMap.get (</span>
+			event
+		);
+	}
+
+	@Override public double var (
+		final int confidenceCount)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L312" title="All 4 branches missed.">		if (0 &gt;= confidenceCount || _pathPnLRealizationList.size() &lt;= confidenceCount)</span>
+		{
+<span class="nc" id="L314">			throw new java.lang.Exception (</span>
+				&quot;CapitalUnitPathEnsemble::var =&gt; Invalid Inputs!&quot;
+			);
+		}
+
+<span class="nc" id="L319">		int cumulativeInstanceCount = 0;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.Double, java.util.List&lt;java.lang.Integer&gt;&gt; pnlListEntry :
+<span class="nc bnc" id="L322" title="All 2 branches missed.">			_pnlListMap.entrySet())</span>
+		{
+<span class="nc" id="L324">			if (confidenceCount &lt;=</span>
+<span class="nc bnc" id="L325" title="All 2 branches missed.">				(cumulativeInstanceCount = cumulativeInstanceCount + pnlListEntry.getValue().size()))</span>
+			{
+<span class="nc" id="L327">				return pnlListEntry.getKey();</span>
+			}
+<span class="nc" id="L329">		}</span>
+
+<span class="nc" id="L331">		throw new java.lang.Exception (</span>
+			&quot;CapitalUnitPathEnsemble::var =&gt; Confidence Count Too High!&quot;
+		);
+	}
+
+	@Override public double var (
+		final double confidenceLevel)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L340" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (</span>
+				confidenceLevel
+			) || 0. &gt;= confidenceLevel || 1. &lt;= confidenceLevel)
+		{
+<span class="nc" id="L344">			throw new java.lang.Exception (</span>
+				&quot;CapitalUnitPathEnsemble::var =&gt; Invalid Inputs!&quot;
+			);
+		}
+
+<span class="nc" id="L349">		return var (</span>
+<span class="nc" id="L350">			(int) (_pathPnLRealizationList.size() * (1. - confidenceLevel))</span>
+		);
+	}
+
+	@Override public double expectedShortfall (
+		final int confidenceCount)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L358" title="All 4 branches missed.">		if (0 &gt;= confidenceCount || _pathPnLRealizationList.size() &lt;= confidenceCount)</span>
+		{
+<span class="nc" id="L360">			throw new java.lang.Exception (</span>
+				&quot;CapitalUnitPathEnsemble::expectedShortfall =&gt; Invalid Inputs!&quot;
+			);
+		}
+
+<span class="nc" id="L365">		int instanceCount = 0;</span>
+<span class="nc" id="L366">		double cumulativeShortfall = 0.;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.Double, java.util.List&lt;java.lang.Integer&gt;&gt; pnlListEntry :
+<span class="nc bnc" id="L369" title="All 2 branches missed.">			_pnlListMap.entrySet())</span>
+		{
+<span class="nc" id="L371">			double pnl = pnlListEntry.getKey();</span>
+
+<span class="nc" id="L373">			int entrySize = pnlListEntry.getValue().size();</span>
+
+<span class="nc" id="L375">			for (int entryIndex = 0;</span>
+<span class="nc bnc" id="L376" title="All 2 branches missed.">				entryIndex &lt; entrySize;</span>
+<span class="nc" id="L377">				++entryIndex)</span>
+			{
+<span class="nc" id="L379">				cumulativeShortfall = cumulativeShortfall + pnl;</span>
+
+<span class="nc bnc" id="L381" title="All 2 branches missed.">				if (++instanceCount == confidenceCount)</span>
+				{
+<span class="nc" id="L383">					return cumulativeShortfall / confidenceCount;</span>
+				}
+			}
+<span class="nc" id="L386">		}</span>
+
+<span class="nc" id="L388">		throw new java.lang.Exception (</span>
+			&quot;CapitalUnitPathEnsemble::expectedShortfall =&gt; Confidence Count Too High!&quot;
+		);
+	}
+
+	@Override public double expectedShortfall (
+		final double confidenceLevel)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L397" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (</span>
+				confidenceLevel
+			) || 0. &gt;= confidenceLevel || 1. &lt;= confidenceLevel
+		)
+		{
+<span class="nc" id="L402">			throw new java.lang.Exception (</span>
+				&quot;CapitalUnitPathEnsemble::expectedShortfall =&gt; Invalid Inputs!&quot;
+			);
+		}
+
+<span class="nc" id="L407">		return expectedShortfall (</span>
+<span class="nc" id="L408">			(int) (_pathPnLRealizationList.size() * (1. - confidenceLevel))</span>
+		);
+	}
+
+	@Override public org.drip.capital.explain.CapitalUnitPnLAttribution pnlAttribution (
+		final int confidenceCount)
+	{
+<span class="nc bnc" id="L415" title="All 4 branches missed.">		if (0 &gt;= confidenceCount || _pathPnLRealizationList.size() &lt;= confidenceCount)</span>
+		{
+<span class="nc" id="L417">			return null;</span>
+		}
+
+<span class="nc" id="L420">		int instanceCount = 0;</span>
+
+<span class="nc" id="L422">		java.util.List&lt;org.drip.capital.simulation.PathPnLRealization&gt; selectedPathPnLRealizationList =</span>
+			new java.util.ArrayList&lt;org.drip.capital.simulation.PathPnLRealization&gt;();
+
+		for (java.util.Map.Entry&lt;java.lang.Double, java.util.List&lt;java.lang.Integer&gt;&gt; pnlListEntry :
+<span class="nc bnc" id="L426" title="All 2 branches missed.">			_pnlListMap.entrySet())</span>
+		{
+<span class="nc bnc" id="L428" title="All 2 branches missed.">			for (int listIndex : pnlListEntry.getValue())</span>
+			{
+<span class="nc" id="L430">				selectedPathPnLRealizationList.add (</span>
+<span class="nc" id="L431">					_pathPnLRealizationList.get (</span>
+						listIndex
+					)
+				);
+
+<span class="nc bnc" id="L436" title="All 2 branches missed.">				if (++instanceCount == confidenceCount)</span>
+				{
+<span class="nc" id="L438">					break;</span>
+				}
+<span class="nc" id="L440">			}</span>
+
+<span class="nc bnc" id="L442" title="All 2 branches missed.">			if (instanceCount == confidenceCount)</span>
+			{
+<span class="nc" id="L444">				break;</span>
+			}
+<span class="nc" id="L446">		}</span>
+
+		try
+		{
+<span class="nc" id="L450">			return new org.drip.capital.explain.CapitalUnitPnLAttribution (</span>
+				selectedPathPnLRealizationList
+			);
+		}
+<span class="nc" id="L454">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L456">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L459">		return null;</span>
+	}
+
+	@Override public org.drip.capital.explain.CapitalUnitPnLAttribution pnlAttribution (
+		final double confidenceLevel)
+	{
+<span class="nc bnc" id="L465" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (</span>
+				confidenceLevel
+			) || 0. &gt;= confidenceLevel || 1. &lt;= confidenceLevel
+		)
+		{
+<span class="nc" id="L470">			return null;</span>
+		}
+
+<span class="nc" id="L473">		return pnlAttribution (</span>
+<span class="nc" id="L474">			(int) (_pathPnLRealizationList.size() * (1. - confidenceLevel))</span>
+		);
+	}
+
+	@Override public org.drip.capital.explain.CapitalUnitPnLAttribution pnlAttribution (
+		final java.util.List&lt;java.lang.Integer&gt; pathIndexList)
+	{
+<span class="nc bnc" id="L481" title="All 4 branches missed.">		if (null == pathIndexList || 0 == pathIndexList.size())</span>
+		{
+<span class="nc" id="L483">			return null;</span>
+		}
+
+<span class="nc" id="L486">		java.util.List&lt;org.drip.capital.simulation.PathPnLRealization&gt; selectedPathPnLRealizationList =</span>
+			new java.util.ArrayList&lt;org.drip.capital.simulation.PathPnLRealization&gt;();
+
+<span class="nc bnc" id="L489" title="All 2 branches missed.">		for (int pathIndex : pathIndexList)</span>
+		{
+<span class="nc" id="L491">			selectedPathPnLRealizationList.add (</span>
+<span class="nc" id="L492">				_pathPnLRealizationList.get (</span>
+					pathIndex
+				)
+			);
+<span class="nc" id="L496">		}</span>
+
+		try
+		{
+<span class="nc" id="L500">			return new org.drip.capital.explain.CapitalUnitPnLAttribution (</span>
+				selectedPathPnLRealizationList
+			);
+		}
+<span class="nc" id="L504">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L506">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L509">		return null;</span>
+	}
+
+	@Override public java.util.List&lt;java.lang.Double&gt; grossSystemicStressPnLList()
+	{
+<span class="nc" id="L514">		java.util.List&lt;java.lang.Double&gt; grossSystemicStressPnLList =</span>
+			new java.util.ArrayList&lt;java.lang.Double&gt;();
+
+<span class="nc bnc" id="L517" title="All 2 branches missed.">		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : _pathPnLRealizationList)</span>
+		{
+<span class="nc" id="L519">			grossSystemicStressPnLList.add (</span>
+<span class="nc" id="L520">				pathPnLRealization.grossSystemicStressPnL()</span>
+			);
+<span class="nc" id="L522">		}</span>
+
+<span class="nc" id="L524">		return grossSystemicStressPnLList;</span>
+	}
+
+	@Override public java.util.List&lt;java.lang.Double&gt; grossIdiosyncraticStressPnLList()
+	{
+<span class="nc" id="L529">		java.util.List&lt;java.lang.Double&gt; grossIdiosyncraticStressPnLList =</span>
+			new java.util.ArrayList&lt;java.lang.Double&gt;();
+
+<span class="nc bnc" id="L532" title="All 2 branches missed.">		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : _pathPnLRealizationList)</span>
+		{
+<span class="nc" id="L534">			grossIdiosyncraticStressPnLList.add (</span>
+<span class="nc" id="L535">				pathPnLRealization.grossIdiosyncraticStressPnL()</span>
+			);
+<span class="nc" id="L537">		}</span>
+
+<span class="nc" id="L539">		return grossIdiosyncraticStressPnLList;</span>
+	}
+
+	@Override public java.util.List&lt;java.lang.Double&gt; grossFSPnLList()
+	{
+<span class="nc" id="L544">		java.util.List&lt;java.lang.Double&gt; grossFSPnLList = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+
+<span class="nc bnc" id="L546" title="All 2 branches missed.">		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : _pathPnLRealizationList)</span>
+		{
+<span class="nc" id="L548">			grossFSPnLList.add (</span>
+<span class="nc" id="L549">				pathPnLRealization.grossFSPnL()</span>
+			);
+<span class="nc" id="L551">		}</span>
+
+<span class="nc" id="L553">		return grossFSPnLList;</span>
+	}
+
+	@Override public java.util.List&lt;java.lang.Double&gt; grossPnLList()
+	{
+<span class="nc" id="L558">		java.util.List&lt;java.lang.Double&gt; grossPnLList = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+
+<span class="nc bnc" id="L560" title="All 2 branches missed.">		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : _pathPnLRealizationList)</span>
+		{
+<span class="nc" id="L562">			grossPnLList.add (</span>
+<span class="nc" id="L563">				pathPnLRealization.grossPnL()</span>
+			);
+<span class="nc" id="L565">		}</span>
+
+<span class="nc" id="L567">		return grossPnLList;</span>
+	}
+
+	@Override public org.drip.capital.simulation.EnsemblePnLDistribution ensembleDistribution()
+	{
+<span class="nc" id="L572">		java.util.List&lt;java.lang.Double&gt; grossPnLList = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+
+<span class="nc" id="L574">		java.util.List&lt;java.lang.Double&gt; grossFSPnLList = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+
+<span class="nc" id="L576">		java.util.List&lt;java.lang.Double&gt; grossSystemicStressPnLList =</span>
+			new java.util.ArrayList&lt;java.lang.Double&gt;();
+
+<span class="nc" id="L579">		java.util.List&lt;java.lang.Double&gt; grossIdiosyncraticStressPnLList =</span>
+			new java.util.ArrayList&lt;java.lang.Double&gt;();
+
+<span class="nc bnc" id="L582" title="All 2 branches missed.">		for (org.drip.capital.simulation.PathPnLRealization pathPnLRealization : _pathPnLRealizationList)</span>
+		{
+<span class="nc" id="L584">			grossSystemicStressPnLList.add (</span>
+<span class="nc" id="L585">				pathPnLRealization.grossSystemicStressPnL()</span>
+			);
+
+<span class="nc" id="L588">			grossIdiosyncraticStressPnLList.add (</span>
+<span class="nc" id="L589">				pathPnLRealization.grossIdiosyncraticStressPnL()</span>
+			);
+
+<span class="nc" id="L592">			grossFSPnLList.add (</span>
+<span class="nc" id="L593">				pathPnLRealization.grossFSPnL()</span>
+			);
+
+<span class="nc" id="L596">			grossPnLList.add (</span>
+<span class="nc" id="L597">				pathPnLRealization.grossPnL()</span>
+			);
+<span class="nc" id="L599">		}</span>
+
+		try
+		{
+<span class="nc" id="L603">			return new org.drip.capital.simulation.EnsemblePnLDistribution (</span>
+				grossSystemicStressPnLList,
+				grossIdiosyncraticStressPnLList,
+				grossFSPnLList,
+				grossPnLList
+			);
+		}
+<span class="nc" id="L610">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L612">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L615">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

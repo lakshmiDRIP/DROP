@@ -6,44 +6,56 @@ package org.drip.function.rdtor1solver;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -84,10 +96,10 @@ package org.drip.function.rdtor1solver;
 
 public class BarrierFixedPointFinder
 {
-<span class="fc" id="L87">	private org.drip.function.definition.RdToR1 _objectiveFunction = null;</span>
-<span class="fc" id="L88">	private org.drip.function.rdtor1descent.LineStepEvolutionControl _lineStepEvolutionControl = null;</span>
-<span class="fc" id="L89">	private org.drip.function.definition.RdToR1[] _inequalityConstraintMultivariateFunctionArray = null;</span>
-<span class="fc" id="L90">	private org.drip.function.rdtor1solver.InteriorPointBarrierControl _interiorPointBarrierControl = null;</span>
+<span class="fc" id="L99">	private org.drip.function.definition.RdToR1 _objectiveFunction = null;</span>
+<span class="fc" id="L100">	private org.drip.function.rdtor1descent.LineStepEvolutionControl _lineStepEvolutionControl = null;</span>
+<span class="fc" id="L101">	private org.drip.function.definition.RdToR1[] _inequalityConstraintMultivariateFunctionArray = null;</span>
+<span class="fc" id="L102">	private org.drip.function.rdtor1solver.InteriorPointBarrierControl _interiorPointBarrierControl = null;</span>
 
 	/**
 	 * BarrierFixedPointFinder Constructor
@@ -107,32 +119,32 @@ public class BarrierFixedPointFinder
 		final org.drip.function.rdtor1solver.InteriorPointBarrierControl interiorPointBarrierControl,
 		final org.drip.function.rdtor1descent.LineStepEvolutionControl lineStepEvolutionControl)
 		throws java.lang.Exception
-<span class="fc" id="L110">	{</span>
-<span class="pc bpc" id="L111" title="3 of 6 branches missed.">		if (null == (_objectiveFunction = objectiveFunction) ||</span>
+<span class="fc" id="L122">	{</span>
+<span class="pc bpc" id="L123" title="3 of 6 branches missed.">		if (null == (_objectiveFunction = objectiveFunction) ||</span>
 			null == (_inequalityConstraintMultivariateFunctionArray = inequalityConstraintMultivariateFunctionArray) ||
 			null == (_interiorPointBarrierControl = interiorPointBarrierControl))
 		{
-<span class="nc" id="L115">			throw new java.lang.Exception (&quot;BarrierFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L127">			throw new java.lang.Exception (&quot;BarrierFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L118">		_lineStepEvolutionControl = lineStepEvolutionControl;</span>
-<span class="fc" id="L119">		int constraintCount = _inequalityConstraintMultivariateFunctionArray.length;</span>
+<span class="fc" id="L130">		_lineStepEvolutionControl = lineStepEvolutionControl;</span>
+<span class="fc" id="L131">		int constraintCount = _inequalityConstraintMultivariateFunctionArray.length;</span>
 
-<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (0 == constraintCount)</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		if (0 == constraintCount)</span>
 		{
-<span class="nc" id="L123">			throw new java.lang.Exception (&quot;BarrierFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L135">			throw new java.lang.Exception (&quot;BarrierFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L126">		for (int constraintIndex = 0;</span>
-<span class="fc bfc" id="L127" title="All 2 branches covered.">			constraintIndex &lt; constraintCount;</span>
-<span class="fc" id="L128">			++constraintIndex)</span>
+<span class="fc" id="L138">		for (int constraintIndex = 0;</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">			constraintIndex &lt; constraintCount;</span>
+<span class="fc" id="L140">			++constraintIndex)</span>
 		{
-<span class="pc bpc" id="L130" title="1 of 2 branches missed.">			if (null == _inequalityConstraintMultivariateFunctionArray[constraintIndex])</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">			if (null == _inequalityConstraintMultivariateFunctionArray[constraintIndex])</span>
 			{
-<span class="nc" id="L132">				throw new java.lang.Exception (&quot;BarrierFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L144">				throw new java.lang.Exception (&quot;BarrierFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
 			}
 		}
-<span class="fc" id="L135">	}</span>
+<span class="fc" id="L147">	}</span>
 
 	/**
 	 * Retrieve the Objective Function
@@ -142,7 +154,7 @@ public class BarrierFixedPointFinder
 
 	public org.drip.function.definition.RdToR1 objectiveFunction()
 	{
-<span class="nc" id="L145">		return _objectiveFunction;</span>
+<span class="nc" id="L157">		return _objectiveFunction;</span>
 	}
 
 	/**
@@ -153,7 +165,7 @@ public class BarrierFixedPointFinder
 
 	public org.drip.function.definition.RdToR1[] inequalityConstraintMultivariateFunctionArray()
 	{
-<span class="nc" id="L156">		return _inequalityConstraintMultivariateFunctionArray;</span>
+<span class="nc" id="L168">		return _inequalityConstraintMultivariateFunctionArray;</span>
 	}
 
 	/**
@@ -164,7 +176,7 @@ public class BarrierFixedPointFinder
 
 	public org.drip.function.rdtor1descent.LineStepEvolutionControl lineStepEvolutionControl()
 	{
-<span class="nc" id="L167">		return _lineStepEvolutionControl;</span>
+<span class="nc" id="L179">		return _lineStepEvolutionControl;</span>
 	}
 
 	/**
@@ -175,7 +187,7 @@ public class BarrierFixedPointFinder
 
 	public org.drip.function.rdtor1solver.InteriorPointBarrierControl interiorPointBarrierControl()
 	{
-<span class="nc" id="L178">		return _interiorPointBarrierControl;</span>
+<span class="nc" id="L190">		return _interiorPointBarrierControl;</span>
 	}
 
 	/**
@@ -190,46 +202,46 @@ public class BarrierFixedPointFinder
 	public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier solve (
 		final double[] startingVariateArray)
 	{
-<span class="fc" id="L193">		double barrierStrength = _interiorPointBarrierControl.initialStrength();</span>
+<span class="fc" id="L205">		double barrierStrength = _interiorPointBarrierControl.initialStrength();</span>
 
-<span class="fc" id="L195">		int outstandingDecaySteps = _interiorPointBarrierControl.decayStepCount();</span>
+<span class="fc" id="L207">		int outstandingDecaySteps = _interiorPointBarrierControl.decayStepCount();</span>
 
-<span class="fc" id="L197">		double barrierDecayVelocity = _interiorPointBarrierControl.decayVelocity();</span>
+<span class="fc" id="L209">		double barrierDecayVelocity = _interiorPointBarrierControl.decayVelocity();</span>
 
-<span class="fc" id="L199">		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier variateConstraint = null;</span>
-<span class="fc" id="L200">		int constraintCount = _inequalityConstraintMultivariateFunctionArray.length;</span>
-<span class="fc" id="L201">		double[] startingConstraintMultiplierArray = new double[constraintCount];</span>
+<span class="fc" id="L211">		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier variateConstraint = null;</span>
+<span class="fc" id="L212">		int constraintCount = _inequalityConstraintMultivariateFunctionArray.length;</span>
+<span class="fc" id="L213">		double[] startingConstraintMultiplierArray = new double[constraintCount];</span>
 
 		try
 		{
-<span class="fc" id="L205">			for (int constraintIndex = 0;</span>
-<span class="fc bfc" id="L206" title="All 2 branches covered.">				constraintIndex &lt; constraintCount;</span>
-<span class="fc" id="L207">				++constraintIndex)</span>
+<span class="fc" id="L217">			for (int constraintIndex = 0;</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">				constraintIndex &lt; constraintCount;</span>
+<span class="fc" id="L219">				++constraintIndex)</span>
 			{
-<span class="fc" id="L209">				startingConstraintMultiplierArray[constraintIndex] = barrierStrength /</span>
-<span class="fc" id="L210">					_inequalityConstraintMultivariateFunctionArray[constraintIndex].evaluate (</span>
+<span class="fc" id="L221">				startingConstraintMultiplierArray[constraintIndex] = barrierStrength /</span>
+<span class="fc" id="L222">					_inequalityConstraintMultivariateFunctionArray[constraintIndex].evaluate (</span>
 						startingVariateArray
 					);
 			}
 
-<span class="fc" id="L215">			variateConstraint = new org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier (</span>
+<span class="fc" id="L227">			variateConstraint = new org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier (</span>
 				false,
 				startingVariateArray,
 				startingConstraintMultiplierArray
 			);
 		}
-<span class="nc" id="L221">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L233">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L223">			e.printStackTrace();</span>
+<span class="nc" id="L235">			e.printStackTrace();</span>
 
-<span class="nc" id="L225">			return null;</span>
-<span class="fc" id="L226">		}</span>
+<span class="nc" id="L237">			return null;</span>
+<span class="fc" id="L238">		}</span>
 
-<span class="fc bfc" id="L228" title="All 2 branches covered.">		while (--outstandingDecaySteps &gt;= 0)</span>
+<span class="fc bfc" id="L240" title="All 2 branches covered.">		while (--outstandingDecaySteps &gt;= 0)</span>
 		{
 			try
 			{
-<span class="fc" id="L232">				org.drip.function.rdtor1solver.InteriorFixedPointFinder interiorFixedPointFinder =</span>
+<span class="fc" id="L244">				org.drip.function.rdtor1solver.InteriorFixedPointFinder interiorFixedPointFinder =</span>
 					new org.drip.function.rdtor1solver.InteriorFixedPointFinder (
 						_objectiveFunction,
 						_inequalityConstraintMultivariateFunctionArray,
@@ -238,26 +250,26 @@ public class BarrierFixedPointFinder
 						barrierStrength
 					);
 
-<span class="fc" id="L241">				if (null == (</span>
-<span class="fc bfc" id="L242" title="All 2 branches covered.">					variateConstraint = interiorFixedPointFinder.find (</span>
+<span class="fc" id="L253">				if (null == (</span>
+<span class="fc bfc" id="L254" title="All 2 branches covered.">					variateConstraint = interiorFixedPointFinder.find (</span>
 						variateConstraint
 					))
 				)
 				{
-<span class="fc" id="L247">					return null;</span>
+<span class="fc" id="L259">					return null;</span>
 				}
 			}
-<span class="nc" id="L250">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L262">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L252">				e.printStackTrace();</span>
+<span class="nc" id="L264">				e.printStackTrace();</span>
 
-<span class="nc" id="L254">				return null;</span>
-<span class="fc" id="L255">			}</span>
+<span class="nc" id="L266">				return null;</span>
+<span class="fc" id="L267">			}</span>
 
-<span class="fc" id="L257">			barrierStrength *= barrierDecayVelocity;</span>
+<span class="fc" id="L269">			barrierStrength *= barrierDecayVelocity;</span>
 		}
 
-<span class="fc" id="L260">		return variateConstraint;</span>
+<span class="fc" id="L272">		return variateConstraint;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

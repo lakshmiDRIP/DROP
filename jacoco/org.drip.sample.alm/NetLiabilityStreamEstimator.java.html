@@ -10,38 +10,49 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -86,36 +97,36 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L89">public class NetLiabilityStreamEstimator {</span>
+<span class="nc" id="L100">public class NetLiabilityStreamEstimator {</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L95">		EnvManager.InitEnv (</span>
+<span class="fc" id="L106">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L100">		double dblAfterTaxIncome = 800.;</span>
-<span class="fc" id="L101">		double dblRetirementAge = 65.;</span>
-<span class="fc" id="L102">		double dblMaximumAge = 85.;</span>
-<span class="fc" id="L103">		double dblIncomeReplacementRate = 0.35;</span>
-<span class="fc" id="L104">		double dblWorkingAgeConsumptionRate = 0.80;</span>
-<span class="fc" id="L105">		double dblRetirementAgeConsumptionRate = 0.60;</span>
-<span class="fc" id="L106">		double dblStartAge = 45.;</span>
-<span class="fc" id="L107">		double dblEndAge = 105.;</span>
+<span class="fc" id="L111">		double dblAfterTaxIncome = 800.;</span>
+<span class="fc" id="L112">		double dblRetirementAge = 65.;</span>
+<span class="fc" id="L113">		double dblMaximumAge = 85.;</span>
+<span class="fc" id="L114">		double dblIncomeReplacementRate = 0.35;</span>
+<span class="fc" id="L115">		double dblWorkingAgeConsumptionRate = 0.80;</span>
+<span class="fc" id="L116">		double dblRetirementAgeConsumptionRate = 0.60;</span>
+<span class="fc" id="L117">		double dblStartAge = 45.;</span>
+<span class="fc" id="L118">		double dblEndAge = 105.;</span>
 
-<span class="fc" id="L109">		double dblYield = -0.0020;</span>
-<span class="fc" id="L110">		double dblBasicConsumptionSpread = 0.0100;</span>
-<span class="fc" id="L111">		double dblWorkingAgeIncomeSpread = 0.0100;</span>
-<span class="fc" id="L112">		double dblPensionBenefitsIncomeSpread = 0.0100;</span>
+<span class="fc" id="L120">		double dblYield = -0.0020;</span>
+<span class="fc" id="L121">		double dblBasicConsumptionSpread = 0.0100;</span>
+<span class="fc" id="L122">		double dblWorkingAgeIncomeSpread = 0.0100;</span>
+<span class="fc" id="L123">		double dblPensionBenefitsIncomeSpread = 0.0100;</span>
 
-<span class="fc" id="L114">		double dblWorkingAgeIncomePVReconciler = 14726.60;</span>
-<span class="fc" id="L115">		double dblPensionBenefitsIncomePVReconciler = 4392.20;</span>
-<span class="fc" id="L116">		double dblBasicConsumptionPVReconciler = 19310.70;</span>
+<span class="fc" id="L125">		double dblWorkingAgeIncomePVReconciler = 14726.60;</span>
+<span class="fc" id="L126">		double dblPensionBenefitsIncomePVReconciler = 4392.20;</span>
+<span class="fc" id="L127">		double dblBasicConsumptionPVReconciler = 19310.70;</span>
 
-<span class="fc" id="L118">		NetLiabilityStream nls = new NetLiabilityStream (</span>
+<span class="fc" id="L129">		NetLiabilityStream nls = new NetLiabilityStream (</span>
 			new InvestorCliffSettings (
 				dblRetirementAge,
 				dblMaximumAge
@@ -128,7 +139,7 @@ import org.drip.service.env.EnvManager;
 			dblAfterTaxIncome
 		);
 
-<span class="fc" id="L131">		NetLiabilityMetrics nlm = nls.generateMetrics (</span>
+<span class="fc" id="L142">		NetLiabilityMetrics nlm = nls.generateMetrics (</span>
 			dblStartAge,
 			dblEndAge,
 			new DiscountRate (
@@ -139,72 +150,72 @@ import org.drip.service.env.EnvManager;
 			)
 		);
 
-<span class="fc" id="L142">		System.out.println (&quot;\n\t||---------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L153">		System.out.println (&quot;\n\t||---------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L144">		System.out.println (&quot;\t||    L -&gt; R:                                                    ||&quot;);</span>
+<span class="fc" id="L155">		System.out.println (&quot;\t||    L -&gt; R:                                                    ||&quot;);</span>
 
-<span class="fc" id="L146">		System.out.println (&quot;\t||        Age (Years)                                            ||&quot;);</span>
+<span class="fc" id="L157">		System.out.println (&quot;\t||        Age (Years)                                            ||&quot;);</span>
 
-<span class="fc" id="L148">		System.out.println (&quot;\t||        Retired?                                               ||&quot;);</span>
+<span class="fc" id="L159">		System.out.println (&quot;\t||        Retired?                                               ||&quot;);</span>
 
-<span class="fc" id="L150">		System.out.println (&quot;\t||        Alive?                                                 ||&quot;);</span>
+<span class="fc" id="L161">		System.out.println (&quot;\t||        Alive?                                                 ||&quot;);</span>
 
-<span class="fc" id="L152">		System.out.println (&quot;\t||        Horizon (Years)                                        ||&quot;);</span>
+<span class="fc" id="L163">		System.out.println (&quot;\t||        Horizon (Years)                                        ||&quot;);</span>
 
-<span class="fc" id="L154">		System.out.println (&quot;\t||        Working Age Income DF                                  ||&quot;);</span>
+<span class="fc" id="L165">		System.out.println (&quot;\t||        Working Age Income DF                                  ||&quot;);</span>
 
-<span class="fc" id="L156">		System.out.println (&quot;\t||        Pension Benefits Income DF                             ||&quot;);</span>
+<span class="fc" id="L167">		System.out.println (&quot;\t||        Pension Benefits Income DF                             ||&quot;);</span>
 
-<span class="fc" id="L158">		System.out.println (&quot;\t||        Basic Consumption DF                                   ||&quot;);</span>
+<span class="fc" id="L169">		System.out.println (&quot;\t||        Basic Consumption DF                                   ||&quot;);</span>
 
-<span class="fc" id="L160">		System.out.println (&quot;\t||        Working Age Income                                     ||&quot;);</span>
+<span class="fc" id="L171">		System.out.println (&quot;\t||        Working Age Income                                     ||&quot;);</span>
 
-<span class="fc" id="L162">		System.out.println (&quot;\t||        Pension Benefits Income                                ||&quot;);</span>
+<span class="fc" id="L173">		System.out.println (&quot;\t||        Pension Benefits Income                                ||&quot;);</span>
 
-<span class="fc" id="L164">		System.out.println (&quot;\t||        Basic Consumption                                      ||&quot;);</span>
+<span class="fc" id="L175">		System.out.println (&quot;\t||        Basic Consumption                                      ||&quot;);</span>
 
-<span class="fc" id="L166">		System.out.println (&quot;\t||---------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L177">		System.out.println (&quot;\t||---------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L168" title="All 2 branches covered.">		for (NetLiabilityCashFlow nlcf : nlm.netLiabilityCashFlowList())</span>
-<span class="fc" id="L169">			System.out.println (</span>
+<span class="fc bfc" id="L179" title="All 2 branches covered.">		for (NetLiabilityCashFlow nlcf : nlm.netLiabilityCashFlowList())</span>
+<span class="fc" id="L180">			System.out.println (</span>
 				&quot;\t||&quot; +
-<span class="fc" id="L171">				FormatUtil.FormatDouble (nlcf.age(), 3, 0, 1.) + &quot; | &quot; +</span>
-<span class="fc bfc" id="L172" title="All 2 branches covered.">				(nlcf.isRetired() ? &quot;N&quot; : &quot;Y&quot;) + &quot; | &quot; +</span>
-<span class="fc bfc" id="L173" title="All 2 branches covered.">				(nlcf.isAlive() ? &quot;Y&quot; : &quot;N&quot;) + &quot; |&quot; +</span>
-<span class="fc" id="L174">				FormatUtil.FormatDouble (nlcf.horizon(), 2, 0, 1.) + &quot; |&quot; +</span>
-<span class="fc" id="L175">				FormatUtil.FormatDouble (nlcf.workingAgeIncomeDF(), 1, 4, 1.) + &quot; |&quot; +</span>
-<span class="fc" id="L176">				FormatUtil.FormatDouble (nlcf.pensionBenefitsDF(), 1, 4, 1.) + &quot; |&quot; +</span>
-<span class="fc" id="L177">				FormatUtil.FormatDouble (nlcf.basicConsumptionDF(), 1, 4, 1.) + &quot; |&quot; +</span>
-<span class="fc" id="L178">				FormatUtil.FormatDouble (nlcf.workingAgeIncome(), 3, 0, 1.) + &quot; |&quot; +</span>
-<span class="fc" id="L179">				FormatUtil.FormatDouble (nlcf.pensionBenefits(), 3, 0, 1.) + &quot; |&quot; +</span>
-<span class="fc" id="L180">				FormatUtil.FormatDouble (nlcf.basicConsumption(), 3, 0, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L182">				FormatUtil.FormatDouble (nlcf.age(), 3, 0, 1.) + &quot; | &quot; +</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">				(nlcf.isRetired() ? &quot;N&quot; : &quot;Y&quot;) + &quot; | &quot; +</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">				(nlcf.isAlive() ? &quot;Y&quot; : &quot;N&quot;) + &quot; |&quot; +</span>
+<span class="fc" id="L185">				FormatUtil.FormatDouble (nlcf.horizon(), 2, 0, 1.) + &quot; |&quot; +</span>
+<span class="fc" id="L186">				FormatUtil.FormatDouble (nlcf.workingAgeIncomeDF(), 1, 4, 1.) + &quot; |&quot; +</span>
+<span class="fc" id="L187">				FormatUtil.FormatDouble (nlcf.pensionBenefitsDF(), 1, 4, 1.) + &quot; |&quot; +</span>
+<span class="fc" id="L188">				FormatUtil.FormatDouble (nlcf.basicConsumptionDF(), 1, 4, 1.) + &quot; |&quot; +</span>
+<span class="fc" id="L189">				FormatUtil.FormatDouble (nlcf.workingAgeIncome(), 3, 0, 1.) + &quot; |&quot; +</span>
+<span class="fc" id="L190">				FormatUtil.FormatDouble (nlcf.pensionBenefits(), 3, 0, 1.) + &quot; |&quot; +</span>
+<span class="fc" id="L191">				FormatUtil.FormatDouble (nlcf.basicConsumption(), 3, 0, 1.) + &quot; ||&quot;</span>
 			);
 
-<span class="fc" id="L183">		System.out.println (&quot;\t||---------------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L194">		System.out.println (&quot;\t||---------------------------------------------------------------||\n&quot;);</span>
 
-<span class="fc" id="L185">		System.out.println (&quot;\t||-------------------------------------------------||&quot;);</span>
+<span class="fc" id="L196">		System.out.println (&quot;\t||-------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L187">		System.out.println (</span>
+<span class="fc" id="L198">		System.out.println (</span>
 			&quot;\t|| Working Age Income PV      : &quot; +
-<span class="fc" id="L189">			FormatUtil.FormatDouble (nlm.workingAgeIncomePV(), 5, 1, 1) + &quot; |&quot; +</span>
-<span class="fc" id="L190">			FormatUtil.FormatDouble (dblWorkingAgeIncomePVReconciler, 5, 1, 1) + &quot; ||&quot;</span>
+<span class="fc" id="L200">			FormatUtil.FormatDouble (nlm.workingAgeIncomePV(), 5, 1, 1) + &quot; |&quot; +</span>
+<span class="fc" id="L201">			FormatUtil.FormatDouble (dblWorkingAgeIncomePVReconciler, 5, 1, 1) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L193">		System.out.println (</span>
+<span class="fc" id="L204">		System.out.println (</span>
 			&quot;\t|| Pension Benefits Income PV : &quot; +
-<span class="fc" id="L195">			FormatUtil.FormatDouble (nlm.pensionBenefitsIncomePV(), 5, 1, 1) + &quot; |&quot; +</span>
-<span class="fc" id="L196">			FormatUtil.FormatDouble (dblPensionBenefitsIncomePVReconciler, 5, 1, 1) + &quot; ||&quot;</span>
+<span class="fc" id="L206">			FormatUtil.FormatDouble (nlm.pensionBenefitsIncomePV(), 5, 1, 1) + &quot; |&quot; +</span>
+<span class="fc" id="L207">			FormatUtil.FormatDouble (dblPensionBenefitsIncomePVReconciler, 5, 1, 1) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L199">		System.out.println (</span>
+<span class="fc" id="L210">		System.out.println (</span>
 			&quot;\t|| Basic Consumption PV       : &quot; +
-<span class="fc" id="L201">			FormatUtil.FormatDouble (nlm.basicConsumptionPV(), 5, 1, 1) + &quot; |&quot; +</span>
-<span class="fc" id="L202">			FormatUtil.FormatDouble (dblBasicConsumptionPVReconciler, 5, 1, 1) + &quot; ||&quot;</span>
+<span class="fc" id="L212">			FormatUtil.FormatDouble (nlm.basicConsumptionPV(), 5, 1, 1) + &quot; |&quot; +</span>
+<span class="fc" id="L213">			FormatUtil.FormatDouble (dblBasicConsumptionPVReconciler, 5, 1, 1) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L205">		System.out.println (&quot;\t||-------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L216">		System.out.println (&quot;\t||-------------------------------------------------||\n&quot;);</span>
 
-<span class="fc" id="L207">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L208">	}</span>
+<span class="fc" id="L218">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L219">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

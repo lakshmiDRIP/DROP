@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>R1NonCentral.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.measure.chisquare</a> &gt; <span class="el_source">R1NonCentral.java</span></div><h1>R1NonCentral.java</h1><pre class="source lang-java linenums">
+package org.drip.measure.chisquare;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;R1NonCentral&lt;/i&gt; implements the Distribution Table for the R&lt;sup&gt;1&lt;/sup&gt; Non-central Chi-Square
+ * 	Distribution. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Johnson, N. L., S. Kotz, and N. Balakrishnan (1995): &lt;i&gt;Continuous Univariate Distributions
+ * 				2&lt;sup&gt;nd&lt;/sup&gt; Edition&lt;/i&gt; &lt;b&gt;John Wiley and Sons&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Muirhead, R. (2005): &lt;i&gt;Aspects of Multivariate Statistical Theory 2&lt;sup&gt;nd&lt;/sup&gt; Edition&lt;/i&gt;
+ * 				&lt;b&gt;Wiley&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Non-central Chi-Squared Distribution (2019): Chi-Squared Function
+ * 				https://en.wikipedia.org/wiki/Noncentral_chi-squared_distribution
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Sankaran, M. (1963): Approximations to the Non-Central Chi-Square Distribution &lt;i&gt;Biometrika&lt;/i&gt;
+ * 				&lt;b&gt;50 (1-2)&lt;/b&gt; 199-204
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Young, D. S. (2010): tolerance: An R Package for Estimating Tolerance Intervals &lt;i&gt;Journal of
+ * 				Statistical Software&lt;/i&gt; &lt;b&gt;36 (5)&lt;/b&gt; 1-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md&quot;&gt;Chi-Square Distribution Implementation/Properties&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class R1NonCentral
+	extends org.drip.measure.continuous.R1Univariate
+{
+<span class="nc" id="L120">	private double _cdfScaler = java.lang.Double.NaN;</span>
+<span class="nc" id="L121">	private org.drip.function.definition.R1ToR1 _gammaEstimator = null;</span>
+<span class="nc" id="L122">	private org.drip.function.definition.R1ToR1 _digammaEstimator = null;</span>
+<span class="nc" id="L123">	private org.drip.function.definition.R2ToR1 _lowerIncompleteGammaEstimator = null;</span>
+<span class="nc" id="L124">	private org.drip.measure.chisquare.R1NonCentralParameters _r1NonCentralParameters = null;</span>
+<span class="nc" id="L125">	private org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator</span>
+		_modifiedBesselFirstKindEstimator = null;
+
+	private double nonCentralMoment (
+		final int n,
+		final double[] fourLeadingRawMoments)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		if (n &lt;= 3)</span>
+		{
+<span class="nc" id="L135">			return fourLeadingRawMoments[n - 1];</span>
+		}
+
+<span class="nc" id="L138">		double nonCentralMoment = cumulant (</span>
+			n
+		);
+
+<span class="nc" id="L142">		double degreesOfFreedom = _r1NonCentralParameters.degreesOfFreedom();</span>
+
+<span class="nc" id="L144">		double nonCentralityParameter = _r1NonCentralParameters.nonCentralityParameter();</span>
+
+<span class="nc" id="L146">		for (int j = 1;</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">			j &lt; n;</span>
+<span class="nc" id="L148">			++j)</span>
+		{
+<span class="nc" id="L150">			nonCentralMoment = nonCentralMoment +</span>
+<span class="nc" id="L151">				_gammaEstimator.evaluate (</span>
+					n
+<span class="nc" id="L153">				) * java.lang.Math.pow (</span>
+					2.,
+					j - 1.
+				) * (
+					degreesOfFreedom + j * nonCentralityParameter
+<span class="nc" id="L158">				) * nonCentralMoment (</span>
+					n - j,
+					fourLeadingRawMoments
+<span class="nc" id="L161">				) / _gammaEstimator.evaluate (</span>
+					n - j + 1
+				);
+		}
+
+<span class="nc" id="L166">		return nonCentralMoment;</span>
+	}
+
+	/**
+	 * Construct the Standard Instance of R1NonCentral
+	 * 
+	 * @param degreesOfFreedom Degrees of Freedom
+	 * @param nonCentralityParameter Non-centrality Parameter
+	 * @param gammaEstimator Gamma Estimator
+	 * @param digammaEstimator Digamma Estimator
+	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
+	 * @param modifiedBesselFirstKindEstimator Modified Bessel First Kind Estimator
+	 * 
+	 * @return The Standard Instance of R1NonCentral
+	 */
+
+	public static final R1NonCentral Standard (
+		final double degreesOfFreedom,
+		final double nonCentralityParameter,
+		final org.drip.function.definition.R1ToR1 gammaEstimator,
+		final org.drip.function.definition.R1ToR1 digammaEstimator,
+		final org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator,
+		final org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator
+			modifiedBesselFirstKindEstimator)
+	{
+		try
+		{
+<span class="nc" id="L193">			return new R1NonCentral (</span>
+				new org.drip.measure.chisquare.R1NonCentralParameters (
+					degreesOfFreedom,
+					nonCentralityParameter
+				),
+				gammaEstimator,
+				digammaEstimator,
+				lowerIncompleteGammaEstimator,
+				modifiedBesselFirstKindEstimator
+			);
+		}
+<span class="nc" id="L204">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L206">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L209">		return null;</span>
+	}
+
+	/**
+	 * R1NonCentral Constructor
+	 * 
+	 * @param r1NonCentralParameters R&lt;sup&gt;1&lt;/sup&gt; Non-central Parameters
+	 * @param gammaEstimator Gamma Estimator
+	 * @param digammaEstimator Digamma Estimator
+	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
+	 * @param modifiedBesselFirstKindEstimator Modified Bessel First Kind Estimator
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public R1NonCentral (
+		final org.drip.measure.chisquare.R1NonCentralParameters r1NonCentralParameters,
+		final org.drip.function.definition.R1ToR1 gammaEstimator,
+		final org.drip.function.definition.R1ToR1 digammaEstimator,
+		final org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator,
+		final org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator
+			modifiedBesselFirstKindEstimator)
+		throws java.lang.Exception
+<span class="nc" id="L232">	{</span>
+<span class="nc bnc" id="L233" title="All 10 branches missed.">		if (null == (_r1NonCentralParameters = r1NonCentralParameters) ||</span>
+			null == (_gammaEstimator = gammaEstimator) ||
+			null == (_digammaEstimator = digammaEstimator) ||
+			null == (_lowerIncompleteGammaEstimator = lowerIncompleteGammaEstimator) ||
+			null == (_modifiedBesselFirstKindEstimator = modifiedBesselFirstKindEstimator)
+		)
+		{
+<span class="nc" id="L240">			throw new java.lang.Exception (</span>
+				&quot;R1NonCentral Constructor =&gt; Invalid Inputs&quot;
+			);
+		}
+
+<span class="nc" id="L245">		_cdfScaler = java.lang.Math.exp (</span>
+<span class="nc" id="L246">			-0.5 * _r1NonCentralParameters.nonCentralityParameter()</span>
+		);
+<span class="nc" id="L248">	}</span>
+
+	/**
+	 * Retrieve the R&lt;sup&gt;1&lt;/sup&gt; Non-Central Parameters
+	 * 
+	 * @return The R&lt;sup&gt;1&lt;/sup&gt; Non-Central Parameters
+	 */
+
+	public org.drip.measure.chisquare.R1NonCentralParameters parameters()
+	{
+<span class="nc" id="L258">		return _r1NonCentralParameters;</span>
+	}
+
+	/**
+	 * Retrieve the Gamma Estimator
+	 * 
+	 * @return Gamma Estimator
+	 */
+
+	public org.drip.function.definition.R1ToR1 gammaEstimator()
+	{
+<span class="nc" id="L269">		return _gammaEstimator;</span>
+	}
+
+	/**
+	 * Retrieve the Digamma Estimator
+	 * 
+	 * @return Digamma Estimator
+	 */
+
+	public org.drip.function.definition.R1ToR1 digammaEstimator()
+	{
+<span class="nc" id="L280">		return _digammaEstimator;</span>
+	}
+
+	/**
+	 * Retrieve the Lower Incomplete Gamma Estimator
+	 * 
+	 * @return Lower Incomplete Gamma Estimator
+	 */
+
+	public org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator()
+	{
+<span class="nc" id="L291">		return _lowerIncompleteGammaEstimator;</span>
+	}
+
+	/**
+	 * Retrieve the Modified Bessel First Kind Estimator
+	 * 
+	 * @return Modified Bessel First Kind Estimator
+	 */
+
+	public org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator
+		modifiedBesselFirstKindEstimator()
+	{
+<span class="nc" id="L303">		return _modifiedBesselFirstKindEstimator;</span>
+	}
+
+	@Override public double[] support()
+	{
+<span class="nc" id="L308">		return new double[]</span>
+		{
+			0.,
+			java.lang.Double.POSITIVE_INFINITY
+		};
+	}
+
+	@Override public double density (
+		final double x)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L319" title="All 2 branches missed.">		if (!supported (</span>
+			x
+		))
+		{
+<span class="nc" id="L323">			throw new java.lang.Exception (</span>
+				&quot;R1NonCentral::density =&gt; Variate not in Range&quot;
+			);
+		}
+
+<span class="nc" id="L328">		double degreesOfFreedom = _r1NonCentralParameters.degreesOfFreedom();</span>
+
+<span class="nc" id="L330">		double nonCentralityParameter = _r1NonCentralParameters.nonCentralityParameter();</span>
+
+<span class="nc" id="L332">		return 0.5 * java.lang.Math.pow (</span>
+			x / nonCentralityParameter,
+			0.25 * degreesOfFreedom - 0.5
+<span class="nc" id="L335">		) * java.lang.Math.exp (</span>
+			-0.5 * (x + nonCentralityParameter)
+<span class="nc" id="L337">		) * _modifiedBesselFirstKindEstimator.bigI (</span>
+			0.5 * degreesOfFreedom - 1.,
+<span class="nc" id="L339">			java.lang.Math.sqrt (</span>
+				x * nonCentralityParameter
+			)
+		);
+	}
+
+	@Override public double cumulative (
+		final double t)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L349" title="All 2 branches missed.">		if (!supported (</span>
+			t
+		))
+		{
+<span class="nc" id="L353">			throw new java.lang.Exception (</span>
+				&quot;R1NonCentral::cumulative =&gt; Invalid Inputs&quot;
+			);
+		}
+
+<span class="nc" id="L358">		int termCount = 10;</span>
+<span class="nc" id="L359">		double cumulative = 0.;</span>
+
+<span class="nc" id="L361">		double degreesOfFreedom = _r1NonCentralParameters.degreesOfFreedom();</span>
+
+<span class="nc" id="L363">		double nonCentralityParameter = _r1NonCentralParameters.nonCentralityParameter();</span>
+
+<span class="nc" id="L365">		for (int termIndex = 0;</span>
+<span class="nc bnc" id="L366" title="All 2 branches missed.">			termIndex &lt; termCount;</span>
+<span class="nc" id="L367">			++termIndex)</span>
+		{
+<span class="nc" id="L369">			cumulative = cumulative +</span>
+<span class="nc" id="L370">				java.lang.Math.pow (</span>
+					0.5 * nonCentralityParameter,
+					termIndex
+				) * new org.drip.measure.chisquare.R1Central (
+					degreesOfFreedom + 2 * termIndex,
+					_gammaEstimator,
+					_digammaEstimator,
+					_lowerIncompleteGammaEstimator
+<span class="nc" id="L378">				).cumulative (</span>
+					t
+<span class="nc" id="L380">				) / org.drip.numerical.common.NumberUtil.Factorial (</span>
+					termIndex
+				);
+		}
+
+<span class="nc" id="L385">		return _cdfScaler * cumulative;</span>
+	}
+
+	@Override public double mean()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L391">		return _r1NonCentralParameters.degreesOfFreedom() + _r1NonCentralParameters.nonCentralityParameter();</span>
+	}
+
+	@Override public double variance()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L397">		return 2. * _r1NonCentralParameters.degreesOfFreedom() +</span>
+<span class="nc" id="L398">			4. * _r1NonCentralParameters.nonCentralityParameter();</span>
+	}
+
+	@Override public double skewness()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L404">		double degreesOfFreedom = _r1NonCentralParameters.degreesOfFreedom();</span>
+
+<span class="nc" id="L406">		double nonCentralityParameter = _r1NonCentralParameters.nonCentralityParameter();</span>
+
+<span class="nc" id="L408">		return (degreesOfFreedom + 3. * nonCentralityParameter) * java.lang.Math.pow (</span>
+			2.,
+			degreesOfFreedom + 2. * nonCentralityParameter
+		);
+	}
+
+	@Override public double excessKurtosis()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L417">		double degreesOfFreedom = _r1NonCentralParameters.degreesOfFreedom();</span>
+
+<span class="nc" id="L419">		double nonCentralityParameter = _r1NonCentralParameters.nonCentralityParameter();</span>
+
+<span class="nc" id="L421">		double kPlusTwoLambda = degreesOfFreedom + 2. * nonCentralityParameter;</span>
+<span class="nc" id="L422">		return 12. * (degreesOfFreedom + 4. * nonCentralityParameter) /</span>
+			(kPlusTwoLambda* kPlusTwoLambda);
+	}
+
+	@Override public org.drip.function.definition.R1ToR1 momentGeneratingFunction()
+	{
+<span class="nc" id="L428">		return new org.drip.function.definition.R1ToR1 (</span>
+			null
+		)
+<span class="nc" id="L431">		{</span>
+			@Override public double evaluate (
+				final double t)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L436" title="All 4 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (</span>
+						t
+					) || t &gt; 0.5
+				)
+				{
+<span class="nc" id="L441">					throw new java.lang.Exception (</span>
+						&quot;R1NonCentral::momentGeneratingFunction::evaluate =&gt; Invalid Input&quot;
+					);
+				}
+
+<span class="nc" id="L446">				double oneMinusTwoT = 1. - 2. * t;</span>
+
+<span class="nc" id="L448">				return java.lang.Math.exp (</span>
+<span class="nc" id="L449">					_r1NonCentralParameters.nonCentralityParameter() * t / oneMinusTwoT</span>
+<span class="nc" id="L450">				) / java.lang.Math.pow (</span>
+					oneMinusTwoT,
+<span class="nc" id="L452">					0.5 * _r1NonCentralParameters.degreesOfFreedom()</span>
+				);
+			}
+		};
+	}
+
+	/**
+	 * Compute the Cumulant
+	 * 
+	 * @param n Cumulant Index
+	 * 
+	 * @return The Cumulant
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double cumulant (
+		final int n)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L472" title="All 2 branches missed.">		if (0 &gt; n)</span>
+		{
+<span class="nc" id="L474">			throw new java.lang.Exception (</span>
+				&quot;R1NonCentral::cumulant =&gt; Invalid Inputs&quot;
+			);
+		}
+
+<span class="nc" id="L479">		return (</span>
+<span class="nc" id="L480">			_r1NonCentralParameters.degreesOfFreedom() + n * _r1NonCentralParameters.nonCentralityParameter()</span>
+<span class="nc" id="L481">		) * java.lang.Math.pow (</span>
+			2.,
+			n - 1.
+<span class="nc" id="L484">		) * _gammaEstimator.evaluate (</span>
+			n
+		);
+	}
+
+	/**
+	 * Compute the Leading Non-central Moments
+	 * 
+	 * @return Leading Non-central Moments
+	 */
+
+	public double[] leadingRawMoments()
+	{
+<span class="nc" id="L497">		double degreesOfFreedom = _r1NonCentralParameters.degreesOfFreedom();</span>
+
+<span class="nc" id="L499">		double nonCentralityParameter = _r1NonCentralParameters.nonCentralityParameter();</span>
+
+<span class="nc" id="L501">		double[] fourLeadingRawMomentArray = new double[4];</span>
+<span class="nc" id="L502">		fourLeadingRawMomentArray[0] = nonCentralityParameter + degreesOfFreedom;</span>
+<span class="nc" id="L503">		fourLeadingRawMomentArray[1] =</span>
+			fourLeadingRawMomentArray[0] * fourLeadingRawMomentArray[0] +
+			2. * (nonCentralityParameter + 2. * degreesOfFreedom);
+<span class="nc" id="L506">		fourLeadingRawMomentArray[2] =</span>
+			fourLeadingRawMomentArray[0] * fourLeadingRawMomentArray[0] * fourLeadingRawMomentArray[0] +
+			6. * fourLeadingRawMomentArray[0] * (nonCentralityParameter + 2. * degreesOfFreedom) +
+			8. * (nonCentralityParameter + 3. * degreesOfFreedom);
+<span class="nc" id="L510">		fourLeadingRawMomentArray[3] =</span>
+			fourLeadingRawMomentArray[0] * fourLeadingRawMomentArray[0] * fourLeadingRawMomentArray[0] *
+				fourLeadingRawMomentArray[0] +
+			12. * fourLeadingRawMomentArray[0] * fourLeadingRawMomentArray[0] *
+				(nonCentralityParameter + 2. * degreesOfFreedom) +
+			4. * (
+				11. * degreesOfFreedom * degreesOfFreedom +
+				44. * degreesOfFreedom * nonCentralityParameter +
+				36. * nonCentralityParameter * nonCentralityParameter
+			) +
+			48. * (nonCentralityParameter + 4. * degreesOfFreedom);
+<span class="nc" id="L521">		return fourLeadingRawMomentArray;</span>
+	}
+
+	/**
+	 * Compute the Leading central Moments
+	 * 
+	 * @return Leading central Moments
+	 */
+
+	public double[] leadingCentralMoments()
+	{
+<span class="nc" id="L532">		double degreesOfFreedom = _r1NonCentralParameters.degreesOfFreedom();</span>
+
+<span class="nc" id="L534">		double nonCentralityParameter = _r1NonCentralParameters.nonCentralityParameter();</span>
+
+<span class="nc" id="L536">		double[] fourLeadingCentralMomentArray = new double[4];</span>
+<span class="nc" id="L537">		fourLeadingCentralMomentArray[0] = 0.;</span>
+<span class="nc" id="L538">		fourLeadingCentralMomentArray[1] =</span>
+			2. * (nonCentralityParameter + 2. * degreesOfFreedom);
+<span class="nc" id="L540">		fourLeadingCentralMomentArray[2] =</span>
+			8. * (nonCentralityParameter + 3. * degreesOfFreedom);
+<span class="nc" id="L542">		fourLeadingCentralMomentArray[3] =</span>
+			12. * (nonCentralityParameter + 2. * degreesOfFreedom) *
+				(nonCentralityParameter + 2. * degreesOfFreedom) +
+			48. * (nonCentralityParameter + 4. * degreesOfFreedom);
+<span class="nc" id="L546">		return fourLeadingCentralMomentArray;</span>
+	}
+
+	/**
+	 * Compute the Non-central Moment
+	 * 
+	 * @param n Moment Index
+	 * 
+	 * @return The Non-central Moment
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double nonCentralMoment (
+		final int n)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L563" title="All 2 branches missed.">		if (0 &gt;= n)</span>
+		{
+<span class="nc" id="L565">			throw new java.lang.Exception (</span>
+				&quot;R1NonCentral::nonCentralMoment =&gt; Invalid Inputs&quot;
+			);
+		}
+
+<span class="nc" id="L570">		return nonCentralMoment (</span>
+			n,
+<span class="nc" id="L572">			leadingRawMoments()</span>
+		);
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -15,41 +15,53 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -102,35 +114,35 @@ import org.drip.service.env.EnvManager;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationLibrary.md&quot;&gt;Model Validation Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/anfuso2013&quot;&gt;Anfuso, Karyampas, and Nawroth (2013) Replications&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/anfuso2017/README.md&quot;&gt;Anfuso, Karyampas, and Nawroth (2013) Replications&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L115">public class RollingWindowCorrelation8</span>
+<span class="nc" id="L127">public class RollingWindowCorrelation8</span>
 {
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L122">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L134">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L124">		int pathCount = 1;</span>
-<span class="nc" id="L125">		int vertexCount = 390;</span>
-<span class="nc" id="L126">		int rollingWindow = 26;</span>
-<span class="nc" id="L127">		double[][] correlation = </span>
+<span class="nc" id="L136">		int pathCount = 1;</span>
+<span class="nc" id="L137">		int vertexCount = 390;</span>
+<span class="nc" id="L138">		int rollingWindow = 26;</span>
+<span class="nc" id="L139">		double[][] correlation = </span>
 		{
 			{1.000, 0.161},	// SNP500
 			{0.161, 1.000},	// CHFUSD
 		};
 
-<span class="nc" id="L133">		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (</span>
+<span class="nc" id="L145">		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (</span>
 			new RandomNumberGenerator(),
 			correlation,
 			vertexCount,
@@ -139,62 +151,62 @@ import org.drip.service.env.EnvManager;
 			null
 		);
 
-<span class="nc" id="L142">		double[][] correlatedSequence =</span>
-<span class="nc" id="L143">			correlatedPathVertexDimension.straightMultiPathVertexRd()[0].flatform();</span>
+<span class="nc" id="L154">		double[][] correlatedSequence =</span>
+<span class="nc" id="L155">			correlatedPathVertexDimension.straightMultiPathVertexRd()[0].flatform();</span>
 
-<span class="nc" id="L145">		List&lt;double[]&gt; windowSequence = new ArrayList&lt;double[]&gt;();</span>
+<span class="nc" id="L157">		List&lt;double[]&gt; windowSequence = new ArrayList&lt;double[]&gt;();</span>
 
-<span class="nc bnc" id="L147" title="All 2 branches missed.">		for (int rollingIndex = 0; rollingIndex &lt; rollingWindow; ++rollingIndex)</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">		for (int rollingIndex = 0; rollingIndex &lt; rollingWindow; ++rollingIndex)</span>
 		{
-<span class="nc" id="L149">			windowSequence.add (correlatedSequence[rollingIndex]);</span>
+<span class="nc" id="L161">			windowSequence.add (correlatedSequence[rollingIndex]);</span>
 		}
 
-<span class="nc" id="L152">		double[][] rollingWindowSequence = new double[rollingWindow][2];</span>
+<span class="nc" id="L164">		double[][] rollingWindowSequence = new double[rollingWindow][2];</span>
 
-<span class="nc" id="L154">		System.out.println (&quot;\t|---------------------------------------------||&quot;);</span>
+<span class="nc" id="L166">		System.out.println (&quot;\t|---------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L156">		System.out.println (&quot;\t|   Time Series Rolling Window Correlation    ||&quot;);</span>
-
-<span class="nc" id="L158">		System.out.println (&quot;\t|---------------------------------------------||&quot;);</span>
-
-<span class="nc" id="L160">		System.out.println (&quot;\t|    L -&gt; R:                                  ||&quot;);</span>
-
-<span class="nc" id="L162">		System.out.println (&quot;\t|            - SNP500                         ||&quot;);</span>
-
-<span class="nc" id="L164">		System.out.println (&quot;\t|            - CHFUSD                         ||&quot;);</span>
-
-<span class="nc" id="L166">		System.out.println (&quot;\t|            - SNP500 vs. CHFUSD Correlation  ||&quot;);</span>
-
-<span class="nc" id="L168">		System.out.println (&quot;\t|            - CHFUSD vs. SNP500 Correlation  ||&quot;);</span>
+<span class="nc" id="L168">		System.out.println (&quot;\t|   Time Series Rolling Window Correlation    ||&quot;);</span>
 
 <span class="nc" id="L170">		System.out.println (&quot;\t|---------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L172" title="All 2 branches missed.">		for (int index = rollingWindow; index &lt; vertexCount; ++index)</span>
+<span class="nc" id="L172">		System.out.println (&quot;\t|    L -&gt; R:                                  ||&quot;);</span>
+
+<span class="nc" id="L174">		System.out.println (&quot;\t|            - SNP500                         ||&quot;);</span>
+
+<span class="nc" id="L176">		System.out.println (&quot;\t|            - CHFUSD                         ||&quot;);</span>
+
+<span class="nc" id="L178">		System.out.println (&quot;\t|            - SNP500 vs. CHFUSD Correlation  ||&quot;);</span>
+
+<span class="nc" id="L180">		System.out.println (&quot;\t|            - CHFUSD vs. SNP500 Correlation  ||&quot;);</span>
+
+<span class="nc" id="L182">		System.out.println (&quot;\t|---------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L184" title="All 2 branches missed.">		for (int index = rollingWindow; index &lt; vertexCount; ++index)</span>
 		{
-<span class="nc" id="L174">			windowSequence.toArray (rollingWindowSequence);</span>
+<span class="nc" id="L186">			windowSequence.toArray (rollingWindowSequence);</span>
 
-<span class="nc" id="L176">			MultivariateDiscrete multivariateDiscrete = new MultivariateDiscrete (rollingWindowSequence);</span>
+<span class="nc" id="L188">			MultivariateDiscrete multivariateDiscrete = new MultivariateDiscrete (rollingWindowSequence);</span>
 
-<span class="nc" id="L178">			double[][] rollingWindowCorrelation = multivariateDiscrete.correlation();</span>
+<span class="nc" id="L190">			double[][] rollingWindowCorrelation = multivariateDiscrete.correlation();</span>
 
-<span class="nc" id="L180">			System.out.println (&quot;\t| &quot; +</span>
-<span class="nc" id="L181">				FormatUtil.FormatDouble (correlatedSequence[index][0], 1, 8, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L182">				FormatUtil.FormatDouble (correlatedSequence[index][1], 1, 8, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L183">				FormatUtil.FormatDouble (rollingWindowCorrelation[0][1], 2, 1, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L184">				FormatUtil.FormatDouble (rollingWindowCorrelation[1][0], 2, 1, 100.) + &quot;% ||&quot;</span>
+<span class="nc" id="L192">			System.out.println (&quot;\t| &quot; +</span>
+<span class="nc" id="L193">				FormatUtil.FormatDouble (correlatedSequence[index][0], 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L194">				FormatUtil.FormatDouble (correlatedSequence[index][1], 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L195">				FormatUtil.FormatDouble (rollingWindowCorrelation[0][1], 2, 1, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L196">				FormatUtil.FormatDouble (rollingWindowCorrelation[1][0], 2, 1, 100.) + &quot;% ||&quot;</span>
 			);
 
-<span class="nc bnc" id="L187" title="All 2 branches missed.">			if (index &lt; vertexCount - 1)</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">			if (index &lt; vertexCount - 1)</span>
 			{
-<span class="nc" id="L189">				windowSequence.remove (0);</span>
+<span class="nc" id="L201">				windowSequence.remove (0);</span>
 
-<span class="nc" id="L191">				windowSequence.add (correlatedSequence[index + 1]);</span>
+<span class="nc" id="L203">				windowSequence.add (correlatedSequence[index + 1]);</span>
 			}
 		}
 
-<span class="nc" id="L195">		System.out.println (&quot;\t|---------------------------------------------||&quot;);</span>
+<span class="nc" id="L207">		System.out.println (&quot;\t|---------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L197">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L198">	}</span>
+<span class="nc" id="L209">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L210">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

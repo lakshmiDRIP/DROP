@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CapitalUnitEventContainer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.entity</a> &gt; <span class="el_source">CapitalUnitEventContainer.java</span></div><h1>CapitalUnitEventContainer.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.entity;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;CapitalUnitEventContainer&lt;/i&gt; contains all the Stress Event Specifications across all of the Event Types that
+ * 	belong inside of the a Capital Unit. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Bank for International Supervision(2005): Stress Testing at Major Financial Institutions: Survey
+ * 				Results and Practice https://www.bis.org/publ/cgfs24.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Glasserman, P. (2004): &lt;i&gt;Monte Carlo Methods in Financial Engineering&lt;/i&gt; &lt;b&gt;Springer&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/entity/README.md&quot;&gt;Economic Risk Capital Estimation Nodes&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class CapitalUnitEventContainer
+{
+<span class="fc" id="L109">	private org.drip.capital.stress.SystemicEventContainer _systemicEventContainer = null;</span>
+<span class="fc" id="L110">	private org.drip.capital.stress.IdiosyncraticEventContainer _idiosyncraticEventContainer = null;</span>
+
+	/**
+	 * Empty CapitalUnitEventContainer Constructor
+	 */
+
+	public CapitalUnitEventContainer()
+<span class="fc" id="L117">	{</span>
+<span class="fc" id="L118">	}</span>
+
+	/**
+	 * Add Systemic Event
+	 * 
+	 * @param systemicEvent The Systemic Event
+	 * 
+	 * @return TRUE - The Systemic Event successfully added
+	 */
+
+	public boolean addSystemicEvent (
+		final org.drip.capital.stress.Event systemicEvent)
+	{
+<span class="fc bfc" id="L131" title="All 2 branches covered.">		if (null == _systemicEventContainer)</span>
+		{
+<span class="fc" id="L133">			_systemicEventContainer = new org.drip.capital.stress.SystemicEventContainer();</span>
+		}
+
+<span class="fc" id="L136">		return _systemicEventContainer.addEvent (</span>
+			systemicEvent
+		);
+	}
+
+	/**
+	 * Indicate if the Systemic Event is Available
+	 * 
+	 * @param systemicEventName Systemic Event Name
+	 * 
+	 * @return TRUE - The Systemic Event is Available
+	 */
+
+	public boolean containsSystemicEvent (
+		final java.lang.String systemicEventName)
+	{
+<span class="nc bnc" id="L152" title="All 2 branches missed.">		return null == _systemicEventContainer ? false : _systemicEventContainer.containsEvent (</span>
+			systemicEventName
+		);
+	}
+
+	/**
+	 * Retrieve the Systemic Event by Name
+	 * 
+	 * @param systemicEventName Systemic Event by Name
+	 * 
+	 * @return The Systemic Event
+	 */
+
+	public org.drip.capital.stress.Event systemicEvent (
+		final java.lang.String systemicEventName)
+	{
+<span class="nc bnc" id="L168" title="All 2 branches missed.">		return null == _systemicEventContainer ? null : _systemicEventContainer.event (</span>
+			systemicEventName
+		);
+	}
+
+	/**
+	 * Add Idiosyncratic Event
+	 * 
+	 * @param idiosyncraticEvent The Idiosyncratic Event
+	 * 
+	 * @return TRUE - The Idiosyncratic Event successfully added
+	 */
+
+	public boolean addIdiosyncraticEvent (
+		final org.drip.capital.stress.Event idiosyncraticEvent)
+	{
+<span class="fc bfc" id="L184" title="All 2 branches covered.">		if (null == _idiosyncraticEventContainer)</span>
+		{
+<span class="fc" id="L186">			_idiosyncraticEventContainer = new org.drip.capital.stress.IdiosyncraticEventContainer();</span>
+		}
+
+<span class="fc" id="L189">		return _idiosyncraticEventContainer.addEvent (</span>
+			idiosyncraticEvent
+		);
+	}
+
+	/**
+	 * Indicate if the Idiosyncratic Event is Available
+	 * 
+	 * @param idiosyncraticEventName Idiosyncratic Event Name
+	 * 
+	 * @return TRUE - The Idiosyncratic Event is Available
+	 */
+
+	public boolean containsIdiosyncraticEvent (
+		final java.lang.String idiosyncraticEventName)
+	{
+<span class="nc bnc" id="L205" title="All 2 branches missed.">		return null == _idiosyncraticEventContainer ? false : _idiosyncraticEventContainer.containsEvent (</span>
+			idiosyncraticEventName
+		);
+	}
+
+	/**
+	 * Retrieve the Idiosyncratic Event by Name
+	 * 
+	 * @param idiosyncraticEventName Idiosyncratic Event by Name
+	 * 
+	 * @return The Idiosyncratic Event
+	 */
+
+	public org.drip.capital.stress.Event idiosyncraticEvent (
+		final java.lang.String idiosyncraticEventName)
+	{
+<span class="nc bnc" id="L221" title="All 2 branches missed.">		return null == _idiosyncraticEventContainer ? null : _idiosyncraticEventContainer.event (</span>
+			idiosyncraticEventName
+		);
+	}
+
+	/**
+	 * Retrieve the Systemic Event Container
+	 * 
+	 * @return The Systemic Event Container
+	 */
+
+	public org.drip.capital.stress.SystemicEventContainer systemicEventContainer()
+	{
+<span class="nc" id="L234">		return _systemicEventContainer;</span>
+	}
+
+	/**
+	 * Retrieve the Idiosyncratic Event Container
+	 * 
+	 * @return The Idiosyncratic Event Container
+	 */
+
+	public org.drip.capital.stress.IdiosyncraticEventContainer idiosyncraticEventContainer()
+	{
+<span class="nc" id="L245">		return _idiosyncraticEventContainer;</span>
+	}
+
+	/**
+	 * Add Correlated Stress Event PnL Series
+	 * 
+	 * @param systemicEventName Systemic Stress Event Name
+	 * @param correlatedEventName Correlated Stress Event Name
+	 * @param correlatedEventPnLSeries Correlated Stress Event PnL Series
+	 * 
+	 * @return TRUE - The Correlated Stress Event PnL Series successfully added
+	 */
+
+	public boolean addCorrelatedEvent (
+		final java.lang.String systemicEventName,
+		final java.lang.String correlatedEventName,
+		final org.drip.capital.stress.PnLSeries correlatedEventPnLSeries)
+	{
+<span class="pc bpc" id="L263" title="1 of 2 branches missed.">		if (null == _systemicEventContainer)</span>
+		{
+<span class="nc" id="L265">			return false;</span>
+		}
+
+<span class="fc" id="L268">		org.drip.capital.stress.Event systemicEvent = _systemicEventContainer.event (</span>
+			systemicEventName
+		);
+
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">		if (null == systemicEvent)</span>
+		{
+<span class="nc" id="L274">			return false;</span>
+		}
+
+<span class="fc" id="L277">		return systemicEvent.attachStressEventPnL (</span>
+			correlatedEventName,
+			correlatedEventPnLSeries
+		);
+	}
+
+	/**
+	 * Indicate if the Correlated Event is Available
+	 * 
+	 * @param systemicEventName Systemic Stress Event Name
+	 * @param correlatedEventName Correlated Stress Event Name
+	 * 
+	 * @return TRUE - The Correlated Event is Available
+	 */
+
+	public boolean containsCorrelatedEvent (
+		final java.lang.String systemicEventName,
+		final java.lang.String correlatedEventName)
+	{
+<span class="nc bnc" id="L296" title="All 2 branches missed.">		if (null == _systemicEventContainer)</span>
+		{
+<span class="nc" id="L298">			return false;</span>
+		}
+
+<span class="nc bnc" id="L301" title="All 2 branches missed.">		return !_systemicEventContainer.containsEvent (</span>
+			systemicEventName
+<span class="nc" id="L303">		) ? false : _systemicEventContainer.event (</span>
+			systemicEventName
+<span class="nc" id="L305">		).containsAttachedEvent (</span>
+			correlatedEventName
+		);
+	}
+
+	/**
+	 * Retrieve the Correlated Stress Event PnL
+	 * 
+	 * @param systemicEventName Systemic Stress Event Name
+	 * @param correlatedEventName Correlated Stress Event Name
+	 * 
+	 * @return TRUE - The Correlated Stress Event PnL
+	 */
+
+	public org.drip.capital.stress.PnLSeries correlatedEvent (
+		final java.lang.String systemicEventName,
+		final java.lang.String correlatedEventName)
+	{
+<span class="nc bnc" id="L323" title="All 2 branches missed.">		return !_systemicEventContainer.containsEvent (</span>
+			systemicEventName
+<span class="nc" id="L325">		) ? null : _systemicEventContainer.event (</span>
+			systemicEventName
+<span class="nc" id="L327">		).attachedEventPnL (</span>
+			correlatedEventName
+		);
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

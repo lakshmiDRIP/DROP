@@ -6,44 +6,56 @@ package org.drip.function.rdtor1descent;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -90,10 +102,10 @@ package org.drip.function.rdtor1descent;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/rdtor1descent/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Function Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/rdtor1descent/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Gradient Descent Techniques&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -101,10 +113,10 @@ package org.drip.function.rdtor1descent;
 
 public abstract class LineEvolutionVerifierMetrics
 {
-<span class="fc" id="L104">	private double[] _currentVariateArray = null;</span>
-<span class="fc" id="L105">	private double _stepLength = java.lang.Double.NaN;</span>
-<span class="fc" id="L106">	private double[] _currentVariateFunctionJacobian = null;</span>
-<span class="fc" id="L107">	private org.drip.function.definition.UnitVector _targetDirection = null;</span>
+<span class="fc" id="L116">	private double[] _currentVariateArray = null;</span>
+<span class="fc" id="L117">	private double _stepLength = java.lang.Double.NaN;</span>
+<span class="fc" id="L118">	private double[] _currentVariateFunctionJacobian = null;</span>
+<span class="fc" id="L119">	private org.drip.function.definition.UnitVector _targetDirection = null;</span>
 
 	protected LineEvolutionVerifierMetrics (
 		final org.drip.function.definition.UnitVector targetDirection,
@@ -112,16 +124,16 @@ public abstract class LineEvolutionVerifierMetrics
 		final double stepLength,
 		final double[] currentVariateFunctionJacobian)
 		throws java.lang.Exception
-<span class="fc" id="L115">	{</span>
-<span class="pc bpc" id="L116" title="2 of 4 branches missed.">		if (null == (_targetDirection = targetDirection) ||</span>
+<span class="fc" id="L127">	{</span>
+<span class="pc bpc" id="L128" title="2 of 4 branches missed.">		if (null == (_targetDirection = targetDirection) ||</span>
 			null == (_currentVariateArray = currentVariateArray) ||
-<span class="pc bpc" id="L118" title="3 of 6 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_stepLength = stepLength) ||</span>
+<span class="pc bpc" id="L130" title="3 of 6 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_stepLength = stepLength) ||</span>
 			null == (_currentVariateFunctionJacobian = currentVariateFunctionJacobian) ||
 			_currentVariateArray.length != _currentVariateFunctionJacobian.length)
 		{
-<span class="nc" id="L122">			throw new java.lang.Exception (&quot;LineEvolutionVerifierMetrics Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L134">			throw new java.lang.Exception (&quot;LineEvolutionVerifierMetrics Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L124">	}</span>
+<span class="fc" id="L136">	}</span>
 
 	/**
 	 * Retrieve the Current Variate Array
@@ -131,7 +143,7 @@ public abstract class LineEvolutionVerifierMetrics
 
 	public double[] currentVariateArray()
 	{
-<span class="nc" id="L134">		return _currentVariateArray;</span>
+<span class="nc" id="L146">		return _currentVariateArray;</span>
 	}
 
 	/**
@@ -142,7 +154,7 @@ public abstract class LineEvolutionVerifierMetrics
 
 	public org.drip.function.definition.UnitVector targetDirection()
 	{
-<span class="fc" id="L145">		return _targetDirection;</span>
+<span class="fc" id="L157">		return _targetDirection;</span>
 	}
 
 	/**
@@ -153,7 +165,7 @@ public abstract class LineEvolutionVerifierMetrics
 
 	public double stepLength()
 	{
-<span class="fc" id="L156">		return _stepLength;</span>
+<span class="fc" id="L168">		return _stepLength;</span>
 	}
 
 	/**
@@ -164,21 +176,21 @@ public abstract class LineEvolutionVerifierMetrics
 
 	public double[] currentVariateFunctionJacobian()
 	{
-<span class="fc" id="L167">		return _currentVariateFunctionJacobian;</span>
+<span class="fc" id="L179">		return _currentVariateFunctionJacobian;</span>
 	}
 
 	@Override public java.lang.String toString()
 	{
-<span class="fc" id="L172">		double[] targetDirectionVector = _targetDirection.component();</span>
+<span class="fc" id="L184">		double[] targetDirectionVector = _targetDirection.component();</span>
 
-<span class="fc" id="L174">		java.lang.String string = &quot;\t[&quot;;</span>
-<span class="fc" id="L175">		int variateCount = _currentVariateArray.length;</span>
+<span class="fc" id="L186">		java.lang.String string = &quot;\t[&quot;;</span>
+<span class="fc" id="L187">		int variateCount = _currentVariateArray.length;</span>
 
-<span class="fc" id="L177">		for (int variateIndex = 0;</span>
-<span class="fc bfc" id="L178" title="All 2 branches covered.">			variateIndex &lt; variateCount;</span>
-<span class="fc" id="L179">			++variateIndex)</span>
+<span class="fc" id="L189">		for (int variateIndex = 0;</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">			variateIndex &lt; variateCount;</span>
+<span class="fc" id="L191">			++variateIndex)</span>
 		{
-<span class="fc" id="L181">			string = string + org.drip.numerical.common.FormatUtil.FormatDouble (</span>
+<span class="fc" id="L193">			string = string + org.drip.numerical.common.FormatUtil.FormatDouble (</span>
 				_currentVariateArray[variateIndex],
 				2,
 				3,
@@ -186,18 +198,18 @@ public abstract class LineEvolutionVerifierMetrics
 			) + &quot; |&quot;;
 		}
 
-<span class="fc" id="L189">		string = string + &quot;]&quot; + org.drip.numerical.common.FormatUtil.FormatDouble (</span>
+<span class="fc" id="L201">		string = string + &quot;]&quot; + org.drip.numerical.common.FormatUtil.FormatDouble (</span>
 			_stepLength,
 			1,
 			3,
 			1.
 		) + &quot; || {&quot;;
 
-<span class="fc" id="L196">		for (int variateIndex = 0;</span>
-<span class="fc bfc" id="L197" title="All 2 branches covered.">			variateIndex &lt; variateCount;</span>
-<span class="fc" id="L198">			++variateIndex)</span>
+<span class="fc" id="L208">		for (int variateIndex = 0;</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">			variateIndex &lt; variateCount;</span>
+<span class="fc" id="L210">			++variateIndex)</span>
 		{
-<span class="fc" id="L200">			string = string + org.drip.numerical.common.FormatUtil.FormatDouble (</span>
+<span class="fc" id="L212">			string = string + org.drip.numerical.common.FormatUtil.FormatDouble (</span>
 				targetDirectionVector[variateIndex],
 				1,
 				2,
@@ -205,7 +217,7 @@ public abstract class LineEvolutionVerifierMetrics
 			) + &quot; |&quot;;
 		}
 
-<span class="fc" id="L208">		return string + &quot; }&quot;;</span>
+<span class="fc" id="L220">		return string + &quot; }&quot;;</span>
 	}
 
 	/**

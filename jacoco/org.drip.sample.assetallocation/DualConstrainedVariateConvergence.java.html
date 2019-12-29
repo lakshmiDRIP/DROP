@@ -14,38 +14,49 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -82,31 +93,31 @@ import org.drip.service.env.EnvManager;
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/assetallocation/README.md&quot;&gt;Asset Allocation&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/assetallocation/README.md&quot;&gt;MVO Based Constrained Optimal Allocator&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L94">public class DualConstrainedVariateConvergence</span>
+<span class="nc" id="L105">public class DualConstrainedVariateConvergence</span>
 {
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="fc" id="L101">		EnvManager.InitEnv (</span>
+<span class="fc" id="L112">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L106">		VariateInequalityConstraintMultiplier.s_preBoundBlog = true;</span>
-<span class="fc" id="L107">		VariateInequalityConstraintMultiplier.s_postBoundBlog = true;</span>
+<span class="fc" id="L117">		VariateInequalityConstraintMultiplier.s_preBoundBlog = true;</span>
+<span class="fc" id="L118">		VariateInequalityConstraintMultiplier.s_postBoundBlog = true;</span>
 
-<span class="fc" id="L109">		String[] assetIDArray = new String[]</span>
+<span class="fc" id="L120">		String[] assetIDArray = new String[]</span>
 		{
 			&quot;TOK&quot;,
 			&quot;EWJ&quot;,
@@ -116,7 +127,7 @@ import org.drip.service.env.EnvManager;
 			&quot;GSG&quot;,
 			&quot;BWX&quot;
 		};
-<span class="fc" id="L119">		double[] assetHoldingsLowerBoundArray = new double[]</span>
+<span class="fc" id="L130">		double[] assetHoldingsLowerBoundArray = new double[]</span>
 		{
 			0.05,
 			0.04,
@@ -126,7 +137,7 @@ import org.drip.service.env.EnvManager;
 			0.03,
 			0.13
 		};
-<span class="fc" id="L129">		double[] assetHoldingsUpperBoundArray = new double[]</span>
+<span class="fc" id="L140">		double[] assetHoldingsUpperBoundArray = new double[]</span>
 		{
 			0.43,
 			0.27,
@@ -136,7 +147,7 @@ import org.drip.service.env.EnvManager;
 			0.32,
 			0.88
 		};
-<span class="fc" id="L139">		double[] assetExpectedReturnsArray = new double[]</span>
+<span class="fc" id="L150">		double[] assetExpectedReturnsArray = new double[]</span>
 		{
 			0.1300,
 			0.0700,
@@ -146,8 +157,8 @@ import org.drip.service.env.EnvManager;
 			0.1000,
 			0.0100
 		};
-<span class="fc" id="L149">		double portfolioDesignReturn = 0.06000;</span>
-<span class="fc" id="L150">		double[][] assetReturnsCovarianceMatrix = new double[][]</span>
+<span class="fc" id="L160">		double portfolioDesignReturn = 0.06000;</span>
+<span class="fc" id="L161">		double[][] assetReturnsCovarianceMatrix = new double[][]</span>
 		{
 			{0.002733 * 12, 0.002083 * 12, 0.001593 * 12, 0.000488 * 12, 0.001172 * 12, 0.002312 * 12, 0.000710 * 12},
 			{0.002083 * 12, 0.002768 * 12, 0.001302 * 12, 0.000457 * 12, 0.001105 * 12, 0.001647 * 12, 0.000563 * 12},
@@ -158,107 +169,107 @@ import org.drip.service.env.EnvManager;
 			{0.000710 * 12, 0.000563 * 12, 0.000519 * 12, 0.000370 * 12, 0.000661 * 12, 0.000749 * 12, 0.000703 * 12}
 		};
 
-<span class="fc" id="L161">		AssetUniverseStatisticalProperties assetUniverseStatisticalProperties =</span>
-<span class="fc" id="L162">			AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
-<span class="fc" id="L163">				MultivariateMoments.Standard (</span>
+<span class="fc" id="L172">		AssetUniverseStatisticalProperties assetUniverseStatisticalProperties =</span>
+<span class="fc" id="L173">			AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
+<span class="fc" id="L174">				MultivariateMoments.Standard (</span>
 					assetIDArray,
 					assetExpectedReturnsArray,
 					assetReturnsCovarianceMatrix
 				)
 			);
 
-<span class="fc" id="L170">		double[][] covarianceMatrix = assetUniverseStatisticalProperties.covariance (</span>
+<span class="fc" id="L181">		double[][] covarianceMatrix = assetUniverseStatisticalProperties.covariance (</span>
 			assetIDArray
 		);
 
-<span class="fc" id="L174">		System.out.println (&quot;\n\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L185">		System.out.println (&quot;\n\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L176">		System.out.println (&quot;\t|                                  CROSS ASSET COVARIANCE MATRIX                                 ||&quot;);</span>
+<span class="fc" id="L187">		System.out.println (&quot;\t|                                  CROSS ASSET COVARIANCE MATRIX                                 ||&quot;);</span>
 
-<span class="fc" id="L178">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L189">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L180">		String header = &quot;\t|     |&quot;;</span>
+<span class="fc" id="L191">		String header = &quot;\t|     |&quot;;</span>
 
-<span class="fc" id="L182">		for (int assetIndex = 0;</span>
-<span class="fc bfc" id="L183" title="All 2 branches covered.">			assetIndex &lt; assetIDArray.length;</span>
-<span class="fc" id="L184">			++assetIndex)</span>
+<span class="fc" id="L193">		for (int assetIndex = 0;</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">			assetIndex &lt; assetIDArray.length;</span>
+<span class="fc" id="L195">			++assetIndex)</span>
 		{
-<span class="fc" id="L186">			header += &quot;    &quot; + assetIDArray[assetIndex] + &quot;     |&quot;;</span>
+<span class="fc" id="L197">			header += &quot;    &quot; + assetIDArray[assetIndex] + &quot;     |&quot;;</span>
 		}
 
-<span class="fc" id="L189">		System.out.println (header + &quot;|&quot;);</span>
+<span class="fc" id="L200">		System.out.println (header + &quot;|&quot;);</span>
 
-<span class="fc" id="L191">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L202">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L193">		for (int assetIndexI = 0;</span>
-<span class="fc bfc" id="L194" title="All 2 branches covered.">			assetIndexI &lt; assetIDArray.length;</span>
-<span class="fc" id="L195">			++assetIndexI)</span>
+<span class="fc" id="L204">		for (int assetIndexI = 0;</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">			assetIndexI &lt; assetIDArray.length;</span>
+<span class="fc" id="L206">			++assetIndexI)</span>
 		{
-<span class="fc" id="L197">			String dump = &quot;\t| &quot; + assetIDArray[assetIndexI] + &quot; &quot;;</span>
+<span class="fc" id="L208">			String dump = &quot;\t| &quot; + assetIDArray[assetIndexI] + &quot; &quot;;</span>
 
-<span class="fc" id="L199">			for (int assetIndexJ = 0;</span>
-<span class="fc bfc" id="L200" title="All 2 branches covered.">				assetIndexJ &lt; assetIDArray.length;</span>
-<span class="fc" id="L201">				++assetIndexJ)</span>
+<span class="fc" id="L210">			for (int assetIndexJ = 0;</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">				assetIndexJ &lt; assetIDArray.length;</span>
+<span class="fc" id="L212">				++assetIndexJ)</span>
 			{
-<span class="fc" id="L203">				dump += &quot;|&quot; + FormatUtil.FormatDouble (</span>
+<span class="fc" id="L214">				dump += &quot;|&quot; + FormatUtil.FormatDouble (</span>
 					covarianceMatrix[assetIndexI][assetIndexJ], 1, 8, 1.
 				) + &quot; &quot;;
 			}
 
-<span class="fc" id="L208">			System.out.println (dump + &quot;||&quot;);</span>
+<span class="fc" id="L219">			System.out.println (dump + &quot;||&quot;);</span>
 		}
 
-<span class="fc" id="L211">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||\n\n&quot;);</span>
+<span class="fc" id="L222">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||\n\n&quot;);</span>
 
-<span class="fc" id="L213">		System.out.println (&quot;\t|-------------------||&quot;);</span>
+<span class="fc" id="L224">		System.out.println (&quot;\t|-------------------||&quot;);</span>
 
-<span class="fc" id="L215">		System.out.println (&quot;\t|   ASSET BOUNDS    ||&quot;);</span>
+<span class="fc" id="L226">		System.out.println (&quot;\t|   ASSET BOUNDS    ||&quot;);</span>
 
-<span class="fc" id="L217">		System.out.println (&quot;\t|-------------------||&quot;);</span>
+<span class="fc" id="L228">		System.out.println (&quot;\t|-------------------||&quot;);</span>
 
-<span class="fc" id="L219">		for (int assetIndex = 0;</span>
-<span class="fc bfc" id="L220" title="All 2 branches covered.">			assetIndex &lt; assetIDArray.length;</span>
-<span class="fc" id="L221">			++assetIndex)</span>
+<span class="fc" id="L230">		for (int assetIndex = 0;</span>
+<span class="fc bfc" id="L231" title="All 2 branches covered.">			assetIndex &lt; assetIDArray.length;</span>
+<span class="fc" id="L232">			++assetIndex)</span>
 		{
-<span class="fc" id="L223">			System.out.println (</span>
+<span class="fc" id="L234">			System.out.println (</span>
 				&quot;\t| &quot; + assetIDArray[assetIndex] + &quot; | &quot; +
-<span class="fc" id="L225">				FormatUtil.FormatDouble (assetHoldingsLowerBoundArray[assetIndex], 2, 0, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L226">				FormatUtil.FormatDouble (assetHoldingsUpperBoundArray[assetIndex], 2, 0, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L236">				FormatUtil.FormatDouble (assetHoldingsLowerBoundArray[assetIndex], 2, 0, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L237">				FormatUtil.FormatDouble (assetHoldingsUpperBoundArray[assetIndex], 2, 0, 100.) + &quot;% ||&quot;</span>
 			);
 		}
 
-<span class="fc" id="L230">		System.out.println (&quot;\t|-------------------||\n\n&quot;);</span>
+<span class="fc" id="L241">		System.out.println (&quot;\t|-------------------||\n\n&quot;);</span>
 
-<span class="fc" id="L232">		InteriorPointBarrierControl interiorPointBarrierControl = InteriorPointBarrierControl.Standard();</span>
+<span class="fc" id="L243">		InteriorPointBarrierControl interiorPointBarrierControl = InteriorPointBarrierControl.Standard();</span>
 
-<span class="fc" id="L234">		System.out.println (&quot;\t|--------------------------------------------||&quot;);</span>
+<span class="fc" id="L245">		System.out.println (&quot;\t|--------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L236">		System.out.println (&quot;\t|  INTERIOR POINT METHOD BARRIER PARAMETERS  ||&quot;);</span>
+<span class="fc" id="L247">		System.out.println (&quot;\t|  INTERIOR POINT METHOD BARRIER PARAMETERS  ||&quot;);</span>
 
-<span class="fc" id="L238">		System.out.println (&quot;\t|--------------------------------------------||&quot;);</span>
+<span class="fc" id="L249">		System.out.println (&quot;\t|--------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L240">		System.out.println (</span>
-<span class="fc" id="L241">			&quot;\t|    Barrier Decay Velocity        : &quot; + 1. / interiorPointBarrierControl.decayVelocity()</span>
+<span class="fc" id="L251">		System.out.println (</span>
+<span class="fc" id="L252">			&quot;\t|    Barrier Decay Velocity        : &quot; + 1. / interiorPointBarrierControl.decayVelocity()</span>
 		);
 
-<span class="fc" id="L244">		System.out.println (</span>
-<span class="fc" id="L245">			&quot;\t|    Barrier Decay Steps           : &quot; + interiorPointBarrierControl.decayStepCount()</span>
+<span class="fc" id="L255">		System.out.println (</span>
+<span class="fc" id="L256">			&quot;\t|    Barrier Decay Steps           : &quot; + interiorPointBarrierControl.decayStepCount()</span>
 		);
 
-<span class="fc" id="L248">		System.out.println (</span>
-<span class="fc" id="L249">			&quot;\t|    Initial Barrier Strength      : &quot; + interiorPointBarrierControl.initialStrength()</span>
+<span class="fc" id="L259">		System.out.println (</span>
+<span class="fc" id="L260">			&quot;\t|    Initial Barrier Strength      : &quot; + interiorPointBarrierControl.initialStrength()</span>
 		);
 
-<span class="fc" id="L252">		System.out.println (</span>
-<span class="fc" id="L253">			&quot;\t|    Barrier Convergence Tolerance : &quot; + interiorPointBarrierControl.relativeTolerance()</span>
+<span class="fc" id="L263">		System.out.println (</span>
+<span class="fc" id="L264">			&quot;\t|    Barrier Convergence Tolerance : &quot; + interiorPointBarrierControl.relativeTolerance()</span>
 		);
 
-<span class="fc" id="L256">		System.out.println (&quot;\t|--------------------------------------------||\n\n&quot;);</span>
+<span class="fc" id="L267">		System.out.println (&quot;\t|--------------------------------------------||\n\n&quot;);</span>
 
-<span class="fc" id="L258">		BoundedPortfolioConstructionParameters boundedPortfolioConstructionParameters =</span>
+<span class="fc" id="L269">		BoundedPortfolioConstructionParameters boundedPortfolioConstructionParameters =</span>
 			new BoundedPortfolioConstructionParameters (
 				assetIDArray,
-<span class="fc" id="L261">				CustomRiskUtilitySettings.VarianceMinimizer(),</span>
+<span class="fc" id="L272">				CustomRiskUtilitySettings.VarianceMinimizer(),</span>
 				new EqualityConstraintSettings (
 					EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT |
 						EqualityConstraintSettings.RETURNS_CONSTRAINT,
@@ -266,28 +277,28 @@ import org.drip.service.env.EnvManager;
 				)
 			);
 
-<span class="fc" id="L269">		for (int assetIndex = 0;</span>
-<span class="fc bfc" id="L270" title="All 2 branches covered.">			assetIndex &lt; assetIDArray.length;</span>
-<span class="fc" id="L271">			++assetIndex)</span>
+<span class="fc" id="L280">		for (int assetIndex = 0;</span>
+<span class="fc bfc" id="L281" title="All 2 branches covered.">			assetIndex &lt; assetIDArray.length;</span>
+<span class="fc" id="L282">			++assetIndex)</span>
 		{
-<span class="fc" id="L273">			boundedPortfolioConstructionParameters.addBound (</span>
+<span class="fc" id="L284">			boundedPortfolioConstructionParameters.addBound (</span>
 				assetIDArray[assetIndex],
 				assetHoldingsLowerBoundArray[assetIndex],
 				assetHoldingsUpperBoundArray[assetIndex]
 			);
 		}
 
-<span class="fc" id="L280">		new ConstrainedMeanVarianceOptimizer (</span>
+<span class="fc" id="L291">		new ConstrainedMeanVarianceOptimizer (</span>
 			interiorPointBarrierControl,
-<span class="fc" id="L282">			LineStepEvolutionControl.NocedalWrightStrongWolfe (</span>
+<span class="fc" id="L293">			LineStepEvolutionControl.NocedalWrightStrongWolfe (</span>
 				false
 			)
-<span class="fc" id="L285">		).allocate (</span>
+<span class="fc" id="L296">		).allocate (</span>
 			boundedPortfolioConstructionParameters,
 			assetUniverseStatisticalProperties
 		);
 
-<span class="fc" id="L290">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L291">	}</span>
+<span class="fc" id="L301">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L302">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
