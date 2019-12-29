@@ -129,7 +129,6 @@ public class R1CentralWilsonHilferty
 
 	public static final R1CentralWilsonHilferty Standard (
 		final int degreesOfFreedom)
-		throws java.lang.Exception
 	{
 		if (0 >= degreesOfFreedom)
 		{

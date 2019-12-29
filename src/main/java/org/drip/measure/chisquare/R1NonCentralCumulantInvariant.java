@@ -283,6 +283,7 @@ public class R1NonCentralCumulantInvariant
 	 * @param digammaEstimator Digamma Estimator
 	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
 	 * @param modifiedBesselFirstKindEstimator Modified Bessel First Kind Estimator
+	 * @param sankaranB Sankaran (1963) "B"
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
