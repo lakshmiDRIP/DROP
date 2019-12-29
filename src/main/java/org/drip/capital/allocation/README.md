@@ -1,8 +1,8 @@
-# DROP Analytics Support Package
+# DROP Capital Allocation Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Analytics Support Package contains Assorted Support and Helper Utilities.
+DROP Capital Allocation Package contains Economic Risk Capital Entity Allocation.
 
 
 ## Class Components

@@ -163,7 +163,7 @@ public class R1FokkerPlanckBrownian
 				if (null == r1TimeVertex)
 				{
 					throw new java.lang.Exception (
-						"R1FokkerPlanckBrownian::pointZeroStartTemporalPDF::density"
+						"R1FokkerPlanckBrownian::deltaStartTemporalPDF::density"
 					);
 				}
 

@@ -1,5 +1,5 @@
 
-package org.drip.dynamics.kolmogorov;
+package org.drip.function.r1tor1;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,8 +76,8 @@ package org.drip.dynamics.kolmogorov;
  */
 
 /**
- * <i>R1FokkerPlanckCIR</i> exposes the R<sup>1</sup> Cox-Ingersoll-Ross Probability Density Function
- * 	Evolution Equation. The References are:
+ * <i>R1UnivariateCIRPDF</i> exposes the R<sup>1</sup> Univariate Cox-Ingersoll-Ross Probability Density
+ * 	Function. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -114,47 +114,40 @@ package org.drip.dynamics.kolmogorov;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1FokkerPlanckCIR
-	extends org.drip.dynamics.kolmogorov.R1FokkerPlanckCKLS
+public class R1UnivariateCIRPDF
+	extends org.drip.function.definition.R1ToR1
 {
+	private double _beta = java.lang.Double.NaN;
+	private double _alpha = java.lang.Double.NaN;
+	private org.drip.function.definition.R1ToR1 _gammaFunction = null;
 
 	/**
-	 * R1FokkerPlanckCIR Constructor
-	 *
+	 * Construct a Standard Instance of R1UnivariateCIRPDF
+	 * 
 	 * @param cklsParameters The CKLS Parameters
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return Standard Instance of R1UnivariateCIRPDF
 	 */
 
-	public R1FokkerPlanckCIR (
+	public static final R1UnivariateCIRPDF Standard (
 		final org.drip.dynamics.meanreverting.CKLSParameters cklsParameters)
-		throws java.lang.Exception
 	{
-		super (
-			cklsParameters
-		);
-	}
+		if (null == cklsParameters)
+		{
+			return null;
+		}
 
-	@Override public org.drip.function.definition.R1ToR1 steadyStatePDF()
-	{
-		return org.drip.function.r1tor1.R1UnivariateCIRPDF.Standard (
-			cklsParameters()
-		);
-	}
+		double volatility = cklsParameters.volatilityCoefficient();
 
-	@Override public org.drip.dynamics.process.R1ProbabilityDensityFunction deltaStartTemporalPDF (
-		final double r0)
-	{
+		double beta = 2. * cklsParameters.meanReversionSpeed() / volatility / volatility;
+
 		try
 		{
-			return new org.drip.dynamics.process.R1ProbabilityDensityFunctionCIR (
-				r0,
-				cklsParameters(),
-				org.drip.specialfunction.bessel.ModifiedFirstFrobeniusSeriesEstimator.Standard (
-					new org.drip.specialfunction.gamma.EulerIntegralSecondKind (
-						null
-					),
-					20
+			return new R1UnivariateCIRPDF (
+				beta * cklsParameters.meanReversionLevel(),
+				beta,
+				new org.drip.specialfunction.gamma.NemesAnalytic (
+					null
 				)
 			);
 		}
@@ -164,5 +157,97 @@ public class R1FokkerPlanckCIR
 		}
 
 		return null;
+	}
+
+	/**
+	 * R1UnivariateCIRPDF Constructor
+	 * 
+	 * @param alpha The Alpha
+	 * @param beta The Beta
+	 * @param gammaFunction The Gamma Function
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public R1UnivariateCIRPDF (
+		final double alpha,
+		final double beta,
+		final org.drip.function.definition.R1ToR1 gammaFunction)
+		throws java.lang.Exception
+	{
+		super (
+			null
+		);
+
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+				_alpha = alpha
+			) || !org.drip.numerical.common.NumberUtil.IsValid (
+				_beta = beta
+			) || null == (_gammaFunction = gammaFunction)
+		)
+		{
+			throw new java.lang.Exception (
+				"R1UnivariateCIRPDF CVonstructor => IOnvalid Inputs"
+			);
+		}
+	}
+
+	/**
+	 * Retrieve Alpha
+	 * 
+	 * @return The Alpha
+	 */
+
+	public double alpha()
+	{
+		return _alpha;
+	}
+
+	/**
+	 * Retrieve Beta
+	 * 
+	 * @return The Beta
+	 */
+
+	public double beta()
+	{
+		return _beta;
+	}
+
+	/**
+	 * Retrieve the Gamma Function
+	 * 
+	 * @return The Gamma Function
+	 */
+
+	public org.drip.function.definition.R1ToR1 gammaFunction()
+	{
+		return _gammaFunction;
+	}
+
+	@Override public double evaluate (
+		final double r)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+			r
+		))
+		{
+			throw new java.lang.Exception (
+				"R1UnivariateCIRPDF::evaluate => Invalid Inputs"
+			);
+		}
+
+		return java.lang.Math.pow (
+			_beta,
+			_alpha
+		) * java.lang.Math.pow (
+			r,
+			_alpha - 1.
+		) * java.lang.Math.exp (
+			-1. * _beta * r
+		) / _gammaFunction.evaluate (
+			_alpha
+		);
 	}
 }

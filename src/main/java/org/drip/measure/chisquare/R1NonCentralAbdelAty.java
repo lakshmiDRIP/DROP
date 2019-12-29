@@ -115,11 +115,9 @@ package org.drip.measure.chisquare;
  */
 
 public class R1NonCentralAbdelAty
-	extends org.drip.measure.gaussian.R1UnivariateNormal
+	extends org.drip.measure.chisquare.R1NonCentralWilsonHaferty
 {
-	private int _degreesOfFreedom = -1;
 	private double _f = java.lang.Double.NaN;
-	private double _nonCentralityParameter = java.lang.Double.NaN;
 
 	/**
 	 * Construct a Standard Instance of R1NonCentralAbdelAty
@@ -134,7 +132,8 @@ public class R1NonCentralAbdelAty
 		final int degreesOfFreedom,
 		final double nonCentralityParameter)
 	{
-		if (0 >= degreesOfFreedom || !org.drip.numerical.common.NumberUtil.IsValid (
+		if (0 >= degreesOfFreedom ||
+			!org.drip.numerical.common.NumberUtil.IsValid (
 				nonCentralityParameter
 			)
 		)
@@ -149,13 +148,17 @@ public class R1NonCentralAbdelAty
 		try
 		{
 			return new R1NonCentralAbdelAty (
-				degreesOfFreedom,
-				nonCentralityParameter,
-				f,
-				1. - twoOver9f,
-				java.lang.Math.sqrt (
-					twoOver9f
-				)
+				new org.drip.measure.chisquare.R1NonCentralParameters (
+					degreesOfFreedom,
+					nonCentralityParameter
+				),
+				new org.drip.measure.gaussian.R1UnivariateNormal (
+					1. - twoOver9f,
+					java.lang.Math.sqrt (
+						twoOver9f
+					)
+				),
+				f
 			);
 		}
 		catch (java.lang.Exception e)
@@ -167,43 +170,17 @@ public class R1NonCentralAbdelAty
 	}
 
 	protected R1NonCentralAbdelAty (
-		final int degreesOfFreedom,
-		final double nonCentralityParameter,
-		final double f,
-		final double mean,
-		final double sigma)
+		final org.drip.measure.chisquare.R1NonCentralParameters r1NonCentralParameters,
+		final org.drip.measure.gaussian.R1UnivariateNormal r1UnivariateNormal,
+		final double f)
 		throws java.lang.Exception
 	{
 		super (
-			mean,
-			sigma
+			r1NonCentralParameters,
+			r1UnivariateNormal
 		);
 
 		_f = f;
-		_degreesOfFreedom = degreesOfFreedom;
-		_nonCentralityParameter = nonCentralityParameter;
-	}
-
-	/**
-	 * Retrieve the Degrees of Freedom
-	 * 
-	 * @return The Degrees of Freedom
-	 */
-
-	public int degreesOfFreedom()
-	{
-		return _degreesOfFreedom;
-	}
-
-	/**
-	 * Retrieve the Non-centrality Parameter
-	 * 
-	 * @return The Non-centrality Parameter
-	 */
-
-	public double nonCentralityParameter()
-	{
-		return _nonCentralityParameter;
 	}
 
 	/**
@@ -215,5 +192,28 @@ public class R1NonCentralAbdelAty
 	public double f()
 	{
 		return _f;
+	}
+
+	@Override public double transform (
+		final double x)
+	{
+		org.drip.measure.chisquare.R1NonCentralParameters parameters = parameters();
+
+		return java.lang.Math.pow (
+			x / (
+				parameters.degreesOfFreedom() + parameters.nonCentralityParameter()
+			),
+			1. / 3.
+		);
+	}
+
+	@Override public double inverseTransform (
+		final double wilsonHilferty)
+	{
+		org.drip.measure.chisquare.R1NonCentralParameters parameters = parameters();
+
+		return wilsonHilferty * wilsonHilferty * wilsonHilferty * (
+			parameters.degreesOfFreedom() + parameters.nonCentralityParameter()
+		);
 	}
 }

@@ -228,13 +228,7 @@ public class R1CKLSStochasticEvolver
 		return _cklsParameters;
 	}
 
-	/**
-	 * Construct the Fokker Planck PDF Generator corresponding to R<sup>1</sup> Stochastic Evolver
-	 * 
-	 * @return The Fokker Planck PDF Generator corresponding to R<sup>1</sup> Stochastic Evolver
-	 */
-
-	public org.drip.dynamics.kolmogorov.R1FokkerPlanck fokkerPlanckGenerator()
+	@Override public org.drip.dynamics.kolmogorov.R1FokkerPlanck fokkerPlanckGenerator()
 	{
 		try
 		{

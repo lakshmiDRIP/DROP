@@ -215,7 +215,7 @@ public class NonCentralCentralMoments
 		{
 			for (int dof : dofArray)
 			{
-				R1NonCentral r1UnivariateNonCentral = new R1NonCentral (
+				R1NonCentral r1UnivariateNonCentral = R1NonCentral.Standard (
 					dof,
 					nonCentralityParameter,
 					gammaEstimator,

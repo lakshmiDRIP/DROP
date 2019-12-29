@@ -2,8 +2,7 @@
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Regression implements the Regression Test Runs for Fixed Income, Numerical Analysis, and Spline
-	Libraries.
+DROP Regression implements the Regression Test Runs for Fixed Income, Numerical Analysis, and Spline Libraries.
 
 
 ## Component Packages

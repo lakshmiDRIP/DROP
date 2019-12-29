@@ -68,8 +68,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>WilsonHilfertyMeasureEstimate</i> illustrates the Estimation of Measures for the Wilson-Hilferty
- * Transformation of a Central Chi-squared Distribution. The References are:
+ * <i>CentralWilsonHilfertyMeasureEstimate</i> illustrates the Estimation of Measures for the Wilson-Hilferty
+ * 	Transformation of a Central Chi-squared Distribution. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -90,7 +90,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class WilsonHilfertyMeasureEstimate
+public class CentralWilsonHilfertyMeasureEstimate
 {
 
 	public static final void main (
@@ -150,7 +150,7 @@ public class WilsonHilfertyMeasureEstimate
 
 		for (int dof : dofArray)
 		{
-			R1CentralWilsonHilferty r1UnivariateWilsonHilferty = new R1CentralWilsonHilferty (dof);
+			R1CentralWilsonHilferty r1UnivariateWilsonHilferty = R1CentralWilsonHilferty.Standard (dof);
 
 			String display = "\t| [" + FormatUtil.FormatDouble (dof, 2, 0, 1., false) + "] =>";
 

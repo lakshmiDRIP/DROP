@@ -117,12 +117,11 @@ package org.drip.measure.chisquare;
 public class R1NonCentral
 	extends org.drip.measure.continuous.R1Univariate
 {
-	private int _degreesOfFreedom = -1;
 	private double _cdfScaler = java.lang.Double.NaN;
-	private double _nonCentralityParameter = java.lang.Double.NaN;
 	private org.drip.function.definition.R1ToR1 _gammaEstimator = null;
 	private org.drip.function.definition.R1ToR1 _digammaEstimator = null;
 	private org.drip.function.definition.R2ToR1 _lowerIncompleteGammaEstimator = null;
+	private org.drip.measure.chisquare.R1NonCentralParameters _r1NonCentralParameters = null;
 	private org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator
 		_modifiedBesselFirstKindEstimator = null;
 
@@ -140,6 +139,10 @@ public class R1NonCentral
 			n
 		);
 
+		double degreesOfFreedom = _r1NonCentralParameters.degreesOfFreedom();
+
+		double nonCentralityParameter = _r1NonCentralParameters.nonCentralityParameter();
+
 		for (int j = 1;
 			j < n;
 			++j)
@@ -150,7 +153,9 @@ public class R1NonCentral
 				) * java.lang.Math.pow (
 					2.,
 					j - 1.
-				) * (_degreesOfFreedom + j * _nonCentralityParameter) * nonCentralMoment (
+				) * (
+					degreesOfFreedom + j * nonCentralityParameter
+				) * nonCentralMoment (
 					n - j,
 					fourLeadingRawMoments
 				) / _gammaEstimator.evaluate (
@@ -162,10 +167,52 @@ public class R1NonCentral
 	}
 
 	/**
-	 * R1NonCentral Constructor
+	 * Construct the Standard Instance of R1NonCentral
 	 * 
 	 * @param degreesOfFreedom Degrees of Freedom
 	 * @param nonCentralityParameter Non-centrality Parameter
+	 * @param gammaEstimator Gamma Estimator
+	 * @param digammaEstimator Digamma Estimator
+	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
+	 * @param modifiedBesselFirstKindEstimator Modified Bessel First Kind Estimator
+	 * 
+	 * @return The Standard Instance of R1NonCentral
+	 */
+
+	public static final R1NonCentral Standard (
+		final double degreesOfFreedom,
+		final double nonCentralityParameter,
+		final org.drip.function.definition.R1ToR1 gammaEstimator,
+		final org.drip.function.definition.R1ToR1 digammaEstimator,
+		final org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator,
+		final org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator
+			modifiedBesselFirstKindEstimator)
+	{
+		try
+		{
+			return new R1NonCentral (
+				new org.drip.measure.chisquare.R1NonCentralParameters (
+					degreesOfFreedom,
+					nonCentralityParameter
+				),
+				gammaEstimator,
+				digammaEstimator,
+				lowerIncompleteGammaEstimator,
+				modifiedBesselFirstKindEstimator
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * R1NonCentral Constructor
+	 * 
+	 * @param r1NonCentralParameters R<sup>1</sup> Non-central Parameters
 	 * @param gammaEstimator Gamma Estimator
 	 * @param digammaEstimator Digamma Estimator
 	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
@@ -175,8 +222,7 @@ public class R1NonCentral
 	 */
 
 	public R1NonCentral (
-		final int degreesOfFreedom,
-		final double nonCentralityParameter,
+		final org.drip.measure.chisquare.R1NonCentralParameters r1NonCentralParameters,
 		final org.drip.function.definition.R1ToR1 gammaEstimator,
 		final org.drip.function.definition.R1ToR1 digammaEstimator,
 		final org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator,
@@ -184,10 +230,8 @@ public class R1NonCentral
 			modifiedBesselFirstKindEstimator)
 		throws java.lang.Exception
 	{
-		if (0 >= (_degreesOfFreedom = degreesOfFreedom) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (
-				_nonCentralityParameter = nonCentralityParameter
-			) || null == (_gammaEstimator = gammaEstimator) ||
+		if (null == (_r1NonCentralParameters = r1NonCentralParameters) ||
+			null == (_gammaEstimator = gammaEstimator) ||
 			null == (_digammaEstimator = digammaEstimator) ||
 			null == (_lowerIncompleteGammaEstimator = lowerIncompleteGammaEstimator) ||
 			null == (_modifiedBesselFirstKindEstimator = modifiedBesselFirstKindEstimator)
@@ -199,30 +243,19 @@ public class R1NonCentral
 		}
 
 		_cdfScaler = java.lang.Math.exp (
-			-0.5 * _nonCentralityParameter
+			-0.5 * _r1NonCentralParameters.nonCentralityParameter()
 		);
 	}
 
 	/**
-	 * Retrieve the Degrees of Freedom
+	 * Retrieve the R<sup>1</sup> Non-Central Parameters
 	 * 
-	 * @return The Degrees of Freedom
+	 * @return The R<sup>1</sup> Non-Central Parameters
 	 */
 
-	public int degreesOfFreedom()
+	public org.drip.measure.chisquare.R1NonCentralParameters parameters()
 	{
-		return _degreesOfFreedom;
-	}
-
-	/**
-	 * Retrieve the Non-centrality Parameter
-	 * 
-	 * @return The Non-centrality Parameter
-	 */
-
-	public double nonCentralityParameter()
-	{
-		return _nonCentralityParameter;
+		return _r1NonCentralParameters;
 	}
 
 	/**
@@ -292,15 +325,19 @@ public class R1NonCentral
 			);
 		}
 
+		double degreesOfFreedom = _r1NonCentralParameters.degreesOfFreedom();
+
+		double nonCentralityParameter = _r1NonCentralParameters.nonCentralityParameter();
+
 		return 0.5 * java.lang.Math.pow (
-			x / _nonCentralityParameter,
-			0.25 * _degreesOfFreedom - 0.5
+			x / nonCentralityParameter,
+			0.25 * degreesOfFreedom - 0.5
 		) * java.lang.Math.exp (
-			-0.5 * (x + _nonCentralityParameter)
+			-0.5 * (x + nonCentralityParameter)
 		) * _modifiedBesselFirstKindEstimator.bigI (
-			0.5 * _degreesOfFreedom - 1.,
+			0.5 * degreesOfFreedom - 1.,
 			java.lang.Math.sqrt (
-				x * _nonCentralityParameter
+				x * nonCentralityParameter
 			)
 		);
 	}
@@ -321,16 +358,20 @@ public class R1NonCentral
 		int termCount = 10;
 		double cumulative = 0.;
 
+		double degreesOfFreedom = _r1NonCentralParameters.degreesOfFreedom();
+
+		double nonCentralityParameter = _r1NonCentralParameters.nonCentralityParameter();
+
 		for (int termIndex = 0;
 			termIndex < termCount;
 			++termIndex)
 		{
 			cumulative = cumulative +
 				java.lang.Math.pow (
-					0.5 * _nonCentralityParameter,
+					0.5 * nonCentralityParameter,
 					termIndex
 				) * new org.drip.measure.chisquare.R1Central (
-					_degreesOfFreedom + 2 * termIndex,
+					degreesOfFreedom + 2 * termIndex,
 					_gammaEstimator,
 					_digammaEstimator,
 					_lowerIncompleteGammaEstimator
@@ -347,36 +388,46 @@ public class R1NonCentral
 	@Override public double mean()
 		throws java.lang.Exception
 	{
-		return _degreesOfFreedom + _nonCentralityParameter;
+		return _r1NonCentralParameters.degreesOfFreedom() + _r1NonCentralParameters.nonCentralityParameter();
 	}
 
 	@Override public double variance()
 		throws java.lang.Exception
 	{
-		return 2. * _degreesOfFreedom + 4. * _nonCentralityParameter;
+		return 2. * _r1NonCentralParameters.degreesOfFreedom() +
+			4. * _r1NonCentralParameters.nonCentralityParameter();
 	}
 
 	@Override public double skewness()
 		throws java.lang.Exception
 	{
-		return (_degreesOfFreedom + 3. * _nonCentralityParameter) * java.lang.Math.pow (
+		double degreesOfFreedom = _r1NonCentralParameters.degreesOfFreedom();
+
+		double nonCentralityParameter = _r1NonCentralParameters.nonCentralityParameter();
+
+		return (degreesOfFreedom + 3. * nonCentralityParameter) * java.lang.Math.pow (
 			2.,
-			_degreesOfFreedom + 2. * _nonCentralityParameter
+			degreesOfFreedom + 2. * nonCentralityParameter
 		);
 	}
 
 	@Override public double excessKurtosis()
 		throws java.lang.Exception
 	{
-		double kPlusTwoLambda = _degreesOfFreedom + 2. * _nonCentralityParameter;
+		double degreesOfFreedom = _r1NonCentralParameters.degreesOfFreedom();
 
-		return 12. * (_degreesOfFreedom + 4. * _nonCentralityParameter) /
+		double nonCentralityParameter = _r1NonCentralParameters.nonCentralityParameter();
+
+		double kPlusTwoLambda = degreesOfFreedom + 2. * nonCentralityParameter;
+		return 12. * (degreesOfFreedom + 4. * nonCentralityParameter) /
 			(kPlusTwoLambda* kPlusTwoLambda);
 	}
 
 	@Override public org.drip.function.definition.R1ToR1 momentGeneratingFunction()
 	{
-		return new org.drip.function.definition.R1ToR1 (null)
+		return new org.drip.function.definition.R1ToR1 (
+			null
+		)
 		{
 			@Override public double evaluate (
 				final double t)
@@ -395,10 +446,10 @@ public class R1NonCentral
 				double oneMinusTwoT = 1. - 2. * t;
 
 				return java.lang.Math.exp (
-					_nonCentralityParameter * t / oneMinusTwoT
+					_r1NonCentralParameters.nonCentralityParameter() * t / oneMinusTwoT
 				) / java.lang.Math.pow (
 					oneMinusTwoT,
-					0.5 * _degreesOfFreedom
+					0.5 * _r1NonCentralParameters.degreesOfFreedom()
 				);
 			}
 		};
@@ -425,7 +476,9 @@ public class R1NonCentral
 			);
 		}
 
-		return (_degreesOfFreedom + n * _nonCentralityParameter) * java.lang.Math.pow (
+		return (
+			_r1NonCentralParameters.degreesOfFreedom() + n * _r1NonCentralParameters.nonCentralityParameter()
+		) * java.lang.Math.pow (
 			2.,
 			n - 1.
 		) * _gammaEstimator.evaluate (
@@ -441,26 +494,30 @@ public class R1NonCentral
 
 	public double[] leadingRawMoments()
 	{
+		double degreesOfFreedom = _r1NonCentralParameters.degreesOfFreedom();
+
+		double nonCentralityParameter = _r1NonCentralParameters.nonCentralityParameter();
+
 		double[] fourLeadingRawMomentArray = new double[4];
-		fourLeadingRawMomentArray[0] = _nonCentralityParameter + _degreesOfFreedom;
+		fourLeadingRawMomentArray[0] = nonCentralityParameter + degreesOfFreedom;
 		fourLeadingRawMomentArray[1] =
 			fourLeadingRawMomentArray[0] * fourLeadingRawMomentArray[0] +
-			2. * (_nonCentralityParameter + 2. * _degreesOfFreedom);
+			2. * (nonCentralityParameter + 2. * degreesOfFreedom);
 		fourLeadingRawMomentArray[2] =
 			fourLeadingRawMomentArray[0] * fourLeadingRawMomentArray[0] * fourLeadingRawMomentArray[0] +
-			6. * fourLeadingRawMomentArray[0] * (_nonCentralityParameter + 2. * _degreesOfFreedom) +
-			8. * (_nonCentralityParameter + 3. * _degreesOfFreedom);
+			6. * fourLeadingRawMomentArray[0] * (nonCentralityParameter + 2. * degreesOfFreedom) +
+			8. * (nonCentralityParameter + 3. * degreesOfFreedom);
 		fourLeadingRawMomentArray[3] =
 			fourLeadingRawMomentArray[0] * fourLeadingRawMomentArray[0] * fourLeadingRawMomentArray[0] *
 				fourLeadingRawMomentArray[0] +
 			12. * fourLeadingRawMomentArray[0] * fourLeadingRawMomentArray[0] *
-				(_nonCentralityParameter + 2. * _degreesOfFreedom) +
+				(nonCentralityParameter + 2. * degreesOfFreedom) +
 			4. * (
-				11. * _degreesOfFreedom * _degreesOfFreedom +
-				44. * _degreesOfFreedom * _nonCentralityParameter +
-				36. * _nonCentralityParameter * _nonCentralityParameter
+				11. * degreesOfFreedom * degreesOfFreedom +
+				44. * degreesOfFreedom * nonCentralityParameter +
+				36. * nonCentralityParameter * nonCentralityParameter
 			) +
-			48. * (_nonCentralityParameter + 4. * _degreesOfFreedom);
+			48. * (nonCentralityParameter + 4. * degreesOfFreedom);
 		return fourLeadingRawMomentArray;
 	}
 
@@ -472,16 +529,20 @@ public class R1NonCentral
 
 	public double[] leadingCentralMoments()
 	{
+		double degreesOfFreedom = _r1NonCentralParameters.degreesOfFreedom();
+
+		double nonCentralityParameter = _r1NonCentralParameters.nonCentralityParameter();
+
 		double[] fourLeadingCentralMomentArray = new double[4];
 		fourLeadingCentralMomentArray[0] = 0.;
 		fourLeadingCentralMomentArray[1] =
-			2. * (_nonCentralityParameter + 2. * _degreesOfFreedom);
+			2. * (nonCentralityParameter + 2. * degreesOfFreedom);
 		fourLeadingCentralMomentArray[2] =
-			8. * (_nonCentralityParameter + 3. * _degreesOfFreedom);
+			8. * (nonCentralityParameter + 3. * degreesOfFreedom);
 		fourLeadingCentralMomentArray[3] =
-			12. * (_nonCentralityParameter + 2. * _degreesOfFreedom) *
-				(_nonCentralityParameter + 2. * _degreesOfFreedom) +
-			48. * (_nonCentralityParameter + 4. * _degreesOfFreedom);
+			12. * (nonCentralityParameter + 2. * degreesOfFreedom) *
+				(nonCentralityParameter + 2. * degreesOfFreedom) +
+			48. * (nonCentralityParameter + 4. * degreesOfFreedom);
 		return fourLeadingCentralMomentArray;
 	}
 

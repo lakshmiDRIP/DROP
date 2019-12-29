@@ -77,7 +77,7 @@ package org.drip.measure.chisquare;
 
 /**
  * <i>R1CentralWilsonHilferty</i> implements the Normal Proxy Version for the R<sup>1</sup> Chi-Square
- * 	Distribution using the Wilson-Hilferty Transfomation. The References are:
+ * 	Distribution using the Wilson-Hilferty Transformation. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -115,89 +115,158 @@ package org.drip.measure.chisquare;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1CentralWilsonHilferty
-	extends org.drip.measure.chisquare.R1WilsonHilferty
+public abstract class R1WilsonHilferty
+	extends org.drip.measure.continuous.R1Univariate
 {
+	private double _degreesOfFreedom = -1;
+	private org.drip.measure.gaussian.R1UnivariateNormal _r1UnivariateNormal = null;
 
-	/**
-	 * Construct a Standard Instance of R1CentralWilsonHilferty
-	 * 
-	 * @param degreesOfFreedom Degrees of Freedom
-	 * 
-	 * @return Standard Instance of R1CentralWilsonHilferty
-	 */
-
-	public static final R1CentralWilsonHilferty Standard (
-		final int degreesOfFreedom)
-		throws java.lang.Exception
-	{
-		if (0 >= degreesOfFreedom)
-		{
-			return null;
-		}
-
-		double twoOver_9degreesOfFreedom_ = 2. / (9. * degreesOfFreedom);
-
-		try
-		{
-			return new R1CentralWilsonHilferty (
-				degreesOfFreedom,
-				new org.drip.measure.gaussian.R1UnivariateNormal (
-					1. - twoOver_9degreesOfFreedom_,
-					twoOver_9degreesOfFreedom_
-				)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	protected R1CentralWilsonHilferty (
-		final int degreesOfFreedom,
+	protected R1WilsonHilferty (
+		final double degreesOfFreedom,
 		final org.drip.measure.gaussian.R1UnivariateNormal r1UnivariateNormal)
 		throws java.lang.Exception
 	{
-		super (
-			degreesOfFreedom,
-			r1UnivariateNormal
-		);
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+				_degreesOfFreedom = degreesOfFreedom
+			) || 0. >= _degreesOfFreedom ||
+			null == (_r1UnivariateNormal = r1UnivariateNormal)
+		)
+		{
+			throw new java.lang.Exception (
+				"R1WilsonHilferty Constructor => Invalid Inputs"
+			);
+		}
 	}
 
-	@Override public double transform (
-		final double x)
+	/**
+	 * Retrieve the Degrees of Freedom
+	 * 
+	 * @return The Degrees of Freedom
+	 */
+
+	public double degreesOfFreedom()
 	{
-		return x;
+		return _degreesOfFreedom;
 	}
 
-	@Override public double inverseTransform (
-		final double wilsonHilferty)
+	/**
+	 * Retrieve the R<sup>1</sup> Univariate Normal
+	 * 
+	 * @return The R<sup>1</sup> Univariate Normal
+	 */
+
+	public org.drip.measure.gaussian.R1UnivariateNormal r1UnivariateNormal()
 	{
-		return wilsonHilferty;
+		return _r1UnivariateNormal;
 	}
 
-	@Override public double random()
+	/**
+	 * Transform x into the Wilson-Hilferty Variate
+	 * 
+	 * @param x X
+	 * 
+	 * @return The Wilson-Hilferty Variate
+	 */
+
+	public abstract double transform (
+		final double x);
+
+	/**
+	 * Transform the Wilson-Hilferty Variate into x
+	 * 
+	 * @param wilsonHilferty The Wilson-Hilferty Variate
+	 * 
+	 * @return The Wilson-Hilferty Variate transformed back to x
+	 */
+
+	public abstract double inverseTransform (
+		final double wilsonHilferty);
+
+	@Override public double[] support()
+	{
+		return new double[]
+		{
+			0.,
+			java.lang.Double.POSITIVE_INFINITY
+		};
+	}
+
+	@Override public double density (
+		final double t)
 		throws java.lang.Exception
 	{
-		double sumOfStandardNormalSquares = 0.;
-
-		double degreesOfFreedom = degreesOfFreedom();
-
-		for (int drawIndex = 0; drawIndex < degreesOfFreedom; ++drawIndex)
-		{
-			double randomStandardNormal = org.drip.measure.gaussian.NormalQuadrature.InverseCDF
-				(java.lang.Math.random());
-
-			sumOfStandardNormalSquares = sumOfStandardNormalSquares +
-				randomStandardNormal * randomStandardNormal;
-		}
-
-		return java.lang.Math.pow (
-			sumOfStandardNormalSquares / degreesOfFreedom,
-			1. / 3.
+		return _r1UnivariateNormal.density (
+			transform (
+				t
+			)
 		);
+	}
+
+	@Override public double cumulative (
+		final double t)
+		throws java.lang.Exception
+	{
+		return _r1UnivariateNormal.cumulative (
+			transform (
+				t
+			)
+		);
+	}
+
+	@Override public double invCumulative (
+		final double y)
+		throws java.lang.Exception
+	{
+		return inverseTransform (
+			_r1UnivariateNormal.invCumulative (
+				y
+			)
+		);
+	}
+
+	@Override public double mean()
+		throws java.lang.Exception
+	{
+		return _r1UnivariateNormal.mean();
+	}
+
+	@Override public double median()
+		throws java.lang.Exception
+	{
+		return _r1UnivariateNormal.median();
+	}
+
+	@Override public double mode()
+		throws java.lang.Exception
+	{
+		return _r1UnivariateNormal.mode();
+	}
+
+	@Override public double variance()
+		throws java.lang.Exception
+	{
+		return _r1UnivariateNormal.variance();
+	}
+
+	@Override public double skewness()
+		throws java.lang.Exception
+	{
+		return _r1UnivariateNormal.skewness();
+	}
+
+	@Override public double excessKurtosis()
+		throws java.lang.Exception
+	{
+		return _r1UnivariateNormal.excessKurtosis();
+	}
+
+	@Override public org.drip.function.definition.R1ToR1 momentGeneratingFunction()
+	{
+		return _r1UnivariateNormal.momentGeneratingFunction();
+	}
+
+	@Override public org.drip.function.definition.R1ToR1 probabilityGeneratingFunction()
+	{
+		return _r1UnivariateNormal.probabilityGeneratingFunction();
 	}
 }

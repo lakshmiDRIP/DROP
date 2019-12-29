@@ -1,7 +1,7 @@
 
 package org.drip.sample.chisquaredistribution;
 
-import org.drip.measure.chisquare.R1CentralFisherProxy;
+import org.drip.measure.chisquare.R1CentralWilsonHilferty;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -68,8 +68,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>FisherProxyPDFEstimate</i> illustrates the Construction and the Usage of a Fisher Proxy for a Central
- * Chi-squared Distribution. The References are:
+ * <i>CentralWilsonHilfertyPDFEstimate</i> illustrates the Construction and the Usage of the Wilson-Hilferty
+ * 	Normal Proxy for a Central Chi-squared Distribution. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -90,7 +90,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FisherProxyPDFEstimate
+public class CentralWilsonHilfertyPDFEstimate
 {
 
 	public static final void main (
@@ -101,18 +101,18 @@ public class FisherProxyPDFEstimate
 
 		double[] tArray =
 		{
-			 0.1,
-			 1.0,
-			 2.0,
-			 3.0,
-			 4.0,
-			 5.0,
-			 6.0,
-			 7.0,
-			 8.0,
-			 9.0,
-			10.0,
-			12.0,
+			 0.75,
+			 0.80,
+			 0.85,
+			 0.90,
+			 0.95,
+			 1.00,
+			 1.05,
+			 1.10,
+			 1.15,
+			 1.20,
+			 1.25,
+			 1.30,
 		};
 		int[] dofArray =
 		{
@@ -158,14 +158,14 @@ public class FisherProxyPDFEstimate
 
 		for (int dof : dofArray)
 		{
-			R1CentralFisherProxy r1UnivariateFisherProxy = new R1CentralFisherProxy (dof);
+			R1CentralWilsonHilferty r1UnivariateWilsonHilferty = R1CentralWilsonHilferty.Standard (dof);
 
 			String display = "\t| [" + FormatUtil.FormatDouble (dof, 1, 0, 1., false) + "] =>";
 
 			for (double t : tArray)
 			{
 				display = display + " " + FormatUtil.FormatDouble (
-					r1UnivariateFisherProxy.density (t), 1, 5, 1., false
+					r1UnivariateWilsonHilferty.density (t), 1, 5, 1., false
 				) + " |";
 			}
 
@@ -192,14 +192,14 @@ public class FisherProxyPDFEstimate
 
 		for (int dof : dofArray)
 		{
-			R1CentralFisherProxy r1UnivariateFisherProxy = new R1CentralFisherProxy (dof);
+			R1CentralWilsonHilferty r1UnivariateWilsonHilferty = R1CentralWilsonHilferty.Standard (dof);
 
 			String display = "\t| [" + FormatUtil.FormatDouble (dof, 1, 0, 1., false) + "] =>";
 
 			for (double t : tArray)
 			{
 				display = display + " " + FormatUtil.FormatDouble (
-					r1UnivariateFisherProxy.cumulative (t), 1, 5, 1., false
+					r1UnivariateWilsonHilferty.cumulative (t), 1, 5, 1., false
 				) + " |";
 			}
 
@@ -226,14 +226,14 @@ public class FisherProxyPDFEstimate
 
 		for (int dof : dofArray)
 		{
-			R1CentralFisherProxy r1UnivariateFisherProxy = new R1CentralFisherProxy (dof);
+			R1CentralWilsonHilferty r1UnivariateWilsonHilferty = R1CentralWilsonHilferty.Standard (dof);
 
 			String display = "\t| [" + FormatUtil.FormatDouble (dof, 1, 0, 1., false) + "] =>";
 
 			for (double p : pValueArray)
 			{
 				display = display + " " + FormatUtil.FormatDouble (
-					r1UnivariateFisherProxy.invCumulative (p), 1, 5, 1., false
+					r1UnivariateWilsonHilferty.invCumulative (p), 1, 5, 1., false
 				) + " |";
 			}
 

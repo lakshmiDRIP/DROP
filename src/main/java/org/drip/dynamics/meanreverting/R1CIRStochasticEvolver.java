@@ -321,4 +321,88 @@ public class R1CIRStochasticEvolver
 
 		return null;
 	}
+
+	@Override public org.drip.measure.chisquare.R1NonCentral futureValueDistribution (
+		final double r0,
+		final double t)
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+				r0
+			) || !org.drip.numerical.common.NumberUtil.IsValid (
+				t
+			) || 0. > t
+		)
+		{
+			return null;
+		}
+
+		int digammaTermCount = 1000;
+		int besselFirstTermCount = 20;
+
+		org.drip.dynamics.meanreverting.CKLSParameters cklsParameters = cklsParameters();
+
+		double ePowerMinusAT = java.lang.Math.exp (
+			-1. * cklsParameters.meanReversionSpeed() * t
+		);
+
+		org.drip.function.definition.R1ToR1 gammaEstimator =
+			new org.drip.specialfunction.gamma.EulerIntegralSecondKind (
+				null
+			);
+
+		try
+		{
+			return new org.drip.measure.chisquare.R1NonCentral (
+				new org.drip.measure.chisquare.R1NonCentralParameters (
+					cklsParameters.meanReversionLevel() * (1. - ePowerMinusAT),
+					r0 * ePowerMinusAT
+				),
+				gammaEstimator,
+				org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (
+					digammaTermCount
+				),
+				new org.drip.function.definition.R2ToR1()
+				{
+					@Override public double evaluate (
+						final double s,
+						final double t)
+						throws Exception
+					{
+						return new org.drip.specialfunction.incompletegamma.LowerEulerIntegral (
+							null,
+							t
+						).evaluate (
+							s
+						);
+					}
+				},
+				org.drip.specialfunction.bessel.ModifiedFirstFrobeniusSeriesEstimator.Standard (
+					gammaEstimator,
+					besselFirstTermCount
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override public org.drip.dynamics.kolmogorov.R1FokkerPlanckCIR fokkerPlanckGenerator()
+	{
+		try
+		{
+			return new org.drip.dynamics.kolmogorov.R1FokkerPlanckCIR (
+				cklsParameters()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }

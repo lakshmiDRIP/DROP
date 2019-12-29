@@ -22,6 +22,30 @@ DROP Measure Chi-Square implements the Chi-Square Distribution Implementation/Pr
  * [***R1NonCentral***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/R1NonCentral.java)
  <i>R1NonCentral</i> implements the Distribution Table for the R<sup>1</sup> Non-central Chi-Square Distribution.
 
+ * [***R1NonCentralAbdelAty***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/R1NonCentralAbdelAty.java)
+ <i>R1NonCentralAbdelAty</i> implements the Abdel-Aty (1954) Wilson-Haferty Approximation for the R<sup>1</sup> Non-central Chi-Square Distribution.
+
+ * [***R1NonCentralCLTProxy***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/R1NonCentralCLTProxy.java)
+ <i>R1NonCentralCLTProxy</i> implements the CLT Proxy Distribution for the R<sup>1</sup> Non-central Chi-Square Distribution.
+
+ * [***R1NonCentralComposite***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/R1NonCentralComposite.java)
+ <i>R1NonCentralComposite</i> implements Composite R<sup>1</sup> Non-central Chi-Square Distributions.
+
+ * [***R1NonCentralCumulantInvariant***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/R1NonCentralCumulantInvariant.java)
+ <i>R1NonCentralCumulantInvariant</i> implements the Cumulant Invariant Transformation for the R<sup>1</sup> Non-central Chi-Square Distribution.
+
+ * [***R1NonCentralParameters***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/R1NonCentralParameters.java)
+ <i>R1NonCentralParameters</i> holds the Parameters used in the R<sup>1</sup> Non-central Chi-Square Distribution.
+
+ * [***R1NonCentralSankaran***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/R1NonCentralSankaran.java)
+ <i>R1NonCentralSankaran</i> implements the Sankaran (1959, 1963) Wilson-Haferty Approximation for the R<sup>1</sup> Non-central Chi-Square Distribution.
+
+ * [***R1NonCentralWilsonHaferty***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/R1NonCentralWilsonHaferty.java)
+ <i>R1NonCentralWilsonHaferty</i> implements the Wilson-Haferty Transform for the R<sup>1</sup> Non-central Chi-Square Distribution.
+
+ * [***R1CentralWilsonHilferty***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/R1CentralWilsonHilferty.java)
+ <i>R1CentralWilsonHilferty</i> implements the Normal Proxy Version for the R<sup>1</sup> Chi-Square Distribution using the Wilson-Hilferty Transformation.
+
 
 ## References
 

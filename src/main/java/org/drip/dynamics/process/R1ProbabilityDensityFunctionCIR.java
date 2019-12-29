@@ -1,5 +1,5 @@
 
-package org.drip.dynamics.kolmogorov;
+package org.drip.dynamics.process;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,8 +76,8 @@ package org.drip.dynamics.kolmogorov;
  */
 
 /**
- * <i>R1FokkerPlanckCIR</i> exposes the R<sup>1</sup> Cox-Ingersoll-Ross Probability Density Function
- * 	Evolution Equation. The References are:
+ * <i>R1ProbabilityDensityFunctionCIR</i> exposes the R<sup>1</sup> Probability Density Function Evaluation
+ * 	Equation for an Underlying CIR Process. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -108,61 +108,134 @@ package org.drip.dynamics.kolmogorov;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md">HJM, Hull White, LMM, and SABR Dynamic Evolution Models</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/kolmogorov/README.md">Fokker Planck Kolmogorov Forward/Backward</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/process/README.md">Ito-Dynamics Based Stochastic Process</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1FokkerPlanckCIR
-	extends org.drip.dynamics.kolmogorov.R1FokkerPlanckCKLS
+public class R1ProbabilityDensityFunctionCIR
+	extends org.drip.dynamics.process.R1ProbabilityDensityFunction
 {
+	private double _q = java.lang.Double.NaN;
+	private double _r0 = java.lang.Double.NaN;
+	private double _twoAOverSigmaSquared = java.lang.Double.NaN;
+	private org.drip.dynamics.meanreverting.CKLSParameters _cklsParameters = null;
+	private org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator
+		_modifiedBesselFirstKindEstimator = null;
 
 	/**
-	 * R1FokkerPlanckCIR Constructor
-	 *
+	 * R1ProbabilityDensityFunctionCIR Constructor
+	 * 
+	 * @param r0 Starting Value for r
 	 * @param cklsParameters The CKLS Parameters
+	 * @param modifiedBesselFirstKindEstimator Modified Bessel Estimator of the First Kind
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public R1FokkerPlanckCIR (
-		final org.drip.dynamics.meanreverting.CKLSParameters cklsParameters)
+	public R1ProbabilityDensityFunctionCIR (
+		final double r0,
+		final org.drip.dynamics.meanreverting.CKLSParameters cklsParameters,
+		final org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator
+			modifiedBesselFirstKindEstimator)
 		throws java.lang.Exception
 	{
-		super (
-			cklsParameters
-		);
-	}
-
-	@Override public org.drip.function.definition.R1ToR1 steadyStatePDF()
-	{
-		return org.drip.function.r1tor1.R1UnivariateCIRPDF.Standard (
-			cklsParameters()
-		);
-	}
-
-	@Override public org.drip.dynamics.process.R1ProbabilityDensityFunction deltaStartTemporalPDF (
-		final double r0)
-	{
-		try
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+				_r0 = r0
+			) ||
+			null == (_cklsParameters = cklsParameters) ||
+			null == (_modifiedBesselFirstKindEstimator = modifiedBesselFirstKindEstimator)
+		)
 		{
-			return new org.drip.dynamics.process.R1ProbabilityDensityFunctionCIR (
-				r0,
-				cklsParameters(),
-				org.drip.specialfunction.bessel.ModifiedFirstFrobeniusSeriesEstimator.Standard (
-					new org.drip.specialfunction.gamma.EulerIntegralSecondKind (
-						null
-					),
-					20
-				)
+			throw new java.lang.Exception (
+				"R1ProbabilityDensityFunctionCIR Constructor => Invalid Inputs"
 			);
 		}
-		catch (java.lang.Exception e)
+
+		double volatilityCoefficient = _cklsParameters.volatilityCoefficient();
+
+		_q = _cklsParameters.meanReversionLevel() * (
+			_twoAOverSigmaSquared = 2. * _cklsParameters.meanReversionSpeed() / volatilityCoefficient /
+				volatilityCoefficient
+		) - 1.;
+	}
+
+	/**
+	 * Retrieve "q"
+	 * 
+	 * @return "q"
+	 */
+
+	public double q()
+	{
+		return _q;
+	}
+
+	/**
+	 * Retrieve the Starting Value for r
+	 * 
+	 * @return Starting Value for r
+	 */
+
+	public double r0()
+	{
+		return _r0;
+	}
+
+	/**
+	 * Retrieve the CKLS Parameters
+	 * 
+	 * @return The CKLS Parameters
+	 */
+
+	public org.drip.dynamics.meanreverting.CKLSParameters cklsParameters()
+	{
+		return _cklsParameters;
+	}
+
+	/**
+	 * Retrieve the Modified Bessel Estimator of the First Kind
+	 * 
+	 * @return The Modified Bessel Estimator of the First Kind
+	 */
+
+	public org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator
+		modifiedBesselFirstKindEstimator()
+	{
+		return _modifiedBesselFirstKindEstimator;
+	}
+
+	@Override public double density (
+		final org.drip.dynamics.ito.TimeR1Vertex r1TimeVertex)
+		throws java.lang.Exception
+	{
+		if (null == r1TimeVertex)
 		{
-			e.printStackTrace();
+			throw new java.lang.Exception (
+				"R1ProbabilityDensityFunctionCIR::density => Invalid Inputs"
+			);
 		}
 
-		return null;
+		double ePowerMinusAT = java.lang.Math.exp (
+			-1. * _cklsParameters.meanReversionSpeed() * r1TimeVertex.t()
+		);
+
+		double c = _twoAOverSigmaSquared / (1. - ePowerMinusAT);
+		double u = c * _r0 * ePowerMinusAT;
+
+		double v = c * r1TimeVertex.x();
+
+		return c * java.lang.Math.exp (
+			-1. * (u + v)
+		) * java.lang.Math.pow (
+			u / v,
+			0.5 * _q
+		) * _modifiedBesselFirstKindEstimator.bigI (
+			_q,
+			2. * java.lang.Math.sqrt (
+				u * v
+			)
+		);
 	}
 }

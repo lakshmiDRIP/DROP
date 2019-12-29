@@ -68,7 +68,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>CLTProxyMeasureEstimate</i> illustrates the Estimation of Measures for a CLT Proxy for a Central
+ * <i>CentralCLTProxyMeasureEstimate</i> illustrates the Estimation of Measures for a CLT Proxy for a Central
  * Chi-squared Distribution. The References are:
  * 
  * <br><br>
@@ -90,7 +90,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CLTProxyMeasureEstimate
+public class CentralCLTProxyMeasureEstimate
 {
 
 	public static final void main (

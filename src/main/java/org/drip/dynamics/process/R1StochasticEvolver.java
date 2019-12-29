@@ -259,7 +259,7 @@ public class R1StochasticEvolver
 	{
 		try
 		{
-			return new org.drip.dynamics.kolmogorov.R1FokkerPlanck (
+			new org.drip.dynamics.kolmogorov.R1FokkerPlanck (
 				_driftFunction,
 				_volatilityFunction
 			);
@@ -269,6 +269,22 @@ public class R1StochasticEvolver
 			e.printStackTrace();
 		}
 
+		return null;
+	}
+
+	/**
+	 * Generate the Future Value Distribution at Time t
+	 * 
+	 * @param x0 Starting Variate
+	 * @param t Time
+	 * 
+	 * @return The Future Value Distribution
+	 */
+
+	public org.drip.measure.continuous.R1Univariate futureValueDistribution (
+		final double x0,
+		final double t)
+	{
 		return null;
 	}
 }

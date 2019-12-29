@@ -117,7 +117,7 @@ package org.drip.measure.chisquare;
 
 public class R1Central extends org.drip.measure.continuous.R1Univariate
 {
-	private int _degreesOfFreedom = -1;
+	private double _degreesOfFreedom = -1;
 	private double _cdfScaler = java.lang.Double.NaN;
 	private double _normalizer = java.lang.Double.NaN;
 	private org.drip.function.definition.R1ToR1 _gammaEstimator = null;
@@ -140,7 +140,7 @@ public class R1Central extends org.drip.measure.continuous.R1Univariate
 			return null;
 		}
 
-		int degreesOfFreedom = 0;
+		double degreesOfFreedom = 0;
 
 		for (org.drip.measure.chisquare.R1Central chiSquaredDistribution :
 			chiSquaredDistributionArray)
@@ -182,13 +182,15 @@ public class R1Central extends org.drip.measure.continuous.R1Univariate
 	 */
 
 	public R1Central (
-		final int degreesOfFreedom,
+		final double degreesOfFreedom,
 		final org.drip.function.definition.R1ToR1 gammaEstimator,
 		final org.drip.function.definition.R1ToR1 digammaEstimator,
 		final org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator)
 		throws java.lang.Exception
 	{
-		if (0 >= (_degreesOfFreedom = degreesOfFreedom) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+				_degreesOfFreedom = degreesOfFreedom
+			) || 0. >= _degreesOfFreedom ||
 			null == (_gammaEstimator = gammaEstimator) ||
 			null == (_digammaEstimator = digammaEstimator) ||
 			null == (_lowerIncompleteGammaEstimator = lowerIncompleteGammaEstimator))
@@ -210,7 +212,7 @@ public class R1Central extends org.drip.measure.continuous.R1Univariate
 	 * @return The Degrees of Freedom
 	 */
 
-	public int degreesOfFreedom()
+	public double degreesOfFreedom()
 	{
 		return _degreesOfFreedom;
 	}

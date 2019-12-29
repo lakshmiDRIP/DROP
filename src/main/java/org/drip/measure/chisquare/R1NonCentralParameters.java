@@ -76,31 +76,30 @@ package org.drip.measure.chisquare;
  */
 
 /**
- * <i>R1CentralWilsonHilferty</i> implements the Normal Proxy Version for the R<sup>1</sup> Chi-Square
- * 	Distribution using the Wilson-Hilferty Transfomation. The References are:
+ * <i>R1NonCentralParameters</i> holds the Parameters used in the R<sup>1</sup> Non-central Chi-Square
+ * 	Distribution. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Abramowitz, M., and I. A. Stegun (2007): <i>Handbook of Mathematics Functions</i> <b>Dover Book
- * 				on Mathematics</b>
- * 		</li>
- * 		<li>
- * 			Backstrom, T., and J. Fischer (2018): Fast Randomization for Distributed Low Bit-rate Coding of
- * 				Speech and Audio <i>IEEE/ACM Transactions on Audio, Speech, and Language Processing</i> <b>26
- * 				(1)</b> 19-30
- * 		</li>
- * 		<li>
- * 			Chi-Squared Distribution (2019): Chi-Squared Function
- * 				https://en.wikipedia.org/wiki/Chi-squared_distribution
- * 		</li>
- * 		<li>
- * 			Johnson, N. L., S. Kotz, and N. Balakrishnan (1994): <i>Continuous Univariate Distributions
+ * 			Johnson, N. L., S. Kotz, and N. Balakrishnan (1995): <i>Continuous Univariate Distributions
  * 				2<sup>nd</sup> Edition</i> <b>John Wiley and Sons</b>
  * 		</li>
  * 		<li>
- * 			National Institute of Standards and Technology (2019): Chi-Squared Distribution
- * 				https://www.itl.nist.gov/div898/handbook/eda/section3/eda3666.htm
+ * 			Muirhead, R. (2005): <i>Aspects of Multivariate Statistical Theory 2<sup>nd</sup> Edition</i>
+ * 				<b>Wiley</b>
+ * 		</li>
+ * 		<li>
+ * 			Non-central Chi-Squared Distribution (2019): Chi-Squared Function
+ * 				https://en.wikipedia.org/wiki/Noncentral_chi-squared_distribution
+ * 		</li>
+ * 		<li>
+ * 			Sankaran, M. (1963): Approximations to the Non-Central Chi-Square Distribution <i>Biometrika</i>
+ * 				<b>50 (1-2)</b> 199-204
+ * 		</li>
+ * 		<li>
+ * 			Young, D. S. (2010): tolerance: An R Package for Estimating Tolerance Intervals <i>Journal of
+ * 				Statistical Software</i> <b>36 (5)</b> 1-39
  * 		</li>
  * 	</ul>
  *
@@ -115,89 +114,58 @@ package org.drip.measure.chisquare;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1CentralWilsonHilferty
-	extends org.drip.measure.chisquare.R1WilsonHilferty
+public class R1NonCentralParameters
 {
+	private double _degreesOfFreedom = -1;
+	private double _nonCentralityParameter = java.lang.Double.NaN;
 
 	/**
-	 * Construct a Standard Instance of R1CentralWilsonHilferty
+	 * R1NonCentralParameters Constructor
 	 * 
 	 * @param degreesOfFreedom Degrees of Freedom
+	 * @param nonCentralityParameter Non-centrality Parameter
 	 * 
-	 * @return Standard Instance of R1CentralWilsonHilferty
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final R1CentralWilsonHilferty Standard (
-		final int degreesOfFreedom)
+	public R1NonCentralParameters (
+		final double degreesOfFreedom,
+		final double nonCentralityParameter)
 		throws java.lang.Exception
 	{
-		if (0 >= degreesOfFreedom)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+				_degreesOfFreedom = degreesOfFreedom
+			) || 0 >= _degreesOfFreedom ||
+			!org.drip.numerical.common.NumberUtil.IsValid (
+				_nonCentralityParameter = nonCentralityParameter
+			)
+		)
 		{
-			return null;
-		}
-
-		double twoOver_9degreesOfFreedom_ = 2. / (9. * degreesOfFreedom);
-
-		try
-		{
-			return new R1CentralWilsonHilferty (
-				degreesOfFreedom,
-				new org.drip.measure.gaussian.R1UnivariateNormal (
-					1. - twoOver_9degreesOfFreedom_,
-					twoOver_9degreesOfFreedom_
-				)
+			throw new java.lang.Exception (
+				"R1NonCentralParameters Constructor => Invalid Inputs: " + degreesOfFreedom + " | " + nonCentralityParameter
 			);
 		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
 	}
 
-	protected R1CentralWilsonHilferty (
-		final int degreesOfFreedom,
-		final org.drip.measure.gaussian.R1UnivariateNormal r1UnivariateNormal)
-		throws java.lang.Exception
+	/**
+	 * Retrieve the Degrees of Freedom
+	 * 
+	 * @return The Degrees of Freedom
+	 */
+
+	public double degreesOfFreedom()
 	{
-		super (
-			degreesOfFreedom,
-			r1UnivariateNormal
-		);
+		return _degreesOfFreedom;
 	}
 
-	@Override public double transform (
-		final double x)
+	/**
+	 * Retrieve the Non-centrality Parameter
+	 * 
+	 * @return The Non-centrality Parameter
+	 */
+
+	public double nonCentralityParameter()
 	{
-		return x;
-	}
-
-	@Override public double inverseTransform (
-		final double wilsonHilferty)
-	{
-		return wilsonHilferty;
-	}
-
-	@Override public double random()
-		throws java.lang.Exception
-	{
-		double sumOfStandardNormalSquares = 0.;
-
-		double degreesOfFreedom = degreesOfFreedom();
-
-		for (int drawIndex = 0; drawIndex < degreesOfFreedom; ++drawIndex)
-		{
-			double randomStandardNormal = org.drip.measure.gaussian.NormalQuadrature.InverseCDF
-				(java.lang.Math.random());
-
-			sumOfStandardNormalSquares = sumOfStandardNormalSquares +
-				randomStandardNormal * randomStandardNormal;
-		}
-
-		return java.lang.Math.pow (
-			sumOfStandardNormalSquares / degreesOfFreedom,
-			1. / 3.
-		);
+		return _nonCentralityParameter;
 	}
 }
