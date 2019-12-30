@@ -11,7 +11,7 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimizer_v4.59.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimizer_v4.64.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -81,6 +81,12 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 	* A Greedy Heuristic
 	* Cutting Planes Algorithm and PROXACCPM – Concept and Tool
 	* PROXACCPM Performance on the Generic Problem
+	* Chvatal-Gomory Cuts and Variants
+	* Chvatal-Gomory Cuts
+	* Deriving the Cuts for the Setup
+	* Branching Rule and Node Selection
+	* Computational Results
+	* Conclusion
 	* References
 
 
