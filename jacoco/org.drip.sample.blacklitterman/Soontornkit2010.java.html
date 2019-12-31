@@ -16,38 +16,49 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -97,33 +108,33 @@ import org.drip.service.env.EnvManager;
  *  
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/blacklitterman/README.md&quot;&gt;Black Litterman&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/blacklitterman/README.md&quot;&gt;Canonical Black Litterman and Extensions&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L110">public class Soontornkit2010 {</span>
+<span class="nc" id="L121">public class Soontornkit2010 {</span>
 
 	public static final void main (
 		final String[] astArgs)
 		throws Exception
 	{
-<span class="fc" id="L116">		EnvManager.InitEnv (</span>
+<span class="fc" id="L127">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L121">		double dblTau = 0.3;</span>
-<span class="fc" id="L122">		double dblRiskFreeRate = 0.03;</span>
-<span class="fc" id="L123">		double adblHistoricalBenchmarkReturn = 0.049;</span>
-<span class="fc" id="L124">		double dblHistoricalLongTermVariance = 0.0152;</span>
+<span class="fc" id="L132">		double dblTau = 0.3;</span>
+<span class="fc" id="L133">		double dblRiskFreeRate = 0.03;</span>
+<span class="fc" id="L134">		double adblHistoricalBenchmarkReturn = 0.049;</span>
+<span class="fc" id="L135">		double dblHistoricalLongTermVariance = 0.0152;</span>
 
-<span class="fc" id="L126">		String[] astrID1 = new String[] {</span>
+<span class="fc" id="L137">		String[] astrID1 = new String[] {</span>
 			&quot;AGRO &amp; FOOD INDUSTRY    &quot;,
 			&quot;CONSUMER PRODUCTS       &quot;,
 			&quot;FINANCIALS              &quot;,
@@ -134,7 +145,7 @@ import org.drip.service.env.EnvManager;
 			&quot;TECHNOLOGY              &quot;
 		};
 
-<span class="fc" id="L137">		String[] astrID2 = new String[] {</span>
+<span class="fc" id="L148">		String[] astrID2 = new String[] {</span>
 			&quot;ZRR3Y                   &quot;,
 			&quot;AGRO &amp; FOOD INDUSTRY    &quot;,
 			&quot;CONSUMER PRODUCTS       &quot;,
@@ -146,7 +157,7 @@ import org.drip.service.env.EnvManager;
 			&quot;TECHNOLOGY              &quot;
 		};
 
-<span class="fc" id="L149">		double[] adblMarketCapitalizationEstimate = new double[] {</span>
+<span class="fc" id="L160">		double[] adblMarketCapitalizationEstimate = new double[] {</span>
 			1118732.,
 			 143798.,
 			3136108.,
@@ -157,7 +168,7 @@ import org.drip.service.env.EnvManager;
 			1808058.
 		};
 
-<span class="fc" id="L160">		double[][] aadblAssetExcessReturnsCovariance = new double[][] {</span>
+<span class="fc" id="L171">		double[][] aadblAssetExcessReturnsCovariance = new double[][] {</span>
 			{ 0.0013, -0.0010, -0.0005, -0.0009, -0.0019, -0.0004, -0.0014, -0.0008, -0.0006},
 			{-0.0010,  0.0391,  0.0158,  0.0398,  0.0496,  0.0462,  0.0454,  0.0370,  0.0265},
 			{-0.0005,  0.0158,  0.0118,  0.0150,  0.0203,  0.0204,  0.0191,  0.0161,  0.0111},
@@ -169,25 +180,25 @@ import org.drip.service.env.EnvManager;
 			{-0.0006,  0.0265,  0.0111,  0.0403,  0.0471,  0.0453,  0.0481,  0.0384,  0.0473}
 		};
 
-<span class="fc" id="L172">		double[][] aadblAssetSpaceViewProjection = new double[][] {</span>
+<span class="fc" id="L183">		double[][] aadblAssetSpaceViewProjection = new double[][] {</span>
 			{  1.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00},
 			{  0.00,  0.00, -1.00,  0.00,  0.00,  0.00,  1.00,  0.00,  0.00},
 			{  0.00,  0.00,  0.00, -0.41,  0.49,  0.00, -0.59,  0.00,  0.51}
 		};
 
-<span class="fc" id="L178">		double[] adblProjectionExpectedExcessReturns = new double[] {</span>
+<span class="fc" id="L189">		double[] adblProjectionExpectedExcessReturns = new double[] {</span>
 			0.000,
 			0.020,
 			0.001
 		};
 
-<span class="fc" id="L184">		double[][] aadblProjectionExcessReturnsCovariance = new double[][] {</span>
+<span class="fc" id="L195">		double[][] aadblProjectionExcessReturnsCovariance = new double[][] {</span>
 			{0.0013, 0.0000, 0.0000},
 			{0.0000, 0.0679, 0.0000},
 			{0.0000, 0.0000, 0.0132}
 		};
 
-<span class="fc" id="L190">		double[] adblMarketCapitalizationWeight1Reconciler = new double[] {</span>
+<span class="fc" id="L201">		double[] adblMarketCapitalizationWeight1Reconciler = new double[] {</span>
 			0.07,
 			0.01,
 			0.20,
@@ -198,7 +209,7 @@ import org.drip.service.env.EnvManager;
 			0.12
 		};
 
-<span class="fc" id="L201">		double[] adblMarketCapitalizationWeight2Reconciler = new double[] {</span>
+<span class="fc" id="L212">		double[] adblMarketCapitalizationWeight2Reconciler = new double[] {</span>
 			0.500,
 			0.036,
 			0.005,
@@ -210,7 +221,7 @@ import org.drip.service.env.EnvManager;
 			0.059
 		};
 
-<span class="fc" id="L213">		double[] adblExpectedExcessReturnReconciler = new double[] {</span>
+<span class="fc" id="L224">		double[] adblExpectedExcessReturnReconciler = new double[] {</span>
 			0.0001,
 			0.0221,
 			0.0096,
@@ -222,7 +233,7 @@ import org.drip.service.env.EnvManager;
 			0.0244
 		};
 
-<span class="fc" id="L225">		double[] adblAssetSpaceJointReturnsReconciler = new double[] {</span>
+<span class="fc" id="L236">		double[] adblAssetSpaceJointReturnsReconciler = new double[] {</span>
 			0.0336,
 			0.0333,
 			0.0315,
@@ -233,7 +244,7 @@ import org.drip.service.env.EnvManager;
 			0.0608
 		};
 
-<span class="fc" id="L236">		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (</span>
+<span class="fc" id="L247">		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (</span>
 			new MultivariateMeta (
 				new String[] {
 					&quot;PROJECTION #1&quot;,
@@ -245,36 +256,36 @@ import org.drip.service.env.EnvManager;
 			aadblProjectionExcessReturnsCovariance
 		);
 
-<span class="fc" id="L248">		double dblRiskAversion = RiskUtilitySettingsEstimator.EquilibriumRiskAversion (</span>
+<span class="fc" id="L259">		double dblRiskAversion = RiskUtilitySettingsEstimator.EquilibriumRiskAversion (</span>
 			adblHistoricalBenchmarkReturn,
 			dblRiskFreeRate,
 			dblHistoricalLongTermVariance
 		);
 
-<span class="fc" id="L254">		double[] adblMarketCapitalizationWeight2 = new double[adblMarketCapitalizationEstimate.length + 1];</span>
-<span class="fc" id="L255">		double[] adblMarketCapitalizationWeight1 = new double[adblMarketCapitalizationEstimate.length];</span>
-<span class="fc" id="L256">		adblMarketCapitalizationWeight2[0] = 0.50;</span>
-<span class="fc" id="L257">		double dblTotalMarketCapitalization = 0.;</span>
+<span class="fc" id="L265">		double[] adblMarketCapitalizationWeight2 = new double[adblMarketCapitalizationEstimate.length + 1];</span>
+<span class="fc" id="L266">		double[] adblMarketCapitalizationWeight1 = new double[adblMarketCapitalizationEstimate.length];</span>
+<span class="fc" id="L267">		adblMarketCapitalizationWeight2[0] = 0.50;</span>
+<span class="fc" id="L268">		double dblTotalMarketCapitalization = 0.;</span>
 
-<span class="fc bfc" id="L259" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMarketCapitalizationEstimate.length; ++i)</span>
-<span class="fc" id="L260">			dblTotalMarketCapitalization += adblMarketCapitalizationEstimate[i];</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMarketCapitalizationEstimate.length; ++i)</span>
+<span class="fc" id="L271">			dblTotalMarketCapitalization += adblMarketCapitalizationEstimate[i];</span>
 
-<span class="fc bfc" id="L262" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMarketCapitalizationEstimate.length; ++i) {</span>
-<span class="fc" id="L263">			adblMarketCapitalizationWeight1[i] = adblMarketCapitalizationEstimate[i] / dblTotalMarketCapitalization;</span>
-<span class="fc" id="L264">			adblMarketCapitalizationWeight2[i + 1] = 0.5 * adblMarketCapitalizationWeight1[i];</span>
+<span class="fc bfc" id="L273" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMarketCapitalizationEstimate.length; ++i) {</span>
+<span class="fc" id="L274">			adblMarketCapitalizationWeight1[i] = adblMarketCapitalizationEstimate[i] / dblTotalMarketCapitalization;</span>
+<span class="fc" id="L275">			adblMarketCapitalizationWeight2[i + 1] = 0.5 * adblMarketCapitalizationWeight1[i];</span>
 		}
 
-<span class="fc" id="L267">		double[] adblExpectedExcessReturn = Matrix.Product (</span>
+<span class="fc" id="L278">		double[] adblExpectedExcessReturn = Matrix.Product (</span>
 			aadblAssetExcessReturnsCovariance,
 			adblMarketCapitalizationWeight2
 		);
 
-<span class="fc bfc" id="L272" title="All 2 branches covered.">		for (int i = 0; i &lt; adblExpectedExcessReturn.length; ++i)</span>
-<span class="fc" id="L273">			adblExpectedExcessReturn[i] *= dblRiskAversion;</span>
+<span class="fc bfc" id="L283" title="All 2 branches covered.">		for (int i = 0; i &lt; adblExpectedExcessReturn.length; ++i)</span>
+<span class="fc" id="L284">			adblExpectedExcessReturn[i] *= dblRiskAversion;</span>
 
-<span class="fc" id="L275">		BlackLittermanCombinationEngine blce = new BlackLittermanCombinationEngine (</span>
-<span class="fc" id="L276">			ForwardReverseOptimizationOutput.Reverse (</span>
-<span class="fc" id="L277">				Portfolio.Standard (</span>
+<span class="fc" id="L286">		BlackLittermanCombinationEngine blce = new BlackLittermanCombinationEngine (</span>
+<span class="fc" id="L287">			ForwardReverseOptimizationOutput.Reverse (</span>
+<span class="fc" id="L288">				Portfolio.Standard (</span>
 					astrID2,
 					adblMarketCapitalizationWeight2
 				),
@@ -292,244 +303,244 @@ import org.drip.service.env.EnvManager;
 			)
 		);
 
-<span class="fc" id="L295">		R1MultivariateConvolutionMetrics jpm = blce.customConfidenceRun().jointPosteriorMetrics();</span>
+<span class="fc" id="L306">		R1MultivariateConvolutionMetrics jpm = blce.customConfidenceRun().jointPosteriorMetrics();</span>
 
-<span class="fc" id="L297">		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jpm.joint();</span>
+<span class="fc" id="L308">		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jpm.joint();</span>
 
-<span class="fc" id="L299">		R1MultivariateNormal posteriorDistribution = (R1MultivariateNormal) jpm.posterior();</span>
+<span class="fc" id="L310">		R1MultivariateNormal posteriorDistribution = (R1MultivariateNormal) jpm.posterior();</span>
 
-<span class="fc" id="L301">		double[] adblAssetSpaceJointReturns = jointDistribution.mean();</span>
+<span class="fc" id="L312">		double[] adblAssetSpaceJointReturns = jointDistribution.mean();</span>
 
-<span class="fc" id="L303">		double[][] aadblAssetSpaceJointCovariance = jointDistribution.covariance().covarianceMatrix();</span>
+<span class="fc" id="L314">		double[][] aadblAssetSpaceJointCovariance = jointDistribution.covariance().covarianceMatrix();</span>
 
-<span class="fc" id="L305">		double[][] aadblAssetSpacePosteriorCovariance = posteriorDistribution.covariance().covarianceMatrix();</span>
+<span class="fc" id="L316">		double[][] aadblAssetSpacePosteriorCovariance = posteriorDistribution.covariance().covarianceMatrix();</span>
 
-<span class="fc" id="L307">		System.out.println (&quot;\n\t|------------------------||&quot;);</span>
+<span class="fc" id="L318">		System.out.println (&quot;\n\t|------------------------||&quot;);</span>
 
-<span class="fc" id="L309">		System.out.println (&quot;\t| TAU   =&gt; &quot; + FormatUtil.FormatDouble (dblTau, 1, 8, 1.) + &quot;   ||&quot;);</span>
+<span class="fc" id="L320">		System.out.println (&quot;\t| TAU   =&gt; &quot; + FormatUtil.FormatDouble (dblTau, 1, 8, 1.) + &quot;   ||&quot;);</span>
 
-<span class="fc" id="L311">		System.out.println (&quot;\t| DELTA =&gt; &quot; + FormatUtil.FormatDouble (dblRiskAversion, 1, 8, 1.) + &quot;   ||&quot;);</span>
+<span class="fc" id="L322">		System.out.println (&quot;\t| DELTA =&gt; &quot; + FormatUtil.FormatDouble (dblRiskAversion, 1, 8, 1.) + &quot;   ||&quot;);</span>
 
-<span class="fc" id="L313">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="fc" id="L324">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
-<span class="fc" id="L315">		System.out.println (&quot;\n\t||-------------------------------------------||&quot;);</span>
+<span class="fc" id="L326">		System.out.println (&quot;\n\t||-------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L317">		System.out.println (&quot;\t||    MARKET CAPITALIZATION RECONCILER #1    ||&quot;);</span>
+<span class="fc" id="L328">		System.out.println (&quot;\t||    MARKET CAPITALIZATION RECONCILER #1    ||&quot;);</span>
 
-<span class="fc" id="L319">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
+<span class="fc" id="L330">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L321">		System.out.println (&quot;\t||           SECTOR         =&gt;  WT. |  PAPER ||&quot;);</span>
+<span class="fc" id="L332">		System.out.println (&quot;\t||           SECTOR         =&gt;  WT. |  PAPER ||&quot;);</span>
 
-<span class="fc" id="L323">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
+<span class="fc" id="L334">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L325" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMarketCapitalizationEstimate.length; ++i)</span>
-<span class="fc" id="L326">			System.out.println (</span>
+<span class="fc bfc" id="L336" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMarketCapitalizationEstimate.length; ++i)</span>
+<span class="fc" id="L337">			System.out.println (</span>
 				&quot;\t|| &quot; + astrID1[i] + &quot; =&gt; &quot; +
-<span class="fc" id="L328">					FormatUtil.FormatDouble (adblMarketCapitalizationWeight1[i], 2, 0, 100.) + &quot;% |  &quot; +</span>
-<span class="fc" id="L329">					FormatUtil.FormatDouble (adblMarketCapitalizationWeight1Reconciler[i], 2, 0, 100.) + &quot;%  ||&quot;</span>
+<span class="fc" id="L339">					FormatUtil.FormatDouble (adblMarketCapitalizationWeight1[i], 2, 0, 100.) + &quot;% |  &quot; +</span>
+<span class="fc" id="L340">					FormatUtil.FormatDouble (adblMarketCapitalizationWeight1Reconciler[i], 2, 0, 100.) + &quot;%  ||&quot;</span>
 			);
 
-<span class="fc" id="L332">		System.out.println (&quot;\t||-------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L343">		System.out.println (&quot;\t||-------------------------------------------||\n&quot;);</span>
 
-<span class="fc" id="L334">		System.out.println (&quot;\t||----------------------------------------------||&quot;);</span>
+<span class="fc" id="L345">		System.out.println (&quot;\t||----------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L336">		System.out.println (&quot;\t||      MARKET CAPITALIZATION RECONCILER #2     ||&quot;);</span>
+<span class="fc" id="L347">		System.out.println (&quot;\t||      MARKET CAPITALIZATION RECONCILER #2     ||&quot;);</span>
 
-<span class="fc" id="L338">		System.out.println (&quot;\t||----------------------------------------------||&quot;);</span>
+<span class="fc" id="L349">		System.out.println (&quot;\t||----------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L340">		System.out.println (&quot;\t||           SECTOR         =&gt; WEIGHT |  PAPER  ||&quot;);</span>
-
-<span class="fc" id="L342">		System.out.println (&quot;\t||----------------------------------------------||&quot;);</span>
-
-<span class="fc bfc" id="L344" title="All 2 branches covered.">		for (int i = 0; i &lt;= adblMarketCapitalizationEstimate.length; ++i)</span>
-<span class="fc" id="L345">			System.out.println (</span>
-				&quot;\t|| &quot; + astrID2[i] + &quot; =&gt; &quot; +
-<span class="fc" id="L347">					FormatUtil.FormatDouble (adblMarketCapitalizationWeight2[i], 2, 1, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L348">					FormatUtil.FormatDouble (adblMarketCapitalizationWeight2Reconciler[i], 2, 1, 100.) + &quot;%  ||&quot;</span>
-			);
-
-<span class="fc" id="L351">		System.out.println (&quot;\t||----------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L351">		System.out.println (&quot;\t||           SECTOR         =&gt; WEIGHT |  PAPER  ||&quot;);</span>
 
 <span class="fc" id="L353">		System.out.println (&quot;\t||----------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L355">		System.out.println (&quot;\t||             IMPLIED EXCESS RETURN            ||&quot;);</span>
-
-<span class="fc" id="L357">		System.out.println (&quot;\t||----------------------------------------------||&quot;);</span>
-
-<span class="fc" id="L359">		System.out.println (&quot;\t||           SECTOR         =&gt; RETURN |  PAPER  ||&quot;);</span>
-
-<span class="fc" id="L361">		System.out.println (&quot;\t||----------------------------------------------||&quot;);</span>
-
-<span class="fc bfc" id="L363" title="All 2 branches covered.">		for (int i = 0; i &lt; adblExpectedExcessReturn.length; ++i)</span>
-<span class="fc" id="L364">			System.out.println (</span>
+<span class="fc bfc" id="L355" title="All 2 branches covered.">		for (int i = 0; i &lt;= adblMarketCapitalizationEstimate.length; ++i)</span>
+<span class="fc" id="L356">			System.out.println (</span>
 				&quot;\t|| &quot; + astrID2[i] + &quot; =&gt; &quot; +
-<span class="fc" id="L366">					FormatUtil.FormatDouble (adblExpectedExcessReturn[i], 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L367">					FormatUtil.FormatDouble (adblExpectedExcessReturnReconciler[i], 1, 2, 100.) + &quot;%  ||&quot;</span>
+<span class="fc" id="L358">					FormatUtil.FormatDouble (adblMarketCapitalizationWeight2[i], 2, 1, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L359">					FormatUtil.FormatDouble (adblMarketCapitalizationWeight2Reconciler[i], 2, 1, 100.) + &quot;%  ||&quot;</span>
 			);
 
-<span class="fc" id="L370">		System.out.println (&quot;\t||----------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L362">		System.out.println (&quot;\t||----------------------------------------------||\n&quot;);</span>
+
+<span class="fc" id="L364">		System.out.println (&quot;\t||----------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L366">		System.out.println (&quot;\t||             IMPLIED EXCESS RETURN            ||&quot;);</span>
+
+<span class="fc" id="L368">		System.out.println (&quot;\t||----------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L370">		System.out.println (&quot;\t||           SECTOR         =&gt; RETURN |  PAPER  ||&quot;);</span>
 
 <span class="fc" id="L372">		System.out.println (&quot;\t||----------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L374">		System.out.println (&quot;\t||             IMPLIED MARKET RETURN            ||&quot;);</span>
-
-<span class="fc" id="L376">		System.out.println (&quot;\t||----------------------------------------------||&quot;);</span>
-
-<span class="fc" id="L378">		System.out.println (&quot;\t||           SECTOR         =&gt; RETURN |  PAPER  ||&quot;);</span>
-
-<span class="fc" id="L380">		System.out.println (&quot;\t||----------------------------------------------||&quot;);</span>
-
-<span class="fc bfc" id="L382" title="All 2 branches covered.">		for (int i = 0; i &lt; adblExpectedExcessReturn.length; ++i)</span>
-<span class="fc" id="L383">			System.out.println (</span>
+<span class="fc bfc" id="L374" title="All 2 branches covered.">		for (int i = 0; i &lt; adblExpectedExcessReturn.length; ++i)</span>
+<span class="fc" id="L375">			System.out.println (</span>
 				&quot;\t|| &quot; + astrID2[i] + &quot; =&gt; &quot; +
-<span class="fc" id="L385">					FormatUtil.FormatDouble (adblExpectedExcessReturn[i] + dblRiskFreeRate, 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L386">					FormatUtil.FormatDouble (adblExpectedExcessReturnReconciler[i] + dblRiskFreeRate, 1, 2, 100.) + &quot;%  ||&quot;</span>
+<span class="fc" id="L377">					FormatUtil.FormatDouble (adblExpectedExcessReturn[i], 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L378">					FormatUtil.FormatDouble (adblExpectedExcessReturnReconciler[i], 1, 2, 100.) + &quot;%  ||&quot;</span>
 			);
 
-<span class="fc" id="L389">		System.out.println (&quot;\t||----------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L381">		System.out.println (&quot;\t||----------------------------------------------||\n&quot;);</span>
 
-<span class="fc" id="L391">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L383">		System.out.println (&quot;\t||----------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L393">		System.out.println (&quot;\t|                           PRIOR CROSS ASSET COVARIANCE MATRIX                                  ||&quot;);</span>
+<span class="fc" id="L385">		System.out.println (&quot;\t||             IMPLIED MARKET RETURN            ||&quot;);</span>
 
-<span class="fc" id="L395">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L387">		System.out.println (&quot;\t||----------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L397">		String strHeader = &quot;\t|     |&quot;;</span>
+<span class="fc" id="L389">		System.out.println (&quot;\t||           SECTOR         =&gt; RETURN |  PAPER  ||&quot;);</span>
 
-<span class="fc bfc" id="L399" title="All 2 branches covered.">		for (int i = 0; i &lt; astrID2.length; ++i)</span>
-<span class="fc" id="L400">			strHeader += &quot;    &quot; + astrID2[i] + &quot;     |&quot;;</span>
+<span class="fc" id="L391">		System.out.println (&quot;\t||----------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L402">		System.out.println (strHeader + &quot;|&quot;);</span>
+<span class="fc bfc" id="L393" title="All 2 branches covered.">		for (int i = 0; i &lt; adblExpectedExcessReturn.length; ++i)</span>
+<span class="fc" id="L394">			System.out.println (</span>
+				&quot;\t|| &quot; + astrID2[i] + &quot; =&gt; &quot; +
+<span class="fc" id="L396">					FormatUtil.FormatDouble (adblExpectedExcessReturn[i] + dblRiskFreeRate, 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L397">					FormatUtil.FormatDouble (adblExpectedExcessReturnReconciler[i] + dblRiskFreeRate, 1, 2, 100.) + &quot;%  ||&quot;</span>
+			);
 
-<span class="fc" id="L404">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L400">		System.out.println (&quot;\t||----------------------------------------------||\n&quot;);</span>
 
-<span class="fc bfc" id="L406" title="All 2 branches covered.">		for (int i = 0; i &lt; astrID2.length; ++i) {</span>
-<span class="fc" id="L407">			String strDump = &quot;\t| &quot; + astrID2[i] + &quot; &quot;;</span>
+<span class="fc" id="L402">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L409" title="All 2 branches covered.">			for (int j = 0; j &lt; astrID2.length; ++j)</span>
-<span class="fc" id="L410">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblAssetExcessReturnsCovariance[i][j], 1, 8, 1.) + &quot; &quot;;</span>
+<span class="fc" id="L404">		System.out.println (&quot;\t|                           PRIOR CROSS ASSET COVARIANCE MATRIX                                  ||&quot;);</span>
 
-<span class="fc" id="L412">			System.out.println (strDump + &quot;||&quot;);</span>
-		}
+<span class="fc" id="L406">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L408">		String strHeader = &quot;\t|     |&quot;;</span>
+
+<span class="fc bfc" id="L410" title="All 2 branches covered.">		for (int i = 0; i &lt; astrID2.length; ++i)</span>
+<span class="fc" id="L411">			strHeader += &quot;    &quot; + astrID2[i] + &quot;     |&quot;;</span>
+
+<span class="fc" id="L413">		System.out.println (strHeader + &quot;|&quot;);</span>
 
 <span class="fc" id="L415">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L417">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc bfc" id="L417" title="All 2 branches covered.">		for (int i = 0; i &lt; astrID2.length; ++i) {</span>
+<span class="fc" id="L418">			String strDump = &quot;\t| &quot; + astrID2[i] + &quot; &quot;;</span>
 
-<span class="fc" id="L419">		System.out.println (&quot;\t|                          VIEW SCOPING ASSET PROJECTION LOADING                                 ||&quot;);</span>
+<span class="fc bfc" id="L420" title="All 2 branches covered.">			for (int j = 0; j &lt; astrID2.length; ++j)</span>
+<span class="fc" id="L421">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblAssetExcessReturnsCovariance[i][j], 1, 8, 1.) + &quot; &quot;;</span>
 
-<span class="fc" id="L421">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="fc" id="L423">		strHeader = &quot;\t|     |&quot;;</span>
-
-<span class="fc bfc" id="L425" title="All 2 branches covered.">		for (int i = 0; i &lt; astrID2.length; ++i)</span>
-<span class="fc" id="L426">			strHeader += &quot;    &quot; + astrID2[i] + &quot;     |&quot;;</span>
-
-<span class="fc" id="L428">		System.out.println (strHeader + &quot;|&quot;);</span>
-
-<span class="fc" id="L430">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="fc bfc" id="L432" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblAssetSpaceViewProjection.length; ++i) {</span>
-<span class="fc" id="L433">			String strDump = &quot;\t|  #&quot; + i + &quot; &quot;;</span>
-
-<span class="fc bfc" id="L435" title="All 2 branches covered.">			for (int j = 0; j &lt; astrID2.length; ++j)</span>
-<span class="fc" id="L436">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblAssetSpaceViewProjection[i][j], 1, 8, 1.) + &quot; &quot;;</span>
-
-<span class="fc" id="L438">			System.out.println (strDump + &quot;||&quot;);</span>
+<span class="fc" id="L423">			System.out.println (strDump + &quot;||&quot;);</span>
 		}
+
+<span class="fc" id="L426">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L428">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L430">		System.out.println (&quot;\t|                          VIEW SCOPING ASSET PROJECTION LOADING                                 ||&quot;);</span>
+
+<span class="fc" id="L432">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L434">		strHeader = &quot;\t|     |&quot;;</span>
+
+<span class="fc bfc" id="L436" title="All 2 branches covered.">		for (int i = 0; i &lt; astrID2.length; ++i)</span>
+<span class="fc" id="L437">			strHeader += &quot;    &quot; + astrID2[i] + &quot;     |&quot;;</span>
+
+<span class="fc" id="L439">		System.out.println (strHeader + &quot;|&quot;);</span>
 
 <span class="fc" id="L441">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L443">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc bfc" id="L443" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblAssetSpaceViewProjection.length; ++i) {</span>
+<span class="fc" id="L444">			String strDump = &quot;\t|  #&quot; + i + &quot; &quot;;</span>
 
-<span class="fc" id="L445">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc bfc" id="L446" title="All 2 branches covered.">			for (int j = 0; j &lt; astrID2.length; ++j)</span>
+<span class="fc" id="L447">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblAssetSpaceViewProjection[i][j], 1, 8, 1.) + &quot; &quot;;</span>
 
-<span class="fc bfc" id="L447" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblAssetSpaceViewProjection.length; ++i) {</span>
-<span class="fc" id="L448">			String strDump = &quot;\t|  #&quot; + i + &quot; &quot;;</span>
-
-<span class="fc bfc" id="L450" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblAssetSpaceViewProjection.length; ++j)</span>
-<span class="fc" id="L451">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblProjectionExcessReturnsCovariance[i][j], 1, 8, 1.) + &quot; &quot;;</span>
-
-<span class="fc" id="L453">			System.out.println (strDump + &quot;|&quot; + FormatUtil.FormatDouble (adblProjectionExpectedExcessReturns[i], 1, 2, 100.) + &quot;%&quot;);</span>
+<span class="fc" id="L449">			System.out.println (strDump + &quot;||&quot;);</span>
 		}
+
+<span class="fc" id="L452">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L454">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
 <span class="fc" id="L456">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L458">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc bfc" id="L458" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblAssetSpaceViewProjection.length; ++i) {</span>
+<span class="fc" id="L459">			String strDump = &quot;\t|  #&quot; + i + &quot; &quot;;</span>
 
-<span class="fc" id="L460">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc bfc" id="L461" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblAssetSpaceViewProjection.length; ++j)</span>
+<span class="fc" id="L462">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblProjectionExcessReturnsCovariance[i][j], 1, 8, 1.) + &quot; &quot;;</span>
 
-<span class="fc" id="L462">		System.out.println (&quot;\t|                           JOINT CROSS ASSET COVARIANCE MATRIX                                  ||&quot;);</span>
-
-<span class="fc" id="L464">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="fc" id="L466">		strHeader = &quot;\t|     |&quot;;</span>
-
-<span class="fc bfc" id="L468" title="All 2 branches covered.">		for (int i = 0; i &lt; astrID2.length; ++i)</span>
-<span class="fc" id="L469">			strHeader += &quot;    &quot; + astrID2[i] + &quot;     |&quot;;</span>
-
-<span class="fc" id="L471">		System.out.println (strHeader + &quot;|&quot;);</span>
-
-<span class="fc" id="L473">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="fc bfc" id="L475" title="All 2 branches covered.">		for (int i = 0; i &lt; astrID2.length; ++i) {</span>
-<span class="fc" id="L476">			String strDump = &quot;\t| &quot; + astrID2[i] + &quot; &quot;;</span>
-
-<span class="fc bfc" id="L478" title="All 2 branches covered.">			for (int j = 0; j &lt; astrID2.length; ++j)</span>
-<span class="fc" id="L479">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblAssetSpaceJointCovariance[i][j], 1, 8, 1.) + &quot; &quot;;</span>
-
-<span class="fc" id="L481">			System.out.println (strDump + &quot;||&quot;);</span>
+<span class="fc" id="L464">			System.out.println (strDump + &quot;|&quot; + FormatUtil.FormatDouble (adblProjectionExpectedExcessReturns[i], 1, 2, 100.) + &quot;%&quot;);</span>
 		}
+
+<span class="fc" id="L467">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L469">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L471">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L473">		System.out.println (&quot;\t|                           JOINT CROSS ASSET COVARIANCE MATRIX                                  ||&quot;);</span>
+
+<span class="fc" id="L475">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L477">		strHeader = &quot;\t|     |&quot;;</span>
+
+<span class="fc bfc" id="L479" title="All 2 branches covered.">		for (int i = 0; i &lt; astrID2.length; ++i)</span>
+<span class="fc" id="L480">			strHeader += &quot;    &quot; + astrID2[i] + &quot;     |&quot;;</span>
+
+<span class="fc" id="L482">		System.out.println (strHeader + &quot;|&quot;);</span>
 
 <span class="fc" id="L484">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L486">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc bfc" id="L486" title="All 2 branches covered.">		for (int i = 0; i &lt; astrID2.length; ++i) {</span>
+<span class="fc" id="L487">			String strDump = &quot;\t| &quot; + astrID2[i] + &quot; &quot;;</span>
 
-<span class="fc" id="L488">		System.out.println (&quot;\t|                         POSTERIOR CROSS ASSET COVARIANCE MATRIX                                ||&quot;);</span>
+<span class="fc bfc" id="L489" title="All 2 branches covered.">			for (int j = 0; j &lt; astrID2.length; ++j)</span>
+<span class="fc" id="L490">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblAssetSpaceJointCovariance[i][j], 1, 8, 1.) + &quot; &quot;;</span>
 
-<span class="fc" id="L490">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="fc" id="L492">		strHeader = &quot;\t|     |&quot;;</span>
-
-<span class="fc bfc" id="L494" title="All 2 branches covered.">		for (int i = 0; i &lt; astrID2.length; ++i)</span>
-<span class="fc" id="L495">			strHeader += &quot;    &quot; + astrID2[i] + &quot;     |&quot;;</span>
-
-<span class="fc" id="L497">		System.out.println (strHeader + &quot;|&quot;);</span>
-
-<span class="fc" id="L499">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="fc bfc" id="L501" title="All 2 branches covered.">		for (int i = 0; i &lt; astrID2.length; ++i) {</span>
-<span class="fc" id="L502">			String strDump = &quot;\t| &quot; + astrID2[i] + &quot; &quot;;</span>
-
-<span class="fc bfc" id="L504" title="All 2 branches covered.">			for (int j = 0; j &lt; astrID2.length; ++j)</span>
-<span class="fc" id="L505">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblAssetSpacePosteriorCovariance[i][j], 1, 8, 1.) + &quot; &quot;;</span>
-
-<span class="fc" id="L507">			System.out.println (strDump + &quot;||&quot;);</span>
+<span class="fc" id="L492">			System.out.println (strDump + &quot;||&quot;);</span>
 		}
 
-<span class="fc" id="L510">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L495">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L512">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="fc" id="L497">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L514">		System.out.println (&quot;\t| JOINT/POSTERIOR RETURN ||&quot;);</span>
+<span class="fc" id="L499">		System.out.println (&quot;\t|                         POSTERIOR CROSS ASSET COVARIANCE MATRIX                                ||&quot;);</span>
 
-<span class="fc" id="L516">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="fc" id="L501">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L518">		System.out.println (&quot;\t|   ID  =&gt; RIOC  | HL99  ||&quot;);</span>
+<span class="fc" id="L503">		strHeader = &quot;\t|     |&quot;;</span>
 
-<span class="fc" id="L520">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="fc bfc" id="L505" title="All 2 branches covered.">		for (int i = 0; i &lt; astrID2.length; ++i)</span>
+<span class="fc" id="L506">			strHeader += &quot;    &quot; + astrID2[i] + &quot;     |&quot;;</span>
 
-<span class="fc bfc" id="L522" title="All 2 branches covered.">		for (int i = 0; i &lt; adblAssetSpaceJointReturnsReconciler.length; ++i) {</span>
-<span class="fc" id="L523">			System.out.println (</span>
+<span class="fc" id="L508">		System.out.println (strHeader + &quot;|&quot;);</span>
+
+<span class="fc" id="L510">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L512" title="All 2 branches covered.">		for (int i = 0; i &lt; astrID2.length; ++i) {</span>
+<span class="fc" id="L513">			String strDump = &quot;\t| &quot; + astrID2[i] + &quot; &quot;;</span>
+
+<span class="fc bfc" id="L515" title="All 2 branches covered.">			for (int j = 0; j &lt; astrID2.length; ++j)</span>
+<span class="fc" id="L516">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblAssetSpacePosteriorCovariance[i][j], 1, 8, 1.) + &quot; &quot;;</span>
+
+<span class="fc" id="L518">			System.out.println (strDump + &quot;||&quot;);</span>
+		}
+
+<span class="fc" id="L521">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||\n&quot;);</span>
+
+<span class="fc" id="L523">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+
+<span class="fc" id="L525">		System.out.println (&quot;\t| JOINT/POSTERIOR RETURN ||&quot;);</span>
+
+<span class="fc" id="L527">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+
+<span class="fc" id="L529">		System.out.println (&quot;\t|   ID  =&gt; RIOC  | HL99  ||&quot;);</span>
+
+<span class="fc" id="L531">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L533" title="All 2 branches covered.">		for (int i = 0; i &lt; adblAssetSpaceJointReturnsReconciler.length; ++i) {</span>
+<span class="fc" id="L534">			System.out.println (</span>
 				&quot;\t| [&quot; + astrID2[i] + &quot;] =&gt;&quot; +
-<span class="fc" id="L525">				FormatUtil.FormatDouble (adblAssetSpaceJointReturns[i], 2, 2, 100.) + &quot;% |&quot; +</span>
-<span class="fc" id="L526">				FormatUtil.FormatDouble (adblAssetSpaceJointReturnsReconciler[i], 2, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L536">				FormatUtil.FormatDouble (adblAssetSpaceJointReturns[i], 2, 2, 100.) + &quot;% |&quot; +</span>
+<span class="fc" id="L537">				FormatUtil.FormatDouble (adblAssetSpaceJointReturnsReconciler[i], 2, 2, 100.) + &quot;% ||&quot;</span>
 			);
 		}
 
-<span class="fc" id="L530">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="fc" id="L541">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
-<span class="fc" id="L532">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L533">	}</span>
+<span class="fc" id="L543">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L544">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

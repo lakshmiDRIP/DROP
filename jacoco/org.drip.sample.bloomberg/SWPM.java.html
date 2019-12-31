@@ -22,6 +22,7 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -30,33 +31,43 @@ import org.drip.state.identifier.ForwardLabel;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -91,17 +102,17 @@ import org.drip.state.identifier.ForwardLabel;
  *  
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/bloomberg/README.md&quot;&gt;Bloomberg&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/bloomberg/README.md&quot;&gt;Bloomberg CDSO CDSW SWPM YAS&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L104">public class SWPM {</span>
+<span class="nc" id="L115">public class SWPM {</span>
 	private static final String FIELD_SEPARATOR = &quot;    &quot;;
 
 	/*
@@ -117,31 +128,31 @@ import org.drip.state.identifier.ForwardLabel;
 		final String strCurrency)
 		throws Exception
 	{
-<span class="fc" id="L120">		CalibratableComponent[] aCalibComp = new CalibratableComponent[aiDay.length + iNumFuture];</span>
+<span class="fc" id="L131">		CalibratableComponent[] aCalibComp = new CalibratableComponent[aiDay.length + iNumFuture];</span>
 
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
-<span class="nc" id="L123">			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
+<span class="nc" id="L134">			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (</span>
 				dtEffective,
-<span class="nc" id="L125">				dtEffective.addBusDays (</span>
+<span class="nc" id="L136">				dtEffective.addBusDays (</span>
 					aiDay[i],
 					strCurrency
 				),
-<span class="nc" id="L129">				ForwardLabel.Create (</span>
+<span class="nc" id="L140">				ForwardLabel.Create (</span>
 					strCurrency,
 					aiDay[i] + &quot;D&quot;
 				)
 			);
 
-<span class="fc" id="L135">		CalibratableComponent[] aEDF = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
+<span class="fc" id="L146">		CalibratableComponent[] aEDF = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
 			dtEffective,
 			iNumFuture,
 			strCurrency
 		);
 
-<span class="pc bpc" id="L141" title="1 of 2 branches missed.">		for (int i = aiDay.length; i &lt; aiDay.length + iNumFuture; ++i)</span>
-<span class="nc" id="L142">			aCalibComp[i] = aEDF[i - aiDay.length];</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">		for (int i = aiDay.length; i &lt; aiDay.length + iNumFuture; ++i)</span>
+<span class="nc" id="L153">			aCalibComp[i] = aEDF[i - aiDay.length];</span>
 
-<span class="fc" id="L144">		return aCalibComp;</span>
+<span class="fc" id="L155">		return aCalibComp;</span>
 	}
 
 	private static final FixFloatComponent OTCIRS (
@@ -150,14 +161,14 @@ import org.drip.state.identifier.ForwardLabel;
 		final String strMaturityTenor,
 		final double dblCoupon)
 	{
-<span class="fc" id="L153">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+<span class="fc" id="L164">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
 			strCurrency,
 			&quot;ALL&quot;,
 			strMaturityTenor,
 			&quot;MAIN&quot;
 		);
 
-<span class="fc" id="L160">		return ffConv.createFixFloatComponent (</span>
+<span class="fc" id="L171">		return ffConv.createFixFloatComponent (</span>
 			dtSpot,
 			strMaturityTenor,
 			dblCoupon,
@@ -179,17 +190,17 @@ import org.drip.state.identifier.ForwardLabel;
 		final double[] adblCoupon)
 		throws Exception
 	{
-<span class="fc" id="L182">		CalibratableComponent[] aCalibComp = new CalibratableComponent[astrTenor.length];</span>
+<span class="fc" id="L193">		CalibratableComponent[] aCalibComp = new CalibratableComponent[astrTenor.length];</span>
 
-<span class="fc bfc" id="L184" title="All 2 branches covered.">		for (int i = 0; i &lt; astrTenor.length; ++i)</span>
-<span class="fc" id="L185">			aCalibComp[i] = OTCIRS (</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">		for (int i = 0; i &lt; astrTenor.length; ++i)</span>
+<span class="fc" id="L196">			aCalibComp[i] = OTCIRS (</span>
 				dtEffective,
 				strCurrency,
 				astrTenor[i],
 				adblCoupon[i]
 			);
 
-<span class="fc" id="L192">		return aCalibComp;</span>
+<span class="fc" id="L203">		return aCalibComp;</span>
 	}
 
 	/*
@@ -211,20 +222,20 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct the array of Deposit instruments and their quotes.
 		 */
 
-<span class="fc" id="L214">		CalibratableComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+<span class="fc" id="L225">		CalibratableComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
 			dtSpot,
 			new int[] {},
 			0,
 			strCurrency
 		);
 
-<span class="fc" id="L221">		double[] adblDepositQuote = new double[] {}; // Futures</span>
+<span class="fc" id="L232">		double[] adblDepositQuote = new double[] {}; // Futures</span>
 
 		/*
 		 * Construct the array of Swap instruments and their quotes.
 		 */
 
-<span class="fc" id="L227">		double[] adblSwapQuote = new double[] {</span>
+<span class="fc" id="L238">		double[] adblSwapQuote = new double[] {</span>
 			0.0009875 + dblBump,   //  9M
 			0.00122 + dblBump,     //  1Y
 			0.00223 + dblBump,     // 18M
@@ -235,7 +246,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.02597 + dblBump      // 10Y
 		};
 
-<span class="fc" id="L238">		String[] astrSwapManifestMeasure = new String[] {</span>
+<span class="fc" id="L249">		String[] astrSwapManifestMeasure = new String[] {</span>
 			&quot;SwapRate&quot;,		//  9M
 			&quot;SwapRate&quot;,     //  1Y
 			&quot;SwapRate&quot;,     // 18M
@@ -246,7 +257,7 @@ import org.drip.state.identifier.ForwardLabel;
 			&quot;SwapRate&quot;      // 10Y
 		};
 
-<span class="fc" id="L249">		CalibratableComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
+<span class="fc" id="L260">		CalibratableComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
 			dtSpot,
 			strCurrency,
 			new java.lang.String[] {
@@ -261,7 +272,7 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct a shape preserving and smoothing KLK Hyperbolic Spline from the cash/swap instruments.
 		 */
 
-<span class="fc" id="L264">		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (</span>
+<span class="fc" id="L275">		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (</span>
 			&quot;KLK_HYPERBOLIC_SHAPE_TEMPLATE&quot;,
 			new ValuationParams (
 				dtSpot,
@@ -282,27 +293,27 @@ import org.drip.state.identifier.ForwardLabel;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L285">		EnvManager.InitEnv (</span>
+<span class="fc" id="L296">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L290">		JulianDate dtValue = DateUtil.Today();</span>
+<span class="fc" id="L301">		JulianDate dtValue = DateUtil.Today();</span>
 
-<span class="fc" id="L292">		JulianDate dtSettle = dtValue.addBusDays (</span>
+<span class="fc" id="L303">		JulianDate dtSettle = dtValue.addBusDays (</span>
 			2,
 			&quot;USD&quot;
 		);
 
-<span class="fc" id="L297">		System.out.println (&quot;\n---- Valuation Details ----\n&quot;);</span>
+<span class="fc" id="L308">		System.out.println (&quot;\n---- Valuation Details ----\n&quot;);</span>
 
-<span class="fc" id="L299">		System.out.println (&quot;Trade Date  : &quot; + dtValue);</span>
+<span class="fc" id="L310">		System.out.println (&quot;Trade Date  : &quot; + dtValue);</span>
 
-<span class="fc" id="L301">		System.out.println (&quot;Settle Date : &quot; + dtSettle);</span>
+<span class="fc" id="L312">		System.out.println (&quot;Settle Date : &quot; + dtSettle);</span>
 
-<span class="fc" id="L303">		double dblCoupon = 0.0187;</span>
-<span class="fc" id="L304">		double dblFixing = 0.00087;</span>
-<span class="fc" id="L305">		double dblNotional = 10.e+06;</span>
+<span class="fc" id="L314">		double dblCoupon = 0.0187;</span>
+<span class="fc" id="L315">		double dblFixing = 0.00087;</span>
+<span class="fc" id="L316">		double dblNotional = 10.e+06;</span>
 
 		/*
 		 * Model the discount curve instrument quotes. Best pulled from Curves #42 in the BBG SWPM &quot;Curves&quot; tab
@@ -312,51 +323,51 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Build the Discount Curve
 		 */
 
-<span class="fc" id="L315">		MergedDiscountForwardCurve dc = MakeDC (</span>
+<span class="fc" id="L326">		MergedDiscountForwardCurve dc = MakeDC (</span>
 			dtValue,
 			&quot;USD&quot;,
 			0.
 		);
 
-<span class="fc" id="L321">		JulianDate dtEffective = dtValue.addBusDays (</span>
+<span class="fc" id="L332">		JulianDate dtEffective = dtValue.addBusDays (</span>
 			2,
 			&quot;USD&quot;
 		);
 
-<span class="fc" id="L326">		JulianDate dtMaturity = dtEffective.addTenor (&quot;5Y&quot;);</span>
+<span class="fc" id="L337">		JulianDate dtMaturity = dtEffective.addTenor (&quot;5Y&quot;);</span>
 
 		/*
 		 * Build the Fixed Receive Stream
 		 */
 
-<span class="fc" id="L332">		FixFloatComponent swap = OTCIRS (</span>
+<span class="fc" id="L343">		FixFloatComponent swap = OTCIRS (</span>
 			dtEffective,
 			&quot;USD&quot;,
 			&quot;5Y&quot;,
 			0.
 		);
 
-<span class="fc" id="L339">		System.out.println (&quot;\n---- Swap Details ----\n&quot;);</span>
+<span class="fc" id="L350">		System.out.println (&quot;\n---- Swap Details ----\n&quot;);</span>
 
-<span class="fc" id="L341">		System.out.println (&quot;Effective: &quot; + dtEffective);</span>
+<span class="fc" id="L352">		System.out.println (&quot;Effective: &quot; + dtEffective);</span>
 
-<span class="fc" id="L343">		System.out.println (&quot;Maturity:  &quot; + dtMaturity);</span>
+<span class="fc" id="L354">		System.out.println (&quot;Maturity:  &quot; + dtMaturity);</span>
 
 		/*
 		 * Set up the base market parameters, including base discount curves and the base fixings
 		 */
 
-<span class="fc" id="L349">		LatentStateFixingsContainer lsfc = new LatentStateFixingsContainer();</span>
+<span class="fc" id="L360">		LatentStateFixingsContainer lsfc = new LatentStateFixingsContainer();</span>
 
-<span class="fc" id="L351">		ComposableUnitFloatingPeriod cufs = ((ComposableUnitFloatingPeriod) (swap.derivedStream().periods().get (0).periods().get (0)));</span>
+<span class="fc" id="L362">		ComposableUnitFloatingPeriod cufs = ((ComposableUnitFloatingPeriod) (swap.derivedStream().periods().get (0).periods().get (0)));</span>
 
-<span class="fc" id="L353">		lsfc.add (</span>
-<span class="fc" id="L354">			cufs.referenceIndexPeriod().fixingDate(),</span>
-<span class="fc" id="L355">			swap.derivedStream().forwardLabel(),</span>
+<span class="fc" id="L364">		lsfc.add (</span>
+<span class="fc" id="L365">			cufs.referenceIndexPeriod().fixingDate(),</span>
+<span class="fc" id="L366">			swap.derivedStream().forwardLabel(),</span>
 			dblFixing
 		);
 
-<span class="fc" id="L359">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L370">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
 			dc,
 			null,
 			null,
@@ -370,7 +381,7 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Set up the valuation parameters
 		 */
 
-<span class="fc" id="L373">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L384">		ValuationParams valParams = new ValuationParams (</span>
 			dtValue,
 			dtSettle,
 			&quot;USD&quot;
@@ -380,36 +391,36 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Generate the base scenario measures for the swap
 		 */
 
-<span class="fc" id="L383">		CaseInsensitiveTreeMap&lt;Double&gt; mapSwapCalc = swap.value (</span>
+<span class="fc" id="L394">		CaseInsensitiveTreeMap&lt;Double&gt; mapSwapCalc = swap.value (</span>
 			valParams,
 			null,
 			mktParams,
 			null
 		);
 
-<span class="fc" id="L390">		double dblBasePV = mapSwapCalc.get (&quot;PV&quot;);</span>
+<span class="fc" id="L401">		double dblBasePV = mapSwapCalc.get (&quot;PV&quot;);</span>
 
-<span class="fc" id="L392">		double dblBaseFixedDV01 = mapSwapCalc.get (&quot;FixedDV01&quot;);</span>
+<span class="fc" id="L403">		double dblBaseFixedDV01 = mapSwapCalc.get (&quot;FixedDV01&quot;);</span>
 
-<span class="fc" id="L394">		System.out.println (&quot;\n---- Swap Output Measures ----\n&quot;);</span>
+<span class="fc" id="L405">		System.out.println (&quot;\n---- Swap Output Measures ----\n&quot;);</span>
 
-<span class="fc" id="L396">		System.out.println (&quot;Mkt Val      : &quot; + FormatUtil.FormatDouble (dblBasePV, 0, 0, dblNotional));</span>
+<span class="fc" id="L407">		System.out.println (&quot;Mkt Val      : &quot; + FormatUtil.FormatDouble (dblBasePV, 0, 0, dblNotional));</span>
 
-<span class="fc" id="L398">		System.out.println (&quot;Par Cpn      : &quot; + FormatUtil.FormatDouble (mapSwapCalc.get (&quot;FairPremium&quot;), 1, 5, 100.));</span>
+<span class="fc" id="L409">		System.out.println (&quot;Par Cpn      : &quot; + FormatUtil.FormatDouble (mapSwapCalc.get (&quot;FairPremium&quot;), 1, 5, 100.));</span>
 
-<span class="fc" id="L400">		System.out.println (&quot;Fixed DV01   : &quot; + FormatUtil.FormatDouble (dblBaseFixedDV01, 0, 0, dblNotional));</span>
+<span class="fc" id="L411">		System.out.println (&quot;Fixed DV01   : &quot; + FormatUtil.FormatDouble (dblBaseFixedDV01, 0, 0, dblNotional));</span>
 
 		/*
 		 * Set up the fixings bumped market parameters - these use base discount curve and the bumped fixing
 		 */
 
-<span class="fc" id="L406">		lsfc.add (</span>
-<span class="fc" id="L407">			cufs.referenceIndexPeriod().fixingDate(),</span>
-<span class="fc" id="L408">			swap.derivedStream().forwardLabel(),</span>
+<span class="fc" id="L417">		lsfc.add (</span>
+<span class="fc" id="L418">			cufs.referenceIndexPeriod().fixingDate(),</span>
+<span class="fc" id="L419">			swap.derivedStream().forwardLabel(),</span>
 			dblFixing + 0.0001
 		);
 
-<span class="fc" id="L412">		CurveSurfaceQuoteContainer mktParamsFixingsBumped = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L423">		CurveSurfaceQuoteContainer mktParamsFixingsBumped = MarketParamsBuilder.Create (</span>
 			dc,
 			null,
 			null,
@@ -423,36 +434,36 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Generate the fixing bumped scenario measures for the swap
 		 */
 
-<span class="fc" id="L426">		CaseInsensitiveTreeMap&lt;Double&gt; mapSwapFixingsBumpedCalc = swap.value (</span>
+<span class="fc" id="L437">		CaseInsensitiveTreeMap&lt;Double&gt; mapSwapFixingsBumpedCalc = swap.value (</span>
 			valParams,
 			null,
 			mktParamsFixingsBumped,
 			null
 		);
 
-<span class="fc" id="L433">		double dblFixingsDV01 = mapSwapFixingsBumpedCalc.get (&quot;PV&quot;) - dblBasePV;</span>
+<span class="fc" id="L444">		double dblFixingsDV01 = mapSwapFixingsBumpedCalc.get (&quot;PV&quot;) - dblBasePV;</span>
 
-<span class="fc" id="L435">		System.out.println (&quot;Fixings DV01 : &quot; + FormatUtil.FormatDouble (dblFixingsDV01, 0, 0, dblNotional));</span>
+<span class="fc" id="L446">		System.out.println (&quot;Fixings DV01 : &quot; + FormatUtil.FormatDouble (dblFixingsDV01, 0, 0, dblNotional));</span>
 
-<span class="fc" id="L437">		System.out.println (&quot;Total DV01   : &quot; + FormatUtil.FormatDouble (dblBaseFixedDV01 + dblFixingsDV01, 0, 0, dblNotional));</span>
+<span class="fc" id="L448">		System.out.println (&quot;Total DV01   : &quot; + FormatUtil.FormatDouble (dblBaseFixedDV01 + dblFixingsDV01, 0, 0, dblNotional));</span>
 
 		/*
 		 * Set up the rate flat bumped market parameters - these use the bumped base discount curve and the base fixing
 		 */
 
-<span class="fc" id="L443">		MergedDiscountForwardCurve dcBumped = MakeDC (</span>
+<span class="fc" id="L454">		MergedDiscountForwardCurve dcBumped = MakeDC (</span>
 			dtValue,
 			&quot;USD&quot;,
 			-0.0001
 		);
 
-<span class="fc" id="L449">		lsfc.add (</span>
+<span class="fc" id="L460">		lsfc.add (</span>
 			dtEffective,
-<span class="fc" id="L451">			swap.derivedStream().forwardLabel(),</span>
+<span class="fc" id="L462">			swap.derivedStream().forwardLabel(),</span>
 			dblFixing - 0.0001
 		);
 
-<span class="fc" id="L455">		CurveSurfaceQuoteContainer mktParamsRateBumped = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L466">		CurveSurfaceQuoteContainer mktParamsRateBumped = MarketParamsBuilder.Create (</span>
 			dcBumped,
 			null,
 			null,
@@ -466,47 +477,47 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Generate the rate flat bumped scenario measures for the swap
 		 */
 
-<span class="fc" id="L469">		CaseInsensitiveTreeMap&lt;Double&gt; mapSwapRateBumpedCalc = swap.value (</span>
+<span class="fc" id="L480">		CaseInsensitiveTreeMap&lt;Double&gt; mapSwapRateBumpedCalc = swap.value (</span>
 			valParams,
 			null,
 			mktParamsRateBumped,
 			null
 		);
 
-<span class="fc" id="L476">		System.out.println (&quot;PV01         : &quot; + FormatUtil.FormatDouble (mapSwapRateBumpedCalc.get (&quot;PV&quot;) - dblBasePV, 0, 0, dblNotional));</span>
+<span class="fc" id="L487">		System.out.println (&quot;PV01         : &quot; + FormatUtil.FormatDouble (mapSwapRateBumpedCalc.get (&quot;PV&quot;) - dblBasePV, 0, 0, dblNotional));</span>
 
 		/*
 		 * Generate the Swap's fixed cash flows
 		 */
 
-<span class="fc" id="L482">		System.out.println (&quot;\n---- Fixed Cashflow ----\n&quot;);</span>
+<span class="fc" id="L493">		System.out.println (&quot;\n---- Fixed Cashflow ----\n&quot;);</span>
 
-<span class="fc bfc" id="L484" title="All 2 branches covered.">		for (CompositePeriod p : swap.referenceStream().cashFlowPeriod())</span>
-<span class="fc" id="L485">			System.out.println (</span>
-<span class="fc" id="L486">				DateUtil.YYYYMMDD (p.payDate()) + FIELD_SEPARATOR +</span>
-<span class="fc" id="L487">				DateUtil.YYYYMMDD (p.startDate()) + FIELD_SEPARATOR +</span>
-<span class="fc" id="L488">				DateUtil.YYYYMMDD (p.endDate()) + FIELD_SEPARATOR +</span>
-<span class="fc" id="L489">				FormatUtil.FormatDouble (p.couponDCF() * 360, 0, 0, 1.) + FIELD_SEPARATOR +</span>
-<span class="fc" id="L490">				FormatUtil.FormatDouble (p.couponDCF(), 0, 2, dblCoupon * dblNotional) + FIELD_SEPARATOR +</span>
-<span class="fc" id="L491">				FormatUtil.FormatDouble (dc.df (p.payDate()), 1, 4, 1.)</span>
+<span class="fc bfc" id="L495" title="All 2 branches covered.">		for (CompositePeriod p : swap.referenceStream().cashFlowPeriod())</span>
+<span class="fc" id="L496">			System.out.println (</span>
+<span class="fc" id="L497">				DateUtil.YYYYMMDD (p.payDate()) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L498">				DateUtil.YYYYMMDD (p.startDate()) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L499">				DateUtil.YYYYMMDD (p.endDate()) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L500">				FormatUtil.FormatDouble (p.couponDCF() * 360, 0, 0, 1.) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L501">				FormatUtil.FormatDouble (p.couponDCF(), 0, 2, dblCoupon * dblNotional) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L502">				FormatUtil.FormatDouble (dc.df (p.payDate()), 1, 4, 1.)</span>
 			);
 
 		/*
 		 * Generate the Swap's floating cash flows
 		 */
 
-<span class="fc" id="L498">		System.out.println (&quot;\n---- Floating Cashflow ----\n&quot;);</span>
+<span class="fc" id="L509">		System.out.println (&quot;\n---- Floating Cashflow ----\n&quot;);</span>
 
-<span class="fc bfc" id="L500" title="All 2 branches covered.">		for (CompositePeriod p : swap.derivedStream().cashFlowPeriod())</span>
-<span class="fc" id="L501">			System.out.println (</span>
-<span class="fc" id="L502">				DateUtil.YYYYMMDD (p.payDate()) + FIELD_SEPARATOR +</span>
-<span class="fc" id="L503">				DateUtil.YYYYMMDD (p.startDate()) + FIELD_SEPARATOR +</span>
-<span class="fc" id="L504">				DateUtil.YYYYMMDD (p.endDate()) + FIELD_SEPARATOR +</span>
-<span class="fc" id="L505">				FormatUtil.FormatDouble (p.couponDCF() * 360, 0, 0, 1.) + FIELD_SEPARATOR +</span>
-<span class="fc" id="L506">				FormatUtil.FormatDouble (dc.df (p.payDate()), 1, 4, 1.)</span>
+<span class="fc bfc" id="L511" title="All 2 branches covered.">		for (CompositePeriod p : swap.derivedStream().cashFlowPeriod())</span>
+<span class="fc" id="L512">			System.out.println (</span>
+<span class="fc" id="L513">				DateUtil.YYYYMMDD (p.payDate()) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L514">				DateUtil.YYYYMMDD (p.startDate()) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L515">				DateUtil.YYYYMMDD (p.endDate()) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L516">				FormatUtil.FormatDouble (p.couponDCF() * 360, 0, 0, 1.) + FIELD_SEPARATOR +</span>
+<span class="fc" id="L517">				FormatUtil.FormatDouble (dc.df (p.payDate()), 1, 4, 1.)</span>
 			);
 
-<span class="fc" id="L509">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L510">	}</span>
+<span class="fc" id="L520">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L521">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

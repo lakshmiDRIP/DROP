@@ -10,38 +10,49 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -89,28 +100,28 @@ import org.drip.service.env.EnvManager;
  *  
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/blacklitterman/README.md&quot;&gt;Black Litterman&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/blacklitterman/README.md&quot;&gt;Canonical Black Litterman and Extensions&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L102">public class IdzorekAndrogue2003 {</span>
+<span class="nc" id="L113">public class IdzorekAndrogue2003 {</span>
 
 	public static final void main (
 		final String[] astArgs)
 		throws Exception
 	{
-<span class="fc" id="L108">		EnvManager.InitEnv (</span>
+<span class="fc" id="L119">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L113">		String[] astrAssetClass = new String[] {</span>
+<span class="fc" id="L124">		String[] astrAssetClass = new String[] {</span>
 			&quot;US Bonds            &quot;,
 			&quot;Global Bonds xUSD   &quot;,
 			&quot;World Equity xUS    &quot;,
@@ -121,7 +132,7 @@ import org.drip.service.env.EnvManager;
 			&quot;US Small Cap Value  &quot;
 		};
 
-<span class="fc" id="L124">		double[] adblMarketCapitalizationEstimate = new double[] {</span>
+<span class="fc" id="L135">		double[] adblMarketCapitalizationEstimate = new double[] {</span>
 			 8360741000000.,
 			11583275710000.,
 			 9212460000000.,
@@ -132,9 +143,9 @@ import org.drip.service.env.EnvManager;
 			  459897061500.
 		};
 
-<span class="fc" id="L135">		double dblDelta = 3.37;</span>
+<span class="fc" id="L146">		double dblDelta = 3.37;</span>
 
-<span class="fc" id="L137">		double[][] aadblAssetExcessReturnsCorrelation = new double[][] {</span>
+<span class="fc" id="L148">		double[][] aadblAssetExcessReturnsCorrelation = new double[][] {</span>
 			{ 0.0014,  0.0015, -0.0008, -0.0017, -0.0010, -0.0007, -0.0015, -0.0006},
 			{ 0.0015,  0.0076,  0.0026, -0.0006, -0.0013, -0.0003, -0.0002,  0.0005},
 			{-0.0008,  0.0026,  0.0251,  0.0292,  0.0208,  0.0147,  0.0248,  0.0134},
@@ -145,7 +156,7 @@ import org.drip.service.env.EnvManager;
 			{-0.0006,  0.0005,  0.0134,  0.0268,  0.0260,  0.0215,  0.0411,  0.0276}
 		};
 
-<span class="fc" id="L148">		double[] adblMarketCapitalizationWeightReconciler = new double[] {</span>
+<span class="fc" id="L159">		double[] adblMarketCapitalizationWeightReconciler = new double[] {</span>
 			0.2016,
 			0.2793,
 			0.2221,
@@ -156,7 +167,7 @@ import org.drip.service.env.EnvManager;
 			0.0111
 		};
 
-<span class="fc" id="L159">		double[] adblImpliedReturnsReconciler = new double[] {</span>
+<span class="fc" id="L170">		double[] adblImpliedReturnsReconciler = new double[] {</span>
 			0.0008,
 			0.0094,
 			0.0395,
@@ -167,77 +178,77 @@ import org.drip.service.env.EnvManager;
 			0.0349
 		};
 
-<span class="fc" id="L170">		double dblTotalMarketCapitalization = 0.;</span>
-<span class="fc" id="L171">		double[] adblMarketCapitalizationWeight = new double[adblMarketCapitalizationEstimate.length];</span>
+<span class="fc" id="L181">		double dblTotalMarketCapitalization = 0.;</span>
+<span class="fc" id="L182">		double[] adblMarketCapitalizationWeight = new double[adblMarketCapitalizationEstimate.length];</span>
 
-<span class="fc bfc" id="L173" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMarketCapitalizationEstimate.length; ++i)</span>
-<span class="fc" id="L174">			dblTotalMarketCapitalization += adblMarketCapitalizationEstimate[i];</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMarketCapitalizationEstimate.length; ++i)</span>
+<span class="fc" id="L185">			dblTotalMarketCapitalization += adblMarketCapitalizationEstimate[i];</span>
 
-<span class="fc bfc" id="L176" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMarketCapitalizationEstimate.length; ++i)</span>
-<span class="fc" id="L177">			adblMarketCapitalizationWeight[i] = adblMarketCapitalizationEstimate[i] / dblTotalMarketCapitalization;</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMarketCapitalizationEstimate.length; ++i)</span>
+<span class="fc" id="L188">			adblMarketCapitalizationWeight[i] = adblMarketCapitalizationEstimate[i] / dblTotalMarketCapitalization;</span>
 
-<span class="fc" id="L179">		double[] adblImpliedReturns = Matrix.Product (</span>
+<span class="fc" id="L190">		double[] adblImpliedReturns = Matrix.Product (</span>
 			aadblAssetExcessReturnsCorrelation,
 			adblMarketCapitalizationWeight
 		);
 
-<span class="fc" id="L184">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L195">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L186">		System.out.println (&quot;\t|                                          CO-VARIANCE MATRIX                                          ||&quot;);</span>
-
-<span class="fc" id="L188">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="fc bfc" id="L190" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetClass.length; ++i) {</span>
-<span class="fc" id="L191">			String strDump = &quot;\t| &quot; + astrAssetClass[i] + &quot; &quot;;</span>
-
-<span class="fc bfc" id="L193" title="All 2 branches covered.">			for (int j = 0; j &lt; astrAssetClass.length; ++j)</span>
-<span class="fc" id="L194">				strDump += &quot;| &quot; + FormatUtil.FormatDouble (aadblAssetExcessReturnsCorrelation[i][j], 1, 4, 1.) + &quot; &quot;;</span>
-
-<span class="fc" id="L196">			System.out.println (strDump + &quot;||&quot;);</span>
-		}
+<span class="fc" id="L197">		System.out.println (&quot;\t|                                          CO-VARIANCE MATRIX                                          ||&quot;);</span>
 
 <span class="fc" id="L199">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L201">		System.out.println (&quot;\n\t||-------------------------------------------------------------||&quot;);</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetClass.length; ++i) {</span>
+<span class="fc" id="L202">			String strDump = &quot;\t| &quot; + astrAssetClass[i] + &quot; &quot;;</span>
 
-<span class="fc" id="L203">		System.out.println (&quot;\t||         MARKET CAPITALIZATION AND EQUILIBRIUM WEIGHTS       ||&quot;);</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">			for (int j = 0; j &lt; astrAssetClass.length; ++j)</span>
+<span class="fc" id="L205">				strDump += &quot;| &quot; + FormatUtil.FormatDouble (aadblAssetExcessReturnsCorrelation[i][j], 1, 4, 1.) + &quot; &quot;;</span>
 
-<span class="fc" id="L205">		System.out.println (&quot;\t||-------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L207">			System.out.println (strDump + &quot;||&quot;);</span>
+		}
 
-<span class="fc" id="L207">		System.out.println (&quot;\t||     ASSET CLASS      =&gt;  CAPITALIZATION |  OUTPUT |  PAPER  ||&quot;);</span>
+<span class="fc" id="L210">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L209">		System.out.println (&quot;\t||-------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L212">		System.out.println (&quot;\n\t||-------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L211" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMarketCapitalizationEstimate.length; ++i)</span>
-<span class="fc" id="L212">			System.out.println (</span>
+<span class="fc" id="L214">		System.out.println (&quot;\t||         MARKET CAPITALIZATION AND EQUILIBRIUM WEIGHTS       ||&quot;);</span>
+
+<span class="fc" id="L216">		System.out.println (&quot;\t||-------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L218">		System.out.println (&quot;\t||     ASSET CLASS      =&gt;  CAPITALIZATION |  OUTPUT |  PAPER  ||&quot;);</span>
+
+<span class="fc" id="L220">		System.out.println (&quot;\t||-------------------------------------------------------------||&quot;);</span>
+
+<span class="fc bfc" id="L222" title="All 2 branches covered.">		for (int i = 0; i &lt; adblMarketCapitalizationEstimate.length; ++i)</span>
+<span class="fc" id="L223">			System.out.println (</span>
 				&quot;\t|| &quot; + astrAssetClass[i] + &quot; =&gt; &quot; +
-<span class="fc" id="L214">				FormatUtil.FormatDouble (adblMarketCapitalizationEstimate[i], 14, 0, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L215">				FormatUtil.FormatDouble (adblMarketCapitalizationWeight[i], 2, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L216">				FormatUtil.FormatDouble (adblMarketCapitalizationWeightReconciler[i], 2, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L225">				FormatUtil.FormatDouble (adblMarketCapitalizationEstimate[i], 14, 0, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L226">				FormatUtil.FormatDouble (adblMarketCapitalizationWeight[i], 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L227">				FormatUtil.FormatDouble (adblMarketCapitalizationWeightReconciler[i], 2, 2, 100.) + &quot;% ||&quot;</span>
 			);
 
-<span class="fc" id="L219">		System.out.println (&quot;\t||-------------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L230">		System.out.println (&quot;\t||-------------------------------------------------------------||\n&quot;);</span>
 
-<span class="fc" id="L221">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
+<span class="fc" id="L232">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L223">		System.out.println (&quot;\t||         RISK PREMIUM IMPLIED RETURNS      ||&quot;);</span>
+<span class="fc" id="L234">		System.out.println (&quot;\t||         RISK PREMIUM IMPLIED RETURNS      ||&quot;);</span>
 
-<span class="fc" id="L225">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
+<span class="fc" id="L236">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L227">		System.out.println (&quot;\t||     ASSET CLASS      =&gt;  OUTPUT |  PAPER  ||&quot;);</span>
+<span class="fc" id="L238">		System.out.println (&quot;\t||     ASSET CLASS      =&gt;  OUTPUT |  PAPER  ||&quot;);</span>
 
-<span class="fc" id="L229">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
+<span class="fc" id="L240">		System.out.println (&quot;\t||-------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L231" title="All 2 branches covered.">		for (int i = 0; i &lt; adblImpliedReturns.length; ++i)</span>
-<span class="fc" id="L232">			System.out.println (</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">		for (int i = 0; i &lt; adblImpliedReturns.length; ++i)</span>
+<span class="fc" id="L243">			System.out.println (</span>
 				&quot;\t|| &quot; + astrAssetClass[i] + &quot; =&gt; &quot; +
-<span class="fc" id="L234">				FormatUtil.FormatDouble (dblDelta * adblImpliedReturns[i], 2, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L235">				FormatUtil.FormatDouble (adblImpliedReturnsReconciler[i], 2, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L245">				FormatUtil.FormatDouble (dblDelta * adblImpliedReturns[i], 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L246">				FormatUtil.FormatDouble (adblImpliedReturnsReconciler[i], 2, 2, 100.) + &quot;% ||&quot;</span>
 			);
 
-<span class="fc" id="L238">		System.out.println (&quot;\t||-------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L249">		System.out.println (&quot;\t||-------------------------------------------||\n&quot;);</span>
 
-<span class="fc" id="L240">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L241">	}</span>
+<span class="fc" id="L251">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L252">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
