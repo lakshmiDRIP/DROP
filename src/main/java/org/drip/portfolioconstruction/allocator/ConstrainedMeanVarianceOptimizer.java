@@ -168,6 +168,28 @@ public class ConstrainedMeanVarianceOptimizer extends
 		_lineStepEvolutionControl = lineStepEvolutionControl;
 	}
 
+	/**
+	 * Retrieve the Line Step Evolution Control
+	 * 
+	 * @return The Line Step Evolution Control
+	 */
+
+	public org.drip.function.rdtor1descent.LineStepEvolutionControl lineStepEvolutionControl()
+	{
+		return _lineStepEvolutionControl;
+	}
+
+	/**
+	 * Retrieve the Interior Point Barrier Control
+	 * 
+	 * @return The Interior Point Barrier Control
+	 */
+
+	public org.drip.function.rdtor1solver.InteriorPointBarrierControl interiorPointBarrierControl()
+	{
+		return _interiorPointBarrierControl;
+	}
+
 	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput
 		longOnlyMaximumReturnsAllocate (
 			final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
@@ -361,6 +383,8 @@ public class ConstrainedMeanVarianceOptimizer extends
 				org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) ||
 			null == assetUniverseStatisticalProperties)
 		{
+			System.out.println (assetUniverseStatisticalProperties);
+
 			return null;
 		}
 

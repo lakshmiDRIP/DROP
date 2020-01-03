@@ -6,46 +6,35 @@ package org.drip.function.matrix;
  */
 
 /*!
- * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
- *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
- *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
- *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
- *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
- *  	and computational support.
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- * 	DROP Product Core implements libraries for the following:
+ * 	DROP Analytics Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Loan Analytics
- * 	- Transaction Cost Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- *  - Asset Liability Management Analytics
- * 	- Capital Estimation Analytics
- * 	- Exposure Analytics
- * 	- Margin Analytics
- * 	- XVA Analytics
+ * 	- Transaction Cost Analytics
  * 
- * 	DROP Computational Core implements libraries for the following:
- * 	- Algorithm Support
- * 	- Computation Support
- * 	- Function Analysis
- *  - Model Validation
- * 	- Numerical Analysis
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
  * 	- Numerical Optimizer
  * 	- Spline Builder
- *  - Statistical Learning
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -105,10 +94,10 @@ package org.drip.function.matrix;
  *  
  * <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">R<sup>d</sup> To R<sup>d</sup> Function Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/matrix/README.md">Support for Functions of Matrices</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalSupportLibrary.md">Numerical Support Library</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/matrix/README.md">Linear Algebra and Matrix Utilities</a></li>
  *  </ul>
  * <br><br>
  * 
@@ -117,5 +106,58 @@ package org.drip.function.matrix;
 
 public class FrobeniusCovariance
 {
+	private java.util.Map<java.lang.Double, org.drip.function.matrix.Square> _componentMap = null;
 
+	/**
+	 * Empty FrobeniusCovariance Constructor
+	 */
+
+	public FrobeniusCovariance()
+	{
+	}
+
+	/**
+	 * Add a Frobenius Component
+	 * 
+	 * @param eigenValue The Frobenius Component EigenValue
+	 * @param component The Frobenius Component
+	 * 
+	 * @return TRUE - The Frobenius Component successfully added
+	 */
+
+	public boolean addComponent (
+		final double eigenValue,
+		final org.drip.function.matrix.Square component)
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+				eigenValue
+			) || null == component
+		)
+		{
+			return false;
+		}
+
+		if (null == _componentMap)
+		{
+			_componentMap = new java.util.TreeMap<java.lang.Double, org.drip.function.matrix.Square>();
+		}
+
+		_componentMap.put (
+			eigenValue,
+			component
+		);
+
+		return true;
+	}
+
+	/**
+	 * Retrieve the Map of Frobenius Components
+	 * 
+	 * @return Map of Frobenius Components
+	 */
+
+	public java.util.Map<java.lang.Double, org.drip.function.matrix.Square> componentMap()
+	{
+		return _componentMap;
+	}
 }

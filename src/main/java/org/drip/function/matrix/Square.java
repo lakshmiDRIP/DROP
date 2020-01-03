@@ -6,46 +6,35 @@ package org.drip.function.matrix;
  */
 
 /*!
- * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
- *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
- *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
- *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
- *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
- *  	and computational support.
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- * 	DROP Product Core implements libraries for the following:
+ * 	DROP Analytics Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Loan Analytics
- * 	- Transaction Cost Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- *  - Asset Liability Management Analytics
- * 	- Capital Estimation Analytics
- * 	- Exposure Analytics
- * 	- Margin Analytics
- * 	- XVA Analytics
+ * 	- Transaction Cost Analytics
  * 
- * 	DROP Computational Core implements libraries for the following:
- * 	- Algorithm Support
- * 	- Computation Support
- * 	- Function Analysis
- *  - Model Validation
- * 	- Numerical Analysis
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
  * 	- Numerical Optimizer
  * 	- Spline Builder
- *  - Statistical Learning
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -104,10 +93,10 @@ package org.drip.function.matrix;
  *  
  * <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">R<sup>d</sup> To R<sup>d</sup> Function Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/matrix/README.md">Support for Functions of Matrices</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalSupportLibrary.md">Numerical Support Library</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/matrix/README.md">Linear Algebra and Matrix Utilities</a></li>
  *  </ul>
  * <br><br>
  * 
@@ -152,7 +141,7 @@ public class Square
 		{
 			if (null == _grid[dimensionIndex] ||
 				dimension != _grid[dimensionIndex].length ||
-				org.drip.numerical.common.NumberUtil.IsValid (
+				!org.drip.numerical.common.NumberUtil.IsValid (
 					_grid[dimensionIndex]
 				)
 			)
@@ -212,13 +201,16 @@ public class Square
 	}
 
 	/**
-	 * Generate the Array of the Eigen-Shadow Matrices
+	 * Generate the Frobenius Covariance
 	 * 
-	 * @return Array of the Eigen-Shadow Matrices
+	 * @return The Frobenius Covariance
 	 */
 
-	public double[][][] eigenShadowArray()
+	public org.drip.function.matrix.FrobeniusCovariance frobeniusCovariance()
 	{
+		org.drip.function.matrix.FrobeniusCovariance frobeniusCovariance =
+			new org.drip.function.matrix.FrobeniusCovariance();
+
 		org.drip.numerical.eigen.EigenOutput eigenOutput = eigenize();
 
 		if (null == eigenOutput)
@@ -231,9 +223,9 @@ public class Square
 		int dimension = _grid.length;
 		double[][][] eigenShadowArray = new double[dimension][dimension][dimension];
 
-		for (int componentIndex = 0;
-			componentIndex < dimension;
-			++componentIndex)
+		for (int eigenIndex = 0;
+			eigenIndex < dimension;
+			++eigenIndex)
 		{
 			for (int dimensionIndexI = 0;
 				dimensionIndexI < dimension;
@@ -243,14 +235,174 @@ public class Square
 					dimensionIndexJ < dimension;
 					++dimensionIndexJ)
 				{
-					eigenShadowArray[componentIndex][dimensionIndexI][dimensionIndexJ] =
+					eigenShadowArray[eigenIndex][dimensionIndexI][dimensionIndexJ] =
 						_grid[dimensionIndexI][dimensionIndexJ] - (
-							dimensionIndexI == dimensionIndexJ ? eigenValueArray[componentIndex] : 0.
+							dimensionIndexI == dimensionIndexJ ? eigenValueArray[eigenIndex] : 0.
 						);
 				}
 			}
 		}
 
-		return eigenShadowArray;
+		for (int componentIndex = 0;
+			componentIndex < dimension;
+			++componentIndex)
+		{
+			double[][] frobeniusComponentMatrix = null;
+			double componentEigenValue = eigenValueArray[componentIndex];
+
+			for (int eigenIndex = 0;
+				eigenIndex < dimension;
+				++eigenIndex)
+			{
+				if (eigenIndex == componentIndex)
+				{
+					continue;
+				}
+
+				if (null == frobeniusComponentMatrix)
+				{
+					frobeniusComponentMatrix = org.drip.numerical.linearalgebra.Matrix.Scale2D (
+						eigenShadowArray[eigenIndex],
+						1. / (componentEigenValue - eigenValueArray[eigenIndex])
+					);
+				}
+				else
+				{
+					frobeniusComponentMatrix = org.drip.numerical.linearalgebra.Matrix.Scale2D (
+						org.drip.numerical.linearalgebra.Matrix.Product (
+							frobeniusComponentMatrix,
+							eigenShadowArray[eigenIndex]
+						),
+						1. / (componentEigenValue - eigenValueArray[eigenIndex])
+					);
+				}
+			}
+
+			try
+			{
+				if (!frobeniusCovariance.addComponent (
+					componentEigenValue,
+					new org.drip.function.matrix.Square (
+						frobeniusComponentMatrix
+					)
+				))
+				{
+					return null;
+				}
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		return frobeniusCovariance;
 	}
+
+	/**
+	 * Compute the Value of the Matrix using the specified Function
+	 * 
+	 * @param r1ToR1Function The R<sup>1</sup> To R<sup>1</sup> Function
+	 * 
+	 * @return The Function Matrix Value
+	 */
+
+	public double[][] evaluate (
+		final org.drip.function.definition.R1ToR1 r1ToR1Function)
+	{
+		if (null == r1ToR1Function)
+		{
+			return null;
+		}
+
+		int dimension = _grid.length;
+		double[][] matrixFunction = null;
+
+		org.drip.function.matrix.FrobeniusCovariance frobeniusCovariance = frobeniusCovariance();
+
+		if (null == frobeniusCovariance)
+		{
+			return null;
+		}
+
+		for (java.util.Map.Entry<java.lang.Double, org.drip.function.matrix.Square> componentMapEntry :
+			frobeniusCovariance.componentMap().entrySet())
+		{
+			double[][] frobeniusComponentFunctionProjection = null;
+
+			try
+			{
+				frobeniusComponentFunctionProjection = org.drip.numerical.linearalgebra.Matrix.Scale2D (
+					componentMapEntry.getValue().grid(),
+					r1ToR1Function.evaluate (
+						componentMapEntry.getKey()
+					)
+				);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+
+			if (null == frobeniusComponentFunctionProjection)
+			{
+				return null;
+			}
+
+			if (null == matrixFunction)
+			{
+				matrixFunction = frobeniusComponentFunctionProjection;
+			}
+			else
+			{
+				for (int dimensionIndexI = 0;
+					dimensionIndexI < dimension;
+					++dimensionIndexI)
+				{
+					for (int dimensionIndexJ = 0;
+						dimensionIndexJ < dimension;
+						++dimensionIndexJ)
+					{
+						matrixFunction[dimensionIndexI][dimensionIndexJ] =
+							matrixFunction[dimensionIndexI][dimensionIndexJ] +
+							frobeniusComponentFunctionProjection[dimensionIndexI][dimensionIndexJ];
+					}
+				}
+			}
+		}
+
+		return matrixFunction;
+	}
+
+    /**
+     * Compute the Determinant
+     *
+     * @return The Determinant
+     */
+
+	public double determinant()
+	{
+		org.drip.numerical.eigen.EigenOutput eigenOutput = eigenize();
+
+		if (null == eigenOutput)
+		{
+			return 0.;
+		}
+
+		double[] eigenValueArray = eigenOutput.eigenValueArray();
+
+		double determinant = 1.;
+		int dimension = _grid.length;
+
+		for (int eigenIndex = 0;
+			eigenIndex < dimension;
+	        ++eigenIndex)
+		{
+	         determinant = determinant * eigenValueArray[eigenIndex];
+		}
+
+		return determinant;
+    }
 }

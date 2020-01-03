@@ -96,9 +96,24 @@ package org.drip.portfolioconstruction.allocator;
 public class BoundedPortfolioConstructionParameters extends
 	org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
 {
+
 	private org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.asset.AssetBounds>
 		_assetBoundsMap = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.asset.AssetBounds>();
+
+	private double lowerPivotStartingWeight (
+		final java.lang.String assetID)
+	{
+		org.drip.portfolioconstruction.asset.AssetBounds assetBounds = _assetBoundsMap.get (
+			assetID
+		);
+
+		double lowerWeight = assetBounds.lower();
+
+		return !org.drip.numerical.common.NumberUtil.IsValid (
+			lowerWeight
+		) ? 0. : lowerWeight;
+	}
 
 	/**
 	 * BoundedPortfolioConstructionParameters Constructor
@@ -121,6 +136,19 @@ public class BoundedPortfolioConstructionParameters extends
 			customRiskUtilitySettings,
 			equalityConstraintSettings
 		);
+	}
+
+	/**
+	 * Retrieve the Portfolio Asset Bounds Map
+	 * 
+	 * @return The Portfolio Asset Bounds Map
+	 */
+
+	public
+		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.asset.AssetBounds>
+			assetBoundsMap()
+	{
+		return _assetBoundsMap;
 	}
 
 	/**
@@ -340,12 +368,15 @@ public class BoundedPortfolioConstructionParameters extends
 		java.lang.String[] assetIDArray = assetIDArray();
 
 		double cumulativeWeight = 0.;
+		double allocationQuantumFactor = 0.1;
 		int assetCount = assetIDArray.length;
 		double[] startingVariateArray = new double[assetCount + (returnsConstraintPresent ? 2 : 1)];
 
 		for (int i = 0; i < assetCount; ++i)
 		{
-			startingVariateArray[i] = _assetBoundsMap.get (assetIDArray[i]).lower();
+			startingVariateArray[i] = lowerPivotStartingWeight (
+				assetIDArray[i]
+			);
 
 			cumulativeWeight += startingVariateArray[i];
 		}
@@ -355,11 +386,35 @@ public class BoundedPortfolioConstructionParameters extends
 			return null;
 		}
 
-		double weightGap = (1. - cumulativeWeight) / assetCount;
+		boolean allocationLoop = true;
+		double allocationWeightQuantum = allocationQuantumFactor * (1. - cumulativeWeight) / assetCount;
 
-		for (int i = 0; i < assetCount; ++i)
+		while (allocationLoop)
 		{
-			startingVariateArray[i] += weightGap;
+			for (int i = 0; i < assetCount; ++i)
+			{
+				if (!allocationLoop)
+				{
+					break;
+				}
+
+				org.drip.portfolioconstruction.asset.AssetBounds assetBounds = _assetBoundsMap.get (
+					assetIDArray[i]
+				);
+
+				double newStartingWeight = startingVariateArray[i] + allocationWeightQuantum;
+
+				if (assetBounds.lower() <= newStartingWeight && assetBounds.upper() >= newStartingWeight)
+				{
+					startingVariateArray[i] = newStartingWeight;
+					cumulativeWeight = cumulativeWeight + allocationWeightQuantum;;
+				}
+
+				if (1. <= cumulativeWeight)
+				{
+					allocationLoop = false;
+				}
+			}
 		}
 
 		if (returnsConstraintPresent)

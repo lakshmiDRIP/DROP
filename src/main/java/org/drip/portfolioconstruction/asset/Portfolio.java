@@ -319,6 +319,28 @@ public class Portfolio
 	}
 
 	/**
+	 * Retrieve the Portfolio Asset Cardinality
+	 * 
+	 * @return The Portfolio Asset Cardinality
+	 */
+
+	public int cardinality()
+	{
+		int cardinality = 0;
+		int assetCount = _assetComponentArray.length;
+
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			if (0. !=  _assetComponentArray[assetIndex].amount())
+			{
+				++cardinality;
+			}
+		}
+
+		return cardinality;
+	}
+
+	/**
 	 * Retrieve the Expected Returns of the Portfolio
 	 * 
 	 * @param assetUniverseStatisticalProperties The Asset Pool Statistical Properties Instance

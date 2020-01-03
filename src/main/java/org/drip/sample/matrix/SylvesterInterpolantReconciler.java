@@ -1,6 +1,11 @@
 
 package org.drip.sample.matrix;
 
+import java.util.Map;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.matrix.FrobeniusCovariance;
+import org.drip.function.matrix.Square;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.eigen.EigenOutput;
 import org.drip.numerical.eigen.QREigenComponentExtractor;
@@ -246,6 +251,90 @@ public class SylvesterInterpolantReconciler
 				a,
 				""
 			)
+		);
+
+		System.out.println ("\t|----------------------------------------|");
+
+		Square aSquare = new Square (
+			a
+		);
+
+		FrobeniusCovariance frobeniusCovariance = aSquare.frobeniusCovariance();
+
+		Map<Double, Square> componentMap = frobeniusCovariance.componentMap();
+
+		Object[] eigenValueKey = componentMap.keySet().toArray();
+
+		frobeniusCovariant0 = componentMap.get (
+			eigenValueKey[0]
+		).grid();
+
+		frobeniusCovariant1 = frobeniusCovariance.componentMap().get (
+			eigenValueKey[1]
+		).grid();
+
+		System.out.println ("\t|-----------------------------------------|");
+
+		System.out.println ("\t|          SYLVESTER RECONCILER           |");
+
+		System.out.println ("\t|-----------------------------------------|");
+
+		NumberUtil.PrintMatrix (
+			"\t| FROBENIUS COVARIANT 0",
+			frobeniusCovariant0
+		);
+
+		System.out.println ("\t|-----------------------------------------|");
+
+		NumberUtil.PrintMatrix (
+			"\t| FROBENIUS COVARIANT 1",
+			frobeniusCovariant1
+		);
+
+		System.out.println ("\t|-----------------------------------------|");
+
+		recoveredA = aSquare.evaluate (
+			new R1ToR1 (
+				null
+			)
+			{
+				@Override public double evaluate (
+					final double x)
+					throws Exception
+				{
+					return x;
+				}
+			}
+		);
+
+		System.out.println ("\t|----------------------------------------|");
+
+		NumberUtil.PrintMatrix (
+			"\t| RECOVERED MATRIX",
+			recoveredA
+		);
+
+		System.out.println ("\t|----------------------------------------|");
+
+		inverseA = aSquare.evaluate (
+			new R1ToR1 (
+				null
+			)
+			{
+				@Override public double evaluate (
+					final double x)
+					throws Exception
+				{
+					return 1. / x;
+				}
+			}
+		);
+
+		System.out.println ("\t|----------------------------------------|");
+
+		NumberUtil.PrintMatrix (
+			"\t| INVERSE MATRIX",
+			inverseA
 		);
 
 		System.out.println ("\t|----------------------------------------|");
