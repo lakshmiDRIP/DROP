@@ -20,37 +20,48 @@ import org.drip.state.govvie.GovvieCurve;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -86,17 +97,17 @@ import org.drip.state.govvie.GovvieCurve;
  *  
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/bondeos/README.md&quot;&gt;Bond EOS&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/bondeos/README.md&quot;&gt;EOS Bond Bullet/Exercise Measures&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L99">public class Shenzhen {</span>
+<span class="nc" id="L110">public class Shenzhen {</span>
 
 	private static final MergedDiscountForwardCurve FundingCurve (
 		final JulianDate dtSpot,
@@ -104,15 +115,15 @@ import org.drip.state.govvie.GovvieCurve;
 		final double dblBump)
 		throws Exception
 	{
-<span class="fc" id="L107">		String[] astrDepositMaturityTenor = new String[] {</span>
+<span class="fc" id="L118">		String[] astrDepositMaturityTenor = new String[] {</span>
 			&quot;2D&quot;
 		};
 
-<span class="fc" id="L111">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L122">		double[] adblDepositQuote = new double[] {</span>
 			0.0111956 + dblBump // 2D
 		};
 
-<span class="fc" id="L115">		double[] adblFuturesQuote = new double[] {</span>
+<span class="fc" id="L126">		double[] adblFuturesQuote = new double[] {</span>
 			0.011375 + dblBump,	// 98.8625
 			0.013350 + dblBump,	// 98.6650
 			0.014800 + dblBump,	// 98.5200
@@ -121,7 +132,7 @@ import org.drip.state.govvie.GovvieCurve;
 			0.019300 + dblBump	// 98.0700
 		};
 
-<span class="fc" id="L124">		String[] astrFixFloatMaturityTenor = new String[] {</span>
+<span class="fc" id="L135">		String[] astrFixFloatMaturityTenor = new String[] {</span>
 			&quot;02Y&quot;,
 			&quot;03Y&quot;,
 			&quot;04Y&quot;,
@@ -141,7 +152,7 @@ import org.drip.state.govvie.GovvieCurve;
 			&quot;50Y&quot;
 		};
 
-<span class="fc" id="L144">		double[] adblFixFloatQuote = new double[] {</span>
+<span class="fc" id="L155">		double[] adblFixFloatQuote = new double[] {</span>
 			0.017029 + dblBump, //  2Y
 			0.019354 + dblBump, //  3Y
 			0.021044 + dblBump, //  4Y
@@ -161,7 +172,7 @@ import org.drip.state.govvie.GovvieCurve;
 			0.027655 + dblBump  // 50Y
 		};
 
-<span class="fc" id="L164">		MergedDiscountForwardCurve dcFunding = LatentMarketStateBuilder.SmoothFundingCurve (</span>
+<span class="fc" id="L175">		MergedDiscountForwardCurve dcFunding = LatentMarketStateBuilder.SmoothFundingCurve (</span>
 			dtSpot,
 			strCurrency,
 			astrDepositMaturityTenor,
@@ -174,19 +185,19 @@ import org.drip.state.govvie.GovvieCurve;
 			&quot;SwapRate&quot;
 		);
 
-<span class="fc" id="L177">		Component[] aDepositComp = OTCInstrumentBuilder.FundingDeposit (</span>
+<span class="fc" id="L188">		Component[] aDepositComp = OTCInstrumentBuilder.FundingDeposit (</span>
 			dtSpot,
 			strCurrency,
 			astrDepositMaturityTenor
 		);
 
-<span class="fc" id="L183">		Component[] aFuturesComp = ExchangeInstrumentBuilder.ForwardRateFuturesPack (</span>
+<span class="fc" id="L194">		Component[] aFuturesComp = ExchangeInstrumentBuilder.ForwardRateFuturesPack (</span>
 			dtSpot,
 			adblFuturesQuote.length,
 			strCurrency
 		);
 
-<span class="fc" id="L189">		Component[] aFixFloatComp = OTCInstrumentBuilder.FixFloatStandard (</span>
+<span class="fc" id="L200">		Component[] aFixFloatComp = OTCInstrumentBuilder.FixFloatStandard (</span>
 			dtSpot,
 			strCurrency,
 			&quot;ALL&quot;,
@@ -195,13 +206,13 @@ import org.drip.state.govvie.GovvieCurve;
 			0.
 		);
 
-<span class="fc" id="L198">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L209">		ValuationParams valParams = new ValuationParams (</span>
 			dtSpot,
 			dtSpot,
 			strCurrency
 		);
 
-<span class="fc" id="L204">		CurveSurfaceQuoteContainer csqc = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L215">		CurveSurfaceQuoteContainer csqc = MarketParamsBuilder.Create (</span>
 			dcFunding,
 			null,
 			null,
@@ -211,69 +222,69 @@ import org.drip.state.govvie.GovvieCurve;
 			null
 		);
 
-<span class="fc" id="L214">		System.out.println();</span>
+<span class="fc" id="L225">		System.out.println();</span>
 
-<span class="fc" id="L216">		System.out.println (&quot;\t|-------------------------------------||&quot;);</span>
+<span class="fc" id="L227">		System.out.println (&quot;\t|-------------------------------------||&quot;);</span>
 
-<span class="fc" id="L218">		System.out.println (&quot;\t|        DEPOSIT INPUT vs. CALC       ||&quot;);</span>
+<span class="fc" id="L229">		System.out.println (&quot;\t|        DEPOSIT INPUT vs. CALC       ||&quot;);</span>
 
-<span class="fc" id="L220">		System.out.println (&quot;\t|-------------------------------------||&quot;);</span>
+<span class="fc" id="L231">		System.out.println (&quot;\t|-------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L222" title="All 2 branches covered.">		for (int i = 0; i &lt; aDepositComp.length; ++i)</span>
-<span class="fc" id="L223">			System.out.println (&quot;\t| [&quot; + aDepositComp[i].maturityDate() + &quot;] =&quot; +</span>
-<span class="fc" id="L224">				FormatUtil.FormatDouble (aDepositComp[i].measureValue (</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">		for (int i = 0; i &lt; aDepositComp.length; ++i)</span>
+<span class="fc" id="L234">			System.out.println (&quot;\t| [&quot; + aDepositComp[i].maturityDate() + &quot;] =&quot; +</span>
+<span class="fc" id="L235">				FormatUtil.FormatDouble (aDepositComp[i].measureValue (</span>
 					valParams,
 					null,
 					csqc,
 					null,
 					&quot;ForwardRate&quot;
 				), 1, 6, 1.) + &quot; |&quot; +
-<span class="fc" id="L231">				FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L242">				FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.) + &quot; ||&quot;</span>
 			);
 
-<span class="fc" id="L234">		System.out.println (&quot;\t|-------------------------------------||&quot;);</span>
+<span class="fc" id="L245">		System.out.println (&quot;\t|-------------------------------------||&quot;);</span>
 
-<span class="fc" id="L236">		System.out.println();</span>
+<span class="fc" id="L247">		System.out.println();</span>
 
-<span class="fc" id="L238">		System.out.println (&quot;\t|-------------------------------------||&quot;);</span>
+<span class="fc" id="L249">		System.out.println (&quot;\t|-------------------------------------||&quot;);</span>
 
-<span class="fc" id="L240">		System.out.println (&quot;\t|        FUTURES INPUT vs. CALC       ||&quot;);</span>
+<span class="fc" id="L251">		System.out.println (&quot;\t|        FUTURES INPUT vs. CALC       ||&quot;);</span>
 
-<span class="fc" id="L242">		System.out.println (&quot;\t|-------------------------------------||&quot;);</span>
+<span class="fc" id="L253">		System.out.println (&quot;\t|-------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L244" title="All 2 branches covered.">		for (int i = 0; i &lt; aFuturesComp.length; ++i)</span>
-<span class="fc" id="L245">			System.out.println (&quot;\t| [&quot; + aFuturesComp[i].maturityDate() + &quot;] =&quot; +</span>
-<span class="fc" id="L246">				FormatUtil.FormatDouble (aFuturesComp[i].measureValue (</span>
+<span class="fc bfc" id="L255" title="All 2 branches covered.">		for (int i = 0; i &lt; aFuturesComp.length; ++i)</span>
+<span class="fc" id="L256">			System.out.println (&quot;\t| [&quot; + aFuturesComp[i].maturityDate() + &quot;] =&quot; +</span>
+<span class="fc" id="L257">				FormatUtil.FormatDouble (aFuturesComp[i].measureValue (</span>
 					valParams,
 					null,
 					csqc,
 					null,
 					&quot;ForwardRate&quot;
 				), 1, 6, 1.) + &quot; |&quot; +
-<span class="fc" id="L253">				FormatUtil.FormatDouble (adblFuturesQuote[i], 1, 6, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L264">				FormatUtil.FormatDouble (adblFuturesQuote[i], 1, 6, 1.) + &quot; ||&quot;</span>
 			);
 
-<span class="fc" id="L256">		System.out.println (&quot;\t|-------------------------------------||&quot;);</span>
+<span class="fc" id="L267">		System.out.println (&quot;\t|-------------------------------------||&quot;);</span>
 
-<span class="fc" id="L258">		System.out.println();</span>
+<span class="fc" id="L269">		System.out.println();</span>
 
-<span class="fc" id="L260">		System.out.println (&quot;\t|------------------------------------------------|| &quot;);</span>
+<span class="fc" id="L271">		System.out.println (&quot;\t|------------------------------------------------|| &quot;);</span>
 
-<span class="fc" id="L262">		System.out.println (&quot;\t|          FIX-FLOAT INPUTS vs CALIB             ||&quot;);</span>
+<span class="fc" id="L273">		System.out.println (&quot;\t|          FIX-FLOAT INPUTS vs CALIB             ||&quot;);</span>
 
-<span class="fc" id="L264">		System.out.println (&quot;\t|------------------------------------------------|| &quot;);</span>
+<span class="fc" id="L275">		System.out.println (&quot;\t|------------------------------------------------|| &quot;);</span>
 
-<span class="fc bfc" id="L266" title="All 2 branches covered.">		for (int i = 0; i &lt; aFixFloatComp.length; ++i)</span>
-<span class="fc" id="L267">			System.out.println (&quot;\t| [&quot; + aFixFloatComp[i].maturityDate() + &quot;] =&quot; +</span>
-<span class="fc" id="L268">				FormatUtil.FormatDouble (aFixFloatComp[i].measureValue (</span>
+<span class="fc bfc" id="L277" title="All 2 branches covered.">		for (int i = 0; i &lt; aFixFloatComp.length; ++i)</span>
+<span class="fc" id="L278">			System.out.println (&quot;\t| [&quot; + aFixFloatComp[i].maturityDate() + &quot;] =&quot; +</span>
+<span class="fc" id="L279">				FormatUtil.FormatDouble (aFixFloatComp[i].measureValue (</span>
 					valParams,
 					null,
 					csqc,
 					null,
 					&quot;CalibSwapRate&quot;
 				), 1, 6, 1.) + &quot; |&quot; +
-<span class="fc" id="L275">				FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 6, 1.) + &quot; |&quot; +</span>
-<span class="fc" id="L276">				FormatUtil.FormatDouble (aFixFloatComp[i].measureValue (</span>
+<span class="fc" id="L286">				FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 6, 1.) + &quot; |&quot; +</span>
+<span class="fc" id="L287">				FormatUtil.FormatDouble (aFixFloatComp[i].measureValue (</span>
 					valParams,
 					null,
 					csqc,
@@ -282,11 +293,11 @@ import org.drip.state.govvie.GovvieCurve;
 				), 1, 6, 1.) + &quot; ||&quot;
 			);
 
-<span class="fc" id="L285">		System.out.println (&quot;\t|------------------------------------------------||&quot;);</span>
+<span class="fc" id="L296">		System.out.println (&quot;\t|------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L287">		System.out.println();</span>
+<span class="fc" id="L298">		System.out.println();</span>
 
-<span class="fc" id="L289">		return dcFunding;</span>
+<span class="fc" id="L300">		return dcFunding;</span>
 	}
 
 	private static final GovvieCurve GovvieCurve (
@@ -296,7 +307,7 @@ import org.drip.state.govvie.GovvieCurve;
 		final double[] adblYield)
 		throws Exception
 	{
-<span class="fc" id="L299">		JulianDate[] adtEffective = new JulianDate[] {</span>
+<span class="fc" id="L310">		JulianDate[] adtEffective = new JulianDate[] {</span>
 			dtSpot,
 			dtSpot,
 			dtSpot,
@@ -307,18 +318,18 @@ import org.drip.state.govvie.GovvieCurve;
 			dtSpot
 		};
 
-<span class="fc" id="L310">		JulianDate[] adtMaturity = new JulianDate[] {</span>
-<span class="fc" id="L311">			dtSpot.addTenor (&quot;1Y&quot;),</span>
-<span class="fc" id="L312">			dtSpot.addTenor (&quot;2Y&quot;),</span>
-<span class="fc" id="L313">			dtSpot.addTenor (&quot;3Y&quot;),</span>
-<span class="fc" id="L314">			dtSpot.addTenor (&quot;5Y&quot;),</span>
-<span class="fc" id="L315">			dtSpot.addTenor (&quot;7Y&quot;),</span>
-<span class="fc" id="L316">			dtSpot.addTenor (&quot;10Y&quot;),</span>
-<span class="fc" id="L317">			dtSpot.addTenor (&quot;20Y&quot;),</span>
-<span class="fc" id="L318">			dtSpot.addTenor (&quot;30Y&quot;)</span>
+<span class="fc" id="L321">		JulianDate[] adtMaturity = new JulianDate[] {</span>
+<span class="fc" id="L322">			dtSpot.addTenor (&quot;1Y&quot;),</span>
+<span class="fc" id="L323">			dtSpot.addTenor (&quot;2Y&quot;),</span>
+<span class="fc" id="L324">			dtSpot.addTenor (&quot;3Y&quot;),</span>
+<span class="fc" id="L325">			dtSpot.addTenor (&quot;5Y&quot;),</span>
+<span class="fc" id="L326">			dtSpot.addTenor (&quot;7Y&quot;),</span>
+<span class="fc" id="L327">			dtSpot.addTenor (&quot;10Y&quot;),</span>
+<span class="fc" id="L328">			dtSpot.addTenor (&quot;20Y&quot;),</span>
+<span class="fc" id="L329">			dtSpot.addTenor (&quot;30Y&quot;)</span>
 		};
 
-<span class="fc" id="L321">		GovvieCurve gc = LatentMarketStateBuilder.GovvieCurve (</span>
+<span class="fc" id="L332">		GovvieCurve gc = LatentMarketStateBuilder.GovvieCurve (</span>
 			strCode,
 			dtSpot,
 			adtEffective,
@@ -329,48 +340,48 @@ import org.drip.state.govvie.GovvieCurve;
 			LatentMarketStateBuilder.SHAPE_PRESERVING
 		);
 
-<span class="fc" id="L332">		BondComponent[] aComp = TreasuryBuilder.FromCode (</span>
+<span class="fc" id="L343">		BondComponent[] aComp = TreasuryBuilder.FromCode (</span>
 			strCode,
 			adtEffective,
 			adtMaturity,
 			adblCoupon
 		);
 
-<span class="fc" id="L339">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
+<span class="fc" id="L350">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
 
-<span class="fc" id="L341">		CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L352">		CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
 
-<span class="fc" id="L343">		csqc.setGovvieState (gc);</span>
+<span class="fc" id="L354">		csqc.setGovvieState (gc);</span>
 
-<span class="fc" id="L345">		System.out.println();</span>
+<span class="fc" id="L356">		System.out.println();</span>
 
-<span class="fc" id="L347">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
+<span class="fc" id="L358">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L349">		System.out.println (&quot;\t|       TREASURY INPUT vs CALIB YIELD       ||&quot;);</span>
+<span class="fc" id="L360">		System.out.println (&quot;\t|       TREASURY INPUT vs CALIB YIELD       ||&quot;);</span>
 
-<span class="fc" id="L351">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
+<span class="fc" id="L362">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L353" title="All 2 branches covered.">		for (int i = 0; i &lt; aComp.length; ++i)</span>
-<span class="fc" id="L354">			System.out.println (&quot;\t| &quot; + aComp[i].name() + &quot; | &quot; +</span>
-<span class="fc" id="L355">				FormatUtil.FormatDouble (adblYield[i], 1, 3, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L356">				FormatUtil.FormatDouble (aComp[i].yieldFromPrice (</span>
+<span class="fc bfc" id="L364" title="All 2 branches covered.">		for (int i = 0; i &lt; aComp.length; ++i)</span>
+<span class="fc" id="L365">			System.out.println (&quot;\t| &quot; + aComp[i].name() + &quot; | &quot; +</span>
+<span class="fc" id="L366">				FormatUtil.FormatDouble (adblYield[i], 1, 3, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L367">				FormatUtil.FormatDouble (aComp[i].yieldFromPrice (</span>
 					valParams,
 					null,
 					null,
-<span class="fc" id="L360">					aComp[i].maturityDate().julian(),</span>
+<span class="fc" id="L371">					aComp[i].maturityDate().julian(),</span>
 					1.,
-<span class="fc" id="L362">					aComp[i].priceFromYield (</span>
+<span class="fc" id="L373">					aComp[i].priceFromYield (</span>
 						valParams,
 						null,
 						null,
-<span class="fc" id="L366">						gc.yield (aComp[i].maturityDate().julian())</span>
+<span class="fc" id="L377">						gc.yield (aComp[i].maturityDate().julian())</span>
 					)
 				), 1, 3, 100.) + &quot;% ||&quot;
 			);
 
-<span class="fc" id="L371">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
+<span class="fc" id="L382">		System.out.println (&quot;\t|-------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L373">		return gc;</span>
+<span class="fc" id="L384">		return gc;</span>
 	}
 
 	private static final void RVMeasures (
@@ -380,38 +391,38 @@ import org.drip.state.govvie.GovvieCurve;
 		final double dblCleanPrice)
 		throws Exception
 	{
-<span class="fc" id="L383">		JulianDate dtSettle = dtValue.addBusDays (</span>
+<span class="fc" id="L394">		JulianDate dtSettle = dtValue.addBusDays (</span>
 			3,
-<span class="fc" id="L385">			bond.currency()</span>
+<span class="fc" id="L396">			bond.currency()</span>
 		);
 
-<span class="fc" id="L388">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L399">		ValuationParams valParams = new ValuationParams (</span>
 			dtValue,
 			dtSettle,
-<span class="fc" id="L391">			bond.currency()</span>
+<span class="fc" id="L402">			bond.currency()</span>
 		);
 
-<span class="fc" id="L394">		System.out.println();</span>
+<span class="fc" id="L405">		System.out.println();</span>
 
-<span class="fc" id="L396">		System.out.println (&quot;\t|--------------------------------||&quot;);</span>
+<span class="fc" id="L407">		System.out.println (&quot;\t|--------------------------------||&quot;);</span>
 
-<span class="fc" id="L398">		System.out.println (&quot;\t| Trade Date       : &quot; + dtValue + &quot; ||&quot;);</span>
+<span class="fc" id="L409">		System.out.println (&quot;\t| Trade Date       : &quot; + dtValue + &quot; ||&quot;);</span>
 
-<span class="fc" id="L400">		System.out.println (&quot;\t| Cash Settle Date : &quot; + dtSettle + &quot; ||&quot;);</span>
+<span class="fc" id="L411">		System.out.println (&quot;\t| Cash Settle Date : &quot; + dtSettle + &quot; ||&quot;);</span>
 
-<span class="fc" id="L402">		System.out.println (&quot;\t|--------------------------------||&quot;);</span>
+<span class="fc" id="L413">		System.out.println (&quot;\t|--------------------------------||&quot;);</span>
 
-<span class="fc" id="L404">		System.out.println();</span>
+<span class="fc" id="L415">		System.out.println();</span>
 
-<span class="fc" id="L406">		double dblYTM = Double.NaN;</span>
-<span class="fc" id="L407">		double dblYTW = Double.NaN;</span>
-<span class="fc" id="L408">		double dblOASTW = Double.NaN;</span>
-<span class="fc" id="L409">		double dblWALTM = Double.NaN;</span>
-<span class="fc" id="L410">		double dblWALTW = Double.NaN;</span>
-<span class="fc" id="L411">		double dblZSpreadTW = Double.NaN;</span>
-<span class="fc" id="L412">		double dblModifiedDurationTW = Double.NaN;</span>
+<span class="fc" id="L417">		double dblYTM = Double.NaN;</span>
+<span class="fc" id="L418">		double dblYTW = Double.NaN;</span>
+<span class="fc" id="L419">		double dblOASTW = Double.NaN;</span>
+<span class="fc" id="L420">		double dblWALTM = Double.NaN;</span>
+<span class="fc" id="L421">		double dblWALTW = Double.NaN;</span>
+<span class="fc" id="L422">		double dblZSpreadTW = Double.NaN;</span>
+<span class="fc" id="L423">		double dblModifiedDurationTW = Double.NaN;</span>
 
-<span class="fc" id="L414">		WorkoutInfo wi = bond.exerciseYieldFromPrice (</span>
+<span class="fc" id="L425">		WorkoutInfo wi = bond.exerciseYieldFromPrice (</span>
 			valParams,
 			csqc,
 			null,
@@ -419,107 +430,107 @@ import org.drip.state.govvie.GovvieCurve;
 		);
 
 		try {
-<span class="fc" id="L422">			dblYTW = wi.yield();</span>
+<span class="fc" id="L433">			dblYTW = wi.yield();</span>
 
-<span class="fc" id="L424">			dblYTM = bond.yieldFromPrice (</span>
+<span class="fc" id="L435">			dblYTM = bond.yieldFromPrice (</span>
 				valParams,
 				csqc,
 				null,
-<span class="fc" id="L428">				bond.maturityDate().julian(),</span>
+<span class="fc" id="L439">				bond.maturityDate().julian(),</span>
 				1.,
 				dblCleanPrice
 			);
 
-<span class="fc" id="L433">			dblWALTW = bond.weightedAverageLife (</span>
+<span class="fc" id="L444">			dblWALTW = bond.weightedAverageLife (</span>
 				valParams,
 				csqc,
-<span class="fc" id="L436">				wi.date(),</span>
-<span class="fc" id="L437">				wi.factor()</span>
+<span class="fc" id="L447">				wi.date(),</span>
+<span class="fc" id="L448">				wi.factor()</span>
 			);
 
-<span class="fc" id="L440">			dblWALTM = bond.weightedAverageLife (</span>
+<span class="fc" id="L451">			dblWALTM = bond.weightedAverageLife (</span>
 				valParams,
 				csqc,
-<span class="fc" id="L443">				bond.maturityDate().julian(),</span>
+<span class="fc" id="L454">				bond.maturityDate().julian(),</span>
 				1.
 			);
 
-<span class="fc" id="L447">			dblZSpreadTW = bond.zSpreadFromYield (</span>
+<span class="fc" id="L458">			dblZSpreadTW = bond.zSpreadFromYield (</span>
 				valParams,
 				csqc,
 				null,
-<span class="fc" id="L451">				wi.date(),</span>
-<span class="fc" id="L452">				wi.factor(),</span>
-<span class="fc" id="L453">				wi.yield()</span>
+<span class="fc" id="L462">				wi.date(),</span>
+<span class="fc" id="L463">				wi.factor(),</span>
+<span class="fc" id="L464">				wi.yield()</span>
 			);
 
-<span class="fc" id="L456">			dblOASTW = bond.oasFromYield (</span>
+<span class="fc" id="L467">			dblOASTW = bond.oasFromYield (</span>
 				valParams,
 				csqc,
 				null,
-<span class="fc" id="L460">				wi.date(),</span>
-<span class="fc" id="L461">				wi.factor(),</span>
-<span class="fc" id="L462">				wi.yield()</span>
+<span class="fc" id="L471">				wi.date(),</span>
+<span class="fc" id="L472">				wi.factor(),</span>
+<span class="fc" id="L473">				wi.yield()</span>
 			);
 
-<span class="fc" id="L465">			dblModifiedDurationTW = bond.modifiedDurationFromPrice (</span>
+<span class="fc" id="L476">			dblModifiedDurationTW = bond.modifiedDurationFromPrice (</span>
 				valParams,
 				csqc,
 				null,
-<span class="fc" id="L469">				wi.date(),</span>
-<span class="fc" id="L470">				wi.factor(),</span>
+<span class="fc" id="L480">				wi.date(),</span>
+<span class="fc" id="L481">				wi.factor(),</span>
 				dblCleanPrice
 			);
-<span class="nc" id="L473">		} catch (Exception e) {</span>
+<span class="nc" id="L484">		} catch (Exception e) {</span>
 			// e.printStackTrace();
-<span class="fc" id="L475">		}</span>
+<span class="fc" id="L486">		}</span>
 
-<span class="fc" id="L477">		System.out.println (&quot;\t Bond Name                 =&gt; &quot; + bond.name());</span>
+<span class="fc" id="L488">		System.out.println (&quot;\t Bond Name                 =&gt; &quot; + bond.name());</span>
 
-<span class="fc" id="L479">		System.out.println (&quot;\t Effective Date            =&gt; &quot; + bond.effectiveDate());</span>
+<span class="fc" id="L490">		System.out.println (&quot;\t Effective Date            =&gt; &quot; + bond.effectiveDate());</span>
 
-<span class="fc" id="L481">		System.out.println (&quot;\t Maturity Date             =&gt; &quot; + bond.maturityDate());</span>
+<span class="fc" id="L492">		System.out.println (&quot;\t Maturity Date             =&gt; &quot; + bond.maturityDate());</span>
 
-<span class="fc" id="L483">		System.out.println (&quot;\t Exercise Date             =&gt; &quot; + new JulianDate (wi.date()));</span>
+<span class="fc" id="L494">		System.out.println (&quot;\t Exercise Date             =&gt; &quot; + new JulianDate (wi.date()));</span>
 
-<span class="fc" id="L485">		System.out.println (&quot;\t Price                     =&gt; &quot; + FormatUtil.FormatDouble (dblCleanPrice, 1, 5, 100.));</span>
+<span class="fc" id="L496">		System.out.println (&quot;\t Price                     =&gt; &quot; + FormatUtil.FormatDouble (dblCleanPrice, 1, 5, 100.));</span>
 
-<span class="fc" id="L487">		System.out.println (&quot;\t Bond Accrued              =&gt; &quot; + FormatUtil.FormatDouble (bond.accrued (dtSettle.julian(), csqc), 1, 4, 100.));</span>
+<span class="fc" id="L498">		System.out.println (&quot;\t Bond Accrued              =&gt; &quot; + FormatUtil.FormatDouble (bond.accrued (dtSettle.julian(), csqc), 1, 4, 100.));</span>
 
-<span class="fc" id="L489">		System.out.println (&quot;\t Bond YTW                  =&gt; &quot; + FormatUtil.FormatDouble (dblYTW, 1, 3, 100.) + &quot;%&quot;);</span>
+<span class="fc" id="L500">		System.out.println (&quot;\t Bond YTW                  =&gt; &quot; + FormatUtil.FormatDouble (dblYTW, 1, 3, 100.) + &quot;%&quot;);</span>
 
-<span class="fc" id="L491">		System.out.println (&quot;\t Bond YTM                  =&gt; &quot; + FormatUtil.FormatDouble (dblYTM, 1, 3, 100.) + &quot;%&quot;);</span>
+<span class="fc" id="L502">		System.out.println (&quot;\t Bond YTM                  =&gt; &quot; + FormatUtil.FormatDouble (dblYTM, 1, 3, 100.) + &quot;%&quot;);</span>
 
-<span class="fc" id="L493">		System.out.println (&quot;\t Bond WAL TW               =&gt; &quot; + FormatUtil.FormatDouble (dblWALTW, 1, 3, 1.));</span>
+<span class="fc" id="L504">		System.out.println (&quot;\t Bond WAL TW               =&gt; &quot; + FormatUtil.FormatDouble (dblWALTW, 1, 3, 1.));</span>
 
-<span class="fc" id="L495">		System.out.println (&quot;\t Bond WAL TM               =&gt; &quot; + FormatUtil.FormatDouble (dblWALTM, 1, 3, 1.));</span>
+<span class="fc" id="L506">		System.out.println (&quot;\t Bond WAL TM               =&gt; &quot; + FormatUtil.FormatDouble (dblWALTM, 1, 3, 1.));</span>
 
-<span class="fc" id="L497">		System.out.println (&quot;\t Bond Modified Duration TW =&gt; &quot; + FormatUtil.FormatDouble (dblModifiedDurationTW, 1, 4, 10000.));</span>
+<span class="fc" id="L508">		System.out.println (&quot;\t Bond Modified Duration TW =&gt; &quot; + FormatUtil.FormatDouble (dblModifiedDurationTW, 1, 4, 10000.));</span>
 
-<span class="fc" id="L499">		System.out.println (&quot;\t Bond Z Spread TW          =&gt; &quot; + FormatUtil.FormatDouble (dblZSpreadTW, 1, 1, 10000.));</span>
+<span class="fc" id="L510">		System.out.println (&quot;\t Bond Z Spread TW          =&gt; &quot; + FormatUtil.FormatDouble (dblZSpreadTW, 1, 1, 10000.));</span>
 
-<span class="fc" id="L501">		System.out.println (&quot;\t Bond OAS TW               =&gt; &quot; + FormatUtil.FormatDouble (dblOASTW, 1, 1, 10000.));</span>
-<span class="fc" id="L502">	}</span>
+<span class="fc" id="L512">		System.out.println (&quot;\t Bond OAS TW               =&gt; &quot; + FormatUtil.FormatDouble (dblOASTW, 1, 1, 10000.));</span>
+<span class="fc" id="L513">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L508">		EnvManager.InitEnv (</span>
+<span class="fc" id="L519">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L513">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L524">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.MARCH,
 			10
 		);
 
-<span class="fc" id="L519">		String strCurrency = &quot;USD&quot;;</span>
-<span class="fc" id="L520">		String strTreasuryCode = &quot;UST&quot;;</span>
+<span class="fc" id="L530">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L531">		String strTreasuryCode = &quot;UST&quot;;</span>
 
-<span class="fc" id="L522">		double[] adblTreasuryCoupon = new double[] {</span>
+<span class="fc" id="L533">		double[] adblTreasuryCoupon = new double[] {</span>
 			0.0100,
 			0.0100,
 			0.0125,
@@ -530,7 +541,7 @@ import org.drip.state.govvie.GovvieCurve;
 			0.0300
 		};
 
-<span class="fc" id="L533">		double[] adblTreasuryYield = new double[] {</span>
+<span class="fc" id="L544">		double[] adblTreasuryYield = new double[] {</span>
 			0.0083,	//  1Y
 			0.0122, //  2Y
 			0.0149, //  3Y
@@ -541,27 +552,27 @@ import org.drip.state.govvie.GovvieCurve;
 			0.0308  // 30Y
 		};
 
-<span class="fc" id="L544">		JulianDate dtEffective = DateUtil.CreateFromYMD (2016,  3,  4);</span>
-<span class="fc" id="L545">		JulianDate dtMaturity  = DateUtil.CreateFromYMD (2023,  6,  1);</span>
-<span class="fc" id="L546">		double dblCoupon = 0.05625;</span>
-<span class="fc" id="L547">		double dblCleanPrice = 0.9975000;</span>
-<span class="fc" id="L548">		int iFreq = 2;</span>
-<span class="fc" id="L549">		String strCUSIP = &quot;Shenzhen&quot;;</span>
-<span class="fc" id="L550">		String strDayCount = &quot;30/360&quot;;</span>
-<span class="fc" id="L551">		int[] aiExerciseDate = new int[] {</span>
-<span class="fc" id="L552">			DateUtil.CreateFromYMD (2018,  6,  1).julian(),</span>
-<span class="fc" id="L553">			DateUtil.CreateFromYMD (2019,  6,  1).julian(),</span>
-<span class="fc" id="L554">			DateUtil.CreateFromYMD (2020,  6,  1).julian(),</span>
-<span class="fc" id="L555">			DateUtil.CreateFromYMD (2021,  6,  1).julian(),</span>
+<span class="fc" id="L555">		JulianDate dtEffective = DateUtil.CreateFromYMD (2016,  3,  4);</span>
+<span class="fc" id="L556">		JulianDate dtMaturity  = DateUtil.CreateFromYMD (2023,  6,  1);</span>
+<span class="fc" id="L557">		double dblCoupon = 0.05625;</span>
+<span class="fc" id="L558">		double dblCleanPrice = 0.9975000;</span>
+<span class="fc" id="L559">		int iFreq = 2;</span>
+<span class="fc" id="L560">		String strCUSIP = &quot;Shenzhen&quot;;</span>
+<span class="fc" id="L561">		String strDayCount = &quot;30/360&quot;;</span>
+<span class="fc" id="L562">		int[] aiExerciseDate = new int[] {</span>
+<span class="fc" id="L563">			DateUtil.CreateFromYMD (2018,  6,  1).julian(),</span>
+<span class="fc" id="L564">			DateUtil.CreateFromYMD (2019,  6,  1).julian(),</span>
+<span class="fc" id="L565">			DateUtil.CreateFromYMD (2020,  6,  1).julian(),</span>
+<span class="fc" id="L566">			DateUtil.CreateFromYMD (2021,  6,  1).julian(),</span>
 		};
-<span class="fc" id="L557">		double[] adblExercisePrice = new double[] {</span>
+<span class="fc" id="L568">		double[] adblExercisePrice = new double[] {</span>
 			1.04219,
 			1.02813,
 			1.01406,
 			1.00000,
 		};
 
-<span class="fc" id="L564">		BondComponent bond = BondBuilder.CreateSimpleFixed (</span>
+<span class="fc" id="L575">		BondComponent bond = BondBuilder.CreateSimpleFixed (</span>
 			strCUSIP,
 			strCurrency,
 			&quot;&quot;,
@@ -574,7 +585,7 @@ import org.drip.state.govvie.GovvieCurve;
 			null
 		);
 
-<span class="fc" id="L577">		EmbeddedOptionSchedule eos = new EmbeddedOptionSchedule (</span>
+<span class="fc" id="L588">		EmbeddedOptionSchedule eos = new EmbeddedOptionSchedule (</span>
 			aiExerciseDate,
 			adblExercisePrice,
 			false,
@@ -585,18 +596,18 @@ import org.drip.state.govvie.GovvieCurve;
 			Double.NaN
 		);
 
-<span class="fc" id="L588">		bond.setEmbeddedCallSchedule (eos);</span>
+<span class="fc" id="L599">		bond.setEmbeddedCallSchedule (eos);</span>
 
-<span class="fc" id="L590">		RVMeasures (</span>
+<span class="fc" id="L601">		RVMeasures (</span>
 			bond,
 			dtSpot,
-<span class="fc" id="L593">			MarketParamsBuilder.Create (</span>
-<span class="fc" id="L594">				FundingCurve (</span>
+<span class="fc" id="L604">			MarketParamsBuilder.Create (</span>
+<span class="fc" id="L605">				FundingCurve (</span>
 					dtSpot,
 					strCurrency,
 					0.
 				),
-<span class="fc" id="L599">				GovvieCurve (</span>
+<span class="fc" id="L610">				GovvieCurve (</span>
 					dtSpot,
 					strTreasuryCode,
 					adblTreasuryCoupon,
@@ -611,7 +622,7 @@ import org.drip.state.govvie.GovvieCurve;
 			dblCleanPrice
 		);
 
-<span class="fc" id="L614">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L615">	}</span>
+<span class="fc" id="L625">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L626">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

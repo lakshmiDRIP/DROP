@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SylvesterInterpolantReconciler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.matrix</a> &gt; <span class="el_source">SylvesterInterpolantReconciler.java</span></div><h1>SylvesterInterpolantReconciler.java</h1><pre class="source lang-java linenums">
 package org.drip.sample.matrix;
 
+import java.util.Map;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.matrix.FrobeniusCovariance;
+import org.drip.function.matrix.Square;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.eigen.EigenOutput;
 import org.drip.numerical.eigen.QREigenComponentExtractor;
@@ -110,147 +115,231 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L113">public class SylvesterInterpolantReconciler</span>
+<span class="nc" id="L118">public class SylvesterInterpolantReconciler</span>
 {
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L120">		EnvManager.InitEnv (</span>
+<span class="nc" id="L125">		EnvManager.InitEnv (</span>
 			&quot;&quot;
 		);
 
-<span class="nc" id="L124">		double[][] a =</span>
+<span class="nc" id="L129">		double[][] a =</span>
 		{
 			{1, 3},
 			{4, 2},
 		};
 
-<span class="nc" id="L130">		QREigenComponentExtractor qrece = new QREigenComponentExtractor (</span>
+<span class="nc" id="L135">		QREigenComponentExtractor qrece = new QREigenComponentExtractor (</span>
 			50,
 			0.00001
 		);
 
-<span class="nc" id="L135">		EigenOutput eigenOutput = qrece.eigenize (</span>
+<span class="nc" id="L140">		EigenOutput eigenOutput = qrece.eigenize (</span>
 			a
 		);
 
-<span class="nc" id="L139">		double[] eigenValueArray = eigenOutput.eigenValueArray();</span>
+<span class="nc" id="L144">		double[] eigenValueArray = eigenOutput.eigenValueArray();</span>
 
-<span class="nc" id="L141">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
+<span class="nc" id="L146">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
 
-<span class="nc" id="L143">		NumberUtil.PrintMatrix (</span>
+<span class="nc" id="L148">		NumberUtil.PrintMatrix (</span>
 			&quot;\t| ORIGINAL MATRIX&quot;,
 			a
 		);
 
-<span class="nc" id="L148">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
+<span class="nc" id="L153">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
 
-<span class="nc" id="L150">		System.out.println();</span>
+<span class="nc" id="L155">		System.out.println();</span>
 
-<span class="nc" id="L152">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
+<span class="nc" id="L157">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
 
-<span class="nc" id="L154">		System.out.println (&quot;\t|              EIGEN VALUES               |&quot;);</span>
+<span class="nc" id="L159">		System.out.println (&quot;\t|              EIGEN VALUES               |&quot;);</span>
 
-<span class="nc" id="L156">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
+<span class="nc" id="L161">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
 
-<span class="nc" id="L158">		System.out.println (&quot;\t|  &quot; + eigenValueArray[0] + &quot;  |  &quot; + eigenValueArray[1]);</span>
+<span class="nc" id="L163">		System.out.println (&quot;\t|  &quot; + eigenValueArray[0] + &quot;  |  &quot; + eigenValueArray[1]);</span>
 
-<span class="nc" id="L160">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
+<span class="nc" id="L165">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
 
-<span class="nc" id="L162">		double[][] frobeniusCovariant0 = new double[2][2];</span>
-<span class="nc" id="L163">		double[][] frobeniusCovariant1 = new double[2][2];</span>
-<span class="nc" id="L164">		frobeniusCovariant0[0][0] = (a[0][0] - eigenValueArray[1]) / (eigenValueArray[0] - eigenValueArray[1]);</span>
-<span class="nc" id="L165">		frobeniusCovariant0[1][1] = (a[1][1] - eigenValueArray[1]) / (eigenValueArray[0] - eigenValueArray[1]);</span>
-<span class="nc" id="L166">		frobeniusCovariant0[0][1] = a[0][1] / (eigenValueArray[0] - eigenValueArray[1]);</span>
-<span class="nc" id="L167">		frobeniusCovariant0[1][0] = a[1][0] / (eigenValueArray[0] - eigenValueArray[1]);</span>
-<span class="nc" id="L168">		frobeniusCovariant1[0][0] = (a[0][0] - eigenValueArray[0]) / (eigenValueArray[1] - eigenValueArray[0]);</span>
-<span class="nc" id="L169">		frobeniusCovariant1[1][1] = (a[1][1] - eigenValueArray[0]) / (eigenValueArray[1] - eigenValueArray[0]);</span>
-<span class="nc" id="L170">		frobeniusCovariant1[0][1] = a[0][1] / (eigenValueArray[1] - eigenValueArray[0]);</span>
-<span class="nc" id="L171">		frobeniusCovariant1[1][0] = a[1][0] / (eigenValueArray[1] - eigenValueArray[0]);</span>
+<span class="nc" id="L167">		double[][] frobeniusCovariant0 = new double[2][2];</span>
+<span class="nc" id="L168">		double[][] frobeniusCovariant1 = new double[2][2];</span>
+<span class="nc" id="L169">		frobeniusCovariant0[0][0] = (a[0][0] - eigenValueArray[1]) / (eigenValueArray[0] - eigenValueArray[1]);</span>
+<span class="nc" id="L170">		frobeniusCovariant0[1][1] = (a[1][1] - eigenValueArray[1]) / (eigenValueArray[0] - eigenValueArray[1]);</span>
+<span class="nc" id="L171">		frobeniusCovariant0[0][1] = a[0][1] / (eigenValueArray[0] - eigenValueArray[1]);</span>
+<span class="nc" id="L172">		frobeniusCovariant0[1][0] = a[1][0] / (eigenValueArray[0] - eigenValueArray[1]);</span>
+<span class="nc" id="L173">		frobeniusCovariant1[0][0] = (a[0][0] - eigenValueArray[0]) / (eigenValueArray[1] - eigenValueArray[0]);</span>
+<span class="nc" id="L174">		frobeniusCovariant1[1][1] = (a[1][1] - eigenValueArray[0]) / (eigenValueArray[1] - eigenValueArray[0]);</span>
+<span class="nc" id="L175">		frobeniusCovariant1[0][1] = a[0][1] / (eigenValueArray[1] - eigenValueArray[0]);</span>
+<span class="nc" id="L176">		frobeniusCovariant1[1][0] = a[1][0] / (eigenValueArray[1] - eigenValueArray[0]);</span>
 
-<span class="nc" id="L173">		System.out.println();</span>
+<span class="nc" id="L178">		System.out.println();</span>
 
-<span class="nc" id="L175">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
+<span class="nc" id="L180">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
 
-<span class="nc" id="L177">		System.out.println (&quot;\t|          SYLVESTER RECONCILER           |&quot;);</span>
+<span class="nc" id="L182">		System.out.println (&quot;\t|          SYLVESTER RECONCILER           |&quot;);</span>
 
-<span class="nc" id="L179">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
+<span class="nc" id="L184">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
 
-<span class="nc" id="L181">		NumberUtil.PrintMatrix (</span>
+<span class="nc" id="L186">		NumberUtil.PrintMatrix (</span>
 			&quot;\t| FROBENIUS COVARIANT 0&quot;,
 			frobeniusCovariant0
 		);
 
-<span class="nc" id="L186">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
+<span class="nc" id="L191">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
 
-<span class="nc" id="L188">		NumberUtil.PrintMatrix (</span>
+<span class="nc" id="L193">		NumberUtil.PrintMatrix (</span>
 			&quot;\t| FROBENIUS COVARIANT 1&quot;,
 			frobeniusCovariant1
 		);
 
-<span class="nc" id="L193">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
+<span class="nc" id="L198">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
 
-<span class="nc" id="L195">		double[][] recoveredA = Matrix.Scale2D (</span>
+<span class="nc" id="L200">		double[][] recoveredA = Matrix.Scale2D (</span>
 			frobeniusCovariant0,
 			eigenValueArray[0]
 		);
 
-<span class="nc" id="L200">		double[][] recoveredA1 = Matrix.Scale2D (</span>
+<span class="nc" id="L205">		double[][] recoveredA1 = Matrix.Scale2D (</span>
 			frobeniusCovariant1,
 			eigenValueArray[1]
 		);
 
-<span class="nc" id="L205">		recoveredA[0][0] += recoveredA1[0][0];</span>
-<span class="nc" id="L206">		recoveredA[0][1] += recoveredA1[0][1];</span>
-<span class="nc" id="L207">		recoveredA[1][0] += recoveredA1[1][0];</span>
-<span class="nc" id="L208">		recoveredA[1][1] += recoveredA1[1][1];</span>
+<span class="nc" id="L210">		recoveredA[0][0] += recoveredA1[0][0];</span>
+<span class="nc" id="L211">		recoveredA[0][1] += recoveredA1[0][1];</span>
+<span class="nc" id="L212">		recoveredA[1][0] += recoveredA1[1][0];</span>
+<span class="nc" id="L213">		recoveredA[1][1] += recoveredA1[1][1];</span>
 
-<span class="nc" id="L210">		System.out.println (&quot;\t|------------------------------------------|&quot;);</span>
+<span class="nc" id="L215">		System.out.println (&quot;\t|------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L212">		NumberUtil.PrintMatrix (</span>
+<span class="nc" id="L217">		NumberUtil.PrintMatrix (</span>
 			&quot;\t| RECOVERED MATRIX&quot;,
 			recoveredA
 		);
 
-<span class="nc" id="L217">		System.out.println (&quot;\t|------------------------------------------|&quot;);</span>
+<span class="nc" id="L222">		System.out.println (&quot;\t|------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L219">		double[][] inverseA = Matrix.Scale2D (</span>
+<span class="nc" id="L224">		double[][] inverseA = Matrix.Scale2D (</span>
 			frobeniusCovariant0,
 			1. / eigenValueArray[0]
 		);
 
-<span class="nc" id="L224">		double[][] inverseA1 = Matrix.Scale2D (</span>
+<span class="nc" id="L229">		double[][] inverseA1 = Matrix.Scale2D (</span>
 			frobeniusCovariant1,
 			1. / eigenValueArray[1]
 		);
 
-<span class="nc" id="L229">		inverseA[0][0] += inverseA1[0][0];</span>
-<span class="nc" id="L230">		inverseA[0][1] += inverseA1[0][1];</span>
-<span class="nc" id="L231">		inverseA[1][0] += inverseA1[1][0];</span>
-<span class="nc" id="L232">		inverseA[1][1] += inverseA1[1][1];</span>
+<span class="nc" id="L234">		inverseA[0][0] += inverseA1[0][0];</span>
+<span class="nc" id="L235">		inverseA[0][1] += inverseA1[0][1];</span>
+<span class="nc" id="L236">		inverseA[1][0] += inverseA1[1][0];</span>
+<span class="nc" id="L237">		inverseA[1][1] += inverseA1[1][1];</span>
 
-<span class="nc" id="L234">		System.out.println (&quot;\t|----------------------------------------|&quot;);</span>
+<span class="nc" id="L239">		System.out.println (&quot;\t|----------------------------------------|&quot;);</span>
 
-<span class="nc" id="L236">		NumberUtil.PrintMatrix (</span>
+<span class="nc" id="L241">		NumberUtil.PrintMatrix (</span>
 			&quot;\t| INVERSE MATRIX&quot;,
 			inverseA
 		);
 
-<span class="nc" id="L241">		System.out.println (&quot;\t|----------------------------------------|&quot;);</span>
+<span class="nc" id="L246">		System.out.println (&quot;\t|----------------------------------------|&quot;);</span>
 
-<span class="nc" id="L243">		NumberUtil.PrintMatrix (</span>
+<span class="nc" id="L248">		NumberUtil.PrintMatrix (</span>
 			&quot;\t| INVERSE MATRIX&quot;,
-<span class="nc" id="L245">			Matrix.Invert (</span>
+<span class="nc" id="L250">			Matrix.Invert (</span>
 				a,
 				&quot;&quot;
 			)
 		);
 
-<span class="nc" id="L251">		System.out.println (&quot;\t|----------------------------------------|&quot;);</span>
+<span class="nc" id="L256">		System.out.println (&quot;\t|----------------------------------------|&quot;);</span>
 
-<span class="nc" id="L253">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L254">	}</span>
+<span class="nc" id="L258">		Square aSquare = new Square (</span>
+			a
+		);
+
+<span class="nc" id="L262">		FrobeniusCovariance frobeniusCovariance = aSquare.frobeniusCovariance();</span>
+
+<span class="nc" id="L264">		Map&lt;Double, Square&gt; componentMap = frobeniusCovariance.componentMap();</span>
+
+<span class="nc" id="L266">		Object[] eigenValueKey = componentMap.keySet().toArray();</span>
+
+<span class="nc" id="L268">		frobeniusCovariant0 = componentMap.get (</span>
+			eigenValueKey[0]
+<span class="nc" id="L270">		).grid();</span>
+
+<span class="nc" id="L272">		frobeniusCovariant1 = frobeniusCovariance.componentMap().get (</span>
+			eigenValueKey[1]
+<span class="nc" id="L274">		).grid();</span>
+
+<span class="nc" id="L276">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
+
+<span class="nc" id="L278">		System.out.println (&quot;\t|          SYLVESTER RECONCILER           |&quot;);</span>
+
+<span class="nc" id="L280">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
+
+<span class="nc" id="L282">		NumberUtil.PrintMatrix (</span>
+			&quot;\t| FROBENIUS COVARIANT 0&quot;,
+			frobeniusCovariant0
+		);
+
+<span class="nc" id="L287">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
+
+<span class="nc" id="L289">		NumberUtil.PrintMatrix (</span>
+			&quot;\t| FROBENIUS COVARIANT 1&quot;,
+			frobeniusCovariant1
+		);
+
+<span class="nc" id="L294">		System.out.println (&quot;\t|-----------------------------------------|&quot;);</span>
+
+<span class="nc" id="L296">		recoveredA = aSquare.evaluate (</span>
+			new R1ToR1 (
+				null
+			)
+<span class="nc" id="L300">			{</span>
+				@Override public double evaluate (
+					final double x)
+					throws Exception
+				{
+<span class="nc" id="L305">					return x;</span>
+				}
+			}
+		);
+
+<span class="nc" id="L310">		System.out.println (&quot;\t|----------------------------------------|&quot;);</span>
+
+<span class="nc" id="L312">		NumberUtil.PrintMatrix (</span>
+			&quot;\t| RECOVERED MATRIX&quot;,
+			recoveredA
+		);
+
+<span class="nc" id="L317">		System.out.println (&quot;\t|----------------------------------------|&quot;);</span>
+
+<span class="nc" id="L319">		inverseA = aSquare.evaluate (</span>
+			new R1ToR1 (
+				null
+			)
+<span class="nc" id="L323">			{</span>
+				@Override public double evaluate (
+					final double x)
+					throws Exception
+				{
+<span class="nc" id="L328">					return 1. / x;</span>
+				}
+			}
+		);
+
+<span class="nc" id="L333">		System.out.println (&quot;\t|----------------------------------------|&quot;);</span>
+
+<span class="nc" id="L335">		NumberUtil.PrintMatrix (</span>
+			&quot;\t| INVERSE MATRIX&quot;,
+			inverseA
+		);
+
+<span class="nc" id="L340">		System.out.println (&quot;\t|----------------------------------------|&quot;);</span>
+
+<span class="nc" id="L342">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L343">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
