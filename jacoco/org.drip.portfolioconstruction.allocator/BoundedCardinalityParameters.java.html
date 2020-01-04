@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BoundedCardinalityParameters.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.portfolioconstruction.allocator</a> &gt; <span class="el_source">BoundedCardinalityParameters.java</span></div><h1>BoundedCardinalityParameters.java</h1><pre class="source lang-java linenums">
+package org.drip.portfolioconstruction.allocator;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;BoundedCardinalityParameters&lt;/i&gt; holds the Parameters needed to build the Portfolio with Bounds on the
+ * 	Underlying Assets as well as Portfolio Level Holdings Cardinality Constraint. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ * 			Chang, T., J., N. Meade, J. E. Beasley, and Y. M. Sharaiha (2000): Heuristics for Cardinality
+ * 				Constrained Portfolio Optimization &lt;i&gt;Computers and Operations Research&lt;/i&gt; &lt;b&gt;27 (13)&lt;/b&gt;
+ * 				1271-1302
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Chvatal, V. (1973): Edmonds Polytopes in a Hierarchy of Combinatorial Problems &lt;i&gt;Discrete
+ * 				Mathematics&lt;/i&gt; &lt;b&gt;4 (4)&lt;/b&gt; 305-337
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Jobst, N. J., M. D. Horniman, C. A. Lucas, and G. Mitra (2001): Computational Aspects of
+ * 				Alternative Portfolio Selection Models in the Presence of Discrete Asset Choice Constraints
+ * 				&lt;i&gt;Quantitative Finance&lt;/i&gt; &lt;b&gt;1 (5)&lt;/b&gt; 1-13
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Letchford, A. N. and A. Lodi (2002): Strengthening Chvatal-Gomory Cuts and Gomory Fractional Cuts
+ * 				&lt;i&gt;Operations Research Letters&lt;/i&gt; &lt;b&gt;30 (2)&lt;/b&gt; 74-82
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Tadonki, C., and J. P. Vial (2004): Portfolio Selection with Cardinality and Bound Constraints
+ * 				https://www.cri.ensmp.fr/~tadonki/PaperForWeb/Tadonki_PF.pdf
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/README.md&quot;&gt;Portfolio Construction under Allocation Constraints&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator/README.md&quot;&gt;MVO Based Portfolio Allocation Construction&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class BoundedCardinalityParameters
+	extends org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+{
+<span class="nc" id="L122">	private int _cardinalityUpperBound = -1;</span>
+
+	/**
+	 * BoundedCardinalityParameters Constructor
+	 * 
+	 * @param assetIDArray Array of Assets ID
+	 * @param customRiskUtilitySettings The Quadratic Custom Risk Utility Settings
+	 * @param equalityConstraintSettings The Portfolio Equality Constraint Settings
+	 * @param cardinalityUpperBound The Cardinality Upper Bound
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public BoundedCardinalityParameters (
+		final java.lang.String[] assetIDArray,
+		final org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings customRiskUtilitySettings,
+		final org.drip.portfolioconstruction.allocator.EqualityConstraintSettings equalityConstraintSettings,
+		final int cardinalityUpperBound)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L142">		super (</span>
+			assetIDArray,
+			customRiskUtilitySettings,
+			equalityConstraintSettings
+		);
+
+<span class="nc bnc" id="L148" title="All 2 branches missed.">		if (0 &gt;= (_cardinalityUpperBound = cardinalityUpperBound))</span>
+		{
+<span class="nc" id="L150">			throw new java.lang.Exception (</span>
+				&quot;BoundedCardinalityParameters Constructor =&gt; Invalid Inputs&quot;
+			);
+		}
+<span class="nc" id="L154">	}</span>
+
+	/**
+	 * Retrieve the Cardinality Upper Bound
+	 * 
+	 * @return The Cardinality Upper Bound
+	 */
+
+	public int cardinalityUpperBound()
+	{
+<span class="nc" id="L164">		return _cardinalityUpperBound;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
