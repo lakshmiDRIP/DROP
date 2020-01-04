@@ -214,7 +214,7 @@ public class CardinalityConstrainedMeanVarianceOptimizer
 		return null;
 	}
 
-	private int augmentPruneList (
+	private int firstPassPruneList (
 		final org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio,
 		final org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
 			parentBoundedPortfolioConstructionParameters,
@@ -258,6 +258,61 @@ public class CardinalityConstrainedMeanVarianceOptimizer
 		return pruneCount;
 	}
 
+	private boolean secondPassPruneList (
+		final org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio,
+		final org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+			parentBoundedPortfolioConstructionParameters,
+		final java.util.Set<java.lang.String> pruneAssetIDSet,
+		int pruneCount)
+	{
+		java.util.Map<java.lang.Double, java.lang.String> boundsDepartureMap =
+			new java.util.TreeMap<java.lang.Double, java.lang.String>();
+
+		org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray =
+			optimalPortfolio.assetComponentArray();
+
+		for (int assetIndex = 0;
+			assetIndex < assetComponentArray.length;
+			++assetIndex)
+		{
+			java.lang.String assetID = assetComponentArray[assetIndex].id();
+
+			try
+			{
+				boundsDepartureMap.put (
+					assetComponentArray[assetIndex].amount() -
+					parentBoundedPortfolioConstructionParameters.lowerBound (
+						assetID
+					),
+					assetID
+				);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return false;
+			}
+		}
+
+		for (java.util.Map.Entry<java.lang.Double, java.lang.String> boundsDepartureEntry :
+			boundsDepartureMap.entrySet())
+		{
+			if (0 == pruneCount)
+			{
+				break;
+			}
+
+			pruneAssetIDSet.add (
+				boundsDepartureEntry.getValue()
+			);
+
+			--pruneCount;
+		}
+
+		return true;
+	}
+
 	/**
 	 * CardinalityConstrainedMeanVarianceOptimizer Constructor
 	 * 
@@ -295,6 +350,14 @@ public class CardinalityConstrainedMeanVarianceOptimizer
 
 		java.lang.String[] assetIDArray = boundedCardinalityParameters.assetIDArray();
 
+		if (cardinalityUpperBound >= assetIDArray.length)
+		{
+			return super.allocate (
+				portfolioConstructionParameters,
+				assetUniverseStatisticalProperties
+			);
+		}
+
 		java.util.Set<java.lang.String> pruneAssetIDSet = new java.util.HashSet<java.lang.String>();
 
 		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
@@ -321,7 +384,7 @@ public class CardinalityConstrainedMeanVarianceOptimizer
 			return optimizationOutput;
 		}
 
-		while (0 != augmentPruneList (
+		while (0 != firstPassPruneList (
 			optimalPortfolio,
 			boundedCardinalityParameters,
 			pruneAssetIDSet
@@ -349,6 +412,30 @@ public class CardinalityConstrainedMeanVarianceOptimizer
 		{
 			return optimizationOutput;
 		}
+
+		secondPassPruneList (
+			optimalPortfolio,
+			boundedCardinalityParameters,
+			pruneAssetIDSet,
+			optimalPortfolio.cardinality() - cardinalityUpperBound
+		);
+
+		workingPortfolioConstructionParameters = workingPortfolioConstructionParameters (
+			assetIDArray,
+			boundedCardinalityParameters,
+			pruneAssetIDSet
+		);
+
+		optimizationOutput = super.allocate (
+			workingPortfolioConstructionParameters,
+			assetUniverseStatisticalProperties
+		);
+
+		optimalPortfolio = optimizationOutput.optimalPortfolio();
+
+		PrintPortfolio (
+			optimalPortfolio
+		);
 
 		return optimizationOutput;
 	}
