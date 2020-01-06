@@ -75,9 +75,9 @@
  	* *Special Function* => Special Function and their Analysis.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aspecialfunction) }
- * [***Model Validation Library***](https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md) => Functionality for Statistical Hypotheses Validation and Testing.
+ * [***Model Validation Library***](https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md) => Functionality for Statistical Hypotheses Validation and Testing.
 	* *Validation* => Statistical Hypotheses Evidence Processing and Testing.
-		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md) | 
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/README.md) | 
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Avalidation) }
  * [***Numerical Analysis***](https://github.com/lakshmiDRIP/DROP/blob/master/NumericalAnalysisLibrary.md) => Functionality for Numerical Methods - including R<sup>x</sup> Solvers, Linear Algebra, and Statistical Measure Distributions.
  	* *Function* => Implementation and Solvers for a Suite of R<sup>x</sup> To R<sup>1</sup> Functions.
