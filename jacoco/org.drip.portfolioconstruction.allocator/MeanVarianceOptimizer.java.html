@@ -95,9 +95,9 @@ package org.drip.portfolioconstruction.allocator;
 <span class="fc" id="L95">public abstract class MeanVarianceOptimizer</span>
 {
 
-	protected abstract org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+	protected abstract org.drip.portfolioconstruction.allocator.HoldingsAllocationControl
 		constrainedPCP (
-			final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+			final org.drip.portfolioconstruction.allocator.HoldingsAllocationControl
 				designPortfolioConstructionParameters,
 			final double returnsConstraint);
 
@@ -110,9 +110,9 @@ package org.drip.portfolioconstruction.allocator;
 	 * @return The Long-Only Maximum Returns Portfolio
 	 */
 
-	public abstract org.drip.portfolioconstruction.allocator.OptimizationOutput
+	public abstract org.drip.portfolioconstruction.allocator.HoldingsAllocation
 		longOnlyMaximumReturnsAllocate (
-			final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+			final org.drip.portfolioconstruction.allocator.HoldingsAllocationControl
 				portfolioConstructionParameters,
 			final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
 				assetUniverseStatisticalProperties);
@@ -126,9 +126,9 @@ package org.drip.portfolioconstruction.allocator;
 	 * @return The Global Minimum Variance Portfolio
 	 */
 
-	public abstract org.drip.portfolioconstruction.allocator.OptimizationOutput
+	public abstract org.drip.portfolioconstruction.allocator.HoldingsAllocation
 		globalMinimumVarianceAllocate (
-			final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+			final org.drip.portfolioconstruction.allocator.HoldingsAllocationControl
 				portfolioConstructionParameters,
 			final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
 				assetUniverseStatisticalProperties);
@@ -142,8 +142,8 @@ package org.drip.portfolioconstruction.allocator;
 	 * @return The Optimal Portfolio
 	 */
 
-	public abstract org.drip.portfolioconstruction.allocator.OptimizationOutput allocate (
-		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+	public abstract org.drip.portfolioconstruction.allocator.HoldingsAllocation allocate (
+		final org.drip.portfolioconstruction.allocator.HoldingsAllocationControl
 			portfolioConstructionParameters,
 		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
 			assetUniverseStatisticalProperties);
@@ -159,7 +159,7 @@ package org.drip.portfolioconstruction.allocator;
 	 */
 
 	public org.drip.portfolioconstruction.mpt.MarkovitzBullet efficientFrontier (
-		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+		final org.drip.portfolioconstruction.allocator.HoldingsAllocationControl
 			portfolioConstructionParameters,
 		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
 			assetUniverseStatisticalProperties,
@@ -170,7 +170,7 @@ package org.drip.portfolioconstruction.allocator;
 <span class="nc" id="L170">			return null;</span>
 		}
 
-<span class="fc" id="L173">		org.drip.portfolioconstruction.allocator.OptimizationOutput globalMinimumVarianceOptimizationOutput =</span>
+<span class="fc" id="L173">		org.drip.portfolioconstruction.allocator.HoldingsAllocation globalMinimumVarianceOptimizationOutput =</span>
 <span class="fc" id="L174">			globalMinimumVarianceAllocate (</span>
 				portfolioConstructionParameters,
 				assetUniverseStatisticalProperties
@@ -181,7 +181,7 @@ package org.drip.portfolioconstruction.allocator;
 <span class="nc" id="L181">			return null;</span>
 		}
 
-<span class="fc" id="L184">		org.drip.portfolioconstruction.allocator.OptimizationOutput longOnlyMaximumReturnsOptimizationOutput</span>
+<span class="fc" id="L184">		org.drip.portfolioconstruction.allocator.HoldingsAllocation longOnlyMaximumReturnsOptimizationOutput</span>
 <span class="fc" id="L185">			= longOnlyMaximumReturnsAllocate (</span>
 				portfolioConstructionParameters,
 				assetUniverseStatisticalProperties

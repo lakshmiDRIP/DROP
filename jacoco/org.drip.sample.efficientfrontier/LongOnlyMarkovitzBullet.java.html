@@ -99,7 +99,7 @@ import org.drip.service.env.EnvManager;
 {
 
 	private static void DisplayPortfolioMetrics (
-		final OptimizationOutput optimizationOutput)
+		final HoldingsAllocation optimizationOutput)
 		throws Exception
 	{
 <span class="fc" id="L105">		AssetComponent[] globalMinimumAssetComponentArray =</span>
@@ -279,8 +279,8 @@ import org.drip.service.env.EnvManager;
 
 <span class="fc" id="L280">		System.out.println (&quot;\t|--------------------------------------------||\n\n&quot;);</span>
 
-<span class="fc" id="L282">		BoundedPortfolioConstructionParameters boundedPortfolioConstructionParameters =</span>
-			new BoundedPortfolioConstructionParameters (
+<span class="fc" id="L282">		BoundedHoldingsAllocationControl boundedPortfolioConstructionParameters =</span>
+			new BoundedHoldingsAllocationControl (
 				assetNameArray,
 <span class="fc" id="L285">				CustomRiskUtilitySettings.VarianceMinimizer(),</span>
 				new EqualityConstraintSettings (
@@ -340,7 +340,7 @@ import org.drip.service.env.EnvManager;
 
 <span class="fc" id="L341">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||\n\n\n&quot;);</span>
 
-<span class="fc" id="L343">		TreeMap&lt;Double, OptimizationOutput&gt; frontierPortfolioMap = markovitzBullet.optimalPortfolioMap();</span>
+<span class="fc" id="L343">		TreeMap&lt;Double, HoldingsAllocation&gt; frontierPortfolioMap = markovitzBullet.optimalPortfolioMap();</span>
 
 <span class="fc" id="L345">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
 
@@ -352,7 +352,7 @@ import org.drip.service.env.EnvManager;
 
 <span class="fc" id="L353">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L355" title="All 2 branches covered.">		for (Map.Entry&lt;Double, OptimizationOutput&gt; me : frontierPortfolioMap.entrySet())</span>
+<span class="fc bfc" id="L355" title="All 2 branches covered.">		for (Map.Entry&lt;Double, HoldingsAllocation&gt; me : frontierPortfolioMap.entrySet())</span>
 		{
 <span class="fc" id="L357">			DisplayPortfolioMetrics (</span>
 <span class="fc" id="L358">				me.getValue()</span>

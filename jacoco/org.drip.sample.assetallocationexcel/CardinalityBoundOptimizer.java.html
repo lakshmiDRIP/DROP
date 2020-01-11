@@ -6,6 +6,8 @@ import org.drip.function.rdtor1solver.InteriorPointBarrierControl;
 import org.drip.measure.statistics.MultivariateMoments;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.portfolioconstruction.allocator.*;
+import org.drip.portfolioconstruction.cardinality.UpperBoundHoldingsAllocationControl;
+import org.drip.portfolioconstruction.cardinality.TadonkiVialMeanVarianceOptimizer;
 import org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties;
 import org.drip.service.env.EnvManager;
 
@@ -125,20 +127,20 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L128">public class CardinalityBoundOptimizer</span>
+<span class="nc" id="L130">public class CardinalityBoundOptimizer</span>
 {
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L135">		EnvManager.InitEnv (</span>
+<span class="nc" id="L137">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="nc" id="L140">		int cardinalityUpperBound = 4;</span>
-<span class="nc" id="L141">		String[] assetIDArray = new String[]</span>
+<span class="nc" id="L142">		int cardinalityUpperBound = 4;</span>
+<span class="nc" id="L143">		String[] assetIDArray = new String[]</span>
 		{
 			&quot;TOK&quot;,
 			&quot;EWJ&quot;,
@@ -148,7 +150,7 @@ import org.drip.service.env.EnvManager;
 			&quot;GSG&quot;,
 			&quot;BWX&quot;
 		};
-<span class="nc" id="L151">		double[] assetHoldingsLowerBoundArray = new double[]</span>
+<span class="nc" id="L153">		double[] assetHoldingsLowerBoundArray = new double[]</span>
 		{
 			0.05,
 			0.05,
@@ -158,7 +160,7 @@ import org.drip.service.env.EnvManager;
 			0.05,
 			0.03
 		};
-<span class="nc" id="L161">		double[] assetHoldingsUpperBoundArray = new double[]</span>
+<span class="nc" id="L163">		double[] assetHoldingsUpperBoundArray = new double[]</span>
 		{
 			0.40,
 			0.40,
@@ -168,7 +170,7 @@ import org.drip.service.env.EnvManager;
 			0.15,
 			0.50
 		};
-<span class="nc" id="L171">		double[] expectedAssetReturnsArray = new double[]</span>
+<span class="nc" id="L173">		double[] expectedAssetReturnsArray = new double[]</span>
 		{
 			0.008355,
 			0.007207,
@@ -178,8 +180,8 @@ import org.drip.service.env.EnvManager;
 			0.006821,
 			0.001570
 		};
-<span class="nc" id="L181">		double portfolioDesignReturn = 0.005497;</span>
-<span class="nc" id="L182">		double[][] assetReturnsCovarianceMatrix = new double[][]</span>
+<span class="nc" id="L183">		double portfolioDesignReturn = 0.005497;</span>
+<span class="nc" id="L184">		double[][] assetReturnsCovarianceMatrix = new double[][]</span>
 		{
 			{0.002733, 0.002083, 0.001593, 0.000488, 0.001172, 0.002312, 0.000710},
 			{0.002083, 0.002768, 0.001302, 0.000457, 0.001105, 0.001647, 0.000563},
@@ -190,38 +192,38 @@ import org.drip.service.env.EnvManager;
 			{0.000710, 0.000563, 0.000519, 0.000370, 0.000661, 0.000749, 0.000703}
 		};
 
-<span class="nc" id="L193">		AssetUniverseStatisticalProperties assetUniverseStatisticalProperties =</span>
-<span class="nc" id="L194">			AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
-<span class="nc" id="L195">				MultivariateMoments.Standard (</span>
+<span class="nc" id="L195">		AssetUniverseStatisticalProperties assetUniverseStatisticalProperties =</span>
+<span class="nc" id="L196">			AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
+<span class="nc" id="L197">				MultivariateMoments.Standard (</span>
 					assetIDArray,
 					expectedAssetReturnsArray,
 					assetReturnsCovarianceMatrix
 				)
 			);
 
-<span class="nc" id="L202">		System.out.println (&quot;\t|-------------------||&quot;);</span>
+<span class="nc" id="L204">		System.out.println (&quot;\t|-------------------||&quot;);</span>
 
-<span class="nc" id="L204">		System.out.println (&quot;\t|   ASSET BOUNDS    ||&quot;);</span>
+<span class="nc" id="L206">		System.out.println (&quot;\t|   ASSET BOUNDS    ||&quot;);</span>
 
-<span class="nc" id="L206">		System.out.println (&quot;\t|-------------------||&quot;);</span>
+<span class="nc" id="L208">		System.out.println (&quot;\t|-------------------||&quot;);</span>
 
-<span class="nc" id="L208">		for (int assetIndex = 0;</span>
-<span class="nc bnc" id="L209" title="All 2 branches missed.">			assetIndex &lt; assetIDArray.length;</span>
-<span class="nc" id="L210">			++assetIndex)</span>
+<span class="nc" id="L210">		for (int assetIndex = 0;</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">			assetIndex &lt; assetIDArray.length;</span>
+<span class="nc" id="L212">			++assetIndex)</span>
 		{
-<span class="nc" id="L212">			System.out.println (</span>
+<span class="nc" id="L214">			System.out.println (</span>
 				&quot;\t| &quot; + assetIDArray[assetIndex] + &quot; | &quot; +
-<span class="nc" id="L214">				FormatUtil.FormatDouble (assetHoldingsLowerBoundArray[assetIndex], 2, 0, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L215">				FormatUtil.FormatDouble (assetHoldingsUpperBoundArray[assetIndex], 2, 0, 100.) + &quot;% ||&quot;</span>
+<span class="nc" id="L216">				FormatUtil.FormatDouble (assetHoldingsLowerBoundArray[assetIndex], 2, 0, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L217">				FormatUtil.FormatDouble (assetHoldingsUpperBoundArray[assetIndex], 2, 0, 100.) + &quot;% ||&quot;</span>
 			);
 		}
 
-<span class="nc" id="L219">		System.out.println (&quot;\t|-------------------||&quot;);</span>
+<span class="nc" id="L221">		System.out.println (&quot;\t|-------------------||&quot;);</span>
 
-<span class="nc" id="L221">		BoundedCardinalityParameters boundedCardinalityParameters =</span>
-			new BoundedCardinalityParameters (
+<span class="nc" id="L223">		UpperBoundHoldingsAllocationControl boundedCardinalityParameters =</span>
+			new UpperBoundHoldingsAllocationControl (
 				assetIDArray,
-<span class="nc" id="L224">				CustomRiskUtilitySettings.VarianceMinimizer(),</span>
+<span class="nc" id="L226">				CustomRiskUtilitySettings.VarianceMinimizer(),</span>
 				new EqualityConstraintSettings (
 					EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT |
 						EqualityConstraintSettings.RETURNS_CONSTRAINT,
@@ -230,28 +232,28 @@ import org.drip.service.env.EnvManager;
 				cardinalityUpperBound
 			);
 
-<span class="nc" id="L233">		for (int assetIndex = 0;</span>
-<span class="nc bnc" id="L234" title="All 2 branches missed.">			assetIndex &lt; assetIDArray.length;</span>
-<span class="nc" id="L235">			++assetIndex)</span>
+<span class="nc" id="L235">		for (int assetIndex = 0;</span>
+<span class="nc bnc" id="L236" title="All 2 branches missed.">			assetIndex &lt; assetIDArray.length;</span>
+<span class="nc" id="L237">			++assetIndex)</span>
 		{
-<span class="nc" id="L237">			boundedCardinalityParameters.addBound (</span>
+<span class="nc" id="L239">			boundedCardinalityParameters.addBound (</span>
 				assetIDArray[assetIndex],
 				assetHoldingsLowerBoundArray[assetIndex],
 				assetHoldingsUpperBoundArray[assetIndex]
 			);
 		}
 
-<span class="nc" id="L244">		new CardinalityConstrainedMeanVarianceOptimizer (</span>
-<span class="nc" id="L245">			InteriorPointBarrierControl.Standard(),</span>
-<span class="nc" id="L246">			LineStepEvolutionControl.NocedalWrightStrongWolfe (</span>
+<span class="nc" id="L246">		new TadonkiVialMeanVarianceOptimizer (</span>
+<span class="nc" id="L247">			InteriorPointBarrierControl.Standard(),</span>
+<span class="nc" id="L248">			LineStepEvolutionControl.NocedalWrightStrongWolfe (</span>
 				false
 			)
-<span class="nc" id="L249">		).allocate (</span>
+<span class="nc" id="L251">		).allocate (</span>
 			boundedCardinalityParameters,
 			assetUniverseStatisticalProperties
 		);
 
-<span class="nc" id="L254">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L255">	}</span>
+<span class="nc" id="L256">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L257">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
