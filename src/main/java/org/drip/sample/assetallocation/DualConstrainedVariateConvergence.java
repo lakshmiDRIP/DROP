@@ -266,8 +266,8 @@ public class DualConstrainedVariateConvergence
 
 		System.out.println ("\t|--------------------------------------------||\n\n");
 
-		BoundedPortfolioConstructionParameters boundedPortfolioConstructionParameters =
-			new BoundedPortfolioConstructionParameters (
+		BoundedHoldingsAllocationControl boundedPortfolioConstructionParameters =
+			new BoundedHoldingsAllocationControl (
 				assetIDArray,
 				CustomRiskUtilitySettings.VarianceMinimizer(),
 				new EqualityConstraintSettings (

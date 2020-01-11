@@ -195,8 +195,8 @@ public class DaJagannathan2005d {
 		for (int i = 0; i < adblHistoricalReturn.length; ++i)
 			adblAdjustedHistoricalReturn[i] = adblHistoricalReturn[i] - dblRiskFreeRate;
 
-		OptimizationOutput op = new QuadraticMeanVarianceOptimizer().allocate (
-			new PortfolioConstructionParameters (
+		HoldingsAllocation op = new QuadraticMeanVarianceOptimizer().allocate (
+			new HoldingsAllocationControl (
 				astrID,
 				CustomRiskUtilitySettings.RiskTolerant (0.078),
 				EqualityConstraintSettings.FullyInvested()

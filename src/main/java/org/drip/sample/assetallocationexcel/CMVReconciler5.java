@@ -287,8 +287,8 @@ public class CMVReconciler5
 
 		System.out.println ("\t|--------------------------------------------||\n\n");
 
-		BoundedPortfolioConstructionParameters boundedPortfolioConstructionParameters =
-			new BoundedPortfolioConstructionParameters (
+		BoundedHoldingsAllocationControl boundedPortfolioConstructionParameters =
+			new BoundedHoldingsAllocationControl (
 				assetIDArray,
 				CustomRiskUtilitySettings.VarianceMinimizer(),
 				new EqualityConstraintSettings (
@@ -309,7 +309,7 @@ public class CMVReconciler5
 			);
 		}
 
-		OptimizationOutput optimizationOutput = new ConstrainedMeanVarianceOptimizer (
+		HoldingsAllocation optimizationOutput = new ConstrainedMeanVarianceOptimizer (
 			interiorPointBarrierControl,
 			LineStepEvolutionControl.NocedalWrightStrongWolfe (
 				false

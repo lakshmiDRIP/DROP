@@ -95,14 +95,14 @@ package org.drip.portfolioconstruction.mpt;
 
 public class MarkovitzBullet
 {
-	private org.drip.portfolioconstruction.allocator.OptimizationOutput
+	private org.drip.portfolioconstruction.allocator.HoldingsAllocation
 		_globalMinimumVarianceOptimizationOutput = null;
-	private org.drip.portfolioconstruction.allocator.OptimizationOutput
+	private org.drip.portfolioconstruction.allocator.HoldingsAllocation
 		_longOnlyMaximumReturnsOptimizationOutput = null;
 
-	private java.util.TreeMap<java.lang.Double, org.drip.portfolioconstruction.allocator.OptimizationOutput>
+	private java.util.TreeMap<java.lang.Double, org.drip.portfolioconstruction.allocator.HoldingsAllocation>
 		_optimalPortfolioMap = new java.util.TreeMap<java.lang.Double,
-			org.drip.portfolioconstruction.allocator.OptimizationOutput>();
+			org.drip.portfolioconstruction.allocator.HoldingsAllocation>();
 
 	/**
 	 * MarkovitzBullet Constructor
@@ -114,9 +114,9 @@ public class MarkovitzBullet
 	 */
 
 	public MarkovitzBullet (
-		final org.drip.portfolioconstruction.allocator.OptimizationOutput
+		final org.drip.portfolioconstruction.allocator.HoldingsAllocation
 			globalMinimumVarianceOptimizationOutput,
-		final org.drip.portfolioconstruction.allocator.OptimizationOutput
+		final org.drip.portfolioconstruction.allocator.HoldingsAllocation
 			longOnlyMaximumReturnsOptimizationOutput)
 		throws java.lang.Exception
 	{
@@ -143,7 +143,7 @@ public class MarkovitzBullet
 	 * @return The Global Minimum Variance Portfolio Metrics
 	 */
 
-	public org.drip.portfolioconstruction.allocator.OptimizationOutput globalMinimumVariance()
+	public org.drip.portfolioconstruction.allocator.HoldingsAllocation globalMinimumVariance()
 	{
 		return _globalMinimumVarianceOptimizationOutput;
 	}
@@ -154,7 +154,7 @@ public class MarkovitzBullet
 	 * @return The Long Only Maximum Returns Portfolio Metrics
 	 */
 
-	public org.drip.portfolioconstruction.allocator.OptimizationOutput longOnlyMaximumReturns()
+	public org.drip.portfolioconstruction.allocator.HoldingsAllocation longOnlyMaximumReturns()
 	{
 		return _longOnlyMaximumReturnsOptimizationOutput;
 	}
@@ -168,7 +168,7 @@ public class MarkovitzBullet
 	 */
 
 	public boolean addOptimalPortfolio (
-		final org.drip.portfolioconstruction.allocator.OptimizationOutput optimizationOutput)
+		final org.drip.portfolioconstruction.allocator.HoldingsAllocation optimizationOutput)
 	{
 		if (null == optimizationOutput)
 		{
@@ -189,7 +189,7 @@ public class MarkovitzBullet
 	 * @return The Map of Optimal Portfolios
 	 */
 
-	public java.util.TreeMap<java.lang.Double, org.drip.portfolioconstruction.allocator.OptimizationOutput>
+	public java.util.TreeMap<java.lang.Double, org.drip.portfolioconstruction.allocator.HoldingsAllocation>
 		optimalPortfolioMap()
 	{
 		return _optimalPortfolioMap;

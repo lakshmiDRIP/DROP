@@ -111,8 +111,8 @@ public class VanillaVarianceMinimizer
 		final double riskTolerance)
 		throws Exception
 	{
-		OptimizationOutput optimizationOutput = new QuadraticMeanVarianceOptimizer().allocate (
-			new PortfolioConstructionParameters (
+		HoldingsAllocation optimizationOutput = new QuadraticMeanVarianceOptimizer().allocate (
+			new HoldingsAllocationControl (
 				assetIDArray,
 				CustomRiskUtilitySettings.VarianceMinimizer(),
 				new EqualityConstraintSettings (

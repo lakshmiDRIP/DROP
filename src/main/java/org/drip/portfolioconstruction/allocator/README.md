@@ -7,9 +7,8 @@ DROP Portfolio Construction Allocator Package implements the MVO Based Portfolio
 
 ## Class Components
 
- * [***BoundedPortfolioConstructionParameters***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator/BoundedPortfolioConstructionParameters.java)
- <i>BoundedPortfolioConstructionParameters</i> holds the Parameters needed to build the Portfolio with Bounds
- on the Underlying Assets.
+ * [***BoundedHoldingsAllocationControl***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator/BoundedHoldingsAllocationControl.java)
+ <i>BoundedHoldingsAllocationControl</i> holds the Parameters needed to build the Portfolio with Bounds on the Underlying Assets.
 
  * [***ConstrainedMeanVarianceOptimizer***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator/ConstrainedMeanVarianceOptimizer.java)
  <i>ConstrainedMeanVarianceOptimizer</i> builds an Optimal Portfolio Based on MPT Using the Asset Pool
@@ -23,19 +22,17 @@ DROP Portfolio Construction Allocator Package implements the MVO Based Portfolio
  <i>EqualityConstraintSettings</i> holds the Parameters required to generate the Mandatory
  Constraints for the Portfolio.
 
- * [***ForwardReverseOptimizationOutput***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator/ForwardReverseOptimizationOutput.java)
- <i>ForwardReverseOptimizationOutput</i> holds the Metrics that result from a Forward/Reverse Optimization
- Run.
+ * [***ForwardReverseHoldingsAllocation***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator/ForwardReverseHoldingsAllocation.java)
+ <i>ForwardReverseHoldingsAllocation</i> holds the Metrics that result from a Forward/Reverse Optimization Run.
+
+ * [***HoldingsAllocation***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator/HoldingsAllocation.java)
+ <i>HoldingsAllocation</i> holds the Output of an Optimal Portfolio Construction Run, i.e., the Optimal Asset Weights in the Portfolio and the related Portfolio Metrics.
+
+ * [***HoldingsAllocationControl***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator/HoldingsAllocationControl.java)
+ <i>HoldingsAllocationControl</i> holds the Parameters needed to control the Allocation.
 
  * [***MeanVarianceOptimizer***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator/MeanVarianceOptimizer.java)
  <i>MeanVarianceOptimizer</i> exposes Portfolio Construction using Mean Variance Optimization Techniques.
-
- * [***OptimizationOutput***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator/OptimizationOutput.java)
- <i>OptimizationOutput</i> holds the Output of an Optimal Portfolio Construction Run, i.e., the Optimal Asset
- Weights in the Portfolio and the related Portfolio Metrics.
-
- * [***PortfolioConstructionParameters***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator/PortfolioConstructionParameters.java)
- <i>PortfolioConstructionParameters</i> holds the Parameters needed to construct the Portfolio.
 
  * [***QuadraticMeanVarianceOptimizer***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator/QuadraticMeanVarianceOptimizer.java)
  <i>QuadraticMeanVarianceOptimizer</i> builds an Optimal Portfolio Based on MPT Using the Asset Pool

@@ -97,13 +97,13 @@ public class QuadraticMeanVarianceOptimizer extends
 	org.drip.portfolioconstruction.allocator.MeanVarianceOptimizer
 {
 
-	protected org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters constrainedPCP (
-		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+	protected org.drip.portfolioconstruction.allocator.HoldingsAllocationControl constrainedPCP (
+		final org.drip.portfolioconstruction.allocator.HoldingsAllocationControl
 			designPortfolioConstructionParameters,
 		final double returnsConstraint)
 	{
 		try {
-			return new org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters (
+			return new org.drip.portfolioconstruction.allocator.HoldingsAllocationControl (
 				designPortfolioConstructionParameters.assetIDArray(),
 				designPortfolioConstructionParameters.customRiskUtilitySettings(),
 				new org.drip.portfolioconstruction.allocator.EqualityConstraintSettings (
@@ -129,9 +129,9 @@ public class QuadraticMeanVarianceOptimizer extends
 	{
 	}
 
-	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput
+	@Override public org.drip.portfolioconstruction.allocator.HoldingsAllocation
 		longOnlyMaximumReturnsAllocate (
-			final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+			final org.drip.portfolioconstruction.allocator.HoldingsAllocationControl
 				portfolioConstructionParameters,
 			final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
 				assetUniverseStatisticalProperties)
@@ -185,15 +185,15 @@ public class QuadraticMeanVarianceOptimizer extends
 			return null;
 		}
 
-		return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (
+		return org.drip.portfolioconstruction.allocator.HoldingsAllocation.Create (
 			assetComponentArray,
 			assetUniverseStatisticalProperties
 		);
 	}
 
-	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput
+	@Override public org.drip.portfolioconstruction.allocator.HoldingsAllocation
 		globalMinimumVarianceAllocate (
-			final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+			final org.drip.portfolioconstruction.allocator.HoldingsAllocationControl
 				portfolioConstructionParameters,
 			final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
 				assetUniverseStatisticalProperties)
@@ -306,14 +306,14 @@ public class QuadraticMeanVarianceOptimizer extends
 			return null;
 		}
 
-		return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (
+		return org.drip.portfolioconstruction.allocator.HoldingsAllocation.Create (
 			assetComponentArray,
 			assetUniverseStatisticalProperties
 		);
 	}
 
-	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput allocate (
-		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+	@Override public org.drip.portfolioconstruction.allocator.HoldingsAllocation allocate (
+		final org.drip.portfolioconstruction.allocator.HoldingsAllocationControl
 			portfolioConstructionParameters,
 		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
 			assetUniverseStatisticalProperties)
@@ -386,7 +386,7 @@ public class QuadraticMeanVarianceOptimizer extends
 			return null;
 		}
 
-		return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (
+		return org.drip.portfolioconstruction.allocator.HoldingsAllocation.Create (
 			assetComponentArray,
 			assetUniverseStatisticalProperties
 		);

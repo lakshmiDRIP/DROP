@@ -5,7 +5,7 @@ import org.drip.measure.bayesian.ProjectionDistributionLoading;
 import org.drip.measure.continuous.MultivariateMeta;
 import org.drip.measure.gaussian.*;
 import org.drip.numerical.common.FormatUtil;
-import org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput;
+import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
 import org.drip.portfolioconstruction.asset.Portfolio;
 import org.drip.portfolioconstruction.bayesian.*;
 import org.drip.service.env.EnvManager;
@@ -206,7 +206,7 @@ public class ProjectionImpliedConfidenceTilt
 		};
 
 		double[][] projectionTiltArray = new BlackLittermanCombinationEngine (
-			ForwardReverseOptimizationOutput.Reverse (
+			ForwardReverseHoldingsAllocation.Reverse (
 				Portfolio.Standard (
 					assetIDArray,
 					assetEquilibriumWeightArray

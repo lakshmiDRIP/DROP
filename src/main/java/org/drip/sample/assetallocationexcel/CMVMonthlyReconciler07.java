@@ -288,8 +288,8 @@ public class CMVMonthlyReconciler07
 
 		System.out.println ("\t|--------------------------------------------||\n\n");
 
-		BoundedPortfolioConstructionParameters boundedPortfolioConstructionParameters =
-			new BoundedPortfolioConstructionParameters (
+		BoundedHoldingsAllocationControl boundedPortfolioConstructionParameters =
+			new BoundedHoldingsAllocationControl (
 				assetIDArray,
 				CustomRiskUtilitySettings.VarianceMinimizer(),
 				new EqualityConstraintSettings (
@@ -310,7 +310,7 @@ public class CMVMonthlyReconciler07
 			);
 		}
 
-		OptimizationOutput optimizationOutput = new ConstrainedMeanVarianceOptimizer (
+		HoldingsAllocation optimizationOutput = new ConstrainedMeanVarianceOptimizer (
 			interiorPointBarrierControl,
 			LineStepEvolutionControl.NocedalWrightStrongWolfe (
 				false

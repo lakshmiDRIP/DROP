@@ -110,7 +110,7 @@ public class PortfolioConstructionProcessor {
 		java.lang.String[] astrAssetID = org.drip.json.parser.Converter.StringArrayEntry (jsonParameter,
 			"AssetSet");
 
-		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters pdp = null;
+		org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl pdp = null;
 		int iNumAsset = null == astrAssetID ? 0 : astrAssetID.length;
 		double[] adblAssetLowerBound = new double[iNumAsset];
 		double[] adblAssetUpperBound = new double[iNumAsset];
@@ -149,7 +149,7 @@ public class PortfolioConstructionProcessor {
 				org.drip.function.rdtor1descent.LineStepEvolutionControl.NocedalWrightStrongWolfe (false));
 
 		try {
-			pdp = new org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+			pdp = new org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
 				(astrAssetID, new org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings (1.,
 					0.), new org.drip.portfolioconstruction.allocator.EqualityConstraintSettings
 						(org.drip.portfolioconstruction.allocator.EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
@@ -164,7 +164,7 @@ public class PortfolioConstructionProcessor {
 			if (!pdp.addBound (astrAssetID[i], adblAssetLowerBound[i], adblAssetUpperBound[i])) return null;
 		}
 
-		org.drip.portfolioconstruction.allocator.OptimizationOutput oo = cmva.allocate (pdp, ausp);
+		org.drip.portfolioconstruction.allocator.HoldingsAllocation oo = cmva.allocate (pdp, ausp);
 
 		if (null == oo) return null;
 
@@ -223,7 +223,7 @@ public class PortfolioConstructionProcessor {
     	java.lang.String[] astrAssetID = org.drip.json.parser.Converter.StringArrayEntry (jsonParameter,
 			"AssetSet");
 
-		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters pdp = null;
+		org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl pdp = null;
 		int iNumAsset = null == astrAssetID ? 0 : astrAssetID.length;
 		double dblPortfolioDesignReturn = java.lang.Double.NaN;
 		double[] adblAssetLowerBound = new double[iNumAsset];
@@ -265,7 +265,7 @@ public class PortfolioConstructionProcessor {
 			org.drip.portfolioconstruction.allocator.ConstrainedMeanVarianceOptimizer (null, null);
 
 		try {
-			pdp = new org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+			pdp = new org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
 				(astrAssetID, new org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings (1.,
 					0.), new org.drip.portfolioconstruction.allocator.EqualityConstraintSettings
 						(org.drip.portfolioconstruction.allocator.EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT
@@ -281,7 +281,7 @@ public class PortfolioConstructionProcessor {
 			if (!pdp.addBound (astrAssetID[i], adblAssetLowerBound[i], adblAssetUpperBound[i])) return null;
 		}
 
-		org.drip.portfolioconstruction.allocator.OptimizationOutput oo = cmva.allocate (pdp, ausp);
+		org.drip.portfolioconstruction.allocator.HoldingsAllocation oo = cmva.allocate (pdp, ausp);
 
 		if (null == oo) return null;
 

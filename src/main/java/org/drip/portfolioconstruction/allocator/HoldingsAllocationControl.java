@@ -79,7 +79,7 @@ package org.drip.portfolioconstruction.allocator;
  */
 
 /**
- * <i>PortfolioConstructionParameters</i> holds the Parameters needed to construct the Portfolio.
+ * <i>HoldingsAllocationControl</i> holds the Parameters needed to control the Portfolio Allocation.
  *
  *	<br><br>
  *  <ul>
@@ -92,7 +92,7 @@ package org.drip.portfolioconstruction.allocator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PortfolioConstructionParameters
+public class HoldingsAllocationControl
 {
 	private java.lang.String[] _assetIDArray = null;
 	private org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings _customRiskUtilitySettings =
@@ -101,7 +101,7 @@ public class PortfolioConstructionParameters
 		_equalityConstraintSettings = null;
 
 	/**
-	 * PortfolioConstructionParameters Constructor
+	 * HoldingsAllocationControl Constructor
 	 * 
 	 * @param assetIDArray Array of Asset IDs
 	 * @param customRiskUtilitySettings The Custom Risk Utility Settings
@@ -110,7 +110,7 @@ public class PortfolioConstructionParameters
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public PortfolioConstructionParameters (
+	public HoldingsAllocationControl (
 		final java.lang.String[] assetIDArray,
 		final org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings customRiskUtilitySettings,
 		final org.drip.portfolioconstruction.allocator.EqualityConstraintSettings equalityConstraintSettings)
@@ -120,7 +120,7 @@ public class PortfolioConstructionParameters
 			null == (_customRiskUtilitySettings = customRiskUtilitySettings) ||
 			null == (_equalityConstraintSettings = equalityConstraintSettings))
 		{
-			throw new java.lang.Exception ("PortfolioConstructionParameters Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("HoldingsAllocationControl Constructor => Invalid Inputs");
 		}
 	}
 

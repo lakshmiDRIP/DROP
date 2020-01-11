@@ -111,7 +111,7 @@ public class BlackLittermanCombinationEngine
 	private org.drip.portfolioconstruction.bayesian.ProjectionSpecification _projectionSpecification = null;
 	private org.drip.portfolioconstruction.bayesian.PriorControlSpecification _priorControlSpecification =
 		null;
-	private org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+	private org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 		_forwardReverseOptimizationOutputUnadjusted = null;
 
 	private org.drip.measure.bayesian.ScopingProjectionVariateDistribution
@@ -171,7 +171,7 @@ public class BlackLittermanCombinationEngine
 	}
 
 	private double[] allocationTiltArray (
-		final org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+		final org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 			forwardReverseOptimizationOutputAdjusted)
 	{
 		double[] adjustedWeightArray =
@@ -204,7 +204,7 @@ public class BlackLittermanCombinationEngine
 	 */
 
 	public BlackLittermanCombinationEngine (
-		final org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+		final org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 			forwardReverseOptimizationOutputUnadjusted,
 		final org.drip.portfolioconstruction.bayesian.PriorControlSpecification priorControlSpecification,
 		final org.drip.portfolioconstruction.bayesian.ProjectionSpecification projectionSpecification)
@@ -245,9 +245,9 @@ public class BlackLittermanCombinationEngine
 			}
 		}
 
-		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+		org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 			forwardReverseOptimizationOutputAdjusted =
-				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (
+				org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation.Forward (
 					_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta().names(),
 					_forwardReverseOptimizationOutputUnadjusted.expectedAssetExcessReturnsArray(),
 					assetBayesianExcessReturnsCovarianceMatrix,
@@ -313,9 +313,9 @@ public class BlackLittermanCombinationEngine
 
 		org.drip.measure.continuous.R1Multivariate r1mPosterior = jointPosteriorMetrics.posterior();
 
-		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+		org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 			forwardReverseOptimizationOutputAdjusted =
-				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (
+				org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation.Forward (
 					portfolioMeta.names(),
 					r1mPosterior.mean(),
 					_priorControlSpecification.useAlternateReferenceModel() ?
@@ -374,13 +374,13 @@ public class BlackLittermanCombinationEngine
 			return null;
 		}
 
-		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+		org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 			forwardReverseOptimizationOutputAdjusted = null;
 
 		if (_priorControlSpecification.useAlternateReferenceModel())
 		{
 			forwardReverseOptimizationOutputAdjusted =
-				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (
+				org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation.Forward (
 					assetIDArray,
 					org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingMean (
 						scopingProjectionVariateDistribution,
@@ -404,7 +404,7 @@ public class BlackLittermanCombinationEngine
 				);
 
 			forwardReverseOptimizationOutputAdjusted = null == combinedDistribution ? null :
-				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (
+				org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation.Forward (
 					assetIDArray,
 					combinedDistribution.mean(),
 					assetExcessReturnsCovarianceMatrix,
@@ -478,9 +478,9 @@ public class BlackLittermanCombinationEngine
 
 		org.drip.measure.continuous.R1Multivariate posteriorDistribution = jointPosteriorMetrics.posterior();
 
-		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+		org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 			forwardReverseOptimizationOutputCustomConfidence =
-				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (
+				org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation.Forward (
 					assetIDArray,
 					posteriorDistribution.mean(),
 					useAlternateReferenceModel ? assetExcessReturnsCovarianceMatrix :
@@ -494,13 +494,13 @@ public class BlackLittermanCombinationEngine
 			return null;
 		}
 
-		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+		org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 			forwardReverseOptimizationOutputFullConfidence = null;
 
 		if (useAlternateReferenceModel)
 		{
 			forwardReverseOptimizationOutputFullConfidence =
-				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (
+				org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation.Forward (
 					assetIDArray,
 					org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingMean (
 						scopingProjectionVariateDistribution,
@@ -524,7 +524,7 @@ public class BlackLittermanCombinationEngine
 				);
 
 			forwardReverseOptimizationOutputFullConfidence = null == combinedDistribution ? null :
-				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (
+				org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation.Forward (
 					assetIDArray,
 					combinedDistribution.mean(),
 					assetExcessReturnsCovarianceMatrix,

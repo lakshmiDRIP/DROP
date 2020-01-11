@@ -108,7 +108,7 @@ package org.drip.portfolioconstruction.bayesian;
 public class BlackLittermanOutput
 {
 	private double[] _allocationAdjustmentTiltArray = null;
-	private org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+	private org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 		_adjustedOptimizationOutput = null;
 
 	/**
@@ -122,7 +122,7 @@ public class BlackLittermanOutput
 	 */
 
 	public BlackLittermanOutput (
-		final org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+		final org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 			adjustedOptimizationOutput,
 		final double[] allocationAdjustmentTiltArray)
 		throws java.lang.Exception
@@ -141,7 +141,7 @@ public class BlackLittermanOutput
 	 * @return The Adjusted Forward Equilibrium Optimization Metrics
 	 */
 
-	public org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+	public org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 		adjustedOptimizationOutput()
 	{
 		return _adjustedOptimizationOutput;

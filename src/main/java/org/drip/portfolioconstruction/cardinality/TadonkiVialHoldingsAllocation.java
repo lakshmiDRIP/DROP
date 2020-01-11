@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.allocator;
+package org.drip.portfolioconstruction.cardinality;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -7,10 +7,6 @@ package org.drip.portfolioconstruction.allocator;
 
 /*!
  * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -79,8 +75,34 @@ package org.drip.portfolioconstruction.allocator;
  */
 
 /**
- * <i>OptimizationOutput</i> holds the Output of an Optimal Portfolio Construction Run, i.e., the Optimal
- * Asset Weights in the Portfolio and the related Portfolio Metrics.
+ * <i>TadonkiVialHoldingsAllocation</i> holds the Results of the Allocation performed using the Tadonki and
+ * 	Vial (2004) Heuristic Scheme. The References are:
+ * 
+ * <br><br>
+ *  <ul>
+ *  	<li>
+ * 			Chang, T., J., N. Meade, J. E. Beasley, and Y. M. Sharaiha (2000): Heuristics for Cardinality
+ * 				Constrained Portfolio Optimization <i>Computers and Operations Research</i> <b>27 (13)</b>
+ * 				1271-1302
+ *  	</li>
+ *  	<li>
+ * 			Chvatal, V. (1973): Edmonds Polytopes in a Hierarchy of Combinatorial Problems <i>Discrete
+ * 				Mathematics</i> <b>4 (4)</b> 305-337
+ *  	</li>
+ *  	<li>
+ * 			Jobst, N. J., M. D. Horniman, C. A. Lucas, and G. Mitra (2001): Computational Aspects of
+ * 				Alternative Portfolio Selection Models in the Presence of Discrete Asset Choice Constraints
+ * 				<i>Quantitative Finance</i> <b>1 (5)</b> 1-13
+ *  	</li>
+ *  	<li>
+ * 			Letchford, A. N. and A. Lodi (2002): Strengthening Chvatal-Gomory Cuts and Gomory Fractional Cuts
+ * 				<i>Operations Research Letters</i> <b>30 (2)</b> 74-82
+ *  	</li>
+ *  	<li>
+ * 			Tadonki, C., and J. P. Vial (2004): Portfolio Selection with Cardinality and Bound Constraints
+ * 				https://www.cri.ensmp.fr/~tadonki/PaperForWeb/Tadonki_PF.pdf
+ *  	</li>
+ *  </ul>
  *
  *	<br><br>
  *  <ul>
@@ -93,85 +115,12 @@ package org.drip.portfolioconstruction.allocator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class OptimizationOutput
+public class TadonkiVialHoldingsAllocation
+	extends org.drip.portfolioconstruction.allocator.HoldingsAllocation
 {
-	private org.drip.portfolioconstruction.asset.Portfolio _optimalPortfolio = null;
-	private org.drip.portfolioconstruction.asset.PortfolioMetrics _optimalPortfolioMetrics = null;
 
 	/**
-	 * Create an Instance of the Optimal Portfolio
-	 * 
-	 * @param optimalAssetComponentArray The Array of the Optimal Asset Components
-	 * @param assetUniverseStatisticalProperties The AssetUniverseStatisticalProperties Instance
-	 * 
-	 * @return The Instance of the Optimal Portfolio
-	 */
-
-	public static final OptimizationOutput Create (
-		final org.drip.portfolioconstruction.asset.AssetComponent[] optimalAssetComponentArray,
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties assetUniverseStatisticalProperties)
-	{
-		if (null == optimalAssetComponentArray || null == assetUniverseStatisticalProperties)
-		{
-			return null;
-		}
-
-		int iNumAsset = optimalAssetComponentArray.length;
-
-		if (0 == iNumAsset)
-		{
-			return null;
-		}
-
-		try
-		{
-			org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio = new
-				org.drip.portfolioconstruction.asset.Portfolio (optimalAssetComponentArray);
-
-			double portfolioExcessReturnsMean = optimalPortfolio.expectedReturn
-				(assetUniverseStatisticalProperties);
-
-			double portfolioExcessReturnsVariance = optimalPortfolio.variance
-				(assetUniverseStatisticalProperties);
-
-			double portfolioExcessReturnsSigma = java.lang.Math.sqrt (portfolioExcessReturnsVariance);
-
-			double[] impliedBetaArray = org.drip.numerical.linearalgebra.Matrix.Product (
-				assetUniverseStatisticalProperties.covariance (optimalPortfolio.assetIDArray()),
-				optimalPortfolio.weightArray()
-			);
-
-			if (null == impliedBetaArray)
-			{
-				return null;
-			}
-
-			for (int i = 0; i < iNumAsset; ++i)
-			{
-				impliedBetaArray[i] = impliedBetaArray[i] / portfolioExcessReturnsVariance;
-			}
-
-			return new org.drip.portfolioconstruction.allocator.OptimizationOutput (
-				new org.drip.portfolioconstruction.asset.Portfolio (optimalAssetComponentArray),
-				new org.drip.portfolioconstruction.asset.PortfolioMetrics (
-					portfolioExcessReturnsMean,
-					portfolioExcessReturnsVariance,
-					portfolioExcessReturnsSigma,
-					portfolioExcessReturnsMean / portfolioExcessReturnsSigma,
-					impliedBetaArray
-				)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * OptimizationOutput Constructor
+	 * TadonkiVialHoldingsAllocation Constructor
 	 * 
 	 * @param optimalPortfolio The Optimal Portfolio
 	 * @param optimalPortfolioMetrics The Optimal Portfolio Metrics
@@ -179,37 +128,14 @@ public class OptimizationOutput
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public OptimizationOutput (
+	public TadonkiVialHoldingsAllocation (
 		final org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio,
 		final org.drip.portfolioconstruction.asset.PortfolioMetrics optimalPortfolioMetrics)
 		throws java.lang.Exception
 	{
-		if (null == (_optimalPortfolio = optimalPortfolio) ||
-			null == (_optimalPortfolioMetrics = optimalPortfolioMetrics))
-		{
-			throw new java.lang.Exception ("OptimizationOutput Constructor => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Retrieve the Optimal Portfolio Metrics
-	 * 
-	 * @return The Optimal Portfolio Metrics
-	 */
-
-	public org.drip.portfolioconstruction.asset.PortfolioMetrics optimalMetrics()
-	{
-		return _optimalPortfolioMetrics;
-	}
-
-	/**
-	 * Retrieve the Optimal Portfolio Instance
-	 * 
-	 * @return The Optimal Portfolio Instance
-	 */
-
-	public org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio()
-	{
-		return _optimalPortfolio;
+		super (
+			optimalPortfolio,
+			optimalPortfolioMetrics
+		);
 	}
 }

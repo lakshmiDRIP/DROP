@@ -121,7 +121,7 @@ public class BlackLittermanCustomConfidenceOutput
 	 */
 
 	public BlackLittermanCustomConfidenceOutput (
-		final org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+		final org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 			forwardReverseOptimizationOutput,
 		final double[] allocationAdjustmentTiltArray,
 		final org.drip.measure.bayesian.R1MultivariateConvolutionMetrics jointPosteriorMetrics)

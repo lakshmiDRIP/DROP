@@ -6,6 +6,8 @@ import org.drip.function.rdtor1solver.InteriorPointBarrierControl;
 import org.drip.measure.statistics.MultivariateMoments;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.portfolioconstruction.allocator.*;
+import org.drip.portfolioconstruction.cardinality.UpperBoundHoldingsAllocationControl;
+import org.drip.portfolioconstruction.cardinality.TadonkiVialMeanVarianceOptimizer;
 import org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties;
 import org.drip.service.env.EnvManager;
 
@@ -218,8 +220,8 @@ public class CardinalityBoundOptimizer
 
 		System.out.println ("\t|-------------------||");
 
-		BoundedCardinalityParameters boundedCardinalityParameters =
-			new BoundedCardinalityParameters (
+		UpperBoundHoldingsAllocationControl boundedCardinalityParameters =
+			new UpperBoundHoldingsAllocationControl (
 				assetIDArray,
 				CustomRiskUtilitySettings.VarianceMinimizer(),
 				new EqualityConstraintSettings (
@@ -241,7 +243,7 @@ public class CardinalityBoundOptimizer
 			);
 		}
 
-		new CardinalityConstrainedMeanVarianceOptimizer (
+		new TadonkiVialMeanVarianceOptimizer (
 			InteriorPointBarrierControl.Standard(),
 			LineStepEvolutionControl.NocedalWrightStrongWolfe (
 				false

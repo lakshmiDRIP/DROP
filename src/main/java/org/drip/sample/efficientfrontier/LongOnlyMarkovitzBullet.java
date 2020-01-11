@@ -99,7 +99,7 @@ public class LongOnlyMarkovitzBullet
 {
 
 	private static void DisplayPortfolioMetrics (
-		final OptimizationOutput optimizationOutput)
+		final HoldingsAllocation optimizationOutput)
 		throws Exception
 	{
 		AssetComponent[] globalMinimumAssetComponentArray =
@@ -279,8 +279,8 @@ public class LongOnlyMarkovitzBullet
 
 		System.out.println ("\t|--------------------------------------------||\n\n");
 
-		BoundedPortfolioConstructionParameters boundedPortfolioConstructionParameters =
-			new BoundedPortfolioConstructionParameters (
+		BoundedHoldingsAllocationControl boundedPortfolioConstructionParameters =
+			new BoundedHoldingsAllocationControl (
 				assetNameArray,
 				CustomRiskUtilitySettings.VarianceMinimizer(),
 				new EqualityConstraintSettings (
@@ -340,7 +340,7 @@ public class LongOnlyMarkovitzBullet
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||\n\n\n");
 
-		TreeMap<Double, OptimizationOutput> frontierPortfolioMap = markovitzBullet.optimalPortfolioMap();
+		TreeMap<Double, HoldingsAllocation> frontierPortfolioMap = markovitzBullet.optimalPortfolioMap();
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||");
 
@@ -352,7 +352,7 @@ public class LongOnlyMarkovitzBullet
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||");
 
-		for (Map.Entry<Double, OptimizationOutput> me : frontierPortfolioMap.entrySet())
+		for (Map.Entry<Double, HoldingsAllocation> me : frontierPortfolioMap.entrySet())
 		{
 			DisplayPortfolioMetrics (
 				me.getValue()

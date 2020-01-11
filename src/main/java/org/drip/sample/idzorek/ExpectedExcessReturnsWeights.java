@@ -2,7 +2,7 @@
 package org.drip.sample.idzorek;
 
 import org.drip.numerical.common.FormatUtil;
-import org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput;
+import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
 import org.drip.portfolioconstruction.asset.*;
 import org.drip.service.env.EnvManager;
 
@@ -104,7 +104,7 @@ public class ExpectedExcessReturnsWeights
 {
 
 	private static final void ForwardOptimizationWeights (
-		final ForwardReverseOptimizationOutput forwardReverseOptimizationOutput,
+		final ForwardReverseHoldingsAllocation forwardReverseOptimizationOutput,
 		final double[] weightReconcilerArray,
 		final int preDecimalDigits,
 		final int postDecimalDigits,
@@ -258,7 +258,7 @@ public class ExpectedExcessReturnsWeights
 			  0.0214
 		};
 
-		double[] impliedEquilibriumExcessReturnsArray = ForwardReverseOptimizationOutput.Reverse (
+		double[] impliedEquilibriumExcessReturnsArray = ForwardReverseHoldingsAllocation.Reverse (
 			Portfolio.Standard (
 				assetIDArray,
 				assetEquilibriumWeightArray
@@ -295,7 +295,7 @@ public class ExpectedExcessReturnsWeights
 		System.out.println ("\t|---------------------------------------------------------------------||\n");
 
 		ForwardOptimizationWeights (
-			ForwardReverseOptimizationOutput.Forward (
+			ForwardReverseHoldingsAllocation.Forward (
 				assetIDArray,
 				assetSpaceHistoricalReturnsArray,
 				assetExcessReturnsCovarianceMatrix,
@@ -308,7 +308,7 @@ public class ExpectedExcessReturnsWeights
 		);
 
 		ForwardOptimizationWeights (
-			ForwardReverseOptimizationOutput.Forward (
+			ForwardReverseHoldingsAllocation.Forward (
 				assetIDArray,
 				assetSpaceGSMIReturnsArray,
 				assetExcessReturnsCovarianceMatrix,
@@ -321,7 +321,7 @@ public class ExpectedExcessReturnsWeights
 		);
 
 		ForwardOptimizationWeights (
-			ForwardReverseOptimizationOutput.Forward (
+			ForwardReverseHoldingsAllocation.Forward (
 				assetIDArray,
 				assetSpaceCAPMReturnsArray,
 				assetExcessReturnsCovarianceMatrix,

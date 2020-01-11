@@ -98,7 +98,7 @@ public class UnboundedMarkovitzBullet
 {
 
 	private static void DisplayPortfolioMetrics (
-		final OptimizationOutput optimalOutput)
+		final HoldingsAllocation optimalOutput)
 		throws Exception
 	{
 		AssetComponent[] globalMinimumAssetComponentArray =
@@ -150,7 +150,7 @@ public class UnboundedMarkovitzBullet
 		}
 
 		MarkovitzBullet markovitzBullet = new QuadraticMeanVarianceOptimizer().efficientFrontier (
-			new PortfolioConstructionParameters (
+			new HoldingsAllocationControl (
 				assetIDArray,
 				CustomRiskUtilitySettings.RiskTolerant (riskToleranceFactor),
 				new EqualityConstraintSettings (
@@ -192,7 +192,7 @@ public class UnboundedMarkovitzBullet
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||\n\n\n");
 
-		TreeMap<Double, OptimizationOutput> frontierPortfolioMap = markovitzBullet.optimalPortfolioMap();
+		TreeMap<Double, HoldingsAllocation> frontierPortfolioMap = markovitzBullet.optimalPortfolioMap();
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||");
 
@@ -204,7 +204,7 @@ public class UnboundedMarkovitzBullet
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||");
 
-		for (Map.Entry<Double, OptimizationOutput> me : frontierPortfolioMap.entrySet())
+		for (Map.Entry<Double, HoldingsAllocation> me : frontierPortfolioMap.entrySet())
 		{
 			DisplayPortfolioMetrics (
 				me.getValue()

@@ -79,7 +79,7 @@ package org.drip.portfolioconstruction.allocator;
  */
 
 /**
- * <i>BoundedPortfolioConstructionParameters</i> holds the Parameters needed to build the Portfolio with
+ * <i>BoundedHoldingsAllocationControl</i> holds the Parameters needed to build the Portfolio with
  * Bounds on the Underlying Assets.
  *
  *	<br><br>
@@ -93,8 +93,8 @@ package org.drip.portfolioconstruction.allocator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BoundedPortfolioConstructionParameters extends
-	org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+public class BoundedHoldingsAllocationControl extends
+	org.drip.portfolioconstruction.allocator.HoldingsAllocationControl
 {
 
 	private org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.asset.AssetBounds>
@@ -116,7 +116,7 @@ public class BoundedPortfolioConstructionParameters extends
 	}
 
 	/**
-	 * BoundedPortfolioConstructionParameters Constructor
+	 * BoundedHoldingsAllocationControl Constructor
 	 * 
 	 * @param assetIDArray Array of Assets ID
 	 * @param customRiskUtilitySettings The Quadratic Custom Risk Utility Settings
@@ -125,7 +125,7 @@ public class BoundedPortfolioConstructionParameters extends
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public BoundedPortfolioConstructionParameters (
+	public BoundedHoldingsAllocationControl (
 		final java.lang.String[] assetIDArray,
 		final org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings customRiskUtilitySettings,
 		final org.drip.portfolioconstruction.allocator.EqualityConstraintSettings equalityConstraintSettings)
@@ -208,7 +208,7 @@ public class BoundedPortfolioConstructionParameters extends
 		if (!_assetBoundsMap.containsKey (assetID))
 		{
 			throw new java.lang.Exception
-				("BoundedPortfolioConstructionParameters::lowerBound => Invalid Inputs");
+				("BoundedHoldingsAllocationControl::lowerBound => Invalid Inputs");
 		}
 
 		return _assetBoundsMap.get (assetID).lower();
@@ -231,7 +231,7 @@ public class BoundedPortfolioConstructionParameters extends
 		if (!_assetBoundsMap.containsKey (assetID))
 		{
 			throw new java.lang.Exception
-				("BoundedPortfolioConstructionParameters::upperBound => Invalid Inputs");
+				("BoundedHoldingsAllocationControl::upperBound => Invalid Inputs");
 		}
 
 		return _assetBoundsMap.get (assetID).upper();

@@ -1,5 +1,5 @@
 
-package org.drip.portfolioconstruction.allocator;
+package org.drip.portfolioconstruction.cardinality;
 
 import org.drip.numerical.common.FormatUtil;
 
@@ -78,9 +78,9 @@ import org.drip.numerical.common.FormatUtil;
  */
 
 /**
- * <i>CardinalityConstrainedMeanVarianceOptimizer</i> builds an Optimal Portfolio Based on MPT Using the
- * 	Asset Pool Statistical Properties with the Specified Lower/Upper Bounds on the Component Assets, along
- * 	with an Upper Bound on Portfolio Cardinality. The References are:
+ * <i>TadonkiVialMeanVarianceOptimizer</i> builds an Optimal Portfolio Based on MPT Using the Asset Pool
+ * 	Statistical Properties with the Specified Lower/Upper Bounds on the Component Assets, along with an Upper
+ * 	Bound on Portfolio Cardinality, using the Tadonki and Vial (2004) Heuristic Scheme. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -119,7 +119,7 @@ import org.drip.numerical.common.FormatUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CardinalityConstrainedMeanVarianceOptimizer
+public class TadonkiVialMeanVarianceOptimizer
 	extends org.drip.portfolioconstruction.allocator.ConstrainedMeanVarianceOptimizer
 {
 	private void PrintPortfolio (
@@ -154,15 +154,15 @@ public class CardinalityConstrainedMeanVarianceOptimizer
 		System.out.println ("\t|------------------||");
 	}
 
-	private org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+	private org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
 		workingPortfolioConstructionParameters (
 			final java.lang.String[] assetIDArray,
-			final org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+			final org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
 				parentBoundedPortfolioConstructionParameters,
 			final java.util.Set<java.lang.String> pruneAssetIDSet)
 	{
 		int prunedAssetIDIndex = 0;
-		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+		org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
 			boundedPortfolioConstructionParameters = null;
 
 		java.lang.String[] prunedAssetIDArray =
@@ -185,7 +185,7 @@ public class CardinalityConstrainedMeanVarianceOptimizer
 		try
 		{
 			boundedPortfolioConstructionParameters =
-				new org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters (
+				new org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl (
 					prunedAssetIDArray,
 					parentBoundedPortfolioConstructionParameters.customRiskUtilitySettings(),
 					parentBoundedPortfolioConstructionParameters.equalityConstraintSettings()
@@ -216,7 +216,7 @@ public class CardinalityConstrainedMeanVarianceOptimizer
 
 	private int firstPassPruneList (
 		final org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio,
-		final org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+		final org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
 			parentBoundedPortfolioConstructionParameters,
 		final java.util.Set<java.lang.String> pruneAssetIDSet)
 	{
@@ -260,7 +260,7 @@ public class CardinalityConstrainedMeanVarianceOptimizer
 
 	private boolean secondPassPruneList (
 		final org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio,
-		final org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+		final org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
 			parentBoundedPortfolioConstructionParameters,
 		final java.util.Set<java.lang.String> pruneAssetIDSet,
 		int pruneCount)
@@ -314,13 +314,13 @@ public class CardinalityConstrainedMeanVarianceOptimizer
 	}
 
 	/**
-	 * CardinalityConstrainedMeanVarianceOptimizer Constructor
+	 * TadonkiVialMeanVarianceOptimizer Constructor
 	 * 
 	 * @param interiorPointBarrierControl Interior Fixed Point Barrier Control Parameters
 	 * @param lineStepEvolutionControl Line Step Evolution Control Parameters
 	 */
 
-	public CardinalityConstrainedMeanVarianceOptimizer (
+	public TadonkiVialMeanVarianceOptimizer (
 		final org.drip.function.rdtor1solver.InteriorPointBarrierControl interiorPointBarrierControl,
 		final org.drip.function.rdtor1descent.LineStepEvolutionControl lineStepEvolutionControl)
 	{
@@ -330,21 +330,22 @@ public class CardinalityConstrainedMeanVarianceOptimizer
 		);
 	}
 
-	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput allocate (
-		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+	@Override public org.drip.portfolioconstruction.allocator.HoldingsAllocation allocate (
+		final org.drip.portfolioconstruction.allocator.HoldingsAllocationControl
 			portfolioConstructionParameters,
 		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
 			assetUniverseStatisticalProperties)
 	{
 		if (!(portfolioConstructionParameters instanceof
-			org.drip.portfolioconstruction.allocator.BoundedCardinalityParameters))
+			org.drip.portfolioconstruction.cardinality.UpperBoundHoldingsAllocationControl))
 		{
 			return null;
 		}
 
-		org.drip.portfolioconstruction.allocator.BoundedCardinalityParameters boundedCardinalityParameters =
-			(org.drip.portfolioconstruction.allocator.BoundedCardinalityParameters)
-				portfolioConstructionParameters;
+		org.drip.portfolioconstruction.cardinality.UpperBoundHoldingsAllocationControl
+			boundedCardinalityParameters =
+				(org.drip.portfolioconstruction.cardinality.UpperBoundHoldingsAllocationControl)
+					portfolioConstructionParameters;
 
 		int cardinalityUpperBound = boundedCardinalityParameters.cardinalityUpperBound();
 
@@ -360,14 +361,14 @@ public class CardinalityConstrainedMeanVarianceOptimizer
 
 		java.util.Set<java.lang.String> pruneAssetIDSet = new java.util.HashSet<java.lang.String>();
 
-		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+		org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
 			workingPortfolioConstructionParameters = workingPortfolioConstructionParameters (
 				assetIDArray,
 				boundedCardinalityParameters,
 				pruneAssetIDSet
 			);
 
-		org.drip.portfolioconstruction.allocator.OptimizationOutput optimizationOutput = super.allocate (
+		org.drip.portfolioconstruction.allocator.HoldingsAllocation optimizationOutput = super.allocate (
 			workingPortfolioConstructionParameters,
 			assetUniverseStatisticalProperties
 		);

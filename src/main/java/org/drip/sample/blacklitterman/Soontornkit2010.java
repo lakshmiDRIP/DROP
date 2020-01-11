@@ -284,7 +284,7 @@ public class Soontornkit2010 {
 			adblExpectedExcessReturn[i] *= dblRiskAversion;
 
 		BlackLittermanCombinationEngine blce = new BlackLittermanCombinationEngine (
-			ForwardReverseOptimizationOutput.Reverse (
+			ForwardReverseHoldingsAllocation.Reverse (
 				Portfolio.Standard (
 					astrID2,
 					adblMarketCapitalizationWeight2

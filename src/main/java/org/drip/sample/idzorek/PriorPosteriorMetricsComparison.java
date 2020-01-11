@@ -5,7 +5,7 @@ import org.drip.measure.bayesian.*;
 import org.drip.measure.continuous.MultivariateMeta;
 import org.drip.measure.gaussian.*;
 import org.drip.numerical.common.FormatUtil;
-import org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput;
+import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
 import org.drip.portfolioconstruction.asset.*;
 import org.drip.portfolioconstruction.bayesian.*;
 import org.drip.service.env.EnvManager;
@@ -108,7 +108,7 @@ public class PriorPosteriorMetricsComparison
 {
 
 	private static final void ForwardOptimizationWeights (
-		final ForwardReverseOptimizationOutput forwardReverseOptimizationOutput,
+		final ForwardReverseHoldingsAllocation forwardReverseOptimizationOutput,
 		final double[] weightReconcilerArray,
 		final int preDecimalDigits,
 		final int postDecimalDigits,
@@ -293,7 +293,7 @@ public class PriorPosteriorMetricsComparison
 		);
 
 		R1MultivariateConvolutionMetrics jointPosteriorMetrics = new BlackLittermanCombinationEngine (
-			ForwardReverseOptimizationOutput.Reverse (
+			ForwardReverseHoldingsAllocation.Reverse (
 				Portfolio.Standard (
 					assetIDArray,
 					assetEquilibriumWeightArray
@@ -328,8 +328,8 @@ public class PriorPosteriorMetricsComparison
 		double[][] aadblAssetSpacePosteriorCovariance =
 			posteriorDistribution.covariance().covarianceMatrix();
 
-		ForwardReverseOptimizationOutput posteriorForwardReverseOptimizationOutput =
-			ForwardReverseOptimizationOutput.Forward (
+		ForwardReverseHoldingsAllocation posteriorForwardReverseOptimizationOutput =
+			ForwardReverseHoldingsAllocation.Forward (
 				assetIDArray,
 				assetSpaceJointReturnsArray,
 				assetExcessReturnsCovarianceMatrix,

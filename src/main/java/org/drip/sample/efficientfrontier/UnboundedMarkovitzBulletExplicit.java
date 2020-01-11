@@ -94,7 +94,7 @@ public class UnboundedMarkovitzBulletExplicit
 {
 
 	private static double DisplayPortfolioMetrics (
-		final OptimizationOutput optimizationOutput)
+		final HoldingsAllocation optimizationOutput)
 		throws Exception
 	{
 		AssetComponent[] globalMinimumAssetComponentArray =
@@ -155,8 +155,8 @@ public class UnboundedMarkovitzBulletExplicit
 				)
 			);
 
-		PortfolioConstructionParameters portfolioConstructionParameters =
-			new PortfolioConstructionParameters (
+		HoldingsAllocationControl portfolioConstructionParameters =
+			new HoldingsAllocationControl (
 				assetIDArray,
 				CustomRiskUtilitySettings.RiskTolerant (
 					riskToleranceFactor
@@ -222,7 +222,7 @@ public class UnboundedMarkovitzBulletExplicit
 		{
 			DisplayPortfolioMetrics (
 				meanVarianceOptimizer.allocate (
-					new PortfolioConstructionParameters (
+					new HoldingsAllocationControl (
 						assetIDArray,
 						CustomRiskUtilitySettings.VarianceMinimizer(),
 						new EqualityConstraintSettings (

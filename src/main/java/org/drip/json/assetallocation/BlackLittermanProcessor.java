@@ -148,7 +148,7 @@ public class BlackLittermanProcessor {
 					adblProjectionExpectedExcessReturns, aadblProjectionExcessReturnsCovariance);
 
 			blce = new org.drip.portfolioconstruction.bayesian.BlackLittermanCombinationEngine
-				(org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Reverse
+				(org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation.Reverse
 					(org.drip.portfolioconstruction.asset.Portfolio.Standard (astrAssetID,
 						adblAssetEquilibriumWeight), aadblAssetExcessReturnsCovariance, dblRiskAversion), new
 							org.drip.portfolioconstruction.bayesian.PriorControlSpecification (false,

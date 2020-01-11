@@ -99,24 +99,24 @@ public class ConstrainedMeanVarianceOptimizer extends
 	private org.drip.function.rdtor1descent.LineStepEvolutionControl _lineStepEvolutionControl = null;
 	private org.drip.function.rdtor1solver.InteriorPointBarrierControl _interiorPointBarrierControl = null;
 
-	protected org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters constrainedPCP (
-		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+	protected org.drip.portfolioconstruction.allocator.HoldingsAllocationControl constrainedPCP (
+		final org.drip.portfolioconstruction.allocator.HoldingsAllocationControl
 			designPortfolioConstructionParameters,
 		final double returnsConstraint)
 	{
 		java.lang.String[] assetIDArray = designPortfolioConstructionParameters.assetIDArray();
 
 		int assetCount = assetIDArray.length;
-		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+		org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
 			boundedPortfolioConstructionParametersIn =
-				(org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters)
+				(org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl)
 					designPortfolioConstructionParameters;
 
 		try
 		{
-			org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+			org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
 				boundedPortfolioConstructionParametersOut =
-					new org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters (
+					new org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl (
 						assetIDArray,
 						designPortfolioConstructionParameters.customRiskUtilitySettings(),
 						new org.drip.portfolioconstruction.allocator.EqualityConstraintSettings (
@@ -190,16 +190,16 @@ public class ConstrainedMeanVarianceOptimizer extends
 		return _interiorPointBarrierControl;
 	}
 
-	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput
+	@Override public org.drip.portfolioconstruction.allocator.HoldingsAllocation
 		longOnlyMaximumReturnsAllocate (
-			final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+			final org.drip.portfolioconstruction.allocator.HoldingsAllocationControl
 				portfolioConstructionParameters,
 			final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
 				assetUniverseStatisticalProperties)
 	{
 		if (null == portfolioConstructionParameters ||
 			!(portfolioConstructionParameters instanceof
-				org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) ||
+				org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl) ||
 			null == assetUniverseStatisticalProperties)
 		{
 			return null;
@@ -212,9 +212,9 @@ public class ConstrainedMeanVarianceOptimizer extends
 		int assetCount = assetIDArray.length;
 		org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray = new
 			org.drip.portfolioconstruction.asset.AssetComponent[assetCount];
-		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+		org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
 			boundedPortfolioConstructionParameters =
-				(org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters)
+				(org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl)
 					portfolioConstructionParameters;
 
 		double[] expectedAssetReturnsArray = assetUniverseStatisticalProperties.expectedReturns (
@@ -279,22 +279,22 @@ public class ConstrainedMeanVarianceOptimizer extends
 			}
 		}
 
-		return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (
+		return org.drip.portfolioconstruction.allocator.HoldingsAllocation.Create (
 			assetComponentArray,
 			assetUniverseStatisticalProperties
 		);
 	}
 
-	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput
+	@Override public org.drip.portfolioconstruction.allocator.HoldingsAllocation
 		globalMinimumVarianceAllocate (
-			final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+			final org.drip.portfolioconstruction.allocator.HoldingsAllocationControl
 				portfolioConstructionParameters,
 			final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
 				assetUniverseStatisticalProperties)
 	{
 		if (null == portfolioConstructionParameters ||
 			!(portfolioConstructionParameters instanceof
-				org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) ||
+				org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl) ||
 			null == assetUniverseStatisticalProperties)
 		{
 			return null;
@@ -312,9 +312,9 @@ public class ConstrainedMeanVarianceOptimizer extends
 		int assetCount = assetIDArray.length;
 		org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray = new
 			org.drip.portfolioconstruction.asset.AssetComponent[assetCount];
-		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+		org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
 			boundedPortfolioConstructionParameters =
-				(org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters)
+				(org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl)
 					portfolioConstructionParameters;
 
 		try
@@ -359,7 +359,7 @@ public class ConstrainedMeanVarianceOptimizer extends
 				);
 			}
 
-			return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (
+			return org.drip.portfolioconstruction.allocator.HoldingsAllocation.Create (
 				assetComponentArray,
 				assetUniverseStatisticalProperties
 			);
@@ -372,15 +372,15 @@ public class ConstrainedMeanVarianceOptimizer extends
 		return null;
 	}
 
-	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput allocate (
-		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+	@Override public org.drip.portfolioconstruction.allocator.HoldingsAllocation allocate (
+		final org.drip.portfolioconstruction.allocator.HoldingsAllocationControl
 			portfolioConstructionParameters,
 		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
 			assetUniverseStatisticalProperties)
 	{
 		if (null == portfolioConstructionParameters ||
 			!(portfolioConstructionParameters instanceof
-				org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) ||
+				org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl) ||
 			null == assetUniverseStatisticalProperties)
 		{
 			System.out.println (assetUniverseStatisticalProperties);
@@ -400,9 +400,9 @@ public class ConstrainedMeanVarianceOptimizer extends
 		int assetCount = assetIDArray.length;
 		org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray = new
 			org.drip.portfolioconstruction.asset.AssetComponent[assetCount];
-		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+		org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
 			boundedPortfolioConstructionParameters =
-				(org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters)
+				(org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl)
 					portfolioConstructionParameters;
 
 		try
@@ -446,7 +446,7 @@ public class ConstrainedMeanVarianceOptimizer extends
 				);
 			}
 
-			return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (
+			return org.drip.portfolioconstruction.allocator.HoldingsAllocation.Create (
 				assetComponentArray,
 				assetUniverseStatisticalProperties
 			);

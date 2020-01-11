@@ -230,7 +230,7 @@ public class Table5Reconciler
 
 		BlackLittermanCombinationEngine blackLittermanCombinationEngine =
 			new BlackLittermanCombinationEngine (
-				ForwardReverseOptimizationOutput.Reverse (
+				ForwardReverseHoldingsAllocation.Reverse (
 					Portfolio.Standard (
 						assetIDArray,
 						assetEquilibriumWeightArray
@@ -264,8 +264,8 @@ public class Table5Reconciler
 		double[][] assetSpacePosteriorCovarianceMatrix =
 			posteriorDistribution.covariance().covarianceMatrix();
 
-		OptimizationOutput optimizationOutput = new QuadraticMeanVarianceOptimizer().allocate (
-			new PortfolioConstructionParameters (
+		HoldingsAllocation optimizationOutput = new QuadraticMeanVarianceOptimizer().allocate (
+			new HoldingsAllocationControl (
 				assetIDArray,
 				CustomRiskUtilitySettings.RiskAversion (
 					riskAversion
