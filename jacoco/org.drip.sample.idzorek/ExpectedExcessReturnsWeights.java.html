@@ -2,7 +2,7 @@
 package org.drip.sample.idzorek;
 
 import org.drip.numerical.common.FormatUtil;
-import org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput;
+import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
 import org.drip.portfolioconstruction.asset.*;
 import org.drip.service.env.EnvManager;
 
@@ -104,7 +104,7 @@ import org.drip.service.env.EnvManager;
 {
 
 	private static final void ForwardOptimizationWeights (
-		final ForwardReverseOptimizationOutput forwardReverseOptimizationOutput,
+		final ForwardReverseHoldingsAllocation forwardReverseOptimizationOutput,
 		final double[] weightReconcilerArray,
 		final int preDecimalDigits,
 		final int postDecimalDigits,
@@ -258,7 +258,7 @@ import org.drip.service.env.EnvManager;
 			  0.0214
 		};
 
-<span class="fc" id="L261">		double[] impliedEquilibriumExcessReturnsArray = ForwardReverseOptimizationOutput.Reverse (</span>
+<span class="fc" id="L261">		double[] impliedEquilibriumExcessReturnsArray = ForwardReverseHoldingsAllocation.Reverse (</span>
 <span class="fc" id="L262">			Portfolio.Standard (</span>
 				assetIDArray,
 				assetEquilibriumWeightArray
@@ -295,7 +295,7 @@ import org.drip.service.env.EnvManager;
 <span class="fc" id="L295">		System.out.println (&quot;\t|---------------------------------------------------------------------||\n&quot;);</span>
 
 <span class="fc" id="L297">		ForwardOptimizationWeights (</span>
-<span class="fc" id="L298">			ForwardReverseOptimizationOutput.Forward (</span>
+<span class="fc" id="L298">			ForwardReverseHoldingsAllocation.Forward (</span>
 				assetIDArray,
 				assetSpaceHistoricalReturnsArray,
 				assetExcessReturnsCovarianceMatrix,
@@ -308,7 +308,7 @@ import org.drip.service.env.EnvManager;
 		);
 
 <span class="fc" id="L310">		ForwardOptimizationWeights (</span>
-<span class="fc" id="L311">			ForwardReverseOptimizationOutput.Forward (</span>
+<span class="fc" id="L311">			ForwardReverseHoldingsAllocation.Forward (</span>
 				assetIDArray,
 				assetSpaceGSMIReturnsArray,
 				assetExcessReturnsCovarianceMatrix,
@@ -321,7 +321,7 @@ import org.drip.service.env.EnvManager;
 		);
 
 <span class="fc" id="L323">		ForwardOptimizationWeights (</span>
-<span class="fc" id="L324">			ForwardReverseOptimizationOutput.Forward (</span>
+<span class="fc" id="L324">			ForwardReverseHoldingsAllocation.Forward (</span>
 				assetIDArray,
 				assetSpaceCAPMReturnsArray,
 				assetExcessReturnsCovarianceMatrix,

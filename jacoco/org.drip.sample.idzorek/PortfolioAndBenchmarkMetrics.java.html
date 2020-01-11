@@ -5,7 +5,7 @@ import org.drip.measure.bayesian.*;
 import org.drip.measure.continuous.MultivariateMeta;
 import org.drip.measure.gaussian.*;
 import org.drip.numerical.common.FormatUtil;
-import org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput;
+import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
 import org.drip.portfolioconstruction.asset.*;
 import org.drip.portfolioconstruction.bayesian.*;
 import org.drip.service.env.EnvManager;
@@ -183,7 +183,7 @@ import org.drip.service.env.EnvManager;
 		);
 
 <span class="fc" id="L185">		R1MultivariateConvolutionMetrics jointPosteriorMetrics = new BlackLittermanCombinationEngine (</span>
-<span class="fc" id="L186">			ForwardReverseOptimizationOutput.Reverse (</span>
+<span class="fc" id="L186">			ForwardReverseHoldingsAllocation.Reverse (</span>
 <span class="fc" id="L187">				Portfolio.Standard (</span>
 					assetIDArray,
 					assetEquilibriumWeightArray
@@ -204,8 +204,8 @@ import org.drip.service.env.EnvManager;
 
 <span class="fc" id="L205">		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jointPosteriorMetrics.joint();</span>
 
-<span class="fc" id="L207">		ForwardReverseOptimizationOutput priorForwardReverseOptimizationOutput =</span>
-<span class="fc" id="L208">			ForwardReverseOptimizationOutput.Reverse (</span>
+<span class="fc" id="L207">		ForwardReverseHoldingsAllocation priorForwardReverseOptimizationOutput =</span>
+<span class="fc" id="L208">			ForwardReverseHoldingsAllocation.Reverse (</span>
 <span class="fc" id="L209">				Portfolio.Standard (</span>
 					assetIDArray,
 					assetEquilibriumWeightArray
@@ -217,8 +217,8 @@ import org.drip.service.env.EnvManager;
 <span class="fc" id="L217">		PortfolioMetrics optimalPriorPortfolioMetrics =</span>
 <span class="fc" id="L218">			priorForwardReverseOptimizationOutput.optimalMetrics();</span>
 
-<span class="fc" id="L220">		ForwardReverseOptimizationOutput posteriorForwardReverseOptimizationOutput =</span>
-<span class="fc" id="L221">			ForwardReverseOptimizationOutput.Forward (</span>
+<span class="fc" id="L220">		ForwardReverseHoldingsAllocation posteriorForwardReverseOptimizationOutput =</span>
+<span class="fc" id="L221">			ForwardReverseHoldingsAllocation.Forward (</span>
 				assetIDArray,
 <span class="fc" id="L223">				jointDistribution.mean(),</span>
 				assetExcessReturnsCovarianceMatrix,

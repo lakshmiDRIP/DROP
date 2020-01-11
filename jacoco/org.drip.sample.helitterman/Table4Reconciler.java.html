@@ -225,7 +225,7 @@ import org.drip.service.env.EnvManager;
 
 <span class="fc" id="L226">		BlackLittermanCombinationEngine blackLittermanCombinationEngine =</span>
 			new BlackLittermanCombinationEngine (
-<span class="fc" id="L228">				ForwardReverseOptimizationOutput.Reverse (</span>
+<span class="fc" id="L228">				ForwardReverseHoldingsAllocation.Reverse (</span>
 <span class="fc" id="L229">					Portfolio.Standard (</span>
 						assetIDArray,
 						assetEquilibriumWeightArray
@@ -259,8 +259,8 @@ import org.drip.service.env.EnvManager;
 <span class="fc" id="L259">		double[][] assetSpacePosteriorCovarianceMatrix =</span>
 <span class="fc" id="L260">			posteriorDistribution.covariance().covarianceMatrix();</span>
 
-<span class="fc" id="L262">		OptimizationOutput optimizationOutput = new QuadraticMeanVarianceOptimizer().allocate (</span>
-			new PortfolioConstructionParameters (
+<span class="fc" id="L262">		HoldingsAllocation optimizationOutput = new QuadraticMeanVarianceOptimizer().allocate (</span>
+			new HoldingsAllocationControl (
 				assetIDArray,
 <span class="fc" id="L265">				CustomRiskUtilitySettings.RiskAversion (</span>
 					riskAversion

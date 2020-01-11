@@ -5,7 +5,7 @@ import org.drip.measure.bayesian.*;
 import org.drip.measure.continuous.MultivariateMeta;
 import org.drip.measure.gaussian.*;
 import org.drip.numerical.common.FormatUtil;
-import org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput;
+import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
 import org.drip.portfolioconstruction.asset.*;
 import org.drip.portfolioconstruction.bayesian.*;
 import org.drip.service.env.EnvManager;
@@ -108,7 +108,7 @@ import org.drip.service.env.EnvManager;
 {
 
 	private static final void ForwardOptimizationWeights (
-		final ForwardReverseOptimizationOutput forwardReverseOptimizationOutput,
+		final ForwardReverseHoldingsAllocation forwardReverseOptimizationOutput,
 		final double[] weightReconcilerArray,
 		final int preDecimalDigits,
 		final int postDecimalDigits,
@@ -293,7 +293,7 @@ import org.drip.service.env.EnvManager;
 		);
 
 <span class="fc" id="L295">		R1MultivariateConvolutionMetrics jointPosteriorMetrics = new BlackLittermanCombinationEngine (</span>
-<span class="fc" id="L296">			ForwardReverseOptimizationOutput.Reverse (</span>
+<span class="fc" id="L296">			ForwardReverseHoldingsAllocation.Reverse (</span>
 <span class="fc" id="L297">				Portfolio.Standard (</span>
 					assetIDArray,
 					assetEquilibriumWeightArray
@@ -328,8 +328,8 @@ import org.drip.service.env.EnvManager;
 <span class="fc" id="L328">		double[][] aadblAssetSpacePosteriorCovariance =</span>
 <span class="fc" id="L329">			posteriorDistribution.covariance().covarianceMatrix();</span>
 
-<span class="fc" id="L331">		ForwardReverseOptimizationOutput posteriorForwardReverseOptimizationOutput =</span>
-<span class="fc" id="L332">			ForwardReverseOptimizationOutput.Forward (</span>
+<span class="fc" id="L331">		ForwardReverseHoldingsAllocation posteriorForwardReverseOptimizationOutput =</span>
+<span class="fc" id="L332">			ForwardReverseHoldingsAllocation.Forward (</span>
 				assetIDArray,
 				assetSpaceJointReturnsArray,
 				assetExcessReturnsCovarianceMatrix,

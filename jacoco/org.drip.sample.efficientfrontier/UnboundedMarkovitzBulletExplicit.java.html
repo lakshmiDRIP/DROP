@@ -94,7 +94,7 @@ import org.drip.service.env.EnvManager;
 {
 
 	private static double DisplayPortfolioMetrics (
-		final OptimizationOutput optimizationOutput)
+		final HoldingsAllocation optimizationOutput)
 		throws Exception
 	{
 <span class="nc" id="L100">		AssetComponent[] globalMinimumAssetComponentArray =</span>
@@ -155,8 +155,8 @@ import org.drip.service.env.EnvManager;
 				)
 			);
 
-<span class="nc" id="L158">		PortfolioConstructionParameters portfolioConstructionParameters =</span>
-			new PortfolioConstructionParameters (
+<span class="nc" id="L158">		HoldingsAllocationControl portfolioConstructionParameters =</span>
+			new HoldingsAllocationControl (
 				assetIDArray,
 <span class="nc" id="L161">				CustomRiskUtilitySettings.RiskTolerant (</span>
 					riskToleranceFactor
@@ -222,7 +222,7 @@ import org.drip.service.env.EnvManager;
 		{
 <span class="nc" id="L223">			DisplayPortfolioMetrics (</span>
 <span class="nc" id="L224">				meanVarianceOptimizer.allocate (</span>
-					new PortfolioConstructionParameters (
+					new HoldingsAllocationControl (
 						assetIDArray,
 <span class="nc" id="L227">						CustomRiskUtilitySettings.VarianceMinimizer(),</span>
 						new EqualityConstraintSettings (

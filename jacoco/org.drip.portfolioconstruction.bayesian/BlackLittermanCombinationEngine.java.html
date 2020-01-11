@@ -111,7 +111,7 @@ public class BlackLittermanCombinationEngine
 <span class="fc" id="L111">	private org.drip.portfolioconstruction.bayesian.ProjectionSpecification _projectionSpecification = null;</span>
 <span class="fc" id="L112">	private org.drip.portfolioconstruction.bayesian.PriorControlSpecification _priorControlSpecification =</span>
 		null;
-<span class="fc" id="L114">	private org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput</span>
+<span class="fc" id="L114">	private org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation</span>
 		_forwardReverseOptimizationOutputUnadjusted = null;
 
 	private org.drip.measure.bayesian.ScopingProjectionVariateDistribution
@@ -171,7 +171,7 @@ public class BlackLittermanCombinationEngine
 	}
 
 	private double[] allocationTiltArray (
-		final org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+		final org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 			forwardReverseOptimizationOutputAdjusted)
 	{
 <span class="fc" id="L177">		double[] adjustedWeightArray =</span>
@@ -204,7 +204,7 @@ public class BlackLittermanCombinationEngine
 	 */
 
 	public BlackLittermanCombinationEngine (
-		final org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+		final org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 			forwardReverseOptimizationOutputUnadjusted,
 		final org.drip.portfolioconstruction.bayesian.PriorControlSpecification priorControlSpecification,
 		final org.drip.portfolioconstruction.bayesian.ProjectionSpecification projectionSpecification)
@@ -245,9 +245,9 @@ public class BlackLittermanCombinationEngine
 			}
 		}
 
-		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+		org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 <span class="nc" id="L249">			forwardReverseOptimizationOutputAdjusted =</span>
-<span class="nc" id="L250">				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (</span>
+<span class="nc" id="L250">				org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation.Forward (</span>
 <span class="nc" id="L251">					_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta().names(),</span>
 <span class="nc" id="L252">					_forwardReverseOptimizationOutputUnadjusted.expectedAssetExcessReturnsArray(),</span>
 					assetBayesianExcessReturnsCovarianceMatrix,
@@ -313,9 +313,9 @@ public class BlackLittermanCombinationEngine
 
 <span class="fc" id="L314">		org.drip.measure.continuous.R1Multivariate r1mPosterior = jointPosteriorMetrics.posterior();</span>
 
-		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+		org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 <span class="fc" id="L317">			forwardReverseOptimizationOutputAdjusted =</span>
-<span class="fc" id="L318">				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (</span>
+<span class="fc" id="L318">				org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation.Forward (</span>
 <span class="fc" id="L319">					portfolioMeta.names(),</span>
 <span class="fc" id="L320">					r1mPosterior.mean(),</span>
 <span class="fc bfc" id="L321" title="All 2 branches covered.">					_priorControlSpecification.useAlternateReferenceModel() ?</span>
@@ -374,13 +374,13 @@ public class BlackLittermanCombinationEngine
 <span class="nc" id="L374">			return null;</span>
 		}
 
-		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+		org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 <span class="fc" id="L378">			forwardReverseOptimizationOutputAdjusted = null;</span>
 
 <span class="pc bpc" id="L380" title="1 of 2 branches missed.">		if (_priorControlSpecification.useAlternateReferenceModel())</span>
 		{
 <span class="fc" id="L382">			forwardReverseOptimizationOutputAdjusted =</span>
-<span class="fc" id="L383">				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (</span>
+<span class="fc" id="L383">				org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation.Forward (</span>
 					assetIDArray,
 <span class="fc" id="L385">					org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingMean (</span>
 						scopingProjectionVariateDistribution,
@@ -404,7 +404,7 @@ public class BlackLittermanCombinationEngine
 				);
 
 <span class="nc bnc" id="L406" title="All 2 branches missed.">			forwardReverseOptimizationOutputAdjusted = null == combinedDistribution ? null :</span>
-<span class="nc" id="L407">				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (</span>
+<span class="nc" id="L407">				org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation.Forward (</span>
 					assetIDArray,
 <span class="nc" id="L409">					combinedDistribution.mean(),</span>
 					assetExcessReturnsCovarianceMatrix,
@@ -478,9 +478,9 @@ public class BlackLittermanCombinationEngine
 
 <span class="fc" id="L479">		org.drip.measure.continuous.R1Multivariate posteriorDistribution = jointPosteriorMetrics.posterior();</span>
 
-		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+		org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 <span class="fc" id="L482">			forwardReverseOptimizationOutputCustomConfidence =</span>
-<span class="fc" id="L483">				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (</span>
+<span class="fc" id="L483">				org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation.Forward (</span>
 					assetIDArray,
 <span class="pc bpc" id="L485" title="1 of 2 branches missed.">					posteriorDistribution.mean(),</span>
 					useAlternateReferenceModel ? assetExcessReturnsCovarianceMatrix :
@@ -494,13 +494,13 @@ public class BlackLittermanCombinationEngine
 <span class="nc" id="L494">			return null;</span>
 		}
 
-		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+		org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 <span class="fc" id="L498">			forwardReverseOptimizationOutputFullConfidence = null;</span>
 
 <span class="pc bpc" id="L500" title="1 of 2 branches missed.">		if (useAlternateReferenceModel)</span>
 		{
 <span class="fc" id="L502">			forwardReverseOptimizationOutputFullConfidence =</span>
-<span class="fc" id="L503">				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (</span>
+<span class="fc" id="L503">				org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation.Forward (</span>
 					assetIDArray,
 <span class="fc" id="L505">					org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingMean (</span>
 						scopingProjectionVariateDistribution,
@@ -524,7 +524,7 @@ public class BlackLittermanCombinationEngine
 				);
 
 <span class="nc bnc" id="L526" title="All 2 branches missed.">			forwardReverseOptimizationOutputFullConfidence = null == combinedDistribution ? null :</span>
-<span class="nc" id="L527">				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (</span>
+<span class="nc" id="L527">				org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation.Forward (</span>
 					assetIDArray,
 <span class="nc" id="L529">					combinedDistribution.mean(),</span>
 					assetExcessReturnsCovarianceMatrix,

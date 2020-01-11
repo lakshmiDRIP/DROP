@@ -110,7 +110,7 @@ package org.drip.json.assetallocation;
 <span class="fc" id="L110">		java.lang.String[] astrAssetID = org.drip.json.parser.Converter.StringArrayEntry (jsonParameter,</span>
 			&quot;AssetSet&quot;);
 
-<span class="fc" id="L113">		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters pdp = null;</span>
+<span class="fc" id="L113">		org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl pdp = null;</span>
 <span class="pc bpc" id="L114" title="1 of 2 branches missed.">		int iNumAsset = null == astrAssetID ? 0 : astrAssetID.length;</span>
 <span class="fc" id="L115">		double[] adblAssetLowerBound = new double[iNumAsset];</span>
 <span class="fc" id="L116">		double[] adblAssetUpperBound = new double[iNumAsset];</span>
@@ -149,7 +149,7 @@ package org.drip.json.assetallocation;
 <span class="fc" id="L149">				org.drip.function.rdtor1descent.LineStepEvolutionControl.NocedalWrightStrongWolfe (false));</span>
 
 		try {
-<span class="fc" id="L152">			pdp = new org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters</span>
+<span class="fc" id="L152">			pdp = new org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl</span>
 				(astrAssetID, new org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings (1.,
 					0.), new org.drip.portfolioconstruction.allocator.EqualityConstraintSettings
 						(org.drip.portfolioconstruction.allocator.EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
@@ -164,7 +164,7 @@ package org.drip.json.assetallocation;
 <span class="pc bpc" id="L164" title="1 of 2 branches missed.">			if (!pdp.addBound (astrAssetID[i], adblAssetLowerBound[i], adblAssetUpperBound[i])) return null;</span>
 		}
 
-<span class="fc" id="L167">		org.drip.portfolioconstruction.allocator.OptimizationOutput oo = cmva.allocate (pdp, ausp);</span>
+<span class="fc" id="L167">		org.drip.portfolioconstruction.allocator.HoldingsAllocation oo = cmva.allocate (pdp, ausp);</span>
 
 <span class="pc bpc" id="L169" title="1 of 2 branches missed.">		if (null == oo) return null;</span>
 
@@ -223,7 +223,7 @@ package org.drip.json.assetallocation;
 <span class="fc" id="L223">    	java.lang.String[] astrAssetID = org.drip.json.parser.Converter.StringArrayEntry (jsonParameter,</span>
 			&quot;AssetSet&quot;);
 
-<span class="fc" id="L226">		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters pdp = null;</span>
+<span class="fc" id="L226">		org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl pdp = null;</span>
 <span class="pc bpc" id="L227" title="1 of 2 branches missed.">		int iNumAsset = null == astrAssetID ? 0 : astrAssetID.length;</span>
 <span class="fc" id="L228">		double dblPortfolioDesignReturn = java.lang.Double.NaN;</span>
 <span class="fc" id="L229">		double[] adblAssetLowerBound = new double[iNumAsset];</span>
@@ -265,7 +265,7 @@ package org.drip.json.assetallocation;
 			org.drip.portfolioconstruction.allocator.ConstrainedMeanVarianceOptimizer (null, null);
 
 		try {
-<span class="fc" id="L268">			pdp = new org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters</span>
+<span class="fc" id="L268">			pdp = new org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl</span>
 				(astrAssetID, new org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings (1.,
 					0.), new org.drip.portfolioconstruction.allocator.EqualityConstraintSettings
 						(org.drip.portfolioconstruction.allocator.EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT
@@ -281,7 +281,7 @@ package org.drip.json.assetallocation;
 <span class="pc bpc" id="L281" title="1 of 2 branches missed.">			if (!pdp.addBound (astrAssetID[i], adblAssetLowerBound[i], adblAssetUpperBound[i])) return null;</span>
 		}
 
-<span class="fc" id="L284">		org.drip.portfolioconstruction.allocator.OptimizationOutput oo = cmva.allocate (pdp, ausp);</span>
+<span class="fc" id="L284">		org.drip.portfolioconstruction.allocator.HoldingsAllocation oo = cmva.allocate (pdp, ausp);</span>
 
 <span class="pc bpc" id="L286" title="1 of 2 branches missed.">		if (null == oo) return null;</span>
 

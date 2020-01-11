@@ -98,7 +98,7 @@ import org.drip.service.env.EnvManager;
 {
 
 	private static void DisplayPortfolioMetrics (
-		final OptimizationOutput optimalOutput)
+		final HoldingsAllocation optimalOutput)
 		throws Exception
 	{
 <span class="nc" id="L104">		AssetComponent[] globalMinimumAssetComponentArray =</span>
@@ -150,7 +150,7 @@ import org.drip.service.env.EnvManager;
 		}
 
 <span class="nc" id="L152">		MarkovitzBullet markovitzBullet = new QuadraticMeanVarianceOptimizer().efficientFrontier (</span>
-			new PortfolioConstructionParameters (
+			new HoldingsAllocationControl (
 				assetIDArray,
 <span class="nc" id="L155">				CustomRiskUtilitySettings.RiskTolerant (riskToleranceFactor),</span>
 				new EqualityConstraintSettings (
@@ -192,7 +192,7 @@ import org.drip.service.env.EnvManager;
 
 <span class="nc" id="L193">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||\n\n\n&quot;);</span>
 
-<span class="nc" id="L195">		TreeMap&lt;Double, OptimizationOutput&gt; frontierPortfolioMap = markovitzBullet.optimalPortfolioMap();</span>
+<span class="nc" id="L195">		TreeMap&lt;Double, HoldingsAllocation&gt; frontierPortfolioMap = markovitzBullet.optimalPortfolioMap();</span>
 
 <span class="nc" id="L197">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
 
@@ -204,7 +204,7 @@ import org.drip.service.env.EnvManager;
 
 <span class="nc" id="L205">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L207" title="All 2 branches missed.">		for (Map.Entry&lt;Double, OptimizationOutput&gt; me : frontierPortfolioMap.entrySet())</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">		for (Map.Entry&lt;Double, HoldingsAllocation&gt; me : frontierPortfolioMap.entrySet())</span>
 		{
 <span class="nc" id="L209">			DisplayPortfolioMetrics (</span>
 <span class="nc" id="L210">				me.getValue()</span>
