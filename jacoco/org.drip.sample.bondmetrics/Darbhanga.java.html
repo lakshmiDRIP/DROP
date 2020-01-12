@@ -12,36 +12,48 @@ import org.drip.service.scenario.*;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -76,42 +88,42 @@ import org.drip.service.scenario.*;
  *  
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/bondmetrics/README.md&quot;&gt;Bond Analytics Metrics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/bondmetrics/README.md&quot;&gt;Bond Relative Value Replication Demonstration&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L89">public class Darbhanga {</span>
+<span class="nc" id="L101">public class Darbhanga {</span>
 
 	public static final void main (
 		final String[] astArgs)
 		throws Exception
 	{
-<span class="nc" id="L95">		EnvManager.InitEnv (</span>
+<span class="nc" id="L107">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="nc" id="L100">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="nc" id="L112">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2018,
 			DateUtil.JANUARY,
 			5
 		);
 
-<span class="nc" id="L106">		String[] astrDepositTenor = new String[] {</span>
+<span class="nc" id="L118">		String[] astrDepositTenor = new String[] {</span>
 			&quot;2D&quot;
 		};
 
-<span class="nc" id="L110">		double[] adblDepositQuote = new double[] {</span>
+<span class="nc" id="L122">		double[] adblDepositQuote = new double[] {</span>
 			0.0170393 // 2D
 		};
 
-<span class="nc" id="L114">		double[] adblFuturesQuote = new double[] {</span>
+<span class="nc" id="L126">		double[] adblFuturesQuote = new double[] {</span>
 			0.01810,	// 98.190
 			0.01995,	// 98.005
 			0.02115,	// 97.885
@@ -120,7 +132,7 @@ import org.drip.service.scenario.*;
 			0.02340     // 97.660
 		};
 
-<span class="nc" id="L123">		String[] astrFixFloatTenor = new String[] {</span>
+<span class="nc" id="L135">		String[] astrFixFloatTenor = new String[] {</span>
 			&quot;02Y&quot;,
 			&quot;03Y&quot;,
 			&quot;04Y&quot;,
@@ -140,7 +152,7 @@ import org.drip.service.scenario.*;
 			&quot;50Y&quot;
 		};
 
-<span class="nc" id="L143">		double[] adblFixFloatQuote = new double[] {</span>
+<span class="nc" id="L155">		double[] adblFixFloatQuote = new double[] {</span>
 			0.021489, //  2Y
 			0.022452, //  3Y
 			0.022964, //  4Y
@@ -160,7 +172,7 @@ import org.drip.service.scenario.*;
 			0.025636  // 50Y
 		};
 
-<span class="nc" id="L163">		String[] astrGovvieTenor = new String[] {</span>
+<span class="nc" id="L175">		String[] astrGovvieTenor = new String[] {</span>
 			&quot;1M&quot;,
 			&quot;3M&quot;,
 			&quot;6M&quot;,
@@ -175,7 +187,7 @@ import org.drip.service.scenario.*;
 			&quot;30Y&quot;
 		};
 
-<span class="nc" id="L178">		double[] adblGovvieYield = new double[] {</span>
+<span class="nc" id="L190">		double[] adblGovvieYield = new double[] {</span>
 			0.01270, //  1M
 			0.01390, //  3M
 			0.01580, //  6M
@@ -190,7 +202,7 @@ import org.drip.service.scenario.*;
 			0.02810  // 30Y
 		};
 
-<span class="nc" id="L193">		String[] astrCreditTenor = new String[] {</span>
+<span class="nc" id="L205">		String[] astrCreditTenor = new String[] {</span>
 			&quot;06M&quot;,
 			&quot;01Y&quot;,
 			&quot;02Y&quot;,
@@ -201,7 +213,7 @@ import org.drip.service.scenario.*;
 			&quot;10Y&quot;
 		};
 
-<span class="nc" id="L204">		double[] adblCreditQuote = new double[] {</span>
+<span class="nc" id="L216">		double[] adblCreditQuote = new double[] {</span>
 			 60.,	//  6M
 			 68.,	//  1Y
 			 88.,	//  2Y
@@ -212,37 +224,37 @@ import org.drip.service.scenario.*;
 			188.	// 10Y
 		};
 
-<span class="nc" id="L215">		double dblFX = 1.;</span>
-<span class="nc" id="L216">		int iSettleLag = 3;</span>
-<span class="nc" id="L217">		int iCouponFreq = 4;</span>
-<span class="nc" id="L218">		String strName = &quot;Darbhanga&quot;;</span>
-<span class="nc" id="L219">		double dblCleanPrice = 1.01546;</span>
-<span class="nc" id="L220">		double dblIssuePrice = 1.;</span>
-<span class="nc" id="L221">		String strCurrency = &quot;USD&quot;;</span>
-<span class="nc" id="L222">		double dblSpreadBump = 20.;</span>
-<span class="nc" id="L223">		double dblIssueAmount = 2.60e7;</span>
-<span class="nc" id="L224">		double dblFloatSpread = 0.01255;</span>
-<span class="nc" id="L225">		String strTreasuryCode = &quot;UST&quot;;</span>
-<span class="nc" id="L226">		double dblFullFirstCoupon = 0.0280378;</span>
-<span class="nc" id="L227">		String strCouponDayCount = &quot;30/360&quot;;</span>
-<span class="nc" id="L228">		double dblSpreadDurationMultiplier = 5.;</span>
+<span class="nc" id="L227">		double dblFX = 1.;</span>
+<span class="nc" id="L228">		int iSettleLag = 3;</span>
+<span class="nc" id="L229">		int iCouponFreq = 4;</span>
+<span class="nc" id="L230">		String strName = &quot;Darbhanga&quot;;</span>
+<span class="nc" id="L231">		double dblCleanPrice = 1.01546;</span>
+<span class="nc" id="L232">		double dblIssuePrice = 1.;</span>
+<span class="nc" id="L233">		String strCurrency = &quot;USD&quot;;</span>
+<span class="nc" id="L234">		double dblSpreadBump = 20.;</span>
+<span class="nc" id="L235">		double dblIssueAmount = 2.60e7;</span>
+<span class="nc" id="L236">		double dblFloatSpread = 0.01255;</span>
+<span class="nc" id="L237">		String strTreasuryCode = &quot;UST&quot;;</span>
+<span class="nc" id="L238">		double dblFullFirstCoupon = 0.0280378;</span>
+<span class="nc" id="L239">		String strCouponDayCount = &quot;30/360&quot;;</span>
+<span class="nc" id="L240">		double dblSpreadDurationMultiplier = 5.;</span>
 
-<span class="nc" id="L230">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
+<span class="nc" id="L242">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
 			2015,
 			3,
 			12
 		);
 
-<span class="nc" id="L236">		JulianDate dtMaturity = DateUtil.CreateFromYMD (</span>
+<span class="nc" id="L248">		JulianDate dtMaturity = DateUtil.CreateFromYMD (</span>
 			2020,
 			3,
 			12
 		);
 
-<span class="nc" id="L242">		double dblResetRate = dblFullFirstCoupon - dblFloatSpread;</span>
-<span class="nc" id="L243">		String strRateIndex = strCurrency + &quot;-&quot; + (12 / iCouponFreq) + &quot;M&quot;;</span>
+<span class="nc" id="L254">		double dblResetRate = dblFullFirstCoupon - dblFloatSpread;</span>
+<span class="nc" id="L255">		String strRateIndex = strCurrency + &quot;-&quot; + (12 / iCouponFreq) + &quot;M&quot;;</span>
 
-<span class="nc" id="L245">		BondComponent bond = BondBuilder.CreateSimpleFloater (</span>
+<span class="nc" id="L257">		BondComponent bond = BondBuilder.CreateSimpleFloater (</span>
 			strName,
 			strCurrency,
 			strRateIndex,
@@ -256,7 +268,7 @@ import org.drip.service.scenario.*;
 			null
 		);
 
-<span class="nc" id="L259">		BondReplicator abr = BondReplicator.CorporateSenior (</span>
+<span class="nc" id="L271">		BondReplicator abr = BondReplicator.CorporateSenior (</span>
 			dblCleanPrice,
 			dblIssuePrice,
 			dblIssueAmount,
@@ -279,11 +291,11 @@ import org.drip.service.scenario.*;
 			bond
 		);
 
-<span class="nc" id="L282">		BondReplicationRun abrr = abr.generateRun();</span>
+<span class="nc" id="L294">		BondReplicationRun abrr = abr.generateRun();</span>
 
-<span class="nc" id="L284">		System.out.println (abrr.display());</span>
+<span class="nc" id="L296">		System.out.println (abrr.display());</span>
 
-<span class="nc" id="L286">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L287">	}</span>
+<span class="nc" id="L298">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L299">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
