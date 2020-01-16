@@ -96,7 +96,6 @@ package org.drip.portfolioconstruction.allocator;
 public class BoundedHoldingsAllocationControl extends
 	org.drip.portfolioconstruction.allocator.HoldingsAllocationControl
 {
-
 	private org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.asset.AssetBounds>
 		_assetBoundsMap = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.asset.AssetBounds>();
@@ -110,9 +109,18 @@ public class BoundedHoldingsAllocationControl extends
 
 		double lowerWeight = assetBounds.lower();
 
-		return !org.drip.numerical.common.NumberUtil.IsValid (
+		if (org.drip.numerical.common.NumberUtil.IsValid (
 			lowerWeight
-		) ? 0. : lowerWeight;
+		))
+		{
+			return lowerWeight;
+		}
+
+		double upperWeight = assetBounds.upper();
+
+		return !org.drip.numerical.common.NumberUtil.IsValid (
+			upperWeight
+		) ? 0. : upperWeight - 0.5;
 	}
 
 	/**

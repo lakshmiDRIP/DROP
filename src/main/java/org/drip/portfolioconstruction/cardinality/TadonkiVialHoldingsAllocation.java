@@ -118,6 +118,38 @@ package org.drip.portfolioconstruction.cardinality;
 public class TadonkiVialHoldingsAllocation
 	extends org.drip.portfolioconstruction.allocator.HoldingsAllocation
 {
+	private org.drip.portfolioconstruction.allocator.HoldingsAllocation _floorPassHoldingsAllocation = null;
+	private org.drip.portfolioconstruction.allocator.HoldingsAllocation _firstPrunePassHoldingsAllocation =
+		null;
+	private org.drip.portfolioconstruction.allocator.HoldingsAllocation _secondPrunePassHoldingsAllocation =
+		null;
+
+	/**
+	 * Generate a Standard Instance of the Tadonki Vial Holdings Allocation
+	 * 
+	 * @param holdingsAllocation The Holdings Allocation
+	 * 
+	 * @return Tadonki Vial Holdings Allocation
+	 */
+
+	public static final TadonkiVialHoldingsAllocation Standard (
+		final org.drip.portfolioconstruction.allocator.HoldingsAllocation holdingsAllocation)
+	{
+		try
+		{
+			return null == holdingsAllocation ? null :
+				new org.drip.portfolioconstruction.cardinality.TadonkiVialHoldingsAllocation (
+					holdingsAllocation.optimalPortfolio(),
+					holdingsAllocation.optimalMetrics()
+				);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
 	 * TadonkiVialHoldingsAllocation Constructor
@@ -137,5 +169,98 @@ public class TadonkiVialHoldingsAllocation
 			optimalPortfolio,
 			optimalPortfolioMetrics
 		);
+	}
+
+	/**
+	 * Retrieve the Floor Pass Holdings Allocation
+	 * 
+	 * @return The Floor Pass Holdings Allocation
+	 */
+
+	public org.drip.portfolioconstruction.allocator.HoldingsAllocation floorPassHoldingsAllocation()
+	{
+		return _floorPassHoldingsAllocation;
+	}
+
+	/**
+	 * Retrieve the First Prune Pass Holdings Allocation
+	 * 
+	 * @return The First Prune Pass Holdings Allocation
+	 */
+
+	public org.drip.portfolioconstruction.allocator.HoldingsAllocation firstPrunePassHoldingsAllocation()
+	{
+		return _firstPrunePassHoldingsAllocation;
+	}
+
+	/**
+	 * Retrieve the Second Prune Pass Holdings Allocation
+	 * 
+	 * @return The Second Prune Pass Holdings Allocation
+	 */
+
+	public org.drip.portfolioconstruction.allocator.HoldingsAllocation secondPrunePassHoldingsAllocation()
+	{
+		return _secondPrunePassHoldingsAllocation;
+	}
+
+	/**
+	 * Set the Floor Pass Holdings Allocation
+	 * 
+	 * @param floorPassHoldingsAllocation The Floor Pass Holdings Allocation
+	 * 
+	 * @return TRUE - The Floor Pass Holdings Allocation successfully set
+	 */
+
+	public boolean setFloorPassHoldingsAllocation (
+		final org.drip.portfolioconstruction.allocator.HoldingsAllocation floorPassHoldingsAllocation)
+	{
+		if (null == floorPassHoldingsAllocation)
+		{
+			return false;
+		}
+
+		_floorPassHoldingsAllocation = floorPassHoldingsAllocation;
+		return true;
+	}
+
+	/**
+	 * Set the First Prune Pass Holdings Allocation
+	 * 
+	 * @param firstPrunePassHoldingsAllocation The First Prune Pass Holdings Allocation
+	 * 
+	 * @return TRUE - The First Prune Pass Holdings Allocation successfully set
+	 */
+
+	public boolean setFirstPrunePassHoldingsAllocation (
+		final org.drip.portfolioconstruction.allocator.HoldingsAllocation firstPrunePassHoldingsAllocation)
+	{
+		if (null == firstPrunePassHoldingsAllocation)
+		{
+			return false;
+		}
+
+		_firstPrunePassHoldingsAllocation = firstPrunePassHoldingsAllocation;
+		return true;
+	}
+
+	/**
+	 * Set the Second Prune Pass Holdings Allocation
+	 * 
+	 * @param secondPrunePassHoldingsAllocation The Second Prune Pass Holdings Allocation
+	 * 
+	 * @return TRUE - The Second Prune Pass Holdings Allocation successfully set
+	 */
+
+	public boolean setSecondPrunePassHoldingsAllocation (
+		final org.drip.portfolioconstruction.allocator.HoldingsAllocation secondPrunePassHoldingsAllocation)
+	{
+		if (null == secondPrunePassHoldingsAllocation)
+		{
+			return false;
+		}
+
+		_secondPrunePassHoldingsAllocation = secondPrunePassHoldingsAllocation;
+		return true;
 	}
 }

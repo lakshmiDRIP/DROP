@@ -1,8 +1,6 @@
 
 package org.drip.portfolioconstruction.cardinality;
 
-import org.drip.numerical.common.FormatUtil;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -122,48 +120,17 @@ import org.drip.numerical.common.FormatUtil;
 public class TadonkiVialMeanVarianceOptimizer
 	extends org.drip.portfolioconstruction.allocator.ConstrainedMeanVarianceOptimizer
 {
-	private void PrintPortfolio (
-		final org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio)
-	{
-		System.out.println ("\t|------------------||");
-
-		System.out.println ("\t|  OPTIMAL WEIGHTS ||");
-
-		System.out.println ("\t|------------------||");
-
-		System.out.println ("\t| ASSET |   DROP   ||");
-
-		System.out.println ("\t|------------------||");
-
-		for (int assetIndex = 0;
-			assetIndex < optimalPortfolio.assetComponentArray().length;
-			++assetIndex)
-		{
-			System.out.println (
-				"\t|  " + optimalPortfolio.assetComponentArray()[assetIndex].id() + "  |" +
-				FormatUtil.FormatDouble (
-					optimalPortfolio.assetComponentArray()[assetIndex].amount(), 2, 4, 100.
-				) + "% ||"
-			);
-		}
-
-		System.out.println ("\t|------------------||");
-
-		System.out.println ("\t| Cardinality => " + optimalPortfolio.cardinality());
-
-		System.out.println ("\t|------------------||");
-	}
 
 	private org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
-		workingPortfolioConstructionParameters (
+		workingPortfolioAllocationControl (
 			final java.lang.String[] assetIDArray,
 			final org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
-				parentBoundedPortfolioConstructionParameters,
+				boundedHoldingsAllocationControl,
 			final java.util.Set<java.lang.String> pruneAssetIDSet)
 	{
 		int prunedAssetIDIndex = 0;
 		org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
-			boundedPortfolioConstructionParameters = null;
+			workingPortfolioAllocationControl = null;
 
 		java.lang.String[] prunedAssetIDArray =
 			new java.lang.String[assetIDArray.length - pruneAssetIDSet.size()];
@@ -184,27 +151,27 @@ public class TadonkiVialMeanVarianceOptimizer
 
 		try
 		{
-			boundedPortfolioConstructionParameters =
+			workingPortfolioAllocationControl =
 				new org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl (
 					prunedAssetIDArray,
-					parentBoundedPortfolioConstructionParameters.customRiskUtilitySettings(),
-					parentBoundedPortfolioConstructionParameters.equalityConstraintSettings()
+					boundedHoldingsAllocationControl.customRiskUtilitySettings(),
+					boundedHoldingsAllocationControl.equalityConstraintSettings()
 				);
 
 			for (int prunedAssetIndex = 0;
 				prunedAssetIndex < prunedAssetIDArray.length;
 				++prunedAssetIndex)
 			{
-				boundedPortfolioConstructionParameters.addBound (
+				workingPortfolioAllocationControl.addBound (
 					prunedAssetIDArray[prunedAssetIndex],
 					0.,
-					parentBoundedPortfolioConstructionParameters.upperBound (
+					boundedHoldingsAllocationControl.upperBound (
 						prunedAssetIDArray[prunedAssetIndex]
 					)
 				);
 			}
 
-			return boundedPortfolioConstructionParameters;
+			return workingPortfolioAllocationControl;
 		}
 		catch (java.lang.Exception e)
 		{
@@ -214,10 +181,10 @@ public class TadonkiVialMeanVarianceOptimizer
 		return null;
 	}
 
-	private int firstPassPruneList (
+	private int firstGreedyPruneList (
 		final org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio,
 		final org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
-			parentBoundedPortfolioConstructionParameters,
+			boundedHoldingsAllocationControl,
 		final java.util.Set<java.lang.String> pruneAssetIDSet)
 	{
 		int pruneCount = 0;
@@ -234,7 +201,7 @@ public class TadonkiVialMeanVarianceOptimizer
 				java.lang.String assetID = assetComponentArray[assetIndex].id();
 
 				if (assetComponentArray[assetIndex].amount() <
-					parentBoundedPortfolioConstructionParameters.lowerBound (
+					boundedHoldingsAllocationControl.lowerBound (
 						assetID
 					)
 				)
@@ -242,8 +209,6 @@ public class TadonkiVialMeanVarianceOptimizer
 					pruneAssetIDSet.add (
 						assetID
 					);
-
-					System.out.println ("\tPruning: " + assetID);
 
 					++pruneCount;
 				}
@@ -258,7 +223,7 @@ public class TadonkiVialMeanVarianceOptimizer
 		return pruneCount;
 	}
 
-	private boolean secondPassPruneList (
+	private boolean secondGreedyPruneList (
 		final org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio,
 		final org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
 			parentBoundedPortfolioConstructionParameters,
@@ -330,114 +295,141 @@ public class TadonkiVialMeanVarianceOptimizer
 		);
 	}
 
-	@Override public org.drip.portfolioconstruction.allocator.HoldingsAllocation allocate (
+	@Override public org.drip.portfolioconstruction.cardinality.TadonkiVialHoldingsAllocation allocate (
 		final org.drip.portfolioconstruction.allocator.HoldingsAllocationControl
-			portfolioConstructionParameters,
+			holdingsAllocationControl,
 		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
 			assetUniverseStatisticalProperties)
 	{
-		if (!(portfolioConstructionParameters instanceof
+		if (!(holdingsAllocationControl instanceof
 			org.drip.portfolioconstruction.cardinality.UpperBoundHoldingsAllocationControl))
 		{
 			return null;
 		}
 
 		org.drip.portfolioconstruction.cardinality.UpperBoundHoldingsAllocationControl
-			boundedCardinalityParameters =
+			upperBoundHoldingsAllocationControl =
 				(org.drip.portfolioconstruction.cardinality.UpperBoundHoldingsAllocationControl)
-					portfolioConstructionParameters;
+					holdingsAllocationControl;
 
-		int cardinalityUpperBound = boundedCardinalityParameters.cardinalityUpperBound();
+		int cardinalityUpperBound = upperBoundHoldingsAllocationControl.cardinalityUpperBound();
 
-		java.lang.String[] assetIDArray = boundedCardinalityParameters.assetIDArray();
+		java.lang.String[] assetIDArray = upperBoundHoldingsAllocationControl.assetIDArray();
 
 		if (cardinalityUpperBound >= assetIDArray.length)
 		{
-			return super.allocate (
-				portfolioConstructionParameters,
-				assetUniverseStatisticalProperties
+			return org.drip.portfolioconstruction.cardinality.TadonkiVialHoldingsAllocation.Standard (
+				super.allocate (
+					holdingsAllocationControl,
+					assetUniverseStatisticalProperties
+				)
 			);
 		}
 
 		java.util.Set<java.lang.String> pruneAssetIDSet = new java.util.HashSet<java.lang.String>();
 
 		org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
-			workingPortfolioConstructionParameters = workingPortfolioConstructionParameters (
+			workingPortfolioAllocationControl = workingPortfolioAllocationControl (
 				assetIDArray,
-				boundedCardinalityParameters,
+				upperBoundHoldingsAllocationControl,
 				pruneAssetIDSet
 			);
 
-		org.drip.portfolioconstruction.allocator.HoldingsAllocation optimizationOutput = super.allocate (
-			workingPortfolioConstructionParameters,
-			assetUniverseStatisticalProperties
-		);
-
-		org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio =
-			optimizationOutput.optimalPortfolio();
-
-		PrintPortfolio (
-			optimalPortfolio
-		);
-
-		if (cardinalityUpperBound >= optimalPortfolio.cardinality())
-		{
-			return optimizationOutput;
-		}
-
-		while (0 != firstPassPruneList (
-			optimalPortfolio,
-			boundedCardinalityParameters,
-			pruneAssetIDSet
-		))
-		{
-			workingPortfolioConstructionParameters = workingPortfolioConstructionParameters (
-				assetIDArray,
-				boundedCardinalityParameters,
-				pruneAssetIDSet
-			);
-
-			optimizationOutput = super.allocate (
-				workingPortfolioConstructionParameters,
+		org.drip.portfolioconstruction.allocator.HoldingsAllocation floorPassHoldingsAllocation =
+			super.allocate (
+				workingPortfolioAllocationControl,
 				assetUniverseStatisticalProperties
 			);
 
-			optimalPortfolio = optimizationOutput.optimalPortfolio();
+		if (null == floorPassHoldingsAllocation)
+		{
+			return null;
+		}
 
-			PrintPortfolio (
-				optimalPortfolio
+		org.drip.portfolioconstruction.allocator.HoldingsAllocation firstPrunePassHoldingsAllocation =
+			floorPassHoldingsAllocation;
+
+		org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio =
+			firstPrunePassHoldingsAllocation.optimalPortfolio();
+
+		while (0 != firstGreedyPruneList (
+			optimalPortfolio,
+			upperBoundHoldingsAllocationControl,
+			pruneAssetIDSet
+		))
+		{
+			workingPortfolioAllocationControl = workingPortfolioAllocationControl (
+				assetIDArray,
+				upperBoundHoldingsAllocationControl,
+				pruneAssetIDSet
 			);
+
+			firstPrunePassHoldingsAllocation = super.allocate (
+				workingPortfolioAllocationControl,
+				assetUniverseStatisticalProperties
+			);
+
+			if (null == firstPrunePassHoldingsAllocation)
+			{
+				return null;
+			}
+
+			optimalPortfolio = firstPrunePassHoldingsAllocation.optimalPortfolio();
 		}
 
 		if (cardinalityUpperBound >= optimalPortfolio.cardinality())
 		{
-			return optimizationOutput;
+			org.drip.portfolioconstruction.cardinality.TadonkiVialHoldingsAllocation
+				tadonkiVialHoldingsAllocation = 
+					org.drip.portfolioconstruction.cardinality.TadonkiVialHoldingsAllocation.Standard (
+						firstPrunePassHoldingsAllocation
+					);
+
+			return null == tadonkiVialHoldingsAllocation ||
+				!tadonkiVialHoldingsAllocation.setFloorPassHoldingsAllocation (
+					floorPassHoldingsAllocation
+				) || !tadonkiVialHoldingsAllocation.setFirstPrunePassHoldingsAllocation (
+					firstPrunePassHoldingsAllocation
+				) ? null : tadonkiVialHoldingsAllocation;
 		}
 
-		secondPassPruneList (
+		secondGreedyPruneList (
 			optimalPortfolio,
-			boundedCardinalityParameters,
+			upperBoundHoldingsAllocationControl,
 			pruneAssetIDSet,
 			optimalPortfolio.cardinality() - cardinalityUpperBound
 		);
 
-		workingPortfolioConstructionParameters = workingPortfolioConstructionParameters (
+		workingPortfolioAllocationControl = workingPortfolioAllocationControl (
 			assetIDArray,
-			boundedCardinalityParameters,
+			upperBoundHoldingsAllocationControl,
 			pruneAssetIDSet
 		);
 
-		optimizationOutput = super.allocate (
-			workingPortfolioConstructionParameters,
-			assetUniverseStatisticalProperties
-		);
+		org.drip.portfolioconstruction.allocator.HoldingsAllocation secondPrunePassHoldingsAllocation =
+			super.allocate (
+				workingPortfolioAllocationControl,
+				assetUniverseStatisticalProperties
+			);
 
-		optimalPortfolio = optimizationOutput.optimalPortfolio();
+		if (null == secondPrunePassHoldingsAllocation)
+		{
+			return null;
+		}
 
-		PrintPortfolio (
-			optimalPortfolio
-		);
+		org.drip.portfolioconstruction.cardinality.TadonkiVialHoldingsAllocation
+			tadonkiVialHoldingsAllocation = 
+				org.drip.portfolioconstruction.cardinality.TadonkiVialHoldingsAllocation.Standard (
+					secondPrunePassHoldingsAllocation
+				);
 
-		return optimizationOutput;
+		return null == tadonkiVialHoldingsAllocation ||
+			!tadonkiVialHoldingsAllocation.setFloorPassHoldingsAllocation (
+				floorPassHoldingsAllocation
+			) || !tadonkiVialHoldingsAllocation.setFirstPrunePassHoldingsAllocation (
+				firstPrunePassHoldingsAllocation
+			) || !tadonkiVialHoldingsAllocation.setSecondPrunePassHoldingsAllocation (
+				secondPrunePassHoldingsAllocation
+			) ? null : tadonkiVialHoldingsAllocation;
 	}
 }

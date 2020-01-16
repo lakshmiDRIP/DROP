@@ -880,4 +880,30 @@ public class NumberUtil {
 
 		return 1. == sum;
 	}
+
+	/**
+	 * Retrieve the Fractional Part of z
+	 * 
+	 * @param z Z
+	 * 
+	 * @return The Fractional Part of z
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double Fractional (
+		final double z)
+		throws java.lang.Exception
+	{
+		if (!IsValid (
+			z
+		))
+		{
+			throw new java.lang.Exception (
+				"NumberUtil::Fractional => Invalid Inputs"
+			);
+		}
+
+		return z - (int) z;
+	}
 }

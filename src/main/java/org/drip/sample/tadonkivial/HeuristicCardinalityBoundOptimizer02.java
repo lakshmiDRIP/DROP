@@ -1,12 +1,14 @@
 
-package org.drip.sample.assetallocationexcel;
+package org.drip.sample.tadonkivial;
 
 import org.drip.function.rdtor1descent.LineStepEvolutionControl;
 import org.drip.function.rdtor1solver.InteriorPointBarrierControl;
 import org.drip.measure.statistics.MultivariateMoments;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.portfolioconstruction.allocator.*;
+import org.drip.portfolioconstruction.asset.Portfolio;
 import org.drip.portfolioconstruction.cardinality.UpperBoundHoldingsAllocationControl;
+import org.drip.portfolioconstruction.cardinality.TadonkiVialHoldingsAllocation;
 import org.drip.portfolioconstruction.cardinality.TadonkiVialMeanVarianceOptimizer;
 import org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties;
 import org.drip.service.env.EnvManager;
@@ -17,7 +19,6 @@ import org.drip.service.env.EnvManager;
 
 /*!
  * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -86,8 +87,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>CardinalityBoundOptimizer</i> demonstrates the Setup and Execution of a Cardinality Bounded Portfolio
- * 	Allocator with Asset Level Bounds. The References are:
+ * <i>HeuristicCardinalityBoundOptimizer02</i> demonstrates the Setup and Execution of a Cardinality Bounded
+ * 	Portfolio Allocator with Asset Level Bounds using the Tadonki-Vial (2004) Heuristics. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -127,8 +128,50 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CardinalityBoundOptimizer
+public class HeuristicCardinalityBoundOptimizer02
 {
+
+	private static final void PrintPortfolio (
+		final String header,
+		final HoldingsAllocation holdingsAllocation)
+	{
+		if (null == holdingsAllocation)
+		{
+			return;
+		}
+
+		Portfolio optimalPortfolio = holdingsAllocation.optimalPortfolio();
+
+		System.out.println ("\t|------------------||");
+
+		System.out.println ("\t|  " + header);
+
+		System.out.println ("\t|------------------||");
+
+		System.out.println ("\t| ASSET |   DROP   ||");
+
+		System.out.println ("\t|------------------||");
+
+		for (int assetIndex = 0;
+			assetIndex < optimalPortfolio.assetComponentArray().length;
+			++assetIndex)
+		{
+			System.out.println (
+				"\t|  " + optimalPortfolio.assetComponentArray()[assetIndex].id() + "  |" +
+				FormatUtil.FormatDouble (
+					optimalPortfolio.assetComponentArray()[assetIndex].amount(), 2, 4, 100.
+				) + "% ||"
+			);
+		}
+
+		System.out.println ("\t|------------------||");
+
+		System.out.println ("\t| Cardinality => " + optimalPortfolio.cardinality());
+
+		System.out.println ("\t|------------------||");
+
+		System.out.println();
+	}
 
 	public static final void main (
 		final String[] argumentArray)
@@ -172,15 +215,15 @@ public class CardinalityBoundOptimizer
 		};
 		double[] expectedAssetReturnsArray = new double[]
 		{
-			0.008355,
-			0.007207,
-			0.006279,
-			0.002466,
-			0.004472,
-			0.006821,
-			0.001570
+			0.008430,
+			0.007230,
+			0.006450,
+			0.002560,
+			0.004480,
+			0.006840,
+			0.001670
 		};
-		double portfolioDesignReturn = 0.005497;
+		double portfolioDesignReturn = 0.005500;
 		double[][] assetReturnsCovarianceMatrix = new double[][]
 		{
 			{0.002733, 0.002083, 0.001593, 0.000488, 0.001172, 0.002312, 0.000710},
@@ -243,7 +286,7 @@ public class CardinalityBoundOptimizer
 			);
 		}
 
-		new TadonkiVialMeanVarianceOptimizer (
+		TadonkiVialHoldingsAllocation tadonkiVialHoldingsAllocation = new TadonkiVialMeanVarianceOptimizer (
 			InteriorPointBarrierControl.Standard(),
 			LineStepEvolutionControl.NocedalWrightStrongWolfe (
 				false
@@ -251,6 +294,21 @@ public class CardinalityBoundOptimizer
 		).allocate (
 			boundedCardinalityParameters,
 			assetUniverseStatisticalProperties
+		);
+
+		PrintPortfolio (
+			"FLOOR PASS",
+			tadonkiVialHoldingsAllocation.floorPassHoldingsAllocation()
+		);
+
+		PrintPortfolio (
+			"FIRST GREEDY PRUNE PASS",
+			tadonkiVialHoldingsAllocation.firstPrunePassHoldingsAllocation()
+		);
+
+		PrintPortfolio (
+			"SECOND GREEDY PRUNE PASS",
+			tadonkiVialHoldingsAllocation.secondPrunePassHoldingsAllocation()
 		);
 
 		EnvManager.TerminateEnv();

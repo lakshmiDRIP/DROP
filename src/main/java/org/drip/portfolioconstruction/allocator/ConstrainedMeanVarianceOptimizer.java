@@ -374,21 +374,19 @@ public class ConstrainedMeanVarianceOptimizer extends
 
 	@Override public org.drip.portfolioconstruction.allocator.HoldingsAllocation allocate (
 		final org.drip.portfolioconstruction.allocator.HoldingsAllocationControl
-			portfolioConstructionParameters,
+			holdingsAllocationControl,
 		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
 			assetUniverseStatisticalProperties)
 	{
-		if (null == portfolioConstructionParameters ||
-			!(portfolioConstructionParameters instanceof
+		if (null == holdingsAllocationControl ||
+			!(holdingsAllocationControl instanceof
 				org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl) ||
 			null == assetUniverseStatisticalProperties)
 		{
-			System.out.println (assetUniverseStatisticalProperties);
-
 			return null;
 		}
 
-		java.lang.String[] assetIDArray = portfolioConstructionParameters.assetIDArray();
+		java.lang.String[] assetIDArray = holdingsAllocationControl.assetIDArray();
 
 		double[][] aadblCovariance = assetUniverseStatisticalProperties.covariance (assetIDArray);
 
@@ -401,19 +399,19 @@ public class ConstrainedMeanVarianceOptimizer extends
 		org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray = new
 			org.drip.portfolioconstruction.asset.AssetComponent[assetCount];
 		org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
-			boundedPortfolioConstructionParameters =
+			boundedHoldingsAllocationControl =
 				(org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl)
-					portfolioConstructionParameters;
+					holdingsAllocationControl;
 
 		try
 		{
 			org.drip.function.rdtor1.LagrangianMultivariate lagrangianMultivariate =
 				new org.drip.function.rdtor1.LagrangianMultivariate (
-					portfolioConstructionParameters.customRiskUtilitySettings().riskObjectiveUtility (
+					holdingsAllocationControl.customRiskUtilitySettings().riskObjectiveUtility (
 						assetIDArray,
 						assetUniverseStatisticalProperties
 					),
-					boundedPortfolioConstructionParameters.equalityConstraintArray (
+					boundedHoldingsAllocationControl.equalityConstraintArray (
 						assetUniverseStatisticalProperties
 					)
 				);
@@ -422,13 +420,13 @@ public class ConstrainedMeanVarianceOptimizer extends
 				variateInequalityConstraintMultiplier =
 					new org.drip.function.rdtor1solver.BarrierFixedPointFinder (
 						lagrangianMultivariate,
-						boundedPortfolioConstructionParameters.boundingConstraintsArray (
+						boundedHoldingsAllocationControl.boundingConstraintsArray (
 							lagrangianMultivariate.constraintFunctionDimension()
 						),
 						_interiorPointBarrierControl,
 						_lineStepEvolutionControl
 					).solve (
-						boundedPortfolioConstructionParameters.weightConstrainedFeasibleStart()
+						boundedHoldingsAllocationControl.weightConstrainedFeasibleStart()
 					);
 
 			if (null == variateInequalityConstraintMultiplier)
