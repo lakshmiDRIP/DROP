@@ -118,50 +118,55 @@ public class RdFokkerPlanck
 {
 <span class="nc" id="L119">	private org.drip.dynamics.ito.DiffusionTensor _diffusionTensor = null;</span>
 <span class="nc" id="L120">	private org.drip.dynamics.ito.RdToR1Drift[] _driftFunctionArray = null;</span>
+<span class="nc" id="L121">	private org.drip.dynamics.kolmogorov.RiskenOmegaEstimator _riskenOmegaEstimator = null;</span>
 
 	/**
 	 * RdFokkerPlanck Constructor
 	 * 
 	 * @param driftFunctionArray Drift Function Array
 	 * @param diffusionTensor Diffusion Tensor
+	 * @param riskenOmegaEstimator Risken Omega Estimator
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RdFokkerPlanck (
 		final org.drip.dynamics.ito.RdToR1Drift[] driftFunctionArray,
-		final org.drip.dynamics.ito.DiffusionTensor diffusionTensor)
+		final org.drip.dynamics.ito.DiffusionTensor diffusionTensor,
+		final org.drip.dynamics.kolmogorov.RiskenOmegaEstimator riskenOmegaEstimator)
 		throws java.lang.Exception
-<span class="nc" id="L135">	{</span>
-<span class="nc bnc" id="L136" title="All 4 branches missed.">		if (null == (_driftFunctionArray = driftFunctionArray) ||</span>
-			null == (_diffusionTensor = diffusionTensor))
+<span class="nc" id="L138">	{</span>
+<span class="nc bnc" id="L139" title="All 6 branches missed.">		if (null == (_driftFunctionArray = driftFunctionArray) ||</span>
+			null == (_diffusionTensor = diffusionTensor) ||
+			null == (_riskenOmegaEstimator = riskenOmegaEstimator)
+		)
 		{
-<span class="nc" id="L139">			throw new java.lang.Exception (</span>
+<span class="nc" id="L144">			throw new java.lang.Exception (</span>
 				&quot;RdFokkerPlanck Constructor =&gt; Invalid Inputs&quot;
 			);
 		}
 
-<span class="nc" id="L144">		int dimension = _driftFunctionArray.length;</span>
+<span class="nc" id="L149">		int dimension = _driftFunctionArray.length;</span>
 
-<span class="nc bnc" id="L146" title="All 2 branches missed.">		if (dimension != _diffusionTensor.dimension())</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		if (dimension != _diffusionTensor.dimension())</span>
 		{
-<span class="nc" id="L148">			throw new java.lang.Exception (</span>
+<span class="nc" id="L153">			throw new java.lang.Exception (</span>
 				&quot;RdFokkerPlanck Constructor =&gt; Invalid Inputs&quot;
 			);
 		}
 
-<span class="nc" id="L153">		for (int dimensionIndex = 0;</span>
-<span class="nc bnc" id="L154" title="All 2 branches missed.">			dimensionIndex &lt; dimension;</span>
-<span class="nc" id="L155">			++dimensionIndex)</span>
+<span class="nc" id="L158">		for (int dimensionIndex = 0;</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">			dimensionIndex &lt; dimension;</span>
+<span class="nc" id="L160">			++dimensionIndex)</span>
 		{
-<span class="nc bnc" id="L157" title="All 2 branches missed.">			if (null == _driftFunctionArray[dimensionIndex])</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">			if (null == _driftFunctionArray[dimensionIndex])</span>
 			{
-<span class="nc" id="L159">				throw new java.lang.Exception (</span>
+<span class="nc" id="L164">				throw new java.lang.Exception (</span>
 					&quot;RdFokkerPlanck Constructor =&gt; Invalid Inputs&quot;
 				);
 			}
 		}
-<span class="nc" id="L164">	}</span>
+<span class="nc" id="L169">	}</span>
 
 	/**
 	 * Retrieve the Drift Function Array
@@ -171,7 +176,7 @@ public class RdFokkerPlanck
 
 	public org.drip.dynamics.ito.RdToR1Drift[] driftFunctionArray()
 	{
-<span class="nc" id="L174">		return _driftFunctionArray;</span>
+<span class="nc" id="L179">		return _driftFunctionArray;</span>
 	}
 
 	/**
@@ -182,7 +187,18 @@ public class RdFokkerPlanck
 
 	public org.drip.dynamics.ito.DiffusionTensor diffusionTensor()
 	{
-<span class="nc" id="L185">		return _diffusionTensor;</span>
+<span class="nc" id="L190">		return _diffusionTensor;</span>
+	}
+
+	/**
+	 * Retrieve the Risken Omega Estimator
+	 * 
+	 * @return The Risken Omega Estimator
+	 */
+
+	public org.drip.dynamics.kolmogorov.RiskenOmegaEstimator riskenOmegaEstimator()
+	{
+<span class="nc" id="L201">		return _riskenOmegaEstimator;</span>
 	}
 
 	/**
@@ -201,104 +217,104 @@ public class RdFokkerPlanck
 		final org.drip.dynamics.ito.TimeRdVertex timeRdVertex)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L204" title="All 4 branches missed.">		if (null == probabilityDensityFunction ||</span>
+<span class="nc bnc" id="L220" title="All 4 branches missed.">		if (null == probabilityDensityFunction ||</span>
 			null == timeRdVertex)
 		{
-<span class="nc" id="L207">			throw new java.lang.Exception (</span>
+<span class="nc" id="L223">			throw new java.lang.Exception (</span>
 				&quot;RdFokkerPlanck::pdfDot =&gt; Invalid Inputs&quot;
 			);
 		}
 
-<span class="nc" id="L212">		final int dimension = _diffusionTensor.dimension();</span>
+<span class="nc" id="L228">		final int dimension = _diffusionTensor.dimension();</span>
 
-<span class="nc" id="L214">		final double time = timeRdVertex.t();</span>
+<span class="nc" id="L230">		final double time = timeRdVertex.t();</span>
 
-<span class="nc" id="L216">		double pdfDot = 0.;</span>
+<span class="nc" id="L232">		double pdfDot = 0.;</span>
 
-<span class="nc" id="L218">		for (int dimensionIndex = 0;</span>
-<span class="nc bnc" id="L219" title="All 2 branches missed.">			dimensionIndex &lt; dimension;</span>
-<span class="nc" id="L220">			++dimensionIndex)</span>
+<span class="nc" id="L234">		for (int dimensionIndex = 0;</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">			dimensionIndex &lt; dimension;</span>
+<span class="nc" id="L236">			++dimensionIndex)</span>
 		{
-<span class="nc" id="L222">			final int index = dimensionIndex;</span>
+<span class="nc" id="L238">			final int index = dimensionIndex;</span>
 
-<span class="nc" id="L224">			pdfDot = pdfDot - new org.drip.function.definition.RdToR1 (</span>
+<span class="nc" id="L240">			pdfDot = pdfDot - new org.drip.function.definition.RdToR1 (</span>
 				null
 			)
-<span class="nc" id="L227">			{</span>
+<span class="nc" id="L243">			{</span>
 				@Override public int dimension()
 				{
-<span class="nc" id="L230">					return dimension;</span>
+<span class="nc" id="L246">					return dimension;</span>
 				}
 
 				@Override public double evaluate (
 					final double[] xArray)
 					throws java.lang.Exception
 				{
-<span class="nc" id="L237">					org.drip.dynamics.ito.TimeRdVertex localTimeRdVertex =</span>
+<span class="nc" id="L253">					org.drip.dynamics.ito.TimeRdVertex localTimeRdVertex =</span>
 						new org.drip.dynamics.ito.TimeRdVertex (
 							time,
 							xArray
 						);
 
-<span class="nc" id="L243">					return _driftFunctionArray[index].drift (</span>
+<span class="nc" id="L259">					return _driftFunctionArray[index].drift (</span>
 						localTimeRdVertex
-<span class="nc" id="L245">					) * probabilityDensityFunction.density (</span>
+<span class="nc" id="L261">					) * probabilityDensityFunction.density (</span>
 						localTimeRdVertex
 					);
 				}
-<span class="nc" id="L249">			}.derivative (</span>
-<span class="nc" id="L250">				timeRdVertex.xArray(),</span>
+<span class="nc" id="L265">			}.derivative (</span>
+<span class="nc" id="L266">				timeRdVertex.xArray(),</span>
 				dimensionIndex,
 				1
 			);
 		}
 
-<span class="nc" id="L256">		for (int dimensionIndexI = 0;</span>
-<span class="nc bnc" id="L257" title="All 2 branches missed.">			dimensionIndexI &lt; dimension;</span>
-<span class="nc" id="L258">			++dimensionIndexI)</span>
+<span class="nc" id="L272">		for (int dimensionIndexI = 0;</span>
+<span class="nc bnc" id="L273" title="All 2 branches missed.">			dimensionIndexI &lt; dimension;</span>
+<span class="nc" id="L274">			++dimensionIndexI)</span>
 		{
-<span class="nc" id="L260">			final int indexI = dimensionIndexI;</span>
+<span class="nc" id="L276">			final int indexI = dimensionIndexI;</span>
 
-<span class="nc" id="L262">			for (int dimensionIndexJ = 0;</span>
-<span class="nc bnc" id="L263" title="All 2 branches missed.">				dimensionIndexJ &lt; dimension;</span>
-<span class="nc" id="L264">				++dimensionIndexJ)</span>
+<span class="nc" id="L278">			for (int dimensionIndexJ = 0;</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">				dimensionIndexJ &lt; dimension;</span>
+<span class="nc" id="L280">				++dimensionIndexJ)</span>
 			{
-<span class="nc" id="L266">				final int indexJ = dimensionIndexJ;</span>
+<span class="nc" id="L282">				final int indexJ = dimensionIndexJ;</span>
 
-<span class="nc" id="L268">				pdfDot = pdfDot + new org.drip.function.definition.RdToR1 (</span>
+<span class="nc" id="L284">				pdfDot = pdfDot + new org.drip.function.definition.RdToR1 (</span>
 					null
 				)
-<span class="nc" id="L271">				{</span>
+<span class="nc" id="L287">				{</span>
 					@Override public int dimension()
 					{
-<span class="nc" id="L274">						return dimension;</span>
+<span class="nc" id="L290">						return dimension;</span>
 					}
 
 					@Override public double evaluate (
 						final double[] xArray)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L281">						org.drip.dynamics.ito.TimeRdVertex localTimeRdVertex =</span>
+<span class="nc" id="L297">						org.drip.dynamics.ito.TimeRdVertex localTimeRdVertex =</span>
 							new org.drip.dynamics.ito.TimeRdVertex (
 								time,
 								xArray
 							);
 
-<span class="nc" id="L287">						return _diffusionTensor.diffusionCoefficient (</span>
+<span class="nc" id="L303">						return _diffusionTensor.diffusionCoefficient (</span>
 							localTimeRdVertex,
 							indexI,
 							indexJ
-<span class="nc" id="L291">						) * probabilityDensityFunction.density (</span>
+<span class="nc" id="L307">						) * probabilityDensityFunction.density (</span>
 							localTimeRdVertex
 						);
 					}
-<span class="nc" id="L295">				}.hessian (</span>
-<span class="nc" id="L296">					timeRdVertex.xArray()</span>
+<span class="nc" id="L311">				}.hessian (</span>
+<span class="nc" id="L312">					timeRdVertex.xArray()</span>
 				)[indexI][indexJ];
 			};
 		}
 
-<span class="nc" id="L301">		return pdfDot;</span>
+<span class="nc" id="L317">		return pdfDot;</span>
 	}
 
 	/**
@@ -312,7 +328,7 @@ public class RdFokkerPlanck
 	public org.drip.dynamics.process.RdProbabilityDensityFunction temporalPDF (
 		final org.drip.function.definition.RdToR1 intialProbabilityDensityFunction)
 	{
-<span class="nc" id="L315">		return null;</span>
+<span class="nc" id="L331">		return null;</span>
 	}
 
 	/**
@@ -323,7 +339,82 @@ public class RdFokkerPlanck
 
 	public org.drip.function.definition.RdToR1 steadyStatePDF()
 	{
-<span class="nc" id="L326">		return null;</span>
+<span class="nc" id="L342">		double[][] omega = _riskenOmegaEstimator.estimateOmega (</span>
+			_diffusionTensor,
+			_driftFunctionArray
+		);
+
+<span class="nc" id="L347">		final double[][] omegaInverse =</span>
+<span class="nc" id="L348">			org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination (</span>
+				omega
+			);
+
+<span class="nc bnc" id="L352" title="All 2 branches missed.">		if (null == omegaInverse)</span>
+		{
+<span class="nc" id="L354">			return null;</span>
+		}
+
+<span class="nc" id="L357">		final int dimension = _diffusionTensor.dimension();</span>
+
+<span class="nc" id="L359">		double rdNormalizer = java.lang.Double.NaN;</span>
+
+		try
+		{
+<span class="nc" id="L363">			rdNormalizer = java.lang.Math.sqrt (</span>
+<span class="nc" id="L364">				java.lang.Math.pow (</span>
+					2. * java.lang.Math.PI,
+					-1. * dimension
+				) / new org.drip.function.matrix.Square (
+					omega
+<span class="nc" id="L369">				).determinant()</span>
+			);
+		}
+<span class="nc" id="L372">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L374">			e.printStackTrace();</span>
+<span class="nc" id="L375">		}</span>
+
+<span class="nc" id="L377">		final double rdNormalizerFinal = rdNormalizer;</span>
+
+<span class="nc" id="L379">		final org.drip.function.definition.R1ToR1 r1ToR1Exponential =</span>
+			new org.drip.function.definition.R1ToR1 (
+				null
+			)
+<span class="nc" id="L383">		{</span>
+			@Override public double evaluate (
+				final double x)
+				throws java.lang.Exception
+			{
+<span class="nc" id="L388">				return java.lang.Math.exp (</span>
+					-0.5 * x
+				);
+			}
+		};
+
+<span class="nc" id="L394">		return new org.drip.function.definition.RdToR1 (</span>
+			null
+		)
+<span class="nc" id="L397">		{</span>
+			@Override public int dimension()
+			{
+<span class="nc" id="L400">				return dimension;</span>
+			}
+
+			@Override public double evaluate (
+				final double[] xArray)
+				throws java.lang.Exception
+			{
+<span class="nc" id="L407">				return rdNormalizerFinal * r1ToR1Exponential.evaluate (</span>
+<span class="nc" id="L408">					org.drip.numerical.linearalgebra.Matrix.DotProduct (</span>
+						xArray,
+<span class="nc" id="L410">						org.drip.numerical.linearalgebra.Matrix.Product (</span>
+							omegaInverse,
+							xArray
+						)
+					)
+				);
+			}
+		};
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

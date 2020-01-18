@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TadonkiVialMeanVarianceOptimizer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.portfolioconstruction.cardinality</a> &gt; <span class="el_source">TadonkiVialMeanVarianceOptimizer.java</span></div><h1>TadonkiVialMeanVarianceOptimizer.java</h1><pre class="source lang-java linenums">
 package org.drip.portfolioconstruction.cardinality;
 
-import org.drip.numerical.common.FormatUtil;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -122,195 +120,162 @@ import org.drip.numerical.common.FormatUtil;
 public class TadonkiVialMeanVarianceOptimizer
 	extends org.drip.portfolioconstruction.allocator.ConstrainedMeanVarianceOptimizer
 {
-	private void PrintPortfolio (
-		final org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio)
-	{
-<span class="nc" id="L128">		System.out.println (&quot;\t|------------------||&quot;);</span>
-
-<span class="nc" id="L130">		System.out.println (&quot;\t|  OPTIMAL WEIGHTS ||&quot;);</span>
-
-<span class="nc" id="L132">		System.out.println (&quot;\t|------------------||&quot;);</span>
-
-<span class="nc" id="L134">		System.out.println (&quot;\t| ASSET |   DROP   ||&quot;);</span>
-
-<span class="nc" id="L136">		System.out.println (&quot;\t|------------------||&quot;);</span>
-
-<span class="nc" id="L138">		for (int assetIndex = 0;</span>
-<span class="nc bnc" id="L139" title="All 2 branches missed.">			assetIndex &lt; optimalPortfolio.assetComponentArray().length;</span>
-<span class="nc" id="L140">			++assetIndex)</span>
-		{
-<span class="nc" id="L142">			System.out.println (</span>
-<span class="nc" id="L143">				&quot;\t|  &quot; + optimalPortfolio.assetComponentArray()[assetIndex].id() + &quot;  |&quot; +</span>
-<span class="nc" id="L144">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L145">					optimalPortfolio.assetComponentArray()[assetIndex].amount(), 2, 4, 100.</span>
-				) + &quot;% ||&quot;
-			);
-		}
-
-<span class="nc" id="L150">		System.out.println (&quot;\t|------------------||&quot;);</span>
-
-<span class="nc" id="L152">		System.out.println (&quot;\t| Cardinality =&gt; &quot; + optimalPortfolio.cardinality());</span>
-
-<span class="nc" id="L154">		System.out.println (&quot;\t|------------------||&quot;);</span>
-<span class="nc" id="L155">	}</span>
 
 	private org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
-		workingPortfolioConstructionParameters (
+		workingPortfolioAllocationControl (
 			final java.lang.String[] assetIDArray,
 			final org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
-				parentBoundedPortfolioConstructionParameters,
+				boundedHoldingsAllocationControl,
 			final java.util.Set&lt;java.lang.String&gt; pruneAssetIDSet)
 	{
-<span class="nc" id="L164">		int prunedAssetIDIndex = 0;</span>
+<span class="nc" id="L131">		int prunedAssetIDIndex = 0;</span>
 		org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
-<span class="nc" id="L166">			boundedPortfolioConstructionParameters = null;</span>
+<span class="nc" id="L133">			workingPortfolioAllocationControl = null;</span>
 
-<span class="nc" id="L168">		java.lang.String[] prunedAssetIDArray =</span>
-<span class="nc" id="L169">			new java.lang.String[assetIDArray.length - pruneAssetIDSet.size()];</span>
+<span class="nc" id="L135">		java.lang.String[] prunedAssetIDArray =</span>
+<span class="nc" id="L136">			new java.lang.String[assetIDArray.length - pruneAssetIDSet.size()];</span>
 
-<span class="nc" id="L171">		for (int assetIndex = 0;</span>
-<span class="nc bnc" id="L172" title="All 2 branches missed.">			assetIndex &lt; assetIDArray.length;</span>
-<span class="nc" id="L173">			++assetIndex)</span>
+<span class="nc" id="L138">		for (int assetIndex = 0;</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">			assetIndex &lt; assetIDArray.length;</span>
+<span class="nc" id="L140">			++assetIndex)</span>
 		{
-<span class="nc bnc" id="L175" title="All 2 branches missed.">			if (null == pruneAssetIDSet ||</span>
-<span class="nc bnc" id="L176" title="All 2 branches missed.">				!pruneAssetIDSet.contains (</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">			if (null == pruneAssetIDSet ||</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">				!pruneAssetIDSet.contains (</span>
 					assetIDArray[assetIndex]
 				)
 			)
 			{
-<span class="nc" id="L181">				prunedAssetIDArray[prunedAssetIDIndex++] = assetIDArray[assetIndex];</span>
+<span class="nc" id="L148">				prunedAssetIDArray[prunedAssetIDIndex++] = assetIDArray[assetIndex];</span>
 			}
 		}
 
 		try
 		{
-<span class="nc" id="L187">			boundedPortfolioConstructionParameters =</span>
+<span class="nc" id="L154">			workingPortfolioAllocationControl =</span>
 				new org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl (
 					prunedAssetIDArray,
-<span class="nc" id="L190">					parentBoundedPortfolioConstructionParameters.customRiskUtilitySettings(),</span>
-<span class="nc" id="L191">					parentBoundedPortfolioConstructionParameters.equalityConstraintSettings()</span>
+<span class="nc" id="L157">					boundedHoldingsAllocationControl.customRiskUtilitySettings(),</span>
+<span class="nc" id="L158">					boundedHoldingsAllocationControl.equalityConstraintSettings()</span>
 				);
 
-<span class="nc" id="L194">			for (int prunedAssetIndex = 0;</span>
-<span class="nc bnc" id="L195" title="All 2 branches missed.">				prunedAssetIndex &lt; prunedAssetIDArray.length;</span>
-<span class="nc" id="L196">				++prunedAssetIndex)</span>
+<span class="nc" id="L161">			for (int prunedAssetIndex = 0;</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">				prunedAssetIndex &lt; prunedAssetIDArray.length;</span>
+<span class="nc" id="L163">				++prunedAssetIndex)</span>
 			{
-<span class="nc" id="L198">				boundedPortfolioConstructionParameters.addBound (</span>
+<span class="nc" id="L165">				workingPortfolioAllocationControl.addBound (</span>
 					prunedAssetIDArray[prunedAssetIndex],
 					0.,
-<span class="nc" id="L201">					parentBoundedPortfolioConstructionParameters.upperBound (</span>
+<span class="nc" id="L168">					boundedHoldingsAllocationControl.upperBound (</span>
 						prunedAssetIDArray[prunedAssetIndex]
 					)
 				);
 			}
 
-<span class="nc" id="L207">			return boundedPortfolioConstructionParameters;</span>
+<span class="nc" id="L174">			return workingPortfolioAllocationControl;</span>
 		}
-<span class="nc" id="L209">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L176">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L211">			e.printStackTrace();</span>
+<span class="nc" id="L178">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L214">		return null;</span>
+<span class="nc" id="L181">		return null;</span>
 	}
 
-	private int firstPassPruneList (
+	private int firstGreedyPruneList (
 		final org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio,
 		final org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
-			parentBoundedPortfolioConstructionParameters,
+			boundedHoldingsAllocationControl,
 		final java.util.Set&lt;java.lang.String&gt; pruneAssetIDSet)
 	{
-<span class="nc" id="L223">		int pruneCount = 0;</span>
+<span class="nc" id="L190">		int pruneCount = 0;</span>
 
-<span class="nc" id="L225">		org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray =</span>
-<span class="nc" id="L226">			optimalPortfolio.assetComponentArray();</span>
+<span class="nc" id="L192">		org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray =</span>
+<span class="nc" id="L193">			optimalPortfolio.assetComponentArray();</span>
 
 		try
 		{
-<span class="nc" id="L230">			for (int assetIndex = 0;</span>
-<span class="nc bnc" id="L231" title="All 2 branches missed.">				assetIndex &lt; assetComponentArray.length;</span>
-<span class="nc" id="L232">				++assetIndex)</span>
+<span class="nc" id="L197">			for (int assetIndex = 0;</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">				assetIndex &lt; assetComponentArray.length;</span>
+<span class="nc" id="L199">				++assetIndex)</span>
 			{
-<span class="nc" id="L234">				java.lang.String assetID = assetComponentArray[assetIndex].id();</span>
+<span class="nc" id="L201">				java.lang.String assetID = assetComponentArray[assetIndex].id();</span>
 
-<span class="nc" id="L236">				if (assetComponentArray[assetIndex].amount() &lt;</span>
-<span class="nc bnc" id="L237" title="All 2 branches missed.">					parentBoundedPortfolioConstructionParameters.lowerBound (</span>
+<span class="nc" id="L203">				if (assetComponentArray[assetIndex].amount() &lt;</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">					boundedHoldingsAllocationControl.lowerBound (</span>
 						assetID
 					)
 				)
 				{
-<span class="nc" id="L242">					pruneAssetIDSet.add (</span>
+<span class="nc" id="L209">					pruneAssetIDSet.add (</span>
 						assetID
 					);
 
-<span class="nc" id="L246">					System.out.println (&quot;\tPruning: &quot; + assetID);</span>
-
-<span class="nc" id="L248">					++pruneCount;</span>
+<span class="nc" id="L213">					++pruneCount;</span>
 				}
 			}
 		}
-<span class="nc" id="L252">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L217">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L254">			e.printStackTrace();</span>
-<span class="nc" id="L255">		}</span>
+<span class="nc" id="L219">			e.printStackTrace();</span>
+<span class="nc" id="L220">		}</span>
 
 
-<span class="nc" id="L258">		return pruneCount;</span>
+<span class="nc" id="L223">		return pruneCount;</span>
 	}
 
-	private boolean secondPassPruneList (
+	private boolean secondGreedyPruneList (
 		final org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio,
 		final org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
 			parentBoundedPortfolioConstructionParameters,
 		final java.util.Set&lt;java.lang.String&gt; pruneAssetIDSet,
 		int pruneCount)
 	{
-<span class="nc" id="L268">		java.util.Map&lt;java.lang.Double, java.lang.String&gt; boundsDepartureMap =</span>
+<span class="nc" id="L233">		java.util.Map&lt;java.lang.Double, java.lang.String&gt; boundsDepartureMap =</span>
 			new java.util.TreeMap&lt;java.lang.Double, java.lang.String&gt;();
 
-<span class="nc" id="L271">		org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray =</span>
-<span class="nc" id="L272">			optimalPortfolio.assetComponentArray();</span>
+<span class="nc" id="L236">		org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray =</span>
+<span class="nc" id="L237">			optimalPortfolio.assetComponentArray();</span>
 
-<span class="nc" id="L274">		for (int assetIndex = 0;</span>
-<span class="nc bnc" id="L275" title="All 2 branches missed.">			assetIndex &lt; assetComponentArray.length;</span>
-<span class="nc" id="L276">			++assetIndex)</span>
+<span class="nc" id="L239">		for (int assetIndex = 0;</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">			assetIndex &lt; assetComponentArray.length;</span>
+<span class="nc" id="L241">			++assetIndex)</span>
 		{
-<span class="nc" id="L278">			java.lang.String assetID = assetComponentArray[assetIndex].id();</span>
+<span class="nc" id="L243">			java.lang.String assetID = assetComponentArray[assetIndex].id();</span>
 
 			try
 			{
-<span class="nc" id="L282">				boundsDepartureMap.put (</span>
-<span class="nc" id="L283">					assetComponentArray[assetIndex].amount() -</span>
-<span class="nc" id="L284">					parentBoundedPortfolioConstructionParameters.lowerBound (</span>
+<span class="nc" id="L247">				boundsDepartureMap.put (</span>
+<span class="nc" id="L248">					assetComponentArray[assetIndex].amount() -</span>
+<span class="nc" id="L249">					parentBoundedPortfolioConstructionParameters.lowerBound (</span>
 						assetID
 					),
 					assetID
 				);
 			}
-<span class="nc" id="L290">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L255">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L292">				e.printStackTrace();</span>
+<span class="nc" id="L257">				e.printStackTrace();</span>
 
-<span class="nc" id="L294">				return false;</span>
-<span class="nc" id="L295">			}</span>
+<span class="nc" id="L259">				return false;</span>
+<span class="nc" id="L260">			}</span>
 		}
 
 		for (java.util.Map.Entry&lt;java.lang.Double, java.lang.String&gt; boundsDepartureEntry :
-<span class="nc bnc" id="L299" title="All 2 branches missed.">			boundsDepartureMap.entrySet())</span>
+<span class="nc bnc" id="L264" title="All 2 branches missed.">			boundsDepartureMap.entrySet())</span>
 		{
-<span class="nc bnc" id="L301" title="All 2 branches missed.">			if (0 == pruneCount)</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">			if (0 == pruneCount)</span>
 			{
-<span class="nc" id="L303">				break;</span>
+<span class="nc" id="L268">				break;</span>
 			}
 
-<span class="nc" id="L306">			pruneAssetIDSet.add (</span>
-<span class="nc" id="L307">				boundsDepartureEntry.getValue()</span>
+<span class="nc" id="L271">			pruneAssetIDSet.add (</span>
+<span class="nc" id="L272">				boundsDepartureEntry.getValue()</span>
 			);
 
-<span class="nc" id="L310">			--pruneCount;</span>
-<span class="nc" id="L311">		}</span>
+<span class="nc" id="L275">			--pruneCount;</span>
+<span class="nc" id="L276">		}</span>
 
-<span class="nc" id="L313">		return true;</span>
+<span class="nc" id="L278">		return true;</span>
 	}
 
 	/**
@@ -324,121 +289,148 @@ public class TadonkiVialMeanVarianceOptimizer
 		final org.drip.function.rdtor1solver.InteriorPointBarrierControl interiorPointBarrierControl,
 		final org.drip.function.rdtor1descent.LineStepEvolutionControl lineStepEvolutionControl)
 	{
-<span class="nc" id="L327">		super (</span>
+<span class="nc" id="L292">		super (</span>
 			interiorPointBarrierControl,
 			lineStepEvolutionControl
 		);
-<span class="nc" id="L331">	}</span>
+<span class="nc" id="L296">	}</span>
 
-	@Override public org.drip.portfolioconstruction.allocator.HoldingsAllocation allocate (
+	@Override public org.drip.portfolioconstruction.cardinality.TadonkiVialHoldingsAllocation allocate (
 		final org.drip.portfolioconstruction.allocator.HoldingsAllocationControl
-			portfolioConstructionParameters,
+			holdingsAllocationControl,
 		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
 			assetUniverseStatisticalProperties)
 	{
-<span class="nc bnc" id="L339" title="All 2 branches missed.">		if (!(portfolioConstructionParameters instanceof</span>
+<span class="nc bnc" id="L304" title="All 2 branches missed.">		if (!(holdingsAllocationControl instanceof</span>
 			org.drip.portfolioconstruction.cardinality.UpperBoundHoldingsAllocationControl))
 		{
-<span class="nc" id="L342">			return null;</span>
+<span class="nc" id="L307">			return null;</span>
 		}
 
 		org.drip.portfolioconstruction.cardinality.UpperBoundHoldingsAllocationControl
-<span class="nc" id="L346">			boundedCardinalityParameters =</span>
+<span class="nc" id="L311">			upperBoundHoldingsAllocationControl =</span>
 				(org.drip.portfolioconstruction.cardinality.UpperBoundHoldingsAllocationControl)
-					portfolioConstructionParameters;
+					holdingsAllocationControl;
 
-<span class="nc" id="L350">		int cardinalityUpperBound = boundedCardinalityParameters.cardinalityUpperBound();</span>
+<span class="nc" id="L315">		int cardinalityUpperBound = upperBoundHoldingsAllocationControl.cardinalityUpperBound();</span>
 
-<span class="nc" id="L352">		java.lang.String[] assetIDArray = boundedCardinalityParameters.assetIDArray();</span>
+<span class="nc" id="L317">		java.lang.String[] assetIDArray = upperBoundHoldingsAllocationControl.assetIDArray();</span>
 
-<span class="nc bnc" id="L354" title="All 2 branches missed.">		if (cardinalityUpperBound &gt;= assetIDArray.length)</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">		if (cardinalityUpperBound &gt;= assetIDArray.length)</span>
 		{
-<span class="nc" id="L356">			return super.allocate (</span>
-				portfolioConstructionParameters,
-				assetUniverseStatisticalProperties
+<span class="nc" id="L321">			return org.drip.portfolioconstruction.cardinality.TadonkiVialHoldingsAllocation.Standard (</span>
+<span class="nc" id="L322">				super.allocate (</span>
+					holdingsAllocationControl,
+					assetUniverseStatisticalProperties
+				)
 			);
 		}
 
-<span class="nc" id="L362">		java.util.Set&lt;java.lang.String&gt; pruneAssetIDSet = new java.util.HashSet&lt;java.lang.String&gt;();</span>
+<span class="nc" id="L329">		java.util.Set&lt;java.lang.String&gt; pruneAssetIDSet = new java.util.HashSet&lt;java.lang.String&gt;();</span>
 
 		org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
-<span class="nc" id="L365">			workingPortfolioConstructionParameters = workingPortfolioConstructionParameters (</span>
+<span class="nc" id="L332">			workingPortfolioAllocationControl = workingPortfolioAllocationControl (</span>
 				assetIDArray,
-				boundedCardinalityParameters,
+				upperBoundHoldingsAllocationControl,
 				pruneAssetIDSet
 			);
 
-<span class="nc" id="L371">		org.drip.portfolioconstruction.allocator.HoldingsAllocation optimizationOutput = super.allocate (</span>
-			workingPortfolioConstructionParameters,
-			assetUniverseStatisticalProperties
-		);
+<span class="nc" id="L338">		org.drip.portfolioconstruction.allocator.HoldingsAllocation floorPassHoldingsAllocation =</span>
+<span class="nc" id="L339">			super.allocate (</span>
+				workingPortfolioAllocationControl,
+				assetUniverseStatisticalProperties
+			);
 
-<span class="nc" id="L376">		org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio =</span>
-<span class="nc" id="L377">			optimizationOutput.optimalPortfolio();</span>
-
-<span class="nc" id="L379">		PrintPortfolio (</span>
-			optimalPortfolio
-		);
-
-<span class="nc bnc" id="L383" title="All 2 branches missed.">		if (cardinalityUpperBound &gt;= optimalPortfolio.cardinality())</span>
+<span class="nc bnc" id="L344" title="All 2 branches missed.">		if (null == floorPassHoldingsAllocation)</span>
 		{
-<span class="nc" id="L385">			return optimizationOutput;</span>
+<span class="nc" id="L346">			return null;</span>
 		}
 
-<span class="nc bnc" id="L388" title="All 2 branches missed.">		while (0 != firstPassPruneList (</span>
+<span class="nc" id="L349">		org.drip.portfolioconstruction.allocator.HoldingsAllocation firstPrunePassHoldingsAllocation =</span>
+			floorPassHoldingsAllocation;
+
+<span class="nc" id="L352">		org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio =</span>
+<span class="nc" id="L353">			firstPrunePassHoldingsAllocation.optimalPortfolio();</span>
+
+<span class="nc bnc" id="L355" title="All 2 branches missed.">		while (0 != firstGreedyPruneList (</span>
 			optimalPortfolio,
-			boundedCardinalityParameters,
+			upperBoundHoldingsAllocationControl,
 			pruneAssetIDSet
 		))
 		{
-<span class="nc" id="L394">			workingPortfolioConstructionParameters = workingPortfolioConstructionParameters (</span>
+<span class="nc" id="L361">			workingPortfolioAllocationControl = workingPortfolioAllocationControl (</span>
 				assetIDArray,
-				boundedCardinalityParameters,
+				upperBoundHoldingsAllocationControl,
 				pruneAssetIDSet
 			);
 
-<span class="nc" id="L400">			optimizationOutput = super.allocate (</span>
-				workingPortfolioConstructionParameters,
+<span class="nc" id="L367">			firstPrunePassHoldingsAllocation = super.allocate (</span>
+				workingPortfolioAllocationControl,
 				assetUniverseStatisticalProperties
 			);
 
-<span class="nc" id="L405">			optimalPortfolio = optimizationOutput.optimalPortfolio();</span>
+<span class="nc bnc" id="L372" title="All 2 branches missed.">			if (null == firstPrunePassHoldingsAllocation)</span>
+			{
+<span class="nc" id="L374">				return null;</span>
+			}
 
-<span class="nc" id="L407">			PrintPortfolio (</span>
-				optimalPortfolio
-			);
+<span class="nc" id="L377">			optimalPortfolio = firstPrunePassHoldingsAllocation.optimalPortfolio();</span>
 		}
 
-<span class="nc bnc" id="L412" title="All 2 branches missed.">		if (cardinalityUpperBound &gt;= optimalPortfolio.cardinality())</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">		if (cardinalityUpperBound &gt;= optimalPortfolio.cardinality())</span>
 		{
-<span class="nc" id="L414">			return optimizationOutput;</span>
+			org.drip.portfolioconstruction.cardinality.TadonkiVialHoldingsAllocation
+<span class="nc" id="L383">				tadonkiVialHoldingsAllocation = </span>
+<span class="nc" id="L384">					org.drip.portfolioconstruction.cardinality.TadonkiVialHoldingsAllocation.Standard (</span>
+						firstPrunePassHoldingsAllocation
+					);
+
+<span class="nc bnc" id="L388" title="All 2 branches missed.">			return null == tadonkiVialHoldingsAllocation ||</span>
+<span class="nc bnc" id="L389" title="All 2 branches missed.">				!tadonkiVialHoldingsAllocation.setFloorPassHoldingsAllocation (</span>
+					floorPassHoldingsAllocation
+<span class="nc bnc" id="L391" title="All 2 branches missed.">				) || !tadonkiVialHoldingsAllocation.setFirstPrunePassHoldingsAllocation (</span>
+					firstPrunePassHoldingsAllocation
+				) ? null : tadonkiVialHoldingsAllocation;
 		}
 
-<span class="nc" id="L417">		secondPassPruneList (</span>
+<span class="nc" id="L396">		secondGreedyPruneList (</span>
 			optimalPortfolio,
-			boundedCardinalityParameters,
+			upperBoundHoldingsAllocationControl,
 			pruneAssetIDSet,
-<span class="nc" id="L421">			optimalPortfolio.cardinality() - cardinalityUpperBound</span>
+<span class="nc" id="L400">			optimalPortfolio.cardinality() - cardinalityUpperBound</span>
 		);
 
-<span class="nc" id="L424">		workingPortfolioConstructionParameters = workingPortfolioConstructionParameters (</span>
+<span class="nc" id="L403">		workingPortfolioAllocationControl = workingPortfolioAllocationControl (</span>
 			assetIDArray,
-			boundedCardinalityParameters,
+			upperBoundHoldingsAllocationControl,
 			pruneAssetIDSet
 		);
 
-<span class="nc" id="L430">		optimizationOutput = super.allocate (</span>
-			workingPortfolioConstructionParameters,
-			assetUniverseStatisticalProperties
-		);
+<span class="nc" id="L409">		org.drip.portfolioconstruction.allocator.HoldingsAllocation secondPrunePassHoldingsAllocation =</span>
+<span class="nc" id="L410">			super.allocate (</span>
+				workingPortfolioAllocationControl,
+				assetUniverseStatisticalProperties
+			);
 
-<span class="nc" id="L435">		optimalPortfolio = optimizationOutput.optimalPortfolio();</span>
+<span class="nc bnc" id="L415" title="All 2 branches missed.">		if (null == secondPrunePassHoldingsAllocation)</span>
+		{
+<span class="nc" id="L417">			return null;</span>
+		}
 
-<span class="nc" id="L437">		PrintPortfolio (</span>
-			optimalPortfolio
-		);
+		org.drip.portfolioconstruction.cardinality.TadonkiVialHoldingsAllocation
+<span class="nc" id="L421">			tadonkiVialHoldingsAllocation = </span>
+<span class="nc" id="L422">				org.drip.portfolioconstruction.cardinality.TadonkiVialHoldingsAllocation.Standard (</span>
+					secondPrunePassHoldingsAllocation
+				);
 
-<span class="nc" id="L441">		return optimizationOutput;</span>
+<span class="nc bnc" id="L426" title="All 2 branches missed.">		return null == tadonkiVialHoldingsAllocation ||</span>
+<span class="nc bnc" id="L427" title="All 2 branches missed.">			!tadonkiVialHoldingsAllocation.setFloorPassHoldingsAllocation (</span>
+				floorPassHoldingsAllocation
+<span class="nc bnc" id="L429" title="All 2 branches missed.">			) || !tadonkiVialHoldingsAllocation.setFirstPrunePassHoldingsAllocation (</span>
+				firstPrunePassHoldingsAllocation
+<span class="nc bnc" id="L431" title="All 2 branches missed.">			) || !tadonkiVialHoldingsAllocation.setSecondPrunePassHoldingsAllocation (</span>
+				secondPrunePassHoldingsAllocation
+			) ? null : tadonkiVialHoldingsAllocation;
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

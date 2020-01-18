@@ -96,23 +96,31 @@ package org.drip.portfolioconstruction.allocator;
 public class BoundedHoldingsAllocationControl extends
 	org.drip.portfolioconstruction.allocator.HoldingsAllocationControl
 {
-
-<span class="fc" id="L100">	private org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.portfolioconstruction.asset.AssetBounds&gt;</span>
+<span class="fc" id="L99">	private org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.portfolioconstruction.asset.AssetBounds&gt;</span>
 		_assetBoundsMap = new
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.portfolioconstruction.asset.AssetBounds&gt;();
 
 	private double lowerPivotStartingWeight (
 		final java.lang.String assetID)
 	{
-<span class="fc" id="L107">		org.drip.portfolioconstruction.asset.AssetBounds assetBounds = _assetBoundsMap.get (</span>
+<span class="fc" id="L106">		org.drip.portfolioconstruction.asset.AssetBounds assetBounds = _assetBoundsMap.get (</span>
 			assetID
 		);
 
-<span class="fc" id="L111">		double lowerWeight = assetBounds.lower();</span>
+<span class="fc" id="L110">		double lowerWeight = assetBounds.lower();</span>
 
-<span class="pc bpc" id="L113" title="1 of 2 branches missed.">		return !org.drip.numerical.common.NumberUtil.IsValid (</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">		if (org.drip.numerical.common.NumberUtil.IsValid (</span>
 			lowerWeight
-		) ? 0. : lowerWeight;
+		))
+		{
+<span class="fc" id="L116">			return lowerWeight;</span>
+		}
+
+<span class="nc" id="L119">		double upperWeight = assetBounds.upper();</span>
+
+<span class="nc bnc" id="L121" title="All 2 branches missed.">		return !org.drip.numerical.common.NumberUtil.IsValid (</span>
+			upperWeight
+		) ? 0. : upperWeight - 0.5;
 	}
 
 	/**
@@ -131,12 +139,12 @@ public class BoundedHoldingsAllocationControl extends
 		final org.drip.portfolioconstruction.allocator.EqualityConstraintSettings equalityConstraintSettings)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L134">		super (</span>
+<span class="fc" id="L142">		super (</span>
 			assetIDArray,
 			customRiskUtilitySettings,
 			equalityConstraintSettings
 		);
-<span class="fc" id="L139">	}</span>
+<span class="fc" id="L147">	}</span>
 
 	/**
 	 * Retrieve the Portfolio Asset Bounds Map
@@ -148,7 +156,7 @@ public class BoundedHoldingsAllocationControl extends
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.portfolioconstruction.asset.AssetBounds&gt;
 			assetBoundsMap()
 	{
-<span class="nc" id="L151">		return _assetBoundsMap;</span>
+<span class="nc" id="L159">		return _assetBoundsMap;</span>
 	}
 
 	/**
@@ -166,14 +174,14 @@ public class BoundedHoldingsAllocationControl extends
 		final double lowerBound,
 		final double upperBound)
 	{
-<span class="pc bpc" id="L169" title="2 of 4 branches missed.">		if (null == assetID || assetID.isEmpty())</span>
+<span class="pc bpc" id="L177" title="2 of 4 branches missed.">		if (null == assetID || assetID.isEmpty())</span>
 		{
-<span class="nc" id="L171">			return false;</span>
+<span class="nc" id="L179">			return false;</span>
 		}
 
 		try
 		{
-<span class="fc" id="L176">			_assetBoundsMap.put (</span>
+<span class="fc" id="L184">			_assetBoundsMap.put (</span>
 				assetID,
 				new org.drip.portfolioconstruction.asset.AssetBounds (
 					lowerBound,
@@ -181,14 +189,14 @@ public class BoundedHoldingsAllocationControl extends
 				)
 			);
 
-<span class="fc" id="L184">			return true;</span>
+<span class="fc" id="L192">			return true;</span>
 		}
-<span class="nc" id="L186">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L194">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L188">			e.printStackTrace();</span>
+<span class="nc" id="L196">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L191">		return false;</span>
+<span class="nc" id="L199">		return false;</span>
 	}
 
 	/**
@@ -205,13 +213,13 @@ public class BoundedHoldingsAllocationControl extends
 		final java.lang.String assetID)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L208" title="1 of 2 branches missed.">		if (!_assetBoundsMap.containsKey (assetID))</span>
+<span class="pc bpc" id="L216" title="1 of 2 branches missed.">		if (!_assetBoundsMap.containsKey (assetID))</span>
 		{
-<span class="nc" id="L210">			throw new java.lang.Exception</span>
+<span class="nc" id="L218">			throw new java.lang.Exception</span>
 				(&quot;BoundedHoldingsAllocationControl::lowerBound =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="fc" id="L214">		return _assetBoundsMap.get (assetID).lower();</span>
+<span class="fc" id="L222">		return _assetBoundsMap.get (assetID).lower();</span>
 	}
 
 	/**
@@ -228,13 +236,13 @@ public class BoundedHoldingsAllocationControl extends
 		final java.lang.String assetID)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L231" title="1 of 2 branches missed.">		if (!_assetBoundsMap.containsKey (assetID))</span>
+<span class="pc bpc" id="L239" title="1 of 2 branches missed.">		if (!_assetBoundsMap.containsKey (assetID))</span>
 		{
-<span class="nc" id="L233">			throw new java.lang.Exception</span>
+<span class="nc" id="L241">			throw new java.lang.Exception</span>
 				(&quot;BoundedHoldingsAllocationControl::upperBound =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="fc" id="L237">		return _assetBoundsMap.get (assetID).upper();</span>
+<span class="fc" id="L245">		return _assetBoundsMap.get (assetID).upper();</span>
 	}
 
 	/**
@@ -248,33 +256,33 @@ public class BoundedHoldingsAllocationControl extends
 	public org.drip.function.rdtor1.AffineBoundMultivariate[] boundingConstraintsArray (
 		final int extraneousVariateCount)
 	{
-<span class="fc" id="L251">		java.util.List&lt;org.drip.function.rdtor1.AffineBoundMultivariate&gt; boundingConstraintsList =</span>
+<span class="fc" id="L259">		java.util.List&lt;org.drip.function.rdtor1.AffineBoundMultivariate&gt; boundingConstraintsList =</span>
 			new java.util.ArrayList&lt;org.drip.function.rdtor1.AffineBoundMultivariate&gt;();
 
-<span class="fc" id="L254">		java.lang.String[] assetIDArray = assetIDArray();</span>
+<span class="fc" id="L262">		java.lang.String[] assetIDArray = assetIDArray();</span>
 
-<span class="fc" id="L256">		int assetCount = assetIDArray.length;</span>
+<span class="fc" id="L264">		int assetCount = assetIDArray.length;</span>
 
-<span class="fc bfc" id="L258" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+<span class="fc bfc" id="L266" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
 		{
-<span class="pc bpc" id="L260" title="1 of 2 branches missed.">			if (!_assetBoundsMap.containsKey (assetIDArray[assetIndex]))</span>
+<span class="pc bpc" id="L268" title="1 of 2 branches missed.">			if (!_assetBoundsMap.containsKey (assetIDArray[assetIndex]))</span>
 			{
-<span class="nc" id="L262">				continue;</span>
+<span class="nc" id="L270">				continue;</span>
 			}
 
-<span class="fc" id="L265">			org.drip.portfolioconstruction.asset.AssetBounds assetBounds = _assetBoundsMap.get (</span>
+<span class="fc" id="L273">			org.drip.portfolioconstruction.asset.AssetBounds assetBounds = _assetBoundsMap.get (</span>
 				assetIDArray[assetIndex]
 			);
 
-<span class="fc" id="L269">			double lowerBound = assetBounds.lower();</span>
+<span class="fc" id="L277">			double lowerBound = assetBounds.lower();</span>
 
-<span class="fc" id="L271">			double upperBound = assetBounds.upper();</span>
+<span class="fc" id="L279">			double upperBound = assetBounds.upper();</span>
 
 			try
 			{
-<span class="pc bpc" id="L275" title="1 of 2 branches missed.">				if (org.drip.numerical.common.NumberUtil.IsValid (lowerBound))</span>
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">				if (org.drip.numerical.common.NumberUtil.IsValid (lowerBound))</span>
 				{
-<span class="fc" id="L277">					boundingConstraintsList.add (</span>
+<span class="fc" id="L285">					boundingConstraintsList.add (</span>
 						new org.drip.function.rdtor1.AffineBoundMultivariate (
 							false,
 							assetIndex,
@@ -284,9 +292,9 @@ public class BoundedHoldingsAllocationControl extends
 					);
 				}
 
-<span class="pc bpc" id="L287" title="1 of 2 branches missed.">				if (org.drip.numerical.common.NumberUtil.IsValid (upperBound))</span>
+<span class="pc bpc" id="L295" title="1 of 2 branches missed.">				if (org.drip.numerical.common.NumberUtil.IsValid (upperBound))</span>
 				{
-<span class="fc" id="L289">					boundingConstraintsList.add (</span>
+<span class="fc" id="L297">					boundingConstraintsList.add (</span>
 						new org.drip.function.rdtor1.AffineBoundMultivariate (
 							true,
 							assetIndex,
@@ -296,30 +304,30 @@ public class BoundedHoldingsAllocationControl extends
 					);
 				}
 			}
-<span class="nc" id="L299">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L307">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L301">				e.printStackTrace();</span>
+<span class="nc" id="L309">				e.printStackTrace();</span>
 
-<span class="nc" id="L303">				return null;</span>
-<span class="fc" id="L304">			}</span>
+<span class="nc" id="L311">				return null;</span>
+<span class="fc" id="L312">			}</span>
 		}
 
-<span class="fc" id="L307">		int constraintCount = boundingConstraintsList.size();</span>
+<span class="fc" id="L315">		int constraintCount = boundingConstraintsList.size();</span>
 
-<span class="pc bpc" id="L309" title="1 of 2 branches missed.">		if (0 == constraintCount)</span>
+<span class="pc bpc" id="L317" title="1 of 2 branches missed.">		if (0 == constraintCount)</span>
 		{
-<span class="nc" id="L311">			return null;</span>
+<span class="nc" id="L319">			return null;</span>
 		}
 
-<span class="fc" id="L314">		org.drip.function.rdtor1.AffineBoundMultivariate[] boundingConstraintsArray =</span>
+<span class="fc" id="L322">		org.drip.function.rdtor1.AffineBoundMultivariate[] boundingConstraintsArray =</span>
 			new org.drip.function.rdtor1.AffineBoundMultivariate[constraintCount];
 
-<span class="fc bfc" id="L317" title="All 2 branches covered.">		for (int constraintIndex = 0; constraintIndex &lt; constraintCount; ++constraintIndex)</span>
+<span class="fc bfc" id="L325" title="All 2 branches covered.">		for (int constraintIndex = 0; constraintIndex &lt; constraintCount; ++constraintIndex)</span>
 		{
-<span class="fc" id="L319">			boundingConstraintsArray[constraintIndex] = boundingConstraintsList.get (constraintIndex);</span>
+<span class="fc" id="L327">			boundingConstraintsArray[constraintIndex] = boundingConstraintsList.get (constraintIndex);</span>
 		}
 
-<span class="fc" id="L322">		return boundingConstraintsArray;</span>
+<span class="fc" id="L330">		return boundingConstraintsArray;</span>
 	}
 
 	/**
@@ -330,27 +338,27 @@ public class BoundedHoldingsAllocationControl extends
 
 	public double[] feasibleStart()
 	{
-<span class="nc" id="L333">		boolean returnsConstraintPresent = org.drip.numerical.common.NumberUtil.IsValid (</span>
-<span class="nc" id="L334">			equalityConstraintSettings().returnsConstraint()</span>
+<span class="nc" id="L341">		boolean returnsConstraintPresent = org.drip.numerical.common.NumberUtil.IsValid (</span>
+<span class="nc" id="L342">			equalityConstraintSettings().returnsConstraint()</span>
 		);
 
-<span class="nc" id="L337">		java.lang.String[] assetIDArray = assetIDArray();</span>
+<span class="nc" id="L345">		java.lang.String[] assetIDArray = assetIDArray();</span>
 
-<span class="nc" id="L339">		int assetCount = assetIDArray.length;</span>
-<span class="nc bnc" id="L340" title="All 2 branches missed.">		double[] startingVariateArray = new double[assetCount + (returnsConstraintPresent ? 2 : 1)];</span>
+<span class="nc" id="L347">		int assetCount = assetIDArray.length;</span>
+<span class="nc bnc" id="L348" title="All 2 branches missed.">		double[] startingVariateArray = new double[assetCount + (returnsConstraintPresent ? 2 : 1)];</span>
 
-<span class="nc bnc" id="L342" title="All 2 branches missed.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+<span class="nc bnc" id="L350" title="All 2 branches missed.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
 		{
-<span class="nc" id="L344">			startingVariateArray[assetIndex] = _assetBoundsMap.get (assetIDArray[assetIndex]).feasibleStart();</span>
+<span class="nc" id="L352">			startingVariateArray[assetIndex] = _assetBoundsMap.get (assetIDArray[assetIndex]).feasibleStart();</span>
 		}
 
-<span class="nc bnc" id="L347" title="All 2 branches missed.">		if (returnsConstraintPresent)</span>
+<span class="nc bnc" id="L355" title="All 2 branches missed.">		if (returnsConstraintPresent)</span>
 		{
-<span class="nc" id="L349">			startingVariateArray[assetCount + 1] = 0.;</span>
+<span class="nc" id="L357">			startingVariateArray[assetCount + 1] = 0.;</span>
 		}
 
-<span class="nc" id="L352">		startingVariateArray[assetCount] = 0.;</span>
-<span class="nc" id="L353">		return startingVariateArray;</span>
+<span class="nc" id="L360">		startingVariateArray[assetCount] = 0.;</span>
+<span class="nc" id="L361">		return startingVariateArray;</span>
 	}
 
 	/**
@@ -361,69 +369,69 @@ public class BoundedHoldingsAllocationControl extends
 
 	public double[] weightConstrainedFeasibleStart()
 	{
-<span class="fc" id="L364">		boolean returnsConstraintPresent = org.drip.numerical.common.NumberUtil.IsValid (</span>
-<span class="fc" id="L365">			equalityConstraintSettings().returnsConstraint()</span>
+<span class="fc" id="L372">		boolean returnsConstraintPresent = org.drip.numerical.common.NumberUtil.IsValid (</span>
+<span class="fc" id="L373">			equalityConstraintSettings().returnsConstraint()</span>
 		);
 
-<span class="fc" id="L368">		java.lang.String[] assetIDArray = assetIDArray();</span>
+<span class="fc" id="L376">		java.lang.String[] assetIDArray = assetIDArray();</span>
 
-<span class="fc" id="L370">		double cumulativeWeight = 0.;</span>
-<span class="fc" id="L371">		double allocationQuantumFactor = 0.1;</span>
-<span class="fc" id="L372">		int assetCount = assetIDArray.length;</span>
-<span class="fc bfc" id="L373" title="All 2 branches covered.">		double[] startingVariateArray = new double[assetCount + (returnsConstraintPresent ? 2 : 1)];</span>
+<span class="fc" id="L378">		double cumulativeWeight = 0.;</span>
+<span class="fc" id="L379">		double allocationQuantumFactor = 0.1;</span>
+<span class="fc" id="L380">		int assetCount = assetIDArray.length;</span>
+<span class="fc bfc" id="L381" title="All 2 branches covered.">		double[] startingVariateArray = new double[assetCount + (returnsConstraintPresent ? 2 : 1)];</span>
 
-<span class="fc bfc" id="L375" title="All 2 branches covered.">		for (int i = 0; i &lt; assetCount; ++i)</span>
+<span class="fc bfc" id="L383" title="All 2 branches covered.">		for (int i = 0; i &lt; assetCount; ++i)</span>
 		{
-<span class="fc" id="L377">			startingVariateArray[i] = lowerPivotStartingWeight (</span>
+<span class="fc" id="L385">			startingVariateArray[i] = lowerPivotStartingWeight (</span>
 				assetIDArray[i]
 			);
 
-<span class="fc" id="L381">			cumulativeWeight += startingVariateArray[i];</span>
+<span class="fc" id="L389">			cumulativeWeight += startingVariateArray[i];</span>
 		}
 
-<span class="pc bpc" id="L384" title="1 of 2 branches missed.">		if (1. &lt; cumulativeWeight)</span>
+<span class="pc bpc" id="L392" title="1 of 2 branches missed.">		if (1. &lt; cumulativeWeight)</span>
 		{
-<span class="nc" id="L386">			return null;</span>
+<span class="nc" id="L394">			return null;</span>
 		}
 
-<span class="fc" id="L389">		boolean allocationLoop = true;</span>
-<span class="fc" id="L390">		double allocationWeightQuantum = allocationQuantumFactor * (1. - cumulativeWeight) / assetCount;</span>
+<span class="fc" id="L397">		boolean allocationLoop = true;</span>
+<span class="fc" id="L398">		double allocationWeightQuantum = allocationQuantumFactor * (1. - cumulativeWeight) / assetCount;</span>
 
-<span class="fc bfc" id="L392" title="All 2 branches covered.">		while (allocationLoop)</span>
+<span class="fc bfc" id="L400" title="All 2 branches covered.">		while (allocationLoop)</span>
 		{
-<span class="fc bfc" id="L394" title="All 2 branches covered.">			for (int i = 0; i &lt; assetCount; ++i)</span>
+<span class="fc bfc" id="L402" title="All 2 branches covered.">			for (int i = 0; i &lt; assetCount; ++i)</span>
 			{
-<span class="fc bfc" id="L396" title="All 2 branches covered.">				if (!allocationLoop)</span>
+<span class="fc bfc" id="L404" title="All 2 branches covered.">				if (!allocationLoop)</span>
 				{
-<span class="fc" id="L398">					break;</span>
+<span class="fc" id="L406">					break;</span>
 				}
 
-<span class="fc" id="L401">				org.drip.portfolioconstruction.asset.AssetBounds assetBounds = _assetBoundsMap.get (</span>
+<span class="fc" id="L409">				org.drip.portfolioconstruction.asset.AssetBounds assetBounds = _assetBoundsMap.get (</span>
 					assetIDArray[i]
 				);
 
-<span class="fc" id="L405">				double newStartingWeight = startingVariateArray[i] + allocationWeightQuantum;</span>
+<span class="fc" id="L413">				double newStartingWeight = startingVariateArray[i] + allocationWeightQuantum;</span>
 
-<span class="pc bpc" id="L407" title="2 of 4 branches missed.">				if (assetBounds.lower() &lt;= newStartingWeight &amp;&amp; assetBounds.upper() &gt;= newStartingWeight)</span>
+<span class="pc bpc" id="L415" title="2 of 4 branches missed.">				if (assetBounds.lower() &lt;= newStartingWeight &amp;&amp; assetBounds.upper() &gt;= newStartingWeight)</span>
 				{
-<span class="fc" id="L409">					startingVariateArray[i] = newStartingWeight;</span>
-<span class="fc" id="L410">					cumulativeWeight = cumulativeWeight + allocationWeightQuantum;;</span>
+<span class="fc" id="L417">					startingVariateArray[i] = newStartingWeight;</span>
+<span class="fc" id="L418">					cumulativeWeight = cumulativeWeight + allocationWeightQuantum;;</span>
 				}
 
-<span class="fc bfc" id="L413" title="All 2 branches covered.">				if (1. &lt;= cumulativeWeight)</span>
+<span class="fc bfc" id="L421" title="All 2 branches covered.">				if (1. &lt;= cumulativeWeight)</span>
 				{
-<span class="fc" id="L415">					allocationLoop = false;</span>
+<span class="fc" id="L423">					allocationLoop = false;</span>
 				}
 			}
 		}
 
-<span class="fc bfc" id="L420" title="All 2 branches covered.">		if (returnsConstraintPresent)</span>
+<span class="fc bfc" id="L428" title="All 2 branches covered.">		if (returnsConstraintPresent)</span>
 		{
-<span class="fc" id="L422">			startingVariateArray[assetCount + 1] = 0.;</span>
+<span class="fc" id="L430">			startingVariateArray[assetCount + 1] = 0.;</span>
 		}
 
-<span class="fc" id="L425">		startingVariateArray[assetCount] = 0.;</span>
-<span class="fc" id="L426">		return startingVariateArray;</span>
+<span class="fc" id="L433">		startingVariateArray[assetCount] = 0.;</span>
+<span class="fc" id="L434">		return startingVariateArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

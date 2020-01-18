@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HeuristicCardinalityBoundOptimizer15.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.tadonkivial</a> &gt; <span class="el_source">HeuristicCardinalityBoundOptimizer15.java</span></div><h1>HeuristicCardinalityBoundOptimizer15.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.tadonkivial;
+
+import org.drip.function.rdtor1descent.LineStepEvolutionControl;
+import org.drip.function.rdtor1solver.InteriorPointBarrierControl;
+import org.drip.measure.statistics.MultivariateMoments;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.portfolioconstruction.allocator.*;
+import org.drip.portfolioconstruction.asset.Portfolio;
+import org.drip.portfolioconstruction.cardinality.UpperBoundHoldingsAllocationControl;
+import org.drip.portfolioconstruction.cardinality.TadonkiVialHoldingsAllocation;
+import org.drip.portfolioconstruction.cardinality.TadonkiVialMeanVarianceOptimizer;
+import org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;HeuristicCardinalityBoundOptimizer15&lt;/i&gt; demonstrates the Setup and Execution of a Cardinality Bounded
+ * 	Portfolio Allocator with Asset Level Bounds using the Tadonki-Vial (2004) Heuristics. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ * 			Chang, T., J., N. Meade, J. E. Beasley, and Y. M. Sharaiha (2000): Heuristics for Cardinality
+ * 				Constrained Portfolio Optimization &lt;i&gt;Computers and Operations Research&lt;/i&gt; &lt;b&gt;27 (13)&lt;/b&gt;
+ * 				1271-1302
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Chvatal, V. (1973): Edmonds Polytopes in a Hierarchy of Combinatorial Problems &lt;i&gt;Discrete
+ * 				Mathematics&lt;/i&gt; &lt;b&gt;4 (4)&lt;/b&gt; 305-337
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Jobst, N. J., M. D. Horniman, C. A. Lucas, and G. Mitra (2001): Computational Aspects of
+ * 				Alternative Portfolio Selection Models in the Presence of Discrete Asset Choice Constraints
+ * 				&lt;i&gt;Quantitative Finance&lt;/i&gt; &lt;b&gt;1 (5)&lt;/b&gt; 1-13
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Letchford, A. N. and A. Lodi (2002): Strengthening Chvatal-Gomory Cuts and Gomory Fractional Cuts
+ * 				&lt;i&gt;Operations Research Letters&lt;/i&gt; &lt;b&gt;30 (2)&lt;/b&gt; 74-82
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Tadonki, C., and J. P. Vial (2004): Portfolio Selection with Cardinality and Bound Constraints
+ * 				https://www.cri.ensmp.fr/~tadonki/PaperForWeb/Tadonki_PF.pdf
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/assetallocationexcel/README.md&quot;&gt;Asset-Bound Allocator Excel Reconciliation&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L131">public class HeuristicCardinalityBoundOptimizer15</span>
+{
+
+	private static final void PrintPortfolio (
+		final String header,
+		final HoldingsAllocation holdingsAllocation)
+	{
+<span class="nc bnc" id="L138" title="All 2 branches missed.">		if (null == holdingsAllocation)</span>
+		{
+<span class="nc" id="L140">			return;</span>
+		}
+
+<span class="nc" id="L143">		Portfolio optimalPortfolio = holdingsAllocation.optimalPortfolio();</span>
+
+<span class="nc" id="L145">		System.out.println (&quot;\t|------------------||&quot;);</span>
+
+<span class="nc" id="L147">		System.out.println (&quot;\t|  &quot; + header);</span>
+
+<span class="nc" id="L149">		System.out.println (&quot;\t|------------------||&quot;);</span>
+
+<span class="nc" id="L151">		System.out.println (&quot;\t| ASSET |   DROP   ||&quot;);</span>
+
+<span class="nc" id="L153">		System.out.println (&quot;\t|------------------||&quot;);</span>
+
+<span class="nc" id="L155">		for (int assetIndex = 0;</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">			assetIndex &lt; optimalPortfolio.assetComponentArray().length;</span>
+<span class="nc" id="L157">			++assetIndex)</span>
+		{
+<span class="nc" id="L159">			System.out.println (</span>
+<span class="nc" id="L160">				&quot;\t|  &quot; + optimalPortfolio.assetComponentArray()[assetIndex].id() + &quot;  |&quot; +</span>
+<span class="nc" id="L161">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L162">					optimalPortfolio.assetComponentArray()[assetIndex].amount(), 2, 4, 100.</span>
+				) + &quot;% ||&quot;
+			);
+		}
+
+<span class="nc" id="L167">		System.out.println (&quot;\t|------------------||&quot;);</span>
+
+<span class="nc" id="L169">		System.out.println (&quot;\t| Cardinality =&gt; &quot; + optimalPortfolio.cardinality());</span>
+
+<span class="nc" id="L171">		System.out.println (&quot;\t|------------------||&quot;);</span>
+
+<span class="nc" id="L173">		System.out.println();</span>
+<span class="nc" id="L174">	}</span>
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L180">		EnvManager.InitEnv (</span>
+			&quot;&quot;,
+			true
+		);
+
+<span class="nc" id="L185">		int cardinalityUpperBound = 4;</span>
+<span class="nc" id="L186">		String[] assetIDArray = new String[]</span>
+		{
+			&quot;TOK&quot;,
+			&quot;EWJ&quot;,
+			&quot;HYG&quot;,
+			&quot;LQD&quot;,
+			&quot;EMD&quot;,
+			&quot;GSG&quot;,
+			&quot;BWX&quot;
+		};
+<span class="nc" id="L196">		double[] assetHoldingsLowerBoundArray = new double[]</span>
+		{
+			0.05,
+			0.05,
+			0.05,
+			0.05,
+			0.00,
+			0.00,
+			0.00
+		};
+<span class="nc" id="L206">		double[] assetHoldingsUpperBoundArray = new double[]</span>
+		{
+			0.50,
+			0.40,
+			0.30,
+			0.30,
+			0.35,
+			0.15,
+			0.50
+		};
+<span class="nc" id="L216">		double[] expectedAssetReturnsArray = new double[]</span>
+		{
+			0.1100,
+			0.1000,
+			0.0800,
+			0.0500,
+			0.0600,
+			0.0700,
+			0.0200
+		};
+<span class="nc" id="L226">		double portfolioDesignReturn = 0.08200;</span>
+<span class="nc" id="L227">		double[][] assetReturnsCovarianceMatrix = new double[][]</span>
+		{
+			{0.002733 * 12, 0.002083 * 12, 0.001593 * 12, 0.000488 * 12, 0.001172 * 12, 0.002312 * 12, 0.000710 * 12},
+			{0.002083 * 12, 0.002768 * 12, 0.001302 * 12, 0.000457 * 12, 0.001105 * 12, 0.001647 * 12, 0.000563 * 12},
+			{0.001593 * 12, 0.001302 * 12, 0.001463 * 12, 0.000639 * 12, 0.001050 * 12, 0.001110 * 12, 0.000519 * 12},
+			{0.000488 * 12, 0.000457 * 12, 0.000639 * 12, 0.000608 * 12, 0.000663 * 12, 0.000042 * 12, 0.000370 * 12},
+			{0.001172 * 12, 0.001105 * 12, 0.001050 * 12, 0.000663 * 12, 0.001389 * 12, 0.000825 * 12, 0.000661 * 12},
+			{0.002312 * 12, 0.001647 * 12, 0.001110 * 12, 0.000042 * 12, 0.000825 * 12, 0.005211 * 12, 0.000749 * 12},
+			{0.000710 * 12, 0.000563 * 12, 0.000519 * 12, 0.000370 * 12, 0.000661 * 12, 0.000749 * 12, 0.000703 * 12}
+		};
+
+<span class="nc" id="L238">		AssetUniverseStatisticalProperties assetUniverseStatisticalProperties =</span>
+<span class="nc" id="L239">			AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
+<span class="nc" id="L240">				MultivariateMoments.Standard (</span>
+					assetIDArray,
+					expectedAssetReturnsArray,
+					assetReturnsCovarianceMatrix
+				)
+			);
+
+<span class="nc" id="L247">		System.out.println (&quot;\t|-------------------||&quot;);</span>
+
+<span class="nc" id="L249">		System.out.println (&quot;\t|   ASSET BOUNDS    ||&quot;);</span>
+
+<span class="nc" id="L251">		System.out.println (&quot;\t|-------------------||&quot;);</span>
+
+<span class="nc" id="L253">		for (int assetIndex = 0;</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">			assetIndex &lt; assetIDArray.length;</span>
+<span class="nc" id="L255">			++assetIndex)</span>
+		{
+<span class="nc" id="L257">			System.out.println (</span>
+				&quot;\t| &quot; + assetIDArray[assetIndex] + &quot; | &quot; +
+<span class="nc" id="L259">				FormatUtil.FormatDouble (assetHoldingsLowerBoundArray[assetIndex], 2, 0, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L260">				FormatUtil.FormatDouble (assetHoldingsUpperBoundArray[assetIndex], 2, 0, 100.) + &quot;% ||&quot;</span>
+			);
+		}
+
+<span class="nc" id="L264">		System.out.println (&quot;\t|-------------------||&quot;);</span>
+
+<span class="nc" id="L266">		UpperBoundHoldingsAllocationControl boundedCardinalityParameters =</span>
+			new UpperBoundHoldingsAllocationControl (
+				assetIDArray,
+<span class="nc" id="L269">				CustomRiskUtilitySettings.VarianceMinimizer(),</span>
+				new EqualityConstraintSettings (
+					EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT |
+						EqualityConstraintSettings.RETURNS_CONSTRAINT,
+					portfolioDesignReturn
+				),
+				cardinalityUpperBound
+			);
+
+<span class="nc" id="L278">		for (int assetIndex = 0;</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">			assetIndex &lt; assetIDArray.length;</span>
+<span class="nc" id="L280">			++assetIndex)</span>
+		{
+<span class="nc" id="L282">			boundedCardinalityParameters.addBound (</span>
+				assetIDArray[assetIndex],
+				assetHoldingsLowerBoundArray[assetIndex],
+				assetHoldingsUpperBoundArray[assetIndex]
+			);
+		}
+
+<span class="nc" id="L289">		TadonkiVialHoldingsAllocation tadonkiVialHoldingsAllocation = new TadonkiVialMeanVarianceOptimizer (</span>
+<span class="nc" id="L290">			InteriorPointBarrierControl.Standard(),</span>
+<span class="nc" id="L291">			LineStepEvolutionControl.NocedalWrightStrongWolfe (</span>
+				false
+			)
+<span class="nc" id="L294">		).allocate (</span>
+			boundedCardinalityParameters,
+			assetUniverseStatisticalProperties
+		);
+
+<span class="nc" id="L299">		PrintPortfolio (</span>
+			&quot;FLOOR PASS&quot;,
+<span class="nc" id="L301">			tadonkiVialHoldingsAllocation.floorPassHoldingsAllocation()</span>
+		);
+
+<span class="nc" id="L304">		PrintPortfolio (</span>
+			&quot;FIRST GREEDY PRUNE PASS&quot;,
+<span class="nc" id="L306">			tadonkiVialHoldingsAllocation.firstPrunePassHoldingsAllocation()</span>
+		);
+
+<span class="nc" id="L309">		PrintPortfolio (</span>
+			&quot;SECOND GREEDY PRUNE PASS&quot;,
+<span class="nc" id="L311">			tadonkiVialHoldingsAllocation.secondPrunePassHoldingsAllocation()</span>
+		);
+
+<span class="nc" id="L314">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L315">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

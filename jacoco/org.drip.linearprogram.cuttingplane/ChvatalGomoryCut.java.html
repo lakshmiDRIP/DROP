@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ChvatalGomoryCut.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.linearprogram.cuttingplane</a> &gt; <span class="el_source">ChvatalGomoryCut.java</span></div><h1>ChvatalGomoryCut.java</h1><pre class="source lang-java linenums">
+package org.drip.linearprogram.cuttingplane;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;ChvatalGomoryCut&lt;/i&gt; implements the Chvatal-Gomory Cut. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ * 			Burdet, C. A., and E. L. Johnson (1977): A Sub-additive Approach to Solve Linear Integer Programs
+ * 				&lt;i&gt;Annals of Discrete Mathematics&lt;/i&gt; &lt;b&gt;1&lt;/b&gt; 117-143
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Chvatal, V. (1973): Edmonds Polytopes in a Hierarchy of Combinatorial Problems &lt;i&gt;Discrete
+ * 				Mathematics&lt;/i&gt; &lt;b&gt;4 (4)&lt;/b&gt; 305-337
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Gomory, R. E. (1958): Outline of an Algorithm for Integer Solutions to Linear Programs
+ * 				&lt;i&gt;Bulletin of the American Mathematical Society&lt;/i&gt; &lt;b&gt;64 (5)&lt;/b&gt; 275-278
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Kelley, J. E. (1960): The Cutting Plane Method for Solving Convex Problems &lt;i&gt;Journal for the
+ * 				Society of the Industrial and Applied Mathematics&lt;/i&gt; &lt;b&gt;8 (4)&lt;/b&gt; 703-712
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Letchford, A. N. and A. Lodi (2002): Strengthening Chvatal-Gomory Cuts and Gomory Fractional Cuts
+ * 				&lt;i&gt;Operations Research Letters&lt;/i&gt; &lt;b&gt;30 (2)&lt;/b&gt; 74-82
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/linearprogram/README.md&quot;&gt;Linear Programming Solution Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/linearprogram/cuttingplane/README.md&quot;&gt;Polyhedral Cutting Plane Generation Schemes&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class ChvatalGomoryCut
+	extends org.drip.linearprogram.canonical.ILPConstraint
+{
+<span class="nc" id="L118">	private double[] _lambdaArray = null;</span>
+
+	/**
+	 * ChvatalGomoryCut Constructor
+	 * 
+	 * @param aGrid &quot;A&quot; Constraint Grid
+	 * @param bArray &quot;b&quot; Constraint Array
+	 * @param lambdaArray The Lambda Array
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public ChvatalGomoryCut (
+		final int[][] aGrid,
+		final int[] bArray,
+		final double[] lambdaArray)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L136">		super (</span>
+			aGrid,
+			bArray
+		);
+
+<span class="nc bnc" id="L141" title="All 2 branches missed.">		if (null == (_lambdaArray = lambdaArray))</span>
+		{
+<span class="nc" id="L143">			throw new java.lang.Exception (</span>
+				&quot;ChvatalGomoryCut Constructor =&gt; Invalid Inputs&quot;
+			);
+		}
+
+<span class="nc" id="L148">		int constraintCount = constraintCount();</span>
+
+<span class="nc bnc" id="L150" title="All 2 branches missed.">		if (_lambdaArray.length != constraintCount)</span>
+		{
+<span class="nc" id="L152">			throw new java.lang.Exception (</span>
+				&quot;ChvatalGomoryCut Constructor =&gt; Invalid Inputs&quot;
+			);
+		}
+
+<span class="nc" id="L157">		for (int constraintIndex = 0;</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">			constraintIndex &lt; constraintCount;</span>
+<span class="nc" id="L159">			++constraintIndex)</span>
+		{
+<span class="nc bnc" id="L161" title="All 4 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (</span>
+					_lambdaArray[constraintIndex]
+				) || 0. &gt; _lambdaArray[constraintIndex]
+			)
+			{
+<span class="nc" id="L166">				throw new java.lang.Exception (</span>
+					&quot;ChvatalGomoryCut Constructor =&gt; Invalid Inputs&quot;
+				);
+			}
+		}
+<span class="nc" id="L171">	}</span>
+
+	/**
+	 * Retrieve the Lambda Array
+	 * 
+	 * @return The Lambda Array
+	 */
+
+	public double[] lambdaArray()
+	{
+<span class="nc" id="L181">		return _lambdaArray;</span>
+	}
+
+	/**
+	 * Generate the Unadjusted Coefficient Array
+	 * 
+	 * @return The Unadjusted Coefficient Array
+	 */
+
+	public double[] unadjustedCoefficientArray()
+	{
+<span class="nc" id="L192">		int[] bArray = bArray();</span>
+
+<span class="nc" id="L194">		int[][] aGrid = aGrid();</span>
+
+<span class="nc" id="L196">		int dimension = aGrid.length;</span>
+<span class="nc" id="L197">		int constraintCount = bArray.length;</span>
+<span class="nc" id="L198">		double[] unadjustedCoefficientArray = new double[dimension + 1];</span>
+
+<span class="nc" id="L200">		for (int dimensionIndex = 0;</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">			dimensionIndex &lt;= dimension;</span>
+<span class="nc" id="L202">			++dimensionIndex)</span>
+		{
+<span class="nc" id="L204">			unadjustedCoefficientArray[dimensionIndex] = 0.;</span>
+		}
+
+<span class="nc" id="L207">		for (int constraintIndex = 0;</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">			constraintIndex &lt; constraintCount;</span>
+<span class="nc" id="L209">			++constraintIndex)</span>
+		{
+<span class="nc" id="L211">			for (int dimensionIndex = 0;</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">				dimensionIndex &lt; dimension;</span>
+<span class="nc" id="L213">				++dimensionIndex)</span>
+			{
+<span class="nc" id="L215">				unadjustedCoefficientArray[dimensionIndex + 1] += _lambdaArray[constraintIndex] *</span>
+					aGrid[constraintIndex][dimensionIndex];
+			}
+
+<span class="nc" id="L219">			unadjustedCoefficientArray[0] = unadjustedCoefficientArray[0] +</span>
+				_lambdaArray[constraintIndex] * bArray[constraintIndex];
+		}
+
+<span class="nc" id="L223">		return unadjustedCoefficientArray;</span>
+	}
+
+	/**
+	 * Generate the Adjusted Coefficient Array
+	 * 
+	 * @return The Adjusted Coefficient Array
+	 */
+
+	public double[] adjustedCoefficientArray()
+	{
+<span class="nc" id="L234">		double[] unadjustedCoefficientArray = unadjustedCoefficientArray();</span>
+
+<span class="nc bnc" id="L236" title="All 2 branches missed.">		if (null == unadjustedCoefficientArray)</span>
+		{
+<span class="nc" id="L238">			return null;</span>
+		}
+
+<span class="nc" id="L241">		int coefficientCount = unadjustedCoefficientArray.length;</span>
+<span class="nc" id="L242">		double[] adjustedCoefficientArray = new double[coefficientCount];</span>
+
+<span class="nc" id="L244">		for (int coefficientIndex = 0;</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">			coefficientIndex &lt; coefficientCount;</span>
+<span class="nc" id="L246">			++coefficientIndex)</span>
+		{
+<span class="nc" id="L248">			adjustedCoefficientArray[coefficientIndex] = (int) unadjustedCoefficientArray[coefficientIndex];</span>
+		}
+
+<span class="nc" id="L251">		return adjustedCoefficientArray;</span>
+	}
+
+	/**
+	 * Verify if the Variate Array satisfies the Constraint
+	 * 
+	 * @param variateArray The Input Variate Array
+	 * 
+	 * @return TRUE - The Variate Array satisfies the Constraint
+	 */
+
+	public boolean verify (
+		final int[] variateArray)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L266" title="All 2 branches missed.">		if (!super.verify (</span>
+			variateArray
+		))
+		{
+<span class="nc" id="L270">			return false;</span>
+		}
+
+<span class="nc" id="L273">		double[] adjustedCoefficientArray = adjustedCoefficientArray();</span>
+
+<span class="nc bnc" id="L275" title="All 2 branches missed.">		if (null == adjustedCoefficientArray)</span>
+		{
+<span class="nc" id="L277">			return false;</span>
+		}
+
+<span class="nc" id="L280">		double lhs = 0.;</span>
+<span class="nc" id="L281">		int coefficientCount = adjustedCoefficientArray.length;</span>
+
+<span class="nc" id="L283">		for (int coefficientIndex = 1;</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">			coefficientIndex &lt; coefficientCount;</span>
+<span class="nc" id="L285">			++coefficientIndex)</span>
+		{
+<span class="nc" id="L287">			lhs += variateArray[coefficientIndex] * adjustedCoefficientArray[coefficientIndex];</span>
+		}
+
+<span class="nc bnc" id="L290" title="All 2 branches missed.">		return lhs &lt;= adjustedCoefficientArray[0];</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -118,6 +118,38 @@ package org.drip.portfolioconstruction.cardinality;
 public class TadonkiVialHoldingsAllocation
 	extends org.drip.portfolioconstruction.allocator.HoldingsAllocation
 {
+<span class="nc" id="L121">	private org.drip.portfolioconstruction.allocator.HoldingsAllocation _floorPassHoldingsAllocation = null;</span>
+<span class="nc" id="L122">	private org.drip.portfolioconstruction.allocator.HoldingsAllocation _firstPrunePassHoldingsAllocation =</span>
+		null;
+<span class="nc" id="L124">	private org.drip.portfolioconstruction.allocator.HoldingsAllocation _secondPrunePassHoldingsAllocation =</span>
+		null;
+
+	/**
+	 * Generate a Standard Instance of the Tadonki Vial Holdings Allocation
+	 * 
+	 * @param holdingsAllocation The Holdings Allocation
+	 * 
+	 * @return Tadonki Vial Holdings Allocation
+	 */
+
+	public static final TadonkiVialHoldingsAllocation Standard (
+		final org.drip.portfolioconstruction.allocator.HoldingsAllocation holdingsAllocation)
+	{
+		try
+		{
+<span class="nc bnc" id="L140" title="All 2 branches missed.">			return null == holdingsAllocation ? null :</span>
+				new org.drip.portfolioconstruction.cardinality.TadonkiVialHoldingsAllocation (
+<span class="nc" id="L142">					holdingsAllocation.optimalPortfolio(),</span>
+<span class="nc" id="L143">					holdingsAllocation.optimalMetrics()</span>
+				);
+		}
+<span class="nc" id="L146">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L148">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L151">		return null;</span>
+	}
 
 	/**
 	 * TadonkiVialHoldingsAllocation Constructor
@@ -133,10 +165,103 @@ public class TadonkiVialHoldingsAllocation
 		final org.drip.portfolioconstruction.asset.PortfolioMetrics optimalPortfolioMetrics)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L136">		super (</span>
+<span class="nc" id="L168">		super (</span>
 			optimalPortfolio,
 			optimalPortfolioMetrics
 		);
-<span class="nc" id="L140">	}</span>
+<span class="nc" id="L172">	}</span>
+
+	/**
+	 * Retrieve the Floor Pass Holdings Allocation
+	 * 
+	 * @return The Floor Pass Holdings Allocation
+	 */
+
+	public org.drip.portfolioconstruction.allocator.HoldingsAllocation floorPassHoldingsAllocation()
+	{
+<span class="nc" id="L182">		return _floorPassHoldingsAllocation;</span>
+	}
+
+	/**
+	 * Retrieve the First Prune Pass Holdings Allocation
+	 * 
+	 * @return The First Prune Pass Holdings Allocation
+	 */
+
+	public org.drip.portfolioconstruction.allocator.HoldingsAllocation firstPrunePassHoldingsAllocation()
+	{
+<span class="nc" id="L193">		return _firstPrunePassHoldingsAllocation;</span>
+	}
+
+	/**
+	 * Retrieve the Second Prune Pass Holdings Allocation
+	 * 
+	 * @return The Second Prune Pass Holdings Allocation
+	 */
+
+	public org.drip.portfolioconstruction.allocator.HoldingsAllocation secondPrunePassHoldingsAllocation()
+	{
+<span class="nc" id="L204">		return _secondPrunePassHoldingsAllocation;</span>
+	}
+
+	/**
+	 * Set the Floor Pass Holdings Allocation
+	 * 
+	 * @param floorPassHoldingsAllocation The Floor Pass Holdings Allocation
+	 * 
+	 * @return TRUE - The Floor Pass Holdings Allocation successfully set
+	 */
+
+	public boolean setFloorPassHoldingsAllocation (
+		final org.drip.portfolioconstruction.allocator.HoldingsAllocation floorPassHoldingsAllocation)
+	{
+<span class="nc bnc" id="L218" title="All 2 branches missed.">		if (null == floorPassHoldingsAllocation)</span>
+		{
+<span class="nc" id="L220">			return false;</span>
+		}
+
+<span class="nc" id="L223">		_floorPassHoldingsAllocation = floorPassHoldingsAllocation;</span>
+<span class="nc" id="L224">		return true;</span>
+	}
+
+	/**
+	 * Set the First Prune Pass Holdings Allocation
+	 * 
+	 * @param firstPrunePassHoldingsAllocation The First Prune Pass Holdings Allocation
+	 * 
+	 * @return TRUE - The First Prune Pass Holdings Allocation successfully set
+	 */
+
+	public boolean setFirstPrunePassHoldingsAllocation (
+		final org.drip.portfolioconstruction.allocator.HoldingsAllocation firstPrunePassHoldingsAllocation)
+	{
+<span class="nc bnc" id="L238" title="All 2 branches missed.">		if (null == firstPrunePassHoldingsAllocation)</span>
+		{
+<span class="nc" id="L240">			return false;</span>
+		}
+
+<span class="nc" id="L243">		_firstPrunePassHoldingsAllocation = firstPrunePassHoldingsAllocation;</span>
+<span class="nc" id="L244">		return true;</span>
+	}
+
+	/**
+	 * Set the Second Prune Pass Holdings Allocation
+	 * 
+	 * @param secondPrunePassHoldingsAllocation The Second Prune Pass Holdings Allocation
+	 * 
+	 * @return TRUE - The Second Prune Pass Holdings Allocation successfully set
+	 */
+
+	public boolean setSecondPrunePassHoldingsAllocation (
+		final org.drip.portfolioconstruction.allocator.HoldingsAllocation secondPrunePassHoldingsAllocation)
+	{
+<span class="nc bnc" id="L258" title="All 2 branches missed.">		if (null == secondPrunePassHoldingsAllocation)</span>
+		{
+<span class="nc" id="L260">			return false;</span>
+		}
+
+<span class="nc" id="L263">		_secondPrunePassHoldingsAllocation = secondPrunePassHoldingsAllocation;</span>
+<span class="nc" id="L264">		return true;</span>
+	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
