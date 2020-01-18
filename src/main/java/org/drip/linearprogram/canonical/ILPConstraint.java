@@ -271,6 +271,8 @@ public class ILPConstraint
 	 * @param variateArray The Input Variate Array
 	 * 
 	 * @return TRUE - The Variate Array satisfies the Constraint
+	 * 
+	 * @throws java.lang.Exception Thrown if the Verification cannot be done
 	 */
 
 	public boolean verify (

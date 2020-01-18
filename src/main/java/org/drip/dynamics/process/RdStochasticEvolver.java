@@ -360,7 +360,8 @@ public class RdStochasticEvolver
 				_driftFunctionArray,
 				new org.drip.dynamics.ito.DiffusionTensor (
 					_volatilityFunctionGrid
-				)
+				),
+				null
 			);
 		}
 		catch (java.lang.Exception e)

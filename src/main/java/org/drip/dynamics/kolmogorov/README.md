@@ -25,6 +25,9 @@ DROP Dynamics Kolmogorov Package implements Fokker Planck Kolmogorov Forward/Bac
  * [***RdFokkerPlanck***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/kolmogorov/RdFokkerPlanck.java)
  <i>RdFokkerPlanck</i> exposes the R<sup>d</sup> Fokker-Planck Probability Density Function Evolution Equation.
 
+ * [***RiskenOmegaEstimator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/kolmogorov/RiskenOmegaEstimator.java)
+ <i>RiskenOmegaEstimator</i> exposes the Risken Omega Matrix Estimation Function.
+
 
 # References
 

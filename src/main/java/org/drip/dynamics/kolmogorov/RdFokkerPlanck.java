@@ -118,23 +118,28 @@ public class RdFokkerPlanck
 {
 	private org.drip.dynamics.ito.DiffusionTensor _diffusionTensor = null;
 	private org.drip.dynamics.ito.RdToR1Drift[] _driftFunctionArray = null;
+	private org.drip.dynamics.kolmogorov.RiskenOmegaEstimator _riskenOmegaEstimator = null;
 
 	/**
 	 * RdFokkerPlanck Constructor
 	 * 
 	 * @param driftFunctionArray Drift Function Array
 	 * @param diffusionTensor Diffusion Tensor
+	 * @param riskenOmegaEstimator Risken Omega Estimator
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RdFokkerPlanck (
 		final org.drip.dynamics.ito.RdToR1Drift[] driftFunctionArray,
-		final org.drip.dynamics.ito.DiffusionTensor diffusionTensor)
+		final org.drip.dynamics.ito.DiffusionTensor diffusionTensor,
+		final org.drip.dynamics.kolmogorov.RiskenOmegaEstimator riskenOmegaEstimator)
 		throws java.lang.Exception
 	{
 		if (null == (_driftFunctionArray = driftFunctionArray) ||
-			null == (_diffusionTensor = diffusionTensor))
+			null == (_diffusionTensor = diffusionTensor) ||
+			null == (_riskenOmegaEstimator = riskenOmegaEstimator)
+		)
 		{
 			throw new java.lang.Exception (
 				"RdFokkerPlanck Constructor => Invalid Inputs"
@@ -183,6 +188,17 @@ public class RdFokkerPlanck
 	public org.drip.dynamics.ito.DiffusionTensor diffusionTensor()
 	{
 		return _diffusionTensor;
+	}
+
+	/**
+	 * Retrieve the Risken Omega Estimator
+	 * 
+	 * @return The Risken Omega Estimator
+	 */
+
+	public org.drip.dynamics.kolmogorov.RiskenOmegaEstimator riskenOmegaEstimator()
+	{
+		return _riskenOmegaEstimator;
 	}
 
 	/**
@@ -323,6 +339,81 @@ public class RdFokkerPlanck
 
 	public org.drip.function.definition.RdToR1 steadyStatePDF()
 	{
-		return null;
+		double[][] omega = _riskenOmegaEstimator.estimateOmega (
+			_diffusionTensor,
+			_driftFunctionArray
+		);
+
+		final double[][] omegaInverse =
+			org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination (
+				omega
+			);
+
+		if (null == omegaInverse)
+		{
+			return null;
+		}
+
+		final int dimension = _diffusionTensor.dimension();
+
+		double rdNormalizer = java.lang.Double.NaN;
+
+		try
+		{
+			rdNormalizer = java.lang.Math.sqrt (
+				java.lang.Math.pow (
+					2. * java.lang.Math.PI,
+					-1. * dimension
+				) / new org.drip.function.matrix.Square (
+					omega
+				).determinant()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		final double rdNormalizerFinal = rdNormalizer;
+
+		final org.drip.function.definition.R1ToR1 r1ToR1Exponential =
+			new org.drip.function.definition.R1ToR1 (
+				null
+			)
+		{
+			@Override public double evaluate (
+				final double x)
+				throws java.lang.Exception
+			{
+				return java.lang.Math.exp (
+					-0.5 * x
+				);
+			}
+		};
+
+		return new org.drip.function.definition.RdToR1 (
+			null
+		)
+		{
+			@Override public int dimension()
+			{
+				return dimension;
+			}
+
+			@Override public double evaluate (
+				final double[] xArray)
+				throws java.lang.Exception
+			{
+				return rdNormalizerFinal * r1ToR1Exponential.evaluate (
+					org.drip.numerical.linearalgebra.Matrix.DotProduct (
+						xArray,
+						org.drip.numerical.linearalgebra.Matrix.Product (
+							omegaInverse,
+							xArray
+						)
+					)
+				);
+			}
+		};
 	}
 }

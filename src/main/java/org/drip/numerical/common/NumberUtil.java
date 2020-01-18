@@ -906,4 +906,30 @@ public class NumberUtil {
 
 		return z - (int) z;
 	}
+
+	/**
+	 * Retrieve the Reciprocal Integer Floor of z
+	 * 
+	 * @param z Z
+	 * 
+	 * @return The Reciprocal Integer Floor of z
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final int ReciprocalIntegerFloor (
+		final double z)
+		throws java.lang.Exception
+	{
+		if (!IsValid (
+			z
+		))
+		{
+			throw new java.lang.Exception (
+				"NumberUtil::ReciprocalIntegerFloor => Invalid Inputs"
+			);
+		}
+
+		return (int) (1. / z);
+	}
 }

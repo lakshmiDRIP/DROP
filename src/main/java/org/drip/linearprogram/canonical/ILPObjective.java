@@ -224,6 +224,8 @@ public class ILPObjective
 	 * @param variateArray The Input Variate Array
 	 * 
 	 * @return The Objective Function at the specified Variate Array
+	 * 
+	 * @throws java.lang.Exception Thrown if the Evaluation cannot be done
 	 */
 
 	public double evaluate (
