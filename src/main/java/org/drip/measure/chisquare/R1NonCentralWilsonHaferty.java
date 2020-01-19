@@ -128,6 +128,8 @@ public abstract class R1NonCentralWilsonHaferty
 			r1NonCentralParameters.degreesOfFreedom(),
 			r1UnivariateNormal
 		);
+
+		_r1NonCentralParameters = r1NonCentralParameters;
 	}
 
 	/**

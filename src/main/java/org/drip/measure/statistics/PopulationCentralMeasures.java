@@ -113,7 +113,7 @@ public class PopulationCentralMeasures
 		throws java.lang.Exception
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (_mean = mean) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_variance = variance))
+			java.lang.Double.isNaN (_variance = variance))
 		{
 			throw new java.lang.Exception ("PopulationCentralMeasures Constructor => Invalid Inputsx");
 		}
