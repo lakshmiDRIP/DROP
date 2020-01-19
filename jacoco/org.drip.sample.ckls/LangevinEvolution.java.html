@@ -12,34 +12,45 @@ import org.drip.service.env.EnvManager;
 
 /*!
  * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -99,33 +110,33 @@ import org.drip.service.env.EnvManager;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm/README.md&quot;&gt;LIBOR Market Model&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/ckls/README.md&quot;&gt;Analysis of CKLS Process Variants&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L111">public class LangevinEvolution</span>
+<span class="nc" id="L122">public class LangevinEvolution</span>
 {
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L118">		EnvManager.InitEnv (</span>
+<span class="nc" id="L129">		EnvManager.InitEnv (</span>
 			&quot;&quot;
 		);
 
-<span class="nc" id="L122">		double timeWidth = 1.;</span>
-<span class="nc" id="L123">		double temperature = 300.;</span>
-<span class="nc" id="L124">		double restLength = 1.e-10;</span>
-<span class="nc" id="L125">		double initialLength = 3.e-10;</span>
-<span class="nc" id="L126">		double dampingCoefficient = 0.5;</span>
-<span class="nc" id="L127">		double elasticityCoefficient = 1.0;</span>
-<span class="nc" id="L128">		double[] timeArray =</span>
+<span class="nc" id="L133">		double timeWidth = 1.;</span>
+<span class="nc" id="L134">		double temperature = 300.;</span>
+<span class="nc" id="L135">		double restLength = 1.e-10;</span>
+<span class="nc" id="L136">		double initialLength = 3.e-10;</span>
+<span class="nc" id="L137">		double dampingCoefficient = 0.5;</span>
+<span class="nc" id="L138">		double elasticityCoefficient = 1.0;</span>
+<span class="nc" id="L139">		double[] timeArray =</span>
 		{
 			0.0,
 			0.5,
@@ -149,43 +160,43 @@ import org.drip.service.env.EnvManager;
 			9.5
 		};
 
-<span class="nc" id="L152">		System.out.println (</span>
+<span class="nc" id="L163">		System.out.println (</span>
 			&quot;\t|-----------------------------------------------------------||&quot;
 		);
 
-<span class="nc" id="L156">		System.out.println (</span>
+<span class="nc" id="L167">		System.out.println (</span>
 			&quot;\t|                 LANGEVIN SYSTEM EVOLUTION                 ||&quot;
 		);
 
-<span class="nc" id="L160">		System.out.println (</span>
+<span class="nc" id="L171">		System.out.println (</span>
 			&quot;\t|-----------------------------------------------------------||&quot;
 		);
 
-<span class="nc" id="L164">		System.out.println (</span>
+<span class="nc" id="L175">		System.out.println (</span>
 			&quot;\t| Temperature             =&gt; &quot; + temperature
 		);
 
-<span class="nc" id="L168">		System.out.println (</span>
+<span class="nc" id="L179">		System.out.println (</span>
 			&quot;\t| Rest Length             =&gt; &quot; + restLength
 		);
 
-<span class="nc" id="L172">		System.out.println (</span>
+<span class="nc" id="L183">		System.out.println (</span>
 			&quot;\t| Damping Coefficient     =&gt; &quot; + dampingCoefficient
 		);
 
-<span class="nc" id="L176">		System.out.println (</span>
+<span class="nc" id="L187">		System.out.println (</span>
 			&quot;\t| Elasticity Coefficient  =&gt; &quot; + elasticityCoefficient
 		);
 
-<span class="nc" id="L180">		System.out.println (</span>
+<span class="nc" id="L191">		System.out.println (</span>
 			&quot;\t|-----------------------------------------------------------||&quot;
 		);
 
-<span class="nc" id="L184">		R1WienerDriver wienerDriver = new R1WienerDriver (</span>
+<span class="nc" id="L195">		R1WienerDriver wienerDriver = new R1WienerDriver (</span>
 			timeWidth
 		);
 
-<span class="nc" id="L188">		LangevinEvolver langevinEvolver = new LangevinEvolver (</span>
+<span class="nc" id="L199">		LangevinEvolver langevinEvolver = new LangevinEvolver (</span>
 			elasticityCoefficient,
 			dampingCoefficient,
 			restLength,
@@ -193,54 +204,54 @@ import org.drip.service.env.EnvManager;
 			wienerDriver
 		);
 
-<span class="nc" id="L196">		System.out.println (</span>
-<span class="nc" id="L197">			&quot;\t| Correlation Time        =&gt; &quot; + langevinEvolver.correlationTime()</span>
+<span class="nc" id="L207">		System.out.println (</span>
+<span class="nc" id="L208">			&quot;\t| Correlation Time        =&gt; &quot; + langevinEvolver.correlationTime()</span>
 		);
 
-<span class="nc" id="L200">		System.out.println (</span>
-<span class="nc" id="L201">			&quot;\t| Diffusion Coefficient   =&gt; &quot; + langevinEvolver.stokesEinsteinEffectiveDiffusionCoefficient()</span>
+<span class="nc" id="L211">		System.out.println (</span>
+<span class="nc" id="L212">			&quot;\t| Diffusion Coefficient   =&gt; &quot; + langevinEvolver.stokesEinsteinEffectiveDiffusionCoefficient()</span>
 		);
 
-<span class="nc" id="L204">		System.out.println (</span>
-<span class="nc" id="L205">			&quot;\t| Equi-Partition Energy   =&gt; &quot; + langevinEvolver.equiPartitionEnergy()</span>
+<span class="nc" id="L215">		System.out.println (</span>
+<span class="nc" id="L216">			&quot;\t| Equi-Partition Energy   =&gt; &quot; + langevinEvolver.equiPartitionEnergy()</span>
 		);
 
-<span class="nc" id="L208">		System.out.println (</span>
-<span class="nc" id="L209">			&quot;\t| Volatility              =&gt; &quot; + langevinEvolver.cklsParameters().volatilityCoefficient()</span>
+<span class="nc" id="L219">		System.out.println (</span>
+<span class="nc" id="L220">			&quot;\t| Volatility              =&gt; &quot; + langevinEvolver.cklsParameters().volatilityCoefficient()</span>
 		);
 
-<span class="nc" id="L212">		System.out.println (</span>
-<span class="nc" id="L213">			&quot;\t| Mean-Reversion Level    =&gt; &quot; + langevinEvolver.cklsParameters().meanReversionLevel()</span>
+<span class="nc" id="L223">		System.out.println (</span>
+<span class="nc" id="L224">			&quot;\t| Mean-Reversion Level    =&gt; &quot; + langevinEvolver.cklsParameters().meanReversionLevel()</span>
 		);
 
-<span class="nc" id="L216">		System.out.println (</span>
-<span class="nc" id="L217">			&quot;\t| Mean-Reversion Speed    =&gt; &quot; + langevinEvolver.cklsParameters().meanReversionSpeed()</span>
+<span class="nc" id="L227">		System.out.println (</span>
+<span class="nc" id="L228">			&quot;\t| Mean-Reversion Speed    =&gt; &quot; + langevinEvolver.cklsParameters().meanReversionSpeed()</span>
 		);
 
-<span class="nc" id="L220">		System.out.println (</span>
+<span class="nc" id="L231">		System.out.println (</span>
 			&quot;\t|-----------------------------------------------------------||&quot;
 		);
 
-<span class="nc" id="L224">		System.out.println();</span>
+<span class="nc" id="L235">		System.out.println();</span>
 
-<span class="nc" id="L226">		System.out.println (</span>
+<span class="nc" id="L237">		System.out.println (</span>
 			&quot;\t|-----------------------------------------------------------||&quot;
 		);
 
-<span class="nc bnc" id="L230" title="All 2 branches missed.">		for (double time : timeArray)</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">		for (double time : timeArray)</span>
 		{
-<span class="nc" id="L232">			System.out.println (</span>
-<span class="nc" id="L233">				&quot;\t| &quot; + FormatUtil.FormatDouble (time, 1, 1, 1.) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L234">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L235">					langevinEvolver.fluctuationCorrelation (</span>
+<span class="nc" id="L243">			System.out.println (</span>
+<span class="nc" id="L244">				&quot;\t| &quot; + FormatUtil.FormatDouble (time, 1, 1, 1.) + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L245">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L246">					langevinEvolver.fluctuationCorrelation (</span>
 						time
 					), 1, 5, 1.
-<span class="nc" id="L238">				) + &quot; | &quot; + FormatUtil.FormatDouble (</span>
-<span class="nc" id="L239">					langevinEvolver.fluctuationCovariance (</span>
+<span class="nc" id="L249">				) + &quot; | &quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L250">					langevinEvolver.fluctuationCovariance (</span>
 						time
 					), 1, 25, 1.
-<span class="nc" id="L242">				) + &quot; | &quot; + FormatUtil.FormatDouble (</span>
-<span class="nc" id="L243">					langevinEvolver.mean (</span>
+<span class="nc" id="L253">				) + &quot; | &quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L254">					langevinEvolver.mean (</span>
 						initialLength,
 						time
 					), 1, 15, 1.
@@ -248,39 +259,39 @@ import org.drip.service.env.EnvManager;
 			);
 		}
 
-<span class="nc" id="L251">		System.out.println (</span>
+<span class="nc" id="L262">		System.out.println (</span>
 			&quot;\t|-----------------------------------------------------------||&quot;
 		);
 
-<span class="nc" id="L255">		System.out.println();</span>
+<span class="nc" id="L266">		System.out.println();</span>
 
-<span class="nc" id="L257">		double[][] aitSahaliaMLEAsymptote = langevinEvolver.aitSahaliaMLEAsymptote (</span>
+<span class="nc" id="L268">		double[][] aitSahaliaMLEAsymptote = langevinEvolver.aitSahaliaMLEAsymptote (</span>
 			1.
 		);
 
-<span class="nc" id="L261">		System.out.println (</span>
+<span class="nc" id="L272">		System.out.println (</span>
 			&quot;\t|---------------------------------||&quot;
 		);
 
-<span class="nc" id="L265">		System.out.println (</span>
+<span class="nc" id="L276">		System.out.println (</span>
 			&quot;\t| AIT SAHALIA MLE ASYMPTOTE ERROR ||&quot;
 		);
 
-<span class="nc" id="L269">		System.out.println (</span>
+<span class="nc" id="L280">		System.out.println (</span>
 			&quot;\t|---------------------------------||&quot;
 		);
 
-<span class="nc" id="L273">		org.drip.numerical.common.NumberUtil.Print2DArray (</span>
+<span class="nc" id="L284">		org.drip.numerical.common.NumberUtil.Print2DArray (</span>
 			&quot;\t|\t&quot;,
 			aitSahaliaMLEAsymptote,
 			false
 		);
 
-<span class="nc" id="L279">		System.out.println (</span>
+<span class="nc" id="L290">		System.out.println (</span>
 			&quot;\t|---------------------------------||&quot;
 		);
 
-<span class="nc" id="L283">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L284">	}</span>
+<span class="nc" id="L294">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L295">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

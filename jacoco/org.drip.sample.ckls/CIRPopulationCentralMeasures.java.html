@@ -13,34 +13,45 @@ import org.drip.service.env.EnvManager;
 
 /*!
  * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -100,16 +111,16 @@ import org.drip.service.env.EnvManager;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm/README.md&quot;&gt;LIBOR Market Model&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/ckls/README.md&quot;&gt;Analysis of CKLS Process Variants&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L112">public class CIRPopulationCentralMeasures</span>
+<span class="nc" id="L123">public class CIRPopulationCentralMeasures</span>
 {
 
 	private static final void TemporalCentralMeasures (
@@ -119,35 +130,35 @@ import org.drip.service.env.EnvManager;
 		final double[] tArray)
 		throws Exception
 	{
-<span class="nc" id="L122">		R1StochasticEvolver r1StochasticEvolver = R1CIRStochasticEvolver.Wiener (</span>
+<span class="nc" id="L133">		R1StochasticEvolver r1StochasticEvolver = R1CIRStochasticEvolver.Wiener (</span>
 			meanReversionSpeed,
 			meanReversionLevel,
 			volatility,
 			0.01
 		);
 
-<span class="nc" id="L129">		java.lang.String dump = &quot;\t| [&quot; +</span>
-<span class="nc" id="L130">			FormatUtil.FormatDouble (meanReversionSpeed, 1, 1, 1.) + &quot;,&quot; +</span>
-<span class="nc" id="L131">			FormatUtil.FormatDouble (meanReversionLevel, 1, 1, 1.) + &quot;,&quot; +</span>
-<span class="nc" id="L132">			FormatUtil.FormatDouble (volatility, 1, 1, 1.) + &quot;] =&gt;&quot;;</span>
+<span class="nc" id="L140">		java.lang.String dump = &quot;\t| [&quot; +</span>
+<span class="nc" id="L141">			FormatUtil.FormatDouble (meanReversionSpeed, 1, 1, 1.) + &quot;,&quot; +</span>
+<span class="nc" id="L142">			FormatUtil.FormatDouble (meanReversionLevel, 1, 1, 1.) + &quot;,&quot; +</span>
+<span class="nc" id="L143">			FormatUtil.FormatDouble (volatility, 1, 1, 1.) + &quot;] =&gt;&quot;;</span>
 
-<span class="nc bnc" id="L134" title="All 2 branches missed.">		for (double t : tArray)</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">		for (double t : tArray)</span>
 		{
-<span class="nc" id="L136">			PopulationCentralMeasures populationCentralMeasures =</span>
-<span class="nc" id="L137">				r1StochasticEvolver.temporalPopulationCentralMeasures (</span>
+<span class="nc" id="L147">			PopulationCentralMeasures populationCentralMeasures =</span>
+<span class="nc" id="L148">				r1StochasticEvolver.temporalPopulationCentralMeasures (</span>
 					meanReversionSpeed,
 					t
 				);
 
-<span class="nc" id="L142">			dump = dump + &quot; {&quot; + FormatUtil.FormatDouble (</span>
-<span class="nc" id="L143">				populationCentralMeasures.mean(), 1, 4, 1.</span>
-<span class="nc" id="L144">			) + &quot; |&quot; + FormatUtil.FormatDouble (</span>
-<span class="nc" id="L145">				populationCentralMeasures.variance(), 1, 4, 1.</span>
+<span class="nc" id="L153">			dump = dump + &quot; {&quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L154">				populationCentralMeasures.mean(), 1, 4, 1.</span>
+<span class="nc" id="L155">			) + &quot; |&quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L156">				populationCentralMeasures.variance(), 1, 4, 1.</span>
 			) + &quot;}&quot;;
 		}
 
-<span class="nc" id="L149">		System.out.println (dump);</span>
-<span class="nc" id="L150">	}</span>
+<span class="nc" id="L160">		System.out.println (dump);</span>
+<span class="nc" id="L161">	}</span>
 
 	private static final void SteadyStateCentralMeasures (
 		final double meanReversionSpeed,
@@ -155,38 +166,38 @@ import org.drip.service.env.EnvManager;
 		final double volatility)
 		throws Exception
 	{
-<span class="nc" id="L158">		PopulationCentralMeasures populationCentralMeasures = R1CIRStochasticEvolver.Wiener (</span>
+<span class="nc" id="L169">		PopulationCentralMeasures populationCentralMeasures = R1CIRStochasticEvolver.Wiener (</span>
 			meanReversionSpeed,
 			meanReversionLevel,
 			volatility,
 			0.01
-<span class="nc" id="L163">		).steadyStatePopulationCentralMeasures (</span>
+<span class="nc" id="L174">		).steadyStatePopulationCentralMeasures (</span>
 			meanReversionSpeed
 		);
 
-<span class="nc" id="L167">		System.out.println (</span>
-<span class="nc" id="L168">			&quot;\t| [&quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L178">		System.out.println (</span>
+<span class="nc" id="L179">			&quot;\t| [&quot; + FormatUtil.FormatDouble (</span>
 				meanReversionSpeed, 1, 1, 1.
-<span class="nc" id="L170">			) + &quot;,&quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L181">			) + &quot;,&quot; + FormatUtil.FormatDouble (</span>
 				meanReversionLevel, 1, 1, 1.
-<span class="nc" id="L172">			) + &quot;,&quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L183">			) + &quot;,&quot; + FormatUtil.FormatDouble (</span>
 				volatility, 1, 1, 1.
-<span class="nc" id="L174">			) + &quot;] =&gt;&quot; + &quot; {&quot; + FormatUtil.FormatDouble (</span>
-<span class="nc" id="L175">				populationCentralMeasures.mean(), 1, 4, 1.</span>
-<span class="nc" id="L176">			) + &quot; |&quot; + FormatUtil.FormatDouble (</span>
-<span class="nc" id="L177">				populationCentralMeasures.variance(), 1, 4, 1.</span>
+<span class="nc" id="L185">			) + &quot;] =&gt;&quot; + &quot; {&quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L186">				populationCentralMeasures.mean(), 1, 4, 1.</span>
+<span class="nc" id="L187">			) + &quot; |&quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L188">				populationCentralMeasures.variance(), 1, 4, 1.</span>
 			) + &quot;}&quot;
 		);
-<span class="nc" id="L180">	}</span>
+<span class="nc" id="L191">	}</span>
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L186">		EnvManager.InitEnv (</span>
+<span class="nc" id="L197">		EnvManager.InitEnv (</span>
 			&quot;&quot;
 		);
-<span class="nc" id="L189">		double[] tArray =</span>
+<span class="nc" id="L200">		double[] tArray =</span>
 		{
 			 1.0,
 			 2.0,
@@ -196,7 +207,7 @@ import org.drip.service.env.EnvManager;
 			 6.0,
 			 7.0,
 		};
-<span class="nc" id="L199">		double[] volatilityArray =</span>
+<span class="nc" id="L210">		double[] volatilityArray =</span>
 		{
 			 0.5,
 			 1.0,
@@ -204,13 +215,13 @@ import org.drip.service.env.EnvManager;
 			 2.0,
 			 2.5,
 		};
-<span class="nc" id="L207">		double[] meanReversionLevelArray =</span>
+<span class="nc" id="L218">		double[] meanReversionLevelArray =</span>
 		{
 			 0.5,
 			 1.0,
 			 1.5,
 		};
-<span class="nc" id="L213">		double[] meanReversionSpeedArray =</span>
+<span class="nc" id="L224">		double[] meanReversionSpeedArray =</span>
 		{
 			 0.5,
 			 1.0,
@@ -219,29 +230,29 @@ import org.drip.service.env.EnvManager;
 			 2.5,
 		};
 
-<span class="nc" id="L222">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L233">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L224">		System.out.println (&quot;\t|                                          ORNSTEIN-UHLENBECK FOKKER-PLANCK PDF TEMPORAL CENTRAL MEASURES                                           ||&quot;);</span>
+<span class="nc" id="L235">		System.out.println (&quot;\t|                                          ORNSTEIN-UHLENBECK FOKKER-PLANCK PDF TEMPORAL CENTRAL MEASURES                                           ||&quot;);</span>
 
-<span class="nc" id="L226">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L237">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L228">		System.out.println (&quot;\t|        L -&gt; R:                                                                                                                                    ||&quot;);</span>
+<span class="nc" id="L239">		System.out.println (&quot;\t|        L -&gt; R:                                                                                                                                    ||&quot;);</span>
 
-<span class="nc" id="L230">		System.out.println (&quot;\t|                - Mean Reversion Level                                                                                                             ||&quot;);</span>
+<span class="nc" id="L241">		System.out.println (&quot;\t|                - Mean Reversion Level                                                                                                             ||&quot;);</span>
 
-<span class="nc" id="L232">		System.out.println (&quot;\t|                - Volatility                                                                                                                       ||&quot;);</span>
+<span class="nc" id="L243">		System.out.println (&quot;\t|                - Volatility                                                                                                                       ||&quot;);</span>
 
-<span class="nc" id="L234">		System.out.println (&quot;\t|                - Row of PDF {Mean | Variance} Tuple over t                                                                                        ||&quot;);</span>
+<span class="nc" id="L245">		System.out.println (&quot;\t|                - Row of PDF {Mean | Variance} Tuple over t                                                                                        ||&quot;);</span>
 
-<span class="nc" id="L236">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L247">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L238" title="All 2 branches missed.">		for (double meanReversionSpeed : meanReversionSpeedArray)</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">		for (double meanReversionSpeed : meanReversionSpeedArray)</span>
 		{
-<span class="nc bnc" id="L240" title="All 2 branches missed.">			for (double meanReversionLevel : meanReversionLevelArray)</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">			for (double meanReversionLevel : meanReversionLevelArray)</span>
 			{
-<span class="nc bnc" id="L242" title="All 2 branches missed.">				for (double volatility : volatilityArray)</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">				for (double volatility : volatilityArray)</span>
 				{
-<span class="nc" id="L244">					TemporalCentralMeasures (</span>
+<span class="nc" id="L255">					TemporalCentralMeasures (</span>
 						meanReversionSpeed,
 						meanReversionLevel,
 						volatility,
@@ -251,33 +262,33 @@ import org.drip.service.env.EnvManager;
 			}
 		}
 
-<span class="nc" id="L254">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L265">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L256">		System.out.println();</span>
+<span class="nc" id="L267">		System.out.println();</span>
 
-<span class="nc" id="L258">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L269">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L260">		System.out.println (&quot;\t|                                        ORNSTEIN-UHLENBECK FOKKER-PLANCK PDF STEADY STATE CENTRAL MEASURES                                         ||&quot;);</span>
+<span class="nc" id="L271">		System.out.println (&quot;\t|                                        ORNSTEIN-UHLENBECK FOKKER-PLANCK PDF STEADY STATE CENTRAL MEASURES                                         ||&quot;);</span>
 
-<span class="nc" id="L262">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L273">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L264">		System.out.println (&quot;\t|        L -&gt; R:                                                                                                                                    ||&quot;);</span>
+<span class="nc" id="L275">		System.out.println (&quot;\t|        L -&gt; R:                                                                                                                                    ||&quot;);</span>
 
-<span class="nc" id="L266">		System.out.println (&quot;\t|                - Mean Reversion Level                                                                                                             ||&quot;);</span>
+<span class="nc" id="L277">		System.out.println (&quot;\t|                - Mean Reversion Level                                                                                                             ||&quot;);</span>
 
-<span class="nc" id="L268">		System.out.println (&quot;\t|                - Volatility                                                                                                                       ||&quot;);</span>
+<span class="nc" id="L279">		System.out.println (&quot;\t|                - Volatility                                                                                                                       ||&quot;);</span>
 
-<span class="nc" id="L270">		System.out.println (&quot;\t|                - PDF {Mean | Variance} Tuple                                                                                                      ||&quot;);</span>
+<span class="nc" id="L281">		System.out.println (&quot;\t|                - PDF {Mean | Variance} Tuple                                                                                                      ||&quot;);</span>
 
-<span class="nc" id="L272">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L283">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L274" title="All 2 branches missed.">		for (double meanReversionSpeed : meanReversionSpeedArray)</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">		for (double meanReversionSpeed : meanReversionSpeedArray)</span>
 		{
-<span class="nc bnc" id="L276" title="All 2 branches missed.">			for (double meanReversionLevel : meanReversionLevelArray)</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">			for (double meanReversionLevel : meanReversionLevelArray)</span>
 			{
-<span class="nc bnc" id="L278" title="All 2 branches missed.">				for (double volatility : volatilityArray)</span>
+<span class="nc bnc" id="L289" title="All 2 branches missed.">				for (double volatility : volatilityArray)</span>
 				{
-<span class="nc" id="L280">					SteadyStateCentralMeasures (</span>
+<span class="nc" id="L291">					SteadyStateCentralMeasures (</span>
 						meanReversionSpeed,
 						meanReversionLevel,
 						volatility
@@ -286,9 +297,9 @@ import org.drip.service.env.EnvManager;
 			}
 		}
 
-<span class="nc" id="L289">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L300">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L291">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L292">	}</span>
+<span class="nc" id="L302">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L303">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

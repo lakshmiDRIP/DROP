@@ -13,7 +13,73 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
- * Copyright (C) 2019 Quantitative Risk Analytics
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
  */
 
 /**
@@ -33,56 +99,64 @@ import org.drip.service.env.EnvManager;
  * 			Kupiec, P. H. (2000): Stress Tests and Risk Capital &lt;i&gt;Risk&lt;/i&gt; &lt;b&gt;2 (4)&lt;/b&gt; 27-39
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/businessspec/README.md&quot;&gt;Business Grouping and Hierarchy Specification&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L40">public class CorporateCenterGroup</span>
+<span class="nc" id="L114">public class CorporateCenterGroup</span>
 {
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L47">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L121">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L49">		String group = &quot;CorpCtr&quot;;</span>
+<span class="nc" id="L123">		String group = &quot;CorpCtr&quot;;</span>
 
-<span class="nc" id="L51">		BusinessGroupingContext businessGroupingContext = CapitalEstimationContextManager.ContextContainer().businessGroupingContext();</span>
+<span class="nc" id="L125">		BusinessGroupingContext businessGroupingContext = CapitalEstimationContextManager.ContextContainer().businessGroupingContext();</span>
 
-<span class="nc" id="L53">		Set&lt;String&gt; businessSet = businessGroupingContext.businessSetFromGroup (group);</span>
+<span class="nc" id="L127">		Set&lt;String&gt; businessSet = businessGroupingContext.businessSetFromGroup (group);</span>
 
-<span class="nc" id="L55">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L129">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L57">		System.out.println (&quot;\t|          CITIGROUP CORPORATE CENTER GROUP BUSINESS UNITS           ||&quot;);</span>
+<span class="nc" id="L131">		System.out.println (&quot;\t|             BHC CORPORATE CENTER GROUP BUSINESS UNITS              ||&quot;);</span>
 
-<span class="nc" id="L59">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L133">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L61">		System.out.println (&quot;\t|        L -&gt; R:                                                     ||&quot;);</span>
+<span class="nc" id="L135">		System.out.println (&quot;\t|        L -&gt; R:                                                     ||&quot;);</span>
 
-<span class="nc" id="L63">		System.out.println (&quot;\t|                - Group                                             ||&quot;);</span>
+<span class="nc" id="L137">		System.out.println (&quot;\t|                - Group                                             ||&quot;);</span>
 
-<span class="nc" id="L65">		System.out.println (&quot;\t|                - Product                                           ||&quot;);</span>
+<span class="nc" id="L139">		System.out.println (&quot;\t|                - Product                                           ||&quot;);</span>
 
-<span class="nc" id="L67">		System.out.println (&quot;\t|                - Business                                          ||&quot;);</span>
+<span class="nc" id="L141">		System.out.println (&quot;\t|                - Business                                          ||&quot;);</span>
 
-<span class="nc" id="L69">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L143">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L71" title="All 2 branches missed.">		for (String business : businessSet)</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">		for (String business : businessSet)</span>
 		{
-<span class="nc" id="L73">			BusinessGrouping businessGrouping = businessGroupingContext.businessGrouping (business);</span>
+<span class="nc" id="L147">			BusinessGrouping businessGrouping = businessGroupingContext.businessGrouping (business);</span>
 
-<span class="nc" id="L75">			System.out.println (</span>
+<span class="nc" id="L149">			System.out.println (</span>
 				&quot;\t| &quot; +
-<span class="nc" id="L77">				businessGrouping.group() + &quot; | &quot; +</span>
-<span class="nc" id="L78">				businessGrouping.product() + &quot; | &quot; +</span>
-<span class="nc" id="L79">				businessGrouping.business()</span>
+<span class="nc" id="L151">				businessGrouping.group() + &quot; | &quot; +</span>
+<span class="nc" id="L152">				businessGrouping.product() + &quot; | &quot; +</span>
+<span class="nc" id="L153">				businessGrouping.business()</span>
 			);
-<span class="nc" id="L81">		}</span>
+<span class="nc" id="L155">		}</span>
 
-<span class="nc" id="L83">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L157">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L85">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L86">	}</span>
+<span class="nc" id="L159">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L160">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

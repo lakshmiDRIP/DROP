@@ -12,34 +12,45 @@ import org.drip.service.env.EnvManager;
 
 /*!
  * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -99,16 +110,16 @@ import org.drip.service.env.EnvManager;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm/README.md&quot;&gt;LIBOR Market Model&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/ckls/README.md&quot;&gt;Analysis of CKLS Process Variants&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L111">public class ExponentialAffineZeroPricer</span>
+<span class="nc" id="L122">public class ExponentialAffineZeroPricer</span>
 {
 
 	private static final void Price (
@@ -117,66 +128,66 @@ import org.drip.service.env.EnvManager;
 		final double[] rateArray)
 		throws Exception
 	{
-<span class="nc" id="L120">		System.out.println (</span>
+<span class="nc" id="L131">		System.out.println (</span>
 			&quot;\t|--------------------------------------------------------------------------------------------------||&quot;
 		);
 
-<span class="nc" id="L124">		System.out.println (</span>
-<span class="nc" id="L125">			&quot;\t|      Mean Reversion Speed =&gt; &quot; + r1CIRStochasticEvolver.cklsParameters().meanReversionSpeed()</span>
+<span class="nc" id="L135">		System.out.println (</span>
+<span class="nc" id="L136">			&quot;\t|      Mean Reversion Speed =&gt; &quot; + r1CIRStochasticEvolver.cklsParameters().meanReversionSpeed()</span>
 		);
 
-<span class="nc" id="L128">		System.out.println (</span>
-<span class="nc" id="L129">			&quot;\t|      Mean Reversion Level =&gt; &quot; + r1CIRStochasticEvolver.cklsParameters().meanReversionLevel()</span>
+<span class="nc" id="L139">		System.out.println (</span>
+<span class="nc" id="L140">			&quot;\t|      Mean Reversion Level =&gt; &quot; + r1CIRStochasticEvolver.cklsParameters().meanReversionLevel()</span>
 		);
 
-<span class="nc" id="L132">		System.out.println (</span>
-<span class="nc" id="L133">			&quot;\t|      Volatility           =&gt; &quot; + r1CIRStochasticEvolver.cklsParameters().volatilityCoefficient()</span>
+<span class="nc" id="L143">		System.out.println (</span>
+<span class="nc" id="L144">			&quot;\t|      Volatility           =&gt; &quot; + r1CIRStochasticEvolver.cklsParameters().volatilityCoefficient()</span>
 		);
 
-<span class="nc" id="L136">		System.out.println (</span>
+<span class="nc" id="L147">		System.out.println (</span>
 			&quot;\t|--------------------------------------------------------------------------------------------------||&quot;
 		);
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">		for (double ttm : ttmArray)</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		for (double ttm : ttmArray)</span>
 		{
-<span class="nc" id="L142">			ExponentialAffineZeroCoefficients exponentialAffineZeroCoefficients =</span>
-<span class="nc" id="L143">				ExponentialAffineZeroCoefficients.FromCIR (</span>
+<span class="nc" id="L153">			ExponentialAffineZeroCoefficients exponentialAffineZeroCoefficients =</span>
+<span class="nc" id="L154">				ExponentialAffineZeroCoefficients.FromCIR (</span>
 					r1CIRStochasticEvolver,
 					ttm
 				);
 
-<span class="nc" id="L148">			String dump = &quot;\t|&quot; + FormatUtil.FormatDouble (ttm, 1, 1, 1.) + &quot; =&gt; {&quot; +</span>
-<span class="nc" id="L149">				FormatUtil.FormatDouble (exponentialAffineZeroCoefficients.a(), 2, 2, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L150">				FormatUtil.FormatDouble (exponentialAffineZeroCoefficients.b(), 2, 2, 1.) + &quot;}  &quot;; </span>
+<span class="nc" id="L159">			String dump = &quot;\t|&quot; + FormatUtil.FormatDouble (ttm, 1, 1, 1.) + &quot; =&gt; {&quot; +</span>
+<span class="nc" id="L160">				FormatUtil.FormatDouble (exponentialAffineZeroCoefficients.a(), 2, 2, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L161">				FormatUtil.FormatDouble (exponentialAffineZeroCoefficients.b(), 2, 2, 1.) + &quot;}  &quot;; </span>
 
-<span class="nc bnc" id="L152" title="All 2 branches missed.">			for (double rate : rateArray)</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">			for (double rate : rateArray)</span>
 			{
-<span class="nc" id="L154">				dump = dump + &quot; &quot; + FormatUtil.FormatDouble (</span>
-<span class="nc" id="L155">					exponentialAffineZeroCoefficients.price (</span>
+<span class="nc" id="L165">				dump = dump + &quot; &quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L166">					exponentialAffineZeroCoefficients.price (</span>
 						rate
 					), 2, 3, 100., false
 				) + &quot; |&quot;;
 			}
 
-<span class="nc" id="L161">			System.out.println (dump + &quot;|&quot;);</span>
+<span class="nc" id="L172">			System.out.println (dump + &quot;|&quot;);</span>
 		}
 
-<span class="nc" id="L164">		System.out.println (</span>
+<span class="nc" id="L175">		System.out.println (</span>
 			&quot;\t|--------------------------------------------------------------------------------------------------||&quot;
 		);
 
-<span class="nc" id="L168">		System.out.println();</span>
-<span class="nc" id="L169">	}</span>
+<span class="nc" id="L179">		System.out.println();</span>
+<span class="nc" id="L180">	}</span>
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L175">		EnvManager.InitEnv (</span>
+<span class="nc" id="L186">		EnvManager.InitEnv (</span>
 			&quot;&quot;
 		);
 
-<span class="nc" id="L179">		double[] ttmArray =</span>
+<span class="nc" id="L190">		double[] ttmArray =</span>
 		{
 			5.0,
 			4.5,
@@ -189,7 +200,7 @@ import org.drip.service.env.EnvManager;
 			1.0,
 			0.5,
 		};
-<span class="nc" id="L192">		double[] rateArray =</span>
+<span class="nc" id="L203">		double[] rateArray =</span>
 		{
 			0.08,
 			0.07,
@@ -200,7 +211,7 @@ import org.drip.service.env.EnvManager;
 			0.02,
 			0.01,
 		};
-<span class="nc" id="L203">		double[] meanReversionSpeedArray =</span>
+<span class="nc" id="L214">		double[] meanReversionSpeedArray =</span>
 		{
 			0.030,
 			0.025,
@@ -208,7 +219,7 @@ import org.drip.service.env.EnvManager;
 			0.015,
 			0.010,
 		};
-<span class="nc" id="L211">		double[] meanReversionLevelArray =</span>
+<span class="nc" id="L222">		double[] meanReversionLevelArray =</span>
 		{
 			0.045,
 			0.035,
@@ -216,7 +227,7 @@ import org.drip.service.env.EnvManager;
 			0.015,
 			0.005,
 		};
-<span class="nc" id="L219">		double[] volatilityArray =</span>
+<span class="nc" id="L230">		double[] volatilityArray =</span>
 		{
 			0.020,
 			0.015,
@@ -224,14 +235,14 @@ import org.drip.service.env.EnvManager;
 			0.005,
 		};
 
-<span class="nc bnc" id="L227" title="All 2 branches missed.">		for (double meanReversionLevel : meanReversionLevelArray)</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">		for (double meanReversionLevel : meanReversionLevelArray)</span>
 		{
-<span class="nc bnc" id="L229" title="All 2 branches missed.">			for (double meanReversionSpeed : meanReversionSpeedArray)</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">			for (double meanReversionSpeed : meanReversionSpeedArray)</span>
 			{
-<span class="nc bnc" id="L231" title="All 2 branches missed.">				for (double volatility : volatilityArray)</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">				for (double volatility : volatilityArray)</span>
 				{
-<span class="nc" id="L233">					Price (</span>
-<span class="nc" id="L234">						R1CIRStochasticEvolver.Wiener (</span>
+<span class="nc" id="L244">					Price (</span>
+<span class="nc" id="L245">						R1CIRStochasticEvolver.Wiener (</span>
 							meanReversionSpeed,
 							meanReversionLevel,
 							volatility,
@@ -244,7 +255,7 @@ import org.drip.service.env.EnvManager;
 			}
 		}
 
-<span class="nc" id="L247">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L248">	}</span>
+<span class="nc" id="L258">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L259">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
