@@ -53,7 +53,7 @@ public class ICGGroup
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		System.out.println ("\t|                 CITIGROUP ICG GROUP BUSINESS UNITS                 ||");
+		System.out.println ("\t|                    BHC ICG GROUP BUSINESS UNITS                    ||");
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 

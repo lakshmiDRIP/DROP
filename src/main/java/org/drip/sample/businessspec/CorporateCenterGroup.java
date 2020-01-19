@@ -54,7 +54,7 @@ public class CorporateCenterGroup
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		System.out.println ("\t|          CITIGROUP CORPORATE CENTER GROUP BUSINESS UNITS           ||");
+		System.out.println ("\t|             BHC CORPORATE CENTER GROUP BUSINESS UNITS              ||");
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 

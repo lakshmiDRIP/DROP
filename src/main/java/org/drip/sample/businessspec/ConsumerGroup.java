@@ -53,7 +53,7 @@ public class ConsumerGroup
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		System.out.println ("\t|              CITIGROUP CONSUMER GROUP BUSINESS UNITS               ||");
+		System.out.println ("\t|                 BHC CONSUMER GROUP BUSINESS UNITS                  ||");
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 

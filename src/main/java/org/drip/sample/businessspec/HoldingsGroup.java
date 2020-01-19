@@ -53,7 +53,7 @@ public class HoldingsGroup
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		System.out.println ("\t|              CITIGROUP HOLDINGS GROUP BUSINESS UNITS               ||");
+		System.out.println ("\t|                 BHC HOLDINGS GROUP BUSINESS UNITS                  ||");
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 
