@@ -11,7 +11,7 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimizer_v4.64.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimizer_v4.69.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -87,6 +87,24 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 	* Branching Rule and Node Selection
 	* Computational Results
 	* Conclusion
+	* References
+ * Simplex Algorithm
+	* Introduction
+	* Overview
+	* Standard Form
+	* Simplex Tableau
+	* Pivot Operations
+	* The Algorithm
+	* Entering Variable Selection
+	* Leaving Variable Selection
+	* Example #1
+	* Finding an Initial Canonical Tableau
+	* Example #2
+	* Advanced Topics – Implementation
+	* Degeneracy and Stalling
+	* Efficiency
+	* Other Algorithms
+	* Linear-Fractional Programming
 	* References
 
 

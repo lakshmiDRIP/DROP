@@ -11,7 +11,7 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v4.62.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v4.67.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -118,6 +118,30 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 	* Description
 	* Example
 	* Implementation
+	* References
+ * Gamma Distribution
+	* Overview
+	* Gamma Measures - Central Distribution Table
+	* Definitions
+	* Characterization Using Shape 𝜶 and Rate 𝜷
+	* Characterization using Shape 𝒌 and Scale 𝜽
+	* Properties – Skewness
+	* Properties – Median Calculation
+	* Properties – Summation
+	* Properties – Scaling
+	* Properties – Exponential Family
+	* Properties – Logarithmic Expectation and Variance
+	* Properties – Information Entropy
+	* Properties – Kullback-Liebler Divergence
+	* Properties – Laplace Transform
+	* Related Distributions – General
+	* Properties – Compound Gamma
+	* Statistical Inference – Maximum Likelihood Parameter Estimation
+	* Closed-Form Estimators
+	* Bayesian Minimum Mean-Squared Error
+	* Bayesian Inference Conjugate Prior
+	* Occurrence and Applications
+	* Computational Methods – Generating Gamma Distributed Random Variables
 	* References
  * Chi Square Distribution
 	* Overview

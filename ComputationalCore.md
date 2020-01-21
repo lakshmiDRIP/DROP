@@ -65,6 +65,7 @@ Computational Core Module contains libraries the implement Algorithm/Computation
  * Numerical Integration
  * Gaussian Quadrature
  * Gauss-Kronrod Quadrature
+ * Gamma Distribution
  * Chi Square Distribution
  * Non-central Chi-Square Distribution
 
@@ -79,6 +80,7 @@ Computational Core Module contains libraries the implement Algorithm/Computation
  * Karush-Kuhn-Tucker Conditions
  * Interior Point Method
  * Portfolio Selection with Cardinality and Bound Constraints
+ * Simplex Algorithm
 
 
 ## Spline Builder Coverage
