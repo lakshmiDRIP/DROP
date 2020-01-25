@@ -130,17 +130,24 @@ public class SpotMarketParameters
 		final double nonMaturingAssetAnnualVolatility)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_maturingAssetPrice = maturingAssetPrice) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_maturingAssetAnnualVolatility =
-				maturingAssetAnnualVolatility) || 0. > _maturingAssetAnnualVolatility ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_forwardYieldLowerBound = forwardYieldLowerBound) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_nonMaturingAssetPrice = nonMaturingAssetPrice) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_nonMaturingAssetAnnualReturn =
-				nonMaturingAssetAnnualReturn) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_nonMaturingAssetAnnualVolatility =
-				nonMaturingAssetAnnualVolatility) || 0. > _nonMaturingAssetAnnualVolatility)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+				_maturingAssetPrice = maturingAssetPrice
+			) || !org.drip.numerical.common.NumberUtil.IsValid (
+				_maturingAssetAnnualVolatility = maturingAssetAnnualVolatility
+			) || 0. > _maturingAssetAnnualVolatility || !org.drip.numerical.common.NumberUtil.IsValid (
+				_forwardYieldLowerBound = forwardYieldLowerBound
+			) || !org.drip.numerical.common.NumberUtil.IsValid (
+				_nonMaturingAssetPrice = nonMaturingAssetPrice
+			) || !org.drip.numerical.common.NumberUtil.IsValid (
+				_nonMaturingAssetAnnualReturn = nonMaturingAssetAnnualReturn
+			) || !org.drip.numerical.common.NumberUtil.IsValid (
+				_nonMaturingAssetAnnualVolatility = nonMaturingAssetAnnualVolatility) ||
+			0. > _nonMaturingAssetAnnualVolatility
+		)
 		{
-			throw new java.lang.Exception ("SpotMarketParameters Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"SpotMarketParameters Constructor => Invalid Inputs"
+			);
 		}
 	}
 

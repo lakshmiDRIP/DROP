@@ -120,24 +120,35 @@ public class EvolutionDigest
 		if (null == (_pathForwardTenorArray = pathForwardTenorArray) ||
 			null == (_pathForwardPriceGrid = pathForwardPriceGrid))
 		{
-			throw new java.lang.Exception ("EvolutionDigest Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"EvolutionDigest Constructor => Invalid Inputs"
+			);
 		}
 
 		int forwardTenorCount = _pathForwardTenorArray.length;
 
 		if (0 == forwardTenorCount || forwardTenorCount != _pathForwardPriceGrid.length)
 		{
-			throw new java.lang.Exception ("EvolutionDigest Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"EvolutionDigest Constructor => Invalid Inputs"
+			);
 		}
 
-		for (int forwardTenorIndex = 0; forwardTenorIndex < forwardTenorCount; ++forwardTenorIndex)
+		for (int forwardTenorIndex = 0;
+			forwardTenorIndex < forwardTenorCount;
+			++forwardTenorIndex)
 		{
 			if (null == pathForwardTenorArray[forwardTenorIndex] ||
 				pathForwardTenorArray[forwardTenorIndex].isEmpty() ||
 				null == _pathForwardPriceGrid[forwardTenorIndex] ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_pathForwardPriceGrid[forwardTenorIndex]))
+				!org.drip.numerical.common.NumberUtil.IsValid (
+					_pathForwardPriceGrid[forwardTenorIndex]
+				)
+			)
 			{
-				throw new java.lang.Exception ("EvolutionDigest Constructor => Invalid Inputs");
+				throw new java.lang.Exception (
+					"EvolutionDigest Constructor => Invalid Inputs"
+				);
 			}
 		}
 	}
@@ -176,7 +187,9 @@ public class EvolutionDigest
 		org.drip.measure.statistics.UnivariateDiscreteThin[] thinStatisticsArray =
 			new org.drip.measure.statistics.UnivariateDiscreteThin[forwardTenorCount];
 
-		for (int forwardTenorIndex = 0; forwardTenorIndex < forwardTenorCount; ++forwardTenorIndex)
+		for (int forwardTenorIndex = 0;
+			forwardTenorIndex < forwardTenorCount;
+			++forwardTenorIndex)
 		{
 			try
 			{

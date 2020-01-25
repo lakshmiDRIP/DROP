@@ -122,9 +122,12 @@ public class AssetEvolver
 	{
 		if (0 >= (_pathCount = pathCount) ||
 			null == (_timeStepInTenor = timeStepInTenor) || _timeStepInTenor.isEmpty() ||
-			null == (_timeHorizonInTenor = timeHorizonInTenor) || _timeHorizonInTenor.isEmpty())
+			null == (_timeHorizonInTenor = timeHorizonInTenor) || _timeHorizonInTenor.isEmpty()
+		)
 		{
-			throw new java.lang.Exception ("AssetEvolver Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"AssetEvolver Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -176,8 +179,9 @@ public class AssetEvolver
 
 		try
 		{
-			timeHorizonInMonths = org.drip.analytics.support.Helper.TenorToMonths (_timeHorizonInTenor) /
-				evolutionTenorInMonths;
+			timeHorizonInMonths = org.drip.analytics.support.Helper.TenorToMonths (
+				_timeHorizonInTenor
+			) / evolutionTenorInMonths;
 		}
 		catch (java.lang.Exception e)
 		{
@@ -189,7 +193,9 @@ public class AssetEvolver
 		java.lang.String[] evolutionTenorArray = new java.lang.String[timeHorizonInMonths + 1];
 		evolutionTenorArray[0] = "0M";
 
-		for (int periodIndex = 1; periodIndex <= timeHorizonInMonths; ++periodIndex)
+		for (int periodIndex = 1;
+			periodIndex <= timeHorizonInMonths;
+			++periodIndex)
 		{
 			evolutionTenorArray[periodIndex] = (periodIndex * evolutionTenorInMonths) + "M";
 		}
@@ -220,9 +226,13 @@ public class AssetEvolver
 
 		try
 		{
-			timeStepInMonths = org.drip.analytics.support.Helper.TenorToMonths (_timeStepInTenor);
+			timeStepInMonths = org.drip.analytics.support.Helper.TenorToMonths (
+				_timeStepInTenor
+			);
 
-			timeHorizonInMonths = org.drip.analytics.support.Helper.TenorToMonths (_timeHorizonInTenor);
+			timeHorizonInMonths = org.drip.analytics.support.Helper.TenorToMonths (
+				_timeHorizonInTenor
+			);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -231,7 +241,9 @@ public class AssetEvolver
 			return null;
 		}
 
-		java.lang.String[] pathForwardTenorArray = evolutionTenorArray (timeStepInMonths);
+		java.lang.String[] pathForwardTenorArray = evolutionTenorArray (
+			timeStepInMonths
+		);
 
 		if (null == pathForwardTenorArray)
 		{
@@ -240,7 +252,9 @@ public class AssetEvolver
 
 		double[][] pathMarketValueGrid = new double[pathForwardTenorArray.length][_pathCount];
 
-		for (int pathIndex = 0; pathIndex < _pathCount; ++pathIndex)
+		for (int pathIndex = 0;
+			pathIndex < _pathCount;
+			++pathIndex)
 		{
 			int forwardPriceIndex = 0;
 

@@ -98,7 +98,8 @@ package org.drip.alm.dynamics;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MatchingPortfolio extends org.drip.alm.dynamics.EvolvableAsset
+public class MatchingPortfolio
+	extends org.drip.alm.dynamics.EvolvableAsset
 {
 	private org.drip.alm.dynamics.MaturingAsset _maturingAsset = null;
 	private org.drip.alm.dynamics.NonMaturingAsset _nonMaturingAsset = null;
@@ -175,7 +176,9 @@ public class MatchingPortfolio extends org.drip.alm.dynamics.EvolvableAsset
 		int horizonPeriod = horizonTenorInMonths / evolutionTenorInMonths;
 		double[] priceTrajectory = new double[horizonPeriod + 1];
 
-		for (int periodIndex = 0; periodIndex <= horizonPeriod; ++periodIndex)
+		for (int periodIndex = 0;
+			periodIndex <= horizonPeriod;
+			++periodIndex)
 		{
 			priceTrajectory[periodIndex] = maturingAssetPathRealization[periodIndex] +
 				nonMaturingAssetPathRealization[periodIndex];

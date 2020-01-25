@@ -98,7 +98,8 @@ package org.drip.alm.dynamics;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class EvolvableAsset extends org.drip.portfolioconstruction.asset.AssetComponent
+public abstract class EvolvableAsset
+	extends org.drip.portfolioconstruction.asset.AssetComponent
 {
 
 	/**

@@ -1,6 +1,6 @@
 
 /**
- * cBSST Scenario Construction, Query, Generation
+ * Correlated Stress Scenario Construction, Query, Generation
  *
  * @author Lakshmi Krishnamurthy
  */

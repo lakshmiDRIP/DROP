@@ -7,6 +7,7 @@ import org.drip.alm.dynamics.MatchingPortfolio;
 import org.drip.alm.dynamics.MaturingAsset;
 import org.drip.alm.dynamics.NonMaturingAsset;
 import org.drip.alm.dynamics.SpotMarketParameters;
+import org.drip.feed.loader.PropertiesParser;
 import org.drip.measure.statistics.UnivariateDiscreteThin;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
@@ -17,7 +18,6 @@ import org.drip.service.env.EnvManager;
 
 /*!
  * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -86,8 +86,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>MatchingPortfolioEvolution</i> illustrates the Market Value Evolution of a Matching Portfolio. The
- * References are:
+ * <i>PortfolioEvolutionShell</i> illustrates the Execution of a Portfolio Evolution Shell. The References
+ * 	are:
  *
  *	<br><br>
  *  <ul>
@@ -100,40 +100,105 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MatchingPortfolioEvolution
+public class PortfolioEvolutionShell
 {
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			""
+		);
 
-		int maturity = 5;
-		double ytm = 0.0363;
-		int pathCount = 100000;
-		int evolutionTenorInMonths = 3;
-		double forwardYieldLowerBound = -100.;
-		double nonMaturingAssetInitialPrice = 1.;
-		double nonMaturingAssetAnnualReturn = 0.07;
-		double nonMaturingAssetAnnualVolatility = 0.10;
+		String configFolder = System.getenv (
+			"CONFIG"
+		);
 
-		double initialPriceVolatility = 0.04 / Math.sqrt (maturity);
+		String configFile = configFolder + "\\alm\\PortfolioEvolutionShell.txt";
 
-		double initialPrice = Math.exp (-1. * maturity * ytm);
+		PropertiesParser propertiesParser = new PropertiesParser (
+			configFile
+		);
 
-		String maturityTenor = maturity + "Y";
-		double maturingAssetHoldings = 10. / initialPrice;
-		double nonMaturingAssetHoldings = 0.;
+		int pathCount = propertiesParser.integerValue (
+			"PathCount"
+		);
+
+		int evolutionTenorInMonths = propertiesParser.integerValue (
+			"EvolutionTenorInMonths"
+		);
+
+		int maturingAssetMaturityTenor = propertiesParser.integerValue (
+			"MaturingAssetMaturityTenor"
+		);
+
+		double maturingAssetInitialYield = propertiesParser.doubleValue (
+			"MaturingAssetInitialYield"
+		);
+
+		double maturingAssetPriceVolatilityCoefficient = propertiesParser.doubleValue (
+			"MaturingAssetPriceVolatilityCoefficient"
+		);
+
+		double maturingAssetInitialMarketValue = propertiesParser.doubleValue (
+			"MaturingAssetInitialMarketValue"
+		);
+
+		double nonMaturingAssetInitialPrice = propertiesParser.doubleValue (
+			"NonMaturingAssetInitialPrice"
+		);
+
+		double nonMaturingAssetAnnualReturn = propertiesParser.doubleValue (
+			"NonMaturingAssetAnnualReturn"
+		);
+
+		double nonMaturingAssetAnnualVolatility = propertiesParser.doubleValue (
+			"NonMaturingAssetAnnualVolatility"
+		);
+
+		double nonMaturingAssetInitialMarketValue = propertiesParser.doubleValue (
+			"NonMaturingAssetInitialMarketValue"
+		);
+
+		System.out.println ("pathCount=" + pathCount);
+
+		System.out.println ("evolutionTenorInMonths=" + evolutionTenorInMonths);
+
+		System.out.println ("maturingAssetMaturityTenor=" + maturingAssetMaturityTenor);
+
+		System.out.println ("maturingAssetInitialMarketValue=" + maturingAssetInitialMarketValue);
+
+		System.out.println ("maturingAssetInitialYield=" + maturingAssetInitialYield);
+
+		System.out.println ("maturingAssetPriceVolatilityCoefficient=" + maturingAssetPriceVolatilityCoefficient);
+
+		System.out.println ("nonMaturingAssetInitialMarketValue=" + nonMaturingAssetInitialMarketValue);
+
+		System.out.println ("nonMaturingAssetInitialPrice=" + nonMaturingAssetInitialPrice);
+
+		System.out.println ("nonMaturingAssetAnnualReturn=" + nonMaturingAssetAnnualReturn);
+
+		System.out.println ("nonMaturingAssetAnnualVolatility=" + nonMaturingAssetAnnualVolatility);
+
+		double maturingAssetInitialPrice = Math.exp (
+			-1. * maturingAssetMaturityTenor * maturingAssetInitialYield
+		);
+
+		double maturingAssetInitialPriceVolatility = maturingAssetPriceVolatilityCoefficient / Math.sqrt (maturingAssetMaturityTenor);
 
 		SpotMarketParameters spotMarketParameters = new SpotMarketParameters (
-			initialPrice,
-			initialPriceVolatility,
-			forwardYieldLowerBound,
+			maturingAssetInitialPrice,
+			maturingAssetInitialPriceVolatility,
+			-100.,
 			nonMaturingAssetInitialPrice,
 			nonMaturingAssetAnnualReturn,
 			nonMaturingAssetAnnualVolatility
 		);
+
+		String maturityTenor = maturingAssetMaturityTenor + "Y";
+		double maturingAssetHoldings = maturingAssetInitialMarketValue / maturingAssetInitialPrice;
+		double nonMaturingAssetHoldings = nonMaturingAssetInitialMarketValue / nonMaturingAssetInitialPrice;
 
 		MatchingPortfolio matchingPortfolio = new MatchingPortfolio (
 			"MATCHING PORTFOLIO",
@@ -162,13 +227,13 @@ public class MatchingPortfolioEvolution
 
 		System.out.println ("\t| Portfolio Maturity Tenor                 => " + maturityTenor);
 
-		System.out.println ("\t| Maturing Asset Starting Yield            => " + (100. * ytm) + "%");
+		System.out.println ("\t| Maturing Asset Starting Yield            => " + (100. * maturingAssetInitialYield) + "%");
 
-		System.out.println ("\t| Maturing Asset Starting Price            => " + (100. * initialPrice));
+		System.out.println ("\t| Maturing Asset Starting Price            => " + (100. * maturingAssetInitialPrice));
 
-		System.out.println ("\t| Maturing Asset Starting Price Volatility => " + (100. * initialPriceVolatility * Math.sqrt (maturity)) + "%");
+		System.out.println ("\t| Maturing Asset Starting Price Volatility => " + (100. * maturingAssetInitialPriceVolatility) + "%");
 
-		System.out.println ("\t| Maturing Asset Initial Holdings          => " + (maturingAssetHoldings * initialPrice));
+		System.out.println ("\t| Maturing Asset Initial Holdings          => " + (maturingAssetHoldings * maturingAssetInitialPrice));
 
 		System.out.println ("\t| Non-Maturing Asset Returns               => " + (100. * nonMaturingAssetAnnualReturn) + "%");
 
@@ -198,7 +263,7 @@ public class MatchingPortfolioEvolution
 			trajectoryTenor = trajectoryTenor + trajectoryEvolutionTenor + ",";
 		}
 
-		// System.out.println (trajectoryTenor);
+		System.out.println (trajectoryTenor);
 
 		double[][] pathForwardPriceGrid = evolutionDigest.pathForwardPriceGrid();
 
@@ -213,7 +278,7 @@ public class MatchingPortfolioEvolution
 				) + ",";
 			}
 
-			// System.out.println (trajectory);
+			System.out.println (trajectory);
 		}
 
 		System.out.println();
@@ -259,6 +324,8 @@ public class MatchingPortfolioEvolution
 		}
 
 		System.out.println ("\t|----------------------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
 
 		EnvManager.TerminateEnv();
 	}

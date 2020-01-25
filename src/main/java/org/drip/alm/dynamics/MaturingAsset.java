@@ -98,7 +98,8 @@ package org.drip.alm.dynamics;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MaturingAsset extends org.drip.alm.dynamics.EvolvableAsset
+public class MaturingAsset
+	extends org.drip.alm.dynamics.EvolvableAsset
 {
 	private java.lang.String _maturityTenor = "";
 
@@ -125,7 +126,9 @@ public class MaturingAsset extends org.drip.alm.dynamics.EvolvableAsset
 
 		if (null == (_maturityTenor = maturityTenor))
 		{
-			throw new java.lang.Exception ("MaturingAsset Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"MaturingAsset Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -156,7 +159,9 @@ public class MaturingAsset extends org.drip.alm.dynamics.EvolvableAsset
 
 		try
 		{
-			maturityInMonths = org.drip.analytics.support.Helper.TenorToMonths (_maturityTenor);
+			maturityInMonths = org.drip.analytics.support.Helper.TenorToMonths (
+				_maturityTenor
+			);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -171,11 +176,13 @@ public class MaturingAsset extends org.drip.alm.dynamics.EvolvableAsset
 		}
 
 		double firstPeriodPriceVolatility = spotMarketParameters.maturingAssetAnnualVolatility() *
-			java.lang.Math.sqrt (timeIncrement);
+			java.lang.Math.sqrt (
+				timeIncrement
+			);
 
-		double initialLogPrice = java.lang.Math.log (spotMarketParameters.maturingAssetPrice());
-
-		// double forwardYieldLowerBound = spotMarketParameters.forwardYieldLowerBound();
+		double initialLogPrice = java.lang.Math.log (
+			spotMarketParameters.maturingAssetPrice()
+		);
 
 		double initialTimeToMaturity = ((double) horizonTenorInMonths) / 12.;
 		double timeToMaturity = initialTimeToMaturity;
@@ -187,7 +194,9 @@ public class MaturingAsset extends org.drip.alm.dynamics.EvolvableAsset
 
 		double holdings = amount();
 
-		for (int periodIndex = 1; periodIndex <= horizonPeriod; ++periodIndex)
+		for (int periodIndex = 1;
+			periodIndex <= horizonPeriod;
+			++periodIndex)
 		{
 			timeToMaturity = timeToMaturity - timeIncrement;
 			targetLogPrice = targetLogPrice + initialYield * timeIncrement;
@@ -196,8 +205,9 @@ public class MaturingAsset extends org.drip.alm.dynamics.EvolvableAsset
 			{
 				logPriceTrajectory[periodIndex] = logPriceTrajectory[periodIndex - 1] +
 					forwardYield * timeIncrement +
-					firstPeriodPriceVolatility * java.lang.Math.sqrt (timeToMaturity) *
-						org.drip.measure.gaussian.NormalQuadrature.Random();
+					firstPeriodPriceVolatility * java.lang.Math.sqrt (
+						timeToMaturity
+					) * org.drip.measure.gaussian.NormalQuadrature.Random();
 			}
 			catch (java.lang.Exception e)
 			{
@@ -206,17 +216,8 @@ public class MaturingAsset extends org.drip.alm.dynamics.EvolvableAsset
 				return null;
 			}
 
-			/* double forwardPriceUpperBound = -1. * forwardYieldLowerBound * periodsToMaturity;
-
-			if (priceTrajectory[periodIndex] > forwardPriceUpperBound)
-			{
-				priceTrajectory[periodIndex] = forwardPriceUpperBound;
-			} */
-
 			if (horizonPeriod != periodIndex)
 			{
-				// forwardYield = -1. * logPriceTrajectory[periodIndex] / timeIncrement;
-
 				double meanReversionSpeed = 1. - ((timeToMaturity - timeIncrement) / initialTimeToMaturity);
 
 				meanReversionSpeed = java.lang.Math.pow (
@@ -230,7 +231,9 @@ public class MaturingAsset extends org.drip.alm.dynamics.EvolvableAsset
 			}
 		}
 
-		for (int periodIndex = 0; periodIndex <= horizonPeriod; ++periodIndex)
+		for (int periodIndex = 0;
+			periodIndex <= horizonPeriod;
+			++periodIndex)
 		{
 			logPriceTrajectory[periodIndex] = holdings * java.lang.Math.exp (
 				logPriceTrajectory[periodIndex]

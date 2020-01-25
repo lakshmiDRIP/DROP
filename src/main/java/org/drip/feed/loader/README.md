@@ -35,6 +35,9 @@ DROP Feed Loader Package contains the Reference/Market Data Feed Loader.
  * [***InstrumentSetTenorQuote***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/loader/InstrumentSetTenorQuote.java)
  <i>InstrumentSetTenorQuote</i> holds the Instrument Set Tenor and Closing Quote Group.
 
+ * [***PropertiesParser***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/loader/PropertiesParser.java)
+ <i>PropertiesParser</i> contains the functionality to load the Field/Value Sets from the Field=Value Format.
+
  * [***TenorQuote***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/loader/TenorQuote.java)
  <i>TenorQuote</i> holds the Instrument Tenor and Closing Quote.
 

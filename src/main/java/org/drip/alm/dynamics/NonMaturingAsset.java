@@ -98,7 +98,8 @@ package org.drip.alm.dynamics;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NonMaturingAsset extends org.drip.alm.dynamics.EvolvableAsset
+public class NonMaturingAsset
+	extends org.drip.alm.dynamics.EvolvableAsset
 {
 
 	/**
@@ -131,22 +132,26 @@ public class NonMaturingAsset extends org.drip.alm.dynamics.EvolvableAsset
 			return null;
 		}
 
+		int horizonPeriod = horizonTenorInMonths / evolutionTenorInMonths;
+		double[] priceTrajectory = new double[horizonPeriod + 1];
 		double timeIncrement = evolutionTenorInMonths / 12.;
 
 		double periodPriceVolatility = spotMarketParameters.nonMaturingAssetAnnualVolatility() *
-			java.lang.Math.sqrt (timeIncrement);
-
-		double initialLogPrice = java.lang.Math.log (spotMarketParameters.nonMaturingAssetPrice());
+			java.lang.Math.sqrt (
+				timeIncrement
+			);
 
 		double periodReturn = spotMarketParameters.nonMaturingAssetAnnualReturn() * timeIncrement;
 
+		priceTrajectory[0] = java.lang.Math.log (
+			spotMarketParameters.nonMaturingAssetPrice()
+		);
+
 		double holdings = amount();
 
-		int horizonPeriod = horizonTenorInMonths / evolutionTenorInMonths;
-		double[] priceTrajectory = new double[horizonPeriod + 1];
-		priceTrajectory[0] = initialLogPrice;
-
-		for (int periodIndex = 1; periodIndex <= horizonPeriod; ++periodIndex)
+		for (int periodIndex = 1;
+			periodIndex <= horizonPeriod;
+			++periodIndex)
 		{
 			try
 			{
@@ -161,9 +166,13 @@ public class NonMaturingAsset extends org.drip.alm.dynamics.EvolvableAsset
 			}
 		}
 
-		for (int periodIndex = 0; periodIndex <= horizonPeriod; ++periodIndex)
+		for (int periodIndex = 0;
+			periodIndex <= horizonPeriod;
+			++periodIndex)
 		{
-			priceTrajectory[periodIndex] = holdings * java.lang.Math.exp (priceTrajectory[periodIndex]);
+			priceTrajectory[periodIndex] = holdings * java.lang.Math.exp (
+				priceTrajectory[periodIndex]
+			);
 		}
 
 		return priceTrajectory;
