@@ -122,11 +122,14 @@ public class AssetEvolver
 <span class="nc" id="L122">	{</span>
 <span class="nc bnc" id="L123" title="All 4 branches missed.">		if (0 &gt;= (_pathCount = pathCount) ||</span>
 <span class="nc bnc" id="L124" title="All 4 branches missed.">			null == (_timeStepInTenor = timeStepInTenor) || _timeStepInTenor.isEmpty() ||</span>
-<span class="nc bnc" id="L125" title="All 2 branches missed.">			null == (_timeHorizonInTenor = timeHorizonInTenor) || _timeHorizonInTenor.isEmpty())</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">			null == (_timeHorizonInTenor = timeHorizonInTenor) || _timeHorizonInTenor.isEmpty()</span>
+		)
 		{
-<span class="nc" id="L127">			throw new java.lang.Exception (&quot;AssetEvolver Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L128">			throw new java.lang.Exception (</span>
+				&quot;AssetEvolver Constructor =&gt; Invalid Inputs&quot;
+			);
 		}
-<span class="nc" id="L129">	}</span>
+<span class="nc" id="L132">	}</span>
 
 	/**
 	 * Retrieve the Count of the Number Paths
@@ -136,7 +139,7 @@ public class AssetEvolver
 
 	public int pathCount()
 	{
-<span class="nc" id="L139">		return _pathCount;</span>
+<span class="nc" id="L142">		return _pathCount;</span>
 	}
 
 	/**
@@ -147,7 +150,7 @@ public class AssetEvolver
 
 	public java.lang.String timeStepInTenor()
 	{
-<span class="nc" id="L150">		return _timeStepInTenor;</span>
+<span class="nc" id="L153">		return _timeStepInTenor;</span>
 	}
 
 	/**
@@ -158,7 +161,7 @@ public class AssetEvolver
 
 	public java.lang.String timeHorizonInTenor()
 	{
-<span class="nc" id="L161">		return _timeHorizonInTenor;</span>
+<span class="nc" id="L164">		return _timeHorizonInTenor;</span>
 	}
 
 	/**
@@ -172,29 +175,32 @@ public class AssetEvolver
 	public java.lang.String[] evolutionTenorArray (
 		final int evolutionTenorInMonths)
 	{
-<span class="nc" id="L175">		int timeHorizonInMonths = -1;</span>
+<span class="nc" id="L178">		int timeHorizonInMonths = -1;</span>
 
 		try
 		{
-<span class="nc" id="L179">			timeHorizonInMonths = org.drip.analytics.support.Helper.TenorToMonths (_timeHorizonInTenor) /</span>
-				evolutionTenorInMonths;
+<span class="nc" id="L182">			timeHorizonInMonths = org.drip.analytics.support.Helper.TenorToMonths (</span>
+				_timeHorizonInTenor
+			) / evolutionTenorInMonths;
 		}
-<span class="nc" id="L182">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L186">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L184">			e.printStackTrace();</span>
+<span class="nc" id="L188">			e.printStackTrace();</span>
 
-<span class="nc" id="L186">			return null;</span>
-<span class="nc" id="L187">		}</span>
+<span class="nc" id="L190">			return null;</span>
+<span class="nc" id="L191">		}</span>
 
-<span class="nc" id="L189">		java.lang.String[] evolutionTenorArray = new java.lang.String[timeHorizonInMonths + 1];</span>
-<span class="nc" id="L190">		evolutionTenorArray[0] = &quot;0M&quot;;</span>
+<span class="nc" id="L193">		java.lang.String[] evolutionTenorArray = new java.lang.String[timeHorizonInMonths + 1];</span>
+<span class="nc" id="L194">		evolutionTenorArray[0] = &quot;0M&quot;;</span>
 
-<span class="nc bnc" id="L192" title="All 2 branches missed.">		for (int periodIndex = 1; periodIndex &lt;= timeHorizonInMonths; ++periodIndex)</span>
+<span class="nc" id="L196">		for (int periodIndex = 1;</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">			periodIndex &lt;= timeHorizonInMonths;</span>
+<span class="nc" id="L198">			++periodIndex)</span>
 		{
-<span class="nc" id="L194">			evolutionTenorArray[periodIndex] = (periodIndex * evolutionTenorInMonths) + &quot;M&quot;;</span>
+<span class="nc" id="L200">			evolutionTenorArray[periodIndex] = (periodIndex * evolutionTenorInMonths) + &quot;M&quot;;</span>
 		}
 
-<span class="nc" id="L197">		return evolutionTenorArray;</span>
+<span class="nc" id="L203">		return evolutionTenorArray;</span>
 	}
 
 	/**
@@ -210,70 +216,78 @@ public class AssetEvolver
 		final org.drip.alm.dynamics.EvolvableAsset asset,
 		final org.drip.alm.dynamics.SpotMarketParameters spotMarketParameters)
 	{
-<span class="nc bnc" id="L213" title="All 4 branches missed.">		if (null == asset || null == spotMarketParameters)</span>
+<span class="nc bnc" id="L219" title="All 4 branches missed.">		if (null == asset || null == spotMarketParameters)</span>
 		{
-<span class="nc" id="L215">			return null;</span>
+<span class="nc" id="L221">			return null;</span>
 		}
 
-<span class="nc" id="L218">		int timeStepInMonths = -1;</span>
-<span class="nc" id="L219">		int timeHorizonInMonths = -1;</span>
+<span class="nc" id="L224">		int timeStepInMonths = -1;</span>
+<span class="nc" id="L225">		int timeHorizonInMonths = -1;</span>
 
 		try
 		{
-<span class="nc" id="L223">			timeStepInMonths = org.drip.analytics.support.Helper.TenorToMonths (_timeStepInTenor);</span>
+<span class="nc" id="L229">			timeStepInMonths = org.drip.analytics.support.Helper.TenorToMonths (</span>
+				_timeStepInTenor
+			);
 
-<span class="nc" id="L225">			timeHorizonInMonths = org.drip.analytics.support.Helper.TenorToMonths (_timeHorizonInTenor);</span>
+<span class="nc" id="L233">			timeHorizonInMonths = org.drip.analytics.support.Helper.TenorToMonths (</span>
+				_timeHorizonInTenor
+			);
 		}
-<span class="nc" id="L227">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L237">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L229">			e.printStackTrace();</span>
+<span class="nc" id="L239">			e.printStackTrace();</span>
 
-<span class="nc" id="L231">			return null;</span>
-<span class="nc" id="L232">		}</span>
+<span class="nc" id="L241">			return null;</span>
+<span class="nc" id="L242">		}</span>
 
-<span class="nc" id="L234">		java.lang.String[] pathForwardTenorArray = evolutionTenorArray (timeStepInMonths);</span>
+<span class="nc" id="L244">		java.lang.String[] pathForwardTenorArray = evolutionTenorArray (</span>
+			timeStepInMonths
+		);
 
-<span class="nc bnc" id="L236" title="All 2 branches missed.">		if (null == pathForwardTenorArray)</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">		if (null == pathForwardTenorArray)</span>
 		{
-<span class="nc" id="L238">			return null;</span>
+<span class="nc" id="L250">			return null;</span>
 		}
 
-<span class="nc" id="L241">		double[][] pathMarketValueGrid = new double[pathForwardTenorArray.length][_pathCount];</span>
+<span class="nc" id="L253">		double[][] pathMarketValueGrid = new double[pathForwardTenorArray.length][_pathCount];</span>
 
-<span class="nc bnc" id="L243" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; _pathCount; ++pathIndex)</span>
+<span class="nc" id="L255">		for (int pathIndex = 0;</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">			pathIndex &lt; _pathCount;</span>
+<span class="nc" id="L257">			++pathIndex)</span>
 		{
-<span class="nc" id="L245">			int forwardPriceIndex = 0;</span>
+<span class="nc" id="L259">			int forwardPriceIndex = 0;</span>
 
-<span class="nc" id="L247">			double[] pathMarketValueArray = asset.realizePath (</span>
+<span class="nc" id="L261">			double[] pathMarketValueArray = asset.realizePath (</span>
 				spotMarketParameters,
 				timeHorizonInMonths,
 				timeStepInMonths
 			);
 
-<span class="nc bnc" id="L253" title="All 2 branches missed.">			if (null == pathMarketValueArray)</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">			if (null == pathMarketValueArray)</span>
 			{
-<span class="nc" id="L255">				return null;</span>
+<span class="nc" id="L269">				return null;</span>
 			}
 
-<span class="nc bnc" id="L258" title="All 2 branches missed.">			for (double forwardMarketValue : pathMarketValueArray)</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">			for (double forwardMarketValue : pathMarketValueArray)</span>
 			{
-<span class="nc" id="L260">				pathMarketValueGrid[forwardPriceIndex++][pathIndex] = forwardMarketValue;</span>
+<span class="nc" id="L274">				pathMarketValueGrid[forwardPriceIndex++][pathIndex] = forwardMarketValue;</span>
 			}
 		}
 
 		try
 		{
-<span class="nc" id="L266">			return new org.drip.alm.dynamics.EvolutionDigest (</span>
+<span class="nc" id="L280">			return new org.drip.alm.dynamics.EvolutionDigest (</span>
 				pathForwardTenorArray,
 				pathMarketValueGrid
 			);
 		}
-<span class="nc" id="L271">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L285">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L273">			e.printStackTrace();</span>
+<span class="nc" id="L287">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L276">		return null;</span>
+<span class="nc" id="L290">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

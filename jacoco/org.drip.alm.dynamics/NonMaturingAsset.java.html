@@ -98,7 +98,8 @@ package org.drip.alm.dynamics;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NonMaturingAsset extends org.drip.alm.dynamics.EvolvableAsset
+public class NonMaturingAsset
+	extends org.drip.alm.dynamics.EvolvableAsset
 {
 
 	/**
@@ -115,58 +116,66 @@ public class NonMaturingAsset extends org.drip.alm.dynamics.EvolvableAsset
 		final double amount)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L118">		super (</span>
+<span class="nc" id="L119">		super (</span>
 			id,
 			amount
 		);
-<span class="nc" id="L122">	}</span>
+<span class="nc" id="L123">	}</span>
 
 	@Override public double[] realizePath (
 		final org.drip.alm.dynamics.SpotMarketParameters spotMarketParameters,
 		final int horizonTenorInMonths,
 		final int evolutionTenorInMonths)
 	{
-<span class="nc bnc" id="L129" title="All 4 branches missed.">		if (null == spotMarketParameters || horizonTenorInMonths &lt; evolutionTenorInMonths)</span>
+<span class="nc bnc" id="L130" title="All 4 branches missed.">		if (null == spotMarketParameters || horizonTenorInMonths &lt; evolutionTenorInMonths)</span>
 		{
-<span class="nc" id="L131">			return null;</span>
+<span class="nc" id="L132">			return null;</span>
 		}
 
-<span class="nc" id="L134">		double timeIncrement = evolutionTenorInMonths / 12.;</span>
+<span class="nc" id="L135">		int horizonPeriod = horizonTenorInMonths / evolutionTenorInMonths;</span>
+<span class="nc" id="L136">		double[] priceTrajectory = new double[horizonPeriod + 1];</span>
+<span class="nc" id="L137">		double timeIncrement = evolutionTenorInMonths / 12.;</span>
 
-<span class="nc" id="L136">		double periodPriceVolatility = spotMarketParameters.nonMaturingAssetAnnualVolatility() *</span>
-<span class="nc" id="L137">			java.lang.Math.sqrt (timeIncrement);</span>
+<span class="nc" id="L139">		double periodPriceVolatility = spotMarketParameters.nonMaturingAssetAnnualVolatility() *</span>
+<span class="nc" id="L140">			java.lang.Math.sqrt (</span>
+				timeIncrement
+			);
 
-<span class="nc" id="L139">		double initialLogPrice = java.lang.Math.log (spotMarketParameters.nonMaturingAssetPrice());</span>
+<span class="nc" id="L144">		double periodReturn = spotMarketParameters.nonMaturingAssetAnnualReturn() * timeIncrement;</span>
 
-<span class="nc" id="L141">		double periodReturn = spotMarketParameters.nonMaturingAssetAnnualReturn() * timeIncrement;</span>
+<span class="nc" id="L146">		priceTrajectory[0] = java.lang.Math.log (</span>
+<span class="nc" id="L147">			spotMarketParameters.nonMaturingAssetPrice()</span>
+		);
 
-<span class="nc" id="L143">		double holdings = amount();</span>
+<span class="nc" id="L150">		double holdings = amount();</span>
 
-<span class="nc" id="L145">		int horizonPeriod = horizonTenorInMonths / evolutionTenorInMonths;</span>
-<span class="nc" id="L146">		double[] priceTrajectory = new double[horizonPeriod + 1];</span>
-<span class="nc" id="L147">		priceTrajectory[0] = initialLogPrice;</span>
-
-<span class="nc bnc" id="L149" title="All 2 branches missed.">		for (int periodIndex = 1; periodIndex &lt;= horizonPeriod; ++periodIndex)</span>
+<span class="nc" id="L152">		for (int periodIndex = 1;</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">			periodIndex &lt;= horizonPeriod;</span>
+<span class="nc" id="L154">			++periodIndex)</span>
 		{
 			try
 			{
-<span class="nc" id="L153">				priceTrajectory[periodIndex] = priceTrajectory[periodIndex - 1] + periodReturn +</span>
-<span class="nc" id="L154">					periodPriceVolatility * org.drip.measure.gaussian.NormalQuadrature.Random();</span>
+<span class="nc" id="L158">				priceTrajectory[periodIndex] = priceTrajectory[periodIndex - 1] + periodReturn +</span>
+<span class="nc" id="L159">					periodPriceVolatility * org.drip.measure.gaussian.NormalQuadrature.Random();</span>
 			}
-<span class="nc" id="L156">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L161">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L158">				e.printStackTrace();</span>
+<span class="nc" id="L163">				e.printStackTrace();</span>
 
-<span class="nc" id="L160">				return null;</span>
-<span class="nc" id="L161">			}</span>
+<span class="nc" id="L165">				return null;</span>
+<span class="nc" id="L166">			}</span>
 		}
 
-<span class="nc bnc" id="L164" title="All 2 branches missed.">		for (int periodIndex = 0; periodIndex &lt;= horizonPeriod; ++periodIndex)</span>
+<span class="nc" id="L169">		for (int periodIndex = 0;</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">			periodIndex &lt;= horizonPeriod;</span>
+<span class="nc" id="L171">			++periodIndex)</span>
 		{
-<span class="nc" id="L166">			priceTrajectory[periodIndex] = holdings * java.lang.Math.exp (priceTrajectory[periodIndex]);</span>
+<span class="nc" id="L173">			priceTrajectory[periodIndex] = holdings * java.lang.Math.exp (</span>
+				priceTrajectory[periodIndex]
+			);
 		}
 
-<span class="nc" id="L169">		return priceTrajectory;</span>
+<span class="nc" id="L178">		return priceTrajectory;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
