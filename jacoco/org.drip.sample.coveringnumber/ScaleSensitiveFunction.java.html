@@ -11,39 +11,50 @@ import org.drip.spaces.cover.ScaleSensitiveCoveringBounds;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -79,76 +90,76 @@ import org.drip.spaces.cover.ScaleSensitiveCoveringBounds;
  *  
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/coveringnumber/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Covering Number Agnostic Bounds&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/coveringnumber/README.md&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt;Agnostic Function Covering Number Bounds&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L92">public class ScaleSensitiveFunction {</span>
+<span class="nc" id="L103">public class ScaleSensitiveFunction {</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L98">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L109">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L100">		final int iSampleSize = 10;</span>
+<span class="fc" id="L111">		final int iSampleSize = 10;</span>
 
-<span class="fc" id="L102">		R1ToR1 auFatShatter = new R1ToR1 (null) {</span>
+<span class="fc" id="L113">		R1ToR1 auFatShatter = new R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws Exception
 			{
-<span class="fc" id="L107">				return iSampleSize;</span>
+<span class="fc" id="L118">				return iSampleSize;</span>
 			}
 		};
 
-<span class="fc" id="L111">		ScaleSensitiveCoveringBounds sscn = new ScaleSensitiveCoveringBounds (</span>
+<span class="fc" id="L122">		ScaleSensitiveCoveringBounds sscn = new ScaleSensitiveCoveringBounds (</span>
 			auFatShatter,
 			iSampleSize
 		);
 
-<span class="fc" id="L116">		double[] adblCover = new double[] {</span>
+<span class="fc" id="L127">		double[] adblCover = new double[] {</span>
 			500., 600., 700., 800., 900., 960.
 		};
 
-<span class="fc" id="L120">		System.out.println (&quot;\n\t||------------------------------------------------||&quot;);</span>
+<span class="fc" id="L131">		System.out.println (&quot;\n\t||------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L122">		System.out.println (&quot;\t||    Scale    Sensitive    Covering   Numbers    ||&quot;);</span>
+<span class="fc" id="L133">		System.out.println (&quot;\t||    Scale    Sensitive    Covering   Numbers    ||&quot;);</span>
 
-<span class="fc" id="L124">		System.out.println (&quot;\t||    -----    ---------    --------   -------    ||&quot;);</span>
+<span class="fc" id="L135">		System.out.println (&quot;\t||    -----    ---------    --------   -------    ||&quot;);</span>
 
-<span class="fc" id="L126">		System.out.println (&quot;\t|| L -&gt; R:                                        ||&quot;);</span>
+<span class="fc" id="L137">		System.out.println (&quot;\t|| L -&gt; R:                                        ||&quot;);</span>
 
-<span class="fc" id="L128">		System.out.println (&quot;\t||   Sample Size Lower Bound                      ||&quot;);</span>
+<span class="fc" id="L139">		System.out.println (&quot;\t||   Sample Size Lower Bound                      ||&quot;);</span>
 
-<span class="fc" id="L130">		System.out.println (&quot;\t||   Restricted Subset Cardinality                ||&quot;);</span>
+<span class="fc" id="L141">		System.out.println (&quot;\t||   Restricted Subset Cardinality                ||&quot;);</span>
 
-<span class="fc" id="L132">		System.out.println (&quot;\t||   Probability of the Cover Weight Upper Bound  ||&quot;);</span>
+<span class="fc" id="L143">		System.out.println (&quot;\t||   Probability of the Cover Weight Upper Bound  ||&quot;);</span>
 
-<span class="fc" id="L134">		System.out.println (&quot;\t||   Log Log Covering Number Lower Bound          ||&quot;);</span>
+<span class="fc" id="L145">		System.out.println (&quot;\t||   Log Log Covering Number Lower Bound          ||&quot;);</span>
 
-<span class="fc" id="L136">		System.out.println (&quot;\t||   Log Log Covering Number Upper Bound          ||&quot;);</span>
-
-<span class="fc" id="L138">		System.out.println (&quot;\t||------------------------------------------------||&quot;);</span>
-
-<span class="fc bfc" id="L140" title="All 2 branches covered.">		for (double dblCover : adblCover)</span>
-<span class="fc" id="L141">			System.out.println (&quot;\t|| [&quot; + FormatUtil.FormatDouble (dblCover, 3, 0, 1.) + &quot;] =&gt; &quot; +</span>
-<span class="fc" id="L142">				FormatUtil.FormatDouble (sscn.sampleSizeLowerBound (dblCover), 1, 1, 1.) + &quot; |&quot; +</span>
-<span class="fc" id="L143">				FormatUtil.FormatDouble (sscn.restrictedSubsetCardinality (dblCover), 3, 0, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L144">				FormatUtil.FormatDouble (sscn.upperProbabilityBoundWeight (dblCover), 5, 0, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L145">				FormatUtil.FormatDouble (Math.log (sscn.logLowerBound (dblCover)), 1, 2, 1.) + &quot; -&gt; &quot; +</span>
-<span class="fc" id="L146">				FormatUtil.FormatDouble (Math.log (sscn.logUpperBound (dblCover)), 1, 2, 1.) + &quot; ||&quot;</span>
-			);
+<span class="fc" id="L147">		System.out.println (&quot;\t||   Log Log Covering Number Upper Bound          ||&quot;);</span>
 
 <span class="fc" id="L149">		System.out.println (&quot;\t||------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L151">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L152">	}</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">		for (double dblCover : adblCover)</span>
+<span class="fc" id="L152">			System.out.println (&quot;\t|| [&quot; + FormatUtil.FormatDouble (dblCover, 3, 0, 1.) + &quot;] =&gt; &quot; +</span>
+<span class="fc" id="L153">				FormatUtil.FormatDouble (sscn.sampleSizeLowerBound (dblCover), 1, 1, 1.) + &quot; |&quot; +</span>
+<span class="fc" id="L154">				FormatUtil.FormatDouble (sscn.restrictedSubsetCardinality (dblCover), 3, 0, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L155">				FormatUtil.FormatDouble (sscn.upperProbabilityBoundWeight (dblCover), 5, 0, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L156">				FormatUtil.FormatDouble (Math.log (sscn.logLowerBound (dblCover)), 1, 2, 1.) + &quot; -&gt; &quot; +</span>
+<span class="fc" id="L157">				FormatUtil.FormatDouble (Math.log (sscn.logUpperBound (dblCover)), 1, 2, 1.) + &quot; ||&quot;</span>
+			);
+
+<span class="fc" id="L160">		System.out.println (&quot;\t||------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L162">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L163">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

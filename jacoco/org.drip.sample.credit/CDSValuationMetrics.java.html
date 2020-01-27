@@ -23,38 +23,49 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -90,17 +101,17 @@ import org.drip.state.identifier.ForwardLabel;
  *  
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/credit/README.md&quot;&gt;Credit Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/cashflow/README.md&quot;&gt;Single Name Portfolio CDS Analytics&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L103">public class CDSValuationMetrics {</span>
+<span class="nc" id="L114">public class CDSValuationMetrics {</span>
 
 	private static final FixFloatComponent OTCFixFloat (
 		final JulianDate dtSpot,
@@ -108,14 +119,14 @@ import org.drip.state.identifier.ForwardLabel;
 		final String strMaturityTenor,
 		final double dblCoupon)
 	{
-<span class="fc" id="L111">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+<span class="fc" id="L122">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
 			strCurrency,
 			&quot;ALL&quot;,
 			strMaturityTenor,
 			&quot;MAIN&quot;
 		);
 
-<span class="fc" id="L118">		return ffConv.createFixFloatComponent (</span>
+<span class="fc" id="L129">		return ffConv.createFixFloatComponent (</span>
 			dtSpot,
 			strMaturityTenor,
 			dblCoupon,
@@ -137,31 +148,31 @@ import org.drip.state.identifier.ForwardLabel;
 		final String strCurrency)
 		throws Exception
 	{
-<span class="fc" id="L140">		CalibratableComponent[] aCalibComp = new CalibratableComponent[aiDay.length + iNumFutures];</span>
+<span class="fc" id="L151">		CalibratableComponent[] aCalibComp = new CalibratableComponent[aiDay.length + iNumFutures];</span>
 
-<span class="fc bfc" id="L142" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
-<span class="fc" id="L143">			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
+<span class="fc" id="L154">			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (</span>
 				dtEffective,
-<span class="fc" id="L145">				dtEffective.addBusDays (</span>
+<span class="fc" id="L156">				dtEffective.addBusDays (</span>
 					aiDay[i],
 					strCurrency
 				),
-<span class="fc" id="L149">				ForwardLabel.Create (</span>
+<span class="fc" id="L160">				ForwardLabel.Create (</span>
 					strCurrency,
 					&quot;3M&quot;
 				)
 			);
 
-<span class="fc" id="L155">		CalibratableComponent[] aEDF = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
+<span class="fc" id="L166">		CalibratableComponent[] aEDF = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
 			dtEffective,
 			iNumFutures,
 			strCurrency
 		);
 
-<span class="pc bpc" id="L161" title="1 of 2 branches missed.">		for (int i = aiDay.length; i &lt; aiDay.length + iNumFutures; ++i)</span>
-<span class="nc" id="L162">			aCalibComp[i] = aEDF[i - aiDay.length];</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">		for (int i = aiDay.length; i &lt; aiDay.length + iNumFutures; ++i)</span>
+<span class="nc" id="L173">			aCalibComp[i] = aEDF[i - aiDay.length];</span>
 
-<span class="fc" id="L164">		return aCalibComp;</span>
+<span class="fc" id="L175">		return aCalibComp;</span>
 	}
 
 	/*
@@ -177,17 +188,17 @@ import org.drip.state.identifier.ForwardLabel;
 		final double[] adblCoupon)
 		throws Exception
 	{
-<span class="fc" id="L180">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L191">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
 
-<span class="fc bfc" id="L182" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
-<span class="fc" id="L183">			aIRS[i] = OTCFixFloat (</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L194">			aIRS[i] = OTCFixFloat (</span>
 				dtSpot,
 				strCurrency,
 				astrMaturityTenor[i],
 				adblCoupon[i]
 			);
 
-<span class="fc" id="L190">		return aIRS;</span>
+<span class="fc" id="L201">		return aIRS;</span>
 	}
 
 	/*
@@ -208,7 +219,7 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct the array of Deposit instruments and their quotes.
 		 */
 
-<span class="fc" id="L211">		CalibratableComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+<span class="fc" id="L222">		CalibratableComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
 			dtSpot,
 			new int[] {
 				1, 2, 3, 7, 14, 21, 30, 60
@@ -217,11 +228,11 @@ import org.drip.state.identifier.ForwardLabel;
 			strCurrency
 		);
 
-<span class="fc" id="L220">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L231">		double[] adblDepositQuote = new double[] {</span>
 			0.01200, 0.01200, 0.01200, 0.01450, 0.01550, 0.01600, 0.01660, 0.01850
 		};
 
-<span class="fc" id="L224">		String[] astrDepositManifestMeasure = new String[] {</span>
+<span class="fc" id="L235">		String[] astrDepositManifestMeasure = new String[] {</span>
 			&quot;ForwardRate&quot;,
 			&quot;ForwardRate&quot;,
 			&quot;ForwardRate&quot;,
@@ -236,7 +247,7 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct the array of Swap instruments and their quotes.
 		 */
 
-<span class="fc" id="L239">		double[] adblSwapQuote = new double[] {</span>
+<span class="fc" id="L250">		double[] adblSwapQuote = new double[] {</span>
 			0.02604,    //  4Y
 			0.02808,    //  5Y
 			0.02983,    //  6Y
@@ -254,7 +265,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.03145     // 50Y
 		};
 
-<span class="fc" id="L257">		String[] astrSwapManifestMeasure = new String[] {</span>
+<span class="fc" id="L268">		String[] astrSwapManifestMeasure = new String[] {</span>
 			&quot;SwapRate&quot;,    //  4Y
 			&quot;SwapRate&quot;,    //  5Y
 			&quot;SwapRate&quot;,    //  6Y
@@ -272,7 +283,7 @@ import org.drip.state.identifier.ForwardLabel;
 			&quot;SwapRate&quot;     // 50Y
 		};
 
-<span class="fc" id="L275">		CalibratableComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
+<span class="fc" id="L286">		CalibratableComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
 			dtSpot,
 			strCurrency,
 			new java.lang.String[] {
@@ -285,7 +296,7 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct a shape preserving and smoothing KLK Hyperbolic Spline from the cash/swap instruments.
 		 */
 
-<span class="fc" id="L288">		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (</span>
+<span class="fc" id="L299">		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (</span>
 			&quot;KLK_HYPERBOLIC_SHAPE_TEMPLATE&quot;,
 			new ValuationParams (
 				dtSpot,
@@ -318,17 +329,17 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Populate the instruments, the calibration measures, and the calibration quotes
 		 */
 
-<span class="fc" id="L321">		double[] adblQuotes = new double[5];</span>
-<span class="fc" id="L322">		String[] astrCalibMeasure = new String[5];</span>
-<span class="fc" id="L323">		CreditDefaultSwap[] aCDS = new CreditDefaultSwap[5];</span>
+<span class="fc" id="L332">		double[] adblQuotes = new double[5];</span>
+<span class="fc" id="L333">		String[] astrCalibMeasure = new String[5];</span>
+<span class="fc" id="L334">		CreditDefaultSwap[] aCDS = new CreditDefaultSwap[5];</span>
 
-<span class="fc bfc" id="L325" title="All 2 branches covered.">		for (int i = 0; i &lt; 5; ++i) {</span>
+<span class="fc bfc" id="L336" title="All 2 branches covered.">		for (int i = 0; i &lt; 5; ++i) {</span>
 
 			/*
 			 * The Calibration CDS
 			 */
 
-<span class="fc" id="L331">			aCDS[i] = CDSBuilder.CreateSNAC (</span>
+<span class="fc" id="L342">			aCDS[i] = CDSBuilder.CreateSNAC (</span>
 				dtSpot,
 				(i + 1) + &quot;Y&quot;,
 				0.01,
@@ -339,20 +350,20 @@ import org.drip.state.identifier.ForwardLabel;
 			 * Calibration Quote
 			 */
 
-<span class="fc" id="L342">			adblQuotes[i] = 100.;</span>
+<span class="fc" id="L353">			adblQuotes[i] = 100.;</span>
 
 			/*
 			 * Calibration Measure
 			 */
 
-<span class="fc" id="L348">			astrCalibMeasure[i] = &quot;FairPremium&quot;;</span>
+<span class="fc" id="L359">			astrCalibMeasure[i] = &quot;FairPremium&quot;;</span>
 		}
 
 		/*
 		 * Create the Credit Curve from the give CDS instruments
 		 */
 
-<span class="fc" id="L355">		CreditCurve cc = ScenarioCreditCurveBuilder.Custom (</span>
+<span class="fc" id="L366">		CreditCurve cc = ScenarioCreditCurveBuilder.Custom (</span>
 			strCreditCurve,
 			dtSpot,
 			aCDS,
@@ -367,23 +378,23 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Valuation Parameters
 		 */
 
-<span class="fc" id="L370">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
+<span class="fc" id="L381">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
 
 		/*
 		 * Standard Credit Pricer Parameters (check javadoc for details)
 		 */
 
-<span class="fc" id="L376">		CreditPricerParams pricerParams = CreditPricerParams.Standard();</span>
+<span class="fc" id="L387">		CreditPricerParams pricerParams = CreditPricerParams.Standard();</span>
 
 		/*
 		 * Re-calculate the input calibration measures for the input CDSes
 		 */
 
-<span class="fc bfc" id="L382" title="All 2 branches covered.">		for (int i = 0; i &lt; aCDS.length; ++i)</span>
-<span class="fc" id="L383">			System.out.println (</span>
+<span class="fc bfc" id="L393" title="All 2 branches covered.">		for (int i = 0; i &lt; aCDS.length; ++i)</span>
+<span class="fc" id="L394">			System.out.println (</span>
 				&quot;\t&quot; + astrCalibMeasure[i] + &quot;[&quot; + i + &quot;] = &quot; +
-<span class="fc" id="L385">				aCDS[i].measureValue (</span>
-<span class="fc" id="L386">					valParams, pricerParams, MarketParamsBuilder.Create (</span>
+<span class="fc" id="L396">				aCDS[i].measureValue (</span>
+<span class="fc" id="L397">					valParams, pricerParams, MarketParamsBuilder.Create (</span>
 						dcFunding,
 						null,
 						null,
@@ -398,7 +409,7 @@ import org.drip.state.identifier.ForwardLabel;
 				)
 			);
 
-<span class="fc" id="L401">		return cc;</span>
+<span class="fc" id="L412">		return cc;</span>
 	}
 
 	/*
@@ -411,54 +422,54 @@ import org.drip.state.identifier.ForwardLabel;
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L414">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L425">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L416">		JulianDate dtSpot = DateUtil.Today();</span>
+<span class="fc" id="L427">		JulianDate dtSpot = DateUtil.Today();</span>
 
-<span class="fc" id="L418">		String strCurrency = &quot;USD&quot;;</span>
-<span class="fc" id="L419">		String strCreditCurve = &quot;DB&quot;;</span>
-<span class="fc" id="L420">		String strCDSForwardStartTenor = &quot;3M&quot;;</span>
-<span class="fc" id="L421">		String strCDSMaturityTenor = &quot;5Y&quot;;</span>
-<span class="fc" id="L422">		double dblCDSCoupon = 0.1;</span>
+<span class="fc" id="L429">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L430">		String strCreditCurve = &quot;DB&quot;;</span>
+<span class="fc" id="L431">		String strCDSForwardStartTenor = &quot;3M&quot;;</span>
+<span class="fc" id="L432">		String strCDSMaturityTenor = &quot;5Y&quot;;</span>
+<span class="fc" id="L433">		double dblCDSCoupon = 0.1;</span>
 
-<span class="fc" id="L424">		MergedDiscountForwardCurve dcFunding = MakeDC (</span>
+<span class="fc" id="L435">		MergedDiscountForwardCurve dcFunding = MakeDC (</span>
 			dtSpot,
 			strCurrency
 		);
 
-<span class="fc" id="L429">		CreditCurve cc = MakeCC (</span>
+<span class="fc" id="L440">		CreditCurve cc = MakeCC (</span>
 			dtSpot,
 			strCreditCurve,
 			dcFunding
 		);
 
-<span class="fc" id="L435">		CurveSurfaceQuoteContainer csqc = MarketParamsBuilder.Credit (</span>
+<span class="fc" id="L446">		CurveSurfaceQuoteContainer csqc = MarketParamsBuilder.Credit (</span>
 			dcFunding,
 			cc
 		);
 
-<span class="fc" id="L440">		CreditDefaultSwap cdsForward = CDSBuilder.CreateSNAC (</span>
-<span class="fc" id="L441">			dtSpot.addTenor (strCDSForwardStartTenor),</span>
+<span class="fc" id="L451">		CreditDefaultSwap cdsForward = CDSBuilder.CreateSNAC (</span>
+<span class="fc" id="L452">			dtSpot.addTenor (strCDSForwardStartTenor),</span>
 			strCDSMaturityTenor,
 			dblCDSCoupon,
 			strCreditCurve
 		);
 
-<span class="fc" id="L447">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
+<span class="fc" id="L458">		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
 
-<span class="fc" id="L449">		CreditPricerParams pricerParams = CreditPricerParams.Standard();</span>
+<span class="fc" id="L460">		CreditPricerParams pricerParams = CreditPricerParams.Standard();</span>
 
-<span class="fc" id="L451">		Map&lt;String, Double&gt; mapCDSForward = cdsForward.value (</span>
+<span class="fc" id="L462">		Map&lt;String, Double&gt; mapCDSForward = cdsForward.value (</span>
 			valParams,
 			pricerParams,
 			csqc,
 			null
 		);
 
-<span class="fc bfc" id="L458" title="All 2 branches covered.">		for (Map.Entry&lt;String, Double&gt; me : mapCDSForward.entrySet())</span>
-<span class="fc" id="L459">			System.out.println (me.getKey() + &quot; =&gt; &quot; + me.getValue());</span>
+<span class="fc bfc" id="L469" title="All 2 branches covered.">		for (Map.Entry&lt;String, Double&gt; me : mapCDSForward.entrySet())</span>
+<span class="fc" id="L470">			System.out.println (me.getKey() + &quot; =&gt; &quot; + me.getValue());</span>
 
-<span class="fc" id="L461">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L462">	}</span>
+<span class="fc" id="L472">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L473">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

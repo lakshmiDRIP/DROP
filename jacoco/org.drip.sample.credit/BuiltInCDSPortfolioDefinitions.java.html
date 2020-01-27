@@ -17,6 +17,7 @@ import org.drip.service.env.*;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -26,33 +27,43 @@ import org.drip.service.env.*;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -109,17 +120,17 @@ import org.drip.service.env.*;
  *  
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/credit/README.md&quot;&gt;Credit Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/cashflow/README.md&quot;&gt;Single Name Portfolio CDS Analytics&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L122">public class BuiltInCDSPortfolioDefinitions {</span>
+<span class="nc" id="L133">public class BuiltInCDSPortfolioDefinitions {</span>
 
 	/*
 	 * Sample demonstrating the creation/usage of the CDX API
@@ -129,7 +140,7 @@ import org.drip.service.env.*;
 
 	private static final void BasketCDSAPISample()
 	{
-<span class="fc" id="L132">		JulianDate dtToday = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L143">		JulianDate dtToday = DateUtil.CreateFromYMD (</span>
 			2013,
 			DateUtil.MAY,
 			10
@@ -159,21 +170,21 @@ import org.drip.service.env.*;
 		 * List of all the built-in CDX names
 		 */
 
-<span class="fc" id="L162">		Set&lt;String&gt; setstrCDXNames = StandardCDXManager.GetCDXNames();</span>
+<span class="fc" id="L173">		Set&lt;String&gt; setstrCDXNames = StandardCDXManager.GetCDXNames();</span>
 
 		/*
 		 * Descriptions of all the built-in CDX names
 		 */
 
-<span class="fc" id="L168">		CaseInsensitiveTreeMap&lt;String&gt; mapCDXDescr = StandardCDXManager.GetCDXDescriptions();</span>
+<span class="fc" id="L179">		CaseInsensitiveTreeMap&lt;String&gt; mapCDXDescr = StandardCDXManager.GetCDXDescriptions();</span>
 
 		/*
 		 * Construct the on-the run CDX.EM 5Y corresponding to T - 1Y
 		 */
 
-<span class="fc" id="L174">		BasketProduct bpPresetOTR = StandardCDXManager.GetOnTheRun (</span>
+<span class="fc" id="L185">		BasketProduct bpPresetOTR = StandardCDXManager.GetOnTheRun (</span>
 			&quot;CDX.EM&quot;,
-<span class="fc" id="L176">			dtToday.subtractTenor (&quot;1Y&quot;),</span>
+<span class="fc" id="L187">			dtToday.subtractTenor (&quot;1Y&quot;),</span>
 			&quot;5Y&quot;
 		);
 
@@ -181,9 +192,9 @@ import org.drip.service.env.*;
 		 * Construct the on-the run ITRAXX.ENERGY 5Y corresponding to T - 7Y
 		 */
 
-<span class="fc" id="L184">		BasketProduct bpPreLoadedOTR = StandardCDXManager.GetOnTheRun (</span>
+<span class="fc" id="L195">		BasketProduct bpPreLoadedOTR = StandardCDXManager.GetOnTheRun (</span>
 			&quot;ITRAXX.ENERGY&quot;,
-<span class="fc" id="L186">			dtToday.subtractTenor (&quot;7Y&quot;),</span>
+<span class="fc" id="L197">			dtToday.subtractTenor (&quot;7Y&quot;),</span>
 			&quot;5Y&quot;
 		);
 
@@ -191,27 +202,27 @@ import org.drip.service.env.*;
 		 * Retrieve the full set of date/index series set for ITRAXX.ENERGY
 		 */
 
-<span class="fc" id="L194">		Map&lt;JulianDate, Integer&gt; mapCDXSeries = StandardCDXManager.GetCDXSeriesMap (&quot;ITRAXX.ENERGY&quot;);</span>
+<span class="fc" id="L205">		Map&lt;JulianDate, Integer&gt; mapCDXSeries = StandardCDXManager.GetCDXSeriesMap (&quot;ITRAXX.ENERGY&quot;);</span>
 
 		// System.out.println (bpCDX.name() + &quot;: &quot; + bpCDX.effective() + &quot;=&gt;&quot; + bpCDX.maturity());
 
 		// System.out.println (bpCDXOTR.name() + &quot;: &quot; + bpCDXOTR.effective() + &quot;=&gt;&quot; + bpCDXOTR.maturity());
 
-<span class="fc" id="L200">		int i = 0;</span>
+<span class="fc" id="L211">		int i = 0;</span>
 
-<span class="fc bfc" id="L202" title="All 2 branches covered.">		for (String strCDX : setstrCDXNames)</span>
-<span class="fc" id="L203">			System.out.println (&quot;CDX[&quot; + i++ + &quot;]: &quot; + strCDX);</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">		for (String strCDX : setstrCDXNames)</span>
+<span class="fc" id="L214">			System.out.println (&quot;CDX[&quot; + i++ + &quot;]: &quot; + strCDX);</span>
 
-<span class="fc bfc" id="L205" title="All 2 branches covered.">		for (Map.Entry&lt;String, String&gt; meCDXDescr : mapCDXDescr.entrySet())</span>
-<span class="fc" id="L206">			System.out.println (&quot;[&quot; + meCDXDescr.getKey() + &quot;]: &quot; + meCDXDescr.getValue());</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">		for (Map.Entry&lt;String, String&gt; meCDXDescr : mapCDXDescr.entrySet())</span>
+<span class="fc" id="L217">			System.out.println (&quot;[&quot; + meCDXDescr.getKey() + &quot;]: &quot; + meCDXDescr.getValue());</span>
 
-<span class="fc" id="L208">		System.out.println (bpPresetOTR.name() + &quot;: &quot; + bpPresetOTR.effective() + &quot;=&gt;&quot; + bpPresetOTR.maturity());</span>
+<span class="fc" id="L219">		System.out.println (bpPresetOTR.name() + &quot;: &quot; + bpPresetOTR.effective() + &quot;=&gt;&quot; + bpPresetOTR.maturity());</span>
 
-<span class="fc" id="L210">		System.out.println (bpPreLoadedOTR.name() + &quot;: &quot; + bpPreLoadedOTR.effective() + &quot;=&gt;&quot; + bpPreLoadedOTR.maturity());</span>
+<span class="fc" id="L221">		System.out.println (bpPreLoadedOTR.name() + &quot;: &quot; + bpPreLoadedOTR.effective() + &quot;=&gt;&quot; + bpPreLoadedOTR.maturity());</span>
 
-<span class="fc bfc" id="L212" title="All 2 branches covered.">		for (Map.Entry&lt;JulianDate, Integer&gt; me : mapCDXSeries.entrySet())</span>
-<span class="fc" id="L213">			System.out.println (&quot;ITRAXX.ENERGY[&quot; + me.getValue() + &quot;]: &quot; + me.getKey());</span>
-<span class="fc" id="L214">	}</span>
+<span class="fc bfc" id="L223" title="All 2 branches covered.">		for (Map.Entry&lt;JulianDate, Integer&gt; me : mapCDXSeries.entrySet())</span>
+<span class="fc" id="L224">			System.out.println (&quot;ITRAXX.ENERGY[&quot; + me.getValue() + &quot;]: &quot; + me.getKey());</span>
+<span class="fc" id="L225">	}</span>
 
 	public static final void main (
 		final String astrArgs[])
@@ -219,13 +230,13 @@ import org.drip.service.env.*;
 	{
 		// String strConfig = &quot;c:\\Lakshmi\\BondAnal\\Config.xml&quot;;
 
-<span class="fc" id="L222">		String strConfig = &quot;&quot;;</span>
+<span class="fc" id="L233">		String strConfig = &quot;&quot;;</span>
 
-<span class="fc" id="L224">		EnvManager.InitEnv (strConfig);</span>
+<span class="fc" id="L235">		EnvManager.InitEnv (strConfig);</span>
 
-<span class="fc" id="L226">		BasketCDSAPISample();</span>
+<span class="fc" id="L237">		BasketCDSAPISample();</span>
 
-<span class="fc" id="L228">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L229">	}</span>
+<span class="fc" id="L239">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L240">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

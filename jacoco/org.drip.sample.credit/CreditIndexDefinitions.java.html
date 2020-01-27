@@ -10,38 +10,49 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -76,47 +87,47 @@ import org.drip.service.env.EnvManager;
  *  
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/credit/README.md&quot;&gt;Credit Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/cashflow/README.md&quot;&gt;Single Name Portfolio CDS Analytics&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L89">public class CreditIndexDefinitions {</span>
+<span class="nc" id="L100">public class CreditIndexDefinitions {</span>
 
 	private static final void DisplayIndexConvention (
 		final String strFullIndexName)
 		throws Exception
 	{
-<span class="fc" id="L95">		CreditIndexConvention cic = CreditIndexConventionContainer.ConventionFromFullName (strFullIndexName);</span>
+<span class="fc" id="L106">		CreditIndexConvention cic = CreditIndexConventionContainer.ConventionFromFullName (strFullIndexName);</span>
 
-<span class="fc" id="L97">		System.out.println (</span>
-<span class="fc" id="L98">			&quot;\t| &quot; + cic.fullName() +</span>
-<span class="fc" id="L99">			&quot; | &quot; + cic.indexType() +</span>
-<span class="fc" id="L100">			&quot; | &quot; + cic.indexSubType() +</span>
-<span class="fc" id="L101">			&quot; | &quot; + cic.seriesName() +</span>
-<span class="fc" id="L102">			&quot; | &quot; + cic.currency() +</span>
-<span class="fc" id="L103">			&quot; | &quot; + cic.effectiveDate() +</span>
-<span class="fc" id="L104">			&quot; | &quot; + cic.maturityDate() +</span>
-<span class="fc" id="L105">			&quot; | &quot; + cic.frequency() +</span>
-<span class="fc" id="L106">			&quot; | &quot; + cic.dayCount() +</span>
-<span class="fc" id="L107">			&quot; | &quot; + FormatUtil.FormatDouble (cic.fixedCoupon(), 3, 0, 10000.) +</span>
-<span class="fc" id="L108">			&quot; | &quot; + FormatUtil.FormatDouble (cic.recoveryRate(), 2, 0, 100.) +</span>
-<span class="fc" id="L109">			&quot;% | &quot; + cic.numberOfConstituents() + &quot; ||&quot;</span>
+<span class="fc" id="L108">		System.out.println (</span>
+<span class="fc" id="L109">			&quot;\t| &quot; + cic.fullName() +</span>
+<span class="fc" id="L110">			&quot; | &quot; + cic.indexType() +</span>
+<span class="fc" id="L111">			&quot; | &quot; + cic.indexSubType() +</span>
+<span class="fc" id="L112">			&quot; | &quot; + cic.seriesName() +</span>
+<span class="fc" id="L113">			&quot; | &quot; + cic.currency() +</span>
+<span class="fc" id="L114">			&quot; | &quot; + cic.effectiveDate() +</span>
+<span class="fc" id="L115">			&quot; | &quot; + cic.maturityDate() +</span>
+<span class="fc" id="L116">			&quot; | &quot; + cic.frequency() +</span>
+<span class="fc" id="L117">			&quot; | &quot; + cic.dayCount() +</span>
+<span class="fc" id="L118">			&quot; | &quot; + FormatUtil.FormatDouble (cic.fixedCoupon(), 3, 0, 10000.) +</span>
+<span class="fc" id="L119">			&quot; | &quot; + FormatUtil.FormatDouble (cic.recoveryRate(), 2, 0, 100.) +</span>
+<span class="fc" id="L120">			&quot;% | &quot; + cic.numberOfConstituents() + &quot; ||&quot;</span>
 		);
-<span class="fc" id="L111">	}</span>
+<span class="fc" id="L122">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L117">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L128">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L119">		String[] astrFullIndexName = new String[] {</span>
+<span class="fc" id="L130">		String[] astrFullIndexName = new String[] {</span>
 			&quot;CDX.NA.IG.S15.5Y&quot;,
 			&quot;CDX.NA.IG.S16.5Y&quot;,
 			&quot;CDX.NA.IG.S17.5Y&quot;,
@@ -131,60 +142,60 @@ import org.drip.service.env.EnvManager;
 			&quot;CDX.NA.IG.S26.5Y&quot;
 		};
 
-<span class="fc" id="L134">		System.out.println (&quot;\n&quot;);</span>
+<span class="fc" id="L145">		System.out.println (&quot;\n&quot;);</span>
 
-<span class="fc" id="L136">		System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L147">		System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L138">		System.out.println (&quot;\t|                                                                                                          ||&quot;);</span>
+<span class="fc" id="L149">		System.out.println (&quot;\t|                                                                                                          ||&quot;);</span>
 
-<span class="fc" id="L140">		System.out.println (&quot;\t|                                      CDX NA IG OTC INDEX DEFINITIONS                                     ||&quot;);</span>
+<span class="fc" id="L151">		System.out.println (&quot;\t|                                      CDX NA IG OTC INDEX DEFINITIONS                                     ||&quot;);</span>
 
-<span class="fc" id="L142">		System.out.println (&quot;\t|                                                                                                          ||&quot;);</span>
+<span class="fc" id="L153">		System.out.println (&quot;\t|                                                                                                          ||&quot;);</span>
 
-<span class="fc" id="L144">		System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L155">		System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L146">		System.out.println (&quot;\t|                                                                                                          ||&quot;);</span>
+<span class="fc" id="L157">		System.out.println (&quot;\t|                                                                                                          ||&quot;);</span>
 
-<span class="fc" id="L148">		System.out.println (&quot;\t|    L -&gt; R:                                                                                               ||&quot;);</span>
+<span class="fc" id="L159">		System.out.println (&quot;\t|    L -&gt; R:                                                                                               ||&quot;);</span>
 
-<span class="fc" id="L150">		System.out.println (&quot;\t|                                                                                                          ||&quot;);</span>
+<span class="fc" id="L161">		System.out.println (&quot;\t|                                                                                                          ||&quot;);</span>
 
-<span class="fc" id="L152">		System.out.println (&quot;\t|        - Full Name                                                                                       ||&quot;);</span>
+<span class="fc" id="L163">		System.out.println (&quot;\t|        - Full Name                                                                                       ||&quot;);</span>
 
-<span class="fc" id="L154">		System.out.println (&quot;\t|        - Index Type                                                                                      ||&quot;);</span>
+<span class="fc" id="L165">		System.out.println (&quot;\t|        - Index Type                                                                                      ||&quot;);</span>
 
-<span class="fc" id="L156">		System.out.println (&quot;\t|        - Index Sub-Type                                                                                  ||&quot;);</span>
+<span class="fc" id="L167">		System.out.println (&quot;\t|        - Index Sub-Type                                                                                  ||&quot;);</span>
 
-<span class="fc" id="L158">		System.out.println (&quot;\t|        - Series Name                                                                                     ||&quot;);</span>
+<span class="fc" id="L169">		System.out.println (&quot;\t|        - Series Name                                                                                     ||&quot;);</span>
 
-<span class="fc" id="L160">		System.out.println (&quot;\t|        - Currency                                                                                        ||&quot;);</span>
+<span class="fc" id="L171">		System.out.println (&quot;\t|        - Currency                                                                                        ||&quot;);</span>
 
-<span class="fc" id="L162">		System.out.println (&quot;\t|        - Effective Date                                                                                  ||&quot;);</span>
+<span class="fc" id="L173">		System.out.println (&quot;\t|        - Effective Date                                                                                  ||&quot;);</span>
 
-<span class="fc" id="L164">		System.out.println (&quot;\t|        - Maturity Date                                                                                   ||&quot;);</span>
+<span class="fc" id="L175">		System.out.println (&quot;\t|        - Maturity Date                                                                                   ||&quot;);</span>
 
-<span class="fc" id="L166">		System.out.println (&quot;\t|        - Coupon/Pay Frequency                                                                            ||&quot;);</span>
+<span class="fc" id="L177">		System.out.println (&quot;\t|        - Coupon/Pay Frequency                                                                            ||&quot;);</span>
 
-<span class="fc" id="L168">		System.out.println (&quot;\t|        - Coupon/Pay Day Count                                                                            ||&quot;);</span>
+<span class="fc" id="L179">		System.out.println (&quot;\t|        - Coupon/Pay Day Count                                                                            ||&quot;);</span>
 
-<span class="fc" id="L170">		System.out.println (&quot;\t|        - Fixed Coupon Strike (bp)                                                                        ||&quot;);</span>
+<span class="fc" id="L181">		System.out.println (&quot;\t|        - Fixed Coupon Strike (bp)                                                                        ||&quot;);</span>
 
-<span class="fc" id="L172">		System.out.println (&quot;\t|        - Fixed Recovery Rate                                                                             ||&quot;);</span>
+<span class="fc" id="L183">		System.out.println (&quot;\t|        - Fixed Recovery Rate                                                                             ||&quot;);</span>
 
-<span class="fc" id="L174">		System.out.println (&quot;\t|        - Number of Constituents                                                                          ||&quot;);</span>
+<span class="fc" id="L185">		System.out.println (&quot;\t|        - Number of Constituents                                                                          ||&quot;);</span>
 
-<span class="fc" id="L176">		System.out.println (&quot;\t|                                                                                                          ||&quot;);</span>
+<span class="fc" id="L187">		System.out.println (&quot;\t|                                                                                                          ||&quot;);</span>
 
-<span class="fc" id="L178">		System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L189">		System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L180" title="All 2 branches covered.">		for (String strFullIndexName : astrFullIndexName)</span>
-<span class="fc" id="L181">			DisplayIndexConvention (strFullIndexName);</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">		for (String strFullIndexName : astrFullIndexName)</span>
+<span class="fc" id="L192">			DisplayIndexConvention (strFullIndexName);</span>
 
-<span class="fc" id="L183">		System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L194">		System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L185">		System.out.println (&quot;\n&quot;);</span>
+<span class="fc" id="L196">		System.out.println (&quot;\n&quot;);</span>
 
-<span class="fc" id="L187">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L188">	}</span>
+<span class="fc" id="L198">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L199">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

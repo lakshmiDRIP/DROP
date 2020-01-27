@@ -13,39 +13,50 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -82,28 +93,28 @@ import org.drip.service.env.EnvManager;
  *  
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/classifier/README.md&quot;&gt;Classifier Agnostic Bounds&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/classifier/README.md&quot;&gt;Binary Classifier Supremum Bounds Estimator&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L95">public class BinaryClassifierSupremumBound {</span>
+<span class="nc" id="L106">public class BinaryClassifierSupremumBound {</span>
 
 	private static final double[] EmpiricalOutcome (
 		final int iNumOutcome)
 		throws Exception
 	{
-<span class="nc" id="L101">		double[] adblEmpiricalOutcome = new double[iNumOutcome];</span>
+<span class="nc" id="L112">		double[] adblEmpiricalOutcome = new double[iNumOutcome];</span>
 
-<span class="nc bnc" id="L103" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumOutcome; ++i)</span>
-<span class="nc" id="L104">			adblEmpiricalOutcome[i] = Math.random() + 0.5;</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumOutcome; ++i)</span>
+<span class="nc" id="L115">			adblEmpiricalOutcome[i] = Math.random() + 0.5;</span>
 
-<span class="nc" id="L106">		return adblEmpiricalOutcome;</span>
+<span class="nc" id="L117">		return adblEmpiricalOutcome;</span>
 	}
 
 	private static final SingleSequenceAgnosticMetrics[] IIDDraw (
@@ -111,12 +122,12 @@ import org.drip.service.env.EnvManager;
 		final int iNumSample)
 		throws Exception
 	{
-<span class="nc" id="L114">		SingleSequenceAgnosticMetrics[] aSSAM = new SingleSequenceAgnosticMetrics[iNumSample];</span>
+<span class="nc" id="L125">		SingleSequenceAgnosticMetrics[] aSSAM = new SingleSequenceAgnosticMetrics[iNumSample];</span>
 
-<span class="nc bnc" id="L116" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i)</span>
-<span class="nc" id="L117">			aSSAM[i] = rsg.sequence (iNumSample, null);</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i)</span>
+<span class="nc" id="L128">			aSSAM[i] = rsg.sequence (iNumSample, null);</span>
 
-<span class="nc" id="L119">		return aSSAM;</span>
+<span class="nc" id="L130">		return aSSAM;</span>
 	}
 
 	private static final EmpiricalPenaltySupremumEstimator EmpiricalLossSupremumFunction (
@@ -125,7 +136,7 @@ import org.drip.service.env.EnvManager;
 	{
 		// AbstractBinaryClassifier[] aClassifier = null;
 
-<span class="nc" id="L128">		return null;</span>
+<span class="nc" id="L139">		return null;</span>
 
 		/* return new EmpiricalLossSupremum (
 			new GeneralizedClassifierFunctionClass (
@@ -145,29 +156,29 @@ import org.drip.service.env.EnvManager;
 		final int iNumSet)
 		throws Exception
 	{
-<span class="nc" id="L148">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (adblEmpiricalOutcome.length, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
+<span class="nc" id="L159">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (adblEmpiricalOutcome.length, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
 
-<span class="nc bnc" id="L150" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
-<span class="nc" id="L151">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
+<span class="nc" id="L162">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
 				bsg,
 				adblEmpiricalOutcome.length
 			);
 
-<span class="nc" id="L156">			EmpiricalPenaltySupremumMetrics eslm = new EmpiricalPenaltySupremumMetrics (</span>
-<span class="nc" id="L157">				EmpiricalLossSupremumFunction (</span>
+<span class="nc" id="L167">			EmpiricalPenaltySupremumMetrics eslm = new EmpiricalPenaltySupremumMetrics (</span>
+<span class="nc" id="L168">				EmpiricalLossSupremumFunction (</span>
 					adblEmpiricalOutcome
 				),
 				aSSAM,
 				null
 			);
 
-<span class="nc bnc" id="L164" title="All 2 branches missed.">			if (0 != j) strDump += &quot; |&quot;;</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">			if (0 != j) strDump += &quot; |&quot;;</span>
 
-<span class="nc" id="L166">			strDump += FormatUtil.FormatDouble (eslm.martingaleVarianceUpperBound(), 1, 3, 1.);</span>
+<span class="nc" id="L177">			strDump += FormatUtil.FormatDouble (eslm.martingaleVarianceUpperBound(), 1, 3, 1.);</span>
 		}
 
-<span class="nc" id="L169">		System.out.println (strDump + &quot; |&quot;);</span>
-<span class="nc" id="L170">	}</span>
+<span class="nc" id="L180">		System.out.println (strDump + &quot; |&quot;);</span>
+<span class="nc" id="L181">	}</span>
 
 	private static final void GhostVariateVarianceRun (
 		final Binary bsg,
@@ -175,34 +186,34 @@ import org.drip.service.env.EnvManager;
 		final int iNumSet)
 		throws Exception
 	{
-<span class="nc" id="L178">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (adblEmpiricalOutcome.length, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
+<span class="nc" id="L189">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (adblEmpiricalOutcome.length, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
 
-<span class="nc bnc" id="L180" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
-<span class="nc" id="L181">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
+<span class="nc" id="L192">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
 				bsg,
 				adblEmpiricalOutcome.length
 			);
 
-<span class="nc" id="L186">			EmpiricalPenaltySupremumMetrics eslm = new EmpiricalPenaltySupremumMetrics (</span>
-<span class="nc" id="L187">				EmpiricalLossSupremumFunction (</span>
+<span class="nc" id="L197">			EmpiricalPenaltySupremumMetrics eslm = new EmpiricalPenaltySupremumMetrics (</span>
+<span class="nc" id="L198">				EmpiricalLossSupremumFunction (</span>
 					adblEmpiricalOutcome
 				),
 				aSSAM,
 				null
 			);
 
-<span class="nc" id="L194">			SingleSequenceAgnosticMetrics[] aSSAMGhost = IIDDraw (</span>
+<span class="nc" id="L205">			SingleSequenceAgnosticMetrics[] aSSAMGhost = IIDDraw (</span>
 				bsg,
 				adblEmpiricalOutcome.length
 			);
 
-<span class="nc bnc" id="L199" title="All 2 branches missed.">			if (0 != j) strDump += &quot; |&quot;;</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">			if (0 != j) strDump += &quot; |&quot;;</span>
 
-<span class="nc" id="L201">			strDump += FormatUtil.FormatDouble (eslm.ghostVarianceUpperBound (aSSAMGhost), 1, 3, 1.);</span>
+<span class="nc" id="L212">			strDump += FormatUtil.FormatDouble (eslm.ghostVarianceUpperBound (aSSAMGhost), 1, 3, 1.);</span>
 		}
 
-<span class="nc" id="L204">		System.out.println (strDump + &quot; |&quot;);</span>
-<span class="nc" id="L205">	}</span>
+<span class="nc" id="L215">		System.out.println (strDump + &quot; |&quot;);</span>
+<span class="nc" id="L216">	}</span>
 
 	private static final void EfronSteinSteeleRun (
 		final Binary bsg,
@@ -210,34 +221,34 @@ import org.drip.service.env.EnvManager;
 		final int iNumSet)
 		throws Exception
 	{
-<span class="nc" id="L213">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (adblEmpiricalOutcome.length, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
+<span class="nc" id="L224">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (adblEmpiricalOutcome.length, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
 
-<span class="nc bnc" id="L215" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
-<span class="nc" id="L216">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
+<span class="nc" id="L227">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
 				bsg,
 				adblEmpiricalOutcome.length
 			);
 
-<span class="nc" id="L221">			EmpiricalPenaltySupremumMetrics eslm = new EmpiricalPenaltySupremumMetrics (</span>
-<span class="nc" id="L222">				EmpiricalLossSupremumFunction (</span>
+<span class="nc" id="L232">			EmpiricalPenaltySupremumMetrics eslm = new EmpiricalPenaltySupremumMetrics (</span>
+<span class="nc" id="L233">				EmpiricalLossSupremumFunction (</span>
 					adblEmpiricalOutcome
 				),
 				aSSAM,
 				null
 			);
 
-<span class="nc" id="L229">			SingleSequenceAgnosticMetrics[] aSSAMGhost = IIDDraw (</span>
+<span class="nc" id="L240">			SingleSequenceAgnosticMetrics[] aSSAMGhost = IIDDraw (</span>
 				bsg,
 				adblEmpiricalOutcome.length
 			);
 
-<span class="nc bnc" id="L234" title="All 2 branches missed.">			if (0 != j) strDump += &quot; |&quot;;</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">			if (0 != j) strDump += &quot; |&quot;;</span>
 
-<span class="nc" id="L236">			strDump += FormatUtil.FormatDouble (eslm.efronSteinSteeleBound (aSSAMGhost), 1, 3, 1.);</span>
+<span class="nc" id="L247">			strDump += FormatUtil.FormatDouble (eslm.efronSteinSteeleBound (aSSAMGhost), 1, 3, 1.);</span>
 		}
 
-<span class="nc" id="L239">		System.out.println (strDump + &quot; |&quot;);</span>
-<span class="nc" id="L240">	}</span>
+<span class="nc" id="L250">		System.out.println (strDump + &quot; |&quot;);</span>
+<span class="nc" id="L251">	}</span>
 
 	private static final void PivotDifferencesRun (
 		final Binary bsg,
@@ -245,29 +256,29 @@ import org.drip.service.env.EnvManager;
 		final int iNumSet)
 		throws Exception
 	{
-<span class="nc" id="L248">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (adblEmpiricalOutcome.length, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
+<span class="nc" id="L259">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (adblEmpiricalOutcome.length, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
 
-<span class="nc bnc" id="L250" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
-<span class="nc" id="L251">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
+<span class="nc bnc" id="L261" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
+<span class="nc" id="L262">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
 				bsg,
 				adblEmpiricalOutcome.length
 			);
 
-<span class="nc" id="L256">			EmpiricalPenaltySupremumMetrics eslm = new EmpiricalPenaltySupremumMetrics (</span>
-<span class="nc" id="L257">				EmpiricalLossSupremumFunction (</span>
+<span class="nc" id="L267">			EmpiricalPenaltySupremumMetrics eslm = new EmpiricalPenaltySupremumMetrics (</span>
+<span class="nc" id="L268">				EmpiricalLossSupremumFunction (</span>
 					adblEmpiricalOutcome
 				),
 				aSSAM,
 				null
 			);
 
-<span class="nc bnc" id="L264" title="All 2 branches missed.">			if (0 != j) strDump += &quot; |&quot;;</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">			if (0 != j) strDump += &quot; |&quot;;</span>
 
-<span class="nc" id="L266">			strDump += FormatUtil.FormatDouble (eslm.pivotVarianceUpperBound (new FlatMultivariateRandom (0.)), 1, 3, 1.);</span>
+<span class="nc" id="L277">			strDump += FormatUtil.FormatDouble (eslm.pivotVarianceUpperBound (new FlatMultivariateRandom (0.)), 1, 3, 1.);</span>
 		}
 
-<span class="nc" id="L269">		System.out.println (strDump + &quot; |&quot;);</span>
-<span class="nc" id="L270">	}</span>
+<span class="nc" id="L280">		System.out.println (strDump + &quot; |&quot;);</span>
+<span class="nc" id="L281">	}</span>
 
 	private static final void LugosiVarianceRun (
 		final Binary bsg,
@@ -275,127 +286,127 @@ import org.drip.service.env.EnvManager;
 		final int iNumSet)
 		throws Exception
 	{
-<span class="nc" id="L278">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (adblEmpiricalOutcome.length, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
+<span class="nc" id="L289">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (adblEmpiricalOutcome.length, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
 
-<span class="nc bnc" id="L280" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
-<span class="nc" id="L281">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
+<span class="nc bnc" id="L291" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
+<span class="nc" id="L292">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
 				bsg,
 				adblEmpiricalOutcome.length
 			);
 
-<span class="nc" id="L286">			EmpiricalPenaltySupremumMetrics eslm = new EmpiricalPenaltySupremumMetrics (</span>
-<span class="nc" id="L287">				EmpiricalLossSupremumFunction (</span>
+<span class="nc" id="L297">			EmpiricalPenaltySupremumMetrics eslm = new EmpiricalPenaltySupremumMetrics (</span>
+<span class="nc" id="L298">				EmpiricalLossSupremumFunction (</span>
 					adblEmpiricalOutcome
 				),
 				aSSAM,
 				null
 			);
 
-<span class="nc" id="L294">			SingleSequenceAgnosticMetrics[] aSSAMGhost = IIDDraw (</span>
+<span class="nc" id="L305">			SingleSequenceAgnosticMetrics[] aSSAMGhost = IIDDraw (</span>
 				bsg,
 				1
 			);
 
-<span class="nc bnc" id="L299" title="All 2 branches missed.">			if (0 != j) strDump += &quot; |&quot;;</span>
+<span class="nc bnc" id="L310" title="All 2 branches missed.">			if (0 != j) strDump += &quot; |&quot;;</span>
 
-<span class="nc" id="L301">			strDump += FormatUtil.FormatDouble (eslm.lugosiVarianceBound (aSSAMGhost[0].sequence()), 1, 3, 1.);</span>
+<span class="nc" id="L312">			strDump += FormatUtil.FormatDouble (eslm.lugosiVarianceBound (aSSAMGhost[0].sequence()), 1, 3, 1.);</span>
 		}
 
-<span class="nc" id="L304">		System.out.println (strDump + &quot; |&quot;);</span>
-<span class="nc" id="L305">	}</span>
+<span class="nc" id="L315">		System.out.println (strDump + &quot; |&quot;);</span>
+<span class="nc" id="L316">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L311">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L322">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L313">		int iNumSet = 5;</span>
+<span class="nc" id="L324">		int iNumSet = 5;</span>
 
-<span class="nc" id="L315">		int[] aiSampleSize = new int[] {</span>
+<span class="nc" id="L326">		int[] aiSampleSize = new int[] {</span>
 			3, 10, 25, 50
 		};
 
-<span class="nc" id="L319">		Binary bin = new Binary (0.7);</span>
+<span class="nc" id="L330">		Binary bin = new Binary (0.7);</span>
 
-<span class="nc" id="L321">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
+<span class="nc" id="L332">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L323">		System.out.println (&quot;\t|  Martingale Differences Variance Upper Bound  |&quot;);</span>
+<span class="nc" id="L334">		System.out.println (&quot;\t|  Martingale Differences Variance Upper Bound  |&quot;);</span>
 
-<span class="nc" id="L325">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="nc" id="L336">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc bnc" id="L327" title="All 2 branches missed.">		for (int iSampleSize : aiSampleSize)</span>
-<span class="nc" id="L328">			MartingaleDifferencesRun (</span>
+<span class="nc bnc" id="L338" title="All 2 branches missed.">		for (int iSampleSize : aiSampleSize)</span>
+<span class="nc" id="L339">			MartingaleDifferencesRun (</span>
 				bin,
-<span class="nc" id="L330">				EmpiricalOutcome (iSampleSize),</span>
+<span class="nc" id="L341">				EmpiricalOutcome (iSampleSize),</span>
 				iNumSet
 			);
 
-<span class="nc" id="L334">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="nc" id="L345">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L336">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
+<span class="nc" id="L347">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L338">		System.out.println (&quot;\t|   Symmetrized Variate Variance Upper Bound    |&quot;);</span>
+<span class="nc" id="L349">		System.out.println (&quot;\t|   Symmetrized Variate Variance Upper Bound    |&quot;);</span>
 
-<span class="nc" id="L340">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="nc" id="L351">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc bnc" id="L342" title="All 2 branches missed.">		for (int iSampleSize : aiSampleSize)</span>
-<span class="nc" id="L343">			GhostVariateVarianceRun (</span>
+<span class="nc bnc" id="L353" title="All 2 branches missed.">		for (int iSampleSize : aiSampleSize)</span>
+<span class="nc" id="L354">			GhostVariateVarianceRun (</span>
 				bin,
-<span class="nc" id="L345">				EmpiricalOutcome (iSampleSize),</span>
+<span class="nc" id="L356">				EmpiricalOutcome (iSampleSize),</span>
 				iNumSet
 			);
 
-<span class="nc" id="L349">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="nc" id="L360">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L351">		aiSampleSize = new int[] {</span>
+<span class="nc" id="L362">		aiSampleSize = new int[] {</span>
 			3, 10, 25, 50, 75, 99
 		};
 
-<span class="nc" id="L355">		System.out.println (&quot;\t|    Efron-Stein-Steele Variance Upper Bound    |&quot;);</span>
+<span class="nc" id="L366">		System.out.println (&quot;\t|    Efron-Stein-Steele Variance Upper Bound    |&quot;);</span>
 
-<span class="nc" id="L357">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="nc" id="L368">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc bnc" id="L359" title="All 2 branches missed.">		for (int iSampleSize : aiSampleSize)</span>
-<span class="nc" id="L360">			EfronSteinSteeleRun (</span>
+<span class="nc bnc" id="L370" title="All 2 branches missed.">		for (int iSampleSize : aiSampleSize)</span>
+<span class="nc" id="L371">			EfronSteinSteeleRun (</span>
 				bin,
-<span class="nc" id="L362">				EmpiricalOutcome (iSampleSize),</span>
+<span class="nc" id="L373">				EmpiricalOutcome (iSampleSize),</span>
 				iNumSet
 			);
 
-<span class="nc" id="L366">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="nc" id="L377">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L368">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
+<span class="nc" id="L379">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L370">		System.out.println (&quot;\t|    Pivoted Differences Variance Upper Bound   |&quot;);</span>
+<span class="nc" id="L381">		System.out.println (&quot;\t|    Pivoted Differences Variance Upper Bound   |&quot;);</span>
 
-<span class="nc" id="L372">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="nc" id="L383">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc bnc" id="L374" title="All 2 branches missed.">		for (int iSampleSize : aiSampleSize)</span>
-<span class="nc" id="L375">			PivotDifferencesRun (</span>
+<span class="nc bnc" id="L385" title="All 2 branches missed.">		for (int iSampleSize : aiSampleSize)</span>
+<span class="nc" id="L386">			PivotDifferencesRun (</span>
 				bin,
-<span class="nc" id="L377">				EmpiricalOutcome (iSampleSize),</span>
+<span class="nc" id="L388">				EmpiricalOutcome (iSampleSize),</span>
 				iNumSet
 			);
 
-<span class="nc" id="L381">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="nc" id="L392">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L383">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
+<span class="nc" id="L394">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L385">		System.out.println (&quot;\t|       Lugosi Bounded Variance Upper Bound       |&quot;);</span>
+<span class="nc" id="L396">		System.out.println (&quot;\t|       Lugosi Bounded Variance Upper Bound       |&quot;);</span>
 
-<span class="nc" id="L387">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="nc" id="L398">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc bnc" id="L389" title="All 2 branches missed.">		for (int iSampleSize : aiSampleSize)</span>
-<span class="nc" id="L390">			LugosiVarianceRun (</span>
+<span class="nc bnc" id="L400" title="All 2 branches missed.">		for (int iSampleSize : aiSampleSize)</span>
+<span class="nc" id="L401">			LugosiVarianceRun (</span>
 				bin,
-<span class="nc" id="L392">				EmpiricalOutcome (iSampleSize),</span>
+<span class="nc" id="L403">				EmpiricalOutcome (iSampleSize),</span>
 				iNumSet
 			);
 
-<span class="nc" id="L396">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="nc" id="L407">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L398">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L399">	}</span>
+<span class="nc" id="L409">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L410">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

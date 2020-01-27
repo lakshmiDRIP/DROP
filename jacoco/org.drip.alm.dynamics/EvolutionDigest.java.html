@@ -120,27 +120,38 @@ public class EvolutionDigest
 <span class="nc bnc" id="L120" title="All 4 branches missed.">		if (null == (_pathForwardTenorArray = pathForwardTenorArray) ||</span>
 			null == (_pathForwardPriceGrid = pathForwardPriceGrid))
 		{
-<span class="nc" id="L123">			throw new java.lang.Exception (&quot;EvolutionDigest Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L123">			throw new java.lang.Exception (</span>
+				&quot;EvolutionDigest Constructor =&gt; Invalid Inputs&quot;
+			);
 		}
 
-<span class="nc" id="L126">		int forwardTenorCount = _pathForwardTenorArray.length;</span>
+<span class="nc" id="L128">		int forwardTenorCount = _pathForwardTenorArray.length;</span>
 
-<span class="nc bnc" id="L128" title="All 4 branches missed.">		if (0 == forwardTenorCount || forwardTenorCount != _pathForwardPriceGrid.length)</span>
+<span class="nc bnc" id="L130" title="All 4 branches missed.">		if (0 == forwardTenorCount || forwardTenorCount != _pathForwardPriceGrid.length)</span>
 		{
-<span class="nc" id="L130">			throw new java.lang.Exception (&quot;EvolutionDigest Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L132">			throw new java.lang.Exception (</span>
+				&quot;EvolutionDigest Constructor =&gt; Invalid Inputs&quot;
+			);
 		}
 
-<span class="nc bnc" id="L133" title="All 2 branches missed.">		for (int forwardTenorIndex = 0; forwardTenorIndex &lt; forwardTenorCount; ++forwardTenorIndex)</span>
+<span class="nc" id="L137">		for (int forwardTenorIndex = 0;</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">			forwardTenorIndex &lt; forwardTenorCount;</span>
+<span class="nc" id="L139">			++forwardTenorIndex)</span>
 		{
-<span class="nc bnc" id="L135" title="All 2 branches missed.">			if (null == pathForwardTenorArray[forwardTenorIndex] ||</span>
-<span class="nc bnc" id="L136" title="All 4 branches missed.">				pathForwardTenorArray[forwardTenorIndex].isEmpty() ||</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">			if (null == pathForwardTenorArray[forwardTenorIndex] ||</span>
+<span class="nc bnc" id="L142" title="All 4 branches missed.">				pathForwardTenorArray[forwardTenorIndex].isEmpty() ||</span>
 				null == _pathForwardPriceGrid[forwardTenorIndex] ||
-<span class="nc bnc" id="L138" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_pathForwardPriceGrid[forwardTenorIndex]))</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (</span>
+					_pathForwardPriceGrid[forwardTenorIndex]
+				)
+			)
 			{
-<span class="nc" id="L140">				throw new java.lang.Exception (&quot;EvolutionDigest Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L149">				throw new java.lang.Exception (</span>
+					&quot;EvolutionDigest Constructor =&gt; Invalid Inputs&quot;
+				);
 			}
 		}
-<span class="nc" id="L143">	}</span>
+<span class="nc" id="L154">	}</span>
 
 	/**
 	 * Retrieve the Array of Path Forward Evolution Tenors
@@ -150,7 +161,7 @@ public class EvolutionDigest
 
 	public java.lang.String[] pathForwardTenorArray()
 	{
-<span class="nc" id="L153">		return _pathForwardTenorArray;</span>
+<span class="nc" id="L164">		return _pathForwardTenorArray;</span>
 	}
 
 	/**
@@ -161,7 +172,7 @@ public class EvolutionDigest
 
 	public double[][] pathForwardPriceGrid()
 	{
-<span class="nc" id="L164">		return _pathForwardPriceGrid;</span>
+<span class="nc" id="L175">		return _pathForwardPriceGrid;</span>
 	}
 
 	/**
@@ -172,28 +183,30 @@ public class EvolutionDigest
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin[] thinStatisticsArray()
 	{
-<span class="nc" id="L175">		int forwardTenorCount = _pathForwardTenorArray.length;</span>
-<span class="nc" id="L176">		org.drip.measure.statistics.UnivariateDiscreteThin[] thinStatisticsArray =</span>
+<span class="nc" id="L186">		int forwardTenorCount = _pathForwardTenorArray.length;</span>
+<span class="nc" id="L187">		org.drip.measure.statistics.UnivariateDiscreteThin[] thinStatisticsArray =</span>
 			new org.drip.measure.statistics.UnivariateDiscreteThin[forwardTenorCount];
 
-<span class="nc bnc" id="L179" title="All 2 branches missed.">		for (int forwardTenorIndex = 0; forwardTenorIndex &lt; forwardTenorCount; ++forwardTenorIndex)</span>
+<span class="nc" id="L190">		for (int forwardTenorIndex = 0;</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">			forwardTenorIndex &lt; forwardTenorCount;</span>
+<span class="nc" id="L192">			++forwardTenorIndex)</span>
 		{
 			try
 			{
-<span class="nc" id="L183">				thinStatisticsArray[forwardTenorIndex] =</span>
+<span class="nc" id="L196">				thinStatisticsArray[forwardTenorIndex] =</span>
 					new org.drip.measure.statistics.UnivariateDiscreteThin (
 						_pathForwardPriceGrid[forwardTenorIndex]
 					);
 			}
-<span class="nc" id="L188">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L201">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L190">				e.printStackTrace();</span>
+<span class="nc" id="L203">				e.printStackTrace();</span>
 
-<span class="nc" id="L192">				return null;</span>
-<span class="nc" id="L193">			}</span>
+<span class="nc" id="L205">				return null;</span>
+<span class="nc" id="L206">			}</span>
 		}
 
-<span class="nc" id="L196">		return thinStatisticsArray;</span>
+<span class="nc" id="L209">		return thinStatisticsArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

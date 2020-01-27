@@ -98,9 +98,10 @@ package org.drip.alm.dynamics;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MaturingAsset extends org.drip.alm.dynamics.EvolvableAsset
+public class MaturingAsset
+	extends org.drip.alm.dynamics.EvolvableAsset
 {
-<span class="nc" id="L103">	private java.lang.String _maturityTenor = &quot;&quot;;</span>
+<span class="nc" id="L104">	private java.lang.String _maturityTenor = &quot;&quot;;</span>
 
 	/**
 	 * MaturingAsset Constructor
@@ -118,16 +119,18 @@ public class MaturingAsset extends org.drip.alm.dynamics.EvolvableAsset
 		final java.lang.String maturityTenor)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L121">		super (</span>
+<span class="nc" id="L122">		super (</span>
 			id,
 			amount
 		);
 
-<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (null == (_maturityTenor = maturityTenor))</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">		if (null == (_maturityTenor = maturityTenor))</span>
 		{
-<span class="nc" id="L128">			throw new java.lang.Exception (&quot;MaturingAsset Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L129">			throw new java.lang.Exception (</span>
+				&quot;MaturingAsset Constructor =&gt; Invalid Inputs&quot;
+			);
 		}
-<span class="nc" id="L130">	}</span>
+<span class="nc" id="L133">	}</span>
 
 	/**
 	 * Retrieve the Maturity Tenor
@@ -137,7 +140,7 @@ public class MaturingAsset extends org.drip.alm.dynamics.EvolvableAsset
 
 	public java.lang.String maturityTenor()
 	{
-<span class="nc" id="L140">		return _maturityTenor;</span>
+<span class="nc" id="L143">		return _maturityTenor;</span>
 	}
 
 	@Override public double[] realizePath (
@@ -145,99 +148,99 @@ public class MaturingAsset extends org.drip.alm.dynamics.EvolvableAsset
 		final int horizonTenorInMonths,
 		final int evolutionTenorInMonths)
 	{
-<span class="nc bnc" id="L148" title="All 4 branches missed.">		if (null == spotMarketParameters || horizonTenorInMonths &lt; evolutionTenorInMonths)</span>
+<span class="nc bnc" id="L151" title="All 4 branches missed.">		if (null == spotMarketParameters || horizonTenorInMonths &lt; evolutionTenorInMonths)</span>
 		{
-<span class="nc" id="L150">			return null;</span>
+<span class="nc" id="L153">			return null;</span>
 		}
 
-<span class="nc" id="L153">		int maturityInMonths = -1;</span>
-<span class="nc" id="L154">		double timeIncrement = evolutionTenorInMonths / 12.;</span>
-<span class="nc" id="L155">		int horizonPeriod = horizonTenorInMonths / evolutionTenorInMonths;</span>
+<span class="nc" id="L156">		int maturityInMonths = -1;</span>
+<span class="nc" id="L157">		double timeIncrement = evolutionTenorInMonths / 12.;</span>
+<span class="nc" id="L158">		int horizonPeriod = horizonTenorInMonths / evolutionTenorInMonths;</span>
 
 		try
 		{
-<span class="nc" id="L159">			maturityInMonths = org.drip.analytics.support.Helper.TenorToMonths (_maturityTenor);</span>
+<span class="nc" id="L162">			maturityInMonths = org.drip.analytics.support.Helper.TenorToMonths (</span>
+				_maturityTenor
+			);
 		}
-<span class="nc" id="L161">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L166">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L163">			e.printStackTrace();</span>
+<span class="nc" id="L168">			e.printStackTrace();</span>
 
-<span class="nc" id="L165">			return null;</span>
-<span class="nc" id="L166">		}</span>
-
-<span class="nc bnc" id="L168" title="All 2 branches missed.">		if (maturityInMonths &lt; horizonTenorInMonths)</span>
-		{
 <span class="nc" id="L170">			return null;</span>
+<span class="nc" id="L171">		}</span>
+
+<span class="nc bnc" id="L173" title="All 2 branches missed.">		if (maturityInMonths &lt; horizonTenorInMonths)</span>
+		{
+<span class="nc" id="L175">			return null;</span>
 		}
 
-<span class="nc" id="L173">		double firstPeriodPriceVolatility = spotMarketParameters.maturingAssetAnnualVolatility() *</span>
-<span class="nc" id="L174">			java.lang.Math.sqrt (timeIncrement);</span>
+<span class="nc" id="L178">		double firstPeriodPriceVolatility = spotMarketParameters.maturingAssetAnnualVolatility() *</span>
+<span class="nc" id="L179">			java.lang.Math.sqrt (</span>
+				timeIncrement
+			);
 
-<span class="nc" id="L176">		double initialLogPrice = java.lang.Math.log (spotMarketParameters.maturingAssetPrice());</span>
+<span class="nc" id="L183">		double initialLogPrice = java.lang.Math.log (</span>
+<span class="nc" id="L184">			spotMarketParameters.maturingAssetPrice()</span>
+		);
 
-		// double forwardYieldLowerBound = spotMarketParameters.forwardYieldLowerBound();
+<span class="nc" id="L187">		double initialTimeToMaturity = ((double) horizonTenorInMonths) / 12.;</span>
+<span class="nc" id="L188">		double timeToMaturity = initialTimeToMaturity;</span>
+<span class="nc" id="L189">		double initialYield = -1. * initialLogPrice / timeToMaturity;</span>
+<span class="nc" id="L190">		double[] logPriceTrajectory = new double[horizonPeriod + 1];</span>
+<span class="nc" id="L191">		double targetLogPrice = initialLogPrice;</span>
+<span class="nc" id="L192">		logPriceTrajectory[0] = initialLogPrice;</span>
+<span class="nc" id="L193">		double forwardYield = initialYield;</span>
 
-<span class="nc" id="L180">		double initialTimeToMaturity = ((double) horizonTenorInMonths) / 12.;</span>
-<span class="nc" id="L181">		double timeToMaturity = initialTimeToMaturity;</span>
-<span class="nc" id="L182">		double initialYield = -1. * initialLogPrice / timeToMaturity;</span>
-<span class="nc" id="L183">		double[] logPriceTrajectory = new double[horizonPeriod + 1];</span>
-<span class="nc" id="L184">		double targetLogPrice = initialLogPrice;</span>
-<span class="nc" id="L185">		logPriceTrajectory[0] = initialLogPrice;</span>
-<span class="nc" id="L186">		double forwardYield = initialYield;</span>
+<span class="nc" id="L195">		double holdings = amount();</span>
 
-<span class="nc" id="L188">		double holdings = amount();</span>
-
-<span class="nc bnc" id="L190" title="All 2 branches missed.">		for (int periodIndex = 1; periodIndex &lt;= horizonPeriod; ++periodIndex)</span>
+<span class="nc" id="L197">		for (int periodIndex = 1;</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">			periodIndex &lt;= horizonPeriod;</span>
+<span class="nc" id="L199">			++periodIndex)</span>
 		{
-<span class="nc" id="L192">			timeToMaturity = timeToMaturity - timeIncrement;</span>
-<span class="nc" id="L193">			targetLogPrice = targetLogPrice + initialYield * timeIncrement;</span>
+<span class="nc" id="L201">			timeToMaturity = timeToMaturity - timeIncrement;</span>
+<span class="nc" id="L202">			targetLogPrice = targetLogPrice + initialYield * timeIncrement;</span>
 
 			try
 			{
-<span class="nc" id="L197">				logPriceTrajectory[periodIndex] = logPriceTrajectory[periodIndex - 1] +</span>
+<span class="nc" id="L206">				logPriceTrajectory[periodIndex] = logPriceTrajectory[periodIndex - 1] +</span>
 					forwardYield * timeIncrement +
-<span class="nc" id="L199">					firstPeriodPriceVolatility * java.lang.Math.sqrt (timeToMaturity) *</span>
-<span class="nc" id="L200">						org.drip.measure.gaussian.NormalQuadrature.Random();</span>
+<span class="nc" id="L208">					firstPeriodPriceVolatility * java.lang.Math.sqrt (</span>
+						timeToMaturity
+<span class="nc" id="L210">					) * org.drip.measure.gaussian.NormalQuadrature.Random();</span>
 			}
-<span class="nc" id="L202">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L212">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L204">				e.printStackTrace();</span>
+<span class="nc" id="L214">				e.printStackTrace();</span>
 
-<span class="nc" id="L206">				return null;</span>
-<span class="nc" id="L207">			}</span>
+<span class="nc" id="L216">				return null;</span>
+<span class="nc" id="L217">			}</span>
 
-			/* double forwardPriceUpperBound = -1. * forwardYieldLowerBound * periodsToMaturity;
-
-			if (priceTrajectory[periodIndex] &gt; forwardPriceUpperBound)
+<span class="nc bnc" id="L219" title="All 2 branches missed.">			if (horizonPeriod != periodIndex)</span>
 			{
-				priceTrajectory[periodIndex] = forwardPriceUpperBound;
-			} */
+<span class="nc" id="L221">				double meanReversionSpeed = 1. - ((timeToMaturity - timeIncrement) / initialTimeToMaturity);</span>
 
-<span class="nc bnc" id="L216" title="All 2 branches missed.">			if (horizonPeriod != periodIndex)</span>
-			{
-				// forwardYield = -1. * logPriceTrajectory[periodIndex] / timeIncrement;
-
-<span class="nc" id="L220">				double meanReversionSpeed = 1. - ((timeToMaturity - timeIncrement) / initialTimeToMaturity);</span>
-
-<span class="nc" id="L222">				meanReversionSpeed = java.lang.Math.pow (</span>
+<span class="nc" id="L223">				meanReversionSpeed = java.lang.Math.pow (</span>
 					meanReversionSpeed,
 					4.0
 				);
 
-<span class="nc" id="L227">				forwardYield = meanReversionSpeed *</span>
+<span class="nc" id="L228">				forwardYield = meanReversionSpeed *</span>
 					(targetLogPrice - logPriceTrajectory[periodIndex]) / timeIncrement +
 					initialYield;
 			}
 		}
 
-<span class="nc bnc" id="L233" title="All 2 branches missed.">		for (int periodIndex = 0; periodIndex &lt;= horizonPeriod; ++periodIndex)</span>
+<span class="nc" id="L234">		for (int periodIndex = 0;</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">			periodIndex &lt;= horizonPeriod;</span>
+<span class="nc" id="L236">			++periodIndex)</span>
 		{
-<span class="nc" id="L235">			logPriceTrajectory[periodIndex] = holdings * java.lang.Math.exp (</span>
+<span class="nc" id="L238">			logPriceTrajectory[periodIndex] = holdings * java.lang.Math.exp (</span>
 				logPriceTrajectory[periodIndex]
 			);
 		}
 
-<span class="nc" id="L240">		return logPriceTrajectory;</span>
+<span class="nc" id="L243">		return logPriceTrajectory;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
