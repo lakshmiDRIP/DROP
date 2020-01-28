@@ -11,41 +11,53 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -97,16 +109,16 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md&quot;&gt;Function Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/digamma/README.md&quot;&gt;Estimates of the Digamma Function&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L109">public class ElezovicGiordanoPecaricBoundProperty</span>
+<span class="nc" id="L121">public class ElezovicGiordanoPecaricBoundProperty</span>
 {
 
 	private static final void Verifier (
@@ -114,28 +126,28 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
 		throws Exception
 	{
 		R1PropertyVerification leftVerification =
-<span class="nc" id="L117">			DigammaInequalityLemma.ElezovicGiordanoPecaricLeftBound().verify (z);</span>
+<span class="nc" id="L129">			DigammaInequalityLemma.ElezovicGiordanoPecaricLeftBound().verify (z);</span>
 
 		R1PropertyVerification rightVerification =
-<span class="nc" id="L120">			DigammaInequalityLemma.ElezovicGiordanoPecaricRightBound().verify (z);</span>
+<span class="nc" id="L132">			DigammaInequalityLemma.ElezovicGiordanoPecaricRightBound().verify (z);</span>
 
-<span class="nc" id="L122">		System.out.println (</span>
-<span class="nc" id="L123">			&quot;\t|&quot; + FormatUtil.FormatDouble (z, 2, 2, 1.) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L124">				FormatUtil.FormatDouble (leftVerification.lValue(), 1, 10, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L125">				FormatUtil.FormatDouble (leftVerification.rValue(), 1, 10, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L126">				FormatUtil.FormatDouble (rightVerification.rValue(), 1, 10, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L127">				leftVerification.verified() + &quot; | &quot; +</span>
-<span class="nc" id="L128">				rightVerification.verified() + &quot; ||&quot;</span>
+<span class="nc" id="L134">		System.out.println (</span>
+<span class="nc" id="L135">			&quot;\t|&quot; + FormatUtil.FormatDouble (z, 2, 2, 1.) + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L136">				FormatUtil.FormatDouble (leftVerification.lValue(), 1, 10, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L137">				FormatUtil.FormatDouble (leftVerification.rValue(), 1, 10, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L138">				FormatUtil.FormatDouble (rightVerification.rValue(), 1, 10, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L139">				leftVerification.verified() + &quot; | &quot; +</span>
+<span class="nc" id="L140">				rightVerification.verified() + &quot; ||&quot;</span>
 		);
-<span class="nc" id="L130">	}</span>
+<span class="nc" id="L142">	}</span>
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L136">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L148">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L138">		double[] zArray =</span>
+<span class="nc" id="L150">		double[] zArray =</span>
 		{
 			0.25,
 			0.50,
@@ -160,36 +172,36 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
 			9.00,
 			9.50,
 		};
-<span class="nc" id="L163">		System.out.println (&quot;\t|----------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L175">		System.out.println (&quot;\t|----------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L165">		System.out.println (&quot;\t|      DIGAMMA FUNCTION ELEZEVIC-GIORDANO-PECARIC BOUND PROPERTY       ||&quot;);</span>
+<span class="nc" id="L177">		System.out.println (&quot;\t|      DIGAMMA FUNCTION ELEZEVIC-GIORDANO-PECARIC BOUND PROPERTY       ||&quot;);</span>
 
-<span class="nc" id="L167">		System.out.println (&quot;\t|----------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L179">		System.out.println (&quot;\t|----------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L169">		System.out.println (&quot;\t|        L -&gt; R:                                                       ||&quot;);</span>
+<span class="nc" id="L181">		System.out.println (&quot;\t|        L -&gt; R:                                                       ||&quot;);</span>
 
-<span class="nc" id="L171">		System.out.println (&quot;\t|                - z                                                   ||&quot;);</span>
+<span class="nc" id="L183">		System.out.println (&quot;\t|                - z                                                   ||&quot;);</span>
 
-<span class="nc" id="L173">		System.out.println (&quot;\t|                - LHS Value                                           ||&quot;);</span>
+<span class="nc" id="L185">		System.out.println (&quot;\t|                - LHS Value                                           ||&quot;);</span>
 
-<span class="nc" id="L175">		System.out.println (&quot;\t|                - Middle Value                                        ||&quot;);</span>
+<span class="nc" id="L187">		System.out.println (&quot;\t|                - Middle Value                                        ||&quot;);</span>
 
-<span class="nc" id="L177">		System.out.println (&quot;\t|                - RHS Value                                           ||&quot;);</span>
+<span class="nc" id="L189">		System.out.println (&quot;\t|                - RHS Value                                           ||&quot;);</span>
 
-<span class="nc" id="L179">		System.out.println (&quot;\t|                - Left Verification Success?                          ||&quot;);</span>
+<span class="nc" id="L191">		System.out.println (&quot;\t|                - Left Verification Success?                          ||&quot;);</span>
 
-<span class="nc" id="L181">		System.out.println (&quot;\t|                - Right Verification Success?                         ||&quot;);</span>
+<span class="nc" id="L193">		System.out.println (&quot;\t|                - Right Verification Success?                         ||&quot;);</span>
 
-<span class="nc" id="L183">		System.out.println (&quot;\t|----------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L195">		System.out.println (&quot;\t|----------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L185" title="All 2 branches missed.">		for (double z : zArray)</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">		for (double z : zArray)</span>
 		{
-<span class="nc" id="L187">			Verifier (z);</span>
+<span class="nc" id="L199">			Verifier (z);</span>
 		}
 
-<span class="nc" id="L190">		System.out.println (&quot;\t|----------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L202">		System.out.println (&quot;\t|----------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L192">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L193">	}</span>
+<span class="nc" id="L204">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L205">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

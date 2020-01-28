@@ -10,6 +10,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -19,33 +20,43 @@ import org.drip.service.env.EnvManager;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -80,37 +91,37 @@ import org.drip.service.env.EnvManager;
  *  
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/date/README.md&quot;&gt;Date Management API&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/date/README.md&quot;&gt;Calendar Date Roll Day Count&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L93">public class DateRollAPI {</span>
+<span class="nc" id="L104">public class DateRollAPI {</span>
 	public static final void main (
 		final String astrArgs[])
 		throws Exception
 	{
 		// String strConfig = &quot;c:\\Lakshmi\\BondAnal\\Config.xml&quot;;
 
-<span class="fc" id="L100">		String strConfig = &quot;&quot;;</span>
+<span class="fc" id="L111">		String strConfig = &quot;&quot;;</span>
 
-<span class="fc" id="L102">		EnvManager.InitEnv (strConfig);</span>
+<span class="fc" id="L113">		EnvManager.InitEnv (strConfig);</span>
 
-<span class="fc" id="L104">		JulianDate dt = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L115">		JulianDate dt = DateUtil.CreateFromYMD (</span>
 			2012,
 			DateUtil.FEBRUARY,
 			5
 		);
 
-<span class="fc" id="L110">		System.out.println (&quot;\tDATE_ROLL_ACTUAL                      : &quot; + dt + &quot; -&gt; &quot; +</span>
+<span class="fc" id="L121">		System.out.println (&quot;\tDATE_ROLL_ACTUAL                      : &quot; + dt + &quot; -&gt; &quot; +</span>
 			new JulianDate (
-<span class="fc" id="L112">				Convention.RollDate (</span>
-<span class="fc" id="L113">					dt.julian(),</span>
+<span class="fc" id="L123">				Convention.RollDate (</span>
+<span class="fc" id="L124">					dt.julian(),</span>
 					Convention.DATE_ROLL_ACTUAL,
 					&quot;USD&quot;,
 					1
@@ -118,10 +129,10 @@ import org.drip.service.env.EnvManager;
 			)
 		);
 
-<span class="fc" id="L121">		System.out.println (&quot;\tDATE_ROLL_FOLLOWING                   : &quot; + dt + &quot; -&gt; &quot; +</span>
+<span class="fc" id="L132">		System.out.println (&quot;\tDATE_ROLL_FOLLOWING                   : &quot; + dt + &quot; -&gt; &quot; +</span>
 			new JulianDate (
-<span class="fc" id="L123">				Convention.RollDate (</span>
-<span class="fc" id="L124">					dt.julian(),</span>
+<span class="fc" id="L134">				Convention.RollDate (</span>
+<span class="fc" id="L135">					dt.julian(),</span>
 					Convention.DATE_ROLL_FOLLOWING,
 					&quot;USD&quot;,
 					1
@@ -129,10 +140,10 @@ import org.drip.service.env.EnvManager;
 			)
 		);
 
-<span class="fc" id="L132">		System.out.println (&quot;\tDATE_ROLL_MODIFIED_FOLLOWING          : &quot; + dt + &quot; -&gt; &quot; +</span>
+<span class="fc" id="L143">		System.out.println (&quot;\tDATE_ROLL_MODIFIED_FOLLOWING          : &quot; + dt + &quot; -&gt; &quot; +</span>
 			new JulianDate (
-<span class="fc" id="L134">				Convention.RollDate (</span>
-<span class="fc" id="L135">					dt.julian(),</span>
+<span class="fc" id="L145">				Convention.RollDate (</span>
+<span class="fc" id="L146">					dt.julian(),</span>
 					Convention.DATE_ROLL_MODIFIED_FOLLOWING,
 					&quot;USD&quot;,
 					1
@@ -140,10 +151,10 @@ import org.drip.service.env.EnvManager;
 			)
 		);
 
-<span class="fc" id="L143">		System.out.println (&quot;\tDATE_ROLL_MODIFIED_FOLLOWING_BIMONTHLY: &quot; + dt + &quot; -&gt; &quot; +</span>
+<span class="fc" id="L154">		System.out.println (&quot;\tDATE_ROLL_MODIFIED_FOLLOWING_BIMONTHLY: &quot; + dt + &quot; -&gt; &quot; +</span>
 			new JulianDate (
-<span class="fc" id="L145">				Convention.RollDate (</span>
-<span class="fc" id="L146">					dt.julian(),</span>
+<span class="fc" id="L156">				Convention.RollDate (</span>
+<span class="fc" id="L157">					dt.julian(),</span>
 					Convention.DATE_ROLL_MODIFIED_FOLLOWING_BIMONTHLY,
 					&quot;USD&quot;,
 					1
@@ -151,10 +162,10 @@ import org.drip.service.env.EnvManager;
 			)
 		);
 
-<span class="fc" id="L154">		System.out.println (&quot;\tDATE_ROLL_PREVIOUS                    : &quot; + dt + &quot; -&gt; &quot; +</span>
+<span class="fc" id="L165">		System.out.println (&quot;\tDATE_ROLL_PREVIOUS                    : &quot; + dt + &quot; -&gt; &quot; +</span>
 			new JulianDate (
-<span class="fc" id="L156">				Convention.RollDate (</span>
-<span class="fc" id="L157">					dt.julian(),</span>
+<span class="fc" id="L167">				Convention.RollDate (</span>
+<span class="fc" id="L168">					dt.julian(),</span>
 					Convention.DATE_ROLL_PREVIOUS,
 					&quot;USD&quot;,
 					1
@@ -162,10 +173,10 @@ import org.drip.service.env.EnvManager;
 			)
 		);
 
-<span class="fc" id="L165">		System.out.println (&quot;\tDATE_ROLL_MODIFIED_PREVIOUS           : &quot; + dt + &quot; -&gt; &quot; +</span>
+<span class="fc" id="L176">		System.out.println (&quot;\tDATE_ROLL_MODIFIED_PREVIOUS           : &quot; + dt + &quot; -&gt; &quot; +</span>
 			new JulianDate (
-<span class="fc" id="L167">				Convention.RollDate (</span>
-<span class="fc" id="L168">					dt.julian(),</span>
+<span class="fc" id="L178">				Convention.RollDate (</span>
+<span class="fc" id="L179">					dt.julian(),</span>
 					Convention.DATE_ROLL_MODIFIED_PREVIOUS,
 					&quot;USD&quot;,
 					1
@@ -173,7 +184,7 @@ import org.drip.service.env.EnvManager;
 			)
 		);
 
-<span class="fc" id="L176">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L177">	}</span>
+<span class="fc" id="L187">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L188">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

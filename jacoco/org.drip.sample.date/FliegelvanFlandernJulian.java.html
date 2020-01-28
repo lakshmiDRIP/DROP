@@ -10,38 +10,49 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -89,44 +100,44 @@ import org.drip.service.env.EnvManager;
  *  
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/date/README.md&quot;&gt;Date Management API&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/date/README.md&quot;&gt;Calendar Date Roll Day Count&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L102">public class FliegelvanFlandernJulian {</span>
+<span class="nc" id="L113">public class FliegelvanFlandernJulian {</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L108">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L119">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L110">		int iYear = 2001;</span>
-<span class="fc" id="L111">		int iMonth = 2;</span>
-<span class="fc" id="L112">		int iDate = 24;</span>
+<span class="fc" id="L121">		int iYear = 2001;</span>
+<span class="fc" id="L122">		int iMonth = 2;</span>
+<span class="fc" id="L123">		int iDate = 24;</span>
 
-<span class="fc" id="L114">		int iJulian = DateUtil.ToJulian (</span>
+<span class="fc" id="L125">		int iJulian = DateUtil.ToJulian (</span>
 			iYear,
 			iMonth,
 			iDate
 		);
 
-<span class="fc" id="L120">		System.out.println (</span>
+<span class="fc" id="L131">		System.out.println (</span>
 			&quot;\tGregorian: [&quot; + iYear + &quot;/&quot; +
-<span class="fc" id="L122">			FormatUtil.FormatDouble (iMonth, 2, 0, 1., false) + &quot;/&quot; +</span>
-<span class="fc" id="L123">			FormatUtil.FormatDouble (iDate, 2, 0, 1., false) +</span>
+<span class="fc" id="L133">			FormatUtil.FormatDouble (iMonth, 2, 0, 1., false) + &quot;/&quot; +</span>
+<span class="fc" id="L134">			FormatUtil.FormatDouble (iDate, 2, 0, 1., false) +</span>
 			&quot;]; Julian: &quot; + iJulian
 		);
 
-<span class="fc" id="L127">		System.out.println (&quot;\tJulian: &quot; + iJulian + &quot;; Gregorian: [&quot; + DateUtil.YYYYMMDD (iJulian) + &quot;]&quot;);</span>
+<span class="fc" id="L138">		System.out.println (&quot;\tJulian: &quot; + iJulian + &quot;; Gregorian: [&quot; + DateUtil.YYYYMMDD (iJulian) + &quot;]&quot;);</span>
 
-<span class="fc" id="L129">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L130">	}</span>
+<span class="fc" id="L140">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L141">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

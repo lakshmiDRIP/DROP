@@ -17,41 +17,53 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -117,17 +129,17 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
  *
  *  &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation&quot;&gt;Model Validation Suite&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/core&quot;&gt;Core Model Validation Support Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/validation&quot;&gt;Empirical Univariate Gap Distance Tests&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L130">public class UniformAndersonDarlingGapDiscriminant</span>
+<span class="nc" id="L142">public class UniformAndersonDarlingGapDiscriminant</span>
 {
 
 	private static final double UnivariateRandom (
@@ -135,10 +147,10 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 		final double rightSupport)
 		throws Exception
 	{
-<span class="nc" id="L138">		return new R1UnivariateUniform (</span>
+<span class="nc" id="L150">		return new R1UnivariateUniform (</span>
 			leftSupport,
 			rightSupport
-<span class="nc" id="L141">		).random();</span>
+<span class="nc" id="L153">		).random();</span>
 	}
 
 	private static final Sample GenerateSample (
@@ -147,17 +159,17 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 		final int drawCount)
 		throws Exception
 	{
-<span class="nc" id="L150">		double[] univariateRandomArray = new double[drawCount];</span>
+<span class="nc" id="L162">		double[] univariateRandomArray = new double[drawCount];</span>
 
-<span class="nc bnc" id="L152" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; drawCount; ++drawIndex)</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; drawCount; ++drawIndex)</span>
 		{
-<span class="nc" id="L154">			univariateRandomArray[drawIndex] = UnivariateRandom (</span>
+<span class="nc" id="L166">			univariateRandomArray[drawIndex] = UnivariateRandom (</span>
 				leftSupport,
 				rightSupport
 			);
 		}
 
-<span class="nc" id="L160">		return new Sample (univariateRandomArray);</span>
+<span class="nc" id="L172">		return new Sample (univariateRandomArray);</span>
 	}
 
 	private static final Sample[] GenerateSampleArray (
@@ -167,18 +179,18 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 		final int sampleCount)
 		throws Exception
 	{
-<span class="nc" id="L170">		Sample[] sampleArray = new Sample[sampleCount];</span>
+<span class="nc" id="L182">		Sample[] sampleArray = new Sample[sampleCount];</span>
 
-<span class="nc bnc" id="L172" title="All 2 branches missed.">		for (int sampleIndex = 0; sampleIndex &lt; sampleCount; ++sampleIndex)</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">		for (int sampleIndex = 0; sampleIndex &lt; sampleCount; ++sampleIndex)</span>
 		{
-<span class="nc" id="L174">			sampleArray[sampleIndex] = GenerateSample (</span>
+<span class="nc" id="L186">			sampleArray[sampleIndex] = GenerateSample (</span>
 				leftSupport,
 				rightSupport,
 				drawCount
 			);
 		}
 
-<span class="nc" id="L181">		return sampleArray;</span>
+<span class="nc" id="L193">		return sampleArray;</span>
 	}
 
 	private static final Ensemble GenerateEnsemble (
@@ -188,8 +200,8 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 		final int sampleCount)
 		throws Exception
 	{
-<span class="nc" id="L191">		return new Ensemble (</span>
-<span class="nc" id="L192">			GenerateSampleArray (</span>
+<span class="nc" id="L203">		return new Ensemble (</span>
+<span class="nc" id="L204">			GenerateSampleArray (</span>
 				leftSupport,
 				rightSupport,
 				drawCount,
@@ -198,12 +210,12 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 			new TestStatisticEvaluator[]
 			{
 				new TestStatisticEvaluator()
-<span class="nc" id="L201">				{</span>
+<span class="nc" id="L213">				{</span>
 					public double evaluate (
 						final double[] drawArray)
 						throws Exception
 					{
-<span class="nc" id="L206">						return 1.;</span>
+<span class="nc" id="L218">						return 1.;</span>
 					}
 				}
 			}
@@ -216,10 +228,10 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 		final GapTestSetting gapTestSetting)
 		throws Exception
 	{
-<span class="nc" id="L219">		return new ProbabilityIntegralTransformTest (</span>
-<span class="nc" id="L220">			ensemble.nativeProbabilityIntegralTransform()</span>
-<span class="nc" id="L221">		).distanceTest (</span>
-<span class="nc" id="L222">			sample.nativeProbabilityIntegralTransform(),</span>
+<span class="nc" id="L231">		return new ProbabilityIntegralTransformTest (</span>
+<span class="nc" id="L232">			ensemble.nativeProbabilityIntegralTransform()</span>
+<span class="nc" id="L233">		).distanceTest (</span>
+<span class="nc" id="L234">			sample.nativeProbabilityIntegralTransform(),</span>
 			gapTestSetting
 		);
 	}
@@ -233,36 +245,36 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 		final GapTestSetting gapTestSetting)
 		throws Exception
 	{
-<span class="nc" id="L236">		return DistanceTest (</span>
+<span class="nc" id="L248">		return DistanceTest (</span>
 			sample,
-<span class="nc" id="L238">			GenerateEnsemble (</span>
+<span class="nc" id="L250">			GenerateEnsemble (</span>
 				hypothesisMean,
 				hypothesisSigma,
 				drawCount,
 				sampleCount
 			),
 			gapTestSetting
-<span class="nc" id="L245">		).distance();</span>
+<span class="nc" id="L257">		).distance();</span>
 	}
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L252">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L264">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L254">		int drawCount = 2000;</span>
-<span class="nc" id="L255">		int sampleCount = 600;</span>
-<span class="nc" id="L256">		double sampleLeftSupport = 0.;</span>
-<span class="nc" id="L257">		double sampleRightSupport = 1.;</span>
-<span class="nc" id="L258">		double[] hypothesisLeftSupportArray = {</span>
+<span class="nc" id="L266">		int drawCount = 2000;</span>
+<span class="nc" id="L267">		int sampleCount = 600;</span>
+<span class="nc" id="L268">		double sampleLeftSupport = 0.;</span>
+<span class="nc" id="L269">		double sampleRightSupport = 1.;</span>
+<span class="nc" id="L270">		double[] hypothesisLeftSupportArray = {</span>
 			-0.50,
 			-0.25,
 			 0.00,
 			 0.25,
 			 0.50
 		};
-<span class="nc" id="L265">		double[] hypothesisRightSupportArray = {</span>
+<span class="nc" id="L277">		double[] hypothesisRightSupportArray = {</span>
 			0.75,
 			1.00,
 			1.25,
@@ -270,42 +282,42 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 			1.75
 		};
 
-<span class="nc" id="L273">		GapTestSetting gapTestSetting = GapTestSetting.RiskFactorLossTest (</span>
-<span class="nc" id="L274">			GapLossWeightFunction.AndersonDarling()</span>
+<span class="nc" id="L285">		GapTestSetting gapTestSetting = GapTestSetting.RiskFactorLossTest (</span>
+<span class="nc" id="L286">			GapLossWeightFunction.AndersonDarling()</span>
 		);
 
-<span class="nc" id="L277">		Sample sample = GenerateSample (</span>
+<span class="nc" id="L289">		Sample sample = GenerateSample (</span>
 			sampleLeftSupport,
 			sampleRightSupport,
 			drawCount
 		);
 
-<span class="nc" id="L283">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="nc" id="L295">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
 
-<span class="nc" id="L285">		System.out.println (&quot;\t|    DISCRIMINANT GRID SCAN    ||&quot;);</span>
+<span class="nc" id="L297">		System.out.println (&quot;\t|    DISCRIMINANT GRID SCAN    ||&quot;);</span>
 
-<span class="nc" id="L287">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="nc" id="L299">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
 
-<span class="nc" id="L289">		System.out.println (&quot;\t|    L -&gt; R:                   ||&quot;);</span>
+<span class="nc" id="L301">		System.out.println (&quot;\t|    L -&gt; R:                   ||&quot;);</span>
 
-<span class="nc" id="L291">		System.out.println (&quot;\t|        - Hypothesis Left     ||&quot;);</span>
+<span class="nc" id="L303">		System.out.println (&quot;\t|        - Hypothesis Left     ||&quot;);</span>
 
-<span class="nc" id="L293">		System.out.println (&quot;\t|        - Hypothesis Right    ||&quot;);</span>
+<span class="nc" id="L305">		System.out.println (&quot;\t|        - Hypothesis Right    ||&quot;);</span>
 
-<span class="nc" id="L295">		System.out.println (&quot;\t|        - Distance Metric     ||&quot;);</span>
+<span class="nc" id="L307">		System.out.println (&quot;\t|        - Distance Metric     ||&quot;);</span>
 
-<span class="nc" id="L297">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="nc" id="L309">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L299" title="All 2 branches missed.">		for (double hypothesisLeftSupport : hypothesisLeftSupportArray)</span>
+<span class="nc bnc" id="L311" title="All 2 branches missed.">		for (double hypothesisLeftSupport : hypothesisLeftSupportArray)</span>
 		{
-<span class="nc bnc" id="L301" title="All 2 branches missed.">			for (double hypothesisRightSupport : hypothesisRightSupportArray)</span>
+<span class="nc bnc" id="L313" title="All 2 branches missed.">			for (double hypothesisRightSupport : hypothesisRightSupportArray)</span>
 			{
-<span class="nc" id="L303">				System.out.println (</span>
+<span class="nc" id="L315">				System.out.println (</span>
 					&quot;\t| &quot; +
-<span class="nc" id="L305">					FormatUtil.FormatDouble (hypothesisLeftSupport, 1, 2, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L306">					FormatUtil.FormatDouble (hypothesisRightSupport, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L307">					FormatUtil.FormatDouble (</span>
-<span class="nc" id="L308">						DistanceTest (</span>
+<span class="nc" id="L317">					FormatUtil.FormatDouble (hypothesisLeftSupport, 1, 2, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L318">					FormatUtil.FormatDouble (hypothesisRightSupport, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L319">					FormatUtil.FormatDouble (</span>
+<span class="nc" id="L320">						DistanceTest (</span>
 							hypothesisLeftSupport,
 							hypothesisRightSupport,
 							drawCount,
@@ -319,9 +331,9 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 			}
 		}
 
-<span class="nc" id="L322">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="nc" id="L334">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
 
-<span class="nc" id="L324">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L325">	}</span>
+<span class="nc" id="L336">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L337">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

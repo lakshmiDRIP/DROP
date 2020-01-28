@@ -12,36 +12,47 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -103,174 +114,174 @@ import org.drip.service.env.EnvManager;
  *  
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/csaevents/README.md&quot;&gt;CSA Event Time-lines&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;DROP API Construction and Usage&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/csaevents/README.md&quot;&gt;Time-line of IMA/CSA Event Sequences&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L116">public class AndersenPykhtinSokolDates</span>
+<span class="nc" id="L127">public class AndersenPykhtinSokolDates</span>
 {
 
 	public static final void main (
 		final String[] args)
 		throws Exception
 	{
-<span class="nc" id="L123">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L134">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L125">		JulianDate spot = DateUtil.CreateFromYMD (</span>
+<span class="nc" id="L136">		JulianDate spot = DateUtil.CreateFromYMD (</span>
 			2018,
 			DateUtil.APRIL,
 			16
 		);
 
-<span class="nc" id="L131">		String calendar = &quot;USD&quot;;</span>
+<span class="nc" id="L142">		String calendar = &quot;USD&quot;;</span>
 
-<span class="nc" id="L133">		LastFlowDates csaFlowDatesClassicalPlus = LastFlowDates.SpotStandard (</span>
+<span class="nc" id="L144">		LastFlowDates csaFlowDatesClassicalPlus = LastFlowDates.SpotStandard (</span>
 			spot,
-<span class="nc" id="L135">			AndersenPykhtinSokolLag.ClassicalPlus(),</span>
+<span class="nc" id="L146">			AndersenPykhtinSokolLag.ClassicalPlus(),</span>
 			calendar
 		);
 
-<span class="nc" id="L139">		LastFlowDates csaFlowDatesClassicalMinus = LastFlowDates.SpotStandard (</span>
+<span class="nc" id="L150">		LastFlowDates csaFlowDatesClassicalMinus = LastFlowDates.SpotStandard (</span>
 			spot,
-<span class="nc" id="L141">			AndersenPykhtinSokolLag.ClassicalMinus(),</span>
+<span class="nc" id="L152">			AndersenPykhtinSokolLag.ClassicalMinus(),</span>
 			calendar
 		);
 
-<span class="nc" id="L145">		LastFlowDates csaFlowDatesAggressive = LastFlowDates.SpotStandard (</span>
+<span class="nc" id="L156">		LastFlowDates csaFlowDatesAggressive = LastFlowDates.SpotStandard (</span>
 			spot,
-<span class="nc" id="L147">			AndersenPykhtinSokolLag.Aggressive(),</span>
+<span class="nc" id="L158">			AndersenPykhtinSokolLag.Aggressive(),</span>
 			calendar
 		);
 
-<span class="nc" id="L151">		LastFlowDates csaFlowDatesConservative = LastFlowDates.SpotStandard (</span>
+<span class="nc" id="L162">		LastFlowDates csaFlowDatesConservative = LastFlowDates.SpotStandard (</span>
 			spot,
-<span class="nc" id="L153">			AndersenPykhtinSokolLag.Conservative(),</span>
+<span class="nc" id="L164">			AndersenPykhtinSokolLag.Conservative(),</span>
 			calendar
 		);
 
-<span class="nc" id="L157">		System.out.println (</span>
+<span class="nc" id="L168">		System.out.println (</span>
 			&quot;\t|------------------------------------------------------------------------------------------------||&quot;
 		);
 
-<span class="nc" id="L161">		System.out.println (</span>
+<span class="nc" id="L172">		System.out.println (</span>
 			&quot;\t|      INTRA-MARGIN CSA EVENT DATE GENERATION USING ANDERSEN PYKHTIN SOKOL PARAMETRIZATION       ||&quot;
 		);
 
-<span class="nc" id="L165">		System.out.println (</span>
+<span class="nc" id="L176">		System.out.println (</span>
 			&quot;\t|------------------------------------------------------------------------------------------------||&quot;
 		);
 
-<span class="nc" id="L169">		System.out.println (</span>
+<span class="nc" id="L180">		System.out.println (</span>
 			&quot;\t|                                                                                                ||&quot;
 		);
 
-<span class="nc" id="L173">		System.out.println (</span>
+<span class="nc" id="L184">		System.out.println (</span>
 			&quot;\t|    L -&gt; R:                                                                                     ||&quot;
 		);
 
-<span class="nc" id="L177">		System.out.println (</span>
+<span class="nc" id="L188">		System.out.println (</span>
 			&quot;\t|                                                                                                ||&quot;
 		);
 
-<span class="nc" id="L181">		System.out.println (</span>
+<span class="nc" id="L192">		System.out.println (</span>
 			&quot;\t|        - CSA Event Date                                                                        ||&quot;
 		);
 
-<span class="nc" id="L185">		System.out.println (</span>
+<span class="nc" id="L196">		System.out.println (</span>
 			&quot;\t|        - CSA Event Type                                                                        ||&quot;
 		);
 
-<span class="nc" id="L189">		System.out.println (</span>
+<span class="nc" id="L200">		System.out.println (</span>
 			&quot;\t|        - Classical- Scheme                                                                     ||&quot;
 		);
 
-<span class="nc" id="L193">		System.out.println (</span>
+<span class="nc" id="L204">		System.out.println (</span>
 			&quot;\t|        - Classical+ Scheme                                                                     ||&quot;
 		);
 
-<span class="nc" id="L197">		System.out.println (</span>
+<span class="nc" id="L208">		System.out.println (</span>
 			&quot;\t|        - Aggressive Scheme                                                                     ||&quot;
 		);
 
-<span class="nc" id="L201">		System.out.println (</span>
+<span class="nc" id="L212">		System.out.println (</span>
 			&quot;\t|        - Conservative Scheme                                                                   ||&quot;
 		);
 
-<span class="nc" id="L205">		System.out.println (</span>
+<span class="nc" id="L216">		System.out.println (</span>
 			&quot;\t|                                                                                                ||&quot;
 		);
 
-<span class="nc" id="L209">		System.out.println (</span>
+<span class="nc" id="L220">		System.out.println (</span>
 			&quot;\t|------------------------------------------------------------------------------------------------||&quot;
 		);
 
-<span class="nc" id="L213">		System.out.println (</span>
+<span class="nc" id="L224">		System.out.println (</span>
 			&quot;\t| Margin Valuation Date   =&gt; SETTLEMENT  | &quot; +
-<span class="nc" id="L215">			csaFlowDatesClassicalPlus.valuation() + &quot; | &quot; +</span>
-<span class="nc" id="L216">			csaFlowDatesClassicalMinus.valuation() + &quot; | &quot; +</span>
-<span class="nc" id="L217">			csaFlowDatesAggressive.valuation() + &quot; | &quot; +</span>
-<span class="nc" id="L218">			csaFlowDatesConservative.valuation() + &quot; ||&quot;</span>
+<span class="nc" id="L226">			csaFlowDatesClassicalPlus.valuation() + &quot; | &quot; +</span>
+<span class="nc" id="L227">			csaFlowDatesClassicalMinus.valuation() + &quot; | &quot; +</span>
+<span class="nc" id="L228">			csaFlowDatesAggressive.valuation() + &quot; | &quot; +</span>
+<span class="nc" id="L229">			csaFlowDatesConservative.valuation() + &quot; ||&quot;</span>
 		);
 
-<span class="nc" id="L221">		System.out.println (</span>
+<span class="nc" id="L232">		System.out.println (</span>
 			&quot;\t| Client Margin Flow Date =&gt; OBSERVATION | &quot; +
-<span class="nc" id="L223">			csaFlowDatesClassicalPlus.clientVariationMarginPosting() + &quot; | &quot; +</span>
-<span class="nc" id="L224">			csaFlowDatesClassicalMinus.clientVariationMarginPosting() + &quot; | &quot; +</span>
-<span class="nc" id="L225">			csaFlowDatesAggressive.clientVariationMarginPosting() + &quot; | &quot; +</span>
-<span class="nc" id="L226">			csaFlowDatesConservative.clientVariationMarginPosting() + &quot; ||&quot;</span>
+<span class="nc" id="L234">			csaFlowDatesClassicalPlus.clientVariationMarginPosting() + &quot; | &quot; +</span>
+<span class="nc" id="L235">			csaFlowDatesClassicalMinus.clientVariationMarginPosting() + &quot; | &quot; +</span>
+<span class="nc" id="L236">			csaFlowDatesAggressive.clientVariationMarginPosting() + &quot; | &quot; +</span>
+<span class="nc" id="L237">			csaFlowDatesConservative.clientVariationMarginPosting() + &quot; ||&quot;</span>
 		);
 
-<span class="nc" id="L229">		System.out.println (</span>
+<span class="nc" id="L240">		System.out.println (</span>
 			&quot;\t| Dealer Margin Flow Date =&gt; OBSERVATION | &quot; +
-<span class="nc" id="L231">			csaFlowDatesClassicalPlus.dealerVariationMarginPosting() + &quot; | &quot; +</span>
-<span class="nc" id="L232">			csaFlowDatesClassicalMinus.dealerVariationMarginPosting() + &quot; | &quot; +</span>
-<span class="nc" id="L233">			csaFlowDatesAggressive.dealerVariationMarginPosting() + &quot; | &quot; +</span>
-<span class="nc" id="L234">			csaFlowDatesConservative.dealerVariationMarginPosting() + &quot; ||&quot;</span>
+<span class="nc" id="L242">			csaFlowDatesClassicalPlus.dealerVariationMarginPosting() + &quot; | &quot; +</span>
+<span class="nc" id="L243">			csaFlowDatesClassicalMinus.dealerVariationMarginPosting() + &quot; | &quot; +</span>
+<span class="nc" id="L244">			csaFlowDatesAggressive.dealerVariationMarginPosting() + &quot; | &quot; +</span>
+<span class="nc" id="L245">			csaFlowDatesConservative.dealerVariationMarginPosting() + &quot; ||&quot;</span>
 		);
 
-<span class="nc" id="L237">		System.out.println (</span>
+<span class="nc" id="L248">		System.out.println (</span>
 			&quot;\t| Client Trade Flow Date  =&gt; SETTLEMENT  | &quot; +
-<span class="nc" id="L239">			csaFlowDatesClassicalPlus.clientTradePayment() + &quot; | &quot; +</span>
-<span class="nc" id="L240">			csaFlowDatesClassicalMinus.clientTradePayment() + &quot; | &quot; +</span>
-<span class="nc" id="L241">			csaFlowDatesAggressive.clientTradePayment() + &quot; | &quot; +</span>
-<span class="nc" id="L242">			csaFlowDatesConservative.clientTradePayment() + &quot; ||&quot;</span>
+<span class="nc" id="L250">			csaFlowDatesClassicalPlus.clientTradePayment() + &quot; | &quot; +</span>
+<span class="nc" id="L251">			csaFlowDatesClassicalMinus.clientTradePayment() + &quot; | &quot; +</span>
+<span class="nc" id="L252">			csaFlowDatesAggressive.clientTradePayment() + &quot; | &quot; +</span>
+<span class="nc" id="L253">			csaFlowDatesConservative.clientTradePayment() + &quot; ||&quot;</span>
 		);
 
-<span class="nc" id="L245">		System.out.println (</span>
+<span class="nc" id="L256">		System.out.println (</span>
 			&quot;\t| Dealer Trade Flow Date  =&gt; SETTLEMENT  | &quot; +
-<span class="nc" id="L247">			csaFlowDatesClassicalPlus.dealerTradePayment() + &quot; | &quot; +</span>
-<span class="nc" id="L248">			csaFlowDatesClassicalMinus.dealerTradePayment() + &quot; | &quot; +</span>
-<span class="nc" id="L249">			csaFlowDatesAggressive.dealerTradePayment() + &quot; | &quot; +</span>
-<span class="nc" id="L250">			csaFlowDatesConservative.dealerTradePayment() + &quot; ||&quot;</span>
+<span class="nc" id="L258">			csaFlowDatesClassicalPlus.dealerTradePayment() + &quot; | &quot; +</span>
+<span class="nc" id="L259">			csaFlowDatesClassicalMinus.dealerTradePayment() + &quot; | &quot; +</span>
+<span class="nc" id="L260">			csaFlowDatesAggressive.dealerTradePayment() + &quot; | &quot; +</span>
+<span class="nc" id="L261">			csaFlowDatesConservative.dealerTradePayment() + &quot; ||&quot;</span>
 		);
 
-<span class="nc" id="L253">		System.out.println (</span>
+<span class="nc" id="L264">		System.out.println (</span>
 			&quot;\t| Early Termination Date  =&gt; OBSERVATION | &quot; +
-<span class="nc" id="L255">			csaFlowDatesClassicalPlus.spot() + &quot; | &quot; +</span>
-<span class="nc" id="L256">			csaFlowDatesClassicalMinus.spot() + &quot; | &quot; +</span>
-<span class="nc" id="L257">			csaFlowDatesAggressive.spot() + &quot; | &quot; +</span>
-<span class="nc" id="L258">			csaFlowDatesConservative.spot() + &quot; ||&quot;</span>
+<span class="nc" id="L266">			csaFlowDatesClassicalPlus.spot() + &quot; | &quot; +</span>
+<span class="nc" id="L267">			csaFlowDatesClassicalMinus.spot() + &quot; | &quot; +</span>
+<span class="nc" id="L268">			csaFlowDatesAggressive.spot() + &quot; | &quot; +</span>
+<span class="nc" id="L269">			csaFlowDatesConservative.spot() + &quot; ||&quot;</span>
 		);
 
-<span class="nc" id="L261">		System.out.println (</span>
+<span class="nc" id="L272">		System.out.println (</span>
 			&quot;\t| Spot Date               =&gt; OBSERVATION | &quot; +
-<span class="nc" id="L263">			csaFlowDatesClassicalPlus.spot() + &quot; | &quot; +</span>
-<span class="nc" id="L264">			csaFlowDatesClassicalMinus.spot() + &quot; | &quot; +</span>
-<span class="nc" id="L265">			csaFlowDatesAggressive.spot() + &quot; | &quot; +</span>
-<span class="nc" id="L266">			csaFlowDatesConservative.spot() + &quot; ||&quot;</span>
+<span class="nc" id="L274">			csaFlowDatesClassicalPlus.spot() + &quot; | &quot; +</span>
+<span class="nc" id="L275">			csaFlowDatesClassicalMinus.spot() + &quot; | &quot; +</span>
+<span class="nc" id="L276">			csaFlowDatesAggressive.spot() + &quot; | &quot; +</span>
+<span class="nc" id="L277">			csaFlowDatesConservative.spot() + &quot; ||&quot;</span>
 		);
 
-<span class="nc" id="L269">		System.out.println (</span>
+<span class="nc" id="L280">		System.out.println (</span>
 			&quot;\t|------------------------------------------------------------------------------------------------||&quot;
 		);
 
-<span class="nc" id="L273">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L274">	}</span>
+<span class="nc" id="L284">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L285">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
