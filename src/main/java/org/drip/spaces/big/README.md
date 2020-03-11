@@ -29,6 +29,12 @@ DROP Spaces Big Package contains Big-data In-place Manipulation Utilities.
  * [***BinaryTree***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/BinaryTree.java)
  <i>BinaryTree</i> contains an Implementation of the Left/Right Binary Tree.
 
+ * [***KNearestPostOffice***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/KNearestPostOffice.java)
+ <i>KNearestPostOffice</i> implements a Locator of the k Nearest Services.
+
+ * [***MoviesInFlight***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/MoviesInFlight.java)
+ <i>MoviesInFlight</i> implements a Closest Pair of Movies matching a Flight Duration.
+
  * [***SubMatrixSetExtractor***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/SubMatrixSetExtractor.java)
  <i>SubMatrixSetExtractor</i> contains the Functionality to extract the Set of the Sub-matrices contained
  inside of the given Matrix.
@@ -36,6 +42,9 @@ DROP Spaces Big Package contains Big-data In-place Manipulation Utilities.
  * [***SubStringSetExtractor***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/SubStringSetExtractor.java)
  <i>SubStringSetExtractor</i> contains the Functionality to extract the Full Suite of the Sub-strings
  contained inside of the given String.
+
+ * [***ZombieMatrix***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/ZombieMatrix.java)
+ <i>ZombieMatrix</i> implements a Zombie Adjacency Migration.
 
 
 ## DROP Specifications

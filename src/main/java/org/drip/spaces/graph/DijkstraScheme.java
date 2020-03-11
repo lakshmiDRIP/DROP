@@ -78,7 +78,7 @@ package org.drip.spaces.graph;
 
 /**
  * <i>DijkstraScheme</i> implements the Dijkstra Algorithm for finding the Shortest Path between a Pair of
- * Vertexes in a Graph. The References are:
+ * 	Vertexes in a Graph. The References are:
  *
  * <br><br>
  *  <ul>
@@ -119,35 +119,41 @@ public class DijkstraScheme
 	private org.drip.spaces.graph.Topography _topography = null;
 
 	private void visitVertex (
-		final org.drip.spaces.graph.ShortestPathVertex currentVertexPeriphery,
-		final org.drip.spaces.graph.ShortestPathFirstWengert spfWengert)
+		final org.drip.spaces.graph.ShortestPathVertex currentVertex,
+		final org.drip.spaces.graph.ShortestPathVertexContainer shortestPathVertexContainer)
 	{
-		org.drip.spaces.graph.ShortestPathTree vertexPeripheryMap = spfWengert.vertexPeripheryMap();
+		double currentWeightFromSource = currentVertex.weightFromSource();
 
-		java.util.Map<java.lang.String, java.lang.Double> connectionMap = _topography.connectionMap();
+		java.lang.String currentVertexName = currentVertex.currentVertexName();
 
-		double currentWeightFromSource = currentVertexPeriphery.weightFromSource();
+		java.util.Map<java.lang.String, java.lang.Double> egressMap = _topography.vertex (
+			currentVertexName
+		).egressMap();
 
-		java.lang.String currentVertex = currentVertexPeriphery.current();
-
-		java.util.Map<java.lang.String, java.lang.Double> egressMap = _topography.vertex
-			(currentVertex).egressMap();
+		java.util.Map<java.lang.String, java.lang.Double> adjacencyMap = _topography.adjacencyMap();
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> egressEntry : egressMap.entrySet())
 		{
-			java.lang.String egressVertex = egressEntry.getKey();
+			java.lang.String egressVertexName = egressEntry.getKey();
 
-			double weightFromSourceThroughCurrent = currentWeightFromSource + connectionMap.get
-				(currentVertex + "_" + egressVertex);
+			double weightFromSourceThroughCurrent = currentWeightFromSource + adjacencyMap.get (
+				currentVertexName + "_" + egressVertexName
+			);
 
-			org.drip.spaces.graph.ShortestPathVertex egressVertexPeriphery =
-				vertexPeripheryMap.shortestPathVertex (egressVertex);
+			org.drip.spaces.graph.ShortestPathVertex egressVertex =
+				shortestPathVertexContainer.shortestPathVertex (
+					egressVertexName
+				);
 
-			if (egressVertexPeriphery.weightFromSource() > weightFromSourceThroughCurrent)
+			if (egressVertex.weightFromSource() > weightFromSourceThroughCurrent)
 			{
-				egressVertexPeriphery.setWeightFromSource (weightFromSourceThroughCurrent);
+				egressVertex.setWeightFromSource (
+					weightFromSourceThroughCurrent
+				);
 
-				egressVertexPeriphery.setPreceeding (currentVertex);
+				egressVertex.setPreceeding (
+					currentVertexName
+				);
 			}
 		}
 	}
@@ -166,7 +172,9 @@ public class DijkstraScheme
 	{
 		if (null == (_topography = topography))
 		{
-			throw new java.lang.Exception ("DijkstraScheme Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"DijkstraScheme Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -184,53 +192,53 @@ public class DijkstraScheme
 	/**
 	 * Initialize the Dijsktra Scheme
 	 * 
-	 * @param source The Source Vertex
+	 * @param sourceVertexName The Source Vertex Name
 	 * 
-	 * @return The Initial Dijkstra Wengert
+	 * @return The Initial Dijkstra Shortest Path Vertex Container
 	 */
 
-	public org.drip.spaces.graph.ShortestPathFirstWengert setup (
-		final java.lang.String source)
+	public org.drip.spaces.graph.ShortestPathVertexContainer setup (
+		final java.lang.String sourceVertexName)
 	{
-		return org.drip.spaces.graph.ShortestPathFirstWengert.Dijkstra (
+		return org.drip.spaces.graph.ShortestPathVertexContainer.Dijkstra (
 			_topography,
-			source
+			sourceVertexName
 		);
 	}
 
 	/**
 	 * Run the Dijsktra SPF Algorithm
 	 * 
-	 * @param source The Source Vertex
+	 * @param sourceVertexName The Source Vertex Name
 	 * 
-	 * @return The Dijkstra Wengert
+	 * @return The Dijkstra Shortest Path Vertex Container
 	 */
 
-	public org.drip.spaces.graph.ShortestPathFirstWengert spf (
-		final java.lang.String source)
+	public org.drip.spaces.graph.ShortestPathVertexContainer spf (
+		final java.lang.String sourceVertexName)
 	{
-		org.drip.spaces.graph.ShortestPathFirstWengert spfWengert = setup (source);
+		org.drip.spaces.graph.ShortestPathVertexContainer shortestPathVertexContainer = setup (
+			sourceVertexName
+		);
 
-		if (null == spfWengert)
+		if (null == shortestPathVertexContainer)
 		{
 			return null;
 		}
 
-		org.drip.spaces.graph.ShortestPathTree vertexPeripheryMap = spfWengert.vertexPeripheryMap();
+		org.drip.spaces.graph.ShortestPathVertex unvisitedShortestPathVertex =
+			shortestPathVertexContainer.unvisitedShortestPathVertex();
 
-		org.drip.spaces.graph.ShortestPathVertex vertexPeriphery =
-			vertexPeripheryMap.greedyShortestPathVertex();
-
-		while (null != vertexPeriphery)
+		while (null != unvisitedShortestPathVertex)
 		{
 			visitVertex (
-				vertexPeriphery,
-				spfWengert
+				unvisitedShortestPathVertex,
+				shortestPathVertexContainer
 			);
 
-			vertexPeriphery = vertexPeripheryMap.greedyShortestPathVertex();
+			unvisitedShortestPathVertex = shortestPathVertexContainer.unvisitedShortestPathVertex();
 		}
 
-		return spfWengert;
+		return shortestPathVertexContainer;
 	}
 }

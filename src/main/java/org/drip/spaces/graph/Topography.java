@@ -115,11 +115,11 @@ package org.drip.spaces.graph;
 
 public class Topography
 {
-	private org.drip.spaces.graph.TopographyEdgeMap _topographyEdgeMap = new
-		org.drip.spaces.graph.TopographyEdgeMap();
+	private org.drip.spaces.graph.TopographyEdgeMap _topographyEdgeMap =
+		new org.drip.spaces.graph.TopographyEdgeMap();
 
-	private java.util.Map<java.lang.String, org.drip.spaces.graph.Vertex> _vertexMap = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.spaces.graph.Vertex>();
+	private java.util.Map<java.lang.String, org.drip.spaces.graph.Vertex> _vertexMap =
+		new org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.spaces.graph.Vertex>();
 
 	/**
 	 * Empty Topography Constructor
@@ -127,6 +127,28 @@ public class Topography
 
 	public Topography()
 	{
+	}
+
+	/**
+	 * Retrieve the Map of Vertex
+	 * 
+	 * @return The Map of Vertex
+	 */
+
+	public java.util.Map<java.lang.String, org.drip.spaces.graph.Vertex> vertexMap()
+	{
+		return _vertexMap;
+	}
+
+	/**
+	 * Retrieve the Topography Edge Map
+	 * 
+	 * @return The Topography Edge Map
+	 */
+
+	public org.drip.spaces.graph.TopographyEdgeMap topographyEdgeMap()
+	{
+		return _topographyEdgeMap;
 	}
 
 	/**
@@ -160,7 +182,9 @@ public class Topography
 		{
 			_vertexMap.put (
 				vertexName,
-				new org.drip.spaces.graph.Vertex (vertexName)
+				new org.drip.spaces.graph.Vertex (
+					vertexName
+				)
 			);
 		}
 		catch (java.lang.Exception e)
@@ -182,7 +206,9 @@ public class Topography
 	public boolean vertexExists (
 		final java.lang.String vertexName)
 	{
-		return null != vertexName && _vertexMap.containsKey (vertexName);
+		return null != vertexName && _vertexMap.containsKey (
+			vertexName
+		);
 	}
 
 	/**
@@ -196,7 +222,11 @@ public class Topography
 	public org.drip.spaces.graph.Vertex vertex (
 		final java.lang.String vertexName)
 	{
-		return vertexExists (vertexName) ? _vertexMap.get (vertexName) : null;
+		return vertexExists (
+			vertexName
+		) ? _vertexMap.get (
+			vertexName
+		) : null;
 	}
 
 	/**
@@ -210,82 +240,72 @@ public class Topography
 	public boolean addEdge (
 		final org.drip.spaces.graph.Edge edge)
 	{
-		if (null == edge || !_topographyEdgeMap.addEdge (edge))
+		if (null == edge || !_topographyEdgeMap.addEdge (
+			edge
+		))
 		{
 			return false;
 		}
 
 		double weight = edge.weight();
 
-		java.lang.String source = edge.source();
+		java.lang.String sourceVertexName = edge.sourceVertexName();
 
-		java.lang.String destination = edge.destination();
+		java.lang.String destinationVertexName = edge.destinationVertexName();
 
-		org.drip.spaces.graph.Vertex sourceVertex = vertex (source);
+		org.drip.spaces.graph.Vertex sourceVertex = vertex (
+			sourceVertexName
+		);
 
-		org.drip.spaces.graph.Vertex destinationVertex = vertex (destination);
+		org.drip.spaces.graph.Vertex destinationVertex = vertex (
+			destinationVertexName
+		);
 
 		return null != sourceVertex && null != destinationVertex && sourceVertex.addEgress (
-			destination,
+			destinationVertexName,
 			weight
 		) && destinationVertex.addEgress (
-			source,
+			sourceVertexName,
 			weight
 		);
 	}
 
 	/**
-	 * Retrieve the Map of Vertex
-	 * 
-	 * @return The Map of Vertex
-	 */
-
-	public java.util.Map<java.lang.String, org.drip.spaces.graph.Vertex> vertexMap()
-	{
-		return _vertexMap;
-	}
-
-	/**
-	 * Retrieve the Topography Edge Map
-	 * 
-	 * @return The Topography Edge Map
-	 */
-
-	public org.drip.spaces.graph.TopographyEdgeMap topographyEdgeMap()
-	{
-		return _topographyEdgeMap;
-	}
-
-	/**
 	 * Indicate if the Pair of Vertexes are Adjacent
 	 * 
-	 * @param source The Source Vertex
-	 * @param destination The Destination Vertex
+	 * @param sourceVertexName The Source Vertex Name
+	 * @param destinationVertexName The Destination Vertex Name
 	 * 
 	 * @return TRUE - The Pair of Vertexes are Adjacent
 	 */
 
 	public boolean adjacent (
-		final java.lang.String source,
-		final java.lang.String destination)
+		final java.lang.String sourceVertexName,
+		final java.lang.String destinationVertexName)
 	{
-		org.drip.spaces.graph.Vertex sourceVertex = vertex (source);
+		org.drip.spaces.graph.Vertex sourceVertex = vertex (
+			sourceVertexName
+		);
 
-		org.drip.spaces.graph.Vertex destinationVertex = vertex (destination);
+		org.drip.spaces.graph.Vertex destinationVertex = vertex (
+			destinationVertexName
+		);
 
 		if (null == sourceVertex || null == destinationVertex)
 		{
 			return false;
 		}
 
-		return sourceVertex.egressMap().containsKey (destination);
+		return sourceVertex.egressMap().containsKey (
+			destinationVertexName
+		);
 	}
 
 	/**
 	 * Compute the Weight between Source and Destination if Adjacent
 	 * 
-	 * @param source The Source Vertex
-	 * @param destination The Destination Vertex
+	 * @param sourceVertexName The Source Vertex Name
+	 * @param destinationVertexName The Destination Vertex Name
 	 * 
 	 * @return The Weight between Source and Destination if Adjacent
 	 * 
@@ -293,60 +313,66 @@ public class Topography
 	 */
 
 	public double adjacentWeight (
-		final java.lang.String source,
-		final java.lang.String destination)
+		final java.lang.String sourceVertexName,
+		final java.lang.String destinationVertexName)
 		throws java.lang.Exception
 	{
 		if (!adjacent (
-			source,
-			destination
+			sourceVertexName,
+			destinationVertexName
 		))
 		{
-			throw new java.lang.Exception ("Topography::adjacentDistance => Invalid Adjacency Check");
+			throw new java.lang.Exception (
+				"Topography::adjacentWeight => Invalid Adjacency Check"
+			);
 		}
 
-		return vertex (source).egressMap().get (destination);
+		return vertex (
+			sourceVertexName
+		).egressMap().get (
+			destinationVertexName
+		);
 	}
 
 	/**
-	 * Generate the Connection Map between valid Pairs of Source and Destination
+	 * Generate the Map between Adjacent Pairs of Source and Destination
 	 * 
-	 * @return The Connection Map
+	 * @return The Adjacency Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> connectionMap()
+	public java.util.Map<java.lang.String, java.lang.Double> adjacencyMap()
 	{
 		java.util.Set<java.lang.String> vertexNameSet = _vertexMap.keySet();
 
-		java.util.Map<java.lang.String, java.lang.Double> connectionMap = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+		java.util.Map<java.lang.String, java.lang.Double> adjacencyMap =
+			new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
-		for (String source : vertexNameSet)
+		for (String sourceVertexName : vertexNameSet)
 		{
-			for (String destination : vertexNameSet)
+			for (String destinationVertexName : vertexNameSet)
 			{
 				try
 				{
 					if (adjacent (
-						source,
-						destination
+						sourceVertexName,
+						destinationVertexName
 					))
 					{
 						double adjacentWeight = adjacent (
-							source,
-							destination
+							sourceVertexName,
+							destinationVertexName
 						) ? adjacentWeight (
-							source,
-							destination
+							sourceVertexName,
+							destinationVertexName
 						) : 0.;
 
-						connectionMap.put (
-							source + "_" + destination,
+							adjacencyMap.put (
+							sourceVertexName + "_" + destinationVertexName,
 							adjacentWeight
 						);
 
-						connectionMap.put (
-							destination + "_" + source,
+							adjacencyMap.put (
+							destinationVertexName + "_" + sourceVertexName,
 							adjacentWeight
 						);
 					}
@@ -358,6 +384,6 @@ public class Topography
 			}
 		}
 
-		return connectionMap;
+		return adjacencyMap;
 	}
 }

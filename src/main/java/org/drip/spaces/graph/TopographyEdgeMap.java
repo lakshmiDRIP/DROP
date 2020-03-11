@@ -115,8 +115,8 @@ package org.drip.spaces.graph;
 
 public class TopographyEdgeMap
 {
-	private java.util.Map<java.lang.String, org.drip.spaces.graph.Edge> _edgeMap = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.spaces.graph.Edge>();
+	private java.util.Map<java.lang.String, org.drip.spaces.graph.Edge> _edgeMap =
+		new org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.spaces.graph.Edge>();
 
 	/**
 	 * Empty TopographyEdgeMap Constructor
@@ -142,22 +142,22 @@ public class TopographyEdgeMap
 			return false;
 		}
 
-		java.lang.String source = edge.source();
+		java.lang.String sourceVertexName = edge.sourceVertexName();
 
-		java.lang.String destination = edge.destination();
+		java.lang.String destinationVertexName = edge.destinationVertexName();
 
 		_edgeMap.put (
-			source + "_" + destination,
+			sourceVertexName + "_" + destinationVertexName,
 			edge
 		);
 
 		try
 		{
 			_edgeMap.put (
-				destination + "_" + source,
+				destinationVertexName + "_" + sourceVertexName,
 				new org.drip.spaces.graph.Edge (
-					destination,
-					source,
+					destinationVertexName,
+					sourceVertexName,
 					edge.weight()
 				)
 			);
@@ -186,54 +186,62 @@ public class TopographyEdgeMap
 	/**
 	 * Retrieve the Edge connecting the Source and the Destination
 	 * 
-	 * @param source The Source
-	 * @param destination The Destination
+	 * @param sourceVertexName The Source Vertex Name
+	 * @param destinationVertexName The Destination Vertex Name
 	 * 
 	 * @return The Edge connecting the Source and the Destination
 	 */
 
 	public org.drip.spaces.graph.Edge edge (
-		final java.lang.String source,
-		final java.lang.String destination)
+		final java.lang.String sourceVertexName,
+		final java.lang.String destinationVertexName)
 	{
-		if (null == source || source.isEmpty() ||
-			null == destination || destination.isEmpty())
+		if (null == sourceVertexName || sourceVertexName.isEmpty() ||
+			null == destinationVertexName || destinationVertexName.isEmpty())
 		{
 			return null;
 		}
 
-		java.lang.String key = source + "_" + destination;
+		java.lang.String key = sourceVertexName + "_" + destinationVertexName;
 
-		return _edgeMap.containsKey (key) ? _edgeMap.get (key) : null;
+		return _edgeMap.containsKey (
+			key
+		) ? _edgeMap.get (
+			key
+		) : null;
 	}
 
 	/**
 	 * Retrieve all the Edges corresponding to the Source Vertex
 	 * 
-	 * @param source The Source Vertex
+	 * @param sourceVertexName The Source Vertex Name
 	 * 
 	 * @return Edges corresponding to the Source Vertex
 	 */
 
 	public java.util.List<org.drip.spaces.graph.Edge> edgeList (
-		final java.lang.String source)
+		final java.lang.String sourceVertexName)
 	{
-		if (null == source || source.isEmpty())
+		if (null == sourceVertexName || sourceVertexName.isEmpty())
 		{
 			return null;
 		}
 
-		java.util.List<org.drip.spaces.graph.Edge> edgeList = new
-			java.util.ArrayList<org.drip.spaces.graph.Edge>();
+		java.util.List<org.drip.spaces.graph.Edge> edgeList =
+			new java.util.ArrayList<org.drip.spaces.graph.Edge>();
 
 		for (java.util.Map.Entry<java.lang.String, org.drip.spaces.graph.Edge> edgeMapEntry :
 			_edgeMap.entrySet())
 		{
 			java.lang.String key = edgeMapEntry.getKey();
 
-			if (key.startsWith (source))
+			if (key.startsWith (
+				sourceVertexName
+			))
 			{
-				edgeList.add (edgeMapEntry.getValue());
+				edgeList.add (
+					edgeMapEntry.getValue()
+				);
 			}
 		}
 

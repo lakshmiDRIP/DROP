@@ -120,25 +120,31 @@ public class BellmanFordScheme
 
 	private void visitEdge (
 		final org.drip.spaces.graph.Edge edge,
-		final org.drip.spaces.graph.ShortestPathFirstWengert spfWengert)
+		final org.drip.spaces.graph.ShortestPathVertexContainer shortestPathVertexContainer)
 	{
-		java.lang.String leftVertex = edge.source();
+		java.lang.String startVertexName = edge.sourceVertexName();
 
-		org.drip.spaces.graph.ShortestPathTree vertexPeripheryMap = spfWengert.vertexPeripheryMap();
+		org.drip.spaces.graph.ShortestPathVertex sourceShortestPathVertex =
+			shortestPathVertexContainer.shortestPathVertex (
+				startVertexName
+			);
 
-		org.drip.spaces.graph.ShortestPathVertex vertexPeripheryLeft = vertexPeripheryMap.shortestPathVertex
-			(leftVertex);
+		org.drip.spaces.graph.ShortestPathVertex destinationShortestPathVertex =
+			shortestPathVertexContainer.shortestPathVertex (
+				edge.destinationVertexName()
+			);
 
-		org.drip.spaces.graph.ShortestPathVertex vertexPeripheryRight = vertexPeripheryMap.shortestPathVertex
-			(edge.destination());
+		double weightToDestinationThroughStart = sourceShortestPathVertex.weightFromSource() + edge.weight();
 
-		double sourceToRightThroughLeft = vertexPeripheryLeft.weightFromSource() + edge.weight();
-
-		if (sourceToRightThroughLeft < vertexPeripheryRight.weightFromSource())
+		if (weightToDestinationThroughStart < destinationShortestPathVertex.weightFromSource())
 		{
-			vertexPeripheryRight.setWeightFromSource (sourceToRightThroughLeft);
+			destinationShortestPathVertex.setWeightFromSource (
+				weightToDestinationThroughStart
+			);
 
-			vertexPeripheryRight.setPreceeding (leftVertex);
+			destinationShortestPathVertex.setPreceeding (
+				startVertexName
+			);
 		}
 	}
 
@@ -156,7 +162,9 @@ public class BellmanFordScheme
 	{
 		if (null == (_topography = topography))
 		{
-			throw new java.lang.Exception ("BellmanFordScheme Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"BellmanFordScheme Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -174,41 +182,45 @@ public class BellmanFordScheme
 	/**
 	 * Initialize the Bellman Ford Scheme
 	 * 
-	 * @param source The Source Vertex
+	 * @param sourceVertexName The Source Vertex Name
 	 * 
-	 * @return The Initial Bellman Ford Wengert
+	 * @return The Initial Bellman Ford Scheme
 	 */
 
-	public org.drip.spaces.graph.ShortestPathFirstWengert setup (
-		final java.lang.String source)
+	public org.drip.spaces.graph.ShortestPathVertexContainer setup (
+		final java.lang.String sourceVertexName)
 	{
-		return org.drip.spaces.graph.ShortestPathFirstWengert.BellmanFord (
+		return org.drip.spaces.graph.ShortestPathVertexContainer.BellmanFord (
 			_topography,
-			source
+			sourceVertexName
 		);
 	}
 
 	/**
 	 * Run the Bellman Ford SPF Algorithm
 	 * 
-	 * @param source The Source Vertex
+	 * @param sourceVertexName The Source Vertex Name
 	 * 
-	 * @return The Bellman Ford Wengert
+	 * @return The Bellman Ford Scheme
 	 */
 
-	public org.drip.spaces.graph.ShortestPathFirstWengert spf (
-		final java.lang.String source)
+	public org.drip.spaces.graph.ShortestPathVertexContainer spf (
+		final java.lang.String sourceVertexName)
 	{
-		org.drip.spaces.graph.ShortestPathFirstWengert spfWengert = setup (source);
+		org.drip.spaces.graph.ShortestPathVertexContainer shortestPathVertexContainer = setup (
+			sourceVertexName
+		);
 
-		if (null == spfWengert)
+		if (null == shortestPathVertexContainer)
 		{
 			return null;
 		}
 
 		int vertexCount = _topography.vertexNameSet().size();
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		for (int vertexIndex = 0;
+			vertexIndex < vertexCount;
+			++vertexIndex)
 		{
 			java.util.Map<java.lang.String, org.drip.spaces.graph.Edge> edgeMap =
 				_topography.topographyEdgeMap().edgeMap();
@@ -218,11 +230,11 @@ public class BellmanFordScheme
 			{
 				visitEdge (
 					edgeEntry.getValue(),
-					spfWengert
+					shortestPathVertexContainer
 				);
 			}
 		}
 
-		return spfWengert;
+		return shortestPathVertexContainer;
 	}
 }

@@ -117,68 +117,50 @@ package org.drip.spaces.graph;
 public class ShortestPathVertex
 {
 	private boolean _visited = false;
-	private java.lang.String _current = "";
-	private java.lang.String _preceeding = "";
+	private java.lang.String _currentVertexName = "";
+	private java.lang.String _preceedingVertexName = "";
 	private double _weightFromSource = java.lang.Double.POSITIVE_INFINITY;
 
 	/**
 	 * ShortestPathVertex Constructor
 	 * 
-	 * @param current The Current Node
+	 * @param currentVertexName The Current Vertex Name
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ShortestPathVertex (
-		final java.lang.String current)
+		final java.lang.String currentVertexName)
 		throws java.lang.Exception
 	{
-		if (null == (_current = current) || _current.isEmpty())
+		if (null == (_currentVertexName = currentVertexName) || _currentVertexName.isEmpty())
 		{
-			throw new java.lang.Exception ("ShortestPathVertex Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"ShortestPathVertex Constructor => Invalid Inputs"
+			);
 		}
 	}
 
 	/**
-	 * Retrieve the Current Vertex
+	 * Retrieve the Current Vertex Name
 	 * 
-	 * @return The Current Vertex
+	 * @return The Current Vertex Name
 	 */
 
-	public java.lang.String current()
+	public java.lang.String currentVertexName()
 	{
-		return _current;
+		return _currentVertexName;
 	}
 
 	/**
-	 * Retrieve the Preceeding Traversal Vertex
+	 * Retrieve the Preceeding Vertex Name
 	 * 
-	 * @return The Preceeding Traversal Vertex
+	 * @return The Preceeding Vertex Name
 	 */
 
-	public java.lang.String preceeding()
+	public java.lang.String preceedingVertexName()
 	{
-		return _preceeding;
-	}
-
-	/**
-	 * Set the Preceeding Traversal Vertex
-	 * 
-	 * @param preceeding The Preceeding Traversal Vertex
-	 * 
-	 * @return TRUE - The Preceeding Vertex successfully set
-	 */
-
-	public boolean setPreceeding (
-		final java.lang.String preceeding)
-	{
-		if (null == preceeding || preceeding.isEmpty())
-		{
-			return false;
-		}
-
-		_preceeding = preceeding;
-		return true;
+		return _preceedingVertexName;
 	}
 
 	/**
@@ -193,6 +175,37 @@ public class ShortestPathVertex
 	}
 
 	/**
+	 * Indicate if the Vertex has been Visited
+	 * 
+	 * @return TRUE - The Vertex has been Visited
+	 */
+	
+	public boolean visited()
+	{
+		return _visited;
+	}
+
+	/**
+	 * Set the Preceeding Vertex
+	 * 
+	 * @param preceedingVertexName The Preceeding Vertex Name
+	 * 
+	 * @return TRUE - The Preceeding Vertex successfully set
+	 */
+
+	public boolean setPreceeding (
+		final java.lang.String preceedingVertexName)
+	{
+		if (null == preceedingVertexName || preceedingVertexName.isEmpty())
+		{
+			return false;
+		}
+
+		_preceedingVertexName = preceedingVertexName;
+		return true;
+	}
+
+	/**
 	 * Set the Weight From Source
 	 * 
 	 * @param weightFromSource The Weight From Source
@@ -203,24 +216,15 @@ public class ShortestPathVertex
 	public boolean setWeightFromSource (
 		final double weightFromSource)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (weightFromSource))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+			weightFromSource
+		))
 		{
 			return false;
 		}
 
 		_weightFromSource = weightFromSource;
 		return true;
-	}
-
-	/**
-	 * Indicate if the Vertex has been Visited
-	 * 
-	 * @return TRUE - The Vertex has been Visited
-	 */
-	
-	public boolean visited()
-	{
-		return _visited;
 	}
 
 	/**

@@ -115,55 +115,57 @@ package org.drip.spaces.graph;
 
 public class Edge
 {
-	private java.lang.String _source = "";
-	private java.lang.String _destination = "";
 	private double _weight = java.lang.Double.NaN;
+	private java.lang.String _sourceVertexName = "";
+	private java.lang.String _destinationVertexName = "";
 
 	/**
 	 * Edge Constructor
 	 * 
-	 * @param source The Source Vertex Name
-	 * @param destination The Destination Vertex Name
+	 * @param sourceVertexName The Source Vertex Name
+	 * @param destinationVertexName The Destination Vertex Name
 	 * @param weight The Source-Destination Path Weight
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Edge (
-		final java.lang.String source,
-		final java.lang.String destination,
+		final java.lang.String sourceVertexName,
+		final java.lang.String destinationVertexName,
 		final double weight)
 		throws java.lang.Exception
 	{
-		if (null == (_source = source) || _source.isEmpty() ||
-			null == (_destination = destination) || _destination.isEmpty())
+		if (null == (_sourceVertexName = sourceVertexName) || _sourceVertexName.isEmpty() ||
+			null == (_destinationVertexName = destinationVertexName) || _destinationVertexName.isEmpty())
 		{
-			throw new java.lang.Exception ("Edge Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"Edge Constructor => Invalid Inputs"
+			);
 		}
 
 		_weight = weight;
 	}
 
 	/**
-	 * Retrieve the Source Vertex
+	 * Retrieve the Source Vertex Name
 	 * 
-	 * @return The Source Vertex
+	 * @return The Source Vertex Name
 	 */
 
-	public java.lang.String source()
+	public java.lang.String sourceVertexName()
 	{
-		return _source;
+		return _sourceVertexName;
 	}
 
 	/**
-	 * Retrieve the Destination Vertex
+	 * Retrieve the Destination Vertex Name
 	 * 
-	 * @return The Destination Vertex
+	 * @return The Destination Vertex Name
 	 */
 
-	public java.lang.String destination()
+	public java.lang.String destinationVertexName()
 	{
-		return _destination;
+		return _destinationVertexName;
 	}
 
 	/**

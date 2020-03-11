@@ -11,6 +11,12 @@ DROP Sample Algo illustrates the C<sup>x</sup> R<sup>x</sup> In-Place Manipulati
  <i>C1ArrayTranslateShuffle</i> demonstrates the Functionality that conducts an in-place Translation and
  Shuffling of a Big String Instance.
 
+ * [***KNearestServiceLocater***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/KNearestServiceLocater.java)
+ <i>KNearestServiceLocater</i> demonstrates the Construction and the Usage of a k-Nearest Service Locator.
+
+ * [***MoviesInFlightMatcher***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/MoviesInFlightMatcher.java)
+ <i>MoviesInFlightMatcher</i> demonstrates the Construction and the Usage of a Flight Duration Movie Matching Algorithm.
+
  * [***R1ArrayInSituSort***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/R1ArrayInSituSort.java)
  <i>R1ArrayInSituSort</i> demonstrates the Functionality that conducts an in-place Sorting of an Instance of
  BigDoubleArray using a variety of Sorting Algorithms.
@@ -25,6 +31,9 @@ DROP Sample Algo illustrates the C<sup>x</sup> R<sup>x</sup> In-Place Manipulati
 
  * [***SubStringSetExtraction***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/SubStringSetExtraction.java)
  <i>SubStringSetExtraction</i> demonstrates the Extraction of Permuted and Contiguous Sub-string Sets.
+
+ * [***ZombieInfector***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/ZombieInfector.java)
+ <i>ZombieInfector</i> demonstrates the Construction and the Usage of a Zombie Adjacency Migration.
 
 
 ## DROP Specifications

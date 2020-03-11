@@ -16,6 +16,9 @@ DROP Sample Graph illustrates the Graph Traversal and Navigation Algorithms.
  * [***TopographyMap***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graph/TopographyMap.java)
  <i>TopographyMap</i> illustrates the Construction of Topographical Map.
 
+ * [***PrimMinimumSpanningTree***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graph/PrimMinimumSpanningTree.java)
+ <i>PrimMinimumSpanningTree</i> illustrates the Execution of the Prim Algorithm.
+
 
 ## References
 

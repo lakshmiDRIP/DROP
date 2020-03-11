@@ -200,7 +200,7 @@ public abstract class R1ToR1SeriesTerm
 				final double x)
 				throws java.lang.Exception
 			{
-				if (0 >= order ||
+				if (0 > order ||
 					!org.drip.numerical.common.NumberUtil.IsValid (x))
 				{
 					throw new java.lang.Exception ("Taylor::R1ToR1SeriesTerm::value => Invalid Inputs");

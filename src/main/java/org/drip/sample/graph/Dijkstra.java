@@ -9,7 +9,7 @@ import org.drip.spaces.graph.DijkstraScheme;
 import org.drip.spaces.graph.Edge;
 import org.drip.spaces.graph.Topography;
 import org.drip.spaces.graph.ShortestPathVertex;
-import org.drip.spaces.graph.ShortestPathTree;
+import org.drip.spaces.graph.ShortestPathVertexContainer;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -240,7 +240,7 @@ public class Dijkstra
 	private static final String PathVertexes (
 		final String source,
 		final String destination,
-		final ShortestPathTree vertexPeripheryMap)
+		final ShortestPathVertexContainer vertexPeripheryMap)
 		throws Exception
 	{
 		String path = "";
@@ -248,11 +248,11 @@ public class Dijkstra
 
 		ShortestPathVertex vertexPeriphery = vertexPeripheryMap.shortestPathVertex (vertex);
 
-		while (!source.equalsIgnoreCase (vertexPeriphery.current()))
+		while (!source.equalsIgnoreCase (vertexPeriphery.currentVertexName()))
 		{
-			path = path + vertexPeriphery.current() + " <- ";
+			path = path + vertexPeriphery.currentVertexName() + " <- ";
 
-			vertexPeriphery = vertexPeripheryMap.shortestPathVertex (vertexPeriphery.preceeding());
+			vertexPeriphery = vertexPeripheryMap.shortestPathVertex (vertexPeriphery.preceedingVertexName());
 		}
 
 		path = path + source;
@@ -273,7 +273,7 @@ public class Dijkstra
 
 		for (String source : vertexNameSet)
 		{
-			ShortestPathTree vertexPeripheryMap = dijkstraScheme.spf (source).vertexPeripheryMap();
+			ShortestPathVertexContainer vertexPeripheryMap = dijkstraScheme.spf (source);
 
 			System.out.println ("\t||------------------------------------------------------------||");
 
@@ -286,7 +286,7 @@ public class Dijkstra
 					System.out.println (
 						"\t|| " + source + " to " + vertex + " is " +
 						FormatUtil.FormatDouble (vertexPeriphery.weightFromSource(), 4, 0, 1.) +
-						" | Previous is " + vertexPeriphery.preceeding() + " || " + PathVertexes (
+						" | Previous is " + vertexPeriphery.preceedingVertexName() + " || " + PathVertexes (
 							source,
 							vertex,
 							vertexPeripheryMap

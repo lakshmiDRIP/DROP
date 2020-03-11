@@ -2,14 +2,19 @@
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Optimization implements the Necessary, Sufficient, and Regularity Checks for Gradient Descent in a
-	Constrained Optimization Setup.
+DROP Optimization implements the Necessary, Sufficient, and Regularity Checks for Gradient Descent in a Constrained Optimization Setup as well LP/ILP/MINLP Schemes.
 
 
 ## Component Packages
 
+ * [***Canonical***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/canonical)
+ DROP Optimization Canonical Package implements Polyhedral Cutting Plane Generation Schemes.
+
  * [***Constrained***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/constrained)
  DROP Optimization Constrained implements the KKT Fritz-John Constrained Optimizer Framework.
+
+ * [***Cutting Plane***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/cuttingplane)
+ DROP Optimization Cutting Plane Package implements Polyhedral Cutting Plane Generation Schemes.
 
  * [***Necessary***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/necessary)
  DROP Optimization Necessary Package implements the Constrained Optimizer Necessary Sufficient Conditions.
@@ -23,14 +28,24 @@ DROP Optimization implements the Necessary, Sufficient, and Regularity Checks fo
  * Boyd, S., and L. van den Berghe (2009): <i>Convex Optimization</i> <b>Cambridge University Press</b>
  Cambridge UK
 
+ * Burdet, C. A., and E. L. Johnson (1977): A Sub-additive Approach to Solve Linear Integer Programs <i>Annals of Discrete Mathematics</i> <b>1</b> 117-143
+
+ * Chvatal, V. (1973): Edmonds Polytopes in a Hierarchy of Combinatorial Problems <i>Discrete Mathematics</i> <b>4 (4)</b> 305-337
+
  * Eustaquio, R., E. Karas, and A. Ribeiro (2008): <i>Constraint Qualification for Nonlinear Programming</i>
  <b>Federal University of Parana</b>
+
+ * Gomory, R. E. (1958): Outline of an Algorithm for Integer Solutions to Linear Programs <i>Bulletin of the American Mathematical Society</i> <b>64 (5)</b> 275-278
 
  * Karush, A. (1939): <i>Minima of Functions of Several Variables with Inequalities as Side Constraints</i>
  <b>University of Chicago</b> Chicago IL
 
+ * Kelley, J. E. (1960): The Cutting Plane Method for Solving Convex Problems <i>Journal for the Society of the Industrial and Applied Mathematics</i> <b>8 (4)</b> 703-712
+
  * Kuhn, H. W., and A. W. Tucker (1951): Nonlinear Programming <i>Proceedings of the Second Berkeley
  Symposium</i> <b>University of California</b> Berkeley CA 481-492
+
+ * Letchford, A. N. and A. Lodi (2002): Strengthening Chvatal-Gomory Cuts and Gomory Fractional Cuts <i>Operations Research Letters</i> <b>30 (2)</b> 74-82
 
  * Ruszczynski, A. (2006): <i>Nonlinear Optimization</i> <b>Princeton University Press</b> Princeton NJ
 

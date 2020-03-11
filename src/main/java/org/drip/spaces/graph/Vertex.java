@@ -78,7 +78,7 @@ package org.drip.spaces.graph;
 
 /**
  * <i>Vertex</i> implements a Single Vertex Node and the corresponding Egresses emanating from it. The
- * References are:
+ * 	References are:
  *
  * <br><br>
  *  <ul>
@@ -118,8 +118,8 @@ public class Vertex
 {
 	private java.lang.String _name = "";
 
-	private java.util.Map<java.lang.String, java.lang.Double> _egressMap = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+	private java.util.Map<java.lang.String, java.lang.Double> _egressMap =
+		new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
 	/**
 	 * Vertex Constructor
@@ -135,7 +135,9 @@ public class Vertex
 	{
 		if (null == (_name = name) || _name.isEmpty())
 		{
-			throw new java.lang.Exception ("Vertex Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"Vertex Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -174,8 +176,12 @@ public class Vertex
 		final java.lang.String destinationName,
 		final double weight)
 	{
-		if (null == destinationName || destinationName.equalsIgnoreCase (_name) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (weight))
+		if (null == destinationName || destinationName.equalsIgnoreCase (
+				_name
+			) || !org.drip.numerical.common.NumberUtil.IsValid (
+				weight
+			)
+		)
 		{
 			return false;
 		}
