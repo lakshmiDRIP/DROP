@@ -3,7 +3,7 @@ package org.drip.sample.graph;
 
 import java.util.Map;
 
-import org.drip.graph.core.Edge;
+import org.drip.graph.core.BidirectionalEdge;
 import org.drip.graph.core.Graph;
 import org.drip.graph.core.Tree;
 import org.drip.graph.spanningtree.Kruskal;
@@ -123,96 +123,96 @@ public class KruskalMinimumSpanningTree
 
 		Graph graph = new Graph();
 
-		graph.addEdge (
-			new Edge (
+		graph.addBidirectionalEdge (
+			new BidirectionalEdge (
 				vertexArray[0], // Delhi
 				vertexArray[1], // Bombay
 				1388.
 			)
 		);
 
-		graph.addEdge (
-			new Edge (
+		graph.addBidirectionalEdge (
+			new BidirectionalEdge (
 				vertexArray[0], // Delhi
 				vertexArray[2], // Madras
 				2191.
 			)
 		);
 
-		graph.addEdge (
-			new Edge (
+		graph.addBidirectionalEdge (
+			new BidirectionalEdge (
 				vertexArray[1], // Bombay
 				vertexArray[2], // Madras
 				1279.
 			)
 		);
 
-		graph.addEdge (
-			new Edge (
+		graph.addBidirectionalEdge (
+			new BidirectionalEdge (
 				vertexArray[0], // Delhi
 				vertexArray[3], // Calcutta
 				1341.
 			)
 		);
 
-		graph.addEdge (
-			new Edge (
+		graph.addBidirectionalEdge (
+			new BidirectionalEdge (
 				vertexArray[1], // Bombay
 				vertexArray[3], // Calcutta
 				1968.
 			)
 		);
 
-		graph.addEdge (
-			new Edge (
+		graph.addBidirectionalEdge (
+			new BidirectionalEdge (
 				vertexArray[2], // Madras
 				vertexArray[3], // Calcutta
 				1663.
 			)
 		);
 
-		graph.addEdge (
-			new Edge (
+		graph.addBidirectionalEdge (
+			new BidirectionalEdge (
 				vertexArray[2], // Madras
 				vertexArray[4], // Bangalore
 				361.
 			)
 		);
 
-		graph.addEdge (
-			new Edge (
+		graph.addBidirectionalEdge (
+			new BidirectionalEdge (
 				vertexArray[2], // Madras
 				vertexArray[5], // Hyderabad
 				784.
 			)
 		);
 
-		graph.addEdge (
-			new Edge (
+		graph.addBidirectionalEdge (
+			new BidirectionalEdge (
 				vertexArray[2], // Madras
 				vertexArray[6], // Cochin
 				697.
 			)
 		);
 
-		graph.addEdge (
-			new Edge (
+		graph.addBidirectionalEdge (
+			new BidirectionalEdge (
 				vertexArray[1], // Bombay
 				vertexArray[7], // Pune
 				192.
 			)
 		);
 
-		graph.addEdge (
-			new Edge (
+		graph.addBidirectionalEdge (
+			new BidirectionalEdge (
 				vertexArray[1], // Bombay
 				vertexArray[8], // Ahmedabad
 				492.
 			)
 		);
 
-		graph.addEdge (
-			new Edge (
+		graph.addBidirectionalEdge (
+			new BidirectionalEdge (
 				vertexArray[0], // Delhi
 				vertexArray[9], // Jaipur
 				308.
@@ -227,7 +227,7 @@ public class KruskalMinimumSpanningTree
 
 		for (Tree minimumSpanningTree : minimumSpanningForest.values())
 		{
-			for (Edge edge : minimumSpanningTree.edgeMap().values())
+			for (BidirectionalEdge edge : minimumSpanningTree.edgeMap().values())
 			{
 				System.out.println (
 					edge

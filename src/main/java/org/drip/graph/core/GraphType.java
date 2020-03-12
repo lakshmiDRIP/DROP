@@ -75,8 +75,8 @@ package org.drip.graph.core;
  */
 
 /**
- * <i>Edge</i> represents the Connection between a Pair of Vertexes. The References are:
- *
+ * <i>GraphType</i> holds the Pre-specified Graph Types. The References are:
+ * 
  * <br><br>
  *  <ul>
  *  	<li>
@@ -109,101 +109,43 @@ package org.drip.graph.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Edge
+public class GraphType
 {
-	private double _distance = java.lang.Double.NaN;
-	private java.lang.String _sourceVertexName = "";
-	private java.lang.String _destinationVertexName = "";
 
 	/**
-	 * Edge Constructor
-	 * 
-	 * @param sourceVertexName Source Vertex Name
-	 * @param destinationVertexName Destination Vertex Name
-	 * @param distance Distance
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * Graph is Unspecified
 	 */
 
-	public Edge (
-		final java.lang.String sourceVertexName,
-		final java.lang.String destinationVertexName,
-		final double distance)
-		throws java.lang.Exception
-	{
-		if (null == (_sourceVertexName = sourceVertexName) || _sourceVertexName.isEmpty() ||
-			null == (_destinationVertexName = destinationVertexName) || _destinationVertexName.isEmpty() ||
-			_sourceVertexName.equalsIgnoreCase (
-				_destinationVertexName
-			) || !org.drip.numerical.common.NumberUtil.IsValid (
-				_distance = distance
-			)
-		)
-		{
-			throw new java.lang.Exception (
-				"Edge Constructor => Invalid Inputs"
-			);
-		}
-	}
+	public static final int UNSPECIFIED = 0;
 
 	/**
-	 * Retrieve the Source Vertex Name
-	 * 
-	 * @return The Source Vertex Name
+	 * Graph is a Tree
 	 */
 
-	public java.lang.String sourceVertexName()
-	{
-		return _sourceVertexName;
-	}
+	public static final int TREE = 1;
 
 	/**
-	 * Retrieve the Destination Vertex Name
-	 * 
-	 * @return The Destination Vertex Name
+	 * Graph is Cyclical
 	 */
 
-	public java.lang.String destinationVertexName()
-	{
-		return _destinationVertexName;
-	}
+	public static final int CYCLICAL = 2;
 
 	/**
-	 * Retrieve the Distance
-	 * 
-	 * @return The Distance
+	 * Graph is Complete
 	 */
 
-	public double distance()
-	{
-		return _distance;
-	}
+	public static final int COMPLETE = 4;
 
 	/**
-	 * Compare the Current Edge with the Specified One
-	 * 
-	 * @param edgeOther The "Other" Edge
-	 * 
-	 * @return TRUE - If the Edges are the same
+	 * Graph is Complete Bipartite
 	 */
 
-	public boolean compareWith (
-		final Edge edgeOther)
-	{
-		if (null == edgeOther)
-		{
-			return false;
-		}
+	public static final int COMPLETE_BIPARTITE = 8;
 
-		return _sourceVertexName.equalsIgnoreCase (
-			edgeOther.sourceVertexName()
-		) && _destinationVertexName.equalsIgnoreCase (
-			edgeOther.destinationVertexName()
-		) && _distance == edgeOther.distance();
-	}
+	/**
+	 * Graph is n-Dimensional Hypercube
+	 */
 
-	@Override public java.lang.String toString()
-	{
-		return "{" + _sourceVertexName + " -> " + _destinationVertexName + " = " + _distance + "}";
-	}
+	public static final int N_DIMENSIONAL_HYPERCUBE = 16;
+
 }

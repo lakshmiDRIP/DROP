@@ -110,52 +110,8 @@ package org.drip.graph.core;
  */
 
 public class Graph
+	extends org.drip.graph.core.Network
 {
-	private java.util.Map<java.lang.String, org.drip.graph.core.Edge> _edgeMap = null;
-	private java.util.Map<java.lang.String, org.drip.graph.core.Vertex> _vertexMap = null;
-
-	private boolean addVertexEdge (
-		final java.lang.String vertexName,
-		final org.drip.graph.core.Edge edge)
-	{
-		if (_vertexMap.containsKey (
-			vertexName
-		))
-		{
-			return _vertexMap.get (
-				vertexName
-			).addEdge (
-				edge
-			);
-		}
-
-		try
-		{
-			org.drip.graph.core.Vertex vertex = new org.drip.graph.core.Vertex (
-				vertexName
-			);
-
-			if (!vertex.addEdge (
-				edge
-			))
-			{
-				return false;
-			}
-
-			_vertexMap.put (
-				vertexName,
-				vertex
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-
-			return false;
-		}
-
-		return true;
-	}
 
 	/**
 	 * Graph Constructor
@@ -163,99 +119,43 @@ public class Graph
 
 	public Graph()
 	{
-		_edgeMap =
-			new org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.graph.core.Edge>();
-
-		_vertexMap =
-			new org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.graph.core.Vertex>();
+		super();
 	}
 
 	/**
-	 * Retrieve the Vertex Map
+	 * Add the Specified Graph to the Current
 	 * 
-	 * @return The Vertex Map
+	 * @param graph The Specified Graph
+	 * 
+	 * @return TRUE - The Specified Graph successfully Added
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap()
+	public boolean addGraph (
+		final org.drip.graph.core.Graph graph)
 	{
-		return _vertexMap;
-	}
-
-	/**
-	 * Retrieve the Edge Map
-	 * 
-	 * @return The Edge Map
-	 */
-
-	public java.util.Map<java.lang.String, org.drip.graph.core.Edge> edgeMap()
-	{
-		return _edgeMap;
-	}
-
-	/**
-	 * Add an Edge to the Graph
-	 * 
-	 * @param edge The Edge
-	 * 
-	 * @return TRUE - The Edge successfully added
-	 */
-
-	public boolean addEdge (
-		final org.drip.graph.core.Edge edge)
-	{
-		if (null == edge)
+		if (null == graph)
 		{
 			return false;
 		}
 
-		java.lang.String edgeSourceVertexName = edge.sourceVertexName();
+		java.util.Collection<org.drip.graph.core.BidirectionalEdge> edgeCollection = graph.edgeMap().values();
 
-		java.lang.String edgeDestinationVertexName = edge.destinationVertexName();
-
-		if (!addVertexEdge (
-			edgeSourceVertexName,
-			edge
-		) || !addVertexEdge (
-			edgeDestinationVertexName,
-			edge
-		))
+		if (null == edgeCollection || 0 == edgeCollection.size())
 		{
-			return false;
+			return true;
 		}
 
-		_edgeMap.put (
-			edgeSourceVertexName + "_" + edgeDestinationVertexName,
-			edge
-		);
-
-		_edgeMap.put (
-			edgeDestinationVertexName + "_" + edgeSourceVertexName,
-			edge
-		);
+		for (org.drip.graph.core.BidirectionalEdge edge : edgeCollection)
+		{
+			if (!addBidirectionalEdge (
+				edge
+			))
+			{
+				return false;
+			}
+		}
 
 		return true;
-	}
-
-	/**
-	 * Construct an Ordered Edge Map
-	 * 
-	 * @return The Ordered Edge Map
-	 */
-
-	public java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> orderedEdgeMap()
-	{
-		java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> orderedEdgeMap =
-			new java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge>();
-
-		for (org.drip.graph.core.Edge edge : _edgeMap.values())
-		{
-			orderedEdgeMap.put (
-				edge.distance(),
-				edge
-			);
-		}
-
-		return orderedEdgeMap;
 	}
 
 	/**
@@ -269,7 +169,7 @@ public class Graph
 
 	public boolean dfsRecursive (
 		final java.lang.String vertexName,
-		final org.drip.graph.spanningtree.OrderedSearch orderedSearch)
+		final org.drip.graph.core.OrderedSearch orderedSearch)
 	{
 		if (null == orderedSearch ||
 			!_vertexMap.containsKey (
@@ -288,29 +188,33 @@ public class Graph
 			vertexName
 		);
 
-		java.util.Map<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap = vertex.adjacencyMap();
+		java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap = vertex.adjacencyMap();
 
 		if (null == adjacencyMap || 0 == adjacencyMap.size())
 		{
 			return true;
 		}
 
-		for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.Edge> egressMapEntry :
+		for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.BidirectionalEdge> egressMapEntry :
 			adjacencyMap.entrySet())
 		{
-			java.lang.String destinationVertexName = egressMapEntry.getValue().destinationVertexName();
+			java.lang.String secondVertexName = egressMapEntry.getValue().secondVertexName();
 
 			if (!orderedSearch.vertexPresent (
-				destinationVertexName
+				secondVertexName
 			))
 			{
 				if (!dfsRecursive (
-					destinationVertexName,
+					secondVertexName,
 					orderedSearch
 				))
 				{
 					return false;
 				}
+			}
+			else
+			{
+				orderedSearch.setContainsCycle();
 			}
 		}
 
@@ -328,7 +232,7 @@ public class Graph
 
 	public boolean dfsNonRecursive (
 		final java.lang.String vertexName,
-		final org.drip.graph.spanningtree.OrderedSearch orderedSearch)
+		final org.drip.graph.core.OrderedSearch orderedSearch)
 	{
 		if (null == orderedSearch ||
 			!_vertexMap.containsKey (
@@ -364,24 +268,27 @@ public class Graph
 				currentVertexName
 			);
 
-			java.util.Map<java.lang.Double, org.drip.graph.core.Edge> egressMap =
+			java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> egressMap =
 				currentVertex.adjacencyMap();
 
 			if (null != egressMap && 0 != egressMap.size())
 			{
-				for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.Edge> egressMapEntry
-					: egressMap.entrySet())
+				for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.BidirectionalEdge>
+					egressMapEntry : egressMap.entrySet())
 				{
-					java.lang.String destinationVertexName =
-						egressMapEntry.getValue().destinationVertexName();
+					java.lang.String secondVertexName = egressMapEntry.getValue().secondVertexName();
 
 					if (!orderedSearch.vertexPresent (
-						destinationVertexName
+						secondVertexName
 					))
 					{
 						processVertexList.add (
-							destinationVertexName
+							secondVertexName
 						);
+					}
+					else
+					{
+						orderedSearch.setContainsCycle();
 					}
 				}
 			}
@@ -405,7 +312,7 @@ public class Graph
 
 	public boolean bfs (
 		final java.lang.String vertexName,
-		final org.drip.graph.spanningtree.OrderedSearch orderedSearch)
+		final org.drip.graph.core.OrderedSearch orderedSearch)
 	{
 		if (null == orderedSearch ||
 			!_vertexMap.containsKey (
@@ -439,24 +346,27 @@ public class Graph
 				currentVertexName
 			);
 
-			java.util.Map<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
+			java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap =
 				currentVertex.adjacencyMap();
 
 			if (null != adjacencyMap && 0 != adjacencyMap.size())
 			{
-				for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.Edge>
+				for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.BidirectionalEdge>
 					adjacencyMapEntry : adjacencyMap.entrySet())
 				{
-					java.lang.String destinationVertexName =
-						adjacencyMapEntry.getValue().destinationVertexName();
+					java.lang.String secondVertexName = adjacencyMapEntry.getValue().secondVertexName();
 
 					if (!orderedSearch.vertexPresent (
-						destinationVertexName
+						secondVertexName
 					))
 					{
 						processVertexList.add (
-							destinationVertexName
+							secondVertexName
 						);
+					}
+					else
+					{
+						orderedSearch.setContainsCycle();
 					}
 				}
 			}
@@ -467,6 +377,43 @@ public class Graph
 		}
 
 		return true;
+	}
+
+	/**
+	 * Indicate if the Graph is Connected
+	 * 
+	 * @return TRUE - The Graph is Connected
+	 */
+
+	public boolean isConnected()
+	{
+		if (_vertexMap.isEmpty())
+		{
+			return false;
+		}
+
+		java.lang.String vertexName = "";
+
+		java.util.Set<java.lang.String> vertexNameSet = _vertexMap.keySet();
+
+		for (java.lang.String vertexMapKey : vertexNameSet)
+		{
+			vertexName = vertexMapKey;
+			break;
+		}
+
+		org.drip.graph.core.OrderedSearch orderedSearch =
+			new org.drip.graph.core.OrderedSearch();
+
+		if (!bfs (
+			vertexName,
+			orderedSearch
+		))
+		{
+			return false;
+		}
+
+		return orderedSearch.vertexNameSet().size() == vertexNameSet.size();
 	}
 
 	/**
@@ -494,7 +441,7 @@ public class Graph
 			);
 		}
 
-		for (java.lang.String treeVertexName : tree.vertexSet())
+		for (java.lang.String treeVertexName : tree.vertexMap().keySet())
 		{
 			if (!graphVertexNameSet.contains (
 				treeVertexName
@@ -512,35 +459,6 @@ public class Graph
 	}
 
 	/**
-	 * Indicate if the Specified Edge matches with any Edges in the Tree
-	 * 
-	 * @param edgeOther The "Other" Edge
-	 * 
-	 * @return TRUE - The Specified Edge matches with any Edges in the Tree
-	 */
-
-	public boolean containsEdge (
-		final org.drip.graph.core.Edge edgeOther)
-	{
-		if (null == edgeOther)
-		{
-			return false;
-		}
-
-		for (org.drip.graph.core.Edge edge : _edgeMap.values())
-		{
-			if (edge.compareWith (
-				edgeOther
-			))
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
 	 * Retrieve the Set of the Fundamental Cycles using the Spanning Tree
 	 * 
 	 * @param tree Spanning Tree
@@ -548,7 +466,7 @@ public class Graph
 	 * @return Set of the Fundamental Cycles using the Spanning Tree
 	 */
 
-	public java.util.Set<org.drip.graph.core.Edge> fundamentalCycleEdgeSet (
+	public java.util.Set<org.drip.graph.core.BidirectionalEdge> fundamentalCycleEdgeSet (
 		final org.drip.graph.core.Tree tree)
 	{
 		if (null == tree)
@@ -556,12 +474,12 @@ public class Graph
 			return null;
 		}
 
-		java.util.Set<org.drip.graph.core.Edge> edgeSet =
-			new java.util.HashSet<org.drip.graph.core.Edge> (
+		java.util.Set<org.drip.graph.core.BidirectionalEdge> edgeSet =
+			new java.util.HashSet<org.drip.graph.core.BidirectionalEdge> (
 				_edgeMap.values()
 			);
 
-		for (org.drip.graph.core.Edge edge : tree.edgeMap().values())
+		for (org.drip.graph.core.BidirectionalEdge edge : tree.edgeMap().values())
 		{
 			if (!containsEdge (
 				edge
@@ -576,5 +494,190 @@ public class Graph
 		}
 
 		return edgeSet;
+	}
+
+	/**
+	 * Retrieve the List of the Leaf Vertex Names
+	 * 
+	 * @return List of the Leaf Vertex Names
+	 */
+
+	public java.util.List<java.lang.String> leafVertexNameList()
+	{
+		java.util.List<java.lang.String> leafVertexNameList = new java.util.ArrayList<java.lang.String>();
+
+		for (java.util.Map.Entry<java.lang.String, org.drip.graph.core.Vertex> vertexMapEntry :
+			_vertexMap.entrySet())
+		{
+			java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap =
+				vertexMapEntry.getValue().adjacencyMap();
+
+			if (null == adjacencyMap || 0 == adjacencyMap.size())
+			{
+				leafVertexNameList.add (
+					vertexMapEntry.getKey()
+				);
+			}
+		}
+
+		return leafVertexNameList;
+	}
+
+	/**
+	 * Indicate if the Graph contains a Cycle
+	 * 
+	 * @return TRUE - The Graph contains a Cycle
+	 */
+
+	public boolean containsCycle()
+	{
+		java.util.List<java.lang.String> leafVertexNameList = leafVertexNameList();
+
+		if (null == leafVertexNameList || 0 == leafVertexNameList.size())
+		{
+			return true;
+		}
+
+		for (java.lang.String leafVertexName : leafVertexNameList)
+		{
+			org.drip.graph.core.OrderedSearch orderedSearch =
+				new org.drip.graph.core.OrderedSearch();
+
+			bfs (
+				leafVertexName,
+				orderedSearch
+			);
+
+			if (orderedSearch.containsCycle())
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Indicate if the Graph is Cyclical
+	 * 
+	 * @return TRUE - The Graph is Cyclical
+	 */
+
+	public boolean isCyclical()
+	{
+		java.util.List<java.lang.String> leafVertexNameList = leafVertexNameList();
+
+		return null == leafVertexNameList || 0 == leafVertexNameList.size() ? true : false;
+	}
+
+	/**
+	 * Indicate if the Graph is a Tree
+	 * 
+	 * @return TRUE - The Graph is a Tree
+	 */
+
+	public boolean isTree()
+	{
+		return isConnected() && !containsCycle();
+	}
+
+	/**
+	 * Indicate if the Graph is Complete
+	 * 
+	 * @return TRUE - The Graph is Complete
+	 */
+
+	public boolean isComplete()
+	{
+		int n = _vertexMap.size() - 1;
+
+		for (java.util.Map.Entry<java.lang.String, org.drip.graph.core.Vertex> vertexMapEntry :
+			_vertexMap.entrySet())
+		{
+			java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap =
+				vertexMapEntry.getValue().adjacencyMap();
+
+			if (null == adjacencyMap || n != adjacencyMap.size())
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Retrieve the Graph Type
+	 * 
+	 * @return The Graph Type
+	 */
+
+	public int type()
+	{
+		if (!isTree())
+		{
+			return org.drip.graph.core.GraphType.TREE;
+		}
+
+		if (isCyclical())
+		{
+			return org.drip.graph.core.GraphType.CYCLICAL;
+		}
+
+		if (isComplete())
+		{
+			return org.drip.graph.core.GraphType.COMPLETE;
+		}
+
+		return org.drip.graph.core.GraphType.UNSPECIFIED;
+	}
+
+	/**
+	 * Retrieve the Count of the Spanning Trees Using Kirchoff's Matrix-Tree Theorem
+	 * 
+	 * @return Count of the Spanning Trees Using Kirchoff's Matrix-Tree Theorem
+	 */
+
+	public int kirchoffSpanningTreeCount()
+	{
+		return 0;
+	}
+
+	/**
+	 * Retrieve the Count of the Spanning Trees
+	 * 
+	 * @return Count of the Spanning Trees
+	 */
+
+	public double spanningTreeCount()
+	{
+		if (!isConnected())
+		{
+			return 0;
+		}
+
+		int type = type();
+
+		if (type == org.drip.graph.core.GraphType.TREE)
+		{
+			return 1;
+		}
+
+		if (type == org.drip.graph.core.GraphType.CYCLICAL)
+		{
+			return _vertexMap.size();
+		}
+
+		if (type == org.drip.graph.core.GraphType.COMPLETE)
+		{
+			int n = _vertexMap.size();
+
+			return java.lang.Math.pow (
+				n,
+				n - 2
+			);
+		}
+
+		return kirchoffSpanningTreeCount();
 	}
 }

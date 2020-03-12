@@ -75,21 +75,26 @@ package org.drip.graph.core;
  */
 
 /**
- * <i>Tree</i> holds the Vertexes and the Edges associated with a Tree. The References are:
- * 
+ * <i>BidirectionalEdge</i> represents the Bi-directional Connection between a Pair of Vertexes. The
+ * 	References are:
+ *
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Wikipedia (2019a): Kruskal's Algorithm https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
+ *  		Bollobas, B. (1998): <i>Modern Graph Theory</i> <b>Springer</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2019b): Prim's Algorithm https://en.wikipedia.org/wiki/Prim%27s_algorithm
+ *  		Eppstein, D. (1999): Spanning Trees and Spanners
+ *  			https://www.ics.uci.edu/~eppstein/pubs/Epp-TR-96-16.pdf
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020a): Breadth-First Search https://en.wikipedia.org/wiki/Breadth-first_search
+ *  		Gross, J. L., and J. Yellen (2005): <i>Graph Theory and its Applications</i> <b>Springer</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020b): Depth-First Search https://en.wikipedia.org/wiki/Depth-first_search
+ *  		Kocay, W., and D. L. Kreher (2004): <i>Graphs, Algorithms, and Optimizations</i> <b>CRC Press</b>
+ *  	</li>
+ *  	<li>
+ *  		Wikipedia (2020): Spanning Tree https://en.wikipedia.org/wiki/Spanning_tree
  *  	</li>
  *  </ul>
  *
@@ -105,86 +110,113 @@ package org.drip.graph.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Tree
-	extends org.drip.graph.core.Network
+public class BidirectionalEdge
 {
-	/**
-	 * Tree Constructor
-	 */
-
-	public Tree()
-	{
-		super();
-	}
+	private java.lang.String _firstVertexName = "";
+	private java.lang.String _secondVertexName = "";
+	private double _distance = java.lang.Double.NaN;
 
 	/**
-	 * Add a Stand-alone Vertex to the Network
-	 *  
-	 * @param vertexName The Stand-alone Vertex Name
+	 * BidirectionalEdge Constructor
 	 * 
-	 * @return TRUE - The Stand-alone Vertex successfully added to the Network
+	 * @param firstVertexName First Vertex Name
+	 * @param secondVertexName Second Vertex Name
+	 * @param distance Distance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public boolean addVertex (
-		final java.lang.String vertexName)
+	public BidirectionalEdge (
+		final java.lang.String firstVertexName,
+		final java.lang.String secondVertexName,
+		final double distance)
+		throws java.lang.Exception
 	{
-		if (null == vertexName || vertexName.isEmpty() ||
-			!_vertexMap.isEmpty() ||
-			!_edgeMap.isEmpty()
+		if (null == (_firstVertexName = firstVertexName) || _firstVertexName.isEmpty() ||
+			null == (_secondVertexName = secondVertexName) || _secondVertexName.isEmpty() ||
+			_firstVertexName.equalsIgnoreCase (
+				_secondVertexName
+			) || !org.drip.numerical.common.NumberUtil.IsValid (
+				_distance = distance
+			)
 		)
 		{
-			return false;
-		}
-
-		try
-		{
-			_vertexMap.put (
-				vertexName,
-				new org.drip.graph.core.Vertex (
-					vertexName
-				)
+			throw new java.lang.Exception (
+				"BidirectionalEdge Constructor => Invalid Inputs"
 			);
 		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-
-			return false;
-		}
-
-		return true;
 	}
 
 	/**
-	 * Absorb the Specified Tree and Edge
+	 * Retrieve the First Vertex Name
 	 * 
-	 * @param tree The Tree
-	 * @param edge The Edge
-	 * 
-	 * @return TRUE - The Tree and Edge successfully absorbed
+	 * @return The First Vertex Name
 	 */
 
-	public boolean absorbTreeAndEdge (
-		final org.drip.graph.core.Tree tree,
-		final org.drip.graph.core.BidirectionalEdge edge)
+	public java.lang.String firstVertexName()
 	{
-		if (null == tree || !addBidirectionalEdge (
-			edge
-		))
+		return _firstVertexName;
+	}
+
+	/**
+	 * Retrieve the Second Vertex Name
+	 * 
+	 * @return The Second Vertex Name
+	 */
+
+	public java.lang.String secondVertexName()
+	{
+		return _secondVertexName;
+	}
+
+	/**
+	 * Retrieve the Distance
+	 * 
+	 * @return The Distance
+	 */
+
+	public double distance()
+	{
+		return _distance;
+	}
+
+	/**
+	 * Compare the Current Edge with the Specified One
+	 * 
+	 * @param bidirectionalEdge The "Other" Bi-directional Edge
+	 * 
+	 * @return TRUE - If the Edges are the same
+	 */
+
+	public boolean compareWith (
+		final BidirectionalEdge bidirectionalEdge)
+	{
+		if (null == bidirectionalEdge)
 		{
 			return false;
 		}
 
-		for (org.drip.graph.core.BidirectionalEdge treeEdge : tree.edgeMap().values())
-		{
-			if (!addBidirectionalEdge (
-				treeEdge
-			))
-			{
-				return false;
-			}
-		}
+		java.lang.String firstVertexNameOther = bidirectionalEdge.firstVertexName();
 
-		return true;
+		java.lang.String secondVertexNameOther = bidirectionalEdge.secondVertexName();
+
+		return (
+			_firstVertexName.equalsIgnoreCase (
+				firstVertexNameOther
+			) && _secondVertexName.equalsIgnoreCase (
+				secondVertexNameOther
+			)
+		) || (
+			_firstVertexName.equalsIgnoreCase (
+				secondVertexNameOther
+			) && _secondVertexName.equalsIgnoreCase (
+				firstVertexNameOther
+			)
+		) && _distance == bidirectionalEdge.distance();
+	}
+
+	@Override public java.lang.String toString()
+	{
+		return "{" + _firstVertexName + " -> " + _secondVertexName + " = " + _distance + "}";
 	}
 }

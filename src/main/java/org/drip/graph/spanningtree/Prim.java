@@ -110,7 +110,7 @@ public class Prim
 	private org.drip.graph.core.Graph _graph = null;
 
 	private boolean updateEdgeTreeMap (
-		final java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> edgeTreeMap,
+		final java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge> edgeTreeMap,
 		final java.util.Set<java.lang.String> visitedVertexSet,
 		final java.lang.String currentVertexName)
 	{
@@ -118,7 +118,7 @@ public class Prim
 			currentVertexName
 		);
 
-		java.util.Map<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
+		java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap =
 			currentVertex.adjacencyMap();
 
 		if (null == adjacencyMap || 0 == adjacencyMap.size())
@@ -126,10 +126,10 @@ public class Prim
 			return false;
 		}
 
-		for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.Edge> egressEntry :
+		for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.BidirectionalEdge> egressEntry :
 			adjacencyMap.entrySet())
 		{
-			org.drip.graph.core.Edge edge = egressEntry.getValue();
+			org.drip.graph.core.BidirectionalEdge edge = egressEntry.getValue();
 
 			edgeTreeMap.put (
 				edge.distance(),
@@ -196,8 +196,8 @@ public class Prim
 
 		java.util.Set<java.lang.String> visitedVertexSet = new java.util.HashSet<java.lang.String>();
 
-		java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> edgeTreeMap =
-			new java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge>();
+		java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge> edgeTreeMap =
+			new java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge>();
 
 		if (!updateEdgeTreeMap (
 				edgeTreeMap,
@@ -211,16 +211,16 @@ public class Prim
 
 		while (!edgeTreeMap.isEmpty())
 		{
-			java.util.Map.Entry<java.lang.Double, org.drip.graph.core.Edge> firstEntry =
+			java.util.Map.Entry<java.lang.Double, org.drip.graph.core.BidirectionalEdge> firstEntry =
 				edgeTreeMap.firstEntry();
 
 			edgeTreeMap.remove (
 				firstEntry.getKey()
 			);
 
-			org.drip.graph.core.Edge processedEdge = firstEntry.getValue();
+			org.drip.graph.core.BidirectionalEdge processedEdge = firstEntry.getValue();
 
-			java.lang.String currentVertexName = processedEdge.destinationVertexName();
+			java.lang.String currentVertexName = processedEdge.secondVertexName();
 
 			if (visitedVertexSet.contains (
 				currentVertexName
@@ -229,7 +229,7 @@ public class Prim
 				continue;
 			}
 
-			if (!minimumSpanningTree.addEdge (
+			if (!minimumSpanningTree.addBidirectionalEdge (
 				processedEdge
 			))
 			{

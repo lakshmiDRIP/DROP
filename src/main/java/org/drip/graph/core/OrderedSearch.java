@@ -1,5 +1,5 @@
 
-package org.drip.graph.spanningtree;
+package org.drip.graph.core;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -99,7 +99,7 @@ package org.drip.graph.spanningtree;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/spanningtree/README.md">Algorithms for Spanning Tree Analysis</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/README.md">Vertexes, Edges, Trees, and Graphs</a></li>
  *  </ul>
  * <br><br>
  *
@@ -108,6 +108,7 @@ package org.drip.graph.spanningtree;
 
 public class OrderedSearch
 {
+	private boolean _containsCycle = false;
 	private java.util.Set<java.lang.String> _vertexNameSet = null;
 	private java.util.List<java.lang.String> _vertexNameList = null;
 
@@ -142,6 +143,17 @@ public class OrderedSearch
 	public java.util.List<java.lang.String> vertexNameList()
 	{
 		return _vertexNameList;
+	}
+
+	/**
+	 * Indicate if the Ordered Search contains a Cycle
+	 * 
+	 * @return TRUE - The Ordered Search contains a Cycle
+	 */
+
+	public boolean containsCycle()
+	{
+		return _containsCycle;
 	}
 
 	/**
@@ -189,6 +201,18 @@ public class OrderedSearch
 			);
 		}
 
+		return true;
+	}
+
+	/**
+	 * Set to Indicate that the Ordered Search contains a Cycle
+	 * 
+	 * @return TRUE - The Indicator successfully set
+	 */
+
+	public boolean setContainsCycle()
+	{
+		_containsCycle = true;
 		return true;
 	}
 }

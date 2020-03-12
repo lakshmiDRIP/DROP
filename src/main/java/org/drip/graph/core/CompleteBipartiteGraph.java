@@ -75,21 +75,25 @@ package org.drip.graph.core;
  */
 
 /**
- * <i>Tree</i> holds the Vertexes and the Edges associated with a Tree. The References are:
+ * <i>CompleteBipartiteGraph</i> implements a Complete, Bipartite Graph. The References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Wikipedia (2019a): Kruskal's Algorithm https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
+ *  		Bollobas, B. (1998): <i>Modern Graph Theory</i> <b>Springer</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2019b): Prim's Algorithm https://en.wikipedia.org/wiki/Prim%27s_algorithm
+ *  		Eppstein, D. (1999): Spanning Trees and Spanners
+ *  			https://www.ics.uci.edu/~eppstein/pubs/Epp-TR-96-16.pdf
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020a): Breadth-First Search https://en.wikipedia.org/wiki/Breadth-first_search
+ *  		Gross, J. L., and J. Yellen (2005): <i>Graph Theory and its Applications</i> <b>Springer</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020b): Depth-First Search https://en.wikipedia.org/wiki/Depth-first_search
+ *  		Kocay, W., and D. L. Kreher (2004): <i>Graphs, Algorithms, and Optimizations</i> <b>CRC Press</b>
+ *  	</li>
+ *  	<li>
+ *  		Wikipedia (2020): Spanning Tree https://en.wikipedia.org/wiki/Spanning_tree
  *  	</li>
  *  </ul>
  *
@@ -105,86 +109,168 @@ package org.drip.graph.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Tree
-	extends org.drip.graph.core.Network
+public class CompleteBipartiteGraph
+	extends org.drip.graph.core.Graph
 {
+	private org.drip.graph.core.Graph _pGraph = null;
+	private org.drip.graph.core.Graph _qGraph = null;
+	private org.drip.graph.core.BidirectionalEdge _connectionEdge = null;
+
 	/**
-	 * Tree Constructor
+	 * CompleteBipartiteGraph Constructor
+	 * 
+	 * @param pGraph P Graph
+	 * @param qGraph Q Graph
+	 * @param connectionEdge Connection Edge
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public Tree()
+	public CompleteBipartiteGraph (
+		final org.drip.graph.core.Graph pGraph,
+		final org.drip.graph.core.Graph qGraph,
+		final org.drip.graph.core.BidirectionalEdge connectionEdge)
+		throws java.lang.Exception
 	{
 		super();
-	}
 
-	/**
-	 * Add a Stand-alone Vertex to the Network
-	 *  
-	 * @param vertexName The Stand-alone Vertex Name
-	 * 
-	 * @return TRUE - The Stand-alone Vertex successfully added to the Network
-	 */
-
-	public boolean addVertex (
-		final java.lang.String vertexName)
-	{
-		if (null == vertexName || vertexName.isEmpty() ||
-			!_vertexMap.isEmpty() ||
-			!_edgeMap.isEmpty()
+		if (null == (_pGraph = pGraph) || _pGraph.isEmpty() ||
+			null == (_qGraph = qGraph) || _qGraph.isEmpty() ||
+			null == (_connectionEdge = connectionEdge)
 		)
 		{
-			return false;
-		}
-
-		try
-		{
-			_vertexMap.put (
-				vertexName,
-				new org.drip.graph.core.Vertex (
-					vertexName
-				)
+			throw new java.lang.Exception (
+				"CompleteBipartiteGraph Constructor => Invalid Inputs"
 			);
 		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
 
-			return false;
+		java.lang.String firstVertexName = _connectionEdge.firstVertexName();
+
+		java.lang.String secondVertexName = _connectionEdge.secondVertexName();
+
+		if ((!_pGraph.containsVertex (
+				firstVertexName
+			) && !_qGraph.containsVertex (
+				secondVertexName
+			)) || (!_pGraph.containsVertex (
+				secondVertexName
+			) && !_qGraph.containsVertex (
+				firstVertexName
+			))
+		)
+		{
+			throw new java.lang.Exception (
+				"CompleteBipartiteGraph Constructor => Invalid Inputs"
+			);
 		}
 
-		return true;
+		if (!addGraph (
+				_pGraph
+			) || !addGraph (
+				_qGraph
+			) || !addBidirectionalEdge (
+				_connectionEdge
+			)
+		)
+		{
+			throw new java.lang.Exception (
+				"CompleteBipartiteGraph Constructor => Invalid Inputs"
+			);
+		}
 	}
 
 	/**
-	 * Absorb the Specified Tree and Edge
+	 * Retrieve the P Graph
 	 * 
-	 * @param tree The Tree
-	 * @param edge The Edge
-	 * 
-	 * @return TRUE - The Tree and Edge successfully absorbed
+	 * @return The P Graph
 	 */
 
-	public boolean absorbTreeAndEdge (
-		final org.drip.graph.core.Tree tree,
-		final org.drip.graph.core.BidirectionalEdge edge)
+	public org.drip.graph.core.Graph pGraph()
 	{
-		if (null == tree || !addBidirectionalEdge (
-			edge
-		))
-		{
-			return false;
-		}
+		return _pGraph;
+	}
 
-		for (org.drip.graph.core.BidirectionalEdge treeEdge : tree.edgeMap().values())
-		{
-			if (!addBidirectionalEdge (
-				treeEdge
-			))
-			{
-				return false;
-			}
-		}
+	/**
+	 * Retrieve the Q Graph
+	 * 
+	 * @return The Q Graph
+	 */
 
+	public org.drip.graph.core.Graph qGraph()
+	{
+		return _qGraph;
+	}
+
+	/**
+	 * Retrieve the Connection Edge
+	 * 
+	 * @return The Connection Edge
+	 */
+
+	public org.drip.graph.core.BidirectionalEdge connectionEdge()
+	{
+		return _connectionEdge;
+	}
+
+	/**
+	 * Retrieve P
+	 * 
+	 * @return P
+	 */
+
+	public int p()
+	{
+		return _pGraph.vertexCount();
+	}
+
+	/**
+	 * Retrieve Q
+	 * 
+	 * @return Q
+	 */
+
+	public int q()
+	{
+		return _qGraph.vertexCount();
+	}
+
+	@Override public boolean isConnected()
+	{
 		return true;
+	}
+
+	@Override public boolean isTree()
+	{
+		return false;
+	}
+
+	@Override public boolean isComplete()
+	{
+		return false;
+	}
+
+	@Override public boolean containsCycle()
+	{
+		return true;
+	}
+
+	@Override public int type()
+	{
+		return org.drip.graph.core.GraphType.COMPLETE_BIPARTITE;
+	}
+
+	@Override public double spanningTreeCount()
+	{
+		int p = _pGraph.vertexCount();
+
+		int q = _qGraph.vertexCount();
+
+		return java.lang.Math.pow (
+			p,
+			q - 1
+		) * java.lang.Math.pow (
+			q,
+			p - 1
+		);
 	}
 }

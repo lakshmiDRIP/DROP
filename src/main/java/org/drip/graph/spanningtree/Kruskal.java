@@ -133,7 +133,7 @@ public class Kruskal
 	{
 		org.drip.graph.core.Tree tree = new org.drip.graph.core.Tree();
 
-		if (!tree.addStandaloneVertex (
+		if (!tree.addVertex (
 			vertexName
 		))
 		{
@@ -201,47 +201,42 @@ public class Kruskal
 			}
 		}
 
-		java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> orderedEdgeMap =
+		java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge> orderedEdgeMap =
 			_graph.orderedEdgeMap();
 
 		while (!orderedEdgeMap.isEmpty())
 		{
-			java.util.Map.Entry<java.lang.Double, org.drip.graph.core.Edge> firstEntry =
+			java.util.Map.Entry<java.lang.Double, org.drip.graph.core.BidirectionalEdge> firstEntry =
 				orderedEdgeMap.firstEntry();
 
 			orderedEdgeMap.remove (
 				firstEntry.getKey()
 			);
 
-			org.drip.graph.core.Edge currentEdge = firstEntry.getValue();
+			org.drip.graph.core.BidirectionalEdge currentEdge = firstEntry.getValue();
 
-			java.lang.String sourceVertexName = currentEdge.sourceVertexName();
+			java.lang.String firstVertexName = currentEdge.firstVertexName();
 
 			org.drip.graph.core.Tree sourceContainerTree = ContainingTree (
-				sourceVertexName,
+				firstVertexName,
 				minimumSpanningForest
 			);
 
-			java.lang.String destinationVertexName = currentEdge.destinationVertexName();
+			java.lang.String destinationVertexName = currentEdge.secondVertexName();
 
 			org.drip.graph.core.Tree destinationContainerTree = ContainingTree (
 				destinationVertexName,
 				minimumSpanningForest
 			);
 
-			if (null == sourceContainerTree || null == destinationContainerTree)
-			{
-				return null;
-			}
-
-			if (sourceContainerTree != destinationContainerTree)
+			if (null != destinationContainerTree &&
+				sourceContainerTree != destinationContainerTree)
 			{
 				if (!sourceContainerTree.absorbTreeAndEdge (
 					destinationContainerTree,
 					currentEdge
 				))
 				{
-					System.out.println ("Cannot absorb edge");
 					return null;
 				}
 

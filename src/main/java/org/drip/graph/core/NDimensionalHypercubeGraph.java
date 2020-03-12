@@ -1,9 +1,5 @@
 
-package org.drip.sample.forward;
-
-import org.drip.analytics.support.CompositePeriodBuilder;
-import org.drip.market.definition.*;
-import org.drip.service.env.EnvManager;
+package org.drip.graph.core;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -11,12 +7,6 @@ import org.drip.service.env.EnvManager;
 
 /*!
  * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -85,101 +75,103 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>JurisdictionIBORIndexDefinition</i> demonstrates the functionality to retrieve the IBOR settings for
- * the various Jurisdictions.
- *  
+ * <i>NDimensionalHypercubeGraph</i> implements an n-dimensional Hyper-cube Graph. The References are:
+ * 
  * <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/forward/README.md">IBOR Spline Forward Curve Construction</a></li>
+ *  	<li>
+ *  		Bollobas, B. (1998): <i>Modern Graph Theory</i> <b>Springer</b>
+ *  	</li>
+ *  	<li>
+ *  		Eppstein, D. (1999): Spanning Trees and Spanners
+ *  			https://www.ics.uci.edu/~eppstein/pubs/Epp-TR-96-16.pdf
+ *  	</li>
+ *  	<li>
+ *  		Gross, J. L., and J. Yellen (2005): <i>Graph Theory and its Applications</i> <b>Springer</b>
+ *  	</li>
+ *  	<li>
+ *  		Kocay, W., and D. L. Kreher (2004): <i>Graphs, Algorithms, and Optimizations</i> <b>CRC Press</b>
+ *  	</li>
+ *  	<li>
+ *  		Wikipedia (2020): Spanning Tree https://en.wikipedia.org/wiki/Spanning_tree
+ *  	</li>
+ *  </ul>
+ *
+ * <br><br>
+ *  <ul>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/README.md">Vertexes, Edges, Trees, and Graphs</a></li>
  *  </ul>
  * <br><br>
- * 
+ *
  * @author Lakshmi Krishnamurthy
  */
 
-public class JurisdictionIBORIndexDefinition {
-	private static final String AccrualType (
-		final int iAccrualCompounding)
+public class NDimensionalHypercubeGraph
+	extends org.drip.graph.core.Graph
+{
+
+	/**
+	 * NDimensionalHypercube Constructor
+	 */
+
+	public NDimensionalHypercubeGraph()
 	{
-		return CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_ARITHMETIC == iAccrualCompounding ? "ARITHMETIC" : " GEOMETRIC";
+		super();
 	}
 
-	private static final void DisplayNameOvernightSetting (
-		final String strName)
+	@Override public boolean isConnected()
 	{
-		IBORIndex index = IBORIndexContainer.IndexFromName (strName);
+		return true;
+	}
 
-		String strLongestMaturity = index.longestMaturity();
+	@Override public boolean isTree()
+	{
+		return false;
+	}
 
-		String strShortestMaturity = index.shortestMaturity();
+	@Override public boolean isComplete()
+	{
+		return true;
+	}
 
-		System.out.println ("\t[" +
-			index.currency() + "] => " +
-			index.dayCount() + " | " +
-			index.spotLag() + " | " +
-			AccrualType (index.accrualCompoundingRule()) + " | " +
-			(strShortestMaturity.isEmpty() ? "  " : strShortestMaturity) + " | " +
-			(strLongestMaturity.isEmpty() ? "   " : strLongestMaturity) + " | " +
-			index.name()
+	@Override public boolean containsCycle()
+	{
+		return true;
+	}
+
+	@Override public int type()
+	{
+		return org.drip.graph.core.GraphType.N_DIMENSIONAL_HYPERCUBE;
+	}
+
+	@Override public double spanningTreeCount()
+	{
+		int n = _vertexMap.size();
+
+		double spanningTreeCount = 1.;
+
+		for (int k = 2;
+			k <= n;
+			++k)
+		{
+			spanningTreeCount = spanningTreeCount * java.lang.Math.pow (
+				k,
+				org.drip.numerical.common.NumberUtil.NCK (
+					n,
+					k
+				)
+			);
+		}
+
+		return spanningTreeCount * java.lang.Math.pow (
+			2,
+			java.lang.Math.pow (
+				2,
+				n
+			) - n - 1
 		);
-	}
-
-	public static final void main (
-		String[] args)
-	{
-		EnvManager.InitEnv ("");
-
-		System.out.println ("\n\t---------------\n\t---------------\n");
-
-		DisplayNameOvernightSetting ("CHF-LIBOR");
-
-		DisplayNameOvernightSetting ("EUR-EURIBOR");
-
-		DisplayNameOvernightSetting ("EUR-LIBOR");
-
-		DisplayNameOvernightSetting ("GBP-LIBOR");
-
-		DisplayNameOvernightSetting ("JPY-LIBOR");
-
-		DisplayNameOvernightSetting ("USD-LIBOR");
-
-		System.out.println ("\n\t---------------\n\t---------------\n");
-
-		DisplayNameOvernightSetting ("AUD-LIBOR");
-
-		DisplayNameOvernightSetting ("CAD-LIBOR");
-
-		DisplayNameOvernightSetting ("CZK-LIBOR");
-
-		DisplayNameOvernightSetting ("DKK-LIBOR");
-
-		DisplayNameOvernightSetting ("HKD-LIBOR");
-
-		DisplayNameOvernightSetting ("HUF-LIBOR");
-
-		DisplayNameOvernightSetting ("IDR-LIBOR");
-
-		DisplayNameOvernightSetting ("INR-LIBOR");
-
-		DisplayNameOvernightSetting ("NOK-LIBOR");
-
-		DisplayNameOvernightSetting ("NZD-LIBOR");
-
-		DisplayNameOvernightSetting ("PLN-LIBOR");
-
-		DisplayNameOvernightSetting ("RMB-LIBOR");
-
-		DisplayNameOvernightSetting ("SGD-LIBOR");
-
-		DisplayNameOvernightSetting ("SEK-LIBOR");
-
-		DisplayNameOvernightSetting ("SKK-LIBOR");
-
-		DisplayNameOvernightSetting ("ZAR-LIBOR");
-
-		EnvManager.TerminateEnv();
 	}
 }

@@ -103,7 +103,7 @@ import org.drip.state.inference.*;
 
 /**
  * <i>JurisdictionOTCIndexSwaps</i> demonstrates the Construction and Usage of the Jurisdiction Standard OTC
- * Float-Float Swaps.
+ * 	Float-Float Swaps.
  *  
  * <br><br>
  *  <ul>

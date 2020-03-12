@@ -75,7 +75,7 @@ package org.drip.graph.core;
  */
 
 /**
- * <i>Vertex</i> implements a Single Vertex Node and the corresponding Egresses emanating from it. The
+ * <i>Network</i> implements a Generic Topological Network containing Discrete Vertexes and Edges. The
  * 	References are:
  * 
  * <br><br>
@@ -110,64 +110,155 @@ package org.drip.graph.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Vertex
+abstract public class Network
 {
-	private java.lang.String _name = "";
-	private java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> _adjacencyMap = null;
+	protected java.util.Map<java.lang.String, org.drip.graph.core.BidirectionalEdge> _edgeMap = null;
+	protected java.util.Map<java.lang.String, org.drip.graph.core.Vertex> _vertexMap = null;
 
-	/**
-	 * Vertex Constructor
-	 * 
-	 * @param name The Vertex Name
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public Vertex (
-		final java.lang.String name)
-		throws java.lang.Exception
+	protected boolean addVertexEdge (
+		final java.lang.String vertexName,
+		final org.drip.graph.core.BidirectionalEdge edge)
 	{
-		if (null == (_name = name) || _name.isEmpty())
+		if (_vertexMap.containsKey (
+			vertexName
+		))
 		{
-			throw new java.lang.Exception (
-				"Vertex Constructor => Invalid Inputs"
+			return _vertexMap.get (
+				vertexName
+			).addEdge (
+				edge
 			);
 		}
 
-		_adjacencyMap = new java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge>();
+		try
+		{
+			org.drip.graph.core.Vertex vertex = new org.drip.graph.core.Vertex (
+				vertexName
+			);
+
+			if (!vertex.addEdge (
+				edge
+			))
+			{
+				return false;
+			}
+
+			_vertexMap.put (
+				vertexName,
+				vertex
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+
+			return false;
+		}
+
+		return true;
+	}
+
+	protected Network()
+	{
+		_edgeMap =
+			new org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.graph.core.BidirectionalEdge>();
+
+		_vertexMap =
+			new org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.graph.core.Vertex>();
 	}
 
 	/**
-	 * Retrieve the Vertex Name
+	 * Retrieve the Vertex Map
 	 * 
-	 * @return The Vertex Name
+	 * @return The Vertex Map
 	 */
 
-	public java.lang.String name()
+	public java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap()
 	{
-		return _name;
+		return _vertexMap;
 	}
 
 	/**
-	 * Retrieve the Adjacency Map
+	 * Retrieve the Edge Map
 	 * 
-	 * @return The Adjacency Map
+	 * @return The Edge Map
 	 */
 
-	public java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap()
+	public java.util.Map<java.lang.String, org.drip.graph.core.BidirectionalEdge> edgeMap()
 	{
-		return _adjacencyMap;
+		return _edgeMap;
 	}
 
 	/**
-	 * Add an Bidirectional Edge to the Adjacency Map
+	 * Retrieve the Count of the Edges
+	 * 
+	 * @return The Count of the Edges
+	 */
+
+	public int edgeCount()
+	{
+		return _edgeMap.size();
+	}
+
+	/**
+	 * Retrieve the Count of the Vertexes
+	 * 
+	 * @return The Count of the Vertexes
+	 */
+
+	public int vertexCount()
+	{
+		return _vertexMap.size();
+	}
+
+	/**
+	 * Add a Vertex to the Network
+	 *  
+	 * @param vertexName The Vertex Name
+	 * 
+	 * @return TRUE - The Vertex successfully added to the Network
+	 */
+
+	public boolean addVertex (
+		final java.lang.String vertexName)
+	{
+		if (null == vertexName || vertexName.isEmpty() ||
+			!_vertexMap.containsKey (
+				vertexName
+			)
+		)
+		{
+			return false;
+		}
+
+		try
+		{
+			_vertexMap.put (
+				vertexName,
+				new org.drip.graph.core.Vertex (
+					vertexName
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Add a Bidirectional Edge to the Network
 	 * 
 	 * @param bidirectionalEdge The Bidirectional Edge
 	 * 
 	 * @return TRUE - The Bidirectional Edge successfully added
 	 */
 
-	public boolean addEdge (
+	public boolean addBidirectionalEdge (
 		final org.drip.graph.core.BidirectionalEdge bidirectionalEdge)
 	{
 		if (null == bidirectionalEdge)
@@ -179,46 +270,141 @@ public class Vertex
 
 		java.lang.String secondVertexName = bidirectionalEdge.secondVertexName();
 
-		if (!firstVertexName.equalsIgnoreCase (
-				_name
-			) && !secondVertexName.equalsIgnoreCase (
-				_name
-			)
-		)
+		if (!addVertexEdge (
+			firstVertexName,
+			bidirectionalEdge
+		) || !addVertexEdge (
+			secondVertexName,
+			bidirectionalEdge
+		))
 		{
 			return false;
 		}
 
-		double distance = bidirectionalEdge.distance();
+		_edgeMap.put (
+			firstVertexName + "_" + secondVertexName,
+			bidirectionalEdge
+		);
 
-		if (firstVertexName.equalsIgnoreCase (
-			_name
-		))
-		{
-			_adjacencyMap.put (
-				distance,
-				bidirectionalEdge
-			);
-		}
-		else
-		{
-			try
-			{
-				_adjacencyMap.put (
-					distance,
-					new org.drip.graph.core.BidirectionalEdge (
-						secondVertexName,
-						firstVertexName,
-						distance
-					)
-				);
-			}
-			catch (java.lang.Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
+		_edgeMap.put (
+			secondVertexName + "_" + firstVertexName,
+			bidirectionalEdge
+		);
 
 		return true;
+	}
+
+	/**
+	 * Construct an Ordered Edge Map
+	 * 
+	 * @return The Ordered Edge Map
+	 */
+
+	public java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge> orderedEdgeMap()
+	{
+		java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge> orderedEdgeMap =
+			new java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge>();
+
+		for (org.drip.graph.core.BidirectionalEdge edge : _edgeMap.values())
+		{
+			orderedEdgeMap.put (
+				edge.distance(),
+				edge
+			);
+		}
+
+		return orderedEdgeMap;
+	}
+
+	/**
+	 * Indicate if the Network is Empty
+	 * 
+	 * @return TRUE - The Network is Empty
+	 */
+
+	public boolean isEmpty()
+	{
+		return _vertexMap.isEmpty();
+	}
+
+	/**
+	 * Indicate if the Vertex is Contained in the Network
+	 * 
+	 * @param vertexName The Vertex Name
+	 * 
+	 * @return TRUE - The Vertex is Contained in the Network
+	 */
+
+	public boolean containsVertex (
+		final java.lang.String vertexName)
+	{
+		return null != vertexName && _vertexMap.containsKey (
+			vertexName
+		);
+	}
+
+	/**
+	 * Retrieve the Length of the Discrete Object
+	 * 
+	 * @return Length of the Discrete Object
+	 */
+
+	public double length()
+	{
+		double length = 0.;
+
+		for (org.drip.graph.core.BidirectionalEdge edge : _edgeMap.values())
+		{
+			length = length + edge.distance();
+		}
+
+		return length;
+	}
+
+	/**
+	 * Indicate if the Edge forms a Cycle with the Network
+	 * 
+	 * @param edge The Edge
+	 * 
+	 * @return TRUE - The Edge forms a Cycle with the Network
+	 */
+
+	public boolean isEdgeACycle (
+		final org.drip.graph.core.BidirectionalEdge edge)
+	{
+		return null == edge ? false : _vertexMap.containsKey (
+			edge.firstVertexName()
+		) && _vertexMap.containsKey (
+			edge.secondVertexName()
+		);
+	}
+
+	/**
+	 * Indicate if the Specified Edge matches with any Edges in the Network
+	 * 
+	 * @param edgeOther The "Other" Edge
+	 * 
+	 * @return TRUE - The Specified Edge matches with any Edges in the Network
+	 */
+
+	public boolean containsEdge (
+		final org.drip.graph.core.BidirectionalEdge edgeOther)
+	{
+		if (null == edgeOther)
+		{
+			return false;
+		}
+
+		for (org.drip.graph.core.BidirectionalEdge edge : _edgeMap.values())
+		{
+			if (edge.compareWith (
+				edgeOther
+			))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
