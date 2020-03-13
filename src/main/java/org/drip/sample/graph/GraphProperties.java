@@ -3,8 +3,6 @@ package org.drip.sample.graph;
 
 import org.drip.graph.core.BidirectionalEdge;
 import org.drip.graph.core.Graph;
-import org.drip.graph.core.Tree;
-import org.drip.graph.mst.Prim;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -71,27 +69,26 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>PrimMinimumSpanningTree</i> illustrates the Execution of the Prim Algorithm. The References are:
+ * <i>GraphProperties</i> illustrates the Characteristic Properties of the specified Graph. The References
+ * 	are:
  *  
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Wikipedia (2018a): Graph (Abstract Data Type)
- *  			https://en.wikipedia.org/wiki/Graph_(abstract_data_type)
+ *  		Bollobas, B. (1998): <i>Modern Graph Theory</i> <b>Springer</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018b): Graph Theory https://en.wikipedia.org/wiki/Graph_theory
+ *  		Eppstein, D. (1999): Spanning Trees and Spanners
+ *  			https://www.ics.uci.edu/~eppstein/pubs/Epp-TR-96-16.pdf
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018c): Graph (Discrete Mathematics)
- *  			https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)
+ *  		Gross, J. L., and J. Yellen (2005): <i>Graph Theory and its Applications</i> <b>Springer</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018d): Dijkstra's Algorithm https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+ *  		Kocay, W., and D. L. Kreher (2004): <i>Graphs, Algorithms, and Optimizations</i> <b>CRC Press</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018e): Bellman-Ford Algorithm
- *  			https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
+ *  		Wikipedia (2020): Spanning Tree https://en.wikipedia.org/wiki/Spanning_tree
  *  	</li>
  *  </ul>
  * <br><br>
@@ -106,7 +103,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PrimMinimumSpanningTree
+public class GraphProperties
 {
 
 	public static final void main (
@@ -119,16 +116,16 @@ public class PrimMinimumSpanningTree
 
 		String[] vertexArray = new String[]
 		{
-			"Delhi     ",
-			"Bombay    ",
-			"Madras    ",
-			"Calcutta  ",
-			"Bangalore ",
-			"Hyderabad ",
-			"Cochin    ",
-			"Pune      ",
-			"Ahmedabad ",
-			"Jaipur    "
+			"delhi     ",
+			"bombay    ",
+			"madras    ",
+			"calcutta  ",
+			"bangalore ",
+			"hyderabad ",
+			"cochin    ",
+			"pune      ",
+			"ahmedabad ",
+			"jaipur    "
 		};
 
 		Graph graph = new Graph();
@@ -229,25 +226,52 @@ public class PrimMinimumSpanningTree
 			)
 		);
 
-		Prim prim = new Prim (
-			graph
+		System.out.println (
+			"\t|------------------------------------------------------------------------------------"
 		);
-
-		Tree minimumSpanningTree = prim.minimumSpanningForest (
-			"Jaipur    "
-		).treeMap().get (
-			"Jaipur    "
-		);
-
-		for (BidirectionalEdge edge : minimumSpanningTree.edgeMap().values())
-		{
-			System.out.println (
-				edge
-			);
-		}
 
 		System.out.println (
-			"\tTotal MST Length => " + minimumSpanningTree.length()
+			"\t| Is the Graph Connected?            => " + graph.isConnected()
+		);
+
+		System.out.println (
+			"\t| Leaf Vertexes                      => " + graph.leafVertexNameList()
+		);
+
+		System.out.println (
+			"\t| Does the Graph contain a Cycle?    => " + graph.containsCycle()
+		);
+
+		System.out.println (
+			"\t| Is the Graph Cyclical?             => " + graph.isCyclical()
+		);
+
+		System.out.println (
+			"\t| Is the Graph a Tree?               => " + graph.isTree()
+		);
+
+		System.out.println (
+			"\t| Is the Graph Complete?             => " + graph.isComplete()
+		);
+
+		System.out.println (
+			"\t| Graph Vertex Degree Map            => " + graph.vertexDegreeMap()
+		);
+
+		System.out.println (
+			"\t| Graph Type                         => " + graph.type()
+		);
+
+		System.out.println (
+			"\t| Graph Kirchoff Spanning Tree Count => " + graph.kirchoffSpanningTreeCount()
+		);
+
+		System.out.println (
+			"\t| Graph Spanning Tree Count          => " + graph.spanningTreeCount()
+		);
+
+		System.out.println (
+			"\t|------------------------------------------------------------------------------------"
 		);
 
 		EnvManager.TerminateEnv();

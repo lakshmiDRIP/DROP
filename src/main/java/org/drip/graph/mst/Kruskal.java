@@ -1,5 +1,5 @@
 
-package org.drip.graph.spanningtree;
+package org.drip.graph.mst;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -81,16 +81,23 @@ package org.drip.graph.spanningtree;
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Wikipedia (2019a): Kruskal's Algorithm https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
+ *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms
+ *  			3<sup>rd</sup> Edition</i> <b>MIT Press</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2019b): Prim's Algorithm https://en.wikipedia.org/wiki/Prim%27s_algorithm
+ *  		Grama, A., A. Gupta, G. Karypis, and V. Kumar (2003): <i>Introduction to Parallel Computing
+ *  			2<sup>nd</sup> Edition</i> <b>Addison Wesley</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020a): Breadth-First Search https://en.wikipedia.org/wiki/Breadth-first_search
+ *  		Osipov, V., P. Sanders, and J. Singler (2009): The Filter-Kruskal Minimum Spanning Tree Algorithm
+ *  			http://algo2.iti.kit.edu/documents/fkruskal.pdf
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020b): Depth-First Search https://en.wikipedia.org/wiki/Depth-first_search
+ *  		Quinn, M. J., and N. Deo (1984): Parallel Graph Algorithms <i>ACM Computing Surveys</i> <b>16
+ *  			(3)</b> 319-348
+ *  	</li>
+ *  	<li>
+ *  		Wikipedia (2019): Kruskal's Algorithm https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
  *  	</li>
  *  </ul>
  *
@@ -99,7 +106,7 @@ package org.drip.graph.spanningtree;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/spanningtree/README.md">Algorithms for Spanning Tree Analysis</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/mst/README.md">Algorithms for Generating Minimum Spanning Trees</a></li>
  *  </ul>
  * <br><br>
  *
@@ -109,44 +116,6 @@ package org.drip.graph.spanningtree;
 public class Kruskal
 {
 	private org.drip.graph.core.Graph _graph = null;
-
-	private static final org.drip.graph.core.Tree ContainingTree (
-		final java.lang.String vertexName,
-		final java.util.Map<java.lang.String, org.drip.graph.core.Tree> minimumSpanningForest)
-	{
-		for (org.drip.graph.core.Tree tree : minimumSpanningForest.values())
-		{
-			if (tree.containsVertex (
-				vertexName
-			))
-			{
-				return tree;
-			}
-		}
-
-		return null;
-	}
-
-	private static final boolean UnitVertexTree (
-		final java.lang.String vertexName,
-		final java.util.Map<java.lang.String, org.drip.graph.core.Tree> minimumSpanningForest)
-	{
-		org.drip.graph.core.Tree tree = new org.drip.graph.core.Tree();
-
-		if (!tree.addVertex (
-			vertexName
-		))
-		{
-			return true;
-		}
-
-		minimumSpanningForest.put (
-			vertexName,
-			tree
-		);
-
-		return true;
-	}
 
 	/**
 	 * Kruskal Constructor
@@ -185,16 +154,14 @@ public class Kruskal
 	 * @return Map of the Minimum Spanning Trees
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.graph.core.Tree> minimumSpanningForest()
+	public org.drip.graph.core.Forest minimumSpanningForest()
 	{
-		java.util.Map<java.lang.String, org.drip.graph.core.Tree> minimumSpanningForest =
-			new java.util.HashMap<java.lang.String, org.drip.graph.core.Tree>();
+		org.drip.graph.core.Forest forest = new org.drip.graph.core.Forest();
 
 		for (java.lang.String vertexName : _graph.vertexMap().keySet())
 		{
-			if (!UnitVertexTree (
-				vertexName,
-				minimumSpanningForest
+			if (!forest.unitVertexTree (
+				vertexName
 			))
 			{
 				return null;
@@ -217,16 +184,14 @@ public class Kruskal
 
 			java.lang.String firstVertexName = currentEdge.firstVertexName();
 
-			org.drip.graph.core.Tree sourceContainerTree = ContainingTree (
-				firstVertexName,
-				minimumSpanningForest
+			org.drip.graph.core.Tree sourceContainerTree = forest.containingTree (
+				firstVertexName
 			);
 
 			java.lang.String destinationVertexName = currentEdge.secondVertexName();
 
-			org.drip.graph.core.Tree destinationContainerTree = ContainingTree (
-				destinationVertexName,
-				minimumSpanningForest
+			org.drip.graph.core.Tree destinationContainerTree = forest.containingTree (
+				destinationVertexName
 			);
 
 			if (null != destinationContainerTree &&
@@ -235,17 +200,15 @@ public class Kruskal
 				if (!sourceContainerTree.absorbTreeAndEdge (
 					destinationContainerTree,
 					currentEdge
+				) || !forest.removeTree (
+					destinationVertexName
 				))
 				{
 					return null;
 				}
-
-				minimumSpanningForest.remove (
-					destinationVertexName
-				);
 			}
 		}
 
-		return minimumSpanningForest;
+		return forest;
 	}
 }

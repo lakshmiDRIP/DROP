@@ -512,7 +512,7 @@ public class Graph
 			java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap =
 				vertexMapEntry.getValue().adjacencyMap();
 
-			if (null == adjacencyMap || 0 == adjacencyMap.size())
+			if (null == adjacencyMap || 1 == adjacencyMap.size())
 			{
 				leafVertexNameList.add (
 					vertexMapEntry.getKey()
@@ -607,6 +607,62 @@ public class Graph
 	}
 
 	/**
+	 * Retrieve the Map of the Vertex Adjacency Degree
+	 * 
+	 * @return Map of the Vertex Adjacency Degree
+	 */
+
+	public java.util.Map<java.lang.String, java.lang.Integer> vertexDegreeMap()
+	{
+		java.util.Map<java.lang.String, java.lang.Integer> vertexDegreeMap =
+			new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Integer>();
+
+		for (java.util.Map.Entry<java.lang.String, org.drip.graph.core.Vertex> vertexMapEntry :
+			_vertexMap.entrySet())
+		{
+			java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap =
+				vertexMapEntry.getValue().adjacencyMap();
+
+			vertexDegreeMap.put (
+				vertexMapEntry.getKey(),
+				null == adjacencyMap ? 0 : adjacencyMap.size()
+			);
+		}
+
+		return vertexDegreeMap;
+	}
+
+	/**
+	 * Indicate if the specified Vertexes are Adjacent
+	 * 
+	 * @param vertexName1 Vertex #1
+	 * @param vertexName2 Vertex #2
+	 * 
+	 * @return TRUE - The Vertexes are Adjacent
+	 */
+
+	public boolean areVertexesAdjacent (
+		final java.lang.String vertexName1,
+		final java.lang.String vertexName2)
+	{
+		if (null == vertexName1 || vertexName1.isEmpty() ||
+			null == vertexName2 || vertexName2.isEmpty() ||
+			! _vertexMap.containsKey (
+				vertexName1
+			) || !_vertexMap.containsKey (
+				vertexName2
+			)
+		)
+		{
+			return false;
+		}
+
+		return _edgeMap.containsKey (
+			vertexName1 + "_" + vertexName2
+		);
+	}
+
+	/**
 	 * Retrieve the Graph Type
 	 * 
 	 * @return The Graph Type
@@ -614,7 +670,7 @@ public class Graph
 
 	public int type()
 	{
-		if (!isTree())
+		if (isTree())
 		{
 			return org.drip.graph.core.GraphType.TREE;
 		}
@@ -638,8 +694,82 @@ public class Graph
 	 * @return Count of the Spanning Trees Using Kirchoff's Matrix-Tree Theorem
 	 */
 
-	public int kirchoffSpanningTreeCount()
+	public double kirchoffSpanningTreeCount()
 	{
+		java.util.Map<java.lang.String, java.lang.Integer> vertexDegreeMap = vertexDegreeMap();
+
+		java.util.Set<java.lang.String> vertexNameSet = vertexDegreeMap.keySet();
+
+		int vertexCount = vertexDegreeMap.size();
+
+		int vertexIndex = 0;
+		java.lang.String previousVertexName = "";
+		double[][] kirchoffMatrix = new double[vertexCount][vertexCount];
+		double[][] augmentedKirchoffMatrix = new double[vertexCount - 1][vertexCount - 1];
+
+		for (int vertexIndexI = 0;
+			vertexIndexI < vertexCount;
+			++vertexIndexI)
+		{
+			for (int vertexIndexJ = 0;
+				vertexIndexJ < vertexCount;
+				++vertexIndexJ)
+			{
+				kirchoffMatrix[vertexIndexI][vertexIndexJ] = 0;
+			}
+		}
+
+		for (java.lang.String vertexName : vertexNameSet)
+		{
+			kirchoffMatrix[vertexIndex][vertexIndex] = vertexDegreeMap.get (
+				vertexName
+			);
+
+			if (!previousVertexName.isEmpty())
+			{
+				if (areVertexesAdjacent (
+					vertexName,
+					previousVertexName
+				))
+				{
+					kirchoffMatrix[vertexIndex - 1][vertexIndex] = -1;
+					kirchoffMatrix[vertexIndex][vertexIndex - 1] = -1;
+				}
+				else
+				{
+					kirchoffMatrix[vertexIndex - 1][vertexIndex] = 0;
+					kirchoffMatrix[vertexIndex][vertexIndex - 1] = 0;
+				}
+			}
+
+			previousVertexName = vertexName;
+			++vertexIndex;
+		}
+
+		for (int vertexIndexI = 0;
+			vertexIndexI < vertexCount - 1;
+			++vertexIndexI)
+		{
+			for (int vertexIndexJ = 0;
+				vertexIndexJ < vertexCount - 1;
+				++vertexIndexJ)
+			{
+				augmentedKirchoffMatrix[vertexIndexI][vertexIndexJ] =
+					kirchoffMatrix[vertexIndexI][vertexIndexJ];
+			}
+		}
+
+		try
+		{
+			return new org.drip.function.matrix.Square (
+				augmentedKirchoffMatrix
+			).determinant();
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
 		return 0;
 	}
 

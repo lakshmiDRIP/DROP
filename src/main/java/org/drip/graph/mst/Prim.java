@@ -1,5 +1,5 @@
 
-package org.drip.graph.spanningtree;
+package org.drip.graph.mst;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -80,16 +80,28 @@ package org.drip.graph.spanningtree;
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Wikipedia (2019a): Kruskal's Algorithm https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
+ *  		Grama, A., A. Gupta, G. Karypis, and V. Kumar (2003): <i>Introduction to Parallel Computing
+ *  			2<sup>nd</sup> Edition</i> <b>Addison Wesley</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2019b): Prim's Algorithm https://en.wikipedia.org/wiki/Prim%27s_algorithm
+ *  		Kepner, J., and J. Gilbert (2011): <i>Graph Algorithms in the Language of Linear Algebra</i>
+ *  			<b>Society for Industrial and Applied Mathematics</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020a): Breadth-First Search https://en.wikipedia.org/wiki/Breadth-first_search
+ *  		Pettie, S., and V. Ramachandran (2002): An Optimal Minimum Spanning Tree <i>Algorithm Journal of
+ *  			the ACM</i> <b>49 (1)</b> 16-34
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020b): Depth-First Search https://en.wikipedia.org/wiki/Depth-first_search
+ *  		Sedgewick, R. E., and K. D. Wayne (2011): <i>Algorithms 4<sup>th</sup> Edition</i>
+ *  			<b>Addison-Wesley</b>
+ *  	</li>
+ *  	<li>
+ *  		Setia, R., A. Nedunchezhian, and S. Balachandran (2015): A New Parallel Algorithm for Minimum
+ *  			Spanning Tree Problem
+ *  			https://hipcor.fatcow.com/hipc2009/documents/HIPCSS09Papers/1569250351.pdf
+ *  	</li>
+ *  	<li>
+ *  		Wikipedia (2019): Prim's Algorithm https://en.wikipedia.org/wiki/Prim%27s_algorithm
  *  	</li>
  *  </ul>
  *
@@ -98,7 +110,7 @@ package org.drip.graph.spanningtree;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/spanningtree/README.md">Algorithms for Spanning Tree Analysis</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/mst/README.md">Algorithms for Generating Minimum Spanning Trees</a></li>
  *  </ul>
  * <br><br>
  *
@@ -142,6 +154,18 @@ public class Prim
 		);
 
 		return true;
+	}
+
+	private static final org.drip.graph.core.Forest InitialVertexTreeForest (
+		final java.lang.String initialVertexName,
+		final org.drip.graph.core.Tree minimumSpanningTree)
+	{
+		org.drip.graph.core.Forest forest = new org.drip.graph.core.Forest();
+
+		return forest.addTree (
+			initialVertexName,
+			minimumSpanningTree
+		) ? forest : null;
 	}
 
 	/**
@@ -191,8 +215,7 @@ public class Prim
 			return null;
 		}
 
-		org.drip.graph.core.Tree minimumSpanningTree =
-			new org.drip.graph.core.Tree();
+		org.drip.graph.core.Tree minimumSpanningTree = new org.drip.graph.core.Tree();
 
 		java.util.Set<java.lang.String> visitedVertexSet = new java.util.HashSet<java.lang.String>();
 
@@ -244,5 +267,25 @@ public class Prim
 		}
 
 		return minimumSpanningTree;
+	}
+
+	public org.drip.graph.core.Forest minimumSpanningForest (
+		final java.lang.String initialVertexName)
+	{
+		org.drip.graph.core.Tree minimumSpanningTreeInitial = minimumSpanningTree (
+			initialVertexName
+		);
+
+		if (null == minimumSpanningTreeInitial)
+		{
+			return null;
+		}
+
+		org.drip.graph.core.Forest forest = InitialVertexTreeForest (
+			initialVertexName,
+			minimumSpanningTreeInitial
+		);
+
+		return forest;
 	}
 }

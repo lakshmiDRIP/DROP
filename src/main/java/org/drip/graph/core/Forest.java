@@ -80,16 +80,20 @@ package org.drip.graph.core;
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Wikipedia (2019a): Kruskal's Algorithm https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
+ *  		Bollobas, B. (1998): <i>Modern Graph Theory</i> <b>Springer</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2019b): Prim's Algorithm https://en.wikipedia.org/wiki/Prim%27s_algorithm
+ *  		Eppstein, D. (1999): Spanning Trees and Spanners
+ *  			https://www.ics.uci.edu/~eppstein/pubs/Epp-TR-96-16.pdf
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020a): Breadth-First Search https://en.wikipedia.org/wiki/Breadth-first_search
+ *  		Gross, J. L., and J. Yellen (2005): <i>Graph Theory and its Applications</i> <b>Springer</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020b): Depth-First Search https://en.wikipedia.org/wiki/Depth-first_search
+ *  		Kocay, W., and D. L. Kreher (2004): <i>Graphs, Algorithms, and Optimizations</i> <b>CRC Press</b>
+ *  	</li>
+ *  	<li>
+ *  		Wikipedia (2020): Spanning Tree https://en.wikipedia.org/wiki/Spanning_tree
  *  	</li>
  *  </ul>
  *
@@ -105,28 +109,28 @@ package org.drip.graph.core;
  * @author Lakshmi Krishnamurthy
  */
 
+/**
+ * @author laksh
+ *
+ */
+/**
+ * @author laksh
+ *
+ */
 public class Forest
 {
+	private java.util.Set<java.lang.String> _vertexSet = null;
 	private java.util.Map<java.lang.String, org.drip.graph.core.Tree> _treeMap = null;
 
 	/**
 	 * Forest Constructor
-	 * 
-	 * @param treeMap Map of Trees
-	 * 
-	 * @throws java.lang.Exception Throw if the Input is Invalid
 	 */
 
-	public Forest (
-		final java.util.Map<java.lang.String, org.drip.graph.core.Tree> treeMap)
-		throws java.lang.Exception
+	public Forest()
 	{
-		if (null == (_treeMap = treeMap) || 0 == _treeMap.size())
-		{
-			throw new java.lang.Exception (
-				"Forest Constructor => Invalid Inputs"
-			);
-		}
+		_vertexSet = new java.util.HashSet<java.lang.String>();
+
+		_treeMap = new org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.graph.core.Tree>();
 	}
 
 	/**
@@ -138,5 +142,152 @@ public class Forest
 	public java.util.Map<java.lang.String, org.drip.graph.core.Tree> treeMap()
 	{
 		return _treeMap;
+	}
+
+	/**
+	 * Create and add a Unit Vertex Tree into the Forest
+	 * 
+	 * @param vertexName Vertex Name
+	 * 
+	 * @return TRUE - The Unit Vertex Tree successfully added into the Forest
+	 */
+
+	public boolean unitVertexTree (
+		final java.lang.String vertexName)
+	{
+		if (null == vertexName)
+		{
+			return false;
+		}
+
+		org.drip.graph.core.Tree tree = new org.drip.graph.core.Tree();
+
+		if (!tree.addVertex (
+			vertexName
+		))
+		{
+			return true;
+		}
+
+		_treeMap.put (
+			vertexName,
+			tree
+		);
+
+		return true;
+	}
+
+	/**
+	 * Add a Keyed Tree to the Forest
+	 *  
+	 * @param treeKey The Tree Key
+	 * @param tree The Tree
+	 * 
+	 * @return TRUE - The Keyed Tree successfully added to the Forest
+	 */
+
+	public boolean addTree (
+		final java.lang.String treeKey,
+		final org.drip.graph.core.Tree tree)
+	{
+		if (null == treeKey || _treeMap.containsKey (
+				treeKey
+			) || null == tree
+		)
+		{
+			return false;
+		}
+
+		_treeMap.put (
+			treeKey,
+			tree
+		);
+
+		_vertexSet.addAll (
+			tree.vertexSet()
+		);
+
+		return true;
+	}
+
+	/**
+	 * Retrieve the Set of Vertexes
+	 * 
+	 * @return The Set of Vertexes
+	 */
+
+	public java.util.Set<java.lang.String> vertexSet()
+	{
+		return _vertexSet;
+	}
+
+	/**
+	 * Indicate if the Vertex is Contained in the Forest
+	 * 
+	 * @param vertexName The Vertex Name
+	 * 
+	 * @return TRUE - The Vertex is Contained in the Forest
+	 */
+
+	public boolean containsVertex (
+		final java.lang.String vertexName)
+	{
+		return null != vertexName && _vertexSet.contains (
+			vertexName
+		);
+	}
+
+	/**
+	 * Retrieve the Tree that contains the specified Vertex
+	 * 
+	 * @param vertexName The Vertex Name
+	 * 
+	 * @return Tree that contains the specified Vertex
+	 */
+
+	public org.drip.graph.core.Tree containingTree (
+		final java.lang.String vertexName)
+	{
+		if (null == vertexName)
+		{
+			return null;
+		}
+
+		for (org.drip.graph.core.Tree tree : _treeMap.values())
+		{
+			if (tree.containsVertex (
+				vertexName
+			))
+			{
+				return tree;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Remove the Tree corresponding to the Vertex Name
+	 * 
+	 * @param vertexName Vertex Name
+	 * 
+	 * @return TRUE - The Tree corresponding to the Vertex Name successfully removed
+	 */
+
+	public boolean removeTree (
+		final java.lang.String vertexName)
+	{
+		if (null == vertexName || !_treeMap.containsKey (
+			vertexName
+		))
+		{
+			return false;
+		}
+
+		_treeMap.remove (
+			vertexName
+		);
+
+		return true;
 	}
 }

@@ -112,8 +112,8 @@ package org.drip.graph.core;
 
 abstract public class Network
 {
-	protected java.util.Map<java.lang.String, org.drip.graph.core.BidirectionalEdge> _edgeMap = null;
 	protected java.util.Map<java.lang.String, org.drip.graph.core.Vertex> _vertexMap = null;
+	protected java.util.Map<java.lang.String, org.drip.graph.core.BidirectionalEdge> _edgeMap = null;
 
 	protected boolean addVertexEdge (
 		final java.lang.String vertexName,
@@ -209,6 +209,17 @@ abstract public class Network
 	public int vertexCount()
 	{
 		return _vertexMap.size();
+	}
+
+	/**
+	 * Retrieve the Set of Vertexes
+	 * 
+	 * @return The Set of Vertexes
+	 */
+
+	public java.util.Set<java.lang.String> vertexSet()
+	{
+		return _vertexMap.keySet();
 	}
 
 	/**

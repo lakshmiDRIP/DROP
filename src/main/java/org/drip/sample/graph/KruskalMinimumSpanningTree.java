@@ -6,7 +6,7 @@ import java.util.Map;
 import org.drip.graph.core.BidirectionalEdge;
 import org.drip.graph.core.Graph;
 import org.drip.graph.core.Tree;
-import org.drip.graph.spanningtree.Kruskal;
+import org.drip.graph.mst.Kruskal;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -223,7 +223,7 @@ public class KruskalMinimumSpanningTree
 			graph
 		);
 
-		Map<String, Tree> minimumSpanningForest = kruskal.minimumSpanningForest();
+		Map<String, Tree> minimumSpanningForest = kruskal.minimumSpanningForest().treeMap();
 
 		for (Tree minimumSpanningTree : minimumSpanningForest.values())
 		{

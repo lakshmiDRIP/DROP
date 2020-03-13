@@ -80,16 +80,20 @@ package org.drip.graph.core;
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Wikipedia (2019a): Kruskal's Algorithm https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
+ *  		Bollobas, B. (1998): <i>Modern Graph Theory</i> <b>Springer</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2019b): Prim's Algorithm https://en.wikipedia.org/wiki/Prim%27s_algorithm
+ *  		Eppstein, D. (1999): Spanning Trees and Spanners
+ *  			https://www.ics.uci.edu/~eppstein/pubs/Epp-TR-96-16.pdf
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020a): Breadth-First Search https://en.wikipedia.org/wiki/Breadth-first_search
+ *  		Gross, J. L., and J. Yellen (2005): <i>Graph Theory and its Applications</i> <b>Springer</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020b): Depth-First Search https://en.wikipedia.org/wiki/Depth-first_search
+ *  		Kocay, W., and D. L. Kreher (2004): <i>Graphs, Algorithms, and Optimizations</i> <b>CRC Press</b>
+ *  	</li>
+ *  	<li>
+ *  		Wikipedia (2020): Spanning Tree https://en.wikipedia.org/wiki/Spanning_tree
  *  	</li>
  *  </ul>
  *
