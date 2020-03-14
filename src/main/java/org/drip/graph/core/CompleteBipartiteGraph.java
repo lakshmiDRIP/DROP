@@ -112,31 +112,31 @@ package org.drip.graph.core;
 public class CompleteBipartiteGraph
 	extends org.drip.graph.core.Graph
 {
-	private org.drip.graph.core.Graph _pGraph = null;
-	private org.drip.graph.core.Graph _qGraph = null;
-	private org.drip.graph.core.BidirectionalEdge _connectionEdge = null;
+	private java.util.Set<java.lang.String> _vertexNameSetP = null;
+	private java.util.Set<java.lang.String> _vertexNameSetQ = null;
+	private java.util.Map<java.lang.String, org.drip.graph.core.BidirectionalEdge> _crossConnectMap = null;
 
 	/**
 	 * CompleteBipartiteGraph Constructor
 	 * 
-	 * @param pGraph P Graph
-	 * @param qGraph Q Graph
-	 * @param connectionEdge Connection Edge
+	 * @param vertexNameSetP P Vertex Name Set
+	 * @param vertexNameSetQ Q Vertex Name Set
+	 * @param crossConnectMap Cross Connection Map
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CompleteBipartiteGraph (
-		final org.drip.graph.core.Graph pGraph,
-		final org.drip.graph.core.Graph qGraph,
-		final org.drip.graph.core.BidirectionalEdge connectionEdge)
+		final java.util.Set<java.lang.String> vertexNameSetP,
+		final java.util.Set<java.lang.String> vertexNameSetQ,
+		final java.util.Map<java.lang.String, org.drip.graph.core.BidirectionalEdge> crossConnectMap)
 		throws java.lang.Exception
 	{
 		super();
 
-		if (null == (_pGraph = pGraph) || _pGraph.isEmpty() ||
-			null == (_qGraph = qGraph) || _qGraph.isEmpty() ||
-			null == (_connectionEdge = connectionEdge)
+		if (null == (_vertexNameSetP = vertexNameSetP) ||
+			null == (_vertexNameSetQ = vertexNameSetQ) ||
+			null == (_crossConnectMap = crossConnectMap)
 		)
 		{
 			throw new java.lang.Exception (
@@ -144,72 +144,86 @@ public class CompleteBipartiteGraph
 			);
 		}
 
-		java.lang.String firstVertexName = _connectionEdge.firstVertexName();
+		int p = _vertexNameSetP.size();
 
-		java.lang.String secondVertexName = _connectionEdge.secondVertexName();
+		int q = _vertexNameSetQ.size();
 
-		if ((!_pGraph.containsVertex (
-				firstVertexName
-			) && !_qGraph.containsVertex (
-				secondVertexName
-			)) || (!_pGraph.containsVertex (
-				secondVertexName
-			) && !_qGraph.containsVertex (
-				firstVertexName
+		if (0 == p ||
+			0 == q ||
+			p * q != _crossConnectMap.size()
+		)
+		{
+			throw new java.lang.Exception (
+				"CompleteBipartiteGraph Constructor => Invalid Inputs"
+			);
+		}
+
+		java.util.Set<java.lang.String> crossConnectKeySet = _crossConnectMap.keySet();
+
+		for (java.lang.String vertexNameP : _vertexNameSetP)
+		{
+			for (java.lang.String vertexNameQ : _vertexNameSetQ)
+			{
+				if (!crossConnectKeySet.contains (
+					vertexNameP + "_" + vertexNameQ
+				) && !crossConnectKeySet.contains (
+					vertexNameQ + "_" + vertexNameP
+				))
+				{
+					throw new java.lang.Exception (
+						"CompleteBipartiteGraph Constructor => Invalid Inputs"
+					);
+				}
+			}
+		}
+
+		java.util.Collection<org.drip.graph.core.BidirectionalEdge> crossConnectEdgeCollection =
+			_crossConnectMap.values();
+
+		for (org.drip.graph.core.BidirectionalEdge edge : crossConnectEdgeCollection)
+		{
+			if (!addBidirectionalEdge (
+				edge
 			))
-		)
-		{
-			throw new java.lang.Exception (
-				"CompleteBipartiteGraph Constructor => Invalid Inputs"
-			);
-		}
-
-		if (!addGraph (
-				_pGraph
-			) || !addGraph (
-				_qGraph
-			) || !addBidirectionalEdge (
-				_connectionEdge
-			)
-		)
-		{
-			throw new java.lang.Exception (
-				"CompleteBipartiteGraph Constructor => Invalid Inputs"
-			);
+			{
+				throw new java.lang.Exception (
+					"CompleteBipartiteGraph Constructor => Invalid Inputs"
+				);
+			}
 		}
 	}
 
 	/**
-	 * Retrieve the P Graph
+	 * Retrieve the P Vertex Name Set
 	 * 
-	 * @return The P Graph
+	 * @return The P Vertex Name Set
 	 */
 
-	public org.drip.graph.core.Graph pGraph()
+	public java.util.Set<java.lang.String> vertexNameSetP()
 	{
-		return _pGraph;
+		return _vertexNameSetP;
 	}
 
 	/**
-	 * Retrieve the Q Graph
+	 * Retrieve the Q Vertex Name Set
 	 * 
-	 * @return The Q Graph
+	 * @return The Q Vertex Name Set
 	 */
 
-	public org.drip.graph.core.Graph qGraph()
+	public java.util.Set<java.lang.String> vertexNameSetQ()
 	{
-		return _qGraph;
+		return _vertexNameSetQ;
 	}
 
 	/**
-	 * Retrieve the Connection Edge
+	 * Retrieve the Cross Connection Edge Map
 	 * 
-	 * @return The Connection Edge
+	 * @return The Cross Connection Edge Map
 	 */
 
-	public org.drip.graph.core.BidirectionalEdge connectionEdge()
+	public java.util.Map<java.lang.String, org.drip.graph.core.BidirectionalEdge> crossConnectMap()
 	{
-		return _connectionEdge;
+		return _crossConnectMap;
 	}
 
 	/**
@@ -220,7 +234,7 @@ public class CompleteBipartiteGraph
 
 	public int p()
 	{
-		return _pGraph.vertexCount();
+		return _vertexNameSetP.size();
 	}
 
 	/**
@@ -231,7 +245,7 @@ public class CompleteBipartiteGraph
 
 	public int q()
 	{
-		return _qGraph.vertexCount();
+		return _vertexNameSetQ.size();
 	}
 
 	@Override public boolean isConnected()
@@ -261,9 +275,9 @@ public class CompleteBipartiteGraph
 
 	@Override public double spanningTreeCount()
 	{
-		int p = _pGraph.vertexCount();
+		int p =  _vertexNameSetP.size();
 
-		int q = _qGraph.vertexCount();
+		int q =  _vertexNameSetQ.size();
 
 		return java.lang.Math.pow (
 			p,

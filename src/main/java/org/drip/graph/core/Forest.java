@@ -109,18 +109,11 @@ package org.drip.graph.core;
  * @author Lakshmi Krishnamurthy
  */
 
-/**
- * @author laksh
- *
- */
-/**
- * @author laksh
- *
- */
 public class Forest
 {
 	private java.util.Set<java.lang.String> _vertexSet = null;
 	private java.util.Map<java.lang.String, org.drip.graph.core.Tree> _treeMap = null;
+	private java.util.Map<java.lang.String, java.lang.String> _containingTreeNameMap = null;
 
 	/**
 	 * Forest Constructor
@@ -131,6 +124,8 @@ public class Forest
 		_vertexSet = new java.util.HashSet<java.lang.String>();
 
 		_treeMap = new org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.graph.core.Tree>();
+
+		_containingTreeNameMap = new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.String>();
 	}
 
 	/**
@@ -142,6 +137,28 @@ public class Forest
 	public java.util.Map<java.lang.String, org.drip.graph.core.Tree> treeMap()
 	{
 		return _treeMap;
+	}
+
+	/**
+	 * Retrieve the Map of Containing Tree Names
+	 * 
+	 * @return Map of Containing Tree Names
+	 */
+
+	public java.util.Map<java.lang.String, java.lang.String> containingTreeNameMap()
+	{
+		return _containingTreeNameMap;
+	}
+
+	/**
+	 * Retrieve the Set of Vertexes
+	 * 
+	 * @return The Set of Vertexes
+	 */
+
+	public java.util.Set<java.lang.String> vertexSet()
+	{
+		return _vertexSet;
 	}
 
 	/**
@@ -174,6 +191,11 @@ public class Forest
 			tree
 		);
 
+		_containingTreeNameMap.put (
+			vertexName,
+			vertexName
+		);
+
 		return true;
 	}
 
@@ -203,22 +225,32 @@ public class Forest
 			tree
 		);
 
+		java.util.Set<java.lang.String> treeVertexSet = tree.vertexSet();
+
 		_vertexSet.addAll (
-			tree.vertexSet()
+			treeVertexSet
 		);
+
+		for (java.lang.String vertexName : treeVertexSet)
+		{
+			_containingTreeNameMap.put (
+				vertexName,
+				treeKey
+			);
+		}
 
 		return true;
 	}
 
 	/**
-	 * Retrieve the Set of Vertexes
+	 * Retrieve the Set of the Tree Keys
 	 * 
-	 * @return The Set of Vertexes
+	 * @return The Set of the Tree Keys
 	 */
 
-	public java.util.Set<java.lang.String> vertexSet()
+	public java.util.Set<java.lang.String> treeKeySet()
 	{
-		return _vertexSet;
+		return _treeMap.keySet();
 	}
 
 	/**
@@ -232,7 +264,7 @@ public class Forest
 	public boolean containsVertex (
 		final java.lang.String vertexName)
 	{
-		return null != vertexName && _vertexSet.contains (
+		return null != vertexName && _containingTreeNameMap.containsKey (
 			vertexName
 		);
 	}
@@ -248,44 +280,86 @@ public class Forest
 	public org.drip.graph.core.Tree containingTree (
 		final java.lang.String vertexName)
 	{
-		if (null == vertexName)
-		{
-			return null;
-		}
-
-		for (org.drip.graph.core.Tree tree : _treeMap.values())
-		{
-			if (tree.containsVertex (
+		return containsVertex (
+			vertexName
+		) ? _treeMap.get (
+			_containingTreeNameMap.get (
 				vertexName
-			))
-			{
-				return tree;
-			}
-		}
-
-		return null;
+			)
+		) : null;
 	}
 
 	/**
-	 * Remove the Tree corresponding to the Vertex Name
+	 * Conditionally Merge the Specified Source and Destination Trees of the Edge
 	 * 
-	 * @param vertexName Vertex Name
+	 * @param edge The Edge
 	 * 
-	 * @return TRUE - The Tree corresponding to the Vertex Name successfully removed
+	 * @return TRUE - The Source and the Destination Trees successfully conditionally merged
 	 */
 
-	public boolean removeTree (
-		final java.lang.String vertexName)
+	public boolean conditionalMerge (
+		final org.drip.graph.core.BidirectionalEdge edge)
 	{
-		if (null == vertexName || !_treeMap.containsKey (
-			vertexName
+		if (null == edge)
+		{
+			return false;
+		}
+
+		java.lang.String sourceVertexName = edge.firstVertexName();
+
+		java.lang.String destinationVertexName = edge.secondVertexName();
+
+		if (!_containingTreeNameMap.containsKey (
+				sourceVertexName
+			) || !_containingTreeNameMap.containsKey (
+				destinationVertexName
+			)
+		)
+		{
+			return false;
+		}
+
+		java.lang.String sourceTreeName = _containingTreeNameMap.get (
+			sourceVertexName
+		);
+
+		java.lang.String destinationTreeName = _containingTreeNameMap.get (
+			destinationVertexName
+		);
+
+		if (sourceTreeName.equalsIgnoreCase (
+			destinationTreeName
+		))
+		{
+			return true;
+		}
+
+		org.drip.graph.core.Tree destinationTree = _treeMap.get (
+			destinationTreeName
+		);
+
+		java.util.Set<java.lang.String> destinationTreeVertexSet = destinationTree.vertexSet();
+
+		for (java.lang.String vertexName : destinationTreeVertexSet)
+		{
+			_containingTreeNameMap.put (
+				vertexName,
+				sourceTreeName
+			);
+		}
+
+		if (!_treeMap.get (
+			sourceTreeName
+		).absorbTreeAndEdge (
+			destinationTree,
+			edge
 		))
 		{
 			return false;
 		}
 
 		_treeMap.remove (
-			vertexName
+			destinationTreeName
 		);
 
 		return true;

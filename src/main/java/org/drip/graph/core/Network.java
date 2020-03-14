@@ -366,10 +366,232 @@ abstract public class Network
 
 		for (org.drip.graph.core.BidirectionalEdge edge : _edgeMap.values())
 		{
-			length = length + edge.distance();
+			length = length + (edge instanceof org.drip.graph.core.BidirectionalEdge ? 0.5 : 1.) *
+				edge.distance();
 		}
 
 		return length;
+	}
+
+	/**
+	 * Generate the Vertex Set using a Recursive Depth-First Search
+	 * 
+	 * @param vertexName Vertex Name
+	 * @param orderedSearch The Ordered Search Holder
+	 * 
+	 * @return The Vertex Set using a Recursive Depth-First Search
+	 */
+
+	public boolean dfsRecursive (
+		final java.lang.String vertexName,
+		final org.drip.graph.core.OrderedSearch orderedSearch)
+	{
+		if (null == orderedSearch ||
+			!_vertexMap.containsKey (
+				vertexName
+			)
+		)
+		{
+			return false;
+		}
+
+		orderedSearch.addVertex (
+			vertexName
+		);
+
+		org.drip.graph.core.Vertex vertex = _vertexMap.get (
+			vertexName
+		);
+
+		java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap = vertex.adjacencyMap();
+
+		if (null == adjacencyMap || 0 == adjacencyMap.size())
+		{
+			return true;
+		}
+
+		for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.BidirectionalEdge> egressMapEntry :
+			adjacencyMap.entrySet())
+		{
+			java.lang.String secondVertexName = egressMapEntry.getValue().secondVertexName();
+
+			if (!orderedSearch.vertexPresent (
+				secondVertexName
+			))
+			{
+				if (!dfsRecursive (
+					secondVertexName,
+					orderedSearch
+				))
+				{
+					return false;
+				}
+			}
+			else
+			{
+				orderedSearch.setContainsCycle();
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Generate the Vertex Set using a Non-recursive Depth-First Search
+	 * 
+	 * @param vertexName Vertex Name
+	 * @param orderedSearch The Ordered Search Holder
+	 * 
+	 * @return The Vertex Set using a Non-recursive Depth-First Search
+	 */
+
+	public boolean dfsNonRecursive (
+		final java.lang.String vertexName,
+		final org.drip.graph.core.OrderedSearch orderedSearch)
+	{
+		if (null == orderedSearch ||
+			!_vertexMap.containsKey (
+				vertexName
+			)
+		)
+		{
+			return false;
+		}
+
+		java.util.List<java.lang.String> processVertexList = new java.util.ArrayList<java.lang.String>();
+
+		processVertexList.add (
+			vertexName
+		);
+
+		while (!processVertexList.isEmpty())
+		{
+			int lastIndex = processVertexList.size() - 1;
+
+			java.lang.String currentVertexName = processVertexList.get (
+				lastIndex
+			);
+
+			if (!orderedSearch.addVertex (
+				currentVertexName
+			))
+			{
+				return false;
+			}
+
+			org.drip.graph.core.Vertex currentVertex = _vertexMap.get (
+				currentVertexName
+			);
+
+			java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> egressMap =
+				currentVertex.adjacencyMap();
+
+			if (null != egressMap && 0 != egressMap.size())
+			{
+				for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.BidirectionalEdge>
+					egressMapEntry : egressMap.entrySet())
+				{
+					java.lang.String secondVertexName = egressMapEntry.getValue().secondVertexName();
+
+					if (!orderedSearch.vertexPresent (
+						secondVertexName
+					))
+					{
+						processVertexList.add (
+							secondVertexName
+						);
+					}
+					else
+					{
+						orderedSearch.setContainsCycle();
+					}
+				}
+			}
+
+			processVertexList.remove (
+				lastIndex
+			);
+		}
+
+		return true;
+	}
+
+	/**
+	 * Generate the Vertex Set using a Breadth-First Search
+	 * 
+	 * @param vertexName Vertex Name
+	 * @param orderedSearch The Ordered Search Holder
+	 * 
+	 * @return The Vertex Set using a Breadth-First Search
+	 */
+
+	public boolean bfs (
+		final java.lang.String vertexName,
+		final org.drip.graph.core.OrderedSearch orderedSearch)
+	{
+		if (null == orderedSearch ||
+			!_vertexMap.containsKey (
+				vertexName
+			)
+		)
+		{
+			return false;
+		}
+
+		java.util.List<java.lang.String> processVertexList = new java.util.ArrayList<java.lang.String>();
+
+		processVertexList.add (
+			vertexName
+		);
+
+		while (!processVertexList.isEmpty())
+		{
+			java.lang.String currentVertexName = processVertexList.get (
+				0
+			);
+
+			if (!orderedSearch.addVertex (
+				currentVertexName
+			))
+			{
+				return false;
+			}
+
+			org.drip.graph.core.Vertex currentVertex = _vertexMap.get (
+				currentVertexName
+			);
+
+			java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap =
+				currentVertex.adjacencyMap();
+
+			if (null != adjacencyMap && 0 != adjacencyMap.size())
+			{
+				for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.BidirectionalEdge>
+					adjacencyMapEntry : adjacencyMap.entrySet())
+				{
+					java.lang.String secondVertexName = adjacencyMapEntry.getValue().secondVertexName();
+
+					if (!orderedSearch.vertexPresent (
+						secondVertexName
+					))
+					{
+						processVertexList.add (
+							secondVertexName
+						);
+					}
+					else
+					{
+						orderedSearch.setContainsCycle();
+					}
+				}
+			}
+
+			processVertexList.remove (
+				0
+			);
+		}
+
+		return true;
 	}
 
 	/**

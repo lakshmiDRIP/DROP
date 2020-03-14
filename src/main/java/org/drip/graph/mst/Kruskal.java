@@ -180,33 +180,9 @@ public class Kruskal
 				firstEntry.getKey()
 			);
 
-			org.drip.graph.core.BidirectionalEdge currentEdge = firstEntry.getValue();
-
-			java.lang.String firstVertexName = currentEdge.firstVertexName();
-
-			org.drip.graph.core.Tree sourceContainerTree = forest.containingTree (
-				firstVertexName
+			forest.conditionalMerge (
+				firstEntry.getValue()
 			);
-
-			java.lang.String destinationVertexName = currentEdge.secondVertexName();
-
-			org.drip.graph.core.Tree destinationContainerTree = forest.containingTree (
-				destinationVertexName
-			);
-
-			if (null != destinationContainerTree &&
-				sourceContainerTree != destinationContainerTree)
-			{
-				if (!sourceContainerTree.absorbTreeAndEdge (
-					destinationContainerTree,
-					currentEdge
-				) || !forest.removeTree (
-					destinationVertexName
-				))
-				{
-					return null;
-				}
-			}
 		}
 
 		return forest;

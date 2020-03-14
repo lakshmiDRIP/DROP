@@ -227,15 +227,35 @@ public class KruskalMinimumSpanningTree
 
 		for (Tree minimumSpanningTree : minimumSpanningForest.values())
 		{
+			System.out.println (
+				"\t|-----------------------------------------------------------------------------------|"
+			);
+
+			System.out.println (
+				"\t|                        KRUSKAL MINIMUM SPANNING TREE PATH                         |"
+			);
+
+			System.out.println (
+				"\t|-----------------------------------------------------------------------------------|"
+			);
+
 			for (BidirectionalEdge edge : minimumSpanningTree.edgeMap().values())
 			{
 				System.out.println (
-					edge
+					"\t| " + edge
 				);
 			}
 
 			System.out.println (
-				"\tTotal MST Length => " + minimumSpanningTree.length()
+				"\t|-----------------------------------------------------------------------------------|"
+			);
+
+			System.out.println (
+				"\t| Total MST Length => " + minimumSpanningTree.length()
+			);
+
+			System.out.println (
+				"\t|-----------------------------------------------------------------------------------|"
 			);
 		}
 
