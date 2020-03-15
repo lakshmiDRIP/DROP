@@ -112,7 +112,6 @@ package org.drip.graph.core;
 public class Graph
 	extends org.drip.graph.core.Network
 {
-
 	/**
 	 * Graph Constructor
 	 */
@@ -138,7 +137,8 @@ public class Graph
 			return false;
 		}
 
-		java.util.Collection<org.drip.graph.core.BidirectionalEdge> edgeCollection = graph.edgeMap().values();
+		java.util.Collection<org.drip.graph.core.BidirectionalEdge> edgeCollection =
+			graph.edgeMap().values();
 
 		if (null == edgeCollection || 0 == edgeCollection.size())
 		{
@@ -171,21 +171,13 @@ public class Graph
 			return false;
 		}
 
-		java.lang.String vertexName = "";
-
 		java.util.Set<java.lang.String> vertexNameSet = _vertexMap.keySet();
-
-		for (java.lang.String vertexMapKey : vertexNameSet)
-		{
-			vertexName = vertexMapKey;
-			break;
-		}
 
 		org.drip.graph.core.OrderedSearch orderedSearch =
 			new org.drip.graph.core.OrderedSearch();
 
 		if (!bfs (
-			vertexName,
+			initialVertexName(),
 			orderedSearch
 		))
 		{
@@ -386,6 +378,25 @@ public class Graph
 	}
 
 	/**
+	 * Indicate if the Graph is Dense
+	 * 
+	 * @return TRUE - The Graph is Dense
+	 */
+
+	public boolean isDense()
+	{
+		int vertexCount = _vertexMap.size();
+
+		return 0.5 * _edgeMap.size() >= vertexCount * java.lang.Math.log (
+			java.lang.Math.log (
+				java.lang.Math.log (
+					vertexCount
+				)
+			)
+		);
+	}
+
+	/**
 	 * Retrieve the Map of the Vertex Adjacency Degree
 	 * 
 	 * @return Map of the Vertex Adjacency Degree
@@ -425,13 +436,7 @@ public class Graph
 		final java.lang.String vertexName2)
 	{
 		if (null == vertexName1 || vertexName1.isEmpty() ||
-			null == vertexName2 || vertexName2.isEmpty() ||
-			! _vertexMap.containsKey (
-				vertexName1
-			) || !_vertexMap.containsKey (
-				vertexName2
-			)
-		)
+			null == vertexName2 || vertexName2.isEmpty())
 		{
 			return false;
 		}
@@ -483,8 +488,8 @@ public class Graph
 
 		int vertexCount = vertexDegreeMap.size();
 
-		double[][] kirchoffMatrix = new double[vertexCount][vertexCount];
-		double[][] reducedKirchoffMatrix = new double[vertexCount - 1][vertexCount - 1];
+		double[][] laplacianMatrix = new double[vertexCount][vertexCount];
+		double[][] laplacianMatrixCoFactor = new double[vertexCount - 1][vertexCount - 1];
 
 		for (int vertexIndexI = 0;
 			vertexIndexI < vertexCount;
@@ -494,7 +499,7 @@ public class Graph
 				vertexIndexJ < vertexCount;
 				++vertexIndexJ)
 			{
-				kirchoffMatrix[vertexIndexI][vertexIndexJ] = 0.;
+				laplacianMatrix[vertexIndexI][vertexIndexJ] = 0.;
 			}
 		}
 
@@ -510,13 +515,13 @@ public class Graph
 					vertexNameJ
 				))
 				{
-					kirchoffMatrix[vertexIndexI][vertexIndexJ] = vertexDegreeMap.get (
+					laplacianMatrix[vertexIndexI][vertexIndexJ] = vertexDegreeMap.get (
 						vertexNameI
 					);
 				}
 				else
 				{
-					kirchoffMatrix[vertexIndexI][vertexIndexJ] = areVertexesAdjacent (
+					laplacianMatrix[vertexIndexI][vertexIndexJ] = areVertexesAdjacent (
 						vertexNameI,
 						vertexNameJ
 					) ? -1. : 0.;
@@ -536,15 +541,15 @@ public class Graph
 				vertexIndexJ < vertexCount - 1;
 				++vertexIndexJ)
 			{
-				reducedKirchoffMatrix[vertexIndexI][vertexIndexJ] =
-					kirchoffMatrix[vertexIndexI][vertexIndexJ];
+				laplacianMatrixCoFactor[vertexIndexI][vertexIndexJ] =
+					laplacianMatrix[vertexIndexI][vertexIndexJ];
 			}
 		}
 
 		try
 		{
 			return new org.drip.function.matrix.Square (
-				reducedKirchoffMatrix
+				laplacianMatrixCoFactor
 			).determinant();
 		}
 		catch (java.lang.Exception e)

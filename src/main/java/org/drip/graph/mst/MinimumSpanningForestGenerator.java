@@ -1,5 +1,5 @@
 
-package org.drip.alm.dynamics;
+package org.drip.graph.mst;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -7,7 +7,6 @@ package org.drip.alm.dynamics;
 
 /*!
  * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -76,114 +75,81 @@ package org.drip.alm.dynamics;
  */
 
 /**
- * <i>MatchingPortfolio</i> implements the Matching ALM Portfolio and its Evolution. The References are:
+ * <i>MinimumSpanningForestGenerator</i> exposes the Algorithmic Implementation for the Generation of the
+ * 	Minimum Spanning Forest. The References are:
  * 
  * <br><br>
- * 	<ul>
- * 		<li>
- * 			Judd, K., L., F. Kubler, and K. Schmedders (2011): Bond Ladders and Optimal Portfolios
- * 				https://pdfs.semanticscholar.org/7c4e/3704ad9af6fbeca27c915b5f69eb0f717396.pdf <b>Schematic
- * 				Scholar</b>
- * 		</li>
- * 	</ul>
- *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ALMAnalyticsLibrary.md">Asset Liability Management Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/alm/README.md">Asset Liability Management Analytics Functionality</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/alm/dynamics/README.md">ALM Portfolio Allocation and Evolution</a></li>
+ *  	<li>
+ *  		Grama, A., A. Gupta, G. Karypis, and V. Kumar (2003): <i>Introduction to Parallel Computing
+ *  			2<sup>nd</sup> Edition</i> <b>Addison Wesley</b>
+ *  	</li>
+ *  	<li>
+ *  		Kepner, J., and J. Gilbert (2011): <i>Graph Algorithms in the Language of Linear Algebra</i>
+ *  			<b>Society for Industrial and Applied Mathematics</b>
+ *  	</li>
+ *  	<li>
+ *  		Pettie, S., and V. Ramachandran (2002): An Optimal Minimum Spanning Tree <i>Algorithm Journal of
+ *  			the ACM</i> <b>49 (1)</b> 16-34
+ *  	</li>
+ *  	<li>
+ *  		Sedgewick, R. E., and K. D. Wayne (2011): <i>Algorithms 4<sup>th</sup> Edition</i>
+ *  			<b>Addison-Wesley</b>
+ *  	</li>
+ *  	<li>
+ *  		Setia, R., A. Nedunchezhian, and S. Balachandran (2015): A New Parallel Algorithm for Minimum
+ *  			Spanning Tree Problem
+ *  			https://hipcor.fatcow.com/hipc2009/documents/HIPCSS09Papers/1569250351.pdf
+ *  	</li>
+ *  	<li>
+ *  		Wikipedia (2019): Prim's Algorithm https://en.wikipedia.org/wiki/Prim%27s_algorithm
+ *  	</li>
  *  </ul>
- * 
+ *
+ * <br><br>
+ *  <ul>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/mst/README.md">Algorithms for Generating Minimum Spanning Trees</a></li>
+ *  </ul>
+ * <br><br>
+ *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MatchingPortfolio
-	extends org.drip.alm.dynamics.EvolvableAsset
+public abstract class MinimumSpanningForestGenerator
 {
-	private org.drip.alm.dynamics.MaturingAsset _maturingAsset = null;
-	private org.drip.alm.dynamics.NonMaturingAsset _nonMaturingAsset = null;
+	protected org.drip.graph.core.Graph _graph = null;
 
-	/**
-	 * MatchingPortfolio Constructor
-	 * 
-	 * @param id Asset ID
-	 * @param maturingAsset Maturing Asset
-	 * @param nonMaturingAsset Non-maturing Asset
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public MatchingPortfolio (
-		final java.lang.String id,
-		final org.drip.alm.dynamics.MaturingAsset maturingAsset,
-		final org.drip.alm.dynamics.NonMaturingAsset nonMaturingAsset)
+	protected MinimumSpanningForestGenerator (
+		final org.drip.graph.core.Graph graph)
 		throws java.lang.Exception
 	{
-		super (
-			id,
-			maturingAsset.amount() + nonMaturingAsset.amount()
-		);
-
-		_maturingAsset = maturingAsset;
-		_nonMaturingAsset = nonMaturingAsset;
+		if (null == (_graph = graph))
+		{
+			throw new java.lang.Exception (
+				"MinimumSpanningForestGenerator Constructor => Invalid Inputs"
+			);
+		}
 	}
 
 	/**
-	 * Retrieve the Maturing Asset
+	 * Retrieve the Graph
 	 * 
-	 * @return Maturing Asset
+	 * @return The Graph
 	 */
 
-	public org.drip.alm.dynamics.MaturingAsset maturingAsset()
+	public org.drip.graph.core.Graph graph()
 	{
-		return _maturingAsset;
+		return _graph;
 	}
 
 	/**
-	 * Retrieve the Non-maturing Asset
+	 * Generate the Map of the Minimum Spanning Trees from the Initial Vertex
 	 * 
-	 * @return Non-maturing Asset
+	 * @return Map of the Minimum Spanning Trees
 	 */
 
-	public org.drip.alm.dynamics.NonMaturingAsset nonMaturingAsset()
-	{
-		return _nonMaturingAsset;
-	}
-
-	@Override public double[] realizePath (
-		final org.drip.alm.dynamics.SpotMarketParameters spotMarketParameters,
-		final int horizonTenorInMonths,
-		final int evolutionTenorInMonths)
-	{
-		double[] maturingAssetPathRealization = _maturingAsset.realizePath (
-			spotMarketParameters,
-			horizonTenorInMonths,
-			evolutionTenorInMonths
-		);
-
-		double[] nonMaturingAssetPathRealization = _nonMaturingAsset.realizePath (
-			spotMarketParameters,
-			horizonTenorInMonths,
-			evolutionTenorInMonths
-		);
-
-		if (null == maturingAssetPathRealization || null == nonMaturingAssetPathRealization)
-		{
-			return null;
-		}
-
-		int horizonPeriod = horizonTenorInMonths / evolutionTenorInMonths;
-		double[] priceTrajectory = new double[horizonPeriod + 1];
-
-		for (int periodIndex = 0;
-			periodIndex <= horizonPeriod;
-			++periodIndex)
-		{
-			priceTrajectory[periodIndex] = maturingAssetPathRealization[periodIndex] +
-				nonMaturingAssetPathRealization[periodIndex];
-		}
-
-		return priceTrajectory;
-	}
+	public abstract org.drip.graph.core.Forest minimumSpanningForest();
 }

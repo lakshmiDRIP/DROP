@@ -114,8 +114,8 @@ package org.drip.graph.mst;
  */
 
 public class Kruskal
+	extends org.drip.graph.mst.MinimumSpanningForestGenerator
 {
-	private org.drip.graph.core.Graph _graph = null;
 
 	/**
 	 * Kruskal Constructor
@@ -129,32 +129,12 @@ public class Kruskal
 		final org.drip.graph.core.Graph graph)
 		throws java.lang.Exception
 	{
-		if (null == (_graph = graph))
-		{
-			throw new java.lang.Exception (
-				"Kruskal Constructor => Invalid Inputs"
-			);
-		}
+		super (
+			graph
+		);
 	}
 
-	/**
-	 * Retrieve the Graph
-	 * 
-	 * @return The Graph
-	 */
-
-	public org.drip.graph.core.Graph graph()
-	{
-		return _graph;
-	}
-
-	/**
-	 * Generate the Map of the Minimum Spanning Trees from the Initial Vertex
-	 * 
-	 * @return Map of the Minimum Spanning Trees
-	 */
-
-	public org.drip.graph.core.Forest minimumSpanningForest()
+	@Override public org.drip.graph.core.Forest minimumSpanningForest()
 	{
 		org.drip.graph.core.Forest forest = new org.drip.graph.core.Forest();
 
@@ -166,23 +146,6 @@ public class Kruskal
 			{
 				return null;
 			}
-		}
-
-		java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge> orderedEdgeMap =
-			_graph.orderedEdgeMap();
-
-		while (!orderedEdgeMap.isEmpty())
-		{
-			java.util.Map.Entry<java.lang.Double, org.drip.graph.core.BidirectionalEdge> firstEntry =
-				orderedEdgeMap.firstEntry();
-
-			orderedEdgeMap.remove (
-				firstEntry.getKey()
-			);
-
-			forest.conditionalMerge (
-				firstEntry.getValue()
-			);
 		}
 
 		return forest;

@@ -118,9 +118,8 @@ package org.drip.graph.mst;
  */
 
 public class Prim
+	extends org.drip.graph.mst.MinimumSpanningForestGenerator
 {
-	private org.drip.graph.core.Graph _graph = null;
-
 	private boolean updateEdgeTreeMap (
 		final java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge> edgeTreeMap,
 		final java.util.Set<java.lang.String> visitedVertexSet,
@@ -156,16 +155,24 @@ public class Prim
 		return true;
 	}
 
-	private static final org.drip.graph.core.Forest InitialVertexTreeForest (
-		final java.lang.String initialVertexName,
-		final org.drip.graph.core.Tree minimumSpanningTree)
+	private java.lang.String uncoveredVertex (
+		final org.drip.graph.core.Forest forest)
 	{
-		org.drip.graph.core.Forest forest = new org.drip.graph.core.Forest();
+		java.util.Set<java.lang.String> graphVertexNameSet = _graph.vertexSet();
 
-		return forest.addTree (
-			initialVertexName,
-			minimumSpanningTree
-		) ? forest : null;
+		java.util.Set<java.lang.String> forestVertexNameSet = forest.vertexSet();
+
+		for (java.lang.String graphVertexName : graphVertexNameSet)
+		{
+			if (!forestVertexNameSet.contains (
+				graphVertexName
+			))
+			{
+				return graphVertexName;
+			}
+		}
+
+		return "";
 	}
 
 	/**
@@ -180,23 +187,9 @@ public class Prim
 		final org.drip.graph.core.Graph graph)
 		throws java.lang.Exception
 	{
-		if (null == (_graph = graph))
-		{
-			throw new java.lang.Exception (
-				"Prim Constructor => Invalid Inputs"
-			);
-		}
-	}
-
-	/**
-	 * Retrieve the Graph
-	 * 
-	 * @return The Graph
-	 */
-
-	public org.drip.graph.core.Graph graph()
-	{
-		return _graph;
+		super (
+			graph
+		);
 	}
 
 	/**
@@ -269,6 +262,14 @@ public class Prim
 		return minimumSpanningTree;
 	}
 
+	/**
+	 * Generate the Minimum Spanning Forest from the specified Initial Vertex
+	 * 
+	 * @param initialVertexName Initial Vertex Name
+	 * 
+	 * @return The Minimum Spanning Forest
+	 */
+
 	public org.drip.graph.core.Forest minimumSpanningForest (
 		final java.lang.String initialVertexName)
 	{
@@ -281,11 +282,48 @@ public class Prim
 			return null;
 		}
 
-		org.drip.graph.core.Forest forest = InitialVertexTreeForest (
+		org.drip.graph.core.Forest forest = new org.drip.graph.core.Forest();
+
+		if (!forest.addTree (
 			initialVertexName,
 			minimumSpanningTreeInitial
-		);
+		))
+		{
+			return null;
+		}
+
+		java.lang.String uncoveredVertex = uncoveredVertex (forest);
+
+		while (!uncoveredVertex.isEmpty())
+		{
+			org.drip.graph.core.Tree minimumSpanningTree = minimumSpanningTree (
+				initialVertexName
+			);
+
+			if (null == minimumSpanningTree ||
+				!forest.addTree (
+					initialVertexName,
+					minimumSpanningTreeInitial
+				)
+			)
+			{
+				return null;
+			}
+
+			uncoveredVertex = uncoveredVertex (
+				forest
+			);
+		}
 
 		return forest;
+	}
+
+	@Override public org.drip.graph.core.Forest minimumSpanningForest()
+	{
+		java.lang.String initialVertexName = _graph.initialVertexName();
+
+		return initialVertexName.isEmpty() ? null : minimumSpanningForest (
+			initialVertexName
+		);
 	}
 }

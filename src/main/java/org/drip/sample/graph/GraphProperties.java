@@ -271,6 +271,10 @@ public class GraphProperties
 		);
 
 		System.out.println (
+			"\t| Is the Graph Dense?                => " + graph.isDense()
+		);
+
+		System.out.println (
 			"\t|------------------------------------------------------------------------------------"
 		);
 

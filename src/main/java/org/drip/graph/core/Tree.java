@@ -112,6 +112,7 @@ package org.drip.graph.core;
 public class Tree
 	extends org.drip.graph.core.Network
 {
+
 	/**
 	 * Tree Constructor
 	 */
@@ -190,5 +191,72 @@ public class Tree
 		}
 
 		return true;
+	}
+
+	/**
+	 * Construct and Retrieve the Tree Adjacency Map from the Graph
+	 * 
+	 * @param graph The Graph
+	 * 
+	 * @return The Tree Adjacency Map
+	 */
+
+	public java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap (
+		final org.drip.graph.core.Graph graph)
+	{
+		if (null == graph)
+		{
+			return null;
+		}
+
+		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> graphVertexMap = graph.vertexMap();
+
+		java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap =
+			new java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge>();
+
+		for (java.lang.String vertexName : _vertexMap.keySet())
+		{
+			if (!graphVertexMap.containsKey (
+				vertexName
+			))
+			{
+				return null;
+			}
+
+			org.drip.graph.core.Vertex vertex = graphVertexMap.get (
+				vertexName
+			);
+
+			java.util.Collection<org.drip.graph.core.BidirectionalEdge> edgeCollection =
+				vertex.adjacencyMap().values();
+
+			if (null == edgeCollection || 0 == edgeCollection.size())
+			{
+				continue;
+			}
+
+			for (org.drip.graph.core.BidirectionalEdge edge : edgeCollection)
+			{
+				java.lang.String sourceVertexName = edge.firstVertexName();
+
+				java.lang.String destinationVertexName = edge.secondVertexName();
+
+				if (_vertexMap.containsKey (
+					sourceVertexName
+				) && _vertexMap.containsKey (
+					destinationVertexName
+				))
+				{
+					continue;
+				}
+
+				adjacencyMap.put (
+					edge.distance(),
+					edge
+				);
+			}
+		}
+
+		return adjacencyMap;
 	}
 }

@@ -112,6 +112,8 @@ package org.drip.graph.core;
 
 abstract public class Network
 {
+	private java.lang.String _initialVertexName = "";
+
 	protected java.util.Map<java.lang.String, org.drip.graph.core.Vertex> _vertexMap = null;
 	protected java.util.Map<java.lang.String, org.drip.graph.core.BidirectionalEdge> _edgeMap = null;
 
@@ -190,6 +192,17 @@ abstract public class Network
 	}
 
 	/**
+	 * Retrieve the Initial Vertex Name
+	 * 
+	 * @return The Initial Vertex Name
+	 */
+
+	public java.lang.String initialVertexName()
+	{
+		return _initialVertexName;
+	}
+
+	/**
 	 * Retrieve the Count of the Edges
 	 * 
 	 * @return The Count of the Edges
@@ -234,12 +247,17 @@ abstract public class Network
 		final java.lang.String vertexName)
 	{
 		if (null == vertexName || vertexName.isEmpty() ||
-			!_vertexMap.containsKey (
+			_vertexMap.containsKey (
 				vertexName
 			)
 		)
 		{
 			return false;
+		}
+
+		if (_initialVertexName.isEmpty())
+		{
+			_initialVertexName = vertexName;
 		}
 
 		try
@@ -290,6 +308,11 @@ abstract public class Network
 		))
 		{
 			return false;
+		}
+
+		if (_initialVertexName.isEmpty())
+		{
+			_initialVertexName = firstVertexName;
 		}
 
 		_edgeMap.put (

@@ -296,6 +296,10 @@ public class CompleteBipartiteProperties
 		);
 
 		System.out.println (
+			"\t| Is the Graph Dense?                => " + graph.isDense()
+		);
+
+		System.out.println (
 			"\t| Graph Vertex Degree Map            => " + graph.vertexDegreeMap()
 		);
 
@@ -363,42 +367,41 @@ public class CompleteBipartiteProperties
 			graph
 		);
 
-		Tree minimumSpanningTree = prim.minimumSpanningForest (
-			"hyderabad "
-		).treeMap().get (
-			"hyderabad "
-		);
+		minimumSpanningForest = prim.minimumSpanningForest().treeMap();
 
-		System.out.println (
-			"\t|-----------------------------------------------------------------------------------|"
-		);
-
-		System.out.println (
-			"\t|                          PRIM MINIMUM SPANNING TREE PATH                          |"
-		);
-
-		System.out.println (
-			"\t|-----------------------------------------------------------------------------------|"
-		);
-
-		for (BidirectionalEdge edge : minimumSpanningTree.edgeMap().values())
+		for (Tree minimumSpanningTree : minimumSpanningForest.values())
 		{
 			System.out.println (
-				"\t| " + edge
+				"\t|-----------------------------------------------------------------------------------|"
+			);
+
+			System.out.println (
+				"\t|                         PRIM MINIMUM SPANNING TREE PATH                           |"
+			);
+
+			System.out.println (
+				"\t|-----------------------------------------------------------------------------------|"
+			);
+
+			for (BidirectionalEdge edge : minimumSpanningTree.edgeMap().values())
+			{
+				System.out.println (
+					"\t| " + edge
+				);
+			}
+
+			System.out.println (
+				"\t|-----------------------------------------------------------------------------------|"
+			);
+
+			System.out.println (
+				"\t| Total MST Length => " + minimumSpanningTree.length()
+			);
+
+			System.out.println (
+				"\t|-----------------------------------------------------------------------------------|"
 			);
 		}
-
-		System.out.println (
-			"\t|-----------------------------------------------------------------------------------|"
-		);
-
-		System.out.println (
-			"\t| Total MST Length => " + minimumSpanningTree.length()
-		);
-
-		System.out.println (
-			"\t|-----------------------------------------------------------------------------------|"
-		);
 
 		EnvManager.TerminateEnv();
 	}
