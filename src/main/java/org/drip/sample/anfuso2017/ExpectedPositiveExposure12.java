@@ -81,7 +81,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>ExpectedPositiveExposure12</i> computes the Expected Positive Exposure as a Function of the MTM
- * Volatility as laid out in Table 12 of Anfuso, Karyampas, and Nawroth (2017).
+ * 	Volatility as laid out in Table 12 of Anfuso, Karyampas, and Nawroth (2017).
  *
  *  <br><br>
  *  <ul>

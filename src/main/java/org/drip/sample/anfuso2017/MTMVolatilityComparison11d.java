@@ -92,7 +92,7 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 
 /**
  * <i>MTMVolatilityComparison11d</i> illustrates the Impact on Gap Distribution of Hypothesis Parameters as
- * laid out in Table 11d of Anfuso, Karyampas, and Nawroth (2017).
+ * 	laid out in Table 11d of Anfuso, Karyampas, and Nawroth (2017).
  *
  *  <br><br>
  *  <ul>

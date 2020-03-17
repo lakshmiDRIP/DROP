@@ -83,7 +83,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>HighQualityLiquidAssetCompliance</i> illustrates the Basel III/Jurisdictional Compliance Checks
- * associated with High Quality Liquid Assets. The References are:
+ * 	associated with High Quality Liquid Assets. The References are:
  * 
  * <br><br>
  * 	<ul>

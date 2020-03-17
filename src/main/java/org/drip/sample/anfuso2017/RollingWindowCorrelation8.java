@@ -86,7 +86,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>RollingWindowCorrelation8</i> demonstrates computing the Correlation on a Rolling Window Basis between
- * Two Correlated Series as illustrated in Table 8 of Anfuso, Karyampas, and Nawroth (2017).
+ * 	Two Correlated Series as illustrated in Table 8 of Anfuso, Karyampas, and Nawroth (2017).
  *
  *  <br><br>
  *  <ul>

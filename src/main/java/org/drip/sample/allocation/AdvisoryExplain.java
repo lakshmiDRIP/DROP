@@ -98,7 +98,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>AdvisoryExplain</i> zeds the Comparison across the Different Allocation Methodologies.
+ * <i>AdvisoryExplain</i> shows the Comparison across the Different Allocation Methodologies.
  * 
  *     MANAGED SEGMENT  - Advisory
  * 

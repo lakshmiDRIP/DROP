@@ -88,8 +88,8 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>USSIFICompliance</i> illustrates the US SIFI Capital Metrics Compliance Checks along with Liquidity
- * Compliance Checks for several Liquidity Metrics Standards. Liquidity Criteria correspond to Large BHC's.
- * The References are:
+ * 	Compliance Checks for several Liquidity Metrics Standards. Liquidity Criteria correspond to Large BHC's.
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>

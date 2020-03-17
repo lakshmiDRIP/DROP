@@ -87,7 +87,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>R1ArraySumPair</i> demonstrates the Functionality to identify the Pair of Numbers in the Array that add
- * up to the specified Total.
+ * 	up to the specified Total.
  * 
  * <br><br>
  *  <ul>

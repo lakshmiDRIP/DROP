@@ -83,7 +83,7 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
 
 /**
  * <i>ModelMTMDistribution11c</i> illustrates the Model MTM Distributions laid out in Table 11c of Anfuso,
- * Karyampas, and Nawroth (2017).
+ * 	Karyampas, and Nawroth (2017).
  *
  *  <br><br>
  *  <ul>

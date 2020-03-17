@@ -93,7 +93,7 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 
 /**
  * <i>WeightedGapDistribution2c</i> demonstrates the Weighted Gap Distribution illustrated in Table 2c of
- * Anfuso, Karyampas, and Nawroth (2013).
+ * 	Anfuso, Karyampas, and Nawroth (2013).
  *
  *  <br><br>
  *  <ul>

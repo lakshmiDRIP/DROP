@@ -98,7 +98,7 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 
 /**
  * <i>ADCorrelationBacktesting7c</i> demonstrates the Horizon Multi-Factor Gap PIT Quantiles set out in Table
- * 7c of Anfuso, Karyampas, and Nawroth (2017).
+ * 	7c of Anfuso, Karyampas, and Nawroth (2017).
  *
  *  <br><br>
  *  <ul>

@@ -88,8 +88,8 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>Basel32019Compliance</i> illustrates the Basel III 2019 Capital Metrics Compliance Checks along with
- * Liquidity Compliance Checks for several Liquidity Metrics Standards. Liquidity Criteria correspond to
- * Large BHC's. The References are:
+ * 	Liquidity Compliance Checks for several Liquidity Metrics Standards. Liquidity Criteria correspond to
+ * 	Large BHC's. The References are:
  * 
  * <br><br>
  * 	<ul>

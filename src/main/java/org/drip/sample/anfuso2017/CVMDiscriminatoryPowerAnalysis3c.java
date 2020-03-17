@@ -88,7 +88,7 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 
 /**
  * <i>CVMDiscriminatoryPowerAnalysis3c</i> demonstrates the Discriminatory Power Analysis illustrated in
- * Table 3c of Anfuso, Karyampas, and Nawroth (2013).
+ * 	Table 3c of Anfuso, Karyampas, and Nawroth (2013).
  *
  *  <br><br>
  *  <ul>

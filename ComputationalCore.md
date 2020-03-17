@@ -10,6 +10,8 @@ Computational Core Module contains libraries the implement Algorithm/Computation
 
  * [*Function Analysis*](https://github.com/lakshmiDRIP/DROP/blob/master/FunctionAnalysisLibrary.md) => Special Function and their Analysis.
 
+ * [*Graph Algorithms*](https://github.com/lakshmiDRIP/DROP/blob/master/GraphAlgorithmLibrary.md) => Graph Representation and Path Traversal.
+
  * [*Model Validation*](https://github.com/lakshmiDRIP/DROP/blob/master/ModelValidationAnalyticsLibrary.md) => Functionality for Statistical Hypotheses Validation and Testing.
 
  * [*Numerical Analysis*](https://github.com/lakshmiDRIP/DROP/blob/master/NumericalAnalysisLibrary.md) => Functionality for Numerical Methods - including R<sup>x</sup> Solvers, Linear Algebra, and Statistical Measure Distributions.
@@ -33,6 +35,16 @@ Computational Core Module contains libraries the implement Algorithm/Computation
  * Bessel Function
  * Stretched Exponential Function
  * Error Function
+
+
+## Graph Algorithm Coverage
+
+ * Spanning Tree
+ * Minimum Spanning Tree
+ * Prim's Algorithm
+ * Kruskal's Algorithm
+ * Boruvka's Algorithm
+ * Reverse-Delete Algorithm
 
 
 ## Model Validation Coverage

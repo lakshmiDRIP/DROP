@@ -93,7 +93,7 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 
 /**
  * <i>CVMCorrelationDiscriminatoryPowerAnalysis9c</i> demonstrates the Correlation Discriminatory Power
- * Analysis on an Ensemble of Hypothesis as seen in Table 9c of Anfuso, Karyampas, and Nawroth (2017).
+ * 	Analysis on an Ensemble of Hypothesis as seen in Table 9c of Anfuso, Karyampas, and Nawroth (2017).
  *
  *  <br><br>
  *  <ul>

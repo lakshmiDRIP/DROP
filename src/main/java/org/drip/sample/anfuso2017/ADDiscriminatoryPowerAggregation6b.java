@@ -97,8 +97,8 @@ import org.drip.validation.riskfactorsingle.HypothesisSuiteAggregate;
  */
 
 /**
- * <i>ADDiscriminatoryPowerAggregation6a</i> demonstrates Multi-Horizon Discriminatory Power Aggregation
- * illustrated in Table 6b of Anfuso, Karyampas, and Nawroth (2017).
+ * <i>ADDiscriminatoryPowerAggregation6b</i> demonstrates Multi-Horizon Discriminatory Power Aggregation
+ * 	illustrated in Table 6b of Anfuso, Karyampas, and Nawroth (2017).
  *
  *  <br><br>
  *  <ul>

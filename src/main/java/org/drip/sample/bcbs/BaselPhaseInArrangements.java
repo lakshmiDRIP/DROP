@@ -82,7 +82,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>BaselPhaseInArrangements</i> illustrates the Basel III Capital/Liquidity Phase-in Arrangement Schedule.
- * The References are:
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>

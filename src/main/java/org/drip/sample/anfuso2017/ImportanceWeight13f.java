@@ -82,7 +82,7 @@ import org.drip.validation.distance.ImportanceWeight;
 
 /**
  * <i>ImportanceWeight13f</i> demonstrates the Computation of the Importance Weight set out in Table 13f of
- * Anfuso, Karyampas, and Nawroth (2017).
+ * 	Anfuso, Karyampas, and Nawroth (2017).
  *
  *  <br><br>
  *  <ul>

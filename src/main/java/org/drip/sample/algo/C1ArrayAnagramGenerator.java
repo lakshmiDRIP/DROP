@@ -83,7 +83,7 @@ import org.drip.spaces.big.AnagramMapSet;
 
 /**
  * <i>C1ArrayAnagramGenerator</i> demonstrates the Functionality to generate Anagrams inside of a Word List
- * (i.e., Sentence).
+ * 	(i.e., Sentence).
  * 
  * <br><br>
  *  <ul>
