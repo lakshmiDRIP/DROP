@@ -84,7 +84,7 @@ import org.drip.specialfunction.property.DigammaSaddlePointEqualityLemma;
 
 /**
  * <i>QuarticReciprocalSumProperty</i> demonstrates the Quartic Sum Property of the Digamma Saddle Points.
- * The References are:
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>

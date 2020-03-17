@@ -84,7 +84,7 @@ import org.drip.specialfunction.beta.IntegrandEstimator;
 
 /**
  * <i>CumulativeBinomialDistribution</i> illustrates the Computation of the Cumulative Binomial Distribution
- * Values using the Incomplete Beta Function. The References are:
+ * 	Values using the Incomplete Beta Function. The References are:
  * 
  * <br><br>
  * 	<ul>

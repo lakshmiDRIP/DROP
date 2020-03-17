@@ -82,7 +82,7 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
 
 /**
  * <i>AsymptoteBoundProperty</i> demonstrates the Estimation of the Asymptote Bounds of the Digamma Function
- * using the Asymptotic Bounds. The References are:
+ * 	using the Asymptotic Bounds. The References are:
  * 
  * <br><br>
  * 	<ul>

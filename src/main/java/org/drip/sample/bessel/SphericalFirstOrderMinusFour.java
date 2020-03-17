@@ -81,8 +81,8 @@ import org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator;
  */
 
 /**
- * <i>SphericalFirstOrderMinusFour</i> implements the Estimator for the -4 Order Spherical Bessel Function
- * of the First Kind. The References are:
+ * <i>SphericalFirstOrderMinusFour</i> implements the Estimator for the -4 Order Spherical Bessel Function of
+ * 	the First Kind. The References are:
  * 
  * <br><br>
  * 	<ul>

@@ -82,7 +82,7 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
 
 /**
  * <i>BernsteinBinetBoundProperty</i> demonstrates the Estimation of the Bernstein-Binet Bounds of the
- * Digamma Function. The References are:
+ * 	Digamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>

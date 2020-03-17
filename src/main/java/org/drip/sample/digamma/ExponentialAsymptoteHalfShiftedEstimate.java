@@ -81,7 +81,7 @@ import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
 
 /**
  * <i>ExponentialAsymptoteHalfShiftedEstimate</i> demonstrates the Estimation of the Digamma Function using
- * the Exponential Asymptote Half-Shifted Series. The References are:
+ * 	the Exponential Asymptote Half-Shifted Series. The References are:
  * 
  * <br><br>
  * 	<ul>

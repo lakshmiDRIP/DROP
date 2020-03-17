@@ -84,7 +84,7 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
 
 /**
  * <i>ModifiedFirstFrobeniusEstimate</i> illustrates the Frobenius Series Based Estimation for the Modified
- * Bessel Function of the First Kind. The References are:
+ * 	Bessel Function of the First Kind. The References are:
  * 
  * <br><br>
  * 	<ul>

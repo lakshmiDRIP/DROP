@@ -81,7 +81,7 @@ import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
 
 /**
  * <i>AsymptoticEstimate</i> demonstrates the Estimation of the Digamma Function using the Asymptotic Series.
- * The References are:
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>

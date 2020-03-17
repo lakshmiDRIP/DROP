@@ -85,7 +85,7 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
 
 /**
  * <i>SphericalFirstEstimate</i> illustrates the Estimation for the Spherical Bessel Function of the First
- * Kind. The References are:
+ * 	Kind. The References are:
  * 
  * <br><br>
  * 	<ul>

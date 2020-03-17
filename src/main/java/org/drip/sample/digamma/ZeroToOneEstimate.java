@@ -83,7 +83,7 @@ import org.drip.specialfunction.loggamma.InfiniteSumEstimator;
 
 /**
  * <i>ZeroToOneEstimate</i> demonstrates the Estimation of the Digamma Function using the Mezo-Hoffman (2017)
- * Series. The References are:
+ * 	Series. The References are:
  * 
  * <br><br>
  * 	<ul>

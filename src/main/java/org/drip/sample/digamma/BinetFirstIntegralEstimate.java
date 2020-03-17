@@ -82,7 +82,7 @@ import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
 
 /**
  * <i>BinetFirstIntegralEstimate</i> demonstrates the Estimation of the Digamma Function using the Binet
- * First Integral. The References are:
+ * 	First Integral. The References are:
  * 
  * <br><br>
  * 	<ul>

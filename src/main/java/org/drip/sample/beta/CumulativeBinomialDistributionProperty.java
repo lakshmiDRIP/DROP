@@ -82,7 +82,7 @@ import org.drip.specialfunction.property.IncompleteBetaEqualityLemma;
 
 /**
  * <i>CumulativeBinomialDistributionProperty</i> illustrates the Verification of the Cumulative Binomial
- * Distribution Property. The References are:
+ * 	Distribution Property. The References are:
  * 
  * <br><br>
  * 	<ul>

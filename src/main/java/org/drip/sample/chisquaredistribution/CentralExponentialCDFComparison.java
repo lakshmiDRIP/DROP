@@ -86,7 +86,7 @@ import org.drip.specialfunction.incompletegamma.LowerEulerIntegral;
 
 /**
  * <i>CentralExponentialCDFComparison</i> illustrates the Comparison of the CDF between the Exponential
- * Distribution and the Central Chi-squared Distribution with 2 Degrees of Freedom. The References are:
+ * 	Distribution and the Central Chi-squared Distribution with 2 Degrees of Freedom. The References are:
  * 
  * <br><br>
  * 	<ul>

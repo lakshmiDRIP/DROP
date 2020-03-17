@@ -86,7 +86,7 @@ import org.drip.specialfunction.incompletegamma.LowerEulerIntegral;
 
 /**
  * <i>CentralMeasureEstimate</i> illustrates the Estimation of the Central Chi-squared Distribution Measures.
- * The References are:
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>

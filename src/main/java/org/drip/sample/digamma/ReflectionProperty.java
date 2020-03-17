@@ -82,7 +82,7 @@ import org.drip.specialfunction.property.DigammaEqualityLemma;
 
 /**
  * <i>ReflectionProperty</i> demonstrates the Reflection Property Lemma for Digamma Functions in (0, 1). The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>

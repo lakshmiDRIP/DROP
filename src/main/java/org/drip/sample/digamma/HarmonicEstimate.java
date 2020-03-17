@@ -81,7 +81,7 @@ import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
 
 /**
  * <i>HarmonicEstimate</i> demonstrates the Cumulative Series Digamma Estimate Based on the Harmonic
- * Function. The References are:
+ * 	Function. The References are:
  * 
  * <br><br>
  * 	<ul>

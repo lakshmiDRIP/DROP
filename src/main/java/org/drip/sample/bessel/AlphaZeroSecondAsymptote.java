@@ -82,7 +82,7 @@ import org.drip.specialfunction.definition.BesselSecondKindEstimator;
 
 /**
  * <i>AlphaZeroSecondAsymptote</i> illustrates the Integer Alpha = 0 Estimation for the Cylindrical Bessel
- * Function of the Second Kind. The References are:
+ * 	Function of the Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>

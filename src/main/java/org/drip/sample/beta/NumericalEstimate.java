@@ -83,7 +83,7 @@ import org.drip.specialfunction.beta.SummationSeriesEstimator;
 
 /**
  * <i>NumericalEstimate</i> illustrates the Beta Function Estimation using Integrand Schemes. The References
- * are:
+ * 	are:
  * 
  * <br><br>
  * 	<ul>

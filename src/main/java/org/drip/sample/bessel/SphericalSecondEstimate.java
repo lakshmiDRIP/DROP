@@ -83,7 +83,7 @@ import org.drip.specialfunction.definition.SphericalBesselSecondKindEstimator;
 
 /**
  * <i>SphericalSecondEstimate</i> illustrates the Estimation for the Spherical Bessel Function of the Second
- * Kind. The References are:
+ * 	Kind. The References are:
  * 
  * <br><br>
  * 	<ul>

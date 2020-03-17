@@ -82,7 +82,7 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
 
 /**
  * <i>FirstFrobeniusEstimate</i> illustrates the Frobenius Series Based Estimation for the Cylindrical Bessel
- * Function of the First Kind. The References are:
+ * 	Function of the First Kind. The References are:
  * 
  * <br><br>
  * 	<ul>

@@ -83,7 +83,7 @@ import org.drip.specialfunction.gamma.WindschitlTothAnalytic;
 
 /**
  * <i>TaylorRiemannZetaEstimate</i> demonstrates the Estimation of the Digamma Function using the
- * Taylor-Reimann Zeta Series. The References are:
+ * 	Taylor-Reimann Zeta Series. The References are:
  * 
  * <br><br>
  * 	<ul>

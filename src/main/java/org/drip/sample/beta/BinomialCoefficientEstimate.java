@@ -83,7 +83,7 @@ import org.drip.specialfunction.beta.SummationSeriesEstimator;
 
 /**
  * <i>BinomialCoefficientEstimate</i> illustrates the Estimation of the Binomial Coefficient. The References
- * are:
+ * 	are:
  * 
  * <br><br>
  * 	<ul>

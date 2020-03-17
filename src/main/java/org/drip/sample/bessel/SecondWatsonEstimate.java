@@ -82,7 +82,7 @@ import org.drip.specialfunction.definition.BesselSecondKindEstimator;
 
 /**
  * <i>SecondWatsonEstimate</i> illustrates the Watson Integral Based Estimation for the Cylindrical Bessel
- * Function of the Second Kind for Integer Orders. The References are:
+ * 	Function of the Second Kind for Integer Orders. The References are:
  * 
  * <br><br>
  * 	<ul>

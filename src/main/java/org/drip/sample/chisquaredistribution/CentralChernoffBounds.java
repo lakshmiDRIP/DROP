@@ -86,7 +86,7 @@ import org.drip.specialfunction.incompletegamma.LowerEulerIntegral;
 
 /**
  * <i>CentralChernoffBounds</i> illustrates the Upper Chernoff Bounds for the Central Chi-squared Function.
- * The References are:
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>

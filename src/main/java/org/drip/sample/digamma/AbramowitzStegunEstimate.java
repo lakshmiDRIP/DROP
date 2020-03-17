@@ -81,7 +81,7 @@ import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
 
 /**
  * <i>AbramowitzStegunEstimate</i> demonstrates the Cumulative Series Based Digamma Estimation. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>

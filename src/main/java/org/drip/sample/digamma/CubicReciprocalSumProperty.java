@@ -84,7 +84,7 @@ import org.drip.specialfunction.property.DigammaSaddlePointEqualityLemma;
 
 /**
  * <i>CubicReciprocalSumProperty</i> demonstrates the Cubic Sum Property of the Digamma Saddle Points. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>

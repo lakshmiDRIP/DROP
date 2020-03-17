@@ -80,8 +80,8 @@ import org.drip.specialfunction.beta.SummationSeriesEstimator;
  */
 
 /**
- * <i>DerivativeEstimate</i> illustrates the Beta Function Jacobian Estimation using Integrand Schemes. The
- * References are:
+ * <i>JacobianEstimate</i> illustrates the Beta Function Jacobian Estimation using Integrand Schemes. The
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>

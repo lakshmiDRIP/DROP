@@ -84,7 +84,7 @@ import org.drip.specialfunction.property.DigammaSaddlePointEqualityLemma;
 
 /**
  * <i>QuadraticPolynomialReciprocalSumProperty2</i> demonstrates the Second Quadratic Polynomial Sum Property
- * of the Digamma Saddle Points. The References are:
+ * 	of the Digamma Saddle Points. The References are:
  * 
  * <br><br>
  * 	<ul>

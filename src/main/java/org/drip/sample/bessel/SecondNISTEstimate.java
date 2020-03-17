@@ -86,7 +86,7 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
 
 /**
  * <i>SecondNISTEstimate</i> illustrates the Bessel Second NIST Estimation for the Cylindrical Bessel
- * Function of the Second Kind. The References are:
+ * 	Function of the Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>

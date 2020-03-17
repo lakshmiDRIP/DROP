@@ -82,7 +82,7 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
 
 /**
  * <i>AlzerJamesonProperty</i> demonstrates the Alzer Jameson (2017) Property Lemma for Digamma Functions.
- * The References are:
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>

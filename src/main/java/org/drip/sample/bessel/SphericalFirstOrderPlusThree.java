@@ -82,7 +82,7 @@ import org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator;
 
 /**
  * <i>SphericalFirstOrderPlusThree</i> implements the Estimator for the +3 Order Spherical Bessel Function of
- * the First Kind. The References are:
+ * 	the First Kind. The References are:
  * 
  * <br><br>
  * 	<ul>

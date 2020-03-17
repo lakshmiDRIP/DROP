@@ -82,7 +82,7 @@ import org.drip.specialfunction.property.DigammaEqualityLemma;
 
 /**
  * <i>BlagouchineSummationProperty9</i> demonstrates the Blagouchine (2014) Property Lemma for Digamma
- * Functions. The References are:
+ * 	Functions. The References are:
  * 
  * <br><br>
  * 	<ul>

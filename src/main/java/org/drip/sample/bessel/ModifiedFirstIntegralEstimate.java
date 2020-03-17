@@ -82,7 +82,7 @@ import org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator;
 
 /**
  * <i>ModifiedFirstIntegralEstimate</i> illustrates the Integral Based Estimation for the Modified Bessel
- * Function of the First Kind for Non-Integer Orders. The References are:
+ * 	Function of the First Kind for Non-Integer Orders. The References are:
  * 
  * <br><br>
  * 	<ul>

@@ -83,7 +83,7 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
 
 /**
  * <i>AlphaZeroFirstApproximate</i> illustrates the Alpha=0 Approximation for the Cylindrical Bessel Function
- * of the First Kind. The References are:
+ * 	of the First Kind. The References are:
  * 
  * <br><br>
  * 	<ul>

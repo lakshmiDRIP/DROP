@@ -81,7 +81,7 @@ import org.drip.specialfunction.bessel.FirstSchlafliIntegralEstimator;
 
 /**
  * <i>FirstSchlafliNonIntegerEstimate</i> illustrates the Schlafli Integral Based Estimation for the
- * Cylindrical Bessel Function of the First Kind for Non-Integer Orders. The References are:
+ * 	Cylindrical Bessel Function of the First Kind for Non-Integer Orders. The References are:
  * 
  * <br><br>
  * 	<ul>

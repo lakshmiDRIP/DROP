@@ -83,7 +83,7 @@ import org.drip.specialfunction.definition.ModifiedBesselSecondKindEstimator;
 
 /**
  * <i>ModifiedSecondAlphaHalfAsymptote</i> illustrates the Large z Hankel Asymptote Series Based Estimation
- * for the Modified Bessel Function of the Second Kind, specifically for alpha = 0.5. The References are:
+ * 	for the Modified Bessel Function of the Second Kind, specifically for alpha = 0.5. The References are:
  * 
  * <br><br>
  * 	<ul>

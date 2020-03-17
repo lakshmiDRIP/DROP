@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
 
 /**
  * <i>AlzerDifferenceProperty</i> demonstrates the Alzer (1997) Difference Property Lemma for Digamma
- * Functions where s is in (0, 1). The References are:
+ * 	Functions where s is in (0, 1). The References are:
  * 
  * <br><br>
  * 	<ul>

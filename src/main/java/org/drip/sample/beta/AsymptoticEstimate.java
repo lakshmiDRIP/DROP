@@ -84,7 +84,7 @@ import org.drip.specialfunction.loggamma.NemesAnalyticEstimator;
 
 /**
  * <i>AsymptoticEstimate</i> illustrates the Estimation and the Comparison of Asymptotic Estimates of the
- * Beta Function. The References are:
+ * 	Beta Function. The References are:
  * 
  * <br><br>
  * 	<ul>

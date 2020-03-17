@@ -83,7 +83,7 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
 
 /**
  * <i>AlphaStrictlyPositiveModifiedSecondAsymptote</i> illustrates the Integer Alpha Strictly Positive
- * Estimation for the Modified Bessel Function of the Second Kind. The References are:
+ * 	Estimation for the Modified Bessel Function of the Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>

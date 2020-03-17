@@ -84,7 +84,7 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
 
 /**
  * <i>AlphaNonNegativeIntegerFirstAsymptote</i> illustrates the Integer Alpha Positive Estimation for the
- * Cylindrical Bessel Function of the First Kind. The References are:
+ * 	Cylindrical Bessel Function of the First Kind. The References are:
  * 
  * <br><br>
  * 	<ul>

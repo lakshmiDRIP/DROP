@@ -82,7 +82,7 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
 
 /**
  * <i>ZeroOneBoundProperty</i> demonstrates the Estimation of the (0, 1) Bounds of the Digamma Function using
- * the (0, 1) Bounds. The References are:
+ * 	the (0, 1) Bounds. The References are:
  * 
  * <br><br>
  * 	<ul>

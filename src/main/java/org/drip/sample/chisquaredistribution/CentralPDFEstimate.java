@@ -86,7 +86,7 @@ import org.drip.specialfunction.incompletegamma.LowerEulerIntegral;
 
 /**
  * <i>CentralPDFEstimate</i> illustrates the Construction and the Usage of a Central Chi-squared
- * Distribution. The References are:
+ * 	Distribution. The References are:
  * 
  * <br><br>
  * 	<ul>

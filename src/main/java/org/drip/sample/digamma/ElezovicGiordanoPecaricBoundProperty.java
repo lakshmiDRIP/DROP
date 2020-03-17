@@ -82,7 +82,7 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
 
 /**
  * <i>ElezovicGiordanoPecaricBoundProperty</i> demonstrates the Estimation of the Elezevic-Giordano-Pecaric
- * Bounds of the Digamma Function. The References are:
+ * 	Bounds of the Digamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>

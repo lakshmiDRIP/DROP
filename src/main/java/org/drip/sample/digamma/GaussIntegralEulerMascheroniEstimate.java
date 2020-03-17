@@ -83,7 +83,7 @@ import org.drip.specialfunction.digamma.IntegralEstimator;
 
 /**
  * <i>GaussIntegralEulerMascheroniEstimate</i> demonstrates the Estimation of the Digamma Function using the
- * Gauss Euler-Mascheroni Integral. The References are:
+ * 	Gauss Euler-Mascheroni Integral. The References are:
  * 
  * <br><br>
  * 	<ul>

@@ -82,7 +82,7 @@ import org.drip.specialfunction.property.IncompleteBetaEqualityLemma;
 
 /**
  * <i>IncompleteIdentityProperty8</i> illustrates the Incomplete Beta Function Identity Property
- * Verification. The References are:
+ * 	Verification. The References are:
  * 
  * <br><br>
  * 	<ul>

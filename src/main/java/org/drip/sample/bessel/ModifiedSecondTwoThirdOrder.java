@@ -82,7 +82,7 @@ import org.drip.specialfunction.definition.ModifiedBesselSecondKindEstimator;
 
 /**
  * <i>ModifiedSecondTwoThirdOrder</i> implements the Integral Estimator for the 2. / 3. Order Modified Bessel
- * Function of the Second Kind. The References are:
+ * 	Function of the Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>

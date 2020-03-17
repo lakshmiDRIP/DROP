@@ -82,7 +82,7 @@ import org.drip.specialfunction.definition.ModifiedBesselSecondKindEstimator;
 
 /**
  * <i>ModifiedSecondIntegralEstimate</i> illustrates the Integral Based Estimation for the Modified Bessel
- * Function of the Second Kind for Non-Integer Orders. The References are:
+ * 	Function of the Second Kind for Non-Integer Orders. The References are:
  * 
  * <br><br>
  * 	<ul>

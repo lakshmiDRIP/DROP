@@ -82,7 +82,7 @@ import org.drip.specialfunction.beta.LogGammaEstimator;
 
 /**
  * <i>EulerIntegrandNEstimate</i> illustrates the Beta Function Estimation using the Euler Integrand "N"
- * Scheme. The References are:
+ * 	Scheme. The References are:
  * 
  * <br><br>
  * 	<ul>

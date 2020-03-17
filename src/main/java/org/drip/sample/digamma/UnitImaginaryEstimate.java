@@ -82,7 +82,7 @@ import org.drip.specialfunction.digamma.SpecialValues;
 
 /**
  * <i>UnitImaginaryEstimate</i> demonstrates the Estimation of the Digamma Function at the Unit Imaginary
- * Location. The References are:
+ * 	Location. The References are:
  * 
  * <br><br>
  * 	<ul>

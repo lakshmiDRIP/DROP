@@ -83,7 +83,7 @@ import org.drip.specialfunction.digamma.IntegralEstimator;
 
 /**
  * <i>GaussIntegralEstimate</i> demonstrates the Estimation of the Digamma Function using the Gauss Integral.
- * The References are:
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>

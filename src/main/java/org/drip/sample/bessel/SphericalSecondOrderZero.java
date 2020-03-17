@@ -82,7 +82,7 @@ import org.drip.specialfunction.definition.SphericalBesselSecondKindEstimator;
 
 /**
  * <i>SphericalSecondOrderZero</i> implements the Estimator for the Zero Order Spherical Bessel Function of
- * the Second Kind. The References are:
+ * 	the Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>

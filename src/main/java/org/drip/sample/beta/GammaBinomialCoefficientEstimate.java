@@ -83,7 +83,7 @@ import org.drip.specialfunction.gamma.WindschitlTothAnalytic;
 
 /**
  * <i>GammaBinomialCoefficientEstimate</i> illustrates the Estimation of the Binomial Coefficient using the
- * Gamma Function. The References are:
+ * 	Gamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>

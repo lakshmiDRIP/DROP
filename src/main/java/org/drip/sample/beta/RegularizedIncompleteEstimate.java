@@ -84,7 +84,7 @@ import org.drip.specialfunction.beta.IntegrandEstimator;
 
 /**
  * <i>RegularizedIncompleteEstimate</i> illustrates the Estimation of the Regularized Incomplete Beta
- * Function. The References are:
+ * 	Function. The References are:
  * 
  * <br><br>
  * 	<ul>

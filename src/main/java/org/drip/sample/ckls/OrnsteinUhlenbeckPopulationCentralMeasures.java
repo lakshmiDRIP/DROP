@@ -11,7 +11,6 @@ import org.drip.service.env.EnvManager;
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
-
 /*!
  * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
@@ -85,7 +84,7 @@ import org.drip.service.env.EnvManager;
 /**
  * <i>OrnsteinUhlenbeckPopulationCentralMeasures</i> illustrates the Aging of Population Central Measures,
  * 	both Temporal and Steady-State, of an Evolving R<sup>1</sup> Ornstein-Uhlenbeck Process. The References
- * are:
+ * 	are:
  *  
  * 	<br><br>
  *  <ul>

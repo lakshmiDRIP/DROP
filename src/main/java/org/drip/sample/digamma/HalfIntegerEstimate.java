@@ -81,7 +81,7 @@ import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
 
 /**
  * <i>HalfIntegerEstimate</i> demonstrates the Estimation of the Digamma Function for Half Integers. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>

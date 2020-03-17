@@ -83,7 +83,7 @@ import org.drip.specialfunction.digamma.IntegralEstimator;
 
 /**
  * <i>DirichletIntegralEstimate</i> demonstrates the Estimation of the Digamma Function using the Dirichlet
- * Integral. The References are:
+ * 	Integral. The References are:
  * 
  * <br><br>
  * 	<ul>

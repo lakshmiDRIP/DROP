@@ -83,7 +83,7 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
 
 /**
  * <i>AlphaZeroNegativeZFirstAsymptote</i> illustrates the Alpha=0, Negative z Estimation for the Cylindrical
- * Bessel Function of the First Kind. The References are:
+ * 	Bessel Function of the First Kind. The References are:
  * 
  * <br><br>
  * 	<ul>

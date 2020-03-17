@@ -84,7 +84,7 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
 
 /**
  * <i>ModifiedFirstHankelAsymptote</i> illustrates the Large z Hankel Asymptote Series Based Estimation for
- * the Modified Bessel Function of the First Kind. The References are:
+ * 	the Modified Bessel Function of the First Kind. The References are:
  * 
  * <br><br>
  * 	<ul>

@@ -82,7 +82,7 @@ import org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator;
 
 /**
  * <i>SphericalFirstOrderMinusTwo</i> implements the Estimator for the -2 Order Spherical Bessel Function of
- * the First Kind. The References are:
+ * 	the First Kind. The References are:
  * 
  * <br><br>
  * 	<ul>

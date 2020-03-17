@@ -82,7 +82,7 @@ import org.drip.specialfunction.definition.ModifiedBesselSecondKindEstimator;
 
 /**
  * <i>AlphaZeroModifiedSecondAsymptote</i> illustrates the Integer Alpha = 0 Estimation for the Modified
- * Bessel Function of the Second Kind. The References are:
+ * 	Bessel Function of the Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>

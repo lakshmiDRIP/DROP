@@ -83,7 +83,7 @@ import org.drip.specialfunction.digamma.IntegralEstimator;
 
 /**
  * <i>BinetSecondIntegralEstimate</i> demonstrates the Estimation of the Digamma Function using the Binet
- * Second Integral. The References are:
+ * 	Second Integral. The References are:
  * 
  * <br><br>
  * 	<ul>

@@ -81,7 +81,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>CentralCLTProxyPDFEstimate</i> illustrates the Construction and the Usage of a CLT Proxy for a Central
- * Chi-squared Distribution. The References are:
+ * 	Chi-squared Distribution. The References are:
  * 
  * <br><br>
  * 	<ul>

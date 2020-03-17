@@ -86,7 +86,7 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
 
 /**
  * <i>HighZSecondAsymptote</i> illustrates the High z Estimation for the Cylindrical Bessel Function of the
- * Second Kind. The References are:
+ * 	Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
