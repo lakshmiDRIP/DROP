@@ -1,12 +1,12 @@
 
-package org.drip.sample.graph;
+package org.drip.sample.mst;
 
 import java.util.Map;
 
 import org.drip.graph.core.BidirectionalEdge;
 import org.drip.graph.core.Graph;
 import org.drip.graph.core.Tree;
-import org.drip.graph.mst.Kruskal;
+import org.drip.graph.mstgreedy.KruskalGenerator;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -73,30 +73,44 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>KruskalMinimumSpanningTree</i> illustrates the Execution of the Kruskal Algorithm. The References are:
+ * <i>KruskalMaximumForestGenerator</i> illustrates the Execution of the Kruskal Algorithm for Maximum
+ * 	Spanning Tree. The References are:
  *  
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Wikipedia (2019a): Kruskal's Algorithm https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
+ *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms
+ *  			3<sup>rd</sup> Edition</i> <b>MIT Press</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2019b): Prim's Algorithm https://en.wikipedia.org/wiki/Prim%27s_algorithm
+ *  		Grama, A., A. Gupta, G. Karypis, and V. Kumar (2003): <i>Introduction to Parallel Computing
+ *  			2<sup>nd</sup> Edition</i> <b>Addison Wesley</b>
+ *  	</li>
+ *  	<li>
+ *  		Osipov, V., P. Sanders, and J. Singler (2009): The Filter-Kruskal Minimum Spanning Tree Algorithm
+ *  			http://algo2.iti.kit.edu/documents/fkruskal.pdf
+ *  	</li>
+ *  	<li>
+ *  		Quinn, M. J., and N. Deo (1984): Parallel Graph Algorithms <i>ACM Computing Surveys</i> <b>16
+ *  			(3)</b> 319-348
+ *  	</li>
+ *  	<li>
+ *  		Wikipedia (2019): Kruskal's Algorithm https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
  *  	</li>
  *  </ul>
  * <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md">Algorithm Support Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graph/README.md">Graph Builder and Navigator</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/mst/README.md">Minimum Spanning Tree and Forest Algorithms</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class KruskalMinimumSpanningTree
+public class KruskalMaximumForestGenerator
 {
 
 	public static final void main (
@@ -219,27 +233,28 @@ public class KruskalMinimumSpanningTree
 			)
 		);
 
-		Kruskal kruskal = new Kruskal (
-			graph
+		KruskalGenerator kruskal = new KruskalGenerator (
+			graph,
+			true
 		);
 
-		Map<String, Tree> minimumSpanningForest = kruskal.minimumSpanningForest().treeMap();
+		Map<String, Tree> maximumSpanningForest = kruskal.optimalSpanningForest().treeMap();
 
-		for (Tree minimumSpanningTree : minimumSpanningForest.values())
+		for (Tree maximumSpanningTree : maximumSpanningForest.values())
 		{
 			System.out.println (
 				"\t|-----------------------------------------------------------------------------------|"
 			);
 
 			System.out.println (
-				"\t|                        KRUSKAL MINIMUM SPANNING TREE PATH                         |"
+				"\t|                        KRUSKAL MAXIMUM SPANNING TREE PATH                         |"
 			);
 
 			System.out.println (
 				"\t|-----------------------------------------------------------------------------------|"
 			);
 
-			for (BidirectionalEdge edge : minimumSpanningTree.edgeMap().values())
+			for (BidirectionalEdge edge : maximumSpanningTree.edgeMap().values())
 			{
 				System.out.println (
 					"\t| " + edge
@@ -251,7 +266,15 @@ public class KruskalMinimumSpanningTree
 			);
 
 			System.out.println (
-				"\t| Total MST Length => " + minimumSpanningTree.length()
+				"\t| Maximum Bottleneck Edge => " + maximumSpanningTree.maximumBottleneckEdge()
+			);
+
+			System.out.println (
+				"\t| Minimum Bottleneck Edge => " + maximumSpanningTree.minimumBottleneckEdge()
+			);
+
+			System.out.println (
+				"\t| Total MST Length        => " + maximumSpanningTree.length()
 			);
 
 			System.out.println (

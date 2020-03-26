@@ -84,7 +84,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>ERFNumericalRecipe</i> illustrates the Error Function Estimation based on the Numerical Recipe Version
- * of the Error Function Estimator. The References are:
+ * 	of the Error Function Estimator. The References are:
  * 
  * <br><br>
  * 	<ul>

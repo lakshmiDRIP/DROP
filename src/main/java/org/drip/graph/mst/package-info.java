@@ -1,6 +1,6 @@
 
 /**
- * Algorithms for Generating Minimum Spanning Trees
+ * Agnostic Minimum Spanning Tree Properties
  *
  * @author Lakshmi Krishnamurthy
  */

@@ -1,5 +1,5 @@
 
-package org.drip.graph.mst;
+package org.drip.graph.treebuilder;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,8 +75,8 @@ package org.drip.graph.mst;
  */
 
 /**
- * <i>Boruvka</i> implements the Boruvka Algorithm for generating a Minimum Spanning Tree. The References
- * 	are:
+ * <i>KMSTGenerator</i> exposes the Functionality behind the k-MST Generation for a given Graph and a Vertex
+ * 	Count. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -86,7 +86,7 @@ package org.drip.graph.mst;
  *  			<b>66 (11)</b> 1366-1378
  *  	</li>
  *  	<li>
- *  		Chazelle, B. (2000): A Minimum Spanning Tree ALgorithm with Inverse-Ackerman Type Complexity
+ *  		Chazelle, B. (2000): A Minimum Spanning Tree Algorithm with Inverse-Ackerman Type Complexity
  *  			<i> Journal of the Association for Computing Machinery</i> <b>47 (6)</b> 1028-1047
  *  	</li>
  *  	<li>
@@ -95,72 +95,58 @@ package org.drip.graph.mst;
  *  			(2)</b> 321-328
  *  	</li>
  *  	<li>
- *  		Mares, M. (2004): Two Linear-Time Algorithms for MSTon Minor Closed Graph Classes <i>Activium
- *  			Mathematicum</i> <b>40 (3)</b> 315-320
+ *  		Pettie, S., and V. Ramachandran (2002): An Optimal Minimum Spanning Tree <i>Algorithm Journal of
+ *  			the ACM</i> <b>49 (1)</b> 16-34
  *  	</li>
  *  	<li>
- *  		Wikipedia (2019): Boruvka's Algorithm https://en.wikipedia.org/wiki/Bor%C5%AFvka's_algorithm
+ *  		Wikipedia (2020): Minimum Spanning Tree https://en.wikipedia.org/wiki/Minimum_spanning_tree
  *  	</li>
  *  </ul>
  *
  * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/mst/README.md">Algorithms for Generating Minimum Spanning Trees</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/treebuilder/README.md">Stubs for Spanning Tree Construction</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Boruvka
-	extends org.drip.graph.mst.MinimumSpanningForestGenerator
+public abstract class KMSTGenerator
+	extends org.drip.graph.treebuilder.OptimalSpanningForestGenerator
 {
+	private int _k = -1;
 
-	/**
-	 * Boruvka Constructor
-	 * 
-	 * @param graph The Graph
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public Boruvka (
-		final org.drip.graph.core.Graph graph)
+	protected KMSTGenerator (
+		final org.drip.graph.core.Graph graph,
+		final boolean maximum,
+		final int k)
 		throws java.lang.Exception
 	{
 		super (
-			graph
+			graph,
+			maximum
 		);
+
+		if (0 >= (_k = k))
+		{
+			throw new java.lang.Exception (
+				"KMSTGenerator Constructor => Invalid Inputs"
+			);
+		}
 	}
 
-	@Override public org.drip.graph.core.Forest minimumSpanningForest()
+	/**
+	 * Retrieve the Vertex Count k to generate the MST for
+	 * 
+	 * @return The Vertex Count k
+	 */
+
+	public int k()
 	{
-		java.util.Set<java.lang.String> vertexNameSet = _graph.vertexMap().keySet();
-
-		org.drip.graph.core.Forest forest = new org.drip.graph.core.Forest();
-
-		for (java.lang.String vertexName : vertexNameSet)
-		{
-			if (!forest.unitVertexTree (
-				vertexName
-			))
-			{
-				return null;
-			}
-		}
-
-		int forestTreeCount = forest.treeMap().size();
-
-		int previousForestTreeCount = forestTreeCount;
-
-		do
-		{
-			
-		} while (forestTreeCount < previousForestTreeCount);
-
-		return forest;
+		return _k;
 	}
 }

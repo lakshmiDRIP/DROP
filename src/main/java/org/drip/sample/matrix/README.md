@@ -39,13 +39,25 @@ DROP Sample Matrix illustrates Cholesky Factorization, PCA, and Eigenization.
  <i>RayleighQuotient</i> demonstrates the Computation of an Approximate to the Eigenvalue using the Rayleigh
  Quotient.
 
+ * [***SylvesterInterpolantReconciler***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/matrix/SylvesterInterpolantReconciler.java)
+ <i>SylvesterInterpolantReconciler</i> demonstrates the Construction and Usage of the Sylvester Matrix Interpolant.
+
 
 ## References
 
- * Wikipedia - Power Iteration (2018): https://en.wikipedia.org/wiki/Power_iteration
+ * Claerbout, J. F. (1985): <i>Fundamentals of Geo-physical Data Processing</i> <b>Blackwell Scientific</b>
 
- * Wikipedia - Rayleigh Quotient Iteration (2018):
- 	https://en.wikipedia.org/wiki/Rayleigh_quotient_iteration
+ * Horn, R. A., and C. R. Johnson (1991): <i>Topics in Matrix Analysis</i> <b>Cambridge University Press</b>
+
+ * Schwerdtfeger, A. (1938): <i>Les Fonctions de Matrices: Les Fonctions Univalentes I</i> <b>Hermann</b> Paris, France
+
+ * Sylvester, J. J. (1883): On the Equation to the Secular Inequalities in the Planetary Theory <i>The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science</i> <b>16 (100)</b> 267-269
+
+ * Wikipedia (2018): Power Iteration https://en.wikipedia.org/wiki/Power_iteration
+
+ * Wikipedia (2018): Rayleigh Quotient Iteration https://en.wikipedia.org/wiki/Rayleigh_quotient_iteration
+
+ * Wikipedia (2019): Sylvester Formula https://en.wikipedia.org/wiki/Sylvester%27s_formula
 
 
 ## DROP Specifications

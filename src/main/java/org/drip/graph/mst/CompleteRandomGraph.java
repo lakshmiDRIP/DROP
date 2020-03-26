@@ -75,79 +75,149 @@ package org.drip.graph.mst;
  */
 
 /**
- * <i>Kruskal</i> implements the Kruskal Algorithm for generating a Minimum Spanning Tree. The References
- * 	are:
+ * <i>CompleteRandomGraph</i> implements the Expected Size Metrics for a Complete Graph with Randomly
+ * 	Distributed Weights and non-zero Count of Vertexes. The References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms
- *  			3<sup>rd</sup> Edition</i> <b>MIT Press</b>
+ *  		Bader, D. A., and G. Cong (2006): Fast Shared Memory Algorithms for computing the Minimum
+ *  			Spanning Forests of Sparse Graphs <i>Journal of Parallel and Distributed Computing</i>
+ *  			<b>66 (11)</b> 1366-1378
  *  	</li>
  *  	<li>
- *  		Grama, A., A. Gupta, G. Karypis, and V. Kumar (2003): <i>Introduction to Parallel Computing
- *  			2<sup>nd</sup> Edition</i> <b>Addison Wesley</b>
+ *  		Chazelle, B. (2000): A Minimum Spanning Tree Algorithm with Inverse-Ackerman Type Complexity
+ *  			<i> Journal of the Association for Computing Machinery</i> <b>47 (6)</b> 1028-1047
  *  	</li>
  *  	<li>
- *  		Osipov, V., P. Sanders, and J. Singler (2009): The Filter-Kruskal Minimum Spanning Tree Algorithm
- *  			http://algo2.iti.kit.edu/documents/fkruskal.pdf
+ *  		Karger, D. R., P. N. Klein, and R. E. Tarjan (1995): A Randomized Linear-Time Algorithm to find
+ *  			Minimum Spanning Trees <i> Journal of the Association for Computing Machinery</i> <b>42
+ *  			(2)</b> 321-328
  *  	</li>
  *  	<li>
- *  		Quinn, M. J., and N. Deo (1984): Parallel Graph Algorithms <i>ACM Computing Surveys</i> <b>16
- *  			(3)</b> 319-348
+ *  		Pettie, S., and V. Ramachandran (2002): An Optimal Minimum Spanning Tree <i>Algorithm Journal of
+ *  			the ACM</i> <b>49 (1)</b> 16-34
  *  	</li>
  *  	<li>
- *  		Wikipedia (2019): Kruskal's Algorithm https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
+ *  		Wikipedia (2020): Minimum Spanning Tree https://en.wikipedia.org/wiki/Minimum_spanning_tree
  *  	</li>
  *  </ul>
  *
  * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/mst/README.md">Algorithms for Generating Minimum Spanning Trees</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/mst/README.md">Agnostic Minimum Spanning Tree Properties</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Kruskal
-	extends org.drip.graph.mst.MinimumSpanningForestGenerator
+public class CompleteRandomGraph
+	extends org.drip.graph.core.Graph
 {
+	private org.drip.measure.crng.RandomNumberGenerator _randomNumberGenerator = null;
 
 	/**
-	 * Kruskal Constructor
+	 * Compute a Uniform Instance of the Complete Random Graph
 	 * 
-	 * @param graph The Graph
+	 * @param vertexCount Count of Vertexes
+	 * 
+	 * @return Uniform Instance of the Complete Random Graph
+	 */
+
+	public static final CompleteRandomGraph Uniform (
+		final int vertexCount)
+	{
+		try
+		{
+			return new CompleteRandomGraph (
+				vertexCount,
+				new org.drip.measure.crng.RandomNumberGenerator()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * CompleteRandomGraph Constructor
+	 * 
+	 * @param vertexCount Count of Vertexes
+	 * @param randomNumberGenerator Random Number Generator
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public Kruskal (
-		final org.drip.graph.core.Graph graph)
+	public CompleteRandomGraph (
+		final int vertexCount,
+		final org.drip.measure.crng.RandomNumberGenerator randomNumberGenerator)
 		throws java.lang.Exception
 	{
-		super (
-			graph
-		);
-	}
+		super();
 
-	@Override public org.drip.graph.core.Forest minimumSpanningForest()
-	{
-		org.drip.graph.core.Forest forest = new org.drip.graph.core.Forest();
-
-		for (java.lang.String vertexName : _graph.vertexMap().keySet())
+		if (0 >= vertexCount ||
+			null == (_randomNumberGenerator = randomNumberGenerator)
+		)
 		{
-			if (!forest.unitVertexTree (
-				vertexName
-			))
-			{
-				return null;
-			}
+			throw new java.lang.Exception (
+				"CompleteRandomGraph Constructor => Invalid Inputs"
+			);
 		}
 
-		return forest;
+		java.lang.String[] vertexNameArray = new java.lang.String[vertexCount];
+
+		for (int vertexIndex = 0;
+			vertexIndex < vertexCount;
+			++vertexIndex)
+		{
+			vertexNameArray[vertexIndex] = "" + vertexIndex;
+		}
+
+		for (int vertexIndexI = 0;
+			vertexIndexI < vertexCount;
+			++vertexIndexI)
+		{
+
+			for (int vertexIndexJ = vertexIndexI + 1;
+				vertexIndexJ < vertexCount;
+				++vertexIndexJ)
+			{
+				if (!super.addBidirectionalEdge (
+					new org.drip.graph.core.BidirectionalEdge (
+						vertexNameArray[vertexIndexI],
+						vertexNameArray[vertexIndexJ],
+						randomNumberGenerator.nextDouble01()
+					)
+				))
+				{
+					throw new java.lang.Exception (
+						"CompleteRandomGraph Constructor => Invalid Inputs"
+					);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Retrieve the Random Number Generator
+	 * 
+	 * @return The Random Number Generator
+	 */
+
+	public org.drip.measure.crng.RandomNumberGenerator randomNumberGenerator()
+	{
+		return _randomNumberGenerator;
+	}
+
+	@Override public boolean isConnected()
+	{
+		return true;
 	}
 }

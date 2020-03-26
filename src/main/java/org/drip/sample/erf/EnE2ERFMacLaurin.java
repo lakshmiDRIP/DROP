@@ -84,7 +84,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>EnE2ERFMacLaurin</i> illustrates the E<sub>n</sub> MacLaurin Series Based Estimates for the
- * E<sub>2</sub> erf. The References are:
+ * 	E<sub>2</sub> erf. The References are:
  * 
  * <br><br>
  * 	<ul>

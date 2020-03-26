@@ -84,7 +84,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>ERFHansHeinrichBurmannConvergent</i> illustrates the Error Function Estimation based on the Convergent
- * Hans-Heinrich-Burmann Series. The References are:
+ * 	Hans-Heinrich-Burmann Series. The References are:
  * 
  * <br><br>
  * 	<ul>

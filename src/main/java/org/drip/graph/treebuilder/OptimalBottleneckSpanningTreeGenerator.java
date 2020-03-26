@@ -1,5 +1,5 @@
 
-package org.drip.graph.mst;
+package org.drip.graph.treebuilder;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,81 +75,57 @@ package org.drip.graph.mst;
  */
 
 /**
- * <i>MinimumSpanningForestGenerator</i> exposes the Algorithmic Implementation for the Generation of the
- * 	Minimum Spanning Forest. The References are:
+ * <i>OptimalBottleneckSpanningTreeGenerator</i> exposes the Functionality behind the Minimum/Maximum
+ * 	Bottleneck Spanning Tree Generation for the given Graph. The References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Grama, A., A. Gupta, G. Karypis, and V. Kumar (2003): <i>Introduction to Parallel Computing
- *  			2<sup>nd</sup> Edition</i> <b>Addison Wesley</b>
+ *  		Bader, D. A., and G. Cong (2006): Fast Shared Memory Algorithms for computing the Minimum
+ *  			Spanning Forests of Sparse Graphs <i>Journal of Parallel and Distributed Computing</i>
+ *  			<b>66 (11)</b> 1366-1378
  *  	</li>
  *  	<li>
- *  		Kepner, J., and J. Gilbert (2011): <i>Graph Algorithms in the Language of Linear Algebra</i>
- *  			<b>Society for Industrial and Applied Mathematics</b>
+ *  		Chazelle, B. (2000): A Minimum Spanning Tree Algorithm with Inverse-Ackerman Type Complexity
+ *  			<i> Journal of the Association for Computing Machinery</i> <b>47 (6)</b> 1028-1047
+ *  	</li>
+ *  	<li>
+ *  		Karger, D. R., P. N. Klein, and R. E. Tarjan (1995): A Randomized Linear-Time Algorithm to find
+ *  			Minimum Spanning Trees <i> Journal of the Association for Computing Machinery</i> <b>42
+ *  			(2)</b> 321-328
  *  	</li>
  *  	<li>
  *  		Pettie, S., and V. Ramachandran (2002): An Optimal Minimum Spanning Tree <i>Algorithm Journal of
  *  			the ACM</i> <b>49 (1)</b> 16-34
  *  	</li>
  *  	<li>
- *  		Sedgewick, R. E., and K. D. Wayne (2011): <i>Algorithms 4<sup>th</sup> Edition</i>
- *  			<b>Addison-Wesley</b>
- *  	</li>
- *  	<li>
- *  		Setia, R., A. Nedunchezhian, and S. Balachandran (2015): A New Parallel Algorithm for Minimum
- *  			Spanning Tree Problem
- *  			https://hipcor.fatcow.com/hipc2009/documents/HIPCSS09Papers/1569250351.pdf
- *  	</li>
- *  	<li>
- *  		Wikipedia (2019): Prim's Algorithm https://en.wikipedia.org/wiki/Prim%27s_algorithm
+ *  		Wikipedia (2020): Minimum Spanning Tree https://en.wikipedia.org/wiki/Minimum_spanning_tree
  *  	</li>
  *  </ul>
  *
  * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/mst/README.md">Algorithms for Generating Minimum Spanning Trees</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/treebuilder/README.md">Stubs for Spanning Tree Construction</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class MinimumSpanningForestGenerator
+public abstract class OptimalBottleneckSpanningTreeGenerator
+	extends org.drip.graph.treebuilder.OptimalSpanningForestGenerator
 {
-	protected org.drip.graph.core.Graph _graph = null;
-
-	protected MinimumSpanningForestGenerator (
-		final org.drip.graph.core.Graph graph)
+	protected OptimalBottleneckSpanningTreeGenerator (
+		final org.drip.graph.core.Graph graph,
+		final boolean maximum)
 		throws java.lang.Exception
 	{
-		if (null == (_graph = graph))
-		{
-			throw new java.lang.Exception (
-				"MinimumSpanningForestGenerator Constructor => Invalid Inputs"
-			);
-		}
+		super (
+			graph,
+			maximum
+		);
 	}
-
-	/**
-	 * Retrieve the Graph
-	 * 
-	 * @return The Graph
-	 */
-
-	public org.drip.graph.core.Graph graph()
-	{
-		return _graph;
-	}
-
-	/**
-	 * Generate the Map of the Minimum Spanning Trees from the Initial Vertex
-	 * 
-	 * @return Map of the Minimum Spanning Trees
-	 */
-
-	public abstract org.drip.graph.core.Forest minimumSpanningForest();
 }

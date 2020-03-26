@@ -117,6 +117,32 @@ public class RiemannZeta extends org.drip.function.definition.R1ToR1
 	private org.drip.function.definition.R1ToR1 _gammaEstimator = null;
 
 	/**
+	 * Compute the Apery's Constant (i.e., Riemann Zeta at Value 3.)
+	 * 
+	 * @return Apery's Constant
+	 */
+
+	public static final double AperyConstant()
+	{
+		try
+		{
+			return new RiemannZeta (
+				null,
+				new org.drip.specialfunction.gamma.NemesAnalytic (
+					null
+				)
+			).evaluate (
+				3.
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+		}
+
+		 return java.lang.Double.NaN;
+	}
+
+	/**
 	 * RiemannZeta Constructor
 	 * 
 	 * @param dc The Derivative Control

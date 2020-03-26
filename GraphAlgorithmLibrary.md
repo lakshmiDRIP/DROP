@@ -11,7 +11,7 @@ Graph Algorithm Library contains the Libraries implementing the Graph Representa
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm/GraphAlgorithm_v4.73.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm/GraphAlgorithm_v4.76.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -85,6 +85,33 @@ Graph Algorithm Library contains the Libraries implementing the Graph Representa
 	* Special Cases
 	* Complexity
 	* Other Algorithms
+	* References
+ * Reverse-Delete Algorithm
+	* Overview
+	* Running Time
+	* Proof of Correctness: Approach
+	* Proof of Correctness: Part One
+	* Proof of Correctness: Part Two
+	* References
+ * Breadth-first Search
+	* Overview
+	* Objective
+	* Implementation
+	* Time and Space Complexity Analysis
+	* Completeness Analysis
+	* BFS Ordering
+	* Applications
+	* References
+ * Depth-first Search
+	* Overview
+	* Properties
+	* DFS Traversal
+	* Edges from a DFS Output
+	* Ordering of the DFS Output
+	* Vertex Orderings
+	* Implementation
+	* Applications
+	* Complexity
 	* References
 
 

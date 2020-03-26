@@ -83,7 +83,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>E2ERFMacLaurinGenerator</i> illustrates the MacLaurin Series Coefficients for the E<sub>2</sub> ERF.
- * The References are:
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>

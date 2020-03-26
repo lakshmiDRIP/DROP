@@ -100,7 +100,7 @@ package org.drip.graph.core;
  * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
  *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/README.md">Vertexes, Edges, Trees, and Graphs</a></li>
  *  </ul>
@@ -165,14 +165,17 @@ public class Forest
 	 * Create and add a Unit Vertex Tree into the Forest
 	 * 
 	 * @param vertexName Vertex Name
+	 * @param graph Parent Graph
 	 * 
 	 * @return TRUE - The Unit Vertex Tree successfully added into the Forest
 	 */
 
 	public boolean unitVertexTree (
-		final java.lang.String vertexName)
+		final java.lang.String vertexName,
+		final org.drip.graph.core.Graph graph)
 	{
-		if (null == vertexName)
+		if (null == vertexName || vertexName.isEmpty() ||
+			null == graph)
 		{
 			return false;
 		}
@@ -200,32 +203,35 @@ public class Forest
 	}
 
 	/**
-	 * Add a Keyed Tree to the Forest
+	 * Add a Named Tree to the Forest
 	 *  
-	 * @param treeKey The Tree Key
+	 * @param treeName The Tree Name
 	 * @param tree The Tree
+	 * @param graph The Graph
 	 * 
 	 * @return TRUE - The Keyed Tree successfully added to the Forest
 	 */
 
 	public boolean addTree (
-		final java.lang.String treeKey,
-		final org.drip.graph.core.Tree tree)
+		final java.lang.String treeName,
+		final org.drip.graph.core.Tree tree,
+		final org.drip.graph.core.Graph graph)
 	{
-		if (null == treeKey || _treeMap.containsKey (
-				treeKey
+		if (null == treeName || _treeMap.containsKey (
+				treeName
 			) || null == tree
+			|| null == graph
 		)
 		{
 			return false;
 		}
 
 		_treeMap.put (
-			treeKey,
+			treeName,
 			tree
 		);
 
-		java.util.Set<java.lang.String> treeVertexSet = tree.vertexSet();
+		java.util.Set<java.lang.String> treeVertexSet = tree.vertexNameSet();
 
 		_vertexSet.addAll (
 			treeVertexSet
@@ -235,7 +241,7 @@ public class Forest
 		{
 			_containingTreeNameMap.put (
 				vertexName,
-				treeKey
+				treeName
 			);
 		}
 
@@ -243,12 +249,12 @@ public class Forest
 	}
 
 	/**
-	 * Retrieve the Set of the Tree Keys
+	 * Retrieve the Set of the Tree Names
 	 * 
-	 * @return The Set of the Tree Keys
+	 * @return The Set of the Tree Names
 	 */
 
-	public java.util.Set<java.lang.String> treeKeySet()
+	public java.util.Set<java.lang.String> treeNameSet()
 	{
 		return _treeMap.keySet();
 	}
@@ -293,14 +299,17 @@ public class Forest
 	 * Conditionally Merge the Specified Source and Destination Trees of the Edge
 	 * 
 	 * @param edge The Edge
+	 * @param graph The Graph
 	 * 
 	 * @return TRUE - The Source and the Destination Trees successfully conditionally merged
 	 */
 
 	public boolean conditionalMerge (
-		final org.drip.graph.core.BidirectionalEdge edge)
+		final org.drip.graph.core.BidirectionalEdge edge,
+		final org.drip.graph.core.Graph graph)
 	{
-		if (null == edge)
+		if (null == edge ||
+			null == graph)
 		{
 			return false;
 		}
@@ -338,7 +347,7 @@ public class Forest
 			destinationTreeName
 		);
 
-		java.util.Set<java.lang.String> destinationTreeVertexSet = destinationTree.vertexSet();
+		java.util.Set<java.lang.String> destinationTreeVertexSet = destinationTree.vertexNameSet();
 
 		for (java.lang.String vertexName : destinationTreeVertexSet)
 		{
@@ -363,5 +372,24 @@ public class Forest
 		);
 
 		return true;
+	}
+
+	/**
+	 * Retrieve the Length of the Forest
+	 * 
+	 * @return Length of the Forest
+	 */
+
+	public double length()
+	{
+		double length = 0.;
+
+		for (org.drip.graph.core.Tree tree : _treeMap.values())
+		{
+			length = length + tree.length();
+			
+		}
+
+		return length;
 	}
 }

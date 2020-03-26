@@ -84,7 +84,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>ERFAbramowitzStegunMixed3</i> illustrates the Error Function Estimation based on the Abramowitz-Stegun
- * 3rd Degree Mixed Polynomial. The References are:
+ * 	3<sup>rd</sup> Degree Mixed Polynomial. The References are:
  * 
  * <br><br>
  * 	<ul>

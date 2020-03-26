@@ -100,7 +100,7 @@ package org.drip.graph.core;
  * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
  *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/README.md">Vertexes, Edges, Trees, and Graphs</a></li>
  *  </ul>
@@ -201,7 +201,7 @@ public class Tree
 	 * @return The Tree Adjacency Map
 	 */
 
-	public java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap (
+	public java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap (
 		final org.drip.graph.core.Graph graph)
 	{
 		if (null == graph)
@@ -211,7 +211,7 @@ public class Tree
 
 		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> graphVertexMap = graph.vertexMap();
 
-		java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap =
+		java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge> treeAdjacencyMap =
 			new java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge>();
 
 		for (java.lang.String vertexName : _vertexMap.keySet())
@@ -250,13 +250,83 @@ public class Tree
 					continue;
 				}
 
-				adjacencyMap.put (
+				treeAdjacencyMap.put (
 					edge.distance(),
 					edge
 				);
 			}
 		}
 
-		return adjacencyMap;
+		return treeAdjacencyMap;
+	}
+
+	/**
+	 * Retrieve the Maximum Bottleneck Edge of the Tree
+	 * 
+	 * @return The Maximum Bottleneck Edge of the Tree
+	 */
+
+	public org.drip.graph.core.BidirectionalEdge maximumBottleneckEdge()
+	{
+		java.util.Map<java.lang.String, org.drip.graph.core.BidirectionalEdge> edgeMap = edgeMap();
+
+		if (null == edgeMap || 0 == edgeMap.size())
+		{
+			return null;
+		}
+
+		org.drip.graph.core.BidirectionalEdge bottleneckEdge = null;
+
+		for (org.drip.graph.core.BidirectionalEdge edge : edgeMap.values())
+		{
+			if (null == bottleneckEdge)
+			{
+				bottleneckEdge = edge;
+			}
+			else
+			{
+				if (edge.distance() > bottleneckEdge.distance())
+				{
+					bottleneckEdge = edge;
+				}
+			}
+		}
+
+		return bottleneckEdge;
+	}
+
+	/**
+	 * Retrieve the Minimum Bottleneck Edge of the Tree
+	 * 
+	 * @return The Minimum Bottleneck Edge of the Tree
+	 */
+
+	public org.drip.graph.core.BidirectionalEdge minimumBottleneckEdge()
+	{
+		java.util.Map<java.lang.String, org.drip.graph.core.BidirectionalEdge> edgeMap = edgeMap();
+
+		if (null == edgeMap || 0 == edgeMap.size())
+		{
+			return null;
+		}
+
+		org.drip.graph.core.BidirectionalEdge bottleneckEdge = null;
+
+		for (org.drip.graph.core.BidirectionalEdge edge : edgeMap.values())
+		{
+			if (null == bottleneckEdge)
+			{
+				bottleneckEdge = edge;
+			}
+			else
+			{
+				if (edge.distance() < bottleneckEdge.distance())
+				{
+					bottleneckEdge = edge;
+				}
+			}
+		}
+
+		return bottleneckEdge;
 	}
 }

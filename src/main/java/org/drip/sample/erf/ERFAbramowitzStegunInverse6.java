@@ -84,7 +84,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>ERFAbramowitzStegunInverse6</i> illustrates the Error Function Estimation based on the
- * Abramowitz-Stegun 6th Degree Inverse Polynomial. The References are:
+ * 	Abramowitz-Stegun 6<sup>th</sup> Degree Inverse Polynomial. The References are:
  * 
  * <br><br>
  * 	<ul>

@@ -1,12 +1,12 @@
 
-package org.drip.sample.graph;
+package org.drip.sample.mst;
 
 import java.util.Map;
 
 import org.drip.graph.core.BidirectionalEdge;
 import org.drip.graph.core.Graph;
 import org.drip.graph.core.Tree;
-import org.drip.graph.mst.Prim;
+import org.drip.graph.mstgreedy.PrimGenerator;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -73,42 +73,49 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>PrimMinimumSpanningTree</i> illustrates the Execution of the Prim Algorithm. The References are:
+ * <i>PrimMinimumForestGenerator</i> illustrates the Execution of the Prim Minimum Spanning Forest Algorithm.
+ * 	The References are:
  *  
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Wikipedia (2018a): Graph (Abstract Data Type)
- *  			https://en.wikipedia.org/wiki/Graph_(abstract_data_type)
+ *  		Grama, A., A. Gupta, G. Karypis, and V. Kumar (2003): <i>Introduction to Parallel Computing
+ *  			2<sup>nd</sup> Edition</i> <b>Addison Wesley</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018b): Graph Theory https://en.wikipedia.org/wiki/Graph_theory
+ *  		Kepner, J., and J. Gilbert (2011): <i>Graph Algorithms in the Language of Linear Algebra</i>
+ *  			<b>Society for Industrial and Applied Mathematics</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018c): Graph (Discrete Mathematics)
- *  			https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)
+ *  		Pettie, S., and V. Ramachandran (2002): An Optimal Minimum Spanning Tree <i>Algorithm Journal of
+ *  			the ACM</i> <b>49 (1)</b> 16-34
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018d): Dijkstra's Algorithm https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+ *  		Sedgewick, R. E., and K. D. Wayne (2011): <i>Algorithms 4<sup>th</sup> Edition</i>
+ *  			<b>Addison-Wesley</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018e): Bellman-Ford Algorithm
- *  			https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
+ *  		Setia, R., A. Nedunchezhian, and S. Balachandran (2015): A New Parallel Algorithm for Minimum
+ *  			Spanning Tree Problem
+ *  			https://hipcor.fatcow.com/hipc2009/documents/HIPCSS09Papers/1569250351.pdf
+ *  	</li>
+ *  	<li>
+ *  		Wikipedia (2019): Prim's Algorithm https://en.wikipedia.org/wiki/Prim%27s_algorithm
  *  	</li>
  *  </ul>
  * <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md">Algorithm Support Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graph/README.md">Graph Builder and Navigator</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/mst/README.md">Minimum Spanning Tree and Forest Algorithms</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PrimMinimumSpanningTree
+public class PrimMinimumForestGenerator
 {
 
 	public static final void main (
@@ -231,11 +238,12 @@ public class PrimMinimumSpanningTree
 			)
 		);
 
-		Prim prim = new Prim (
-			graph
+		PrimGenerator prim = new PrimGenerator (
+			graph,
+			false
 		);
 
-		Map<String, Tree> minimumSpanningForest = prim.minimumSpanningForest().treeMap();
+		Map<String, Tree> minimumSpanningForest = prim.optimalSpanningForest().treeMap();
 
 		for (Tree minimumSpanningTree : minimumSpanningForest.values())
 		{
@@ -263,7 +271,15 @@ public class PrimMinimumSpanningTree
 			);
 
 			System.out.println (
-				"\t| Total MST Length => " + minimumSpanningTree.length()
+				"\t| Maximum Bottleneck Edge => " + minimumSpanningTree.maximumBottleneckEdge()
+			);
+
+			System.out.println (
+				"\t| Minimum Bottleneck Edge => " + minimumSpanningTree.minimumBottleneckEdge()
+			);
+
+			System.out.println (
+				"\t| Total MST Length        => " + minimumSpanningTree.length()
 			);
 
 			System.out.println (

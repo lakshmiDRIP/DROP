@@ -85,7 +85,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>ERFWinitzki2008a</i> illustrates the Error Function Estimation based on the Winitzki (2008a) Analytical
- * Error Function Estimator. The References are:
+ * 	Error Function Estimator. The References are:
  * 
  * <br><br>
  * 	<ul>

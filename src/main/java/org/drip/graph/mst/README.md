@@ -2,39 +2,35 @@
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Graph MST Package contains the algorithms for generating Minimum Spanning Trees.
+DROP Graph MST computes the Agnostic Minimum Spanning Tree Properties.
 
 
 ## Class Components
 
- * [***Kruskal***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/mst/Kruskal.java)
- <i>Kruskal</i> implements the Kruskal Algorithm for generating a Minimum Spanning Tree.
+ * [***CompleteRandomGraph***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/mst/CompleteRandomGraph.java)
+ <i>CompleteRandomGraph</i> implements the Expected Size Metrics for a Complete Graph with Randomly Distributed Weights and non-zero Count of Vertexes.
 
- * [***Prim***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/mst/Prim.java)
- <i>Prim</i> implements the Prim's Algorithm for generating a Minimum Spanning Tree.
+ * [***CompleteRandomGraphEnsemble***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/mst/CompleteRandomGraphEnsemble.java)
+ <i>CompleteRandomGraphEnsemble</i> implements the Ensemble of Complete Random Graphs.
+
+ * [***SteeleCompleteUniformRandomEntry***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/mst/SteeleCompleteUniformRandomEntry.java)
+ <i>SteeleCompleteUniformRandomEntry</i> holds a single Entry from the Expected MST Length Computation for Fully Connected Graphs with a small Number of Vertexes and Edge Weights that are i.i.d from U [0, 1].
+
+ * [***SteeleCompleteUniformRandomMST***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/mst/SteeleCompleteUniformRandomMST.java)
+ <i>SteeleCompleteUniformRandomMST</i> holds the Expected Length of the MST computed by Steele (2002) for Graphs with small Number of Vertexes.
 
 
 # References
 
- * Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms 3<sup>rd</sup> Edition</i> <b>MIT Press</b>
+ * Bader, D. A., and G. Cong (2006): Fast Shared Memory Algorithms for computing the Minimum Spanning Forests of Sparse Graphs <i>Journal of Parallel and Distributed Computing</i> <b>66 (11)</b> 1366-1378
 
- * Grama, A., A. Gupta, G. Karypis, and V. Kumar (2003): <i>Introduction to Parallel Computing 2<sup>nd</sup> Edition</i> <b>Addison Wesley</b>
+ * Chazelle, B. (2000): A Minimum Spanning Tree Algorithm with Inverse-Ackerman Type Complexity <i> Journal of the Association for Computing Machinery</i> <b>47 (6)</b> 1028-1047
 
- * Kepner, J., and J. Gilbert (2011): <i>Graph Algorithms in the Language of Linear Algebra</i> <b>Society for Industrial and Applied Mathematics</b>
-
- * Osipov, V., P. Sanders, and J. Singler (2009): The Filter-Kruskal Minimum Spanning Tree Algorithm http://algo2.iti.kit.edu/documents/fkruskal.pdf
+ * Karger, D. R., P. N. Klein, and R. E. Tarjan (1995): A Randomized Linear-Time Algorithm to find Minimum Spanning Trees <i> Journal of the Association for Computing Machinery</i> <b>42 (2)</b> 321-328
 
  * Pettie, S., and V. Ramachandran (2002): An Optimal Minimum Spanning Tree <i>Algorithm Journal of the ACM</i> <b>49 (1)</b> 16-34
 
- * Quinn, M. J., and N. Deo (1984): Parallel Graph Algorithms <i>ACM Computing Surveys</i> <b>16 (3)</b> 319-348
-
- * Sedgewick, R. E., and K. D. Wayne (2011): <i>Algorithms 4<sup>th</sup> Edition</i> <b>Addison-Wesley</b>
-
- * Setia, R., A. Nedunchezhian, and S. Balachandran (2015): A New Parallel Algorithm for Minimum Spanning Tree Problem https://hipcor.fatcow.com/hipc2009/documents/HIPCSS09Papers/1569250351.pdf
-
- * Wikipedia (2019): Kruskal's Algorithm https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
-
- * Wikipedia (2019): Prim's Algorithm https://en.wikipedia.org/wiki/Prim%27s_algorithm
+ * Wikipedia (2020): Minimum Spanning Tree https://en.wikipedia.org/wiki/Minimum_spanning_tree
 
 
 ## DROP Specifications

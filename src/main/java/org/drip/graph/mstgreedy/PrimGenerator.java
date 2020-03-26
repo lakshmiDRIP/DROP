@@ -1,5 +1,5 @@
 
-package org.drip.graph.mst;
+package org.drip.graph.mstgreedy;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,7 +75,8 @@ package org.drip.graph.mst;
  */
 
 /**
- * <i>Prim</i> implements the Prim's Algorithm for generating a Minimum Spanning Tree. The References are:
+ * <i>PrimGenerator</i> implements the Prim's Algorithm for generating a Minimum Spanning Tree. The
+ * 	References are:
  * 
  * <br><br>
  *  <ul>
@@ -108,17 +109,17 @@ package org.drip.graph.mst;
  * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/mst/README.md">Algorithms for Generating Minimum Spanning Trees</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/mstgreedy/README.md">Greedy Algorithms for MSTs and Forests</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Prim
-	extends org.drip.graph.mst.MinimumSpanningForestGenerator
+public class PrimGenerator
+	extends org.drip.graph.treebuilder.OptimalSpanningForestGenerator
 {
 	private boolean updateEdgeTreeMap (
 		final java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge> edgeTreeMap,
@@ -158,7 +159,7 @@ public class Prim
 	private java.lang.String uncoveredVertex (
 		final org.drip.graph.core.Forest forest)
 	{
-		java.util.Set<java.lang.String> graphVertexNameSet = _graph.vertexSet();
+		java.util.Set<java.lang.String> graphVertexNameSet = _graph.vertexNameSet();
 
 		java.util.Set<java.lang.String> forestVertexNameSet = forest.vertexSet();
 
@@ -176,19 +177,22 @@ public class Prim
 	}
 
 	/**
-	 * Prim Constructor
+	 * PrimGenerator Constructor
 	 * 
 	 * @param graph The Graph
+	 * @param maximum TRUE - The Maximum Spanning Forest is to be generated
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public Prim (
-		final org.drip.graph.core.Graph graph)
+	public PrimGenerator (
+		final org.drip.graph.core.Graph graph,
+		final boolean maximum)
 		throws java.lang.Exception
 	{
 		super (
-			graph
+			graph,
+			maximum
 		);
 	}
 
@@ -225,16 +229,18 @@ public class Prim
 			return minimumSpanningTree;
 		}
 
+		boolean maximum = maximum();
+
 		while (!edgeTreeMap.isEmpty())
 		{
-			java.util.Map.Entry<java.lang.Double, org.drip.graph.core.BidirectionalEdge> firstEntry =
-				edgeTreeMap.firstEntry();
+			java.util.Map.Entry<java.lang.Double, org.drip.graph.core.BidirectionalEdge> entry =
+				maximum ? edgeTreeMap.lastEntry() : edgeTreeMap.firstEntry();
 
 			edgeTreeMap.remove (
-				firstEntry.getKey()
+				entry.getKey()
 			);
 
-			org.drip.graph.core.BidirectionalEdge processedEdge = firstEntry.getValue();
+			org.drip.graph.core.BidirectionalEdge processedEdge = entry.getValue();
 
 			java.lang.String currentVertexName = processedEdge.secondVertexName();
 
@@ -286,13 +292,16 @@ public class Prim
 
 		if (!forest.addTree (
 			initialVertexName,
-			minimumSpanningTreeInitial
+			minimumSpanningTreeInitial,
+			_graph
 		))
 		{
 			return null;
 		}
 
-		java.lang.String uncoveredVertex = uncoveredVertex (forest);
+		java.lang.String uncoveredVertex = uncoveredVertex (
+			forest
+		);
 
 		while (!uncoveredVertex.isEmpty())
 		{
@@ -303,7 +312,8 @@ public class Prim
 			if (null == minimumSpanningTree ||
 				!forest.addTree (
 					initialVertexName,
-					minimumSpanningTreeInitial
+					minimumSpanningTreeInitial,
+					_graph
 				)
 			)
 			{
@@ -318,7 +328,7 @@ public class Prim
 		return forest;
 	}
 
-	@Override public org.drip.graph.core.Forest minimumSpanningForest()
+	@Override public org.drip.graph.core.Forest optimalSpanningForest()
 	{
 		java.lang.String initialVertexName = _graph.initialVertexName();
 

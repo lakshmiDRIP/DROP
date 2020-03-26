@@ -84,7 +84,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>ERFHansHeinrichBurmannSchopfSupancic</i> illustrates the Error Function Estimation based on the Schopf
- * Supancic (2014) Series. The References are:
+ * 	Supancic (2014) Series. The References are:
  * 
  * <br><br>
  * 	<ul>
