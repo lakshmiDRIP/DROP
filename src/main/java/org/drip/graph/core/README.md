@@ -28,9 +28,6 @@ DROP Graph Core Package contains the Vertexes, Edges, Trees, Forests, and Graphs
  * [***Network***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/Network.java)
  <i>Network</i> implements a Generic Topological Network containing Discrete Vertexes and Edges.
 
- * [***OrderedSearch***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/OrderedSearch.java)
- <i>OrderedSearch</i> holds the Results of the Ordered Search (BFS/DFS) of the Vertexes of a Graph.
-
  * [***Tree***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/Tree.java)
  <i>Tree</i> holds the Vertexes and the Edges associated with a Tree.
 

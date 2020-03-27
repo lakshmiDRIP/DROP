@@ -84,7 +84,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>ERFCInverseFactorialExpansion</i> illustrates the Error Function Complement Estimation based on the
- * Inverse Factorial Expansion Error Function Complement Series. The References are:
+ * 	Inverse Factorial Expansion Error Function Complement Series. The References are:
  * 
  * <br><br>
  * 	<ul>

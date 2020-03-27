@@ -178,6 +178,35 @@ public class CompleteRandomGraphEnsemble
 	}
 
 	/**
+	 * Construct the Reverse-Delete based CompleteRandomGraphEnsemble
+	 * 
+	 * @param completeRandomGraph The Complete Random Graph
+	 * 
+	 * @return The CompleteRandomGraphEnsemble Instance
+	 */
+
+	public static final CompleteRandomGraphEnsemble ReverseDelete (
+		final org.drip.graph.mst.CompleteRandomGraph completeRandomGraph)
+	{
+		try
+		{
+			return new CompleteRandomGraphEnsemble (
+				completeRandomGraph,
+				new org.drip.graph.mstgreedy.ReverseDeleteGenerator (
+					completeRandomGraph,
+					false
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct the Boruvka based CompleteRandomGraphEnsemble
 	 * 
 	 * @param completeRandomGraph The Complete Random Graph

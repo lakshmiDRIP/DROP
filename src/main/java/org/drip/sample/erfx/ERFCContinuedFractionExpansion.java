@@ -85,7 +85,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>ERFCContinuedFractionExpansion</i> illustrates the Error Function Complement Estimation based on the
- * Continued Fraction Expansion Analytical Error Function Complement Expression. The References are:
+ *	Continued Fraction Expansion Analytical Error Function Complement Expression. The References are:
  * 
  * <br><br>
  * 	<ul>

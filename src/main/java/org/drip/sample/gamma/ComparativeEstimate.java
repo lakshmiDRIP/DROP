@@ -89,7 +89,7 @@ import org.drip.specialfunction.loggamma.InfiniteSumEstimator;
 
 /**
  * <i>ComparativeEstimate</i> demonstrates the Comparisons across several Estimation Techniques of the Gamma
- * Function. The References are:
+ * 	Function. The References are:
  * 
  * <br><br>
  * 	<ul>

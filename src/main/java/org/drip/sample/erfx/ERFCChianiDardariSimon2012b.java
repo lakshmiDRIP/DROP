@@ -85,7 +85,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>ERFCChianiDardariSimon2012b</i> illustrates the Error Function Complement Estimation based on the
- * Chiani-Dardari-Simon (2012b) Analytical Error Function Complement Expression. The References are:
+ * 	Chiani-Dardari-Simon (2012b) Analytical Error Function Complement Expression. The References are:
  * 
  * <br><br>
  * 	<ul>

@@ -81,8 +81,8 @@ import org.drip.specialfunction.loggamma.InfiniteSumEstimator;
 
 /**
  * <i>FourierBlagouchineSeriesEstimate</i> demonstrates the Estimate of the Log Gamma Function using the
- * Malmsten-Blagouchine as well as the Blagouchine (2015) Variants of the Fourier Series Expansion. The
- * References are:
+ * 	Malmsten-Blagouchine as well as the Blagouchine (2015) Variants of the Fourier Series Expansion. The
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>

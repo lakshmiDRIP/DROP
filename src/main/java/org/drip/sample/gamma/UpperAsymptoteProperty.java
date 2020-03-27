@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.GammaInequalityLemma;
 
 /**
  * <i>UpperAsymptoteProperty</i> demonstrates the Verification of the Upper Asymptote Property of the Gamma
- * Function. The References are:
+ * 	Function. The References are:
  * 
  * <br><br>
  * 	<ul>

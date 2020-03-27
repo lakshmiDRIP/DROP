@@ -160,14 +160,14 @@ public class Vertex
 	}
 
 	/**
-	 * Add an Bidirectional Edge to the Adjacency Map
+	 * Add a Bidirectional Edge to the Adjacency Map
 	 * 
 	 * @param bidirectionalEdge The Bidirectional Edge
 	 * 
 	 * @return TRUE - The Bidirectional Edge successfully added
 	 */
 
-	public boolean addEdge (
+	public boolean addBidirectionalEdge (
 		final org.drip.graph.core.BidirectionalEdge bidirectionalEdge)
 	{
 		if (null == bidirectionalEdge)
@@ -218,6 +218,39 @@ public class Vertex
 				e.printStackTrace();
 			}
 		}
+
+		return true;
+	}
+
+	/**
+	 * Remove a Bidirectional Edge from the Adjacency Map
+	 * 
+	 * @param bidirectionalEdge The Bidirectional Edge
+	 * 
+	 * @return TRUE - The Bidirectional Edge successfully added
+	 */
+
+	public boolean removeBidirectionalEdge (
+		final org.drip.graph.core.BidirectionalEdge bidirectionalEdge)
+	{
+		if (null == bidirectionalEdge)
+		{
+			return false;
+		}
+
+		if (!bidirectionalEdge.firstVertexName().equalsIgnoreCase (
+				_name
+			) && !bidirectionalEdge.secondVertexName().equalsIgnoreCase (
+				_name
+			)
+		)
+		{
+			return false;
+		}
+
+		_adjacencyMap.remove (
+			bidirectionalEdge.distance()
+		);
 
 		return true;
 	}

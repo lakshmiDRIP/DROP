@@ -81,7 +81,7 @@ import org.drip.specialfunction.gamma.FirstDerivative;
 
 /**
  * <i>FirstDerivativeEstimate</i> demonstrates the Estimation of the First Derivative of the Gamma Function.
- * The References are:
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>

@@ -82,7 +82,7 @@ import org.drip.specialfunction.loggamma.InfiniteSumEstimator;
 
 /**
  * <i>PowerSourceExponentialDecayEstimate</i> demonstrates the Estimation of the Power Source Exponential
- * Decay Function. The References are:
+ * 	Decay Function. The References are:
  * 
  * <br><br>
  * 	<ul>

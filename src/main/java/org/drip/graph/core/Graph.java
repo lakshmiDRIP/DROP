@@ -174,8 +174,8 @@ public class Graph
 
 		java.util.Set<java.lang.String> vertexNameSet = _vertexMap.keySet();
 
-		org.drip.graph.core.OrderedSearch orderedSearch =
-			new org.drip.graph.core.OrderedSearch();
+		org.drip.graph.search.OrderedVertexGroup orderedSearch =
+			new org.drip.graph.search.OrderedVertexGroup();
 
 		if (!bfs (
 			initialVertexName(),
@@ -312,8 +312,8 @@ public class Graph
 
 		for (java.lang.String leafVertexName : leafVertexNameList)
 		{
-			org.drip.graph.core.OrderedSearch orderedSearch =
-				new org.drip.graph.core.OrderedSearch();
+			org.drip.graph.search.OrderedVertexGroup orderedSearch =
+				new org.drip.graph.search.OrderedVertexGroup();
 
 			bfs (
 				leafVertexName,

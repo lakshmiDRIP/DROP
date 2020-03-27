@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.GammaInequalityLemma;
 
 /**
  * <i>GautschiConvexProperty</i> demonstrates the Verification of the Gautschi Double-Bound Convex Property
- * of the Gamma Function. The References are:
+ * 	of the Gamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>

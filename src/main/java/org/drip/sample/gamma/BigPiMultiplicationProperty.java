@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.BigPiEqualityLemma;
 
 /**
  * <i>BigPiMultiplicationProperty</i> demonstrates the Verification of the Multiplication Property of the Big
- * Pi Function. The References are:
+ * 	Pi Function. The References are:
  * 
  * <br><br>
  * 	<ul>

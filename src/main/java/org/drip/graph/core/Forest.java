@@ -387,7 +387,6 @@ public class Forest
 		for (org.drip.graph.core.Tree tree : _treeMap.values())
 		{
 			length = length + tree.length();
-			
 		}
 
 		return length;

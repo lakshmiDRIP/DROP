@@ -83,7 +83,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>ERFIMacLaurinGenerator</i> illustrates the MacLaurin Series Coefficient Generation for the Error
- * Function Inverse. The References are:
+ *	Function Inverse. The References are:
  * 
  * <br><br>
  * 	<ul>

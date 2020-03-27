@@ -215,9 +215,4 @@ public class CompleteRandomGraph
 	{
 		return _randomNumberGenerator;
 	}
-
-	@Override public boolean isConnected()
-	{
-		return true;
-	}
 }

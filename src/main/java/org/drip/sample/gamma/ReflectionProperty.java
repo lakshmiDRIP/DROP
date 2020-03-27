@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.GammaEqualityLemma;
 
 /**
  * <i>ReflectionProperty</i> demonstrates the Verification of the Reflection Property of the Gamma Function.
- * The References are:
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>

@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.ReimannZetaEqualityLemma;
 
 /**
  * <i>RiemannZetaAnalyticContinuity</i> demonstrates the Analytic Continuity Property of the Riemann Zeta
- * Function. The References are:
+ * 	Function. The References are:
  * 
  * <br><br>
  * 	<ul>

@@ -1,9 +1,12 @@
 
-package org.drip.sample.graph;
+package org.drip.sample.mst;
+
+import java.util.Map;
 
 import org.drip.graph.core.BidirectionalEdge;
 import org.drip.graph.core.Graph;
-import org.drip.graph.core.OrderedSearch;
+import org.drip.graph.core.Tree;
+import org.drip.graph.mstgreedy.ReverseDeleteGenerator;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -70,37 +73,43 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>DepthFirstSearch</i> illustrates the Application of the Depth-First Search on a Graph. The References
- * 	are:
+ * <i>ReverseDeleteMinimumForestGenerator</i> illustrates the Execution of the Reverse-Delete Algorithm for
+ * 	Minimum Spanning Tree. The References are:
  *  
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Wikipedia (2019a): Kruskal's Algorithm https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
+ *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms
+ *  			3<sup>rd</sup> Edition</i> <b>MIT Press</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2019b): Prim's Algorithm https://en.wikipedia.org/wiki/Prim%27s_algorithm
+ *  		Kleinberg, J., and E. Tardos (2006): <i>Algorithm Design</i> <b>Addison Wesley</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020a): Breadth-First Search https://en.wikipedia.org/wiki/Breadth-first_search
+ *  		Kruskal, J. B. (1956): On the Shortest Spanning Subtree of a Graph and the Traveling Salesman
+ *  			Problem <i>Proceedings of the American Mathematical Society</i> <b>7 (1)</b> 48-50
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020b): Depth-First Search https://en.wikipedia.org/wiki/Depth-first_search
+ *  		Thorup, M. (2000): Near-optimal Fully-dynamic Graph Connectivity <i>Proceedings on the 32nd ACM
+ *  			Symposium on the Theory of Computing</i> 343-350
+ *  	</li>
+ *  	<li>
+ *  		Wikipedia (2019): Reverse-delete Algorithm https://en.wikipedia.org/wiki/Reverse-delete_algorithm
  *  	</li>
  *  </ul>
  * <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md">Algorithm Support Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graph/README.md">Graph Builder and Navigator</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/mst/README.md">Minimum Spanning Tree and Forest Algorithms</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DepthFirstSearch
+public class ReverseDeleteMinimumForestGenerator
 {
 
 	public static final void main (
@@ -113,16 +122,16 @@ public class DepthFirstSearch
 
 		String[] vertexArray = new String[]
 		{
-			"Delhi     ",
-			"Bombay    ",
-			"Madras    ",
-			"Calcutta  ",
-			"Bangalore ",
-			"Hyderabad ",
-			"Cochin    ",
-			"Pune      ",
-			"Ahmedabad ",
-			"Jaipur    "
+			"delhi     ",
+			"bombay    ",
+			"madras    ",
+			"calcutta  ",
+			"bangalore ",
+			"hyderabad ",
+			"cochin    ",
+			"pune      ",
+			"ahmedabad ",
+			"jaipur    "
 		};
 
 		Graph graph = new Graph();
@@ -223,29 +232,54 @@ public class DepthFirstSearch
 			)
 		);
 
-		String vertexName = "Delhi     ";
-
-		OrderedSearch recursiveOrderedSearch = new OrderedSearch();
-
-		System.out.println (
-			graph.dfsRecursive (
-				vertexName,
-				recursiveOrderedSearch
-			)
+		ReverseDeleteGenerator reverseDelete = new ReverseDeleteGenerator (
+			graph,
+			false
 		);
 
-		System.out.println (recursiveOrderedSearch.vertexNameList());
+		Map<String, Tree> minimumSpanningForest = reverseDelete.optimalSpanningForest().treeMap();
 
-		OrderedSearch nonRecursiveOrderedSearch = new OrderedSearch();
+		for (Tree minimumSpanningTree : minimumSpanningForest.values())
+		{
+			System.out.println (
+				"\t|-----------------------------------------------------------------------------------|"
+			);
 
-		System.out.println (
-			graph.dfsNonRecursive (
-				vertexName,
-				nonRecursiveOrderedSearch
-			)
-		);
+			System.out.println (
+				"\t|                     REVERSE-DELETE MINIMUM SPANNING TREE PATH                     |"
+			);
 
-		System.out.println (nonRecursiveOrderedSearch.vertexNameList());
+			System.out.println (
+				"\t|-----------------------------------------------------------------------------------|"
+			);
+
+			for (BidirectionalEdge edge : minimumSpanningTree.edgeMap().values())
+			{
+				System.out.println (
+					"\t| " + edge
+				);
+			}
+
+			System.out.println (
+				"\t|-----------------------------------------------------------------------------------|"
+			);
+
+			System.out.println (
+				"\t| Maximum Bottleneck Edge => " + minimumSpanningTree.maximumBottleneckEdge()
+			);
+
+			System.out.println (
+				"\t| Minimum Bottleneck Edge => " + minimumSpanningTree.minimumBottleneckEdge()
+			);
+
+			System.out.println (
+				"\t| Total MST Length        => " + minimumSpanningTree.length()
+			);
+
+			System.out.println (
+				"\t|-----------------------------------------------------------------------------------|"
+			);
+		}
 
 		EnvManager.TerminateEnv();
 	}

@@ -155,10 +155,10 @@ public class KruskalGenerator
 		java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge> orderedEdgeMap =
 			_graph.orderedEdgeMap();
 
-		java.util.Set<java.lang.Double> ascendingKeySet = maximum() ? orderedEdgeMap.descendingKeySet() :
+		java.util.Set<java.lang.Double> orderedKeySet = maximum() ? orderedEdgeMap.descendingKeySet() :
 			orderedEdgeMap.keySet();
 
-		for (double distanceKey : ascendingKeySet)
+		for (double distanceKey : orderedKeySet)
 		{
 			if (!forest.conditionalMerge (
 				orderedEdgeMap.get (

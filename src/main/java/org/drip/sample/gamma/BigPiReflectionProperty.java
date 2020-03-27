@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.BigPiEqualityLemma;
 
 /**
  * <i>BigPiReflectionProperty</i> demonstrates the Verification of the Reflection Property of the Big Pi
- * Function. The References are:
+ * 	Function. The References are:
  * 
  * <br><br>
  * 	<ul>

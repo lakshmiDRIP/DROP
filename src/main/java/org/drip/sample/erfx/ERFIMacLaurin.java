@@ -84,7 +84,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>ERFIMacLaurin</i> illustrates the Inverse Error Function Estimation using the Euler-MacLaurin Series
- * Inverse Error Function Estimator. The References are:
+ * 	Inverse Error Function Estimator. The References are:
  * 
  * <br><br>
  * 	<ul>

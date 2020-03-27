@@ -85,7 +85,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>ERFCKaragiannidisLioumpas</i> illustrates the Error Function Complement Estimation based on the
- * Karagiannidis-Lioumpas Analytical Error Function Complement Expression. The References are:
+ * 	Karagiannidis-Lioumpas Analytical Error Function Complement Expression. The References are:
  * 
  * <br><br>
  * 	<ul>

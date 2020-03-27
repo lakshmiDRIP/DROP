@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.GammaEqualityLemma;
 
 /**
  * <i>DuplicationProperty</i> demonstrates the Verification of the Duplication Property of the Gamma
- * Function. The References are:
+ * 	Function. The References are:
  * 
  * <br><br>
  * 	<ul>

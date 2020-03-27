@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.GammaInequalityLemma;
 
 /**
  * <i>ExponentialConvexProperty</i> demonstrates the Verification of the Exponential Convex Property of the
- * Gamma Function. The References are:
+ * 	Gamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>

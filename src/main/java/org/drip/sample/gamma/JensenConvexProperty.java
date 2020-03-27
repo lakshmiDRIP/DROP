@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.GammaInequalityLemma;
 
 /**
  * <i>JensenConvexProperty</i> demonstrates the Verification of the Jensen Multi-Point Interpolant Convex
- * Property of the Gamma Function. The References are:
+ * 	Property of the Gamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>

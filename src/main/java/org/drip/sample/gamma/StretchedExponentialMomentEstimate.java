@@ -81,7 +81,7 @@ import org.drip.specialfunction.derived.StretchedExponentialMoment;
 
 /**
  * <i>StretchedExponentialMomentEstimate</i> demonstrates the Estimation of the Moments of the Stretched
- * Exponential Function. The References are:
+ * 	Exponential Function. The References are:
  * 
  * <br><br>
  * 	<ul>

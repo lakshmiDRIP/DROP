@@ -1,5 +1,5 @@
 
-package org.drip.graph.core;
+package org.drip.graph.mstgreedy;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,26 +75,28 @@ package org.drip.graph.core;
  */
 
 /**
- * <i>OrderedSearch</i> holds the Results of the Ordered Search (BFS/DFS) of the Vertexes of a Graph. The
- * 	References are:
+ * <i>ReverseDeleteGenerator</i> implements the Reverse-Delete Algorithm for generating a Minimum Spanning
+ * 	Tree. The References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Bollobas, B. (1998): <i>Modern Graph Theory</i> <b>Springer</b>
+ *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms
+ *  			3<sup>rd</sup> Edition</i> <b>MIT Press</b>
  *  	</li>
  *  	<li>
- *  		Eppstein, D. (1999): Spanning Trees and Spanners
- *  			https://www.ics.uci.edu/~eppstein/pubs/Epp-TR-96-16.pdf
+ *  		Kleinberg, J., and E. Tardos (2006): <i>Algorithm Design</i> <b>Addison Wesley</b>
  *  	</li>
  *  	<li>
- *  		Gross, J. L., and J. Yellen (2005): <i>Graph Theory and its Applications</i> <b>Springer</b>
+ *  		Kruskal, J. B. (1956): On the Shortest Spanning Subtree of a Graph and the Traveling Salesman
+ *  			Problem <i>Proceedings of the American Mathematical Society</i> <b>7 (1)</b> 48-50
  *  	</li>
  *  	<li>
- *  		Kocay, W., and D. L. Kreher (2004): <i>Graphs, Algorithms, and Optimizations</i> <b>CRC Press</b>
+ *  		Thorup, M. (2000): Near-optimal Fully-dynamic Graph Connectivity <i>Proceedings on the 32nd ACM
+ *  			Symposium on the Theory of Computing</i> 343-350
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020): Spanning Tree https://en.wikipedia.org/wiki/Spanning_tree
+ *  		Wikipedia (2019): Reverse-delete Algorithm https://en.wikipedia.org/wiki/Reverse-delete_algorithm
  *  	</li>
  *  </ul>
  *
@@ -103,120 +105,85 @@ package org.drip.graph.core;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/README.md">Vertexes, Edges, Trees, and Graphs</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/mstgreedy/README.md">Greedy Algorithms for MSTs and Forests</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class OrderedSearch
+public class ReverseDeleteGenerator
+	extends org.drip.graph.treebuilder.OptimalSpanningForestGenerator
 {
-	private boolean _containsCycle = false;
-	private java.util.Set<java.lang.String> _vertexNameSet = null;
-	private java.util.List<java.lang.String> _vertexNameList = null;
 
 	/**
-	 * OrderedSearch Constructor
+	 * ReverseDeleteGenerator Constructor
+	 * 
+	 * @param graph The Graph
+	 * @param maximum TRUE - The Maximum Spanning Forest is to be generated
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public OrderedSearch()
+	public ReverseDeleteGenerator (
+		final org.drip.graph.core.Graph graph,
+		final boolean maximum)
+		throws java.lang.Exception
 	{
-		_vertexNameSet = new java.util.HashSet<java.lang.String>();
-
-		_vertexNameList = new java.util.ArrayList<java.lang.String>();
-	}
-
-	/**
-	 * Retrieve the Set of available Vertexes
-	 * 
-	 * @return Set of available Vertexes
-	 */
-
-	public java.util.Set<java.lang.String> vertexNameSet()
-	{
-		return _vertexNameSet;
-	}
-
-	/**
-	 * Retrieve the List of available Vertexes
-	 * 
-	 * @return List of available Vertexes
-	 */
-
-	public java.util.List<java.lang.String> vertexNameList()
-	{
-		return _vertexNameList;
-	}
-
-	/**
-	 * Indicate if the Ordered Search contains a Cycle
-	 * 
-	 * @return TRUE - The Ordered Search contains a Cycle
-	 */
-
-	public boolean containsCycle()
-	{
-		return _containsCycle;
-	}
-
-	/**
-	 * Indicate if the Specified Vertex in Present in the Search
-	 * 
-	 * @param vertexName The Vertex Name
-	 * 
-	 * @return TRUE - The Specified Vertex is present in the Search
-	 */
-
-	public boolean vertexPresent (
-		final java.lang.String vertexName)
-	{
-		return null != vertexName && !vertexName.isEmpty() && _vertexNameSet.contains (
-			vertexName
+		super (
+			graph,
+			maximum
 		);
 	}
 
-	/**
-	 * Add the specified Vertex to the Search
-	 * 
-	 * @param vertexName The Vertex Name
-	 * 
-	 * @return TRUE - The Specified Vertex successfully added to the Search
-	 */
-
-	public boolean addVertex (
-		final java.lang.String vertexName)
+	@Override public org.drip.graph.core.Forest optimalSpanningForest()
 	{
-		if (null == vertexName || vertexName.isEmpty())
+		if (!_graph.isConnected())
 		{
-			return false;
+			return null;
 		}
 
-		if (!_vertexNameSet.contains (
-			vertexName
-		))
+		boolean maximum = maximum();
+
+		java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge> orderedEdgeMap =
+			_graph.orderedEdgeMap();
+
+		java.util.Set<java.lang.Double> orderedKeySet = maximum ? orderedEdgeMap.keySet() :
+			orderedEdgeMap.descendingKeySet();
+
+		for (double distanceKey : orderedKeySet)
 		{
-			_vertexNameSet.add (
-				vertexName
+			org.drip.graph.core.BidirectionalEdge edge = orderedEdgeMap.get (
+				distanceKey
 			);
 
-			_vertexNameList.add (
-				vertexName
-			);
+			if (!_graph.removeBidirectionalEdge (
+				edge
+			))
+			{
+				return null;
+			}
+
+			if (!_graph.isConnected())
+			{
+				_graph.addBidirectionalEdge (
+					edge
+				);
+			}
 		}
 
-		return true;
-	}
+		try
+		{
+			return new org.drip.graph.mstgreedy.KruskalGenerator (
+				_graph,
+				maximum
+			).optimalSpanningForest();
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
 
-	/**
-	 * Set to Indicate that the Ordered Search contains a Cycle
-	 * 
-	 * @return TRUE - The Indicator successfully set
-	 */
-
-	public boolean setContainsCycle()
-	{
-		_containsCycle = true;
-		return true;
+		return null;
 	}
 }

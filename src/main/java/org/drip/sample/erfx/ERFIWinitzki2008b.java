@@ -84,7 +84,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>ERFIWinitzki2008b</i> illustrates the Inverse Error Function Estimation based on the Winitzki (2008b)
- * Analytical Inverse Error Function Estimator. The References are:
+ * 	Analytical Inverse Error Function Estimator. The References are:
  * 
  * <br><br>
  * 	<ul>

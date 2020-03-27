@@ -81,7 +81,7 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
 
 /**
  * <i>HigherDerivativeEstimate</i> demonstrates the Estimation of the Higher Order Derivatives of the Gamma
- * Function. The References are:
+ * 	Function. The References are:
  * 
  * <br><br>
  * 	<ul>
