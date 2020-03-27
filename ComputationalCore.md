@@ -45,6 +45,8 @@ Computational Core Module contains libraries the implement Algorithm/Computation
  * Kruskal's Algorithm
  * Boruvka's Algorithm
  * Reverse-Delete Algorithm
+ * Breadth-first Search
+ * Depth-first Search
 
 
 ## Model Validation Coverage

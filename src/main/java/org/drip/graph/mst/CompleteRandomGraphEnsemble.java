@@ -239,6 +239,7 @@ public class CompleteRandomGraphEnsemble
 	 * CompleteRandomGraphEnsemble Constructor
 	 * 
 	 * @param completeRandomGraph The Underlying Complete Random Graph
+	 * @param minimumSpanningForestGenerator The Minimum Spanning Forest Generator
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
