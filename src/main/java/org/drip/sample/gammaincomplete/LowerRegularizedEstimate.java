@@ -81,7 +81,7 @@ import org.drip.specialfunction.incompletegamma.LowerRegularized;
 
 /**
  * <i>LowerRegularizedEstimate</i> illustrates the Estimation of the Regularized Lower Incomplete Gamma
- * Function using several Techniques. The References are:
+ * 	Function using several Techniques. The References are:
  * 
  * <br><br>
  * 	<ul>

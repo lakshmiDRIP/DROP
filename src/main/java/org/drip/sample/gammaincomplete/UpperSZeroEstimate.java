@@ -82,7 +82,7 @@ import org.drip.specialfunction.incompletegamma.UpperSFixed;
 
 /**
  * <i>UpperSZeroEstimate</i> illustrates the Estimation of the Upper Incomplete Gamma Function using the NIST
- * (2019) Series for s = 0. The References are:
+ * 	(2019) Series for s = 0. The References are:
  * 
  * <br><br>
  * 	<ul>

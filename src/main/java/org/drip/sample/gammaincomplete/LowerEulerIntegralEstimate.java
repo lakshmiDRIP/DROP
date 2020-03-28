@@ -82,7 +82,7 @@ import org.drip.specialfunction.incompletegamma.LowerEulerIntegral;
 
 /**
  * <i>LowerEulerIntegralEstimate</i> illustrates the Estimation using the Euler's Second Kind Integral of the
- * Lower Incomplete Gamma Function. The References are:
+ * 	Lower Incomplete Gamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>

@@ -168,7 +168,7 @@ public class CompleteUniformRandomBoruvka
 
 		System.out.println ("\t|------------------------------------------------------||");
 
-		System.out.println ("\t|      COMPLETE UNIFORM RANDOM KRUSKAL MST LENGTH      ||");
+		System.out.println ("\t|      COMPLETE UNIFORM RANDOM BORUVKA MST LENGTH      ||");
 
 		System.out.println ("\t|------------------------------------------------------||");
 

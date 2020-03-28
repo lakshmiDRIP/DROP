@@ -81,7 +81,7 @@ import org.drip.specialfunction.incompletegamma.UpperRegularized;
 
 /**
  * <i>UpperRegularizedEstimate</i> illustrates the Estimation of the Regularized Upper Incomplete Gamma
- * Function using several Techniques. The References are:
+ * 	Function using several Techniques. The References are:
  * 
  * <br><br>
  * 	<ul>

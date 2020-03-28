@@ -81,7 +81,7 @@ import org.drip.specialfunction.incompletegamma.UpperSFixed;
 
 /**
  * <i>UpperSRecurrenceEstimate</i> illustrates the Recurrence-Based Estimation of the Upper Incomplete Gamma
- * Function using the NIST (2019) Series. The References are:
+ * 	Function using the NIST (2019) Series. The References are:
  * 
  * <br><br>
  * 	<ul>

@@ -82,7 +82,7 @@ import org.drip.specialfunction.incompletegamma.UpperSFixed;
 
 /**
  * <i>UpperWeissteinEstimate</i> illustrates the Estimation of the Upper Incomplete Gamma Function using the
- * Weisstein Series. The References are:
+ * 	Weisstein Series. The References are:
  * 
  * <br><br>
  * 	<ul>

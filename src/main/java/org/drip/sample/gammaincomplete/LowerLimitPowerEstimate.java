@@ -82,7 +82,7 @@ import org.drip.specialfunction.incompletegamma.LowerLimitPowerIntegrand;
 
 /**
  * <i>LowerLimitPowerEstimate</i> illustrates the Estimation of the Integral of the Product of the Limit
- * Raised to an Exponent and the corresponding Lower Incomplete Gamma Function. The References are:
+ * 	Raised to an Exponent and the corresponding Lower Incomplete Gamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>

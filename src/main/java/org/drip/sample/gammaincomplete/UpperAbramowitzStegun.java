@@ -82,7 +82,7 @@ import org.drip.specialfunction.incompletegamma.GaussContinuedFraction;
 
 /**
  * <i>UpperAbramowitzStegun</i> illustrates the Estimation of the Upper Incomplete Gamma Function using the
- * Abramowitz-Stegun (2007) Version of Gauss Continued Fraction. The References are:
+ * 	Abramowitz-Stegun (2007) Version of Gauss Continued Fraction. The References are:
  * 
  * <br><br>
  * 	<ul>

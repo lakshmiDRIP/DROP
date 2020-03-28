@@ -83,7 +83,7 @@ import org.drip.specialfunction.incompletegamma.LowerSFixed;
 
 /**
  * <i>LowerZInfinityAsymptote</i> illustrates the Asymptotic Behavior of the Lower Incomplete Gamma Function
- * in the Neighborhood of z = Infinity using the Weierstrass Limit Series. The References are:
+ * 	in the Neighborhood of z = Infinity using the Weierstrass Limit Series. The References are:
  * 
  * <br><br>
  * 	<ul>

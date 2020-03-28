@@ -82,7 +82,7 @@ import org.drip.specialfunction.incompletegamma.GaussContinuedFraction;
 
 /**
  * <i>LowerGaussContinuedFraction</i> illustrates the Estimation of the Lower Incomplete Gamma Function using
- * the Gauss Continued Fraction. The References are:
+ * 	the Gauss Continued Fraction. The References are:
  * 
  * <br><br>
  * 	<ul>

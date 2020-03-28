@@ -145,7 +145,7 @@ public class ReverseDeleteGenerator
 
 		boolean maximum = maximum();
 
-		java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge> orderedEdgeMap =
+		java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> orderedEdgeMap =
 			_graph.orderedEdgeMap();
 
 		java.util.Set<java.lang.Double> orderedKeySet = maximum ? orderedEdgeMap.keySet() :
@@ -153,7 +153,7 @@ public class ReverseDeleteGenerator
 
 		for (double distanceKey : orderedKeySet)
 		{
-			org.drip.graph.core.BidirectionalEdge edge = orderedEdgeMap.get (
+			org.drip.graph.core.Edge edge = orderedEdgeMap.get (
 				distanceKey
 			);
 

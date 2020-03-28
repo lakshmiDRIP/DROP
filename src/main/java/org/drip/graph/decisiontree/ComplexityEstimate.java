@@ -86,7 +86,7 @@ package org.drip.graph.decisiontree;
  *  			<b>66 (11)</b> 1366-1378
  *  	</li>
  *  	<li>
- *  		Chazelle, B. (2000): A Minimum Spanning Tree ALgorithm with Inverse-Ackerman Type Complexity
+ *  		Chazelle, B. (2000): A Minimum Spanning Tree Algorithm with Inverse-Ackerman Type Complexity
  *  			<i> Journal of the Association for Computing Machinery</i> <b>47 (6)</b> 1028-1047
  *  	</li>
  *  	<li>

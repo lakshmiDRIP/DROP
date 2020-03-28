@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.drip.analytics.support.CaseInsensitiveHashMap;
-import org.drip.graph.core.BidirectionalEdge;
+import org.drip.graph.core.Edge;
 import org.drip.graph.core.CompleteBipartiteGraph;
 import org.drip.graph.core.Graph;
 import org.drip.graph.core.Tree;
@@ -142,7 +142,7 @@ public class CompleteBipartiteProperties
 	}
 
 	private static final void AddEdge (
-		final Map<String, BidirectionalEdge> crossConnectMap,
+		final Map<String, Edge> crossConnectMap,
 		final String vertexNameP,
 		final String vertexNameQ,
 		final double weight)
@@ -150,7 +150,7 @@ public class CompleteBipartiteProperties
 	{
 		crossConnectMap.put (
 			vertexNameP + "_" + vertexNameQ,
-			new BidirectionalEdge (
+			new Edge (
 				vertexNameP,
 				vertexNameQ,
 				weight
@@ -181,7 +181,7 @@ public class CompleteBipartiteProperties
 			"ahmedabad ",
 		};
 
-		Map<String, BidirectionalEdge> crossConnectMap = new CaseInsensitiveHashMap<BidirectionalEdge>();
+		Map<String, Edge> crossConnectMap = new CaseInsensitiveHashMap<Edge>();
 
 		AddEdge (
 			crossConnectMap,
@@ -352,7 +352,7 @@ public class CompleteBipartiteProperties
 				"\t|-----------------------------------------------------------------------------------|"
 			);
 
-			for (BidirectionalEdge edge : minimumSpanningTree.edgeMap().values())
+			for (Edge edge : minimumSpanningTree.edgeMap().values())
 			{
 				System.out.println (
 					"\t| " + edge
@@ -395,7 +395,7 @@ public class CompleteBipartiteProperties
 				"\t|-----------------------------------------------------------------------------------|"
 			);
 
-			for (BidirectionalEdge edge : minimumSpanningTree.edgeMap().values())
+			for (Edge edge : minimumSpanningTree.edgeMap().values())
 			{
 				System.out.println (
 					"\t| " + edge

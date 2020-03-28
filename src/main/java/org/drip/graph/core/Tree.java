@@ -171,7 +171,7 @@ public class Tree
 
 	public boolean absorbTreeAndEdge (
 		final org.drip.graph.core.Tree tree,
-		final org.drip.graph.core.BidirectionalEdge edge)
+		final org.drip.graph.core.Edge edge)
 	{
 		if (null == tree || !addBidirectionalEdge (
 			edge
@@ -180,7 +180,7 @@ public class Tree
 			return false;
 		}
 
-		for (org.drip.graph.core.BidirectionalEdge treeEdge : tree.edgeMap().values())
+		for (org.drip.graph.core.Edge treeEdge : tree.edgeMap().values())
 		{
 			if (!addBidirectionalEdge (
 				treeEdge
@@ -201,7 +201,7 @@ public class Tree
 	 * @return The Tree Adjacency Map
 	 */
 
-	public java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap (
+	public java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap (
 		final org.drip.graph.core.Graph graph)
 	{
 		if (null == graph)
@@ -211,8 +211,8 @@ public class Tree
 
 		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> graphVertexMap = graph.vertexMap();
 
-		java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge> treeAdjacencyMap =
-			new java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge>();
+		java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> treeAdjacencyMap =
+			new java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge>();
 
 		for (java.lang.String vertexName : _vertexMap.keySet())
 		{
@@ -227,7 +227,7 @@ public class Tree
 				vertexName
 			);
 
-			java.util.Collection<org.drip.graph.core.BidirectionalEdge> edgeCollection =
+			java.util.Collection<org.drip.graph.core.Edge> edgeCollection =
 				vertex.adjacencyMap().values();
 
 			if (null == edgeCollection || 0 == edgeCollection.size())
@@ -235,7 +235,7 @@ public class Tree
 				continue;
 			}
 
-			for (org.drip.graph.core.BidirectionalEdge edge : edgeCollection)
+			for (org.drip.graph.core.Edge edge : edgeCollection)
 			{
 				java.lang.String sourceVertexName = edge.firstVertexName();
 
@@ -251,7 +251,7 @@ public class Tree
 				}
 
 				treeAdjacencyMap.put (
-					edge.distance(),
+					edge.weight(),
 					edge
 				);
 			}
@@ -266,18 +266,18 @@ public class Tree
 	 * @return The Maximum Bottleneck Edge of the Tree
 	 */
 
-	public org.drip.graph.core.BidirectionalEdge maximumBottleneckEdge()
+	public org.drip.graph.core.Edge maximumBottleneckEdge()
 	{
-		java.util.Map<java.lang.String, org.drip.graph.core.BidirectionalEdge> edgeMap = edgeMap();
+		java.util.Map<java.lang.String, org.drip.graph.core.Edge> edgeMap = edgeMap();
 
 		if (null == edgeMap || 0 == edgeMap.size())
 		{
 			return null;
 		}
 
-		org.drip.graph.core.BidirectionalEdge bottleneckEdge = null;
+		org.drip.graph.core.Edge bottleneckEdge = null;
 
-		for (org.drip.graph.core.BidirectionalEdge edge : edgeMap.values())
+		for (org.drip.graph.core.Edge edge : edgeMap.values())
 		{
 			if (null == bottleneckEdge)
 			{
@@ -285,7 +285,7 @@ public class Tree
 			}
 			else
 			{
-				if (edge.distance() > bottleneckEdge.distance())
+				if (edge.weight() > bottleneckEdge.weight())
 				{
 					bottleneckEdge = edge;
 				}
@@ -301,18 +301,18 @@ public class Tree
 	 * @return The Minimum Bottleneck Edge of the Tree
 	 */
 
-	public org.drip.graph.core.BidirectionalEdge minimumBottleneckEdge()
+	public org.drip.graph.core.Edge minimumBottleneckEdge()
 	{
-		java.util.Map<java.lang.String, org.drip.graph.core.BidirectionalEdge> edgeMap = edgeMap();
+		java.util.Map<java.lang.String, org.drip.graph.core.Edge> edgeMap = edgeMap();
 
 		if (null == edgeMap || 0 == edgeMap.size())
 		{
 			return null;
 		}
 
-		org.drip.graph.core.BidirectionalEdge bottleneckEdge = null;
+		org.drip.graph.core.Edge bottleneckEdge = null;
 
-		for (org.drip.graph.core.BidirectionalEdge edge : edgeMap.values())
+		for (org.drip.graph.core.Edge edge : edgeMap.values())
 		{
 			if (null == bottleneckEdge)
 			{
@@ -320,7 +320,7 @@ public class Tree
 			}
 			else
 			{
-				if (edge.distance() < bottleneckEdge.distance())
+				if (edge.weight() < bottleneckEdge.weight())
 				{
 					bottleneckEdge = edge;
 				}

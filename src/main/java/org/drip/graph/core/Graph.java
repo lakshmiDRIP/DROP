@@ -138,7 +138,7 @@ public class Graph
 			return false;
 		}
 
-		java.util.Collection<org.drip.graph.core.BidirectionalEdge> edgeCollection =
+		java.util.Collection<org.drip.graph.core.Edge> edgeCollection =
 			graph.edgeMap().values();
 
 		if (null == edgeCollection || 0 == edgeCollection.size())
@@ -146,7 +146,7 @@ public class Graph
 			return true;
 		}
 
-		for (org.drip.graph.core.BidirectionalEdge edge : edgeCollection)
+		for (org.drip.graph.core.Edge edge : edgeCollection)
 		{
 			if (!addBidirectionalEdge (
 				edge
@@ -177,12 +177,21 @@ public class Graph
 		org.drip.graph.search.OrderedVertexGroup orderedSearch =
 			new org.drip.graph.search.OrderedVertexGroup();
 
-		if (!bfs (
-			initialVertexName(),
-			orderedSearch
-		))
+		try
 		{
-			return false;
+			if (!new org.drip.graph.search.BreadthFirst (
+				this
+			).nonRecursive (
+				initialVertexName(),
+				orderedSearch
+			))
+			{
+				return false;
+			}
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
 		}
 
 		return orderedSearch.vertexNameSet().size() == vertexNameSet.size();
@@ -238,7 +247,7 @@ public class Graph
 	 * @return Set of the Fundamental Cycles using the Spanning Tree
 	 */
 
-	public java.util.Set<org.drip.graph.core.BidirectionalEdge> fundamentalCycleEdgeSet (
+	public java.util.Set<org.drip.graph.core.Edge> fundamentalCycleEdgeSet (
 		final org.drip.graph.core.Tree tree)
 	{
 		if (null == tree)
@@ -246,12 +255,12 @@ public class Graph
 			return null;
 		}
 
-		java.util.Set<org.drip.graph.core.BidirectionalEdge> edgeSet =
-			new java.util.HashSet<org.drip.graph.core.BidirectionalEdge> (
+		java.util.Set<org.drip.graph.core.Edge> edgeSet =
+			new java.util.HashSet<org.drip.graph.core.Edge> (
 				_edgeMap.values()
 			);
 
-		for (org.drip.graph.core.BidirectionalEdge edge : tree.edgeMap().values())
+		for (org.drip.graph.core.Edge edge : tree.edgeMap().values())
 		{
 			if (!containsEdge (
 				edge
@@ -281,7 +290,7 @@ public class Graph
 		for (java.util.Map.Entry<java.lang.String, org.drip.graph.core.Vertex> vertexMapEntry :
 			_vertexMap.entrySet())
 		{
-			java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap =
+			java.util.Map<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
 				vertexMapEntry.getValue().adjacencyMap();
 
 			if (null == adjacencyMap || 1 == adjacencyMap.size())
@@ -315,10 +324,22 @@ public class Graph
 			org.drip.graph.search.OrderedVertexGroup orderedSearch =
 				new org.drip.graph.search.OrderedVertexGroup();
 
-			bfs (
-				leafVertexName,
-				orderedSearch
-			);
+			try
+			{
+				if (!new org.drip.graph.search.BreadthFirst (
+					this
+				).nonRecursive (
+					leafVertexName,
+					orderedSearch
+				))
+				{
+					return false;
+				}
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+			}
 
 			if (orderedSearch.containsCycle())
 			{
@@ -366,7 +387,7 @@ public class Graph
 		for (java.util.Map.Entry<java.lang.String, org.drip.graph.core.Vertex> vertexMapEntry :
 			_vertexMap.entrySet())
 		{
-			java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap =
+			java.util.Map<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
 				vertexMapEntry.getValue().adjacencyMap();
 
 			if (null == adjacencyMap || n != adjacencyMap.size())
@@ -411,7 +432,7 @@ public class Graph
 		for (java.util.Map.Entry<java.lang.String, org.drip.graph.core.Vertex> vertexMapEntry :
 			_vertexMap.entrySet())
 		{
-			java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap =
+			java.util.Map<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
 				vertexMapEntry.getValue().adjacencyMap();
 
 			vertexDegreeMap.put (

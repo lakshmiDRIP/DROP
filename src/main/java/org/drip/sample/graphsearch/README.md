@@ -7,6 +7,9 @@ DROP Sample Graph Search illustrates the Breadth/Depth First Search/Ordering Sch
 
 ## Class Components
 
+ * [***BFS3***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graph/BFS3.java)
+ <i>BFS3</i> illustrates the Application of the Breadth-First Search on a Graph.
+
  * [***DFS1***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graph/DFS1.java)
  <i>DFS1</i> illustrates Construction/Usage of a Graph DFS and Vertex Ordering.
 
@@ -19,6 +22,10 @@ DROP Sample Graph Search illustrates the Breadth/Depth First Search/Ordering Sch
 
 ## References
 
+ * Aziz, A., and A. Prakash (2010): Algorithms for Interviews http://users.ece.utexas.edu/~adnan/afi-samples-new.pdf
+
+ * Coppin, B. (2004): <i>Artificial Intelligence Illuminated<i> <b>Jones and Bartlett Learning</b>
+
  * Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms 3<sup>rd</sup> Edition</i> <b>MIT Press</b>
 
  * de Fraysseix, H., O. de Mendez, and P. Rosenstiehl (2006): Tremaux Trees and Planarity <i>International Journal of Foundations of Computer Science</i> <b>17 (5)</b> 1017-1030
@@ -26,6 +33,8 @@ DROP Sample Graph Search illustrates the Breadth/Depth First Search/Ordering Sch
  * Mehlhorn, K., and P. Sanders (2008): <i>Algorithms and Data Structures: The Basic Tool-box</i> <b>Springer</b>
 
  * Reif, J. H. (1985): Depth-first Search is inherently Sequential <i>Information Processing Letters</i> <b>20 (5)</b> 229-234
+
+ * Russell, S., and P. Norvig (2003): <i>Artificial Intelligence: Modern Approach 2<sup>nd</sup> Edition</i> <b>Prentice Hall</b>
 
  * Wikipedia (2019): Kruskal's Algorithm https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
 

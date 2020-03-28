@@ -82,7 +82,7 @@ import org.drip.specialfunction.incompletegamma.LowerSFixed;
 
 /**
  * <i>LowerNIST2019Estimate</i> illustrates the Estimation of the Lower Incomplete Gamma Function using the
- * NIST (2019) Series. The References are:
+ * 	NIST (2019) Series. The References are:
  * 
  * <br><br>
  * 	<ul>

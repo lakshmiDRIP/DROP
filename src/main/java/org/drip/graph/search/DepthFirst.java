@@ -176,7 +176,7 @@ public class DepthFirst
 			vertexName
 		);
 
-		java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap =
+		java.util.Map<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
 			vertex.adjacencyMap();
 
 		if (null == adjacencyMap || 0 == adjacencyMap.size())
@@ -184,7 +184,7 @@ public class DepthFirst
 			return true;
 		}
 
-		for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMapEntry :
+		for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.Edge> adjacencyMapEntry :
 			adjacencyMap.entrySet())
 		{
 			java.lang.String secondVertexName = adjacencyMapEntry.getValue().secondVertexName();
@@ -265,12 +265,12 @@ public class DepthFirst
 				currentVertexName
 			);
 
-			java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap =
+			java.util.Map<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
 				currentVertex.adjacencyMap();
 
 			if (null != adjacencyMap && 0 != adjacencyMap.size())
 			{
-				for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.BidirectionalEdge>
+				for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.Edge>
 					adjacencyMapEntry : adjacencyMap.entrySet())
 				{
 					java.lang.String secondVertexName = adjacencyMapEntry.getValue().secondVertexName();

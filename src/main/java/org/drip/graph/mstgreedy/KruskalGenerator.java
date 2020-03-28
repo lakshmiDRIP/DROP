@@ -152,7 +152,7 @@ public class KruskalGenerator
 			}
 		}
 
-		java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge> orderedEdgeMap =
+		java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> orderedEdgeMap =
 			_graph.orderedEdgeMap();
 
 		java.util.Set<java.lang.Double> orderedKeySet = maximum() ? orderedEdgeMap.descendingKeySet() :

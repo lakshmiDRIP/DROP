@@ -1,10 +1,5 @@
 
-package org.drip.sample.graph;
-
-import org.drip.graph.core.BidirectionalEdge;
-import org.drip.graph.core.Graph;
-import org.drip.graph.search.OrderedVertexGroup;
-import org.drip.service.env.EnvManager;
+package org.drip.graph.core;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -80,172 +75,154 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>BreadthFirstSearch</i> illustrates the Application of the Breadth-First Search on a Graph. The
- * 	References are:
- *  
+ * <i>Edge</i> represents the Connection between a Pair of Vertexes. The References are:
+ *
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Wikipedia (2019a): Kruskal's Algorithm https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
+ *  		Bollobas, B. (1998): <i>Modern Graph Theory</i> <b>Springer</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2019b): Prim's Algorithm https://en.wikipedia.org/wiki/Prim%27s_algorithm
+ *  		Eppstein, D. (1999): Spanning Trees and Spanners
+ *  			https://www.ics.uci.edu/~eppstein/pubs/Epp-TR-96-16.pdf
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020a): Breadth-First Search https://en.wikipedia.org/wiki/Breadth-first_search
+ *  		Gross, J. L., and J. Yellen (2005): <i>Graph Theory and its Applications</i> <b>Springer</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020b): Depth-First Search https://en.wikipedia.org/wiki/Depth-first_search
+ *  		Kocay, W., and D. L. Kreher (2004): <i>Graphs, Algorithms, and Optimizations</i> <b>CRC Press</b>
+ *  	</li>
+ *  	<li>
+ *  		Wikipedia (2020): Spanning Tree https://en.wikipedia.org/wiki/Spanning_tree
  *  	</li>
  *  </ul>
+ *
  * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graph/README.md">Graph Traversal and Navigation Algorithms</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/README.md">Vertexes, Edges, Trees, and Graphs</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BreadthFirstSearch
+public class Edge
 {
+	private double _weight = java.lang.Double.NaN;
+	private java.lang.String _firstVertexName = "";
+	private java.lang.String _secondVertexName = "";
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Edge Constructor
+	 * 
+	 * @param firstVertexName First Vertex Name
+	 * @param secondVertexName Second Vertex Name
+	 * @param weight Weight
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public Edge (
+		final java.lang.String firstVertexName,
+		final java.lang.String secondVertexName,
+		final double weight)
+		throws java.lang.Exception
 	{
-		EnvManager.InitEnv (
-			""
-		);
-
-		String[] vertexArray = new String[]
+		if (null == (_firstVertexName = firstVertexName) || _firstVertexName.isEmpty() ||
+			null == (_secondVertexName = secondVertexName) || _secondVertexName.isEmpty() ||
+			_firstVertexName.equalsIgnoreCase (
+				_secondVertexName
+			) || !org.drip.numerical.common.NumberUtil.IsValid (
+				_weight = weight
+			)
+		)
 		{
-			"Delhi     ",
-			"Bombay    ",
-			"Madras    ",
-			"Calcutta  ",
-			"Bangalore ",
-			"Hyderabad ",
-			"Cochin    ",
-			"Pune      ",
-			"Ahmedabad ",
-			"Jaipur    "
-		};
+			throw new java.lang.Exception (
+				"Edge Constructor => Invalid Inputs "
+			);
+		}
+	}
 
-		Graph graph = new Graph();
+	/**
+	 * Retrieve the First Vertex Name
+	 * 
+	 * @return The First Vertex Name
+	 */
 
-		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
-				vertexArray[0], // Delhi
-				vertexArray[1], // Bombay
-				1388.
-			)
-		);
+	public java.lang.String firstVertexName()
+	{
+		return _firstVertexName;
+	}
 
-		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
-				vertexArray[0], // Delhi
-				vertexArray[2], // Madras
-				2191.
-			)
-		);
+	/**
+	 * Retrieve the Second Vertex Name
+	 * 
+	 * @return The Second Vertex Name
+	 */
 
-		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
-				vertexArray[1], // Bombay
-				vertexArray[2], // Madras
-				1279.
-			)
-		);
+	public java.lang.String secondVertexName()
+	{
+		return _secondVertexName;
+	}
 
-		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
-				vertexArray[0], // Delhi
-				vertexArray[3], // Calcutta
-				1341.
-			)
-		);
+	/**
+	 * Retrieve the Weight
+	 * 
+	 * @return The Weight
+	 */
 
-		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
-				vertexArray[1], // Bombay
-				vertexArray[3], // Calcutta
-				1968.
-			)
-		);
+	public double weight()
+	{
+		return _weight;
+	}
 
-		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
-				vertexArray[2], // Madras
-				vertexArray[3], // Calcutta
-				1663.
-			)
-		);
+	/**
+	 * Compare the Current Edge with the Specified One
+	 * 
+	 * @param edge The "Other" Edge
+	 * 
+	 * @return TRUE - If the Edges are the same
+	 */
 
-		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
-				vertexArray[2], // Madras
-				vertexArray[4], // Bangalore
-				361.
-			)
-		);
+	public boolean compareWith (
+		final Edge edge)
+	{
+		return null == edge ? false : _firstVertexName.equalsIgnoreCase (
+			edge.firstVertexName()
+		) && _firstVertexName.equalsIgnoreCase (
+			edge.secondVertexName()
+		) && _weight == edge.weight();
+	}
 
-		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
-				vertexArray[2], // Madras
-				vertexArray[5], // Hyderabad
-				784.
-			)
-		);
+	/**
+	 * Retrieve a new "Inverted" Edge
+	 * 
+	 * @return New "Inverted" Edge
+	 */
 
-		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
-				vertexArray[2], // Madras
-				vertexArray[6], // Cochin
-				697.
-			)
-		);
+	public Edge invert()
+	{
+		try
+		{
+			return new Edge (
+				_secondVertexName,
+				_firstVertexName,
+				_weight
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
 
-		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
-				vertexArray[1], // Bombay
-				vertexArray[7], // Pune
-				192.
-			)
-		);
+		return null;
+	}
 
-		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
-				vertexArray[1], // Bombay
-				vertexArray[8], // Ahmedabad
-				492.
-			)
-		);
-
-		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
-				vertexArray[0], // Delhi
-				vertexArray[9], // Jaipur
-				308.
-			)
-		);
-
-		String vertexName = "Delhi     ";
-
-		OrderedVertexGroup orderedSearch = new OrderedVertexGroup();
-
-		System.out.println (
-			graph.bfs (
-				vertexName,
-				orderedSearch
-			)
-		);
-
-		System.out.println (orderedSearch.vertexNameList());
-
-		EnvManager.TerminateEnv();
+	@Override public java.lang.String toString()
+	{
+		return "{" + _firstVertexName + " -> " + _secondVertexName + " = " + _weight + "}";
 	}
 }

@@ -190,7 +190,7 @@ public class CompleteRandomGraph
 				++vertexIndexJ)
 			{
 				if (!super.addBidirectionalEdge (
-					new org.drip.graph.core.BidirectionalEdge (
+					new org.drip.graph.core.Edge (
 						vertexNameArray[vertexIndexI],
 						vertexNameArray[vertexIndexJ],
 						randomNumberGenerator.nextDouble01()

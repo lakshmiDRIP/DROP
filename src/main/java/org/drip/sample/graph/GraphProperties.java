@@ -1,7 +1,7 @@
 
 package org.drip.sample.graph;
 
-import org.drip.graph.core.BidirectionalEdge;
+import org.drip.graph.core.Edge;
 import org.drip.graph.core.Graph;
 import org.drip.service.env.EnvManager;
 
@@ -142,7 +142,7 @@ public class GraphProperties
 		Graph graph = new Graph();
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[0], // Delhi
 				vertexArray[1], // Bombay
 				1388.
@@ -150,7 +150,7 @@ public class GraphProperties
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[0], // Delhi
 				vertexArray[2], // Madras
 				2191.
@@ -158,7 +158,7 @@ public class GraphProperties
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[1], // Bombay
 				vertexArray[2], // Madras
 				1279.
@@ -166,7 +166,7 @@ public class GraphProperties
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[0], // Delhi
 				vertexArray[3], // Calcutta
 				1341.
@@ -174,7 +174,7 @@ public class GraphProperties
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[1], // Bombay
 				vertexArray[3], // Calcutta
 				1968.
@@ -182,7 +182,7 @@ public class GraphProperties
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[2], // Madras
 				vertexArray[3], // Calcutta
 				1663.
@@ -190,7 +190,7 @@ public class GraphProperties
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[2], // Madras
 				vertexArray[4], // Bangalore
 				361.
@@ -198,7 +198,7 @@ public class GraphProperties
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[2], // Madras
 				vertexArray[5], // Hyderabad
 				784.
@@ -206,7 +206,7 @@ public class GraphProperties
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[2], // Madras
 				vertexArray[6], // Cochin
 				697.
@@ -214,7 +214,7 @@ public class GraphProperties
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[1], // Bombay
 				vertexArray[7], // Pune
 				192.
@@ -222,7 +222,7 @@ public class GraphProperties
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[1], // Bombay
 				vertexArray[8], // Ahmedabad
 				492.
@@ -230,7 +230,7 @@ public class GraphProperties
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[0], // Delhi
 				vertexArray[9], // Jaipur
 				308.

@@ -305,7 +305,7 @@ public class Forest
 	 */
 
 	public boolean conditionalMerge (
-		final org.drip.graph.core.BidirectionalEdge edge,
+		final org.drip.graph.core.Edge edge,
 		final org.drip.graph.core.Graph graph)
 	{
 		if (null == edge ||

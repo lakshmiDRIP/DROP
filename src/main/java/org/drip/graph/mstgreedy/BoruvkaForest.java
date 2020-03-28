@@ -121,14 +121,14 @@ public class BoruvkaForest
 		final org.drip.graph.core.Tree tree,
 		final org.drip.graph.core.Graph graph)
 	{
-		java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap =
+		java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
 			tree.adjacencyMap (
 				graph
 			);
 
 		if (null != adjacencyMap && 0 != adjacencyMap.size())
 		{
-			double distance = adjacencyMap.firstEntry().getValue().distance();
+			double distance = adjacencyMap.firstEntry().getValue().weight();
 
 			_orderedTreeMap.put (
 				distance,
@@ -169,7 +169,7 @@ public class BoruvkaForest
 			sourceTreeName
 		);
 
-		java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap =
+		java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
 			sourceTree.adjacencyMap (
 				graph
 			);
@@ -178,7 +178,7 @@ public class BoruvkaForest
 		{
 			double distance = sourceTree.adjacencyMap (
 				graph
-			).firstEntry().getValue().distance();
+			).firstEntry().getValue().weight();
 
 			_orderedTreeMap.put (
 				distance,
@@ -294,7 +294,7 @@ public class BoruvkaForest
 		final org.drip.graph.core.Graph graph,
 		final boolean maximum)
 	{
-		org.drip.graph.core.BidirectionalEdge edge = maximum ?
+		org.drip.graph.core.Edge edge = maximum ?
 			orderedTreeMap().lastEntry().getValue().adjacencyMap (
 				graph
 			).lastEntry().getValue() :

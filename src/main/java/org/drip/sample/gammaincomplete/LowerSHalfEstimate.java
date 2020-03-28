@@ -83,7 +83,7 @@ import org.drip.specialfunction.incompletegamma.LowerEulerIntegral;
 
 /**
  * <i>LowerSHalfEstimate</i> illustrates the Estimation of the Lower Incomplete Gamma Function using the NIST
- * (2019) Series for s = 0.5. The References are:
+ * 	(2019) Series for s = 0.5. The References are:
  * 
  * <br><br>
  * 	<ul>

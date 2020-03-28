@@ -1,7 +1,7 @@
 
 package org.drip.sample.graphsearch;
 
-import org.drip.graph.core.BidirectionalEdge;
+import org.drip.graph.core.Edge;
 import org.drip.graph.core.Graph;
 import org.drip.graph.search.DepthFirst;
 import org.drip.graph.search.OrderedVertexGroup;
@@ -131,32 +131,32 @@ public class DFS2
 
 		Graph graph = new Graph();
 
-		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+		graph.addUnidirectionalEdge (
+			new Edge (
 				"A",
 				"B",
 				1.
 			)
 		);
 
-		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+		graph.addUnidirectionalEdge (
+			new Edge (
 				"B",
 				"D",
 				2.
 			)
 		);
 
-		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+		graph.addUnidirectionalEdge (
+			new Edge (
 				"A",
 				"C",
 				3.
 			)
 		);
 
-		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+		graph.addUnidirectionalEdge (
+			new Edge (
 				"C",
 				"D",
 				4.

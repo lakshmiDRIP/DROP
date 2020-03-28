@@ -82,8 +82,8 @@ import org.drip.specialfunction.incompletegamma.UpperSFixed;
 
 /**
  * <i>UpperSOneEstimate</i> illustrates the Estimation of the Upper Incomplete Gamma Function using the
- * Weisstein Series for the Special Case of s=1, where the Closed Form is the Exponential Decay Function. The
- * References are:
+ * 	Weisstein Series for the Special Case of s=1, where the Closed Form is the Exponential Decay Function.
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>

@@ -7,11 +7,11 @@ DROP Graph Core Package contains the Vertexes, Edges, Trees, Forests, and Graphs
 
 ## Class Components
 
- * [***BidirectionalEdge***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/BidirectionalEdge.java)
- <i>BidirectionalEdge</i> represents the Bi-directional Connection between a Pair of Vertexes.
-
  * [***CompleteBipartiteGraph***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/CompleteBipartiteGraph.java)
  <i>CompleteBipartiteGraph</i> implements a Complete, Bipartite Graph.
+
+ * [***Edge***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/Edge.java)
+ <i>Edge</i> represents the Connection between a Pair of Vertexes.
 
  * [***Forest***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/Forest.java)
  <i>Forest</i> holds a Map of Trees indexed by the Starting Vertex Names.

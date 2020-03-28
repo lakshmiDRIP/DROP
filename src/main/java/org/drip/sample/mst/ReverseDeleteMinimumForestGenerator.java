@@ -3,7 +3,7 @@ package org.drip.sample.mst;
 
 import java.util.Map;
 
-import org.drip.graph.core.BidirectionalEdge;
+import org.drip.graph.core.Edge;
 import org.drip.graph.core.Graph;
 import org.drip.graph.core.Tree;
 import org.drip.graph.mstgreedy.ReverseDeleteGenerator;
@@ -147,7 +147,7 @@ public class ReverseDeleteMinimumForestGenerator
 		Graph graph = new Graph();
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[0], // Delhi
 				vertexArray[1], // Bombay
 				1388.
@@ -155,7 +155,7 @@ public class ReverseDeleteMinimumForestGenerator
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[0], // Delhi
 				vertexArray[2], // Madras
 				2191.
@@ -163,7 +163,7 @@ public class ReverseDeleteMinimumForestGenerator
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[1], // Bombay
 				vertexArray[2], // Madras
 				1279.
@@ -171,7 +171,7 @@ public class ReverseDeleteMinimumForestGenerator
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[0], // Delhi
 				vertexArray[3], // Calcutta
 				1341.
@@ -179,7 +179,7 @@ public class ReverseDeleteMinimumForestGenerator
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[1], // Bombay
 				vertexArray[3], // Calcutta
 				1968.
@@ -187,7 +187,7 @@ public class ReverseDeleteMinimumForestGenerator
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[2], // Madras
 				vertexArray[3], // Calcutta
 				1663.
@@ -195,7 +195,7 @@ public class ReverseDeleteMinimumForestGenerator
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[2], // Madras
 				vertexArray[4], // Bangalore
 				361.
@@ -203,7 +203,7 @@ public class ReverseDeleteMinimumForestGenerator
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[2], // Madras
 				vertexArray[5], // Hyderabad
 				784.
@@ -211,7 +211,7 @@ public class ReverseDeleteMinimumForestGenerator
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[2], // Madras
 				vertexArray[6], // Cochin
 				697.
@@ -219,7 +219,7 @@ public class ReverseDeleteMinimumForestGenerator
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[1], // Bombay
 				vertexArray[7], // Pune
 				192.
@@ -227,7 +227,7 @@ public class ReverseDeleteMinimumForestGenerator
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[1], // Bombay
 				vertexArray[8], // Ahmedabad
 				492.
@@ -235,7 +235,7 @@ public class ReverseDeleteMinimumForestGenerator
 		);
 
 		graph.addBidirectionalEdge (
-			new BidirectionalEdge (
+			new Edge (
 				vertexArray[0], // Delhi
 				vertexArray[9], // Jaipur
 				308.
@@ -263,7 +263,7 @@ public class ReverseDeleteMinimumForestGenerator
 				"\t|-----------------------------------------------------------------------------------|"
 			);
 
-			for (BidirectionalEdge edge : minimumSpanningTree.edgeMap().values())
+			for (Edge edge : minimumSpanningTree.edgeMap().values())
 			{
 				System.out.println (
 					"\t| " + edge

@@ -10,9 +10,6 @@ DROP Sample Graph illustrates the Graph Traversal and Navigation Algorithms.
  * [***BellmanFord***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graph/BellmanFord.java)
  <i>BellmanFord</i> illustrates the Execution of the Bellman Ford Shortest Path First Algorithm.
 
- * [***BreadthFirstSearch***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graph/BreadthFirstSearch.java)
- <i>BreadthFirstSearch</i> illustrates the Application of the Breadth-First Search on a Graph.
-
  * [***CompleteBipartiteProperties***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graph/CompleteBipartiteProperties.java)
  <i>CompleteBipartiteProperties</i> illustrates the Characteristic Properties of a Complete Bipartite Graph.
 

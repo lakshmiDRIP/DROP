@@ -122,7 +122,7 @@ public class PrimGenerator
 	extends org.drip.graph.treebuilder.OptimalSpanningForestGenerator
 {
 	private boolean updateEdgeTreeMap (
-		final java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge> edgeTreeMap,
+		final java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> edgeTreeMap,
 		final java.util.Set<java.lang.String> visitedVertexSet,
 		final java.lang.String currentVertexName)
 	{
@@ -130,7 +130,7 @@ public class PrimGenerator
 			currentVertexName
 		);
 
-		java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap =
+		java.util.Map<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
 			currentVertex.adjacencyMap();
 
 		if (null == adjacencyMap || 0 == adjacencyMap.size())
@@ -138,13 +138,13 @@ public class PrimGenerator
 			return false;
 		}
 
-		for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.BidirectionalEdge> egressEntry :
+		for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.Edge> egressEntry :
 			adjacencyMap.entrySet())
 		{
-			org.drip.graph.core.BidirectionalEdge edge = egressEntry.getValue();
+			org.drip.graph.core.Edge edge = egressEntry.getValue();
 
 			edgeTreeMap.put (
-				edge.distance(),
+				edge.weight(),
 				edge
 			);
 		}
@@ -216,8 +216,8 @@ public class PrimGenerator
 
 		java.util.Set<java.lang.String> visitedVertexSet = new java.util.HashSet<java.lang.String>();
 
-		java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge> edgeTreeMap =
-			new java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge>();
+		java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> edgeTreeMap =
+			new java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge>();
 
 		if (!updateEdgeTreeMap (
 				edgeTreeMap,
@@ -233,14 +233,14 @@ public class PrimGenerator
 
 		while (!edgeTreeMap.isEmpty())
 		{
-			java.util.Map.Entry<java.lang.Double, org.drip.graph.core.BidirectionalEdge> entry =
+			java.util.Map.Entry<java.lang.Double, org.drip.graph.core.Edge> entry =
 				maximum ? edgeTreeMap.lastEntry() : edgeTreeMap.firstEntry();
 
 			edgeTreeMap.remove (
 				entry.getKey()
 			);
 
-			org.drip.graph.core.BidirectionalEdge processedEdge = entry.getValue();
+			org.drip.graph.core.Edge processedEdge = entry.getValue();
 
 			java.lang.String currentVertexName = processedEdge.secondVertexName();
 

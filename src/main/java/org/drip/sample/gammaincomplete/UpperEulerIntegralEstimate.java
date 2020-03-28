@@ -82,7 +82,7 @@ import org.drip.specialfunction.incompletegamma.UpperEulerIntegral;
 
 /**
  * <i>UpperEulerIntegralEstimate</i> illustrates the Estimation using the Euler's Second Kind Integral of the
- * Upper Incomplete Gamma Function. The References are:
+ * 	Upper Incomplete Gamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>

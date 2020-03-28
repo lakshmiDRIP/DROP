@@ -1,5 +1,5 @@
 
-package org.drip.graph.core;
+package org.drip.graph.search;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,26 +75,27 @@ package org.drip.graph.core;
  */
 
 /**
- * <i>BidirectionalEdge</i> represents the Bi-directional Connection between a Pair of Vertexes. The
- * 	References are:
- *
+ * <i>BreadthFirst</i> implements the Iterative Breadth-first Search Schemes. The References are:
+ * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Bollobas, B. (1998): <i>Modern Graph Theory</i> <b>Springer</b>
+ *  		Aziz, A., and A. Prakash (2010): Algorithms for Interviews
+ *  			http://users.ece.utexas.edu/~adnan/afi-samples-new.pdf
  *  	</li>
  *  	<li>
- *  		Eppstein, D. (1999): Spanning Trees and Spanners
- *  			https://www.ics.uci.edu/~eppstein/pubs/Epp-TR-96-16.pdf
+ *  		Coppin, B. (2004): <i>Artificial Intelligence Illuminated<i> <b>Jones and Bartlett Learning</b>
  *  	</li>
  *  	<li>
- *  		Gross, J. L., and J. Yellen (2005): <i>Graph Theory and its Applications</i> <b>Springer</b>
+ *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms
+ *  			3<sup>rd</sup> Edition</i> <b>MIT Press</b>
  *  	</li>
  *  	<li>
- *  		Kocay, W., and D. L. Kreher (2004): <i>Graphs, Algorithms, and Optimizations</i> <b>CRC Press</b>
+ *  		Russell, S., and P. Norvig (2003): <i>Artificial Intelligence: Modern Approach 2<sup>nd</sup>
+ *  			Edition</i> <b>Prentice Hall</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020): Spanning Tree https://en.wikipedia.org/wiki/Spanning_tree
+ *  		Wikipedia (2020): Breadth-first Search https://en.wikipedia.org/wiki/Breadth-first_search
  *  	</li>
  *  </ul>
  *
@@ -103,120 +104,129 @@ package org.drip.graph.core;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/README.md">Vertexes, Edges, Trees, and Graphs</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/search/README.md">BFS, DFS, and Ordered Vertexes</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BidirectionalEdge
+public class BreadthFirst
 {
-	private java.lang.String _firstVertexName = "";
-	private java.lang.String _secondVertexName = "";
-	private double _distance = java.lang.Double.NaN;
+	private org.drip.graph.core.Network _network = null;
 
 	/**
-	 * BidirectionalEdge Constructor
+	 * BreadthFirst Constructor
 	 * 
-	 * @param firstVertexName First Vertex Name
-	 * @param secondVertexName Second Vertex Name
-	 * @param distance Distance
+	 * @param network Graph Network
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public BidirectionalEdge (
-		final java.lang.String firstVertexName,
-		final java.lang.String secondVertexName,
-		final double distance)
+	public BreadthFirst (
+		final org.drip.graph.core.Network network)
 		throws java.lang.Exception
 	{
-		if (null == (_firstVertexName = firstVertexName) || _firstVertexName.isEmpty() ||
-			null == (_secondVertexName = secondVertexName) || _secondVertexName.isEmpty() ||
-			_firstVertexName.equalsIgnoreCase (
-				_secondVertexName
-			) || !org.drip.numerical.common.NumberUtil.IsValid (
-				_distance = distance
-			)
-		)
+		if (null == (_network = network))
 		{
 			throw new java.lang.Exception (
-				"BidirectionalEdge Constructor => Invalid Inputs "
+				"BreadthFirst Constructor => Invalid Inputs"
 			);
 		}
 	}
 
 	/**
-	 * Retrieve the First Vertex Name
+	 * Retrieve the Graph Network
 	 * 
-	 * @return The First Vertex Name
+	 * @return The Graph Network
 	 */
 
-	public java.lang.String firstVertexName()
+	public org.drip.graph.core.Network network()
 	{
-		return _firstVertexName;
+		return _network;
 	}
 
 	/**
-	 * Retrieve the Second Vertex Name
+	 * Generate the Vertex Set using a Non-recursive Breadth-First Search
 	 * 
-	 * @return The Second Vertex Name
+	 * @param vertexName Vertex Name
+	 * @param orderedVertexGroup The Ordered Vertex Group
+	 * 
+	 * @return The Vertex Set using a Non-recursive Breadth-First Search
 	 */
 
-	public java.lang.String secondVertexName()
+	public boolean nonRecursive (
+		final java.lang.String vertexName,
+		final org.drip.graph.search.OrderedVertexGroup orderedVertexGroup)
 	{
-		return _secondVertexName;
-	}
-
-	/**
-	 * Retrieve the Distance
-	 * 
-	 * @return The Distance
-	 */
-
-	public double distance()
-	{
-		return _distance;
-	}
-
-	/**
-	 * Compare the Current Edge with the Specified One
-	 * 
-	 * @param bidirectionalEdge The "Other" Bi-directional Edge
-	 * 
-	 * @return TRUE - If the Edges are the same
-	 */
-
-	public boolean compareWith (
-		final BidirectionalEdge bidirectionalEdge)
-	{
-		if (null == bidirectionalEdge)
+		if (!_network.containsVertex (
+				vertexName
+			) || null == orderedVertexGroup
+		)
 		{
 			return false;
 		}
 
-		java.lang.String firstVertexNameOther = bidirectionalEdge.firstVertexName();
+		java.util.List<java.lang.String> processVertexList = new java.util.ArrayList<java.lang.String>();
 
-		java.lang.String secondVertexNameOther = bidirectionalEdge.secondVertexName();
+		processVertexList.add (
+			vertexName
+		);
 
-		return (
-			_firstVertexName.equalsIgnoreCase (
-				firstVertexNameOther
-			) && _secondVertexName.equalsIgnoreCase (
-				secondVertexNameOther
-			)
-		) || (
-			_firstVertexName.equalsIgnoreCase (
-				secondVertexNameOther
-			) && _secondVertexName.equalsIgnoreCase (
-				firstVertexNameOther
-			)
-		) && _distance == bidirectionalEdge.distance();
-	}
+		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap = _network.vertexMap();
 
-	@Override public java.lang.String toString()
-	{
-		return "{" + _firstVertexName + " -> " + _secondVertexName + " = " + _distance + "}";
+		while (!processVertexList.isEmpty())
+		{
+			java.lang.String currentVertexName = processVertexList.get (
+				0
+			);
+
+			if (!orderedVertexGroup.addVertexName (
+				currentVertexName
+			))
+			{
+				return false;
+			}
+
+			org.drip.graph.core.Vertex currentVertex = vertexMap.get (
+				currentVertexName
+			);
+
+			java.util.Map<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
+				currentVertex.adjacencyMap();
+
+			if (null != adjacencyMap && 0 != adjacencyMap.size())
+			{
+				for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.Edge>
+					adjacencyMapEntry : adjacencyMap.entrySet())
+				{
+					java.lang.String secondVertexName = adjacencyMapEntry.getValue().secondVertexName();
+
+					if (!orderedVertexGroup.vertexPresent (
+						secondVertexName
+					))
+					{
+						if (!processVertexList.contains (
+							secondVertexName
+						))
+						{
+							processVertexList.add (
+								secondVertexName
+							);
+						}
+					}
+					else
+					{
+						orderedVertexGroup.setContainsCycle();
+					}
+				}
+			}
+
+			processVertexList.remove (
+				0
+			);
+		}
+
+		return true;
 	}
 }

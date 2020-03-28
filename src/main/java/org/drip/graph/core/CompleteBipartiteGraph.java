@@ -114,7 +114,7 @@ public class CompleteBipartiteGraph
 {
 	private java.util.Set<java.lang.String> _vertexNameSetP = null;
 	private java.util.Set<java.lang.String> _vertexNameSetQ = null;
-	private java.util.Map<java.lang.String, org.drip.graph.core.BidirectionalEdge> _crossConnectMap = null;
+	private java.util.Map<java.lang.String, org.drip.graph.core.Edge> _crossConnectMap = null;
 
 	/**
 	 * CompleteBipartiteGraph Constructor
@@ -129,7 +129,7 @@ public class CompleteBipartiteGraph
 	public CompleteBipartiteGraph (
 		final java.util.Set<java.lang.String> vertexNameSetP,
 		final java.util.Set<java.lang.String> vertexNameSetQ,
-		final java.util.Map<java.lang.String, org.drip.graph.core.BidirectionalEdge> crossConnectMap)
+		final java.util.Map<java.lang.String, org.drip.graph.core.Edge> crossConnectMap)
 		throws java.lang.Exception
 	{
 		super();
@@ -177,10 +177,10 @@ public class CompleteBipartiteGraph
 			}
 		}
 
-		java.util.Collection<org.drip.graph.core.BidirectionalEdge> crossConnectEdgeCollection =
+		java.util.Collection<org.drip.graph.core.Edge> crossConnectEdgeCollection =
 			_crossConnectMap.values();
 
-		for (org.drip.graph.core.BidirectionalEdge edge : crossConnectEdgeCollection)
+		for (org.drip.graph.core.Edge edge : crossConnectEdgeCollection)
 		{
 			if (!addBidirectionalEdge (
 				edge
@@ -221,7 +221,7 @@ public class CompleteBipartiteGraph
 	 * @return The Cross Connection Edge Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.graph.core.BidirectionalEdge> crossConnectMap()
+	public java.util.Map<java.lang.String, org.drip.graph.core.Edge> crossConnectMap()
 	{
 		return _crossConnectMap;
 	}

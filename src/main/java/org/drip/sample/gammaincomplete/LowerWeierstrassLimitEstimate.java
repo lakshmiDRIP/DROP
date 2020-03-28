@@ -82,7 +82,7 @@ import org.drip.specialfunction.incompletegamma.LowerSFixed;
 
 /**
  * <i>LowerWeierstrassLimitEstimate</i> illustrates the Estimation of the Lower Incomplete Gamma Function
- * using the Weierstrass Limit Series. The References are:
+ * 	using the Weierstrass Limit Series. The References are:
  * 
  * <br><br>
  * 	<ul>

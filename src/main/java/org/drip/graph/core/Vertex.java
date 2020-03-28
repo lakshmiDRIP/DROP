@@ -113,7 +113,7 @@ package org.drip.graph.core;
 public class Vertex
 {
 	private java.lang.String _name = "";
-	private java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> _adjacencyMap = null;
+	private java.util.Map<java.lang.Double, org.drip.graph.core.Edge> _adjacencyMap = null;
 
 	/**
 	 * Vertex Constructor
@@ -134,7 +134,7 @@ public class Vertex
 			);
 		}
 
-		_adjacencyMap = new java.util.TreeMap<java.lang.Double, org.drip.graph.core.BidirectionalEdge>();
+		_adjacencyMap = new java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge>();
 	}
 
 	/**
@@ -154,34 +154,24 @@ public class Vertex
 	 * @return The Adjacency Map
 	 */
 
-	public java.util.Map<java.lang.Double, org.drip.graph.core.BidirectionalEdge> adjacencyMap()
+	public java.util.Map<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap()
 	{
 		return _adjacencyMap;
 	}
 
 	/**
-	 * Add a Bidirectional Edge to the Adjacency Map
+	 * Add an Edge to the Adjacency Map
 	 * 
-	 * @param bidirectionalEdge The Bidirectional Edge
+	 * @param edge The Edge
 	 * 
-	 * @return TRUE - The Bidirectional Edge successfully added
+	 * @return TRUE - The Edge successfully added
 	 */
 
-	public boolean addBidirectionalEdge (
-		final org.drip.graph.core.BidirectionalEdge bidirectionalEdge)
+	public boolean addEdge (
+		final org.drip.graph.core.Edge edge)
 	{
-		if (null == bidirectionalEdge)
-		{
-			return false;
-		}
-
-		java.lang.String firstVertexName = bidirectionalEdge.firstVertexName();
-
-		java.lang.String secondVertexName = bidirectionalEdge.secondVertexName();
-
-		if (!firstVertexName.equalsIgnoreCase (
-				_name
-			) && !secondVertexName.equalsIgnoreCase (
+		if (null == edge ||
+			!edge.firstVertexName().equalsIgnoreCase (
 				_name
 			)
 		)
@@ -189,58 +179,27 @@ public class Vertex
 			return false;
 		}
 
-		double distance = bidirectionalEdge.distance();
-
-		if (firstVertexName.equalsIgnoreCase (
-			_name
-		))
-		{
-			_adjacencyMap.put (
-				distance,
-				bidirectionalEdge
-			);
-		}
-		else
-		{
-			try
-			{
-				_adjacencyMap.put (
-					distance,
-					new org.drip.graph.core.BidirectionalEdge (
-						secondVertexName,
-						firstVertexName,
-						distance
-					)
-				);
-			}
-			catch (java.lang.Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
+		_adjacencyMap.put (
+			edge.weight(),
+			edge
+		);
 
 		return true;
 	}
 
 	/**
-	 * Remove a Bidirectional Edge from the Adjacency Map
+	 * Remove a Edge from the Adjacency Map
 	 * 
-	 * @param bidirectionalEdge The Bidirectional Edge
+	 * @param edge The Edge
 	 * 
-	 * @return TRUE - The Bidirectional Edge successfully added
+	 * @return TRUE - The Edge successfully added
 	 */
 
-	public boolean removeBidirectionalEdge (
-		final org.drip.graph.core.BidirectionalEdge bidirectionalEdge)
+	public boolean removeEdge (
+		final org.drip.graph.core.Edge edge)
 	{
-		if (null == bidirectionalEdge)
-		{
-			return false;
-		}
-
-		if (!bidirectionalEdge.firstVertexName().equalsIgnoreCase (
-				_name
-			) && !bidirectionalEdge.secondVertexName().equalsIgnoreCase (
+		if (null == edge ||
+			!edge.firstVertexName().equalsIgnoreCase (
 				_name
 			)
 		)
@@ -249,7 +208,7 @@ public class Vertex
 		}
 
 		_adjacencyMap.remove (
-			bidirectionalEdge.distance()
+			edge.weight()
 		);
 
 		return true;

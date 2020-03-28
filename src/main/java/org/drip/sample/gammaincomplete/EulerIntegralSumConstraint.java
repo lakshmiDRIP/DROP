@@ -83,7 +83,7 @@ import org.drip.specialfunction.incompletegamma.UpperEulerIntegral;
 
 /**
  * <i>EulerIntegralSumConstraint</i> illustrates the Constraint that the Lower and Upper Gamma Functions must
- * add up to the Parent. The References are:
+ * 	add up to the Parent. The References are:
  * 
  * <br><br>
  * 	<ul>
