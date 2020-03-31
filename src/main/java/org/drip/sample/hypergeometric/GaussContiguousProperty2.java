@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.GaussContiguousEqualityLemma;
 
 /**
  * <i>GaussContiguousProperty2</i> verifies the Gauss Contiguous Identity #2 Lemma for Hyper-geometric
- * Functions. The References are:
+ * 	Functions. The References are:
  * 
  * <br><br>
  * 	<ul>

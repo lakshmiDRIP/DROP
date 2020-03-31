@@ -85,7 +85,7 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
 
 /**
  * <i>KummerPfaffFirstTransformation</i> reconciles the Hyper-geometric Function Estimates using the Euler
- * Integral Representation against First Pfaff Transformation. The References are:
+ * 	Integral Representation against First Pfaff Transformation. The References are:
  * 
  * <br><br>
  * 	<ul>

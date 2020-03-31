@@ -87,7 +87,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>ERFIntegrandG7K15</i> computes the R<sup>1</sup> Nested Numerical Estimate and Error of the erf
- * Integrand using the G7-K15 Gaussian Integration Quadrature Scheme. The References are:
+ * 	Integrand using the G7-K15 Gaussian Integration Quadrature Scheme. The References are:
  * 
  * <br><br>
  * 	<ul>

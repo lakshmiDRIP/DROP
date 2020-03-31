@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.HypergeometricEqualityLemma;
 
 /**
  * <i>GaussBaileyProperty</i> verifies the Gauss Bailey Identity Property Lemma for z = +0.5. The References
- * are:
+ * 	are:
  * 
  * <br><br>
  * 	<ul>

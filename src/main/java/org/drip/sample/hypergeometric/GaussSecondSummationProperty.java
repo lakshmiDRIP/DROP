@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.HypergeometricEqualityLemma;
 
 /**
  * <i>GaussSecondSummationProperty</i> verifies the Gauss Second Summation Identity Property Lemma for
- * z = +0.5. The References are:
+ * 	z = +0.5. The References are:
  * 
  * <br><br>
  * 	<ul>

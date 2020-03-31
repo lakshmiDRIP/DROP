@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.HypergeometricEqualityLemma;
 
 /**
  * <i>FirstOrderSwitchProperty</i> verifies the First-Order Derivative Parameter Switch Identity Lemma. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>

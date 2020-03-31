@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.HypergeometricEqualityLemma;
 
 /**
  * <i>GoursatCubicTransformationProperty</i> verifies the Goursat Cubic Transformation Identity Lemma. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>

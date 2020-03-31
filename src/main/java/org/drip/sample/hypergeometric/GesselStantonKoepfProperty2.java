@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.HypergeometricEqualityLemma;
 
 /**
  * <i>GesselStantonKoepfProperty2</i> verifies the Second Gessel-Stanton-Koepf Identity Property Lemma for
- * Rational Z. The References are:
+ * 	Rational Z. The References are:
  * 
  * <br><br>
  * 	<ul>

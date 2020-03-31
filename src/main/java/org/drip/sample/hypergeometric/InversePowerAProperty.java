@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.HypergeometricEqualityLemma;
 
 /**
  * <i>InversePowerAProperty</i> verifies the Hyper-geometric Function Special Case
- * ((1. - z) ** a = 2F1 (a, 1.0; 1.0, z)) Identity Lemma. The References are:
+ * 	((1. - z) ** a = 2F1 (a, 1.0; 1.0, z)) Identity Lemma. The References are:
  * 
  * <br><br>
  * 	<ul>

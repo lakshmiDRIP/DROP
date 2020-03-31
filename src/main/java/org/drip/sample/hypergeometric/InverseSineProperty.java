@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.HypergeometricEqualityLemma;
 
 /**
  * <i>InverseSineProperty</i> verifies the Hyper-geometric Function Special Case
- * (arcsin (z) = 2F1 (0.5, 0.5; 1.5, z * z)) Identity Lemma. The References are:
+ * 	(arcsin (z) = 2F1 (0.5, 0.5; 1.5, z * z)) Identity Lemma. The References are:
  * 
  * <br><br>
  * 	<ul>

@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.HypergeometricEqualityLemma;
 
 /**
  * <i>GaussVanderMondeProperty</i> verifies the Gauss van der Monde Identity Property Lemma for z = 1. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>

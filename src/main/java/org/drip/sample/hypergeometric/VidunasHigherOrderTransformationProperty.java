@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.HypergeometricEqualityLemma;
 
 /**
  * <i>VidunasHigherOrderTransformationProperty</i> verifies the Vidunas Higher-Order Transformation Identity
- * Lemma. The References are:
+ * 	Lemma. The References are:
  * 
  * <br><br>
  * 	<ul>

@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.HypergeometricEqualityLemma;
 
 /**
  * <i>IncompleteBetaProperty</i> verifies the Incomplete Beta Identity Property Lemma for Rational Z. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>

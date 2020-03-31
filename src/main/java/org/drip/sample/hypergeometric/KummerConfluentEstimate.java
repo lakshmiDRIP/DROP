@@ -86,7 +86,7 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
 
 /**
  * <i>KummerConfluentEstimate</i> estimates the Kummer's Confluent Hyper-geometric Function. The References
- * are:
+ * 	are:
  * 
  * <br><br>
  * 	<ul>

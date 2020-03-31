@@ -86,7 +86,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>ERFCCraig1991G7K15</i> computes the R<sup>1</sup> Nested Numerical Estimate and Error of the erfc
- * Integrand using the G7-K15 Gaussian Integration Quadrature Scheme. The References are:
+ * 	Integrand using the G7-K15 Gaussian Integration Quadrature Scheme. The References are:
  * 
  * <br><br>
  * 	<ul>

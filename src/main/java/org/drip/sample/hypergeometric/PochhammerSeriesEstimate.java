@@ -85,7 +85,7 @@ import org.drip.specialfunction.hypergeometric.SeriesEstimator;
 
 /**
  * <i>PochhammerSeriesEstimate</i> estimates the Hyper-geometric Function using the Pochhammer Series and
- * compares it against the Euler Integral Representation. The References are:
+ * 	compares it against the Euler Integral Representation. The References are:
  * 
  * <br><br>
  * 	<ul>

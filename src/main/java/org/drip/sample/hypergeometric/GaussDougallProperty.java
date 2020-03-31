@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.HypergeometricEqualityLemma;
 
 /**
  * <i>GaussDougallProperty</i> verifies the Gauss Dougall Identity Property Lemma for z = 1. The References
- * are:
+ * 	are:
  * 
  * <br><br>
  * 	<ul>

@@ -86,7 +86,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>ERFIntegrandG7</i> computes the R<sup>1</sup> Numerical Estimate of the erf Integrand using the G7
- * Gaussian Quadrature Scheme. The References are:
+ * 	Gaussian Quadrature Scheme. The References are:
  * 
  * <br><br>
  * 	<ul>

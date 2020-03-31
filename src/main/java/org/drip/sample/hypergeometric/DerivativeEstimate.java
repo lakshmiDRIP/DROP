@@ -84,7 +84,7 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
 
 /**
  * <i>DerivativeEstimate</i> estimates the Hyper-geometric Function Derivative using the Euler Integral
- * Representation. The References are:
+ * 	Representation. The References are:
  * 
  * <br><br>
  * 	<ul>

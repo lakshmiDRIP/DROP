@@ -85,7 +85,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>ERFCCraig1991G7</i> computes the R<sup>1</sup> Numerical Estimate of the erfc Integrand using the G7
- * Gaussian Integration Quadrature Scheme. The References are:
+ * 	Gaussian Integration Quadrature Scheme. The References are:
  * 
  * <br><br>
  * 	<ul>

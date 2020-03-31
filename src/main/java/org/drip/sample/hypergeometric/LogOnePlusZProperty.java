@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.HypergeometricEqualityLemma;
 
 /**
  * <i>LogOnePlusZProperty</i> verifies the Hyper-geometric Function Special Case
- * (log (1 + z) = 2F1 (1, 1,; 2, -z)) Identity Lemma. The References are:
+ * 	(log (1 + z) = 2F1 (1, 1,; 2, -z)) Identity Lemma. The References are:
  * 
  * <br><br>
  * 	<ul>

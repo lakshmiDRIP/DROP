@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.HypergeometricEqualityLemma;
 
 /**
  * <i>GaussContinuedFractionProperty</i> verifies the Gauss Continued Fraction Identity Property Lemma for
- * Rational Z. The References are:
+ * 	Rational Z. The References are:
  * 
  * <br><br>
  * 	<ul>

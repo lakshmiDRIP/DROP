@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.HypergeometricEqualityLemma;
 
 /**
  * <i>FirstOrderSpecialCaseProperty</i> verifies the First-Order Derivative Special Case (c = a + 1) Identity
- * Lemma. The References are:
+ * 	Lemma. The References are:
  * 
  * <br><br>
  * 	<ul>

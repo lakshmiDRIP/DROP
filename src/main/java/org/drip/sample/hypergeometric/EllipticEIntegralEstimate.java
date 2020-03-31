@@ -84,7 +84,7 @@ import org.drip.specialfunction.derived.EllipticEIntegral;
 
 /**
  * <i>EllipticEIntegralEstimate</i> estimates the Elliptic E-Integral Function using the 2F1 Hyper-geometric
- * Function. The References are:
+ * 	Function. The References are:
  * 
  * <br><br>
  * 	<ul>

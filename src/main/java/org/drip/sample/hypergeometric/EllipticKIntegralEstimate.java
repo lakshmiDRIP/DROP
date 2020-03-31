@@ -84,7 +84,7 @@ import org.drip.specialfunction.derived.EllipticKIntegral;
 
 /**
  * <i>EllipticKIntegralEstimate</i> estimates the Elliptic K-Integral Function using the 2F1 Hyper-geometric
- * Function. The References are:
+ * 	Function. The References are:
  * 
  * <br><br>
  * 	<ul>

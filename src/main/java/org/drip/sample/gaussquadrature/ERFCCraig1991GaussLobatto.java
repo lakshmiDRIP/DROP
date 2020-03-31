@@ -85,7 +85,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>ERFCCraig1991GaussLobatto</i> computes the R<sup>1</sup> Numerical Estimate of the erfc Integrand using
- * the Gauss-Lobatto Integration Quadrature Scheme. The References are:
+ * 	the Gauss-Lobatto Integration Quadrature Scheme. The References are:
  * 
  * <br><br>
  * 	<ul>

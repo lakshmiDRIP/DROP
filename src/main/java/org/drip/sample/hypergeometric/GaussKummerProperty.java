@@ -83,7 +83,7 @@ import org.drip.specialfunction.property.HypergeometricEqualityLemma;
 
 /**
  * <i>GaussKummerProperty</i> verifies the Gauss Kummer Identity Property Lemma for z = -1. The References
- * are:
+ * 	are:
  * 
  * <br><br>
  * 	<ul>

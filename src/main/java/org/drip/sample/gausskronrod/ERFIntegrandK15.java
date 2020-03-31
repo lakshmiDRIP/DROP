@@ -86,7 +86,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>ERFIntegrandK15</i> computes the R<sup>1</sup> Numerical Estimate of the erf Integrand using the K15
- * Gaussian Quadrature Scheme. The References are:
+ * 	Gaussian Quadrature Scheme. The References are:
  * 
  * <br><br>
  * 	<ul>

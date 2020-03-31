@@ -82,7 +82,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>CubicPolyGaussLegendre</i> computes the R<sup>1</sup> Numerical Estimate of the Cubic Polynomial
- * Integrand using the Gauss-Legendre Integration Quadrature Scheme. The References are:
+ * 	Integrand using the Gauss-Legendre Integration Quadrature Scheme. The References are:
  * 
  * <br><br>
  * 	<ul>
