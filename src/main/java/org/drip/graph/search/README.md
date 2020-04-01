@@ -21,7 +21,7 @@ DROP Graph Search Package implements BFS, DFS, and Vertex Ordering.
 
  * Aziz, A., and A. Prakash (2010): Algorithms for Interviews http://users.ece.utexas.edu/~adnan/afi-samples-new.pdf
 
- * Coppin, B. (2004): <i>Artificial Intelligence Illuminated<i> <b>Jones and Bartlett Learning</b>
+ * Coppin, B. (2004): <i>Artificial Intelligence Illuminated</i> <b>Jones and Bartlett Learning</b>
 
  * Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms 3<sup>rd</sup> Edition</i> <b>MIT Press</b>
 

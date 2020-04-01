@@ -84,7 +84,7 @@ package org.drip.graph.search;
  *  			http://users.ece.utexas.edu/~adnan/afi-samples-new.pdf
  *  	</li>
  *  	<li>
- *  		Coppin, B. (2004): <i>Artificial Intelligence Illuminated<i> <b>Jones and Bartlett Learning</b>
+ *  		Coppin, B. (2004): <i>Artificial Intelligence Illuminated</i> <b>Jones and Bartlett Learning</b>
  *  	</li>
  *  	<li>
  *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms

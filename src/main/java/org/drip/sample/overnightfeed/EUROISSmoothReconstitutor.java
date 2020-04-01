@@ -82,7 +82,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>EUROISSmoothReconstitutor<.i> Demonstrates the Cleansing and the Smooth Re-constitution of the EUR
+ * <i>EUROISSmoothReconstitutor</i> Demonstrates the Cleansing and the Smooth Re-constitution of the EUR
  * 	Input OIS Marks.
  *
  * <br><br>
