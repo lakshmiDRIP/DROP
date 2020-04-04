@@ -2,7 +2,7 @@
 package org.drip.sample.graph;
 
 import org.drip.graph.core.Edge;
-import org.drip.graph.core.Graph;
+import org.drip.graph.core.DirectedGraph;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -11,7 +11,6 @@ import org.drip.service.env.EnvManager;
 
 /*!
  * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -139,7 +138,7 @@ public class GraphProperties
 			"jaipur    "
 		};
 
-		Graph graph = new Graph();
+		DirectedGraph graph = new DirectedGraph();
 
 		graph.addBidirectionalEdge (
 			new Edge (

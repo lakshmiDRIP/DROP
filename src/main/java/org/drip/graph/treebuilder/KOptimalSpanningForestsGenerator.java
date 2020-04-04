@@ -119,10 +119,10 @@ public abstract class KOptimalSpanningForestsGenerator
 {
 	private int _k = -1;
 	private boolean _maximum = false;
-	protected org.drip.graph.core.Graph _graph = null;
+	protected org.drip.graph.core.DirectedGraph _graph = null;
 
 	protected KOptimalSpanningForestsGenerator (
-		final org.drip.graph.core.Graph graph,
+		final org.drip.graph.core.DirectedGraph graph,
 		final boolean maximum,
 		final int k)
 		throws java.lang.Exception
@@ -150,7 +150,7 @@ public abstract class KOptimalSpanningForestsGenerator
 	 * @return The Graph
 	 */
 
-	public org.drip.graph.core.Graph graph()
+	public org.drip.graph.core.DirectedGraph graph()
 	{
 		return _graph;
 	}

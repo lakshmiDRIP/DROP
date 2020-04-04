@@ -121,7 +121,7 @@ public abstract class DegreeConstrainedMSTGenerator
 	private int _d = -1;
 
 	protected DegreeConstrainedMSTGenerator (
-		final org.drip.graph.core.Graph graph,
+		final org.drip.graph.core.DirectedGraph graph,
 		final boolean maximum,
 		final int d)
 		throws java.lang.Exception

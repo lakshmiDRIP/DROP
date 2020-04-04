@@ -7,8 +7,8 @@ import java.util.Set;
 
 import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.graph.core.Edge;
-import org.drip.graph.core.CompleteBipartiteGraph;
-import org.drip.graph.core.Graph;
+import org.drip.graph.core.CompleteBipartite;
+import org.drip.graph.core.DirectedGraph;
 import org.drip.graph.core.Tree;
 import org.drip.graph.mstgreedy.KruskalGenerator;
 import org.drip.graph.mstgreedy.PrimGenerator;
@@ -267,7 +267,7 @@ public class CompleteBipartiteProperties
 			1782.
 		);
 
-		Graph graph = new CompleteBipartiteGraph (
+		DirectedGraph graph = new CompleteBipartite (
 			VertexNameSet (
 				vertexNameArrayP
 			),

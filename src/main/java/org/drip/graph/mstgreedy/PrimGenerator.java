@@ -121,29 +121,35 @@ package org.drip.graph.mstgreedy;
 public class PrimGenerator
 	extends org.drip.graph.treebuilder.OptimalSpanningForestGenerator
 {
+
 	private boolean updateEdgeTreeMap (
-		final java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> edgeTreeMap,
+		final java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> orderedEdgeKeyMap,
 		final java.util.Set<java.lang.String> visitedVertexSet,
-		final java.lang.String currentVertexName)
+		final java.lang.String currentVertexName,
+		final boolean maximum)
 	{
 		org.drip.graph.core.Vertex currentVertex = _graph.vertexMap().get (
 			currentVertexName
 		);
 
-		java.util.Map<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
-			currentVertex.adjacencyMap();
+		java.util.Map<java.lang.String, org.drip.graph.core.Edge> graphEdgeMap = _graph.edgeMap();
 
-		if (null == adjacencyMap || 0 == adjacencyMap.size())
+		java.util.List<java.lang.String> adjacencyKeyList = currentVertex.adjacencyKeyList (
+			maximum
+		);
+
+		if (null == adjacencyKeyList || 0 == adjacencyKeyList.size())
 		{
-			return false;
+			return true;
 		}
 
-		for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.Edge> egressEntry :
-			adjacencyMap.entrySet())
+		for (java.lang.String edgeKey : adjacencyKeyList)
 		{
-			org.drip.graph.core.Edge edge = egressEntry.getValue();
+			org.drip.graph.core.Edge edge = graphEdgeMap.get (
+				edgeKey
+			);
 
-			edgeTreeMap.put (
+			orderedEdgeKeyMap.put (
 				edge.weight(),
 				edge
 			);
@@ -186,7 +192,7 @@ public class PrimGenerator
 	 */
 
 	public PrimGenerator (
-		final org.drip.graph.core.Graph graph,
+		final org.drip.graph.core.DirectedGraph graph,
 		final boolean maximum)
 		throws java.lang.Exception
 	{
@@ -219,17 +225,18 @@ public class PrimGenerator
 		java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> edgeTreeMap =
 			new java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge>();
 
+		boolean maximum = maximum();
+
 		if (!updateEdgeTreeMap (
 				edgeTreeMap,
 				visitedVertexSet,
-				initialVertexName
+				initialVertexName,
+				maximum
 			)
 		)
 		{
 			return minimumSpanningTree;
 		}
-
-		boolean maximum = maximum();
 
 		while (!edgeTreeMap.isEmpty())
 		{
@@ -242,7 +249,7 @@ public class PrimGenerator
 
 			org.drip.graph.core.Edge processedEdge = entry.getValue();
 
-			java.lang.String currentVertexName = processedEdge.secondVertexName();
+			java.lang.String currentVertexName = processedEdge.destinationVertexName();
 
 			if (visitedVertexSet.contains (
 				currentVertexName
@@ -251,7 +258,7 @@ public class PrimGenerator
 				continue;
 			}
 
-			if (!minimumSpanningTree.addBidirectionalEdge (
+			if (!minimumSpanningTree.addEdge (
 				processedEdge
 			))
 			{
@@ -261,7 +268,8 @@ public class PrimGenerator
 			updateEdgeTreeMap (
 				edgeTreeMap,
 				visitedVertexSet,
-				currentVertexName
+				currentVertexName,
+				maximum
 			);
 		}
 

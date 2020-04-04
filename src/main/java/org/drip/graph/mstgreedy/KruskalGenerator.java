@@ -127,7 +127,7 @@ public class KruskalGenerator
 	 */
 
 	public KruskalGenerator (
-		final org.drip.graph.core.Graph graph,
+		final org.drip.graph.core.DirectedGraph graph,
 		final boolean maximum)
 		throws java.lang.Exception
 	{
@@ -152,17 +152,17 @@ public class KruskalGenerator
 			}
 		}
 
-		java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> orderedEdgeMap =
-			_graph.orderedEdgeMap();
+		java.util.Map<java.lang.String, org.drip.graph.core.Edge> graphEdgeMap = _graph.edgeMap();
 
-		java.util.Set<java.lang.Double> orderedKeySet = maximum() ? orderedEdgeMap.descendingKeySet() :
-			orderedEdgeMap.keySet();
+		java.util.List<java.lang.String> orderedEdgeKeyList = _graph.orderedEdgeKeyList (
+			maximum()
+		);
 
-		for (double distanceKey : orderedKeySet)
+		for (java.lang.String edgeKey : orderedEdgeKeyList)
 		{
 			if (!forest.conditionalMerge (
-				orderedEdgeMap.get (
-					distanceKey
+				graphEdgeMap.get (
+					edgeKey
 				),
 				_graph
 			))

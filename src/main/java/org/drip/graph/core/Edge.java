@@ -112,29 +112,29 @@ package org.drip.graph.core;
 public class Edge
 {
 	private double _weight = java.lang.Double.NaN;
-	private java.lang.String _firstVertexName = "";
-	private java.lang.String _secondVertexName = "";
+	private java.lang.String _sourceVertexName = "";
+	private java.lang.String _destinationVertexName = "";
 
 	/**
 	 * Edge Constructor
 	 * 
-	 * @param firstVertexName First Vertex Name
-	 * @param secondVertexName Second Vertex Name
+	 * @param sourceVertexName Source Vertex Name
+	 * @param destinationVertexName Destination Vertex Name
 	 * @param weight Weight
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Edge (
-		final java.lang.String firstVertexName,
-		final java.lang.String secondVertexName,
+		final java.lang.String sourceVertexName,
+		final java.lang.String destinationVertexName,
 		final double weight)
 		throws java.lang.Exception
 	{
-		if (null == (_firstVertexName = firstVertexName) || _firstVertexName.isEmpty() ||
-			null == (_secondVertexName = secondVertexName) || _secondVertexName.isEmpty() ||
-			_firstVertexName.equalsIgnoreCase (
-				_secondVertexName
+		if (null == (_sourceVertexName = sourceVertexName) || _sourceVertexName.isEmpty() ||
+			null == (_destinationVertexName = destinationVertexName) || _destinationVertexName.isEmpty() ||
+			_sourceVertexName.equalsIgnoreCase (
+				_destinationVertexName
 			) || !org.drip.numerical.common.NumberUtil.IsValid (
 				_weight = weight
 			)
@@ -147,25 +147,25 @@ public class Edge
 	}
 
 	/**
-	 * Retrieve the First Vertex Name
+	 * Retrieve the Source Vertex Name
 	 * 
-	 * @return The First Vertex Name
+	 * @return The Source Vertex Name
 	 */
 
-	public java.lang.String firstVertexName()
+	public java.lang.String sourceVertexName()
 	{
-		return _firstVertexName;
+		return _sourceVertexName;
 	}
 
 	/**
-	 * Retrieve the Second Vertex Name
+	 * Retrieve the Destination Vertex Name
 	 * 
-	 * @return The Second Vertex Name
+	 * @return The Destination Vertex Name
 	 */
 
-	public java.lang.String secondVertexName()
+	public java.lang.String destinationVertexName()
 	{
-		return _secondVertexName;
+		return _destinationVertexName;
 	}
 
 	/**
@@ -190,10 +190,10 @@ public class Edge
 	public boolean compareWith (
 		final Edge edge)
 	{
-		return null == edge ? false : _firstVertexName.equalsIgnoreCase (
-			edge.firstVertexName()
-		) && _firstVertexName.equalsIgnoreCase (
-			edge.secondVertexName()
+		return null == edge ? false : _sourceVertexName.equalsIgnoreCase (
+			edge.sourceVertexName()
+		) && _sourceVertexName.equalsIgnoreCase (
+			edge.destinationVertexName()
 		) && _weight == edge.weight();
 	}
 
@@ -208,8 +208,8 @@ public class Edge
 		try
 		{
 			return new Edge (
-				_secondVertexName,
-				_firstVertexName,
+				_destinationVertexName,
+				_sourceVertexName,
 				_weight
 			);
 		}
@@ -223,6 +223,6 @@ public class Edge
 
 	@Override public java.lang.String toString()
 	{
-		return "{" + _firstVertexName + " -> " + _secondVertexName + " = " + _weight + "}";
+		return "{" + _sourceVertexName + " -> " + _destinationVertexName + " = " + _weight + "}";
 	}
 }

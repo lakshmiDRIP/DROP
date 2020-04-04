@@ -116,7 +116,7 @@ package org.drip.graph.mst;
  */
 
 public class CompleteRandomGraph
-	extends org.drip.graph.core.Graph
+	extends org.drip.graph.core.DirectedGraph
 {
 	private org.drip.measure.crng.RandomNumberGenerator _randomNumberGenerator = null;
 

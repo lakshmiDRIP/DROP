@@ -81,7 +81,7 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>RBCRiskTypeMapping</i> zeds the RBC to the iVAST Risk Type Mapping. It also indicates if the RBC is to
- * be excluded from Consideration. The References are:
+ * 	be excluded from Consideration. The References are:
  * 
  * <br><br>
  * 	<ul>

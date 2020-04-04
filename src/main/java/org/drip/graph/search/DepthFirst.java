@@ -176,19 +176,15 @@ public class DepthFirst
 			vertexName
 		);
 
-		java.util.Map<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
-			vertex.adjacencyMap();
+		java.util.Set<java.lang.String> neighboringVertexNameSet = vertex.neighboringVertexNameSet();
 
-		if (null == adjacencyMap || 0 == adjacencyMap.size())
+		if (null == neighboringVertexNameSet || 0 == neighboringVertexNameSet.size())
 		{
 			return true;
 		}
 
-		for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.Edge> adjacencyMapEntry :
-			adjacencyMap.entrySet())
+		for (java.lang.String secondVertexName : neighboringVertexNameSet)
 		{
-			java.lang.String secondVertexName = adjacencyMapEntry.getValue().secondVertexName();
-
 			if (!orderedVertexGroup.vertexPresent (
 				secondVertexName
 			))
@@ -265,33 +261,30 @@ public class DepthFirst
 				currentVertexName
 			);
 
-			java.util.Map<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
-				currentVertex.adjacencyMap();
+			java.util.Set<java.lang.String> neighboringVertexNameSet =
+				currentVertex.neighboringVertexNameSet();
 
-			if (null != adjacencyMap && 0 != adjacencyMap.size())
+			if (null != neighboringVertexNameSet && 0 != neighboringVertexNameSet.size())
 			{
-				for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.Edge>
-					adjacencyMapEntry : adjacencyMap.entrySet())
+				for (java.lang.String destinationVertexName : neighboringVertexNameSet)
 				{
-					java.lang.String secondVertexName = adjacencyMapEntry.getValue().secondVertexName();
-
 					if (!orderedVertexGroup.vertexPresent (
-						secondVertexName
+						destinationVertexName
 					))
 					{
 						if (!processVertexList.contains (
-							secondVertexName
+							destinationVertexName
 						))
 						{
 							processVertexList.add (
-								secondVertexName
+								destinationVertexName
 							);
 						}
 					}
 					else
 					{
 						orderedVertexGroup.touchVertex (
-							secondVertexName
+							destinationVertexName
 						);
 					}
 				}

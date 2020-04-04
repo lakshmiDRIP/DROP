@@ -192,16 +192,13 @@ public class BreadthFirst
 				currentVertexName
 			);
 
-			java.util.Map<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
-				currentVertex.adjacencyMap();
+			java.util.Set<java.lang.String> neighboringVertexNameSet =
+				currentVertex.neighboringVertexNameSet();
 
-			if (null != adjacencyMap && 0 != adjacencyMap.size())
+			if (null != neighboringVertexNameSet && 0 != neighboringVertexNameSet.size())
 			{
-				for (java.util.Map.Entry<java.lang.Double, org.drip.graph.core.Edge>
-					adjacencyMapEntry : adjacencyMap.entrySet())
+				for (java.lang.String secondVertexName : neighboringVertexNameSet)
 				{
-					java.lang.String secondVertexName = adjacencyMapEntry.getValue().secondVertexName();
-
 					if (!orderedVertexGroup.vertexPresent (
 						secondVertexName
 					))

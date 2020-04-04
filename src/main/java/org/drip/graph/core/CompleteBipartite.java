@@ -75,7 +75,7 @@ package org.drip.graph.core;
  */
 
 /**
- * <i>GraphType</i> holds the Pre-specified Graph Types. The References are:
+ * <i>CompleteBipartite</i> implements a Complete, Bipartite Graph. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -109,43 +109,182 @@ package org.drip.graph.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class GraphType
+public class CompleteBipartite
+	extends org.drip.graph.core.DirectedGraph
 {
+	private java.util.Set<java.lang.String> _vertexNameSetP = null;
+	private java.util.Set<java.lang.String> _vertexNameSetQ = null;
+	private java.util.Map<java.lang.String, org.drip.graph.core.Edge> _crossConnectMap = null;
 
 	/**
-	 * Graph is Unspecified
+	 * CompleteBipartite Constructor
+	 * 
+	 * @param vertexNameSetP P Vertex Name Set
+	 * @param vertexNameSetQ Q Vertex Name Set
+	 * @param crossConnectMap Cross Connection Map
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final int UNSPECIFIED = 0;
+	public CompleteBipartite (
+		final java.util.Set<java.lang.String> vertexNameSetP,
+		final java.util.Set<java.lang.String> vertexNameSetQ,
+		final java.util.Map<java.lang.String, org.drip.graph.core.Edge> crossConnectMap)
+		throws java.lang.Exception
+	{
+		super();
+
+		if (null == (_vertexNameSetP = vertexNameSetP) ||
+			null == (_vertexNameSetQ = vertexNameSetQ) ||
+			null == (_crossConnectMap = crossConnectMap)
+		)
+		{
+			throw new java.lang.Exception (
+				"CompleteBipartite Constructor => Invalid Inputs"
+			);
+		}
+
+		int p = _vertexNameSetP.size();
+
+		int q = _vertexNameSetQ.size();
+
+		if (0 == p ||
+			0 == q ||
+			p * q != _crossConnectMap.size()
+		)
+		{
+			throw new java.lang.Exception (
+				"CompleteBipartite Constructor => Invalid Inputs"
+			);
+		}
+
+		java.util.Set<java.lang.String> crossConnectKeySet = _crossConnectMap.keySet();
+
+		for (java.lang.String vertexNameP : _vertexNameSetP)
+		{
+			for (java.lang.String vertexNameQ : _vertexNameSetQ)
+			{
+				if (!crossConnectKeySet.contains (
+					vertexNameP + "_" + vertexNameQ
+				) && !crossConnectKeySet.contains (
+					vertexNameQ + "_" + vertexNameP
+				))
+				{
+					throw new java.lang.Exception (
+						"CompleteBipartiteGraph Constructor => Invalid Inputs"
+					);
+				}
+			}
+		}
+
+		java.util.Collection<org.drip.graph.core.Edge> crossConnectEdgeCollection =
+			_crossConnectMap.values();
+
+		for (org.drip.graph.core.Edge edge : crossConnectEdgeCollection)
+		{
+			if (!addBidirectionalEdge (
+				edge
+			))
+			{
+				throw new java.lang.Exception (
+					"CompleteBipartite Constructor => Invalid Inputs"
+				);
+			}
+		}
+	}
 
 	/**
-	 * Graph is a Tree
+	 * Retrieve the P Vertex Name Set
+	 * 
+	 * @return The P Vertex Name Set
 	 */
 
-	public static final int TREE = 1;
+	public java.util.Set<java.lang.String> vertexNameSetP()
+	{
+		return _vertexNameSetP;
+	}
 
 	/**
-	 * Graph is Cyclical
+	 * Retrieve the Q Vertex Name Set
+	 * 
+	 * @return The Q Vertex Name Set
 	 */
 
-	public static final int CYCLICAL = 2;
+	public java.util.Set<java.lang.String> vertexNameSetQ()
+	{
+		return _vertexNameSetQ;
+	}
 
 	/**
-	 * Graph is Complete
+	 * Retrieve the Cross Connection Edge Map
+	 * 
+	 * @return The Cross Connection Edge Map
 	 */
 
-	public static final int COMPLETE = 4;
+	public java.util.Map<java.lang.String, org.drip.graph.core.Edge> crossConnectMap()
+	{
+		return _crossConnectMap;
+	}
 
 	/**
-	 * Graph is Complete Bipartite
+	 * Retrieve P
+	 * 
+	 * @return P
 	 */
 
-	public static final int COMPLETE_BIPARTITE = 8;
+	public int p()
+	{
+		return _vertexNameSetP.size();
+	}
 
 	/**
-	 * Graph is n-Dimensional Hypercube
+	 * Retrieve Q
+	 * 
+	 * @return Q
 	 */
 
-	public static final int N_DIMENSIONAL_HYPERCUBE = 16;
+	public int q()
+	{
+		return _vertexNameSetQ.size();
+	}
 
+	@Override public boolean isConnected()
+	{
+		return true;
+	}
+
+	@Override public boolean isTree()
+	{
+		return false;
+	}
+
+	@Override public boolean isComplete()
+	{
+		return false;
+	}
+
+	@Override public boolean containsCycle()
+	{
+		return true;
+	}
+
+	@Override public int type()
+	{
+		return org.drip.graph.core.DirectedGraphType.COMPLETE_BIPARTITE;
+	}
+
+	@Override public double spanningTreeCount()
+	{
+		int p =  _vertexNameSetP.size();
+
+		int q =  _vertexNameSetQ.size();
+
+		return java.lang.Math.pow (
+			p,
+			q - 1
+		) * java.lang.Math.pow (
+			q,
+			p - 1
+		);
+	}
 }

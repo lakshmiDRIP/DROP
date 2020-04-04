@@ -121,7 +121,7 @@ public abstract class KMSTGenerator
 	private int _k = -1;
 
 	protected KMSTGenerator (
-		final org.drip.graph.core.Graph graph,
+		final org.drip.graph.core.DirectedGraph graph,
 		final boolean maximum,
 		final int k)
 		throws java.lang.Exception

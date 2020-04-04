@@ -75,7 +75,7 @@ package org.drip.graph.core;
  */
 
 /**
- * <i>CompleteBipartiteGraph</i> implements a Complete, Bipartite Graph. The References are:
+ * <i>NDimensionalHypercube</i> implements an n-dimensional Hyper-cube Graph. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -109,143 +109,17 @@ package org.drip.graph.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CompleteBipartiteGraph
-	extends org.drip.graph.core.Graph
+public class NDimensionalHypercube
+	extends org.drip.graph.core.DirectedGraph
 {
-	private java.util.Set<java.lang.String> _vertexNameSetP = null;
-	private java.util.Set<java.lang.String> _vertexNameSetQ = null;
-	private java.util.Map<java.lang.String, org.drip.graph.core.Edge> _crossConnectMap = null;
 
 	/**
-	 * CompleteBipartiteGraph Constructor
-	 * 
-	 * @param vertexNameSetP P Vertex Name Set
-	 * @param vertexNameSetQ Q Vertex Name Set
-	 * @param crossConnectMap Cross Connection Map
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * NDimensionalHypercube Constructor
 	 */
 
-	public CompleteBipartiteGraph (
-		final java.util.Set<java.lang.String> vertexNameSetP,
-		final java.util.Set<java.lang.String> vertexNameSetQ,
-		final java.util.Map<java.lang.String, org.drip.graph.core.Edge> crossConnectMap)
-		throws java.lang.Exception
+	public NDimensionalHypercube()
 	{
 		super();
-
-		if (null == (_vertexNameSetP = vertexNameSetP) ||
-			null == (_vertexNameSetQ = vertexNameSetQ) ||
-			null == (_crossConnectMap = crossConnectMap)
-		)
-		{
-			throw new java.lang.Exception (
-				"CompleteBipartiteGraph Constructor => Invalid Inputs"
-			);
-		}
-
-		int p = _vertexNameSetP.size();
-
-		int q = _vertexNameSetQ.size();
-
-		if (0 == p ||
-			0 == q ||
-			p * q != _crossConnectMap.size()
-		)
-		{
-			throw new java.lang.Exception (
-				"CompleteBipartiteGraph Constructor => Invalid Inputs"
-			);
-		}
-
-		java.util.Set<java.lang.String> crossConnectKeySet = _crossConnectMap.keySet();
-
-		for (java.lang.String vertexNameP : _vertexNameSetP)
-		{
-			for (java.lang.String vertexNameQ : _vertexNameSetQ)
-			{
-				if (!crossConnectKeySet.contains (
-					vertexNameP + "_" + vertexNameQ
-				) && !crossConnectKeySet.contains (
-					vertexNameQ + "_" + vertexNameP
-				))
-				{
-					throw new java.lang.Exception (
-						"CompleteBipartiteGraph Constructor => Invalid Inputs"
-					);
-				}
-			}
-		}
-
-		java.util.Collection<org.drip.graph.core.Edge> crossConnectEdgeCollection =
-			_crossConnectMap.values();
-
-		for (org.drip.graph.core.Edge edge : crossConnectEdgeCollection)
-		{
-			if (!addBidirectionalEdge (
-				edge
-			))
-			{
-				throw new java.lang.Exception (
-					"CompleteBipartiteGraph Constructor => Invalid Inputs"
-				);
-			}
-		}
-	}
-
-	/**
-	 * Retrieve the P Vertex Name Set
-	 * 
-	 * @return The P Vertex Name Set
-	 */
-
-	public java.util.Set<java.lang.String> vertexNameSetP()
-	{
-		return _vertexNameSetP;
-	}
-
-	/**
-	 * Retrieve the Q Vertex Name Set
-	 * 
-	 * @return The Q Vertex Name Set
-	 */
-
-	public java.util.Set<java.lang.String> vertexNameSetQ()
-	{
-		return _vertexNameSetQ;
-	}
-
-	/**
-	 * Retrieve the Cross Connection Edge Map
-	 * 
-	 * @return The Cross Connection Edge Map
-	 */
-
-	public java.util.Map<java.lang.String, org.drip.graph.core.Edge> crossConnectMap()
-	{
-		return _crossConnectMap;
-	}
-
-	/**
-	 * Retrieve P
-	 * 
-	 * @return P
-	 */
-
-	public int p()
-	{
-		return _vertexNameSetP.size();
-	}
-
-	/**
-	 * Retrieve Q
-	 * 
-	 * @return Q
-	 */
-
-	public int q()
-	{
-		return _vertexNameSetQ.size();
 	}
 
 	@Override public boolean isConnected()
@@ -260,7 +134,7 @@ public class CompleteBipartiteGraph
 
 	@Override public boolean isComplete()
 	{
-		return false;
+		return true;
 	}
 
 	@Override public boolean containsCycle()
@@ -270,21 +144,34 @@ public class CompleteBipartiteGraph
 
 	@Override public int type()
 	{
-		return org.drip.graph.core.GraphType.COMPLETE_BIPARTITE;
+		return org.drip.graph.core.DirectedGraphType.N_DIMENSIONAL_HYPERCUBE;
 	}
 
 	@Override public double spanningTreeCount()
 	{
-		int p =  _vertexNameSetP.size();
+		int n = _vertexMap.size();
 
-		int q =  _vertexNameSetQ.size();
+		double spanningTreeCount = 1.;
 
-		return java.lang.Math.pow (
-			p,
-			q - 1
-		) * java.lang.Math.pow (
-			q,
-			p - 1
+		for (int k = 2;
+			k <= n;
+			++k)
+		{
+			spanningTreeCount = spanningTreeCount * java.lang.Math.pow (
+				k,
+				org.drip.numerical.common.NumberUtil.NCK (
+					n,
+					k
+				)
+			);
+		}
+
+		return spanningTreeCount * java.lang.Math.pow (
+			2,
+			java.lang.Math.pow (
+				2,
+				n
+			) - n - 1
 		);
 	}
 }

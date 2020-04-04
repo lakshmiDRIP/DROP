@@ -99,6 +99,7 @@ package org.drip.analytics.support;
 @SuppressWarnings ("serial") public class CaseInsensitiveHashMap<V> extends
 	java.util.HashMap<java.lang.String, V>
 {
+
     @Override public V put (
     	final java.lang.String strKey,
     	final V v)

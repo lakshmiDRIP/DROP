@@ -7,8 +7,14 @@ DROP Graph Core Package contains the Vertexes, Edges, Trees, Forests, and Graphs
 
 ## Class Components
 
- * [***CompleteBipartiteGraph***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/CompleteBipartiteGraph.java)
- <i>CompleteBipartiteGraph</i> implements a Complete, Bipartite Graph.
+ * [***CompleteBipartite***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/CompleteBipartite.java)
+ <i>CompleteBipartite</i> implements a Complete, Bipartite Graph.
+
+ * [***DirectedGraph***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/DirectedGraph.java)
+ <i>DirectedGraph</i> implements the Vertex/Edge Topology corresponding to a Directed Graph.
+
+ * [***DirectedGraphType***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/DirectedGraphType.java)
+ <i>DirectedGraphType</i> holds the Pre-specified Directed Graph Types.
 
  * [***Edge***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/Edge.java)
  <i>Edge</i> represents the Connection between a Pair of Vertexes.
@@ -16,14 +22,8 @@ DROP Graph Core Package contains the Vertexes, Edges, Trees, Forests, and Graphs
  * [***Forest***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/Forest.java)
  <i>Forest</i> holds a Map of Trees indexed by the Starting Vertex Names.
 
- * [***Graph***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/Graph.java)
- <i>Graph</i> implements a Vertex/Edge Topology corresponding to the Graph.
-
- * [***GraphType***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/GraphType.java)
- <i>GraphType</i> holds the Pre-specified Graph Types.
-
- * [***NDimensionalHypercubeGraph***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/NDimensionalHypercubeGraph.java)
- <i>NDimensionalHypercubeGraph</i> implements an n-dimensional Hyper-cube Graph.
+ * [***NDimensionalHypercube***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/NDimensionalHypercube.java)
+ <i>NDimensionalHypercube</i> implements an n-dimensional Hyper-cube Graph.
 
  * [***Network***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core/Network.java)
  <i>Network</i> implements a Generic Topological Network containing Discrete Vertexes and Edges.

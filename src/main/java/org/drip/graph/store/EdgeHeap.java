@@ -75,7 +75,7 @@ package org.drip.graph.store;
  */
 
 /**
- * <i>EdgeNavigator</i> contains the Collection of Edges that Fan out of a Vertex. The References are:
+ * <i>EdgeHeap</i> implements a Heap of Edges that Fan out of a Vertex. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -113,13 +113,15 @@ package org.drip.graph.store;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EdgeNavigator
+public class EdgeHeap
+	implements org.drip.graph.store.PriorityHeap<org.drip.graph.core.Edge, java.lang.String>
 {
 	private java.util.Map<java.lang.String, org.drip.graph.core.Edge> _edgeMap = null;
 	private java.util.Map<java.lang.String, java.lang.Integer> _destinationCounterMap = null;
-	private java.util.Map<java.lang.Double, java.util.List<java.lang.String>> _adjacentEdgeKeyListMap = null;
+	private java.util.TreeMap<java.lang.Double, java.util.List<java.lang.String>> _adjacentEdgeKeyListMap =
+		null;
 
-	private int updateDestinationEdgeCounterMap (
+	private int incrementDestinationEdgeCounterMap (
 		final java.lang.String destinationVertexName)
 	{
 		int destinationCounter = 1;
@@ -141,7 +143,38 @@ public class EdgeNavigator
 		return destinationCounter;
 	}
 
-	private boolean updateAdjacencyEdgeKeyMap (
+	private boolean decrementDestinationEdgeCounterMap (
+		final java.lang.String destinationVertexName)
+	{
+		if (!_destinationCounterMap.containsKey (
+			destinationVertexName
+		))
+		{
+			return false;
+		}
+
+		int destinationCounter = _destinationCounterMap.get (
+			destinationVertexName
+		) - 1;
+
+		if (0 >= destinationCounter)
+		{
+			_destinationCounterMap.remove (
+				destinationVertexName
+			);
+		}
+		else
+		{
+			_destinationCounterMap.put (
+				destinationVertexName,
+				destinationCounter
+			);
+		}
+
+		return true;
+	}
+
+	private boolean addToAdjacencyEdgeKeyMap (
 		final java.lang.String edgeKey,
 		final double weight)
 	{
@@ -172,11 +205,47 @@ public class EdgeNavigator
 		return true;
 	}
 
+	private boolean removeFromAdjacencyEdgeKeyMap (
+		final java.lang.String edgeKey,
+		final double weight)
+	{
+		if (!_adjacentEdgeKeyListMap.containsKey (
+			weight
+		))
+		{
+			return false;
+		}
+
+		java.util.List<java.lang.String> adjacencyEdgeKeyList = _adjacentEdgeKeyListMap.get (
+			weight
+		);
+
+		if (!adjacencyEdgeKeyList.contains (
+			edgeKey
+		))
+		{
+			return false;
+		}
+
+		adjacencyEdgeKeyList.remove (
+			edgeKey
+		);
+
+		if (0 == adjacencyEdgeKeyList.size())
+		{
+			_adjacentEdgeKeyListMap.remove (
+				weight
+			);
+		}
+
+		return true;
+	}
+
 	/**
-	 * EdgeNavigator Constructor
+	 * EdgeHeap Constructor
 	 */
 
-	public EdgeNavigator()
+	public EdgeHeap()
 	{
 		_edgeMap = new org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.graph.core.Edge>();
 
@@ -192,7 +261,7 @@ public class EdgeNavigator
 	 * @return The Weight Order Map of Adjacent Edges Keys List
 	 */
 
-	public java.util.Map<java.lang.Double, java.util.List<java.lang.String>> adjacentEdgeKeyListMap()
+	public java.util.TreeMap<java.lang.Double, java.util.List<java.lang.String>> adjacentEdgeKeyListMap()
 	{
 		return _adjacentEdgeKeyListMap;
 	}
@@ -220,11 +289,49 @@ public class EdgeNavigator
 	}
 
 	/**
+	 * Retrieve the Ordered Adjacency Key List
+	 * 
+	 * @param descending TRUE - The Edge List is in the Descending Order of Distance
+	 * 
+	 * @return The Ordered Adjacency Key List
+	 */
+
+	public java.util.List<java.lang.String> adjacencyKeyList (
+		final boolean descending)
+	{
+		java.util.List<java.lang.String> adjacencyKeyList = new java.util.ArrayList<java.lang.String>();
+
+		for (double distance : _adjacentEdgeKeyListMap.keySet())
+		{
+			for (java.lang.String edgeKey : _adjacentEdgeKeyListMap.get (
+				distance
+			))
+			{
+				if (descending)
+				{
+					adjacencyKeyList.add (
+						0,
+						edgeKey
+					);
+				}
+				else
+				{
+					adjacencyKeyList.add (
+						edgeKey
+					);
+				}
+			}
+		}
+
+		return adjacencyKeyList;
+	}
+
+	/**
 	 * Add an Edge
 	 * 
 	 * @param edge The Edge
 	 * 
-	 * @return TRUE - The Edge successfully added
+	 * @return The Edge Key
 	 */
 
 	public java.lang.String addEdge (
@@ -235,10 +342,10 @@ public class EdgeNavigator
 			return "";
 		}
 
-		java.lang.String destinationVertexName = edge.secondVertexName();
+		java.lang.String destinationVertexName = edge.destinationVertexName();
 
-		java.lang.String edgeKey = edge.firstVertexName() + "_" + destinationVertexName + "_" +
-			updateDestinationEdgeCounterMap (
+		java.lang.String edgeKey = edge.sourceVertexName() + "_" + destinationVertexName + "@" +
+			incrementDestinationEdgeCounterMap (
 				destinationVertexName
 			);
 
@@ -247,10 +354,56 @@ public class EdgeNavigator
 			edge
 		);
 
-		return updateAdjacencyEdgeKeyMap (
+		return addToAdjacencyEdgeKeyMap (
 			edgeKey,
 			edge.weight()
 		) ? edgeKey : "";
+	}
+
+	/**
+	 * Remove the Edge from the Edge Map
+	 * 
+	 * @param edgeKey The Edge Key
+	 * 
+	 * @return TRUE - The Edge represented by the Key successfully removed
+	 */
+
+	public boolean removeEdge (
+		final java.lang.String edgeKey)
+	{
+		if (null == edgeKey ||
+			!_edgeMap.containsKey (
+				edgeKey
+			)
+		)
+		{
+			return false;
+		}
+
+		org.drip.graph.core.Edge edge = _edgeMap.get (
+			edgeKey
+		);
+
+		if (!removeFromAdjacencyEdgeKeyMap (
+			edgeKey,
+			edge.weight()
+		))
+		{
+			return false;
+		}
+
+		if (!decrementDestinationEdgeCounterMap (
+			edge.destinationVertexName()
+		))
+		{
+			return false;
+		}
+
+		_edgeMap.remove (
+			edgeKey
+		);
+
+		return true;
 	}
 
 	/**
@@ -305,5 +458,164 @@ public class EdgeNavigator
 		}
 
 		return destinationEdgeList;
+	}
+
+	/**
+	 * Retrieve the Set of Neighboring Vertex Names
+	 * 
+	 * @return The Set of Neighboring Vertex Names
+	 */
+
+	public java.util.Set<java.lang.String> neighboringVertexNameSet()
+	{
+		return _destinationCounterMap.keySet();
+	}
+
+	/**
+	 * Retrieve the Out-Degree of the Vertex
+	 * 
+	 * @return Out-Degree of the Vertex
+	 */
+
+	public int outDegree()
+	{
+		int outDegree = 0;
+
+		for (java.util.Map.Entry<java.lang.Double, java.util.List<java.lang.String>> adjacentEdgeKeyListEntry
+			: _adjacentEdgeKeyListMap.entrySet())
+		{
+			outDegree = outDegree + adjacentEdgeKeyListEntry.getValue().size();
+		}
+
+		return outDegree;
+	}
+
+	/**
+	 * Retrieve the Branching Factor of the Vertex
+	 * 
+	 * @return Branching Factor of the Vertex
+	 */
+
+	public int branchingFactor()
+	{
+		return outDegree();
+	}
+
+	@Override public java.lang.String insert (
+		final org.drip.graph.core.Edge edge)
+	{
+		return addEdge (
+			edge
+		);
+	}
+
+	@Override public boolean meld (
+		final org.drip.graph.store.PriorityHeap<org.drip.graph.core.Edge, java.lang.String>
+			priorityHeapOther)
+	{
+		if (!(priorityHeapOther instanceof EdgeHeap))
+		{
+			return false;
+		}
+
+		for (org.drip.graph.core.Edge edge : ((EdgeHeap) priorityHeapOther).edgeMap().values())
+		{
+			java.lang.String edgeKey = addEdge (
+				edge
+			);
+
+			if (null == edgeKey || edgeKey.isEmpty())
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	@Override public org.drip.graph.core.Edge delete (
+		final java.lang.String edgeKey)
+	{
+		if (null == edgeKey ||
+			!_edgeMap.containsKey (
+				edgeKey
+			)
+		)
+		{
+			return null;
+		}
+
+		org.drip.graph.core.Edge edge = _edgeMap.get (
+			edgeKey
+		);
+
+		if (!removeFromAdjacencyEdgeKeyMap (
+			edgeKey,
+			edge.weight()
+		))
+		{
+			return null;
+		}
+
+		if (!decrementDestinationEdgeCounterMap (
+			edge.destinationVertexName()
+		))
+		{
+			return null;
+		}
+
+		_edgeMap.remove (
+			edgeKey
+		);
+
+		return edge;
+	}
+
+	@Override public org.drip.graph.core.Edge findMinimum()
+	{
+		java.util.Map.Entry<java.lang.Double, java.util.List<java.lang.String>> minimumEntry =
+			_adjacentEdgeKeyListMap.firstEntry();
+
+		return null == minimumEntry ? null : _edgeMap.get (
+			minimumEntry.getValue().get (
+				0
+			)
+		);
+	}
+
+	@Override public org.drip.graph.core.Edge deleteMinimum()
+	{
+		java.util.Map.Entry<java.lang.Double, java.util.List<java.lang.String>> minimumEntry =
+			_adjacentEdgeKeyListMap.firstEntry();
+
+		return null == minimumEntry ? null : delete (
+			minimumEntry.getValue().get (
+				0
+			)
+		);
+	}
+
+	@Override public org.drip.graph.core.Edge findMaximum()
+	{
+		java.util.Map.Entry<java.lang.Double, java.util.List<java.lang.String>> maximumEntry =
+			_adjacentEdgeKeyListMap.lastEntry();
+
+		return null == maximumEntry ? null : _edgeMap.get (
+			maximumEntry.getValue().get (
+				0
+			)
+		);
+	}
+
+	@Override public org.drip.graph.core.Edge deleteMaximum()
+	{
+		java.util.Map.Entry<java.lang.Double, java.util.List<java.lang.String>> maximumEntry =
+			_adjacentEdgeKeyListMap.lastEntry();
+
+		return null == maximumEntry ? null : delete (
+			maximumEntry.getValue().get (
+				0
+			)
+		);
 	}
 }

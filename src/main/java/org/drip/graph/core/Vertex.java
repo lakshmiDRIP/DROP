@@ -113,7 +113,8 @@ package org.drip.graph.core;
 public class Vertex
 {
 	private java.lang.String _name = "";
-	private java.util.Map<java.lang.Double, org.drip.graph.core.Edge> _adjacencyMap = null;
+	private org.drip.graph.store.EdgeHeap _edgeHeap = null;
+	private java.util.Map<java.lang.Double, java.lang.String> _adjacencyKeyMap = null;
 
 	/**
 	 * Vertex Constructor
@@ -134,7 +135,9 @@ public class Vertex
 			);
 		}
 
-		_adjacencyMap = new java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge>();
+		_edgeHeap = new org.drip.graph.store.EdgeHeap();
+
+		_adjacencyKeyMap = new java.util.TreeMap<java.lang.Double, java.lang.String>();
 	}
 
 	/**
@@ -149,14 +152,41 @@ public class Vertex
 	}
 
 	/**
-	 * Retrieve the Adjacency Map
+	 * Retrieve the Adjacency Key Map
 	 * 
-	 * @return The Adjacency Map
+	 * @return The Adjacency Key Map
 	 */
 
-	public java.util.Map<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap()
+	public java.util.Map<java.lang.Double, java.lang.String> adjacencyKeyMap()
 	{
-		return _adjacencyMap;
+		return _adjacencyKeyMap;
+	}
+
+	/**
+	 * Retrieve the Edge Heap
+	 * 
+	 * @return The Edge Heap
+	 */
+
+	public org.drip.graph.store.EdgeHeap edgeHeap()
+	{
+		return _edgeHeap;
+	}
+
+	/**
+	 * Retrieve the Ordered Adjacency Key List
+	 * 
+	 * @param descending TRUE - The Edge List is in the Descending Order of Distance
+	 * 
+	 * @return The Ordered Adjacency Key List
+	 */
+
+	public java.util.List<java.lang.String> adjacencyKeyList (
+		final boolean descending)
+	{
+		return _edgeHeap.adjacencyKeyList (
+			descending
+		);
 	}
 
 	/**
@@ -167,51 +197,39 @@ public class Vertex
 	 * @return TRUE - The Edge successfully added
 	 */
 
-	public boolean addEdge (
+	public java.lang.String addEdge (
 		final org.drip.graph.core.Edge edge)
 	{
-		if (null == edge ||
-			!edge.firstVertexName().equalsIgnoreCase (
-				_name
-			)
-		)
-		{
-			return false;
-		}
-
-		_adjacencyMap.put (
-			edge.weight(),
+		return _edgeHeap.addEdge (
 			edge
 		);
-
-		return true;
 	}
 
 	/**
-	 * Remove a Edge from the Adjacency Map
+	 * Remove an Edge from the Adjacency Map
 	 * 
-	 * @param edge The Edge
+	 * @param edgeKey The Edge Key
 	 * 
-	 * @return TRUE - The Edge successfully added
+	 * @return TRUE - The Edge represented by the Key successfully removed
 	 */
 
 	public boolean removeEdge (
-		final org.drip.graph.core.Edge edge)
+		final java.lang.String edgeKey)
 	{
-		if (null == edge ||
-			!edge.firstVertexName().equalsIgnoreCase (
-				_name
-			)
-		)
-		{
-			return false;
-		}
-
-		_adjacencyMap.remove (
-			edge.weight()
+		return _edgeHeap.removeEdge (
+			edgeKey
 		);
+	}
 
-		return true;
+	/**
+	 * Retrieve the Set of Neighbors
+	 * 
+	 * @return The Set of Neighbors
+	 */
+
+	public java.util.Set<java.lang.String> neighboringVertexNameSet()
+	{
+		return _edgeHeap.neighboringVertexNameSet();
 	}
 
 	/**
@@ -222,7 +240,7 @@ public class Vertex
 
 	public int outDegree()
 	{
-		return null == _adjacencyMap ? 0 : _adjacencyMap.size();
+		return _edgeHeap.outDegree();
 	}
 
 	/**
@@ -233,6 +251,6 @@ public class Vertex
 
 	public int branchingFactor()
 	{
-		return null == _adjacencyMap ? 0 : _adjacencyMap.size();
+		return _edgeHeap.branchingFactor();
 	}
 }

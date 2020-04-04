@@ -75,7 +75,8 @@ package org.drip.graph.core;
  */
 
 /**
- * <i>Graph</i> implements a Vertex/Edge Topology corresponding to the Graph. The References are:
+ * <i>DirectedGraph</i> implements the Vertex/Edge Topology corresponding to a Directed Graph. The References
+ * 	are:
  * 
  * <br><br>
  *  <ul>
@@ -109,15 +110,15 @@ package org.drip.graph.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Graph
+public class DirectedGraph
 	extends org.drip.graph.core.Network
 {
 
 	/**
-	 * Graph Constructor
+	 * DirectedGraph Constructor
 	 */
 
-	public Graph()
+	public DirectedGraph()
 	{
 		super();
 	}
@@ -131,7 +132,7 @@ public class Graph
 	 */
 
 	public boolean addGraph (
-		final org.drip.graph.core.Graph graph)
+		final org.drip.graph.core.DirectedGraph graph)
 	{
 		if (null == graph)
 		{
@@ -148,7 +149,7 @@ public class Graph
 
 		for (org.drip.graph.core.Edge edge : edgeCollection)
 		{
-			if (!addBidirectionalEdge (
+			if (!addEdge (
 				edge
 			))
 			{
@@ -290,10 +291,10 @@ public class Graph
 		for (java.util.Map.Entry<java.lang.String, org.drip.graph.core.Vertex> vertexMapEntry :
 			_vertexMap.entrySet())
 		{
-			java.util.Map<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
-				vertexMapEntry.getValue().adjacencyMap();
+			java.util.Map<java.lang.Double, java.lang.String> adjacencyKeyMap =
+				vertexMapEntry.getValue().adjacencyKeyMap();
 
-			if (null == adjacencyMap || 1 == adjacencyMap.size())
+			if (null == adjacencyKeyMap || 1 == adjacencyKeyMap.size())
 			{
 				leafVertexNameList.add (
 					vertexMapEntry.getKey()
@@ -382,17 +383,27 @@ public class Graph
 
 	public boolean isComplete()
 	{
-		int n = _vertexMap.size() - 1;
+		java.util.Set<java.lang.String> graphVertexNameSet = _vertexMap.keySet();
 
 		for (java.util.Map.Entry<java.lang.String, org.drip.graph.core.Vertex> vertexMapEntry :
 			_vertexMap.entrySet())
 		{
-			java.util.Map<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
-				vertexMapEntry.getValue().adjacencyMap();
+			java.lang.String vertexName = vertexMapEntry.getKey();
 
-			if (null == adjacencyMap || n != adjacencyMap.size())
+			java.util.Set<java.lang.String> neighborSet =
+				vertexMapEntry.getValue().neighboringVertexNameSet();
+
+			for (java.lang.String graphVertexName : graphVertexNameSet)
 			{
-				return false;
+				if (!neighborSet.contains (
+						vertexName
+					) && !graphVertexName.equalsIgnoreCase (
+						vertexName
+					)
+				)
+				{
+					return false;
+				}
 			}
 		}
 
@@ -432,12 +443,12 @@ public class Graph
 		for (java.util.Map.Entry<java.lang.String, org.drip.graph.core.Vertex> vertexMapEntry :
 			_vertexMap.entrySet())
 		{
-			java.util.Map<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
-				vertexMapEntry.getValue().adjacencyMap();
+			java.util.Set<java.lang.String> neighboringVertexNameSet =
+				vertexMapEntry.getValue().neighboringVertexNameSet();
 
 			vertexDegreeMap.put (
 				vertexMapEntry.getKey(),
-				null == adjacencyMap ? 0 : adjacencyMap.size()
+				null == neighboringVertexNameSet ? 0 : neighboringVertexNameSet.size()
 			);
 		}
 
@@ -478,20 +489,20 @@ public class Graph
 	{
 		if (isTree())
 		{
-			return org.drip.graph.core.GraphType.TREE;
+			return org.drip.graph.core.DirectedGraphType.TREE;
 		}
 
 		if (isCyclical())
 		{
-			return org.drip.graph.core.GraphType.CYCLICAL;
+			return org.drip.graph.core.DirectedGraphType.CYCLICAL;
 		}
 
 		if (isComplete())
 		{
-			return org.drip.graph.core.GraphType.COMPLETE;
+			return org.drip.graph.core.DirectedGraphType.COMPLETE;
 		}
 
-		return org.drip.graph.core.GraphType.UNSPECIFIED;
+		return org.drip.graph.core.DirectedGraphType.UNSPECIFIED;
 	}
 
 	/**
@@ -597,17 +608,17 @@ public class Graph
 
 		int type = type();
 
-		if (type == org.drip.graph.core.GraphType.TREE)
+		if (type == org.drip.graph.core.DirectedGraphType.TREE)
 		{
 			return 1;
 		}
 
-		if (type == org.drip.graph.core.GraphType.CYCLICAL)
+		if (type == org.drip.graph.core.DirectedGraphType.CYCLICAL)
 		{
 			return _vertexMap.size();
 		}
 
-		if (type == org.drip.graph.core.GraphType.COMPLETE)
+		if (type == org.drip.graph.core.DirectedGraphType.COMPLETE)
 		{
 			int n = _vertexMap.size();
 

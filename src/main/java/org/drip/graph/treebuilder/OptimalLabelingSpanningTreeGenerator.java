@@ -119,7 +119,7 @@ public abstract class OptimalLabelingSpanningTreeGenerator
 	extends org.drip.graph.treebuilder.OptimalSpanningForestGenerator
 {
 	protected OptimalLabelingSpanningTreeGenerator (
-		final org.drip.graph.core.Graph graph,
+		final org.drip.graph.core.DirectedGraph graph,
 		final boolean maximum)
 		throws java.lang.Exception
 	{

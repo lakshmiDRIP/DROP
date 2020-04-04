@@ -130,7 +130,7 @@ public class Tree
 	 * @return TRUE - The Stand-alone Vertex successfully added to the Network
 	 */
 
-	public boolean addVertex (
+	public boolean addStandaloneVertex (
 		final java.lang.String vertexName)
 	{
 		if (null == vertexName || vertexName.isEmpty() ||
@@ -173,16 +173,25 @@ public class Tree
 		final org.drip.graph.core.Tree tree,
 		final org.drip.graph.core.Edge edge)
 	{
-		if (null == tree || !addBidirectionalEdge (
-			edge
-		))
+		if (null == tree ||
+			!addEdge (
+				edge
+			)
+		)
 		{
 			return false;
 		}
 
-		for (org.drip.graph.core.Edge treeEdge : tree.edgeMap().values())
+		java.util.Collection<org.drip.graph.core.Edge> treeEdgeCollection = tree.edgeMap().values();
+
+		if (null == treeEdgeCollection || 0 == treeEdgeCollection.size())
 		{
-			if (!addBidirectionalEdge (
+			return true;
+		}
+
+		for (org.drip.graph.core.Edge treeEdge : treeEdgeCollection)
+		{
+			if (!addEdge (
 				treeEdge
 			))
 			{
@@ -197,17 +206,21 @@ public class Tree
 	 * Construct and Retrieve the Tree Adjacency Map from the Graph
 	 * 
 	 * @param graph The Graph
+	 * @param descending TRUE - The Edge List is in the Descending Order of Distance
 	 * 
 	 * @return The Tree Adjacency Map
 	 */
 
 	public java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap (
-		final org.drip.graph.core.Graph graph)
+		final org.drip.graph.core.DirectedGraph graph,
+		final boolean descending)
 	{
 		if (null == graph)
 		{
 			return null;
 		}
+
+		java.util.Map<java.lang.String, org.drip.graph.core.Edge> graphEdgeMap = graph.edgeMap();
 
 		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> graphVertexMap = graph.vertexMap();
 
@@ -227,19 +240,24 @@ public class Tree
 				vertexName
 			);
 
-			java.util.Collection<org.drip.graph.core.Edge> edgeCollection =
-				vertex.adjacencyMap().values();
+			java.util.List<java.lang.String> adjacencyKeyList = vertex.adjacencyKeyList (
+				descending
+			);
 
-			if (null == edgeCollection || 0 == edgeCollection.size())
+			if (null == adjacencyKeyList || 0 == adjacencyKeyList.size())
 			{
 				continue;
 			}
 
-			for (org.drip.graph.core.Edge edge : edgeCollection)
+			for (java.lang.String graphEdgeKey : adjacencyKeyList)
 			{
-				java.lang.String sourceVertexName = edge.firstVertexName();
+				org.drip.graph.core.Edge graphEdge = graphEdgeMap.get (
+					graphEdgeKey
+				);
 
-				java.lang.String destinationVertexName = edge.secondVertexName();
+				java.lang.String sourceVertexName = graphEdge.sourceVertexName();
+
+				java.lang.String destinationVertexName = graphEdge.destinationVertexName();
 
 				if (_vertexMap.containsKey (
 					sourceVertexName
@@ -251,8 +269,8 @@ public class Tree
 				}
 
 				treeAdjacencyMap.put (
-					edge.weight(),
-					edge
+					graphEdge.weight(),
+					graphEdge
 				);
 			}
 		}

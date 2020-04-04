@@ -119,11 +119,13 @@ public class BoruvkaForest
 	private boolean updateOrderedTreeMap (
 		final java.lang.String treeName,
 		final org.drip.graph.core.Tree tree,
-		final org.drip.graph.core.Graph graph)
+		final org.drip.graph.core.DirectedGraph graph,
+		final boolean descending)
 	{
 		java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
 			tree.adjacencyMap (
-				graph
+				graph,
+				descending
 			);
 
 		if (null != adjacencyMap && 0 != adjacencyMap.size())
@@ -147,7 +149,8 @@ public class BoruvkaForest
 	private boolean updateOrderedTreeMap (
 		final java.lang.String sourceTreeName,
 		final java.lang.String destinationTreeName,
-		final org.drip.graph.core.Graph graph)
+		final org.drip.graph.core.DirectedGraph graph,
+		final boolean descending)
 	{
 		_orderedTreeMap.remove (
 			_treeNameDistanceMap.get (
@@ -171,13 +174,15 @@ public class BoruvkaForest
 
 		java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
 			sourceTree.adjacencyMap (
-				graph
+				graph,
+				descending
 			);
 
 		if (null != adjacencyMap && !adjacencyMap.isEmpty())
 		{
 			double distance = sourceTree.adjacencyMap (
-				graph
+				graph,
+				descending
 			).firstEntry().getValue().weight();
 
 			_orderedTreeMap.put (
@@ -241,7 +246,7 @@ public class BoruvkaForest
 
 	public boolean unitVertexTree (
 		final java.lang.String vertexName,
-		final org.drip.graph.core.Graph graph)
+		final org.drip.graph.core.DirectedGraph graph)
 	{
 		return super.unitVertexTree (
 			vertexName,
@@ -251,7 +256,8 @@ public class BoruvkaForest
 			treeMap().get (
 				vertexName
 			),
-			graph
+			graph,
+			false
 		);
 	}
 
@@ -261,6 +267,7 @@ public class BoruvkaForest
 	 * @param treeName The Tree Name
 	 * @param tree The Tree
 	 * @param graph The Graph
+	 * @param descending Tree Neighbor Set in Descending Order
 	 * 
 	 * @return TRUE - The Keyed Tree successfully added to the Forest
 	 */
@@ -268,7 +275,8 @@ public class BoruvkaForest
 	public boolean addTree (
 		final java.lang.String treeName,
 		final org.drip.graph.core.Tree tree,
-		final org.drip.graph.core.Graph graph)
+		final org.drip.graph.core.DirectedGraph graph,
+		final boolean descending)
 	{
 		return super.addTree (
 			treeName,
@@ -277,7 +285,8 @@ public class BoruvkaForest
 		) && updateOrderedTreeMap (
 			treeName,
 			tree,
-			graph
+			graph,
+			descending
 		);
 	}
 
@@ -291,15 +300,17 @@ public class BoruvkaForest
 	 */
 
 	public boolean conditionalBoruvkaMerge (
-		final org.drip.graph.core.Graph graph,
+		final org.drip.graph.core.DirectedGraph graph,
 		final boolean maximum)
 	{
 		org.drip.graph.core.Edge edge = maximum ?
 			orderedTreeMap().lastEntry().getValue().adjacencyMap (
-				graph
+				graph,
+				maximum
 			).lastEntry().getValue() :
 			orderedTreeMap().firstEntry().getValue().adjacencyMap (
-				graph
+				graph,
+				maximum
 			).firstEntry().getValue();
 
 		if (null == edge ||
@@ -316,12 +327,13 @@ public class BoruvkaForest
 
 		return updateOrderedTreeMap (
 			containingTreeNameMap.get (
-				edge.firstVertexName()
+				edge.sourceVertexName()
 			),
 			containingTreeNameMap.get (
-				edge.secondVertexName()
+				edge.destinationVertexName()
 			),
-			graph
+			graph,
+			maximum
 		);
 	}
 }

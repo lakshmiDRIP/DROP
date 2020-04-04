@@ -126,7 +126,7 @@ public class ReverseDeleteGenerator
 	 */
 
 	public ReverseDeleteGenerator (
-		final org.drip.graph.core.Graph graph,
+		final org.drip.graph.core.DirectedGraph graph,
 		final boolean maximum)
 		throws java.lang.Exception
 	{
@@ -145,20 +145,20 @@ public class ReverseDeleteGenerator
 
 		boolean maximum = maximum();
 
-		java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> orderedEdgeMap =
-			_graph.orderedEdgeMap();
+		java.util.Map<java.lang.String, org.drip.graph.core.Edge> graphEdgeMap = _graph.edgeMap();
 
-		java.util.Set<java.lang.Double> orderedKeySet = maximum ? orderedEdgeMap.keySet() :
-			orderedEdgeMap.descendingKeySet();
+		java.util.List<java.lang.String> orderedEdgeKeyList = _graph.orderedEdgeKeyList (
+			!maximum
+		);
 
-		for (double distanceKey : orderedKeySet)
+		for (java.lang.String edgeKey : orderedEdgeKeyList)
 		{
-			org.drip.graph.core.Edge edge = orderedEdgeMap.get (
-				distanceKey
+			org.drip.graph.core.Edge edge = graphEdgeMap.get (
+				edgeKey
 			);
 
-			if (!_graph.removeBidirectionalEdge (
-				edge
+			if (!_graph.removeEdge (
+				edgeKey
 			))
 			{
 				return null;
@@ -166,7 +166,7 @@ public class ReverseDeleteGenerator
 
 			if (!_graph.isConnected())
 			{
-				_graph.addBidirectionalEdge (
+				_graph.addEdge (
 					edge
 				);
 			}

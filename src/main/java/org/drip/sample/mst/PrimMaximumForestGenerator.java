@@ -4,7 +4,7 @@ package org.drip.sample.mst;
 import java.util.Map;
 
 import org.drip.graph.core.Edge;
-import org.drip.graph.core.Graph;
+import org.drip.graph.core.DirectedGraph;
 import org.drip.graph.core.Tree;
 import org.drip.graph.mstgreedy.PrimGenerator;
 import org.drip.service.env.EnvManager;
@@ -150,7 +150,7 @@ public class PrimMaximumForestGenerator
 			"Jaipur    "
 		};
 
-		Graph graph = new Graph();
+		DirectedGraph graph = new DirectedGraph();
 
 		graph.addBidirectionalEdge (
 			new Edge (

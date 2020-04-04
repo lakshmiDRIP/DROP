@@ -23,7 +23,7 @@ DROP Piterbarg (2010) demonstrates the Piterbarg (2010) CSA Measure Extraction.
  <i>ZeroStrikeCallOption</i> examines the Impact of Funding and Collateralization on a "Zero Strike Call", i.e., the Futures Contract on an Asset with Non-Zero Value.
 
 
-## Class Components
+## References
 
  * Barden, P. (2009): Equity Forward Prices in the Presence of Funding Spreads <i>ICBI Conference</i> <b>Rome</b>
 

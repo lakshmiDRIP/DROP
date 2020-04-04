@@ -2,7 +2,7 @@
 package org.drip.sample.graphsearch;
 
 import org.drip.graph.core.Edge;
-import org.drip.graph.core.Graph;
+import org.drip.graph.core.DirectedGraph;
 import org.drip.graph.search.DepthFirst;
 import org.drip.graph.search.OrderedVertexGroup;
 import org.drip.service.env.EnvManager;
@@ -129,7 +129,7 @@ public class DFS1
 			""
 		);
 
-		Graph graph = new Graph();
+		DirectedGraph graph = new DirectedGraph();
 
 		graph.addBidirectionalEdge (
 			new Edge (

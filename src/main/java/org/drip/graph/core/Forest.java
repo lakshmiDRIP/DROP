@@ -172,7 +172,7 @@ public class Forest
 
 	public boolean unitVertexTree (
 		final java.lang.String vertexName,
-		final org.drip.graph.core.Graph graph)
+		final org.drip.graph.core.DirectedGraph graph)
 	{
 		if (null == vertexName || vertexName.isEmpty() ||
 			null == graph)
@@ -182,7 +182,7 @@ public class Forest
 
 		org.drip.graph.core.Tree tree = new org.drip.graph.core.Tree();
 
-		if (!tree.addVertex (
+		if (!tree.addStandaloneVertex (
 			vertexName
 		))
 		{
@@ -215,7 +215,7 @@ public class Forest
 	public boolean addTree (
 		final java.lang.String treeName,
 		final org.drip.graph.core.Tree tree,
-		final org.drip.graph.core.Graph graph)
+		final org.drip.graph.core.DirectedGraph graph)
 	{
 		if (null == treeName || _treeMap.containsKey (
 				treeName
@@ -306,7 +306,7 @@ public class Forest
 
 	public boolean conditionalMerge (
 		final org.drip.graph.core.Edge edge,
-		final org.drip.graph.core.Graph graph)
+		final org.drip.graph.core.DirectedGraph graph)
 	{
 		if (null == edge ||
 			null == graph)
@@ -314,9 +314,9 @@ public class Forest
 			return false;
 		}
 
-		java.lang.String sourceVertexName = edge.firstVertexName();
+		java.lang.String sourceVertexName = edge.sourceVertexName();
 
-		java.lang.String destinationVertexName = edge.secondVertexName();
+		java.lang.String destinationVertexName = edge.destinationVertexName();
 
 		if (!_containingTreeNameMap.containsKey (
 				sourceVertexName

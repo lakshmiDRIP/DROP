@@ -75,7 +75,7 @@ package org.drip.graph.core;
  */
 
 /**
- * <i>NDimensionalHypercubeGraph</i> implements an n-dimensional Hyper-cube Graph. The References are:
+ * <i>DirectedGraphType</i> holds the Pre-specified Directed Graph Types. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -109,69 +109,43 @@ package org.drip.graph.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NDimensionalHypercubeGraph
-	extends org.drip.graph.core.Graph
+public class DirectedGraphType
 {
 
 	/**
-	 * NDimensionalHypercube Constructor
+	 * Graph is Unspecified
 	 */
 
-	public NDimensionalHypercubeGraph()
-	{
-		super();
-	}
+	public static final int UNSPECIFIED = 0;
 
-	@Override public boolean isConnected()
-	{
-		return true;
-	}
+	/**
+	 * Graph is a Tree
+	 */
 
-	@Override public boolean isTree()
-	{
-		return false;
-	}
+	public static final int TREE = 1;
 
-	@Override public boolean isComplete()
-	{
-		return true;
-	}
+	/**
+	 * Graph is Cyclical
+	 */
 
-	@Override public boolean containsCycle()
-	{
-		return true;
-	}
+	public static final int CYCLICAL = 2;
 
-	@Override public int type()
-	{
-		return org.drip.graph.core.GraphType.N_DIMENSIONAL_HYPERCUBE;
-	}
+	/**
+	 * Graph is Complete
+	 */
 
-	@Override public double spanningTreeCount()
-	{
-		int n = _vertexMap.size();
+	public static final int COMPLETE = 4;
 
-		double spanningTreeCount = 1.;
+	/**
+	 * Graph is Complete Bipartite
+	 */
 
-		for (int k = 2;
-			k <= n;
-			++k)
-		{
-			spanningTreeCount = spanningTreeCount * java.lang.Math.pow (
-				k,
-				org.drip.numerical.common.NumberUtil.NCK (
-					n,
-					k
-				)
-			);
-		}
+	public static final int COMPLETE_BIPARTITE = 8;
 
-		return spanningTreeCount * java.lang.Math.pow (
-			2,
-			java.lang.Math.pow (
-				2,
-				n
-			) - n - 1
-		);
-	}
+	/**
+	 * Graph is n-Dimensional Hypercube
+	 */
+
+	public static final int N_DIMENSIONAL_HYPERCUBE = 16;
+
 }

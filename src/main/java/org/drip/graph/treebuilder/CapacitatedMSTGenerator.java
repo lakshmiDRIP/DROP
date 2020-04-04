@@ -121,7 +121,7 @@ public abstract class CapacitatedMSTGenerator
 	private int _c = -1;
 
 	protected CapacitatedMSTGenerator (
-		final org.drip.graph.core.Graph graph,
+		final org.drip.graph.core.DirectedGraph graph,
 		final boolean maximum,
 		final int c)
 		throws java.lang.Exception
