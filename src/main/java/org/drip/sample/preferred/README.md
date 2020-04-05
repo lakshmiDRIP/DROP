@@ -10,6 +10,7 @@ DROP Preferred contains the Preferred Stock Analytics Sample Demonstration.
  * [***PreferredFixedBullet***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/preferred/PreferredFixedBullet.java)
  <i>PreferredFixedBullet</i> demonstrates Non-EOS Fixed Coupon Preferred Bond Pricing and Relative Value Measure Generation Functionality.
 
+
 ## DROP Specifications
 
  * Main                     => https://lakshmidrip.github.io/DROP/

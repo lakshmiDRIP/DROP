@@ -53,31 +53,61 @@ import org.drip.state.identifier.OvernightLabel;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     => https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   => https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     => https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  => https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications => https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         => https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        => https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           => https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    => https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   => https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *   	you may not use this file except in compliance with the License.
@@ -94,23 +124,42 @@ import org.drip.state.identifier.OvernightLabel;
  */
 
 /**
- * ExposurePathFixFloat sets up a Brownian Bridge Based Dense Exposure Generation from Sparse Nodes for a
- * 	Fix-Float Swap. The References are:
+ * <i>ExposurePathFixFloat</i> sets up a Brownian Bridge Based Dense Exposure Generation from Sparse Nodes
+ * 	for a Fix-Float Swap. The References are:
  *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737, eSSRN.
+ * <br><br>
+ *  <ul>
+ *  	<li>
+ *  		Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
+ *  			Re-Hypothecation Option https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955
+ *  			<b>eSSRN</b>
+ *  	</li>
+ *  	<li>
+ *  		Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Re-thinking Margin Period of Risk
+ *  			https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2902737 <b>eSSRN</b>
+ *  	</li>
+ *  	<li>
+ *  		Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial
+ *  			Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 <b>eSSRN</b>
+ *  	</li>
+ *  	<li>
+ *  		Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting
+ *  			https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011 <b>eSSRN</b>
+ *  	</li>
+ *  	<li>
+ *  		Pykhtin, M. (2009): Modeling Counter-party Credit Exposure in the Presence of Margin Agreements
+ *  			http://www.risk-europe.com/protected/michael-pykhtin.pdf
+ *  	</li>
+ *  </ul>
  *  
- *  - Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial Margin,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156, eSSRN.
- *  
- *  - Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the
- *  	Re-Hypothecation Option, eSSRN, https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955.
- *  
- *  - Burgard, C., and M. Kjaer (2017): Derivatives Funding, Netting, and Accounting, eSSRN,
- *  	https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2534011.
- * 
- *  - Pykhtin, M. (2009): Modeling Counter-party Credit Exposure in the Presence of Margin Agreements,
- *  	http://www.risk-europe.com/protected/michael-pykhtin.pdf.
+ * <br><br>
+ *  <ul>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md">Exposure Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/pykhtin2009/README.md">Regression Based Secondary Stochastic Projection</a></li>
+ *  </ul>
+ * <br><br>
  * 
  * @author Lakshmi Krishnamurthy
  */
