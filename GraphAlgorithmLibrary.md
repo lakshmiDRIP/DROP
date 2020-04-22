@@ -11,7 +11,7 @@ Graph Algorithm Library contains the Libraries implementing the Graph Representa
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm/GraphAlgorithm_v4.76.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm/GraphAlgorithm_v4.82.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -25,6 +25,40 @@ Graph Algorithm Library contains the Libraries implementing the Graph Representa
 
 ## Coverage
 
+ * Priority Queue
+	* Overview
+	* Operations
+	* Implementation
+	* Specialized Heaps
+	* Summary of Running Times
+	* Using a Priority Queue to Sort
+	* Using a Sorting Algorithm to Make a Priority Queue
+	* Applications – Bandwidth Management
+	* Applications – Discrete Event Simulation
+	* Application – Dijkstra’s Algorithm
+	* Application – Huffman Coding
+	* Application – Best-First Search Algorithm
+	* Application – ROAM Triangulation Algorithm
+	* Application – Prim’s Algorithm for Minimum Spanning Tree
+	* Parallel Priority Queue
+	* Parallelize Individual Operations
+	* Concurrent Parallel Access
+	* K-Element Operations
+	* References
+ * The Soft Heap: An Approximate Priority Queue with Optimal Error Rate
+	* Abstract
+	* Introduction
+	* Applications
+	* The Data Structure
+	* Soft Heap Operations
+	* Inserting an Item
+	* Melding Two Heaps
+	* DeleteMin
+	* Complexity Analysis
+	* The Error Rate
+	* The Running Time
+	* Optimality
+	* References
  * Spanning Tree
 	* Overview
 	* Applications

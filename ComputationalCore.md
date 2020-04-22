@@ -39,6 +39,8 @@ Computational Core Module contains libraries the implement Algorithm/Computation
 
 ## Graph Algorithm Coverage
 
+ * Priority Queue
+ * The Soft Heap: An Approximate Priority Queue with Optimal Error Rate
  * Spanning Tree
  * Minimum Spanning Tree
  * Prim's Algorithm
