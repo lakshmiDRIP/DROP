@@ -121,24 +121,24 @@ public class BigOAsymptoteType
 	 * The Algorithm is bounded above (up to constant factor) asymptotically
 	 */
 
-	public static final java.lang.String BIG_O = "Asymptotic Upper Bound";
+	public static final java.lang.String BIG_O = "Big O Bound";
 
 	/**
 	 * The Algorithm is bounded above and below asymptotically
 	 */
 
-	public static final java.lang.String BIG_THETA = "Asymptotic Upper and Lower Bound";
+	public static final java.lang.String BIG_THETA = "Big Theta Bound";
 
 	/**
 	 * The Algorithm is bounded below asymptotically
 	 */
 
-	public static final java.lang.String BIG_OMEGA = "Asymptotic Lower Bound";
+	public static final java.lang.String BIG_OMEGA = "Big Omega Bound";
 
 	/**
 	 * The Algorithm is Dominated asymptotically
 	 */
 
-	public static final java.lang.String SMALL_O = "Asymptotic Domination Bound";
+	public static final java.lang.String SMALL_O = "Small O Bound";
 
 }

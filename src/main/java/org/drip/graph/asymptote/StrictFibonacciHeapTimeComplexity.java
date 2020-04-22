@@ -136,7 +136,9 @@ public class StrictFibonacciHeapTimeComplexity
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime()
+							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime(),
+							org.drip.graph.asymptote.BigOAsymptoteType.BIG_THETA,
+							org.drip.graph.asymptote.BigOAsymptoteForm.CONSTANT
 						),
 						null,
 						null
@@ -151,7 +153,9 @@ public class StrictFibonacciHeapTimeComplexity
 					"delete-min",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.LogarithmicTime()
+							org.drip.graph.asymptote.AlgorithmTimeComplexity.LogarithmicTime(),
+							org.drip.graph.asymptote.BigOAsymptoteType.BIG_O,
+							org.drip.graph.asymptote.BigOAsymptoteForm.LOG_N
 						),
 						null,
 						null,
@@ -168,7 +172,9 @@ public class StrictFibonacciHeapTimeComplexity
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime()
+							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime(),
+							org.drip.graph.asymptote.BigOAsymptoteType.BIG_THETA,
+							org.drip.graph.asymptote.BigOAsymptoteForm.CONSTANT
 						),
 						null,
 						null
@@ -184,7 +190,9 @@ public class StrictFibonacciHeapTimeComplexity
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime()
+							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime(),
+							org.drip.graph.asymptote.BigOAsymptoteType.BIG_THETA,
+							org.drip.graph.asymptote.BigOAsymptoteForm.CONSTANT
 						),
 						null,
 						null
@@ -200,7 +208,9 @@ public class StrictFibonacciHeapTimeComplexity
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime()
+							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime(),
+							org.drip.graph.asymptote.BigOAsymptoteType.BIG_THETA,
+							org.drip.graph.asymptote.BigOAsymptoteForm.CONSTANT
 						),
 						null,
 						null

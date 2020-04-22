@@ -136,7 +136,9 @@ public class PairingHeapTimeComplexity
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime()
+							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime(),
+							org.drip.graph.asymptote.BigOAsymptoteType.BIG_THETA,
+							org.drip.graph.asymptote.BigOAsymptoteForm.CONSTANT
 						),
 						null,
 						null
@@ -151,7 +153,9 @@ public class PairingHeapTimeComplexity
 					"delete-min",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Amortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.LogarithmicTime()
+							org.drip.graph.asymptote.AlgorithmTimeComplexity.LogarithmicTime(),
+							org.drip.graph.asymptote.BigOAsymptoteType.BIG_O,
+							org.drip.graph.asymptote.BigOAsymptoteForm.LOG_N
 						),
 						null,
 						null,
@@ -168,7 +172,9 @@ public class PairingHeapTimeComplexity
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime()
+							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime(),
+							org.drip.graph.asymptote.BigOAsymptoteType.BIG_THETA,
+							org.drip.graph.asymptote.BigOAsymptoteForm.CONSTANT
 						),
 						null,
 						null
@@ -202,7 +208,9 @@ public class PairingHeapTimeComplexity
 										)
 									);
 								}
-							}
+							},
+							org.drip.graph.asymptote.BigOAsymptoteType.BIG_O,
+							org.drip.graph.asymptote.BigOAsymptoteForm.EXP_SQRT_LOG_LOG_N
 						),
 						null,
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
@@ -220,10 +228,14 @@ public class PairingHeapTimeComplexity
 										)
 									);
 								}
-							}
+							},
+							org.drip.graph.asymptote.BigOAsymptoteType.BIG_OMEGA,
+							org.drip.graph.asymptote.BigOAsymptoteForm.LOG_LOG_N
 						),
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Amortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.LogarithmicTime()
+							org.drip.graph.asymptote.AlgorithmTimeComplexity.LogarithmicTime(),
+							org.drip.graph.asymptote.BigOAsymptoteType.SMALL_O,
+							org.drip.graph.asymptote.BigOAsymptoteForm.LOG_N
 						)
 					)
 				)
@@ -237,7 +249,9 @@ public class PairingHeapTimeComplexity
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime()
+							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime(),
+							org.drip.graph.asymptote.BigOAsymptoteType.BIG_THETA,
+							org.drip.graph.asymptote.BigOAsymptoteForm.CONSTANT
 						),
 						null,
 						null

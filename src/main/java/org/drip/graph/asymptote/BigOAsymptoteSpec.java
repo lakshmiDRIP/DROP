@@ -116,6 +116,8 @@ package org.drip.graph.asymptote;
 
 public class BigOAsymptoteSpec
 {
+	private java.lang.String _form = "";
+	private java.lang.String _type = "";
 	private boolean _isAmortized = false;
 	private org.drip.function.definition.R1ToR1 _boundingFunction = null;
 
@@ -123,18 +125,24 @@ public class BigOAsymptoteSpec
 	 * Retrieve the Amortized Asymptotic Specification
 	 * 
 	 * @param boundingFunction Asymptotically Bounding Function
+	 * @type Big-O Asymptote Type
+	 * @form Big-O Asymptote Form
 	 * 
 	 * @return The Amortized Asymptotic Specification
 	 */
 
 	public static final BigOAsymptoteSpec Amortized (
-		final org.drip.function.definition.R1ToR1 boundingFunction)
+		final org.drip.function.definition.R1ToR1 boundingFunction,
+		final java.lang.String type,
+		final java.lang.String form)
 	{
 		try
 		{
 			return new BigOAsymptoteSpec (
 				boundingFunction,
-				true
+				true,
+				type,
+				form
 			);
 		}
 		catch (java.lang.Exception e)
@@ -149,18 +157,24 @@ public class BigOAsymptoteSpec
 	 * Retrieve the Unamortized Asymptotic Specification
 	 * 
 	 * @param boundingFunction Asymptotically Bounding Function
+	 * @type Big-O Asymptote Type
+	 * @form Big-O Asymptote Form
 	 * 
 	 * @return The Unamortized Asymptotic Specification
 	 */
 
 	public static final BigOAsymptoteSpec Unamortized (
-		final org.drip.function.definition.R1ToR1 boundingFunction)
+		final org.drip.function.definition.R1ToR1 boundingFunction,
+		final java.lang.String type,
+		final java.lang.String form)
 	{
 		try
 		{
 			return new BigOAsymptoteSpec (
 				boundingFunction,
-				false
+				false,
+				type,
+				form
 			);
 		}
 		catch (java.lang.Exception e)
@@ -176,16 +190,23 @@ public class BigOAsymptoteSpec
 	 * 
 	 * @param boundingFunction Asymptotically Bounding Function
 	 * @param isAmortized TRUE - The Asymptote is an Amortized Estimate
+	 * @type Big-O Asymptote Type
+	 * @form Big-O Asymptote Form
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BigOAsymptoteSpec (
 		final org.drip.function.definition.R1ToR1 boundingFunction,
-		final boolean isAmortized)
+		final boolean isAmortized,
+		final java.lang.String type,
+		final java.lang.String form)
 		throws java.lang.Exception
 	{
-		if (null == (_boundingFunction = boundingFunction))
+		if (null == (_boundingFunction = boundingFunction) ||
+			null == (_type = type) || _type.isEmpty() ||
+			null == (_form = form) || _form.isEmpty()
+		)
 		{
 			throw new java.lang.Exception (
 				"BigOAsymptoteSpec Constructor => Invalid Inputs"
@@ -215,5 +236,27 @@ public class BigOAsymptoteSpec
 	public boolean isAmortized()
 	{
 		return _isAmortized;
+	}
+
+	/**
+	 * Retrieve the Big-O Asymptote Type
+	 * 
+	 * @return The Big-O Asymptote Type
+	 */
+
+	public java.lang.String type()
+	{
+		return _type;
+	}
+
+	/**
+	 * Retrieve the Big-O Asymptote Form
+	 * 
+	 * @return The Big-O Asymptote Form
+	 */
+
+	public java.lang.String form()
+	{
+		return _form;
 	}
 }

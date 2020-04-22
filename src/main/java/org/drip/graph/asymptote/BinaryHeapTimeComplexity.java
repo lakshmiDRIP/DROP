@@ -124,19 +124,21 @@ public class BinaryHeapTimeComplexity
 	 * @return The Algorithm Time Complexity for a Binary Heap
 	 */
 
-	public static final AlgorithmTimeComplexity Standard()
+	public static final BinaryHeapTimeComplexity Standard()
 	{
-		org.drip.graph.asymptote.AlgorithmTimeComplexity algorithmTimeComplexity =
-			new org.drip.graph.asymptote.AlgorithmTimeComplexity();
+		org.drip.graph.asymptote.BinaryHeapTimeComplexity binaryHeapTimeComplexity =
+			new org.drip.graph.asymptote.BinaryHeapTimeComplexity();
 
 		try
 		{
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!binaryHeapTimeComplexity.addOperationTimeComplexity (
 					"find-min",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime()
+							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime(),
+							org.drip.graph.asymptote.BigOAsymptoteType.BIG_THETA,
+							org.drip.graph.asymptote.BigOAsymptoteForm.CONSTANT
 						),
 						null,
 						null
@@ -147,12 +149,14 @@ public class BinaryHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!binaryHeapTimeComplexity.addOperationTimeComplexity (
 					"delete-min",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.LogarithmicTime()
+							org.drip.graph.asymptote.AlgorithmTimeComplexity.LogarithmicTime(),
+							org.drip.graph.asymptote.BigOAsymptoteType.BIG_THETA,
+							org.drip.graph.asymptote.BigOAsymptoteForm.LOG_N
 						),
 						null,
 						null
@@ -163,11 +167,13 @@ public class BinaryHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!binaryHeapTimeComplexity.addOperationTimeComplexity (
 					"insert",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.LogarithmicTime()
+							org.drip.graph.asymptote.AlgorithmTimeComplexity.LogarithmicTime(),
+							org.drip.graph.asymptote.BigOAsymptoteType.BIG_O,
+							org.drip.graph.asymptote.BigOAsymptoteForm.LOG_N
 						),
 						null,
 						null,
@@ -179,11 +185,13 @@ public class BinaryHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!binaryHeapTimeComplexity.addOperationTimeComplexity (
 					"decrease-key",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.LogarithmicTime()
+							org.drip.graph.asymptote.AlgorithmTimeComplexity.LogarithmicTime(),
+							org.drip.graph.asymptote.BigOAsymptoteType.BIG_O,
+							org.drip.graph.asymptote.BigOAsymptoteForm.LOG_N
 						),
 						null,
 						null,
@@ -195,12 +203,14 @@ public class BinaryHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!binaryHeapTimeComplexity.addOperationTimeComplexity (
 					"meld",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.LinearTime()
+							org.drip.graph.asymptote.AlgorithmTimeComplexity.LinearTime(),
+							org.drip.graph.asymptote.BigOAsymptoteType.BIG_THETA,
+							org.drip.graph.asymptote.BigOAsymptoteForm.N
 						),
 						null,
 						null
@@ -211,7 +221,7 @@ public class BinaryHeapTimeComplexity
 				return null;
 			}
 
-			return algorithmTimeComplexity;
+			return binaryHeapTimeComplexity;
 		}
 		catch (java.lang.Exception e)
 		{
