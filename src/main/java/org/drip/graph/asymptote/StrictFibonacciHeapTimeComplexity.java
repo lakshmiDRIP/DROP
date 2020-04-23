@@ -124,14 +124,14 @@ public class StrictFibonacciHeapTimeComplexity
 	 * @return The Algorithm Time Complexity for a Strict Fibonacci Heap
 	 */
 
-	public static final AlgorithmTimeComplexity Standard()
+	public static final StrictFibonacciHeapTimeComplexity Standard()
 	{
-		org.drip.graph.asymptote.AlgorithmTimeComplexity algorithmTimeComplexity =
-			new org.drip.graph.asymptote.AlgorithmTimeComplexity();
+		org.drip.graph.asymptote.StrictFibonacciHeapTimeComplexity strictFibonacciHeapTimeComplexity =
+			new org.drip.graph.asymptote.StrictFibonacciHeapTimeComplexity();
 
 		try
 		{
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!strictFibonacciHeapTimeComplexity.addOperationTimeComplexity (
 					"find-min",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
@@ -149,7 +149,7 @@ public class StrictFibonacciHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!strictFibonacciHeapTimeComplexity.addOperationTimeComplexity (
 					"delete-min",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
@@ -167,7 +167,7 @@ public class StrictFibonacciHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!strictFibonacciHeapTimeComplexity.addOperationTimeComplexity (
 					"insert",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
@@ -185,7 +185,7 @@ public class StrictFibonacciHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!strictFibonacciHeapTimeComplexity.addOperationTimeComplexity (
 					"decrease-key",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
@@ -203,7 +203,7 @@ public class StrictFibonacciHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!strictFibonacciHeapTimeComplexity.addOperationTimeComplexity (
 					"meld",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
@@ -221,7 +221,7 @@ public class StrictFibonacciHeapTimeComplexity
 				return null;
 			}
 
-			return algorithmTimeComplexity;
+			return strictFibonacciHeapTimeComplexity;
 		}
 		catch (java.lang.Exception e)
 		{

@@ -124,14 +124,14 @@ public class RankPairingHeapTimeComplexity
 	 * @return The Algorithm Time Complexity for a Rank-Pairing Heap
 	 */
 
-	public static final AlgorithmTimeComplexity Standard()
+	public static final RankPairingHeapTimeComplexity Standard()
 	{
-		org.drip.graph.asymptote.AlgorithmTimeComplexity algorithmTimeComplexity =
-			new org.drip.graph.asymptote.AlgorithmTimeComplexity();
+		org.drip.graph.asymptote.RankPairingHeapTimeComplexity rankPairingHeapTimeComplexity =
+			new org.drip.graph.asymptote.RankPairingHeapTimeComplexity();
 
 		try
 		{
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!rankPairingHeapTimeComplexity.addOperationTimeComplexity (
 					"find-min",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
@@ -149,7 +149,7 @@ public class RankPairingHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!rankPairingHeapTimeComplexity.addOperationTimeComplexity (
 					"delete-min",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Amortized (
@@ -167,7 +167,7 @@ public class RankPairingHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!rankPairingHeapTimeComplexity.addOperationTimeComplexity (
 					"insert",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
@@ -185,7 +185,7 @@ public class RankPairingHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!rankPairingHeapTimeComplexity.addOperationTimeComplexity (
 					"decrease-key",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
@@ -203,7 +203,7 @@ public class RankPairingHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!rankPairingHeapTimeComplexity.addOperationTimeComplexity (
 					"meld",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
@@ -221,7 +221,7 @@ public class RankPairingHeapTimeComplexity
 				return null;
 			}
 
-			return algorithmTimeComplexity;
+			return rankPairingHeapTimeComplexity;
 		}
 		catch (java.lang.Exception e)
 		{

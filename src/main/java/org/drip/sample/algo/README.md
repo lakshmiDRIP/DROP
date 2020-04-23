@@ -20,10 +20,6 @@ DROP Sample Algo illustrates the C<sup>x</sup> R<sup>x</sup> In-Place Manipulati
  * [***MoviesInFlightMatcher***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/MoviesInFlightMatcher.java)
  <i>MoviesInFlightMatcher</i> demonstrates the Construction and the Usage of a Flight Duration Movie Matching Algorithm.
 
- * [***R1ArrayInSituSort***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/R1ArrayInSituSort.java)
- <i>R1ArrayInSituSort</i> demonstrates the Functionality that conducts an in-place Sorting of an Instance of
- BigDoubleArray using a variety of Sorting Algorithms.
-
  * [***R1ArraySumPair***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/R1ArraySumPair.java)
  <i>R1ArraySumPair</i> demonstrates the Functionality to identify the Pair of Numbers in the Array that add up to the specified Total.
 

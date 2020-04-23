@@ -139,10 +139,15 @@ public class OperationTimeComplexity
 		final org.drip.graph.asymptote.BigOAsymptoteSpec smallOSpec)
 		throws java.lang.Exception
 	{
-		if (null == (_bigOSpec = bigOSpec) &&
-			null == (_bigThetaSpec = bigThetaSpec) &&
-			null == (_bigOmegaSpec = bigOmegaSpec) &&
-			null == (_smallOSpec = smallOSpec)
+		_bigOSpec = bigOSpec;
+		_smallOSpec = smallOSpec;
+		_bigOmegaSpec = bigOmegaSpec;
+		_bigThetaSpec = bigThetaSpec;
+
+		if (null == _bigOSpec &&
+			null == _bigThetaSpec &&
+			null == _bigOmegaSpec &&
+			null == _smallOSpec
 		)
 		{
 			throw new java.lang.Exception (

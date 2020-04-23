@@ -124,14 +124,14 @@ public class BinomialHeapTimeComplexity
 	 * @return The Algorithm Time Complexity for a Binomial Heap
 	 */
 
-	public static final AlgorithmTimeComplexity Standard()
+	public static final BinomialHeapTimeComplexity Standard()
 	{
-		org.drip.graph.asymptote.AlgorithmTimeComplexity algorithmTimeComplexity =
-			new org.drip.graph.asymptote.AlgorithmTimeComplexity();
+		org.drip.graph.asymptote.BinomialHeapTimeComplexity binomialHeapTimeComplexity =
+			new org.drip.graph.asymptote.BinomialHeapTimeComplexity();
 
 		try
 		{
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!binomialHeapTimeComplexity.addOperationTimeComplexity (
 					"find-min",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
@@ -149,7 +149,7 @@ public class BinomialHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!binomialHeapTimeComplexity.addOperationTimeComplexity (
 					"delete-min",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
@@ -167,7 +167,7 @@ public class BinomialHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!binomialHeapTimeComplexity.addOperationTimeComplexity (
 					"insert",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
@@ -185,7 +185,7 @@ public class BinomialHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!binomialHeapTimeComplexity.addOperationTimeComplexity (
 					"decrease-key",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
@@ -203,7 +203,7 @@ public class BinomialHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!binomialHeapTimeComplexity.addOperationTimeComplexity (
 					"meld",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
@@ -221,7 +221,7 @@ public class BinomialHeapTimeComplexity
 				return null;
 			}
 
-			return algorithmTimeComplexity;
+			return binomialHeapTimeComplexity;
 		}
 		catch (java.lang.Exception e)
 		{

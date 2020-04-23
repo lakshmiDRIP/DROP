@@ -1,5 +1,5 @@
 
-package org.drip.graph.asymptote;
+package org.drip.graph.heap;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,30 +75,28 @@ package org.drip.graph.asymptote;
  */
 
 /**
- * <i>FibonacciHeapTimeComplexity</i> maintains the Asymptotic Behavior Specifications of a Fibonacci Heap's
- * 	Operations. The References are:
+ * <i>BinaryHeap</i> implements a Binary Heap Based Priority Queue. The References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Brodal, G. S. (1996): Priority Queue on Parallel Machines <i>Scandinavian Workshop on Algorithm
- *  			Theory – SWAT ’96</i> 416-427
+ *  		Brodal, G. S., G. Lagogiannis, and R. E. Tarjan (2012): Strict Fibonacci Heaps <i>Proceedings on
+ *  			the 44<sup>th</sup> Symposium on the Theory of Computing - STOC '12</i> 1177-1184
  *  	</li>
  *  	<li>
  *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms
  *  			3<sup>rd</sup> Edition</i> <b>MIT Press</b>
  *  	</li>
  *  	<li>
- *  		Sanders, P., K. Mehlhorn, M. Dietzfelbinger, and R. Dementiev (2019): <i>Sequential and Parallel
- *  			Algorithms and Data Structures – A Basic Toolbox</i> <b>Springer</b>
+ *  		Hayward, R., and C. McDiarmid (1991): Average Case Analysis of Heap-building by Repeated
+ *  			Insertion <i>Journal of Algorithms</i> <b>12 (1)</b> 126-153
  *  	</li>
  *  	<li>
- *  		Sundell, H., and P. Tsigas (2005): Fast and Lock-free Concurrent Priority Queues for
- *  			Multi-threaded Systems <i>Journal of Parallel and Distributed Computing</i> <b>65 (5)</b>
- *  			609-627
+ *  		Suchanek, M. A. (2012): Elementary yet Precise Worst-case Analysis of Floyd's Heap Construction
+ *  			Program <i>Fundamenta Informaticae</i> <b>120 (1)</b> 75-92
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020): Priority Queue https://en.wikipedia.org/wiki/Priority_queue
+ *  		Wikipedia (2020): Binary Heap https://en.wikipedia.org/wiki/Binary_heap
  *  	</li>
  *  </ul>
  *
@@ -107,127 +105,214 @@ package org.drip.graph.asymptote;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/asymptote/README.md">Big O Algorithm Asymptotic Analysis</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/heap/README.md">Heap Based Priority Queue Implementations</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class FibonacciHeapTimeComplexity
-	extends org.drip.graph.asymptote.AlgorithmTimeComplexity
+public class BinaryHeap
 {
+	private org.drip.graph.heap.BinaryNode _top = null;
+
+	private static final boolean SwapNodePair (
+		final org.drip.graph.heap.BinaryNode node1,
+		final org.drip.graph.heap.BinaryNode node2)
+	{
+		if (null == node1 || null == node2)
+		{
+			return false;
+		}
+
+		int tmpLevel = node1.level();
+
+		org.drip.graph.heap.BinaryNode tmpLeft = node1.left();
+
+		org.drip.graph.heap.BinaryNode tmpRight = node1.right();
+
+		org.drip.graph.heap.BinaryNode tmpParent = node1.parent();
+
+		return node1.setParent (
+			node2.parent()
+		) && node1.setLevel (
+			node2.level()
+		) && node1.setLeft (
+			node2.left()
+		) && node1.setRight (
+			node2.right()
+		) && node2.setParent (
+			tmpParent
+		) && node2.setLevel (
+			tmpLevel
+		) && node2.setLeft (
+			tmpLeft
+		) && node2.setRight (
+			tmpRight
+		);
+	}
 
 	/**
-	 * Build the Algorithm Time Complexity for a Fibonacci Heap
-	 * 
-	 * @return The Algorithm Time Complexity for a Fibonacci Heap
+	 * BinaryHeap Constructor
 	 */
 
-	public static final FibonacciHeapTimeComplexity Standard()
+	public BinaryHeap()
 	{
-		org.drip.graph.asymptote.FibonacciHeapTimeComplexity fibonacciHeapTimeComplexity =
-			new org.drip.graph.asymptote.FibonacciHeapTimeComplexity();
+	}
+
+	/**
+	 * Retrieve the Top Node
+	 * 
+	 * @return The Top Node
+	 */
+
+	public org.drip.graph.heap.BinaryNode top()
+	{
+		return _top;
+	}
+
+	/**
+	 * Maintain the Binary Heap Property from the Node to the Top
+	 * 
+	 * @param node Specified Node
+	 * 
+	 * @return TRUE - The Heap Property is successfully maintained
+	 */
+
+	public boolean maintainHeapProperty (
+		org.drip.graph.heap.BinaryNode node)
+	{
+		if (null == node)
+		{
+			return true;
+		}
+
+		org.drip.graph.heap.BinaryNode parent = node.parent();
+
+		if (null == parent)
+		{
+			return true;
+		}
+
+		while (node.value() > parent.value())
+		{
+			if (!SwapNodePair (
+				node,
+				parent
+			))
+			{
+				return false;
+			}
+
+			if (null == (parent = node.parent()))
+			{
+				break;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Insert the Specified Value into the Heap
+	 * 
+	 * @param value Value
+	 * 
+	 * @return TRUE - The Value successfully inserted
+	 */
+
+	public boolean insert (
+		final double value)
+	{
+		if (java.lang.Double.isNaN (
+			value
+		))
+		{
+			return false;
+		}
+
+		if (null == _top)
+		{
+			try
+			{
+				_top = new org.drip.graph.heap.BinaryNode (
+					value
+				);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return false;
+			}
+
+			return _top.setParent (
+				null
+			) && _top.setLevel (
+				0
+			) && _top.setLeft (
+				null
+			) && _top.setRight (
+				null
+			);
+		}
+
+		org.drip.graph.heap.BinaryNode node = _top;
+		org.drip.graph.heap.BinaryNode newNode = null;
+
+		while (null != node.left() && null != node.right())
+		{
+			node = node.right();
+		}
 
 		try
 		{
-			if (!fibonacciHeapTimeComplexity.addOperationTimeComplexity (
-					"find-min",
-					new org.drip.graph.asymptote.OperationTimeComplexity (
-						null,
-						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime(),
-							org.drip.graph.asymptote.BigOAsymptoteType.BIG_THETA,
-							org.drip.graph.asymptote.BigOAsymptoteForm.CONSTANT
-						),
-						null,
-						null
-					)
-				)
-			)
-			{
-				return null;
-			}
-
-			if (!fibonacciHeapTimeComplexity.addOperationTimeComplexity (
-					"delete-min",
-					new org.drip.graph.asymptote.OperationTimeComplexity (
-						org.drip.graph.asymptote.BigOAsymptoteSpec.Amortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.LogarithmicTime(),
-							org.drip.graph.asymptote.BigOAsymptoteType.BIG_O,
-							org.drip.graph.asymptote.BigOAsymptoteForm.LOG_N
-						),
-						null,
-						null,
-						null
-					)
-				)
-			)
-			{
-				return null;
-			}
-
-			if (!fibonacciHeapTimeComplexity.addOperationTimeComplexity (
-					"insert",
-					new org.drip.graph.asymptote.OperationTimeComplexity (
-						null,
-						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime(),
-							org.drip.graph.asymptote.BigOAsymptoteType.BIG_THETA,
-							org.drip.graph.asymptote.BigOAsymptoteForm.CONSTANT
-						),
-						null,
-						null
-					)
-				)
-			)
-			{
-				return null;
-			}
-
-			if (!fibonacciHeapTimeComplexity.addOperationTimeComplexity (
-					"decrease-key",
-					new org.drip.graph.asymptote.OperationTimeComplexity (
-						null,
-						org.drip.graph.asymptote.BigOAsymptoteSpec.Amortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime(),
-							org.drip.graph.asymptote.BigOAsymptoteType.BIG_THETA,
-							org.drip.graph.asymptote.BigOAsymptoteForm.CONSTANT
-						),
-						null,
-						null
-					)
-				)
-			)
-			{
-				return null;
-			}
-
-			if (!fibonacciHeapTimeComplexity.addOperationTimeComplexity (
-					"meld",
-					new org.drip.graph.asymptote.OperationTimeComplexity (
-						null,
-						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime(),
-							org.drip.graph.asymptote.BigOAsymptoteType.BIG_THETA,
-							org.drip.graph.asymptote.BigOAsymptoteForm.CONSTANT
-						),
-						null,
-						null
-					)
-				)
-			)
-			{
-				return null;
-			}
-
-			return fibonacciHeapTimeComplexity;
+			newNode = new org.drip.graph.heap.BinaryNode (
+				value
+			);
 		}
 		catch (java.lang.Exception e)
 		{
 			e.printStackTrace();
+
+			return false;
 		}
 
-		return null;
+		if (!newNode.setParent (
+				node
+			) || !newNode.setLevel (
+				node.level() + 1
+			) || !newNode.setLeft (
+				null
+			) || !newNode.setRight (
+				null
+			)
+		)
+		{
+			return false;
+		}
+
+		if (null == node.left())
+		{
+			if (!node.setLeft (
+				newNode
+			))
+			{
+				return false;
+			}
+		}
+		else
+		{
+			if (!node.setRight (
+				newNode
+			))
+			{
+				return false;
+			}
+		}
+
+		return maintainHeapProperty (
+			newNode
+		);
 	}
 }

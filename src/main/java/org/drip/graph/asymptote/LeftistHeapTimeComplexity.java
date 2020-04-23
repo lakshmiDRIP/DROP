@@ -124,14 +124,14 @@ public class LeftistHeapTimeComplexity
 	 * @return The Algorithm Time Complexity for a Leftist Heap
 	 */
 
-	public static final AlgorithmTimeComplexity Standard()
+	public static final LeftistHeapTimeComplexity Standard()
 	{
-		org.drip.graph.asymptote.AlgorithmTimeComplexity algorithmTimeComplexity =
-			new org.drip.graph.asymptote.AlgorithmTimeComplexity();
+		org.drip.graph.asymptote.LeftistHeapTimeComplexity leftistHeapTimeComplexity =
+			new org.drip.graph.asymptote.LeftistHeapTimeComplexity();
 
 		try
 		{
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!leftistHeapTimeComplexity.addOperationTimeComplexity (
 					"find-min",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
@@ -149,7 +149,7 @@ public class LeftistHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!leftistHeapTimeComplexity.addOperationTimeComplexity (
 					"delete-min",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
@@ -167,7 +167,7 @@ public class LeftistHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!leftistHeapTimeComplexity.addOperationTimeComplexity (
 					"insert",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
@@ -185,7 +185,7 @@ public class LeftistHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!leftistHeapTimeComplexity.addOperationTimeComplexity (
 					"decrease-key",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
@@ -203,7 +203,7 @@ public class LeftistHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!leftistHeapTimeComplexity.addOperationTimeComplexity (
 					"meld",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
@@ -221,7 +221,7 @@ public class LeftistHeapTimeComplexity
 				return null;
 			}
 
-			return algorithmTimeComplexity;
+			return leftistHeapTimeComplexity;
 		}
 		catch (java.lang.Exception e)
 		{

@@ -26,9 +26,6 @@ DROP Spaces Big Package contains Big-data In-place Manipulation Utilities.
  <i>BigR2Array</i> contains an Implementation Navigation and Processing Algorithms for Big Double
  R<sup>2</sup> Arrays.
 
- * [***BinaryTree***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/BinaryTree.java)
- <i>BinaryTree</i> contains an Implementation of the Left/Right Binary Tree.
-
  * [***KNearestPostOffice***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/KNearestPostOffice.java)
  <i>KNearestPostOffice</i> implements a Locator of the k Nearest Services.
 

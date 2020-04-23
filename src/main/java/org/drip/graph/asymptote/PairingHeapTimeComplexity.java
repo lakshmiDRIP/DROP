@@ -124,14 +124,14 @@ public class PairingHeapTimeComplexity
 	 * @return The Algorithm Time Complexity for a Pairing Heap
 	 */
 
-	public static final AlgorithmTimeComplexity Standard()
+	public static final PairingHeapTimeComplexity Standard()
 	{
-		org.drip.graph.asymptote.AlgorithmTimeComplexity algorithmTimeComplexity =
-			new org.drip.graph.asymptote.AlgorithmTimeComplexity();
+		org.drip.graph.asymptote.PairingHeapTimeComplexity pairingHeapTimeComplexity =
+			new org.drip.graph.asymptote.PairingHeapTimeComplexity();
 
 		try
 		{
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!pairingHeapTimeComplexity.addOperationTimeComplexity (
 					"find-min",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
@@ -149,7 +149,7 @@ public class PairingHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!pairingHeapTimeComplexity.addOperationTimeComplexity (
 					"delete-min",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Amortized (
@@ -167,7 +167,7 @@ public class PairingHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!pairingHeapTimeComplexity.addOperationTimeComplexity (
 					"insert",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
@@ -185,7 +185,7 @@ public class PairingHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!pairingHeapTimeComplexity.addOperationTimeComplexity (
 					"decrease-key",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
@@ -244,7 +244,7 @@ public class PairingHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!pairingHeapTimeComplexity.addOperationTimeComplexity (
 					"meld",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
@@ -262,7 +262,7 @@ public class PairingHeapTimeComplexity
 				return null;
 			}
 
-			return algorithmTimeComplexity;
+			return pairingHeapTimeComplexity;
 		}
 		catch (java.lang.Exception e)
 		{

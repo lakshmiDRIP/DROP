@@ -1,5 +1,5 @@
 
-package org.drip.graph.asymptote;
+package org.drip.graph.heap;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,30 +75,28 @@ package org.drip.graph.asymptote;
  */
 
 /**
- * <i>FibonacciHeapTimeComplexity</i> maintains the Asymptotic Behavior Specifications of a Fibonacci Heap's
- * 	Operations. The References are:
+ * <i>BinaryNode</i> implements a Node in a Binary Tree. The References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Brodal, G. S. (1996): Priority Queue on Parallel Machines <i>Scandinavian Workshop on Algorithm
- *  			Theory – SWAT ’96</i> 416-427
+ *  		Brodal, G. S., G. Lagogiannis, and R. E. Tarjan (2012): Strict Fibonacci Heaps <i>Proceedings on
+ *  			the 44<sup>th</sup> Symposium on the Theory of Computing - STOC '12</i> 1177-1184
  *  	</li>
  *  	<li>
  *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms
  *  			3<sup>rd</sup> Edition</i> <b>MIT Press</b>
  *  	</li>
  *  	<li>
- *  		Sanders, P., K. Mehlhorn, M. Dietzfelbinger, and R. Dementiev (2019): <i>Sequential and Parallel
- *  			Algorithms and Data Structures – A Basic Toolbox</i> <b>Springer</b>
+ *  		Hayward, R., and C. McDiarmid (1991): Average Case Analysis of Heap-building by Repeated
+ *  			Insertion <i>Journal of Algorithms</i> <b>12 (1)</b> 126-153
  *  	</li>
  *  	<li>
- *  		Sundell, H., and P. Tsigas (2005): Fast and Lock-free Concurrent Priority Queues for
- *  			Multi-threaded Systems <i>Journal of Parallel and Distributed Computing</i> <b>65 (5)</b>
- *  			609-627
+ *  		Suchanek, M. A. (2012): Elementary yet Precise Worst-case Analysis of Floyd's Heap Construction
+ *  			Program <i>Fundamenta Informaticae</i> <b>120 (1)</b> 75-92
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020): Priority Queue https://en.wikipedia.org/wiki/Priority_queue
+ *  		Wikipedia (2020): Binary Heap https://en.wikipedia.org/wiki/Binary_heap
  *  	</li>
  *  </ul>
  *
@@ -107,127 +105,161 @@ package org.drip.graph.asymptote;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/asymptote/README.md">Big O Algorithm Asymptotic Analysis</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/heap/README.md">Heap Based Priority Queue Implementations</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class FibonacciHeapTimeComplexity
-	extends org.drip.graph.asymptote.AlgorithmTimeComplexity
+public class BinaryNode
 {
+	private int _level = 0;
+	private BinaryNode _left = null;
+	private BinaryNode _right = null;
+	private BinaryNode _parent = null;
+	private double _value = java.lang.Double.NaN;
 
 	/**
-	 * Build the Algorithm Time Complexity for a Fibonacci Heap
+	 * BinaryNode Constructor
 	 * 
-	 * @return The Algorithm Time Complexity for a Fibonacci Heap
+	 * @param value Node Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final FibonacciHeapTimeComplexity Standard()
+	public BinaryNode (
+		final double value)
+		throws java.lang.Exception
 	{
-		org.drip.graph.asymptote.FibonacciHeapTimeComplexity fibonacciHeapTimeComplexity =
-			new org.drip.graph.asymptote.FibonacciHeapTimeComplexity();
-
-		try
+		if (java.lang.Double.isNaN (
+				_value = value
+			)
+		)
 		{
-			if (!fibonacciHeapTimeComplexity.addOperationTimeComplexity (
-					"find-min",
-					new org.drip.graph.asymptote.OperationTimeComplexity (
-						null,
-						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime(),
-							org.drip.graph.asymptote.BigOAsymptoteType.BIG_THETA,
-							org.drip.graph.asymptote.BigOAsymptoteForm.CONSTANT
-						),
-						null,
-						null
-					)
-				)
-			)
-			{
-				return null;
-			}
-
-			if (!fibonacciHeapTimeComplexity.addOperationTimeComplexity (
-					"delete-min",
-					new org.drip.graph.asymptote.OperationTimeComplexity (
-						org.drip.graph.asymptote.BigOAsymptoteSpec.Amortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.LogarithmicTime(),
-							org.drip.graph.asymptote.BigOAsymptoteType.BIG_O,
-							org.drip.graph.asymptote.BigOAsymptoteForm.LOG_N
-						),
-						null,
-						null,
-						null
-					)
-				)
-			)
-			{
-				return null;
-			}
-
-			if (!fibonacciHeapTimeComplexity.addOperationTimeComplexity (
-					"insert",
-					new org.drip.graph.asymptote.OperationTimeComplexity (
-						null,
-						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime(),
-							org.drip.graph.asymptote.BigOAsymptoteType.BIG_THETA,
-							org.drip.graph.asymptote.BigOAsymptoteForm.CONSTANT
-						),
-						null,
-						null
-					)
-				)
-			)
-			{
-				return null;
-			}
-
-			if (!fibonacciHeapTimeComplexity.addOperationTimeComplexity (
-					"decrease-key",
-					new org.drip.graph.asymptote.OperationTimeComplexity (
-						null,
-						org.drip.graph.asymptote.BigOAsymptoteSpec.Amortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime(),
-							org.drip.graph.asymptote.BigOAsymptoteType.BIG_THETA,
-							org.drip.graph.asymptote.BigOAsymptoteForm.CONSTANT
-						),
-						null,
-						null
-					)
-				)
-			)
-			{
-				return null;
-			}
-
-			if (!fibonacciHeapTimeComplexity.addOperationTimeComplexity (
-					"meld",
-					new org.drip.graph.asymptote.OperationTimeComplexity (
-						null,
-						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
-							org.drip.graph.asymptote.AlgorithmTimeComplexity.ConstantTime(),
-							org.drip.graph.asymptote.BigOAsymptoteType.BIG_THETA,
-							org.drip.graph.asymptote.BigOAsymptoteForm.CONSTANT
-						),
-						null,
-						null
-					)
-				)
-			)
-			{
-				return null;
-			}
-
-			return fibonacciHeapTimeComplexity;
+			throw new java.lang.Exception (
+				"BinaryNode Constructor => Invalid Inputs"
+			);
 		}
-		catch (java.lang.Exception e)
+	}
+
+	/**
+	 * Retrieve the Level
+	 * 
+	 * @return The Level
+	 */
+
+	public int level()
+	{
+		return _level;
+	}
+
+	/**
+	 * Retrieve the Parent
+	 * 
+	 * @return The Parent
+	 */
+
+	public BinaryNode parent()
+	{
+		return _parent;
+	}
+
+	/**
+	 * Retrieve the Left Child
+	 * 
+	 * @return The Left Child
+	 */
+
+	public BinaryNode left()
+	{
+		return _left;
+	}
+
+	/**
+	 * Retrieve the Right Child
+	 * 
+	 * @return The Right Child
+	 */
+
+	public BinaryNode right()
+	{
+		return _right;
+	}
+
+	/**
+	 * Retrieve the Node Value
+	 * 
+	 * @return The Node Value
+	 */
+
+	public double value()
+	{
+		return _value;
+	}
+
+	/**
+	 * Set the Level of the Node
+	 * 
+	 * @param level The Level
+	 * 
+	 * @return TRUE - The Node's Level successfully set
+	 */
+
+	public boolean setLevel (
+		final int level)
+	{
+		if (0 > level)
 		{
-			e.printStackTrace();
+			return false;
 		}
 
-		return null;
+		_level = level;
+		return true;
+	}
+
+	/**
+	 * Set the Parent of the Node
+	 * 
+	 * @param parent The Parent
+	 * 
+	 * @return TRUE - The Node's Parent successfully set
+	 */
+
+	public boolean setParent (
+		final BinaryNode parent)
+	{
+		_parent = parent;
+		return true;
+	}
+
+	/**
+	 * Set the Left Child of the Node
+	 * 
+	 * @param left The Left Child
+	 * 
+	 * @return TRUE - The Node's Left Child successfully set
+	 */
+
+	public boolean setLeft (
+		final BinaryNode left)
+	{
+		_left = left;
+		return true;
+	}
+
+	/**
+	 * Set the Right Child of the Node
+	 * 
+	 * @param right The Right Child
+	 * 
+	 * @return TRUE - The Node's Right Child successfully set
+	 */
+
+	public boolean setRight (
+		final BinaryNode right)
+	{
+		_right = right;
+		return true;
 	}
 }

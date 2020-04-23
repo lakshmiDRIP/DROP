@@ -124,14 +124,14 @@ public class TwoThreeHeapTimeComplexity
 	 * @return The Algorithm Time Complexity for a 2-3 Heap
 	 */
 
-	public static final AlgorithmTimeComplexity Standard()
+	public static final TwoThreeHeapTimeComplexity Standard()
 	{
-		org.drip.graph.asymptote.AlgorithmTimeComplexity algorithmTimeComplexity =
-			new org.drip.graph.asymptote.AlgorithmTimeComplexity();
+		org.drip.graph.asymptote.TwoThreeHeapTimeComplexity twoThreeHeapTimeComplexity =
+			new org.drip.graph.asymptote.TwoThreeHeapTimeComplexity();
 
 		try
 		{
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!twoThreeHeapTimeComplexity.addOperationTimeComplexity (
 					"find-min",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
@@ -149,7 +149,7 @@ public class TwoThreeHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!twoThreeHeapTimeComplexity.addOperationTimeComplexity (
 					"delete-min",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Amortized (
@@ -167,7 +167,7 @@ public class TwoThreeHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!twoThreeHeapTimeComplexity.addOperationTimeComplexity (
 					"insert",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Amortized (
@@ -185,7 +185,7 @@ public class TwoThreeHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!twoThreeHeapTimeComplexity.addOperationTimeComplexity (
 					"decrease-key",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						null,
@@ -203,7 +203,7 @@ public class TwoThreeHeapTimeComplexity
 				return null;
 			}
 
-			if (!algorithmTimeComplexity.addOperationTimeComplexity (
+			if (!twoThreeHeapTimeComplexity.addOperationTimeComplexity (
 					"meld",
 					new org.drip.graph.asymptote.OperationTimeComplexity (
 						org.drip.graph.asymptote.BigOAsymptoteSpec.Unamortized (
@@ -221,7 +221,7 @@ public class TwoThreeHeapTimeComplexity
 				return null;
 			}
 
-			return algorithmTimeComplexity;
+			return twoThreeHeapTimeComplexity;
 		}
 		catch (java.lang.Exception e)
 		{

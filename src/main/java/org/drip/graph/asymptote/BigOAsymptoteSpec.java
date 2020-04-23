@@ -125,8 +125,8 @@ public class BigOAsymptoteSpec
 	 * Retrieve the Amortized Asymptotic Specification
 	 * 
 	 * @param boundingFunction Asymptotically Bounding Function
-	 * @type Big-O Asymptote Type
-	 * @form Big-O Asymptote Form
+	 * @param type Big-O Asymptote Type
+	 * @param form Big-O Asymptote Form
 	 * 
 	 * @return The Amortized Asymptotic Specification
 	 */
@@ -157,8 +157,8 @@ public class BigOAsymptoteSpec
 	 * Retrieve the Unamortized Asymptotic Specification
 	 * 
 	 * @param boundingFunction Asymptotically Bounding Function
-	 * @type Big-O Asymptote Type
-	 * @form Big-O Asymptote Form
+	 * @param type Big-O Asymptote Type
+	 * @param form Big-O Asymptote Form
 	 * 
 	 * @return The Unamortized Asymptotic Specification
 	 */
@@ -190,8 +190,8 @@ public class BigOAsymptoteSpec
 	 * 
 	 * @param boundingFunction Asymptotically Bounding Function
 	 * @param isAmortized TRUE - The Asymptote is an Amortized Estimate
-	 * @type Big-O Asymptote Type
-	 * @form Big-O Asymptote Form
+	 * @param type Big-O Asymptote Type
+	 * @param form Big-O Asymptote Form
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
