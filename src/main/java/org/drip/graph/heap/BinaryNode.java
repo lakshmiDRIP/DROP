@@ -118,6 +118,7 @@ public class BinaryNode
 	private BinaryNode _left = null;
 	private BinaryNode _right = null;
 	private BinaryNode _parent = null;
+	private boolean _isRightChild = false;
 	private double _value = java.lang.Double.NaN;
 
 	/**
@@ -199,6 +200,17 @@ public class BinaryNode
 	}
 
 	/**
+	 * Indicate if the Node is a Right Child of the Parent
+	 * 
+	 * @return TRUE - Node is a Right Child
+	 */
+
+	public boolean isRightChild()
+	{
+		return _isRightChild;
+	}
+
+	/**
 	 * Set the Level of the Node
 	 * 
 	 * @param level The Level
@@ -261,5 +273,36 @@ public class BinaryNode
 	{
 		_right = right;
 		return true;
+	}
+
+	/**
+	 * Set the Node as the Right Child of the Parent
+	 * 
+	 * @param isRightChild TRUE - The Node is a Right Child
+	 * 
+	 * @return TRUE - The Node as the Right Child of the Parent is successfully set
+	 */
+
+	public boolean setAsRightChild (
+		final boolean isRightChild)
+	{
+		_isRightChild = isRightChild;
+		return true;
+	}
+
+	/**
+	 * Indicate if the Node has 0 or 1 Children
+	 * 
+	 * @return TRUE - The Node has 0 or 1 Children
+	 */
+
+	public boolean zeroOrOneChildren()
+	{
+		return null == _left || null == _right;
+	}
+
+	@Override public java.lang.String toString()
+	{
+		return "{" + _value + " | " + _level + " | " + (_isRightChild ? "R" : "L") + "}";
 	}
 }
