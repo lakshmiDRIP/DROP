@@ -28,17 +28,6 @@ DROP Sample Lanczos illustrates the Lanczos Gamma Calculation Scheme.
 
 ## References
 
- * Godfrey, P. (2001): Lanczos Implementation of the Gamma Function http://www.numericana.com/answer/info/godfrey.htm
-
- * Press, W. H., S. A. Teukolsky, W. T. Vetterling, and B. P. Flannery (2007): <i>Numerical Recipes: The Art of Scientific Computing 3rd Edition</i> <b>Cambridge University Press</b> New York
-
- * Pugh, G. R. (2004): <i>An Analysis of the Lanczos Gamma Approximation</i> Ph. D. <b>University of British Columbia</b>
-
- * Toth V. T. (2016): Programmable Calculators – The Gamma Function http://www.rskey.org/CMS/index.php/the-library/11
-
- * Wikipedia (2019): Lanczos Approximation https://en.wikipedia.org/wiki/Lanczos_approximation
-
-
 ## DROP Specifications
 
  * Main                     => https://lakshmidrip.github.io/DROP/
