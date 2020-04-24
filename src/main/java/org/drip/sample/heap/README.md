@@ -13,7 +13,7 @@ DROP Sample Heap illustrates the Construction/Usage Priority Queue and Heap Algo
 
 # References
 
- * Brodal, G. S. (1996): Priority Queue on Parallel Machines <i>Scandinavian Workshop on Algorithm Theory – SWAT 96</i> 416-427
+ * Brodal, G. S. (1996): Priority Queue on Parallel Machines <i>Scandinavian Workshop on Algorithm Theory; SWAT 96</i> 416-427
 
  * Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms 3<sup>rd</sup> Edition</i> <b>MIT Press</b>
 
