@@ -32,7 +32,7 @@ DROP Sample Hypothesis Test illustrates Sample/Ensemble Statistical Hypothesis T
 
  * Head, M. L., L. Holman, R, Lanfear, A. T. Kahn, and M. D. Jennions (2015): The Extent and Consequences of p-Hacking in Science <i>PLoS Biology</i> <b>13 (3)</b> e1002106
 
- * Wasserstein, R. L., and N. A. Lazar (2016): The ASA’s Statement on p-values: Context, Process, and Purpose <i>American Statistician</i> <b>70 (2)</b> 129-133
+ * Wasserstein, R. L., and N. A. Lazar (2016): The ASA Statement on p-values: Context, Process, and Purpose <i>American Statistician</i> <b>70 (2)</b> 129-133
 
  * Wetzels, R., D. Matzke, M. D. Lee, J. N. Rouder, G, J, Iverson, and E. J. Wagenmakers (2011): Statistical Evidence in Experimental Psychology: An Empirical Comparison using 855 t-Tests <i>Perspectives in Psychological Science</i> <b>6 (3)</b> 291-298
 
