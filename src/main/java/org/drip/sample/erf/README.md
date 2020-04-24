@@ -59,9 +59,9 @@ DROP ERF illustrates the E<sup>2</sup> and E<sup>n</sup> erf Estimation.
 
  * Chang, S. H., P. C. Cosman, L. B. Milstein (2011): Chernoff-Type Bounds for Gaussian Error Function <i>IEEE Transactions on Communications</i> <b>59 (11)</b> 2939-2944
 
- * Cody, W. J. (1991): Algorithm 715: SPECFUN – A Portable FORTRAN Package of Special Function Routines and Test Drivers <i>ACM Transactions on Mathematical Software</i> <b>19 (1)</b> 22-32
+ * Cody, W. J. (1991): Algorithm 715: SPECFUN, a Portable FORTRAN Package of Special Function Routines and Test Drivers <i>ACM Transactions on Mathematical Software</i> <b>19 (1)</b> 22-32
 
- * Schopf, H. M., and P. H. Supancic (2014): On Burmann’s Theorem and its Application to Problems of Linear and Non-linear Heat Transfer and Diffusion https://www.mathematica-journal.com/2014/11/on-burmanns-theorem-and-its-application-to-problems-of-linear-and-nonlinear-heat-transfer-and-diffusion/#more-39602/
+ * Schopf, H. M., and P. H. Supancic (2014): On Burmann Theorem and its Application to Problems of Linear and Non-linear Heat Transfer and Diffusion https://www.mathematica-journal.com/2014/11/on-burmanns-theorem-and-its-application-to-problems-of-linear-and-nonlinear-heat-transfer-and-diffusion/#more-39602/
 
  * Wikipedia (2019): Error Function https://en.wikipedia.org/wiki/Error_function
 
