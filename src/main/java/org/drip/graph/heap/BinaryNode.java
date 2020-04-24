@@ -211,6 +211,29 @@ public class BinaryNode
 	}
 
 	/**
+	 * Set the Value of the Node
+	 * 
+	 * @param value The Value
+	 * 
+	 * @return TRUE - The Node's Level successfully set
+	 */
+
+	public boolean setValue (
+		final double value)
+	{
+		if (java.lang.Double.isNaN (
+				value
+			)
+		)
+		{
+			return false;
+		}
+
+		_value = value;
+		return true;
+	}
+
+	/**
 	 * Set the Level of the Node
 	 * 
 	 * @param level The Level
@@ -301,8 +324,74 @@ public class BinaryNode
 		return null == _left || null == _right;
 	}
 
+	/**
+	 * Indicate if the Node is Leaf
+	 * 
+	 * @return TRUE - The Node is Leaf
+	 */
+
+	public boolean isLeaf()
+	{
+		return null == _left && null == _right;
+	}
+
+	/**
+	 * Retrieve the Child Node with the Smaller Value
+	 * 
+	 * @return The Child Node with the Smaller Value
+	 */
+
+	public BinaryNode smallerChild()
+	{
+		if (null == _left && null == _right)
+		{
+			return null;
+		}
+
+		if (null == _left)
+		{
+			return _right;
+		}
+
+		if (null == _right)
+		{
+			return _left;
+		}
+
+		return _left.value() < _right.value() ? _left : _right;
+	}
+
+	/**
+	 * Retrieve the Child Node with the Larger Value
+	 * 
+	 * @return The Child Node with the Larger Value
+	 */
+
+	public BinaryNode largerChild()
+	{
+		if (null == _left && null == _right)
+		{
+			return null;
+		}
+
+		if (null == _left)
+		{
+			return _right;
+		}
+
+		if (null == _right)
+		{
+			return _left;
+		}
+
+		return _left.value() > _right.value() ? _left : _right;
+	}
+
 	@Override public java.lang.String toString()
 	{
-		return "{" + _value + " | " + _level + " | " + (_isRightChild ? "R" : "L") + "}";
+		return "{"
+			+ _value + " | " + _level + " | " + (_isRightChild ? "R" : "L") + " | " +
+				(null == _parent ? "" : _parent.value()) +
+		"}";
 	}
 }

@@ -116,86 +116,157 @@ public class BinaryHeap
 {
 	private org.drip.graph.heap.BinaryNode _top = null;
 
-	private  final boolean SwapNodeAndParent (
-		final org.drip.graph.heap.BinaryNode oldNode,
-		final org.drip.graph.heap.BinaryNode oldParent)
+	private double replaceTop (
+		final org.drip.graph.heap.BinaryNode node)
 	{
-		if (null == oldNode || null == oldParent)
+		double value = _top.value();
+
+		if (node == _top)
+		{
+			_top = null;
+		}
+		else
+		{
+			_top.setValue (
+				node.value()
+			);
+		}
+
+		return value;
+	}
+
+	private boolean removeLeafNode (
+		final org.drip.graph.heap.BinaryNode leafNode)
+	{
+		org.drip.graph.heap.BinaryNode parent = leafNode.parent();
+
+		if (null == parent)
+		{
+			return true;
+		}
+
+		if (!leafNode.setParent (
+			null
+		))
 		{
 			return false;
 		}
 
-		int oldNodeLevel = oldNode.level();
-
-		boolean isOldNodeRightChild = oldNode.isRightChild();
-
-		boolean isOldParentRightChild = oldParent.isRightChild();
-
-		org.drip.graph.heap.BinaryNode oldNodeLeft = oldNode.left();
-
-		org.drip.graph.heap.BinaryNode oldNodeRight = oldNode.right();
-
-		org.drip.graph.heap.BinaryNode oldParentParent = oldParent.parent();
-
-		oldNode.setParent (
-			oldParentParent
+		return leafNode.isRightChild() ? parent.setRight (
+			null
+		) : parent.setLeft (
+			null
 		);
+	}
 
-		oldNode.setLevel (
-			oldParent.level()
-		);
+	private final boolean swapNodeAndParent (
+		final org.drip.graph.heap.BinaryNode node5,
+		final org.drip.graph.heap.BinaryNode node4)
+	{
+		// System.out.println ("\t\t\t\t" + node5 + " || " + node4);
 
-		oldNode.setLeft (
-			oldParent.left()
-		);
-
-		oldNode.setRight (
-			oldParent.right()
-		);
-
-		oldNode.setAsRightChild (
-			isOldParentRightChild
-		);
-
-		if (null != oldParentParent)
+		if (null == node5 || null == node4)
 		{
-			if (isOldParentRightChild)
-			{
-				oldParentParent.setRight (oldNode);
-			}
-			else
-			{
-				oldParentParent.setLeft (oldNode);
-			}
+			return false;
 		}
 
-		oldParent.setParent (
-			oldNode
+		int oldNode5Level = node5.level();
+
+		boolean isOldNode5RightChild = node5.isRightChild();
+
+		boolean isOldNode4RightChild = node4.isRightChild();
+
+		org.drip.graph.heap.BinaryNode oldNode5Left = node5.left();
+
+		org.drip.graph.heap.BinaryNode oldNode5Right = node5.right();
+
+		org.drip.graph.heap.BinaryNode oldNode4Parent = node4.parent();
+
+		node5.setParent (
+			oldNode4Parent
 		);
 
-		oldParent.setLevel (
-			oldNodeLevel
+		node5.setLevel (
+			node4.level()
 		);
 
-		oldParent.setLeft (
-			oldNodeLeft
-		);
-
-		oldParent.setRight (
-			oldNodeRight
-		);
-
-		oldParent.setAsRightChild (
-			isOldNodeRightChild
-		);
-
-		if (isOldNodeRightChild)
+		if (isOldNode5RightChild)
 		{
-			oldNode.setRight (oldParent);
+			node5.setLeft (
+				node4.left()
+			);
+
+			node5.setRight (
+				node4
+			);
 		}
 		else
 		{
-			oldNode.setLeft (oldParent);
+			node5.setLeft (
+				node4
+			);
+
+			node5.setRight (
+				node4.right()
+			);
+		}
+
+		node5.setAsRightChild (
+			isOldNode4RightChild
+		);
+
+		if (null != oldNode4Parent)
+		{
+			if (isOldNode4RightChild)
+			{
+				oldNode4Parent.setRight (
+					node5
+				);
+			}
+			else
+			{
+				oldNode4Parent.setLeft (
+					node5
+				);
+			}
+		}
+		else
+		{
+			_top = node5;
+		}
+
+		node4.setParent (
+			node5
+		);
+
+		node4.setLevel (
+			oldNode5Level
+		);
+
+		node4.setLeft (
+			oldNode5Left
+		);
+
+		node4.setRight (
+			oldNode5Right
+		);
+
+		node4.setAsRightChild (
+			isOldNode5RightChild
+		);
+
+		if (null != oldNode5Left)
+		{
+			oldNode5Left.setParent (
+				node4
+			);
+		}
+
+		if (null != oldNode5Right)
+		{
+			oldNode5Right.setParent (
+				node4
+			);
 		}
 
 		return true;
@@ -228,7 +299,7 @@ public class BinaryHeap
 	 * @return TRUE - The Heap Property is successfully maintained
 	 */
 
-	public boolean maintainHeapProperty (
+	public boolean maintainHeapPropertyBottomUp (
 		org.drip.graph.heap.BinaryNode node)
 	{
 		if (null == node)
@@ -238,13 +309,9 @@ public class BinaryHeap
 
 		org.drip.graph.heap.BinaryNode parent = node.parent();
 
-		System.out.println (
-			bfsWalk()
-		);
-
 		while (null != parent && node.value() >= parent.value())
 		{
-			if (!SwapNodeAndParent (
+			if (!swapNodeAndParent (
 				node,
 				parent
 			))
@@ -253,6 +320,40 @@ public class BinaryHeap
 			}
 
 			parent = node.parent();
+		}
+
+		return true;
+	}
+
+	/**
+	 * Maintain the Binary Heap Property from the Node to the Bottom
+	 * 
+	 * @param node Specified Node
+	 * 
+	 * @return TRUE - The Heap Property is successfully maintained
+	 */
+
+	public boolean maintainHeapPropertyTopDown (
+		org.drip.graph.heap.BinaryNode node)
+	{
+		if (null == node)
+		{
+			return true;
+		}
+
+		org.drip.graph.heap.BinaryNode largerChild = node.largerChild();
+
+		while (null != largerChild && node.value() <= largerChild.value())
+		{
+			if (!swapNodeAndParent (
+				largerChild,
+				node
+			))
+			{
+				return false;
+			}
+
+			largerChild = node.largerChild();
 		}
 
 		return true;
@@ -386,9 +487,98 @@ public class BinaryHeap
 			}
 		}
 
-		return maintainHeapProperty (
+		return maintainHeapPropertyBottomUp (
 			newNode
 		);
+	}
+
+	/**
+	 * Extract the Maximum from the Heap
+	 * 
+	 * @return The Maximum Value in the Heap
+	 * 
+	 * @throws java.lang.Exception Thrown if the Heap Maximum cannot be extracted
+	 */
+
+	public double extractMax()
+		throws java.lang.Exception
+	{
+		if (null == _top)
+		{
+			throw new java.lang.Exception (
+				"BinaryHeap::extractMax => Heap is Empty"
+			);
+		}
+
+		org.drip.graph.heap.BinaryNode node = null;
+
+		java.util.List<org.drip.graph.heap.BinaryNode> elementQueue =
+			new java.util.ArrayList<org.drip.graph.heap.BinaryNode>();
+
+		elementQueue.add (
+			_top
+		);
+
+		while (!elementQueue.isEmpty())
+		{
+			node = elementQueue.get (
+				0
+			);
+
+			elementQueue.remove (
+				0
+			);
+
+			if (node.isLeaf())
+			{
+				break;
+			}
+
+			org.drip.graph.heap.BinaryNode left = node.left();
+
+			if (null != left)
+			{
+				elementQueue.add (
+					left
+				);
+			}
+
+			org.drip.graph.heap.BinaryNode right = node.right();
+
+			if (null != right)
+			{
+				elementQueue.add (
+					right
+				);
+			}
+		}
+
+		if (!removeLeafNode (
+			node
+		))
+		{
+			throw new java.lang.Exception (
+				"BinaryHeap::extractMax => Cannot remove Leaf Node"
+			);
+		}
+
+		double topNodeValue = replaceTop (
+			node
+		);
+
+		if (null != _top)
+		{
+			if (!maintainHeapPropertyTopDown (
+				_top
+			))
+			{
+				throw new java.lang.Exception (
+					"BinaryHeap::extractMax => Cannot maintain Heap Property"
+				);
+			}
+		}
+
+		return topNodeValue;
 	}
 
 	/**
@@ -401,6 +591,11 @@ public class BinaryHeap
 	{
 		java.util.List<org.drip.graph.heap.BinaryNode> elementList =
 			new java.util.ArrayList<org.drip.graph.heap.BinaryNode>();
+
+		if (null == _top)
+		{
+			return elementList;
+		}
 
 		java.util.List<org.drip.graph.heap.BinaryNode> elementQueue =
 			new java.util.ArrayList<org.drip.graph.heap.BinaryNode>();
@@ -418,8 +613,6 @@ public class BinaryHeap
 			elementQueue.remove (
 				0
 			);
-
-			// System.out.println ("\t\t\t" + node.value());
 
 			elementList.add (
 				node
@@ -445,5 +638,16 @@ public class BinaryHeap
 		}
 
 		return elementList;
+	}
+
+	/**
+	 * Indicate if the Heap is Empty
+	 * 
+	 * @return TRUE - The Heap is Empty
+	 */
+
+	public boolean isEmpty()
+	{
+		return null == _top;
 	}
 }
