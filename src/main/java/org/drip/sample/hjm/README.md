@@ -17,7 +17,7 @@ DROP Sample HJM illustrates the HJM Multi-Factor Principal Dynamics Evolution.
 
  * [***MultiFactorQMDynamics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hjm/MultiFactorQMDynamics.java)
  <i>MultiFactorQMDynamics</i> demonstrates the Construction and Usage of the 3-Factor Gaussian Model Dynamics
- for the Evolution of the Discount Factor Quantification Metrics - the Instantaneous Forward Rate, the LIBOR
+ for the Evolution of the Discount Factor Quantification Metrics; the Instantaneous Forward Rate, the LIBOR
  Forward Rate, the Shifted LIBOR Forward Rate, the Short Rate, the Compounded Short Rate, and the Price.
 
  * [***PrincipalComponentDynamics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hjm/PrincipalComponentDynamics.java)

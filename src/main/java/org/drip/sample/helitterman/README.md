@@ -34,7 +34,7 @@ DROP Sample He Litterman illustrates the He Litterman (1999) Projection Loadings
 
 ## References
 
- * He. G., and R. Litterman (1999): The Intuition behind the Black-Litterman Model Portfolios, Goldman Sachs
+ * He. G., and R. Litterman (1999): The Intuition behind the Black Litterman Model Portfolios, Goldman Sachs
  	Asset Management
 
 
