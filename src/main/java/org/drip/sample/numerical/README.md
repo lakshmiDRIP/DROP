@@ -7,6 +7,9 @@ DROP Numerical demonstrates Search, Quadratures, and Fourier Phase Tracker Routi
 
 ## Class Components
 
+ * [***BinaryDigitCount***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/numerical/BinaryDigitCount.java)
+ <i>BinaryDigitCount</i> illustrates the Estimation of the Binary Digit Count for the Set of Integers.
+
  * [***FixedPointSearch***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/numerical/FixedPointSearch.java)
  <i>FixedPointSearch</i> contains a sample illustration of usage of the Root Finder Library. It demonstrates the fixed point extraction using the following techniques:
  	* Newton-Raphson method
@@ -27,6 +30,9 @@ DROP Numerical demonstrates Search, Quadratures, and Fourier Phase Tracker Routi
 
  * [***PhaseTrackerComparison***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/numerical/PhaseTrackerComparison.java)
  <i>PhaseTrackerComparison</i> demonstrates the Log + Power Complex Number Phase Correction Functionality implemented by three different ways for the calculation of the Inverse Fourier Transforms. The sample problem chosen is the stochastic volatility evolution using the Heston Method.
+
+ * [***PrimeFactorEstimator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/numerical/PrimeFactorEstimator.java)
+ <i>PrimeFactorEstimator</i> shows samples for estimating the Prime Factor of a given Integer.
 
 
 ## DROP Specifications

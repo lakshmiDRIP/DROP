@@ -1,7 +1,8 @@
 
 package org.drip.sample.numerical;
 
-import org.drip.numerical.common.PrimeFactorTable;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.numerical.common.NumberUtil;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -102,7 +103,67 @@ public class PrimeFactorEstimator
 			""
 		);
 
-		System.out.println (PrimeFactorTable.PrimeCountMap (52));
+		int start = 1;
+		int finish = 99;
+
+		System.out.println (
+			"\t|--------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\t|              PRIME FACTOR ESTIMATOR              ||"
+		);
+
+		System.out.println (
+			"\t|--------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\t|    L -> R:                                       ||"
+		);
+
+		System.out.println (
+			"\t|          - n                                     ||"
+		);
+
+		System.out.println (
+			"\t|          - Prime Factorization                   ||"
+		);
+
+		System.out.println (
+			"\t|          - Prime Factorization Exponent          ||"
+		);
+
+		System.out.println (
+			"\t|          - Prime Factor Map                      ||"
+		);
+
+		System.out.println (
+			"\t|--------------------------------------------------||"
+		);
+
+		for (int number = start;
+			number <= finish;
+			++number
+		)
+		{
+			System.out.println (
+				"\t| [" + number + "] =" +
+				NumberUtil.PrimeFactor (
+					number
+				) + " | " + FormatUtil.FormatDouble (
+					NumberUtil.PrimeFactorExponentTwo (
+						number
+					), 1, 6, 1.
+				) + " | " + NumberUtil.PrimeCountMap (
+					number
+				)
+			);
+		}
+
+		System.out.println (
+			"\t|--------------------------------------------------||"
+		);
 
 		EnvManager.TerminateEnv();
 	}

@@ -1,5 +1,8 @@
 
-package org.drip.numerical.common;
+package org.drip.sample.numerical;
+
+import org.drip.numerical.common.NumberUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,129 +78,86 @@ package org.drip.numerical.common;
  */
 
 /**
- * <i>PrimeFactorTable</i> implements the Cumulative Table of Prime Factors of a Number.
+ * <i>BinaryDigitCount</i> illustrates the Estimation of the Binary Digit Count for the Set of Integers.
  * 
- * <br><br>
+ *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/common">Primitives/Array Manipulate Format Display Utilities</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/numerical/README.md">Search, Quadratures, Fourier Phase Tracker</a></li>
  *  </ul>
- * <br><br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class PrimeFactorTable
+public class BinaryDigitCount
 {
 
-	/**
-	 * Retrieve the Map of Prime Number Count for the given Number
-	 * 
-	 * @param n The Given Number
-	 * @return Map of Prime Number Count
-	 */
-
-	public static final java.util.TreeMap<java.lang.Integer, java.lang.Integer> PrimeCountMap (
-		int n)
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		if (0 >= n)
-		{
-			n = -1 * n;
-		}
-
-		int dePrimed = n;
-
-		java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeCountMap =
-			new java.util.TreeMap<java.lang.Integer, java.lang.Integer>();
-
-		int max = (int) java.lang.Math.sqrt (
-			n
+		EnvManager.InitEnv (
+			""
 		);
 
-		for (int index = 2;
-			index <= max;
-			++index
+		int start = 1;
+		int finish = 99;
+
+		System.out.println (
+			"\t|--------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\t|              PRIME FACTOR ESTIMATOR              ||"
+		);
+
+		System.out.println (
+			"\t|--------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\t|    L -> R:                                       ||"
+		);
+
+		System.out.println (
+			"\t|          - n                                     ||"
+		);
+
+		System.out.println (
+			"\t|          - Prime Factorization                   ||"
+		);
+
+		System.out.println (
+			"\t|          - Prime Factorization Exponent          ||"
+		);
+
+		System.out.println (
+			"\t|          - Prime Factor Map                      ||"
+		);
+
+		System.out.println (
+			"\t|--------------------------------------------------||"
+		);
+
+		for (int number = start;
+			number <= finish;
+			++number
 		)
 		{
-			int remainder = dePrimed % index;
-
-			while (0 == remainder)
-			{
-				if (primeCountMap.containsKey (
-					index
-				))
-				{
-					primeCountMap.put (
-						index,
-						primeCountMap.get (
-							index
-						) + 1
-					);
-				}
-				else
-				{
-					primeCountMap.put (
-						index,
-						1
-					);
-				}
-
-				dePrimed = dePrimed / index;
-				remainder = dePrimed % index;
-			}
-		}
-
-		primeCountMap.put (
-			dePrimed,
-			1
-		);
-
-		return primeCountMap;
-	}
-
-	/**
-	 * Compute the Prime Factor for a given Integer
-	 * 
-	 * @param n The Integer
-	 * 
-	 * @return Prime Factor for a given Integer
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double PrimeFactor (
-		final int n)
-		throws java.lang.Exception
-	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeCountMap = PrimeCountMap (
-			n
-		);
-
-		if (null == primeCountMap || 0 == primeCountMap.size())
-		{
-			throw new java.lang.Exception (
-				"PrimeFactorTable::PrimeFactor => Cannot extract Map"
+			System.out.println (
+				"\t| [" + number + "] = " +
+				NumberUtil.BinaryDigitCount (
+					number
+				)
 			);
 		}
 
-		int primeFactor = 1;
+		System.out.println (
+			"\t|--------------------------------------------------||"
+		);
 
-		for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> primeCountEntry :
-			primeCountMap.entrySet())
-		{
-			int prime = primeCountEntry.getKey();
-
-			int primeCount = primeCountEntry.getValue();
-
-			while (0 != primeCount)
-			{
-				primeFactor = primeFactor * prime;
-				--primeCount;
-			}
-		}
-
-		return primeFactor;
+		EnvManager.TerminateEnv();
 	}
 }

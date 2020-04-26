@@ -932,4 +932,166 @@ public class NumberUtil {
 
 		return (int) (1. / z);
 	}
+
+	/**
+	 * Retrieve the Map of Prime Number Count for the given Number
+	 * 
+	 * @param n The Given Number
+	 * @return Map of Prime Number Count
+	 */
+
+	public static final java.util.TreeMap<java.lang.Integer, java.lang.Integer> PrimeCountMap (
+		int n)
+	{
+		if (0 >= n)
+		{
+			n = -1 * n;
+		}
+
+		int dePrimed = n;
+
+		java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeCountMap =
+			new java.util.TreeMap<java.lang.Integer, java.lang.Integer>();
+
+		int max = (int) java.lang.Math.sqrt (
+			n
+		);
+
+		for (int index = 2;
+			index <= max;
+			++index
+		)
+		{
+			int remainder = dePrimed % index;
+
+			while (0 == remainder)
+			{
+				if (primeCountMap.containsKey (
+					index
+				))
+				{
+					primeCountMap.put (
+						index,
+						primeCountMap.get (
+							index
+						) + 1
+					);
+				}
+				else
+				{
+					primeCountMap.put (
+						index,
+						1
+					);
+				}
+
+				dePrimed = dePrimed / index;
+				remainder = dePrimed % index;
+			}
+		}
+
+		primeCountMap.put (
+			dePrimed,
+			1
+		);
+
+		return primeCountMap;
+	}
+
+	/**
+	 * Compute the Prime Factor for a given Integer
+	 * 
+	 * @param n The Integer
+	 * 
+	 * @return Prime Factor for a given Integer
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double PrimeFactor (
+		final int n)
+		throws java.lang.Exception
+	{
+		java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeCountMap = PrimeCountMap (
+			n
+		);
+
+		if (null == primeCountMap || 0 == primeCountMap.size())
+		{
+			throw new java.lang.Exception (
+				"PrimeFactorTable::PrimeFactor => Cannot extract Map"
+			);
+		}
+
+		int primeFactor = 1;
+
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> primeCountEntry :
+			primeCountMap.entrySet())
+		{
+			int prime = primeCountEntry.getKey();
+
+			int primeCount = primeCountEntry.getValue();
+
+			while (0 != primeCount)
+			{
+				primeFactor = primeFactor * prime;
+				--primeCount;
+			}
+		}
+
+		return primeFactor;
+	}
+
+	/**
+	 * Compute the Exponent 2 of Prime Factorization for a given Integer
+	 * 
+	 * @param n The Integer
+	 * 
+	 * @return Exponent 2 of Prime Factorization for a given Integer
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double PrimeFactorExponentTwo (
+		final int n)
+		throws java.lang.Exception
+	{
+		return java.lang.Math.log (
+			n
+		) / java.lang.Math.log (
+			2.
+		);
+	}
+
+	/**
+	 * Retrieve the Binary Digit Count
+	 * 
+	 * @param n N
+	 * 
+	 * @return The Binary Digit Count
+	 */
+
+	public static final int BinaryDigitCount (
+		int n)
+	{
+		if (0 == n)
+		{
+			return 0;
+		}
+
+		if (n < 0)
+		{
+			n= n * -1;
+		}
+
+		int binaryDigitCount = 0;
+
+		while (n != 0)
+		{
+			binaryDigitCount = binaryDigitCount + (n % 2);
+			n = n / 2;
+		}
+
+		return binaryDigitCount;
+	}
 }

@@ -13,6 +13,9 @@ DROP Sample Heap illustrates the Construction/Usage Priority Queue and Heap Algo
  * [***BinaryMinHeap***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/heap/BinaryMinHeap.java)
  <i>BinaryMinHeap</i> illustrates Operations off of a Binary Min-Heap..
 
+ * [***BinaryTreeAsymptoticComplexity***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/heap/BinaryTreeAsymptoticComplexity.java)
+ <i>BinaryTreeAsymptoticComplexity</i> illustrates the Asymptotics of the Priority Queue Time Complexity for Binary Heap Based Implementations.
+
  * [***PriorityQueueTimeComplexity***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/heap/PriorityQueueTimeComplexity.java)
  <i>PriorityQueueTimeComplexity</i> illustrates the Asymptotic Estimates of the Priority Queue Time Complexity for Heap Based Implementations.
 
