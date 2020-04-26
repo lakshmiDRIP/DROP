@@ -1,8 +1,5 @@
 
-package org.drip.sample.heap;
-
-import org.drip.graph.heap.BinaryTreePriorityQueue;
-import org.drip.service.env.EnvManager;
+package org.drip.numerical.common;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -78,122 +75,129 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>BinaryMinHeap</i> illustrates Operations off of a Binary Min-Heap. The References are:
+ * <i>PrimeFactorTable</i> implements the Cumulative Table of Prime Factors of a Number.
  * 
  * <br><br>
  *  <ul>
- *  	<li>
- *  		Brodal, G. S., G. Lagogiannis, and R. E. Tarjan (2012): Strict Fibonacci Heaps <i>Proceedings on
- *  			the 44<sup>th</sup> Symposium on the Theory of Computing - STOC '12</i> 1177-1184
- *  	</li>
- *  	<li>
- *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms
- *  			3<sup>rd</sup> Edition</i> <b>MIT Press</b>
- *  	</li>
- *  	<li>
- *  		Hayward, R., and C. McDiarmid (1991): Average Case Analysis of Heap-building by Repeated
- *  			Insertion <i>Journal of Algorithms</i> <b>12 (1)</b> 126-153
- *  	</li>
- *  	<li>
- *  		Suchanek, M. A. (2012): Elementary yet Precise Worst-case Analysis of Floyd's Heap Construction
- *  			Program <i>Fundamenta Informaticae</i> <b>120 (1)</b> 75-92
- *  	</li>
- *  	<li>
- *  		Wikipedia (2020): Binary Heap https://en.wikipedia.org/wiki/Binary_heap
- *  	</li>
- *  </ul>
- *
- * <br><br>
- *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/heap/README.md">Priority Queue and Heap Algorithms</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/common">Primitives/Array Manipulate Format Display Utilities</a></li>
  *  </ul>
  * <br><br>
- *
+ * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class BinaryMinHeap
+public class PrimeFactorTable
 {
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Retrieve the Map of Prime Number Count for the given Number
+	 * 
+	 * @param n The Given Number
+	 * @return Map of Prime Number Count
+	 */
+
+	public static final java.util.TreeMap<java.lang.Integer, java.lang.Integer> PrimeCountMap (
+		int n)
 	{
-		EnvManager.InitEnv (
-			""
-		);
-
-		BinaryTreePriorityQueue binaryHeap = new BinaryTreePriorityQueue (
-			true
-		);
-
-		double[] valueArray =
+		if (0 >= n)
 		{
-			5.,
-			9.,
-			4.,
-			3.,
-			7.,
-			8.,
-		};
+			n = -1 * n;
+		}
 
-		System.out.println (
-			"\t|--------------------------------------------------------------------------------------------------------------------------------"
+		int dePrimed = n;
+
+		java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeCountMap =
+			new java.util.TreeMap<java.lang.Integer, java.lang.Integer>();
+
+		int max = (int) java.lang.Math.sqrt (
+			n
 		);
 
-		System.out.println (
-			"\t|  INSERTION INTO BINARY HEAP"
-		);
-
-		System.out.println (
-			"\t|--------------------------------------------------------------------------------------------------------------------------------"
-		);
-
-		for (double value : valueArray)
+		for (int index = 2;
+			index <= max;
+			++index
+		)
 		{
-			binaryHeap.insert (
-				value
-			);
+			int remainder = dePrimed % index;
 
-			System.out.println (
-				"\t| After inserting " + value + " Heap BFS: " +
-				binaryHeap.bfsWalk()
+			while (0 == remainder)
+			{
+				if (primeCountMap.containsKey (
+					index
+				))
+				{
+					primeCountMap.put (
+						index,
+						primeCountMap.get (
+							index
+						) + 1
+					);
+				}
+				else
+				{
+					primeCountMap.put (
+						index,
+						1
+					);
+				}
+
+				dePrimed = dePrimed / index;
+				remainder = dePrimed % index;
+			}
+		}
+
+		primeCountMap.put (
+			dePrimed,
+			1
+		);
+
+		return primeCountMap;
+	}
+
+	/**
+	 * Compute the Prime Factor for a given Integer
+	 * 
+	 * @param n The Integer
+	 * 
+	 * @return Prime Factor for a given Integer
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double PrimeFactor (
+		final int n)
+		throws java.lang.Exception
+	{
+		java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeCountMap = PrimeCountMap (
+			n
+		);
+
+		if (null == primeCountMap || 0 == primeCountMap.size())
+		{
+			throw new java.lang.Exception (
+				"PrimeFactorTable::PrimeFactor => Cannot extract Map"
 			);
 		}
 
-		System.out.println (
-			"\t|--------------------------------------------------------------------------------------------------------------------------------"
-		);
+		int primeFactor = 1;
 
-		System.out.println();
-
-		System.out.println (
-			"\t|--------------------------------------------------------------------------------------------------------------------------------"
-		);
-
-		System.out.println (
-			"\t|  EXTRACT-MIN FROM BINARY HEAP"
-		);
-
-		System.out.println (
-			"\t|--------------------------------------------------------------------------------------------------------------------------------"
-		);
-
-		while (!binaryHeap.isEmpty())
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> primeCountEntry :
+			primeCountMap.entrySet())
 		{
-			System.out.println (
-				"\t| After removing min=" + binaryHeap.extractTop() + " Heap BFS: " +
-				binaryHeap.bfsWalk()
-			);
+			int prime = primeCountEntry.getKey();
+
+			int primeCount = primeCountEntry.getValue();
+
+			while (0 != primeCount)
+			{
+				primeFactor = primeFactor * prime;
+				--primeCount;
+			}
 		}
 
-		System.out.println (
-			"\t|--------------------------------------------------------------------------------------------------------------------------------"
-		);
-
-		EnvManager.TerminateEnv();
+		return primeFactor;
 	}
 }

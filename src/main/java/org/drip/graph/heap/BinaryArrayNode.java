@@ -1,8 +1,5 @@
 
-package org.drip.sample.heap;
-
-import org.drip.graph.heap.BinaryTreePriorityQueue;
-import org.drip.service.env.EnvManager;
+package org.drip.graph.heap;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -78,7 +75,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>BinaryMinHeap</i> illustrates Operations off of a Binary Min-Heap. The References are:
+ * <i>BinaryArrayNode</i> implements a Node in a Binary Tree implemented using an Array. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -107,93 +104,15 @@ import org.drip.service.env.EnvManager;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/heap/README.md">Priority Queue and Heap Algorithms</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/heap/README.md">Heap Based Priority Queue Implementations</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BinaryMinHeap
+public class BinaryArrayNode
 {
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
-	{
-		EnvManager.InitEnv (
-			""
-		);
-
-		BinaryTreePriorityQueue binaryHeap = new BinaryTreePriorityQueue (
-			true
-		);
-
-		double[] valueArray =
-		{
-			5.,
-			9.,
-			4.,
-			3.,
-			7.,
-			8.,
-		};
-
-		System.out.println (
-			"\t|--------------------------------------------------------------------------------------------------------------------------------"
-		);
-
-		System.out.println (
-			"\t|  INSERTION INTO BINARY HEAP"
-		);
-
-		System.out.println (
-			"\t|--------------------------------------------------------------------------------------------------------------------------------"
-		);
-
-		for (double value : valueArray)
-		{
-			binaryHeap.insert (
-				value
-			);
-
-			System.out.println (
-				"\t| After inserting " + value + " Heap BFS: " +
-				binaryHeap.bfsWalk()
-			);
-		}
-
-		System.out.println (
-			"\t|--------------------------------------------------------------------------------------------------------------------------------"
-		);
-
-		System.out.println();
-
-		System.out.println (
-			"\t|--------------------------------------------------------------------------------------------------------------------------------"
-		);
-
-		System.out.println (
-			"\t|  EXTRACT-MIN FROM BINARY HEAP"
-		);
-
-		System.out.println (
-			"\t|--------------------------------------------------------------------------------------------------------------------------------"
-		);
-
-		while (!binaryHeap.isEmpty())
-		{
-			System.out.println (
-				"\t| After removing min=" + binaryHeap.extractTop() + " Heap BFS: " +
-				binaryHeap.bfsWalk()
-			);
-		}
-
-		System.out.println (
-			"\t|--------------------------------------------------------------------------------------------------------------------------------"
-		);
-
-		EnvManager.TerminateEnv();
-	}
 }

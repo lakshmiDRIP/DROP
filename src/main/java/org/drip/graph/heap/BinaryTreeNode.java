@@ -75,7 +75,7 @@ package org.drip.graph.heap;
  */
 
 /**
- * <i>BinaryNode</i> implements a Node in a Binary Tree. The References are:
+ * <i>BinaryTreeNode</i> implements a Node in a Binary Tree. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -112,34 +112,34 @@ package org.drip.graph.heap;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BinaryNode
+public class BinaryTreeNode
 {
 	private int _level = 0;
-	private BinaryNode _left = null;
-	private BinaryNode _right = null;
-	private BinaryNode _parent = null;
+	private BinaryTreeNode _left = null;
+	private BinaryTreeNode _right = null;
+	private BinaryTreeNode _parent = null;
 	private boolean _isRightChild = false;
-	private double _value = java.lang.Double.NaN;
+	private double _key = java.lang.Double.NaN;
 
 	/**
-	 * BinaryNode Constructor
+	 * BinaryTreeNode Constructor
 	 * 
-	 * @param value Node Value
+	 * @param key Node Key
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public BinaryNode (
-		final double value)
+	public BinaryTreeNode (
+		final double key)
 		throws java.lang.Exception
 	{
 		if (java.lang.Double.isNaN (
-				_value = value
+				_key = key
 			)
 		)
 		{
 			throw new java.lang.Exception (
-				"BinaryNode Constructor => Invalid Inputs"
+				"BinaryTreeNode Constructor => Invalid Inputs"
 			);
 		}
 	}
@@ -161,7 +161,7 @@ public class BinaryNode
 	 * @return The Parent
 	 */
 
-	public BinaryNode parent()
+	public BinaryTreeNode parent()
 	{
 		return _parent;
 	}
@@ -172,7 +172,7 @@ public class BinaryNode
 	 * @return The Left Child
 	 */
 
-	public BinaryNode left()
+	public BinaryTreeNode left()
 	{
 		return _left;
 	}
@@ -183,20 +183,20 @@ public class BinaryNode
 	 * @return The Right Child
 	 */
 
-	public BinaryNode right()
+	public BinaryTreeNode right()
 	{
 		return _right;
 	}
 
 	/**
-	 * Retrieve the Node Value
+	 * Retrieve the Node Key
 	 * 
-	 * @return The Node Value
+	 * @return The Node Key
 	 */
 
-	public double value()
+	public double key()
 	{
-		return _value;
+		return _key;
 	}
 
 	/**
@@ -211,25 +211,25 @@ public class BinaryNode
 	}
 
 	/**
-	 * Set the Value of the Node
+	 * Set the Key of the Node
 	 * 
-	 * @param value The Value
+	 * @param key The Key
 	 * 
-	 * @return TRUE - The Node's Level successfully set
+	 * @return TRUE - The Node's Key successfully set
 	 */
 
-	public boolean setValue (
-		final double value)
+	public boolean setKey (
+		final double key)
 	{
 		if (java.lang.Double.isNaN (
-				value
+				key
 			)
 		)
 		{
 			return false;
 		}
 
-		_value = value;
+		_key = key;
 		return true;
 	}
 
@@ -262,7 +262,7 @@ public class BinaryNode
 	 */
 
 	public boolean setParent (
-		final BinaryNode parent)
+		final BinaryTreeNode parent)
 	{
 		_parent = parent;
 		return true;
@@ -277,7 +277,7 @@ public class BinaryNode
 	 */
 
 	public boolean setLeft (
-		final BinaryNode left)
+		final BinaryTreeNode left)
 	{
 		_left = left;
 		return true;
@@ -292,7 +292,7 @@ public class BinaryNode
 	 */
 
 	public boolean setRight (
-		final BinaryNode right)
+		final BinaryTreeNode right)
 	{
 		_right = right;
 		return true;
@@ -341,7 +341,7 @@ public class BinaryNode
 	 * @return The Child Node with the Smaller Value
 	 */
 
-	public BinaryNode smallerChild()
+	public BinaryTreeNode smallerChild()
 	{
 		if (null == _left && null == _right)
 		{
@@ -358,7 +358,7 @@ public class BinaryNode
 			return _left;
 		}
 
-		return _left.value() < _right.value() ? _left : _right;
+		return _left.key() < _right.key() ? _left : _right;
 	}
 
 	/**
@@ -367,7 +367,7 @@ public class BinaryNode
 	 * @return The Child Node with the Larger Value
 	 */
 
-	public BinaryNode largerChild()
+	public BinaryTreeNode largerChild()
 	{
 		if (null == _left && null == _right)
 		{
@@ -384,14 +384,14 @@ public class BinaryNode
 			return _left;
 		}
 
-		return _left.value() > _right.value() ? _left : _right;
+		return _left.key() > _right.key() ? _left : _right;
 	}
 
 	@Override public java.lang.String toString()
 	{
 		return "{"
-			+ _value + " | " + _level + " | " + (_isRightChild ? "R" : "L") + " | " +
-				(null == _parent ? "" : _parent.value()) +
+			+ _key + " | " + _level + " | " + (_isRightChild ? "R" : "L") + " | " +
+				(null == _parent ? "" : _parent.key()) +
 		"}";
 	}
 }

@@ -1,7 +1,7 @@
 
-package org.drip.sample.heap;
+package org.drip.sample.numerical;
 
-import org.drip.graph.heap.BinaryTreePriorityQueue;
+import org.drip.numerical.common.PrimeFactorTable;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -78,44 +78,20 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>BinaryMinHeap</i> illustrates Operations off of a Binary Min-Heap. The References are:
+ * <i>PrimeFactorEstimator</i> shows samples for estimating the Prime Factor of a given Integer.
  * 
- * <br><br>
- *  <ul>
- *  	<li>
- *  		Brodal, G. S., G. Lagogiannis, and R. E. Tarjan (2012): Strict Fibonacci Heaps <i>Proceedings on
- *  			the 44<sup>th</sup> Symposium on the Theory of Computing - STOC '12</i> 1177-1184
- *  	</li>
- *  	<li>
- *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms
- *  			3<sup>rd</sup> Edition</i> <b>MIT Press</b>
- *  	</li>
- *  	<li>
- *  		Hayward, R., and C. McDiarmid (1991): Average Case Analysis of Heap-building by Repeated
- *  			Insertion <i>Journal of Algorithms</i> <b>12 (1)</b> 126-153
- *  	</li>
- *  	<li>
- *  		Suchanek, M. A. (2012): Elementary yet Precise Worst-case Analysis of Floyd's Heap Construction
- *  			Program <i>Fundamenta Informaticae</i> <b>120 (1)</b> 75-92
- *  	</li>
- *  	<li>
- *  		Wikipedia (2020): Binary Heap https://en.wikipedia.org/wiki/Binary_heap
- *  	</li>
- *  </ul>
- *
- * <br><br>
+ *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/heap/README.md">Priority Queue and Heap Algorithms</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/numerical/README.md">Search, Quadratures, Fourier Phase Tracker</a></li>
  *  </ul>
- * <br><br>
- *
+ * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class BinaryMinHeap
+public class PrimeFactorEstimator
 {
 
 	public static final void main (
@@ -126,73 +102,7 @@ public class BinaryMinHeap
 			""
 		);
 
-		BinaryTreePriorityQueue binaryHeap = new BinaryTreePriorityQueue (
-			true
-		);
-
-		double[] valueArray =
-		{
-			5.,
-			9.,
-			4.,
-			3.,
-			7.,
-			8.,
-		};
-
-		System.out.println (
-			"\t|--------------------------------------------------------------------------------------------------------------------------------"
-		);
-
-		System.out.println (
-			"\t|  INSERTION INTO BINARY HEAP"
-		);
-
-		System.out.println (
-			"\t|--------------------------------------------------------------------------------------------------------------------------------"
-		);
-
-		for (double value : valueArray)
-		{
-			binaryHeap.insert (
-				value
-			);
-
-			System.out.println (
-				"\t| After inserting " + value + " Heap BFS: " +
-				binaryHeap.bfsWalk()
-			);
-		}
-
-		System.out.println (
-			"\t|--------------------------------------------------------------------------------------------------------------------------------"
-		);
-
-		System.out.println();
-
-		System.out.println (
-			"\t|--------------------------------------------------------------------------------------------------------------------------------"
-		);
-
-		System.out.println (
-			"\t|  EXTRACT-MIN FROM BINARY HEAP"
-		);
-
-		System.out.println (
-			"\t|--------------------------------------------------------------------------------------------------------------------------------"
-		);
-
-		while (!binaryHeap.isEmpty())
-		{
-			System.out.println (
-				"\t| After removing min=" + binaryHeap.extractTop() + " Heap BFS: " +
-				binaryHeap.bfsWalk()
-			);
-		}
-
-		System.out.println (
-			"\t|--------------------------------------------------------------------------------------------------------------------------------"
-		);
+		System.out.println (PrimeFactorTable.PrimeCountMap (52));
 
 		EnvManager.TerminateEnv();
 	}

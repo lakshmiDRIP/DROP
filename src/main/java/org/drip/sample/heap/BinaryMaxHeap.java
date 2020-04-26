@@ -1,7 +1,7 @@
 
 package org.drip.sample.heap;
 
-import org.drip.graph.heap.BinaryHeap;
+import org.drip.graph.heap.BinaryTreePriorityQueue;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -126,7 +126,7 @@ public class BinaryMaxHeap
 			""
 		);
 
-		BinaryHeap binaryHeap = new BinaryHeap (
+		BinaryTreePriorityQueue binaryHeap = new BinaryTreePriorityQueue (
 			false
 		);
 
@@ -175,7 +175,7 @@ public class BinaryMaxHeap
 		);
 
 		System.out.println (
-			"\t|  EXTRACT-MIN FROM BINARY HEAP"
+			"\t|  EXTRACT-MAX FROM BINARY HEAP"
 		);
 
 		System.out.println (
@@ -185,7 +185,7 @@ public class BinaryMaxHeap
 		while (!binaryHeap.isEmpty())
 		{
 			System.out.println (
-				"\t| After removing max=" + binaryHeap.extractMax() + " Heap BFS: " +
+				"\t| After removing max=" + binaryHeap.extractTop() + " Heap BFS: " +
 				binaryHeap.bfsWalk()
 			);
 		}
