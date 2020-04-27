@@ -1,17 +1,44 @@
-# DROP SIMM Package
+# DROP SIMM Variance Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP SIMM demonstrates the ISDA Product SIMM Margin Estimation.
+DROP SIMM Variance demonstrates Position Bucket Co-variance, i.e., ISDA SIMM vs. FRTB SBA-C vs. Actual.
 
 
 ## Class Components
 
- * [***ProductMargin20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simm/ProductMargin20.java)
- <i>ProductMargin20</i> illustrates the Computation of the ISDA SIMM 2.0 Product Margin for across a Group of Risk Factor Exposure Sensitivities.
+ * [***CRNQMarginComparison***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmvariance/CRNQMarginComparison.java)
+ <i>CRNQMarginComparison</i> illustrates the Comparison of the Credit Non-Qualifying Margin Estimates using different Schemes for Calculating the Position-Bucket Principal Component Co-variance.
 
- * [***ProductMargin21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simm/ProductMargin21.java)
- <i>ProductMargin21</i> illustrates the Computation of the ISDA SIMM 2.1 Product Margin for across a Group of Risk Factor Exposure Sensitivities.
+ * [***CrossGroupPrincipalCovariance***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmvariance/CrossGroupPrincipalCovariance.java)
+ <i>CrossGroupPrincipalCovariance</i> demonstrates the Computation of the Cross Risk Group Principal Component Co-variance using the Actual Risk Group Principal Component.
+
+ * [***CRQMarginComparison***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmvariance/CRQMarginComparison.java)
+ <i>CRQMarginComparison</i> illustrates the Comparison of the Credit Qualifying Margin Estimates using difference Schemes for Calculating the Position-Bucket Principal Component Co-variance.
+
+ * [***CTCrossBucketPrincipal***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmvariance/CTCrossBucketPrincipal.java)
+ <i>CTCrossBucketPrincipal</i> demonstrates the Computation of the Cross CT Bucket Principal Component Co-variance using the CT Bucket Principal Component.
+
+ * [***CTMarginComparison***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmvariance/CTMarginComparison.java)
+ <i>CTMarginComparison</i> illustrates the Comparison of the Commodity Margin Estimates using difference Schemes for Calculating the Position-Bucket Principal Component Co-variance.
+
+ * [***EQCrossBucketPrincipal***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmvariance/EQCrossBucketPrincipal.java)
+ <i>EQCrossBucketPrincipal</i> demonstrates the Computation of the Cross EQ Bucket Principal Component Co-variance using the EQ Bucket Principal Component.
+
+ * [***EQMarginComparison***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmvariance/EQMarginComparison.java)
+ <i>EQMarginComparison</i> illustrates the Comparison of the Equity Margin Estimates using difference Schemes for Calculating the Position-Bucket Principal Component Co-variance.
+
+ * [***FXCrossGroupPrincipal***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmvariance/FXCrossGroupPrincipal.java)
+ <i>FXCrossGroupPrincipal</i> demonstrates the Computation of the Cross FX Bucket Principal Component Co-variance using the FX Risk Group Principal Component.
+
+ * [***FXMarginComparison***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmvariance/FXMarginComparison.java)
+ <i>FXMarginComparison</i> illustrates the Comparison of the FX Margin Estimates using difference Schemes for Calculating the Position-Bucket Principal Component Co-variance.
+
+ * [***IRCrossCurvePrincipal***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmvariance/IRCrossCurvePrincipal.java)
+ <i>IRCrossCurvePrincipal</i> demonstrates the Computation of the Cross IR Curve Principal Component Co-variance using the IR Curve Tenor Principal Component.
+
+ * [***IRMarginComparison***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmvariance/IRMarginComparison.java)
+ <i>IRMarginComparison</i> illustrates the Comparison of the Interest Rate Margin Estimates using difference Schemes for Calculating the Position-Bucket Principal Component Co-variance.
 
 
 ## References
