@@ -1,35 +1,59 @@
-# DROP SIMM EQ Package
+# DROP SIMM IR Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP SIMM EQ demonstrates ISDA SIMM Equity Estimate Runs.
+DROP SIMM IR demonstrates ISDA SIMM Rates Estimate Runs.
 
 
 ## Class Components
 
- * [***EquityClassMargin20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmeq/EquityClassMargin20.java)
- <i>EquityClassMargin20</i> illustrates the Computation of the ISDA 2.0 Aggregate Margin for across a Group of Equity Bucket Exposure Sensitivities.
+ * [***RatesCurrencyCurvatureMarginFlow20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmir/RatesCurrencyCurvatureMarginFlow20.java)
+ <i>RatesCurrencyCurvatureMarginFlow20</i> illustrates the Steps in the Computation of the SIMM 2.0 IR Curvature Margin for a Currency Bucket's IR Exposure Sensitivities.
 
- * [***EquityClassMargin21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmeq/EquityClassMargin21.java)
- <i>EquityClassMargin21</i> illustrates the Computation of the ISDA 2.1 Aggregate Margin for across a Group of Equity Bucket Exposure Sensitivities.
+ * [***RatesCurrencyCurvatureMarginFlow21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmir/RatesCurrencyCurvatureMarginFlow21.java)
+ <i>RatesCurrencyCurvatureMarginFlow21</i> illustrates the Steps in the Computation of the SIMM 2.1 IR Curvature Margin for a Currency Bucket's IR Exposure Sensitivities.
 
- * [***EquityCurvatureMargin20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmeq/EquityCurvatureMargin20.java)
- <i>EquityCurvatureMargin20</i> illustrates the Computation of the SIMM 2.0 Curvature Margin for a Group of Equity Bucket Exposure Sensitivities.
+ * [***RatesCurrencyDeltaMargin20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmir/RatesCurrencyDeltaMargin20.java)
+ <i>RatesCurrencyDeltaMargin20</i> illustrates the Computation of the SIMM 2.0 IR Delta Margin for a Currency Bucket's IR Exposure Sensitivities.
 
- * [***EquityCurvatureMargin21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmeq/EquityCurvatureMargin21.java)
- <i>EquityCurvatureMargin21</i> illustrates the Computation of the SIMM 2.1 Curvature Margin for a Group of Equity Bucket Exposure Sensitivities.
+ * [***RatesCurrencyDeltaMargin21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmir/RatesCurrencyDeltaMargin21.java)
+ <i>RatesCurrencyDeltaMargin21</i> illustrates the Computation of the SIMM 2.1 IR Delta Margin for a Currency Bucket's IR Exposure Sensitivities.
 
- * [***EquityDeltaMargin20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmeq/EquityDeltaMargin20.java)
- <i>EquityDeltaMargin20</i> illustrates the Computation of the SIMM 2.0 Delta Margin across a Group of Equity Bucket Exposure Sensitivities.
+ * [***RatesCurrencyDeltaMarginFlow20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmir/RatesCurrencyDeltaMarginFlow20.java)
+ <i>RatesCurrencyDeltaMarginFlow20</i> illustrates the Steps in the Computation of the SIMM 2.0 IR Delta Margin for a Currency Bucket's IR Exposure Sensitivities.
 
- * [***EquityDeltaMargin21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmeq/EquityDeltaMargin21.java)
- <i>EquityDeltaMargin21</i> illustrates the Computation of the SIMM 2.1 Delta Margin across a Group of Equity Bucket Exposure Sensitivities.
+ * [***RatesCurrencyDeltaMarginFlow21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmir/RatesCurrencyDeltaMarginFlow21.java)
+ <i>RatesCurrencyDeltaMarginFlow21</i> illustrates the Steps in the Computation of the SIMM 2.1 IR Delta Margin for a Currency Bucket's IR Exposure Sensitivities.
 
- * [***EquityVegaMargin20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmeq/EquityVegaMargin20.java)
- <i>EquityVegaMargin20</i> illustrates the Computation of the SIMM 2.0 Vega Margin across a Group of Equity Bucket Exposure Sensitivities.
+ * [***RatesCurrencyVegaMargin20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmir/RatesCurrencyVegaMargin20.java)
+ <i>RatesCurrencyVegaMargin20</i> illustrates the Computation of the SIMM 2.0 IR Vega Margin for a Currency Bucket's IR Exposure Sensitivities.
 
- * [***EquityVegaMargin21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmeq/EquityVegaMargin21.java)
- <i>EquityVegaMargin21</i> illustrates the Computation of the SIMM 2.1 Vega Margin across a Group of Equity Bucket Exposure Sensitivities.
+ * [***RatesCurrencyVegaMargin21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmir/RatesCurrencyVegaMargin21.java)
+ <i>RatesCurrencyVegaMargin21</i> illustrates the Computation of the SIMM 2.1 IR Vega Margin for a Currency Bucket's IR Exposure Sensitivities.
+
+ * [***RatesCurrencyVegaMarginFlow20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmir/RatesCurrencyVegaMarginFlow20.java)
+ <i>RatesCurrencyVegaMarginFlow20</i> illustrates the Steps in the Computation of the SIMM 2.0 IR Vega Margin for a Currency Bucket's IR Exposure Sensitivities.
+
+ * [***RatesCurrencyVegaMarginFlow21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmir/RatesCurrencyVegaMarginFlow21.java)
+ <i>RatesCurrencyVegaMarginFlow21</i> illustrates the Steps in the Computation of the SIMM 2.1 IR Vega Margin for a Currency Bucket's IR Exposure Sensitivities.
+
+ * [***RatesCurvatureMargin20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmir/RatesCurvatureMargin20.java)
+ <i>RatesCurvatureMargin20</i> illustrates the Computation of the SIMM 2.0 IR Curvature Margin for a Bucket of Currency's IR Exposure Sensitivities.
+
+ * [***RatesCurvatureMargin21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmir/RatesCurvatureMargin21.java)
+ <i>RatesCurvatureMargin21</i> illustrates the Computation of the SIMM 2.1 IR Curvature Margin for a Bucket of Currency's IR Exposure Sensitivities.
+
+ * [***RatesDeltaMargin20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmir/RatesDeltaMargin20.java)
+ <i>RatesDeltaMargin20</i> illustrates the Computation of the IR SIMM 2.0 Delta Margin for a Bucket of Currency's IR Exposure Sensitivities.
+
+ * [***RatesDeltaMargin21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmir/RatesDeltaMargin21.java)
+ <i>RatesDeltaMargin21</i> illustrates the Computation of the IR SIMM 2.1 Delta Margin for a Bucket of Currency's IR Exposure Sensitivities.
+
+ * [***RatesVegaMargin20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmir/RatesVegaMargin20.java)
+ <i>RatesVegaMargin20</i> illustrates the Computation of the SIMM 2.0 IR Vega Margin for a Bucket of Currency's IR Exposure Sensitivities.
+
+ * [***RatesVegaMargin21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmir/RatesVegaMargin21.java)
+ <i>RatesVegaMargin21</i> illustrates the Computation of the SIMM 2.1 IR Vega Margin for a Bucket of Currency's IR Exposure Sensitivities.
 
 
 ## References
