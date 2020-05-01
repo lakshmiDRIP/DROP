@@ -8,19 +8,19 @@ DROP Sample Correlated Stress illustrates Correlated Stress Scenario Constructio
 ## Class Components
 
  * [***ASIA***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/correlatedstress/ASIA.java)
- i>ASIA</i> zeds the Business Correlated Stress and their corresponding Scenario Names and Loss Amounts for the following Coordinates:
+ <i>ASIA</i> zeds the Business Correlated Stress and their corresponding Scenario Names and Loss Amounts for the following Coordinates:
  	* REGION    == ASIA
  
  * [***EMEA***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/correlatedstress/EMEA.java)
- i>ASIA</i> zeds the Business Correlated Stress and their corresponding Scenario Names and Loss Amounts for the following Coordinates:
+ <i>ASIA</i> zeds the Business Correlated Stress and their corresponding Scenario Names and Loss Amounts for the following Coordinates:
  	* REGION    == EMEA
 
  * [***LATINAMERICA***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/correlatedstress/LATINAMERICA.java)
- i>ASIA</i> zeds the Business Correlated Stress and their corresponding Scenario Names and Loss Amounts for the following Coordinates:
+ <i>ASIA</i> zeds the Business Correlated Stress and their corresponding Scenario Names and Loss Amounts for the following Coordinates:
  	* REGION    == LATIN AMERICA
 
  * [***NORTHAMERICA***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/correlatedstress/NORTHAMERICA.java)
- i>NORTHAMERICA</i> zeds the Business Correlated Stress and their corresponding Scenario Names and Loss Amounts for the following Coordinates:
+ <i>NORTHAMERICA</i> zeds the Business Correlated Stress and their corresponding Scenario Names and Loss Amounts for the following Coordinates:
  	* REGION    == NORTH AMERICA
 
 
