@@ -1,6 +1,6 @@
 
 /**
- * Correlated R^d Random Sequence Statistics
+ * Correlated R<sup>d</sup> Random Sequence Statistics
  *
  * @author Lakshmi Krishnamurthy
  */
