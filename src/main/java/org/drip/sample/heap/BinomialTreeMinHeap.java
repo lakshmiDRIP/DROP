@@ -1,5 +1,8 @@
 
-package org.drip.spline.basis;
+package org.drip.sample.heap;
+
+import org.drip.graph.heap.BinomialTreePriorityQueue;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -7,13 +10,6 @@ package org.drip.spline.basis;
 
 /*!
  * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
- * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -82,152 +78,71 @@ package org.drip.spline.basis;
  */
 
 /**
- * <i>BSplineSequenceParams</i> implements the parameter set for constructing the B Spline Sequence. It
- * provides functionality to:
- *
+ * <i>BinomialTreeMinHeap</i> illustrates the insert and extract Operations of a Binomial Tree Heap. The
+ * 	References are:
+ * 
  * <br><br>
  *  <ul>
  *  	<li>
- * 			Retrieve the B Spline Order
+ *  		Brodal, G. S., and C. Okasaki (1996): Optimal Purely Functional Priority Queues <i>Journal of
+ *  			Functional Programming</i> <b>6 (6)</b> 839-857
  *  	</li>
  *  	<li>
- * 			Retrieve the Number of Basis Functions
+ *  		Brown, M. R. (1978): Implementation and Analysis of Binomial Queue Algorithms <i>SIAM Journal on
+ *  			Computing</i> <b>7 (3)</b> 298-319
  *  	</li>
  *  	<li>
- * 			Retrieve the Processed Basis Derivative Order
+ *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms
+ *  			3<sup>rd</sup> Edition</i> <b>MIT Press</b>
  *  	</li>
  *  	<li>
- * 			Retrieve the Basis Hat Type
+ *  		Vuillemin, J. (1978): A Data Structure for Manipulating Priority Queues <i>Communications of the
+ *  			ACM</i> <b>21 (4)</b> 309-315
  *  	</li>
  *  	<li>
- * 			Retrieve the Shape Control Type
- *  	</li>
- *  	<li>
- * 			Retrieve the Tension
- *  	</li>
- *  	<li>
- * 			Retrieve the Array of Predictor Ordinates
+ *  		Wikipedia (2019): Binomial Heap https://en.wikipedia.org/wiki/Binomial_heap
  *  	</li>
  *  </ul>
  *
- *	<br><br>
+ * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/basis/README.md">Basis Spline Construction/Customization Parameters</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/heap/README.md">Heap Based Priority Queue Implementations</a></li>
  *  </ul>
  * <br><br>
- * 
+ *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BSplineSequenceParams {
-	private int _iNumBasis = -1;
-	private int _iBSplineOrder = -1;
-	private int _iProcBasisDerivOrder = -1;
-	private java.lang.String _strHatType = "";
-	private double _dblTension = java.lang.Double.NaN;
-	private java.lang.String _strShapeControlType = "";
+public class BinomialTreeMinHeap
+{
 
-	public BSplineSequenceParams (
-		final java.lang.String strHatType,
-		final java.lang.String strShapeControlType,
-		final int iNumBasis,
-		final int iBSplineOrder,
-		final double dblTension,
-		final int iProcBasisDerivOrder)
-		throws java.lang.Exception
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		_iNumBasis = iNumBasis;
-		_strHatType = strHatType;
-		_dblTension = dblTension;
-		_iBSplineOrder = iBSplineOrder;
-		_strShapeControlType = strShapeControlType;
-		_iProcBasisDerivOrder = iProcBasisDerivOrder;
-	}
+		EnvManager.InitEnv (
+			""
+		);
 
-	/**
-	 * Retrieve the B Spline Order
-	 * 
-	 * @return The B Spline Order
-	 */
+		BinomialTreePriorityQueue binomialHeap = new BinomialTreePriorityQueue (
+			true
+		);
 
-	public int bSplineOrder()
-	{
-		return _iBSplineOrder;
-	}
+		System.out.println (
+			binomialHeap.insert (
+				1.
+			)
+		);
 
-	/**
-	 * Retrieve the Number of Basis Functions
-	 * 
-	 * @return The Number of Basis Functions
-	 */
+		System.out.println (
+			binomialHeap.insert (
+				2.
+			)
+		);
 
-	public int numBasis()
-	{
-		return _iNumBasis;
-	}
-
-	/**
-	 * Retrieve the Processed Basis Derivative Order
-	 * 
-	 * @return The Processed Basis Derivative Order
-	 */
-
-	public int procBasisDerivOrder()
-	{
-		return _iProcBasisDerivOrder;
-	}
-
-	/**
-	 * Retrieve the Basis Hat Type
-	 * 
-	 * @return The Basis Hat Type
-	 */
-
-	public java.lang.String hat()
-	{
-		return _strHatType;
-	}
-
-	/**
-	 * Retrieve the Shape Control Type
-	 * 
-	 * @return The Shape Control Type
-	 */
-
-	public java.lang.String shapeControl()
-	{
-		return _strShapeControlType;
-	}
-
-	/**
-	 * Retrieve the Tension
-	 * 
-	 * @return The Tension
-	 */
-
-	public double tension()
-	{
-		return _dblTension;
-	}
-
-	/**
-	 * Retrieve the Array of Predictor Ordinates
-	 * 
-	 * @return The Array of Predictor Ordinates
-	 */
-
-	public double[] predictorOrdinates()
-	{
-		int iNumPredictorOrdinate = _iBSplineOrder + _iNumBasis;
-		double[] adblPredictorOrdinate = new double[iNumPredictorOrdinate];
-		double dblPredictorOrdinateIncrement = 1. / (_iBSplineOrder + _iNumBasis - 1);
-
-		for (int i = 0; i < iNumPredictorOrdinate; ++i)
-			adblPredictorOrdinate[i] = dblPredictorOrdinateIncrement * i;
-
-		return adblPredictorOrdinate;
+		EnvManager.TerminateEnv();
 	}
 }

@@ -591,6 +591,44 @@ public class BinaryTreePriorityQueue
 	}
 
 	/**
+	 * Meld the Specified Binary Tree Priority Queue with the current
+	 * 
+	 * @param binaryTreePriorityQueueOther The Specified Binary Tree Priority Queue
+	 * 
+	 * @return TRUE - The Specified Binary Tree Priority Queue successfully melded
+	 */
+
+	public boolean meld (
+		final BinaryTreePriorityQueue binaryTreePriorityQueueOther)
+	{
+		if (null == binaryTreePriorityQueueOther)
+		{
+			return false;
+		}
+
+		while (!binaryTreePriorityQueueOther.isEmpty())
+		{
+			try
+			{
+				if (!insert (
+					binaryTreePriorityQueueOther.extractTop()
+				))
+				{
+					return false;
+				}
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Extract the Top from the Heap
 	 * 
 	 * @return The Top Key in the Heap
@@ -604,7 +642,7 @@ public class BinaryTreePriorityQueue
 		if (null == _top)
 		{
 			throw new java.lang.Exception (
-				"BinaryHeap::extractTop => Heap is Empty"
+				"BinaryTreePriorityQueue::extractTop => Heap is Empty"
 			);
 		}
 
@@ -656,7 +694,7 @@ public class BinaryTreePriorityQueue
 		))
 		{
 			throw new java.lang.Exception (
-				"BinaryHeap::extractTop => Cannot remove Leaf Node"
+				"BinaryTreePriorityQueue::extractTop => Cannot remove Leaf Node"
 			);
 		}
 
@@ -671,7 +709,7 @@ public class BinaryTreePriorityQueue
 			))
 			{
 				throw new java.lang.Exception (
-					"BinaryHeap::extractTop => Cannot maintain Heap Property"
+					"BinaryTreePriorityQueue::extractTop => Cannot maintain Heap Property"
 				);
 			}
 		}
@@ -736,6 +774,89 @@ public class BinaryTreePriorityQueue
 		}
 
 		return elementList;
+	}
+
+	/**
+	 * Perform a BFS Walk and generate the Level List Map
+	 * 
+	 * @return The Level List Map
+	 */
+
+	public java.util.Map<java.lang.Integer, java.util.List<org.drip.graph.heap.BinaryTreeNode>>
+		bfsLevelListMap()
+	{
+		java.util.Map<java.lang.Integer, java.util.List<org.drip.graph.heap.BinaryTreeNode>> bfsLevelListMap
+			= new java.util.TreeMap<java.lang.Integer, java.util.List<org.drip.graph.heap.BinaryTreeNode>>();
+
+		if (null == _top)
+		{
+			return bfsLevelListMap;
+		}
+
+		java.util.List<org.drip.graph.heap.BinaryTreeNode> elementQueue =
+			new java.util.ArrayList<org.drip.graph.heap.BinaryTreeNode>();
+
+		elementQueue.add (
+			_top
+		);
+
+		while (!elementQueue.isEmpty())
+		{
+			org.drip.graph.heap.BinaryTreeNode node = elementQueue.get (
+				0
+			);
+
+			elementQueue.remove (
+				0
+			);
+
+			int level = node.level();
+
+			if (bfsLevelListMap.containsKey (
+				level
+			))
+			{
+				bfsLevelListMap.get (
+					level
+				).add (
+					node
+				);
+			}
+			else
+			{
+				java.util.List<org.drip.graph.heap.BinaryTreeNode> binaryTreeNodeList =
+					new java.util.ArrayList<org.drip.graph.heap.BinaryTreeNode>();
+
+				binaryTreeNodeList.add (
+					node
+				);
+
+				bfsLevelListMap.put (
+					level,
+					binaryTreeNodeList
+				);
+			}
+
+			org.drip.graph.heap.BinaryTreeNode left = node.left();
+
+			if (null != left)
+			{
+				elementQueue.add (
+					left
+				);
+			}
+
+			org.drip.graph.heap.BinaryTreeNode right = node.right();
+
+			if (null != right)
+			{
+				elementQueue.add (
+					right
+				);
+			}
+		}
+
+		return bfsLevelListMap;
 	}
 
 	/**

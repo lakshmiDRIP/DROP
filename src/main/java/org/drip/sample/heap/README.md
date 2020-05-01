@@ -7,6 +7,9 @@ DROP Sample Heap illustrates the Construction/Usage Priority Queue and Heap Algo
 
 ## Class Components
 
+ * [***BinaryHeapMeld***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/heap/BinaryHeapMeld.java)
+ <i>BinaryHeapMeld</i> illustrates the Melding of two Binary Heaps into One.
+
  * [***BinaryMaxHeap***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/heap/BinaryMaxHeap.java)
  <i>BinaryMaxHeap</i> illustrates Operations off of a Binary Max-Heap..
 

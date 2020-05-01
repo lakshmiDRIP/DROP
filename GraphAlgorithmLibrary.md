@@ -11,7 +11,7 @@ Graph Algorithm Library contains the Libraries implementing the Graph Representa
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm/GraphAlgorithm_v4.82.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm/GraphAlgorithm_v4.84.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -44,6 +44,30 @@ Graph Algorithm Library contains the Libraries implementing the Graph Representa
 	* Parallelize Individual Operations
 	* Concurrent Parallel Access
 	* K-Element Operations
+	* References
+ * Binary Heap
+	* Overview
+	* Heap Operations
+	* Insert
+	* Extract
+	* Building a Heap
+	* Heap Implementation
+	* Derivation of Index Equations
+	* Child Nodes
+	* Parent Node
+	* Related Structures
+	* References
+ * Binomial Heap
+	* Overview
+	* Definition
+	* Structure of a Binomial Heap
+	* Implementation
+	* Merge
+	* Insert
+	* Find Minimum
+	* Delete Minimum
+	* Decrease Key
+	* Delete
 	* References
  * The Soft Heap: An Approximate Priority Queue with Optimal Error Rate
 	* Abstract

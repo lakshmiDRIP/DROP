@@ -7,9 +7,6 @@ DROP Graph Heap Package contains the Heap Based Priority Queue Implementations.
 
 ## Class Components
 
- * [***BinaryArrayNode***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/heap/BinaryArrayNode.java)
- <i>BinaryArrayNode</i> implements a Node in a Binary Tree implemented using an Array.
-
  * [***BinaryTreeAsymptote***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/heap/BinaryTreeAsymptote.java)
  <i>BinaryTreeAsymptote</i> implements the Asymptotics of a Binary Based Heap.
 

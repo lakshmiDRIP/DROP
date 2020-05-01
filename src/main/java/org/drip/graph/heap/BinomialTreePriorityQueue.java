@@ -75,28 +75,28 @@ package org.drip.graph.heap;
  */
 
 /**
- * <i>BinaryArrayNode</i> implements a Node in a Binary Tree implemented using an Array. The References are:
+ * <i>BinomialTreePriorityQueue</i> implements an Binomial Tree Based Priority Queue. The References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Brodal, G. S., G. Lagogiannis, and R. E. Tarjan (2012): Strict Fibonacci Heaps <i>Proceedings on
- *  			the 44<sup>th</sup> Symposium on the Theory of Computing - STOC '12</i> 1177-1184
+ *  		Brodal, G. S., and C. Okasaki (1996): Optimal Purely Functional Priority Queues <i>Journal of
+ *  			Functional Programming</i> <b>6 (6)</b> 839-857
+ *  	</li>
+ *  	<li>
+ *  		Brown, M. R. (1978): Implementation and Analysis of Binomial Queue Algorithms <i>SIAM Journal on
+ *  			Computing</i> <b>7 (3)</b> 298-319
  *  	</li>
  *  	<li>
  *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms
  *  			3<sup>rd</sup> Edition</i> <b>MIT Press</b>
  *  	</li>
  *  	<li>
- *  		Hayward, R., and C. McDiarmid (1991): Average Case Analysis of Heap-building by Repeated
- *  			Insertion <i>Journal of Algorithms</i> <b>12 (1)</b> 126-153
+ *  		Vuillemin, J. (1978): A Data Structure for Manipulating Priority Queues <i>Communications of the
+ *  			ACM</i> <b>21 (4)</b> 309-315
  *  	</li>
  *  	<li>
- *  		Suchanek, M. A. (2012): Elementary yet Precise Worst-case Analysis of Floyd's Heap Construction
- *  			Program <i>Fundamenta Informaticae</i> <b>120 (1)</b> 75-92
- *  	</li>
- *  	<li>
- *  		Wikipedia (2020): Binary Heap https://en.wikipedia.org/wiki/Binary_heap
+ *  		Wikipedia (2019): Binomial Heap https://en.wikipedia.org/wiki/Binomial_heap
  *  	</li>
  *  </ul>
  *
@@ -112,7 +112,136 @@ package org.drip.graph.heap;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BinaryArrayNode
+public class BinomialTreePriorityQueue
 {
+	private boolean _minHeap = false;
+	private java.util.List<org.drip.graph.heap.BinomialTree> _binomialTreeList = null;
 
+	/**
+	 * BinomialTreePriorityQueue Constructor
+	 * 
+	 * @param minHeap TRUE - Indicates that Heap is a Min Heap
+	 */
+
+	public BinomialTreePriorityQueue (
+		final boolean minHeap)
+	{
+		_minHeap = minHeap;
+	}
+
+	/**
+	 * Indicate if the Binary Heap is a Min Heap
+	 * 
+	 * @return TRUE - The Binary Heap is a Min Heap
+	 */
+
+	public boolean minHeap()
+	{
+		return _minHeap;
+	}
+
+	/**
+	 * Retrieve the List of Binomial Trees
+	 * 
+	 * @return List of Binomial Trees
+	 */
+
+	public java.util.List<org.drip.graph.heap.BinomialTree> binomialTreeList()
+	{
+		return _binomialTreeList;
+	}
+
+	/**
+	 * Insert the Specified Key into the Heap
+	 * 
+	 * @param key Key
+	 * 
+	 * @return TRUE - The Key successfully inserted
+	 */
+
+	public boolean insert (
+		final double key)
+	{
+		int currentOrder = 0;
+		org.drip.graph.heap.BinomialTree meldedTree = null;
+
+		try
+		{
+			meldedTree = new org.drip.graph.heap.BinomialTree (
+				key
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+
+			return false;
+		}
+
+		if (null == _binomialTreeList)
+		{
+			_binomialTreeList = new java.util.ArrayList<org.drip.graph.heap.BinomialTree>();
+		}
+
+		boolean insertFlag = currentOrder >= _binomialTreeList.size();
+
+		org.drip.graph.heap.BinomialTree orderedTree = insertFlag ? null :
+			_binomialTreeList.get (
+				currentOrder
+			);
+
+		if (null == orderedTree)
+		{
+			if (insertFlag)
+			{
+				_binomialTreeList.add (
+					meldedTree
+				);
+			}
+			else
+			{
+				_binomialTreeList.set (
+					currentOrder,
+					meldedTree
+				);
+			}
+
+			return true;
+		}
+
+		orderedTree = _binomialTreeList.get (
+			currentOrder
+		);
+
+		while (null != orderedTree)
+		{
+			meldedTree = org.drip.graph.heap.BinomialTree.MeldPair (
+				meldedTree,
+				orderedTree,
+				_minHeap
+			);
+
+			insertFlag = ++currentOrder >= _binomialTreeList.size();
+
+			orderedTree = insertFlag ? null : _binomialTreeList.get (
+				currentOrder
+			);
+		}
+
+		if (insertFlag)
+		{
+			_binomialTreeList.add (
+				meldedTree
+			);
+		}
+		else
+		{
+			_binomialTreeList.set (
+				currentOrder,
+				meldedTree
+			);
+		}
+
+		return true;
+	}
 }

@@ -85,7 +85,7 @@ package org.drip.spline.basis;
  * <i>FunctionSetBuilderParams</i> is an empty stub class whose derived implementations hold the per segment
  * basis set parameters.
  *
- * <br><br>
+ *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>

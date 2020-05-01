@@ -1,6 +1,6 @@
 
 /**
- * Sovereign Bond Analytics Sample Demonstration
+ * Sovereign Bond Construction and Analytics
  *
  * @author Lakshmi Krishnamurthy
  */

@@ -85,7 +85,7 @@ package org.drip.spline.basis;
  * <i>ExponentialTensionSetParams</i> implements per-segment parameters for the exponential tension basis
  * set. Currently it only contains the tension parameter.
  *
- * <br><br>
+ *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
