@@ -112,10 +112,97 @@ package org.drip.graph.heap;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BinomialTreePriorityQueue
+public class BinomialTreePriorityQueue<K, V>
+	implements org.drip.graph.heap.PriorityQueue<K, V>
 {
 	private boolean _minHeap = false;
 	private java.util.List<org.drip.graph.heap.BinomialTree> _binomialTreeList = null;
+
+	private boolean trimEmptyTrailer()
+	{
+		int reverseIndex = null == _binomialTreeList ? 0 : _binomialTreeList.size() - 1;
+
+		while (reverseIndex >= 0 &&
+			null == _binomialTreeList.get (
+				reverseIndex
+			)
+		)
+		{
+			_binomialTreeList.remove (
+				reverseIndex--
+			);
+		}
+
+		return true;
+	}
+
+	private int extremumIndex()
+		throws java.lang.Exception
+	{
+		if (isEmpty())
+		{
+			throw new java.lang.Exception (
+				"BinomialTreePriorityQueue::extremumIndex => The Extremum (Minimum/Maximum) Index cannot be computed"
+			);
+		}
+
+		int extremumIndex = 0;
+
+		while (extremumIndex < _binomialTreeList.size() &&
+			null == _binomialTreeList.get (
+				extremumIndex
+			)
+		)
+		{
+			++extremumIndex;
+		}
+
+		int size = _binomialTreeList.size();
+
+		if (extremumIndex >= size)
+		{
+			--extremumIndex;
+		}
+
+		double extremumKey = _binomialTreeList.get (
+			extremumIndex
+		).key();
+
+		for (int index = extremumIndex + 1;
+			index < size;
+			++index)
+		{
+			org.drip.graph.heap.BinomialTree current = _binomialTreeList.get (
+				index
+			);
+
+			if (null != current)
+			{
+				double currentKey = _binomialTreeList.get (
+					index
+				).key();
+
+				if (_minHeap)
+				{
+					if (currentKey < extremumKey)
+					{
+						extremumKey = currentKey;
+						extremumIndex = index;
+					}
+				}
+				else
+				{
+					if (currentKey > extremumKey)
+					{
+						extremumKey = currentKey;
+						extremumIndex = index;
+					}
+				}
+			}
+		}
+
+		return extremumIndex;
+	}
 
 	/**
 	 * BinomialTreePriorityQueue Constructor
@@ -152,35 +239,33 @@ public class BinomialTreePriorityQueue
 	}
 
 	/**
-	 * Insert the Specified Key into the Heap
+	 * Meld the Specified Tree into the Heap
 	 * 
-	 * @param key Key
+	 * @param tree The Tree to Meld
 	 * 
-	 * @return TRUE - The Key successfully inserted
+	 * @return TRUE - The Tree successfully melded into the Heap
 	 */
 
-	public boolean insert (
-		final double key)
+	public boolean meld (
+		final org.drip.graph.heap.BinomialTree tree)
 	{
-		int currentOrder = 0;
-		org.drip.graph.heap.BinomialTree meldedTree = null;
-
-		try
+		if (null == tree)
 		{
-			meldedTree = new org.drip.graph.heap.BinomialTree (
-				key
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-
-			return false;
+			return true;
 		}
 
 		if (null == _binomialTreeList)
 		{
 			_binomialTreeList = new java.util.ArrayList<org.drip.graph.heap.BinomialTree>();
+		}
+
+		int currentOrder = tree.order();
+
+		while (_binomialTreeList.size() < currentOrder)
+		{
+			_binomialTreeList.add (
+				null
+			);
 		}
 
 		boolean insertFlag = currentOrder >= _binomialTreeList.size();
@@ -190,19 +275,21 @@ public class BinomialTreePriorityQueue
 				currentOrder
 			);
 
+		org.drip.graph.heap.BinomialTree combinedTree = tree;
+
 		if (null == orderedTree)
 		{
 			if (insertFlag)
 			{
 				_binomialTreeList.add (
-					meldedTree
+					combinedTree
 				);
 			}
 			else
 			{
 				_binomialTreeList.set (
 					currentOrder,
-					meldedTree
+					combinedTree
 				);
 			}
 
@@ -215,8 +302,13 @@ public class BinomialTreePriorityQueue
 
 		while (null != orderedTree)
 		{
-			meldedTree = org.drip.graph.heap.BinomialTree.MeldPair (
-				meldedTree,
+			_binomialTreeList.set (
+				currentOrder,
+				null
+			);
+
+			combinedTree = org.drip.graph.heap.BinomialTree.CombinePair (
+				combinedTree,
 				orderedTree,
 				_minHeap
 			);
@@ -231,17 +323,140 @@ public class BinomialTreePriorityQueue
 		if (insertFlag)
 		{
 			_binomialTreeList.add (
-				meldedTree
+				combinedTree
 			);
 		}
 		else
 		{
 			_binomialTreeList.set (
 				currentOrder,
-				meldedTree
+				combinedTree
 			);
 		}
 
+		return trimEmptyTrailer();
+	}
+
+	/**
+	 * Insert the Specified Key into the Heap
+	 * 
+	 * @param key Key
+	 * 
+	 * @return TRUE - The Key successfully inserted
+	 */
+
+	public boolean insert (
+		final double key)
+	{
+		try
+		{
+			return meld (
+				new org.drip.graph.heap.BinomialTree (
+					key
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	/**
+	 * Meld the Specified Binomial Heap into the Current Heap
+	 * 
+	 * @param binomialHeapOther The Binomial Heap to Meld
+	 * 
+	 * @return TRUE - The Binomial Heap successfully melded into the Current Heap
+	 */
+
+	public boolean meld (
+		final BinomialTreePriorityQueue<K, V> binomialHeapOther)
+	{
+		if (null == binomialHeapOther || binomialHeapOther.isEmpty())
+		{
+			return true;
+		}
+
+		java.util.List<org.drip.graph.heap.BinomialTree> binomialTreeListOther =
+			binomialHeapOther.binomialTreeList();
+
+		if (isEmpty())
+		{
+			_binomialTreeList = binomialTreeListOther;
+			return true;
+		}
+
+		for (org.drip.graph.heap.BinomialTree tree : binomialTreeListOther)
+		{
+			if (!meld (
+				tree
+			))
+			{
+				return false;
+			}
+		}
+
 		return true;
+	}
+
+	/**
+	 * Extract the Extremum Tree Entry
+	 * 
+	 * @return The Extremum Tree Entry
+	 */
+
+	public org.drip.graph.heap.BinomialTree extractExtremum()
+	{
+		int extremumIndex = -1;
+
+		try
+		{
+			extremumIndex = extremumIndex();
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+
+			return null;
+		}
+
+		org.drip.graph.heap.BinomialTree extremumTree = _binomialTreeList.get (
+			extremumIndex
+		);
+
+		_binomialTreeList.set (
+			extremumIndex,
+			null
+		);
+
+		java.util.List<org.drip.graph.heap.BinomialTree> binomialTreeChildren = extremumTree.children();
+
+		if (null != binomialTreeChildren)
+		{
+			for (org.drip.graph.heap.BinomialTree child : binomialTreeChildren)
+			{
+				if (!meld (
+					child
+				))
+				{
+					return null;
+				}
+			}
+		}
+
+		return trimEmptyTrailer() ? extremumTree : null;
+	}
+
+	@Override public boolean isEmpty()
+	{
+		return null == _binomialTreeList || 0 == _binomialTreeList.size();
+	}
+
+	@Override public java.lang.String toString()
+	{
+		return null == _binomialTreeList ? "[]" : _binomialTreeList.toString();
 	}
 }

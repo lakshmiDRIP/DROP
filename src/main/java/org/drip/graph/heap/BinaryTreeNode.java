@@ -112,14 +112,14 @@ package org.drip.graph.heap;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BinaryTreeNode
+public class BinaryTreeNode<K, V>
 {
 	private int _level = 0;
-	private BinaryTreeNode _left = null;
-	private BinaryTreeNode _right = null;
-	private BinaryTreeNode _parent = null;
 	private boolean _isRightChild = false;
+	private BinaryTreeNode<K, V> _left = null;
 	private double _key = java.lang.Double.NaN;
+	private BinaryTreeNode<K, V> _right = null;
+	private BinaryTreeNode<K, V> _parent = null;
 
 	/**
 	 * BinaryTreeNode Constructor
@@ -161,7 +161,7 @@ public class BinaryTreeNode
 	 * @return The Parent
 	 */
 
-	public BinaryTreeNode parent()
+	public BinaryTreeNode<K, V> parent()
 	{
 		return _parent;
 	}
@@ -172,7 +172,7 @@ public class BinaryTreeNode
 	 * @return The Left Child
 	 */
 
-	public BinaryTreeNode left()
+	public BinaryTreeNode<K, V> left()
 	{
 		return _left;
 	}
@@ -183,7 +183,7 @@ public class BinaryTreeNode
 	 * @return The Right Child
 	 */
 
-	public BinaryTreeNode right()
+	public BinaryTreeNode<K, V> right()
 	{
 		return _right;
 	}
@@ -262,7 +262,7 @@ public class BinaryTreeNode
 	 */
 
 	public boolean setParent (
-		final BinaryTreeNode parent)
+		final BinaryTreeNode<K, V> parent)
 	{
 		_parent = parent;
 		return true;
@@ -277,7 +277,7 @@ public class BinaryTreeNode
 	 */
 
 	public boolean setLeft (
-		final BinaryTreeNode left)
+		final BinaryTreeNode<K, V> left)
 	{
 		_left = left;
 		return true;
@@ -292,7 +292,7 @@ public class BinaryTreeNode
 	 */
 
 	public boolean setRight (
-		final BinaryTreeNode right)
+		final BinaryTreeNode<K, V> right)
 	{
 		_right = right;
 		return true;
@@ -341,7 +341,7 @@ public class BinaryTreeNode
 	 * @return The Child Node with the Smaller Value
 	 */
 
-	public BinaryTreeNode smallerChild()
+	public BinaryTreeNode<K, V> smallerChild()
 	{
 		if (null == _left && null == _right)
 		{
@@ -367,7 +367,7 @@ public class BinaryTreeNode
 	 * @return The Child Node with the Larger Value
 	 */
 
-	public BinaryTreeNode largerChild()
+	public BinaryTreeNode<K, V> largerChild()
 	{
 		if (null == _left && null == _right)
 		{

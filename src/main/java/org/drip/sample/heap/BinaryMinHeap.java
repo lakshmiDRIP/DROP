@@ -126,7 +126,7 @@ public class BinaryMinHeap
 			""
 		);
 
-		BinaryTreePriorityQueue binaryHeap = new BinaryTreePriorityQueue (
+		BinaryTreePriorityQueue<Double, Double> binaryHeap = new BinaryTreePriorityQueue<Double, Double> (
 			true
 		);
 

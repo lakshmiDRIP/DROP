@@ -1,6 +1,7 @@
 
 package org.drip.sample.heap;
 
+import org.drip.graph.heap.BinomialTree;
 import org.drip.graph.heap.BinomialTreePriorityQueue;
 import org.drip.service.env.EnvManager;
 
@@ -78,8 +79,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>BinomialTreeMinHeap</i> illustrates the insert and extract Operations of a Binomial Tree Heap. The
- * 	References are:
+ * <i>BinomialHeapMaxSequentialExtract</i> illustrates the Sequential Extraction Operation into a Max
+ * 	Binomial Heap. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -116,8 +117,20 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BinomialTreeMinHeap
+public class BinomialHeapMaxSequentialExtract
 {
+
+	private static final void DisplayHeap (
+		final BinomialTreePriorityQueue<Double, Double> binomialHeap)
+		throws Exception
+	{
+		int order = 0;
+
+		for (BinomialTree tree : binomialHeap.binomialTreeList())
+		{
+			System.out.println ("\t|\t[" + order++ + "] => " + tree);
+		}
+	}
 
 	public static final void main (
 		final String[] argumentArray)
@@ -127,21 +140,46 @@ public class BinomialTreeMinHeap
 			""
 		);
 
-		BinomialTreePriorityQueue binomialHeap = new BinomialTreePriorityQueue (
-			true
+		int sequenceCount = 33;
+
+		BinomialTreePriorityQueue<Double, Double> binomialHeap =
+			new BinomialTreePriorityQueue<Double, Double> (
+				false
+			);
+
+		System.out.println ("\t|-------------------------------------------------------------------------------------");
+
+		System.out.println ("\t| After Inserting " + sequenceCount + " Items");
+
+		System.out.println ("\t|-------------------------------------------------------------------------------------");
+
+		for (int sequenceIndex = 1;
+			sequenceIndex <= sequenceCount;
+			++sequenceIndex)
+		{
+			binomialHeap.insert (
+				sequenceIndex
+			);
+		}
+
+		DisplayHeap (
+			binomialHeap
 		);
 
-		System.out.println (
-			binomialHeap.insert (
-				1.
-			)
-		);
+		System.out.println ("\t|-------------------------------------------------------------------------------------");
 
-		System.out.println (
-			binomialHeap.insert (
-				2.
-			)
-		);
+		while (!binomialHeap.isEmpty())
+		{
+			BinomialTree tree = binomialHeap.extractExtremum();
+
+			System.out.println ("\t| After extracting " + tree.key());
+
+			DisplayHeap (
+				binomialHeap
+			);
+		}
+
+		System.out.println ("\t|-------------------------------------------------------------------------------------");
 
 		EnvManager.TerminateEnv();
 	}

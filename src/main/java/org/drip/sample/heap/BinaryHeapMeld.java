@@ -123,11 +123,11 @@ import org.drip.service.env.EnvManager;
 public class BinaryHeapMeld
 {
 
-	private static final String PrintNode (
-		final BinaryTreeNode binaryTreeNode)
+	private static <K, V> String PrintNode (
+		final BinaryTreeNode<K, V> binaryTreeNode)
 		throws Exception
 	{
-		BinaryTreeNode parent = binaryTreeNode.parent();
+		BinaryTreeNode<K, V> parent = binaryTreeNode.parent();
 
 		return "[" + FormatUtil.FormatDouble (
 			binaryTreeNode.key(), 1, 3, 1.
@@ -153,11 +153,11 @@ public class BinaryHeapMeld
 		int keyCount1 = 16;
 		int keyCount2 = 16;
 
-		BinaryTreePriorityQueue binaryHeap1 = new BinaryTreePriorityQueue (
+		BinaryTreePriorityQueue<Double, Double> binaryHeap1 = new BinaryTreePriorityQueue<Double, Double> (
 			false
 		);
 
-		BinaryTreePriorityQueue binaryHeap2 = new BinaryTreePriorityQueue (
+		BinaryTreePriorityQueue<Double, Double> binaryHeap2 = new BinaryTreePriorityQueue<Double, Double> (
 			false
 		);
 
@@ -195,11 +195,12 @@ public class BinaryHeapMeld
 			"\t|--------------------------------------------------------------------------------------------------------------------------------"
 		);
 
-		for (Map.Entry<Integer, List<BinaryTreeNode>> bfsEntry : binaryHeap1.bfsLevelListMap().entrySet())
+		for (Map.Entry<Integer, List<BinaryTreeNode<Double, Double>>> bfsEntry :
+			binaryHeap1.bfsLevelListMap().entrySet())
 		{
 			String treeDump = "\t| {" + bfsEntry.getKey() + "}";
 
-			for (BinaryTreeNode binaryTreeNode: bfsEntry.getValue())
+			for (BinaryTreeNode<Double, Double> binaryTreeNode: bfsEntry.getValue())
 			{
 				treeDump = treeDump + PrintNode (
 					binaryTreeNode
@@ -227,11 +228,12 @@ public class BinaryHeapMeld
 			"\t|--------------------------------------------------------------------------------------------------------------------------------"
 		);
 
-		for (Map.Entry<Integer, List<BinaryTreeNode>> bfsEntry : binaryHeap2.bfsLevelListMap().entrySet())
+		for (Map.Entry<Integer, List<BinaryTreeNode<Double, Double>>> bfsEntry :
+			binaryHeap2.bfsLevelListMap().entrySet())
 		{
 			String treeDump = "\t| {" + bfsEntry.getKey() + "}";
 
-			for (BinaryTreeNode binaryTreeNode: bfsEntry.getValue())
+			for (BinaryTreeNode<Double, Double> binaryTreeNode: bfsEntry.getValue())
 			{
 				treeDump = treeDump + PrintNode (
 					binaryTreeNode
@@ -263,11 +265,12 @@ public class BinaryHeapMeld
 			"\t|--------------------------------------------------------------------------------------------------------------------------------"
 		);
 
-		for (Map.Entry<Integer, List<BinaryTreeNode>> bfsEntry : binaryHeap1.bfsLevelListMap().entrySet())
+		for (Map.Entry<Integer, List<BinaryTreeNode<Double, Double>>> bfsEntry :
+			binaryHeap1.bfsLevelListMap().entrySet())
 		{
 			String treeDump = "\t| {" + bfsEntry.getKey() + "}";
 
-			for (BinaryTreeNode binaryTreeNode: bfsEntry.getValue())
+			for (BinaryTreeNode<Double, Double> binaryTreeNode: bfsEntry.getValue())
 			{
 				treeDump = treeDump + PrintNode (
 					binaryTreeNode

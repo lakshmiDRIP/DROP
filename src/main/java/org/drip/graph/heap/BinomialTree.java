@@ -118,8 +118,47 @@ public class BinomialTree
 	private double _key = java.lang.Double.NaN;
 	private java.util.List<BinomialTree> _children = null;
 
+	private static final boolean ChildKeyList (
+		final BinomialTree tree,
+		final java.util.List<java.lang.Double> childKeyList)
+	{
+		if (null == childKeyList)
+		{
+			return false;
+		}
+
+		if (null == tree)
+		{
+			return true;
+		}
+
+		java.util.List<BinomialTree> children = tree.children();
+
+		if (null == children)
+		{
+			return true;
+		}
+
+		for (BinomialTree child : children)
+		{
+			if (null != child)
+			{
+				childKeyList.add (
+					child.key()
+				);
+
+				ChildKeyList (
+					child,
+					childKeyList
+				);
+			}
+		}
+
+		return true;
+	}
+
 	/**
-	 * Meld the specified Pair of Binomial Trees into one of the Higher Order
+	 * Combine the specified Pair of Binomial Trees into one of the Higher Order
 	 * 
 	 * @param binomialTree1 Binomial Tree #1
 	 * @param binomialTree2 Binomial Tree #2
@@ -128,7 +167,7 @@ public class BinomialTree
 	 * @return The Binomial Tree of Higher Order
 	 */
 
-	public static final BinomialTree MeldPair (
+	public static final BinomialTree CombinePair (
 		final BinomialTree binomialTree1,
 		final BinomialTree binomialTree2,
 		final boolean minHeap)
@@ -318,14 +357,14 @@ public class BinomialTree
 	{
 		if (null == children)
 		{
-			return false;
+			return true;
 		}
 
 		int childrenCount = children.size();
 
 		if (0 == childrenCount)
 		{
-			return false;
+			return true;
 		}
 
 		for (int childIndex = 0;
@@ -336,7 +375,7 @@ public class BinomialTree
 				0
 			);
 
-			if (null == child || childIndex == child.order())
+			if (null == child)
 			{
 				return false;
 			}
@@ -346,8 +385,28 @@ public class BinomialTree
 		return true;
 	}
 
+	/**
+	 * Retrieve the List of all the Child Keys
+	 * 
+	 * @return The List of all the Child Keys
+	 */
+
+	public java.util.List<java.lang.Double> childKeyList()
+	{
+		java.util.List<java.lang.Double> childKeyList = new java.util.ArrayList<java.lang.Double>();
+
+		return ChildKeyList (
+			this,
+			childKeyList
+		) ? childKeyList : null;
+	}
+
 	@Override public java.lang.String toString()
 	{
-		return "[" + key() + " | " + _parent.key() + "]";
+		return "{" +
+			"Order = " + order() + " | Key = " + _key +
+			" | Parent Key = " + (null == _parent ? "null" : _parent.key()) +
+			" | Children Keys = (" + childKeyList() + ")" +
+		"}";
 	}
 }
