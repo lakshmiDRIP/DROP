@@ -132,14 +132,14 @@ public class PriorityQueueEntry<K, V>
 		final V value)
 		throws java.lang.Exception
 	{
-		if (null == (_key = key) ||
-			null == (_value = value)
-		)
+		if (null == (_key = key))
 		{
 			throw new java.lang.Exception (
 				"PriorityQueueEntry Constructor => Invalid Inputs"
 			);
 		}
+
+		_value = value;
 	}
 
 	/**
@@ -162,5 +162,57 @@ public class PriorityQueueEntry<K, V>
 	public V value()
 	{
 		return _value;
+	}
+
+	/**
+	 * Set the Key
+	 * 
+	 * @param key The Key
+	 * 
+	 * @return TRUE - The Key successfully set
+	 */
+
+	public boolean setKey (
+		final K key)
+	{
+		if (null == key)
+		{
+			return false;
+		}
+
+		_key = key;
+		return true;
+	}
+
+	/**
+	 * Set the Value
+	 * 
+	 * @param value The Value
+	 * 
+	 * @return TRUE - The Value successfully set
+	 */
+
+	public boolean setValue (
+		final V value)
+	{
+		_value = value;
+		return true;
+	}
+
+	@Override public PriorityQueueEntry<K, V> clone()
+	{
+		try
+		{
+			return new PriorityQueueEntry<K, V> (
+				_key,
+				_value
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

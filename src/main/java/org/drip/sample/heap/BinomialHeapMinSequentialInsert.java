@@ -120,11 +120,11 @@ import org.drip.service.env.EnvManager;
 public class BinomialHeapMinSequentialInsert
 {
 
-	private static final void DisplayHeap (
-		final BinomialTreePriorityQueue<Double, Double> binomialHeap)
+	private static <K extends java.lang.Comparable<K>, V> void DisplayHeap (
+		final BinomialTreePriorityQueue<K, V> binomialHeap)
 		throws Exception
 	{
-		for (BinomialTree tree : binomialHeap.binomialTreeList())
+		for (BinomialTree<K, V> tree : binomialHeap.binomialTreeList())
 		{
 			System.out.println ("\t|\t" + tree);
 		}
@@ -138,14 +138,15 @@ public class BinomialHeapMinSequentialInsert
 			""
 		);
 
-		int sequenceCount = 33;
+		double sequenceCount = 33.;
+		boolean doubleInsert = true;
 
 		BinomialTreePriorityQueue<Double, Double> binomialHeap =
 			new BinomialTreePriorityQueue<Double, Double> (
 				true
 			);
 
-		for (int sequenceIndex = 0;
+		for (double sequenceIndex = 0.;
 			sequenceIndex <= sequenceCount;
 			++sequenceIndex)
 		{
@@ -154,8 +155,17 @@ public class BinomialHeapMinSequentialInsert
 			System.out.println ("\t| After inserting " + sequenceIndex);
 
 			binomialHeap.insert (
+				sequenceIndex,
 				sequenceIndex
 			);
+
+			if (doubleInsert)
+			{
+				binomialHeap.insert (
+					sequenceIndex,
+					sequenceIndex
+				);
+			}
 
 			DisplayHeap (
 				binomialHeap

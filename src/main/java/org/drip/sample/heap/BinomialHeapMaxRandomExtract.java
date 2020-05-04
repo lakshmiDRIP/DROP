@@ -120,13 +120,13 @@ import org.drip.service.env.EnvManager;
 public class BinomialHeapMaxRandomExtract
 {
 
-	private static final void DisplayHeap (
-		final BinomialTreePriorityQueue<Double, Double> binomialHeap)
+	private static <K extends java.lang.Comparable<K>, V> void DisplayHeap (
+		final BinomialTreePriorityQueue<K, V> binomialHeap)
 		throws Exception
 	{
 		int order = 0;
 
-		for (BinomialTree tree : binomialHeap.binomialTreeList())
+		for (BinomialTree<K, V> tree : binomialHeap.binomialTreeList())
 		{
 			System.out.println ("\t|\t[" + order++ + "] => " + tree);
 		}
@@ -158,6 +158,7 @@ public class BinomialHeapMaxRandomExtract
 			++randomIndex)
 		{
 			binomialHeap.insert (
+				Math.random(),
 				Math.random()
 			);
 		}
@@ -170,9 +171,7 @@ public class BinomialHeapMaxRandomExtract
 
 		while (!binomialHeap.isEmpty())
 		{
-			BinomialTree tree = binomialHeap.extractExtremum();
-
-			System.out.println ("\t|\t" + tree.key());
+			System.out.println ("\t|\t" + binomialHeap.extractExtremum().key());
 		}
 
 		System.out.println ("\t|-------------------------------------------------------------------------------------");

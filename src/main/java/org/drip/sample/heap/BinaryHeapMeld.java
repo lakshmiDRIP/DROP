@@ -123,21 +123,21 @@ import org.drip.service.env.EnvManager;
 public class BinaryHeapMeld
 {
 
-	private static <K, V> String PrintNode (
+	private static <K extends Comparable<K>, V> String PrintNode (
 		final BinaryTreeNode<K, V> binaryTreeNode)
 		throws Exception
 	{
 		BinaryTreeNode<K, V> parent = binaryTreeNode.parent();
 
 		return "[" + FormatUtil.FormatDouble (
-			binaryTreeNode.key(), 1, 3, 1.
+			(double) binaryTreeNode.entry().key(), 1, 3, 1.
 		) + " | " +
 			binaryTreeNode.level() + " | " +
 		(
 			binaryTreeNode.isRightChild() ? "R" : "L"
 		) + " | " + (
 			null != parent ? FormatUtil.FormatDouble (
-				parent.key(), 1, 3, 1.
+				(double) parent.entry().key(), 1, 3, 1.
 			) : "     "
 		) + "]";
 	}
@@ -152,6 +152,7 @@ public class BinaryHeapMeld
 
 		int keyCount1 = 16;
 		int keyCount2 = 16;
+		boolean doubleInsertion = true;
 
 		BinaryTreePriorityQueue<Double, Double> binaryHeap1 = new BinaryTreePriorityQueue<Double, Double> (
 			false
@@ -168,8 +169,17 @@ public class BinaryHeapMeld
 			double key = Math.random();
 
 			binaryHeap1.insert (
+				key,
 				key
 			);
+
+			if (doubleInsertion)
+			{
+				binaryHeap1.insert (
+					key,
+					key
+				);
+			}
 		}
 
 		for (int keyIndex = 0;
@@ -179,8 +189,17 @@ public class BinaryHeapMeld
 			double key = Math.random();
 
 			binaryHeap2.insert (
+				key,
 				key
 			);
+
+			if (doubleInsertion)
+			{
+				binaryHeap2.insert (
+					key,
+					key
+				);
+			}
 		}
 
 		System.out.println (

@@ -120,13 +120,13 @@ import org.drip.service.env.EnvManager;
 public class BinomialHeapMinRandomInsert
 {
 
-	private static final void DisplayHeap (
-		final BinomialTreePriorityQueue<Double, Double> binomialHeap)
+	private static <K extends java.lang.Comparable<K>, V> void DisplayHeap (
+		final BinomialTreePriorityQueue<K, V> binomialHeap)
 		throws Exception
 	{
 		int order = 0;
 
-		for (BinomialTree tree : binomialHeap.binomialTreeList())
+		for (BinomialTree<K, V> tree : binomialHeap.binomialTreeList())
 		{
 			System.out.println ("\t|\t[" + order++ + "] => " + tree);
 		}
@@ -154,6 +154,7 @@ public class BinomialHeapMinRandomInsert
 			++randomIndex)
 		{
 			binomialHeap.insert (
+				Math.random(),
 				Math.random()
 			);
 		}

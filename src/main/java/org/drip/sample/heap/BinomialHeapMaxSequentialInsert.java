@@ -120,11 +120,11 @@ import org.drip.service.env.EnvManager;
 public class BinomialHeapMaxSequentialInsert
 {
 
-	private static final void DisplayHeap (
-		final BinomialTreePriorityQueue<Double, Double> binomialHeap)
+	private static <K extends java.lang.Comparable<K>, V> void DisplayHeap (
+		final BinomialTreePriorityQueue<K, V> binomialHeap)
 		throws Exception
 	{
-		for (BinomialTree tree : binomialHeap.binomialTreeList())
+		for (BinomialTree<K, V> tree : binomialHeap.binomialTreeList())
 		{
 			System.out.println ("\t|\t" + tree);
 		}
@@ -138,14 +138,15 @@ public class BinomialHeapMaxSequentialInsert
 			""
 		);
 
-		int sequenceCount = 33;
+		double sequenceCount = 33.;
+		boolean doubleInsertion = true;
 
 		BinomialTreePriorityQueue<Double, Double> binomialHeap =
 			new BinomialTreePriorityQueue<Double, Double> (
 				false
 			);
 
-		for (int sequenceIndex = 0;
+		for (double sequenceIndex = 0;
 			sequenceIndex <= sequenceCount;
 			++sequenceIndex)
 		{
@@ -154,8 +155,17 @@ public class BinomialHeapMaxSequentialInsert
 			System.out.println ("\t| After inserting " + sequenceIndex);
 
 			binomialHeap.insert (
+				sequenceIndex,
 				sequenceIndex
 			);
+
+			if (doubleInsertion)
+			{
+				binomialHeap.insert (
+					sequenceIndex,
+					sequenceIndex
+				);
+			}
 
 			DisplayHeap (
 				binomialHeap

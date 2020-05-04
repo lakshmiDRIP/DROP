@@ -120,13 +120,13 @@ import org.drip.service.env.EnvManager;
 public class BinomialHeapMinSequentialExtract
 {
 
-	private static final void DisplayHeap (
-		final BinomialTreePriorityQueue<Double, Double> binomialHeap)
+	private static <K extends java.lang.Comparable<K>, V> void DisplayHeap (
+		final BinomialTreePriorityQueue<K, V> binomialHeap)
 		throws Exception
 	{
 		int order = 0;
 
-		for (BinomialTree tree : binomialHeap.binomialTreeList())
+		for (BinomialTree<K, V> tree : binomialHeap.binomialTreeList())
 		{
 			System.out.println ("\t|\t[" + order++ + "] => " + tree);
 		}
@@ -140,7 +140,8 @@ public class BinomialHeapMinSequentialExtract
 			""
 		);
 
-		int sequenceCount = 33;
+		double sequenceCount = 33;
+		boolean doubleInsertion = true;
 
 		BinomialTreePriorityQueue<Double, Double> binomialHeap =
 			new BinomialTreePriorityQueue<Double, Double> (
@@ -153,13 +154,22 @@ public class BinomialHeapMinSequentialExtract
 
 		System.out.println ("\t|-------------------------------------------------------------------------------------");
 
-		for (int sequenceIndex = 1;
+		for (double sequenceIndex = 1;
 			sequenceIndex <= sequenceCount;
 			++sequenceIndex)
 		{
 			binomialHeap.insert (
+				sequenceIndex,
 				sequenceIndex
 			);
+
+			if (doubleInsertion)
+			{
+				binomialHeap.insert (
+					sequenceIndex,
+					sequenceIndex
+				);
+			}
 		}
 
 		DisplayHeap (
@@ -170,9 +180,7 @@ public class BinomialHeapMinSequentialExtract
 
 		while (!binomialHeap.isEmpty())
 		{
-			BinomialTree tree = binomialHeap.extractExtremum();
-
-			System.out.println ("\t| After extracting " + tree.key());
+			System.out.println ("\t| After extracting " + binomialHeap.extractExtremum().key());
 
 			DisplayHeap (
 				binomialHeap

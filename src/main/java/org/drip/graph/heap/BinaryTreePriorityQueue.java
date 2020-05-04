@@ -112,23 +112,26 @@ package org.drip.graph.heap;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BinaryTreePriorityQueue<K, V>
-	implements org.drip.graph.heap.PriorityQueue<K, V>
+public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
+	extends org.drip.graph.heap.PriorityQueue<K, V>
 {
-	private boolean _minHeap = false;
 	private org.drip.graph.heap.BinaryTreeNode<K, V> _top = null;
 
 	private boolean heapPropertyValid (
 		final org.drip.graph.heap.BinaryTreeNode<K, V> above,
 		final org.drip.graph.heap.BinaryTreeNode<K, V> below)
 	{
-		return _minHeap ? above.key() <= below.key() : above.key() >= below.key();
+		return minHeap() ? 1 != above.entry().key().compareTo (
+			below.entry().key()
+		) : -1 != above.entry().key().compareTo (
+			below.entry().key()
+		);
 	}
 
-	private double replaceTop (
+	private org.drip.graph.heap.PriorityQueueEntry<K, V> replaceTop (
 		final org.drip.graph.heap.BinaryTreeNode<K, V> node)
 	{
-		double key = _top.key();
+		org.drip.graph.heap.PriorityQueueEntry<K, V> topEntry = _top.entry().clone();
 
 		if (node == _top)
 		{
@@ -137,11 +140,11 @@ public class BinaryTreePriorityQueue<K, V>
 		else
 		{
 			_top.setKey (
-				node.key()
+				node.entry().key()
 			);
 		}
 
-		return key;
+		return topEntry;
 	}
 
 	private boolean removeLeafNode (
@@ -362,7 +365,9 @@ public class BinaryTreePriorityQueue<K, V>
 	public BinaryTreePriorityQueue (
 		final boolean minHeap)
 	{
-		_minHeap = minHeap;
+		super (
+			minHeap
+		);
 	}
 
 	/**
@@ -374,17 +379,6 @@ public class BinaryTreePriorityQueue<K, V>
 	public org.drip.graph.heap.BinaryTreeNode<K, V> top()
 	{
 		return _top;
-	}
-
-	/**
-	 * Indicate if the Binary Heap is a Min Heap
-	 * 
-	 * @return TRUE - The Binary Heap is a Min Heap
-	 */
-
-	public boolean minHeap()
-	{
-		return _minHeap;
 	}
 
 	/**
@@ -442,7 +436,9 @@ public class BinaryTreePriorityQueue<K, V>
 			return true;
 		}
 
-		org.drip.graph.heap.BinaryTreeNode<K, V> nextChild = _minHeap ? node.smallerChild() :
+		boolean minHeap = minHeap();
+
+		org.drip.graph.heap.BinaryTreeNode<K, V> nextChild = minHeap ? node.smallerChild() :
 			node.largerChild();
 
 		while (null != nextChild &&
@@ -460,29 +456,25 @@ public class BinaryTreePriorityQueue<K, V>
 				return false;
 			}
 
-			nextChild = _minHeap ? node.smallerChild() : node.largerChild();
+			nextChild = minHeap ? node.smallerChild() : node.largerChild();
 		}
 
 		return true;
 	}
 
-	/**
-	 * Insert the Specified Key into the Heap
-	 * 
-	 * @param key Key
-	 * 
-	 * @return TRUE - The Key successfully inserted
-	 */
-
-	public boolean insert (
-		final double key)
+	@Override public boolean insert (
+		final K key,
+		final V value)
 	{
 		if (null == _top)
 		{
 			try
 			{
 				_top = new org.drip.graph.heap.BinaryTreeNode<K, V> (
-					key
+					new org.drip.graph.heap.PriorityQueueEntry<K, V> (
+						key,
+						value
+					)
 				);
 			}
 			catch (java.lang.Exception e)
@@ -542,7 +534,10 @@ public class BinaryTreePriorityQueue<K, V>
 		try
 		{
 			newNode = new org.drip.graph.heap.BinaryTreeNode<K, V> (
-				key
+				new org.drip.graph.heap.PriorityQueueEntry<K, V> (
+					key,
+					value
+				)
 			);
 		}
 		catch (java.lang.Exception e)
@@ -592,60 +587,11 @@ public class BinaryTreePriorityQueue<K, V>
 		);
 	}
 
-	/**
-	 * Meld the Specified Binary Tree Priority Queue with the current
-	 * 
-	 * @param binaryTreePriorityQueueOther The Specified Binary Tree Priority Queue
-	 * 
-	 * @return TRUE - The Specified Binary Tree Priority Queue successfully melded
-	 */
-
-	public boolean meld (
-		final BinaryTreePriorityQueue<K, V> binaryTreePriorityQueueOther)
-	{
-		if (null == binaryTreePriorityQueueOther)
-		{
-			return false;
-		}
-
-		while (!binaryTreePriorityQueueOther.isEmpty())
-		{
-			try
-			{
-				if (!insert (
-					binaryTreePriorityQueueOther.extractTop()
-				))
-				{
-					return false;
-				}
-			}
-			catch (java.lang.Exception e)
-			{
-				e.printStackTrace();
-
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	/**
-	 * Extract the Top from the Heap
-	 * 
-	 * @return The Top Key in the Heap
-	 * 
-	 * @throws java.lang.Exception Thrown if the Heap Maximum cannot be extracted
-	 */
-
-	public double extractTop()
-		throws java.lang.Exception
+	@Override public org.drip.graph.heap.PriorityQueueEntry<K, V> extractExtremum()
 	{
 		if (null == _top)
 		{
-			throw new java.lang.Exception (
-				"BinaryTreePriorityQueue::extractTop => Heap is Empty"
-			);
+			return null;
 		}
 
 		org.drip.graph.heap.BinaryTreeNode<K, V> node = null;
@@ -695,12 +641,10 @@ public class BinaryTreePriorityQueue<K, V>
 			node
 		))
 		{
-			throw new java.lang.Exception (
-				"BinaryTreePriorityQueue::extractTop => Cannot remove Leaf Node"
-			);
+			return null;
 		}
 
-		double topNodeKey = replaceTop (
+		org.drip.graph.heap.PriorityQueueEntry<K, V> topNodeEntry = replaceTop (
 			node
 		);
 
@@ -710,13 +654,61 @@ public class BinaryTreePriorityQueue<K, V>
 				_top
 			))
 			{
-				throw new java.lang.Exception (
-					"BinaryTreePriorityQueue::extractTop => Cannot maintain Heap Property"
-				);
+				return null;
 			}
 		}
 
-		return topNodeKey;
+		return topNodeEntry;
+	}
+
+	@Override public org.drip.graph.heap.PriorityQueueEntry<K, V> extremum()
+	{
+		return null == _top ? null : _top.entry();
+	}
+
+	@Override public boolean meld (
+		final org.drip.graph.heap.PriorityQueue<K, V> priorityQueueOther)
+	{
+		if (null == priorityQueueOther ||
+			priorityQueueOther.isEmpty() ||
+			!(priorityQueueOther instanceof BinaryTreePriorityQueue<?, ?>)
+		)
+		{
+			return false;
+		}
+
+		BinaryTreePriorityQueue<K, V> binaryTreePriorityQueueOther =
+			(BinaryTreePriorityQueue<K, V>) priorityQueueOther;
+
+		while (!binaryTreePriorityQueueOther.isEmpty())
+		{
+			org.drip.graph.heap.PriorityQueueEntry<K, V> topOther =
+				binaryTreePriorityQueueOther.extractExtremum();
+
+			if (null == topOther)
+			{
+				return false;
+			}
+
+			try
+			{
+				if (!insert (
+					topOther.key(),
+					topOther.value()
+				))
+				{
+					return false;
+				}
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -869,19 +861,17 @@ public class BinaryTreePriorityQueue<K, V>
 	}
 
 	/**
-	 * Retrieve the Node with a Value Corresponding to the Input
+	 * Retrieve the Node with a Key Corresponding to the Input
 	 * 
-	 * @param value The Input Value
+	 * @param key The Input Key
 	 * 
-	 * @return TRUE - The Node with a Value Corresponding to the Input
+	 * @return TRUE - The Node with a Key Corresponding to the Input
 	 */
 
-	public org.drip.graph.heap.BinaryTreeNode<K, V> nodeWithValue (
-		final double value)
+	public org.drip.graph.heap.BinaryTreeNode<K, V> keyEntry (
+		final K key)
 	{
-		if (java.lang.Double.isNaN (
-			value
-		))
+		if (null == key)
 		{
 			return null;
 		}
@@ -908,7 +898,9 @@ public class BinaryTreePriorityQueue<K, V>
 				0
 			);
 
-			if (value == node.key())
+			if (0 == key.compareTo (
+				node.entry().key())
+			)
 			{
 				return node;
 			}

@@ -113,8 +113,72 @@ package org.drip.graph.heap;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface PriorityQueue<K, V>
+public abstract class PriorityQueue<K, V>
 {
+	private boolean _minHeap = false;
+
+	/**
+	 * PriorityQueue Constructor
+	 * 
+	 * @param minHeap TRUE - Indicates that Heap is a Min Heap
+	 */
+
+	public PriorityQueue (
+		final boolean minHeap)
+	{
+		_minHeap = minHeap;
+	}
+
+	/**
+	 * Indicate if the Binary Heap is a Min Heap
+	 * 
+	 * @return TRUE - The Binary Heap is a Min Heap
+	 */
+
+	public boolean minHeap()
+	{
+		return _minHeap;
+	}
+
+	/**
+	 * Insert the Specified Key into the Heap
+	 * 
+	 * @param key Key
+	 * @param value Node Value
+	 * 
+	 * @return TRUE - The Key successfully inserted
+	 */
+
+	public abstract boolean insert (
+		final K key,
+		final V value);
+
+	/**
+	 * Meld the Specified Priority Queue with the Current
+	 * 
+	 * @param priorityQueueOther The Specified Binary Tree Priority Queue
+	 * 
+	 * @return TRUE - The Specified Priority Queue successfully melded
+	 */
+
+	public abstract boolean meld (
+		final org.drip.graph.heap.PriorityQueue<K, V> priorityQueueOther);
+
+	/**
+	 * Retrieve the Top from the Heap
+	 * 
+	 * @return The Top Key in the Heap
+	 */
+
+	public abstract org.drip.graph.heap.PriorityQueueEntry<K, V> extremum();
+
+	/**
+	 * Extract the Top from the Heap
+	 * 
+	 * @return The Top Key in the Heap
+	 */
+
+	public abstract org.drip.graph.heap.PriorityQueueEntry<K, V> extractExtremum();
 
 	/**
 	 * Indicate if the Heap is Empty
@@ -124,4 +188,44 @@ public interface PriorityQueue<K, V>
 
 	public abstract boolean isEmpty();
 
+	/**
+	 * Generate the Sorted Key List
+	 * 
+	 * @return The Sorted Key List
+	 */
+
+	public java.util.List<K> keyList()
+	{
+		java.util.List<K> sortedKeyList = new java.util.ArrayList<K>();
+
+		while (!isEmpty())
+		{
+			sortedKeyList.add (
+				extractExtremum().key()
+			);
+		}
+
+		return sortedKeyList;
+	}
+
+	/**
+	 * Generate the Sorted Entry List
+	 * 
+	 * @return The Sorted Entry List
+	 */
+
+	public java.util.List<org.drip.graph.heap.PriorityQueueEntry<K, V>> entryList()
+	{
+		java.util.List<org.drip.graph.heap.PriorityQueueEntry<K, V>> sortedEntryList =
+			new java.util.ArrayList<org.drip.graph.heap.PriorityQueueEntry<K, V>>();
+
+		while (!isEmpty())
+		{
+			sortedEntryList.add (
+				extractExtremum()
+			);
+		}
+
+		return sortedEntryList;
+	}
 }

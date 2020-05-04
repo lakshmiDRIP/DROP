@@ -112,31 +112,28 @@ package org.drip.graph.heap;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BinaryTreeNode<K, V>
+public class BinaryTreeNode<K extends java.lang.Comparable<K>, V>
 {
 	private int _level = 0;
 	private boolean _isRightChild = false;
 	private BinaryTreeNode<K, V> _left = null;
-	private double _key = java.lang.Double.NaN;
 	private BinaryTreeNode<K, V> _right = null;
 	private BinaryTreeNode<K, V> _parent = null;
+	private org.drip.graph.heap.PriorityQueueEntry<K, V> _entry = null;
 
 	/**
 	 * BinaryTreeNode Constructor
 	 * 
-	 * @param key Node Key
+	 * @param entry Entry
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BinaryTreeNode (
-		final double key)
+		final org.drip.graph.heap.PriorityQueueEntry<K, V> entry)
 		throws java.lang.Exception
 	{
-		if (java.lang.Double.isNaN (
-				_key = key
-			)
-		)
+		if (null == (_entry = entry))
 		{
 			throw new java.lang.Exception (
 				"BinaryTreeNode Constructor => Invalid Inputs"
@@ -189,14 +186,14 @@ public class BinaryTreeNode<K, V>
 	}
 
 	/**
-	 * Retrieve the Node Key
+	 * Retrieve the Entry
 	 * 
-	 * @return The Node Key
+	 * @return The Entry
 	 */
 
-	public double key()
+	public org.drip.graph.heap.PriorityQueueEntry<K, V> entry()
 	{
-		return _key;
+		return _entry;
 	}
 
 	/**
@@ -219,18 +216,11 @@ public class BinaryTreeNode<K, V>
 	 */
 
 	public boolean setKey (
-		final double key)
+		final K key)
 	{
-		if (java.lang.Double.isNaN (
-				key
-			)
-		)
-		{
-			return false;
-		}
-
-		_key = key;
-		return true;
+		return _entry.setKey (
+			key
+		);
 	}
 
 	/**
@@ -358,7 +348,9 @@ public class BinaryTreeNode<K, V>
 			return _left;
 		}
 
-		return _left.key() < _right.key() ? _left : _right;
+		return -1 == _left.entry().key().compareTo (
+			_right.entry().key()
+		) ? _left : _right;
 	}
 
 	/**
@@ -384,14 +376,16 @@ public class BinaryTreeNode<K, V>
 			return _left;
 		}
 
-		return _left.key() > _right.key() ? _left : _right;
+		return 1 == _left.entry().key().compareTo (
+			_right.entry().key()
+		) ? _left : _right;
 	}
 
 	@Override public java.lang.String toString()
 	{
 		return "{"
-			+ _key + " | " + _level + " | " + (_isRightChild ? "R" : "L") + " | " +
-				(null == _parent ? "" : _parent.key()) +
+			+ _entry.key() + " | " + _level + " | " + (_isRightChild ? "R" : "L") + " | " +
+				(null == _parent ? "" : _parent.entry().key()) +
 		"}";
 	}
 }

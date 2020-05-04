@@ -126,11 +126,8 @@ public class BinaryMaxHeap
 			""
 		);
 
-		BinaryTreePriorityQueue<Double, Double> binaryHeap = new BinaryTreePriorityQueue<Double, Double> (
-			false
-		);
-
-		double[] valueArray =
+		boolean doubleInsertion = true;
+		double[] keyArray =
 		{
 			5.,
 			9.,
@@ -139,6 +136,10 @@ public class BinaryMaxHeap
 			3.,
 			8.,
 		};
+
+		BinaryTreePriorityQueue<Double, Double> binaryHeap = new BinaryTreePriorityQueue<Double, Double> (
+			false
+		);
 
 		System.out.println (
 			"\t|--------------------------------------------------------------------------------------------------------------------------------"
@@ -152,14 +153,23 @@ public class BinaryMaxHeap
 			"\t|--------------------------------------------------------------------------------------------------------------------------------"
 		);
 
-		for (double value : valueArray)
+		for (double key : keyArray)
 		{
 			binaryHeap.insert (
-				value
+				key,
+				key
 			);
 
+			if (doubleInsertion)
+			{
+				binaryHeap.insert (
+					key,
+					key
+				);
+			}
+
 			System.out.println (
-				"\t| After inserting " + value + " Heap BFS: " +
+				"\t| After inserting " + key + " Heap BFS: " +
 				binaryHeap.bfsWalk()
 			);
 		}
@@ -185,7 +195,7 @@ public class BinaryMaxHeap
 		while (!binaryHeap.isEmpty())
 		{
 			System.out.println (
-				"\t| After removing max=" + binaryHeap.extractTop() + " Heap BFS: " +
+				"\t| After removing max=" + binaryHeap.extractExtremum().key() + " Heap BFS: " +
 				binaryHeap.bfsWalk()
 			);
 		}
