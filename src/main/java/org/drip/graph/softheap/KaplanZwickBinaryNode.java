@@ -116,26 +116,255 @@ package org.drip.graph.softheap;
 
 public class KaplanZwickBinaryNode
 {
-	private int _rank = -1;
+	private int _k = -1;
+	private int _r = -1;
+	private boolean _minHeap = false;
 	private KaplanZwickBinaryNode _left = null;
+	private double _ckey = java.lang.Double.NaN;
 	private KaplanZwickBinaryNode _right = null;
-	private double _errorRate = java.lang.Double.NaN;
+	private KaplanZwickBinaryNode _parent = null;
+	private java.util.List<java.lang.Double> _keyList = null;
+	private org.drip.graph.softheap.KaplanZwickTargetSize _targetSize = null;
 
-	private int targetSize (
-		final int k,
-		final int r)
+	private boolean swapChildren()
 	{
-		if (k <= r)
+		KaplanZwickBinaryNode tmp = _left;
+		_left = _right;
+		_right = tmp;
+		return true;
+	}
+
+	private boolean shouldBeSifted()
+	{
+		if (null == _left && null == _right)
 		{
-			return 1;
+			return false;
 		}
 
-		return (int) java.lang.Math.ceil (
-			3. * targetSize (
-				k - 1,
-				r
-			) / 2.
+		// return _keyList.size() < _targetSize.estimate() / 2;
+
+		return _keyList.size() < java.lang.Math.ceil (
+			0.5 * _targetSize.estimate()
 		);
+	}
+
+	/**
+	 * Combine Two Root Nodes of Rank k each to a Root Node of Rank k + 1
+	 * 
+	 * @param node1 Node #1
+	 * @param node2 Node #2
+	 * 
+	 * @return The Combined Root Node of Rank k + 1
+	 */
+
+	public static final KaplanZwickBinaryNode CombineRootNodePair (
+		final KaplanZwickBinaryNode node1,
+		final KaplanZwickBinaryNode node2)
+	{
+		if (null == node1 || null == node2 || !node1.isRoot() || !node2.isRoot())
+		{
+			return null;
+		}
+
+		int k = node1.k();
+
+		if (k != node2.k())
+		{
+			return null;
+		}
+
+		int r = node1.r();
+
+		if (r != node2.r())
+		{
+			return null;
+		}
+
+		boolean minHeap = node1.minHeap();
+
+		if (minHeap != node2.minHeap())
+		{
+			return null;
+		}
+
+		KaplanZwickBinaryNode newRoot = null;
+
+		try
+		{
+			newRoot = new KaplanZwickBinaryNode (
+				minHeap,
+				r,
+				k + 1
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		double ckey1 = node1.ckey();
+
+		double ckey2 = node2.ckey();
+
+		double ckey = ckey1 < ckey2 ? ckey1 : ckey2;
+
+		if (!minHeap)
+		{
+			ckey = ckey1 > ckey2 ? ckey1 : ckey2;
+		}
+
+		return newRoot.setCKey (
+			ckey
+		) && node1.setParent (
+			newRoot
+		) && node2.setParent (
+			newRoot
+		) &&  newRoot.setLeft (
+			node1
+		) && newRoot.setRight (
+			node2
+		) && newRoot.sift() ? newRoot : null;
+	}
+
+	/**
+	 * Construct an Instance of KaplanZwickBinaryNode from the Error Rate
+	 * 
+	 * @param minHeap Min Heap Flag
+	 * @param errorRate Error Rate
+	 * @param k Rank
+	 * @param left Left Child
+	 * @param right Right Child
+	 * @param parent Parent
+	 * 
+	 * @return KaplanZwickBinaryNode Instance from the Error Rate
+	 */
+
+	public static final KaplanZwickBinaryNode FromErrorRate (
+		final boolean minHeap,
+		final double errorRate,
+		final int k,
+		final KaplanZwickBinaryNode left,
+		final KaplanZwickBinaryNode right,
+		final KaplanZwickBinaryNode parent)
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+				errorRate
+			) || 0. >= errorRate || 1. <= errorRate
+		)
+		{
+			return null;
+		}
+
+		try
+		{
+			KaplanZwickBinaryNode node = new KaplanZwickBinaryNode (
+				minHeap,
+				5 + (int) java.lang.Math.ceil (
+					java.lang.Math.log (
+						errorRate
+					) / java.lang.Math.log (
+						2.
+					)
+				),
+				k
+			);
+
+			return node.setParent (
+				parent
+			) &&  node.setLeft (
+				left
+			) && node.setRight (
+				right
+			) ? node : null;
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct a Leaf Root Node of a New Tree with a single Key
+	 * 
+	 * @param minHeap Min Heap Flag
+	 * @param r The R Parameter
+	 * @param key The Key
+	 * 
+	 * @return The Leaf Root of a New Tree with a single Key
+	 */
+
+	public static final KaplanZwickBinaryNode LeafRoot (
+		final boolean minHeap,
+		final int r,
+		final double key)
+	{
+		try
+		{
+			KaplanZwickBinaryNode emptyRoot = new KaplanZwickBinaryNode (
+				minHeap,
+				r,
+				0
+			);
+
+			return emptyRoot.addKey (
+				key
+			) ? emptyRoot : null;
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * KaplanZwickBinaryNode Constructor
+	 * 
+	 * @param minHeap Min Heap Flag
+	 * @param r R Parameter
+	 * @param k Rank
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public KaplanZwickBinaryNode (
+		final boolean minHeap,
+		final int r,
+		final int k)
+		throws java.lang.Exception
+	{
+		if (0 > (_r = r) ||
+			0 > (_k = k) ||
+			null == (_targetSize =
+				org.drip.graph.softheap.KaplanZwickTargetSize.Standard (
+					_k,
+					_r
+				)
+			)
+		)
+		{
+			throw new java.lang.Exception (
+				"KaplanZwickBinaryNode Constructor => Invalid Inputs"
+			);
+		}
+
+		_minHeap = minHeap;
+
+		_keyList = new java.util.ArrayList<java.lang.Double>();
+	}
+
+	/**
+	 * Indicate if the Binary Heap is a Min Heap
+	 * 
+	 * @return TRUE - The Binary Heap is a Min Heap
+	 */
+
+	public boolean minHeap()
+	{
+		return _minHeap;
 	}
 
 	/**
@@ -144,20 +373,9 @@ public class KaplanZwickBinaryNode
 	 * @return The Rank
 	 */
 
-	public int rank()
+	public int k()
 	{
-		return _rank;
-	}
-
-	/**
-	 * Retrieve the Error Rate
-	 * 
-	 * @return The Error Rate
-	 */
-
-	public double errorRate()
-	{
-		return _errorRate;
+		return _k;
 	}
 
 	/**
@@ -183,33 +401,395 @@ public class KaplanZwickBinaryNode
 	}
 
 	/**
-	 * Retrieve the computed "r" Parameter
+	 * Retrieve the Parent Tree
 	 * 
-	 * @return The Computed "r" Parameter
+	 * @return The Parent Tree
 	 */
 
-	public int r()
+	public KaplanZwickBinaryNode parent()
 	{
-		return 5 + (int) java.lang.Math.ceil (
-			java.lang.Math.log (
-				_errorRate
-			) / java.lang.Math.log (
-				2.
-			)
-		);
+		return _parent;
 	}
 
 	/**
-	 * Compute the Target Size
+	 * Retrieve the Target Size
 	 * 
 	 * @return The Target Size
 	 */
 
-	public int targetSize()
+	public org.drip.graph.softheap.KaplanZwickTargetSize targetSize()
 	{
-		return targetSize (
-			_rank,
-			r()
+		return _targetSize;
+	}
+
+	/**
+	 * Retrieve the R Parameter
+	 * 
+	 * @return The R Parameter
+	 */
+
+	public int r()
+	{
+		return _r;
+	}
+
+	/**
+	 * Retrieve the List of Keys
+	 * 
+	 * @return The List of Keys
+	 */
+
+	public java.util.List<java.lang.Double> keyList()
+	{
+		return _keyList;
+	}
+
+	/**
+	 * Retrieve the ckey
+	 * 
+	 * @return The ckey
+	 */
+
+	public double ckey()
+	{
+		return _ckey;
+	}
+
+	/**
+	 * Retrieve the Current Size of the List
+	 * 
+	 * @return Current Size of the List
+	 */
+
+	public int currentSize()
+	{
+		return _keyList.size();
+	}
+
+	/**
+	 * Set the ckey of the Current Node
+	 * 
+	 * @param ckey The ckey
+	 * 
+	 * @return TRUE - The ckey of the Current Node successfully set
+	 */
+
+	public boolean setCKey (
+		final double ckey)
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+			ckey
+		))
+		{
+			return false;
+		}
+
+		_ckey = ckey;
+		return true;
+	}
+
+	/**
+	 * Set the Parent of the Current Node
+	 * 
+	 * @param parent The Parent
+	 * 
+	 * @return TRUE - The Parent of the Current Node successfully set
+	 */
+
+	public boolean setParent (
+		final KaplanZwickBinaryNode parent)
+	{
+		_parent = parent;
+		return true;
+	}
+
+	/**
+	 * Set the Left Child of the Current Node
+	 * 
+	 * @param left The Left Child
+	 * 
+	 * @return TRUE - The Left Child of the Current Node successfully set
+	 */
+
+	public boolean setLeft (
+		final KaplanZwickBinaryNode left)
+	{
+		_left = left;
+		return true;
+	}
+
+	/**
+	 * Set the Right Child of the Current Node
+	 * 
+	 * @param right The Right Child
+	 * 
+	 * @return TRUE - The Right Child of the Current Node successfully set
+	 */
+
+	public boolean setRight (
+		final KaplanZwickBinaryNode right)
+	{
+		_right = right;
+		return true;
+	}
+
+	/**
+	 * Add a Key to the Key List
+	 * 
+	 * @param key The Key
+	 * 
+	 * @return TRUE - The Key is successfully added to the Key List
+	 */
+
+	public boolean addKey (
+		final double key)
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+			key
+		))
+		{
+			return false;
+		}
+
+		_keyList.add (
+			key
 		);
+
+		if (org.drip.numerical.common.NumberUtil.IsValid (
+			_ckey
+		))
+		{
+			_ckey = key;
+		}
+		else
+		{
+			if (_minHeap)
+			{
+				_ckey = _ckey > key ? _ckey : key;
+			}
+			else
+			{
+				_ckey = _ckey < key ? _ckey : key;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Retrieve the Top Key
+	 * 
+	 * @return The Top Key
+	 */
+
+	public double removeKey()
+	{
+		// sift();
+
+		return _keyList.remove (
+			0
+		);
+	}
+
+	/**
+	 * Retrieve the Key Corruption Status List
+	 * 
+	 * @return The Key Corruption Status List
+	 */
+
+	public java.util.List<java.lang.Boolean> keyCorruptionStatusList()
+	{
+		java.util.List<java.lang.Boolean> keyCorruptionStatusList =
+			new java.util.ArrayList<java.lang.Boolean>();
+
+		for (double key : _keyList)
+		{
+			keyCorruptionStatusList.add (
+				key == _ckey
+			);
+		}
+
+		return keyCorruptionStatusList;
+	}
+
+	/**
+	 * Indicate if the Node is a Root
+	 * 
+	 * @return TRUE - The Node is a Root
+	 */
+
+	public boolean isRoot()
+	{
+		return null == _parent;
+	}
+
+	/**
+	 * Indicate if the Node is a Leaf
+	 * 
+	 * @return TRUE - The Node is a Leaf
+	 */
+
+	public boolean isLeaf()
+	{
+		return null == _left && null == _right;
+	}
+
+	/**
+	 * Sift the Node
+	 * 
+	 * @return TRUE - The Node has been successfully sifted
+	 */
+
+	public boolean sift()
+	{
+		while (shouldBeSifted())
+		{
+			if (null == _left || (null != _right && (
+				_minHeap ? _left.ckey() >= _right.ckey() : _left.ckey() <= _right.ckey()
+			)))
+			{
+				if (!swapChildren())
+				{
+					return false;
+				}
+			}
+
+			java.util.List<java.lang.Double> leftKeyList = _left.keyList();
+
+			int leftElementSize = leftKeyList.size();
+
+			for (int leftElementIndex = leftElementSize - 1;
+				leftElementIndex >= 0;
+				--leftElementIndex)
+			{
+				_keyList.add (
+					leftKeyList.remove (
+						leftElementIndex
+					)
+				);
+			}
+
+			_ckey = _left.ckey();
+
+			if (_left.isLeaf())
+			{
+				_left = null;
+			}
+			else
+			{
+				if (!_left.sift())
+				{
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Perform a BFS Walk through the Nodes and retrieve them
+	 * 
+	 * @return The List of Nodes
+	 */
+
+	public java.util.List<KaplanZwickBinaryNode> bfsWalk()
+	{
+		java.util.List<KaplanZwickBinaryNode> elementList = new java.util.ArrayList<KaplanZwickBinaryNode>();
+
+		java.util.List<KaplanZwickBinaryNode> elementQueue =
+			new java.util.ArrayList<KaplanZwickBinaryNode>();
+
+		elementQueue.add (
+			this
+		);
+
+		while (!elementQueue.isEmpty())
+		{
+			KaplanZwickBinaryNode node = elementQueue.get (
+				0
+			);
+
+			elementQueue.remove (
+				0
+			);
+
+			elementList.add (
+				node
+			);
+
+			KaplanZwickBinaryNode left = node.left();
+
+			if (null != left)
+			{
+				elementQueue.add (
+					left
+				);
+			}
+
+			KaplanZwickBinaryNode right = node.right();
+
+			if (null != right)
+			{
+				elementQueue.add (
+					right
+				);
+			}
+		}
+
+		return elementList;
+	}
+
+	/**
+	 * Perform a BFS Walk through the Nodes and retrieve them
+	 * 
+	 * @return The List of Nodes
+	 */
+
+	public java.util.List<java.lang.Double> childKeyList()
+	{
+		java.util.List<java.lang.Double> childKeyList = new java.util.ArrayList<java.lang.Double>();
+
+		java.util.List<KaplanZwickBinaryNode> bfsWalk = bfsWalk();
+
+		for (KaplanZwickBinaryNode node : bfsWalk)
+		{
+			childKeyList.addAll (
+				node.keyList()
+			);
+		}
+
+		return childKeyList;
+	}
+
+	/**
+	 * Compute the Implied Error Rate
+	 * 
+	 * @return The Implied Error Rate
+	 */
+
+	public double impliedErrorRate()
+	{
+		return java.lang.Math.pow (
+			2,
+			5. - _r
+		);
+	}
+
+	@Override public java.lang.String toString()
+	{
+		String state = "{Rank = " + _k + "; ckey = " + _ckey + "; List = " + _keyList;
+
+		state = state + "; Parent = " + (null == _parent ? "null" : _parent.ckey());
+
+		state = state + "; Left = " + (
+			null == _left ? "null" : _left.ckey() + " @ " + _left.childKeyList() + " @ " + _left.keyList()
+		);
+
+		state = state + "; Right = " + (
+			null == _right ? "null" : _right.ckey() + " @ " + _right.childKeyList() + " @ " + _right.keyList()
+		);
+
+		return state + "}";
 	}
 }
