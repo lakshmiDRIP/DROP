@@ -195,7 +195,7 @@ public class KaplanZwickTreeMelder
 	/**
 	 * Append to the Tail using the New Tail
 	 * 
-	 * @param tailTree The New Tail
+	 * @param tail The New Tail
 	 * 
 	 * @return TRUE - The Tail Root Node appended successfully using the Supplied Root Node
 	 */
