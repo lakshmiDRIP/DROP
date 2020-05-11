@@ -1,8 +1,8 @@
-# DROP XVA Basel Package
+# DROP Sample XVA Basel Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP XVA Basel illustrates the Basel XVA Accounting Metrics Scheme.
+DROP Sample XVA Basel illustrates the Basel XVA Accounting Metrics Scheme.
 
 
 ## Class Components

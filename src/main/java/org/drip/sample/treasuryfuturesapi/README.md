@@ -1,8 +1,8 @@
-# DROP Treasury Futures API Package
+# DROP Sample Treasury Futures API Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Treasury Futures API demonstrates G20 Treasury Futures Valuation API.
+DROP Sample Treasury Futures API demonstrates G20 Treasury Futures Valuation API.
 
 
 ## Class Components

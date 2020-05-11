@@ -1,8 +1,8 @@
-# DROP Trend Package
+# DROP Sample Trend Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Trend illustrates Fixed/Variable Bayesian Drift Gain Estimation.
+DROP Sample Trend illustrates Fixed/Variable Bayesian Drift Gain Estimation.
 
 
 ## Class Components

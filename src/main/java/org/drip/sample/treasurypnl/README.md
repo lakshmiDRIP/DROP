@@ -1,8 +1,8 @@
-# DROP Treasury PnL Package
+# DROP Sample Treasury PnL Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Treasury PnL demonstrates G20 Benchmark Treasury PnL Attribution.
+DROP Sample Treasury PnL demonstrates G20 Benchmark Treasury PnL Attribution.
 
 
 ## Class Components

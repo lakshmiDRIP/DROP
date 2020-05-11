@@ -1,8 +1,8 @@
-# DROP XVA Package
+# DROP Sample XVA Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP XVA illustrates XVA Metrics Computation for Collateralized, Uncollateralized, and Zero Threshold Portfolio.
+DROP Sample XVA illustrates XVA Metrics Computation for Collateralized, Uncollateralized, and Zero Threshold Portfolio.
 
 
 ## Class Components

@@ -1,8 +1,8 @@
-# DROP Treasury Futures Feed Package
+# DROP Sample Treasury Futures Feed Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Treasury Futures Feed demonstrates G20 Treasury Futures Feed Reconstitution.
+DROP Sample Treasury Futures Feed demonstrates G20 Treasury Futures Feed Reconstitution.
 
 
 ## Class Components

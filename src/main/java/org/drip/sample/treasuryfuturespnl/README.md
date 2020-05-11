@@ -1,8 +1,8 @@
-# DROP Treasury Futures PnL Package
+# DROP Sample Treasury Futures PnL Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Treasury Futures PnL demonstrates G20 Treasury Futures PnL Attribution Analysis.
+DROP Sample Treasury Futures PnL demonstrates G20 Treasury Futures PnL Attribution Analysis.
 
 
 ## Class Components

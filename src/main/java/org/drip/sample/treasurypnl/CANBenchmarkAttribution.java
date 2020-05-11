@@ -85,6 +85,15 @@ import org.drip.service.env.EnvManager;
  * <i>CANBenchmarkAttribution</i> demonstrates the Computation of the PnL Time Series Metrics for the CAN
  * 	Benchmark Bond Series.
  *
+ *	<br><br>
+ *  <ul>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/treasuryfuturespnl/README.md">G20 Benchmark Treasury PnL Attribution</a></li>
+ *  </ul>
+ * <br><br>
+ *
  * @author Lakshmi Krishnamurthy
  */
 

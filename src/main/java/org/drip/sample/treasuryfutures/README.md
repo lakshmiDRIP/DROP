@@ -1,8 +1,8 @@
-# DROP Treasury Futures Package
+# DROP Sample Treasury Futures Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Treasury Futures demonstrates UST Futures Eligibility Definitions Valuation.
+DROP Sample Treasury Futures demonstrates UST Futures Eligibility Definitions Valuation.
 
 
 ## Class Components

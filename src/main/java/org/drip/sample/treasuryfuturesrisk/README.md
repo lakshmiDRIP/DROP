@@ -1,8 +1,8 @@
-# DROP Treasury Futures Risk Package
+# DROP Sample Treasury Futures Risk Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Treasury Futures Risk demonstrates Treasury Futures Key Rate Duration Calculations.
+DROP Sample Treasury Futures Risk demonstrates Treasury Futures Key Rate Duration Calculations.
 
 
 ## Class Components

@@ -9,8 +9,8 @@ DROP Sample XVA Topology illustrates Aggregation Group Based XVA Topology.
 
  |     Sample     | Source | Output |
  |----------------|--------|--------|
- | Fixed Bullet 1 | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/xvatopology/BookGroupLayout.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/xvatopology/BookGroupLayout.drop) |
- | Fixed Bullet 2 | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/xvatopology/BookLatentStateMap.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/xvatopology/BookLatentStateMap.drop) |
+ | Book Group Layout | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/xvatopology/BookGroupLayout.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/xvatopology/BookGroupLayout.drop) |
+ | Book Latent State Map | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/xvatopology/BookLatentStateMap.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/xvatopology/BookLatentStateMap.drop) |
 
 
 ## Hierarchy

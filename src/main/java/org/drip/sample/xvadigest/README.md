@@ -1,8 +1,8 @@
-# DROP XVA Digest Package
+# DROP Sample XVA Digest Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP XVA Digest illustrates Basel XVA Accounting Metrics Digest Estimation.
+DROP Sample XVA Digest illustrates Basel XVA Accounting Metrics Digest Estimation.
 
 
 ## Class Components

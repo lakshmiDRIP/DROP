@@ -1,8 +1,8 @@
-# DROP XCCY Package
+# DROP Sample XCCY Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP XCCY illustrates OTC Cross Currency Swaps Contract Definition.
+DROP Sample XCCY illustrates OTC Cross Currency Swaps Contract Definition.
 
 
 ## Class Components
