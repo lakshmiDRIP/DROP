@@ -77,7 +77,7 @@ package org.drip.function.e2erf;
 
 /**
  * <i>ErrorFunctionAnalytical</i> implements Analytical Versions of the E<sub>2</sub> Error Function (erf)
- * Estimate. The References are:
+ * 	Estimate. The References are:
  * 
  * <br><br>
  * 	<ul>

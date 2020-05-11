@@ -77,7 +77,7 @@ package org.drip.function.definition;
 
 /**
  * <i>R1PropertyVerification</i> evaluates the Specified Pair of R<sup>x</sup> To R<sup>1</sup> Functions,
- * and holds the Verification Status.
+ * 	and holds the Verification Status.
  *
  *	<br><br>
  *  <ul>

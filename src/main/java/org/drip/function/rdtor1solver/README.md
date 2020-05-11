@@ -2,8 +2,7 @@
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Function R<sup>d</sup> To R<sup>1</sup> Solver Package implements the Suite of Built-in R<sup>d</sup> To
-	R<sup>1</sup> Solvers.
+DROP Function R<sup>d</sup> To R<sup>1</sup> Solver Package implements the Suite of Built-in R<sup>d</sup> To R<sup>1</sup> Solvers.
 
 
 ## Class Components

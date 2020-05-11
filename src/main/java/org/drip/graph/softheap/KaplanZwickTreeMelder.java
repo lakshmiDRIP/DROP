@@ -113,10 +113,10 @@ package org.drip.graph.softheap;
  * @author Lakshmi Krishnamurthy
  */
 
-public class KaplanZwickTreeMelder
+public class KaplanZwickTreeMelder<K extends java.lang.Comparable<K>, V>
 {
-	private org.drip.graph.softheap.KaplanZwickTree _head = null;
-	private org.drip.graph.softheap.KaplanZwickTree _tail = null;
+	private org.drip.graph.softheap.KaplanZwickTree<K, V> _head = null;
+	private org.drip.graph.softheap.KaplanZwickTree<K, V> _tail = null;
 
 	/**
 	 * KaplanZwickTreeMelder Constructor
@@ -127,7 +127,7 @@ public class KaplanZwickTreeMelder
 	 */
 
 	public KaplanZwickTreeMelder (
-		final org.drip.graph.softheap.KaplanZwickTree mergedTreeList)
+		final org.drip.graph.softheap.KaplanZwickTree<K, V> mergedTreeList)
 		throws java.lang.Exception
 	{
 		if (null == mergedTreeList)
@@ -146,7 +146,7 @@ public class KaplanZwickTreeMelder
 	 * @return Head of the Melded Tree
 	 */
 
-	public org.drip.graph.softheap.KaplanZwickTree head()
+	public org.drip.graph.softheap.KaplanZwickTree<K, V> head()
 	{
 		return _head;
 	}
@@ -157,7 +157,7 @@ public class KaplanZwickTreeMelder
 	 * @return Tail of the Melded Tree
 	 */
 
-	public org.drip.graph.softheap.KaplanZwickTree tail()
+	public org.drip.graph.softheap.KaplanZwickTree<K, V> tail()
 	{
 		return _tail;
 	}
@@ -182,7 +182,7 @@ public class KaplanZwickTreeMelder
 	 */
 
 	public boolean growTail (
-		final org.drip.graph.softheap.KaplanZwickBinaryNode rootNode)
+		final org.drip.graph.softheap.KaplanZwickBinaryNode<K, V> rootNode)
 	{
 		return _tail.setRoot (
 			org.drip.graph.softheap.KaplanZwickBinaryNode.CombineRootNodePair (
@@ -201,7 +201,7 @@ public class KaplanZwickTreeMelder
 	 */
 
 	public boolean appendToTail (
-		final org.drip.graph.softheap.KaplanZwickTree tail)
+		final org.drip.graph.softheap.KaplanZwickTree<K, V> tail)
 	{
 		if (null == tail ||
 			!_tail.setNext (

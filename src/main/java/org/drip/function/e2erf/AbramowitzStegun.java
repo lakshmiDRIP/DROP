@@ -77,7 +77,7 @@ package org.drip.function.e2erf;
 
 /**
  * <i>AbramowitzStegun</i> implements the E<sub>2</sub> (erf) Estimator using Abramowitz-Stegun Scheme. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>

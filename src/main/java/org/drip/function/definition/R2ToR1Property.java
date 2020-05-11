@@ -77,7 +77,7 @@ package org.drip.function.definition;
 
 /**
  * <i>R2ToR1Property</i> evaluates the Specified Pair of R<sup>2</sup> To R<sup>1</sup> Functions, and
- * verifies the Properties.
+ * 	verifies the Properties.
  *
  *	<br><br>
  *  <ul>

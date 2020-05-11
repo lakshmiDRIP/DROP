@@ -1,8 +1,5 @@
 
-package org.drip.sample.graphstore;
-
-import org.drip.graph.store.SoftHeap;
-import org.drip.service.env.EnvManager;
+package org.drip.graph.softheap;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -78,7 +75,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>SoftHeapNavigator</i> demonstrates the Creation and Usage of a Soft Heap. The References are:
+ * <i>ChazelleTree</i> implements the Top-Level Head List of the Chazelle Soft Heap. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -109,55 +106,226 @@ import org.drip.service.env.EnvManager;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graphstore/README.md">Graph Heap Access Data Structures</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/softheap/README.md">Soft Heap - Approximate Priority Queue</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SoftHeapNavigator
+public class ChazelleTree
 {
+	private ChazelleTree _next = null;
+	private ChazelleTree _prev = null;
+	private ChazelleTree _suffixExtremum = null;
+	private org.drip.graph.softheap.ChazelleSoftQueueNode _root = null;
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Update the Suffix Extremum of all Trees at and preceding the specified Tree
+	 * 
+	 * @param tree Specified Tree
+	 * 
+	 * @return TRUE - Update Suffix Extremum successfully completed
+	 */
+
+	public static final boolean UpdateSuffixExtremum (
+		ChazelleTree tree)
 	{
-		EnvManager.InitEnv (
-			""
-		);
-
-		double r = 600;
-		int keyCount = 100;
-		double headerRank = 0;
-
-		SoftHeap softHeap = SoftHeap.Create (
-			headerRank,
-			r
-		);
-
-		for (int keyIndex = 1;
-			keyIndex <= keyCount;
-			++keyIndex)
+		if (null == tree)
 		{
-			softHeap.insert (
-				keyIndex
-			);
+			return false;
 		}
 
-		System.out.println (softHeap.deleteMin());
+		while (null != tree)
+		{
+			ChazelleTree next = tree.next();
 
-		System.out.println (softHeap.deleteMin());
+			org.drip.graph.softheap.ChazelleSoftQueueNode currentRoot = tree.root();
 
-		System.out.println (softHeap.deleteMin());
+			ChazelleTree nextSuffixExtremum = null == next ? null : next.suffixExtremum();
 
-		System.out.println (softHeap.deleteMin());
+			if (null == nextSuffixExtremum ||
+				1 != currentRoot.cEntry().compareTo (
+					nextSuffixExtremum.root().cEntry()
+				)
+			)
+			{
+				tree.setSuffixExtremum (
+					tree
+				);
+			}
+			else
+			{
+				tree.setSuffixExtremum (
+					nextSuffixExtremum
+				);
+			}
 
-		System.out.println (softHeap.deleteMin());
+			tree = tree.prev();
+		}
 
-		System.out.println (softHeap.deleteMin());
+		return true;
+	}
 
-		EnvManager.TerminateEnv();
+	/**
+	 * ChazelleTree Constructor
+	 * 
+	 * @param root Root of the Current Tree
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public ChazelleTree (
+		final ChazelleSoftQueueNode root)
+		throws java.lang.Exception
+	{
+		if (null == (_root = root))
+		{
+			throw new java.lang.Exception (
+				"ChazelleTree Constructor => Invalid Inputs"
+			);
+		}
+	}
+
+	/**
+	 * Retrieve the Root
+	 * 
+	 * @return The Root
+	 */
+
+	public org.drip.graph.softheap.ChazelleSoftQueueNode root()
+	{
+		return _root;
+	}
+
+	/**
+	 * Retrieve the Previous Tree
+	 * 
+	 * @return The Previous Tree
+	 */
+
+	public ChazelleTree prev()
+	{
+		return _prev;
+	}
+
+	/**
+	 * Retrieve the Next Tree
+	 * 
+	 * @return The Next Tree
+	 */
+
+	public ChazelleTree next()
+	{
+		return _next;
+	}
+	/**
+	 * Retrieve the Extremum ckey Tree among those following this in the List
+	 * 
+	 * @return The Extremum ckey Tree among those following this in the List
+	 */
+
+	public ChazelleTree suffixExtremum()
+	{
+		return _suffixExtremum;
+	}
+
+	/**
+	 * Retrieve the Rank
+	 * 
+	 * @return The Rank
+	 */
+
+	public double rank()
+	{
+		return _root.k();
+	}
+
+	/**
+	 * Set the Root Soft Queue
+	 * 
+	 * @param root The Root Soft Queue
+	 * 
+	 * @return TRUE - The Root Soft Queue successfully set
+	 */
+
+	public boolean setRoot (
+		final ChazelleSoftQueueNode root)
+	{
+		_root = root;
+		return true;
+	}
+
+	/**
+	 * Set the Previous Tree
+	 * 
+	 * @param prev The Previous Tree
+	 * 
+	 * @return TRUE - The Previous Tree successfully set
+	 */
+
+	public boolean setPrev (
+		final ChazelleTree prev)
+	{
+		_prev = prev;
+		return true;
+	}
+
+	/**
+	 * Set the Next Tree
+	 * 
+	 * @param next The Next Tree
+	 * 
+	 * @return TRUE - The Next Tree successfully set
+	 */
+
+	public boolean setNext (
+		final ChazelleTree next)
+	{
+		_next = next;
+		return true;
+	}
+
+	/**
+	 * (Re-)set the Suffix Extremum Tree
+	 * 
+	 * @param suffixExtremum The Suffix Extremum
+	 * 
+	 * @return TRUE - The Suffix Extremum Tree successfully (re-)set
+	 */
+
+	public boolean setSuffixExtremum (
+		final ChazelleTree suffixExtremum)
+	{
+		if (null == suffixExtremum)
+		{
+			return false;
+		}
+
+		_suffixExtremum = suffixExtremum;
+		return true;
+	}
+
+	/**
+	 * Generate a Stand-alone Tree with the Root Node alone in its List
+	 *  
+	 * @return Stand-alone Tree with the Root Node alone in its List
+	 */
+
+	public ChazelleTree rootTree()
+	{
+		try
+		{
+			return new ChazelleTree (
+				_root
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

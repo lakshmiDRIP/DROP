@@ -77,7 +77,7 @@ package org.drip.function.enerf;
 
 /**
  * <i>GeneralizedMacLaurinSeriesTerm</i> implements the Generalized E<sub>n</sub> Error Function MacLaurin
- * Series Term. The References are:
+ * 	Series Term. The References are:
  * 
  * <br><br>
  * 	<ul>

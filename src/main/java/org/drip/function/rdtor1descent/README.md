@@ -2,8 +2,7 @@
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Function R<sup>d</sup> To R<sup>1</sup> Descent Package implements the Suite of R<sup>d</sup> To
-	R<sup>1</sup> Gradient Descent Techniques.
+DROP Function R<sup>d</sup> To R<sup>1</sup> Descent Package implements the Suite of R<sup>d</sup> To R<sup>1</sup> Gradient Descent Techniques.
 
 
 ## Class Components

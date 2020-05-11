@@ -1,6 +1,7 @@
 
-package org.drip.sample.graphstore;
+package org.drip.sample.softheap;
 
+import org.drip.graph.heap.PriorityQueueEntry;
 import org.drip.graph.softheap.KaplanZwickBinaryNode;
 import org.drip.graph.softheap.KaplanZwickPriorityQueue;
 import org.drip.graph.softheap.KaplanZwickTree;
@@ -80,8 +81,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>KaplanZwickMaxSequentialInsert</i> illustrates the Insert Operation for a Max Soft Heap as described in
- * 	Kaplan and Zwick (2009). The References are:
+ * <i>KaplanZwickMeld</i> illustrates the Meld Operation for a Soft Heap as described in Kaplan and Zwick
+ * 	(2009). The References are:
  * 
  * <br><br>
  *  <ul>
@@ -112,41 +113,41 @@ import org.drip.service.env.EnvManager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graphstore/README.md">Graph Heap Access Data Structures</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/softheap/README.md">Soft Heap Based Priority Queues</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class KaplanZwickMaxSequentialInsert
+public class KaplanZwickMeld
 {
 
-	private static final void PrintHeap (
-		final KaplanZwickPriorityQueue softHeap)
+	private static <K extends Comparable<K>, V> void PrintHeap (
+		final KaplanZwickPriorityQueue<K, V> softHeap)
 	{
-		KaplanZwickTree tree = softHeap.head();
+		KaplanZwickTree<K, V> tree = softHeap.head();
 
 		while (null != tree)
 		{
-			KaplanZwickBinaryNode node = tree.root();
+			KaplanZwickBinaryNode<K, V> node = tree.root();
 
 			System.out.println (
-				"\t|\tRank = " + node.k() + "; ckey = " + node.ckey() + "; List = " + node.keyList() +
-					"; Parent = " + (null == node.parent() ? "null" : node.parent().ckey())
+				"\t|\tRank = " + node.k() + "; ckey = " + node.cEntry().key() + "; List = " + node.entryList() +
+					"; Parent = " + (null == node.parent() ? "null" : node.parent().cEntry().key())
 			);
 
 			System.out.println (
 				"\t|\t\tLeft = " + (
-					null == node.left() ? "null" : node.left().ckey() + " @ " + node.left().childKeyList() +
-						" @ " + node.left().keyList()
+					null == node.left() ? "null" : node.left().cEntry().key() + " @ " + node.left().childKeyList() +
+						" @ " + node.left().entryList()
 				)
 			);
 
 			System.out.println (
 				"\t|\t\tRight = " + (
-					null == node.right() ? "null" : node.right().ckey() + " @ " + node.right().childKeyList() +
-						" @ " + node.right().keyList()
+					null == node.right() ? "null" : node.right().cEntry().key() + " @ " + node.right().childKeyList() +
+						" @ " + node.right().entryList()
 				)
 			);
 
@@ -163,39 +164,106 @@ public class KaplanZwickMaxSequentialInsert
 		);
 
 		int r = 10;
-		int keyCount = 33;
+		int keyCount = 1000;
+		boolean doubleInsert = true;
 
-		KaplanZwickPriorityQueue softHeap = KaplanZwickPriorityQueue.Initial (
+		KaplanZwickPriorityQueue<Double, Double> softHeap1 = KaplanZwickPriorityQueue.Initial (
 			false,
 			r,
-			0
+			new PriorityQueueEntry<Double, Double> (
+				Math.random(),
+				Math.random()
+			)
 		);
-		System.out.println ("\t|-------------------------------------------------------------------------------------");
 
-		System.out.println ("\t| After inserting 0");
-
-
-		System.out.println (softHeap);
+		KaplanZwickPriorityQueue<Double, Double> softHeap2 = KaplanZwickPriorityQueue.Initial (
+			false,
+			r,
+			new PriorityQueueEntry<Double, Double> (
+				Math.random(),
+				Math.random()
+			)
+		);
 
 		for (double keyIndex = 1.;
 			keyIndex <= keyCount;
 			++keyIndex)
 		{
-			System.out.println ("\t|-------------------------------------------------------------------------------------");
+			double key1 = Math.random();
 
-			System.out.println ("\t| After inserting " + keyIndex);
+			double key2 = Math.random();
 
-			System.out.println ("\t|-------------------------------------------------------------------------------------");
-
-			softHeap.insert (
-				r,
-				keyIndex
+			softHeap1.insert (
+				key1,
+				key1
 			);
 
-			PrintHeap (softHeap);
+			softHeap2.insert (
+				key2,
+				key2
+			);
 
-			System.out.println ("\t|-------------------------------------------------------------------------------------");
+			if (doubleInsert)
+			{
+				softHeap1.insert (
+					key1,
+					key1
+				);
+
+				softHeap1.insert (
+					key2,
+					key2
+				);
+			}
 		}
+
+		System.out.println ("\t|-------------------------------------------------------------------------------------");
+
+		System.out.println ("\t| After Sequential Insertion #1");
+
+		System.out.println ("\t|-------------------------------------------------------------------------------------");
+
+		PrintHeap (
+			softHeap1
+		);
+
+		System.out.println ("\t|-------------------------------------------------------------------------------------");
+
+		System.out.println();
+
+		System.out.println ("\t|-------------------------------------------------------------------------------------");
+
+		System.out.println ("\t| After Sequential Insertion #2");
+
+		System.out.println ("\t|-------------------------------------------------------------------------------------");
+
+		PrintHeap (
+			softHeap2
+		);
+
+		System.out.println ("\t|-------------------------------------------------------------------------------------");
+
+		System.out.println();
+
+		softHeap1.meld (softHeap2);
+
+		System.out.println ("\t|-------------------------------------------------------------------------------------");
+
+		System.out.println ("\t| After Extraction");
+
+		System.out.println ("\t|-------------------------------------------------------------------------------------");
+
+		int orderIndex = 0;
+
+		while (!softHeap1.isEmpty())
+		{
+			System.out.println (
+				"\t| [" + (++orderIndex) + "] => " +
+				softHeap1.extractExtremum()
+			);
+		}
+
+		System.out.println ("\t|-------------------------------------------------------------------------------------");
 
 		EnvManager.TerminateEnv();
 	}

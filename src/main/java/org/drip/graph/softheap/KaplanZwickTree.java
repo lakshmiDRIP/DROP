@@ -113,23 +113,25 @@ package org.drip.graph.softheap;
  * @author Lakshmi Krishnamurthy
  */
 
-public class KaplanZwickTree
+public class KaplanZwickTree<K extends java.lang.Comparable<K>, V>
 {
-	private KaplanZwickTree _next = null;
-	private KaplanZwickTree _prev = null;
-	private KaplanZwickTree _suffixExtremum = null;
-	private org.drip.graph.softheap.KaplanZwickBinaryNode _root = null;
+	private KaplanZwickTree<K, V> _next = null;
+	private KaplanZwickTree<K, V> _prev = null;
+	private KaplanZwickTree<K, V> _suffixExtremum = null;
+	private org.drip.graph.softheap.KaplanZwickBinaryNode<K, V> _root = null;
 
 	/**
 	 * Update the Suffix Extremum of all Trees at and preceding the specified Tree
 	 * 
+	 * @param <K> Key Type
+	 * @param <V> Value Type
 	 * @param tree Specified Tree
 	 * 
 	 * @return TRUE - Update Suffix Extremum successfully completed
 	 */
 
-	public static final boolean UpdateSuffixExtremum (
-		KaplanZwickTree tree)
+	public static <K extends java.lang.Comparable<K>, V> boolean UpdateSuffixExtremum (
+		KaplanZwickTree<K, V> tree)
 	{
 		if (null == tree)
 		{
@@ -138,13 +140,19 @@ public class KaplanZwickTree
 
 		while (null != tree)
 		{
-			KaplanZwickTree next = tree.next();
+			KaplanZwickTree<K, V> next = tree.next();
 
-			KaplanZwickTree nextSuffixExtremum = null == next ? null : next.suffixExtremum();
+			org.drip.graph.softheap.KaplanZwickBinaryNode<K, V> currentRoot = tree.root();
 
-			if (tree.root().minHeap())
+			KaplanZwickTree<K, V> nextSuffixExtremum = null == next ? null : next.suffixExtremum();
+
+			if (currentRoot.minHeap())
 			{
-				if (null == nextSuffixExtremum || tree.root().ckey() <= nextSuffixExtremum.root().ckey())
+				if (null == nextSuffixExtremum ||
+					1 != currentRoot.cEntry().key().compareTo (
+						nextSuffixExtremum.root().cEntry().key()
+					)
+				)
 				{
 					tree.setSuffixExtremum (
 						tree
@@ -159,7 +167,11 @@ public class KaplanZwickTree
 			}
 			else
 			{
-				if (null == nextSuffixExtremum || tree.root().ckey() >= nextSuffixExtremum.root().ckey())
+				if (null == nextSuffixExtremum ||
+					-1 != currentRoot.cEntry().key().compareTo (
+						nextSuffixExtremum.root().cEntry().key()
+					)
+				)
 				{
 					tree.setSuffixExtremum (
 						tree
@@ -173,7 +185,6 @@ public class KaplanZwickTree
 				}
 			}
 
-
 			tree = tree.prev();
 		}
 
@@ -181,33 +192,28 @@ public class KaplanZwickTree
 	}
 
 	/**
-	 * Construct an Initial Tree with a single Key
+	 * Merge Two Trees with Identical Ranks
 	 * 
-	 * @param minHeap Min Heap Flag
-	 * @param r The R Parameter
-	 * @param key The Key
+	 * @param <K> Key Type
+	 * @param <V> Value Type
+	 * @param tree1 Tree #1
+	 * @param tree2 Tree #2
 	 * 
-	 * @return The Initial Tree with a single Key
+	 * @return The Merged Tree
 	 */
 
-	public static final KaplanZwickTree Initial (
-		final boolean minHeap,
-		final int r,
-		final double key)
+	public static <K extends java.lang.Comparable<K>, V> KaplanZwickTree<K, V> EquiRankTreeMerge (
+		final KaplanZwickTree<K, V> tree1,
+		final KaplanZwickTree<K, V> tree2)
 	{
 		try
 		{
-			KaplanZwickTree newTree = new KaplanZwickTree (
-				org.drip.graph.softheap.KaplanZwickBinaryNode.LeafRoot (
-					minHeap,
-					r,
-					key
+			return null == tree1 || null == tree2 ? null : new KaplanZwickTree<K, V> (
+				org.drip.graph.softheap.KaplanZwickBinaryNode.CombineRootNodePair (
+					tree1.root(),
+					tree2.root()
 				)
 			);
-
-			return newTree.setSuffixExtremum (
-				newTree
-			) ? newTree : null;
 		}
 		catch (java.lang.Exception e)
 		{
@@ -218,26 +224,35 @@ public class KaplanZwickTree
 	}
 
 	/**
-	 * Merge Two Trees with Identical Ranks
+	 * Construct an Initial Tree with a single Entry
 	 * 
-	 * @param tree1 Tree #1
-	 * @param tree2 Tree #2
+	 * @param <K> Key Type
+	 * @param <V> Value Type
+	 * @param minHeap Min Heap Flag
+	 * @param r The R Parameter
+	 * @param entry The Entry
 	 * 
-	 * @return The Merged Tree
+	 * @return The Initial Tree with a single Entry
 	 */
 
-	public static final KaplanZwickTree EquiRankTreeMerge (
-		final KaplanZwickTree tree1,
-		final KaplanZwickTree tree2)
+	public static <K extends java.lang.Comparable<K>, V> KaplanZwickTree<K, V> Initial (
+		final boolean minHeap,
+		final int r,
+		final org.drip.graph.heap.PriorityQueueEntry<K, V> entry)
 	{
 		try
 		{
-			return null == tree1 || null == tree2 ? null : new KaplanZwickTree (
-				org.drip.graph.softheap.KaplanZwickBinaryNode.CombineRootNodePair (
-					tree1.root(),
-					tree2.root()
+			KaplanZwickTree<K, V> newTree = new KaplanZwickTree<K, V> (
+				org.drip.graph.softheap.KaplanZwickBinaryNode.LeafRoot (
+					minHeap,
+					r,
+					entry
 				)
 			);
+
+			return newTree.setSuffixExtremum (
+				newTree
+			) ? newTree : null;
 		}
 		catch (java.lang.Exception e)
 		{
@@ -256,7 +271,7 @@ public class KaplanZwickTree
 	 */
 
 	public KaplanZwickTree (
-		final org.drip.graph.softheap.KaplanZwickBinaryNode root)
+		final org.drip.graph.softheap.KaplanZwickBinaryNode<K, V> root)
 		throws java.lang.Exception
 	{
 		if (null == (_root = root))
@@ -273,7 +288,7 @@ public class KaplanZwickTree
 	 * @return The Root
 	 */
 
-	public org.drip.graph.softheap.KaplanZwickBinaryNode root()
+	public org.drip.graph.softheap.KaplanZwickBinaryNode<K, V> root()
 	{
 		return _root;
 	}
@@ -284,7 +299,7 @@ public class KaplanZwickTree
 	 * @return The Previous Tree in the List
 	 */
 
-	public KaplanZwickTree prev()
+	public KaplanZwickTree<K, V> prev()
 	{
 		return _prev;
 	}
@@ -295,7 +310,7 @@ public class KaplanZwickTree
 	 * @return The Next Tree in the List
 	 */
 
-	public KaplanZwickTree next()
+	public KaplanZwickTree<K, V> next()
 	{
 		return _next;
 	}
@@ -306,7 +321,7 @@ public class KaplanZwickTree
 	 * @return The Extremum ckey Tree among those following this in the List
 	 */
 
-	public KaplanZwickTree suffixExtremum()
+	public KaplanZwickTree<K, V> suffixExtremum()
 	{
 		return _suffixExtremum;
 	}
@@ -331,7 +346,7 @@ public class KaplanZwickTree
 	 */
 
 	public boolean setRoot (
-		final org.drip.graph.softheap.KaplanZwickBinaryNode root)
+		final org.drip.graph.softheap.KaplanZwickBinaryNode<K, V> root)
 	{
 		if (null == root)
 		{
@@ -351,7 +366,7 @@ public class KaplanZwickTree
 	 */
 
 	public boolean setPrev (
-		final KaplanZwickTree prev)
+		final KaplanZwickTree<K, V> prev)
 	{
 		_prev = prev;
 		return true;
@@ -366,7 +381,7 @@ public class KaplanZwickTree
 	 */
 
 	public boolean setNext (
-		final KaplanZwickTree next)
+		final KaplanZwickTree<K, V> next)
 	{
 		_next = next;
 		return true;
@@ -381,7 +396,7 @@ public class KaplanZwickTree
 	 */
 
 	public boolean setSuffixExtremum (
-		final KaplanZwickTree suffixExtremum)
+		final KaplanZwickTree<K, V> suffixExtremum)
 	{
 		if (null == suffixExtremum)
 		{
@@ -398,11 +413,11 @@ public class KaplanZwickTree
 	 * @return Stand-alone Tree with the Root Node alone in its List
 	 */
 
-	public KaplanZwickTree rootTree()
+	public KaplanZwickTree<K, V> rootTree()
 	{
 		try
 		{
-			return new KaplanZwickTree (
+			return new KaplanZwickTree<K, V> (
 				_root
 			);
 		}

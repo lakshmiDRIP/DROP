@@ -115,63 +115,44 @@ package org.drip.graph.softheap;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface ApproximatePriorityQueue<V>
+public abstract class ApproximatePriorityQueue<K extends java.lang.Comparable<K>, V>
+	extends org.drip.graph.heap.PriorityQueue<K, V>
 {
+	private int _r = -1;
+
+	protected ApproximatePriorityQueue (
+		final boolean minHeap,
+		final int r)
+		throws java.lang.Exception
+	{
+		super (
+			minHeap
+		);
+
+		if (0 > (_r = r))
+		{
+			throw new java.lang.Exception (
+				"ApproximatePriorityQueue Constructor => Invalid Inputs"
+			);
+		}
+	}
 
 	/**
-	 * Insert a Key into the Approximate Priority Queue
+	 * Retrieve the R Parameter
 	 * 
-	 * @param key The Key
-	 * @param v the Item
-	 * 
-	 * @return TRUE - The Key successfully inserted into the Approximate Priority Queue
+	 * @return The R Parameter
 	 */
 
-	public abstract boolean insert (
-		final double key,
-		final V v);
+	public int r()
+	{
+		return _r;
+	}
 
 	/**
-	 * Meld the Specified Approximate Priority Queue into the current Approximate Priority Queue
+	 * Compute the Implied Error Rate
 	 * 
-	 * @param approximatePriorityQueue The Specified Approximate Priority Queue
-	 * 
-	 * @return TRUE - The Specified Approximate Priority Queue successfully melded
+	 * @return The Implied Error Rate
 	 */
 
-	public abstract boolean meld (
-		org.drip.graph.softheap.ApproximatePriorityQueue<V> approximatePriorityQueue);
-
-	/**
-	 * Find the Item with the Minimum Key
-	 * 
-	 * @return The Item with the Minimum Key
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public abstract boolean findMin()
-		throws java.lang.Exception;
-
-	/**
-	 * Delete the Item with the Specified Key
-	 * 
-	 * @param key The Key
-	 * 
-	 * @return TRUE - The Item with the Specified Key successfully deleted
-	 */
-
-	public abstract boolean delete (
-		final double key);
-
-	/**
-	 * Find the Item with the Minimum Key and Delete it
-	 * 
-	 * @return TRUE - The Item with the Minimum Key successfully deleted
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public abstract boolean deleteMin()
-		throws java.lang.Exception;
+	public abstract double impliedErrorRate();
 }

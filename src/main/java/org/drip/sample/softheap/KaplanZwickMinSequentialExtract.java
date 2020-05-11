@@ -1,5 +1,11 @@
 
-package org.drip.graph.store;
+package org.drip.sample.softheap;
+
+import org.drip.graph.heap.PriorityQueueEntry;
+import org.drip.graph.softheap.KaplanZwickBinaryNode;
+import org.drip.graph.softheap.KaplanZwickPriorityQueue;
+import org.drip.graph.softheap.KaplanZwickTree;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,14 +81,14 @@ package org.drip.graph.store;
  */
 
 /**
- * <i>ItemListEntry</i> implements an Entry in the Item-list that is a Singly-linked List of Items. The
- * 	References are:
+ * <i>KaplanZwickMinSequentialExtract</i> illustrates the Sequential Extract Operation for a Min Soft Heap as
+ * 	described in Kaplan and Zwick (2009). The References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Blum, M., R. W. Floyd, V. Pratt, R. L. Rivest, and R. E. Tarjan (1973): Time Bounds for Selection
- *  			<i> Journal of Computer and System Sciences</i> <b>7 (4)</b> 448-461
+ *  		Chazelle, B. (2000): The Discrepancy Method: Randomness and Complexity
+ *  			https://www.cs.princeton.edu/~chazelle/pubs/book.pdf
  *  	</li>
  *  	<li>
  *  		Chazelle, B. (2000): The Soft Heap: An Approximate Priority Queue with Optimal Error Rate
@@ -93,13 +99,12 @@ package org.drip.graph.store;
  *  			<i>Journal of the Association for Computing Machinery</i> <b>47 (6)</b> 1028-1047
  *  	</li>
  *  	<li>
- *  		Fredman, M. L., and R. E. Tarjan (1987): Fibonacci Heaps and their Uses in Improved Network
- *  			Optimization Algorithms <i>Journal of the Association for Computing Machinery</i> <b>34
- *  			(3)</b> 596-615
+ *  		Kaplan, H., and U. Zwick (2009): A simpler implementation and analysis of Chazelle's Soft Heaps
+ *  			https://epubs.siam.org/doi/abs/10.1137/1.9781611973068.53?mobileUi=0
  *  	</li>
  *  	<li>
- *  		Vuillemin, J. (2000): A Data Structure for Manipulating Priority Queues <i>Communications of the
- *  			ACM</i> <b>21 (4)</b> 309-315
+ *  		Pettie, S., and V. Ramachandran (2008): Randomized Minimum Spanning Tree Algorithms using
+ *  			Exponentially Fewer Random Bits <i>ACM Transactions on Algorithms</i> <b>4 (1)</b> 1-27
  *  	</li>
  *  </ul>
  *
@@ -107,88 +112,122 @@ package org.drip.graph.store;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/store/README.md">Graph Navigation Storage Data Structures</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/softheap/README.md">Soft Heap Based Priority Queues</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ItemListEntry
+public class KaplanZwickMinSequentialExtract
 {
-	private ItemListEntry _next = null;
-	private double _key = java.lang.Double.POSITIVE_INFINITY;
 
-	/**
-	 * Empty ItemListEntry Constructor
-	 */
-
-	public ItemListEntry()
+	private static <K extends Comparable<K>, V> void PrintHeap (
+		final KaplanZwickPriorityQueue<K, V> softHeap)
 	{
-	}
+		KaplanZwickTree<K, V> tree = softHeap.head();
 
-	/**
-	 * Retrieve the Key
-	 * 
-	 * @return The Key
-	 */
-
-	public double key()
-	{
-		return _key;
-	}
-
-	/**
-	 * Retrieve the Next ItemListEntry in the Item-list
-	 * 
-	 * @return The Next ItemListEntry in the Item-list
-	 */
-
-	public ItemListEntry next()
-	{
-		return _next;
-	}
-
-	/**
-	 * Set the Key
-	 * 
-	 * @param key The Key
-	 * 
-	 * @return TRUE - The Key successfully set
-	 */
-
-	public boolean setKey (
-		final double key)
-	{
-		if (java.lang.Double.isNaN (
-			key
-		))
+		while (null != tree)
 		{
-			return false;
+			KaplanZwickBinaryNode<K, V> node = tree.root();
+
+			System.out.println (
+				"\t|\tRank = " + node.k() + "; ckey = " + node.cEntry().key() + "; List = " + node.entryList() +
+					"; Parent = " + (null == node.parent() ? "null" : node.parent().cEntry().key())
+			);
+
+			System.out.println (
+				"\t|\t\tLeft = " + (
+					null == node.left() ? "null" : node.left().cEntry().key() + " @ " + node.left().childKeyList() +
+						" @ " + node.left().entryList()
+				)
+			);
+
+			System.out.println (
+				"\t|\t\tRight = " + (
+					null == node.right() ? "null" : node.right().cEntry().key() + " @ " + node.right().childKeyList() +
+						" @ " + node.right().entryList()
+				)
+			);
+
+			tree = tree.next();
+		}
+	}
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+		EnvManager.InitEnv (
+			""
+		);
+
+		int r = 10;
+		int keyCount = 33;
+		boolean doubleInsert = true;
+
+		KaplanZwickPriorityQueue<Double, Double> softHeap = KaplanZwickPriorityQueue.Initial (
+			true,
+			r,
+			new PriorityQueueEntry<Double, Double> (
+				0.,
+				0.
+			)
+		);
+
+		for (double keyIndex = 1.;
+			keyIndex <= keyCount;
+			++keyIndex)
+		{
+			softHeap.insert (
+				keyIndex,
+				keyIndex
+			);
+
+			if (doubleInsert)
+			{
+				softHeap.insert (
+					keyIndex,
+					keyIndex
+				);
+			}
 		}
 
-		_key = key;
-		return true;
-	}
+		System.out.println ("\t|-------------------------------------------------------------------------------------");
 
-	/**
-	 * Set the Next Item List Entry
-	 * 
-	 * @param next The Next Item List Entry
-	 * 
-	 * @return TRUE - The Next Item List Entry successfully set
-	 */
+		System.out.println ("\t| After Sequential Insertion");
 
-	public boolean setNext (
-		final ItemListEntry next)
-	{
-		_next = next;
-		return true;
-	}
+		System.out.println ("\t|-------------------------------------------------------------------------------------");
 
-	@Override public java.lang.String toString()
-	{
-		return "[key = " + _key + "; next = " + (null == _next ? "null" : _next.toString()) + "]";
+		PrintHeap (
+			softHeap
+		);
+
+		System.out.println ("\t|-------------------------------------------------------------------------------------");
+
+		System.out.println();
+
+		System.out.println ("\t|-------------------------------------------------------------------------------------");
+
+		System.out.println ("\t| After Sequential Extraction");
+
+		while (!softHeap.isEmpty())
+		{
+			System.out.println ("\t|-------------------------------------------------------------------------------------");
+
+			System.out.println (
+				"\t| After extracting " +
+				softHeap.extractExtremum()
+			);
+
+			PrintHeap (
+				softHeap
+			);
+
+			System.out.println ("\t|-------------------------------------------------------------------------------------");
+		}
+
+		EnvManager.TerminateEnv();
 	}
 }

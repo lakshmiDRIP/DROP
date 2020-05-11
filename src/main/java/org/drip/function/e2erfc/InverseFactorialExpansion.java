@@ -77,7 +77,7 @@ package org.drip.function.e2erfc;
 
 /**
  * <i>InverseFactorialExpansion</i> implements the Term and the Generator in the Inverse Factorial Expansion
- * of Error Function Complement (erfc). The References are:
+ * 	of Error Function Complement (erfc). The References are:
  * 
  * <br><br>
  * 	<ul>

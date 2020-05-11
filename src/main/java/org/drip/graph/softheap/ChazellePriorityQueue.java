@@ -1,5 +1,5 @@
 
-package org.drip.graph.store;
+package org.drip.graph.softheap;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,7 +75,7 @@ package org.drip.graph.store;
  */
 
 /**
- * <i>SoftHeap</i> implements the Soft Heap - an Approximate Priority Queue. The References are:
+ * <i>ChazellePriorityQueue</i> implements the Chazelle (2000) Verison of Soft Heap. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -114,11 +114,11 @@ package org.drip.graph.store;
  * @author Lakshmi Krishnamurthy
  */
 
-public class SoftHeap
+public class ChazellePriorityQueue
 {
 	private double _r = java.lang.Double.NaN;
-	private org.drip.graph.store.HEAD _tail = null;
-	private org.drip.graph.store.HEAD _header = null;
+	private org.drip.graph.softheap.ChazelleTree _tail = null;
+	private org.drip.graph.softheap.ChazelleTree _head = null;
 
 	/**
 	 * Create a Fresh Instance of Soft-Heap
@@ -129,11 +129,11 @@ public class SoftHeap
 	 * @return Fresh Instance of Soft-Heap
 	 */
 
-	public static final SoftHeap Create (
+	/* public static final ChazellePriorityQueue Create (
 		final double headerRank,
 		final double r)
 	{
-		org.drip.graph.store.HEAD header = new org.drip.graph.store.HEAD();
+		org.drip.graph.softheap.ChazelleTree header = new org.drip.graph.softheap.ChazelleTree();
 
 		if (!header.setRank (
 			headerRank
@@ -142,7 +142,7 @@ public class SoftHeap
 			return null;
 		}
 
-		org.drip.graph.store.HEAD tail = new org.drip.graph.store.HEAD();
+		org.drip.graph.softheap.ChazelleTree tail = new org.drip.graph.softheap.ChazelleTree();
 
 		if (!header.setNext (
 				tail
@@ -156,7 +156,7 @@ public class SoftHeap
 
 		try
 		{
-			return new SoftHeap (
+			return new ChazellePriorityQueue (
 				r,
 				header,
 				tail
@@ -168,55 +168,53 @@ public class SoftHeap
 		}
 
 		return null;
-	}
+	} */
 
 	/**
-	 * SoftHeap Constructor
+	 * ChazellePriorityQueue Constructor
 	 * 
 	 * @param r r
-	 * @param header Header
+	 * @param head Header
 	 * @param tail Tail
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public SoftHeap (
+	public ChazellePriorityQueue (
 		final double r,
-		final org.drip.graph.store.HEAD header,
-		final org.drip.graph.store.HEAD tail)
+		final org.drip.graph.softheap.ChazelleTree head,
+		final org.drip.graph.softheap.ChazelleTree tail)
 		throws java.lang.Exception
 	{
-		if (java.lang.Double.isNaN (
-			_r = r
-		))
+		if (0 > (_r = r) ||
+			null == (_head = head) ||
+			null == (_tail = tail)
+		)
 		{
 			throw new java.lang.Exception (
-				"SoftHeap Constructor => Invalid Inputs"
+				"ChazellePriorityQueue Constructor => Invalid Inputs"
 			);
 		}
-
-		_tail = tail;
-		_header = header;
 	}
 
 	/**
-	 * Retrieve the Header
+	 * Retrieve the Head of the List of Trees
 	 * 
-	 * @return The Header
+	 * @return Head of the List of Trees
 	 */
 
-	public org.drip.graph.store.HEAD header()
+	public org.drip.graph.softheap.ChazelleTree head()
 	{
-		return _header;
+		return _head;
 	}
 
 	/**
-	 * Retrieve the Tail
+	 * Retrieve the Tail of the List of Trees
 	 * 
-	 * @return The Tail
+	 * @return Tail of the List of Trees
 	 */
 
-	public org.drip.graph.store.HEAD tail()
+	public org.drip.graph.softheap.ChazelleTree tail()
 	{
 		return _tail;
 	}
@@ -233,47 +231,14 @@ public class SoftHeap
 	}
 
 	/**
-	 * Update all the suffixMin's inside the HEAD Lists
+	 * Retrieve the Rank of the Heap
 	 * 
-	 * @param h The Last Header List
-	 * 
-	 * @return TRUE - The SuffixMin's inside the HEAD Lists successfully updated
+	 * @return Rank of the Heap
 	 */
 
-	public boolean fixMinList (
-		org.drip.graph.store.HEAD h)
+	public double rank()
 	{
-		if (null == h)
-		{
-			return false;
-		}
-
-		/*
-		 * Head corresponding to Queue with Lowest CKey
-		 */
-
-		org.drip.graph.store.HEAD hNext = h.next();
-
-		org.drip.graph.store.HEAD tmpSuffixMin = _tail == hNext ? h : hNext.suffixMin();
-
-		while (h != _header)
-		{
-			if (h.queue().ckey() < tmpSuffixMin.queue().ckey())
-			{
-				tmpSuffixMin = h;
-			}
-
-			if (!h.setSuffixMin (
-				tmpSuffixMin
-			))
-			{
-				return false;
-			}
-
-			h = h.prev();
-		}
-
-		return true;
+		return _head.rank();
 	}
 
 	/**
@@ -284,40 +249,44 @@ public class SoftHeap
 	 * @return TRUE - The Specified Soft Queue successfully melded
 	 */
 
-	public boolean meld (
-		org.drip.graph.store.SoftQueueNode softQueueNode)
-	{
+	/* public boolean meld (
+		org.drip.graph.softheap.ChazelleSoftQueueNode softQueueNode)
+	{ */
 
 		/*
 		 * Heap Rank corresponding to softQueueNode
 		 */
 
-		if (null == softQueueNode)
+		/* if (null == softQueueNode)
 		{
 			return false;
 		}
 
-		org.drip.graph.store.HEAD toHead = _header.next();
+		org.drip.graph.softheap.ChazelleTree toHead = _head.next();
 
-		while (softQueueNode.rank() > toHead.rank())
+		while (softQueueNode.k() > toHead.rank())
 		{
 			toHead = toHead.next();
 		}
 
-		org.drip.graph.store.HEAD prevHead = toHead.prev();
+		int r = softQueueNode.r();
+
+		org.drip.graph.softheap.ChazelleTree prevHead = toHead.prev(); */
 
 		/*
 		 * Carry Propagation to handle Pre-existing Ranks
 		 */
 
-		while (softQueueNode.rank() == toHead.rank())
+		/* while (softQueueNode.k() == toHead.rank())
 		{
-			org.drip.graph.store.SoftQueueNode nextSoftQueueNode = null;
-			org.drip.graph.store.SoftQueueNode childSoftQueueNode = null;
+			org.drip.graph.softheap.ChazelleSoftQueueNode nextSoftQueueNode = null;
+			org.drip.graph.softheap.ChazelleSoftQueueNode childSoftQueueNode = null;
 
-			org.drip.graph.store.SoftQueueNode toHeadSoftQueueNode = toHead.queue();
+			org.drip.graph.softheap.ChazelleSoftQueueNode toHeadSoftQueueNode = toHead.root();
 
-			if (toHeadSoftQueueNode.ckey() > softQueueNode.ckey())
+			if (1 == toHeadSoftQueueNode.cEntry().compareTo (
+				softQueueNode.cEntry()
+			))
 			{
 				nextSoftQueueNode = softQueueNode;
 				childSoftQueueNode = toHeadSoftQueueNode;
@@ -328,20 +297,21 @@ public class SoftHeap
 				nextSoftQueueNode = toHeadSoftQueueNode;
 			}
 
-			softQueueNode = new org.drip.graph.store.SoftQueueNode();
+			softQueueNode = org.drip.graph.softheap.ChazelleSoftQueueNode.LeafRoot (
+				r,
+				nextSoftQueueNode.cEntry()
+			);
 
-			if (!softQueueNode.setCKey (
-					nextSoftQueueNode.ckey()
-				) || !softQueueNode.setRank (
-					nextSoftQueueNode.rank() + 1.
+			if (!softQueueNode.setRank (
+					nextSoftQueueNode.k() + 1.
 				) || !softQueueNode.setNext (
 					nextSoftQueueNode
 				) || !softQueueNode.setChild (
 					childSoftQueueNode
-				) || !softQueueNode.setHeadItem (
-					nextSoftQueueNode.headItem()
-				) || !softQueueNode.setTailItem (
-					nextSoftQueueNode.tailItem()
+				) || !softQueueNode.setHeadEntry (
+					nextSoftQueueNode.headEntry()
+				) || !softQueueNode.setTailEntry (
+					nextSoftQueueNode.tailEntry()
 				)
 			)
 			{
@@ -349,19 +319,19 @@ public class SoftHeap
 			}
 
 			toHead = toHead.next();
-		}
+		} */
 
 		/*
 		 * Insertion of the New Queue
 		 */
 
-		org.drip.graph.store.HEAD h = prevHead == toHead.prev() ? 
-			new org.drip.graph.store.HEAD() : prevHead.next();
+		/* org.drip.graph.softheap.ChazelleTree h = prevHead == toHead.prev() ? 
+			new org.drip.graph.softheap.ChazelleTree() : prevHead.next();
 
 		return h.setQueue (
 			softQueueNode
 		) && h.setRank (
-			softQueueNode.rank()
+			softQueueNode.k()
 		) && h.setPrev (
 			prevHead
 		) && h.setNext (
@@ -373,7 +343,7 @@ public class SoftHeap
 		) && fixMinList (
 			h
 		);
-	}
+	} */
 
 	/**
 	 * Insert a Key into the Soft Heap
@@ -383,10 +353,10 @@ public class SoftHeap
 	 * @return TRUE - The Key successfully inserted
 	 */
 
-	public boolean insert (
+	/* public boolean insert (
 		final double key)
 	{
-		org.drip.graph.store.ItemListEntry itemListEntry = new org.drip.graph.store.ItemListEntry();
+		org.drip.graph.softheap.ChazelleEntryList itemListEntry = new org.drip.graph.softheap.ChazelleEntryList();
 
 		if (!itemListEntry.setKey (
 			key
@@ -395,20 +365,20 @@ public class SoftHeap
 			return false;
 		}
 
-		org.drip.graph.store.SoftQueueNode softQueueNode = new org.drip.graph.store.SoftQueueNode();
+		org.drip.graph.softheap.ChazelleSoftQueueNode softQueueNode = new org.drip.graph.softheap.ChazelleSoftQueueNode();
 
 		return softQueueNode.setRank (
 			0
 		) && softQueueNode.setCKey (
 			key
-		) && softQueueNode.setHeadItem (
+		) && softQueueNode.setHeadEntry (
 			itemListEntry
-		) && softQueueNode.setTailItem (
+		) && softQueueNode.setTailEntry (
 			itemListEntry
 		) && meld (
 			softQueueNode
 		);
-	}
+	} */
 
 	/**
 	 * Replace the Empty-list at the Specified Soft Queue and return it
@@ -418,24 +388,24 @@ public class SoftHeap
 	 * @return The Empty-list at the Specified Soft Queue successfully replaced and returned
 	 */
 
-	public org.drip.graph.store.SoftQueueNode sift (
-		final org.drip.graph.store.SoftQueueNode softQueueNode)
+	/* public org.drip.graph.softheap.ChazelleSoftQueueNode sift (
+		final org.drip.graph.softheap.ChazelleSoftQueueNode softQueueNode)
 	{
-		if (!softQueueNode.setHeadItem (
+		if (!softQueueNode.setHeadEntry (
 				null
-			) || !softQueueNode.setTailItem (
+			) || !softQueueNode.setTailEntry (
 				null
 			)
 		)
 		{
 			return null;
-		}
+		} */
 
 		/*
 		 * Stop Recursion if the Node is a Leaf
 		 */
 
-		org.drip.graph.store.SoftQueueNode nextSoftQueueNode = softQueueNode.next();
+		/* org.drip.graph.softheap.ChazelleSoftQueueNode nextSoftQueueNode = softQueueNode.next();
 
 		if (null == nextSoftQueueNode && null == softQueueNode.child())
 		{
@@ -451,19 +421,19 @@ public class SoftHeap
 		))
 		{
 			return null;
-		}
+		} */
 
 		/*
 		 * Rotation to maintain Heap Ordering after Sift
 		 */
 
-		nextSoftQueueNode = softQueueNode.next();
+		/* nextSoftQueueNode = softQueueNode.next();
 
-		org.drip.graph.store.SoftQueueNode childSoftQueueNode = softQueueNode.child();
+		org.drip.graph.softheap.ChazelleSoftQueueNode childSoftQueueNode = softQueueNode.child();
 
 		if (nextSoftQueueNode.ckey() > childSoftQueueNode.ckey())
 		{
-			org.drip.graph.store.SoftQueueNode tmpNode = childSoftQueueNode;
+			org.drip.graph.softheap.ChazelleSoftQueueNode tmpNode = childSoftQueueNode;
 
 			if (!softQueueNode.setChild (
 					nextSoftQueueNode
@@ -474,34 +444,34 @@ public class SoftHeap
 			{
 				return null;
 			}
-		}
+		} */
 
 		/*
 		 * Updating the Soft Queue State
 		 */
 
-		nextSoftQueueNode = softQueueNode.next();
+		/* nextSoftQueueNode = softQueueNode.next();
 
-		if (!softQueueNode.setHeadItem (
-				nextSoftQueueNode.headItem()
-			) || !softQueueNode.setTailItem (
-				nextSoftQueueNode.tailItem()
+		if (!softQueueNode.setHeadEntry (
+				nextSoftQueueNode.headEntry()
+			) || !softQueueNode.setTailEntry (
+				nextSoftQueueNode.tailEntry()
 			) || !softQueueNode.setCKey (
 				nextSoftQueueNode.ckey()
 			)
 		)
 		{
 			return null;
-		}
+		} */
 
 		/*
 		 * Test for Secondary Recursion Criterion
 		 */
 
-		double rank = softQueueNode.rank();
+		/* double rank = softQueueNode.k();
 
 		if (rank > _r && (
-			1 == rank % 2 || softQueueNode.child().rank() < rank - 1.
+			1 == rank % 2 || softQueueNode.child().k() < rank - 1.
 		))
 		{
 			if (!softQueueNode.setNext (
@@ -512,19 +482,19 @@ public class SoftHeap
 			)
 			{
 				return null;
-			}
+			} */
 
 			/*
 			 * Rotation to maintain Heap Ordering after Sift
 			 */
 
-			nextSoftQueueNode = softQueueNode.next();
+			/* nextSoftQueueNode = softQueueNode.next();
 
 			childSoftQueueNode = softQueueNode.child();
 
 			if (nextSoftQueueNode.ckey() > childSoftQueueNode.ckey())
 			{
-				org.drip.graph.store.SoftQueueNode tmpNode = childSoftQueueNode;
+				org.drip.graph.softheap.ChazelleSoftQueueNode tmpNode = childSoftQueueNode;
 
 				if (!softQueueNode.setChild (
 						nextSoftQueueNode
@@ -535,31 +505,31 @@ public class SoftHeap
 				{
 					return null;
 				}
-			}
+			} */
 
 			/*
 			 * Concatenation of the Item List
 			 */
 
-			nextSoftQueueNode = softQueueNode.next();
+			/* nextSoftQueueNode = softQueueNode.next();
 
 			if (java.lang.Double.POSITIVE_INFINITY != nextSoftQueueNode.ckey() &&
-				null != nextSoftQueueNode.headItem())
+				null != nextSoftQueueNode.headEntry())
 			{
-				if (!nextSoftQueueNode.tailItem().setNext (
-						softQueueNode.headItem()
-					) || !softQueueNode.setHeadItem (
-						nextSoftQueueNode.headItem()
+				if (!nextSoftQueueNode.tailEntry().setNext (
+						softQueueNode.headEntry()
+					) || !softQueueNode.setHeadEntry (
+						nextSoftQueueNode.headEntry()
 					)
 				)
 				{
 					return null;
 				}
 
-				if (null == softQueueNode.tailItem())
+				if (null == softQueueNode.tailEntry())
 				{
-					if (!softQueueNode.setTailItem (
-						nextSoftQueueNode.tailItem()
+					if (!softQueueNode.setTailEntry (
+						nextSoftQueueNode.tailEntry()
 					))
 					{
 						return null;
@@ -573,13 +543,13 @@ public class SoftHeap
 					return null;
 				}
 			}
-		}
+		} */
 
 		/*
 		 * Cleaning up the Soft Queue's Next and Child
 		 */
 
-		nextSoftQueueNode = softQueueNode.next();
+		/* nextSoftQueueNode = softQueueNode.next();
 
 		if (java.lang.Double.POSITIVE_INFINITY == softQueueNode.child().ckey())
 		{
@@ -610,7 +580,7 @@ public class SoftHeap
 		}
 
 		return softQueueNode;
-	}
+	} */
 
 	/**
 	 * Return the Item with the Smallest CKey and Delete it
@@ -620,19 +590,19 @@ public class SoftHeap
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double deleteMin()
+	/* public double deleteMin()
 		throws java.lang.Exception
-	{
+	{ */
 
 		/*
 		 * Checking for the Rank Invariance Violation
 		 */
 
-		org.drip.graph.store.HEAD h = _header.next().suffixMin();
+		/* org.drip.graph.softheap.ChazelleTree h = _header.next().suffixMin();
 
-		org.drip.graph.store.SoftQueueNode tmpSoftQueueNode = h.queue();
+		org.drip.graph.softheap.ChazelleSoftQueueNode tmpSoftQueueNode = h.queue();
 
-		while (null == tmpSoftQueueNode.headItem())
+		while (null == tmpSoftQueueNode.headEntry())
 		{
 			int childCount = 0;
 
@@ -641,17 +611,17 @@ public class SoftHeap
 				tmpSoftQueueNode = tmpSoftQueueNode.next();
 
 				++childCount;
-			}
+			} */
 
 			/*
 			 * Rank Invariance Violation Handling
 			 */
 
-			if (childCount < h.rank() / 2)
+			/* if (childCount < h.rank() / 2)
 			{
-				org.drip.graph.store.HEAD hNext = h.next();
+				org.drip.graph.softheap.ChazelleTree hNext = h.next();
 
-				org.drip.graph.store.HEAD hPrev = h.prev();
+				org.drip.graph.softheap.ChazelleTree hPrev = h.prev();
 
 				if (!hPrev.setNext (
 						hNext
@@ -684,13 +654,13 @@ public class SoftHeap
 				}
 			}
 			else
-			{
+			{ */
 
 				/*
 				 * Rank Invariance Holds: Refill Item List at the Root
 				 */
 
-				org.drip.graph.store.SoftQueueNode queue = h.queue();
+				/* org.drip.graph.softheap.ChazelleSoftQueueNode queue = h.queue();
 
 				if (!h.setQueue (
 					sift (
@@ -705,9 +675,9 @@ public class SoftHeap
 
 				if (java.lang.Double.POSITIVE_INFINITY == h.queue().ckey())
 				{
-					org.drip.graph.store.HEAD hNext = h.next();
+					org.drip.graph.softheap.ChazelleTree hNext = h.next();
 
-					org.drip.graph.store.HEAD hPrev = h.prev();
+					org.drip.graph.softheap.ChazelleTree hPrev = h.prev();
 
 					if (!hPrev.setNext (
 							hNext
@@ -735,19 +705,19 @@ public class SoftHeap
 			}
 
 			h = _header.next().suffixMin();
-		}
+		} */
 
 		/*
 		 * Retrieve and Delete the Minimum Key
 		 */
 
-		org.drip.graph.store.SoftQueueNode hQueue = h.queue();
+		/* org.drip.graph.softheap.ChazelleSoftQueueNode hQueue = h.queue();
 
-		org.drip.graph.store.ItemListEntry hQueueIL = hQueue.headItem();
+		org.drip.graph.softheap.ChazelleEntryList hQueueIL = hQueue.headEntry();
 
 		double min = hQueueIL.key();
 
-		if (!hQueue.setHeadItem (
+		if (!hQueue.setHeadEntry (
 			hQueueIL.next()
 		))
 		{
@@ -756,9 +726,9 @@ public class SoftHeap
 			);
 		}
 
-		if (null == hQueue.headItem())
+		if (null == hQueue.headEntry())
 		{
-			if (!hQueue.setTailItem (
+			if (!hQueue.setTailEntry (
 				null
 			))
 			{
@@ -780,5 +750,5 @@ public class SoftHeap
 		display = display + " Tail = " + (null == _tail ? "null;" : _tail.toString() + ";");
 
 		return display + "}";
-	}
+	} */
 }

@@ -1,5 +1,5 @@
 
-package org.drip.graph.store;
+package org.drip.graph.softheap;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,8 +75,8 @@ package org.drip.graph.store;
  */
 
 /**
- * <i>SoftQueueNode</i> implements a Soft-Queue Node's CKey and its Rank in the Master Tree. The References
- * 	are:
+ * <i>ChazelleSoftQueueNode</i> implements a Soft-Queue Node's CKey and its Rank in the Master Tree. The
+ * 	References are:
  * 
  * <br><br>
  *  <ul>
@@ -108,39 +108,78 @@ package org.drip.graph.store;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/store/README.md">Graph Navigation Storage Data Structures</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/softheap/README.md">Soft Heap - Approximate Priority Queue</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SoftQueueNode
+public class ChazelleSoftQueueNode
 {
-	private SoftQueueNode _next = null;
-	private SoftQueueNode _child = null;
-	private double _ckey = java.lang.Double.POSITIVE_INFINITY;
-	private double _rank = java.lang.Double.POSITIVE_INFINITY;
-	private org.drip.graph.store.ItemListEntry _headItem = null;
-	private org.drip.graph.store.ItemListEntry _tailItem = null;
+	private int _r = -1;
+	private ChazelleSoftQueueNode _next = null;
+	private ChazelleSoftQueueNode _child = null;
+	private double _k = java.lang.Double.POSITIVE_INFINITY;
+	private java.util.List<java.lang.Double> _entryList = null;
+	private java.lang.Double _cEntry = java.lang.Double.POSITIVE_INFINITY;
 
 	/**
-	 * Empty SoftQueueNode Constructor
+	 * Construct a Leaf Root Node of a New Tree with a single Entry
+	 * 
+	 * @param r The R Parameter
+	 * @param entry The Entry
+	 * 
+	 * @return The Leaf Root of a New Tree with a single KeEntryy
 	 */
 
-	public SoftQueueNode()
+	public static final ChazelleSoftQueueNode LeafRoot (
+		final int r,
+		final java.lang.Double entry)
 	{
+		try
+		{
+			ChazelleSoftQueueNode emptyRoot = new ChazelleSoftQueueNode (
+				r,
+				0
+			);
+
+			return emptyRoot.addEntry (
+				entry
+			) ? emptyRoot : null;
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
-	 * Retrieve the ckey
+	 * ChazelleSoftQueueNode Constructor
 	 * 
-	 * @return The ckey
+	 * @param r R Parameter
+	 * @param k Rank
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double ckey()
+	public ChazelleSoftQueueNode (
+		final int r,
+		final int k)
+		throws java.lang.Exception
 	{
-		return _ckey;
+		if (0 > (_r = r) ||
+			0 > (_k = k)
+		)
+		{
+			throw new java.lang.Exception (
+				"ChazelleSoftQueueNode Constructor => Invalid Inputs"
+			);
+		}
+
+		_entryList = new java.util.ArrayList<java.lang.Double>();
 	}
 
 	/**
@@ -149,9 +188,9 @@ public class SoftQueueNode
 	 * @return The Rank
 	 */
 
-	public double rank()
+	public double k()
 	{
-		return _rank;
+		return _k;
 	}
 
 	/**
@@ -160,7 +199,7 @@ public class SoftQueueNode
 	 * @return The Next Soft Queue Node
 	 */
 
-	public SoftQueueNode next()
+	public ChazelleSoftQueueNode next()
 	{
 		return _next;
 	}
@@ -171,89 +210,94 @@ public class SoftQueueNode
 	 * @return The Child Soft Queue Node
 	 */
 
-	public SoftQueueNode child()
+	public ChazelleSoftQueueNode child()
 	{
 		return _child;
 	}
 
 	/**
-	 * Retrieve the Head Item List Entry
+	 * Retrieve the R Parameter
 	 * 
-	 * @return The Head Item List Entry
+	 * @return The R Parameter
 	 */
 
-	public org.drip.graph.store.ItemListEntry headItem()
+	public int r()
 	{
-		return _headItem;
+		return _r;
 	}
 
 	/**
-	 * Retrieve the Tail Item List Entry
+	 * Retrieve the List of Entries
 	 * 
-	 * @return The Tail Item List Entry
+	 * @return The List of Entries
 	 */
 
-	public org.drip.graph.store.ItemListEntry tailItem()
+	public java.util.List<java.lang.Double> entryList()
 	{
-		return _tailItem;
+		return _entryList;
 	}
 
 	/**
-	 * Set the CKey
+	 * Retrieve the cEntry
 	 * 
-	 * @param ckey The CKey
-	 * 
-	 * @return TRUE - The CKey successfully set
+	 * @return The cEntry
 	 */
 
-	public boolean setCKey (
-		final double ckey)
+	public java.lang.Double cEntry()
 	{
-		if (java.lang.Double.isNaN (
-			ckey
-		))
+		return _cEntry;
+	}
+
+	/**
+	 * Retrieve the Current Size of the List
+	 * 
+	 * @return Current Size of the List
+	 */
+
+	public int currentSize()
+	{
+		return _entryList.size();
+	}
+
+	/**
+	 * Set the cEntry
+	 * 
+	 * @param cEntry The CEntry
+	 * 
+	 * @return TRUE - The CEntry successfully set
+	 */
+
+	public boolean setCEntry (
+		final java.lang.Double cEntry)
+	{
+		if (null == cEntry)
 		{
 			return false;
 		}
 
-		_ckey = ckey;
+		_cEntry = cEntry;
 		return true;
 	}
 
 	/**
 	 * Set the Rank
 	 * 
-	 * @param rank The Rank
+	 * @param k The Rank
 	 * 
 	 * @return TRUE - The Rank successfully set
 	 */
 
 	public boolean setRank (
-		final double rank)
+		final double k)
 	{
 		if (java.lang.Double.isNaN (
-			rank
+			k
 		))
 		{
 			return false;
 		}
 
-		_rank = rank;
-		return true;
-	}
-
-	/**
-	 * Set the Next Soft Queue Node
-	 * 
-	 * @param next The Next Soft Queue Node
-	 * 
-	 * @return TRUE - The Next Soft Queue Node successfully set
-	 */
-
-	public boolean setNext (
-		final org.drip.graph.store.SoftQueueNode next)
-	{
-		_next = next;
+		_k = k;
 		return true;
 	}
 
@@ -266,54 +310,200 @@ public class SoftQueueNode
 	 */
 
 	public boolean setChild (
-		final org.drip.graph.store.SoftQueueNode child)
+		final org.drip.graph.softheap.ChazelleSoftQueueNode child)
 	{
 		_child = child;
 		return true;
 	}
 
 	/**
-	 * Set the Head Item List Entry
+	 * Set the Next Soft Queue Node
 	 * 
-	 * @param headItem The Head Item List Entry
+	 * @param next The Next Soft Queue Node
 	 * 
-	 * @return TRUE - The Head Item List Entry successfully set
+	 * @return TRUE - The Next Soft Queue Node successfully set
 	 */
 
-	public boolean setHeadItem (
-		final org.drip.graph.store.ItemListEntry headItem)
+	public boolean setNext (
+		final org.drip.graph.softheap.ChazelleSoftQueueNode next)
 	{
-		_headItem = headItem;
+		_next = next;
 		return true;
 	}
 
 	/**
-	 * Set the Tail Item List Entry
+	 * Add an Entry to the Entry List
 	 * 
-	 * @param tailItem The Tail Item List Entry
+	 * @param entry The Entry
 	 * 
-	 * @return TRUE - The Tail Item List Entry successfully set
+	 * @return TRUE - The Entry is successfully added to the Entry List
 	 */
 
-	public boolean setTailItem (
-		final org.drip.graph.store.ItemListEntry tailItem)
+	public boolean addEntry (
+		final java.lang.Double entry)
 	{
-		_tailItem = tailItem;
+		if (null == entry)
+		{
+			return false;
+		}
+
+		_entryList.add (
+			entry
+		);
+
+		if (null == _cEntry)
+		{
+			_cEntry = entry;
+		}
+		else
+		{
+			_cEntry = 1 == _cEntry.compareTo (
+				entry
+			) ? _cEntry : entry;
+		}
+
 		return true;
+	}
+
+	/**
+	 * Peek the Top Entry
+	 * 
+	 * @return The Top Entry
+	 */
+
+	public java.lang.Double peekTopEntry()
+	{
+		return _entryList.get (
+			0
+		);
+	}
+
+	/**
+	 * Retrieve the Key Corruption Status List
+	 * 
+	 * @return The Key Corruption Status List
+	 */
+
+	public java.util.List<java.lang.Boolean> keyCorruptionStatusList()
+	{
+		java.util.List<java.lang.Boolean> keyCorruptionStatusList =
+			new java.util.ArrayList<java.lang.Boolean>();
+
+		for (java.lang.Double entry : _entryList)
+		{
+			keyCorruptionStatusList.add (
+				0 == _cEntry.compareTo (
+					entry
+				)
+			);
+		}
+
+		return keyCorruptionStatusList;
+	}
+
+	/**
+	 * Indicate if the Node is a Leaf
+	 * 
+	 * @return TRUE - The Node is a Leaf
+	 */
+
+	public boolean isLeaf()
+	{
+		return null == _child && null == _next;
+	}
+
+	/**
+	 * Perform a BFS Walk through the Nodes and retrieve them
+	 * 
+	 * @return The List of Nodes
+	 */
+
+	public java.util.List<ChazelleSoftQueueNode> bfsWalk()
+	{
+		java.util.List<ChazelleSoftQueueNode> elementList = new java.util.ArrayList<ChazelleSoftQueueNode>();
+
+		java.util.List<ChazelleSoftQueueNode> elementQueue =
+			new java.util.ArrayList<ChazelleSoftQueueNode>();
+
+		elementQueue.add (
+			this
+		);
+
+		while (!elementQueue.isEmpty())
+		{
+			ChazelleSoftQueueNode node = elementQueue.get (
+				0
+			);
+
+			elementQueue.remove (
+				0
+			);
+
+			elementList.add (
+				node
+			);
+
+			ChazelleSoftQueueNode left = node.child();
+
+			if (null != left)
+			{
+				elementQueue.add (
+					left
+				);
+			}
+
+			ChazelleSoftQueueNode right = node.next();
+
+			if (null != right)
+			{
+				elementQueue.add (
+					right
+				);
+			}
+		}
+
+		return elementList;
+	}
+
+	/**
+	 * Perform a BFS Walk through the Nodes and retrieve them
+	 * 
+	 * @return The List of Nodes
+	 */
+
+	public java.util.List<java.lang.Double> childKeyList()
+	{
+		java.util.List<java.lang.Double> childKeyList =
+			new java.util.ArrayList<java.lang.Double>();
+
+		java.util.List<ChazelleSoftQueueNode> bfsWalk = bfsWalk();
+
+		for (ChazelleSoftQueueNode node : bfsWalk)
+		{
+			childKeyList.addAll (
+				node.entryList()
+			);
+		}
+
+		return childKeyList;
 	}
 
 	@Override public java.lang.String toString()
 	{
-		java.lang.String display = "{CKey = " + _ckey + "; Rank = " + _rank + ";";
+		String state = "{Rank = " + _k + "; ckey = " + _cEntry + "; List = " + _entryList;
 
-		display = display + " Next = " + (null == _next ? "null;" : _next.toString() + ";");
+		// state = state + "; Parent = " + (null == _parent ? "null" : _parent.cEntry().key());
 
-		display = display + " Child = " + (null == _child ? "null;" : _child.toString() + ";");
+		state = state + "; Child = " + (
+			null == _child ? "null" : _child.cEntry() + " @ " + _child.childKeyList() + " @ " +
+				_child.entryList()
+		);
 
-		display = display + " Head Item = " + (null == _headItem ? "null;" : _headItem.toString() + ";");
+		state = state + "; Next = " + (
+			null == _next ? "null" : _next.cEntry() + " @ " + _next.childKeyList() + " @ " +
+				_next.entryList()
+		);
 
-		display = display + " Tail Item = " + (null == _tailItem ? "null;" : _tailItem.toString() + ";");
-
-		return display + "}";
+		return state + "}";
 	}
 }

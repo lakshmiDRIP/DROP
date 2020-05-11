@@ -1,5 +1,11 @@
 
-package org.drip.graph.store;
+package org.drip.sample.softheap;
+
+import org.drip.graph.heap.PriorityQueueEntry;
+import org.drip.graph.softheap.KaplanZwickBinaryNode;
+import org.drip.graph.softheap.KaplanZwickPriorityQueue;
+import org.drip.graph.softheap.KaplanZwickTree;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,13 +81,14 @@ package org.drip.graph.store;
  */
 
 /**
- * <i>NODE</i> implements the Top-Level Head List of the Soft Heap. The References are:
+ * <i>KaplanZwickMinRandomInsert</i> illustrates the Random Insert Operation for a Min Soft Heap as described
+ * 	in Kaplan and Zwick (2009). The References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Blum, M., R. W. Floyd, V. Pratt, R. L. Rivest, and R. E. Tarjan (1973): Time Bounds for Selection
- *  			<i> Journal of Computer and System Sciences</i> <b>7 (4)</b> 448-461
+ *  		Chazelle, B. (2000): The Discrepancy Method: Randomness and Complexity
+ *  			https://www.cs.princeton.edu/~chazelle/pubs/book.pdf
  *  	</li>
  *  	<li>
  *  		Chazelle, B. (2000): The Soft Heap: An Approximate Priority Queue with Optimal Error Rate
@@ -92,13 +99,12 @@ package org.drip.graph.store;
  *  			<i>Journal of the Association for Computing Machinery</i> <b>47 (6)</b> 1028-1047
  *  	</li>
  *  	<li>
- *  		Fredman, M. L., and R. E. Tarjan (1987): Fibonacci Heaps and their Uses in Improved Network
- *  			Optimization Algorithms <i>Journal of the Association for Computing Machinery</i> <b>34
- *  			(3)</b> 596-615
+ *  		Kaplan, H., and U. Zwick (2009): A simpler implementation and analysis of Chazelle's Soft Heaps
+ *  			https://epubs.siam.org/doi/abs/10.1137/1.9781611973068.53?mobileUi=0
  *  	</li>
  *  	<li>
- *  		Vuillemin, J. (2000): A Data Structure for Manipulating Priority Queues <i>Communications of the
- *  			ACM</i> <b>21 (4)</b> 309-315
+ *  		Pettie, S., and V. Ramachandran (2008): Randomized Minimum Spanning Tree Algorithms using
+ *  			Exponentially Fewer Random Bits <i>ACM Transactions on Algorithms</i> <b>4 (1)</b> 1-27
  *  	</li>
  *  </ul>
  *
@@ -106,179 +112,98 @@ package org.drip.graph.store;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/store/README.md">Graph Navigation Storage Data Structures</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/softheap/README.md">Soft Heap Based Priority Queues</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class HEAD
+public class KaplanZwickMinRandomInsert
 {
-	private HEAD _next = null;
-	private HEAD _prev = null;
-	private HEAD _suffixMin = null;
-	private org.drip.graph.store.SoftQueueNode _queue = null;
-	private double _rank = java.lang.Double.POSITIVE_INFINITY;
 
-	/**
-	 * HEAD Constructor
-	 */
-
-	public HEAD()
+	private static <K extends Comparable<K>, V> void PrintHeap (
+		final KaplanZwickPriorityQueue<K, V> softHeap)
 	{
-	}
+		KaplanZwickTree<K, V> tree = softHeap.head();
 
-	/**
-	 * Retrieve the Queue
-	 * 
-	 * @return The Queue
-	 */
-
-	public org.drip.graph.store.SoftQueueNode queue()
-	{
-		return _queue;
-	}
-
-	/**
-	 * Retrieve the Next HEAD
-	 * 
-	 * @return The Next HEAD
-	 */
-
-	public HEAD next()
-	{
-		return _next;
-	}
-
-	/**
-	 * Retrieve the Previous HEAD
-	 * 
-	 * @return The Previous HEAD
-	 */
-
-	public HEAD prev()
-	{
-		return _prev;
-	}
-
-	/**
-	 * Retrieve the Minimum Suffix HEAD
-	 * 
-	 * @return The Minimum Suffix HEAD
-	 */
-
-	public HEAD suffixMin()
-	{
-		return _suffixMin;
-	}
-
-	/**
-	 * Retrieve the Rank
-	 * 
-	 * @return The Rank
-	 */
-
-	public double rank()
-	{
-		return _rank;
-	}
-
-	/**
-	 * Set the Head Soft Queue
-	 * 
-	 * @param queue The Head Soft Queue
-	 * 
-	 * @return TRUE - The Head Soft Queue successfully set
-	 */
-
-	public boolean setQueue (
-		final SoftQueueNode queue)
-	{
-		_queue = queue;
-		return true;
-	}
-
-	/**
-	 * Set the Next HEAD List
-	 * 
-	 * @param next The Next HEAD List
-	 * 
-	 * @return TRUE - The Next HEAD List successfully set
-	 */
-
-	public boolean setNext (
-		final HEAD next)
-	{
-		_next = next;
-		return true;
-	}
-
-	/**
-	 * Set the Previous HEAD List
-	 * 
-	 * @param prev The Previous HEAD List
-	 * 
-	 * @return TRUE - The Previous HEAD List successfully set
-	 */
-
-	public boolean setPrev (
-		final HEAD prev)
-	{
-		_prev = prev;
-		return true;
-	}
-
-	/**
-	 * Set the Suffix Minimum HEAD List
-	 * 
-	 * @param suffixMin The Suffix Minimum HEAD List
-	 * 
-	 * @return TRUE - The Suffix Minimum HEAD List successfully set
-	 */
-
-	public boolean setSuffixMin (
-		final HEAD suffixMin)
-	{
-		_suffixMin = suffixMin;
-		return true;
-	}
-
-	/**
-	 * Set the Rank
-	 * 
-	 * @param rank The Rank
-	 * 
-	 * @return TRUE - The Rank successfully set
-	 */
-
-	public boolean setRank (
-		final double rank)
-	{
-		if (java.lang.Double.isNaN (
-			rank
-		))
+		while (null != tree)
 		{
-			return false;
+			KaplanZwickBinaryNode<K, V> node = tree.root();
+
+			System.out.println (
+				"\t|\tRank = " + node.k() + "; ckey = " + node.cEntry().key() + "; List = " + node.entryList() +
+					"; Parent = " + (null == node.parent() ? "null" : node.parent().cEntry().key())
+			);
+
+			System.out.println (
+				"\t|\t\tLeft = " + (
+					null == node.left() ? "null" : node.left().cEntry().key() + " @ " + node.left().childKeyList() +
+						" @ " + node.left().entryList()
+				)
+			);
+
+			System.out.println (
+				"\t|\t\tRight = " + (
+					null == node.right() ? "null" : node.right().cEntry().key() + " @ " + node.right().childKeyList() +
+						" @ " + node.right().entryList()
+				)
+			);
+
+			tree = tree.next();
+		}
+	}
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+		EnvManager.InitEnv (
+			""
+		);
+
+		int r = 10;
+		int keyCount = 2046;
+		boolean doubleInsert = true;
+
+		KaplanZwickPriorityQueue<Double, Double> softHeap = KaplanZwickPriorityQueue.Initial (
+			true,
+			r,
+			new PriorityQueueEntry<Double, Double> (
+				Math.random(),
+				Math.random()
+			)
+		);
+
+		for (double keyIndex = 1.;
+			keyIndex <= keyCount;
+			++keyIndex)
+		{
+			double key = Math.random();
+
+			softHeap.insert (
+				key,
+				key
+			);
+
+			if (doubleInsert)
+			{
+				softHeap.insert (
+					key,
+					key
+				);
+			}
 		}
 
-		_rank = rank;
-		return true;
-	}
+		System.out.println ("\t|-------------------------------------------------------------------------------------");
 
-	@Override public java.lang.String toString()
-	{
-		java.lang.String display = "{Rank = " + _rank + ";";
+		PrintHeap (
+			softHeap
+		);
 
-		display = display + " Queue = " + (null == _queue ? "null;" : _queue.toString() + ";");
+		System.out.println ("\t|-------------------------------------------------------------------------------------");
 
-		display = display + " Next = " + (null == _next ? "null;" : _next.toString() + ";");
-
-		// display = display + " Prev = " + (null == _prev ? "null;" : _prev.toString() + ";");
-
-		// display = display + " Suffix Min = " + (null == _suffixMin ? "null;" : _suffixMin.toString() + ";");
-
-		return display + "}";
+		EnvManager.TerminateEnv();
 	}
 }

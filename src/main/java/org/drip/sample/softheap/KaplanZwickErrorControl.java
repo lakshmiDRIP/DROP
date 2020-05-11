@@ -1,9 +1,9 @@
 
-package org.drip.sample.graphstore;
+package org.drip.sample.softheap;
 
-import org.drip.graph.softheap.KaplanZwickBinaryNode;
+import org.drip.graph.heap.PriorityQueueEntry;
 import org.drip.graph.softheap.KaplanZwickPriorityQueue;
-import org.drip.graph.softheap.KaplanZwickTree;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -80,7 +80,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>KaplanZwickMinSequentialInsert</i> illustrates the Insert Operation for a Min Soft Heap as described in
+ * <i>KaplanZwickErrorControl</i> illustrates the Error Rate Control inside a Soft Heap as described in
  * 	Kaplan and Zwick (2009). The References are:
  * 
  * <br><br>
@@ -112,47 +112,15 @@ import org.drip.service.env.EnvManager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graphstore/README.md">Graph Heap Access Data Structures</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/softheap/README.md">Soft Heap Based Priority Queues</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class KaplanZwickMinSequentialInsert
+public class KaplanZwickErrorControl
 {
-
-	private static final void PrintHeap (
-		final KaplanZwickPriorityQueue softHeap)
-	{
-		KaplanZwickTree tree = softHeap.head();
-
-		while (null != tree)
-		{
-			KaplanZwickBinaryNode node = tree.root();
-
-			System.out.println (
-				"\t|\tRank = " + node.k() + "; ckey = " + node.ckey() + "; List = " + node.keyList() +
-					"; Parent = " + (null == node.parent() ? "null" : node.parent().ckey())
-			);
-
-			System.out.println (
-				"\t|\t\tLeft = " + (
-					null == node.left() ? "null" : node.left().ckey() + " @ " + node.left().childKeyList() +
-						" @ " + node.left().keyList()
-				)
-			);
-
-			System.out.println (
-				"\t|\t\tRight = " + (
-					null == node.right() ? "null" : node.right().ckey() + " @ " + node.right().childKeyList() +
-						" @ " + node.right().keyList()
-				)
-			);
-
-			tree = tree.next();
-		}
-	}
 
 	public static final void main (
 		final String[] argumentArray)
@@ -162,40 +130,153 @@ public class KaplanZwickMinSequentialInsert
 			""
 		);
 
-		int r = 5;
-		int keyCount = 33;
+		int r1 = 6;
+		int r2 = 10;
+		int r3 = 15;
+		int r4 = 20;
+		int r5 = 25;
+		int keyCount = 9999;
 
-		KaplanZwickPriorityQueue softHeap = KaplanZwickPriorityQueue.Initial (
-			true,
-			r,
-			0
+		KaplanZwickPriorityQueue<Double, Double> softHeap1 = KaplanZwickPriorityQueue.Initial (
+			false,
+			r1,
+			new PriorityQueueEntry<Double, Double> (
+				Math.random(),
+				Math.random()
+			)
 		);
-		System.out.println ("\t|-------------------------------------------------------------------------------------");
 
-		System.out.println ("\t| After inserting 0");
+		KaplanZwickPriorityQueue<Double, Double> softHeap2 = KaplanZwickPriorityQueue.Initial (
+			false,
+			r2,
+			new PriorityQueueEntry<Double, Double> (
+				Math.random(),
+				Math.random()
+			)
+		);
 
+		KaplanZwickPriorityQueue<Double, Double> softHeap3 = KaplanZwickPriorityQueue.Initial (
+			false,
+			r3,
+			new PriorityQueueEntry<Double, Double> (
+				Math.random(),
+				Math.random()
+			)
+		);
 
-		System.out.println (softHeap);
+		KaplanZwickPriorityQueue<Double, Double> softHeap4 = KaplanZwickPriorityQueue.Initial (
+			false,
+			r4,
+			new PriorityQueueEntry<Double, Double> (
+				Math.random(),
+				Math.random()
+			)
+		);
+
+		KaplanZwickPriorityQueue<Double, Double> softHeap5 = KaplanZwickPriorityQueue.Initial (
+			false,
+			r5,
+			new PriorityQueueEntry<Double, Double> (
+				Math.random(),
+				Math.random()
+			)
+		);
 
 		for (double keyIndex = 1.;
-			keyIndex <= keyCount;
+			keyIndex < keyCount;
 			++keyIndex)
 		{
-			System.out.println ("\t|-------------------------------------------------------------------------------------");
+			double key = Math.random();
 
-			System.out.println ("\t| After inserting " + keyIndex);
-
-			System.out.println ("\t|-------------------------------------------------------------------------------------");
-
-			softHeap.insert (
-				r,
-				keyIndex
+			softHeap1.insert (
+				key,
+				key
 			);
 
-			PrintHeap (softHeap);
+			softHeap2.insert (
+				key,
+				key
+			);
 
-			System.out.println ("\t|-------------------------------------------------------------------------------------");
+			softHeap3.insert (
+				key,
+				key
+			);
+
+			softHeap4.insert (
+				key,
+				key
+			);
+
+			softHeap5.insert (
+				key,
+				key
+			);
 		}
+
+		int orderIndex = 0;
+
+		System.out.println (
+			"\t|-------------------------------------------------------------------------------------"
+		);
+
+		System.out.println (
+			"\t|      Extract Max"
+		);
+
+		System.out.println (
+			"\t|-------------------------------------------------------------------------------------"
+		);
+
+		while (!softHeap1.isEmpty())
+		{
+			System.out.println (
+				"\t| [" + (++orderIndex) + "] => " +
+				FormatUtil.FormatDouble (softHeap1.extractExtremum().key(), 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (softHeap2.extractExtremum().key(), 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (softHeap3.extractExtremum().key(), 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (softHeap4.extractExtremum().key(), 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (softHeap5.extractExtremum().key(), 1, 8, 1.) + " ||"
+			);
+		}
+
+		System.out.println (
+			"\t|-------------------------------------------------------------------------------------"
+		);
+
+		System.out.println (
+			"\t|  Error Rate #1 => " + FormatUtil.FormatDouble (
+				softHeap1.impliedErrorRate(), 2, 12, 100.
+			) + "%"
+		);
+
+		System.out.println (
+			"\t|  Error Rate #2 => " + FormatUtil.FormatDouble (
+				softHeap2.impliedErrorRate(), 2, 12, 100.
+			) + "%"
+		);
+
+		System.out.println (
+			"\t|  Error Rate #3 => " + FormatUtil.FormatDouble (
+				softHeap3.impliedErrorRate(), 2, 12, 100.
+			) + "%"
+		);
+
+		System.out.println (
+			"\t|  Error Rate #4 => " + FormatUtil.FormatDouble (
+				softHeap4.impliedErrorRate(), 2, 12, 100.
+			) + "%"
+		);
+
+		System.out.println (
+			"\t|  Error Rate #5 => " + FormatUtil.FormatDouble (
+				softHeap5.impliedErrorRate(), 2, 12, 100.
+			) + "%"
+		);
+
+		System.out.println (
+			"\t|-------------------------------------------------------------------------------------"
+		);
 
 		EnvManager.TerminateEnv();
 	}

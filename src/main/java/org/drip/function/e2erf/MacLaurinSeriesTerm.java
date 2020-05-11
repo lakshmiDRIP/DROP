@@ -77,7 +77,7 @@ package org.drip.function.e2erf;
 
 /**
  * <i>MacLaurinSeriesTerm</i> implements the E<sub>2</sub> MacLaurin Series Term. This is used for both erf
- * and erf<sup>-1</sup>. The References are:
+ * 	and erf<sup>-1</sup>. The References are:
  * 
  * <br><br>
  * 	<ul>

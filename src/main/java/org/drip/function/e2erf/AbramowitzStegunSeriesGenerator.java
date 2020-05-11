@@ -77,7 +77,7 @@ package org.drip.function.e2erf;
 
 /**
  * <i>AbramowitzStegunSeriesGenerator</i> implements the E<sub>2</sub> erf Abramowitz-Stegun Variant of
- * Series Term Generator. The References are:
+ * 	Series Term Generator. The References are:
  * 
  * <br><br>
  * 	<ul>

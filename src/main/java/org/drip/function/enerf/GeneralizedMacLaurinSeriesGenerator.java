@@ -77,7 +77,7 @@ package org.drip.function.enerf;
 
 /**
  * <i>GeneralizedMacLaurinSeriesGenerator</i> implements the E<sub>n</sub> MacLaurin Series Term Generator.
- * The References are:
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>

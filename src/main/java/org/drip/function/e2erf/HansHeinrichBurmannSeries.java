@@ -77,7 +77,7 @@ package org.drip.function.e2erf;
 
 /**
  * <i>HansHeinrichBurmannSeries</i> generates the Terms in the E<sub>2</sub> erf Hans-Heinrich-Burmann Series
- * Variants. The References are:
+ * 	Variants. The References are:
  * 
  * <br><br>
  * 	<ul>

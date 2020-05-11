@@ -1,8 +1,10 @@
 
-package org.drip.sample.graphstore;
+package org.drip.sample.softheap;
 
-import org.drip.graph.core.Edge;
-import org.drip.graph.core.DirectedGraph;
+import org.drip.graph.heap.PriorityQueueEntry;
+import org.drip.graph.softheap.KaplanZwickBinaryNode;
+import org.drip.graph.softheap.KaplanZwickPriorityQueue;
+import org.drip.graph.softheap.KaplanZwickTree;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -11,7 +13,6 @@ import org.drip.service.env.EnvManager;
 
 /*!
  * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -80,41 +81,79 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>EdgeNavigator</i> illustrates the Navigation out of a Vertex using Edge Heap. The References are:
- *  
+ * <i>KaplanZwickMaxSequentialInsert</i> illustrates the Insert Operation for a Max Soft Heap as described in
+ * 	Kaplan and Zwick (2009). The References are:
+ * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Bollobas, B. (1998): <i>Modern Graph Theory</i> <b>Springer</b>
+ *  		Chazelle, B. (2000): The Discrepancy Method: Randomness and Complexity
+ *  			https://www.cs.princeton.edu/~chazelle/pubs/book.pdf
  *  	</li>
  *  	<li>
- *  		Eppstein, D. (1999): Spanning Trees and Spanners
- *  			https://www.ics.uci.edu/~eppstein/pubs/Epp-TR-96-16.pdf
+ *  		Chazelle, B. (2000): The Soft Heap: An Approximate Priority Queue with Optimal Error Rate
+ *  			<i>Journal of the Association for Computing Machinery</i> <b>47 (6)</b> 1012-1027
  *  	</li>
  *  	<li>
- *  		Gross, J. L., and J. Yellen (2005): <i>Graph Theory and its Applications</i> <b>Springer</b>
+ *  		Chazelle, B. (2000): A Minimum Spanning Tree Algorithm with Inverse-Ackerman Type Complexity
+ *  			<i>Journal of the Association for Computing Machinery</i> <b>47 (6)</b> 1028-1047
  *  	</li>
  *  	<li>
- *  		Kocay, W., and D. L. Kreher (2004): <i>Graphs, Algorithms, and Optimizations</i> <b>CRC Press</b>
+ *  		Kaplan, H., and U. Zwick (2009): A simpler implementation and analysis of Chazelle's Soft Heaps
+ *  			https://epubs.siam.org/doi/abs/10.1137/1.9781611973068.53?mobileUi=0
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020): Spanning Tree https://en.wikipedia.org/wiki/Spanning_tree
+ *  		Pettie, S., and V. Ramachandran (2008): Randomized Minimum Spanning Tree Algorithms using
+ *  			Exponentially Fewer Random Bits <i>ACM Transactions on Algorithms</i> <b>4 (1)</b> 1-27
  *  	</li>
  *  </ul>
+ *
  * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graphstore/README.md">Graph Heap Access Data Structures</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/softheap/README.md">Soft Heap Based Priority Queues</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class EdgeNavigator
+public class KaplanZwickMaxSequentialInsert
 {
+
+	private static <K extends Comparable<K>, V> void PrintHeap (
+		final KaplanZwickPriorityQueue<K, V> softHeap)
+	{
+		KaplanZwickTree<K, V> tree = softHeap.head();
+
+		while (null != tree)
+		{
+			KaplanZwickBinaryNode<K, V> node = tree.root();
+
+			System.out.println (
+				"\t|\tRank = " + node.k() + "; ckey = " + node.cEntry().key() + "; List = " + node.entryList() +
+					"; Parent = " + (null == node.parent() ? "null" : node.parent().cEntry().key())
+			);
+
+			System.out.println (
+				"\t|\t\tLeft = " + (
+					null == node.left() ? "null" : node.left().cEntry().key() + " @ " + node.left().childKeyList() +
+						" @ " + node.left().entryList()
+				)
+			);
+
+			System.out.println (
+				"\t|\t\tRight = " + (
+					null == node.right() ? "null" : node.right().cEntry().key() + " @ " + node.right().childKeyList() +
+						" @ " + node.right().entryList()
+				)
+			);
+
+			tree = tree.next();
+		}
+	}
 
 	public static final void main (
 		final String[] argumentArray)
@@ -124,117 +163,52 @@ public class EdgeNavigator
 			""
 		);
 
-		String[] vertexArray = new String[]
+		int r = 10;
+		int keyCount = 33;
+		boolean doubleInsert = true;
+
+		KaplanZwickPriorityQueue<Double, Double> softHeap = KaplanZwickPriorityQueue.Initial (
+			false,
+			r,
+			new PriorityQueueEntry<Double, Double> (
+				0.,
+				0.
+			)
+		);
+
+		System.out.println ("\t|-------------------------------------------------------------------------------------");
+
+		System.out.println ("\t| After inserting 0");
+
+		for (double keyIndex = 1.;
+			keyIndex <= keyCount;
+			++keyIndex)
 		{
-			"delhi     ",
-			"bombay    ",
-			"madras    ",
-			"calcutta  ",
-			"bangalore ",
-			"hyderabad ",
-			"cochin    ",
-			"pune      ",
-			"ahmedabad ",
-			"jaipur    "
-		};
+			System.out.println ("\t|-------------------------------------------------------------------------------------");
 
-		DirectedGraph graph = new DirectedGraph();
+			System.out.println ("\t| After inserting " + keyIndex);
 
-		graph.addBidirectionalEdge (
-			new Edge (
-				vertexArray[0], // Delhi
-				vertexArray[1], // Bombay
-				1388.
-			)
-		);
+			System.out.println ("\t|-------------------------------------------------------------------------------------");
 
-		graph.addBidirectionalEdge (
-			new Edge (
-				vertexArray[0], // Delhi
-				vertexArray[2], // Madras
-				2191.
-			)
-		);
+			softHeap.insert (
+				keyIndex,
+				keyIndex
+			);
 
-		graph.addBidirectionalEdge (
-			new Edge (
-				vertexArray[1], // Bombay
-				vertexArray[2], // Madras
-				1279.
-			)
-		);
+			if (doubleInsert)
+			{
+				softHeap.insert (
+					keyIndex,
+					keyIndex
+				);
+			}
 
-		graph.addBidirectionalEdge (
-			new Edge (
-				vertexArray[0], // Delhi
-				vertexArray[3], // Calcutta
-				1341.
-			)
-		);
+			PrintHeap (
+				softHeap
+			);
 
-		graph.addBidirectionalEdge (
-			new Edge (
-				vertexArray[1], // Bombay
-				vertexArray[3], // Calcutta
-				1968.
-			)
-		);
-
-		graph.addBidirectionalEdge (
-			new Edge (
-				vertexArray[2], // Madras
-				vertexArray[3], // Calcutta
-				1663.
-			)
-		);
-
-		graph.addBidirectionalEdge (
-			new Edge (
-				vertexArray[2], // Madras
-				vertexArray[4], // Bangalore
-				361.
-			)
-		);
-
-		graph.addBidirectionalEdge (
-			new Edge (
-				vertexArray[2], // Madras
-				vertexArray[5], // Hyderabad
-				784.
-			)
-		);
-
-		graph.addBidirectionalEdge (
-			new Edge (
-				vertexArray[2], // Madras
-				vertexArray[6], // Cochin
-				697.
-			)
-		);
-
-		graph.addBidirectionalEdge (
-			new Edge (
-				vertexArray[1], // Bombay
-				vertexArray[7], // Pune
-				192.
-			)
-		);
-
-		graph.addBidirectionalEdge (
-			new Edge (
-				vertexArray[1], // Bombay
-				vertexArray[8], // Ahmedabad
-				492.
-			)
-		);
-
-		graph.addBidirectionalEdge (
-			new Edge (
-				vertexArray[0], // Delhi
-				vertexArray[9], // Jaipur
-				308.
-			)
-		);
+			System.out.println ("\t|-------------------------------------------------------------------------------------");
+		}
 
 		EnvManager.TerminateEnv();
 	}

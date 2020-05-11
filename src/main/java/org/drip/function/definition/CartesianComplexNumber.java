@@ -82,7 +82,7 @@ package org.drip.function.definition;
 
 /**
  * <i>CartesianComplexNumber</i> implements the functionality for dealing with the Cartesian Form of Complex
- * Numbers.
+ * 	Numbers.
  * 
  * <br><br>
  *  <ul>

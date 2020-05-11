@@ -77,7 +77,7 @@ package org.drip.function.enerf;
 
 /**
  * <i>GeneralizedErrorFunction</i> implements the Generalized E<sub>n</sub> Error Function (erf). The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>

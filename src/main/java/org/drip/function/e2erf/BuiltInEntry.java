@@ -77,7 +77,7 @@ package org.drip.function.e2erf;
 
 /**
  * <i>BuiltInEntry</i> implements E<sub>2</sub> Entries of the Built-in Table of erf and erfc Values. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>

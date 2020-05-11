@@ -77,8 +77,8 @@ package org.drip.function.definition;
 
 /**
  * <i>R3ToR1</i> provides the Evaluation of the Objective Function and its derivatives for a specified
- * variate Pair. Default Implementation of the Derivatives are for Non-analytical Black Box Objective
- * Functions.
+ * 	variate Pair. Default Implementation of the Derivatives are for Non-analytical Black Box Objective
+ * 	Functions.
  * 
  * <br><br>
  * 	<ul>

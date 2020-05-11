@@ -77,7 +77,7 @@ package org.drip.function.e2erfc;
 
 /**
  * <i>ErrorFunctionComplementAnalytical</i> implements Analytical Versions of the Error Function Complement
- * (erfc) Estimate. The References are:
+ * 	(erfc) Estimate. The References are:
  * 
  * <br><br>
  * 	<ul>

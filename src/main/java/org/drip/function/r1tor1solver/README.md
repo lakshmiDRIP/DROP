@@ -20,11 +20,6 @@ DROP Function R<sup>1</sup> Solver Package contains several Built-in R<sup>1</su
  ExecutionInitializationOutput, BracketingOutput holds the left/right bracket variates and the corresponding
  values for the objective function.
 
- * [***BracketingOutput***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver/BracketingOutput.java)
- <i>BracketingOutput</i> carries the results of the bracketing initialization. In addition to the fields of
- ExecutionInitializationOutput, BracketingOutput holds the left/right bracket variates and the corresponding
- values for the objective function.
-
  * [***ConvergenceControlParams***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver/ConvergenceControlParams.java)
  <i>ConvergenceControlParams</i> holds the fields needed for the controlling the execution of Newton's
  method. ConvergenceControlParams does that using the following parameters.
@@ -73,6 +68,20 @@ DROP Function R<sup>1</sup> Solver Package contains several Built-in R<sup>1</su
  ExecutionInitializer behavior can be customized/optimized through several of the initialization heuristics
  techniques implemented in the InitializationHeuristics class.
 
+ * [***FixedPointFinder***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver/FixedPointFinder.java)
+ <i>FixedPointFinder</i> is the base abstract class that is implemented by customized invocations, e.g., Newton method, or any of the bracketing methodologies. FixedPointFinder invokes the core routine for determining the fixed point from the goal. The ExecutionControl determines the execution termination. The initialization heuristics implements targeted customization of the search.
+
+ * FixedPointFinder main flow comprises of the following steps:
+ 	* Initialize the fixed point search zone by determining either a) the brackets, or b) the starting variate.
+ 	* Compute the absolute OF tolerance that establishes the attainment of the fixed point.
+ 	* Launch the variate iterator that iterates the variate.
+ 	* Iterate until the desired tolerance has been attained
+ 	* Return the fixed point output.
+
+ * Fixed point finders that derive from this provide implementations for the following:
+ 	* Variate initialization: They may choose either bracketing initializer, or the convergence initializer; functionality is provided for both in this module.
+ 	* Variate Iteration: Variates are iterated using a) any of the standard primitive built-in variate iterators (or custom ones), or b) a variate selector scheme for each iteration.
+
  * [***FixedPointFinderBracketing***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver/FixedPointFinderBracketing.java)
  <i>FixedPointFinderBracketing</i> customizes the FixedPointFinder for bracketing based fixed point finder
  functionality.
@@ -119,8 +128,8 @@ DROP Function R<sup>1</sup> Solver Package contains several Built-in R<sup>1</su
  <i>FixedPointFinderZheng</i> implements the fixed point locator using Zheng's improvement to Brent's
  	method.
 
- FixedPointFinderZheng overrides the iterateCompoundVariate method to achieve the desired simplification in
- 	the iterative variate selection.
+ * [***FixedPointFinderZheng***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver/FixedPointFinderZheng.java)
+ <i>FixedPointFinderZheng</i> overrides the iterateCompoundVariate method to achieve the desired simplification in the iterative variate selection.
 
  * [***IteratedBracket***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1solver/IteratedBracket.java)
  <i>IteratedBracket</i> holds the left/right bracket variates and the corresponding values for the objective

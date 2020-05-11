@@ -114,15 +114,16 @@ package org.drip.graph.softheap;
  * @author Lakshmi Krishnamurthy
  */
 
-public class KaplanZwickPriorityQueue
+public class KaplanZwickPriorityQueue<K extends java.lang.Comparable<K>, V>
+	extends org.drip.graph.heap.PriorityQueue<K, V>
 {
-	private boolean _minHeap = false;
-	private org.drip.graph.softheap.KaplanZwickTree _head = null;
-	private org.drip.graph.softheap.KaplanZwickTree _tail = null;
+	private int _r = -1;
+	private org.drip.graph.softheap.KaplanZwickTree<K, V> _head = null;
+	private org.drip.graph.softheap.KaplanZwickTree<K, V> _tail = null;
 
-	private static final boolean UpdatePrevAndCurrent (
-		final org.drip.graph.softheap.KaplanZwickTree prev,
-		final org.drip.graph.softheap.KaplanZwickTree current)
+	private static <K extends java.lang.Comparable<K>, V> boolean UpdatePrevAndCurrent (
+		final org.drip.graph.softheap.KaplanZwickTree<K, V> prev,
+		final org.drip.graph.softheap.KaplanZwickTree<K, V> current)
 	{
 		if (!current.setPrev (
 				prev
@@ -146,15 +147,17 @@ public class KaplanZwickPriorityQueue
 		return true;
 	}
 
-	private static final KaplanZwickPriorityQueue MakeQueue (
+	private static <K extends java.lang.Comparable<K>, V> KaplanZwickPriorityQueue<K, V> MakeQueue (
 		final boolean minHeap,
-		final org.drip.graph.softheap.KaplanZwickTree head,
-		final org.drip.graph.softheap.KaplanZwickTree tail)
+		final int r,
+		final org.drip.graph.softheap.KaplanZwickTree<K, V> head,
+		final org.drip.graph.softheap.KaplanZwickTree<K, V> tail)
 	{
 		try
 		{
-			return new KaplanZwickPriorityQueue (
+			return new KaplanZwickPriorityQueue<K, V> (
 				minHeap,
+				r,
 				head,
 				tail
 			);
@@ -167,20 +170,17 @@ public class KaplanZwickPriorityQueue
 		return null;
 	}
 
-	private static final org.drip.graph.softheap.KaplanZwickTree MergeTreeLists (
-		final KaplanZwickPriorityQueue queue1,
-		final KaplanZwickPriorityQueue queue2)
+	private static <K extends java.lang.Comparable<K>, V> org.drip.graph.softheap.KaplanZwickTree<K, V>
+		MergeTreeLists (
+			org.drip.graph.softheap.KaplanZwickTree<K, V> current1,
+			org.drip.graph.softheap.KaplanZwickTree<K, V> current2)
 	{
-		org.drip.graph.softheap.KaplanZwickTree head = null;
-		org.drip.graph.softheap.KaplanZwickTree current = head;
-
-		org.drip.graph.softheap.KaplanZwickTree current1 = queue1.head();
-
-		org.drip.graph.softheap.KaplanZwickTree current2 = queue2.head();
+		org.drip.graph.softheap.KaplanZwickTree<K, V> head = null;
+		org.drip.graph.softheap.KaplanZwickTree<K, V> current = head;
 
 		while (null != current1 && null != current2)
 		{
-			org.drip.graph.softheap.KaplanZwickTree prev = current;
+			org.drip.graph.softheap.KaplanZwickTree<K, V> prev = current;
 
 			int rank1 = current1.rank();
 
@@ -190,7 +190,7 @@ public class KaplanZwickPriorityQueue
 			{
 				if (rank1 < rank2)
 				{
-					current = new org.drip.graph.softheap.KaplanZwickTree (
+					current = new org.drip.graph.softheap.KaplanZwickTree<K, V> (
 						current1.root()
 					);
 
@@ -198,7 +198,7 @@ public class KaplanZwickPriorityQueue
 				}
 				else if (rank2 < rank1)
 				{
-					current = new org.drip.graph.softheap.KaplanZwickTree (
+					current = new org.drip.graph.softheap.KaplanZwickTree<K, V> (
 						current2.root()
 					);
 
@@ -206,7 +206,7 @@ public class KaplanZwickPriorityQueue
 				}
 				else
 				{
-					current = new org.drip.graph.softheap.KaplanZwickTree (
+					current = new org.drip.graph.softheap.KaplanZwickTree<K, V> (
 						current1.root()
 					);
 
@@ -224,7 +224,7 @@ public class KaplanZwickPriorityQueue
 
 					prev = current;
 
-					current = new org.drip.graph.softheap.KaplanZwickTree (
+					current = new org.drip.graph.softheap.KaplanZwickTree<K, V> (
 						current2.root()
 					);
 
@@ -251,11 +251,11 @@ public class KaplanZwickPriorityQueue
 
 		while (null != current1)
 		{
-			org.drip.graph.softheap.KaplanZwickTree prev = current;
+			org.drip.graph.softheap.KaplanZwickTree<K, V> prev = current;
 
 			try
 			{
-				current = new org.drip.graph.softheap.KaplanZwickTree (
+				current = new org.drip.graph.softheap.KaplanZwickTree<K, V> (
 					current1.root()
 				);
 			}
@@ -281,11 +281,11 @@ public class KaplanZwickPriorityQueue
 
 		while (null != current2)
 		{
-			org.drip.graph.softheap.KaplanZwickTree prev = current;
+			org.drip.graph.softheap.KaplanZwickTree<K, V> prev = current;
 
 			try
 			{
-				current = new org.drip.graph.softheap.KaplanZwickTree (
+				current = new org.drip.graph.softheap.KaplanZwickTree<K, V> (
 					current2.root()
 				);
 			}
@@ -312,52 +312,20 @@ public class KaplanZwickPriorityQueue
 		return head;
 	}
 
-	/**
-	 * Meld the Queue Pair into a Queue
-	 * 
-	 * @param queue1 Queue #1
-	 * @param queue2 Queue #2
-	 * 
-	 * @return The Melded Queue
-	 */
-
-	public static final KaplanZwickPriorityQueue Meld (
-		final KaplanZwickPriorityQueue queue1,
-		final KaplanZwickPriorityQueue queue2)
+	private static <K extends java.lang.Comparable<K>, V> KaplanZwickTreeMelder<K, V> Meld (
+		final org.drip.graph.softheap.KaplanZwickTree<K, V> mergedTreeList)
 	{
-		if (null == queue1)
-		{
-			return queue2;
-		}
-
-		if (null == queue2)
-		{
-			return queue1;
-		}
-
-		boolean minHeap = queue1.minHeap();
-
-		if (minHeap != queue2.minHeap())
-		{
-			return null;
-		}
-
-		org.drip.graph.softheap.KaplanZwickTree mergedTreeList = MergeTreeLists (
-			queue1,
-			queue2
-		);
-
 		if (null == mergedTreeList)
 		{
 			return null;
 		}
 
-		org.drip.graph.softheap.KaplanZwickTreeMelder melder = null;
-		org.drip.graph.softheap.KaplanZwickTree mergedTreeCurrent = mergedTreeList;
+		org.drip.graph.softheap.KaplanZwickTreeMelder<K, V> melder = null;
+		org.drip.graph.softheap.KaplanZwickTree<K, V> mergedTreeCurrent = mergedTreeList;
 
 		try
 		{
-			melder = new org.drip.graph.softheap.KaplanZwickTreeMelder (
+			melder = new org.drip.graph.softheap.KaplanZwickTreeMelder<K, V> (
 				mergedTreeCurrent
 			);
 		}
@@ -372,7 +340,9 @@ public class KaplanZwickPriorityQueue
 		{
 			int tailRank = melder.tailRank();
 
-			if (tailRank < mergedTreeCurrent.rank())
+			int mergedTreeCurrentRank = mergedTreeCurrent.rank();
+
+			if (tailRank < mergedTreeCurrentRank)
 			{
 				if (!melder.appendToTail (
 					mergedTreeCurrent.rootTree()
@@ -384,7 +354,7 @@ public class KaplanZwickPriorityQueue
 				continue;
 			}
 
-			org.drip.graph.softheap.KaplanZwickTree mergedTreeNext = mergedTreeCurrent.next();
+			org.drip.graph.softheap.KaplanZwickTree<K, V> mergedTreeNext = mergedTreeCurrent.next();
 
 			if (null == mergedTreeNext)
 			{
@@ -411,12 +381,7 @@ public class KaplanZwickPriorityQueue
 
 				if (melder.tailRank() == mergedTreeNextRank)
 				{
-					if (!melder.growTail (
-						mergedTreeNext.rootTree().root()
-					))
-					{
-						return null;
-					}
+					continue;
 				}
 				else
 				{
@@ -445,8 +410,65 @@ public class KaplanZwickPriorityQueue
 			mergedTreeCurrent = mergedTreeNext;
 		}
 
-		KaplanZwickPriorityQueue priorityQueue = MakeQueue (
+		return org.drip.graph.softheap.KaplanZwickTree.UpdateSuffixExtremum (
+			melder.tail()
+		) ? melder : null;
+	}
+
+	/**
+	 * Meld the Queue Pair into a Queue
+	 * 
+	 * @param <K> Key Type
+	 * @param <V> Value Type
+	 * @param queue1 Queue #1
+	 * @param queue2 Queue #2
+	 * 
+	 * @return The Melded Queue
+	 */
+
+	public static <K extends java.lang.Comparable<K>, V> KaplanZwickPriorityQueue<K, V> Meld (
+		final KaplanZwickPriorityQueue<K, V> queue1,
+		final KaplanZwickPriorityQueue<K, V> queue2)
+	{
+		if (null == queue1)
+		{
+			return queue2;
+		}
+
+		if (null == queue2)
+		{
+			return queue1;
+		}
+
+		boolean minHeap = queue1.minHeap();
+
+		if (minHeap != queue2.minHeap())
+		{
+			return null;
+		}
+
+		int r = queue1.r();
+
+		if (r != queue2.r())
+		{
+			return null;
+		}
+
+		KaplanZwickTreeMelder<K, V> melder = Meld (
+			 MergeTreeLists (
+				queue1.head(),
+				queue2.head()
+			)
+		);
+
+		if (null == melder)
+		{
+			return null;
+		}
+
+		KaplanZwickPriorityQueue<K, V> priorityQueue = MakeQueue (
 			minHeap,
+			r,
 			melder.head(),
 			melder.tail()
 		);
@@ -458,30 +480,34 @@ public class KaplanZwickPriorityQueue
 	}
 
 	/**
-	 * Construct an Initial Heap with a single Key
+	 * Construct an Initial Heap with a single Entry
 	 * 
+	 * @param <K> Key Type
+	 * @param <V> Value Type
 	 * @param minHeap TRUE - Indicates that Heap is a Min Heap
 	 * @param r The R Parameter
-	 * @param key The Key
+	 * @param entry The Entry
 	 * 
-	 * @return The Initial Heap with a single Key
+	 * @return The Initial Heap with a single Entry
 	 */
 
-	public static final KaplanZwickPriorityQueue Initial (
+	public static <K extends java.lang.Comparable<K>, V> KaplanZwickPriorityQueue<K, V> Initial (
 		final boolean minHeap,
 		final int r,
-		final double key)
+		final org.drip.graph.heap.PriorityQueueEntry<K, V> entry)
 	{
-		org.drip.graph.softheap.KaplanZwickTree head = org.drip.graph.softheap.KaplanZwickTree.Initial (
-			minHeap,
-			r,
-			key
-		);
+		org.drip.graph.softheap.KaplanZwickTree<K, V> head =
+			org.drip.graph.softheap.KaplanZwickTree.Initial (
+				minHeap,
+				r,
+				entry
+			);
 
 		try
 		{
-			return new KaplanZwickPriorityQueue (
+			return new KaplanZwickPriorityQueue<K, V> (
 				minHeap,
+				r,
 				head,
 				head
 			);
@@ -498,6 +524,7 @@ public class KaplanZwickPriorityQueue
 	 * KaplanZwickPriorityQueue Constructor
 	 * 
 	 * @param minHeap TRUE - Indicates that Heap is a Min Heap
+	 * @param r R Parameter
 	 * @param head The Head Tree of the Heap
 	 * @param tail The Tail Tree of the Heap
 	 * 
@@ -506,11 +533,17 @@ public class KaplanZwickPriorityQueue
 
 	public KaplanZwickPriorityQueue (
 		final boolean minHeap,
-		final org.drip.graph.softheap.KaplanZwickTree head,
-		final org.drip.graph.softheap.KaplanZwickTree tail)
+		final int r,
+		final org.drip.graph.softheap.KaplanZwickTree<K, V> head,
+		final org.drip.graph.softheap.KaplanZwickTree<K, V> tail)
 		throws java.lang.Exception
 	{
-		if (null == (_head = head) ||
+		super (
+			minHeap
+		);
+
+		if (0 > (_r = r) ||
+			null == (_head = head) ||
 			null == (_tail = tail)
 		)
 		{
@@ -518,19 +551,6 @@ public class KaplanZwickPriorityQueue
 				"KaplanZwickPriorityQueue Constructor => Invalid Inputs"
 			);
 		}
-
-		_minHeap = minHeap;
-	}
-
-	/**
-	 * Indicate if the Binary Heap is a Min Heap
-	 * 
-	 * @return TRUE - The Binary Heap is a Min Heap
-	 */
-
-	public boolean minHeap()
-	{
-		return _minHeap;
 	}
 
 	/**
@@ -539,7 +559,7 @@ public class KaplanZwickPriorityQueue
 	 * @return Head of the List of Trees
 	 */
 
-	public org.drip.graph.softheap.KaplanZwickTree head()
+	public org.drip.graph.softheap.KaplanZwickTree<K, V> head()
 	{
 		return _head;
 	}
@@ -550,9 +570,20 @@ public class KaplanZwickPriorityQueue
 	 * @return Tail of the List of Trees
 	 */
 
-	public org.drip.graph.softheap.KaplanZwickTree tail()
+	public org.drip.graph.softheap.KaplanZwickTree<K, V> tail()
 	{
 		return _tail;
+	}
+
+	/**
+	 * Retrieve the R Parameter
+	 * 
+	 * @return The R Parameter
+	 */
+
+	public int r()
+	{
+		return _r;
 	}
 
 	/**
@@ -566,26 +597,20 @@ public class KaplanZwickPriorityQueue
 		return _head.rank();
 	}
 
-	/**
-	 * Insert an Element into the Queue
-	 * 
-	 * @param r The R Parameter
-	 * @param key They Key
-	 * 
-	 * @return The ELement successfully inserted into the Queue
-	 */
-
-	public boolean insert (
-		final int r,
-		final double key)
+	@Override public boolean meld (
+		final org.drip.graph.heap.PriorityQueue<K, V> priorityQueueOther)
 	{
-		KaplanZwickPriorityQueue meldedQueue = Meld (
+		if (null == priorityQueueOther ||
+			priorityQueueOther.isEmpty() ||
+			!(priorityQueueOther instanceof KaplanZwickPriorityQueue<?, ?>)
+		)
+		{
+			return false;
+		}
+
+		KaplanZwickPriorityQueue<K, V> meldedQueue = Meld (
 			this,
-			KaplanZwickPriorityQueue.Initial (
-				_minHeap,
-				r,
-				key
-			)
+			(KaplanZwickPriorityQueue<K, V>) priorityQueueOther
 		);
 
 		if (null == meldedQueue)
@@ -600,24 +625,45 @@ public class KaplanZwickPriorityQueue
 		return true;
 	}
 
-	/**
-	 * Indicate if the Soft Heap is Empty
-	 * 
-	 * @return TRUE - The Soft Heap is Empty
-	 */
+	@Override public boolean insert (
+		final K key,
+		final V value)
+	{
+		try
+		{
+			return meld (
+				KaplanZwickPriorityQueue.Initial (
+					minHeap(),
+					_r,
+					new org.drip.graph.heap.PriorityQueueEntry<K, V> (
+						key,
+						value
+					)
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
 
-	public boolean isEmpty()
+		return false;
+	}
+
+	@Override public boolean isEmpty()
 	{
 		if (null == _head)
 		{
 			return true;
 		}
 
-		org.drip.graph.softheap.KaplanZwickTree tree = _head;
+		org.drip.graph.softheap.KaplanZwickTree<K, V> tree = _head;
 
 		while (null != tree)
 		{
-			if (0 != tree.root().currentSize())
+			org.drip.graph.softheap.KaplanZwickBinaryNode<K, V> rootNode = tree.root();
+
+			if (0 != rootNode.currentSize() || !rootNode.isLeaf())
 			{
 				return false;
 			}
@@ -628,111 +674,95 @@ public class KaplanZwickPriorityQueue
 		return true;
 	}
 
-	/**
-	 * Extract the Extremum from the Soft Heap
-	 * 
-	 * @return The Extremum Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Extremum cannot be extracted
-	 */
+	@Override public org.drip.graph.heap.PriorityQueueEntry<K, V> extremum()
+	{
+		return isEmpty() ? null : _head.suffixExtremum().root().peekTopEntry();
+	}
 
-	public double extractExtremum()
-		throws java.lang.Exception
+	@Override public org.drip.graph.heap.PriorityQueueEntry<K, V> extractExtremum()
 	{
 		if (isEmpty())
 		{
-			throw new java.lang.Exception (
-				"KaplanZwickPriorityQueue::extractExtremum => Queue is Empty"
-			);
+			return null;
 		}
 
-		org.drip.graph.softheap.KaplanZwickTree extremumTree = _head.suffixExtremum();
+		org.drip.graph.softheap.KaplanZwickTree<K, V> extremumTree = _head.suffixExtremum();
 
-		org.drip.graph.softheap.KaplanZwickBinaryNode extremumRoot = extremumTree.root();
+		org.drip.graph.softheap.KaplanZwickBinaryNode<K, V> extremumRoot = extremumTree.root();
 
-		double extremum = extremumRoot.removeKey();
-
-		if (!extremumRoot.sift())
-		{
-			throw new java.lang.Exception (
-				"KaplanZwickPriorityQueue::extractExtremum => Cannot sift the Extremum Root"
-			);
-		}
+		org.drip.graph.heap.PriorityQueueEntry<K, V> extremumEntry = extremumRoot.removeTopEntry();
 
 		if (0 == extremumRoot.currentSize())
 		{
-			if (null == extremumTree.prev())
-			{
-				org.drip.graph.softheap.KaplanZwickTree nextTree = extremumTree.next();
+			org.drip.graph.softheap.KaplanZwickTree<K, V> prev = extremumTree.prev();
 
-				if (null != nextTree)
+			org.drip.graph.softheap.KaplanZwickTree<K, V> next = extremumTree.next();
+
+			if (null == prev)
+			{
+				if (null != next)
 				{
-					if (!(_head = nextTree).setPrev (
+					if (!(_head = next).setPrev (
 						null
 					))
 					{
-						throw new java.lang.Exception (
-							"KaplanZwickPriorityQueue::extractExtremum => Cannot remove Empty Root"
-						);
+						return null;
 					}
 				}
 			}
-			else if (null == extremumTree.next())
+			else if (null == next)
 			{
-				org.drip.graph.softheap.KaplanZwickTree prevTree = extremumTree.prev();
-
-				if (null != prevTree)
+				if (null != prev)
 				{
-					if (!(_tail = prevTree).setNext (
+					if (!(_tail = prev).setNext (
 						null
 					))
 					{
-						throw new java.lang.Exception (
-							"KaplanZwickPriorityQueue::extractExtremum => Cannot remove Empty Root"
-						);
+						return null;
 					}
 				}
 			}
 			else
 			{
-				org.drip.graph.softheap.KaplanZwickTree prevTree = extremumTree.prev();
-
-				org.drip.graph.softheap.KaplanZwickTree nextTree = extremumTree.next();
-
-				if (!prevTree.setNext (
-						nextTree
-					) || !nextTree.setNext (
-						prevTree
+				if (!prev.setNext (
+						next
+					) || !next.setPrev (
+						prev
 					)
 				)
 				{
-					throw new java.lang.Exception (
-						"KaplanZwickPriorityQueue::extractExtremum => Cannot remove Empty Root"
-					);
+					return null;
 				}
-			}
-
-			if (!org.drip.graph.softheap.KaplanZwickTree.UpdateSuffixExtremum (
-				_tail
-			))
-			{
-				throw new java.lang.Exception (
-					"KaplanZwickPriorityQueue::extractExtremum => Cannot update Extremum Suffix"
-				);
 			}
 		}
 
-		return extremum;
+		return org.drip.graph.softheap.KaplanZwickTree.UpdateSuffixExtremum (
+			_tail
+		) ? extremumEntry : null;
+	}
+
+	/**
+	 * Compute the Implied Error Rate
+	 * 
+	 * @return The Implied Error Rate
+	 */
+
+	public double impliedErrorRate()
+	{
+		return java.lang.Math.pow (
+			2,
+			5. - _r
+		);
 	}
 
 	@Override public java.lang.String toString()
 	{
 		String state = "<";
-		org.drip.graph.softheap.KaplanZwickTree tree = _head;
+		org.drip.graph.softheap.KaplanZwickTree<K, V> tree = _head;
 
 		while (null != tree)
 		{
-			state = state + tree.root().toString() + " | ";
+			state = state + tree.root() + " | ";
 
 			tree = tree.next();
 		}

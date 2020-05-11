@@ -77,7 +77,7 @@ package org.drip.function.e2erfc;
 
 /**
  * <i>ErrorFunctionComplementInverse</i> implements the Error Function Complement Inverse erfc<sup>-1</sup>.
- * The References are:
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>

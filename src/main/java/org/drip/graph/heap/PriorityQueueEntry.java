@@ -215,4 +215,9 @@ public class PriorityQueueEntry<K, V>
 
 		return null;
 	}
+
+	@Override public java.lang.String toString()
+	{
+		return _key.toString();
+	}
 }
