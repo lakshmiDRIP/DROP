@@ -48,7 +48,7 @@ DROP Graph Core Package contains the Vertexes, Edges, Paths, Trees, Forests, and
 
  * Eppstein, D. (1999): Spanning Trees and Spanners https://www.ics.uci.edu/~eppstein/pubs/Epp-TR-96-16.pdf
 
- * Felner, A. (2011): Position Paper: Dijkstra’s Algorithm versus Uniform Cost Search or a Case against Dijkstra’s Algorithm <i>Proceedings of the 4<sup>th</sup> International Symposium on Combinatorial Search</i> 47-51
+ * Felner, A. (2011): Position Paper: Dijkstra Algorithm versus Uniform Cost Search or a Case against Dijkstra Algorithm <i>Proceedings of the 4<sup>th</sup> International Symposium on Combinatorial Search</i> 47-51
 
  * Gross, J. L., and J. Yellen (2005): <i>Graph Theory and its Applications</i> <b>Springer</b>
 
