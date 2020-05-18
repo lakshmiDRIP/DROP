@@ -110,7 +110,6 @@ package org.drip.graph.core;
  */
 
 public class Edge
-	implements java.lang.Comparable<Edge>
 {
 	private double _weight = java.lang.Double.NaN;
 	private java.lang.String _sourceVertexName = "";
@@ -220,19 +219,6 @@ public class Edge
 		}
 
 		return null;
-	}
-
-	@Override public int compareTo (
-		final Edge edgeOther)
-	{
-		double weightOther = null == edgeOther ? java.lang.Double.NEGATIVE_INFINITY : edgeOther.weight();
-
-		if (null == edgeOther || _weight < weightOther)
-		{
-			return -1;
-		}
-
-		return _weight == weightOther ? 0 : 1;
 	}
 
 	@Override public java.lang.String toString()

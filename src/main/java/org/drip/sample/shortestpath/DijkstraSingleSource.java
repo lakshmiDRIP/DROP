@@ -251,7 +251,8 @@ public class DijkstraSingleSource
 		);
 
 		DijkstraGenerator dijkstraGenerator = new DijkstraGenerator (
-			graph
+			graph,
+			true
 		);
 
 		for (String sourceVertexName : vertexArray)

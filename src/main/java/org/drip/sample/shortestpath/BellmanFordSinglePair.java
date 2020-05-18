@@ -247,7 +247,8 @@ public class BellmanFordSinglePair
 		);
 
 		BellmanFordGenerator bellmanFordGenerator = new BellmanFordGenerator (
-			graph
+			graph,
+			true
 		);
 
 		for (String sourceVertexName : vertexArray)

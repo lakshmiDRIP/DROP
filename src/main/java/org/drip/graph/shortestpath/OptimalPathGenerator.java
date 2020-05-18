@@ -75,30 +75,28 @@ package org.drip.graph.shortestpath;
  */
 
 /**
- * <i>DijkstraGenerator</i> generates the Shortest Path for a Directed Graph using the Dijkstra Algorithm.
- * 	The References are:
+ * <i>OptimalPathGenerator</i> contains the Stubs for generating the Optimal (Shortest/Longest) Path on a
+ * 	Directed Graph. The References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Dijkstra, E. W. (1959): A Note on Two Problems in Connection with Graphs <i>Numerische
- *  			Mathematik</i> <b>1</b> 269-271
+ *  		Bang-Jensen, J., and G. Gutin (2008): <i>Digraphs: Theory, Algorithms, and Applications
+ *  			2<sup>nd</sup> Edition</i> <b>Springer</b>
  *  	</li>
  *  	<li>
- *  		Felner, A. (2011): Position Paper: Dijkstra’s Algorithm versus Uniform Cost Search or a Case
- *  			against Dijkstra’s Algorithm <i>Proceedings of the 4<sup>th</sup> International Symposium on
- *  			Combinatorial Search</i> 47-51
+ *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms</i>
+ *  			3<sup>rd</sup> Edition <b>MIT Press</b>
  *  	</li>
  *  	<li>
- *  		Mehlhorn, K. W., and P. Sanders (2008): <i>Algorithms and Data Structures: The Basic Toolbox</i>
- *  			<b>Springer</b>
+ *  		Kleinberg, J., and E. Tardos (2022): <i>Algorithm Design 2<sup>nd</sup> Edition</i> <b>Pearson</b>
  *  	</li>
  *  	<li>
- *  		Russell, S., and P. Norvig (2009): <i>Artificial Intelligence: A Modern Approach 3<sup>rd</sup>
- *  			Edition</i> <b>Prentice Hall</b>
+ *  		Sedgewick, R. and K. Wayne (2011): <i>Algorithms 4<sup>th</sup> Edition</i> <b>Addison Wesley</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2019): Dijkstra's Algorithm https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+ *  		Wikipedia (2020): Bellman-Ford Algorithm
+ *  			https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
  *  	</li>
  *  </ul>
  *
@@ -114,107 +112,117 @@ package org.drip.graph.shortestpath;
  * @author Lakshmi Krishnamurthy
  */
 
-public class DijkstraGenerator
-	extends org.drip.graph.shortestpath.OptimalPathGenerator
+public abstract class OptimalPathGenerator
 {
+	private boolean _shortestPath = false;
+	private org.drip.graph.core.DirectedGraph _graph = null;
 
-	@Override protected org.drip.graph.shortestpath.VertexAugmentor augmentVertexes (
-		final java.lang.String sourceVertexName)
-	{
-		if (null == sourceVertexName || sourceVertexName.isEmpty())
-		{
-			return null;
-		}
+	protected abstract org.drip.graph.shortestpath.VertexAugmentor augmentVertexes (
+		final java.lang.String sourceVertexName);
 
-		java.util.List<java.lang.String> vertexList = new java.util.ArrayList<java.lang.String>();
-
-		vertexList.add (
-			sourceVertexName
-		);
-
-		boolean shortestPath = shortestPath();
-
-		org.drip.graph.core.DirectedGraph graph = graph();
-
-		org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor = null;
-
-		try
-		{
-			vertexAugmentor = new org.drip.graph.shortestpath.VertexAugmentor (
-				sourceVertexName,
-				graph.vertexNameSet(),
-				shortestPath
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap = graph.vertexMap();
-
-		while (!vertexList.isEmpty())
-		{
-			java.lang.String currentVertexName = vertexList.remove (
-				0
-			);
-
-			vertexAugmentor.setVertexProcessed (
-				currentVertexName
-			);
-
-			org.drip.graph.heap.PriorityQueue<java.lang.Double, org.drip.graph.core.Edge>
-				adjacencyPriorityQueue = vertexMap.get (
-					currentVertexName
-				).adjacencyPriorityQueue (
-					shortestPath
-				);
-
-			while (!adjacencyPriorityQueue.isEmpty())
-			{
-				org.drip.graph.core.Edge edge = adjacencyPriorityQueue.extractExtremum().item();
-
-				if (!vertexAugmentor.updateAugmentedVertex (
-					edge
-				))
-				{
-					return null;
-				}
-
-				java.lang.String currentDestinationVertexName = edge.destinationVertexName();
-
-				if (!vertexAugmentor.vertexProcessed (
-						currentDestinationVertexName
-					) && !vertexList.add (
-						currentDestinationVertexName
-					)
-				)
-				{
-					return null;
-				}
-			}
-		}
-
-		return vertexAugmentor;
-	}
-
-	/**
-	 * DijkstraGenerator Constructor
-	 * 
-	 * @param graph Graph underlying the Path Generator
-	 * @param shortestPath TRUE - Shortest Path Sought
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public DijkstraGenerator (
+	protected OptimalPathGenerator (
 		final org.drip.graph.core.DirectedGraph graph,
 		final boolean shortestPath)
 		throws java.lang.Exception
 	{
-		super (
-			graph,
-			shortestPath
+		if (null == (_graph = graph))
+		{
+			throw new java.lang.Exception (
+				"OptimalPathGenerator Constructor => Invalid Inputs"
+			);
+		}
+
+		_shortestPath = shortestPath;
+	}
+
+	/**
+	 * Retrieve the Graph underlying the Path Generator
+	 * 
+	 * @return Graph underlying the Path Generator
+	 */
+
+	public org.drip.graph.core.DirectedGraph graph()
+	{
+		return _graph;
+	}
+
+	/**
+	 * Indicate if the Shortest Path is Sought
+	 * 
+	 * @return TRUE - Shortest Path Sought
+	 */
+
+	public boolean shortestPath()
+	{
+		return _shortestPath;
+	}
+
+	/**
+	 * Generate the Shortest Path from the Source to the Destination
+	 * 
+	 * @param sourceVertexName Source Vertex Name
+	 * @param destinationVertexName Destination Vertex Name
+	 * 
+	 * @return Shortest Path from the Source to the Destination
+	 */
+
+	public org.drip.graph.core.Path singlePair (
+		final java.lang.String sourceVertexName,
+		final java.lang.String destinationVertexName)
+	{
+		org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor = augmentVertexes (
+			sourceVertexName
 		);
+
+		return null == vertexAugmentor ? null : vertexAugmentor.generatePath (
+			destinationVertexName
+		);
+	}
+
+	/**
+	 * Generate the List of the Shortest Path from the Source to all Destinations
+	 * 
+	 * @param sourceVertexName Source Vertex Name
+	 * 
+	 * @return List of the Shortest Path from the Source to all Destinations
+	 */
+
+	public java.util.List<org.drip.graph.core.Path> singleSource (
+		final java.lang.String sourceVertexName)
+	{
+		org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor = augmentVertexes (
+			sourceVertexName
+		);
+
+		if (null == vertexAugmentor)
+		{
+			return null;
+		}
+
+		java.util.List<org.drip.graph.core.Path> pathList =
+			new java.util.ArrayList<org.drip.graph.core.Path>();
+
+		for (java.lang.String destinationVertexName : _graph.vertexNameSet())
+		{
+			if (!destinationVertexName.equalsIgnoreCase (
+				sourceVertexName
+			))
+			{
+				org.drip.graph.core.Path path = vertexAugmentor.generatePath (
+					destinationVertexName
+				);
+
+				if (null == path)
+				{
+					return null;
+				}
+
+				pathList.add (
+					path
+				);
+			}
+		}
+
+		return pathList;
 	}
 }

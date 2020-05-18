@@ -113,10 +113,9 @@ package org.drip.graph.shortestpath;
  */
 
 public class BellmanFordGenerator
+	extends org.drip.graph.shortestpath.OptimalPathGenerator
 {
-	private org.drip.graph.core.DirectedGraph _graph = null;
-
-	private org.drip.graph.shortestpath.VertexAugmentor shortestPath (
+	@Override protected org.drip.graph.shortestpath.VertexAugmentor augmentVertexes (
 		final java.lang.String sourceVertexName)
 	{
 		if (null == sourceVertexName || sourceVertexName.isEmpty())
@@ -126,10 +125,18 @@ public class BellmanFordGenerator
 
 		org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor = null;
 
+		boolean shortestPath = shortestPath();
+
+		org.drip.graph.core.DirectedGraph graph = graph();
+
+		java.util.Set<java.lang.String> vertexNameSet = graph.vertexNameSet();
+
 		try
 		{
 			vertexAugmentor = new org.drip.graph.shortestpath.VertexAugmentor (
-				sourceVertexName
+				sourceVertexName,
+				vertexNameSet,
+				shortestPath
 			);
 		}
 		catch (java.lang.Exception e)
@@ -139,29 +146,20 @@ public class BellmanFordGenerator
 			return null;
 		}
 
-		java.util.Set<java.lang.String> vertexNameSet = _graph.vertexNameSet();
-
-		if (!vertexAugmentor.initializeVertexNameSet (
-			vertexNameSet
-		))
-		{
-			return null;
-		}
-
 		int vertexCount = vertexNameSet.size();
 
-		java.util.Map<java.lang.String, org.drip.graph.core.Edge> edgeMap = _graph.edgeMap();
+		java.util.Map<java.lang.String, org.drip.graph.core.Edge> edgeMap = graph.edgeMap();
 
 		org.drip.graph.heap.PriorityQueue<java.lang.Double, java.lang.String> edgePriorityQueue =
 			new org.drip.graph.heap.BinomialTreePriorityQueue<java.lang.Double, java.lang.String> (
-				true
+				shortestPath
 			);
 
 		while (0 < vertexCount--)
 		{
 			if (!edgePriorityQueue.meld (
-				_graph.edgePriorityQueue (
-					true
+				graph.edgePriorityQueue (
+					shortestPath
 				)
 			))
 			{
@@ -188,99 +186,19 @@ public class BellmanFordGenerator
 	 * BellmanFordGenerator Constructor
 	 * 
 	 * @param graph Graph underlying the Path Generator
+	 * @param shortestPath TRUE - Shortest Path Sought
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BellmanFordGenerator (
-		final org.drip.graph.core.DirectedGraph graph)
+		final org.drip.graph.core.DirectedGraph graph,
+		final boolean shortestPath)
 		throws java.lang.Exception
 	{
-		if (null == (_graph = graph))
-		{
-			throw new java.lang.Exception (
-				"BellmanFordGenerator Constructor => Invalid Inputs"
-			);
-		}
-	}
-
-	/**
-	 * Retrieve the Graph underlying the Path Generator
-	 * 
-	 * @return Graph underlying the Path Generator
-	 */
-
-	public org.drip.graph.core.DirectedGraph graph()
-	{
-		return _graph;
-	}
-
-	/**
-	 * Generate the Shortest Path from the Source to the Destination
-	 * 
-	 * @param sourceVertexName Source Vertex Name
-	 * @param destinationVertexName Destination Vertex Name
-	 * 
-	 * @return Shortest Path from the Source to the Destination
-	 */
-
-	public org.drip.graph.core.Path singlePair (
-		final java.lang.String sourceVertexName,
-		final java.lang.String destinationVertexName)
-	{
-		org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor = shortestPath (
-			sourceVertexName
+		super (
+			graph,
+			shortestPath
 		);
-
-		return null == vertexAugmentor ? null : vertexAugmentor.generatePath (
-			destinationVertexName
-		);
-	}
-
-	/**
-	 * Generate the List of the Shortest Path from the Source to all Destinations
-	 * 
-	 * @param sourceVertexName Source Vertex Name
-	 * 
-	 * @return List of the Shortest Path from the Source to all Destinations
-	 */
-
-	public java.util.List<org.drip.graph.core.Path> singleSource (
-		final java.lang.String sourceVertexName)
-	{
-		org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor = shortestPath (
-			sourceVertexName
-		);
-
-		if (null == vertexAugmentor)
-		{
-			return null;
-		}
-
-		java.util.List<org.drip.graph.core.Path> pathList =
-			new java.util.ArrayList<org.drip.graph.core.Path>();
-
-		for (java.lang.String destinationVertexName : _graph.vertexNameSet())
-		{
-			if (!destinationVertexName.equalsIgnoreCase (
-				sourceVertexName
-			))
-			{
-				org.drip.graph.core.Path path = vertexAugmentor.generatePath (
-					destinationVertexName
-				);
-
-				if (null == path)
-				{
-					return null;
-				}
-
-				pathList.add (
-					path
-				);
-			}
-		}
-
-		return pathList;
 	}
 }
