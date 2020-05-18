@@ -154,15 +154,16 @@ public class KruskalGenerator
 
 		java.util.Map<java.lang.String, org.drip.graph.core.Edge> graphEdgeMap = _graph.edgeMap();
 
-		java.util.List<java.lang.String> orderedEdgeKeyList = _graph.orderedEdgeKeyList (
-			maximum()
-		);
+		org.drip.graph.heap.PriorityQueue<java.lang.Double, java.lang.String> edgePriorityQueue =
+			_graph.edgePriorityQueue (
+				!maximum()
+			);
 
-		for (java.lang.String edgeKey : orderedEdgeKeyList)
+		while (!edgePriorityQueue.isEmpty())
 		{
 			if (!forest.conditionalMerge (
 				graphEdgeMap.get (
-					edgeKey
+					edgePriorityQueue.extractExtremum().item()
 				),
 				_graph
 			))

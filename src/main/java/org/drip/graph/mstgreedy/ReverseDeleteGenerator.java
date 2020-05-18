@@ -147,12 +147,15 @@ public class ReverseDeleteGenerator
 
 		java.util.Map<java.lang.String, org.drip.graph.core.Edge> graphEdgeMap = _graph.edgeMap();
 
-		java.util.List<java.lang.String> orderedEdgeKeyList = _graph.orderedEdgeKeyList (
-			!maximum
-		);
+		org.drip.graph.heap.PriorityQueue<java.lang.Double, java.lang.String> edgePriorityQueue =
+			_graph.edgePriorityQueue (
+				maximum
+			);
 
-		for (java.lang.String edgeKey : orderedEdgeKeyList)
+		while (!edgePriorityQueue.isEmpty())
 		{
+			java.lang.String edgeKey = edgePriorityQueue.extractExtremum().item();
+
 			org.drip.graph.core.Edge edge = graphEdgeMap.get (
 				edgeKey
 			);

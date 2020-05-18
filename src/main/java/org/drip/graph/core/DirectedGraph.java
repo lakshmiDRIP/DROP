@@ -291,10 +291,7 @@ public class DirectedGraph
 		for (java.util.Map.Entry<java.lang.String, org.drip.graph.core.Vertex> vertexMapEntry :
 			_vertexMap.entrySet())
 		{
-			java.util.Map<java.lang.Double, java.lang.String> adjacencyKeyMap =
-				vertexMapEntry.getValue().adjacencyKeyMap();
-
-			if (null == adjacencyKeyMap || 1 == adjacencyKeyMap.size())
+			if (vertexMapEntry.getValue().isLeaf())
 			{
 				leafVertexNameList.add (
 					vertexMapEntry.getKey()

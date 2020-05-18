@@ -11,7 +11,7 @@ Graph Algorithm Library contains the Libraries implementing the Graph Representa
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm/GraphAlgorithm_v4.84.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm/GraphAlgorithm_v4.86.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -69,6 +69,10 @@ Graph Algorithm Library contains the Libraries implementing the Graph Representa
 	* Decrease Key
 	* Delete
 	* References
+ * Soft Heap
+	* Overview
+	* Applications - Selection Algorithm
+	* References
  * The Soft Heap: An Approximate Priority Queue with Optimal Error Rate
 	* Abstract
 	* Introduction
@@ -82,6 +86,24 @@ Graph Algorithm Library contains the Libraries implementing the Graph Representa
 	* The Error Rate
 	* The Running Time
 	* Optimality
+	* References
+ * A Simpler Implementation and Analysis of Chazelle’s Soft Heaps
+	* Introduction
+	* Soft Heaps
+	* Implementation
+	* The Data Structure
+	* The Sift Operation
+	* The Combine Operation
+	* The Update-Suffix-Min Operation
+	* The make-heap Operation
+	* The meld Operation
+	* The insert Operation
+	* The extract-min Operation
+	* Correctness
+	* Amortized Analysis
+	* Adding a Delete Operation
+	* Comparison with Chazelle’s Implementation
+	* Concluding Remarks
 	* References
  * Spanning Tree
 	* Overview
@@ -171,6 +193,20 @@ Graph Algorithm Library contains the Libraries implementing the Graph Representa
 	* Applications
 	* Complexity
 	* References
+ * Dijkstra's Algorithm
+	* Introduction
+	* Algorithm
+	* Characteristics
+	* Generalization of the Problem
+	* Using a Priority Queue
+	* Proof of Correctness
+	* Running Time
+	* Practical Optimizations and Infinite Graphs
+	* Specialized Variants
+	* Related Problems and Algorithms
+	* Dynamics Programming Perspective
+	* References
+ * Bellman-Ford Algorithm
 
 
 ## DROP Specifications

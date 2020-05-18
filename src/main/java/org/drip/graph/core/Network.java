@@ -192,7 +192,7 @@ abstract public class Network
 			new org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.graph.core.Edge>();
 
 		_vertexMap =
-			new org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.graph.core.Vertex>();
+			new org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.graph.core.Vertex>();
 	}
 
 	/**
@@ -399,73 +399,31 @@ abstract public class Network
 	}
 
 	/**
-	 * Construct an Ordered Edge Key List
+	 * Construct an Edge Priority Queue
 	 * 
-	 * @param descending TRUE - The Edge List is in the Descending Order of Distance
+	 * @param minHeap TRUE - The Priority Queue is in the Ascending Order of Weight
 	 * 
-	 * @return The Ordered Edge Key List
+	 * @return The Edge Priority Queue
 	 */
 
-	public java.util.List<java.lang.String> orderedEdgeKeyList (
-		final boolean descending)
+	public org.drip.graph.heap.PriorityQueue<java.lang.Double, java.lang.String> edgePriorityQueue (
+		final boolean minHeap)
 	{
-		java.util.TreeMap<java.lang.Double, java.util.List<java.lang.String>> orderedEdgeKeyListMap =
-			new java.util.TreeMap<java.lang.Double, java.util.List<java.lang.String>>();
+		org.drip.graph.heap.PriorityQueue<java.lang.Double, java.lang.String> edgePriorityQueue =
+			new org.drip.graph.heap.BinomialTreePriorityQueue<java.lang.Double, java.lang.String> (
+				minHeap
+			);
 
 		for (java.util.Map.Entry<java.lang.String, org.drip.graph.core.Edge> edgeMapEntry :
 			_edgeMap.entrySet())
 		{
-			double weight = edgeMapEntry.getValue().weight();
-
-			if (orderedEdgeKeyListMap.containsKey (
-				weight
-			))
-			{
-				orderedEdgeKeyListMap.get (
-					weight
-				).add (
-					edgeMapEntry.getKey()
-				);
-			}
-			else
-			{
-				java.util.List<java.lang.String> edgeKeyList = new java.util.ArrayList<java.lang.String>();
-
-				edgeKeyList.add (
-					edgeMapEntry.getKey()
-				);
-
-				orderedEdgeKeyListMap.put (
-					weight,
-					edgeKeyList
-				);
-			}
+			edgePriorityQueue.insert (
+				edgeMapEntry.getValue().weight(),
+				edgeMapEntry.getKey()
+			);
 		}
 
-		java.util.List<java.lang.String> orderedEdgeKeyList = new java.util.ArrayList<java.lang.String>();
-
-		for (double distance : orderedEdgeKeyListMap.keySet())
-		{
-			if (descending)
-			{
-				orderedEdgeKeyList.addAll (
-					0,
-					orderedEdgeKeyListMap.get (
-						distance
-					)
-				);
-			}
-			else
-			{
-				orderedEdgeKeyList.addAll (
-					orderedEdgeKeyListMap.get (
-						distance
-					)
-				);
-			}
-		}
-
-		return orderedEdgeKeyList;
+		return edgePriorityQueue;
 	}
 
 	/**

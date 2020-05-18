@@ -112,10 +112,10 @@ package org.drip.graph.heap;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BinomialTreePriorityQueue<K extends java.lang.Comparable<K>, V>
-	extends org.drip.graph.heap.PriorityQueue<K, V>
+public class BinomialTreePriorityQueue<KEY extends java.lang.Comparable<KEY>, ITEM>
+	extends org.drip.graph.heap.PriorityQueue<KEY, ITEM>
 {
-	private java.util.List<org.drip.graph.heap.BinomialTree<K, V>> _binomialTreeList = null;
+	private java.util.List<org.drip.graph.heap.BinomialTree<KEY, ITEM>> _binomialTreeList = null;
 
 	private boolean trimEmptyTrailer()
 	{
@@ -163,7 +163,7 @@ public class BinomialTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 			--extremumIndex;
 		}
 
-		K extremumKey = _binomialTreeList.get (
+		KEY extremumKey = _binomialTreeList.get (
 			extremumIndex
 		).entry().key();
 
@@ -173,13 +173,13 @@ public class BinomialTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 			index < size;
 			++index)
 		{
-			org.drip.graph.heap.BinomialTree<K, V> current = _binomialTreeList.get (
+			org.drip.graph.heap.BinomialTree<KEY, ITEM> current = _binomialTreeList.get (
 				index
 			);
 
 			if (null != current)
 			{
-				K currentKey = _binomialTreeList.get (
+				KEY currentKey = _binomialTreeList.get (
 					index
 				).entry().key();
 
@@ -229,7 +229,7 @@ public class BinomialTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 	 * @return List of Binomial Trees
 	 */
 
-	public java.util.List<org.drip.graph.heap.BinomialTree<K, V>> binomialTreeList()
+	public java.util.List<org.drip.graph.heap.BinomialTree<KEY, ITEM>> binomialTreeList()
 	{
 		return _binomialTreeList;
 	}
@@ -243,7 +243,7 @@ public class BinomialTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 	 */
 
 	public boolean meld (
-		final org.drip.graph.heap.BinomialTree<K, V> tree)
+		final org.drip.graph.heap.BinomialTree<KEY, ITEM> tree)
 	{
 		if (null == tree)
 		{
@@ -252,7 +252,7 @@ public class BinomialTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 
 		if (null == _binomialTreeList)
 		{
-			_binomialTreeList = new java.util.ArrayList<org.drip.graph.heap.BinomialTree<K, V>>();
+			_binomialTreeList = new java.util.ArrayList<org.drip.graph.heap.BinomialTree<KEY, ITEM>>();
 		}
 
 		int currentOrder = tree.order();
@@ -266,12 +266,12 @@ public class BinomialTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 
 		boolean insertFlag = currentOrder >= _binomialTreeList.size();
 
-		org.drip.graph.heap.BinomialTree<K, V> orderedTree = insertFlag ? null :
+		org.drip.graph.heap.BinomialTree<KEY, ITEM> orderedTree = insertFlag ? null :
 			_binomialTreeList.get (
 				currentOrder
 			);
 
-		org.drip.graph.heap.BinomialTree<K, V> combinedTree = tree;
+		org.drip.graph.heap.BinomialTree<KEY, ITEM> combinedTree = tree;
 
 		if (null == orderedTree)
 		{
@@ -336,7 +336,7 @@ public class BinomialTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 	}
 
 	@Override public boolean meld (
-		final org.drip.graph.heap.PriorityQueue<K, V> priorityQueueOther)
+		final org.drip.graph.heap.PriorityQueue<KEY, ITEM> priorityQueueOther)
 	{
 		if (null == priorityQueueOther ||
 			priorityQueueOther.isEmpty() ||
@@ -346,10 +346,10 @@ public class BinomialTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 			return true;
 		}
 
-		BinomialTreePriorityQueue<K, V> binomialHeapOther =
-			(BinomialTreePriorityQueue<K, V>) priorityQueueOther;
+		BinomialTreePriorityQueue<KEY, ITEM> binomialHeapOther =
+			(BinomialTreePriorityQueue<KEY, ITEM>) priorityQueueOther;
 
-		java.util.List<org.drip.graph.heap.BinomialTree<K, V>> binomialTreeListOther =
+		java.util.List<org.drip.graph.heap.BinomialTree<KEY, ITEM>> binomialTreeListOther =
 			binomialHeapOther.binomialTreeList();
 
 		if (isEmpty())
@@ -358,7 +358,7 @@ public class BinomialTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 			return true;
 		}
 
-		for (org.drip.graph.heap.BinomialTree<K, V> tree : binomialTreeListOther)
+		for (org.drip.graph.heap.BinomialTree<KEY, ITEM> tree : binomialTreeListOther)
 		{
 			if (!meld (
 				tree
@@ -372,16 +372,16 @@ public class BinomialTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 	}
 
 	@Override public boolean insert (
-		final K key,
-		final V value)
+		final KEY key,
+		final ITEM item)
 	{
 		try
 		{
 			return meld (
-				new org.drip.graph.heap.BinomialTree<K, V> (
-					new org.drip.graph.heap.PriorityQueueEntry<K, V> (
+				new org.drip.graph.heap.BinomialTree<KEY, ITEM> (
+					new org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> (
 						key,
-						value
+						item
 					)
 				)
 			);
@@ -394,7 +394,7 @@ public class BinomialTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 		return false;
 	}
 
-	@Override public org.drip.graph.heap.PriorityQueueEntry<K, V> extractExtremum()
+	@Override public org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> extractExtremum()
 	{
 		int extremumIndex = -1;
 
@@ -409,7 +409,7 @@ public class BinomialTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 			return null;
 		}
 
-		org.drip.graph.heap.BinomialTree<K, V> extremumTree = _binomialTreeList.get (
+		org.drip.graph.heap.BinomialTree<KEY, ITEM> extremumTree = _binomialTreeList.get (
 			extremumIndex
 		);
 
@@ -418,12 +418,12 @@ public class BinomialTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 			null
 		);
 
-		java.util.List<org.drip.graph.heap.BinomialTree<K, V>> binomialTreeChildren =
+		java.util.List<org.drip.graph.heap.BinomialTree<KEY, ITEM>> binomialTreeChildren =
 			extremumTree.children();
 
 		if (null != binomialTreeChildren)
 		{
-			for (org.drip.graph.heap.BinomialTree<K, V> child : binomialTreeChildren)
+			for (org.drip.graph.heap.BinomialTree<KEY, ITEM> child : binomialTreeChildren)
 			{
 				if (!meld (
 					child
@@ -437,7 +437,7 @@ public class BinomialTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 		return trimEmptyTrailer() ? extremumTree.entry() : null;
 	}
 
-	@Override public org.drip.graph.heap.PriorityQueueEntry<K, V> extremum()
+	@Override public org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> extremum()
 	{
 		int extremumIndex = -1;
 

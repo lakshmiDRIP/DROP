@@ -115,8 +115,8 @@ package org.drip.graph.softheap;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ApproximatePriorityQueue<K extends java.lang.Comparable<K>, V>
-	extends org.drip.graph.heap.PriorityQueue<K, V>
+public abstract class ApproximatePriorityQueue<KEY extends java.lang.Comparable<KEY>, ITEM>
+	extends org.drip.graph.heap.PriorityQueue<KEY, ITEM>
 {
 	private int _r = -1;
 

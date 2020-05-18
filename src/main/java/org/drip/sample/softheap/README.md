@@ -37,9 +37,6 @@ DROP Soft Heap illustrates Soft Heap Based Priority Queues.
  * [***KaplanZwickMinSequentialInsert***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/softheap/KaplanZwickMinSequentialInsert.java)
  <i>KaplanZwickMinSequentialInsert</i> illustrates the Insert Operation for a Min Soft Heap as described in Kaplan and Zwick (2009).
 
- * [***SoftHeapNavigator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/softheap/SoftHeapNavigator.java)
- <i>SoftHeapNavigator</i> demonstrates the Creation and Usage of a Soft Heap.
-
 
 ## References
 

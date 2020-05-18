@@ -114,7 +114,8 @@ public class BoruvkaForest
 	extends org.drip.graph.mstgreedy.KruskalForest
 {
 	private java.util.Map<java.lang.String, java.lang.Double> _treeNameDistanceMap = null;
-	private java.util.TreeMap<java.lang.Double, org.drip.graph.core.Tree> _orderedTreeMap = null;
+	private org.drip.graph.heap.PriorityQueue<java.lang.Double, org.drip.graph.core.Tree>
+		_orderedTreePriorityQueue = null;
 
 	private boolean updateOrderedTreeMap (
 		final java.lang.String treeName,
@@ -122,17 +123,17 @@ public class BoruvkaForest
 		final org.drip.graph.core.DirectedGraph graph,
 		final boolean descending)
 	{
-		java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
-			tree.adjacencyMap (
+		org.drip.graph.heap.PriorityQueue<java.lang.Double, org.drip.graph.core.Edge> edgePriorityQueue =
+			tree.edgePriorityQueue (
 				graph,
-				descending
+				_orderedTreePriorityQueue.minHeap()
 			);
 
-		if (null != adjacencyMap && 0 != adjacencyMap.size())
+		if (null != edgePriorityQueue && !edgePriorityQueue.isEmpty())
 		{
-			double distance = adjacencyMap.firstEntry().getValue().weight();
+			double distance = edgePriorityQueue.extremum().item().weight();
 
-			_orderedTreeMap.put (
+			_orderedTreePriorityQueue.insert (
 				distance,
 				tree
 			);
@@ -150,15 +151,15 @@ public class BoruvkaForest
 		final java.lang.String sourceTreeName,
 		final java.lang.String destinationTreeName,
 		final org.drip.graph.core.DirectedGraph graph,
-		final boolean descending)
+		final boolean minHeap)
 	{
-		_orderedTreeMap.remove (
+		_orderedTreePriorityQueue.delete (
 			_treeNameDistanceMap.get (
 				sourceTreeName
 			)
 		);
 
-		_orderedTreeMap.remove (
+		_orderedTreePriorityQueue.delete (
 			_treeNameDistanceMap.get (
 				destinationTreeName
 			)
@@ -172,20 +173,17 @@ public class BoruvkaForest
 			sourceTreeName
 		);
 
-		java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap =
-			sourceTree.adjacencyMap (
+		org.drip.graph.heap.PriorityQueue<java.lang.Double, org.drip.graph.core.Edge>
+			sourceTreeEdgePriorityQueue = sourceTree.edgePriorityQueue (
 				graph,
-				descending
+				_orderedTreePriorityQueue.minHeap()
 			);
 
-		if (null != adjacencyMap && !adjacencyMap.isEmpty())
+		if (null != sourceTreeEdgePriorityQueue && !sourceTreeEdgePriorityQueue.isEmpty())
 		{
-			double distance = sourceTree.adjacencyMap (
-				graph,
-				descending
-			).firstEntry().getValue().weight();
+			double distance = sourceTreeEdgePriorityQueue.extremum().item().weight();
 
-			_orderedTreeMap.put (
+			_orderedTreePriorityQueue.insert (
 				distance,
 				sourceTree
 			);
@@ -201,38 +199,21 @@ public class BoruvkaForest
 
 	/**
 	 * BoruvkaForest Constructor
+	 * 
+	 * @param minHeap TRUE - Minimum Heap
 	 */
 
-	public BoruvkaForest()
+	public BoruvkaForest (
+		final boolean minHeap)
 	{
 		super();
 
-		_orderedTreeMap = new java.util.TreeMap<java.lang.Double, org.drip.graph.core.Tree>();
-
 		_treeNameDistanceMap = new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
-	}
 
-
-	/**
-	 * Retrieve the Map of Tree Names to Distance
-	 * 
-	 * @return Map of Tree Names to Distance
-	 */
-
-	public java.util.Map<java.lang.String, java.lang.Double> treeNameDistanceMap()
-	{
-		return _treeNameDistanceMap;
-	}
-
-	/**
-	 * Retrieve the Ordered Map of Trees
-	 * 
-	 * @return Ordered Map of Trees
-	 */
-
-	public java.util.TreeMap<java.lang.Double, org.drip.graph.core.Tree> orderedTreeMap()
-	{
-		return _orderedTreeMap;
+		_orderedTreePriorityQueue =
+			new org.drip.graph.heap.BinomialTreePriorityQueue<java.lang.Double, org.drip.graph.core.Tree> (
+				minHeap
+			);
 	}
 
 	/**
@@ -303,15 +284,10 @@ public class BoruvkaForest
 		final org.drip.graph.core.DirectedGraph graph,
 		final boolean maximum)
 	{
-		org.drip.graph.core.Edge edge = maximum ?
-			orderedTreeMap().lastEntry().getValue().adjacencyMap (
-				graph,
-				maximum
-			).lastEntry().getValue() :
-			orderedTreeMap().firstEntry().getValue().adjacencyMap (
-				graph,
-				maximum
-			).firstEntry().getValue();
+		org.drip.graph.core.Edge edge = _orderedTreePriorityQueue.extremum().item().edgePriorityQueue (
+			graph,
+			_orderedTreePriorityQueue.minHeap()
+		).extremum().item();
 
 		if (null == edge ||
 			!super.conditionalMerge (
@@ -333,7 +309,7 @@ public class BoruvkaForest
 				edge.destinationVertexName()
 			),
 			graph,
-			maximum
+			_orderedTreePriorityQueue.minHeap()
 		);
 	}
 }

@@ -115,24 +115,24 @@ package org.drip.graph.heap;
  * @author Lakshmi Krishnamurthy
  */
 
-public class TimedCollection<K>
+public class TimedCollection<ITEM>
 {
-	private org.drip.graph.heap.PriorityQueue<K, java.lang.Long> _priorityQueue = null;
+	private org.drip.graph.heap.PriorityQueue<java.lang.Long, ITEM> _priorityQueue = null;
 
 	/**
 	 * Construct a Binomial FIFO (i.e, Queue) Version of TimedCollection
 	 * 
-	 * @param <K> The Item Type
+	 * @param <ITEM> The Item Type
 	 * 
 	 * @return Binomial FIFO (i.e, Queue) Version of TimedCollection
 	 */
 
-	public static <K extends java.lang.Comparable<K>> TimedCollection<K> FIFOBinomial()
+	public static <ITEM> TimedCollection<ITEM> FIFOBinomial()
 	{
 		try
 		{
-			return new org.drip.graph.heap.TimedCollection<K> (
-				new org.drip.graph.heap.BinomialTreePriorityQueue<K, java.lang.Long> (
+			return new org.drip.graph.heap.TimedCollection<ITEM> (
+				new org.drip.graph.heap.BinomialTreePriorityQueue<java.lang.Long, ITEM> (
 					true
 				)
 			);
@@ -148,17 +148,17 @@ public class TimedCollection<K>
 	/**
 	 * Construct a Binary FIFO (i.e, Queue) Version of TimedCollection
 	 * 
-	 * @param <K> The Item Type
+	 * @param <ITEM> The Item Type
 	 * 
 	 * @return Binary FIFO (i.e, Queue) Version of TimedCollection
 	 */
 
-	public static <K extends java.lang.Comparable<K>> TimedCollection<K> FIFOBinary()
+	public static <ITEM> TimedCollection<ITEM> FIFOBinary()
 	{
 		try
 		{
-			return new org.drip.graph.heap.TimedCollection<K> (
-				new org.drip.graph.heap.BinaryTreePriorityQueue<K, java.lang.Long> (
+			return new org.drip.graph.heap.TimedCollection<ITEM> (
+				new org.drip.graph.heap.BinaryTreePriorityQueue<java.lang.Long, ITEM> (
 					true
 				)
 			);
@@ -174,17 +174,17 @@ public class TimedCollection<K>
 	/**
 	 * Construct a Binomial LIFO (i.e, Stack) Version of TimedCollection
 	 * 
-	 * @param <K> The Item Type
+	 * @param <ITEM> The Item Type
 	 * 
 	 * @return Binomial LIFO (i.e, Stack) Version of TimedCollection
 	 */
 
-	public static <K extends java.lang.Comparable<K>> TimedCollection<K> LIFOBinomial()
+	public static <ITEM> TimedCollection<ITEM> LIFOBinomial()
 	{
 		try
 		{
-			return new org.drip.graph.heap.TimedCollection<K> (
-				new org.drip.graph.heap.BinomialTreePriorityQueue<K, java.lang.Long> (
+			return new org.drip.graph.heap.TimedCollection<ITEM> (
+				new org.drip.graph.heap.BinomialTreePriorityQueue<java.lang.Long, ITEM> (
 					false
 				)
 			);
@@ -200,17 +200,17 @@ public class TimedCollection<K>
 	/**
 	 * Construct a Binary LIFO (i.e, Stack) Version of TimedCollection
 	 * 
-	 * @param <K> The Item Type
+	 * @param <ITEM> The Item Type
 	 * 
 	 * @return Binary LIFO (i.e, Stack) Version of TimedCollection
 	 */
 
-	public static <K extends java.lang.Comparable<K>> TimedCollection<K> LIFOBinary()
+	public static <ITEM> TimedCollection<ITEM> LIFOBinary()
 	{
 		try
 		{
-			return new org.drip.graph.heap.TimedCollection<K> (
-				new org.drip.graph.heap.BinaryTreePriorityQueue<K, java.lang.Long> (
+			return new org.drip.graph.heap.TimedCollection<ITEM> (
+				new org.drip.graph.heap.BinaryTreePriorityQueue<java.lang.Long, ITEM> (
 					false
 				)
 			);
@@ -228,11 +228,11 @@ public class TimedCollection<K>
 	 * 
 	 * @param priorityQueue Underlying Priority Queue
 	 * 
-	 * @throws java.lang.Exception Thown if the Inputs ae Invalid
+	 * @throws java.lang.Exception Thown if the Inputs are Invalid
 	 */
 
 	public TimedCollection (
-		final org.drip.graph.heap.PriorityQueue<K, java.lang.Long> priorityQueue)
+		final org.drip.graph.heap.PriorityQueue<java.lang.Long, ITEM> priorityQueue)
 		throws java.lang.Exception
 	{
 		if (null == (_priorityQueue = priorityQueue))
@@ -249,7 +249,7 @@ public class TimedCollection<K>
 	 * @return The Underlying Priority Queue
 	 */
 
-	public org.drip.graph.heap.PriorityQueue<K, java.lang.Long> priorityQueue()
+	public org.drip.graph.heap.PriorityQueue<java.lang.Long, ITEM> priorityQueue()
 	{
 		return _priorityQueue;
 	}
@@ -257,17 +257,17 @@ public class TimedCollection<K>
 	/**
 	 * Insert an Item into the Queue with its Time Stamp
 	 * 
-	 * @param k The Item
+	 * @param item The Item
 	 * 
 	 * @return TRUE - The Item is successfully inserted into the Queue with its Time Stamp
 	 */
 
 	public boolean insert (
-		final K k)
+		final ITEM item)
 	{
 		return _priorityQueue.insert (
-			k,
-			System.nanoTime()
+			System.nanoTime(),
+			item
 		);
 	}
 
@@ -277,7 +277,7 @@ public class TimedCollection<K>
 	 * @return The Extremum Item
 	 */
 
-	public org.drip.graph.heap.PriorityQueueEntry<K, java.lang.Long> extractExtremum()
+	public org.drip.graph.heap.PriorityQueueEntry<java.lang.Long, ITEM> extractExtremum()
 	{
 		return _priorityQueue.extractExtremum();
 	}
@@ -288,7 +288,7 @@ public class TimedCollection<K>
 	 * @return The Extremum Item
 	 */
 
-	public org.drip.graph.heap.PriorityQueueEntry<K, java.lang.Long> peek()
+	public org.drip.graph.heap.PriorityQueueEntry<java.lang.Long, ITEM> peek()
 	{
 		return _priorityQueue.extremum();
 	}

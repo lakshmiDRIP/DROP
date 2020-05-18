@@ -112,14 +112,14 @@ package org.drip.graph.heap;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
-	extends org.drip.graph.heap.PriorityQueue<K, V>
+public class BinaryTreePriorityQueue<KEY extends java.lang.Comparable<KEY>, ITEM>
+	extends org.drip.graph.heap.PriorityQueue<KEY, ITEM>
 {
-	private org.drip.graph.heap.BinaryTreeNode<K, V> _top = null;
+	private org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> _top = null;
 
 	private boolean heapPropertyValid (
-		final org.drip.graph.heap.BinaryTreeNode<K, V> above,
-		final org.drip.graph.heap.BinaryTreeNode<K, V> below)
+		final org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> above,
+		final org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> below)
 	{
 		return minHeap() ? 1 != above.entry().key().compareTo (
 			below.entry().key()
@@ -128,10 +128,10 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 		);
 	}
 
-	private org.drip.graph.heap.PriorityQueueEntry<K, V> replaceTop (
-		final org.drip.graph.heap.BinaryTreeNode<K, V> node)
+	private org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> replaceTop (
+		final org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> node)
 	{
-		org.drip.graph.heap.PriorityQueueEntry<K, V> topEntry = _top.entry().clone();
+		org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> topEntry = _top.entry().clone();
 
 		if (node == _top)
 		{
@@ -148,9 +148,9 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 	}
 
 	private boolean removeLeafNode (
-		final org.drip.graph.heap.BinaryTreeNode<K, V> leafNode)
+		final org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> leafNode)
 	{
-		org.drip.graph.heap.BinaryTreeNode<K, V> parent = leafNode.parent();
+		org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> parent = leafNode.parent();
 
 		if (null == parent)
 		{
@@ -172,8 +172,8 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 	}
 
 	private final boolean swapNodeAndParent (
-		final org.drip.graph.heap.BinaryTreeNode<K, V> node,
-		final org.drip.graph.heap.BinaryTreeNode<K, V> parent)
+		final org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> node,
+		final org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> parent)
 	{
 		if (null == node || null == parent)
 		{
@@ -188,15 +188,15 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 
 		boolean parentOldIsRightChild = parent.isRightChild();
 
-		org.drip.graph.heap.BinaryTreeNode<K, V> nodeOldLeft = node.left();
+		org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> nodeOldLeft = node.left();
 
-		org.drip.graph.heap.BinaryTreeNode<K, V> nodeOldRight = node.right();
+		org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> nodeOldRight = node.right();
 
-		org.drip.graph.heap.BinaryTreeNode<K, V> parentOldLeft = parent.left();
+		org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> parentOldLeft = parent.left();
 
-		org.drip.graph.heap.BinaryTreeNode<K, V> parentOldRight = parent.right();
+		org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> parentOldRight = parent.right();
 
-		org.drip.graph.heap.BinaryTreeNode<K, V> parentOldParent = parent.parent();
+		org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> parentOldParent = parent.parent();
 
 		if (!node.setLevel (
 			parentOldLevel
@@ -376,7 +376,7 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 	 * @return The Top Node
 	 */
 
-	public org.drip.graph.heap.BinaryTreeNode<K, V> top()
+	public org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> top()
 	{
 		return _top;
 	}
@@ -390,14 +390,14 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 	 */
 
 	public boolean maintainHeapPropertyBottomUp (
-		org.drip.graph.heap.BinaryTreeNode<K, V> node)
+		org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> node)
 	{
 		if (null == node)
 		{
 			return true;
 		}
 
-		org.drip.graph.heap.BinaryTreeNode<K, V> parent = node.parent();
+		org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> parent = node.parent();
 
 		while (null != parent &&
 			!heapPropertyValid (
@@ -429,7 +429,7 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 	 */
 
 	public boolean maintainHeapPropertyTopDown (
-		org.drip.graph.heap.BinaryTreeNode<K, V> node)
+		org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> node)
 	{
 		if (null == node)
 		{
@@ -438,7 +438,7 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 
 		boolean minHeap = minHeap();
 
-		org.drip.graph.heap.BinaryTreeNode<K, V> nextChild = minHeap ? node.smallerChild() :
+		org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> nextChild = minHeap ? node.smallerChild() :
 			node.largerChild();
 
 		while (null != nextChild &&
@@ -463,17 +463,17 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 	}
 
 	@Override public boolean insert (
-		final K key,
-		final V value)
+		final KEY key,
+		final ITEM item)
 	{
 		if (null == _top)
 		{
 			try
 			{
-				_top = new org.drip.graph.heap.BinaryTreeNode<K, V> (
-					new org.drip.graph.heap.PriorityQueueEntry<K, V> (
+				_top = new org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> (
+					new org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> (
 						key,
-						value
+						item
 					)
 				);
 			}
@@ -495,11 +495,11 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 			);
 		}
 
-		org.drip.graph.heap.BinaryTreeNode<K, V> node = null;
-		org.drip.graph.heap.BinaryTreeNode<K, V> newNode = null;
+		org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> node = null;
+		org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> newNode = null;
 
-		java.util.List<org.drip.graph.heap.BinaryTreeNode<K, V>> elementQueue =
-			new java.util.ArrayList<org.drip.graph.heap.BinaryTreeNode<K, V>>();
+		java.util.List<org.drip.graph.heap.BinaryTreeNode<KEY, ITEM>> elementQueue =
+			new java.util.ArrayList<org.drip.graph.heap.BinaryTreeNode<KEY, ITEM>>();
 
 		elementQueue.add (
 			_top
@@ -533,10 +533,10 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 
 		try
 		{
-			newNode = new org.drip.graph.heap.BinaryTreeNode<K, V> (
-				new org.drip.graph.heap.PriorityQueueEntry<K, V> (
+			newNode = new org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> (
+				new org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> (
 					key,
-					value
+					item
 				)
 			);
 		}
@@ -587,17 +587,17 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 		);
 	}
 
-	@Override public org.drip.graph.heap.PriorityQueueEntry<K, V> extractExtremum()
+	@Override public org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> extractExtremum()
 	{
 		if (null == _top)
 		{
 			return null;
 		}
 
-		org.drip.graph.heap.BinaryTreeNode<K, V> node = null;
+		org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> node = null;
 
-		java.util.List<org.drip.graph.heap.BinaryTreeNode<K, V>> elementQueue =
-			new java.util.ArrayList<org.drip.graph.heap.BinaryTreeNode<K, V>>();
+		java.util.List<org.drip.graph.heap.BinaryTreeNode<KEY, ITEM>> elementQueue =
+			new java.util.ArrayList<org.drip.graph.heap.BinaryTreeNode<KEY, ITEM>>();
 
 		elementQueue.add (
 			_top
@@ -618,7 +618,7 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 				break;
 			}
 
-			org.drip.graph.heap.BinaryTreeNode<K, V> left = node.left();
+			org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> left = node.left();
 
 			if (null != left)
 			{
@@ -627,7 +627,7 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 				);
 			}
 
-			org.drip.graph.heap.BinaryTreeNode<K, V> right = node.right();
+			org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> right = node.right();
 
 			if (null != right)
 			{
@@ -644,7 +644,7 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 			return null;
 		}
 
-		org.drip.graph.heap.PriorityQueueEntry<K, V> topNodeEntry = replaceTop (
+		org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> topNodeEntry = replaceTop (
 			node
 		);
 
@@ -661,13 +661,13 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 		return topNodeEntry;
 	}
 
-	@Override public org.drip.graph.heap.PriorityQueueEntry<K, V> extremum()
+	@Override public org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> extremum()
 	{
 		return null == _top ? null : _top.entry();
 	}
 
 	@Override public boolean meld (
-		final org.drip.graph.heap.PriorityQueue<K, V> priorityQueueOther)
+		final org.drip.graph.heap.PriorityQueue<KEY, ITEM> priorityQueueOther)
 	{
 		if (null == priorityQueueOther ||
 			priorityQueueOther.isEmpty() ||
@@ -677,12 +677,12 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 			return false;
 		}
 
-		BinaryTreePriorityQueue<K, V> binaryTreePriorityQueueOther =
-			(BinaryTreePriorityQueue<K, V>) priorityQueueOther;
+		BinaryTreePriorityQueue<KEY, ITEM> binaryTreePriorityQueueOther =
+			(BinaryTreePriorityQueue<KEY, ITEM>) priorityQueueOther;
 
 		while (!binaryTreePriorityQueueOther.isEmpty())
 		{
-			org.drip.graph.heap.PriorityQueueEntry<K, V> topOther =
+			org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> topOther =
 				binaryTreePriorityQueueOther.extractExtremum();
 
 			if (null == topOther)
@@ -694,7 +694,7 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 			{
 				if (!insert (
 					topOther.key(),
-					topOther.value()
+					topOther.item()
 				))
 				{
 					return false;
@@ -717,18 +717,18 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 	 * @return The List of Nodes
 	 */
 
-	public java.util.List<org.drip.graph.heap.BinaryTreeNode<K, V>> bfsWalk()
+	public java.util.List<org.drip.graph.heap.BinaryTreeNode<KEY, ITEM>> bfsWalk()
 	{
-		java.util.List<org.drip.graph.heap.BinaryTreeNode<K, V>> elementList =
-			new java.util.ArrayList<org.drip.graph.heap.BinaryTreeNode<K, V>>();
+		java.util.List<org.drip.graph.heap.BinaryTreeNode<KEY, ITEM>> elementList =
+			new java.util.ArrayList<org.drip.graph.heap.BinaryTreeNode<KEY, ITEM>>();
 
 		if (null == _top)
 		{
 			return elementList;
 		}
 
-		java.util.List<org.drip.graph.heap.BinaryTreeNode<K, V>> elementQueue =
-			new java.util.ArrayList<org.drip.graph.heap.BinaryTreeNode<K, V>>();
+		java.util.List<org.drip.graph.heap.BinaryTreeNode<KEY, ITEM>> elementQueue =
+			new java.util.ArrayList<org.drip.graph.heap.BinaryTreeNode<KEY, ITEM>>();
 
 		elementQueue.add (
 			_top
@@ -736,7 +736,7 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 
 		while (!elementQueue.isEmpty())
 		{
-			org.drip.graph.heap.BinaryTreeNode<K, V> node = elementQueue.get (
+			org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> node = elementQueue.get (
 				0
 			);
 
@@ -748,7 +748,7 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 				node
 			);
 
-			org.drip.graph.heap.BinaryTreeNode<K, V> left = node.left();
+			org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> left = node.left();
 
 			if (null != left)
 			{
@@ -757,7 +757,7 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 				);
 			}
 
-			org.drip.graph.heap.BinaryTreeNode<K, V> right = node.right();
+			org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> right = node.right();
 
 			if (null != right)
 			{
@@ -776,21 +776,21 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 	 * @return The Level List Map
 	 */
 
-	public java.util.Map<java.lang.Integer, java.util.List<org.drip.graph.heap.BinaryTreeNode<K, V>>>
+	public java.util.Map<java.lang.Integer, java.util.List<org.drip.graph.heap.BinaryTreeNode<KEY, ITEM>>>
 		bfsLevelListMap()
 	{
-		java.util.Map<java.lang.Integer, java.util.List<org.drip.graph.heap.BinaryTreeNode<K, V>>>
+		java.util.Map<java.lang.Integer, java.util.List<org.drip.graph.heap.BinaryTreeNode<KEY, ITEM>>>
 			bfsLevelListMap =
 				new java.util.TreeMap<java.lang.Integer,
-					java.util.List<org.drip.graph.heap.BinaryTreeNode<K, V>>>();
+					java.util.List<org.drip.graph.heap.BinaryTreeNode<KEY, ITEM>>>();
 
 		if (null == _top)
 		{
 			return bfsLevelListMap;
 		}
 
-		java.util.List<org.drip.graph.heap.BinaryTreeNode<K, V>> elementQueue =
-			new java.util.ArrayList<org.drip.graph.heap.BinaryTreeNode<K, V>>();
+		java.util.List<org.drip.graph.heap.BinaryTreeNode<KEY, ITEM>> elementQueue =
+			new java.util.ArrayList<org.drip.graph.heap.BinaryTreeNode<KEY, ITEM>>();
 
 		elementQueue.add (
 			_top
@@ -798,7 +798,7 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 
 		while (!elementQueue.isEmpty())
 		{
-			org.drip.graph.heap.BinaryTreeNode<K, V> node = elementQueue.get (
+			org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> node = elementQueue.get (
 				0
 			);
 
@@ -820,8 +820,8 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 			}
 			else
 			{
-				java.util.List<org.drip.graph.heap.BinaryTreeNode<K, V>> binaryTreeNodeList =
-					new java.util.ArrayList<org.drip.graph.heap.BinaryTreeNode<K, V>>();
+				java.util.List<org.drip.graph.heap.BinaryTreeNode<KEY, ITEM>> binaryTreeNodeList =
+					new java.util.ArrayList<org.drip.graph.heap.BinaryTreeNode<KEY, ITEM>>();
 
 				binaryTreeNodeList.add (
 					node
@@ -833,7 +833,7 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 				);
 			}
 
-			org.drip.graph.heap.BinaryTreeNode<K, V> left = node.left();
+			org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> left = node.left();
 
 			if (null != left)
 			{
@@ -842,7 +842,7 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 				);
 			}
 
-			org.drip.graph.heap.BinaryTreeNode<K, V> right = node.right();
+			org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> right = node.right();
 
 			if (null != right)
 			{
@@ -868,8 +868,8 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 	 * @return TRUE - The Node with a Key Corresponding to the Input
 	 */
 
-	public org.drip.graph.heap.BinaryTreeNode<K, V> keyEntry (
-		final K key)
+	public org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> keyEntry (
+		final KEY key)
 	{
 		if (null == key)
 		{
@@ -881,8 +881,8 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 			return null;
 		}
 
-		java.util.List<org.drip.graph.heap.BinaryTreeNode<K, V>> elementQueue =
-			new java.util.ArrayList<org.drip.graph.heap.BinaryTreeNode<K, V>>();
+		java.util.List<org.drip.graph.heap.BinaryTreeNode<KEY, ITEM>> elementQueue =
+			new java.util.ArrayList<org.drip.graph.heap.BinaryTreeNode<KEY, ITEM>>();
 
 		elementQueue.add (
 			_top
@@ -890,7 +890,7 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 
 		while (!elementQueue.isEmpty())
 		{
-			org.drip.graph.heap.BinaryTreeNode<K, V> node = elementQueue.get (
+			org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> node = elementQueue.get (
 				0
 			);
 
@@ -905,7 +905,7 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 				return node;
 			}
 
-			org.drip.graph.heap.BinaryTreeNode<K, V> left = node.left();
+			org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> left = node.left();
 
 			if (null != left)
 			{
@@ -914,7 +914,7 @@ public class BinaryTreePriorityQueue<K extends java.lang.Comparable<K>, V>
 				);
 			}
 
-			org.drip.graph.heap.BinaryTreeNode<K, V> right = node.right();
+			org.drip.graph.heap.BinaryTreeNode<KEY, ITEM> right = node.right();
 
 			if (null != right)
 			{

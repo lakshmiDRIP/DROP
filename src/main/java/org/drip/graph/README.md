@@ -31,8 +31,8 @@ DROP Graph Search Package implements BFS, DFS, and Vertex Ordering.
  * [***Soft Heap***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/softheap)
 DROP Soft Heap contains Soft Heap Based Approximate Priority Queue Implementation.
 
- * [***Store***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/store)
-DROP Graph Search Package implements the Graph Navigation Storage Data Structures.
+ * [***Tree Builder***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/treebuilder)
+DROP Graph Tree Builder maintains the Stubs for Spanning Tree Construction.
 
 
 ## References

@@ -114,21 +114,21 @@ package org.drip.graph.softheap;
  * @author Lakshmi Krishnamurthy
  */
 
-public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
+public class KaplanZwickBinaryNode<KEY extends java.lang.Comparable<KEY>, ITEM>
 {
 	private int _k = -1;
 	private int _r = -1;
 	private boolean _minHeap = false;
-	private KaplanZwickBinaryNode<K, V> _left = null;
-	private KaplanZwickBinaryNode<K, V> _right = null;
-	private KaplanZwickBinaryNode<K, V> _parent = null;
-	private org.drip.graph.heap.PriorityQueueEntry<K, V> _cEntry = null;
+	private KaplanZwickBinaryNode<KEY, ITEM> _left = null;
+	private KaplanZwickBinaryNode<KEY, ITEM> _right = null;
+	private KaplanZwickBinaryNode<KEY, ITEM> _parent = null;
+	private org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> _cEntry = null;
 	private org.drip.graph.softheap.KaplanZwickTargetSize _targetSize = null;
-	private java.util.List<org.drip.graph.heap.PriorityQueueEntry<K, V>> _entryList = null;
+	private java.util.List<org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM>> _entryList = null;
 
 	private boolean swapChildren()
 	{
-		KaplanZwickBinaryNode<K, V> tmp = _left;
+		KaplanZwickBinaryNode<KEY, ITEM> tmp = _left;
 		_left = _right;
 		_right = tmp;
 		return true;
@@ -149,17 +149,18 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 	/**
 	 * Combine Two Root Nodes of Rank k each to a Root Node of Rank k + 1
 	 * 
-	 * @param <K> Key Type
-	 * @param <V> Value Type
+	 * @param <KEY> Key Type
+	 * @param <ITEM> Item Type
 	 * @param node1 Node #1
 	 * @param node2 Node #2
 	 * 
 	 * @return The Combined Root Node of Rank k + 1
 	 */
 
-	public static <K extends java.lang.Comparable<K>, V> KaplanZwickBinaryNode<K, V> CombineRootNodePair (
-		final KaplanZwickBinaryNode<K, V> node1,
-		final KaplanZwickBinaryNode<K, V> node2)
+	public static <KEY extends java.lang.Comparable<KEY>, ITEM> KaplanZwickBinaryNode<KEY, ITEM>
+		CombineRootNodePair (
+			final KaplanZwickBinaryNode<KEY, ITEM> node1,
+			final KaplanZwickBinaryNode<KEY, ITEM> node2)
 	{
 		if (null == node1 || null == node2 || !node1.isRoot() || !node2.isRoot())
 		{
@@ -189,11 +190,11 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 			return null;
 		}
 
-		KaplanZwickBinaryNode<K, V> newRoot = null;
+		KaplanZwickBinaryNode<KEY, ITEM> newRoot = null;
 
 		try
 		{
-			newRoot = new KaplanZwickBinaryNode<K, V> (
+			newRoot = new KaplanZwickBinaryNode<KEY, ITEM> (
 				minHeap,
 				r,
 				k + 1
@@ -204,15 +205,15 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 			e.printStackTrace();
 		}
 
-		org.drip.graph.heap.PriorityQueueEntry<K, V> cEntry1 = node1.cEntry();
+		org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> cEntry1 = node1.cEntry();
 
-		org.drip.graph.heap.PriorityQueueEntry<K, V> cEntry2 = node2.cEntry();
+		org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> cEntry2 = node2.cEntry();
 
-		K ckey1 = cEntry1.key();
+		KEY ckey1 = cEntry1.key();
 
-		K ckey2 = cEntry2.key();
+		KEY ckey2 = cEntry2.key();
 
-		org.drip.graph.heap.PriorityQueueEntry<K, V> cEntry = -1 == ckey1.compareTo (
+		org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> cEntry = -1 == ckey1.compareTo (
 			ckey2
 		) ? cEntry1 : cEntry2;
 
@@ -239,8 +240,8 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 	/**
 	 * Construct an Instance of KaplanZwickBinaryNode from the Error Rate
 	 * 
-	 * @param <K> Key Type
-	 * @param <V> Value Type
+	 * @param <KEY> Key Type
+	 * @param <ITEM> Item Type
 	 * @param minHeap Min Heap Flag
 	 * @param errorRate Error Rate
 	 * @param k Rank
@@ -251,13 +252,14 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 	 * @return KaplanZwickBinaryNode Instance from the Error Rate
 	 */
 
-	public static <K extends java.lang.Comparable<K>, V> KaplanZwickBinaryNode<K, V> FromErrorRate (
-		final boolean minHeap,
-		final double errorRate,
-		final int k,
-		final KaplanZwickBinaryNode<K, V> left,
-		final KaplanZwickBinaryNode<K, V> right,
-		final KaplanZwickBinaryNode<K, V> parent)
+	public static <KEY extends java.lang.Comparable<KEY>, ITEM> KaplanZwickBinaryNode<KEY, ITEM>
+		FromErrorRate (
+			final boolean minHeap,
+			final double errorRate,
+			final int k,
+			final KaplanZwickBinaryNode<KEY, ITEM> left,
+			final KaplanZwickBinaryNode<KEY, ITEM> right,
+			final KaplanZwickBinaryNode<KEY, ITEM> parent)
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (
 				errorRate
@@ -269,7 +271,7 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 
 		try
 		{
-			KaplanZwickBinaryNode<K, V> node = new KaplanZwickBinaryNode<K, V> (
+			KaplanZwickBinaryNode<KEY, ITEM> node = new KaplanZwickBinaryNode<KEY, ITEM> (
 				minHeap,
 				5 + (int) java.lang.Math.ceil (
 					java.lang.Math.log (
@@ -300,8 +302,8 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 	/**
 	 * Construct a Leaf Root Node of a New Tree with a single Entry
 	 * 
-	 * @param <K> Key Type
-	 * @param <V> Value Type
+	 * @param <KEY> Key Type
+	 * @param <ITEM> Item Type
 	 * @param minHeap Min Heap Flag
 	 * @param r The R Parameter
 	 * @param entry The Entry
@@ -309,14 +311,14 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 	 * @return The Leaf Root of a New Tree with a single KeEntryy
 	 */
 
-	public static <K extends java.lang.Comparable<K>, V> KaplanZwickBinaryNode<K, V> LeafRoot (
+	public static <KEY extends java.lang.Comparable<KEY>, ITEM> KaplanZwickBinaryNode<KEY, ITEM> LeafRoot (
 		final boolean minHeap,
 		final int r,
-		final org.drip.graph.heap.PriorityQueueEntry<K, V> entry)
+		final org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> entry)
 	{
 		try
 		{
-			KaplanZwickBinaryNode<K, V> emptyRoot = new KaplanZwickBinaryNode<K, V> (
+			KaplanZwickBinaryNode<KEY, ITEM> emptyRoot = new KaplanZwickBinaryNode<KEY, ITEM> (
 				minHeap,
 				r,
 				0
@@ -367,7 +369,7 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 
 		_minHeap = minHeap;
 
-		_entryList = new java.util.ArrayList<org.drip.graph.heap.PriorityQueueEntry<K, V>>();
+		_entryList = new java.util.ArrayList<org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM>>();
 	}
 
 	/**
@@ -398,7 +400,7 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 	 * @return The Left Tree
 	 */
 
-	public KaplanZwickBinaryNode<K, V> left()
+	public KaplanZwickBinaryNode<KEY, ITEM> left()
 	{
 		return _left;
 	}
@@ -409,7 +411,7 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 	 * @return The right Tree
 	 */
 
-	public KaplanZwickBinaryNode<K, V> right()
+	public KaplanZwickBinaryNode<KEY, ITEM> right()
 	{
 		return _right;
 	}
@@ -420,7 +422,7 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 	 * @return The Parent Tree
 	 */
 
-	public KaplanZwickBinaryNode<K, V> parent()
+	public KaplanZwickBinaryNode<KEY, ITEM> parent()
 	{
 		return _parent;
 	}
@@ -453,7 +455,7 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 	 * @return The List of Entries
 	 */
 
-	public java.util.List<org.drip.graph.heap.PriorityQueueEntry<K, V>> entryList()
+	public java.util.List<org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM>> entryList()
 	{
 		return _entryList;
 	}
@@ -464,7 +466,7 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 	 * @return The cEntry
 	 */
 
-	public org.drip.graph.heap.PriorityQueueEntry<K, V> cEntry()
+	public org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> cEntry()
 	{
 		return _cEntry;
 	}
@@ -489,7 +491,7 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 	 */
 
 	public boolean setCEntry (
-		final org.drip.graph.heap.PriorityQueueEntry<K, V> cEntry)
+		final org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> cEntry)
 	{
 		if (null == cEntry)
 		{
@@ -509,7 +511,7 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 	 */
 
 	public boolean setParent (
-		final KaplanZwickBinaryNode<K, V> parent)
+		final KaplanZwickBinaryNode<KEY, ITEM> parent)
 	{
 		_parent = parent;
 		return true;
@@ -524,7 +526,7 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 	 */
 
 	public boolean setLeft (
-		final KaplanZwickBinaryNode<K, V> left)
+		final KaplanZwickBinaryNode<KEY, ITEM> left)
 	{
 		_left = left;
 		return true;
@@ -539,7 +541,7 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 	 */
 
 	public boolean setRight (
-		final KaplanZwickBinaryNode<K, V> right)
+		final KaplanZwickBinaryNode<KEY, ITEM> right)
 	{
 		_right = right;
 		return true;
@@ -554,7 +556,7 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 	 */
 
 	public boolean addEntry (
-		final org.drip.graph.heap.PriorityQueueEntry<K, V> entry)
+		final org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> entry)
 	{
 		if (null == entry)
 		{
@@ -594,7 +596,7 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 	 * @return The Top Entry
 	 */
 
-	public org.drip.graph.heap.PriorityQueueEntry<K, V> peekTopEntry()
+	public org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> peekTopEntry()
 	{
 		return _entryList.get (
 			0
@@ -607,9 +609,9 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 	 * @return The Top Entry
 	 */
 
-	public org.drip.graph.heap.PriorityQueueEntry<K, V> removeTopEntry()
+	public org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> removeTopEntry()
 	{
-		org.drip.graph.heap.PriorityQueueEntry<K, V> topEntry = _entryList.remove (
+		org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> topEntry = _entryList.remove (
 			0
 		);
 
@@ -627,7 +629,7 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 		java.util.List<java.lang.Boolean> keyCorruptionStatusList =
 			new java.util.ArrayList<java.lang.Boolean>();
 
-		for (org.drip.graph.heap.PriorityQueueEntry<K, V> entry : _entryList)
+		for (org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> entry : _entryList)
 		{
 			keyCorruptionStatusList.add (
 				0 == _cEntry.key().compareTo (
@@ -685,7 +687,8 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 				}
 			}
 
-			java.util.List<org.drip.graph.heap.PriorityQueueEntry<K, V>> leftEntryList = _left.entryList();
+			java.util.List<org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM>> leftEntryList =
+				_left.entryList();
 
 			int leftElementSize = leftEntryList.size();
 
@@ -724,13 +727,13 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 	 * @return The List of Nodes
 	 */
 
-	public java.util.List<KaplanZwickBinaryNode<K, V>> bfsWalk()
+	public java.util.List<KaplanZwickBinaryNode<KEY, ITEM>> bfsWalk()
 	{
-		java.util.List<KaplanZwickBinaryNode<K, V>> elementList =
-			new java.util.ArrayList<KaplanZwickBinaryNode<K, V>>();
+		java.util.List<KaplanZwickBinaryNode<KEY, ITEM>> elementList =
+			new java.util.ArrayList<KaplanZwickBinaryNode<KEY, ITEM>>();
 
-		java.util.List<KaplanZwickBinaryNode<K, V>> elementQueue =
-			new java.util.ArrayList<KaplanZwickBinaryNode<K, V>>();
+		java.util.List<KaplanZwickBinaryNode<KEY, ITEM>> elementQueue =
+			new java.util.ArrayList<KaplanZwickBinaryNode<KEY, ITEM>>();
 
 		elementQueue.add (
 			this
@@ -738,7 +741,7 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 
 		while (!elementQueue.isEmpty())
 		{
-			KaplanZwickBinaryNode<K, V> node = elementQueue.get (
+			KaplanZwickBinaryNode<KEY, ITEM> node = elementQueue.get (
 				0
 			);
 
@@ -750,7 +753,7 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 				node
 			);
 
-			KaplanZwickBinaryNode<K, V> left = node.left();
+			KaplanZwickBinaryNode<KEY, ITEM> left = node.left();
 
 			if (null != left)
 			{
@@ -759,7 +762,7 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 				);
 			}
 
-			KaplanZwickBinaryNode<K, V> right = node.right();
+			KaplanZwickBinaryNode<KEY, ITEM> right = node.right();
 
 			if (null != right)
 			{
@@ -778,14 +781,14 @@ public class KaplanZwickBinaryNode<K extends java.lang.Comparable<K>, V>
 	 * @return The List of Nodes
 	 */
 
-	public java.util.List<org.drip.graph.heap.PriorityQueueEntry<K, V>> childKeyList()
+	public java.util.List<org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM>> childKeyList()
 	{
-		java.util.List<org.drip.graph.heap.PriorityQueueEntry<K, V>> childKeyList =
-			new java.util.ArrayList<org.drip.graph.heap.PriorityQueueEntry<K, V>>();
+		java.util.List<org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM>> childKeyList =
+			new java.util.ArrayList<org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM>>();
 
-		java.util.List<KaplanZwickBinaryNode<K, V>> bfsWalk = bfsWalk();
+		java.util.List<KaplanZwickBinaryNode<KEY, ITEM>> bfsWalk = bfsWalk();
 
-		for (KaplanZwickBinaryNode<K, V> node : bfsWalk)
+		for (KaplanZwickBinaryNode<KEY, ITEM> node : bfsWalk)
 		{
 			childKeyList.addAll (
 				node.entryList()

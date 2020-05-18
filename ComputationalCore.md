@@ -42,7 +42,9 @@ Computational Core Module contains libraries the implement Algorithm/Computation
  * Priority Queue
  * Binary Heap
  * Binomial Heap
+ * Soft Heap
  * The Soft Heap: An Approximate Priority Queue with Optimal Error Rate
+ * A Simpler Implementation and Analysis of Chazelle’s Soft Heaps
  * Spanning Tree
  * Minimum Spanning Tree
  * Prim's Algorithm
@@ -51,6 +53,8 @@ Computational Core Module contains libraries the implement Algorithm/Computation
  * Reverse-Delete Algorithm
  * Breadth-first Search
  * Depth-first Search
+ * Dijkstra's Algorithm
+ * Bellman-Ford Algorithm
 
 
 ## Model Validation Coverage

@@ -143,9 +143,11 @@ public class BoruvkaGenerator
 	{
 		java.util.Set<java.lang.String> vertexNameSet = _graph.vertexMap().keySet();
 
-		org.drip.graph.mstgreedy.BoruvkaForest forest = new org.drip.graph.mstgreedy.BoruvkaForest();
-
 		boolean maximum = maximum();
+
+		org.drip.graph.mstgreedy.BoruvkaForest forest = new org.drip.graph.mstgreedy.BoruvkaForest (
+			!maximum
+		);
 
 		for (java.lang.String vertexName : vertexNameSet)
 		{

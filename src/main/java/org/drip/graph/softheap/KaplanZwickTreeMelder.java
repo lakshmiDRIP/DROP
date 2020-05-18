@@ -113,10 +113,10 @@ package org.drip.graph.softheap;
  * @author Lakshmi Krishnamurthy
  */
 
-public class KaplanZwickTreeMelder<K extends java.lang.Comparable<K>, V>
+public class KaplanZwickTreeMelder<KEY extends java.lang.Comparable<KEY>, ITEM>
 {
-	private org.drip.graph.softheap.KaplanZwickTree<K, V> _head = null;
-	private org.drip.graph.softheap.KaplanZwickTree<K, V> _tail = null;
+	private org.drip.graph.softheap.KaplanZwickTree<KEY, ITEM> _head = null;
+	private org.drip.graph.softheap.KaplanZwickTree<KEY, ITEM> _tail = null;
 
 	/**
 	 * KaplanZwickTreeMelder Constructor
@@ -127,7 +127,7 @@ public class KaplanZwickTreeMelder<K extends java.lang.Comparable<K>, V>
 	 */
 
 	public KaplanZwickTreeMelder (
-		final org.drip.graph.softheap.KaplanZwickTree<K, V> mergedTreeList)
+		final org.drip.graph.softheap.KaplanZwickTree<KEY, ITEM> mergedTreeList)
 		throws java.lang.Exception
 	{
 		if (null == mergedTreeList)
@@ -146,7 +146,7 @@ public class KaplanZwickTreeMelder<K extends java.lang.Comparable<K>, V>
 	 * @return Head of the Melded Tree
 	 */
 
-	public org.drip.graph.softheap.KaplanZwickTree<K, V> head()
+	public org.drip.graph.softheap.KaplanZwickTree<KEY, ITEM> head()
 	{
 		return _head;
 	}
@@ -157,7 +157,7 @@ public class KaplanZwickTreeMelder<K extends java.lang.Comparable<K>, V>
 	 * @return Tail of the Melded Tree
 	 */
 
-	public org.drip.graph.softheap.KaplanZwickTree<K, V> tail()
+	public org.drip.graph.softheap.KaplanZwickTree<KEY, ITEM> tail()
 	{
 		return _tail;
 	}
@@ -182,7 +182,7 @@ public class KaplanZwickTreeMelder<K extends java.lang.Comparable<K>, V>
 	 */
 
 	public boolean growTail (
-		final org.drip.graph.softheap.KaplanZwickBinaryNode<K, V> rootNode)
+		final org.drip.graph.softheap.KaplanZwickBinaryNode<KEY, ITEM> rootNode)
 	{
 		return _tail.setRoot (
 			org.drip.graph.softheap.KaplanZwickBinaryNode.CombineRootNodePair (
@@ -201,7 +201,7 @@ public class KaplanZwickTreeMelder<K extends java.lang.Comparable<K>, V>
 	 */
 
 	public boolean appendToTail (
-		final org.drip.graph.softheap.KaplanZwickTree<K, V> tail)
+		final org.drip.graph.softheap.KaplanZwickTree<KEY, ITEM> tail)
 	{
 		if (null == tail ||
 			!_tail.setNext (

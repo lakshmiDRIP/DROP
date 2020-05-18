@@ -113,7 +113,7 @@ package org.drip.graph.heap;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class PriorityQueue<K, V>
+public abstract class PriorityQueue<KEY extends java.lang.Comparable<KEY>, ITEM>
 {
 	private boolean _minHeap = false;
 
@@ -141,17 +141,17 @@ public abstract class PriorityQueue<K, V>
 	}
 
 	/**
-	 * Insert the Specified Key into the Heap
+	 * Insert the Specified Key/Item into the Heap
 	 * 
 	 * @param key Key
-	 * @param value Node Value
+	 * @param item Node Item
 	 * 
-	 * @return TRUE - The Key successfully inserted
+	 * @return TRUE - The Key/Item successfully inserted
 	 */
 
 	public abstract boolean insert (
-		final K key,
-		final V value);
+		final KEY key,
+		final ITEM item);
 
 	/**
 	 * Meld the Specified Priority Queue with the Current
@@ -162,7 +162,7 @@ public abstract class PriorityQueue<K, V>
 	 */
 
 	public abstract boolean meld (
-		final org.drip.graph.heap.PriorityQueue<K, V> priorityQueueOther);
+		final org.drip.graph.heap.PriorityQueue<KEY, ITEM> priorityQueueOther);
 
 	/**
 	 * Retrieve the Top from the Heap
@@ -170,7 +170,7 @@ public abstract class PriorityQueue<K, V>
 	 * @return The Top Key in the Heap
 	 */
 
-	public abstract org.drip.graph.heap.PriorityQueueEntry<K, V> extremum();
+	public abstract org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> extremum();
 
 	/**
 	 * Extract the Top from the Heap
@@ -178,7 +178,7 @@ public abstract class PriorityQueue<K, V>
 	 * @return The Top Key in the Heap
 	 */
 
-	public abstract org.drip.graph.heap.PriorityQueueEntry<K, V> extractExtremum();
+	public abstract org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> extractExtremum();
 
 	/**
 	 * Indicate if the Heap is Empty
@@ -189,14 +189,88 @@ public abstract class PriorityQueue<K, V>
 	public abstract boolean isEmpty();
 
 	/**
+	 * Delete the Entry corresponding to the specified Key
+	 * 
+	 * @param key Key
+	 * 
+	 * @return TRUE - The corresponding Entry successfully deleted
+	 */
+
+	public boolean delete (
+		final KEY key)
+	{
+		if (null == key)
+		{
+			return false;
+		}
+
+		boolean minHeap = minHeap();
+
+		int compare = java.lang.Integer.MIN_VALUE;
+
+		java.util.List<org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM>> entryList =
+			new java.util.ArrayList<org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM>>();
+
+		while (!isEmpty())
+		{
+			org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> entry = extractExtremum();
+
+			entryList.add (
+				entry
+			);
+
+			compare = key.compareTo (
+				entry.key()
+			);
+
+			if (minHeap)
+			{
+				if (1 != compare)
+				{
+					break;
+				}
+			}
+			else
+			{
+				if (-1 != compare)
+				{
+					break;
+				}
+			}
+		}
+
+		boolean matchFound = 0 == compare;
+
+		if (matchFound)
+		{
+			entryList.remove (
+				entryList.size() - 1
+			);
+		}
+
+		for (org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> entry : entryList)
+		{
+			if (!insert (
+				entry.key(),
+				entry.item()
+			))
+			{
+				return false;
+			}
+		}
+
+		return matchFound;
+	}
+
+	/**
 	 * Generate the Sorted Key List
 	 * 
 	 * @return The Sorted Key List
 	 */
 
-	public java.util.List<K> keyList()
+	public java.util.List<KEY> sortedKeyList()
 	{
-		java.util.List<K> sortedKeyList = new java.util.ArrayList<K>();
+		java.util.List<KEY> sortedKeyList = new java.util.ArrayList<KEY>();
 
 		while (!isEmpty())
 		{
@@ -214,10 +288,10 @@ public abstract class PriorityQueue<K, V>
 	 * @return The Sorted Entry List
 	 */
 
-	public java.util.List<org.drip.graph.heap.PriorityQueueEntry<K, V>> entryList()
+	public java.util.List<org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM>> sortedEntryList()
 	{
-		java.util.List<org.drip.graph.heap.PriorityQueueEntry<K, V>> sortedEntryList =
-			new java.util.ArrayList<org.drip.graph.heap.PriorityQueueEntry<K, V>>();
+		java.util.List<org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM>> sortedEntryList =
+			new java.util.ArrayList<org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM>>();
 
 		while (!isEmpty())
 		{

@@ -203,17 +203,17 @@ public class Tree
 	}
 
 	/**
-	 * Construct and Retrieve the Tree Adjacency Map from the Graph
+	 * Construct and Retrieve the Edge Priority Queue from the Graph
 	 * 
 	 * @param graph The Graph
-	 * @param descending TRUE - The Edge List is in the Descending Order of Distance
+	 * @param minHeap TRUE - The Edge Priority Queue is in the Descending Order of Distance
 	 * 
 	 * @return The Tree Adjacency Map
 	 */
 
-	public java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> adjacencyMap (
+	public org.drip.graph.heap.PriorityQueue<java.lang.Double, org.drip.graph.core.Edge> edgePriorityQueue (
 		final org.drip.graph.core.DirectedGraph graph,
-		final boolean descending)
+		final boolean minHeap)
 	{
 		if (null == graph)
 		{
@@ -224,8 +224,10 @@ public class Tree
 
 		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> graphVertexMap = graph.vertexMap();
 
-		java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge> treeAdjacencyMap =
-			new java.util.TreeMap<java.lang.Double, org.drip.graph.core.Edge>();
+		org.drip.graph.heap.PriorityQueue<java.lang.Double, org.drip.graph.core.Edge> edgePriorityQueue =
+			new org.drip.graph.heap.BinomialTreePriorityQueue<java.lang.Double, org.drip.graph.core.Edge> (
+				minHeap
+			);
 
 		for (java.lang.String vertexName : _vertexMap.keySet())
 		{
@@ -240,16 +242,12 @@ public class Tree
 				vertexName
 			);
 
-			java.util.List<java.lang.String> adjacencyKeyList = vertex.adjacencyKeyList (
-				descending
-			);
-
-			if (null == adjacencyKeyList || 0 == adjacencyKeyList.size())
+			if (vertex.isLeaf())
 			{
 				continue;
 			}
 
-			for (java.lang.String graphEdgeKey : adjacencyKeyList)
+			for (java.lang.String graphEdgeKey : vertex.edgeMap().keySet())
 			{
 				org.drip.graph.core.Edge graphEdge = graphEdgeMap.get (
 					graphEdgeKey
@@ -268,14 +266,14 @@ public class Tree
 					continue;
 				}
 
-				treeAdjacencyMap.put (
+				edgePriorityQueue.insert (
 					graphEdge.weight(),
 					graphEdge
 				);
 			}
 		}
 
-		return treeAdjacencyMap;
+		return edgePriorityQueue;
 	}
 
 	/**

@@ -1,6 +1,13 @@
 
-package org.drip.sample.softheap;
+package org.drip.sample.shortestpath;
 
+import java.util.List;
+
+import org.drip.graph.core.DirectedGraph;
+import org.drip.graph.core.Edge;
+import org.drip.graph.core.Path;
+import org.drip.graph.shortestpath.DijkstraGenerator;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -77,30 +84,30 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>SoftHeapNavigator</i> demonstrates the Creation and Usage of a Soft Heap. The References are:
+ * <i>DijkstraSingleSource</i> illustrates the Shortest Path Generation for a Directed Graph using the
+ * 	Dijkstra Algorithm across all Destinations for the given Source. The References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Blum, M., R. W. Floyd, V. Pratt, R. L. Rivest, and R. E. Tarjan (1973): Time Bounds for Selection
- *  			<i> Journal of Computer and System Sciences</i> <b>7 (4)</b> 448-461
+ *  		Dijkstra, E. W. (1959): A Note on Two Problems in Connection with Graphs <i>Numerische
+ *  			Mathematik</i> <b>1</b> 269-271
  *  	</li>
  *  	<li>
- *  		Chazelle, B. (2000): The Soft Heap: An Approximate Priority Queue with Optimal Error Rate
- *  			<i>Journal of the Association for Computing Machinery</i> <b>47 (6)</b> 1012-1027
+ *  		Felner, A. (2011): Position Paper: Dijkstra’s Algorithm versus Uniform Cost Search or a Case
+ *  			against Dijkstra’s Algorithm <i>Proceedings of the 4<sup>th</sup> International Symposium on
+ *  			Combinatorial Search</i> 47-51
  *  	</li>
  *  	<li>
- *  		Chazelle, B. (2000): A Minimum Spanning Tree Algorithm with Inverse-Ackerman Type Complexity
- *  			<i>Journal of the Association for Computing Machinery</i> <b>47 (6)</b> 1028-1047
+ *  		Mehlhorn, K. W., and P. Sanders (2008): <i>Algorithms and Data Structures: The Basic Toolbox</i>
+ *  			<b>Springer</b>
  *  	</li>
  *  	<li>
- *  		Fredman, M. L., and R. E. Tarjan (1987): Fibonacci Heaps and their Uses in Improved Network
- *  			Optimization Algorithms <i>Journal of the Association for Computing Machinery</i> <b>34
- *  			(3)</b> 596-615
+ *  		Russell, S., and P. Norvig (2009): <i>Artificial Intelligence: A Modern Approach 3<sup>rd</sup>
+ *  			Edition</i> <b>Prentice Hall</b>
  *  	</li>
  *  	<li>
- *  		Vuillemin, J. (2000): A Data Structure for Manipulating Priority Queues <i>Communications of the
- *  			ACM</i> <b>21 (4)</b> 309-315
+ *  		Wikipedia (2019): Dijkstra's Algorithm https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
  *  	</li>
  *  </ul>
  *
@@ -109,14 +116,14 @@ import org.drip.service.env.EnvManager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/softheap/README.md">Soft Heap Based Priority Queues</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/shortestpath/README.md">Source Destination Shortest Path Algorithms</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SoftHeapNavigator
+public class DijkstraSingleSource
 {
 
 	public static final void main (
@@ -127,35 +134,145 @@ public class SoftHeapNavigator
 			""
 		);
 
-		/* double r = 600;
-		int keyCount = 100;
-		double headerRank = 0;
+		String[] vertexArray = new String[]
+		{
+			"Delhi     ",
+			"Bombay    ",
+			"Madras    ",
+			"Calcutta  ",
+			"Bangalore ",
+			"Hyderabad ",
+			"Cochin    ",
+			"Pune      ",
+			"Ahmedabad ",
+			"Jaipur    "
+		};
 
-		ChazellePriorityQueue softHeap = ChazellePriorityQueue.Create (
-			headerRank,
-			r
+		DirectedGraph graph = new DirectedGraph();
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[0], // Delhi
+				vertexArray[1], // Bombay
+				1388.
+			)
 		);
 
-		for (int keyIndex = 1;
-			keyIndex <= keyCount;
-			++keyIndex)
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[0], // Delhi
+				vertexArray[2], // Madras
+				2191.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[1], // Bombay
+				vertexArray[2], // Madras
+				1279.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[0], // Delhi
+				vertexArray[3], // Calcutta
+				1341.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[1], // Bombay
+				vertexArray[3], // Calcutta
+				1968.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[2], // Madras
+				vertexArray[3], // Calcutta
+				1663.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[2], // Madras
+				vertexArray[4], // Bangalore
+				361.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[2], // Madras
+				vertexArray[5], // Hyderabad
+				784.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[2], // Madras
+				vertexArray[6], // Cochin
+				697.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[1], // Bombay
+				vertexArray[7], // Pune
+				192.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[1], // Bombay
+				vertexArray[8], // Ahmedabad
+				492.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[0], // Delhi
+				vertexArray[9], // Jaipur
+				308.
+			)
+		);
+
+		System.out.println (
+			"\t|-----------------------------------------------------------------------------------------------------"
+		);
+
+		DijkstraGenerator dijkstraGenerator = new DijkstraGenerator (
+			graph
+		);
+
+		for (String sourceVertexName : vertexArray)
 		{
-			softHeap.insert (
-				keyIndex
+			List<Path> pathArray = dijkstraGenerator.singleSource (
+				sourceVertexName
+			);
+
+			for (Path path : pathArray)
+			{
+				System.out.println (
+					"\t| {" + path.sourceVertexName() + " -> " + path.destinationVertexName() + "} => " + 
+					path.vertexList() + " | " +
+					FormatUtil.FormatDouble (path.totalLength(), 4, 0, 1.)
+				);
+			}
+
+			System.out.println (
+				"\t|-----------------------------------------------------------------------------------------------------"
 			);
 		}
-
-		System.out.println (softHeap.deleteMin());
-
-		System.out.println (softHeap.deleteMin());
-
-		System.out.println (softHeap.deleteMin());
-
-		System.out.println (softHeap.deleteMin());
-
-		System.out.println (softHeap.deleteMin());
-
-		System.out.println (softHeap.deleteMin()); */
 
 		EnvManager.TerminateEnv();
 	}

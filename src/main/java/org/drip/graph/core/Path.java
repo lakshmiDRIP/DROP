@@ -1,5 +1,5 @@
 
-package org.drip.graph.store;
+package org.drip.graph.core;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,31 +75,30 @@ package org.drip.graph.store;
  */
 
 /**
- * <i>PriorityHeap</i> exposes Data Structures from a Totally Ordered Universe, and supports Insertion,
- * 	Ordered Retrieval, Melding, and Deleting of Items from the Heap. The References are:
+ * <i>Path</i> contains a contiguous Series of Edges representing a Path from a Source to a Destination. The
+ * 	References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Blum, M., R. W. Floyd, V. Pratt, R. L. Rivest, and R. E. Tarjan (1973): Time Bounds for Selection
- *  			<i> Journal of Computer and System Sciences</i> <b>7 (4)</b> 448-461
+ *  		Dijkstra, E. W. (1959): A Note on Two Problems in Connection with Graphs <i>Numerische
+ *  			Mathematik</i> <b>1</b> 269-271
  *  	</li>
  *  	<li>
- *  		Chazelle, B. (2000): The Soft Heap: An Approximate Priority Queue with Optimal Error Rate
- *  			<i>Journal of the Association for Computing Machinery</i> <b>47 (6)</b> 1012-1027
+ *  		Felner, A. (2011): Position Paper: Dijkstra’s Algorithm versus Uniform Cost Search or a Case
+ *  			against Dijkstra’s Algorithm <i>Proceedings of the 4<sup>th</sup> International Symposium on
+ *  			Combinatorial Search</i> 47-51
  *  	</li>
  *  	<li>
- *  		Chazelle, B. (2000): A Minimum Spanning Tree Algorithm with Inverse-Ackerman Type Complexity
- *  			<i>Journal of the Association for Computing Machinery</i> <b>47 (6)</b> 1028-1047
+ *  		Mehlhorn, K. W., and P. Sanders (2008): <i>Algorithms and Data Structures: The Basic Toolbox</i>
+ *  			<b>Springer</b>
  *  	</li>
  *  	<li>
- *  		Fredman, M. L., and R. E. Tarjan (1987): Fibonacci Heaps and their Uses in Improved Network
- *  			Optimization Algorithms <i>Journal of the Association for Computing Machinery</i> <b>34
- *  			(3)</b> 596-615
+ *  		Russell, S., and P. Norvig (2009): <i>Artificial Intelligence: A Modern Approach 3<sup>rd</sup>
+ *  			Edition</i> <b>Prentice Hall</b>
  *  	</li>
  *  	<li>
- *  		Vuillemin, J. (2000): A Data Structure for Manipulating Priority Queues <i>Communications of the
- *  			ACM</i> <b>21 (4)</b> 309-315
+ *  		Wikipedia (2019): Dijkstra's Algorithm https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
  *  	</li>
  *  </ul>
  *
@@ -108,78 +107,145 @@ package org.drip.graph.store;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/store/README.md">Graph Navigation Storage Data Structures</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/shortestpath/README.md">Shortest Path Generation Algorithm Family</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface PriorityHeap<V, I>
+public class Path
 {
+	private java.lang.String _sourceVertexName = "";
+	private java.lang.String _destinationVertexName = "";
+	private java.util.List<org.drip.graph.core.Edge> _edgeList = null;
 
 	/**
-	 * Insert an Item of the Type V
+	 * Path Constructor
 	 * 
-	 * @param v Item of the Type V
+	 * @param edgeList Contiguous List of Edges
 	 * 
-	 * @return The Identifier Key for the Item successfully Inserted
+	 * @throws java.lang.Exception Thrown if the Input is not Valid
 	 */
 
-	public abstract I insert (
-		final V v);
+	public Path (
+		final java.util.List<org.drip.graph.core.Edge> edgeList)
+		throws java.lang.Exception
+	{
+		if (null == (_edgeList = edgeList))
+		{
+			throw new java.lang.Exception (
+				"Path Constructor => Invalid Inputs"
+			);
+		}
+
+		org.drip.graph.core.Edge previousEdge = null;
+
+		for (org.drip.graph.core.Edge edge : edgeList)
+		{
+			if (null == edge)
+			{
+				throw new java.lang.Exception (
+					"Path Constructor => Invalid Inputs"
+				);
+			}
+
+			java.lang.String edgeSourceVertexName = edge.sourceVertexName();
+
+			if (null != previousEdge &&
+				!previousEdge.destinationVertexName().equalsIgnoreCase (
+					edgeSourceVertexName
+				)
+			)
+			{
+				throw new java.lang.Exception (
+					"Path Constructor => Invalid Inputs"
+				);
+			}
+
+			if (_sourceVertexName.isEmpty())
+			{
+				_sourceVertexName = edgeSourceVertexName;
+			}
+
+			_destinationVertexName = edge.destinationVertexName();
+
+			previousEdge = edge;
+		}
+	}
 
 	/**
-	 * Meld the Specified Priority Heap into the Current One
+	 * Retrieve the Source Vertex Name
 	 * 
-	 * @param priorityHeapOther The Specified Priority Heap
-	 * 
-	 * @return TRUE - The Specified Priority Heap successfully melded
+	 * @return The Source Vertex Name
 	 */
 
-	public abstract boolean meld (
-		final PriorityHeap<V, I> priorityHeapOther);
+	public java.lang.String sourceVertexName()
+	{
+		return _sourceVertexName;
+	}
 
 	/**
-	 * Delete an Item corresponding to the Identifier i
+	 * Retrieve the Destination Vertex Name
 	 * 
-	 * @param i Identifier
-	 * 
-	 * @return The Item corresponding to the Identifier i
+	 * @return The Destination Vertex Name
 	 */
 
-	public abstract V delete (
-		final I i);
+	public java.lang.String destinationVertexName()
+	{
+		return _destinationVertexName;
+	}
 
 	/**
-	 * Find the Minimum Item
+	 * Retrieve the Contiguous List of Edges
 	 * 
-	 * @return The Minimum Item
+	 * @return The Contiguous List of Edges
 	 */
 
-	public abstract V findMinimum();
+	public java.util.List<org.drip.graph.core.Edge> edgeList()
+	{
+		return _edgeList;
+	}
 
 	/**
-	 * Find the Minimum Item and Remove it from the Heap
+	 * Generate the List of Path Vertex Names
 	 * 
-	 * @return The Minimum Item
+	 * @return List of Path Vertex Names
 	 */
 
-	public abstract V deleteMinimum();
+	public java.util.List<java.lang.String> vertexList()
+	{
+		java.util.List<java.lang.String> vertexList = new java.util.ArrayList<java.lang.String>();
+
+		vertexList.add (
+			_sourceVertexName
+		);
+
+		for (org.drip.graph.core.Edge edge : _edgeList)
+		{
+			vertexList.add (
+				edge.destinationVertexName()
+			);
+		}
+
+		return vertexList;
+	}
 
 	/**
-	 * Find the Maximum Item
+	 * Retrieve the Total Length of the Path
 	 * 
-	 * @return The Maximum Item
+	 * @return Total Length of the Path
 	 */
 
-	public abstract V findMaximum();
+	public double totalLength()
+	{
+		double totalLength = 0.;
 
-	/**
-	 * Find the Maximum Item and Remove it from the Heap
-	 * 
-	 * @return The Maximum Item
-	 */
+		for (org.drip.graph.core.Edge edge : _edgeList)
+		{
+			totalLength = totalLength + edge.weight();
+		}
 
-	public abstract V deleteMaximum();
+		return totalLength;
+	}
 }

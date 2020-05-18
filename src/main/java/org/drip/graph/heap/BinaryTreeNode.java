@@ -112,14 +112,14 @@ package org.drip.graph.heap;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BinaryTreeNode<K extends java.lang.Comparable<K>, V>
+public class BinaryTreeNode<KEY extends java.lang.Comparable<KEY>, ITEM>
 {
 	private int _level = 0;
 	private boolean _isRightChild = false;
-	private BinaryTreeNode<K, V> _left = null;
-	private BinaryTreeNode<K, V> _right = null;
-	private BinaryTreeNode<K, V> _parent = null;
-	private org.drip.graph.heap.PriorityQueueEntry<K, V> _entry = null;
+	private BinaryTreeNode<KEY, ITEM> _left = null;
+	private BinaryTreeNode<KEY, ITEM> _right = null;
+	private BinaryTreeNode<KEY, ITEM> _parent = null;
+	private org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> _entry = null;
 
 	/**
 	 * BinaryTreeNode Constructor
@@ -130,7 +130,7 @@ public class BinaryTreeNode<K extends java.lang.Comparable<K>, V>
 	 */
 
 	public BinaryTreeNode (
-		final org.drip.graph.heap.PriorityQueueEntry<K, V> entry)
+		final org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> entry)
 		throws java.lang.Exception
 	{
 		if (null == (_entry = entry))
@@ -158,7 +158,7 @@ public class BinaryTreeNode<K extends java.lang.Comparable<K>, V>
 	 * @return The Parent
 	 */
 
-	public BinaryTreeNode<K, V> parent()
+	public BinaryTreeNode<KEY, ITEM> parent()
 	{
 		return _parent;
 	}
@@ -169,7 +169,7 @@ public class BinaryTreeNode<K extends java.lang.Comparable<K>, V>
 	 * @return The Left Child
 	 */
 
-	public BinaryTreeNode<K, V> left()
+	public BinaryTreeNode<KEY, ITEM> left()
 	{
 		return _left;
 	}
@@ -180,7 +180,7 @@ public class BinaryTreeNode<K extends java.lang.Comparable<K>, V>
 	 * @return The Right Child
 	 */
 
-	public BinaryTreeNode<K, V> right()
+	public BinaryTreeNode<KEY, ITEM> right()
 	{
 		return _right;
 	}
@@ -191,7 +191,7 @@ public class BinaryTreeNode<K extends java.lang.Comparable<K>, V>
 	 * @return The Entry
 	 */
 
-	public org.drip.graph.heap.PriorityQueueEntry<K, V> entry()
+	public org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> entry()
 	{
 		return _entry;
 	}
@@ -216,7 +216,7 @@ public class BinaryTreeNode<K extends java.lang.Comparable<K>, V>
 	 */
 
 	public boolean setKey (
-		final K key)
+		final KEY key)
 	{
 		return _entry.setKey (
 			key
@@ -252,7 +252,7 @@ public class BinaryTreeNode<K extends java.lang.Comparable<K>, V>
 	 */
 
 	public boolean setParent (
-		final BinaryTreeNode<K, V> parent)
+		final BinaryTreeNode<KEY, ITEM> parent)
 	{
 		_parent = parent;
 		return true;
@@ -267,7 +267,7 @@ public class BinaryTreeNode<K extends java.lang.Comparable<K>, V>
 	 */
 
 	public boolean setLeft (
-		final BinaryTreeNode<K, V> left)
+		final BinaryTreeNode<KEY, ITEM> left)
 	{
 		_left = left;
 		return true;
@@ -282,7 +282,7 @@ public class BinaryTreeNode<K extends java.lang.Comparable<K>, V>
 	 */
 
 	public boolean setRight (
-		final BinaryTreeNode<K, V> right)
+		final BinaryTreeNode<KEY, ITEM> right)
 	{
 		_right = right;
 		return true;
@@ -331,7 +331,7 @@ public class BinaryTreeNode<K extends java.lang.Comparable<K>, V>
 	 * @return The Child Node with the Smaller Value
 	 */
 
-	public BinaryTreeNode<K, V> smallerChild()
+	public BinaryTreeNode<KEY, ITEM> smallerChild()
 	{
 		if (null == _left && null == _right)
 		{
@@ -354,12 +354,12 @@ public class BinaryTreeNode<K extends java.lang.Comparable<K>, V>
 	}
 
 	/**
-	 * Retrieve the Child Node with the Larger Value
+	 * Retrieve the Child Node with the Larger Key
 	 * 
-	 * @return The Child Node with the Larger Value
+	 * @return The Child Node with the Larger Key
 	 */
 
-	public BinaryTreeNode<K, V> largerChild()
+	public BinaryTreeNode<KEY, ITEM> largerChild()
 	{
 		if (null == _left && null == _right)
 		{

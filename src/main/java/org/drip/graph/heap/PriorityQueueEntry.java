@@ -113,23 +113,23 @@ package org.drip.graph.heap;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PriorityQueueEntry<K, V>
+public class PriorityQueueEntry<KEY, ITEM>
 {
-	private K _key = null;
-	private V _value = null;
+	private KEY _key = null;
+	private ITEM _item = null;
 
 	/**
 	 * PriorityQueueEntry Constructor
 	 * 
 	 * @param key Key
-	 * @param value Value
+	 * @param item Item
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PriorityQueueEntry (
-		final K key,
-		final V value)
+		final KEY key,
+		final ITEM item)
 		throws java.lang.Exception
 	{
 		if (null == (_key = key))
@@ -139,7 +139,7 @@ public class PriorityQueueEntry<K, V>
 			);
 		}
 
-		_value = value;
+		_item = item;
 	}
 
 	/**
@@ -148,20 +148,20 @@ public class PriorityQueueEntry<K, V>
 	 * @return The Key
 	 */
 
-	public K key()
+	public KEY key()
 	{
 		return _key;
 	}
 
 	/**
-	 * Retrieve the Value
+	 * Retrieve the Item
 	 * 
-	 * @return The Value
+	 * @return The Item
 	 */
 
-	public V value()
+	public ITEM item()
 	{
-		return _value;
+		return _item;
 	}
 
 	/**
@@ -173,7 +173,7 @@ public class PriorityQueueEntry<K, V>
 	 */
 
 	public boolean setKey (
-		final K key)
+		final KEY key)
 	{
 		if (null == key)
 		{
@@ -185,27 +185,27 @@ public class PriorityQueueEntry<K, V>
 	}
 
 	/**
-	 * Set the Value
+	 * Set the Item
 	 * 
-	 * @param value The Value
+	 * @param item The Item
 	 * 
 	 * @return TRUE - The Value successfully set
 	 */
 
-	public boolean setValue (
-		final V value)
+	public boolean setItem (
+		final ITEM item)
 	{
-		_value = value;
+		_item = item;
 		return true;
 	}
 
-	@Override public PriorityQueueEntry<K, V> clone()
+	@Override public PriorityQueueEntry<KEY, ITEM> clone()
 	{
 		try
 		{
-			return new PriorityQueueEntry<K, V> (
+			return new PriorityQueueEntry<KEY, ITEM> (
 				_key,
-				_value
+				_item
 			);
 		}
 		catch (java.lang.Exception e)

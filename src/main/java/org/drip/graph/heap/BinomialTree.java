@@ -112,15 +112,15 @@ package org.drip.graph.heap;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BinomialTree<K extends java.lang.Comparable<K>, V>
+public class BinomialTree<KEY extends java.lang.Comparable<KEY>, ITEM>
 {
-	private BinomialTree<K, V> _parent = null;
-	private java.util.List<BinomialTree<K, V>> _children = null;
-	private org.drip.graph.heap.PriorityQueueEntry<K, V> _entry = null;
+	private BinomialTree<KEY, ITEM> _parent = null;
+	private java.util.List<BinomialTree<KEY, ITEM>> _children = null;
+	private org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> _entry = null;
 
-	private static <K extends java.lang.Comparable<K>, V> boolean ChildKeyList (
-		final BinomialTree<K, V> tree,
-		final java.util.List<K> childKeyList)
+	private static <KEY extends java.lang.Comparable<KEY>, ITEM> boolean ChildKeyList (
+		final BinomialTree<KEY, ITEM> tree,
+		final java.util.List<KEY> childKeyList)
 	{
 		if (null == childKeyList)
 		{
@@ -132,14 +132,14 @@ public class BinomialTree<K extends java.lang.Comparable<K>, V>
 			return true;
 		}
 
-		java.util.List<BinomialTree<K, V>> children = tree.children();
+		java.util.List<BinomialTree<KEY, ITEM>> children = tree.children();
 
 		if (null == children)
 		{
 			return true;
 		}
 
-		for (BinomialTree<K, V> child : children)
+		for (BinomialTree<KEY, ITEM> child : children)
 		{
 			if (null != child)
 			{
@@ -160,8 +160,8 @@ public class BinomialTree<K extends java.lang.Comparable<K>, V>
 	/**
 	 * Combine the specified Pair of Binomial Trees into one of the Higher Order
 	 * 
-	 * @param <K> Key Type
-	 * @param <V> Value Type
+	 * @param <KEY> Key Type
+	 * @param <ITEM> Item Type
 	 * @param binomialTree1 Binomial Tree #1
 	 * @param binomialTree2 Binomial Tree #2
 	 * @param minHeap TRUE - Meld into a Minimum Binomial Heap
@@ -169,9 +169,9 @@ public class BinomialTree<K extends java.lang.Comparable<K>, V>
 	 * @return The Binomial Tree of Higher Order
 	 */
 
-	public static <K extends java.lang.Comparable<K>, V> BinomialTree<K, V> CombinePair (
-		final BinomialTree<K, V> binomialTree1,
-		final BinomialTree<K, V> binomialTree2,
+	public static <KEY extends java.lang.Comparable<KEY>, ITEM> BinomialTree<KEY, ITEM> CombinePair (
+		final BinomialTree<KEY, ITEM> binomialTree1,
+		final BinomialTree<KEY, ITEM> binomialTree2,
 		final boolean minHeap)
 	{
 		if (null == binomialTree1 || null == binomialTree2)
@@ -186,13 +186,13 @@ public class BinomialTree<K extends java.lang.Comparable<K>, V>
 			return null;
 		}
 
-		BinomialTree<K, V> upTree = null;
-		BinomialTree<K, V> downTree = null;
-		BinomialTree<K, V> combinedTree = null;
+		BinomialTree<KEY, ITEM> upTree = null;
+		BinomialTree<KEY, ITEM> downTree = null;
+		BinomialTree<KEY, ITEM> combinedTree = null;
 
-		K key1 = binomialTree1.entry().key();
+		KEY key1 = binomialTree1.entry().key();
 
-		K key2 = binomialTree2.entry().key();
+		KEY key2 = binomialTree2.entry().key();
 
 		if (minHeap)
 		{
@@ -225,9 +225,10 @@ public class BinomialTree<K extends java.lang.Comparable<K>, V>
 			}
 		}
 
-		java.util.List<BinomialTree<K, V>> meldedChildren = new java.util.ArrayList<BinomialTree<K, V>>();
+		java.util.List<BinomialTree<KEY, ITEM>> meldedChildren =
+			new java.util.ArrayList<BinomialTree<KEY, ITEM>>();
 
-		java.util.List<BinomialTree<K, V>> upChildren = upTree.children();
+		java.util.List<BinomialTree<KEY, ITEM>> upChildren = upTree.children();
 
 		if (null != upChildren)
 		{
@@ -251,10 +252,10 @@ public class BinomialTree<K extends java.lang.Comparable<K>, V>
 
 		try
 		{
-			combinedTree = new BinomialTree<K, V> (
-				new org.drip.graph.heap.PriorityQueueEntry<K, V> (
+			combinedTree = new BinomialTree<KEY, ITEM> (
+				new org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> (
 					upTree.entry().key(),
-					upTree.entry().value()
+					upTree.entry().item()
 				)
 			);
 		}
@@ -281,7 +282,7 @@ public class BinomialTree<K extends java.lang.Comparable<K>, V>
 	 */
 
 	public BinomialTree (
-		final org.drip.graph.heap.PriorityQueueEntry<K, V> entry)
+		final org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> entry)
 		throws java.lang.Exception
 	{
 		if (null == (_entry = entry))
@@ -298,7 +299,7 @@ public class BinomialTree<K extends java.lang.Comparable<K>, V>
 	 * @return Entry of the Binomial Tree Node
 	 */
 
-	public org.drip.graph.heap.PriorityQueueEntry<K, V> entry()
+	public org.drip.graph.heap.PriorityQueueEntry<KEY, ITEM> entry()
 	{
 		return _entry;
 	}
@@ -309,7 +310,7 @@ public class BinomialTree<K extends java.lang.Comparable<K>, V>
 	 * @return Parent of the Binomial Tree
 	 */
 
-	public BinomialTree<K, V> parent()
+	public BinomialTree<KEY, ITEM> parent()
 	{
 		return _parent;
 	}
@@ -320,7 +321,7 @@ public class BinomialTree<K extends java.lang.Comparable<K>, V>
 	 * @return List of the Children
 	 */
 
-	public java.util.List<BinomialTree<K, V>> children()
+	public java.util.List<BinomialTree<KEY, ITEM>> children()
 	{
 		return _children;
 	}
@@ -345,7 +346,7 @@ public class BinomialTree<K extends java.lang.Comparable<K>, V>
 	 */
 
 	public boolean setParent (
-		final BinomialTree<K, V> parent)
+		final BinomialTree<KEY, ITEM> parent)
 	{
 		_parent = parent;
 		return true;
@@ -360,7 +361,7 @@ public class BinomialTree<K extends java.lang.Comparable<K>, V>
 	 */
 
 	public boolean setChildren (
-		final java.util.List<BinomialTree<K, V>> children)
+		final java.util.List<BinomialTree<KEY, ITEM>> children)
 	{
 		if (null == children)
 		{
@@ -378,7 +379,7 @@ public class BinomialTree<K extends java.lang.Comparable<K>, V>
 			childIndex < childrenCount;
 			++childIndex)
 		{
-			BinomialTree<K, V> child = children.get (
+			BinomialTree<KEY, ITEM> child = children.get (
 				0
 			);
 
@@ -398,9 +399,9 @@ public class BinomialTree<K extends java.lang.Comparable<K>, V>
 	 * @return The List of all the Child Keys
 	 */
 
-	public java.util.List<K> childKeyList()
+	public java.util.List<KEY> childKeyList()
 	{
-		java.util.List<K> childKeyList = new java.util.ArrayList<K>();
+		java.util.List<KEY> childKeyList = new java.util.ArrayList<KEY>();
 
 		return ChildKeyList (
 			this,
