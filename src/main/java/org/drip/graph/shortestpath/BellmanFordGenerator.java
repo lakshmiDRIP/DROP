@@ -135,7 +135,6 @@ public class BellmanFordGenerator
 		{
 			vertexAugmentor = new org.drip.graph.shortestpath.VertexAugmentor (
 				sourceVertexName,
-				vertexNameSet,
 				shortestPath
 			);
 		}
@@ -146,6 +145,12 @@ public class BellmanFordGenerator
 			return null;
 		}
 
+		if (!vertexAugmentor.initializeVertexNameSet (
+			vertexNameSet
+		))
+		{
+			return null;
+		}
 		int vertexCount = vertexNameSet.size();
 
 		java.util.Map<java.lang.String, org.drip.graph.core.Edge> edgeMap = graph.edgeMap();

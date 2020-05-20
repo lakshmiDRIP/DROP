@@ -133,7 +133,6 @@ public class VertexAugmentor
 	 * VertexAugmentor Constructor
 	 * 
 	 * @param sourceVertexName The Source vertex Name
-	 * @param vertexNameSet The Vertex Name Set
 	 * @param shortestTest TRUE - Shortest Path Sought
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -141,12 +140,10 @@ public class VertexAugmentor
 
 	public VertexAugmentor (
 		final java.lang.String sourceVertexName,
-		final java.util.Set<java.lang.String> vertexNameSet,
 		final boolean shortestPath)
 		throws java.lang.Exception
 	{
-		if (null == (_sourceVertexName = sourceVertexName) || _sourceVertexName.isEmpty() ||
-			null == vertexNameSet || 0 == vertexNameSet.size())
+		if (null == (_sourceVertexName = sourceVertexName) || _sourceVertexName.isEmpty())
 		{
 			throw new java.lang.Exception (
 				"VertexAugmentor Constructor => Invalid Input"
@@ -176,8 +173,26 @@ public class VertexAugmentor
 			sourceAugmentedVertex
 		);
 
-		double initialWeight = (_shortestPath = shortestPath) ? java.lang.Double.MAX_VALUE :
-			java.lang.Double.MIN_VALUE;
+		_shortestPath = shortestPath;
+	}
+
+	/**
+	 * Initialize the Set of Vertexes
+	 * 
+	 * @param vertexNameSet The Vertex Name Set
+	 * 
+	 * @return TRUE - The Set of Vertexes successfully initialized
+	 */
+
+	public boolean initializeVertexNameSet (
+		final java.util.Set<java.lang.String> vertexNameSet)
+	{
+		if (null == vertexNameSet || 0 == vertexNameSet.size())
+		{
+			return false;
+		}
+
+		double initialWeight = _shortestPath ? java.lang.Double.MAX_VALUE : java.lang.Double.MIN_VALUE;
 
 		for (java.lang.String vertexName : vertexNameSet)
 		{
@@ -195,9 +210,7 @@ public class VertexAugmentor
 					)
 				)
 				{
-					throw new java.lang.Exception (
-						"VertexAugmentor Constructor => Cannot set Initial Augmented Vertex"
-					);
+					return false;
 				}
 
 				_augmentedVertexMap.put (
@@ -206,6 +219,8 @@ public class VertexAugmentor
 				);
 			}
 		}
+
+		return true;
 	}
 
 	/**
@@ -259,31 +274,26 @@ public class VertexAugmentor
 
 		java.lang.String precedingAugmentedVertexName = precedingEdge.sourceVertexName();
 
-		java.lang.String augmentedVertexName = precedingEdge.destinationVertexName();
-
 		if (!_augmentedVertexMap.containsKey (
-				precedingAugmentedVertexName
-			) || !_augmentedVertexMap.containsKey (
-				augmentedVertexName
-			)
-		)
+			precedingAugmentedVertexName
+		))
 		{
 			return false;
 		}
+
+		java.lang.String augmentedVertexName = precedingEdge.destinationVertexName();
 
 		double distanceThroughPrecedingVertex = _augmentedVertexMap.get (
 			precedingAugmentedVertexName
 		).weight() + precedingEdge.weight();
 
-		org.drip.graph.shortestpath.AugmentedVertex augmentedVertex = _augmentedVertexMap.get (
+		if (!_augmentedVertexMap.containsKey (
 			augmentedVertexName
-		);
-
-		if (compareIntermediatePath (
-			distanceThroughPrecedingVertex,
-			augmentedVertex.weight()
 		))
 		{
+			org.drip.graph.shortestpath.AugmentedVertex augmentedVertex =
+				new org.drip.graph.shortestpath.AugmentedVertex();
+
 			if (!augmentedVertex.setPrecedingEdge (
 					precedingEdge
 				) || !augmentedVertex.setWeight (
@@ -292,6 +302,33 @@ public class VertexAugmentor
 			)
 			{
 				return false;
+			}
+
+			_augmentedVertexMap.put (
+				augmentedVertexName,
+				augmentedVertex
+			);
+		}
+		else
+		{
+			org.drip.graph.shortestpath.AugmentedVertex augmentedVertex = _augmentedVertexMap.get (
+				augmentedVertexName
+			);
+
+			if (compareIntermediatePath (
+				distanceThroughPrecedingVertex,
+				augmentedVertex.weight()
+			))
+			{
+				if (!augmentedVertex.setPrecedingEdge (
+						precedingEdge
+					) || !augmentedVertex.setWeight (
+						distanceThroughPrecedingVertex
+					)
+				)
+				{
+					return false;
+				}
 			}
 		}
 

@@ -1,5 +1,5 @@
 
-package org.drip.spaces.graph;
+package org.drip.graph.shortestpath;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -7,8 +7,6 @@ package org.drip.spaces.graph;
 
 /*!
  * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -77,27 +75,27 @@ package org.drip.spaces.graph;
  */
 
 /**
- * <i>Vertex</i> implements a Single Vertex Node and the corresponding Egresses emanating from it. The
- * 	References are:
- *
+ * <i>YenVertexScanOptimizer</i> optimizes the Shortest Path Generation for a Directed Graph under the
+ * 	Bellman-Ford Algorithm. This happens by eliminating unnecessary Vertex Scans. The References are:
+ * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Wikipedia (2018a): Graph (Abstract Data Type)
- *  			https://en.wikipedia.org/wiki/Graph_(abstract_data_type)
+ *  		Bang-Jensen, J., and G. Gutin (2008): <i>Digraphs: Theory, Algorithms, and Applications
+ *  			2<sup>nd</sup> Edition</i> <b>Springer</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018b): Graph Theory https://en.wikipedia.org/wiki/Graph_theory
+ *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms</i>
+ *  			3<sup>rd</sup> Edition <b>MIT Press</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018c): Graph (Discrete Mathematics)
- *  			https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)
+ *  		Kleinberg, J., and E. Tardos (2022): <i>Algorithm Design 2<sup>nd</sup> Edition</i> <b>Pearson</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018d): Dijkstra's Algorithm https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+ *  		Sedgewick, R. and K. Wayne (2011): <i>Algorithms 4<sup>th</sup> Edition</i> <b>Addison Wesley</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018e): Bellman-Ford Algorithm
+ *  		Wikipedia (2020): Bellman-Ford Algorithm
  *  			https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
  *  	</li>
  *  </ul>
@@ -105,92 +103,80 @@ package org.drip.spaces.graph;
  * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/graph/README.md">Graph Representation and Traversal Algorithms</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/shortestpath/README.md">Shortest Path Generation Algorithm Family</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Vertex
+public class YenVertexScanOptimizer
 {
-	private java.lang.String _name = "";
-
-	private java.util.Map<java.lang.String, java.lang.Double> _egressMap =
-		new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+	private java.util.Map<java.lang.String, java.lang.Boolean> _vertexScanMap = null;
+	private java.util.Map<java.lang.String, java.lang.Double> _vertexDistanceMap = null;
 
 	/**
-	 * Vertex Constructor
+	 * YenVertexScanOptimizer Constructor
 	 * 
-	 * @param name The Name of the Vertex Node
+	 * @param augmentedVertexMap The Augmented Vertex Map
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if the Input is Invalid
 	 */
 
-	public Vertex (
-		final java.lang.String name)
+	public YenVertexScanOptimizer (
+		final java.util.Map<java.lang.String, org.drip.graph.shortestpath.AugmentedVertex>
+			augmentedVertexMap)
 		throws java.lang.Exception
 	{
-		if (null == (_name = name) || _name.isEmpty())
+		if (null == augmentedVertexMap || 0 == augmentedVertexMap.size())
 		{
 			throw new java.lang.Exception (
-				"Vertex Constructor => Invalid Inputs"
+				"YenVertexScanOptimizer Constructor => Invalid Inputs"
+			);
+		}
+
+		_vertexScanMap = new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Boolean>();
+
+		_vertexDistanceMap = new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+
+		for (java.util.Map.Entry<java.lang.String, org.drip.graph.shortestpath.AugmentedVertex>
+			augmentedVertexEntry : augmentedVertexMap.entrySet())
+		{
+			java.lang.String vertexName = augmentedVertexEntry.getKey();
+
+			_vertexScanMap.put (
+				vertexName,
+				true
+			);
+
+			_vertexDistanceMap.put (
+				vertexName,
+				augmentedVertexEntry.getValue().weight()
 			);
 		}
 	}
 
 	/**
-	 * Retrieve the Name of the Vertex Node
+	 * Retrieve the Vertex Scan Map
 	 * 
-	 * @return The Name of the Vertex Node
+	 * @return The Vertex Scan Map
 	 */
 
-	public java.lang.String name()
+	public java.util.Map<java.lang.String, java.lang.Boolean> vertexScanMap()
 	{
-		return _name;
+		return _vertexScanMap;
 	}
 
 	/**
-	 * Retrieve the Egress Map
+	 * Retrieve the Vertex Distance Map
 	 * 
-	 * @return The Egress Map
+	 * @return The Vertex Distance Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> egressMap()
+	public java.util.Map<java.lang.String, java.lang.Double> vertexDistanceMap()
 	{
-		return _egressMap;
-	}
-
-	/**
-	 * Add an Egress to the Vertex Node
-	 * 
-	 * @param destinationName Name of the Destination Vertex Node
-	 * @param weight Weight of the Egress Path
-	 * 
-	 * @return TRUE - The Egress successfully added to the Vertex Node
-	 */
-
-	public boolean addEgress (
-		final java.lang.String destinationName,
-		final double weight)
-	{
-		if (null == destinationName || destinationName.equalsIgnoreCase (
-				_name
-			) || !org.drip.numerical.common.NumberUtil.IsValid (
-				weight
-			)
-		)
-		{
-			return false;
-		}
-
-		_egressMap.put (
-			destinationName,
-			weight
-		);
-
-		return true;
+		return _vertexDistanceMap;
 	}
 }

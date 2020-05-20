@@ -7,8 +7,9 @@ DROP Sample Simplex demonstrates LP Simplex Formulation and Solution.
 
 ## Class Components
 
- * [***LPConstraintFormulation***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simplex/LPConstraintFormulation.java)
- <i>LPConstraintFormulation</i> illustrates the Formulation and Canonicalization of the LP Simplex Constraint.
+ |     Sample     | Source | Output |
+ |----------------|--------|--------|
+ | LP Constraint Formulation | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simplex/LPConstraintFormulation.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/simplex/LPConstraintFormulation.drop) |
 
 
 ## References
@@ -22,6 +23,16 @@ DROP Sample Simplex demonstrates LP Simplex Formulation and Solution.
  * van der Bei, R. J. (2008): Linear Programming: Foundations and Extensions 3<sup>rd</sup> Edition <i>International Series in Operations Research and Management Science</i> <b>114 Springer-Verlag</b>
 
  * Wikipedia (2020): Simplex Algorithm https://en.wikipedia.org/wiki/Simplex_algorithm
+
+
+## Hierarchy
+
+ <ul>
+	<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
+	<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
+	<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+	<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simplex/README.md">LP Simplex Formulation and Solution</a></li>
+ </ul>
 
 
 ## DROP Specifications

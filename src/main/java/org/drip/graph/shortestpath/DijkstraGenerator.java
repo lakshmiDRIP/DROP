@@ -134,15 +134,12 @@ public class DijkstraGenerator
 
 		boolean shortestPath = shortestPath();
 
-		org.drip.graph.core.DirectedGraph graph = graph();
-
 		org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor = null;
 
 		try
 		{
 			vertexAugmentor = new org.drip.graph.shortestpath.VertexAugmentor (
 				sourceVertexName,
-				graph.vertexNameSet(),
 				shortestPath
 			);
 		}
@@ -151,7 +148,7 @@ public class DijkstraGenerator
 			e.printStackTrace();
 		}
 
-		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap = graph.vertexMap();
+		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap = graph().vertexMap();
 
 		while (!vertexList.isEmpty())
 		{

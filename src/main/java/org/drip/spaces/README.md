@@ -17,9 +17,6 @@ DROP Spaces implements R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Val
  * [***Function Class***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/functionclass)
  DROP Spaces Function Class Package implements the Normed Finite Spaces Function Class.
 
- * [***Graph***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/graph)
- DROP Spaces Graph Package implements the Graph Representation and Traversal Algorithms.
-
  * [***Instance***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/instance)
  DROP Spaces Instance Package implements Validated Continuous/Combinatorial Metric Spaces.
 
@@ -67,23 +64,6 @@ DROP Spaces implements R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Val
  	https://docs.oracle.com/javase/7/docs/api/java/util/LinkedList.html
 
  * Pollard, D. (1984): <i>Convergence of Stochastic Processes</i> <b>Springer</b> New York
-
- * Wikipedia (2018a): Linked List https://en.wikipedia.org/wiki/Linked_list
-
- * Wikipedia (2018b): Doubly Linked List https://en.wikipedia.org/wiki/Doubly_linked_list
-
- * Wikipedia (2018c): Linked Data Structure https://en.wikipedia.org/wiki/Linked_data_structure
-
- * Wikipedia (2018d): Graph (Abstract Data Type) https://en.wikipedia.org/wiki/Graph_(abstract_data_type)
-
- * Wikipedia (2018e): Graph Theory https://en.wikipedia.org/wiki/Graph_theory
-
- * Wikipedia (2018f): Graph (Discrete Mathematics)
- 	https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)
-
- * Wikipedia (2018g): Dijkstra's Algorithm https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
-
- * Wikipedia (2018h): Bellman-Ford Algorithm https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
 
  * Williamson, R. C., A. J. Smola, and B. Scholkopf (2000): Entropy Numbers of Linear Function Classes, in:
  	<i>Proceedings of the 13th Annual Conference on Computational Learning Theory</i> <b>ACM</b> New York

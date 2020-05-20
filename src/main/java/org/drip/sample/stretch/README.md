@@ -10,7 +10,7 @@ DROP Stretch demonstrates Knot Insertion Curvature Roughness Penalty.
  * [***ATMTTESurface2D***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/stretch/ATMTTESurface2D.java)
  <i>ATMTTESurface2D</i> demonstrates the Surface 2D ATM/TTE (X/Y) Stretch Construction and usage API.
 
- * [***CurvatureRoughnessPenaltyFit***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/stretch/CurvatureRoughnessPenaltyFit.java)
+ * [***CurvatureLengthRoughnessFit***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/stretch/CurvatureLengthRoughnessFit.java)
  <i>CurvatureLengthRoughnessPenalty</i> demonstrates the setting up and the usage of the curvature, the length, and the closeness of fit penalizing spline. This sample shows the following:
  	* Set up the X Predictor Ordinate and the Y Response Value Set.
  	* Construct a set of Predictor Ordinates, their Responses, and corresponding Weights to serve as weighted closeness of fit.
@@ -82,19 +82,6 @@ DROP Stretch demonstrates Knot Insertion Curvature Roughness Penalty.
 
  * [***MultiSpanAggregationEstimator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/stretch/MultiSpanAggregationEstimator.java)
  <i>MultiSpanAggregationEstimator</i> demonstrates the Construction and Usage of the Multiple Span Aggregation Functionality.
-
-
-## References
-
- * Murty, K. G. (1983): <i>Linear Programming</i> <b>John Wiley and Sons</b> New York
-
- * Nering, E. D., and A. W. Tucker (1993): <i>Linear Programs and Related Problems</i> <b>Academic Press</b>
-
- * Padberg, M. W. (1999): <i>Linear Optimization and Extensions 2<sup>nd</sup> Edition</i> <b>Springer-Verlag</b>
-
- * van der Bei, R. J. (2008): Linear Programming: Foundations and Extensions 3<sup>rd</sup> Edition <i>International Series in Operations Research and Management Science</i> <b>114 Springer-Verlag</b>
-
- * Wikipedia (2020): Simplex Algorithm https://en.wikipedia.org/wiki/Simplex_algorithm
 
 
 ## DROP Specifications

@@ -1,15 +1,14 @@
 
-package org.drip.sample.graph;
+package org.drip.sample.shortestpath;
 
-import java.util.Set;
+import java.util.List;
 
+import org.drip.graph.core.DirectedGraph;
+import org.drip.graph.core.Edge;
+import org.drip.graph.core.Path;
+import org.drip.graph.shortestpath.BellmanFordGenerator;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.spaces.graph.DijkstraScheme;
-import org.drip.spaces.graph.Edge;
-import org.drip.spaces.graph.Topography;
-import org.drip.spaces.graph.ShortestPathVertex;
-import org.drip.spaces.graph.ShortestPathVertexContainer;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -17,8 +16,6 @@ import org.drip.spaces.graph.ShortestPathVertexContainer;
 
 /*!
  * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -87,47 +84,56 @@ import org.drip.spaces.graph.ShortestPathVertexContainer;
  */
 
 /**
- * <i>Dijkstra</i> illustrates the Execution of the Dijkstra Algorithm. The References are:
- *  
+ * <i>BellmanFordSingleSource</i> illustrates the Shortest Path Generation for a Directed Graph using the
+ * 	Bellman-Ford Algorithm across all Destinations for the given Source. The References are:
+ * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Wikipedia (2018a): Graph (Abstract Data Type)
- *  			https://en.wikipedia.org/wiki/Graph_(abstract_data_type)
+ *  		Dijkstra, E. W. (1959): A Note on Two Problems in Connection with Graphs <i>Numerische
+ *  			Mathematik</i> <b>1</b> 269-271
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018b): Graph Theory https://en.wikipedia.org/wiki/Graph_theory
+ *  		Felner, A. (2011): Position Paper: Dijkstra’s Algorithm versus Uniform Cost Search or a Case
+ *  			against Dijkstra’s Algorithm <i>Proceedings of the 4<sup>th</sup> International Symposium on
+ *  			Combinatorial Search</i> 47-51
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018c): Graph (Discrete Mathematics)
- *  			https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)
+ *  		Mehlhorn, K. W., and P. Sanders (2008): <i>Algorithms and Data Structures: The Basic Toolbox</i>
+ *  			<b>Springer</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018d): Dijkstra's Algorithm https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+ *  		Russell, S., and P. Norvig (2009): <i>Artificial Intelligence: A Modern Approach 3<sup>rd</sup>
+ *  			Edition</i> <b>Prentice Hall</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018e): Bellman-Ford Algorithm
- *  			https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
+ *  		Wikipedia (2019): Dijkstra's Algorithm https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
  *  	</li>
  *  </ul>
+ *
  * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graph/README.md">Graph Traversal and Navigation Algorithms</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/shortestpath/README.md">Source Destination Shortest Path Algorithms</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Dijkstra
+public class BellmanFordSingleSource
 {
 
-	private static final Topography SetTopography()
+	public static final void main (
+		final String[] argumentArray)
 		throws Exception
 	{
+		EnvManager.InitEnv (
+			""
+		);
+
 		String[] vertexArray = new String[]
 		{
 			"Delhi     ",
@@ -142,14 +148,9 @@ public class Dijkstra
 			"Jaipur    "
 		};
 
-		Topography topography = new Topography();
+		DirectedGraph graph = new DirectedGraph();
 
-		for (String vertexName : vertexArray)
-		{
-			topography.addVertex (vertexName);
-		}
-
-		topography.addEdge (
+		graph.addBidirectionalEdge (
 			new Edge (
 				vertexArray[0], // Delhi
 				vertexArray[1], // Bombay
@@ -157,7 +158,7 @@ public class Dijkstra
 			)
 		);
 
-		topography.addEdge (
+		graph.addBidirectionalEdge (
 			new Edge (
 				vertexArray[0], // Delhi
 				vertexArray[2], // Madras
@@ -165,7 +166,7 @@ public class Dijkstra
 			)
 		);
 
-		topography.addEdge (
+		graph.addBidirectionalEdge (
 			new Edge (
 				vertexArray[1], // Bombay
 				vertexArray[2], // Madras
@@ -173,7 +174,7 @@ public class Dijkstra
 			)
 		);
 
-		topography.addEdge (
+		graph.addBidirectionalEdge (
 			new Edge (
 				vertexArray[0], // Delhi
 				vertexArray[3], // Calcutta
@@ -181,7 +182,7 @@ public class Dijkstra
 			)
 		);
 
-		topography.addEdge (
+		graph.addBidirectionalEdge (
 			new Edge (
 				vertexArray[1], // Bombay
 				vertexArray[3], // Calcutta
@@ -189,7 +190,7 @@ public class Dijkstra
 			)
 		);
 
-		topography.addEdge (
+		graph.addBidirectionalEdge (
 			new Edge (
 				vertexArray[2], // Madras
 				vertexArray[3], // Calcutta
@@ -197,7 +198,7 @@ public class Dijkstra
 			)
 		);
 
-		topography.addEdge (
+		graph.addBidirectionalEdge (
 			new Edge (
 				vertexArray[2], // Madras
 				vertexArray[4], // Bangalore
@@ -205,7 +206,7 @@ public class Dijkstra
 			)
 		);
 
-		topography.addEdge (
+		graph.addBidirectionalEdge (
 			new Edge (
 				vertexArray[2], // Madras
 				vertexArray[5], // Hyderabad
@@ -213,7 +214,7 @@ public class Dijkstra
 			)
 		);
 
-		topography.addEdge (
+		graph.addBidirectionalEdge (
 			new Edge (
 				vertexArray[2], // Madras
 				vertexArray[6], // Cochin
@@ -221,7 +222,7 @@ public class Dijkstra
 			)
 		);
 
-		topography.addEdge (
+		graph.addBidirectionalEdge (
 			new Edge (
 				vertexArray[1], // Bombay
 				vertexArray[7], // Pune
@@ -229,7 +230,7 @@ public class Dijkstra
 			)
 		);
 
-		topography.addEdge (
+		graph.addBidirectionalEdge (
 			new Edge (
 				vertexArray[1], // Bombay
 				vertexArray[8], // Ahmedabad
@@ -237,7 +238,7 @@ public class Dijkstra
 			)
 		);
 
-		topography.addEdge (
+		graph.addBidirectionalEdge (
 			new Edge (
 				vertexArray[0], // Delhi
 				vertexArray[9], // Jaipur
@@ -245,68 +246,33 @@ public class Dijkstra
 			)
 		);
 
-		return topography;
-	}
+		System.out.println (
+			"\t|-----------------------------------------------------------------------------------------------------"
+		);
 
-	private static final String PathVertexes (
-		final String source,
-		final String destination,
-		final ShortestPathVertexContainer vertexPeripheryMap)
-		throws Exception
-	{
-		String path = "";
-		String vertex = destination;
+		BellmanFordGenerator bellmanFordGenerator = new BellmanFordGenerator (
+			graph,
+			true
+		);
 
-		ShortestPathVertex vertexPeriphery = vertexPeripheryMap.shortestPathVertex (vertex);
-
-		while (!source.equalsIgnoreCase (vertexPeriphery.currentVertexName()))
+		for (String sourceVertexName : vertexArray)
 		{
-			path = path + vertexPeriphery.currentVertexName() + " <- ";
+			List<Path> pathArray = bellmanFordGenerator.singleSource (
+				sourceVertexName
+			);
 
-			vertexPeriphery = vertexPeripheryMap.shortestPathVertex (vertexPeriphery.preceedingVertexName());
-		}
-
-		path = path + source;
-		return path;
-	}
-
-	public static void main (
-		final String[] inputArray)
-		throws Exception
-	{
-		EnvManager.InitEnv ("");
-
-		Topography topography = SetTopography();
-
-		DijkstraScheme dijkstraScheme = new DijkstraScheme (topography);
-
-		Set<String> vertexNameSet = topography.vertexNameSet();
-
-		for (String source : vertexNameSet)
-		{
-			ShortestPathVertexContainer vertexPeripheryMap = dijkstraScheme.spf (source);
-
-			System.out.println ("\t||------------------------------------------------------------||");
-
-			for (String vertex : vertexNameSet)
+			for (Path path : pathArray)
 			{
-				if (!vertex.equalsIgnoreCase(source))
-				{
-					ShortestPathVertex vertexPeriphery = vertexPeripheryMap.shortestPathVertex (vertex);
-
-					System.out.println (
-						"\t|| " + source + " to " + vertex + " is " +
-						FormatUtil.FormatDouble (vertexPeriphery.weightFromSource(), 4, 0, 1.) +
-						" | Previous is " + vertexPeriphery.preceedingVertexName() + " || " + PathVertexes (
-							source,
-							vertex,
-							vertexPeripheryMap
-						)
-					);
-				}
+				System.out.println (
+					"\t| {" + path.sourceVertexName() + " -> " + path.destinationVertexName() + "} => " + 
+					path.vertexList() + " | " +
+					FormatUtil.FormatDouble (path.totalLength(), 4, 0, 1.)
+				);
 			}
 
-			System.out.println ("\t||------------------------------------------------------------||\n");
+			System.out.println (
+				"\t|-----------------------------------------------------------------------------------------------------"
+			);
 		}
 
 		EnvManager.TerminateEnv();
