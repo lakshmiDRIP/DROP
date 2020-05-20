@@ -133,7 +133,7 @@ public class VertexAugmentor
 	 * VertexAugmentor Constructor
 	 * 
 	 * @param sourceVertexName The Source vertex Name
-	 * @param shortestTest TRUE - Shortest Path Sought
+	 * @param shortestPath TRUE - Shortest Path Sought
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */

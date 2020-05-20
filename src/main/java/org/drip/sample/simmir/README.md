@@ -1,11 +1,23 @@
-# DROP SIMM IR Package
+# DROP Sample SIMM IR Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP SIMM IR demonstrates ISDA SIMM Rates Estimate Runs.
+DROP Sample SIMM IR demonstrates ISDA SIMM Rates Estimate Runs.
 
 
 ## Class Components
+
+ * [***RatesClassMargin20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmir/RatesClassMargin20.java)
+ <i>RatesClassMargin20</i> illustrates the Computation of the SIMM 2.0 IR Class Margin for a Currency Bucket's IR Exposure Sensitivities.
+
+ * [***RatesClassMargin21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmir/RatesClassMargin21.java)
+ <i>RatesClassMargin21</i> illustrates the Computation of the SIMM 2.1 IR Class Margin for a Currency Bucket's IR Exposure Sensitivities.
+
+ * [***RatesCurrencyCurvatureMargin20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmir/RatesCurrencyCurvatureMargin20.java)
+ <i>RatesCurrencyCurvatureMargin20</i> illustrates the Computation of the SIMM 2.0 IR Curvature Margin for a Currency Bucket's IR Exposure Sensitivities.
+
+ * [***RatesCurrencyCurvatureMargin21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmir/RatesCurrencyCurvatureMargin21.java)
+ <i>RatesCurrencyCurvatureMargin21</i> illustrates the Computation of the SIMM 2.1 IR Curvature Margin for a Currency Bucket's IR Exposure Sensitivities.
 
  * [***RatesCurrencyCurvatureMarginFlow20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simmir/RatesCurrencyCurvatureMarginFlow20.java)
  <i>RatesCurrencyCurvatureMarginFlow20</i> illustrates the Steps in the Computation of the SIMM 2.0 IR Curvature Margin for a Currency Bucket's IR Exposure Sensitivities.
