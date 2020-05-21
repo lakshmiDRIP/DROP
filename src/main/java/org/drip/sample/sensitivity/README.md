@@ -1,8 +1,8 @@
-# DROP Sensitivity Package
+# DROP Sample Sensitivity Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Sensitivity demonstrates the Forward Funding OIS Curve Sensitivity Functionality.
+DROP Sample Sensitivity demonstrates the Forward Funding OIS Curve Sensitivity Functionality.
 
 
 ## Class Components
@@ -53,7 +53,7 @@ DROP Sensitivity demonstrates the Forward Funding OIS Curve Sensitivity Function
   	* Build and run the sampling for the 6M-6M Tenor Basis Swap from its instruments and quotes.
   	* Build and run the sampling for the 12M-6M Tenor Basis Swap from its instruments and quotes.
 
- * [***ForwardReferenceBasisSensitivity***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/sensitivity/ForwardReferenceBasisSensitivity.java)
+ * [***FundingCurveQuoteSensitivity***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/sensitivity/FundingCurveQuoteSensitivity.java)
 <i>FundingCurveQuoteSensitivity</i> demonstrates the calculation of the Funding curve sensitivity to the calibration instrument quotes. It does the following:
   	* Construct the Array of Cash/Swap Instruments and their Quotes from the given set of parameters.
   	* Construct the Cash/Swap Instrument Set Stretch Builder.

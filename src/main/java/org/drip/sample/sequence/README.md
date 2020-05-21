@@ -1,8 +1,8 @@
-# DROP Sequence Package
+# DROP Sample Sequence Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Sequence demonstrates the IID Dual Poisson Sequence Bound Estimator.
+DROP Sample Sequence demonstrates the IID Dual Poisson Sequence Bound Estimator.
 
 
 ## Class Components
@@ -22,7 +22,7 @@ DROP Sequence demonstrates the IID Dual Poisson Sequence Bound Estimator.
  * [***SingleRandomSequenceBound***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/sequence/SingleRandomSequenceBound.java)
  <i>SingleRandomSequenceBound</i> demonstrates the Computation of the Probabilistic Bounds for a Sample Random Sequence.
 
- * [***SingleRandomSequenceBound***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/sequence/SingleRandomSequenceBound.java)
+ * [***UnitRandomSequenceBound***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/sequence/UnitRandomSequenceBound.java)
  <i>UnitRandomSequenceBound</i> demonstrates the Computation of the Probabilistic Bounds for a Sample Unit Random Sequence.
 
 

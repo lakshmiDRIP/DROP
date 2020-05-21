@@ -1,8 +1,8 @@
-# DROP Scaled Exponential Package
+# DROP Sample Scaled Exponential Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Scaled Exponential shows the Scaled Exponential Function Estimates/Moments.
+DROP Sample Scaled Exponential shows the Scaled Exponential Function Estimates/Moments.
 
 
 ## Class Components

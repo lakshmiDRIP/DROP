@@ -1,8 +1,8 @@
-# DROP Security Suite Package
+# DROP Sample Security Suite Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Security Suite demonstrates the Custom Security Relative Value Demonstration.
+DROP Sample Security Suite demonstrates the Custom Security Relative Value Demonstration.
 
 
 ## Class Components

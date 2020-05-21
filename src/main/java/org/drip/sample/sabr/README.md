@@ -7,7 +7,7 @@ DROP SABR demonstrates SABR Forward Evolution Black Volatility Calibration and E
 
 ## Class Components
 
- * [***ForwardRateEvolution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/sabr/ForwardRateEvolution.java)
+ * [***BlackVolatility***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/sabr/BlackVolatility.java)
  <i>BlackVolatility</i> demonstrates the Construction and Usage of the SABR Model to Imply the Black Volatility of a given Contract.
 
  * [***ForwardRateEvolution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/sabr/ForwardRateEvolution.java)
