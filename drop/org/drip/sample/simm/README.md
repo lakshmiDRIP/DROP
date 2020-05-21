@@ -7,11 +7,10 @@ DROP SIMM demonstrates the ISDA Product SIMM Margin Estimation.
 
 ## Class Components
 
- * [***ProductMargin20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simm/ProductMargin20.java)
- <i>ProductMargin20</i> illustrates the Computation of the ISDA SIMM 2.0 Product Margin for across a Group of Risk Factor Exposure Sensitivities.
-
- * [***ProductMargin21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simm/ProductMargin21.java)
- <i>ProductMargin21</i> illustrates the Computation of the ISDA SIMM 2.1 Product Margin for across a Group of Risk Factor Exposure Sensitivities.
+ |     Sample     | Source | Output |
+ |----------------|--------|--------|
+ | Product Margin 2.0 | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simm/ProductMargin20.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/simm/ProductMargin20.drop) |
+ | Product Margin 2.1 | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simm/ProductMargin21.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/simm/ProductMargin21.drop) |
 
 
 ## References
@@ -25,6 +24,16 @@ DROP SIMM demonstrates the ISDA Product SIMM Margin Estimation.
  * Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin Requirements; A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167 <b>eSSRN</b>
 
  * International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
+
+
+## Hierarchy
+
+ <ul>
+	<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
+	<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
+	<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+	<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simm/README.md">ISDA Product SIMM Margin Estimation</a></li>
+ </ul>
 
 
 ## DROP Specifications
