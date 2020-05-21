@@ -4,13 +4,13 @@
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP implements libraries targeting analytics/risk, transaction cost analytics, asset liability analytics, capital, exposure, and margin analytics, valuation adjustment analytics, and portfolio construction analytics within and across fixed income, credit, commodity, equity, FX, and structured products. It also includes auxiliary libraries for algorithm support, numerical analysis, numerical optimization, spline builder, model validation, statistical learning, and computational support
+DROP implements libraries targeting analytics/risk, transaction cost analytics, asset liability analytics, capital, exposure, and margin analytics, valuation adjustment analytics, and portfolio construction analytics within and across fixed income, credit, commodity, equity, FX, and structured products. It also includes auxiliary libraries for graph algorithms, numerical analysis, numerical optimization, spline builder, model validation, statistical learning, and computational support
 
 DROP is composed of three modules.
 
  * [***Product     Core Module***](https://github.com/lakshmiDRIP/DROP/blob/master/ProductCore.md)         =>   Fixed Income Product Analytics, Loan Analytics, and Transaction Cost Analytics.
  * [***Portfolio   Core Module***](https://github.com/lakshmiDRIP/DROP/blob/master/PortfolioCore.md)       =>   Portfolio Contruction and Asset Liability, along with Exposure, Margin, XVA, and Capital Analytics.
- * [***Computation Core Module***](https://github.com/lakshmiDRIP/DROP/blob/master/ComputationalCore.md)   =>   Algorithm/Computation Support, Function Analysis, Model Validation, Numerical Analysis, Numerical Optimizer, Spline Builder, and Statistical Learning.
+ * [***Computation Core Module***](https://github.com/lakshmiDRIP/DROP/blob/master/ComputationalCore.md)   =>   Algorithm/Computation Support, Function Analysis, Model Validation, Numerical Analysis, Numerical Optimizer, Spline Builder, Graph Algorithms, and Statistical Learning.
 
 
 ## Pointers
