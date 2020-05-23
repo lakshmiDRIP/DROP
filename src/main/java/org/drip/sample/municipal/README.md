@@ -1,8 +1,8 @@
-# DROP Municipal Package
+# DROP Sample Municipal Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Municipal illustrates Municipal Bond Analytics.
+DROP Sample Municipal illustrates Municipal Bond Analytics.
 
 
 ## Class Components

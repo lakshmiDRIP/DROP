@@ -1,8 +1,8 @@
-# DROP Optimizer Package
+# DROP Sample Optimizer Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Optimizer demonstrates Lagrangian/KKT Necessary Sufficient Conditions.
+DROP Sample Optimizer demonstrates Lagrangian/KKT Necessary Sufficient Conditions.
 
 
 ## Class Components
@@ -20,7 +20,7 @@ DROP Optimizer demonstrates Lagrangian/KKT Necessary Sufficient Conditions.
  <i>VariateSumExtremization</i> computes the Equality Constrained Extrema of the Sum of Variates VariateSumExtremization the Surface of the Sphere using Lagrange Multipliers.
 
 
-## Class Components
+## References
 
  * Boyd, S., and L. van den Berghe (2009): <i>Convex Optimization</i> <b>Cambridge University Press</b> Cambridge UK
 

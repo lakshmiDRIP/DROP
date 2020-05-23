@@ -1,13 +1,13 @@
-# DROP Numeraire Package
+# DROP Sample Numeraire Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Numeraire illustrates the R<sup>1</sup> Joint Jump Diffusion Numeraire Dynamics.
+DROP Sample Numeraire illustrates the R<sup>1</sup> Joint Jump Diffusion Numeraire Dynamics.
 
 
 ## Class Components
 
- * [***R1JointJumpDiffusion***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/numeraire/R1JointJumpDiffusion.java)
+ * [***R1JointDiffusion***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/numeraire/R1JointDiffusion.java)
  <i>R1JointDiffusion</i> demonstrates the Joint Evolution of R<sup>1</sup> Diffusion Variates - the Continuous Asset, the Collateral, the Bank, and the Counter-Party Numeraires involved in the Dynamic XVA Replication Portfolio of the Burgard and Kjaer (2011) Methodology.
 
  * [***R1JointJumpDiffusion***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/numeraire/R1JointJumpDiffusion.java)

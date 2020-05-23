@@ -1,8 +1,8 @@
-# DROP Overnight Package
+# DROP Sample Overnight Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Overnight demonstrates Shape Preserving Stretch Overnight Curve Construction.
+DROP Sample Overnight demonstrates Shape Preserving Stretch Overnight Curve Construction.
 
 
 ## Class Components
@@ -106,7 +106,7 @@ DROP Overnight demonstrates Shape Preserving Stretch Overnight Curve Constructio
  <i>SingleStretchCurveBuilder</i> contains a sample of the construction and usage of the Overnight Curve built using the Overnight Indexed Swap Product Instruments inside a single stretch.
 
 
-## Class Components
+## References
 
  * Ametrano, F., and M. Bianchetti (2013): Everything You Always Wanted to Know About Multiple Interest Rate Curve Bootstrapping but Were Afraid to Ask http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2219548
 

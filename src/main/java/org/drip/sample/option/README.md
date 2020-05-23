@@ -1,8 +1,8 @@
-# DROP Option Package
+# DROP Sample Option Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Option demonstrates Deterministic (Black) / Stochastic (Heston) Option Valuation/Risk.
+DROP Sample Option demonstrates Deterministic (Black) / Stochastic (Heston) Option Valuation/Risk.
 
 
 ## Class Components

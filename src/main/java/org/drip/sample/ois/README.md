@@ -1,8 +1,8 @@
-# DROP OIS Package
+# DROP Sample OIS Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP OIS illustrates the Index/Fund OIS Curve Reconcilation.
+DROP Sample OIS illustrates the Index/Fund OIS Curve Reconcilation.
 
 
 ## Class Components

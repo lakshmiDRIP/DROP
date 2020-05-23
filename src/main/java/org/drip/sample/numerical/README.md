@@ -1,8 +1,8 @@
-# DROP Numerical Package
+# DROP Sample Numerical Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Numerical demonstrates Search, Quadratures, and Fourier Phase Tracker Routines.
+DROP Sample Numerical demonstrates Search, Quadratures, and Fourier Phase Tracker Routines.
 
 
 ## Class Components

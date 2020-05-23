@@ -1,8 +1,8 @@
-# DROP Newton Cotes Package
+# DROP Sample Newton Cotes Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Newton Cotes illustrates the R<sup>1</sup> Newton-Cotes Quadrature Schemes.
+DROP Sample Newton Cotes illustrates the R<sup>1</sup> Newton-Cotes Quadrature Schemes.
 
 
 ## Class Components

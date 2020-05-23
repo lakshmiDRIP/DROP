@@ -1,8 +1,8 @@
-# DROP OIS API Package
+# DROP Sample OIS API Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP OIS API demonstrates OIS Construction and Valuation API.
+DROP Sample OIS API demonstrates OIS Construction and Valuation API.
 
 
 ## Class Components
