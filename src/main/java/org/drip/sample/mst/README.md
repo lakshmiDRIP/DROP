@@ -1,8 +1,8 @@
-# DROP MST Package
+# DROP Sample MST Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP MST illustrates the Usage of Minimum Spanning Tree and Forest Algorithms.
+DROP Sample MST illustrates the Usage of Minimum Spanning Tree and Forest Algorithms.
 
 
 ## Class Components
@@ -25,7 +25,7 @@ DROP MST illustrates the Usage of Minimum Spanning Tree and Forest Algorithms.
  * [***CompleteUniformRandomReverseDelete***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/mst/CompleteUniformRandomReverseDelete.java)
  <i>CompleteUniformRandomReverseDelete</i> demonstrates the Ensemble MST Length Analysis of a Complete Graph built using Random Weights, and the Reverse-Delete Minimum Spanning Forest Generator.
 
- * [***CompleteUniformRandomPrim***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/mst/CompleteUniformRandomPrim.java)
+ * [***CompleteUniformRandomSteele***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/mst/CompleteUniformRandomSteele.java)
  <i>CompleteUniformRandomSteele</i> displays the computed expected MST Length of a Complete Graph built using U[0,1] Random Weights.
 
  * [***KruskalMaximumForestGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/mst/KruskalMaximumForestGenerator.java)

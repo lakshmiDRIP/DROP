@@ -1,8 +1,8 @@
-# DROP Multi-Curve Package
+# DROP Sample Multi-Curve Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Multi-Curve illustrates the Multi-Curve Construction and Valuation.
+DROP Sample Multi-Curve illustrates the Multi-Curve Construction and Valuation.
 
 
 ## Class Components
