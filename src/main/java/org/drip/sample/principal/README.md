@@ -1,8 +1,8 @@
-# DROP Principal Package
+# DROP Sample Principal Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Principal demonstrates the Information Ratio Based Principal Trading.
+DROP Sample Principal demonstrates the Information Ratio Based Principal Trading.
 
 
 ## Class Components
@@ -26,7 +26,7 @@ DROP Principal demonstrates the Information Ratio Based Principal Trading.
  <i>OptimalTrajectoryMeasures</i> demonstrates the Trade Scheduling using the Equity Market Impact Functions determined empirically by Almgren, Thum, Hauptmann, and Li (2005), using the Parameterization of Almgren (2003) for IBM. It generates the Transaction Cost/Principal Discount Measures from the Run.
 
 
-## Class Components
+## References
 
  * Almgren, R., and N. Chriss (1999): Value under Liquidation <i>Risk</i> <b>12 (12)</b>
 

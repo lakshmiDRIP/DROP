@@ -7,8 +7,19 @@ DROP Sample Preferred contains the Preferred Stock Analytics Sample Demonstratio
 
 ## Class Components
 
- * [***PreferredFixedBullet***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/preferred/PreferredFixedBullet.java)
- <i>PreferredFixedBullet</i> demonstrates Non-EOS Fixed Coupon Preferred Bond Pricing and Relative Value Measure Generation Functionality.
+ |     Sample     | Source | Output |
+ |----------------|--------|--------|
+ | Preferred Fixed Bullet | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/preferred/PreferredFixedBullet.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/preferred/PreferredFixedBullet.drop) |
+
+
+## Hierarchy
+
+ <ul>
+	<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
+	<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
+	<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+	<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/principal/README.md">Information Ratio Based Principal Trading</a></li>
+ </ul>
 
 
 ## DROP Specifications

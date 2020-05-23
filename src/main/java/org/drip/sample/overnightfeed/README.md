@@ -1,8 +1,8 @@
-# DROP Overnight Feed Package
+# DROP Sample Overnight Feed Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Overnight Feed demonstrates the G7 Smooth OIS Feed Reconstitutor.
+DROP Sample Overnight Feed demonstrates the G7 Smooth OIS Feed Reconstitutor.
 
 
 ## Class Components

@@ -1,8 +1,8 @@
-# DROP RNG Package
+# DROP Sample RNG Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP RNG illustrates QR Unbiased Antithetic Random Generator.
+DROP Sample RNG illustrates QR Unbiased Antithetic Random Generator.
 
 
 ## Class Components

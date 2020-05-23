@@ -1,8 +1,8 @@
-# DROP R<sup>d</sup> To R<sup>1</sup> Package
+# DROP Sample R<sup>d</sup> To R<sup>1</sup> Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP R<sup>d</sup> To R<sup>1</sup> contains the Constrained/Unconstrained Covariance Ellipsoid Function.
+DROP Sample R<sup>d</sup> To R<sup>1</sup> contains the Constrained/Unconstrained Covariance Ellipsoid Function.
 
 
 ## Class Components

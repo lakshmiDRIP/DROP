@@ -1,8 +1,8 @@
-# DROP Overnight Historical Package
+# DROP Sample Overnight Historical Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Overnight Historical demonstrates the G7 Smooth OIS 1M Forward.
+DROP Sample Overnight Historical demonstrates the G7 Smooth OIS 1M Forward.
 
 
 ## Class Components

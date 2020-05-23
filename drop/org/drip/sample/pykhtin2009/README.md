@@ -7,20 +7,25 @@ DROP Sample Pykhtin (2009) illustrates the Regression Based Secondary Stochastic
 
 ## Class Components
 
- * [***ExposurePathBrownianBridge***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/pykhtin2009/ExposurePathBrownianBridge.java)
- <i>ExposurePathBrownianBridge</i> sets up a Brownian Bridge Scheme base on the Pykhtin (2009) local Volatility Methodology to estimate Exposures at Secondary Nodes.
-
- * [***ExposurePathFixFloat***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/pykhtin2009/ExposurePathFixFloat.java)
- <i>ExposurePathFixFloat</i> sets up a Brownian Bridge Based Dense Exposure Generation from Sparse Nodes for a Fix-Float Swap.
-
- * [***ExposurePathLocalVolatility***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/pykhtin2009/ExposurePathLocalVolatility.java)
- <i>ExposurePathLocalVolatility</i> estimates the Path-wise Local Volatility Realizations using the Pykhtin (2009) Scheme.
-
- * [***LocalVolatilityRegressor***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/pykhtin2009/LocalVolatilityRegressor.java)
- <i>LocalVolatilityRegressor</i> is a Demonstration of the Exposure Regression Local Volatility Methodology of Pykhtin (2009).
+ |     Sample     | Source | Output |
+ |----------------|--------|--------|
+ | Exposure Path Brownian Bridge | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/pykhtin2009/ExposurePathBrownianBridge/Beta.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/pykhtin2009/ExposurePathBrownianBridge.drop) |
+ | Exposure Path Fix Float | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/pykhtin2009/ExposurePathFixFloat/Beta.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/pykhtin2009/ExposurePathFixFloat.drop) |
+ | Exposure Path Local Volatility | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/pykhtin2009/ExposurePathLocalVolatility/Beta.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/pykhtin2009/ExposurePathLocalVolatility.drop) |
+ | Local Volatility Regressor | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/pykhtin2009/LocalVolatilityRegressor/Beta.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/pykhtin2009/LocalVolatilityRegressor.drop) |
 
 
-## Class Components
+## Hierarchy
+
+ <ul>
+	<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
+	<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md">Exposure Analytics</a></li>
+	<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+	<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/pykhtin2009/README.md">Regression Based Secondary Stochastic Projection</a></li>
+ </ul>
+
+
+## References
 
  * Albanese, C., and L. Andersen (2014): Accounting for OTC Derivatives: Funding Adjustments and the Re-Hypothecation Option https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2482955 <b>eSSRN</b>
 

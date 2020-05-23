@@ -1,8 +1,8 @@
-# DROP Piterbarg (2012) Package
+# DROP Sample Piterbarg (2012) Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Piterbarg (2012) demonstrates the Piterbarg (2012) Domestic Foreign Collateral.
+DROP Sample Piterbarg (2012) demonstrates the Piterbarg (2012) Domestic Foreign Collateral.
 
 
 ## Class Components

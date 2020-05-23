@@ -1,8 +1,8 @@
-# DROP Quantile Package
+# DROP Sample Quantile Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Quantile illustrates Quantile Generation and Comparison Testing.
+DROP Sample Quantile illustrates Quantile Generation and Comparison Testing.
 
 
 ## Class Components

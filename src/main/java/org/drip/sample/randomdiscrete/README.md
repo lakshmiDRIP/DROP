@@ -1,8 +1,8 @@
-# DROP Random Discrete Package
+# DROP Sample Random Discrete Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Random Discrete illustrates Discrete Distribution Random Number Generator.
+DROP Sample Random Discrete illustrates Discrete Distribution Random Number Generator.
 
 
 ## Class Components

@@ -1,8 +1,8 @@
-# DROP Piterbarg (2010) Package
+# DROP Sample Piterbarg (2010) Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Piterbarg (2010) demonstrates the Piterbarg (2010) CSA Measure Extraction.
+DROP Sample Piterbarg (2010) demonstrates the Piterbarg (2010) CSA Measure Extraction.
 
 
 ## Class Components
