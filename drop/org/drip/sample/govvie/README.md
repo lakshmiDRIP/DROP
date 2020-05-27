@@ -7,19 +7,19 @@ DROP Sample Govvie illustrates the Boot/Spline Govvie Curve Construction API.
 
 ## Class Components
 
- |          Sample         | Source | Output |
- |-------------------------|--------|--------|
- | Non-Linear Govvie Curve | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/govvie/NonlinearGovvieCurve.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/govvie/NonlinearGovvieCurve.drop) |
- | Spline Govvie Curve     | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/govvie/SplineGovvieCurve.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/govvie/SplineGovvieCurve.drop) |
+ |     Sample     | Source | Output |
+ |----------------|--------|--------|
+ | Nonlinear Govvie Curve | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/govvie/NonlinearGovvieCurve.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/govvie/NonlinearGovvieCurve.drop) |
+ | Spline Govvie Curve | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/govvie/SplineGovvieCurve.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/govvie/SplineGovvieCurve.drop) |
 
 
 ## Hierarchy
 
  <ul>
-	<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
-	<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics Library</a></li>
-	<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
-	<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/govvie/README.md">Govvie Curve Builder</a></li>
+	<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
+	<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+	<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+	<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/govvie/README.md">Boot/Spline Govvie Curve Construction</a></li>
  </ul>
 
 

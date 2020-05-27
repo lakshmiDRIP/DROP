@@ -7,20 +7,23 @@ DROP Sample Graph Search illustrates the Breadth/Depth First Search/Ordering Sch
 
 ## Class Components
 
- * [***BFS1***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graph/BFS1.java)
- <i>BFS3</i> illustrates the Application of the Breadth-First Search on a Graph.
+ |     Sample     | Source | Output |
+ |----------------|--------|--------|
+ | BFS1 | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graphsearch/BFS1.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/graph/BFS1.drop) |
+ | BFS3 | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graphsearch/BFS3.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/graph/BFS3.drop) |
+ | DFS1 | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graphsearch/DFS1.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/graph/DFS1.drop) |
+ | DFS2 | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graphsearch/DFS2.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/graph/DFS2.drop) |
+ | DFS3 | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graphsearch/DFS3.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/graph/DFS3.drop) |
 
- * [***BFS3***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graph/BFS3.java)
- <i>BFS3</i> illustrates the Application of the Breadth-First Search on a Graph.
 
- * [***DFS1***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graph/DFS1.java)
- <i>DFS1</i> illustrates Construction/Usage of a Graph DFS and Vertex Ordering.
+## Hierarchy
 
- * [***DFS2***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graph/DFS2.java)
- <i>DFS2</i> illustrates Construction/Usage of a Graph DFS and Vertex Ordering.
-
- * [***DFS3***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graph/DFS3.java)
- <i>DFS3</i> illustrates the Application of the Depth-First Search on a Graph.
+ <ul>
+	<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
+	<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
+	<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+	<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graphsearch/README.md">Breadth/Depth First Search/Ordering</a></li>
+ </ul>
 
 
 ## References

@@ -10,7 +10,7 @@ DROP Sample Gamma Incomplete illustrates the Estimates of Incomplete Gamma Funct
  * [***EulerIntegralSumConstraint***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gammaincomplete/EulerIntegralSumConstraint.java)
  <i>EulerIntegralSumConstraint</i> illustrates the Constraint that the Lower and Upper Gamma Functions must add up to the Parent.
 
- * [***LowerGaussContinuedFraction***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gammaincomplete/LowerGaussContinuedFraction.java)
+ * [***LowerEulerIntegralEstimate***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gammaincomplete/LowerEulerIntegralEstimate.java)
  <i>LowerEulerIntegralEstimate</i> illustrates the Estimation using the Euler's Second Kind Integral of the Lower Incomplete Gamma Function.
 
  * [***LowerGaussContinuedFraction***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gammaincomplete/LowerGaussContinuedFraction.java)
