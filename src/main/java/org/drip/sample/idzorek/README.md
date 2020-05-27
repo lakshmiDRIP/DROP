@@ -23,12 +23,15 @@ DROP Sample Idzorek illustrates the Idzorek (2005) User Confidence Tilt.
  <i>ProjectionImpliedConfidenceLevel</i> reconciles the Implied Confidence Black-Litterman Model Process
  Levels generated using the Idzorek Model.
 
+ * [***ProjectionImpliedConfidenceTilt***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/idzorek/ProjectionImpliedConfidenceLevel.java)
+ <i>ProjectionImpliedConfidenceTilt</i> computes the Tilt induced on an Asset by a User-specified Confidence.
+
  * [***UserConfidenceProjectionCalibration***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/idzorek/UserConfidenceProjectionCalibration.java)
  <i>UserConfidenceProjectionCalibration</i> calibrates the Black Litterman Projection Variance using the
  Implied Allocation Tilts.
 
 
-# References
+## References
 
  * He. G., and R. Litterman (1999): The Intuition behind the Black-Litterman Model Portfolios, Goldman Sachs
  	Asset Management

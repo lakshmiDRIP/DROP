@@ -1,8 +1,8 @@
-# DROP LVaR Package
+# DROP Sample LVaR Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP LVaR illustrates Estimating of the Liquidity VaR Based Optimal Trajectory.
+DROP Sample LVaR illustrates Estimating of the Liquidity VaR Based Optimal Trajectory.
 
 
 ## Class Components

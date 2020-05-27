@@ -11,7 +11,7 @@ Graph Algorithm Library contains the Libraries implementing the Graph Representa
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm/GraphAlgorithm_v4.86.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm/GraphAlgorithm_v4.90.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -213,6 +213,27 @@ Graph Algorithm Library contains the Libraries implementing the Graph Representa
 	* Finding Negative Weights
 	* Applications in Routing
 	* Improvements
+	* References
+ * Johnson's Algorithm
+	* Overview
+	* Algorithm Description
+	* Correctness
+	* Analysis
+	* References
+ * A^* Search Algorithm
+	* Overview
+	* Introduction
+	* Description
+	* Implementation Details
+	* Special Cases
+	* Properties – Termination and Completeness
+	* Properties – Admissibility
+	* Properties - Optimal Efficiency
+	* Bounded Relaxation
+	* Complexity
+	* Applications
+	* Relation to Other Algorithms
+	* Variants
 	* References
 
 

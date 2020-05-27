@@ -7,18 +7,18 @@ DROP Sample JSON illustrates the RFC4627 Compliant JSON Lexer/Serializer Functio
 
 ## Class Components
 
- |   Sample   | Source | Output |
- |------------|--------|--------|
- | Test       | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/json/Test.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/json/Test.drop) |
+ |     Sample     | Source | Output |
+ |----------------|--------|--------|
+ | Test | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/json/Test.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/json/Test.drop) |
  | Yylex Test | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/json/YylexTest.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/json/YylexTest.drop) |
 
 
 ## Hierarchy
 
  <ul>
-	<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
+	<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
 	<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md">Algorithm Support Library</a></li>
-	<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
+	<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
 	<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/json/README.md">JSON Serialization and De-serialization</a></li>
  </ul>
 
