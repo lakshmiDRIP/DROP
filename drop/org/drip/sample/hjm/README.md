@@ -7,22 +7,22 @@ DROP Sample HJM illustrates the HJM Multi-Factor Principal Dynamics Evolution.
 
 ## Class Components
 
- |              Sample             | Source | Output |
- |---------------------------------|--------|--------|
- | G2++ Dynamics                   | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hjm/G2PlusPlusDynamics.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/hjm/G2PlusPlusDynamics.drop) |
- | Multi-Factor Dynamics           | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hjm/MultiFactorDynamics.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/hjm/MultiFactorDynamics.drop) |
- | Multi-Factor QM Dynamics        | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hjm/MultiFactorQMDynamics.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/hjm/MultiFactorQMDynamics.drop) |
- | Principal Component Dynamics    | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hjm/PrincipalComponentDynamics.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/hjm/PrincipalComponentDynamics.drop) |
+ |     Sample     | Source | Output |
+ |----------------|--------|--------|
+ | G2++ Dynamics | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hjm/G2PlusPlusDynamics.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/hjm/G2PlusPlusDynamics.drop) |
+ | Multi Factor Dynamics | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hjm/MultiFactorDynamics.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/hjm/MultiFactorDynamics.drop) |
+ | Multi Factor QM Dynamics | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hjm/MultiFactorQMDynamics.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/hjm/MultiFactorQMDynamics.drop) |
+ | Principal Component Dynamics | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hjm/PrincipalComponentDynamics.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/hjm/PrincipalComponentDynamics.drop) |
  | Principal Component QM Dynamics | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hjm/PrincipalComponentQMDynamics.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/hjm/PrincipalComponentQMDynamics.drop) |
 
 
 ## Hierarchy
 
  <ul>
-	<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
-	<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics Library</a></li>
-	<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
-	<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hjm/README.md">Generic HJM Evolution</a></li>
+	<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
+	<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+	<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+	<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hjm/README.md">HJM Multi-Factor Principal Dynamics</a></li>
  </ul>
 
 

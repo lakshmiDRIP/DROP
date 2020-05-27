@@ -24,7 +24,7 @@ DROP Sample HJM illustrates the HJM Multi-Factor Principal Dynamics Evolution.
  <i>PrincipalComponentDynamics</i> demonstrates the Construction and Usage of the PCA-Based Multi-Factor
  Gaussian Model Dynamics for the Evolution of the Instantaneous Forward Rate, the Price, and the Short Rate.
 
- * [***G2PlusPlusDynamics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hjm/G2PlusPlusDynamics.java)
+ * [***PrincipalComponentQMDynamics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hjm/PrincipalComponentQMDynamics.java)
  <i>PrincipalComponentQMDynamics</i> demonstrates the Construction and Usage of the Principal Component Based
  Gaussian Model Dynamics for the Evolution of the Discount Factor Quantification Metrics - the Instantaneous
  Forward Rate, the LIBOR Forward Rate, the Shifted LIBOR Forward Rate, the Short Rate, the Compounded Short

@@ -7,24 +7,29 @@ DROP Sample He Litterman illustrates the He Litterman (1999) Projection Loadings
 
 ## Class Components
 
- |          Sample          | Source | Output |
- |--------------------------|--------|--------|
+ |     Sample     | Source | Output |
+ |----------------|--------|--------|
  | Table 4 Detailed Blowout | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/helitterman/Table4DetailedBlowout.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/helitterman/Table4DetailedBlowout.drop) |
- | Table 4 Reconciler       | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/helitterman/Table4Reconciler.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/helitterman/Table4Reconciler.drop) |
- | Table 5 Reconciler       | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/helitterman/Table5Reconciler.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/helitterman/Table5Reconciler.drop) |
- | Table 6 Reconciler       | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/helitterman/Table6Reconciler.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/helitterman/Table6Reconciler.drop) |
- | Table 7 Reconciler       | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/helitterman/Table7Reconciler.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/helitterman/Table7Reconciler.drop) |
- | Table 8 Reconciler       | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/helitterman/Table8Reconciler.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/helitterman/Table8Reconciler.drop) |
+ | Table 4 Reconciler | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/helitterman/Table4Reconciler.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/helitterman/Table4Reconciler.drop) |
+ | Table 5 Reconciler | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/helitterman/Table5Reconciler.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/helitterman/Table5Reconciler.drop) |
+ | Table 6 Reconciler | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/helitterman/Table6Reconciler.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/helitterman/Table6Reconciler.drop) |
+ | Table 7 Reconciler | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/helitterman/Table7Reconciler.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/helitterman/Table7Reconciler.drop) |
+ | Table 8 Reconciler | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/helitterman/Table8Reconciler.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/helitterman/Table8Reconciler.drop) |
 
 
 ## Hierarchy
 
  <ul>
 	<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
-	<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md">Asset Allocation Analytics Library</a></li>
-	<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
-	<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/helitterman/README.md">He and Litterman (1999) Reconcilers</a></li>
+	<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md">Asset Allocation Analytics</a></li>
+	<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+	<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/helitterman/README.md">He Litterman (1999) Projection Loadings</a></li>
  </ul>
+
+
+## References
+
+ * He. G., and R. Litterman (1999): The Intuition behind the Black Litterman Model Portfolios, Goldman Sachs Asset Management
 
 
 ## DROP Specifications

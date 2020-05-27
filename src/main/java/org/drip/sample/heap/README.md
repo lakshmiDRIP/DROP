@@ -25,6 +25,9 @@ DROP Sample Heap illustrates the Construction/Usage Priority Queue and Heap Algo
  * [***BinomialHeapMaxRandomInsert***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/heap/BinomialHeapMaxRandomInsert.java)
  <i>BinomialHeapMaxRandomInsert</i> illustrates the Random Insertion Operation into a Max Binomial Heap.
 
+ * [***BinomialHeapMaxSequentialDelete***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/heap/BinomialHeapMaxSequentialDelete.java)
+ <i>BinomialHeapMaxSequentialDelete</i> illustrates the Sequential Deletion Operation into a Max Binomial Heap.
+
  * [***BinomialHeapMaxSequentialExtract***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/heap/BinomialHeapMaxSequentialExtract.java)
  <i>BinomialHeapMaxSequentialExtract</i> illustrates the Sequential Extraction Operation into a Max Binomial Heap.
 
@@ -34,11 +37,11 @@ DROP Sample Heap illustrates the Construction/Usage Priority Queue and Heap Algo
  * [***BinomialHeapMinRandomExtract***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/heap/BinomialHeapMinRandomExtract.java)
  <i>BinomialHeapMinRandomExtract</i> illustrates the Extract Min Operation into a Min Binomial Heap.
 
- * [***BinomialHeapMinRandomExtract***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/heap/BinomialHeapMinRandomExtract.java)
- <i>BinomialHeapMinRandomExtract</i> illustrates the Extract Min Operation into a Min Binomial Heap.
-
  * [***BinomialHeapMinRandomInsert***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/heap/BinomialHeapMinRandomInsert.java)
  <i>BinomialHeapMinRandomInsert</i> illustrates the Random Insert Operation into a Min Binomial Heap.
+
+ * [***BinomialHeapMinSequentialDelete***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/heap/BinomialHeapMinSequentialDelete.java)
+ <i>BinomialHeapMinSequentialDelete</i> illustrates the Sequential Deletion Operation into a Min Binomial Heap.
 
  * [***BinomialHeapMinSequentialExtract***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/heap/BinomialHeapMinSequentialExtract.java)
  <i>BinomialHeapMinSequentialExtract</i> illustrates the Sequential Extraction Operation into a Min Binomial Heap.
@@ -50,7 +53,7 @@ DROP Sample Heap illustrates the Construction/Usage Priority Queue and Heap Algo
  <i>PriorityQueueTimeComplexity</i> illustrates the Asymptotic Estimates of the Priority Queue Time Complexity for Heap Based Implementations.
 
 
-# References
+## References
 
  * Brodal, G. S. (1996): Priority Queue on Parallel Machines <i>Scandinavian Workshop on Algorithm Theory; SWAT 96</i> 416-427
 
