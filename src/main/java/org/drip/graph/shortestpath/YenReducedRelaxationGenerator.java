@@ -75,8 +75,8 @@ package org.drip.graph.shortestpath;
  */
 
 /**
- * <i>YenVertexScanGenerator</i> generates the Shortest Path for a Directed Graph using the Bellman-Ford
- * 	Algorithm with a Yen (1970) Vertex Scan Trimming Scheme applied. The References are:
+ * <i>YenReducedRelaxationGenerator</i> generates the Shortest Path for a Directed Graph using the
+ * 	Bellman-Ford Algorithm with a Yen (1970) Vertex Relaxation Trimming Scheme applied. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -112,111 +112,22 @@ package org.drip.graph.shortestpath;
  * @author Lakshmi Krishnamurthy
  */
 
-public class YenVertexScanGenerator
-	extends org.drip.graph.shortestpath.OptimalPathGenerator
+public class YenReducedRelaxationGenerator
+	extends org.drip.graph.shortestpath.BellmanFordGenerator
 {
 
-	@Override protected org.drip.graph.shortestpath.VertexAugmentor augmentVertexes (
-		final java.lang.String sourceVertexName)
+	@Override protected boolean vertexNeedsRelaxation (
+		final org.drip.graph.shortestpath.VertexRelaxationControl vertexRelaxationControl,
+		final org.drip.graph.core.Edge edge)
 	{
-		if (null == sourceVertexName || sourceVertexName.isEmpty())
-		{
-			return null;
-		}
-
-		boolean shortestPath = shortestPath();
-
-		org.drip.graph.core.DirectedGraph graph = graph();
-
-		java.util.Set<java.lang.String> vertexNameSet = graph.vertexNameSet();
-
-		org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor = null;
-		org.drip.graph.shortestpath.YenVertexScanOptimizer vertexScanOptimizer = null;
-
-		try
-		{
-			vertexAugmentor = new org.drip.graph.shortestpath.VertexAugmentor (
-				sourceVertexName,
-				shortestPath
+		return null == vertexRelaxationControl ||
+			vertexRelaxationControl.vertexNeedsRelaxation (
+				edge.sourceVertexName()
 			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-
-			return null;
-		}
-
-		if (!vertexAugmentor.initializeVertexNameSet (
-			vertexNameSet
-		))
-		{
-			return null;
-		}
-
-		int vertexCount = vertexNameSet.size();
-
-		java.util.Map<java.lang.String, org.drip.graph.core.Edge> edgeMap = graph.edgeMap();
-
-		org.drip.graph.heap.PriorityQueue<java.lang.Double, java.lang.String> edgePriorityQueue =
-			new org.drip.graph.heap.BinomialTreePriorityQueue<java.lang.Double, java.lang.String> (
-				shortestPath
-			);
-
-		while (0 < vertexCount--)
-		{
-			if (!edgePriorityQueue.meld (
-				graph.edgePriorityQueue (
-					shortestPath
-				)
-			))
-			{
-				return null;
-			}
-
-			while (!edgePriorityQueue.isEmpty())
-			{
-				if (!vertexAugmentor.updateAugmentedVertex (
-					edgeMap.get (
-						edgePriorityQueue.extractExtremum().item()
-					)
-				))
-				{
-					return null;
-				}
-			}
-
-			if (null == vertexScanOptimizer)
-			{
-				try
-				{
-					vertexScanOptimizer = new org.drip.graph.shortestpath.YenVertexScanOptimizer (
-						vertexAugmentor.augmentedVertexMap()
-					);
-				}
-				catch (java.lang.Exception e)
-				{
-					e.printStackTrace();
-
-					return null;
-				}
-			}
-			else
-			{
-				if (!vertexScanOptimizer.scanAndUpdateVertexes (
-					vertexAugmentor.augmentedVertexMap()
-				))
-				{
-					return null;
-				}
-			}
-		}
-
-		return vertexAugmentor;
 	}
 
 	/**
-	 * YenVertexScanGenerator Constructor
+	 * YenReducedRelaxationGenerator Constructor
 	 * 
 	 * @param graph Graph underlying the Path Generator
 	 * @param shortestPath TRUE - Shortest Path Sought
@@ -224,7 +135,7 @@ public class YenVertexScanGenerator
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public YenVertexScanGenerator (
+	public YenReducedRelaxationGenerator (
 		final org.drip.graph.core.DirectedGraph graph,
 		final boolean shortestPath)
 		throws java.lang.Exception

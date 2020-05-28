@@ -75,8 +75,9 @@ package org.drip.graph.shortestpath;
  */
 
 /**
- * <i>YenVertexScanOptimizer</i> optimizes the Shortest Path Generation for a Directed Graph under the
- * 	Bellman-Ford Algorithm. This happens by eliminating unnecessary Vertex Scans. The References are:
+ * <i>VertexRelaxationControl</i> controls the Vertexes to be relaxed in the Shortest Path Generation for a
+ * 	Directed Graph under the Bellman-Ford Algorithm. This happens by eliminating unnecessary Vertex
+ * 	Relaxations. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -112,20 +113,20 @@ package org.drip.graph.shortestpath;
  * @author Lakshmi Krishnamurthy
  */
 
-public class YenVertexScanOptimizer
+public class VertexRelaxationControl
 {
-	private java.util.Map<java.lang.String, java.lang.Boolean> _vertexScanMap = null;
 	private java.util.Map<java.lang.String, java.lang.Double> _vertexDistanceMap = null;
+	private java.util.Map<java.lang.String, java.lang.Boolean> _vertexRelaxationMap = null;
 
 	/**
-	 * YenVertexScanOptimizer Constructor
+	 * VertexRelaxationControl Constructor
 	 * 
 	 * @param augmentedVertexMap The Augmented Vertex Map
 	 * 
 	 * @throws java.lang.Exception Thrown if the Input is Invalid
 	 */
 
-	public YenVertexScanOptimizer (
+	public VertexRelaxationControl (
 		final java.util.Map<java.lang.String, org.drip.graph.shortestpath.AugmentedVertex>
 			augmentedVertexMap)
 		throws java.lang.Exception
@@ -133,11 +134,11 @@ public class YenVertexScanOptimizer
 		if (null == augmentedVertexMap || 0 == augmentedVertexMap.size())
 		{
 			throw new java.lang.Exception (
-				"YenVertexScanOptimizer Constructor => Invalid Inputs"
+				"VertexRelaxationControl Constructor => Invalid Inputs"
 			);
 		}
 
-		_vertexScanMap = new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Boolean>();
+		_vertexRelaxationMap = new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Boolean>();
 
 		_vertexDistanceMap = new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
@@ -146,7 +147,7 @@ public class YenVertexScanOptimizer
 		{
 			java.lang.String vertexName = augmentedVertexEntry.getKey();
 
-			_vertexScanMap.put (
+			_vertexRelaxationMap.put (
 				vertexName,
 				true
 			);
@@ -159,14 +160,14 @@ public class YenVertexScanOptimizer
 	}
 
 	/**
-	 * Retrieve the Vertex Scan Map
+	 * Retrieve the Vertex Relaxation Map
 	 * 
-	 * @return The Vertex Scan Map
+	 * @return The Vertex Relaxation Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Boolean> vertexScanMap()
+	public java.util.Map<java.lang.String, java.lang.Boolean> vertexRelaxationMap()
 	{
-		return _vertexScanMap;
+		return _vertexRelaxationMap;
 	}
 
 	/**
@@ -181,18 +182,20 @@ public class YenVertexScanOptimizer
 	}
 
 	/**
-	 * Scan and Update the Vertexes
+	 * Relax and Update the Vertexes
 	 * 
 	 * @param updatedAugmentedVertexMap The Updated Augmented Vertex Map
 	 * 
-	 * @return TRUE - The Vertexes are Scanned and Updated
+	 * @return TRUE - The Vertexes are Relaxed and Updated
 	 */
 
-	public boolean scanAndUpdateVertexes (
+	public boolean relaxAndUpdateVertexes (
 		final java.util.Map<java.lang.String, org.drip.graph.shortestpath.AugmentedVertex>
 			updatedAugmentedVertexMap)
 	{
-		if (null == updatedAugmentedVertexMap || updatedAugmentedVertexMap.size() != _vertexScanMap.size())
+		if (null == updatedAugmentedVertexMap ||
+			updatedAugmentedVertexMap.size() != _vertexRelaxationMap.size()
+		)
 		{
 			return false;
 		}
@@ -209,7 +212,7 @@ public class YenVertexScanOptimizer
 				) == updatedVertexDistance
 			)
 			{
-				_vertexScanMap.put (
+				_vertexRelaxationMap.put (
 					vertexName,
 					false
 				);
@@ -227,18 +230,20 @@ public class YenVertexScanOptimizer
 	}
 
 	/**
-	 * Indicate if the Vertex Needs a Scan
+	 * Indicate if the Vertex Needs a Relaxation
 	 * 
 	 * @param vertexName The Vertex Name
 	 * 
-	 * @return TRUE - The Vertex Needs a Scan
+	 * @return TRUE - The Vertex Needs a Relaxation
 	 */
 
-	public boolean vertexNeedsScan (
+	public boolean vertexNeedsRelaxation (
 		final java.lang.String vertexName)
 	{
 		if (null == vertexName || vertexName.isEmpty() ||
-			!_vertexScanMap.containsKey (
+			!_vertexRelaxationMap.containsKey (
+				vertexName
+			) || !_vertexDistanceMap.containsKey (
 				vertexName
 			)
 		)
@@ -246,8 +251,14 @@ public class YenVertexScanOptimizer
 			return false;
 		}
 
-		return _vertexScanMap.get (
+		double vertexDistance = _vertexDistanceMap.get (
 			vertexName
 		);
+
+		return java.lang.Double.MAX_VALUE == vertexDistance ||
+			java.lang.Double.MIN_VALUE == vertexDistance ||
+			_vertexRelaxationMap.get (
+				vertexName
+			);
 	}
 }

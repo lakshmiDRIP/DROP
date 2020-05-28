@@ -116,6 +116,42 @@ public class BellmanFordGenerator
 	extends org.drip.graph.shortestpath.OptimalPathGenerator
 {
 
+	protected boolean vertexNeedsRelaxation (
+		final org.drip.graph.shortestpath.VertexRelaxationControl vertexRelaxationControl,
+		final org.drip.graph.core.Edge edge)
+	{
+		return true;
+	}
+
+	private boolean verifyNegativeCycle (
+		final org.drip.graph.shortestpath.VertexRelaxationControl vertexRelaxationControl,
+		final org.drip.graph.heap.PriorityQueue<java.lang.Double, java.lang.String> edgePriorityQueue)
+	{
+		java.util.Map<java.lang.String, org.drip.graph.core.Edge> edgeMap = graph().edgeMap();
+
+		java.util.Map<java.lang.String, java.lang.Double> vertexDistanceMap =
+			vertexRelaxationControl.vertexDistanceMap();
+
+		while (!edgePriorityQueue.isEmpty())
+		{
+			org.drip.graph.core.Edge edge = edgeMap.get (
+				edgePriorityQueue.extractExtremum().item()
+			);
+
+			if (vertexDistanceMap.get (
+					edge.sourceVertexName()
+				) + edge.weight() < vertexDistanceMap.get (
+					edge.sourceVertexName()
+				)
+			)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	@Override protected org.drip.graph.shortestpath.VertexAugmentor augmentVertexes (
 		final java.lang.String sourceVertexName)
 	{
@@ -124,13 +160,14 @@ public class BellmanFordGenerator
 			return null;
 		}
 
-		org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor = null;
-
 		boolean shortestPath = shortestPath();
 
 		org.drip.graph.core.DirectedGraph graph = graph();
 
 		java.util.Set<java.lang.String> vertexNameSet = graph.vertexNameSet();
+
+		org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor = null;
+		org.drip.graph.shortestpath.VertexRelaxationControl vertexRelaxationControl = null;
 
 		try
 		{
@@ -152,6 +189,7 @@ public class BellmanFordGenerator
 		{
 			return null;
 		}
+
 		int vertexCount = vertexNameSet.size();
 
 		java.util.Map<java.lang.String, org.drip.graph.core.Edge> edgeMap = graph.edgeMap();
@@ -174,10 +212,43 @@ public class BellmanFordGenerator
 
 			while (!edgePriorityQueue.isEmpty())
 			{
-				if (!vertexAugmentor.updateAugmentedVertex (
-					edgeMap.get (
-						edgePriorityQueue.extractExtremum().item()
-					)
+				org.drip.graph.core.Edge edge = edgeMap.get (
+					edgePriorityQueue.extractExtremum().item()
+				);
+
+				if (vertexNeedsRelaxation (
+					vertexRelaxationControl,
+					edge
+				))
+				{
+					if (!vertexAugmentor.updateAugmentedVertex (
+						edge
+					))
+					{
+						return null;
+					}
+				}
+			}
+
+			if (null == vertexRelaxationControl)
+			{
+				try
+				{
+					vertexRelaxationControl = new org.drip.graph.shortestpath.VertexRelaxationControl (
+						vertexAugmentor.augmentedVertexMap()
+					);
+				}
+				catch (java.lang.Exception e)
+				{
+					e.printStackTrace();
+
+					return null;
+				}
+			}
+			else
+			{
+				if (!vertexRelaxationControl.relaxAndUpdateVertexes (
+					vertexAugmentor.augmentedVertexMap()
 				))
 				{
 					return null;
@@ -185,7 +256,14 @@ public class BellmanFordGenerator
 			}
 		}
 
-		return vertexAugmentor;
+		return edgePriorityQueue.meld (
+			graph.edgePriorityQueue (
+				shortestPath
+			)
+		) && verifyNegativeCycle (
+			vertexRelaxationControl,
+			edgePriorityQueue
+		) ? vertexAugmentor : null;
 	}
 
 	/**

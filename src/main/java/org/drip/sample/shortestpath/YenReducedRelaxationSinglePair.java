@@ -5,7 +5,7 @@ import org.drip.graph.core.DirectedGraph;
 import org.drip.graph.core.Edge;
 import org.drip.graph.core.Path;
 import org.drip.graph.shortestpath.OptimalPathGenerator;
-import org.drip.graph.shortestpath.YenVertexScanGenerator;
+import org.drip.graph.shortestpath.YenReducedRelaxationGenerator;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -83,9 +83,9 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>YenVertexScanSinglePair</i> illustrates the Shortest Path Generation for a Directed Graph using the
- * 	Bellman-Ford Algorithm for a given Source Destination Pair with the Yen Vertex Scan Optimization
- * 	applied. The References are:
+ * <i>YenReducedRelaxationSinglePair</i> illustrates the Shortest Path Generation for a Directed Graph using
+ * 	the Bellman-Ford Algorithm for a given Source Destination Pair with the Yen Reduced Vertex Relaxation
+ * 	Scheme applied. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -121,7 +121,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class YenVertexScanSinglePair
+public class YenReducedRelaxationSinglePair
 {
 
 	public static final void main (
@@ -248,7 +248,7 @@ public class YenVertexScanSinglePair
 			"\t|-----------------------------------------------------------------------------------------------------"
 		);
 
-		OptimalPathGenerator bellmanFordGenerator = new YenVertexScanGenerator (
+		OptimalPathGenerator optimalPathGenerator = new YenReducedRelaxationGenerator (
 			graph,
 			true
 		);
@@ -261,7 +261,7 @@ public class YenVertexScanSinglePair
 					vertexName
 				))
 				{
-					Path path = bellmanFordGenerator.singlePair (
+					Path path = optimalPathGenerator.singlePair (
 						sourceVertexName,
 						vertexName
 					);
