@@ -56,7 +56,8 @@ Computational Core Module contains libraries the implement Algorithm/Computation
  * Dijkstra's Algorithm
  * Bellman-Ford Algorithm
  * Johnson's Algorithm
- * A^* Search Algorithm
+ * A<sup>*</sup> Search Algorithm
+ * Floyd-Warshall Algorithm
 
 
 ## Model Validation Coverage

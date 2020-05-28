@@ -11,7 +11,7 @@ Graph Algorithm Library contains the Libraries implementing the Graph Representa
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm/GraphAlgorithm_v4.90.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm/GraphAlgorithm_v4.91.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -234,6 +234,16 @@ Graph Algorithm Library contains the Libraries implementing the Graph Representa
 	* Applications
 	* Relation to Other Algorithms
 	* Variants
+	* References
+ * Floyd-Warshall Algorithm
+	* Overview
+	* History and Naming
+	* Algorithm
+	* Behavior with Negative Cycles
+	* Path Reconstruction
+	* Analysis
+	* Applications and Generalizations
+	* Comparisons with other Shortest Path Algorithms
 	* References
 
 

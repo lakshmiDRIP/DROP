@@ -7,19 +7,19 @@ DROP Sample FX illustrates the Smooth Shape Preserving FX Curve API.
 
 ## Class Components
 
- |            Sample            | Source | Output |
- |------------------------------|--------|--------|
- | Custom FX Curve Builder      | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/fx/CustomFXCurveBuilder.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/fx/CustomFXCurveBuilder.drop) |
+ |     Sample     | Source | Output |
+ |----------------|--------|--------|
+ | Custom FX Curve Builder | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/fx/CustomFXCurveBuilder.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/fx/CustomFXCurveBuilder.drop) |
  | FX Currency Pair Conventions | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/fx/FXCurrencyPairConventions.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/fx/FXCurrencyPairConventions.drop) |
 
 
 ## Hierarchy
 
  <ul>
-	<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
-	<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics Library</a></li>
-	<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
-	<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/fx/README.md">FX Curve Builder</a></li>
+	<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
+	<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+	<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+	<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/fx/README.md">Smooth Shape Preserving FX Curve</a></li>
  </ul>
 
 
