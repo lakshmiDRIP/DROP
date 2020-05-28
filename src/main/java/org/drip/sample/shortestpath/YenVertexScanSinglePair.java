@@ -1,5 +1,13 @@
 
-package org.drip.graph.shortestpath;
+package org.drip.sample.shortestpath;
+
+import org.drip.graph.core.DirectedGraph;
+import org.drip.graph.core.Edge;
+import org.drip.graph.core.Path;
+import org.drip.graph.shortestpath.OptimalPathGenerator;
+import org.drip.graph.shortestpath.YenVertexScanGenerator;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,8 +83,9 @@ package org.drip.graph.shortestpath;
  */
 
 /**
- * <i>BellmanFordGenerator</i> generates the Shortest Path for a Directed Graph using the Bellman-Ford
- * 	Algorithm. The References are:
+ * <i>YenVertexScanSinglePair</i> illustrates the Shortest Path Generation for a Directed Graph using the
+ * 	Bellman-Ford Algorithm for a given Source Destination Pair with the Yen Vertex Scan Optimization
+ * 	applied. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -104,107 +113,172 @@ package org.drip.graph.shortestpath;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/shortestpath/README.md">Shortest Path Generation Algorithm Family</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/shortestpath/README.md">Source Destination Shortest Path Algorithms</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BellmanFordGenerator
-	extends org.drip.graph.shortestpath.OptimalPathGenerator
+public class YenVertexScanSinglePair
 {
 
-	@Override protected org.drip.graph.shortestpath.VertexAugmentor augmentVertexes (
-		final java.lang.String sourceVertexName)
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		if (null == sourceVertexName || sourceVertexName.isEmpty())
+		EnvManager.InitEnv (
+			""
+		);
+
+		String[] vertexArray = new String[]
 		{
-			return null;
-		}
+			"Delhi     ",
+			"Bombay    ",
+			"Madras    ",
+			"Calcutta  ",
+			"Bangalore ",
+			"Hyderabad ",
+			"Cochin    ",
+			"Pune      ",
+			"Ahmedabad ",
+			"Jaipur    "
+		};
 
-		org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor = null;
+		DirectedGraph graph = new DirectedGraph();
 
-		boolean shortestPath = shortestPath();
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[0], // Delhi
+				vertexArray[1], // Bombay
+				1388.
+			)
+		);
 
-		org.drip.graph.core.DirectedGraph graph = graph();
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[0], // Delhi
+				vertexArray[2], // Madras
+				2191.
+			)
+		);
 
-		java.util.Set<java.lang.String> vertexNameSet = graph.vertexNameSet();
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[1], // Bombay
+				vertexArray[2], // Madras
+				1279.
+			)
+		);
 
-		try
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[0], // Delhi
+				vertexArray[3], // Calcutta
+				1341.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[1], // Bombay
+				vertexArray[3], // Calcutta
+				1968.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[2], // Madras
+				vertexArray[3], // Calcutta
+				1663.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[2], // Madras
+				vertexArray[4], // Bangalore
+				361.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[2], // Madras
+				vertexArray[5], // Hyderabad
+				784.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[2], // Madras
+				vertexArray[6], // Cochin
+				697.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[1], // Bombay
+				vertexArray[7], // Pune
+				192.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[1], // Bombay
+				vertexArray[8], // Ahmedabad
+				492.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[0], // Delhi
+				vertexArray[9], // Jaipur
+				308.
+			)
+		);
+
+		System.out.println (
+			"\t|-----------------------------------------------------------------------------------------------------"
+		);
+
+		OptimalPathGenerator bellmanFordGenerator = new YenVertexScanGenerator (
+			graph,
+			true
+		);
+
+		for (String sourceVertexName : vertexArray)
 		{
-			vertexAugmentor = new org.drip.graph.shortestpath.VertexAugmentor (
-				sourceVertexName,
-				shortestPath
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-
-			return null;
-		}
-
-		if (!vertexAugmentor.initializeVertexNameSet (
-			vertexNameSet
-		))
-		{
-			return null;
-		}
-		int vertexCount = vertexNameSet.size();
-
-		java.util.Map<java.lang.String, org.drip.graph.core.Edge> edgeMap = graph.edgeMap();
-
-		org.drip.graph.heap.PriorityQueue<java.lang.Double, java.lang.String> edgePriorityQueue =
-			new org.drip.graph.heap.BinomialTreePriorityQueue<java.lang.Double, java.lang.String> (
-				shortestPath
-			);
-
-		while (0 < vertexCount--)
-		{
-			if (!edgePriorityQueue.meld (
-				graph.edgePriorityQueue (
-					shortestPath
-				)
-			))
+			for (String vertexName : vertexArray)
 			{
-				return null;
-			}
-
-			while (!edgePriorityQueue.isEmpty())
-			{
-				if (!vertexAugmentor.updateAugmentedVertex (
-					edgeMap.get (
-						edgePriorityQueue.extractExtremum().item()
-					)
+				if (!sourceVertexName.equalsIgnoreCase (
+					vertexName
 				))
 				{
-					return null;
+					Path path = bellmanFordGenerator.singlePair (
+						sourceVertexName,
+						vertexName
+					);
+
+					System.out.println (
+						"\t| {" + sourceVertexName + " -> " + vertexName + "} => " + 
+						path.vertexList() + " | " +
+						FormatUtil.FormatDouble (path.totalLength(), 4, 0, 1.)
+					);
 				}
 			}
+
+			System.out.println (
+				"\t|-----------------------------------------------------------------------------------------------------"
+			);
 		}
 
-		return vertexAugmentor;
-	}
-
-	/**
-	 * BellmanFordGenerator Constructor
-	 * 
-	 * @param graph Graph underlying the Path Generator
-	 * @param shortestPath TRUE - Shortest Path Sought
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public BellmanFordGenerator (
-		final org.drip.graph.core.DirectedGraph graph,
-		final boolean shortestPath)
-		throws java.lang.Exception
-	{
-		super (
-			graph,
-			shortestPath
-		);
+		EnvManager.TerminateEnv();
 	}
 }

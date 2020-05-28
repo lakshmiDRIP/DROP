@@ -179,4 +179,75 @@ public class YenVertexScanOptimizer
 	{
 		return _vertexDistanceMap;
 	}
+
+	/**
+	 * Scan and Update the Vertexes
+	 * 
+	 * @param updatedAugmentedVertexMap The Updated Augmented Vertex Map
+	 * 
+	 * @return TRUE - The Vertexes are Scanned and Updated
+	 */
+
+	public boolean scanAndUpdateVertexes (
+		final java.util.Map<java.lang.String, org.drip.graph.shortestpath.AugmentedVertex>
+			updatedAugmentedVertexMap)
+	{
+		if (null == updatedAugmentedVertexMap || updatedAugmentedVertexMap.size() != _vertexScanMap.size())
+		{
+			return false;
+		}
+
+		for (java.util.Map.Entry<java.lang.String, org.drip.graph.shortestpath.AugmentedVertex>
+			updatedAugmentedVertexEntry : updatedAugmentedVertexMap.entrySet())
+		{
+			java.lang.String vertexName = updatedAugmentedVertexEntry.getKey();
+
+			double updatedVertexDistance = updatedAugmentedVertexEntry.getValue().weight();
+
+			if (_vertexDistanceMap.get (
+					vertexName
+				) == updatedVertexDistance
+			)
+			{
+				_vertexScanMap.put (
+					vertexName,
+					false
+				);
+			}
+			else
+			{
+				_vertexDistanceMap.put (
+					vertexName,
+					updatedVertexDistance
+				);
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Indicate if the Vertex Needs a Scan
+	 * 
+	 * @param vertexName The Vertex Name
+	 * 
+	 * @return TRUE - The Vertex Needs a Scan
+	 */
+
+	public boolean vertexNeedsScan (
+		final java.lang.String vertexName)
+	{
+		if (null == vertexName || vertexName.isEmpty() ||
+			!_vertexScanMap.containsKey (
+				vertexName
+			)
+		)
+		{
+			return false;
+		}
+
+		return _vertexScanMap.get (
+			vertexName
+		);
+	}
 }
