@@ -75,8 +75,9 @@ package org.drip.graph.shortestpath;
  */
 
 /**
- * <i>BellmanFordGenerator</i> generates the Shortest Path for a Directed Graph using the Bellman-Ford
- * 	Algorithm. The References are:
+ * <i>YenEdgePartitionGenerator</i> generates the Shortest Path for a Directed Graph using the Bellman-Ford
+ * 	Algorithm with the Edge Partitioning Scheme applied to improve the Worst-Case Behavior. The References
+ * 	are:
  * 
  * <br><br>
  *  <ul>
@@ -112,44 +113,208 @@ package org.drip.graph.shortestpath;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BellmanFordGenerator
-	extends org.drip.graph.shortestpath.OptimalPathGenerator
+public class YenEdgePartitionGenerator
+	extends org.drip.graph.shortestpath.BellmanFordGenerator
 {
+	private java.util.List<java.lang.String> _vertexNameList = null;
+	private org.drip.graph.core.DirectedGraph _forwardDirectedGraph = null;
+	private org.drip.graph.core.DirectedGraph _backwardDirectedGraph = null;
+	private java.util.Map<java.lang.String, java.lang.Integer> _vertexIndexMap = null;
 
-	protected boolean vertexNeedsRelaxation (
-		final org.drip.graph.shortestpath.VertexRelaxationControl vertexRelaxationControl,
-		final org.drip.graph.core.Edge edge)
+	private static final boolean ProcessVertex (
+		final org.drip.graph.core.Vertex vertex,
+		final org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor,
+		final boolean shortestPath)
 	{
-		return true;
-	}
+		org.drip.graph.heap.PriorityQueue<java.lang.Double, org.drip.graph.core.Edge> edgePriorityQueue =
+			new org.drip.graph.heap.BinomialTreePriorityQueue<java.lang.Double, org.drip.graph.core.Edge> (
+				shortestPath
+			);
 
-	protected boolean verifyNegativeCycle (
-		final org.drip.graph.shortestpath.VertexRelaxationControl vertexRelaxationControl,
-		final org.drip.graph.heap.PriorityQueue<java.lang.Double, java.lang.String> edgePriorityQueue)
-	{
-		java.util.Map<java.lang.String, org.drip.graph.core.Edge> edgeMap = graph().edgeMap();
-
-		java.util.Map<java.lang.String, java.lang.Double> vertexDistanceMap =
-			vertexRelaxationControl.vertexDistanceMap();
+		if (!edgePriorityQueue.meld (
+			vertex.adjacencyPriorityQueue (
+				shortestPath
+			)
+		))
+		{
+			return false;
+		}
 
 		while (!edgePriorityQueue.isEmpty())
 		{
-			org.drip.graph.core.Edge edge = edgeMap.get (
+			if (!vertexAugmentor.updateAugmentedVertex (
 				edgePriorityQueue.extractExtremum().item()
-			);
-
-			if (vertexDistanceMap.get (
-					edge.sourceVertexName()
-				) + edge.weight() < vertexDistanceMap.get (
-					edge.destinationVertexName()
-				)
-			)
+			))
 			{
 				return false;
 			}
 		}
 
 		return true;
+	}
+
+	private boolean processSubgraph (
+		final int vertexCount,
+		final boolean forward,
+		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor,
+		final boolean shortestPath)
+	{
+		int vertexIndex = forward ? 0 : vertexCount - 1;
+		int finalVertexIndex = forward ? vertexCount - 1 : 0;
+
+		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> forwardVertexMap = graph.vertexMap();
+
+		while (vertexIndex != finalVertexIndex)
+		{
+			java.lang.String vertexName = _vertexNameList.get (
+				vertexIndex
+			);
+
+			if (graph.containsVertex (
+				vertexName
+			))
+			{
+				if (!ProcessVertex (
+					forwardVertexMap.get (
+						vertexName
+					),
+					vertexAugmentor,
+					shortestPath
+				))
+				{
+					return false;
+				}
+			}
+
+			if (forward)
+			{
+				++vertexIndex;
+			}
+			else
+			{
+				--vertexIndex;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * YenEdgePartitionGenerator Constructor
+	 * 
+	 * @param graph Graph underlying the Path Generator
+	 * @param shortestPath TRUE - Shortest Path Sought
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public YenEdgePartitionGenerator (
+		final org.drip.graph.core.DirectedGraph graph,
+		final boolean shortestPath)
+		throws java.lang.Exception
+	{
+		super (
+			graph,
+			shortestPath
+		);
+
+		int vertexIndex = 0;
+
+		_vertexNameList = new java.util.ArrayList<java.lang.String>();
+
+		_vertexIndexMap = new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Integer>();
+
+		for (java.lang.String vertexName : graph.vertexMap().keySet())
+		{
+			_vertexNameList.add (
+				vertexName
+			);
+
+			_vertexIndexMap.put (
+				vertexName,
+				vertexIndex++
+			);
+		}
+
+		_forwardDirectedGraph = new org.drip.graph.core.DirectedGraph();
+
+		_backwardDirectedGraph = new org.drip.graph.core.DirectedGraph();
+
+		for (org.drip.graph.core.Edge edge : graph.edgeMap().values())
+		{
+			if (_vertexIndexMap.get (
+					edge.sourceVertexName()
+				) < _vertexIndexMap.get (
+					edge.destinationVertexName()
+				)
+			)
+			{
+				if (!_forwardDirectedGraph.addEdge (
+					edge
+				))
+				{
+					throw new java.lang.Exception (
+						"YenEdgePartitionGenerator Constructor => Invalid Inputs"
+					);
+				}
+			}
+			else
+			{
+				if (!_backwardDirectedGraph.addEdge (
+					edge
+				))
+				{
+					throw new java.lang.Exception (
+						"YenEdgePartitionGenerator Constructor => Invalid Inputs"
+					);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Retrieve the Vertex Index Map
+	 * 
+	 * @return The Vertex Index Map
+	 */
+
+	public java.util.Map<java.lang.String, java.lang.Integer> vertexIndexMap()
+	{
+		return _vertexIndexMap;
+	}
+
+	/**
+	 * Retrieve the Vertex Name List
+	 * 
+	 * @return The Vertex Name List
+	 */
+
+	public java.util.List<java.lang.String> vertexNameList()
+	{
+		return _vertexNameList;
+	}
+
+	/**
+	 * Retrieve the Forward Directed Graph
+	 * 
+	 * @return Forward Directed Graph
+	 */
+
+	public org.drip.graph.core.DirectedGraph forwardDirectedGraph()
+	{
+		return _forwardDirectedGraph;
+	}
+
+	/**
+	 * Retrieve the Backward Directed Graph
+	 * 
+	 * @return Backward Directed Graph
+	 */
+
+	public org.drip.graph.core.DirectedGraph backwardDirectedGraph()
+	{
+		return _backwardDirectedGraph;
 	}
 
 	@Override protected org.drip.graph.shortestpath.VertexAugmentor augmentVertexes (
@@ -162,10 +327,11 @@ public class BellmanFordGenerator
 
 		boolean shortestPath = shortestPath();
 
+		int vertexCount = _vertexIndexMap.size();
+
 		org.drip.graph.core.DirectedGraph graph = graph();
 
-		java.util.Set<java.lang.String> vertexNameSet = graph.vertexNameSet();
-
+		int iterationCount = vertexCount;
 		org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor = null;
 		org.drip.graph.shortestpath.VertexRelaxationControl vertexRelaxationControl = null;
 
@@ -184,50 +350,30 @@ public class BellmanFordGenerator
 		}
 
 		if (!vertexAugmentor.initializeVertexNameSet (
-			vertexNameSet
+			graph.vertexNameSet()
 		))
 		{
 			return null;
 		}
 
-		int vertexCount = vertexNameSet.size();
-
-		java.util.Map<java.lang.String, org.drip.graph.core.Edge> edgeMap = graph.edgeMap();
-
-		org.drip.graph.heap.PriorityQueue<java.lang.Double, java.lang.String> edgePriorityQueue =
-			new org.drip.graph.heap.BinomialTreePriorityQueue<java.lang.Double, java.lang.String> (
-				shortestPath
-			);
-
-		while (0 < vertexCount--)
+		while (0 < iterationCount--)
 		{
-			if (!edgePriorityQueue.meld (
-				graph.edgePriorityQueue (
+			if (!processSubgraph (
+					vertexCount,
+					true,
+					_forwardDirectedGraph,
+					vertexAugmentor,
+					shortestPath
+				) || !processSubgraph (
+					vertexCount,
+					false,
+					_backwardDirectedGraph,
+					vertexAugmentor,
 					shortestPath
 				)
-			))
+			)
 			{
 				return null;
-			}
-
-			while (!edgePriorityQueue.isEmpty())
-			{
-				org.drip.graph.core.Edge edge = edgeMap.get (
-					edgePriorityQueue.extractExtremum().item()
-				);
-
-				if (vertexNeedsRelaxation (
-					vertexRelaxationControl,
-					edge
-				))
-				{
-					if (!vertexAugmentor.updateAugmentedVertex (
-						edge
-					))
-					{
-						return null;
-					}
-				}
 			}
 
 			if (null == vertexRelaxationControl)
@@ -256,6 +402,11 @@ public class BellmanFordGenerator
 			}
 		}
 
+		org.drip.graph.heap.PriorityQueue<java.lang.Double, java.lang.String> edgePriorityQueue =
+			new org.drip.graph.heap.BinomialTreePriorityQueue<java.lang.Double, java.lang.String> (
+				shortestPath
+			);
+
 		return edgePriorityQueue.meld (
 			graph.edgePriorityQueue (
 				shortestPath
@@ -264,25 +415,5 @@ public class BellmanFordGenerator
 			vertexRelaxationControl,
 			edgePriorityQueue
 		) ? vertexAugmentor : null;
-	}
-
-	/**
-	 * BellmanFordGenerator Constructor
-	 * 
-	 * @param graph Graph underlying the Path Generator
-	 * @param shortestPath TRUE - Shortest Path Sought
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public BellmanFordGenerator (
-		final org.drip.graph.core.DirectedGraph graph,
-		final boolean shortestPath)
-		throws java.lang.Exception
-	{
-		super (
-			graph,
-			shortestPath
-		);
 	}
 }
