@@ -76,8 +76,8 @@ package org.drip.graph.shortestpath;
 
 /**
  * <i>YenEdgePartitionGenerator</i> generates the Shortest Path for a Directed Graph using the Bellman-Ford
- * 	Algorithm with the Edge Partitioning Scheme applied to improve the Worst-Case Behavior. The References
- * 	are:
+ * 	Algorithm with the Yen (1970) Edge Partitioning Scheme applied to improve the Worst-Case Behavior. The
+ *  References are:
  * 
  * <br><br>
  *  <ul>
@@ -114,91 +114,9 @@ package org.drip.graph.shortestpath;
  */
 
 public class YenEdgePartitionGenerator
-	extends org.drip.graph.shortestpath.BellmanFordGenerator
+	extends org.drip.graph.shortestpath.EdgePartitionGenerator
 {
-	private java.util.List<java.lang.String> _vertexNameList = null;
-	private org.drip.graph.core.DirectedGraph _forwardDirectedGraph = null;
-	private org.drip.graph.core.DirectedGraph _backwardDirectedGraph = null;
-	private java.util.Map<java.lang.String, java.lang.Integer> _vertexIndexMap = null;
-
-	private static final boolean ProcessVertex (
-		final org.drip.graph.core.Vertex vertex,
-		final org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor,
-		final boolean shortestPath)
-	{
-		org.drip.graph.heap.PriorityQueue<java.lang.Double, org.drip.graph.core.Edge> edgePriorityQueue =
-			new org.drip.graph.heap.BinomialTreePriorityQueue<java.lang.Double, org.drip.graph.core.Edge> (
-				shortestPath
-			);
-
-		if (!edgePriorityQueue.meld (
-			vertex.adjacencyPriorityQueue (
-				shortestPath
-			)
-		))
-		{
-			return false;
-		}
-
-		while (!edgePriorityQueue.isEmpty())
-		{
-			if (!vertexAugmentor.updateAugmentedVertex (
-				edgePriorityQueue.extractExtremum().item()
-			))
-			{
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	private boolean processSubgraph (
-		final int vertexCount,
-		final boolean forward,
-		final org.drip.graph.core.DirectedGraph graph,
-		final org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor,
-		final boolean shortestPath)
-	{
-		int vertexIndex = forward ? 0 : vertexCount - 1;
-		int finalVertexIndex = forward ? vertexCount - 1 : 0;
-
-		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> forwardVertexMap = graph.vertexMap();
-
-		while (vertexIndex != finalVertexIndex)
-		{
-			java.lang.String vertexName = _vertexNameList.get (
-				vertexIndex
-			);
-
-			if (graph.containsVertex (
-				vertexName
-			))
-			{
-				if (!ProcessVertex (
-					forwardVertexMap.get (
-						vertexName
-					),
-					vertexAugmentor,
-					shortestPath
-				))
-				{
-					return false;
-				}
-			}
-
-			if (forward)
-			{
-				++vertexIndex;
-			}
-			else
-			{
-				--vertexIndex;
-			}
-		}
-
-		return true;
-	}
+	private org.drip.graph.shortestpath.EdgePartition _edgePartition = null;
 
 	/**
 	 * YenEdgePartitionGenerator Constructor
@@ -219,201 +137,20 @@ public class YenEdgePartitionGenerator
 			shortestPath
 		);
 
-		int vertexIndex = 0;
-
-		_vertexNameList = new java.util.ArrayList<java.lang.String>();
-
-		_vertexIndexMap = new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Integer>();
-
-		for (java.lang.String vertexName : graph.vertexMap().keySet())
+		if (null == (_edgePartition = org.drip.graph.shortestpath.EdgePartition.FromGraph (
+				graph,
+				false
+			))
+		)
 		{
-			_vertexNameList.add (
-				vertexName
-			);
-
-			_vertexIndexMap.put (
-				vertexName,
-				vertexIndex++
+			throw new java.lang.Exception (
+				"YenEdgePartitionGenerator Constructor => Invalid Inputs"
 			);
 		}
-
-		_forwardDirectedGraph = new org.drip.graph.core.DirectedGraph();
-
-		_backwardDirectedGraph = new org.drip.graph.core.DirectedGraph();
-
-		for (org.drip.graph.core.Edge edge : graph.edgeMap().values())
-		{
-			if (_vertexIndexMap.get (
-					edge.sourceVertexName()
-				) < _vertexIndexMap.get (
-					edge.destinationVertexName()
-				)
-			)
-			{
-				if (!_forwardDirectedGraph.addEdge (
-					edge
-				))
-				{
-					throw new java.lang.Exception (
-						"YenEdgePartitionGenerator Constructor => Invalid Inputs"
-					);
-				}
-			}
-			else
-			{
-				if (!_backwardDirectedGraph.addEdge (
-					edge
-				))
-				{
-					throw new java.lang.Exception (
-						"YenEdgePartitionGenerator Constructor => Invalid Inputs"
-					);
-				}
-			}
-		}
 	}
 
-	/**
-	 * Retrieve the Vertex Index Map
-	 * 
-	 * @return The Vertex Index Map
-	 */
-
-	public java.util.Map<java.lang.String, java.lang.Integer> vertexIndexMap()
+	@Override public org.drip.graph.shortestpath.EdgePartition edgePartition()
 	{
-		return _vertexIndexMap;
-	}
-
-	/**
-	 * Retrieve the Vertex Name List
-	 * 
-	 * @return The Vertex Name List
-	 */
-
-	public java.util.List<java.lang.String> vertexNameList()
-	{
-		return _vertexNameList;
-	}
-
-	/**
-	 * Retrieve the Forward Directed Graph
-	 * 
-	 * @return Forward Directed Graph
-	 */
-
-	public org.drip.graph.core.DirectedGraph forwardDirectedGraph()
-	{
-		return _forwardDirectedGraph;
-	}
-
-	/**
-	 * Retrieve the Backward Directed Graph
-	 * 
-	 * @return Backward Directed Graph
-	 */
-
-	public org.drip.graph.core.DirectedGraph backwardDirectedGraph()
-	{
-		return _backwardDirectedGraph;
-	}
-
-	@Override protected org.drip.graph.shortestpath.VertexAugmentor augmentVertexes (
-		final java.lang.String sourceVertexName)
-	{
-		if (null == sourceVertexName || sourceVertexName.isEmpty())
-		{
-			return null;
-		}
-
-		boolean shortestPath = shortestPath();
-
-		int vertexCount = _vertexIndexMap.size();
-
-		org.drip.graph.core.DirectedGraph graph = graph();
-
-		int iterationCount = vertexCount;
-		org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor = null;
-		org.drip.graph.shortestpath.VertexRelaxationControl vertexRelaxationControl = null;
-
-		try
-		{
-			vertexAugmentor = new org.drip.graph.shortestpath.VertexAugmentor (
-				sourceVertexName,
-				shortestPath
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-
-			return null;
-		}
-
-		if (!vertexAugmentor.initializeVertexNameSet (
-			graph.vertexNameSet()
-		))
-		{
-			return null;
-		}
-
-		while (0 < iterationCount--)
-		{
-			if (!processSubgraph (
-					vertexCount,
-					true,
-					_forwardDirectedGraph,
-					vertexAugmentor,
-					shortestPath
-				) || !processSubgraph (
-					vertexCount,
-					false,
-					_backwardDirectedGraph,
-					vertexAugmentor,
-					shortestPath
-				)
-			)
-			{
-				return null;
-			}
-
-			if (null == vertexRelaxationControl)
-			{
-				try
-				{
-					vertexRelaxationControl = new org.drip.graph.shortestpath.VertexRelaxationControl (
-						vertexAugmentor.augmentedVertexMap()
-					);
-				}
-				catch (java.lang.Exception e)
-				{
-					e.printStackTrace();
-
-					return null;
-				}
-			}
-			else
-			{
-				if (!vertexRelaxationControl.relaxAndUpdateVertexes (
-					vertexAugmentor.augmentedVertexMap()
-				))
-				{
-					return null;
-				}
-			}
-		}
-
-		org.drip.graph.heap.PriorityQueue<java.lang.Double, java.lang.String> edgePriorityQueue =
-			new org.drip.graph.heap.BinomialTreePriorityQueue<java.lang.Double, java.lang.String> (
-				shortestPath
-			);
-
-		return edgePriorityQueue.meld (
-			graph.edgePriorityQueue (
-				shortestPath
-			)
-		) && verifyNegativeCycle (
-			vertexRelaxationControl,
-			edgePriorityQueue
-		) ? vertexAugmentor : null;
+		return _edgePartition;
 	}
 }

@@ -152,6 +152,53 @@ public class BellmanFordGenerator
 		return true;
 	}
 
+	protected boolean relaxEdges (
+		final org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor,
+		final org.drip.graph.shortestpath.VertexRelaxationControl vertexRelaxationControl)
+	{
+		boolean shortestPath = shortestPath();
+
+		org.drip.graph.core.DirectedGraph graph = graph();
+
+		java.util.Map<java.lang.String, org.drip.graph.core.Edge> edgeMap = graph.edgeMap();
+
+		org.drip.graph.heap.PriorityQueue<java.lang.Double, java.lang.String> edgePriorityQueue =
+			new org.drip.graph.heap.BinomialTreePriorityQueue<java.lang.Double, java.lang.String> (
+				shortestPath
+			);
+
+		if (!edgePriorityQueue.meld (
+			graph.edgePriorityQueue (
+				shortestPath
+			)
+		))
+		{
+			return false;
+		}
+
+		while (!edgePriorityQueue.isEmpty())
+		{
+			org.drip.graph.core.Edge edge = edgeMap.get (
+				edgePriorityQueue.extractExtremum().item()
+			);
+
+			if (vertexNeedsRelaxation (
+				vertexRelaxationControl,
+				edge
+			))
+			{
+				if (!vertexAugmentor.updateAugmentedVertex (
+					edge
+				))
+				{
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
 	@Override protected org.drip.graph.shortestpath.VertexAugmentor augmentVertexes (
 		final java.lang.String sourceVertexName)
 	{
@@ -192,42 +239,14 @@ public class BellmanFordGenerator
 
 		int vertexCount = vertexNameSet.size();
 
-		java.util.Map<java.lang.String, org.drip.graph.core.Edge> edgeMap = graph.edgeMap();
-
-		org.drip.graph.heap.PriorityQueue<java.lang.Double, java.lang.String> edgePriorityQueue =
-			new org.drip.graph.heap.BinomialTreePriorityQueue<java.lang.Double, java.lang.String> (
-				shortestPath
-			);
-
 		while (0 < vertexCount--)
 		{
-			if (!edgePriorityQueue.meld (
-				graph.edgePriorityQueue (
-					shortestPath
-				)
+			if (!relaxEdges (
+				vertexAugmentor,
+				vertexRelaxationControl
 			))
 			{
 				return null;
-			}
-
-			while (!edgePriorityQueue.isEmpty())
-			{
-				org.drip.graph.core.Edge edge = edgeMap.get (
-					edgePriorityQueue.extractExtremum().item()
-				);
-
-				if (vertexNeedsRelaxation (
-					vertexRelaxationControl,
-					edge
-				))
-				{
-					if (!vertexAugmentor.updateAugmentedVertex (
-						edge
-					))
-					{
-						return null;
-					}
-				}
 			}
 
 			if (null == vertexRelaxationControl)
@@ -255,6 +274,11 @@ public class BellmanFordGenerator
 				}
 			}
 		}
+
+		org.drip.graph.heap.PriorityQueue<java.lang.Double, java.lang.String> edgePriorityQueue =
+			new org.drip.graph.heap.BinomialTreePriorityQueue<java.lang.Double, java.lang.String> (
+				shortestPath
+			);
 
 		return edgePriorityQueue.meld (
 			graph.edgePriorityQueue (

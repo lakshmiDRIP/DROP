@@ -84,8 +84,8 @@ import org.drip.service.env.EnvManager;
 
 /**
  * <i>YenEdgePartitionSinglePair</i> illustrates the Shortest Path Generation for a Directed Graph using the
- * 	Bellman-Ford Algorithm for a given Source Destination Pair with the Yen Edge Partition Scheme applied.
- * 	The References are:
+ * 	Bellman-Ford Algorithm for a given Source Destination Pair with the Yen (1970) Edge Partition Scheme
+ * 	applied. The References are:
  * 
  * <br><br>
  *  <ul>

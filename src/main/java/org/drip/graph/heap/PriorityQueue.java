@@ -302,4 +302,24 @@ public abstract class PriorityQueue<KEY extends java.lang.Comparable<KEY>, ITEM>
 
 		return sortedEntryList;
 	}
+
+	/**
+	 * Generate the Sorted Item List
+	 * 
+	 * @return The Sorted Item List
+	 */
+
+	public java.util.List<ITEM> sortedItemList()
+	{
+		java.util.List<ITEM> sortedItemList = new java.util.ArrayList<ITEM>();
+
+		while (!isEmpty())
+		{
+			sortedItemList.add (
+				extractExtremum().item()
+			);
+		}
+
+		return sortedItemList;
+	}
 }
