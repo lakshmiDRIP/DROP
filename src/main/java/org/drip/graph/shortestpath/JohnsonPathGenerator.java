@@ -75,28 +75,27 @@ package org.drip.graph.shortestpath;
  */
 
 /**
- * <i>OptimalPathGenerator</i> contains the Stubs for generating the Optimal (Shortest/Longest) Path on a
- * 	Directed Graph. The References are:
+ * <i>JohnsonPathGenerator</i> generates the Shortest Path for a Directed Graph using the Johnson Algorithm.
+ * 	The References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Bang-Jensen, J., and G. Gutin (2008): <i>Digraphs: Theory, Algorithms, and Applications
- *  			2<sup>nd</sup> Edition</i> <b>Springer</b>
+ *  		Black, P. E. (2004): Johnson's Algorithm https://xlinux.nist.gov/dads/HTML/johnsonsAlgorithm.html
  *  	</li>
  *  	<li>
  *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms</i>
  *  			3<sup>rd</sup> Edition <b>MIT Press</b>
  *  	</li>
  *  	<li>
- *  		Kleinberg, J., and E. Tardos (2022): <i>Algorithm Design 2<sup>nd</sup> Edition</i> <b>Pearson</b>
+ *  		Johnson, D. B. (1977): Efficient Algorithms for Shortest Paths in Sparse Networks <i>Journal of
+ *  			the ACM</i> <b>24 (1)</b> 1-13
  *  	</li>
  *  	<li>
- *  		Sedgewick, R. and K. Wayne (2011): <i>Algorithms 4<sup>th</sup> Edition</i> <b>Addison Wesley</b>
+ *  		Suurballe, J. W. (1974): Disjoint Paths in a Network <i>Networks</i> <b>14 (2)</b> 125-145
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020): Bellman-Ford Algorithm
- *  			https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
+ *  		Wikipedia (2019): Johnson's Algorithm https://en.wikipedia.org/wiki/Johnson%27s_algorithm
  *  	</li>
  *  </ul>
  *
@@ -112,125 +111,132 @@ package org.drip.graph.shortestpath;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class OptimalPathGenerator
+public class JohnsonPathGenerator
+	extends org.drip.graph.shortestpath.OptimalPathGenerator
 {
-	private boolean _shortestPath = false;
-	private org.drip.graph.core.DirectedGraph _graph = null;
 
-	protected OptimalPathGenerator (
+	/**
+	 * JohnsonPathGenerator Constructor
+	 * 
+	 * @param graph Graph underlying the Path Generator
+	 * @param shortestPath TRUE - Shortest Path Sought
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public JohnsonPathGenerator (
 		final org.drip.graph.core.DirectedGraph graph,
 		final boolean shortestPath)
 		throws java.lang.Exception
 	{
-		if (null == (_graph = graph))
-		{
-			throw new java.lang.Exception (
-				"OptimalPathGenerator Constructor => Invalid Inputs"
-			);
-		}
-
-		_shortestPath = shortestPath;
-	}
-
-	/**
-	 * Retrieve the Graph underlying the Path Generator
-	 * 
-	 * @return Graph underlying the Path Generator
-	 */
-
-	public org.drip.graph.core.DirectedGraph graph()
-	{
-		return _graph;
-	}
-
-	/**
-	 * Indicate if the Shortest Path is Sought
-	 * 
-	 * @return TRUE - Shortest Path Sought
-	 */
-
-	public boolean shortestPath()
-	{
-		return _shortestPath;
-	}
-
-	/**
-	 * Generate the Augmented Vertex Suite starting from the Source Vertex
-	 * 
-	 * @param sourceVertexName The Source Vertex Name
-	 * 
-	 * @return The Augmented Vertex Suite
-	 */
-
-	public abstract org.drip.graph.bellmanford.VertexAugmentor augmentVertexes (
-		final java.lang.String sourceVertexName);
-
-	/**
-	 * Generate the Shortest Path from the Source to the Destination
-	 * 
-	 * @param sourceVertexName Source Vertex Name
-	 * @param destinationVertexName Destination Vertex Name
-	 * 
-	 * @return Shortest Path from the Source to the Destination
-	 */
-
-	public org.drip.graph.core.Path singlePair (
-		final java.lang.String sourceVertexName,
-		final java.lang.String destinationVertexName)
-	{
-		org.drip.graph.bellmanford.VertexAugmentor vertexAugmentor = augmentVertexes (
-			sourceVertexName
-		);
-
-		return null == vertexAugmentor ? null : vertexAugmentor.generatePath (
-			destinationVertexName
+		super (
+			graph,
+			shortestPath
 		);
 	}
 
-	/**
-	 * Generate the List of the Shortest Path from the Source to all Destinations
-	 * 
-	 * @param sourceVertexName Source Vertex Name
-	 * 
-	 * @return List of the Shortest Path from the Source to all Destinations
-	 */
-
-	public java.util.List<org.drip.graph.core.Path> singleSource (
+	@Override public org.drip.graph.bellmanford.VertexAugmentor augmentVertexes (
 		final java.lang.String sourceVertexName)
 	{
-		org.drip.graph.bellmanford.VertexAugmentor vertexAugmentor = augmentVertexes (
-			sourceVertexName
-		);
-
-		if (null == vertexAugmentor)
+		if (null == sourceVertexName || sourceVertexName.isEmpty())
 		{
 			return null;
 		}
 
-		java.util.List<org.drip.graph.core.Path> pathList =
-			new java.util.ArrayList<org.drip.graph.core.Path>();
+		org.drip.graph.core.DirectedGraph graph = graph();
 
-		for (java.lang.String destinationVertexName : _graph.vertexNameSet())
+		org.drip.graph.core.DirectedGraph graphClone = graph.clone();
+
+		org.drip.graph.bellmanford.VertexAugmentor vertexAugmentor = null;
+
+		java.util.Set<java.lang.String> vertexNameSet = graph.vertexNameSet();
+
+		java.lang.String johnsonQVertexName = org.drip.numerical.common.StringUtil.GUID();
+
+		for (java.lang.String vertexName : vertexNameSet)
 		{
-			if (!destinationVertexName.equalsIgnoreCase (
-				sourceVertexName
-			))
+			try
 			{
-				org.drip.graph.core.Path path = vertexAugmentor.generatePath (
-					destinationVertexName
-				);
-
-				if (null == path)
+				if (!graphClone.addEdge (
+					new org.drip.graph.core.Edge (
+						johnsonQVertexName,
+						vertexName,
+						0.
+					)
+				))
 				{
 					return null;
 				}
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
 
-				pathList.add (
-					path
-				);
+				return null;
 			}
 		}
 
-		return pathList;
+		try
+		{
+			vertexAugmentor = new org.drip.graph.bellmanford.EdgeRelaxationPathGenerator (
+				graphClone,
+				shortestPath()
+			).augmentVertexes (
+				johnsonQVertexName
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+
+			return null;
+		}
+
+		org.drip.graph.core.DirectedGraph bellmanFordGraph = new org.drip.graph.core.DirectedGraph();
+
+		java.util.Map<java.lang.String, org.drip.graph.bellmanford.AugmentedVertex> augmentedVertexMap =
+			vertexAugmentor.augmentedVertexMap();
+
+		for (java.util.Map.Entry<java.lang.String, org.drip.graph.core.Edge> edgeMapEntry :
+			graphClone.edgeMap().entrySet()
+		)
+		{
+			org.drip.graph.core.Edge edge = edgeMapEntry.getValue();
+
+			if (!edge.sourceVertexName().equalsIgnoreCase (
+				johnsonQVertexName
+			))
+			{
+				try
+				{
+					java.lang.String edgeSourceVertexName = edge.sourceVertexName();
+
+					java.lang.String edgeDestinationVertexName = edge.destinationVertexName();
+
+					if (!bellmanFordGraph.addEdge (
+						new org.drip.graph.core.Edge (
+							edgeSourceVertexName,
+							edgeDestinationVertexName,
+							edge.weight() + augmentedVertexMap.get (
+								edgeSourceVertexName
+							).weight() - augmentedVertexMap.get (
+								edgeDestinationVertexName
+							).weight()
+						)
+					))
+					{
+						return null;
+					}
+				}
+				catch (java.lang.Exception e)
+				{
+					e.printStackTrace();
+
+					return null;
+				}
+			}
+		}
+
+		return vertexAugmentor;
 	}
 }

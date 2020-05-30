@@ -1,10 +1,13 @@
 
 package org.drip.sample.shortestpath;
 
+import java.util.List;
+
+import org.drip.graph.bellmanford.BannisterEppsteinPathGenerator;
 import org.drip.graph.core.DirectedGraph;
 import org.drip.graph.core.Edge;
 import org.drip.graph.core.Path;
-import org.drip.graph.shortestpath.DijkstraPathGenerator;
+import org.drip.graph.shortestpath.OptimalPathGenerator;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -82,30 +85,29 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>DijkstraSinglePair</i> illustrates the Shortest Path Generation for a Directed Graph using the Dijkstra
- * 	Algorithm for a given Source Destination Pair. The References are:
+ * <i>BannisterEppsteinSingleSource</i> illustrates the Shortest Path Generation for a Directed Graph using the
+ * 	Bellman-Ford Algorithm for a given Source with the Bannister and Eppstein (2012) Edge Partition Scheme
+ * 	applied. The References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Dijkstra, E. W. (1959): A Note on Two Problems in Connection with Graphs <i>Numerische
- *  			Mathematik</i> <b>1</b> 269-271
+ *  		Bang-Jensen, J., and G. Gutin (2008): <i>Digraphs: Theory, Algorithms, and Applications
+ *  			2<sup>nd</sup> Edition</i> <b>Springer</b>
  *  	</li>
  *  	<li>
- *  		Felner, A. (2011): Position Paper: Dijkstra’s Algorithm versus Uniform Cost Search or a Case
- *  			against Dijkstra’s Algorithm <i>Proceedings of the 4<sup>th</sup> International Symposium on
- *  			Combinatorial Search</i> 47-51
+ *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms</i>
+ *  			3<sup>rd</sup> Edition <b>MIT Press</b>
  *  	</li>
  *  	<li>
- *  		Mehlhorn, K. W., and P. Sanders (2008): <i>Algorithms and Data Structures: The Basic Toolbox</i>
- *  			<b>Springer</b>
+ *  		Kleinberg, J., and E. Tardos (2022): <i>Algorithm Design 2<sup>nd</sup> Edition</i> <b>Pearson</b>
  *  	</li>
  *  	<li>
- *  		Russell, S., and P. Norvig (2009): <i>Artificial Intelligence: A Modern Approach 3<sup>rd</sup>
- *  			Edition</i> <b>Prentice Hall</b>
+ *  		Sedgewick, R. and K. Wayne (2011): <i>Algorithms 4<sup>th</sup> Edition</i> <b>Addison Wesley</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2019): Dijkstra's Algorithm https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+ *  		Wikipedia (2020): Bellman-Ford Algorithm
+ *  			https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
  *  	</li>
  *  </ul>
  *
@@ -121,7 +123,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class DijkstraSinglePair
+public class BannisterEppsteinSingleSource
 {
 
 	public static final void main (
@@ -248,30 +250,24 @@ public class DijkstraSinglePair
 			"\t|-----------------------------------------------------------------------------------------------------"
 		);
 
-		DijkstraPathGenerator dijkstraGenerator = new DijkstraPathGenerator (
+		OptimalPathGenerator optimalPathGenerator = new BannisterEppsteinPathGenerator (
 			graph,
 			true
 		);
 
 		for (String sourceVertexName : vertexArray)
 		{
-			for (String vertexName : vertexArray)
-			{
-				if (!sourceVertexName.equalsIgnoreCase (
-					vertexName
-				))
-				{
-					Path path = dijkstraGenerator.singlePair (
-						sourceVertexName,
-						vertexName
-					);
+			List<Path> pathArray = optimalPathGenerator.singleSource (
+				sourceVertexName
+			);
 
-					System.out.println (
-						"\t| {" + sourceVertexName + " -> " + vertexName + "} => " + 
-						path.vertexList() + " | " +
-						FormatUtil.FormatDouble (path.totalLength(), 4, 0, 1.)
-					);
-				}
+			for (Path path : pathArray)
+			{
+				System.out.println (
+					"\t| {" + path.sourceVertexName() + " -> " + path.destinationVertexName() + "} => " + 
+					path.vertexList() + " | " +
+					FormatUtil.FormatDouble (path.totalLength(), 4, 0, 1.)
+				);
 			}
 
 			System.out.println (

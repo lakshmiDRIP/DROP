@@ -1,11 +1,11 @@
 
 package org.drip.sample.shortestpath;
 
+import org.drip.graph.bellmanford.YenEdgePartitionPathGenerator;
 import org.drip.graph.core.DirectedGraph;
 import org.drip.graph.core.Edge;
 import org.drip.graph.core.Path;
 import org.drip.graph.shortestpath.OptimalPathGenerator;
-import org.drip.graph.shortestpath.YenEdgePartitionGenerator;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -248,7 +248,7 @@ public class YenEdgePartitionSinglePair
 			"\t|-----------------------------------------------------------------------------------------------------"
 		);
 
-		OptimalPathGenerator optimalPathGenerator = new YenEdgePartitionGenerator (
+		OptimalPathGenerator optimalPathGenerator = new YenEdgePartitionPathGenerator (
 			graph,
 			true
 		);

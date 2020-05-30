@@ -6,7 +6,7 @@ import java.util.List;
 import org.drip.graph.core.DirectedGraph;
 import org.drip.graph.core.Edge;
 import org.drip.graph.core.Path;
-import org.drip.graph.shortestpath.DijkstraGenerator;
+import org.drip.graph.shortestpath.DijkstraPathGenerator;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -250,7 +250,7 @@ public class DijkstraSingleSource
 			"\t|-----------------------------------------------------------------------------------------------------"
 		);
 
-		DijkstraGenerator dijkstraGenerator = new DijkstraGenerator (
+		DijkstraPathGenerator dijkstraGenerator = new DijkstraPathGenerator (
 			graph,
 			true
 		);

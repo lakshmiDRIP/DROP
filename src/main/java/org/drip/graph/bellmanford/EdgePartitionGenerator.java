@@ -1,5 +1,5 @@
 
-package org.drip.graph.shortestpath;
+package org.drip.graph.bellmanford;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,9 +75,9 @@ package org.drip.graph.shortestpath;
  */
 
 /**
- * <i>VertexRelaxationControl</i> controls the Vertexes to be relaxed in the Shortest Path Generation for a
- * 	Directed Graph under the Bellman-Ford Algorithm. This happens by eliminating unnecessary Vertex
- * 	Relaxations. The References are:
+ * <i>EdgePartitionGenerator</i> generates the Shortest Path for a Directed Graph using the Bellman-Ford
+ * 	Algorithm with the Edge Partitioning Scheme applied to improve the Worst-Case Behavior. The References
+ * 	are:
  * 
  * <br><br>
  *  <ul>
@@ -106,159 +106,144 @@ package org.drip.graph.shortestpath;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/shortestpath/README.md">Shortest Path Generation Algorithm Family</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/bellmanford/README.md">Bellman Ford Shortest Path Family</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class VertexRelaxationControl
+public abstract class EdgePartitionGenerator
+	extends org.drip.graph.bellmanford.EdgeRelaxationPathGenerator
 {
-	private java.util.Map<java.lang.String, java.lang.Double> _vertexDistanceMap = null;
-	private java.util.Map<java.lang.String, java.lang.Boolean> _vertexRelaxationMap = null;
 
-	/**
-	 * VertexRelaxationControl Constructor
-	 * 
-	 * @param augmentedVertexMap The Augmented Vertex Map
-	 * 
-	 * @throws java.lang.Exception Thrown if the Input is Invalid
-	 */
-
-	public VertexRelaxationControl (
-		final java.util.Map<java.lang.String, org.drip.graph.shortestpath.AugmentedVertex>
-			augmentedVertexMap)
-		throws java.lang.Exception
+	private static final boolean ProcessVertex (
+		final org.drip.graph.core.Vertex vertex,
+		final org.drip.graph.bellmanford.VertexAugmentor vertexAugmentor,
+		final boolean shortestPath)
 	{
-		if (null == augmentedVertexMap || 0 == augmentedVertexMap.size())
-		{
-			throw new java.lang.Exception (
-				"VertexRelaxationControl Constructor => Invalid Inputs"
-			);
-		}
-
-		_vertexRelaxationMap = new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Boolean>();
-
-		_vertexDistanceMap = new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
-
-		for (java.util.Map.Entry<java.lang.String, org.drip.graph.shortestpath.AugmentedVertex>
-			augmentedVertexEntry : augmentedVertexMap.entrySet())
-		{
-			java.lang.String vertexName = augmentedVertexEntry.getKey();
-
-			_vertexRelaxationMap.put (
-				vertexName,
-				true
+		org.drip.graph.heap.PriorityQueue<java.lang.Double, org.drip.graph.core.Edge> edgePriorityQueue =
+			new org.drip.graph.heap.BinomialTreePriorityQueue<java.lang.Double, org.drip.graph.core.Edge> (
+				shortestPath
 			);
 
-			_vertexDistanceMap.put (
-				vertexName,
-				augmentedVertexEntry.getValue().weight()
-			);
-		}
-	}
-
-	/**
-	 * Retrieve the Vertex Relaxation Map
-	 * 
-	 * @return The Vertex Relaxation Map
-	 */
-
-	public java.util.Map<java.lang.String, java.lang.Boolean> vertexRelaxationMap()
-	{
-		return _vertexRelaxationMap;
-	}
-
-	/**
-	 * Retrieve the Vertex Distance Map
-	 * 
-	 * @return The Vertex Distance Map
-	 */
-
-	public java.util.Map<java.lang.String, java.lang.Double> vertexDistanceMap()
-	{
-		return _vertexDistanceMap;
-	}
-
-	/**
-	 * Relax and Update the Vertexes
-	 * 
-	 * @param updatedAugmentedVertexMap The Updated Augmented Vertex Map
-	 * 
-	 * @return TRUE - The Vertexes are Relaxed and Updated
-	 */
-
-	public boolean relaxAndUpdateVertexes (
-		final java.util.Map<java.lang.String, org.drip.graph.shortestpath.AugmentedVertex>
-			updatedAugmentedVertexMap)
-	{
-		if (null == updatedAugmentedVertexMap ||
-			updatedAugmentedVertexMap.size() != _vertexRelaxationMap.size()
-		)
+		if (!edgePriorityQueue.meld (
+			vertex.adjacencyPriorityQueue (
+				shortestPath
+			)
+		))
 		{
 			return false;
 		}
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.graph.shortestpath.AugmentedVertex>
-			updatedAugmentedVertexEntry : updatedAugmentedVertexMap.entrySet())
+		while (!edgePriorityQueue.isEmpty())
 		{
-			java.lang.String vertexName = updatedAugmentedVertexEntry.getKey();
-
-			double updatedVertexDistance = updatedAugmentedVertexEntry.getValue().weight();
-
-			if (_vertexDistanceMap.get (
-					vertexName
-				) == updatedVertexDistance
-			)
+			if (!vertexAugmentor.updateAugmentedVertex (
+				edgePriorityQueue.extractExtremum().item()
+			))
 			{
-				_vertexRelaxationMap.put (
-					vertexName,
-					false
-				);
-			}
-			else
-			{
-				_vertexDistanceMap.put (
-					vertexName,
-					updatedVertexDistance
-				);
+				return false;
 			}
 		}
 
 		return true;
 	}
 
-	/**
-	 * Indicate if the Vertex Needs a Relaxation
-	 * 
-	 * @param vertexName The Vertex Name
-	 * 
-	 * @return TRUE - The Vertex Needs a Relaxation
-	 */
-
-	public boolean vertexNeedsRelaxation (
-		final java.lang.String vertexName)
+	private static final boolean ProcessSubgraph (
+		final int vertexCount,
+		final boolean forward,
+		final org.drip.graph.core.DirectedGraph graph,
+		final java.util.List<java.lang.String> vertexNameList,
+		final org.drip.graph.bellmanford.VertexAugmentor vertexAugmentor,
+		final boolean shortestPath)
 	{
-		if (null == vertexName || vertexName.isEmpty() ||
-			!_vertexRelaxationMap.containsKey (
-				vertexName
-			) || !_vertexDistanceMap.containsKey (
-				vertexName
-			)
-		)
+		int vertexIndex = forward ? 0 : vertexCount - 1;
+		int finalVertexIndex = forward ? vertexCount - 1 : 0;
+
+		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> forwardVertexMap = graph.vertexMap();
+
+		while (vertexIndex != finalVertexIndex)
 		{
-			return false;
+			java.lang.String vertexName = vertexNameList.get (
+				vertexIndex
+			);
+
+			if (graph.containsVertex (
+				vertexName
+			))
+			{
+				if (!ProcessVertex (
+					forwardVertexMap.get (
+						vertexName
+					),
+					vertexAugmentor,
+					shortestPath
+				))
+				{
+					return false;
+				}
+			}
+
+			if (forward)
+			{
+				++vertexIndex;
+			}
+			else
+			{
+				--vertexIndex;
+			}
 		}
 
-		double vertexDistance = _vertexDistanceMap.get (
-			vertexName
-		);
-
-		return java.lang.Double.MAX_VALUE == vertexDistance ||
-			java.lang.Double.MIN_VALUE == vertexDistance ||
-			_vertexRelaxationMap.get (
-				vertexName
-			);
+		return true;
 	}
+
+	@Override protected boolean relaxEdges (
+		final org.drip.graph.bellmanford.VertexAugmentor vertexAugmentor,
+		final org.drip.graph.bellmanford.VertexRelaxationControl vertexRelaxationControl)
+	{
+		org.drip.graph.bellmanford.EdgePartition edgePartition = edgePartition();
+
+		java.util.List<java.lang.String> vertexNameList = edgePartition.vertexNameList();
+
+		org.drip.graph.core.DirectedGraph graph = graph();
+
+		boolean shortestPath = shortestPath();
+
+		int vertexCount = graph.vertexCount();
+
+		return ProcessSubgraph (
+			vertexCount,
+			true,
+			edgePartition.forwardDirectedGraph(),
+			vertexNameList,
+			vertexAugmentor,
+			shortestPath
+		) && ProcessSubgraph (
+			vertexCount,
+			false,
+			edgePartition.backwardDirectedGraph(),
+			vertexNameList,
+			vertexAugmentor,
+			shortestPath
+		);
+	}
+
+	protected EdgePartitionGenerator (
+		final org.drip.graph.core.DirectedGraph graph,
+		final boolean shortestPath)
+		throws java.lang.Exception
+	{
+		super (
+			graph,
+			shortestPath
+		);
+	}
+
+	/**
+	 * Retrieve the Edge Partition
+	 * 
+	 * @return The Edge Partition
+	 */
+
+	public abstract org.drip.graph.bellmanford.EdgePartition edgePartition();
 }

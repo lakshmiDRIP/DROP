@@ -1,5 +1,5 @@
 
-package org.drip.graph.shortestpath;
+package org.drip.graph.bellmanford;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -106,7 +106,7 @@ package org.drip.graph.shortestpath;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/shortestpath/README.md">Shortest Path Generation Algorithm Family</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/bellmanford/README.md">Bellman Ford Shortest Path Family</a></li>
  *  </ul>
  * <br><br>
  *
@@ -117,7 +117,7 @@ public class VertexAugmentor
 {
 	private boolean _shortestPath = false;
 	private java.lang.String _sourceVertexName = "";
-	private java.util.Map<java.lang.String, org.drip.graph.shortestpath.AugmentedVertex> _augmentedVertexMap
+	private java.util.Map<java.lang.String, org.drip.graph.bellmanford.AugmentedVertex> _augmentedVertexMap
 		= null;
 
 	private final boolean compareIntermediatePath (
@@ -151,10 +151,10 @@ public class VertexAugmentor
 		}
 
 		_augmentedVertexMap = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.graph.shortestpath.AugmentedVertex>();
+			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.graph.bellmanford.AugmentedVertex>();
 
-		org.drip.graph.shortestpath.AugmentedVertex sourceAugmentedVertex =
-			new org.drip.graph.shortestpath.AugmentedVertex();
+		org.drip.graph.bellmanford.AugmentedVertex sourceAugmentedVertex =
+			new org.drip.graph.bellmanford.AugmentedVertex();
 
 		if (!sourceAugmentedVertex.setPrecedingEdge (
 				null
@@ -200,8 +200,8 @@ public class VertexAugmentor
 				vertexName
 			))
 			{
-				org.drip.graph.shortestpath.AugmentedVertex augmentedVertex =
-					new org.drip.graph.shortestpath.AugmentedVertex();
+				org.drip.graph.bellmanford.AugmentedVertex augmentedVertex =
+					new org.drip.graph.bellmanford.AugmentedVertex();
 
 				if (!augmentedVertex.setPrecedingEdge (
 						null
@@ -251,7 +251,7 @@ public class VertexAugmentor
 	 * @return Map of Augmented Vertexes
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.graph.shortestpath.AugmentedVertex> augmentedVertexMap()
+	public java.util.Map<java.lang.String, org.drip.graph.bellmanford.AugmentedVertex> augmentedVertexMap()
 	{
 		return _augmentedVertexMap;
 	}
@@ -291,8 +291,8 @@ public class VertexAugmentor
 			augmentedVertexName
 		))
 		{
-			org.drip.graph.shortestpath.AugmentedVertex augmentedVertex =
-				new org.drip.graph.shortestpath.AugmentedVertex();
+			org.drip.graph.bellmanford.AugmentedVertex augmentedVertex =
+				new org.drip.graph.bellmanford.AugmentedVertex();
 
 			if (!augmentedVertex.setPrecedingEdge (
 					precedingEdge
@@ -311,7 +311,7 @@ public class VertexAugmentor
 		}
 		else
 		{
-			org.drip.graph.shortestpath.AugmentedVertex augmentedVertex = _augmentedVertexMap.get (
+			org.drip.graph.bellmanford.AugmentedVertex augmentedVertex = _augmentedVertexMap.get (
 				augmentedVertexName
 			);
 

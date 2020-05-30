@@ -1,5 +1,5 @@
 
-package org.drip.graph.shortestpath;
+package org.drip.graph.bellmanford;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,9 +75,9 @@ package org.drip.graph.shortestpath;
  */
 
 /**
- * <i>BannisterEppsteinGenerator</i> generates the Shortest Path for a Directed Graph using the Bellman-Ford
- * 	Algorithm with the Bannister and Eppstein (2012) Edge Partitioning Scheme applied to improve the
- * 	Worst-Case Behavior. The References are:
+ * <i>YenEdgePartitionPathGenerator</i> generates the Shortest Path for a Directed Graph using the
+ * 	Bellman-Ford Algorithm with the Yen (1970) Edge Partitioning Scheme applied to improve the Worst-Case
+ * 	Behavior. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -106,19 +106,20 @@ package org.drip.graph.shortestpath;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/shortestpath/README.md">Shortest Path Generation Algorithm Family</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/bellmanford/README.md">Bellman Ford Shortest Path Family</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BannisterEppsteinGenerator
-	extends org.drip.graph.shortestpath.EdgePartitionGenerator
+public class YenEdgePartitionPathGenerator
+	extends org.drip.graph.bellmanford.EdgePartitionGenerator
 {
+	private org.drip.graph.bellmanford.EdgePartition _edgePartition = null;
 
 	/**
-	 * BannisterEppsteinGenerator Constructor
+	 * YenEdgePartitionPathGenerator Constructor
 	 * 
 	 * @param graph Graph underlying the Path Generator
 	 * @param shortestPath TRUE - Shortest Path Sought
@@ -126,7 +127,7 @@ public class BannisterEppsteinGenerator
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public BannisterEppsteinGenerator (
+	public YenEdgePartitionPathGenerator (
 		final org.drip.graph.core.DirectedGraph graph,
 		final boolean shortestPath)
 		throws java.lang.Exception
@@ -135,13 +136,21 @@ public class BannisterEppsteinGenerator
 			graph,
 			shortestPath
 		);
+
+		if (null == (_edgePartition = org.drip.graph.bellmanford.EdgePartition.FromGraph (
+				graph,
+				false
+			))
+		)
+		{
+			throw new java.lang.Exception (
+				"YenEdgePartitionPathGenerator Constructor => Invalid Inputs"
+			);
+		}
 	}
 
-	@Override public org.drip.graph.shortestpath.EdgePartition edgePartition()
+	@Override public org.drip.graph.bellmanford.EdgePartition edgePartition()
 	{
-		return org.drip.graph.shortestpath.EdgePartition.FromGraph (
-			graph(),
-			true
-		);
+		return _edgePartition;
 	}
 }

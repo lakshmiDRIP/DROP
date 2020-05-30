@@ -75,8 +75,8 @@ package org.drip.graph.shortestpath;
  */
 
 /**
- * <i>DijkstraGenerator</i> generates the Shortest Path for a Directed Graph using the Dijkstra Algorithm.
- * 	The References are:
+ * <i>DijkstraPathGenerator</i> generates the Shortest Path for a Directed Graph using the Dijkstra
+ * 	Algorithm. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -114,11 +114,31 @@ package org.drip.graph.shortestpath;
  * @author Lakshmi Krishnamurthy
  */
 
-public class DijkstraGenerator
+public class DijkstraPathGenerator
 	extends org.drip.graph.shortestpath.OptimalPathGenerator
 {
 
-	@Override protected org.drip.graph.shortestpath.VertexAugmentor augmentVertexes (
+	/**
+	 * DijkstraPathGenerator Constructor
+	 * 
+	 * @param graph Graph underlying the Path Generator
+	 * @param shortestPath TRUE - Shortest Path Sought
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public DijkstraPathGenerator (
+		final org.drip.graph.core.DirectedGraph graph,
+		final boolean shortestPath)
+		throws java.lang.Exception
+	{
+		super (
+			graph,
+			shortestPath
+		);
+	}
+
+	@Override public org.drip.graph.bellmanford.VertexAugmentor augmentVertexes (
 		final java.lang.String sourceVertexName)
 	{
 		if (null == sourceVertexName || sourceVertexName.isEmpty())
@@ -134,11 +154,11 @@ public class DijkstraGenerator
 
 		boolean shortestPath = shortestPath();
 
-		org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor = null;
+		org.drip.graph.bellmanford.VertexAugmentor vertexAugmentor = null;
 
 		try
 		{
-			vertexAugmentor = new org.drip.graph.shortestpath.VertexAugmentor (
+			vertexAugmentor = new org.drip.graph.bellmanford.VertexAugmentor (
 				sourceVertexName,
 				shortestPath
 			);
@@ -193,25 +213,5 @@ public class DijkstraGenerator
 		}
 
 		return vertexAugmentor;
-	}
-
-	/**
-	 * DijkstraGenerator Constructor
-	 * 
-	 * @param graph Graph underlying the Path Generator
-	 * @param shortestPath TRUE - Shortest Path Sought
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public DijkstraGenerator (
-		final org.drip.graph.core.DirectedGraph graph,
-		final boolean shortestPath)
-		throws java.lang.Exception
-	{
-		super (
-			graph,
-			shortestPath
-		);
 	}
 }

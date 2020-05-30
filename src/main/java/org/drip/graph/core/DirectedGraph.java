@@ -161,6 +161,31 @@ public class DirectedGraph
 	}
 
 	/**
+	 * Clone the existing Graph into a New One
+	 * 
+	 * @return The Cloned Graph
+	 */
+
+	public DirectedGraph clone()
+	{
+		DirectedGraph clone = new DirectedGraph();
+
+		java.util.Collection<org.drip.graph.core.Edge> edgeCollection = edgeMap().values();
+
+		for (org.drip.graph.core.Edge edge : edgeCollection)
+		{
+			if (!clone.addEdge (
+				edge
+			))
+			{
+				return null;
+			}
+		}
+
+		return clone;
+	}
+
+	/**
 	 * Indicate if the Graph is Connected
 	 * 
 	 * @return TRUE - The Graph is Connected

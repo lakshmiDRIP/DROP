@@ -1,5 +1,5 @@
 
-package org.drip.graph.shortestpath;
+package org.drip.graph.bellmanford;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,7 +75,7 @@ package org.drip.graph.shortestpath;
  */
 
 /**
- * <i>BellmanFordGenerator</i> generates the Shortest Path for a Directed Graph using the Bellman-Ford
+ * <i>EdgeRelaxationPathGenerator</i> generates the Shortest Path for a Directed Graph using the Bellman-Ford
  * 	Algorithm. The References are:
  * 
  * <br><br>
@@ -105,26 +105,26 @@ package org.drip.graph.shortestpath;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/shortestpath/README.md">Shortest Path Generation Algorithm Family</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/bellmanford/README.md">Bellman Ford Shortest Path Family</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BellmanFordGenerator
+public class EdgeRelaxationPathGenerator
 	extends org.drip.graph.shortestpath.OptimalPathGenerator
 {
 
 	protected boolean vertexNeedsRelaxation (
-		final org.drip.graph.shortestpath.VertexRelaxationControl vertexRelaxationControl,
+		final org.drip.graph.bellmanford.VertexRelaxationControl vertexRelaxationControl,
 		final org.drip.graph.core.Edge edge)
 	{
 		return true;
 	}
 
 	protected boolean verifyNegativeCycle (
-		final org.drip.graph.shortestpath.VertexRelaxationControl vertexRelaxationControl,
+		final org.drip.graph.bellmanford.VertexRelaxationControl vertexRelaxationControl,
 		final org.drip.graph.heap.PriorityQueue<java.lang.Double, java.lang.String> edgePriorityQueue)
 	{
 		java.util.Map<java.lang.String, org.drip.graph.core.Edge> edgeMap = graph().edgeMap();
@@ -153,8 +153,8 @@ public class BellmanFordGenerator
 	}
 
 	protected boolean relaxEdges (
-		final org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor,
-		final org.drip.graph.shortestpath.VertexRelaxationControl vertexRelaxationControl)
+		final org.drip.graph.bellmanford.VertexAugmentor vertexAugmentor,
+		final org.drip.graph.bellmanford.VertexRelaxationControl vertexRelaxationControl)
 	{
 		boolean shortestPath = shortestPath();
 
@@ -199,7 +199,27 @@ public class BellmanFordGenerator
 		return true;
 	}
 
-	@Override protected org.drip.graph.shortestpath.VertexAugmentor augmentVertexes (
+	/**
+	 * EdgeRelaxationPathGenerator Constructor
+	 * 
+	 * @param graph Graph underlying the Path Generator
+	 * @param shortestPath TRUE - Shortest Path Sought
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public EdgeRelaxationPathGenerator (
+		final org.drip.graph.core.DirectedGraph graph,
+		final boolean shortestPath)
+		throws java.lang.Exception
+	{
+		super (
+			graph,
+			shortestPath
+		);
+	}
+
+	@Override public org.drip.graph.bellmanford.VertexAugmentor augmentVertexes (
 		final java.lang.String sourceVertexName)
 	{
 		if (null == sourceVertexName || sourceVertexName.isEmpty())
@@ -213,12 +233,12 @@ public class BellmanFordGenerator
 
 		java.util.Set<java.lang.String> vertexNameSet = graph.vertexNameSet();
 
-		org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor = null;
-		org.drip.graph.shortestpath.VertexRelaxationControl vertexRelaxationControl = null;
+		org.drip.graph.bellmanford.VertexAugmentor vertexAugmentor = null;
+		org.drip.graph.bellmanford.VertexRelaxationControl vertexRelaxationControl = null;
 
 		try
 		{
-			vertexAugmentor = new org.drip.graph.shortestpath.VertexAugmentor (
+			vertexAugmentor = new org.drip.graph.bellmanford.VertexAugmentor (
 				sourceVertexName,
 				shortestPath
 			);
@@ -253,7 +273,7 @@ public class BellmanFordGenerator
 			{
 				try
 				{
-					vertexRelaxationControl = new org.drip.graph.shortestpath.VertexRelaxationControl (
+					vertexRelaxationControl = new org.drip.graph.bellmanford.VertexRelaxationControl (
 						vertexAugmentor.augmentedVertexMap()
 					);
 				}
@@ -288,25 +308,5 @@ public class BellmanFordGenerator
 			vertexRelaxationControl,
 			edgePriorityQueue
 		) ? vertexAugmentor : null;
-	}
-
-	/**
-	 * BellmanFordGenerator Constructor
-	 * 
-	 * @param graph Graph underlying the Path Generator
-	 * @param shortestPath TRUE - Shortest Path Sought
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public BellmanFordGenerator (
-		final org.drip.graph.core.DirectedGraph graph,
-		final boolean shortestPath)
-		throws java.lang.Exception
-	{
-		super (
-			graph,
-			shortestPath
-		);
 	}
 }

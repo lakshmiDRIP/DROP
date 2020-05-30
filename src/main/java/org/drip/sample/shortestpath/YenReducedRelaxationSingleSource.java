@@ -3,11 +3,11 @@ package org.drip.sample.shortestpath;
 
 import java.util.List;
 
+import org.drip.graph.bellmanford.YenReducedRelaxationPathGenerator;
 import org.drip.graph.core.DirectedGraph;
 import org.drip.graph.core.Edge;
 import org.drip.graph.core.Path;
 import org.drip.graph.shortestpath.OptimalPathGenerator;
-import org.drip.graph.shortestpath.YenReducedRelaxationGenerator;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -252,7 +252,7 @@ public class YenReducedRelaxationSingleSource
 			"\t|-----------------------------------------------------------------------------------------------------"
 		);
 
-		OptimalPathGenerator optimalPathGenerator = new YenReducedRelaxationGenerator (
+		OptimalPathGenerator optimalPathGenerator = new YenReducedRelaxationPathGenerator (
 			graph,
 			true
 		);

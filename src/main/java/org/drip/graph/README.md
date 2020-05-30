@@ -2,12 +2,15 @@
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Graph implements the Graph Representation, Construction, and Traversal Functionality.
+DROP Graph Bellman Ford Package implements the Bellman Ford Shortest Path Family of Algorithms.
 
 
 ## Component Packages
 
  * [***Asymptote***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/asymptote)
+DROP Graph Asymptote Package implements Big O Algorithm Asymptotic Analysis.
+
+ * [***Bellman Ford***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/bellmanford)
 DROP Graph Asymptote Package implements Big O Algorithm Asymptotic Analysis.
 
  * [***Core***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/core)
