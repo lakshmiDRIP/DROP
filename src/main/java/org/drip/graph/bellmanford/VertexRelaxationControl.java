@@ -127,7 +127,7 @@ public class VertexRelaxationControl
 	 */
 
 	public VertexRelaxationControl (
-		final java.util.Map<java.lang.String, org.drip.graph.bellmanford.AugmentedVertex>
+		final java.util.Map<java.lang.String, org.drip.graph.shortestpath.AugmentedVertex>
 			augmentedVertexMap)
 		throws java.lang.Exception
 	{
@@ -142,7 +142,7 @@ public class VertexRelaxationControl
 
 		_vertexDistanceMap = new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.graph.bellmanford.AugmentedVertex>
+		for (java.util.Map.Entry<java.lang.String, org.drip.graph.shortestpath.AugmentedVertex>
 			augmentedVertexEntry : augmentedVertexMap.entrySet())
 		{
 			java.lang.String vertexName = augmentedVertexEntry.getKey();
@@ -190,7 +190,7 @@ public class VertexRelaxationControl
 	 */
 
 	public boolean relaxAndUpdateVertexes (
-		final java.util.Map<java.lang.String, org.drip.graph.bellmanford.AugmentedVertex>
+		final java.util.Map<java.lang.String, org.drip.graph.shortestpath.AugmentedVertex>
 			updatedAugmentedVertexMap)
 	{
 		if (null == updatedAugmentedVertexMap ||
@@ -200,7 +200,7 @@ public class VertexRelaxationControl
 			return false;
 		}
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.graph.bellmanford.AugmentedVertex>
+		for (java.util.Map.Entry<java.lang.String, org.drip.graph.shortestpath.AugmentedVertex>
 			updatedAugmentedVertexEntry : updatedAugmentedVertexMap.entrySet())
 		{
 			java.lang.String vertexName = updatedAugmentedVertexEntry.getKey();

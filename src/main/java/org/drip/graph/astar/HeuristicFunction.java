@@ -1,5 +1,5 @@
 
-package org.drip.graph.shortestpath;
+package org.drip.graph.astar;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,28 +75,30 @@ package org.drip.graph.shortestpath;
  */
 
 /**
- * <i>OptimalPathGenerator</i> contains the Stubs for generating the Optimal (Shortest/Longest) Path on a
- * 	Directed Graph. The References are:
+ * <i>HeuristicFunction</i> exposes the Heuristic Value at a Vertex. The References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Bang-Jensen, J., and G. Gutin (2008): <i>Digraphs: Theory, Algorithms, and Applications
- *  			2<sup>nd</sup> Edition</i> <b>Springer</b>
+ *  		Dechter, R., and J. Pearl (1985): Generalized Best-first Search Strategies and the Optimality of
+ *  			A<sup>*</sup> <i>Journal of the ACM</i> <b>32 (3)</b> 505-536
  *  	</li>
  *  	<li>
- *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms</i>
- *  			3<sup>rd</sup> Edition <b>MIT Press</b>
+ *  		Hart, P. E., N. J. Nilsson, and B. Raphael (1968): A Formal Basis for the Heuristic Determination
+ *  			of the Minimum Cost Paths <i>IEEE Transactions on Systems Sciences and Cybernetics</i> <b>4
+ *  			(2)</b> 100-107
  *  	</li>
  *  	<li>
- *  		Kleinberg, J., and E. Tardos (2022): <i>Algorithm Design 2<sup>nd</sup> Edition</i> <b>Pearson</b>
+ *  		Kagan, E., and I. Ben-Gal (2014): A Group Testing Algorithm with Online Informational Learning
+ *  			<i>IIE Transactions</i> <b>46 (2)</b> 164-184
  *  	</li>
  *  	<li>
- *  		Sedgewick, R. and K. Wayne (2011): <i>Algorithms 4<sup>th</sup> Edition</i> <b>Addison Wesley</b>
+ *  		Russell, S. J. and P. Norvig (2018): <i>Artificial Intelligence: A Modern Approach 4<sup>th</sup>
+ *  			Edition</i> <b>Pearson</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020): Bellman-Ford Algorithm
- *  			https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
+ *  		Wikipedia (2020): A<sup>*</sup> Search Algorithm
+ *  			https://en.wikipedia.org/wiki/A*_search_algorithm
  *  	</li>
  *  </ul>
  *
@@ -105,132 +107,27 @@ package org.drip.graph.shortestpath;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/shortestpath/README.md">Shortest Path Generation Algorithm Family</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/astar/README.md">A<sup>*</sup> Heuristic Shortest Path Family</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class OptimalPathGenerator
+public interface HeuristicFunction
 {
-	private boolean _shortestPath = false;
-	private org.drip.graph.core.DirectedGraph _graph = null;
-
-	protected OptimalPathGenerator (
-		final org.drip.graph.core.DirectedGraph graph,
-		final boolean shortestPath)
-		throws java.lang.Exception
-	{
-		if (null == (_graph = graph))
-		{
-			throw new java.lang.Exception (
-				"OptimalPathGenerator Constructor => Invalid Inputs"
-			);
-		}
-
-		_shortestPath = shortestPath;
-	}
 
 	/**
-	 * Retrieve the Graph underlying the Path Generator
+	 * Compute the Heuristic Value at the Vertex
 	 * 
-	 * @return Graph underlying the Path Generator
+	 * @param vertex The Vertex
+	 * 
+	 * @return The Heuristic Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Input are Invalid
 	 */
 
-	public org.drip.graph.core.DirectedGraph graph()
-	{
-		return _graph;
-	}
-
-	/**
-	 * Indicate if the Shortest Path is Sought
-	 * 
-	 * @return TRUE - Shortest Path Sought
-	 */
-
-	public boolean shortestPath()
-	{
-		return _shortestPath;
-	}
-
-	/**
-	 * Generate the Augmented Vertex Suite starting from the Source Vertex
-	 * 
-	 * @param sourceVertexName The Source Vertex Name
-	 * 
-	 * @return The Augmented Vertex Suite
-	 */
-
-	public abstract org.drip.graph.shortestpath.VertexAugmentor augmentVertexes (
-		final java.lang.String sourceVertexName);
-
-	/**
-	 * Generate the Shortest Path from the Source to the Destination
-	 * 
-	 * @param sourceVertexName Source Vertex Name
-	 * @param destinationVertexName Destination Vertex Name
-	 * 
-	 * @return Shortest Path from the Source to the Destination
-	 */
-
-	public org.drip.graph.core.Path singlePair (
-		final java.lang.String sourceVertexName,
-		final java.lang.String destinationVertexName)
-	{
-		org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor = augmentVertexes (
-			sourceVertexName
-		);
-
-		return null == vertexAugmentor ? null : vertexAugmentor.generatePath (
-			destinationVertexName
-		);
-	}
-
-	/**
-	 * Generate the List of the Shortest Path from the Source to all Destinations
-	 * 
-	 * @param sourceVertexName Source Vertex Name
-	 * 
-	 * @return List of the Shortest Path from the Source to all Destinations
-	 */
-
-	public java.util.List<org.drip.graph.core.Path> singleSource (
-		final java.lang.String sourceVertexName)
-	{
-		org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor = augmentVertexes (
-			sourceVertexName
-		);
-
-		if (null == vertexAugmentor)
-		{
-			return null;
-		}
-
-		java.util.List<org.drip.graph.core.Path> pathList =
-			new java.util.ArrayList<org.drip.graph.core.Path>();
-
-		for (java.lang.String destinationVertexName : _graph.vertexNameSet())
-		{
-			if (!destinationVertexName.equalsIgnoreCase (
-				sourceVertexName
-			))
-			{
-				org.drip.graph.core.Path path = vertexAugmentor.generatePath (
-					destinationVertexName
-				);
-
-				if (null == path)
-				{
-					return null;
-				}
-
-				pathList.add (
-					path
-				);
-			}
-		}
-
-		return pathList;
-	}
+	public abstract double evaluate (
+		final org.drip.graph.core.Vertex vertex)
+		throws java.lang.Exception;
 }

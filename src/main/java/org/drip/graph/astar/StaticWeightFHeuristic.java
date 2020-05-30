@@ -1,5 +1,5 @@
 
-package org.drip.graph.bellmanford;
+package org.drip.graph.astar;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,30 +75,31 @@ package org.drip.graph.bellmanford;
  */
 
 /**
- * <i>AugmentedVertex</i> contains the Augmentations of a Vertex during a Shortest Path Algorithm. The
- * 	References are:
+ * <i>StaticWeightFHeuristic</i> implements the Statically Weighted A<sup>*</sup> F-Heuristic Value at a
+ * 	Vertex. The References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Dijkstra, E. W. (1959): A Note on Two Problems in Connection with Graphs <i>Numerische
- *  			Mathematik</i> <b>1</b> 269-271
+ *  		Dechter, R., and J. Pearl (1985): Generalized Best-first Search Strategies and the Optimality of
+ *  			A<sup>*</sup> <i>Journal of the ACM</i> <b>32 (3)</b> 505-536
  *  	</li>
  *  	<li>
- *  		Felner, A. (2011): Position Paper: Dijkstra’s Algorithm versus Uniform Cost Search or a Case
- *  			against Dijkstra’s Algorithm <i>Proceedings of the 4<sup>th</sup> International Symposium on
- *  			Combinatorial Search</i> 47-51
+ *  		Hart, P. E., N. J. Nilsson, and B. Raphael (1968): A Formal Basis for the Heuristic Determination
+ *  			of the Minimum Cost Paths <i>IEEE Transactions on Systems Sciences and Cybernetics</i> <b>4
+ *  			(2)</b> 100-107
  *  	</li>
  *  	<li>
- *  		Mehlhorn, K. W., and P. Sanders (2008): <i>Algorithms and Data Structures: The Basic Toolbox</i>
- *  			<b>Springer</b>
+ *  		Kagan, E., and I. Ben-Gal (2014): A Group Testing Algorithm with Online Informational Learning
+ *  			<i>IIE Transactions</i> <b>46 (2)</b> 164-184
  *  	</li>
  *  	<li>
- *  		Russell, S., and P. Norvig (2009): <i>Artificial Intelligence: A Modern Approach 3<sup>rd</sup>
- *  			Edition</i> <b>Prentice Hall</b>
+ *  		Russell, S. J. and P. Norvig (2018): <i>Artificial Intelligence: A Modern Approach 4<sup>th</sup>
+ *  			Edition</i> <b>Pearson</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2019): Dijkstra's Algorithm https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+ *  		Wikipedia (2020): A<sup>*</sup> Search Algorithm
+ *  			https://en.wikipedia.org/wiki/A*_search_algorithm
  *  	</li>
  *  </ul>
  *
@@ -107,120 +108,56 @@ package org.drip.graph.bellmanford;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/bellmanford/README.md">Bellman Ford Shortest Path Family</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/astar/README.md">A<sup>*</sup> Heuristic Shortest Path Family</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class AugmentedVertex
+public class StaticWeightFHeuristic
+	extends org.drip.graph.astar.FHeuristic
 {
-	private boolean _processed = false;
-	private org.drip.graph.core.Edge _precedingEdge = null;
-	private double _weight = java.lang.Double.POSITIVE_INFINITY;
+	private double _epsilon = java.lang.Double.NaN;
 
 	/**
-	 * AugmentedVertex Constructor
+	 * StaticWeightFHeuristic Constructor
+	 * 
+	 * @param gHeuristic The G Heuristic
+	 * @param hHeuristic The H Heuristic
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public AugmentedVertex()
+	public StaticWeightFHeuristic (
+		final org.drip.graph.astar.HeuristicFunction gHeuristic,
+		final org.drip.graph.astar.HeuristicFunction hHeuristic,
+		final double epsilon)
+		throws java.lang.Exception
 	{
-	}
+		super (
+			gHeuristic,
+			hHeuristic
+		);
 
-	/**
-	 * Retrieve the Preceding Edge
-	 * 
-	 * @return The Preceding Edge
-	 */
-
-	public org.drip.graph.core.Edge precedingEdge()
-	{
-		return _precedingEdge;
-	}
-
-	/**
-	 * Indicate if the Vertex has been Processed
-	 * 
-	 * @return TRUE - The Vertex has been Processed
-	 */
-
-	public boolean processed()
-	{
-		return _processed;
-	}
-
-	/**
-	 * Retrieve the Vertex Path Weight
-	 * 
-	 * @return The Vertex Path Weight
-	 */
-
-	public double weight()
-	{
-		return _weight;
-	}
-
-	/**
-	 * Set the Preceding Edge in the Path
-	 * 
-	 * @param precedingEdge The Preceding Edge in the Path
-	 * 
-	 * @return TRUE - The Preceding Edge in the Path successfully set
-	 */
-
-	public boolean setPrecedingEdge (
-		final org.drip.graph.core.Edge precedingEdge)
-	{
-		_precedingEdge = precedingEdge;
-		return true;
-	}
-
-	/**
-	 * Set the Vertex Processing Status
-	 * 
-	 * @param processed The Vertex Processing Status
-	 * 
-	 * @return TRUE - The Vertex Processing Status successfully set
-	 */
-
-	public boolean setProcessed (
-		final boolean processed)
-	{
-		_processed = processed;
-		return true;
-	}
-
-	/**
-	 * Set the Vertex Path Weight
-	 * 
-	 * @param weight The Vertex Path Weight
-	 * 
-	 * @return TRUE - The Vertex Path Weight successfully set
-	 */
-
-	public boolean setWeight (
-		final double weight)
-	{
-		if (java.lang.Double.isNaN (
-			weight
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+			_epsilon = epsilon
 		))
 		{
-			return false;
+			throw new java.lang.Exception (
+				"FHeuristic Constructor => Invalid Inputs"
+			);
 		}
-
-		_weight = weight;
-		return true;
 	}
 
 	/**
-	 * Retrieve the Preceding Vertex Name
+	 * Retrieve the "Epsilon" Weight
 	 * 
-	 * @return The Preceding Vertex Name
+	 * @return The "Epsilon" Weight
 	 */
 
-	public java.lang.String precedingVertexName()
+	public double epsilon()
 	{
-		return _precedingEdge.sourceVertexName();
+		return _epsilon;
 	}
 }

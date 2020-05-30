@@ -7,9 +7,6 @@ DROP Graph Bellman Ford Package implements the Bellman Ford Shortest Path Family
 
 ## Class Components
 
- * [***AugmentedVertex***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/bellmanford/AugmentedVertex.java)
- <i>AugmentedVertex</i> contains the Augmentations of a Vertex during a Shortest Path Algorithm.
-
  * [***BannisterEppsteinPathGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/bellmanford/BannisterEppsteinPathGenerator.java)
  <i>BannisterEppsteinPathGenerator</i> generates the Shortest Path for a Directed Graph using the Bellman-Ford Algorithm with the Bannister and Eppstein (2012) Edge Partitioning Scheme applied to improve the Worst-Case Behavior.
 
@@ -22,8 +19,8 @@ DROP Graph Bellman Ford Package implements the Bellman Ford Shortest Path Family
  * [***EdgeRelaxationPathGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/bellmanford/EdgeRelaxationPathGenerator.java)
  <i>EdgeRelaxationPathGenerator</i> generates the Shortest Path for a Directed Graph using the Bellman-Ford Algorithm.
 
- * [***VertexAugmentor***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/bellmanford/VertexAugmentor.java)
- <i>VertexAugmentor</i> augments and maintains the set of Path Vertexes.
+ * [***JohnsonPathGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/bellmanford/JohnsonPathGenerator.java)
+ <i>JohnsonPathGenerator</i> generates the Shortest Path for a Directed Graph using the Johnson Algorithm.
 
  * [***VertexRelaxationControl***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/bellmanford/VertexRelaxationControl.java)
  <i>VertexRelaxationControl</i> controls the Vertexes to be relaxed in the Shortest Path Generation for a Directed Graph under the Bellman-Ford Algorithm. This happens by eliminating unnecessary Vertex Relaxations.
@@ -39,7 +36,11 @@ DROP Graph Bellman Ford Package implements the Bellman Ford Shortest Path Family
 
  * Bang-Jensen, J., and G. Gutin (2008): <i>Digraphs: Theory, Algorithms, and Applications 2<sup>nd</sup> Edition</i> <b>Springer</b>
 
+ * Black, P. E. (2004): Johnson Algorithm https://xlinux.nist.gov/dads/HTML/johnsonsAlgorithm.html
+
  * Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms</i> 3<sup>rd</sup> Edition <b>MIT Press</b>
+
+ * Johnson, D. B. (1977): Efficient Algorithms for Shortest Paths in Sparse Networks <i>Journal of the ACM</i> <b>24 (1)</b> 1-13
 
  * Kleinberg, J., and E. Tardos (2022): <i>Algorithm Design 2<sup>nd</sup> Edition</i> <b>Pearson</b>
 
@@ -48,6 +49,10 @@ DROP Graph Bellman Ford Package implements the Bellman Ford Shortest Path Family
  * Russell, S., and P. Norvig (2009): <i>Artificial Intelligence: A Modern Approach 3<sup>rd</sup> Edition</i> <b>Prentice Hall</b>
 
  * Sedgewick, R. and K. Wayne (2011): <i>Algorithms 4<sup>th</sup> Edition</i> <b>Addison Wesley</b>
+
+ * Suurballe, J. W. (1974): Disjoint Paths in a Network <i>Networks</i> <b>14 (2)</b> 125-145
+
+ * Wikipedia (2019): Johnson Algorithm https://en.wikipedia.org/wiki/Johnson%27s_algorithm
 
  * Wikipedia (2020): Bellman-Ford Algorithm https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
 

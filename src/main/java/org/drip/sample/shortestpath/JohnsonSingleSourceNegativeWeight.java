@@ -1,6 +1,8 @@
 
 package org.drip.sample.shortestpath;
 
+import java.util.List;
+
 import org.drip.graph.bellmanford.JohnsonPathGenerator;
 import org.drip.graph.core.DirectedGraph;
 import org.drip.graph.core.Edge;
@@ -83,8 +85,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>JohnsonSinglePair</i> illustrates the Shortest Path Generation for a Directed Graph using the Johnson
- * 	Algorithm for a given Source Destination Pair. The References are:
+ * <i>JohnsonSingleSourceNegativeWeight</i> illustrates the Shortest Path Generation for a Directed Graph
+ * 	using the Johnson Algorithm for a given Source with Negative Weight. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -119,7 +121,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class JohnsonSinglePair
+public class JohnsonSingleSourceNegativeWeight
 {
 
 	public static final void main (
@@ -130,115 +132,61 @@ public class JohnsonSinglePair
 			""
 		);
 
-		String[] vertexArray = new String[]
-		{
-			"Delhi     ",
-			"Bombay    ",
-			"Madras    ",
-			"Calcutta  ",
-			"Bangalore ",
-			"Hyderabad ",
-			"Cochin    ",
-			"Pune      ",
-			"Ahmedabad ",
-			"Jaipur    "
-		};
-
 		DirectedGraph graph = new DirectedGraph();
 
-		graph.addBidirectionalEdge (
+		graph.addEdge (
 			new Edge (
-				vertexArray[0], // Delhi
-				vertexArray[1], // Bombay
-				1388.
+				"w",
+				"z",
+				 2.
 			)
 		);
 
-		graph.addBidirectionalEdge (
+		graph.addEdge (
 			new Edge (
-				vertexArray[0], // Delhi
-				vertexArray[2], // Madras
-				2191.
+				"x",
+				"w",
+				 6.
 			)
 		);
 
-		graph.addBidirectionalEdge (
+		graph.addEdge (
 			new Edge (
-				vertexArray[1], // Bombay
-				vertexArray[2], // Madras
-				1279.
+				"x",
+				"y",
+				 3.
 			)
 		);
 
-		graph.addBidirectionalEdge (
+		graph.addEdge (
 			new Edge (
-				vertexArray[0], // Delhi
-				vertexArray[3], // Calcutta
-				1341.
+				"y",
+				"w",
+				 4.
 			)
 		);
 
-		graph.addBidirectionalEdge (
+		graph.addEdge (
 			new Edge (
-				vertexArray[1], // Bombay
-				vertexArray[3], // Calcutta
-				1968.
+				"y",
+				"z",
+				 5.
 			)
 		);
 
-		graph.addBidirectionalEdge (
+		graph.addEdge (
 			new Edge (
-				vertexArray[2], // Madras
-				vertexArray[3], // Calcutta
-				1663.
+				"z",
+				"x",
+				-7.
 			)
 		);
 
-		graph.addBidirectionalEdge (
+		graph.addEdge (
 			new Edge (
-				vertexArray[2], // Madras
-				vertexArray[4], // Bangalore
-				361.
-			)
-		);
-
-		graph.addBidirectionalEdge (
-			new Edge (
-				vertexArray[2], // Madras
-				vertexArray[5], // Hyderabad
-				784.
-			)
-		);
-
-		graph.addBidirectionalEdge (
-			new Edge (
-				vertexArray[2], // Madras
-				vertexArray[6], // Cochin
-				697.
-			)
-		);
-
-		graph.addBidirectionalEdge (
-			new Edge (
-				vertexArray[1], // Bombay
-				vertexArray[7], // Pune
-				192.
-			)
-		);
-
-		graph.addBidirectionalEdge (
-			new Edge (
-				vertexArray[1], // Bombay
-				vertexArray[8], // Ahmedabad
-				492.
-			)
-		);
-
-		graph.addBidirectionalEdge (
-			new Edge (
-				vertexArray[0], // Delhi
-				vertexArray[9], // Jaipur
-				308.
+				"z",
+				"y",
+				-3.
 			)
 		);
 
@@ -251,25 +199,19 @@ public class JohnsonSinglePair
 			true
 		);
 
-		for (String sourceVertexName : vertexArray)
+		for (String sourceVertexName : graph.vertexNameSet())
 		{
-			for (String vertexName : vertexArray)
-			{
-				if (!sourceVertexName.equalsIgnoreCase (
-					vertexName
-				))
-				{
-					Path path = optimalPathGenerator.singlePair (
-						sourceVertexName,
-						vertexName
-					);
+			List<Path> pathArray = optimalPathGenerator.singleSource (
+				sourceVertexName
+			);
 
-					System.out.println (
-						"\t| {" + sourceVertexName + " -> " + vertexName + "} => " + 
-						path.vertexList() + " | " +
-						FormatUtil.FormatDouble (path.totalLength(), 4, 0, 1.)
-					);
-				}
+			for (Path path : pathArray)
+			{
+				System.out.println (
+					"\t| {" + path.sourceVertexName() + " -> " + path.destinationVertexName() + "} => " + 
+					path.vertexList() + " | " +
+					FormatUtil.FormatDouble (path.totalLength(), 4, 0, 1.)
+				);
 			}
 
 			System.out.println (

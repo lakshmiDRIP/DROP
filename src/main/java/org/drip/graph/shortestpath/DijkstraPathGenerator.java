@@ -138,7 +138,7 @@ public class DijkstraPathGenerator
 		);
 	}
 
-	@Override public org.drip.graph.bellmanford.VertexAugmentor augmentVertexes (
+	@Override public org.drip.graph.shortestpath.VertexAugmentor augmentVertexes (
 		final java.lang.String sourceVertexName)
 	{
 		if (null == sourceVertexName || sourceVertexName.isEmpty())
@@ -154,11 +154,11 @@ public class DijkstraPathGenerator
 
 		boolean shortestPath = shortestPath();
 
-		org.drip.graph.bellmanford.VertexAugmentor vertexAugmentor = null;
+		org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor = null;
 
 		try
 		{
-			vertexAugmentor = new org.drip.graph.bellmanford.VertexAugmentor (
+			vertexAugmentor = new org.drip.graph.shortestpath.VertexAugmentor (
 				sourceVertexName,
 				shortestPath
 			);

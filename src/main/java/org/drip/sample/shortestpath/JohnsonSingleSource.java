@@ -1,6 +1,8 @@
 
 package org.drip.sample.shortestpath;
 
+import java.util.List;
+
 import org.drip.graph.bellmanford.JohnsonPathGenerator;
 import org.drip.graph.core.DirectedGraph;
 import org.drip.graph.core.Edge;
@@ -83,8 +85,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>JohnsonSinglePair</i> illustrates the Shortest Path Generation for a Directed Graph using the Johnson
- * 	Algorithm for a given Source Destination Pair. The References are:
+ * <i>JohnsonSingleSource</i> illustrates the Shortest Path Generation for a Directed Graph using the Johnson
+ * 	Algorithm for a given Source. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -119,7 +121,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class JohnsonSinglePair
+public class JohnsonSingleSource
 {
 
 	public static final void main (
@@ -253,23 +255,17 @@ public class JohnsonSinglePair
 
 		for (String sourceVertexName : vertexArray)
 		{
-			for (String vertexName : vertexArray)
-			{
-				if (!sourceVertexName.equalsIgnoreCase (
-					vertexName
-				))
-				{
-					Path path = optimalPathGenerator.singlePair (
-						sourceVertexName,
-						vertexName
-					);
+			List<Path> pathArray = optimalPathGenerator.singleSource (
+				sourceVertexName
+			);
 
-					System.out.println (
-						"\t| {" + sourceVertexName + " -> " + vertexName + "} => " + 
-						path.vertexList() + " | " +
-						FormatUtil.FormatDouble (path.totalLength(), 4, 0, 1.)
-					);
-				}
+			for (Path path : pathArray)
+			{
+				System.out.println (
+					"\t| {" + path.sourceVertexName() + " -> " + path.destinationVertexName() + "} => " + 
+					path.vertexList() + " | " +
+					FormatUtil.FormatDouble (path.totalLength(), 4, 0, 1.)
+				);
 			}
 
 			System.out.println (

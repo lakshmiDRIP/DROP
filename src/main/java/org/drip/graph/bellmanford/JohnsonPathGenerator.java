@@ -1,5 +1,5 @@
 
-package org.drip.graph.shortestpath;
+package org.drip.graph.bellmanford;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -104,7 +104,7 @@ package org.drip.graph.shortestpath;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/shortestpath/README.md">Shortest Path Generation Algorithm Family</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/bellmanford/README.md">Bellman Ford Shortest Path Family</a></li>
  *  </ul>
  * <br><br>
  *
@@ -135,7 +135,7 @@ public class JohnsonPathGenerator
 		);
 	}
 
-	@Override public org.drip.graph.bellmanford.VertexAugmentor augmentVertexes (
+	@Override public org.drip.graph.shortestpath.VertexAugmentor augmentVertexes (
 		final java.lang.String sourceVertexName)
 	{
 		if (null == sourceVertexName || sourceVertexName.isEmpty())
@@ -147,9 +147,9 @@ public class JohnsonPathGenerator
 
 		org.drip.graph.core.DirectedGraph graphClone = graph.clone();
 
-		org.drip.graph.bellmanford.VertexAugmentor vertexAugmentor = null;
-
 		java.util.Set<java.lang.String> vertexNameSet = graph.vertexNameSet();
+
+		org.drip.graph.shortestpath.VertexAugmentor bellmanFordVertexAugmentor = null;
 
 		java.lang.String johnsonQVertexName = org.drip.numerical.common.StringUtil.GUID();
 
@@ -178,7 +178,7 @@ public class JohnsonPathGenerator
 
 		try
 		{
-			vertexAugmentor = new org.drip.graph.bellmanford.EdgeRelaxationPathGenerator (
+			bellmanFordVertexAugmentor = new org.drip.graph.bellmanford.EdgeRelaxationPathGenerator (
 				graphClone,
 				shortestPath()
 			).augmentVertexes (
@@ -194,8 +194,8 @@ public class JohnsonPathGenerator
 
 		org.drip.graph.core.DirectedGraph bellmanFordGraph = new org.drip.graph.core.DirectedGraph();
 
-		java.util.Map<java.lang.String, org.drip.graph.bellmanford.AugmentedVertex> augmentedVertexMap =
-			vertexAugmentor.augmentedVertexMap();
+		java.util.Map<java.lang.String, org.drip.graph.shortestpath.AugmentedVertex> augmentedVertexMap =
+			bellmanFordVertexAugmentor.augmentedVertexMap();
 
 		for (java.util.Map.Entry<java.lang.String, org.drip.graph.core.Edge> edgeMapEntry :
 			graphClone.edgeMap().entrySet()
@@ -237,6 +237,20 @@ public class JohnsonPathGenerator
 			}
 		}
 
-		return vertexAugmentor;
+		try
+		{
+			return new org.drip.graph.shortestpath.DijkstraPathGenerator (
+				bellmanFordGraph,
+				shortestPath()
+			).augmentVertexes (
+				sourceVertexName
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

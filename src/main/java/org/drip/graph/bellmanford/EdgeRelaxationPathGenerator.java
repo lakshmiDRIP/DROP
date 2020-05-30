@@ -153,7 +153,7 @@ public class EdgeRelaxationPathGenerator
 	}
 
 	protected boolean relaxEdges (
-		final org.drip.graph.bellmanford.VertexAugmentor vertexAugmentor,
+		final org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor,
 		final org.drip.graph.bellmanford.VertexRelaxationControl vertexRelaxationControl)
 	{
 		boolean shortestPath = shortestPath();
@@ -219,7 +219,7 @@ public class EdgeRelaxationPathGenerator
 		);
 	}
 
-	@Override public org.drip.graph.bellmanford.VertexAugmentor augmentVertexes (
+	@Override public org.drip.graph.shortestpath.VertexAugmentor augmentVertexes (
 		final java.lang.String sourceVertexName)
 	{
 		if (null == sourceVertexName || sourceVertexName.isEmpty())
@@ -233,12 +233,12 @@ public class EdgeRelaxationPathGenerator
 
 		java.util.Set<java.lang.String> vertexNameSet = graph.vertexNameSet();
 
-		org.drip.graph.bellmanford.VertexAugmentor vertexAugmentor = null;
+		org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor = null;
 		org.drip.graph.bellmanford.VertexRelaxationControl vertexRelaxationControl = null;
 
 		try
 		{
-			vertexAugmentor = new org.drip.graph.bellmanford.VertexAugmentor (
+			vertexAugmentor = new org.drip.graph.shortestpath.VertexAugmentor (
 				sourceVertexName,
 				shortestPath
 			);

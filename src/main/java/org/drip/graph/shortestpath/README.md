@@ -10,9 +10,6 @@ DROP Graph Shortest Path Package implements the Shortest Path Generation Algorit
  * [***AugmentedVertex***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/shortestpath/AugmentedVertex.java)
  <i>AugmentedVertex</i> contains the Augmentations of a Vertex during a Shortest Path Algorithm.
 
- * [***BellmanFordGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/shortestpath/BellmanFordGenerator.java)
- <i>BellmanFordGenerator</i> generates the Shortest Path for a Directed Graph using the Bellman-Ford Algorithm.
-
  * [***DijkstraGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/shortestpath/DijkstraGenerator.java)
  <i>DijkstraGenerator</i> generates the Shortest Path for a Directed Graph using the Dijkstra Algorithm.
 
@@ -25,15 +22,11 @@ DROP Graph Shortest Path Package implements the Shortest Path Generation Algorit
 
 # References
 
- * Bang-Jensen, J., and G. Gutin (2008): <i>Digraphs: Theory, Algorithms, and Applications 2<sup>nd</sup> Edition</i> <b>Springer</b>
-
  * Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms</i> 3<sup>rd</sup> Edition <b>MIT Press</b>
 
  * Dijkstra, E. W. (1959): A Note on Two Problems in Connection with Graphs <i>Numerische Mathematik</i> <b>1</b> 269-271
 
  * Felner, A. (2011): Position Paper: Dijkstra Algorithm versus Uniform Cost Search or a Case against Dijkstra Algorithm <i>Proceedings of the 4<sup>th</sup> International Symposium on Combinatorial Search</i> 47-51
-
- * Kleinberg, J., and E. Tardos (2022): <i>Algorithm Design 2<sup>nd</sup> Edition</i> <b>Pearson</b>
 
  * Mehlhorn, K. W., and P. Sanders (2008): <i>Algorithms and Data Structures: The Basic Toolbox</i> <b>Springer</b>
 
@@ -42,8 +35,6 @@ DROP Graph Shortest Path Package implements the Shortest Path Generation Algorit
  * Sedgewick, R. and K. Wayne (2011): <i>Algorithms 4<sup>th</sup> Edition</i> <b>Addison Wesley</b>
 
  * Wikipedia (2019): Dijkstra Algorithm https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
-
- * Wikipedia (2020): Bellman-Ford Algorithm https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
 
 
 ## DROP Specifications

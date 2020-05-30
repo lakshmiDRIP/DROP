@@ -119,7 +119,7 @@ public abstract class EdgePartitionGenerator
 
 	private static final boolean ProcessVertex (
 		final org.drip.graph.core.Vertex vertex,
-		final org.drip.graph.bellmanford.VertexAugmentor vertexAugmentor,
+		final org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor,
 		final boolean shortestPath)
 	{
 		org.drip.graph.heap.PriorityQueue<java.lang.Double, org.drip.graph.core.Edge> edgePriorityQueue =
@@ -154,7 +154,7 @@ public abstract class EdgePartitionGenerator
 		final boolean forward,
 		final org.drip.graph.core.DirectedGraph graph,
 		final java.util.List<java.lang.String> vertexNameList,
-		final org.drip.graph.bellmanford.VertexAugmentor vertexAugmentor,
+		final org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor,
 		final boolean shortestPath)
 	{
 		int vertexIndex = forward ? 0 : vertexCount - 1;
@@ -198,7 +198,7 @@ public abstract class EdgePartitionGenerator
 	}
 
 	@Override protected boolean relaxEdges (
-		final org.drip.graph.bellmanford.VertexAugmentor vertexAugmentor,
+		final org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor,
 		final org.drip.graph.bellmanford.VertexRelaxationControl vertexRelaxationControl)
 	{
 		org.drip.graph.bellmanford.EdgePartition edgePartition = edgePartition();
