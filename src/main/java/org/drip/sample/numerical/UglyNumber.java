@@ -1,8 +1,6 @@
 
 package org.drip.sample.numerical;
 
-import org.drip.numerical.common.FormatUtil;
-import org.drip.numerical.common.NumberUtil;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -79,7 +77,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>PrimeFactorEstimator</i> shows samples for estimating the Prime Factor of a given Integer.
+ * <i>UglyNumber</i> shows the Computation of the n<sup>th</sup> Ugly Number for the Input Number Triplet.
  * 
  *	<br><br>
  *  <ul>
@@ -92,78 +90,46 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PrimeFactorEstimator
+public class UglyNumber
 {
 
 	public static final void main (
-		final String[] argumentArray)
+		final String argumentArray[])
 		throws Exception
 	{
 		EnvManager.InitEnv (
 			""
 		);
 
-		int start = 1;
-		int finish = 99;
-
-		System.out.println (
-			"\t|--------------------------------------------------||"
-		);
-
-		System.out.println (
-			"\t|              PRIME FACTOR ESTIMATOR              ||"
-		);
-
-		System.out.println (
-			"\t|--------------------------------------------------||"
-		);
-
-		System.out.println (
-			"\t|    L -> R:                                       ||"
-		);
-
-		System.out.println (
-			"\t|          - n                                     ||"
-		);
-
-		System.out.println (
-			"\t|          - Prime Factorization                   ||"
-		);
-
-		System.out.println (
-			"\t|          - Prime Factorization Exponent          ||"
-		);
-
-		System.out.println (
-			"\t|          - Prime Factor Map                      ||"
-		);
-
-		System.out.println (
-			"\t|--------------------------------------------------||"
-		);
-
-		for (int number = start;
-			number <= finish;
-			++number
-		)
+		/* int[] aArray =
 		{
-			System.out.println (
-				"\t| [" + number + "] =" +
-				NumberUtil.PrimeFactor (
-					number
-				) + " | " + FormatUtil.FormatDouble (
-					NumberUtil.PrimeFactorExponentTwo (
-						number
-					), 1, 6, 1.
-				) + " | " + NumberUtil.PrimeFactorMap (
-					number
-				)
-			);
+			2,
+		};
+		int[] bArray =
+		{
+			3,
+		};
+		int[] cArray =
+		{
+			5,
+		}; */
+		int[] uglyIndexArray =
+		{
+			1,
+			2,
+			3,
+		};
+
+		System.out.println ("\t|-----------------------------------------||");
+
+		for (int uglyIndex = 0;
+			uglyIndex < uglyIndexArray.length;
+			++uglyIndex)
+		{
+			// System.out.println 
 		}
 
-		System.out.println (
-			"\t|--------------------------------------------------||"
-		);
+		System.out.println ("\t|-----------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

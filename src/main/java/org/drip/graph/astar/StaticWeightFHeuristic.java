@@ -141,8 +141,9 @@ public class StaticWeightFHeuristic
 		);
 
 		if (!org.drip.numerical.common.NumberUtil.IsValid (
-			_epsilon = epsilon
-		))
+				_epsilon = epsilon
+			) || 1. >= _epsilon
+		)
 		{
 			throw new java.lang.Exception (
 				"FHeuristic Constructor => Invalid Inputs"
@@ -159,5 +160,16 @@ public class StaticWeightFHeuristic
 	public double epsilon()
 	{
 		return _epsilon;
+	}
+
+	@Override public double evaluate (
+		final org.drip.graph.core.Vertex vertex)
+		throws java.lang.Exception
+	{
+		return gHeuristic().evaluate (
+			vertex
+		) +  _epsilon * hHeuristic().evaluate (
+			vertex
+		);
 	}
 }

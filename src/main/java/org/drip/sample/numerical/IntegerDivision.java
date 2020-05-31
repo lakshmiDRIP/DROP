@@ -1,7 +1,6 @@
 
 package org.drip.sample.numerical;
 
-import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.service.env.EnvManager;
 
@@ -79,7 +78,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>PrimeFactorEstimator</i> shows samples for estimating the Prime Factor of a given Integer.
+ * <i>IntegerDivision</i> shows the Division of Two Integers without using Multiplication, Division, and Mod
+ * 	Operator.
  * 
  *	<br><br>
  *  <ul>
@@ -92,78 +92,44 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PrimeFactorEstimator
+public class IntegerDivision
 {
 
 	public static final void main (
-		final String[] argumentArray)
+		final String argumentArray[])
 		throws Exception
 	{
 		EnvManager.InitEnv (
 			""
 		);
 
-		int start = 1;
-		int finish = 99;
+		int[] dividendArray =
+		{
+			10,
+			 7,
+		};
+		int[] divisorArray =
+		{
+			 3,
+			-3,
+		};
 
-		System.out.println (
-			"\t|--------------------------------------------------||"
-		);
+		System.out.println ("\t|-----------------------------------------||");
 
-		System.out.println (
-			"\t|              PRIME FACTOR ESTIMATOR              ||"
-		);
-
-		System.out.println (
-			"\t|--------------------------------------------------||"
-		);
-
-		System.out.println (
-			"\t|    L -> R:                                       ||"
-		);
-
-		System.out.println (
-			"\t|          - n                                     ||"
-		);
-
-		System.out.println (
-			"\t|          - Prime Factorization                   ||"
-		);
-
-		System.out.println (
-			"\t|          - Prime Factorization Exponent          ||"
-		);
-
-		System.out.println (
-			"\t|          - Prime Factor Map                      ||"
-		);
-
-		System.out.println (
-			"\t|--------------------------------------------------||"
-		);
-
-		for (int number = start;
-			number <= finish;
-			++number
-		)
+		for (int index = 0;
+			index < dividendArray.length;
+			++index)
 		{
 			System.out.println (
-				"\t| [" + number + "] =" +
-				NumberUtil.PrimeFactor (
-					number
-				) + " | " + FormatUtil.FormatDouble (
-					NumberUtil.PrimeFactorExponentTwo (
-						number
-					), 1, 6, 1.
-				) + " | " + NumberUtil.PrimeFactorMap (
-					number
+				"\t| " + dividendArray[index] + " / " + divisorArray[index] + " = " +
+				NumberUtil.DivideIntegers (
+					dividendArray[index],
+					divisorArray[index]
 				)
 			);
 		}
 
-		System.out.println (
-			"\t|--------------------------------------------------||"
-		);
+		System.out.println ("\t|-----------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

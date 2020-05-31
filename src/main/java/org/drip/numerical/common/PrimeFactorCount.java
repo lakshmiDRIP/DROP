@@ -1,9 +1,5 @@
 
-package org.drip.sample.numerical;
-
-import org.drip.numerical.common.FormatUtil;
-import org.drip.numerical.common.NumberUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.numerical.common;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -79,92 +75,32 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>PrimeFactorEstimator</i> shows samples for estimating the Prime Factor of a given Integer.
+ * <i>PrimeFactorCount</i> contains a Prime Factor and its Count in a Composite Number.
  * 
- *	<br><br>
+ * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/numerical/README.md">Search, Quadratures, Fourier Phase Tracker</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/common">Primitives/Array Manipulate Format Display Utilities</a></li>
  *  </ul>
+ * <br><br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class PrimeFactorEstimator
+public class PrimeFactorCount
 {
+	private int _primeFactor = 1;
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Retrieve the Prime Factor
+	 * 
+	 * @return The Prime Factor
+	 */
+
+	public int primeFactor()
 	{
-		EnvManager.InitEnv (
-			""
-		);
-
-		int start = 1;
-		int finish = 99;
-
-		System.out.println (
-			"\t|--------------------------------------------------||"
-		);
-
-		System.out.println (
-			"\t|              PRIME FACTOR ESTIMATOR              ||"
-		);
-
-		System.out.println (
-			"\t|--------------------------------------------------||"
-		);
-
-		System.out.println (
-			"\t|    L -> R:                                       ||"
-		);
-
-		System.out.println (
-			"\t|          - n                                     ||"
-		);
-
-		System.out.println (
-			"\t|          - Prime Factorization                   ||"
-		);
-
-		System.out.println (
-			"\t|          - Prime Factorization Exponent          ||"
-		);
-
-		System.out.println (
-			"\t|          - Prime Factor Map                      ||"
-		);
-
-		System.out.println (
-			"\t|--------------------------------------------------||"
-		);
-
-		for (int number = start;
-			number <= finish;
-			++number
-		)
-		{
-			System.out.println (
-				"\t| [" + number + "] =" +
-				NumberUtil.PrimeFactor (
-					number
-				) + " | " + FormatUtil.FormatDouble (
-					NumberUtil.PrimeFactorExponentTwo (
-						number
-					), 1, 6, 1.
-				) + " | " + NumberUtil.PrimeFactorMap (
-					number
-				)
-			);
-		}
-
-		System.out.println (
-			"\t|--------------------------------------------------||"
-		);
-
-		EnvManager.TerminateEnv();
+		return _primeFactor;
 	}
 }

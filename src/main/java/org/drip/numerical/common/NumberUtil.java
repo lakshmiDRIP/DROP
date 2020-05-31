@@ -117,6 +117,90 @@ public class NumberUtil {
 	private static final double DEFAULT_ABSOLUTE_TOLERANCE = 1.0e-03;
 	private static final double DEFAULT_RELATIVE_TOLERANCE = 1.0e-03;
 
+	private static final int Quotient (
+		final int dividend,
+		final int divisor)
+	{
+		if (dividend < divisor)
+		{
+			return 0;
+		}
+
+		int quotient = 1;
+		int divisorSeriesSum = divisor;
+
+		while (true)
+		{
+			int divisorSeriesSumTemp = divisorSeriesSum + divisorSeriesSum;
+
+			if (divisorSeriesSumTemp > dividend)
+			{
+				break;
+			}
+
+			quotient += quotient;
+			divisorSeriesSum =  divisorSeriesSumTemp;
+		}
+
+		return quotient + Quotient (
+			dividend - divisorSeriesSum,
+			divisor
+		);
+	}
+
+	private static final int ComputeFromPrimeFactorMap (
+		final java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeCountMap)
+	{
+		int primeFactor = 1;
+
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> primeCountEntry :
+			primeCountMap.entrySet())
+		{
+			int prime = primeCountEntry.getKey();
+
+			int primeCount = primeCountEntry.getValue();
+
+			while (0 != primeCount)
+			{
+				primeFactor = primeFactor * prime;
+				--primeCount;
+			}
+		}
+
+		return primeFactor;
+	}
+
+	private static final int PrimeNumberToIncrement (
+		final java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeCountMap)
+	{
+		int smallestCompoundedPrime = 1;
+		int primeNumberToIncrement = 1;
+
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> primeCountEntry :
+			primeCountMap.entrySet())
+		{
+			int compoundedPrime = 1;
+
+			int prime = primeCountEntry.getKey();
+
+			int primeCount = primeCountEntry.getValue();
+
+			while (0 != primeCount)
+			{
+				compoundedPrime = compoundedPrime * prime;
+				--primeCount;
+			}
+
+			if (smallestCompoundedPrime > compoundedPrime)
+			{
+				smallestCompoundedPrime = compoundedPrime;
+				primeNumberToIncrement = prime;
+			}
+		}
+
+		return primeNumberToIncrement;
+	}
+
 	/**
 	 * Check if the Input Long is MIN_VALUE or MAX_VALUE
 	 * 
@@ -934,13 +1018,14 @@ public class NumberUtil {
 	}
 
 	/**
-	 * Retrieve the Map of Prime Number Count for the given Number
+	 * Retrieve the Map of Prime Factor Count for the given Number
 	 * 
 	 * @param n The Given Number
-	 * @return Map of Prime Number Count
+	 * 
+	 * @return Map of Prime Factor Count
 	 */
 
-	public static final java.util.TreeMap<java.lang.Integer, java.lang.Integer> PrimeCountMap (
+	public static final java.util.TreeMap<java.lang.Integer, java.lang.Integer> PrimeFactorMap (
 		int n)
 	{
 		if (0 >= n)
@@ -950,7 +1035,7 @@ public class NumberUtil {
 
 		int dePrimed = n;
 
-		java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeCountMap =
+		java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeFactorMap =
 			new java.util.TreeMap<java.lang.Integer, java.lang.Integer>();
 
 		int max = (int) java.lang.Math.sqrt (
@@ -966,20 +1051,20 @@ public class NumberUtil {
 
 			while (0 == remainder)
 			{
-				if (primeCountMap.containsKey (
+				if (primeFactorMap.containsKey (
 					index
 				))
 				{
-					primeCountMap.put (
+					primeFactorMap.put (
 						index,
-						primeCountMap.get (
+						primeFactorMap.get (
 							index
 						) + 1
 					);
 				}
 				else
 				{
-					primeCountMap.put (
+					primeFactorMap.put (
 						index,
 						1
 					);
@@ -990,12 +1075,12 @@ public class NumberUtil {
 			}
 		}
 
-		primeCountMap.put (
+		primeFactorMap.put (
 			dePrimed,
 			1
 		);
 
-		return primeCountMap;
+		return primeFactorMap;
 	}
 
 	/**
@@ -1012,34 +1097,20 @@ public class NumberUtil {
 		final int n)
 		throws java.lang.Exception
 	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeCountMap = PrimeCountMap (
+		java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeFactorMap = PrimeFactorMap (
 			n
 		);
 
-		if (null == primeCountMap || 0 == primeCountMap.size())
+		if (null == primeFactorMap || 0 == primeFactorMap.size())
 		{
 			throw new java.lang.Exception (
 				"PrimeFactorTable::PrimeFactor => Cannot extract Map"
 			);
 		}
 
-		int primeFactor = 1;
-
-		for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> primeCountEntry :
-			primeCountMap.entrySet())
-		{
-			int prime = primeCountEntry.getKey();
-
-			int primeCount = primeCountEntry.getValue();
-
-			while (0 != primeCount)
-			{
-				primeFactor = primeFactor * prime;
-				--primeCount;
-			}
-		}
-
-		return primeFactor;
+		return ComputeFromPrimeFactorMap (
+			primeFactorMap
+		);
 	}
 
 	/**
@@ -1093,5 +1164,236 @@ public class NumberUtil {
 		}
 
 		return binaryDigitCount;
+	}
+
+	/**
+	 * Divide two integers without using multiplication, division, and mod operator. The integer division
+	 *  should truncate toward zero, which means losing its fractional part. For example, truncate(8.345) = 8
+	 *  and truncate(-2.7335) = -2.
+	 *   
+	 * @param dividend Dividend
+	 * @param divisor Divisor
+	 * 
+	 * @return The quotient after dividing dividend by divisor
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final int DivideIntegers (
+		final int dividend,
+		final int divisor)
+		throws java.lang.Exception
+	{
+		if (0 == divisor)
+		{
+			throw new java.lang.Exception (
+				"NumberUtil::DivideIntegers => Invalid Divisor"
+			);
+		}
+
+		int sign = 1;
+		int unsignedDivisor = divisor;
+		int unsignedDividend = dividend;
+
+		if (0 > unsignedDivisor && 0 > unsignedDividend)
+		{
+			unsignedDivisor = -1 * unsignedDivisor;
+			unsignedDividend = -1 * unsignedDividend;
+		}
+		else if (0 > unsignedDivisor)
+		{
+			sign = -1;
+			unsignedDivisor = -1 * unsignedDivisor;
+		}
+		else if (0 > unsignedDividend)
+		{
+			sign = -1;
+			unsignedDividend = -1 * unsignedDividend;
+		}
+
+		return sign * Quotient (
+			unsignedDividend,
+			unsignedDivisor
+		);
+	}
+
+	/**
+	 * Find the n-th ugly number. Ugly numbers are positive integers which are divisible by a or b or c.
+	 * 
+	 * @param n n
+	 * @param a a
+	 * @param b b
+	 * @param c c
+	 * 
+	 * @return The n-th Ugly Number
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final int UglyNumber (
+		final int n,
+		final int a,
+		final int b,
+		final int c)
+		throws java.lang.Exception
+	{
+		if (0 >= n ||
+			0 >= a ||
+			0 >= b ||
+			0 >= c)
+		{
+			throw new java.lang.Exception (
+				"NumberUtil::UglyNumber => Invalid Divisor"
+			);
+		}
+
+		int ugly1 = -1;
+
+		if (a < b && a < c)
+		{
+			ugly1 = a;
+		}
+
+		if (b < a && b < c)
+		{
+			ugly1 = b;
+		}
+
+		if (c < a && c < b)
+		{
+			ugly1 = c;
+		}
+
+		if (1 == n)
+		{
+			return ugly1;
+		}
+
+		java.util.TreeMap<java.lang.Integer, java.lang.Integer> startingPrimeFactorMap = PrimeFactorMap (
+			ugly1
+		);
+
+		java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeFactorMapA = ugly1 == a ?
+			startingPrimeFactorMap : PrimeFactorMap (
+				a
+			);
+
+		java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeFactorMapB = ugly1 == b ?
+			startingPrimeFactorMap : PrimeFactorMap (
+				b
+			);
+
+		java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeFactorMapC = ugly1 == c ?
+			startingPrimeFactorMap : PrimeFactorMap (
+				c
+			);
+
+		java.util.TreeMap<java.lang.Integer, java.lang.Integer> baselinePrimeCountMap =
+			new java.util.TreeMap<java.lang.Integer, java.lang.Integer>();
+
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> primeCountMapAEntry :
+			primeFactorMapA.entrySet())
+		{
+			baselinePrimeCountMap.put (
+				primeCountMapAEntry.getKey(),
+				primeCountMapAEntry.getValue()
+			);
+		}
+
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> primeCountMapBEntry :
+			primeFactorMapB.entrySet())
+		{
+			int primeKey = primeCountMapBEntry.getKey();
+
+			int primeCount = primeCountMapBEntry.getValue();
+
+			if (baselinePrimeCountMap.containsKey (
+				primeKey
+			))
+			{
+				if (baselinePrimeCountMap.get (
+						primeKey
+					) < primeCount
+				)
+				{
+					baselinePrimeCountMap.put (
+						primeKey,
+						primeCount
+					);
+				}
+			}
+			else
+			{
+				baselinePrimeCountMap.put (
+					primeKey,
+					primeCount
+				);
+			}
+		}
+
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> primeCountMapCEntry :
+			primeFactorMapC.entrySet())
+		{
+			int primeKey = primeCountMapCEntry.getKey();
+
+			int primeCount = primeCountMapCEntry.getValue();
+
+			if (baselinePrimeCountMap.containsKey (
+				primeKey
+			))
+			{
+				if (baselinePrimeCountMap.get (
+						primeKey
+					) < primeCount
+				)
+				{
+					baselinePrimeCountMap.put (
+						primeKey,
+						primeCount
+					);
+				}
+			}
+			else
+			{
+				baselinePrimeCountMap.put (
+					primeKey,
+					primeCount
+				);
+			}
+		}
+
+		java.util.TreeMap<java.lang.Integer, java.lang.Integer> compositePrimeCountUpdateMap =
+			new java.util.TreeMap<java.lang.Integer, java.lang.Integer>();
+
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> compositePrimeCountMapEntry :
+			baselinePrimeCountMap.entrySet())
+		{
+			compositePrimeCountUpdateMap.put (
+				compositePrimeCountMapEntry.getKey(),
+				0
+			);
+		}
+
+		for (int uglyIndex = 4;
+			uglyIndex <= n;
+			++uglyIndex)
+		{
+			int primeNumberToIncrement = PrimeNumberToIncrement (
+				compositePrimeCountUpdateMap
+			);
+
+			compositePrimeCountUpdateMap.put (
+				primeNumberToIncrement,
+				compositePrimeCountUpdateMap.get (
+					primeNumberToIncrement
+				) + 1
+			);
+		}
+
+		return ComputeFromPrimeFactorMap (
+			startingPrimeFactorMap
+		) * ComputeFromPrimeFactorMap (
+			compositePrimeCountUpdateMap
+		);
 	}
 }

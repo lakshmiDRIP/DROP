@@ -21,6 +21,9 @@ DROP Sample Numerical demonstrates Search, Quadratures, and Fourier Phase Tracke
  	* Brent's method
  	* Zheng's method
 
+ * [***IntegerDivision***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/numerical/IntegerDivision.java)
+ <i>IntegerDivision</i> shows the Division of Two Integers without using Multiplication, Division, and Mod Operator.
+
  * [***IntegrandQuadrature***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/numerical/IntegrandQuadrature.java)
  <i>IntegrandQuadrature</i> shows samples for the following routines for integrating the objective function:
  	* Mid-Point Scheme
