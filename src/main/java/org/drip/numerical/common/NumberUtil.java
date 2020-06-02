@@ -170,35 +170,82 @@ public class NumberUtil {
 		return primeFactor;
 	}
 
-	private static final int PrimeNumberToIncrement (
-		final java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeCountMap)
+	private static final org.drip.numerical.common.PrimeFactorCount PrimeFactorToIncrement (
+		final java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeFactorMap,
+		final java.util.TreeMap<java.lang.Integer, java.lang.Integer> baselinePrimeFactorMap)
 	{
-		int smallestCompoundedPrime = 1;
-		int primeNumberToIncrement = 1;
+		int primeFactorToIncrement = 1;
+		int primeFactorIncrementCount = -1;
+		int smallestCompoundedPrimeFactor = java.lang.Integer.MAX_VALUE;
 
-		for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> primeCountEntry :
-			primeCountMap.entrySet())
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> baselinePrimeFactorEntry :
+			baselinePrimeFactorMap.entrySet())
 		{
-			int compoundedPrime = 1;
+			int primeFactor = baselinePrimeFactorEntry.getKey();
 
-			int prime = primeCountEntry.getKey();
+			int baselinePrimeFactorCount = baselinePrimeFactorEntry.getValue();
 
-			int primeCount = primeCountEntry.getValue();
+			int primeFactorCount = primeFactorMap.containsKey (
+				primeFactor
+			) ? primeFactorMap.get (
+				primeFactor
+			) : 0;
 
-			while (0 != primeCount)
+			int primeFactorCountTarget = baselinePrimeFactorCount > primeFactorCount ?
+				baselinePrimeFactorCount : primeFactorCount + 1;
+			int primeFactorCountIndex = primeFactorCountTarget;
+			int compoundedPrimeFactor = 1;
+
+			while (primeFactorCountIndex-- > 0)
 			{
-				compoundedPrime = compoundedPrime * prime;
-				--primeCount;
+				compoundedPrimeFactor = compoundedPrimeFactor * primeFactor;
 			}
 
-			if (smallestCompoundedPrime > compoundedPrime)
+			if (smallestCompoundedPrimeFactor > compoundedPrimeFactor)
 			{
-				smallestCompoundedPrime = compoundedPrime;
-				primeNumberToIncrement = prime;
+				primeFactorToIncrement = primeFactor;
+				smallestCompoundedPrimeFactor = compoundedPrimeFactor;
+				primeFactorIncrementCount = primeFactorCountTarget - primeFactorCount;
 			}
 		}
 
-		return primeNumberToIncrement;
+		try
+		{
+			return new org.drip.numerical.common.PrimeFactorCount (
+				primeFactorToIncrement,
+				primeFactorIncrementCount
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	private static final double BinaryPower (
+		final double x,
+		final int n)
+	{
+		if (1 >= n)
+		{
+			return 1 == n ? x : 1.;
+		}
+
+		int i = 1;
+		double power = x;
+
+		while (i + i < n)
+		{
+			i += i;
+			power = power * power;
+		}
+
+		return power * BinaryPower (
+			x,
+			n - i
+		);
 	}
 
 	/**
@@ -1243,7 +1290,7 @@ public class NumberUtil {
 			0 >= c)
 		{
 			throw new java.lang.Exception (
-				"NumberUtil::UglyNumber => Invalid Divisor"
+				"NumberUtil::UglyNumber => Invalid Inputs"
 			);
 		}
 
@@ -1269,54 +1316,54 @@ public class NumberUtil {
 			return ugly1;
 		}
 
-		java.util.TreeMap<java.lang.Integer, java.lang.Integer> startingPrimeFactorMap = PrimeFactorMap (
+		java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeFactorMap = PrimeFactorMap (
 			ugly1
 		);
 
-		java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeFactorMapA = ugly1 == a ?
-			startingPrimeFactorMap : PrimeFactorMap (
+		java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeFactorMapA = ugly1 == a ? primeFactorMap
+			: PrimeFactorMap (
 				a
 			);
 
-		java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeFactorMapB = ugly1 == b ?
-			startingPrimeFactorMap : PrimeFactorMap (
+		java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeFactorMapB = ugly1 == b ? primeFactorMap
+			: PrimeFactorMap (
 				b
 			);
 
-		java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeFactorMapC = ugly1 == c ?
-			startingPrimeFactorMap : PrimeFactorMap (
+		java.util.TreeMap<java.lang.Integer, java.lang.Integer> primeFactorMapC = ugly1 == c ? primeFactorMap
+			: PrimeFactorMap (
 				c
 			);
 
-		java.util.TreeMap<java.lang.Integer, java.lang.Integer> baselinePrimeCountMap =
+		java.util.TreeMap<java.lang.Integer, java.lang.Integer> baselinePrimeFactorMap =
 			new java.util.TreeMap<java.lang.Integer, java.lang.Integer>();
 
-		for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> primeCountMapAEntry :
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> primeFactorMapAEntry :
 			primeFactorMapA.entrySet())
 		{
-			baselinePrimeCountMap.put (
-				primeCountMapAEntry.getKey(),
-				primeCountMapAEntry.getValue()
+			baselinePrimeFactorMap.put (
+				primeFactorMapAEntry.getKey(),
+				primeFactorMapAEntry.getValue()
 			);
 		}
 
-		for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> primeCountMapBEntry :
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> primeFactorMapBEntry :
 			primeFactorMapB.entrySet())
 		{
-			int primeKey = primeCountMapBEntry.getKey();
+			int primeKey = primeFactorMapBEntry.getKey();
 
-			int primeCount = primeCountMapBEntry.getValue();
+			int primeCount = primeFactorMapBEntry.getValue();
 
-			if (baselinePrimeCountMap.containsKey (
+			if (baselinePrimeFactorMap.containsKey (
 				primeKey
 			))
 			{
-				if (baselinePrimeCountMap.get (
+				if (baselinePrimeFactorMap.get (
 						primeKey
 					) < primeCount
 				)
 				{
-					baselinePrimeCountMap.put (
+					baselinePrimeFactorMap.put (
 						primeKey,
 						primeCount
 					);
@@ -1324,30 +1371,30 @@ public class NumberUtil {
 			}
 			else
 			{
-				baselinePrimeCountMap.put (
+				baselinePrimeFactorMap.put (
 					primeKey,
 					primeCount
 				);
 			}
 		}
 
-		for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> primeCountMapCEntry :
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> primeFactorMapCEntry :
 			primeFactorMapC.entrySet())
 		{
-			int primeKey = primeCountMapCEntry.getKey();
+			int primeKey = primeFactorMapCEntry.getKey();
 
-			int primeCount = primeCountMapCEntry.getValue();
+			int primeCount = primeFactorMapCEntry.getValue();
 
-			if (baselinePrimeCountMap.containsKey (
+			if (baselinePrimeFactorMap.containsKey (
 				primeKey
 			))
 			{
-				if (baselinePrimeCountMap.get (
+				if (baselinePrimeFactorMap.get (
 						primeKey
 					) < primeCount
 				)
 				{
-					baselinePrimeCountMap.put (
+					baselinePrimeFactorMap.put (
 						primeKey,
 						primeCount
 					);
@@ -1355,45 +1402,88 @@ public class NumberUtil {
 			}
 			else
 			{
-				baselinePrimeCountMap.put (
+				baselinePrimeFactorMap.put (
 					primeKey,
 					primeCount
 				);
 			}
 		}
 
-		java.util.TreeMap<java.lang.Integer, java.lang.Integer> compositePrimeCountUpdateMap =
-			new java.util.TreeMap<java.lang.Integer, java.lang.Integer>();
-
-		for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> compositePrimeCountMapEntry :
-			baselinePrimeCountMap.entrySet())
-		{
-			compositePrimeCountUpdateMap.put (
-				compositePrimeCountMapEntry.getKey(),
-				0
-			);
-		}
-
-		for (int uglyIndex = 4;
+		for (int uglyIndex = 2;
 			uglyIndex <= n;
 			++uglyIndex)
 		{
-			int primeNumberToIncrement = PrimeNumberToIncrement (
-				compositePrimeCountUpdateMap
+			org.drip.numerical.common.PrimeFactorCount primeFactorCount = PrimeFactorToIncrement (
+				primeFactorMap,
+				baselinePrimeFactorMap
 			);
 
-			compositePrimeCountUpdateMap.put (
-				primeNumberToIncrement,
-				compositePrimeCountUpdateMap.get (
-					primeNumberToIncrement
-				) + 1
-			);
+			if (null == primeFactorCount)
+			{
+				throw new java.lang.Exception (
+					"NumberUtil::UglyNumber => Cannot find out Prime Factor to Increment"
+				);
+			}
+
+			int primeFactor = primeFactorCount.primeFactor();
+
+			if (primeFactorMap.containsKey (
+				primeFactor
+			))
+			{
+				primeFactorMap.put (
+					primeFactor,
+					primeFactorMap.get (
+						primeFactor
+					) + primeFactorCount.count()
+				);
+			}
+			else
+			{
+				primeFactorMap.put (
+					primeFactor,
+					primeFactorCount.count()
+				);
+			}
 		}
 
 		return ComputeFromPrimeFactorMap (
-			startingPrimeFactorMap
-		) * ComputeFromPrimeFactorMap (
-			compositePrimeCountUpdateMap
+			primeFactorMap
 		);
+	}
+
+	/**
+	 * Compute the Integer Power of x
+	 * 
+	 * @param x x
+	 * @param n n
+	 * 
+	 * @return Integer Power of x
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double Power (
+		final double x,
+		final int n)
+		throws java.lang.Exception
+	{
+		if (!IsValid (
+			x
+		))
+		{
+			throw new java.lang.Exception (
+				"NumberUtil::Power => Invalid Inputs"
+			);
+		}
+
+		boolean negative = 0 > n;
+
+		double power = BinaryPower (
+			x,
+			negative ? -n : n
+		);
+
+		return negative ? 1. / power : power;
 	}
 }

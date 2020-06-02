@@ -78,7 +78,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>UglyNumber</i> shows the Computation of the n<sup>th</sup> Ugly Number for the Input Number Triplet.
+ * <i>IntegerPower</i> shows the Computation of the Integer Power of a Number.
  * 
  *	<br><br>
  *  <ul>
@@ -91,47 +91,32 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class UglyNumber
+public class IntegerPower
 {
 
-	public static final void main (
-		final String argumentArray[])
+	public final static void main (
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv (
 			""
 		);
 
-		int[] aArray =
+		double[] xArray =
 		{
 			2,
 		};
-		int[] bArray =
+		int[] powerArray =
 		{
-			3,
-		};
-		int[] cArray =
-		{
-			5,
-		};
-		int[] uglyIndexArray =
-		{
-			// 1,
 			2,
-			// 3,
 		};
 
-		System.out.println ("\t|-----------------------------------------||");
-
-		for (int uglyIndex = 0;
-			uglyIndex < uglyIndexArray.length;
-			++uglyIndex)
+		for (int powerIndex = 0;
+			powerIndex < powerArray.length;
+			++powerIndex)
 		{
-			System.out.println (NumberUtil.UglyNumber(uglyIndexArray[uglyIndex], aArray[0], bArray[0], cArray[0]));
+			System.out.println (NumberUtil.Power(xArray[0], powerArray[powerIndex]));
 		}
-
-		System.out.println ("\t|-----------------------------------------||");
-
 		EnvManager.TerminateEnv();
 	}
 }

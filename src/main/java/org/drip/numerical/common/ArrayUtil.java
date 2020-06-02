@@ -75,8 +75,8 @@ package org.drip.numerical.common;
  */
 
 /**
- * <i>PrimeFactorCount</i> contains a Prime Factor and its Count in a Composite Number.
- * 
+ * <i>ArrayUtil</i> implements Generic Array Utility Functions used in DROP modules.
+ *  
  * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
@@ -89,54 +89,201 @@ package org.drip.numerical.common;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PrimeFactorCount
+public class ArrayUtil
 {
-	private int _count = -1;
-	private int _primeFactor = 1;
+
+	private static final int PivotIndex (
+		final int[] numberArray,
+		int leftIndex,
+		int rightIndex)
+	{
+		while (numberArray[leftIndex] > numberArray[rightIndex])
+		{
+			int midIndex = (leftIndex + rightIndex) / 2;
+
+			if (numberArray[midIndex] > numberArray[midIndex + 1])
+			{
+				return midIndex;
+			}
+
+			if (numberArray[leftIndex] > numberArray[midIndex])
+			{
+				rightIndex = midIndex;
+			}
+			else
+			{
+				leftIndex = midIndex;
+			}
+		}
+
+		return -1;
+	}
+
+	private static final int SearchPivotIndex (
+		final int[] numberArray,
+		final int target,
+		int leftIndex,
+		int rightIndex)
+	{
+		int midIndex = (leftIndex + rightIndex) / 2;
+
+		while (leftIndex < rightIndex + 1)
+		{
+			if (numberArray[midIndex] == target)
+			{
+				return midIndex;
+			}
+
+			if (numberArray[midIndex] < target)
+			{
+				leftIndex = midIndex;
+			}
+			else
+			{
+				rightIndex = midIndex;
+			}
+		}
+
+		return -1;
+	}
 
 	/**
-	 * PrimeFactorCount Constructor
+	 * Search for the Target in a Rotated Array
 	 * 
-	 * @param primeFactor Prime Factor
-	 * @param count Count of the Prime Factor
+	 * @param numberArray The Rotated Number Array
+	 * @param target The Target
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return TRUE - The Number exists
 	 */
 
-	public PrimeFactorCount (
-		final int primeFactor,
-		final int count)
-		throws java.lang.Exception
+	public static final boolean SearchRotatedArray (
+		final int[] numberArray,
+		final int target)
 	{
-		if (2 > (_primeFactor = primeFactor) ||
-			0 > (_count = count)
-		)
+		int arrayLength = numberArray.length;
+		int rightIndex = arrayLength - 1;
+		int midIndex = arrayLength / 2;
+
+		int pivotIndex = PivotIndex (
+			numberArray,
+			0,
+			midIndex
+		);
+
+		if (-1 == pivotIndex)
 		{
-			throw new java.lang.Exception (
-				"PrimeFactorCount Constructor => Invalid Inputs " + primeFactor + " | " + count
+			pivotIndex = PivotIndex (
+				numberArray,
+				midIndex + 1,
+				arrayLength - 1
 			);
 		}
+
+		return numberArray[rightIndex] < target ? -1 != SearchPivotIndex (
+			numberArray,
+			target,
+			0,
+			pivotIndex
+		) : -1 != SearchPivotIndex (
+			numberArray,
+			target,
+			pivotIndex + 1,
+			rightIndex
+		);
 	}
 
 	/**
-	 * Retrieve the Prime Factor
+	 * Search for the Target in a Rotated Array
 	 * 
-	 * @return The Prime Factor
+	 * @param numberArray The Rotated Number Array
+	 * @param target The Target
+	 * 
+	 * @return TRUE - The Rotated Index
 	 */
 
-	public int primeFactor()
+	public static final int SearchRotatedArray2 (
+		final int[] numberArray,
+		final int target)
 	{
-		return _primeFactor;
+		int arrayLength = numberArray.length;
+		int rightIndex = arrayLength - 1;
+		int midIndex = arrayLength / 2;
+
+		int pivotIndex = PivotIndex (
+			numberArray,
+			0,
+			midIndex
+		);
+
+		if (-1 == pivotIndex)
+		{
+			pivotIndex = PivotIndex (
+				numberArray,
+				midIndex + 1,
+				arrayLength - 1
+			);
+		}
+
+		return numberArray[rightIndex] < target ? SearchPivotIndex (
+			numberArray,
+			target,
+			0,
+			pivotIndex
+		) : SearchPivotIndex (
+			numberArray,
+			target,
+			pivotIndex + 1,
+			rightIndex
+		);
 	}
 
-	/**
-	 * Retrieve the Count of the Prime Factor
-	 * 
-	 * @return The Count of the Prime Factor
-	 */
-
-	public int count()
+	private static final int[] excludeAndSort (
+		final int[] numberArray,
+		final int excludeIndex)
 	{
-		return _count;
+		int excludeAndSortIndex = 0;
+		int excludeAndSortArraySize = numberArray.length - 1;
+		int[] excludeAndSortArray = new int[excludeAndSortArraySize];
+
+		for (int numberArrayIndex = 0;
+			numberArrayIndex < numberArray.length;
+			++numberArrayIndex)
+		{
+			if (numberArrayIndex != excludeIndex)
+			{
+				excludeAndSortArray[excludeAndSortIndex++] = numberArray[numberArrayIndex];
+			}
+		}
+
+		java.util.Arrays.sort (
+			excludeAndSortArray
+		);
+
+		return excludeAndSortArray;
+	}
+
+	public static final java.util.List<int[]> ThreeSum (
+		final int[] numberArray)
+	{
+		java.util.List<int[]> numberArrayList = new java.util.ArrayList<int[]>();
+
+		for (int numberArrayIndex = 0;
+			numberArrayIndex < numberArray.length;
+			++numberArrayIndex)
+		{
+			int[] excludeAndSortArray  = excludeAndSort (
+				numberArray,
+				numberArrayIndex
+			);
+
+			for (int excludeAndSortArrayIndex = 0;
+				excludeAndSortArrayIndex < excludeAndSortArray.length;
+				++excludeAndSortArrayIndex)
+			{
+				
+			}
+		}
+
+		return numberArrayList;
 	}
 }
