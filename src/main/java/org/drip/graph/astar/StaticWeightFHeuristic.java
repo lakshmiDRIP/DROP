@@ -125,6 +125,7 @@ public class StaticWeightFHeuristic
 	 * 
 	 * @param gHeuristic The G Heuristic
 	 * @param hHeuristic The H Heuristic
+	 * @param epsilon Epsilon
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
