@@ -3,7 +3,7 @@ package org.drip.sample.bcbs;
 
 import org.drip.capital.bcbs.CapitalMetricsStandard;
 import org.drip.capital.bcbs.LiquidityMetrics;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

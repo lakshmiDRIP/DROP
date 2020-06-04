@@ -152,7 +152,7 @@ public class ScenarioMarketSurfaceBuilder {
 		for (int i = 0; i < iNumX; ++i) {
 			org.drip.spline.stretch.MultiSegmentSequence mssWire =
 				org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-					("Stretch@" + strName + "@" + org.drip.numerical.common.StringUtil.GUID(), adblY,
+					("Stretch@" + strName + "@" + org.drip.service.common.StringUtil.GUID(), adblY,
 						aadblNode[i], aSCBCWireSpan, null,
 							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
 								org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE);
@@ -172,7 +172,7 @@ public class ScenarioMarketSurfaceBuilder {
 			return new org.drip.state.curve.BasisSplineMarketSurface (dtStart.julian(),
 				org.drip.state.identifier.CustomLabel.Standard (strName), strCurrency, new
 					org.drip.spline.multidimensional.WireSurfaceStretch ("WireSurfaceStretch@" + strName +
-						"@" + org.drip.numerical.common.StringUtil.GUID(), scbcSurface, mapWireSpan));
+						"@" + org.drip.service.common.StringUtil.GUID(), scbcSurface, mapWireSpan));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}

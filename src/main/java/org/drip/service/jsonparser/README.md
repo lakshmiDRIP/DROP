@@ -19,8 +19,8 @@ DROP JSON Parser Package implements the RFC4627 Compliant JSON Message Parser.
  <i>Converter</i> transforms the JSON Object to certain Primitive/Simple Data Type Arrays, i.e., double,
  integer, String, or JulianDate Arrays.
 
- * [***JSONParser***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/parser/JSONParser.java)
- <i>JSONParser</i> is an Adaptation of the JSONParser Class from the RFC4627 compliant JSON Simple (https://code.google.com/p/json-simple/).
+ * [***LexicalProcessor***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/parser/LexicalProcessor.java)
+ <i>LexicalProcessor</i> is an Adaptation of the JSONParser Class from the RFC4627 compliant JSON Simple (https://code.google.com/p/json-simple/).
 
  * [***ParseException***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/parser/ParseException.java)
  <i>ParseException</i> is an Adaptation of the ParseException Class from the RFC4627 compliant JSON Simple (https://code.google.com/p/json-simple/).

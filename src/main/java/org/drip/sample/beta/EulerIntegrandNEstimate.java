@@ -1,7 +1,7 @@
 
 package org.drip.sample.beta;
 
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.beta.IntegrandEstimator;
 import org.drip.specialfunction.beta.LogGammaEstimator;

@@ -3,10 +3,10 @@ package org.drip.sample.stochasticvolatility;
 
 import org.drip.analytics.date.*;
 import org.drip.analytics.definition.MarketSurface;
-import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.fourier.PhaseAdjuster;
 import org.drip.param.pricer.HestonOptionPricerParams;
 import org.drip.pricer.option.HestonStochasticVolatilityAlgorithm;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.spline.basis.*;
 import org.drip.spline.params.*;

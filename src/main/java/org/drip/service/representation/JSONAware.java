@@ -1,5 +1,5 @@
 
-package org.drip.json.parser;
+package org.drip.service.representation;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -11,6 +11,7 @@ package org.drip.json.parser;
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -79,32 +80,25 @@ package org.drip.json.parser;
  */
 
 /**
- * <i>ContainerFactory</i> is an Adaptation of the ContainerFactory Interface from the RFC4627 compliant JSON
- * Simple (https://code.google.com/p/json-simple/).
+ * <i>JSONAware</i> is an Adaptation of the JSONAware class from the RFC4627 compliant JSON Simple
+ * (https://code.google.com/p/json-simple/). Beans that support customized output of JSON text shall
+ * implement this interface.
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json">RFC-4627 Compliant JSON Encoder/Decoder (Parser)</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/parser">RFC4627 Compliant JSON Message Parser</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/representation">RFC4627 Compliant JSON Message Object</a></li>
  *  </ul>
- *
+ * 
  * @author Fang Yidong
  * @author Lakshmi Krishnamurthy
  */
 
-public interface ContainerFactory {
-
-	/**
-     * @return A Map instance to store JSON object, or null if you want to use org.json.simple.JSONObject.
-     */
-
-	@SuppressWarnings ("rawtypes") java.util.Map createObjectContainer();
-    
+public interface JSONAware {
     /**
-     * @return A List instance to store JSON array, or null if you want to use org.json.simple.JSONArray. 
+     * @return JSON text
      */
-
-    @SuppressWarnings ("rawtypes") java.util.List creatArrayContainer();
+    String toJSONString();
 }

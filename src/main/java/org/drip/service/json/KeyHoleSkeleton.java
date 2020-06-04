@@ -105,8 +105,8 @@ public class KeyHoleSkeleton {
 	 * @return JSON Response
 	 */
 
-	public static final org.drip.json.simple.JSONObject Thunker (
-		final org.drip.json.simple.JSONObject jsonInput)
+	public static final org.drip.service.representation.JSONObject Thunker (
+		final org.drip.service.representation.JSONObject jsonInput)
 	{
     	if (null == jsonInput || !jsonInput.containsKey ("API") || !jsonInput.containsKey ("Parameters"))
 			return null;
@@ -123,8 +123,8 @@ public class KeyHoleSkeleton {
 
 		if (null == objParameter) return null;
 
-		org.drip.json.simple.JSONObject jsonParameter = (org.drip.json.simple.JSONObject)
-    		org.drip.json.simple.JSONValue.parse (objParameter.toString());
+		org.drip.service.representation.JSONObject jsonParameter = (org.drip.service.representation.JSONObject)
+    		org.drip.service.representation.JSONValue.parse (objParameter.toString());
 
 		if ("DATE::ISHOLIDAY".equalsIgnoreCase (strAPIName))
 			return org.drip.service.json.DateProcessor.IsHoliday (jsonParameter);
@@ -172,11 +172,11 @@ public class KeyHoleSkeleton {
 			return org.drip.service.json.FixedAssetBackedProcessor.SecularMetrics (jsonParameter);
 
 		if ("PORTFOLIOALLOCATION::BUDGETCONSTRAINEDMEANVARIANCE".equalsIgnoreCase (strAPIName))
-			return org.drip.json.assetallocation.PortfolioConstructionProcessor.BudgetConstrainedAllocator
+			return org.drip.service.assetallocation.PortfolioConstructionProcessor.BudgetConstrainedAllocator
 				(jsonParameter);
 
 		if ("PORTFOLIOALLOCATION::RETURNSCONSTRAINEDMEANVARIANCE".equalsIgnoreCase (strAPIName))
-			return org.drip.json.assetallocation.PortfolioConstructionProcessor.ReturnsConstrainedAllocator
+			return org.drip.service.assetallocation.PortfolioConstructionProcessor.ReturnsConstrainedAllocator
 				(jsonParameter);
 
 		if ("PREPAYASSETBACKED::SECULARMETRICS".equalsIgnoreCase (strAPIName))
@@ -186,7 +186,7 @@ public class KeyHoleSkeleton {
 			return org.drip.service.json.TreasuryBondProcessor.SecularMetrics (jsonParameter);
 
 		if ("BLACKLITTERMAN::BAYESIANMETRICS".equalsIgnoreCase (strAPIName))
-			return org.drip.json.assetallocation.BlackLittermanProcessor.Estimate (jsonParameter);
+			return org.drip.service.assetallocation.BlackLittermanProcessor.Estimate (jsonParameter);
 
 		return null;
 	}
@@ -204,11 +204,11 @@ public class KeyHoleSkeleton {
 	{
     	if (null == strJSONRequest || strJSONRequest.isEmpty()) return null;
 
-		java.lang.Object objInput = org.drip.json.simple.JSONValue.parse (strJSONRequest);
+		java.lang.Object objInput = org.drip.service.representation.JSONValue.parse (strJSONRequest);
 
-		if (null == objInput || !(objInput instanceof org.drip.json.simple.JSONObject)) return null;
+		if (null == objInput || !(objInput instanceof org.drip.service.representation.JSONObject)) return null;
 
-		org.drip.json.simple.JSONObject jsonResponse = Thunker ((org.drip.json.simple.JSONObject) objInput);
+		org.drip.service.representation.JSONObject jsonResponse = Thunker ((org.drip.service.representation.JSONObject) objInput);
 
 		return null == jsonResponse ? null : jsonResponse.toJSONString();
 	}

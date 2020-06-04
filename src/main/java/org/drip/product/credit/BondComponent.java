@@ -542,14 +542,14 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapCalibMeasures = new
 			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
 
-		if (org.drip.numerical.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]
+		if (org.drip.service.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]
 			{"CleanPrice", "FairCleanPrice", "FairPrice", "Price"}, false)) {
 			mapCalibMeasures.put (strCalibMeasure, dblCleanPrice);
 
 			return mapCalibMeasures;
 		}
 
-		if (org.drip.numerical.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]
+		if (org.drip.service.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]
 			{"DirtyPrice", "FairDirtyPrice"}, false)) {
 			try {
 				mapCalibMeasures.put (strCalibMeasure, dblCleanPrice + accrued (valParams.valueDate(),
@@ -561,7 +561,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			}
 		}
 
-		if (org.drip.numerical.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]
+		if (org.drip.service.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]
 			{"Yield", "FairYield"}, false)) {
 			try {
 				mapCalibMeasures.put (strCalibMeasure, yieldFromPrice (valParams, csqc, vcp, iExerciseDate,
@@ -573,7 +573,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			}
 		}
 
-		if (org.drip.numerical.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]
+		if (org.drip.service.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]
 			{"TSYSpread", "FairTSYSpread"}, false)) {
 			try {
 				mapCalibMeasures.put (strCalibMeasure, tsySpreadFromPrice (valParams, csqc, vcp,
@@ -585,7 +585,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			}
 		}
 
-		if (org.drip.numerical.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]
+		if (org.drip.service.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]
 			{"OAS", "OASpread", "OptionAdjustedSpread"}, false)) {
 			try {
 				mapCalibMeasures.put (strCalibMeasure, oasFromPrice (valParams, csqc, vcp, iExerciseDate,
@@ -597,7 +597,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			}
 		}
 
-		if (org.drip.numerical.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]
+		if (org.drip.service.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]
 			{"BondBasis", "YieldBasis", "YieldSpread"}, false)) {
 			try {
 				mapCalibMeasures.put (strCalibMeasure, bondBasisFromPrice (valParams, csqc, vcp,
@@ -609,7 +609,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			}
 		}
 
-		if (org.drip.numerical.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]
+		if (org.drip.service.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]
 			{"CreditBasis"}, false)) {
 			if (null == cc) return null;
 
@@ -623,7 +623,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			}
 		}
 
-		if (org.drip.numerical.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]
+		if (org.drip.service.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]
 			{"PECS", "ParEquivalentCDSSpread"}, false)) {
 			if (null == cc) return null;
 
@@ -963,13 +963,13 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			bwmFair.creditRisklessCleanbcm().pv() : dblCreditRiskyPV;
 
 		try {
-			org.drip.numerical.common.CollectionUtil.MergeWithMain (mapMeasures, rvMeasures (valParams,
+			org.drip.service.common.CollectionUtil.MergeWithMain (mapMeasures, rvMeasures (valParams,
 				pricerParams, csqc, vcp, new org.drip.param.valuation.WorkoutInfo (iMaturityDate,
 					yieldFromPrice (valParams, csqc, vcp, dblPrice / notional (valParams.valueDate())), 1.,
 						org.drip.param.valuation.WorkoutInfo.WO_TYPE_MATURITY), dblPrice, ""));
 
-			org.drip.numerical.common.CollectionUtil.MergeWithMain (mapMeasures,
-				org.drip.numerical.common.CollectionUtil.PrefixKeys (mapMeasures, "Fair"));
+			org.drip.service.common.CollectionUtil.MergeWithMain (mapMeasures,
+				org.drip.service.common.CollectionUtil.PrefixKeys (mapMeasures, "Fair"));
 
 			return mapMeasures;
 		} catch (java.lang.Exception e) {
@@ -991,8 +991,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 				(valParams, pricerParams, csqc, vcp, wiMarket, priceFromYield (valParams, csqc, vcp,
 					wiMarket.date(), wiMarket.factor(), wiMarket.yield()), "");
 
-			org.drip.numerical.common.CollectionUtil.MergeWithMain (mapMeasures,
-				org.drip.numerical.common.CollectionUtil.PrefixKeys (mapMeasures, "Market"));
+			org.drip.service.common.CollectionUtil.MergeWithMain (mapMeasures,
+				org.drip.service.common.CollectionUtil.PrefixKeys (mapMeasures, "Market"));
 
 			return mapMeasures;
 		} catch (java.lang.Exception e) {
@@ -15438,7 +15438,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 				mapMeasures.put ("MarketZeroDiscountMargin", dblZeroDiscountMargin);
 			}
 
-			org.drip.numerical.common.CollectionUtil.MergeWithMain (mapMeasures, mapWorkoutMeasures);
+			org.drip.service.common.CollectionUtil.MergeWithMain (mapMeasures, mapWorkoutMeasures);
 
 			org.drip.state.credit.CreditCurve cc = csqs.creditState (creditLabel());
 
@@ -15458,10 +15458,10 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 						org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapMarketMeasures
 							= bwmMarket.toMap ("");
 
-						org.drip.numerical.common.CollectionUtil.MergeWithMain (mapMarketMeasures,
-							org.drip.numerical.common.CollectionUtil.PrefixKeys (mapMarketMeasures, "Market"));
+						org.drip.service.common.CollectionUtil.MergeWithMain (mapMarketMeasures,
+							org.drip.service.common.CollectionUtil.PrefixKeys (mapMarketMeasures, "Market"));
 
-						org.drip.numerical.common.CollectionUtil.MergeWithMain (mapMeasures, mapMarketMeasures);
+						org.drip.service.common.CollectionUtil.MergeWithMain (mapMeasures, mapMarketMeasures);
 					}
 				}
 			}

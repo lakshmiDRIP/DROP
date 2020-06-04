@@ -774,7 +774,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 			bondCTD.value (valParams, pricerParams, csqc, vcp);
 
 		if (null == mapBondFuturesMeasure || null == (mapBondFuturesMeasure =
-			org.drip.numerical.common.CollectionUtil.PrefixKeys (bondCTD.value (valParams, pricerParams, csqc,
+			org.drip.service.common.CollectionUtil.PrefixKeys (bondCTD.value (valParams, pricerParams, csqc,
 				vcp), "CTD::")))
 			return null;
 

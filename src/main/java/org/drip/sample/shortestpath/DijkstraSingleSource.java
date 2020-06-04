@@ -7,7 +7,7 @@ import org.drip.graph.core.DirectedGraph;
 import org.drip.graph.core.Edge;
 import org.drip.graph.core.Path;
 import org.drip.graph.shortestpath.DijkstraPathGenerator;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

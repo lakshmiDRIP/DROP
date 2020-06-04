@@ -5,7 +5,7 @@ import org.drip.graph.bellmanford.EdgeRelaxationPathGenerator;
 import org.drip.graph.core.DirectedGraph;
 import org.drip.graph.core.Edge;
 import org.drip.graph.core.Path;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

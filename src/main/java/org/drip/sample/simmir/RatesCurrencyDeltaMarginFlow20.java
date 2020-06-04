@@ -4,7 +4,7 @@ package org.drip.sample.simmir;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.margin.BucketAggregateIR;
 import org.drip.simm.margin.SensitivityAggregateIR;

@@ -6,7 +6,7 @@ import org.drip.function.definition.R2ToR1;
 import org.drip.measure.gamma.R1ConsistentEstimator;
 import org.drip.measure.gamma.R1ShapeScaleDistribution;
 import org.drip.measure.gamma.ShapeScaleParameters;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
 import org.drip.specialfunction.gamma.EulerIntegralSecondKind;

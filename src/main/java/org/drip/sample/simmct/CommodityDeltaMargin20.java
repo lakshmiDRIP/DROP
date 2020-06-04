@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 import org.drip.analytics.support.CaseInsensitiveHashMap;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.foundation.MarginEstimationSettings;
 import org.drip.simm.margin.BucketAggregate;

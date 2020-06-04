@@ -5,4 +5,4 @@
  * @author Lakshmi Krishnamurthy
  */
 
-package org.drip.json.parser;
+package org.drip.service.jsonparser;

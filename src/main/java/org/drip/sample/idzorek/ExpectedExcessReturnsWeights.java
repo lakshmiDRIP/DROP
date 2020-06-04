@@ -1,9 +1,9 @@
 
 package org.drip.sample.idzorek;
 
-import org.drip.numerical.common.FormatUtil;
 import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
 import org.drip.portfolioconstruction.asset.*;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

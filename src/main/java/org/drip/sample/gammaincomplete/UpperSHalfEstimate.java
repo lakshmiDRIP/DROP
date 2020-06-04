@@ -3,7 +3,7 @@ package org.drip.sample.gammaincomplete;
 
 import org.drip.function.e2erf.AbramowitzStegun;
 import org.drip.function.e2erf.ErrorFunctionAnalytical;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.incompletegamma.UpperEulerIntegral;
 

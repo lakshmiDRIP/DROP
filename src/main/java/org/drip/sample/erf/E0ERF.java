@@ -3,7 +3,7 @@ package org.drip.sample.erf;
 
 import org.drip.function.enerf.E0ErrorFunction;
 import org.drip.function.enerf.GeneralizedErrorFunction;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

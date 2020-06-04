@@ -24,7 +24,7 @@ import org.drip.capital.label.Coordinate;
 import org.drip.capital.setting.CapitalAllocationControl;
 import org.drip.capital.setting.SimulationControl;
 import org.drip.capital.setting.SimulationPnLControl;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

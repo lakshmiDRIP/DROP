@@ -105,7 +105,7 @@ public class RequestResponseDecorator {
 	 */
 
 	@SuppressWarnings ("unchecked") public static final boolean AffixRequestHeaders (
-		final org.drip.json.simple.JSONObject jsonRequest)
+		final org.drip.service.representation.JSONObject jsonRequest)
 	{
 		if (null == jsonRequest) return false;
 
@@ -113,7 +113,7 @@ public class RequestResponseDecorator {
 
 		jsonRequest.put ("REQUESTTIMESTAMP", new java.util.Date().toString());
 
-		jsonRequest.put ("REQUESTID", org.drip.numerical.common.StringUtil.GUID());
+		jsonRequest.put ("REQUESTID", org.drip.service.common.StringUtil.GUID());
 
 		return true;
 	}
@@ -128,22 +128,22 @@ public class RequestResponseDecorator {
 	 */
 
 	@SuppressWarnings ("unchecked") public static final boolean AffixResponseHeaders (
-		final org.drip.json.simple.JSONObject jsonResponse,
-		final org.drip.json.simple.JSONObject jsonRequest)
+		final org.drip.service.representation.JSONObject jsonResponse,
+		final org.drip.service.representation.JSONObject jsonRequest)
 	{
 		if (null == jsonResponse || null == jsonRequest) return false;
 
     	jsonResponse.put ("APITYPE", "RESPONSE");
 
-    	jsonResponse.put ("REQUESTTIMESTAMP", org.drip.json.parser.Converter.StringEntry
+    	jsonResponse.put ("REQUESTTIMESTAMP", org.drip.service.jsonparser.Converter.StringEntry
     		(jsonRequest, "REQUESTTIMESTAMP"));
 
-    	jsonResponse.put ("REQUESTID", org.drip.json.parser.Converter.StringEntry (jsonRequest,
+    	jsonResponse.put ("REQUESTID", org.drip.service.jsonparser.Converter.StringEntry (jsonRequest,
     		"REQUESTID"));
 
     	jsonResponse.put ("RESPONSETIMESTAMP", new java.util.Date().toString());
 
-    	jsonResponse.put ("RESPONSEID", org.drip.numerical.common.StringUtil.GUID());
+    	jsonResponse.put ("RESPONSEID", org.drip.service.common.StringUtil.GUID());
 
 		return true;
 	}

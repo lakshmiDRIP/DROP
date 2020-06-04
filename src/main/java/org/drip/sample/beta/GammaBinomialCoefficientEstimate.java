@@ -2,7 +2,7 @@
 package org.drip.sample.beta;
 
 import org.drip.function.definition.R1ToR1;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.beta.CombinatorialEstimate;
 import org.drip.specialfunction.gamma.WindschitlTothAnalytic;

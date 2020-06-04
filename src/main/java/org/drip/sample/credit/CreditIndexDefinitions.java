@@ -2,7 +2,7 @@
 package org.drip.sample.credit;
 
 import org.drip.market.otc.*;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

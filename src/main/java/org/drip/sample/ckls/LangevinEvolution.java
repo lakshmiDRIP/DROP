@@ -3,7 +3,7 @@ package org.drip.sample.ckls;
 
 import org.drip.dynamics.ito.R1WienerDriver;
 import org.drip.dynamics.physical.LangevinEvolver;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

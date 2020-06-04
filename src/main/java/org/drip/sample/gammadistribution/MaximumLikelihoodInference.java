@@ -7,7 +7,7 @@ import org.drip.measure.gamma.R1MaximumLikelihoodEstimator;
 import org.drip.measure.gamma.R1ParameterEstimator;
 import org.drip.measure.gamma.R1ShapeScaleDistribution;
 import org.drip.measure.gamma.ShapeScaleParameters;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
 import org.drip.specialfunction.gamma.EulerIntegralSecondKind;

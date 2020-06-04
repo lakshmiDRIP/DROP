@@ -104,8 +104,8 @@ public class ForwardRateFuturesProcessor {
 	 * @return JSON Funding Futures Curve Metrics Response
 	 */
 
-	@SuppressWarnings ("unchecked") static final org.drip.json.simple.JSONObject CurveMetrics (
-		final org.drip.json.simple.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") static final org.drip.service.representation.JSONObject CurveMetrics (
+		final org.drip.service.representation.JSONObject jsonParameter)
 	{
 		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =
 			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);
@@ -121,7 +121,7 @@ public class ForwardRateFuturesProcessor {
 
 		org.drip.product.rates.SingleStreamComponent futures =
 			org.drip.service.template.ExchangeInstrumentBuilder.ForwardRateFutures (dtSpot.addTenor
-				(org.drip.json.parser.Converter.StringEntry (jsonParameter, "FuturesEffectiveTenor")),
+				(org.drip.service.jsonparser.Converter.StringEntry (jsonParameter, "FuturesEffectiveTenor")),
 					dcFunding.currency());
 
 		if (null == futures) return null;
@@ -131,15 +131,15 @@ public class ForwardRateFuturesProcessor {
 
 		if (null == mapResult) return null;
 
-		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();
+		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> me : mapResult.entrySet())
 			jsonResponse.put (me.getKey(), me.getValue());
 
-		org.drip.json.simple.JSONArray jsonCashFlowArray = new org.drip.json.simple.JSONArray();
+		org.drip.service.representation.JSONArray jsonCashFlowArray = new org.drip.service.representation.JSONArray();
 
 		for (org.drip.analytics.cashflow.CompositePeriod cp : futures.couponPeriods()) {
-			org.drip.json.simple.JSONObject jsonCashFlow = new org.drip.json.simple.JSONObject();
+			org.drip.service.representation.JSONObject jsonCashFlow = new org.drip.service.representation.JSONObject();
 
 			try {
 				jsonCashFlow.put ("StartDate", new org.drip.analytics.date.JulianDate

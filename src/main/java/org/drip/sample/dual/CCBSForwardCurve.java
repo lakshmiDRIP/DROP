@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.support.*;
-import org.drip.numerical.common.FormatUtil;
 import org.drip.param.creator.*;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.period.*;
@@ -15,6 +14,7 @@ import org.drip.product.fx.*;
 import org.drip.product.params.*;
 import org.drip.product.rates.*;
 import org.drip.sample.forward.IBORCurve;
+import org.drip.service.common.FormatUtil;
 import org.drip.spline.params.SegmentCustomBuilderControl;
 import org.drip.spline.stretch.*;
 import org.drip.state.creator.*;

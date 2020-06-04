@@ -3,8 +3,8 @@ package org.drip.sample.json;
 
 import java.io.*;
 
-import org.drip.json.parser.*;
 import org.drip.service.env.EnvManager;
+import org.drip.service.jsonparser.*;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

@@ -1,5 +1,5 @@
 
-package org.drip.json.parser;
+package org.drip.service.common;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -11,6 +11,10 @@ package org.drip.json.parser;
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -79,67 +83,95 @@ package org.drip.json.parser;
  */
 
 /**
- * <i>Yytoken</i> is an Adaptation of the Yytoken Class from the RFC4627 compliant JSON Simple
- * (https://code.google.com/p/json-simple/).
- *
- *	<br><br>
+ * <i>FormatUtil</i> implements formatting utility functions. Currently it just exports functions to pad and
+ * 	format.
+ * 
+ * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json">RFC-4627 Compliant JSON Encoder/Decoder (Parser)</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/parser">RFC4627 Compliant JSON Message Parser</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common">Assorted Data Structures Support Utilities</a></li>
  *  </ul>
- *
- * @author Fang Yidong
+ * <br><br>
+ * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class Yytoken {
-    public static final int TYPE_VALUE=0;//JSON primitive value: string,number,boolean,null
-    public static final int TYPE_LEFT_BRACE=1;
-    public static final int TYPE_RIGHT_BRACE=2;
-    public static final int TYPE_LEFT_SQUARE=3;
-    public static final int TYPE_RIGHT_SQUARE=4;
-    public static final int TYPE_COMMA=5;
-    public static final int TYPE_COLON=6;
-    public static final int TYPE_EOF=-1;//end of file
-    
-    public int type=0;
-    public Object value=null;
-    
-    public Yytoken(int type,Object value){
-            this.type=type;
-            this.value=value;
-    }
-    
-    public String toString(){
-            StringBuffer sb = new StringBuffer();
-            switch(type){
-            case TYPE_VALUE:
-                    sb.append("VALUE(").append(value).append(")");
-                    break;
-            case TYPE_LEFT_BRACE:
-                    sb.append("LEFT BRACE({)");
-                    break;
-            case TYPE_RIGHT_BRACE:
-                    sb.append("RIGHT BRACE(})");
-                    break;
-            case TYPE_LEFT_SQUARE:
-                    sb.append("LEFT SQUARE([)");
-                    break;
-            case TYPE_RIGHT_SQUARE:
-                    sb.append("RIGHT SQUARE(])");
-                    break;
-            case TYPE_COMMA:
-                    sb.append("COMMA(,)");
-                    break;
-            case TYPE_COLON:
-                    sb.append("COLON(:)");
-                    break;
-            case TYPE_EOF:
-                    sb.append("END OF FILE");
-                    break;
-            }
-            return sb.toString();
-    }
+public class FormatUtil {
+
+	/**
+	 * Pre-pad a single digit integer with zeros
+	 * 
+	 * @param i Integer representing the input
+	 * 
+	 * @return String representing the padded output
+	 */
+
+	public static final java.lang.String PrePad (
+		final int i)
+	{
+		if (i > 9) return "" + i;
+
+		return "0" + i;
+	}
+
+	/**
+	 * Format the double input by multiplying, and then adding left and right adjustments
+	 * 
+	 * @param dblValue Double representing the input
+	 * @param iNumLeft Integer representing the number of left justifying zeros
+	 * @param iNumRight Integer representing the number of right justifying zeros
+	 * @param dblMultiplier Double representing the multiplier
+	 * @param bLeadingSpaceForPositive TRUE - A Leading Space will be emitted for Adjusted Positive Numbers.
+	 * 		For Adjusted Negatives this will be the '-' sign.
+	 * 
+	 * @return String representing the formatted input
+	 */
+
+	public static final java.lang.String FormatDouble (
+		final double dblValue,
+		final int iNumLeft,
+		final int iNumRight,
+		final double dblMultiplier,
+		final boolean bLeadingSpaceForPositive)
+	{
+		java.lang.String strFormat = "#";
+		java.lang.String strLeading = "";
+		double dblAdjustedValue = dblMultiplier * dblValue;
+
+		if (0 <= dblAdjustedValue && bLeadingSpaceForPositive) strLeading = " ";
+
+		for (int i = 0; i < iNumLeft; ++i)
+			strFormat += "0";
+
+		if (0 != iNumRight) {
+			strFormat += ".";
+
+			for (int i = 0; i < iNumRight; ++i)
+				strFormat += "0";
+		}
+
+		return strLeading + new java.text.DecimalFormat (strFormat).format (dblAdjustedValue);
+	}
+
+	/**
+	 * Format the double input by multiplying, and then adding left and right adjustments
+	 * 
+	 * @param dblValue Double representing the input
+	 * @param iNumLeft Integer representing the number of left justifying zeros
+	 * @param iNumRight Integer representing the number of right justifying zeros
+	 * @param dblMultiplier Double representing the multiplier
+	 * 
+	 * @return String representing the formatted input
+	 */
+
+	public static final java.lang.String FormatDouble (
+		final double dblValue,
+		final int iNumLeft,
+		final int iNumRight,
+		final double dblMultiplier)
+	{
+		return FormatDouble (dblValue, iNumLeft, iNumRight, dblMultiplier, true);
+	}
 }

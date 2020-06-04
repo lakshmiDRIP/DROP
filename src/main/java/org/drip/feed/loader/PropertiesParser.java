@@ -116,7 +116,7 @@ public class PropertiesParser
 				break;
 			}
 
-			java.lang.String[] astrValue = org.drip.numerical.common.StringUtil.Split (
+			java.lang.String[] astrValue = org.drip.service.common.StringUtil.Split (
 				strCSVLine,
 				"="
 			);

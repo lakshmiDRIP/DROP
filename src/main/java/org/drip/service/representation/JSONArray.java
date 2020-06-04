@@ -1,5 +1,5 @@
 
-package org.drip.json.simple;
+package org.drip.service.representation;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -80,30 +80,107 @@ package org.drip.json.simple;
  */
 
 /**
- * <i>JSONStreamAware</i> is an Adaptation of the JSONStreamAware class from the RFC4627 compliant JSON Simple
- *  (https://code.google.com/p/json-simple/). Beans that support customized output of JSON text to a writer
- *  shall implement this interface.  
+ * <i>JSONArray</i> is an Adaptation of the JSONArray class from the RFC4627 compliant JSON Simple
+ * (https://code.google.com/p/json-simple/). A JSON array. JSONObject supports java.util.List interface.
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json">RFC-4627 Compliant JSON Encoder/Decoder (Parser)</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/simple">RFC4627 Compliant JSON Message Object</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/representation">RFC4627 Compliant JSON Message Object</a></li>
  *  </ul>
  * 
  * @author Fang Yidong
  * @author Lakshmi Krishnamurthy
  */
 
-public interface JSONStreamAware {
+@SuppressWarnings ("rawtypes") public class JSONArray extends java.util.ArrayList implements java.util.List, JSONAware, JSONStreamAware {
+    private static final long serialVersionUID = 3957988303675231981L;
 
+/**
+ * Encode a list into JSON text and write it to out. 
+ * If this list is also a JSONStreamAware or a JSONAware, JSONStreamAware and JSONAware specific behaviours will be ignored at this top level.
+ * 
+ * @see org.drip.service.representation.JSONValue#writeJSONString(Object, Writer)
+ * 
+ * @param list List
+ * @param out Output Writer
+ * 
+ * @throws java.io.IOException Thrown if the Inputs are invalid
+ */
+
+    public static void writeJSONString(java.util.List list, java.io.Writer out) throws java.io.IOException{
+            if(list == null){
+                    out.write("null");
+                    return;
+            }
+            
+            boolean first = true;
+            java.util.Iterator iter=list.iterator();
+            
+    out.write('[');
+            while(iter.hasNext()){
+        if(first)
+            first = false;
+        else
+            out.write(',');
+        
+                    Object value=iter.next();
+                    if(value == null){
+                            out.write("null");
+                            continue;
+                    }
+                    
+                    JSONValue.writeJSONString(value, out);
+            }
+            out.write(']');
+    }
+    
+    public void writeJSONString(java.io.Writer out) throws java.io.IOException{
+            writeJSONString(this, out);
+    }
+    
     /**
-     * write JSON string to out.
+     * Convert a list to JSON text. The result is a JSON array. 
+     * If this list is also a JSONAware, JSONAware specific behaviours will be omitted at this top level.
      * 
-     * @param out Output Writer
-	 * 
-	 * @throws java.io.IOException Thrown if the Inputs are invalid
+     * @see org.drip.service.representation.JSONValue#toJSONString(Object)
+     * 
+     * @param list List
+     * @return JSON text, or "null" if list is null.
      */
-    void writeJSONString(java.io.Writer out) throws java.io.IOException;
+    public static String toJSONString(java.util.List list){
+            if(list == null)
+                    return "null";
+            
+    boolean first = true;
+    StringBuffer sb = new StringBuffer();
+    java.util.Iterator iter=list.iterator();
+    
+    sb.append('[');
+            while(iter.hasNext()){
+        if(first)
+            first = false;
+        else
+            sb.append(',');
+        
+                    Object value=iter.next();
+                    if(value == null){
+                            sb.append("null");
+                            continue;
+                    }
+                    sb.append(JSONValue.toJSONString(value));
+            }
+    sb.append(']');
+            return sb.toString();
+    }
+
+    public String toJSONString(){
+            return toJSONString(this);
+    }
+    
+    public String toString() {
+            return toJSONString();
+    }
 }

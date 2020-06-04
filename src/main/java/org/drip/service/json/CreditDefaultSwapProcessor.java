@@ -104,8 +104,8 @@ public class CreditDefaultSwapProcessor {
 	 * @return JSON Credit Default Swap Curve Metrics Response
 	 */
 
-	@SuppressWarnings ("unchecked") static final org.drip.json.simple.JSONObject CurveMetrics (
-		final org.drip.json.simple.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") static final org.drip.service.representation.JSONObject CurveMetrics (
+		final org.drip.service.representation.JSONObject jsonParameter)
 	{
 		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =
 			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);
@@ -126,8 +126,8 @@ public class CreditDefaultSwapProcessor {
 
 		try {
 			cds = org.drip.service.template.OTCInstrumentBuilder.CDS (dtSpot,
-				org.drip.json.parser.Converter.StringEntry (jsonParameter, "CDSMaturity"),
-					org.drip.json.parser.Converter.DoubleEntry (jsonParameter, "CDSCoupon"),
+				org.drip.service.jsonparser.Converter.StringEntry (jsonParameter, "CDSMaturity"),
+					org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter, "CDSCoupon"),
 						dcFunding.currency(), ((org.drip.state.identifier.EntityCDSLabel)
 							(ccSurvivalRecovery.label())).referenceEntity());
 		} catch (java.lang.Exception e) {
@@ -143,15 +143,15 @@ public class CreditDefaultSwapProcessor {
 
 		if (null == mapResult) return null;
 
-		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();
+		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> me : mapResult.entrySet())
 			jsonResponse.put (me.getKey(), me.getValue());
 
-		org.drip.json.simple.JSONArray jsonCouponFlowArray = new org.drip.json.simple.JSONArray();
+		org.drip.service.representation.JSONArray jsonCouponFlowArray = new org.drip.service.representation.JSONArray();
 
 		for (org.drip.analytics.cashflow.CompositePeriod cp : cds.couponPeriods()) {
-			org.drip.json.simple.JSONObject jsonCouponFlow = new org.drip.json.simple.JSONObject();
+			org.drip.service.representation.JSONObject jsonCouponFlow = new org.drip.service.representation.JSONObject();
 
 			try {
 				jsonCouponFlow.put ("StartDate", new org.drip.analytics.date.JulianDate
@@ -189,10 +189,10 @@ public class CreditDefaultSwapProcessor {
 
 		jsonResponse.put ("CouponFlow", jsonCouponFlowArray);
 
-		org.drip.json.simple.JSONArray jsonLossFlowArray = new org.drip.json.simple.JSONArray();
+		org.drip.service.representation.JSONArray jsonLossFlowArray = new org.drip.service.representation.JSONArray();
 
 		for (org.drip.analytics.cashflow.LossQuadratureMetrics lqm : cds.lossFlow (dtSpot, csqc)) {
-			org.drip.json.simple.JSONObject jsonLossFlow = new org.drip.json.simple.JSONObject();
+			org.drip.service.representation.JSONObject jsonLossFlow = new org.drip.service.representation.JSONObject();
 
 			try {
 				jsonLossFlow.put ("StartDate", new org.drip.analytics.date.JulianDate

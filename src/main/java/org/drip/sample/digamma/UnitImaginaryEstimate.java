@@ -1,8 +1,8 @@
 
 package org.drip.sample.digamma;
 
-import org.drip.numerical.common.FormatUtil;
 import org.drip.function.definition.CartesianComplexNumber;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.digamma.SpecialValues;
 

@@ -1,5 +1,5 @@
 
-package org.drip.json.assetallocation;
+package org.drip.service.assetallocation;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -80,14 +80,14 @@ package org.drip.json.assetallocation;
 
 /**
  * <i>PortfolioConstructionProcessor</i> Sets Up and Executes a JSON Based In/Out Processing Service for
- * Constrained and Unconstrained Portfolio Construction.
+ * 	Constrained and Unconstrained Portfolio Construction.
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json">RFC-4627 Compliant JSON Encoder/Decoder (Parser)</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/assetallocation">JSON Based In/Out Service</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/assetallocation">JSON Based In/Out Service</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
@@ -103,11 +103,11 @@ public class PortfolioConstructionProcessor {
 	 * @return JSON Budget Constrained Mean Variance Allocation Response
 	 */
 
-	@SuppressWarnings ("unchecked") public static final org.drip.json.simple.JSONObject
+	@SuppressWarnings ("unchecked") public static final org.drip.service.representation.JSONObject
 		BudgetConstrainedAllocator (
-			final org.drip.json.simple.JSONObject jsonParameter)
+			final org.drip.service.representation.JSONObject jsonParameter)
 	{
-		java.lang.String[] astrAssetID = org.drip.json.parser.Converter.StringArrayEntry (jsonParameter,
+		java.lang.String[] astrAssetID = org.drip.service.jsonparser.Converter.StringArrayEntry (jsonParameter,
 			"AssetSet");
 
 		org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl pdp = null;
@@ -117,18 +117,18 @@ public class PortfolioConstructionProcessor {
 
 		if (0 == iNumAsset) return null;
 
-		double[] adblAssetExpectedReturns = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,
+		double[] adblAssetExpectedReturns = org.drip.service.jsonparser.Converter.DoubleArrayEntry (jsonParameter,
 			"AssetExpectedReturns");
 
-		double[][] aadblAssetReturnsCovariance = org.drip.json.parser.Converter.DualDoubleArrayEntry
+		double[][] aadblAssetReturnsCovariance = org.drip.service.jsonparser.Converter.DualDoubleArrayEntry
 			(jsonParameter, "AssetReturnsCovariance");
 
 		for (int i = 0; i < iNumAsset; ++i) {
 			try {
-				adblAssetLowerBound[i] = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,
+				adblAssetLowerBound[i] = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter,
 					astrAssetID[i] + "::LowerBound");
 
-				adblAssetUpperBound[i] = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,
+				adblAssetUpperBound[i] = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter,
 					astrAssetID[i] + "::UpperBound");
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();
@@ -174,14 +174,14 @@ public class PortfolioConstructionProcessor {
 
 		if (null == aAC || aAC.length != iNumAsset) return null;
 
-		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();
+		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
 
-		jsonResponse.put ("AssetSet", org.drip.json.parser.Converter.Array (astrAssetID));
+		jsonResponse.put ("AssetSet", org.drip.service.jsonparser.Converter.Array (astrAssetID));
 
-		jsonResponse.put ("AssetExpectedReturns", org.drip.json.parser.Converter.Array
+		jsonResponse.put ("AssetExpectedReturns", org.drip.service.jsonparser.Converter.Array
 			(adblAssetExpectedReturns));
 
-		jsonResponse.put ("AssetReturnsCovariance", org.drip.json.parser.Converter.Array
+		jsonResponse.put ("AssetReturnsCovariance", org.drip.service.jsonparser.Converter.Array
 			(aadblAssetReturnsCovariance));
 
 		for (int i = 0; i < adblAssetExpectedReturns.length; ++i) {
@@ -216,11 +216,11 @@ public class PortfolioConstructionProcessor {
 	 * @return JSON Returns Constrained Mean Variance Allocation Response
 	 */
 
-	@SuppressWarnings ("unchecked") public static final org.drip.json.simple.JSONObject
+	@SuppressWarnings ("unchecked") public static final org.drip.service.representation.JSONObject
 		ReturnsConstrainedAllocator (
-			final org.drip.json.simple.JSONObject jsonParameter)
+			final org.drip.service.representation.JSONObject jsonParameter)
 	{
-    	java.lang.String[] astrAssetID = org.drip.json.parser.Converter.StringArrayEntry (jsonParameter,
+    	java.lang.String[] astrAssetID = org.drip.service.jsonparser.Converter.StringArrayEntry (jsonParameter,
 			"AssetSet");
 
 		org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl pdp = null;
@@ -231,21 +231,21 @@ public class PortfolioConstructionProcessor {
 
 		if (0 == iNumAsset) return null;
 
-		double[] adblAssetReturnsMean = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,
+		double[] adblAssetReturnsMean = org.drip.service.jsonparser.Converter.DoubleArrayEntry (jsonParameter,
 			"AssetReturnsMean");
 
-		double[][] aadblAssetReturnsCovariance = org.drip.json.parser.Converter.DualDoubleArrayEntry
+		double[][] aadblAssetReturnsCovariance = org.drip.service.jsonparser.Converter.DualDoubleArrayEntry
 			(jsonParameter, "AssetReturnsCovariance");
 
 		try {
-			dblPortfolioDesignReturn = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,
+			dblPortfolioDesignReturn = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter,
 				"PortfolioDesignReturn");
 
 			for (int i = 0; i < iNumAsset; ++i) {
-				adblAssetLowerBound[i] = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,
+				adblAssetLowerBound[i] = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter,
 					astrAssetID[i] + "::LowerBound");
 
-				adblAssetUpperBound[i] = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,
+				adblAssetUpperBound[i] = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter,
 					astrAssetID[i] + "::UpperBound");
 			}
 		} catch (java.lang.Exception e) {
@@ -291,13 +291,13 @@ public class PortfolioConstructionProcessor {
 
 		if (null == aAC || aAC.length != iNumAsset) return null;
 
-		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();
+		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
 
-		jsonResponse.put ("AssetSet", org.drip.json.parser.Converter.Array (astrAssetID));
+		jsonResponse.put ("AssetSet", org.drip.service.jsonparser.Converter.Array (astrAssetID));
 
-		jsonResponse.put ("AssetReturnsMean", org.drip.json.parser.Converter.Array (adblAssetReturnsMean));
+		jsonResponse.put ("AssetReturnsMean", org.drip.service.jsonparser.Converter.Array (adblAssetReturnsMean));
 
-		jsonResponse.put ("AssetReturnsCovariance", org.drip.json.parser.Converter.Array
+		jsonResponse.put ("AssetReturnsCovariance", org.drip.service.jsonparser.Converter.Array
 			(aadblAssetReturnsCovariance));
 
 		for (int i = 0; i < adblAssetReturnsMean.length; ++i) {

@@ -3,7 +3,7 @@ package org.drip.sample.measure;
 
 import org.drip.analytics.date.*;
 import org.drip.measure.lebesgue.R1PiecewiseLinear;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

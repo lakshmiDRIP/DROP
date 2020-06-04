@@ -174,7 +174,7 @@ public class CapitalUnitStressScenarioLoader
 				}
 
 				java.lang.String[] capitalUnitCorrelatedFieldArray =
-					org.drip.numerical.common.StringUtil.Split (
+					org.drip.service.common.StringUtil.Split (
 						capitalUnitCorrelatedLine,
 						","
 					);
@@ -281,7 +281,7 @@ public class CapitalUnitStressScenarioLoader
 				}
 
 				java.lang.String[] capitalUnitIdiosyncraticFieldArray =
-					org.drip.numerical.common.StringUtil.Split (
+					org.drip.service.common.StringUtil.Split (
 						capitalUnitIdiosyncraticLine,
 						","
 					);
@@ -394,7 +394,7 @@ public class CapitalUnitStressScenarioLoader
 						++capitalUnitLineArrayIndex)
 					{
 						java.lang.String[] capitalUnitLineSystemicFieldArray =
-							org.drip.numerical.common.StringUtil.Split (
+							org.drip.service.common.StringUtil.Split (
 								capitalUnitLineArray[capitalUnitLineArrayIndex],
 								","
 							);

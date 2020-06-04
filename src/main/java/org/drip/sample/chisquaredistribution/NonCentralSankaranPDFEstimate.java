@@ -2,7 +2,7 @@
 package org.drip.sample.chisquaredistribution;
 
 import org.drip.measure.chisquare.R1NonCentralSankaran;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

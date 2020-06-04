@@ -103,8 +103,8 @@ public class FixFloatProcessor {
 	 * @return JSON Funding Fix Float Curve Metrics Response
 	 */
 
-	@SuppressWarnings ("unchecked") static final org.drip.json.simple.JSONObject CurveMetrics (
-		final org.drip.json.simple.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") static final org.drip.service.representation.JSONObject CurveMetrics (
+		final org.drip.service.representation.JSONObject jsonParameter)
 	{
 		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =
 			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);
@@ -122,8 +122,8 @@ public class FixFloatProcessor {
 
 		try {
 			irs = org.drip.service.template.OTCInstrumentBuilder.FixFloatStandard (dtSpot,
-				dcFunding.currency(), "ALL", org.drip.json.parser.Converter.StringEntry (jsonParameter,
-					"FixFloatMaturity"), "MAIN", org.drip.json.parser.Converter.DoubleEntry (jsonParameter,
+				dcFunding.currency(), "ALL", org.drip.service.jsonparser.Converter.StringEntry (jsonParameter,
+					"FixFloatMaturity"), "MAIN", org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter,
 						"FixFloatCoupon"));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -138,15 +138,15 @@ public class FixFloatProcessor {
 
 		if (null == mapResult) return null;
 
-		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();
+		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
 
 		for (java.util.Map.Entry<java.lang.String, java.lang.Double> me : mapResult.entrySet())
 			jsonResponse.put (me.getKey(), me.getValue());
 
-		org.drip.json.simple.JSONArray jsonFixedCashFlowArray = new org.drip.json.simple.JSONArray();
+		org.drip.service.representation.JSONArray jsonFixedCashFlowArray = new org.drip.service.representation.JSONArray();
 
 		for (org.drip.analytics.cashflow.CompositePeriod cp : irs.referenceStream().cashFlowPeriod()) {
-			org.drip.json.simple.JSONObject jsonCashFlow = new org.drip.json.simple.JSONObject();
+			org.drip.service.representation.JSONObject jsonCashFlow = new org.drip.service.representation.JSONObject();
 
 			try {
 				jsonCashFlow.put ("StartDate", new org.drip.analytics.date.JulianDate
@@ -183,10 +183,10 @@ public class FixFloatProcessor {
 
 		jsonResponse.put ("FixedCashFlow", jsonFixedCashFlowArray);
 
-		org.drip.json.simple.JSONArray jsonFloatingCashFlowArray = new org.drip.json.simple.JSONArray();
+		org.drip.service.representation.JSONArray jsonFloatingCashFlowArray = new org.drip.service.representation.JSONArray();
 
 		for (org.drip.analytics.cashflow.CompositePeriod cp : irs.derivedStream().cashFlowPeriod()) {
-			org.drip.json.simple.JSONObject jsonCashFlow = new org.drip.json.simple.JSONObject();
+			org.drip.service.representation.JSONObject jsonCashFlow = new org.drip.service.representation.JSONObject();
 
 			try {
 				jsonCashFlow.put ("StartDate", new org.drip.analytics.date.JulianDate

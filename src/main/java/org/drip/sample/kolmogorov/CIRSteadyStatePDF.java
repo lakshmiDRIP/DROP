@@ -3,7 +3,7 @@ package org.drip.sample.kolmogorov;
 
 import org.drip.dynamics.meanreverting.R1CIRStochasticEvolver;
 import org.drip.function.definition.R1ToR1;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

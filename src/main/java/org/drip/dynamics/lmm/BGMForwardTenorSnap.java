@@ -301,16 +301,16 @@ public class BGMForwardTenorSnap {
 
 	@Override public java.lang.String toString()
 	{
-		return org.drip.numerical.common.FormatUtil.FormatDouble (_dblLIBOR, 1, 2, 100.) + "% | " +
-			org.drip.numerical.common.FormatUtil.FormatDouble (_dblLIBORIncrement, 2, 2, 10000.) + " | " +
-				org.drip.numerical.common.FormatUtil.FormatDouble (_dblDiscountFactor, 1, 4, 1.) + " | " +
-					org.drip.numerical.common.FormatUtil.FormatDouble (_dblDiscountFactorIncrement, 2, 2, 10000.)
-						+ " | " + org.drip.numerical.common.FormatUtil.FormatDouble
+		return org.drip.service.common.FormatUtil.FormatDouble (_dblLIBOR, 1, 2, 100.) + "% | " +
+			org.drip.service.common.FormatUtil.FormatDouble (_dblLIBORIncrement, 2, 2, 10000.) + " | " +
+				org.drip.service.common.FormatUtil.FormatDouble (_dblDiscountFactor, 1, 4, 1.) + " | " +
+					org.drip.service.common.FormatUtil.FormatDouble (_dblDiscountFactorIncrement, 2, 2, 10000.)
+						+ " | " + org.drip.service.common.FormatUtil.FormatDouble
 							(_dblContinuouslyCompoundedForwardIncrement, 2, 2, 10000.) + " | " +
-								org.drip.numerical.common.FormatUtil.FormatDouble (_dblSpotRateIncrement, 2, 2,
-									10000.) + " | " + org.drip.numerical.common.FormatUtil.FormatDouble
+								org.drip.service.common.FormatUtil.FormatDouble (_dblSpotRateIncrement, 2, 2,
+									10000.) + " | " + org.drip.service.common.FormatUtil.FormatDouble
 										(_dblInstantaneousEffectiveForwardRate, 2, 2, 10000.) + " | " +
-											org.drip.numerical.common.FormatUtil.FormatDouble
+											org.drip.service.common.FormatUtil.FormatDouble
 												(_dblInstantaneousNominalForwardRate, 2, 2, 10000.) + " ||";
 	}
 }

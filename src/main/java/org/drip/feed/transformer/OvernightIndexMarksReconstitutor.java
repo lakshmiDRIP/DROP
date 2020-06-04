@@ -182,7 +182,7 @@ public class OvernightIndexMarksReconstitutor {
 
 			for (org.drip.product.rates.FixFloatComponent ffc : aOIS) {
 				try {
-					strDump += org.drip.numerical.common.FormatUtil.FormatDouble (ffc.measureValue (valParams,
+					strDump += org.drip.service.common.FormatUtil.FormatDouble (ffc.measureValue (valParams,
 						null, csqc, null, "SwapRate"), 1, 6, 1.) + ",";
 				} catch (java.lang.Exception e) {
 					e.printStackTrace();
@@ -192,7 +192,7 @@ public class OvernightIndexMarksReconstitutor {
 			}
 
 			for (int i = 0; i < iNumOISQuote; ++i)
-				strDump += org.drip.numerical.common.FormatUtil.FormatDouble (adblOISQuote[i], 1, 6, 1.) + ",";
+				strDump += org.drip.service.common.FormatUtil.FormatDouble (adblOISQuote[i], 1, 6, 1.) + ",";
 
 			System.out.println (strDump);
 		}

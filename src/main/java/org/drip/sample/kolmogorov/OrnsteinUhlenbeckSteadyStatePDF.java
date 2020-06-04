@@ -4,7 +4,7 @@ package org.drip.sample.kolmogorov;
 import org.drip.dynamics.kolmogorov.R1FokkerPlanckOrnsteinUhlenbeck;
 import org.drip.dynamics.meanreverting.CKLSParameters;
 import org.drip.function.definition.R1ToR1;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

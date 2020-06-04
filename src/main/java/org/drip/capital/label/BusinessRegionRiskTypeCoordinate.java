@@ -125,7 +125,7 @@ public class BusinessRegionRiskTypeCoordinate
 			return null;
 		}
 
-		java.lang.String[] businessRegionRiskType = org.drip.numerical.common.StringUtil.Split (
+		java.lang.String[] businessRegionRiskType = org.drip.service.common.StringUtil.Split (
 			fullyQualifiedName,
 			org.drip.capital.label.Coordinate.FQN_DELIMITER
 		);

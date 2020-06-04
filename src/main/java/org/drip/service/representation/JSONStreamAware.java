@@ -1,5 +1,5 @@
 
-package org.drip.numerical.common;
+package org.drip.service.representation;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -12,9 +12,6 @@ package org.drip.numerical.common;
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
- * Copyright (C) 2013 Lakshmi Krishnamurthy
- * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -83,95 +80,30 @@ package org.drip.numerical.common;
  */
 
 /**
- * <i>FormatUtil</i> implements formatting utility functions. Currently it just exports functions to pad and
- * format.
- * 
- * <br><br>
+ * <i>JSONStreamAware</i> is an Adaptation of the JSONStreamAware class from the RFC4627 compliant JSON Simple
+ *  (https://code.google.com/p/json-simple/). Beans that support customized output of JSON text to a writer
+ *  shall implement this interface.  
+ *
+ *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/common">Primitives/Array Manipulate Format Display Utilities</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/representation">RFC4627 Compliant JSON Message Object</a></li>
  *  </ul>
- * <br><br>
  * 
+ * @author Fang Yidong
  * @author Lakshmi Krishnamurthy
  */
 
-public class FormatUtil {
+public interface JSONStreamAware {
 
-	/**
-	 * Pre-pad a single digit integer with zeros
+    /**
+     * write JSON string to out.
+     * 
+     * @param out Output Writer
 	 * 
-	 * @param i Integer representing the input
-	 * 
-	 * @return String representing the padded output
-	 */
-
-	public static final java.lang.String PrePad (
-		final int i)
-	{
-		if (i > 9) return "" + i;
-
-		return "0" + i;
-	}
-
-	/**
-	 * Format the double input by multiplying, and then adding left and right adjustments
-	 * 
-	 * @param dblValue Double representing the input
-	 * @param iNumLeft Integer representing the number of left justifying zeros
-	 * @param iNumRight Integer representing the number of right justifying zeros
-	 * @param dblMultiplier Double representing the multiplier
-	 * @param bLeadingSpaceForPositive TRUE - A Leading Space will be emitted for Adjusted Positive Numbers.
-	 * 		For Adjusted Negatives this will be the '-' sign.
-	 * 
-	 * @return String representing the formatted input
-	 */
-
-	public static final java.lang.String FormatDouble (
-		final double dblValue,
-		final int iNumLeft,
-		final int iNumRight,
-		final double dblMultiplier,
-		final boolean bLeadingSpaceForPositive)
-	{
-		java.lang.String strFormat = "#";
-		java.lang.String strLeading = "";
-		double dblAdjustedValue = dblMultiplier * dblValue;
-
-		if (0 <= dblAdjustedValue && bLeadingSpaceForPositive) strLeading = " ";
-
-		for (int i = 0; i < iNumLeft; ++i)
-			strFormat += "0";
-
-		if (0 != iNumRight) {
-			strFormat += ".";
-
-			for (int i = 0; i < iNumRight; ++i)
-				strFormat += "0";
-		}
-
-		return strLeading + new java.text.DecimalFormat (strFormat).format (dblAdjustedValue);
-	}
-
-	/**
-	 * Format the double input by multiplying, and then adding left and right adjustments
-	 * 
-	 * @param dblValue Double representing the input
-	 * @param iNumLeft Integer representing the number of left justifying zeros
-	 * @param iNumRight Integer representing the number of right justifying zeros
-	 * @param dblMultiplier Double representing the multiplier
-	 * 
-	 * @return String representing the formatted input
-	 */
-
-	public static final java.lang.String FormatDouble (
-		final double dblValue,
-		final int iNumLeft,
-		final int iNumRight,
-		final double dblMultiplier)
-	{
-		return FormatDouble (dblValue, iNumLeft, iNumRight, dblMultiplier, true);
-	}
+	 * @throws java.io.IOException Thrown if the Inputs are invalid
+     */
+    void writeJSONString(java.io.Writer out) throws java.io.IOException;
 }

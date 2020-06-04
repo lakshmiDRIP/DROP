@@ -4,7 +4,7 @@ package org.drip.sample.anfuso2017;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.state.identifier.EntityEquityLabel;
 import org.drip.state.identifier.FXLabel;

@@ -10,6 +10,12 @@ DROP Service maintains the Environment, Product/Definition Containers, and hosts
  * [***API***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api)
  DROP Service API Package implements the Horizon Roll Attribution Service API.
 
+ * [***Asset Allocation***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/assetallocation)
+ DROP Service Asset Allocation Package implements the JSON Based In/Out Service.
+
+ * [***Common***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common)
+ DROP Service Common Package contains the Assorted Data Structures Support Utilities.
+
  * [***Engine***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/engine)
  DROP Service Engine Package implements the Compute Engine Request-Response Thunker.
 
@@ -19,8 +25,14 @@ DROP Service maintains the Environment, Product/Definition Containers, and hosts
  * [***JSON***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/json)
  DROP Service JSON Package implements the JSON Based Valuation Request Processor.
 
+ * [***JSON Parser***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/jsonparser)
+ DROP Service JSON Parser Package implements the RFC4627 Compliant JSON Message Parser.
+
  * [***Product***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/product)
  DROP Service Product Package implements the Product Horizon PnL Attribution Decomposition.
+
+ * [***Representation***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/simple)
+ DROP Service Representation Package implements the RFC4627 Compliant JSON Message Object.
 
  * [***Scenario***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/scenario)
  DROP Service Scenario Package implements the Custom Scenario Service Metric Generator.

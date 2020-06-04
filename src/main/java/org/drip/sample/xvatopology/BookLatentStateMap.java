@@ -3,8 +3,8 @@ package org.drip.sample.xvatopology;
 
 import java.util.Map;
 
-import org.drip.numerical.common.FormatUtil;
-import org.drip.numerical.common.StringUtil;
+import org.drip.service.common.FormatUtil;
+import org.drip.service.common.StringUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.state.identifier.CSALabel;
 import org.drip.state.identifier.EntityFundingLabel;

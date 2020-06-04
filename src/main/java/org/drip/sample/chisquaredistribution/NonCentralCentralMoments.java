@@ -4,7 +4,7 @@ package org.drip.sample.chisquaredistribution;
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.definition.R2ToR1;
 import org.drip.measure.chisquare.R1NonCentral;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.bessel.ModifiedFirstFrobeniusSeriesEstimator;
 import org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator;

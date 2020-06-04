@@ -159,13 +159,13 @@ public class EntityCapital
 
 	@Override public java.lang.String toString()
 	{
-		return org.drip.numerical.common.FormatUtil.FormatDouble (
+		return org.drip.service.common.FormatUtil.FormatDouble (
 			_absolute,
 			10,
 			 0,
 			 1.,
 			false
-		) + " | (" + org.drip.numerical.common.FormatUtil.FormatDouble (
+		) + " | (" + org.drip.service.common.FormatUtil.FormatDouble (
 			_fractional,
 			2,
 			2,

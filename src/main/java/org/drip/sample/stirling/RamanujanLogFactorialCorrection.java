@@ -1,9 +1,9 @@
 
 package org.drip.sample.stirling;
 
-import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.estimation.R1Estimate;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.loggamma.RamanujanSeriesEstimator;
 

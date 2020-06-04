@@ -870,7 +870,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		try {
 			return calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (new double[]
 				{left(), right()}, new double[] {dblLeftValue, dblRightValue},
-					org.drip.numerical.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2,
+					org.drip.service.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2,
 						dblLeftSlope), null, null, sbfrState));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -906,7 +906,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 						wrvcStateRight ? null : wrvcStateRight.responseIndexedBasisConstraint (_be, this)};
 
 			return calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (null, null,
-				org.drip.numerical.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2, dblLeftSlope),
+				org.drip.service.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2, dblLeftSlope),
 					null, aSBFCState, sbfrState));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -1076,7 +1076,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 							org.drip.spline.params.SegmentStateCalibrationInputs (new double[] {left(),
 								right()}, new double[] {dblLeftManifestSensitivity,
 									dblRightManifestSensitivity},
-										org.drip.numerical.common.CollectionUtil.DerivArrayFromSlope
+										org.drip.service.common.CollectionUtil.DerivArrayFromSlope
 											(numParameters() - 2, dblLeftSlopeManifestSensitivity), null,
 												null, sbfrManifestSensitivity), null) : true;
 		} catch (java.lang.Exception e) {
@@ -1130,7 +1130,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 
 			return null == aSBFCManifestSensitivity ? true : calibrateLocalManifestJacobian
 				(strManifestMeasure, new org.drip.spline.params.SegmentStateCalibrationInputs (null, null,
-					org.drip.numerical.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2,
+					org.drip.service.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2,
 						dblLeftSlopeManifestSensitivity), null, aSBFCManifestSensitivity,
 							sbfrManifestSensitivity), aSBFCState);
 		} catch (java.lang.Exception e) {

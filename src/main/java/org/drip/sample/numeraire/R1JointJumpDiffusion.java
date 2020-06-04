@@ -5,8 +5,8 @@ import org.drip.measure.discrete.SequenceGenerator;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.*;
 import org.drip.measure.realization.*;
-import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

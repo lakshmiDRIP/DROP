@@ -4,7 +4,7 @@ package org.drip.sample.chisquaredistribution;
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.definition.R2ToR1;
 import org.drip.measure.chisquare.R1Central;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
 import org.drip.specialfunction.gamma.EulerIntegralSecondKind;

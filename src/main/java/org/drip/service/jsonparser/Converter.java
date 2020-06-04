@@ -1,5 +1,5 @@
 
-package org.drip.json.parser;
+package org.drip.service.jsonparser;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -86,8 +86,8 @@ package org.drip.json.parser;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json">RFC-4627 Compliant JSON Encoder/Decoder (Parser)</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/parser">RFC4627 Compliant JSON Message Parser</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/jsonparser">RFC4627 Compliant JSON Message Parser</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
@@ -105,7 +105,7 @@ public class Converter {
 	 */
 
 	public static final java.lang.String StringEntry (
-		final org.drip.json.simple.JSONObject json,
+		final org.drip.service.representation.JSONObject json,
 		final java.lang.String strEntryKey)
 	{
 		if (null == json || !json.containsKey (strEntryKey)) return null;
@@ -126,16 +126,16 @@ public class Converter {
 	 */
 
 	public static final java.lang.String[] StringArrayEntry (
-		final org.drip.json.simple.JSONObject json,
+		final org.drip.service.representation.JSONObject json,
 		final java.lang.String strEntryKey)
 	{
 		if (null == json || !json.containsKey (strEntryKey)) return null;
 
 		java.lang.Object objEntry = json.get (strEntryKey);
 
-		if (null == objEntry || !(objEntry instanceof org.drip.json.simple.JSONArray)) return null;
+		if (null == objEntry || !(objEntry instanceof org.drip.service.representation.JSONArray)) return null;
 
-		org.drip.json.simple.JSONArray jsonArray = (org.drip.json.simple.JSONArray) objEntry;
+		org.drip.service.representation.JSONArray jsonArray = (org.drip.service.representation.JSONArray) objEntry;
 
 		int iNumElement = jsonArray.size();
 
@@ -163,7 +163,7 @@ public class Converter {
 	 */
 
 	public static final org.drip.analytics.date.JulianDate DateEntry (
-		final org.drip.json.simple.JSONObject json,
+		final org.drip.service.representation.JSONObject json,
 		final java.lang.String strEntryKey)
 	{
 		return org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY (StringEntry (json, strEntryKey));
@@ -179,16 +179,16 @@ public class Converter {
 	 */
 
 	public static final org.drip.analytics.date.JulianDate[] DateArrayEntry (
-		final org.drip.json.simple.JSONObject json,
+		final org.drip.service.representation.JSONObject json,
 		final java.lang.String strEntryKey)
 	{
 		if (null == json || !json.containsKey (strEntryKey)) return null;
 
 		java.lang.Object objEntry = json.get (strEntryKey);
 
-		if (null == objEntry || !(objEntry instanceof org.drip.json.simple.JSONArray)) return null;
+		if (null == objEntry || !(objEntry instanceof org.drip.service.representation.JSONArray)) return null;
 
-		org.drip.json.simple.JSONArray jsonArray = (org.drip.json.simple.JSONArray) objEntry;
+		org.drip.service.representation.JSONArray jsonArray = (org.drip.service.representation.JSONArray) objEntry;
 
 		int iNumElement = jsonArray.size();
 
@@ -219,7 +219,7 @@ public class Converter {
 	 */
 
 	public static final double DoubleEntry (
-		final org.drip.json.simple.JSONObject json,
+		final org.drip.service.representation.JSONObject json,
 		final java.lang.String strEntryKey)
 		throws java.lang.Exception
 	{
@@ -243,16 +243,16 @@ public class Converter {
 	 */
 
 	public static final double[] DoubleArrayEntry (
-		final org.drip.json.simple.JSONObject json,
+		final org.drip.service.representation.JSONObject json,
 		final java.lang.String strEntryKey)
 	{
 		if (null == json || !json.containsKey (strEntryKey)) return null;
 
 		java.lang.Object objEntry = json.get (strEntryKey);
 
-		if (null == objEntry || !(objEntry instanceof org.drip.json.simple.JSONArray)) return null;
+		if (null == objEntry || !(objEntry instanceof org.drip.service.representation.JSONArray)) return null;
 
-		org.drip.json.simple.JSONArray jsonArray = (org.drip.json.simple.JSONArray) objEntry;
+		org.drip.service.representation.JSONArray jsonArray = (org.drip.service.representation.JSONArray) objEntry;
 
 		int iNumElement = jsonArray.size();
 
@@ -287,16 +287,16 @@ public class Converter {
 	 */
 
 	public static final double[][] DualDoubleArrayEntry (
-		final org.drip.json.simple.JSONObject json,
+		final org.drip.service.representation.JSONObject json,
 		final java.lang.String strEntryKey)
 	{
 		if (null == json || !json.containsKey (strEntryKey)) return null;
 
 		java.lang.Object objEntry = json.get (strEntryKey);
 
-		if (null == objEntry || !(objEntry instanceof org.drip.json.simple.JSONArray)) return null;
+		if (null == objEntry || !(objEntry instanceof org.drip.service.representation.JSONArray)) return null;
 
-		org.drip.json.simple.JSONArray jsonArray = (org.drip.json.simple.JSONArray) objEntry;
+		org.drip.service.representation.JSONArray jsonArray = (org.drip.service.representation.JSONArray) objEntry;
 
 		int iNumOuterElement = jsonArray.size();
 
@@ -307,10 +307,10 @@ public class Converter {
 		for (int i = 0; i < iNumOuterElement; ++i) {
 			java.lang.Object objOuterElement = jsonArray.get (i);
 
-			if (null == objOuterElement || !(objOuterElement instanceof org.drip.json.simple.JSONArray))
+			if (null == objOuterElement || !(objOuterElement instanceof org.drip.service.representation.JSONArray))
 				return null;
 
-			org.drip.json.simple.JSONArray jsonOuterArray = (org.drip.json.simple.JSONArray) objOuterElement;
+			org.drip.service.representation.JSONArray jsonOuterArray = (org.drip.service.representation.JSONArray) objOuterElement;
 
 			int iNumInnerElement = jsonOuterArray.size();
 
@@ -348,7 +348,7 @@ public class Converter {
 	 */
 
 	public static final int IntegerEntry (
-		final org.drip.json.simple.JSONObject json,
+		final org.drip.service.representation.JSONObject json,
 		final java.lang.String strEntryKey)
 		throws java.lang.Exception
 	{
@@ -373,9 +373,9 @@ public class Converter {
 	public static final int[] IntegerArrayEntry (
 		final java.lang.Object objJSON)
 	{
-		if (null == objJSON || !(objJSON instanceof org.drip.json.simple.JSONArray)) return null;
+		if (null == objJSON || !(objJSON instanceof org.drip.service.representation.JSONArray)) return null;
 
-		org.drip.json.simple.JSONArray jsonArray = (org.drip.json.simple.JSONArray) objJSON;
+		org.drip.service.representation.JSONArray jsonArray = (org.drip.service.representation.JSONArray) objJSON;
 
 		int iNumElement = jsonArray.size();
 
@@ -406,7 +406,7 @@ public class Converter {
 	 */
 
 	public static final boolean BooleanEntry (
-		final org.drip.json.simple.JSONObject json,
+		final org.drip.service.representation.JSONObject json,
 		final java.lang.String strEntryKey)
 		throws java.lang.Exception
 	{
@@ -431,9 +431,9 @@ public class Converter {
 	public static final boolean[] BooleanArrayEntry (
 		final java.lang.Object objJSON)
 	{
-		if (null == objJSON || !(objJSON instanceof org.drip.json.simple.JSONArray)) return null;
+		if (null == objJSON || !(objJSON instanceof org.drip.service.representation.JSONArray)) return null;
 
-		org.drip.json.simple.JSONArray jsonArray = (org.drip.json.simple.JSONArray) objJSON;
+		org.drip.service.representation.JSONArray jsonArray = (org.drip.service.representation.JSONArray) objJSON;
 
 		int iNumElement = jsonArray.size();
 
@@ -460,12 +460,12 @@ public class Converter {
 	 * @return The JSON Array Instance
 	 */
 
-	@SuppressWarnings ("unchecked") public static final org.drip.json.simple.JSONArray Array (
+	@SuppressWarnings ("unchecked") public static final org.drip.service.representation.JSONArray Array (
 		final java.lang.String[] astr)
 	{
 		if (null == astr || 0 == astr.length) return null;
 
-		org.drip.json.simple.JSONArray jsonArray = new org.drip.json.simple.JSONArray();
+		org.drip.service.representation.JSONArray jsonArray = new org.drip.service.representation.JSONArray();
 
 		for (java.lang.String str : astr)
 			jsonArray.add (str);
@@ -481,12 +481,12 @@ public class Converter {
 	 * @return The JSON Array Instance
 	 */
 
-	@SuppressWarnings ("unchecked") public static final org.drip.json.simple.JSONArray Array (
+	@SuppressWarnings ("unchecked") public static final org.drip.service.representation.JSONArray Array (
 		final int[] ai)
 	{
 		if (null == ai || 0 == ai.length) return null;
 
-		org.drip.json.simple.JSONArray jsonArray = new org.drip.json.simple.JSONArray();
+		org.drip.service.representation.JSONArray jsonArray = new org.drip.service.representation.JSONArray();
 
 		for (int i : ai)
 			jsonArray.add (i);
@@ -502,12 +502,12 @@ public class Converter {
 	 * @return The JSON Array Instance
 	 */
 
-	@SuppressWarnings ("unchecked") public static final org.drip.json.simple.JSONArray Array (
+	@SuppressWarnings ("unchecked") public static final org.drip.service.representation.JSONArray Array (
 		final double[] adbl)
 	{
 		if (null == adbl || 0 == adbl.length) return null;
 
-		org.drip.json.simple.JSONArray jsonArray = new org.drip.json.simple.JSONArray();
+		org.drip.service.representation.JSONArray jsonArray = new org.drip.service.representation.JSONArray();
 
 		for (double dbl : adbl)
 			jsonArray.add (dbl);
@@ -523,12 +523,12 @@ public class Converter {
 	 * @return The JSON 2D Array Instance
 	 */
 
-	@SuppressWarnings ("unchecked") public static final org.drip.json.simple.JSONArray Array (
+	@SuppressWarnings ("unchecked") public static final org.drip.service.representation.JSONArray Array (
 		final double[][] aadbl)
 	{
 		if (null == aadbl || 0 == aadbl.length) return null;
 
-		org.drip.json.simple.JSONArray jsonArray = new org.drip.json.simple.JSONArray();
+		org.drip.service.representation.JSONArray jsonArray = new org.drip.service.representation.JSONArray();
 
 		for (double[] adbl : aadbl)
 			jsonArray.add (Array (adbl));
@@ -544,12 +544,12 @@ public class Converter {
 	 * @return The JSON Array Instance
 	 */
 
-	@SuppressWarnings ("unchecked") public static final org.drip.json.simple.JSONArray Array (
+	@SuppressWarnings ("unchecked") public static final org.drip.service.representation.JSONArray Array (
 		final boolean[] ab)
 	{
 		if (null == ab || 0 == ab.length) return null;
 
-		org.drip.json.simple.JSONArray jsonArray = new org.drip.json.simple.JSONArray();
+		org.drip.service.representation.JSONArray jsonArray = new org.drip.service.representation.JSONArray();
 
 		for (boolean b : ab)
 			jsonArray.add (b);
@@ -565,12 +565,12 @@ public class Converter {
 	 * @return The JSON Array Instance
 	 */
 
-	@SuppressWarnings ("unchecked") public static final org.drip.json.simple.JSONArray Array (
+	@SuppressWarnings ("unchecked") public static final org.drip.service.representation.JSONArray Array (
 		final org.drip.analytics.date.JulianDate[] adt)
 	{
 		if (null == adt || 0 == adt.length) return null;
 
-		org.drip.json.simple.JSONArray jsonArray = new org.drip.json.simple.JSONArray();
+		org.drip.service.representation.JSONArray jsonArray = new org.drip.service.representation.JSONArray();
 
 		for (org.drip.analytics.date.JulianDate dt : adt)
 			jsonArray.add (dt);

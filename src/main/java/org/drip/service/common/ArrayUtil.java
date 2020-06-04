@@ -1,5 +1,5 @@
 
-package org.drip.numerical.common;
+package org.drip.service.common;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -81,8 +81,8 @@ package org.drip.numerical.common;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/common">Primitives/Array Manipulate Format Display Utilities</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common">Assorted Data Structures Support Utilities</a></li>
  *  </ul>
  * <br><br>
  * 
@@ -180,6 +180,26 @@ public class ArrayUtil
 		}
 
 		return -1;
+	}
+
+	private static final int SlidingWindowCount (
+		final int[] numberArray,
+		final int index,
+		final int windowSize)
+	{
+		int count = 0;
+
+		for (int left = 0;
+			left <= numberArray.length - windowSize;
+			++left)
+		{
+			if (index >= left && index <= left + windowSize - 1)
+			{
+				++count;
+			}
+		}
+
+		return count;
 	}
 
 	/**
@@ -603,33 +623,249 @@ public class ArrayUtil
 		return result;
 	}
 
+	/**
+	 * Given an array of integers, find the sum of min(B), where B ranges over every (contiguous) sub-array.
+	 * 
+	 * @param numberArray Array if Integers
+	 * 
+	 * @return Sum of min(B)
+	 */
+
+	public static final int SubarrayMinimum (
+		final int[] numberArray)
+	{
+		if (1 == numberArray.length)
+		{
+			return numberArray[0];
+		}
+
+		int minIndex = -1;
+		int minValue = java.lang.Integer.MAX_VALUE;
+
+		for (int index = 0;
+			index < numberArray.length;
+			++index)
+		{
+			if (minValue > numberArray[index])
+			{
+				minIndex = index;
+				minValue = numberArray[index];
+			}
+		}
+
+		int minValueInstanceCount = 0;
+
+		for (int index = 0;
+			index < numberArray.length;
+			++index)
+		{
+			minValueInstanceCount = minValueInstanceCount + SlidingWindowCount (
+				numberArray,
+				minIndex,
+				index + 1
+			);
+		}
+
+		if (minIndex == 0)
+		{
+			int[] numberSubarray = new int[numberArray.length - 1];
+
+			for (int index = 1;
+				index < numberArray.length;
+				++index)
+			{
+				numberSubarray[index - 1] = numberArray[index];
+			}
+
+			return minValueInstanceCount * minValue + SubarrayMinimum (
+				numberSubarray
+			);
+		}
+
+		if (minIndex == numberArray.length - 1)
+		{
+			int[] numberSubarray = new int[numberArray.length - 1];
+
+			for (int index = 0;
+				index < numberArray.length - 1;
+				++index)
+			{
+				numberSubarray[index] = numberArray[index];
+			}
+
+			return minValueInstanceCount * minValue + SubarrayMinimum (
+				numberSubarray
+			);
+		}
+
+		int[] leftSubarray = new int[minIndex];
+		int[] rightSubarray = new int[numberArray.length - minIndex - 1];
+
+		for (int index = 0;
+			index < numberArray.length;
+			++index)
+		{
+			if (minIndex > index)
+			{
+				leftSubarray[index] = numberArray[index];
+			}
+			else if (minIndex < index)
+			{
+				rightSubarray[index - minIndex - 1] = numberArray[index];
+			}
+		}
+
+		return minValueInstanceCount * minValue + SubarrayMinimum (
+			leftSubarray
+		) + SubarrayMinimum (
+			rightSubarray
+		);
+	}
+
+	private static final int[] ExcludeAndSort (
+		final int[] numberArray,
+		final int exclusionIndex)
+	{
+		int[] excludedAndSortedArray = new int[numberArray.length - 1];
+
+		for (int index = 0;
+			index < numberArray.length;
+			++index)
+		{
+			if (index < exclusionIndex)
+			{
+				excludedAndSortedArray[index] = numberArray[index];
+			}
+			else if (index > exclusionIndex)
+			{
+				excludedAndSortedArray[index - 1] = numberArray[index];
+			}
+		}
+
+		java.util.Arrays.sort (
+			excludedAndSortedArray
+		);
+
+		return excludedAndSortedArray;
+	}
+
+	/**
+	 * Given an array of n integers and an integer target, are there elements a, b, c, and d in the array
+	 * 	such that a + b + c + d = target? Find all unique quadruplets in the array which gives the sum of
+	 * 	target.
+	 * 
+	 * @param numberArray The Number Array
+	 * @param target Target
+	 * 
+	 * @return Collection of Unique Quadruplets
+	 */
+
+	public static final java.util.Collection<java.util.List<java.lang.Integer>> FourSum (
+		final int[] numberArray,
+		final int target)
+	{
+		java.util.Map<java.lang.String, java.util.List<java.lang.Integer>> fourSumListMap =
+			new java.util.HashMap<java.lang.String, java.util.List<java.lang.Integer>>();
+
+		for (int exclusionIndex = 0;
+			exclusionIndex < numberArray.length;
+			++exclusionIndex)
+		{
+			int[] excludedAndSortedArray = ExcludeAndSort (
+				numberArray,
+				exclusionIndex
+			);
+
+			for (int excludedAndSortedArrayIndex = 0;
+				excludedAndSortedArrayIndex < excludedAndSortedArray.length;
+				++excludedAndSortedArrayIndex)
+			{
+				for (int threeSumIndex = excludedAndSortedArrayIndex + 1;
+					threeSumIndex < excludedAndSortedArray.length;
+					++threeSumIndex)
+				{
+					int fourSumIndex = excludedAndSortedArray.length - 1;
+
+					while (fourSumIndex > threeSumIndex)
+					{
+						int sum = numberArray[exclusionIndex] +
+							excludedAndSortedArray[excludedAndSortedArrayIndex] +
+							excludedAndSortedArray[threeSumIndex] +
+							excludedAndSortedArray[fourSumIndex];
+
+						if (target == sum)
+						{
+							int[] fourSumComponentArray = new int[4];
+							fourSumComponentArray[0] = numberArray[exclusionIndex];
+							fourSumComponentArray[1] = excludedAndSortedArray[excludedAndSortedArrayIndex];
+							fourSumComponentArray[2] = excludedAndSortedArray[threeSumIndex];
+							fourSumComponentArray[3] = excludedAndSortedArray[fourSumIndex];
+
+							java.util.Arrays.sort (
+								fourSumComponentArray
+							);
+
+							java.util.List<java.lang.Integer> fourSumList =
+								new java.util.ArrayList<java.lang.Integer>();
+
+							fourSumList.add (
+								numberArray[exclusionIndex]
+							);
+
+							fourSumList.add (
+								excludedAndSortedArray[excludedAndSortedArrayIndex]
+							);
+
+							fourSumList.add (
+								excludedAndSortedArray[threeSumIndex]
+							);
+
+							fourSumList.add (
+								excludedAndSortedArray[fourSumIndex]
+							);
+
+							fourSumListMap.put (
+								fourSumComponentArray[0] + "#" +
+									fourSumComponentArray[1] + "#" +
+									fourSumComponentArray[2] + "#" +
+									fourSumComponentArray[3],
+								fourSumList
+							);
+						}
+
+						--fourSumIndex;
+					}
+				}
+			}
+		}
+
+		return fourSumListMap.values();
+	}
+
+	/* public static final double MaximumSubarrayCumCircular (
+		final double[] numberArray)
+	{
+		
+	} */
+
 	public static final void main (
 		String[] args)
 	{
+		int target = 0;
 		int[] numberArray = new int[]
 		{
-			 2,
-			 3,
-			-2,
-			 4,
-		};
-
-		System.out.println (
-			MaximumProductSubarray (
-				numberArray
-			)
-		);
-
-		numberArray = new int[]
-		{
-			-2,
+			 1,
 			 0,
-			-1
+			-1,
+			 0,
+			-2,
+			 2,
 		};
 
 		System.out.println (
-			MaximumProductSubarray (
-				numberArray
+			FourSum (
+				numberArray,
+				target
 			)
 		);
 	}

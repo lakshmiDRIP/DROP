@@ -3,10 +3,10 @@ package org.drip.sample.securitysuite;
 
 import org.drip.analytics.cashflow.CompositePeriod;
 import org.drip.analytics.date.*;
-import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.linearalgebra.Matrix;
 import org.drip.product.creator.BondBuilder;
 import org.drip.product.credit.BondComponent;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.scenario.*;
 

@@ -5,4 +5,4 @@
  * @author Lakshmi Krishnamurthy
  */
 
-package org.drip.json.assetallocation;
+package org.drip.service.assetallocation;

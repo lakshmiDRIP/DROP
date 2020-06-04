@@ -3,7 +3,7 @@ package org.drip.sample.trend;
 
 import org.drip.execution.bayesian.*;
 import org.drip.measure.gaussian.R1UnivariateNormal;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

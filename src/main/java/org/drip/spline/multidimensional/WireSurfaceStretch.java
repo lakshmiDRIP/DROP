@@ -171,7 +171,7 @@ public class WireSurfaceStretch {
 		org.drip.spline.stretch.MultiSegmentSequence mss =
 			org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
 				("org.drip.spline.multidimensional.WireSurfaceStretch@" +
-					org.drip.numerical.common.StringUtil.GUID(), adblX, adblZ, aSCBC, null,
+					org.drip.service.common.StringUtil.GUID(), adblX, adblZ, aSCBC, null,
 						org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
 							org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE);
 
@@ -243,7 +243,7 @@ public class WireSurfaceStretch {
 			return new org.drip.spline.grid.OverlappingStretchSpan
 				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
 					("org.drip.spline.multidimensional.WireSurfaceStretch@" +
-						org.drip.numerical.common.StringUtil.GUID(), adblX, adblZ, aSCBC, null,
+						org.drip.service.common.StringUtil.GUID(), adblX, adblZ, aSCBC, null,
 							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
 								org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE));
 		} catch (java.lang.Exception e) {

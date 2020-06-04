@@ -123,7 +123,7 @@ public class Array2D {
 			!org.drip.numerical.common.NumberUtil.IsValid (dblInitialAmount) || 0. >= dblInitialAmount)
 			return null;
 
-		java.lang.String[] astrDateAmountEdge = org.drip.numerical.common.StringUtil.Split (strDateAmountVertex,
+		java.lang.String[] astrDateAmountEdge = org.drip.service.common.StringUtil.Split (strDateAmountVertex,
 			";");
 
 		if (null == astrDateAmountEdge) return null;
@@ -184,7 +184,7 @@ public class Array2D {
 			!org.drip.numerical.common.NumberUtil.IsValid (dblInitialAmount))
 			return null;
 
-		java.lang.String[] astrDateFactorVertex = org.drip.numerical.common.StringUtil.Split
+		java.lang.String[] astrDateFactorVertex = org.drip.service.common.StringUtil.Split
 			(strDateFactorVertex, ";");
 
 		if (null == astrDateFactorVertex) return null;
@@ -233,7 +233,7 @@ public class Array2D {
 	{
 		if (null == strDateFactorVertex || strDateFactorVertex.isEmpty()) return null;
 
-		java.lang.String[] astrDateFactorVertex = org.drip.numerical.common.StringUtil.Split
+		java.lang.String[] astrDateFactorVertex = org.drip.service.common.StringUtil.Split
 			(strDateFactorVertex, ";");
 
 		if (null == astrDateFactorVertex) return null;
@@ -286,9 +286,9 @@ public class Array2D {
 		if (null == strX || strX.isEmpty() || null == strY || strY.isEmpty()) return null;
 
 		try {
-			return new Array2D (org.drip.numerical.common.StringUtil.MakeDoubleArrayFromStringTokenizer (new
+			return new Array2D (org.drip.service.common.StringUtil.MakeDoubleArrayFromStringTokenizer (new
 				java.util.StringTokenizer (strX, ";")),
-					org.drip.numerical.common.StringUtil.MakeDoubleArrayFromStringTokenizer (new
+					org.drip.service.common.StringUtil.MakeDoubleArrayFromStringTokenizer (new
 						java.util.StringTokenizer (strY, ";")));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();

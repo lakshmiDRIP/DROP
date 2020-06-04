@@ -1,5 +1,6 @@
 
-package org.drip.numerical.common;
+package org.drip.service.common;
+
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -112,8 +113,8 @@ package org.drip.numerical.common;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/common">Primitives/Array Manipulate Format Display Utilities</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common">Assorted Data Structures Support Utilities</a></li>
  *  </ul>
  * <br><br>
  * 
@@ -373,7 +374,7 @@ public class CollectionUtil {
 				|| null == strRecordDelimiter || strRecordDelimiter.isEmpty())
 			return null;
 
-		java.lang.String[] astrRecord = org.drip.numerical.common.StringUtil.Split (str2DMap,
+		java.lang.String[] astrRecord = org.drip.service.common.StringUtil.Split (str2DMap,
 			strRecordDelimiter);
 
 		if (null == astrRecord || 0 == astrRecord.length) return null;
@@ -386,7 +387,7 @@ public class CollectionUtil {
 				(astrRecord[i]))
 				continue;
 
-			java.lang.String[] astrKVPair = org.drip.numerical.common.StringUtil.Split (astrRecord[i],
+			java.lang.String[] astrKVPair = org.drip.service.common.StringUtil.Split (astrRecord[i],
 				strKVDelimiter);
 			
 			if (null == astrKVPair || 2 != astrKVPair.length || null == astrKVPair[0] ||
@@ -431,7 +432,7 @@ public class CollectionUtil {
 				|| null == strRecordDelimiter || strRecordDelimiter.isEmpty())
 			return null;
 
-		java.lang.String[] astrRecord = org.drip.numerical.common.StringUtil.Split (str3DMap, strRecordDelimiter);
+		java.lang.String[] astrRecord = org.drip.service.common.StringUtil.Split (str3DMap, strRecordDelimiter);
 
 		if (null == astrRecord || 0 == astrRecord.length) return null;
 
@@ -442,7 +443,7 @@ public class CollectionUtil {
 		for (int i = 0; i < astrRecord.length; ++i) {
 			if (null == astrRecord[i] || astrRecord[i].isEmpty()) continue;
 
-			java.lang.String[] astrKVPair = org.drip.numerical.common.StringUtil.Split (astrRecord[i], strKVDelimiter);
+			java.lang.String[] astrKVPair = org.drip.service.common.StringUtil.Split (astrRecord[i], strKVDelimiter);
 			
 			if (null == astrKVPair || 2 != astrKVPair.length || null == astrKVPair[0] ||
 				astrKVPair[0].isEmpty() || strNULLString.equalsIgnoreCase (astrKVPair[0]) || (bSkipNullValue
@@ -450,7 +451,7 @@ public class CollectionUtil {
 						(astrKVPair[1]))))
 				continue;
 
-			java.lang.String[] astrKeySet = org.drip.numerical.common.StringUtil.Split (astrKVPair[0],
+			java.lang.String[] astrKeySet = org.drip.service.common.StringUtil.Split (astrKVPair[0],
 				strMultiLevelKeyDelimiter);
 			
 			if (null == astrKeySet || 2 != astrKeySet.length || null == astrKeySet[0] ||
@@ -503,7 +504,7 @@ public class CollectionUtil {
 				|| null == strRecordDelimiter || strRecordDelimiter.isEmpty())
 			return null;
 
-		java.lang.String[] astrRecord = org.drip.numerical.common.StringUtil.Split (str4DMap, strRecordDelimiter);
+		java.lang.String[] astrRecord = org.drip.service.common.StringUtil.Split (str4DMap, strRecordDelimiter);
 
 		if (null == astrRecord || 0 == astrRecord.length) return null;
 
@@ -516,7 +517,7 @@ public class CollectionUtil {
 				(astrRecord[i]))
 				continue;
 
-			java.lang.String[] astrKVPairOut = org.drip.numerical.common.StringUtil.Split (astrRecord[i],
+			java.lang.String[] astrKVPairOut = org.drip.service.common.StringUtil.Split (astrRecord[i],
 				strKVDelimiter);
 			
 			if (null == astrKVPairOut || 2 != astrKVPairOut.length || null == astrKVPairOut[0] ||
@@ -525,7 +526,7 @@ public class CollectionUtil {
 						strNULLString.equalsIgnoreCase (astrKVPairOut[1]))))
 				continue;
 
-			java.lang.String[] astrKeySet = org.drip.numerical.common.StringUtil.Split (astrKVPairOut[0],
+			java.lang.String[] astrKeySet = org.drip.service.common.StringUtil.Split (astrKVPairOut[0],
 				strMultiLevelKeyDelimiter);
 			
 			if (null == astrKeySet || 3 != astrKeySet.length || null == astrKeySet[0] ||

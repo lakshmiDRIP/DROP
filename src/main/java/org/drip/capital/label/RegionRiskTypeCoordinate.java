@@ -125,7 +125,7 @@ public class RegionRiskTypeCoordinate
 			return null;
 		}
 
-		java.lang.String[] regionRiskType = org.drip.numerical.common.StringUtil.Split (
+		java.lang.String[] regionRiskType = org.drip.service.common.StringUtil.Split (
 			fullyQualifiedName,
 			org.drip.capital.label.Coordinate.FQN_DELIMITER
 		);

@@ -2,8 +2,8 @@
 package org.drip.sample.newtoncotes;
 
 import org.drip.function.definition.R1ToR1;
-import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

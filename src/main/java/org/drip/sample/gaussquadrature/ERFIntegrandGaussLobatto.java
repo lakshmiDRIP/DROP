@@ -6,8 +6,8 @@ import java.util.Map;
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.e2erf.BuiltInEntry;
 import org.drip.function.e2erf.ErrorFunction;
-import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.integration.GaussLobattoQuadratureGenerator;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

@@ -3,7 +3,7 @@ package org.drip.sample.businessspec;
 
 import org.drip.capital.env.CapitalEstimationContextManager;
 import org.drip.capital.shell.VolatilityScaleContext;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

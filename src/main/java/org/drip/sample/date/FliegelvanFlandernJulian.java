@@ -2,7 +2,7 @@
 package org.drip.sample.date;
 
 import org.drip.analytics.date.DateUtil;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

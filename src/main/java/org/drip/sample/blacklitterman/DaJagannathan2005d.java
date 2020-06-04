@@ -2,11 +2,11 @@
 package org.drip.sample.blacklitterman;
 
 import org.drip.measure.statistics.MultivariateMoments;
-import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.linearalgebra.Matrix;
 import org.drip.portfolioconstruction.allocator.*;
 import org.drip.portfolioconstruction.asset.AssetComponent;
 import org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

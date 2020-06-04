@@ -5,13 +5,13 @@ import java.util.Map;
 
 import org.drip.analytics.date.*;
 import org.drip.function.r1tor1.*;
-import org.drip.numerical.common.FormatUtil;
 import org.drip.param.creator.MarketParamsBuilder;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.valuation.ValuationParams;
 import org.drip.product.creator.SingleStreamComponentBuilder;
 import org.drip.product.fra.FRAMarketComponent;
 import org.drip.sample.forward.*;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.state.discount.*;
 import org.drip.state.forward.ForwardCurve;

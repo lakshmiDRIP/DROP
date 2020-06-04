@@ -104,25 +104,25 @@ public class FixedAssetBackedProcessor {
 	 * @return JSON Constant Payment Asset Backed Loan Secular Metrics Response
 	 */
 
-	@SuppressWarnings ("unchecked") static final org.drip.json.simple.JSONObject SecularMetrics (
-		final org.drip.json.simple.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") static final org.drip.service.representation.JSONObject SecularMetrics (
+		final org.drip.service.representation.JSONObject jsonParameter)
 	{
-		java.lang.String strBondName = org.drip.json.parser.Converter.StringEntry (jsonParameter, "Name");
+		java.lang.String strBondName = org.drip.service.jsonparser.Converter.StringEntry (jsonParameter, "Name");
 
-		java.lang.String strCurrency = org.drip.json.parser.Converter.StringEntry (jsonParameter,
+		java.lang.String strCurrency = org.drip.service.jsonparser.Converter.StringEntry (jsonParameter,
 			"Currency");
 
-		java.lang.String strDayCount = org.drip.json.parser.Converter.StringEntry (jsonParameter,
+		java.lang.String strDayCount = org.drip.service.jsonparser.Converter.StringEntry (jsonParameter,
 			"DayCount");
 
-		org.drip.analytics.date.JulianDate dtEffective = org.drip.json.parser.Converter.DateEntry
+		org.drip.analytics.date.JulianDate dtEffective = org.drip.service.jsonparser.Converter.DateEntry
 			(jsonParameter, "EffectiveDate");
 
 		if (null == dtEffective) return null;
 
 		int iEffectiveDate = dtEffective.julian();
 
-		org.drip.analytics.date.JulianDate dtSettle = org.drip.json.parser.Converter.DateEntry
+		org.drip.analytics.date.JulianDate dtSettle = org.drip.service.jsonparser.Converter.DateEntry
 			(jsonParameter, "SettleDate");
 
 		if (null == dtSettle) return null;
@@ -139,20 +139,20 @@ public class FixedAssetBackedProcessor {
 		double dblBeginPrincipalFactor = java.lang.Double.NaN;
 
 		try {
-			iNumPayment = org.drip.json.parser.Converter.IntegerEntry (jsonParameter, "NumPayment");
+			iNumPayment = org.drip.service.jsonparser.Converter.IntegerEntry (jsonParameter, "NumPayment");
 
-			dblCouponRate = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, "CouponRate");
+			dblCouponRate = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter, "CouponRate");
 
-			iPayFrequency = org.drip.json.parser.Converter.IntegerEntry (jsonParameter, "PayFrequency");
+			iPayFrequency = org.drip.service.jsonparser.Converter.IntegerEntry (jsonParameter, "PayFrequency");
 
-			dblBondNotional = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, "BondNotional");
+			dblBondNotional = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter, "BondNotional");
 
-			dblServiceFeeRate = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, "ServiceFeeRate");
+			dblServiceFeeRate = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter, "ServiceFeeRate");
 
-			dblFixedMonthlyAmount = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,
+			dblFixedMonthlyAmount = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter,
 				"FixedMonthlyAmount");
 
-			dblBeginPrincipalFactor = org.drip.json.parser.Converter.DoubleEntry (jsonParameter,
+			dblBeginPrincipalFactor = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter,
 				"BeginPrincipalFactor");
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -166,12 +166,12 @@ public class FixedAssetBackedProcessor {
 
 		if (null == fpmb || fpmb.maturityDate().julian() <= iSettleDate) return null;
 
-		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();
+		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
 
-		org.drip.json.simple.JSONArray jsonCouponFlowArray = new org.drip.json.simple.JSONArray();
+		org.drip.service.representation.JSONArray jsonCouponFlowArray = new org.drip.service.representation.JSONArray();
 
 		for (org.drip.analytics.cashflow.CompositePeriod cp : fpmb.couponPeriods()) {
-			org.drip.json.simple.JSONObject jsonCouponFlow = new org.drip.json.simple.JSONObject();
+			org.drip.service.representation.JSONObject jsonCouponFlow = new org.drip.service.representation.JSONObject();
 
 			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = cp.couponMetrics (iEffectiveDate,
 				null);

@@ -1,8 +1,8 @@
 
 package org.drip.sample.helitterman;
 
-import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

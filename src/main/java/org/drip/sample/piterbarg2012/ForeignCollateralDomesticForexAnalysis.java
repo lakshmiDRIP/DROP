@@ -324,13 +324,13 @@ public class ForeignCollateralDomesticForexAnalysis {
 					double dblParForward = mapFCFF.get ("ParForward");
 
 					System.out.println ("\t[" +
-						org.drip.numerical.common.FormatUtil.FormatDouble (dblForeignRatesVolatility, 2, 0, 100.) + "%," +
-						org.drip.numerical.common.FormatUtil.FormatDouble (dblFXVolatility, 2, 0, 100.) + "%," +
-						org.drip.numerical.common.FormatUtil.FormatDouble (dblFXForeignRatesCorrelation, 2, 0, 100.) + "%] = " +
-						org.drip.numerical.common.FormatUtil.FormatDouble (dblPrice, 1, 2, 100.) + " | " +
-						org.drip.numerical.common.FormatUtil.FormatDouble (dblPrice - dblBaselinePrice, 1, 2, 100.) + " | " +
-						org.drip.numerical.common.FormatUtil.FormatDouble (dblParForward, 1, 4, 1.) + " | " +
-						org.drip.numerical.common.FormatUtil.FormatDouble (dblParForward - dblBaselineParForward, 1, 4, 1.)
+						org.drip.service.common.FormatUtil.FormatDouble (dblForeignRatesVolatility, 2, 0, 100.) + "%," +
+						org.drip.service.common.FormatUtil.FormatDouble (dblFXVolatility, 2, 0, 100.) + "%," +
+						org.drip.service.common.FormatUtil.FormatDouble (dblFXForeignRatesCorrelation, 2, 0, 100.) + "%] = " +
+						org.drip.service.common.FormatUtil.FormatDouble (dblPrice, 1, 2, 100.) + " | " +
+						org.drip.service.common.FormatUtil.FormatDouble (dblPrice - dblBaselinePrice, 1, 2, 100.) + " | " +
+						org.drip.service.common.FormatUtil.FormatDouble (dblParForward, 1, 4, 1.) + " | " +
+						org.drip.service.common.FormatUtil.FormatDouble (dblParForward - dblBaselineParForward, 1, 4, 1.)
 					);
 				}
 			}

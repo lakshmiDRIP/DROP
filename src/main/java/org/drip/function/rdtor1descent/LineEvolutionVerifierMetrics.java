@@ -190,7 +190,7 @@ public abstract class LineEvolutionVerifierMetrics
 			variateIndex < variateCount;
 			++variateIndex)
 		{
-			string = string + org.drip.numerical.common.FormatUtil.FormatDouble (
+			string = string + org.drip.service.common.FormatUtil.FormatDouble (
 				_currentVariateArray[variateIndex],
 				2,
 				3,
@@ -198,7 +198,7 @@ public abstract class LineEvolutionVerifierMetrics
 			) + " |";
 		}
 
-		string = string + "]" + org.drip.numerical.common.FormatUtil.FormatDouble (
+		string = string + "]" + org.drip.service.common.FormatUtil.FormatDouble (
 			_stepLength,
 			1,
 			3,
@@ -209,7 +209,7 @@ public abstract class LineEvolutionVerifierMetrics
 			variateIndex < variateCount;
 			++variateIndex)
 		{
-			string = string + org.drip.numerical.common.FormatUtil.FormatDouble (
+			string = string + org.drip.service.common.FormatUtil.FormatDouble (
 				targetDirectionVector[variateIndex],
 				1,
 				2,

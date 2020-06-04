@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.drip.graph.heap.BinaryTreeNode;
 import org.drip.graph.heap.BinaryTreePriorityQueue;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

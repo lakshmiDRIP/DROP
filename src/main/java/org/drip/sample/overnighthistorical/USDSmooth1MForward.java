@@ -6,7 +6,7 @@ import java.util.Map;
 import org.drip.analytics.date.JulianDate;
 import org.drip.feed.loader.*;
 import org.drip.historical.state.FundingCurveMetrics;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.state.OvernightCurveAPI;
 import org.drip.service.template.LatentMarketStateBuilder;

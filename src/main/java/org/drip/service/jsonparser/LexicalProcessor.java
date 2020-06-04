@@ -1,5 +1,5 @@
 
-package org.drip.json.parser;
+package org.drip.service.jsonparser;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -79,22 +79,22 @@ package org.drip.json.parser;
  */
 
 /**
- * <i>JSONParser</i> is an Adaptation of the JSONParser Class from the RFC4627 compliant JSON Simple
+ * <i>LexicalProcessor</i> is an Adaptation of the JSONParser Class from the RFC4627 compliant JSON Simple
  * (https://code.google.com/p/json-simple/).
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json">RFC-4627 Compliant JSON Encoder/Decoder (Parser)</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/parser">RFC4627 Compliant JSON Message Parser</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/jsonparser">RFC4627 Compliant JSON Message Parser</a></li>
  *  </ul>
  *
  * @author Fang Yidong
  * @author Lakshmi Krishnamurthy
  */
 
-public class JSONParser {
+public class LexicalProcessor {
     public static final int S_INIT=0;
     public static final int S_IN_FINISHED_VALUE=1;//string,number,boolean,null,object,array
     public static final int S_IN_OBJECT=2;
@@ -358,21 +358,21 @@ public void reset(){
     
     @SuppressWarnings ("rawtypes") private java.util.Map createObjectContainer(ContainerFactory containerFactory){
             if(containerFactory == null)
-                    return new org.drip.json.simple.JSONObject();
+                    return new org.drip.service.representation.JSONObject();
             java.util.Map m = containerFactory.createObjectContainer();
             
             if(m == null)
-                    return new org.drip.json.simple.JSONObject();
+                    return new org.drip.service.representation.JSONObject();
             return m;
     }
     
     @SuppressWarnings ("rawtypes") private java.util.List createArrayContainer(ContainerFactory containerFactory){
             if(containerFactory == null)
-                    return new org.drip.json.simple.JSONArray();
+                    return new org.drip.service.representation.JSONArray();
             java.util.List l = containerFactory.creatArrayContainer();
             
             if(l == null)
-                    return new org.drip.json.simple.JSONArray();
+                    return new org.drip.service.representation.JSONArray();
             return l;
     }
     

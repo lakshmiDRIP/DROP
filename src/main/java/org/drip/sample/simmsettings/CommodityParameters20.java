@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.drip.measure.stochastic.LabelCorrelation;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.commodity.CTBucket;
 import org.drip.simm.commodity.CTSettingsContainer20;

@@ -453,7 +453,7 @@ public class PositionMarketSnap {
 		java.lang.String strContent = "";
 
 		for (java.lang.String strR1Key : _mapCustomR1.keySet())
-			strContent = strContent + org.drip.numerical.common.FormatUtil.FormatDouble (_mapCustomR1.get
+			strContent = strContent + org.drip.service.common.FormatUtil.FormatDouble (_mapCustomR1.get
 				(strR1Key), 1, 8, 1.) + ",";
 
 		for (java.lang.String strC1Key : _mapCustomC1.keySet())

@@ -4,9 +4,9 @@ package org.drip.sample.json;
 import java.io.*;
 import java.util.*;
 
-import org.drip.json.parser.*;
-import org.drip.json.simple.*;
 import org.drip.service.env.EnvManager;
+import org.drip.service.jsonparser.*;
+import org.drip.service.representation.*;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -137,7 +137,7 @@ public class Test {
             obj=JSONValue.parse(s);
             System.out.println ("hello\bworld\"abc\tdef\\ghi\rjkl\n123中".equalsIgnoreCase(((List)obj).get(0).toString()));
             
-            JSONParser parser = new JSONParser();
+            LexicalProcessor parser = new LexicalProcessor();
             s="{\"name\":";
             try{
                     obj = parser.parse(s);

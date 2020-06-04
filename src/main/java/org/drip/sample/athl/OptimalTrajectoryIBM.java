@@ -7,7 +7,7 @@ import org.drip.execution.optimum.PowerImpactContinuous;
 import org.drip.execution.parameters.AssetFlowSettings;
 import org.drip.execution.strategy.DiscreteTradingTrajectory;
 import org.drip.function.definition.R1ToR1;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

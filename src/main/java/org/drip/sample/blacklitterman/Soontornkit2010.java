@@ -4,11 +4,11 @@ package org.drip.sample.blacklitterman;
 import org.drip.measure.bayesian.R1MultivariateConvolutionMetrics;
 import org.drip.measure.continuous.MultivariateMeta;
 import org.drip.measure.gaussian.*;
-import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.linearalgebra.Matrix;
 import org.drip.portfolioconstruction.allocator.*;
 import org.drip.portfolioconstruction.asset.Portfolio;
 import org.drip.portfolioconstruction.bayesian.*;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

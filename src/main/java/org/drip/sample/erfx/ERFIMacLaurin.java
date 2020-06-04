@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.drip.function.e2erf.BuiltInEntry;
 import org.drip.function.e2erf.ErrorFunctionInverse;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

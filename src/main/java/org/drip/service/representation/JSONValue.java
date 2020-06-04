@@ -1,5 +1,5 @@
 
-package org.drip.json.simple;
+package org.drip.service.representation;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -87,8 +87,8 @@ package org.drip.json.simple;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json">RFC-4627 Compliant JSON Encoder/Decoder (Parser)</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/simple">RFC4627 Compliant JSON Message Object</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/representation">RFC4627 Compliant JSON Message Object</a></li>
  *  </ul>
  * 
  * @author Fang Yidong
@@ -100,7 +100,7 @@ public class JSONValue {
      * Parse JSON text into java object from the input source. 
      * Please use parseWithException() if you don't want to ignore the exception.
      * 
-     * @see org.drip.json.parser.JSONParser#parse(Reader)
+     * @see org.drip.service.jsonparser.LexicalProcessor#parse(Reader)
      * @see #parseWithException(Reader)
      * 
      * @param in Input Reader
@@ -116,7 +116,7 @@ public class JSONValue {
      */
     public static Object parse(java.io.Reader in){
             try{
-                    org.drip.json.parser.JSONParser parser=new org.drip.json.parser.JSONParser();
+                    org.drip.service.jsonparser.LexicalProcessor parser=new org.drip.service.jsonparser.LexicalProcessor();
                     return parser.parse(in);
             }
             catch(Exception e){
@@ -132,7 +132,7 @@ public class JSONValue {
     /**
      * Parse JSON text into java object from the input source.
      * 
-     * @see org.drip.json.parser.JSONParser
+     * @see org.drip.service.jsonparser.LexicalProcessor
      * 
      * @param in Input Reader
      * @return Instance of the following:
@@ -145,15 +145,15 @@ public class JSONValue {
      * 
      * @throws java.io.IOException Thrown if the Inputs are Invalid
      * 
-     * @throws org.drip.json.parser.ParseException Thrown if the Inputs are Invalid
+     * @throws org.drip.service.jsonparser.ParseException Thrown if the Inputs are Invalid
      */
-    public static Object parseWithException(java.io.Reader in) throws java.io.IOException, org.drip.json.parser.ParseException{
-    	org.drip.json.parser.JSONParser parser=new org.drip.json.parser.JSONParser();
+    public static Object parseWithException(java.io.Reader in) throws java.io.IOException, org.drip.service.jsonparser.ParseException{
+    	org.drip.service.jsonparser.LexicalProcessor parser=new org.drip.service.jsonparser.LexicalProcessor();
             return parser.parse(in);
     }
     
-    public static Object parseWithException(String s) throws org.drip.json.parser.ParseException{
-    	org.drip.json.parser.JSONParser parser=new org.drip.json.parser.JSONParser();
+    public static Object parseWithException(String s) throws org.drip.service.jsonparser.ParseException{
+    	org.drip.service.jsonparser.LexicalProcessor parser=new org.drip.service.jsonparser.LexicalProcessor();
             return parser.parse(s);
     }
     
@@ -165,8 +165,8 @@ public class JSONValue {
  * DO NOT call this method from writeJSONString(Writer) of a class that implements both JSONStreamAware and (Map or List) with 
  * "this" as the first parameter, use JSONObject.writeJSONString(Map, Writer) or JSONArray.writeJSONString(List, Writer) instead. 
  * 
- * @see org.drip.json.simple.JSONObject#writeJSONString(Map, Writer)
- * @see org.drip.json.simple.JSONArray#writeJSONString(List, Writer)
+ * @see org.drip.service.representation.JSONObject#writeJSONString(Map, Writer)
+ * @see org.drip.service.representation.JSONArray#writeJSONString(List, Writer)
  * 
  * @param value The JSON Object
  * @param out The JSON Writer
@@ -223,7 +223,7 @@ public class JSONValue {
             }
             
             if(value instanceof java.util.Map){
-            	org.drip.json.simple.JSONObject.writeJSONString((java.util.Map)value, out);
+            	org.drip.service.representation.JSONObject.writeJSONString((java.util.Map)value, out);
                     return;
             }
             
@@ -243,8 +243,8 @@ public class JSONValue {
      * DO NOT call this method from toJSONString() of a class that implements both JSONAware and Map or List with 
      * "this" as the parameter, use JSONObject.toJSONString(Map) or JSONArray.toJSONString(List) instead. 
      * 
-     * @see org.drip.json.simple.JSONObject#toJSONString(Map)
-     * @see org.drip.json.simple.JSONArray#toJSONString(List)
+     * @see org.drip.service.representation.JSONObject#toJSONString(Map)
+     * @see org.drip.service.representation.JSONArray#toJSONString(List)
      * 
      * @param value The JSON Object
      * 
@@ -282,10 +282,10 @@ public class JSONValue {
                     return ((JSONAware)value).toJSONString();
             
             if(value instanceof java.util.Map)
-                    return org.drip.json.simple.JSONObject.toJSONString((java.util.Map)value);
+                    return org.drip.service.representation.JSONObject.toJSONString((java.util.Map)value);
             
             if(value instanceof java.util.List)
-                    return org.drip.json.simple.JSONArray.toJSONString((java.util.List)value);
+                    return org.drip.service.representation.JSONArray.toJSONString((java.util.List)value);
             
             return value.toString();
     }

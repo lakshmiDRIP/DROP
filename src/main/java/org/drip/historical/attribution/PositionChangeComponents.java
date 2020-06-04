@@ -453,26 +453,26 @@ public class PositionChangeComponents {
 	{
 		java.lang.String strContent = firstDate().toString() + "," + secondDate().toString() + ",";
 
-		strContent = strContent + org.drip.numerical.common.FormatUtil.FormatDouble (grossChange(), 1, 8, 1.) +
+		strContent = strContent + org.drip.service.common.FormatUtil.FormatDouble (grossChange(), 1, 8, 1.) +
 			",";
 
-		strContent = strContent + org.drip.numerical.common.FormatUtil.FormatDouble (grossCleanChange(), 1, 8,
+		strContent = strContent + org.drip.service.common.FormatUtil.FormatDouble (grossCleanChange(), 1, 8,
 			1.) + ",";
 
 		try {
-			strContent = strContent + org.drip.numerical.common.FormatUtil.FormatDouble
+			strContent = strContent + org.drip.service.common.FormatUtil.FormatDouble
 				(marketRealizationChange(), 1, 8, 1.) + ",";
 
-			strContent = strContent + org.drip.numerical.common.FormatUtil.FormatDouble (marketRollDownChange(),
+			strContent = strContent + org.drip.service.common.FormatUtil.FormatDouble (marketRollDownChange(),
 				1, 8, 1.) + ",";
 
-			strContent = strContent + org.drip.numerical.common.FormatUtil.FormatDouble (_dblAccrualChange, 1, 8,
+			strContent = strContent + org.drip.service.common.FormatUtil.FormatDouble (_dblAccrualChange, 1, 8,
 				1.) + ",";
 
-			strContent = strContent + org.drip.numerical.common.FormatUtil.FormatDouble (explainedChange(), 1, 8,
+			strContent = strContent + org.drip.service.common.FormatUtil.FormatDouble (explainedChange(), 1, 8,
 				1.) + ",";
 
-			strContent = strContent + org.drip.numerical.common.FormatUtil.FormatDouble (unexplainedChange(), 1,
+			strContent = strContent + org.drip.service.common.FormatUtil.FormatDouble (unexplainedChange(), 1,
 				8, 1.) + ",";
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -485,7 +485,7 @@ public class PositionChangeComponents {
 		if (null == _mapDifferenceMetric) return strContent;
 
 		for (java.lang.String strKey : _mapDifferenceMetric.keySet())
-			strContent = strContent + org.drip.numerical.common.FormatUtil.FormatDouble (_mapDifferenceMetric.get
+			strContent = strContent + org.drip.service.common.FormatUtil.FormatDouble (_mapDifferenceMetric.get
 				(strKey), 1, 8, 1.) + ",";
 
 		return strContent;

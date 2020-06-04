@@ -7,7 +7,7 @@ package org.drip.sample.date;
 
 import org.drip.analytics.date.*;
 import org.drip.analytics.daycount.Convention;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

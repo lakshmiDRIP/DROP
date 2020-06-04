@@ -1,7 +1,7 @@
 
 package org.drip.sample.numerical;
 
-import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.common.PrimeUtil;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -127,7 +127,7 @@ public class UglyNumber
 			uglyIndex < uglyIndexArray.length;
 			++uglyIndex)
 		{
-			System.out.println (NumberUtil.UglyNumber(uglyIndexArray[uglyIndex], aArray[0], bArray[0], cArray[0]));
+			System.out.println (PrimeUtil.UglyNumber(uglyIndexArray[uglyIndex], aArray[0], bArray[0], cArray[0]));
 		}
 
 		System.out.println ("\t|-----------------------------------------||");

@@ -221,7 +221,7 @@ public class FixedBondAPI {
 		}
 
 		org.drip.product.credit.BondComponent bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed
-			(strIssuerName + " " + org.drip.numerical.common.FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.)
+			(strIssuerName + " " + org.drip.service.common.FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.)
 				+ " " + dtMaturity, strBondCouponCurrency, strIssuerName, dblBondCoupon,
 					iBondCouponFrequency, strBondCouponDayCount, dtEffective, dtMaturity, null, null);
 
@@ -356,7 +356,7 @@ public class FixedBondAPI {
 		}
 
 		org.drip.product.credit.BondComponent bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed
-			(strIssuerName + " " + org.drip.numerical.common.FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.)
+			(strIssuerName + " " + org.drip.service.common.FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.)
 				+ " " + dtMaturity, strBondCouponCurrency, strIssuerName, dblBondCoupon,
 					iBondCouponFrequency, strBondCouponDayCount, dtEffective, dtMaturity, null, null);
 
@@ -472,7 +472,7 @@ public class FixedBondAPI {
 		}
 
 		org.drip.product.credit.BondComponent bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed
-			(strIssuerName + " " + org.drip.numerical.common.FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.)
+			(strIssuerName + " " + org.drip.service.common.FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.)
 				+ " " + dtMaturity, strBondCouponCurrency, strIssuerName, dblBondCoupon,
 					iBondCouponFrequency, strBondCouponDayCount, dtEffective, dtMaturity, null, null);
 
@@ -666,7 +666,7 @@ public class FixedBondAPI {
 		}
 
 		org.drip.product.credit.BondComponent bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed
-			(strIssuerName + " " + org.drip.numerical.common.FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.)
+			(strIssuerName + " " + org.drip.service.common.FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.)
 				+ " " + dtMaturity, strBondCouponCurrency, strIssuerName, dblBondCoupon,
 					iBondCouponFrequency, strBondCouponDayCount, dtEffective, dtMaturity, null, null);
 

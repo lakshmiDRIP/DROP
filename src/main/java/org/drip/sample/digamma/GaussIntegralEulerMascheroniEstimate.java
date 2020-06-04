@@ -1,8 +1,8 @@
 
 package org.drip.sample.digamma;
 
-import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.estimation.R1ToR1IntegrandEstimator;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
 import org.drip.specialfunction.digamma.IntegralEstimator;

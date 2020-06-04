@@ -410,13 +410,13 @@ public class BondProductBuilder {
 				return null;
 			}
 
-			bpb._bIsCallable = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
+			bpb._bIsCallable = org.drip.service.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("IsCallable"));
 
-			bpb._bIsPutable = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
+			bpb._bIsPutable = org.drip.service.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("IsPutable"));
 
-			bpb._bIsSinkable = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
+			bpb._bIsSinkable = org.drip.service.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("IsSinkable"));
 
 			bpb._strRedemptionCurrency = org.drip.analytics.support.Helper.SwitchIRCurve
@@ -446,12 +446,12 @@ public class BondProductBuilder {
 				return null;
 			}
 
-			bpb._bHasBeenCalled = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
+			bpb._bHasBeenCalled = org.drip.service.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("Called"));
 
 			bpb._strFloatCouponConvention = rs.getString ("FloatCouponConvention");
 
-			bpb._bIsFloater = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
+			bpb._bIsFloater = org.drip.service.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("Floater"));
 
 			// bpb._dblCurrentCoupon = 0.01 * rs.getDouble ("CurrentCoupon");
@@ -459,10 +459,10 @@ public class BondProductBuilder {
 			bpb._dtFinalMaturity = org.drip.analytics.date.DateUtil.MakeJulianFromRSEntry (rs.getDate
 				("FinalMaturity"));
 
-			bpb._bIsPerpetual = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
+			bpb._bIsPerpetual = org.drip.service.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("Perpetual"));
 
-			bpb._bIsDefaulted = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
+			bpb._bIsDefaulted = org.drip.service.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("Defaulted"));
 
 			bpb._dblFloatSpread = 0.0001 * rs.getDouble ("FloatSpread");
@@ -1623,9 +1623,9 @@ public class BondProductBuilder {
 					_dtFirstCoupon.julian(), _dtInterestAccrualStart.julian(), _iCouponFreq,
 						_dblCurrentCoupon, _strDayCountCode, _strDayCountCode, null, null, null, null, null,
 							null, null, null, _strMaturityType, false, _strCouponCurrency,
-								_strCouponCurrency, !org.drip.numerical.common.StringUtil.IsEmpty (_strRateIndex)
+								_strCouponCurrency, !org.drip.service.common.StringUtil.IsEmpty (_strRateIndex)
 									? org.drip.state.identifier.ForwardLabel.Standard (_strRateIndex) : null,
-										!org.drip.numerical.common.StringUtil.IsEmpty (_strIssuerSPN) ?
+										!org.drip.service.common.StringUtil.IsEmpty (_strIssuerSPN) ?
 											org.drip.state.identifier.EntityCDSLabel.Standard (_strIssuerSPN,
 												_strCouponCurrency) : null);
 	}

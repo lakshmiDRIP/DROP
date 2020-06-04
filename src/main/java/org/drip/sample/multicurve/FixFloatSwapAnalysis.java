@@ -723,11 +723,11 @@ public class FixFloatSwapAnalysis {
 		double dblSwapRate = mapIRSOutput.get ("SwapRate");
 
 		System.out.println ("\t[" +
-			org.drip.numerical.common.FormatUtil.FormatDouble (dblForwardVol, 2, 0, 100.) + "%," +
-			org.drip.numerical.common.FormatUtil.FormatDouble (dblFundingVol, 2, 0, 100.) + "%," +
-			org.drip.numerical.common.FormatUtil.FormatDouble (dblForwardFundingCorr, 2, 0, 100.) + "%] =" +
-			org.drip.numerical.common.FormatUtil.FormatDouble (dblSwapRate, 1, 4, 100.) + "% | " +
-			org.drip.numerical.common.FormatUtil.FormatDouble (dblSwapRate - dblBaselineSwapRate, 1, 0, 10000.));
+			org.drip.service.common.FormatUtil.FormatDouble (dblForwardVol, 2, 0, 100.) + "%," +
+			org.drip.service.common.FormatUtil.FormatDouble (dblFundingVol, 2, 0, 100.) + "%," +
+			org.drip.service.common.FormatUtil.FormatDouble (dblForwardFundingCorr, 2, 0, 100.) + "%] =" +
+			org.drip.service.common.FormatUtil.FormatDouble (dblSwapRate, 1, 4, 100.) + "% | " +
+			org.drip.service.common.FormatUtil.FormatDouble (dblSwapRate - dblBaselineSwapRate, 1, 0, 10000.));
 
 		return dblSwapRate;
 	}

@@ -97,27 +97,27 @@ package org.drip.service.json;
 public class LatentStateProcessor {
 
 	static final org.drip.state.discount.MergedDiscountForwardCurve FundingCurve (
-		final org.drip.json.simple.JSONObject jsonParameter)
+		final org.drip.service.representation.JSONObject jsonParameter)
 	{
-		org.drip.analytics.date.JulianDate dtSpot = org.drip.json.parser.Converter.DateEntry (jsonParameter,
+		org.drip.analytics.date.JulianDate dtSpot = org.drip.service.jsonparser.Converter.DateEntry (jsonParameter,
 			"SpotDate");
 
-		java.lang.String strCurrency = org.drip.json.parser.Converter.StringEntry (jsonParameter,
+		java.lang.String strCurrency = org.drip.service.jsonparser.Converter.StringEntry (jsonParameter,
 			"Currency");
 
-		java.lang.String[] astrDepositMaturityTenor = org.drip.json.parser.Converter.StringArrayEntry
+		java.lang.String[] astrDepositMaturityTenor = org.drip.service.jsonparser.Converter.StringArrayEntry
 			(jsonParameter, "DepositTenor");
 
-		double[] adblDepositQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,
+		double[] adblDepositQuote = org.drip.service.jsonparser.Converter.DoubleArrayEntry (jsonParameter,
 			"DepositQuote");
 
-		double[] adblFuturesQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,
+		double[] adblFuturesQuote = org.drip.service.jsonparser.Converter.DoubleArrayEntry (jsonParameter,
 			"FuturesQuote");
 
-		java.lang.String[] astrFixFloatMaturityTenor = org.drip.json.parser.Converter.StringArrayEntry
+		java.lang.String[] astrFixFloatMaturityTenor = org.drip.service.jsonparser.Converter.StringArrayEntry
 			(jsonParameter, "FixFloatTenor");
 
-		double[] adblFixFloatQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,
+		double[] adblFixFloatQuote = org.drip.service.jsonparser.Converter.DoubleArrayEntry (jsonParameter,
 			"FixFloatQuote");
 
 		return org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (dtSpot, strCurrency,
@@ -126,18 +126,18 @@ public class LatentStateProcessor {
 	}
 
 	static final org.drip.state.govvie.GovvieCurve TreasuryCurve (
-		final org.drip.json.simple.JSONObject jsonParameter)
+		final org.drip.service.representation.JSONObject jsonParameter)
 	{
-		org.drip.analytics.date.JulianDate dtSpot = org.drip.json.parser.Converter.DateEntry (jsonParameter,
+		org.drip.analytics.date.JulianDate dtSpot = org.drip.service.jsonparser.Converter.DateEntry (jsonParameter,
 			"SpotDate");
 
-		java.lang.String strCode = org.drip.json.parser.Converter.StringEntry (jsonParameter,
+		java.lang.String strCode = org.drip.service.jsonparser.Converter.StringEntry (jsonParameter,
 			"TreasuryCode");
 
-		java.lang.String[] astrTenor = org.drip.json.parser.Converter.StringArrayEntry (jsonParameter,
+		java.lang.String[] astrTenor = org.drip.service.jsonparser.Converter.StringArrayEntry (jsonParameter,
 			"TreasuryTenor");
 
-		double[] adblYield = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,
+		double[] adblYield = org.drip.service.jsonparser.Converter.DoubleArrayEntry (jsonParameter,
 			"TreasuryYield");
 
 		int iNumTenor = null == adblYield ? 0 : adblYield.length;
@@ -159,18 +159,18 @@ public class LatentStateProcessor {
 	}
 
 	static final org.drip.state.credit.CreditCurve CreditCurve (
-		final org.drip.json.simple.JSONObject jsonParameter,
+		final org.drip.service.representation.JSONObject jsonParameter,
 		final org.drip.state.discount.MergedDiscountForwardCurve dcFunding)
 	{
 		if (null == dcFunding) return null;
 
-		java.lang.String strReferenceEntity = org.drip.json.parser.Converter.StringEntry (jsonParameter,
+		java.lang.String strReferenceEntity = org.drip.service.jsonparser.Converter.StringEntry (jsonParameter,
 			"ReferenceEntity");
 
-		java.lang.String[] astrCDSMaturityTenor = org.drip.json.parser.Converter.StringArrayEntry
+		java.lang.String[] astrCDSMaturityTenor = org.drip.service.jsonparser.Converter.StringArrayEntry
 			(jsonParameter, "CDSTenor");
 
-		double[] adblCDSQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter, "CDSQuote");
+		double[] adblCDSQuote = org.drip.service.jsonparser.Converter.DoubleArrayEntry (jsonParameter, "CDSQuote");
 
 		return org.drip.service.template.LatentMarketStateBuilder.CreditCurve (dcFunding.epoch(),
 			strReferenceEntity, astrCDSMaturityTenor, adblCDSQuote, adblCDSQuote, "FairPremium", dcFunding);
@@ -184,28 +184,28 @@ public class LatentStateProcessor {
 	 * @return JSON Funding Curve Response
 	 */
 
-	@SuppressWarnings ("unchecked") static final org.drip.json.simple.JSONObject FundingCurveThunker (
-		final org.drip.json.simple.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") static final org.drip.service.representation.JSONObject FundingCurveThunker (
+		final org.drip.service.representation.JSONObject jsonParameter)
 	{
-		org.drip.analytics.date.JulianDate dtSpot = org.drip.json.parser.Converter.DateEntry (jsonParameter,
+		org.drip.analytics.date.JulianDate dtSpot = org.drip.service.jsonparser.Converter.DateEntry (jsonParameter,
 			"SpotDate");
 
-		java.lang.String strCurrency = org.drip.json.parser.Converter.StringEntry (jsonParameter,
+		java.lang.String strCurrency = org.drip.service.jsonparser.Converter.StringEntry (jsonParameter,
 			"Currency");
 
-		java.lang.String[] astrDepositMaturityTenor = org.drip.json.parser.Converter.StringArrayEntry
+		java.lang.String[] astrDepositMaturityTenor = org.drip.service.jsonparser.Converter.StringArrayEntry
 			(jsonParameter, "DepositTenor");
 
-		double[] adblDepositQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,
+		double[] adblDepositQuote = org.drip.service.jsonparser.Converter.DoubleArrayEntry (jsonParameter,
 			"DepositQuote");
 
-		double[] adblFuturesQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,
+		double[] adblFuturesQuote = org.drip.service.jsonparser.Converter.DoubleArrayEntry (jsonParameter,
 			"FuturesQuote");
 
-		java.lang.String[] astrFixFloatMaturityTenor = org.drip.json.parser.Converter.StringArrayEntry
+		java.lang.String[] astrFixFloatMaturityTenor = org.drip.service.jsonparser.Converter.StringArrayEntry
 			(jsonParameter, "FixFloatTenor");
 
-		double[] adblFixFloatQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,
+		double[] adblFixFloatQuote = org.drip.service.jsonparser.Converter.DoubleArrayEntry (jsonParameter,
 			"FixFloatQuote");
 
 		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =
@@ -219,10 +219,10 @@ public class LatentStateProcessor {
 		int iNumFutures = null == adblFuturesQuote ? 0 : adblFuturesQuote.length;
 		int iNumFixFloat = null == adblFixFloatQuote ? 0 : adblFixFloatQuote.length;
 
-		org.drip.json.simple.JSONArray jsonDepositArray = new org.drip.json.simple.JSONArray();
+		org.drip.service.representation.JSONArray jsonDepositArray = new org.drip.service.representation.JSONArray();
 
 		for (int i = 0; i < iNumDeposit; ++i) {
-			org.drip.json.simple.JSONObject jsonDeposit = new org.drip.json.simple.JSONObject();
+			org.drip.service.representation.JSONObject jsonDeposit = new org.drip.service.representation.JSONObject();
 
 			jsonDeposit.put ("InstrumentType", "DEPOSIT");
 
@@ -243,10 +243,10 @@ public class LatentStateProcessor {
 			jsonDepositArray.add (i, jsonDeposit);
 		}
 
-		org.drip.json.simple.JSONArray jsonFuturesArray = new org.drip.json.simple.JSONArray();
+		org.drip.service.representation.JSONArray jsonFuturesArray = new org.drip.service.representation.JSONArray();
 
 		for (int i = 0; i < iNumFutures; ++i) {
-			org.drip.json.simple.JSONObject jsonFutures = new org.drip.json.simple.JSONObject();
+			org.drip.service.representation.JSONObject jsonFutures = new org.drip.service.representation.JSONObject();
 
 			jsonFutures.put ("InstrumentType", "FUTURES");
 
@@ -265,10 +265,10 @@ public class LatentStateProcessor {
 			jsonFuturesArray.add (i, jsonFutures);
 		}
 
-		org.drip.json.simple.JSONArray jsonFixFloatArray = new org.drip.json.simple.JSONArray();
+		org.drip.service.representation.JSONArray jsonFixFloatArray = new org.drip.service.representation.JSONArray();
 
 		for (int i = 0; i < iNumFixFloat; ++i) {
-			org.drip.json.simple.JSONObject jsonFixFloat = new org.drip.json.simple.JSONObject();
+			org.drip.service.representation.JSONObject jsonFixFloat = new org.drip.service.representation.JSONObject();
 
 			jsonFixFloat.put ("InstrumentType", "FIXFLOAT");
 
@@ -289,7 +289,7 @@ public class LatentStateProcessor {
 			jsonFixFloatArray.add (i, jsonFixFloat);
 		}
 
-		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();
+		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
 
 		jsonResponse.put ("SpotDate", dtSpot.toString());
 
@@ -314,20 +314,20 @@ public class LatentStateProcessor {
 	 * @return JSON Credit Curve Response
 	 */
 
-	@SuppressWarnings ("unchecked") static final org.drip.json.simple.JSONObject CreditCurveThunker (
-		final org.drip.json.simple.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") static final org.drip.service.representation.JSONObject CreditCurveThunker (
+		final org.drip.service.representation.JSONObject jsonParameter)
 	{
 		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = FundingCurve (jsonParameter);
 
 		if (null == dcFunding) return null;
 
-		java.lang.String strReferenceEntity = org.drip.json.parser.Converter.StringEntry (jsonParameter,
+		java.lang.String strReferenceEntity = org.drip.service.jsonparser.Converter.StringEntry (jsonParameter,
 			"ReferenceEntity");
 
-		java.lang.String[] astrCDSMaturityTenor = org.drip.json.parser.Converter.StringArrayEntry
+		java.lang.String[] astrCDSMaturityTenor = org.drip.service.jsonparser.Converter.StringArrayEntry
 			(jsonParameter, "CDSTenor");
 
-		double[] adblCDSQuote = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter, "CDSQuote");
+		double[] adblCDSQuote = org.drip.service.jsonparser.Converter.DoubleArrayEntry (jsonParameter, "CDSQuote");
 
 		org.drip.analytics.date.JulianDate dtSpot = dcFunding.epoch();
 
@@ -341,10 +341,10 @@ public class LatentStateProcessor {
 
 		String strLatentStateLabel = ccSurvivalRecovery.label().fullyQualifiedName();
 
-		org.drip.json.simple.JSONArray jsonCDSArray = new org.drip.json.simple.JSONArray();
+		org.drip.service.representation.JSONArray jsonCDSArray = new org.drip.service.representation.JSONArray();
 
 		for (int i = 0; i < iNumCDS; ++i) {
-			org.drip.json.simple.JSONObject jsonCDS = new org.drip.json.simple.JSONObject();
+			org.drip.service.representation.JSONObject jsonCDS = new org.drip.service.representation.JSONObject();
 
 			jsonCDS.put ("ReferenceEntity", strLatentStateLabel);
 
@@ -369,7 +369,7 @@ public class LatentStateProcessor {
 			jsonCDSArray.add (i, jsonCDS);
 		}
 
-		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();
+		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
 
 		jsonResponse.put ("SpotDate", dtSpot.toString());
 

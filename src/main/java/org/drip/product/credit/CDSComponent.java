@@ -764,8 +764,8 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 		if (null == mapFairMeasures) return null;
 
-		org.drip.numerical.common.CollectionUtil.MergeWithMain (mapFairMeasures,
-			org.drip.numerical.common.CollectionUtil.PrefixKeys (mapFairMeasures, "Fair"));
+		org.drip.service.common.CollectionUtil.MergeWithMain (mapFairMeasures,
+			org.drip.service.common.CollectionUtil.PrefixKeys (mapFairMeasures, "Fair"));
 
 		org.drip.analytics.cashflow.ComposableUnitPeriod cupFirst = _lsCouponPeriod.get (0).periods().get
 			(0);
@@ -851,10 +851,10 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 					measures ("", valParams, pricerParams, csqsMarket, vcp);
 
 				if (null != mapMarketMeasures) {
-					org.drip.numerical.common.CollectionUtil.MergeWithMain (mapMarketMeasures,
-						org.drip.numerical.common.CollectionUtil.PrefixKeys (mapMarketMeasures, "Market"));
+					org.drip.service.common.CollectionUtil.MergeWithMain (mapMarketMeasures,
+						org.drip.service.common.CollectionUtil.PrefixKeys (mapMarketMeasures, "Market"));
 
-					org.drip.numerical.common.CollectionUtil.MergeWithMain (mapMeasures, mapMarketMeasures);
+					org.drip.service.common.CollectionUtil.MergeWithMain (mapMeasures, mapMarketMeasures);
 				}
 			}
 		}

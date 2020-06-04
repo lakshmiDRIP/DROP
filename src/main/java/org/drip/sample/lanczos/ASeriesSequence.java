@@ -3,7 +3,7 @@ package org.drip.sample.lanczos;
 
 import java.util.Map;
 
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.lanczos.ASeriesGenerator;
 

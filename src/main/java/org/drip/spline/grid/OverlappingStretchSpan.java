@@ -255,7 +255,7 @@ public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
 			}
 		}
 
-		return org.drip.numerical.common.CollectionUtil.AppendWengert (lsWJ);
+		return org.drip.service.common.CollectionUtil.AppendWengert (lsWJ);
 	}
 
 	@Override public boolean in (

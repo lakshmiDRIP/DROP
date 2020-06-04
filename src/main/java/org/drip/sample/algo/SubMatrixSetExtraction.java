@@ -3,7 +3,7 @@ package org.drip.sample.algo;
 
 import java.util.List;
 
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.spaces.big.SubMatrixSetExtractor;
 

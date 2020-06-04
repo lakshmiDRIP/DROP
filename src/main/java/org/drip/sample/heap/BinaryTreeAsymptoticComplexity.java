@@ -2,7 +2,7 @@
 package org.drip.sample.heap;
 
 import org.drip.graph.heap.BinaryTreeAsymptote;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

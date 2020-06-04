@@ -2,7 +2,7 @@
 package org.drip.sample.option;
 
 import org.drip.analytics.date.*;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.state.creator.ScenarioDeterministicVolatilityBuilder;
 import org.drip.state.volatility.VolatilityCurve;

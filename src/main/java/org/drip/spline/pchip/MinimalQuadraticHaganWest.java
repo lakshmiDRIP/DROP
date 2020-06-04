@@ -323,11 +323,11 @@ public class MinimalQuadraticHaganWest {
 
 		for (int i = 0; i < adblConservedConstraint.length; ++i)
 			System.out.println ("Conserved Constraint[" + i + "] => " +
-				org.drip.numerical.common.FormatUtil.FormatDouble (adblConservedConstraint[i], 1, 6, 1.));
+				org.drip.service.common.FormatUtil.FormatDouble (adblConservedConstraint[i], 1, 6, 1.));
 
 		for (double dblTime = adblTime[0]; dblTime <= adblTime[adblTime.length - 1]; dblTime += 0.25)
-			System.out.println ("Response[" + org.drip.numerical.common.FormatUtil.FormatDouble (dblTime, 2, 2,
-				1.) + "] = " + org.drip.numerical.common.FormatUtil.FormatDouble (mqhw.responseValue (dblTime), 1,
+			System.out.println ("Response[" + org.drip.service.common.FormatUtil.FormatDouble (dblTime, 2, 2,
+				1.) + "] = " + org.drip.service.common.FormatUtil.FormatDouble (mqhw.responseValue (dblTime), 1,
 					6, 1.));
 	}
 }

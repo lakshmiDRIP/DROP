@@ -109,7 +109,7 @@ public class FlatForwardFXCurve extends org.drip.state.fx.ExplicitBootFXCurve {
 		throws java.lang.Exception
 	{
 		return new org.drip.product.fx.FXForwardComponent ("FXFWD_" +
-			org.drip.numerical.common.StringUtil.GUID(), currencyPair(), epoch().julian(), iNodeDate, 1.,
+			org.drip.service.common.StringUtil.GUID(), currencyPair(), epoch().julian(), iNodeDate, 1.,
 				null).discountCurveBasis (valParam, dcNum, dcDenom, _dblFXSpot, fx (iNodeDate),
 					bBasisOnDenom);
 	}

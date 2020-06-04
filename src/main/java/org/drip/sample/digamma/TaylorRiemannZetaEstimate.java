@@ -1,7 +1,7 @@
 
 package org.drip.sample.digamma;
 
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.derived.RiemannZeta;
 import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;

@@ -456,10 +456,10 @@ public class BondWorkoutMeasures {
 
 		mapMeasures.put (strPrefix + "RecoveryPV", _dblRecoveryPV);
 
-		org.drip.numerical.common.CollectionUtil.MergeWithMain (mapMeasures, _bcmCreditRisklessDirty.toMap
+		org.drip.service.common.CollectionUtil.MergeWithMain (mapMeasures, _bcmCreditRisklessDirty.toMap
 			(strPrefix + "RisklessDirty"));
 
-		org.drip.numerical.common.CollectionUtil.MergeWithMain (mapMeasures, _bcmCreditRisklessClean.toMap
+		org.drip.service.common.CollectionUtil.MergeWithMain (mapMeasures, _bcmCreditRisklessClean.toMap
 			(strPrefix + "RisklessClean"));
 
 		if (null != _bcmCreditRiskyDirty) {
@@ -491,10 +491,10 @@ public class BondWorkoutMeasures {
 
 			mapMeasures.put (strPrefix + "PV", _bcmCreditRiskyClean.pv());
 
-			org.drip.numerical.common.CollectionUtil.MergeWithMain (mapMeasures, _bcmCreditRiskyDirty.toMap
+			org.drip.service.common.CollectionUtil.MergeWithMain (mapMeasures, _bcmCreditRiskyDirty.toMap
 				(strPrefix + "RiskyDirty"));
 
-			org.drip.numerical.common.CollectionUtil.MergeWithMain (mapMeasures, _bcmCreditRiskyClean.toMap
+			org.drip.service.common.CollectionUtil.MergeWithMain (mapMeasures, _bcmCreditRiskyClean.toMap
 				(strPrefix + "RiskyClean"));
 		}
 

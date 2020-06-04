@@ -3,11 +3,11 @@ package org.drip.sample.multicurve;
 
 import org.drip.analytics.date.*;
 import org.drip.market.otc.*;
-import org.drip.numerical.common.FormatUtil;
 import org.drip.param.valuation.ValuationParams;
 import org.drip.product.creator.SingleStreamComponentBuilder;
 import org.drip.product.definition.CalibratableComponent;
 import org.drip.product.rates.FixFloatComponent;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.state.creator.ScenarioDiscountCurveBuilder;
 import org.drip.state.discount.*;

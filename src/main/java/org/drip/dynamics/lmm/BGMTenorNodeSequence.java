@@ -287,28 +287,28 @@ public class BGMTenorNodeSequence {
 
 			strDateDump += " " + new org.drip.analytics.date.JulianDate (_aiDate[i]) + " |";
 
-			strLIBORDump += "  " + org.drip.numerical.common.FormatUtil.FormatDouble (_adblLIBOR[i], 1, 3, 100.)
+			strLIBORDump += "  " + org.drip.service.common.FormatUtil.FormatDouble (_adblLIBOR[i], 1, 3, 100.)
 				+ "%   |";
 
-			strLIBORIncrementDump += "    " + org.drip.numerical.common.FormatUtil.FormatDouble
+			strLIBORIncrementDump += "    " + org.drip.service.common.FormatUtil.FormatDouble
 				(_adblLIBORIncrement[i], 2, 0, 10000.) + "     |";
 
-			strDiscountFactorDump += "  " + org.drip.numerical.common.FormatUtil.FormatDouble
+			strDiscountFactorDump += "  " + org.drip.service.common.FormatUtil.FormatDouble
 				(_adblDiscountFactor[i], 2, 3, 100.) + "   |";
 
-			strDiscountFactorIncrementDump += "    " + org.drip.numerical.common.FormatUtil.FormatDouble
+			strDiscountFactorIncrementDump += "    " + org.drip.service.common.FormatUtil.FormatDouble
 				(_adblDiscountFactorIncrement[i], 2, 0, 10000.) + "     |";
 
-			strContinuousForwardIncrementDump += "    " + org.drip.numerical.common.FormatUtil.FormatDouble
+			strContinuousForwardIncrementDump += "    " + org.drip.service.common.FormatUtil.FormatDouble
 				(_adblContinuousForwardRateIncrement[i], 2, 0, 10000.) + "     |";
 
-			strSpotRateIncrementDump += "    " + org.drip.numerical.common.FormatUtil.FormatDouble
+			strSpotRateIncrementDump += "    " + org.drip.service.common.FormatUtil.FormatDouble
 				(_adblSpotRateIncrement[i], 2, 0, 10000.) + "     |";
 
-			strInstantaneousEffectiveForwardDump += "    " + org.drip.numerical.common.FormatUtil.FormatDouble
+			strInstantaneousEffectiveForwardDump += "    " + org.drip.service.common.FormatUtil.FormatDouble
 				(_adblInstantaneousEffectiveForwardRate[i], 2, 0, 10000.) + "     |";
 
-			strInstantaneousNominalForwardDump += "    " + org.drip.numerical.common.FormatUtil.FormatDouble
+			strInstantaneousNominalForwardDump += "    " + org.drip.service.common.FormatUtil.FormatDouble
 				(_adblInstantaneousNominalForwardRate[i], 2, 0, 10000.) + "     |";
 		}
 

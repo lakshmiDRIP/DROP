@@ -6,8 +6,8 @@ import java.util.Map;
 import org.drip.function.e2erf.BuiltInEntry;
 import org.drip.function.e2erfc.ErrorFunctionComplement;
 import org.drip.function.e2erfc.ErrorFunctionComplementAnalytical;
-import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.estimation.R1Estimate;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

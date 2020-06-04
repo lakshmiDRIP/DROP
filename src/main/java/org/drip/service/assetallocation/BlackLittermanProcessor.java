@@ -1,5 +1,5 @@
 
-package org.drip.json.assetallocation;
+package org.drip.service.assetallocation;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -80,14 +80,14 @@ package org.drip.json.assetallocation;
 
 /**
  * <i>BlackLittermanProcessor</i> Sets Up and Executes a JSON Based In/Out Processing Service for the Black
- * Litterman Bayesian View Incorporation/Parameter Estimation.
+ * 	Litterman Bayesian View Incorporation/Parameter Estimation.
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json">RFC-4627 Compliant JSON Encoder/Decoder (Parser)</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/assetallocation">JSON Based In/Out Service</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/assetallocation">JSON Based In/Out Service</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
@@ -103,13 +103,13 @@ public class BlackLittermanProcessor {
 	 * @return JSON Bayesian Co-variance/Returns Estimation Response
 	 */
 
-	@SuppressWarnings ("unchecked") public static final org.drip.json.simple.JSONObject Estimate (
-		final org.drip.json.simple.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") public static final org.drip.service.representation.JSONObject Estimate (
+		final org.drip.service.representation.JSONObject jsonParameter)
 	{
-		java.lang.String[] astrAssetID = org.drip.json.parser.Converter.StringArrayEntry (jsonParameter,
+		java.lang.String[] astrAssetID = org.drip.service.jsonparser.Converter.StringArrayEntry (jsonParameter,
 			"AssetSet");
 
-		double[][] aadblAssetSpaceViewProjection = org.drip.json.parser.Converter.DualDoubleArrayEntry
+		double[][] aadblAssetSpaceViewProjection = org.drip.service.jsonparser.Converter.DualDoubleArrayEntry
 			(jsonParameter, "AssetSpaceViewProjection");
 
 		double dblTau = java.lang.Double.NaN;
@@ -120,28 +120,28 @@ public class BlackLittermanProcessor {
 		int iNumView = null == aadblAssetSpaceViewProjection ? 0 : aadblAssetSpaceViewProjection.length;
 		java.lang.String[] astrProjectionName = 0 == iNumView? null : new java.lang.String[iNumView];
 
-		double[] adblAssetEquilibriumWeight = org.drip.json.parser.Converter.DoubleArrayEntry (jsonParameter,
+		double[] adblAssetEquilibriumWeight = org.drip.service.jsonparser.Converter.DoubleArrayEntry (jsonParameter,
 			"AssetEquilibriumWeight");
 
-		double[][] aadblAssetExcessReturnsCovariance = org.drip.json.parser.Converter.DualDoubleArrayEntry
+		double[][] aadblAssetExcessReturnsCovariance = org.drip.service.jsonparser.Converter.DualDoubleArrayEntry
 			(jsonParameter, "AssetExcessReturnsCovariance");
 
-		double[] adblProjectionExpectedExcessReturns = org.drip.json.parser.Converter.DoubleArrayEntry
+		double[] adblProjectionExpectedExcessReturns = org.drip.service.jsonparser.Converter.DoubleArrayEntry
 			(jsonParameter, "ProjectionExpectedExcessReturns");
 
 		double[][] aadblProjectionExcessReturnsCovariance =
-			org.drip.json.parser.Converter.DualDoubleArrayEntry (jsonParameter,
+			org.drip.service.jsonparser.Converter.DualDoubleArrayEntry (jsonParameter,
 				"ProjectionExcessReturnsCovariance");
 
 		for (int i = 0; i < iNumView ; ++i)
 			astrProjectionName[i] = "PROJECTION #" + i;
 
 		try {
-			dblTau = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, "Tau");
+			dblTau = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter, "Tau");
 
-			dblRiskAversion = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, "Delta");
+			dblRiskAversion = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter, "Delta");
 
-			dblRiskFreeRate = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, "RiskFreeRate");
+			dblRiskFreeRate = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter, "RiskFreeRate");
 
 			viewDistribution = org.drip.measure.gaussian.R1MultivariateNormal.Standard (new
 				org.drip.measure.continuous.MultivariateMeta (astrProjectionName),
@@ -185,7 +185,7 @@ public class BlackLittermanProcessor {
 		org.drip.measure.gaussian.R1MultivariateNormal r1mnPosterior =
 			(org.drip.measure.gaussian.R1MultivariateNormal) r1mPosterior;
 
-		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();
+		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
 
 		jsonResponse.put ("Tau", dblTau);
 
@@ -193,30 +193,30 @@ public class BlackLittermanProcessor {
 
 		jsonResponse.put ("RiskFreeRate", dblRiskFreeRate);
 
-		jsonResponse.put ("ScopingSet", org.drip.json.parser.Converter.Array (astrAssetID));
+		jsonResponse.put ("ScopingSet", org.drip.service.jsonparser.Converter.Array (astrAssetID));
 
-		jsonResponse.put ("ScopingExpectedExcessReturns", org.drip.json.parser.Converter.Array
+		jsonResponse.put ("ScopingExpectedExcessReturns", org.drip.service.jsonparser.Converter.Array
 			(r1mnPrior.mean()));
 
-		jsonResponse.put ("ScopingExcessReturnsCovariance", org.drip.json.parser.Converter.Array
+		jsonResponse.put ("ScopingExcessReturnsCovariance", org.drip.service.jsonparser.Converter.Array
 			(r1mnPrior.covariance().covarianceMatrix()));
 
-		jsonResponse.put ("ProjectionExpectedExcessReturns", org.drip.json.parser.Converter.Array
+		jsonResponse.put ("ProjectionExpectedExcessReturns", org.drip.service.jsonparser.Converter.Array
 			(adblProjectionExpectedExcessReturns));
 
-		jsonResponse.put ("ViewScopingProjectionLoading", org.drip.json.parser.Converter.Array
+		jsonResponse.put ("ViewScopingProjectionLoading", org.drip.service.jsonparser.Converter.Array
 			(aadblAssetSpaceViewProjection));
 
-		jsonResponse.put ("JointExcessReturnsCovariance", org.drip.json.parser.Converter.Array
+		jsonResponse.put ("JointExcessReturnsCovariance", org.drip.service.jsonparser.Converter.Array
 			(r1mnJoint.covariance().covarianceMatrix()));
 
-		jsonResponse.put ("PosteriorExcessReturnsCovariance", org.drip.json.parser.Converter.Array
+		jsonResponse.put ("PosteriorExcessReturnsCovariance", org.drip.service.jsonparser.Converter.Array
 			(r1mnPosterior.covariance().covarianceMatrix()));
 
-		jsonResponse.put ("PriorExpectedExcessReturn", org.drip.json.parser.Converter.Array
+		jsonResponse.put ("PriorExpectedExcessReturn", org.drip.service.jsonparser.Converter.Array
 			(r1mPrior.mean()));
 
-		jsonResponse.put ("PosteriorExpectedExcessReturn", org.drip.json.parser.Converter.Array
+		jsonResponse.put ("PosteriorExpectedExcessReturn", org.drip.service.jsonparser.Converter.Array
 			(r1mPosterior.mean()));
 
 		return jsonResponse;

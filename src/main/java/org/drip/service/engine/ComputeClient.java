@@ -186,8 +186,8 @@ public class ComputeClient {
 	 * @return The Processed JSON Response
 	 */
 
-	public org.drip.json.simple.JSONObject invoke (
-		final org.drip.json.simple.JSONObject jsonRequest)
+	public org.drip.service.representation.JSONObject invoke (
+		final org.drip.service.representation.JSONObject jsonRequest)
 	{
 		if (!org.drip.service.engine.RequestResponseDecorator.AffixRequestHeaders (jsonRequest)) return null;
 
@@ -198,11 +198,11 @@ public class ComputeClient {
 
 	    	pw.flush();
 
-	    	java.lang.Object objResponse = org.drip.json.simple.JSONValue.parse (new java.io.BufferedReader
+	    	java.lang.Object objResponse = org.drip.service.representation.JSONValue.parse (new java.io.BufferedReader
 	    		(new java.io.InputStreamReader (_socketComputeServer.getInputStream())).readLine());
 
-			return null == objResponse || !(objResponse instanceof org.drip.json.simple.JSONObject) ? null :
-				(org.drip.json.simple.JSONObject) objResponse;
+			return null == objResponse || !(objResponse instanceof org.drip.service.representation.JSONObject) ? null :
+				(org.drip.service.representation.JSONObject) objResponse;
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -273,14 +273,14 @@ public class ComputeClient {
 			aadblBound[i][1] = adblAssetUpperBound[i];
 		}
 
-		org.drip.json.simple.JSONObject jsonParameters = new org.drip.json.simple.JSONObject();
+		org.drip.service.representation.JSONObject jsonParameters = new org.drip.service.representation.JSONObject();
 
-		jsonParameters.put ("AssetSet", org.drip.json.parser.Converter.Array (astrAssetName));
+		jsonParameters.put ("AssetSet", org.drip.service.jsonparser.Converter.Array (astrAssetName));
 
-		jsonParameters.put ("AssetExpectedReturns", org.drip.json.parser.Converter.Array
+		jsonParameters.put ("AssetExpectedReturns", org.drip.service.jsonparser.Converter.Array
 			(adblAssetExpectedReturns));
 
-		jsonParameters.put ("AssetReturnsCovariance", org.drip.json.parser.Converter.Array
+		jsonParameters.put ("AssetReturnsCovariance", org.drip.service.jsonparser.Converter.Array
 			(aadblAssetReturnsCovariance));
 
 		for (int i = 0; i < adblAssetExpectedReturns.length; ++i) {
@@ -289,7 +289,7 @@ public class ComputeClient {
 			jsonParameters.put (astrAssetName[i] + "::UpperBound", aadblBound[i][1]);
 		}
 
-		org.drip.json.simple.JSONObject jsonRequest = new org.drip.json.simple.JSONObject();
+		org.drip.service.representation.JSONObject jsonRequest = new org.drip.service.representation.JSONObject();
 
 		jsonRequest.put ("API", "PORTFOLIOALLOCATION::BUDGETCONSTRAINEDMEANVARIANCE");
 
@@ -301,7 +301,7 @@ public class ComputeClient {
 
 		ComputeClient cc = Standard();
 
-		org.drip.json.simple.JSONObject jsonResponse = cc.invoke (jsonRequest);
+		org.drip.service.representation.JSONObject jsonResponse = cc.invoke (jsonRequest);
 
 		System.out.println ("\n\t|---------------- JSON RESPONSE ----------------|\n");
 

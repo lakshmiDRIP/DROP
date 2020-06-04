@@ -2,7 +2,7 @@
 package org.drip.sample.beta;
 
 import org.drip.function.definition.R2ToR1;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.beta.AsymptoticLogEstimator;
 import org.drip.specialfunction.beta.LogGammaEstimator;

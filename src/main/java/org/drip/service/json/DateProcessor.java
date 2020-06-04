@@ -103,10 +103,10 @@ public class DateProcessor {
 	 * @return JSON Date Holiday Check Response
 	 */
 
-	@SuppressWarnings ("unchecked") static final org.drip.json.simple.JSONObject IsHoliday (
-		final org.drip.json.simple.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") static final org.drip.service.representation.JSONObject IsHoliday (
+		final org.drip.service.representation.JSONObject jsonParameter)
 	{
-		org.drip.analytics.date.JulianDate dt = org.drip.json.parser.Converter.DateEntry (jsonParameter,
+		org.drip.analytics.date.JulianDate dt = org.drip.service.jsonparser.Converter.DateEntry (jsonParameter,
 			"Date");
 
 		if (null == dt) return null;
@@ -115,14 +115,14 @@ public class DateProcessor {
 
 		try {
 			bIsHoliday = org.drip.analytics.daycount.Convention.IsHoliday (dt.julian(),
-				org.drip.json.parser.Converter.StringEntry (jsonParameter, "Calendar"));
+				org.drip.service.jsonparser.Converter.StringEntry (jsonParameter, "Calendar"));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();
+		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
 
 		jsonResponse.put ("IsHoliday", bIsHoliday);
 
@@ -137,21 +137,21 @@ public class DateProcessor {
 	 * @return JSON Date Adjustment Response
 	 */
 
-	@SuppressWarnings ("unchecked") static final org.drip.json.simple.JSONObject AdjustBusinessDays (
-		final org.drip.json.simple.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") static final org.drip.service.representation.JSONObject AdjustBusinessDays (
+		final org.drip.service.representation.JSONObject jsonParameter)
 	{
-		org.drip.analytics.date.JulianDate dt = org.drip.json.parser.Converter.DateEntry (jsonParameter,
+		org.drip.analytics.date.JulianDate dt = org.drip.service.jsonparser.Converter.DateEntry (jsonParameter,
 			"Date");
 
 		if (null == dt) return null;
 
-		java.lang.String strCalendar = org.drip.json.parser.Converter.StringEntry (jsonParameter,
+		java.lang.String strCalendar = org.drip.service.jsonparser.Converter.StringEntry (jsonParameter,
 			"Calendar");
 
 		int iDaysToAdjust = 0;
 
 		try {
-			iDaysToAdjust = org.drip.json.parser.Converter.IntegerEntry (jsonParameter, "DaysToAdjust");
+			iDaysToAdjust = org.drip.service.jsonparser.Converter.IntegerEntry (jsonParameter, "DaysToAdjust");
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 
@@ -162,7 +162,7 @@ public class DateProcessor {
 
 		if (null == dtOut) return null;
 
-		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();
+		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
 
 		jsonResponse.put ("DateOut", dtOut.toString());
 
@@ -177,10 +177,10 @@ public class DateProcessor {
 	 * @return JSON Date Offset Response
 	 */
 
-	@SuppressWarnings ("unchecked") static final org.drip.json.simple.JSONObject AddDays (
-		final org.drip.json.simple.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") static final org.drip.service.representation.JSONObject AddDays (
+		final org.drip.service.representation.JSONObject jsonParameter)
 	{
-		org.drip.analytics.date.JulianDate dt = org.drip.json.parser.Converter.DateEntry (jsonParameter,
+		org.drip.analytics.date.JulianDate dt = org.drip.service.jsonparser.Converter.DateEntry (jsonParameter,
 			"Date");
 
 		if (null == dt) return null;
@@ -188,7 +188,7 @@ public class DateProcessor {
 		int iDaysToAdd = 0;
 
 		try {
-			iDaysToAdd = org.drip.json.parser.Converter.IntegerEntry (jsonParameter, "DaysToAdd");
+			iDaysToAdd = org.drip.service.jsonparser.Converter.IntegerEntry (jsonParameter, "DaysToAdd");
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 
@@ -199,7 +199,7 @@ public class DateProcessor {
 
 		if (null == dtOut) return null;
 
-		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();
+		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
 
 		jsonResponse.put ("DateOut", dtOut.toString());
 

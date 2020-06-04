@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.drip.analytics.date.*;
 import org.drip.market.otc.*;
-import org.drip.numerical.common.FormatUtil;
 import org.drip.param.creator.MarketParamsBuilder;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.pricer.CreditPricerParams;
@@ -16,6 +15,7 @@ import org.drip.product.definition.*;
 import org.drip.product.option.CDSEuropeanOption;
 import org.drip.product.params.LastTradingDateSetting;
 import org.drip.product.rates.FixFloatComponent;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.state.creator.*;
 import org.drip.state.credit.CreditCurve;

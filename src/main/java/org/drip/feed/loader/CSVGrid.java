@@ -484,7 +484,7 @@ public class CSVGrid {
 
 			if (null == astrHeader[i] || astrHeader[i].isEmpty()) astrHeader[i] = "@:#";
 
-			java.lang.String[] astrInstrumentTenor = org.drip.numerical.common.StringUtil.Split
+			java.lang.String[] astrInstrumentTenor = org.drip.service.common.StringUtil.Split
 				(astrHeader[i].trim(), ":");
 
 			if (null == astrInstrumentTenor || 2 != astrInstrumentTenor.length) return null;

@@ -4,7 +4,7 @@ package org.drip.sample.erf;
 import java.util.TreeMap;
 
 import org.drip.function.e2erf.MacLaurinSeries;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

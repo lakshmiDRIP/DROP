@@ -1,9 +1,9 @@
 
 package org.drip.sample.matrix;
 
-import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

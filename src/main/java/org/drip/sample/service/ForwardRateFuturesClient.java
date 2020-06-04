@@ -2,10 +2,10 @@
 package org.drip.sample.service;
 
 import org.drip.analytics.date.*;
-import org.drip.json.parser.Converter;
-import org.drip.json.simple.JSONObject;
 import org.drip.service.env.EnvManager;
 import org.drip.service.json.KeyHoleSkeleton;
+import org.drip.service.jsonparser.Converter;
+import org.drip.service.representation.JSONObject;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

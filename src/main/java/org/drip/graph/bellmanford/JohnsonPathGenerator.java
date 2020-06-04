@@ -151,7 +151,7 @@ public class JohnsonPathGenerator
 
 		org.drip.graph.shortestpath.VertexAugmentor bellmanFordVertexAugmentor = null;
 
-		java.lang.String johnsonQVertexName = org.drip.numerical.common.StringUtil.GUID();
+		java.lang.String johnsonQVertexName = org.drip.service.common.StringUtil.GUID();
 
 		for (java.lang.String vertexName : vertexNameSet)
 		{

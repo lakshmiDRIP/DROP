@@ -3,7 +3,7 @@ package org.drip.sample.hypergeometric;
 
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.definition.R2ToR1;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.beta.LogGammaEstimator;
 import org.drip.specialfunction.definition.LegendreEstimator;

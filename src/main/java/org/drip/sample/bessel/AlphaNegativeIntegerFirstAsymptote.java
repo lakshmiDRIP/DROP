@@ -1,7 +1,7 @@
 
 package org.drip.sample.bessel;
 
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.definition.BesselFirstKindEstimator;
 import org.drip.specialfunction.gamma.EulerIntegralSecondKind;

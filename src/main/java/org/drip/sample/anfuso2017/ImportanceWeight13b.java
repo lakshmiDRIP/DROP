@@ -2,7 +2,7 @@
 package org.drip.sample.anfuso2017;
 
 import org.drip.measure.gaussian.R1UnivariateNormal;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.distance.ImportanceWeight;
 

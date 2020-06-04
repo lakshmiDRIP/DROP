@@ -311,7 +311,7 @@ public class PykhtinPillarDynamics
 
 		org.drip.spline.stretch.MultiSegmentSequence multiSegmentSequence =
 			org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
-				"LocalVolatilityR1ToR1_" + org.drip.numerical.common.StringUtil.GUID(),
+				"LocalVolatilityR1ToR1_" + org.drip.service.common.StringUtil.GUID(),
 				exposureArray,
 				localVolatilityArray,
 				localVolatilityGenerationControl.segmentCustomBuilderControlArray(),

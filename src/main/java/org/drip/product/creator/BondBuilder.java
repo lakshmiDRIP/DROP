@@ -270,7 +270,7 @@ public class BondBuilder {
 				strCurrency,
 				strCurrency,
 				null,
-				!org.drip.numerical.common.StringUtil.IsEmpty (strCreditCurveName) ?
+				!org.drip.service.common.StringUtil.IsEmpty (strCreditCurveName) ?
 					org.drip.state.identifier.EntityCDSLabel.Standard (
 						strCreditCurveName,
 						strCurrency
@@ -399,7 +399,7 @@ public class BondBuilder {
 				strCurrency,
 				strCurrency,
 				null,
-				!org.drip.numerical.common.StringUtil.IsEmpty (strCreditCurveName) ?
+				!org.drip.service.common.StringUtil.IsEmpty (strCreditCurveName) ?
 					org.drip.state.identifier.EntityCDSLabel.Standard (
 						strCreditCurveName,
 						strCurrency
@@ -1194,7 +1194,7 @@ public class BondBuilder {
 			return null;
 		}
 
-		java.lang.String strName = strTreasuryCode + " " + org.drip.numerical.common.FormatUtil.FormatDouble
+		java.lang.String strName = strTreasuryCode + " " + org.drip.service.common.FormatUtil.FormatDouble
 			(dblCoupon, 1, 2, 100.) + " " + dtMaturity;
 
 		tsyBond.setIdentifierSet (
@@ -1384,7 +1384,7 @@ public class BondBuilder {
 						dapPeriodEnd,
 						dapAccrualEnd,
 						org.drip.state.identifier.ForwardLabel.Standard (strFloatIndex),
-						!org.drip.numerical.common.StringUtil.IsEmpty (strCreditCurveName) ?
+						!org.drip.service.common.StringUtil.IsEmpty (strCreditCurveName) ?
 							org.drip.state.identifier.EntityCDSLabel.Standard (
 								strCreditCurveName,
 								strCurrency

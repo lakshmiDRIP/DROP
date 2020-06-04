@@ -179,7 +179,7 @@ public class VariateInequalityConstraintMultiplier
 				variateIndex < variateCount;
 				++variateIndex)
 			{
-				dump += " " + org.drip.numerical.common.FormatUtil.FormatDouble (
+				dump += " " + org.drip.service.common.FormatUtil.FormatDouble (
 					variateArray[variateIndex],
 					2,
 					2,
@@ -236,7 +236,7 @@ public class VariateInequalityConstraintMultiplier
 				variateIndex < variateCount;
 				++variateIndex)
 			{
-				dump += " " + org.drip.numerical.common.FormatUtil.FormatDouble (
+				dump += " " + org.drip.service.common.FormatUtil.FormatDouble (
 					variateArray[variateIndex],
 					2,
 					2,
@@ -354,7 +354,7 @@ public class VariateInequalityConstraintMultiplier
 				variateIndex < variateCount;
 				++variateIndex)
 			{
-				dump += " " + org.drip.numerical.common.FormatUtil.FormatDouble (
+				dump += " " + org.drip.service.common.FormatUtil.FormatDouble (
 					variateArray[variateIndex],
 					2,
 					2,
@@ -411,7 +411,7 @@ public class VariateInequalityConstraintMultiplier
 				variateIndex < variateCount;
 				++variateIndex)
 			{
-				dump += " " + org.drip.numerical.common.FormatUtil.FormatDouble (
+				dump += " " + org.drip.service.common.FormatUtil.FormatDouble (
 					variateArray[variateIndex],
 					2,
 					2,

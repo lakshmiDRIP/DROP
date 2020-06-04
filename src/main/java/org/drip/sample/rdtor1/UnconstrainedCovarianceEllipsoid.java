@@ -2,7 +2,7 @@
 package org.drip.sample.rdtor1;
 
 import org.drip.function.rdtor1.*;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

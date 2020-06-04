@@ -1,5 +1,5 @@
 
-package org.drip.json.simple;
+package org.drip.service.jsonparser;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -11,7 +11,6 @@ package org.drip.json.simple;
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -80,153 +79,100 @@ package org.drip.json.simple;
  */
 
 /**
- * <i>ItemList</i> is an Adaptation of the ItemList Interface from the RFC4627 compliant JSON Simple
+ * <i>ParseException</i> is an Adaptation of the ParseException Class from the RFC4627 compliant JSON Simple
  * (https://code.google.com/p/json-simple/).
- *
- * 		|a:b:c| = |a|,|b|,|c|
- * 		|:| = ||,||
- * 		|a:| = |a|,||
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json">RFC-4627 Compliant JSON Encoder/Decoder (Parser)</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/simple">RFC4627 Compliant JSON Message Object</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/jsonparser">RFC4627 Compliant JSON Message Parser</a></li>
  *  </ul>
  *
  * @author Fang Yidong
  * @author Lakshmi Krishnamurthy
  */
 
-public class ItemList {
-    private String sp=",";
-    @SuppressWarnings ("rawtypes") java.util.List items=new java.util.ArrayList();
+public class ParseException extends java.lang.Exception {
+    private static final long serialVersionUID = -7880698968187728548L;
     
-    
-    public ItemList(){}
-    
-    
-    public ItemList(String s){
-            this.split(s,sp,items);
-    }
-    
-    public ItemList(String s,String sp){
-            this.sp=s;
-            this.split(s,sp,items);
-    }
-    
-    public ItemList(String s,String sp,boolean isMultiToken){
-            split(s,sp,items,isMultiToken);
-    }
-    
-    @SuppressWarnings ("rawtypes") public java.util.List getItems(){
-            return this.items;
-    }
-    
-    public String[] getArray(){
-            return (String[])this.items.toArray();
-    }
-    
-    @SuppressWarnings ({"rawtypes", "unchecked"}) public void split(String s,String sp,java.util.List append,boolean isMultiToken){
-            if(s==null || sp==null)
-                    return;
-            if(isMultiToken){
-            	java.util.StringTokenizer tokens=new java.util.StringTokenizer(s,sp);
-                    while(tokens.hasMoreTokens()){
-                            append.add(tokens.nextToken().trim());
-                    }
-            }
-            else{
-                    this.split(s,sp,append);
-            }
-    }
-    
-    @SuppressWarnings ({"rawtypes", "unchecked"}) public void split(String s,String sp,java.util.List append){
-            if(s==null || sp==null)
-                    return;
-            int pos=0;
-            int prevPos=0;
-            do{
-                    prevPos=pos;
-                    pos=s.indexOf(sp,pos);
-                    if(pos==-1)
-                            break;
-                    append.add(s.substring(prevPos,pos).trim());
-                    pos+=sp.length();
-            }while(pos!=-1);
-            append.add(s.substring(prevPos).trim());
-    }
-    
-    public void setSP(String sp){
-            this.sp=sp;
-    }
-    
-    @SuppressWarnings ("unchecked") public void add(int i,String item){
-            if(item==null)
-                    return;
-            items.add(i,item.trim());
-    }
+    public static final int ERROR_UNEXPECTED_CHAR = 0;
+    public static final int ERROR_UNEXPECTED_TOKEN = 1;
+    public static final int ERROR_UNEXPECTED_EXCEPTION = 2;
 
-    @SuppressWarnings ("unchecked") public void add(String item){
-            if(item==null)
-                    return;
-            items.add(item.trim());
+    private int errorType;
+    private Object unexpectedObject;
+    private int position;
+    
+    public ParseException(int errorType){
+            this(-1, errorType, null);
     }
     
-    @SuppressWarnings ("unchecked") public void addAll(ItemList list){
-            items.addAll(list.items);
+    public ParseException(int errorType, Object unexpectedObject){
+            this(-1, errorType, unexpectedObject);
     }
     
-    public void addAll(String s){
-            this.split(s,sp,items);
+    public ParseException(int position, int errorType, Object unexpectedObject){
+            this.position = position;
+            this.errorType = errorType;
+            this.unexpectedObject = unexpectedObject;
     }
     
-    public void addAll(String s,String sp){
-            this.split(s,sp,items);
+    public int getErrorType() {
+            return errorType;
     }
     
-    public void addAll(String s,String sp,boolean isMultiToken){
-            this.split(s,sp,items,isMultiToken);
+    public void setErrorType(int errorType) {
+            this.errorType = errorType;
     }
     
     /**
-     * @param i 0-based
-     * @return i
+     * @see org.drip.service.jsonparser.LexicalProcessor#getPosition()
+     * 
+     * @return The character position (starting with 0) of the input where the error occurs.
      */
-    public String get(int i){
-            return (String)items.get(i);
+    public int getPosition() {
+            return position;
     }
     
-    public int size(){
-            return items.size();
+    public void setPosition(int position) {
+            this.position = position;
     }
-
+    
+    /**
+     * @see org.drip.service.jsonparser.Yytoken
+     * 
+     * @return One of the following base on the value of errorType:
+     *                      ERROR_UNEXPECTED_CHAR           java.lang.Character
+     *                      ERROR_UNEXPECTED_TOKEN          org.json.simple.parser.Yytoken
+     *                      ERROR_UNEXPECTED_EXCEPTION      java.lang.Exception
+     */
+    public Object getUnexpectedObject() {
+            return unexpectedObject;
+    }
+    
+    public void setUnexpectedObject(Object unexpectedObject) {
+            this.unexpectedObject = unexpectedObject;
+    }
+    
     public String toString(){
-            return toString(sp);
-    }
-    
-    public String toString(String sp){
-            StringBuffer sb=new StringBuffer();
+            StringBuffer sb = new StringBuffer();
             
-            for(int i=0;i<items.size();i++){
-                    if(i==0)
-                            sb.append(items.get(i));
-                    else{
-                            sb.append(sp);
-                            sb.append(items.get(i));
-                    }
+            switch(errorType){
+            case ERROR_UNEXPECTED_CHAR:
+                    sb.append("Unexpected character (").append(unexpectedObject).append(") at position ").append(position).append(".");
+                    break;
+            case ERROR_UNEXPECTED_TOKEN:
+                    sb.append("Unexpected token ").append(unexpectedObject).append(" at position ").append(position).append(".");
+                    break;
+            case ERROR_UNEXPECTED_EXCEPTION:
+                    sb.append("Unexpected exception at position ").append(position).append(": ").append(unexpectedObject);
+                    break;
+            default:
+                    sb.append("Unkown error at position ").append(position).append(".");
+                    break;
             }
             return sb.toString();
-
-    }
-    
-    public void clear(){
-            items.clear();
-    }
-    
-    public void reset(){
-            sp=",";
-            items.clear();
     }
 }

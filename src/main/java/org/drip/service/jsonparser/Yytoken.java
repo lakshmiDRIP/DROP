@@ -1,5 +1,5 @@
 
-package org.drip.json.simple;
+package org.drip.service.jsonparser;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -11,7 +11,6 @@ package org.drip.json.simple;
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -80,25 +79,67 @@ package org.drip.json.simple;
  */
 
 /**
- * <i>JSONAware</i> is an Adaptation of the JSONAware class from the RFC4627 compliant JSON Simple
- * (https://code.google.com/p/json-simple/). Beans that support customized output of JSON text shall
- * implement this interface.
+ * <i>Yytoken</i> is an Adaptation of the Yytoken Class from the RFC4627 compliant JSON Simple
+ * (https://code.google.com/p/json-simple/).
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json">RFC-4627 Compliant JSON Encoder/Decoder (Parser)</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/simple">RFC4627 Compliant JSON Message Object</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/jsonparser">RFC4627 Compliant JSON Message Parser</a></li>
  *  </ul>
- * 
+ *
  * @author Fang Yidong
  * @author Lakshmi Krishnamurthy
  */
 
-public interface JSONAware {
-    /**
-     * @return JSON text
-     */
-    String toJSONString();
+public class Yytoken {
+    public static final int TYPE_VALUE=0;//JSON primitive value: string,number,boolean,null
+    public static final int TYPE_LEFT_BRACE=1;
+    public static final int TYPE_RIGHT_BRACE=2;
+    public static final int TYPE_LEFT_SQUARE=3;
+    public static final int TYPE_RIGHT_SQUARE=4;
+    public static final int TYPE_COMMA=5;
+    public static final int TYPE_COLON=6;
+    public static final int TYPE_EOF=-1;//end of file
+    
+    public int type=0;
+    public Object value=null;
+    
+    public Yytoken(int type,Object value){
+            this.type=type;
+            this.value=value;
+    }
+    
+    public String toString(){
+            StringBuffer sb = new StringBuffer();
+            switch(type){
+            case TYPE_VALUE:
+                    sb.append("VALUE(").append(value).append(")");
+                    break;
+            case TYPE_LEFT_BRACE:
+                    sb.append("LEFT BRACE({)");
+                    break;
+            case TYPE_RIGHT_BRACE:
+                    sb.append("RIGHT BRACE(})");
+                    break;
+            case TYPE_LEFT_SQUARE:
+                    sb.append("LEFT SQUARE([)");
+                    break;
+            case TYPE_RIGHT_SQUARE:
+                    sb.append("RIGHT SQUARE(])");
+                    break;
+            case TYPE_COMMA:
+                    sb.append("COMMA(,)");
+                    break;
+            case TYPE_COLON:
+                    sb.append("COLON(:)");
+                    break;
+            case TYPE_EOF:
+                    sb.append("END OF FILE");
+                    break;
+            }
+            return sb.toString();
+    }
 }

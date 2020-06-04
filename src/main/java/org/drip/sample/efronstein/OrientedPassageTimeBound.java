@@ -1,11 +1,11 @@
 
 package org.drip.sample.efronstein;
 
-import org.drip.numerical.common.FormatUtil;
 import org.drip.sequence.custom.OrientedPercolationFirstPassage;
 import org.drip.sequence.functional.*;
 import org.drip.sequence.metrics.SingleSequenceAgnosticMetrics;
 import org.drip.sequence.random.*;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

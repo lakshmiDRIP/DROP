@@ -2,7 +2,7 @@
 package org.drip.sample.distancetest;
 
 import org.drip.measure.continuous.R1UnivariateUniform;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.distance.GapTestOutcome;
 import org.drip.validation.distance.GapTestSetting;

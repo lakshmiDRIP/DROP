@@ -9,7 +9,7 @@ import org.drip.capital.stress.Event;
 import org.drip.capital.stress.SystemicEventContainer;
 import org.drip.capital.stress.IdiosyncraticEventContainer;
 import org.drip.capital.stress.PnLSeries;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

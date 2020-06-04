@@ -3,10 +3,10 @@ package org.drip.sample.numerical;
 
 import java.util.Map;
 
-import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.fourier.PhaseAdjuster;
 import org.drip.param.pricer.HestonOptionPricerParams;
 import org.drip.pricer.option.HestonStochasticVolatilityAlgorithm;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

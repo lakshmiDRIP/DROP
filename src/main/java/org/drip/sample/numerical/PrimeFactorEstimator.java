@@ -1,8 +1,9 @@
 
 package org.drip.sample.numerical;
 
-import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.common.PrimeUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -149,13 +150,13 @@ public class PrimeFactorEstimator
 		{
 			System.out.println (
 				"\t| [" + number + "] =" +
-				NumberUtil.PrimeFactor (
+				PrimeUtil.PrimeFactor (
 					number
 				) + " | " + FormatUtil.FormatDouble (
 					NumberUtil.PrimeFactorExponentTwo (
 						number
 					), 1, 6, 1.
-				) + " | " + NumberUtil.PrimeFactorMap (
+				) + " | " + PrimeUtil.PrimeFactorMap (
 					number
 				)
 			);

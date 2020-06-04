@@ -132,7 +132,7 @@ public class LocalControlBasisSplineRegressor extends org.drip.regression.core.U
 		while (dblX <= dblXMax) {
 			try {
 				if (!rrd.set (getName() + "_" + strStretchName + "_" + dblX,
-					org.drip.numerical.common.FormatUtil.FormatDouble (mss.responseValue (dblX), 1, 2, 1.) +
+					org.drip.service.common.FormatUtil.FormatDouble (mss.responseValue (dblX), 1, 2, 1.) +
 						" | " + mss.monotoneType (dblX)))
 					return false;
 			} catch (java.lang.Exception e) {

@@ -3,7 +3,7 @@ package org.drip.sample.stretch;
 
 import java.util.*;
 
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.spline.basis.PolynomialFunctionSetParams;
 import org.drip.spline.grid.*;

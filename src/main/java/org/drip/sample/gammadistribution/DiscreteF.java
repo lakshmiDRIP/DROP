@@ -6,7 +6,7 @@ import org.drip.function.definition.R2ToR1;
 import org.drip.measure.gamma.R1ShapeScaleComposite;
 import org.drip.measure.gamma.R1ShapeScaleDiscrete;
 import org.drip.measure.statistics.UnivariateDiscreteThin;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
 import org.drip.specialfunction.gamma.EulerIntegralSecondKind;

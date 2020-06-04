@@ -985,18 +985,18 @@ public class CDXRefDataParams {
 		java.lang.String strCDXCode = _strIndexClass + "." + _strIndexGroupName + "." + _iIndexLifeSpan +
 			"Y." + _iIndexSeries + "." + _iIndexVersion;
 
-		sb.append ("\t\tUpdateCDXRefDataMap (" + org.drip.numerical.common.StringUtil.MakeStringArg (strCDXCode) +
+		sb.append ("\t\tUpdateCDXRefDataMap (" + org.drip.service.common.StringUtil.MakeStringArg (strCDXCode) +
 			",\n\t\t\torg.drip.product.creator.CDXRefDataBuilder.CreateCDXRefDataBuilder (");
 
-		sb.append (org.drip.numerical.common.StringUtil.MakeStringArg (_strCurveID) + ", ");
+		sb.append (org.drip.service.common.StringUtil.MakeStringArg (_strCurveID) + ", ");
 
-		sb.append (org.drip.numerical.common.StringUtil.MakeStringArg (_strSPN) + ",\n\t\t\t\t");
+		sb.append (org.drip.service.common.StringUtil.MakeStringArg (_strSPN) + ",\n\t\t\t\t");
 
-		sb.append (org.drip.numerical.common.StringUtil.MakeStringArg (_strIndexLabel) + ", ");
+		sb.append (org.drip.service.common.StringUtil.MakeStringArg (_strIndexLabel) + ", ");
 
-		sb.append (org.drip.numerical.common.StringUtil.MakeStringArg (_strIndexName) + ",\n\t\t\t\t\t");
+		sb.append (org.drip.service.common.StringUtil.MakeStringArg (_strIndexName) + ",\n\t\t\t\t\t");
 
-		sb.append (org.drip.numerical.common.StringUtil.MakeStringArg (_strCurveName) + ", ");
+		sb.append (org.drip.service.common.StringUtil.MakeStringArg (_strCurveName) + ", ");
 
 		sb.append (_dtIssue.julian() + ", ");
 
@@ -1004,9 +1004,9 @@ public class CDXRefDataParams {
 
 		sb.append (_dblCoupon + ", ");
 
-		sb.append (org.drip.numerical.common.StringUtil.MakeStringArg (_strCurrency) + ",\n\t\t\t\t\t\t");
+		sb.append (org.drip.service.common.StringUtil.MakeStringArg (_strCurrency) + ",\n\t\t\t\t\t\t");
 
-		sb.append (org.drip.numerical.common.StringUtil.MakeStringArg (_strDayCount) + ", ");
+		sb.append (org.drip.service.common.StringUtil.MakeStringArg (_strDayCount) + ", ");
 
 		sb.append (_bFullFirstStub + ", ");
 
@@ -1014,23 +1014,23 @@ public class CDXRefDataParams {
 
 		sb.append (_iFrequency + ", ");
 
-		sb.append (org.drip.numerical.common.StringUtil.MakeStringArg (_strRedID) + ", ");
+		sb.append (org.drip.service.common.StringUtil.MakeStringArg (_strRedID) + ", ");
 
-		sb.append (org.drip.numerical.common.StringUtil.MakeStringArg (_strIndexClass) + ", ");
+		sb.append (org.drip.service.common.StringUtil.MakeStringArg (_strIndexClass) + ", ");
 
 		sb.append (_iIndexSeries + ", ");
 
-		sb.append (org.drip.numerical.common.StringUtil.MakeStringArg (_strIndexGroupName) + ", ");
+		sb.append (org.drip.service.common.StringUtil.MakeStringArg (_strIndexGroupName) + ", ");
 
-		sb.append (org.drip.numerical.common.StringUtil.MakeStringArg (_strIndexShortName) + ", ");
+		sb.append (org.drip.service.common.StringUtil.MakeStringArg (_strIndexShortName) + ", ");
 
-		sb.append (org.drip.numerical.common.StringUtil.MakeStringArg (_strIndexShortGroupName) + ", ");
+		sb.append (org.drip.service.common.StringUtil.MakeStringArg (_strIndexShortGroupName) + ", ");
 
 		sb.append (_iIndexVersion + ", ");
 
 		sb.append (_iIndexLifeSpan + ",\n\t\t\t\t\t\t\t");
 
-		sb.append (org.drip.numerical.common.StringUtil.MakeStringArg (_strCurvyCurveID) + ", ");
+		sb.append (org.drip.service.common.StringUtil.MakeStringArg (_strCurvyCurveID) + ", ");
 
 		sb.append (_dblIndexFactor + ", ");
 
@@ -1038,7 +1038,7 @@ public class CDXRefDataParams {
 
 		sb.append (_iDefaultedComponentCount + ", ");
 
-		sb.append (org.drip.numerical.common.StringUtil.MakeStringArg (_strLocation) + ", ");
+		sb.append (org.drip.service.common.StringUtil.MakeStringArg (_strLocation) + ", ");
 
 		sb.append (_bPayAccrued + ", ");
 
@@ -1046,9 +1046,9 @@ public class CDXRefDataParams {
 
 		sb.append (_bQuoteAsCDS + ", ");
 
-		sb.append (org.drip.numerical.common.StringUtil.MakeStringArg (_strBBGTicker) + ", ");
+		sb.append (org.drip.service.common.StringUtil.MakeStringArg (_strBBGTicker) + ", ");
 
-		sb.append (org.drip.numerical.common.StringUtil.MakeStringArg (_strShortName) + "));\n\n");
+		sb.append (org.drip.service.common.StringUtil.MakeStringArg (_strShortName) + "));\n\n");
 
 		return sb.toString();
 	}

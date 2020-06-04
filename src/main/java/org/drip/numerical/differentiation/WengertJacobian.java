@@ -344,7 +344,7 @@ public class WengertJacobian {
 				++iParameterIndex) {
 				if (0 != iParameterIndex) sbDWengertDParameter.append (", ");
 
-				sbDWengertDParameter.append (org.drip.numerical.common.FormatUtil.FormatDouble
+				sbDWengertDParameter.append (org.drip.service.common.FormatUtil.FormatDouble
 					(_aadblDWengertDParameter[iWengertIndex][iParameterIndex], 1, 3, 1.));
 			}
 

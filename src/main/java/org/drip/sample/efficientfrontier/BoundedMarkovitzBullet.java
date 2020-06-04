@@ -6,11 +6,11 @@ import java.util.*;
 import org.drip.function.rdtor1descent.LineStepEvolutionControl;
 import org.drip.function.rdtor1solver.InteriorPointBarrierControl;
 import org.drip.measure.statistics.MultivariateMoments;
-import org.drip.numerical.common.FormatUtil;
 import org.drip.portfolioconstruction.allocator.*;
 import org.drip.portfolioconstruction.asset.*;
 import org.drip.portfolioconstruction.mpt.MarkovitzBullet;
 import org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

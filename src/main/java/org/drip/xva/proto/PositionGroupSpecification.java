@@ -151,7 +151,7 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 		try
 		{
 			return new PositionGroupSpecification (
-				org.drip.numerical.common.StringUtil.GUID(),
+				org.drip.service.common.StringUtil.GUID(),
 				name,
 				14,
 				14,
@@ -205,7 +205,7 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 		try
 		{
 			return new PositionGroupSpecification (
-				org.drip.numerical.common.StringUtil.GUID(),
+				org.drip.service.common.StringUtil.GUID(),
 				name,
 				14,
 				14,

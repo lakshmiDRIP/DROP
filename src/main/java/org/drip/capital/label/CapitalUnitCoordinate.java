@@ -125,7 +125,7 @@ public class CapitalUnitCoordinate
 			return null;
 		}
 
-		java.lang.String[] idRiskType = org.drip.numerical.common.StringUtil.Split (
+		java.lang.String[] idRiskType = org.drip.service.common.StringUtil.Split (
 			fullyQualifiedName,
 			org.drip.capital.label.Coordinate.FQN_DELIMITER
 		);

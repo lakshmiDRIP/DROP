@@ -2,7 +2,7 @@
 package org.drip.sample.funding;
 
 import org.drip.function.r1tor1.LinearRationalShapeControl;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.spline.basis.ExponentialTensionSetParams;
 import org.drip.spline.params.*;

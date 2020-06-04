@@ -5,11 +5,11 @@ import org.drip.measure.bayesian.R1MultivariateConvolutionMetrics;
 import org.drip.measure.continuous.MultivariateMeta;
 import org.drip.measure.gaussian.*;
 import org.drip.measure.statistics.MultivariateMoments;
-import org.drip.numerical.common.FormatUtil;
 import org.drip.portfolioconstruction.allocator.*;
 import org.drip.portfolioconstruction.asset.*;
 import org.drip.portfolioconstruction.bayesian.*;
 import org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

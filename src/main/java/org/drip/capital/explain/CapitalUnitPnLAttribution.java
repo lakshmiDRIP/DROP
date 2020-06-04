@@ -366,7 +366,7 @@ public class CapitalUnitPnLAttribution
 						);
 					}
 
-					java.lang.String parentSystemicEventName = org.drip.numerical.common.StringUtil.Split (
+					java.lang.String parentSystemicEventName = org.drip.service.common.StringUtil.Split (
 						eventName,
 						"::"
 					)[0];

@@ -4,7 +4,7 @@ package org.drip.sample.mst;
 import org.drip.graph.mst.CompleteRandomGraph;
 import org.drip.graph.mst.CompleteRandomGraphEnsemble;
 import org.drip.measure.statistics.UnivariateDiscreteThin;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

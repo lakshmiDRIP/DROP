@@ -4,11 +4,11 @@ package org.drip.sample.loan;
 import org.drip.analytics.cashflow.*;
 import org.drip.analytics.date.*;
 import org.drip.market.definition.FloaterIndex;
-import org.drip.numerical.common.FormatUtil;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.valuation.ValuationParams;
 import org.drip.product.creator.BondBuilder;
 import org.drip.product.credit.BondComponent;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.scenario.*;
 

@@ -2,7 +2,7 @@
 package org.drip.sample.rng;
 
 import org.drip.measure.crng.*;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

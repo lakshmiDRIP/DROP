@@ -5,11 +5,11 @@ import java.util.Map;
 
 import org.drip.analytics.date.*;
 import org.drip.market.otc.*;
-import org.drip.numerical.common.FormatUtil;
 import org.drip.param.creator.MarketParamsBuilder;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.valuation.ValuationParams;
 import org.drip.product.rates.FixFloatComponent;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.template.LatentMarketStateBuilder;
 import org.drip.state.discount.MergedDiscountForwardCurve;

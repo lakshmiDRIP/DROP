@@ -1,7 +1,7 @@
 
 package org.drip.sample.spline;
 
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.spline.bspline.*;
 

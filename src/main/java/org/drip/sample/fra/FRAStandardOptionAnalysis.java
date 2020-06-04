@@ -656,16 +656,16 @@ public class FRAStandardOptionAnalysis {
 		double dblSpotFloorletPrice = mapFRAFloorletOutput.get ("SpotPrice");
 
 		System.out.println ("\t[" +
-			org.drip.numerical.common.FormatUtil.FormatDouble (dblForwardVol, 2, 0, 100.) + "%," +
-			org.drip.numerical.common.FormatUtil.FormatDouble (dblFundingVol, 2, 0, 100.) + "%," +
-			org.drip.numerical.common.FormatUtil.FormatDouble (dblForwardFundingCorr, 2, 0, 100.) + "%] =" +
-			org.drip.numerical.common.FormatUtil.FormatDouble (dblATMFRA, 1, 4, 100.) + "% | " +
-			org.drip.numerical.common.FormatUtil.FormatDouble (dblManifestMeasureIntrinsic, 1, 1, 10000.) + " | " +
-			org.drip.numerical.common.FormatUtil.FormatDouble (dblManifestMeasureIntrinsicValue, 1, 1, 10000.) + " | " +
-			org.drip.numerical.common.FormatUtil.FormatDouble (dblForwardATMCapletPrice, 1, 1, 10000.) + " | " +
-			org.drip.numerical.common.FormatUtil.FormatDouble (dblSpotCapletPrice, 1, 1, 10000.) + " | " +
-			org.drip.numerical.common.FormatUtil.FormatDouble (dblForwardATMFloorletPrice, 1, 1, 10000.) + " | " +
-			org.drip.numerical.common.FormatUtil.FormatDouble (dblSpotFloorletPrice, 1, 1, 10000.));
+			org.drip.service.common.FormatUtil.FormatDouble (dblForwardVol, 2, 0, 100.) + "%," +
+			org.drip.service.common.FormatUtil.FormatDouble (dblFundingVol, 2, 0, 100.) + "%," +
+			org.drip.service.common.FormatUtil.FormatDouble (dblForwardFundingCorr, 2, 0, 100.) + "%] =" +
+			org.drip.service.common.FormatUtil.FormatDouble (dblATMFRA, 1, 4, 100.) + "% | " +
+			org.drip.service.common.FormatUtil.FormatDouble (dblManifestMeasureIntrinsic, 1, 1, 10000.) + " | " +
+			org.drip.service.common.FormatUtil.FormatDouble (dblManifestMeasureIntrinsicValue, 1, 1, 10000.) + " | " +
+			org.drip.service.common.FormatUtil.FormatDouble (dblForwardATMCapletPrice, 1, 1, 10000.) + " | " +
+			org.drip.service.common.FormatUtil.FormatDouble (dblSpotCapletPrice, 1, 1, 10000.) + " | " +
+			org.drip.service.common.FormatUtil.FormatDouble (dblForwardATMFloorletPrice, 1, 1, 10000.) + " | " +
+			org.drip.service.common.FormatUtil.FormatDouble (dblSpotFloorletPrice, 1, 1, 10000.));
 	}
 
 	public static final void main (

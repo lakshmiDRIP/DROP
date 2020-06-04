@@ -4,7 +4,7 @@ package org.drip.sample.treasuryfuturesapi;
 import java.util.*;
 
 import org.drip.analytics.date.*;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.product.TreasuryFuturesAPI;
 

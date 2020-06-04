@@ -120,7 +120,7 @@ public class CSVParser {
 			brCSV = new java.io.BufferedReader (new java.io.FileReader (strCSVFile));
 
 			while (null != (strCSVLine = brCSV.readLine())) {
-				java.lang.String[] astrValue = org.drip.numerical.common.StringUtil.Split (strCSVLine, ",");
+				java.lang.String[] astrValue = org.drip.service.common.StringUtil.Split (strCSVLine, ",");
 
 				if (null != astrValue && 0 != astrValue.length) {
 					if (!bHeader || !bIgnoreHeader) csvGrid.add (astrValue);
@@ -160,7 +160,7 @@ public class CSVParser {
 			brCSV = new java.io.BufferedReader (new java.io.FileReader (strCSVFile));
 
 			while (null != (strCSVLine = brCSV.readLine())) {
-				java.lang.String[] astrValue = org.drip.numerical.common.StringUtil.Split (strCSVLine, ",");
+				java.lang.String[] astrValue = org.drip.service.common.StringUtil.Split (strCSVLine, ",");
 
 				if (null != astrValue && 0 != astrValue.length) {
 					if (bHeader)

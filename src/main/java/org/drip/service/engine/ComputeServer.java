@@ -177,19 +177,19 @@ public class ComputeServer {
 
 	        	System.out.println (strJSONRequest);
 
-	        	java.lang.Object objRequest = org.drip.json.simple.JSONValue.parse (strJSONRequest);
+	        	java.lang.Object objRequest = org.drip.service.representation.JSONValue.parse (strJSONRequest);
 
-		    	if (null == objRequest || !(objRequest instanceof org.drip.json.simple.JSONObject))
+		    	if (null == objRequest || !(objRequest instanceof org.drip.service.representation.JSONObject))
 		    		return false;
 
-		    	org.drip.json.simple.JSONObject jsonRequest = (org.drip.json.simple.JSONObject) objRequest;
+		    	org.drip.service.representation.JSONObject jsonRequest = (org.drip.service.representation.JSONObject) objRequest;
 
-		    	java.lang.Object objResponse = org.drip.json.simple.JSONValue.parse
+		    	java.lang.Object objResponse = org.drip.service.representation.JSONValue.parse
 	    			(org.drip.service.json.KeyHoleSkeleton.Thunker (strJSONRequest));
 
 		    	if (null == objResponse) return false;
 
-		    	org.drip.json.simple.JSONObject jsonResponse = (org.drip.json.simple.JSONObject) objResponse;
+		    	org.drip.service.representation.JSONObject jsonResponse = (org.drip.service.representation.JSONObject) objResponse;
 
 		    	if (!org.drip.service.engine.RequestResponseDecorator.AffixResponseHeaders (jsonResponse,
 		    		jsonRequest))

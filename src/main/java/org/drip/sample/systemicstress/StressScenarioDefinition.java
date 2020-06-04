@@ -12,7 +12,7 @@ import org.drip.capital.systemicscenario.HypotheticalScenarioDefinition;
 import org.drip.capital.systemicscenario.PredictorScenarioSpecification;
 import org.drip.capital.systemicscenario.StressScenarioQuantification;
 import org.drip.capital.systemicscenario.StressScenarioSpecification;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

@@ -7,7 +7,7 @@ import org.drip.function.definition.R2ToR1;
 import org.drip.graph.mst.SteeleCompleteUniformRandomEntry;
 import org.drip.graph.mst.SteeleCompleteUniformRandomMST;
 import org.drip.measure.gamma.R1ShapeScaleDistribution;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
 import org.drip.specialfunction.gamma.EulerIntegralSecondKind;

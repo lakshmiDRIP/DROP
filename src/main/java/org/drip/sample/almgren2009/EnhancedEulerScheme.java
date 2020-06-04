@@ -2,7 +2,7 @@
 package org.drip.sample.almgren2009;
 
 import org.drip.function.r1tor1.AlmgrenEnhancedEulerUpdate;
-import org.drip.numerical.common.FormatUtil;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

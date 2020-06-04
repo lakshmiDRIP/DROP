@@ -1,20 +1,19 @@
-# DROP JSON
+# DROP JSON Asset Allocation Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP JSON contains the Implementation of the RFC-4627 Compliant JSON Encoder/Decoder (Parser).
+DROP JSON Asset Allocation Package implements the JSON Based In/Out Service.
 
 
-## Component Packages
+## Class Components
 
- * [***Asset Allocation***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/assetallocation)
- DROP JSON Asset Allocation Package implements the JSON Based In/Out Service.
+ * [***BlackLittermanProcessor***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/assetallocation/BlackLittermanProcessor.java)
+ <i>BlackLittermanProcessor</i> Sets Up and Executes a JSON Based In/Out Processing Service for the Black
+ Litterman Bayesian View Incorporation/Parameter Estimation.
 
- * [***Parser***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/parser)
- DROP JSON Parser Package implements the RFC4627 Compliant JSON Message Parser.
-
- * [***Simple***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/simple)
- DROP JSON Simple Package implements the RFC4627 Compliant JSON Message Object.
+ * [***PortfolioConstructionProcessor***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/assetallocation/PortfolioConstructionProcessor.java)
+ <i>PortfolioConstructionProcessor</i> Sets Up and Executes a JSON Based In/Out Processing Service for
+ Constrained and Unconstrained Portfolio Construction.
 
 
 ## DROP Specifications
