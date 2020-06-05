@@ -202,6 +202,75 @@ public class ArrayUtil
 		return count;
 	}
 
+	private static final boolean SpiralMatrixOrder (
+		final java.util.List<java.lang.Integer> spiralMatrixOrder,
+		final int[][] matrix,
+		final int rowShift,
+		final int columnShift)
+	{
+		int rowCount = matrix.length;
+		int columnCount = matrix[0].length;
+
+		if (rowShift > rowCount - rowShift ||
+			columnShift > columnCount - columnShift)
+		{
+			return true;
+		}
+
+		for (int columnIndex = columnShift;
+			columnIndex < columnCount - columnShift;
+			++columnIndex)
+		{
+			spiralMatrixOrder.add (
+				matrix[rowShift][columnIndex]
+			);
+		}
+
+		if (2 * rowShift < rowCount)
+		{
+			for (int rowIndex = rowShift + 1;
+				rowIndex < rowCount - rowShift - 1;
+				++rowIndex)
+			{
+				spiralMatrixOrder.add (
+					matrix[rowIndex][columnCount - columnShift - 1]
+				);
+			}
+		}
+
+		if (columnCount >= columnShift + 1 &&
+			2 * rowShift != rowCount - 1)
+		{
+			for (int columnIndex = columnCount - columnShift - 1;
+				columnIndex >= columnShift;
+				--columnIndex)
+			{
+				spiralMatrixOrder.add (
+					matrix[rowCount - rowShift - 1][columnIndex]
+				);
+			}
+		}
+
+		if (rowCount >= rowShift + 2)
+		{
+			for (int rowIndex = rowCount - rowShift - 2;
+				rowIndex >= rowShift + 1;
+				--rowIndex)
+			{
+				spiralMatrixOrder.add (
+					matrix[rowIndex][columnShift]
+				);
+			}
+		}
+
+		return SpiralMatrixOrder (
+			spiralMatrixOrder,
+			matrix,
+			rowShift + 1,
+			columnShift + 1
+		);
+	}
+
 	/**
 	 * Search for the Target in a Rotated Array
 	 * 
@@ -842,30 +911,348 @@ public class ArrayUtil
 		return fourSumListMap.values();
 	}
 
-	/* public static final double MaximumSubarrayCumCircular (
-		final double[] numberArray)
+	/**
+	 * Compute the Maximum Sum of any Sub-array
+	 * 
+	 * @param numberArray The Number Array
+	 * 
+	 * @return The Maximum Sum of any Sub-array
+	 */
+
+	public static final int MaximumSubarraySum (
+		final int[] numberArray)
 	{
-		
-	} */
+		int endIndex = 0;
+		int startIndex = 0;
+		int maxSum = java.lang.Integer.MIN_VALUE;
+
+		while (endIndex < numberArray.length)
+		{
+			int currentSum = 0;
+
+			while (endIndex < numberArray.length &&
+				0 <= numberArray[endIndex])
+			{
+				currentSum = currentSum + numberArray[endIndex++];
+			}
+
+			while (startIndex <= endIndex &&
+				0 >= numberArray[startIndex])
+			{
+				currentSum = currentSum - numberArray[startIndex++];
+			}
+
+			if (currentSum > maxSum)
+			{
+				maxSum = currentSum;
+			}
+
+			endIndex++;
+		}
+
+		return maxSum;
+	}
+
+	/**
+	 * Compute the Minimum Sum of any Sub-array
+	 * 
+	 * @param numberArray The Number Array
+	 * 
+	 * @return The Minimum Sum of any Sub-array
+	 */
+
+	public static final int MinimumSubarraySum (
+		final int[] numberArray)
+	{
+		int endIndex = 0;
+		int startIndex = 0;
+		int minSum = java.lang.Integer.MAX_VALUE;
+
+		while (endIndex < numberArray.length)
+		{
+			int currentSum = 0;
+
+			while (endIndex < numberArray.length &&
+				0 >= numberArray[endIndex])
+			{
+				currentSum = currentSum + numberArray[endIndex++];
+			}
+
+			while (startIndex <= endIndex &&
+				0 >= numberArray[startIndex])
+			{
+				currentSum = currentSum - numberArray[startIndex++];
+			}
+
+			if (currentSum < minSum)
+			{
+				minSum = currentSum;
+			}
+
+			endIndex++;
+		}
+
+		return minSum;
+	}
+
+	/**
+	 * Given a circular array C of integers represented by A, find the maximum possible sum of a non-empty
+	 * 	sub-array of C. Here, a circular array means the end of the array connects to the beginning of the
+	 * 	array.  (Formally, C[i] = A[i] when 0 <= i < A.length, and C[i+A.length] = C[i] when i gte 0.)
+	 * 
+	 * Also, a sub-array may only include each element of the fixed buffer A at most once.  (Formally, for a
+	 * 	sub-array C[i], C[i+1], ..., C[j], there does not exist i lte k1, k2 gte j with k1 % A.length = k2 %
+	 *  A.length.)
+	 * 
+	 * @param numberArray The Number Array
+	 * 
+	 * @return The Maximum Sum of any Circular Sub-array
+	 */
+
+	public static final double MaximumSubarraySumCircular (
+		final int[] numberArray)
+	{
+		int sum = 0;
+		boolean allNegative = true;
+		boolean allPositive = true;
+		int max = java.lang.Integer.MIN_VALUE;
+
+		for (int index = 0;
+			index < numberArray.length;
+			++index)
+		{
+			if (0 > numberArray[index])
+			{
+				allPositive = false;
+			}
+			else if (0 < numberArray[index])
+			{
+				allNegative = false;
+			}
+
+			sum = sum + numberArray[index];
+
+			if (max < numberArray[index])
+			{
+				max = numberArray[index];
+			}
+		}
+
+		if (allPositive)
+		{
+			return sum;
+		}
+
+		if (allNegative)
+		{
+			return max;
+		}
+
+		System.out.println (
+			MinimumSubarraySum (
+				numberArray
+			)
+		);
+
+		return java.lang.Math.max (
+			MaximumSubarraySum (
+				numberArray
+			),
+			sum - MinimumSubarraySum (
+				numberArray
+			)
+		);
+	}
+
+	/**
+	 * Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral
+	 * 	order.
+	 * 
+	 * @param matrix m x n Matrix
+	 * 
+	 * @return Elements of the matrix in spiral order.
+	 */
+
+	public static final java.util.List<java.lang.Integer> SpiralMatrixOrder (
+		final int[][] matrix)
+	{
+		java.util.List<java.lang.Integer> spiralMatrixOrder =
+			new java.util.ArrayList<java.lang.Integer>();
+
+		return SpiralMatrixOrder (
+			spiralMatrixOrder,
+			matrix,
+			0,
+			0
+		) ? spiralMatrixOrder : null;
+	}
+
+	/**
+	 * A robot is located at the top-left corner of a m x n grid. The robot can only move either down or
+	 *  right at any point in time. The robot is trying to reach the bottom-right corner of the grid. Now
+	 *  consider if some obstacles are added to the grids. How many unique paths would there be?
+	 *  
+	 * @param obstacleGrid The Obstacle Grid
+	 * 
+	 * @return Count of the Unique Paths
+	 */
+
+	public static final int UniquePathsWithObstacles (
+		final int[][] obstacleGrid)
+	{
+		int uniquePathsWithObstacles = 0;
+		int height = obstacleGrid.length;
+		int width = obstacleGrid[0].length;
+
+		java.util.List<int[]> locationList = new java.util.ArrayList<int[]>();
+
+		locationList.add (
+			new int[]
+			{
+				0,
+				0
+			}
+		);
+
+		while (!locationList.isEmpty())
+		{
+			int[] location = locationList.remove (
+				0
+			);
+
+			int locationX = location[0];
+			int locationY = location[1];
+
+			if (locationX == width - 1 &&
+				locationY == height - 1
+			)
+			{
+				++uniquePathsWithObstacles;
+				continue;
+			}
+
+			int down = locationY + 1;
+			int right = locationX + 1;
+
+			if (right < width &&
+				1 != obstacleGrid[right][locationY]
+			)
+			{
+				locationList.add (
+					new int[]
+					{
+						right,
+						locationY
+					}
+				);
+			}
+
+			if (down < height &&
+				1 != obstacleGrid[locationX][down]
+			)
+			{
+				locationList.add (
+					new int[]
+					{
+						locationX,
+						down
+					}
+				);
+			}
+		}
+
+		return uniquePathsWithObstacles;
+	}
+
+	private static final boolean CanMakePalindrome (
+		final java.lang.String s,
+		final int left,
+		final int right,
+		final int k)
+	{
+		java.util.Set<java.lang.Character> charSet = new java.util.HashSet<java.lang.Character>();
+
+		char[] charArray = s.toCharArray();
+
+		for (int charIndex = left;
+			charIndex <= right;
+			++charIndex)
+		{
+			if (charSet.contains (
+				charArray[charIndex]
+			))
+			{
+				charSet.remove (
+					charArray[charIndex]
+				);
+			}
+			else
+			{
+				charSet.add (
+					charArray[charIndex]
+				);
+			}
+		}
+
+		return charSet.size() <= 2 * k + 1;
+	}
+
+	/**
+	 * Given a string s, we make queries on substrings of s. For each query queries[i] = [left, right, k], we
+	 *  may rearrange the substring s[left], ..., s[right], and then choose up to k of them to replace with
+	 *  any lower-case English letter. If the substring is possible to be a palindrome string after the
+	 *  operations above, the result of the query is true. Otherwise, the result is false.
+	 *  
+	 * Return an array answer[], where answer[i] is the result of the i-th query queries[i].
+	 *  
+	 * Note that: Each letter is counted individually for replacement so if for example
+	 *  s[left..right] = "aaa", and k = 2, we can only replace two of the letters.  (Also, note that the
+	 *  initial string s is never modified by any query.)
+
+	 * @param s Input String
+	 * @param queries Array of Queries
+	 * 
+	 * @return List of Query Results
+	 */
+
+	public static final java.util.List<java.lang.Boolean> CanMakePalindromeQueries (
+		final java.lang.String s,
+		final int[][] queries)
+	{
+		java.util.List<java.lang.Boolean> queryArray = new java.util.ArrayList<java.lang.Boolean>();
+
+		for (int[] query : queries)
+		{
+			queryArray.add (
+				CanMakePalindrome (
+					s,
+					query[0],
+					query[1],
+					query[2]
+				)
+			);
+		}
+
+		return queryArray;
+	}
 
 	public static final void main (
 		String[] args)
 	{
-		int target = 0;
-		int[] numberArray = new int[]
+		java.lang.String s = "abcda";
+		int[][] queries = new int[][]
 		{
-			 1,
-			 0,
-			-1,
-			 0,
-			-2,
-			 2,
+			{3, 3, 0},
+			{1, 2, 0},
+			{0, 3, 1},
+			{0, 3, 2},
+			{0, 4, 1},
 		};
 
 		System.out.println (
-			FourSum (
-				numberArray,
-				target
+			CanMakePalindromeQueries (
+				s,
+				queries
 			)
 		);
 	}
