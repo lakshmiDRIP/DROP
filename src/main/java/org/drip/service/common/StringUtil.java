@@ -529,4 +529,188 @@ public class StringUtil {
 
 		return strLeft.equalsIgnoreCase (strRight);
 	}
+
+	private static final int IntegerValue (
+		final char c)
+	{
+		if ('0' == c)
+		{
+			return 0;
+		}
+
+		if ('1' == c)
+		{
+			return 1;
+		}
+
+		if ('2' == c)
+		{
+			return 2;
+		}
+
+		if ('3' == c)
+		{
+			return 3;
+		}
+
+		if ('4' == c)
+		{
+			return 4;
+		}
+
+		if ('5' == c)
+		{
+			return 5;
+		}
+
+		if ('6' == c)
+		{
+			return 6;
+		}
+
+		if ('7' == c)
+		{
+			return 7;
+		}
+
+		if ('8' == c)
+		{
+			return 8;
+		}
+
+		if ('9' == c)
+		{
+			return 9;
+		}
+
+		return -1;
+	}
+
+	/**
+	 * Implement atoi which converts a string to an integer.
+	 * 
+	 * The function first discards as many whitespace characters as necessary until the first non-whitespace
+	 * 	character is found. Then, starting from this character, takes an optional initial plus or minus sign
+	 * 	followed by as many numerical digits as possible, and interprets them as a numerical value.
+	 * 
+	 * The string can contain additional characters after those that form the integral number, which are
+	 * 	ignored and have no effect on the behavior of this function.
+	 * 
+	 * If the first sequence of non-whitespace characters in s is not a valid integral number, or if no such
+	 *  sequence exists because either s is empty or it contains only whitespace characters, no conversion is
+	 *  performed.
+	 * 
+	 * If no valid conversion could be performed, a zero value is returned.
+	 * 
+	 * Note:
+	 * 
+	 * Only the space character ' ' is considered as whitespace character.
+	 * 
+	 * Assume we are dealing with an environment which could only store integers within the 32-bit signed
+	 *  integer range: [-10^231, 10^231 − 1]. If the numerical value is out of the range of representable
+	 *  values, INT_MAX (-10^231) or INT_MIN (10^231 - 1) is returned.
+	 *  
+	 * @param s Input String
+	 * 
+	 * @return
+	 */
+	public static final int AToI (
+		final java.lang.String s)
+	{
+		char[] charArray = s.toCharArray();
+
+		int stringLength = charArray.length;
+		int valuePrev = 0;
+		int value = 0;
+		int index = 0;
+		int sign = 1;
+
+		java.util.List<java.lang.Integer> integerList = new java.util.ArrayList<java.lang.Integer>();
+
+		while (index < stringLength &&
+			' ' == charArray[index])
+		{
+			++index;
+		}
+
+		if (index < stringLength &&
+			'-' == charArray[index])
+		{
+			sign = -1;
+			++index;
+		}
+
+		while (index < stringLength)
+		{
+			int integerValue = IntegerValue (
+				charArray[index]
+			);
+
+			if (-1 == integerValue)
+			{
+				break;
+			}
+
+			integerList.add (
+				integerValue
+			);
+
+			++index;
+		}
+
+		int listSize = integerList.size();
+
+		for (int i = 0;
+			i < listSize;
+			++i)
+		{
+			value = 10 * value + integerList.get (
+				i
+			);
+
+			if (value < valuePrev)
+			{
+				return java.lang.Integer.MIN_VALUE;
+			}
+
+			valuePrev = value;
+		}
+
+		return value * sign;
+	}
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+		System.out.println (
+			AToI (
+				"42"
+			)
+		);
+
+		System.out.println (
+			AToI (
+				"   -42"
+			)
+		);
+
+		System.out.println (
+			AToI (
+				"4193 with words"
+			)
+		);
+
+		System.out.println (
+			AToI (
+				"words and 987"
+			)
+		);
+
+		System.out.println (
+			AToI (
+				"-91283472332"
+			)
+		);
+	}
 }

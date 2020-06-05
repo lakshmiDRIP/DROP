@@ -271,6 +271,39 @@ public class ArrayUtil
 		);
 	}
 
+	private static final boolean CanMakePalindrome (
+		final java.lang.String s,
+		final int left,
+		final int right,
+		final int k)
+	{
+		java.util.Set<java.lang.Character> charSet = new java.util.HashSet<java.lang.Character>();
+
+		char[] charArray = s.toCharArray();
+
+		for (int charIndex = left;
+			charIndex <= right;
+			++charIndex)
+		{
+			if (charSet.contains (
+				charArray[charIndex]
+			))
+			{
+				charSet.remove (
+					charArray[charIndex]
+				);
+			}
+			else
+			{
+				charSet.add (
+					charArray[charIndex]
+				);
+			}
+		}
+
+		return charSet.size() <= 2 * k + 1;
+	}
+
 	/**
 	 * Search for the Target in a Rotated Array
 	 * 
@@ -1164,39 +1197,6 @@ public class ArrayUtil
 		return uniquePathsWithObstacles;
 	}
 
-	private static final boolean CanMakePalindrome (
-		final java.lang.String s,
-		final int left,
-		final int right,
-		final int k)
-	{
-		java.util.Set<java.lang.Character> charSet = new java.util.HashSet<java.lang.Character>();
-
-		char[] charArray = s.toCharArray();
-
-		for (int charIndex = left;
-			charIndex <= right;
-			++charIndex)
-		{
-			if (charSet.contains (
-				charArray[charIndex]
-			))
-			{
-				charSet.remove (
-					charArray[charIndex]
-				);
-			}
-			else
-			{
-				charSet.add (
-					charArray[charIndex]
-				);
-			}
-		}
-
-		return charSet.size() <= 2 * k + 1;
-	}
-
 	/**
 	 * Given a string s, we make queries on substrings of s. For each query queries[i] = [left, right, k], we
 	 *  may rearrange the substring s[left], ..., s[right], and then choose up to k of them to replace with
@@ -1208,7 +1208,7 @@ public class ArrayUtil
 	 * Note that: Each letter is counted individually for replacement so if for example
 	 *  s[left..right] = "aaa", and k = 2, we can only replace two of the letters.  (Also, note that the
 	 *  initial string s is never modified by any query.)
-
+	 *  
 	 * @param s Input String
 	 * @param queries Array of Queries
 	 * 
@@ -1236,23 +1236,414 @@ public class ArrayUtil
 		return queryArray;
 	}
 
+	/**
+	 * Find all pairs of integers in the array which have difference equal to the number d.
+	 * 
+	 * @param x The Array
+	 * @param d The Difference
+	 * 
+	 * @return All pairs of integers in the array which have difference equal to the number d.
+	 */
+
+	public static final java.util.List<int[]> ArrayPairList (
+		int[] x,
+		int d)
+	{
+		if (null == x || 0 == x.length)
+		{
+			return null;
+		}
+
+		java.util.List<int[]> arrayPairList = new java.util.ArrayList<int[]>();
+
+		java.util.Arrays.sort (
+			x
+		);
+
+		for (int i = 0;
+			i < x.length - 1;
+			++i)
+		{
+			int j = x.length - 1;
+
+			while (j > i &&
+				x[j] - x[i] >= d
+			)
+			{
+				if (x[j] == x[i] + d)
+				{
+					arrayPairList.add (
+						new int[]
+						{
+							x[i],
+							x[j]
+						}
+					);
+				}
+
+				--j;
+			}
+		}
+
+		return arrayPairList;
+	}
+
+	private static final int FourSeaterCount (
+		final int[] row)
+	{
+		int left = 1;
+		int right = 1;
+		int center = 1;
+
+		if (1 == row[1] || 1 == row[2])
+		{
+			left = 0;
+		}
+
+		if (1 == row[3] || 1 == row[4])
+		{
+			left = 0;
+			center = 0;
+		}
+
+		if (1 == row[5] || 1 == row[6])
+		{
+			right = 0;
+			center = 0;
+		}
+
+		if (1 == row[7] || 1 == row[8])
+		{
+			right = 0;
+		}
+
+		if (1 == left && 1 == right)
+		{
+			center = 0;
+		}
+
+		return left + center + right;
+	}
+
+	/**
+	 * A cinema has n rows of seats, numbered from 1 to n and there are ten seats in each row, labeled from 1
+	 * 	to 10.
+	 * 
+	 * Given the array reservedSeats containing the numbers of seats already reserved, for example,
+	 * 	reservedSeats[i] = [3,8] means the seat located in row 3 and labeled with 8 is already reserved.
+	 * 
+	 * Return the maximum number of four-person groups you can assign on the cinema seats. A four-person
+	 * 	group occupies four adjacent seats in one single row. Seats across an aisle (such as [3,3] and [3,4])
+	 *  are not considered to be adjacent, but there is an exceptional case on which an aisle split a
+	 *  four-person group, in that case, the aisle split a four-person group in the middle, which means to
+	 *  have two people on each side.
+	 *  
+	 * @param n Number of Rows
+	 * @param reservedSeats Locations of Reserved Seats
+	 * 
+	 * @return Maximum number of four-person groups.
+	 */
+
+	public static final int MaximumNumberOfFamilies (
+		final int n,
+		final int[][] reservedSeats)
+	{
+		int maximumNumberOfFamilies = 0;
+		int[][] seatGrid = new int[n][10];
+
+		for (int i = 0;
+			i < n;
+			++i)
+		{
+			for (int j = 0;
+				j < 10;
+				++j)
+			{
+				seatGrid[i][j] = 0;
+			}
+		}
+
+		for (int[] reservedSeat : reservedSeats)
+		{
+			seatGrid[reservedSeat[0] - 1][reservedSeat[1] - 1] = 1;
+		}
+
+		for (int[] seatRow : seatGrid)
+		{
+			maximumNumberOfFamilies = maximumNumberOfFamilies + FourSeaterCount (
+				seatRow
+			);
+		}
+
+		return maximumNumberOfFamilies;
+	}
+
+	/**
+	 * Given an array of non-negative integers, you are initially positioned at the first index of the array.
+	 * 
+	 * Each element in the array represents your maximum jump length at that position.
+	 * 
+	 * Determine if you are able to reach the last index.
+	 * 
+	 * @param numberArray Array of non-negative Integers
+	 * 
+	 * @return TRUE - The Last Index can be reached.
+	 */
+
+	public static final boolean CanJumpToLastIndex (
+		final int[] numberArray)
+	{
+		java.util.List<java.lang.Integer> traversalList = new java.util.ArrayList<java.lang.Integer>();
+
+		java.util.Set<java.lang.Integer> visitedSet = new java.util.HashSet<java.lang.Integer>();
+
+		int lastIndex = numberArray.length;
+
+		traversalList.add (
+			0
+		);
+
+		visitedSet.add (
+			0
+		);
+
+		while (!traversalList.isEmpty())
+		{
+			int index = traversalList.remove (
+				0
+			);
+
+			if (index == lastIndex)
+			{
+				return true;
+			}
+
+			for (int jump = 0;
+				jump <= numberArray[index];
+				++jump)
+			{
+				int nextLocation = index + jump;
+
+				if (!visitedSet.contains (
+					nextLocation
+				))
+				{
+					traversalList.add (
+						nextLocation
+					);
+
+					visitedSet.add (
+						nextLocation
+					);
+				}
+			}
+		}
+
+		return false;
+	}
+
+	private static final boolean ConditionalStep (
+		final int x,
+		final int y,
+		final int wordCharIndex,
+		final char[][] board,
+		final char[] wordCharArray,
+		final java.util.List<int[]> traversalList,
+		final java.util.Set<java.lang.Integer> visitedLocationSet)
+	{
+		if (x >= 0 &&
+			x < board.length &&
+			y >= 0 &&
+			y < board[0].length &&
+			wordCharIndex < wordCharArray.length)
+		{
+			int nextLocation = x * board.length + y;
+
+			if (wordCharArray[wordCharIndex] == board[x][y] &&
+				!visitedLocationSet.contains (
+					nextLocation
+				)
+			)
+			{
+				traversalList.add (
+					new int[]
+					{
+						x,
+						y,
+						wordCharIndex
+					}
+				);
+
+				visitedLocationSet.add (
+					nextLocation
+				);
+			}
+		}
+
+		return true;
+	}
+
+	private static final boolean WordExists (
+		final int startX,
+		final int startY,
+		final char[][] board,
+		final char[] wordCharArray)
+	{
+		int wordLastIndex = wordCharArray.length - 1;
+
+		java.util.List<int[]> traversalList = new java.util.ArrayList<int[]>();
+
+		java.util.Set<java.lang.Integer> visitedLocationSet = new java.util.HashSet<java.lang.Integer>();
+
+		traversalList.add (
+			new int[]
+			{
+				startX,
+				startY,
+				0
+			}
+		);
+
+		visitedLocationSet.add (
+			startX * board.length + startY
+		);
+
+		while (!traversalList.isEmpty())
+		{
+			int[] traversalItem = traversalList.remove (
+				0
+			);
+
+			int x = traversalItem[0];
+			int y = traversalItem[1];
+			int wordCharIndex = traversalItem[2];
+
+			if (wordCharArray[wordCharIndex] != board[x][y])
+			{
+				continue;
+			}
+
+			if (wordCharIndex == wordLastIndex)
+			{
+				return true;
+			}
+
+			ConditionalStep (
+				x - 1,
+				y,
+				wordCharIndex + 1,
+				board,
+				wordCharArray,
+				traversalList,
+				visitedLocationSet
+			);
+
+			ConditionalStep (
+				x + 1,
+				y,
+				wordCharIndex + 1,
+				board,
+				wordCharArray,
+				traversalList,
+				visitedLocationSet
+			);
+
+			ConditionalStep (
+				x,
+				y - 1,
+				wordCharIndex + 1,
+				board,
+				wordCharArray,
+				traversalList,
+				visitedLocationSet
+			);
+
+			ConditionalStep (
+				x,
+				y + 1,
+				wordCharIndex + 1,
+				board,
+				wordCharArray,
+				traversalList,
+				visitedLocationSet
+			);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Given a 2D board and a word, find if the word exists in the grid.
+	 * 
+	 * The word can be constructed from letters of sequentially adjacent cell, where "adjacent" cells are
+	 *  those horizontally or vertically neighboring. The same letter cell may not be used more than once.
+	 *  
+	 * @param board The Board
+	 * @param word The Word
+	 * 
+	 * @return TRUE - The Word exists on the board
+	 */
+
+	public static final boolean WordExistsInBoard (
+		final char[][] board,
+		final java.lang.String word)
+	{
+		char[] wordCharArray = word.toCharArray();
+
+		for (int row = 0;
+			row < board.length;
+			++row)
+		{
+			for (int column = 0;
+				column < board[0].length;
+				++column)
+			{
+				if (wordCharArray[0] == board[row][column])
+				{
+					if (WordExists (
+						row,
+						column,
+						board,
+						wordCharArray
+					))
+					{
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
 	public static final void main (
 		String[] args)
 	{
-		java.lang.String s = "abcda";
-		int[][] queries = new int[][]
+		char[][] board = new char[][]
 		{
-			{3, 3, 0},
-			{1, 2, 0},
-			{0, 3, 1},
-			{0, 3, 2},
-			{0, 4, 1},
+			{'A', 'B', 'C', 'E'},
+			{'S', 'F', 'C', 'S'},
+			{'A', 'D', 'E', 'E'},
 		};
 
 		System.out.println (
-			CanMakePalindromeQueries (
-				s,
-				queries
+			WordExistsInBoard (
+				board,
+				"ABCCED"
+			)
+		);
+
+		System.out.println (
+			WordExistsInBoard (
+				board,
+				"SEE"
+			)
+		);
+
+		System.out.println (
+			WordExistsInBoard (
+				board,
+				"ABCB"
 			)
 		);
 	}
