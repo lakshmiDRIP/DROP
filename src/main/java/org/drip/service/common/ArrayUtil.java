@@ -1615,36 +1615,4 @@ public class ArrayUtil
 
 		return false;
 	}
-
-	public static final void main (
-		String[] args)
-	{
-		char[][] board = new char[][]
-		{
-			{'A', 'B', 'C', 'E'},
-			{'S', 'F', 'C', 'S'},
-			{'A', 'D', 'E', 'E'},
-		};
-
-		System.out.println (
-			WordExistsInBoard (
-				board,
-				"ABCCED"
-			)
-		);
-
-		System.out.println (
-			WordExistsInBoard (
-				board,
-				"SEE"
-			)
-		);
-
-		System.out.println (
-			WordExistsInBoard (
-				board,
-				"ABCB"
-			)
-		);
-	}
 }

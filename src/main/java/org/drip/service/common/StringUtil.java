@@ -121,6 +121,262 @@ public class StringUtil {
 
 	public static final double VERSION = 2.4;
 
+	private static final int DecimalIntegerDigit (
+		final char c)
+	{
+		if ('0' == c)
+		{
+			return 0;
+		}
+
+		if ('1' == c)
+		{
+			return 1;
+		}
+
+		if ('2' == c)
+		{
+			return 2;
+		}
+
+		if ('3' == c)
+		{
+			return 3;
+		}
+
+		if ('4' == c)
+		{
+			return 4;
+		}
+
+		if ('5' == c)
+		{
+			return 5;
+		}
+
+		if ('6' == c)
+		{
+			return 6;
+		}
+
+		if ('7' == c)
+		{
+			return 7;
+		}
+
+		if ('8' == c)
+		{
+			return 8;
+		}
+
+		if ('9' == c)
+		{
+			return 9;
+		}
+
+		return -1;
+	}
+
+	private static final int HexadecimalIntegerDigit (
+		final char c)
+	{
+		if ('0' == c)
+		{
+			return 0;
+		}
+
+		if ('1' == c)
+		{
+			return 1;
+		}
+
+		if ('2' == c)
+		{
+			return 2;
+		}
+
+		if ('3' == c)
+		{
+			return 3;
+		}
+
+		if ('4' == c)
+		{
+			return 4;
+		}
+
+		if ('5' == c)
+		{
+			return 5;
+		}
+
+		if ('6' == c)
+		{
+			return 6;
+		}
+
+		if ('7' == c)
+		{
+			return 7;
+		}
+
+		if ('8' == c)
+		{
+			return 8;
+		}
+
+		if ('9' == c)
+		{
+			return 9;
+		}
+
+		if ('a' == c)
+		{
+			return 10;
+		}
+
+		if ('b' == c)
+		{
+			return 11;
+		}
+
+		if ('c' == c)
+		{
+			return 12;
+		}
+
+		if ('d' == c)
+		{
+			return 13;
+		}
+
+		if ('e' == c)
+		{
+			return 14;
+		}
+
+		if ('f' == c)
+		{
+			return 15;
+		}
+
+		return -1;
+	}
+
+	private static final int DecimalNumberFromString (
+		final java.lang.String s)
+	{
+		char[] charArray = s.toCharArray();
+
+		int size = charArray.length;
+		int numberFromString = 0;
+
+		for (int charIndex = 0;
+			charIndex < size;
+			++charIndex)
+		{
+			int decimal = DecimalIntegerDigit (
+				charArray[charIndex]
+			);
+
+			if (-1 == decimal)
+			{
+				return -1;
+			}
+
+			numberFromString = 10 * numberFromString + decimal;
+		}
+
+		return numberFromString;
+	}
+
+	private static final int HexadecimalNumberFromString (
+		final java.lang.String s)
+	{
+		char[] charArray = s.toCharArray();
+
+		int size = charArray.length;
+		int numberFromString = 0;
+
+		for (int charIndex = 0;
+			charIndex < size;
+			++charIndex)
+		{
+			int hexadecimal = HexadecimalIntegerDigit (
+				charArray[charIndex]
+			);
+
+			if (-1 == hexadecimal)
+			{
+				return -1;
+			}
+
+			numberFromString = 10 * numberFromString + hexadecimal;
+		}
+
+		return numberFromString;
+	}
+
+	private static final boolean ValidIPv4 (
+		final java.lang.String address)
+	{
+		java.lang.String[] subnetAddress = Split (
+			address.toLowerCase(),
+			"."
+		);
+
+		if (null == subnetAddress || 4 != subnetAddress.length)
+		{
+			return false;
+		}
+
+		for (int i = 0;
+			i < 3;
+			++i)
+		{
+			int numberFromString = DecimalNumberFromString (
+				subnetAddress[i]
+			);
+
+			if (0 > numberFromString || 256 <= numberFromString)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private static final boolean ValidIPv6 (
+		final java.lang.String address)
+	{
+		java.lang.String[] subnetAddress = Split (
+			address.toLowerCase(),
+			":"
+		);
+
+		if (null == subnetAddress || 8 != subnetAddress.length)
+		{
+			return false;
+		}
+
+		for (int i = 0;
+			i < 8;
+			++i)
+		{
+			int numberFromString = HexadecimalNumberFromString (
+				subnetAddress[i]
+			);
+
+			if (0 > numberFromString || 65536 <= numberFromString)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	/**
 	 * Look for a match of the field in the input array
 	 * 
@@ -222,43 +478,79 @@ public class StringUtil {
 	/**
 	 * Parse and Split the Input Phrase into a String Array using the specified Delimiter
 	 * 
-	 * @param strPhrase Input Phrase
-	 * @param strDelim Delimiter
+	 * @param inputPhrase Input Phrase
+	 * @param delimiter Delimiter
 	 * 
 	 * @return Array of Sub-Strings
 	 */
 
 	public static final java.lang.String[] Split (
-		final java.lang.String strPhrase,
-		final java.lang.String strDelim)
+		final java.lang.String inputPhrase,
+		final java.lang.String delimiter)
 	{
-		if (null == strPhrase || strPhrase.isEmpty() || null == strDelim || strDelim.isEmpty()) return null;
-
-		java.util.List<java.lang.Integer> lsDelimIndex = new java.util.ArrayList<java.lang.Integer>();
-
-		int iDelimIndex = -1;
-
-		while (-1 != (iDelimIndex = strPhrase.indexOf (strDelim, iDelimIndex + 1)))
-			lsDelimIndex.add (iDelimIndex);
-
-		int iNumField = lsDelimIndex.size();
-
-		if (0 == iNumField) return null;
-
-		int iBeginIndex = 0;
-		java.lang.String[] astr = new java.lang.String[iNumField + 1];
-
-		for (int i = 0; i < iNumField; ++i) {
-			int iFinishIndex = lsDelimIndex.get (i);
-
-			astr[i] = iBeginIndex >= iFinishIndex ? "" : strPhrase.substring (iBeginIndex, iFinishIndex);
-
-			iBeginIndex = lsDelimIndex.get (i) + 1;
+		if (null == inputPhrase || inputPhrase.isEmpty() ||
+			null == delimiter || delimiter.isEmpty()
+		)
+		{
+			return null;
 		}
 
-		astr[iNumField] = strPhrase.substring (iBeginIndex);
+		if (-1 == inputPhrase.indexOf (
+			delimiter,
+			0
+		))
+		{
+			return new java.lang.String[]
+			{
+				inputPhrase
+			};
+		}
 
-		return astr;
+		int delimiterIndex = -1;
+
+		java.util.List<java.lang.Integer> delimiterIndexList = new java.util.ArrayList<java.lang.Integer>();
+
+		while (-1 != (delimiterIndex = inputPhrase.indexOf (
+			delimiter,
+			delimiterIndex + 1
+		)))
+		{
+			delimiterIndexList.add (
+				delimiterIndex
+			);
+		}
+
+		int fieldCount = delimiterIndexList.size();
+
+		if (0 == fieldCount)
+		{
+			return null;
+		}
+
+		int beginIndex = 0;
+		java.lang.String[] fieldArray = new java.lang.String[fieldCount + 1];
+
+		for (int fieldIndex = 0;
+			fieldIndex < fieldCount;
+			++fieldIndex)
+		{
+			int endIndex = delimiterIndexList.get (fieldIndex);
+
+			fieldArray[fieldIndex] = beginIndex >= endIndex ? "" : inputPhrase.substring (
+				beginIndex,
+				endIndex
+			);
+
+			beginIndex = delimiterIndexList.get (
+				fieldIndex
+			) + 1;
+		}
+
+		fieldArray[fieldCount] = inputPhrase.substring (
+			beginIndex
+		);
+
+		return fieldArray;
 	}
 
 	/**
@@ -530,62 +822,6 @@ public class StringUtil {
 		return strLeft.equalsIgnoreCase (strRight);
 	}
 
-	private static final int IntegerValue (
-		final char c)
-	{
-		if ('0' == c)
-		{
-			return 0;
-		}
-
-		if ('1' == c)
-		{
-			return 1;
-		}
-
-		if ('2' == c)
-		{
-			return 2;
-		}
-
-		if ('3' == c)
-		{
-			return 3;
-		}
-
-		if ('4' == c)
-		{
-			return 4;
-		}
-
-		if ('5' == c)
-		{
-			return 5;
-		}
-
-		if ('6' == c)
-		{
-			return 6;
-		}
-
-		if ('7' == c)
-		{
-			return 7;
-		}
-
-		if ('8' == c)
-		{
-			return 8;
-		}
-
-		if ('9' == c)
-		{
-			return 9;
-		}
-
-		return -1;
-	}
-
 	/**
 	 * Implement atoi which converts a string to an integer.
 	 * 
@@ -612,8 +848,9 @@ public class StringUtil {
 	 *  
 	 * @param s Input String
 	 * 
-	 * @return
+	 * @return The Integer
 	 */
+
 	public static final int AToI (
 		final java.lang.String s)
 	{
@@ -642,7 +879,7 @@ public class StringUtil {
 
 		while (index < stringLength)
 		{
-			int integerValue = IntegerValue (
+			int integerValue = DecimalIntegerDigit (
 				charArray[index]
 			);
 
@@ -679,37 +916,229 @@ public class StringUtil {
 		return value * sign;
 	}
 
+	/**
+	 * Given an input string, reverse the string word by word.
+	 * 
+	 * @param s Input String
+	 * 
+	 * @return String with Words Reversed
+	 */
+
+	public static final java.lang.String ReverseWords (
+		final java.lang.String s)
+	{
+		java.lang.String[] wordArray = s.split (
+			" "
+		);
+
+		boolean firstWord = true;
+		java.lang.String reverseString = "";
+
+		for (int wordIndex = wordArray.length - 1;
+			wordIndex >= 0;
+			--wordIndex)
+		{
+			java.lang.String gap = " ";
+
+			if (firstWord)
+			{
+				gap = "";
+			}
+
+			if (null != wordArray[wordIndex] && !wordArray[wordIndex].isBlank())
+			{
+				reverseString = reverseString + gap + wordArray[wordIndex];
+				firstWord = false;
+			}
+		}
+
+		return reverseString;
+	}
+
+	/**
+	 * Function to check whether an input string is a valid IPv4 address or IPv6 address or neither.
+	 * 
+	 * IPv4 addresses are canonically represented in dot-decimal notation, which consists of four decimal
+	 * 	numbers, each ranging from 0 to 255, separated by dots ("."), e.g.,172.16.254.1;
+	 * 
+	 * Besides, leading zeros in the IPv4 is invalid. For example, the address 172.16.254.01 is invalid.
+	 * 
+	 * IPv6 addresses are represented as eight groups of four hexadecimal digits, each group representing 16
+	 * 	bits. The groups are separated by colons (":"). For example, the address
+	 *  2001:0db8:85a3:0000:0000:8a2e:0370:7334 is a valid one. Also, we could omit some leading zeros among
+	 *  four hexadecimal digits and some low-case characters in the address to upper-case ones, so
+	 *  2001:db8:85a3:0:0:8A2E:0370:7334 is also a valid IPv6 address(Omit leading zeros and using upper
+	 *  cases).
+	 *  
+	 *  However, we don't replace a consecutive group of zero value with a single empty group using two
+	 *   consecutive colons (::) to pursue simplicity. For example, 2001:0db8:85a3::8A2E:0370:7334 is an
+	 *   invalid IPv6 address.
+	 *   
+	 *  Besides, extra leading zeros in the IPv6 is also invalid. For example, the address
+	 *   02001:0db8:85a3:0000:0000:8a2e:0370:7334 is invalid.
+	 *   
+	 *  Note: You may assume there is no extra space or special characters in the input string.
+	 * 
+	 * @param s Input String
+	 * 
+	 * @return IP Address Type
+	 */
+
+	public static final java.lang.String ValidIPAddressType (
+		final java.lang.String s)
+	{
+		if (ValidIPv4 (
+			s
+		))
+		{
+			return "IPv4";
+		}
+
+		return ValidIPv6 (
+			s
+		) ? "IPv6" : "Neither";
+	}
+
+	/**
+	 * Compare two version numbers version1 and version2.
+	 * 
+	 * If version1 > version2 return 1; if version1 < version2 return -1;otherwise return 0.
+	 * 
+	 * You may assume that the version strings are non-empty and contain only digits and the . character.
+	 * 
+	 * The . character does not represent a decimal point and is used to separate number sequences.
+	 * 
+	 * For instance, 2.5 is not "two and a half" or "half way to version three", it is the fifth second-level
+	 * 	revision of the second first-level revision.
+	 * 
+	 * You may assume the default revision number for each level of a version number to be 0. For example,
+	 *  version number 3.4 has a revision number of 3 and 4 for its first and second level revision number.
+	 *  Its third and fourth level revision number are both 0.
+	 * 
+	 * @param version1 First Version String
+	 * @param version2 Second Version String
+	 * 
+	 * @return Results of the Comparison
+	 */
+
+	public static final int VersionCompare (
+		final java.lang.String version1,
+		final java.lang.String version2)
+	{
+		java.lang.String[] subVersion1 = Split (
+			version1,
+			"."
+		);
+
+		java.lang.String[] subVersion2 = Split (
+			version2,
+			"."
+		);
+
+		int subVersion1Index = 0;
+		int subVersion2Index = 0;
+
+		while (subVersion1Index < subVersion1.length &&
+			subVersion2Index < subVersion2.length)
+		{
+			int subVersion1Number = DecimalNumberFromString (
+				subVersion1[subVersion1Index]
+			);
+
+			int subVersion2Number = DecimalNumberFromString (
+				subVersion2[subVersion1Index]
+			);
+
+			if (subVersion1Number > subVersion2Number)
+			{
+				return 1;
+			}
+
+			if (subVersion1Number < subVersion2Number)
+			{
+				return -1;
+			}
+
+			++subVersion1Index;
+			++subVersion2Index;
+		}
+
+		if (subVersion1.length == subVersion2.length)
+		{
+			return 0;
+		}
+
+		if (subVersion1.length > subVersion2.length)
+		{
+			while (subVersion1Index < subVersion1.length)
+			{
+				int subVersion1Number = DecimalNumberFromString (
+					subVersion1[subVersion1Index]
+				);
+
+				if (0 != subVersion1Number)
+				{
+					return 1;
+				}
+
+				++subVersion1Index;
+			}
+		}
+		else
+		{
+			while (subVersion2Index < subVersion2.length)
+			{
+				int subVersion2Number = DecimalNumberFromString (
+					subVersion2[subVersion1Index]
+				);
+
+				if (0 != subVersion2Number)
+				{
+					return -1;
+				}
+
+				++subVersion2Index;
+			}
+		}
+
+		return 0;
+	}
+
 	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+		String[] args)
 	{
 		System.out.println (
-			AToI (
-				"42"
+			VersionCompare (
+				"0.1",
+				"1.1"
 			)
 		);
 
 		System.out.println (
-			AToI (
-				"   -42"
+			VersionCompare (
+				"1.0.1",
+				"1"
 			)
 		);
 
 		System.out.println (
-			AToI (
-				"4193 with words"
+			VersionCompare (
+				"7.5.2.4",
+				"7.5.3"
 			)
 		);
 
 		System.out.println (
-			AToI (
-				"words and 987"
+			VersionCompare (
+				"1.01",
+				"1.001"
 			)
 		);
 
 		System.out.println (
-			AToI (
-				"-91283472332"
+			VersionCompare (
+				"1.0",
+				"1.0.0"
 			)
 		);
 	}
