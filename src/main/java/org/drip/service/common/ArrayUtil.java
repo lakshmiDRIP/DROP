@@ -1031,7 +1031,7 @@ public class ArrayUtil
 	/**
 	 * Given a circular array C of integers represented by A, find the maximum possible sum of a non-empty
 	 * 	sub-array of C. Here, a circular array means the end of the array connects to the beginning of the
-	 * 	array.  (Formally, C[i] = A[i] when 0 <= i < A.length, and C[i+A.length] = C[i] when i gte 0.)
+	 * 	array.  (Formally, C[i] = A[i] when 0 lte i lt A.length, and C[i+A.length] = C[i] when i gte 0.)
 	 * 
 	 * Also, a sub-array may only include each element of the fixed buffer A at most once.  (Formally, for a
 	 * 	sub-array C[i], C[i+1], ..., C[j], there does not exist i lte k1, k2 gte j with k1 % A.length = k2 %

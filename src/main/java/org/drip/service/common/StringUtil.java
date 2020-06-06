@@ -377,6 +377,22 @@ public class StringUtil {
 		return true;
 	}
 
+	private static final boolean IsPalindrome (
+		final char[] charArray,
+		int startIndex,
+		int endIndex)
+	{
+		while (endIndex > startIndex)
+		{
+			if (charArray[endIndex--] != charArray[startIndex++])
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	/**
 	 * Look for a match of the field in the input array
 	 * 
@@ -1002,7 +1018,7 @@ public class StringUtil {
 	/**
 	 * Compare two version numbers version1 and version2.
 	 * 
-	 * If version1 > version2 return 1; if version1 < version2 return -1;otherwise return 0.
+	 * If version1 gt version2 return 1; if version1 lt version2 return -1;otherwise return 0.
 	 * 
 	 * You may assume that the version strings are non-empty and contain only digits and the . character.
 	 * 
@@ -1104,41 +1120,357 @@ public class StringUtil {
 		return 0;
 	}
 
+	/**
+	 * Given a string, find the longest palindromic substring.
+	 * 
+	 * @param s Input String
+	 * 
+	 * @return The longest palindromic substring
+	 */
+
+	public static final java.lang.String LongestPalindromicSubstring (
+		final java.lang.String s)
+	{
+		char[] charArray = s.toCharArray();
+
+		int beginIndex = 0;
+		int longestPalindromeSize = 0;
+		int stringLength = charArray.length;
+		java.lang.String longestPalindromicSubstring = "";
+
+		while (beginIndex + longestPalindromeSize < stringLength)
+		{
+			int endIndex = stringLength - 1;
+
+			while (endIndex > beginIndex + longestPalindromeSize)
+			{
+				if (IsPalindrome (
+					charArray,
+					beginIndex,
+					endIndex
+				))
+				{
+					java.lang.String palindrome = s.substring (
+						beginIndex,
+						endIndex + 1
+					);
+
+					int palindromeSize = palindrome.length();
+
+					if (palindromeSize > longestPalindromeSize)
+					{
+						longestPalindromicSubstring = palindrome;
+						longestPalindromeSize = palindromeSize;
+					}
+				}
+
+				--endIndex;
+			}
+
+			++beginIndex;
+		}
+
+		return longestPalindromicSubstring;
+	}
+
+	/**
+	 * Find the length of the <b>longest substring</b> without repeating characters.
+	 * 
+	 * @param s Input String
+	 * 
+	 * @return Length of the <b>longest substring</b> without repeating characters.
+	 */
+
+	public static final int LengthOfLongestNonRepeatingSubstring (
+		final java.lang.String s)
+	{
+		char[] charArray = s.toCharArray();
+
+		int index = 0;
+		int beginIndex = 0;
+		int lengthOfLongestNonRepeatingSubstring = 0;
+
+		java.util.Map<java.lang.Character, java.lang.Integer> charMap =
+			new java.util.HashMap<java.lang.Character, java.lang.Integer>();
+
+		while (index < charArray.length)
+		{
+			if (charMap.containsKey (
+				charArray[index]
+			))
+			{
+				int lengthOfNonRepeatingSubstring = index - beginIndex;
+
+				if (lengthOfLongestNonRepeatingSubstring < lengthOfNonRepeatingSubstring)
+				{
+					lengthOfLongestNonRepeatingSubstring = lengthOfNonRepeatingSubstring;
+				}
+
+				beginIndex = charMap.get (
+					charArray[index]
+				) + 1;
+
+				charMap.clear();
+
+				for (int currentNonRepeatingSubstringIndex = beginIndex;
+					currentNonRepeatingSubstringIndex <= index;
+					++currentNonRepeatingSubstringIndex)
+				{
+					charMap.put (
+						charArray[currentNonRepeatingSubstringIndex],
+						currentNonRepeatingSubstringIndex + beginIndex
+					);
+				}
+			}
+			else
+			{
+				charMap.put (
+					charArray[index],
+					index
+				);
+			}
+
+			++index;
+		}
+
+		int lengthOfNonRepeatingSubstring = charArray.length - beginIndex;
+
+		if (lengthOfLongestNonRepeatingSubstring < lengthOfNonRepeatingSubstring)
+		{
+			lengthOfLongestNonRepeatingSubstring = lengthOfNonRepeatingSubstring;
+		}
+
+		return lengthOfLongestNonRepeatingSubstring;
+	}
+
+	/**
+	 * Given a string containing only three types of characters: '(', ')' and '*', write a function to check
+	 * 	whether this string is valid. We define the validity of a string by these rules:
+	 * 
+	 * Any left parenthesis '(' must have a corresponding right parenthesis ')'.
+	 * Any right parenthesis ')' must have a corresponding left parenthesis '('.
+	 * Left parenthesis '(' must go before the corresponding right parenthesis ')'.
+	 * '*' could be treated as a single right parenthesis ')' or a single left parenthesis '(' or an empty
+	 *  string.
+	 * An empty string is also valid.
+	 *  
+	 * @param s Input String
+	 * 
+	 * @return TRUE - The String has Valid Parenthesis
+	 */
+
+	public static final boolean ValidateParenthesisString (
+		final java.lang.String s)
+	{
+		char[] charArray = s.toCharArray();
+
+		int rightBracketIndex = charArray.length - 1;
+		int leftBracketIndex = charArray.length - 2;
+		int rightParenthesisCount = 0;
+		int leftParenthesisCount = 0;
+		int wildCardCount = 0;
+		int wildCardIndex = 0;
+
+		for (char c : charArray)
+		{
+			if (c == ')')
+			{
+				++rightParenthesisCount;
+			}
+			else if (c == '(')
+			{
+				++leftParenthesisCount;
+			}
+			else if (c == '*')
+			{
+				++wildCardCount;
+			}
+		}
+
+		while (rightParenthesisCount > 0 && leftParenthesisCount > 0 && rightBracketIndex >= 0)
+		{
+			while (charArray[rightBracketIndex] != ')')
+			{
+				--rightBracketIndex;
+			}
+
+			leftBracketIndex = rightBracketIndex - 1 < leftBracketIndex ? rightBracketIndex - 1 :
+				leftBracketIndex;
+
+			while (leftBracketIndex >= 0)
+			{
+				if (charArray[leftBracketIndex] == '(')
+				{
+					--rightParenthesisCount;
+					--leftParenthesisCount;
+					break;
+				}
+
+				--leftBracketIndex;
+			}
+
+			--rightBracketIndex;
+		}
+
+		while (rightParenthesisCount > 0 && wildCardCount > 0 && rightBracketIndex > 0)
+		{
+			while (charArray[rightBracketIndex] != ')')
+			{
+				--rightBracketIndex;
+			}
+
+			while (wildCardIndex < rightBracketIndex)
+			{
+				if (charArray[wildCardIndex] == '*')
+				{
+					--rightParenthesisCount;
+					--wildCardCount;
+					break;
+				}
+
+				++wildCardIndex;
+			}
+
+			--rightBracketIndex;
+		}
+
+		if (rightParenthesisCount > 0)
+		{
+			return false;
+		}
+
+		if (leftParenthesisCount == 0)
+		{
+			return true;
+		}
+
+		int leftBracketIndexUpperBound = leftBracketIndex - 1;
+
+		while (charArray[leftBracketIndexUpperBound] != '(')
+		{
+			--leftBracketIndexUpperBound;
+		}
+
+		leftBracketIndex = 0;
+
+		while (leftParenthesisCount > 0 && wildCardCount > 0 &&
+			leftBracketIndex <= leftBracketIndexUpperBound)
+		{
+			while (charArray[leftBracketIndex] != '(')
+			{
+				++leftBracketIndex;
+			}
+
+			wildCardIndex = leftBracketIndex + 1;
+
+			while (wildCardIndex < charArray.length)
+			{
+				if (charArray[wildCardIndex] == '*')
+				{
+					--leftParenthesisCount;
+					--wildCardCount;
+					break;
+				}
+
+				++wildCardIndex;
+			}
+
+			++leftBracketIndex;
+		}
+
+		return 0 == leftParenthesisCount;
+	}
+
+	/**
+	 * Given a positive 32-bit integer, you need to find the smallest 32-bit integer which has exactly the
+	 * 	same digits existing in the integer and is greater in value. If no such positive 32-bit integer
+	 * 	exists, you need to return -1.
+	 * 
+	 * @param n Input Integer
+	 * 
+	 * @return Next Greater Number
+	 */
+
+	public static final int NextGreaterInteger (
+		int n)
+	{
+		java.util.List<java.lang.Integer> integerList = new java.util.ArrayList<java.lang.Integer>();
+
+		while (n != 0)
+		{
+			integerList.add (
+				0,
+				n % 10
+			);
+
+			n = n / 10;
+		}
+
+		int integerListSize = integerList.size();
+
+		if (1 == integerListSize)
+		{
+			return -1;
+		}
+
+		int rightInteger = integerList.get (
+			integerListSize - 1
+		);
+
+		int leftIndex = integerListSize - 2;
+
+		while (leftIndex >= 0)
+		{
+			int leftInteger = integerList.get (
+				leftIndex
+			);
+
+			if (leftInteger < rightInteger)
+			{
+				int number = 0;
+
+				for (int index = 0;
+					index < integerListSize;
+					++index)
+				{
+					if (index == leftIndex)
+					{
+						number = number * 10 + rightInteger;
+					}
+					else if (index == leftIndex + 1)
+					{
+						number = number * 10 + leftInteger;
+					}
+					else
+					{
+						number = number * 10 + integerList.get (
+							index
+						);
+					}
+				}
+
+				return number;
+			}
+
+			rightInteger = leftInteger;
+			--leftIndex;
+		}
+
+		return -1;
+	}
+
 	public static final void main (
 		String[] args)
 	{
 		System.out.println (
-			VersionCompare (
-				"0.1",
-				"1.1"
+			NextGreaterInteger (
+				12
 			)
 		);
 
 		System.out.println (
-			VersionCompare (
-				"1.0.1",
-				"1"
-			)
-		);
-
-		System.out.println (
-			VersionCompare (
-				"7.5.2.4",
-				"7.5.3"
-			)
-		);
-
-		System.out.println (
-			VersionCompare (
-				"1.01",
-				"1.001"
-			)
-		);
-
-		System.out.println (
-			VersionCompare (
-				"1.0",
-				"1.0.0"
+			NextGreaterInteger (
+				21
 			)
 		);
 	}
