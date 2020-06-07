@@ -393,6 +393,33 @@ public class StringUtil {
 		return true;
 	}
 
+	private static final int CharToDigit (
+		final int c)
+	{
+		return (int) c - (int) '0';
+	}
+
+	private static final java.util.List<java.lang.Integer> StringToNumber (
+		final java.lang.String s)
+	{
+		java.util.List<java.lang.Integer> numberList = new java.util.ArrayList<java.lang.Integer>();
+
+		for (int i = 0;
+			i < s.length();
+			++i)
+		{
+			numberList.add (
+				CharToDigit (
+					s.charAt (
+						i
+					)
+				)
+			);
+		}
+
+		return numberList;
+	}
+
 	/**
 	 * Look for a match of the field in the input array
 	 * 
@@ -1459,18 +1486,229 @@ public class StringUtil {
 		return -1;
 	}
 
+	/**
+	 * Given an absolute path for a file (Unix-style), simplify it. Or in other words, convert it to the
+	 * 	canonical path.
+	 * 
+	 * In a UNIX-style file system, a period . refers to the current directory. Furthermore, a double period
+	 * 	.. moves the directory up a level.
+	 * 
+	 * Note that the returned canonical path must always begin with a slash /, and there must be only a
+	 * 	single slash / between two directory names. The last directory name (if it exists) must not end with
+	 * 	a trailing /. Also, the canonical path must be the shortest string representing the absolute path.
+	 * 
+	 * @param path Input Path
+	 * 
+	 * @return Simplified Path
+	 */
+
+	public static final java.lang.String SimplifyPath (
+		java.lang.String path)
+	{
+		while (path.startsWith (
+			"/"
+		))
+		{
+			path = path.substring (
+				1
+			);
+		}
+
+		while (path.endsWith (
+			"/"
+		))
+		{
+			path = path.substring (
+				0,
+				path.length() - 1
+			);
+		}
+
+		java.lang.String[] folders = Split (
+			path,
+			"/"
+		);
+
+		java.util.List<java.lang.String> folderList = new java.util.ArrayList<java.lang.String>();
+
+		for (java.lang.String folder : folders)
+		{
+			if (null == folder || folder.isEmpty())
+			{
+				continue;
+			}
+
+			if (folder.equals (
+				".."
+			))
+			{
+				int folderListIndex = folderList.size() - 1;
+
+				if (0 <= folderListIndex)
+				{
+					folderList.remove (
+						folderListIndex
+					);
+				}
+			}
+			else if (!folder.equals (
+				"."
+			))
+			{
+				folderList.add (
+					folder
+				);
+			}
+		}
+
+		if (folderList.isEmpty())
+		{
+			return "/";
+		}
+
+		java.lang.String simplifiedPath = "";
+
+		for (java.lang.String folder : folderList)
+		{
+			simplifiedPath = simplifiedPath + "/" + folder;
+		}
+
+		return simplifiedPath;
+	}
+
+	/**
+	 * Given a string containing only 4 kinds of characters 'Q', 'W', 'E' and 'R'.
+	 * 
+	 * A string is said to be balanced if each of its characters appears n/4 times where n is the length of
+	 * 	the string.
+	 * 
+	 * Return the minimum length of the substring that can be replaced with any other string of the same
+	 *  length to make the original string balanced.
+	 *  
+	 * Return 0 if the string is already balanced.
+	 * 
+	 * @param s Input String
+	 * 
+	 * @return Minimum length of the substring
+	 */
+
+	public static final int BalanceString (
+		final java.lang.String s)
+	{
+		char[] charArray = s.toCharArray();
+
+		int stringLength = charArray.length;
+		int charCount = stringLength / 4;
+		int qCount = 0;
+		int wCount = 0;
+		int eCount = 0;
+		int rCount = 0;
+
+		for (int charIndex = 0;
+			charIndex < stringLength;
+			++charIndex)
+		{
+			if ('Q' == charArray[charIndex])
+			{
+				++qCount;
+			}
+			else if ('W' == charArray[charIndex])
+			{
+				++wCount;
+			}
+			else if ('E' == charArray[charIndex])
+			{
+				++eCount;
+			}
+			else if ('R' == charArray[charIndex])
+			{
+				++rCount;
+			}
+		}
+
+		return (java.lang.Math.abs (
+			qCount - charCount
+		) + java.lang.Math.abs (
+			wCount - charCount
+		) + java.lang.Math.abs (
+			eCount - charCount
+		) + java.lang.Math.abs (
+			rCount - charCount
+		)) / 2;
+	}
+
+	/**
+	 * 
+	 * Given two non-negative integers represented as strings, return their product, also represented as a
+	 *  string.
+	 * 
+	 * @param num1 First Number
+	 * @param num2 Second Number
+	 * 
+	 * @return The Product
+	 */
+
+	public static final java.lang.String MultiplyNumbers (
+		final java.lang.String num1,
+		final java.lang.String num2)
+	{
+		java.util.List<java.lang.Integer> numberList1 = StringToNumber (
+			num1
+		);
+
+		java.util.List<java.lang.Integer> numberList2 = StringToNumber (
+			num2
+		);
+
+		int scale1 = 1;
+		int multiplication = 0;
+
+		int number1Length = numberList1.size();
+
+		int number2Length = numberList2.size();
+
+		for (int index1 = number1Length - 1;
+			index1 >= 0;
+			--index1)
+		{
+			int scale2 = 1;
+
+			int digit1 = numberList1.get (
+				index1
+			);
+
+			for (int index2 = number2Length - 1;
+				index2 >= 0;
+				--index2)
+			{
+				int digit2 = numberList2.get (
+					index2
+				);
+
+				multiplication = multiplication + digit1 * scale1 * digit2 * scale2;
+				scale2 = scale2 * 10;
+			}
+
+			scale1 = scale1 * 10;
+		}
+
+		return "" + multiplication;
+	}
+
 	public static final void main (
 		String[] args)
 	{
 		System.out.println (
-			NextGreaterInteger (
-				12
+			MultiplyNumbers (
+				"2",
+				"3"
 			)
 		);
 
 		System.out.println (
-			NextGreaterInteger (
-				21
+			MultiplyNumbers (
+				"123",
+				"456"
 			)
 		);
 	}
