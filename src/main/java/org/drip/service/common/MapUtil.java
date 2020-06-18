@@ -108,50 +108,203 @@ public class MapUtil
 		int numerator,
 		int denominator)
 	{
-		int quotient = numerator / denominator;
-		int remainer = numerator % denominator;
-
-		java.util.List<java.lang.Integer> repeatingFractionList =
-			new java.util.ArrayList<java.lang.Integer>();
-
 		java.util.Map<java.lang.Integer, java.lang.Integer> repeatingFractionMap =
 			new java.util.HashMap<java.lang.Integer, java.lang.Integer>();
 
-		while (0 != remainer && !repeatingFractionMap.containsKey (
-			remainer
-		))
+		int index = 0;
+		int remainer = numerator % denominator;
+		java.lang.String fractionToDecimal = "" + (numerator / denominator);
+
+		if (remainer == 0)
 		{
-			int nextRemainer = 10 * remainer % denominator;
+			return fractionToDecimal;
+		}
+
+		fractionToDecimal = fractionToDecimal + ".";
+
+		while (remainer != 0 &&
+			!repeatingFractionMap.containsKey (
+				remainer
+			)
+		)
+		{
+			int remainerTimes10 = remainer * 10;
+			int quotient = remainerTimes10 / denominator;
 
 			repeatingFractionMap.put (
 				remainer,
-				10 * remainer / denominator
+				remainerTimes10 / denominator
 			);
 
-			repeatingFractionList.add (
-				remainer
-			);
-
-			remainer = nextRemainer;
+			remainer = remainerTimes10 % denominator;
+			fractionToDecimal = fractionToDecimal + quotient;
 		}
 
-		java.lang.String fractionToDecimal = "";
-
-		for (int repeatingFraction : repeatingFractionList)
+		if (0 == remainer)
 		{
-			fractionToDecimal = fractionToDecimal + repeatingFractionMap.get (
-				repeatingFraction
-			);
+			return fractionToDecimal;
 		}
 
-		if (fractionToDecimal.isEmpty())
+		int remainerQuotient = repeatingFractionMap.get (
+			remainer
+		);
+
+		int fractionToDecimalLength = fractionToDecimal.length();
+
+		while (index < fractionToDecimalLength)
 		{
-			return "" + quotient;
+			if (((int) fractionToDecimal.charAt (
+				index
+			) - '0') == remainerQuotient)
+			{
+				break;
+			}
+
+			index++;
 		}
 
-		return 0 == remainer ?
-			quotient + "." + fractionToDecimal :
-			quotient + ".(" + fractionToDecimal + ")";
+		return fractionToDecimal.substring (
+			0,
+			index
+		) + "(" + fractionToDecimal.substring (
+			index,
+			fractionToDecimalLength
+		) + ")";
+	}
+
+	public static final int LeastIntervalTaskScheduler (
+		final char[] taskArray,
+		final int coolOffInterval)
+	{
+		int leastIntervalTaskScheduler = 0;
+
+		java.util.HashMap<java.lang.Character, java.lang.Integer> taskCountMap =
+			new java.util.HashMap<java.lang.Character, java.lang.Integer>();
+
+		java.util.HashMap<java.lang.Character, java.lang.Integer> taskCoolDownMap =
+			new java.util.HashMap<java.lang.Character, java.lang.Integer>();
+
+		for (char c : taskArray)
+		{
+			if (taskCountMap.containsKey(c))
+			{
+				taskCountMap.put(c, taskCountMap.get(c) + 1);
+			}
+			else
+			{
+				taskCountMap.put(c, 1);
+			}
+
+			taskCoolDownMap.put(c, 0);
+		}
+
+		java.util.TreeMap<java.lang.Integer, java.util.List<java.lang.Character>> taskFrequencyMap =
+			new java.util.TreeMap<java.lang.Integer, java.util.List<java.lang.Character>>();
+
+		for (java.util.HashMap.Entry<java.lang.Character, java.lang.Integer> taskCountMapEntry :
+			taskCountMap.entrySet())
+		{
+			int freq = taskCountMapEntry.getValue();
+
+			char task = taskCountMapEntry.getKey();
+
+			if (!taskFrequencyMap.containsKey(freq))
+			{
+				java.util.List<java.lang.Character> freqList = new java.util.ArrayList<java.lang.Character>();
+
+				freqList.add(task);
+
+				taskFrequencyMap.put(freq, freqList);
+			}
+			else
+			{
+				taskFrequencyMap.get(freq).add(task);
+			}
+		}
+
+		while (!taskFrequencyMap.isEmpty())
+		{
+			java.util.Set<java.lang.Integer> freqSet = taskFrequencyMap.descendingKeySet();
+
+			int pickIndex = -1;
+			int freqPicked = -1;
+			char taskPicked = ' ';
+			++leastIntervalTaskScheduler;
+
+			for (int freq : freqSet)
+			{
+				pickIndex = 0;
+
+				if (-1 != freqPicked)
+				{
+					break;
+				}
+
+				java.util.List<java.lang.Character> freqList = taskFrequencyMap.get(freq);
+
+				for (char task : freqList)
+				{
+					if (0 == taskCoolDownMap.get(task))
+					{
+						taskPicked = task;
+						freqPicked = freq;
+						break;
+					}
+
+					++pickIndex;
+				}
+			}
+
+			if (' ' != taskPicked)
+			{
+				java.util.List<java.lang.Character> taskList = taskFrequencyMap.get(freqPicked);
+
+				taskList.remove(pickIndex);
+
+				if (taskList.isEmpty())
+				{
+					taskFrequencyMap.remove(freqPicked);
+				}
+
+				freqPicked = freqPicked - 1;
+
+				if (freqPicked > 0)
+				{
+					if (taskFrequencyMap.containsKey(freqPicked))
+					{
+						taskFrequencyMap.get(freqPicked).add(taskPicked);
+					}
+					else
+					{
+						java.util.List<java.lang.Character> freqPickedList =
+							new java.util.ArrayList<java.lang.Character>();
+
+						freqPickedList.add(taskPicked);
+
+						taskFrequencyMap.put(freqPicked, freqPickedList);
+					}
+				}
+			}
+
+			for (java.util.Map.Entry<java.lang.Character, java.lang.Integer> taskCoolDownEntry :
+				taskCoolDownMap.entrySet())
+			{
+				char c = taskCoolDownEntry.getKey();
+
+				int coolDown = taskCoolDownEntry.getValue();
+
+				if (c == taskPicked)
+				{
+					taskCoolDownMap.put(c, coolOffInterval);
+				}
+				else if (coolDown > 0)
+				{
+					taskCoolDownMap.put(c, coolDown - 1);
+				}
+			}
+		}
+
+		return leastIntervalTaskScheduler;
 	}
 
 	public static final void main (
@@ -159,23 +312,9 @@ public class MapUtil
 		throws Exception
 	{
 		System.out.println (
-			FractionToDecimal (
-				1,
+			LeastIntervalTaskScheduler (
+				new char[] {'A', 'A', 'A', 'B', 'B', 'B'},
 				2
-			)
-		);
-
-		System.out.println (
-			FractionToDecimal (
-				2,
-				1
-			)
-		);
-
-		System.out.println (
-			FractionToDecimal (
-				2,
-				3
 			)
 		);
 	}

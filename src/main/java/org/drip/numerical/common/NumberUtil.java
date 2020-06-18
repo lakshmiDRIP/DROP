@@ -1126,4 +1126,264 @@ public class NumberUtil {
 
 		return negative ? 1. / power : power;
 	}
+
+	private static final int DigitListToInteger (
+		final java.util.List<java.lang.Integer> integerToDigitList)
+	{
+		int integer = 0;
+
+		for (int digit : integerToDigitList)
+		{
+			integer = 10 * integer + digit;
+		}
+
+		return integer;
+	}
+
+	private static final int NextPalindrome (
+		int n)
+	{
+		java.util.List<java.lang.Integer> digitList = new java.util.ArrayList<java.lang.Integer>();
+
+		int number = n + 1;
+
+		while (0 != number)
+		{
+			digitList.add (
+				0,
+				number % 10
+			);
+
+			number = number / 10;
+		}
+
+		int digitCount = digitList.size();
+
+		int leftDigitIndex = 0;
+		int rightDigitIndex = digitCount - 1;
+
+		while (leftDigitIndex < rightDigitIndex)
+		{
+			int leftDigit = digitList.get (
+				leftDigitIndex
+			);
+
+			int rightDigit = digitList.get (
+				rightDigitIndex
+			);
+
+			if (leftDigit > rightDigit)
+			{
+				digitList.set (
+					rightDigitIndex,
+					leftDigit
+				);
+			}
+			else if (leftDigit < rightDigit)
+			{
+				if (leftDigitIndex == rightDigitIndex - 1)
+				{
+					int newDigit = leftDigit + 1;
+
+					digitList.set (
+						leftDigitIndex,
+						newDigit
+					);
+
+					digitList.set (
+						rightDigitIndex,
+						newDigit
+					);
+
+					break;
+				}
+
+				digitList.set (
+					rightDigitIndex,
+					leftDigit
+				);
+
+				int precedingDigit = digitList.get (
+					rightDigitIndex - 1
+				);
+
+				if (9 != precedingDigit)
+				{
+					digitList.set (
+						rightDigitIndex - 1,
+						precedingDigit + 1
+					);
+				}
+				else
+				{
+					while (rightDigitIndex > 0 &&
+						9 == digitList.get (
+							rightDigitIndex - 1
+						)
+					)
+					{
+						digitList.set (
+							rightDigitIndex - 1,
+							0
+						);
+
+						--rightDigitIndex;
+					}
+
+					if (0 == rightDigitIndex)
+					{
+						digitList.add (
+							0,
+							1
+						);
+					}
+					else
+					{
+						digitList.set (
+							rightDigitIndex - 1,
+							digitList.get (
+								rightDigitIndex - 1
+							) + 1
+						);
+					}
+
+					return NextPalindrome (
+						DigitListToInteger (
+							digitList
+						) - 1
+					);
+				}
+			}
+
+			++leftDigitIndex;
+			--rightDigitIndex;
+		}
+
+		return DigitListToInteger (
+			digitList
+		);
+	}
+
+	/**
+	 * Find the smallest prime palindrome greater than or equal to the input number.
+	 * 
+	 * Recall that a number is prime if it's only divisors are 1 and itself, and it is greater than 1.
+	 * 
+	 * For example, 2,3,5,7,11 and 13 are primes.
+	 * 
+	 * Recall that a number is a palindrome if it reads the same from left to right as it does from right to
+	 * 	left.
+	 * 
+	 * For example, 12321 is a palindrome.
+	 * 
+	 * @param n The Number
+	 * 
+	 * @return The Next Prime Palindrome
+	 */
+
+	public static final int NextPrimePalindrome (
+		final int n)
+	{
+		int nextPalindrome = NextPalindrome (
+			n
+		);
+
+		while (!org.drip.numerical.common.PrimeUtil.IsPrime (
+			nextPalindrome
+		))
+		{
+			nextPalindrome = NextPalindrome (
+				nextPalindrome
+			);
+		}
+
+		return nextPalindrome;
+	}
+
+	public static final int TrailingFactorialZeros (
+		final int n)
+	{
+		int zeroCount = 0;
+
+		double log5 = Math.log (
+			5
+		);
+
+		for (int num = 5; num <= n; num = num + 5)
+		{
+			zeroCount = zeroCount + (int) (Math.log (
+				num
+			) / log5);
+		}
+
+		return zeroCount;
+	}
+
+	public static final int NthDigit (
+		final int n)
+	{
+		int tenPower = 1;
+		int currentDigit = 1;
+		int leftNumberSpan = 1;
+		int upperCharIndex = 8;
+		int upperCharIndexPrev = -1;
+
+		while (n - 1 >= upperCharIndex)
+		{
+			++currentDigit;
+			tenPower = tenPower * 10;
+			leftNumberSpan = tenPower;
+			upperCharIndexPrev = upperCharIndex;
+			upperCharIndex = upperCharIndex + 9 * tenPower;
+		}
+
+		int currentDigitSequenceNumber = n - 1 - upperCharIndexPrev;
+		int number = leftNumberSpan + (currentDigitSequenceNumber - 1) / currentDigit;
+
+		java.util.List<java.lang.Integer> digitList = new java.util.ArrayList<java.lang.Integer>(); 
+
+		while (number != 0)
+		{
+			digitList.add (
+				0,
+				number % 10
+			);
+
+			number = number / 10;
+		}
+
+		while (currentDigit != digitList.size())
+		{
+			digitList.add (
+				0,
+				0
+			);
+		}
+
+		return digitList.get (
+			n % currentDigit
+		);
+	}
+
+	public static final void main (
+		final String[] argumentArray)
+	{
+		System.out.println (
+			NextPrimePalindrome (
+				6
+			)
+		);
+
+		System.out.println (
+			NextPrimePalindrome (
+				8
+			)
+		);
+
+		System.out.println (
+			NextPrimePalindrome (
+				13
+			)
+		);
+	}
 }

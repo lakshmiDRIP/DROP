@@ -304,6 +304,41 @@ public class ArrayUtil
 		return charSet.size() <= 2 * k + 1;
 	}
 
+	private static final boolean ReverseMatchPossible (
+		int[] a,
+		int[] b,
+		int startIndex,
+		int endIndex)
+	{
+		while (startIndex <= endIndex)
+		{
+			if (a[startIndex++] != b[endIndex--])
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private static final boolean FlipSequence (
+		final int[] numberArray,
+		int endIndex)
+	{
+		int startIndex = 0;
+
+		while (startIndex < endIndex)
+		{
+			int temp = numberArray[startIndex];
+			numberArray[startIndex] = numberArray[endIndex];
+			numberArray[endIndex] = temp;
+			++startIndex;
+			--endIndex;
+		}
+
+		return true;
+	}
+
 	/**
 	 * Search for the Target in a Rotated Array
 	 * 
@@ -1614,5 +1649,967 @@ public class ArrayUtil
 		}
 
 		return false;
+	}
+
+	/**
+	 * Check if Reverse match is Possible
+	 * 
+	 * @param a Array A
+	 * @param b Array B
+	 * 
+	 * @return TRUE - Reverse Match is Possible
+	 */
+
+	public static final boolean ReverseMatchPossible (
+		final int[] a,
+		final int[] b)
+	{
+		int index = 0;
+		int length = a.length;
+		int mismatchStartIndex = -1;
+
+		while (index < length)
+		{
+			while (index < length && a[index] == b[index])
+			{
+				++index;
+			}
+
+			mismatchStartIndex = index;
+
+			while (index < length && a[mismatchStartIndex] != b[index])
+			{
+				++index;
+			}
+
+			if (index == length)
+			{
+				return false;
+			}
+
+			if (!ReverseMatchPossible (
+				a,
+				b,
+				mismatchStartIndex,
+				index
+			))
+			{
+				return false;
+			}
+
+			++index;
+		}
+
+		return true;
+	}
+
+	/**
+	 * There are n students, numbered from 1 to n, each with their own year-book. They would like to pass
+	 * 	their year- books around and get them signed by other students.
+	 * 
+	 * You are given a list of n integers arr[1..n], which is guaranteed to be a permutation of 1..n (in
+	 * 	other words, it includes the integers from 1 to n exactly once each, in some order). The meaning of
+	 * 	this list is described below.
+	 * 
+	 * Initially, each student is holding their own year-book. The students will then repeat the following two
+	 * 	steps each minute: Each student i will first sign the year-book that they're currently holding (which
+	 * 	may either belong to themselves or to another student), and then they'll pass it to student arr[i].
+	 *  It is possible that arr[i] = i for any given i, in which case student i will pass their year-book back
+	 *  to themselves. Once a student has received their own year-book back, they will hold on to it and no
+	 *  longer participate in the passing process.
+	 *  
+	 * It is guaranteed that, for any possible valid input, each student will eventually receive their own
+	 *  year-book back and will never end up holding more than one year-book at a time.
+	 * 
+	 * You must compute a list of n integers output, whose ith element is equal to the number of signatures
+	 * 	that will be present in student i's year-book once they receive it back.
+
+	 * @param studentArray The Starting Array
+	 * 
+	 * @return The Signature Count Array
+	 */
+
+	public static final int[] FindSignatureCount (
+		final int[] studentArray)
+	{
+		int personCount = studentArray.length;
+		int[] book = new int[personCount];
+		int[] signatureArray = new int[personCount];
+
+		java.util.Set<java.lang.Integer> bookNotAtOwner = new java.util.HashSet<java.lang.Integer>();
+
+		for (int person = 0;
+			person < personCount;
+			++person)
+		{
+			signatureArray[person] = 1;
+			book[person] = studentArray[person] - 1;
+
+			bookNotAtOwner.add (
+				person
+			);
+		}
+
+		while (!bookNotAtOwner.isEmpty())
+		{
+			for (int person = 0;
+				person < personCount;
+				++person)
+			{
+				if (book[person] == person)
+				{
+					if (bookNotAtOwner.contains (
+						person
+					))
+					{
+						bookNotAtOwner.remove (
+							person
+						);
+					}
+				}
+				else
+				{
+					signatureArray[person]++;
+					book[person] = studentArray[book[person]] - 1;
+				}
+			}
+		}
+
+		return signatureArray;
+	}
+
+	/**
+	 * You are given an array a of N integers. For each index i, you are required to determine the number of
+	 * 	contiguous sub-arrays that fulfills the following conditions:
+	 * 
+	 * 	The value at index i must be the maximum element in the contiguous subarrays, and:
+	 * 
+	 * 	These contiguous subarrays must either start from or end on index i.
+	 * 
+	 * @param arr Input Array
+	 * 
+	 * @return Number of Contiguous Sub-arrays
+	 */
+
+	public static final int[] CountSubArrays (
+		final int[] arr)
+	{
+		int arrayLength = arr.length;
+		int[] subArrayCount = new int[arrayLength];
+		boolean[] peakEncountered = new boolean[arrayLength];
+
+		for (int i = 0;
+			i < arrayLength;
+			++i)
+		{
+			subArrayCount[i] = 1;
+			peakEncountered[i] = false;
+		}
+
+		for (int i = 0;
+			i < arrayLength;
+			++i)
+		{
+			for (int j = 0;
+				j < i;
+				++j)
+			{
+				if (arr[i] > arr[j])
+				{
+					peakEncountered[j] = true;
+				}
+				else if (!peakEncountered[j])
+				{
+					++subArrayCount[j];
+				}
+			}
+		}
+
+		for (int i = 0;
+			i < arrayLength;
+			++i)
+		{
+			peakEncountered[i] = false;
+		}
+
+		for (int i = arrayLength - 1;
+			i >= 0;
+			--i)
+		{
+			for (int j = arrayLength - 1;
+				j > i;
+				--j)
+			{
+				if (arr[i] > arr[j])
+				{
+					peakEncountered[j] = true;
+				}
+				else if (!peakEncountered[j])
+				{
+					++subArrayCount[j];
+				}
+			}
+		}
+
+		return subArrayCount;
+	}
+
+	public static final int[][] KClosestPoints (
+		final int[][] pointGrid,
+		final int k)
+	{
+		java.util.TreeMap<java.lang.Double, int[]> orderedPointMap =
+			new java.util.TreeMap<java.lang.Double, int[]>();
+
+		for (int pointIndex = 0;
+			pointIndex < pointGrid.length;
+			++pointIndex)
+		{
+			int x = pointGrid[pointIndex][0];
+			int y = pointGrid[pointIndex][1];
+			double distance = x * x + y * y;
+
+			orderedPointMap.put (
+				distance,
+				pointGrid[pointIndex]
+			);
+		}
+
+		int i = 0;
+		int[][] kClosestPoints = new int[k][2];
+
+		java.util.Set<java.lang.Double> distanceSet = orderedPointMap.keySet();
+
+		for (double distance : distanceSet)
+		{
+			if (i >= k)
+			{
+				break;
+			}
+
+			kClosestPoints[i++] = orderedPointMap.get (
+				distance
+			);
+		}
+
+		return kClosestPoints;
+	}
+
+	/**
+	 * Merge the Array of Sorted Arrays into a Single Array
+	 * 
+	 * @param arrayOfArrays Array of Sorted Arrays
+	 * 
+	 * @return Resulting Single Array
+	 */
+
+	public static final int[] MergeSortedArrays (
+		final int[][] arrayOfArrays)
+	{
+		int mergedArrayLength = 0;
+		int arrayCount = arrayOfArrays.length;
+		int[] arrayCursor = new int[arrayCount];
+		int[] arrayLength = new int[arrayCount];
+
+		for (int arrayIndex = 0;
+			arrayIndex < arrayCount;
+			++arrayIndex)
+		{
+			arrayCursor[arrayIndex] = 0;
+			arrayLength[arrayIndex] = arrayOfArrays[arrayIndex].length;
+			mergedArrayLength = mergedArrayLength + arrayOfArrays[arrayIndex].length;
+		}
+
+		int mergedArrayIndex = 0;
+		int[] mergedArray = new int[mergedArrayLength];
+
+		while (mergedArrayIndex < mergedArrayLength)
+		{
+			int startIndex = 0;
+
+			while (arrayCursor[startIndex] >= arrayLength[startIndex])
+			{
+				++startIndex;
+			}
+
+			int minArrayIndex = startIndex;
+			int minValue = arrayOfArrays[startIndex][arrayCursor[startIndex]];
+
+			for (int arrayIndex = startIndex + 1;
+				arrayIndex < arrayCount;
+				++arrayIndex)
+			{
+				if (arrayCursor[arrayIndex] < arrayLength[arrayIndex] &&
+					arrayOfArrays[arrayIndex][arrayCursor[arrayIndex]] < minValue
+				)
+				{
+					minArrayIndex = arrayIndex;
+					minValue = arrayOfArrays[arrayIndex][arrayCursor[arrayIndex]];
+				}
+			}
+
+			mergedArray[mergedArrayIndex] = minValue;
+			++arrayCursor[minArrayIndex];
+			++mergedArrayIndex;
+		}
+
+		return mergedArray;
+	}
+
+	/**
+	 * Given a circular array (the next element of the last element is the first element of the array), print
+	 *  the Next Greater Number for every element. The Next Greater Number of a number x is the first greater
+	 *  number to its traversing-order next in the array, which means you could search circularly to find its
+	 *  next greater number. If it doesn't exist, output -1 for this number.
+	 *   
+	 * @param numberArray Input Number Array
+	 * 
+	 * @return Array of Next Greater Numbers
+	 */
+
+	public static final int[] NextGreaterElement (
+		final int[] numberArray)
+	{
+		int arrayLength = numberArray.length;
+		int[] nextGreaterElementArray = new int[arrayLength];
+
+		for (int i = 0;
+			i < arrayLength;
+			++i)
+		{
+			int index = i + 1 == arrayLength ? 0 : i + 1;
+			int nextGreaterNumber = numberArray[i];
+
+			while (index != i)
+			{
+				if (numberArray[index] > nextGreaterNumber)
+				{
+					nextGreaterNumber = numberArray[index];
+				}
+
+				if (++index == arrayLength)
+				{
+					index = 0;
+				}
+			}
+
+			nextGreaterElementArray[i] = numberArray[i] == nextGreaterNumber ? -1 : nextGreaterNumber;
+		}
+
+		return nextGreaterElementArray;
+	}
+
+	/**
+	 * Given an array of integers, find out whether there are two distinct indices i and j in the array such
+	 * 	that the absolute difference between two numbers in it is at most t and the absolute difference
+	 * 	between i and j is at most k.
+	 * 
+	 * @param numberArray The Number Array
+	 * @param k Index Difference Bound
+	 * @param t Value Difference Bound
+	 * 
+	 * @return TRUE - There is a near-by Duplicate
+	 */
+
+	public static final boolean NearbyAlmostDuplicate (
+		final int[] numberArray,
+		final int k,
+		final int t)
+	{
+		if (null == numberArray || 0 == numberArray.length)
+		{
+			return false;
+		}
+
+		int arrayLength = numberArray.length;
+
+		if (0 > k || k >= arrayLength ||
+			0 > t || t >= arrayLength)
+		{
+			return false;
+		}
+
+		for (int index = 0;
+			index < arrayLength;
+			++index)
+		{
+			int compareIndex = index < k ? 0 : index - k;
+			int upperIndex = index + k >= arrayLength ? arrayLength - 1 : index + k;
+
+			while (compareIndex <= upperIndex)
+			{
+				if (compareIndex != index && java.lang.Math.abs (
+						numberArray[index] - numberArray[compareIndex]
+					) <= t
+				)
+				{
+					return true;
+				}
+
+				++compareIndex;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Given a list of non-negative numbers and a target integer k, check if the array has a continuous
+	 * 	sub-array of size at least 2 that sums up to a multiple of k, that is, sums up to n*k where n is also
+	 * 	an integer.
+	 * 
+	 * @param numberArray The Number Array
+	 * @param k Target Sum k
+	 * 
+	 * @return TRUE - The array has a continuous sub-array of size at least 2 that sums up to a multiple of k
+	 */
+
+	public static final boolean ContinuousSubarraySum (
+		final int[] numberArray,
+		final int k)
+	{
+		if (null == numberArray)
+		{
+			return false;
+		}
+
+		int arrayLength = numberArray.length;
+
+		if (1 >= arrayLength)
+		{
+			return false;
+		}
+
+		java.util.HashMap<java.lang.Integer, java.lang.Integer> remainerSizeMap =
+			new java.util.HashMap<java.lang.Integer, java.lang.Integer>();
+
+		int sum = numberArray[0];
+
+		for (int i = 1;
+			i < arrayLength;
+			++i)
+		{
+			sum = sum + numberArray[i];
+			int currentRemain = sum % k;
+
+			if (0 == currentRemain ||
+				remainerSizeMap.containsKey (
+					k - currentRemain
+				) && i - 1 >= remainerSizeMap.get (
+					k - currentRemain
+				)
+			)
+			{
+				return true;
+			}
+
+			remainerSizeMap.put (
+				currentRemain,
+				i + 1
+			);
+		}
+
+		return false;
+	}
+
+	public static final int TargetSum (
+		final int[] numberArray,
+		final int target)
+	{
+		int targetSumCount = 0;
+
+		java.util.List<int[]> indexAndResultList = new java.util.ArrayList<int[]>();
+
+		indexAndResultList.add (
+			new int[]
+			{
+				-1,
+				0
+			}
+		);
+
+		while (!indexAndResultList.isEmpty())
+		{
+			int[] indexAndResult = indexAndResultList.remove (
+				0
+			);
+
+			int nextIndex = indexAndResult[0] + 1;
+			int result = indexAndResult[1];
+
+			if (nextIndex == numberArray.length)
+			{
+				if (result == target)
+				{
+					++targetSumCount;
+				}
+			}
+			else
+			{
+				indexAndResultList.add (
+					new int[]
+					{
+						nextIndex,
+						result + numberArray[nextIndex]
+					}
+				);
+
+				indexAndResultList.add (
+					new int[]
+					{
+						nextIndex,
+						result - numberArray[nextIndex]
+					}
+				);
+			}
+		}
+
+		return targetSumCount;
+	}
+
+	public static final int UniqueElementsInSortedArray (
+		final int[] numberArray)
+	{
+		int i = 1;
+		int count = 0 ;
+		int prevNumber = numberArray[0];
+
+		while (i < numberArray.length)
+		{
+			while (i < numberArray.length &&
+				prevNumber == numberArray[i]
+			)
+			{
+				++i;
+			}
+
+			count++;
+
+			if (i < numberArray.length)
+			{
+				prevNumber = numberArray[i];
+			}
+		}
+
+		return count;
+	}
+
+	private static final boolean GeneratePathCombinations (
+		final java.util.List<java.util.List<java.lang.Integer>> pathIndexList,
+		final int currentIndex,
+		final int[] numberArray)
+	{
+		int arrayLength = numberArray.length;
+
+		if (currentIndex == arrayLength)
+		{
+			return true;
+		}
+
+		java.util.List<java.util.List<java.lang.Integer>> currentPathIndexList =
+			new java.util.ArrayList<java.util.List<java.lang.Integer>>();
+
+		java.util.List<java.lang.Integer> currentIndexPath = new java.util.ArrayList<java.lang.Integer>();
+
+		currentIndexPath.add (
+			numberArray[currentIndex]
+		);
+
+		currentPathIndexList.add (
+			currentIndexPath
+		);
+
+		for (java.util.List<java.lang.Integer> pathIndex : pathIndexList)
+		{
+			java.util.List<java.lang.Integer> currentPath = new java.util.ArrayList<java.lang.Integer>();
+
+			currentPath.addAll (
+				pathIndex
+			);
+
+			currentPath.add (
+				numberArray[currentIndex]
+			);
+
+			currentPathIndexList.add (
+				currentPath
+			);
+		}
+
+		pathIndexList.addAll (
+			currentPathIndexList
+		);
+
+		return GeneratePathCombinations (
+			pathIndexList,
+			currentIndex + 1,
+			numberArray
+		);
+	}
+
+	public static final java.util.Set<java.util.List<java.lang.Integer>> GeneratePathCombinations (
+		final int[] numberArray,
+		final int target)
+	{
+		java.util.List<java.util.List<java.lang.Integer>> pathIndexList =
+			new java.util.ArrayList<java.util.List<java.lang.Integer>>();
+
+		GeneratePathCombinations (
+			pathIndexList,
+			0,
+			numberArray
+		);
+
+		java.util.Set<java.util.List<java.lang.Integer>> validPathIndexSet =
+			new java.util.HashSet<java.util.List<java.lang.Integer>>();
+
+		for (java.util.List<java.lang.Integer> pathIndexSequence : pathIndexList)
+		{
+			int sum = 0;
+
+			for (int pathIndexValue : pathIndexSequence)
+			{
+				sum = sum + pathIndexValue;
+			}
+
+			if (sum == target)
+			{
+				validPathIndexSet.add (
+					pathIndexSequence
+				);
+			}
+		}
+
+		return validPathIndexSet;
+	}
+
+	private static final int[] FirstAndLastPosition (
+		final int leftIndex,
+		final int rightIndex,
+		final int[] numberArray,
+		final int target)
+	{
+		int arrayLength = numberArray.length;
+		int midIndex = (leftIndex + rightIndex) / 2;
+
+		if (rightIndex == leftIndex || rightIndex == leftIndex + 1)
+		{
+			if (numberArray[leftIndex] != target && numberArray[rightIndex] != target)
+			{
+				return new int[]
+				{
+					-1,
+					-1
+				};
+			}
+		}
+
+		if (numberArray[midIndex] == target)
+		{
+			int leftLocation = midIndex;
+			int rightLocation = midIndex;
+
+			while (leftLocation >= 0 && numberArray[leftLocation] == target)
+			{
+				--leftLocation;
+			}
+
+			while (rightLocation < arrayLength && numberArray[rightLocation] == target)
+			{
+				++rightLocation;
+			}
+
+			return new int[]
+			{
+				numberArray[leftLocation] == target ? leftLocation : leftLocation + 1,
+				numberArray[rightLocation] == target ? rightLocation : rightLocation - 1
+			};
+		}
+		else if (target < numberArray[midIndex])
+		{
+			return FirstAndLastPosition (
+				leftIndex,
+				midIndex,
+				numberArray,
+				target
+			);
+		}
+
+		return FirstAndLastPosition (
+			midIndex,
+			rightIndex,
+			numberArray,
+			target
+		);
+	}
+
+	public static final int[] FirstAndLastPosition (
+		final int[] numberArray,
+		final int target)
+	{
+		int arrayLength = numberArray.length;
+
+		if (target < numberArray[0] || target > numberArray[arrayLength - 1])
+		{
+			return new int[]
+			{
+				-1,
+				-1
+			};
+		}
+
+		return FirstAndLastPosition (
+			0,
+			arrayLength - 1,
+			numberArray,
+			target
+		);
+	}
+
+	public static final int[] ProductOfArrayExceptSelf (
+		final int[] numberArray)
+	{
+		int arrayLength = numberArray.length;
+		int[] productOfArrayExceptSelf = new int[arrayLength];
+		int[] leftProductExcludingSelf = new int[arrayLength];
+		int[] rightProductExcludingSelf = new int[arrayLength];
+
+		for (int i = 0;
+			i < arrayLength;
+			++i)
+		{
+			leftProductExcludingSelf[i] = 0 == i ? 1 : leftProductExcludingSelf[i - 1] * numberArray[i - 1];
+		}
+
+		for (int i = arrayLength - 1;
+			i >= 0;
+			--i)
+		{
+			rightProductExcludingSelf[i] = i == arrayLength - 1 ? 1 :
+				numberArray[i + 1] * rightProductExcludingSelf[i + 1];
+		}
+
+		for (int i = 0;
+			i < arrayLength;
+			++i)
+		{
+			productOfArrayExceptSelf[i] = leftProductExcludingSelf[i] * rightProductExcludingSelf[i];
+		}
+
+		return productOfArrayExceptSelf;
+	}
+
+	private static final boolean MarkIslands (
+		final int xStart,
+		final int yStart,
+		final int[][] islandMark,
+		final int[][] grid)
+	{
+		int rowCount = grid.length;
+		int columnCount = grid[0].length;
+
+		java.util.List<int[]> locationList = new java.util.ArrayList<int[]>();
+
+		locationList.add(new int[] {xStart, yStart});
+
+		while (!locationList.isEmpty())
+		{
+			int[] location = locationList.remove (0);
+
+			int x = location[0];
+			int y = location[1];
+			islandMark[x][y] = 1;
+			int xNext = x + 1;
+			int yNext = y + 1;
+
+			if (xNext < rowCount && 0 != grid[xNext][y])
+			{
+				locationList.add(new int[] {xNext, y});
+			}
+
+			if (yNext < columnCount && 0 != grid[x][yNext])
+			{
+				locationList.add(new int[] {x, yNext});
+			}
+		}
+
+		return true;
+	}
+
+	public static final int IslandCounter (
+		final int[][] grid)
+	{
+		int islandCount = 0;
+		int rowCount = grid.length;
+		int columnCount = grid[0].length;
+		int[][] islandMark = new int[rowCount][columnCount];
+		int x = 0;
+		int y = 0;
+
+		for (int rowIndex = 0; rowIndex < rowCount; ++rowIndex)
+		{
+			for (int columnIndex = 0; columnIndex < columnCount; ++columnIndex)
+			{
+				islandMark[rowIndex][columnIndex] = 1 - grid[rowIndex][columnIndex];
+			}
+		}
+
+		while (x < columnCount && y < rowCount)
+		{
+			while (y < columnCount && 1 == islandMark[x][y])
+			{
+				x++;
+
+				if (rowCount == x)
+				{
+					x = 0;
+					y++;
+				}
+			}
+
+			if (y == columnCount)
+			{
+				break;
+			}
+
+			MarkIslands (
+				x,
+				y,
+				islandMark,
+				grid
+			);
+
+			++islandCount;
+		}
+
+		return islandCount;
+	}
+
+	public static final int[] PancakeFlipSort (
+		final int[] numberArray)
+	{
+		int arrayLength = numberArray.length;
+		int endIndex = arrayLength - 1;
+		int flipCount = 0;
+
+		while (endIndex >= 0)
+		{
+			int maxIndex = 0;
+			int maxValue = numberArray[0];
+
+			for (int index = 0;
+				index <= endIndex;
+				++index)
+			{
+				if (numberArray[index] > maxValue)
+				{
+					maxValue = numberArray[index];
+					maxIndex = index;
+				}
+			}
+
+			if (0 != maxIndex)
+			{
+				FlipSequence (
+					numberArray,
+					maxIndex
+				);
+
+				++flipCount;
+			}
+
+			FlipSequence (
+				numberArray,
+				endIndex
+			);
+
+			++flipCount;
+			--endIndex;
+		}
+
+		System.out.println (flipCount);
+
+		return numberArray;
+	}
+
+	private static final int RoundLotUnits (
+		final int lotSize,
+		final int unitSize)
+	{
+		return lotSize / unitSize + (0 == lotSize % unitSize ? 0 : 1);
+	}
+
+	private static final int TimeConsumed (
+		final int[] lotSizeArray,
+		final int rate)
+	{
+		int timeConsumed = 0;
+
+		for (int index = 0;
+			index < lotSizeArray.length;
+			++index)
+		{
+			timeConsumed = timeConsumed + RoundLotUnits (
+				lotSizeArray[index],
+				rate
+			);
+		}
+
+		return timeConsumed;
+	}
+
+	public static final int MinimumConsumptionRate (
+		final int[] lotSizeArray,
+		final int totalTime)
+	{
+		int totalSize = 0;
+		int lotCount = lotSizeArray.length;
+
+		for (int lotIndex = 0;
+			lotIndex < lotCount;
+			++lotIndex)
+		{
+			totalSize = totalSize + lotSizeArray[lotIndex];
+		}
+
+		int consumptionRate = totalSize / totalTime;
+
+		if (0 == consumptionRate)
+		{
+			return -1;
+		}
+
+		int timeConsumed = TimeConsumed (
+			lotSizeArray,
+			consumptionRate
+		);
+
+		while (timeConsumed > totalTime)
+		{
+			timeConsumed = TimeConsumed (
+				lotSizeArray,
+				++consumptionRate
+			);
+		}
+
+		return consumptionRate;
+	}
+
+	public static final void main (
+		final String[] argumentArray)
+	{
+		System.out.println (
+			ContinuousSubarraySum (
+				new int[] {23, 2, 4, 6, 7},
+				6
+			)
+		);
+
+		System.out.println (
+			ContinuousSubarraySum (
+				new int[] {23, 2, 6, 4, 7},
+				6
+			)
+		);
 	}
 }

@@ -235,6 +235,24 @@ public class PrimeUtil
 	}
 
 	/**
+	 * Indicate if the specified Number is a Prime Number
+	 * 
+	 * @param n n
+	 * 
+	 * @return The specified Number is Prime
+	 */
+
+	public static final boolean IsPrime (
+		final int n)
+	{
+		return PrimeFactorMap (
+			n
+		).containsKey (
+			n
+		);
+	}
+
+	/**
 	 * Compute the Prime Factor for a given Integer
 	 * 
 	 * @param n The Integer

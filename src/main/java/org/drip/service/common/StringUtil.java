@@ -263,7 +263,7 @@ public class StringUtil {
 		return -1;
 	}
 
-	private static final int DecimalNumberFromString (
+	public static final int DecimalNumberFromString (
 		final java.lang.String s)
 	{
 		char[] charArray = s.toCharArray();
@@ -418,6 +418,200 @@ public class StringUtil {
 		}
 
 		return numberList;
+	}
+
+	private static final boolean IsPalindrome (
+		final java.util.List<java.lang.Integer> digitList)
+	{
+		int listLength = digitList.size();
+
+		for (int listIndex = 0;
+			listIndex < listLength;
+			++listIndex)
+		{
+			if (digitList.get (
+					listIndex
+				) != digitList.get (
+					listLength - listIndex - 1
+				)
+			)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private static final boolean IsPalindrome (
+		final int i)
+	{
+		return IsPalindrome (
+			IntegerToDigitList (
+				i
+			)
+		);
+	}
+
+	private static final java.util.List<java.lang.Integer> SwapIntoPalindrome (
+		final java.util.List<java.lang.Integer> digitList)
+	{
+		if (IsPalindrome (
+			digitList
+		))
+		{
+			return digitList;
+		}
+
+		int digitCount = digitList.size();
+
+		int digitIndexLeft = 0;
+		int digitIndexRight = digitCount - 1;
+
+		while (digitIndexLeft < digitIndexRight)
+		{
+			int leftDigit = digitList.get (
+				digitIndexLeft
+			);
+
+			if (leftDigit != digitList.get (
+				digitIndexRight
+			))
+			{
+				digitList.remove (
+					digitIndexRight
+				);
+
+				digitList.add (
+					digitIndexRight,
+					leftDigit
+				);
+			}
+
+			++digitIndexLeft;
+			--digitIndexRight;
+		}
+
+		return digitList;
+	}
+
+	private static final java.util.List<java.lang.Integer> IntegerToDigitList (
+		int i)
+	{
+		java.util.List<java.lang.Integer> integerToDigitList = new java.util.ArrayList<java.lang.Integer>();
+
+		while (i != 0)
+		{
+			int digit = i % 10;
+
+			integerToDigitList.add (
+				0,
+				digit
+			);
+
+			i = i / 10;
+		}
+
+		return integerToDigitList;
+	}
+
+	private static final int DigitListToInteger (
+		final java.util.List<java.lang.Integer> integerToDigitList)
+	{
+		int integer = 0;
+
+		for (int digit : integerToDigitList)
+		{
+			integer = 10 * integer + digit;
+		}
+
+		return integer;
+	}
+
+	private static final java.lang.String EvaluateSubSum (
+		final int level,
+		final java.lang.String s)
+	{
+		int subSum = 0;
+
+		java.lang.String[] numberString = s.split (
+			","
+		);
+
+		for (java.lang.String number : numberString)
+		{
+			subSum = subSum + DecimalNumberFromString (
+				number
+			);
+		}
+
+		return "" + (level * subSum);
+	}
+
+	private static final java.lang.String NestedArrayDepthSum (
+		final java.lang.String expression,
+		final int level)
+	{
+		char[] charArray = expression.toCharArray();
+
+		int expressionLength = charArray.length;
+		int rightBracketIndex = -1;
+		int leftBracketIndex = -1;
+		int index = 0;
+
+		while (index < expressionLength)
+		{
+			if (charArray[index] == '[')
+			{
+				leftBracketIndex = index;
+				break;
+			}
+
+			++index;
+		}
+
+		while (index < expressionLength)
+		{
+			if (charArray[index] == ']')
+			{
+				rightBracketIndex = index;
+			}
+
+			++index;
+		}
+
+		if (-1 == leftBracketIndex &&
+			-1 == rightBracketIndex
+		)
+		{
+			return EvaluateSubSum (
+				level,
+				expression
+			);
+		}
+
+		java.lang.String leftSubstring = expression.substring (
+			0,
+			leftBracketIndex
+		);
+
+		java.lang.String rightSubstring = expression.substring (
+			rightBracketIndex + 1,
+			expressionLength
+		);
+
+		java.lang.String evaluation = NestedArrayDepthSum (
+			expression.substring (
+				leftBracketIndex + 1,
+				rightBracketIndex
+			),
+			level + 1
+		);
+
+		return EvaluateSubSum (
+			level,
+			leftSubstring + evaluation + rightSubstring
+		);
 	}
 
 	/**
@@ -1695,20 +1889,1425 @@ public class StringUtil {
 		return "" + multiplication;
 	}
 
+	private static final java.util.Map<java.lang.Character, java.lang.Integer> UpperChar2IntMap()
+	{
+		java.util.Map<java.lang.Character, java.lang.Integer> upperChar2IntMap =
+			new java.util.HashMap<java.lang.Character, java.lang.Integer>();
+
+		upperChar2IntMap.put (
+			'A',
+			0
+		);
+
+		upperChar2IntMap.put (
+			'B',
+			1
+		);
+
+		upperChar2IntMap.put (
+			'C',
+			2
+		);
+
+		upperChar2IntMap.put (
+			'D',
+			3
+		);
+
+		upperChar2IntMap.put (
+			'E',
+			4
+		);
+
+		upperChar2IntMap.put (
+			'F',
+			5
+		);
+
+		upperChar2IntMap.put (
+			'G',
+			6
+		);
+
+		upperChar2IntMap.put (
+			'H',
+			7
+		);
+
+		upperChar2IntMap.put (
+			'I',
+			8
+		);
+
+		upperChar2IntMap.put (
+			'J',
+			9
+		);
+
+		upperChar2IntMap.put (
+			'K',
+			10
+		);
+
+		upperChar2IntMap.put (
+			'L',
+			11
+		);
+
+		upperChar2IntMap.put (
+			'M',
+			12
+		);
+
+		upperChar2IntMap.put (
+			'N',
+			13
+		);
+
+		upperChar2IntMap.put (
+			'O',
+			14
+		);
+
+		upperChar2IntMap.put (
+			'P',
+			15
+		);
+
+		upperChar2IntMap.put (
+			'Q',
+			16
+		);
+
+		upperChar2IntMap.put (
+			'R',
+			17
+		);
+
+		upperChar2IntMap.put (
+			'S',
+			18
+		);
+
+		upperChar2IntMap.put (
+			'T',
+			19
+		);
+
+		upperChar2IntMap.put (
+			'U',
+			20
+		);
+
+		upperChar2IntMap.put (
+			'V',
+			21
+		);
+
+		upperChar2IntMap.put (
+			'W',
+			22
+		);
+
+		upperChar2IntMap.put (
+			'X',
+			23
+		);
+
+		upperChar2IntMap.put (
+			'Y',
+			24
+		);
+
+		upperChar2IntMap.put (
+			'Z',
+			25
+		);
+
+		return upperChar2IntMap;
+	}
+
+	private static final java.util.Map<java.lang.Character, java.lang.Integer> LowerChar2IntMap()
+	{
+		java.util.Map<java.lang.Character, java.lang.Integer> lowerChar2IntMap =
+			new java.util.HashMap<java.lang.Character, java.lang.Integer>();
+
+		lowerChar2IntMap.put (
+			'a',
+			0
+		);
+
+		lowerChar2IntMap.put (
+			'b',
+			1
+		);
+
+		lowerChar2IntMap.put (
+			'c',
+			2
+		);
+
+		lowerChar2IntMap.put (
+			'd',
+			3
+		);
+
+		lowerChar2IntMap.put (
+			'e',
+			4
+		);
+
+		lowerChar2IntMap.put (
+			'f',
+			5
+		);
+
+		lowerChar2IntMap.put (
+			'g',
+			6
+		);
+
+		lowerChar2IntMap.put (
+			'h',
+			7
+		);
+
+		lowerChar2IntMap.put (
+			'i',
+			8
+		);
+
+		lowerChar2IntMap.put (
+			'j',
+			9
+		);
+
+		lowerChar2IntMap.put (
+			'k',
+			10
+		);
+
+		lowerChar2IntMap.put (
+			'l',
+			11
+		);
+
+		lowerChar2IntMap.put (
+			'm',
+			12
+		);
+
+		lowerChar2IntMap.put (
+			'n',
+			13
+		);
+
+		lowerChar2IntMap.put (
+			'o',
+			14
+		);
+
+		lowerChar2IntMap.put (
+			'p',
+			15
+		);
+
+		lowerChar2IntMap.put (
+			'q',
+			16
+		);
+
+		lowerChar2IntMap.put (
+			'r',
+			17
+		);
+
+		lowerChar2IntMap.put (
+			's',
+			18
+		);
+
+		lowerChar2IntMap.put (
+			't',
+			19
+		);
+
+		lowerChar2IntMap.put (
+			'u',
+			20
+		);
+
+		lowerChar2IntMap.put (
+			'v',
+			21
+		);
+
+		lowerChar2IntMap.put (
+			'w',
+			22
+		);
+
+		lowerChar2IntMap.put (
+			'x',
+			23
+		);
+
+		lowerChar2IntMap.put (
+			'y',
+			24
+		);
+
+		lowerChar2IntMap.put (
+			'z',
+			25
+		);
+
+		return lowerChar2IntMap;
+	}
+
+	private static final char[] Int2UpperCharArray()
+	{
+		char[] int2UpperCharArray = new char[26];
+		int2UpperCharArray[0] = 'A';
+		int2UpperCharArray[1] = 'B';
+		int2UpperCharArray[2] = 'C';
+		int2UpperCharArray[3] = 'D';
+		int2UpperCharArray[4] = 'E';
+		int2UpperCharArray[5] = 'F';
+		int2UpperCharArray[6] = 'G';
+		int2UpperCharArray[7] = 'H';
+		int2UpperCharArray[8] = 'I';
+		int2UpperCharArray[9] = 'J';
+		int2UpperCharArray[10] = 'K';
+		int2UpperCharArray[11] = 'L';
+		int2UpperCharArray[12] = 'M';
+		int2UpperCharArray[13] = 'N';
+		int2UpperCharArray[14] = 'O';
+		int2UpperCharArray[15] = 'P';
+		int2UpperCharArray[16] = 'Q';
+		int2UpperCharArray[17] = 'R';
+		int2UpperCharArray[18] = 'S';
+		int2UpperCharArray[19] = 'T';
+		int2UpperCharArray[20] = 'U';
+		int2UpperCharArray[21] = 'V';
+		int2UpperCharArray[22] = 'W';
+		int2UpperCharArray[23] = 'X';
+		int2UpperCharArray[24] = 'Y';
+		int2UpperCharArray[25] = 'Z';
+		return int2UpperCharArray;
+	}
+
+	private static final char[] Int2LowerCharArray()
+	{
+		char[] int2LowerCharArray = new char[26];
+		int2LowerCharArray[0] = 'a';
+		int2LowerCharArray[1] = 'b';
+		int2LowerCharArray[2] = 'c';
+		int2LowerCharArray[3] = 'd';
+		int2LowerCharArray[4] = 'e';
+		int2LowerCharArray[5] = 'f';
+		int2LowerCharArray[6] = 'g';
+		int2LowerCharArray[7] = 'h';
+		int2LowerCharArray[8] = 'i';
+		int2LowerCharArray[9] = 'j';
+		int2LowerCharArray[10] = 'k';
+		int2LowerCharArray[11] = 'l';
+		int2LowerCharArray[12] = 'm';
+		int2LowerCharArray[13] = 'n';
+		int2LowerCharArray[14] = 'o';
+		int2LowerCharArray[15] = 'p';
+		int2LowerCharArray[16] = 'q';
+		int2LowerCharArray[17] = 'r';
+		int2LowerCharArray[18] = 's';
+		int2LowerCharArray[19] = 't';
+		int2LowerCharArray[20] = 'u';
+		int2LowerCharArray[21] = 'v';
+		int2LowerCharArray[22] = 'w';
+		int2LowerCharArray[23] = 'x';
+		int2LowerCharArray[24] = 'y';
+		int2LowerCharArray[25] = 'z';
+		return int2LowerCharArray;
+	}
+
+	private static final java.util.Map<java.lang.Character, java.lang.Integer> Int2IntMap()
+	{
+		java.util.Map<java.lang.Character, java.lang.Integer> int2IntMap =
+			new java.util.HashMap<java.lang.Character, java.lang.Integer>();
+
+		int2IntMap.put (
+			'0',
+			0
+		);
+
+		int2IntMap.put (
+			'1',
+			1
+		);
+
+		int2IntMap.put (
+			'2',
+			2
+		);
+
+		int2IntMap.put (
+			'3',
+			3
+		);
+
+		int2IntMap.put (
+			'4',
+			4
+		);
+
+		int2IntMap.put (
+			'5',
+			5
+		);
+
+		int2IntMap.put (
+			'6',
+			6
+		);
+
+		int2IntMap.put (
+			'7',
+			7
+		);
+
+		int2IntMap.put (
+			'8',
+			8
+		);
+
+		int2IntMap.put (
+			'9',
+			9
+		);
+
+		return int2IntMap;
+	}
+
+	/**
+	 * One simple way to encrypt a string is to "rotate" every alphanumeric character by a certain amount.
+	 *  Rotating a character means replacing it with another character that is a certain number of steps away
+	 *  in normal alphabetic or numerical order.
+	 *  
+	 * For example, if the string "Zebra-493?" is rotated 3 places, the resulting string is "Cheud-726?".
+	 * 	Every alphabetic character is replaced with the character 3 letters higher (wrapping around from Z to
+	 *  A), and every numeric character replaced with the character 3 digits higher (wrapping around from 9
+	 *  to 0). Note that the non-alphanumeric characters remain unchanged.
+	 *  
+	 * Given a string and a rotation factor, return an encrypted string.
+	 *  
+	 * @param in Input String
+	 * @param rotationFactor Rotation Factor
+	 * 
+	 * @return The Encrypted String
+	 */
+
+	public static final java.lang.String RotationalCipher (
+		final java.lang.String in,
+		final int rotationFactor)
+	{
+		java.lang.String out = "";
+
+		char[] int2LowerCharArray = Int2LowerCharArray();
+
+		char[] int2UpperCharArray = Int2UpperCharArray();
+
+		java.util.Map<java.lang.Character, java.lang.Integer> int2IntMap = Int2IntMap();
+
+		java.util.Map<java.lang.Character, java.lang.Integer> lowerChar2IntMap = LowerChar2IntMap();
+
+		java.util.Map<java.lang.Character, java.lang.Integer> upperChar2IntMap = UpperChar2IntMap();
+
+		for (int i = 0; i < in.length(); ++i)
+		{
+			char c = in.charAt (
+				i
+			);
+
+			if (int2IntMap.containsKey (
+				c
+			))
+			{
+				int value = int2IntMap.get (
+					c
+				) + rotationFactor;
+
+				while (value >= 10)
+				{
+					value = value - 10;
+				}
+
+				out = out + value;
+			}
+			else if (lowerChar2IntMap.containsKey (
+				c
+			))
+			{
+				int value = lowerChar2IntMap.get (
+					c
+				) + rotationFactor;
+
+				while (value >= 26)
+				{
+					value = value - 26;
+				}
+
+				out = out + int2LowerCharArray[value];
+			}
+			else if (upperChar2IntMap.containsKey (
+				c
+			))
+			{
+				int value = upperChar2IntMap.get (
+					c
+				) + rotationFactor;
+
+				while (value >= 26)
+				{
+					value = value - 26;
+				}
+
+				out = out + int2UpperCharArray[value];
+			}
+			else
+			{
+				out = out + c;
+			}
+		}
+
+		return out;
+	}
+
+	public static final int MatchingPairCount (
+		final java.lang.String s,
+		final java.lang.String t)
+	{
+		int length = s.length();
+
+		int matchingPairCount = 0;
+
+		java.util.List<java.lang.Integer> mismatchedIndexList =
+			new java.util.ArrayList<java.lang.Integer>();
+
+		for (int i = 0; i < length; ++i)
+		{
+			if (s.charAt (
+					i
+				) == t.charAt (
+					i
+				)
+			)
+			{
+				++matchingPairCount;
+			}
+			else
+			{
+				mismatchedIndexList.add (
+					i
+				);
+			}
+		}
+
+		int mismatchedIndexListSize = mismatchedIndexList.size();
+
+		if (0 == mismatchedIndexListSize || 1 == mismatchedIndexListSize)
+		{
+			return length - 2;
+		}
+
+		boolean singleMatch = false;
+		boolean doubleMatch = false;
+
+		for (int i = 0; i < mismatchedIndexListSize; ++i)
+		{
+			if (doubleMatch)
+			{
+				break;
+			}
+
+			int indexI = mismatchedIndexList.get (i);
+
+			char tI = t.charAt (indexI);
+
+			char sI = s.charAt (indexI);
+
+			for (int j = i + 1; j < mismatchedIndexListSize; ++j)
+			{
+				int indexJ = mismatchedIndexList.get (j);
+
+				char tJ = t.charAt (indexJ);
+
+				char sJ = s.charAt (indexJ);
+
+				if (sI == tJ && tI == sJ)
+				{
+					doubleMatch = true;
+					break;
+				}
+				else if (sI == tJ || tI == sJ)
+				{
+					singleMatch = true;
+				}
+			}
+		}
+
+		if (doubleMatch)
+		{
+			matchingPairCount = matchingPairCount + 2;
+		}
+		else if (singleMatch)
+		{
+			matchingPairCount = matchingPairCount + 1;
+		}
+
+		return matchingPairCount;
+	}
+
+	public static final java.lang.String MinimumWindowSubstring (
+		final java.lang.String s,
+		final java.lang.String t)
+	{
+		if (null == s || s.isEmpty() || null == t || t.isEmpty() || s.length() < t.length()) return "";
+
+		int sLength = s.length();
+
+		int tLength = t.length();
+
+		if (sLength < tLength) return "";
+
+		java.util.Map<java.lang.Character, java.lang.Integer> tCharacterCountMap =
+			new java.util.HashMap<java.lang.Character, java.lang.Integer>();
+
+		for (char c : t.toCharArray())
+		{
+			if (tCharacterCountMap.containsKey (c))
+				tCharacterCountMap.put (c, tCharacterCountMap.get (c) + 1);
+			else
+				tCharacterCountMap.put (c, 1);
+		}
+
+		int leftIndex = 0;
+		int minLeftIndex = 0;
+		int matchCharCount = 0;
+		int minLen = sLength + 1;
+
+		for (int rightIndex = 0; rightIndex < sLength; ++rightIndex)
+		{
+			char rightChar = s.charAt (rightIndex);
+
+			if (tCharacterCountMap.containsKey (rightChar))
+			{
+				int rightSideCharacterCount = tCharacterCountMap.get (rightChar);
+
+				tCharacterCountMap.put (rightChar, rightSideCharacterCount - 1);
+
+				if (rightSideCharacterCount > 0) ++matchCharCount;
+
+				while (matchCharCount == tLength)
+				{
+					if (rightIndex - leftIndex + 1 < minLen)
+					{
+						minLeftIndex = leftIndex;
+						minLen = rightIndex - leftIndex + 1;
+					}
+
+					char leftChar = s.charAt (leftIndex);
+
+					if (tCharacterCountMap.containsKey (leftChar))
+					{
+						int leftSideCharacterCount = tCharacterCountMap.get (leftChar);
+
+						tCharacterCountMap.put (rightChar, leftSideCharacterCount + 1);
+
+						if (leftSideCharacterCount <= 0) --matchCharCount;
+					}
+
+					++leftChar;
+				}
+			}
+		}
+
+		return minLen > sLength ? "" : s.substring (minLeftIndex, minLeftIndex + minLen);
+	}
+
+	/**
+	 * Given a non-empty string, you may delete at most one character. Judge whether you can make it a
+	 * 	palindrome.
+	 * 
+	 * @param s Input String
+	 * 
+	 * @return TRUE - Can be turned into a Palindrome with one Deletion
+	 */
+
+	public static final boolean IsValidPalindrome (
+		final java.lang.String s)
+	{
+		char[] charArray = s.toCharArray();
+
+		int stringLength = charArray.length;
+		int rightIndex = stringLength - 1;
+		int leftIndex = 0;
+
+		while (leftIndex <= rightIndex)
+		{
+			if (charArray[leftIndex] != charArray[rightIndex])
+			{
+				if (charArray[leftIndex + 1] == charArray[rightIndex])
+				{
+					++leftIndex;
+				}
+				else if (charArray[leftIndex] == charArray[rightIndex - 1])
+				{
+					--rightIndex;
+				}
+				else
+				{
+					return false;
+				}
+			}
+
+			++leftIndex;
+			--rightIndex;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Given an integer n, find the closest integer (not including itself), which is a palindrome.
+	 * 
+	 * The 'closest' is defined as absolute difference minimized between two integers.
+	 * 
+	 * @param i The Integer
+	 * 
+	 * @return Closest Palindrome Integer
+	 */
+
+	public static final int ClosestPalindromicInteger (
+		final int i)
+	{
+		java.util.List<java.lang.Integer> integerToDigitList = IntegerToDigitList (
+			i
+		);
+
+		int palindromeInteger = DigitListToInteger (
+			SwapIntoPalindrome (
+					integerToDigitList
+				)
+			);
+
+		int difference = i - palindromeInteger;
+		int absoluteDifference = difference < 0 ? -1 * difference : difference;
+		int rightNumber = i + absoluteDifference;
+		int leftNumber = i - absoluteDifference;
+
+		while (leftNumber < rightNumber)
+		{
+			if (IsPalindrome (leftNumber))
+			{
+				int currentDifference = leftNumber - i;
+
+				if (absoluteDifference > -1 * currentDifference)
+				{
+					difference = currentDifference;
+					absoluteDifference = -1 * currentDifference;
+				}
+			}
+			else if (IsPalindrome (rightNumber))
+			{
+				int currentDifference = rightNumber - i;
+
+				if (absoluteDifference > currentDifference)
+				{
+					difference = currentDifference;
+					absoluteDifference = currentDifference;
+				}
+			}
+
+			++leftNumber;
+			--rightNumber;
+		}
+
+		return i + difference;
+	}
+
+	/**
+	 * Given Nested Array calculate the Depth Sum. 
+	 * 
+	 * @param expression The Expression
+	 * 
+	 * @return Value of the Nested Array Sum
+	 */
+
+	public static final java.lang.String NestedArrayDepthSum (
+		final java.lang.String expression)
+	{
+		return NestedArrayDepthSum (
+			expression.substring (
+				1,
+				expression.length() - 1
+			),
+			1
+		);
+	}
+
+	/**
+	 * An encoded string is given.  To find and write the decoded string to a tape, the encoded string is
+	 * 	read one character at a time and the following steps are taken:
+	 * 
+	 * If the character read is a letter, that letter is written onto the tape.
+	 * 
+	 * If the character read is a digit (say d), the entire current tape is repeatedly written d-1 more times
+	 * 	in total.
+	 * 
+	 * Now for some encoded string, and an index K, find and return the k<sup>th</sup> letter (1 indexed) in
+	 * 	the decoded string.
+	 * 
+	 * @param s Input String
+	 * @param k k<sup>th</sup> Location (1-indexed)
+	 * 
+	 * @return k<sup>th</sup> letter (1 indexed) in the decoded string.
+	 */
+
+	public static final java.lang.String DecodeStringAtIndex (
+		final java.lang.String s,
+		final int k)
+	{
+		java.util.List<java.lang.Integer> indexList = new java.util.ArrayList<java.lang.Integer>();
+
+		java.util.List<java.lang.String> wordList = new java.util.ArrayList<java.lang.String>();
+
+		char[] charArray = s.toCharArray();
+
+		int charIndex = 0;
+		int startWordIndex = 0;
+		java.lang.String prevWord = "";
+		int stringLength = charArray.length;
+
+		while (true)
+		{
+			while (charIndex < stringLength &&
+				!java.lang.Character.isDigit (
+					charArray[charIndex]
+				)
+			)
+			{
+				++charIndex;
+			}
+
+			wordList.add (
+				s.substring (
+					startWordIndex,
+					charIndex
+				)
+			);
+
+			if (charIndex == stringLength)
+			{
+				break;
+			}
+
+			int numberStartIndex = charIndex;
+			startWordIndex = charIndex + 1;
+
+			while (charIndex < stringLength &&
+				java.lang.Character.isDigit (
+					charArray[charIndex]
+				)
+			)
+			{
+				++charIndex;
+			}
+
+			indexList.add (
+				DecimalNumberFromString (
+					s.substring (
+						numberStartIndex,
+						charIndex
+					)
+				)
+			);
+
+			if (charIndex == stringLength)
+			{
+				break;
+			}
+		}
+
+		if (indexList.isEmpty() && k > stringLength)
+		{
+			return "";
+		}
+
+		for (int i = 0;
+			i < indexList.size();
+			++i)
+		{
+			java.lang.String currentWord = prevWord + wordList.get (
+				i
+			);
+
+			int repeatCount = indexList.get (
+				i
+			);
+
+			int currentWordLength = currentWord.length();
+
+			if (currentWordLength * repeatCount > k)
+			{
+				return "" + currentWord.charAt (
+					(k - 1) % currentWordLength
+				);
+			}
+
+			prevWord = "";
+
+			for (int j = 0;
+				j < repeatCount;
+				++j)
+			{
+				prevWord = prevWord + currentWord;
+			}
+		}
+
+		return "";
+	}
+
+	private static final java.lang.String[] ZeroToTwentyTable()
+	{
+		java.lang.String[] zeroToTwentyTable = new java.lang.String[20];
+		zeroToTwentyTable[0] = "Zero";
+		zeroToTwentyTable[1] = "One";
+		zeroToTwentyTable[2] = "Two";
+		zeroToTwentyTable[3] = "Three";
+		zeroToTwentyTable[4] = "Four";
+		zeroToTwentyTable[5] = "Five";
+		zeroToTwentyTable[6] = "Six";
+		zeroToTwentyTable[7] = "Seven";
+		zeroToTwentyTable[8] = "Eight";
+		zeroToTwentyTable[9] = "None";
+		zeroToTwentyTable[10] = "Ten";
+		zeroToTwentyTable[11] = "Eleven";
+		zeroToTwentyTable[12] = "Twelve";
+		zeroToTwentyTable[13] = "Thirteen";
+		zeroToTwentyTable[14] = "Fourteen";
+		zeroToTwentyTable[15] = "Fifteen";
+		zeroToTwentyTable[16] = "Sixteen";
+		zeroToTwentyTable[17] = "Seventeen";
+		zeroToTwentyTable[18] = "Eighteen";
+		zeroToTwentyTable[19] = "Nineteen";
+		return zeroToTwentyTable;
+	}
+
+	private static final java.lang.String[] TensPlaceTable()
+	{
+		java.lang.String[] tensPlaceTable = new java.lang.String[10];
+		tensPlaceTable[2] = "Twenty";
+		tensPlaceTable[3] = "Thirty";
+		tensPlaceTable[4] = "Forty";
+		tensPlaceTable[5] = "Fifty";
+		tensPlaceTable[6] = "Sixty";
+		tensPlaceTable[7] = "Seventy";
+		tensPlaceTable[8] = "Eighty";
+		tensPlaceTable[9] = "No=inety";
+		return tensPlaceTable;
+	}
+
+	private static final java.lang.String TwoDigitNumber (
+		final int i)
+	{
+		java.lang.String[] zeroToTwentyTable = ZeroToTwentyTable();
+
+		if (i < 20)
+		{
+			return zeroToTwentyTable[i];
+		}
+
+		java.lang.String twoDigitNumber = TensPlaceTable()[i / 10];
+
+		int rightDigit = i % 10;
+		return 0 == rightDigit ? twoDigitNumber : twoDigitNumber + " " + zeroToTwentyTable[rightDigit];
+	}
+
+	public static final java.lang.String ThreeDigitNumber (
+		final int i)
+	{
+		return i < 100 ? TwoDigitNumber (
+			i
+		) : ZeroToTwentyTable()[i / 100] + " Hundred and " + TwoDigitNumber (
+			i % 100
+		);
+	}
+
+	public static final java.lang.String ReorganizeString (
+		final java.lang.String in)
+	{
+		char[] charArrayIn = in.toCharArray();
+
+		int evenIndexLocation = 0;
+		boolean oddLocation = false;
+		int oddLeftIndexLocation = 1;
+		int stringLength = charArrayIn.length;
+		char[] charArrayOut = new char[stringLength];
+		int oddRightIndexLocation = 0 == stringLength % 2 ? stringLength - 1 : stringLength - 2;
+
+		java.util.TreeMap<java.lang.Character, java.lang.Integer> charCountMap =
+			new java.util.TreeMap<java.lang.Character, java.lang.Integer>();
+
+		for (char c : charArrayIn)
+		{
+			if (charCountMap.containsKey (
+				c
+			))
+			{
+				charCountMap.put(c, charCountMap.get(c) + 1);
+			}
+			else
+			{
+				charCountMap.put(c, 1);
+			}
+		}
+
+		while (!charCountMap.isEmpty())
+		{
+			java.util.Map.Entry<java.lang.Character, java.lang.Integer> entry = charCountMap.firstEntry();
+
+			char c = entry.getKey();
+
+			int count = entry.getValue();
+
+			if (count > (1 + stringLength) / 2)
+			{
+				return "";
+			}
+
+			charCountMap.remove (
+				c
+			);
+
+			if (!oddLocation)
+			{
+				for (;
+					evenIndexLocation < stringLength;
+					evenIndexLocation = evenIndexLocation + 2)
+				{
+					charArrayOut[evenIndexLocation] = c;
+					--count;
+				}
+
+				while (0 != count)
+				{
+					charArrayOut[oddRightIndexLocation] = c;
+					oddRightIndexLocation = oddRightIndexLocation - 2;
+					--count;
+				}
+
+				oddLocation = !oddLocation;
+			}
+			else
+			{
+				for (;
+					oddLeftIndexLocation < stringLength;
+					oddLeftIndexLocation = oddLeftIndexLocation + 2)
+				{
+					charArrayOut[oddLeftIndexLocation] = c;
+					--count;
+				}
+
+				oddLocation = !oddLocation;
+			}
+		}
+
+		return new java.lang.String (
+			charArrayOut
+		);
+	}
+
+	public static final java.lang.String RemoveMinimumValidParenthesis (
+		final java.lang.String s)
+	{
+		java.util.List<java.lang.Integer> leftBracketIndexList = new java.util.ArrayList<java.lang.Integer>();
+
+		java.util.List<java.lang.Integer> rightBracketIndexList = new java.util.ArrayList<java.lang.Integer>();
+
+		char[] charArray = s.toCharArray();
+
+		int stringLength = charArray.length;
+
+		for (int index = 0;
+			index < stringLength;
+			++index)
+		{
+			char c = charArray[index];
+
+			if ('(' == c)
+			{
+				leftBracketIndexList.add (
+					index
+				);
+			}
+			else if (')' == c)
+			{
+				rightBracketIndexList.add (
+					index
+				);
+			}
+		}
+
+		if (leftBracketIndexList.isEmpty() && rightBracketIndexList.isEmpty())
+		{
+			return s;
+		}
+
+		java.util.Set<java.lang.Integer> indexRemovalList = new java.util.HashSet<java.lang.Integer>();
+
+		while (!leftBracketIndexList.isEmpty() && !rightBracketIndexList.isEmpty())
+		{
+			int rightMostLeftBracketIndex = leftBracketIndexList.get (
+				leftBracketIndexList.size() - 1
+			);
+
+			int pairingRightIndex = -1;
+			int pairingRightBracketIndexListCursor = -1;
+
+			for (int rightBracketIndexListCursor = 0;
+				rightBracketIndexListCursor < rightBracketIndexList.size();
+				++rightBracketIndexListCursor)
+			{
+				int rightIndex = rightBracketIndexList.get (
+					rightBracketIndexListCursor
+				);
+
+				if (rightIndex > rightMostLeftBracketIndex)
+				{
+					pairingRightIndex = rightIndex;
+					pairingRightBracketIndexListCursor = rightBracketIndexListCursor;
+				}
+			}
+
+			if (-1 == pairingRightIndex)
+			{
+				indexRemovalList.add (
+					rightMostLeftBracketIndex
+				);
+
+				leftBracketIndexList.remove (
+					leftBracketIndexList.size() - 1
+				);
+			}
+			else
+			{
+				leftBracketIndexList.remove (
+					leftBracketIndexList.size() - 1
+				);
+
+				rightBracketIndexList.remove (
+					pairingRightBracketIndexListCursor
+				);
+			}
+		}
+
+		if (!leftBracketIndexList.isEmpty())
+		{
+			indexRemovalList.addAll (
+				leftBracketIndexList
+			);
+		}
+		else if (!rightBracketIndexList.isEmpty())
+		{
+			indexRemovalList.addAll (
+				rightBracketIndexList
+			);
+		}
+
+		java.lang.String output = "";
+
+		for (int index = 0;
+			index < stringLength;
+			++index)
+		{
+			if (!indexRemovalList.contains (
+				index
+			))
+			{
+				output = output + charArray[index];
+			}
+		}
+
+		return output;
+	}
+
+	private static final java.util.Set<java.lang.String> PermutationSet (
+		final java.util.Set<java.lang.String> permutationSet,
+		final java.util.Set<java.lang.Integer> exclusionIndexSet,
+		final java.lang.String s)
+	{
+		char[] charArray = s.toCharArray();
+
+		int stringLength = charArray.length;
+
+		if (exclusionIndexSet.size() == stringLength - 1)
+		{
+			int exclusionIndex = -1;
+
+			for (int i = 0; i < stringLength; ++i)
+			{
+				if (!exclusionIndexSet.contains(i))
+				{
+					exclusionIndex = i;
+					break;
+				}
+			}
+
+			java.util.Set<java.lang.String> currentPermutationSet =
+				new java.util.HashSet<java.lang.String>();
+
+			for (java.lang.String permutation : permutationSet)
+			{
+				currentPermutationSet.add(permutation + charArray[exclusionIndex]);
+			}
+
+			return currentPermutationSet;
+		}
+
+		java.util.Set<java.lang.Integer> inclusionIndexSet = new java.util.HashSet<java.lang.Integer>();
+
+		for (int i = 0; i < stringLength; ++i)
+		{
+			if (!exclusionIndexSet.contains(i))
+			{
+				inclusionIndexSet.add (i);
+			}
+		}
+
+		java.util.Set<java.lang.String> currentPermutationSet =
+			new java.util.HashSet<java.lang.String>();
+
+		for (int index : inclusionIndexSet)
+		{
+			java.util.Set<java.lang.Integer> tempExclusionIndexSet =
+				new java.util.HashSet<java.lang.Integer>();
+
+			tempExclusionIndexSet.addAll (exclusionIndexSet);
+
+			tempExclusionIndexSet.add (index);
+
+			java.util.Set<java.lang.String> tempPermutationSet =
+				new java.util.HashSet<java.lang.String>();
+
+			if (permutationSet.isEmpty())
+			{
+				tempPermutationSet.add ("" + charArray[index]);
+			}
+			else
+			{
+				for (java.lang.String permutation : permutationSet)
+				{
+					tempPermutationSet.add (permutation + charArray[index]);
+				}
+			}
+
+			currentPermutationSet.addAll (
+				PermutationSet (
+					tempPermutationSet,
+					tempExclusionIndexSet,
+					s
+				)
+			);
+		}
+
+		return currentPermutationSet;
+	}
+
+	public static final java.util.Set<java.lang.String> PermutationSet (
+		final java.lang.String s)
+	{
+		java.util.Set<java.lang.String> permutationSet = new java.util.HashSet<java.lang.String>();
+
+		java.util.Set<java.lang.Integer> exclusionIndexSet = new java.util.HashSet<java.lang.Integer>();
+
+		return PermutationSet (
+			permutationSet,
+			exclusionIndexSet,
+			s
+		);
+	}
+
+	public static final boolean IsPermutationPresent (
+		final java.lang.String s1,
+		final java.lang.String s2)
+	{
+		java.util.Set<java.lang.String> s1PermutationSet = PermutationSet (s1);
+
+		int s1Size = s1.length();
+
+		for (int i = 0; i < s2.length() - s1Size; ++i)
+		{
+			if (s1PermutationSet.contains (s2.substring(i, i + s1Size)))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public static final java.util.List<java.util.List<java.lang.String>> MergeAccountList (
+		final java.util.List<java.util.List<java.lang.String>> accounts)
+	{
+		java.util.Map<java.lang.String, java.lang.Integer> emailIndexMap =
+			new java.util.HashMap<java.lang.String, java.lang.Integer>();
+
+		for (int index = 0;
+			index < accounts.size();
+			++index)
+		{
+			java.util.List<java.lang.String> accountDetail = accounts.get(index);
+
+			int matchingAccountIndex = -1;
+			java.lang.String matchingEmail = "";
+
+			for (int listIndex = 1; listIndex < accountDetail.size(); ++listIndex)
+			{
+				java.lang.String email = accountDetail.get(listIndex);
+
+				if (emailIndexMap.containsKey(email))
+				{
+					matchingAccountIndex = emailIndexMap.get(email);
+
+					matchingEmail = email;
+					break;
+				}
+			}
+
+			if (-1 == matchingAccountIndex)
+			{
+				for (int listIndex = 1; listIndex < accountDetail.size(); ++listIndex)
+				{
+					emailIndexMap.put(accountDetail.get(listIndex), index);
+				}
+			}
+			else
+			{
+				java.util.List<java.lang.String> matchingAccountDetail = accounts.get(matchingAccountIndex);
+
+				for (int listIndex = 1; listIndex < accountDetail.size(); ++listIndex)
+				{
+					java.lang.String email = accountDetail.get(listIndex);
+
+					emailIndexMap.put(email, matchingAccountIndex);
+
+					if (!matchingEmail.equals(email)) matchingAccountDetail.add(email);
+				}
+
+				accounts.set(index, null);
+			}
+		}
+
+		java.util.List<java.util.List<java.lang.String>> mergedAccountList =
+			new java.util.ArrayList<java.util.List<java.lang.String>>();
+
+		for (int index = 0;
+			index < accounts.size();
+			++index)
+		{
+			java.util.List<java.lang.String> accountDetail = accounts.get(index);
+
+			if (null != accountDetail) mergedAccountList.add(accountDetail);
+		}
+
+		return mergedAccountList;
+	}
+
+	private static final int SumOfDigits (int n)
+	{
+		int sum = 0;
+
+		while (n != 0)
+		{
+			sum = sum + (n % 10);
+			n = n / 10;
+		}
+
+		return sum;
+	}
+
+    public static final int solution(int[] A)
+    {
+    	java.util.HashMap<java.lang.Integer, java.util.List<java.lang.Integer>> integerSumListMap =
+    		new java.util.HashMap<java.lang.Integer, java.util.List<java.lang.Integer>>();
+
+    	int max = java.lang.Integer.MIN_VALUE;
+
+    	for (int i : A)
+    	{
+    		int digitSum = SumOfDigits (i);
+
+    		if (integerSumListMap.containsKey (digitSum))
+    		{
+    			integerSumListMap.get(digitSum).add(i);
+    		}
+    		else
+    		{
+    			java.util.List<java.lang.Integer> integerList  = new java.util.ArrayList<java.lang.Integer>();
+
+    			integerList.add(i);
+
+    			integerSumListMap.put(digitSum, integerList);
+    		}
+    	}
+
+    	for (java.util.Map.Entry<java.lang.Integer, java.util.List<java.lang.Integer>> integerSumListEntry :
+    		integerSumListMap.entrySet())
+    	{
+    		java.util.List<java.lang.Integer> integerList = integerSumListEntry.getValue();
+
+    		int listSize = integerList.size();
+
+    		if (1 != listSize)
+    		{
+    			for (int i = 0; i < listSize; ++i)
+    			{
+        			for (int j = 0; j < i; ++j)
+        			{
+        				int sum = integerList.get(i) + integerList.get(j);
+
+        				if (sum > max)
+        				{
+        					max = sum;
+        				}
+        			}
+    			}
+    		}
+    	}
+
+    	return java.lang.Integer.MIN_VALUE == max ? -1 : max;
+    }
+
 	public static final void main (
-		String[] args)
+		final String[] argumentArray)
 	{
 		System.out.println (
-			MultiplyNumbers (
-				"2",
-				"3"
+			DecodeStringAtIndex (
+				"leet2code3",
+				10
 			)
 		);
 
 		System.out.println (
-			MultiplyNumbers (
-				"123",
-				"456"
+			DecodeStringAtIndex (
+				"ha22",
+				5
+			)
+		);
+
+		System.out.println (
+			DecodeStringAtIndex (
+				"a2345678999999999999999",
+				1
 			)
 		);
 	}
