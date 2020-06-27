@@ -1,5 +1,10 @@
 
-package org.drip.graph.selection;
+package org.drip.sample.selection;
+
+import org.drip.graph.selection.OrderStatisticSelector;
+import org.drip.graph.selection.PartialSortSelector;
+import org.drip.service.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,27 +80,27 @@ package org.drip.graph.selection;
  */
 
 /**
- * <i>MedianOfMediansSelect</i> implements the QuickSelect Algorithm using the Median-of-Medians Pivot
- * 	Generation Strategy. The References are:
+ * <i>PartialSelect</i> illustrates the Construction and Usage of the Partial Sort Selection Algorithm. The
+ * 	References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Blum, M., R. W. Floyd, V. Pratt, R. L. Rivest, and R. E. Tarjan (1973): Time Bounds for Selection
- *  			<i>Journal of Computer and System Sciences</i> <b>7 (4)</b> 448-461
- *  	</li>
- *  	<li>
- *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms
- *  			3<sup>rd</sup> Edition</i> <b>MIT Press</b>
+ *  		Eppstein, D. (2007): Blum-style Analysis of Quickselect
+ *  			https://11011110.github.io/blog/2007/10/09/blum-style-analysis-of.html
  *  	</li>
  *  	<li>
  *  		Hoare, C. A. R. (1961): Algorithm 65: Find <i>Communications of the ACM</i> <b>4 (1)</b> 321-322
  *  	</li>
  *  	<li>
+ *  		Knuth, D. (1997): <i>The Art of Computer Programming 3<sup>rd</sup> Edition</i>
+ *  			<b>Addison-Wesley</b>
+ *  	</li>
+ *  	<li>
  *  		Wikipedia (2019): Quickselect https://en.wikipedia.org/wiki/Quickselect
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020): Median Of Medians https://en.wikipedia.org/wiki/Median_of_medians
+ *  		Wikipedia (2019): Selection Algorithm https://en.wikipedia.org/wiki/Selection_algorithm
  *  	</li>
  *  </ul>
  *
@@ -103,128 +108,101 @@ package org.drip.graph.selection;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/selection/README.md">k<sup>th</sup> Order Statistics Selection Scheme</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/selection/README.md">k<sup>th</sup> Extremum Element Selection Algorithms</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MedianOfMediansSelect
-	extends org.drip.graph.selection.QuickSelect
+public class PartialSelect
 {
-	private int _groupElementCount = -1;
 
-	private int groupMedianIndex (
-		final int leftIndex,
-		final int rightIndex)
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		double[] elementArray = elementArray();
-
-		int indexI = leftIndex + 1;
-
-		while (indexI <= rightIndex)
-		{
-			int indexJ = indexI;
-
-			while (indexJ > leftIndex &&
-				elementArray[indexJ - 1] > elementArray[indexJ]
-			)
-			{
-				swapLocations (
-					indexJ - 1,
-					indexJ
-				);
-
-				--indexJ;
-			}
-
-			++indexI;
-		}
-
-		return (leftIndex + rightIndex) / 2;
-	}
-
-	@Override protected int pivotIndex (
-		final int leftIndex,
-		final int rightIndex)
-		throws java.lang.Exception
-	{
-		if (rightIndex - leftIndex < _groupElementCount)
-		{
-			return groupMedianIndex (
-				leftIndex,
-				rightIndex
-			);
-		}
-
-		for (int index = leftIndex;
-			index <= rightIndex;
-			index = index + _groupElementCount)
-		{
-			int subRightIndex = index + _groupElementCount - 1;
-
-			if (subRightIndex > rightIndex)
-			{
-				subRightIndex = rightIndex;
-			}
-
-			int groupMedianIndex = groupMedianIndex (
-				index,
-				subRightIndex
-			);
-
-			swapLocations (
-				groupMedianIndex,
-				leftIndex + (index - leftIndex) / _groupElementCount
-			);
-		}
-
-		int midIndex = (rightIndex - leftIndex) / 2 / _groupElementCount + leftIndex + 1;
-
-		return selectIndex (
-			leftIndex,
-			leftIndex + (rightIndex - leftIndex) / _groupElementCount,
-			midIndex
-		);
-	}
-
-	/**
-	 * MedianOfMediansSelect Constructor
-	 * 
-	 * @param elementArray Array of Elements
-	 * @param groupElementCount Group Element Count
-	 * 
-	 * @throws java.lang.Exception Thrown if the Input is Invalid
-	 */
-
-	public MedianOfMediansSelect (
-		final double[] elementArray,
-		final int groupElementCount)
-		throws java.lang.Exception
-	{
-		super (
-			elementArray,
-			false
+		EnvManager.InitEnv (
+			""
 		);
 
-		if (5 > (_groupElementCount = groupElementCount))
+		Double[] numberArray =
 		{
-			throw new java.lang.Exception (
-				"MedianOfMediansSelect Constructor => Invalid Inputs"
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			Math.random(),
+		};
+
+		OrderStatisticSelector<Double> partialSortSelect = new PartialSortSelector<Double> (
+			numberArray
+		);
+
+		System.out.println (
+			"\t|---------------|"
+		);
+
+		System.out.println (
+			"\t|     INPUT     |"
+		);
+
+		System.out.println (
+			"\t|---------------|"
+		);
+
+		for (int i = 0;
+			i < numberArray.length;
+			++i)
+		{
+			System.out.println (
+				"\t| " + i + " => " + FormatUtil.FormatDouble (
+					numberArray[i], 1, 4, 1.
+				)
 			);
 		}
-	}
 
-	/**
-	 * Retrieve the Group Element Count
-	 * 
-	 * @return The Group Element Count
-	 */
+		System.out.println (
+			"\t|---------------|"
+		);
 
-	public int groupElementCount()
-	{
-		return _groupElementCount;
+		System.out.println();
+
+		System.out.println (
+			"\t|---------------|"
+		);
+
+		System.out.println (
+			"\t|    OUTPUT     |"
+		);
+
+		System.out.println (
+			"\t|---------------|"
+		);
+
+		for (int i = 0;
+			i < numberArray.length;
+			++i)
+		{
+			System.out.println (
+				"\t| " + i + " => " + FormatUtil.FormatDouble (
+					partialSortSelect.select (
+						i
+					), 1, 4, 1.
+				)
+			);
+		}
+
+		System.out.println (
+			"\t|---------------|"
+		);
+
+		EnvManager.TerminateEnv();
 	}
 }

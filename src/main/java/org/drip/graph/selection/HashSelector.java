@@ -1,10 +1,5 @@
 
-package org.drip.sample.selection;
-
-import org.drip.graph.selection.MedianOfMediansSelector;
-import org.drip.graph.selection.OrderStatisticSelector;
-import org.drip.service.common.FormatUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.graph.selection;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -80,27 +75,26 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>BFPRTSelect</i> illustrates the Construction and Usage of the BFPRT Median-of-Medians QuickSelect
- * 	Algorithm. The References are:
+ * <i>HashSelector</i> implements the Hash-table Based Selection Algorithm. The References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Blum, M., R. W. Floyd, V. Pratt, R. L. Rivest, and R. E. Tarjan (1973): Time Bounds for Selection
- *  			<i>Journal of Computer and System Sciences</i> <b>7 (4)</b> 448-461
- *  	</li>
- *  	<li>
- *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms
- *  			3<sup>rd</sup> Edition</i> <b>MIT Press</b>
+ *  		Eppstein, D. (2007): Blum-style Analysis of Quickselect
+ *  			https://11011110.github.io/blog/2007/10/09/blum-style-analysis-of.html
  *  	</li>
  *  	<li>
  *  		Hoare, C. A. R. (1961): Algorithm 65: Find <i>Communications of the ACM</i> <b>4 (1)</b> 321-322
  *  	</li>
  *  	<li>
+ *  		Knuth, D. (1997): <i>The Art of Computer Programming 3<sup>rd</sup> Edition</i>
+ *  			<b>Addison-Wesley</b>
+ *  	</li>
+ *  	<li>
  *  		Wikipedia (2019): Quickselect https://en.wikipedia.org/wiki/Quickselect
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020): Median Of Medians https://en.wikipedia.org/wiki/Median_of_medians
+ *  		Wikipedia (2019): Selection Algorithm https://en.wikipedia.org/wiki/Selection_algorithm
  *  	</li>
  *  </ul>
  *
@@ -108,114 +102,137 @@ import org.drip.service.env.EnvManager;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/selection/README.md">k<sup>th</sup> Extremum Element Selection Algorithms</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/selection/README.md">k<sup>th</sup> Order Statistics Selection Scheme</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BFPRTSelect
+public class HashSelector
+	extends org.drip.graph.selection.OrderStatisticSelector<java.lang.Double>
 {
+	private int _bucketCount = -1;
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	private java.util.List<java.util.List<java.lang.Double>> _elementBucketList =
+		new java.util.ArrayList<java.util.List<java.lang.Double>>();
+
+	/**
+	 * HashSelector Constructor
+	 * 
+	 * @param elementArray Array of Elements
+	 * @param bucketCount Count of the Number of Buckets
+	 * 
+	 * @throws java.lang.Exception Thrown if the Input is Invalid
+	 */
+
+	public HashSelector (
+		final java.lang.Double[] elementArray,
+		final int bucketCount)
+		throws java.lang.Exception
 	{
-		EnvManager.InitEnv (
-			""
+		super (
+			elementArray
 		);
 
-		int groupElementCount = 5;
-		Double[] numberArray =
+		if (0 >= (_bucketCount = bucketCount))
 		{
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-		};
-
-		OrderStatisticSelector<Double> medianOfMediansSelectRecursive = new MedianOfMediansSelector<Double> (
-			numberArray,
-			true,
-			groupElementCount
-		);
-
-		OrderStatisticSelector<Double> medianOfMediansSelectIterative = new MedianOfMediansSelector<Double> (
-			numberArray,
-			false,
-			groupElementCount
-		);
-
-		System.out.println (
-			"\t|---------------|"
-		);
-
-		System.out.println (
-			"\t|     INPUT     |"
-		);
-
-		System.out.println (
-			"\t|---------------|"
-		);
-
-		for (int i = 0;
-			i < numberArray.length;
-			++i)
-		{
-			System.out.println (
-				"\t| " + i + " => " + FormatUtil.FormatDouble (
-					numberArray[i], 1, 4, 1.
-				)
+			throw new java.lang.Exception (
+				"HashSelector Constructor => Invalid Bucket Count"
 			);
 		}
 
-		System.out.println (
-			"\t|---------------|"
-		);
+		double maxValue = elementArray[0];
+		double minValue = elementArray[0];
 
-		System.out.println();
-
-		System.out.println (
-			"\t|-----------------------------|"
-		);
-
-		System.out.println (
-			"\t|   RECURSIVE  |   ITERATIVE  |"
-		);
-
-		System.out.println (
-			"\t|-----------------------------|"
-		);
-
-		for (int i = 0;
-			i < numberArray.length;
-			++i)
+		for (double value : elementArray)
 		{
-			System.out.println (
-				"\t| " + i + " => " + FormatUtil.FormatDouble (
-					medianOfMediansSelectRecursive.select (
-						i
-					), 1, 4, 1.
-				) + " | " +  FormatUtil.FormatDouble (
-					medianOfMediansSelectIterative.select (
-						i
-					), 1, 4, 1.
-				)
+			if (value < minValue)
+			{
+				minValue = value;
+			}
+			else if (value > maxValue)
+			{
+				maxValue = value;
+			}
+		}
+
+		for (int bucketIndex = 0;
+			bucketIndex < _bucketCount;
+			++bucketIndex)
+		{
+			_elementBucketList.add (
+				new java.util.ArrayList<java.lang.Double>()
 			);
 		}
 
-		System.out.println (
-			"\t|-----------------------------|"
+		double bucketWidth = (maxValue - minValue) / _bucketCount;
+
+		for (double value : elementArray)
+		{
+			_elementBucketList.get (
+				(int) ((value - minValue) / bucketWidth)
+			).add (
+				value
+			);
+		}
+	}
+
+	/**
+	 * Retrieve the Count of Buckets
+	 * 
+	 * @return The Bucket Count
+	 */
+
+	public int bucketCount()
+	{
+		return _bucketCount;
+	}
+
+	@Override public java.lang.Double select (
+		final int k)
+	{
+		int bucketIndex = 0;
+		int orderStatistics = 0;
+
+		int bucketSize = _elementBucketList.get (
+			bucketIndex
+		).size();
+
+		while (bucketIndex < _bucketCount - 1 &&
+			orderStatistics + bucketSize < k)
+		{
+			orderStatistics = orderStatistics + bucketSize;
+
+			bucketSize = _elementBucketList.get (
+				++bucketIndex
+			).size();
+		}
+
+		java.util.List<java.lang.Double> valueList = _elementBucketList.get (
+			bucketIndex
 		);
 
-		EnvManager.TerminateEnv();
+		java.lang.Double[] valueArray = new java.lang.Double[valueList.size()];
+
+		valueList.toArray (
+			valueArray
+		);
+
+		try
+		{
+			return new org.drip.graph.selection.PartialSortSelector<java.lang.Double> (
+				valueArray
+			).select (
+				k
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

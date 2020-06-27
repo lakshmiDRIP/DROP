@@ -75,7 +75,7 @@ package org.drip.graph.selection;
  */
 
 /**
- * <i>QuickSelect</i> implements the Hoare's QuickSelect Algorithm. The References are:
+ * <i>QuickSelector</i> implements the Hoare's QuickSelect Algorithm. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -110,21 +110,10 @@ package org.drip.graph.selection;
  * @author Lakshmi Krishnamurthy
  */
 
-public class QuickSelect
+public class QuickSelector<K extends java.lang.Comparable<K>>
+	extends org.drip.graph.selection.OrderStatisticSelector<K>
 {
-
-	private double[] _elementArray = null;
 	private boolean _tailCallOptimizationOn = false;
-
-	protected boolean swapLocations (
-		final int location1,
-		final int location2)
-	{
-		double value = _elementArray[location1];
-		_elementArray[location1] = _elementArray[location2];
-		_elementArray[location2] = value;
-		return true;
-	}
 
 	protected int pivotIndex (
 		final int leftIndex,
@@ -140,7 +129,9 @@ public class QuickSelect
 		final int k)
 		throws java.lang.Exception
 	{
-		int arraySize = _elementArray.length;
+		K[] elementArray = elementArray();
+
+		int arraySize = elementArray.length;
 
 		if (leftIndex < 0 ||
 			rightIndex >= arraySize || rightIndex < leftIndex ||
@@ -148,7 +139,7 @@ public class QuickSelect
 		)
 		{
 			throw new java.lang.Exception (
-				"QuickSelect::recursiveIndexSelect => Invalid Inputs"
+				"QuickSelector::recursiveIndexSelect => Invalid Inputs"
 			);
 		}
 
@@ -188,7 +179,9 @@ public class QuickSelect
 		final int k)
 		throws java.lang.Exception
 	{
-		int arraySize = _elementArray.length;
+		K[] elementArray = elementArray();
+
+		int arraySize = elementArray.length;
 
 		if (leftIndex < 0 ||
 			rightIndex >= arraySize || rightIndex < leftIndex ||
@@ -196,7 +189,7 @@ public class QuickSelect
 		)
 		{
 			throw new java.lang.Exception (
-				"QuickSelect::iterativeIndexSelect => Invalid Inputs"
+				"QuickSelector::iterativeIndexSelect => Invalid Inputs"
 			);
 		}
 
@@ -233,7 +226,7 @@ public class QuickSelect
 	}
 
 	/**
-	 * QuickSelect Constructor
+	 * QuickSelector Constructor
 	 * 
 	 * @param elementArray Array of Elements
 	 * @param tailCallOptimizationOn TRUE - Tail Call Optimization is Turned On
@@ -241,35 +234,16 @@ public class QuickSelect
 	 * @throws java.lang.Exception Thrown if the Input is Invalid
 	 */
 
-	public QuickSelect (
-		final double[] elementArray,
+	public QuickSelector (
+		final K[] elementArray,
 		final boolean tailCallOptimizationOn)
 		throws java.lang.Exception
 	{
-		if (null == (_elementArray = elementArray) ||
-			0 == _elementArray.length ||
-			!org.drip.numerical.common.NumberUtil.IsValid (
-				_elementArray
-			)
-		)
-		{
-			throw new java.lang.Exception (
-				"QuickSelect Constructor => Invalid Inputs"
-			);
-		}
+		super (
+			elementArray
+		);
 
 		_tailCallOptimizationOn = tailCallOptimizationOn;
-	}
-
-	/**
-	 * Retrieve the Array of Elements
-	 * 
-	 * @return The Array of Elements
-	 */
-
-	public double[] elementArray()
-	{
-		return _elementArray;
 	}
 
 	/**
@@ -301,7 +275,9 @@ public class QuickSelect
 		final int pivotIndex)
 		throws java.lang.Exception
 	{
-		int arraySize = _elementArray.length;
+		K[] elementArray = elementArray();
+
+		int arraySize = elementArray.length;
 
 		if (leftIndex < 0 ||
 			rightIndex >= arraySize || rightIndex < leftIndex ||
@@ -309,11 +285,11 @@ public class QuickSelect
 		)
 		{
 			throw new java.lang.Exception (
-				"QuickSelect::partition => Invalid Inputs " + leftIndex + " | " + rightIndex + " | " + pivotIndex + " | "
+				"QuickSelector::partition => Invalid Inputs"
 			);
 		}
 
-		double pivotValue = _elementArray[pivotIndex];
+		K pivotValue = elementArray[pivotIndex];
 
 		if (!swapLocations (
 			pivotIndex,
@@ -321,7 +297,7 @@ public class QuickSelect
 		))
 		{
 			throw new java.lang.Exception (
-				"QuickSelect::partition => Cannot Swap Locations"
+				"QuickSelector::partition => Cannot Swap Locations"
 			);
 		}
 
@@ -330,7 +306,9 @@ public class QuickSelect
 
 		while (index < rightIndex)
 		{
-			if (_elementArray[index] < pivotValue)
+			if (-1 == elementArray[index].compareTo (
+				pivotValue
+			))
 			{
 				if (!swapLocations (
 					storeIndex,
@@ -338,7 +316,7 @@ public class QuickSelect
 				))
 				{
 					throw new java.lang.Exception (
-						"QuickSelect::partition => Cannot Swap Locations"
+						"QuickSelector::partition => Cannot Swap Locations"
 					);
 				}
 
@@ -350,7 +328,9 @@ public class QuickSelect
 
 		while (index < rightIndex)
 		{
-			if (_elementArray[index] == pivotValue)
+			if (-1 == elementArray[index].compareTo (
+				pivotValue
+			))
 			{
 				if (!swapLocations (
 					storeIndex,
@@ -358,7 +338,7 @@ public class QuickSelect
 				))
 				{
 					throw new java.lang.Exception (
-						"QuickSelect::partition => Cannot Swap Locations"
+						"QuickSelector::partition => Cannot Swap Locations"
 					);
 				}
 
@@ -374,7 +354,7 @@ public class QuickSelect
 		))
 		{
 			throw new java.lang.Exception (
-				"QuickSelect::partition => Cannot Swap Locations"
+				"QuickSelector::partition => Cannot Swap Locations"
 			);
 		}
 
@@ -399,7 +379,7 @@ public class QuickSelect
 		final int k)
 		throws java.lang.Exception
 	{
-		return _tailCallOptimizationOn ? iterativeIndexSelect (
+		return _tailCallOptimizationOn ? recursiveIndexSelect (
 			leftIndex,
 			rightIndex,
 			k
@@ -422,12 +402,31 @@ public class QuickSelect
 	 * @throws java.lang.Exception Thrown if the Selection cannot be performed
 	 */
 
-	public double select (
+	public K select (
 		final int leftIndex,
 		final int rightIndex,
 		final int k)
 		throws java.lang.Exception
 	{
-		return _elementArray[selectIndex (leftIndex, rightIndex, k)];
+		return elementArray()[selectIndex (leftIndex, rightIndex, k)];
+	}
+
+	@Override public K select (
+		final int k)
+	{
+		try
+		{
+			return select (
+				0,
+				elementArray().length - 1,
+				k
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

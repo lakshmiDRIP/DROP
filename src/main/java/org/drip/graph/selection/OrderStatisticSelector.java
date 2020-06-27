@@ -1,10 +1,5 @@
 
-package org.drip.sample.selection;
-
-import org.drip.graph.selection.MedianOfMediansSelector;
-import org.drip.graph.selection.OrderStatisticSelector;
-import org.drip.service.common.FormatUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.graph.selection;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -80,27 +75,27 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>BFPRTSelect</i> illustrates the Construction and Usage of the BFPRT Median-of-Medians QuickSelect
- * 	Algorithm. The References are:
+ * <i>OrderStatisticSelector</i> exposes the Functionality to Select the k<sup>th</sup> Extremum Order
+ * 	Statistic. The References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Blum, M., R. W. Floyd, V. Pratt, R. L. Rivest, and R. E. Tarjan (1973): Time Bounds for Selection
- *  			<i>Journal of Computer and System Sciences</i> <b>7 (4)</b> 448-461
- *  	</li>
- *  	<li>
- *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms
- *  			3<sup>rd</sup> Edition</i> <b>MIT Press</b>
+ *  		Eppstein, D. (2007): Blum-style Analysis of Quickselect
+ *  			https://11011110.github.io/blog/2007/10/09/blum-style-analysis-of.html
  *  	</li>
  *  	<li>
  *  		Hoare, C. A. R. (1961): Algorithm 65: Find <i>Communications of the ACM</i> <b>4 (1)</b> 321-322
  *  	</li>
  *  	<li>
+ *  		Knuth, D. (1997): <i>The Art of Computer Programming 3<sup>rd</sup> Edition</i>
+ *  			<b>Addison-Wesley</b>
+ *  	</li>
+ *  	<li>
  *  		Wikipedia (2019): Quickselect https://en.wikipedia.org/wiki/Quickselect
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020): Median Of Medians https://en.wikipedia.org/wiki/Median_of_medians
+ *  		Wikipedia (2019): Selection Algorithm https://en.wikipedia.org/wiki/Selection_algorithm
  *  	</li>
  *  </ul>
  *
@@ -108,114 +103,106 @@ import org.drip.service.env.EnvManager;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/selection/README.md">k<sup>th</sup> Extremum Element Selection Algorithms</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/selection/README.md">k<sup>th</sup> Order Statistics Selection Scheme</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BFPRTSelect
+public abstract class OrderStatisticSelector<K>
 {
+	private K[] _elementArray = null;
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	protected OrderStatisticSelector (
+		final K[] elementArray)
+		throws java.lang.Exception
 	{
-		EnvManager.InitEnv (
-			""
-		);
-
-		int groupElementCount = 5;
-		Double[] numberArray =
+		if (null == (_elementArray = elementArray))
 		{
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-		};
-
-		OrderStatisticSelector<Double> medianOfMediansSelectRecursive = new MedianOfMediansSelector<Double> (
-			numberArray,
-			true,
-			groupElementCount
-		);
-
-		OrderStatisticSelector<Double> medianOfMediansSelectIterative = new MedianOfMediansSelector<Double> (
-			numberArray,
-			false,
-			groupElementCount
-		);
-
-		System.out.println (
-			"\t|---------------|"
-		);
-
-		System.out.println (
-			"\t|     INPUT     |"
-		);
-
-		System.out.println (
-			"\t|---------------|"
-		);
-
-		for (int i = 0;
-			i < numberArray.length;
-			++i)
-		{
-			System.out.println (
-				"\t| " + i + " => " + FormatUtil.FormatDouble (
-					numberArray[i], 1, 4, 1.
-				)
+			throw new java.lang.Exception (
+				"OrderStatisticSelector Constructor => Invalid Inputs"
 			);
 		}
 
-		System.out.println (
-			"\t|---------------|"
-		);
+		int elementCount = _elementArray.length;
 
-		System.out.println();
-
-		System.out.println (
-			"\t|-----------------------------|"
-		);
-
-		System.out.println (
-			"\t|   RECURSIVE  |   ITERATIVE  |"
-		);
-
-		System.out.println (
-			"\t|-----------------------------|"
-		);
-
-		for (int i = 0;
-			i < numberArray.length;
-			++i)
+		if (0 == elementCount)
 		{
-			System.out.println (
-				"\t| " + i + " => " + FormatUtil.FormatDouble (
-					medianOfMediansSelectRecursive.select (
-						i
-					), 1, 4, 1.
-				) + " | " +  FormatUtil.FormatDouble (
-					medianOfMediansSelectIterative.select (
-						i
-					), 1, 4, 1.
-				)
+			throw new java.lang.Exception (
+				"OrderStatisticSelector Constructor => Invalid Inputs"
 			);
 		}
 
-		System.out.println (
-			"\t|-----------------------------|"
-		);
-
-		EnvManager.TerminateEnv();
+		for (int elementIndex = 0;
+			elementIndex < elementCount;
+			++elementIndex)
+		{
+			if (null == _elementArray[elementIndex])
+			{
+				throw new java.lang.Exception (
+					"OrderStatisticSelector Constructor => Invalid Inputs"
+				);
+			}
+		}
 	}
+
+	protected boolean swapLocations (
+		final int location1,
+		final int location2)
+	{
+		K value = _elementArray[location1];
+		_elementArray[location1] = _elementArray[location2];
+		_elementArray[location2] = value;
+		return true;
+	}
+
+	/**
+	 * Retrieve the Array of Elements
+	 * 
+	 * @return The Array of Elements
+	 */
+
+	public K[] elementArray()
+	{
+		return _elementArray;
+	}
+
+	/**
+	 * Retrieve the Sorted List of the Elements
+	 * 
+	 * @return Sorted List of the Elements
+	 */
+
+	public java.util.List<K> sort()
+	{
+		int elementCount = _elementArray.length;
+
+		java.util.List<K> sortedElementList = new java.util.ArrayList<K>();
+
+		for (int i = 0;
+			i < elementCount;
+			++i)
+		{
+			sortedElementList.add (
+				select (
+					i
+				)
+			);
+		}
+
+		return sortedElementList;
+	}
+
+	/**
+	 * Perform a Selection for the k<sup>th</sup> Order Statistic on the Array
+	 * 
+	 * @param k The Order Statistic
+	 * 
+	 * @return The k<sup>th</sup> Order Statistic
+	 */
+
+	public abstract K select (
+		final int k);
 }

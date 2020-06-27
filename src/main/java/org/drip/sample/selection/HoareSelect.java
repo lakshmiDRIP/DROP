@@ -1,7 +1,8 @@
 
 package org.drip.sample.selection;
 
-import org.drip.graph.selection.QuickSelect;
+import org.drip.graph.selection.OrderStatisticSelector;
+import org.drip.graph.selection.QuickSelector;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -126,7 +127,7 @@ public class HoareSelect
 			""
 		);
 
-		double[] numberArray =
+		Double[] numberArray =
 		{
 			Math.random(),
 			Math.random(),
@@ -140,7 +141,7 @@ public class HoareSelect
 			Math.random(),
 		};
 
-		QuickSelect quickSelectRecursive = new QuickSelect (
+		OrderStatisticSelector<Double> quickSelectRecursive = new QuickSelector<Double> (
 			numberArray,
 			true
 		);
@@ -193,8 +194,6 @@ public class HoareSelect
 			System.out.println (
 				"\t| " + i + " => " + FormatUtil.FormatDouble (
 					quickSelectRecursive.select (
-						0,
-						numberArray.length - 1,
 						i
 					), 1, 4, 1.
 				)
@@ -207,7 +206,7 @@ public class HoareSelect
 
 		System.out.println();
 
-		QuickSelect quickSelectIterative = new QuickSelect (
+		QuickSelector<Double> quickSelectIterative = new QuickSelector<Double> (
 			numberArray,
 			true
 		);
@@ -231,8 +230,6 @@ public class HoareSelect
 			System.out.println (
 				"\t| " + i + " => " + FormatUtil.FormatDouble (
 					quickSelectIterative.select (
-						0,
-						numberArray.length - 1,
 						i
 					), 1, 4, 1.
 				)
