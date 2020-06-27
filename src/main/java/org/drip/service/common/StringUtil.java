@@ -2776,6 +2776,286 @@ public class StringUtil {
 		return "";
 	}
 
+	/**
+	 * Given a string, find the longest palindromic substring in it. You may assume that the maximum length
+	 *  of the string is 1000.
+	 * 
+	 * @param s The Input String
+	 * 
+	 * @return The Longest Palindrome Sub-string
+	 */
+
+	public static final java.lang.String LongestPalindromeSubstring (
+		final java.lang.String s)
+	{
+		if (null == s || s.isEmpty())
+		{
+			return "";
+		}
+
+		char[] charArray = s.toCharArray();
+
+		int stringLength = charArray.length;
+		int rightPalindromeIndex = -1;
+		int leftPalindromeIndex = -1;
+
+		java.util.HashMap<java.lang.Character, java.util.List<java.lang.Integer>> charLocationMap =
+			new java.util.HashMap<java.lang.Character, java.util.List<java.lang.Integer>>();
+
+		for (int index = 0;
+			index < stringLength;
+			++index)
+		{
+			char c = charArray[index];
+
+			if (charLocationMap.containsKey (
+				c
+			))
+			{
+				charLocationMap.get (
+					c
+				).add (
+					index
+				);
+			}
+			else
+			{
+				java.util.List<java.lang.Integer> locationList =
+					new java.util.ArrayList<java.lang.Integer>();
+
+				locationList.add (
+					index
+				);
+
+				charLocationMap.put (
+					c,
+					locationList
+				);
+			}
+		}
+
+		java.util.Set<java.lang.Character> charKeySet = charLocationMap.keySet();
+
+		for (java.lang.Character c : charKeySet)
+		{
+			java.util.List<java.lang.Integer> locationList = charLocationMap.get (
+				c
+			);
+
+			int locationListSize = locationList.size();
+
+			for (int i = 0;
+				i < locationListSize;
+				++i)
+			{
+				for (int j = locationListSize - 1;
+					j > i;
+					--j)
+				{
+					int leftIndexStart = locationList.get (
+						i
+					);
+
+					int rightIndexStart = locationList.get (
+						j
+					);
+
+					boolean isPalindrome = true;
+					int leftIndex = leftIndexStart;
+					int rightIndex = rightIndexStart;
+
+					if ((leftPalindromeIndex < leftIndex && rightPalindromeIndex > leftIndex) ||
+						(leftPalindromeIndex < rightIndex && rightPalindromeIndex > rightIndex)
+					)
+					{
+						continue;
+					}
+
+					while (leftIndex < rightIndex)
+					{
+						if (charArray[leftIndex++] != charArray[rightIndex--])
+						{
+							isPalindrome = false;
+							break;
+						}
+					}
+
+					if (isPalindrome)
+					{
+						leftPalindromeIndex = leftIndexStart;
+						rightPalindromeIndex = rightIndexStart;
+					}
+				}
+			}
+		}
+
+		return -1 == leftPalindromeIndex ? "" : s.substring (
+			leftPalindromeIndex,
+			rightPalindromeIndex + 1
+		);
+	}
+
+	/**
+	 * Given a string, find the length of the longest substring without repeating characters.
+	 * 
+	 * @param s The Given String
+	 * 
+	 * @return The Longest Non-repeating Sub-string
+	 */
+
+	public static final java.lang.String LongestNonRepeatingSubstring (
+		final java.lang.String s)
+	{
+		if (null == s || s.isEmpty())
+		{
+			return "";
+		}
+
+		char[] charArray = s.toCharArray();
+
+		int endNonRepeatingIndex = -1;
+		int beginNonRepeatingIndex = -1;
+		int nonRepeatingIndexFromRight = 0;
+		int stringLength = charArray.length;
+		int nonRepeatingIndexFromLeft = stringLength;
+
+		java.util.HashMap<java.lang.Character, java.util.List<java.lang.Integer>> charLocationMap =
+			new java.util.HashMap<java.lang.Character, java.util.List<java.lang.Integer>>();
+
+		for (int index = 0;
+			index < stringLength;
+			++index)
+		{
+			char c = charArray[index];
+
+			if (charLocationMap.containsKey (
+				c
+			))
+			{
+				charLocationMap.get (
+					c
+				).add (
+					index
+				);
+			}
+			else
+			{
+				java.util.List<java.lang.Integer> locationList =
+					new java.util.ArrayList<java.lang.Integer>();
+
+				locationList.add (
+					index
+				);
+
+				charLocationMap.put (
+					c,
+					locationList
+				);
+			}
+		}
+
+		java.util.Set<java.lang.Character> charKeySet = charLocationMap.keySet();
+
+		for (java.lang.Character c : charKeySet)
+		{
+			java.util.List<java.lang.Integer> locationList = charLocationMap.get (
+				c
+			);
+
+			int locationListSize = locationList.size();
+
+			if (locationListSize < 2)
+			{
+				continue;
+			}
+
+			int leftLocationIndex = locationList.get (
+				1
+			);
+
+			int rightLocationIndex = locationList.get (
+				locationListSize - 2
+			);
+
+			if (nonRepeatingIndexFromLeft > leftLocationIndex)
+			{
+				nonRepeatingIndexFromLeft = leftLocationIndex;
+			}
+
+			if (nonRepeatingIndexFromRight < rightLocationIndex)
+			{
+				nonRepeatingIndexFromRight = rightLocationIndex;
+			}
+
+			for (int i = 1;
+				i < locationListSize;
+				++i)
+			{
+				int leftIndex = locationList.get (
+					i - 1
+				);
+
+				int rightIndex = locationList.get (
+					i
+				);
+
+				if (-1 == endNonRepeatingIndex)
+				{
+					endNonRepeatingIndex = rightIndex;
+					beginNonRepeatingIndex = leftIndex;
+				}
+				else if (
+					(leftIndex > beginNonRepeatingIndex && leftIndex < endNonRepeatingIndex) ||
+					(rightIndex > beginNonRepeatingIndex && rightIndex < endNonRepeatingIndex)
+				)
+				{
+					if (rightIndex - leftIndex < endNonRepeatingIndex - beginNonRepeatingIndex)
+					{
+						endNonRepeatingIndex = rightIndex;
+						beginNonRepeatingIndex = leftIndex;
+					}
+				}
+				else
+				{
+					if (rightIndex - leftIndex > endNonRepeatingIndex - beginNonRepeatingIndex)
+					{
+						endNonRepeatingIndex = rightIndex;
+						beginNonRepeatingIndex = leftIndex;
+					}
+				}
+			}
+		}
+
+		if (-1 == endNonRepeatingIndex)
+		{
+			return nonRepeatingIndexFromLeft > stringLength - nonRepeatingIndexFromRight ? s.substring (
+				0,
+				nonRepeatingIndexFromLeft
+			) :  s.substring (
+				nonRepeatingIndexFromRight + 1,
+				stringLength - nonRepeatingIndexFromRight - 1
+			);
+		}
+
+		int substringLeftIndex = beginNonRepeatingIndex;
+		int substringRightIndex = endNonRepeatingIndex;
+
+		if (endNonRepeatingIndex - beginNonRepeatingIndex < nonRepeatingIndexFromLeft)
+		{
+			substringLeftIndex = 0;
+			substringRightIndex = nonRepeatingIndexFromLeft;
+		}
+
+		return substringRightIndex - substringLeftIndex > stringLength - nonRepeatingIndexFromRight - 1 ?
+			s.substring (
+				substringLeftIndex,
+				substringRightIndex
+			) :  s.substring (
+				nonRepeatingIndexFromRight + 1,
+				stringLength
+			);
+	}
+
 	private static final java.lang.String[] ZeroToTwentyTable()
 	{
 		java.lang.String[] zeroToTwentyTable = new java.lang.String[20];
@@ -3291,23 +3571,20 @@ public class StringUtil {
 		final String[] argumentArray)
 	{
 		System.out.println (
-			DecodeStringAtIndex (
-				"leet2code3",
-				10
+			LongestNonRepeatingSubstring (
+				"abcabcbb"
 			)
 		);
 
 		System.out.println (
-			DecodeStringAtIndex (
-				"ha22",
-				5
+			LongestNonRepeatingSubstring (
+				"bbbbb"
 			)
 		);
 
 		System.out.println (
-			DecodeStringAtIndex (
-				"a2345678999999999999999",
-				1
+			LongestNonRepeatingSubstring (
+				"pwwkew"
 			)
 		);
 	}

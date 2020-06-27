@@ -2112,6 +2112,177 @@ public class ArrayUtil
 		return false;
 	}
 
+	/**
+	 * Given an integer array arr and an integer k, modify the array by repeating it k times.
+	 * 
+	 * For example, if the array is [1, 2] and k = 3 then the modified array will be [1, 2, 1, 2, 1, 2].
+	 * 
+	 * Return the maximum sub-array sum in the modified array. Note that the length of the sub-array can be 0
+	 *  and its sum in that case is 0.
+	 * 
+	 * @param numberArray The Number Array
+	 * @param k The Repeat Count
+	 * 
+	 * @return Maximum sub-array sum in the modified array
+	 */
+
+	public static final int KConcatenatedMaximumSum (
+		final int[] numberArray,
+		final int k)
+	{
+		if (null == numberArray)
+		{
+			return 0;
+		}
+
+		int arrayLength = numberArray.length;
+
+		if (0 == arrayLength)
+		{
+			return 0;
+		}
+
+		int indexInclusiveLeftMax = numberArray[0] > 0 ? numberArray[0] : 0;
+		int indexInclusiveLeftMin = numberArray[0] < 0 ? numberArray[0] : 0;
+		int[] indexInclusiveLeftMaxArray = new int[arrayLength];
+		int[] indexInclusiveLeftMinArray = new int[arrayLength];
+		indexInclusiveLeftMaxArray[0] = numberArray[0];
+
+		for (int i = 1;
+			i < arrayLength;
+			++i)
+		{
+			int sum = indexInclusiveLeftMaxArray[i - 1] + numberArray[i];
+			indexInclusiveLeftMaxArray[i] = sum > numberArray[i] ? sum : numberArray[i];
+			indexInclusiveLeftMinArray[i] = sum < numberArray[i] ? sum : numberArray[i];
+			indexInclusiveLeftMax = indexInclusiveLeftMax > indexInclusiveLeftMaxArray[i] ?
+				indexInclusiveLeftMax : indexInclusiveLeftMaxArray[i];
+			indexInclusiveLeftMin = indexInclusiveLeftMin < indexInclusiveLeftMinArray[i] ?
+				indexInclusiveLeftMin : indexInclusiveLeftMinArray[i];
+		}
+
+		int singleMax = indexInclusiveLeftMax - indexInclusiveLeftMin;
+
+		if (1 == k)
+		{
+			return singleMax;
+		}
+
+		int[] indexInclusiveRightMaxArray = new int[arrayLength];
+		int[] indexInclusiveRightMinArray = new int[arrayLength];
+		indexInclusiveRightMaxArray[arrayLength - 1] = numberArray[arrayLength - 1];
+		int indexInclusiveRightMax = numberArray[arrayLength - 1] > 0 ? numberArray[arrayLength - 1] : 0;
+		int indexInclusiveRightMin = numberArray[arrayLength - 1] < 0 ? numberArray[arrayLength - 1] : 0;
+
+		for (int i = arrayLength - 2;
+			i >= 0;
+			--i)
+		{
+			int sum = indexInclusiveLeftMaxArray[i + 1] + numberArray[i];
+			indexInclusiveRightMaxArray[i] = sum > numberArray[i] ? sum : numberArray[i];
+			indexInclusiveRightMinArray[i] = sum < numberArray[i] ? sum : numberArray[i];
+			indexInclusiveRightMax = indexInclusiveRightMax > indexInclusiveRightMaxArray[i] ?
+				indexInclusiveRightMax : indexInclusiveRightMaxArray[i];
+			indexInclusiveRightMin = indexInclusiveRightMin < indexInclusiveRightMinArray[i] ?
+				indexInclusiveRightMin : indexInclusiveRightMinArray[i];
+		}
+
+		int spanMax = indexInclusiveLeftMax + indexInclusiveRightMax;
+		return k * singleMax > spanMax ? k * singleMax : spanMax;
+	}
+
+	private static final int KthHighestOrderStatistic (
+		final int[] numberArray,
+		final int k)
+	{
+		java.util.PriorityQueue<java.lang.Integer> heap = new java.util.PriorityQueue<java.lang.Integer>();
+
+		int arrayCount = numberArray.length;
+
+		for (int i = 0;
+			i < arrayCount;
+			++i)
+		{
+			if (i < k)
+			{
+				heap.offer(
+					numberArray[i]
+				);
+			}
+			else
+			{
+				if (numberArray[i] > heap.peek())
+				{
+					heap.poll();
+
+					heap.offer(
+						numberArray[i]
+					);
+				}
+			}
+		}
+
+		return heap.peek();
+	}
+
+	/**
+	 * Given an unsorted array numberArray, reorder it such that numberArray[0] < numberArray[1] >
+	 * 	numberArray[2] < numberArray[3]....
+	 * 
+	 * @param numberArray Number Array
+	 * 
+	 * @return TRUE - The Number Array is Wiggle Sorted
+	 */
+
+	public static final boolean WiggleSort (
+		final int[] numberArray)
+	{
+		if (null == numberArray)
+		{
+			return true;
+		}
+
+		int oddLocation = 1;
+		int arrayLength = numberArray.length;
+		int evenLocation = 0 == arrayLength % 2 ? arrayLength - 2 : arrayLength - 1;
+		java.lang.Integer[] wiggleArray = 2 >= arrayLength ? null : new java.lang.Integer[arrayLength];
+
+		if (null == wiggleArray)
+		{
+			return true;
+		}
+
+		int median = KthHighestOrderStatistic (
+			numberArray,
+			(arrayLength + 1) / 2
+		);
+
+		for (int i = 0;
+			i < arrayLength;
+			++i)
+		{
+			if (numberArray[i] > median)
+			{
+				wiggleArray[oddLocation] = numberArray[i];
+				oddLocation += 2;
+			}
+			else if (numberArray[i] < median)
+			{
+				wiggleArray[evenLocation] = numberArray[i];
+				evenLocation -= 2;
+			}
+		}
+
+		for (int i = 0;
+			i < arrayLength;
+			++i)
+		{
+			numberArray[i] = null == wiggleArray[i] ? median : wiggleArray[i];
+		}
+
+		return true;
+	}
+
 	public static final int TargetSum (
 		final int[] numberArray,
 		final int target)
@@ -2599,16 +2770,9 @@ public class ArrayUtil
 		final String[] argumentArray)
 	{
 		System.out.println (
-			ContinuousSubarraySum (
-				new int[] {23, 2, 4, 6, 7},
-				6
-			)
-		);
-
-		System.out.println (
-			ContinuousSubarraySum (
-				new int[] {23, 2, 6, 4, 7},
-				6
+			KConcatenatedMaximumSum (
+				new int[] {1, 2},
+				3
 			)
 		);
 	}

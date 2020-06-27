@@ -172,6 +172,293 @@ public class NumberUtil {
 		);
 	}
 
+	private static final int DigitListToInteger (
+		final java.util.List<java.lang.Integer> integerToDigitList)
+	{
+		int integer = 0;
+
+		for (int digit : integerToDigitList)
+		{
+			integer = 10 * integer + digit;
+		}
+
+		return integer;
+	}
+
+	private static final java.util.List<java.lang.Integer> StringToDigitList (
+		final java.lang.String s)
+	{
+		java.util.List<java.lang.Integer> integerToDigitList = new java.util.ArrayList<java.lang.Integer>();
+
+		char[] charArray = s.toCharArray();
+
+		int stringLength = charArray.length;
+		int index = 0;
+
+		while (index < stringLength)
+		{
+			integerToDigitList.add (
+				(int) (charArray[index++] - '0')
+			);
+		}
+
+		return integerToDigitList;
+	}
+
+	private static final int NextPalindrome (
+		int n)
+	{
+		java.util.List<java.lang.Integer> digitList = new java.util.ArrayList<java.lang.Integer>();
+
+		int number = n + 1;
+
+		while (0 != number)
+		{
+			digitList.add (
+				0,
+				number % 10
+			);
+
+			number = number / 10;
+		}
+
+		int digitCount = digitList.size();
+
+		int leftDigitIndex = 0;
+		int rightDigitIndex = digitCount - 1;
+
+		while (leftDigitIndex < rightDigitIndex)
+		{
+			int leftDigit = digitList.get (
+				leftDigitIndex
+			);
+
+			int rightDigit = digitList.get (
+				rightDigitIndex
+			);
+
+			if (leftDigit > rightDigit)
+			{
+				digitList.set (
+					rightDigitIndex,
+					leftDigit
+				);
+			}
+			else if (leftDigit < rightDigit)
+			{
+				if (leftDigitIndex == rightDigitIndex - 1)
+				{
+					int newDigit = leftDigit + 1;
+
+					digitList.set (
+						leftDigitIndex,
+						newDigit
+					);
+
+					digitList.set (
+						rightDigitIndex,
+						newDigit
+					);
+
+					break;
+				}
+
+				digitList.set (
+					rightDigitIndex,
+					leftDigit
+				);
+
+				int precedingDigit = digitList.get (
+					rightDigitIndex - 1
+				);
+
+				if (9 != precedingDigit)
+				{
+					digitList.set (
+						rightDigitIndex - 1,
+						precedingDigit + 1
+					);
+				}
+				else
+				{
+					while (rightDigitIndex > 0 &&
+						9 == digitList.get (
+							rightDigitIndex - 1
+						)
+					)
+					{
+						digitList.set (
+							rightDigitIndex - 1,
+							0
+						);
+
+						--rightDigitIndex;
+					}
+
+					if (0 == rightDigitIndex)
+					{
+						digitList.add (
+							0,
+							1
+						);
+					}
+					else
+					{
+						digitList.set (
+							rightDigitIndex - 1,
+							digitList.get (
+								rightDigitIndex - 1
+							) + 1
+						);
+					}
+
+					return NextPalindrome (
+						DigitListToInteger (
+							digitList
+						) - 1
+					);
+				}
+			}
+
+			++leftDigitIndex;
+			--rightDigitIndex;
+		}
+
+		return DigitListToInteger (
+			digitList
+		);
+	}
+
+	private static final int NumberFromList (
+		final java.util.List<java.lang.Integer> integerList,
+		final int leftDigitIndex,
+		final int rightDigitIndex)
+	{
+		int number = 0;
+		int digitIndex = leftDigitIndex;
+
+		while (digitIndex <= rightDigitIndex)
+		{
+			number = 10 * number + integerList.get (
+				digitIndex++
+			);
+		}
+
+		return number;
+	}
+
+	private static final boolean IsNumberSequenceAdditive (
+		final java.util.List<java.lang.Integer> integerList)
+	{
+		int totalDigitCount = integerList.size();
+
+		if (3 > totalDigitCount)
+		{
+			return false;
+		}
+
+		int thirdNumber = -1;
+		int secondNumber = -1;
+		int firstDigitFinish = 0;
+		int lastProcessedIndex = -1;
+
+		while (-1 == lastProcessedIndex &&
+			firstDigitFinish <= totalDigitCount / 2)
+		{
+			int firstNumber = NumberFromList (
+				integerList,
+				0,
+				firstDigitFinish
+			);
+
+			int secondDigitStart = firstDigitFinish + 1;
+			int secondDigitFinish = firstDigitFinish + 1;
+
+			while (-1 == lastProcessedIndex &&
+				secondDigitFinish <= 2 * totalDigitCount / 3)
+			{
+				secondNumber = NumberFromList (
+					integerList,
+					secondDigitStart,
+					secondDigitFinish
+				);
+
+				int thirdDigitSize = java.lang.Math.max (
+					firstDigitFinish,
+					secondDigitFinish - secondDigitStart
+				);
+
+				int thirdDigitStart = secondDigitFinish + 1;
+				int thirdDigitFinish = thirdDigitStart + thirdDigitSize;
+
+				while (thirdDigitFinish < totalDigitCount)
+				{
+					thirdNumber = NumberFromList (
+						integerList,
+						thirdDigitStart,
+						thirdDigitFinish
+					);
+
+					if (thirdNumber == firstNumber + secondNumber)
+					{
+						if (thirdDigitFinish == totalDigitCount - 1)
+						{
+							return true;
+						}
+
+						lastProcessedIndex = thirdDigitFinish;
+						break;
+					}
+
+					++thirdDigitFinish;
+				}
+
+				++secondDigitFinish;
+			}
+
+			++firstDigitFinish;
+		}
+
+		int currentNumber = -1;
+		boolean endReached = false;
+		int prevNumber = thirdNumber;
+		int prevPrevNumber = secondNumber;
+
+		while (!endReached)
+		{
+			int currentNumberEndIndex = lastProcessedIndex + 1;
+
+			while (currentNumberEndIndex < totalDigitCount &&
+				currentNumber < prevNumber)
+			{
+				currentNumber = NumberFromList (
+					integerList,
+					lastProcessedIndex + 1,
+					currentNumberEndIndex
+				);
+
+				++currentNumberEndIndex;
+			}
+
+			if (currentNumberEndIndex == totalDigitCount)
+			{
+				if (currentNumber == prevNumber + prevPrevNumber)
+				{
+					return true;
+				}
+
+				endReached = true;
+			}
+
+			lastProcessedIndex = currentNumberEndIndex - 1;
+			prevPrevNumber = prevNumber;
+			prevNumber = currentNumber;
+			currentNumber = -1;
+		}
+
+		return false;
+	}
+
 	/**
 	 * Check if the Input Long is MIN_VALUE or MAX_VALUE
 	 * 
@@ -1127,143 +1414,6 @@ public class NumberUtil {
 		return negative ? 1. / power : power;
 	}
 
-	private static final int DigitListToInteger (
-		final java.util.List<java.lang.Integer> integerToDigitList)
-	{
-		int integer = 0;
-
-		for (int digit : integerToDigitList)
-		{
-			integer = 10 * integer + digit;
-		}
-
-		return integer;
-	}
-
-	private static final int NextPalindrome (
-		int n)
-	{
-		java.util.List<java.lang.Integer> digitList = new java.util.ArrayList<java.lang.Integer>();
-
-		int number = n + 1;
-
-		while (0 != number)
-		{
-			digitList.add (
-				0,
-				number % 10
-			);
-
-			number = number / 10;
-		}
-
-		int digitCount = digitList.size();
-
-		int leftDigitIndex = 0;
-		int rightDigitIndex = digitCount - 1;
-
-		while (leftDigitIndex < rightDigitIndex)
-		{
-			int leftDigit = digitList.get (
-				leftDigitIndex
-			);
-
-			int rightDigit = digitList.get (
-				rightDigitIndex
-			);
-
-			if (leftDigit > rightDigit)
-			{
-				digitList.set (
-					rightDigitIndex,
-					leftDigit
-				);
-			}
-			else if (leftDigit < rightDigit)
-			{
-				if (leftDigitIndex == rightDigitIndex - 1)
-				{
-					int newDigit = leftDigit + 1;
-
-					digitList.set (
-						leftDigitIndex,
-						newDigit
-					);
-
-					digitList.set (
-						rightDigitIndex,
-						newDigit
-					);
-
-					break;
-				}
-
-				digitList.set (
-					rightDigitIndex,
-					leftDigit
-				);
-
-				int precedingDigit = digitList.get (
-					rightDigitIndex - 1
-				);
-
-				if (9 != precedingDigit)
-				{
-					digitList.set (
-						rightDigitIndex - 1,
-						precedingDigit + 1
-					);
-				}
-				else
-				{
-					while (rightDigitIndex > 0 &&
-						9 == digitList.get (
-							rightDigitIndex - 1
-						)
-					)
-					{
-						digitList.set (
-							rightDigitIndex - 1,
-							0
-						);
-
-						--rightDigitIndex;
-					}
-
-					if (0 == rightDigitIndex)
-					{
-						digitList.add (
-							0,
-							1
-						);
-					}
-					else
-					{
-						digitList.set (
-							rightDigitIndex - 1,
-							digitList.get (
-								rightDigitIndex - 1
-							) + 1
-						);
-					}
-
-					return NextPalindrome (
-						DigitListToInteger (
-							digitList
-						) - 1
-					);
-				}
-			}
-
-			++leftDigitIndex;
-			--rightDigitIndex;
-		}
-
-		return DigitListToInteger (
-			digitList
-		);
-	}
-
 	/**
 	 * Find the smallest prime palindrome greater than or equal to the input number.
 	 * 
@@ -1300,6 +1450,136 @@ public class NumberUtil {
 		return nextPalindrome;
 	}
 
+	/**
+	 * Greatest Common Divisor between Two Numbers
+	 * 
+	 * @param a First Number
+	 * @param b Second Number
+	 * 
+	 * @return The GCD
+	 */
+
+	public static final long GCD (
+		final long a,
+		final long b)
+	{
+		if (a < b)
+		{
+			return GCD (
+				b,
+				a
+			);
+		}
+
+		if (0 == b)
+		{
+			return a;
+		}
+
+		return GCD (
+			b,
+			a % b
+		);
+	}
+
+	/**
+	 * Find the n<sup>th</sup> ugly number.
+	 * 
+	 * Ugly numbers are positive integers which are divisible by a or b or c.
+	 * 
+	 * @param n n
+	 * @param a A
+	 * @param b B
+	 * @param c C
+	 * 
+	 * @return The n<sup>th</sup> Ugly Number
+	 */
+
+	public static final long NthUglyNumber (
+		final long n,
+		final long a,
+		final long b,
+		final long c)
+	{
+		if (1L == a || 1L == b || 1L == c)
+		{
+			return n;
+		}
+
+		long ab = a * b / GCD (
+			a,
+			b
+		);
+
+		long ac = a * c / GCD (
+			a,
+			c
+		);
+
+		long bc = b * c / GCD (
+			b,
+			c
+		);
+
+		long abc = a * bc / GCD (
+			a,
+			bc
+		);
+
+		long left = 0L;
+		long uglyNumber = -1L;
+		long right = java.lang.Long.MAX_VALUE;
+
+		while (left <= right)
+		{
+			long mid = (left + right) / 2;
+			long count = mid / a + mid / b + mid / c - mid / ab - mid / bc - mid / ac + mid / abc;
+
+			if (n == count)
+			{
+				right = mid - 1;
+				uglyNumber = mid;
+			}
+			else if (count > n)
+			{
+				right = mid - 1;
+			}
+			else
+			{
+				left = mid + 1;
+			}
+		}
+
+		return uglyNumber;
+	}
+
+	/**
+	 * Additive number is a string whose digits can form additive sequence.
+	 * 
+	 * A valid additive sequence should contain <b>at least</b> three numbers. Except for the first two
+	 * 	numbers, each subsequent number in the sequence must be the sum of the preceding two.
+	 * 
+	 * Given a string containing only digits '0'-'9', write a function to determine if it's an additive
+	 * 	number.
+	 * 
+	 * <b>Note</b>: Numbers in the additive sequence <b>cannot</b> have leading zeros, so sequence 1, 2, 03
+	 * 	or 1, 02, 3 is invalid.
+	 * 
+	 * @param s The Input String
+	 * 
+	 * @return TRUE - Input is an Additive Number
+	 */
+
+	public static final boolean IsNumberSequenceAdditive (
+		final java.lang.String s)
+	{
+		return null == s || s.isEmpty() ? false : IsNumberSequenceAdditive (
+			StringToDigitList (
+				s
+			)
+		);
+	}
+
 	public static final int TrailingFactorialZeros (
 		final int n)
 	{
@@ -1317,6 +1597,69 @@ public class NumberUtil {
 		}
 
 		return zeroCount;
+	}
+
+	/**
+	 * You are given two jugs with capacities x and y liters. There is an infinite amount of water supply
+	 * 	available. You need to determine whether it is possible to measure exactly z liters using these two
+	 *  jugs.
+	 *  
+	 * If z liters of water is measurable, you must have z liters of water contained within one or both
+	 *  buckets by the end.
+	 *  
+	 * Operations allowed:
+	 * 
+	 *   Fill any of the jugs completely with water.
+	 *   Empty any of the jugs.
+	 *   Pour water from one jug into another till the other jug is completely full or the first jug itself
+	 *      is empty.
+	 * 
+	 * @param x x
+	 * @param y y
+	 * @param z z
+	 * 
+	 * @return
+	 */
+
+	public static final boolean CanMeasureWater (
+		final int x,
+		final int y,
+		final int z)
+	{
+		if (x + y < z)
+		{
+			return false;
+		}
+
+		if (0 == x && 0 == y)
+		{
+			return 0 == z;
+		}
+
+		if (0 == x)
+		{
+			return y == z || 0 == z;
+		}
+
+		if (0 == y)
+		{
+			return x == z || 0 == z;
+		}
+
+		if (x + y == z)
+		{
+			return true;
+		}
+
+		return 0 == z % (
+			x <= y ? GCD (
+				x,
+				y % x
+			) : GCD (
+				y,
+				x % y
+			)
+		);
 	}
 
 	public static final int NthDigit (
@@ -1369,20 +1712,14 @@ public class NumberUtil {
 		final String[] argumentArray)
 	{
 		System.out.println (
-			NextPrimePalindrome (
-				6
+			IsNumberSequenceAdditive (
+				"112358"
 			)
 		);
 
 		System.out.println (
-			NextPrimePalindrome (
-				8
-			)
-		);
-
-		System.out.println (
-			NextPrimePalindrome (
-				13
+			IsNumberSequenceAdditive (
+				"199100199"
 			)
 		);
 	}
