@@ -1,5 +1,10 @@
 
-package org.drip.graph.selection;
+package org.drip.sample.selection;
+
+import org.drip.graph.selection.HashSelector;
+import org.drip.graph.selection.OrderStatisticSelector;
+import org.drip.service.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,8 +80,8 @@ package org.drip.graph.selection;
  */
 
 /**
- * <i>MedianOfMediansSelector</i> implements the QuickSelect Algorithm using the Median-of-Medians Pivot
- * 	Generation Strategy. The References are:
+ * <i>HashSelect</i> illustrates the Construction and Usage of the Bucket Hash-table Based Selection
+ * 	Algorithm. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -103,140 +108,103 @@ package org.drip.graph.selection;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/selection/README.md">k<sup>th</sup> Order Statistics Selection Scheme</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/selection/README.md">k<sup>th</sup> Extremum Element Selection Algorithms</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MedianOfMediansSelector<K extends java.lang.Comparable<K>>
-	extends org.drip.graph.selection.QuickSelector<K>
+public class HashSelect
 {
-	private int _groupElementCount = -1;
 
-	private int groupMedianIndex (
-		final int leftIndex,
-		final int rightIndex)
-		throws java.lang.Exception
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		K[] elementArray = elementArray();
+		EnvManager.InitEnv (
+			""
+		);
 
-		int indexI = leftIndex + 1;
-
-		while (indexI <= rightIndex)
+		int bucketCount = 5;
+		Double[] numberArray =
 		{
-			int indexJ = indexI;
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			Math.random(),
+		};
 
-			while (indexJ > leftIndex &&
-				-1 == elementArray[indexJ - 1].compareTo (
-					elementArray[indexJ]
+		OrderStatisticSelector<Double> hashSelector = new HashSelector (
+			numberArray,
+			bucketCount
+		);
+
+		System.out.println (
+			"\t|---------------|"
+		);
+
+		System.out.println (
+			"\t|     INPUT     |"
+		);
+
+		System.out.println (
+			"\t|---------------|"
+		);
+
+		for (int i = 0;
+			i < numberArray.length;
+			++i)
+		{
+			System.out.println (
+				"\t| " + i + " => " + FormatUtil.FormatDouble (
+					numberArray[i], 1, 4, 1.
 				)
-			)
-			{
-				if (!swapLocations (
-					indexJ - 1,
-					indexJ
-				))
-				{
-					throw new java.lang.Exception (
-						"MedianOfMediansSelector::groupMedianIndex => Cannot Swap Locations"
-					);
-				}
-
-				--indexJ;
-			}
-
-			++indexI;
-		}
-
-		return (leftIndex + rightIndex) / 2;
-	}
-
-	@Override protected int pivotIndex (
-		final int leftIndex,
-		final int rightIndex)
-		throws java.lang.Exception
-	{
-		if (rightIndex - leftIndex < _groupElementCount)
-		{
-			return groupMedianIndex (
-				leftIndex,
-				rightIndex
 			);
 		}
 
-		for (int index = leftIndex;
-			index <= rightIndex;
-			index = index + _groupElementCount)
-		{
-			int subRightIndex = index + _groupElementCount - 1;
-
-			if (subRightIndex > rightIndex)
-			{
-				subRightIndex = rightIndex;
-			}
-
-			if (!swapLocations (
-				groupMedianIndex (
-					index,
-					subRightIndex
-				),
-				leftIndex + (index - leftIndex) / _groupElementCount
-			))
-			{
-				throw new java.lang.Exception (
-					"MedianOfMediansSelector::pivotIndex => Cannot Swap Locations"
-				);
-			}
-		}
-
-		return selectIndex (
-			leftIndex,
-			leftIndex + (rightIndex - leftIndex) / _groupElementCount,
-			(rightIndex - leftIndex) / 2 / _groupElementCount + leftIndex + 1
-		);
-	}
-
-	/**
-	 * MedianOfMediansSelector Constructor
-	 * 
-	 * @param elementArray Array of Elements
-	 * @param tailCallOptimizationOn TRUE - Tail Call Optimization is Turned On
-	 * @param groupElementCount Group Element Count
-	 * 
-	 * @throws java.lang.Exception Thrown if the Input is Invalid
-	 */
-
-	public MedianOfMediansSelector (
-		final K[] elementArray,
-		final boolean tailCallOptimizationOn,
-		final int groupElementCount)
-		throws java.lang.Exception
-	{
-		super (
-			elementArray,
-			tailCallOptimizationOn,
-			null
+		System.out.println (
+			"\t|---------------|"
 		);
 
-		if (5 > (_groupElementCount = groupElementCount))
+		System.out.println();
+
+		System.out.println (
+			"\t|---------------|"
+		);
+
+		System.out.println (
+			"\t|    OUTPUT     |"
+		);
+
+		System.out.println (
+			"\t|---------------|"
+		);
+
+		for (int i = 0;
+			i < numberArray.length;
+			++i)
 		{
-			throw new java.lang.Exception (
-				"MedianOfMediansSelector Constructor => Invalid Inputs"
+			System.out.println (
+				"\t| " + i + " => " + FormatUtil.FormatDouble (
+					hashSelector.select (
+						i
+					), 1, 4, 1.
+				)
 			);
 		}
-	}
 
-	/**
-	 * Retrieve the Group Element Count
-	 * 
-	 * @return The Group Element Count
-	 */
+		System.out.println (
+			"\t|---------------|"
+		);
 
-	public int groupElementCount()
-	{
-		return _groupElementCount;
+		EnvManager.TerminateEnv();
 	}
 }

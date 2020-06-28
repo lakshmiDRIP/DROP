@@ -75,27 +75,27 @@ package org.drip.graph.selection;
  */
 
 /**
- * <i>MedianOfMediansSelector</i> implements the QuickSelect Algorithm using the Median-of-Medians Pivot
- * 	Generation Strategy. The References are:
+ * <i>IntroselectControl</i> contains the Introselect-based Control Schemes to augment Quickselect. The
+ * 	References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Blum, M., R. W. Floyd, V. Pratt, R. L. Rivest, and R. E. Tarjan (1973): Time Bounds for Selection
- *  			<i>Journal of Computer and System Sciences</i> <b>7 (4)</b> 448-461
- *  	</li>
- *  	<li>
- *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms
- *  			3<sup>rd</sup> Edition</i> <b>MIT Press</b>
- *  	</li>
- *  	<li>
  *  		Hoare, C. A. R. (1961): Algorithm 65: Find <i>Communications of the ACM</i> <b>4 (1)</b> 321-322
+ *  	</li>
+ *  	<li>
+ *  		Knuth, D. (1997): <i>The Art of Computer Programming 3<sup>rd</sup> Edition</i>
+ *  			<b>Addison-Wesley</b>
+ *  	</li>
+ *  	<li>
+ *  		Musser, D. R. (1997): Introselect Sorting and Selection Algorithms <i>Software: Practice and
+ *  			Experience</i> <b>27 (8)</b> 983-993
  *  	</li>
  *  	<li>
  *  		Wikipedia (2019): Quickselect https://en.wikipedia.org/wiki/Quickselect
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020): Median Of Medians https://en.wikipedia.org/wiki/Median_of_medians
+ *  		Wikipedia (2020): Introselect https://en.wikipedia.org/wiki/Introselect
  *  	</li>
  *  </ul>
  *
@@ -111,132 +111,122 @@ package org.drip.graph.selection;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MedianOfMediansSelector<K extends java.lang.Comparable<K>>
-	extends org.drip.graph.selection.QuickSelector<K>
+public class IntroselectControl
 {
-	private int _groupElementCount = -1;
-
-	private int groupMedianIndex (
-		final int leftIndex,
-		final int rightIndex)
-		throws java.lang.Exception
-	{
-		K[] elementArray = elementArray();
-
-		int indexI = leftIndex + 1;
-
-		while (indexI <= rightIndex)
-		{
-			int indexJ = indexI;
-
-			while (indexJ > leftIndex &&
-				-1 == elementArray[indexJ - 1].compareTo (
-					elementArray[indexJ]
-				)
-			)
-			{
-				if (!swapLocations (
-					indexJ - 1,
-					indexJ
-				))
-				{
-					throw new java.lang.Exception (
-						"MedianOfMediansSelector::groupMedianIndex => Cannot Swap Locations"
-					);
-				}
-
-				--indexJ;
-			}
-
-			++indexI;
-		}
-
-		return (leftIndex + rightIndex) / 2;
-	}
-
-	@Override protected int pivotIndex (
-		final int leftIndex,
-		final int rightIndex)
-		throws java.lang.Exception
-	{
-		if (rightIndex - leftIndex < _groupElementCount)
-		{
-			return groupMedianIndex (
-				leftIndex,
-				rightIndex
-			);
-		}
-
-		for (int index = leftIndex;
-			index <= rightIndex;
-			index = index + _groupElementCount)
-		{
-			int subRightIndex = index + _groupElementCount - 1;
-
-			if (subRightIndex > rightIndex)
-			{
-				subRightIndex = rightIndex;
-			}
-
-			if (!swapLocations (
-				groupMedianIndex (
-					index,
-					subRightIndex
-				),
-				leftIndex + (index - leftIndex) / _groupElementCount
-			))
-			{
-				throw new java.lang.Exception (
-					"MedianOfMediansSelector::pivotIndex => Cannot Swap Locations"
-				);
-			}
-		}
-
-		return selectIndex (
-			leftIndex,
-			leftIndex + (rightIndex - leftIndex) / _groupElementCount,
-			(rightIndex - leftIndex) / 2 / _groupElementCount + leftIndex + 1
-		);
-	}
+	private int _problemSize = 0;
+	private int _iterationCount = 0;
+	private int _subPartitionReductionLimit = -1;
+	private double _subPartitionCumulativeSize = 0;
+	private double _subPartitionCumulativeLimit = 0;
+	private double _subPartitionCumulativeFactor = java.lang.Double.NaN;
 
 	/**
-	 * MedianOfMediansSelector Constructor
+	 * IntroselectControl Constructor
 	 * 
-	 * @param elementArray Array of Elements
-	 * @param tailCallOptimizationOn TRUE - Tail Call Optimization is Turned On
-	 * @param groupElementCount Group Element Count
+	 * @param subPartitionReductionLimit Sub-partition Reduction Limit
+	 * @param subPartitionCumulativeFactor Sub-partition Cumulative Factor
 	 * 
-	 * @throws java.lang.Exception Thrown if the Input is Invalid
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MedianOfMediansSelector (
-		final K[] elementArray,
-		final boolean tailCallOptimizationOn,
-		final int groupElementCount)
+	public IntroselectControl (
+		final int subPartitionReductionLimit,
+		final double subPartitionCumulativeFactor)
 		throws java.lang.Exception
 	{
-		super (
-			elementArray,
-			tailCallOptimizationOn,
-			null
-		);
-
-		if (5 > (_groupElementCount = groupElementCount))
+		if (1 >= (_subPartitionReductionLimit = subPartitionReductionLimit) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (
+				_subPartitionCumulativeFactor = subPartitionCumulativeFactor
+			) || 1. >= _subPartitionCumulativeFactor
+		)
 		{
 			throw new java.lang.Exception (
-				"MedianOfMediansSelector Constructor => Invalid Inputs"
+				"IntroselectControl Constructor => Invalid Inputs"
 			);
 		}
 	}
 
 	/**
-	 * Retrieve the Group Element Count
+	 * Retrieve the Sub-partition Reduction Limit
 	 * 
-	 * @return The Group Element Count
+	 * @return The Sub-partition Reduction Limit
 	 */
 
-	public int groupElementCount()
+	public int subPartitionReductionLimit()
 	{
-		return _groupElementCount;
+		return _subPartitionReductionLimit;
+	}
+
+	/**
+	 * Retrieve the Sub-partition Cumulative Factor
+	 * 
+	 * @return The Sub-partition Cumulative Factor
+	 */
+
+	public double subPartitionCumulativeFactor()
+	{
+		return _subPartitionCumulativeFactor;
+	}
+
+	/**
+	 * Retrieve the Iteration Count
+	 * 
+	 * @return The Iteration Count
+	 */
+
+	public int iterationCount()
+	{
+		return _iterationCount;
+	}
+
+	/**
+	 * Retrieve the Cumulative Sub-partition Size
+	 * 
+	 * @return The Cumulative Sub-partition Size
+	 */
+
+	public double subPartitionCumulativeSize()
+	{
+		return _subPartitionCumulativeSize;
+	}
+
+	/**
+	 * Initialize using the Array Size
+	 * 
+	 * @param size The Array Size
+	 * 
+	 * @return TRUE - Initialization successful
+	 */
+
+	public boolean init (
+		final int size)
+	{
+		if (0 >= size)
+		{
+			return false;
+		}
+
+		_subPartitionCumulativeLimit = (_problemSize = size) * _subPartitionCumulativeFactor;
+		_subPartitionCumulativeSize = size;
+		_iterationCount = 0;
+		return true;
+	}
+
+	/**
+	 * Check if the Sufficient Progress has occurred
+	 * 
+	 * @param size The Current Size of the Partition
+	 * 
+	 * @return TRUE - Sufficient Progress has occurred
+	 */
+
+	public boolean progressCheck (
+		final int size)
+	{
+		_subPartitionCumulativeSize = _subPartitionCumulativeSize + size;
+		return _subPartitionCumulativeSize > _subPartitionCumulativeLimit || (
+			++_iterationCount > _subPartitionReductionLimit &&
+			size > _problemSize / 2
+		) ? false : true;
 	}
 }

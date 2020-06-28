@@ -75,27 +75,27 @@ package org.drip.graph.selection;
  */
 
 /**
- * <i>MedianOfMediansSelector</i> implements the QuickSelect Algorithm using the Median-of-Medians Pivot
- * 	Generation Strategy. The References are:
+ * <i>FloydRivestSelector</i> implements the Floyd-Rivest Selection Algorithm. The References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Blum, M., R. W. Floyd, V. Pratt, R. L. Rivest, and R. E. Tarjan (1973): Time Bounds for Selection
- *  			<i>Journal of Computer and System Sciences</i> <b>7 (4)</b> 448-461
+ *  		Floyd, R. W., and R. L. Rivest (1975): Expected Time Bounds for Selection <i>Communications of
+ *  			the ACM</i> <b>18 (3)</b> 165-172
  *  	</li>
  *  	<li>
- *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms
- *  			3<sup>rd</sup> Edition</i> <b>MIT Press</b>
+ *  		Floyd, R. W., and R. L. Rivest (1975): The Algorithm SELECT – for finding the i<sup>th</sup>
+ *  			smallest of n Elements <i>Communications of the ACM</i> <b>18 (3)</b> 173
  *  	</li>
  *  	<li>
  *  		Hoare, C. A. R. (1961): Algorithm 65: Find <i>Communications of the ACM</i> <b>4 (1)</b> 321-322
  *  	</li>
  *  	<li>
- *  		Wikipedia (2019): Quickselect https://en.wikipedia.org/wiki/Quickselect
+ *  		Wikipedia (2019): Floyd-Rivest Algorithm
+ *  			https://en.wikipedia.org/wiki/Floyd%E2%80%93Rivest_algorithm
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020): Median Of Medians https://en.wikipedia.org/wiki/Median_of_medians
+ *  		Wikipedia (2019): Quickselect https://en.wikipedia.org/wiki/Quickselect
  *  	</li>
  *  </ul>
  *
@@ -111,132 +111,123 @@ package org.drip.graph.selection;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MedianOfMediansSelector<K extends java.lang.Comparable<K>>
+public class FloydRivestSelector<K extends java.lang.Comparable<K>>
 	extends org.drip.graph.selection.QuickSelector<K>
 {
-	private int _groupElementCount = -1;
-
-	private int groupMedianIndex (
-		final int leftIndex,
-		final int rightIndex)
-		throws java.lang.Exception
-	{
-		K[] elementArray = elementArray();
-
-		int indexI = leftIndex + 1;
-
-		while (indexI <= rightIndex)
-		{
-			int indexJ = indexI;
-
-			while (indexJ > leftIndex &&
-				-1 == elementArray[indexJ - 1].compareTo (
-					elementArray[indexJ]
-				)
-			)
-			{
-				if (!swapLocations (
-					indexJ - 1,
-					indexJ
-				))
-				{
-					throw new java.lang.Exception (
-						"MedianOfMediansSelector::groupMedianIndex => Cannot Swap Locations"
-					);
-				}
-
-				--indexJ;
-			}
-
-			++indexI;
-		}
-
-		return (leftIndex + rightIndex) / 2;
-	}
-
-	@Override protected int pivotIndex (
-		final int leftIndex,
-		final int rightIndex)
-		throws java.lang.Exception
-	{
-		if (rightIndex - leftIndex < _groupElementCount)
-		{
-			return groupMedianIndex (
-				leftIndex,
-				rightIndex
-			);
-		}
-
-		for (int index = leftIndex;
-			index <= rightIndex;
-			index = index + _groupElementCount)
-		{
-			int subRightIndex = index + _groupElementCount - 1;
-
-			if (subRightIndex > rightIndex)
-			{
-				subRightIndex = rightIndex;
-			}
-
-			if (!swapLocations (
-				groupMedianIndex (
-					index,
-					subRightIndex
-				),
-				leftIndex + (index - leftIndex) / _groupElementCount
-			))
-			{
-				throw new java.lang.Exception (
-					"MedianOfMediansSelector::pivotIndex => Cannot Swap Locations"
-				);
-			}
-		}
-
-		return selectIndex (
-			leftIndex,
-			leftIndex + (rightIndex - leftIndex) / _groupElementCount,
-			(rightIndex - leftIndex) / 2 / _groupElementCount + leftIndex + 1
-		);
-	}
 
 	/**
-	 * MedianOfMediansSelector Constructor
+	 * FloydRivestSelector Constructor
 	 * 
 	 * @param elementArray Array of Elements
-	 * @param tailCallOptimizationOn TRUE - Tail Call Optimization is Turned On
-	 * @param groupElementCount Group Element Count
 	 * 
 	 * @throws java.lang.Exception Thrown if the Input is Invalid
 	 */
 
-	public MedianOfMediansSelector (
-		final K[] elementArray,
-		final boolean tailCallOptimizationOn,
-		final int groupElementCount)
+	public FloydRivestSelector (
+		final K[] elementArray)
 		throws java.lang.Exception
 	{
 		super (
 			elementArray,
-			tailCallOptimizationOn,
+			false,
 			null
 		);
-
-		if (5 > (_groupElementCount = groupElementCount))
-		{
-			throw new java.lang.Exception (
-				"MedianOfMediansSelector Constructor => Invalid Inputs"
-			);
-		}
 	}
 
-	/**
-	 * Retrieve the Group Element Count
-	 * 
-	 * @return The Group Element Count
-	 */
-
-	public int groupElementCount()
+	@Override public int selectIndex (
+		int leftIndex,
+		int rightIndex,
+		final int k)
+		throws java.lang.Exception
 	{
-		return _groupElementCount;
+		K[] elementArray = elementArray();
+
+		int arraySize = elementArray.length;
+
+		if (leftIndex < 0 ||
+			rightIndex >= arraySize || rightIndex < leftIndex ||
+			0 > k || k >= arraySize
+		)
+		{
+			throw new java.lang.Exception (
+				"FloydRivestSelector::selectIndex => Invalid Inputs"
+			);
+		}
+
+		while (rightIndex >= leftIndex)
+		{
+			K t = elementArray[k];
+			int j = rightIndex;
+			int i = leftIndex;
+
+			swapLocations (
+				leftIndex,
+				k
+			);
+
+			if (1 == elementArray[rightIndex].compareTo (
+				t
+			))
+			{
+				swapLocations (
+					leftIndex,
+					rightIndex
+				);
+			}
+
+			while (i < j)
+			{
+				swapLocations (
+					i,
+					j
+				);
+
+				++i;
+				--j;
+
+				while (-1 == elementArray[i].compareTo (
+					t
+				))
+				{
+					++i;
+				}
+
+				while (1 == elementArray[j].compareTo (
+					t
+				))
+				{
+					--j;
+				}
+			}
+
+			if (0 == elementArray[leftIndex].compareTo (
+				t
+			))
+			{
+				swapLocations (
+					leftIndex,
+					j
+				);
+			}
+			else
+			{
+				swapLocations (
+					rightIndex,
+					++j
+				);
+			}
+
+			if (j <= k)
+			{
+				leftIndex = j + 1;
+			}
+
+			if (k <= j)
+			{
+				rightIndex = j - 1;
+			}
+		}
+
+		return k;
 	}
 }

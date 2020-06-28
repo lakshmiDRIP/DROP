@@ -143,7 +143,8 @@ public class HoareSelect
 
 		OrderStatisticSelector<Double> quickSelectRecursive = new QuickSelector<Double> (
 			numberArray,
-			true
+			true,
+			null
 		);
 
 		System.out.println (
@@ -208,7 +209,8 @@ public class HoareSelect
 
 		QuickSelector<Double> quickSelectIterative = new QuickSelector<Double> (
 			numberArray,
-			true
+			true,
+			null
 		);
 
 		System.out.println (

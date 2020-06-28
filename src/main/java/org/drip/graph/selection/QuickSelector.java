@@ -114,6 +114,7 @@ public class QuickSelector<K extends java.lang.Comparable<K>>
 	extends org.drip.graph.selection.OrderStatisticSelector<K>
 {
 	private boolean _tailCallOptimizationOn = false;
+	private org.drip.graph.selection.IntroselectControl _introselectControl = null;
 
 	protected int pivotIndex (
 		final int leftIndex,
@@ -124,8 +125,8 @@ public class QuickSelector<K extends java.lang.Comparable<K>>
 	}
 
 	protected int recursiveIndexSelect (
-		final int leftIndex,
-		final int rightIndex,
+		int leftIndex,
+		int rightIndex,
 		final int k)
 		throws java.lang.Exception
 	{
@@ -162,12 +163,27 @@ public class QuickSelector<K extends java.lang.Comparable<K>>
 			return k;
 		}
 
-		return k < pivotIndex ? recursiveIndexSelect (
+		if (k < pivotIndex)
+		{
+			rightIndex = pivotIndex - 1;
+		}
+		else
+		{
+			leftIndex = pivotIndex + 1;
+		}
+
+		if (null != _introselectControl)
+		{
+			if (!_introselectControl.progressCheck (
+				rightIndex - leftIndex + 1
+			))
+			{
+				return -1;
+			}
+		}
+
+		return recursiveIndexSelect (
 			leftIndex,
-			pivotIndex - 1,
-			k
-		) : recursiveIndexSelect (
-			pivotIndex + 1,
 			rightIndex,
 			k
 		);
@@ -222,6 +238,16 @@ public class QuickSelector<K extends java.lang.Comparable<K>>
 			{
 				leftIndex = pivotIndex + 1;
 			}
+
+			if (null != _introselectControl)
+			{
+				if (!_introselectControl.progressCheck (
+					rightIndex - leftIndex + 1
+				))
+				{
+					return -1;
+				}
+			}
 		}
 	}
 
@@ -230,19 +256,22 @@ public class QuickSelector<K extends java.lang.Comparable<K>>
 	 * 
 	 * @param elementArray Array of Elements
 	 * @param tailCallOptimizationOn TRUE - Tail Call Optimization is Turned On
+	 * @param introselectControl The Introselect Control
 	 * 
 	 * @throws java.lang.Exception Thrown if the Input is Invalid
 	 */
 
 	public QuickSelector (
 		final K[] elementArray,
-		final boolean tailCallOptimizationOn)
+		final boolean tailCallOptimizationOn,
+		final org.drip.graph.selection.IntroselectControl introselectControl)
 		throws java.lang.Exception
 	{
 		super (
 			elementArray
 		);
 
+		_introselectControl = introselectControl;
 		_tailCallOptimizationOn = tailCallOptimizationOn;
 	}
 
@@ -255,6 +284,17 @@ public class QuickSelector<K extends java.lang.Comparable<K>>
 	public boolean tailCallOptimizationOn()
 	{
 		return _tailCallOptimizationOn;
+	}
+
+	/**
+	 * Retrieve the Introselect Control
+	 * 
+	 * @return The Introselect Control
+	 */
+
+	public org.drip.graph.selection.IntroselectControl introselectControl()
+	{
+		return _introselectControl;
 	}
 
 	/**
@@ -379,6 +419,18 @@ public class QuickSelector<K extends java.lang.Comparable<K>>
 		final int k)
 		throws java.lang.Exception
 	{
+		if (null != _introselectControl)
+		{
+			if (!_introselectControl.init (
+				rightIndex - leftIndex + 1
+			))
+			{
+				throw new java.lang.Exception (
+					"QuickSelector::iterativeIndexSelect => Cannot initialize Introselect Control"
+				);
+			}
+		};
+
 		return _tailCallOptimizationOn ? recursiveIndexSelect (
 			leftIndex,
 			rightIndex,
@@ -408,7 +460,20 @@ public class QuickSelector<K extends java.lang.Comparable<K>>
 		final int k)
 		throws java.lang.Exception
 	{
-		return elementArray()[selectIndex (leftIndex, rightIndex, k)];
+		int selectIndex = selectIndex (
+			leftIndex,
+			rightIndex,
+			k
+		);
+
+		if (-1 == selectIndex)
+		{
+			throw new java.lang.Exception (
+				"QuickSelector::select => Invalid Selected Index"
+			);
+		}
+
+		return elementArray()[selectIndex];
 	}
 
 	@Override public K select (

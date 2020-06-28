@@ -58,6 +58,12 @@ Computational Core Module contains libraries the implement Algorithm/Computation
  * Johnson's Algorithm
  * A<sup>*</sup> Search Algorithm
  * Floyd-Warshall Algorithm
+ * Selection Algorithm
+ * Quickselect
+ * Median Of Medians
+ * Floyd-Rivest Algorithm
+ * Introselect
+ * Order Statistics Tree
 
 
 ## Model Validation Coverage

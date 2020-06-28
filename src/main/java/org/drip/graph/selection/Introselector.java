@@ -75,27 +75,26 @@ package org.drip.graph.selection;
  */
 
 /**
- * <i>MedianOfMediansSelector</i> implements the QuickSelect Algorithm using the Median-of-Medians Pivot
- * 	Generation Strategy. The References are:
+ * <i>Introselector</i> implements the Introselect Algorithm. The References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Blum, M., R. W. Floyd, V. Pratt, R. L. Rivest, and R. E. Tarjan (1973): Time Bounds for Selection
- *  			<i>Journal of Computer and System Sciences</i> <b>7 (4)</b> 448-461
- *  	</li>
- *  	<li>
- *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms
- *  			3<sup>rd</sup> Edition</i> <b>MIT Press</b>
- *  	</li>
- *  	<li>
  *  		Hoare, C. A. R. (1961): Algorithm 65: Find <i>Communications of the ACM</i> <b>4 (1)</b> 321-322
+ *  	</li>
+ *  	<li>
+ *  		Knuth, D. (1997): <i>The Art of Computer Programming 3<sup>rd</sup> Edition</i>
+ *  			<b>Addison-Wesley</b>
+ *  	</li>
+ *  	<li>
+ *  		Musser, D. R. (1997): Introselect Sorting and Selection Algorithms <i>Software: Practice and
+ *  			Experience</i> <b>27 (8)</b> 983-993
  *  	</li>
  *  	<li>
  *  		Wikipedia (2019): Quickselect https://en.wikipedia.org/wiki/Quickselect
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020): Median Of Medians https://en.wikipedia.org/wiki/Median_of_medians
+ *  		Wikipedia (2020): Introselect https://en.wikipedia.org/wiki/Introselect
  *  	</li>
  *  </ul>
  *
@@ -111,132 +110,37 @@ package org.drip.graph.selection;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MedianOfMediansSelector<K extends java.lang.Comparable<K>>
+public class Introselector<K extends java.lang.Comparable<K>>
 	extends org.drip.graph.selection.QuickSelector<K>
 {
-	private int _groupElementCount = -1;
-
-	private int groupMedianIndex (
-		final int leftIndex,
-		final int rightIndex)
-		throws java.lang.Exception
-	{
-		K[] elementArray = elementArray();
-
-		int indexI = leftIndex + 1;
-
-		while (indexI <= rightIndex)
-		{
-			int indexJ = indexI;
-
-			while (indexJ > leftIndex &&
-				-1 == elementArray[indexJ - 1].compareTo (
-					elementArray[indexJ]
-				)
-			)
-			{
-				if (!swapLocations (
-					indexJ - 1,
-					indexJ
-				))
-				{
-					throw new java.lang.Exception (
-						"MedianOfMediansSelector::groupMedianIndex => Cannot Swap Locations"
-					);
-				}
-
-				--indexJ;
-			}
-
-			++indexI;
-		}
-
-		return (leftIndex + rightIndex) / 2;
-	}
-
-	@Override protected int pivotIndex (
-		final int leftIndex,
-		final int rightIndex)
-		throws java.lang.Exception
-	{
-		if (rightIndex - leftIndex < _groupElementCount)
-		{
-			return groupMedianIndex (
-				leftIndex,
-				rightIndex
-			);
-		}
-
-		for (int index = leftIndex;
-			index <= rightIndex;
-			index = index + _groupElementCount)
-		{
-			int subRightIndex = index + _groupElementCount - 1;
-
-			if (subRightIndex > rightIndex)
-			{
-				subRightIndex = rightIndex;
-			}
-
-			if (!swapLocations (
-				groupMedianIndex (
-					index,
-					subRightIndex
-				),
-				leftIndex + (index - leftIndex) / _groupElementCount
-			))
-			{
-				throw new java.lang.Exception (
-					"MedianOfMediansSelector::pivotIndex => Cannot Swap Locations"
-				);
-			}
-		}
-
-		return selectIndex (
-			leftIndex,
-			leftIndex + (rightIndex - leftIndex) / _groupElementCount,
-			(rightIndex - leftIndex) / 2 / _groupElementCount + leftIndex + 1
-		);
-	}
 
 	/**
-	 * MedianOfMediansSelector Constructor
+	 * Introselector Constructor
 	 * 
 	 * @param elementArray Array of Elements
 	 * @param tailCallOptimizationOn TRUE - Tail Call Optimization is Turned On
-	 * @param groupElementCount Group Element Count
+	 * @param introselectControl The Introselect Control
 	 * 
 	 * @throws java.lang.Exception Thrown if the Input is Invalid
 	 */
 
-	public MedianOfMediansSelector (
+	public Introselector (
 		final K[] elementArray,
 		final boolean tailCallOptimizationOn,
-		final int groupElementCount)
+		final org.drip.graph.selection.IntroselectControl introselectControl)
 		throws java.lang.Exception
 	{
 		super (
 			elementArray,
 			tailCallOptimizationOn,
-			null
+			introselectControl
 		);
 
-		if (5 > (_groupElementCount = groupElementCount))
+		if (null == introselectControl)
 		{
 			throw new java.lang.Exception (
-				"MedianOfMediansSelector Constructor => Invalid Inputs"
+				"Introselector Constructor => Invalid Inputs"
 			);
 		}
-	}
-
-	/**
-	 * Retrieve the Group Element Count
-	 * 
-	 * @return The Group Element Count
-	 */
-
-	public int groupElementCount()
-	{
-		return _groupElementCount;
 	}
 }

@@ -11,7 +11,7 @@ Graph Algorithm Library contains the Libraries implementing the Graph Representa
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm/GraphAlgorithm_v4.91.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm/GraphAlgorithm_v4.96.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -244,6 +244,46 @@ Graph Algorithm Library contains the Libraries implementing the Graph Representa
 	* Analysis
 	* Applications and Generalizations
 	* Comparisons with other Shortest Path Algorithms
+	* References
+ * Selection Algorithm
+	* Overview
+	* Selection by Sorting
+	* Unordered Partial Sorting
+	* Partial Selection Sort
+	* Partition-Based Selection
+	* Median Selection as Pivot Strategy
+	* Incremental Sorting by Selection
+	* Using Data Structures to Select in Sublinear Time
+	* Lower Bounds
+	* Space Complexity
+	* Online Selection Algorithm
+	* Related Problems
+	* References
+ * Quickselect
+	* Overview
+	* Algorithm
+	* Time Complexity
+	* Variants
+	* References
+ * Median Of Medians
+	* Overview
+	* Outline
+	* Algorithm
+	* Properties of the Pivot
+	* Proof of O(n) Running Time
+	* Analysis
+	* References
+ * Floyd-Rivest Algorithm
+	* Overview
+	* Algorithm
+	* References
+ * Introselect
+	* Overview
+	* Algorithm
+	* References
+ * Order Statistics Tree
+	* Overview
+	* Advanced Search Tree Implementation
 	* References
 
 

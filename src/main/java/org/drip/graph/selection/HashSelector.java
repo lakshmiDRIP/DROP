@@ -119,6 +119,64 @@ public class HashSelector
 		new java.util.ArrayList<java.util.List<java.lang.Double>>();
 
 	/**
+	 * Construct a Frequency Table
+	 * 
+	 * @param integerArray The Input Integer Array
+	 * 
+	 * @return The Frequency Table
+	 */
+
+	public static final HashSelector FrequencyTable (
+		final int[] integerArray)
+	{
+		if (null == integerArray)
+		{
+			return null;
+		}
+
+		int arraySize = integerArray.length;
+
+		if (0 == arraySize)
+		{
+			return null;
+		}
+
+		int i = 0;
+		int maxValue = integerArray[0];
+		int minValue = integerArray[0];
+		java.lang.Double[] elementArray = new java.lang.Double[arraySize];
+
+		for (int value : integerArray)
+		{
+			elementArray[i] = (double) value;
+
+			if (value < minValue)
+			{
+				minValue = value;
+			}
+			else if (value > maxValue)
+			{
+				maxValue = value;
+			}
+		}
+
+		try
+		{
+			return new HashSelector (
+				elementArray,
+				maxValue - minValue + 1
+			);
+
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * HashSelector Constructor
 	 * 
 	 * @param elementArray Array of Elements
@@ -171,8 +229,10 @@ public class HashSelector
 
 		for (double value : elementArray)
 		{
+			int bucketIndex = (int) ((value - minValue) / bucketWidth);
+
 			_elementBucketList.get (
-				(int) ((value - minValue) / bucketWidth)
+				bucketIndex < _bucketCount ? bucketIndex : _bucketCount - 1
 			).add (
 				value
 			);
@@ -193,21 +253,23 @@ public class HashSelector
 	@Override public java.lang.Double select (
 		final int k)
 	{
+		int bucketSize = 0;
 		int bucketIndex = 0;
 		int orderStatistics = 0;
 
-		int bucketSize = _elementBucketList.get (
-			bucketIndex
-		).size();
-
-		while (bucketIndex < _bucketCount - 1 &&
-			orderStatistics + bucketSize < k)
+		while (bucketIndex < _bucketCount)
 		{
-			orderStatistics = orderStatistics + bucketSize;
-
 			bucketSize = _elementBucketList.get (
-				++bucketIndex
+				bucketIndex
 			).size();
+
+			if (orderStatistics + bucketSize > k)
+			{
+				break;
+			}
+
+			orderStatistics = orderStatistics + bucketSize;
+			++bucketIndex;
 		}
 
 		java.util.List<java.lang.Double> valueList = _elementBucketList.get (
@@ -225,7 +287,7 @@ public class HashSelector
 			return new org.drip.graph.selection.PartialSortSelector<java.lang.Double> (
 				valueArray
 			).select (
-				k
+				k - orderStatistics
 			);
 		}
 		catch (java.lang.Exception e)
