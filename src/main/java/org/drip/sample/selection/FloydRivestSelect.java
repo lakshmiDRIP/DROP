@@ -143,7 +143,8 @@ public class FloydRivestSelect
 		};
 
 		OrderStatisticSelector<Double> hashSelector = new FloydRivestSelector<Double> (
-			numberArray
+			numberArray,
+			null
 		);
 
 		System.out.println (

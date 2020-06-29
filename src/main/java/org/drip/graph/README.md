@@ -31,6 +31,9 @@ DROP Graph MST Greedy Package contains the Greedy Algorithms for MSTs and Forest
  * [***Search***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/search)
 DROP Graph Search Package implements BFS, DFS, and Vertex Ordering.
 
+ * [***Selection***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/selection)
+DROP Graph Selection Package implements k<sup>th</sup> Order Statistics Selectors.
+
  * [***Shortest Path***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/shortestpath)
 DROP Graph Shortest Path Package implements the Shortest Path Generation Algorithm Family.
 
@@ -50,6 +53,8 @@ DROP Graph Tree Builder maintains the Stubs for Spanning Tree Construction.
  * Bader, D. A., and G. Cong (2006): Fast Shared Memory Algorithms for computing the Minimum Spanning Forests of Sparse Graphs <i>Journal of Parallel and Distributed Computing</i> <b>66 (11)</b> 1366-1378
 
  * Bollobas, B. (1998): <i>Modern Graph Theory</i> <b>Springer</b>
+
+ * Blum, M., R. W. Floyd, V. Pratt, R. L. Rivest, and R. E. Tarjan (1973): Time Bounds for Selection <i>Journal of Computer and System Sciences</i> <b>7 (4)</b> 448-461
 
  * Brodal, G. S., G. Lagogiannis, and R. E. Tarjan (2012): Strict Fibonacci Heaps <i>Proceedings on the 44<sup>th</sup> Symposium on the Theory of Computing; STOC 12</i> 1177-1184
 
@@ -75,13 +80,21 @@ DROP Graph Tree Builder maintains the Stubs for Spanning Tree Construction.
 
  * Eppstein, D. (1999): Spanning Trees and Spanners https://www.ics.uci.edu/~eppstein/pubs/Epp-TR-96-16.pdf
 
+ * Eppstein, D. (2007): Blum-style Analysis of Quickselect https://11011110.github.io/blog/2007/10/09/blum-style-analysis-of.html
+
  * Felner, A. (2011): Position Paper: Dijkstra Algorithm versus Uniform Cost Search or a Case against Dijkstra Algorithm <i>Proceedings of the 4<sup>th</sup> International Symposium on Combinatorial Search</i> 47-51
+
+ * Floyd, R. W., and R. L. Rivest (1975): Expected Time Bounds for Selection <i>Communications of the ACM</i> <b>18 (3)</b> 165-172
+
+ * Floyd, R. W., and R. L. Rivest (1975): The Algorithm SELECT: for finding the i<sup>th</sup> smallest of n Elements <i>Communications of the ACM</i> <b>18 (3)</b> 173
 
  * Grama, A., A. Gupta, G. Karypis, and V. Kumar (2003): <i>Introduction to Parallel Computing 2<sup>nd</sup> Edition</i> <b>Addison Wesley</b>
 
  * Gross, J. L., and J. Yellen (2005): <i>Graph Theory and its Applications</i> <b>Springer</b>
 
  * Hayward, R., and C. McDiarmid (1991): Average Case Analysis of Heap-building by Repeated Insertion <i>Journal of Algorithms</i> <b>12 (1)</b> 126-153
+
+ * Hoare, C. A. R. (1961): Algorithm 65: Find <i>Communications of the ACM</i> <b>4 (1)</b> 321-322
 
  * Kaplan, H., and U. Zwick (2009): A simpler implementation and analysis of Chazelle Soft Heaps https://epubs.siam.org/doi/abs/10.1137/1.9781611973068.53?mobileUi=0
 
@@ -91,9 +104,13 @@ DROP Graph Tree Builder maintains the Stubs for Spanning Tree Construction.
 
  * Kleinberg, J., and E. Tardos (2022): <i>Algorithm Design 2<sup>nd</sup> Edition</i> <b>Pearson</b>
 
+ * Knuth, D. (1997): <i>The Art of Computer Programming 3<sup>rd</sup> Edition</i> <b>Addison-Wesley</b>
+
  * Kocay, W., and D. L. Kreher (2004): <i>Graphs, Algorithms, and Optimizations</i> <b>CRC Press</b>
 
  * Mehlhorn, K., and P. Sanders (2008): <i>Algorithms and Data Structures: The Basic Tool-box</i> <b>Springer</b>
+
+ * Musser, D. R. (1997): Introselect Sorting and Selection Algorithms <i>Software: Practice and Experience</i> <b>27 (8)</b> 983-993
 
  * Osipov, V., P. Sanders, and J. Singler (2009): The Filter-Kruskal Minimum Spanning Tree Algorithm http://algo2.iti.kit.edu/documents/fkruskal.pdf
 
@@ -121,11 +138,17 @@ DROP Graph Tree Builder maintains the Stubs for Spanning Tree Construction.
 
  * Wikipedia (2019): Binomial Heap https://en.wikipedia.org/wiki/Binomial_heap
 
- * Wikipedia (2019): Kruskal Algorithm https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
-
  * Wikipedia (2019): Dijkstra Algorithm https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 
+ * Wikipedia (2019): Floyd-Rivest Algorithm https://en.wikipedia.org/wiki/Floyd%E2%80%93Rivest_algorithm
+
+ * Wikipedia (2019): Kruskal Algorithm https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
+
  * Wikipedia (2019): Prim Algorithm https://en.wikipedia.org/wiki/Prim%27s_algorithm
+
+ * Wikipedia (2019): Quickselect https://en.wikipedia.org/wiki/Quickselect
+
+ * Wikipedia (2019): Selection Algorithm https://en.wikipedia.org/wiki/Selection_algorithm
 
  * Wikipedia (2020): Bellman-Ford Algorithm https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
 
@@ -134,6 +157,10 @@ DROP Graph Tree Builder maintains the Stubs for Spanning Tree Construction.
  * Wikipedia (2020): Breadth-first Search https://en.wikipedia.org/wiki/Breadth-first_search
 
  * Wikipedia (2020): Depth-first Search https://en.wikipedia.org/wiki/Depth-first_search
+
+ * Wikipedia (2020): Introselect https://en.wikipedia.org/wiki/Introselect
+
+ * Wikipedia (2020): Median Of Medians https://en.wikipedia.org/wiki/Median_of_medians
 
  * Wikipedia (2020): Minimum Spanning Tree https://en.wikipedia.org/wiki/Minimum_spanning_tree
 

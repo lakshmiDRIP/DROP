@@ -3567,7 +3567,53 @@ public class StringUtil {
     	return java.lang.Integer.MIN_VALUE == max ? -1 : max;
     }
 
-	public static final void main (
+    public static final boolean ValidateParenthesis (
+    	final java.lang.String input)
+    {
+    	if (null == input || input.isEmpty())
+    	{
+    		return false;
+    	}
+
+    	java.util.List<java.lang.Character> charList = new java.util.ArrayList<java.lang.Character>();
+
+    	for (char c : input.toCharArray())
+    	{
+    		if ('(' == c || '{' == c || '[' == c)
+    		{
+    			charList.add (
+    				c
+    			);
+    		}
+    		else if (')' == c || '}' == c || ']' == c)
+    		{
+    			if (0 == charList.size())
+    			{
+    				return false;
+    			}
+
+    			char prevChar = charList.get (
+    				charList.size() - 1
+    			);
+
+    			if (')' == c)
+				{
+    				if (prevChar != '(')
+    				{
+    					return false;
+    				}
+
+    				charList.remove (
+	    				charList.size() - 1
+	    			);
+				}
+    		}
+    	}
+
+    	return true;
+    }
+
+    public static final void main (
 		final String[] argumentArray)
 	{
 		System.out.println (

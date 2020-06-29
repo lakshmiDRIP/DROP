@@ -489,7 +489,7 @@ public class QuickSelector<K extends java.lang.Comparable<K>>
 		}
 		catch (java.lang.Exception e)
 		{
-			e.printStackTrace();
+			// e.printStackTrace();
 		}
 
 		return null;

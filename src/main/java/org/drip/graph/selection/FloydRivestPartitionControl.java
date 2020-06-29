@@ -1,10 +1,5 @@
 
-package org.drip.sample.selection;
-
-import org.drip.graph.selection.OrderStatisticSelector;
-import org.drip.graph.selection.QuickSelector;
-import org.drip.service.common.FormatUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.graph.selection;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -80,27 +75,28 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>HoareSelect</i> illustrates the Construction and Usage of Hoare's QuickSelect Algorithm. The References
- * 	are:
+ * <i>FloydRivestPartitionControl</i> implements the Control Parameters for the Floyd-Rivest Selection
+ * 	Algorithm. The References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Eppstein, D. (2007): Blum-style Analysis of Quickselect
- *  			https://11011110.github.io/blog/2007/10/09/blum-style-analysis-of.html
+ *  		Floyd, R. W., and R. L. Rivest (1975): Expected Time Bounds for Selection <i>Communications of
+ *  			the ACM</i> <b>18 (3)</b> 165-172
+ *  	</li>
+ *  	<li>
+ *  		Floyd, R. W., and R. L. Rivest (1975): The Algorithm SELECT – for finding the i<sup>th</sup>
+ *  			smallest of n Elements <i>Communications of the ACM</i> <b>18 (3)</b> 173
  *  	</li>
  *  	<li>
  *  		Hoare, C. A. R. (1961): Algorithm 65: Find <i>Communications of the ACM</i> <b>4 (1)</b> 321-322
  *  	</li>
  *  	<li>
- *  		Knuth, D. (1997): <i>The Art of Computer Programming 3<sup>rd</sup> Edition</i>
- *  			<b>Addison-Wesley</b>
+ *  		Wikipedia (2019): Floyd-Rivest Algorithm
+ *  			https://en.wikipedia.org/wiki/Floyd%E2%80%93Rivest_algorithm
  *  	</li>
  *  	<li>
  *  		Wikipedia (2019): Quickselect https://en.wikipedia.org/wiki/Quickselect
- *  	</li>
- *  	<li>
- *  		Wikipedia (2019): Selection Algorithm https://en.wikipedia.org/wiki/Selection_algorithm
  *  	</li>
  *  </ul>
  *
@@ -108,148 +104,99 @@ import org.drip.service.env.EnvManager;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/selection/README.md">k<sup>th</sup> Extremum Element Selection Algorithms</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/selection/README.md">k<sup>th</sup> Order Statistics Selection Scheme</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class HoareSelect
+public class FloydRivestPartitionControl
 {
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * The Floyd Rivest Algorithm 489 Width Limit
+	 */
+
+	public static final int ALGORITHM_489_WIDTH_LIMIT = 600;
+
+	/**
+	 * The Floyd Rivest Algorithm 489 Shrinkage Factor
+	 */
+
+	public static final double ALGORITHM_489_SHRINKAGE = 0.5;
+
+	private int _widthLimit = -1;
+	private double _shrinkage = java.lang.Double.NaN;
+
+	/**
+	 * Retrieve the Algorithm #489 Instance of FloydRivestPartitionControl
+	 * 
+	 * @return Algorithm #489 Instance of FloydRivestPartitionControl
+	 */
+
+	public static final FloydRivestPartitionControl Algorithm489()
 	{
-		EnvManager.InitEnv (
-			""
-		);
-
-		Double[] numberArray1 =
+		try
 		{
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-		};
-		Double[] numberArray2 = new Double[numberArray1.length];
-
-		for (int i = 0;
-			i < numberArray1.length;
-			++i)
-		{
-			numberArray2[i] = numberArray1[i];
-		}
-
-		OrderStatisticSelector<Double> quickSelectRecursive = new QuickSelector<Double> (
-			numberArray1,
-			true,
-			null
-		);
-
-		System.out.println (
-			"\t|---------------|"
-		);
-
-		System.out.println (
-			"\t|     INPUT     |"
-		);
-
-		System.out.println (
-			"\t|---------------|"
-		);
-
-		for (int i = 0;
-			i < numberArray1.length;
-			++i)
-		{
-			System.out.println (
-				"\t| " + i + " => " + FormatUtil.FormatDouble (
-					numberArray1[i], 1, 4, 1.
-				)
+			return new FloydRivestPartitionControl (
+				ALGORITHM_489_WIDTH_LIMIT,
+				ALGORITHM_489_SHRINKAGE
 			);
 		}
-
-		System.out.println (
-			"\t|---------------|"
-		);
-
-		System.out.println();
-
-		System.out.println (
-			"\t|---------------|"
-		);
-
-		System.out.println (
-			"\t|   RECURSIVE   |"
-		);
-
-		System.out.println (
-			"\t|---------------|"
-		);
-
-		for (int i = 0;
-			i < numberArray2.length;
-			++i)
+		catch (java.lang.Exception e)
 		{
-			System.out.println (
-				"\t| " + i + " => " + FormatUtil.FormatDouble (
-					quickSelectRecursive.select (
-						i
-					), 1, 4, 1.
-				)
-			);
+			e.printStackTrace();
 		}
 
-		System.out.println (
-			"\t|---------------|"
-		);
+		return null;
+	}
+	/**
+	 * FloydRivestPartitionControl Constructor
+	 * 
+	 * @param widthLimit
+	 * @param shrinkage
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
 
-		System.out.println();
-
-		QuickSelector<Double> quickSelectIterative = new QuickSelector<Double> (
-			numberArray2,
-			true,
-			null
-		);
-
-		System.out.println (
-			"\t|---------------|"
-		);
-
-		System.out.println (
-			"\t|   ITERATIVE   |"
-		);
-
-		System.out.println (
-			"\t|---------------|"
-		);
-
-		for (int i = 0;
-			i < numberArray2.length;
-			++i)
+	public FloydRivestPartitionControl (
+		final int widthLimit,
+		final double shrinkage)
+		throws java.lang.Exception
+	{
+		if (1 >= (_widthLimit = widthLimit) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (
+				_shrinkage = shrinkage
+			) || 1. <= _shrinkage
+		)
 		{
-			System.out.println (
-				"\t| " + i + " => " + FormatUtil.FormatDouble (
-					quickSelectIterative.select (
-						i
-					), 1, 4, 1.
-				)
+			throw new java.lang.Exception (
+				"FloydRivestPartitionControl Constructor => Invalid Inputs"
 			);
 		}
+	}
 
-		System.out.println (
-			"\t|---------------|"
-		);
+	/**
+	 * Retrieve the Limiting Width
+	 * 
+	 * @return The Limiting Width
+	 */
 
-		EnvManager.TerminateEnv();
+	public int widthLimit()
+	{
+		return _widthLimit;
+	}
+
+	/**
+	 * Retrieve the Shrinkage
+	 * 
+	 * @return The Shrinkage
+	 */
+
+	public double shrinkage()
+	{
+		return _shrinkage;
 	}
 }

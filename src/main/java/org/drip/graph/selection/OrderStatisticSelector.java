@@ -114,6 +114,7 @@ package org.drip.graph.selection;
 public abstract class OrderStatisticSelector<K>
 {
 	private K[] _elementArray = null;
+	private boolean _inPlace = false;
 
 	protected OrderStatisticSelector (
 		final K[] elementArray)
@@ -167,6 +168,17 @@ public abstract class OrderStatisticSelector<K>
 	public K[] elementArray()
 	{
 		return _elementArray;
+	}
+
+	/**
+	 * Indicate of the Selection is In-place
+	 * 
+	 * @return TRUE - The Selection is In-place
+	 */
+
+	public boolean inPlace()
+	{
+		return _inPlace;
 	}
 
 	/**

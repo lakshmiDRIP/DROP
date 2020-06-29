@@ -128,7 +128,7 @@ public class BFPRTSelect
 		);
 
 		int groupElementCount = 5;
-		Double[] numberArray =
+		Double[] numberArray1 =
 		{
 			Math.random(),
 			Math.random(),
@@ -141,15 +141,23 @@ public class BFPRTSelect
 			Math.random(),
 			Math.random(),
 		};
+		Double[] numberArray2 = new Double[numberArray1.length];
+
+		for (int i = 0;
+			i < numberArray1.length;
+			++i)
+		{
+			numberArray2[i] = numberArray1[i];
+		}
 
 		OrderStatisticSelector<Double> medianOfMediansSelectRecursive = new MedianOfMediansSelector<Double> (
-			numberArray,
+			numberArray1,
 			true,
 			groupElementCount
 		);
 
 		OrderStatisticSelector<Double> medianOfMediansSelectIterative = new MedianOfMediansSelector<Double> (
-			numberArray,
+			numberArray2,
 			false,
 			groupElementCount
 		);
@@ -167,12 +175,12 @@ public class BFPRTSelect
 		);
 
 		for (int i = 0;
-			i < numberArray.length;
+			i < numberArray1.length;
 			++i)
 		{
 			System.out.println (
 				"\t| " + i + " => " + FormatUtil.FormatDouble (
-					numberArray[i], 1, 4, 1.
+					numberArray1[i], 1, 4, 1.
 				)
 			);
 		}
@@ -196,7 +204,7 @@ public class BFPRTSelect
 		);
 
 		for (int i = 0;
-			i < numberArray.length;
+			i < numberArray1.length;
 			++i)
 		{
 			System.out.println (

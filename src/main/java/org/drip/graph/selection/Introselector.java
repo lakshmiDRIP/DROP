@@ -113,6 +113,7 @@ package org.drip.graph.selection;
 public class Introselector<K extends java.lang.Comparable<K>>
 	extends org.drip.graph.selection.QuickSelector<K>
 {
+	private int _groupElementCount = -1;
 
 	/**
 	 * Introselector Constructor
@@ -120,6 +121,7 @@ public class Introselector<K extends java.lang.Comparable<K>>
 	 * @param elementArray Array of Elements
 	 * @param tailCallOptimizationOn TRUE - Tail Call Optimization is Turned On
 	 * @param introselectControl The Introselect Control
+	 * @param groupElementCount Group Element Count
 	 * 
 	 * @throws java.lang.Exception Thrown if the Input is Invalid
 	 */
@@ -127,7 +129,8 @@ public class Introselector<K extends java.lang.Comparable<K>>
 	public Introselector (
 		final K[] elementArray,
 		final boolean tailCallOptimizationOn,
-		final org.drip.graph.selection.IntroselectControl introselectControl)
+		final org.drip.graph.selection.IntroselectControl introselectControl,
+		final int groupElementCount)
 		throws java.lang.Exception
 	{
 		super (
@@ -136,11 +139,54 @@ public class Introselector<K extends java.lang.Comparable<K>>
 			introselectControl
 		);
 
-		if (null == introselectControl)
+		if (null == introselectControl ||
+			5 > (_groupElementCount = groupElementCount)
+		)
 		{
 			throw new java.lang.Exception (
 				"Introselector Constructor => Invalid Inputs"
 			);
 		}
+	}
+
+	/**
+	 * Retrieve the Group Element Count
+	 * 
+	 * @return The Group Element Count
+	 */
+
+	public int groupElementCount()
+	{
+		return _groupElementCount;
+	}
+
+	@Override public K select (
+		final int k)
+	{
+		K selection = super.select (
+			k
+		);
+
+		if (null != selection)
+		{
+			return selection;
+		}
+
+		try
+		{
+			return new org.drip.graph.selection.MedianOfMediansSelector<K> (
+				elementArray(),
+				tailCallOptimizationOn(),
+				_groupElementCount
+			).select (
+				k
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

@@ -1,6 +1,8 @@
 
 package org.drip.sample.selection;
 
+import org.drip.graph.selection.IntroselectControl;
+import org.drip.graph.selection.Introselector;
 import org.drip.graph.selection.OrderStatisticSelector;
 import org.drip.graph.selection.QuickSelector;
 import org.drip.service.common.FormatUtil;
@@ -80,15 +82,11 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>HoareSelect</i> illustrates the Construction and Usage of Hoare's QuickSelect Algorithm. The References
- * 	are:
+ * <i>MusserSelect</i> illustrates the Construction and Usage of Musser's Introselect Algorithm. The
+ * 	References are:
  * 
  * <br><br>
  *  <ul>
- *  	<li>
- *  		Eppstein, D. (2007): Blum-style Analysis of Quickselect
- *  			https://11011110.github.io/blog/2007/10/09/blum-style-analysis-of.html
- *  	</li>
  *  	<li>
  *  		Hoare, C. A. R. (1961): Algorithm 65: Find <i>Communications of the ACM</i> <b>4 (1)</b> 321-322
  *  	</li>
@@ -97,10 +95,14 @@ import org.drip.service.env.EnvManager;
  *  			<b>Addison-Wesley</b>
  *  	</li>
  *  	<li>
+ *  		Musser, D. R. (1997): Introselect Sorting and Selection Algorithms <i>Software: Practice and
+ *  			Experience</i> <b>27 (8)</b> 983-993
+ *  	</li>
+ *  	<li>
  *  		Wikipedia (2019): Quickselect https://en.wikipedia.org/wiki/Quickselect
  *  	</li>
  *  	<li>
- *  		Wikipedia (2019): Selection Algorithm https://en.wikipedia.org/wiki/Selection_algorithm
+ *  		Wikipedia (2020): Introselect https://en.wikipedia.org/wiki/Introselect
  *  	</li>
  *  </ul>
  *
@@ -116,43 +118,35 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class HoareSelect
+public class MusserSelect
 {
 
-	public static final void main (
-		final String[] argumentArray)
+	private static final void RunIntroselect (
+		final int groupElementCount,
+		final int subPartitionReductionLimit,
+		final double subPartitionCumulativeFactor,
+		final Double[] numberArrayIn)
 		throws Exception
 	{
-		EnvManager.InitEnv (
-			""
-		);
-
-		Double[] numberArray1 =
-		{
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-			Math.random(),
-		};
-		Double[] numberArray2 = new Double[numberArray1.length];
+		Double[] numberArray = new Double[numberArrayIn.length];
 
 		for (int i = 0;
-			i < numberArray1.length;
+			i < numberArrayIn.length;
 			++i)
 		{
-			numberArray2[i] = numberArray1[i];
+			numberArray[i] = numberArrayIn[i];
 		}
 
-		OrderStatisticSelector<Double> quickSelectRecursive = new QuickSelector<Double> (
-			numberArray1,
+		IntroselectControl introselectControl = new IntroselectControl (
+			subPartitionReductionLimit,
+			subPartitionCumulativeFactor
+		);
+
+		OrderStatisticSelector<Double> introselectRecursive = new Introselector<Double> (
+			numberArray,
 			true,
-			null
+			introselectControl,
+			groupElementCount
 		);
 
 		System.out.println (
@@ -168,12 +162,12 @@ public class HoareSelect
 		);
 
 		for (int i = 0;
-			i < numberArray1.length;
+			i < numberArray.length;
 			++i)
 		{
 			System.out.println (
 				"\t| " + i + " => " + FormatUtil.FormatDouble (
-					numberArray1[i], 1, 4, 1.
+					numberArray[i], 1, 4, 1.
 				)
 			);
 		}
@@ -197,12 +191,12 @@ public class HoareSelect
 		);
 
 		for (int i = 0;
-			i < numberArray2.length;
+			i < numberArray.length;
 			++i)
 		{
 			System.out.println (
 				"\t| " + i + " => " + FormatUtil.FormatDouble (
-					quickSelectRecursive.select (
+					introselectRecursive.select (
 						i
 					), 1, 4, 1.
 				)
@@ -215,10 +209,11 @@ public class HoareSelect
 
 		System.out.println();
 
-		QuickSelector<Double> quickSelectIterative = new QuickSelector<Double> (
-			numberArray2,
+		QuickSelector<Double> introselectIterative = new Introselector<Double> (
+			numberArray,
 			true,
-			null
+			introselectControl,
+			groupElementCount
 		);
 
 		System.out.println (
@@ -234,12 +229,12 @@ public class HoareSelect
 		);
 
 		for (int i = 0;
-			i < numberArray2.length;
+			i < numberArray.length;
 			++i)
 		{
 			System.out.println (
 				"\t| " + i + " => " + FormatUtil.FormatDouble (
-					quickSelectIterative.select (
+					introselectIterative.select (
 						i
 					), 1, 4, 1.
 				)
@@ -248,6 +243,50 @@ public class HoareSelect
 
 		System.out.println (
 			"\t|---------------|"
+		);
+	}
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+		EnvManager.InitEnv (
+			""
+		);
+
+		int groupElementCount = 5;
+		Double[] numberArray =
+		{
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			Math.random(),
+		};
+
+		int subPartitionReductionLimit = 100;
+		double subPartitionCumulativeFactor = 50.;
+
+		RunIntroselect (
+			groupElementCount,
+			subPartitionReductionLimit,
+			subPartitionCumulativeFactor,
+			numberArray
+		);
+
+		subPartitionReductionLimit = 2;
+		subPartitionCumulativeFactor = 1.1;
+
+		RunIntroselect (
+			groupElementCount,
+			subPartitionReductionLimit,
+			subPartitionCumulativeFactor,
+			numberArray
 		);
 
 		EnvManager.TerminateEnv();

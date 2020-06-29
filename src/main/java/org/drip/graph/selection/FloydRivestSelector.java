@@ -114,45 +114,52 @@ package org.drip.graph.selection;
 public class FloydRivestSelector<K extends java.lang.Comparable<K>>
 	extends org.drip.graph.selection.QuickSelector<K>
 {
+	private org.drip.graph.selection.FloydRivestPartitionControl _partitionControl = null;
 
-	/**
-	 * FloydRivestSelector Constructor
-	 * 
-	 * @param elementArray Array of Elements
-	 * 
-	 * @throws java.lang.Exception Thrown if the Input is Invalid
-	 */
-
-	public FloydRivestSelector (
-		final K[] elementArray)
-		throws java.lang.Exception
-	{
-		super (
-			elementArray,
-			false,
-			null
-		);
-	}
-
-	@Override public int selectIndex (
+	private int shrinkAndSelectIndex (
 		int leftIndex,
 		int rightIndex,
 		final int k)
 		throws java.lang.Exception
 	{
-		K[] elementArray = elementArray();
-
-		int arraySize = elementArray.length;
-
-		if (leftIndex < 0 ||
-			rightIndex >= arraySize || rightIndex < leftIndex ||
-			0 > k || k >= arraySize
-		)
+		if (null != _partitionControl)
 		{
-			throw new java.lang.Exception (
-				"FloydRivestSelector::selectIndex => Invalid Inputs"
-			);
+			double shrinkageFactor = _partitionControl.shrinkage();
+
+			if (rightIndex - leftIndex > _partitionControl.widthLimit())
+			{
+				int width = rightIndex - leftIndex + 1;
+				int i = k - leftIndex + 1;
+
+				double z = java.lang.Math.log (
+					width
+				);
+
+				double s = shrinkageFactor * java.lang.Math.exp (
+					2. * z / 3.
+				);
+
+				double sd = (2 * i > width ? 1 : -1) * shrinkageFactor * java.lang.Math.sqrt (
+					z * s * (width - s) / width
+				);
+
+				double sOverWidth = s / width;
+
+				return shrinkAndSelectIndex (
+					java.lang.Math.max (
+						leftIndex,
+						k - (int) (sOverWidth * i + sd)
+					),
+					java.lang.Math.min (
+						rightIndex,
+						k + (int) (sOverWidth * (width - i) + sd)
+					),
+					k
+				);
+			}
 		}
+
+		K[] elementArray = elementArray();
 
 		while (rightIndex >= leftIndex)
 		{
@@ -160,27 +167,42 @@ public class FloydRivestSelector<K extends java.lang.Comparable<K>>
 			int j = rightIndex;
 			int i = leftIndex;
 
-			swapLocations (
+			if (!swapLocations (
 				leftIndex,
 				k
-			);
+			))
+			{
+				throw new java.lang.Exception (
+					"FloydRivestSelector::shrinkAndSelectIndex => Cannot Swap Locations"
+				);
+			}
 
 			if (1 == elementArray[rightIndex].compareTo (
 				t
 			))
 			{
-				swapLocations (
+				if (!swapLocations (
 					leftIndex,
 					rightIndex
-				);
+				))
+				{
+					throw new java.lang.Exception (
+						"FloydRivestSelector::shrinkAndSelectIndex => Cannot Swap Locations"
+					);
+				}
 			}
 
 			while (i < j)
 			{
-				swapLocations (
+				if (!swapLocations (
 					i,
 					j
-				);
+				))
+				{
+					throw new java.lang.Exception (
+						"FloydRivestSelector::shrinkAndSelectIndex => Cannot Swap Locations"
+					);
+				}
 
 				++i;
 				--j;
@@ -204,17 +226,27 @@ public class FloydRivestSelector<K extends java.lang.Comparable<K>>
 				t
 			))
 			{
-				swapLocations (
+				if (!swapLocations (
 					leftIndex,
 					j
-				);
+				))
+				{
+					throw new java.lang.Exception (
+						"FloydRivestSelector::shrinkAndSelectIndex => Cannot Swap Locations"
+					);
+				}
 			}
 			else
 			{
-				swapLocations (
+				if (!swapLocations (
 					rightIndex,
 					++j
-				);
+				))
+				{
+					throw new java.lang.Exception (
+						"FloydRivestSelector::shrinkAndSelectIndex => Cannot Swap Locations"
+					);
+				}
 			}
 
 			if (j <= k)
@@ -229,5 +261,66 @@ public class FloydRivestSelector<K extends java.lang.Comparable<K>>
 		}
 
 		return k;
+	}
+
+	/**
+	 * FloydRivestSelector Constructor
+	 * 
+	 * @param elementArray Array of Elements
+	 * @param partitionControl Floyd-Rivest Partition Control
+	 * 
+	 * @throws java.lang.Exception Thrown if the Input is Invalid
+	 */
+
+	public FloydRivestSelector (
+		final K[] elementArray,
+		final org.drip.graph.selection.FloydRivestPartitionControl partitionControl)
+		throws java.lang.Exception
+	{
+		super (
+			elementArray,
+			false,
+			null
+		);
+
+		_partitionControl = partitionControl;
+	}
+
+	/**
+	 * Retrieve the Floyd-Rivest Partition Control
+	 * 
+	 * @return The Floyd-Rivest Partition Control
+	 */
+
+	public org.drip.graph.selection.FloydRivestPartitionControl partitionControl()
+	{
+		return _partitionControl;
+	}
+
+	@Override public int selectIndex (
+		int leftIndex,
+		int rightIndex,
+		final int k)
+		throws java.lang.Exception
+	{
+		K[] elementArray = elementArray();
+
+		int arraySize = elementArray.length;
+
+		if (leftIndex < 0 ||
+			rightIndex >= arraySize || rightIndex < leftIndex ||
+			0 > k || k >= arraySize
+		)
+		{
+			throw new java.lang.Exception (
+				"FloydRivestSelector::selectIndex => Invalid Inputs"
+			);
+		}
+
+		return shrinkAndSelectIndex (
+			leftIndex,
+			rightIndex,
+			k
+		);
 	}
 }
