@@ -3567,6 +3567,14 @@ public class StringUtil {
     	return java.lang.Integer.MIN_VALUE == max ? -1 : max;
     }
 
+    /**
+     * Indicate if the Input String is composed of Valid Parenthesis Sequence
+     * 
+     * @param input Input String
+     * 
+     * @return TRUE - The Input String is composed of Valid Parenthesis Sequence
+     */
+
     public static final boolean ValidateParenthesis (
     	final java.lang.String input)
     {
@@ -3607,30 +3615,40 @@ public class StringUtil {
 	    				charList.size() - 1
 	    			);
 				}
+    			else if (']' == c)
+				{
+    				if (prevChar != '[')
+    				{
+    					return false;
+    				}
+
+    				charList.remove (
+	    				charList.size() - 1
+	    			);
+				}
+    			else if ('}' == c)
+				{
+    				if (prevChar != '{')
+    				{
+    					return false;
+    				}
+
+    				charList.remove (
+	    				charList.size() - 1
+	    			);
+				}
     		}
     	}
 
-    	return true;
+    	return charList.isEmpty();
     }
 
     public static final void main (
 		final String[] argumentArray)
 	{
 		System.out.println (
-			LongestNonRepeatingSubstring (
-				"abcabcbb"
-			)
-		);
-
-		System.out.println (
-			LongestNonRepeatingSubstring (
-				"bbbbb"
-			)
-		);
-
-		System.out.println (
-			LongestNonRepeatingSubstring (
-				"pwwkew"
+			ValidateParenthesis (
+				"()({}[])"
 			)
 		);
 	}

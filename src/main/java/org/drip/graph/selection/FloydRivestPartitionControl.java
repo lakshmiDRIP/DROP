@@ -155,8 +155,8 @@ public class FloydRivestPartitionControl
 	/**
 	 * FloydRivestPartitionControl Constructor
 	 * 
-	 * @param widthLimit
-	 * @param shrinkage
+	 * @param widthLimit Width Limit
+	 * @param shrinkage Shrinkage Factor
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */

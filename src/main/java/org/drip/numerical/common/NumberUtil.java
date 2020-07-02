@@ -1618,7 +1618,7 @@ public class NumberUtil {
 	 * @param y y
 	 * @param z z
 	 * 
-	 * @return
+	 * @return TRUE - The Measurement can be successfully carried out
 	 */
 
 	public static final boolean CanMeasureWater (

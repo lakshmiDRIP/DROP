@@ -339,6 +339,14 @@ public class ArrayUtil
 		return true;
 	}
 
+	private static final boolean DoRangesOverlap (
+		final int[] range1,
+		final int[] range2)
+	{
+		return (range1[0] >= range2[0] && range1[0] <= range2[1]) ||
+			(range1[1] >= range2[0] && range1[1] <= range2[1]);
+	}
+
 	/**
 	 * Search for the Target in a Rotated Array
 	 * 
@@ -2226,8 +2234,8 @@ public class ArrayUtil
 	}
 
 	/**
-	 * Given an unsorted array numberArray, reorder it such that numberArray[0] < numberArray[1] >
-	 * 	numberArray[2] < numberArray[3]....
+	 * Given an unsorted array numberArray, reorder it such that numberArray[0] le numberArray[1] ge
+	 * 	numberArray[2] le numberArray[3]....
 	 * 
 	 * @param numberArray Number Array
 	 * 
@@ -2661,7 +2669,6 @@ public class ArrayUtil
 	{
 		int arrayLength = numberArray.length;
 		int endIndex = arrayLength - 1;
-		int flipCount = 0;
 
 		while (endIndex >= 0)
 		{
@@ -2685,8 +2692,6 @@ public class ArrayUtil
 					numberArray,
 					maxIndex
 				);
-
-				++flipCount;
 			}
 
 			FlipSequence (
@@ -2694,11 +2699,8 @@ public class ArrayUtil
 				endIndex
 			);
 
-			++flipCount;
 			--endIndex;
 		}
-
-		System.out.println (flipCount);
 
 		return numberArray;
 	}
@@ -2766,14 +2768,180 @@ public class ArrayUtil
 		return consumptionRate;
 	}
 
+	/**
+	 * Collapse any Overlapping Ranges inside the Specified List
+	 * 
+	 * @param rangeList Ranges in the List
+	 * 
+	 * @return Collection of the Collapsed Ranges
+	 */
+
+	public static final java.util.Collection<int[]> CollapseOverlappingRanges (
+		final java.util.List<int[]> rangeList)
+	{
+		java.util.TreeMap<java.lang.Integer, int[]> rangeMap =
+			new java.util.TreeMap<java.lang.Integer, int[]>();
+
+		for (int[] range : rangeList)
+		{
+			if (rangeMap.isEmpty())
+			{
+				rangeMap.put (
+					range[0],
+					range
+				);
+
+				continue;
+			}
+
+			int newRangeEnd = range[1];
+			int newRangeStart = range[0];
+
+			java.lang.Integer floorKey = rangeMap.floorKey (
+				newRangeStart
+			);
+
+			floorKey = null != floorKey ? floorKey : rangeMap.firstKey();
+
+			java.util.Map<java.lang.Integer, int[]> tailRangeMap = rangeMap.tailMap (
+				floorKey
+			);
+
+			java.util.List<java.lang.Integer> rangeTrimList = new java.util.ArrayList<java.lang.Integer>();
+
+			if (null != tailRangeMap && 0 != tailRangeMap.size())
+			{
+				for (java.util.Map.Entry<java.lang.Integer, int[]> tailRangeEntry : tailRangeMap.entrySet())
+				{
+					int[] tailRange = tailRangeEntry.getValue();
+
+					if (DoRangesOverlap (
+							range,
+							tailRange
+						) || DoRangesOverlap (
+							tailRange,
+							range
+						))
+					{
+						newRangeEnd = newRangeEnd > tailRange[1] ? newRangeEnd : tailRange[1];
+						newRangeStart = newRangeStart < tailRange[0] ? newRangeStart : tailRange[0];
+
+						rangeTrimList.add (
+							tailRange[0]
+						);
+					}
+				}
+			}
+
+			for (int rangeStart : rangeTrimList)
+			{
+				rangeMap.remove (
+					rangeStart
+				);
+			}
+
+			rangeMap.put (
+				newRangeStart,
+				new int[]
+				{
+					newRangeStart,
+					newRangeEnd
+				}
+			);
+		}
+
+		return rangeMap.values();
+	}
+
+	private static final boolean InputLeftOfMap (
+		final int[] inputRange,
+		final int[] mapRange)
+	{
+		return inputRange[1] < mapRange[0];
+	}
+
+	private static final boolean InputRightOfMap (
+		final int[] inputRange,
+		final int[] mapRange)
+	{
+		return inputRange[0] > mapRange[1];
+	}
+
+	private static final boolean InputSpannedByMap (
+		final int[] inputRange,
+		final int[] mapRange)
+	{
+		return inputRange[0] >= mapRange[0] && inputRange[1] <= mapRange[1];
+	}
+
+	private static final boolean InputSpansOverMap (
+		final int[] inputRange,
+		final int[] mapRange)
+	{
+		return inputRange[0] <= mapRange[0] && inputRange[1] >= mapRange[1];
+	}
+
+	private static final boolean InputLeftStraddlesMap (
+		final int[] inputRange,
+		final int[] mapRange)
+	{
+		return inputRange[0] <= mapRange[0] && inputRange[1] <= mapRange[1];
+	}
+
+	private static final boolean InputRightStraddlesMap (
+		final int[] inputRange,
+		final int[] mapRange)
+	{
+		return inputRange[0] >= mapRange[0] && inputRange[1] >= mapRange[1];
+	}
+
 	public static final void main (
 		final String[] argumentArray)
 	{
-		System.out.println (
-			KConcatenatedMaximumSum (
-				new int[] {1, 2},
-				3
-			)
+		java.util.List<int[]> rangeList = new java.util.ArrayList<int[]>();
+
+		rangeList.add (
+			new int[] {
+				2,
+				4
+			}
 		);
+
+		rangeList.add (
+			new int[] {
+				4,
+				6
+			}
+		);
+
+		rangeList.add (
+			new int[] {
+				7,
+				9
+			}
+		);
+
+		rangeList.add (
+			new int[] {
+				3,
+				8
+			}
+		);
+
+		rangeList.add (
+			new int[] {
+				11,
+				13
+			}
+		);
+
+		for (int[] collapsedRange : CollapseOverlappingRanges (
+			rangeList
+		))
+		{
+			System.out.println (
+				"\t[" + collapsedRange[0] + " | " + collapsedRange[1] + "]"
+			);
+		}
 	}
 }
