@@ -3149,87 +3149,94 @@ public class ArrayUtil
 		return rangeCounterMap;
 	}
 
+	/**
+	 * There are n guests attending a dinner party, numbered from 1 to n. The i<sup>th</sup> guest has a
+	 * 	height of heightArray[i] inches. The guests will sit down at a circular table which has n seats,
+	 * 	numbered from 1 to n in clockwise order around the table. As the host, you will choose how to arrange
+	 * 	the guests, one per seat. Note that there are n! possible permutations of seat assignments. Once the
+	 * 	guests have sat down, the awkwardness between a pair of guests sitting in adjacent seats is defined
+	 * 	as the absolute difference between their two heights. Note that, because the table is circular, seats
+	 * 	1 and n are considered to be adjacent to one another, and that there are therefore n pairs of
+	 * 	adjacent guests. The overall awkwardness of the seating arrangement is then defined as the maximum
+	 *  awkwardness of any pair of adjacent guests. Determine the minimum possible overall awkwardness of any
+	 *  seating arrangement.
+	 *  
+	 * @param heightArray The Height Array
+	 * 
+	 * @return The Maximum Awkwardness of the Arrangement
+	 */
+
 	public static final int MinimumOverallAwkwardness (
 		final int[] heightArray)
 	{
+		if (null == heightArray)
+		{
+			return -1;
+		}
+
 		java.util.Arrays.sort (
 			heightArray
 		);
 
 		int heightCount = heightArray.length;
+
+		if (1 >= heightCount)
+		{
+			return -1;
+		}
+
+		int[] unawkwardHeightArray = new int[heightCount];
 		int heightIndex = heightCount - 1;
 		boolean assignmentFlip = false;
 		int unawkwardHeightIndex = 0;
-		int[] unawkwardHeightArray = new int[heightCount];
+		int awkwardness = 0;
 
 		while (heightIndex >= 0)
 		{
-			if (!assignmentFlip)
+			unawkwardHeightArray[assignmentFlip ? heightCount - 1 - unawkwardHeightIndex :
+				unawkwardHeightIndex] = heightArray[heightIndex];
+
+			if (!(assignmentFlip = !assignmentFlip))
 			{
-				unawkwardHeightArray[unawkwardHeightIndex] = heightArray[heightIndex];
-			}
-			else
-			{
-				unawkwardHeightArray[heightCount - unawkwardHeightIndex] = heightArray[heightIndex];
+				++unawkwardHeightIndex;
 			}
 
-			assignmentFlip = !assignmentFlip;
-			++unawkwardHeightIndex;
 			--heightIndex;
 		}
-		return 0;
+
+		for (int index = 0;
+			index < heightCount;
+			++index)
+		{
+			int priorIndex = index - 1 < 0 ? heightCount - 1 : index - 1;
+
+			int currentAwkwardness = java.lang.Math.abs (
+				unawkwardHeightArray[index] - unawkwardHeightArray[priorIndex]
+			);
+
+			if (currentAwkwardness > awkwardness)
+			{
+				awkwardness = currentAwkwardness;
+			}
+		}
+
+		return awkwardness;
 	}
 
 	public static final void main (
 		final String[] argumentArray)
+		throws java.lang.Exception
 	{
-		java.util.List<int[]> rangeList = new java.util.ArrayList<int[]>();
-
-		rangeList.add (
-			new int[] {
-				2,
-				4
-			}
+		System.out.println (
+			MinimumOverallAwkwardness (
+				new int[]
+				{
+					5,
+					10,
+					6,
+					8
+				}
+			)
 		);
-
-		rangeList.add (
-			new int[] {
-				4,
-				6
-			}
-		);
-
-		rangeList.add (
-			new int[] {
-				7,
-				9
-			}
-		);
-
-		rangeList.add (
-			new int[] {
-				3,
-				8
-			}
-		);
-
-		rangeList.add (
-			new int[] {
-				11,
-				13
-			}
-		);
-
-		java.util.TreeMap<java.lang.Integer, java.lang.Integer> sliceOverlappingRanges =
-			SliceOverlappingRanges (
-				rangeList
-			);
-
-		for (int sliceRangeLeft : sliceOverlappingRanges.keySet())
-		{
-			System.out.println (
-				"\t[" + sliceRangeLeft + " | " + sliceOverlappingRanges.get (sliceRangeLeft) + "]"
-			);
-		}
 	}
 }

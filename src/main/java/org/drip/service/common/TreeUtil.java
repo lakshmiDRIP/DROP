@@ -96,10 +96,10 @@ public class TreeUtil
 	{
 		private TreeNode _left = null;
 		private TreeNode _right = null;
-		private int _value = java.lang.Integer.MIN_VALUE;
+		private double _value = java.lang.Double.NaN;
 
 		public TreeNode (
-			final int value,
+			final double value,
 			final TreeNode left,
 			final TreeNode right)
 		{
@@ -108,7 +108,7 @@ public class TreeUtil
 			_value = value;
 		}
 
-		public int value()
+		public double value()
 		{
 			return _value;
 		}
@@ -154,10 +154,10 @@ public class TreeUtil
 		}
 	}
 
-	public static final java.util.List<java.lang.Integer> RightSideView (
+	public static final java.util.List<java.lang.Double> RightSideView (
 		final TreeNode root)
 	{
-		java.util.List<java.lang.Integer> rightNodeList = new java.util.ArrayList<java.lang.Integer>();
+		java.util.List<java.lang.Double> rightNodeList = new java.util.ArrayList<java.lang.Double>();
 
 		if (null == root)
 		{
@@ -259,5 +259,75 @@ public class TreeUtil
 		}
 
 		return null;
+	}
+
+	/**
+	 * Given a binary tree, return the minimum number of edits to make the value of each node equal to the
+	 *  average of its direct children's. Note that you can only update the value of each tree node, and
+	 *  changing the tree structure is not allowed.
+	 * 
+	 * @param node The Root Node
+	 * 
+	 * @return Minimum Edits for the "Average" Tree
+	 */
+
+	public static final int MinimumEditsForAverage (
+		final TreeNode node)
+	{
+		if (null == node)
+		{
+			return 0;
+		}
+
+		TreeNode left = node.left();
+
+		TreeNode right = node.right();
+
+		if (null == left && null == right)
+		{
+			return 0;
+		}
+
+		int editCount = MinimumEditsForAverage (
+			left
+		) + MinimumEditsForAverage (
+			right
+		);
+
+		if (null == left)
+		{
+			double rightValue = right._value;
+
+			if (node._value != rightValue)
+			{
+				node._value = rightValue;
+				return editCount + 1;
+			}
+
+			return editCount;
+		}
+
+		if (null == right)
+		{
+			double leftValue = left._value;
+
+			if (node._value != leftValue)
+			{
+				node._value = leftValue;
+				return editCount + 1;
+			}
+
+			return editCount;
+		}
+
+		double averageValue = (right._value + left._value) / 2;
+
+		if (node._value != averageValue)
+		{
+			node._value = averageValue;
+			return editCount + 1;
+		}
+
+		return editCount;
 	}
 }
