@@ -2853,46 +2853,331 @@ public class ArrayUtil
 		return rangeMap.values();
 	}
 
-	private static final boolean InputLeftOfMap (
-		final int[] inputRange,
-		final int[] mapRange)
+	private static final boolean UploadCounterRangeMaps (
+		final java.util.TreeMap<java.lang.Integer, java.lang.Integer> sliceCounterMap,
+		final java.util.TreeMap<java.lang.Integer, int[]> sliceRangeMap,
+		final int[] range,
+		final int rangeCount)
 	{
-		return inputRange[1] < mapRange[0];
+		if (range[0] >= range[1])
+		{
+			return false;
+		}
+
+		sliceCounterMap.put (
+			range[0],
+			rangeCount
+		);
+
+		sliceRangeMap.put (
+			range[0],
+			range
+		);
+
+		return true;
 	}
 
-	private static final boolean InputRightOfMap (
+	private static final int[] ProcessRange (
+		final java.util.TreeMap<java.lang.Integer, java.lang.Integer> sliceCounterMap,
+		final java.util.TreeMap<java.lang.Integer, int[]> sliceRangeMap,
 		final int[] inputRange,
-		final int[] mapRange)
+		final int[] mapRange,
+		final int mapRangeCount)
 	{
-		return inputRange[0] > mapRange[1];
+		if (inputRange[1] < mapRange[0] || inputRange[0] > mapRange[1])
+		{
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				inputRange,
+				1
+			);
+
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				mapRange,
+				mapRangeCount
+			);
+
+			return null;
+		}
+
+		if (inputRange[0] >= mapRange[0] && inputRange[1] <= mapRange[1])
+		{
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				new int[]
+				{
+					mapRange[0],
+					inputRange[0]
+				},
+				mapRangeCount
+			);
+
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				new int[]
+				{
+					inputRange[0],
+					inputRange[1]
+				},
+				mapRangeCount + 1
+			);
+
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				new int[]
+				{
+					inputRange[1],
+					mapRange[1]
+				},
+				mapRangeCount
+			);
+
+			return null;
+		}
+
+		if (inputRange[0] <= mapRange[0] && inputRange[1] >= mapRange[1])
+		{
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				new int[]
+				{
+					inputRange[0],
+					mapRange[0]
+				},
+				1
+			);
+
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				new int[]
+				{
+					mapRange[0],
+					mapRange[1]
+				},
+				mapRangeCount + 1
+			);
+
+			return new int[]
+			{
+				mapRange[1],
+				inputRange[1]
+			};
+		}
+
+		if (inputRange[0] <= mapRange[0] && inputRange[1] <= mapRange[1])
+		{
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				new int[]
+				{
+					inputRange[0],
+					mapRange[0]
+				},
+				1
+			);
+
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				new int[]
+				{
+					mapRange[0],
+					inputRange[1]
+				},
+				mapRangeCount + 1
+			);
+
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				new int[]
+				{
+					inputRange[0],
+					mapRange[1]
+				},
+				mapRangeCount
+			);
+
+			return null;
+		}
+
+		if (inputRange[0] >= mapRange[0] && inputRange[1] >= mapRange[1])
+		{
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				new int[]
+				{
+					mapRange[0],
+					inputRange[0]
+				},
+				mapRangeCount
+			);
+
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				new int[]
+				{
+					inputRange[0],
+					mapRange[1]
+				},
+				mapRangeCount + 1
+			);
+
+			return new int[]
+			{
+				mapRange[1],
+				inputRange[1]
+			};
+		}
+
+		return null;
 	}
 
-	private static final boolean InputSpannedByMap (
-		final int[] inputRange,
-		final int[] mapRange)
+	/**
+	 * Generate a Counter Map of the Overlapping Slice Ranges
+	 * 
+	 * @param rangeList The Range List
+	 * 
+	 * @return Counter Map of the Overlapping Slice Ranges
+	 */
+
+	public static final java.util.TreeMap<java.lang.Integer, java.lang.Integer> SliceOverlappingRanges (
+		final java.util.List<int[]> rangeList)
 	{
-		return inputRange[0] >= mapRange[0] && inputRange[1] <= mapRange[1];
+		java.util.TreeMap<java.lang.Integer, java.lang.Integer> rangeCounterMap =
+			new java.util.TreeMap<java.lang.Integer, java.lang.Integer>();
+
+		java.util.TreeMap<java.lang.Integer, int[]> rangeMap =
+			new java.util.TreeMap<java.lang.Integer, int[]>();
+
+		for (int[] range : rangeList)
+		{
+			if (rangeMap.isEmpty())
+			{
+				rangeMap.put (
+					range[0],
+					range
+				);
+
+				rangeCounterMap.put (
+					range[0],
+					1
+				);
+			}
+			else
+			{
+				int[] residualRange = range;
+
+				java.util.TreeMap<java.lang.Integer, java.lang.Integer> sliceCounterMap =
+					new java.util.TreeMap<java.lang.Integer, java.lang.Integer>();
+
+				java.util.TreeMap<java.lang.Integer, int[]> sliceRangeMap =
+					new java.util.TreeMap<java.lang.Integer, int[]>();
+
+				java.util.HashSet<java.lang.Integer> trimList = new java.util.HashSet<java.lang.Integer>();
+
+				for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> rangeCounterMapEntry :
+					rangeCounterMap.entrySet())
+				{
+					int mapRangeLeft = rangeCounterMapEntry.getKey();
+
+					if (null == residualRange)
+					{
+						break;
+					}
+
+					residualRange = ProcessRange (
+						sliceCounterMap,
+						sliceRangeMap,
+						residualRange,
+						rangeMap.get (
+							mapRangeLeft
+						),
+						rangeCounterMapEntry.getValue()
+					);
+
+					trimList.add (
+						mapRangeLeft
+					);
+				}
+
+				for (int trimRangeLeft : trimList)
+				{
+					rangeMap.remove (
+						trimRangeLeft
+					);
+
+					rangeCounterMap.remove (
+						trimRangeLeft
+					);
+				}
+
+				rangeMap.putAll (
+					sliceRangeMap
+				);
+
+				rangeCounterMap.putAll (
+					sliceCounterMap
+				);
+
+				if (null != residualRange)
+				{
+					rangeMap.put (
+						residualRange[0],
+						residualRange
+					);
+
+					rangeCounterMap.put (
+						residualRange[0],
+						1
+					);
+				}
+			}
+		}
+
+		return rangeCounterMap;
 	}
 
-	private static final boolean InputSpansOverMap (
-		final int[] inputRange,
-		final int[] mapRange)
+	public static final int MinimumOverallAwkwardness (
+		final int[] heightArray)
 	{
-		return inputRange[0] <= mapRange[0] && inputRange[1] >= mapRange[1];
-	}
+		java.util.Arrays.sort (
+			heightArray
+		);
 
-	private static final boolean InputLeftStraddlesMap (
-		final int[] inputRange,
-		final int[] mapRange)
-	{
-		return inputRange[0] <= mapRange[0] && inputRange[1] <= mapRange[1];
-	}
+		int heightCount = heightArray.length;
+		int heightIndex = heightCount - 1;
+		boolean assignmentFlip = false;
+		int unawkwardHeightIndex = 0;
+		int[] unawkwardHeightArray = new int[heightCount];
 
-	private static final boolean InputRightStraddlesMap (
-		final int[] inputRange,
-		final int[] mapRange)
-	{
-		return inputRange[0] >= mapRange[0] && inputRange[1] >= mapRange[1];
+		while (heightIndex >= 0)
+		{
+			if (!assignmentFlip)
+			{
+				unawkwardHeightArray[unawkwardHeightIndex] = heightArray[heightIndex];
+			}
+			else
+			{
+				unawkwardHeightArray[heightCount - unawkwardHeightIndex] = heightArray[heightIndex];
+			}
+
+			assignmentFlip = !assignmentFlip;
+			++unawkwardHeightIndex;
+			--heightIndex;
+		}
+		return 0;
 	}
 
 	public static final void main (
@@ -2935,12 +3220,15 @@ public class ArrayUtil
 			}
 		);
 
-		for (int[] collapsedRange : CollapseOverlappingRanges (
-			rangeList
-		))
+		java.util.TreeMap<java.lang.Integer, java.lang.Integer> sliceOverlappingRanges =
+			SliceOverlappingRanges (
+				rangeList
+			);
+
+		for (int sliceRangeLeft : sliceOverlappingRanges.keySet())
 		{
 			System.out.println (
-				"\t[" + collapsedRange[0] + " | " + collapsedRange[1] + "]"
+				"\t[" + sliceRangeLeft + " | " + sliceOverlappingRanges.get (sliceRangeLeft) + "]"
 			);
 		}
 	}
