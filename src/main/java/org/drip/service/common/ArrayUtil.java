@@ -3223,19 +3223,387 @@ public class ArrayUtil
 		return awkwardness;
 	}
 
+	/**
+	 * Given a list of integers and a target. There are 2 symbols + and -. For each integer, choose one from
+	 *  + and - as its new symbol.
+	 *  
+	 * Find out the ways to assign symbols to make sum of integers equal to target.
+	 * 
+	 * @param numberArray The Number Array
+	 * @param target The Sum Target
+	 * 
+	 * @return List of the Target Approach Paths
+	 */
+
+	public static final java.util.List<java.lang.String> TargetApproachPathList (
+		final int[] numberArray,
+		final int target)
+	{
+		java.util.List<java.lang.String> targetApproachPathList =
+			new java.util.ArrayList<java.lang.String>();
+
+		java.util.List<java.lang.Integer> indexQueue = new java.util.ArrayList<java.lang.Integer>();
+
+		java.util.List<java.lang.Integer> sumQueue = new java.util.ArrayList<java.lang.Integer>();
+
+		java.util.List<java.lang.String> pathQueue = new java.util.ArrayList<java.lang.String>();
+
+		int arrayCount = numberArray.length;
+
+		indexQueue.add (
+			0
+		);
+
+		sumQueue.add (
+			0
+		);
+
+		pathQueue.add (
+			""
+		);
+
+		while (!indexQueue.isEmpty())
+		{
+			int queueTailIndex = indexQueue.size() - 1;
+
+			int index = indexQueue.remove (
+				queueTailIndex
+			);
+
+			int sum = sumQueue.remove (
+				queueTailIndex
+			);
+
+			java.lang.String path = pathQueue.remove (
+				queueTailIndex
+			);
+
+			if (index == arrayCount - 1)
+			{
+				if (target == sum + numberArray[index])
+				{
+					targetApproachPathList.add (
+						path + "+" + numberArray[index]
+					);
+				}
+
+				if (target == sum - numberArray[index])
+				{
+					targetApproachPathList.add (
+						path + "-" + numberArray[index]
+					);
+				}
+
+				continue;
+			}
+
+			indexQueue.add (
+				index + 1
+			);
+
+			sumQueue.add (
+				sum - numberArray[index]
+			);
+
+			pathQueue.add (
+				path + "-" + numberArray[index]
+			);
+
+			indexQueue.add (
+				index + 1
+			);
+
+			sumQueue.add (
+				sum + numberArray[index]
+			);
+
+			pathQueue.add (
+				path + "+" + numberArray[index]
+			);
+		}
+
+		return targetApproachPathList;
+	}
+
+	private static final boolean CollapseOperation (
+		final java.util.List<java.lang.String> elementList,
+		final java.lang.String operation)
+	{
+		java.util.List<java.lang.String> collapsedElementList = new java.util.ArrayList<java.lang.String>();
+
+		int elementCount = elementList.size();
+
+		for (int elementIndex = elementCount - 1;
+			elementIndex >= 0;
+			++elementIndex)
+		{
+			if (operation.equalsIgnoreCase (
+				elementList.get (
+					elementIndex
+				))
+			)
+			{
+				if (0 == elementIndex || elementIndex == elementCount - 1)
+				{
+					return false;
+				}
+
+				java.lang.String leftNumber = elementList.get (
+						elementIndex
+						);
+			}
+		}
+
+		return false;
+	}
+
+	public static final int BODMAS (
+		final java.lang.String s)
+	{
+		char[] charArray = s.toCharArray();
+
+		int bodmas = 0;
+		int prevIndex = 0;
+		int stringLength = charArray.length;
+
+		java.util.List<java.lang.String> elementList = new java.util.ArrayList<java.lang.String>();
+
+		for (int index = 0;
+			index < stringLength;
+			++index)
+		{
+			char c = charArray[index];
+
+			if (c == '+' || c == '-' || c == '*' || c == '/')
+			{
+				elementList.add (
+					s.substring (
+						prevIndex,
+						index
+					)
+				);
+
+				elementList.add (
+					"" + c
+				);
+
+				prevIndex = index + 1;
+			}
+		}
+
+		if (prevIndex < stringLength)
+		{
+			elementList.add (
+				s.substring (
+					prevIndex,
+					stringLength
+				)
+			);
+		}
+
+		return bodmas;
+	}
+
+	public static final java.util.List<java.lang.String> ExpressionOperatorPathList (
+		final int[] numberArray,
+		final int target)
+	{
+		java.util.List<java.lang.String> expressionOperatorPathList =
+			new java.util.ArrayList<java.lang.String>();
+
+		java.util.List<java.lang.Integer> resultQueue = new java.util.ArrayList<java.lang.Integer>();
+
+		java.util.List<java.lang.Integer> indexQueue = new java.util.ArrayList<java.lang.Integer>();
+
+		java.util.List<java.lang.String> pathQueue = new java.util.ArrayList<java.lang.String>();
+
+		int arrayCount = numberArray.length;
+
+		indexQueue.add (
+			1
+		);
+
+		resultQueue.add (
+			numberArray[0]
+		);
+
+		pathQueue.add (
+			"" + numberArray[0]
+		);
+
+		while (!indexQueue.isEmpty())
+		{
+			int queueTailIndex = indexQueue.size() - 1;
+
+			int index = indexQueue.remove (
+				queueTailIndex
+			);
+
+			int result = resultQueue.remove (
+				queueTailIndex
+			);
+
+			java.lang.String path = pathQueue.remove (
+				queueTailIndex
+			);
+
+			if (index == arrayCount - 1)
+			{
+				if (target == result + numberArray[index])
+				{
+					expressionOperatorPathList.add (
+						path + "+" + numberArray[index]
+					);
+				}
+
+				if (target == result - numberArray[index])
+				{
+					expressionOperatorPathList.add (
+						path + "-" + numberArray[index]
+					);
+				}
+
+				if (target == result * numberArray[index])
+				{
+					expressionOperatorPathList.add (
+						path + "*" + numberArray[index]
+					);
+				}
+
+				if (target == 10 * result + numberArray[index])
+				{
+					if (!"0".equalsIgnoreCase (
+						path
+					))
+					{
+						expressionOperatorPathList.add (
+							path + "" + numberArray[index]
+						);
+					}
+				}
+
+				continue;
+			}
+
+			indexQueue.add (
+				index + 1
+			);
+
+			resultQueue.add (
+				result - numberArray[index]
+			);
+
+			pathQueue.add (
+				path + "-" + numberArray[index]
+			);
+
+			indexQueue.add (
+				index + 1
+			);
+
+			resultQueue.add (
+				result + numberArray[index]
+			);
+
+			pathQueue.add (
+				path + "+" + numberArray[index]
+			);
+
+			indexQueue.add (
+				index + 1
+			);
+
+			resultQueue.add (
+				result * numberArray[index]
+			);
+
+			pathQueue.add (
+				path + "*" + numberArray[index]
+			);
+
+			indexQueue.add (
+				index + 1
+			);
+
+			resultQueue.add (
+				10 * result + numberArray[index]
+			);
+
+			pathQueue.add (
+				path + "" + numberArray[index]
+			);
+		}
+
+		return expressionOperatorPathList;
+	}
+
 	public static final void main (
 		final String[] argumentArray)
 		throws java.lang.Exception
 	{
 		System.out.println (
-			MinimumOverallAwkwardness (
+			ExpressionOperatorPathList (
 				new int[]
 				{
+					1,
+					2,
+					3,
+				},
+				6
+			)
+		);
+
+		System.out.println (
+			ExpressionOperatorPathList (
+				new int[]
+				{
+					2,
+					3,
+					2,
+				},
+				8
+			)
+		);
+
+		System.out.println (
+			ExpressionOperatorPathList (
+				new int[]
+				{
+					1,
+					0,
 					5,
-					10,
+				},
+				5
+			)
+		);
+
+		System.out.println (
+			ExpressionOperatorPathList (
+				new int[]
+				{
+					0,
+					0,
+				},
+				0
+			)
+		);
+
+		System.out.println (
+			ExpressionOperatorPathList (
+				new int[]
+				{
+					3,
+					4,
+					5,
 					6,
-					8
-				}
+					2,
+					3,
+					7,
+					4,
+					9,
+					0,
+				},
+				9191
 			)
 		);
 	}

@@ -355,6 +355,22 @@ public class WordDictionary
 		return true;
 	}
 
+	/**
+	 * Given a <b>non-empty</b> string and a dictionary containing a list of <b>non-empty</b> words, add
+	 * 	spaces in the string to construct a sentence where each word is a valid dictionary word. Return all
+	 * 	such possible sentences.
+	 * 
+	 * <b>Note</b>:
+	 * 
+	 * 	The same word in the dictionary may be reused multiple times in the segmentation.
+	 * 
+	 * 	You may assume the dictionary does not contain duplicate words.
+	 * 
+	 * @param s Input String
+	 * 
+	 * @return List of all Possible Sentences
+	 */
+
 	public java.util.List<java.lang.String> wordBreakSentenceList (
 		final java.lang.String s)
 	{
@@ -386,31 +402,35 @@ public class WordDictionary
 				tailIndex
 			);
 
-			for (int startIndex = beginIndex;
-				startIndex < wordLength;
-				++startIndex)
+			if (beginIndex >= wordLength - 1)
 			{
-				for (int finishIndex = beginIndex + 1;
-					finishIndex < wordLength;
-					++finishIndex)
+				wordBreakSentenceList.add (
+					sentence
+				);
+
+				continue;
+			}
+
+			for (int endIndex = beginIndex + 1;
+				endIndex <= wordLength;
+				++endIndex)
+			{
+				java.lang.String nextWord = s.substring (
+					beginIndex,
+					endIndex
+				);
+
+				if (_wordSet.contains (
+					nextWord
+				))
 				{
-					java.lang.String nextWord = s.substring (
-						startIndex,
-						finishIndex
+					sIndexQueue.add (
+						endIndex
 					);
 
-					if (_wordSet.contains (
-						nextWord
-					))
-					{
-						sIndexQueue.add (
-							finishIndex
-						);
-
-						sentenceQueue.add (
-							sentence + " " + nextWord
-						);
-					}
+					sentenceQueue.add (
+						sentence + " " + nextWord
+					);
 				}
 			}
 		}
@@ -424,38 +444,60 @@ public class WordDictionary
 		WordDictionary wordDictionary = new WordDictionary();
 
 		wordDictionary.addWord (
-			"bad"
+			"cat"
 		);
 
 		wordDictionary.addWord (
-			"dad"
+			"cats"
 		);
 
 		wordDictionary.addWord (
-			"mad"
+			"and"
+		);
+
+		wordDictionary.addWord (
+			"sand"
+		);
+
+		wordDictionary.addWord (
+			"dog"
 		);
 
 		System.out.println (
-			wordDictionary.search (
-				"pad"
+			wordDictionary.wordBreakSentenceList (
+				"catsanddog"
+			)
+		);
+
+		wordDictionary.addWord (
+			"apple"
+		);
+
+		wordDictionary.addWord (
+			"pen"
+		);
+
+		wordDictionary.addWord (
+			"applepen"
+		);
+
+		wordDictionary.addWord (
+			"pine"
+		);
+
+		wordDictionary.addWord (
+			"pineapple"
+		);
+
+		System.out.println (
+			wordDictionary.wordBreakSentenceList (
+				"pineapplepenapple"
 			)
 		);
 
 		System.out.println (
-			wordDictionary.search (
-				"bad"
-			)
-		);
-
-		System.out.println (
-			wordDictionary.search (
-				".ad"
-			)
-		);
-
-		System.out.println (
-			wordDictionary.search (
-				"b.."
+			wordDictionary.wordBreakSentenceList (
+				"catsandog"
 			)
 		);
 	}
