@@ -347,6 +347,92 @@ public class ArrayUtil
 			(range1[1] >= range2[0] && range1[1] <= range2[1]);
 	}
 
+	private static final int ApplyOperation (
+		final java.lang.String leftNumber,
+		final java.lang.String operation,
+		final java.lang.String rightNumber)
+	{
+		int left = org.drip.service.common.StringUtil.DecimalNumberFromString (
+			leftNumber
+		);
+
+		int right = org.drip.service.common.StringUtil.DecimalNumberFromString (
+			rightNumber
+		);
+
+		if ("/".equalsIgnoreCase (
+			operation
+		))
+		{
+			return left / right;
+		}
+
+		if ("*".equalsIgnoreCase (
+			operation
+		))
+		{
+			return left * right;
+		}
+
+		if ("-".equalsIgnoreCase (
+			operation
+		))
+		{
+			return left - right;
+		}
+
+		return left + right;
+	}
+
+	private static final boolean CollapseOperation (
+		final java.util.List<java.lang.String> elementList,
+		final java.lang.String operation)
+	{
+		int elementCount = elementList.size();
+
+		for (int elementIndex = elementCount - 1;
+			elementIndex >= 0;
+			--elementIndex)
+		{
+			if (operation.equalsIgnoreCase (
+				elementList.get (
+					elementIndex
+				))
+			)
+			{
+				if (0 == elementIndex || elementIndex == elementCount - 1)
+				{
+					return false;
+				}
+
+				int result = ApplyOperation (
+					elementList.get (
+						elementIndex - 1
+					),
+					operation,
+					elementList.get (
+						elementIndex + 1
+					)
+				);
+
+				elementList.remove (
+					elementIndex + 1
+				);
+
+				elementList.remove (
+					elementIndex
+				);
+
+				elementList.set (
+					elementIndex - 1,
+					"" + result
+				);
+			}
+		}
+
+		return true;
+	}
+
 	/**
 	 * Search for the Target in a Rotated Array
 	 * 
@@ -3325,44 +3411,29 @@ public class ArrayUtil
 		return targetApproachPathList;
 	}
 
-	private static final boolean CollapseOperation (
-		final java.util.List<java.lang.String> elementList,
-		final java.lang.String operation)
-	{
-		java.util.List<java.lang.String> collapsedElementList = new java.util.ArrayList<java.lang.String>();
-
-		int elementCount = elementList.size();
-
-		for (int elementIndex = elementCount - 1;
-			elementIndex >= 0;
-			++elementIndex)
-		{
-			if (operation.equalsIgnoreCase (
-				elementList.get (
-					elementIndex
-				))
-			)
-			{
-				if (0 == elementIndex || elementIndex == elementCount - 1)
-				{
-					return false;
-				}
-
-				java.lang.String leftNumber = elementList.get (
-						elementIndex
-						);
-			}
-		}
-
-		return false;
-	}
+	/**
+	 * Execute a BODMAS Evaluation of the Expression
+	 * 
+	 * @param s The Expression String
+	 * 
+	 * @return result of the BODMAS Evaluation
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
 
 	public static final int BODMAS (
 		final java.lang.String s)
+		throws java.lang.Exception
 	{
+		if (null == s || s.isEmpty())
+		{
+			throw new java.lang.Exception (
+				"ArrayUtil::BODMAS => Invalid Inputs"
+			);
+		}
+
 		char[] charArray = s.toCharArray();
 
-		int bodmas = 0;
 		int prevIndex = 0;
 		int stringLength = charArray.length;
 
@@ -3401,8 +3472,69 @@ public class ArrayUtil
 			);
 		}
 
-		return bodmas;
+		if (!CollapseOperation (
+			elementList,
+			"/"
+		))
+		{
+			throw new java.lang.Exception (
+				"ArrayUtil::BODMAS => Cannot compute"
+			);
+		}
+
+		if (!CollapseOperation (
+			elementList,
+			"*"
+		))
+		{
+			throw new java.lang.Exception (
+				"ArrayUtil::BODMAS => Cannot compute"
+			);
+		}
+
+		if (!CollapseOperation (
+			elementList,
+			"-"
+		))
+		{
+			throw new java.lang.Exception (
+				"ArrayUtil::BODMAS => Cannot compute"
+			);
+		}
+
+		if (!CollapseOperation (
+			elementList,
+			"+"
+		))
+		{
+			throw new java.lang.Exception (
+				"ArrayUtil::BODMAS => Cannot compute"
+			);
+		}
+
+		if (1 != elementList.size())
+		{
+			throw new java.lang.Exception (
+				"ArrayUtil::BODMAS => Cannot compute"
+			);
+		}
+
+		return org.drip.service.common.StringUtil.DecimalNumberFromString (
+			elementList.get (
+				0
+			)
+		);
 	}
+
+	/**
+	 * Given a string that contains only digits 0-9 and a target value, return all possibilities to add
+	 *  binary operators (not unary) +, -, or * between the digits so they evaluate to the target value.
+	 * 
+	 * @param numberArray The Number Array
+	 * @param target The Target
+	 * 
+	 * @return List of the Expression Possibilities
+	 */
 
 	public static final java.util.List<java.lang.String> ExpressionOperatorPathList (
 		final int[] numberArray,
@@ -3410,8 +3542,6 @@ public class ArrayUtil
 	{
 		java.util.List<java.lang.String> expressionOperatorPathList =
 			new java.util.ArrayList<java.lang.String>();
-
-		java.util.List<java.lang.Integer> resultQueue = new java.util.ArrayList<java.lang.Integer>();
 
 		java.util.List<java.lang.Integer> indexQueue = new java.util.ArrayList<java.lang.Integer>();
 
@@ -3421,10 +3551,6 @@ public class ArrayUtil
 
 		indexQueue.add (
 			1
-		);
-
-		resultQueue.add (
-			numberArray[0]
 		);
 
 		pathQueue.add (
@@ -3439,47 +3565,57 @@ public class ArrayUtil
 				queueTailIndex
 			);
 
-			int result = resultQueue.remove (
-				queueTailIndex
-			);
-
 			java.lang.String path = pathQueue.remove (
 				queueTailIndex
 			);
 
 			if (index == arrayCount - 1)
 			{
-				if (target == result + numberArray[index])
-				{
-					expressionOperatorPathList.add (
-						path + "+" + numberArray[index]
-					);
-				}
+				java.lang.String bodmasExpression = path + "+" + numberArray[index];
 
-				if (target == result - numberArray[index])
+				try
 				{
-					expressionOperatorPathList.add (
-						path + "-" + numberArray[index]
-					);
-				}
-
-				if (target == result * numberArray[index])
-				{
-					expressionOperatorPathList.add (
-						path + "*" + numberArray[index]
-					);
-				}
-
-				if (target == 10 * result + numberArray[index])
-				{
-					if (!"0".equalsIgnoreCase (
-						path
+					if (target == BODMAS (
+						bodmasExpression
 					))
 					{
 						expressionOperatorPathList.add (
-							path + "" + numberArray[index]
+							bodmasExpression
 						);
 					}
+
+					if (target == BODMAS (
+						bodmasExpression = path + "-" + numberArray[index]
+					))
+					{
+						expressionOperatorPathList.add (
+							bodmasExpression
+						);
+					}
+
+					if (target == BODMAS (
+						bodmasExpression = path + "*" + numberArray[index]
+					))
+					{
+						expressionOperatorPathList.add (
+							bodmasExpression
+						);
+					}
+
+					if (target == BODMAS (
+						bodmasExpression = path + "" + numberArray[index]
+					))
+					{
+						expressionOperatorPathList.add (
+							bodmasExpression
+						);
+					}
+				}
+				catch (java.lang.Exception e)
+				{
+					e.printStackTrace();
+
+					return null;
 				}
 
 				continue;
@@ -3487,10 +3623,6 @@ public class ArrayUtil
 
 			indexQueue.add (
 				index + 1
-			);
-
-			resultQueue.add (
-				result - numberArray[index]
 			);
 
 			pathQueue.add (
@@ -3501,20 +3633,12 @@ public class ArrayUtil
 				index + 1
 			);
 
-			resultQueue.add (
-				result + numberArray[index]
-			);
-
 			pathQueue.add (
 				path + "+" + numberArray[index]
 			);
 
 			indexQueue.add (
 				index + 1
-			);
-
-			resultQueue.add (
-				result * numberArray[index]
 			);
 
 			pathQueue.add (
@@ -3525,10 +3649,6 @@ public class ArrayUtil
 				index + 1
 			);
 
-			resultQueue.add (
-				10 * result + numberArray[index]
-			);
-
 			pathQueue.add (
 				path + "" + numberArray[index]
 			);
@@ -3537,74 +3657,102 @@ public class ArrayUtil
 		return expressionOperatorPathList;
 	}
 
+	/**
+	 * Given a set of <i>non-overlapping</i> intervals, insert a new interval into the intervals (merge if
+	 * 	necessary).
+	 * 
+	 * Assume that the intervals were initially sorted according to their start times.
+	 * 
+	 * @param intervals Array of the Sorted Intervals
+	 * @param newInterval The New Interval
+	 * 
+	 * @return List of the Merged Intervals
+	 */
+
+	public static final java.util.List<int[]> InsertIntoNonOverlappingIntervals (
+		final int[][] intervals,
+		final int[] newInterval)
+	{
+		java.util.List<int[]> insertedIntervalList = new java.util.ArrayList<int[]>();
+
+		int[] currentInterval = newInterval;
+
+		for (int[] oldInterval : intervals)
+		{
+			if (DoRangesOverlap (
+				oldInterval,
+				currentInterval
+			))
+			{
+				currentInterval[0] = currentInterval[0] < oldInterval[0] ? currentInterval[0] :
+					oldInterval[0];
+				currentInterval[1] = currentInterval[1] > oldInterval[1] ? currentInterval[1] :
+					oldInterval[1];
+			}
+			else if (oldInterval[1] < currentInterval[0])
+			{
+				insertedIntervalList.add (
+					oldInterval
+				);
+			}
+			else if (currentInterval[1] < oldInterval[0])
+			{
+				insertedIntervalList.add (
+					currentInterval
+				);
+
+				currentInterval = oldInterval;
+			}
+		}
+
+		insertedIntervalList.add (
+			currentInterval
+		);
+
+		return insertedIntervalList;
+	}
+
 	public static final void main (
 		final String[] argumentArray)
 		throws java.lang.Exception
 	{
-		System.out.println (
-			ExpressionOperatorPathList (
-				new int[]
-				{
-					1,
-					2,
-					3,
-				},
-				6
-			)
+		java.util.List<int[]> insertedIntervalList = InsertIntoNonOverlappingIntervals (
+			new int[][]
+			{
+				{1, 3},
+				{6, 9},
+			},
+			new int[]
+			{
+				2,
+				5,
+			}
 		);
 
-		System.out.println (
-			ExpressionOperatorPathList (
-				new int[]
-				{
-					2,
-					3,
-					2,
-				},
-				8
-			)
+		for (int[] interval : insertedIntervalList)
+		{
+			System.out.println ("[" + interval[0] + " | " + interval[1] + "]");
+		}
+
+		insertedIntervalList = InsertIntoNonOverlappingIntervals (
+			new int[][]
+			{
+				{1, 2},
+				{3, 5},
+				{6, 7},
+				{8, 10},
+				{12, 16},
+			},
+			new int[]
+			{
+				4,
+				8,
+			}
 		);
 
-		System.out.println (
-			ExpressionOperatorPathList (
-				new int[]
-				{
-					1,
-					0,
-					5,
-				},
-				5
-			)
-		);
-
-		System.out.println (
-			ExpressionOperatorPathList (
-				new int[]
-				{
-					0,
-					0,
-				},
-				0
-			)
-		);
-
-		System.out.println (
-			ExpressionOperatorPathList (
-				new int[]
-				{
-					3,
-					4,
-					5,
-					6,
-					2,
-					3,
-					7,
-					4,
-					9,
-					0,
-				},
-				9191
-			)
-		);
+		for (int[] interval : insertedIntervalList)
+		{
+			System.out.println ("[" + interval[0] + " | " + interval[1] + "]");
+		}
 	}
 }

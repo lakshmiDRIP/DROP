@@ -307,6 +307,110 @@ public class MapUtil
 		return leastIntervalTaskScheduler;
 	}
 
+	private static final boolean ElementsOverlap (
+		final java.util.List<java.lang.String> list1,
+		final java.util.List<java.lang.String> list2)
+	{
+		for (java.lang.String element1 : list1)
+		{
+			if (list2.contains (
+				element1
+			))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public static final java.util.Map<java.lang.Integer, java.util.List<java.lang.String>>
+		MinimumNumberOfGroups (
+			final java.util.Map<java.lang.String, java.util.List<java.lang.String>> personInterestListMap)
+	{
+		java.util.Map<java.lang.Integer, java.util.List<java.lang.String>> groupMembershipMap =
+			new java.util.HashMap<java.lang.Integer, java.util.List<java.lang.String>>();
+
+		java.util.Map<java.lang.Integer, java.util.List<java.lang.String>> groupInterestMap =
+			new java.util.HashMap<java.lang.Integer, java.util.List<java.lang.String>>();
+
+		java.util.TreeMap<java.lang.Integer, java.util.List<java.lang.Integer>> groupCountMap =
+			new java.util.TreeMap<java.lang.Integer, java.util.List<java.lang.Integer>>();
+
+		int groupIndex = 0;
+		int nonOverlappingGroupIndex = -1;
+
+		for (java.util.Map.Entry<java.lang.String, java.util.List<java.lang.String>> personInterestListEntry
+			: personInterestListMap.entrySet())
+		{
+			java.lang.String person = personInterestListEntry.getKey();
+
+			java.util.List<java.lang.String> personInterestList = personInterestListEntry.getValue();
+
+			if (groupCountMap.isEmpty())
+			{
+				java.util.List<java.lang.Integer> groupIndexList =
+					new java.util.ArrayList<java.lang.Integer>();
+
+				groupIndexList.add (
+					groupIndex
+				);
+
+				groupCountMap.put (
+					personInterestList.size(),
+					groupIndexList
+				);
+
+				groupInterestMap.put (
+					groupIndex,
+					personInterestList
+				);
+
+				java.util.List<java.lang.String> personList = new java.util.ArrayList<java.lang.String>();
+
+				personList.add (
+					person
+				);
+
+				groupMembershipMap.put (
+					groupIndex,
+					personList
+				);
+
+				continue;
+			}
+
+			java.util.Set<java.lang.Integer> groupCountKeySet = groupCountMap.descendingKeySet();
+
+			for (int groupCount : groupCountKeySet)
+			{
+				if (-1 == nonOverlappingGroupIndex)
+				{
+					break;
+				}
+
+				java.util.List<java.lang.Integer> groupIndexList = groupCountMap.get (
+					groupCount
+				);
+
+				for (int groupID : groupIndexList)
+				{
+					if (!ElementsOverlap (
+						personInterestList,
+						groupInterestMap.get (
+							groupID
+						)
+					))
+					{
+						nonOverlappingGroupIndex = groupID;
+					}
+				}
+			}
+		}
+
+		return groupMembershipMap;
+	}
+
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
