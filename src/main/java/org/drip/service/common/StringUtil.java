@@ -3643,12 +3643,79 @@ public class StringUtil {
     	return charList.isEmpty();
     }
 
+    /**
+     * Generate the Longest Distinct Substring
+     * 
+     * @param s Input String
+     * 
+     * @return The Longest Distinct Substring
+     */
+
+    public static final java.lang.String LongestDistinctSubstring (
+    	final java.lang.String s)
+    {
+    	char[] charArray = s.toCharArray();
+
+    	int index = 0;
+    	int bestLeft = 0;
+    	int bestRight = 0;
+    	int currentLeft = 0;
+    	int stringLength = charArray.length;
+
+    	java.util.Map<java.lang.Character, java.lang.Integer> charLocationMap =
+    		new java.util.HashMap<java.lang.Character, java.lang.Integer>();
+
+    	while (index < stringLength)
+    	{
+    		char c = charArray[index];
+
+    		if (charLocationMap.containsKey (
+    			c
+    		))
+    		{
+    			if (index - currentLeft > bestRight - bestLeft)
+    			{
+    				bestRight = index;
+    				bestLeft = currentLeft;
+    			}
+
+    			currentLeft = charLocationMap.get (
+    				c
+    			) + 1;
+    		}
+
+    		charLocationMap.put (
+    			c,
+    			index
+    		);
+
+    		++index;
+    	}
+
+		if (index - currentLeft > bestRight - bestLeft)
+		{
+			bestRight = index;
+			bestLeft = currentLeft;
+		}
+
+    	return s.substring (
+    		bestLeft,
+    		bestRight
+    	);
+    }
+
     public static final void main (
 		final String[] argumentArray)
 	{
 		System.out.println (
-			ValidateParenthesis (
-				"()({}[])"
+			LongestDistinctSubstring (
+				"abcde"
+			)
+		);
+
+		System.out.println (
+			LongestDistinctSubstring (
+				"acbcdefghdl"
 			)
 		);
 	}

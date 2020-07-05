@@ -3712,47 +3712,77 @@ public class ArrayUtil
 		return insertedIntervalList;
 	}
 
+	private static final boolean SwapElements (
+		final int[] numberArray,
+		final int index1,
+		final int index2)
+	{
+		int number = numberArray[index1];
+		numberArray[index1] = numberArray[index2];
+		numberArray[index2] = number;
+		return true;
+	}
+
+	/**
+	 * Given an array with n objects colored red, white or blue, sort them in-place so that objects of the
+	 * 	same color are adjacent, with the colors in the order red, white and blue.
+	 * 
+	 * Here, use the integers 0, 1, and 2 to represent the color red, white, and blue respectively.
+	 * 
+	 * Note: You are not suppose to use the library's sort function for this problem.
+	 * 
+	 * @param numberArray The Number Array
+	 */
+
+	public static final void SortColor (int[] numberArray)
+	{
+		int twoIndex = numberArray.length - 1;
+		int zeroIndex = 0;
+
+		while (zeroIndex < numberArray.length && 0 == numberArray[zeroIndex]) ++zeroIndex;
+
+		while (0 <= twoIndex && 2 == numberArray[twoIndex]) --twoIndex;
+
+		if (numberArray.length == zeroIndex || -1 == twoIndex) return;
+
+		int index = zeroIndex;
+
+		while (index <= twoIndex) {
+			if (0 == numberArray[index])
+				SwapElements (numberArray, index, zeroIndex++);
+			else if (2 == numberArray[index])
+				SwapElements (numberArray, index, twoIndex--);
+
+			++index;
+		}
+	}
+
+	public static final java.util.Map<java.lang.String, java.lang.Integer> SparseMatrixRepresentation (
+		final int[][] matrix)
+	{
+		java.util.Map<java.lang.String, java.lang.Integer> sparseMatrixRepresentation = new
+			java.util.HashMap<java.lang.String, java.lang.Integer>();
+
+		for (int i = 0; i < matrix.length; ++i) {
+			for (int j = 0; j < matrix[0].length; ++j) {
+				if (0 != matrix[i][j]) sparseMatrixRepresentation.put (i + "_" + j, matrix[i][j]);
+			}
+		}
+
+		return sparseMatrixRepresentation;
+	}
+
 	public static final void main (
 		final String[] argumentArray)
 		throws java.lang.Exception
 	{
-		java.util.List<int[]> insertedIntervalList = InsertIntoNonOverlappingIntervals (
-			new int[][]
-			{
-				{1, 3},
-				{6, 9},
-			},
-			new int[]
-			{
-				2,
-				5,
-			}
-		);
+		int[][] matrix = new int[][] {
+			{10, 20,  0,  0,  0,  0},
+			{ 0, 30,  0, 40,  0,  0},
+			{ 0,  0, 50, 60, 70,  0},
+			{ 0,  0,  0,  0,  0, 80},
+		};
 
-		for (int[] interval : insertedIntervalList)
-		{
-			System.out.println ("[" + interval[0] + " | " + interval[1] + "]");
-		}
-
-		insertedIntervalList = InsertIntoNonOverlappingIntervals (
-			new int[][]
-			{
-				{1, 2},
-				{3, 5},
-				{6, 7},
-				{8, 10},
-				{12, 16},
-			},
-			new int[]
-			{
-				4,
-				8,
-			}
-		);
-
-		for (int[] interval : insertedIntervalList)
-		{
-			System.out.println ("[" + interval[0] + " | " + interval[1] + "]");
-		}
+		System.out.println (SparseMatrixRepresentation (matrix));
 	}
 }

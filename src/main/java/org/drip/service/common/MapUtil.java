@@ -308,12 +308,12 @@ public class MapUtil
 	}
 
 	private static final boolean ElementsOverlap (
-		final java.util.List<java.lang.String> list1,
-		final java.util.List<java.lang.String> list2)
+		final java.util.Set<java.lang.String> set1,
+		final java.util.Set<java.lang.String> set2)
 	{
-		for (java.lang.String element1 : list1)
+		for (java.lang.String element1 : set1)
 		{
-			if (list2.contains (
+			if (set2.contains (
 				element1
 			))
 			{
@@ -324,59 +324,69 @@ public class MapUtil
 		return false;
 	}
 
-	public static final java.util.Map<java.lang.Integer, java.util.List<java.lang.String>>
-		MinimumNumberOfGroups (
-			final java.util.Map<java.lang.String, java.util.List<java.lang.String>> personInterestListMap)
+	/**
+	 * There are N people. We have information about interests of each person. The task is to find minimum
+	 *  set of groups that these people can be placed into so there are no any 2 persons who share the same
+	 *  interests in one particular group. Each person can have infinitely large number of interests.
+	 * 
+	 * @param personInterestSetMap The Person Interest Set Map
+	 * 
+	 * @return Minimum Set of Groups
+	 */
+
+	public static final java.util.Collection<java.util.Set<java.lang.String>>
+		MinimumSetOfGroups (
+			final java.util.Map<java.lang.String, java.util.Set<java.lang.String>> personInterestSetMap)
 	{
-		java.util.Map<java.lang.Integer, java.util.List<java.lang.String>> groupMembershipMap =
-			new java.util.HashMap<java.lang.Integer, java.util.List<java.lang.String>>();
+		java.util.Map<java.lang.Integer, java.util.Set<java.lang.String>> groupMembershipMap =
+			new java.util.HashMap<java.lang.Integer, java.util.Set<java.lang.String>>();
 
-		java.util.Map<java.lang.Integer, java.util.List<java.lang.String>> groupInterestMap =
-			new java.util.HashMap<java.lang.Integer, java.util.List<java.lang.String>>();
+		java.util.Map<java.lang.Integer, java.util.Set<java.lang.String>> groupInterestMap =
+			new java.util.HashMap<java.lang.Integer, java.util.Set<java.lang.String>>();
 
-		java.util.TreeMap<java.lang.Integer, java.util.List<java.lang.Integer>> groupCountMap =
-			new java.util.TreeMap<java.lang.Integer, java.util.List<java.lang.Integer>>();
+		java.util.TreeMap<java.lang.Integer, java.util.Set<java.lang.Integer>> groupCountMap =
+			new java.util.TreeMap<java.lang.Integer, java.util.Set<java.lang.Integer>>();
 
 		int groupIndex = 0;
 		int nonOverlappingGroupIndex = -1;
 
-		for (java.util.Map.Entry<java.lang.String, java.util.List<java.lang.String>> personInterestListEntry
-			: personInterestListMap.entrySet())
+		for (java.util.Map.Entry<java.lang.String, java.util.Set<java.lang.String>> personInterestSetEntry :
+			personInterestSetMap.entrySet())
 		{
-			java.lang.String person = personInterestListEntry.getKey();
+			java.lang.String person = personInterestSetEntry.getKey();
 
-			java.util.List<java.lang.String> personInterestList = personInterestListEntry.getValue();
+			java.util.Set<java.lang.String> personInterestSet = personInterestSetEntry.getValue();
 
 			if (groupCountMap.isEmpty())
 			{
-				java.util.List<java.lang.Integer> groupIndexList =
-					new java.util.ArrayList<java.lang.Integer>();
+				java.util.Set<java.lang.Integer> groupIndexSet = new java.util.HashSet<java.lang.Integer>();
 
-				groupIndexList.add (
+				groupIndexSet.add (
 					groupIndex
 				);
 
 				groupCountMap.put (
-					personInterestList.size(),
-					groupIndexList
+					personInterestSet.size(),
+					groupIndexSet
 				);
 
 				groupInterestMap.put (
 					groupIndex,
-					personInterestList
+					personInterestSet
 				);
 
-				java.util.List<java.lang.String> personList = new java.util.ArrayList<java.lang.String>();
+				java.util.Set<java.lang.String> personSet = new java.util.HashSet<java.lang.String>();
 
-				personList.add (
+				personSet.add (
 					person
 				);
 
 				groupMembershipMap.put (
 					groupIndex,
-					personList
+					personSet
 				);
 
+				++groupIndex;
 				continue;
 			}
 
@@ -384,19 +394,19 @@ public class MapUtil
 
 			for (int groupCount : groupCountKeySet)
 			{
-				if (-1 == nonOverlappingGroupIndex)
+				if (-1 != nonOverlappingGroupIndex)
 				{
 					break;
 				}
 
-				java.util.List<java.lang.Integer> groupIndexList = groupCountMap.get (
+				java.util.Set<java.lang.Integer> groupIndexSet = groupCountMap.get (
 					groupCount
 				);
 
-				for (int groupID : groupIndexList)
+				for (int groupID : groupIndexSet)
 				{
 					if (!ElementsOverlap (
-						personInterestList,
+						personInterestSet,
 						groupInterestMap.get (
 							groupID
 						)
@@ -406,19 +416,164 @@ public class MapUtil
 					}
 				}
 			}
+
+			if (-1 != nonOverlappingGroupIndex)
+			{
+				java.util.Set<java.lang.String> groupInterestSet = groupInterestMap.get (
+					nonOverlappingGroupIndex
+				);
+
+				int oldGroupInterestSize = groupInterestSet.size();
+
+				groupInterestSet.addAll (
+					personInterestSet
+				);
+
+				int newGroupInterestSize = groupInterestSet.size();
+
+				groupMembershipMap.get (
+					nonOverlappingGroupIndex
+				).add (
+					person
+				);
+
+				groupCountMap.get (
+					oldGroupInterestSize
+				).remove (
+					nonOverlappingGroupIndex
+				);
+
+				if (groupCountMap.containsKey (
+					newGroupInterestSize
+				))
+				{
+					groupCountMap.get (
+						newGroupInterestSize
+					).add (
+						nonOverlappingGroupIndex
+					);
+				}
+				else
+				{
+					java.util.Set<java.lang.Integer> groupCountSet =
+						new java.util.HashSet<java.lang.Integer>();
+
+					groupCountSet.add (
+						nonOverlappingGroupIndex
+					);
+
+					groupCountMap.put (
+						newGroupInterestSize,
+						groupCountSet
+					);
+				}
+			}
+			else
+			{
+				java.util.Set<java.lang.String> groupInterestSet = new java.util.HashSet<java.lang.String>();
+
+				groupInterestSet.addAll (
+					personInterestSet
+				);
+
+				groupInterestMap.put (
+					groupIndex,
+					groupInterestSet
+				);
+
+				java.util.Set<java.lang.String> groupMembershipSet =
+					new java.util.HashSet<java.lang.String>();
+
+				groupMembershipSet.add (
+					person
+				);
+
+				groupMembershipMap.put (
+					groupIndex,
+					groupMembershipSet
+				);
+
+				int groupInterestSize = groupInterestSet.size();
+
+				if (groupCountMap.containsKey (
+					groupInterestSize
+				))
+				{
+					groupCountMap.get (
+						groupInterestSize
+					).add (
+						groupIndex
+					);
+				}
+				else
+				{
+					java.util.Set<java.lang.Integer> groupCountSet =
+						new java.util.HashSet<java.lang.Integer>();
+
+					groupCountSet.add (
+						groupIndex
+					);
+
+					groupCountMap.put (
+						groupInterestSize,
+						groupCountSet
+					);
+				}
+
+				++groupIndex;
+			}
 		}
 
-		return groupMembershipMap;
+		return groupMembershipMap.values();
 	}
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
+		java.util.Map<java.lang.String, java.util.Set<java.lang.String>> personInterestSetMap =
+			new java.util.HashMap<java.lang.String, java.util.Set<java.lang.String>>();
+
+		java.util.Set<java.lang.String> aInterestSet = new java.util.HashSet<java.lang.String>();
+
+		aInterestSet.add (
+			"lit"
+		);
+
+		aInterestSet.add (
+			"math"
+		);
+
+		java.util.Set<java.lang.String> bInterestSet = new java.util.HashSet<java.lang.String>();
+
+		bInterestSet.add (
+			"math"
+		);
+
+		java.util.Set<java.lang.String> cInterestSet = new java.util.HashSet<java.lang.String>();
+
+		cInterestSet.add (
+			"sci"
+		);
+
+		personInterestSetMap.put (
+			"a",
+			aInterestSet
+		);
+
+		personInterestSetMap.put (
+			"b",
+			bInterestSet
+		);
+
+		personInterestSetMap.put (
+			"c",
+			cInterestSet
+		);
+
 		System.out.println (
-			LeastIntervalTaskScheduler (
-				new char[] {'A', 'A', 'A', 'B', 'B', 'B'},
-				2
+			MinimumSetOfGroups (
+				personInterestSetMap
 			)
 		);
 	}
