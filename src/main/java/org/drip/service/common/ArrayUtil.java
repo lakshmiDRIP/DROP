@@ -433,6 +433,22 @@ public class ArrayUtil
 		return true;
 	}
 
+	private static final int LocateIndex (
+		final int[] numberArray,
+		final int leftIndex,
+		final int rightIndex,
+		final int number)
+	{
+		if (leftIndex == rightIndex) return number == numberArray[leftIndex] ? leftIndex : -1;
+
+		int midIndex = (leftIndex + rightIndex) / 2;
+
+		if (number == numberArray[midIndex]) return midIndex;
+
+		return number < numberArray[midIndex] ? LocateIndex (numberArray, leftIndex - 1, midIndex, number) :
+			LocateIndex (numberArray, midIndex + 1, rightIndex, number);
+	}
+
 	/**
 	 * Search for the Target in a Rotated Array
 	 * 
@@ -3757,6 +3773,14 @@ public class ArrayUtil
 		}
 	}
 
+	/**
+	 * Construct a Sparse Matrix Representation
+	 * 
+	 * @param matrix The Sparse Matrix
+	 * 
+	 * @return Th Sparse Matrix Representation
+	 */
+
 	public static final java.util.Map<java.lang.String, java.lang.Integer> SparseMatrixRepresentation (
 		final int[][] matrix)
 	{
@@ -3772,17 +3796,120 @@ public class ArrayUtil
 		return sparseMatrixRepresentation;
 	}
 
+	/**
+	 * Compute the Dot Product of the Sparse Matrix
+	 * 
+	 * @param matrix The Sparse Matrix
+	 * 
+	 * @return Dot Product of the Sparse Matrix
+	 */
+
+	public static final int SparseMatrixDotProduct (
+		final int[][] matrix)
+	{
+		int dotProduct = 0;
+
+		java.util.Map<java.lang.String, java.lang.Integer> sparseMatrixRepresentation =
+			SparseMatrixRepresentation (matrix);
+
+		java.util.Set<java.lang.String> locationSet = new java.util.HashSet<java.lang.String>();
+
+		locationSet.addAll (sparseMatrixRepresentation.keySet());
+
+		for (java.lang.String location : locationSet) {
+			if (sparseMatrixRepresentation.containsKey (location)) {
+				java.lang.String[] rowCol = location.split ("_");
+
+				if (sparseMatrixRepresentation.containsKey (rowCol[1] + "_" + rowCol[0])) {
+					dotProduct += sparseMatrixRepresentation.get (location) *
+						sparseMatrixRepresentation.get (rowCol[1] + "_" + rowCol[0]);
+
+					sparseMatrixRepresentation.remove (rowCol[1] + "_" + rowCol[0]);
+				}
+
+				sparseMatrixRepresentation.remove (location);
+			}
+		}
+
+		return dotProduct;
+	}
+
+	/**
+	 * Given an array of integers sorted in ascending order, find the starting and ending position of a given
+	 *  target value.
+	 *  
+	 * The algorithm's runtime complexity must be in the order of <i>O(log n)</i>.
+	 * 
+	 * If the target is not found in the array, return [-1, -1].
+	 * 
+	 * @param numberArray The Sorted Number Array
+	 * @param target The Target Number
+	 * 
+	 * @return The starting and ending positions.
+	 */
+
+	public static final int[] LocationInSortedArray (
+		final int[] numberArray,
+		final int target)
+	{
+		int index = LocateIndex (numberArray, 0, numberArray.length - 1, target);
+
+		if (-1 == index) return new int[] {-1, -1};
+
+		int leftLocationIndex = index;
+		int rightLocationIndex = index;
+
+		while (leftLocationIndex >= 0 && target == numberArray[leftLocationIndex]) --leftLocationIndex;
+
+		while (rightLocationIndex < numberArray.length && target == numberArray[rightLocationIndex])
+			++rightLocationIndex;
+
+		if (-1 == leftLocationIndex || target != numberArray[leftLocationIndex]) ++leftLocationIndex;
+
+		if (numberArray.length == rightLocationIndex || target != numberArray[rightLocationIndex])
+			--rightLocationIndex;
+
+		return new int[] {leftLocationIndex, rightLocationIndex};
+	}
+
+	/**
+	 * Given a m-by-n grid, generate k mines on this grid randomly. Each cell should have equal probability
+	 *  of k / (m * n) of being chosen.
+	 *  
+	 * @param m m
+	 * @param n n
+	 * @param k k
+	 * 
+	 * @return k Random Mines on this Grid
+	 */
+
+	public static final int[][] RandomMinesInGrid (
+		final int m,
+		final int n,
+		final int k)
+	{
+		java.util.Set<java.lang.Integer> mineLocationSet = new java.util.HashSet<java.lang.Integer>();
+
+		while (k > mineLocationSet.size()) mineLocationSet.add ((int)(java.lang.Math.random() * m * n));
+
+		int mineIndex = 0;
+		int[][] mineLocations = new int[k][2];
+
+		for (int mineLocation : mineLocationSet) {
+			mineLocations[mineIndex][0] = mineLocation / m;
+			mineLocations[mineIndex++][1] = mineLocation % m;
+		}
+
+		return mineLocations;
+	}
+
 	public static final void main (
 		final String[] argumentArray)
 		throws java.lang.Exception
 	{
-		int[][] matrix = new int[][] {
-			{10, 20,  0,  0,  0,  0},
-			{ 0, 30,  0, 40,  0,  0},
-			{ 0,  0, 50, 60, 70,  0},
-			{ 0,  0,  0,  0,  0, 80},
-		};
+		int[][] mineLocations = RandomMinesInGrid (10, 10, 10);
 
-		System.out.println (SparseMatrixRepresentation (matrix));
+		for (int[] mineLocation : mineLocations)
+			System.out.println ("\t[" + mineLocation[0] + "," + mineLocation[1] + "]");
 	}
 }

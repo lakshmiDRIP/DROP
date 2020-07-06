@@ -3704,18 +3704,133 @@ public class StringUtil {
     	);
     }
 
+    /**
+     * Given a string of '(' , ')' and lowercase English characters, remove the minimum number of parentheses
+     *  ( '(' or ')', in any positions ) so that the resulting parentheses string is valid and return any
+     *  valid string.
+     *  
+     * Formally, a parentheses string is valid if and only if:
+     *   It is the empty string, contains only lowercase characters, or
+     *   It can be written as AB (A concatenated with B), where A and B are valid strings, or
+     *   It can be written as (A), where A is a valid string.
+     * 
+     * @param s The Input String
+     * 
+     * @return The Valid Parenthesis
+     */
+
+    public static final java.lang.String InvalidParenthesisMinimalRemove (
+    	final java.lang.String s)
+    {
+    	java.util.List<java.lang.Integer> leftParenthesisLocationList =
+    		new java.util.ArrayList<java.lang.Integer>();
+
+    	java.util.List<java.lang.Integer> rightParenthesisLocationList =
+    		new java.util.ArrayList<java.lang.Integer>();
+
+    	for (int i = 0; i < s.length(); ++i) {
+    		char c = s.charAt (i);
+
+    		if (c == '(')
+    			leftParenthesisLocationList.add (i);
+    		else if (c == ')')
+    			rightParenthesisLocationList.add (i);
+    	}
+
+    	for (int i = leftParenthesisLocationList.size() - 1; i >= 0; --i) {
+    		for (int j = 0; j < rightParenthesisLocationList.size(); ++j) {
+    			if (rightParenthesisLocationList.get (j) > leftParenthesisLocationList.get (i)) {
+    				leftParenthesisLocationList.remove (i);
+
+    				rightParenthesisLocationList.remove (j);
+
+    				break;
+    			}
+    		}
+    	}
+
+    	java.util.Set<java.lang.Integer> trimLocationSet = new java.util.HashSet<java.lang.Integer>();
+
+    	trimLocationSet.addAll (leftParenthesisLocationList);
+
+    	trimLocationSet.addAll (rightParenthesisLocationList);
+
+    	java.lang.String validParenthesis = "";
+
+    	for (int i = 0; i < s.length(); ++i) {
+    		if (!trimLocationSet.contains(i)) validParenthesis += s.charAt (i);
+    	}
+
+    	return validParenthesis;
+    }
+
+    /**
+     * Given a string of '(' and ')' parentheses, add the minimum number of parentheses ( '(' or ')', and in
+     *  any positions ) so that the resulting parentheses string is valid.
+     *  
+     * Formally, a parentheses string is valid if and only if:
+     * 
+     *  It is the empty string, or
+     *  It can be written as AB (A concatenated with B), where A and B are valid strings, or
+     *  It can be written as (A), where A is a valid string.
+     *  
+     * Given a parentheses string, return the minimum number of parentheses one must add to make the
+     *  resulting string valid.
+     * 
+     * @param s Input String
+     * 
+     * @return Minimum Number of Parentheses to be added
+     */
+
+    public static final int InvalidParenthesisMinimalAdd (
+    	final java.lang.String s)
+    {
+    	java.util.List<java.lang.Integer> invalidLeftParenthesisList =
+    		new java.util.ArrayList<java.lang.Integer>();
+
+    	java.util.List<java.lang.Integer> invalidRightParenthesisList =
+    		new java.util.ArrayList<java.lang.Integer>();
+
+    	for (int i = 0; i < s.length(); ++i) {
+    		char c = s.charAt (i);
+
+    		if (c == '(')
+    			invalidLeftParenthesisList.add (i);
+    		else if (c == ')') {
+    			if (invalidLeftParenthesisList.isEmpty())
+    				invalidRightParenthesisList.add (i);
+    			else
+    				invalidLeftParenthesisList.remove (invalidLeftParenthesisList.size() - 1);
+    		}
+    	}
+
+    	return invalidLeftParenthesisList.size() + invalidRightParenthesisList.size();
+    }
+
     public static final void main (
 		final String[] argumentArray)
 	{
 		System.out.println (
-			LongestDistinctSubstring (
-				"abcde"
+			InvalidParenthesisMinimalAdd (
+				"())"
 			)
 		);
 
 		System.out.println (
-			LongestDistinctSubstring (
-				"acbcdefghdl"
+			InvalidParenthesisMinimalAdd (
+				"((("
+			)
+		);
+
+		System.out.println (
+			InvalidParenthesisMinimalAdd (
+				"()"
+			)
+		);
+
+		System.out.println (
+			InvalidParenthesisMinimalAdd (
+				"()))(("
 			)
 		);
 	}
