@@ -3807,30 +3807,123 @@ public class StringUtil {
     	return invalidLeftParenthesisList.size() + invalidRightParenthesisList.size();
     }
 
+    /**
+     * Break the given string into words, provided by a given hash-map of frequency of word as word : frequency.
+     * 
+     * @param wordFrequencyMap Word Frequency Map
+     * @param s Input String
+     * 
+     * @return Broken Down Sequence of Words
+     */
+
+    public static final java.util.List<java.lang.String> FrequencyBasedWordDecomposition (
+    	final java.util.Map<java.lang.String, java.lang.Integer> wordFrequencyMap,
+    	final java.lang.String s)
+    {
+    	java.util.List<java.lang.String> frequencyBasedWordDecomposition = new
+    		java.util.ArrayList<java.lang.String>();
+
+    	java.util.List<java.util.Map<java.lang.String, java.lang.Integer>> frequencyUsageMapQueue = new
+    		java.util.ArrayList<java.util.Map<java.lang.String, java.lang.Integer>>();
+
+    	java.util.List<java.lang.String> decompositionQueue = new java.util.ArrayList<java.lang.String>();
+
+    	java.util.List<java.lang.Integer> indexQueue = new java.util.ArrayList<java.lang.Integer>();
+
+    	java.util.Map<java.lang.String, java.lang.Integer> frequencyUsageMapInitial =
+			new java.util.HashMap<java.lang.String, java.lang.Integer>();
+
+    	frequencyUsageMapInitial.putAll (wordFrequencyMap);
+
+    	frequencyUsageMapQueue.add (frequencyUsageMapInitial);
+
+    	decompositionQueue.add ("");
+
+    	indexQueue.add (0);
+
+    	while (!indexQueue.isEmpty()) {
+    		int queueIndex = indexQueue.size() - 1;
+
+    		int stringIndex = indexQueue.remove (queueIndex);
+
+    		java.lang.String decomposedWord = decompositionQueue.remove (queueIndex);
+
+    		java.util.Map<java.lang.String, java.lang.Integer> frequencyUsageMap =
+    			frequencyUsageMapQueue.remove (queueIndex);
+
+    		if (stringIndex >= s.length()) {
+    			frequencyBasedWordDecomposition.add (decomposedWord);
+
+    			continue;
+    		}
+
+    		java.lang.String sCurrent = s.substring (stringIndex);
+
+    		for (java.lang.String wordKey : frequencyUsageMap.keySet()) {
+    			if (sCurrent.startsWith (wordKey) && 0 != frequencyUsageMap.get(wordKey)) {
+    				indexQueue.add (stringIndex + wordKey.length());
+
+    				decompositionQueue.add(decomposedWord + " " + wordKey);
+
+    		    	java.util.Map<java.lang.String, java.lang.Integer> frequencyUsageMapNext =
+    					new java.util.HashMap<java.lang.String, java.lang.Integer>();
+
+    		    	frequencyUsageMapNext.putAll (frequencyUsageMap);
+
+    		    	frequencyUsageMapNext.put (wordKey, frequencyUsageMapNext.get(wordKey) - 1);
+
+    		    	frequencyUsageMapQueue.add (frequencyUsageMapNext);
+    			}
+    		}
+    	}
+
+    	return frequencyBasedWordDecomposition;
+    }
+
     public static final void main (
 		final String[] argumentArray)
 	{
-		System.out.println (
-			InvalidParenthesisMinimalAdd (
-				"())"
+    	java.util.Map<java.lang.String, java.lang.Integer> wordFrequencyMap =
+			new java.util.HashMap<java.lang.String, java.lang.Integer>();
+
+    	wordFrequencyMap.put ("abc", 3);
+
+    	wordFrequencyMap.put ("ab", 2);
+
+    	wordFrequencyMap.put ("abca", 1);
+
+    	System.out.println (
+			FrequencyBasedWordDecomposition (
+				wordFrequencyMap,
+				"abcabcabcabca"
 			)
 		);
 
-		System.out.println (
-			InvalidParenthesisMinimalAdd (
-				"((("
+    	wordFrequencyMap.clear();
+
+    	wordFrequencyMap.put ("abc", 3);
+
+    	wordFrequencyMap.put ("ab", 2);
+
+    	System.out.println (
+			FrequencyBasedWordDecomposition (
+				wordFrequencyMap,
+				"abcabab"
 			)
 		);
 
-		System.out.println (
-			InvalidParenthesisMinimalAdd (
-				"()"
-			)
-		);
+    	wordFrequencyMap.clear();
 
-		System.out.println (
-			InvalidParenthesisMinimalAdd (
-				"()))(("
+    	wordFrequencyMap.put ("abc", 3);
+
+    	wordFrequencyMap.put ("ab", 2);
+
+    	wordFrequencyMap.put ("abca", 1);
+
+    	System.out.println (
+			FrequencyBasedWordDecomposition (
+				wordFrequencyMap,
+				"abcx"
 			)
 		);
 	}

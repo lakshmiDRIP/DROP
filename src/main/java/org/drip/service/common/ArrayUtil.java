@@ -3903,13 +3903,100 @@ public class ArrayUtil
 		return mineLocations;
 	}
 
+	/**
+	 * Given a matrix, return all elements of the matrix in diagonal flip-flop order.
+	 * 
+	 * @param matrix The Matrix
+	 * 
+	 * @return Elements of the matrix in diagonal flip-flop order
+	 */
+
+	public static final int[] EnumerateDiagonalFlipFlop (
+		final int[][] matrix)
+	{
+		int index = 0;
+		boolean straight = false;
+		int[] diagonalFlipFlop = new int[matrix.length * matrix[0].length];
+
+		for (int colIndex = 0; colIndex < matrix.length + matrix[0].length - 1; ++colIndex) {
+			if (straight) {
+				int scanCol = colIndex;
+				int scanRow = 0;
+
+				while (scanCol >= 0 && scanRow <= colIndex) {
+					if (scanCol < matrix[0].length && scanRow < matrix.length)
+						diagonalFlipFlop[index++] = matrix[scanRow][scanCol];
+
+					++scanRow;
+					--scanCol;
+				}
+			} else {
+				int scanCol = 0;
+				int scanRow = colIndex;
+
+				while (scanCol <= colIndex && scanRow >= 0) {
+					if (scanCol < matrix[0].length && scanRow < matrix.length)
+						diagonalFlipFlop[index++] = matrix[scanRow][scanCol];
+
+					--scanRow;
+					++scanCol;
+				}
+			}
+
+			straight = !straight;
+		}
+
+		return diagonalFlipFlop;
+	}
+
+	/**
+	 * Given a matrix, return all elements of the matrix in anti-diagonal order.
+	 * 
+	 * @param matrix The Matrix
+	 * 
+	 * @return Elements of the matrix in anti-diagonal order.
+	 */
+
+	public static final java.util.List<java.util.List<java.lang.Integer>> EnumerateDiagonalOrder (
+		final int[][] matrix)
+	{
+		java.util.List<java.util.List<java.lang.Integer>> diagonalOrder = new
+			java.util.ArrayList<java.util.List<java.lang.Integer>>();
+
+		for (int colIndex = 0; colIndex < matrix.length + matrix[0].length - 1; ++colIndex) {
+			int scanCol = colIndex;
+			int scanRow = 0;
+
+			java.util.List<java.lang.Integer> diagonalOrderRow = new
+				java.util.ArrayList<java.lang.Integer>();
+
+			while (scanCol >= 0 && scanRow <= colIndex) {
+				if (scanCol < matrix[0].length && scanRow < matrix.length)
+					diagonalOrderRow.add (matrix[scanRow][scanCol]);
+
+				++scanRow;
+				--scanCol;
+			}
+
+			diagonalOrder.add (diagonalOrderRow);
+		}
+
+		return diagonalOrder;
+	}
+
 	public static final void main (
 		final String[] argumentArray)
 		throws java.lang.Exception
 	{
-		int[][] mineLocations = RandomMinesInGrid (10, 10, 10);
-
-		for (int[] mineLocation : mineLocations)
-			System.out.println ("\t[" + mineLocation[0] + "," + mineLocation[1] + "]");
+		System.out.print (
+			EnumerateDiagonalOrder (
+				new int[][] {
+					{12,   7, 21, 31, 11},
+					{45,  -2, 14, 27, 19},
+					{-3,  15, 36, 71, 26},
+					{ 4, -13, 55, 34, 15},
+				}
+			)
+		);
 	}
 }

@@ -91,8 +91,42 @@ package org.drip.service.common;
 
 public class PhoneLetterCombinationGenerator
 {
-	private java.util.Map<java.lang.Integer, char[]> _digitCharacterMap =
-		new java.util.HashMap<java.lang.Integer, char[]>();
+	private java.util.Map<java.lang.Character, char[]> _digitCharacterMap =
+		new java.util.HashMap<java.lang.Character, char[]>();
+
+	public static final PhoneLetterCombinationGenerator Standard()
+	{
+		java.util.Map<java.lang.Character, char[]> digitCharacterMap = new
+			java.util.HashMap<java.lang.Character, char[]>();
+
+		digitCharacterMap.put ('1', new char[] {'A', 'B', 'C'});
+
+		digitCharacterMap.put ('2', new char[] {'D', 'E', 'F'});
+
+		digitCharacterMap.put ('3', new char[] {'G', 'H', 'I'});
+
+		digitCharacterMap.put ('4', new char[] {'J', 'K', 'L'});
+
+		digitCharacterMap.put ('5', new char[] {'M', 'N', 'O'});
+
+		digitCharacterMap.put ('6', new char[] {'P', 'Q', 'R'});
+
+		digitCharacterMap.put ('7', new char[] {'S', 'T'});
+
+		digitCharacterMap.put ('8', new char[] {'U', 'V', 'W'});
+
+		digitCharacterMap.put ('9', new char[] {'X', 'Y'});
+
+		digitCharacterMap.put ('0', new char[] {'Z'});
+
+		try {
+			return new PhoneLetterCombinationGenerator (digitCharacterMap);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
 	 * PhoneLetterCombinationGenerator Constructor
@@ -102,7 +136,8 @@ public class PhoneLetterCombinationGenerator
 	 * @throws java.lang.Exception Thrown if the Input is Invalid
 	 */
 
-	public PhoneLetterCombinationGenerator (final java.util.Map<java.lang.Integer, char[]> digitCharacterMap)
+	public PhoneLetterCombinationGenerator (
+		final java.util.Map<java.lang.Character, char[]> digitCharacterMap)
 		throws java.lang.Exception
 	{
 		if (null == (_digitCharacterMap = digitCharacterMap) || 0 == _digitCharacterMap.size())
@@ -115,7 +150,7 @@ public class PhoneLetterCombinationGenerator
 	 * @return Digit to Character Array Map
 	 */
 
-	public java.util.Map<java.lang.Integer, char[]> digitCharacterMap()
+	public java.util.Map<java.lang.Character, char[]> digitCharacterMap()
 	{
 		return _digitCharacterMap;
 	}
@@ -130,10 +165,10 @@ public class PhoneLetterCombinationGenerator
 	 */
 
 	public java.util.Set<java.lang.String> candidateCharacterSet (
-		final int digit,
+		final char digit,
 		final int count)
 	{
-		if (_digitCharacterMap.containsKey (digit)) return null;
+		if (!_digitCharacterMap.containsKey (digit)) return null;
 
 		char[] charArray = _digitCharacterMap.get (digit);
 
@@ -143,14 +178,11 @@ public class PhoneLetterCombinationGenerator
 
 		if (1 == count)
 			candidateCharacterSet.add ("" + charArray[0]);
-		else if (2 == count)
-		{
+		else if (2 == count) {
 			candidateCharacterSet.add (charArray[0] + "" + charArray[0]);
 
 			candidateCharacterSet.add ("" + charArray[1]);
-		}
-		else if (3 == count)
-		{
+		} else if (3 == count) {
 			candidateCharacterSet.add (charArray[0] + "" + charArray[0] + "" + charArray[0]);
 
 			candidateCharacterSet.add (charArray[1] + "" + charArray[0]);
@@ -161,5 +193,68 @@ public class PhoneLetterCombinationGenerator
 		}
 
 		return candidateCharacterSet;
+	}
+
+	/**
+	 * Generate all the Candidate Sequence Sets, given the Phone Number.
+	 * 
+	 * @param number The Input Phone Number
+	 * 
+	 * @return The Candidate Sequence Sets
+	 */
+
+	public java.util.Set<java.lang.String> sequenceSet (
+		final java.lang.String number)
+	{
+		java.util.Set<java.lang.String> sequenceSet = new java.util.HashSet<java.lang.String>();
+
+		char[] digitArray = number.toCharArray();
+
+		java.util.List<java.lang.Integer> numberIndexQueue = new java.util.ArrayList<java.lang.Integer>();
+
+		java.util.List<java.lang.String> numberCombinationQueue = new
+			java.util.ArrayList<java.lang.String>();
+
+		numberIndexQueue.add (0);
+
+		numberCombinationQueue.add ("");
+
+		while (!numberIndexQueue.isEmpty()) {
+			int tailIndex = numberIndexQueue.size() - 1;
+
+			int leftIndex = numberIndexQueue.remove (tailIndex);
+
+			java.lang.String combination = numberCombinationQueue.remove (tailIndex);
+
+			if (leftIndex >= digitArray.length) {
+				sequenceSet.add (combination);
+
+				continue;
+			}
+
+			int rightIndex = leftIndex;
+
+			while (rightIndex < digitArray.length && digitArray[leftIndex] == digitArray[rightIndex])
+				++rightIndex;
+
+			for (java.lang.String candidate : candidateCharacterSet (digitArray[leftIndex], rightIndex -
+				leftIndex)) {
+				numberIndexQueue.add (rightIndex);
+
+				numberCombinationQueue.add (combination + candidate);
+			}
+		}
+
+		return sequenceSet;
+	}
+
+	public static final void main (String[] args)
+	{
+		PhoneLetterCombinationGenerator phoneLetterCombinationGenerator =
+			PhoneLetterCombinationGenerator.Standard();
+
+		System.out.println (phoneLetterCombinationGenerator.sequenceSet ("112"));
+
+		System.out.println (phoneLetterCombinationGenerator.sequenceSet ("1112"));
 	}
 }
