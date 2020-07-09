@@ -210,4 +210,90 @@ public class ListUtil<V>
 			head
 		) ? rotatedHead : null;
 	}
+
+	/**
+	 * Given a singly linked list, group all odd nodes together followed by the even nodes. Please note here
+	 *  we are talking about the node number and not the value in the nodes.
+	 *  
+	 * You should try to do it in place. The program should run in O(1) space complexity and O(nodes) time
+	 *  complexity.
+	 *  
+	 * @param <V> Value Type
+	 * @param head Head Node
+	 * 
+	 * @return TRUE - Operation successfully completed
+	 */
+
+	public static <V> boolean OddEvenNodeShuffle (
+		final ListNode<V> head)
+	{
+		ListNode<V> even = head.next();
+
+		ListNode<V> prevOdd = head;
+		ListNode<V> firstEven = even;
+
+		while (null != even) {
+			ListNode<V> nextOdd = even.next();
+
+			if (null == nextOdd) {
+				prevOdd.setNext (firstEven);
+
+				break;
+			}
+
+			ListNode<V> nextEven = nextOdd.next();
+
+			prevOdd.setNext (nextOdd);
+
+			nextOdd.setNext (firstEven);
+
+			even.setNext (nextEven);
+
+			even = nextEven;
+			prevOdd = nextOdd;
+		}
+
+		return true;
+	}
+
+	public static final void main (
+		final java.lang.String[] argumentArray)
+		throws java.lang.Exception
+	{
+		ListNode<java.lang.Integer> node1 = new ListNode<java.lang.Integer> (2, null);
+
+		ListNode<java.lang.Integer> node2 = new ListNode<java.lang.Integer> (1, null);
+
+		ListNode<java.lang.Integer> node3 = new ListNode<java.lang.Integer> (3, null);
+
+		ListNode<java.lang.Integer> node4 = new ListNode<java.lang.Integer> (5, null);
+
+		ListNode<java.lang.Integer> node5 = new ListNode<java.lang.Integer> (6, null);
+
+		ListNode<java.lang.Integer> node6 = new ListNode<java.lang.Integer> (4, null);
+
+		ListNode<java.lang.Integer> node7 = new ListNode<java.lang.Integer> (7, null);
+
+		node1.setNext (node2);
+
+		node2.setNext (node3);
+
+		node3.setNext (node4);
+
+		node4.setNext (node5);
+
+		node5.setNext (node6);
+
+		node6.setNext (node7);
+
+		OddEvenNodeShuffle (node1);
+
+		ListNode<java.lang.Integer> node = node1;
+
+		while (null != node) {
+			System.out.print (node.value() + " -> ");
+
+			node = node.next();
+		}
+	}
 }

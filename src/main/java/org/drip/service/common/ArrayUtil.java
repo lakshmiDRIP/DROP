@@ -3984,19 +3984,111 @@ public class ArrayUtil
 		return diagonalOrder;
 	}
 
-	public static final void main (
+    public static final int[] SlidingWindowMaximum (
+    	final int[] numberArray,
+    	final int k)
+    {
+    	int[] maximumSlidingWindowArray = new int[numberArray.length - k + 1];
+    	maximumSlidingWindowArray[0] = java.lang.Integer.MIN_VALUE;
+
+    	for (int j = 0; j < k; ++j)
+    		maximumSlidingWindowArray[0] = maximumSlidingWindowArray[0] > numberArray[j] ?
+    			maximumSlidingWindowArray[0] : numberArray[j];
+
+    	for (int i = 1; i <= numberArray.length - k; ++i) {
+        	maximumSlidingWindowArray[i] = java.lang.Integer.MIN_VALUE;
+
+        	for (int j = i; j < i + k; ++j)
+        	{
+        		maximumSlidingWindowArray[i] = maximumSlidingWindowArray[i] > numberArray[j] ?
+        			maximumSlidingWindowArray[i] : numberArray[j];
+        	}
+    	}
+
+    	return maximumSlidingWindowArray;
+    }
+
+    /**
+     * Given a m x n matrix, if an element is 0, set its entire row and column to 0. Do it in-place.
+     * 
+     * @param matrix The Given Matrix
+     * 
+     * @return TRUE - The Altered Matrix
+     */
+
+    public static final boolean SetMatrixZeroes (
+    	final int[][] matrix)
+    {
+    	java.util.Set<int[]> zeroLocationSet = new java.util.HashSet<int[]>();
+
+    	java.util.Set<java.lang.Integer> processedRowSet = new java.util.HashSet<java.lang.Integer>();
+
+    	java.util.Set<java.lang.Integer> processedColumnSet = new java.util.HashSet<java.lang.Integer>();
+
+    	for (int i = 0; i < matrix.length; ++i) {
+        	for (int j = 0; j < matrix[0].length; ++j)
+        		if (0 == matrix[i][j]) zeroLocationSet.add(new int[] {i, j});
+    	}
+
+    	for (int[] location : zeroLocationSet) {
+    		if (!processedRowSet.contains (location[0])) {
+	        	for (int j = 0; j < matrix[0].length; ++j)
+	        		matrix[location[0]][j] = 0;
+
+	        	processedRowSet.add (location[0]);
+    		}
+
+    		if (!processedColumnSet.contains (location[1])) {
+	        	for (int i = 0; i < matrix.length; ++i)
+	        		matrix[i][location[1]] = 0;
+
+	        	processedRowSet.add (location[1]);
+    		}
+    	}
+
+    	return true;
+    }
+
+    /**
+     * Given an unsorted array return whether an increasing subsequence of length 3 exists or not in the
+     * 	array.
+     * 
+     * Formally the function should:
+     * 
+     * 	Return true if there exists <i>i, j, k</i> such that <i>arr[i] lt arr[j] lt arr[k]</i> given <i>0 le
+     * 		i lt j lt le ≤ n-1</i> else return false.
+     * 
+     * <b>Note</b>: Your algorithm should run in O(n) time complexity and O(1) space complexity.
+     * 
+     * @param numberArray The Number Array
+     * 
+     * @return TRUE - Increasing Triplet Subsequence Exists
+     */
+
+    public static final boolean IncreasingTripletSubsequenceExists (
+    	final int[] numberArray)
+    {
+    	int minimum = java.lang.Integer.MAX_VALUE;
+    	int nextMininum = java.lang.Integer.MAX_VALUE;
+
+    	for (int number : numberArray) {
+    		if (number > nextMininum && nextMininum > minimum) return true;
+
+    		if (number <= minimum)
+    			minimum = number;
+    		else if (number <= nextMininum)
+    			nextMininum = number;
+    	}
+
+    	return false;
+    }
+
+    public static final void main (
 		final String[] argumentArray)
 		throws java.lang.Exception
 	{
-		System.out.print (
-			EnumerateDiagonalOrder (
-				new int[][] {
-					{12,   7, 21, 31, 11},
-					{45,  -2, 14, 27, 19},
-					{-3,  15, 36, 71, 26},
-					{ 4, -13, 55, 34, 15},
-				}
-			)
-		);
+		System.out.println (IncreasingTripletSubsequenceExists (new int[] {1, 2, 3, 4, 5}));
+
+		System.out.println (IncreasingTripletSubsequenceExists (new int[] {5, 4, 3, 2, 1}));
 	}
 }

@@ -11,7 +11,7 @@ Graph Algorithm Library contains the Libraries implementing the Graph Representa
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm/GraphAlgorithm_v4.96.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm/GraphAlgorithm_v4.98.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -284,6 +284,28 @@ Graph Algorithm Library contains the Libraries implementing the Graph Representa
  * Order Statistics Tree
 	* Overview
 	* Advanced Search Tree Implementation
+	* References
+ * Maximum Sub-array Problem
+	* Overview
+	* Background
+	* Applications
+	* Kadane’s Algorithm
+	* Generalizations
+	* References
+ * Subset Sum Problem
+	* Overview
+	* Complexity
+	* Exponential Time Algorithm
+	* Pseudo-polynomial Time Dynamic Programming Solution
+	* Polynomial-Time Approximate Algorithm
+	* References
+ * 3SUM
+	* Overview
+	* Quadratic Algorithm
+	* Variants
+	* Reduction from Conv3SUM to 3SUM
+	* Reduction from 3SUM to Conv3SUM
+	* 3SUM-Hardness
 	* References
 
 

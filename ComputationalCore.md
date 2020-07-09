@@ -64,6 +64,9 @@ Computational Core Module contains libraries the implement Algorithm/Computation
  * Floyd-Rivest Algorithm
  * Introselect
  * Order Statistics Tree
+ * Maximum Sub-array Problem
+ * Subset Sum Problem
+ * 3SUM
 
 
 ## Model Validation Coverage

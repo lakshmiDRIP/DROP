@@ -377,22 +377,6 @@ public class StringUtil {
 		return true;
 	}
 
-	private static final boolean IsPalindrome (
-		final char[] charArray,
-		int startIndex,
-		int endIndex)
-	{
-		while (endIndex > startIndex)
-		{
-			if (charArray[endIndex--] != charArray[startIndex++])
-			{
-				return false;
-			}
-		}
-
-		return true;
-	}
-
 	private static final int CharToDigit (
 		final int c)
 	{
@@ -612,6 +596,39 @@ public class StringUtil {
 			level,
 			leftSubstring + evaluation + rightSubstring
 		);
+	}
+
+	private static final int[] CenteredPalindome (
+		final char[] charArray,
+		final int mid)
+	{
+		int left = mid;
+		int right = mid;
+		int leftIndex = left;
+		int rightIndex = right;
+
+		while (leftIndex >= 0 && rightIndex < charArray.length && charArray[leftIndex] == charArray[rightIndex]) {
+			left = leftIndex--;
+			right = rightIndex++;
+		}
+
+		int[] range = new int[] {left, right};
+
+		if (mid == charArray.length - 1) return range;
+
+		left = mid;
+		right = mid + 1;
+		leftIndex = left;
+		rightIndex = right;
+
+		if (charArray[leftIndex] != charArray[rightIndex]) return range;
+
+		while (leftIndex >= 0 && rightIndex < charArray.length && charArray[leftIndex] == charArray[rightIndex]) {
+			left = leftIndex--;
+			right = rightIndex++;
+		}
+
+		return right - left > range[1] - range[0] ? new int[] {left, right} : range;
 	}
 
 	/**
@@ -1346,7 +1363,7 @@ public class StringUtil {
 	 * 
 	 * @param s Input String
 	 * 
-	 * @return The longest palindromic substring
+	 * @return The Longest Palindromic substring
 	 */
 
 	public static final java.lang.String LongestPalindromicSubstring (
@@ -1354,44 +1371,15 @@ public class StringUtil {
 	{
 		char[] charArray = s.toCharArray();
 
-		int beginIndex = 0;
-		int longestPalindromeSize = 0;
-		int stringLength = charArray.length;
-		java.lang.String longestPalindromicSubstring = "";
+		int[] maxRange = CenteredPalindome (charArray, 0);
 
-		while (beginIndex + longestPalindromeSize < stringLength)
-		{
-			int endIndex = stringLength - 1;
+		for (int i = 1; i < charArray.length; ++i) {
+			int[] range = CenteredPalindome (charArray, i);
 
-			while (endIndex > beginIndex + longestPalindromeSize)
-			{
-				if (IsPalindrome (
-					charArray,
-					beginIndex,
-					endIndex
-				))
-				{
-					java.lang.String palindrome = s.substring (
-						beginIndex,
-						endIndex + 1
-					);
-
-					int palindromeSize = palindrome.length();
-
-					if (palindromeSize > longestPalindromeSize)
-					{
-						longestPalindromicSubstring = palindrome;
-						longestPalindromeSize = palindromeSize;
-					}
-				}
-
-				--endIndex;
-			}
-
-			++beginIndex;
+			if (maxRange[1] - maxRange[0] < range[1] - range[0]) maxRange = range;
 		}
 
-		return longestPalindromicSubstring;
+		return s.substring (maxRange[0], maxRange[1] + 1);
 	}
 
 	/**
@@ -2481,8 +2469,7 @@ public class StringUtil {
 		java.util.Map<java.lang.Character, java.lang.Integer> tCharacterCountMap =
 			new java.util.HashMap<java.lang.Character, java.lang.Integer>();
 
-		for (char c : t.toCharArray())
-		{
+		for (char c : t.toCharArray()) {
 			if (tCharacterCountMap.containsKey (c))
 				tCharacterCountMap.put (c, tCharacterCountMap.get (c) + 1);
 			else
@@ -2494,30 +2481,25 @@ public class StringUtil {
 		int matchCharCount = 0;
 		int minLen = sLength + 1;
 
-		for (int rightIndex = 0; rightIndex < sLength; ++rightIndex)
-		{
+		for (int rightIndex = 0; rightIndex < sLength; ++rightIndex) {
 			char rightChar = s.charAt (rightIndex);
 
-			if (tCharacterCountMap.containsKey (rightChar))
-			{
+			if (tCharacterCountMap.containsKey (rightChar)) {
 				int rightSideCharacterCount = tCharacterCountMap.get (rightChar);
 
 				tCharacterCountMap.put (rightChar, rightSideCharacterCount - 1);
 
 				if (rightSideCharacterCount > 0) ++matchCharCount;
 
-				while (matchCharCount == tLength)
-				{
-					if (rightIndex - leftIndex + 1 < minLen)
-					{
+				while (matchCharCount == tLength) {
+					if (rightIndex - leftIndex + 1 < minLen) {
 						minLeftIndex = leftIndex;
 						minLen = rightIndex - leftIndex + 1;
 					}
 
 					char leftChar = s.charAt (leftIndex);
 
-					if (tCharacterCountMap.containsKey (leftChar))
-					{
+					if (tCharacterCountMap.containsKey (leftChar)) {
 						int leftSideCharacterCount = tCharacterCountMap.get (leftChar);
 
 						tCharacterCountMap.put (rightChar, leftSideCharacterCount + 1);
@@ -3880,50 +3862,150 @@ public class StringUtil {
     	return frequencyBasedWordDecomposition;
     }
 
+    private static final boolean CompareCharHashMaps (
+    	final java.util.HashMap<java.lang.Character, java.lang.Integer> charHashMap1,
+    	final java.util.HashMap<java.lang.Character, java.lang.Integer> charHashMap2)
+    {
+    	java.util.Set<java.lang.Character> mergedCharKeySet = new java.util.HashSet<java.lang.Character>();
+
+    	mergedCharKeySet.addAll (charHashMap1.keySet());
+
+    	mergedCharKeySet.addAll (charHashMap2.keySet());
+
+    	for (char charKey : mergedCharKeySet) {
+    		if (!charHashMap1.containsKey (charKey) || !charHashMap1.containsKey (charKey) ||
+    			charHashMap1.get (charKey) != charHashMap2.get (charKey))
+    			return false;
+    	}
+
+    	return true;
+    }
+
+    private static final java.util.HashMap<java.lang.Character, java.lang.Integer> CharHashMap (
+    	final java.lang.String s)
+    {
+    	java.util.HashMap<java.lang.Character, java.lang.Integer> charHashMap = new
+    		java.util.HashMap<java.lang.Character, java.lang.Integer>();
+
+    	for (char c : s.toCharArray()) {
+    		if (charHashMap.containsKey (c))
+    			charHashMap.put (c, charHashMap.get (c) + 1);
+    		else
+    			charHashMap.put (c, 1);
+    	}
+
+    	return charHashMap;
+    }
+
+    /**
+     * Given an array of words, group anagrams together.
+     * 
+     * @param wordArray Array of Words
+     * 
+     * @return The Anagram Group List
+     */
+
+    public static final java.util.List<java.util.List<java.lang.String>> GroupAnagrams2 (
+    	final java.lang.String[] wordArray)
+    {
+    	java.util.List<java.util.HashMap<java.lang.Character, java.lang.Integer>> charHashMapList = new
+    		java.util.ArrayList<java.util.HashMap<java.lang.Character, java.lang.Integer>>();
+
+    	java.util.List<java.util.List<java.lang.String>> anagramListList = new
+    		java.util.ArrayList<java.util.List<java.lang.String>>();
+
+    	charHashMapList.add (CharHashMap (wordArray[0]));
+
+    	java.util.List<java.lang.String> anagramList = new java.util.ArrayList<java.lang.String>();
+
+    	anagramList.add (wordArray[0]);
+
+    	anagramListList.add (anagramList);
+
+    	for (int i = 1; i < wordArray.length; ++i) {
+        	int anagramIndex = -1;
+
+    		java.util.HashMap<java.lang.Character, java.lang.Integer> charHashMap = CharHashMap
+    			(wordArray[i]);
+
+    		for (int j = 0; j < charHashMapList.size(); ++j) {
+    			if (CompareCharHashMaps (charHashMap, charHashMapList.get (j))) {
+    				anagramIndex = j;
+    				break;
+    			}
+    		}
+
+        	if (-1 != anagramIndex) {
+        		anagramListList.get (anagramIndex).add (wordArray[i]);
+        	} else {
+            	charHashMapList.add (charHashMap);
+
+            	java.util.List<java.lang.String> newAnagramList = new
+            		java.util.ArrayList<java.lang.String>();
+
+            	newAnagramList.add (wordArray[i]);
+
+            	anagramListList.add (newAnagramList);
+        	}
+    	}
+
+    	return anagramListList;
+    }
+
+    /**
+     * Given an array of words, group anagrams together.
+     * 
+     * @param wordArray Array of Words
+     * 
+     * @return The Anagram Group List
+     */
+
+    public static final java.util.List<java.util.List<java.lang.String>> GroupAnagrams (
+    	final java.lang.String[] wordArray)
+    {
+    	java.util.HashMap<java.lang.String, java.util.List<java.lang.String>> anagramListMap = new
+    		java.util.HashMap<java.lang.String, java.util.List<java.lang.String>>();
+
+    	for (int i = 0; i < wordArray.length; ++i) {
+    		char[] charArray = wordArray[i].toCharArray();
+
+    		java.util.Arrays.sort (charArray);
+
+    		java.lang.String anagram = new java.lang.String (charArray);
+
+    		if (anagramListMap.containsKey (anagram))
+    			anagramListMap.get (anagram).add (wordArray[i]);
+    		else {
+    			java.util.List<java.lang.String> anagramList = new java.util.ArrayList<java.lang.String>();
+
+    			anagramList.add (wordArray[i]);
+
+    			anagramListMap.put (anagram, anagramList);
+    		}
+    	}
+
+    	java.util.List<java.util.List<java.lang.String>> anagramList = new
+    		java.util.ArrayList<java.util.List<java.lang.String>>();
+
+    	for (java.util.Map.Entry<java.lang.String, java.util.List<java.lang.String>> anagramListEntry :
+    		anagramListMap.entrySet())
+    		anagramList.add(anagramListEntry.getValue());
+
+    	return anagramList;
+    }
+
     public static final void main (
 		final String[] argumentArray)
 	{
-    	java.util.Map<java.lang.String, java.lang.Integer> wordFrequencyMap =
-			new java.util.HashMap<java.lang.String, java.lang.Integer>();
-
-    	wordFrequencyMap.put ("abc", 3);
-
-    	wordFrequencyMap.put ("ab", 2);
-
-    	wordFrequencyMap.put ("abca", 1);
-
     	System.out.println (
-			FrequencyBasedWordDecomposition (
-				wordFrequencyMap,
-				"abcabcabcabca"
+    		LongestPalindromicSubstring (
+				"babad"
 			)
 		);
 
-    	wordFrequencyMap.clear();
-
-    	wordFrequencyMap.put ("abc", 3);
-
-    	wordFrequencyMap.put ("ab", 2);
-
     	System.out.println (
-			FrequencyBasedWordDecomposition (
-				wordFrequencyMap,
-				"abcabab"
-			)
-		);
-
-    	wordFrequencyMap.clear();
-
-    	wordFrequencyMap.put ("abc", 3);
-
-    	wordFrequencyMap.put ("ab", 2);
-
-    	wordFrequencyMap.put ("abca", 1);
-
-    	System.out.println (
-			FrequencyBasedWordDecomposition (
-				wordFrequencyMap,
-				"abcx"
+    		LongestPalindromicSubstring (
+				"cbbd"
 			)
 		);
 	}
