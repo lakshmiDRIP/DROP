@@ -202,75 +202,6 @@ public class ArrayUtil
 		return count;
 	}
 
-	private static final boolean SpiralMatrixOrder (
-		final java.util.List<java.lang.Integer> spiralMatrixOrder,
-		final int[][] matrix,
-		final int rowShift,
-		final int columnShift)
-	{
-		int rowCount = matrix.length;
-		int columnCount = matrix[0].length;
-
-		if (rowShift > rowCount - rowShift ||
-			columnShift > columnCount - columnShift)
-		{
-			return true;
-		}
-
-		for (int columnIndex = columnShift;
-			columnIndex < columnCount - columnShift;
-			++columnIndex)
-		{
-			spiralMatrixOrder.add (
-				matrix[rowShift][columnIndex]
-			);
-		}
-
-		if (2 * rowShift < rowCount)
-		{
-			for (int rowIndex = rowShift + 1;
-				rowIndex < rowCount - rowShift - 1;
-				++rowIndex)
-			{
-				spiralMatrixOrder.add (
-					matrix[rowIndex][columnCount - columnShift - 1]
-				);
-			}
-		}
-
-		if (columnCount >= columnShift + 1 &&
-			2 * rowShift != rowCount - 1)
-		{
-			for (int columnIndex = columnCount - columnShift - 1;
-				columnIndex >= columnShift;
-				--columnIndex)
-			{
-				spiralMatrixOrder.add (
-					matrix[rowCount - rowShift - 1][columnIndex]
-				);
-			}
-		}
-
-		if (rowCount >= rowShift + 2)
-		{
-			for (int rowIndex = rowCount - rowShift - 2;
-				rowIndex >= rowShift + 1;
-				--rowIndex)
-			{
-				spiralMatrixOrder.add (
-					matrix[rowIndex][columnShift]
-				);
-			}
-		}
-
-		return SpiralMatrixOrder (
-			spiralMatrixOrder,
-			matrix,
-			rowShift + 1,
-			columnShift + 1
-		);
-	}
-
 	private static final boolean CanMakePalindrome (
 		final java.lang.String s,
 		final int left,
@@ -1242,6 +1173,52 @@ public class ArrayUtil
 		);
 	}
 
+	private static final boolean SpiralMatrixTopBottom (
+		final java.util.List<java.lang.Integer> elementList,
+		final int[][] matrix,
+		final int top,
+		final int bottom,
+		final int col,
+		final boolean reverse)
+	{
+		if (top > bottom) return true;
+
+		if (!reverse) {
+			int row = top;
+
+			while (row <= bottom) elementList.add (matrix[row++][col]);
+		} else {
+			int row = bottom;
+
+			while (row >= top) elementList.add (matrix[row--][col]);
+		}
+
+		return true;
+	}
+
+	private static final boolean SpiralMatrixLeftRight (
+		final java.util.List<java.lang.Integer> elementList,
+		final int[][] matrix,
+		final int left,
+		final int right,
+		final int row,
+		final boolean reverse)
+	{
+		if (right < left) return true;
+
+		if (!reverse) {
+			int col = left;
+
+			while (col <= right) elementList.add (matrix[row][col++]);
+		} else {
+			int col = right;
+
+			while (col >= left) elementList.add (matrix[row][col--]);
+		}
+
+		return true;
+	}
+
 	/**
 	 * Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral
 	 * 	order.
@@ -1254,15 +1231,34 @@ public class ArrayUtil
 	public static final java.util.List<java.lang.Integer> SpiralMatrixOrder (
 		final int[][] matrix)
 	{
-		java.util.List<java.lang.Integer> spiralMatrixOrder =
-			new java.util.ArrayList<java.lang.Integer>();
+		java.util.List<java.lang.Integer> elementList = new java.util.ArrayList<java.lang.Integer>();
 
-		return SpiralMatrixOrder (
-			spiralMatrixOrder,
-			matrix,
-			0,
-			0
-		) ? spiralMatrixOrder : null;
+		int top = 0;
+		int row = -1;
+		int left = -1;
+		int col = matrix[0].length;
+		int bottom = matrix.length - 1;
+		int right = matrix[0].length - 1;
+
+		while (true) {
+			SpiralMatrixLeftRight (elementList, matrix, ++left, right, ++row, false);
+
+			if (left > right) break;
+
+			SpiralMatrixTopBottom (elementList, matrix, ++top, bottom, --col, false);
+
+			if (top > bottom) break;
+
+			SpiralMatrixLeftRight (elementList, matrix, left, --right, matrix.length - 1 - row, true);
+
+			if (left > right) break;
+
+			SpiralMatrixTopBottom (elementList, matrix, top, --bottom, matrix[0].length - 1 - col, true);
+
+			if (top > bottom) break;
+		}
+
+		return elementList;
 	}
 
 	/**
@@ -4083,12 +4079,124 @@ public class ArrayUtil
     	return false;
     }
 
+    /**
+     * Given four lists A, B, C, D of integer values, compute how many tuples (i, j, k, l) there are such
+     *  that A[i] + B[j] + C[k] + D[l] is zero.
+     * 
+     * @param numberArrayA Number Array A
+     * @param numberArrayB Number Array B
+     * @param numberArrayC Number Array C
+     * @param numberArrayD Number Array D
+     * 
+     * @return Count of the Zero 4 Sums
+     */
+
+    public static final int FourSumCount (
+    	final int[] numberArrayA,
+    	final int[] numberArrayB,
+    	final int[] numberArrayC,
+    	final int[] numberArrayD)
+    {
+    	int fourSumCount = 0;
+
+    	java.util.HashSet<java.lang.Integer> arrayABHashSet = new java.util.HashSet<java.lang.Integer>();
+
+    	for (int numberA : numberArrayA) {
+    		for (int numberB : numberArrayB)
+        		arrayABHashSet.add (-1 * (numberA + numberB));
+    	}
+
+    	for (int numberC : numberArrayC) {
+    		for (int numberD : numberArrayD)
+        		if (arrayABHashSet.contains (numberC + numberD)) ++fourSumCount;
+    	}
+
+    	return fourSumCount;
+    }
+
+    /**
+     * Given non-negative integers a<sub>1</sub>, a<sub>2</sub>, ..., a<sub>n</sub> , where each represents a
+     *  point at coordinate (i, a<sub>i</sub>). n vertical lines are drawn such that the two end-points of
+     *  line i is at (i, a<sub>i</sub>) and (i, 0). Find two lines, which together with x-axis forms a
+     *  container, such that the container contains the most water.
+     * 
+     * @param heightArray Array of Heights
+     * 
+     * @return The Line Locations and the Maximum Container Area
+     */
+
+    public static final int[] MaximumAreaUnderContainer (
+    	final int[] heightArray)
+    {
+    	int[] leftMaxHeightIndex = new int[heightArray.length];
+    	int[] rightMaxHeightIndex = new int[heightArray.length];
+    	int maximumAreaUnderContainer = java.lang.Integer.MIN_VALUE;
+    	rightMaxHeightIndex[heightArray.length - 1] = heightArray.length - 1;
+    	leftMaxHeightIndex[0] = 0;
+    	int rightIndex = 0;
+    	int leftIndex = 0;
+
+    	for (int i = 1; i < heightArray.length; ++i)
+    		leftMaxHeightIndex[i] = heightArray[leftMaxHeightIndex[i - 1]] >= heightArray[i - 1] ?
+    			leftMaxHeightIndex[i - 1] : i - 1;
+
+    	for (int i = heightArray.length - 2; i >= 0; --i)
+    		rightMaxHeightIndex[i] = heightArray[rightMaxHeightIndex[i + 1]] >= heightArray[i + 1] ?
+    			rightMaxHeightIndex[i + 1] : i + 1;
+
+    	for (int i = 0; i < heightArray.length; ++i) {
+    		int areaThroughLevel = (rightMaxHeightIndex[i] - leftMaxHeightIndex[i]) * java.lang.Math.min
+    			(heightArray[leftMaxHeightIndex[i]], heightArray[rightMaxHeightIndex[i]]);
+
+    		int areaLeftOfLevel = (i - leftMaxHeightIndex[i]) * java.lang.Math.min
+    			(heightArray[leftMaxHeightIndex[i]], heightArray[i]);
+
+    		int areaRightOfLevel = (rightMaxHeightIndex[i] - i) * java.lang.Math.min (heightArray[i],
+    			heightArray[rightMaxHeightIndex[i]]);
+
+    		if (maximumAreaUnderContainer < areaThroughLevel) {
+    			maximumAreaUnderContainer = areaThroughLevel;
+    			rightIndex = rightMaxHeightIndex[i];
+    			leftIndex = leftMaxHeightIndex[i];
+    		}
+
+    		if (maximumAreaUnderContainer < areaLeftOfLevel) {
+    			maximumAreaUnderContainer = areaLeftOfLevel;
+    			leftIndex = leftMaxHeightIndex[i];
+    			rightIndex = i;
+    		}
+
+    		if (maximumAreaUnderContainer < areaRightOfLevel) {
+    			maximumAreaUnderContainer = areaRightOfLevel;
+    			rightIndex = rightMaxHeightIndex[i];
+    			leftIndex = i;
+    		}
+    	}
+
+    	return new int[] {leftIndex, rightIndex, maximumAreaUnderContainer};
+    }
+
+    public static final int FirstMisingPositiveInteger (
+    	final int[] numberArray)
+    {
+    	int firstIndex = 0;
+    	int firstMisingPositiveInteger = 1;
+
+    	while (firstIndex < numberArray.length && numberArray[firstIndex] <= 0) ++firstIndex;
+
+    	if (firstIndex == numberArray.length) return 1;
+
+    	java.util.Arrays.sort (numberArray);
+
+    	return firstMisingPositiveInteger;
+    }
+
     public static final void main (
 		final String[] argumentArray)
 		throws java.lang.Exception
 	{
-		System.out.println (IncreasingTripletSubsequenceExists (new int[] {1, 2, 3, 4, 5}));
+    	int[] locationArea = MaximumAreaUnderContainer (new int[] {1, 8, 6, 2, 5, 4, 8, 3, 7});
 
-		System.out.println (IncreasingTripletSubsequenceExists (new int[] {5, 4, 3, 2, 1}));
+    	System.out.println (locationArea[0] + " | " + locationArea[1] + " => " + locationArea[2]);
 	}
 }

@@ -148,6 +148,21 @@ public class ListUtil<V>
 			_next = next;
 			return true;
 		}
+
+		/**
+		 * Set the Node Value
+		 * 
+		 * @param value The Node Value
+		 * 
+		 * @return TRUE - The Node Value successfully set
+		 */
+
+		public boolean setValue (
+			final V value)
+		{
+			_value = value;
+			return true;
+		}
 	}
 
 	/**
@@ -256,39 +271,141 @@ public class ListUtil<V>
 		return true;
 	}
 
+	/**
+	 * Write a program to find the node at which the intersection of two singly linked lists begins.
+	 * 
+	 * @param <V> Value Type
+	 * 
+	 * @param headNode1 Head Node of List #1
+	 * @param headNode2 Head Node of List #2
+	 * 
+	 * @return Head Node of the Intersection List
+	 */
+
+	public static <V> ListNode<V> IntersectingNode (
+		final ListNode<V> headNode1,
+		final ListNode<V> headNode2)
+	{
+		ListNode<V> node1 = headNode1;
+		ListNode<V> node2 = headNode2;
+
+		java.util.HashSet<ListNode<V>> nodeHashSet = new java.util.HashSet<ListNode<V>>();
+
+		while (null != node1) {
+			if (nodeHashSet.contains (node1)) return node1;
+
+			nodeHashSet.add (node1);
+
+			node1 = node1.next();
+		}
+
+		while (null != node2) {
+			if (nodeHashSet.contains (node2)) return node2;
+
+			node2 = node2.next();
+		}
+
+		return null;
+	}
+
+	/**
+	 * You are given two non-empty linked lists representing two non-negative integers. The digits are stored
+	 *  in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as
+	 *  a linked list.
+	 *  
+	 * You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+	 * 
+	 * @param headNode1 Head Node of List #1
+	 * @param headNode2 Head Node of List #2
+	 * 
+	 * @return Head Node of the Added List
+	 */
+
+	public static final ListNode<java.lang.Integer> Add (
+		final ListNode<java.lang.Integer> headNode1,
+		final ListNode<java.lang.Integer> headNode2)
+	{
+		int carry = 0;
+		ListNode<java.lang.Integer> node1 = headNode1;
+		ListNode<java.lang.Integer> node2 = headNode2;
+		ListNode<java.lang.Integer> additionHeadNode = null;
+		ListNode<java.lang.Integer> additionPrevNode = null;
+
+		while (null != node1 && null != node2) {
+			int sum = carry + node1.value() + node2.value();
+
+			ListNode<java.lang.Integer> additionNode = new ListNode<java.lang.Integer> (sum % 10, null);
+
+			if (null != additionPrevNode) additionPrevNode.setNext (additionNode);
+
+			if (null == additionHeadNode) additionHeadNode = additionNode;
+
+			additionPrevNode = additionNode;
+			carry = sum / 10;
+
+			node1 = node1.next();
+
+			node2 = node2.next();
+		}
+
+		while (null != node1) {
+			int sum = carry + node1.value();
+
+			ListNode<java.lang.Integer> additionNode = new ListNode<java.lang.Integer> (sum % 10, null);
+
+			if (null != additionPrevNode) additionPrevNode.setNext (additionNode);
+
+			if (null == additionHeadNode) additionHeadNode = additionNode;
+
+			additionPrevNode = additionNode;
+			carry = sum / 10;
+
+			node1 = node1.next();
+		}
+
+		while (null != node2) {
+			int sum = carry + node2.value();
+
+			ListNode<java.lang.Integer> additionNode = new ListNode<java.lang.Integer> (sum % 10, null);
+
+			if (null != additionPrevNode) additionPrevNode.setNext (additionNode);
+
+			if (null == additionHeadNode) additionHeadNode = additionNode;
+
+			additionPrevNode = additionNode;
+			carry = sum / 10;
+
+			node2 = node2.next();
+		}
+
+		return additionHeadNode;
+	}
+
 	public static final void main (
 		final java.lang.String[] argumentArray)
 		throws java.lang.Exception
 	{
-		ListNode<java.lang.Integer> node1 = new ListNode<java.lang.Integer> (2, null);
+		ListNode<java.lang.Integer> list11 = new ListNode<java.lang.Integer> (2, null);
 
-		ListNode<java.lang.Integer> node2 = new ListNode<java.lang.Integer> (1, null);
+		ListNode<java.lang.Integer> list12 = new ListNode<java.lang.Integer> (4, null);
 
-		ListNode<java.lang.Integer> node3 = new ListNode<java.lang.Integer> (3, null);
+		ListNode<java.lang.Integer> list13 = new ListNode<java.lang.Integer> (3, null);
 
-		ListNode<java.lang.Integer> node4 = new ListNode<java.lang.Integer> (5, null);
+		list11.setNext (list12);
 
-		ListNode<java.lang.Integer> node5 = new ListNode<java.lang.Integer> (6, null);
+		list12.setNext (list13);
 
-		ListNode<java.lang.Integer> node6 = new ListNode<java.lang.Integer> (4, null);
+		ListNode<java.lang.Integer> list21 = new ListNode<java.lang.Integer> (5, null);
 
-		ListNode<java.lang.Integer> node7 = new ListNode<java.lang.Integer> (7, null);
+		ListNode<java.lang.Integer> list22 = new ListNode<java.lang.Integer> (6, null);
 
-		node1.setNext (node2);
+		ListNode<java.lang.Integer> list23 = new ListNode<java.lang.Integer> (4, null);
 
-		node2.setNext (node3);
+		list21.setNext (list22);
 
-		node3.setNext (node4);
+		list22.setNext (list23);
 
-		node4.setNext (node5);
-
-		node5.setNext (node6);
-
-		node6.setNext (node7);
-
-		OddEvenNodeShuffle (node1);
-
-		ListNode<java.lang.Integer> node = node1;
+		ListNode<java.lang.Integer> node = Add (list11, list21);
 
 		while (null != node) {
 			System.out.print (node.value() + " -> ");
