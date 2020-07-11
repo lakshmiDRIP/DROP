@@ -4362,10 +4362,194 @@ public class ArrayUtil
     	return rainWaterCatchmentArea;
     }
 
+    /**
+     * A Random list of people standing in a queue. Each person is described by a pair of integers (h, k),
+     *  where h is the height of the person and k is the number of people in front of this person who have a
+     *  height greater than or equal to h. Reconstruct the queue.
+     * 
+     * @param heightOrderArray The Height+Order Tuple Array
+     * 
+     * @return The Queue Array
+     */
+
+    public static final int[] QueueReconstructionByHeight (
+    	final int[][] heightOrderArray)
+    {
+    	int[] queue = new int[heightOrderArray.length];
+
+    	java.util.TreeMap<java.lang.Integer, java.util.List<java.lang.Integer>> heightOrderMap = new
+    		java.util.TreeMap<java.lang.Integer, java.util.List<java.lang.Integer>>();
+
+    	for (int i = 0; i < heightOrderArray.length; ++i) {
+    		queue[i] = -1;
+
+    		if (heightOrderMap.containsKey (heightOrderArray[i][0]))
+    			heightOrderMap.get (heightOrderArray[i][0]).add (heightOrderArray[i][1]);
+    		else {
+    			java.util.List<java.lang.Integer> orderList = new java.util.ArrayList<java.lang.Integer>();
+
+    			orderList.add (heightOrderArray[i][1]);
+
+        		heightOrderMap.put (heightOrderArray[i][0], orderList);
+    		}
+    	}
+
+    	java.util.Set<java.lang.Integer> heightSet = heightOrderMap.keySet();
+
+    	for (int height : heightSet) {
+    		for (int order : heightOrderMap.get (height)) {
+    			int index = 0;
+    			int queueIndex = 0;
+
+    			while (queueIndex < heightOrderArray.length) {
+    				if (queue[queueIndex] >= height)
+    					++index;
+    				else if (-1 == queue[queueIndex]) {
+    					if (++index == order + 1) {
+    						queue[queueIndex] = height;
+    						break;
+    					}
+    				}
+
+    				++queueIndex;
+    			}
+    		}
+    	}
+
+    	return queue;
+    }
+
+    private static final int MedianOfSortedArray (
+    	final int[] sortedArray)
+    {
+    	int n = sortedArray.length;
+    	return 1 == n % 2 ? sortedArray[n / 2] : (sortedArray[n / 2] + sortedArray[n / 2 - 1]) / 2;
+    }
+
+    private static final int LocateMedian2In1 (
+    	final int[] sortedArray1,
+    	final int median2,
+    	final int leftIndex,
+    	final int rightIndex)
+    {
+    	if (sortedArray1[leftIndex] == median2) return leftIndex;
+
+    	if (sortedArray1[rightIndex] == median2) return rightIndex;
+
+    	if (leftIndex + 1 == rightIndex && sortedArray1[leftIndex] < median2 &&
+    		sortedArray1[rightIndex] > median2)
+    		return leftIndex;
+
+    	int midIndex = (leftIndex + rightIndex) / 2;
+
+    	return sortedArray1[midIndex] > median2 ? LocateMedian2In1 (sortedArray1, median2, leftIndex,
+    		midIndex) : LocateMedian2In1 (sortedArray1, median2, midIndex, rightIndex);
+    }
+
+    /**
+     * There are two sorted arrays of size m and n respectively. Find the median of the two sorted arrays.
+     *  The overall run time complexity should be O(log (m+n)).
+     * 
+     * Assume arrays cannot be both empty.
+     * 
+     * @param sortedArray1 Sorted Array #1
+     * @param sortedArray2 Sorted Array #2
+     * 
+     * @return The Overall Median
+     */
+
+    public static final double MedianOfSortedArrays (
+    	final int[] sortedArray1,
+    	final int[] sortedArray2)
+    {
+    	int m = sortedArray1.length;
+    	int n = sortedArray2.length;
+
+    	int median1 = MedianOfSortedArray (sortedArray1);
+
+    	int median2 = MedianOfSortedArray (sortedArray2);
+
+    	if (median1 == median2) return median1;
+
+    	if (sortedArray1[m - 1] <= median2) {
+    		if (n < m) return sortedArray2[(n - m) / 2 - 1];
+
+    		if (m < n) return sortedArray1[(m + n) / 2];
+
+    		return ((double) (sortedArray1[m - 1] + sortedArray2[0])) / 2.;
+    	}
+
+    	if (sortedArray2[n - 1] < median1)
+    		return m > n ? sortedArray1[(m - n) / 2 - 1] : sortedArray2[(n + m) / 2];
+
+    	int array1Location = LocateMedian2In1 (sortedArray1, median2, 0, m - 1);
+
+    	int array2Location = n / 2;
+    	int elementsToLeft = array1Location + array2Location;
+
+    	if (elementsToLeft > (m + n) / 2) {
+    		if (sortedArray1[array1Location] < sortedArray2[array2Location]) {
+    			--array2Location;
+    			--elementsToLeft;
+    		} else if (sortedArray2[array2Location] < sortedArray1[array1Location]) {
+    			--array1Location;
+    			--elementsToLeft;
+    		} else {
+    			--array1Location;
+    			--array2Location;
+    			elementsToLeft -= 2;
+    		}
+    	}
+
+    	return 1 == elementsToLeft % 2 ? sortedArray1[elementsToLeft / 2] : (sortedArray1[elementsToLeft / 2]
+    		+ sortedArray1[elementsToLeft / 2 - 1]) / 2;
+    }
+
+    private static final int MinimumRowIndex (
+    	final int[][] matrix,
+    	final int[] columnIndex)
+    {
+    	int minimumRowIndex = 0;
+    	int minimum = matrix[0][columnIndex[0]];
+
+    	for (int i = 1; i < matrix.length; ++i) {
+    		if (columnIndex[i] < matrix[i].length) {
+	    		if (minimum > matrix[i][columnIndex[i]]) {
+	    			minimumRowIndex = i;
+	    			minimum = matrix[i][columnIndex[i]];
+	    		}
+    		}
+    	}
+
+    	return minimumRowIndex;
+    }
+
+    public static final int SortedMatrixKthElement (
+    	final int[][] matrix,
+    	final int k)
+    {
+    	int columnIndex = -1;
+    	int elementCount = k;
+    	int minimumRowIndex = -1;
+    	int[] rowColumnIndex = new int[matrix.length];
+
+    	for (int i = 0; i < matrix.length; ++i) rowColumnIndex[i] = 0;
+
+    	while (elementCount > 0) {
+    		minimumRowIndex = MinimumRowIndex (matrix, rowColumnIndex);
+
+    		--elementCount;
+    		columnIndex = rowColumnIndex[minimumRowIndex];
+    		rowColumnIndex[minimumRowIndex] = rowColumnIndex[minimumRowIndex] + 1;
+    	}
+
+    	return matrix[minimumRowIndex][columnIndex];
+    }
+
     public static final void main (
 		final String[] argumentArray)
 		throws java.lang.Exception
 	{
-    	System.out.println (RainWaterCatchmentArea (new int[] {0,1,0,2,1,0,1,3,2,1,2,1}));
+		System.out.println (SortedMatrixKthElement (new int[][] {{1, 5, 9}, {10, 12, 13}, {12, 13, 15}}, 8));
 	}
 }
