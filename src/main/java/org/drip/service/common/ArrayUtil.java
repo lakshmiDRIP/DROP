@@ -4176,27 +4176,196 @@ public class ArrayUtil
     	return new int[] {leftIndex, rightIndex, maximumAreaUnderContainer};
     }
 
+    /**
+     * Given an unsorted integer array, find the smallest missing positive integer.
+     * 
+     * @param numberArray Unsorted Number Array
+     * 
+     * @return Smallest Missing Positive Integer
+     */
+
     public static final int FirstMisingPositiveInteger (
     	final int[] numberArray)
     {
-    	int firstIndex = 0;
-    	int firstMisingPositiveInteger = 1;
+    	for (int i = 0; i < numberArray.length; ++i) {
+    		if (numberArray[i] >= 1 && numberArray[i] <= numberArray.length && numberArray[i] != i + 1)
+    			SwapElements (numberArray, i, numberArray[i] - 1);
 
-    	while (firstIndex < numberArray.length && numberArray[firstIndex] <= 0) ++firstIndex;
+    		if (numberArray[i] >= 1 && numberArray[i] <= numberArray.length && numberArray[i] != i + 1)
+    			SwapElements (numberArray, i, numberArray[i] - 1);
+    	}
 
-    	if (firstIndex == numberArray.length) return 1;
+    	for (int i = 0; i < numberArray.length; ++i)
+    		if (numberArray[i] != i + 1) return i + 1;
 
-    	java.util.Arrays.sort (numberArray);
+    	return numberArray.length + 1;
+    }
 
-    	return firstMisingPositiveInteger;
+    /**
+     * Given an array containing n + 1 integers where each integer is between 1 and n (inclusive), assuming
+     *  there is only one duplicate number, find the duplicate one.
+     * 
+     * @param numberArray The Number Array
+     * 
+     * @return The Duplicate Number
+     */
+
+    public static final int IdentifyDuplicate (
+    	final int[] numberArray)
+    {
+    	int sum = 0;
+
+    	for (int i : numberArray) sum += i;
+
+    	return sum - (numberArray.length - 1) * numberArray.length / 2;
+    }
+
+    private static final boolean CurrentSpansOverNext (
+    	final java.util.TreeMap<java.lang.Integer, int[]> skyscraperFacadeMap,
+    	final int currentBuildingStart,
+    	final int[] currentBuilding,
+    	final int nextBuildingStart,
+    	final int[] nextBuilding)
+    {
+    	if (currentBuilding[1] >= nextBuilding[1]) {
+    		skyscraperFacadeMap.put (currentBuildingStart, currentBuilding);
+
+    		return true;
+    	}
+
+    	int first = currentBuildingStart;
+    	int height12 = currentBuilding[1];
+    	int second = nextBuildingStart;
+    	int height23 = nextBuilding[1];
+    	int third = nextBuilding[0];
+    	int height34 = currentBuilding[1];
+    	int fourth = currentBuilding[0];
+
+    	if (first < second) skyscraperFacadeMap.put (first, new int[] {second, height12});
+
+    	skyscraperFacadeMap.put (second, new int[] {third, height23});
+
+    	if (third < fourth) skyscraperFacadeMap.put (third, new int[] {fourth, height34});
+
+    	return true;
+    }
+
+    private static final boolean NextSpansOverCurrent (
+    	final java.util.TreeMap<java.lang.Integer, int[]> skyscraperFacadeMap,
+    	final int currentBuildingStart,
+    	final int[] currentBuilding,
+    	final int nextBuildingStart,
+    	final int[] nextBuilding)
+    {
+    	if (nextBuilding[1] >= currentBuilding[1]) {
+    		skyscraperFacadeMap.put (nextBuildingStart, nextBuilding);
+
+    		return true;
+    	}
+
+    	int first = nextBuildingStart;
+    	int height12 = nextBuilding[1];
+    	int second = currentBuildingStart;
+    	int height23 = currentBuilding[1];
+    	int third = currentBuilding[0];
+    	int height34 = nextBuilding[1];
+    	int fourth = nextBuilding[0];
+
+    	if (first < second) skyscraperFacadeMap.put (first, new int[] {second, height12});
+
+    	skyscraperFacadeMap.put (second, new int[] {third, height23});
+
+    	if (third < fourth) skyscraperFacadeMap.put (third, new int[] {fourth, height34});
+
+    	return true;
+    }
+
+    private static final boolean CurrentOverlapsWithNext (
+    	final java.util.TreeMap<java.lang.Integer, int[]> skyscraperFacadeMap,
+    	final int currentBuildingStart,
+    	final int[] currentBuilding,
+    	final int nextBuildingStart,
+    	final int[] nextBuilding)
+    {
+    	if (currentBuilding[0] <= nextBuildingStart) {
+    		skyscraperFacadeMap.put (currentBuildingStart, currentBuilding);
+    		
+    		skyscraperFacadeMap.put (nextBuildingStart, nextBuilding);
+
+    		return true;
+    	}
+
+    	int first = currentBuildingStart;
+    	int height12 = currentBuilding[1];
+    	int second = nextBuildingStart;
+    	int height23 = currentBuilding[1] > nextBuilding[1] ? currentBuilding[1] : nextBuilding[1];
+    	int third = currentBuilding[0];
+    	int height34 = nextBuilding[1];
+    	int fourth = nextBuilding[0];
+
+    	if (first < second) skyscraperFacadeMap.put (first, new int[] {second, height12});
+
+    	skyscraperFacadeMap.put (second, new int[] {third, height23});
+
+    	if (third < fourth) skyscraperFacadeMap.put (third, new int[] {fourth, height34});
+
+    	return true;
+    }
+
+    private static final java.util.TreeMap<java.lang.Integer, int[]> SkyscraperPairFacade (
+    	final int currentBuildingStart,
+    	final int[] currentBuilding,
+    	final int nextBuildingStart,
+    	final int[] nextBuilding)
+    {
+    	java.util.TreeMap<java.lang.Integer, int[]> skyscraperFacadeMap = new
+    		java.util.TreeMap<java.lang.Integer, int[]>();
+
+    	int currentBuildingEnd = currentBuilding[0];
+    	int nextBuildingEnd = nextBuilding[0];
+
+    	return skyscraperFacadeMap;
+    }
+
+    public static final int RainWaterCatchmentArea (
+    	final int[] segmentHeightArray)
+    {
+    	int[] segmentLeftArray = new int[segmentHeightArray.length];
+    	int[] segmentRightArray = new int[segmentHeightArray.length];
+    	int[] leftPeakIndexArray = new int[segmentHeightArray.length];
+    	int[] rightPeakIndexArray = new int[segmentHeightArray.length];
+    	rightPeakIndexArray[segmentHeightArray.length - 1] = segmentHeightArray.length - 1;
+    	int rainWaterCatchmentArea = 0;
+    	leftPeakIndexArray[0] = 0;
+
+    	for (int i = 0; i < segmentHeightArray.length; ++i) {
+    		segmentLeftArray[i] = 0 == i ? 0 : segmentHeightArray[i - 1];
+    		segmentRightArray[i] = segmentHeightArray.length - 1 == i ? 0 : segmentHeightArray[i + 1];
+    	}
+
+    	for (int i = 1; i < segmentHeightArray.length; ++i)
+    		leftPeakIndexArray[i] = segmentLeftArray[leftPeakIndexArray[i - 1]] >= segmentLeftArray[i] ?
+    			leftPeakIndexArray[i - 1] : i;
+
+    	for (int i = segmentHeightArray.length - 2; i >= 0; --i)
+    		rightPeakIndexArray[i] = segmentRightArray[rightPeakIndexArray[i + 1]] >=
+    			segmentRightArray[i] ? rightPeakIndexArray[i + 1] : i;
+
+    	for (int i = 0; i < segmentHeightArray.length; ++i) {
+    		int wallHeight = java.lang.Math.min (segmentLeftArray[leftPeakIndexArray[i]],
+    			segmentRightArray[rightPeakIndexArray[i]]);
+
+    		rainWaterCatchmentArea = rainWaterCatchmentArea + (wallHeight < segmentHeightArray[i] ? 0 :
+    			wallHeight - segmentHeightArray[i]);
+    	}
+
+    	return rainWaterCatchmentArea;
     }
 
     public static final void main (
 		final String[] argumentArray)
 		throws java.lang.Exception
 	{
-    	int[] locationArea = MaximumAreaUnderContainer (new int[] {1, 8, 6, 2, 5, 4, 8, 3, 7});
-
-    	System.out.println (locationArea[0] + " | " + locationArea[1] + " => " + locationArea[2]);
+    	System.out.println (RainWaterCatchmentArea (new int[] {0,1,0,2,1,0,1,3,2,1,2,1}));
 	}
 }
