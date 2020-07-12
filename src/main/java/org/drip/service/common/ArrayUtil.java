@@ -380,6 +380,68 @@ public class ArrayUtil
 			LocateIndex (numberArray, midIndex + 1, rightIndex, number);
 	}
 
+    private static final java.util.TreeMap<java.lang.Integer, int[]> DisaggregateSkyscrapers (
+    	final int currentLeft,
+    	final int[] currentRightHeight,
+    	final int newLeft,
+    	final int[] newRightHeight)
+    {
+    	java.util.TreeMap<java.lang.Integer, int[]> disaggregationMap = new
+    		java.util.TreeMap<java.lang.Integer, int[]>();
+
+    	if (currentRightHeight[0] <= newLeft) {
+        	disaggregationMap.put (currentLeft, currentRightHeight);
+
+        	disaggregationMap.put (newLeft, newRightHeight);
+
+        	return disaggregationMap;
+    	}
+
+    	if (newRightHeight[0] <= currentLeft) {
+        	disaggregationMap.put (newLeft, newRightHeight);
+
+        	disaggregationMap.put (currentLeft, currentRightHeight);
+
+        	return disaggregationMap;
+    	}
+
+    	int first = -1;
+    	int third = -1;
+    	int fourth = -1;
+    	int second = -1;
+    	int height12 = -1;
+    	int height34 = -1;
+    	int height23 = currentRightHeight[1] > newRightHeight[1] ? currentRightHeight[1] : newRightHeight[1];
+
+    	if (newLeft <= currentLeft) {
+        	first = newLeft;
+        	second = currentLeft;
+        	height12 = newRightHeight[1];
+    	} else {
+        	second = newLeft;
+        	first = currentLeft;
+        	height12 = currentRightHeight[1];
+    	}
+
+    	if (currentRightHeight[0] <= newRightHeight[0]) {
+	    	third = currentRightHeight[0];
+	    	height34 = newRightHeight[1];
+	    	fourth = newRightHeight[0];
+    	} else {
+	    	third = newRightHeight[0];
+	    	height34 = currentRightHeight[1];
+	    	fourth = currentRightHeight[0];
+    	}
+
+    	if (first < second) disaggregationMap.put (first, new int[] {second, height12});
+
+    	disaggregationMap.put (second, new int[] {third, height23});
+
+    	if (third < fourth) disaggregationMap.put (third, new int[] {fourth, height34});
+
+    	return disaggregationMap;
+    }
+
 	/**
 	 * Search for the Target in a Rotated Array
 	 * 
@@ -4220,113 +4282,6 @@ public class ArrayUtil
     	return sum - (numberArray.length - 1) * numberArray.length / 2;
     }
 
-    private static final boolean CurrentSpansOverNext (
-    	final java.util.TreeMap<java.lang.Integer, int[]> skyscraperFacadeMap,
-    	final int currentBuildingStart,
-    	final int[] currentBuilding,
-    	final int nextBuildingStart,
-    	final int[] nextBuilding)
-    {
-    	if (currentBuilding[1] >= nextBuilding[1]) {
-    		skyscraperFacadeMap.put (currentBuildingStart, currentBuilding);
-
-    		return true;
-    	}
-
-    	int first = currentBuildingStart;
-    	int height12 = currentBuilding[1];
-    	int second = nextBuildingStart;
-    	int height23 = nextBuilding[1];
-    	int third = nextBuilding[0];
-    	int height34 = currentBuilding[1];
-    	int fourth = currentBuilding[0];
-
-    	if (first < second) skyscraperFacadeMap.put (first, new int[] {second, height12});
-
-    	skyscraperFacadeMap.put (second, new int[] {third, height23});
-
-    	if (third < fourth) skyscraperFacadeMap.put (third, new int[] {fourth, height34});
-
-    	return true;
-    }
-
-    private static final boolean NextSpansOverCurrent (
-    	final java.util.TreeMap<java.lang.Integer, int[]> skyscraperFacadeMap,
-    	final int currentBuildingStart,
-    	final int[] currentBuilding,
-    	final int nextBuildingStart,
-    	final int[] nextBuilding)
-    {
-    	if (nextBuilding[1] >= currentBuilding[1]) {
-    		skyscraperFacadeMap.put (nextBuildingStart, nextBuilding);
-
-    		return true;
-    	}
-
-    	int first = nextBuildingStart;
-    	int height12 = nextBuilding[1];
-    	int second = currentBuildingStart;
-    	int height23 = currentBuilding[1];
-    	int third = currentBuilding[0];
-    	int height34 = nextBuilding[1];
-    	int fourth = nextBuilding[0];
-
-    	if (first < second) skyscraperFacadeMap.put (first, new int[] {second, height12});
-
-    	skyscraperFacadeMap.put (second, new int[] {third, height23});
-
-    	if (third < fourth) skyscraperFacadeMap.put (third, new int[] {fourth, height34});
-
-    	return true;
-    }
-
-    private static final boolean CurrentOverlapsWithNext (
-    	final java.util.TreeMap<java.lang.Integer, int[]> skyscraperFacadeMap,
-    	final int currentBuildingStart,
-    	final int[] currentBuilding,
-    	final int nextBuildingStart,
-    	final int[] nextBuilding)
-    {
-    	if (currentBuilding[0] <= nextBuildingStart) {
-    		skyscraperFacadeMap.put (currentBuildingStart, currentBuilding);
-    		
-    		skyscraperFacadeMap.put (nextBuildingStart, nextBuilding);
-
-    		return true;
-    	}
-
-    	int first = currentBuildingStart;
-    	int height12 = currentBuilding[1];
-    	int second = nextBuildingStart;
-    	int height23 = currentBuilding[1] > nextBuilding[1] ? currentBuilding[1] : nextBuilding[1];
-    	int third = currentBuilding[0];
-    	int height34 = nextBuilding[1];
-    	int fourth = nextBuilding[0];
-
-    	if (first < second) skyscraperFacadeMap.put (first, new int[] {second, height12});
-
-    	skyscraperFacadeMap.put (second, new int[] {third, height23});
-
-    	if (third < fourth) skyscraperFacadeMap.put (third, new int[] {fourth, height34});
-
-    	return true;
-    }
-
-    private static final java.util.TreeMap<java.lang.Integer, int[]> SkyscraperPairFacade (
-    	final int currentBuildingStart,
-    	final int[] currentBuilding,
-    	final int nextBuildingStart,
-    	final int[] nextBuilding)
-    {
-    	java.util.TreeMap<java.lang.Integer, int[]> skyscraperFacadeMap = new
-    		java.util.TreeMap<java.lang.Integer, int[]>();
-
-    	int currentBuildingEnd = currentBuilding[0];
-    	int nextBuildingEnd = nextBuilding[0];
-
-    	return skyscraperFacadeMap;
-    }
-
     public static final int RainWaterCatchmentArea (
     	final int[] segmentHeightArray)
     {
@@ -4509,10 +4464,16 @@ public class ArrayUtil
     	final int[][] matrix,
     	final int[] columnIndex)
     {
-    	int minimumRowIndex = 0;
-    	int minimum = matrix[0][columnIndex[0]];
+    	int startRowIndex = 0;
+    	int minimumColumnIndex = columnIndex[0];
 
-    	for (int i = 1; i < matrix.length; ++i) {
+    	while (minimumColumnIndex >= matrix[startRowIndex].length)
+    		minimumColumnIndex = columnIndex [++startRowIndex];
+
+    	int minimumRowIndex = startRowIndex;
+    	int minimum = matrix[startRowIndex][columnIndex[startRowIndex]];
+
+    	for (int i = startRowIndex; i < matrix.length; ++i) {
     		if (columnIndex[i] < matrix[i].length) {
 	    		if (minimum > matrix[i][columnIndex[i]]) {
 	    			minimumRowIndex = i;
@@ -4524,32 +4485,133 @@ public class ArrayUtil
     	return minimumRowIndex;
     }
 
+    /**
+     * Given a n x n matrix where each of the rows and columns are sorted in ascending order, find the
+     *  k<sup>th</sup> smallest element in the matrix.
+     *  
+     * Note that it is the k<sup>th</sup> smallest element in the sorted order, not the k<sup>th</sup>
+     *  distinct element.
+     * 
+     * @param matrix The Matrix
+     * @param k k<sup>th</sup> Element
+     * 
+     * @return k<sup>th</sup> Smallest Element
+     */
+
     public static final int SortedMatrixKthElement (
     	final int[][] matrix,
     	final int k)
     {
-    	int columnIndex = -1;
     	int elementCount = k;
     	int minimumRowIndex = -1;
     	int[] rowColumnIndex = new int[matrix.length];
 
     	for (int i = 0; i < matrix.length; ++i) rowColumnIndex[i] = 0;
 
-    	while (elementCount > 0) {
+    	while (0 < elementCount) {
     		minimumRowIndex = MinimumRowIndex (matrix, rowColumnIndex);
 
     		--elementCount;
-    		columnIndex = rowColumnIndex[minimumRowIndex];
     		rowColumnIndex[minimumRowIndex] = rowColumnIndex[minimumRowIndex] + 1;
     	}
 
-    	return matrix[minimumRowIndex][columnIndex];
+    	return matrix[minimumRowIndex][rowColumnIndex[minimumRowIndex]];
+    }
+
+    /**
+     * Given non-negative integers representing the histogram bar height where the width of each bar is 1,
+     *  find the area of largest rectangle in the histogram.
+     * 
+     * @param heightArray The Bar Array
+     * 
+     * @return Area of the Largest Rectangle
+     */
+
+    public static final int LargestRectangleInHistogram (
+    	final int[] heightArray)
+    {
+    	int maxArea = java.lang.Integer.MIN_VALUE;
+    	int[] shortestRightIndex = new int[heightArray.length];
+    	int[] adjacentTallerRightIndex = new int[heightArray.length];
+    	shortestRightIndex[heightArray.length - 1] = heightArray.length - 1;
+    	adjacentTallerRightIndex[heightArray.length - 1] = heightArray.length - 1;
+
+    	for (int i = heightArray.length - 2; i >= 0; --i)
+    		shortestRightIndex[i] = heightArray[i] < heightArray[shortestRightIndex[i + 1]] ? i :
+    			shortestRightIndex[i + 1];
+
+    	for (int i = heightArray.length - 2; i >= 0; --i) {
+    		int j = i;
+
+    		while (j < heightArray.length - 1) {
+    			if (heightArray[j + 1] < heightArray[i]) break;
+
+    			++j;
+    		}
+
+			adjacentTallerRightIndex[i] = j;
+
+			if (j == heightArray.length - 1)
+				adjacentTallerRightIndex[i] = heightArray[j] >= heightArray[i] ? j : j - 1;
+    	}
+
+    	for (int i = 0; i < heightArray.length; ++i) {
+    		int widestArea = heightArray[shortestRightIndex[i]] * (heightArray.length - i);
+
+    		if (maxArea < widestArea) maxArea = widestArea;
+
+    		int adjacentArea = heightArray[i] * (adjacentTallerRightIndex[i] - i + 1);
+
+    		if (maxArea < adjacentArea) maxArea = adjacentArea;
+    	}
+
+    	return maxArea;
+    }
+
+    public static final java.util.TreeMap<java.lang.Integer, int[]> GenerateSkyline (
+    	final java.util.TreeMap<java.lang.Integer, int[]> skscraperMap)
+    {
+    	java.util.TreeMap<java.lang.Integer, int[]> skylineMap = new
+    		java.util.TreeMap<java.lang.Integer, int[]>();
+
+    	for (java.util.Map.Entry<java.lang.Integer, int[]> skyscraperEntry : skscraperMap.entrySet()) {
+    		if (skylineMap.isEmpty()) {
+    			skylineMap.put (skyscraperEntry.getKey(), skyscraperEntry.getValue());
+
+    			continue;
+    		}
+
+        	java.util.TreeMap<java.lang.Integer, int[]> disaggregationMap = new
+        		java.util.TreeMap<java.lang.Integer, int[]>();
+
+        	for (java.util.Map.Entry<java.lang.Integer, int[]> skyLineEntry : skylineMap.entrySet()) {
+        		disaggregationMap.putAll (DisaggregateSkyscrapers (skyLineEntry.getKey(),
+        			skyLineEntry.getValue(), skyscraperEntry.getKey(),skyscraperEntry.getValue()));
+        	}
+
+        	skylineMap = disaggregationMap;
+    	}
+
+    	return skylineMap;
     }
 
     public static final void main (
 		final String[] argumentArray)
 		throws java.lang.Exception
 	{
-		System.out.println (SortedMatrixKthElement (new int[][] {{1, 5, 9}, {10, 12, 13}, {12, 13, 15}}, 8));
+    	java.util.TreeMap<java.lang.Integer, int[]> skyscraperMap = new java.util.TreeMap<java.lang.Integer,
+    		int[]>();
+
+    	skyscraperMap.put (2, new int[] {9, 10});
+
+    	skyscraperMap.put (3, new int[] {7, 15});
+
+    	skyscraperMap.put (5, new int[] {12, 12});
+
+    	java.util.TreeMap<java.lang.Integer, int[]> skyLineMap = GenerateSkyline (skyscraperMap);
+
+    	for (java.util.Map.Entry<java.lang.Integer, int[]> skyLineEntry : skyLineMap.entrySet())
+    		System.out.println (skyLineEntry.getKey() + " => [" + skyLineEntry.getValue()[0] + " | " +
+    			skyLineEntry.getValue()[1] + "]");
 	}
 }
