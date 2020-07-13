@@ -382,55 +382,30 @@ public class WordDictionary
 
 		int wordLength = s.length();
 
-		sIndexQueue.add (
-			0
-		);
+		sIndexQueue.add (0);
 
-		sentenceQueue.add (
-			""
-		);
+		sentenceQueue.add ("");
 
-		while (!sIndexQueue.isEmpty())
-		{
+		while (!sIndexQueue.isEmpty()) {
 			int tailIndex = sIndexQueue.size() - 1;
 
-			int beginIndex = sIndexQueue.remove (
-				tailIndex
-			);
+			int beginIndex = sIndexQueue.remove (tailIndex);
 
-			java.lang.String sentence = sentenceQueue.remove (
-				tailIndex
-			);
+			java.lang.String sentence = sentenceQueue.remove (tailIndex);
 
-			if (beginIndex >= wordLength - 1)
-			{
-				wordBreakSentenceList.add (
-					sentence
-				);
+			if (beginIndex >= wordLength - 1) {
+				wordBreakSentenceList.add (sentence);
 
 				continue;
 			}
 
-			for (int endIndex = beginIndex + 1;
-				endIndex <= wordLength;
-				++endIndex)
-			{
-				java.lang.String nextWord = s.substring (
-					beginIndex,
-					endIndex
-				);
+			for (int endIndex = beginIndex + 1; endIndex <= wordLength; ++endIndex) {
+				java.lang.String nextWord = s.substring (beginIndex, endIndex);
 
-				if (_wordSet.contains (
-					nextWord
-				))
-				{
-					sIndexQueue.add (
-						endIndex
-					);
+				if (_wordSet.contains (nextWord)) {
+					sIndexQueue.add (endIndex);
 
-					sentenceQueue.add (
-						sentence + " " + nextWord
-					);
+					sentenceQueue.add (sentence + " " + nextWord);
 				}
 			}
 		}

@@ -986,9 +986,61 @@ public class RecursionUtil
 		return length;
 	}
 
+	private static final java.util.List<java.lang.Integer> SmallestPerfectSquareSet (
+		final java.util.HashMap<java.lang.Integer, java.util.List<java.lang.Integer>> memoizeMap,
+		final int number)
+	{
+		// if (memoizeMap.containsKey (number)) return memoizeMap.get (number);
+
+		java.util.List<java.lang.Integer> squaresList = new java.util.ArrayList<java.lang.Integer>();
+
+		double sqrt = java.lang.Math.sqrt (number);
+
+		if (0. == (sqrt - (int) sqrt)) {
+			squaresList.add ((int) sqrt);
+
+			memoizeMap.put (number, squaresList);
+
+			return squaresList;
+		}
+
+		(squaresList = SmallestPerfectSquareSet (memoizeMap, 1)).addAll (SmallestPerfectSquareSet
+			(memoizeMap, number - 1));
+
+		for (int i = 2; i <= (int) sqrt; ++i) {
+			java.util.List<java.lang.Integer> squaresSubList = SmallestPerfectSquareSet (memoizeMap, i * i);
+
+			squaresSubList.addAll (SmallestPerfectSquareSet (memoizeMap, number - i * i));
+
+			if (squaresSubList.size() <= squaresList.size()) squaresList = squaresSubList;
+		}
+
+		memoizeMap.put (number, squaresList);
+
+		return squaresList;
+	}
+
+	public static final java.util.List<java.lang.Integer> SmallestPerfectSquareSet (
+		final int number)
+	{
+		java.util.HashMap<java.lang.Integer, java.util.List<java.lang.Integer>> memoizeMap = new
+			java.util.HashMap<java.lang.Integer, java.util.List<java.lang.Integer>>();
+
+		java.util.List<java.lang.Integer> squaresList = new java.util.ArrayList<java.lang.Integer>();
+
+		squaresList.add (1);
+
+		memoizeMap.put (1, squaresList);
+
+		java.util.List<java.lang.Integer> smallestPerfectSquareSet = SmallestPerfectSquareSet (memoizeMap, number);
+
+		return smallestPerfectSquareSet;
+	}
+
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
+		System.out.println (SmallestPerfectSquareSet (12));
 	}
 }

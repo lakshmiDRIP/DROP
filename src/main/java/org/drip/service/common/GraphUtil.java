@@ -160,31 +160,121 @@ public class GraphUtil
 		return 2 == vertexSetCluster.size() || graph.length <= vertexSetCluster.size();
 	}
 
+	private static final java.util.HashMap<java.lang.String, java.lang.Character> CharacterCodeMap()
+	{
+		java.util.HashMap<java.lang.String, java.lang.Character> characterCodeMap = new
+			java.util.HashMap<java.lang.String, java.lang.Character>();
+
+		characterCodeMap.put ("1", 'A');
+
+		characterCodeMap.put ("2", 'B');
+
+		characterCodeMap.put ("3", 'C');
+
+		characterCodeMap.put ("4", 'D');
+
+		characterCodeMap.put ("5", 'E');
+
+		characterCodeMap.put ("6", 'F');
+
+		characterCodeMap.put ("7", 'G');
+
+		characterCodeMap.put ("8", 'H');
+
+		characterCodeMap.put ("9", 'I');
+
+		characterCodeMap.put ("10", 'J');
+
+		characterCodeMap.put ("11", 'K');
+
+		characterCodeMap.put ("12", 'L');
+
+		characterCodeMap.put ("13", 'M');
+
+		characterCodeMap.put ("14", 'N');
+
+		characterCodeMap.put ("15", 'O');
+
+		characterCodeMap.put ("16", 'P');
+
+		characterCodeMap.put ("17", 'Q');
+
+		characterCodeMap.put ("18", 'R');
+
+		characterCodeMap.put ("19", 'S');
+
+		characterCodeMap.put ("20", 'T');
+
+		characterCodeMap.put ("21", 'U');
+
+		characterCodeMap.put ("22", 'V');
+
+		characterCodeMap.put ("23", 'W');
+
+		characterCodeMap.put ("24", 'X');
+
+		characterCodeMap.put ("25", 'Y');
+
+		characterCodeMap.put ("26", 'Z');
+
+		return characterCodeMap;
+	}
+
+	public static final java.util.Set<java.lang.String> DecodeCombinations (
+		final java.lang.String number)
+	{
+		java.util.HashMap<java.lang.String, java.lang.Character> characterCodeMap = CharacterCodeMap();
+
+		java.util.List<java.lang.String> combinationList = new java.util.ArrayList<java.lang.String>();
+
+		java.util.Set<java.lang.String> combinationSet = new java.util.HashSet<java.lang.String>();
+
+		java.util.List<java.lang.Integer> indexList = new java.util.ArrayList<java.lang.Integer>();
+
+		indexList.add (0);
+
+		combinationList.add ("");
+
+		while (!indexList.isEmpty()) {
+			int queueTailIndex = indexList.size() - 1;
+
+			int index = indexList.remove (queueTailIndex);
+
+			java.lang.String combination = combinationList.remove (queueTailIndex);
+
+			if (index >= number.length()) {
+				combinationSet.add (combination);
+
+				continue;
+			}
+
+			java.lang.String singleDigit = number.substring (index, index + 1);
+
+			if (characterCodeMap.containsKey (singleDigit)) {
+				combinationList.add (combination + characterCodeMap.get (singleDigit));
+
+				indexList.add (index + 1);
+			}
+
+			if (index == number.length() - 1) continue;
+
+			java.lang.String doubleDigit = number.substring (index, index + 2);
+
+			if (characterCodeMap.containsKey (doubleDigit)) {
+				combinationList.add (combination + characterCodeMap.get (doubleDigit));
+
+				indexList.add (index + 2);
+			}
+		}
+
+		return combinationSet;
+	}
+
 	public static final void main (
 		final String[] argumentArray)
 	{
-		System.out.println (
-			IsGraphBipartite (
-				new int[][]
-				{
-					{1, 3},
-					{0, 2},
-					{1, 3},
-					{0, 2},
-				}
-			)
-		);
+		System.out.println (DecodeCombinations ("12"));
 
-		System.out.println (
-			IsGraphBipartite (
-				new int[][]
-				{
-					{1, 2, 3},
-					{0, 2},
-					{0, 1, 3},
-					{0, 2},
-				}
-			)
-		);
+		System.out.println (DecodeCombinations ("226"));
 	}
 }

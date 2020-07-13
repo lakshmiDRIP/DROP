@@ -834,30 +834,16 @@ public class ArrayUtil
 		int min = numberArray[0];
 		int result = numberArray[0];
 
-		for (int i = 1; i < numberArray.length; ++i)
-		{
+		for (int i = 1; i < numberArray.length; ++i) {
 			int temp = max;
 
-			max = java.lang.Math.max (
-				max * numberArray[i],
-				java.lang.Math.max (
-					min * numberArray[i],
-					numberArray[i]
-				)
-			);
+			max = java.lang.Math.max (max * numberArray[i], java.lang.Math.max (min * numberArray[i],
+				numberArray[i]));
 
-			min = java.lang.Math.min (
-				temp * numberArray[i],
-				java.lang.Math.min (
-					min * numberArray[i],
-					numberArray[i]
-				)
-			);
+			min = java.lang.Math.min (temp * numberArray[i], java.lang.Math.min (min * numberArray[i],
+				numberArray[i]));
 
-			if (max > result)
-			{
-				result = max;
-			}
+			if (max > result) result = max;
 		}
 
 		return result;
@@ -4568,6 +4554,16 @@ public class ArrayUtil
     	return maxArea;
     }
 
+    /**
+     * A city skyline is the outer contour of the silhouette formed by all the buildings in that city when
+     *  viewed from a distance. <b>Given the locations and height of all the buildings</b> as shown on a
+     *  cityscape photo, <b>output the skyline</b> formed by these buildings collectively.
+     * 
+     * @param skscraperMap Cityscape represented as a Map of Skyscapers
+     * 
+     * @return The Skyline Map
+     */
+
     public static final java.util.TreeMap<java.lang.Integer, int[]> GenerateSkyline (
     	final java.util.TreeMap<java.lang.Integer, int[]> skscraperMap)
     {
@@ -4595,23 +4591,167 @@ public class ArrayUtil
     	return skylineMap;
     }
 
+    private static final int BurstCandidateIndex (
+    	final java.util.List<java.lang.Integer> integerList)
+    {
+    	if (1 == integerList.size()) return 0;
+
+    	int maximum = integerList.get (0);
+
+    	int maxIndex = 0;
+    	int minIndex = 0;
+    	int minimum = maximum;
+
+    	for (int i = 1; i < integerList.size(); ++i) {
+    		if (integerList.get (i) < minimum) {
+    			minimum = integerList.get (i);
+
+    			minIndex = i;
+    		}
+
+    		if (integerList.get (i) > maximum) {
+    			maximum = integerList.get (i);
+
+    			maxIndex = i;
+    		}
+    	}
+
+    	if (2 == integerList.size() || (0 != minIndex && integerList.size() - 1 != minIndex))
+    		return minIndex;
+
+    	if (0 == minIndex) {
+        	int burstCandidateIndex = 1;
+
+        	while (burstCandidateIndex == maxIndex) ++burstCandidateIndex;
+
+        	minimum = integerList.get (burstCandidateIndex);
+
+        	for (int i = burstCandidateIndex; i < integerList.size(); ++i) {
+	    		if (i != maxIndex && integerList.get (i) < minimum) {
+	    			minimum = integerList.get (i);
+	
+	    			burstCandidateIndex = i;
+	    		}
+    		}
+
+        	return burstCandidateIndex;
+    	}
+
+    	int burstCandidateIndex = integerList.size() - 2;
+
+    	while (burstCandidateIndex == maxIndex) --burstCandidateIndex;
+
+    	minimum = integerList.get (burstCandidateIndex);
+
+    	for (int i = burstCandidateIndex; i >= 0; --i) {
+    		if (i != maxIndex && integerList.get (i) < minimum) {
+    			minimum = integerList.get (i);
+
+    			burstCandidateIndex = i;
+    		}
+		}
+
+    	return burstCandidateIndex;
+    }
+
+    /**
+     * Given an array of balloons, each balloon is painted with a number on it represented by array. You are
+     *  asked to burst all the balloons. If the you burst balloon i you will get nums[left] * nums[i] *
+     *  nums[right] coins. Here left and right are adjacent indices of i. After the burst, the left and right
+     *  then becomes adjacent.
+     *  
+     * Find the maximum coins you can collect by bursting the balloons wisely.
+     * 
+     * @param balloonCoinArray Balloon Coin Array
+     * 
+     * @return Wise Balloon Burst Sum
+     */
+
+    public static final int StrategicBalloonBurstSum (
+    	final int[] balloonCoinArray)
+    {
+    	java.util.List<java.lang.Integer> balloonCoinList = new java.util.ArrayList<java.lang.Integer>();
+
+    	for (int balloonCoin : balloonCoinArray)
+    		balloonCoinList.add (balloonCoin);
+
+    	int sum = 0;
+
+    	while (!balloonCoinList.isEmpty()) {
+    		int burstCandidateIndex = BurstCandidateIndex (balloonCoinList);
+
+    		int product = balloonCoinList.get (burstCandidateIndex);
+
+    		if (burstCandidateIndex > 0) product = product * balloonCoinList.get (burstCandidateIndex - 1);
+
+    		if (burstCandidateIndex < balloonCoinList.size() - 1)
+    			product = product * balloonCoinList.get (burstCandidateIndex + 1);
+
+    		sum += product;
+
+    		balloonCoinList.remove (burstCandidateIndex);
+    	}
+
+    	return sum;
+    }
+
+    private static final int Partition (
+    	final int[] numberArray,
+    	final int left,
+    	final int right,
+    	final int pivotIndex)
+    {
+    	int pivotValue = numberArray[pivotIndex];
+
+    	SwapElements (numberArray, pivotIndex, right);
+
+    	int partitionIndex = left;
+
+    	for (int index = left; index < right; ++index) {
+    		if (numberArray[index] < pivotValue) {
+    	    	SwapElements (numberArray, partitionIndex, index);
+
+    			++partitionIndex;
+    		}
+    	}
+
+    	SwapElements (numberArray, partitionIndex, right);
+
+    	return partitionIndex;
+    }
+
+    private static final int Select (
+    	final int[] numberArray,
+    	final int left,
+    	final int right,
+    	final int k)
+    {
+    	if (left == right) return numberArray[left];
+
+    	int pivotIndex = Partition (numberArray, left, right,
+    		left + ((int) java.lang.Math.random() * (right - left + 1)));
+
+    	if (k == pivotIndex) return numberArray[k];
+
+    	return k < pivotIndex ? Select (numberArray, left, pivotIndex - 1, k) :
+    		Select (numberArray, pivotIndex + 1, right, k);
+    }
+
+    public static final double Median (
+    	final int[] numberArray)
+    {
+    	int arrayLength = numberArray.length;
+
+    	if (1 == arrayLength % 2) return Select (numberArray, 0, arrayLength - 1, arrayLength / 2);
+
+    	return 0.5 * (Select (numberArray, 0, arrayLength - 1, arrayLength / 2 - 1) +
+    		Select (numberArray, 0, arrayLength - 1, arrayLength / 2));
+    }
+
     public static final void main (
 		final String[] argumentArray)
 		throws java.lang.Exception
 	{
-    	java.util.TreeMap<java.lang.Integer, int[]> skyscraperMap = new java.util.TreeMap<java.lang.Integer,
-    		int[]>();
-
-    	skyscraperMap.put (2, new int[] {9, 10});
-
-    	skyscraperMap.put (3, new int[] {7, 15});
-
-    	skyscraperMap.put (5, new int[] {12, 12});
-
-    	java.util.TreeMap<java.lang.Integer, int[]> skyLineMap = GenerateSkyline (skyscraperMap);
-
-    	for (java.util.Map.Entry<java.lang.Integer, int[]> skyLineEntry : skyLineMap.entrySet())
-    		System.out.println (skyLineEntry.getKey() + " => [" + skyLineEntry.getValue()[0] + " | " +
-    			skyLineEntry.getValue()[1] + "]");
+		System.out.println (Median (new int[] {1, 5, 1, 1, 6, 4}));
 	}
 }
