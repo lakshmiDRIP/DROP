@@ -4086,7 +4086,7 @@ public class ArrayUtil
 	        	for (int i = 0; i < matrix.length; ++i)
 	        		matrix[i][location[1]] = 0;
 
-	        	processedRowSet.add (location[1]);
+	        	processedColumnSet.add (location[1]);
     		}
     	}
 
@@ -4707,13 +4707,8 @@ public class ArrayUtil
 
     	int partitionIndex = left;
 
-    	for (int index = left; index < right; ++index) {
-    		if (numberArray[index] < pivotValue) {
-    	    	SwapElements (numberArray, partitionIndex, index);
-
-    			++partitionIndex;
-    		}
-    	}
+    	for (int index = left; index < right; ++index)
+    		if (numberArray[index] < pivotValue) SwapElements (numberArray, partitionIndex++, index);
 
     	SwapElements (numberArray, partitionIndex, right);
 
@@ -4748,10 +4743,42 @@ public class ArrayUtil
     		Select (numberArray, 0, arrayLength - 1, arrayLength / 2));
     }
 
+    public static final boolean WiggleSort2 (
+    	final int[] numberArray)
+    {
+    	Median (numberArray);
+
+    	int index = 1;
+    	int offset = 1 == numberArray.length % 2 ? 0 : 1;
+    	int upperBound = 1 == numberArray.length % 2 ? numberArray.length / 2: numberArray.length / 2 - 1;
+
+    	while (index <= upperBound) {
+    		SwapElements (numberArray, index, numberArray.length - offset - index);
+
+    		index += 2;
+    	}
+
+    	return true;
+    }
+
     public static final void main (
 		final String[] argumentArray)
 		throws java.lang.Exception
 	{
-		System.out.println (Median (new int[] {1, 5, 1, 1, 6, 4}));
+    	int[] numberArray = new int[] {1, 5, 1, 1, 6, 4};
+
+    	WiggleSort2 (numberArray);
+
+    	System.out.println();
+
+    	for (int i : numberArray) System.out.print (i + ",");
+
+    	numberArray = new int[] {1, 3, 2, 2, 3, 1};
+
+    	WiggleSort2 (numberArray);
+
+    	System.out.println();
+
+    	for (int i : numberArray) System.out.print (i + ",");
 	}
 }
