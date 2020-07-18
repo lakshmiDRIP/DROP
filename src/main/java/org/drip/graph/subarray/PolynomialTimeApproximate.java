@@ -117,6 +117,7 @@ package org.drip.graph.subarray;
 public class PolynomialTimeApproximate
 	extends org.drip.graph.subarray.SubsetSum
 {
+	private double _departureRatio = java.lang.Double.NaN;
 
 	/**
 	 * PolynomialTimeApproximate Constructor
@@ -129,17 +130,102 @@ public class PolynomialTimeApproximate
 
 	public PolynomialTimeApproximate (
 		final int[] numberArray,
-		final int target)
+		final int target,
+		final double departureRatio)
 		throws java.lang.Exception
 	{
 		super (
 			numberArray,
 			target
 		);
+
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+				_departureRatio = departureRatio
+			) || 1. <= _departureRatio || 0. >= _departureRatio
+		)
+		{
+			throw new java.lang.Exception (
+				"PolynomialTimeApproximate Constructor => Invalid Departure Ratio");
+		}
+	}
+
+	/**
+	 * Retrieve the Departure Ratio
+	 * 
+	 * @return The Departure Ratio
+	 */
+
+	public double departureRatio()
+	{
+		return _departureRatio;
 	}
 
 	@Override public boolean targetSumExists()
 	{
-		return true;
+		int target = target();
+
+		int[] numberArray = numberArray();
+
+		int arrayLength = numberArray.length;
+
+		java.util.Set<java.lang.Integer> setS = new java.util.HashSet<java.lang.Integer>();
+
+		setS.add (
+			0
+		);
+
+		for (int index = 0;
+			index < arrayLength;
+			++index)
+		{
+			java.util.Set<java.lang.Integer> setT = new java.util.HashSet<java.lang.Integer>();
+
+			for (int number : setS)
+			{
+				setT.add (
+					number + numberArray[index]
+				);
+			}
+
+			java.util.TreeSet<java.lang.Integer> setU = new java.util.TreeSet<java.lang.Integer>();
+
+			setU.addAll (
+				setS
+			);
+
+			setU.addAll (
+				setT
+			);
+
+			setS.clear();
+
+			int y = setU.first();
+
+			setS.add (
+				y
+			);
+
+			for (int z : setU)
+			{
+				if (z > (int) (((double) y) + _departureRatio * target) / arrayLength && z <= target)
+				{
+					y = z;
+
+					setS.add (
+						z
+					);
+				}
+			}
+		}
+
+		for (int number : setS)
+		{
+			if (number >= (1. - _departureRatio) * target && number <= target)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

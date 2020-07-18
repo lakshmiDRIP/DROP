@@ -75,30 +75,31 @@ package org.drip.graph.subarray;
  */
 
 /**
- * <i>PseudoPolynomialDP</i> implements the Sub-set Sum Check using a Pseudo-Polynomial Time Dynamic
- * 	Programming Scheme. The References are:
+ * <i>ThreeSum</i> exposes the Check that indicates if the Set of Numbers contains 3 that Sum to Zero. The
+ * 	References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Bringmann, K. (2017): A near-linear Pseudo-polynomial Time Algorithm for Subset Sums
- *  			<i>Proceedings of the 28<sup>th</sup> Annual ACM SIAM Symposium on Discrete Algorithms</i>
- *  			1073-1084
+ *  		Chan, T. M. (2018): More Logarithmic Factor Speedups for 3SUM, (median+) Convolution, and some
+ *  			Geometric 3SUM-Hard Problems <i>Proceedings of the 29<sup>th</sup> Annual ACM SIAM Symposium
+ *  			on Discrete Algorithms</i> 881-897
  *  	</li>
  *  	<li>
- *  		Horowitz, E., and S. Sahni (1974): Computing Partitions with Applications to the Knapsack Problem
- *  			<i>Journal of the ACM</i> <b>21 (2)</b> 277-292
+ *  		Gajentaan, A., and M. H. Overmars (1995): On a Class of O(n<sup>2</sup>) Problems in
+ *  			Computational Geometry <i>Computational Geometry: Theory and Applications</i> <b>5 (3)</b>
+ *  			165-185
  *  	</li>
  *  	<li>
- *  		Kleinberg, J., and E. Tardos (2022): <i>Algorithm Design 2<sup>nd</sup> Edition</i>
- *  			<b>Pearson</b>
+ *  		Kopelowitz, T., S. Pettie, and E. Porat (2014): Higher Lower Bounds from the 3SUM Conjecture
+ *  			https://arxiv.org/abs/1407.6756 <b>arXiV</b>
  *  	</li>
  *  	<li>
- *  		Koiliaris, K., and C. Xu (2016): A Faster Pseudo-polynomial Time Algorithm for Subset Sum
- *  			https://arxiv.org/abs/1507.02318 <b>arXiV</b>
+ *  		Patrascu, M. (2010): Towards Polynomial Lower Bounds for Dynamic Problems <i>Proceedings of the
+ *  			42<sup>nd</sup> ACM Symposium on Theory of Computing</i> 603-610
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020): Subset Sum Problem https://en.wikipedia.org/wiki/Subset_sum_problem
+ *  		Wikipedia (2020): 3Sum https://en.wikipedia.org/wiki/3SUM
  *  	</li>
  *  </ul>
  *
@@ -114,107 +115,42 @@ package org.drip.graph.subarray;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PseudoPolynomialDP
-	extends org.drip.graph.subarray.SubsetSum
+public abstract class ThreeSum
 {
+	private double[] _numberArray = null;
 
-	/**
-	 * PseudoPolynomialDP Constructor
-	 * 
-	 * @param numberArray The Input Number Array
-	 * @param target The Sum Target
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public PseudoPolynomialDP (
-		final int[] numberArray,
-		final int target)
+	protected ThreeSum (
+		final double[] numberArray)
 		throws java.lang.Exception
 	{
-		super (
-			numberArray,
-			target
-		);
+		if (null == (_numberArray = numberArray) || 0 == _numberArray.length ||
+			!org.drip.numerical.common.NumberUtil.IsValid (
+				_numberArray
+			)
+		)
+		{
+			throw new java.lang.Exception (
+				"ThreeSum Constructor => Invalid Inputs"
+			);
+		}
 	}
 
 	/**
-	 * Generate the Array of Target Sum Existence Flags
+	 * Retrieve the Number Array
 	 * 
-	 * @return Array of Target Sum Existence Flags
+	 * @return The Number Array
 	 */
 
-	public boolean[] targetSumExistenceArray()
+	public double[] numberArray()
 	{
-		int target = target();
-
-		int[] numberArray = numberArray();
-
-		int sumOfNegativeValues = 0;
-		int sumOfPositiveValues = 0;
-		int arrayLength = numberArray.length;
-		boolean[] subsetTargetSumExistence = new boolean[arrayLength];
-		int subsetTargetSumExistenceIndex = 0;
-
-		for (int number : numberArray)
-		{
-			if (0 > number)
-				sumOfNegativeValues = sumOfNegativeValues + number;
-			else if (0 < number)
-				sumOfPositiveValues = sumOfPositiveValues + number;
-
-			subsetTargetSumExistence[subsetTargetSumExistenceIndex++] = false;
-		}
-
-		if (sumOfNegativeValues > target || sumOfPositiveValues < target)
-		{
-			return subsetTargetSumExistence;
-		}
-
-		java.util.HashSet<java.lang.Integer> subsetSumSet = new java.util.HashSet<java.lang.Integer>();
-
-		subsetTargetSumExistence[0] = numberArray[0] == target;
-
-		subsetSumSet.add (
-			numberArray[0]
-		);
-
-		for (int index = 1;
-			index < arrayLength;
-			++index)
-		{
-			subsetTargetSumExistence[index] = subsetTargetSumExistence[index - 1] ||
-				numberArray[index] == target ||
-				subsetSumSet.contains (
-					target - numberArray[index]
-				);
-
-			java.util.HashSet<java.lang.Integer> currentSubsetSumSet =
-				new java.util.HashSet<java.lang.Integer>();
-
-			for (int number : subsetSumSet)
-			{
-				currentSubsetSumSet.add (
-					numberArray[index] + number
-				);
-			}
-
-			currentSubsetSumSet.addAll (
-				subsetSumSet
-			);
-
-			currentSubsetSumSet.add (
-				numberArray[index]
-			);
-
-			subsetSumSet = currentSubsetSumSet;
-		}
-
-		return subsetTargetSumExistence;
+		return _numberArray;
 	}
 
-	@Override public boolean targetSumExists()
-	{
-		return targetSumExistenceArray()[numberArray().length - 1];
-	}
+	/**
+	 * Indicate if the Zero Sum Match exists
+	 * 
+	 * @return TRUE - The Zero Sum Match exists
+	 */
+
+	public abstract boolean zeroSumExists();
 }

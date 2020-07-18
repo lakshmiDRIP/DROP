@@ -1,5 +1,8 @@
 
-package org.drip.graph.subarray;
+package org.drip.sample.subarray;
+
+import org.drip.graph.subarray.PolynomialTimeApproximate;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,8 +78,8 @@ package org.drip.graph.subarray;
  */
 
 /**
- * <i>PseudoPolynomialDP</i> implements the Sub-set Sum Check using a Pseudo-Polynomial Time Dynamic
- * 	Programming Scheme. The References are:
+ * <i>PolynomialTimeApproximateSubsetSum</i> illustrates the Approximate Sub-set Sum Check using a Polynomial
+ *  Time Scheme. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -114,107 +117,53 @@ package org.drip.graph.subarray;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PseudoPolynomialDP
-	extends org.drip.graph.subarray.SubsetSum
+public class PolynomialTimeApproximateSubsetSum
 {
 
-	/**
-	 * PseudoPolynomialDP Constructor
-	 * 
-	 * @param numberArray The Input Number Array
-	 * @param target The Sum Target
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public PseudoPolynomialDP (
-		final int[] numberArray,
-		final int target)
-		throws java.lang.Exception
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		super (
-			numberArray,
-			target
+		EnvManager.InitEnv (
+			""
 		);
-	}
 
-	/**
-	 * Generate the Array of Target Sum Existence Flags
-	 * 
-	 * @return Array of Target Sum Existence Flags
-	 */
+		int[] numberArray =
+		{
+			-7,
+			-3,
+			-2,
+			 9000,
+			 5,
+			 8,
+		};
+		int target = 0;
+		double departureGap = 0.01;
 
-	public boolean[] targetSumExistenceArray()
-	{
-		int target = target();
-
-		int[] numberArray = numberArray();
-
-		int sumOfNegativeValues = 0;
-		int sumOfPositiveValues = 0;
-		int arrayLength = numberArray.length;
-		boolean[] subsetTargetSumExistence = new boolean[arrayLength];
-		int subsetTargetSumExistenceIndex = 0;
+		String array = "";
 
 		for (int number : numberArray)
 		{
-			if (0 > number)
-				sumOfNegativeValues = sumOfNegativeValues + number;
-			else if (0 < number)
-				sumOfPositiveValues = sumOfPositiveValues + number;
-
-			subsetTargetSumExistence[subsetTargetSumExistenceIndex++] = false;
+			array = array + number + ", ";
 		}
 
-		if (sumOfNegativeValues > target || sumOfPositiveValues < target)
-		{
-			return subsetTargetSumExistence;
-		}
-
-		java.util.HashSet<java.lang.Integer> subsetSumSet = new java.util.HashSet<java.lang.Integer>();
-
-		subsetTargetSumExistence[0] = numberArray[0] == target;
-
-		subsetSumSet.add (
-			numberArray[0]
+		System.out.println (
+			"\t|-----------------------------------------------------------------|"
 		);
 
-		for (int index = 1;
-			index < arrayLength;
-			++index)
-		{
-			subsetTargetSumExistence[index] = subsetTargetSumExistence[index - 1] ||
-				numberArray[index] == target ||
-				subsetSumSet.contains (
-					target - numberArray[index]
-				);
+		System.out.println (
+			"\t| Target Sum " + target + " exists in Array [" + array + "] => " +
+			new PolynomialTimeApproximate (
+				numberArray,
+				target,
+				departureGap
+			).targetSumExists()
+		);
 
-			java.util.HashSet<java.lang.Integer> currentSubsetSumSet =
-				new java.util.HashSet<java.lang.Integer>();
+		System.out.println (
+			"\t|-----------------------------------------------------------------|"
+		);
 
-			for (int number : subsetSumSet)
-			{
-				currentSubsetSumSet.add (
-					numberArray[index] + number
-				);
-			}
-
-			currentSubsetSumSet.addAll (
-				subsetSumSet
-			);
-
-			currentSubsetSumSet.add (
-				numberArray[index]
-			);
-
-			subsetSumSet = currentSubsetSumSet;
-		}
-
-		return subsetTargetSumExistence;
-	}
-
-	@Override public boolean targetSumExists()
-	{
-		return targetSumExistenceArray()[numberArray().length - 1];
+		EnvManager.TerminateEnv();
 	}
 }

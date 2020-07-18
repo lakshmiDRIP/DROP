@@ -144,12 +144,28 @@ public class PseudoPolynomialSubsetSum
 			target
 		).targetSumExistenceArray();
 
+		System.out.println ("\t|------------------|");
+
+		System.out.println ("\t|  DP SUBSET SUM   |");
+
+		System.out.println ("\t|------------------|");
+
+		System.out.println ("\t|  L -> R:         |");
+
+		System.out.println ("\t|    - Index       |");
+
+		System.out.println ("\t|    - DP Entry    |");
+
+		System.out.println ("\t|------------------|");
+
 		for (int index = 0;
 			index < numberArray.length;
 			++index)
 		{
-			System.out.println ("\t[" + index + "] => " + subsetSumExistenceArray[index]);
+			System.out.println ("\t| [" + index + "] => " + subsetSumExistenceArray[index]);
 		}
+
+		System.out.println ("\t|------------------|");
 
 		EnvManager.TerminateEnv();
 	}
