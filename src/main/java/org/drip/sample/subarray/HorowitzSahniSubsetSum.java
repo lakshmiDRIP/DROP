@@ -1,5 +1,8 @@
 
-package org.drip.graph.subarray;
+package org.drip.sample.subarray;
+
+import org.drip.graph.subarray.HorowitzSahni;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,8 +78,8 @@ package org.drip.graph.subarray;
  */
 
 /**
- * <i>PseudoPolynomialDP</i> implements the Sub-set Sum Check using a Pseudo-Polynomial Time Dynamic
- * 	Programming Scheme. The References are:
+ * <i>HorowitzSahniSubsetSum</i> illustrates the Sub-set Sum Check using the Horowitz-Sahni Scheme. The
+ * 	References are:
  * 
  * <br><br>
  *  <ul>
@@ -106,104 +109,59 @@ package org.drip.graph.subarray;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/subarray/README.md">Sub-set Sum, k-Sum, and Maximum Sub-array Problems</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/subarray/README.md">Sub-set and Sub-array Sums/Matches</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PseudoPolynomialDP
-	extends org.drip.graph.subarray.SubsetSum
+public class HorowitzSahniSubsetSum
 {
 
-	/**
-	 * PseudoPolynomialDP Constructor
-	 * 
-	 * @param numberArray The Input Number Array
-	 * @param target The Sum Target
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public PseudoPolynomialDP (
-		final int[] numberArray,
-		final int target)
-		throws java.lang.Exception
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		super (
-			numberArray,
-			target
+		EnvManager.InitEnv (
+			""
 		);
-	}
 
-	/**
-	 * Generate the Array of Target Sum Existence Flags
-	 * 
-	 * @return Array of Target Sum Existence Flags
-	 */
+		int[] numberArray =
+		{
+			-7,
+			-3,
+			-2,
+			 9000,
+			 5,
+			 8,
+		};
+		int target = 0;
 
-	public boolean[] targetSumExistenceArray()
-	{
-		int target = target();
-
-		int[] numberArray = numberArray();
-
-		int sumOfNegativeValues = 0;
-		int sumOfPositiveValues = 0;
-		int arrayLength = numberArray.length;
-		boolean[] subsetTargetSumExistence = new boolean[arrayLength];
-		int subsetTargetSumExistenceIndex = 0;
-		int sum = numberArray[0];
+		String array = "";
 
 		for (int number : numberArray)
 		{
-			if (0 > number)
-				sumOfNegativeValues = sumOfNegativeValues + number;
-			else if (0 < number)
-				sumOfPositiveValues = sumOfPositiveValues + number;
-
-			subsetTargetSumExistence[subsetTargetSumExistenceIndex++] = false;
+			array = array + number + ", ";
 		}
 
-		if (sumOfNegativeValues > target || sumOfPositiveValues < target)
-		{
-			return subsetTargetSumExistence;
-		}
-
-		java.util.HashSet<java.lang.Integer> subsetSumSet = new java.util.HashSet<java.lang.Integer>();
-
-		subsetTargetSumExistence[0] = numberArray[0] == target;
-
-		subsetSumSet.add (
-			numberArray[0]
+		System.out.println (
+			"\t|-----------------------------------------------------------------|"
 		);
 
-		for (int index = 1;
-			index < arrayLength;
-			++index)
-		{
-			subsetTargetSumExistence[index] = subsetTargetSumExistence[index - 1] ||
-				numberArray[index] == target ||
-				subsetSumSet.contains (
-					target - numberArray[index]
-				);
+		System.out.println (
+			"\t| Target Sum " + target + " exists in Array [" + array + "] => " +
+			new HorowitzSahni (
+				numberArray,
+				target
+			).targetSumExists()
+		);
 
-			subsetSumSet.add (
-				numberArray[index]
-			);
+		System.out.println (
+			"\t|-----------------------------------------------------------------|"
+		);
 
-			subsetSumSet.add (
-				sum + numberArray[index]
-			);
-		}
-
-		return subsetTargetSumExistence;
-	}
-
-	@Override public boolean targetSumExists()
-	{
-		return targetSumExistenceArray()[numberArray().length - 1];
+		EnvManager.TerminateEnv();
 	}
 }

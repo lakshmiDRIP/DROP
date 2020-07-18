@@ -75,8 +75,7 @@ package org.drip.graph.subarray;
  */
 
 /**
- * <i>PseudoPolynomialDP</i> implements the Sub-set Sum Check using a Pseudo-Polynomial Time Dynamic
- * 	Programming Scheme. The References are:
+ * <i>HorowitzSahni</i> implements the Sub-set Sum Check using the Horowitz-Sahni Scheme. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -114,12 +113,67 @@ package org.drip.graph.subarray;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PseudoPolynomialDP
+public class HorowitzSahni
 	extends org.drip.graph.subarray.SubsetSum
 {
 
+	private static final java.util.Set<java.lang.Integer> SumSet (
+		final int[] numberArray,
+		final java.util.Set<java.lang.Integer> prevSumSet,
+		final int currentIndex)
+	{
+		int arrayLength = numberArray.length;
+
+		if (currentIndex >= arrayLength)
+		{
+			return prevSumSet;
+		}
+
+		int prevSumSetSize = prevSumSet.size();
+
+		java.util.TreeSet<java.lang.Integer> compositeCurrentSumSet =
+			new java.util.TreeSet<java.lang.Integer>();
+
+		for (int nextIndex = currentIndex;
+			nextIndex < arrayLength;
+			++nextIndex)
+		{
+			java.util.TreeSet<java.lang.Integer> currentSumSet = new java.util.TreeSet<java.lang.Integer>();
+
+			if (0 != prevSumSetSize)
+			{
+				for (int prevSum : prevSumSet)
+				{
+					currentSumSet.add (
+						prevSum + numberArray[nextIndex]
+					);
+				}
+			}
+			else
+			{
+				currentSumSet.add (
+					numberArray[nextIndex]
+				);
+			}
+
+			compositeCurrentSumSet.addAll (
+				currentSumSet
+			);
+
+			compositeCurrentSumSet.addAll (
+				SumSet (
+					numberArray,
+					currentSumSet,
+					nextIndex + 1
+				)
+			);
+		}
+
+		return compositeCurrentSumSet;
+	}
+
 	/**
-	 * PseudoPolynomialDP Constructor
+	 * HorowitzSahni Constructor
 	 * 
 	 * @param numberArray The Input Number Array
 	 * @param target The Sum Target
@@ -127,7 +181,7 @@ public class PseudoPolynomialDP
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public PseudoPolynomialDP (
+	public HorowitzSahni (
 		final int[] numberArray,
 		final int target)
 		throws java.lang.Exception
@@ -138,72 +192,61 @@ public class PseudoPolynomialDP
 		);
 	}
 
-	/**
-	 * Generate the Array of Target Sum Existence Flags
-	 * 
-	 * @return Array of Target Sum Existence Flags
-	 */
-
-	public boolean[] targetSumExistenceArray()
-	{
-		int target = target();
-
-		int[] numberArray = numberArray();
-
-		int sumOfNegativeValues = 0;
-		int sumOfPositiveValues = 0;
-		int arrayLength = numberArray.length;
-		boolean[] subsetTargetSumExistence = new boolean[arrayLength];
-		int subsetTargetSumExistenceIndex = 0;
-		int sum = numberArray[0];
-
-		for (int number : numberArray)
-		{
-			if (0 > number)
-				sumOfNegativeValues = sumOfNegativeValues + number;
-			else if (0 < number)
-				sumOfPositiveValues = sumOfPositiveValues + number;
-
-			subsetTargetSumExistence[subsetTargetSumExistenceIndex++] = false;
-		}
-
-		if (sumOfNegativeValues > target || sumOfPositiveValues < target)
-		{
-			return subsetTargetSumExistence;
-		}
-
-		java.util.HashSet<java.lang.Integer> subsetSumSet = new java.util.HashSet<java.lang.Integer>();
-
-		subsetTargetSumExistence[0] = numberArray[0] == target;
-
-		subsetSumSet.add (
-			numberArray[0]
-		);
-
-		for (int index = 1;
-			index < arrayLength;
-			++index)
-		{
-			subsetTargetSumExistence[index] = subsetTargetSumExistence[index - 1] ||
-				numberArray[index] == target ||
-				subsetSumSet.contains (
-					target - numberArray[index]
-				);
-
-			subsetSumSet.add (
-				numberArray[index]
-			);
-
-			subsetSumSet.add (
-				sum + numberArray[index]
-			);
-		}
-
-		return subsetTargetSumExistence;
-	}
-
 	@Override public boolean targetSumExists()
 	{
-		return targetSumExistenceArray()[numberArray().length - 1];
+		int[] numberArray = numberArray();
+
+		int target = target();
+
+		int subArray1Index = 0;
+		int subArray2Index = 0;
+		int arrayLength = numberArray.length;
+		int[] subArray2 = new int[arrayLength / 2];
+		int prevNumber2 = java.lang.Integer.MIN_VALUE;
+		int[] subArray1 = new int[arrayLength - arrayLength / 2];
+
+		for (int index = 0;
+			index < numberArray.length;
+			++index)
+		{
+			if (0 == index % 2)
+				subArray1[subArray1Index++] = numberArray[index];
+			else
+				subArray2[subArray2Index++] = numberArray[index];
+		}
+
+		java.util.Set<java.lang.Integer> ascendingSumSet1 = new java.util.TreeSet<java.lang.Integer>();
+
+		java.util.Set<java.lang.Integer> descendingSumSet2 = new java.util.TreeSet<java.lang.Integer>();
+
+		ascendingSumSet1 = SumSet (
+			numberArray,
+			ascendingSumSet1,
+			0
+		);
+
+		descendingSumSet2 = ((java.util.TreeSet<java.lang.Integer>) SumSet (
+			numberArray,
+			descendingSumSet2,
+			0
+		)).descendingSet();
+
+		for (int number1 : ascendingSumSet1)
+		{
+			for (int number2 : descendingSumSet2)
+			{
+				if (number2 >= prevNumber2)
+				{
+					if (target == number1 + number2)
+					{
+						return true;
+					}
+
+					number2 = prevNumber2;
+				}
+			}
+		}
+
+		return false;
 	}
 }
