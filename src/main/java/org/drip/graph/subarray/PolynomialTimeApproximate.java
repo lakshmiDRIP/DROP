@@ -124,6 +124,7 @@ public class PolynomialTimeApproximate
 	 * 
 	 * @param numberArray The Input Number Array
 	 * @param target The Sum Target
+	 * @param departureRatio The Departure Ratio
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */

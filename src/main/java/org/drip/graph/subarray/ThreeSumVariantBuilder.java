@@ -150,7 +150,7 @@ public class ThreeSumVariantBuilder
 			return null;
 		}
 
-		double offset = target / 3;
+		double offset = target / 3.;
 		int arrayLength = numberArray.length;
 		double[] modifiedArray = new double[arrayLength];
 
@@ -179,6 +179,147 @@ public class ThreeSumVariantBuilder
 			{
 				return new org.drip.graph.subarray.ThreeSumQuadraticHash (
 					modifiedArray
+				);
+			}
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct a 3SUM Check where the Target Sum across the Three Arrays is non-zero.
+	 * 
+	 * @param numberArrayA Number Array A
+	 * @param numberArrayB Number Array B
+	 * @param numberArrayC Number Array C
+	 * @param type 3SUM Check Type
+	 * 
+	 * @return The 3SUM Check
+	 */
+
+	public static final org.drip.graph.subarray.ThreeSum ThreeDistinctArrays (
+		final double[] numberArrayA,
+		final double[] numberArrayB,
+		final double[] numberArrayC,
+		final int type)
+	{
+		if (null == numberArrayA ||
+			null == numberArrayB ||
+			null == numberArrayC)
+		{
+			return null;
+		}
+
+		int index = 0;
+		int arrayLengthA = numberArrayA.length;
+		int arrayLengthB = numberArrayB.length;
+		int arrayLengthC = numberArrayC.length;
+		double[] numberArray = new double[arrayLengthA + arrayLengthB + arrayLengthC];
+
+		if (0 == arrayLengthA ||
+			0 == arrayLengthB ||
+			0 == arrayLengthC)
+		{
+			return null;
+		}
+
+		for (int indexA = 0;
+			indexA < arrayLengthA;
+			++indexA)
+		{
+			numberArray[index++] = 10. * numberArrayA[indexA] + 1;
+		}
+
+		for (int indexB = 0;
+			indexB < arrayLengthB;
+			++indexB)
+		{
+			numberArray[index++] = 10. * numberArrayB[indexB] + 2;
+		}
+
+		for (int indexC = 0;
+			indexC < arrayLengthC;
+			++indexC)
+		{
+			numberArray[index++] = 10. * numberArrayC[indexC] - 3;
+		}
+
+		try
+		{
+			if (COMPARATOR == type)
+			{
+				return new org.drip.graph.subarray.ThreeSumQuadraticComparator (
+					numberArray
+				);
+			}
+
+			if (HASH_TABLE == type)
+			{
+				return new org.drip.graph.subarray.ThreeSumQuadraticHash (
+					numberArray
+				);
+			}
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+
+	/**
+	 * Construct a 3SUM Check for i<sup>th</sup> element and j<sup>th</sup> element add up to
+	 *  (i + j)<sup>th</sup> for some i, j
+	 * 
+	 * @param numberArray Number Array
+	 * @param type 3SUM Check Type
+	 * 
+	 * @return The 3SUM Check
+	 */
+
+	public static final org.drip.graph.subarray.ThreeSum Convolution3SUM (
+		final double[] numberArray,
+		final int type)
+	{
+		if (null == numberArray)
+		{
+			return null;
+		}
+
+		int arrayLength = numberArray.length;
+		double[] convolutionArray = new double[arrayLength];
+
+		if (0 == arrayLength)
+		{
+			return null;
+		}
+
+		for (int i = 0;
+			i < arrayLength;
+			++i)
+		{
+			convolutionArray[i] = 2 * arrayLength * numberArray[i] + i;
+		}
+
+		try
+		{
+			if (COMPARATOR == type)
+			{
+				return new org.drip.graph.subarray.ThreeSumQuadraticComparator (
+					convolutionArray
+				);
+			}
+
+			if (HASH_TABLE == type)
+			{
+				return new org.drip.graph.subarray.ThreeSumQuadraticHash (
+					convolutionArray
 				);
 			}
 		}
