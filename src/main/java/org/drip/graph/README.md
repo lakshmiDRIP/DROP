@@ -40,6 +40,9 @@ DROP Graph Shortest Path Package implements the Shortest Path Generation Algorit
  * [***Soft Heap***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/softheap)
 DROP Soft Heap contains Soft Heap Based Approximate Priority Queue Implementation.
 
+ * [***Sub-Array***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/subarray)
+DROP Graph Sub-array Path Package implements the Algorithms for Sub-set Sum, k-Sum, and Maximum Sub-array Problems.
+
  * [***Tree Builder***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/treebuilder)
 DROP Graph Tree Builder maintains the Stubs for Spanning Tree Construction.
 
@@ -52,9 +55,15 @@ DROP Graph Tree Builder maintains the Stubs for Spanning Tree Construction.
 
  * Bader, D. A., and G. Cong (2006): Fast Shared Memory Algorithms for computing the Minimum Spanning Forests of Sparse Graphs <i>Journal of Parallel and Distributed Computing</i> <b>66 (11)</b> 1366-1378
 
+ * Bentley, J. (1984): Programming Pearls: Algorithm Design Techniques <i>Communications of the ACM</i> <b>27 (9)</b> 865-873
+
+ * Bentley, J. (1989): <i>Programming Pearls <sup>nd</sup> Edition</i> <b>Addison-Wesley</b> Reading MA
+
  * Bollobas, B. (1998): <i>Modern Graph Theory</i> <b>Springer</b>
 
  * Blum, M., R. W. Floyd, V. Pratt, R. L. Rivest, and R. E. Tarjan (1973): Time Bounds for Selection <i>Journal of Computer and System Sciences</i> <b>7 (4)</b> 448-461
+
+ * Bringmann, K. (2017): A near-linear Pseudo-polynomial Time Algorithm for Subset Sums <i>Proceedings of the 28<sup>th</sup> Annual ACM SIAM Symposium on Discrete Algorithms</i> 1073-1084
 
  * Brodal, G. S., G. Lagogiannis, and R. E. Tarjan (2012): Strict Fibonacci Heaps <i>Proceedings on the 44<sup>th</sup> Symposium on the Theory of Computing; STOC 12</i> 1177-1184
 
@@ -63,6 +72,8 @@ DROP Graph Tree Builder maintains the Stubs for Spanning Tree Construction.
  * Brodal, G. S., and C. Okasaki (1996): Optimal Purely Functional Priority Queues <i>Journal of Functional Programming</i> <b>6 (6)</b> 839-857
 
  * Brown, M. R. (1978): Implementation and Analysis of Binomial Queue Algorithms <i>SIAM Journal on Computing</i> <b>7 (3)</b> 298-319
+
+ * Chan, T. M. (2018): More Logarithmic Factor Speedups for 3SUM, (median+) Convolution, and some Geometric 3SUM Hard Problems <i>Proceedings of the 29<sup>th</sup> Annual ACM SIAM Symposium on Discrete Algorithms</i> 881-897
 
  * Chazelle, B. (2000): The Discrepancy Method: Randomness and Complexity https://www.cs.princeton.edu/~chazelle/pubs/book.pdf
 
@@ -88,13 +99,19 @@ DROP Graph Tree Builder maintains the Stubs for Spanning Tree Construction.
 
  * Floyd, R. W., and R. L. Rivest (1975): The Algorithm SELECT: for finding the i<sup>th</sup> smallest of n Elements <i>Communications of the ACM</i> <b>18 (3)</b> 173
 
+ * Gajentaan, A., and M. H. Overmars (1995): On a Class of O(n<sup>2</sup>) Problems in Computational Geometry <i>Computational Geometry: Theory and Applications</i> <b>5 (3)</b> 165-185
+
  * Grama, A., A. Gupta, G. Karypis, and V. Kumar (2003): <i>Introduction to Parallel Computing 2<sup>nd</sup> Edition</i> <b>Addison Wesley</b>
+
+ * Gries, D. (1982): A Note on a Standard Strategy for developing Loop Invariants and Loops <i>Science of Computer Programming</i> <b>2 (3)</b> 207-214
 
  * Gross, J. L., and J. Yellen (2005): <i>Graph Theory and its Applications</i> <b>Springer</b>
 
  * Hayward, R., and C. McDiarmid (1991): Average Case Analysis of Heap-building by Repeated Insertion <i>Journal of Algorithms</i> <b>12 (1)</b> 126-153
 
  * Hoare, C. A. R. (1961): Algorithm 65: Find <i>Communications of the ACM</i> <b>4 (1)</b> 321-322
+
+ * Horowitz, E., and S. Sahni (1974): Computing Partitions with Applications to the Knapsack Problem <i>Journal of the ACM</i> <b>21 (2)</b> 277-292
 
  * Kaplan, H., and U. Zwick (2009): A simpler implementation and analysis of Chazelle Soft Heaps https://epubs.siam.org/doi/abs/10.1137/1.9781611973068.53?mobileUi=0
 
@@ -103,6 +120,10 @@ DROP Graph Tree Builder maintains the Stubs for Spanning Tree Construction.
  * Kepner, J., and J. Gilbert (2011): <i>Graph Algorithms in the Language of Linear Algebra</i> <b>Society for Industrial and Applied Mathematics</b>
 
  * Kleinberg, J., and E. Tardos (2022): <i>Algorithm Design 2<sup>nd</sup> Edition</i> <b>Pearson</b>
+
+ * Koiliaris, K., and C. Xu (2016): A Faster Pseudo-polynomial Time Algorithm for Subset Sum https://arxiv.org/abs/1507.02318 <b>arXiV</b>
+
+ * Kopelowitz, T., S. Pettie, and E. Porat (2014): Higher Lower Bounds from the 3SUM Conjecture https://arxiv.org/abs/1407.6756 <b>arXiV</b>
 
  * Knuth, D. (1997): <i>The Art of Computer Programming 3<sup>rd</sup> Edition</i> <b>Addison-Wesley</b>
 
@@ -113,6 +134,8 @@ DROP Graph Tree Builder maintains the Stubs for Spanning Tree Construction.
  * Musser, D. R. (1997): Introselect Sorting and Selection Algorithms <i>Software: Practice and Experience</i> <b>27 (8)</b> 983-993
 
  * Osipov, V., P. Sanders, and J. Singler (2009): The Filter-Kruskal Minimum Spanning Tree Algorithm http://algo2.iti.kit.edu/documents/fkruskal.pdf
+
+ * Patrascu, M. (2010): Towards Polynomial Lower Bounds for Dynamic Problems <i>Proceedings of the 42<sup>nd</sup> ACM Symposium on Theory of Computing</i> 603-610
 
  * Pettie, S., and V. Ramachandran (2002): An Optimal Minimum Spanning Tree <i>Algorithm Journal of the ACM</i> <b>49 (1)</b> 16-34
 
@@ -134,6 +157,8 @@ DROP Graph Tree Builder maintains the Stubs for Spanning Tree Construction.
 
  * Sundell, H., and P. Tsigas (2005): Fast and Lock-free Concurrent Priority Queues for Multi-threaded Systems <i>Journal of Parallel and Distributed Computing</i> <b>65 (5)</b> 609-627
 
+ * Takaoka, T. (2002): Efficient Algorithms for the Maximum Sub-array Problem by Distance Matrix Multiplication https://www.sciencedirect.com/science/article/pii/S1571066104003135?via%3Dihub
+
  * Vuillemin, J. (1978): A Data Structure for Manipulating Priority Queues <i>Communications of the ACM</i> <b>21 (4)</b> 309-315
 
  * Wikipedia (2019): Binomial Heap https://en.wikipedia.org/wiki/Binomial_heap
@@ -150,6 +175,8 @@ DROP Graph Tree Builder maintains the Stubs for Spanning Tree Construction.
 
  * Wikipedia (2019): Selection Algorithm https://en.wikipedia.org/wiki/Selection_algorithm
 
+ * Wikipedia (2020): 3Sum https://en.wikipedia.org/wiki/3SUM
+
  * Wikipedia (2020): Bellman-Ford Algorithm https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
 
  * Wikipedia (2020): Binary Heap https://en.wikipedia.org/wiki/Binary_heap
@@ -160,6 +187,8 @@ DROP Graph Tree Builder maintains the Stubs for Spanning Tree Construction.
 
  * Wikipedia (2020): Introselect https://en.wikipedia.org/wiki/Introselect
 
+ * Wikipedia (2020): Maximum Sub-array Problem https://en.wikipedia.org/wiki/Maximum_subarray_problem
+
  * Wikipedia (2020): Median Of Medians https://en.wikipedia.org/wiki/Median_of_medians
 
  * Wikipedia (2020): Minimum Spanning Tree https://en.wikipedia.org/wiki/Minimum_spanning_tree
@@ -167,6 +196,8 @@ DROP Graph Tree Builder maintains the Stubs for Spanning Tree Construction.
  * Wikipedia (2020): Priority Queue https://en.wikipedia.org/wiki/Priority_queue
 
  * Wikipedia (2020): Spanning Tree https://en.wikipedia.org/wiki/Spanning_tree
+
+ * Wikipedia (2020): Subset Sum Problem https://en.wikipedia.org/wiki/Subset_sum_problem
 
 
 ## DROP Specifications

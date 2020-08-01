@@ -75,7 +75,7 @@ package org.drip.graph.astar;
  */
 
 /**
- * <i>StaticWeightFHeuristic</i> implements the Statically Weighted A<sup>*</sup> F-Heuristic Value at a
+ * <i>DynamicWeightFHeuristic</i> implements the Dynamically Weighted A<sup>*</sup> F-Heuristic Value at a
  * 	Vertex. The References are:
  * 
  * <br><br>
@@ -115,24 +115,27 @@ package org.drip.graph.astar;
  * @author Lakshmi Krishnamurthy
  */
 
-public class StaticWeightFHeuristic
+public class DynamicWeightFHeuristic
 	extends org.drip.graph.astar.FHeuristic
 {
 	private double _epsilon = java.lang.Double.NaN;
+	private org.drip.graph.astar.Heuristic _wHeuristic = null;
 
 	/**
 	 * StaticWeightFHeuristic Constructor
 	 * 
 	 * @param gHeuristic The G Heuristic
 	 * @param hHeuristic The H Heuristic
+	 * @param wHeuristic The W Heuristic
 	 * @param epsilon Epsilon
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public StaticWeightFHeuristic (
+	public DynamicWeightFHeuristic (
 		final org.drip.graph.astar.Heuristic gHeuristic,
 		final org.drip.graph.astar.Heuristic hHeuristic,
+		final org.drip.graph.astar.Heuristic wHeuristic,
 		final double epsilon)
 		throws java.lang.Exception
 	{
@@ -143,11 +146,12 @@ public class StaticWeightFHeuristic
 
 		if (!org.drip.numerical.common.NumberUtil.IsValid (
 				_epsilon = epsilon
-			) || 1. >= _epsilon
+			) || 1. >= _epsilon ||
+			null == (_wHeuristic = wHeuristic)
 		)
 		{
 			throw new java.lang.Exception (
-				"StaticWeightFHeuristic Constructor => Invalid Inputs"
+				"DynamicWeightFHeuristic Constructor => Invalid Inputs"
 			);
 		}
 	}
@@ -163,13 +167,27 @@ public class StaticWeightFHeuristic
 		return _epsilon;
 	}
 
+	/**
+	 * Retrieve the W Heuristic
+	 * 
+	 * @return The W Heuristic
+	 */
+
+	public org.drip.graph.astar.Heuristic wHeuristic()
+	{
+		return _wHeuristic;
+	}
+
 	@Override public double evaluate (
 		final org.drip.graph.core.Vertex vertex)
 		throws java.lang.Exception
 	{
 		return gHeuristic().evaluate (
 			vertex
-		) + _epsilon * hHeuristic().evaluate (
+		) + (1. + _epsilon * _wHeuristic.evaluate (
+				vertex
+			)
+		) * hHeuristic().evaluate (
 			vertex
 		);
 	}

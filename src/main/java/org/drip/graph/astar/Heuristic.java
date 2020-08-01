@@ -75,7 +75,7 @@ package org.drip.graph.astar;
  */
 
 /**
- * <i>HeuristicFunction</i> exposes the Heuristic Value at a Vertex. The References are:
+ * <i>Heuristic</i> exposes the Heuristic Value at a Vertex. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -114,7 +114,7 @@ package org.drip.graph.astar;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface HeuristicFunction
+public interface Heuristic
 {
 
 	/**

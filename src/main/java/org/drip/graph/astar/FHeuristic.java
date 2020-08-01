@@ -115,10 +115,10 @@ package org.drip.graph.astar;
  */
 
 public class FHeuristic
-	implements org.drip.graph.astar.HeuristicFunction
+	implements org.drip.graph.astar.Heuristic
 {
-	private org.drip.graph.astar.HeuristicFunction _gHeuristic = null;
-	private org.drip.graph.astar.HeuristicFunction _hHeuristic = null;
+	private org.drip.graph.astar.Heuristic _gHeuristic = null;
+	private org.drip.graph.astar.Heuristic _hHeuristic = null;
 
 	/**
 	 * FHeuristic Constructor
@@ -130,8 +130,8 @@ public class FHeuristic
 	 */
 
 	public FHeuristic (
-		final org.drip.graph.astar.HeuristicFunction gHeuristic,
-		final org.drip.graph.astar.HeuristicFunction hHeuristic)
+		final org.drip.graph.astar.Heuristic gHeuristic,
+		final org.drip.graph.astar.Heuristic hHeuristic)
 		throws java.lang.Exception
 	{
 		if (null == (_gHeuristic = gHeuristic) ||
@@ -150,7 +150,7 @@ public class FHeuristic
 	 * @return The G Heuristic
 	 */
 
-	public org.drip.graph.astar.HeuristicFunction gHeuristic()
+	public org.drip.graph.astar.Heuristic gHeuristic()
 	{
 		return _gHeuristic;
 	}
@@ -161,7 +161,7 @@ public class FHeuristic
 	 * @return The H Heuristic
 	 */
 
-	public org.drip.graph.astar.HeuristicFunction hHeuristic()
+	public org.drip.graph.astar.Heuristic hHeuristic()
 	{
 		return _hHeuristic;
 	}

@@ -1428,50 +1428,26 @@ public class ArrayUtil
 	/**
 	 * Find all pairs of integers in the array which have difference equal to the number d.
 	 * 
-	 * @param x The Array
-	 * @param d The Difference
+	 * @param numberArray The Number Array
+	 * @param x The Difference
 	 * 
 	 * @return All pairs of integers in the array which have difference equal to the number d.
 	 */
 
-	public static final java.util.List<int[]> ArrayPairList (
-		int[] x,
-		int d)
-	{
-		if (null == x || 0 == x.length)
-		{
-			return null;
-		}
+	public static final java.util.List<int[]> ArrayPairList (int[] numberArray, int x) {
+		if (null == numberArray || 0 == numberArray.length) return null;
 
 		java.util.List<int[]> arrayPairList = new java.util.ArrayList<int[]>();
 
-		java.util.Arrays.sort (
-			x
-		);
+		java.util.HashSet<java.lang.Integer> numberSet = new java.util.HashSet<java.lang.Integer>();
 
-		for (int i = 0;
-			i < x.length - 1;
-			++i)
-		{
-			int j = x.length - 1;
+		for (int number : numberArray) {
+			if (numberSet.contains (number - x))
+				arrayPairList.add (new int[] {number, number - x});
+			else if (numberSet.contains (number + x))
+				arrayPairList.add (new int[] {number, number + x});
 
-			while (j > i &&
-				x[j] - x[i] >= d
-			)
-			{
-				if (x[j] == x[i] + d)
-				{
-					arrayPairList.add (
-						new int[]
-						{
-							x[i],
-							x[j]
-						}
-					);
-				}
-
-				--j;
-			}
+			numberSet.add (number);
 		}
 
 		return arrayPairList;
@@ -4765,20 +4741,9 @@ public class ArrayUtil
 		final String[] argumentArray)
 		throws java.lang.Exception
 	{
-    	int[] numberArray = new int[] {1, 5, 1, 1, 6, 4};
-
-    	WiggleSort2 (numberArray);
-
-    	System.out.println();
-
-    	for (int i : numberArray) System.out.print (i + ",");
-
-    	numberArray = new int[] {1, 3, 2, 2, 3, 1};
-
-    	WiggleSort2 (numberArray);
-
-    	System.out.println();
-
-    	for (int i : numberArray) System.out.print (i + ",");
+    	int x = -4;
+    	System.out.println (x>>1);
+    	int y = 4;
+    	System.out.println (y>>1);
 	}
 }
