@@ -75,8 +75,8 @@ package org.drip.graph.astar;
  */
 
 /**
- * <i>DynamicWeightFHeuristic</i> implements the Dynamically Weighted A<sup>*</sup> F-Heuristic Value at a
- * 	Vertex. The References are:
+ * <i>VertexContext</i> holds the Current Vertex, its Parent, and the most recently expanded Vertexes for use
+ * 	in the Alpha A<sup>*</sup> Heuristic Function. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -115,139 +115,70 @@ package org.drip.graph.astar;
  * @author Lakshmi Krishnamurthy
  */
 
-public class DynamicWeightFHeuristic
-	extends org.drip.graph.astar.FHeuristic
+public class VertexContext
 {
-	private double _epsilon = java.lang.Double.NaN;
-	private org.drip.graph.astar.VertexFunction _wHeuristic = null;
+	private org.drip.graph.core.Vertex _parent = null;
+	private org.drip.graph.core.Vertex _current = null;
+	private org.drip.graph.core.Vertex _mostRecentlyExpanded = null;
 
 	/**
-	 * Construct the Pohl (1970) Version of the DynamicWeightFHeuristic
+	 * VertexContext Constructor
 	 * 
-	 * @param gHeuristic The G Heuristic
-	 * @param hHeuristic The H Heuristic
-	 * @param depthFunction The Depth Function
-	 * @param epsilon Epsilon
-	 * @param anticipatedSolutionLength Length of the Anticipated Solution
-	 * 
-	 * @return Pohl (1970) Version of the DynamicWeightFHeuristic
-	 */
-
-	public static final DynamicWeightFHeuristic Pohl1970 (
-		final org.drip.graph.astar.VertexFunction gHeuristic,
-		final org.drip.graph.astar.VertexFunction hHeuristic,
-		final org.drip.graph.astar.VertexFunction depthFunction,
-		final double epsilon,
-		final double anticipatedSolutionLength)
-	{
-		if (null == depthFunction ||
-			!org.drip.numerical.common.NumberUtil.IsValid (
-				anticipatedSolutionLength
-			) || 0. >= anticipatedSolutionLength
-		)
-		{
-			return null;
-		}
-
-		try
-		{
-			return new DynamicWeightFHeuristic (
-				gHeuristic,
-				hHeuristic,
-				new org.drip.graph.astar.VertexFunction()
-				{
-					@Override public double evaluate (
-						final org.drip.graph.core.Vertex vertex)
-						throws java.lang.Exception
-					{
-						double wHeuristicValue = 1. - (
-							depthFunction.evaluate (
-								vertex
-							) / anticipatedSolutionLength
-						);
-
-						return 0. > wHeuristicValue ? 0. : wHeuristicValue;
-					}
-				},
-				epsilon
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * DynamicWeightFHeuristic Constructor
-	 * 
-	 * @param gHeuristic The G Heuristic
-	 * @param hHeuristic The H Heuristic
-	 * @param wHeuristic The W Heuristic
-	 * @param epsilon Epsilon
+	 * @param current Current Vertex
+	 * @param parent Parent Vertex
+	 * @param mostRecentlyExpanded Most Recently Expanded Vertex
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public DynamicWeightFHeuristic (
-		final org.drip.graph.astar.VertexFunction gHeuristic,
-		final org.drip.graph.astar.VertexFunction hHeuristic,
-		final org.drip.graph.astar.VertexFunction wHeuristic,
-		final double epsilon)
+	public VertexContext (
+		final org.drip.graph.core.Vertex current,
+		final org.drip.graph.core.Vertex parent,
+		final org.drip.graph.core.Vertex mostRecentlyExpanded)
 		throws java.lang.Exception
 	{
-		super (
-			gHeuristic,
-			hHeuristic
-		);
-
-		if (!org.drip.numerical.common.NumberUtil.IsValid (
-				_epsilon = epsilon
-			) || 1. >= _epsilon ||
-			null == (_wHeuristic = wHeuristic)
+		if (null == (_current = current) ||
+			null == (_mostRecentlyExpanded = mostRecentlyExpanded)
 		)
 		{
 			throw new java.lang.Exception (
-				"DynamicWeightFHeuristic Constructor => Invalid Inputs"
+				"VertexContext Constructor => Invalid Inputs"
 			);
 		}
+
+		_parent = parent;
 	}
 
 	/**
-	 * Retrieve the "Epsilon" Weight
+	 * Retrieve the Current Vertex
 	 * 
-	 * @return The "Epsilon" Weight
+	 * @return The Current Vertex
 	 */
 
-	public double epsilon()
+	public org.drip.graph.core.Vertex current()
 	{
-		return _epsilon;
+		return _current;
 	}
 
 	/**
-	 * Retrieve the W Heuristic
+	 * Retrieve the Parent Vertex
 	 * 
-	 * @return The W Heuristic
+	 * @return The Parent Vertex
 	 */
 
-	public org.drip.graph.astar.VertexFunction wHeuristic()
+	public org.drip.graph.core.Vertex parent()
 	{
-		return _wHeuristic;
+		return _parent;
 	}
 
-	@Override public double evaluate (
-		final org.drip.graph.core.Vertex vertex)
-		throws java.lang.Exception
+	/**
+	 * Retrieve the Most Recently Expanded Vertex
+	 * 
+	 * @return The Most Recently Expanded Vertex
+	 */
+
+	public org.drip.graph.core.Vertex mostRecentlyExpanded()
 	{
-		return gHeuristic().evaluate (
-			vertex
-		) + (1. + _epsilon * _wHeuristic.evaluate (
-				vertex
-			)
-		) * hHeuristic().evaluate (
-			vertex
-		);
+		return _mostRecentlyExpanded;
 	}
 }

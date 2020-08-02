@@ -75,8 +75,8 @@ package org.drip.graph.astar;
  */
 
 /**
- * <i>DynamicWeightFHeuristic</i> implements the Dynamically Weighted A<sup>*</sup> F-Heuristic Value at a
- * 	Vertex. The References are:
+ * <i>MalikAllardFHeuristic</i> implements the Statically Weighted Primary/Backtracking A<sup>*</sup>
+ * 	F-Heuristic Value at a Vertex. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -115,138 +115,98 @@ package org.drip.graph.astar;
  * @author Lakshmi Krishnamurthy
  */
 
-public class DynamicWeightFHeuristic
-	extends org.drip.graph.astar.FHeuristic
+public class MalikAllardFHeuristic
+	implements org.drip.graph.astar.VertexFunction
 {
-	private double _epsilon = java.lang.Double.NaN;
-	private org.drip.graph.astar.VertexFunction _wHeuristic = null;
+	private double _foundationFLoading = java.lang.Double.NaN;
+	private double _nearAdmissibleHFLoading = java.lang.Double.NaN;
+	private org.drip.graph.astar.FHeuristic _foundationFHeuristic = null;
+	private org.drip.graph.astar.VertexFunction _nearAdmissibleHFHeuristic = null;
 
 	/**
-	 * Construct the Pohl (1970) Version of the DynamicWeightFHeuristic
+	 * MalikAllardFHeuristic Constructor
 	 * 
-	 * @param gHeuristic The G Heuristic
-	 * @param hHeuristic The H Heuristic
-	 * @param depthFunction The Depth Function
-	 * @param epsilon Epsilon
-	 * @param anticipatedSolutionLength Length of the Anticipated Solution
-	 * 
-	 * @return Pohl (1970) Version of the DynamicWeightFHeuristic
-	 */
-
-	public static final DynamicWeightFHeuristic Pohl1970 (
-		final org.drip.graph.astar.VertexFunction gHeuristic,
-		final org.drip.graph.astar.VertexFunction hHeuristic,
-		final org.drip.graph.astar.VertexFunction depthFunction,
-		final double epsilon,
-		final double anticipatedSolutionLength)
-	{
-		if (null == depthFunction ||
-			!org.drip.numerical.common.NumberUtil.IsValid (
-				anticipatedSolutionLength
-			) || 0. >= anticipatedSolutionLength
-		)
-		{
-			return null;
-		}
-
-		try
-		{
-			return new DynamicWeightFHeuristic (
-				gHeuristic,
-				hHeuristic,
-				new org.drip.graph.astar.VertexFunction()
-				{
-					@Override public double evaluate (
-						final org.drip.graph.core.Vertex vertex)
-						throws java.lang.Exception
-					{
-						double wHeuristicValue = 1. - (
-							depthFunction.evaluate (
-								vertex
-							) / anticipatedSolutionLength
-						);
-
-						return 0. > wHeuristicValue ? 0. : wHeuristicValue;
-					}
-				},
-				epsilon
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * DynamicWeightFHeuristic Constructor
-	 * 
-	 * @param gHeuristic The G Heuristic
-	 * @param hHeuristic The H Heuristic
-	 * @param wHeuristic The W Heuristic
-	 * @param epsilon Epsilon
+	 * @param foundationFHeuristic Foundation F Heuristic
+	 * @param nearAdmissibleHFHeuristic Near-admissible H<sub>F<sub> Heuristic
+	 * @param foundationFLoading Loading for the Foundation F Heuristic
+	 * @param nearAdmissibleHFLoading Loading for the Near-Admissible H<sub>F<sub> Heuristic
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public DynamicWeightFHeuristic (
-		final org.drip.graph.astar.VertexFunction gHeuristic,
-		final org.drip.graph.astar.VertexFunction hHeuristic,
-		final org.drip.graph.astar.VertexFunction wHeuristic,
-		final double epsilon)
+	public MalikAllardFHeuristic (
+		final org.drip.graph.astar.FHeuristic foundationFHeuristic,
+		final org.drip.graph.astar.VertexFunction nearAdmissibleHFHeuristic,
+		final double foundationFLoading,
+		final double nearAdmissibleHFLoading)
 		throws java.lang.Exception
 	{
-		super (
-			gHeuristic,
-			hHeuristic
-		);
-
-		if (!org.drip.numerical.common.NumberUtil.IsValid (
-				_epsilon = epsilon
-			) || 1. >= _epsilon ||
-			null == (_wHeuristic = wHeuristic)
+		if (null == (_foundationFHeuristic = foundationFHeuristic) ||
+			null == (_nearAdmissibleHFHeuristic = nearAdmissibleHFHeuristic) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (
+				_foundationFLoading = foundationFLoading
+			) || !org.drip.numerical.common.NumberUtil.IsValid (
+				_nearAdmissibleHFLoading = nearAdmissibleHFLoading
+			)
 		)
 		{
 			throw new java.lang.Exception (
-				"DynamicWeightFHeuristic Constructor => Invalid Inputs"
+				"MalikAllardFHeuristic Constructor => Invalid Inputs"
 			);
 		}
 	}
 
 	/**
-	 * Retrieve the "Epsilon" Weight
+	 * Retrieve the Foundation F Heuristic
 	 * 
-	 * @return The "Epsilon" Weight
+	 * @return The Foundation F Heuristic
 	 */
 
-	public double epsilon()
+	public org.drip.graph.astar.FHeuristic foundationFHeuristic()
 	{
-		return _epsilon;
+		return _foundationFHeuristic;
 	}
 
 	/**
-	 * Retrieve the W Heuristic
+	 * Retrieve the Near-admissible H<sub>F<sub> Heuristic
 	 * 
-	 * @return The W Heuristic
+	 * @return The Near-admissible H<sub>F<sub> Heuristic
 	 */
 
-	public org.drip.graph.astar.VertexFunction wHeuristic()
+	public org.drip.graph.astar.VertexFunction nearAdmissibleHFHeuristic()
 	{
-		return _wHeuristic;
+		return _nearAdmissibleHFHeuristic;
+	}
+
+	/**
+	 * Retrieve the Loading for the Foundation F Heuristic
+	 * 
+	 * @return The Loading for the Foundation F Heuristic
+	 */
+
+	public double foundationFLoading()
+	{
+		return _foundationFLoading;
+	}
+
+	/**
+	 * Retrieve the Loading for the Near-Admissible H<sub>F<sub> Heuristic
+	 * 
+	 * @return The Loading for the Near-Admissible H<sub>F<sub> Heuristic
+	 */
+
+	public double nearAdmissibleHFLoading()
+	{
+		return _nearAdmissibleHFLoading;
 	}
 
 	@Override public double evaluate (
 		final org.drip.graph.core.Vertex vertex)
 		throws java.lang.Exception
 	{
-		return gHeuristic().evaluate (
+		return _foundationFLoading * _foundationFHeuristic.evaluate (
 			vertex
-		) + (1. + _epsilon * _wHeuristic.evaluate (
-				vertex
-			)
-		) * hHeuristic().evaluate (
+		) + _nearAdmissibleHFLoading * _nearAdmissibleHFHeuristic.evaluate (
 			vertex
 		);
 	}

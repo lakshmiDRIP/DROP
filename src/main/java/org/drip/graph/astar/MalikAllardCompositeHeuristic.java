@@ -75,8 +75,8 @@ package org.drip.graph.astar;
  */
 
 /**
- * <i>DynamicWeightFHeuristic</i> implements the Dynamically Weighted A<sup>*</sup> F-Heuristic Value at a
- * 	Vertex. The References are:
+ * <i>MalikAllardCompositeHeuristic</i> implements the Composite Malik and Allard (1983) A<sup>*</sup>
+ * 	F-Heuristic Value at a Vertex. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -115,61 +115,48 @@ package org.drip.graph.astar;
  * @author Lakshmi Krishnamurthy
  */
 
-public class DynamicWeightFHeuristic
-	extends org.drip.graph.astar.FHeuristic
+public class MalikAllardCompositeHeuristic
 {
-	private double _epsilon = java.lang.Double.NaN;
-	private org.drip.graph.astar.VertexFunction _wHeuristic = null;
+	private org.drip.graph.astar.MalikAllardFHeuristic _primary = null;
+	private org.drip.graph.astar.MalikAllardFHeuristic _backtracking = null;
 
 	/**
-	 * Construct the Pohl (1970) Version of the DynamicWeightFHeuristic
+	 * Construct a Near-Admissible MalikAllardCompositeHeuristic Instance
 	 * 
-	 * @param gHeuristic The G Heuristic
-	 * @param hHeuristic The H Heuristic
-	 * @param depthFunction The Depth Function
-	 * @param epsilon Epsilon
-	 * @param anticipatedSolutionLength Length of the Anticipated Solution
+	 * @param foundationFHeuristic Foundation F Heuristic
+	 * @param nearAdmissibleHFHeuristic Near-admissible H<sub>F<sub> Heuristic
+	 * @param primaryFoundationFLoading Primary Loading for the Foundation F Heuristic
+	 * @param primaryNearAdmissibleHFLoading Primary Loading for the Near-Admissible H<sub>F<sub> Heuristic
+	 * @param backTrackingFoundationFLoading Back-tracking Loading for the Foundation F Heuristic
+	 * @param backTrackingNearAdmissibleHFLoading Back-tracking Loading for the Near-Admissible H<sub>F<sub>
+	 * 		Heuristic
 	 * 
-	 * @return Pohl (1970) Version of the DynamicWeightFHeuristic
+	 * @return The Near-Admissible MalikAllardCompositeHeuristic Instance
 	 */
 
-	public static final DynamicWeightFHeuristic Pohl1970 (
-		final org.drip.graph.astar.VertexFunction gHeuristic,
-		final org.drip.graph.astar.VertexFunction hHeuristic,
-		final org.drip.graph.astar.VertexFunction depthFunction,
-		final double epsilon,
-		final double anticipatedSolutionLength)
+	public static final MalikAllardCompositeHeuristic NearAdmissible (
+		final org.drip.graph.astar.FHeuristic foundationFHeuristic,
+		final org.drip.graph.astar.VertexFunction nearAdmissibleHFHeuristic,
+		final double primaryFoundationFLoading,
+		final double primaryNearAdmissibleHFLoading,
+		final double backTrackingFoundationFLoading,
+		final double backTrackingNearAdmissibleHFLoading)
 	{
-		if (null == depthFunction ||
-			!org.drip.numerical.common.NumberUtil.IsValid (
-				anticipatedSolutionLength
-			) || 0. >= anticipatedSolutionLength
-		)
-		{
-			return null;
-		}
-
 		try
 		{
-			return new DynamicWeightFHeuristic (
-				gHeuristic,
-				hHeuristic,
-				new org.drip.graph.astar.VertexFunction()
-				{
-					@Override public double evaluate (
-						final org.drip.graph.core.Vertex vertex)
-						throws java.lang.Exception
-					{
-						double wHeuristicValue = 1. - (
-							depthFunction.evaluate (
-								vertex
-							) / anticipatedSolutionLength
-						);
-
-						return 0. > wHeuristicValue ? 0. : wHeuristicValue;
-					}
-				},
-				epsilon
+			return new MalikAllardCompositeHeuristic (
+				new org.drip.graph.astar.MalikAllardFHeuristic (
+					foundationFHeuristic,
+					nearAdmissibleHFHeuristic,
+					primaryFoundationFLoading,
+					primaryNearAdmissibleHFLoading
+				),
+				new org.drip.graph.astar.MalikAllardFHeuristic (
+					foundationFHeuristic,
+					nearAdmissibleHFHeuristic,
+					backTrackingFoundationFLoading,
+					backTrackingNearAdmissibleHFLoading
+				)
 			);
 		}
 		catch (java.lang.Exception e)
@@ -181,73 +168,48 @@ public class DynamicWeightFHeuristic
 	}
 
 	/**
-	 * DynamicWeightFHeuristic Constructor
+	 * MalikAllardCompositeHeuristic Constructor
 	 * 
-	 * @param gHeuristic The G Heuristic
-	 * @param hHeuristic The H Heuristic
-	 * @param wHeuristic The W Heuristic
-	 * @param epsilon Epsilon
+	 * @param primary Primary Malik-Allard Heuristic
+	 * @param backtracking Back-tracking Malik-Allard Heuristic
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public DynamicWeightFHeuristic (
-		final org.drip.graph.astar.VertexFunction gHeuristic,
-		final org.drip.graph.astar.VertexFunction hHeuristic,
-		final org.drip.graph.astar.VertexFunction wHeuristic,
-		final double epsilon)
+	public MalikAllardCompositeHeuristic (
+		final org.drip.graph.astar.MalikAllardFHeuristic primary,
+		final org.drip.graph.astar.MalikAllardFHeuristic backtracking)
 		throws java.lang.Exception
 	{
-		super (
-			gHeuristic,
-			hHeuristic
-		);
-
-		if (!org.drip.numerical.common.NumberUtil.IsValid (
-				_epsilon = epsilon
-			) || 1. >= _epsilon ||
-			null == (_wHeuristic = wHeuristic)
+		if (null == (_primary = primary) ||
+			null == (_backtracking = backtracking)
 		)
 		{
 			throw new java.lang.Exception (
-				"DynamicWeightFHeuristic Constructor => Invalid Inputs"
+				"MalikAllardCompositeHeuristic Constructor => Invalid Inputs"
 			);
 		}
 	}
 
 	/**
-	 * Retrieve the "Epsilon" Weight
+	 * Retrieve the Primary Malik-Allard (1983) Primary Heuristic
 	 * 
-	 * @return The "Epsilon" Weight
+	 * @return The Primary Malik-Allard (1983) Primary Heuristic
 	 */
 
-	public double epsilon()
+	public org.drip.graph.astar.MalikAllardFHeuristic primary()
 	{
-		return _epsilon;
+		return _primary;
 	}
 
 	/**
-	 * Retrieve the W Heuristic
+	 * Retrieve the Primary Malik-Allard (1983) Back-tracking Heuristic
 	 * 
-	 * @return The W Heuristic
+	 * @return The Primary Malik-Allard (1983) Back-tracking Heuristic
 	 */
 
-	public org.drip.graph.astar.VertexFunction wHeuristic()
+	public org.drip.graph.astar.MalikAllardFHeuristic backtracking()
 	{
-		return _wHeuristic;
-	}
-
-	@Override public double evaluate (
-		final org.drip.graph.core.Vertex vertex)
-		throws java.lang.Exception
-	{
-		return gHeuristic().evaluate (
-			vertex
-		) + (1. + _epsilon * _wHeuristic.evaluate (
-				vertex
-			)
-		) * hHeuristic().evaluate (
-			vertex
-		);
+		return _backtracking;
 	}
 }

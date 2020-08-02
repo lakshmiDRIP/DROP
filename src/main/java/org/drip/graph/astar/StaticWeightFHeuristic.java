@@ -131,8 +131,8 @@ public class StaticWeightFHeuristic
 	 */
 
 	public StaticWeightFHeuristic (
-		final org.drip.graph.astar.Heuristic gHeuristic,
-		final org.drip.graph.astar.Heuristic hHeuristic,
+		final org.drip.graph.astar.VertexFunction gHeuristic,
+		final org.drip.graph.astar.VertexFunction hHeuristic,
 		final double epsilon)
 		throws java.lang.Exception
 	{

@@ -75,8 +75,8 @@ package org.drip.graph.astar;
  */
 
 /**
- * <i>DynamicWeightFHeuristic</i> implements the Dynamically Weighted A<sup>*</sup> F-Heuristic Value at a
- * 	Vertex. The References are:
+ * <i>VertexContextWeightHeuristic</i> computes the Reese (1999) Epsilon-Admissible Weight Heuristic for use
+ * 	in the Alpha A<sup>*</sup> Heuristic Function. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -115,139 +115,100 @@ package org.drip.graph.astar;
  * @author Lakshmi Krishnamurthy
  */
 
-public class DynamicWeightFHeuristic
-	extends org.drip.graph.astar.FHeuristic
+public class VertexContextWeightHeuristic
 {
-	private double _epsilon = java.lang.Double.NaN;
-	private org.drip.graph.astar.VertexFunction _wHeuristic = null;
+	private double _bigLambda = java.lang.Double.NaN;
+	private double _smallLambda = java.lang.Double.NaN;
+	private org.drip.graph.astar.VertexFunction _gHeuristic = null;
 
 	/**
-	 * Construct the Pohl (1970) Version of the DynamicWeightFHeuristic
+	 * VertexContextWeightHeuristic Constructor
 	 * 
 	 * @param gHeuristic The G Heuristic
-	 * @param hHeuristic The H Heuristic
-	 * @param depthFunction The Depth Function
-	 * @param epsilon Epsilon
-	 * @param anticipatedSolutionLength Length of the Anticipated Solution
-	 * 
-	 * @return Pohl (1970) Version of the DynamicWeightFHeuristic
-	 */
-
-	public static final DynamicWeightFHeuristic Pohl1970 (
-		final org.drip.graph.astar.VertexFunction gHeuristic,
-		final org.drip.graph.astar.VertexFunction hHeuristic,
-		final org.drip.graph.astar.VertexFunction depthFunction,
-		final double epsilon,
-		final double anticipatedSolutionLength)
-	{
-		if (null == depthFunction ||
-			!org.drip.numerical.common.NumberUtil.IsValid (
-				anticipatedSolutionLength
-			) || 0. >= anticipatedSolutionLength
-		)
-		{
-			return null;
-		}
-
-		try
-		{
-			return new DynamicWeightFHeuristic (
-				gHeuristic,
-				hHeuristic,
-				new org.drip.graph.astar.VertexFunction()
-				{
-					@Override public double evaluate (
-						final org.drip.graph.core.Vertex vertex)
-						throws java.lang.Exception
-					{
-						double wHeuristicValue = 1. - (
-							depthFunction.evaluate (
-								vertex
-							) / anticipatedSolutionLength
-						);
-
-						return 0. > wHeuristicValue ? 0. : wHeuristicValue;
-					}
-				},
-				epsilon
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * DynamicWeightFHeuristic Constructor
-	 * 
-	 * @param gHeuristic The G Heuristic
-	 * @param hHeuristic The H Heuristic
-	 * @param wHeuristic The W Heuristic
-	 * @param epsilon Epsilon
+	 * @param smallLambda The Small Lambda
+	 * @param bigLambda The Big Lambda
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public DynamicWeightFHeuristic (
+	public VertexContextWeightHeuristic (
 		final org.drip.graph.astar.VertexFunction gHeuristic,
-		final org.drip.graph.astar.VertexFunction hHeuristic,
-		final org.drip.graph.astar.VertexFunction wHeuristic,
-		final double epsilon)
+		final double smallLambda,
+		final double bigLambda)
 		throws java.lang.Exception
 	{
-		super (
-			gHeuristic,
-			hHeuristic
-		);
-
-		if (!org.drip.numerical.common.NumberUtil.IsValid (
-				_epsilon = epsilon
-			) || 1. >= _epsilon ||
-			null == (_wHeuristic = wHeuristic)
+		if (null == (_gHeuristic = gHeuristic) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (
+				_smallLambda = smallLambda
+			) || !org.drip.numerical.common.NumberUtil.IsValid (
+				_bigLambda = bigLambda
+			) || _smallLambda > _bigLambda
 		)
 		{
 			throw new java.lang.Exception (
-				"DynamicWeightFHeuristic Constructor => Invalid Inputs"
+				"VertexContextWeightHeuristic Constructor => Invalid Inputs"
 			);
 		}
 	}
 
 	/**
-	 * Retrieve the "Epsilon" Weight
+	 * Retrieve the G Heuristic
 	 * 
-	 * @return The "Epsilon" Weight
+	 * @return The G Heuristic
 	 */
 
-	public double epsilon()
+	public org.drip.graph.astar.VertexFunction gHeuristic()
 	{
-		return _epsilon;
+		return _gHeuristic;
 	}
 
 	/**
-	 * Retrieve the W Heuristic
+	 * Retrieve the Small Lambda
 	 * 
-	 * @return The W Heuristic
+	 * @return The Small Lambda
 	 */
 
-	public org.drip.graph.astar.VertexFunction wHeuristic()
+	public double smallLambda()
 	{
-		return _wHeuristic;
+		return _smallLambda;
 	}
 
-	@Override public double evaluate (
-		final org.drip.graph.core.Vertex vertex)
+	/**
+	 * Retrieve the Big Lambda
+	 * 
+	 * @return The Big Lambda
+	 */
+
+	public double bigLambda()
+	{
+		return _bigLambda;
+	}
+
+	/**
+	 * Compute the Epsilon-Admissible Weight Heuristic for the Specified Vertex Context
+	 * 
+	 * @param vertexContext The vertex Context
+	 * 
+	 * @return The Epsilon-Admissible Weight Heuristic for the Specified Vertex Context
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double evaluate (
+		final org.drip.graph.astar.VertexContext vertexContext)
 		throws java.lang.Exception
 	{
-		return gHeuristic().evaluate (
-			vertex
-		) + (1. + _epsilon * _wHeuristic.evaluate (
-				vertex
-			)
-		) * hHeuristic().evaluate (
-			vertex
-		);
+		if (null == vertexContext)
+		{
+			throw new java.lang.Exception (
+				"VertexContextWeightHeuristic::evaluate => Invalid Inputs"
+			);
+		}
+
+		return _gHeuristic.evaluate (
+			vertexContext.parent()
+		) <= _gHeuristic.evaluate (
+			vertexContext.mostRecentlyExpanded()
+		) ? _smallLambda : _bigLambda;
 	}
 }
