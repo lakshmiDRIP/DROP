@@ -219,9 +219,9 @@ public class JohnsonPathGenerator
 							edgeDestinationVertexName,
 							edge.weight() + augmentedVertexMap.get (
 								edgeSourceVertexName
-							).weight() - augmentedVertexMap.get (
+							).gScore() - augmentedVertexMap.get (
 								edgeDestinationVertexName
-							).weight()
+							).gScore()
 						)
 					))
 					{

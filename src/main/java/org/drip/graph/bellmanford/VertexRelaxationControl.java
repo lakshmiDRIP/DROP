@@ -154,7 +154,7 @@ public class VertexRelaxationControl
 
 			_vertexDistanceMap.put (
 				vertexName,
-				augmentedVertexEntry.getValue().weight()
+				augmentedVertexEntry.getValue().gScore()
 			);
 		}
 	}
@@ -205,7 +205,7 @@ public class VertexRelaxationControl
 		{
 			java.lang.String vertexName = updatedAugmentedVertexEntry.getKey();
 
-			double updatedVertexDistance = updatedAugmentedVertexEntry.getValue().weight();
+			double updatedVertexDistance = updatedAugmentedVertexEntry.getValue().gScore();
 
 			if (_vertexDistanceMap.get (
 					vertexName

@@ -120,12 +120,42 @@ public class VertexContextEpsilonAdmissibleHeuristic
 	private org.drip.graph.astar.FHeuristic _fHeuristic = null;
 	private org.drip.graph.astar.VertexContextWeightHeuristic _vertexContextWeightHeuristic = null;
 
-	public static final VertexContextEpsilonAdmissibleHeuristic AStar (
+	/**
+	 * Construct the Reese (1999) Alpha A<sup>*</sup> Epsilon-Admissible Heuristic Function
+	 * 
+	 * @param gHeuristic The G Heuristic
+	 * @param hHeuristic The H Heuristic
+	 * @param smallLambda The Small Lambda
+	 * @param bigLambda The Big Lambda
+	 * 
+	 * @return The Reese (1999) Alpha A<sup>*</sup> Epsilon-Admissible Heuristic Function
+	 */
+
+	public static final VertexContextEpsilonAdmissibleHeuristic AlphaAStar (
 		final org.drip.graph.astar.VertexFunction gHeuristic,
 		final org.drip.graph.astar.VertexFunction hHeuristic,
 		final double smallLambda,
 		final double bigLambda)
 	{
+		try
+		{
+			return new VertexContextEpsilonAdmissibleHeuristic (
+				new org.drip.graph.astar.FHeuristic (
+					gHeuristic,
+					hHeuristic
+				),
+				new org.drip.graph.astar.VertexContextWeightHeuristic (
+					gHeuristic,
+					smallLambda,
+					bigLambda
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
 		return null;
 	}
 

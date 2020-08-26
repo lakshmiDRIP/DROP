@@ -127,9 +127,9 @@ public class MalikAllardFHeuristic
 	 * MalikAllardFHeuristic Constructor
 	 * 
 	 * @param foundationFHeuristic Foundation F Heuristic
-	 * @param nearAdmissibleHFHeuristic Near-admissible H<sub>F<sub> Heuristic
+	 * @param nearAdmissibleHFHeuristic Near-admissible H<sub>F</sub> Heuristic
 	 * @param foundationFLoading Loading for the Foundation F Heuristic
-	 * @param nearAdmissibleHFLoading Loading for the Near-Admissible H<sub>F<sub> Heuristic
+	 * @param nearAdmissibleHFLoading Loading for the Near-Admissible H<sub>F</sub> Heuristic
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -168,9 +168,9 @@ public class MalikAllardFHeuristic
 	}
 
 	/**
-	 * Retrieve the Near-admissible H<sub>F<sub> Heuristic
+	 * Retrieve the Near-admissible H<sub>F</sub> Heuristic
 	 * 
-	 * @return The Near-admissible H<sub>F<sub> Heuristic
+	 * @return The Near-admissible H<sub>F</sub> Heuristic
 	 */
 
 	public org.drip.graph.astar.VertexFunction nearAdmissibleHFHeuristic()
@@ -190,9 +190,9 @@ public class MalikAllardFHeuristic
 	}
 
 	/**
-	 * Retrieve the Loading for the Near-Admissible H<sub>F<sub> Heuristic
+	 * Retrieve the Loading for the Near-Admissible H<sub>F</sub> Heuristic
 	 * 
-	 * @return The Loading for the Near-Admissible H<sub>F<sub> Heuristic
+	 * @return The Loading for the Near-Admissible H<sub>F</sub> Heuristic
 	 */
 
 	public double nearAdmissibleHFLoading()

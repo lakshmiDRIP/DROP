@@ -4,14 +4,14 @@
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-Computation Support Library contains the Historical/Live Feed Processors, JSON Tranlators, Numerical Regression Tests, and Service Invocation Suite.
+Computation Support Library contains Cluster Support, Historical/Live Feed Processors, JSON Tranlators, Numerical Regression Tests, and Service Invocation Suite.
 
 
 ## Documentation
 
  |        Document         | Link |
  |-------------------------|------|
- | User Guide              |  |
+ | User Guide              |  [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ComputationSupport/ComputationSupport_v5.02.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ComputationSupport) |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
 
@@ -32,6 +32,66 @@ Computation Support Library contains the Historical/Live Feed Processors, JSON T
  * *Service* => Environment, Product/Definition Containers, and hosts the Scenario/State Manipulation APIs.
 	* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md) | 
 	[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aservice) }
+
+
+## Coverage
+
+ * Java 9 Garbage Collection Algorithms
+	* Overview
+	* Object Life Cycle
+	* Garbage Collection Algorithms
+	* Mark and Sweep
+	* Concurrent Mark-Sweep (CMS) Garbage Collection
+	* CMS GC Optimization Options
+	* Serial Garbage Collection
+	* Parallel Garbage Collection
+	* G1 Garbage Collection
+	* G1 Optimization Options
+	* G1 Configuration Flags
+	* G1 Logging Flags
+ * Processes and Threads
+	* Overview
+	* Processes
+	* Threads
+ * Thread Objects
+	* Overview
+	* Defining and Starting a Thread
+	* Pausing Execution with sleep
+	* Interrupts
+	* Supporting Interruption
+	* The Interrupt Status Flag
+	* Joins
+ * Kubernetes
+	* Overview
+	* Kubernetes Objects
+	* Pods
+	* ReplicaSets
+	* Services
+	* Volumes
+	* Namespaces
+	* ConfigMaps and Secrets
+	* ReplicaSets
+	* DeamonSets
+	* Secrets
+	* Managing Kubernetes Objects: Labels and Selectors
+	* Managing Kubernetes Objects: Field Selectors
+	* Replication Controllers and Deployments
+	* Cluster API
+	* Architecture
+	* Kubernetes Control Plane
+	* Kubernetes Node
+	* Add-ons
+	* Microservices
+	* Kubernetes Persistence Architecture
+	* References
+ * Apache Kafka
+	* Overview
+	* Architecture
+	* Connect API
+	* Streams API
+	* Version Compatibility
+	* Performance
+	* References
 
 
 ## DROP Specifications

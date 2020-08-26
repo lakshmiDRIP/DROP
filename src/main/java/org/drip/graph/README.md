@@ -7,6 +7,9 @@ DROP Graph Bellman Ford Package implements the Bellman Ford Shortest Path Family
 
 ## Component Packages
 
+ * [***AStar***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/star)
+DROP A<sup>+</sup> Search Package implements A<sup>*</sup> Heuristic Shortest Path Family.
+
  * [***Asymptote***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/asymptote)
 DROP Graph Asymptote Package implements Big O Algorithm Asymptotic Analysis.
 
@@ -85,6 +88,8 @@ DROP Graph Tree Builder maintains the Stubs for Spanning Tree Construction.
 
  * Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms 3<sup>rd</sup> Edition</i> <b>MIT Press</b>
 
+ * Dechter, R., and J. Pearl (1985): Generalized Best-first Search Strategies and the Optimality of A<sup>*</sup> <i>Journal of the ACM</i> <b>32 (3)</b> 505-536
+
  * de Fraysseix, H., O. de Mendez, and P. Rosenstiehl (2006): Tremaux Trees and Planarity <i>International Journal of Foundations of Computer Science</i> <b>17 (5)</b> 1017-1030
 
  * Dijkstra, E. W. (1959): A Note on Two Problems in Connection with Graphs <i>Numerische Mathematik</i> <b>1</b> 269-271
@@ -107,11 +112,15 @@ DROP Graph Tree Builder maintains the Stubs for Spanning Tree Construction.
 
  * Gross, J. L., and J. Yellen (2005): <i>Graph Theory and its Applications</i> <b>Springer</b>
 
+ * Hart, P. E., N. J. Nilsson, and B. Raphael (1968): A Formal Basis for the Heuristic Determination of the Minimum Cost Paths <i>IEEE Transactions on Systems Sciences and Cybernetics</i> <b>4 (2)</b> 100-107
+
  * Hayward, R., and C. McDiarmid (1991): Average Case Analysis of Heap-building by Repeated Insertion <i>Journal of Algorithms</i> <b>12 (1)</b> 126-153
 
  * Hoare, C. A. R. (1961): Algorithm 65: Find <i>Communications of the ACM</i> <b>4 (1)</b> 321-322
 
  * Horowitz, E., and S. Sahni (1974): Computing Partitions with Applications to the Knapsack Problem <i>Journal of the ACM</i> <b>21 (2)</b> 277-292
+
+ * Kagan, E., and I. Ben-Gal (2014): A Group Testing Algorithm with Online Informational Learning <i>IIE Transactions</i> <b>46 (2)</b> 164-184
 
  * Kaplan, H., and U. Zwick (2009): A simpler implementation and analysis of Chazelle Soft Heaps https://epubs.siam.org/doi/abs/10.1137/1.9781611973068.53?mobileUi=0
 
@@ -147,6 +156,8 @@ DROP Graph Tree Builder maintains the Stubs for Spanning Tree Construction.
 
  * Russell, S., and P. Norvig (2009): <i>Artificial Intelligence: A Modern Approach 3<sup>rd</sup> Edition</i> <b>Prentice Hall</b>
 
+ * Russell, S. J. and P. Norvig (2018): <i>Artificial Intelligence: A Modern Approach 4<sup>th</sup> Edition</i> <b>Pearson</b>
+
  * Sanders, P., K. Mehlhorn, M. Dietzfelbinger, and R. Dementiev (2019): <i>Sequential and Parallel Algorithms and Data Structures; A Basic Toolbox</i> <b>Springer</b>
 
  * Sedgewick, R. E., and K. D. Wayne (2011): <i>Algorithms 4<sup>th</sup> Edition</i> <b>Addison-Wesley</b>
@@ -176,6 +187,8 @@ DROP Graph Tree Builder maintains the Stubs for Spanning Tree Construction.
  * Wikipedia (2019): Selection Algorithm https://en.wikipedia.org/wiki/Selection_algorithm
 
  * Wikipedia (2020): 3Sum https://en.wikipedia.org/wiki/3SUM
+
+ * Wikipedia (2020): A<sup>+</sup> Search Algorithm https://en.wikipedia.org/wiki/A*_search_algorithm
 
  * Wikipedia (2020): Bellman-Ford Algorithm https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
 

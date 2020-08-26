@@ -118,7 +118,7 @@ public class AugmentedVertex
 {
 	private boolean _processed = false;
 	private org.drip.graph.core.Edge _precedingEdge = null;
-	private double _weight = java.lang.Double.POSITIVE_INFINITY;
+	private double _gScore = java.lang.Double.POSITIVE_INFINITY;
 
 	/**
 	 * AugmentedVertex Constructor
@@ -151,14 +151,14 @@ public class AugmentedVertex
 	}
 
 	/**
-	 * Retrieve the Vertex Path Weight
+	 * Retrieve the Vertex Path G Score
 	 * 
-	 * @return The Vertex Path Weight
+	 * @return The Vertex Path G Score
 	 */
 
-	public double weight()
+	public double gScore()
 	{
-		return _weight;
+		return _gScore;
 	}
 
 	/**
@@ -192,24 +192,24 @@ public class AugmentedVertex
 	}
 
 	/**
-	 * Set the Vertex Path Weight
+	 * Set the Vertex Path G Score
 	 * 
-	 * @param weight The Vertex Path Weight
+	 * @param gScore The Vertex Path G Score
 	 * 
-	 * @return TRUE - The Vertex Path Weight successfully set
+	 * @return TRUE - The Vertex Path G Score successfully set
 	 */
 
-	public boolean setWeight (
-		final double weight)
+	public boolean setGScore (
+		final double gScore)
 	{
 		if (java.lang.Double.isNaN (
-			weight
+			gScore
 		))
 		{
 			return false;
 		}
 
-		_weight = weight;
+		_gScore = gScore;
 		return true;
 	}
 

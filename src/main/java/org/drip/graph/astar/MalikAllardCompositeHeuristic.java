@@ -124,11 +124,11 @@ public class MalikAllardCompositeHeuristic
 	 * Construct a Near-Admissible MalikAllardCompositeHeuristic Instance
 	 * 
 	 * @param foundationFHeuristic Foundation F Heuristic
-	 * @param nearAdmissibleHFHeuristic Near-admissible H<sub>F<sub> Heuristic
+	 * @param nearAdmissibleHFHeuristic Near-admissible H<sub>F</sub> Heuristic
 	 * @param primaryFoundationFLoading Primary Loading for the Foundation F Heuristic
-	 * @param primaryNearAdmissibleHFLoading Primary Loading for the Near-Admissible H<sub>F<sub> Heuristic
+	 * @param primaryNearAdmissibleHFLoading Primary Loading for the Near-Admissible H<sub>F</sub> Heuristic
 	 * @param backTrackingFoundationFLoading Back-tracking Loading for the Foundation F Heuristic
-	 * @param backTrackingNearAdmissibleHFLoading Back-tracking Loading for the Near-Admissible H<sub>F<sub>
+	 * @param backTrackingNearAdmissibleHFLoading Back-tracking Loading for the Near-Admissible H<sub>F</sub>
 	 * 		Heuristic
 	 * 
 	 * @return The Near-Admissible MalikAllardCompositeHeuristic Instance

@@ -121,12 +121,12 @@ public class VertexAugmentor
 		= null;
 
 	private final boolean compareIntermediatePath (
-		final double distanceThroughIntermediateVertex,
-		final double augmentedVertexWeight
+		final double gScoreThroughIntermediateVertex,
+		final double augmentedVertexGScore
 		)
 	{
-		return _shortestPath ? distanceThroughIntermediateVertex < augmentedVertexWeight :
-			distanceThroughIntermediateVertex > augmentedVertexWeight;
+		return _shortestPath ? gScoreThroughIntermediateVertex < augmentedVertexGScore :
+			gScoreThroughIntermediateVertex > augmentedVertexGScore;
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class VertexAugmentor
 
 		if (!sourceAugmentedVertex.setPrecedingEdge (
 				null
-			) || !sourceAugmentedVertex.setWeight (
+			) || !sourceAugmentedVertex.setGScore (
 				0.
 			)
 		)
@@ -205,7 +205,7 @@ public class VertexAugmentor
 
 				if (!augmentedVertex.setPrecedingEdge (
 						null
-					) || !augmentedVertex.setWeight (
+					) || !augmentedVertex.setGScore (
 						initialWeight
 					)
 				)
@@ -283,9 +283,9 @@ public class VertexAugmentor
 
 		java.lang.String augmentedVertexName = precedingEdge.destinationVertexName();
 
-		double distanceThroughPrecedingVertex = _augmentedVertexMap.get (
+		double gScoreThroughPrecedingVertex = _augmentedVertexMap.get (
 			precedingAugmentedVertexName
-		).weight() + precedingEdge.weight();
+		).gScore() + precedingEdge.weight();
 
 		if (!_augmentedVertexMap.containsKey (
 			augmentedVertexName
@@ -296,8 +296,8 @@ public class VertexAugmentor
 
 			if (!augmentedVertex.setPrecedingEdge (
 					precedingEdge
-				) || !augmentedVertex.setWeight (
-					distanceThroughPrecedingVertex
+				) || !augmentedVertex.setGScore (
+					gScoreThroughPrecedingVertex
 				)
 			)
 			{
@@ -316,14 +316,14 @@ public class VertexAugmentor
 			);
 
 			if (compareIntermediatePath (
-				distanceThroughPrecedingVertex,
-				augmentedVertex.weight()
+				gScoreThroughPrecedingVertex,
+				augmentedVertex.gScore()
 			))
 			{
 				if (!augmentedVertex.setPrecedingEdge (
 						precedingEdge
-					) || !augmentedVertex.setWeight (
-						distanceThroughPrecedingVertex
+					) || !augmentedVertex.setGScore (
+						gScoreThroughPrecedingVertex
 					)
 				)
 				{
