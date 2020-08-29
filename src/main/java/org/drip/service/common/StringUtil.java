@@ -3994,19 +3994,85 @@ public class StringUtil {
     	return anagramList;
     }
 
+    /**
+     * Company A has Fulfillment Centers in multiple cities within a large geographic region. The cities are
+     * 	arranged on a graph that has been divided up like an ordinary Cartesian plane. Each city is located
+     *  at an integral (x, y) coordinate intersection. City names and locations are given in the form of
+     *  three arrays: c, x, and y, which are aligned by the index to provide the city name (c[i]), and its
+     *  coordinates, (x[i], y[i]).
+     *  
+     *  Write an algorithm to determine the name of the nearest city that shares either an x or a y
+     *   coordinate with the queried city. If no other cities share an xory coordinate, return NONE. If two
+     *   cities have the same distance to the queried city, q[i], consider the one with an alphabetically
+     *   smaller name (i.e. 'ab' lt 'aba' lt 'abb') as the closest choice.
+     *   
+     * The distance is denoted on a Euclidean plane: the difference in x plus the difference in y.
+     * 
+     * @param cities Array of Cities
+     * @param xCoordinateArray Array of City X Coordinates
+     * @param yCoordinateArray Array of City Y Coordinates
+     * @param queryCities Cities to be Queried
+     * 
+     * @return Array of the Nearest Cities
+     */
+
+    public static final java.lang.String[] NearestCities (
+    	final java.lang.String[] cities,
+    	final int[] xCoordinateArray,
+    	final int[] yCoordinateArray,
+    	final java.lang.String[] queryCities)
+    {
+    	java.lang.String[] nearestCities = new java.lang.String[queryCities.length];
+
+    	java.util.HashMap<java.lang.String, java.lang.Integer> cityIndexMap =
+    		new java.util.HashMap<java.lang.String, java.lang.Integer>();
+
+    	for (int j = 0; j < cities.length; ++j)
+    		cityIndexMap.put (cities[j], j);
+
+    	for (int i = 0; i < queryCities.length; ++i) {
+    		nearestCities[i] = "NONE";
+
+    		int queryCityIndex = cityIndexMap.get (queryCities[i]);
+
+        	for (int j = 0; j < cities.length;++j) {
+        		if (i == j) continue;
+
+        		if (xCoordinateArray[j] == xCoordinateArray[queryCityIndex] ||
+        			yCoordinateArray[j] == yCoordinateArray[queryCityIndex]) {
+        			if ("NONE".equalsIgnoreCase (nearestCities[i]))
+        				nearestCities[i] = cities[j];
+        			else {
+        				if (1 == nearestCities[i].compareTo (cities[j])) nearestCities[i] = cities[j];
+        			}
+        		}
+        	}
+    	}
+
+    	return nearestCities;
+    }
+
     public static final void main (
 		final String[] argumentArray)
 	{
-    	System.out.println (
-    		LongestPalindromicSubstring (
-				"babad"
-			)
+    	java.lang.String[] nearestCities = NearestCities (
+	    	new java.lang.String[] {"c1", "c2", "c3"},
+	    	new int[] {3, 2, 1},
+	    	new int[] {3, 2, 3},
+	    	new java.lang.String[] {"c1", "c2", "c3"}
 		);
 
-    	System.out.println (
-    		LongestPalindromicSubstring (
-				"cbbd"
-			)
+    	for (String nearestCity : nearestCities)
+    		System.out.println (nearestCity);
+
+    	nearestCities = NearestCities (
+	    	new java.lang.String[] {"green", "red","blue", "yellow", "pink"},
+	    	new int[] {100, 200, 300, 400, 500},
+	    	new int[] {100, 200, 300, 400, 500},
+	    	new java.lang.String[] {"green", "red","blue", "yellow", "pink"}
 		);
+
+    	for (String nearestCity : nearestCities)
+    		System.out.println (nearestCity);
 	}
 }

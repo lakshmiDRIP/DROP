@@ -4737,13 +4737,36 @@ public class ArrayUtil
     	return true;
     }
 
+    public static final int BaseballScore (
+    	final String[] scoreEventArray)
+    {
+    	int score = 0;
+    	int prevScore = -1;
+    	int prevPrevScore = -1;
+
+    	for (String scoreEvent : scoreEventArray) {
+    		if ("X".equalsIgnoreCase (scoreEvent))
+    			prevScore += prevScore;
+    		else if ("+".equalsIgnoreCase (scoreEvent))
+    			score += (prevScore + prevPrevScore);
+    		else if ("Z".equalsIgnoreCase (scoreEvent))
+    			prevScore = 0;
+    		else {
+	    		if (-1 != prevScore) prevPrevScore = prevScore;
+
+	    		score = score + (prevScore = StringUtil.DecimalNumberFromString (scoreEvent));
+    		}
+    	}
+
+    	return score;
+    }
+
     public static final void main (
 		final String[] argumentArray)
 		throws java.lang.Exception
 	{
-    	int x = -4;
-    	System.out.println (x>>1);
-    	int y = 4;
-    	System.out.println (y>>1);
+    	System.out.println (BaseballScore (new String[] {"10", "20", "X", "+"}));
+
+    	System.out.println (BaseballScore (new String[] {"10", "20", "Z", "30", "+"}));
 	}
 }

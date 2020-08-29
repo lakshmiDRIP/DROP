@@ -381,36 +381,119 @@ public class ListUtil<V>
 		return additionHeadNode;
 	}
 
+	public static final int[] TurnstilePassingTimeArray (
+		final int[] arrivalTimeArray,
+		final int[] directionArray)
+	{
+		int prevDirection = -1;
+		int time = arrivalTimeArray[0];
+		int[] turnstilePassingTimeArray = new int[arrivalTimeArray.length];
+
+		java.util.TreeMap<Integer, java.util.List<Integer>> exitListMap =
+			new java.util.TreeMap<Integer, java.util.List<Integer>>();
+
+		java.util.TreeMap<Integer, java.util.List<Integer>> entryListMap =
+			new java.util.TreeMap<Integer, java.util.List<Integer>>();
+
+		for (int i = 0; i < arrivalTimeArray.length; ++i) {
+			if (0 == directionArray[i]) {
+				if (entryListMap.containsKey (arrivalTimeArray[i]))
+					entryListMap.get (arrivalTimeArray[i]).add (i);
+				else {
+					java.util.List<Integer> entryIndexList = new java.util.ArrayList<Integer>();
+
+					entryIndexList.add (i);
+
+					entryListMap.put (arrivalTimeArray[i], entryIndexList);
+				}
+			} else if (1 == directionArray[i]) {
+				if (exitListMap.containsKey (arrivalTimeArray[i]))
+					exitListMap.get (arrivalTimeArray[i]).add (i);
+				else {
+					java.util.List<Integer> exitIndexList = new java.util.ArrayList<Integer>();
+
+					exitIndexList.add (i);
+
+					exitListMap.put (arrivalTimeArray[i], exitIndexList);
+				}
+			}
+		}
+
+		while (0 != entryListMap.size() || 0 != exitListMap.size()) {
+			if (-1 == prevDirection || 1 == prevDirection) {
+				boolean exitListNotEmpty = 0 != exitListMap.size();
+
+				java.util.Map.Entry<Integer, java.util.List<Integer>> firstElement = exitListNotEmpty ?
+					exitListMap.firstEntry() : entryListMap.firstEntry();
+
+				int key = firstElement.getKey();
+
+				java.util.List<Integer> firstIndexList = firstElement.getValue();
+
+				int index = firstIndexList.get (0);
+
+				firstIndexList.remove (0);
+
+				if (exitListNotEmpty) {
+					if (0 == firstIndexList.size()) exitListMap.remove (key);
+				} else {
+					if (0 == firstIndexList.size()) entryListMap.remove (key);
+				}
+
+				time = key > time ? key : time;
+				prevDirection = exitListNotEmpty ? 1 : 0;
+				turnstilePassingTimeArray[index] = time;
+			} else if (0 == prevDirection) {
+				boolean entryListNotEmpty = 0 != entryListMap.size();
+
+				java.util.Map.Entry<Integer, java.util.List<Integer>> firstElement = entryListNotEmpty ?
+					entryListMap.firstEntry() : exitListMap.firstEntry();
+
+				int key = firstElement.getKey();
+
+				java.util.List<Integer> firstIndexList = firstElement.getValue();
+
+				int index = firstIndexList.get (0);
+
+				firstIndexList.remove (0);
+
+				if (entryListNotEmpty) {
+					if (0 == firstIndexList.size()) entryListMap.remove (key);
+				} else {
+					if (0 == firstIndexList.size()) exitListMap.remove (key);
+				}
+
+				time = key > time ? key : time;
+				prevDirection = entryListNotEmpty ? 0 : 1;
+				turnstilePassingTimeArray[index] = time;
+			}
+
+			++time;
+		}
+
+		return turnstilePassingTimeArray;
+	}
+
 	public static final void main (
 		final java.lang.String[] argumentArray)
 		throws java.lang.Exception
 	{
-		ListNode<java.lang.Integer> list11 = new ListNode<java.lang.Integer> (2, null);
+		int[] turnstilePassingTimeArray = TurnstilePassingTimeArray (
+			new int[] {0, 0, 1, 5},
+			new int[] {0, 1, 1, 0}
+		);
 
-		ListNode<java.lang.Integer> list12 = new ListNode<java.lang.Integer> (4, null);
+		for (int i : turnstilePassingTimeArray)
+			System.out.print (i + ", ");
 
-		ListNode<java.lang.Integer> list13 = new ListNode<java.lang.Integer> (3, null);
+		System.out.println();
 
-		list11.setNext (list12);
+		turnstilePassingTimeArray = TurnstilePassingTimeArray (
+			new int[] {0, 1, 1, 3, 3},
+			new int[] {0, 1, 0, 0, 1}
+		);
 
-		list12.setNext (list13);
-
-		ListNode<java.lang.Integer> list21 = new ListNode<java.lang.Integer> (5, null);
-
-		ListNode<java.lang.Integer> list22 = new ListNode<java.lang.Integer> (6, null);
-
-		ListNode<java.lang.Integer> list23 = new ListNode<java.lang.Integer> (4, null);
-
-		list21.setNext (list22);
-
-		list22.setNext (list23);
-
-		ListNode<java.lang.Integer> node = Add (list11, list21);
-
-		while (null != node) {
-			System.out.print (node.value() + " -> ");
-
-			node = node.next();
-		}
+		for (int i : turnstilePassingTimeArray)
+			System.out.print (i + ", ");
 	}
 }
