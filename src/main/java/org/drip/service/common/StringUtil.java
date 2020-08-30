@@ -4052,27 +4052,69 @@ public class StringUtil {
     	return nearestCities;
     }
 
+    private static final boolean IsPrime (
+    	final String number)
+    {
+    	int decimalNumber = DecimalNumberFromString (number);
+
+    	return -1 != decimalNumber && org.drip.numerical.common.PrimeUtil.IsPrime (decimalNumber);
+    }
+
+    /**
+     * A company's operations team needs an algorithm that can break out a list of products for a given
+     * 	order. The products in the order are listed as a string and the order items are represented as prime
+     *  numbers. Given a string consisting of digits [0-9], count the number of ways the given string can be
+     *  split into prime numbers, which represent unique items in the order. The digits must remain in the
+     *  order given and the entire string must be used.
+     *  
+     * Write an algorithm to find the number of ways the given string can be split into unique prime numbers
+     *  using the entire string.
+     *  
+     * @param number The Input Number
+     * 
+     * @return The Sequence List of Unique Primes
+     */
+
+    public static final java.util.List<java.util.List<String>> SplitIntoUniquePrimes (
+    	final String number)
+    {
+    	int numberLength = number.length();
+
+		java.util.List<java.util.List<String>> primeSequenceList = new
+			java.util.ArrayList<java.util.List<String>>();
+
+		if (IsPrime (number)) {
+			java.util.List<String> primeList = new java.util.ArrayList<String>();
+
+			primeList.add (number);
+
+			primeSequenceList.add (primeList);
+		}
+
+    	if (1 == numberLength) return primeSequenceList;
+
+    	for (int i = 1; i < numberLength; ++i) {
+    		String leftSubstring = number.substring (0, i);
+
+    		if (!IsPrime (leftSubstring)) continue;
+
+    		java.util.List<java.util.List<String>> uniquePrimesSequenceList = SplitIntoUniquePrimes
+    			(number.substring (i, numberLength));
+
+    		if (!uniquePrimesSequenceList.isEmpty()) {
+    			for (java.util.List<String> uniquePrimesList : uniquePrimesSequenceList)
+    				uniquePrimesList.add (0, leftSubstring);
+    		}
+
+    		primeSequenceList.addAll (uniquePrimesSequenceList);
+    	}
+
+    	return primeSequenceList;
+    }
+
     public static final void main (
 		final String[] argumentArray)
 	{
-    	java.lang.String[] nearestCities = NearestCities (
-	    	new java.lang.String[] {"c1", "c2", "c3"},
-	    	new int[] {3, 2, 1},
-	    	new int[] {3, 2, 3},
-	    	new java.lang.String[] {"c1", "c2", "c3"}
-		);
-
-    	for (String nearestCity : nearestCities)
-    		System.out.println (nearestCity);
-
-    	nearestCities = NearestCities (
-	    	new java.lang.String[] {"green", "red","blue", "yellow", "pink"},
-	    	new int[] {100, 200, 300, 400, 500},
-	    	new int[] {100, 200, 300, 400, 500},
-	    	new java.lang.String[] {"green", "red","blue", "yellow", "pink"}
-		);
-
-    	for (String nearestCity : nearestCities)
-    		System.out.println (nearestCity);
+		System.out.println (SplitIntoUniquePrimes ("11373"));
 	}
 }

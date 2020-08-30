@@ -4737,6 +4737,16 @@ public class ArrayUtil
     	return true;
     }
 
+    /**
+     * Tom plays a game in which he throws a baseball at various blocks marked with a symbol. Each block
+     * 	comes with a symbol which can be an integer, ‘X’, ‘+’, or ‘Z’. Given a list of strings represent
+     * 	blocks, return the final score.
+     * 
+     * @param scoreEventArray Array of the Score/Event Strings
+     * 
+     * @return The Baseball Score
+     */
+
     public static final int BaseballScore (
     	final String[] scoreEventArray)
     {
@@ -4761,12 +4771,98 @@ public class ArrayUtil
     	return score;
     }
 
+    /**
+     * A company has several suppliers for its products. For each of the products, the stock is represented
+     *  by a list of a number of items for each supplier. As items are purchased, the supplier raises the
+     *  price by 1 per item purchased. Let's assume Amazon's profit on any single item is the same as the
+     *  number of items the supplier has left. For example, if a supplier has 4 items, company's profit on
+     *  the first item sold is 4, then 3, then 2 and the profit of the last one is 1.
+     *  
+     * Given a list where each value in the list is the number of the item at a given supplier and also given
+     *  the number of items to be ordered, write an algorithm to find the highest profit that can be
+     *  generated for the given product.
+     * 
+     * @param inventoryArray The Number of Suppliers
+     * @param orderCount The Order Count
+     * 
+     * @return The Inventory Profit
+     */
+
+    public static final int InventoryProfit (
+    	final int[] inventoryArray,
+    	final int orderCount)
+    {
+    	int count = 0;
+    	int profit = 0;
+
+    	org.drip.graph.heap.BinomialTreePriorityQueue<Integer, Integer> inventoryHeap = new
+    		org.drip.graph.heap.BinomialTreePriorityQueue<Integer, Integer> (false);
+
+    	for (int inventory : inventoryArray)
+    		inventoryHeap.insert (inventory, inventory);
+
+    	while (!inventoryHeap.isEmpty() && count < orderCount) {
+    		int itemProfit = inventoryHeap.extractExtremum().key();
+
+    		if (itemProfit >= 1) inventoryHeap.insert (itemProfit - 1, itemProfit - 1);
+
+    		profit = profit + itemProfit;
+    		++count;
+    	}
+
+    	return profit;
+    }
+
+    /**
+     * Company A is performing an analysis on the computers at one of its offices. The computers are spaced
+     * 	along a single row. The analysis is performed in the following way:
+     * 
+     * Choose a contiguous segment of a certain number of computers, starting from the beginning of the row.
+     * 	Analyze the available hard disk space on each of the computers. Determine the minimum available disk
+     *  space within this segment. After performing these steps for the first segment, it is then repeated
+     *  for the next segment, continuing this procedure until the end of the row (i.e. if the segment size is
+     *  4, computers 1 to 4 would be analyzed, then 2 to 5, etc.)
+     *  
+     * Given this analysis procedure, write an algorithm to find the maximum available disk space among all
+     *  the minima that are found during the analysis.
+     * 
+     * @param diskSpaceArray Array of Disk Space
+     * @param segmentLength The Segment Length
+     * 
+     * @return The Maximum Available Disk Space
+     */
+
+    public static final int MaximumAvailableDiskSpace (
+    	final int[] diskSpaceArray,
+    	final int segmentLength)
+    {
+    	int index = segmentLength;
+
+    	java.util.PriorityQueue<Integer> diskSpaceQueue = new java.util.PriorityQueue<Integer>();
+
+    	for (int i = 0; i < segmentLength; ++i)
+    		diskSpaceQueue.offer (diskSpaceArray[i]);
+
+    	int maximumAvailableDiskSpace = diskSpaceQueue.peek();
+
+    	while (index < diskSpaceArray.length) {
+    		diskSpaceQueue.remove (diskSpaceArray[index - segmentLength]);
+
+        	int minimumSegmentDiskSpace = diskSpaceQueue.peek();
+
+        	if (maximumAvailableDiskSpace < minimumSegmentDiskSpace)
+        		maximumAvailableDiskSpace = minimumSegmentDiskSpace;
+
+        	++index;
+    	}
+
+    	return maximumAvailableDiskSpace;
+    }
+
     public static final void main (
 		final String[] argumentArray)
 		throws java.lang.Exception
 	{
-    	System.out.println (BaseballScore (new String[] {"10", "20", "X", "+"}));
-
-    	System.out.println (BaseballScore (new String[] {"10", "20", "Z", "30", "+"}));
+    	System.out.println (MaximumAvailableDiskSpace (new int[] {8, 2, 4}, 2));
 	}
 }

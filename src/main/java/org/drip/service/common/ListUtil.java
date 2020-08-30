@@ -381,6 +381,36 @@ public class ListUtil<V>
 		return additionHeadNode;
 	}
 
+	/**
+	 * Imagine a small store that has exactly one turn-stile. It can be used by customers either as an
+	 *  entrance or an exit. Sometimes multiple customers want to pass through the turn-stile and their
+	 *  directions can be different. The i<sup>th</sup> customer comes to the turn-stile at time[i] and wants
+	 *  to either exit the store if direction [i] = 1 or enter the store if direction[i] = 0. Customers form
+	 *  2 queues, one to exit and one to enter. They are ordered by the time when they came to the turn-stile
+	 *  and, if the times are equal, by their indices.
+	 *  
+	 * If one customer wants to enter the store and another customer wants to exit at the same moment, there
+	 *  are three cases:
+	 *   
+	 * If in the previous second the turn-stile was not used (maybe it was used before, but not at the
+	 *  previous second), then the customer who wants to exit goes first.
+	 *  
+	 * If in the previous second the turn-stile was used as an exit, then the customer who wants to leave
+	 *  goes first.
+	 *  
+	 * If in the previous second the turn-stile was used as an entrance, then the customer who wants to enter
+	 *  goes first.
+	 *  
+	 * Passing through the turn-stile takes 1 second.
+	 * 
+	 * Write an algorithm to find the time for each customer when they will pass through the turn-stile.
+
+	 * @param arrivalTimeArray Array of Arrival Times
+	 * @param directionArray Array of Entry/Exit Directions
+	 * 
+	 * @return Array of Pass Times
+	 */
+
 	public static final int[] TurnstilePassingTimeArray (
 		final int[] arrivalTimeArray,
 		final int[] directionArray)

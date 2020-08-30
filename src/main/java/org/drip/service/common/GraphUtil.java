@@ -270,11 +270,101 @@ public class GraphUtil
 		return combinationSet;
 	}
 
+	/**
+	 * Establish the Separate Components connecting the Items
+	 * 
+	 * @param itemListSequence Sequence of Items Lists
+	 * 
+	 * @return The Connected Components
+	 */
+
+	public static final java.util.ArrayList<java.util.HashSet<String>> LargestGroup (
+		java.util.List<java.util.List<String>> itemListSequence)
+	{
+		java.util.ArrayList<java.util.HashSet<String>> componentList = new
+			java.util.ArrayList<java.util.HashSet<String>>();
+
+		for (java.util.List<String> itemList : itemListSequence) {
+			if (componentList.isEmpty()) {
+				java.util.HashSet<String> itemSet = new java.util.HashSet<String>();
+
+				itemSet.addAll (itemList);
+
+				componentList.add (itemSet);
+
+				continue;
+			}
+
+			java.util.ArrayList<Integer> mergeList = new java.util.ArrayList<Integer>();
+
+			for (String item : itemList) {
+				for (int componentIndex = 0; componentIndex < componentList.size(); ++componentIndex) {
+					if (componentList.get (componentIndex).contains (item)) mergeList.add (componentIndex);
+				}
+			}
+
+			if (mergeList.isEmpty()) {
+				java.util.HashSet<String> itemSet = new java.util.HashSet<String>();
+
+				itemSet.addAll (itemList);
+
+				componentList.add (itemSet);
+			} else {
+				java.util.HashSet<String> component = componentList.get (mergeList.get (0));
+
+				for (int mergeListIndex = 1; mergeListIndex < mergeList.size(); ++mergeListIndex)
+					component.addAll (componentList.get (mergeListIndex));
+
+				component.addAll (itemList);
+
+				for (int mergeListIndex = mergeList.size() - 1; mergeListIndex > 1 ; --mergeListIndex)
+					componentList.remove (mergeListIndex);
+			}
+		}
+
+		return componentList;
+	}
+
 	public static final void main (
 		final String[] argumentArray)
 	{
-		System.out.println (DecodeCombinations ("12"));
+		java.util.ArrayList<String> itemList1 = new java.util.ArrayList<String>();
 
-		System.out.println (DecodeCombinations ("226"));
+		itemList1.add ("product1");
+
+		itemList1.add ("product2");
+
+		itemList1.add ("product3");
+
+		java.util.ArrayList<String> itemList2 = new java.util.ArrayList<String>();
+
+		itemList2.add ("product5");
+
+		itemList2.add ("product2");
+
+		java.util.ArrayList<String> itemList3 = new java.util.ArrayList<String>();
+
+		itemList3.add ("product6");
+
+		itemList3.add ("product7");
+
+		java.util.ArrayList<String> itemList4 = new java.util.ArrayList<String>();
+
+		itemList4.add ("product8");
+
+		itemList4.add ("product7");
+
+		java.util.List<java.util.List<String>> itemListSequence = new
+			java.util.ArrayList<java.util.List<String>>();
+
+		itemListSequence.add (itemList1);
+
+		itemListSequence.add (itemList2);
+
+		itemListSequence.add (itemList3);
+
+		itemListSequence.add (itemList4);
+
+		System.out.println (LargestGroup (itemListSequence));
 	}
 }

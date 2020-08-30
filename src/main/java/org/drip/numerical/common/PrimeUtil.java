@@ -245,7 +245,7 @@ public class PrimeUtil
 	public static final boolean IsPrime (
 		final int n)
 	{
-		return PrimeFactorMap (
+		return 1 < n && PrimeFactorMap (
 			n
 		).containsKey (
 			n
