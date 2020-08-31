@@ -631,6 +631,13 @@ public class StringUtil {
 		return right - left > range[1] - range[0] ? new int[] {left, right} : range;
 	}
 
+    private static final boolean RangesOverlap (
+    	final int[] range1,
+    	final int[] range2)
+    {
+    	return range2[0] > range1[0] && range2[0] < range1[1];
+    }
+
 	/**
 	 * Look for a match of the field in the input array
 	 * 
@@ -4112,15 +4119,88 @@ public class StringUtil {
     	return primeSequenceList;
     }
 
+    /**
+     * Given a string s of lower-case letters, partition s into as many as parts so that one letter only
+     * 	appear in one part. Return the partitions as a list.
+     * 
+     * @param s The Input String
+     * 
+     * @return List of Same Character Partitions
+     */
+
     public static final java.util.List<String> CollectSameCharacters (
     	final String s)
     {
-    	return null;
+    	java.util.HashMap<Character, int[]> charRangeMap = new java.util.HashMap<Character, int[]>();
+
+    	for (int i = 0; i < s.length(); ++i) {
+    		char c = s.charAt (i);
+
+    		if (!charRangeMap.containsKey (c))
+    			charRangeMap.put (c, new int[] {i, i});
+    		else {
+    			int[] range = charRangeMap.get (c);
+
+    			range[1] = i;
+    		}
+    	}
+
+    	java.util.TreeMap<Integer, int[]> sortedRangeMap = new java.util.TreeMap<Integer, int[]>();
+
+    	for (int[] range : charRangeMap.values())
+    		sortedRangeMap.put (range[0], range);
+
+    	int[] prevRange = null;
+
+    	java.util.TreeMap<Integer, int[]> nonOverlappingRangeMap = new java.util.TreeMap<Integer, int[]>();
+
+    	for (int rangeLeft : sortedRangeMap.keySet()) {
+    		int[] currentRange = sortedRangeMap.get (rangeLeft);
+
+    		if (null == prevRange) {
+    			nonOverlappingRangeMap.put (rangeLeft, prevRange = currentRange);
+
+    			continue;
+    		}
+
+    		if (!RangesOverlap (prevRange, currentRange))
+    			nonOverlappingRangeMap.put (rangeLeft, prevRange = currentRange);
+    		else
+    			nonOverlappingRangeMap.put (prevRange[0], prevRange = new int[] {prevRange[0],
+    				currentRange[1] > prevRange[1] ? currentRange[1] : prevRange[1]});
+    	}
+
+    	java.util.List<String> partitionList = new java.util.ArrayList<String>();
+
+    	for (int rangeLeft : nonOverlappingRangeMap.keySet())
+    		partitionList.add (s.substring (rangeLeft, nonOverlappingRangeMap.get (rangeLeft)[1] + 1));
+
+    	return partitionList;
+    }
+
+    /**
+     * Given a string of lower characters, remove at most two substrings of any length from the given string
+     *  such that the remaining string contains vowels('a','e','i','o','u') only.
+     *  
+     * Your aim is to maximize the length of the remaining string. Output the length of remaining string
+     * 	after removal of at most two substrings.
+     * 
+     * @param s Input String
+     * 
+     * @return Longest String after Removal
+     */
+
+    public static final String LongestVowel (
+    	final String s)
+    {
+    	return "";
     }
 
     public static final void main (
 		final String[] argumentArray)
 	{
-		System.out.println (SplitIntoUniquePrimes ("11373"));
+		System.out.println (CollectSameCharacters ("bbeadcxede"));
+
+		System.out.println (CollectSameCharacters ("baddacx"));
 	}
 }

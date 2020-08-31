@@ -5057,21 +5057,104 @@ public class ArrayUtil
     	return closestIndexPairList;
     }
 
+    /**
+     * Given a two 2D matrix, find the max score of a path from the upper left cell to bottom right cell that
+     * 	doesn't visit any of the cells twice. The score of a path is the minimum value in that path.
+     * 
+     * @param matrix Matrix of Node Values
+     * 
+     * @return The Maximum Path Score
+     */
+
+    public static final int MaxPathScore (
+    	final int[][] matrix)
+    {
+    	int xSize = matrix.length;
+    	int ySize = matrix[0].length;
+    	int maxPathScore = java.lang.Integer.MIN_VALUE;
+
+    	java.util.List<int[]> locationStack = new java.util.ArrayList<int[]>();
+
+    	java.util.List<Integer> pathMinimumStack = new java.util.ArrayList<Integer>();
+
+    	java.util.List<java.util.HashSet<String>> visitedVertexSetStack = new
+    		java.util.ArrayList<java.util.HashSet<String>>();
+
+    	locationStack.add (new int[] {0, 0});
+
+    	pathMinimumStack.add (java.lang.Integer.MAX_VALUE);
+
+    	java.util.HashSet<String> initialVisitedVertex = new java.util.HashSet<String>();
+
+    	initialVisitedVertex.add ("0_0");
+
+    	visitedVertexSetStack.add (initialVisitedVertex);
+
+    	while (!locationStack.isEmpty()) {
+    		int tailIndex = locationStack.size() - 1;
+
+    		int[] location = locationStack.remove (tailIndex);
+
+    		int prevPathMinimum = pathMinimumStack.remove (tailIndex);
+
+    		int pathMinimum = matrix[location[0]][location[1]] < prevPathMinimum ?
+    			matrix[location[0]][location[1]] : prevPathMinimum;
+
+    		java.util.HashSet<String> visitedVertexSet = visitedVertexSetStack.remove (tailIndex);
+
+    		visitedVertexSet.add (location[0] + "_" + location[1]);
+
+    		if (location[0] == xSize - 1 && location[1] == ySize - 1) {
+    			if (maxPathScore < pathMinimum) maxPathScore = pathMinimum;
+
+    			continue;
+    		}
+
+    		int left = location[0] - 1;
+    		int right = location[0] + 1;
+    		int above = location[1] - 1;
+    		int below = location[1] + 1;
+
+    		if (left >= 0 && !visitedVertexSet.contains (left + "_" + location[1])) {
+    	    	locationStack.add (new int[] {left, location[1]});
+
+    	    	pathMinimumStack.add (pathMinimum);
+
+    	    	visitedVertexSetStack.add (visitedVertexSet);
+    		}
+
+    		if (right < xSize && !visitedVertexSet.contains (right + "_" + location[1])) {
+    	    	locationStack.add (new int[] {right, location[1]});
+
+    	    	pathMinimumStack.add (pathMinimum);
+
+    	    	visitedVertexSetStack.add (visitedVertexSet);
+    		}
+
+    		if (above >= 0 && !visitedVertexSet.contains (location[0] + "_" + above)) {
+    	    	locationStack.add (new int[] {location[0], above});
+
+    	    	pathMinimumStack.add (pathMinimum);
+
+    	    	visitedVertexSetStack.add (visitedVertexSet);
+    		}
+
+    		if (below < ySize && !visitedVertexSet.contains (location[0] + "_" + below)) {
+    	    	locationStack.add (new int[] {location[0], below});
+
+    	    	pathMinimumStack.add (pathMinimum);
+
+    	    	visitedVertexSetStack.add (visitedVertexSet);
+    		}
+    	}
+
+    	return maxPathScore;
+    }
+
     public static final void main (
 		final String[] argumentArray)
 		throws java.lang.Exception
 	{
-    	java.util.List<int[]> taskIndexPairList = OptimizeMemoryUsage (new int[] {1, 7, 2, 4, 5, 6}, new
-    		int[] {3, 1, 2}, 6);
-
-    	for (int[] indexPair : taskIndexPairList)
-    		System.out.println (indexPair[0] + ", " + indexPair[1]);
-
-    	System.out.println();
-
-    	taskIndexPairList = OptimizeMemoryUsage (new int[] {1, 7, 2, 4, 5, 6}, new int[] {1, 1, 2}, 10);
-
-        for (int[] indexPair : taskIndexPairList)
-        	System.out.println (indexPair[0] + ", " + indexPair[1]);
+		System.out.println (MaxPathScore (new int[][] {{7, 5, 3}, {2, 0, 9}, {4, 5, 9}}));
 	}
 }
