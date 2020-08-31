@@ -4859,10 +4859,219 @@ public class ArrayUtil
     	return maximumAvailableDiskSpace;
     }
 
+    private static final boolean Infect (
+    	final java.util.HashSet<String> uninfectedCellSet,
+    	final int rowSize,
+    	final int columnSize)
+    {
+    	if (uninfectedCellSet.isEmpty()) return true;
+
+    	java.util.HashSet<String> infectedCellSet = new java.util.HashSet<String>();
+
+    	for (String uninfectedCell : uninfectedCellSet) {
+    		String[] x_y = uninfectedCell.split ("_");
+
+    		int x = Integer.parseInt (x_y[0]);
+
+    		int y = Integer.parseInt (x_y[1]);
+
+    		int left = x - 1;
+    		int right = x + 1;
+    		int above = y - 1;
+    		int below = y + 1;
+
+    		if (left >= 0) {
+    			String cell = left + "_" + y;
+
+    			if (!uninfectedCellSet.contains (cell)) infectedCellSet.add (uninfectedCell);
+    		}
+
+    		if (right < rowSize) {
+    			String cell = right + "_" + y;
+
+    			if (!uninfectedCellSet.contains (cell)) infectedCellSet.add (uninfectedCell);
+    		}
+
+    		if (above >= 0) {
+    			String cell = x + "_" + above;
+
+    			if (!uninfectedCellSet.contains (cell)) infectedCellSet.add (uninfectedCell);
+    		}
+
+    		if (below < columnSize) {
+    			String cell = x + "_" + below;
+
+    			if (!uninfectedCellSet.contains (cell)) infectedCellSet.add (uninfectedCell);
+    		}
+    	}
+
+    	for (String infectedCell : infectedCellSet)
+    		uninfectedCellSet.remove (infectedCell);
+
+    	return false;
+    }
+
+    /**
+     * Given a 2D grid, each cell is either a zombie or a human. Zombies can turn adjacent
+     *  (up/down/left/right) human beings into zombies every day. Find out how many days does it take to
+     *  infect all humans?
+     * 
+     * @param infectionMatrix The Infection Matrix
+     * 
+     * @return Number of Days to infect the entire Population
+     */
+
+    public static final int PopulationInfection (
+    	final int[][] infectionMatrix)
+    {
+    	int dayCount = 0;
+
+    	java.util.HashSet<String> uninfectedCellSet = new java.util.HashSet<String>();
+
+    	for (int i = 0; i < infectionMatrix.length; ++i) {
+        	for (int j = 0; j < infectionMatrix[i].length; ++j) {
+        		if (0 == infectionMatrix[i][j]) uninfectedCellSet.add (i + "_" + j);
+        	}
+    	}
+
+    	if (infectionMatrix.length * infectionMatrix[0].length == uninfectedCellSet.size()) return -1;
+
+    	while (!Infect (uninfectedCellSet, infectionMatrix.length, infectionMatrix[0].length)) ++dayCount;
+
+    	return dayCount;
+    }
+
+    /**
+     * Given an array containing only positive integers, return if you can pick two integers from the array
+     * 	which cuts the array into three pieces such that the sum of elements in all pieces is equal.
+     * 
+     * @param numberArray The Number Array
+     * 
+     * @return TRUE - A Balanced Partition Exists
+     */
+
+    public static final boolean BalancedPartition (
+    	final int[] numberArray)
+    {
+    	int sumFromLeft = 0;
+    	int[] sumFromRightArray = new int[numberArray.length];
+    	sumFromRightArray[numberArray.length - 1] = numberArray[numberArray.length - 1];
+
+    	for (int i = numberArray.length - 2; i >= 0; --i)
+    		sumFromRightArray[i] = sumFromRightArray[i + 1] + numberArray[i];
+
+    	for (int i = 0; i < numberArray.length - 2; ++i) {
+    		sumFromLeft = sumFromLeft + numberArray[i];
+
+    		if (2 * sumFromLeft != sumFromRightArray[i + 1]) continue;
+
+    		for (int j = i + 2; j < numberArray.length; ++j) {
+    			if (2 * sumFromRightArray[j] == sumFromRightArray[i + 1]) return true;
+    		}
+    	}
+
+    	return false;
+    }
+
+    /**
+     * Give a computer with total k memory space, and an array of foreground tasks and background tasks the
+     *  computer needs to do. Write an algorithm to find a pair of tasks from each array to maximize the
+     *  memory usage. Notice the tasks could be done without origin order.
+     * 
+     * @param foregroundTasks Array of Foreground Tasks
+     * @param backgroundTasks Array of Background Tasks
+     * @param k Memory Limit
+     * 
+     * @return List of [fore, back] pairs
+     */
+
+    public static final java.util.List<int[]> OptimizeMemoryUsage (
+    	final int[] foregroundTasks,
+    	final int[] backgroundTasks,
+    	final int k)
+    {
+    	int[] longerTaskSequence = foregroundTasks.length > backgroundTasks.length ? foregroundTasks :
+    		backgroundTasks;
+    	int[] shorterTaskSequence = foregroundTasks.length < backgroundTasks.length ? foregroundTasks :
+    		backgroundTasks;
+
+    	java.util.TreeMap<Integer, java.util.List<Integer>> shorterTaskIndexMap = new
+    		java.util.TreeMap<Integer, java.util.List<Integer>>();
+
+    	for (int i = 0; i < shorterTaskSequence.length; ++i) {
+    		if (shorterTaskIndexMap.containsKey (shorterTaskSequence[i]))
+    			shorterTaskIndexMap.get (shorterTaskSequence[i]).add (i);
+    		else {
+    			java.util.List<Integer> indexList = new java.util.ArrayList<Integer>();
+
+    			indexList.add (i);
+
+    			shorterTaskIndexMap.put (shorterTaskSequence[i], indexList);
+    		}
+    	}
+
+    	int closestMemoryGap = java.lang.Integer.MAX_VALUE;
+
+    	java.util.List<int[]> closestIndexPairList = new java.util.ArrayList<int[]>();
+
+    	for (int i = 0; i < longerTaskSequence.length; ++i) {
+    		Integer shorterKey = shorterTaskIndexMap.floorKey (k - longerTaskSequence[i]);
+
+    		if (null == shorterKey) continue;
+
+    		if (k - shorterKey - longerTaskSequence[i] < closestMemoryGap) {
+    			closestMemoryGap = k - shorterKey - longerTaskSequence[i];
+
+    			closestIndexPairList.clear();
+
+    			for (int shorterTaskIndex : shorterTaskIndexMap.get (shorterKey))
+    				closestIndexPairList.add (new int[] {i, shorterTaskIndex});
+    		} else if (k - shorterKey - longerTaskSequence[i] == closestMemoryGap) {
+    			for (int shorterTaskIndex : shorterTaskIndexMap.get (shorterKey))
+    				closestIndexPairList.add (new int[] {i, shorterTaskIndex});
+    		}
+    	}
+
+    	for (int i = 0; i < longerTaskSequence.length; ++i) {
+    		if (Math.abs (k - longerTaskSequence[i]) < closestMemoryGap) {
+    			closestMemoryGap = Math.abs (k - longerTaskSequence[i]);
+
+    			closestIndexPairList.clear();
+
+				closestIndexPairList.add (new int[] {i, -1});
+    		} else if (Math.abs (k - longerTaskSequence[i]) == closestMemoryGap)
+				closestIndexPairList.add (new int[] {i, -1});
+    	}
+
+    	for (int i = 0; i < shorterTaskSequence.length; ++i) {
+    		if (Math.abs (k - shorterTaskSequence[i]) < closestMemoryGap) {
+    			closestMemoryGap = Math.abs (k - shorterTaskSequence[i]);
+
+    			closestIndexPairList.clear();
+
+				closestIndexPairList.add (new int[] {-1, i});
+    		} else if (Math.abs (k - shorterTaskSequence[i]) == closestMemoryGap)
+				closestIndexPairList.add (new int[] {-1, i});
+    	}
+
+    	return closestIndexPairList;
+    }
+
     public static final void main (
 		final String[] argumentArray)
 		throws java.lang.Exception
 	{
-    	System.out.println (MaximumAvailableDiskSpace (new int[] {8, 2, 4}, 2));
+    	java.util.List<int[]> taskIndexPairList = OptimizeMemoryUsage (new int[] {1, 7, 2, 4, 5, 6}, new
+    		int[] {3, 1, 2}, 6);
+
+    	for (int[] indexPair : taskIndexPairList)
+    		System.out.println (indexPair[0] + ", " + indexPair[1]);
+
+    	System.out.println();
+
+    	taskIndexPairList = OptimizeMemoryUsage (new int[] {1, 7, 2, 4, 5, 6}, new int[] {1, 1, 2}, 10);
+
+        for (int[] indexPair : taskIndexPairList)
+        	System.out.println (indexPair[0] + ", " + indexPair[1]);
 	}
 }

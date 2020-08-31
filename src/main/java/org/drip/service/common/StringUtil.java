@@ -4112,6 +4112,12 @@ public class StringUtil {
     	return primeSequenceList;
     }
 
+    public static final java.util.List<String> CollectSameCharacters (
+    	final String s)
+    {
+    	return null;
+    }
+
     public static final void main (
 		final String[] argumentArray)
 	{
