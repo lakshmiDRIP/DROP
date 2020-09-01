@@ -646,6 +646,75 @@ public class StringUtil {
     		|| 't' == c || 'v' == c || 'w' == c || 'x' == c || 'z' == c;
     }
 
+    private static final boolean DecrementCharCount (
+    	final int[] charCountArray,
+    	final char c)
+    {
+    	if (0 == charCountArray[(int) c]) return false;
+
+    	--charCountArray[(int) c];
+    	return true;
+    }
+
+    private static final char CharWithLargestCount (
+    	final int[] charCountArray)
+    {
+    	int a = charCountArray[(int) 'a'];
+    	int b = charCountArray[(int) 'b'];
+    	int c = charCountArray[(int) 'c'];
+
+    	if (a >= b && a >= c) return 'a';
+
+    	return b >= c ? 'b' : 'c';
+    }
+
+    private static final char CharWithSmallestCount (
+    	final int[] charCountArray)
+    {
+    	int a = charCountArray[(int) 'a'];
+    	int b = charCountArray[(int) 'b'];
+    	int c = charCountArray[(int) 'c'];
+
+    	if (a <= b && a <= c) return 'a';
+
+    	return b <= c ? 'b' : 'c';
+    }
+
+    private static final char CharWithMediumCount (
+    	final int[] charCountArray)
+    {
+    	char charWithLargestCount = CharWithLargestCount (charCountArray);
+
+    	char charWithSmallestCount = CharWithSmallestCount (charCountArray);
+
+    	if ('a' != charWithLargestCount && 'a' != charWithSmallestCount) return 'a';
+
+    	if ('b' != charWithLargestCount && 'b' != charWithSmallestCount) return 'b';
+
+    	return 'c';
+    }
+
+    private static final boolean SingleCharacterArray (
+    	final int[] charCountArray)
+    {
+    	int zeroCount = 0;
+
+    	if (0 == charCountArray[(int) 'a']) ++zeroCount;
+
+    	if (0 == charCountArray[(int) 'b']) ++zeroCount;
+
+    	if (0 == charCountArray[(int) 'c']) ++zeroCount;
+
+    	return 2 <= zeroCount;
+    }
+
+    private static final boolean EmptyCharCountArray (
+    	final int[] charCountArray)
+    {
+    	return 0 == charCountArray[(int) 'a'] && 0 == charCountArray[(int) 'b'] &&
+    		0 == charCountArray[(int) 'c'];
+    }
+
     /**
 	 * Look for a match of the field in the input array
 	 * 
@@ -4262,11 +4331,146 @@ public class StringUtil {
     	return longestVowel;
     }
 
+    /**
+     * Given a, b, c, find any string of maximum length that can be created such that no 3 consecutive
+     *  characters are same. There can be at max a 'a', b 'b' and c 'c'.
+     * 
+     * @param a Count of the Number of 'A's
+     * @param b Count of the Number of 'B's
+     * @param c Count of the Number of 'C's
+     * 
+     * @return The Longest Word
+     */
+
+    public static final String ConstrainedWord (
+    	final int a,
+    	final int b,
+    	final int c)
+    {
+    	int[] charCountArray = new int[(int) 'c' + 1];
+    	charCountArray[(int) 'a'] = a;
+    	charCountArray[(int) 'b'] = b;
+    	charCountArray[(int) 'c'] = c;
+
+    	char ch = CharWithLargestCount (charCountArray);
+
+    	String constrainedWord = "" + ch;
+
+    	DecrementCharCount (charCountArray, ch);
+
+    	constrainedWord = constrainedWord + (ch = CharWithLargestCount (charCountArray));
+
+    	DecrementCharCount (charCountArray, ch);
+
+    	while (!EmptyCharCountArray (charCountArray)) {
+    		ch = CharWithLargestCount (charCountArray);
+
+    		if (constrainedWord.substring (constrainedWord.length() - 2).equalsIgnoreCase ("" + ch + ch)) {
+    			if (SingleCharacterArray (charCountArray)) break;
+
+    			ch = CharWithMediumCount (charCountArray);
+    		}
+
+			constrainedWord = constrainedWord + ch;
+
+	    	DecrementCharCount (charCountArray, ch);
+    	}
+
+    	return constrainedWord;
+    }
+
+    /**
+     * Given a string s of lower-case letters, find as many sub-strings as possible that meet the following
+     * 	criteria:
+     * 
+     *  - no overlap among strings
+     *  - one letter can only exist in one string. For every letter c in the sub-string, all instances of c
+     *  	must also be in the sub-string
+     *  - find as many sub-strings as possible
+     *  - if there are two solutions with the same number of sub-strings, return the one with the smaller
+     *  	total length.
+     *  
+     * Return sub-strings as a list.
+     * 
+     * @param s Input String
+     * 
+     * @return The Conditional Word List
+     */
+
+    public static final java.util.List<String> ConditionalWordList (
+    	final String s)
+    {
+    	java.util.HashMap<Character, java.util.ArrayList<Integer>> charIndexListMap = new
+    		java.util.HashMap<Character, java.util.ArrayList<Integer>>();
+
+    	char[] charArray = s.toCharArray();
+
+    	for (int i = 0; i < s.length(); ++i) {
+    		char c = charArray[i];
+
+    		if (charIndexListMap.containsKey (c))
+    			charIndexListMap.get (c).add (i);
+    		else {
+    			java.util.ArrayList<Integer> charIndexList = new java.util.ArrayList<Integer>();
+
+    			charIndexList.add (i);
+
+    			charIndexListMap.put (c, charIndexList);
+    		}
+    	}
+
+    	for (java.util.ArrayList<Integer> charIndexList : charIndexListMap.values()) {
+    		boolean discontinuousCharLocation = false;
+
+    		int prevIndex = charIndexList.get (0);
+
+    		for (int i = 1; i < charIndexList.size(); ++i) {
+    			int currentIndex = charIndexList.get (i);
+
+    			if (currentIndex != prevIndex + 1) {
+    				discontinuousCharLocation = true;
+    				break;
+    			}
+
+    			prevIndex = currentIndex;
+    		}
+
+    		if (discontinuousCharLocation) {
+    			for (int charIndex : charIndexList)
+    				charArray[charIndex] = '_';
+    		}
+    	}
+
+    	char prevChar = charArray[0];
+    	String sModified = "" + prevChar;
+
+    	for (int i = 1; i < charArray.length; ++i) {
+			sModified = sModified + (prevChar == charArray[i] || prevChar == '_' || charArray[i] == '_' ? ""
+				: "_") + charArray[i];
+    		prevChar = charArray[i];
+    	}
+
+    	while (sModified.startsWith ("_"))
+    		sModified = sModified.substring (1);
+
+    	while (sModified.endsWith ("_"))
+    		sModified = sModified.substring (0, sModified.length() - 1);
+
+    	String[] conditionalWordArray = sModified.split ("_");
+
+    	java.util.List<String> conditionalWordList = new java.util.ArrayList<String>();
+
+    	for (String conditionalWord : conditionalWordArray)
+    		conditionalWordList.add (conditionalWord);
+
+    	return conditionalWordList;
+    }
+
     public static final void main (
 		final String[] argumentArray)
 	{
-		System.out.println (LongestVowel ("earthproblem"));
+		System.out.println (ConditionalWordList ("bbeadcxede"));
 
-		System.out.println (LongestVowel ("letsgosomewhere"));
+		System.out.println (ConditionalWordList ("baddacxb"));
 	}
 }

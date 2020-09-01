@@ -325,6 +325,109 @@ public class GraphUtil
 		return componentList;
 	}
 
+	/**
+	 * Given an undirected graph, find out all the vertices when removed will make the graph disconnected.
+	 * 	Initially the graph is connected.
+	 * 
+	 * @param edgeArray Array of the Edges
+	 * 
+	 * @return List of Critical Nodes
+	 */
+
+	public static final java.util.ArrayList<Integer> CriticalNodes (
+		final int[][] edgeArray)
+	{
+		java.util.HashMap<Integer, java.util.HashSet<Integer>> neighborSetMap = new
+			java.util.HashMap<Integer, java.util.HashSet<Integer>>();
+
+		for (int[] edge : edgeArray) {
+			if (neighborSetMap.containsKey (edge[0]))
+				neighborSetMap.get (edge[0]).add (edge[1]);
+			else {
+				java.util.HashSet<Integer> neighborSet = new java.util.HashSet<Integer>();
+
+				neighborSet.add (edge[1]);
+
+				neighborSetMap.put (edge[0], neighborSet);
+			}
+
+			if (neighborSetMap.containsKey (edge[1]))
+				neighborSetMap.get (edge[1]).add (edge[0]);
+			else {
+				java.util.HashSet<Integer> neighborSet = new java.util.HashSet<Integer>();
+
+				neighborSet.add (edge[0]);
+
+				neighborSetMap.put (edge[1], neighborSet);
+			}
+		}
+
+		java.util.HashSet<Integer> intermediateNodeSet = new java.util.HashSet<Integer>();
+
+		for (int nodeID : neighborSetMap.keySet()) {
+			if (1 != neighborSetMap.get (nodeID).size()) intermediateNodeSet.add (nodeID);
+		}
+
+		java.util.ArrayList<Integer> criticalNodeList = new java.util.ArrayList<Integer>();
+
+		for (int intermediateNodeID : intermediateNodeSet) {
+			java.util.HashMap<Integer, java.util.HashSet<Integer>> modifiedNeighborSetMap = new
+				java.util.HashMap<Integer, java.util.HashSet<Integer>>();
+
+			int startingVertex = -1;
+
+			for (int[] edge : edgeArray) {
+				if (edge[0] == intermediateNodeID || edge[1] == intermediateNodeID) continue;
+
+				if (-1 == startingVertex) startingVertex = edge[0];
+
+				if (modifiedNeighborSetMap.containsKey (edge[0]))
+					modifiedNeighborSetMap.get (edge[0]).add (edge[1]);
+				else {
+					java.util.HashSet<Integer> modifiedNeighborSet = new java.util.HashSet<Integer>();
+
+					modifiedNeighborSet.add (edge[1]);
+
+					modifiedNeighborSetMap.put (edge[0], modifiedNeighborSet);
+				}
+
+				if (modifiedNeighborSetMap.containsKey (edge[1]))
+					modifiedNeighborSetMap.get (edge[1]).add (edge[0]);
+				else {
+					java.util.HashSet<Integer> modifiedNeighborSet = new java.util.HashSet<Integer>();
+
+					modifiedNeighborSet.add (edge[0]);
+
+					modifiedNeighborSetMap.put (edge[1], modifiedNeighborSet);
+				}
+			}
+
+			java.util.HashSet<Integer> visitedVertexSet = new java.util.HashSet<Integer>();
+
+			java.util.ArrayList<Integer> bfsVertexStack = new java.util.ArrayList<Integer>();
+
+			bfsVertexStack.add (startingVertex);
+
+			while (!bfsVertexStack.isEmpty()) {
+				int vertexID = bfsVertexStack.remove (bfsVertexStack.size() - 1);
+
+				visitedVertexSet.add (vertexID);
+
+				java.util.HashSet<Integer> modifiedNeighborSet = modifiedNeighborSetMap.get (vertexID);
+
+				if (modifiedNeighborSet.isEmpty()) continue;
+
+				for (int modifiedNeighborID : modifiedNeighborSet)
+					bfsVertexStack.add (modifiedNeighborID);
+			}
+
+			if (visitedVertexSet.size() != modifiedNeighborSetMap.size())
+				criticalNodeList.add (intermediateNodeID);
+		}
+
+		return criticalNodeList;
+	}
+
 	public static final void main (
 		final String[] argumentArray)
 	{
