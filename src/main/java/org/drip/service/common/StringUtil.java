@@ -638,7 +638,15 @@ public class StringUtil {
     	return range2[0] > range1[0] && range2[0] < range1[1];
     }
 
-	/**
+    private static final boolean IsConsonant (
+    	final char c)
+    {
+    	return 'b' == c || 'c' == c || 'd' == c || 'y' == c || 'f' == c || 'g' == c || 'h' == c || 'j' == c
+    		|| 'k' == c || 'l' == c || 'm' == c || 'n' == c || 'p' == c || 'q' == c || 'r' == c || 's' == c
+    		|| 't' == c || 'v' == c || 'w' == c || 'x' == c || 'z' == c;
+    }
+
+    /**
 	 * Look for a match of the field in the input array
 	 * 
 	 * @param strFieldToMatch Field To Match
@@ -4193,14 +4201,72 @@ public class StringUtil {
     public static final String LongestVowel (
     	final String s)
     {
-    	return "";
+    	java.util.List<Integer> consonantLocationList = new java.util.ArrayList<Integer>();
+
+    	for (int i = 0; i < s.length(); ++i) {
+    		if (IsConsonant (s.charAt (i))) consonantLocationList.add (i);
+    	}
+
+    	int consonantCount = consonantLocationList.size();
+
+    	if (2 >= consonantCount) {
+    		String longestVowel = "";
+
+        	for (int i = 0; i < s.length(); ++i) {
+        		if (!consonantLocationList.contains (i)) longestVowel = longestVowel + s.charAt (i);
+        	}
+
+        	return longestVowel;
+    	}
+
+    	String longestVowel = "";
+    	int optimalLeftStringEndIndex = -1;
+    	int optimalRightStringStartIndex = -1;
+    	int minimalSnippedStringSize = java.lang.Integer.MAX_VALUE;
+
+    	int firstConsonantIndex = consonantLocationList.get (0);
+
+    	int lastConsonantIndex = consonantLocationList.get (consonantCount - 1);
+
+    	for (int leftStringEndLocation = 0; leftStringEndLocation < consonantCount - 1;
+    		++leftStringEndLocation) {
+    		int leftStringEndIndex = consonantLocationList.get (leftStringEndLocation);
+
+			int rightStringStartIndex = consonantLocationList.get (leftStringEndLocation + 1);
+
+			int snippedStringSize = leftStringEndIndex - firstConsonantIndex + lastConsonantIndex -
+				rightStringStartIndex + 2;
+
+    		if (-1 == optimalLeftStringEndIndex && -1 == optimalRightStringStartIndex) {
+    			minimalSnippedStringSize = snippedStringSize;
+    			optimalLeftStringEndIndex = leftStringEndIndex;
+    			optimalRightStringStartIndex = rightStringStartIndex;
+    			continue;
+    		}
+
+    		if (minimalSnippedStringSize > snippedStringSize) {
+    			minimalSnippedStringSize = snippedStringSize;
+    			optimalLeftStringEndIndex = leftStringEndIndex;
+    			optimalRightStringStartIndex = rightStringStartIndex;
+    		}
+    	}
+
+    	if (0 != firstConsonantIndex) longestVowel = longestVowel + s.substring (0, firstConsonantIndex);
+
+		longestVowel = longestVowel + s.substring (optimalLeftStringEndIndex + 1,
+			optimalRightStringStartIndex);
+
+    	if (s.length() - 1 != lastConsonantIndex)
+    		longestVowel = longestVowel + s.substring (lastConsonantIndex + 1);
+
+    	return longestVowel;
     }
 
     public static final void main (
 		final String[] argumentArray)
 	{
-		System.out.println (CollectSameCharacters ("bbeadcxede"));
+		System.out.println (LongestVowel ("earthproblem"));
 
-		System.out.println (CollectSameCharacters ("baddacx"));
+		System.out.println (LongestVowel ("letsgosomewhere"));
 	}
 }

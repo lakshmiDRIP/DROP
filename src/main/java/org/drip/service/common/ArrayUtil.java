@@ -5151,10 +5151,62 @@ public class ArrayUtil
     	return maxPathScore;
     }
 
+    /**
+     * A shopkeeper has a sale to complete and has arranged the items being sold in a list. Starting from the
+     *  left, the shop keeper rings up each item at its full price less the price of the first lower or
+     *  equally priced item to its right. If there is no item to the right that costs less than or equal to
+     *  the current item's price the current item is sold at full price.
+     * 
+     * Print total cost of all items.
+     * 
+     * Also print the list of integers representing the indexes of the non- discounted items in ascending
+     *  index order.
+     * 
+     * @param priceArray Array of Item Prices
+     * @param nonDiscountedItems List of Non-discounted Items
+     * 
+     * @return Total Cost of Discounted Items
+     */
+
+    public static final int DiscountedSale (
+    	final int[] priceArray,
+    	final java.util.List<Integer> nonDiscountedItems)
+    {
+    	int totalCost = 0;
+
+    	nonDiscountedItems.clear();
+
+    	for (int i = 0; i < priceArray.length; ++i) {
+    		int discount = 0;
+
+    		for (int j = i + 1; j < priceArray.length; ++j) {
+        		if (priceArray[j] <= priceArray[i]) {
+        			discount = priceArray[j];
+        			break;
+        		}
+        	}
+
+    		totalCost = totalCost + priceArray[i] - discount;
+
+    		if (0 == discount) nonDiscountedItems.add (i);
+    	}
+
+    	return totalCost;
+    }
+
     public static final void main (
 		final String[] argumentArray)
 		throws java.lang.Exception
 	{
-		System.out.println (MaxPathScore (new int[][] {{7, 5, 3}, {2, 0, 9}, {4, 5, 9}}));
+    	java.util.List<Integer> nonDiscountedItems = new java.util.ArrayList<Integer>();
+
+    	System.out.println (DiscountedSale (new int[] {2, 3, 1, 2, 4, 2}, nonDiscountedItems) + " | " +
+    		nonDiscountedItems);
+
+    	System.out.println (DiscountedSale (new int[] {5, 1, 3, 4, 6, 2}, nonDiscountedItems) + " | " +
+    		nonDiscountedItems);
+
+    	System.out.println (DiscountedSale (new int[] {1, 3, 3, 2, 5}, nonDiscountedItems) + " | " +
+    		nonDiscountedItems);
 	}
 }

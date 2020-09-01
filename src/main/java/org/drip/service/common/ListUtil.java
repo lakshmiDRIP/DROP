@@ -504,26 +504,101 @@ public class ListUtil<V>
 		return turnstilePassingTimeArray;
 	}
 
+	/**
+	 * Find the k post offices located closest to you, given your location and a list of locations of all
+	 *  post offices available.
+	 *  
+	 * Locations are given in 2D coordinates in [X, Y], where X and Y are integers.
+	 * 
+	 * Euclidean distance is applied to find the distance between you and a post office.
+	 * 
+	 * Assume your location is [m, n] and the location of a post office is [p, q], the Euclidean distance
+	 * 	between the office and you is SquareRoot((m - p) * (m - p) + (n - q) * (n - q)).
+	 * 
+	 * K is a positive integer much smaller than the given number of post offices. 
+	 * 
+	 * @param officeLocationList List of Office Coordinates
+	 * @param k k Nearest Offices
+	 * 
+	 * @return List of Nearest Office Coordinates
+	 */
+
+	public static final java.util.List<int[]> NearestOffices (
+		final java.util.List<int[]> officeLocationList,
+		final int k)
+	{
+		java.util.HashMap<Double, java.util.ArrayList<int[]>> officeDistanceMap =
+			new java.util.HashMap<Double, java.util.ArrayList<int[]>>();
+
+		for (int[] officeLocation : officeLocationList) {
+			double distance = Math.sqrt (officeLocation[0] * officeLocation[0] + officeLocation[1] *
+				officeLocation[1]);
+
+			if (officeDistanceMap.containsKey (distance))
+				officeDistanceMap.get (distance).add (officeLocation);
+			else {
+				java.util.ArrayList<int[]> officeList = new java.util.ArrayList<int[]>();
+
+				officeList.add (officeLocation);
+
+				officeDistanceMap.put (distance, officeList);
+			}
+		}
+
+		java.util.PriorityQueue<Double> nearestOfficeHeap = new
+			java.util.PriorityQueue<Double>((x, y) -> Double.compare (y, x));
+
+		for (double distance : officeDistanceMap.keySet()) {
+			if (k < nearestOfficeHeap.size()) {
+				if (nearestOfficeHeap.peek() > distance) nearestOfficeHeap.poll();
+			}
+
+			nearestOfficeHeap.offer (distance);
+		}
+
+		java.util.List<int[]> nearestOfficesList = new java.util.ArrayList<int[]>();
+
+		int i = 0;
+		boolean set = false;
+
+		while (!nearestOfficeHeap.isEmpty()) {
+			java.util.ArrayList<int[]> officeList = officeDistanceMap.get (nearestOfficeHeap.poll());
+
+			for (int[] officeLocation : officeList) {
+				if (set)
+					nearestOfficesList.set (i, officeLocation);
+				else
+					nearestOfficesList.add (officeLocation);
+
+				if (k == ++i) {
+					i = 0;
+					set = true;
+				}
+			}
+		}
+
+		return nearestOfficesList;
+	}
+
 	public static final void main (
 		final java.lang.String[] argumentArray)
 		throws java.lang.Exception
 	{
-		int[] turnstilePassingTimeArray = TurnstilePassingTimeArray (
-			new int[] {0, 0, 1, 5},
-			new int[] {0, 1, 1, 0}
-		);
+		java.util.ArrayList<int[]> officeLocationList = new java.util.ArrayList<int[]>();
 
-		for (int i : turnstilePassingTimeArray)
-			System.out.print (i + ", ");
+		officeLocationList.add (new int[] {-16,  5});
 
-		System.out.println();
+		officeLocationList.add (new int[] { -1,  2});
 
-		turnstilePassingTimeArray = TurnstilePassingTimeArray (
-			new int[] {0, 1, 1, 3, 3},
-			new int[] {0, 1, 0, 0, 1}
-		);
+		officeLocationList.add (new int[] {  4,  3});
 
-		for (int i : turnstilePassingTimeArray)
-			System.out.print (i + ", ");
+		officeLocationList.add (new int[] { 10, -2});
+
+		officeLocationList.add (new int[] {  0,  3});
+
+		officeLocationList.add (new int[] { -5, -9});
+
+		for (int[] nearestOfficeLocation : NearestOffices (officeLocationList, 3))
+			System.out.print ("[" + nearestOfficeLocation[0] + ", " + nearestOfficeLocation[1] + "] ");
 	}
 }
