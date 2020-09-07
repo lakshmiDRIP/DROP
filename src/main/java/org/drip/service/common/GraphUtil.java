@@ -417,57 +417,162 @@ public class GraphUtil
 
 				if (modifiedNeighborSet.isEmpty()) continue;
 
-				for (int modifiedNeighborID : modifiedNeighborSet)
-					bfsVertexStack.add (modifiedNeighborID);
+				for (int modifiedNeighborID : modifiedNeighborSet) {
+					if (!visitedVertexSet.contains (modifiedNeighborID))
+						bfsVertexStack.add (modifiedNeighborID);
+				}
 			}
 
-			if (visitedVertexSet.size() != modifiedNeighborSetMap.size())
+			if (visitedVertexSet.size() != neighborSetMap.size() - 1)
 				criticalNodeList.add (intermediateNodeID);
 		}
 
 		return criticalNodeList;
 	}
 
+	/**
+	 * There are N cities numbered from 1 to N.
+	 * 
+	 * You are given connections, where each connections[i] = [city1, city2, cost] represents the cost to
+	 *  connect city1 and city2together. (A connection is bidirectional: connecting city1 and city2 is the
+	 *   same as connecting city2 and city1.)
+	 * 
+	 * Return the minimum cost so that for every pair of cities, there exists a path of connections (possibly
+	 *  of length 1) that connects those two cities together. The cost is the sum of the connection costs
+	 *  used. If the task is impossible, return -1.
+	 *  
+	 * @param weightedEdgeArray Array of Weighted Edges
+	 * 
+	 * @return The MSP Cost
+	 */
+
+	public static final int MSPCost (
+		final int[][] weightedEdgeArray)
+	{
+		java.util.HashMap<String, Integer> edgeWeightMap = new java.util.HashMap<String, Integer>();
+
+		java.util.HashMap<Integer, java.util.TreeMap<Integer, java.util.HashSet<Integer>>> weightedGraph =
+			new java.util.HashMap<Integer, java.util.TreeMap<Integer, java.util.HashSet<Integer>>>();
+
+		for (int[] weightedEdge : weightedEdgeArray) {
+			weightedGraph.put (weightedEdge[0], new java.util.TreeMap<Integer,
+				java.util.HashSet<Integer>>());
+
+			weightedGraph.put (weightedEdge[1], new java.util.TreeMap<Integer,
+				java.util.HashSet<Integer>>());
+
+			edgeWeightMap.put (weightedEdge[0] + "_" + weightedEdge[1], weightedEdge[2]);
+
+			edgeWeightMap.put (weightedEdge[1] + "_" + weightedEdge[0], weightedEdge[2]);
+		}
+
+		for (int[] weightedEdge : weightedEdgeArray) {
+			java.util.TreeMap<Integer, java.util.HashSet<Integer>> weightSortedNeighborSet =
+				weightedGraph.get (weightedEdge[0]);
+
+			if (weightSortedNeighborSet.containsKey (weightedEdge[2]))
+				weightSortedNeighborSet.get (weightedEdge[2]).add (weightedEdge[1]);
+			else {
+				java.util.HashSet<Integer> neighborSet = new java.util.HashSet<Integer>();
+
+				neighborSet.add (weightedEdge[1]);
+
+				weightSortedNeighborSet.put (weightedEdge[2], neighborSet);
+			}
+
+			weightSortedNeighborSet = weightedGraph.get (weightedEdge[1]);
+
+			if (weightSortedNeighborSet.containsKey (weightedEdge[2]))
+				weightSortedNeighborSet.get (weightedEdge[2]).add (weightedEdge[0]);
+			else {
+				java.util.HashSet<Integer> neighborSet = new java.util.HashSet<Integer>();
+
+				neighborSet.add (weightedEdge[0]);
+
+				weightSortedNeighborSet.put (weightedEdge[2], neighborSet);
+			}
+		}
+
+		int cost = 0;
+		int startingVertex = weightedEdgeArray[0][0];
+
+		java.util.TreeMap<Integer, java.util.ArrayList<String>> edgePriorityQueue = new
+			java.util.TreeMap<Integer, java.util.ArrayList<String>>();
+
+		java.util.TreeMap<Integer, java.util.HashSet<Integer>> weightSortedNeighborSet =
+			weightedGraph.get (startingVertex);
+
+		if (weightSortedNeighborSet.isEmpty()) return -1;
+
+		for (int edgeWeight : weightSortedNeighborSet.keySet()) {
+			for (int neighborVertex : weightSortedNeighborSet.get (edgeWeight)) {
+				if (edgePriorityQueue.containsKey (edgeWeight))
+					edgePriorityQueue.get (edgeWeight).add (startingVertex + "_" + neighborVertex);
+				else {
+					java.util.ArrayList<String> edgeList = new java.util.ArrayList<String>();
+
+					edgeList.add (startingVertex + "_" + neighborVertex);
+
+					edgePriorityQueue.put (edgeWeight, edgeList);
+				}
+			}
+		}
+
+		java.util.ArrayList<String> spanningEdgeList = new java.util.ArrayList<String>();
+
+		java.util.HashSet<Integer> visitedVertexSet = new java.util.HashSet<Integer>();
+
+		visitedVertexSet.add (startingVertex);
+
+		while (!edgePriorityQueue.isEmpty()) {
+			int shortestDistance = edgePriorityQueue.firstKey();
+
+			java.util.ArrayList<String> edgeList = edgePriorityQueue.get (shortestDistance);
+
+			String nextEdge = edgeList.remove (0);
+
+			if (edgeList.isEmpty()) edgePriorityQueue.remove (shortestDistance);
+
+			int nextVertex = Integer.parseInt (nextEdge.split ("_")[1]);
+
+			if (!visitedVertexSet.contains (nextVertex)) {
+				visitedVertexSet.add (nextVertex);
+
+				spanningEdgeList.add (nextEdge);
+
+				weightSortedNeighborSet = weightedGraph.get (nextVertex);
+
+				if (weightSortedNeighborSet.isEmpty()) continue;
+
+				for (int edgeWeight : weightSortedNeighborSet.keySet()) {
+					for (int neighborVertex : weightSortedNeighborSet.get (edgeWeight)) {
+						if (edgePriorityQueue.containsKey (edgeWeight))
+							edgePriorityQueue.get (edgeWeight).add (nextVertex + "_" + neighborVertex);
+						else {
+							edgeList = new java.util.ArrayList<String>();
+
+							edgeList.add (nextVertex + "_" + neighborVertex);
+
+							edgePriorityQueue.put (edgeWeight, edgeList);
+						}
+					}
+				}
+			}
+		}
+
+		if (visitedVertexSet.size() < weightedGraph.size()) return -1;
+
+		for (String edge : spanningEdgeList)
+			cost = cost + edgeWeightMap.get (edge);
+
+		return cost;
+	}
+
 	public static final void main (
 		final String[] argumentArray)
 	{
-		java.util.ArrayList<String> itemList1 = new java.util.ArrayList<String>();
+		System.out.println (MSPCost (new int[][] {{1, 2, 5}, {1, 3, 6}, {2, 3, 1}}));
 
-		itemList1.add ("product1");
-
-		itemList1.add ("product2");
-
-		itemList1.add ("product3");
-
-		java.util.ArrayList<String> itemList2 = new java.util.ArrayList<String>();
-
-		itemList2.add ("product5");
-
-		itemList2.add ("product2");
-
-		java.util.ArrayList<String> itemList3 = new java.util.ArrayList<String>();
-
-		itemList3.add ("product6");
-
-		itemList3.add ("product7");
-
-		java.util.ArrayList<String> itemList4 = new java.util.ArrayList<String>();
-
-		itemList4.add ("product8");
-
-		itemList4.add ("product7");
-
-		java.util.List<java.util.List<String>> itemListSequence = new
-			java.util.ArrayList<java.util.List<String>>();
-
-		itemListSequence.add (itemList1);
-
-		itemListSequence.add (itemList2);
-
-		itemListSequence.add (itemList3);
-
-		itemListSequence.add (itemList4);
-
-		System.out.println (LargestGroup (itemListSequence));
+		System.out.println (MSPCost (new int[][] {{1, 2, 3}, {3, 4, 4}}));
 	}
 }

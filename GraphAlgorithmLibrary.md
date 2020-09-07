@@ -11,7 +11,7 @@ Graph Algorithm Library contains the Libraries implementing the Graph Representa
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm/GraphAlgorithm_v4.98.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm/GraphAlgorithm_v5.04.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/GraphAlgorithm) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -244,6 +244,20 @@ Graph Algorithm Library contains the Libraries implementing the Graph Representa
 	* Analysis
 	* Applications and Generalizations
 	* Comparisons with other Shortest Path Algorithms
+	* References
+ * Strongly Connected Component
+	* Overview
+	* Definitions
+	* DFS Based Linear Time Algorithms
+	* Reachability-Based Algorithms
+	* Generating Random Strongly Connected Components
+	* Applications
+	* Related Results
+	* References
+ * Kosaraju's Algorithm
+	* Overview
+	* The Algorithm
+	* Complexity
 	* References
  * Selection Algorithm
 	* Overview

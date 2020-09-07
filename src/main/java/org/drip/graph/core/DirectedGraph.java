@@ -652,4 +652,49 @@ public class DirectedGraph
 
 		return kirchoffSpanningTreeCount();
 	}
+
+	/**
+	 * Transpose the Edges of the Current Graph to create a new One
+	 * 
+	 * @return The Transposed Graph
+	 */
+
+	public DirectedGraph Transpose()
+	{
+		java.util.Collection<org.drip.graph.core.Edge> edgeCollection = _edgeMap.values();
+
+		DirectedGraph directedGraphTranspose = new DirectedGraph();
+
+		if (!edgeCollection.isEmpty())
+		{
+			for (org.drip.graph.core.Edge edge : edgeCollection)
+			{
+				if (!directedGraphTranspose.addEdge (
+					edge.invert()
+				))
+				{
+					return null;
+				}
+			}
+		}
+		else
+		{
+			java.util.Collection<org.drip.graph.core.Vertex> vertexCollection = _vertexMap.values();
+
+			if (!vertexCollection.isEmpty())
+			{
+				for (org.drip.graph.core.Vertex vertex : vertexCollection)
+				{
+					if (!directedGraphTranspose.addVertex (
+						vertex.name()
+					))
+					{
+						return null;
+					}
+				}
+			}
+		}
+
+		return directedGraphTranspose;
+	}
 }
