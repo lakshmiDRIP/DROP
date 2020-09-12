@@ -1,5 +1,12 @@
 
-package org.drip.graph.connectivity;
+package org.drip.sample.connectivity;
+
+import java.util.Map;
+
+import org.drip.graph.connectivity.Kosaraju;
+import org.drip.graph.core.DirectedGraph;
+import org.drip.graph.core.Edge;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,8 +82,8 @@ package org.drip.graph.connectivity;
  */
 
 /**
- * <i>Kosaraju</i> implements the 2-pass Kosaraju Strongly Connected Components Algorithm. The References
- * 	are:
+ * <i>KosarajuSCC</i> illustrates the 2-pass Kosaraju Algorithm for determining Strongly Connected
+ * 	Components. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -106,203 +113,164 @@ package org.drip.graph.connectivity;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/connectivity/README.md">Graph Connectivity and Connected Components</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/connectivity/README.md">Graph Connectivity and SCC Algorithms</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Kosaraju
+public class KosarajuSCC
 {
-	private org.drip.graph.core.Network _graph = null;
 
-	private boolean updateVisitation (
-		final org.drip.graph.core.Vertex vertex,
-		final java.util.Map<java.lang.String, java.lang.Boolean> vertexVisitationIndicatorMap,
-		final java.util.List<java.lang.String> componentVertexNameList)
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		java.lang.String vertexName = vertex.name();
+		EnvManager.InitEnv (
+			""
+		);
 
-		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap = _graph.vertexMap();
-
-		if (!vertexVisitationIndicatorMap.containsKey (
-			vertexName
-		))
+		String[] vertexArray = new String[]
 		{
-			vertexVisitationIndicatorMap.put (
-				vertexName,
-				true
-			);
+			"Delhi     ",
+			"Bombay    ",
+			"Madras    ",
+			"Calcutta  ",
+			"Bangalore ",
+			"Hyderabad ",
+			"Cochin    ",
+			"Pune      ",
+			"Ahmedabad ",
+			"Jaipur    "
+		};
 
-			java.util.Set<java.lang.String> neighboringVertexNameSet = vertex.neighboringVertexNameSet();
+		DirectedGraph graph = new DirectedGraph();
 
-			if (!neighboringVertexNameSet.isEmpty())
-			{
-				for (java.lang.String neighboringVertexName : neighboringVertexNameSet)
-				{
-					if (!updateVisitation (
-						vertexMap.get (
-							neighboringVertexName
-						),
-						vertexVisitationIndicatorMap,
-						componentVertexNameList
-					))
-					{
-						return false;
-					}
-				}
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[0], // Delhi
+				vertexArray[1], // Bombay
+				1388.
+			)
+		);
 
-				componentVertexNameList.add (
-					0,
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[0], // Delhi
+				vertexArray[2], // Madras
+				2191.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[1], // Bombay
+				vertexArray[2], // Madras
+				1279.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[0], // Delhi
+				vertexArray[3], // Calcutta
+				1341.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[1], // Bombay
+				vertexArray[3], // Calcutta
+				1968.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[2], // Madras
+				vertexArray[3], // Calcutta
+				1663.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[2], // Madras
+				vertexArray[4], // Bangalore
+				361.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[2], // Madras
+				vertexArray[5], // Hyderabad
+				784.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[2], // Madras
+				vertexArray[6], // Cochin
+				697.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[1], // Bombay
+				vertexArray[7], // Pune
+				192.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[1], // Bombay
+				vertexArray[8], // Ahmedabad
+				492.
+			)
+		);
+
+		graph.addBidirectionalEdge (
+			new Edge (
+				vertexArray[0], // Delhi
+				vertexArray[9], // Jaipur
+				308.
+			)
+		);
+
+		Kosaraju kosaraju = new Kosaraju (
+			graph
+		);
+
+		Map<String, String> vertexRootComponentMap = kosaraju.vertexRootComponentMap();
+
+		System.out.println ("\t|---------------------------||");
+
+		System.out.println ("\t|  KOSARAJU SCC ALGORITHM   ||");
+
+		System.out.println ("\t|---------------------------||");
+
+		System.out.println ("\t|  Component  =>  Root      ||");
+
+		System.out.println ("\t|---------------------------||");
+
+		for (String vertexName : vertexRootComponentMap.keySet())
+		{
+			System.out.println (
+				"\t|  " + vertexName + " => " + vertexRootComponentMap.get (
 					vertexName
-				);
-			}
-		}
-
-		return true;
-	}
-
-	private boolean assignComponent (
-		final org.drip.graph.core.Vertex vertex,
-		final java.lang.String rootVertexName,
-		final java.util.Map<java.lang.String, java.lang.String> vertexRootComponentMap)
-	{
-		java.lang.String vertexName = vertex.name();
-
-		if (!vertexRootComponentMap.containsKey (
-			vertexName
-		))
-		{
-			vertexRootComponentMap.put (
-				vertexName,
-				rootVertexName
-			);
-
-			java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap = _graph.vertexMap();
-
-			java.util.Set<java.lang.String> neighboringVertexNameSet = vertex.neighboringVertexNameSet();
-
-			if (!neighboringVertexNameSet.isEmpty())
-			{
-				for (java.lang.String neighboringVertexName : neighboringVertexNameSet)
-				{
-					if (!assignComponent (
-						vertexMap.get (
-							neighboringVertexName
-						),
-						rootVertexName,
-						vertexRootComponentMap
-					))
-					{
-						return false;
-					}
-				}
-			}
-		}
-
-		return true;
-	}
-
-	/**
-	 * Kosaraju Constructor
-	 * 
-	 * @param graph The Graph Network
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public Kosaraju (
-		final org.drip.graph.core.Network graph)
-		throws java.lang.Exception
-	{
-		if (null == (_graph = graph))
-		{
-			throw new java.lang.Exception (
-				"Kosaraju Constructor => Invalid Inputs"
-			);
-		}
-	}
-
-	/**
-	 * Retrieve the Network Graph
-	 * 
-	 * @return The Network Graph
-	 */
-
-	public org.drip.graph.core.Network graph()
-	{
-		return _graph;
-	}
-
-	/**
-	 * Compute the Vertex Root Component Map
-	 * 
-	 * @return The Vertex Root Component Map
-	 */
-
-	public java.util.Map<java.lang.String, java.lang.String> vertexRootComponentMap()
-	{
-		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap = _graph.vertexMap();
-
-		if (0 == vertexMap.size())
-		{
-			return null;
-		}
-
-		java.util.Set<java.lang.String> vertexNameSet = vertexMap.keySet();
-
-		java.util.Map<java.lang.String, java.lang.Boolean> vertexVisitationIndicatorMap = new
-			java.util.HashMap<java.lang.String, java.lang.Boolean>();
-
-		for (java.lang.String vertexName : vertexNameSet)
-		{
-			vertexVisitationIndicatorMap.put (
-				vertexName,
-				false
+				) + " ||"
 			);
 		}
 
-		java.util.List<java.lang.String> componentVertexNameList =
-			new java.util.ArrayList<java.lang.String>();
+		System.out.println ("\t|---------------------------||");
 
-		for (java.lang.String vertexName : vertexNameSet)
-		{
-			if (!updateVisitation (
-				vertexMap.get (
-					vertexName
-				),
-				vertexVisitationIndicatorMap,
-				componentVertexNameList
-			))
-			{
-				return null;
-			}
-		}
-
-		if (componentVertexNameList.isEmpty())
-		{
-			return null;
-		}
-
-		java.util.Map<java.lang.String, java.lang.String> vertexRootComponentMap = new
-			java.util.HashMap<java.lang.String, java.lang.String>();
-
-		for (java.lang.String vertexName : componentVertexNameList)
-		{
-			if (!assignComponent (
-				vertexMap.get (
-					vertexName
-				),
-				vertexName,
-				vertexRootComponentMap
-			))
-			{
-				return null;
-			}
-		}
-
-		return vertexRootComponentMap;
+		EnvManager.TerminateEnv();
 	}
 }

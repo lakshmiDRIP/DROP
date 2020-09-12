@@ -75,8 +75,8 @@ package org.drip.graph.astar;
  */
 
 /**
- * <i>VertexContextEpsilonAdmissibleHeuristic</i> computes the Reese (1999) Epsilon-Admissible Heuristic in
- * 	the Alpha A<sup>*</sup> Heuristic Function. The References are:
+ * <i>HeuristicOptimalPathGenerator</i> generates Optimal Path using a Heuristic-based A<sup>*</sup>
+ * 	Algorithm. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -115,70 +115,36 @@ package org.drip.graph.astar;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VertexContextEpsilonAdmissibleHeuristic
+public class HeuristicOptimalPathGenerator
+	extends org.drip.graph.shortestpath.OptimalPathGenerator
 {
 	private org.drip.graph.astar.FHeuristic _fHeuristic = null;
-	private org.drip.graph.astar.VertexContextWeightHeuristic _vertexContextWeightHeuristic = null;
 
 	/**
-	 * Construct the Reese (1999) Alpha A<sup>*</sup> Epsilon-Admissible Heuristic Function
+	 * HeuristicOptimalPathGenerator Constructor
 	 * 
-	 * @param gHeuristic The G Heuristic
-	 * @param hHeuristic The H Heuristic
-	 * @param smallLambda The Small Lambda
-	 * @param bigLambda The Big Lambda
-	 * 
-	 * @return The Reese (1999) Alpha A<sup>*</sup> Epsilon-Admissible Heuristic Function
-	 */
-
-	public static final VertexContextEpsilonAdmissibleHeuristic AlphaAStar (
-		final org.drip.graph.astar.VertexFunction gHeuristic,
-		final org.drip.graph.astar.VertexFunction hHeuristic,
-		final double smallLambda,
-		final double bigLambda)
-	{
-		try
-		{
-			return new VertexContextEpsilonAdmissibleHeuristic (
-				new org.drip.graph.astar.FHeuristic (
-					gHeuristic,
-					hHeuristic
-				),
-				new org.drip.graph.astar.VertexContextWeightHeuristic (
-					gHeuristic,
-					smallLambda,
-					bigLambda
-				)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * VertexContextEpsilonAdmissibleHeuristic Constructor
-	 * 
-	 * @param fHeuristic The F Heuristic
-	 * @param vertexContextWeightHeuristic The Vertex Context Weight Heuristic
+	 * @param graph Graph underlying the Path Generator
+	 * @param shortestPath TRUE - Shortest Path Sought
+	 * @param fHeuristic F Heuristic
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public VertexContextEpsilonAdmissibleHeuristic (
-		final org.drip.graph.astar.FHeuristic fHeuristic,
-		final org.drip.graph.astar.VertexContextWeightHeuristic vertexContextWeightHeuristic)
+	public HeuristicOptimalPathGenerator (
+		final org.drip.graph.core.DirectedGraph graph,
+		final boolean shortestPath,
+		final org.drip.graph.astar.FHeuristic fHeuristic)
 		throws java.lang.Exception
 	{
-		if (null == (_fHeuristic = fHeuristic) ||
-			null == (_vertexContextWeightHeuristic = vertexContextWeightHeuristic)
-		)
+		super (
+			graph,
+			shortestPath
+		);
+
+		if (null == (_fHeuristic = fHeuristic))
 		{
 			throw new java.lang.Exception (
-				"VertexContextEpsilonAdmissibleHeuristic Constructor => Invalid Inputs"
+				"HeuristicOptimalPathGenerator Constructor => Invalid Inputs"
 			);
 		}
 	}
@@ -194,44 +160,136 @@ public class VertexContextEpsilonAdmissibleHeuristic
 		return _fHeuristic;
 	}
 
-	/**
-	 * Retrieve the Vertex Context Weight Heuristic
-	 * 
-	 * @return The Vertex Context Weight Heuristic
-	 */
 
-	public org.drip.graph.astar.VertexContextWeightHeuristic vertexContextWeightHeuristic()
+	@Override public org.drip.graph.shortestpath.VertexAugmentor augmentVertexes (
+		final java.lang.String sourceVertexName)
 	{
-		return _vertexContextWeightHeuristic;
+		return null;
 	}
 
-	/**
-	 * Compute the Epsilon-Admissible Heuristic for the Specified Vertex Context
-	 * 
-	 * @param vertexContext The vertex Context
-	 * 
-	 * @return The Epsilon-Admissible Heuristic for the Specified Vertex Context
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double evaluate (
-		final org.drip.graph.astar.VertexContext vertexContext)
-		throws java.lang.Exception
+	@Override public org.drip.graph.core.Path singlePair (
+		final java.lang.String sourceVertexName,
+		final java.lang.String destinationVertexName)
 	{
-		if (null == vertexContext)
+		if (null == sourceVertexName || sourceVertexName.isEmpty() ||
+			null == destinationVertexName || destinationVertexName.isEmpty())
 		{
-			throw new java.lang.Exception (
-				"VertexContextEpsilonAdmissibleHeuristic::evaluate => Invalid Inputs"
+			return null;
+		}
+
+		java.util.Map<java.lang.String, java.lang.Double> vertexGScoreMap =
+			new java.util.HashMap<java.lang.String, java.lang.Double>();
+
+		java.util.Map<java.lang.String, java.lang.Double> vertexFScoreMap =
+			new java.util.HashMap<java.lang.String, java.lang.Double>();
+
+		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap = graph().vertexMap();
+
+		for (java.lang.String vertexName : vertexMap.keySet())
+		{
+			vertexGScoreMap.put (
+				vertexName,
+				java.lang.Double.POSITIVE_INFINITY
+			);
+
+			vertexFScoreMap.put (
+				vertexName,
+				java.lang.Double.POSITIVE_INFINITY
 			);
 		}
 
-		return _fHeuristic.evaluate (
-			vertexContext.current()
-		)  * (
-			1. + _vertexContextWeightHeuristic.evaluate (
-				vertexContext
-			)
+		org.drip.graph.astar.VertexFunction gHeuristic = _fHeuristic.gHeuristic();
+
+		org.drip.graph.astar.VertexFunction hHeuristic = _fHeuristic.hHeuristic();
+
+		vertexGScoreMap.put (
+			sourceVertexName,
+			0.
 		);
+
+		try
+		{
+			vertexFScoreMap.put (
+				sourceVertexName,
+				hHeuristic.evaluate (
+					vertexMap.get (
+						sourceVertexName
+					)
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+
+			return null;
+		}
+
+		java.util.Map<java.lang.String, java.lang.String> precedingVertexMap =
+			new java.util.HashMap<java.lang.String, java.lang.String>();
+
+		java.util.List<java.lang.String> vertexStack = new java.util.ArrayList<java.lang.String>();
+
+		while (!vertexStack.isEmpty())
+		{
+			java.lang.String currentVertexName = vertexStack.remove (
+				vertexStack.size() - 1
+			);
+
+			if (currentVertexName.equalsIgnoreCase (
+				destinationVertexName
+			))
+			{
+				continue;
+			}
+
+			org.drip.graph.core.Vertex currentVertex = vertexMap.get (
+				currentVertexName
+			);
+
+			java.util.Set<java.lang.String> neighboringVertexNameSet =
+				currentVertex.neighboringVertexNameSet();
+
+			if (neighboringVertexNameSet.isEmpty())
+			{
+				continue;
+			}
+
+			for (java.lang.String neighboringVertexName : neighboringVertexNameSet)
+			{
+				try
+				{
+					double tentativeGScore = gHeuristic.evaluate (
+						vertexMap.get (
+							currentVertexName
+						)
+					) + graph().edgeMap().get (
+						currentVertex + "_" + neighboringVertexName
+					).weight();
+				}
+				catch (java.lang.Exception e)
+				{
+					e.printStackTrace();
+
+					return null;
+				}
+			}
+		}
+
+		java.util.List<org.drip.graph.core.Edge> edgeList =
+			new java.util.ArrayList<org.drip.graph.core.Edge>();
+
+		try
+		{
+			return new org.drip.graph.core.Path (
+				edgeList
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }
