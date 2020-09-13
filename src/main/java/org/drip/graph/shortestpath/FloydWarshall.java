@@ -1,5 +1,5 @@
 
-package org.drip.graph.bellmanford;
+package org.drip.graph.shortestpath;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,29 +75,29 @@ package org.drip.graph.bellmanford;
  */
 
 /**
- * <i>YenEdgePartitionPathGenerator</i> generates the Shortest Path for a Directed Graph using the
- * 	Bellman-Ford Algorithm with the Yen (1970) Edge Partitioning Scheme applied to improve the Worst-Case
- * 	Behavior. The References are:
+ * <i>FloydWarshall</i> generates the Shortest Path for a Directed Graph using the Floyd-Warshall Dynamic
+ * 	Programming Algorithm. The References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Bang-Jensen, J., and G. Gutin (2008): <i>Digraphs: Theory, Algorithms, and Applications
- *  			2<sup>nd</sup> Edition</i> <b>Springer</b>
+ *  		Chan, T. M. (2010): More Algorithms for All-Pairs Shortest Paths in Weighted Graphs <i>SIAM
+ *  			Journal on Computing</i> <b>39 (5)</b> 2075-2089
  *  	</li>
  *  	<li>
- *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms</i>
- *  			3<sup>rd</sup> Edition <b>MIT Press</b>
+ *  		Floyd, R. W. (1962): Algorithm 97: Shortest Path <i>Communications of the ACM</i> <b>5 (6)</b>
+ *  			345
  *  	</li>
  *  	<li>
- *  		Kleinberg, J., and E. Tardos (2022): <i>Algorithm Design 2<sup>nd</sup> Edition</i> <b>Pearson</b>
+ *  		Hougardy, S. (2010): The Floyd-Warshall Algorithm on Graphs with Negative Cycles <i>Information
+ *  			Processing Letters</i> <b>110 (8-9)</b> 279-291
  *  	</li>
  *  	<li>
- *  		Sedgewick, R. and K. Wayne (2011): <i>Algorithms 4<sup>th</sup> Edition</i> <b>Addison Wesley</b>
+ *  		Warshall, S. (1962): A Theorem on Boolean Matrices <i>Journal of the ACM</i> <b>9 (1)</b> 11-12
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020): Bellman-Ford Algorithm
- *  			https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
+ *  		Wikipedia (2020): Floyd-Warshall Algorithm
+ *  			https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm
  *  	</li>
  *  </ul>
  *
@@ -106,20 +106,21 @@ package org.drip.graph.bellmanford;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/bellmanford/README.md">Bellman Ford Shortest Path Family</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/shortestpath/README.md">Shortest Path Generation Algorithm Family</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class YenEdgePartitionPathGenerator
-	extends org.drip.graph.bellmanford.EdgePartitionGenerator
+public class FloydWarshall
 {
-	private org.drip.graph.bellmanford.EdgePartition _edgePartition = null;
+	private boolean _shortestPath = false;
+	private org.drip.graph.core.DirectedGraph _graph = null;
+	private org.drip.graph.astar.FHeuristic _fHeuristic = null;
 
 	/**
-	 * YenEdgePartitionPathGenerator Constructor
+	 * FloydWarshall Constructor
 	 * 
 	 * @param graph Graph underlying the Path Generator
 	 * @param shortestPath TRUE - Shortest Path Sought
@@ -128,32 +129,53 @@ public class YenEdgePartitionPathGenerator
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public YenEdgePartitionPathGenerator (
+	public FloydWarshall (
 		final org.drip.graph.core.DirectedGraph graph,
 		final boolean shortestPath,
 		final org.drip.graph.astar.FHeuristic fHeuristic)
 		throws java.lang.Exception
 	{
-		super (
-			graph,
-			shortestPath,
-			fHeuristic
-		);
-
-		if (null == (_edgePartition = org.drip.graph.bellmanford.EdgePartition.FromGraph (
-				graph,
-				false
-			))
-		)
+		if (null == (_graph = graph))
 		{
 			throw new java.lang.Exception (
-				"YenEdgePartitionPathGenerator Constructor => Invalid Inputs"
+				"FloydWarshall Constructor => Invalid Inputs"
 			);
 		}
+
+		_shortestPath = shortestPath;
+		_fHeuristic = fHeuristic;
 	}
 
-	@Override public org.drip.graph.bellmanford.EdgePartition edgePartition()
+	/**
+	 * Retrieve the Graph underlying the Path Generator
+	 * 
+	 * @return Graph underlying the Path Generator
+	 */
+
+	public org.drip.graph.core.DirectedGraph graph()
 	{
-		return _edgePartition;
+		return _graph;
+	}
+
+	/**
+	 * Indicate if the Shortest Path is Sought
+	 * 
+	 * @return TRUE - Shortest Path Sought
+	 */
+
+	public boolean shortestPath()
+	{
+		return _shortestPath;
+	}
+
+	/**
+	 * Retrieve the F Heuristic
+	 * 
+	 * @return The F Heuristic
+	 */
+
+	public org.drip.graph.astar.FHeuristic fHeuristic()
+	{
+		return _fHeuristic;
 	}
 }

@@ -204,18 +204,21 @@ public class EdgeRelaxationPathGenerator
 	 * 
 	 * @param graph Graph underlying the Path Generator
 	 * @param shortestPath TRUE - Shortest Path Sought
+	 * @param fHeuristic F Heuristic
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public EdgeRelaxationPathGenerator (
 		final org.drip.graph.core.DirectedGraph graph,
-		final boolean shortestPath)
+		final boolean shortestPath,
+		final org.drip.graph.astar.FHeuristic fHeuristic)
 		throws java.lang.Exception
 	{
 		super (
 			graph,
-			shortestPath
+			shortestPath,
+			fHeuristic
 		);
 	}
 
@@ -240,7 +243,9 @@ public class EdgeRelaxationPathGenerator
 		{
 			vertexAugmentor = new org.drip.graph.shortestpath.VertexAugmentor (
 				sourceVertexName,
-				shortestPath
+				shortestPath,
+				fHeuristic(),
+				graph.vertexMap()
 			);
 		}
 		catch (java.lang.Exception e)

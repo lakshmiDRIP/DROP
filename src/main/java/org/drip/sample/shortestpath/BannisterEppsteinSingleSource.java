@@ -252,7 +252,8 @@ public class BannisterEppsteinSingleSource
 
 		OptimalPathGenerator optimalPathGenerator = new BannisterEppsteinPathGenerator (
 			graph,
-			true
+			true,
+			null
 		);
 
 		for (String sourceVertexName : vertexArray)

@@ -250,7 +250,8 @@ public class DijkstraSinglePair
 
 		DijkstraPathGenerator dijkstraGenerator = new DijkstraPathGenerator (
 			graph,
-			true
+			true,
+			null
 		);
 
 		for (String sourceVertexName : vertexArray)

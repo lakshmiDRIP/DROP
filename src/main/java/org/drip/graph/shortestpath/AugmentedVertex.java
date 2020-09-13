@@ -117,15 +117,58 @@ package org.drip.graph.shortestpath;
 public class AugmentedVertex
 {
 	private boolean _processed = false;
+	private double _gScore = java.lang.Double.NaN;
+	private double _hScore = java.lang.Double.NaN;
 	private org.drip.graph.core.Edge _precedingEdge = null;
-	private double _gScore = java.lang.Double.POSITIVE_INFINITY;
+
+	/**
+	 * Generate a Non-heuristic Instance of AugmentedVertex
+	 * 
+	 * @return Non-heuristic Instance of AugmentedVertex
+	 */
+
+	public static final AugmentedVertex NonHeuristic()
+	{
+		try
+		{
+			return new AugmentedVertex (
+				java.lang.Double.POSITIVE_INFINITY,
+				java.lang.Double.POSITIVE_INFINITY
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
 	 * AugmentedVertex Constructor
+	 * 
+	 * @param gScore G Score
+	 * @param hScore H Score
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public AugmentedVertex()
+	public AugmentedVertex (
+		final double gScore,
+		final double hScore)
+		throws java.lang.Exception
 	{
+		if (java.lang.Double.isNaN (
+				_gScore = gScore
+			) || java.lang.Double.isNaN (
+				_hScore = hScore
+			)
+		)
+		{
+			throw new java.lang.Exception (
+				"AugmentedVertex Constructor => Invalid Inputs"
+			);
+		}
 	}
 
 	/**
@@ -162,6 +205,28 @@ public class AugmentedVertex
 	}
 
 	/**
+	 * Retrieve the Vertex Path H Score
+	 * 
+	 * @return The Vertex Path H Score
+	 */
+
+	public double hScore()
+	{
+		return _hScore;
+	}
+
+	/**
+	 * Retrieve the Vertex Path F Score
+	 * 
+	 * @return The Vertex Path F Score
+	 */
+
+	public double fScore()
+	{
+		return _gScore + _hScore;
+	}
+
+	/**
 	 * Set the Preceding Edge in the Path
 	 * 
 	 * @param precedingEdge The Preceding Edge in the Path
@@ -192,14 +257,14 @@ public class AugmentedVertex
 	}
 
 	/**
-	 * Set the Vertex Path G Score
+	 * Update the Vertex Path G Score
 	 * 
 	 * @param gScore The Vertex Path G Score
 	 * 
-	 * @return TRUE - The Vertex Path G Score successfully set
+	 * @return TRUE - The Vertex Path G Score successfully updated
 	 */
 
-	public boolean setGScore (
+	public boolean updateGScore (
 		final double gScore)
 	{
 		if (java.lang.Double.isNaN (

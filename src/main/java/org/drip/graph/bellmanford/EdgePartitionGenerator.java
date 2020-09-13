@@ -230,12 +230,14 @@ public abstract class EdgePartitionGenerator
 
 	protected EdgePartitionGenerator (
 		final org.drip.graph.core.DirectedGraph graph,
-		final boolean shortestPath)
+		final boolean shortestPath,
+		final org.drip.graph.astar.FHeuristic fHeuristic)
 		throws java.lang.Exception
 	{
 		super (
 			graph,
-			shortestPath
+			shortestPath,
+			fHeuristic
 		);
 	}
 

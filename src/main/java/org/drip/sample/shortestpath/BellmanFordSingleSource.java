@@ -252,7 +252,8 @@ public class BellmanFordSingleSource
 
 		EdgeRelaxationPathGenerator bellmanFordGenerator = new EdgeRelaxationPathGenerator (
 			graph,
-			true
+			true,
+			null
 		);
 
 		for (String sourceVertexName : vertexArray)

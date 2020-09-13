@@ -252,7 +252,8 @@ public class DijkstraSingleSource
 
 		DijkstraPathGenerator dijkstraGenerator = new DijkstraPathGenerator (
 			graph,
-			true
+			true,
+			null
 		);
 
 		for (String sourceVertexName : vertexArray)

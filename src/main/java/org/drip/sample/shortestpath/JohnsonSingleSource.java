@@ -250,7 +250,8 @@ public class JohnsonSingleSource
 
 		OptimalPathGenerator optimalPathGenerator = new JohnsonPathGenerator (
 			graph,
-			true
+			true,
+			null
 		);
 
 		for (String sourceVertexName : vertexArray)

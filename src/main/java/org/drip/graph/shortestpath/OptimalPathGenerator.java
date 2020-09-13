@@ -116,10 +116,12 @@ public abstract class OptimalPathGenerator
 {
 	private boolean _shortestPath = false;
 	private org.drip.graph.core.DirectedGraph _graph = null;
+	private org.drip.graph.astar.FHeuristic _fHeuristic = null;
 
 	protected OptimalPathGenerator (
 		final org.drip.graph.core.DirectedGraph graph,
-		final boolean shortestPath)
+		final boolean shortestPath,
+		final org.drip.graph.astar.FHeuristic fHeuristic)
 		throws java.lang.Exception
 	{
 		if (null == (_graph = graph))
@@ -130,6 +132,7 @@ public abstract class OptimalPathGenerator
 		}
 
 		_shortestPath = shortestPath;
+		_fHeuristic = fHeuristic;
 	}
 
 	/**
@@ -152,6 +155,17 @@ public abstract class OptimalPathGenerator
 	public boolean shortestPath()
 	{
 		return _shortestPath;
+	}
+
+	/**
+	 * Retrieve the F Heuristic
+	 * 
+	 * @return The F Heuristic
+	 */
+
+	public org.drip.graph.astar.FHeuristic fHeuristic()
+	{
+		return _fHeuristic;
 	}
 
 	/**

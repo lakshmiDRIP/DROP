@@ -252,7 +252,8 @@ public class YenEdgePartitionSingleSource
 
 		OptimalPathGenerator optimalPathGenerator = new YenEdgePartitionPathGenerator (
 			graph,
-			true
+			true,
+			null
 		);
 
 		for (String sourceVertexName : vertexArray)

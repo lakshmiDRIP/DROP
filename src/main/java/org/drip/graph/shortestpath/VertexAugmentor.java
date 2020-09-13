@@ -117,6 +117,8 @@ public class VertexAugmentor
 {
 	private boolean _shortestPath = false;
 	private java.lang.String _sourceVertexName = "";
+	private org.drip.graph.astar.FHeuristic _fHeuristic = null;
+	private java.util.Map<java.lang.String, org.drip.graph.core.Vertex> _vertexMap = null;
 	private java.util.Map<java.lang.String, org.drip.graph.shortestpath.AugmentedVertex> _augmentedVertexMap
 		= null;
 
@@ -134,31 +136,51 @@ public class VertexAugmentor
 	 * 
 	 * @param sourceVertexName The Source vertex Name
 	 * @param shortestPath TRUE - Shortest Path Sought
+	 * @param fHeuristic F Heuristic
+	 * @param vertexMap Underlying Graph Vertex Map
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public VertexAugmentor (
 		final java.lang.String sourceVertexName,
-		final boolean shortestPath)
+		final boolean shortestPath,
+		final org.drip.graph.astar.FHeuristic fHeuristic,
+		final java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap)
 		throws java.lang.Exception
 	{
 		if (null == (_sourceVertexName = sourceVertexName) || _sourceVertexName.isEmpty())
 		{
 			throw new java.lang.Exception (
-				"VertexAugmentor Constructor => Invalid Input"
+				"VertexAugmentor Constructor => Invalid Inputs"
 			);
 		}
 
-		_augmentedVertexMap = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.graph.shortestpath.AugmentedVertex>();
+		_shortestPath = shortestPath;
+		org.drip.graph.shortestpath.AugmentedVertex sourceAugmentedVertex = null;
 
-		org.drip.graph.shortestpath.AugmentedVertex sourceAugmentedVertex =
-			new org.drip.graph.shortestpath.AugmentedVertex();
+		if (null == (_fHeuristic = fHeuristic))
+		{
+			sourceAugmentedVertex = org.drip.graph.shortestpath.AugmentedVertex.NonHeuristic();
+		}
+		else
+		{
+			org.drip.graph.core.Vertex sourceVertex = (_vertexMap = vertexMap).get (
+				sourceVertexName
+			);
+
+			sourceAugmentedVertex = new org.drip.graph.shortestpath.AugmentedVertex (
+				_fHeuristic.gHeuristic().evaluate (
+					sourceVertex
+				), _fHeuristic.hHeuristic().evaluate (
+					sourceVertex
+				)
+			);
+		}
 
 		if (!sourceAugmentedVertex.setPrecedingEdge (
 				null
-			) || !sourceAugmentedVertex.setGScore (
+			) || !sourceAugmentedVertex.updateGScore (
 				0.
 			)
 		)
@@ -168,59 +190,13 @@ public class VertexAugmentor
 			);
 		}
 
+		_augmentedVertexMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.graph.shortestpath.AugmentedVertex>();
+
 		_augmentedVertexMap.put (
 			_sourceVertexName,
 			sourceAugmentedVertex
 		);
-
-		_shortestPath = shortestPath;
-	}
-
-	/**
-	 * Initialize the Set of Vertexes
-	 * 
-	 * @param vertexNameSet The Vertex Name Set
-	 * 
-	 * @return TRUE - The Set of Vertexes successfully initialized
-	 */
-
-	public boolean initializeVertexNameSet (
-		final java.util.Set<java.lang.String> vertexNameSet)
-	{
-		if (null == vertexNameSet || 0 == vertexNameSet.size())
-		{
-			return false;
-		}
-
-		double initialWeight = _shortestPath ? java.lang.Double.MAX_VALUE : java.lang.Double.MIN_VALUE;
-
-		for (java.lang.String vertexName : vertexNameSet)
-		{
-			if (!_augmentedVertexMap.containsKey (
-				vertexName
-			))
-			{
-				org.drip.graph.shortestpath.AugmentedVertex augmentedVertex =
-					new org.drip.graph.shortestpath.AugmentedVertex();
-
-				if (!augmentedVertex.setPrecedingEdge (
-						null
-					) || !augmentedVertex.setGScore (
-						initialWeight
-					)
-				)
-				{
-					return false;
-				}
-
-				_augmentedVertexMap.put (
-					vertexName,
-					augmentedVertex
-				);
-			}
-		}
-
-		return true;
 	}
 
 	/**
@@ -254,6 +230,102 @@ public class VertexAugmentor
 	public java.util.Map<java.lang.String, org.drip.graph.shortestpath.AugmentedVertex> augmentedVertexMap()
 	{
 		return _augmentedVertexMap;
+	}
+
+	/**
+	 * Retrieve the F Heuristic
+	 * 
+	 * @return The F Heuristic
+	 */
+
+	public org.drip.graph.astar.FHeuristic fHeuristic()
+	{
+		return _fHeuristic;
+	}
+
+	/**
+	 * Retrieve the Underlying Graph Vertex Map
+	 * 
+	 * @return The Underlying Graph Vertex Map
+	 */
+
+	public java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap()
+	{
+		return _vertexMap;
+	}
+
+	/**
+	 * Initialize the Set of Vertexes
+	 * 
+	 * @param vertexNameSet The Vertex Name Set
+	 * 
+	 * @return TRUE - The Set of Vertexes successfully initialized
+	 */
+
+	public boolean initializeVertexNameSet (
+		final java.util.Set<java.lang.String> vertexNameSet)
+	{
+		if (null == vertexNameSet || 0 == vertexNameSet.size())
+		{
+			return false;
+		}
+
+		double initialWeight = _shortestPath ? java.lang.Double.MAX_VALUE : java.lang.Double.MIN_VALUE;
+
+		for (java.lang.String vertexName : vertexNameSet)
+		{
+			if (!_augmentedVertexMap.containsKey (
+				vertexName
+			))
+			{
+				org.drip.graph.shortestpath.AugmentedVertex augmentedVertex = null;
+
+				if (null == _fHeuristic)
+				{
+					augmentedVertex = org.drip.graph.shortestpath.AugmentedVertex.NonHeuristic();
+				}
+				else
+				{
+					org.drip.graph.core.Vertex augmentedGraphVertex = _vertexMap.get (
+						vertexName
+					);
+
+					try
+					{
+						augmentedVertex = new org.drip.graph.shortestpath.AugmentedVertex (
+							_fHeuristic.gHeuristic().evaluate (
+								augmentedGraphVertex
+							), _fHeuristic.hHeuristic().evaluate (
+								augmentedGraphVertex
+							)
+						);
+					}
+					catch (java.lang.Exception e)
+					{
+						e.printStackTrace();
+
+						return false;
+					}
+				}
+
+				if (!augmentedVertex.setPrecedingEdge (
+						null
+					) || !augmentedVertex.updateGScore (
+						initialWeight
+					)
+				)
+				{
+					return false;
+				}
+
+				_augmentedVertexMap.put (
+					vertexName,
+					augmentedVertex
+				);
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -291,12 +363,39 @@ public class VertexAugmentor
 			augmentedVertexName
 		))
 		{
-			org.drip.graph.shortestpath.AugmentedVertex augmentedVertex =
-				new org.drip.graph.shortestpath.AugmentedVertex();
+			org.drip.graph.shortestpath.AugmentedVertex augmentedVertex = null;
+
+			if (null == _fHeuristic)
+			{
+				augmentedVertex = org.drip.graph.shortestpath.AugmentedVertex.NonHeuristic();
+			}
+			else
+			{
+				org.drip.graph.core.Vertex augmentedGraphVertex = _vertexMap.get (
+					augmentedVertexName
+				);
+
+				try
+				{
+					augmentedVertex = new org.drip.graph.shortestpath.AugmentedVertex (
+						_fHeuristic.gHeuristic().evaluate (
+							augmentedGraphVertex
+						), _fHeuristic.hHeuristic().evaluate (
+							augmentedGraphVertex
+						)
+					);
+				}
+				catch (java.lang.Exception e)
+				{
+					e.printStackTrace();
+
+					return false;
+				}
+			}
 
 			if (!augmentedVertex.setPrecedingEdge (
 					precedingEdge
-				) || !augmentedVertex.setGScore (
+				) || !augmentedVertex.updateGScore (
 					gScoreThroughPrecedingVertex
 				)
 			)
@@ -322,7 +421,7 @@ public class VertexAugmentor
 			{
 				if (!augmentedVertex.setPrecedingEdge (
 						precedingEdge
-					) || !augmentedVertex.setGScore (
+					) || !augmentedVertex.updateGScore (
 						gScoreThroughPrecedingVertex
 					)
 				)

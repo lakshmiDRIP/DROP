@@ -248,7 +248,8 @@ public class JohnsonSinglePair
 
 		OptimalPathGenerator optimalPathGenerator = new JohnsonPathGenerator (
 			graph,
-			true
+			true,
+			null
 		);
 
 		for (String sourceVertexName : vertexArray)

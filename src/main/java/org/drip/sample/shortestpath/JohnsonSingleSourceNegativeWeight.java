@@ -196,7 +196,8 @@ public class JohnsonSingleSourceNegativeWeight
 
 		OptimalPathGenerator optimalPathGenerator = new JohnsonPathGenerator (
 			graph,
-			true
+			true,
+			null
 		);
 
 		for (String sourceVertexName : graph.vertexNameSet())

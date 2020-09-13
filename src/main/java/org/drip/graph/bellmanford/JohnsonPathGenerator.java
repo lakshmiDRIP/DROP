@@ -120,18 +120,21 @@ public class JohnsonPathGenerator
 	 * 
 	 * @param graph Graph underlying the Path Generator
 	 * @param shortestPath TRUE - Shortest Path Sought
+	 * @param fHeuristic F Heuristic
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public JohnsonPathGenerator (
 		final org.drip.graph.core.DirectedGraph graph,
-		final boolean shortestPath)
+		final boolean shortestPath,
+		final org.drip.graph.astar.FHeuristic fHeuristic)
 		throws java.lang.Exception
 	{
 		super (
 			graph,
-			shortestPath
+			shortestPath,
+			fHeuristic
 		);
 	}
 
@@ -180,7 +183,8 @@ public class JohnsonPathGenerator
 		{
 			bellmanFordVertexAugmentor = new org.drip.graph.bellmanford.EdgeRelaxationPathGenerator (
 				graphClone,
-				shortestPath()
+				shortestPath(),
+				fHeuristic()
 			).augmentVertexes (
 				johnsonQVertexName
 			);
@@ -241,7 +245,8 @@ public class JohnsonPathGenerator
 		{
 			return new org.drip.graph.shortestpath.DijkstraPathGenerator (
 				bellmanFordGraph,
-				shortestPath()
+				shortestPath(),
+				fHeuristic()
 			).augmentVertexes (
 				sourceVertexName
 			);

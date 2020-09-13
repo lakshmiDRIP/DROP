@@ -250,7 +250,8 @@ public class YenReducedRelaxationSinglePair
 
 		OptimalPathGenerator optimalPathGenerator = new YenReducedRelaxationPathGenerator (
 			graph,
-			true
+			true,
+			null
 		);
 
 		for (String sourceVertexName : vertexArray)

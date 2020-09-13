@@ -1,5 +1,5 @@
 
-package org.drip.graph.bellmanford;
+package org.drip.graph.shortestpath;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,29 +75,29 @@ package org.drip.graph.bellmanford;
  */
 
 /**
- * <i>YenEdgePartitionPathGenerator</i> generates the Shortest Path for a Directed Graph using the
- * 	Bellman-Ford Algorithm with the Yen (1970) Edge Partitioning Scheme applied to improve the Worst-Case
- * 	Behavior. The References are:
+ * <i>FloydWarshallDistanceMatrix</i> holds the Cross-Vertex Distance Matrix between a Pair of Vertexes. The
+ * 	References are:
  * 
  * <br><br>
  *  <ul>
  *  	<li>
- *  		Bang-Jensen, J., and G. Gutin (2008): <i>Digraphs: Theory, Algorithms, and Applications
- *  			2<sup>nd</sup> Edition</i> <b>Springer</b>
+ *  		Chan, T. M. (2010): More Algorithms for All-Pairs Shortest Paths in Weighted Graphs <i>SIAM
+ *  			Journal on Computing</i> <b>39 (5)</b> 2075-2089
  *  	</li>
  *  	<li>
- *  		Cormen, T., C. E. Leiserson, R. Rivest, and C. Stein (2009): <i>Introduction to Algorithms</i>
- *  			3<sup>rd</sup> Edition <b>MIT Press</b>
+ *  		Floyd, R. W. (1962): Algorithm 97: Shortest Path <i>Communications of the ACM</i> <b>5 (6)</b>
+ *  			345
  *  	</li>
  *  	<li>
- *  		Kleinberg, J., and E. Tardos (2022): <i>Algorithm Design 2<sup>nd</sup> Edition</i> <b>Pearson</b>
+ *  		Hougardy, S. (2010): The Floyd-Warshall Algorithm on Graphs with Negative Cycles <i>Information
+ *  			Processing Letters</i> <b>110 (8-9)</b> 279-291
  *  	</li>
  *  	<li>
- *  		Sedgewick, R. and K. Wayne (2011): <i>Algorithms 4<sup>th</sup> Edition</i> <b>Addison Wesley</b>
+ *  		Warshall, S. (1962): A Theorem on Boolean Matrices <i>Journal of the ACM</i> <b>9 (1)</b> 11-12
  *  	</li>
  *  	<li>
- *  		Wikipedia (2020): Bellman-Ford Algorithm
- *  			https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
+ *  		Wikipedia (2020): Floyd-Warshall Algorithm
+ *  			https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm
  *  	</li>
  *  </ul>
  *
@@ -106,54 +106,124 @@ package org.drip.graph.bellmanford;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/README.md">Graph Optimization and Tree Construction Algorithms</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/bellmanford/README.md">Bellman Ford Shortest Path Family</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/graph/shortestpath/README.md">Shortest Path Generation Algorithm Family</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class YenEdgePartitionPathGenerator
-	extends org.drip.graph.bellmanford.EdgePartitionGenerator
+public class FloydWarshallDistanceMatrix
 {
-	private org.drip.graph.bellmanford.EdgePartition _edgePartition = null;
+	private java.util.Map<java.lang.Integer, java.lang.String> _indexVertexMap = null;
+	private java.util.Map<java.lang.String, java.lang.Integer> _vertexIndexMap = null;
 
 	/**
-	 * YenEdgePartitionPathGenerator Constructor
+	 * Generate a FloydWarshallDistanceMatrix Instance from the specified Graph
 	 * 
-	 * @param graph Graph underlying the Path Generator
-	 * @param shortestPath TRUE - Shortest Path Sought
-	 * @param fHeuristic F Heuristic
+	 * @param graph The Graph
+	 * 
+	 * @return FloydWarshallDistanceMatrix Instance
+	 */
+
+	public static final FloydWarshallDistanceMatrix FromGraph (
+		final org.drip.graph.core.DirectedGraph graph)
+	{
+		if (null == graph || graph.isEmpty())
+		{
+			return null;
+		}
+
+		java.util.Map<java.lang.String, java.lang.Integer> vertexIndexMap =
+			new java.util.HashMap<java.lang.String, java.lang.Integer>();
+
+		java.util.Map<java.lang.Integer, java.lang.String> indexVertexMap =
+			new java.util.HashMap<java.lang.Integer, java.lang.String>();
+
+		int vertexIndex = 0;
+
+		for (java.lang.String vertexName : graph.vertexNameSet())
+		{
+			vertexIndexMap.put (
+				vertexName,
+				vertexIndex
+			);
+
+			indexVertexMap.put (
+				vertexIndex++,
+				vertexName
+			);
+		}
+
+		try
+		{
+			return new FloydWarshallDistanceMatrix (
+				vertexIndexMap,
+				indexVertexMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * FloydWarshallDistanceMatrix Constructor
+	 * 
+	 * @param vertexIndexMap Vertex to Index Map
+	 * @param indexVertexMap Index to Vertex Map
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public YenEdgePartitionPathGenerator (
-		final org.drip.graph.core.DirectedGraph graph,
-		final boolean shortestPath,
-		final org.drip.graph.astar.FHeuristic fHeuristic)
+	public FloydWarshallDistanceMatrix (
+		final java.util.Map<java.lang.String, java.lang.Integer> vertexIndexMap,
+		final java.util.Map<java.lang.Integer, java.lang.String> indexVertexMap)
 		throws java.lang.Exception
 	{
-		super (
-			graph,
-			shortestPath,
-			fHeuristic
-		);
-
-		if (null == (_edgePartition = org.drip.graph.bellmanford.EdgePartition.FromGraph (
-				graph,
-				false
-			))
+		if (null == (_vertexIndexMap = vertexIndexMap) ||
+			null == (_indexVertexMap = indexVertexMap)
 		)
 		{
 			throw new java.lang.Exception (
-				"YenEdgePartitionPathGenerator Constructor => Invalid Inputs"
+				"FloydWarshallDistanceMatrix Constructor => Invalid Inputs"
+			);
+		}
+
+		int mapSize = _vertexIndexMap.size();
+
+		if (0 == mapSize ||
+			mapSize != _indexVertexMap.size()
+		)
+		{
+			throw new java.lang.Exception (
+				"FloydWarshallDistanceMatrix Constructor => Invalid Inputs"
 			);
 		}
 	}
 
-	@Override public org.drip.graph.bellmanford.EdgePartition edgePartition()
+	/**
+	 * Retrieve the Vertex to Index Map
+	 * 
+	 * @return Vertex to Index Map
+	 */
+
+	public java.util.Map<java.lang.String, java.lang.Integer> vertexIndexMap()
 	{
-		return _edgePartition;
+		return _vertexIndexMap;
+	}
+
+	/**
+	 * Retrieve the Index to Vertex Map
+	 * 
+	 * @return Index to Vertex Map
+	 */
+
+	public java.util.Map<java.lang.Integer, java.lang.String> indexVertexMap()
+	{
+		return _indexVertexMap;
 	}
 }

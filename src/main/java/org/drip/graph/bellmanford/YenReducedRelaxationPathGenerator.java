@@ -131,18 +131,21 @@ public class YenReducedRelaxationPathGenerator
 	 * 
 	 * @param graph Graph underlying the Path Generator
 	 * @param shortestPath TRUE - Shortest Path Sought
+	 * @param fHeuristic F Heuristic
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public YenReducedRelaxationPathGenerator (
 		final org.drip.graph.core.DirectedGraph graph,
-		final boolean shortestPath)
+		final boolean shortestPath,
+		final org.drip.graph.astar.FHeuristic fHeuristic)
 		throws java.lang.Exception
 	{
 		super (
 			graph,
-			shortestPath
+			shortestPath,
+			fHeuristic
 		);
 	}
 }
