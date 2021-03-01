@@ -11,7 +11,7 @@ Computation Support Library contains Cluster Support, Historical/Live Feed Proce
 
  |        Document         | Link |
  |-------------------------|------|
- | User Guide              |  [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ComputationSupport/ComputationSupport_v5.02.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ComputationSupport) |
+ | User Guide              | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ComputationSupport/ComputationSupport_v5.11.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ComputationSupport) |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
 
@@ -61,6 +61,49 @@ Computation Support Library contains Cluster Support, Historical/Live Feed Proce
 	* Supporting Interruption
 	* The Interrupt Status Flag
 	* Joins
+ * Google Guice
+	* Overview
+	* Motivation
+	* Direct Constructor Calls
+	* Factories
+	* Dependency Injection
+	* Dependency Injection with Guice
+ * Terraform
+	* Abstract
+	* Overview
+	* Components
+	* References
+ * Terraform Use Cases
+	* Overview
+	* Heroku App Setup
+	* Multi-tier Applications
+	* Self-Service Clusters
+	* Software Demos
+	* Disposable Environments
+	* Software Defined Networks
+	* Resource Schedulers
+	* Multi-Cloud Deployment
+ * Terraform vs. Other Software
+	* Overview
+	* Terraform vs. Chef, Puppet, etc.
+	* Terraform vs. Cloud Formation, Heat, etc.
+	* Terraform vs. Boto, Fog, etc.
+	* Terraform vs. Custom Solutions
+ * Sample Terraform Configurations
+	* Overview
+	* Samples
+	* Two-Tier AWS Architecture
+	* Terraform-provider-aws/examples/two-tier/terraform-template.tform
+	* Terraform-provider-aws/examples/two-tier/outputs.tf
+	* Terraform-provider-aws/examples/two-tier/main.tf
+	* Terraform-provider-aws/examples/two-tier/variables.tf
+	* Cross Provider Example
+	* Terraform-provider-aws/examples/count/variables.tf
+	* Terraform-provider-aws/examples/count/outputs.tf
+	* Terraform-provider-aws/examples/count/main.tf
+	* Consul Example
+	* Terraform-provider-consul/examples/kv/variables.tf
+	* Terraform-provider-consul/examples/kv/main.tf
  * Kubernetes
 	* Overview
 	* Kubernetes Objects
