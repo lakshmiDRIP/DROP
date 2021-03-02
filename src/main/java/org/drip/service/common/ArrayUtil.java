@@ -153,7 +153,7 @@ public class ArrayUtil
 	{
 		int index = startIndex;
 		int arraySize = numberArray.length;
-		boolean forward = numberArray[index] > 0;
+		boolean forward = numberArray[index] > 0 ? true : false;
 
 		java.util.Set<java.lang.Integer> indexSet = new java.util.HashSet<java.lang.Integer>();
 
@@ -659,7 +659,7 @@ public class ArrayUtil
 	 *  verticalCuts where horizontalCuts[i] is the distance from the top of the rectangular cake to the ith
 	 *  horizontal cut and similarly, verticalCuts[j] is the distance from the left of the rectangular cake
 	 *  to the jth vertical cut. Return the maximum area of a piece of cake after you cut at each horizontal
-	 *  and vertical position provided in the arrays horizontalCuts and verticalCuts.
+	 *  and vertical position  provided in the arrays horizontalCuts and verticalCuts.
 	 * 
 	 * @param h Cake Height
 	 * @param w Cake Width
