@@ -6,6 +6,8 @@ package org.drip.dynamics.kolmogorov;
  */
 
 /*!
+ * Copyright (C) 2022 Lakshmi Krishnamurthy
+ * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
@@ -13,7 +15,7 @@ package org.drip.dynamics.kolmogorov;
  *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
  *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
  *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
- *  	and computational support.
+ *  	graph builder/navigator, and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
@@ -40,6 +42,7 @@ package org.drip.dynamics.kolmogorov;
  * 	- Algorithm Support
  * 	- Computation Support
  * 	- Function Analysis
+ *  - Graph Algorithm
  *  - Model Validation
  * 	- Numerical Analysis
  * 	- Numerical Optimizer
@@ -57,8 +60,6 @@ package org.drip.dynamics.kolmogorov;
  * 	- Release Versions         => https://lakshmidrip.github.io/DROP/version.html
  * 	- Community Credits        => https://lakshmidrip.github.io/DROP/credits.html
  * 	- Issues Catalog           => https://github.com/lakshmiDRIP/DROP/issues
- * 	- JUnit                    => https://lakshmidrip.github.io/DROP/junit/index.html
- * 	- Jacoco                   => https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *   	you may not use this file except in compliance with the License.
@@ -72,44 +73,6 @@ package org.drip.dynamics.kolmogorov;
  *  
  *  See the License for the specific language governing permissions and
  *  	limitations under the License.
- */
-
-/**
- * <i>RiskenOmegaEstimator</i> exposes the Risken Omega Matrix Estimation Function. The References are:
- *  
- * 	<br><br>
- *  <ul>
- * 		<li>
- * 			Bogoliubov, N. N., and D. P. Sankevich (1994): N. N. Bogoliubov and Statistical Mechanics
- * 				<i>Russian Mathematical Surveys</i> <b>49 (5)</b> 19-49
- * 		</li>
- * 		<li>
- * 			Holubec, V., K. Kroy, and S. Steffenoni (2019): Physically Consistent Numerical Solver for
- * 				Time-dependent Fokker-Planck Equations <i>Physical Review E</i> <b>99 (4)</b> 032117
- * 		</li>
- * 		<li>
- * 			Kadanoff, L. P. (2000): <i>Statistical Physics: Statics, Dynamics, and Re-normalization</i>
- * 				<b>World Scientific</b>
- * 		</li>
- * 		<li>
- * 			Ottinger, H. C. (1996): <i>Stochastic Processes in Polymeric Fluids</i> <b>Springer-Verlag</b>
- * 				Berlin-Heidelberg
- * 		</li>
- * 		<li>
- * 			Wikipedia (2019): Fokker-Planck Equation
- * 				https://en.wikipedia.org/wiki/Fokker%E2%80%93Planck_equation
- * 		</li>
- *  </ul>
- *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md">HJM, Hull White, LMM, and SABR Dynamic Evolution Models</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/kolmogorov/README.md">Fokker Planck Kolmogorov Forward/Backward</a></li>
- *  </ul>
- *
- * @author Lakshmi Krishnamurthy
  */
 
 public interface RiskenOmegaEstimator
