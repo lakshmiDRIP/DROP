@@ -53,5 +53,3 @@ DROP Execution Latent Package generates the Correlated Latent Market State Seque
  * Release Versions         => https://lakshmidrip.github.io/DROP/version.html
  * Community Credits        => https://lakshmidrip.github.io/DROP/credits.html
  * Issues Catalog           => https://github.com/lakshmiDRIP/DROP/issues
- * JUnit                    => https://lakshmidrip.github.io/DROP/junit/index.html
- * Jacoco                   => https://lakshmidrip.github.io/DROP/jacoco/index.html
