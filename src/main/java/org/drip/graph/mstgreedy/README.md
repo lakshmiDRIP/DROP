@@ -57,5 +57,3 @@ DROP Graph MST Package contains the Greedy Algorithms for MSTs and Forests.
  * Release Versions         => https://lakshmidrip.github.io/DROP/version.html
  * Community Credits        => https://lakshmidrip.github.io/DROP/credits.html
  * Issues Catalog           => https://github.com/lakshmiDRIP/DROP/issues
- * JUnit                    => https://lakshmidrip.github.io/DROP/junit/index.html
- * Jacoco                   => https://lakshmidrip.github.io/DROP/jacoco/index.html
