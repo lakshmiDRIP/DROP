@@ -143,5 +143,3 @@ DROP Function R<sup>d</sup> To R<sup>1</sup> Solver Package implements the Suite
  * Release Versions         => https://lakshmidrip.github.io/DROP/version.html
  * Community Credits        => https://lakshmidrip.github.io/DROP/credits.html
  * Issues Catalog           => https://github.com/lakshmiDRIP/DROP/issues
- * JUnit                    => https://lakshmidrip.github.io/DROP/junit/index.html
- * Jacoco                   => https://lakshmidrip.github.io/DROP/jacoco/index.html
