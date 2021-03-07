@@ -137,9 +137,10 @@ public class InvocationManager
 
 		System.out.println ("\t|-----------------------------------------------------------------|");
 
-		System.out.println ("\t|    Build Version  => " + s_BuildRecordLatest.dripVersion() + " multi mode");
+		System.out.println ("\t|    Build Version  => " + s_BuildRecordLatest.dripVersion() + " multi");
 
-		System.out.println ("\t|    Build JVM (TM) => " + s_BuildRecordLatest.javaVersion());
+		System.out.println ("\t|    Build JVM (TM) => " + s_BuildRecordLatest.javaVersion() +
+			" mixed mode, sharing");
 
 		System.out.println ("\t|    Build Snap     => " + s_BuildRecordLatest.timeStamp());
 
@@ -196,9 +197,10 @@ public class InvocationManager
 
 		System.out.println ("\t|-----------------------------------------------------------------|");
 
-		System.out.println ("\t|    Build Version  => " + s_BuildRecordLatest.dripVersion() + " multi mode");
+		System.out.println ("\t|    Build Version  => " + s_BuildRecordLatest.dripVersion() + " multi");
 
-		System.out.println ("\t|    Build JVM (TM) => " + s_BuildRecordLatest.javaVersion());
+		System.out.println ("\t|    Build JVM (TM) => " + s_BuildRecordLatest.javaVersion() +
+			" mixed mode, sharing");
 
 		System.out.println ("\t|    Build Snap     => " + s_BuildRecordLatest.timeStamp());
 
