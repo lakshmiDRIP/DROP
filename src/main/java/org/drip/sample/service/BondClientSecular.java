@@ -101,12 +101,9 @@ import org.drip.service.representation.JSONObject;
 
 public class BondClientSecular {
 
-	@SuppressWarnings ("unchecked") public static final void main (
-		final String[] astrArgs)
+	@SuppressWarnings ("unchecked") private static final void BondPriceRun()
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
-
 		JulianDate dtSpot = DateUtil.CreateFromYMD (
 			2017,
 			DateUtil.MAY,
@@ -226,6 +223,141 @@ public class BondClientSecular {
 		System.out.println ("\n\t|---------------- JSON RESPONSE ----------------|\n");
 
 		System.out.println (KeyHoleSkeleton.Thunker (jsonRequest.toJSONString()));
+	}
+
+	@SuppressWarnings ("unchecked") private static final void BondYieldRun()
+		throws Exception
+	{
+		JulianDate dtSpot = DateUtil.CreateFromYMD (
+			2017,
+			DateUtil.MAY,
+			9
+		);
+
+		String strCurrency = "USD";
+
+		String[] astrDepositMaturityTenor = new String[] {
+			"2D"
+		};
+
+		double[] adblDepositQuote = new double[] {
+			0.0103456 // 2D
+		};
+
+		double[] adblFuturesQuote = new double[] {
+			0.01070,
+			0.01235,
+			0.01360
+		};
+
+		String[] astrFixFloatMaturityTenor = new String[] {
+			"01Y",
+			"02Y",
+			"03Y",
+			"04Y",
+			"05Y",
+			"06Y",
+			"07Y",
+			"08Y",
+			"09Y",
+			"10Y",
+			"11Y",
+			"12Y",
+			"15Y",
+			"20Y",
+			"25Y",
+			"30Y",
+			"40Y",
+			"50Y"
+		};
+
+		double[] adblFixFloatQuote = new double[] {
+			0.012484, //  1Y
+			0.014987, //  2Y
+			0.017036, //  3Y
+			0.018624, //  4Y
+			0.019868, //  5Y
+			0.020921, //  6Y
+			0.021788, //  7Y
+			0.022530, //  8Y
+			0.023145, //  9Y
+			0.023685, // 10Y
+			0.024153, // 11Y
+			0.024562, // 12Y
+			0.025389, // 15Y
+			0.026118, // 20Y
+			0.026368, // 25Y
+			0.026432, // 30Y
+			0.026339, // 40Y
+			0.026122  // 50Y
+		};
+
+		JulianDate dtEffective = DateUtil.CreateFromYMD (
+			2012,
+			DateUtil.APRIL,
+			12
+		);
+
+		JulianDate dtMaturity = DateUtil.CreateFromYMD (
+			2027,
+			DateUtil.APRIL,
+			12
+		);
+
+		JSONObject jsonParameters = new JSONObject();
+
+		jsonParameters.put ("SpotDate", dtSpot.toString());
+
+		jsonParameters.put ("Currency", strCurrency);
+
+		jsonParameters.put ("DepositTenor", Converter.Array (astrDepositMaturityTenor));
+
+		jsonParameters.put ("DepositQuote", Converter.Array (adblDepositQuote));
+
+		jsonParameters.put ("FuturesQuote", Converter.Array (adblFuturesQuote));
+
+		jsonParameters.put ("FixFloatTenor", Converter.Array (astrFixFloatMaturityTenor));
+
+		jsonParameters.put ("FixFloatQuote", Converter.Array (adblFixFloatQuote));
+
+		jsonParameters.put ("BondName", "  PDVSA  5.3750 12-APR-2027 ");
+
+		jsonParameters.put ("BondCoupon", 0.053750);
+
+		jsonParameters.put ("BondFrequency", 2);
+
+		jsonParameters.put ("BondDayCount", "30/360");
+
+		jsonParameters.put ("BondEffectiveDate", dtEffective.toString());
+
+		jsonParameters.put ("BondMaturityDate", dtMaturity.toString());
+
+		jsonParameters.put ("BondYield", 0.19835391004517616);
+
+		JSONObject jsonRequest = new JSONObject();
+
+		jsonRequest.put ("API", "BOND::SECULARMETRICS");
+
+		jsonRequest.put ("Parameters", jsonParameters);
+
+		System.out.println ("\n\t|---------------- JSON REQUEST -----------------|\n");
+
+		System.out.println (jsonRequest.toJSONString());
+
+		System.out.println ("\n\t|---------------- JSON RESPONSE ----------------|\n");
+
+		System.out.println (KeyHoleSkeleton.Thunker (jsonRequest.toJSONString()));
+	}
+
+	public static final void main (
+		final String[] astrArgs)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
+
+		BondPriceRun();
+
+		BondYieldRun();
 
 		EnvManager.TerminateEnv();
 	}

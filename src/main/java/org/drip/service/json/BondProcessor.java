@@ -118,6 +118,9 @@ public class BondProcessor {
 		double dblCleanPrice = java.lang.Double.NaN;
 		org.drip.product.credit.BondComponent bond = null;
 
+		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot
+			(dcFunding.epoch().julian());
+
 		try {
 			if (null == (bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed
 				(org.drip.service.jsonparser.Converter.StringEntry (jsonParameter, "BondName"),
@@ -129,15 +132,26 @@ public class BondProcessor {
 										(jsonParameter, "BondMaturityDate"), null, null)))
 				return null;
 
-			dblCleanPrice = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter, "BondCleanPrice");
+			if (jsonParameter.containsKey ("BondCleanPrice"))
+				dblCleanPrice = org.drip.service.jsonparser.Converter.DoubleEntry (
+					jsonParameter,
+					"BondCleanPrice"
+				);
+			else if (jsonParameter.containsKey("BondYield"))
+				dblCleanPrice = bond.priceFromYield (
+					valParams,
+					csqc,
+					null,
+					org.drip.service.jsonparser.Converter.DoubleEntry (
+						jsonParameter,
+						"BondYield"
+					)
+				);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
-
-		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot
-			(dcFunding.epoch().julian());
 
 		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
 
@@ -152,13 +166,11 @@ public class BondProcessor {
 		jsonResponse.put ("BondCleanPrice", dblCleanPrice);
 
 		try {
-			double dblYield01 = bond.yield01FromPrice (valParams, csqc, null, dblCleanPrice);
-
 			double accrued = bond.accrued (valParams.valueDate(), csqc);
 
 			jsonResponse.put ("BondAccrued", accrued);
 
-			jsonResponse.put ("BondDirtyPrice", dblCleanPrice + accrued);
+			double dblYield01 = bond.yield01FromPrice (valParams, csqc, null, dblCleanPrice);
 
 			jsonResponse.put ("BondYield", bond.yieldFromPrice (valParams, csqc, null, dblCleanPrice));
 
@@ -168,15 +180,17 @@ public class BondProcessor {
 			jsonResponse.put ("BondModifiedDuration", 10000. * bond.modifiedDurationFromPrice (valParams,
 				csqc, null, dblCleanPrice));
 
-			jsonResponse.put ("BondYield01", 10000. * dblYield01);
-
-			jsonResponse.put ("BondDV01", 10000. * dblYield01);
-
 			jsonResponse.put ("BondConvexity", 1000000. * bond.convexityFromPrice (valParams, csqc, null,
 				dblCleanPrice));
 
 			jsonResponse.put ("BondBasis", 10000. * bond.bondBasisFromPrice (valParams, csqc, null,
 				dblCleanPrice));
+
+			jsonResponse.put ("BondDirtyPrice", dblCleanPrice + accrued);
+
+			jsonResponse.put ("BondYield01", 10000. * dblYield01);
+
+			jsonResponse.put ("BondDV01", 10000. * dblYield01);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 
@@ -212,6 +226,11 @@ public class BondProcessor {
 		double dblCleanPrice = java.lang.Double.NaN;
 		org.drip.product.credit.BondComponent bond = null;
 
+		int iSpotDate = dcFunding.epoch().julian();
+
+		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot
+			(iSpotDate);
+
 		org.drip.analytics.date.JulianDate dtMaturity = org.drip.service.jsonparser.Converter.DateEntry
 			(jsonParameter, "BondMaturityDate");
 
@@ -225,17 +244,27 @@ public class BondProcessor {
 									"BondEffectiveDate"), dtMaturity, null, null)))
 				return null;
 
-			dblCleanPrice = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter, "BondCleanPrice");
+
+			if (jsonParameter.containsKey ("BondCleanPrice"))
+				dblCleanPrice = org.drip.service.jsonparser.Converter.DoubleEntry (
+					jsonParameter,
+					"BondCleanPrice"
+				);
+			else if (jsonParameter.containsKey("BondYield"))
+				dblCleanPrice = bond.priceFromYield (
+					valParams,
+					csqc,
+					null,
+					org.drip.service.jsonparser.Converter.DoubleEntry (
+						jsonParameter,
+						"BondYield"
+					)
+				);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
-
-		int iSpotDate = dcFunding.epoch().julian();
-
-		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot
-			(iSpotDate);
 
 		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
 
