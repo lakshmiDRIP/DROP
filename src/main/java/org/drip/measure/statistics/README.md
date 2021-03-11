@@ -38,5 +38,3 @@ DROP Measure Statistics contains the R<sup>1</sup> R<sup>d</sup> Thin Thick Mome
  * Release Versions         => https://lakshmidrip.github.io/DROP/version.html
  * Community Credits        => https://lakshmidrip.github.io/DROP/credits.html
  * Issues Catalog           => https://github.com/lakshmiDRIP/DROP/issues
- * JUnit                    => https://lakshmidrip.github.io/DROP/junit/index.html
- * Jacoco                   => https://lakshmidrip.github.io/DROP/jacoco/index.html
