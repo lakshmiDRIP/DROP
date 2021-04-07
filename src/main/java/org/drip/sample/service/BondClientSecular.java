@@ -110,7 +110,7 @@ public class BondClientSecular {
 			9
 		);
 
-		String strCurrency = "USD";
+		String strCurrency = "KES";
 
 		String[] astrDepositMaturityTenor = new String[] {
 			"2D"
@@ -234,7 +234,7 @@ public class BondClientSecular {
 			9
 		);
 
-		String strCurrency = "USD";
+		String strCurrency = "GHS";
 
 		String[] astrDepositMaturityTenor = new String[] {
 			"2D"

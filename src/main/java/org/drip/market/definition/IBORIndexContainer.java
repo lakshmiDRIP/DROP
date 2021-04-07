@@ -301,6 +301,22 @@ public class IBORIndexContainer {
 
 			_mapNamedIBORIndex.put ("JPY-EURTIBOR", iborJPYEuroyen);
 
+			org.drip.market.definition.IBORIndex iborGHS = new org.drip.market.definition.IBORIndex
+				("GHS-LIBOR", "LIBOR", "GHS", "Act/365", "GHS", 0, "ON", "12M",
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+			_mapJurisdictionIBORIndex.put ("GHS", iborGHS);
+
+			_mapNamedIBORIndex.put ("GHS-LIBOR", iborGHS);
+
+			org.drip.market.definition.IBORIndex iborKES = new org.drip.market.definition.IBORIndex
+				("KES-LIBOR", "LIBOR", "KES", "Act/365", "KES", 0, "ON", "12M",
+					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
+
+			_mapJurisdictionIBORIndex.put ("KES", iborKES);
+
+			_mapNamedIBORIndex.put ("KES-LIBOR", iborKES);
+
 			org.drip.market.definition.IBORIndex iborKRW = new org.drip.market.definition.IBORIndex
 				("KRW-LIBOR", "LIBOR", "KRW", "Act/365", "KRW", 1, "ON", "12M",
 					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
