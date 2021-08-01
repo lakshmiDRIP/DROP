@@ -27,7 +27,7 @@ DROP Sample Forward Rate Futures PnL illustrates the Forward Rate Futures PnL At
  <i>ES1Attribution</i> demonstrates the Invocation of the Historical PnL Horizon PnL Attribution analysis for
  the ES1 Series.
 
- * [***ED1Attribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/forwardratefuturespnl/IR1Attribution.java)
+ * [***IR1Attribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/forwardratefuturespnl/IR1Attribution.java)
  <i>IR1Attribution</i> demonstrates the Invocation of the Historical PnL Horizon PnL Attribution analysis for
  the IR1 Series.
 

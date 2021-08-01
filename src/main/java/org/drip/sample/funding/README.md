@@ -23,7 +23,7 @@ DROP Sample Funding illustrates Shape Preserving Local Funding Curve Constructio
  	* Cross-Comparison of the Cash/Swap Calibration Instrument "Rate" metric across the different curve
  	construction methodologies.
 
- * [***CustomFundingCurveBuilder***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/funding/CustomFundingCurveBuilder.java)
+ * [***CustomFundingCurveReconciler***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/funding/CustomFundingCurveReconciler.java)
  <i>CustomFundingCurveReconciler</i> demonstrates the multi-stretch transition custom Funding curve
  construction, turns application, discount factor extraction, and calibration quote recovery. It shows the
  following steps:
