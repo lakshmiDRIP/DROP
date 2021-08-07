@@ -70,9 +70,6 @@ DROP Overnight Hyper-geometric demonstrates Estimates of Hyper-geometric Functio
  * [***GoursatCubicTransformationProperty***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hypergeometric/GoursatCubicTransformationProperty.java)
  <i>GoursatCubicTransformationProperty</i> verifies the Goursat Cubic Transformation Identity Lemma.
 
- * [***KummerConfluentEstimate***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hypergeometric/KummerConfluentEstimate.java)
- <i>KummerConfluentEstimate</i> estimates the Kummer's Confluent Hyper-geometric Function.
-
  * [***GoursatQuadraticTransformationProperty***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hypergeometric/GoursatQuadraticTransformationProperty.java)
  <i>GoursatQuadraticTransformationProperty</i> verifies the Goursat Quadratic Transformation Identity Lemma.
 
@@ -87,6 +84,9 @@ DROP Overnight Hyper-geometric demonstrates Estimates of Hyper-geometric Functio
 
  * [***JacobiEstimate***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hypergeometric/JacobiEstimate.java)
  <i>JacobiEstimate</i> estimates the Jacobi Hyper-geometric Function.
+
+ * [***KummerConfluentEstimate***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hypergeometric/KummerConfluentEstimate.java)
+ <i>KummerEulerTransformation</i> estimates the Kummer's Confluent Hyper-geometric Function.
 
  * [***KummerEulerTransformation***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hypergeometric/KummerEulerTransformation.java)
  <i>KummerEulerTransformation</i> reconciles the Hyper-geometric Function Estimates using the Euler Integral Representation against Euler Transformation.
