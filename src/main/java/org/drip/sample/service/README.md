@@ -7,8 +7,8 @@ DROP Service demonstrates Curve Product Portfolio Valuation Services.
 
 ## Class Components
 
- * [***BudgetConstrainedAllocationClient***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/service/BudgetConstrainedAllocationClient.java)
- <i>BudgetConstrainedAllocationClient</i> demonstrates the Invocation and Examination of the JSON-based Budget Constrained Portfolio Allocation Service Client.
+ * [***BlackLittermanBayesianClient***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/service/BlackLittermanBayesianClient.java)
+ <i>BlackLittermanBayesianClient</i> demonstrates the Invocation and Examination of the JSON-based Bayesian Black-Litterman Service Client.
 
  * [***BondClientCashFlow***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/service/BondClientCashFlow.java)
  <i>BondClientCashFlow</i> demonstrates the Invocation and Examination of the JSON-based Bond Valuation Service for generating the Bond Cash Flows.
