@@ -24,6 +24,9 @@ DROP Sample Numerical demonstrates Search, Quadratures, and Fourier Phase Tracke
  * [***IntegerDivision***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/numerical/IntegerDivision.java)
  <i>IntegerDivision</i> shows the Division of Two Integers without using Multiplication, Division, and Mod Operator.
 
+ * [***IntegerPower***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/numerical/IntegerPower.java)
+ <i>IntegerPower</i> shows the Computation of the Integer Power of a Number.
+
  * [***IntegrandQuadrature***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/numerical/IntegrandQuadrature.java)
  <i>IntegrandQuadrature</i> shows samples for the following routines for integrating the objective function:
  	* Mid-Point Scheme
@@ -36,6 +39,9 @@ DROP Sample Numerical demonstrates Search, Quadratures, and Fourier Phase Tracke
 
  * [***PrimeFactorEstimator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/numerical/PrimeFactorEstimator.java)
  <i>PrimeFactorEstimator</i> shows samples for estimating the Prime Factor of a given Integer.
+
+ * [***UglyNumber***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/numerical/UglyNumber.java)
+ <i>UglyNumber</i> shows the Computation of the n<sup>th</sup> Ugly Number for the Input Number Triplet.
 
 
 ## DROP Specifications
