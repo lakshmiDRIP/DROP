@@ -48,6 +48,8 @@ import org.drip.state.identifier.OvernightLabel;
  */
 
 /*!
+ * Copyright (C) 2022 Lakshmi Krishnamurthy
+ * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
@@ -57,7 +59,7 @@ import org.drip.state.identifier.OvernightLabel;
  *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
  *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
  *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
- *  	and computational support.
+ *  	graph builder/navigator, and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
@@ -84,6 +86,7 @@ import org.drip.state.identifier.OvernightLabel;
  * 	- Algorithm Support
  * 	- Computation Support
  * 	- Function Analysis
+ *  - Graph Algorithm
  *  - Model Validation
  * 	- Numerical Analysis
  * 	- Numerical Optimizer
@@ -101,8 +104,6 @@ import org.drip.state.identifier.OvernightLabel;
  * 	- Release Versions         => https://lakshmidrip.github.io/DROP/version.html
  * 	- Community Credits        => https://lakshmidrip.github.io/DROP/credits.html
  * 	- Issues Catalog           => https://github.com/lakshmiDRIP/DROP/issues
- * 	- JUnit                    => https://lakshmidrip.github.io/DROP/junit/index.html
- * 	- Jacoco                   => https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *   	you may not use this file except in compliance with the License.
