@@ -87,6 +87,7 @@ import org.drip.state.identifier.ForwardLabel;
  *  	limitations under the License.
  */
 
+/*
  * <i>YAS_MBONO</i> contains the sample demonstrating the replication of Bloomberg's Mexican MBONO MXN Bond
  * 	YAS Functionality.
  *
