@@ -1,6 +1,13 @@
 
 package org.drip.service.common;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -4467,11 +4474,248 @@ public class StringUtil {
     	return conditionalWordList;
     }
 
+    private static final boolean IsPalindrome (
+    	final String s,
+    	final int start,
+    	final int end)
+    {
+    	int left = start;
+    	int right = end;
+
+    	while (left < right)
+    	{
+    		if (s.charAt (left) != s.charAt(right))
+			{
+    			return false;
+			}
+
+    		++left;
+    		--right;
+    	}
+
+    	return true;
+    }
+
+    private static final Map<Character, List<Integer>> CharacterLocationListMap (
+		final String s)
+    {
+    	Map<Character, List<Integer>> characterLocationListMap = new HashMap<Character, List<Integer>>();
+
+    	for (int i = 0; i < s.length(); ++i)
+    	{
+    		char ch = s.charAt (i);
+
+    		if (characterLocationListMap.containsKey (ch))
+    		{
+    			int lastLocation = characterLocationListMap.get (ch).get (
+					characterLocationListMap.get (ch).size() - 1
+				);
+
+    			if (0 == (i - lastLocation) % 2)
+				{
+    				characterLocationListMap.get (ch).add (i);
+				}
+    		}
+    		else
+    		{
+    			List<Integer> locationList = new ArrayList<Integer>();
+
+    			locationList.add(i);
+
+    			characterLocationListMap.put (ch, locationList);
+    		}
+    	}
+
+    	return characterLocationListMap;
+    }
+
+    private static final boolean Overlap (
+		final int[] firstRange,
+		final int[] secondRange)
+    {
+    	if (firstRange[0] >= secondRange[0] && firstRange[0] <= secondRange[1])
+		{
+    		return true;
+		}
+
+    	return secondRange[0] >= firstRange[0] && secondRange[0] <= firstRange[1];
+    }
+
+    private static final int MaximumNonOverlappingProduct (
+		final List<int[]> palindromeLocationList)
+    {
+    	if (null == palindromeLocationList || 1 >= palindromeLocationList.size())
+		{
+    		return -1;
+		}
+
+    	int maximumNonOverlappingProduct = -1;
+
+    	for (int i = 0; i < palindromeLocationList.size(); ++i)
+    	{
+    		int[] leftPalindromeLocation = palindromeLocationList.get(i);
+
+    		for (int j = 0; j < i; ++j)
+    		{
+        		int[] rightPalindromeLocation = palindromeLocationList.get(j);
+
+        		if (!Overlap (leftPalindromeLocation, rightPalindromeLocation))
+        		{
+        			int currentProduct = (leftPalindromeLocation[1] - leftPalindromeLocation[0] + 1) *
+    					(rightPalindromeLocation[1] - rightPalindromeLocation[0] + 1);
+
+        			if (currentProduct > maximumNonOverlappingProduct)
+    				{
+        				maximumNonOverlappingProduct = currentProduct;
+    				}
+        		}
+        	}
+    	}
+
+    	return maximumNonOverlappingProduct;
+    }
+
+    public static final int MaximumPalindromeProductLength (
+		final String s)
+    {
+    	Map<Character, List<Integer>> characterLocationListMap = CharacterLocationListMap (s);
+
+    	List<int[]> palindromeLocationList = new ArrayList<int[]>();
+
+    	for (char ch : characterLocationListMap.keySet())
+    	{
+    		List<Integer> characterLocationList = characterLocationListMap.get(ch);
+
+    		if (2 > characterLocationList.size()) continue;
+
+    		for (int i = 0; i < characterLocationList.size(); ++i)
+    		{
+        		for (int j = i + 1; j < characterLocationList.size(); ++j)
+        		{
+        			if (IsPalindrome (s, characterLocationList.get (i), characterLocationList.get (j)))
+        			{
+        				palindromeLocationList.add (
+    						new int[] {characterLocationList.get (i), characterLocationList.get (j)}
+						);
+        			}
+        		}
+    		}
+    	}
+
+    	return MaximumNonOverlappingProduct (palindromeLocationList);
+    }
+
+    private static final List<Integer> SubstringStartLocation (String full, String sub)
+    {
+    	List<Integer> substringStartLocationList = new ArrayList<Integer>();
+
+    	int startIndex = full.indexOf(sub, 0);
+
+    	while (startIndex < full.length() && -1 != startIndex)
+    	{
+    		substringStartLocationList.add (startIndex);
+
+    		startIndex = full.indexOf(sub, startIndex + sub.length());
+    	}
+
+    	return substringStartLocationList;
+    }
+
+    private static final List<Integer> StartLocationList (String full, Set<String> subSet)
+    {
+    	List<Integer> startLocationList = new ArrayList<Integer>();
+
+    	for (String sub : subSet)
+    	{
+    		List<Integer> substringStartLocationList = SubstringStartLocation (full, sub);
+
+    		if (substringStartLocationList.isEmpty()) return new ArrayList<Integer>();
+
+    		startLocationList.addAll(substringStartLocationList);
+    	}
+
+    	return startLocationList;
+    }
+
+    private static final List<Integer> ContiguousWordsLocationList (
+		String full,
+		Set<String> subset,
+		int startIndex)
+    {
+    	List<Integer> contiguousWordsLocationList = new ArrayList<Integer>();
+
+    	List<Integer> currentLocationStack = new ArrayList<Integer>();
+
+    	currentLocationStack.add(startIndex);
+
+    	List<Set<String>> processedSubsetStack = new ArrayList<Set<String>>();
+
+    	processedSubsetStack.add(new HashSet<String> (subset));
+
+    	while (!currentLocationStack.isEmpty())
+    	{
+    		int stackIndex = currentLocationStack.size() - 1;
+ 
+    		int currentLocation = currentLocationStack.get(stackIndex);
+
+    		currentLocationStack.remove(stackIndex);
+
+    		String currentFull = full.substring(currentLocation);
+
+    		Set<String> currentSubset = processedSubsetStack.get(stackIndex);
+
+    		Set<String> nextSubset = new HashSet<String> (currentSubset);
+
+    		processedSubsetStack.remove(stackIndex);
+
+    		for (String currentSub : currentSubset) {
+    			if (currentFull.startsWith (currentSub)) {
+    				nextSubset.remove(currentSub);
+
+    				if (nextSubset.isEmpty())
+    					contiguousWordsLocationList.add(startIndex);
+    				else {
+    					int nextLocation = currentLocation + currentSub.length();
+
+    					if (nextLocation < full.length())
+    					{
+    						currentLocationStack.add(nextLocation);
+
+	    					processedSubsetStack.add(nextSubset);
+    					}
+    				}
+    			}
+    		}
+    	}
+
+    	return contiguousWordsLocationList;
+    }
+
+    public static final List<Integer> WordConcatenationStartList (String full, Set<String> subset)
+    {
+    	List<Integer> wordConcatenationStartList = new ArrayList<Integer>();
+
+    	List<Integer> startLocationList = StartLocationList (full, subset);
+
+    	if (startLocationList.isEmpty()) return wordConcatenationStartList;
+
+    	for (int startIndex : startLocationList)
+	    	wordConcatenationStartList.addAll (ContiguousWordsLocationList (full, subset, startIndex));
+
+	    return wordConcatenationStartList;
+    }
+
     public static final void main (
 		final String[] argumentArray)
 	{
-		System.out.println (ConditionalWordList ("bbeadcxede"));
+    	Set<String> subset = new HashSet<String>();
 
-		System.out.println (ConditionalWordList ("baddacxb"));
+    	subset.add("bar");
+
+    	subset.add("foo");
+
+    	subset.add("the");
+
+    	System.out.println (WordConcatenationStartList ("barfoofoobarthefoobarman", subset));
 	}
 }

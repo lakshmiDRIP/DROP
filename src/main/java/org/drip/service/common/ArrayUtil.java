@@ -1,6 +1,9 @@
 
 package org.drip.service.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -5195,19 +5198,226 @@ public class ArrayUtil
     	return totalCost;
     }
 
+    /**
+     * Given an integer array and an integer, return the length of the shortest non-empty subarray with a sum
+     *  of at least sum. If there is no such subarray, return -1.
+     *  
+     * A subarray is a contiguous part of an array.
+     * 
+     * @param numberArray Array of Numbers
+     * @param sum The Target Sum
+     * 
+     * @return Size of the Shortest Subarray
+     */
+
+    public static final int ShortestSubarrayAtLeastSum (
+		final int[] numberArray,
+		final int sum)
+    {
+    	if (null == numberArray || 0 == numberArray.length)
+    	{
+    		return -1;
+    	}
+
+    	int arrayLength = numberArray.length;
+
+    	if (0 == arrayLength)
+    	{
+    		return -1;
+    	}
+
+    	int currentSum = numberArray[0];
+    	int currentWidth = 1;
+    	int bestWidth = -1;
+
+    	if (currentSum >= sum)
+		{
+    		return 1;
+   		}
+
+    	for (int i = 1;
+			i < arrayLength;
+			++i)
+    	{
+			++currentWidth;
+
+			if (currentSum + numberArray[i] < sum)
+			{
+				currentSum = currentSum + numberArray[i];
+			}
+    		else
+    		{
+    	    	if ((currentSum = numberArray[i]) >= sum)
+	    		{
+    	    		return 1;
+   	    		}
+
+    	    	if (-1 == bestWidth)
+    	    	{
+    	    		bestWidth = currentWidth;
+    	    	}
+    	    	else
+    	    	{
+	    	    	bestWidth = bestWidth < currentWidth ? bestWidth : currentWidth;
+    	    	}
+
+    	    	currentWidth = 1;
+    		}
+    	}
+
+    	return bestWidth;
+    }
+
+    private static final int NumberFromDigitArray (int[] numberArray, int startIndex, int endIndex)
+    {
+    	int number = 0;
+
+    	for (int index = startIndex; index <= endIndex; ++index)
+    		number = 10 * number + numberArray[index];
+
+    	return number;
+    }
+
+    public static final int CountWaysToSeparate (int[] numberArray, int currentIndex, int previousNumber)
+    {
+    	int countWaysToSeparate = 1;
+
+    	if (currentIndex >= numberArray.length) return 0;
+
+    	if (currentIndex == numberArray.length - 1)
+    		return numberArray[currentIndex] >= previousNumber ? 1 : 0;
+
+    	for (int index = currentIndex; index < numberArray.length; ++index) {
+    		int nextCandidateNumber = NumberFromDigitArray (numberArray, index + 1, numberArray.length - 1);
+
+    		if (previousNumber > nextCandidateNumber) continue;
+
+    		countWaysToSeparate = countWaysToSeparate + CountWaysToSeparate (numberArray, index + 1, nextCandidateNumber);
+    	}
+
+    	return countWaysToSeparate;
+    }
+
+    public static final int CountWaysToSeparate (final String numberStr)
+    {
+    	if (null == numberStr || numberStr.isEmpty()) return 0;
+
+    	int[] digitArray = new int[numberStr.length()];
+
+    	int number = Integer.parseInt (numberStr);
+
+    	for (int i = digitArray.length - 1; i >= 0; --i) {
+    		digitArray[i] = number % 10;
+    		number = number / 10;
+    	}
+
+    	return 1 + CountWaysToSeparate (digitArray, 1, digitArray[0]);
+    }
+
+    private static final boolean PartitionAroundMean (
+		double[] numberArray,
+		List<Double> numberLeftOfAverage,
+		List<Double> numberRightOfAverage,
+		final double average)
+    {
+    	for (double number : numberArray)
+    	{
+    		if (number < average)
+    			numberLeftOfAverage.add(number);
+    		else if (number > average)
+    			numberRightOfAverage.add(number);
+    	}
+
+    	return true;
+    }
+
+    private static final void SumCountList (
+		final List<double[]> sumCountList,
+		final List<Double> numberList,
+		final int startIndex)
+    {
+    	if (startIndex >= numberList.size()) return;
+
+    	double count = 1.;
+
+    	double sum = numberList.get(startIndex);
+
+    	sumCountList.add (new double[] {sum, count});
+
+    	for (int i = startIndex + 1; i < numberList.size(); ++i)
+    	{
+    		sum = sum + numberList.get(i);
+
+    		sumCountList.add (new double[] {sum, count = count + 1});
+    	}
+
+    	SumCountList (sumCountList, numberList, startIndex + 1);
+    }
+
+    private static final boolean IsSplittable (
+    	final List<double[]> leftSumCountList,
+    	final List<double[]> rightSumCountList,
+    	final double average)
+    {
+    	for (int i = 0; i < leftSumCountList.size(); ++i)
+    	{
+    		double leftSum = leftSumCountList.get(i)[0];
+
+    		double leftCount = leftSumCountList.get(i)[1];
+
+    		for (int j = 0; j < rightSumCountList.size(); ++j)
+        	{
+    			if (leftSumCountList.size() - 1 == i && rightSumCountList.size() - 1 == j) break;
+
+    			double rightSum = rightSumCountList.get(i)[0];
+
+        		double rightCount = rightSumCountList.get(i)[1];
+
+        		if (leftSum + rightSum == average * (leftCount + rightCount)) return true;
+        	}
+    	}
+
+    	return false;
+    }
+
+    public static final boolean SplitIntoSameAverage (double[] numberArray)
+    {
+    	double average = 0.;
+
+    	for (int i = 0; i < numberArray.length; ++i)
+    	{
+    		average = average + numberArray[i];
+    	}
+
+    	average = average / numberArray.length;
+
+    	for (int i = 0; i < numberArray.length; ++i)
+    	{
+    		if (average == numberArray[i]) return true;
+    	}
+
+		List<Double> listLeftOfAverage = new ArrayList<Double>();
+
+		List<Double> listRightOfAverage = new ArrayList<Double>();
+
+		if (!PartitionAroundMean (numberArray, listLeftOfAverage, listRightOfAverage, average))
+			return false;
+
+		List<double[]> leftSumCountList = new ArrayList<double[]>();
+
+		SumCountList (leftSumCountList, listLeftOfAverage, 0);
+
+		List<double[]> rightSumCountList = new ArrayList<double[]>();
+
+		SumCountList (rightSumCountList, listRightOfAverage, 0);
+
+		return IsSplittable (leftSumCountList, rightSumCountList, average);
+    }
+
     public static final void main (
 		final String[] argumentArray)
-		throws java.lang.Exception
+		throws Exception
 	{
-    	java.util.List<Integer> nonDiscountedItems = new java.util.ArrayList<Integer>();
-
-    	System.out.println (DiscountedSale (new int[] {2, 3, 1, 2, 4, 2}, nonDiscountedItems) + " | " +
-    		nonDiscountedItems);
-
-    	System.out.println (DiscountedSale (new int[] {5, 1, 3, 4, 6, 2}, nonDiscountedItems) + " | " +
-    		nonDiscountedItems);
-
-    	System.out.println (DiscountedSale (new int[] {1, 3, 3, 2, 5}, nonDiscountedItems) + " | " +
-    		nonDiscountedItems);
+    	System.out.println (SplitIntoSameAverage (new double[] {1, 2, 3, 4, 5, 6, 7, 8}));
 	}
 }
