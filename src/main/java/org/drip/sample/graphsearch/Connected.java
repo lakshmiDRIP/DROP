@@ -141,7 +141,7 @@ public class Connected
 
 			neighborList.add (city2);
 
-			_cityNeighborListMap.put(city1, neighborList);
+			_cityNeighborListMap.put (city1, neighborList);
 		}
 
 		if (_cityNeighborListMap.containsKey (city2))
@@ -151,7 +151,7 @@ public class Connected
 
 			neighborList.add (city1);
 
-			_cityNeighborListMap.put(city2, neighborList);
+			_cityNeighborListMap.put (city2, neighborList);
 		}
 
 		return true;
@@ -186,7 +186,148 @@ public class Connected
 		return "no";
 	}
 
+	private static final boolean SourceDoesNotExist (String result) throws Exception
+	{
+		Connected connected = new Connected();
+
+		connected.addPair ("A", "B");
+
+		connected.addPair ("A", "C");
+
+		connected.addPair ("B", "D");
+
+		String source = "F";
+		String target = "D";
+
+		return result.equalsIgnoreCase (connected.citiesReachable (source, target));
+	}
+
+	private static final boolean DestinationDoesNotExist (String result) throws Exception
+	{
+		Connected connected = new Connected();
+
+		connected.addPair ("A", "B");
+
+		connected.addPair ("A", "C");
+
+		connected.addPair ("B", "D");
+
+		String source = "A";
+		String target = "F";
+
+		return result.equalsIgnoreCase (connected.citiesReachable (source, target));
+	}
+
+	private static final boolean DisjointDistinctSegmentConnection (String result) throws Exception
+	{
+		Connected connected = new Connected();
+
+		connected.addPair ("A", "B");
+
+		connected.addPair ("A", "C");
+
+		connected.addPair ("B", "D");
+
+		connected.addPair ("E", "F");
+
+		connected.addPair ("E", "G");
+
+		connected.addPair ("F", "G");
+
+		String source = "A";
+		String target = "F";
+
+		return result.equalsIgnoreCase (connected.citiesReachable (source, target));
+	}
+
+	private static final boolean DisjointSameSegmentConnection (String result) throws Exception
+	{
+		Connected connected = new Connected();
+
+		connected.addPair ("A", "B");
+
+		connected.addPair ("A", "C");
+
+		connected.addPair ("B", "D");
+
+		connected.addPair ("E", "F");
+
+		connected.addPair ("E", "G");
+
+		connected.addPair ("F", "G");
+
+		String source = "A";
+		String target = "D";
+
+		return result.equalsIgnoreCase (connected.citiesReachable (source, target));
+	}
+
+	private static final boolean ConnectionInsideCycle (String result) throws Exception
+	{
+		Connected connected = new Connected();
+
+		connected.addPair ("A", "B");
+
+		connected.addPair ("A", "C");
+
+		connected.addPair ("B", "D");
+
+		connected.addPair ("B", "G");
+
+		connected.addPair ("G", "F");
+
+		connected.addPair ("E", "F");
+
+		connected.addPair ("E", "G");
+
+		connected.addPair ("H", "G");
+
+		String source = "C";
+		String target = "E";
+
+		return result.equalsIgnoreCase (connected.citiesReachable (source, target));
+	}
+
+	private static final boolean ConnectionInsideTree (String result) throws Exception
+	{
+		Connected connected = new Connected();
+
+		connected.addPair ("A", "B");
+
+		connected.addPair ("A", "C");
+
+		connected.addPair ("B", "E");
+
+		connected.addPair ("E", "F");
+
+		connected.addPair ("E", "G");
+
+		connected.addPair ("F", "G");
+
+		connected.addPair ("G", "H");
+
+		String source = "C";
+		String target = "H";
+
+		return result.equalsIgnoreCase (connected.citiesReachable (source, target));
+	}
+
 	public static final void main (String[] argumentArray) throws Exception
+	{
+		System.out.println ("Test #1 (Source Does Not Exist) Passed: " + SourceDoesNotExist ("no"));
+
+		System.out.println ("Test #2 (Destination Does Not Exist) Passed: " + DestinationDoesNotExist ("no"));
+
+		System.out.println ("Test #3 (Disjoint Distinct Segment Connection) Passed: " + DisjointDistinctSegmentConnection ("no"));
+
+		System.out.println ("Test #4 (Disjoint Same Segment Connection) Passed: " + DisjointSameSegmentConnection ("yes"));
+
+		System.out.println ("Test #5 (Connection Inside Cycle) Passed: " + ConnectionInsideCycle ("yes"));
+
+		System.out.println ("Test #6 (Connection Inside Tree) Passed: " + ConnectionInsideTree ("yes"));
+	}
+
+	public static final void ProcessFromFile (String[] argumentArray) throws Exception
 	{
 		Connected connected = new Connected();
 
