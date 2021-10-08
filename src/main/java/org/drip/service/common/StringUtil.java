@@ -4705,17 +4705,108 @@ public class StringUtil {
 	    return wordConcatenationStartList;
     }
 
+    static class PasswordSynposys
+    {
+    	int charShortfall = 0;
+    	boolean containsDigit = false;
+    	boolean containsLower = false;
+    	boolean containsUpper = false;
+    	List<int[]> invalidRange = null;
+
+    	PasswordSynposys (
+			int charShortfall,
+			boolean containsDigit,
+			boolean containsLower,
+			boolean containsUpper,
+			List<int[]> invalidRange)
+    	{
+    		this.charShortfall = charShortfall;
+    		this.containsDigit = containsDigit;
+    		this.containsLower = containsLower;
+    		this.containsUpper = containsUpper;
+    		this.invalidRange = invalidRange;
+    	}
+    }
+
+    private static final PasswordSynposys IsPasswordStrong (
+    	final String password)
+    {
+    	char charState = '0';
+    	int charShortfall = 0;
+    	int repeatCharCount = 0;
+    	boolean containsDigit = false;
+    	boolean containsLower = false;
+    	boolean containsUpper = false;
+
+    	int passwordLength = password.length();
+
+    	if (20 < passwordLength)
+    		charShortfall = 20 - passwordLength;
+    	else if (6 > passwordLength)
+    		charShortfall = 6 - passwordLength;
+
+    	List<int[]> invalidRange = new ArrayList<int[]>();
+
+    	for (int i = 0; i < passwordLength; ++i) {
+    		char ch = password.charAt (i);
+
+    		if (Character.isDigit (ch)) containsDigit = true;
+
+    		if (Character.isLowerCase (ch)) containsLower = true;
+
+    		if (Character.isUpperCase (ch)) containsUpper = true;
+
+    		if (0 == i)
+    			charState = ch;
+    		else {
+    			if (ch == charState)
+    				++repeatCharCount;
+    			else {
+    				if (3 <= repeatCharCount) invalidRange.add (new int[] {i - repeatCharCount + 1, i});
+
+    				charState = ch;
+        			repeatCharCount = 1;
+    			}
+    		}
+    	}
+
+    	return new PasswordSynposys (
+			charShortfall,
+			containsDigit,
+			containsLower,
+			containsUpper,
+			invalidRange
+		);
+    }
+
+    public static final int PasswordChangeSteps (String password)
+    {
+    	PasswordSynposys passwordSynposys = IsPasswordStrong (password);
+
+    	if (0 < passwordSynposys.charShortfall) return passwordSynposys.charShortfall;
+
+		int repeatsToModify = 0;
+		int containmentChanges = 0;
+
+		for (int[] range : passwordSynposys.invalidRange)
+    		repeatsToModify += (range[1] - range[0] + 1) / 3;
+
+		if (!passwordSynposys.containsDigit) ++containmentChanges;
+
+		if (!passwordSynposys.containsLower) ++containmentChanges;
+
+		if (!passwordSynposys.containsUpper) ++containmentChanges;
+
+		return (repeatsToModify > containmentChanges ? repeatsToModify : containmentChanges) - passwordSynposys.charShortfall;
+    }
+
     public static final void main (
 		final String[] argumentArray)
 	{
-    	Set<String> subset = new HashSet<String>();
+    	System.out.println (PasswordChangeSteps ("a"));
 
-    	subset.add("bar");
+    	System.out.println (PasswordChangeSteps ("aA1"));
 
-    	subset.add("foo");
-
-    	subset.add("the");
-
-    	System.out.println (WordConcatenationStartList ("barfoofoobarthefoobarman", subset));
+    	System.out.println (PasswordChangeSteps ("1337C0d3"));
 	}
 }
