@@ -4800,13 +4800,76 @@ public class StringUtil {
 		return (repeatsToModify > containmentChanges ? repeatsToModify : containmentChanges) - passwordSynposys.charShortfall;
     }
 
+    private static final boolean IsNumber (
+		String numberString)
+    {
+    	if (null == numberString || numberString.isEmpty()) return false;
+
+    	char leadingChar = numberString.charAt (0);
+
+    	if ('+' == leadingChar || '-' == leadingChar) numberString = numberString.substring (1);
+
+    	for (int i = 0; i < numberString.length(); ++i) {
+    		char currentChar = numberString.charAt (i);
+
+    		if (!Character.isDigit(currentChar) && currentChar != '.') return false;
+    	}
+
+    	return !".".equals (numberString);
+    }
+
+    /*
+     * A <b>valid number</b> can be split up into these components (in order):
+     * 
+     *  A <b>decimal number</b> or an <b>integer</b>.
+     *  (Optional) An 'e' or 'E', followed by an <b>integer</b>.
+     *  
+     * A <b>decimal number</b> can be split up into these components (in order):
+     * 
+     *  (Optional) A sign character (either '+' or '-').
+     *  One of the following formats:
+     *   One or more digits, followed by a dot '.'.
+     *   One or more digits, followed by a dot '.', followed by one or more digits.
+     *   A dot '.', followed by one or more digits.
+     *   
+     * An <b>integer</b> can be split up into these components (in order):
+     * 
+     *  (Optional) A sign character (either '+' or '-').
+     *  One or more digits.
+     *  
+     * For example, all the following are valid numbers: ["2", "0089", "-0.1", "+3.14", "4.", "-.9", "2e10",
+     *  "-90E3", "3e+7", "+6e-1", "53.5e93", "-123.456e789"], while the following are not valid numbers:
+     *  ["abc", "1a", "1e", "e3", "99e2.5", "--6", "-+3", "95a54e53"].
+     * 
+     * Given a string s, return true if s is a <b>valid number</b>.
+     * 
+     * @param s The Input Number
+     * 
+     * @return TRUE - Number is Valid
+     */
+
+    public static final boolean ValidateNumber (
+    	final String s)
+    {
+    	String sLower = s.toLowerCase();
+
+    	if (!sLower.contains ("e")) return IsNumber (sLower);
+
+    	String[] numberArray = sLower.split ("e");
+
+    	return null != numberArray && 2 == numberArray.length &&
+			IsNumber (numberArray[0]) && IsNumber (numberArray[1]);
+    }
+
     public static final void main (
 		final String[] argumentArray)
 	{
-    	System.out.println (PasswordChangeSteps ("a"));
+    	System.out.println (ValidateNumber ("0"));
 
-    	System.out.println (PasswordChangeSteps ("aA1"));
+    	System.out.println (ValidateNumber ("e"));
 
-    	System.out.println (PasswordChangeSteps ("1337C0d3"));
+    	System.out.println (ValidateNumber ("."));
+
+    	System.out.println (ValidateNumber (".1"));
 	}
 }

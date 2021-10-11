@@ -460,6 +460,25 @@ public class NumberUtil {
 		return false;
 	}
 
+	private static final int[] DivisorPower (
+		final int dividend,
+		final int divisor)
+	{
+		if (divisor > dividend) return null;
+
+		int divisorPower = 1;
+		int prevCompoundedDivisor = 0;
+		int compoundedDivisor = divisor;
+
+		while (compoundedDivisor < dividend) {
+			divisorPower = divisorPower * 2;
+			prevCompoundedDivisor = compoundedDivisor;
+			compoundedDivisor = compoundedDivisor * compoundedDivisor;
+		}
+
+		return new int[] {divisorPower / 2, prevCompoundedDivisor};
+	}
+
 	/**
 	 * Check if the Input Long is MIN_VALUE or MAX_VALUE
 	 * 
@@ -1709,18 +1728,71 @@ public class NumberUtil {
 		);
 	}
 
+	/*
+	 * Given two integers dividend and divisor, divide two integers without using multiplication, division,
+	 *  and mod operator.
+	 *  
+	 * Return the quotient after dividing dividend by divisor.
+	 * 
+	 * The integer division should truncate toward zero, which means losing its fractional part. For
+	 *  example, truncate(8.345) = 8 and truncate(-2.7335) = -2.
+	 *  
+	 * <b>Note</b>: Assume we are dealing with an environment that could only store integers within the
+	 *  <b>32-bit</b> signed integer range: [−2<sup>31</sup>, 2<sup>31</sup> − 1]. For this problem, assume
+	 *  that your function <b>returns</b> 2<sup>31</sup> − 1 <b>when the division result overflows</b>.
+	 *  
+	 * @param dividend Dividend
+	 * @param divisor Divisor
+	 * 
+	 * @return Quotient
+	 */
+
+	public static final int Quotient2 (
+		final int dividend,
+		final int divisor)
+	{
+		if (1 == divisor) return dividend;
+
+		int quotient = 0;
+		int[] divisorPower = null;
+		int dividendRemainder = dividend;
+
+		while (null != (divisorPower = DivisorPower (dividendRemainder, divisor))) {
+			// System.out.println ("\t" + divisorPower[0] + " | " + divisorPower[1]);
+
+			dividendRemainder = dividendRemainder - divisorPower[1];
+			int currentQuotient = divisor;
+
+			for (int i = 1; i < divisorPower[0] - 1; ++i)
+				currentQuotient = currentQuotient * currentQuotient;
+
+			quotient = quotient + currentQuotient;
+		}
+
+		return quotient;
+	}
+
 	public static final void main (
 		final String[] argumentArray)
 	{
 		System.out.println (
-			IsNumberSequenceAdditive (
-				"112358"
+			Quotient2 (
+				1,
+				1
 			)
 		);
 
 		System.out.println (
-			IsNumberSequenceAdditive (
-				"199100199"
+			Quotient2 (
+				0,
+				1
+			)
+		);
+
+		System.out.println (
+			Quotient2 (
+				10,
+				3
 			)
 		);
 	}
