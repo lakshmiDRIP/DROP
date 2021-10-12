@@ -2,7 +2,13 @@
 package org.drip.service.common;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -444,6 +450,30 @@ public class ArrayUtil
     	if (third < fourth) disaggregationMap.put (third, new int[] {fourth, height34});
 
     	return disaggregationMap;
+    }
+
+    private static final List<int[]> NondecreasingSequenceList (
+    	final int[] numberArray)
+    {
+    	List<int[]> nondecreasingSequenceList = new ArrayList<int[]>();
+
+    	int leftIndex = 0;
+    	int rightIndex = 0;
+
+    	for (int i = 1; i < numberArray.length; ++i) {
+    		if (numberArray[i] >= numberArray[i - 1])
+    			++rightIndex;
+    		else {
+    			nondecreasingSequenceList.add (new int[] {leftIndex, rightIndex});
+
+    			leftIndex = i;
+    			rightIndex = i;
+    		}
+    	}
+
+		nondecreasingSequenceList.add (new int[] {leftIndex, numberArray.length - 1});
+
+    	return nondecreasingSequenceList;
     }
 
 	/**
@@ -5414,10 +5444,164 @@ public class ArrayUtil
 		return IsSplittable (leftSumCountList, rightSumCountList, average);
     }
 
+    /*
+     * Given an array of points where points[i] = [x<sub>i</sub>, y<sub>i</sub>] represents a point on the
+     *  <b>X-Y</b> plane, return the maximum number of points that lie on the same straight line.
+     * 
+     * @param points Points Grid
+     * 
+     * @return Maximum Points In Line
+     */
+
+    public static final int MaximumPointsInLine (
+    	final int[][] points)
+    {
+    	double m = Double.NaN;
+    	int maximumPointsCount = -1;
+    	int numPoints = points.length;
+
+    	Map<String, Set<String>> linePointSetMap = new HashMap<String, Set<String>>();
+
+    	for (int i = 0; i < numPoints; ++i) {
+    		String point1 = points[i][0] + "_" + points[i][1];
+
+    		for (int j = 0; j < numPoints; ++j) {
+        		if (i == j) continue;
+
+        		if (points[i][0] == points[j][0])
+        			m = points[i][1] > points[j][1] ? Double.POSITIVE_INFINITY : Double.NEGATIVE_INFINITY;
+        		else
+        			m = (points[i][1] - points[j][1]) / (points[i][0] - points[j][0]);
+
+        		String point2 = points[j][0] + "_" + points[j][1];
+        		double c = points[i][1] - m * points[i][0];
+        		String key = m + "_" + c;
+
+        		Set<String> pointSet = linePointSetMap.containsKey(key) ?
+        			linePointSetMap.get(key) : new HashSet<String>();
+
+        		pointSet.add (point1);
+
+        		pointSet.add (point2);
+
+        		if (!linePointSetMap.containsKey(key)) linePointSetMap.put(key, pointSet);
+    		}
+    	}
+
+    	for (Set<String> pointSet : linePointSetMap.values()) {
+    		int pointSetCount = pointSet.size();
+
+    		if (pointSetCount > maximumPointsCount) maximumPointsCount = pointSetCount;
+    	}
+
+    	return maximumPointsCount;
+    }
+
+    /*
+     * Given an array of integers, your task is to check if it could become non-decreasing by modifying <b>at
+     *  most one element</b>.
+     *  
+     * We define an array is non-decreasing if nums[i] <= nums[i + 1] holds for every i (<b>0-based</b>) such
+     *  that (0 <= i <= n - 2).
+     * 
+     * @param numberArray Number Array
+     * 
+     * @return TRUE - The Conversion is Possible
+     */
+
+    public static final boolean ConversionToNondecreasing (
+    	final int[] numberArray)
+    {
+    	List<int[]> nondecreasingSequenceList = NondecreasingSequenceList (numberArray);
+
+    	int sequenceListSize = nondecreasingSequenceList.size();
+
+    	if (1 == sequenceListSize) return true;
+
+    	if (2 < sequenceListSize) return false;
+
+    	int[] leftRange = nondecreasingSequenceList.get (0);
+
+    	int[] rightRange = nondecreasingSequenceList.get (1);
+
+    	if (leftRange[0] == leftRange[1] || rightRange[0] == rightRange[1]) return true;
+
+    	return numberArray[leftRange[1] - 1] <= numberArray[rightRange[0]] ||
+    		numberArray[leftRange[1]] <= numberArray[rightRange[0] + 1];
+    }
+
+    /*
+     * You are given an integer array of 2 * n integers. You need to partition it into <b>two</b> arrays of
+     *  length n to <b>minimize the absolute difference</b> of the <b>sums</b> of the arrays. To partition
+     *  the array, put each element into <b>one</b> of the two arrays.
+     *  
+     * Return the <b>minimum</b> possible absolute difference.
+     * 
+     * @param numberArray The Number Array
+     * 
+     * @return Minimum Possible Difference
+     */
+
+    public static final int PartitionArrayMinimizeSum (
+    	final int[] numberArray)
+    {
+    	Arrays.sort (numberArray);
+
+    	int leftIndex = 1;
+    	int leftPartitionSum = numberArray[0];
+    	int rightIndex = numberArray.length - 2;
+    	int rightPartitionSum = numberArray[numberArray.length - 1];
+
+    	while (leftIndex < rightIndex) {
+    		if (leftPartitionSum < rightPartitionSum) {
+    			leftPartitionSum = leftPartitionSum + numberArray[rightIndex];
+    			rightPartitionSum = rightPartitionSum + numberArray[leftIndex];
+    		} else {
+    			leftPartitionSum = leftPartitionSum + numberArray[leftIndex];
+    			rightPartitionSum = rightPartitionSum + numberArray[rightIndex];
+    		}
+
+    		++leftIndex;
+    		--rightIndex;
+    	}
+
+    	return leftPartitionSum > rightPartitionSum ?
+    		leftPartitionSum - rightPartitionSum : rightPartitionSum - leftPartitionSum;
+    }
+
+    public static final boolean JumpGameDestinationReachable (
+    	final String s,
+    	final int minJump,
+    	final int maxJump)
+    {
+    	Set<Integer> visitedLocationSet = new HashSet<Integer>();
+
+    	Stack<Integer> locationStack = new Stack<Integer>();
+
+    	locationStack.add (0);
+
+    	while (!locationStack.isEmpty()) {
+    		int location = locationStack.pop();
+
+    		if (s.length() - 1 == location) return true;
+
+    		visitedLocationSet.add (location);
+
+    		for (int i = location + minJump; i <= location + maxJump; ++i) {
+    			if (i < s.length() && !visitedLocationSet.contains (i) && '0' == s.charAt (i))
+    				locationStack.add (i);
+    		}
+    	}
+
+    	return false;
+    }
+
     public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-    	System.out.println (SplitIntoSameAverage (new double[] {1, 2, 3, 4, 5, 6, 7, 8}));
+    	System.out.println (JumpGameDestinationReachable ("011010", 2, 3));
+
+    	System.out.println (JumpGameDestinationReachable ("01101110", 2, 3));
 	}
 }

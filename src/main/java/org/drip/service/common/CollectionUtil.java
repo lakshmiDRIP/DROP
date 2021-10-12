@@ -633,4 +633,53 @@ public class CollectionUtil {
 
 		return wjCombined;
 	}
+
+	/*
+	 * Given an integer array numberArray and two integers k and t, return true if there are <b>two distinct
+	 *  indices</b> i and j in the array such that abs(numberArray[i] - numberArray[j]) <= t and abs(i - j)
+	 *  <= k
+	 * 
+	 * @param numberArray Number Array
+	 * @param k K
+	 * @param t T
+	 * 
+	 * @return TRUE - Element matching the criteria above found
+	 */
+
+	public static final boolean ContainsNearbyAlmostDuplicate (
+		final int[] numberArray,
+		final int k,
+		final int t)
+	{
+		if (0 == t) return true;
+
+		java.util.TreeSet<Integer> slidingWindowSet = new java.util.TreeSet<Integer>();
+
+		for (int i = 0; i < numberArray.length; ++i) {
+			Integer floor = slidingWindowSet.floor (numberArray[i]);
+
+			Integer ceiling = slidingWindowSet.ceiling (numberArray[i]);
+
+			if (null != floor && numberArray[i] - floor <= t) return true;
+
+			if (null != ceiling && ceiling - numberArray[i] <= t) return true;
+
+			slidingWindowSet.add (numberArray[i]);
+
+			if (k < slidingWindowSet.size()) slidingWindowSet.remove (numberArray[i - k]);
+		}
+
+		return false;
+	}
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+		System.out.println (ContainsNearbyAlmostDuplicate (new int[] {1, 2, 3, 1}, 3, 0));
+
+		System.out.println (ContainsNearbyAlmostDuplicate (new int[] {1, 0, 1, 1}, 1, 2));
+
+		System.out.println (ContainsNearbyAlmostDuplicate (new int[] {1, 5, 9, 1, 5, 9}, 2, 3));
+	}
 }
