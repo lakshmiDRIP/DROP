@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -4861,15 +4862,125 @@ public class StringUtil {
 			IsNumber (numberArray[0]) && IsNumber (numberArray[1]);
     }
 
+    private static final char[] CHAR_ARRAY = {
+    	'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+    		'u', 'v', 'w', 'x', 'y', 'z'
+    };
+
+    private static final String ReplaceIndexCharacter (
+    	final String original,
+    	final char c,
+    	final int index)
+    {
+    	int stringLength = original.length();
+
+    	char[] replacedCharArray = new char[stringLength];
+
+    	for (int i = 0; i < stringLength; ++i)
+    		replacedCharArray[i] = i == index ? c : original.charAt (i);
+
+    	return new String (replacedCharArray);
+    }
+
+    private static final List<String> ShortestWordTransformationSequence (
+    	final Set<String> wordSet,
+    	final String beginWord,
+    	final String endWord)
+    {
+    	Stack<List<String>> transformationSequenceStack = new Stack<List<String>>();
+
+    	List<String> transformationSequence = new ArrayList<String>();
+
+    	Set<String> visitedWordSet = new HashSet<String>();
+
+    	Stack<String> wordStack = new Stack<String>();
+
+    	wordStack.push (beginWord);
+
+    	transformationSequence.add (beginWord);
+
+    	List<String> shortestWordTransformationSequence = null;
+
+    	transformationSequenceStack.push (transformationSequence);
+
+    	while (!wordStack.isEmpty()) {
+    		List<String> currentTransformationSequence = transformationSequenceStack.pop();
+
+    		String currentWord = wordStack.pop();
+
+    		visitedWordSet.add (currentWord);
+
+    		if (currentWord.equalsIgnoreCase (endWord)) {
+    			if (null == shortestWordTransformationSequence ||
+    				currentTransformationSequence.size() < shortestWordTransformationSequence.size())
+        			shortestWordTransformationSequence = currentTransformationSequence;
+
+    			break;
+    		}
+
+        	int stringLength = currentWord.length();
+
+    		for (char c : CHAR_ARRAY) {
+    			for (int i = 0; i < stringLength; ++i) {
+    				String newWord = ReplaceIndexCharacter (currentWord, c, i);
+
+    				if (!visitedWordSet.contains (newWord) && wordSet.contains (newWord)) {
+    					wordStack.push (newWord);
+
+    					List<String> newTransformationSequence = new ArrayList<String> (
+    						currentTransformationSequence
+    					);
+
+    					newTransformationSequence.add (newWord);
+
+    			    	transformationSequenceStack.push (newTransformationSequence);
+    				}
+    			}
+    		}
+    	}
+
+    	return shortestWordTransformationSequence;
+    }
+
+    public static final List<String> ShortestWordTransformationSequence (
+    	final List<String> wordList,
+    	final String beginWord,
+    	final String endWord)
+    {
+    	return ShortestWordTransformationSequence (new HashSet<String> (wordList), beginWord, endWord);
+    }
+
     public static final void main (
 		final String[] argumentArray)
 	{
-    	System.out.println (ValidateNumber ("0"));
+    	List<String> wordList = new ArrayList<String>();
 
-    	System.out.println (ValidateNumber ("e"));
+    	wordList.add ("hot");
 
-    	System.out.println (ValidateNumber ("."));
+    	wordList.add ("dot");
 
-    	System.out.println (ValidateNumber (".1"));
+    	wordList.add ("dog");
+
+    	wordList.add ("lot");
+
+    	wordList.add ("log");
+
+    	wordList.add ("cog");
+
+    	System.out.println (ShortestWordTransformationSequence (wordList, "hit", "cog"));
+
+    	wordList.clear();
+
+    	wordList.add ("hot");
+
+    	wordList.add ("dot");
+
+    	wordList.add ("dog");
+
+    	wordList.add ("lot");
+
+    	wordList.add ("log");
+
+    	System.out.println (ShortestWordTransformationSequence (wordList, "hit", "cog"));
 	}
 }

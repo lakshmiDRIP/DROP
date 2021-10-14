@@ -476,6 +476,29 @@ public class ArrayUtil
     	return nondecreasingSequenceList;
     }
 
+    private static final boolean IsPrime (
+    	final Set<Integer> primeSet,
+    	final int number)
+    {
+    	int maximumPrime = 1;
+
+    	for (int prime : primeSet) {
+    		maximumPrime = maximumPrime < prime ? prime : maximumPrime;
+
+    		if (0 == number % prime) return false;
+    	}
+
+    	for (int nextNumber = maximumPrime + 1; nextNumber <= 1 + (int) Math.sqrt (number); ++nextNumber) {
+    		if (IsPrime (primeSet, nextNumber)) {
+    			primeSet.add (nextNumber);
+
+        		if (0 == number % nextNumber) return false;
+    		}
+    	}
+
+    	return true;
+    }
+
 	/**
 	 * Search for the Target in a Rotated Array
 	 * 
@@ -4771,6 +4794,17 @@ public class ArrayUtil
     	return true;
     }
 
+    private static final boolean IsJumpForbidden (
+    	final int[] forbiddenLocationArray,
+    	final int location)
+    {
+    	for (int forbiddenLocation : forbiddenLocationArray) {
+    		if (forbiddenLocation == location) return true;
+    	}
+
+    	return false;
+    }
+
     /**
      * Tom plays a game in which he throws a baseball at various blocks marked with a symbol. Each block
      * 	comes with a symbol which can be an integer, ‘X’, ‘+’, or ‘Z’. Given a list of strings represent
@@ -5596,12 +5630,172 @@ public class ArrayUtil
     	return false;
     }
 
+    /**
+     * Given an integer array numberArray and an integer k, modify the array by repeating it k times. For
+     *  example, if arr = [1, 2] and k = 3 then the modified array will be [1, 2, 1, 2, 1, 2].
+     *  
+     * Return the maximum sub-array sum in the modified array. Note that the length of the sub-array can be 0
+     *  and its sum in that case is 0.
+     *  
+     * As the answer can be very large, return the answer <b>modulo</b> 10<sup>9</sup> + 7.
+     * 
+     * @param numberArray Number Array
+     * @param k K
+     * 
+     * @return Maximum Sum after k Concatenations
+     */
+
+    public static final int KConcatenationMaximumSum (
+    	final int[] numberArray,
+    	final int k)
+    {
+    	int rawIndex = 1;
+    	int bestMaxSum = numberArray[0];
+    	int currentMaxSum = numberArray[0];
+
+    	while (rawIndex < k * numberArray.length) {
+    		int newCurrentSum = currentMaxSum + numberArray[rawIndex % numberArray.length];
+    		currentMaxSum = newCurrentSum > 0 ? newCurrentSum : 0;
+
+    		if (bestMaxSum < currentMaxSum) bestMaxSum = currentMaxSum;
+
+    		++rawIndex;
+    	}
+
+    	return bestMaxSum;
+    }
+
+    /**
+     * A certain bug's home is on the x-axis at position x. Help them get there from position 0.
+     * 
+     * The bug jumps according to the following rules:
+     * 
+     *  It can jump exactly a positions <b>forward</b> (to the right).
+     *  It can jump exactly b positions <b>backward</b> (to the left).
+     *  It cannot jump backward twice in a row.
+     *  It cannot jump to any forbidden positions.
+     *  The bug may jump forward beyond its home, but it cannot jump to positions numbered with negative
+     *   integers.
+     *   
+     * Given an array of integers forbidden, where forbidden[i] means that the bug cannot jump to the
+     *  position forbidden[i], and integers a, b, and x, return the minimum number of jumps needed for the
+     *  bug to reach its home. If there is no possible sequence of jumps that lands the bug on position x,
+     *  return -1.
+
+     * @param forbiddenLocationArray Array of Forbidden Locations
+     * @param a Steps of Right Jump
+     * @param b Steps of Left Jump
+     * @param target Target
+     * 
+     * @return Minimum Steps to reach Target
+     */
+
+    public static final int ReachTargetMinimumJumps (
+    	final int[] forbiddenLocationArray,
+    	final int a,
+    	final int b,
+    	final int target)
+    {
+    	Stack<Boolean> jumpDirectionStack = new Stack<Boolean>();
+
+    	Set<Integer> visitedLocationSet = new HashSet<Integer>();
+
+    	Stack<Integer> jumpCountStack = new Stack<Integer>();
+
+    	Stack<Integer> locationStack = new Stack<Integer>();
+
+    	int minimumJumpCount = Integer.MAX_VALUE;
+
+    	jumpDirectionStack.push (false);
+
+    	jumpCountStack.push (0);
+
+    	locationStack.push (0);
+
+    	while (!locationStack.isEmpty()) {
+    		int jumpCount = jumpCountStack.pop();
+
+    		int location = locationStack.pop();
+
+    		if (target == location) {
+    			if (minimumJumpCount > jumpCount) minimumJumpCount = jumpCount;
+
+    			break;
+    		}
+
+    		boolean previousJumpBack = jumpDirectionStack.pop();
+
+    		visitedLocationSet.add (location);
+
+    		int leftLocation = location - b;
+    		int rightLocation = location + a;
+
+    		if (!IsJumpForbidden (forbiddenLocationArray, rightLocation) &&
+    			!visitedLocationSet.contains (rightLocation)) {
+    			locationStack.push (rightLocation);
+
+    			jumpDirectionStack.push (false);
+
+    			jumpCountStack.push (jumpCount + 1);
+    		}
+
+    		if (leftLocation >= 0 && !previousJumpBack && !IsJumpForbidden (forbiddenLocationArray, leftLocation) &&
+    			!visitedLocationSet.contains (leftLocation)) {
+    			locationStack.push (leftLocation);
+
+    			jumpDirectionStack.push (true);
+
+    			jumpCountStack.push (jumpCount + 1);
+    		}
+    	}
+
+    	return Integer.MAX_VALUE == minimumJumpCount ? -1 : minimumJumpCount;
+    }
+
+    /**
+     * Given an integer n, return the smallest <b>prime palindrome</b> greater than or equal to n.
+     * 
+     * An integer is <b>prime</b> if it has exactly two divisors: 1 and itself. Note that 1 is not a prime
+     *  number.
+     * 
+     *  For example, 2, 3, 5, 7, 11, and 13 are all primes.
+     * 
+     * An integer is a <b>palindrome</b> if it reads the same from left to right as it does from right to
+     *  left.
+     * 
+     *  For example, 101 and 12321 are palindromes.
+     * 
+     * The test cases are generated so that the answer always exists and is in the range [2, 2 *
+     *  10<sup>8</sup>].
+     * 
+     * @param number Given Number
+     * 
+     * @return Closest Next Prime Palindrome
+     */
+
+    public static final int ClosestNextPrimeNumber (
+    	final int number)
+    {
+    	Set<Integer> primeSet = new HashSet<Integer>();
+
+    	primeSet.add (2);
+
+    	int nextNumber = number + 1;
+
+    	while (!IsPrime (primeSet, nextNumber))
+    		++nextNumber;
+
+    	return nextNumber;
+    }
+
     public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-    	System.out.println (JumpGameDestinationReachable ("011010", 2, 3));
+    	System.out.println (ClosestNextPrimeNumber (6));
 
-    	System.out.println (JumpGameDestinationReachable ("01101110", 2, 3));
+    	System.out.println (ClosestNextPrimeNumber (8));
+
+    	System.out.println (ClosestNextPrimeNumber (13));
 	}
 }
