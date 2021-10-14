@@ -1772,28 +1772,40 @@ public class NumberUtil {
 		return quotient;
 	}
 
+	/**
+	 * Given a signed 32-bit integer number, return number with its digits reversed. If reversing number
+	 *  causes the value to go outside the signed 32-bit integer range [-2<sup>31</sup>, 2<sup>31</sup> - 1],
+	 *  then return 0.
+	 * 
+	 * @param number The Given Number
+	 * 
+	 * @return The Reverse
+	 */
+
+	public static final int ReverseInteger (
+		final int number)
+	{
+		int reversedNumber = 0;
+		boolean negative = 0 > number;
+		int positiveNumber = negative ? -1 * number : number;
+
+		while (positiveNumber > 0) {
+			reversedNumber = 10 * reversedNumber + (positiveNumber % 10);
+			positiveNumber = positiveNumber / 10;
+		}
+
+		return negative ? -1 * reversedNumber : reversedNumber;
+	}
+
 	public static final void main (
 		final String[] argumentArray)
 	{
-		System.out.println (
-			Quotient2 (
-				1,
-				1
-			)
-		);
+		System.out.println (ReverseInteger (123));
 
-		System.out.println (
-			Quotient2 (
-				0,
-				1
-			)
-		);
+		System.out.println (ReverseInteger (-123));
 
-		System.out.println (
-			Quotient2 (
-				10,
-				3
-			)
-		);
+		System.out.println (ReverseInteger (120));
+
+		System.out.println (ReverseInteger (0));
 	}
 }

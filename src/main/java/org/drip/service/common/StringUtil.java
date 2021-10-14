@@ -724,6 +724,105 @@ public class StringUtil {
     		0 == charCountArray[(int) 'c'];
     }
 
+    private static final char[] CHAR_ARRAY = {
+    	'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+    		'u', 'v', 'w', 'x', 'y', 'z'
+    };
+
+    private static final String ReplaceIndexCharacter (
+    	final String original,
+    	final char c,
+    	final int index)
+    {
+    	int stringLength = original.length();
+
+    	char[] replacedCharArray = new char[stringLength];
+
+    	for (int i = 0; i < stringLength; ++i)
+    		replacedCharArray[i] = i == index ? c : original.charAt (i);
+
+    	return new String (replacedCharArray);
+    }
+
+    private static final List<String> ShortestWordTransformationSequence (
+    	final Set<String> wordSet,
+    	final String beginWord,
+    	final String endWord)
+    {
+    	Stack<List<String>> transformationSequenceStack = new Stack<List<String>>();
+
+    	List<String> transformationSequence = new ArrayList<String>();
+
+    	Set<String> visitedWordSet = new HashSet<String>();
+
+    	Stack<String> wordStack = new Stack<String>();
+
+    	wordStack.push (beginWord);
+
+    	transformationSequence.add (beginWord);
+
+    	List<String> shortestWordTransformationSequence = null;
+
+    	transformationSequenceStack.push (transformationSequence);
+
+    	while (!wordStack.isEmpty()) {
+    		List<String> currentTransformationSequence = transformationSequenceStack.pop();
+
+    		String currentWord = wordStack.pop();
+
+    		visitedWordSet.add (currentWord);
+
+    		if (currentWord.equalsIgnoreCase (endWord)) {
+    			if (null == shortestWordTransformationSequence ||
+    				currentTransformationSequence.size() < shortestWordTransformationSequence.size())
+        			shortestWordTransformationSequence = currentTransformationSequence;
+
+    			break;
+    		}
+
+        	int stringLength = currentWord.length();
+
+    		for (char c : CHAR_ARRAY) {
+    			for (int i = 0; i < stringLength; ++i) {
+    				String newWord = ReplaceIndexCharacter (currentWord, c, i);
+
+    				if (!visitedWordSet.contains (newWord) && wordSet.contains (newWord)) {
+    					wordStack.push (newWord);
+
+    					List<String> newTransformationSequence = new ArrayList<String> (
+    						currentTransformationSequence
+    					);
+
+    					newTransformationSequence.add (newWord);
+
+    			    	transformationSequenceStack.push (newTransformationSequence);
+    				}
+    			}
+    		}
+    	}
+
+    	return shortestWordTransformationSequence;
+    }
+
+    private static final char[] Reverse (
+    	final String s)
+    {
+    	char[] charArray = s.toCharArray();
+
+    	int leftIndex = 0;
+    	int rightIndex = charArray.length - 1;
+
+    	while (leftIndex < rightIndex) {
+    		char temp = charArray[leftIndex];
+    		charArray[leftIndex] = charArray[rightIndex];
+    		charArray[rightIndex] = temp;
+    		--rightIndex;
+    		++leftIndex;
+    	}
+
+    	return charArray;
+    }
+
     /**
 	 * Look for a match of the field in the input array
 	 * 
@@ -4862,85 +4961,25 @@ public class StringUtil {
 			IsNumber (numberArray[0]) && IsNumber (numberArray[1]);
     }
 
-    private static final char[] CHAR_ARRAY = {
-    	'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-    		'u', 'v', 'w', 'x', 'y', 'z'
-    };
-
-    private static final String ReplaceIndexCharacter (
-    	final String original,
-    	final char c,
-    	final int index)
-    {
-    	int stringLength = original.length();
-
-    	char[] replacedCharArray = new char[stringLength];
-
-    	for (int i = 0; i < stringLength; ++i)
-    		replacedCharArray[i] = i == index ? c : original.charAt (i);
-
-    	return new String (replacedCharArray);
-    }
-
-    private static final List<String> ShortestWordTransformationSequence (
-    	final Set<String> wordSet,
-    	final String beginWord,
-    	final String endWord)
-    {
-    	Stack<List<String>> transformationSequenceStack = new Stack<List<String>>();
-
-    	List<String> transformationSequence = new ArrayList<String>();
-
-    	Set<String> visitedWordSet = new HashSet<String>();
-
-    	Stack<String> wordStack = new Stack<String>();
-
-    	wordStack.push (beginWord);
-
-    	transformationSequence.add (beginWord);
-
-    	List<String> shortestWordTransformationSequence = null;
-
-    	transformationSequenceStack.push (transformationSequence);
-
-    	while (!wordStack.isEmpty()) {
-    		List<String> currentTransformationSequence = transformationSequenceStack.pop();
-
-    		String currentWord = wordStack.pop();
-
-    		visitedWordSet.add (currentWord);
-
-    		if (currentWord.equalsIgnoreCase (endWord)) {
-    			if (null == shortestWordTransformationSequence ||
-    				currentTransformationSequence.size() < shortestWordTransformationSequence.size())
-        			shortestWordTransformationSequence = currentTransformationSequence;
-
-    			break;
-    		}
-
-        	int stringLength = currentWord.length();
-
-    		for (char c : CHAR_ARRAY) {
-    			for (int i = 0; i < stringLength; ++i) {
-    				String newWord = ReplaceIndexCharacter (currentWord, c, i);
-
-    				if (!visitedWordSet.contains (newWord) && wordSet.contains (newWord)) {
-    					wordStack.push (newWord);
-
-    					List<String> newTransformationSequence = new ArrayList<String> (
-    						currentTransformationSequence
-    					);
-
-    					newTransformationSequence.add (newWord);
-
-    			    	transformationSequenceStack.push (newTransformationSequence);
-    				}
-    			}
-    		}
-    	}
-
-    	return shortestWordTransformationSequence;
-    }
+    /**
+     * A transformation sequence from word beginWord to word endWord using a dictionary wordList is a
+     *  sequence of words beginWord -> s<sub>1</sub> -> s<sub>2</sub> -> ... -> s<sub>k</sub> such that:
+     *  Every adjacent pair of words differs by a single letter.
+     *  Every s<sub>i</sub> for 1 <= i <= k is in wordList. Note that beginWord does not need to be in
+     *   wordList.
+     *  s<sub>k</sub> == endWord
+     *  
+     * Given two words, beginWord and endWord, and a dictionary wordList, return all the <b>shortest
+     * 	transformation sequences</b> from beginWord to endWord, or an empty list if no such sequence exists.
+     *  Each sequence should be returned as a list of the words [beginWord, s<sub>1</sub>, s<sub>2</sub>,
+     *   ..., s<sub>k</sub>].
+     * 
+     * @param wordList Word List
+     * @param beginWord Beginning Word
+     * @param endWord End Word
+     * 
+     * @return The Transformation Sequence
+     */
 
     public static final List<String> ShortestWordTransformationSequence (
     	final List<String> wordList,
@@ -4950,37 +4989,75 @@ public class StringUtil {
     	return ShortestWordTransformationSequence (new HashSet<String> (wordList), beginWord, endWord);
     }
 
+    /**
+     * Given an input string, reverse the order of the words.
+     * 
+     * A word is defined as a sequence of non-space characters. The words in the input will be separated by
+     *  at least one space.
+     *  
+     * Return a string of the words in reverse order concatenated by a single space.
+     * 
+     * Note that the input may contain leading or trailing spaces or multiple spaces between two words. The
+     *  returned string should only have a single space separating the words. Do not include any extra
+     *  spaces.
+     *  
+     * @param s Input String
+     * 
+     * @return Sting with Reversed Words
+     */
+
+    public static final String InPlaceWordReversion (
+    	final String s)
+    {
+    	char[] reversedCharArray = Reverse (s.trim());
+
+    	int leftIndex = 0;
+    	int rightIndex = 0;
+
+    	while (rightIndex < reversedCharArray.length) {
+    		while (rightIndex < reversedCharArray.length && ' ' != reversedCharArray[rightIndex])
+    			++rightIndex;
+
+    		int leftWordIndex = leftIndex;
+    		int rightWordIndex = rightIndex - 1;
+
+    		while (leftWordIndex < rightWordIndex) {
+        		char temp = reversedCharArray[leftWordIndex];
+        		reversedCharArray[leftWordIndex] = reversedCharArray[rightWordIndex];
+        		reversedCharArray[rightWordIndex] = temp;
+        		--rightWordIndex;
+        		++leftWordIndex;
+        	}
+
+    		while (rightIndex < reversedCharArray.length && ' ' == reversedCharArray[rightIndex])
+    			++rightIndex;
+
+    		leftIndex = rightIndex;
+    	}
+
+		int leftWordIndex = leftIndex;
+		int rightWordIndex = rightIndex - 1;
+
+		while (leftWordIndex < rightWordIndex) {
+    		char temp = reversedCharArray[leftWordIndex];
+    		reversedCharArray[leftWordIndex] = reversedCharArray[rightWordIndex];
+    		reversedCharArray[rightWordIndex] = temp;
+    		--rightWordIndex;
+    		++leftWordIndex;
+    	}
+
+    	return new String (reversedCharArray);
+    }
+
     public static final void main (
 		final String[] argumentArray)
 	{
-    	List<String> wordList = new ArrayList<String>();
+    	System.out.println (InPlaceWordReversion ("the sky is blue"));
 
-    	wordList.add ("hot");
+    	System.out.println (InPlaceWordReversion ("  hello world  "));
 
-    	wordList.add ("dot");
+    	System.out.println (InPlaceWordReversion ("  Bob    Loves  Alice   "));
 
-    	wordList.add ("dog");
-
-    	wordList.add ("lot");
-
-    	wordList.add ("log");
-
-    	wordList.add ("cog");
-
-    	System.out.println (ShortestWordTransformationSequence (wordList, "hit", "cog"));
-
-    	wordList.clear();
-
-    	wordList.add ("hot");
-
-    	wordList.add ("dot");
-
-    	wordList.add ("dog");
-
-    	wordList.add ("lot");
-
-    	wordList.add ("log");
-
-    	System.out.println (ShortestWordTransformationSequence (wordList, "hit", "cog"));
+    	System.out.println (InPlaceWordReversion ("Alice does not even like bob"));
 	}
 }

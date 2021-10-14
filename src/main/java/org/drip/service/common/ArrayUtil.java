@@ -5278,58 +5278,32 @@ public class ArrayUtil
 		final int[] numberArray,
 		final int sum)
     {
-    	if (null == numberArray || 0 == numberArray.length)
-    	{
-    		return -1;
-    	}
+    	int leftIndex = 0;
+    	int rightIndex = 0;
+    	int currentSum = 0;
+    	int shortestLength = Integer.MAX_VALUE;
 
-    	int arrayLength = numberArray.length;
+    	while (rightIndex < numberArray.length) {
+    		currentSum = currentSum + numberArray[rightIndex];
 
-    	if (0 == arrayLength)
-    	{
-    		return -1;
-    	}
+    		if (currentSum < sum)
+    			++rightIndex;
+    		else {
+    			while (leftIndex < rightIndex && currentSum >= sum) 
+    				currentSum = currentSum - numberArray[leftIndex++];
 
-    	int currentSum = numberArray[0];
-    	int currentWidth = 1;
-    	int bestWidth = -1;
+    			if (currentSum < sum) --leftIndex;
 
-    	if (currentSum >= sum)
-		{
-    		return 1;
-   		}
+    			int currentLength = rightIndex - leftIndex + 1;
 
-    	for (int i = 1;
-			i < arrayLength;
-			++i)
-    	{
-			++currentWidth;
+    			if (currentLength < shortestLength) shortestLength = currentLength;
 
-			if (currentSum + numberArray[i] < sum)
-			{
-				currentSum = currentSum + numberArray[i];
-			}
-    		else
-    		{
-    	    	if ((currentSum = numberArray[i]) >= sum)
-	    		{
-    	    		return 1;
-   	    		}
-
-    	    	if (-1 == bestWidth)
-    	    	{
-    	    		bestWidth = currentWidth;
-    	    	}
-    	    	else
-    	    	{
-	    	    	bestWidth = bestWidth < currentWidth ? bestWidth : currentWidth;
-    	    	}
-
-    	    	currentWidth = 1;
+    			leftIndex = ++rightIndex;
+    			currentSum = 0;
     		}
     	}
 
-    	return bestWidth;
+    	return Integer.MAX_VALUE == shortestLength ? -1 : shortestLength;
     }
 
     private static final int NumberFromDigitArray (int[] numberArray, int startIndex, int endIndex)
@@ -5788,14 +5762,51 @@ public class ArrayUtil
     	return nextNumber;
     }
 
+    /**
+     * Given an integer array and an integer k, return true if the array has a continuous sub-array of size
+     *  at least two whose elements sum up to a multiple of k, or false otherwise.
+     * 
+     * An integer x is a multiple of k if there exists an integer n such that x = n * k. 0 is always a
+     *  multiple of k.
+
+     * @param numberArray Number Array
+     * @param k K
+     * 
+     * @return TRUE - The array has a continuous sub-array of size at least two whose elements sum up to a
+     *  multiple of k
+     */
+
+    public static final boolean ContinuousSubarraySumMod (
+    	final int[] numberArray,
+    	final int k)
+    {
+    	int sum = 0;
+    	int previousRemainder = -1;
+
+    	Set<Integer> remainderSet = new HashSet<Integer>();
+
+    	for (int i = 0; i < numberArray.length; ++i) {
+    		sum = sum + numberArray[i];
+    		int remainder = sum % k;
+
+    		if (remainderSet.contains (remainder)) return true;
+
+    		if (0 != i) remainderSet.add (previousRemainder);
+
+    		previousRemainder = remainder;
+    	}
+
+    	return remainderSet.contains (0);
+    }
+
     public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-    	System.out.println (ClosestNextPrimeNumber (6));
+    	System.out.println (ContinuousSubarraySumMod (new int[] {23, 2, 4, 6, 7}, 6));
 
-    	System.out.println (ClosestNextPrimeNumber (8));
+    	System.out.println (ContinuousSubarraySumMod (new int[] {23, 2, 6, 4, 7}, 6));
 
-    	System.out.println (ClosestNextPrimeNumber (13));
+    	System.out.println (ContinuousSubarraySumMod (new int[] {23, 2, 6, 4, 7}, 13));
 	}
 }
