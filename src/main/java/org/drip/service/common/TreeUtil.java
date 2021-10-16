@@ -331,4 +331,32 @@ public class TreeUtil
 
 		return editCount;
 	}
+
+	/**
+	 * Given the root of a binary tree, determine if it is a valid binary search tree (BST).
+	 * 
+	 * A <b>valid BST</b> is defined as follows:
+	 * 
+	 *  The left subtree of a node contains only nodes with keys <b>less than</b> the node's key.
+	 *  The right subtree of a node contains only nodes with keys <b>greater than</b> the node's key.
+	 *  Both the left and right subtrees must also be binary search trees.
+	 * 
+	 * @param node Current Node
+	 * 
+	 * @return TRUE - Node represents a Strict BST
+	 */
+
+	public static final boolean ValidateIsStrictBST (
+		final TreeNode node)
+	{
+		if (null == node) return true;
+
+		if (null != node._left && node._left._value >= node._value) return false;
+
+		if (!ValidateIsStrictBST (node._left)) return false;
+
+		if (null != node._right && node._right._value <= node._value) return false;
+
+		return ValidateIsStrictBST (node._left);
+	}
 }
