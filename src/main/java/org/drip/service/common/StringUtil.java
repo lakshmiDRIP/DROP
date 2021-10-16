@@ -823,6 +823,50 @@ public class StringUtil {
     	return charArray;
     }
 
+    private static final List<Integer> WildcardLocationList (
+    	final char[] charArray,
+    	final char c,
+    	final int startIndex)
+    {
+    	List<Integer> locationIndexList = new ArrayList<Integer>();
+
+    	for (int i = startIndex; i < charArray.length; ++i) {
+    		if (c == charArray[i]) locationIndexList.add (i);
+    	}
+
+    	return locationIndexList;
+    }
+
+    private static final List<String> PatternList (
+    	final char[] charArray)
+    {
+    	List<String> patternList = new ArrayList<String>();
+
+    	int index = 0;
+    	char specialChar = '0';
+
+    	while (index < charArray.length) {
+    		if ('*' == charArray[index] || '?' == charArray[index])
+    			specialChar = charArray[index];
+    		else {
+    			if ('0' == specialChar)
+    				patternList.add ("" + charArray[index]);
+    			else if ('*' == specialChar || '?' == specialChar) {
+    				patternList.add ("" + specialChar + charArray[index]);
+
+    				specialChar = '0';
+    			}
+    		}
+
+    		++index;
+    	}
+
+		if ('*' == charArray[charArray.length - 1] || '?' == charArray[charArray.length - 1])
+			patternList.add ("" + charArray[charArray.length - 1]);
+
+    	return patternList;
+    }
+
     /**
 	 * Look for a match of the field in the input array
 	 * 
@@ -4965,7 +5009,7 @@ public class StringUtil {
      * A transformation sequence from word beginWord to word endWord using a dictionary wordList is a
      *  sequence of words beginWord -> s<sub>1</sub> -> s<sub>2</sub> -> ... -> s<sub>k</sub> such that:
      *  Every adjacent pair of words differs by a single letter.
-     *  Every s<sub>i</sub> for 1 <= i <= k is in wordList. Note that beginWord does not need to be in
+     *  Every s<sub>i</sub> for 1 leq i leq k is in wordList. Note that beginWord does not need to be in
      *   wordList.
      *  s<sub>k</sub> == endWord
      *  
@@ -5049,15 +5093,77 @@ public class StringUtil {
     	return new String (reversedCharArray);
     }
 
+    public static final boolean WildcardPatternMatchingValidation (
+    	final String s,
+    	final String p)
+    {
+    	if ("?".equalsIgnoreCase (p)) return 1 == s.length();
+
+    	if ("*".equalsIgnoreCase (p)) return true;
+
+    	List<String> patternList = PatternList (p.toCharArray());
+
+    	Stack<Integer> patternIndexStack = new Stack<Integer>();
+
+    	patternIndexStack.push (0);
+
+    	Stack<Integer> locationIndexStack = new Stack<Integer>();
+
+    	locationIndexStack.push (0);
+
+		int lastIndex = s.length() - 1;
+
+		char[] charArray = s.toCharArray();
+
+		while (!locationIndexStack.isEmpty()) {
+    		int patternIndex = patternIndexStack.pop();
+
+    		int locationIndex = locationIndexStack.pop();
+
+    		if (patternIndex >= patternList.size()) {
+    			if (locationIndex <= lastIndex) return false;
+    		}
+
+    		if (locationIndex > lastIndex) return false;
+
+    		char[] patternCharArray = patternList.get (patternIndex).toCharArray();
+
+    		if (1 == patternCharArray.length) {
+    			if ('?' == patternCharArray[0]) {
+    				if (lastIndex != locationIndex) return false;
+    			} else if ('*' != patternCharArray[0]) {
+    				if (patternCharArray[0] != s.charAt (locationIndex)) return false;
+    			}
+    		} else {
+    			if ('?' == patternCharArray[0]) {
+    				if (locationIndex >= lastIndex || s.charAt (locationIndex + 1) != patternCharArray[1])
+    					return false;
+
+    				patternIndexStack.push (patternIndex + 1);
+
+    				locationIndexStack.push (locationIndex + 2);
+    			} else if ('*' == patternCharArray[0]) {
+    				List<Integer> wildcardLocationList = WildcardLocationList (
+				    	charArray,
+				    	patternCharArray[1],
+				    	locationIndex
+				    );
+
+    				for (int nextLocation : wildcardLocationList) {
+        				patternIndexStack.push (patternIndex + 1);
+
+        				locationIndexStack.push (nextLocation + 1);
+    				}
+    			}
+    		}
+    	}
+
+    	return false;
+    }
+
     public static final void main (
 		final String[] argumentArray)
 	{
-    	System.out.println (InPlaceWordReversion ("the sky is blue"));
-
-    	System.out.println (InPlaceWordReversion ("  hello world  "));
-
-    	System.out.println (InPlaceWordReversion ("  Bob    Loves  Alice   "));
-
-    	System.out.println (InPlaceWordReversion ("Alice does not even like bob"));
+    	System.out.println (PatternList ("*".toCharArray()));
 	}
 }
