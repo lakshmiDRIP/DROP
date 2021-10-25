@@ -11,7 +11,7 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalysis/PhoneticsAnalytics_v5.24.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalysis/PhoneticsAnalytics_v5.26.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -90,6 +90,49 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 	* Places of Articulation
 	* Articulation
 	* Development
+	* References
+ * Place of Articulation
+	* Introduction
+	* Overview
+	* The Larynx
+	* Passive Places of Articulation
+	* Active Places of Articulation
+	* Table of Gestures and Passive Articulators and Resulting Places of Articulation
+	* Homorganic Consonants
+	* Central and Lateral Articulation
+	* Coarticulation
+	* References
+ * Labial Consonant
+	* Overview
+	* Absence of Labials
+	* References
+ * Coronal Consonant
+	* Overview
+	* Places of Articulation
+	* Examples
+	* Examples - European
+	* Examples - Australian Aborginal
+	* References
+ * Palatal Consonant
+	* Overview
+	* Characteristics
+	* Distinction from Patalaized Consonants and Consonant Clusters
+	* Examples
+	* References
+ * Palatalization
+	* Overview
+	* Variations
+	* Transcription
+	* Phonology
+	* Allophonic
+	* Phonemic
+	* Morphophonemic
+	* Sound Changes
+	* Examples - Slavic Languages
+	* Examples - Goidelic
+	* Examples - Mandarin Chinese
+	* Examples - Marshallese
+	* Other Uses
 	* References
 
 
