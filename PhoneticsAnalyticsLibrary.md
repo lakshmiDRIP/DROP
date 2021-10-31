@@ -11,7 +11,7 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalysis/PhoneticsAnalytics_v5.26.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics/PhoneticsAnalytics_v5.28.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -133,6 +133,19 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 	* Examples - Mandarin Chinese
 	* Examples - Marshallese
 	* Other Uses
+	* References
+ * Postalveolar Consonants
+	* Overview
+	* Postalveolar Sibilants
+	* Postalveolar Sibilants - Tongue Shape
+	* Postalveolar Sibilants - Point of Tongue Contact (Laminal, Apical, Subapical)
+	* Postalveolar Sibilants - Position of Tongue Tip (Laminal "Closed")
+	* Postalveolar Sibilants - Examples
+	* Postalveolar Non-sibilants
+	* Postalveolar Non-sibilants - Non-palatalized (Retroflex)
+	* Postalveolar Non-sibilants - Palatalized
+	* Postalveolar Non-sibilants - Examples
+	* Postalveolar Clicks
 	* References
 
 
