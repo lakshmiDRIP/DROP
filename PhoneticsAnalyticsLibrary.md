@@ -11,7 +11,7 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics/PhoneticsAnalytics_v5.28.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics/PhoneticsAnalytics_v5.32.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -146,6 +146,19 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 	* Postalveolar Non-sibilants - Palatalized
 	* Postalveolar Non-sibilants - Examples
 	* Postalveolar Clicks
+	* References
+ * Velar Consonants
+	* Overview
+	* IPA Examples
+	* Lack of Velars
+	* Velodorsal Consonants
+	* References
+ * Uvular Consonants
+	* Overview
+	* Uvular Consonants in IPA
+	* Descriptions in Different Languages
+	* Phonological Representation
+	* Uvular Rhotics
 	* References
 
 
