@@ -110,6 +110,11 @@ public class BuildManager
 		try {
 			s_aBuildRecord = new org.drip.service.env.BuildRecord[] {
 				new org.drip.service.env.BuildRecord (
+					"5.23.0",
+					"15.0.1+9-18",
+					"Mon Nov 15 22:35:51 EST 2021"
+				),
+				new org.drip.service.env.BuildRecord (
 					"5.22.0",
 					"15.0.1+9-18",
 					"Fri Nov 05 21:39:41 EST 2021"

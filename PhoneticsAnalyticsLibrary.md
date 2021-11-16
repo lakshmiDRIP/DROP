@@ -160,6 +160,24 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 	* Phonological Representation
 	* Uvular Rhotics
 	* References
+ * Guttural
+	* Overview
+	* Meaning and Etymology
+	* Languages
+	* Languages - Examples of Significant Usage
+	* Languages - Examples of Partial Usage
+	* References
+ * Laryngeal Consonant
+	* Overview
+	* References
+ * Retroflex Consonant
+	* Overview
+	* Types
+	* Types - Other Sounds
+	* Transcription - IPA
+	* Transcription - Other Conventions
+	* Occurrence
+	* References
 
 
 ## DROP Specifications
