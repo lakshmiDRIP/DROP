@@ -11,7 +11,7 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics/PhoneticsAnalytics_v5.35.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics/PhoneticsAnalytics_v5.37.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -185,6 +185,16 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 	* Other Parameters
 	* Individual Manners
 	* Other Airstream Initiations
+	* References
+ * Consonant
+	* Overview
+	* Consonat Sounds and Consonant Letters
+	* Consonants and Vowels
+	* Features
+	* IPA: Pulmonic Consonants
+	* IPA: Non-pulmonic Consonants
+	* IPA: Co-articulated Consonants
+	* Examples
 	* References
 
 
