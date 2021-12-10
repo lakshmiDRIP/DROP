@@ -91,6 +91,16 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 	* Articulation
 	* Development
 	* References
+ * Consonant
+	* Overview
+	* Consonat Sounds and Consonant Letters
+	* Consonants and Vowels
+	* Features
+	* IPA: Pulmonic Consonants
+	* IPA: Non-pulmonic Consonants
+	* IPA: Co-articulated Consonants
+	* Examples
+	* References
  * Place of Articulation
 	* Introduction
 	* Overview
@@ -185,16 +195,6 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 	* Other Parameters
 	* Individual Manners
 	* Other Airstream Initiations
-	* References
- * Consonant
-	* Overview
-	* Consonat Sounds and Consonant Letters
-	* Consonants and Vowels
-	* Features
-	* IPA: Pulmonic Consonants
-	* IPA: Non-pulmonic Consonants
-	* IPA: Co-articulated Consonants
-	* Examples
 	* References
 
 
