@@ -11,7 +11,7 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics/PhoneticsAnalytics_v5.37.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics/PhoneticsAnalytics_v5.39.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -188,13 +188,31 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 	* Transcription - Other Conventions
 	* Occurrence
 	* References
+ * Nasal Consonant
+	* Overview
+	* Definition
+	* Voiceless Nasals
+	* Other Kinds of Nasal Consonants
+	* Languages without Nasals
+	* Languages without Nasals - Lack of Phonemic Nasals
+	* Languages without Nasals - Lack of Phonetic Nasals
+	* References
+ * Obstruent
+	* Overview
+	* Subclasses
+	* Voicing
+	* References
  * Manner of Articulation
 	* Overview
-	* Borad Classifications
+	* Broad Classifications
 	* Stricture
 	* Other Parameters
 	* Individual Manners
 	* Other Airstream Initiations
+	* References
+ * Occlusive
+	* Overview
+	* Common Occlusives
 	* References
 
 
