@@ -11,7 +11,7 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics/PhoneticsAnalytics_v5.39.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics/PhoneticsAnalytics_v5.44.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -214,6 +214,33 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 	* Overview
 	* Common Occlusives
 	* References
+ * Plosive
+	* Overview
+	* Terminology
+	* Articulation
+	* Common Plosives
+	* Classification - Voice
+	* Classification - Aspiration
+	* Classification - Length
+	* Classification - Nasalization
+	* Classification - Airstream Mechanism
+	* Classification - Tenseness
+	* Transcription
+	* Transcription - English
+	* Transcription - Variations
+	* References
+ * Fricatives
+	* Overview
+	* Types - Sibilants
+	* Types - Central Non-sibilant Fricatives
+	* Types - Lateral Fricatives
+	* Types - IPA Letters Used for Both Fricatives and Approximants
+	* Types - Pseudo-fricatives
+	* Types - Aspirated Fricatives
+	* Types - Nasalized Fricatives
+	* Occurrence
+	* Acoustics
+	* Reference
 
 
 ## DROP Specifications

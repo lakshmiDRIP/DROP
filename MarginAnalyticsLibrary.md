@@ -11,7 +11,7 @@ Margin Analytics Library computes the Initial and the Variation Margin Analytics
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/MarginAnalytics/MarginAnalytics_v4.56.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/MarginAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/MarginAnalytics/MarginAnalytics_v5.42.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/MarginAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -106,6 +106,39 @@ Margin Analytics Library computes the Initial and the Variation Margin Analytics
 	* SIMM
 	* MVA
 	* Summary
+ * Aggregation Analytics
+	* Aggregation Problem
+	* Overview of the Aggregation Workflow
+	* Aggregation Functionality
+	* Calculation of Raw Exposure Matrix
+	* Configuration Settings for Non Basel-III Regimes
+	* Configuration Settings for Basel III Regimes
+	* Calculation of Net Exposure Matrix
+	* Collateral Matrix Calculation
+	* Collateral Calculation for FCC Counterparties
+	* Holding Period Adjustment
+	* Equivalent Cash at Valuation Date
+	* Haircut Adjustment Factor
+	* Collateral Matrix Calculation - FCC (<i>t=0</i>)
+	* Counterparty State 2 with Timepoint Less Than 90 Days or Counterparty State 3
+	* Counterparty State in Green or Amber and Red State with Timepoint > 3 Months
+	* 𝑺𝒉𝒐𝒄𝒌𝒆𝒅𝑷𝑳 for Type 1 Product for FCC
+	* 𝑺𝒉𝒐𝒄𝒌𝒆𝒅𝑷𝑳 Model for Type 2 Product for FCC
+	* 𝑺𝒉𝒐𝒄𝒌𝒆𝒅𝑷𝑳 Model for Type 3 Product for FCC
+	* Post Processing
+	* Calculation of the Upfront Collateral
+	* Upfront Collateral at Silo Level
+	* Upfront Collateral at Combined Level
+	* Shifted Exposure Matrix
+	* Basel III Rules for Margin Period of Risk
+	* Exposure Shifted by Margin Period of Risk for Collateralized Counterparties
+	* Exposure Shifted by Margin Period of Risk for Uncollateralized Counterparties
+	* Exposure Shifted by Margin Period of Risk for FCC
+	* Collateralized Exposure Matrix
+	* Calculation of Adjustment
+	* Actual Collateral Adjustment
+	* Wrong Way Risk Adjustment
+	* Final Exposure Matrix
 
 
 ## DROP Specifications
