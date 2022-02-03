@@ -11,7 +11,7 @@ Transaction Cost Analytics Library contains the Functionality to estimate single
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics/TransactionCostAnalytics_v3.10.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics/TransactionCostAnalytics_v5.49.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -159,6 +159,31 @@ Transaction Cost Analytics Library contains the Functionality to estimate single
 	* Heuristics Control
 	* Published Market Quote Picture
 	* Flow Analysis
+ * Corporate Bond Auto-Responder (CBAR)
+	* Summary
+	* Reference Data
+	* Flow Diagram - Client RFQ Data
+	* Streaming Flow
+	* Algorithm Operational Logic Description
+	* Algorithm Processing Logic Operating Detail – RFQ Quoting
+	* Algorithm Processing Logic Operating Detail - Streaming
+	* Auto-Execution of Streamed Levels
+	* Inputs
+	* Outputs
+	* Benchmarks
+	* Market Phases
+	* Algorithm Operating Constraints
+	* Model Use Constraints
+	* Operational Risk
+	* Level Validation Checks for Algo Levels on Bonds Marked in Spread or Yield
+	* Level Validation Checks on Algo Levels for Bonds Marked in Price
+	* Level Validation Checks for Outgoing Streamed Prices
+	* Reputational Risk
+	* Market Risk
+	* Sample Risk/Notional Controls for an IG Desk
+	* Typical Risk/Notional Controls for HY Desk
+	* Risk/Notional Controls
+	* Volatility Controls
 
 
 ## DROP Specifications

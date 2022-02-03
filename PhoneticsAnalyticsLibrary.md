@@ -11,7 +11,7 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics/PhoneticsAnalytics_v5.44.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics/PhoneticsAnalytics_v5.50.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -241,6 +241,35 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 	* Occurrence
 	* Acoustics
 	* Reference
+ * Sibilant
+	* Overview
+	* Acoustics
+	* Sibilant Types
+		* Tongue Shape
+		* Place of Articulation
+		* Point of Contact on the Tongue
+	* Symbols in the IPA
+	* Possible Combinations
+		* Whistled Sibilants
+	* Linguistic Contrasts among Sibilants
+	* Contested Definitions
+	* References
+ * Affricate
+	* Overview
+	* Examples
+	* Notation
+	* Affricates vs. Stop-Fricative Sequences
+	* List of Affricates
+		* Sibilant Affricates
+		* Non-sibilant Affricates
+		* Lateral Affricates
+		* Trilled Affricates
+		* Heterorganic Affricates
+		* Phonation, Co-articulation, and other Variants
+	* Phonological Representation
+	* Affrication
+	* Pre-affrication
+	* References
 
 
 ## DROP Specifications
