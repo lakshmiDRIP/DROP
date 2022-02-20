@@ -11,7 +11,7 @@ Transaction Cost Analytics Library contains the Functionality to estimate single
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics/TransactionCostAnalytics_v5.49.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics/TransactionCostAnalytics_v5.52.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -184,6 +184,11 @@ Transaction Cost Analytics Library contains the Functionality to estimate single
 	* Typical Risk/Notional Controls for HY Desk
 	* Risk/Notional Controls
 	* Volatility Controls
+ * Corporate Bond Skewer
+	* Major Components
+	* Maximum Auto-responder Sizes
+	* Waterfalls
+	* Skewing Flow
 
 
 ## DROP Specifications

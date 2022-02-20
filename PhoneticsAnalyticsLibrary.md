@@ -270,6 +270,27 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 	* Affrication
 	* Pre-affrication
 	* References
+ * Rhotic Consonant
+	* Overview
+	* Types
+	* Characteristics
+	* Variable Rhoticity
+		* English
+		* Other Germanic Languages
+		* Astur-Leonese
+		* Catalan
+		* French
+		* Indonesian and Malaysian Malay
+		* Khmer
+		* Portuguese
+		* Spanish
+		* Thai
+		* Turkish
+		* Uyghur
+		* Yaqui
+		* Lacid
+		* Kurdish
+	* References
 
 
 ## DROP Specifications
