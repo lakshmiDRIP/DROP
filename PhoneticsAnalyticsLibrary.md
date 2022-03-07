@@ -11,7 +11,7 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics/PhoneticsAnalytics_v5.54.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics/PhoneticsAnalytics_v5.55.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -300,6 +300,20 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 		* Yaqui
 		* Lacid
 		* Kurdish
+	* References
+ * Approximant
+	* Overview
+	* Terminology
+	* Semivowels
+	* Apprimants versus Fricatives
+	* Central Approximants
+	* Lateral Approximants
+	* Co-articulated Approximants with Dedicated IPA Symbols
+	* Voiceless Approximants
+		* Disagreement over Use of the Term
+		* Phonetic Characteristics
+		* Distinctiveness
+	* Nasal Approximants
 	* References
 
 
