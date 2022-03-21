@@ -11,7 +11,7 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics/PhoneticsAnalytics_v5.57.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics/PhoneticsAnalytics_v5.59.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -322,6 +322,21 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 	* Contrast with Fricatives/Spirant Approximants
 	* References
  * Continuant
+	* References
+ * Lateral Consonant
+	* Overview
+	* Examples
+	* List of Laterals - Approximants
+	* List of Laterals - Fricatives
+	* List of Laterals - Affricates
+	* List of Laterals - Flaps
+	* List of Laterals - Ejective Fricatives
+	* List of Laterals - Ejective Africates
+	* List of Laterals - Ejective Clicks
+	* Ambiguous Centrality
+	* Lateralized Consonants
+	* References
+ * Trill Consonant
 	* References
 
 
