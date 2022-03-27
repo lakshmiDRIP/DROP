@@ -336,7 +336,13 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 	* Ambiguous Centrality
 	* Lateralized Consonants
 	* References
+ * Vibrant Consonant
+	* References
  * Trill Consonant
+	* Overview
+	* Phonemic Trills
+	* Extralinguistic Trills
+	* Summary
 	* References
 
 
