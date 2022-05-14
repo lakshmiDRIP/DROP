@@ -11,7 +11,7 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics/PhoneticsAnalytics_v5.59.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics/PhoneticsAnalytics_v5.61.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -343,6 +343,19 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 	* Phonemic Trills
 	* Extralinguistic Trills
 	* Summary
+	* References
+ * Tap and Flap Consonants
+	* Overview
+	* Contrasts with Stops, Trills
+	* Tap vs. Flap
+	* IPA Symbols
+	* Types of Taps and Flaps
+		* Alveolar Taps and Flaps
+		* Retroflex Flaps
+		* Lateral Taps and Flaps
+		* Non-coronal Flaps
+		* Nasal Taps and Flaps
+		* Tapped Fricatives
 	* References
 
 
