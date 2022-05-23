@@ -11,7 +11,7 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics/PhoneticsAnalytics_v5.61.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics/PhoneticsAnalytics_v5.64.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -356,6 +356,46 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 		* Non-coronal Flaps
 		* Nasal Taps and Flaps
 		* Tapped Fricatives
+	* References
+ * Vowels
+	* Overview
+		* Vowels with Diacritics
+	* Definition
+	* Articulation
+		* Height
+		* Jones’ Articulation
+		* Backness
+		* Roundedness
+		* Front, Raised, and Retracted
+		* Nasalization
+		* Phonation
+		* Tenseness
+		* Tongue Root Position
+		* Secondary Narrowing in the Vocal Tract
+		* Rhotic Vowels
+		* Reduced Vowels
+		* Common Reduced Vowels – IPA Provides only <ə> and <ɐ>
+	* Acoustics
+		* Spectrogram of the Vowels [i, u, ɑ]
+	* Prosody and Intonation
+		* Idealized Schematic of the Vowel Space
+		* Schematic with Few Intermediate Vowels
+	* Monophthongs, Diphthongs, Triphthongs
+	* Written Vowels
+		* Shifts
+	* Systems
+		* Words Without Vowels
+		* Words Consisting of Only Vowels
+	* References
+ * Monophthongization
+	* Overview
+	* Arabic
+	* English
+		* Smoothing
+	* Hindi
+	* German
+	* Greek
+	* French
 	* References
 
 
