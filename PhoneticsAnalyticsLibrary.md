@@ -11,7 +11,7 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics/PhoneticsAnalytics_v5.64.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics/PhoneticsAnalytics_v5.67.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/PhoneticsAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -396,6 +396,72 @@ Phonetics Analytics Library contains the Libraries implementing the Characterist
 	* German
 	* Greek
 	* French
+	* References
+ * Diphthongization
+	* Overview
+	* Transcription
+	* Types
+		* Falling and Rising
+		* Closing, Opening, and Centering
+		* Narrow and Wide
+	* Phonology
+	* Sound Changes
+	* Difference from Semivowel and Vowel Sequences
+	* Examples
+		* Germanic Languages
+			* English
+			* Standard English Diphthongs
+			* Diphthongs of Dutch
+			* Standard German
+			* Bernese German
+			* Yiddish
+			* Norwegian
+			* Faroese
+			* Icelandic
+		* Romance Languages
+			* French
+			* Quebec French
+			* Catalan
+			* Catalan Diphthongs
+			* Portuguese
+			* Falling Oral Diphthongs of Portuguese
+			* Falling Nasal Diphthongs of Portuguese
+			* Spanish
+			* Falling Spanish Diphthongs
+			* Rising Spanish Diphthongs
+			* Italian
+			* Falling Italian Diphthongs
+			* Rising Italian Diphthongs
+			* Romanian
+		* Celtic Languages
+			* Irish
+			* Scottish Gaelic
+			* Cornish
+			* Welsh
+		* Slavic Languages
+			* Czech
+			* Serbo-Croatian
+		* Finno-Ugric Languages
+			* Estonian
+			* Finnish
+			* Closing Finnish Diphthongs
+			* Close Finnish Diphthongs
+			* Opening Finnish Diphthongs
+			* Northern Sami
+		* Semitic Languages
+			* Maltese
+		* Sino-Tibetan Languages
+			* Mandarin Chinese
+			* Cantonese
+		* Thai-Kadai Languages
+			* Thai
+		* Mon-Khmer Languages
+			* Vietnamese
+			* Khmer
+		* Bantu Languages
+			* Zulu
+		* Autronesian Languages
+			* Indonesian
 	* References
 
 
