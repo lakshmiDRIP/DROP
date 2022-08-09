@@ -140,11 +140,15 @@ public class CreditNonQualifyingBucketDeltaMarginFlow20
 		final String tenor)
 		throws Exception
 	{
-		if (tenorSensitivityMap.containsKey (tenor))
+		if (tenorSensitivityMap.containsKey (
+			tenor
+		))
 		{
 			tenorSensitivityMap.put (
 				tenor,
-				tenorSensitivityMap.get (tenor) + notional * (Math.random() - 0.5)
+				tenorSensitivityMap.get (
+					tenor
+				) + notional * (Math.random() - 0.5)
 			);
 		}
 		else
@@ -192,7 +196,9 @@ public class CreditNonQualifyingBucketDeltaMarginFlow20
 			"10Y"
 		);
 
-		return new RiskFactorTenorSensitivity (tenorSensitivityMap);
+		return new RiskFactorTenorSensitivity (
+			tenorSensitivityMap
+		);
 	}
 
 	private static final void DisplayComponentTenorSensitivity (
@@ -202,21 +208,37 @@ public class CreditNonQualifyingBucketDeltaMarginFlow20
 	{
 		System.out.println();
 
-		System.out.println ("\t|--------------||");
+		System.out.println (
+			"\t|--------------||"
+		);
 
-		System.out.println ("\t|  " + componentName + " DELTA   ||");
+		System.out.println (
+			"\t|  " + componentName + " DELTA   ||"
+		);
 
-		System.out.println ("\t|--------------||");
+		System.out.println (
+			"\t|--------------||"
+		);
 
-		System.out.println ("\t|              ||");
+		System.out.println (
+			"\t|              ||"
+		);
 
-		System.out.println ("\t|  L -> R:     ||");
+		System.out.println (
+			"\t|  L -> R:     ||"
+		);
 
-		System.out.println ("\t|    - Tenor   ||");
+		System.out.println (
+			"\t|    - Tenor   ||"
+		);
 
-		System.out.println ("\t|    - Delta   ||");
+		System.out.println (
+			"\t|    - Delta   ||"
+		);
 
-		System.out.println ("\t|--------------||");
+		System.out.println (
+			"\t|--------------||"
+		);
 
 		for (Map.Entry<String, Double> tenorSensitivityEntry :
 			tenorSensitivityMap.sensitivityMap().entrySet())
@@ -224,11 +246,18 @@ public class CreditNonQualifyingBucketDeltaMarginFlow20
 			System.out.println (
 				"\t| " +
 				tenorSensitivityEntry.getKey() + " => " +
-				FormatUtil.FormatDouble (tenorSensitivityEntry.getValue(), 2, 2, 1.) + " ||"
+				FormatUtil.FormatDouble (
+					tenorSensitivityEntry.getValue(),
+					2,
+					2,
+					1.
+				) + " ||"
 			);
 		}
 
-		System.out.println ("\t|--------------||");
+		System.out.println (
+			"\t|--------------||"
+		);
 
 		System.out.println();
 	}
@@ -239,7 +268,9 @@ public class CreditNonQualifyingBucketDeltaMarginFlow20
 		final String componentName)
 		throws Exception
 	{
-		RiskFactorTenorSensitivity ustRiskFactorSensitivity = CurveTenorSensitivityMap (notional);
+		RiskFactorTenorSensitivity ustRiskFactorSensitivity = CurveTenorSensitivityMap (
+			notional
+		);
 
 		tenorSensitivityMap.put (
 			componentName,
@@ -256,28 +287,51 @@ public class CreditNonQualifyingBucketDeltaMarginFlow20
 		final RiskMeasureAggregateCR riskMeasureAggregateCR)
 		throws Exception
 	{
-		System.out.println ("\t||--------------------------------------------||");
+		System.out.println (
+			"\t||--------------------------------------------||"
+		);
 
-		System.out.println ("\t||   CR RISK CLASS AGGREGATE MARGIN METRICS   ||");
+		System.out.println (
+			"\t||   CR RISK CLASS AGGREGATE MARGIN METRICS   ||"
+		);
 
-		System.out.println ("\t||--------------------------------------------||");
+		System.out.println (
+			"\t||--------------------------------------------||"
+		);
 
 		System.out.println (
 			"\t|| Core Delta SBA Variance     => " +
-			FormatUtil.FormatDouble (riskMeasureAggregateCR.coreSBAVariance(), 10, 0, 1.) + " ||"
+			FormatUtil.FormatDouble (
+				riskMeasureAggregateCR.coreSBAVariance(),
+				10,
+				0,
+				1.
+			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Residual Delta SBA Variance => " +
-			FormatUtil.FormatDouble (riskMeasureAggregateCR.residualSBAVariance(), 10, 0, 1.) + " ||"
+			FormatUtil.FormatDouble (
+				riskMeasureAggregateCR.residualSBAVariance(),
+				10,
+				0,
+				1.
+			) + " ||"
 		);
 
 		System.out.println (
 			"\t|| Delta SBA                   => " +
-			FormatUtil.FormatDouble (riskMeasureAggregateCR.sba(), 10, 0, 1.) + " ||"
+			FormatUtil.FormatDouble (
+				riskMeasureAggregateCR.sba(),
+				10,
+				0,
+				1.
+			) + " ||"
 		);
 
-		System.out.println ("\t||--------------------------------------------||");
+		System.out.println (
+			"\t||--------------------------------------------||"
+		);
 
 		System.out.println();
 	}
