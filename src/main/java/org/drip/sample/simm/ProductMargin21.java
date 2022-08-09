@@ -200,11 +200,17 @@ public class ProductMargin21
 
 		for (String currency : currencyArray)
 		{
-			int categoryIndex = FXRiskThresholdContainer21.CurrencyCategory (currency);
+			String categoryIndexKey = "" + FXRiskThresholdContainer21.CurrencyCategory (
+				currency
+				);
 
-			if (currencySentivityMap.containsKey ("" + categoryIndex))
+			if (currencySentivityMap.containsKey (
+				categoryIndexKey
+			))
 			{
-				Map<String, Double> riskFactorSensitivityMap = currencySentivityMap.get ("" + categoryIndex);
+				Map<String, Double> riskFactorSensitivityMap = currencySentivityMap.get (
+					categoryIndexKey
+				);
 
 				riskFactorSensitivityMap.put (
 					currency,
@@ -221,7 +227,7 @@ public class ProductMargin21
 				);
 
 				currencySentivityMap.put (
-					"" + categoryIndex,
+					categoryIndexKey,
 					riskFactorSensitivityMap
 				);
 			}

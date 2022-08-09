@@ -200,11 +200,17 @@ public class ProductMargin20
 
 		for (String currency : currencyArray)
 		{
-			int categoryIndex = FXRiskThresholdContainer20.CurrencyCategory (currency);
+			String categoryIndexKey = "" + FXRiskThresholdContainer20.CurrencyCategory (
+				currency
+			);
 
-			if (currencySentivityMap.containsKey ("" + categoryIndex))
+			if (currencySentivityMap.containsKey (
+				categoryIndexKey
+			))
 			{
-				Map<String, Double> riskFactorSensitivityMap = currencySentivityMap.get ("" + categoryIndex);
+				Map<String, Double> riskFactorSensitivityMap = currencySentivityMap.get (
+					categoryIndexKey
+				);
 
 				riskFactorSensitivityMap.put (
 					currency,
@@ -221,7 +227,7 @@ public class ProductMargin20
 				);
 
 				currencySentivityMap.put (
-					"" + categoryIndex,
+					categoryIndexKey,
 					riskFactorSensitivityMap
 				);
 			}
@@ -296,7 +302,9 @@ public class ProductMargin20
 			notional * (Math.random() - 0.5)
 		);
 
-		return new RiskFactorTenorSensitivity (tenorSensitivityMap);
+		return new RiskFactorTenorSensitivity (
+			tenorSensitivityMap
+		);
 	}
 
 	private static final void AddCreditTenorSensitivity (
@@ -305,11 +313,15 @@ public class ProductMargin20
 		final String tenor)
 		throws Exception
 	{
-		if (tenorSensitivityMap.containsKey (tenor))
+		if (tenorSensitivityMap.containsKey (
+			tenor
+		))
 		{
 			tenorSensitivityMap.put (
 				tenor,
-				tenorSensitivityMap.get (tenor) + notional * (Math.random() - 0.5)
+				tenorSensitivityMap.get (
+					tenor
+				) + notional * (Math.random() - 0.5)
 			);
 		}
 		else
@@ -357,7 +369,9 @@ public class ProductMargin20
 			"10Y"
 		);
 
-		return new RiskFactorTenorSensitivity (tenorSensitivityMap);
+		return new RiskFactorTenorSensitivity (
+			tenorSensitivityMap
+		);
 	}
 
 	private static final Map<String, Map<String, Double>> EquityRiskFactorSensitivityMap (
@@ -819,7 +833,9 @@ public class ProductMargin20
 		{
 			bucketVegaSensitivityMap.put (
 				bucketVegaMapEntry.getKey(),
-				new BucketSensitivity (bucketVegaMapEntry.getValue())
+				new BucketSensitivity (
+					bucketVegaMapEntry.getValue()
+				)
 			);
 		}
 
@@ -832,13 +848,27 @@ public class ProductMargin20
 		throws Exception
 	{
 		return new BucketSensitivityIR (
-			IRCurveTenorSensitivityMap (notional),
-			IRCurveTenorSensitivityMap (notional),
-			IRCurveTenorSensitivityMap (notional),
-			IRCurveTenorSensitivityMap (notional),
-			IRCurveTenorSensitivityMap (notional),
-			IRCurveTenorSensitivityMap (notional),
-			IRCurveTenorSensitivityMap (notional)
+			IRCurveTenorSensitivityMap (
+				notional
+			),
+			IRCurveTenorSensitivityMap (
+				notional
+			),
+			IRCurveTenorSensitivityMap (
+				notional
+			),
+			IRCurveTenorSensitivityMap (
+				notional
+			),
+			IRCurveTenorSensitivityMap (
+				notional
+			),
+			IRCurveTenorSensitivityMap (
+				notional
+			),
+			IRCurveTenorSensitivityMap (
+				notional
+			)
 		);
 	}
 
@@ -848,7 +878,9 @@ public class ProductMargin20
 		final String componentName)
 		throws Exception
 	{
-		RiskFactorTenorSensitivity ustRiskFactorSensitivity = CreditCurveTenorSensitivityMap (notional);
+		RiskFactorTenorSensitivity ustRiskFactorSensitivity = CreditCurveTenorSensitivityMap (
+			notional
+		);
 
 		tenorSensitivityMap.put (
 			componentName,
@@ -861,7 +893,9 @@ public class ProductMargin20
 		final int vegaDurationDays)
 		throws Exception
 	{
-		Map<String, Map<String, Double>> bucketDeltaMap = EquityRiskFactorSensitivityMap (notional);
+		Map<String, Map<String, Double>> bucketDeltaMap = EquityRiskFactorSensitivityMap (
+			notional
+		);
 
 		Map<String, BucketSensitivity> bucketDeltaSensitivityMap = new HashMap<String, BucketSensitivity>();
 
@@ -869,11 +903,15 @@ public class ProductMargin20
 		{
 			bucketDeltaSensitivityMap.put (
 				bucketDeltaMapEntry.getKey(),
-				new BucketSensitivity (bucketDeltaMapEntry.getValue())
+				new BucketSensitivity (
+					bucketDeltaMapEntry.getValue()
+				)
 			);
 		}
 
-		Map<String, Map<String, Double>> bucketVegaMap = EquityRiskFactorSensitivityMap (notional);
+		Map<String, Map<String, Double>> bucketVegaMap = EquityRiskFactorSensitivityMap (
+			notional
+		);
 
 		Map<String, BucketSensitivity> bucketVegaSensitivityMap = new HashMap<String, BucketSensitivity>();
 
@@ -881,14 +919,22 @@ public class ProductMargin20
 		{
 			bucketVegaSensitivityMap.put (
 				bucketVegaMapEntry.getKey(),
-				new BucketSensitivity (bucketVegaMapEntry.getValue())
+				new BucketSensitivity (
+					bucketVegaMapEntry.getValue()
+				)
 			);
 		}
 
 		return new RiskClassSensitivity (
-			new RiskMeasureSensitivity (bucketDeltaSensitivityMap),
-			new RiskMeasureSensitivity (bucketVegaSensitivityMap),
-			new RiskMeasureSensitivity (bucketVegaSensitivityMap)
+			new RiskMeasureSensitivity (
+				bucketDeltaSensitivityMap
+			),
+			new RiskMeasureSensitivity (
+				bucketVegaSensitivityMap
+			),
+			new RiskMeasureSensitivity (
+				bucketVegaSensitivityMap
+			)
 		);
 	}
 
@@ -897,7 +943,9 @@ public class ProductMargin20
 		final int vegaDurationDays)
 		throws Exception
 	{
-		Map<String, Map<String, Double>> bucketDeltaMap = CommodityRiskFactorSensitivityMap (notional);
+		Map<String, Map<String, Double>> bucketDeltaMap = CommodityRiskFactorSensitivityMap (
+			notional
+		);
 
 		Map<String, BucketSensitivity> bucketDeltaSensitivityMap = new HashMap<String, BucketSensitivity>();
 
@@ -905,11 +953,15 @@ public class ProductMargin20
 		{
 			bucketDeltaSensitivityMap.put (
 				bucketDeltaMapEntry.getKey(),
-				new BucketSensitivity (bucketDeltaMapEntry.getValue())
+				new BucketSensitivity (
+					bucketDeltaMapEntry.getValue()
+				)
 			);
 		}
 
-		Map<String, Map<String, Double>> bucketVegaMap = CommodityRiskFactorSensitivityMap (notional);
+		Map<String, Map<String, Double>> bucketVegaMap = CommodityRiskFactorSensitivityMap (
+			notional
+		);
 
 		Map<String, BucketSensitivity> bucketVegaSensitivityMap = new HashMap<String, BucketSensitivity>();
 
@@ -917,14 +969,22 @@ public class ProductMargin20
 		{
 			bucketVegaSensitivityMap.put (
 				bucketVegaMapEntry.getKey(),
-				new BucketSensitivity (bucketVegaMapEntry.getValue())
+				new BucketSensitivity (
+					bucketVegaMapEntry.getValue()
+				)
 			);
 		}
 
 		return new RiskClassSensitivity (
-			new RiskMeasureSensitivity (bucketDeltaSensitivityMap),
-			new RiskMeasureSensitivity (bucketVegaSensitivityMap),
-			new RiskMeasureSensitivity (bucketVegaSensitivityMap)
+			new RiskMeasureSensitivity (
+				bucketDeltaSensitivityMap
+			),
+			new RiskMeasureSensitivity (
+				bucketVegaSensitivityMap
+			),
+			new RiskMeasureSensitivity (
+				bucketVegaSensitivityMap
+			)
 		);
 	}
 
@@ -944,16 +1004,26 @@ public class ProductMargin20
 		{
 			bucketDeltaSensitivityMap.put (
 				deltaCategoryMapEntry.getKey(),
-				new BucketSensitivity (deltaCategoryMapEntry.getValue())
+				new BucketSensitivity (
+					deltaCategoryMapEntry.getValue()
+				)
 			);
 		}
 
-		Map<String, BucketSensitivity> bucketVegaSensitivityMap = BucketFXVegaSensitivityMap (notional);
+		Map<String, BucketSensitivity> bucketVegaSensitivityMap = BucketFXVegaSensitivityMap (
+			notional
+		);
 
 		return new RiskClassSensitivity (
-			new RiskMeasureSensitivity (bucketDeltaSensitivityMap),
-			new RiskMeasureSensitivity (bucketVegaSensitivityMap),
-			new RiskMeasureSensitivity (bucketVegaSensitivityMap)
+			new RiskMeasureSensitivity (
+				bucketDeltaSensitivityMap
+			),
+			new RiskMeasureSensitivity (
+				bucketVegaSensitivityMap
+			),
+			new RiskMeasureSensitivity (
+				bucketVegaSensitivityMap
+			)
 		);
 	}
 
@@ -962,11 +1032,15 @@ public class ProductMargin20
 		final double[] notionalArray)
 		throws Exception
 	{
-		Map<String, BucketSensitivityIR> bucketDeltaSensitivityMap = new HashMap<String, BucketSensitivityIR>();
+		Map<String, BucketSensitivityIR> bucketDeltaSensitivityMap =
+			new HashMap<String, BucketSensitivityIR>();
 
-		Map<String, BucketSensitivityIR> bucketVegaSensitivityMap = new HashMap<String, BucketSensitivityIR>();
+		Map<String, BucketSensitivityIR> bucketVegaSensitivityMap =
+			new HashMap<String, BucketSensitivityIR>();
 
-		for (int currencyIndex = 0; currencyIndex < currencyArray.length; ++currencyIndex)
+		for (int currencyIndex = 0;
+			currencyIndex < currencyArray.length;
+			++currencyIndex)
 		{
 			bucketDeltaSensitivityMap.put (
 				currencyArray[currencyIndex],
@@ -986,9 +1060,15 @@ public class ProductMargin20
 		}
 
 		return new RiskClassSensitivityIR (
-			new RiskMeasureSensitivityIR (bucketDeltaSensitivityMap),
-			new RiskMeasureSensitivityIR (bucketVegaSensitivityMap),
-			new RiskMeasureSensitivityIR (bucketVegaSensitivityMap)
+			new RiskMeasureSensitivityIR (
+				bucketDeltaSensitivityMap
+			),
+			new RiskMeasureSensitivityIR (
+				bucketVegaSensitivityMap
+			),
+			new RiskMeasureSensitivityIR (
+				bucketVegaSensitivityMap
+			)
 		);
 	}
 
@@ -1003,7 +1083,6 @@ public class ProductMargin20
 
 		Map<String, BucketSensitivityCR> bucketVegaSensitivityMap =
 			new HashMap<String, BucketSensitivityCR>();
-
 
 		for (int bucketIndex : bucketIndexArray)
 		{
@@ -1028,21 +1107,33 @@ public class ProductMargin20
 				);
 			}
 
+			String bucketIndexKey = "" + bucketIndex;
+
 			bucketDeltaSensitivityMap.put (
-				"" + bucketIndex,
-				new BucketSensitivityCR (tenorDeltaSensitivityMap)
+				bucketIndexKey,
+				new BucketSensitivityCR (
+					tenorDeltaSensitivityMap
+				)
 			);
 
 			bucketVegaSensitivityMap.put (
-				"" + bucketIndex,
-				new BucketSensitivityCR (tenorVegaSensitivityMap)
+				bucketIndexKey,
+				new BucketSensitivityCR (
+					tenorVegaSensitivityMap
+				)
 			);
 		}
 
 		return new RiskClassSensitivityCR (
-			new RiskMeasureSensitivityCR (bucketDeltaSensitivityMap),
-			new RiskMeasureSensitivityCR (bucketVegaSensitivityMap),
-			new RiskMeasureSensitivityCR (bucketVegaSensitivityMap)
+			new RiskMeasureSensitivityCR (
+				bucketDeltaSensitivityMap
+			),
+			new RiskMeasureSensitivityCR (
+				bucketVegaSensitivityMap
+			),
+			new RiskMeasureSensitivityCR (
+				bucketVegaSensitivityMap
+			)
 		);
 	}
 
