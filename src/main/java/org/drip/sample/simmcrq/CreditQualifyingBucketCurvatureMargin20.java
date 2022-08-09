@@ -141,11 +141,15 @@ public class CreditQualifyingBucketCurvatureMargin20
 		final String tenor)
 		throws Exception
 	{
-		if (tenorSensitivityMap.containsKey (tenor))
+		if (tenorSensitivityMap.containsKey (
+			tenor
+		))
 		{
 			tenorSensitivityMap.put (
 				tenor,
-				tenorSensitivityMap.get (tenor) + notional * (Math.random() - 0.5)
+				tenorSensitivityMap.get (
+					tenor
+				) + notional * (Math.random() - 0.5)
 			);
 		}
 		else
