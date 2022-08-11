@@ -3,7 +3,6 @@ package org.drip.sample.simmcrq;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.service.common.FormatUtil;
@@ -143,11 +142,15 @@ public class CreditQualifyingVegaMargin20
 		final String tenor)
 		throws Exception
 	{
-		if (tenorSensitivityMap.containsKey (tenor))
+		if (tenorSensitivityMap.containsKey (
+			tenor
+		))
 		{
 			tenorSensitivityMap.put (
 				tenor,
-				tenorSensitivityMap.get (tenor) + notional * (Math.random() - 0.5)
+				tenorSensitivityMap.get (
+					tenor
+				) + notional * (Math.random() - 0.5)
 			);
 		}
 		else
@@ -195,7 +198,9 @@ public class CreditQualifyingVegaMargin20
 			"10Y"
 		);
 
-		return new RiskFactorTenorSensitivity (tenorSensitivityMap);
+		return new RiskFactorTenorSensitivity (
+			tenorSensitivityMap
+		);
 	}
 
 	private static final void DisplayComponentTenorSensitivity (
@@ -205,33 +210,54 @@ public class CreditQualifyingVegaMargin20
 	{
 		System.out.println();
 
-		System.out.println ("\t|--------------||");
+		System.out.println (
+			"\t|--------------||"
+		);
 
-		System.out.println ("\t|  " + componentName + " VEGA    ||");
+		System.out.println (
+			"\t|  " + componentName + " VEGA    ||"
+		);
 
-		System.out.println ("\t|--------------||");
+		System.out.println (
+			"\t|--------------||"
+		);
 
-		System.out.println ("\t|              ||");
+		System.out.println (
+			"\t|              ||"
+		);
 
-		System.out.println ("\t|  L -> R:     ||");
+		System.out.println (
+			"\t|  L -> R:     ||"
+		);
 
-		System.out.println ("\t|    - Tenor   ||");
+		System.out.println (
+			"\t|    - Tenor   ||"
+		);
 
-		System.out.println ("\t|    - Delta   ||");
+		System.out.println (
+			"\t|    - Delta   ||"
+		);
 
-		System.out.println ("\t|--------------||");
+		System.out.println (
+			"\t|--------------||"
+		);
 
 		for (Map.Entry<String, Double> tenorSensitivityEntry :
 			tenorSensitivityMap.sensitivityMap().entrySet())
 		{
 			System.out.println (
-				"\t| " +
-				tenorSensitivityEntry.getKey() + " => " +
-				FormatUtil.FormatDouble (tenorSensitivityEntry.getValue(), 2, 2, 1.) + " ||"
+				"\t| " + tenorSensitivityEntry.getKey() + " => " + FormatUtil.FormatDouble (
+					tenorSensitivityEntry.getValue(),
+					2,
+					2,
+					1.
+				) + " ||"
 			);
 		}
 
-		System.out.println ("\t|--------------||");
+		System.out.println (
+			"\t|--------------||"
+		);
 
 		System.out.println();
 	}
@@ -242,7 +268,9 @@ public class CreditQualifyingVegaMargin20
 		final String componentName)
 		throws Exception
 	{
-		RiskFactorTenorSensitivity ustRiskFactorSensitivity = CurveTenorSensitivityMap (notional);
+		RiskFactorTenorSensitivity ustRiskFactorSensitivity = CurveTenorSensitivityMap (
+			notional
+		);
 
 		tenorSensitivityMap.put (
 			componentName,
@@ -259,28 +287,48 @@ public class CreditQualifyingVegaMargin20
 		final RiskMeasureAggregateCR riskMeasureAggregateCR)
 		throws Exception
 	{
-		System.out.println ("\t||--------------------------------------------||");
-
-		System.out.println ("\t||   CR RISK CLASS AGGREGATE MARGIN METRICS   ||");
-
-		System.out.println ("\t||--------------------------------------------||");
-
 		System.out.println (
-			"\t|| Core Vega SBA Variance      => " +
-			FormatUtil.FormatDouble (riskMeasureAggregateCR.coreSBAVariance(), 10, 0, 1.) + " ||"
+			"\t||--------------------------------------------||"
 		);
 
 		System.out.println (
-			"\t|| Residual Vega SBA Variance  => " +
-			FormatUtil.FormatDouble (riskMeasureAggregateCR.residualSBAVariance(), 10, 0, 1.) + " ||"
+			"\t||   CR RISK CLASS AGGREGATE MARGIN METRICS   ||"
 		);
 
 		System.out.println (
-			"\t|| Vega SBA                    => " +
-			FormatUtil.FormatDouble (riskMeasureAggregateCR.sba(), 10, 0, 1.) + " ||"
+			"\t||--------------------------------------------||"
 		);
 
-		System.out.println ("\t||--------------------------------------------||");
+		System.out.println (
+			"\t|| Core Vega SBA Variance      => " + FormatUtil.FormatDouble (
+				riskMeasureAggregateCR.coreSBAVariance(),
+				10,
+				0,
+				1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t|| Residual Vega SBA Variance  => " + FormatUtil.FormatDouble (
+				riskMeasureAggregateCR.residualSBAVariance(),
+				10,
+				0,
+				1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t|| Vega SBA                    => " + FormatUtil.FormatDouble (
+				riskMeasureAggregateCR.sba(),
+				10,
+				0,
+				1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t||--------------------------------------------||"
+		);
 
 		System.out.println();
 	}
@@ -290,39 +338,62 @@ public class CreditQualifyingVegaMargin20
 		final SensitivityAggregateCR crVegaAggregate)
 		throws Exception
 	{
-		System.out.println ("\t||-------------------------------------||");
-
 		System.out.println (
-			"\t|| " + FormatUtil.FormatDouble (bucketIndex, 2, 0, 1.) +
-			"  RISK FACTOR MARGIN COVARIANCE  ||"
+			"\t||-------------------------------------||"
 		);
 
-		System.out.println ("\t||-------------------------------------||");
+		System.out.println (
+			"\t|| " + FormatUtil.FormatDouble (
+				bucketIndex,
+				2,
+				0,
+				1.
+			) + "  RISK FACTOR MARGIN COVARIANCE  ||"
+		);
 
-		System.out.println ("\t||                                     ||");
+		System.out.println (
+			"\t||-------------------------------------||"
+		);
 
-		System.out.println ("\t||    - L -> R:                        ||");
+		System.out.println (
+			"\t||                                     ||"
+		);
 
-		System.out.println ("\t||        - Component Pair             ||");
+		System.out.println (
+			"\t||    - L -> R:                        ||"
+		);
 
-		System.out.println ("\t||        - Covariance                 ||");
+		System.out.println (
+			"\t||        - Component Pair             ||"
+		);
 
-		System.out.println ("\t||-------------------------------------||");
+		System.out.println (
+			"\t||        - Covariance                 ||"
+		);
+
+		System.out.println (
+			"\t||-------------------------------------||"
+		);
 
 		Map<String, Double> componentMarginCovarianceMap = crVegaAggregate.componentMarginCovarianceMap();
 
-		Set<String> componentPairSet = componentMarginCovarianceMap.keySet();
-
-		for (String componentPair : componentPairSet)
+		for (String componentPair : componentMarginCovarianceMap.keySet())
 		{
 			System.out.println (
-				"\t|| " + componentPair + " => " +
-				FormatUtil.FormatDouble (componentMarginCovarianceMap.get (componentPair), 9, 0, 1.) +
-					"               ||"
+				"\t|| " + componentPair + " => " + FormatUtil.FormatDouble (
+					componentMarginCovarianceMap.get (
+						componentPair
+					),
+					9,
+					0,
+					1.
+				) + "               ||"
 			);
 		}
 
-		System.out.println ("\t||-------------------------------------||");
+		System.out.println (
+			"\t||-------------------------------------||"
+		);
 
 		System.out.println();
 	}

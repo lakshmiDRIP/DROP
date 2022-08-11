@@ -211,33 +211,54 @@ public class CreditQualifyingClassMargin20
 	{
 		System.out.println();
 
-		System.out.println ("\t|--------------||");
+		System.out.println (
+			"\t|--------------||"
+		);
 
-		System.out.println ("\t|  " + componentName + " VEGA    ||");
+		System.out.println (
+			"\t|  " + componentName + " VEGA    ||"
+		);
 
-		System.out.println ("\t|--------------||");
+		System.out.println (
+			"\t|--------------||"
+		);
 
-		System.out.println ("\t|              ||");
+		System.out.println (
+			"\t|              ||"
+		);
 
-		System.out.println ("\t|  L -> R:     ||");
+		System.out.println (
+			"\t|  L -> R:     ||"
+		);
 
-		System.out.println ("\t|    - Tenor   ||");
+		System.out.println (
+			"\t|    - Tenor   ||"
+		);
 
-		System.out.println ("\t|    - Delta   ||");
+		System.out.println (
+			"\t|    - Delta   ||"
+		);
 
-		System.out.println ("\t|--------------||");
+		System.out.println (
+			"\t|--------------||"
+		);
 
 		for (Map.Entry<String, Double> tenorSensitivityEntry :
 			tenorSensitivityMap.sensitivityMap().entrySet())
 		{
 			System.out.println (
-				"\t| " +
-				tenorSensitivityEntry.getKey() + " => " +
-				FormatUtil.FormatDouble (tenorSensitivityEntry.getValue(), 2, 2, 1.) + " ||"
+				"\t| " + tenorSensitivityEntry.getKey() + " => " + FormatUtil.FormatDouble (
+					tenorSensitivityEntry.getValue(),
+					2,
+					2,
+					1.
+				) + " ||"
 			);
 		}
 
-		System.out.println ("\t|--------------||");
+		System.out.println (
+			"\t|--------------||"
+		);
 
 		System.out.println();
 	}
@@ -248,7 +269,9 @@ public class CreditQualifyingClassMargin20
 		final String componentName)
 		throws Exception
 	{
-		RiskFactorTenorSensitivity ustRiskFactorSensitivity = CurveTenorSensitivityMap (notional);
+		RiskFactorTenorSensitivity ustRiskFactorSensitivity = CurveTenorSensitivityMap (
+			notional
+		);
 
 		tenorSensitivityMap.put (
 			componentName,

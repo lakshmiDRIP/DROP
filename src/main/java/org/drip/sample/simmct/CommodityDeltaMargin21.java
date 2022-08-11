@@ -287,21 +287,37 @@ public class CommodityDeltaMargin21
 		final Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap)
 		throws Exception
 	{
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println (
+			"\t|------------------------------------------------||"
+		);
 
-		System.out.println ("\t|               RISK FACTOR DELTA                ||");
+		System.out.println (
+			"\t|               RISK FACTOR DELTA                ||"
+		);
 
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println (
+			"\t|------------------------------------------------||"
+		);
 
-		System.out.println ("\t|  L -> R:                                       ||");
+		System.out.println (
+			"\t|  L -> R:                                       ||"
+		);
 
-		System.out.println ("\t|    - Ticker                                    ||");
+		System.out.println (
+			"\t|    - Ticker                                    ||"
+		);
 
-		System.out.println ("\t|    - Bucket                                    ||");
+		System.out.println (
+			"\t|    - Bucket                                    ||"
+		);
 
-		System.out.println ("\t|    - Delta                                     ||");
+		System.out.println (
+			"\t|    - Delta                                     ||"
+		);
 
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println (
+			"\t|------------------------------------------------||"
+		);
 
 		for (Map.Entry<String, Map<String, Double>> bucketSensitivityMapEntry :
 			bucketRiskFactorSensitivityMap.entrySet())
@@ -313,20 +329,25 @@ public class CommodityDeltaMargin21
 			for (Map.Entry<String, Double> riskFactorSensitivityMapEntry :
 				riskFactorSensitivityMap.entrySet())
 			{
-				String currency = riskFactorSensitivityMapEntry.getKey();
-
-				double riskFactorSensitivity = riskFactorSensitivityMapEntry.getValue();
-
 				System.out.println (
-					"\t| " +
-					currency + " => " +
-					FormatUtil.FormatDouble (Integer.parseInt (bucketIndex), 2, 0, 1.) + " | " +
-					FormatUtil.FormatDouble (riskFactorSensitivity, 2, 2, 1.) + " ||"
+					"\t| " + riskFactorSensitivityMapEntry.getKey() + " => " + FormatUtil.FormatDouble (
+						Integer.parseInt (bucketIndex),
+						2,
+						0,
+						1.
+					) + " | " + FormatUtil.FormatDouble (
+						riskFactorSensitivityMapEntry.getValue(),
+						2,
+						2,
+						1.
+					) + " ||"
 				);
 			}
 		}
 
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println (
+			"\t|------------------------------------------------||"
+		);
 
 		System.out.println();
 	}
