@@ -143,11 +143,15 @@ public class CreditQualifyingClassMargin20
 		final String tenor)
 		throws Exception
 	{
-		if (tenorSensitivityMap.containsKey (tenor))
+		if (tenorSensitivityMap.containsKey (
+			tenor
+		))
 		{
 			tenorSensitivityMap.put (
 				tenor,
-				tenorSensitivityMap.get (tenor) + notional * (Math.random() - 0.5)
+				tenorSensitivityMap.get (
+					tenor
+				) + notional * (Math.random() - 0.5)
 			);
 		}
 		else
@@ -195,7 +199,9 @@ public class CreditQualifyingClassMargin20
 			"10Y"
 		);
 
-		return new RiskFactorTenorSensitivity (tenorSensitivityMap);
+		return new RiskFactorTenorSensitivity (
+			tenorSensitivityMap
+		);
 	}
 
 	private static final void DisplayComponentTenorSensitivity (

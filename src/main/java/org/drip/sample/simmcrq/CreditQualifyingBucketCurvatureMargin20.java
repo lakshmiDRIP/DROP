@@ -197,7 +197,9 @@ public class CreditQualifyingBucketCurvatureMargin20
 			"10Y"
 		);
 
-		return new RiskFactorTenorSensitivity (tenorSensitivityMap);
+		return new RiskFactorTenorSensitivity (
+			tenorSensitivityMap
+		);
 	}
 
 	private static final void DisplayComponentTenorSensitivity (
@@ -207,33 +209,54 @@ public class CreditQualifyingBucketCurvatureMargin20
 	{
 		System.out.println();
 
-		System.out.println ("\t|--------------||");
+		System.out.println (
+			"\t|--------------||"
+		);
 
-		System.out.println ("\t|  " + componentName + " VEGA    ||");
+		System.out.println (
+			"\t|  " + componentName + " VEGA    ||"
+		);
 
-		System.out.println ("\t|--------------||");
+		System.out.println (
+			"\t|--------------||"
+		);
 
-		System.out.println ("\t|              ||");
+		System.out.println (
+			"\t|              ||"
+		);
 
-		System.out.println ("\t|  L -> R:     ||");
+		System.out.println (
+			"\t|  L -> R:     ||"
+		);
 
-		System.out.println ("\t|    - Tenor   ||");
+		System.out.println (
+			"\t|    - Tenor   ||"
+		);
 
-		System.out.println ("\t|    - Delta   ||");
+		System.out.println (
+			"\t|    - Delta   ||"
+		);
 
-		System.out.println ("\t|--------------||");
+		System.out.println (
+			"\t|--------------||"
+		);
 
 		for (Map.Entry<String, Double> tenorSensitivityEntry :
 			tenorSensitivityMap.sensitivityMap().entrySet())
 		{
 			System.out.println (
-				"\t| " +
-				tenorSensitivityEntry.getKey() + " => " +
-				FormatUtil.FormatDouble (tenorSensitivityEntry.getValue(), 2, 2, 1.) + " ||"
+				"\t| " + tenorSensitivityEntry.getKey() + " => " + FormatUtil.FormatDouble (
+					tenorSensitivityEntry.getValue(),
+					2,
+					2,
+					1.
+				) + " ||"
 			);
 		}
 
-		System.out.println ("\t|--------------||");
+		System.out.println (
+			"\t|--------------||"
+		);
 
 		System.out.println();
 	}
@@ -244,11 +267,11 @@ public class CreditQualifyingBucketCurvatureMargin20
 		final String componentName)
 		throws Exception
 	{
-		RiskFactorTenorSensitivity ustRiskFactorSensitivity = CurveTenorSensitivityMap (notional);
-
 		tenorSensitivityMap.put (
 			componentName,
-			ustRiskFactorSensitivity
+			CurveTenorSensitivityMap (
+				notional
+			)
 		);
 	}
 
@@ -256,28 +279,48 @@ public class CreditQualifyingBucketCurvatureMargin20
 		final RiskMeasureAggregateCR riskMeasureAggregateCR)
 		throws Exception
 	{
-		System.out.println ("\t||--------------------------------------------||");
-
-		System.out.println ("\t||   CR RISK CLASS AGGREGATE MARGIN METRICS   ||");
-
-		System.out.println ("\t||--------------------------------------------||");
-
 		System.out.println (
-			"\t|| Core Vega SBA Variance      => " +
-			FormatUtil.FormatDouble (riskMeasureAggregateCR.coreSBAVariance(), 10, 0, 1.) + " ||"
+			"\t||--------------------------------------------||"
 		);
 
 		System.out.println (
-			"\t|| Residual Vega SBA Variance  => " +
-			FormatUtil.FormatDouble (riskMeasureAggregateCR.residualSBAVariance(), 10, 0, 1.) + " ||"
+			"\t||   CR RISK CLASS AGGREGATE MARGIN METRICS   ||"
 		);
 
 		System.out.println (
-			"\t|| Vega SBA                    => " +
-			FormatUtil.FormatDouble (riskMeasureAggregateCR.sba(), 10, 0, 1.) + " ||"
+			"\t||--------------------------------------------||"
 		);
 
-		System.out.println ("\t||--------------------------------------------||");
+		System.out.println (
+			"\t|| Core Vega SBA Variance      => " + FormatUtil.FormatDouble (
+				riskMeasureAggregateCR.coreSBAVariance(),
+				10,
+				0,
+				1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t|| Residual Vega SBA Variance  => " + FormatUtil.FormatDouble (
+				riskMeasureAggregateCR.residualSBAVariance(),
+				10,
+				0,
+				1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t|| Vega SBA                    => " + FormatUtil.FormatDouble (
+				riskMeasureAggregateCR.sba(),
+				10,
+				0,
+				1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t||--------------------------------------------||"
+		);
 
 		System.out.println();
 	}
