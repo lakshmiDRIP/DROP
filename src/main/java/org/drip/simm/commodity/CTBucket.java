@@ -1,6 +1,8 @@
 
 package org.drip.simm.commodity;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -122,9 +124,9 @@ package org.drip.simm.commodity;
 public class CTBucket
 {
 	private int _number = -1;
-	private java.lang.String _entity = "";
-	private double _deltaRiskWeight = java.lang.Double.NaN;
-	private double _memberCorrelation = java.lang.Double.NaN;
+	private String _entity = "";
+	private double _deltaRiskWeight = Double.NaN;
+	private double _memberCorrelation = Double.NaN;
 
 	/**
 	 * CTBucket Constructor
@@ -134,21 +136,28 @@ public class CTBucket
 	 * @param deltaRiskWeight Bucket Delta Risk Weight
 	 * @param memberCorrelation Bucket Cross Member Correlation
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CTBucket (
 		final int number,
-		final java.lang.String entity,
+		final String entity,
 		final double deltaRiskWeight,
 		final double memberCorrelation)
 		throws java.lang.Exception
 	{
 		if (null == (_entity = entity) || _entity.isEmpty() ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_deltaRiskWeight = deltaRiskWeight) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_memberCorrelation = memberCorrelation))
+			!NumberUtil.IsValid (
+				_deltaRiskWeight = deltaRiskWeight
+			) ||
+			!NumberUtil.IsValid (
+				_memberCorrelation = memberCorrelation
+			)
+		)
 		{
-			throw new java.lang.Exception ("CTBucket Constructor => Invalid Inputs");
+			throw new Exception (
+				"CTBucket Constructor => Invalid Inputs"
+			);
 		}
 
 		_number = number;
@@ -171,7 +180,7 @@ public class CTBucket
 	 * @return The Bucket Entity
 	 */
 
-	public java.lang.String entity()
+	public String entity()
 	{
 		return _entity;
 	}

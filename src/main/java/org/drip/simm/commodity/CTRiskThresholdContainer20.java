@@ -1,6 +1,12 @@
 
 package org.drip.simm.commodity;
 
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
+import org.drip.simm.common.DeltaVegaThreshold;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,9 +127,8 @@ package org.drip.simm.commodity;
 
 public class CTRiskThresholdContainer20
 {
-	private static final java.util.Map<java.lang.Integer, org.drip.simm.common.DeltaVegaThreshold>
-		s_DeltaVegaThresholdMap = new java.util.TreeMap<java.lang.Integer,
-			org.drip.simm.common.DeltaVegaThreshold>();
+	private static final Map<Integer, DeltaVegaThreshold> s_DeltaVegaThresholdMap =
+		new TreeMap<Integer, DeltaVegaThreshold>();
 
 	/**
 	 * Initialize the Commodity Risk Threshold Container
@@ -137,7 +142,7 @@ public class CTRiskThresholdContainer20
 		{
 			s_DeltaVegaThresholdMap.put (
 				1,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					1400.,
 					250.
 				)
@@ -145,7 +150,7 @@ public class CTRiskThresholdContainer20
 
 			s_DeltaVegaThresholdMap.put (
 				2,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					20000.,
 					2000.
 				)
@@ -153,7 +158,7 @@ public class CTRiskThresholdContainer20
 
 			s_DeltaVegaThresholdMap.put (
 				3,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					3500.,
 					510.
 				)
@@ -161,7 +166,7 @@ public class CTRiskThresholdContainer20
 
 			s_DeltaVegaThresholdMap.put (
 				4,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					3500.,
 					510.
 				)
@@ -169,7 +174,7 @@ public class CTRiskThresholdContainer20
 
 			s_DeltaVegaThresholdMap.put (
 				5,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					3500.,
 					510.
 				)
@@ -177,7 +182,7 @@ public class CTRiskThresholdContainer20
 
 			s_DeltaVegaThresholdMap.put (
 				6,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					6400.,
 					1900.
 				)
@@ -185,7 +190,7 @@ public class CTRiskThresholdContainer20
 
 			s_DeltaVegaThresholdMap.put (
 				7,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					6400.,
 					1900.
 				)
@@ -193,7 +198,7 @@ public class CTRiskThresholdContainer20
 
 			s_DeltaVegaThresholdMap.put (
 				8,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					2500.,
 					870.
 				)
@@ -201,7 +206,7 @@ public class CTRiskThresholdContainer20
 
 			s_DeltaVegaThresholdMap.put (
 				9,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					2500.,
 					870.
 				)
@@ -209,7 +214,7 @@ public class CTRiskThresholdContainer20
 
 			s_DeltaVegaThresholdMap.put (
 				10,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					300.,
 					220.
 				)
@@ -217,7 +222,7 @@ public class CTRiskThresholdContainer20
 
 			s_DeltaVegaThresholdMap.put (
 				11,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					2900.,
 					450.
 				)
@@ -225,7 +230,7 @@ public class CTRiskThresholdContainer20
 
 			s_DeltaVegaThresholdMap.put (
 				12,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					7600.,
 					740.
 				)
@@ -233,7 +238,7 @@ public class CTRiskThresholdContainer20
 
 			s_DeltaVegaThresholdMap.put (
 				13,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					3900.,
 					370.
 				)
@@ -241,7 +246,7 @@ public class CTRiskThresholdContainer20
 
 			s_DeltaVegaThresholdMap.put (
 				14,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					3900.,
 					370.
 				)
@@ -249,7 +254,7 @@ public class CTRiskThresholdContainer20
 
 			s_DeltaVegaThresholdMap.put (
 				15,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					3900.,
 					370.
 				)
@@ -257,7 +262,7 @@ public class CTRiskThresholdContainer20
 
 			s_DeltaVegaThresholdMap.put (
 				16,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					300.,
 					220.
 				)
@@ -265,13 +270,13 @@ public class CTRiskThresholdContainer20
 
 			s_DeltaVegaThresholdMap.put (
 				17,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					12000.,
 					430.
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 
@@ -287,7 +292,7 @@ public class CTRiskThresholdContainer20
 	 * @return The Commodity Risk Threshold Bucket Set
 	 */
 
-	public static final java.util.Set<java.lang.Integer> BucketSet()
+	public static final Set<Integer> BucketSet()
 	{
 		return s_DeltaVegaThresholdMap.keySet();
 	}
@@ -303,7 +308,9 @@ public class CTRiskThresholdContainer20
 	public static final boolean ContainsBucket (
 		final int bucketNumber)
 	{
-		return s_DeltaVegaThresholdMap.containsKey (bucketNumber);
+		return s_DeltaVegaThresholdMap.containsKey (
+			bucketNumber
+		);
 	}
 
 	/**
@@ -314,10 +321,14 @@ public class CTRiskThresholdContainer20
 	 * @return The Threshold indicated by the Bucket Number
 	 */
 
-	public static final org.drip.simm.common.DeltaVegaThreshold Threshold (
+	public static final DeltaVegaThreshold Threshold (
 		final int bucketNumber)
 	{
-		return ContainsBucket (bucketNumber) ? s_DeltaVegaThresholdMap.get (bucketNumber) : null;
+		return ContainsBucket (
+			bucketNumber
+		) ? s_DeltaVegaThresholdMap.get (
+			bucketNumber
+		) : null;
 	}
 
 	/**
@@ -326,8 +337,7 @@ public class CTRiskThresholdContainer20
 	 * @return The Delta Vega Threshold Map
 	 */
 
-	public static final java.util.Map<java.lang.Integer, org.drip.simm.common.DeltaVegaThreshold>
-		DeltaVegaThresholdMap()
+	public static final Map<Integer, DeltaVegaThreshold> DeltaVegaThresholdMap()
 	{
 		return s_DeltaVegaThresholdMap;
 	}

@@ -204,7 +204,9 @@ public class IRFoundationMarginComparison
 			notional * (Math.random() - 0.5)
 		);
 
-		return new RiskFactorTenorSensitivity (tenorSensitivityMap);
+		return new RiskFactorTenorSensitivity (
+			tenorSensitivityMap
+		);
 	}
 
 	private static final BucketSensitivityIR CurrencyBucketSensitivity (
@@ -213,13 +215,27 @@ public class IRFoundationMarginComparison
 		throws Exception
 	{
 		return new BucketSensitivityIR (
-			CurveTenorSensitivityMap (notional),
-			CurveTenorSensitivityMap (notional),
-			CurveTenorSensitivityMap (notional),
-			CurveTenorSensitivityMap (notional),
-			CurveTenorSensitivityMap (notional),
-			CurveTenorSensitivityMap (notional),
-			CurveTenorSensitivityMap (notional)
+			CurveTenorSensitivityMap (
+				notional
+			),
+			CurveTenorSensitivityMap (
+				notional
+			),
+			CurveTenorSensitivityMap (
+				notional
+			),
+			CurveTenorSensitivityMap (
+				notional
+			),
+			CurveTenorSensitivityMap (
+				notional
+			),
+			CurveTenorSensitivityMap (
+				notional
+			),
+			CurveTenorSensitivityMap (
+				notional
+			)
 		);
 	}
 
@@ -232,55 +248,118 @@ public class IRFoundationMarginComparison
 		throws Exception
 	{
 		RiskClassAggregateIR riskClassAggregate = new RiskClassSensitivityIR (
-			new RiskMeasureSensitivityIR (bucketDeltaSensitivityMap),
-			new RiskMeasureSensitivityIR (bucketVegaSensitivityMap),
-			new RiskMeasureSensitivityIR (bucketVegaSensitivityMap)
+			new RiskMeasureSensitivityIR (
+				bucketDeltaSensitivityMap
+			),
+			new RiskMeasureSensitivityIR (
+				bucketVegaSensitivityMap
+			),
+			new RiskMeasureSensitivityIR (
+				bucketVegaSensitivityMap
+			)
 		).aggregate (
 			riskClassSensitivitySettings,
 			marginEstimationSettings
 		);
 
-		RiskMeasureAggregateIR deltaRiskMeasureAggregate = riskClassAggregate.deltaMargin();
-
 		RiskMeasureAggregateIR vegaRiskMeasureAggregate = riskClassAggregate.vegaMargin();
+
+		RiskMeasureAggregateIR deltaRiskMeasureAggregate = riskClassAggregate.deltaMargin();
 
 		RiskMeasureAggregateIR curvatureRiskMeasureAggregate = riskClassAggregate.curvatureMargin();
 
-		System.out.println ("\t|----------------------------------------||");
-
-		System.out.println ("\t|       " + positionBucketCovarianceScheme + " SBA MARGIN       ||");
-
-		System.out.println ("\t|----------------------------------------||");
-
-		System.out.println ("\t|  MEASURE  =>  CORE  | RESIDUAL | TOTAL ||");
-
-		System.out.println ("\t|----------------------------------------||");
-
-		System.out.println ("\t|   DELTA   => " +
-			FormatUtil.FormatDouble (Math.sqrt (deltaRiskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +
-				" |  " +
-			FormatUtil.FormatDouble (Math.sqrt (deltaRiskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +
-				"  |" +
-			FormatUtil.FormatDouble (deltaRiskMeasureAggregate.sba(), 5, 0, 1.) + " ||"
+		System.out.println (
+			"\t|----------------------------------------||"
 		);
 
-		System.out.println ("\t|   VEGA    => " +
-			FormatUtil.FormatDouble (Math.sqrt (vegaRiskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +
-				" |  " +
-			FormatUtil.FormatDouble (Math.sqrt (vegaRiskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +
-				"  |" +
-			FormatUtil.FormatDouble (vegaRiskMeasureAggregate.sba(), 5, 0, 1.) + " ||"
+		System.out.println (
+			"\t|       " + positionBucketCovarianceScheme + " SBA MARGIN       ||"
 		);
 
-		System.out.println ("\t| CURVATURE => " +
-			FormatUtil.FormatDouble (Math.sqrt (curvatureRiskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +
-				" |  " +
-			FormatUtil.FormatDouble (Math.sqrt (curvatureRiskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +
-				"  |" +
-			FormatUtil.FormatDouble (curvatureRiskMeasureAggregate.sba(), 5, 0, 1.) + " ||"
+		System.out.println (
+			"\t|----------------------------------------||"
 		);
 
-		System.out.println ("\t|----------------------------------------||");
+		System.out.println (
+			"\t|  MEASURE  =>  CORE  | RESIDUAL | TOTAL ||"
+		);
+
+		System.out.println (
+			"\t|----------------------------------------||"
+		);
+
+		System.out.println (
+			"\t|   DELTA   => " + FormatUtil.FormatDouble (
+				Math.sqrt (
+					deltaRiskMeasureAggregate.coreSBAVariance()
+				),
+				5,
+				0,
+				1.
+			) + " |  " + FormatUtil.FormatDouble (
+				Math.sqrt (
+					deltaRiskMeasureAggregate.residualSBAVariance()
+				),
+				5,
+				0,
+				1.
+			) + "  |" + FormatUtil.FormatDouble (
+				deltaRiskMeasureAggregate.sba(),
+				5,
+				0,
+				1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t|   VEGA    => " + FormatUtil.FormatDouble (
+				Math.sqrt (
+					vegaRiskMeasureAggregate.coreSBAVariance()
+				),
+				5,
+				0,
+				1.
+			) + " |  " + FormatUtil.FormatDouble (
+				Math.sqrt (
+					vegaRiskMeasureAggregate.residualSBAVariance()
+				),
+				5,
+				0,
+				1.
+			) + "  |" + FormatUtil.FormatDouble (
+				vegaRiskMeasureAggregate.sba(),
+				5,
+				0,
+				1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t| CURVATURE => " + FormatUtil.FormatDouble (
+				Math.sqrt (
+					curvatureRiskMeasureAggregate.coreSBAVariance()
+				),
+				5,
+				0,
+				1.
+			) + " |  " + FormatUtil.FormatDouble (
+				Math.sqrt (
+					curvatureRiskMeasureAggregate.residualSBAVariance()
+				),
+				5,
+				0,
+				1.
+			) + "  |" + FormatUtil.FormatDouble (
+				curvatureRiskMeasureAggregate.sba(),
+				5,
+				0,
+				1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t|----------------------------------------||"
+		);
 
 		System.out.println();
 	}

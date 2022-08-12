@@ -146,13 +146,17 @@ public class FXFoundationMarginComparison
 
 		for (String currency : currencyArray)
 		{
-			int categoryIndex = FXRiskThresholdContainer20.CurrencyCategory (currency);
+			String categoryIndexKey = "" + FXRiskThresholdContainer20.CurrencyCategory (
+				currency
+			);
 
-			if (currencySentivityMap.containsKey ("" + categoryIndex))
+			if (currencySentivityMap.containsKey (
+				categoryIndexKey
+			))
 			{
-				Map<String, Double> riskFactorSensitivityMap = currencySentivityMap.get ("" + categoryIndex);
-
-				riskFactorSensitivityMap.put (
+				currencySentivityMap.get (
+					categoryIndexKey
+				).put (
 					currency,
 					notional * (Math.random() - 0.5)
 				);
@@ -167,7 +171,7 @@ public class FXFoundationMarginComparison
 				);
 
 				currencySentivityMap.put (
-					"" + categoryIndex,
+					categoryIndexKey,
 					riskFactorSensitivityMap
 				);
 			}
@@ -334,55 +338,118 @@ public class FXFoundationMarginComparison
 		throws Exception
 	{
 		RiskClassAggregate riskClassAggregate = new RiskClassSensitivity (
-			new RiskMeasureSensitivity (bucketDeltaSensitivityMap),
-			new RiskMeasureSensitivity (bucketVegaSensitivityMap),
-			new RiskMeasureSensitivity (bucketVegaSensitivityMap)
+			new RiskMeasureSensitivity (
+				bucketDeltaSensitivityMap
+			),
+			new RiskMeasureSensitivity (
+				bucketVegaSensitivityMap
+			),
+			new RiskMeasureSensitivity (
+				bucketVegaSensitivityMap
+			)
 		).aggregate (
 			riskClassSensitivitySettings,
 			marginEstimationSettings
 		);
 
-		RiskMeasureAggregate deltaRiskMeasureAggregate = riskClassAggregate.deltaMargin();
-
 		RiskMeasureAggregate vegaRiskMeasureAggregate = riskClassAggregate.vegaMargin();
+
+		RiskMeasureAggregate deltaRiskMeasureAggregate = riskClassAggregate.deltaMargin();
 
 		RiskMeasureAggregate curvatureRiskMeasureAggregate = riskClassAggregate.curvatureMargin();
 
-		System.out.println ("\t|----------------------------------------||");
-
-		System.out.println ("\t|       " + positionBucketCovarianceScheme + " SBA MARGIN       ||");
-
-		System.out.println ("\t|----------------------------------------||");
-
-		System.out.println ("\t|  MEASURE  =>  CORE  | RESIDUAL | TOTAL ||");
-
-		System.out.println ("\t|----------------------------------------||");
-
-		System.out.println ("\t|   DELTA   => " +
-			FormatUtil.FormatDouble (Math.sqrt (deltaRiskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +
-				" |  " +
-			FormatUtil.FormatDouble (Math.sqrt (deltaRiskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +
-				"  |" +
-			FormatUtil.FormatDouble (deltaRiskMeasureAggregate.sba(), 5, 0, 1.) + " ||"
+		System.out.println (
+			"\t|----------------------------------------||"
 		);
 
-		System.out.println ("\t|   VEGA    => " +
-			FormatUtil.FormatDouble (Math.sqrt (vegaRiskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +
-				" |  " +
-			FormatUtil.FormatDouble (Math.sqrt (vegaRiskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +
-				"  |" +
-			FormatUtil.FormatDouble (vegaRiskMeasureAggregate.sba(), 5, 0, 1.) + " ||"
+		System.out.println (
+			"\t|       " + positionBucketCovarianceScheme + " SBA MARGIN       ||"
 		);
 
-		System.out.println ("\t| CURVATURE => " +
-			FormatUtil.FormatDouble (Math.sqrt (curvatureRiskMeasureAggregate.coreSBAVariance()), 5, 0, 1.) +
-				" |  " +
-			FormatUtil.FormatDouble (Math.sqrt (curvatureRiskMeasureAggregate.residualSBAVariance()), 5, 0, 1.) +
-				"  |" +
-			FormatUtil.FormatDouble (curvatureRiskMeasureAggregate.sba(), 5, 0, 1.) + " ||"
+		System.out.println (
+			"\t|----------------------------------------||"
 		);
 
-		System.out.println ("\t|----------------------------------------||");
+		System.out.println (
+			"\t|  MEASURE  =>  CORE  | RESIDUAL | TOTAL ||"
+		);
+
+		System.out.println (
+			"\t|----------------------------------------||"
+		);
+
+		System.out.println (
+			"\t|   DELTA   => " + FormatUtil.FormatDouble (
+				Math.sqrt (
+					deltaRiskMeasureAggregate.coreSBAVariance()
+				),
+				5,
+				0,
+				1.
+			) + " |  " + FormatUtil.FormatDouble (
+				Math.sqrt (
+					deltaRiskMeasureAggregate.residualSBAVariance()
+				),
+				5,
+				0,
+				1.
+			) + "  |" + FormatUtil.FormatDouble (
+				deltaRiskMeasureAggregate.sba(),
+				5,
+				0,
+				1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t|   VEGA    => " + FormatUtil.FormatDouble (
+				Math.sqrt (
+					vegaRiskMeasureAggregate.coreSBAVariance()
+				),
+				5,
+				0,
+				1.
+			) + " |  " + FormatUtil.FormatDouble (
+				Math.sqrt (
+					vegaRiskMeasureAggregate.residualSBAVariance()
+				),
+				5,
+				0,
+				1.
+			) + "  |" + FormatUtil.FormatDouble (
+				vegaRiskMeasureAggregate.sba(),
+				5,
+				0,
+				1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t| CURVATURE => " + FormatUtil.FormatDouble (
+				Math.sqrt (
+					curvatureRiskMeasureAggregate.coreSBAVariance()
+				),
+				5,
+				0,
+				1.
+			) + " |  " + FormatUtil.FormatDouble (
+				Math.sqrt (
+					curvatureRiskMeasureAggregate.residualSBAVariance()
+				),
+				5,
+				0,
+				1.
+			) + "  |" + FormatUtil.FormatDouble (
+				curvatureRiskMeasureAggregate.sba(),
+				5,
+				0,
+				1.
+			) + " ||"
+		);
+
+		System.out.println (
+			"\t|----------------------------------------||"
+		);
 
 		System.out.println();
 	}

@@ -340,21 +340,37 @@ public class EquityCurvatureMargin20
 		final Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap)
 		throws Exception
 	{
-		System.out.println ("\t|--------------------------||");
+		System.out.println (
+			"\t|--------------------------||"
+		);
 
-		System.out.println ("\t|     RISK FACTOR VEGA     ||");
+		System.out.println (
+			"\t|     RISK FACTOR VEGA     ||"
+		);
 
-		System.out.println ("\t|--------------------------||");
+		System.out.println (
+			"\t|--------------------------||"
+		);
 
-		System.out.println ("\t|  L -> R:                 ||");
+		System.out.println (
+			"\t|  L -> R:                 ||"
+		);
 
-		System.out.println ("\t|    - Ticker              ||");
+		System.out.println (
+			"\t|    - Ticker              ||"
+		);
 
-		System.out.println ("\t|    - Bucket              ||");
+		System.out.println (
+			"\t|    - Bucket              ||"
+		);
 
-		System.out.println ("\t|    - Vega                ||");
+		System.out.println (
+			"\t|    - Vega                ||"
+		);
 
-		System.out.println ("\t|--------------------------||");
+		System.out.println (
+			"\t|--------------------------||"
+		);
 
 		for (Map.Entry<String, Map<String, Double>> bucketSensitivityMapEntry :
 			bucketRiskFactorSensitivityMap.entrySet())
