@@ -126,16 +126,16 @@ public class MarginEstimationSettings
 	 * FRTB Based Position - Principal Component Estimator
 	 */
 
-	public static final java.lang.String POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_FRTB = "FRTB";
+	public static final String POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_FRTB = "FRTB";
 
 	/**
 	 * ISDA Based Position - Principal Component Estimator
 	 */
 
-	public static final java.lang.String POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA = "ISDA";
+	public static final String POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA = "ISDA";
 
-	private java.lang.String _positionPrincipalComponentScheme = "";
-	private org.drip.simm.foundation.CurvatureEstimator _curvatureEstimator = null;
+	private CurvatureEstimator _curvatureEstimator = null;
+	private String _positionPrincipalComponentScheme = "";
 
 	/**
 	 * Generate a Cornish-Fischer Instance of MarginEstimationSettings
@@ -146,16 +146,16 @@ public class MarginEstimationSettings
 	 */
 
 	public static final MarginEstimationSettings CornishFischer (
-		final java.lang.String positionPrincipalComponentScheme)
+		final String positionPrincipalComponentScheme)
 	{
 		try
 		{
 			return new MarginEstimationSettings (
 				positionPrincipalComponentScheme,
-				org.drip.simm.foundation.CurvatureEstimatorResponseFunction.CornishFischer()
+				CurvatureEstimatorResponseFunction.CornishFischer()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -172,16 +172,16 @@ public class MarginEstimationSettings
 	 */
 
 	public static final MarginEstimationSettings ISDADelta (
-		final java.lang.String positionPrincipalComponentScheme)
+		final String positionPrincipalComponentScheme)
 	{
 		try
 		{
 			return new MarginEstimationSettings (
 				positionPrincipalComponentScheme,
-				org.drip.simm.foundation.CurvatureEstimatorISDADelta.Standard()
+				CurvatureEstimatorISDADelta.Standard()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -198,16 +198,16 @@ public class MarginEstimationSettings
 	 */
 
 	public static final MarginEstimationSettings FRTB (
-		final java.lang.String positionPrincipalComponentScheme)
+		final String positionPrincipalComponentScheme)
 	{
 		try
 		{
 			return new MarginEstimationSettings (
 				positionPrincipalComponentScheme,
-				org.drip.simm.foundation.CurvatureEstimatorFRTB.Standard()
+				CurvatureEstimatorFRTB.Standard()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -221,19 +221,22 @@ public class MarginEstimationSettings
 	 * @param positionPrincipalComponentScheme The Position Principal Component Scheme
 	 * @param curvatureEstimator The Curvature Estimator Function
 	 * 
-	 * @throws java.lang.Exception Throwm if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MarginEstimationSettings (
-		final java.lang.String positionPrincipalComponentScheme,
-		final org.drip.simm.foundation.CurvatureEstimator curvatureEstimator)
-		throws java.lang.Exception
+		final String positionPrincipalComponentScheme,
+		final CurvatureEstimator curvatureEstimator)
+		throws Exception
 	{
 		if (null == (_positionPrincipalComponentScheme = positionPrincipalComponentScheme) ||
-			_positionPrincipalComponentScheme.isEmpty() ||
-			null == (_curvatureEstimator = curvatureEstimator))
+				_positionPrincipalComponentScheme.isEmpty() ||
+			null == (_curvatureEstimator = curvatureEstimator)
+		)
 		{
-			throw new java.lang.Exception ("MarginEstimationSettings Constructor => Invalid Inputs");
+			throw new Exception (
+				"MarginEstimationSettings Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -243,7 +246,7 @@ public class MarginEstimationSettings
 	 * @return The Position Principal Component Scheme
 	 */
 
-	public java.lang.String positionPrincipalComponentScheme()
+	public String positionPrincipalComponentScheme()
 	{
 		return _positionPrincipalComponentScheme;
 	}
@@ -254,7 +257,7 @@ public class MarginEstimationSettings
 	 * @return The Curvature Estimator Function
 	 */
 
-	public org.drip.simm.foundation.CurvatureEstimator curvatureEstimator()
+	public CurvatureEstimator curvatureEstimator()
 	{
 		return _curvatureEstimator;
 	}

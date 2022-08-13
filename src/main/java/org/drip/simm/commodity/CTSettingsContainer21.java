@@ -1,6 +1,15 @@
 
 package org.drip.simm.commodity;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
+import org.drip.measure.stochastic.LabelCorrelation;
+import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -78,7 +87,7 @@ package org.drip.simm.commodity;
  */
 
 /**
- * <i>CTSettingsContainer21</i> h/olds the ISDA SIMM 2.1 Commodity Buckets and their Correlations. The
+ * <i>CTSettingsContainer21</i> holds the ISDA SIMM 2.1 Commodity Buckets and their Correlations. The
  * References are:
  * 
  * <br><br>
@@ -120,52 +129,86 @@ package org.drip.simm.commodity;
 
 public class CTSettingsContainer21
 {
-	private static org.drip.measure.stochastic.LabelCorrelation s_CrossBucketCorrelation = null;
+	private static LabelCorrelation s_CrossBucketCorrelation = null;
 
-	private static final java.util.Map<java.lang.Integer, org.drip.simm.commodity.CTBucket> s_BucketMap =
-		new java.util.TreeMap<java.lang.Integer, org.drip.simm.commodity.CTBucket>();
+	private static final Map<Integer, CTBucket> s_BucketMap =
+		new TreeMap<Integer, CTBucket>();
 
 	private static final boolean SetUpCrossBucketCorrelation()
 	{
-		java.util.List<java.lang.String> bucketList = new java.util.ArrayList<java.lang.String>();
+		List<String> bucketList = new ArrayList<String>();
 
-		bucketList.add ("1");
+		bucketList.add (
+			"1"
+		);
 
-		bucketList.add ("2");
+		bucketList.add (
+			"2"
+		);
 
-		bucketList.add ("3");
+		bucketList.add (
+			"3"
+		);
 
-		bucketList.add ("4");
+		bucketList.add (
+			"4"
+		);
 
-		bucketList.add ("5");
+		bucketList.add (
+			"5"
+		);
 
-		bucketList.add ("6");
+		bucketList.add (
+			"6"
+		);
 
-		bucketList.add ("7");
+		bucketList.add (
+			"7"
+		);
 
-		bucketList.add ("8");
+		bucketList.add (
+			"8"
+		);
 
-		bucketList.add ("9");
+		bucketList.add (
+			"9"
+		);
 
-		bucketList.add ("10");
+		bucketList.add (
+			"10"
+		);
 
-		bucketList.add ("11");
+		bucketList.add (
+			"11"
+		);
 
-		bucketList.add ("12");
+		bucketList.add (
+			"12"
+		);
 
-		bucketList.add ("13");
+		bucketList.add (
+			"13"
+		);
 
-		bucketList.add ("14");
+		bucketList.add (
+			"14"
+		);
 
-		bucketList.add ("15");
+		bucketList.add (
+			"15"
+		);
 
-		bucketList.add ("16");
+		bucketList.add (
+			"16"
+		);
 
-		bucketList.add ("17");
+		bucketList.add (
+			"17"
+		);
 
 		try
 		{
-			s_CrossBucketCorrelation = new org.drip.measure.stochastic.LabelCorrelation (
+			s_CrossBucketCorrelation = new LabelCorrelation (
 				bucketList,
 				new double[][]
 				{
@@ -191,7 +234,7 @@ public class CTSettingsContainer21
 
 			return true;
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -211,7 +254,7 @@ public class CTSettingsContainer21
 		{
 			s_BucketMap.put (
 				1,
-				new org.drip.simm.commodity.CTBucket (
+				new CTBucket (
 					1,
 					"Coal",
 					19.,
@@ -221,7 +264,7 @@ public class CTSettingsContainer21
 
 			s_BucketMap.put (
 				2,
-				new org.drip.simm.commodity.CTBucket (
+				new CTBucket (
 					2,
 					"Crude",
 					20.,
@@ -231,7 +274,7 @@ public class CTSettingsContainer21
 
 			s_BucketMap.put (
 				3,
-				new org.drip.simm.commodity.CTBucket (
+				new CTBucket (
 					3,
 					"Light Ends",
 					17.,
@@ -241,7 +284,7 @@ public class CTSettingsContainer21
 
 			s_BucketMap.put (
 				4,
-				new org.drip.simm.commodity.CTBucket (
+				new CTBucket (
 					4,
 					"Middle Distillates",
 					19.,
@@ -251,7 +294,7 @@ public class CTSettingsContainer21
 
 			s_BucketMap.put (
 				5,
-				new org.drip.simm.commodity.CTBucket (
+				new CTBucket (
 					5,
 					"Heavy Distillates",
 					24.,
@@ -261,7 +304,7 @@ public class CTSettingsContainer21
 
 			s_BucketMap.put (
 				6,
-				new org.drip.simm.commodity.CTBucket (
+				new CTBucket (
 					6,
 					"North American Natural Gas",
 					22.,
@@ -271,7 +314,7 @@ public class CTSettingsContainer21
 
 			s_BucketMap.put (
 				7,
-				new org.drip.simm.commodity.CTBucket (
+				new CTBucket (
 					7,
 					"European Natural Gas",
 					26.,
@@ -281,7 +324,7 @@ public class CTSettingsContainer21
 
 			s_BucketMap.put (
 				8,
-				new org.drip.simm.commodity.CTBucket (
+				new CTBucket (
 					8,
 					"North American Power",
 					50.,
@@ -291,7 +334,7 @@ public class CTSettingsContainer21
 
 			s_BucketMap.put (
 				9,
-				new org.drip.simm.commodity.CTBucket (
+				new CTBucket (
 					9,
 					"European Power",
 					27.,
@@ -301,7 +344,7 @@ public class CTSettingsContainer21
 
 			s_BucketMap.put (
 				10,
-				new org.drip.simm.commodity.CTBucket (
+				new CTBucket (
 					10,
 					"Freight",
 					54.,
@@ -311,7 +354,7 @@ public class CTSettingsContainer21
 
 			s_BucketMap.put (
 				11,
-				new org.drip.simm.commodity.CTBucket (
+				new CTBucket (
 					11,
 					"Base Metals",
 					20.,
@@ -321,7 +364,7 @@ public class CTSettingsContainer21
 
 			s_BucketMap.put (
 				12,
-				new org.drip.simm.commodity.CTBucket (
+				new CTBucket (
 					12,
 					"Precious Metals",
 					20.,
@@ -331,7 +374,7 @@ public class CTSettingsContainer21
 
 			s_BucketMap.put (
 				13,
-				new org.drip.simm.commodity.CTBucket (
+				new CTBucket (
 					13,
 					"Grains",
 					17.,
@@ -341,7 +384,7 @@ public class CTSettingsContainer21
 
 			s_BucketMap.put (
 				14,
-				new org.drip.simm.commodity.CTBucket (
+				new CTBucket (
 					14,
 					"Softs",
 					14.,
@@ -351,7 +394,7 @@ public class CTSettingsContainer21
 
 			s_BucketMap.put (
 				15,
-				new org.drip.simm.commodity.CTBucket (
+				new CTBucket (
 					15,
 					"Livestock",
 					10.,
@@ -361,7 +404,7 @@ public class CTSettingsContainer21
 
 			s_BucketMap.put (
 				16,
-				new org.drip.simm.commodity.CTBucket (
+				new CTBucket (
 					16,
 					"Other",
 					54.,
@@ -371,7 +414,7 @@ public class CTSettingsContainer21
 
 			s_BucketMap.put (
 				17,
-				new org.drip.simm.commodity.CTBucket (
+				new CTBucket (
 					17,
 					"Indexes",
 					16.,
@@ -379,7 +422,7 @@ public class CTSettingsContainer21
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 
@@ -395,7 +438,7 @@ public class CTSettingsContainer21
 	 * @return The Set of Bucket Indexes available
 	 */
 
-	public static final java.util.Set<java.lang.Integer> BucketSet()
+	public static final Set<Integer> BucketSet()
 	{
 		return s_BucketMap.keySet();
 	}
@@ -411,7 +454,9 @@ public class CTSettingsContainer21
 	public static final boolean ContainsBucket (
 		final int bucketNumber)
 	{
-		return s_BucketMap.containsKey (bucketNumber);
+		return s_BucketMap.containsKey (
+			bucketNumber
+		);
 	}
 
 	/**
@@ -422,10 +467,14 @@ public class CTSettingsContainer21
 	 * @return The Bucket denoted by the Number
 	 */
 
-	public static final org.drip.simm.commodity.CTBucket Bucket (
+	public static final CTBucket Bucket (
 		final int bucketNumber)
 	{
-		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;
+		return ContainsBucket (
+			bucketNumber
+		) ? s_BucketMap.get (
+			bucketNumber
+		) : null;
 	}
 
 	/**
@@ -434,7 +483,7 @@ public class CTSettingsContainer21
 	 * @return The Cross Bucket Correlation
 	 */
 
-	public static final org.drip.measure.stochastic.LabelCorrelation CrossBucketCorrelation()
+	public static final LabelCorrelation CrossBucketCorrelation()
 	{
 		return s_CrossBucketCorrelation;
 	}
@@ -445,7 +494,7 @@ public class CTSettingsContainer21
 	 * @return The Bucket Map
 	 */
 
-	public static final java.util.Map<java.lang.Integer, org.drip.simm.commodity.CTBucket> BucketMap()
+	public static final Map<Integer, CTBucket> BucketMap()
 	{
 		return s_BucketMap;
 	}
@@ -456,9 +505,9 @@ public class CTSettingsContainer21
 	 * @return The Cross Bucket Co-variance Matrix
 	 */
 
-	public static final org.drip.simm.foundation.RiskGroupPrincipalCovariance CrossBucketPrincipalCovariance()
+	public static final RiskGroupPrincipalCovariance CrossBucketPrincipalCovariance()
 	{
-		return org.drip.simm.foundation.RiskGroupPrincipalCovariance.Standard (
+		return RiskGroupPrincipalCovariance.Standard (
 			s_CrossBucketCorrelation.matrix(),
 			1.
 		);

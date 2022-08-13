@@ -1,6 +1,15 @@
 
 package org.drip.simm.credit;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
+import org.drip.measure.stochastic.LabelCorrelation;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -120,42 +129,65 @@ package org.drip.simm.credit;
 
 public class CRQSettingsContainer20
 {
-	private static org.drip.measure.stochastic.LabelCorrelation s_CrossBucketCorrelation = null;
+	private static LabelCorrelation s_CrossBucketCorrelation = null;
 
-	private static final java.util.Map<java.lang.Integer, org.drip.simm.credit.CRBucket> s_BucketMap = new
-		java.util.TreeMap<java.lang.Integer, org.drip.simm.credit.CRBucket>();
+	private static final Map<Integer, CRBucket> s_BucketMap = new TreeMap<Integer, CRBucket>();
 
 	private static final boolean SetUpCrossBucketCorrelation()
 	{
-		java.util.List<java.lang.String> bucketList = new java.util.ArrayList<java.lang.String>();
+		List<String> bucketList = new ArrayList<String>();
 
-		bucketList.add ("1");
+		bucketList.add (
+			"1"
+		);
 
-		bucketList.add ("2");
+		bucketList.add (
+			"2"
+		);
 
-		bucketList.add ("3");
+		bucketList.add (
+			"3"
+		);
 
-		bucketList.add ("4");
+		bucketList.add (
+			"4"
+		);
 
-		bucketList.add ("5");
+		bucketList.add (
+			"5"
+		);
 
-		bucketList.add ("6");
+		bucketList.add (
+			"6"
+		);
 
-		bucketList.add ("7");
+		bucketList.add (
+			"7"
+		);
 
-		bucketList.add ("8");
+		bucketList.add (
+			"8"
+		);
 
-		bucketList.add ("9");
+		bucketList.add (
+			"9"
+		);
 
-		bucketList.add ("10");
+		bucketList.add (
+			"10"
+		);
 
-		bucketList.add ("11");
+		bucketList.add (
+			"11"
+		);
 
-		bucketList.add ("12");
+		bucketList.add (
+			"12"
+		);
 
 		try
 		{
-			s_CrossBucketCorrelation = new org.drip.measure.stochastic.LabelCorrelation (
+			s_CrossBucketCorrelation = new LabelCorrelation (
 				bucketList,
 				new double[][]
 				{
@@ -176,7 +208,7 @@ public class CRQSettingsContainer20
 
 			return true;
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -196,135 +228,135 @@ public class CRQSettingsContainer20
 		{
 			s_BucketMap.put (
 				-1,
-				new org.drip.simm.credit.CRBucket (
+				new CRBucket (
 					-1,
-					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_UNSPECIFIED,
-					org.drip.simm.credit.SectorSystemics.RESIDUAL,
+					CRSystemics.CREDIT_QUALITY_UNSPECIFIED,
+					SectorSystemics.RESIDUAL,
 					238.
 				)
 			);
 
 			s_BucketMap.put (
 				1,
-				new org.drip.simm.credit.CRBucket (
+				new CRBucket (
 					1,
-					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					org.drip.simm.credit.SectorSystemics.SOVEREIGNS,
+					CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
+					SectorSystemics.SOVEREIGNS,
 					85.
 				)
 			);
 
 			s_BucketMap.put (
 				2,
-				new org.drip.simm.credit.CRBucket (
+				new CRBucket (
 					2,
-					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					org.drip.simm.credit.SectorSystemics.FINANCIALS,
+					CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
+					SectorSystemics.FINANCIALS,
 					85.
 				)
 			);
 
 			s_BucketMap.put (
 				3,
-				new org.drip.simm.credit.CRBucket (
+				new CRBucket (
 					3,
-					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					org.drip.simm.credit.SectorSystemics.BASIC_MATERIALS,
+					CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
+					SectorSystemics.BASIC_MATERIALS,
 					73.
 				)
 			);
 
 			s_BucketMap.put (
 				4,
-				new org.drip.simm.credit.CRBucket (
+				new CRBucket (
 					4,
-					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					org.drip.simm.credit.SectorSystemics.CONSUMER,
+					CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
+					SectorSystemics.CONSUMER,
 					49.
 				)
 			);
 
 			s_BucketMap.put (
 				5,
-				new org.drip.simm.credit.CRBucket (
+				new CRBucket (
 					5,
-					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					org.drip.simm.credit.SectorSystemics.TMT,
+					CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
+					SectorSystemics.TMT,
 					48.
 				)
 			);
 
 			s_BucketMap.put (
 				6,
-				new org.drip.simm.credit.CRBucket (
+				new CRBucket (
 					6,
-					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					org.drip.simm.credit.SectorSystemics.LOCAL_SERVICES,
+					CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
+					SectorSystemics.LOCAL_SERVICES,
 					43.
 				)
 			);
 
 			s_BucketMap.put (
 				7,
-				new org.drip.simm.credit.CRBucket (
+				new CRBucket (
 					7,
-					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					org.drip.simm.credit.SectorSystemics.BASIC_MATERIALS,
+					CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
+					SectorSystemics.BASIC_MATERIALS,
 					161.
 				)
 			);
 
 			s_BucketMap.put (
 				8,
-				new org.drip.simm.credit.CRBucket (
+				new CRBucket (
 					8,
-					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					org.drip.simm.credit.SectorSystemics.FINANCIALS,
+					CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
+					SectorSystemics.FINANCIALS,
 					238.
 				)
 			);
 
 			s_BucketMap.put (
 				9,
-				new org.drip.simm.credit.CRBucket (
+				new CRBucket (
 					9,
-					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					org.drip.simm.credit.SectorSystemics.BASIC_MATERIALS,
+					CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
+					SectorSystemics.BASIC_MATERIALS,
 					151.
 				)
 			);
 
 			s_BucketMap.put (
 				10,
-				new org.drip.simm.credit.CRBucket (
+				new CRBucket (
 					10,
-					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					org.drip.simm.credit.SectorSystemics.CONSUMER,
+					CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
+					SectorSystemics.CONSUMER,
 					210.
 				)
 			);
 
 			s_BucketMap.put (
 				11,
-				new org.drip.simm.credit.CRBucket (
+				new CRBucket (
 					11,
-					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					org.drip.simm.credit.SectorSystemics.TMT,
+					CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
+					SectorSystemics.TMT,
 					141.
 				)
 			);
 
 			s_BucketMap.put (
 				12,
-				new org.drip.simm.credit.CRBucket (
+				new CRBucket (
 					12,
-					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					org.drip.simm.credit.SectorSystemics.LOCAL_SERVICES,
+					CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
+					SectorSystemics.LOCAL_SERVICES,
 					102.
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 
@@ -340,19 +372,29 @@ public class CRQSettingsContainer20
 	 * @return The Standard ISDA Credit Tenor Set
 	 */
 
-	public static final java.util.Set<java.lang.String> TenorSet()
+	public static final Set<String> TenorSet()
 	{
-		java.util.Set<java.lang.String> tenorSet = new java.util.HashSet<java.lang.String>();
+		Set<String> tenorSet = new HashSet<String>();
 
-		tenorSet.add ("1Y");
+		tenorSet.add (
+			"1Y"
+		);
 
-		tenorSet.add ("2Y");
+		tenorSet.add (
+			"2Y"
+		);
 
-		tenorSet.add ("3Y");
+		tenorSet.add (
+			"3Y"
+		);
 
-		tenorSet.add ("5Y");
+		tenorSet.add (
+			"5Y"
+		);
 
-		tenorSet.add ("10Y");
+		tenorSet.add (
+			"10Y"
+		);
 
 		return tenorSet;
 	}
@@ -363,7 +405,7 @@ public class CRQSettingsContainer20
 	 * @return The Set of Bucket Indexes available
 	 */
 
-	public static final java.util.Set<java.lang.Integer> BucketSet()
+	public static final Set<Integer> BucketSet()
 	{
 		return s_BucketMap.keySet();
 	}
@@ -379,7 +421,9 @@ public class CRQSettingsContainer20
 	public static final boolean ContainsBucket (
 		final int bucketNumber)
 	{
-		return s_BucketMap.containsKey (bucketNumber);
+		return s_BucketMap.containsKey (
+			bucketNumber
+		);
 	}
 
 	/**
@@ -390,10 +434,14 @@ public class CRQSettingsContainer20
 	 * @return The Bucket denoted by the Number
 	 */
 
-	public static final org.drip.simm.credit.CRBucket Bucket (
+	public static final CRBucket Bucket (
 		final int bucketNumber)
 	{
-		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;
+		return ContainsBucket (
+			bucketNumber
+		) ? s_BucketMap.get (
+			bucketNumber
+		) : null;
 	}
 
 	/**
@@ -402,7 +450,7 @@ public class CRQSettingsContainer20
 	 * @return The Cross Bucket Correlation
 	 */
 
-	public static final org.drip.measure.stochastic.LabelCorrelation CrossBucketCorrelation()
+	public static final LabelCorrelation CrossBucketCorrelation()
 	{
 		return s_CrossBucketCorrelation;
 	}
@@ -413,7 +461,7 @@ public class CRQSettingsContainer20
 	 * @return The Bucket Map
 	 */
 
-	public static final java.util.Map<java.lang.Integer, org.drip.simm.credit.CRBucket> BucketMap()
+	public static final Map<Integer, CRBucket> BucketMap()
 	{
 		return s_BucketMap;
 	}

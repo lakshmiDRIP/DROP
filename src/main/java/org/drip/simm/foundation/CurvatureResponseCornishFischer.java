@@ -1,6 +1,9 @@
 
 package org.drip.simm.foundation;
 
+import org.drip.measure.gaussian.NormalQuadrature;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -119,7 +122,8 @@ package org.drip.simm.foundation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CurvatureResponseCornishFischer implements org.drip.simm.foundation.CurvatureResponse
+public class CurvatureResponseCornishFischer
+	implements CurvatureResponse
 {
 
 	/**
@@ -128,8 +132,8 @@ public class CurvatureResponseCornishFischer implements org.drip.simm.foundation
 
 	public static final double CURVATURE_VAR_CUT_OFF = 0.995;
 
-	private double _varCutoff = java.lang.Double.NaN;
-	private double _lambdaPlateauPeak = java.lang.Double.NaN;
+	private double _varCutoff = Double.NaN;
+	private double _lambdaPlateauPeak = Double.NaN;
 
 	/**
 	 * Construct the Standard Instance of CurvatureResponseCornishFischer
@@ -141,9 +145,11 @@ public class CurvatureResponseCornishFischer implements org.drip.simm.foundation
 	{
 		try
 		{
-			return new CurvatureResponseCornishFischer (CURVATURE_VAR_CUT_OFF);
+			return new CurvatureResponseCornishFischer (
+				CURVATURE_VAR_CUT_OFF
+			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -156,20 +162,26 @@ public class CurvatureResponseCornishFischer implements org.drip.simm.foundation
 	 * 
 	 * @param varCutoff VaR Cut-off
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CurvatureResponseCornishFischer (
 		final double varCutoff)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_varCutoff = varCutoff) ||
-				0. > _varCutoff || 1. < _varCutoff)
+		if (!NumberUtil.IsValid (
+				_varCutoff = varCutoff
+			) || 0. > _varCutoff || 1. < _varCutoff
+		)
 		{
-			throw new java.lang.Exception ("CurvatureResponseCornishFischer Constructor => Invalid Inputs");
+			throw new Exception (
+				"CurvatureResponseCornishFischer Constructor => Invalid Inputs"
+			);
 		}
 
-		double tailVariate = org.drip.measure.gaussian.NormalQuadrature.InverseCDF (_varCutoff);
+		double tailVariate = NormalQuadrature.InverseCDF (
+			_varCutoff
+		);
 
 		_lambdaPlateauPeak = tailVariate * tailVariate - 1.;
 	}
@@ -204,22 +216,28 @@ public class CurvatureResponseCornishFischer implements org.drip.simm.foundation
 	 * 
 	 * @return The Lambda
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	@Override public double lambda (
 		final double cumulativeRiskFactorSensitivity,
 		final double cumulativeRiskFactorSensitivityPositive)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (cumulativeRiskFactorSensitivity) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (cumulativeRiskFactorSensitivityPositive) ||
-				0. > cumulativeRiskFactorSensitivityPositive)
+		if (!NumberUtil.IsValid (
+				cumulativeRiskFactorSensitivity
+			) ||
+			!NumberUtil.IsValid (
+				cumulativeRiskFactorSensitivityPositive
+			) || 0. > cumulativeRiskFactorSensitivityPositive
+		)
 		{
-			throw new java.lang.Exception ("CurvatureResponseCornishFischer::lambda => Invalid Inputs");
+			throw new Exception (
+				"CurvatureResponseCornishFischer::lambda => Invalid Inputs"
+			);
 		}
 
-		double theta = java.lang.Math.min (
+		double theta = Math.min (
 			0. == cumulativeRiskFactorSensitivityPositive ? 0. :
 				cumulativeRiskFactorSensitivity / cumulativeRiskFactorSensitivityPositive,
 			0.

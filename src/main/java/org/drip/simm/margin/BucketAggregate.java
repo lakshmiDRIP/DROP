@@ -1,6 +1,10 @@
 
 package org.drip.simm.margin;
 
+import java.util.Map;
+
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,10 +125,9 @@ package org.drip.simm.margin;
 
 public class BucketAggregate
 {
-	private double _sensitivityMarginVariance = java.lang.Double.NaN;
-	private double _cumulativeSensitivityMargin = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, org.drip.simm.margin.RiskFactorAggregate>
-		_riskFactorAggregateMap = null;
+	private double _sensitivityMarginVariance = Double.NaN;
+	private double _cumulativeSensitivityMargin = Double.NaN;
+	private Map<String, RiskFactorAggregate> _riskFactorAggregateMap = null;
 
 	/**
 	 * BucketAggregate Constructor
@@ -133,23 +136,28 @@ public class BucketAggregate
 	 * @param sensitivityMarginVariance The Bucket's Sensitivity Margin Variance
 	 * @param cumulativeSensitivityMargin The Cumulative Risk Factor Sensitivity Margin
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BucketAggregate (
-		final java.util.Map<java.lang.String, org.drip.simm.margin.RiskFactorAggregate>
-			riskFactorAggregateMap,
+		final Map<String, RiskFactorAggregate> riskFactorAggregateMap,
 		final double sensitivityMarginVariance,
 		final double cumulativeSensitivityMargin)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (null == (_riskFactorAggregateMap = riskFactorAggregateMap) || 0 == _riskFactorAggregateMap.size()
-			|| !org.drip.numerical.common.NumberUtil.IsValid (_sensitivityMarginVariance =
-				sensitivityMarginVariance) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_cumulativeSensitivityMargin =
-				cumulativeSensitivityMargin))
+		if (null == (_riskFactorAggregateMap = riskFactorAggregateMap) ||
+			0 == _riskFactorAggregateMap.size() ||
+			!NumberUtil.IsValid (
+				_sensitivityMarginVariance = sensitivityMarginVariance
+			) ||
+			!NumberUtil.IsValid (
+				_cumulativeSensitivityMargin = cumulativeSensitivityMargin
+			)
+		)
 		{
-			throw new java.lang.Exception ("BucketAggregate Constructor => Invalid Inputs");
+			throw new Exception (
+				"BucketAggregate Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -159,7 +167,7 @@ public class BucketAggregate
 	 * @return The Risk Factor Aggregate Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.simm.margin.RiskFactorAggregate> riskFactorAggregateMap()
+	public Map<String, RiskFactorAggregate> riskFactorAggregateMap()
 	{
 		return _riskFactorAggregateMap;
 	}
@@ -194,10 +202,12 @@ public class BucketAggregate
 
 	public double positionPrincipalComponentCovarianceISDA()
 	{
-		double sensitivityMargin = java.lang.Math.sqrt (_sensitivityMarginVariance);
+		double sensitivityMargin = Math.sqrt (
+			_sensitivityMarginVariance
+		);
 
-		return java.lang.Math.min (
-			java.lang.Math.max (
+		return Math.min (
+			Math.max (
 				_cumulativeSensitivityMargin,
 				-1. * sensitivityMargin
 			),

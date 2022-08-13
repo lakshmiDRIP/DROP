@@ -131,14 +131,14 @@ public interface CurvatureEstimator
 	 * 
 	 * @return The SBA Margin
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract double margin (
 		final double cumulativeRiskFactorSensitivity,
 		final double cumulativeRiskFactorSensitivityPositive,
 		final double riskFactorSensitivityVariance)
-		throws java.lang.Exception;
+		throws Exception;
 
 	/**
 	 * Indicate if the Correlator is Quadratic
@@ -158,13 +158,13 @@ public interface CurvatureEstimator
 	 * 
 	 * @return The Bucket Pair Curvature Variance Modulator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double varianceModulator (
-		final java.lang.String bucketKey1,
+		final String bucketKey1,
 		final double bucketVariance1,
-		final java.lang.String bucketKey2,
+		final String bucketKey2,
 		final double bucketVariance2)
-		throws java.lang.Exception;
+		throws Exception;
 }

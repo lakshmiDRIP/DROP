@@ -1,6 +1,10 @@
 
 package org.drip.simm.margin;
 
+import java.util.Map;
+
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,10 +125,9 @@ package org.drip.simm.margin;
 
 public class RiskMeasureAggregate
 {
-	private double _coreSBAVariance = java.lang.Double.NaN;
-	private double _residualSBAVariance = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, org.drip.simm.margin.BucketAggregate> _bucketAggregateMap =
-		null;
+	private double _coreSBAVariance = Double.NaN;
+	private double _residualSBAVariance = Double.NaN;
+	private Map<String, BucketAggregate> _bucketAggregateMap = null;
 
 	/**
 	 * RiskMeasureAggregate Constructor
@@ -133,20 +136,27 @@ public class RiskMeasureAggregate
 	 * @param coreSBAVariance The Core SBA Variance
 	 * @param residualSBAVariance The Residual SBA Variance
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskMeasureAggregate (
-		final java.util.Map<java.lang.String, org.drip.simm.margin.BucketAggregate> bucketAggregateMap,
+		final Map<String, BucketAggregate> bucketAggregateMap,
 		final double coreSBAVariance,
 		final double residualSBAVariance)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (null == (_bucketAggregateMap = bucketAggregateMap) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_coreSBAVariance = coreSBAVariance) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_residualSBAVariance = residualSBAVariance))
+			!NumberUtil.IsValid (
+				_coreSBAVariance = coreSBAVariance
+			) ||
+			!NumberUtil.IsValid (
+				_residualSBAVariance = residualSBAVariance
+			)
+		)
 		{
-			throw new java.lang.Exception ("RiskMeasureAggregate Consructor => Invalid Inputs");
+			throw new Exception (
+				"RiskMeasureAggregate Consructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -156,7 +166,7 @@ public class RiskMeasureAggregate
 	 * @return The Bucket Sensitivity Aggregate Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.simm.margin.BucketAggregate> bucketAggregateMap()
+	public Map<String, BucketAggregate> bucketAggregateMap()
 	{
 		return _bucketAggregateMap;
 	}
@@ -191,6 +201,10 @@ public class RiskMeasureAggregate
 
 	public double sba()
 	{
-		return java.lang.Math.sqrt (_coreSBAVariance) + java.lang.Math.sqrt (_residualSBAVariance);
+		return Math.sqrt (
+			_coreSBAVariance
+		) + Math.sqrt (
+			_residualSBAVariance
+		);
 	}
 }

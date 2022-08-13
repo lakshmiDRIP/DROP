@@ -121,9 +121,9 @@ package org.drip.simm.margin;
 
 public class RiskClassAggregateIR
 {
-	private org.drip.simm.margin.RiskMeasureAggregateIR _vegaMargin = null;
-	private org.drip.simm.margin.RiskMeasureAggregateIR _deltaMargin = null;
-	private org.drip.simm.margin.RiskMeasureAggregateIR _curvatureMargin = null;
+	private RiskMeasureAggregateIR _vegaMargin = null;
+	private RiskMeasureAggregateIR _deltaMargin = null;
+	private RiskMeasureAggregateIR _curvatureMargin = null;
 
 	/**
 	 * RiskClassAggregateIR Constructor
@@ -132,20 +132,22 @@ public class RiskClassAggregateIR
 	 * @param vegaMargin The Vega Margin
 	 * @param curvatureMargin The Curvature Margin
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskClassAggregateIR (
-		final org.drip.simm.margin.RiskMeasureAggregateIR deltaMargin,
-		final org.drip.simm.margin.RiskMeasureAggregateIR vegaMargin,
-		final org.drip.simm.margin.RiskMeasureAggregateIR curvatureMargin)
-		throws java.lang.Exception
+		final RiskMeasureAggregateIR deltaMargin,
+		final RiskMeasureAggregateIR vegaMargin,
+		final RiskMeasureAggregateIR curvatureMargin)
+		throws Exception
 	{
 		if (null == (_deltaMargin = deltaMargin) ||
 			null == (_vegaMargin = vegaMargin) ||
 			null == (_curvatureMargin = curvatureMargin))
 		{
-			throw new java.lang.Exception ("RiskClassAggregateIR Constructor => Invalid Inputs");
+			throw new Exception (
+				"RiskClassAggregateIR Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -155,7 +157,7 @@ public class RiskClassAggregateIR
 	 * @return The Delta Margin
 	 */
 
-	public org.drip.simm.margin.RiskMeasureAggregateIR deltaMargin()
+	public RiskMeasureAggregateIR deltaMargin()
 	{
 		return _deltaMargin;
 	}
@@ -166,7 +168,7 @@ public class RiskClassAggregateIR
 	 * @return The Vega Margin
 	 */
 
-	public org.drip.simm.margin.RiskMeasureAggregateIR vegaMargin()
+	public RiskMeasureAggregateIR vegaMargin()
 	{
 		return _vegaMargin;
 	}
@@ -177,7 +179,7 @@ public class RiskClassAggregateIR
 	 * @return The Curvature Margin
 	 */
 
-	public org.drip.simm.margin.RiskMeasureAggregateIR curvatureMargin()
+	public RiskMeasureAggregateIR curvatureMargin()
 	{
 		return _curvatureMargin;
 	}

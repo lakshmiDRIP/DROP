@@ -1,6 +1,12 @@
 
 package org.drip.simm.credit;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -122,8 +128,8 @@ package org.drip.simm.credit;
 public class CRBucket
 {
 	private int _number = -1;
-	private java.lang.String _quality = "";
-	private java.lang.String[] _sectorArray = null;
+	private String _quality = "";
+	private String[] _sectorArray = null;
 	private double _riskWeight = java.lang.Double.NaN;
 
 	/**
@@ -134,28 +140,33 @@ public class CRBucket
 	 * @param sectorArray The Sector Array
 	 * @param riskWeight The Risk Weight
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CRBucket (
 		final int number,
-		final java.lang.String quality,
-		final java.lang.String[] sectorArray,
+		final String quality,
+		final String[] sectorArray,
 		final double riskWeight)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (null == (_quality = quality) || _quality.isEmpty() ||
 			null == (_sectorArray = sectorArray) || 0 == _sectorArray.length ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_riskWeight = riskWeight))
+			!NumberUtil.IsValid (
+				_riskWeight = riskWeight
+			)
+		)
 		{
-			throw new java.lang.Exception ("CRBucket Constructor => Invalid Inputs");
+			throw new Exception (
+				"CRBucket Constructor => Invalid Inputs"
+			);
 		}
 
 		_number = number;
 	}
 
 	/**
-	 * Retrieve the SIMM 2.0 Bucket Number
+	 * Retrieve the SIMM Bucket Number
 	 * 
 	 * @return The Bucket Number
 	 */
@@ -166,23 +177,23 @@ public class CRBucket
 	}
 
 	/**
-	 * Retrieve the SIMM 2.0 Credit Quality
+	 * Retrieve the SIMM Credit Quality
 	 * 
 	 * @return The Credit Quality
 	 */
 
-	public java.lang.String quality()
+	public String quality()
 	{
 		return _quality;
 	}
 
 	/**
-	 * Retrieve the SIMM 2.0 Sector Array
+	 * Retrieve the SIMM Sector Array
 	 * 
 	 * @return The Sector Array
 	 */
 
-	public java.lang.String[] sectorArray()
+	public String[] sectorArray()
 	{
 		return _sectorArray;
 	}
@@ -206,19 +217,17 @@ public class CRBucket
 	 * @return The Credit Tenor Risk Weight Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> tenorWeightMap (
-		final java.util.Set<java.lang.String> tenorSet)
+	public Map<String, Double> tenorWeightMap (
+		final Set<String> tenorSet)
 	{
 		if (null == tenorSet || 0 == tenorSet.size())
 		{
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> tenorWeightMap = new
-			java.util.HashMap<java.lang.String, java.lang.Double>();
+		Map<String, Double> tenorWeightMap = new HashMap<String, Double>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> tenorWeightEntry :
-			tenorWeightMap.entrySet())
+		for (Map.Entry<String, Double> tenorWeightEntry : tenorWeightMap.entrySet())
 		{
 			tenorWeightMap.put (
 				tenorWeightEntry.getKey(),

@@ -126,7 +126,7 @@ public class SectorSystemics
 	 * The Sovereigns Sector
 	 */
 
-	public static final java.lang.String[] SOVEREIGNS = new java.lang.String[]
+	public static final String[] SOVEREIGNS = new String[]
 	{
 		"SOVEREIGN",
 		"CENTRAL_BANK"
@@ -136,7 +136,7 @@ public class SectorSystemics
 	 * The Financials Sector
 	 */
 
-	public static final java.lang.String[] FINANCIALS = new java.lang.String[]
+	public static final String[] FINANCIALS = new String[]
 	{
 		"FINANCIAL",
 		"GOVERNMENT_BACKED_FINANCIAL"
@@ -146,7 +146,7 @@ public class SectorSystemics
 	 * The Basic Materials Sector
 	 */
 
-	public static final java.lang.String[] BASIC_MATERIALS = new java.lang.String[]
+	public static final String[] BASIC_MATERIALS = new String[]
 	{
 		"BASIC_MATERIALS",
 		"ENERGY",
@@ -157,7 +157,7 @@ public class SectorSystemics
 	 * The Consumer Sector
 	 */
 
-	public static final java.lang.String[] CONSUMER = new java.lang.String[]
+	public static final String[] CONSUMER = new String[]
 	{
 		"CONSUMER"
 	};
@@ -166,7 +166,7 @@ public class SectorSystemics
 	 * The Technology/Media/Telecommunications Sector
 	 */
 
-	public static final java.lang.String[] TMT = new java.lang.String[]
+	public static final String[] TMT = new String[]
 	{
 		"TECHNOLOGY",
 		"MEDIA",
@@ -177,7 +177,7 @@ public class SectorSystemics
 	 * The Local Services Sector
 	 */
 
-	public static final java.lang.String[] LOCAL_SERVICES = new java.lang.String[]
+	public static final String[] LOCAL_SERVICES = new String[]
 	{
 		"NON_FINANCIAL",
 		"HEALTH_CARE",
@@ -191,7 +191,7 @@ public class SectorSystemics
 	 * The RMBS/CMBS Sector
 	 */
 
-	public static final java.lang.String[] RMBS_CMBS = new java.lang.String[]
+	public static final String[] RMBS_CMBS = new String[]
 	{
 		"RMBS",
 		"CMBS"
@@ -201,7 +201,7 @@ public class SectorSystemics
 	 * The "Residual" Sector
 	 */
 
-	public static final java.lang.String[] RESIDUAL = new java.lang.String[]
+	public static final String[] RESIDUAL = new String[]
 	{
 		"RESIDUAL"
 	};
@@ -210,7 +210,7 @@ public class SectorSystemics
 	 * The Consumer Services Sector
 	 */
 
-	public static final java.lang.String[] CONSUMER_SERVICES = new java.lang.String[]
+	public static final String[] CONSUMER_SERVICES = new String[]
 	{
 		"CONSUMER_GOODS",
 		"CONSUMER_SERVICES",
@@ -223,7 +223,7 @@ public class SectorSystemics
 	 * The Telecommunications/Industrials Sector
 	 */
 
-	public static final java.lang.String[] TELECOMMUNICATIONS_INDUSTRIALS = new java.lang.String[]
+	public static final String[] TELECOMMUNICATIONS_INDUSTRIALS = new String[]
 	{
 		"TELECOMMUNICATIONS",
 		"INDUSTRIALS"
@@ -233,7 +233,7 @@ public class SectorSystemics
 	 * The Heavy Industrials Sector
 	 */
 
-	public static final java.lang.String[] HEAVY_INDUSTRIALS = new java.lang.String[]
+	public static final String[] HEAVY_INDUSTRIALS = new String[]
 	{
 		"BASIC_MATERIALS",
 		"ENERGY",
@@ -247,7 +247,7 @@ public class SectorSystemics
 	 * The Investment Sector
 	 */
 
-	public static final java.lang.String[] INVESTMENT = new java.lang.String[]
+	public static final String[] INVESTMENT = new String[]
 	{
 		"FINANCIAL",
 		"GOVERNMENT_BACKED_FINANCIAL",
@@ -259,7 +259,7 @@ public class SectorSystemics
 	 * The "All" Sector
 	 */
 
-	public static final java.lang.String[] ALL = new java.lang.String[]
+	public static final String[] ALL = new String[]
 	{
 		"ALL"
 	};
@@ -268,7 +268,7 @@ public class SectorSystemics
 	 * The Indexes/Funds/ETF's Sector
 	 */
 
-	public static final java.lang.String[] INDEX_FUND_ETF = new java.lang.String[]
+	public static final String[] INDEX_FUND_ETF = new String[]
 	{
 		"INDEX",
 		"FUND",
@@ -279,7 +279,7 @@ public class SectorSystemics
 	 * The Volatility Index Sector
 	 */
 
-	public static final java.lang.String[] VOLATILITY_INDEX = new java.lang.String[]
+	public static final String[] VOLATILITY_INDEX = new String[]
 	{
 		"VOLATILITY_INDEX"
 	};

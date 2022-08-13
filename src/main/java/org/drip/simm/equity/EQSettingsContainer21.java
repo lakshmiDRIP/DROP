@@ -1,6 +1,16 @@
 
 package org.drip.simm.equity;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
+import org.drip.measure.stochastic.LabelCorrelation;
+import org.drip.simm.credit.SectorSystemics;
+import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,42 +131,65 @@ package org.drip.simm.equity;
 
 public class EQSettingsContainer21
 {
-	private static org.drip.measure.stochastic.LabelCorrelation s_CrossBucketCorrelation = null;
+	private static LabelCorrelation s_CrossBucketCorrelation = null;
 
-	private static final java.util.Map<java.lang.Integer, org.drip.simm.equity.EQBucket> s_BucketMap =
-		new java.util.TreeMap<java.lang.Integer, org.drip.simm.equity.EQBucket>();
+	private static final Map<Integer, EQBucket> s_BucketMap = new TreeMap<Integer, EQBucket>();
 
 	private static final boolean SetUpCrossBucketCorrelation()
 	{
-		java.util.List<java.lang.String> bucketList = new java.util.ArrayList<java.lang.String>();
+		List<String> bucketList = new ArrayList<String>();
 
-		bucketList.add ("1");
+		bucketList.add (
+			"1"
+		);
 
-		bucketList.add ("2");
+		bucketList.add (
+			"2"
+		);
 
-		bucketList.add ("3");
+		bucketList.add (
+			"3"
+		);
 
-		bucketList.add ("4");
+		bucketList.add (
+			"4"
+		);
 
-		bucketList.add ("5");
+		bucketList.add (
+			"5"
+		);
 
-		bucketList.add ("6");
+		bucketList.add (
+			"6"
+		);
 
-		bucketList.add ("7");
+		bucketList.add (
+			"7"
+		);
 
-		bucketList.add ("8");
+		bucketList.add (
+			"8"
+		);
 
-		bucketList.add ("9");
+		bucketList.add (
+			"9"
+		);
 
-		bucketList.add ("10");
+		bucketList.add (
+			"10"
+		);
 
-		bucketList.add ("11");
+		bucketList.add (
+			"11"
+		);
 
-		bucketList.add ("12");
+		bucketList.add (
+			"12"
+		);
 
 		try
 		{
-			s_CrossBucketCorrelation = new org.drip.measure.stochastic.LabelCorrelation (
+			s_CrossBucketCorrelation = new LabelCorrelation (
 				bucketList,
 				new double[][]
 				{
@@ -177,7 +210,7 @@ public class EQSettingsContainer21
 
 			return true;
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -197,11 +230,11 @@ public class EQSettingsContainer21
 		{
 			s_BucketMap.put (
 				-1,
-				new org.drip.simm.equity.EQBucket (
+				new EQBucket (
 					-1,
-					org.drip.simm.equity.MarketCapitalizationSystemics.ALL,
-					org.drip.simm.equity.RegionSystemics.ALL,
-					org.drip.simm.credit.SectorSystemics.ALL,
+					MarketCapitalizationSystemics.ALL,
+					RegionSystemics.ALL,
+					SectorSystemics.ALL,
 					34.,
 					0.00,
 					0.63
@@ -210,11 +243,11 @@ public class EQSettingsContainer21
 
 			s_BucketMap.put (
 				1,
-				new org.drip.simm.equity.EQBucket (
+				new EQBucket (
 					1,
-					org.drip.simm.equity.MarketCapitalizationSystemics.LARGE,
-					org.drip.simm.equity.RegionSystemics.EMERGING_MARKETS,
-					org.drip.simm.credit.SectorSystemics.CONSUMER_SERVICES,
+					MarketCapitalizationSystemics.LARGE,
+					RegionSystemics.EMERGING_MARKETS,
+					SectorSystemics.CONSUMER_SERVICES,
 					24.,
 					0.14,
 					0.28
@@ -223,11 +256,11 @@ public class EQSettingsContainer21
 
 			s_BucketMap.put (
 				2,
-				new org.drip.simm.equity.EQBucket (
+				new EQBucket (
 					2,
-					org.drip.simm.equity.MarketCapitalizationSystemics.LARGE,
-					org.drip.simm.equity.RegionSystemics.EMERGING_MARKETS,
-					org.drip.simm.credit.SectorSystemics.TELECOMMUNICATIONS_INDUSTRIALS,
+					MarketCapitalizationSystemics.LARGE,
+					RegionSystemics.EMERGING_MARKETS,
+					SectorSystemics.TELECOMMUNICATIONS_INDUSTRIALS,
 					30.,
 					0.20,
 					0.28
@@ -236,11 +269,11 @@ public class EQSettingsContainer21
 
 			s_BucketMap.put (
 				3,
-				new org.drip.simm.equity.EQBucket (
+				new EQBucket (
 					3,
-					org.drip.simm.equity.MarketCapitalizationSystemics.LARGE,
-					org.drip.simm.equity.RegionSystemics.EMERGING_MARKETS,
-					org.drip.simm.credit.SectorSystemics.HEAVY_INDUSTRIALS,
+					MarketCapitalizationSystemics.LARGE,
+					RegionSystemics.EMERGING_MARKETS,
+					SectorSystemics.HEAVY_INDUSTRIALS,
 					31.,
 					0.25,
 					0.28
@@ -249,11 +282,11 @@ public class EQSettingsContainer21
 
 			s_BucketMap.put (
 				4,
-				new org.drip.simm.equity.EQBucket (
+				new EQBucket (
 					4,
-					org.drip.simm.equity.MarketCapitalizationSystemics.LARGE,
-					org.drip.simm.equity.RegionSystemics.EMERGING_MARKETS,
-					org.drip.simm.credit.SectorSystemics.INVESTMENT,
+					MarketCapitalizationSystemics.LARGE,
+					RegionSystemics.EMERGING_MARKETS,
+					SectorSystemics.INVESTMENT,
 					25.,
 					0.23,
 					0.28
@@ -262,11 +295,11 @@ public class EQSettingsContainer21
 
 			s_BucketMap.put (
 				5,
-				new org.drip.simm.equity.EQBucket (
+				new EQBucket (
 					5,
-					org.drip.simm.equity.MarketCapitalizationSystemics.LARGE,
-					org.drip.simm.equity.RegionSystemics.DEVELOPED_MARKETS,
-					org.drip.simm.credit.SectorSystemics.CONSUMER_SERVICES,
+					MarketCapitalizationSystemics.LARGE,
+					RegionSystemics.DEVELOPED_MARKETS,
+					SectorSystemics.CONSUMER_SERVICES,
 					21.,
 					0.23,
 					0.28
@@ -275,11 +308,11 @@ public class EQSettingsContainer21
 
 			s_BucketMap.put (
 				6,
-				new org.drip.simm.equity.EQBucket (
+				new EQBucket (
 					6,
-					org.drip.simm.equity.MarketCapitalizationSystemics.LARGE,
-					org.drip.simm.equity.RegionSystemics.DEVELOPED_MARKETS,
-					org.drip.simm.credit.SectorSystemics.TELECOMMUNICATIONS_INDUSTRIALS,
+					MarketCapitalizationSystemics.LARGE,
+					RegionSystemics.DEVELOPED_MARKETS,
+					SectorSystemics.TELECOMMUNICATIONS_INDUSTRIALS,
 					22.,
 					0.32,
 					0.28
@@ -288,11 +321,11 @@ public class EQSettingsContainer21
 
 			s_BucketMap.put (
 				7,
-				new org.drip.simm.equity.EQBucket (
+				new EQBucket (
 					7,
-					org.drip.simm.equity.MarketCapitalizationSystemics.LARGE,
-					org.drip.simm.equity.RegionSystemics.DEVELOPED_MARKETS,
-					org.drip.simm.credit.SectorSystemics.HEAVY_INDUSTRIALS,
+					MarketCapitalizationSystemics.LARGE,
+					RegionSystemics.DEVELOPED_MARKETS,
+					SectorSystemics.HEAVY_INDUSTRIALS,
 					27.,
 					0.35,
 					0.28
@@ -301,11 +334,11 @@ public class EQSettingsContainer21
 
 			s_BucketMap.put (
 				8,
-				new org.drip.simm.equity.EQBucket (
+				new EQBucket (
 					8,
-					org.drip.simm.equity.MarketCapitalizationSystemics.LARGE,
-					org.drip.simm.equity.RegionSystemics.DEVELOPED_MARKETS,
-					org.drip.simm.credit.SectorSystemics.INVESTMENT,
+					MarketCapitalizationSystemics.LARGE,
+					RegionSystemics.DEVELOPED_MARKETS,
+					SectorSystemics.INVESTMENT,
 					24.,
 					0.32,
 					0.28
@@ -314,11 +347,11 @@ public class EQSettingsContainer21
 
 			s_BucketMap.put (
 				9,
-				new org.drip.simm.equity.EQBucket (
+				new EQBucket (
 					9,
-					org.drip.simm.equity.MarketCapitalizationSystemics.SMALL,
-					org.drip.simm.equity.RegionSystemics.EMERGING_MARKETS,
-					org.drip.simm.credit.SectorSystemics.ALL,
+					MarketCapitalizationSystemics.SMALL,
+					RegionSystemics.EMERGING_MARKETS,
+					SectorSystemics.ALL,
 					33.,
 					0.17,
 					0.28
@@ -327,11 +360,11 @@ public class EQSettingsContainer21
 
 			s_BucketMap.put (
 				10,
-				new org.drip.simm.equity.EQBucket (
+				new EQBucket (
 					10,
-					org.drip.simm.equity.MarketCapitalizationSystemics.SMALL,
-					org.drip.simm.equity.RegionSystemics.DEVELOPED_MARKETS,
-					org.drip.simm.credit.SectorSystemics.ALL,
+					MarketCapitalizationSystemics.SMALL,
+					RegionSystemics.DEVELOPED_MARKETS,
+					SectorSystemics.ALL,
 					34.,
 					0.16,
 					0.28
@@ -340,11 +373,11 @@ public class EQSettingsContainer21
 
 			s_BucketMap.put (
 				11,
-				new org.drip.simm.equity.EQBucket (
+				new EQBucket (
 					11,
-					org.drip.simm.equity.MarketCapitalizationSystemics.ALL,
-					org.drip.simm.equity.RegionSystemics.ALL,
-					org.drip.simm.credit.SectorSystemics.INDEX_FUND_ETF,
+					MarketCapitalizationSystemics.ALL,
+					RegionSystemics.ALL,
+					SectorSystemics.INDEX_FUND_ETF,
 					17.,
 					0.51,
 					0.28
@@ -353,18 +386,18 @@ public class EQSettingsContainer21
 
 			s_BucketMap.put (
 				12,
-				new org.drip.simm.equity.EQBucket (
+				new EQBucket (
 					12,
-					org.drip.simm.equity.MarketCapitalizationSystemics.ALL,
-					org.drip.simm.equity.RegionSystemics.ALL,
-					org.drip.simm.credit.SectorSystemics.VOLATILITY_INDEX,
+					MarketCapitalizationSystemics.ALL,
+					RegionSystemics.ALL,
+					SectorSystemics.VOLATILITY_INDEX,
 					17.,
 					0.51,
 					0.28
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 
@@ -380,7 +413,7 @@ public class EQSettingsContainer21
 	 * @return The Set of Bucket Indexes available
 	 */
 
-	public static final java.util.Set<java.lang.Integer> BucketSet()
+	public static final Set<Integer> BucketSet()
 	{
 		return s_BucketMap.keySet();
 	}
@@ -396,7 +429,9 @@ public class EQSettingsContainer21
 	public static final boolean ContainsBucket (
 		final int bucketNumber)
 	{
-		return s_BucketMap.containsKey (bucketNumber);
+		return s_BucketMap.containsKey (
+			bucketNumber
+		);
 	}
 
 	/**
@@ -407,10 +442,14 @@ public class EQSettingsContainer21
 	 * @return The Bucket denoted by the Number
 	 */
 
-	public static final org.drip.simm.equity.EQBucket Bucket (
+	public static final EQBucket Bucket (
 		final int bucketNumber)
 	{
-		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;
+		return ContainsBucket (
+			bucketNumber
+		) ? s_BucketMap.get (
+			bucketNumber
+		) : null;
 	}
 
 	/**
@@ -419,7 +458,7 @@ public class EQSettingsContainer21
 	 * @return The Cross Bucket Correlation
 	 */
 
-	public static final org.drip.measure.stochastic.LabelCorrelation CrossBucketCorrelation()
+	public static final LabelCorrelation CrossBucketCorrelation()
 	{
 		return s_CrossBucketCorrelation;
 	}
@@ -430,7 +469,7 @@ public class EQSettingsContainer21
 	 * @return The Bucket Map
 	 */
 
-	public static final java.util.Map<java.lang.Integer, org.drip.simm.equity.EQBucket> BucketMap()
+	public static final Map<Integer, EQBucket> BucketMap()
 	{
 		return s_BucketMap;
 	}
@@ -441,9 +480,9 @@ public class EQSettingsContainer21
 	 * @return The Cross Bucket Co-variance Matrix
 	 */
 
-	public static final org.drip.simm.foundation.RiskGroupPrincipalCovariance CrossBucketPrincipalCovariance()
+	public static final RiskGroupPrincipalCovariance CrossBucketPrincipalCovariance()
 	{
-		return org.drip.simm.foundation.RiskGroupPrincipalCovariance.Standard (
+		return RiskGroupPrincipalCovariance.Standard (
 			s_CrossBucketCorrelation.matrix(),
 			1.
 		);

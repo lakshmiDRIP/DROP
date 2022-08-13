@@ -1,6 +1,11 @@
 
 package org.drip.simm.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.drip.measure.stochastic.LabelCorrelation;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -213,346 +218,18 @@ public class CrossRiskClassCorrelation21
 	public static final double CT_FX = 0.32;
 
 	/**
-	 * Retrieve the Correlation between Interest Rate and Credit Qualifying Risk Classes
-	 * 
-	 * @return Correlation between Interest Rate and Credit Qualifying Risk Classes
-	 */
-
-	public static final double IR_CRQ()
-	{
-		return IR_CRQ;
-	}
-
-	/**
-	 * Retrieve the Correlation between Interest Rate and Credit Qualifying Risk Classes
-	 * 
-	 * @return Correlation between Interest Rate and Credit Qualifying Risk Classes
-	 */
-
-	public static final double CRQ_IR()
-	{
-		return IR_CRQ;
-	}
-
-	/**
-	 * Retrieve the Correlation between Interest Rate and Credit Non Qualifying Risk Classes
-	 * 
-	 * @return Correlation between Interest Rate and Credit Non Qualifying Risk Classes
-	 */
-
-	public static final double IR_CRNQ()
-	{
-		return IR_CRNQ;
-	}
-
-	/**
-	 * Retrieve the Correlation between Interest Rate and Credit Non Qualifying Risk Classes
-	 * 
-	 * @return Correlation between Interest Rate and Credit Non Qualifying Risk Classes
-	 */
-
-	public static final double CRNQ_IR()
-	{
-		return IR_CRNQ;
-	}
-
-	/**
-	 * Retrieve the Correlation between Interest Rate and Equity Risk Classes
-	 * 
-	 * @return Correlation between Interest Rate and Equity Risk Classes
-	 */
-
-	public static final double IR_EQ()
-	{
-		return IR_EQ;
-	}
-
-	/**
-	 * Retrieve the Correlation between Interest Rate and Equity Risk Classes
-	 * 
-	 * @return Correlation between Interest Rate and Equity Risk Classes
-	 */
-
-	public static final double EQ_IR()
-	{
-		return IR_EQ;
-	}
-
-	/**
-	 * Retrieve the Correlation between Interest Rate and Commodity Risk Classes
-	 * 
-	 * @return Correlation between Interest Rate and Commodity Risk Classes
-	 */
-
-	public static final double IR_CT()
-	{
-		return IR_CT;
-	}
-
-	/**
-	 * Retrieve the Correlation between Interest Rate and Commodity Risk Classes
-	 * 
-	 * @return Correlation between Interest Rate and Commodity Risk Classes
-	 */
-
-	public static final double CT_IR()
-	{
-		return IR_CT;
-	}
-
-	/**
-	 * Retrieve the Correlation between Interest Rate and FX Risk Classes
-	 * 
-	 * @return Correlation between Interest Rate and FX Risk Classes
-	 */
-
-	public static final double IR_FX()
-	{
-		return IR_FX;
-	}
-
-	/**
-	 * Retrieve the Correlation between Interest Rate and FX Risk Classes
-	 * 
-	 * @return Correlation between Interest Rate and FX Risk Classes
-	 */
-
-	public static final double FX_IR()
-	{
-		return IR_FX;
-	}
-
-	/**
-	 * Retrieve the Correlation between Credit Qualifying and Credit Non-Qualifying Risk Classes
-	 * 
-	 * @return Correlation between Credit Qualifying and Credit Non-Qualifying Risk Classes
-	 */
-
-	public static final double CRQ_CRNQ()
-	{
-		return CRQ_CRNQ;
-	}
-
-	/**
-	 * Retrieve the Correlation between Credit Qualifying and Credit Non-Qualifying Risk Classes
-	 * 
-	 * @return Correlation between Credit Qualifying and Credit Non-Qualifying Risk Classes
-	 */
-
-	public static final double CNRQ_CNQ()
-	{
-		return CRQ_CRNQ;
-	}
-
-	/**
-	 * Retrieve the Correlation between Credit Qualifying and Equity Risk Classes
-	 * 
-	 * @return Correlation between Credit Qualifying and Equity Risk Classes
-	 */
-
-	public static final double CRQ_EQ()
-	{
-		return CRQ_EQ;
-	}
-
-	/**
-	 * Retrieve the Correlation between Credit Qualifying and Equity Risk Classes
-	 * 
-	 * @return Correlation between Credit Qualifying and Equity Risk Classes
-	 */
-
-	public static final double EQ_CRQ()
-	{
-		return CRQ_EQ;
-	}
-
-	/**
-	 * Retrieve the Correlation between Credit Qualifying and Commodity Risk Classes
-	 * 
-	 * @return Correlation between Credit Qualifying and Commodity Risk Classes
-	 */
-
-	public static final double CRQ_CT()
-	{
-		return CRQ_CT;
-	}
-
-	/**
-	 * Retrieve the Correlation between Credit Qualifying and Commodity Risk Classes
-	 * 
-	 * @return Correlation between Credit Qualifying and Commodity Risk Classes
-	 */
-
-	public static final double CT_CRQ()
-	{
-		return CRQ_CT;
-	}
-
-	/**
-	 * Retrieve the Correlation between Credit Qualifying and FX Risk Classes
-	 * 
-	 * @return Correlation between Credit Qualifying and FX Risk Classes
-	 */
-
-	public static final double CRQ_FX()
-	{
-		return CRQ_FX;
-	}
-
-	/**
-	 * Retrieve the Correlation between Credit Qualifying and FX Risk Classes
-	 * 
-	 * @return Correlation between Credit Qualifying and FX Risk Classes
-	 */
-
-	public static final double FX_CRQ()
-	{
-		return CRQ_FX;
-	}
-
-	/**
-	 * Retrieve the Correlation between Credit Non Qualifying and Equity Risk Classes
-	 * 
-	 * @return Correlation between Credit Non Qualifying and Equity Risk Classes
-	 */
-
-	public static final double CNRQ_EQ()
-	{
-		return CRNQ_EQ;
-	}
-
-	/**
-	 * Retrieve the Correlation between Credit Non Qualifying and Equity Risk Classes
-	 * 
-	 * @return Correlation between Credit Non Qualifying and Equity Risk Classes
-	 */
-
-	public static final double EQ_CNRQ()
-	{
-		return CRNQ_EQ;
-	}
-
-	/**
-	 * Retrieve the Correlation between Credit Non Qualifying and Commodity Risk Classes
-	 * 
-	 * @return Correlation between Credit Non Qualifying and Commodity Risk Classes
-	 */
-
-	public static final double CNRQ_CT()
-	{
-		return CRNQ_CT;
-	}
-
-	/**
-	 * Retrieve the Correlation between Credit Non Qualifying and Commodity Risk Classes
-	 * 
-	 * @return Correlation between Credit Non Qualifying and Commodity Risk Classes
-	 */
-
-	public static final double CT_CNRQ()
-	{
-		return CRNQ_CT;
-	}
-
-	/**
-	 * Retrieve the Correlation between Credit Non Qualifying and FX Risk Classes
-	 * 
-	 * @return Correlation between Credit Non Qualifying and FX Risk Classes
-	 */
-
-	public static final double CreditNonQualifying_FX()
-	{
-		return CRNQ_FX;
-	}
-
-	/**
-	 * Retrieve the Correlation between Credit Non Qualifying and FX Risk Classes
-	 * 
-	 * @return Correlation between Credit Non Qualifying and FX Risk Classes
-	 */
-
-	public static final double FX_CNRQ()
-	{
-		return CRNQ_FX;
-	}
-
-	/**
-	 * Retrieve the Correlation between Equity and Commodity Risk Classes
-	 * 
-	 * @return Correlation between Equity and Commodity Risk Classes
-	 */
-
-	public static final double EQ_CT()
-	{
-		return EQ_CT;
-	}
-
-	/**
-	 * Retrieve the Correlation between Equity and Commodity Risk Classes
-	 * 
-	 * @return Correlation between Equity and Commodity Risk Classes
-	 */
-
-	public static final double CT_EQ()
-	{
-		return EQ_CT;
-	}
-
-	/**
-	 * Retrieve the Correlation between Equity and FX Risk Classes
-	 * 
-	 * @return Correlation between Equity and FX Risk Classes
-	 */
-
-	public static final double EQ_FX()
-	{
-		return EQ_FX;
-	}
-
-	/**
-	 * Retrieve the Correlation between Equity and FX Risk Classes
-	 * 
-	 * @return Correlation between Equity and FX Risk Classes
-	 */
-
-	public static final double FX_EQ()
-	{
-		return EQ_FX;
-	}
-
-	/**
-	 * Retrieve the Correlation between Commodity and FX Risk Classes
-	 * 
-	 * @return Correlation between Commodity and FX Risk Classes
-	 */
-
-	public static final double CT_FX()
-	{
-		return CT_FX;
-	}
-
-	/**
-	 * Retrieve the Correlation between Commodity and FX Risk Classes
-	 * 
-	 * @return Correlation between Commodity and FX Risk Classes
-	 */
-
-	public static final double FX_CT()
-	{
-		return CT_FX;
-	}
-
-	/**
 	 * Generate the Corresponding Risk Class Correlation Matrix as a LabelCorrelation Instance
 	 * 
 	 * @return The Risk Class Correlation Matrix
 	 */
 
-	public static final org.drip.measure.stochastic.LabelCorrelation Matrix()
+	public static final LabelCorrelation Matrix()
 	{
 		double[][] riskClassCorrelationMatrix = new double[6][6];
 
-		for (int i = 0 ; i < 6; ++i)
+		for (int i = 0;
+			i < 6;
+			++i)
 		{
 			riskClassCorrelationMatrix[i][i] = 1.;
 		}
@@ -592,28 +269,40 @@ public class CrossRiskClassCorrelation21
 		riskClassCorrelationMatrix[4][5] = CT_FX;
 		riskClassCorrelationMatrix[5][4] = CT_FX;
 
-		java.util.List<java.lang.String> chargramList = new java.util.ArrayList<java.lang.String>();
+		List<String> chargramList = new ArrayList<String>();
 
-		chargramList.add (org.drip.simm.common.Chargram.IR);
+		chargramList.add (
+			Chargram.IR
+		);
 
-		chargramList.add (org.drip.simm.common.Chargram.CRQ);
+		chargramList.add (
+			Chargram.CRQ
+		);
 
-		chargramList.add (org.drip.simm.common.Chargram.CRNQ);
+		chargramList.add (
+			Chargram.CRNQ
+		);
 
-		chargramList.add (org.drip.simm.common.Chargram.EQ);
+		chargramList.add (
+			Chargram.EQ
+		);
 
-		chargramList.add (org.drip.simm.common.Chargram.CT);
+		chargramList.add (
+			Chargram.CT
+		);
 
-		chargramList.add (org.drip.simm.common.Chargram.FX);
+		chargramList.add (
+			Chargram.FX
+		);
 
 		try
 		{
-			return new org.drip.measure.stochastic.LabelCorrelation (
+			return new LabelCorrelation (
 				chargramList,
 				riskClassCorrelationMatrix
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}

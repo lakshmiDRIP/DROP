@@ -1,6 +1,11 @@
 
 package org.drip.simm.estimator;
 
+import org.drip.simm.foundation.MarginEstimationSettings;
+import org.drip.simm.product.RiskClassSensitivity;
+import org.drip.simm.product.RiskClassSensitivityCR;
+import org.drip.simm.product.RiskClassSensitivityIR;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,12 +126,12 @@ package org.drip.simm.estimator;
 
 public class ProductClassSensitivity
 {
-	private org.drip.simm.product.RiskClassSensitivity _fxRiskClassSensitivity = null;
-	private org.drip.simm.product.RiskClassSensitivityIR _irRiskClassSensitivity = null;
-	private org.drip.simm.product.RiskClassSensitivity _equityRiskClassSensitivity = null;
-	private org.drip.simm.product.RiskClassSensitivity _commodityRiskClassSensitivity = null;
-	private org.drip.simm.product.RiskClassSensitivityCR _creditQualifyingRiskClassSensitivity = null;
-	private org.drip.simm.product.RiskClassSensitivityCR _creditNonQualifyingRiskClassSensitivity = null;
+	private RiskClassSensitivity _fxRiskClassSensitivity = null;
+	private RiskClassSensitivityIR _irRiskClassSensitivity = null;
+	private RiskClassSensitivity _equityRiskClassSensitivity = null;
+	private RiskClassSensitivity _commodityRiskClassSensitivity = null;
+	private RiskClassSensitivityCR _creditQualifyingRiskClassSensitivity = null;
+	private RiskClassSensitivityCR _creditNonQualifyingRiskClassSensitivity = null;
 
 	/**
 	 * ProductClassSensitivity Constructor
@@ -138,17 +143,17 @@ public class ProductClassSensitivity
 	 * @param creditQualifyingRiskClassSensitivity Credit Qualifying Risk Class Sensitivity
 	 * @param creditNonQualifyingRiskClassSensitivity Credit Non-Qualifying Risk Class Sensitivity
 	 * 
-	 * @throws java.lang.Exception Thrownm if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ProductClassSensitivity (
-		final org.drip.simm.product.RiskClassSensitivity equityRiskClassSensitivity,
-		final org.drip.simm.product.RiskClassSensitivity commodityRiskClassSensitivity,
-		final org.drip.simm.product.RiskClassSensitivity fxRiskClassSensitivity,
-		final org.drip.simm.product.RiskClassSensitivityIR irRiskClassSensitivity,
-		final org.drip.simm.product.RiskClassSensitivityCR creditQualifyingRiskClassSensitivity,
-		final org.drip.simm.product.RiskClassSensitivityCR creditNonQualifyingRiskClassSensitivity)
-		throws java.lang.Exception
+		final RiskClassSensitivity equityRiskClassSensitivity,
+		final RiskClassSensitivity commodityRiskClassSensitivity,
+		final RiskClassSensitivity fxRiskClassSensitivity,
+		final RiskClassSensitivityIR irRiskClassSensitivity,
+		final RiskClassSensitivityCR creditQualifyingRiskClassSensitivity,
+		final RiskClassSensitivityCR creditNonQualifyingRiskClassSensitivity)
+		throws Exception
 	{
 		_fxRiskClassSensitivity = fxRiskClassSensitivity;
 		_irRiskClassSensitivity = irRiskClassSensitivity;
@@ -164,7 +169,9 @@ public class ProductClassSensitivity
 			null == _creditQualifyingRiskClassSensitivity &&
 			null == _creditNonQualifyingRiskClassSensitivity)
 		{
-			throw new java.lang.Exception ("ProductClassSensitivity Constructor => Invalid Inputs");
+			throw new Exception (
+				"ProductClassSensitivity Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -174,7 +181,7 @@ public class ProductClassSensitivity
 	 * @return The Equity Risk Class Sensitivity
 	 */
 
-	public org.drip.simm.product.RiskClassSensitivity equityRiskClassSensitivity()
+	public RiskClassSensitivity equityRiskClassSensitivity()
 	{
 		return _equityRiskClassSensitivity;
 	}
@@ -185,7 +192,7 @@ public class ProductClassSensitivity
 	 * @return The Commodity Risk Class Sensitivity
 	 */
 
-	public org.drip.simm.product.RiskClassSensitivity commodityRiskClassSensitivity()
+	public RiskClassSensitivity commodityRiskClassSensitivity()
 	{
 		return _commodityRiskClassSensitivity;
 	}
@@ -196,7 +203,7 @@ public class ProductClassSensitivity
 	 * @return The FX Risk Class Sensitivity
 	 */
 
-	public org.drip.simm.product.RiskClassSensitivity fxRiskClassSensitivity()
+	public RiskClassSensitivity fxRiskClassSensitivity()
 	{
 		return _fxRiskClassSensitivity;
 	}
@@ -207,7 +214,7 @@ public class ProductClassSensitivity
 	 * @return The IR Risk Class Sensitivity
 	 */
 
-	public org.drip.simm.product.RiskClassSensitivityIR irRiskClassSensitivity()
+	public RiskClassSensitivityIR irRiskClassSensitivity()
 	{
 		return _irRiskClassSensitivity;
 	}
@@ -218,7 +225,7 @@ public class ProductClassSensitivity
 	 * @return The Credit Qualifying Risk Class Sensitivity
 	 */
 
-	public org.drip.simm.product.RiskClassSensitivityCR creditQualifyingRiskClassSensitivity()
+	public RiskClassSensitivityCR creditQualifyingRiskClassSensitivity()
 	{
 		return _creditQualifyingRiskClassSensitivity;
 	}
@@ -229,7 +236,7 @@ public class ProductClassSensitivity
 	 * @return The Credit Non-Qualifying Risk Class Sensitivity
 	 */
 
-	public org.drip.simm.product.RiskClassSensitivityCR creditNonQualifyingRiskClassSensitivity()
+	public RiskClassSensitivityCR creditNonQualifyingRiskClassSensitivity()
 	{
 		return _creditNonQualifyingRiskClassSensitivity;
 	}
@@ -243,18 +250,13 @@ public class ProductClassSensitivity
 	 * @return The Margin for the Product Class
 	 */
 
-	public org.drip.simm.estimator.ProductClassMargin estimate (
-		final org.drip.simm.estimator.ProductClassSettings productClassSettings,
-		final org.drip.simm.foundation.MarginEstimationSettings marginEstimationSettings)
+	public ProductClassMargin estimate (
+		final ProductClassSettings productClassSettings,
+		final MarginEstimationSettings marginEstimationSettings)
 	{
-		if (null == productClassSettings)
-		{
-			return null;
-		}
-
 		try
 		{
-			return new ProductClassMargin (
+			return null == productClassSettings ? null : new ProductClassMargin (
 				null == _irRiskClassSensitivity ? null : _irRiskClassSensitivity.aggregate (
 					productClassSettings.irRiskClassSensitivitySettings(),
 					marginEstimationSettings
@@ -283,7 +285,7 @@ public class ProductClassSensitivity
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}

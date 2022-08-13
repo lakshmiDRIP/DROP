@@ -1,6 +1,8 @@
 
 package org.drip.simm.common;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -130,18 +132,25 @@ public class DeltaVegaThreshold
 	 * @param delta The Delta Concentration Threshold
 	 * @param vega The Vega Concentration Threshold
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public DeltaVegaThreshold (
 		final double delta,
 		final double vega)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_delta = delta) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_vega = vega))
+		if (!NumberUtil.IsValid (
+				_delta = delta
+			) ||
+			!NumberUtil.IsValid (
+				_vega = vega
+				)
+			)
 		{
-			throw new java.lang.Exception ("DeltaVegaThreshold Constructor => Invalid Inputs");
+			throw new Exception (
+				"DeltaVegaThreshold Constructor => Invalid Inputs"
+			);
 		}
 	}
 

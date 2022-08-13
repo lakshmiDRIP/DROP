@@ -1,6 +1,12 @@
 
 package org.drip.simm.equity;
 
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
+import org.drip.simm.common.DeltaVegaThreshold;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,9 +127,8 @@ package org.drip.simm.equity;
 
 public class EQRiskThresholdContainer21
 {
-	private static final java.util.Map<java.lang.Integer, org.drip.simm.common.DeltaVegaThreshold>
-		s_DeltaVegaThresholdMap = new java.util.TreeMap<java.lang.Integer,
-			org.drip.simm.common.DeltaVegaThreshold>();
+	private static final Map<Integer, DeltaVegaThreshold> s_DeltaVegaThresholdMap =
+		new TreeMap<Integer, DeltaVegaThreshold>();
 
 	/**
 	 * Initialize the Equity Risk Threshold Container
@@ -137,7 +142,7 @@ public class EQRiskThresholdContainer21
 		{
 			s_DeltaVegaThresholdMap.put (
 				-1,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					1.8,
 					43.
 				)
@@ -145,7 +150,7 @@ public class EQRiskThresholdContainer21
 
 			s_DeltaVegaThresholdMap.put (
 				1,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					8.4,
 					220.
 				)
@@ -153,7 +158,7 @@ public class EQRiskThresholdContainer21
 
 			s_DeltaVegaThresholdMap.put (
 				2,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					8.4,
 					220.
 				)
@@ -161,7 +166,7 @@ public class EQRiskThresholdContainer21
 
 			s_DeltaVegaThresholdMap.put (
 				3,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					8.4,
 					220.
 				)
@@ -169,7 +174,7 @@ public class EQRiskThresholdContainer21
 
 			s_DeltaVegaThresholdMap.put (
 				4,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					8.4,
 					220.
 				)
@@ -177,7 +182,7 @@ public class EQRiskThresholdContainer21
 
 			s_DeltaVegaThresholdMap.put (
 				5,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					26.,
 					2300.
 				)
@@ -185,7 +190,7 @@ public class EQRiskThresholdContainer21
 
 			s_DeltaVegaThresholdMap.put (
 				6,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					26.,
 					2300.
 				)
@@ -193,7 +198,7 @@ public class EQRiskThresholdContainer21
 
 			s_DeltaVegaThresholdMap.put (
 				7,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					26.,
 					2300.
 				)
@@ -201,7 +206,7 @@ public class EQRiskThresholdContainer21
 
 			s_DeltaVegaThresholdMap.put (
 				8,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					26.,
 					2300.
 				)
@@ -209,7 +214,7 @@ public class EQRiskThresholdContainer21
 
 			s_DeltaVegaThresholdMap.put (
 				9,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					1.8,
 					43.
 				)
@@ -217,7 +222,7 @@ public class EQRiskThresholdContainer21
 
 			s_DeltaVegaThresholdMap.put (
 				10,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					1.9,
 					250.
 				)
@@ -225,7 +230,7 @@ public class EQRiskThresholdContainer21
 
 			s_DeltaVegaThresholdMap.put (
 				11,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					540.,
 					8100.
 				)
@@ -233,13 +238,13 @@ public class EQRiskThresholdContainer21
 
 			s_DeltaVegaThresholdMap.put (
 				12,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					540.,
 					8100.
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 
@@ -255,7 +260,7 @@ public class EQRiskThresholdContainer21
 	 * @return The Bucket Number Set
 	 */
 
-	public static final java.util.Set<java.lang.Integer> BucketSet()
+	public static final Set<Integer> BucketSet()
 	{
 		return s_DeltaVegaThresholdMap.keySet();
 	}
@@ -271,7 +276,9 @@ public class EQRiskThresholdContainer21
 	public static final boolean ContainsBucket (
 		final int bucketNumber)
 	{
-		return s_DeltaVegaThresholdMap.containsKey (bucketNumber);
+		return s_DeltaVegaThresholdMap.containsKey (
+			bucketNumber
+		);
 	}
 
 	/**
@@ -282,10 +289,14 @@ public class EQRiskThresholdContainer21
 	 * @return The Equity Threshold specified by the Bucket Number
 	 */
 
-	public static final org.drip.simm.common.DeltaVegaThreshold Threshold (
+	public static final DeltaVegaThreshold Threshold (
 		final int bucketNumber)
 	{
-		return ContainsBucket (bucketNumber) ? s_DeltaVegaThresholdMap.get (bucketNumber) : null;
+		return ContainsBucket (
+			bucketNumber
+		) ? s_DeltaVegaThresholdMap.get (
+			bucketNumber
+		) : null;
 	}
 
 	/**
@@ -294,8 +305,7 @@ public class EQRiskThresholdContainer21
 	 * @return The Delta Vega Threshold Map
 	 */
 
-	public static final java.util.Map<java.lang.Integer, org.drip.simm.common.DeltaVegaThreshold>
-		DeltaVegaThresholdMap()
+	public static final Map<Integer, DeltaVegaThreshold> DeltaVegaThresholdMap()
 	{
 		return s_DeltaVegaThresholdMap;
 	}

@@ -1,6 +1,8 @@
 
 package org.drip.simm.margin;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,10 +123,10 @@ package org.drip.simm.margin;
 
 public class BucketAggregateIR
 {
-	private double _sensitivityMarginVariance = java.lang.Double.NaN;
-	private double _cumulativeSensitivityMargin = java.lang.Double.NaN;
-	private org.drip.simm.margin.RiskFactorAggregateIR _riskFactorAggregate = null;
-	private org.drip.simm.margin.SensitivityAggregateIR _sensitivityAggregate = null;
+	private double _sensitivityMarginVariance = Double.NaN;
+	private double _cumulativeSensitivityMargin = Double.NaN;
+	private RiskFactorAggregateIR _riskFactorAggregate = null;
+	private SensitivityAggregateIR _sensitivityAggregate = null;
 
 	/**
 	 * BucketAggregateIR Constructor
@@ -134,24 +136,29 @@ public class BucketAggregateIR
 	 * @param sensitivityMarginVariance The Bucket's Sensitivity Margin Variance
 	 * @param cumulativeSensitivityMargin The Cumulative Risk Factor Sensitivity Margin
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BucketAggregateIR (
-		final org.drip.simm.margin.RiskFactorAggregateIR riskFactorAggregate,
-		final org.drip.simm.margin.SensitivityAggregateIR sensitivityAggregate,
+		final RiskFactorAggregateIR riskFactorAggregate,
+		final SensitivityAggregateIR sensitivityAggregate,
 		final double sensitivityMarginVariance,
 		final double cumulativeSensitivityMargin)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (null == (_riskFactorAggregate = riskFactorAggregate) ||
 			null == (_sensitivityAggregate = sensitivityAggregate) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_sensitivityMarginVariance =
-				sensitivityMarginVariance) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_cumulativeSensitivityMargin =
-				cumulativeSensitivityMargin))
+			!NumberUtil.IsValid (
+				_sensitivityMarginVariance = sensitivityMarginVariance
+			) ||
+			!NumberUtil.IsValid (
+				_cumulativeSensitivityMargin = cumulativeSensitivityMargin
+			)
+		)
 		{
-			throw new java.lang.Exception ("BucketAggregateIR Constructor => Invalid Inputs");
+			throw new Exception (
+				"BucketAggregateIR Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -161,7 +168,7 @@ public class BucketAggregateIR
 	 * @return The IR Risk Factor Aggregate
 	 */
 
-	public org.drip.simm.margin.RiskFactorAggregateIR riskFactorAggregate()
+	public RiskFactorAggregateIR riskFactorAggregate()
 	{
 		return _riskFactorAggregate;
 	}
@@ -172,7 +179,7 @@ public class BucketAggregateIR
 	 * @return The IR Sensitivity Aggregate
 	 */
 
-	public org.drip.simm.margin.SensitivityAggregateIR sensitivityAggregate()
+	public SensitivityAggregateIR sensitivityAggregate()
 	{
 		return _sensitivityAggregate;
 	}
@@ -207,10 +214,12 @@ public class BucketAggregateIR
 
 	public double positionPrincipalComponentCovarianceISDA()
 	{
-		double sensitivityMargin = java.lang.Math.sqrt (_sensitivityMarginVariance);
+		double sensitivityMargin = Math.sqrt (
+			_sensitivityMarginVariance
+		);
 
-		return java.lang.Math.max (
-			java.lang.Math.min (
+		return Math.max (
+			Math.min (
 				_cumulativeSensitivityMargin,
 				sensitivityMargin
 			),

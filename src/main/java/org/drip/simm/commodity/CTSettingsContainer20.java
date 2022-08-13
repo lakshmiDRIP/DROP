@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.drip.measure.stochastic.LabelCorrelation;
+import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -469,7 +470,11 @@ public class CTSettingsContainer20
 	public static final CTBucket Bucket (
 		final int bucketNumber)
 	{
-		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;
+		return ContainsBucket (
+			bucketNumber
+		) ? s_BucketMap.get (
+			bucketNumber
+		) : null;
 	}
 
 	/**
@@ -500,9 +505,9 @@ public class CTSettingsContainer20
 	 * @return The Cross Bucket Co-variance Matrix
 	 */
 
-	public static final org.drip.simm.foundation.RiskGroupPrincipalCovariance CrossBucketPrincipalCovariance()
+	public static final RiskGroupPrincipalCovariance CrossBucketPrincipalCovariance()
 	{
-		return org.drip.simm.foundation.RiskGroupPrincipalCovariance.Standard (
+		return RiskGroupPrincipalCovariance.Standard (
 			s_CrossBucketCorrelation.matrix(),
 			1.
 		);

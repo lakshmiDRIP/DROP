@@ -1,6 +1,8 @@
 
 package org.drip.simm.foundation;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -119,7 +121,8 @@ package org.drip.simm.foundation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CurvatureEstimatorFRTB implements org.drip.simm.foundation.CurvatureEstimator
+public class CurvatureEstimatorFRTB
+	implements CurvatureEstimator
 {
 
 	/**
@@ -145,16 +148,20 @@ public class CurvatureEstimatorFRTB implements org.drip.simm.foundation.Curvatur
 		final double cumulativeRiskFactorSensitivity,
 		final double cumulativeRiskFactorSensitivityPositive,
 		final double riskFactorSensitivityVariance)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (riskFactorSensitivityVariance) ||
-			0. > riskFactorSensitivityVariance)
+		if (!NumberUtil.IsValid (
+				riskFactorSensitivityVariance
+			) || 0. > riskFactorSensitivityVariance
+		)
 		{
-			throw new java.lang.Exception ("CurvatureEstimatorFRTB::margin => Invalid Inputs");
+			throw new Exception (
+				"CurvatureEstimatorFRTB::margin => Invalid Inputs"
+			);
 		}
 
-		return java.lang.Math.sqrt (
-			java.lang.Math.max (
+		return Math.sqrt (
+			Math.max (
 				cumulativeRiskFactorSensitivity + riskFactorSensitivityVariance,
 				0.
 			)
@@ -167,11 +174,11 @@ public class CurvatureEstimatorFRTB implements org.drip.simm.foundation.Curvatur
 	}
 
 	@Override public double varianceModulator (
-		final java.lang.String bucketKey1,
+		final String bucketKey1,
 		final double bucketVariance1,
-		final java.lang.String bucketKey2,
+		final String bucketKey2,
 		final double bucketVariance2)
-		throws java.lang.Exception
+		throws Exception
 	{
 		return 1.;
 	}

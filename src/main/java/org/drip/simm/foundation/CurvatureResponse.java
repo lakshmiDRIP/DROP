@@ -136,5 +136,5 @@ public interface CurvatureResponse
 	public abstract double lambda (
 		final double cumulativeRiskFactorSensitivity,
 		final double cumulativeRiskFactorSensitivityPositive)
-		throws java.lang.Exception;
+		throws Exception;
 }

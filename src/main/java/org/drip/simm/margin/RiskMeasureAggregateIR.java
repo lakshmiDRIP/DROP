@@ -1,6 +1,10 @@
 
 package org.drip.simm.margin;
 
+import java.util.Map;
+
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,9 +125,9 @@ package org.drip.simm.margin;
 
 public class RiskMeasureAggregateIR
 {
-	private double _coreSBAVariance = java.lang.Double.NaN;
-	private double _residualSBAVariance = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, org.drip.simm.margin.BucketAggregateIR> _bucketAggregateMap =
+	private double _coreSBAVariance = Double.NaN;
+	private double _residualSBAVariance = Double.NaN;
+	private Map<String, BucketAggregateIR> _bucketAggregateMap =
 		null;
 
 	/**
@@ -133,20 +137,27 @@ public class RiskMeasureAggregateIR
 	 * @param coreSBAVariance The Core SBA Variance
 	 * @param residualSBAVariance The Residual SBA Variance
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskMeasureAggregateIR (
-		final java.util.Map<java.lang.String, org.drip.simm.margin.BucketAggregateIR> bucketAggregateMap,
+		final Map<String, BucketAggregateIR> bucketAggregateMap,
 		final double coreSBAVariance,
 		final double residualSBAVariance)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (null == (_bucketAggregateMap = bucketAggregateMap) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_coreSBAVariance = coreSBAVariance) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_residualSBAVariance = residualSBAVariance))
+			!NumberUtil.IsValid (
+				_coreSBAVariance = coreSBAVariance
+			) ||
+			!NumberUtil.IsValid (
+				_residualSBAVariance = residualSBAVariance
+			)
+		)
 		{
-			throw new java.lang.Exception ("RiskMeasureAggregateIR Constructor => Invalid Inputs");
+			throw new Exception (
+				"RiskMeasureAggregateIR Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -178,7 +189,7 @@ public class RiskMeasureAggregateIR
 	 * @return The Aggregate Bucket Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.simm.margin.BucketAggregateIR> bucketAggregateMap()
+	public Map<String, BucketAggregateIR> bucketAggregateMap()
 	{
 		return _bucketAggregateMap;
 	}
@@ -191,6 +202,8 @@ public class RiskMeasureAggregateIR
 
 	public double sba()
 	{
-		return java.lang.Math.sqrt (_coreSBAVariance + _residualSBAVariance);
+		return Math.sqrt (
+			_coreSBAVariance + _residualSBAVariance
+		);
 	}
 }

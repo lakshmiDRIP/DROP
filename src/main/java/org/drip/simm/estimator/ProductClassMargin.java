@@ -1,6 +1,12 @@
 
 package org.drip.simm.estimator;
 
+import org.drip.measure.stochastic.LabelCorrelation;
+import org.drip.simm.common.Chargram;
+import org.drip.simm.margin.RiskClassAggregate;
+import org.drip.simm.margin.RiskClassAggregateCR;
+import org.drip.simm.margin.RiskClassAggregateIR;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -122,12 +128,12 @@ package org.drip.simm.estimator;
 
 public class ProductClassMargin
 {
-	private org.drip.simm.margin.RiskClassAggregate _fxRiskClassAggregate = null;
-	private org.drip.simm.margin.RiskClassAggregateIR _irRiskClassAggregate = null;
-	private org.drip.simm.margin.RiskClassAggregate _equityRiskClassAggregate = null;
-	private org.drip.simm.margin.RiskClassAggregate _commodityRiskClassAggregate = null;
-	private org.drip.simm.margin.RiskClassAggregateCR _creditQualifyingRiskClassAggregate = null;
-	private org.drip.simm.margin.RiskClassAggregateCR _creditNonQualifyingRiskClassAggregate = null;
+	private RiskClassAggregate _fxRiskClassAggregate = null;
+	private RiskClassAggregateIR _irRiskClassAggregate = null;
+	private RiskClassAggregate _equityRiskClassAggregate = null;
+	private RiskClassAggregate _commodityRiskClassAggregate = null;
+	private RiskClassAggregateCR _creditQualifyingRiskClassAggregate = null;
+	private RiskClassAggregateCR _creditNonQualifyingRiskClassAggregate = null;
 
 	/**
 	 * ProductClassMargin Constructor
@@ -139,17 +145,17 @@ public class ProductClassMargin
 	 * @param fxRiskClassAggregate FX Risk Class Aggregate
 	 * @param commodityRiskClassAggregate Commodity Risk Class Aggregate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ProductClassMargin (
-		final org.drip.simm.margin.RiskClassAggregateIR irRiskClassAggregate,
-		final org.drip.simm.margin.RiskClassAggregateCR creditQualifyingRiskClassAggregate,
-		final org.drip.simm.margin.RiskClassAggregateCR creditNonQualifyingRiskClassAggregate,
-		final org.drip.simm.margin.RiskClassAggregate equityRiskClassAggregate,
-		final org.drip.simm.margin.RiskClassAggregate fxRiskClassAggregate,
-		final org.drip.simm.margin.RiskClassAggregate commodityRiskClassAggregate)
-		throws java.lang.Exception
+		final RiskClassAggregateIR irRiskClassAggregate,
+		final RiskClassAggregateCR creditQualifyingRiskClassAggregate,
+		final RiskClassAggregateCR creditNonQualifyingRiskClassAggregate,
+		final RiskClassAggregate equityRiskClassAggregate,
+		final RiskClassAggregate fxRiskClassAggregate,
+		final RiskClassAggregate commodityRiskClassAggregate)
+		throws Exception
 	{
 		_irRiskClassAggregate = irRiskClassAggregate;
 		_fxRiskClassAggregate = fxRiskClassAggregate;
@@ -158,14 +164,17 @@ public class ProductClassMargin
 		_creditQualifyingRiskClassAggregate = creditQualifyingRiskClassAggregate;
 		_creditNonQualifyingRiskClassAggregate = creditNonQualifyingRiskClassAggregate;
 
-		if ((null == _equityRiskClassAggregate &&
+		if (null == _equityRiskClassAggregate &&
 			null == _commodityRiskClassAggregate &&
 			null == _fxRiskClassAggregate &&
 			null == _irRiskClassAggregate &&
 			null == _creditQualifyingRiskClassAggregate &&
-			null == _creditNonQualifyingRiskClassAggregate))
+			null == _creditNonQualifyingRiskClassAggregate
+		)
 		{
-			throw new java.lang.Exception ("ProductClassMargin => Invalid Inputs");
+			throw new Exception (
+				"ProductClassMargin => Invalid Inputs"
+			);
 		}
 	}
 
@@ -175,7 +184,7 @@ public class ProductClassMargin
 	 * @return The Interest Rate Risk Class Aggregate
 	 */
 
-	public org.drip.simm.margin.RiskClassAggregateIR irRiskClassAggregate()
+	public RiskClassAggregateIR irRiskClassAggregate()
 	{
 		return _irRiskClassAggregate;
 	}
@@ -186,7 +195,7 @@ public class ProductClassMargin
 	 * @return The Credit Qualifying Risk Class Aggregate
 	 */
 
-	public org.drip.simm.margin.RiskClassAggregateCR creditQualifyingRiskClassAggregate()
+	public RiskClassAggregateCR creditQualifyingRiskClassAggregate()
 	{
 		return _creditQualifyingRiskClassAggregate;
 	}
@@ -197,7 +206,7 @@ public class ProductClassMargin
 	 * @return The Credit Non-Qualifying Risk Class Aggregate
 	 */
 
-	public org.drip.simm.margin.RiskClassAggregateCR creditNonQualifyingRiskClassAggregate()
+	public RiskClassAggregateCR creditNonQualifyingRiskClassAggregate()
 	{
 		return _creditNonQualifyingRiskClassAggregate;
 	}
@@ -208,7 +217,7 @@ public class ProductClassMargin
 	 * @return The Equity Risk Class Aggregate
 	 */
 
-	public org.drip.simm.margin.RiskClassAggregate equityRiskClassAggregate()
+	public RiskClassAggregate equityRiskClassAggregate()
 	{
 		return _equityRiskClassAggregate;
 	}
@@ -219,7 +228,7 @@ public class ProductClassMargin
 	 * @return The FX Risk Class Aggregate
 	 */
 
-	public org.drip.simm.margin.RiskClassAggregate fxRiskClassAggregate()
+	public RiskClassAggregate fxRiskClassAggregate()
 	{
 		return _fxRiskClassAggregate;
 	}
@@ -230,7 +239,7 @@ public class ProductClassMargin
 	 * @return The Commodity Risk Class Aggregate
 	 */
 
-	public org.drip.simm.margin.RiskClassAggregate commodityRiskClassAggregate()
+	public RiskClassAggregate commodityRiskClassAggregate()
 	{
 		return _commodityRiskClassAggregate;
 	}
@@ -242,21 +251,23 @@ public class ProductClassMargin
 	 * 
 	 * @return The Total IM
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double total (
-		final org.drip.measure.stochastic.LabelCorrelation labelCorrelation)
-		throws java.lang.Exception
+		final LabelCorrelation labelCorrelation)
+		throws Exception
 	{
 		if (null == labelCorrelation)
 		{
-			throw new java.lang.Exception ("ProductClassMargin::total => Invalid Inputs");
+			throw new Exception (
+				"ProductClassMargin::total => Invalid Inputs"
+			);
 		}
 
-		double irIM = null == _irRiskClassAggregate ? 0. : _irRiskClassAggregate.margin();
-
 		double fxIM = null == _fxRiskClassAggregate ? 0. : _fxRiskClassAggregate.margin();
+
+		double irIM = null == _irRiskClassAggregate ? 0. : _irRiskClassAggregate.margin();
 
 		double equityIM = null == _equityRiskClassAggregate ? 0. : _equityRiskClassAggregate.margin();
 
@@ -278,80 +289,82 @@ public class ProductClassMargin
 		totalIM = totalIM + commodityIM * commodityIM;
 
 		totalIM = totalIM + labelCorrelation.entry (
-			org.drip.simm.common.Chargram.IR,
-			org.drip.simm.common.Chargram.CRQ
+			Chargram.IR,
+			Chargram.CRQ
 		) * irIM * creditQualifyingIM;
 
 		totalIM = totalIM + labelCorrelation.entry (
-			org.drip.simm.common.Chargram.IR,
-			org.drip.simm.common.Chargram.CRNQ
+			Chargram.IR,
+			Chargram.CRNQ
 		) * irIM * creditNonQualifyingIM;
 
 		totalIM = totalIM + labelCorrelation.entry (
-			org.drip.simm.common.Chargram.IR,
-			org.drip.simm.common.Chargram.EQ
+			Chargram.IR,
+			Chargram.EQ
 		) * irIM * equityIM;
 
 		totalIM = totalIM + labelCorrelation.entry (
-			org.drip.simm.common.Chargram.IR,
-			org.drip.simm.common.Chargram.FX
+			Chargram.IR,
+			Chargram.FX
 		) * irIM * fxIM;
 
 		totalIM = totalIM + labelCorrelation.entry (
-			org.drip.simm.common.Chargram.IR,
-			org.drip.simm.common.Chargram.CT
+			Chargram.IR,
+			Chargram.CT
 		) * irIM * commodityIM;
 
 		totalIM = totalIM + labelCorrelation.entry (
-			org.drip.simm.common.Chargram.CRQ,
-			org.drip.simm.common.Chargram.CRNQ
+			Chargram.CRQ,
+			Chargram.CRNQ
 		) * creditQualifyingIM * creditNonQualifyingIM;
 
 		totalIM = totalIM + labelCorrelation.entry (
-			org.drip.simm.common.Chargram.CRQ,
-			org.drip.simm.common.Chargram.EQ
+			Chargram.CRQ,
+			Chargram.EQ
 		) * creditQualifyingIM * equityIM;
 
 		totalIM = totalIM + labelCorrelation.entry (
-			org.drip.simm.common.Chargram.CRQ,
-			org.drip.simm.common.Chargram.FX
+			Chargram.CRQ,
+			Chargram.FX
 		) * creditQualifyingIM * fxIM;
 
 		totalIM = totalIM + labelCorrelation.entry (
-			org.drip.simm.common.Chargram.CRQ,
-			org.drip.simm.common.Chargram.CT
+			Chargram.CRQ,
+			Chargram.CT
 		) * creditQualifyingIM * commodityIM;
 
 		totalIM = totalIM + labelCorrelation.entry (
-			org.drip.simm.common.Chargram.CRNQ,
-			org.drip.simm.common.Chargram.EQ
+			Chargram.CRNQ,
+			Chargram.EQ
 		) * creditNonQualifyingIM * equityIM;
 
 		totalIM = totalIM + labelCorrelation.entry (
-			org.drip.simm.common.Chargram.CRNQ,
-			org.drip.simm.common.Chargram.FX
+			Chargram.CRNQ,
+			Chargram.FX
 		) * creditNonQualifyingIM * fxIM;
 
 		totalIM = totalIM + labelCorrelation.entry (
-			org.drip.simm.common.Chargram.CRNQ,
-			org.drip.simm.common.Chargram.CT
+			Chargram.CRNQ,
+			Chargram.CT
 		) * creditNonQualifyingIM * commodityIM;
 
 		totalIM = totalIM + labelCorrelation.entry (
-			org.drip.simm.common.Chargram.EQ,
-			org.drip.simm.common.Chargram.FX
+			Chargram.EQ,
+			Chargram.FX
 		) * equityIM * fxIM;
 
 		totalIM = totalIM + labelCorrelation.entry (
-			org.drip.simm.common.Chargram.EQ,
-			org.drip.simm.common.Chargram.CT
+			Chargram.EQ,
+			Chargram.CT
 		) * equityIM * commodityIM;
 
 		totalIM = totalIM + labelCorrelation.entry (
-			org.drip.simm.common.Chargram.FX,
-			org.drip.simm.common.Chargram.CT
+			Chargram.FX,
+			Chargram.CT
 		) * fxIM * commodityIM;
 
-		return java.lang.Math.sqrt (totalIM);
+		return Math.sqrt (
+			totalIM
+		);
 	}
 }

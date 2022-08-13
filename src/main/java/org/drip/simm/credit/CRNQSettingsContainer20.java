@@ -1,6 +1,11 @@
 
 package org.drip.simm.credit;
 
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -120,8 +125,7 @@ package org.drip.simm.credit;
 
 public class CRNQSettingsContainer20
 {
-	private static final java.util.Map<java.lang.Integer, org.drip.simm.credit.CRBucket> s_BucketMap = new
-		java.util.TreeMap<java.lang.Integer, org.drip.simm.credit.CRBucket>();
+	private static final Map<Integer, CRBucket> s_BucketMap = new TreeMap<Integer, CRBucket>();
 
 	/**
 	 * Initial the Credit Non-Qualifying Settings
@@ -135,35 +139,35 @@ public class CRNQSettingsContainer20
 		{
 			s_BucketMap.put (
 				-1,
-				new org.drip.simm.credit.CRBucket (
+				new CRBucket (
 					-1,
-					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_UNSPECIFIED,
-					org.drip.simm.credit.SectorSystemics.RESIDUAL,
+					CRSystemics.CREDIT_QUALITY_UNSPECIFIED,
+					SectorSystemics.RESIDUAL,
 					2000.
 				)
 			);
 
 			s_BucketMap.put (
 				1,
-				new org.drip.simm.credit.CRBucket (
+				new CRBucket (
 					1,
-					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					org.drip.simm.credit.SectorSystemics.RMBS_CMBS,
+					CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
+					SectorSystemics.RMBS_CMBS,
 					140.
 				)
 			);
 
 			s_BucketMap.put (
 				2,
-				new org.drip.simm.credit.CRBucket (
+				new CRBucket (
 					2,
-					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					org.drip.simm.credit.SectorSystemics.RMBS_CMBS,
+					CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
+					SectorSystemics.RMBS_CMBS,
 					2000.
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 
@@ -179,19 +183,29 @@ public class CRNQSettingsContainer20
 	 * @return The Standard ISDA Credit Tenor Set
 	 */
 
-	public static final java.util.Set<java.lang.String> TenorSet()
+	public static final Set<String> TenorSet()
 	{
-		java.util.Set<java.lang.String> tenorSet = new java.util.HashSet<java.lang.String>();
+		Set<String> tenorSet = new HashSet<String>();
 
-		tenorSet.add ("1Y");
+		tenorSet.add (
+			"1Y"
+		);
 
-		tenorSet.add ("2Y");
+		tenorSet.add (
+			"2Y"
+		);
 
-		tenorSet.add ("3Y");
+		tenorSet.add (
+			"3Y"
+		);
 
-		tenorSet.add ("5Y");
+		tenorSet.add (
+			"5Y"
+		);
 
-		tenorSet.add ("10Y");
+		tenorSet.add (
+			"10Y"
+		);
 
 		return tenorSet;
 	}
@@ -202,7 +216,7 @@ public class CRNQSettingsContainer20
 	 * @return The Set of Bucket Indexes available
 	 */
 
-	public static final java.util.Set<java.lang.Integer> BucketSet()
+	public static final Set<Integer> BucketSet()
 	{
 		return s_BucketMap.keySet();
 	}
@@ -218,7 +232,9 @@ public class CRNQSettingsContainer20
 	public static final boolean ContainsBucket (
 		final int bucketNumber)
 	{
-		return s_BucketMap.containsKey (bucketNumber);
+		return s_BucketMap.containsKey (
+			bucketNumber
+		);
 	}
 
 	/**
@@ -229,10 +245,14 @@ public class CRNQSettingsContainer20
 	 * @return The Bucket denoted by the Number
 	 */
 
-	public static final org.drip.simm.credit.CRBucket Bucket (
+	public static final CRBucket Bucket (
 		final int bucketNumber)
 	{
-		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;
+		return ContainsBucket (
+			bucketNumber
+		) ? s_BucketMap.get (
+			bucketNumber
+		) : null;
 	}
 
 	/**
@@ -241,7 +261,7 @@ public class CRNQSettingsContainer20
 	 * @return The Bucket Map
 	 */
 
-	public static final java.util.Map<java.lang.Integer, org.drip.simm.credit.CRBucket> BucketMap()
+	public static final Map<Integer, CRBucket> BucketMap()
 	{
 		return s_BucketMap;
 	}

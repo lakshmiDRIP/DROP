@@ -1,6 +1,17 @@
 
 package org.drip.simm.common;
 
+import org.drip.simm.commodity.CTSettingsContainer20;
+import org.drip.simm.commodity.CTSettingsContainer21;
+import org.drip.simm.credit.CRNQSettingsContainer20;
+import org.drip.simm.credit.CRNQSettingsContainer21;
+import org.drip.simm.credit.CRQSettingsContainer20;
+import org.drip.simm.credit.CRQSettingsContainer21;
+import org.drip.simm.equity.EQSettingsContainer20;
+import org.drip.simm.equity.EQSettingsContainer21;
+import org.drip.simm.rates.IRSettingsContainer20;
+import org.drip.simm.rates.IRSettingsContainer21;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -122,6 +133,7 @@ package org.drip.simm.common;
 
 public class ISDASettingsContainer
 {
+
 	/**
 	 * Initial the ISDA Settings Container
 	 * 
@@ -130,57 +142,57 @@ public class ISDASettingsContainer
 
 	public static final boolean Init()
 	{
-		if (!org.drip.simm.rates.IRSettingsContainer20.Init())
+		if (!IRSettingsContainer20.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm.rates.IRSettingsContainer21.Init())
+		if (!IRSettingsContainer21.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm.credit.CRQSettingsContainer20.Init())
+		if (!CRQSettingsContainer20.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm.credit.CRQSettingsContainer21.Init())
+		if (!CRQSettingsContainer21.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm.credit.CRNQSettingsContainer20.Init())
+		if (!CRNQSettingsContainer20.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm.credit.CRNQSettingsContainer21.Init())
+		if (!CRNQSettingsContainer21.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm.equity.EQSettingsContainer20.Init())
+		if (!EQSettingsContainer20.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm.equity.EQSettingsContainer21.Init())
+		if (!EQSettingsContainer21.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm.commodity.CTSettingsContainer20.Init())
+		if (!CTSettingsContainer20.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm.commodity.CTSettingsContainer21.Init())
+		if (!CTSettingsContainer21.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm.common.RiskFactorThresholdContainer.Init())
+		if (!RiskFactorThresholdContainer.Init())
 		{
 			return false;
 		}

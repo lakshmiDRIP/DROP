@@ -1,6 +1,15 @@
 
 package org.drip.simm.estimator;
 
+import java.util.List;
+
+import org.drip.measure.stochastic.LabelCorrelation;
+import org.drip.simm.common.CrossRiskClassCorrelation20;
+import org.drip.simm.common.CrossRiskClassCorrelation21;
+import org.drip.simm.parameters.RiskClassSensitivitySettings;
+import org.drip.simm.parameters.RiskClassSensitivitySettingsCR;
+import org.drip.simm.parameters.RiskClassSensitivitySettingsIR;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,16 +130,13 @@ package org.drip.simm.estimator;
 
 public class ProductClassSettings
 {
-	private org.drip.measure.stochastic.LabelCorrelation _labelCorrelation = null;
-	private org.drip.simm.parameters.RiskClassSensitivitySettings _fxRiskClassSensitivitySettings = null;
-	private org.drip.simm.parameters.RiskClassSensitivitySettingsIR _irRiskClassSensitivitySettings = null;
-	private org.drip.simm.parameters.RiskClassSensitivitySettings _equityRiskClassSensitivitySettings = null;
-	private org.drip.simm.parameters.RiskClassSensitivitySettings _commodityRiskClassSensitivitySettings =
-		null;
-	private org.drip.simm.parameters.RiskClassSensitivitySettingsCR
-		_creditQualifyingRiskClassSensitivitySettings = null;
-	private org.drip.simm.parameters.RiskClassSensitivitySettingsCR
-		_creditNonQualifyingRiskClassSensitivitySettings = null;
+	private LabelCorrelation _labelCorrelation = null;
+	private RiskClassSensitivitySettings _fxRiskClassSensitivitySettings = null;
+	private RiskClassSensitivitySettingsIR _irRiskClassSensitivitySettings = null;
+	private RiskClassSensitivitySettings _equityRiskClassSensitivitySettings = null;
+	private RiskClassSensitivitySettings _commodityRiskClassSensitivitySettings = null;
+	private RiskClassSensitivitySettingsCR _creditQualifyingRiskClassSensitivitySettings = null;
+	private RiskClassSensitivitySettingsCR _creditNonQualifyingRiskClassSensitivitySettings = null;
 
 	/**
 	 * Construct an ISDA SIMM 2.0 Version of ProductClassSettings
@@ -142,22 +148,30 @@ public class ProductClassSettings
 	 */
 
 	public static final ProductClassSettings ISDA_20 (
-		final java.util.List<java.lang.String> currencyList,
+		final List<String> currencyList,
 		final int vegaDurationDays)
 	{
 		try
 		{
 			return new ProductClassSettings (
-				org.drip.simm.parameters.RiskClassSensitivitySettings.ISDA_EQ_20 (vegaDurationDays),
-				org.drip.simm.parameters.RiskClassSensitivitySettings.ISDA_CT_20 (vegaDurationDays),
-				org.drip.simm.parameters.RiskClassSensitivitySettings.ISDA_FX_20 (vegaDurationDays),
-				org.drip.simm.parameters.RiskClassSensitivitySettingsIR.ISDA_20 (currencyList),
-				org.drip.simm.parameters.RiskClassSensitivitySettingsCR.ISDA_CRQ_20(),
-				org.drip.simm.parameters.RiskClassSensitivitySettingsCR.ISDA_CRNQ_20(),
-				org.drip.simm.common.CrossRiskClassCorrelation20.Matrix()
+				RiskClassSensitivitySettings.ISDA_EQ_20 (
+					vegaDurationDays
+				),
+				RiskClassSensitivitySettings.ISDA_CT_20 (
+					vegaDurationDays
+				),
+				RiskClassSensitivitySettings.ISDA_FX_20 (
+					vegaDurationDays
+				),
+				RiskClassSensitivitySettingsIR.ISDA_20 (
+					currencyList
+				),
+				RiskClassSensitivitySettingsCR.ISDA_CRQ_20(),
+				RiskClassSensitivitySettingsCR.ISDA_CRNQ_20(),
+				CrossRiskClassCorrelation20.Matrix()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -175,22 +189,30 @@ public class ProductClassSettings
 	 */
 
 	public static final ProductClassSettings ISDA_21 (
-		final java.util.List<java.lang.String> currencyList,
+		final List<String> currencyList,
 		final int vegaDurationDays)
 	{
 		try
 		{
 			return new ProductClassSettings (
-				org.drip.simm.parameters.RiskClassSensitivitySettings.ISDA_EQ_21 (vegaDurationDays),
-				org.drip.simm.parameters.RiskClassSensitivitySettings.ISDA_CT_21 (vegaDurationDays),
-				org.drip.simm.parameters.RiskClassSensitivitySettings.ISDA_FX_21 (vegaDurationDays),
-				org.drip.simm.parameters.RiskClassSensitivitySettingsIR.ISDA_21 (currencyList),
-				org.drip.simm.parameters.RiskClassSensitivitySettingsCR.ISDA_CRQ_21(),
-				org.drip.simm.parameters.RiskClassSensitivitySettingsCR.ISDA_CRNQ_21(),
-				org.drip.simm.common.CrossRiskClassCorrelation21.Matrix()
+				RiskClassSensitivitySettings.ISDA_EQ_21 (
+					vegaDurationDays
+				),
+				RiskClassSensitivitySettings.ISDA_CT_21 (
+					vegaDurationDays
+				),
+				RiskClassSensitivitySettings.ISDA_FX_21 (
+					vegaDurationDays
+				),
+				RiskClassSensitivitySettingsIR.ISDA_21 (
+					currencyList
+				),
+				RiskClassSensitivitySettingsCR.ISDA_CRQ_21(),
+				RiskClassSensitivitySettingsCR.ISDA_CRNQ_21(),
+				CrossRiskClassCorrelation21.Matrix()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -210,20 +232,18 @@ public class ProductClassSettings
 	 * 	Settings
 	 * @param labelCorrelation Cross Risk Class Label Correlation
 	 * 
-	 * @throws java.lang.Exception Throw if the Inputs are Invalid
+	 * @throws Exception Throw if the Inputs are Invalid
 	 */
 
 	public ProductClassSettings (
-		final org.drip.simm.parameters.RiskClassSensitivitySettings equityRiskClassSensitivitySettings,
-		final org.drip.simm.parameters.RiskClassSensitivitySettings commodityRiskClassSensitivitySettings,
-		final org.drip.simm.parameters.RiskClassSensitivitySettings fxRiskClassSensitivitySettings,
-		final org.drip.simm.parameters.RiskClassSensitivitySettingsIR irRiskClassSensitivitySettings,
-		final org.drip.simm.parameters.RiskClassSensitivitySettingsCR
-			creditQualifyingRiskClassSensitivitySettings,
-		final org.drip.simm.parameters.RiskClassSensitivitySettingsCR
-			creditNonQualifyingRiskClassSensitivitySettings,
-		final org.drip.measure.stochastic.LabelCorrelation labelCorrelation)
-		throws java.lang.Exception
+		final RiskClassSensitivitySettings equityRiskClassSensitivitySettings,
+		final RiskClassSensitivitySettings commodityRiskClassSensitivitySettings,
+		final RiskClassSensitivitySettings fxRiskClassSensitivitySettings,
+		final RiskClassSensitivitySettingsIR irRiskClassSensitivitySettings,
+		final RiskClassSensitivitySettingsCR creditQualifyingRiskClassSensitivitySettings,
+		final RiskClassSensitivitySettingsCR creditNonQualifyingRiskClassSensitivitySettings,
+		final LabelCorrelation labelCorrelation)
+		throws Exception
 	{
 		_fxRiskClassSensitivitySettings = fxRiskClassSensitivitySettings;
 		_irRiskClassSensitivitySettings = irRiskClassSensitivitySettings;
@@ -240,7 +260,9 @@ public class ProductClassSettings
 			null == _creditNonQualifyingRiskClassSensitivitySettings) ||
 			null == (_labelCorrelation = labelCorrelation))
 		{
-			throw new java.lang.Exception ("ProductClassSettings Constructor => Invalid Inputs");
+			throw new Exception (
+				"ProductClassSettings Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -250,7 +272,7 @@ public class ProductClassSettings
 	 * @return The Equity Risk Class Sensitivity Settings
 	 */
 
-	public org.drip.simm.parameters.RiskClassSensitivitySettings equityRiskClassSensitivitySettings()
+	public RiskClassSensitivitySettings equityRiskClassSensitivitySettings()
 	{
 		return _equityRiskClassSensitivitySettings;
 	}
@@ -261,7 +283,7 @@ public class ProductClassSettings
 	 * @return The Commodity Risk Class Sensitivity Settings
 	 */
 
-	public org.drip.simm.parameters.RiskClassSensitivitySettings commodityRiskClassSensitivitySettings()
+	public RiskClassSensitivitySettings commodityRiskClassSensitivitySettings()
 	{
 		return _commodityRiskClassSensitivitySettings;
 	}
@@ -272,7 +294,7 @@ public class ProductClassSettings
 	 * @return The FX Risk Class Sensitivity Settings
 	 */
 
-	public org.drip.simm.parameters.RiskClassSensitivitySettings fxRiskClassSensitivitySettings()
+	public RiskClassSensitivitySettings fxRiskClassSensitivitySettings()
 	{
 		return _fxRiskClassSensitivitySettings;
 	}
@@ -283,7 +305,7 @@ public class ProductClassSettings
 	 * @return The IR Risk Class Sensitivity Settings
 	 */
 
-	public org.drip.simm.parameters.RiskClassSensitivitySettingsIR irRiskClassSensitivitySettings()
+	public RiskClassSensitivitySettingsIR irRiskClassSensitivitySettings()
 	{
 		return _irRiskClassSensitivitySettings;
 	}
@@ -294,8 +316,7 @@ public class ProductClassSettings
 	 * @return The Credit Qualifying Risk Class Sensitivity Settings
 	 */
 
-	public org.drip.simm.parameters.RiskClassSensitivitySettingsCR
-		creditQualifyingRiskClassSensitivitySettings()
+	public RiskClassSensitivitySettingsCR creditQualifyingRiskClassSensitivitySettings()
 	{
 		return _creditQualifyingRiskClassSensitivitySettings;
 	}
@@ -306,8 +327,7 @@ public class ProductClassSettings
 	 * @return The Credit Non-Qualifying Risk Class Sensitivity Settings
 	 */
 
-	public org.drip.simm.parameters.RiskClassSensitivitySettingsCR
-		creditNonQualifyingRiskClassSensitivitySettings()
+	public RiskClassSensitivitySettingsCR creditNonQualifyingRiskClassSensitivitySettings()
 	{
 		return _creditNonQualifyingRiskClassSensitivitySettings;
 	}
@@ -318,7 +338,7 @@ public class ProductClassSettings
 	 * @return The Cross Risk Class Label Correlation
 	 */
 
-	public org.drip.measure.stochastic.LabelCorrelation labelCorrelation()
+	public LabelCorrelation labelCorrelation()
 	{
 		return _labelCorrelation;
 	}

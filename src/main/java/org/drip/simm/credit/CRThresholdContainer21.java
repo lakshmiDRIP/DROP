@@ -1,6 +1,12 @@
 
 package org.drip.simm.credit;
 
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
+import org.drip.simm.common.DeltaVegaThreshold;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,13 +127,11 @@ package org.drip.simm.credit;
 
 public class CRThresholdContainer21
 {
-	private static final java.util.Map<java.lang.Integer, org.drip.simm.common.DeltaVegaThreshold>
-		s_CRQThresholdMap = new java.util.TreeMap<java.lang.Integer,
-			org.drip.simm.common.DeltaVegaThreshold>();
+	private static final Map<Integer, DeltaVegaThreshold> s_CRQThresholdMap =
+		new TreeMap<Integer, DeltaVegaThreshold>();
 
-	private static final java.util.Map<java.lang.Integer, org.drip.simm.common.DeltaVegaThreshold>
-		s_CRNQThresholdMap = new java.util.TreeMap<java.lang.Integer,
-			org.drip.simm.common.DeltaVegaThreshold>();
+	private static final Map<Integer, DeltaVegaThreshold> s_CRNQThresholdMap =
+		new TreeMap<Integer, DeltaVegaThreshold>();
 
 	/**
 	 * Initialize the Credit Risk Threshold Container
@@ -141,7 +145,7 @@ public class CRThresholdContainer21
 		{
 			s_CRQThresholdMap.put (
 				-1,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					0.24,
 					250.
 				)
@@ -149,7 +153,7 @@ public class CRThresholdContainer21
 
 			s_CRQThresholdMap.put (
 				1,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					1.00,
 					250.
 				)
@@ -157,7 +161,7 @@ public class CRThresholdContainer21
 
 			s_CRQThresholdMap.put (
 				2,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					0.24,
 					250.
 				)
@@ -165,7 +169,7 @@ public class CRThresholdContainer21
 
 			s_CRQThresholdMap.put (
 				3,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					0.24,
 					250.
 				)
@@ -173,7 +177,7 @@ public class CRThresholdContainer21
 
 			s_CRQThresholdMap.put (
 				4,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					0.24,
 					250.
 				)
@@ -181,7 +185,7 @@ public class CRThresholdContainer21
 
 			s_CRQThresholdMap.put (
 				5,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					0.24,
 					250.
 				)
@@ -189,7 +193,7 @@ public class CRThresholdContainer21
 
 			s_CRQThresholdMap.put (
 				6,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					0.24,
 					250.
 				)
@@ -197,7 +201,7 @@ public class CRThresholdContainer21
 
 			s_CRQThresholdMap.put (
 				7,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					1.00,
 					250.
 				)
@@ -205,7 +209,7 @@ public class CRThresholdContainer21
 
 			s_CRQThresholdMap.put (
 				8,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					0.24,
 					250.
 				)
@@ -213,7 +217,7 @@ public class CRThresholdContainer21
 
 			s_CRQThresholdMap.put (
 				9,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					0.24,
 					250.
 				)
@@ -221,7 +225,7 @@ public class CRThresholdContainer21
 
 			s_CRQThresholdMap.put (
 				10,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					0.24,
 					250.
 				)
@@ -229,7 +233,7 @@ public class CRThresholdContainer21
 
 			s_CRQThresholdMap.put (
 				11,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					0.24,
 					250.
 				)
@@ -237,7 +241,7 @@ public class CRThresholdContainer21
 
 			s_CRQThresholdMap.put (
 				12,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					0.24,
 					250.
 				)
@@ -245,7 +249,7 @@ public class CRThresholdContainer21
 
 			s_CRNQThresholdMap.put (
 				-1,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					0.5,
 					54.
 				)
@@ -253,7 +257,7 @@ public class CRThresholdContainer21
 
 			s_CRNQThresholdMap.put (
 				1,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					9.5,
 					54.
 				)
@@ -261,13 +265,13 @@ public class CRThresholdContainer21
 
 			s_CRNQThresholdMap.put (
 				2,
-				new org.drip.simm.common.DeltaVegaThreshold (
+				new DeltaVegaThreshold (
 					0.5,
 					54.
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 
@@ -283,7 +287,7 @@ public class CRThresholdContainer21
 	 * @return The Credit Risk Qualifying Threshold Bucket Set
 	 */
 
-	public static final java.util.Set<java.lang.Integer> QualifyingBucketSet()
+	public static final Set<Integer> QualifyingBucketSet()
 	{
 		return s_CRQThresholdMap.keySet();
 	}
@@ -294,7 +298,7 @@ public class CRThresholdContainer21
 	 * @return The Credit Risk Non-Qualifying Threshold Bucket Set
 	 */
 
-	public static final java.util.Set<java.lang.Integer> NonQualifyingBucketSet()
+	public static final Set<Integer> NonQualifyingBucketSet()
 	{
 		return s_CRNQThresholdMap.keySet();
 	}
@@ -310,7 +314,9 @@ public class CRThresholdContainer21
 	public static final boolean ContainsQualifyingBucket (
 		final int bucketNumber)
 	{
-		return s_CRQThresholdMap.containsKey (bucketNumber);
+		return s_CRQThresholdMap.containsKey (
+			bucketNumber
+		);
 	}
 
 	/**
@@ -324,7 +330,9 @@ public class CRThresholdContainer21
 	public static final boolean ContainsNonQualifyingBucket (
 		final int bucketNumber)
 	{
-		return s_CRNQThresholdMap.containsKey (bucketNumber);
+		return s_CRNQThresholdMap.containsKey (
+			bucketNumber
+		);
 	}
 
 	/**
@@ -335,10 +343,14 @@ public class CRThresholdContainer21
 	 * @return The Credit Risk Qualifying Threshold Instance identified by the Bucket Number
 	 */
 
-	public static final org.drip.simm.common.DeltaVegaThreshold QualifyingThreshold (
+	public static final DeltaVegaThreshold QualifyingThreshold (
 		final int bucketNumber)
 	{
-		return ContainsQualifyingBucket (bucketNumber) ? s_CRQThresholdMap.get (bucketNumber) : null;
+		return ContainsQualifyingBucket (
+			bucketNumber
+		) ? s_CRQThresholdMap.get (
+			bucketNumber
+		) : null;
 	}
 
 	/**
@@ -349,10 +361,14 @@ public class CRThresholdContainer21
 	 * @return The Credit Risk Non-Qualifying Threshold Instance identified by the Bucket Number
 	 */
 
-	public static final org.drip.simm.common.DeltaVegaThreshold NonQualifyingThreshold (
+	public static final DeltaVegaThreshold NonQualifyingThreshold (
 		final int bucketNumber)
 	{
-		return ContainsNonQualifyingBucket (bucketNumber) ? s_CRNQThresholdMap.get (bucketNumber) : null;
+		return ContainsNonQualifyingBucket (
+			bucketNumber
+		) ? s_CRNQThresholdMap.get (
+			bucketNumber
+		) : null;
 	}
 
 	/**
@@ -361,8 +377,7 @@ public class CRThresholdContainer21
 	 * @return The Credit Risk Qualifying Threshold Map
 	 */
 
-	public static final java.util.Map<java.lang.Integer, org.drip.simm.common.DeltaVegaThreshold>
-		CreditRiskQualifyingThresholdMap()
+	public static final Map<Integer, DeltaVegaThreshold> CreditRiskQualifyingThresholdMap()
 	{
 		return s_CRQThresholdMap;
 	}
@@ -373,8 +388,7 @@ public class CRThresholdContainer21
 	 * @return The Credit Risk Non-Qualifying Threshold Map
 	 */
 
-	public static final java.util.Map<java.lang.Integer, org.drip.simm.common.DeltaVegaThreshold>
-		CreditRiskNonQualifyingThresholdMap()
+	public static final Map<Integer, DeltaVegaThreshold> CreditRiskNonQualifyingThresholdMap()
 	{
 		return s_CRNQThresholdMap;
 	}

@@ -1,6 +1,8 @@
 
 package org.drip.simm.foundation;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -119,7 +121,8 @@ package org.drip.simm.foundation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CurvatureEstimatorISDADelta implements org.drip.simm.foundation.CurvatureEstimator
+public class CurvatureEstimatorISDADelta
+	implements CurvatureEstimator
 {
 
 	/**
@@ -145,22 +148,30 @@ public class CurvatureEstimatorISDADelta implements org.drip.simm.foundation.Cur
 		final double cumulativeRiskFactorSensitivity,
 		final double cumulativeRiskFactorSensitivityPositive,
 		final double riskFactorSensitivityVariance)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (riskFactorSensitivityVariance) ||
-			0. > riskFactorSensitivityVariance)
+		if (!NumberUtil.IsValid (
+				riskFactorSensitivityVariance
+			) || 0. > riskFactorSensitivityVariance
+		)
 		{
-			throw new java.lang.Exception ("CurvatureEstimatorISDADelta::margin => Invalid Inputs");
+			throw new Exception (
+				"CurvatureEstimatorISDADelta::margin => Invalid Inputs"
+			);
 		}
 
 		double curvatureMarginVariance = cumulativeRiskFactorSensitivity + riskFactorSensitivityVariance;
 
 		if (0. > curvatureMarginVariance)
 		{
-			throw new java.lang.Exception ("CurvatureEstimatorISDADelta::margin => Invalid Margin Variance");
+			throw new Exception (
+				"CurvatureEstimatorISDADelta::margin => Invalid Margin Variance"
+			);
 		}
 
-		return java.lang.Math.sqrt (curvatureMarginVariance);
+		return Math.sqrt (
+			curvatureMarginVariance
+		);
 	}
 
 	@Override public boolean isCorrelatorQuadratric()
@@ -169,11 +180,11 @@ public class CurvatureEstimatorISDADelta implements org.drip.simm.foundation.Cur
 	}
 
 	@Override public double varianceModulator (
-		final java.lang.String bucketKey1,
+		final String bucketKey1,
 		final double bucketVariance1,
-		final java.lang.String bucketKey2,
+		final String bucketKey2,
 		final double bucketVariance2)
-		throws java.lang.Exception
+		throws Exception
 	{
 		return 1.;
 	}

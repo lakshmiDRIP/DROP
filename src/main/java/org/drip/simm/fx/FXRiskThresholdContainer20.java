@@ -1,6 +1,13 @@
 
 package org.drip.simm.fx;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
+import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,14 +128,11 @@ package org.drip.simm.fx;
 
 public class FXRiskThresholdContainer20
 {
-	private static final java.util.Map<java.lang.Integer, org.drip.simm.fx.FXRiskGroup> s_FXRiskGroupMap =
-		new java.util.TreeMap<java.lang.Integer, org.drip.simm.fx.FXRiskGroup>();
+	private static final Map<String, Double> s_CategoryVega = new HashMap<String, Double>();
 
-	private static final java.util.Map<java.lang.Integer, java.lang.Double> s_CategoryDelta = new
-		java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+	private static final Map<Integer, Double> s_CategoryDelta = new TreeMap<Integer, Double>();
 
-	private static final java.util.Map<java.lang.String, java.lang.Double> s_CategoryVega = new
-		java.util.HashMap<java.lang.String, java.lang.Double>();
+	private static final Map<Integer, FXRiskGroup> s_FXRiskGroupMap = new TreeMap<Integer, FXRiskGroup>();
 
 	/**
 	 * Initialize the FX Risk Threshold Container
@@ -142,10 +146,10 @@ public class FXRiskThresholdContainer20
 		{
 			s_FXRiskGroupMap.put (
 				1,
-				new org.drip.simm.fx.FXRiskGroup (
+				new FXRiskGroup (
 					1,
 					"Significantly Material",
-					new java.lang.String[]
+					new String[]
 					{
 						"USD",
 						"EUR",
@@ -160,10 +164,10 @@ public class FXRiskThresholdContainer20
 
 			s_FXRiskGroupMap.put (
 				2,
-				new org.drip.simm.fx.FXRiskGroup (
+				new FXRiskGroup (
 					2,
 					"Frequently Traded",
-					new java.lang.String[]
+					new String[]
 					{
 						"BRL",
 						"CNY",
@@ -184,10 +188,10 @@ public class FXRiskThresholdContainer20
 
 			s_FXRiskGroupMap.put (
 				3,
-				new org.drip.simm.fx.FXRiskGroup (
+				new FXRiskGroup (
 					3,
 					"Others",
-					new java.lang.String[]
+					new String[]
 					{
 						"Other"
 					}
@@ -254,7 +258,7 @@ public class FXRiskThresholdContainer20
 				110.
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 
@@ -271,33 +275,38 @@ public class FXRiskThresholdContainer20
 	 * 
 	 * @return The Category
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final int CurrencyCategory (
-		final java.lang.String currency)
-		throws java.lang.Exception
+		final String currency)
+		throws Exception
 	{
 		if (null == currency || currency.isEmpty())
 		{
-			throw new java.lang.Exception ("FXRiskThresholdContainer::CurrencyCategory => Invalid Input");
+			throw new Exception (
+				"FXRiskThresholdContainer::CurrencyCategory => Invalid Input"
+			);
 		}
 
-		for (java.util.Map.Entry<java.lang.Integer, org.drip.simm.fx.FXRiskGroup> fxRiskGroupEntry :
-			s_FXRiskGroupMap.entrySet())
+		for (Map.Entry<Integer, FXRiskGroup> fxRiskGroupEntry : s_FXRiskGroupMap.entrySet())
 		{
-			java.lang.String[] currencyArray = fxRiskGroupEntry.getValue().currencyArray();
+			String[] currencyArray = fxRiskGroupEntry.getValue().currencyArray();
 
-			for (java.lang.String currencyEntry : currencyArray)
+			for (String currencyEntry : currencyArray)
 			{
-				if (currencyEntry.equalsIgnoreCase (currency))
+				if (currencyEntry.equalsIgnoreCase (
+					currency
+				))
 				{
 					return fxRiskGroupEntry.getKey();
 				}
 			}
 		}
 
-		return s_FXRiskGroupMap.get (3).category();
+		return s_FXRiskGroupMap.get (
+			3
+		).category();
 	}
 
 	/**
@@ -306,7 +315,7 @@ public class FXRiskThresholdContainer20
 	 * @return The Category Set
 	 */
 
-	public static final java.util.Set<java.lang.Integer> CategorySet()
+	public static final Set<Integer> CategorySet()
 	{
 		return s_FXRiskGroupMap.keySet();
 	}
@@ -322,7 +331,9 @@ public class FXRiskThresholdContainer20
 	public static final boolean ContainsCategory (
 		final int categoryNumber)
 	{
-		return s_FXRiskGroupMap.containsKey (categoryNumber);
+		return s_FXRiskGroupMap.containsKey (
+			categoryNumber
+		);
 	}
 
 	/**
@@ -333,10 +344,14 @@ public class FXRiskThresholdContainer20
 	 * @return The Risk Group identified by the Category Number
 	 */
 
-	public static final org.drip.simm.fx.FXRiskGroup FXRiskGroup (
+	public static final FXRiskGroup FXRiskGroup (
 		final int categoryNumber)
 	{
-		return ContainsCategory (categoryNumber) ? s_FXRiskGroupMap.get (categoryNumber) : null;
+		return ContainsCategory (
+			categoryNumber
+		) ? s_FXRiskGroupMap.get (
+			categoryNumber
+		) : null;
 	}
 
 	/**
@@ -346,20 +361,25 @@ public class FXRiskThresholdContainer20
 	 * 
 	 * @return Delta Threshold for the Category specified
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double CategoryDeltaThreshold (
 		final int categoryNumber)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!s_CategoryDelta.containsKey (categoryNumber))
+		if (!s_CategoryDelta.containsKey (
+			categoryNumber
+		))
 		{
-			throw new java.lang.Exception
-				("FXRiskThresholdContainer::CategoryDeltaThreshold => Invalid Category");
+			throw new Exception (
+				"FXRiskThresholdContainer::CategoryDeltaThreshold => Invalid Category"
+			);
 		}
 
-		return s_CategoryDelta.get (categoryNumber);
+		return s_CategoryDelta.get (
+			categoryNumber
+		);
 	}
 
 	/**
@@ -370,23 +390,28 @@ public class FXRiskThresholdContainer20
 	 * 
 	 * @return Vega Threshold for the Category Pair specified
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double CategoryVegaThreshold (
 		final int categoryNumber1,
 		final int categoryNumber2)
-		throws java.lang.Exception
+		throws Exception
 	{
-		java.lang.String categoryVegaThresholdKey = categoryNumber1 + "__" + categoryNumber2;
+		String categoryVegaThresholdKey = categoryNumber1 + "__" + categoryNumber2;
 
-		if (!s_CategoryVega.containsKey (categoryVegaThresholdKey))
+		if (!s_CategoryVega.containsKey (
+			categoryVegaThresholdKey
+		))
 		{
-			throw new java.lang.Exception
-				("FXRiskThresholdContainer::CategoryVegaThreshold => Invalid Category");
+			throw new Exception (
+				"FXRiskThresholdContainer::CategoryVegaThreshold => Invalid Category"
+			);
 		}
 
-		return s_CategoryVega.get (categoryVegaThresholdKey);
+		return s_CategoryVega.get (
+			categoryVegaThresholdKey
+		);
 	}
 
 	/**
@@ -395,8 +420,7 @@ public class FXRiskThresholdContainer20
 	 * @return The FX Risk Group Map
 	 */
 
-	public static final java.util.Map<java.lang.Integer, org.drip.simm.fx.FXRiskGroup>
-		FXRiskGroupMap()
+	public static final Map<Integer, FXRiskGroup> FXRiskGroupMap()
 	{
 		return s_FXRiskGroupMap;
 	}
@@ -407,7 +431,7 @@ public class FXRiskThresholdContainer20
 	 * @return The Category Delta Concentration Threshold Map
 	 */
 
-	public static final java.util.Map<java.lang.Integer, java.lang.Double> CategoryDeltaMap()
+	public static final Map<Integer, Double> CategoryDeltaMap()
 	{
 		return s_CategoryDelta;
 	}
@@ -418,7 +442,7 @@ public class FXRiskThresholdContainer20
 	 * @return The Category Vega Concentration Threshold Map
 	 */
 
-	public static final java.util.Map<java.lang.String, java.lang.Double> CategoryVegaMap()
+	public static final Map<String, Double> CategoryVegaMap()
 	{
 		return s_CategoryVega;
 	}
@@ -429,25 +453,28 @@ public class FXRiskThresholdContainer20
 	 * @return The Cross Risk Group Co-variance Matrix
 	 */
 
-	public static final org.drip.simm.foundation.RiskGroupPrincipalCovariance CrossGroupPrincipalCovariance()
+	public static final RiskGroupPrincipalCovariance CrossGroupPrincipalCovariance()
 	{
-		java.util.Set<java.lang.Integer> fxBucketSet = s_FXRiskGroupMap.keySet();
+		Set<Integer> fxBucketSet = s_FXRiskGroupMap.keySet();
 
 		int fxRiskGroupCount = fxBucketSet.size();
 
 		double[][] crossGroupCorrelation = new double[fxRiskGroupCount][fxRiskGroupCount];
 
-		for (int fxRiskGroupIndexI = 0; fxRiskGroupIndexI < fxRiskGroupCount; ++fxRiskGroupIndexI)
+		for (int fxRiskGroupIndexI = 0;
+			fxRiskGroupIndexI < fxRiskGroupCount;
+			++fxRiskGroupIndexI)
 		{
-			for (int fxRiskGroupIndexJ = 0; fxRiskGroupIndexJ < fxRiskGroupCount; ++fxRiskGroupIndexJ)
+			for (int fxRiskGroupIndexJ = 0;
+				fxRiskGroupIndexJ < fxRiskGroupCount;
+				++fxRiskGroupIndexJ)
 			{
 				crossGroupCorrelation[fxRiskGroupIndexI][fxRiskGroupIndexJ] =
-					fxRiskGroupIndexI == fxRiskGroupIndexJ ? 1. :
-					org.drip.simm.fx.FXSystemics20.CORRELATION;
+					fxRiskGroupIndexI == fxRiskGroupIndexJ ? 1. : FXSystemics20.CORRELATION;
 			}
 		}
 
-		return org.drip.simm.foundation.RiskGroupPrincipalCovariance.Standard (
+		return RiskGroupPrincipalCovariance.Standard (
 			crossGroupCorrelation,
 			1.
 		);

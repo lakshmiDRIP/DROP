@@ -122,8 +122,8 @@ package org.drip.simm.fx;
 public class FXRiskGroup
 {
 	private int _category = -1;
-	private java.lang.String _description = "";
-	private java.lang.String[] _currencyArray = null;
+	private String _description = "";
+	private String[] _currencyArray = null;
 
 	/**
 	 * FXRiskGroup Constructor
@@ -132,19 +132,21 @@ public class FXRiskGroup
 	 * @param description The FX Risk Group Description
 	 * @param currencyArray The FX Risk Group Currency Array
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public FXRiskGroup (
 		final int category,
-		final java.lang.String description,
-		final java.lang.String[] currencyArray)
-		throws java.lang.Exception
+		final String description,
+		final String[] currencyArray)
+		throws Exception
 	{
 		if (null == (_description = description) || _description.isEmpty() ||
 			null == (_currencyArray = currencyArray) || 0 == _currencyArray.length)
 		{
-			throw new java.lang.Exception ("FXRiskGroup Constructor => Invalid Inputs");
+			throw new Exception (
+				"FXRiskGroup Constructor => Invalid Inputs"
+			);
 		}
 
 		_category = category;
@@ -167,7 +169,7 @@ public class FXRiskGroup
 	 * @return The FX Risk Group Description
 	 */
 
-	public java.lang.String description()
+	public String description()
 	{
 		return _description;
 	}
@@ -178,7 +180,7 @@ public class FXRiskGroup
 	 * @return The FX Risk Currency Array
 	 */
 
-	public java.lang.String[] currencyArray()
+	public String[] currencyArray()
 	{
 		return _currencyArray;
 	}

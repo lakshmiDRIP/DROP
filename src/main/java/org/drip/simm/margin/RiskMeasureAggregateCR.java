@@ -1,6 +1,10 @@
 
 package org.drip.simm.margin;
 
+import java.util.Map;
+
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,10 +125,9 @@ package org.drip.simm.margin;
 
 public class RiskMeasureAggregateCR
 {
-	private double _coreSBAVariance = java.lang.Double.NaN;
-	private double _residualSBAVariance = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, org.drip.simm.margin.BucketAggregateCR> _bucketAggregateMap =
-		null;
+	private double _coreSBAVariance = Double.NaN;
+	private double _residualSBAVariance = Double.NaN;
+	private Map<String, BucketAggregateCR> _bucketAggregateMap = null;
 
 	/**
 	 * RiskMeasureAggregateCR Constructor
@@ -133,20 +136,27 @@ public class RiskMeasureAggregateCR
 	 * @param coreSBAVariance The Core SBA Variance
 	 * @param residualSBAVariance The Residual SBA Variance
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskMeasureAggregateCR (
-		final java.util.Map<java.lang.String, org.drip.simm.margin.BucketAggregateCR> bucketAggregateMap,
+		final Map<String, BucketAggregateCR> bucketAggregateMap,
 		final double coreSBAVariance,
 		final double residualSBAVariance)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (null == (_bucketAggregateMap = bucketAggregateMap) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_coreSBAVariance = coreSBAVariance) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_residualSBAVariance = residualSBAVariance))
+			!NumberUtil.IsValid (
+				_coreSBAVariance = coreSBAVariance
+			) ||
+			!NumberUtil.IsValid (
+				_residualSBAVariance = residualSBAVariance
+			)
+		)
 		{
-			throw new java.lang.Exception ("RiskMeasureAggregateCR Consructor => Invalid Inputs");
+			throw new Exception (
+				"RiskMeasureAggregateCR Consructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -156,7 +166,7 @@ public class RiskMeasureAggregateCR
 	 * @return The Credit Bucket Sensitivity Aggregate Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.simm.margin.BucketAggregateCR> bucketAggregateMap()
+	public Map<String, BucketAggregateCR> bucketAggregateMap()
 	{
 		return _bucketAggregateMap;
 	}
@@ -191,6 +201,10 @@ public class RiskMeasureAggregateCR
 
 	public double sba()
 	{
-		return java.lang.Math.sqrt (_coreSBAVariance) + java.lang.Math.sqrt (_residualSBAVariance);
+		return Math.sqrt (
+			_coreSBAVariance
+		) + Math.sqrt (
+			_residualSBAVariance
+		);
 	}
 }

@@ -1,6 +1,8 @@
 
 package org.drip.simm.equity;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -122,12 +124,12 @@ package org.drip.simm.equity;
 public class EQBucket
 {
 	private int _number = -1;
-	private java.lang.String _size = "";
-	private java.lang.String _region = "";
-	private java.lang.String[] _sectorArray = null;
-	private double _vegaRiskWeight = java.lang.Double.NaN;
-	private double _deltaRiskWeight = java.lang.Double.NaN;
-	private double _memberCorrelation = java.lang.Double.NaN;
+	private String _size = "";
+	private String _region = "";
+	private String[] _sectorArray = null;
+	private double _vegaRiskWeight = Double.NaN;
+	private double _deltaRiskWeight = Double.NaN;
+	private double _memberCorrelation = Double.NaN;
 
 	/**
 	 * EQBucket Constructor
@@ -140,27 +142,36 @@ public class EQBucket
 	 * @param memberCorrelation Bucket Member Correlation
 	 * @param vegaRiskWeight The Bucket Vega Risk Weight
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public EQBucket (
 		final int number,
-		final java.lang.String size,
-		final java.lang.String region,
-		final java.lang.String[] sectorArray,
+		final String size,
+		final String region,
+		final String[] sectorArray,
 		final double deltaRiskWeight,
 		final double memberCorrelation,
 		final double vegaRiskWeight)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (null == (_size = size) || _size.isEmpty() ||
 			null == (_region = region) || _region.isEmpty() ||
 			null == (_sectorArray = sectorArray) || 0 == _sectorArray.length ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_deltaRiskWeight = deltaRiskWeight) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_memberCorrelation = memberCorrelation) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_vegaRiskWeight = vegaRiskWeight))
+			!NumberUtil.IsValid (
+				_deltaRiskWeight = deltaRiskWeight
+			) ||
+			!NumberUtil.IsValid (
+				_memberCorrelation = memberCorrelation
+			) ||
+			!NumberUtil.IsValid (
+				_vegaRiskWeight = vegaRiskWeight
+			)
+		)
 		{
-			throw new java.lang.Exception ("EQBucket Constructor => Invalid Inputs");
+			throw new Exception (
+				"EQBucket Constructor => Invalid Inputs"
+			);
 		}
 
 		_number = number;
@@ -183,7 +194,7 @@ public class EQBucket
 	 * @return The Bucket Size
 	 */
 
-	public java.lang.String size()
+	public String size()
 	{
 		return _size;
 	}
@@ -194,7 +205,7 @@ public class EQBucket
 	 * @return The Bucket Region
 	 */
 
-	public java.lang.String region()
+	public String region()
 	{
 		return _region;
 	}
@@ -205,7 +216,7 @@ public class EQBucket
 	 * @return The Bucket Sector Array
 	 */
 
-	public java.lang.String[] sectorArray()
+	public String[] sectorArray()
 	{
 		return _sectorArray;
 	}

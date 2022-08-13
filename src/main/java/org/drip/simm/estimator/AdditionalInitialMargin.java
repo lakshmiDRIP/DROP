@@ -1,6 +1,11 @@
 
 package org.drip.simm.estimator;
 
+import java.util.Map;
+
+import org.drip.numerical.common.NumberUtil;
+import org.drip.simm.common.ProductClassMultiplicativeScale;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,12 +126,12 @@ package org.drip.simm.estimator;
 
 public class AdditionalInitialMargin
 {
-	private double _addOnFixed = java.lang.Double.NaN;
-	private double _creditMultiplicativeScale = java.lang.Double.NaN;
-	private double _equityMultiplicativeScale = java.lang.Double.NaN;
-	private double _ratesFXMultiplicativeScale = java.lang.Double.NaN;
-	private double _commodityMultiplicativeScale = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, java.lang.Double> _productAddOnFactorMap = null;
+	private double _addOnFixed = Double.NaN;
+	private double _creditMultiplicativeScale = Double.NaN;
+	private double _equityMultiplicativeScale = Double.NaN;
+	private double _ratesFXMultiplicativeScale = Double.NaN;
+	private double _commodityMultiplicativeScale = Double.NaN;
+	private Map<String, Double> _productAddOnFactorMap = null;
 
 	/**
 	 * Construct a Standard Instance of AdditionalInitialMargin
@@ -139,20 +144,20 @@ public class AdditionalInitialMargin
 
 	public static final AdditionalInitialMargin Standard (
 		final double addOnFixed,
-		final java.util.Map<java.lang.String, java.lang.Double> productAddOnFactorMap)
+		final Map<String, Double> productAddOnFactorMap)
 	{
 		try
 		{
 			return new AdditionalInitialMargin (
-				org.drip.simm.common.ProductClassMultiplicativeScale.MS_RATESFX_DEFAULT,
-				org.drip.simm.common.ProductClassMultiplicativeScale.MS_CREDIT_QUALIFYING_DEFAULT,
-				org.drip.simm.common.ProductClassMultiplicativeScale.MS_EQUITY_DEFAULT,
-				org.drip.simm.common.ProductClassMultiplicativeScale.MS_COMMODITY_DEFAULT,
+				ProductClassMultiplicativeScale.MS_RATESFX_DEFAULT,
+				ProductClassMultiplicativeScale.MS_CREDIT_QUALIFYING_DEFAULT,
+				ProductClassMultiplicativeScale.MS_EQUITY_DEFAULT,
+				ProductClassMultiplicativeScale.MS_COMMODITY_DEFAULT,
 				addOnFixed,
 				productAddOnFactorMap
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -170,7 +175,7 @@ public class AdditionalInitialMargin
 	 * @param addOnFixed The Fixed Add-On
 	 * @param productAddOnFactorMap The Product Add-On Factor Map
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AdditionalInitialMargin (
@@ -179,20 +184,29 @@ public class AdditionalInitialMargin
 		final double equityMultiplicativeScale,
 		final double commodityMultiplicativeScale,
 		final double addOnFixed,
-		final java.util.Map<java.lang.String, java.lang.Double> productAddOnFactorMap)
-		throws java.lang.Exception
+		final Map<String, Double> productAddOnFactorMap)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_ratesFXMultiplicativeScale =
-				ratesFXMultiplicativeScale) || 1. > _ratesFXMultiplicativeScale ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_creditMultiplicativeScale =
-				creditMultiplicativeScale) || 1. > _creditMultiplicativeScale ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_equityMultiplicativeScale =
-				equityMultiplicativeScale) || 1. > _equityMultiplicativeScale ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_commodityMultiplicativeScale =
-				commodityMultiplicativeScale) || 1. > _commodityMultiplicativeScale ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_addOnFixed = addOnFixed) || 0. > _addOnFixed)
+		if (!NumberUtil.IsValid (
+				_ratesFXMultiplicativeScale = ratesFXMultiplicativeScale
+			) || 1. > _ratesFXMultiplicativeScale ||
+			!NumberUtil.IsValid (
+				_creditMultiplicativeScale = creditMultiplicativeScale
+			) || 1. > _creditMultiplicativeScale ||
+			!NumberUtil.IsValid (
+				_equityMultiplicativeScale = equityMultiplicativeScale
+			) || 1. > _equityMultiplicativeScale ||
+			!NumberUtil.IsValid (
+				_commodityMultiplicativeScale = commodityMultiplicativeScale
+			) || 1. > _commodityMultiplicativeScale ||
+			!NumberUtil.IsValid (
+				_addOnFixed = addOnFixed
+			) || 0. > _addOnFixed
+		)
 		{
-			throw new java.lang.Exception ("AdditionalInitialMargin Constructor => Invalid Inputs");
+			throw new Exception (
+				"AdditionalInitialMargin Constructor => Invalid Inputs"
+			);
 		}
 
 		_productAddOnFactorMap = productAddOnFactorMap;
@@ -259,7 +273,7 @@ public class AdditionalInitialMargin
 	 * @return The Product Add-On Factor Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> productAddOnFactorMap()
+	public Map<String, Double> productAddOnFactorMap()
 	{
 		return _productAddOnFactorMap;
 	}
@@ -273,7 +287,7 @@ public class AdditionalInitialMargin
 	 */
 
 	public double productAddOn (
-		final java.util.Map<java.lang.String, java.lang.Double> productNotionalMap)
+		final Map<String, Double> productNotionalMap)
 	{
 		if (null == productNotionalMap || 0 == productNotionalMap.size() ||
 			null == _productAddOnFactorMap || 0 == _productAddOnFactorMap.size())
@@ -283,15 +297,17 @@ public class AdditionalInitialMargin
 
 		double productAddOn = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> productAddOnFactorEntry :
-			_productAddOnFactorMap.entrySet())
+		for (Map.Entry<String, Double> productAddOnFactorEntry : _productAddOnFactorMap.entrySet())
 		{
-			java.lang.String productID = productAddOnFactorEntry.getKey();
+			String productID = productAddOnFactorEntry.getKey();
 
-			if (productNotionalMap.containsKey (productID))
+			if (productNotionalMap.containsKey (
+				productID
+			))
 			{
-				productAddOn = productAddOn + productAddOnFactorEntry.getValue() * productNotionalMap.get
-					(productID);
+				productAddOn = productAddOn + productAddOnFactorEntry.getValue() * productNotionalMap.get (
+					productID
+				);
 			}
 		}
 
@@ -307,8 +323,10 @@ public class AdditionalInitialMargin
 	 */
 
 	public double total (
-		final java.util.Map<java.lang.String, java.lang.Double> productNotionalMap)
+		final Map<String, Double> productNotionalMap)
 	{
-		return _addOnFixed + productAddOn (productNotionalMap);
+		return _addOnFixed + productAddOn (
+			productNotionalMap
+		);
 	}
 }

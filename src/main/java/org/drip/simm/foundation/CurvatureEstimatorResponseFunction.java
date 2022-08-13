@@ -1,6 +1,8 @@
 
 package org.drip.simm.foundation;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -119,9 +121,10 @@ package org.drip.simm.foundation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CurvatureEstimatorResponseFunction implements org.drip.simm.foundation.CurvatureEstimator
+public class CurvatureEstimatorResponseFunction
+	implements CurvatureEstimator
 {
-	private org.drip.simm.foundation.CurvatureResponse _curvatureResponse = null;
+	private CurvatureResponse _curvatureResponse = null;
 
 	/**
 	 * Construct the Cornish Fischer Instance of the Curvature Estimator
@@ -133,10 +136,11 @@ public class CurvatureEstimatorResponseFunction implements org.drip.simm.foundat
 	{
 		try
 		{
-			return new CurvatureEstimatorResponseFunction
-				(org.drip.simm.foundation.CurvatureResponseCornishFischer.Standard());
+			return new CurvatureEstimatorResponseFunction (
+				CurvatureResponseCornishFischer.Standard()
+			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -149,17 +153,18 @@ public class CurvatureEstimatorResponseFunction implements org.drip.simm.foundat
 	 * 
 	 * @param curvatureResponse The Curvature Response Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CurvatureEstimatorResponseFunction (
-		final org.drip.simm.foundation.CurvatureResponse curvatureResponse)
-		throws java.lang.Exception
+		final CurvatureResponse curvatureResponse)
+		throws Exception
 	{
 		if (null == (_curvatureResponse = curvatureResponse))
 		{
-			throw new java.lang.Exception
-				("CurvatureEstimatorResponseFunction Constructor => Invalid Inputs");
+			throw new Exception (
+				"CurvatureEstimatorResponseFunction Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -169,7 +174,7 @@ public class CurvatureEstimatorResponseFunction implements org.drip.simm.foundat
 	 * @return The Curvature Response Function
 	 */
 
-	public org.drip.simm.foundation.CurvatureResponse curvatureResponse()
+	public CurvatureResponse curvatureResponse()
 	{
 		return _curvatureResponse;
 	}
@@ -178,20 +183,25 @@ public class CurvatureEstimatorResponseFunction implements org.drip.simm.foundat
 		final double cumulativeRiskFactorSensitivity,
 		final double cumulativeRiskFactorSensitivityPositive,
 		final double riskFactorSensitivityVariance)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (riskFactorSensitivityVariance) ||
-			0. > riskFactorSensitivityVariance)
+		if (!NumberUtil.IsValid (
+				riskFactorSensitivityVariance
+			) || 0. > riskFactorSensitivityVariance
+		)
 		{
-			throw new java.lang.Exception ("CurvatureEstimatorResponseFunction::margin => Invalid Inputs");
+			throw new Exception (
+				"CurvatureEstimatorResponseFunction::margin => Invalid Inputs"
+			);
 		}
 
-		return java.lang.Math.max (
-			cumulativeRiskFactorSensitivity +
-				_curvatureResponse.lambda (
-					cumulativeRiskFactorSensitivity,
-					cumulativeRiskFactorSensitivityPositive
-				) * java.lang.Math.sqrt (riskFactorSensitivityVariance),
+		return Math.max (
+			cumulativeRiskFactorSensitivity + _curvatureResponse.lambda (
+				cumulativeRiskFactorSensitivity,
+				cumulativeRiskFactorSensitivityPositive
+			) * Math.sqrt (
+				riskFactorSensitivityVariance
+			),
 			0.
 		);
 	}
@@ -202,11 +212,11 @@ public class CurvatureEstimatorResponseFunction implements org.drip.simm.foundat
 	}
 
 	@Override public double varianceModulator (
-		final java.lang.String bucketKey1,
+		final String bucketKey1,
 		final double bucketVariance1,
-		final java.lang.String bucketKey2,
+		final String bucketKey2,
 		final double bucketVariance2)
-		throws java.lang.Exception
+		throws Exception
 	{
 		return 1.;
 	}

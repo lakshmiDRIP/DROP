@@ -125,25 +125,25 @@ public class RegionSystemics
 	 * The "Emerging Markets" Region
 	 */
 
-	public static final java.lang.String EMERGING_MARKETS = "EMERGING_MARKETS";
+	public static final String EMERGING_MARKETS = "EMERGING_MARKETS";
 
 	/**
 	 * The "Developed Markets" Region
 	 */
 
-	public static final java.lang.String DEVELOPED_MARKETS = "DEVELOPED_MARKETS";
+	public static final String DEVELOPED_MARKETS = "DEVELOPED_MARKETS";
 
 	/**
 	 * The "All" Region
 	 */
 
-	public static final java.lang.String ALL = "ALL";
+	public static final String ALL = "ALL";
 
 	/**
 	 * Array of Developed Countries
 	 */
 
-	public static final java.lang.String[] DEVELOPED_COUNTRIES = new java.lang.String[]
+	public static final String[] DEVELOPED_COUNTRIES = new String[]
 	{
 		"Canada",
 		"US",

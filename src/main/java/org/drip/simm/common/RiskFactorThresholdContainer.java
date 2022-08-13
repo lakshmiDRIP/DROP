@@ -1,6 +1,17 @@
 
 package org.drip.simm.common;
 
+import org.drip.simm.commodity.CTRiskThresholdContainer20;
+import org.drip.simm.commodity.CTRiskThresholdContainer21;
+import org.drip.simm.credit.CRThresholdContainer20;
+import org.drip.simm.credit.CRThresholdContainer21;
+import org.drip.simm.equity.EQRiskThresholdContainer20;
+import org.drip.simm.equity.EQRiskThresholdContainer21;
+import org.drip.simm.fx.FXRiskThresholdContainer20;
+import org.drip.simm.fx.FXRiskThresholdContainer21;
+import org.drip.simm.rates.IRThresholdContainer20;
+import org.drip.simm.rates.IRThresholdContainer21;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -130,52 +141,52 @@ public class RiskFactorThresholdContainer
 
 	public static final boolean Init()
 	{
-		if (!org.drip.simm.rates.IRThresholdContainer20.Init())
+		if (!IRThresholdContainer20.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm.rates.IRThresholdContainer21.Init())
+		if (!IRThresholdContainer21.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm.credit.CRThresholdContainer20.Init())
+		if (!CRThresholdContainer20.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm.credit.CRThresholdContainer21.Init())
+		if (!CRThresholdContainer21.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm.equity.EQRiskThresholdContainer20.Init())
+		if (!EQRiskThresholdContainer20.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm.equity.EQRiskThresholdContainer21.Init())
+		if (!EQRiskThresholdContainer21.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm.commodity.CTRiskThresholdContainer20.Init())
+		if (!CTRiskThresholdContainer20.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm.commodity.CTRiskThresholdContainer21.Init())
+		if (!CTRiskThresholdContainer21.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm.fx.FXRiskThresholdContainer20.Init())
+		if (!FXRiskThresholdContainer20.Init())
 		{
 			return false;
 		}
 
-		if (!org.drip.simm.fx.FXRiskThresholdContainer21.Init())
+		if (!FXRiskThresholdContainer21.Init())
 		{
 			return false;
 		}

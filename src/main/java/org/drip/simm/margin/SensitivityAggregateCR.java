@@ -1,6 +1,10 @@
 
 package org.drip.simm.margin;
 
+import java.util.Map;
+
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,8 +125,8 @@ package org.drip.simm.margin;
 
 public class SensitivityAggregateCR
 {
-	private double _cumulativeMarginSensitivity = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, java.lang.Double> _componentMarginCovarianceMap = null;
+	private double _cumulativeMarginSensitivity = Double.NaN;
+	private Map<String, Double> _componentMarginCovarianceMap = null;
 
 	/**
 	 * SensitivityAggregateCR Constructor
@@ -130,20 +134,24 @@ public class SensitivityAggregateCR
 	 * @param componentMarginCovarianceMap The Component Margin Co-variance Map
 	 * @param cumulativeMarginSensitivity The Cumulative Margin Sensitivity
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public SensitivityAggregateCR (
-		final java.util.Map<java.lang.String, java.lang.Double> componentMarginCovarianceMap,
+		final Map<String, Double> componentMarginCovarianceMap,
 		final double cumulativeMarginSensitivity)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (null == (_componentMarginCovarianceMap = componentMarginCovarianceMap) ||
 				0 == _componentMarginCovarianceMap.size() ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_cumulativeMarginSensitivity =
-				cumulativeMarginSensitivity))
+			!NumberUtil.IsValid (
+				_cumulativeMarginSensitivity = cumulativeMarginSensitivity
+			)
+		)
 		{
-			throw new java.lang.Exception ("SensitivityAggregateCR Constructor => Invalid Inputs");
+			throw new Exception (
+				"SensitivityAggregateCR Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -153,7 +161,7 @@ public class SensitivityAggregateCR
 	 * @return The Component Margin Covariance Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> componentMarginCovarianceMap()
+	public Map<String, Double> componentMarginCovarianceMap()
 	{
 		return _componentMarginCovarianceMap;
 	}
@@ -168,7 +176,7 @@ public class SensitivityAggregateCR
 	{
 		double cumulativeMarginCovariance = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> componentMarginCovarianceEntry :
+		for (Map.Entry<String, Double> componentMarginCovarianceEntry :
 			_componentMarginCovarianceMap.entrySet())
 		{
 			cumulativeMarginCovariance = cumulativeMarginCovariance +
@@ -186,7 +194,9 @@ public class SensitivityAggregateCR
 
 	public double cumulativeMargin()
 	{
-		return java.lang.Math.sqrt (cumulativeMarginCovariance());
+		return Math.sqrt (
+			cumulativeMarginCovariance()
+		);
 	}
 
 	/**

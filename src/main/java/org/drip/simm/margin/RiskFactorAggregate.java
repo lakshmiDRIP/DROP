@@ -1,6 +1,8 @@
 
 package org.drip.simm.margin;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,8 +123,8 @@ package org.drip.simm.margin;
 
 public class RiskFactorAggregate
 {
-	private double _sensitivityMargin = java.lang.Double.NaN;
-	private double _concentrationRiskFactor = java.lang.Double.NaN;
+	private double _sensitivityMargin = Double.NaN;
+	private double _concentrationRiskFactor = Double.NaN;
 
 	/**
 	 * RiskFactorAggregate Constructor
@@ -130,18 +132,25 @@ public class RiskFactorAggregate
 	 * @param sensitivityMargin The Bucket Sensitivity Margin
 	 * @param concentrationRiskFactor The Bucket Concentration Risk Factor
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskFactorAggregate (
 		final double sensitivityMargin,
 		final double concentrationRiskFactor)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_sensitivityMargin = sensitivityMargin) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_concentrationRiskFactor = concentrationRiskFactor))
+		if (!NumberUtil.IsValid (
+				_sensitivityMargin = sensitivityMargin
+			) ||
+			!NumberUtil.IsValid (
+				_concentrationRiskFactor = concentrationRiskFactor
+			)
+		)
 		{
-			throw new java.lang.Exception ("RiskFactorAggregate Constructor => Invalid Inputs");
+			throw new Exception (
+				"RiskFactorAggregate Constructor => Invalid Inputs"
+			);
 		}
 	}
 

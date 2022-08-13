@@ -125,35 +125,35 @@ public class Chargram
 	 * The Interest Rate Digram IR
 	 */
 
-	public static final java.lang.String IR = "IR";
+	public static final String IR = "IR";
 
 	/**
 	 * The Credit Qualifying Trigram CRQ
 	 */
 
-	public static final java.lang.String CRQ = "CRQ";
+	public static final String CRQ = "CRQ";
 
 	/**
 	 * The Credit Non-Qualifying Quatro-gram CRNQ
 	 */
 
-	public static final java.lang.String CRNQ = "CRNQ";
+	public static final String CRNQ = "CRNQ";
 
 	/**
 	 * The Equity Digram EQ
 	 */
 
-	public static final java.lang.String EQ = "EQ";
+	public static final String EQ = "EQ";
 
 	/**
 	 * The FX Digram FX
 	 */
 
-	public static final java.lang.String FX = "FX";
+	public static final String FX = "FX";
 
 	/**
 	 * The Commodity Digram CT
 	 */
 
-	public static final java.lang.String CT = "CT";
+	public static final String CT = "CT";
 }

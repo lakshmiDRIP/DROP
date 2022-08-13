@@ -1,6 +1,11 @@
 
 package org.drip.simm.foundation;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.eigen.EigenComponent;
+import org.drip.numerical.eigen.PowerIterationComponentExtractor;
+import org.drip.numerical.linearalgebra.Matrix;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,8 +126,8 @@ package org.drip.simm.foundation;
 
 public class RiskGroupPrincipalCovariance
 {
-	private double _extraGroupCorrelation = java.lang.Double.NaN;
-	private org.drip.numerical.eigen.EigenComponent _principalEigenComponent = null;
+	private double _extraGroupCorrelation = Double.NaN;
+	private EigenComponent _principalEigenComponent = null;
 
 	/**
 	 * Construct the Standard RiskGroupPrincipalCovariance Instance from the Bucket Correlation Matrix and
@@ -141,15 +146,17 @@ public class RiskGroupPrincipalCovariance
 		try
 		{
 			return new RiskGroupPrincipalCovariance (
-				new org.drip.numerical.eigen.PowerIterationComponentExtractor (
+				new PowerIterationComponentExtractor (
 					30,
 					0.000001,
 					false
-				).principalComponent (intraGroupCorrelationMatrix),
+				).principalComponent (
+					intraGroupCorrelationMatrix
+				),
 				extraGroupCorrelation
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -163,19 +170,22 @@ public class RiskGroupPrincipalCovariance
 	 * @param principalEigenComponent Intra-Group Principal Eigen-Component
 	 * @param extraGroupCorrelation Cross Group Correlation
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskGroupPrincipalCovariance (
-		final org.drip.numerical.eigen.EigenComponent principalEigenComponent,
+		final EigenComponent principalEigenComponent,
 		final double extraGroupCorrelation)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (null == (_principalEigenComponent = principalEigenComponent) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_extraGroupCorrelation = extraGroupCorrelation) ||
-				-1. > _extraGroupCorrelation || 1. < _extraGroupCorrelation)
+			!NumberUtil.IsValid (
+				_extraGroupCorrelation = extraGroupCorrelation
+			) || -1. > _extraGroupCorrelation || 1. < _extraGroupCorrelation)
 		{
-			throw new java.lang.Exception ("RiskGroupPrincipalCovariance Constructor => Invalid Inputs");
+			throw new Exception (
+				"RiskGroupPrincipalCovariance Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -185,7 +195,7 @@ public class RiskGroupPrincipalCovariance
 	 * @return The Intra-Group Principal Eigen-Component
 	 */
 
-	public org.drip.numerical.eigen.EigenComponent principalEigenComponent()
+	public EigenComponent principalEigenComponent()
 	{
 		return _principalEigenComponent;
 	}
@@ -209,14 +219,18 @@ public class RiskGroupPrincipalCovariance
 
 	public double[] scaledPrincipalEigenvector()
 	{
-		double scaleFactor = java.lang.Math.sqrt (_principalEigenComponent.eigenValue());
+		double scaleFactor = Math.sqrt (
+			_principalEigenComponent.eigenValue()
+		);
 
 		double[] principalEigenvector = _principalEigenComponent.eigenVector();
 
 		int componentCount = principalEigenvector.length;
 		double[] scaledPrincipalEigenvector = new double[componentCount];
 
-		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex)
+		for (int componentIndex = 0;
+			componentIndex < componentCount;
+			++componentIndex)
 		{
 			scaledPrincipalEigenvector[componentIndex] = principalEigenvector[componentIndex] * scaleFactor;
 		}
@@ -234,7 +248,7 @@ public class RiskGroupPrincipalCovariance
 	{
 		double[] scaledPrincipalEigenvector = scaledPrincipalEigenvector();
 
-		return org.drip.numerical.linearalgebra.Matrix.CrossProduct (
+		return Matrix.CrossProduct (
 			scaledPrincipalEigenvector,
 			scaledPrincipalEigenvector
 		);
@@ -248,7 +262,7 @@ public class RiskGroupPrincipalCovariance
 
 	public double[][] adjustedCovariance()
 	{
-		return org.drip.numerical.linearalgebra.Matrix.Scale2D (
+		return Matrix.Scale2D (
 			unadjustedCovariance(),
 			_extraGroupCorrelation
 		);
