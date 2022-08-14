@@ -1,6 +1,13 @@
 
 package org.drip.simm.parameters;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.r1tor1.ISDABucketCurvatureTenorScaler;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -119,9 +126,10 @@ package org.drip.simm.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BucketCurvatureSettingsIR extends org.drip.simm.parameters.BucketVegaSettingsIR
+public class BucketCurvatureSettingsIR
+	extends BucketVegaSettingsIR
 {
-	private java.util.Map<java.lang.String, java.lang.Double> _tenorScalingFactorMap = null;
+	private Map<String, Double> _tenorScalingFactorMap = null;
 
 	/**
 	 * Generate the ISDA 2.0 Standard BucketCurvatureSettingsIR
@@ -132,82 +140,105 @@ public class BucketCurvatureSettingsIR extends org.drip.simm.parameters.BucketVe
 	 */
 
 	public static BucketCurvatureSettingsIR ISDA_20 (
-		final java.lang.String currency)
+		final String currency)
 	{
-		org.drip.simm.parameters.BucketVegaSettingsIR bucketVegaSettingsIR =
-			org.drip.simm.parameters.BucketVegaSettingsIR.ISDA_20 (currency);
+		BucketVegaSettingsIR bucketVegaSettingsIR = BucketVegaSettingsIR.ISDA_20 (
+			currency
+		);
 
 		if (null == bucketVegaSettingsIR)
 		{
 			return null;
 		}
 
-		org.drip.function.definition.R1ToR1 r1ToR1CurvatureTenorScaler =
-			org.drip.function.r1tor1.ISDABucketCurvatureTenorScaler.Standard();
+		R1ToR1 r1ToR1CurvatureTenorScaler = ISDABucketCurvatureTenorScaler.Standard();
 
-		java.util.Map<java.lang.String, java.lang.Double> tenorScalingFactorMap = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+		Map<String, Double> tenorScalingFactorMap = new CaseInsensitiveHashMap<Double>();
 
 		try
 		{
 			tenorScalingFactorMap.put (
 				"2W",
-				r1ToR1CurvatureTenorScaler.evaluate (14.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					14.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"1M",
-				r1ToR1CurvatureTenorScaler.evaluate (30.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					30.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"3M",
-				r1ToR1CurvatureTenorScaler.evaluate (91.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					91.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"6M",
-				r1ToR1CurvatureTenorScaler.evaluate (183.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					183.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"1Y",
-				r1ToR1CurvatureTenorScaler.evaluate (365.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					365.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"2Y",
-				r1ToR1CurvatureTenorScaler.evaluate (731.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					731.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"3Y",
-				r1ToR1CurvatureTenorScaler.evaluate (1096.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					1096.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"5Y",
-				r1ToR1CurvatureTenorScaler.evaluate (1826.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					1826.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"10Y",
-				r1ToR1CurvatureTenorScaler.evaluate (3652.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					3652.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"15Y",
-				r1ToR1CurvatureTenorScaler.evaluate (5479.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					5479.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"20Y",
-				r1ToR1CurvatureTenorScaler.evaluate (7305.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					7305.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"30Y",
-				r1ToR1CurvatureTenorScaler.evaluate (10957.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					10957.
+				)
 			);
 
 			return new BucketCurvatureSettingsIR (
@@ -233,7 +264,7 @@ public class BucketCurvatureSettingsIR extends org.drip.simm.parameters.BucketVe
 				tenorScalingFactorMap
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -250,82 +281,105 @@ public class BucketCurvatureSettingsIR extends org.drip.simm.parameters.BucketVe
 	 */
 
 	public static BucketCurvatureSettingsIR ISDA_21 (
-		final java.lang.String currency)
+		final String currency)
 	{
-		org.drip.simm.parameters.BucketVegaSettingsIR bucketVegaSettingsIR =
-			org.drip.simm.parameters.BucketVegaSettingsIR.ISDA_21 (currency);
+		BucketVegaSettingsIR bucketVegaSettingsIR = BucketVegaSettingsIR.ISDA_21 (
+			currency
+		);
 
 		if (null == bucketVegaSettingsIR)
 		{
 			return null;
 		}
 
-		org.drip.function.definition.R1ToR1 r1ToR1CurvatureTenorScaler =
-			org.drip.function.r1tor1.ISDABucketCurvatureTenorScaler.Standard();
+		R1ToR1 r1ToR1CurvatureTenorScaler = ISDABucketCurvatureTenorScaler.Standard();
 
-		java.util.Map<java.lang.String, java.lang.Double> tenorScalingFactorMap = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+		Map<String, Double> tenorScalingFactorMap = new CaseInsensitiveHashMap<Double>();
 
 		try
 		{
 			tenorScalingFactorMap.put (
 				"2W",
-				r1ToR1CurvatureTenorScaler.evaluate (14.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					14.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"1M",
-				r1ToR1CurvatureTenorScaler.evaluate (30.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					30.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"3M",
-				r1ToR1CurvatureTenorScaler.evaluate (91.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					91.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"6M",
-				r1ToR1CurvatureTenorScaler.evaluate (183.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					183.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"1Y",
-				r1ToR1CurvatureTenorScaler.evaluate (365.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					365.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"2Y",
-				r1ToR1CurvatureTenorScaler.evaluate (731.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					731.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"3Y",
-				r1ToR1CurvatureTenorScaler.evaluate (1096.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					1096.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"5Y",
-				r1ToR1CurvatureTenorScaler.evaluate (1826.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					1826.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"10Y",
-				r1ToR1CurvatureTenorScaler.evaluate (3652.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					3652.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"15Y",
-				r1ToR1CurvatureTenorScaler.evaluate (5479.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					5479.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"20Y",
-				r1ToR1CurvatureTenorScaler.evaluate (7305.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					7305.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"30Y",
-				r1ToR1CurvatureTenorScaler.evaluate (10957.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					10957.
+				)
 			);
 
 			return new BucketCurvatureSettingsIR (
@@ -351,7 +405,7 @@ public class BucketCurvatureSettingsIR extends org.drip.simm.parameters.BucketVe
 				tenorScalingFactorMap
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -383,31 +437,31 @@ public class BucketCurvatureSettingsIR extends org.drip.simm.parameters.BucketVe
 	 * @param municipalTenorDeltaRiskWeight The MUNICIPAL Tenor Delta Risk Weight
 	 * @param tenorScalingFactorMap The Tenor Scaling Factor Map
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BucketCurvatureSettingsIR (
-		final java.util.Map<java.lang.String, java.lang.Double> oisTenorVegaRiskWeight,
-		final java.util.Map<java.lang.String, java.lang.Double> libor1MTenorVegaRiskWeight,
-		final java.util.Map<java.lang.String, java.lang.Double> libor3MTenorVegaRiskWeight,
-		final java.util.Map<java.lang.String, java.lang.Double> libor6MTenorVegaRiskWeight,
-		final java.util.Map<java.lang.String, java.lang.Double> libor12MTenorVegaRiskWeight,
-		final java.util.Map<java.lang.String, java.lang.Double> primeTenorVegaRiskWeight,
-		final java.util.Map<java.lang.String, java.lang.Double> municipalTenorVegaRiskWeight,
+		final Map<String, Double> oisTenorVegaRiskWeight,
+		final Map<String, Double> libor1MTenorVegaRiskWeight,
+		final Map<String, Double> libor3MTenorVegaRiskWeight,
+		final Map<String, Double> libor6MTenorVegaRiskWeight,
+		final Map<String, Double> libor12MTenorVegaRiskWeight,
+		final Map<String, Double> primeTenorVegaRiskWeight,
+		final Map<String, Double> municipalTenorVegaRiskWeight,
 		final org.drip.measure.stochastic.LabelCorrelation crossTenorCorrelation,
 		final double crossCurveCorrelation,
 		final double concentrationThreshold,
 		final double vegaScaler,
 		final double historicalVolatilityRatio,
-		final java.util.Map<java.lang.String, java.lang.Double> oisTenorDeltaRiskWeight,
-		final java.util.Map<java.lang.String, java.lang.Double> libor1MTenorDeltaRiskWeight,
-		final java.util.Map<java.lang.String, java.lang.Double> libor3MTenorDeltaRiskWeight,
-		final java.util.Map<java.lang.String, java.lang.Double> libor6MTenorDeltaRiskWeight,
-		final java.util.Map<java.lang.String, java.lang.Double> libor12MTenorDeltaRiskWeight,
-		final java.util.Map<java.lang.String, java.lang.Double> primeTenorDeltaRiskWeight,
-		final java.util.Map<java.lang.String, java.lang.Double> municipalTenorDeltaRiskWeight,
-		final java.util.Map<java.lang.String, java.lang.Double> tenorScalingFactorMap)
-		throws java.lang.Exception
+		final Map<String, Double> oisTenorDeltaRiskWeight,
+		final Map<String, Double> libor1MTenorDeltaRiskWeight,
+		final Map<String, Double> libor3MTenorDeltaRiskWeight,
+		final Map<String, Double> libor6MTenorDeltaRiskWeight,
+		final Map<String, Double> libor12MTenorDeltaRiskWeight,
+		final Map<String, Double> primeTenorDeltaRiskWeight,
+		final Map<String, Double> municipalTenorDeltaRiskWeight,
+		final Map<String, Double> tenorScalingFactorMap)
+		throws Exception
 	{
 		super (
 			oisTenorVegaRiskWeight,
@@ -433,7 +487,9 @@ public class BucketCurvatureSettingsIR extends org.drip.simm.parameters.BucketVe
 
 		if (null == (_tenorScalingFactorMap = tenorScalingFactorMap) || 0 == _tenorScalingFactorMap.size())
 		{
-			throw new java.lang.Exception ("BucketVegaSettingsIR Constructor => Invalid Inputs");
+			throw new Exception (
+				"BucketCurvatuveSettingsIR Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -443,194 +499,206 @@ public class BucketCurvatureSettingsIR extends org.drip.simm.parameters.BucketVe
 	 * @return The Tenor Scaling Factor Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> tenorScalingFactorMap()
+	public Map<String, Double> tenorScalingFactorMap()
 	{
 		return _tenorScalingFactorMap;
 	}
 
-	@Override public java.util.Map<java.lang.String, java.lang.Double> oisTenorRiskWeight()
+	@Override public Map<String, Double> oisTenorRiskWeight()
 	{
-		java.util.Map<java.lang.String, java.lang.Double> oisTenorVegaRiskWeight =
-			super.oisTenorRiskWeight();
+		Map<String, Double> oisTenorVegaRiskWeight = super.oisTenorRiskWeight();
 
-		java.util.Map<java.lang.String, java.lang.Double> oisTenorRiskWeight = new
-			java.util.HashMap<java.lang.String, java.lang.Double>();
+		Map<String, Double> oisTenorRiskWeight = new HashMap<String, Double>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> oisTenorVegaRiskWeightEntry :
-			oisTenorVegaRiskWeight.entrySet())
+		for (Map.Entry<String, Double> oisTenorVegaRiskWeightEntry : oisTenorVegaRiskWeight.entrySet())
 		{
-			java.lang.String tenor = oisTenorVegaRiskWeightEntry.getKey();
+			String tenor = oisTenorVegaRiskWeightEntry.getKey();
 
-			if (!_tenorScalingFactorMap.containsKey (tenor))
+			if (!_tenorScalingFactorMap.containsKey (
+				tenor
+			))
 			{
 				return null;
 			}
 
 			oisTenorRiskWeight.put (
 				tenor,
-				oisTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)
+				oisTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (
+					tenor
+				)
 			);
 		}
 
 		return oisTenorRiskWeight;
 	}
 
-	@Override public java.util.Map<java.lang.String, java.lang.Double> libor1MTenorRiskWeight()
+	@Override public Map<String, Double> libor1MTenorRiskWeight()
 	{
-		java.util.Map<java.lang.String, java.lang.Double> libor1MTenorVegaRiskWeight =
-			super.libor1MTenorRiskWeight();
+		Map<String, Double> libor1MTenorVegaRiskWeight = super.libor1MTenorRiskWeight();
 
-		java.util.Map<java.lang.String, java.lang.Double> libor1MTenorRiskWeight = new
-			java.util.HashMap<java.lang.String, java.lang.Double>();
+		Map<String, Double> libor1MTenorRiskWeight = new HashMap<String, Double>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor1MTenorVegaRiskWeightEntry :
+		for (Map.Entry<String, Double> libor1MTenorVegaRiskWeightEntry :
 			libor1MTenorVegaRiskWeight.entrySet())
 		{
-			java.lang.String tenor = libor1MTenorVegaRiskWeightEntry.getKey();
+			String tenor = libor1MTenorVegaRiskWeightEntry.getKey();
 
-			if (!_tenorScalingFactorMap.containsKey (tenor))
+			if (!_tenorScalingFactorMap.containsKey (
+				tenor
+			))
 			{
 				return null;
 			}
 
 			libor1MTenorRiskWeight.put (
 				tenor,
-				libor1MTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)
+				libor1MTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (
+					tenor
+				)
 			);
 		}
 
 		return libor1MTenorRiskWeight;
 	}
 
-	@Override public java.util.Map<java.lang.String, java.lang.Double> libor3MTenorRiskWeight()
+	@Override public Map<String, Double> libor3MTenorRiskWeight()
 	{
-		java.util.Map<java.lang.String, java.lang.Double> libor3MTenorVegaRiskWeight =
-			super.libor3MTenorRiskWeight();
+		Map<String, Double> libor3MTenorVegaRiskWeight = super.libor3MTenorRiskWeight();
 
-		java.util.Map<java.lang.String, java.lang.Double> libor3MTenorRiskWeight = new
-			java.util.HashMap<java.lang.String, java.lang.Double>();
+		Map<String, Double> libor3MTenorRiskWeight = new HashMap<String, Double>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor3MTenorVegaRiskWeightEntry :
+		for (Map.Entry<String, Double> libor3MTenorVegaRiskWeightEntry :
 			libor3MTenorVegaRiskWeight.entrySet())
 		{
-			java.lang.String tenor = libor3MTenorVegaRiskWeightEntry.getKey();
+			String tenor = libor3MTenorVegaRiskWeightEntry.getKey();
 
-			if (!_tenorScalingFactorMap.containsKey (tenor))
+			if (!_tenorScalingFactorMap.containsKey (
+				tenor
+			))
 			{
 				return null;
 			}
 
 			libor3MTenorRiskWeight.put (
 				tenor,
-				libor3MTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)
+				libor3MTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (
+					tenor
+				)
 			);
 		}
 
 		return libor3MTenorRiskWeight;
 	}
 
-	@Override public java.util.Map<java.lang.String, java.lang.Double> libor6MTenorRiskWeight()
+	@Override public Map<String, Double> libor6MTenorRiskWeight()
 	{
-		java.util.Map<java.lang.String, java.lang.Double> libor6MTenorVegaRiskWeight =
-			super.libor6MTenorRiskWeight();
+		Map<String, Double> libor6MTenorVegaRiskWeight = super.libor6MTenorRiskWeight();
 
-		java.util.Map<java.lang.String, java.lang.Double> libor6MTenorRiskWeight = new
-			java.util.HashMap<java.lang.String, java.lang.Double>();
+		Map<String, Double> libor6MTenorRiskWeight = new HashMap<String, Double>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor6MTenorVegaRiskWeightEntry :
+		for (Map.Entry<String, Double> libor6MTenorVegaRiskWeightEntry :
 			libor6MTenorVegaRiskWeight.entrySet())
 		{
-			java.lang.String tenor = libor6MTenorVegaRiskWeightEntry.getKey();
+			String tenor = libor6MTenorVegaRiskWeightEntry.getKey();
 
-			if (!_tenorScalingFactorMap.containsKey (tenor))
+			if (!_tenorScalingFactorMap.containsKey (
+				tenor
+			))
 			{
 				return null;
 			}
 
 			libor6MTenorRiskWeight.put (
 				tenor,
-				libor6MTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)
+				libor6MTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (
+					tenor
+				)
 			);
 		}
 
 		return libor6MTenorRiskWeight;
 	}
 
-	@Override public java.util.Map<java.lang.String, java.lang.Double> libor12MTenorRiskWeight()
+	@Override public Map<String, Double> libor12MTenorRiskWeight()
 	{
-		java.util.Map<java.lang.String, java.lang.Double> libor12MTenorVegaRiskWeight =
-			super.libor12MTenorRiskWeight();
+		Map<String, Double> libor12MTenorVegaRiskWeight = super.libor12MTenorRiskWeight();
 
-		java.util.Map<java.lang.String, java.lang.Double> libor12MTenorRiskWeight = new
-			java.util.HashMap<java.lang.String, java.lang.Double>();
+		Map<String, Double> libor12MTenorRiskWeight = new HashMap<String, Double>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> libor12MTenorVegaRiskWeightEntry :
+		for (Map.Entry<String, Double> libor12MTenorVegaRiskWeightEntry :
 			libor12MTenorVegaRiskWeight.entrySet())
 		{
-			java.lang.String tenor = libor12MTenorVegaRiskWeightEntry.getKey();
+			String tenor = libor12MTenorVegaRiskWeightEntry.getKey();
 
-			if (!_tenorScalingFactorMap.containsKey (tenor))
+			if (!_tenorScalingFactorMap.containsKey (
+				tenor
+			))
 			{
 				return null;
 			}
 
 			libor12MTenorRiskWeight.put (
 				tenor,
-				libor12MTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)
+				libor12MTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (
+					tenor
+				)
 			);
 		}
 
 		return libor12MTenorRiskWeight;
 	}
 
-	@Override public java.util.Map<java.lang.String, java.lang.Double> primeTenorRiskWeight()
+	@Override public Map<String, Double> primeTenorRiskWeight()
 	{
-		java.util.Map<java.lang.String, java.lang.Double> primeTenorVegaRiskWeight =
-			super.primeTenorRiskWeight();
+		Map<String, Double> primeTenorVegaRiskWeight = super.primeTenorRiskWeight();
 
-		java.util.Map<java.lang.String, java.lang.Double> primeTenorRiskWeight = new
-			java.util.HashMap<java.lang.String, java.lang.Double>();
+		Map<String, Double> primeTenorRiskWeight = new HashMap<String, Double>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> primeTenorVegaRiskWeightEntry :
-			primeTenorVegaRiskWeight.entrySet())
+		for (Map.Entry<String, Double> primeTenorVegaRiskWeightEntry : primeTenorVegaRiskWeight.entrySet())
 		{
-			java.lang.String tenor = primeTenorVegaRiskWeightEntry.getKey();
+			String tenor = primeTenorVegaRiskWeightEntry.getKey();
 
-			if (!_tenorScalingFactorMap.containsKey (tenor))
+			if (!_tenorScalingFactorMap.containsKey (
+				tenor
+			))
 			{
 				return null;
 			}
 
 			primeTenorRiskWeight.put (
 				tenor,
-				primeTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)
+				primeTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (
+					tenor
+				)
 			);
 		}
 
 		return primeTenorRiskWeight;
 	}
 
-	@Override public java.util.Map<java.lang.String, java.lang.Double> municipalTenorRiskWeight()
+	@Override public Map<String, Double> municipalTenorRiskWeight()
 	{
-		java.util.Map<java.lang.String, java.lang.Double> municipalTenorVegaRiskWeight =
-			super.municipalTenorRiskWeight();
+		Map<String, Double> municipalTenorVegaRiskWeight = super.municipalTenorRiskWeight();
 
-		java.util.Map<java.lang.String, java.lang.Double> municipalTenorRiskWeight = new
-			java.util.HashMap<java.lang.String, java.lang.Double>();
+		Map<String, Double> municipalTenorRiskWeight = new HashMap<String, Double>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> municipalTenorVegaRiskWeightEntry :
+		for (Map.Entry<String, Double> municipalTenorVegaRiskWeightEntry :
 			municipalTenorVegaRiskWeight.entrySet())
 		{
-			java.lang.String tenor = municipalTenorVegaRiskWeightEntry.getKey();
+			String tenor = municipalTenorVegaRiskWeightEntry.getKey();
 
-			if (!_tenorScalingFactorMap.containsKey (tenor))
+			if (!_tenorScalingFactorMap.containsKey (
+				tenor
+			))
 			{
 				return null;
 			}
 
 			municipalTenorRiskWeight.put (
 				tenor,
-				municipalTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)
+				municipalTenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (
+					tenor
+				)
 			);
 		}
 

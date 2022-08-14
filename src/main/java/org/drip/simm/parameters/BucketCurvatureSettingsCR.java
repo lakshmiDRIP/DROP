@@ -1,6 +1,13 @@
 
 package org.drip.simm.parameters;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.r1tor1.ISDABucketCurvatureTenorScaler;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -119,48 +126,57 @@ package org.drip.simm.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVegaSettingsCR
+public class BucketCurvatureSettingsCR
+	extends BucketVegaSettingsCR
 {
-	private java.util.Map<java.lang.String, java.lang.Double> _tenorScalingFactorMap = null;
+	private Map<String, Double> _tenorScalingFactorMap = null;
 
-	private static final java.util.Map<java.lang.String, java.lang.Double> TenorScalingFactorMap()
+	private static final Map<String, Double> TenorScalingFactorMap()
 	{
-		java.util.Map<java.lang.String, java.lang.Double> tenorScalingFactorMap = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+		R1ToR1 r1ToR1CurvatureTenorScaler = ISDABucketCurvatureTenorScaler.Standard();
 
-		org.drip.function.definition.R1ToR1 r1ToR1CurvatureTenorScaler =
-			org.drip.function.r1tor1.ISDABucketCurvatureTenorScaler.Standard();
+		Map<String, Double> tenorScalingFactorMap = new CaseInsensitiveHashMap<Double>();
 
 		try
 		{
 			tenorScalingFactorMap.put (
 				"1Y",
-				r1ToR1CurvatureTenorScaler.evaluate (365.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					365.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"2Y",
-				r1ToR1CurvatureTenorScaler.evaluate (731.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					731.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"3Y",
-				r1ToR1CurvatureTenorScaler.evaluate (1096.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					1096.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"5Y",
-				r1ToR1CurvatureTenorScaler.evaluate (1826.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					1826.
+				)
 			);
 
 			tenorScalingFactorMap.put (
 				"10Y",
-				r1ToR1CurvatureTenorScaler.evaluate (3652.)
+				r1ToR1CurvatureTenorScaler.evaluate (
+					3652.
+				)
 			);
 
 			return tenorScalingFactorMap;
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -179,16 +195,13 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 	public static BucketCurvatureSettingsCR ISDA_CRQ_20 (
 		final int bucketNumber)
 	{
-		org.drip.simm.parameters.BucketVegaSettingsCR bucketVegaSettingsCR =
-			org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRQ_20 (bucketNumber);
+		BucketVegaSettingsCR bucketVegaSettingsCR = BucketVegaSettingsCR.ISDA_CRQ_20 (
+			bucketNumber
+		);
 
-		if (null == bucketVegaSettingsCR)
-		{
-			return null;
-		}
 		try
 		{
-			return new BucketCurvatureSettingsCR (
+			return null == bucketVegaSettingsCR ? null : new BucketCurvatureSettingsCR (
 				bucketVegaSettingsCR.tenorVegaRiskWeight(),
 				bucketVegaSettingsCR.intraFamilyCrossTenorCorrelation(),
 				bucketVegaSettingsCR.extraFamilyCrossTenorCorrelation(),
@@ -199,7 +212,7 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 				TenorScalingFactorMap()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -218,16 +231,13 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 	public static BucketCurvatureSettingsCR ISDA_CRQ_21 (
 		final int bucketNumber)
 	{
-		org.drip.simm.parameters.BucketVegaSettingsCR bucketVegaSettingsCR =
-			org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRQ_21 (bucketNumber);
+		BucketVegaSettingsCR bucketVegaSettingsCR = BucketVegaSettingsCR.ISDA_CRQ_21 (
+			bucketNumber
+		);
 
-		if (null == bucketVegaSettingsCR)
-		{
-			return null;
-		}
 		try
 		{
-			return new BucketCurvatureSettingsCR (
+			return null == bucketVegaSettingsCR ? null : new BucketCurvatureSettingsCR (
 				bucketVegaSettingsCR.tenorVegaRiskWeight(),
 				bucketVegaSettingsCR.intraFamilyCrossTenorCorrelation(),
 				bucketVegaSettingsCR.extraFamilyCrossTenorCorrelation(),
@@ -238,7 +248,7 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 				TenorScalingFactorMap()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -257,16 +267,13 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 	public static BucketCurvatureSettingsCR ISDA_CRNQ_20 (
 		final int bucketNumber)
 	{
-		org.drip.simm.parameters.BucketVegaSettingsCR bucketVegaSettingsCR =
-			org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRNQ_20 (bucketNumber);
+		BucketVegaSettingsCR bucketVegaSettingsCR = BucketVegaSettingsCR.ISDA_CRNQ_20 (
+			bucketNumber
+		);
 
-		if (null == bucketVegaSettingsCR)
-		{
-			return null;
-		}
 		try
 		{
-			return new BucketCurvatureSettingsCR (
+			return null == bucketVegaSettingsCR ? null : new BucketCurvatureSettingsCR (
 				bucketVegaSettingsCR.tenorVegaRiskWeight(),
 				bucketVegaSettingsCR.intraFamilyCrossTenorCorrelation(),
 				bucketVegaSettingsCR.extraFamilyCrossTenorCorrelation(),
@@ -277,7 +284,7 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 				TenorScalingFactorMap()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -296,16 +303,13 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 	public static BucketCurvatureSettingsCR ISDA_CRNQ_21 (
 		final int bucketNumber)
 	{
-		org.drip.simm.parameters.BucketVegaSettingsCR bucketVegaSettingsCR =
-			org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRNQ_21 (bucketNumber);
+		BucketVegaSettingsCR bucketVegaSettingsCR = BucketVegaSettingsCR.ISDA_CRNQ_21 (
+			bucketNumber
+		);
 
-		if (null == bucketVegaSettingsCR)
-		{
-			return null;
-		}
 		try
 		{
-			return new BucketCurvatureSettingsCR (
+			return null == bucketVegaSettingsCR ? null : new BucketCurvatureSettingsCR (
 				bucketVegaSettingsCR.tenorVegaRiskWeight(),
 				bucketVegaSettingsCR.intraFamilyCrossTenorCorrelation(),
 				bucketVegaSettingsCR.extraFamilyCrossTenorCorrelation(),
@@ -316,7 +320,7 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 				TenorScalingFactorMap()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -336,19 +340,19 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 	 * @param tenorDeltaRiskWeight The Credit Tenor Delta Risk Weight
 	 * @param tenorScalingFactorMap The Tenor Scaling Factor Map
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BucketCurvatureSettingsCR (
-		final java.util.Map<java.lang.String, java.lang.Double> tenorVegaRiskWeight,
+		final Map<String, Double> tenorVegaRiskWeight,
 		final double sameIssuerSeniorityCorrelation,
 		final double differentIssuerSeniorityCorrelation,
 		final double concentrationThreshold,
 		final double vegaScaler,
 		final double historicalVolatilityRatio,
-		final java.util.Map<java.lang.String, java.lang.Double> tenorDeltaRiskWeight,
-		final java.util.Map<java.lang.String, java.lang.Double> tenorScalingFactorMap)
-		throws java.lang.Exception
+		final Map<String, Double> tenorDeltaRiskWeight,
+		final Map<String, Double> tenorScalingFactorMap)
+		throws Exception
 	{
 		super (
 			tenorVegaRiskWeight,
@@ -362,7 +366,9 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 
 		if (null == (_tenorScalingFactorMap = tenorScalingFactorMap) || 0 == _tenorScalingFactorMap.size())
 		{
-			throw new java.lang.Exception ("BucketVegaSettingsIR Constructor => Invalid Inputs");
+			throw new Exception (
+				"BucketVegaSettingsIR Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -372,31 +378,33 @@ public class BucketCurvatureSettingsCR extends org.drip.simm.parameters.BucketVe
 	 * @return The Tenor Scaling Factor Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> tenorScalingFactorMap()
+	public Map<String, Double> tenorScalingFactorMap()
 	{
 		return _tenorScalingFactorMap;
 	}
 
-	@Override public java.util.Map<java.lang.String, java.lang.Double> tenorRiskWeight()
+	@Override public Map<String, Double> tenorRiskWeight()
 	{
-		java.util.Map<java.lang.String, java.lang.Double> tenorVegaRiskWeight = super.tenorRiskWeight();
+		Map<String, Double> tenorVegaRiskWeight = super.tenorRiskWeight();
 
-		java.util.Map<java.lang.String, java.lang.Double> tenorRiskWeight = new
-			java.util.HashMap<java.lang.String, java.lang.Double>();
+		Map<String, Double> tenorRiskWeight = new HashMap<String, Double>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> tenorVegaRiskWeightEntry :
-			tenorVegaRiskWeight.entrySet())
+		for (Map.Entry<String, Double> tenorVegaRiskWeightEntry : tenorVegaRiskWeight.entrySet())
 		{
-			java.lang.String tenor = tenorVegaRiskWeightEntry.getKey();
+			String tenor = tenorVegaRiskWeightEntry.getKey();
 
-			if (!_tenorScalingFactorMap.containsKey (tenor))
+			if (!_tenorScalingFactorMap.containsKey (
+				tenor
+			))
 			{
 				return null;
 			}
 
 			tenorRiskWeight.put (
 				tenor,
-				tenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (tenor)
+				tenorVegaRiskWeightEntry.getValue() * _tenorScalingFactorMap.get (
+					tenor
+				)
 			);
 		}
 
