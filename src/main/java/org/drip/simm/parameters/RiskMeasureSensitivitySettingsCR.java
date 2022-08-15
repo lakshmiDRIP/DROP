@@ -1,6 +1,19 @@
 
 package org.drip.simm.parameters;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.measure.stochastic.LabelCorrelation;
+import org.drip.simm.credit.CRNQBucketCorrelation20;
+import org.drip.simm.credit.CRNQBucketCorrelation21;
+import org.drip.simm.credit.CRNQSettingsContainer20;
+import org.drip.simm.credit.CRNQSettingsContainer21;
+import org.drip.simm.credit.CRQSettingsContainer20;
+import org.drip.simm.credit.CRQSettingsContainer21;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,9 +134,8 @@ package org.drip.simm.parameters;
 
 public class RiskMeasureSensitivitySettingsCR
 {
-	private org.drip.measure.stochastic.LabelCorrelation _crossBucketCorrelation = null;
-	private java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR>
-		_bucketSensitivitySettingsMap = null;
+	private LabelCorrelation _crossBucketCorrelation = null;
+	private Map<String, BucketSensitivitySettingsCR> _bucketSensitivitySettingsMap = null;
 
 	/**
 	 * Generate SIMM 2.0 Credit Qualifying Delta Sensitivity Settings
@@ -133,18 +145,16 @@ public class RiskMeasureSensitivitySettingsCR
 
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRQ_DELTA_20()
 	{
-		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR>
-			bucketSensitivitySettingsMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm.parameters.BucketSensitivitySettingsCR>();
+		Map<String, BucketSensitivitySettingsCR> bucketSensitivitySettingsMap =
+			new CaseInsensitiveHashMap<BucketSensitivitySettingsCR>();
 
-		java.util.Set<java.lang.Integer> bucketIndexSet =
-			org.drip.simm.credit.CRQSettingsContainer20.BucketSet();
-
-		for (int bucketIndex : bucketIndexSet)
+		for (int bucketIndex : CRQSettingsContainer20.BucketSet())
 		{
 			bucketSensitivitySettingsMap.put (
 				"" + bucketIndex,
-				org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_20 (bucketIndex)
+				BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_20 (
+					bucketIndex
+				)
 			);
 		}
 
@@ -152,10 +162,10 @@ public class RiskMeasureSensitivitySettingsCR
 		{
 			return new RiskMeasureSensitivitySettingsCR (
 				bucketSensitivitySettingsMap,
-				org.drip.simm.credit.CRQSettingsContainer20.CrossBucketCorrelation()
+				CRQSettingsContainer20.CrossBucketCorrelation()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -171,18 +181,16 @@ public class RiskMeasureSensitivitySettingsCR
 
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRQ_DELTA_21()
 	{
-		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR>
-			bucketSensitivitySettingsMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm.parameters.BucketSensitivitySettingsCR>();
+		Map<String, BucketSensitivitySettingsCR> bucketSensitivitySettingsMap =
+			new CaseInsensitiveHashMap<BucketSensitivitySettingsCR>();
 
-		java.util.Set<java.lang.Integer> bucketIndexSet =
-			org.drip.simm.credit.CRQSettingsContainer21.BucketSet();
-
-		for (int bucketIndex : bucketIndexSet)
+		for (int bucketIndex : CRQSettingsContainer21.BucketSet())
 		{
 			bucketSensitivitySettingsMap.put (
 				"" + bucketIndex,
-				org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_21 (bucketIndex)
+				BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_21 (
+					bucketIndex
+				)
 			);
 		}
 
@@ -190,10 +198,10 @@ public class RiskMeasureSensitivitySettingsCR
 		{
 			return new RiskMeasureSensitivitySettingsCR (
 				bucketSensitivitySettingsMap,
-				org.drip.simm.credit.CRQSettingsContainer21.CrossBucketCorrelation()
+				CRQSettingsContainer21.CrossBucketCorrelation()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -209,18 +217,14 @@ public class RiskMeasureSensitivitySettingsCR
 
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRQ_VEGA_20()
 	{
-		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR>
-			bucketSensitivitySettingsMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm.parameters.BucketSensitivitySettingsCR>();
+		Map<String, BucketSensitivitySettingsCR> bucketSensitivitySettingsMap =
+			new CaseInsensitiveHashMap<BucketSensitivitySettingsCR>();
 
-		java.util.Set<java.lang.Integer> bucketIndexSet =
-			org.drip.simm.credit.CRQSettingsContainer20.BucketSet();
-
-		for (int bucketIndex : bucketIndexSet)
+		for (int bucketIndex : CRQSettingsContainer20.BucketSet())
 		{
 			bucketSensitivitySettingsMap.put (
 				"" + bucketIndex,
-				org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRQ_20 (bucketIndex)
+				BucketVegaSettingsCR.ISDA_CRQ_20 (bucketIndex)
 			);
 		}
 
@@ -228,10 +232,10 @@ public class RiskMeasureSensitivitySettingsCR
 		{
 			return new RiskMeasureSensitivitySettingsCR (
 				bucketSensitivitySettingsMap,
-				org.drip.simm.credit.CRQSettingsContainer20.CrossBucketCorrelation()
+				CRQSettingsContainer20.CrossBucketCorrelation()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -247,18 +251,16 @@ public class RiskMeasureSensitivitySettingsCR
 
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRQ_VEGA_21()
 	{
-		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR>
-			bucketSensitivitySettingsMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm.parameters.BucketSensitivitySettingsCR>();
+		Map<String, BucketSensitivitySettingsCR> bucketSensitivitySettingsMap =
+			new CaseInsensitiveHashMap<BucketSensitivitySettingsCR>();
 
-		java.util.Set<java.lang.Integer> bucketIndexSet =
-			org.drip.simm.credit.CRQSettingsContainer21.BucketSet();
-
-		for (int bucketIndex : bucketIndexSet)
+		for (int bucketIndex : CRQSettingsContainer21.BucketSet())
 		{
 			bucketSensitivitySettingsMap.put (
 				"" + bucketIndex,
-				org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRQ_21 (bucketIndex)
+				BucketVegaSettingsCR.ISDA_CRQ_21 (
+					bucketIndex
+				)
 			);
 		}
 
@@ -266,10 +268,10 @@ public class RiskMeasureSensitivitySettingsCR
 		{
 			return new RiskMeasureSensitivitySettingsCR (
 				bucketSensitivitySettingsMap,
-				org.drip.simm.credit.CRQSettingsContainer21.CrossBucketCorrelation()
+				CRQSettingsContainer21.CrossBucketCorrelation()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -285,18 +287,16 @@ public class RiskMeasureSensitivitySettingsCR
 
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRQ_CURVATURE_20()
 	{
-		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR>
-			bucketSensitivitySettingsMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm.parameters.BucketSensitivitySettingsCR>();
+		Map<String, BucketSensitivitySettingsCR> bucketSensitivitySettingsMap =
+			new CaseInsensitiveHashMap<BucketSensitivitySettingsCR>();
 
-		java.util.Set<java.lang.Integer> bucketIndexSet =
-			org.drip.simm.credit.CRQSettingsContainer20.BucketSet();
-
-		for (int bucketIndex : bucketIndexSet)
+		for (int bucketIndex : CRQSettingsContainer20.BucketSet())
 		{
 			bucketSensitivitySettingsMap.put (
 				"" + bucketIndex,
-				org.drip.simm.parameters.BucketCurvatureSettingsCR.ISDA_CRQ_20 (bucketIndex)
+				BucketCurvatureSettingsCR.ISDA_CRQ_20 (
+					bucketIndex
+				)
 			);
 		}
 
@@ -304,10 +304,10 @@ public class RiskMeasureSensitivitySettingsCR
 		{
 			return new RiskMeasureSensitivitySettingsCR (
 				bucketSensitivitySettingsMap,
-				org.drip.simm.credit.CRQSettingsContainer20.CrossBucketCorrelation()
+				CRQSettingsContainer20.CrossBucketCorrelation()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -323,18 +323,16 @@ public class RiskMeasureSensitivitySettingsCR
 
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRQ_CURVATURE_21()
 	{
-		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR>
-			bucketSensitivitySettingsMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm.parameters.BucketSensitivitySettingsCR>();
+		Map<String, BucketSensitivitySettingsCR> bucketSensitivitySettingsMap =
+			new CaseInsensitiveHashMap<BucketSensitivitySettingsCR>();
 
-		java.util.Set<java.lang.Integer> bucketIndexSet =
-			org.drip.simm.credit.CRQSettingsContainer21.BucketSet();
-
-		for (int bucketIndex : bucketIndexSet)
+		for (int bucketIndex : CRQSettingsContainer21.BucketSet())
 		{
 			bucketSensitivitySettingsMap.put (
 				"" + bucketIndex,
-				org.drip.simm.parameters.BucketCurvatureSettingsCR.ISDA_CRQ_21 (bucketIndex)
+				BucketCurvatureSettingsCR.ISDA_CRQ_21 (
+					bucketIndex
+				)
 			);
 		}
 
@@ -342,10 +340,10 @@ public class RiskMeasureSensitivitySettingsCR
 		{
 			return new RiskMeasureSensitivitySettingsCR (
 				bucketSensitivitySettingsMap,
-				org.drip.simm.credit.CRQSettingsContainer21.CrossBucketCorrelation()
+				CRQSettingsContainer21.CrossBucketCorrelation()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -361,33 +359,41 @@ public class RiskMeasureSensitivitySettingsCR
 
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRNQ_DELTA_20()
 	{
-		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR>
-			bucketSensitivitySettingsMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm.parameters.BucketSensitivitySettingsCR>();
+		Map<String, BucketSensitivitySettingsCR> bucketSensitivitySettingsMap =
+			new CaseInsensitiveHashMap<BucketSensitivitySettingsCR>();
 
-		java.util.Set<java.lang.Integer> bucketIndexSet =
-			org.drip.simm.credit.CRNQSettingsContainer20.BucketSet();
+		int bucketCount = CRNQSettingsContainer20.BucketSet().size();
 
-		int bucketCount = bucketIndexSet.size();
-
-		java.util.List<java.lang.String> bucketLabelList = new java.util.ArrayList<java.lang.String>();
+		List<String> bucketLabelList = new ArrayList<String>();
 
 		double[][] crossBucketCorrelation = new double[bucketCount][bucketCount];
 
-		for (int bucketIndexOuter = 0; bucketIndexOuter < bucketCount; ++bucketIndexOuter)
+		for (int bucketIndexOuter = 0;
+			bucketIndexOuter < bucketCount;
+			++bucketIndexOuter
+		)
 		{
+			String bucketIndexOuterKey = "" + bucketIndexOuter;
+
 			bucketSensitivitySettingsMap.put (
-				"" + bucketIndexOuter,
-				org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_20 (bucketIndexOuter)
+				bucketIndexOuterKey,
+				BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_20 (
+					bucketIndexOuter
+				)
 			);
 
-			bucketLabelList.add ("" + bucketIndexOuter);
+			bucketLabelList.add (
+				bucketIndexOuterKey
+			);
 
-			for (int bucketIndexInner = 0; bucketIndexInner < bucketCount; ++bucketIndexInner)
+			for (int bucketIndexInner = 0;
+				bucketIndexInner < bucketCount;
+				++bucketIndexInner
+			)
 			{
 				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =
 					bucketIndexInner == bucketIndexOuter ? 1. :
-					org.drip.simm.credit.CRNQBucketCorrelation20.NON_RESIDUAL_TO_NON_RESIDUAL;
+					CRNQBucketCorrelation20.NON_RESIDUAL_TO_NON_RESIDUAL;
 			}
 		}
 
@@ -395,13 +401,13 @@ public class RiskMeasureSensitivitySettingsCR
 		{
 			return new RiskMeasureSensitivitySettingsCR (
 				bucketSensitivitySettingsMap,
-				new org.drip.measure.stochastic.LabelCorrelation (
+				new LabelCorrelation (
 					bucketLabelList,
 					crossBucketCorrelation
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -417,33 +423,40 @@ public class RiskMeasureSensitivitySettingsCR
 
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRNQ_DELTA_21()
 	{
-		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR>
-			bucketSensitivitySettingsMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm.parameters.BucketSensitivitySettingsCR>();
+		Map<String, BucketSensitivitySettingsCR> bucketSensitivitySettingsMap =
+			new CaseInsensitiveHashMap<BucketSensitivitySettingsCR>();
 
-		java.util.Set<java.lang.Integer> bucketIndexSet =
-			org.drip.simm.credit.CRNQSettingsContainer21.BucketSet();
+		int bucketCount = CRNQSettingsContainer21.BucketSet().size();
 
-		int bucketCount = bucketIndexSet.size();
-
-		java.util.List<java.lang.String> bucketLabelList = new java.util.ArrayList<java.lang.String>();
+		List<String> bucketLabelList = new ArrayList<String>();
 
 		double[][] crossBucketCorrelation = new double[bucketCount][bucketCount];
 
-		for (int bucketIndexOuter = 0; bucketIndexOuter < bucketCount; ++bucketIndexOuter)
+		for (int bucketIndexOuter = 0;
+			bucketIndexOuter < bucketCount;
+			++bucketIndexOuter)
 		{
+			String bucketIndexOuterKey = "" + bucketIndexOuter;
+
 			bucketSensitivitySettingsMap.put (
-				"" + bucketIndexOuter,
-				org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_21 (bucketIndexOuter)
+				bucketIndexOuterKey,
+				BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_21 (
+					bucketIndexOuter
+				)
 			);
 
-			bucketLabelList.add ("" + bucketIndexOuter);
+			bucketLabelList.add (
+				bucketIndexOuterKey
+			);
 
-			for (int bucketIndexInner = 0; bucketIndexInner < bucketCount; ++bucketIndexInner)
+			for (int bucketIndexInner = 0;
+				bucketIndexInner < bucketCount;
+				++bucketIndexInner
+			)
 			{
 				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =
 					bucketIndexInner == bucketIndexOuter ? 1. :
-					org.drip.simm.credit.CRNQBucketCorrelation21.NON_RESIDUAL_TO_NON_RESIDUAL;
+					CRNQBucketCorrelation21.NON_RESIDUAL_TO_NON_RESIDUAL;
 			}
 		}
 
@@ -451,13 +464,13 @@ public class RiskMeasureSensitivitySettingsCR
 		{
 			return new RiskMeasureSensitivitySettingsCR (
 				bucketSensitivitySettingsMap,
-				new org.drip.measure.stochastic.LabelCorrelation (
+				new LabelCorrelation (
 					bucketLabelList,
 					crossBucketCorrelation
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -473,33 +486,39 @@ public class RiskMeasureSensitivitySettingsCR
 
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRNQ_VEGA_20()
 	{
-		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR>
-			bucketSensitivitySettingsMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm.parameters.BucketSensitivitySettingsCR>();
+		Map<String, BucketSensitivitySettingsCR> bucketSensitivitySettingsMap =
+			new CaseInsensitiveHashMap<BucketSensitivitySettingsCR>();
 
-		java.util.Set<java.lang.Integer> bucketIndexSet =
-			org.drip.simm.credit.CRNQSettingsContainer20.BucketSet();
+		int bucketCount = CRNQSettingsContainer20.BucketSet().size();
 
-		int bucketCount = bucketIndexSet.size();
-
-		java.util.List<java.lang.String> bucketLabelList = new java.util.ArrayList<java.lang.String>();
+		List<String> bucketLabelList = new ArrayList<String>();
 
 		double[][] crossBucketCorrelation = new double[bucketCount][bucketCount];
 
-		for (int bucketIndexOuter = 0; bucketIndexOuter < bucketCount; ++bucketIndexOuter)
+		for (int bucketIndexOuter = 0;
+			bucketIndexOuter < bucketCount;
+			++bucketIndexOuter
+		)
 		{
+			String bucketIndexOuterKey = "" + bucketIndexOuter;
+
 			bucketSensitivitySettingsMap.put (
-				"" + bucketIndexOuter,
-				org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRNQ_20 (bucketIndexOuter)
+				bucketIndexOuterKey,
+				BucketVegaSettingsCR.ISDA_CRNQ_20 (bucketIndexOuter)
 			);
 
-			bucketLabelList.add ("" + bucketIndexOuter);
+			bucketLabelList.add (
+				bucketIndexOuterKey
+			);
 
-			for (int bucketIndexInner = 0; bucketIndexInner < bucketCount; ++bucketIndexInner)
+			for (int bucketIndexInner = 0;
+				bucketIndexInner < bucketCount;
+				++bucketIndexInner
+			)
 			{
 				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =
 					bucketIndexInner == bucketIndexOuter ? 1. :
-					org.drip.simm.credit.CRNQBucketCorrelation20.NON_RESIDUAL_TO_NON_RESIDUAL;
+					CRNQBucketCorrelation20.NON_RESIDUAL_TO_NON_RESIDUAL;
 			}
 		}
 
@@ -507,13 +526,13 @@ public class RiskMeasureSensitivitySettingsCR
 		{
 			return new RiskMeasureSensitivitySettingsCR (
 				bucketSensitivitySettingsMap,
-				new org.drip.measure.stochastic.LabelCorrelation (
+				new LabelCorrelation (
 					bucketLabelList,
 					crossBucketCorrelation
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -529,33 +548,41 @@ public class RiskMeasureSensitivitySettingsCR
 
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRNQ_VEGA_21()
 	{
-		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR>
-			bucketSensitivitySettingsMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm.parameters.BucketSensitivitySettingsCR>();
+		Map<String, BucketSensitivitySettingsCR> bucketSensitivitySettingsMap =
+			new CaseInsensitiveHashMap<BucketSensitivitySettingsCR>();
 
-		java.util.Set<java.lang.Integer> bucketIndexSet =
-			org.drip.simm.credit.CRNQSettingsContainer21.BucketSet();
+		int bucketCount = CRNQSettingsContainer21.BucketSet().size();
 
-		int bucketCount = bucketIndexSet.size();
-
-		java.util.List<java.lang.String> bucketLabelList = new java.util.ArrayList<java.lang.String>();
+		List<String> bucketLabelList = new ArrayList<String>();
 
 		double[][] crossBucketCorrelation = new double[bucketCount][bucketCount];
 
-		for (int bucketIndexOuter = 0; bucketIndexOuter < bucketCount; ++bucketIndexOuter)
+		for (int bucketIndexOuter = 0;
+			bucketIndexOuter < bucketCount;
+			++bucketIndexOuter
+		)
 		{
+			String bucketIndexOuterKey = "" + bucketIndexOuter;
+
 			bucketSensitivitySettingsMap.put (
-				"" + bucketIndexOuter,
-				org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRNQ_21 (bucketIndexOuter)
+				bucketIndexOuterKey,
+				BucketVegaSettingsCR.ISDA_CRNQ_21 (
+					bucketIndexOuter
+				)
 			);
 
-			bucketLabelList.add ("" + bucketIndexOuter);
+			bucketLabelList.add (
+				bucketIndexOuterKey
+			);
 
-			for (int bucketIndexInner = 0; bucketIndexInner < bucketCount; ++bucketIndexInner)
+			for (int bucketIndexInner = 0;
+				bucketIndexInner < bucketCount;
+				++bucketIndexInner
+			)
 			{
 				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =
 					bucketIndexInner == bucketIndexOuter ? 1. :
-					org.drip.simm.credit.CRNQBucketCorrelation21.NON_RESIDUAL_TO_NON_RESIDUAL;
+					CRNQBucketCorrelation21.NON_RESIDUAL_TO_NON_RESIDUAL;
 			}
 		}
 
@@ -563,13 +590,13 @@ public class RiskMeasureSensitivitySettingsCR
 		{
 			return new RiskMeasureSensitivitySettingsCR (
 				bucketSensitivitySettingsMap,
-				new org.drip.measure.stochastic.LabelCorrelation (
+				new LabelCorrelation (
 					bucketLabelList,
 					crossBucketCorrelation
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -585,33 +612,40 @@ public class RiskMeasureSensitivitySettingsCR
 
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRNQ_CURVATURE_20()
 	{
-		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR>
-			bucketSensitivitySettingsMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm.parameters.BucketSensitivitySettingsCR>();
+		Map<String, BucketSensitivitySettingsCR> bucketSensitivitySettingsMap =
+			new CaseInsensitiveHashMap<BucketSensitivitySettingsCR>();
 
-		java.util.Set<java.lang.Integer> bucketIndexSet =
-			org.drip.simm.credit.CRNQSettingsContainer20.BucketSet();
+		int bucketCount = CRNQSettingsContainer20.BucketSet().size();
 
-		int bucketCount = bucketIndexSet.size();
-
-		java.util.List<java.lang.String> bucketLabelList = new java.util.ArrayList<java.lang.String>();
+		List<String> bucketLabelList = new ArrayList<String>();
 
 		double[][] crossBucketCorrelation = new double[bucketCount][bucketCount];
 
-		for (int bucketIndexOuter = 0; bucketIndexOuter < bucketCount; ++bucketIndexOuter)
+		for (int bucketIndexOuter = 0;
+			bucketIndexOuter < bucketCount;
+			++bucketIndexOuter)
 		{
+			String bucketIndexOuterKey = "" + bucketIndexOuter;
+
 			bucketSensitivitySettingsMap.put (
-				"" + bucketIndexOuter,
-				org.drip.simm.parameters.BucketCurvatureSettingsCR.ISDA_CRNQ_20 (bucketIndexOuter)
+				bucketIndexOuterKey,
+				BucketCurvatureSettingsCR.ISDA_CRNQ_20 (
+					bucketIndexOuter
+				)
 			);
 
-			bucketLabelList.add ("" + bucketIndexOuter);
+			bucketLabelList.add (
+				bucketIndexOuterKey
+			);
 
-			for (int bucketIndexInner = 0; bucketIndexInner < bucketCount; ++bucketIndexInner)
+			for (int bucketIndexInner = 0;
+				bucketIndexInner < bucketCount;
+				++bucketIndexInner
+			)
 			{
 				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =
 					bucketIndexInner == bucketIndexOuter ? 1. :
-					org.drip.simm.credit.CRNQBucketCorrelation20.NON_RESIDUAL_TO_NON_RESIDUAL;
+					CRNQBucketCorrelation20.NON_RESIDUAL_TO_NON_RESIDUAL;
 			}
 		}
 
@@ -619,13 +653,13 @@ public class RiskMeasureSensitivitySettingsCR
 		{
 			return new RiskMeasureSensitivitySettingsCR (
 				bucketSensitivitySettingsMap,
-				new org.drip.measure.stochastic.LabelCorrelation (
+				new LabelCorrelation (
 					bucketLabelList,
 					crossBucketCorrelation
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -641,33 +675,41 @@ public class RiskMeasureSensitivitySettingsCR
 
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRNQ_CURVATURE_21()
 	{
-		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR>
-			bucketSensitivitySettingsMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm.parameters.BucketSensitivitySettingsCR>();
+		Map<String, BucketSensitivitySettingsCR> bucketSensitivitySettingsMap =
+			new CaseInsensitiveHashMap<BucketSensitivitySettingsCR>();
 
-		java.util.Set<java.lang.Integer> bucketIndexSet =
-			org.drip.simm.credit.CRNQSettingsContainer21.BucketSet();
+		int bucketCount = CRNQSettingsContainer21.BucketSet().size();
 
-		int bucketCount = bucketIndexSet.size();
-
-		java.util.List<java.lang.String> bucketLabelList = new java.util.ArrayList<java.lang.String>();
+		List<String> bucketLabelList = new ArrayList<String>();
 
 		double[][] crossBucketCorrelation = new double[bucketCount][bucketCount];
 
-		for (int bucketIndexOuter = 0; bucketIndexOuter < bucketCount; ++bucketIndexOuter)
+		for (int bucketIndexOuter = 0;
+			bucketIndexOuter < bucketCount;
+			++bucketIndexOuter
+		)
 		{
+			String bucketIndexOuterKey = "" + bucketIndexOuter;
+
 			bucketSensitivitySettingsMap.put (
-				"" + bucketIndexOuter,
-				org.drip.simm.parameters.BucketCurvatureSettingsCR.ISDA_CRNQ_21 (bucketIndexOuter)
+				bucketIndexOuterKey,
+				BucketCurvatureSettingsCR.ISDA_CRNQ_21 (
+					bucketIndexOuter
+				)
 			);
 
-			bucketLabelList.add ("" + bucketIndexOuter);
+			bucketLabelList.add (
+				bucketIndexOuterKey
+			);
 
-			for (int bucketIndexInner = 0; bucketIndexInner < bucketCount; ++bucketIndexInner)
+			for (int bucketIndexInner = 0;
+				bucketIndexInner < bucketCount;
+				++bucketIndexInner
+			)
 			{
 				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =
 					bucketIndexInner == bucketIndexOuter ? 1. :
-					org.drip.simm.credit.CRNQBucketCorrelation21.NON_RESIDUAL_TO_NON_RESIDUAL;
+					CRNQBucketCorrelation21.NON_RESIDUAL_TO_NON_RESIDUAL;
 			}
 		}
 
@@ -675,13 +717,13 @@ public class RiskMeasureSensitivitySettingsCR
 		{
 			return new RiskMeasureSensitivitySettingsCR (
 				bucketSensitivitySettingsMap,
-				new org.drip.measure.stochastic.LabelCorrelation (
+				new LabelCorrelation (
 					bucketLabelList,
 					crossBucketCorrelation
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -695,20 +737,22 @@ public class RiskMeasureSensitivitySettingsCR
 	 * @param bucketSensitivitySettingsMap Credit Bucket Sensitivity Settings Map
 	 * @param crossBucketCorrelation Cross Bucket Correlation
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskMeasureSensitivitySettingsCR (
-		final java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR>
-			bucketSensitivitySettingsMap,
-		final org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation)
-		throws java.lang.Exception
+		final Map<String, BucketSensitivitySettingsCR> bucketSensitivitySettingsMap,
+		final LabelCorrelation crossBucketCorrelation)
+		throws Exception
 	{
 		if (null == (_bucketSensitivitySettingsMap = bucketSensitivitySettingsMap) ||
 				0 == _bucketSensitivitySettingsMap.size() ||
-			null == (_crossBucketCorrelation = crossBucketCorrelation))
+			null == (_crossBucketCorrelation = crossBucketCorrelation)
+		)
 		{
-			throw new java.lang.Exception ("RiskMeasureSensitivitySettingsCR Constructor => Invalid Inputs");
+			throw new Exception (
+				"RiskMeasureSensitivitySettingsCR Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -718,7 +762,7 @@ public class RiskMeasureSensitivitySettingsCR
 	 * @return The Cross Bucket Correlation
 	 */
 
-	public org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation()
+	public LabelCorrelation crossBucketCorrelation()
 	{
 		return _crossBucketCorrelation;
 	}
@@ -729,8 +773,7 @@ public class RiskMeasureSensitivitySettingsCR
 	 * @return The Credit Bucket Sensitivity Settings Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR>
-		bucketSensitivitySettingsMap()
+	public Map<String, BucketSensitivitySettingsCR> bucketSensitivitySettingsMap()
 	{
 		return _bucketSensitivitySettingsMap;
 	}

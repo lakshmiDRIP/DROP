@@ -121,9 +121,9 @@ package org.drip.simm.parameters;
 
 public class RiskClassSensitivitySettingsCR
 {
-	private org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR _vega = null;
-	private org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR _delta = null;
-	private org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR _curvature = null;
+	private RiskMeasureSensitivitySettingsCR _vega = null;
+	private RiskMeasureSensitivitySettingsCR _delta = null;
+	private RiskMeasureSensitivitySettingsCR _curvature = null;
 
 	/**
 	 * Generate the SIMM 2.0 CRQ Class Sensitivity Settings
@@ -136,12 +136,12 @@ public class RiskClassSensitivitySettingsCR
 		try
 		{
 			return new RiskClassSensitivitySettingsCR (
-				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRQ_DELTA_20(),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRQ_VEGA_20(),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRQ_CURVATURE_20()
+				RiskMeasureSensitivitySettingsCR.ISDA_CRQ_DELTA_20(),
+				RiskMeasureSensitivitySettingsCR.ISDA_CRQ_VEGA_20(),
+				RiskMeasureSensitivitySettingsCR.ISDA_CRQ_CURVATURE_20()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -160,12 +160,12 @@ public class RiskClassSensitivitySettingsCR
 		try
 		{
 			return new RiskClassSensitivitySettingsCR (
-				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRQ_DELTA_21(),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRQ_VEGA_21(),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRQ_CURVATURE_21()
+				RiskMeasureSensitivitySettingsCR.ISDA_CRQ_DELTA_21(),
+				RiskMeasureSensitivitySettingsCR.ISDA_CRQ_VEGA_21(),
+				RiskMeasureSensitivitySettingsCR.ISDA_CRQ_CURVATURE_21()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -184,12 +184,12 @@ public class RiskClassSensitivitySettingsCR
 		try
 		{
 			return new RiskClassSensitivitySettingsCR (
-				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_DELTA_20(),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_VEGA_20(),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_CURVATURE_20()
+				RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_DELTA_20(),
+				RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_VEGA_20(),
+				RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_CURVATURE_20()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -208,12 +208,12 @@ public class RiskClassSensitivitySettingsCR
 		try
 		{
 			return new RiskClassSensitivitySettingsCR (
-				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_DELTA_21(),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_VEGA_21(),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_CURVATURE_21()
+				RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_DELTA_21(),
+				RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_VEGA_21(),
+				RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_CURVATURE_21()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -228,20 +228,22 @@ public class RiskClassSensitivitySettingsCR
 	 * @param vega The Credit Risk Class Vega Sensitivity Settings
 	 * @param curvature The Credit Risk Class Curvature Sensitivity Settings
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskClassSensitivitySettingsCR (
-		final org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR delta,
-		final org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR vega,
-		final org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR curvature)
-		throws java.lang.Exception
+		final RiskMeasureSensitivitySettingsCR delta,
+		final RiskMeasureSensitivitySettingsCR vega,
+		final RiskMeasureSensitivitySettingsCR curvature)
+		throws Exception
 	{
 		if (null == (_delta = delta) ||
 			null == (_vega = vega) ||
 			null == (_curvature = curvature))
 		{
-			throw new java.lang.Exception ("RiskClassSensitivitySettingsCR Constructor => Invalid Inputs");
+			throw new Exception (
+				"RiskClassSensitivitySettingsCR Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -251,7 +253,7 @@ public class RiskClassSensitivitySettingsCR
 	 * @return The Credit Risk Class Delta Sensitivity Settings
 	 */
 
-	public org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR delta()
+	public RiskMeasureSensitivitySettingsCR delta()
 	{
 		return _delta;
 	}
@@ -262,7 +264,7 @@ public class RiskClassSensitivitySettingsCR
 	 * @return The Credit Risk Class Vega Sensitivity Settings
 	 */
 
-	public org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR vega()
+	public RiskMeasureSensitivitySettingsCR vega()
 	{
 		return _vega;
 	}
@@ -273,7 +275,7 @@ public class RiskClassSensitivitySettingsCR
 	 * @return The Credit Risk Class Curvature Sensitivity Settings
 	 */
 
-	public org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR curvature()
+	public RiskMeasureSensitivitySettingsCR curvature()
 	{
 		return _curvature;
 	}

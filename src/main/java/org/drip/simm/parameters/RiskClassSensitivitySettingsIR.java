@@ -1,6 +1,8 @@
 
 package org.drip.simm.parameters;
 
+import java.util.List;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,9 +123,9 @@ package org.drip.simm.parameters;
 
 public class RiskClassSensitivitySettingsIR
 {
-	private org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR _vega = null;
-	private org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR _delta = null;
-	private org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR _curvature = null;
+	private RiskMeasureSensitivitySettingsIR _vega = null;
+	private RiskMeasureSensitivitySettingsIR _delta = null;
+	private RiskMeasureSensitivitySettingsIR _curvature = null;
 
 	/**
 	 * Generate the ISDA 2.0 Standard Commodity Sensitivity Settings
@@ -134,17 +136,23 @@ public class RiskClassSensitivitySettingsIR
 	 */
 
 	public static final RiskClassSensitivitySettingsIR ISDA_20 (
-		final java.util.List<java.lang.String> currencyList)
+		final List<String> currencyList)
 	{
 		try
 		{
 			return new RiskClassSensitivitySettingsIR (
-				org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR.ISDA_DELTA_20 (currencyList),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR.ISDA_VEGA_20 (currencyList),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR.ISDA_CURVATURE_20 (currencyList)
+				RiskMeasureSensitivitySettingsIR.ISDA_DELTA_20 (
+					currencyList
+				),
+				RiskMeasureSensitivitySettingsIR.ISDA_VEGA_20 (
+					currencyList
+				),
+				RiskMeasureSensitivitySettingsIR.ISDA_CURVATURE_20 (
+					currencyList
+				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -161,17 +169,23 @@ public class RiskClassSensitivitySettingsIR
 	 */
 
 	public static final RiskClassSensitivitySettingsIR ISDA_21 (
-		final java.util.List<java.lang.String> currencyList)
+		final List<String> currencyList)
 	{
 		try
 		{
 			return new RiskClassSensitivitySettingsIR (
-				org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR.ISDA_DELTA_21 (currencyList),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR.ISDA_VEGA_21 (currencyList),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR.ISDA_CURVATURE_21 (currencyList)
+				RiskMeasureSensitivitySettingsIR.ISDA_DELTA_21 (
+					currencyList
+				),
+				RiskMeasureSensitivitySettingsIR.ISDA_VEGA_21 (
+					currencyList
+				),
+				RiskMeasureSensitivitySettingsIR.ISDA_CURVATURE_21 (
+					currencyList
+				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -186,20 +200,22 @@ public class RiskClassSensitivitySettingsIR
 	 * @param vega The IR Risk Class Vega Sensitivity Settings
 	 * @param curvature Curvature Risk Measure Sensitivity Settings
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskClassSensitivitySettingsIR (
-		final org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR delta,
-		final org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR vega,
-		final org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR curvature)
-		throws java.lang.Exception
+		final RiskMeasureSensitivitySettingsIR delta,
+		final RiskMeasureSensitivitySettingsIR vega,
+		final RiskMeasureSensitivitySettingsIR curvature)
+		throws Exception
 	{
 		if (null == (_delta = delta) ||
 			null == (_vega = vega) ||
 			null == (_curvature = curvature))
 		{
-			throw new java.lang.Exception ("RiskClassSensitivitySettingsIR Constructor => Invalid Inputs");
+			throw new Exception (
+				"RiskClassSensitivitySettingsIR Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -209,7 +225,7 @@ public class RiskClassSensitivitySettingsIR
 	 * @return The IR Risk Class Delta Sensitivity Settings
 	 */
 
-	public org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR delta()
+	public RiskMeasureSensitivitySettingsIR delta()
 	{
 		return _delta;
 	}
@@ -220,7 +236,7 @@ public class RiskClassSensitivitySettingsIR
 	 * @return The IR Risk Class Vega Sensitivity Settings
 	 */
 
-	public org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR vega()
+	public RiskMeasureSensitivitySettingsIR vega()
 	{
 		return _vega;
 	}
@@ -231,7 +247,7 @@ public class RiskClassSensitivitySettingsIR
 	 * @return IR Curvature Risk Measure Sensitivity Settings
 	 */
 
-	public org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR curvature()
+	public RiskMeasureSensitivitySettingsIR curvature()
 	{
 		return _curvature;
 	}
