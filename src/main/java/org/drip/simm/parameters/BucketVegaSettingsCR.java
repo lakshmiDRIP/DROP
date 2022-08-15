@@ -1,6 +1,18 @@
 
 package org.drip.simm.parameters;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.drip.measure.gaussian.NormalQuadrature;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.simm.credit.CRNQSystemics20;
+import org.drip.simm.credit.CRNQSystemics21;
+import org.drip.simm.credit.CRQSystemics20;
+import org.drip.simm.credit.CRQSystemics21;
+import org.drip.simm.credit.CRThresholdContainer20;
+import org.drip.simm.credit.CRThresholdContainer21;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -119,11 +131,12 @@ package org.drip.simm.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensitivitySettingsCR
+public class BucketVegaSettingsCR
+	extends BucketSensitivitySettingsCR
 {
-	private double _vegaScaler = java.lang.Double.NaN;
-	private double _historicalVolatilityRatio = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, java.lang.Double> _tenorDeltaRiskWeight = null;
+	private double _vegaScaler = Double.NaN;
+	private double _historicalVolatilityRatio = Double.NaN;
+	private Map<String, Double> _tenorDeltaRiskWeight = null;
 
 	/**
 	 * Retrieve the ISDA 2.0 Credit Qualifying Bucket Vega Settings
@@ -136,28 +149,32 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 	public static BucketVegaSettingsCR ISDA_CRQ_20 (
 		final int bucketNumber)
 	{
-		org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR =
-			org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_20 (bucketNumber);
-
-		if (null == bucketSensitivitySettingsCR)
-		{
-			return null;
-		}
+		BucketSensitivitySettingsCR bucketSensitivitySettingsCR =
+			BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_20 (
+				bucketNumber
+			);
 
 		try
 		{
-			return new BucketVegaSettingsCR (
-				TenorRiskWeightMap (org.drip.simm.credit.CRQSystemics20.VEGA_RISK_WEIGHT),
+			return null == bucketSensitivitySettingsCR ? null : new BucketVegaSettingsCR (
+				TenorRiskWeightMap (
+					CRQSystemics20.VEGA_RISK_WEIGHT
+				),
 				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),
 				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),
-				org.drip.simm.credit.CRThresholdContainer20.QualifyingThreshold (bucketNumber).vega(),
-				java.lang.Math.sqrt (365. / 14.) /
-					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
+				CRThresholdContainer20.QualifyingThreshold (
+					bucketNumber
+				).vega(),
+				Math.sqrt (
+					365. / 14.
+				) / NormalQuadrature.InverseCDF (
+					0.99
+				),
 				1.,
 				bucketSensitivitySettingsCR.tenorRiskWeight()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -176,28 +193,32 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 	public static BucketVegaSettingsCR ISDA_CRNQ_20 (
 		final int bucketNumber)
 	{
-		org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR =
-			org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_20 (bucketNumber);
-
-		if (null == bucketSensitivitySettingsCR)
-		{
-			return null;
-		}
+		BucketSensitivitySettingsCR bucketSensitivitySettingsCR =
+			BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_20 (
+				bucketNumber
+			);
 
 		try
 		{
-			return new BucketVegaSettingsCR (
-				TenorRiskWeightMap (org.drip.simm.credit.CRNQSystemics20.VEGA_RISK_WEIGHT),
+			return null == bucketSensitivitySettingsCR ? null : new BucketVegaSettingsCR (
+				TenorRiskWeightMap (
+					CRNQSystemics20.VEGA_RISK_WEIGHT
+				),
 				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),
 				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),
-				org.drip.simm.credit.CRThresholdContainer20.NonQualifyingThreshold (bucketNumber).vega(),
-				java.lang.Math.sqrt (365. / 14.) /
-					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
+				CRThresholdContainer20.NonQualifyingThreshold (
+					bucketNumber
+				).vega(),
+				Math.sqrt (
+					365. / 14.
+				) / NormalQuadrature.InverseCDF (
+					0.99
+				),
 				1.,
 				bucketSensitivitySettingsCR.tenorRiskWeight()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -216,28 +237,32 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 	public static BucketVegaSettingsCR ISDA_CRQ_21 (
 		final int bucketNumber)
 	{
-		org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR =
-			org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_21 (bucketNumber);
-
-		if (null == bucketSensitivitySettingsCR)
-		{
-			return null;
-		}
+		BucketSensitivitySettingsCR bucketSensitivitySettingsCR =
+			BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_21 (
+				bucketNumber
+			);
 
 		try
 		{
-			return new BucketVegaSettingsCR (
-				TenorRiskWeightMap (org.drip.simm.credit.CRQSystemics21.VEGA_RISK_WEIGHT),
+			return null == bucketSensitivitySettingsCR ? null : new BucketVegaSettingsCR (
+				TenorRiskWeightMap (
+					CRQSystemics21.VEGA_RISK_WEIGHT
+				),
 				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),
 				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),
-				org.drip.simm.credit.CRThresholdContainer21.QualifyingThreshold (bucketNumber).vega(),
-				java.lang.Math.sqrt (365. / 14.) /
-					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
+				CRThresholdContainer21.QualifyingThreshold (
+					bucketNumber
+				).vega(),
+				Math.sqrt (
+					365. / 14.
+				) / NormalQuadrature.InverseCDF (
+					0.99
+				),
 				1.,
 				bucketSensitivitySettingsCR.tenorRiskWeight()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -256,28 +281,32 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 	public static BucketVegaSettingsCR ISDA_CRNQ_21 (
 		final int bucketNumber)
 	{
-		org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR =
-			org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_21 (bucketNumber);
-
-		if (null == bucketSensitivitySettingsCR)
-		{
-			return null;
-		}
+		BucketSensitivitySettingsCR bucketSensitivitySettingsCR =
+			BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_21 (
+				bucketNumber
+			);
 
 		try
 		{
-			return new BucketVegaSettingsCR (
-				TenorRiskWeightMap (org.drip.simm.credit.CRNQSystemics21.VEGA_RISK_WEIGHT),
+			return null == bucketSensitivitySettingsCR ? null : new BucketVegaSettingsCR (
+				TenorRiskWeightMap (
+					CRNQSystemics21.VEGA_RISK_WEIGHT
+				),
 				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),
 				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),
-				org.drip.simm.credit.CRThresholdContainer21.NonQualifyingThreshold (bucketNumber).vega(),
-				java.lang.Math.sqrt (365. / 14.) /
-					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
+				CRThresholdContainer21.NonQualifyingThreshold (
+					bucketNumber
+				).vega(),
+				Math.sqrt (
+					365. / 14.
+				) / NormalQuadrature.InverseCDF (
+					0.99
+				),
 				1.,
 				bucketSensitivitySettingsCR.tenorRiskWeight()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -296,18 +325,18 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 	 * @param historicalVolatilityRatio The Historical Volatility Ratio
 	 * @param tenorDeltaRiskWeight The Credit Tenor Delta Risk Weight
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BucketVegaSettingsCR (
-		final java.util.Map<java.lang.String, java.lang.Double> tenorVegaRiskWeight,
+		final Map<String, Double> tenorVegaRiskWeight,
 		final double sameIssuerSeniorityCorrelation,
 		final double differentIssuerSeniorityCorrelation,
 		final double concentrationThreshold,
 		final double vegaScaler,
 		final double historicalVolatilityRatio,
-		final java.util.Map<java.lang.String, java.lang.Double> tenorDeltaRiskWeight)
-		throws java.lang.Exception
+		final Map<String, Double> tenorDeltaRiskWeight)
+		throws Exception
 	{
 		super (
 			tenorVegaRiskWeight,
@@ -316,12 +345,18 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 			concentrationThreshold
 		);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_vegaScaler = vegaScaler) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_historicalVolatilityRatio =
-				historicalVolatilityRatio) ||
-			null == (_tenorDeltaRiskWeight = tenorDeltaRiskWeight))
+		if (!NumberUtil.IsValid (
+				_vegaScaler = vegaScaler
+			) ||
+			!NumberUtil.IsValid (
+				_historicalVolatilityRatio = historicalVolatilityRatio
+			) ||
+			null == (_tenorDeltaRiskWeight = tenorDeltaRiskWeight)
+		)
 		{
-			throw new java.lang.Exception ("BucketVegaSettingsIR Constructor => Invalid Inputs");
+			throw new Exception (
+				"BucketVegaSettingsIR Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -353,7 +388,7 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 	 * @return The Tenor Delta Risk Weight
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> tenorDeltaRiskWeight()
+	public Map<String, Double> tenorDeltaRiskWeight()
 	{
 		return _tenorDeltaRiskWeight;
 	}
@@ -364,32 +399,33 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 	 * @return The Tenor Vega Risk Weight
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> tenorVegaRiskWeight()
+	public Map<String, Double> tenorVegaRiskWeight()
 	{
 		return super.tenorRiskWeight();
 	}
 
-	@Override public java.util.Map<java.lang.String, java.lang.Double> tenorRiskWeight()
+	@Override public Map<String, Double> tenorRiskWeight()
 	{
-		java.util.Map<java.lang.String, java.lang.Double> tenorVegaRiskWeight = tenorVegaRiskWeight();
+		Map<String, Double> tenorVegaRiskWeight = tenorVegaRiskWeight();
 
-		java.util.Map<java.lang.String, java.lang.Double> tenorRiskWeight = new
-			java.util.HashMap<java.lang.String, java.lang.Double>();
+		Map<String, Double> tenorRiskWeight = new HashMap<String, Double>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> tenorVegaRiskWeightEntry :
-			tenorVegaRiskWeight.entrySet())
+		for (Map.Entry<String, Double> tenorVegaRiskWeightEntry : tenorVegaRiskWeight.entrySet())
 		{
-			java.lang.String tenor = tenorVegaRiskWeightEntry.getKey();
+			String tenor = tenorVegaRiskWeightEntry.getKey();
 
-			if (!tenorVegaRiskWeight.containsKey (tenor))
+			if (!tenorVegaRiskWeight.containsKey (
+				tenor
+			))
 			{
 				return null;
 			}
 
 			tenorRiskWeight.put (
 				tenor,
-				tenorVegaRiskWeightEntry.getValue() * _tenorDeltaRiskWeight.get (tenor) * _vegaScaler *
-					_historicalVolatilityRatio
+				tenorVegaRiskWeightEntry.getValue() * _tenorDeltaRiskWeight.get (
+					tenor
+				) * _vegaScaler * _historicalVolatilityRatio
 			);
 		}
 

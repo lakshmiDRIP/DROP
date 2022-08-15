@@ -1,6 +1,29 @@
 
 package org.drip.simm.parameters;
 
+import java.util.Map;
+
+import org.drip.measure.gaussian.NormalQuadrature;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.simm.commodity.CTBucket;
+import org.drip.simm.commodity.CTRiskThresholdContainer20;
+import org.drip.simm.commodity.CTRiskThresholdContainer21;
+import org.drip.simm.commodity.CTSettingsContainer20;
+import org.drip.simm.commodity.CTSettingsContainer21;
+import org.drip.simm.commodity.CTSystemics20;
+import org.drip.simm.commodity.CTSystemics21;
+import org.drip.simm.equity.EQBucket;
+import org.drip.simm.equity.EQRiskThresholdContainer20;
+import org.drip.simm.equity.EQRiskThresholdContainer21;
+import org.drip.simm.equity.EQSettingsContainer20;
+import org.drip.simm.equity.EQSettingsContainer21;
+import org.drip.simm.equity.EQSystemics20;
+import org.drip.simm.equity.EQSystemics21;
+import org.drip.simm.fx.FXRiskThresholdContainer20;
+import org.drip.simm.fx.FXRiskThresholdContainer21;
+import org.drip.simm.fx.FXSystemics20;
+import org.drip.simm.fx.FXSystemics21;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -119,10 +142,11 @@ package org.drip.simm.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivitySettings
+public class BucketVegaSettings
+	extends BucketSensitivitySettings
 {
-	private double _impliedVolatility = java.lang.Double.NaN;
-	private double _historicalVolatilityRatio = java.lang.Double.NaN;
+	private double _impliedVolatility = Double.NaN;
+	private double _historicalVolatilityRatio = Double.NaN;
 
 	/**
 	 * Retrieve the ISDA 2.0 Equity Vega Settings
@@ -135,27 +159,27 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 	public static BucketVegaSettings ISDA_EQ_20 (
 		final int bucketIndex)
 	{
-		org.drip.simm.equity.EQBucket equityBucket =
-			org.drip.simm.equity.EQSettingsContainer20.BucketMap().get (bucketIndex);
-
-		if (null == equityBucket)
-		{
-			return null;
-		}
+		EQBucket equityBucket = EQSettingsContainer20.BucketMap().get (
+			bucketIndex
+		);
 
 		try
 		{
-			return new BucketVegaSettings (
+			return null == equityBucket ? null : new BucketVegaSettings (
 				equityBucket.vegaRiskWeight() * equityBucket.deltaRiskWeight(),
-				org.drip.simm.equity.EQRiskThresholdContainer20.DeltaVegaThresholdMap().get
-					(bucketIndex).vega(),
+				EQRiskThresholdContainer20.DeltaVegaThresholdMap().get (
+					bucketIndex
+				).vega(),
 				equityBucket.memberCorrelation(),
-				java.lang.Math.sqrt (365. / 14.) /
-					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
-				org.drip.simm.equity.EQSystemics20.HISTORICAL_VOLATILITY_RATIO
+				Math.sqrt (
+					365. / 14.
+				) / NormalQuadrature.InverseCDF (
+					0.99
+				),
+				EQSystemics20.HISTORICAL_VOLATILITY_RATIO
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -174,27 +198,27 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 	public static BucketVegaSettings ISDA_EQ_21 (
 		final int bucketIndex)
 	{
-		org.drip.simm.equity.EQBucket equityBucket =
-			org.drip.simm.equity.EQSettingsContainer21.BucketMap().get (bucketIndex);
-
-		if (null == equityBucket)
-		{
-			return null;
-		}
+		EQBucket equityBucket = EQSettingsContainer21.BucketMap().get (
+			bucketIndex
+		);
 
 		try
 		{
-			return new BucketVegaSettings (
+			return null == equityBucket ? null : new BucketVegaSettings (
 				equityBucket.vegaRiskWeight() * equityBucket.deltaRiskWeight(),
-				org.drip.simm.equity.EQRiskThresholdContainer21.DeltaVegaThresholdMap().get
-					(bucketIndex).vega(),
+				EQRiskThresholdContainer21.DeltaVegaThresholdMap().get (
+					bucketIndex
+				).vega(),
 				equityBucket.memberCorrelation(),
-				java.lang.Math.sqrt (365. / 14.) /
-					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
-				org.drip.simm.equity.EQSystemics21.HISTORICAL_VOLATILITY_RATIO
+				Math.sqrt (
+					365. / 14.
+				) / NormalQuadrature.InverseCDF (
+					0.99
+				),
+				EQSystemics21.HISTORICAL_VOLATILITY_RATIO
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -213,27 +237,27 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 	public static BucketVegaSettings ISDA_CT_20 (
 		final int bucketIndex)
 	{
-		org.drip.simm.commodity.CTBucket commodityBucket =
-			org.drip.simm.commodity.CTSettingsContainer20.BucketMap().get (bucketIndex);
-
-		if (null == commodityBucket)
-		{
-			return null;
-		}
+		CTBucket commodityBucket = CTSettingsContainer20.BucketMap().get (
+			bucketIndex
+		);
 
 		try
 		{
-			return new org.drip.simm.parameters.BucketVegaSettings (
-				org.drip.simm.commodity.CTSystemics20.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),
-				org.drip.simm.commodity.CTRiskThresholdContainer20.DeltaVegaThresholdMap().get
-					(bucketIndex).vega(),
+			return null == commodityBucket ? null : new BucketVegaSettings (
+				CTSystemics20.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),
+				CTRiskThresholdContainer20.DeltaVegaThresholdMap().get (
+					bucketIndex
+				).vega(),
 				commodityBucket.memberCorrelation(),
-				java.lang.Math.sqrt (365. / 14.) /
-					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
-				org.drip.simm.commodity.CTSystemics20.HISTORICAL_VOLATILITY_RATIO
+				Math.sqrt (
+					365. / 14.
+				) / NormalQuadrature.InverseCDF (
+					0.99
+				),
+				CTSystemics20.HISTORICAL_VOLATILITY_RATIO
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -252,27 +276,27 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 	public static BucketVegaSettings ISDA_CT_21 (
 		final int bucketIndex)
 	{
-		org.drip.simm.commodity.CTBucket commodityBucket =
-			org.drip.simm.commodity.CTSettingsContainer21.BucketMap().get (bucketIndex);
-
-		if (null == commodityBucket)
-		{
-			return null;
-		}
+		CTBucket commodityBucket = CTSettingsContainer21.BucketMap().get (
+			bucketIndex
+		);
 
 		try
 		{
-			return new org.drip.simm.parameters.BucketVegaSettings (
-				org.drip.simm.commodity.CTSystemics21.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),
-				org.drip.simm.commodity.CTRiskThresholdContainer21.DeltaVegaThresholdMap().get
-					(bucketIndex).vega(),
+			return null == commodityBucket ? null : new BucketVegaSettings (
+				CTSystemics21.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),
+				CTRiskThresholdContainer21.DeltaVegaThresholdMap().get (
+					bucketIndex
+				).vega(),
 				commodityBucket.memberCorrelation(),
-				java.lang.Math.sqrt (365. / 14.) /
-					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
-				org.drip.simm.commodity.CTSystemics21.HISTORICAL_VOLATILITY_RATIO
+				Math.sqrt (
+					365. / 14.
+				) / NormalQuadrature.InverseCDF (
+					0.99
+				),
+				CTSystemics21.HISTORICAL_VOLATILITY_RATIO
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -289,25 +313,29 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 	 */
 
 	public static BucketVegaSettings ISDA_FX_20 (
-		final java.lang.String vegaCategory)
+		final String vegaCategory)
 	{
-		java.util.Map<java.lang.String, java.lang.Double> fxConcentrationCategoryVegaMap =
-			org.drip.simm.fx.FXRiskThresholdContainer20.CategoryVegaMap();
+		Map<String, Double> fxConcentrationCategoryVegaMap = FXRiskThresholdContainer20.CategoryVegaMap();
 
 		try
 		{
-			return fxConcentrationCategoryVegaMap.containsKey (vegaCategory) ?
-				new org.drip.simm.parameters.BucketVegaSettings (
-					org.drip.simm.fx.FXSystemics20.VEGA_RISK_WEIGHT *
-						org.drip.simm.fx.FXSystemics20.DELTA_RISK_WEIGHT,
-					fxConcentrationCategoryVegaMap.get (vegaCategory),
-					org.drip.simm.fx.FXSystemics20.CORRELATION,
-					java.lang.Math.sqrt (365. / 14.) /
-						org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
-					org.drip.simm.fx.FXSystemics20.HISTORICAL_VOLATILITY_RATIO
-				) : null;
+			return fxConcentrationCategoryVegaMap.containsKey (
+				vegaCategory
+			) ? new BucketVegaSettings (
+				FXSystemics20.VEGA_RISK_WEIGHT * FXSystemics20.DELTA_RISK_WEIGHT,
+				fxConcentrationCategoryVegaMap.get (
+					vegaCategory
+				),
+				FXSystemics20.CORRELATION,
+				Math.sqrt (
+					365. / 14.
+				) / NormalQuadrature.InverseCDF (
+					0.99
+				),
+				FXSystemics20.HISTORICAL_VOLATILITY_RATIO
+			) : null;
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -324,25 +352,29 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 	 */
 
 	public static BucketVegaSettings ISDA_FX_21 (
-		final java.lang.String vegaCategory)
+		final String vegaCategory)
 	{
-		java.util.Map<java.lang.String, java.lang.Double> fxConcentrationCategoryVegaMap =
-			org.drip.simm.fx.FXRiskThresholdContainer21.CategoryVegaMap();
+		Map<String, Double> fxConcentrationCategoryVegaMap = FXRiskThresholdContainer21.CategoryVegaMap();
 
 		try
 		{
-			return fxConcentrationCategoryVegaMap.containsKey (vegaCategory) ?
-				new org.drip.simm.parameters.BucketVegaSettings (
-					org.drip.simm.fx.FXSystemics21.VEGA_RISK_WEIGHT *
-						org.drip.simm.fx.FXSystemics21.DELTA_RISK_WEIGHT,
-					fxConcentrationCategoryVegaMap.get (vegaCategory),
-					org.drip.simm.fx.FXSystemics21.CORRELATION,
-					java.lang.Math.sqrt (365. / 14.) /
-						org.drip.measure.gaussian.NormalQuadrature.InverseCDF (0.99),
-					org.drip.simm.fx.FXSystemics21.HISTORICAL_VOLATILITY_RATIO
-				) : null;
+			return fxConcentrationCategoryVegaMap.containsKey (
+				vegaCategory
+			) ? new BucketVegaSettings (
+				FXSystemics21.VEGA_RISK_WEIGHT * FXSystemics21.DELTA_RISK_WEIGHT,
+				fxConcentrationCategoryVegaMap.get (
+					vegaCategory
+				),
+				FXSystemics21.CORRELATION,
+				Math.sqrt (
+					365. / 14.
+				) / NormalQuadrature.InverseCDF (
+					0.99
+				),
+				FXSystemics21.HISTORICAL_VOLATILITY_RATIO
+			) : null;
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -359,7 +391,7 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 	 * @param impliedVolatility The Implied Volatility
 	 * @param historicalVolatilityRatio The Historical Volatility Ratio
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BucketVegaSettings (
@@ -368,7 +400,7 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 		final double memberCorrelation,
 		final double impliedVolatility,
 		final double historicalVolatilityRatio)
-		throws java.lang.Exception
+		throws Exception
 	{
 		super (
 			riskWeight,
@@ -376,12 +408,17 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 			memberCorrelation
 		);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_impliedVolatility = impliedVolatility) ||
-				0. > _impliedVolatility ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_historicalVolatilityRatio =
-				historicalVolatilityRatio) || 0. > _historicalVolatilityRatio)
+		if (!NumberUtil.IsValid (
+				_impliedVolatility = impliedVolatility
+			) || 0. > _impliedVolatility ||
+			!NumberUtil.IsValid (
+				_historicalVolatilityRatio = historicalVolatilityRatio
+			) || 0. > _historicalVolatilityRatio
+		)
 		{
-			throw new java.lang.Exception ("BucketVegaSettings Constructor => Invalid Inputs");
+			throw new Exception (
+				"BucketVegaSettings Constructor => Invalid Inputs"
+			);
 		}
 	}
 

@@ -1,6 +1,22 @@
 
 package org.drip.simm.parameters;
 
+import java.util.Map;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.simm.credit.CRBucket;
+import org.drip.simm.credit.CRNQBucketCorrelation20;
+import org.drip.simm.credit.CRNQBucketCorrelation21;
+import org.drip.simm.credit.CRNQSettingsContainer20;
+import org.drip.simm.credit.CRNQSettingsContainer21;
+import org.drip.simm.credit.CRQBucketCorrelation20;
+import org.drip.simm.credit.CRQBucketCorrelation21;
+import org.drip.simm.credit.CRQSettingsContainer20;
+import org.drip.simm.credit.CRQSettingsContainer21;
+import org.drip.simm.credit.CRThresholdContainer20;
+import org.drip.simm.credit.CRThresholdContainer21;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -119,17 +135,17 @@ package org.drip.simm.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.LiquiditySettings
+public class BucketSensitivitySettingsCR
+	extends LiquiditySettings
 {
-	private double _extraFamilyCrossTenorCorrelation = java.lang.Double.NaN;
-	private double _intraFamilyCrossTenorCorrelation = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, java.lang.Double> _tenorRiskWeight = null;
+	private Map<String, Double> _tenorRiskWeight = null;
+	private double _extraFamilyCrossTenorCorrelation = Double.NaN;
+	private double _intraFamilyCrossTenorCorrelation = Double.NaN;
 
-	protected static final java.util.Map<java.lang.String, java.lang.Double> TenorRiskWeightMap (
+	protected static final Map<String, Double> TenorRiskWeightMap (
 		final double riskWeight)
 	{
-		java.util.Map<java.lang.String, java.lang.Double> tenorRiskWeight = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+		Map<String, Double> tenorRiskWeight = new CaseInsensitiveHashMap<Double>();
 
 		tenorRiskWeight.put (
 			"1Y",
@@ -170,8 +186,9 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 	public static BucketSensitivitySettingsCR ISDA_CRQ_DELTA_20 (
 		final int bucketNumber)
 	{
-		org.drip.simm.credit.CRBucket creditBucket = org.drip.simm.credit.CRQSettingsContainer20.Bucket
-			(bucketNumber);
+		CRBucket creditBucket = CRQSettingsContainer20.Bucket (
+			bucketNumber
+		);
 
 		if (null == creditBucket)
 		{
@@ -181,18 +198,26 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 		try
 		{
 			return -1 == bucketNumber ? new BucketSensitivitySettingsCR (
-				TenorRiskWeightMap (creditBucket.riskWeight()),
-				org.drip.simm.credit.CRQBucketCorrelation20.SAME_ISSUER_SENIORITY_RESIDUAL,
-				org.drip.simm.credit.CRQBucketCorrelation20.DIFFERENT_ISSUER_SENIORITY_RESIDUAL,
-				org.drip.simm.credit.CRThresholdContainer20.QualifyingThreshold (bucketNumber).delta()
+				TenorRiskWeightMap (
+					creditBucket.riskWeight()
+				),
+				CRQBucketCorrelation20.SAME_ISSUER_SENIORITY_RESIDUAL,
+				CRQBucketCorrelation20.DIFFERENT_ISSUER_SENIORITY_RESIDUAL,
+				CRThresholdContainer20.QualifyingThreshold (
+					bucketNumber
+				).delta()
 			) : new BucketSensitivitySettingsCR (
-				TenorRiskWeightMap (creditBucket.riskWeight()),
-				org.drip.simm.credit.CRQBucketCorrelation20.SAME_ISSUER_SENIORITY_NON_RESIDUAL,
-				org.drip.simm.credit.CRQBucketCorrelation20.DIFFERENT_ISSUER_SENIORITY_NON_RESIDUAL,
-				org.drip.simm.credit.CRThresholdContainer20.QualifyingThreshold (bucketNumber).delta()
+				TenorRiskWeightMap (
+					creditBucket.riskWeight()
+				),
+				CRQBucketCorrelation20.SAME_ISSUER_SENIORITY_NON_RESIDUAL,
+				CRQBucketCorrelation20.DIFFERENT_ISSUER_SENIORITY_NON_RESIDUAL,
+				CRThresholdContainer20.QualifyingThreshold (
+					bucketNumber
+				).delta()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -211,8 +236,9 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 	public static BucketSensitivitySettingsCR ISDA_CRNQ_DELTA_20 (
 		final int bucketNumber)
 	{
-		org.drip.simm.credit.CRBucket creditBucket = org.drip.simm.credit.CRNQSettingsContainer20.Bucket
-			(bucketNumber);
+		CRBucket creditBucket = CRNQSettingsContainer20.Bucket (
+			bucketNumber
+		);
 
 		if (null == creditBucket)
 		{
@@ -222,18 +248,26 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 		try
 		{
 			return -1 == bucketNumber ? new BucketSensitivitySettingsCR (
-				TenorRiskWeightMap (creditBucket.riskWeight()),
-				org.drip.simm.credit.CRNQBucketCorrelation20.GT_80PC_OVERLAP_RESIDUAL,
-				org.drip.simm.credit.CRNQBucketCorrelation20.LT_80PC_OVERLAP_RESIDUAL,
-				org.drip.simm.credit.CRThresholdContainer20.NonQualifyingThreshold (bucketNumber).delta()
+				TenorRiskWeightMap (
+					creditBucket.riskWeight()
+				),
+				CRNQBucketCorrelation20.GT_80PC_OVERLAP_RESIDUAL,
+				CRNQBucketCorrelation20.LT_80PC_OVERLAP_RESIDUAL,
+				CRThresholdContainer20.NonQualifyingThreshold (
+					bucketNumber
+				).delta()
 			) : new BucketSensitivitySettingsCR (
-				TenorRiskWeightMap (creditBucket.riskWeight()),
-				org.drip.simm.credit.CRNQBucketCorrelation20.GT_80PC_OVERLAP_NON_RESIDUAL,
-				org.drip.simm.credit.CRNQBucketCorrelation20.LT_80PC_OVERLAP_NON_RESIDUAL,
-				org.drip.simm.credit.CRThresholdContainer20.NonQualifyingThreshold (bucketNumber).delta()
+				TenorRiskWeightMap (
+					creditBucket.riskWeight()
+				),
+				CRNQBucketCorrelation20.GT_80PC_OVERLAP_NON_RESIDUAL,
+				CRNQBucketCorrelation20.LT_80PC_OVERLAP_NON_RESIDUAL,
+				CRThresholdContainer20.NonQualifyingThreshold (
+					bucketNumber
+				).delta()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -252,7 +286,7 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 	public static BucketSensitivitySettingsCR ISDA_CRQ_DELTA_21 (
 		final int bucketNumber)
 	{
-		org.drip.simm.credit.CRBucket creditBucket = org.drip.simm.credit.CRQSettingsContainer21.Bucket
+		CRBucket creditBucket = CRQSettingsContainer21.Bucket
 			(bucketNumber);
 
 		if (null == creditBucket)
@@ -263,18 +297,26 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 		try
 		{
 			return -1 == bucketNumber ? new BucketSensitivitySettingsCR (
-				TenorRiskWeightMap (creditBucket.riskWeight()),
-				org.drip.simm.credit.CRQBucketCorrelation21.SAME_ISSUER_SENIORITY_RESIDUAL,
-				org.drip.simm.credit.CRQBucketCorrelation21.DIFFERENT_ISSUER_SENIORITY_RESIDUAL,
-				org.drip.simm.credit.CRThresholdContainer21.QualifyingThreshold (bucketNumber).delta()
+				TenorRiskWeightMap (
+					creditBucket.riskWeight()
+				),
+				CRQBucketCorrelation21.SAME_ISSUER_SENIORITY_RESIDUAL,
+				CRQBucketCorrelation21.DIFFERENT_ISSUER_SENIORITY_RESIDUAL,
+				CRThresholdContainer21.QualifyingThreshold (
+					bucketNumber
+				).delta()
 			) : new BucketSensitivitySettingsCR (
-				TenorRiskWeightMap (creditBucket.riskWeight()),
-				org.drip.simm.credit.CRQBucketCorrelation21.SAME_ISSUER_SENIORITY_NON_RESIDUAL,
-				org.drip.simm.credit.CRQBucketCorrelation21.DIFFERENT_ISSUER_SENIORITY_NON_RESIDUAL,
-				org.drip.simm.credit.CRThresholdContainer21.QualifyingThreshold (bucketNumber).delta()
+				TenorRiskWeightMap (
+					creditBucket.riskWeight()
+				),
+				CRQBucketCorrelation21.SAME_ISSUER_SENIORITY_NON_RESIDUAL,
+				CRQBucketCorrelation21.DIFFERENT_ISSUER_SENIORITY_NON_RESIDUAL,
+				CRThresholdContainer21.QualifyingThreshold (
+					bucketNumber
+				).delta()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -293,8 +335,9 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 	public static BucketSensitivitySettingsCR ISDA_CRNQ_DELTA_21 (
 		final int bucketNumber)
 	{
-		org.drip.simm.credit.CRBucket creditBucket = org.drip.simm.credit.CRNQSettingsContainer21.Bucket
-			(bucketNumber);
+		CRBucket creditBucket = CRNQSettingsContainer21.Bucket (
+			bucketNumber
+		);
 
 		if (null == creditBucket)
 		{
@@ -304,18 +347,26 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 		try
 		{
 			return -1 == bucketNumber ? new BucketSensitivitySettingsCR (
-				TenorRiskWeightMap (creditBucket.riskWeight()),
-				org.drip.simm.credit.CRNQBucketCorrelation21.GT_80PC_OVERLAP_RESIDUAL,
-				org.drip.simm.credit.CRNQBucketCorrelation21.LT_80PC_OVERLAP_RESIDUAL,
-				org.drip.simm.credit.CRThresholdContainer21.NonQualifyingThreshold (bucketNumber).delta()
+				TenorRiskWeightMap (
+					creditBucket.riskWeight()
+				),
+				CRNQBucketCorrelation21.GT_80PC_OVERLAP_RESIDUAL,
+				CRNQBucketCorrelation21.LT_80PC_OVERLAP_RESIDUAL,
+				CRThresholdContainer21.NonQualifyingThreshold (
+					bucketNumber
+				).delta()
 			) : new BucketSensitivitySettingsCR (
-				TenorRiskWeightMap (creditBucket.riskWeight()),
-				org.drip.simm.credit.CRNQBucketCorrelation21.GT_80PC_OVERLAP_NON_RESIDUAL,
-				org.drip.simm.credit.CRNQBucketCorrelation21.LT_80PC_OVERLAP_NON_RESIDUAL,
-				org.drip.simm.credit.CRThresholdContainer21.NonQualifyingThreshold (bucketNumber).delta()
+				TenorRiskWeightMap (
+					creditBucket.riskWeight()
+				),
+				CRNQBucketCorrelation21.GT_80PC_OVERLAP_NON_RESIDUAL,
+				CRNQBucketCorrelation21.LT_80PC_OVERLAP_NON_RESIDUAL,
+				CRThresholdContainer21.NonQualifyingThreshold (
+					bucketNumber
+				).delta()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -331,27 +382,30 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 	 * @param extraFamilyCrossTenorCorrelation Extra-Family Cross Tenor Correlation
 	 * @param concentrationThreshold The Concentration Threshold
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BucketSensitivitySettingsCR (
-		final java.util.Map<java.lang.String, java.lang.Double> tenorRiskWeight,
+		final Map<String, Double> tenorRiskWeight,
 		final double intraFamilyCrossTenorCorrelation,
 		final double extraFamilyCrossTenorCorrelation,
 		final double concentrationThreshold)
-		throws java.lang.Exception
+		throws Exception
 	{
 		super (concentrationThreshold);
 
 		if (null == (_tenorRiskWeight = tenorRiskWeight) || 0 == _tenorRiskWeight.size() ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_intraFamilyCrossTenorCorrelation =
-				intraFamilyCrossTenorCorrelation) ||
-				1. <= _intraFamilyCrossTenorCorrelation || -1. >= _intraFamilyCrossTenorCorrelation ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_extraFamilyCrossTenorCorrelation =
-				extraFamilyCrossTenorCorrelation) ||
-				1. <= _extraFamilyCrossTenorCorrelation || -1. >= _extraFamilyCrossTenorCorrelation)
+			!NumberUtil.IsValid (
+				_intraFamilyCrossTenorCorrelation = intraFamilyCrossTenorCorrelation
+			) || 1. <= _intraFamilyCrossTenorCorrelation || -1. >= _intraFamilyCrossTenorCorrelation ||
+			!NumberUtil.IsValid (
+				_extraFamilyCrossTenorCorrelation = extraFamilyCrossTenorCorrelation
+			) || 1. <= _extraFamilyCrossTenorCorrelation || -1. >= _extraFamilyCrossTenorCorrelation
+		)
 		{
-			throw new java.lang.Exception ("BucketSensitivitySettingsCR Constructor => Invalid Inputs");
+			throw new Exception (
+				"BucketSensitivitySettingsCR Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -361,7 +415,7 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 	 * @return The Tenor Risk Weight Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> tenorRiskWeight()
+	public Map<String, Double> tenorRiskWeight()
 	{
 		return _tenorRiskWeight;
 	}

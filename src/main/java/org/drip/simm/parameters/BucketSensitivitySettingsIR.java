@@ -1,6 +1,20 @@
 
 package org.drip.simm.parameters;
 
+import java.util.Map;
+
+import org.drip.measure.stochastic.LabelCorrelation;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.simm.rates.IRSettingsContainer20;
+import org.drip.simm.rates.IRSettingsContainer21;
+import org.drip.simm.rates.IRSystemics;
+import org.drip.simm.rates.IRSystemics20;
+import org.drip.simm.rates.IRSystemics21;
+import org.drip.simm.rates.IRThreshold;
+import org.drip.simm.rates.IRThresholdContainer20;
+import org.drip.simm.rates.IRThresholdContainer21;
+import org.drip.simm.rates.IRWeight;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -119,17 +133,18 @@ package org.drip.simm.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.LiquiditySettings
+public class BucketSensitivitySettingsIR
+	extends LiquiditySettings
 {
-	private double _crossCurveCorrelation = java.lang.Double.NaN;
-	private org.drip.measure.stochastic.LabelCorrelation _crossTenorCorrelation = null;
-	private java.util.Map<java.lang.String, java.lang.Double> _oisTenorRiskWeight = null;
-	private java.util.Map<java.lang.String, java.lang.Double> _primeTenorRiskWeight = null;
-	private java.util.Map<java.lang.String, java.lang.Double> _libor1MTenorRiskWeight = null;
-	private java.util.Map<java.lang.String, java.lang.Double> _libor3MTenorRiskWeight = null;
-	private java.util.Map<java.lang.String, java.lang.Double> _libor6MTenorRiskWeight = null;
-	private java.util.Map<java.lang.String, java.lang.Double> _libor12MTenorRiskWeight = null;
-	private java.util.Map<java.lang.String, java.lang.Double> _municipalTenorRiskWeight = null;
+	private double _crossCurveCorrelation = Double.NaN;
+	private LabelCorrelation _crossTenorCorrelation = null;
+	private Map<String, Double> _oisTenorRiskWeight = null;
+	private Map<String, Double> _primeTenorRiskWeight = null;
+	private Map<String, Double> _libor1MTenorRiskWeight = null;
+	private Map<String, Double> _libor3MTenorRiskWeight = null;
+	private Map<String, Double> _libor6MTenorRiskWeight = null;
+	private Map<String, Double> _libor12MTenorRiskWeight = null;
+	private Map<String, Double> _municipalTenorRiskWeight = null;
 
 	/**
 	 * Construct the ISDA 2.0 Standard IR Delta Sensitivity Settings for the Currency
@@ -140,51 +155,46 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 	 */
 
 	public static final BucketSensitivitySettingsIR ISDA_DELTA_20 (
-		final java.lang.String currency)
+		final String currency)
 	{
-		org.drip.simm.rates.IRThreshold irThreshold = org.drip.simm.rates.IRThresholdContainer20.Threshold
-			(currency);
-
-		org.drip.simm.rates.IRWeight oisRiskWeight = org.drip.simm.rates.IRSettingsContainer20.RiskWeight (
-			currency,
-			org.drip.simm.rates.IRSystemics.SUB_CURVE_OIS
+		IRThreshold irThreshold = IRThresholdContainer20.Threshold (
+			currency
 		);
 
-		org.drip.simm.rates.IRWeight libor1MRiskWeight =
-			org.drip.simm.rates.IRSettingsContainer20.RiskWeight (
-				currency,
-				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_1M
-			);
+		IRWeight oisRiskWeight = IRSettingsContainer20.RiskWeight (
+			currency,
+			IRSystemics.SUB_CURVE_OIS
+		);
 
-		org.drip.simm.rates.IRWeight libor3MRiskWeight =
-			org.drip.simm.rates.IRSettingsContainer20.RiskWeight (
-				currency,
-				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_3M
-			);
+		IRWeight libor1MRiskWeight = IRSettingsContainer20.RiskWeight (
+			currency,
+			IRSystemics.SUB_CURVE_LIBOR_1M
+		);
 
-		org.drip.simm.rates.IRWeight libor6MRiskWeight =
-			org.drip.simm.rates.IRSettingsContainer20.RiskWeight (
-				currency,
-				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_6M
-			);
+		IRWeight libor3MRiskWeight = IRSettingsContainer20.RiskWeight (
+			currency,
+			IRSystemics.SUB_CURVE_LIBOR_3M
+		);
 
-		org.drip.simm.rates.IRWeight libor12MRiskWeight =
-			org.drip.simm.rates.IRSettingsContainer20.RiskWeight (
-				currency,
-				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_12M
-			);
+		IRWeight libor6MRiskWeight = IRSettingsContainer20.RiskWeight (
+			currency,
+			IRSystemics.SUB_CURVE_LIBOR_6M
+		);
 
-		org.drip.simm.rates.IRWeight primeRiskWeight =
-			org.drip.simm.rates.IRSettingsContainer20.RiskWeight (
-				currency,
-				org.drip.simm.rates.IRSystemics.SUB_CURVE_PRIME
-			);
+		IRWeight libor12MRiskWeight = IRSettingsContainer20.RiskWeight (
+			currency,
+			IRSystemics.SUB_CURVE_LIBOR_12M
+		);
 
-		org.drip.simm.rates.IRWeight municipalRiskWeight =
-			org.drip.simm.rates.IRSettingsContainer20.RiskWeight (
-				currency,
-				org.drip.simm.rates.IRSystemics.SUB_CURVE_MUNICIPAL
-			);
+		IRWeight primeRiskWeight = IRSettingsContainer20.RiskWeight (
+			currency,
+			IRSystemics.SUB_CURVE_PRIME
+		);
+
+		IRWeight municipalRiskWeight = IRSettingsContainer20.RiskWeight (
+			currency,
+			IRSystemics.SUB_CURVE_MUNICIPAL
+		);
 
 		try
 		{
@@ -203,12 +213,12 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 					libor12MRiskWeight.tenorDelta(),
 					primeRiskWeight.tenorDelta(),
 					municipalRiskWeight.tenorDelta(),
-					org.drip.simm.rates.IRSettingsContainer20.SingleCurveTenorCorrelation(),
-					org.drip.simm.rates.IRSystemics20.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION,
+					IRSettingsContainer20.SingleCurveTenorCorrelation(),
+					IRSystemics20.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION,
 					irThreshold.deltaVega().delta()
 				);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -225,51 +235,46 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 	 */
 
 	public static final BucketSensitivitySettingsIR ISDA_DELTA_21 (
-		final java.lang.String currency)
+		final String currency)
 	{
-		org.drip.simm.rates.IRThreshold irThreshold = org.drip.simm.rates.IRThresholdContainer21.Threshold
-			(currency);
-
-		org.drip.simm.rates.IRWeight oisRiskWeight = org.drip.simm.rates.IRSettingsContainer21.RiskWeight (
-			currency,
-			org.drip.simm.rates.IRSystemics.SUB_CURVE_OIS
+		IRThreshold irThreshold = IRThresholdContainer21.Threshold (
+			currency
 		);
 
-		org.drip.simm.rates.IRWeight libor1MRiskWeight =
-			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (
-				currency,
-				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_1M
-			);
+		IRWeight oisRiskWeight = IRSettingsContainer21.RiskWeight (
+			currency,
+			IRSystemics.SUB_CURVE_OIS
+		);
 
-		org.drip.simm.rates.IRWeight libor3MRiskWeight =
-			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (
-				currency,
-				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_3M
-			);
+		IRWeight libor1MRiskWeight = IRSettingsContainer21.RiskWeight (
+			currency,
+			IRSystemics.SUB_CURVE_LIBOR_1M
+		);
 
-		org.drip.simm.rates.IRWeight libor6MRiskWeight =
-			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (
-				currency,
-				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_6M
-			);
+		IRWeight libor3MRiskWeight = IRSettingsContainer21.RiskWeight (
+			currency,
+			IRSystemics.SUB_CURVE_LIBOR_3M
+		);
 
-		org.drip.simm.rates.IRWeight libor12MRiskWeight =
-			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (
-				currency,
-				org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_12M
-			);
+		IRWeight libor6MRiskWeight = IRSettingsContainer21.RiskWeight (
+			currency,
+			IRSystemics.SUB_CURVE_LIBOR_6M
+		);
 
-		org.drip.simm.rates.IRWeight primeRiskWeight =
-			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (
-				currency,
-				org.drip.simm.rates.IRSystemics.SUB_CURVE_PRIME
-			);
+		IRWeight libor12MRiskWeight = IRSettingsContainer21.RiskWeight (
+			currency,
+			IRSystemics.SUB_CURVE_LIBOR_12M
+		);
 
-		org.drip.simm.rates.IRWeight municipalRiskWeight =
-			org.drip.simm.rates.IRSettingsContainer21.RiskWeight (
-				currency,
-				org.drip.simm.rates.IRSystemics.SUB_CURVE_MUNICIPAL
-			);
+		IRWeight primeRiskWeight = IRSettingsContainer21.RiskWeight (
+			currency,
+			IRSystemics.SUB_CURVE_PRIME
+		);
+
+		IRWeight municipalRiskWeight = IRSettingsContainer21.RiskWeight (
+			currency,
+			IRSystemics.SUB_CURVE_MUNICIPAL
+		);
 
 		try
 		{
@@ -288,12 +293,12 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 					libor12MRiskWeight.tenorDelta(),
 					primeRiskWeight.tenorDelta(),
 					municipalRiskWeight.tenorDelta(),
-					org.drip.simm.rates.IRSettingsContainer21.SingleCurveTenorCorrelation(),
-					org.drip.simm.rates.IRSystemics21.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION,
+					IRSettingsContainer21.SingleCurveTenorCorrelation(),
+					IRSystemics21.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION,
 					irThreshold.deltaVega().delta()
 				);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -315,23 +320,25 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 	 * @param crossCurveCorrelation Cross Curve Correlation
 	 * @param concentrationThreshold The Concentration Threshold
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BucketSensitivitySettingsIR (
-		final java.util.Map<java.lang.String, java.lang.Double> oisTenorRiskWeight,
-		final java.util.Map<java.lang.String, java.lang.Double> libor1MTenorRiskWeight,
-		final java.util.Map<java.lang.String, java.lang.Double> libor3MTenorRiskWeight,
-		final java.util.Map<java.lang.String, java.lang.Double> libor6MTenorRiskWeight,
-		final java.util.Map<java.lang.String, java.lang.Double> libor12MTenorRiskWeight,
-		final java.util.Map<java.lang.String, java.lang.Double> primeTenorRiskWeight,
-		final java.util.Map<java.lang.String, java.lang.Double> municipalTenorRiskWeight,
-		final org.drip.measure.stochastic.LabelCorrelation crossTenorCorrelation,
+		final Map<String, Double> oisTenorRiskWeight,
+		final Map<String, Double> libor1MTenorRiskWeight,
+		final Map<String, Double> libor3MTenorRiskWeight,
+		final Map<String, Double> libor6MTenorRiskWeight,
+		final Map<String, Double> libor12MTenorRiskWeight,
+		final Map<String, Double> primeTenorRiskWeight,
+		final Map<String, Double> municipalTenorRiskWeight,
+		final LabelCorrelation crossTenorCorrelation,
 		final double crossCurveCorrelation,
 		final double concentrationThreshold)
-		throws java.lang.Exception
+		throws Exception
 	{
-		super (concentrationThreshold);
+		super (
+			concentrationThreshold
+		);
 
 		if (null == (_oisTenorRiskWeight = oisTenorRiskWeight) ||
 			null == (_libor1MTenorRiskWeight = libor1MTenorRiskWeight) ||
@@ -341,10 +348,14 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 			null == (_primeTenorRiskWeight = primeTenorRiskWeight) ||
 			null == (_municipalTenorRiskWeight = municipalTenorRiskWeight) ||
 			null == (_crossTenorCorrelation = crossTenorCorrelation) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_crossCurveCorrelation = crossCurveCorrelation) ||
-				-1. > _crossCurveCorrelation || 1. < _crossCurveCorrelation)
+			!NumberUtil.IsValid (
+				_crossCurveCorrelation = crossCurveCorrelation
+			) || -1. > _crossCurveCorrelation || 1. < _crossCurveCorrelation
+		)
 		{
-			throw new java.lang.Exception ("BucketSensitivitySettingsIR Constructor => Invalid Inputs");
+			throw new Exception (
+				"BucketSensitivitySettingsIR Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -354,7 +365,7 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 	 * @return The OIS Tenor Risk Weight
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> oisTenorRiskWeight()
+	public Map<String, Double> oisTenorRiskWeight()
 	{
 		return _oisTenorRiskWeight;
 	}
@@ -365,7 +376,7 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 	 * @return The LIBOR 1M Tenor Risk Weight
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> libor1MTenorRiskWeight()
+	public Map<String, Double> libor1MTenorRiskWeight()
 	{
 		return _libor1MTenorRiskWeight;
 	}
@@ -376,7 +387,7 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 	 * @return The LIBOR 3M Tenor Risk Weight
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> libor3MTenorRiskWeight()
+	public Map<String, Double> libor3MTenorRiskWeight()
 	{
 		return _libor3MTenorRiskWeight;
 	}
@@ -387,7 +398,7 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 	 * @return The LIBOR 6M Tenor Risk Weight
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> libor6MTenorRiskWeight()
+	public Map<String, Double> libor6MTenorRiskWeight()
 	{
 		return _libor6MTenorRiskWeight;
 	}
@@ -398,7 +409,7 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 	 * @return The LIBOR 12M Tenor Risk Weight
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> libor12MTenorRiskWeight()
+	public Map<String, Double> libor12MTenorRiskWeight()
 	{
 		return _libor12MTenorRiskWeight;
 	}
@@ -409,7 +420,7 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 	 * @return The PRIME Tenor Risk Weight
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> primeTenorRiskWeight()
+	public Map<String, Double> primeTenorRiskWeight()
 	{
 		return _primeTenorRiskWeight;
 	}
@@ -420,7 +431,7 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 	 * @return The MUNICIPAL Curve Tenor Risk Weight
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> municipalTenorRiskWeight()
+	public Map<String, Double> municipalTenorRiskWeight()
 	{
 		return _municipalTenorRiskWeight;
 	}
@@ -442,7 +453,7 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 	 * @return The Single Curve Cross Tenor Correlation
 	 */
 
-	public org.drip.measure.stochastic.LabelCorrelation crossTenorCorrelation()
+	public LabelCorrelation crossTenorCorrelation()
 	{
 		return _crossTenorCorrelation;
 	}

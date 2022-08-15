@@ -121,9 +121,9 @@ package org.drip.simm.parameters;
 
 public class RiskClassSensitivitySettings
 {
-	private org.drip.simm.parameters.RiskMeasureSensitivitySettings _vega = null;
-	private org.drip.simm.parameters.RiskMeasureSensitivitySettings _delta = null;
-	private org.drip.simm.parameters.RiskMeasureSensitivitySettings _curvature = null;
+	private RiskMeasureSensitivitySettings _vega = null;
+	private RiskMeasureSensitivitySettings _delta = null;
+	private RiskMeasureSensitivitySettings _curvature = null;
 
 	/**
 	 * Generate the ISDA 2.0 Standard Commodity Sensitivity Settings
@@ -139,13 +139,14 @@ public class RiskClassSensitivitySettings
 		try
 		{
 			return new RiskClassSensitivitySettings (
-				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_EQ_DELTA_20(),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_EQ_VEGA_20(),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_EQ_CURVATURE_20
-					(vegaDurationDays)
+				RiskMeasureSensitivitySettings.ISDA_EQ_DELTA_20(),
+				RiskMeasureSensitivitySettings.ISDA_EQ_VEGA_20(),
+				RiskMeasureSensitivitySettings.ISDA_EQ_CURVATURE_20 (
+					vegaDurationDays
+				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -167,13 +168,14 @@ public class RiskClassSensitivitySettings
 		try
 		{
 			return new RiskClassSensitivitySettings (
-				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_EQ_DELTA_21(),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_EQ_VEGA_21(),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_EQ_CURVATURE_21
-					(vegaDurationDays)
+				RiskMeasureSensitivitySettings.ISDA_EQ_DELTA_21(),
+				RiskMeasureSensitivitySettings.ISDA_EQ_VEGA_21(),
+				RiskMeasureSensitivitySettings.ISDA_EQ_CURVATURE_21 (
+					vegaDurationDays
+				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -195,13 +197,14 @@ public class RiskClassSensitivitySettings
 		try
 		{
 			return new RiskClassSensitivitySettings (
-				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_CT_DELTA_20(),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_CT_VEGA_20(),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_CT_CURVATURE_20
-					(vegaDurationDays)
+				RiskMeasureSensitivitySettings.ISDA_CT_DELTA_20(),
+				RiskMeasureSensitivitySettings.ISDA_CT_VEGA_20(),
+				RiskMeasureSensitivitySettings.ISDA_CT_CURVATURE_20 (
+					vegaDurationDays
+				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -223,13 +226,14 @@ public class RiskClassSensitivitySettings
 		try
 		{
 			return new RiskClassSensitivitySettings (
-				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_CT_DELTA_21(),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_CT_VEGA_21(),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_CT_CURVATURE_21
-					(vegaDurationDays)
+				RiskMeasureSensitivitySettings.ISDA_CT_DELTA_21(),
+				RiskMeasureSensitivitySettings.ISDA_CT_VEGA_21(),
+				RiskMeasureSensitivitySettings.ISDA_CT_CURVATURE_21 (
+					vegaDurationDays
+				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -251,13 +255,14 @@ public class RiskClassSensitivitySettings
 		try
 		{
 			return new RiskClassSensitivitySettings (
-				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_FX_DELTA_20(),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_FX_VEGA_20(),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_FX_CURVATURE_20
-					(vegaDurationDays)
+				RiskMeasureSensitivitySettings.ISDA_FX_DELTA_20(),
+				RiskMeasureSensitivitySettings.ISDA_FX_VEGA_20(),
+				RiskMeasureSensitivitySettings.ISDA_FX_CURVATURE_20 (
+					vegaDurationDays
+				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -279,13 +284,14 @@ public class RiskClassSensitivitySettings
 		try
 		{
 			return new RiskClassSensitivitySettings (
-				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_FX_DELTA_21(),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_FX_VEGA_21(),
-				org.drip.simm.parameters.RiskMeasureSensitivitySettings.ISDA_FX_CURVATURE_21
-					(vegaDurationDays)
+				RiskMeasureSensitivitySettings.ISDA_FX_DELTA_21(),
+				RiskMeasureSensitivitySettings.ISDA_FX_VEGA_21(),
+				RiskMeasureSensitivitySettings.ISDA_FX_CURVATURE_21 (
+					vegaDurationDays
+				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -300,20 +306,22 @@ public class RiskClassSensitivitySettings
 	 * @param vega Vega Risk Measure Sensitivity Settings
 	 * @param curvature Curvature Risk Measure Sensitivity Settings
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskClassSensitivitySettings (
-		final org.drip.simm.parameters.RiskMeasureSensitivitySettings delta,
-		final org.drip.simm.parameters.RiskMeasureSensitivitySettings vega,
-		final org.drip.simm.parameters.RiskMeasureSensitivitySettings curvature)
-		throws java.lang.Exception
+		final RiskMeasureSensitivitySettings delta,
+		final RiskMeasureSensitivitySettings vega,
+		final RiskMeasureSensitivitySettings curvature)
+		throws Exception
 	{
 		if (null == (_delta = delta) ||
 			null == (_vega = vega) ||
 			null == (_curvature = curvature))
 		{
-			throw new java.lang.Exception ("RiskClassSensitivitySettings Constructor => Invalid Inputs");
+			throw new Exception (
+				"RiskClassSensitivitySettings Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -323,7 +331,7 @@ public class RiskClassSensitivitySettings
 	 * @return Delta Risk Measure Sensitivity Settings
 	 */
 
-	public org.drip.simm.parameters.RiskMeasureSensitivitySettings delta()
+	public RiskMeasureSensitivitySettings delta()
 	{
 		return _delta;
 	}
@@ -334,7 +342,7 @@ public class RiskClassSensitivitySettings
 	 * @return Vega Risk Measure Sensitivity Settings
 	 */
 
-	public org.drip.simm.parameters.RiskMeasureSensitivitySettings vega()
+	public RiskMeasureSensitivitySettings vega()
 	{
 		return _vega;
 	}
@@ -345,7 +353,7 @@ public class RiskClassSensitivitySettings
 	 * @return Curvature Risk Measure Sensitivity Settings
 	 */
 
-	public org.drip.simm.parameters.RiskMeasureSensitivitySettings curvature()
+	public RiskMeasureSensitivitySettings curvature()
 	{
 		return _curvature;
 	}

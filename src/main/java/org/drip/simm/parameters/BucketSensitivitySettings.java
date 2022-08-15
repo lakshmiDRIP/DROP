@@ -1,6 +1,23 @@
 
 package org.drip.simm.parameters;
 
+import java.util.Map;
+
+import org.drip.numerical.common.NumberUtil;
+import org.drip.simm.commodity.CTBucket;
+import org.drip.simm.commodity.CTRiskThresholdContainer20;
+import org.drip.simm.commodity.CTRiskThresholdContainer21;
+import org.drip.simm.commodity.CTSettingsContainer20;
+import org.drip.simm.commodity.CTSettingsContainer21;
+import org.drip.simm.equity.EQBucket;
+import org.drip.simm.equity.EQRiskThresholdContainer20;
+import org.drip.simm.equity.EQSettingsContainer20;
+import org.drip.simm.equity.EQSettingsContainer21;
+import org.drip.simm.fx.FXRiskThresholdContainer20;
+import org.drip.simm.fx.FXRiskThresholdContainer21;
+import org.drip.simm.fx.FXSystemics20;
+import org.drip.simm.fx.FXSystemics21;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -119,10 +136,11 @@ package org.drip.simm.parameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BucketSensitivitySettings extends org.drip.simm.parameters.LiquiditySettings
+public class BucketSensitivitySettings
+	extends LiquiditySettings
 {
-	private double _riskWeight = java.lang.Double.NaN;
-	private double _memberCorrelation = java.lang.Double.NaN;
+	private double _riskWeight = Double.NaN;
+	private double _memberCorrelation = Double.NaN;
 
 	/**
 	 * Construct the BucketSensitivitySettings 2.0 Instance for the specified Bucket Index
@@ -135,24 +153,21 @@ public class BucketSensitivitySettings extends org.drip.simm.parameters.Liquidit
 	public static BucketSensitivitySettings ISDA_EQ_20 (
 		final int bucketIndex)
 	{
-		org.drip.simm.equity.EQBucket equityBucket =
-			org.drip.simm.equity.EQSettingsContainer20.BucketMap().get (bucketIndex);
-
-		if (null == equityBucket)
-		{
-			return null;
-		}
+		EQBucket equityBucket = EQSettingsContainer20.BucketMap().get (
+			bucketIndex
+		);
 
 		try
 		{
-			return new BucketSensitivitySettings (
+			return null == equityBucket ? null : new BucketSensitivitySettings (
 				equityBucket.deltaRiskWeight(),
-				org.drip.simm.equity.EQRiskThresholdContainer20.DeltaVegaThresholdMap().get
-					(bucketIndex).delta(),
+				EQRiskThresholdContainer20.DeltaVegaThresholdMap().get (
+					bucketIndex
+				).delta(),
 				equityBucket.memberCorrelation()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -171,24 +186,21 @@ public class BucketSensitivitySettings extends org.drip.simm.parameters.Liquidit
 	public static BucketSensitivitySettings ISDA_EQ_21 (
 		final int bucketIndex)
 	{
-		org.drip.simm.equity.EQBucket equityBucket =
-			org.drip.simm.equity.EQSettingsContainer21.BucketMap().get (bucketIndex);
-
-		if (null == equityBucket)
-		{
-			return null;
-		}
+		EQBucket equityBucket = EQSettingsContainer21.BucketMap().get (
+			bucketIndex
+		);
 
 		try
 		{
-			return new BucketSensitivitySettings (
+			return null == equityBucket ? null : new BucketSensitivitySettings (
 				equityBucket.deltaRiskWeight(),
-				org.drip.simm.equity.EQRiskThresholdContainer20.DeltaVegaThresholdMap().get
-					(bucketIndex).delta(),
+				EQRiskThresholdContainer20.DeltaVegaThresholdMap().get (
+					bucketIndex
+				).delta(),
 				equityBucket.memberCorrelation()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -207,24 +219,21 @@ public class BucketSensitivitySettings extends org.drip.simm.parameters.Liquidit
 	public static BucketSensitivitySettings ISDA_CT_20 (
 		final int bucketIndex)
 	{
-		org.drip.simm.commodity.CTBucket commodityBucket =
-			org.drip.simm.commodity.CTSettingsContainer20.BucketMap().get (bucketIndex);
-
-		if (null == commodityBucket)
-		{
-			return null;
-		}
+		CTBucket commodityBucket = CTSettingsContainer20.BucketMap().get (
+			bucketIndex
+		);
 
 		try
 		{
-			return new BucketSensitivitySettings (
+			return null == commodityBucket ? null : new BucketSensitivitySettings (
 				commodityBucket.deltaRiskWeight(),
-				org.drip.simm.commodity.CTRiskThresholdContainer20.DeltaVegaThresholdMap().get
-					(bucketIndex).delta(),
+				CTRiskThresholdContainer20.DeltaVegaThresholdMap().get (
+					bucketIndex
+				).delta(),
 				commodityBucket.memberCorrelation()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -243,24 +252,21 @@ public class BucketSensitivitySettings extends org.drip.simm.parameters.Liquidit
 	public static BucketSensitivitySettings ISDA_CT_21 (
 		final int bucketIndex)
 	{
-		org.drip.simm.commodity.CTBucket commodityBucket =
-			org.drip.simm.commodity.CTSettingsContainer21.BucketMap().get (bucketIndex);
-
-		if (null == commodityBucket)
-		{
-			return null;
-		}
+		CTBucket commodityBucket = CTSettingsContainer21.BucketMap().get (
+			bucketIndex
+		);
 
 		try
 		{
-			return new BucketSensitivitySettings (
+			return null == commodityBucket ? null : new BucketSensitivitySettings (
 				commodityBucket.deltaRiskWeight(),
-				org.drip.simm.commodity.CTRiskThresholdContainer21.DeltaVegaThresholdMap().get
-					(bucketIndex).delta(),
+				CTRiskThresholdContainer21.DeltaVegaThresholdMap().get (
+					bucketIndex
+				).delta(),
 				commodityBucket.memberCorrelation()
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -279,23 +285,21 @@ public class BucketSensitivitySettings extends org.drip.simm.parameters.Liquidit
 	public static BucketSensitivitySettings ISDA_FX_20 (
 		final int categoryIndex)
 	{
-		java.util.Map<java.lang.Integer, java.lang.Double> fxConcentrationCategoryDeltaMap =
-			org.drip.simm.fx.FXRiskThresholdContainer20.CategoryDeltaMap();
-
-		if (!fxConcentrationCategoryDeltaMap.containsKey(categoryIndex))
-		{
-			return null;
-		}
+		Map<Integer, Double> fxConcentrationCategoryDeltaMap = FXRiskThresholdContainer20.CategoryDeltaMap();
 
 		try
 		{
-			return new org.drip.simm.parameters.BucketSensitivitySettings (
-				org.drip.simm.fx.FXSystemics20.DELTA_RISK_WEIGHT,
-				fxConcentrationCategoryDeltaMap.get (categoryIndex),
-				org.drip.simm.fx.FXSystemics20.CORRELATION
-			);
+			return fxConcentrationCategoryDeltaMap.containsKey (
+				categoryIndex
+			) ? new BucketSensitivitySettings (
+				FXSystemics20.DELTA_RISK_WEIGHT,
+				fxConcentrationCategoryDeltaMap.get (
+					categoryIndex
+				),
+				FXSystemics20.CORRELATION
+			) : null;
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -314,8 +318,7 @@ public class BucketSensitivitySettings extends org.drip.simm.parameters.Liquidit
 	public static BucketSensitivitySettings ISDA_FX_21 (
 		final int categoryIndex)
 	{
-		java.util.Map<java.lang.Integer, java.lang.Double> fxConcentrationCategoryDeltaMap =
-			org.drip.simm.fx.FXRiskThresholdContainer21.CategoryDeltaMap();
+		Map<Integer, Double> fxConcentrationCategoryDeltaMap = FXRiskThresholdContainer21.CategoryDeltaMap();
 
 		if (!fxConcentrationCategoryDeltaMap.containsKey(categoryIndex))
 		{
@@ -324,13 +327,17 @@ public class BucketSensitivitySettings extends org.drip.simm.parameters.Liquidit
 
 		try
 		{
-			return new org.drip.simm.parameters.BucketSensitivitySettings (
-				org.drip.simm.fx.FXSystemics21.DELTA_RISK_WEIGHT,
-				fxConcentrationCategoryDeltaMap.get (categoryIndex),
-				org.drip.simm.fx.FXSystemics21.CORRELATION
-			);
+			return fxConcentrationCategoryDeltaMap.containsKey (
+				categoryIndex
+			) ? new BucketSensitivitySettings (
+				FXSystemics21.DELTA_RISK_WEIGHT,
+				fxConcentrationCategoryDeltaMap.get (
+					categoryIndex
+				),
+				FXSystemics21.CORRELATION
+			) : null;
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -345,22 +352,29 @@ public class BucketSensitivitySettings extends org.drip.simm.parameters.Liquidit
 	 * @param concentrationFactor The Concentration Factor
 	 * @param memberCorrelation The Bucket Member Correlation
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BucketSensitivitySettings (
 		final double riskWeight,
 		final double concentrationFactor,
 		final double memberCorrelation)
-		throws java.lang.Exception
+		throws Exception
 	{
-		super (concentrationFactor);
+		super (
+			concentrationFactor
+		);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_riskWeight = riskWeight) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_memberCorrelation = memberCorrelation) ||
-				1. < _memberCorrelation || -1. > _memberCorrelation)
+		if (!NumberUtil.IsValid (
+				_riskWeight = riskWeight
+			) ||
+			!NumberUtil.IsValid (
+				_memberCorrelation = memberCorrelation
+			) || 1. < _memberCorrelation || -1. > _memberCorrelation)
 		{
-			throw new java.lang.Exception ("BucketSensitivitySettings Constructor => Invalid Inputs");
+			throw new Exception (
+				"BucketSensitivitySettings Constructor => Invalid Inputs"
+			);
 		}
 	}
 

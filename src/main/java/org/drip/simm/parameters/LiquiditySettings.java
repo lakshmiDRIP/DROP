@@ -1,6 +1,8 @@
 
 package org.drip.simm.parameters;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -120,15 +122,19 @@ package org.drip.simm.parameters;
 
 public abstract class LiquiditySettings
 {
-	private double _concentrationThreshold = java.lang.Double.NaN;
+	private double _concentrationThreshold = Double.NaN;
 
 	protected LiquiditySettings (
 		final double concentrationThreshold)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_concentrationThreshold = concentrationThreshold))
+		if (!NumberUtil.IsValid (
+			_concentrationThreshold = concentrationThreshold
+		))
 		{
-			throw new java.lang.Exception ("LiquiditySettings Constructor => Invalid Inputs");
+			throw new Exception (
+				"LiquiditySettings Constructor => Invalid Inputs"
+			);
 		}
 	}
 
