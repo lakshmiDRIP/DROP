@@ -257,6 +257,42 @@ public class BucketCurvatureSettingsCR
 	}
 
 	/**
+	 * Retrieve the ISDA 2.4 Credit Qualifying Bucket Curvature Settings
+	 * 
+	 * @param bucketNumber The Bucket Number
+	 * 
+	 * @return The ISDA 2.4 Credit Qualifying Bucket Curvature Settings
+	 */
+
+	public static BucketCurvatureSettingsCR ISDA_CRQ_24 (
+		final int bucketNumber)
+	{
+		BucketVegaSettingsCR bucketVegaSettingsCR = BucketVegaSettingsCR.ISDA_CRQ_24 (
+			bucketNumber
+		);
+
+		try
+		{
+			return null == bucketVegaSettingsCR ? null : new BucketCurvatureSettingsCR (
+				bucketVegaSettingsCR.tenorVegaRiskWeight(),
+				bucketVegaSettingsCR.intraFamilyCrossTenorCorrelation(),
+				bucketVegaSettingsCR.extraFamilyCrossTenorCorrelation(),
+				bucketVegaSettingsCR.concentrationThreshold(),
+				bucketVegaSettingsCR.vegaScaler(),
+				bucketVegaSettingsCR.historicalVolatilityRatio(),
+				bucketVegaSettingsCR.tenorDeltaRiskWeight(),
+				TenorScalingFactorMap()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Retrieve the ISDA 2.0 Credit Non-Qualifying Bucket Curvature Settings
 	 * 
 	 * @param bucketNumber The Bucket Number
@@ -304,6 +340,42 @@ public class BucketCurvatureSettingsCR
 		final int bucketNumber)
 	{
 		BucketVegaSettingsCR bucketVegaSettingsCR = BucketVegaSettingsCR.ISDA_CRNQ_21 (
+			bucketNumber
+		);
+
+		try
+		{
+			return null == bucketVegaSettingsCR ? null : new BucketCurvatureSettingsCR (
+				bucketVegaSettingsCR.tenorVegaRiskWeight(),
+				bucketVegaSettingsCR.intraFamilyCrossTenorCorrelation(),
+				bucketVegaSettingsCR.extraFamilyCrossTenorCorrelation(),
+				bucketVegaSettingsCR.concentrationThreshold(),
+				bucketVegaSettingsCR.vegaScaler(),
+				bucketVegaSettingsCR.historicalVolatilityRatio(),
+				bucketVegaSettingsCR.tenorDeltaRiskWeight(),
+				TenorScalingFactorMap()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Retrieve the ISDA 2.4 Credit Non-Qualifying Bucket Curvature Settings
+	 * 
+	 * @param bucketNumber The Bucket Number
+	 * 
+	 * @return The ISDA 2.4 Credit Non-Qualifying Bucket Curvature Settings
+	 */
+
+	public static BucketCurvatureSettingsCR ISDA_CRNQ_24 (
+		final int bucketNumber)
+	{
+		BucketVegaSettingsCR bucketVegaSettingsCR = BucketVegaSettingsCR.ISDA_CRNQ_24 (
 			bucketNumber
 		);
 

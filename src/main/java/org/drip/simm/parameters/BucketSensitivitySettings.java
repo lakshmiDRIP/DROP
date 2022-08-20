@@ -7,16 +7,23 @@ import org.drip.numerical.common.NumberUtil;
 import org.drip.simm.commodity.CTBucket;
 import org.drip.simm.commodity.CTRiskThresholdContainer20;
 import org.drip.simm.commodity.CTRiskThresholdContainer21;
+import org.drip.simm.commodity.CTRiskThresholdContainer24;
 import org.drip.simm.commodity.CTSettingsContainer20;
 import org.drip.simm.commodity.CTSettingsContainer21;
+import org.drip.simm.commodity.CTSettingsContainer24;
 import org.drip.simm.equity.EQBucket;
 import org.drip.simm.equity.EQRiskThresholdContainer20;
+import org.drip.simm.equity.EQRiskThresholdContainer21;
+import org.drip.simm.equity.EQRiskThresholdContainer24;
 import org.drip.simm.equity.EQSettingsContainer20;
 import org.drip.simm.equity.EQSettingsContainer21;
+import org.drip.simm.equity.EQSettingsContainer24;
 import org.drip.simm.fx.FXRiskThresholdContainer20;
 import org.drip.simm.fx.FXRiskThresholdContainer21;
+import org.drip.simm.fx.FXRiskThresholdContainer24;
 import org.drip.simm.fx.FXSystemics20;
 import org.drip.simm.fx.FXSystemics21;
+import org.drip.simm.fx.FXSystemics24;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -194,7 +201,40 @@ public class BucketSensitivitySettings
 		{
 			return null == equityBucket ? null : new BucketSensitivitySettings (
 				equityBucket.deltaRiskWeight(),
-				EQRiskThresholdContainer20.DeltaVegaThresholdMap().get (
+				EQRiskThresholdContainer21.DeltaVegaThresholdMap().get (
+					bucketIndex
+				).delta(),
+				equityBucket.memberCorrelation()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the BucketSensitivitySettings 2.4 Instance for the specified Bucket Index
+	 * 
+	 * @param bucketIndex The Bucket Index
+	 * 
+	 * @return The BucketSensitivitySettings 2.4 Instance
+	 */
+
+	public static BucketSensitivitySettings ISDA_EQ_24 (
+		final int bucketIndex)
+	{
+		EQBucket equityBucket = EQSettingsContainer24.BucketMap().get (
+			bucketIndex
+		);
+
+		try
+		{
+			return null == equityBucket ? null : new BucketSensitivitySettings (
+				equityBucket.deltaRiskWeight(),
+				EQRiskThresholdContainer24.DeltaVegaThresholdMap().get (
 					bucketIndex
 				).delta(),
 				equityBucket.memberCorrelation()
@@ -275,6 +315,39 @@ public class BucketSensitivitySettings
 	}
 
 	/**
+	 * Construct the ISDA 2.1 Standard Commodity Bucket Sensitivity Settings for the specified Index
+	 * 
+	 * @param bucketIndex The Bucket Index
+	 * 
+	 * @return The ISDA 2.1 Standard Commodity Bucket Sensitivity Settings for the specified Index
+	 */
+
+	public static BucketSensitivitySettings ISDA_CT_24 (
+		final int bucketIndex)
+	{
+		CTBucket commodityBucket = CTSettingsContainer24.BucketMap().get (
+			bucketIndex
+		);
+
+		try
+		{
+			return null == commodityBucket ? null : new BucketSensitivitySettings (
+				commodityBucket.deltaRiskWeight(),
+				CTRiskThresholdContainer24.DeltaVegaThresholdMap().get (
+					bucketIndex
+				).delta(),
+				commodityBucket.memberCorrelation()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct the Standard ISDA 2.0 Instance of FX Delta Settings
 	 * 
 	 * @param categoryIndex The Category Index
@@ -335,6 +408,44 @@ public class BucketSensitivitySettings
 					categoryIndex
 				),
 				FXSystemics21.CORRELATION
+			) : null;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Standard ISDA 2.4 Instance of FX Delta Settings
+	 * 
+	 * @param categoryIndex The Category Index
+	 * 
+	 * @return The Standard ISDA 2.4 Instance of FX Delta Settings
+	 */
+
+	public static BucketSensitivitySettings ISDA_FX_24 (
+		final int categoryIndex)
+	{
+		Map<Integer, Double> fxConcentrationCategoryDeltaMap = FXRiskThresholdContainer24.CategoryDeltaMap();
+
+		if (!fxConcentrationCategoryDeltaMap.containsKey(categoryIndex))
+		{
+			return null;
+		}
+
+		try
+		{
+			return fxConcentrationCategoryDeltaMap.containsKey (
+				categoryIndex
+			) ? new BucketSensitivitySettings (
+				FXSystemics24.REGULAR_REGULAR_DELTA_RISK_WEIGHT,
+				fxConcentrationCategoryDeltaMap.get (
+					categoryIndex
+				),
+				FXSystemics24.VOLATILITY_CURVATURE_CORRELATION
 			) : null;
 		}
 		catch (Exception e)

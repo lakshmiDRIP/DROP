@@ -174,6 +174,30 @@ public class RiskClassSensitivitySettingsCR
 	}
 
 	/**
+	 * Generate the SIMM 2.4 CRQ Class Sensitivity Settings
+	 * 
+	 * @return The SIMM 2.4 CRQ Class Sensitivity Settings
+	 */
+
+	public static final RiskClassSensitivitySettingsCR ISDA_CRQ_24()
+	{
+		try
+		{
+			return new RiskClassSensitivitySettingsCR (
+				RiskMeasureSensitivitySettingsCR.ISDA_CRQ_DELTA_24(),
+				RiskMeasureSensitivitySettingsCR.ISDA_CRQ_VEGA_24(),
+				RiskMeasureSensitivitySettingsCR.ISDA_CRQ_CURVATURE_24()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Generate the SIMM 2.0 CRNQ Class Sensitivity Settings
 	 * 
 	 * @return The SIMM 2.0 CRNQ Class Sensitivity Settings
@@ -211,6 +235,30 @@ public class RiskClassSensitivitySettingsCR
 				RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_DELTA_21(),
 				RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_VEGA_21(),
 				RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_CURVATURE_21()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the SIMM 2.4 CRNQ Class Sensitivity Settings
+	 * 
+	 * @return The SIMM 2.4 CRNQ Class Sensitivity Settings
+	 */
+
+	public static final RiskClassSensitivitySettingsCR ISDA_CRNQ_24()
+	{
+		try
+		{
+			return new RiskClassSensitivitySettingsCR (
+				RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_DELTA_24(),
+				RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_VEGA_24(),
+				RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_CURVATURE_24()
 			);
 		}
 		catch (Exception e)

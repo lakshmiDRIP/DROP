@@ -1,6 +1,10 @@
 
 package org.drip.simm.product;
 
+import org.drip.simm.foundation.MarginEstimationSettings;
+import org.drip.simm.margin.RiskClassAggregateIR;
+import org.drip.simm.parameters.RiskClassSensitivitySettingsIR;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,9 +125,9 @@ package org.drip.simm.product;
 
 public class RiskClassSensitivityIR
 {
-	private org.drip.simm.product.RiskMeasureSensitivityIR _vega = null;
-	private org.drip.simm.product.RiskMeasureSensitivityIR _delta = null;
-	private org.drip.simm.product.RiskMeasureSensitivityIR _curvature = null;
+	private RiskMeasureSensitivityIR _vega = null;
+	private RiskMeasureSensitivityIR _delta = null;
+	private RiskMeasureSensitivityIR _curvature = null;
 
 	/**
 	 * RiskClassSensitivityIR Constructor
@@ -132,20 +136,23 @@ public class RiskClassSensitivityIR
 	 * @param vega The IR Vega Tenor Sensitivity
 	 * @param curvature The IR Curvature Tenor Sensitivity
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskClassSensitivityIR (
-		final org.drip.simm.product.RiskMeasureSensitivityIR delta,
-		final org.drip.simm.product.RiskMeasureSensitivityIR vega,
-		final org.drip.simm.product.RiskMeasureSensitivityIR curvature)
-		throws java.lang.Exception
+		final RiskMeasureSensitivityIR delta,
+		final RiskMeasureSensitivityIR vega,
+		final RiskMeasureSensitivityIR curvature)
+		throws Exception
 	{
 		if (null == (_delta = delta) ||
 			null == (_vega = vega) ||
-			null == (_curvature = curvature))
+			null == (_curvature = curvature)
+		)
 		{
-			throw new java.lang.Exception ("RiskClassSensitivityIR Constructor => Invalid Inputs");
+			throw new Exception (
+				"RiskClassSensitivityIR Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -155,7 +162,7 @@ public class RiskClassSensitivityIR
 	 * @return The IR Delta Tenor Sensitivity
 	 */
 
-	public org.drip.simm.product.RiskMeasureSensitivityIR delta()
+	public RiskMeasureSensitivityIR delta()
 	{
 		return _delta;
 	}
@@ -166,7 +173,7 @@ public class RiskClassSensitivityIR
 	 * @return The IR Vega Tenor Sensitivity
 	 */
 
-	public org.drip.simm.product.RiskMeasureSensitivityIR vega()
+	public RiskMeasureSensitivityIR vega()
 	{
 		return _vega;
 	}
@@ -177,7 +184,7 @@ public class RiskClassSensitivityIR
 	 * @return The IR Curvature Tenor Sensitivity
 	 */
 
-	public org.drip.simm.product.RiskMeasureSensitivityIR curvature()
+	public RiskMeasureSensitivityIR curvature()
 	{
 		return _curvature;
 	}
@@ -191,18 +198,13 @@ public class RiskClassSensitivityIR
 	 * @return The Risk Class Sensitivity Aggregate
 	 */
 
-	public org.drip.simm.margin.RiskClassAggregateIR aggregate (
-		final org.drip.simm.parameters.RiskClassSensitivitySettingsIR riskClassSensitivitySettingsIR,
-		final org.drip.simm.foundation.MarginEstimationSettings marginEstimationSettings)
+	public RiskClassAggregateIR aggregate (
+		final RiskClassSensitivitySettingsIR riskClassSensitivitySettingsIR,
+		final MarginEstimationSettings marginEstimationSettings)
 	{
-		if (null == riskClassSensitivitySettingsIR)
-		{
-			return null;
-		}
-
 		try
 		{
-			return new org.drip.simm.margin.RiskClassAggregateIR (
+			return null == riskClassSensitivitySettingsIR ? null : new RiskClassAggregateIR (
 				_delta.linearAggregate (
 					riskClassSensitivitySettingsIR.delta(),
 					marginEstimationSettings
@@ -217,7 +219,7 @@ public class RiskClassSensitivityIR
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}

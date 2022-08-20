@@ -120,9 +120,9 @@ package org.drip.simm.product;
 
 public class CreditEntity
 {
-	private java.lang.String _id = "";
-	private java.lang.String _name = "";
-	private java.lang.String _family = "";
+	private String _id = "";
+	private String _name = "";
+	private String _family = "";
 
 	/**
 	 * CreditEntity Constructor
@@ -131,20 +131,20 @@ public class CreditEntity
 	 * @param name The Credit Entity Name
 	 * @param family The Credit Entity Family
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CreditEntity (
-		final java.lang.String id,
-		final java.lang.String name,
-		final java.lang.String family)
-		throws java.lang.Exception
+		final String id,
+		final String name,
+		final String family)
+		throws Exception
 	{
 		if (null == (_id = id) || _id.isEmpty() ||
 			null == (_name = name) || _name.isEmpty() ||
 			null == (_family = family) || _family.isEmpty())
 		{
-			throw new java.lang.Exception ("CreditEntity Constructor => Invalid Inputs");
+			throw new Exception ("CreditEntity Constructor => Invalid Inputs");
 		}
 	}
 
@@ -154,7 +154,7 @@ public class CreditEntity
 	 * @return The Credit Entity ID
 	 */
 
-	public java.lang.String id()
+	public String id()
 	{
 		return _id;
 	}
@@ -165,7 +165,7 @@ public class CreditEntity
 	 * @return The Credit Entity Name
 	 */
 
-	public java.lang.String name()
+	public String name()
 	{
 		return _name;
 	}
@@ -176,7 +176,7 @@ public class CreditEntity
 	 * @return The Credit Entity Family
 	 */
 
-	public java.lang.String family()
+	public String family()
 	{
 		return _family;
 	}

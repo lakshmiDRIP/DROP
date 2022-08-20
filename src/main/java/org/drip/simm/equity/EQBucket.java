@@ -136,7 +136,7 @@ public class EQBucket
 	 * 
 	 * @param number Bucket Number
 	 * @param size Bucket Equity Market Capitalization Size
-	 * @param region Buket Region
+	 * @param region Bucket Region
 	 * @param sectorArray Bucket Sector Array
 	 * @param deltaRiskWeight Bucket Delta Risk Weight
 	 * @param memberCorrelation Bucket Member Correlation

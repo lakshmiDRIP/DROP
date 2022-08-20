@@ -8,14 +8,19 @@ import org.drip.numerical.common.NumberUtil;
 import org.drip.simm.credit.CRBucket;
 import org.drip.simm.credit.CRNQBucketCorrelation20;
 import org.drip.simm.credit.CRNQBucketCorrelation21;
+import org.drip.simm.credit.CRNQBucketCorrelation24;
 import org.drip.simm.credit.CRNQSettingsContainer20;
 import org.drip.simm.credit.CRNQSettingsContainer21;
+import org.drip.simm.credit.CRNQSettingsContainer24;
 import org.drip.simm.credit.CRQBucketCorrelation20;
 import org.drip.simm.credit.CRQBucketCorrelation21;
+import org.drip.simm.credit.CRQBucketCorrelation24;
 import org.drip.simm.credit.CRQSettingsContainer20;
 import org.drip.simm.credit.CRQSettingsContainer21;
+import org.drip.simm.credit.CRQSettingsContainer24;
 import org.drip.simm.credit.CRThresholdContainer20;
 import org.drip.simm.credit.CRThresholdContainer21;
+import org.drip.simm.credit.CRThresholdContainer24;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -286,8 +291,9 @@ public class BucketSensitivitySettingsCR
 	public static BucketSensitivitySettingsCR ISDA_CRQ_DELTA_21 (
 		final int bucketNumber)
 	{
-		CRBucket creditBucket = CRQSettingsContainer21.Bucket
-			(bucketNumber);
+		CRBucket creditBucket = CRQSettingsContainer21.Bucket (
+			bucketNumber
+		);
 
 		if (null == creditBucket)
 		{
@@ -362,6 +368,106 @@ public class BucketSensitivitySettingsCR
 				CRNQBucketCorrelation21.GT_80PC_OVERLAP_NON_RESIDUAL,
 				CRNQBucketCorrelation21.LT_80PC_OVERLAP_NON_RESIDUAL,
 				CRThresholdContainer21.NonQualifyingThreshold (
+					bucketNumber
+				).delta()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Retrieve the ISDA 2.4 Credit Qualifying Bucket Delta Settings
+	 * 
+	 * @param bucketNumber The Bucket Number
+	 * 
+	 * @return The ISDA 2.4 Credit Qualifying Bucket Delta Settings
+	 */
+
+	public static BucketSensitivitySettingsCR ISDA_CRQ_DELTA_24 (
+		final int bucketNumber)
+	{
+		CRBucket creditBucket = CRQSettingsContainer24.Bucket (
+			bucketNumber
+		);
+
+		if (null == creditBucket)
+		{
+			return null;
+		}
+
+		try
+		{
+			return -1 == bucketNumber ? new BucketSensitivitySettingsCR (
+				TenorRiskWeightMap (
+					creditBucket.riskWeight()
+				),
+				CRQBucketCorrelation24.SAME_ISSUER_SENIORITY_RESIDUAL,
+				CRQBucketCorrelation24.DIFFERENT_ISSUER_SENIORITY_RESIDUAL,
+				CRThresholdContainer24.QualifyingThreshold (
+					bucketNumber
+				).delta()
+			) : new BucketSensitivitySettingsCR (
+				TenorRiskWeightMap (
+					creditBucket.riskWeight()
+				),
+				CRQBucketCorrelation24.SAME_ISSUER_SENIORITY_NON_RESIDUAL,
+				CRQBucketCorrelation24.DIFFERENT_ISSUER_SENIORITY_NON_RESIDUAL,
+				CRThresholdContainer24.QualifyingThreshold (
+					bucketNumber
+				).delta()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Retrieve the ISDA 2.4 Credit Non-Qualifying Bucket Delta Settings
+	 * 
+	 * @param bucketNumber The Bucket Number
+	 * 
+	 * @return The ISDA 2.4 Credit Non-Qualifying Bucket Delta Settings
+	 */
+
+	public static BucketSensitivitySettingsCR ISDA_CRNQ_DELTA_24 (
+		final int bucketNumber)
+	{
+		CRBucket creditBucket = CRNQSettingsContainer24.Bucket (
+			bucketNumber
+		);
+
+		if (null == creditBucket)
+		{
+			return null;
+		}
+
+		try
+		{
+			return -1 == bucketNumber ? new BucketSensitivitySettingsCR (
+				TenorRiskWeightMap (
+					creditBucket.riskWeight()
+				),
+				CRNQBucketCorrelation24.GT_80PC_OVERLAP_RESIDUAL,
+				CRNQBucketCorrelation24.LT_80PC_OVERLAP_RESIDUAL,
+				CRThresholdContainer24.NonQualifyingThreshold (
+					bucketNumber
+				).delta()
+			) : new BucketSensitivitySettingsCR (
+				TenorRiskWeightMap (
+					creditBucket.riskWeight()
+				),
+				CRNQBucketCorrelation24.GT_80PC_OVERLAP_NON_RESIDUAL,
+				CRNQBucketCorrelation24.LT_80PC_OVERLAP_NON_RESIDUAL,
+				CRThresholdContainer24.NonQualifyingThreshold (
 					bucketNumber
 				).delta()
 			);

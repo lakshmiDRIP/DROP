@@ -1,6 +1,14 @@
 
 package org.drip.simm.product;
 
+import java.util.Map;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.simm.margin.BucketAggregate;
+import org.drip.simm.margin.RiskFactorAggregate;
+import org.drip.simm.parameters.BucketCurvatureSettings;
+import org.drip.simm.parameters.BucketSensitivitySettings;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -120,10 +128,10 @@ package org.drip.simm.product;
 
 public class BucketSensitivity
 {
-	private java.util.Map<java.lang.String, java.lang.Double> _riskFactorSensitivityMap = null;
+	private Map<String, Double> _riskFactorSensitivityMap = null;
 
-	private org.drip.simm.margin.BucketAggregate linearAggregate (
-		final org.drip.simm.parameters.BucketSensitivitySettings bucketSensitivitySettings)
+	private BucketAggregate linearAggregate (
+		final BucketSensitivitySettings bucketSensitivitySettings)
 	{
 		double cumulativeRiskFactorSensitivity = 0.;
 		double weightedAggregateSensitivityVariance = 0.;
@@ -134,18 +142,20 @@ public class BucketSensitivity
 
 		double concentrationNormalizer = 1. / bucketSensitivitySettings.concentrationThreshold();
 
-		java.util.Map<java.lang.String, org.drip.simm.margin.RiskFactorAggregate>
-			augmentedBucketSensitivityMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm.margin.RiskFactorAggregate>();
+		Map<String, RiskFactorAggregate> augmentedBucketSensitivityMap =
+			new CaseInsensitiveHashMap<RiskFactorAggregate>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> riskFactorSensitivityMapEntry :
-			_riskFactorSensitivityMap.entrySet())
+		for (Map.Entry<String, Double> riskFactorSensitivityMapEntry : _riskFactorSensitivityMap.entrySet())
 		{
 			double riskFactorSensitivity = riskFactorSensitivityMapEntry.getValue();
 
-			double concentrationRiskFactor = java.lang.Math.max (
+			double concentrationRiskFactor = Math.max (
 				1.,
-				java.lang.Math.sqrt (java.lang.Math.abs (riskFactorSensitivity) * concentrationNormalizer)
+				Math.sqrt (
+					Math.abs (
+						riskFactorSensitivity
+					) * concentrationNormalizer
+				)
 			);
 
 			double riskFactorSensitivityMargin = riskFactorSensitivity * bucketSensitivityRiskWeight *
@@ -156,13 +166,13 @@ public class BucketSensitivity
 			{
 				augmentedBucketSensitivityMap.put (
 					riskFactorSensitivityMapEntry.getKey(),
-					new org.drip.simm.margin.RiskFactorAggregate (
+					new RiskFactorAggregate (
 						riskFactorSensitivityMargin,
 						concentrationRiskFactor
 					)
 				);
 			}
-			catch (java.lang.Exception e)
+			catch (Exception e)
 			{
 				e.printStackTrace();
 
@@ -170,10 +180,11 @@ public class BucketSensitivity
 			}
 		}
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.simm.margin.RiskFactorAggregate>
-			augmentedBucketSensitivityMapOuterEntry : augmentedBucketSensitivityMap.entrySet())
+		for (Map.Entry<String, RiskFactorAggregate> augmentedBucketSensitivityMapOuterEntry :
+			augmentedBucketSensitivityMap.entrySet()
+		)
 		{
-			org.drip.simm.margin.RiskFactorAggregate augmentedRiskFactorSensitivityOuter =
+			RiskFactorAggregate augmentedRiskFactorSensitivityOuter =
 				augmentedBucketSensitivityMapOuterEntry.getValue();
 
 			double riskFactorSensitivityOuter = augmentedRiskFactorSensitivityOuter.sensitivityMargin();
@@ -181,45 +192,46 @@ public class BucketSensitivity
 			double concentrationRiskFactorOuter =
 				augmentedRiskFactorSensitivityOuter.concentrationRiskFactor();
 
-			java.lang.String riskFactorKeyOuter = augmentedBucketSensitivityMapOuterEntry.getKey();
+			String riskFactorKeyOuter = augmentedBucketSensitivityMapOuterEntry.getKey();
 
-			for (java.util.Map.Entry<java.lang.String, org.drip.simm.margin.RiskFactorAggregate>
-				augmentedBucketSensitivityMapInnerEntry : augmentedBucketSensitivityMap.entrySet())
+			for (Map.Entry<String, RiskFactorAggregate> augmentedBucketSensitivityMapInnerEntry :
+				augmentedBucketSensitivityMap.entrySet()
+			)
 			{
-				org.drip.simm.margin.RiskFactorAggregate augmentedRiskFactorSensitivityInner =
+				RiskFactorAggregate augmentedRiskFactorSensitivityInner =
 					augmentedBucketSensitivityMapInnerEntry.getValue();
 
 				double concentrationRiskFactorInner =
 					augmentedRiskFactorSensitivityInner.concentrationRiskFactor();
 
-				double riskFactorSensitivityInner =
-					augmentedRiskFactorSensitivityInner.sensitivityMargin();
+				double riskFactorSensitivityInner = augmentedRiskFactorSensitivityInner.sensitivityMargin();
 
-				double concentrationScaleDown = java.lang.Math.min (
+				double concentrationScaleDown = Math.min (
 					concentrationRiskFactorInner,
 					concentrationRiskFactorOuter
-				) / java.lang.Math.max (
+				) / Math.max (
 					concentrationRiskFactorInner,
 					concentrationRiskFactorOuter
 				);
 
 				weightedAggregateSensitivityVariance = weightedAggregateSensitivityVariance +
-					concentrationScaleDown * riskFactorSensitivityOuter *
-						(riskFactorKeyOuter.equalsIgnoreCase
-							(augmentedBucketSensitivityMapInnerEntry.getKey()) ? 1. : memberCorrelation) *
-								riskFactorSensitivityInner;
+					concentrationScaleDown * riskFactorSensitivityOuter * riskFactorSensitivityInner * (
+						riskFactorKeyOuter.equalsIgnoreCase (
+							augmentedBucketSensitivityMapInnerEntry.getKey()
+						) ? 1. : memberCorrelation
+					);
 			}
 		}
 
 		try
 		{
-			return new org.drip.simm.margin.BucketAggregate (
+			return new BucketAggregate (
 				augmentedBucketSensitivityMap,
 				weightedAggregateSensitivityVariance,
 				cumulativeRiskFactorSensitivity
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -227,8 +239,8 @@ public class BucketSensitivity
 		return null;
 	}
 
-	private org.drip.simm.margin.BucketAggregate curvatureAggregate (
-		final org.drip.simm.parameters.BucketSensitivitySettings bucketSensitivitySettings)
+	private BucketAggregate curvatureAggregate (
+		final BucketSensitivitySettings bucketSensitivitySettings)
 	{
 		double cumulativeRiskFactorSensitivity = 0.;
 		double weightedAggregateSensitivityVariance = 0.;
@@ -239,18 +251,20 @@ public class BucketSensitivity
 
 		double concentrationNormalizer = 1. / bucketSensitivitySettings.concentrationThreshold();
 
-		java.util.Map<java.lang.String, org.drip.simm.margin.RiskFactorAggregate>
-			augmentedBucketSensitivityMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.simm.margin.RiskFactorAggregate>();
+		Map<String, RiskFactorAggregate> augmentedBucketSensitivityMap =
+			new CaseInsensitiveHashMap<RiskFactorAggregate>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> riskFactorSensitivityMapEntry :
-			_riskFactorSensitivityMap.entrySet())
+		for (Map.Entry<String, Double> riskFactorSensitivityMapEntry : _riskFactorSensitivityMap.entrySet())
 		{
 			double riskFactorSensitivity = riskFactorSensitivityMapEntry.getValue();
 
-			double concentrationRiskFactor = java.lang.Math.max (
+			double concentrationRiskFactor = Math.max (
 				1.,
-				java.lang.Math.sqrt (java.lang.Math.abs (riskFactorSensitivity) * concentrationNormalizer)
+				Math.sqrt (
+					Math.abs (
+						riskFactorSensitivity
+					) * concentrationNormalizer
+				)
 			);
 
 			double riskFactorSensitivityMargin = riskFactorSensitivity * bucketSensitivityRiskWeight *
@@ -261,13 +275,13 @@ public class BucketSensitivity
 			{
 				augmentedBucketSensitivityMap.put (
 					riskFactorSensitivityMapEntry.getKey(),
-					new org.drip.simm.margin.RiskFactorAggregate (
+					new RiskFactorAggregate (
 						riskFactorSensitivityMargin,
 						concentrationRiskFactor
 					)
 				);
 			}
-			catch (java.lang.Exception e)
+			catch (Exception e)
 			{
 				e.printStackTrace();
 
@@ -275,38 +289,40 @@ public class BucketSensitivity
 			}
 		}
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.simm.margin.RiskFactorAggregate>
-			augmentedBucketSensitivityMapOuterEntry : augmentedBucketSensitivityMap.entrySet())
+		for (Map.Entry<String, RiskFactorAggregate> augmentedBucketSensitivityMapOuterEntry :
+			augmentedBucketSensitivityMap.entrySet()
+		)
 		{
-			org.drip.simm.margin.RiskFactorAggregate augmentedRiskFactorSensitivityOuter =
+			RiskFactorAggregate augmentedRiskFactorSensitivityOuter =
 				augmentedBucketSensitivityMapOuterEntry.getValue();
 
 			double riskFactorSensitivityOuter = augmentedRiskFactorSensitivityOuter.sensitivityMargin();
 
-			java.lang.String riskFactorKeyOuter = augmentedBucketSensitivityMapOuterEntry.getKey();
+			String riskFactorKeyOuter = augmentedBucketSensitivityMapOuterEntry.getKey();
 
-			for (java.util.Map.Entry<java.lang.String, org.drip.simm.margin.RiskFactorAggregate>
-				augmentedBucketSensitivityMapInnerEntry : augmentedBucketSensitivityMap.entrySet())
+			for (Map.Entry<String, RiskFactorAggregate> augmentedBucketSensitivityMapInnerEntry :
+				augmentedBucketSensitivityMap.entrySet()
+			)
 			{
-				org.drip.simm.margin.RiskFactorAggregate augmentedRiskFactorSensitivityInner =
-					augmentedBucketSensitivityMapInnerEntry.getValue();
-
 				weightedAggregateSensitivityVariance = weightedAggregateSensitivityVariance +
-					riskFactorSensitivityOuter * (riskFactorKeyOuter.equalsIgnoreCase
-						(augmentedBucketSensitivityMapInnerEntry.getKey()) ? 1. : memberCorrelation *
-							memberCorrelation) * augmentedRiskFactorSensitivityInner.sensitivityMargin();
+					riskFactorSensitivityOuter *
+					augmentedBucketSensitivityMapInnerEntry.getValue().sensitivityMargin() * (
+						riskFactorKeyOuter.equalsIgnoreCase (
+							augmentedBucketSensitivityMapInnerEntry.getKey()
+						) ? 1. : memberCorrelation * memberCorrelation
+					);
 			}
 		}
 
 		try
 		{
-			return new org.drip.simm.margin.BucketAggregate (
+			return new BucketAggregate (
 				augmentedBucketSensitivityMap,
 				weightedAggregateSensitivityVariance,
 				cumulativeRiskFactorSensitivity
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -319,17 +335,20 @@ public class BucketSensitivity
 	 * 
 	 * @param riskFactorSensitivityMap The Map of Risk Factor Sensitivities
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BucketSensitivity (
-		final java.util.Map<java.lang.String, java.lang.Double> riskFactorSensitivityMap)
-		throws java.lang.Exception
+		final Map<String, Double> riskFactorSensitivityMap)
+		throws Exception
 	{
 		if (null == (_riskFactorSensitivityMap = riskFactorSensitivityMap) ||
-			0 == _riskFactorSensitivityMap.size())
+			0 == _riskFactorSensitivityMap.size()
+		)
 		{
-			throw new java.lang.Exception ("BucketSensitivity Constructor => Invalid Inputs");
+			throw new Exception (
+				"BucketSensitivity Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -339,7 +358,7 @@ public class BucketSensitivity
 	 * @return The Map of Risk Factor Sensitivities
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> riskFactorSensitivityMap()
+	public Map<String, Double> riskFactorSensitivityMap()
 	{
 		return _riskFactorSensitivityMap;
 	}
@@ -352,15 +371,18 @@ public class BucketSensitivity
 	 * @return Map of Weighted and Adjusted Input Sensitivities
 	 */
 
-	public org.drip.simm.margin.BucketAggregate aggregate (
-		final org.drip.simm.parameters.BucketSensitivitySettings bucketSensitivitySettings)
+	public BucketAggregate aggregate (
+		final BucketSensitivitySettings bucketSensitivitySettings)
 	{
 		if (null == bucketSensitivitySettings)
 		{
 			return null;
 		}
 
-		return bucketSensitivitySettings instanceof org.drip.simm.parameters.BucketCurvatureSettings ?
-			curvatureAggregate (bucketSensitivitySettings) : linearAggregate (bucketSensitivitySettings);
+		return bucketSensitivitySettings instanceof BucketCurvatureSettings ? curvatureAggregate (
+			bucketSensitivitySettings
+		) : linearAggregate (
+			bucketSensitivitySettings
+		);
 	}
 }

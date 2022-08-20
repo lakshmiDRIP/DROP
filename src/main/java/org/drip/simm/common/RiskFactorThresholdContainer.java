@@ -3,14 +3,19 @@ package org.drip.simm.common;
 
 import org.drip.simm.commodity.CTRiskThresholdContainer20;
 import org.drip.simm.commodity.CTRiskThresholdContainer21;
+import org.drip.simm.commodity.CTRiskThresholdContainer24;
 import org.drip.simm.credit.CRThresholdContainer20;
 import org.drip.simm.credit.CRThresholdContainer21;
+import org.drip.simm.credit.CRThresholdContainer24;
 import org.drip.simm.equity.EQRiskThresholdContainer20;
 import org.drip.simm.equity.EQRiskThresholdContainer21;
+import org.drip.simm.equity.EQRiskThresholdContainer24;
 import org.drip.simm.fx.FXRiskThresholdContainer20;
 import org.drip.simm.fx.FXRiskThresholdContainer21;
+import org.drip.simm.fx.FXRiskThresholdContainer24;
 import org.drip.simm.rates.IRThresholdContainer20;
 import org.drip.simm.rates.IRThresholdContainer21;
+import org.drip.simm.rates.IRThresholdContainer24;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -151,12 +156,22 @@ public class RiskFactorThresholdContainer
 			return false;
 		}
 
+		if (!IRThresholdContainer24.Init())
+		{
+			return false;
+		}
+
 		if (!CRThresholdContainer20.Init())
 		{
 			return false;
 		}
 
 		if (!CRThresholdContainer21.Init())
+		{
+			return false;
+		}
+
+		if (!CRThresholdContainer24.Init())
 		{
 			return false;
 		}
@@ -171,6 +186,11 @@ public class RiskFactorThresholdContainer
 			return false;
 		}
 
+		if (!EQRiskThresholdContainer24.Init())
+		{
+			return false;
+		}
+
 		if (!CTRiskThresholdContainer20.Init())
 		{
 			return false;
@@ -181,12 +201,22 @@ public class RiskFactorThresholdContainer
 			return false;
 		}
 
+		if (!CTRiskThresholdContainer24.Init())
+		{
+			return false;
+		}
+
 		if (!FXRiskThresholdContainer20.Init())
 		{
 			return false;
 		}
 
 		if (!FXRiskThresholdContainer21.Init())
+		{
+			return false;
+		}
+
+		if (!FXRiskThresholdContainer24.Init())
 		{
 			return false;
 		}

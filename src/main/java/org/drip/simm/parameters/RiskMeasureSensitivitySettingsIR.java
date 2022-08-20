@@ -1,6 +1,15 @@
 
 package org.drip.simm.parameters;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.drip.measure.stochastic.LabelCorrelation;
+import org.drip.simm.rates.IRSystemics20;
+import org.drip.simm.rates.IRSystemics21;
+import org.drip.simm.rates.IRSystemics24;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,9 +130,8 @@ package org.drip.simm.parameters;
 
 public class RiskMeasureSensitivitySettingsIR
 {
-	private org.drip.measure.stochastic.LabelCorrelation _crossBucketCorrelation = null;
-	private java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsIR>
-		_bucketSensitivitySettingsMap = null;
+	private LabelCorrelation _crossBucketCorrelation = null;
+	private Map<String, BucketSensitivitySettingsIR> _bucketSensitivitySettingsMap = null;
 
 	/**
 	 * Generate the Standard ISDA 2.0 DELTA Instance of RiskMeasureSensitivitySettingsIR
@@ -134,7 +142,7 @@ public class RiskMeasureSensitivitySettingsIR
 	 */
 
 	public static final RiskMeasureSensitivitySettingsIR ISDA_DELTA_20 (
-		final java.util.List<java.lang.String> currencyList)
+		final List<String> currencyList)
 	{
 		if (null == currencyList)
 		{
@@ -150,17 +158,23 @@ public class RiskMeasureSensitivitySettingsIR
 
 		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];
 
-		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsIR>
-			bucketDeltaSettingsMap = new java.util.HashMap<java.lang.String,
-				org.drip.simm.parameters.BucketSensitivitySettingsIR>();
+		Map<String, BucketSensitivitySettingsIR> bucketDeltaSettingsMap =
+			new HashMap<String, BucketSensitivitySettingsIR>();
 
-		for (int currencyListIndex = 0; currencyListIndex < currencyListSize; ++currencyListIndex)
+		for (int currencyListIndex = 0;
+			currencyListIndex < currencyListSize;
+			++currencyListIndex
+		)
 		{
-			java.lang.String currency = currencyList.get (currencyListIndex);
+			String currency = currencyList.get (
+				currencyListIndex
+			);
 
 			bucketDeltaSettingsMap.put (
 				currency,
-				org.drip.simm.parameters.BucketSensitivitySettingsIR.ISDA_DELTA_20 (currency)
+				BucketSensitivitySettingsIR.ISDA_DELTA_20 (
+					currency
+				)
 			);
 
 			for (int currencyListInnerIndex = 0;
@@ -169,7 +183,7 @@ public class RiskMeasureSensitivitySettingsIR
 			{
 				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =
 					currencyListIndex == currencyListInnerIndex ? 1. :
-						org.drip.simm.rates.IRSystemics20.CROSS_CURRENCY_CORRELATION;
+						IRSystemics20.CROSS_CURRENCY_CORRELATION;
 			}
 		}
 
@@ -177,13 +191,13 @@ public class RiskMeasureSensitivitySettingsIR
 		{
 			return new RiskMeasureSensitivitySettingsIR (
 				bucketDeltaSettingsMap,
-				new org.drip.measure.stochastic.LabelCorrelation (
+				new LabelCorrelation (
 					currencyList,
 					crossCurrencyCorrelation
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -200,7 +214,7 @@ public class RiskMeasureSensitivitySettingsIR
 	 */
 
 	public static final RiskMeasureSensitivitySettingsIR ISDA_DELTA_21 (
-		final java.util.List<java.lang.String> currencyList)
+		final List<String> currencyList)
 	{
 		if (null == currencyList)
 		{
@@ -216,26 +230,33 @@ public class RiskMeasureSensitivitySettingsIR
 
 		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];
 
-		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsIR>
-			bucketDeltaSettingsMap = new java.util.HashMap<java.lang.String,
-				org.drip.simm.parameters.BucketSensitivitySettingsIR>();
+		Map<String, BucketSensitivitySettingsIR> bucketDeltaSettingsMap =
+			new HashMap<String, BucketSensitivitySettingsIR>();
 
-		for (int currencyListIndex = 0; currencyListIndex < currencyListSize; ++currencyListIndex)
+		for (int currencyListIndex = 0;
+			currencyListIndex < currencyListSize;
+			++currencyListIndex
+		)
 		{
-			java.lang.String currency = currencyList.get (currencyListIndex);
+			String currency = currencyList.get (
+				currencyListIndex
+			);
 
 			bucketDeltaSettingsMap.put (
 				currency,
-				org.drip.simm.parameters.BucketSensitivitySettingsIR.ISDA_DELTA_21 (currency)
+				BucketSensitivitySettingsIR.ISDA_DELTA_21 (
+					currency
+				)
 			);
 
 			for (int currencyListInnerIndex = 0;
 				currencyListInnerIndex < currencyListSize;
-				++currencyListInnerIndex)
+				++currencyListInnerIndex
+			)
 			{
 				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =
 					currencyListIndex == currencyListInnerIndex ? 1. :
-						org.drip.simm.rates.IRSystemics21.CROSS_CURRENCY_CORRELATION;
+						IRSystemics21.CROSS_CURRENCY_CORRELATION;
 			}
 		}
 
@@ -243,13 +264,86 @@ public class RiskMeasureSensitivitySettingsIR
 		{
 			return new RiskMeasureSensitivitySettingsIR (
 				bucketDeltaSettingsMap,
-				new org.drip.measure.stochastic.LabelCorrelation (
+				new LabelCorrelation (
 					currencyList,
 					crossCurrencyCorrelation
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Standard ISDA 2.4 DELTA Instance of RiskMeasureSensitivitySettingsIR
+	 * 
+	 * @param currencyList The Currency List
+	 * 
+	 * @return The Standard ISDA 2.4 DELTA Instance of RiskMeasureSensitivitySettingsIR
+	 */
+
+	public static final RiskMeasureSensitivitySettingsIR ISDA_DELTA_24 (
+		final List<String> currencyList)
+	{
+		if (null == currencyList)
+		{
+			return null;
+		}
+
+		int currencyListSize = currencyList.size();
+
+		if (0 == currencyListSize)
+		{
+			return null;
+		}
+
+		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];
+
+		Map<String, BucketSensitivitySettingsIR> bucketDeltaSettingsMap =
+			new HashMap<String, BucketSensitivitySettingsIR>();
+
+		for (int currencyListIndex = 0;
+			currencyListIndex < currencyListSize;
+			++currencyListIndex
+		)
+		{
+			String currency = currencyList.get (
+				currencyListIndex
+			);
+
+			bucketDeltaSettingsMap.put (
+				currency,
+				BucketSensitivitySettingsIR.ISDA_DELTA_24 (
+					currency
+				)
+			);
+
+			for (int currencyListInnerIndex = 0;
+				currencyListInnerIndex < currencyListSize;
+				++currencyListInnerIndex
+			)
+			{
+				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =
+					currencyListIndex == currencyListInnerIndex ? 1. :
+					IRSystemics24.CROSS_CURRENCY_CORRELATION;
+			}
+		}
+
+		try
+		{
+			return new RiskMeasureSensitivitySettingsIR (
+				bucketDeltaSettingsMap,
+				new LabelCorrelation (
+					currencyList,
+					crossCurrencyCorrelation
+				)
+			);
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -266,7 +360,7 @@ public class RiskMeasureSensitivitySettingsIR
 	 */
 
 	public static final RiskMeasureSensitivitySettingsIR ISDA_VEGA_20 (
-		final java.util.List<java.lang.String> currencyList)
+		final List<String> currencyList)
 	{
 		if (null == currencyList)
 		{
@@ -282,26 +376,33 @@ public class RiskMeasureSensitivitySettingsIR
 
 		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];
 
-		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsIR>
-			bucketVegaSettingsMap = new java.util.HashMap<java.lang.String,
-				org.drip.simm.parameters.BucketSensitivitySettingsIR>();
+		Map<String, BucketSensitivitySettingsIR> bucketVegaSettingsMap =
+			new HashMap<String, BucketSensitivitySettingsIR>();
 
-		for (int currencyListIndex = 0; currencyListIndex < currencyListSize; ++currencyListIndex)
+		for (int currencyListIndex = 0;
+			currencyListIndex < currencyListSize;
+			++currencyListIndex
+		)
 		{
-			java.lang.String currency = currencyList.get (currencyListIndex);
+			String currency = currencyList.get (
+				currencyListIndex
+			);
 
 			bucketVegaSettingsMap.put (
 				currency,
-				org.drip.simm.parameters.BucketVegaSettingsIR.ISDA_20 (currency)
+				BucketVegaSettingsIR.ISDA_20 (
+					currency
+				)
 			);
 
 			for (int currencyListInnerIndex = 0;
 				currencyListInnerIndex < currencyListSize;
-				++currencyListInnerIndex)
+				++currencyListInnerIndex
+			)
 			{
 				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =
 					currencyListIndex == currencyListInnerIndex ? 1. :
-						org.drip.simm.rates.IRSystemics20.CROSS_CURRENCY_CORRELATION;
+					IRSystemics20.CROSS_CURRENCY_CORRELATION;
 			}
 		}
 
@@ -309,13 +410,13 @@ public class RiskMeasureSensitivitySettingsIR
 		{
 			return new RiskMeasureSensitivitySettingsIR (
 				bucketVegaSettingsMap,
-				new org.drip.measure.stochastic.LabelCorrelation (
+				new LabelCorrelation (
 					currencyList,
 					crossCurrencyCorrelation
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -332,7 +433,7 @@ public class RiskMeasureSensitivitySettingsIR
 	 */
 
 	public static final RiskMeasureSensitivitySettingsIR ISDA_VEGA_21 (
-		final java.util.List<java.lang.String> currencyList)
+		final List<String> currencyList)
 	{
 		if (null == currencyList)
 		{
@@ -348,17 +449,23 @@ public class RiskMeasureSensitivitySettingsIR
 
 		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];
 
-		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsIR>
-			bucketVegaSettingsMap = new java.util.HashMap<java.lang.String,
-				org.drip.simm.parameters.BucketSensitivitySettingsIR>();
+		Map<String, BucketSensitivitySettingsIR> bucketVegaSettingsMap =
+			new HashMap<String, BucketSensitivitySettingsIR>();
 
-		for (int currencyListIndex = 0; currencyListIndex < currencyListSize; ++currencyListIndex)
+		for (int currencyListIndex = 0;
+			currencyListIndex < currencyListSize;
+			++currencyListIndex
+		)
 		{
-			java.lang.String currency = currencyList.get (currencyListIndex);
+			String currency = currencyList.get (
+				currencyListIndex
+			);
 
 			bucketVegaSettingsMap.put (
 				currency,
-				org.drip.simm.parameters.BucketVegaSettingsIR.ISDA_21 (currency)
+				BucketVegaSettingsIR.ISDA_21 (
+					currency
+				)
 			);
 
 			for (int currencyListInnerIndex = 0;
@@ -367,7 +474,7 @@ public class RiskMeasureSensitivitySettingsIR
 			{
 				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =
 					currencyListIndex == currencyListInnerIndex ? 1. :
-						org.drip.simm.rates.IRSystemics21.CROSS_CURRENCY_CORRELATION;
+					IRSystemics21.CROSS_CURRENCY_CORRELATION;
 			}
 		}
 
@@ -375,13 +482,85 @@ public class RiskMeasureSensitivitySettingsIR
 		{
 			return new RiskMeasureSensitivitySettingsIR (
 				bucketVegaSettingsMap,
-				new org.drip.measure.stochastic.LabelCorrelation (
+				new LabelCorrelation (
 					currencyList,
 					crossCurrencyCorrelation
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Standard ISDA 2.4 VEGA Instance of RiskMeasureSensitivitySettingsIR
+	 * 
+	 * @param currencyList The Currency List
+	 * 
+	 * @return The Standard ISDA 2.4 VEGA Instance of RiskMeasureSensitivitySettingsIR
+	 */
+
+	public static final RiskMeasureSensitivitySettingsIR ISDA_VEGA_24 (
+		final List<String> currencyList)
+	{
+		if (null == currencyList)
+		{
+			return null;
+		}
+
+		int currencyListSize = currencyList.size();
+
+		if (0 == currencyListSize)
+		{
+			return null;
+		}
+
+		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];
+
+		Map<String, BucketSensitivitySettingsIR> bucketVegaSettingsMap =
+			new HashMap<String, BucketSensitivitySettingsIR>();
+
+		for (int currencyListIndex = 0;
+			currencyListIndex < currencyListSize;
+			++currencyListIndex
+		)
+		{
+			String currency = currencyList.get (
+				currencyListIndex
+			);
+
+			bucketVegaSettingsMap.put (
+				currency,
+				BucketVegaSettingsIR.ISDA_24 (
+					currency
+				)
+			);
+
+			for (int currencyListInnerIndex = 0;
+				currencyListInnerIndex < currencyListSize;
+				++currencyListInnerIndex)
+			{
+				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =
+					currencyListIndex == currencyListInnerIndex ? 1. :
+					IRSystemics24.CROSS_CURRENCY_CORRELATION;
+			}
+		}
+
+		try
+		{
+			return new RiskMeasureSensitivitySettingsIR (
+				bucketVegaSettingsMap,
+				new LabelCorrelation (
+					currencyList,
+					crossCurrencyCorrelation
+				)
+			);
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -398,7 +577,7 @@ public class RiskMeasureSensitivitySettingsIR
 	 */
 
 	public static final RiskMeasureSensitivitySettingsIR ISDA_CURVATURE_20 (
-		final java.util.List<java.lang.String> currencyList)
+		final List<String> currencyList)
 	{
 		if (null == currencyList)
 		{
@@ -414,26 +593,33 @@ public class RiskMeasureSensitivitySettingsIR
 
 		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];
 
-		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsIR>
-			bucketCurvatureSettingsMap = new java.util.HashMap<java.lang.String,
-				org.drip.simm.parameters.BucketSensitivitySettingsIR>();
+		Map<String, BucketSensitivitySettingsIR> bucketCurvatureSettingsMap =
+			new HashMap<String, BucketSensitivitySettingsIR>();
 
-		for (int currencyListIndex = 0; currencyListIndex < currencyListSize; ++currencyListIndex)
+		for (int currencyListIndex = 0;
+			currencyListIndex < currencyListSize;
+			++currencyListIndex
+		)
 		{
-			java.lang.String currency = currencyList.get (currencyListIndex);
+			String currency = currencyList.get (
+				currencyListIndex
+			);
 
 			bucketCurvatureSettingsMap.put (
 				currency,
-				org.drip.simm.parameters.BucketCurvatureSettingsIR.ISDA_20 (currency)
+				BucketCurvatureSettingsIR.ISDA_20 (
+					currency
+				)
 			);
 
 			for (int currencyListInnerIndex = 0;
 				currencyListInnerIndex < currencyListSize;
-				++currencyListInnerIndex)
+				++currencyListInnerIndex
+			)
 			{
 				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =
 					currencyListIndex == currencyListInnerIndex ? 1. :
-						org.drip.simm.rates.IRSystemics20.CROSS_CURRENCY_CORRELATION;
+					IRSystemics20.CROSS_CURRENCY_CORRELATION;
 			}
 		}
 
@@ -441,13 +627,13 @@ public class RiskMeasureSensitivitySettingsIR
 		{
 			return new RiskMeasureSensitivitySettingsIR (
 				bucketCurvatureSettingsMap,
-				new org.drip.measure.stochastic.LabelCorrelation (
+				new LabelCorrelation (
 					currencyList,
 					crossCurrencyCorrelation
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -464,7 +650,7 @@ public class RiskMeasureSensitivitySettingsIR
 	 */
 
 	public static final RiskMeasureSensitivitySettingsIR ISDA_CURVATURE_21 (
-		final java.util.List<java.lang.String> currencyList)
+		final List<String> currencyList)
 	{
 		if (null == currencyList)
 		{
@@ -480,26 +666,33 @@ public class RiskMeasureSensitivitySettingsIR
 
 		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];
 
-		java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsIR>
-			bucketCurvatureSettingsMap = new java.util.HashMap<java.lang.String,
-				org.drip.simm.parameters.BucketSensitivitySettingsIR>();
+		Map<String, BucketSensitivitySettingsIR> bucketCurvatureSettingsMap =
+			new HashMap<String, BucketSensitivitySettingsIR>();
 
-		for (int currencyListIndex = 0; currencyListIndex < currencyListSize; ++currencyListIndex)
+		for (int currencyListIndex = 0;
+			currencyListIndex < currencyListSize;
+			++currencyListIndex
+		)
 		{
-			java.lang.String currency = currencyList.get (currencyListIndex);
+			String currency = currencyList.get (
+				currencyListIndex
+			);
 
 			bucketCurvatureSettingsMap.put (
 				currency,
-				org.drip.simm.parameters.BucketCurvatureSettingsIR.ISDA_21 (currency)
+				BucketCurvatureSettingsIR.ISDA_21 (
+					currency
+				)
 			);
 
 			for (int currencyListInnerIndex = 0;
 				currencyListInnerIndex < currencyListSize;
-				++currencyListInnerIndex)
+				++currencyListInnerIndex
+			)
 			{
 				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =
 					currencyListIndex == currencyListInnerIndex ? 1. :
-						org.drip.simm.rates.IRSystemics21.CROSS_CURRENCY_CORRELATION;
+					IRSystemics21.CROSS_CURRENCY_CORRELATION;
 			}
 		}
 
@@ -507,13 +700,86 @@ public class RiskMeasureSensitivitySettingsIR
 		{
 			return new RiskMeasureSensitivitySettingsIR (
 				bucketCurvatureSettingsMap,
-				new org.drip.measure.stochastic.LabelCorrelation (
+				new LabelCorrelation (
 					currencyList,
 					crossCurrencyCorrelation
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Standard ISDA 2.4 CURVATURE Instance of RiskMeasureSensitivitySettingsIR
+	 * 
+	 * @param currencyList The Currency List
+	 * 
+	 * @return The Standard ISDA 2.4 CURVATURE Instance of RiskMeasureSensitivitySettingsIR
+	 */
+
+	public static final RiskMeasureSensitivitySettingsIR ISDA_CURVATURE_24 (
+		final List<String> currencyList)
+	{
+		if (null == currencyList)
+		{
+			return null;
+		}
+
+		int currencyListSize = currencyList.size();
+
+		if (0 == currencyListSize)
+		{
+			return null;
+		}
+
+		double[][] crossCurrencyCorrelation = new double[currencyListSize][currencyListSize];
+
+		Map<String, BucketSensitivitySettingsIR> bucketCurvatureSettingsMap =
+			new HashMap<String, BucketSensitivitySettingsIR>();
+
+		for (int currencyListIndex = 0;
+			currencyListIndex < currencyListSize;
+			++currencyListIndex
+		)
+		{
+			String currency = currencyList.get (
+				currencyListIndex
+			);
+
+			bucketCurvatureSettingsMap.put (
+				currency,
+				BucketCurvatureSettingsIR.ISDA_24 (
+					currency
+				)
+			);
+
+			for (int currencyListInnerIndex = 0;
+				currencyListInnerIndex < currencyListSize;
+				++currencyListInnerIndex
+			)
+			{
+				crossCurrencyCorrelation[currencyListIndex][currencyListInnerIndex] =
+					currencyListIndex == currencyListInnerIndex ? 1. :
+					IRSystemics24.CROSS_CURRENCY_CORRELATION;
+			}
+		}
+
+		try
+		{
+			return new RiskMeasureSensitivitySettingsIR (
+				bucketCurvatureSettingsMap,
+				new LabelCorrelation (
+					currencyList,
+					crossCurrencyCorrelation
+				)
+			);
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -527,20 +793,22 @@ public class RiskMeasureSensitivitySettingsIR
 	 * @param bucketSensitivitySettingsMap The IR Bucket Sensitivity Settings Map
 	 * @param crossBucketCorrelation The Cross Bucket Correlation
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskMeasureSensitivitySettingsIR (
-		final java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsIR>
-			bucketSensitivitySettingsMap,
-		final org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation)
-		throws java.lang.Exception
+		final Map<String, BucketSensitivitySettingsIR> bucketSensitivitySettingsMap,
+		final LabelCorrelation crossBucketCorrelation)
+		throws Exception
 	{
 		if (null == (_bucketSensitivitySettingsMap = bucketSensitivitySettingsMap) ||
 				0 == _bucketSensitivitySettingsMap.size() ||
-			null == (_crossBucketCorrelation = crossBucketCorrelation))
+			null == (_crossBucketCorrelation = crossBucketCorrelation)
+		)
 		{
-			throw new java.lang.Exception ("RiskMeasureSensitivitySettingsIR Constructor => Invalid Inputs");
+			throw new Exception (
+				"RiskMeasureSensitivitySettingsIR Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -550,7 +818,7 @@ public class RiskMeasureSensitivitySettingsIR
 	 * @return The Cross Bucket Correlation
 	 */
 
-	public org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation()
+	public LabelCorrelation crossBucketCorrelation()
 	{
 		return _crossBucketCorrelation;
 	}
@@ -561,8 +829,7 @@ public class RiskMeasureSensitivitySettingsIR
 	 * @return The IR Bucket Sensitivity Settings Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsIR>
-		bucketSensitivitySettingsMap()
+	public Map<String, BucketSensitivitySettingsIR> bucketSensitivitySettingsMap()
 	{
 		return _bucketSensitivitySettingsMap;
 	}

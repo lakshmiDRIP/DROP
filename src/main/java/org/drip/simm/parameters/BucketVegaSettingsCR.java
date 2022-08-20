@@ -8,10 +8,13 @@ import org.drip.measure.gaussian.NormalQuadrature;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.simm.credit.CRNQSystemics20;
 import org.drip.simm.credit.CRNQSystemics21;
+import org.drip.simm.credit.CRNQSystemics24;
 import org.drip.simm.credit.CRQSystemics20;
 import org.drip.simm.credit.CRQSystemics21;
+import org.drip.simm.credit.CRQSystemics24;
 import org.drip.simm.credit.CRThresholdContainer20;
 import org.drip.simm.credit.CRThresholdContainer21;
+import org.drip.simm.credit.CRThresholdContainer24;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -295,6 +298,94 @@ public class BucketVegaSettingsCR
 				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),
 				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),
 				CRThresholdContainer21.NonQualifyingThreshold (
+					bucketNumber
+				).vega(),
+				Math.sqrt (
+					365. / 14.
+				) / NormalQuadrature.InverseCDF (
+					0.99
+				),
+				1.,
+				bucketSensitivitySettingsCR.tenorRiskWeight()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Retrieve the ISDA 2.4 Credit Qualifying Bucket Vega Settings
+	 * 
+	 * @param bucketNumber The Bucket Number
+	 * 
+	 * @return The ISDA 2.4 Credit Qualifying Bucket Vega Settings
+	 */
+
+	public static BucketVegaSettingsCR ISDA_CRQ_24 (
+		final int bucketNumber)
+	{
+		BucketSensitivitySettingsCR bucketSensitivitySettingsCR =
+			BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_24 (
+				bucketNumber
+			);
+
+		try
+		{
+			return null == bucketSensitivitySettingsCR ? null : new BucketVegaSettingsCR (
+				TenorRiskWeightMap (
+					CRQSystemics24.VEGA_RISK_WEIGHT
+				),
+				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),
+				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),
+				CRThresholdContainer24.QualifyingThreshold (
+					bucketNumber
+				).vega(),
+				Math.sqrt (
+					365. / 14.
+				) / NormalQuadrature.InverseCDF (
+					0.99
+				),
+				1.,
+				bucketSensitivitySettingsCR.tenorRiskWeight()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Retrieve the ISDA 2.4 Credit Non-Qualifying Bucket Vega Settings
+	 * 
+	 * @param bucketNumber The Bucket Number
+	 * 
+	 * @return The ISDA 2.4 Credit Non-Qualifying Bucket Vega Settings
+	 */
+
+	public static BucketVegaSettingsCR ISDA_CRNQ_24 (
+		final int bucketNumber)
+	{
+		BucketSensitivitySettingsCR bucketSensitivitySettingsCR =
+			BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_24 (
+				bucketNumber
+			);
+
+		try
+		{
+			return null == bucketSensitivitySettingsCR ? null : new BucketVegaSettingsCR (
+				TenorRiskWeightMap (
+					CRNQSystemics24.VEGA_RISK_WEIGHT
+				),
+				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),
+				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),
+				CRThresholdContainer24.NonQualifyingThreshold (
 					bucketNumber
 				).vega(),
 				Math.sqrt (

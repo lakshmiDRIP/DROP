@@ -9,10 +9,13 @@ import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.measure.stochastic.LabelCorrelation;
 import org.drip.simm.credit.CRNQBucketCorrelation20;
 import org.drip.simm.credit.CRNQBucketCorrelation21;
+import org.drip.simm.credit.CRNQBucketCorrelation24;
 import org.drip.simm.credit.CRNQSettingsContainer20;
 import org.drip.simm.credit.CRNQSettingsContainer21;
+import org.drip.simm.credit.CRNQSettingsContainer24;
 import org.drip.simm.credit.CRQSettingsContainer20;
 import org.drip.simm.credit.CRQSettingsContainer21;
+import org.drip.simm.credit.CRQSettingsContainer24;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -210,6 +213,42 @@ public class RiskMeasureSensitivitySettingsCR
 	}
 
 	/**
+	 * Generate SIMM 2.4 Credit Qualifying Delta Sensitivity Settings
+	 * 
+	 * @return The SIMM 2.4 Credit Qualifying Delta Sensitivity Settings
+	 */
+
+	public static final RiskMeasureSensitivitySettingsCR ISDA_CRQ_DELTA_24()
+	{
+		Map<String, BucketSensitivitySettingsCR> bucketSensitivitySettingsMap =
+			new CaseInsensitiveHashMap<BucketSensitivitySettingsCR>();
+
+		for (int bucketIndex : CRQSettingsContainer24.BucketSet())
+		{
+			bucketSensitivitySettingsMap.put (
+				"" + bucketIndex,
+				BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_24 (
+					bucketIndex
+				)
+			);
+		}
+
+		try
+		{
+			return new RiskMeasureSensitivitySettingsCR (
+				bucketSensitivitySettingsMap,
+				CRQSettingsContainer24.CrossBucketCorrelation()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Generate SIMM 2.0 Credit Qualifying Vega Sensitivity Settings
 	 * 
 	 * @return The SIMM 2.0 Credit Qualifying Vega Sensitivity Settings
@@ -269,6 +308,42 @@ public class RiskMeasureSensitivitySettingsCR
 			return new RiskMeasureSensitivitySettingsCR (
 				bucketSensitivitySettingsMap,
 				CRQSettingsContainer21.CrossBucketCorrelation()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate SIMM 2.4 Credit Qualifying Vega Sensitivity Settings
+	 * 
+	 * @return The SIMM 2.4 Credit Qualifying Vega Sensitivity Settings
+	 */
+
+	public static final RiskMeasureSensitivitySettingsCR ISDA_CRQ_VEGA_24()
+	{
+		Map<String, BucketSensitivitySettingsCR> bucketSensitivitySettingsMap =
+			new CaseInsensitiveHashMap<BucketSensitivitySettingsCR>();
+
+		for (int bucketIndex : CRQSettingsContainer24.BucketSet())
+		{
+			bucketSensitivitySettingsMap.put (
+				"" + bucketIndex,
+				BucketVegaSettingsCR.ISDA_CRQ_24 (
+					bucketIndex
+				)
+			);
+		}
+
+		try
+		{
+			return new RiskMeasureSensitivitySettingsCR (
+				bucketSensitivitySettingsMap,
+				CRQSettingsContainer24.CrossBucketCorrelation()
 			);
 		}
 		catch (Exception e)
@@ -341,6 +416,42 @@ public class RiskMeasureSensitivitySettingsCR
 			return new RiskMeasureSensitivitySettingsCR (
 				bucketSensitivitySettingsMap,
 				CRQSettingsContainer21.CrossBucketCorrelation()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate SIMM 2.4 Credit Qualifying Curvature Sensitivity Settings
+	 * 
+	 * @return The SIMM 2.4 Credit Qualifying Curvature Sensitivity Settings
+	 */
+
+	public static final RiskMeasureSensitivitySettingsCR ISDA_CRQ_CURVATURE_24()
+	{
+		Map<String, BucketSensitivitySettingsCR> bucketSensitivitySettingsMap =
+			new CaseInsensitiveHashMap<BucketSensitivitySettingsCR>();
+
+		for (int bucketIndex : CRQSettingsContainer24.BucketSet())
+		{
+			bucketSensitivitySettingsMap.put (
+				"" + bucketIndex,
+				BucketCurvatureSettingsCR.ISDA_CRQ_24 (
+					bucketIndex
+				)
+			);
+		}
+
+		try
+		{
+			return new RiskMeasureSensitivitySettingsCR (
+				bucketSensitivitySettingsMap,
+				CRQSettingsContainer24.CrossBucketCorrelation()
 			);
 		}
 		catch (Exception e)
@@ -457,6 +568,69 @@ public class RiskMeasureSensitivitySettingsCR
 				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =
 					bucketIndexInner == bucketIndexOuter ? 1. :
 					CRNQBucketCorrelation21.NON_RESIDUAL_TO_NON_RESIDUAL;
+			}
+		}
+
+		try
+		{
+			return new RiskMeasureSensitivitySettingsCR (
+				bucketSensitivitySettingsMap,
+				new LabelCorrelation (
+					bucketLabelList,
+					crossBucketCorrelation
+				)
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate SIMM 2.4 Non-Credit Qualifying Delta Sensitivity Settings
+	 * 
+	 * @return The SIMM 2.4 Non-Credit Qualifying Delta Sensitivity Settings
+	 */
+
+	public static final RiskMeasureSensitivitySettingsCR ISDA_CRNQ_DELTA_24()
+	{
+		Map<String, BucketSensitivitySettingsCR> bucketSensitivitySettingsMap =
+			new CaseInsensitiveHashMap<BucketSensitivitySettingsCR>();
+
+		int bucketCount = CRNQSettingsContainer24.BucketSet().size();
+
+		List<String> bucketLabelList = new ArrayList<String>();
+
+		double[][] crossBucketCorrelation = new double[bucketCount][bucketCount];
+
+		for (int bucketIndexOuter = 0;
+			bucketIndexOuter < bucketCount;
+			++bucketIndexOuter)
+		{
+			String bucketIndexOuterKey = "" + bucketIndexOuter;
+
+			bucketSensitivitySettingsMap.put (
+				bucketIndexOuterKey,
+				BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_24 (
+					bucketIndexOuter
+				)
+			);
+
+			bucketLabelList.add (
+				bucketIndexOuterKey
+			);
+
+			for (int bucketIndexInner = 0;
+				bucketIndexInner < bucketCount;
+				++bucketIndexInner
+			)
+			{
+				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =
+					bucketIndexInner == bucketIndexOuter ? 1. :
+					CRNQBucketCorrelation24.NON_RESIDUAL_TO_NON_RESIDUAL;
 			}
 		}
 
@@ -605,6 +779,70 @@ public class RiskMeasureSensitivitySettingsCR
 	}
 
 	/**
+	 * Generate SIMM 2.4 Non-Credit Qualifying Vega Sensitivity Settings
+	 * 
+	 * @return The SIMM 2.4 Non-Credit Qualifying Vega Sensitivity Settings
+	 */
+
+	public static final RiskMeasureSensitivitySettingsCR ISDA_CRNQ_VEGA_24()
+	{
+		Map<String, BucketSensitivitySettingsCR> bucketSensitivitySettingsMap =
+			new CaseInsensitiveHashMap<BucketSensitivitySettingsCR>();
+
+		int bucketCount = CRNQSettingsContainer24.BucketSet().size();
+
+		List<String> bucketLabelList = new ArrayList<String>();
+
+		double[][] crossBucketCorrelation = new double[bucketCount][bucketCount];
+
+		for (int bucketIndexOuter = 0;
+			bucketIndexOuter < bucketCount;
+			++bucketIndexOuter
+		)
+		{
+			String bucketIndexOuterKey = "" + bucketIndexOuter;
+
+			bucketSensitivitySettingsMap.put (
+				bucketIndexOuterKey,
+				BucketVegaSettingsCR.ISDA_CRNQ_24 (
+					bucketIndexOuter
+				)
+			);
+
+			bucketLabelList.add (
+				bucketIndexOuterKey
+			);
+
+			for (int bucketIndexInner = 0;
+				bucketIndexInner < bucketCount;
+				++bucketIndexInner
+			)
+			{
+				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =
+					bucketIndexInner == bucketIndexOuter ? 1. :
+					CRNQBucketCorrelation24.NON_RESIDUAL_TO_NON_RESIDUAL;
+			}
+		}
+
+		try
+		{
+			return new RiskMeasureSensitivitySettingsCR (
+				bucketSensitivitySettingsMap,
+				new LabelCorrelation (
+					bucketLabelList,
+					crossBucketCorrelation
+				)
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Generate SIMM 2.0 Non-Credit Qualifying Curvature Sensitivity Settings
 	 * 
 	 * @return The SIMM 2.0 Non-Credit Qualifying Curvature Sensitivity Settings
@@ -710,6 +948,70 @@ public class RiskMeasureSensitivitySettingsCR
 				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =
 					bucketIndexInner == bucketIndexOuter ? 1. :
 					CRNQBucketCorrelation21.NON_RESIDUAL_TO_NON_RESIDUAL;
+			}
+		}
+
+		try
+		{
+			return new RiskMeasureSensitivitySettingsCR (
+				bucketSensitivitySettingsMap,
+				new LabelCorrelation (
+					bucketLabelList,
+					crossBucketCorrelation
+				)
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate SIMM 2.4 Non-Credit Qualifying Curvature Sensitivity Settings
+	 * 
+	 * @return The SIMM 2.4 Non-Credit Qualifying Curvature Sensitivity Settings
+	 */
+
+	public static final RiskMeasureSensitivitySettingsCR ISDA_CRNQ_CURVATURE_24()
+	{
+		Map<String, BucketSensitivitySettingsCR> bucketSensitivitySettingsMap =
+			new CaseInsensitiveHashMap<BucketSensitivitySettingsCR>();
+
+		int bucketCount = CRNQSettingsContainer24.BucketSet().size();
+
+		List<String> bucketLabelList = new ArrayList<String>();
+
+		double[][] crossBucketCorrelation = new double[bucketCount][bucketCount];
+
+		for (int bucketIndexOuter = 0;
+			bucketIndexOuter < bucketCount;
+			++bucketIndexOuter
+		)
+		{
+			String bucketIndexOuterKey = "" + bucketIndexOuter;
+
+			bucketSensitivitySettingsMap.put (
+				bucketIndexOuterKey,
+				BucketCurvatureSettingsCR.ISDA_CRNQ_24 (
+					bucketIndexOuter
+				)
+			);
+
+			bucketLabelList.add (
+				bucketIndexOuterKey
+			);
+
+			for (int bucketIndexInner = 0;
+				bucketIndexInner < bucketCount;
+				++bucketIndexInner
+			)
+			{
+				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =
+					bucketIndexInner == bucketIndexOuter ? 1. :
+					CRNQBucketCorrelation24.NON_RESIDUAL_TO_NON_RESIDUAL;
 			}
 		}
 

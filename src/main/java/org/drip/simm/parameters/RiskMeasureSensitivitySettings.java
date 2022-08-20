@@ -10,12 +10,16 @@ import java.util.Set;
 import org.drip.measure.stochastic.LabelCorrelation;
 import org.drip.simm.commodity.CTSettingsContainer20;
 import org.drip.simm.commodity.CTSettingsContainer21;
+import org.drip.simm.commodity.CTSettingsContainer24;
 import org.drip.simm.equity.EQSettingsContainer20;
 import org.drip.simm.equity.EQSettingsContainer21;
+import org.drip.simm.equity.EQSettingsContainer24;
 import org.drip.simm.fx.FXRiskThresholdContainer20;
 import org.drip.simm.fx.FXRiskThresholdContainer21;
+import org.drip.simm.fx.FXRiskThresholdContainer24;
 import org.drip.simm.fx.FXSystemics20;
 import org.drip.simm.fx.FXSystemics21;
+import org.drip.simm.fx.FXSystemics24;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -213,6 +217,42 @@ public class RiskMeasureSensitivitySettings
 	}
 
 	/**
+	 * Construct an ISDA 2.4 Equity DELTA Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @return ISDA 2.4 Equity DELTA Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_EQ_DELTA_24()
+	{
+		Map<String, BucketSensitivitySettings> bucketDeltaSettingsMap =
+			new HashMap<String, BucketSensitivitySettings>();
+
+		try
+		{
+			for (int bucketIndex : EQSettingsContainer24.BucketMap().keySet())
+			{
+				bucketDeltaSettingsMap.put (
+					"" + bucketIndex,
+					BucketSensitivitySettings.ISDA_EQ_24 (
+						bucketIndex
+					)
+				);
+			}
+
+			return new RiskMeasureSensitivitySettings (
+				bucketDeltaSettingsMap,
+				EQSettingsContainer24.CrossBucketCorrelation()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct an ISDA 2.0 Equity VEGA Standard Instance of RiskMeasureSensitivitySettings
 	 * 
 	 * @return ISDA 2.0 Equity VEGA Standard Instance of RiskMeasureSensitivitySettings
@@ -285,6 +325,42 @@ public class RiskMeasureSensitivitySettings
 	}
 
 	/**
+	 * Construct an ISDA 2.4 Equity VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @return ISDA 2.4 Equity VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_EQ_VEGA_24()
+	{
+		Map<String, BucketSensitivitySettings> bucketVegaSettingsMap =
+			new HashMap<String, BucketSensitivitySettings>();
+
+		try
+		{
+			for (int bucketIndex : EQSettingsContainer24.BucketMap().keySet())
+			{
+				bucketVegaSettingsMap.put (
+					"" + bucketIndex,
+					BucketVegaSettings.ISDA_EQ_24 (
+						bucketIndex
+					)
+				);
+			}
+
+			return new RiskMeasureSensitivitySettings (
+				bucketVegaSettingsMap,
+				EQSettingsContainer24.CrossBucketCorrelation()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct an ISDA 2.0 Equity CURVATURE Standard Instance of RiskMeasureSensitivitySettings
 	 * 
 	 * @param vegaDurationDays The Vega Duration Days
@@ -345,6 +421,46 @@ public class RiskMeasureSensitivitySettings
 				bucketCurvatureSettingsMap.put (
 					"" + bucketIndex,
 					BucketCurvatureSettings.ISDA_EQ_21 (
+						bucketIndex,
+						vegaDurationDays
+					)
+				);
+			}
+
+			return new RiskMeasureSensitivitySettings (
+				bucketCurvatureSettingsMap,
+				EQSettingsContainer21.CrossBucketCorrelation()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an ISDA 2.4 Equity CURVATURE Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @param vegaDurationDays The Vega Duration Days
+	 * 
+	 * @return ISDA 2.4 Equity CURVATURE Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_EQ_CURVATURE_24 (
+		final int vegaDurationDays)
+	{
+		Map<String, BucketSensitivitySettings> bucketCurvatureSettingsMap =
+			new HashMap<String, BucketSensitivitySettings>();
+
+		try
+		{
+			for (int bucketIndex : EQSettingsContainer24.BucketMap().keySet())
+			{
+				bucketCurvatureSettingsMap.put (
+					"" + bucketIndex,
+					BucketCurvatureSettings.ISDA_EQ_24 (
 						bucketIndex,
 						vegaDurationDays
 					)
@@ -437,6 +553,42 @@ public class RiskMeasureSensitivitySettings
 	}
 
 	/**
+	 * Construct an ISDA 2.4 Commodity DELTA Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @return ISDA 2.4 Commodity DELTA Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_CT_DELTA_24()
+	{
+		Map<String, BucketSensitivitySettings> bucketDeltaSettingsMap =
+			new HashMap<String, BucketSensitivitySettings>();
+
+		try
+		{
+			for (int bucketIndex : CTSettingsContainer24.BucketMap().keySet())
+			{
+				bucketDeltaSettingsMap.put (
+					"" + bucketIndex,
+					BucketSensitivitySettings.ISDA_CT_24 (
+						bucketIndex
+					)
+				);
+			}
+
+			return new RiskMeasureSensitivitySettings (
+				bucketDeltaSettingsMap,
+				CTSettingsContainer24.CrossBucketCorrelation()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct an ISDA 2.0 Commodity VEGA Standard Instance of RiskMeasureSensitivitySettings
 	 * 
 	 * @return ISDA 2.0 Commodity VEGA Standard Instance of RiskMeasureSensitivitySettings
@@ -498,6 +650,42 @@ public class RiskMeasureSensitivitySettings
 			return new RiskMeasureSensitivitySettings (
 				bucketVegaSettingsMap,
 				CTSettingsContainer21.CrossBucketCorrelation()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an ISDA 2.4 Commodity VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @return ISDA 2.4 Commodity VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_CT_VEGA_24()
+	{
+		Map<String, BucketSensitivitySettings> bucketVegaSettingsMap =
+			new HashMap<String, BucketSensitivitySettings>();
+
+		try
+		{
+			for (int bucketIndex : CTSettingsContainer24.BucketMap().keySet())
+			{
+				bucketVegaSettingsMap.put (
+					"" + bucketIndex,
+					BucketVegaSettings.ISDA_CT_24 (
+						bucketIndex
+					)
+				);
+			}
+
+			return new RiskMeasureSensitivitySettings (
+				bucketVegaSettingsMap,
+				CTSettingsContainer24.CrossBucketCorrelation()
 			);
 		}
 		catch (Exception e)
@@ -578,6 +766,46 @@ public class RiskMeasureSensitivitySettings
 			return new RiskMeasureSensitivitySettings (
 				bucketCurvatureSettingsMap,
 				CTSettingsContainer21.CrossBucketCorrelation()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an ISDA 2.4 Commodity CURVATURE Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @param vegaDurationDays The Vega Duration Days
+	 * 
+	 * @return ISDA 2.4 Commodity CURVATURE Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_CT_CURVATURE_24 (
+		final int vegaDurationDays)
+	{
+		Map<String, BucketSensitivitySettings> bucketCurvatureSettingsMap =
+			new HashMap<String, BucketSensitivitySettings>();
+
+		try
+		{
+			for (int bucketIndex : CTSettingsContainer24.BucketMap().keySet())
+			{
+				bucketCurvatureSettingsMap.put (
+					"" + bucketIndex,
+					BucketCurvatureSettings.ISDA_CT_24 (
+						bucketIndex,
+						vegaDurationDays
+					)
+				);
+			}
+
+			return new RiskMeasureSensitivitySettings (
+				bucketCurvatureSettingsMap,
+				CTSettingsContainer24.CrossBucketCorrelation()
 			);
 		}
 		catch (Exception e)
@@ -693,6 +921,69 @@ public class RiskMeasureSensitivitySettings
 				{
 					crossBucketCorrelationMatrix[deltaCategoryIndex - 1][categoryIndexInner - 1] =
 						deltaCategoryIndex == categoryIndexInner ? 1. : FXSystemics21.CORRELATION;
+				}
+			}
+
+			return new RiskMeasureSensitivitySettings (
+				bucketDeltaSettingsMap,
+				new LabelCorrelation (
+					deltaCategoryList,
+					crossBucketCorrelationMatrix
+				)
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an ISDA 2.4 FX DELTA Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @return ISDA 2.4 FX DELTA Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_FX_DELTA_24()
+	{
+		Map<String, BucketSensitivitySettings> bucketDeltaSettingsMap =
+			new HashMap<String, BucketSensitivitySettings>();
+
+		Map<Integer, Double> fxConcentrationCategoryDeltaMap = FXRiskThresholdContainer24.CategoryDeltaMap();
+
+		Set<Integer> fxConcentrationCategoryDeltaKey = fxConcentrationCategoryDeltaMap.keySet();
+
+		List<String> deltaCategoryList = new ArrayList<String>();
+
+		int fxConcentrationCategoryDeltaCount = fxConcentrationCategoryDeltaKey.size();
+
+		double[][] crossBucketCorrelationMatrix = new
+			double[fxConcentrationCategoryDeltaCount][fxConcentrationCategoryDeltaCount];
+
+		try
+		{
+			for (int deltaCategoryIndex : fxConcentrationCategoryDeltaKey)
+			{
+				String deltaCategory = "" + deltaCategoryIndex;
+
+				deltaCategoryList.add (
+					deltaCategory
+				);
+
+				bucketDeltaSettingsMap.put (
+					deltaCategory,
+					BucketSensitivitySettings.ISDA_FX_24 (
+						deltaCategoryIndex
+					)
+				);
+
+				for (int categoryIndexInner : fxConcentrationCategoryDeltaKey)
+				{
+					crossBucketCorrelationMatrix[deltaCategoryIndex - 1][categoryIndexInner - 1] =
+						deltaCategoryIndex == categoryIndexInner ? 1. :
+						FXSystemics24.VOLATILITY_CURVATURE_CORRELATION;
 				}
 			}
 
@@ -843,6 +1134,72 @@ public class RiskMeasureSensitivitySettings
 	}
 
 	/**
+	 * Construct an ISDA 2.4 FX VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @return ISDA 2.4 FX VEGA Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_FX_VEGA_24()
+	{
+		Map<String, BucketSensitivitySettings> bucketVegaSettingsMap =
+			new HashMap<String, BucketSensitivitySettings>();
+
+		Map<String, Double> fxConcentrationCategoryVegaMap = FXRiskThresholdContainer24.CategoryVegaMap();
+
+		Set<String> fxConcentrationCategoryVegaKey = fxConcentrationCategoryVegaMap.keySet();
+
+		List<String> vegaCategoryList = new ArrayList<String>();
+
+		int fxConcentrationCategoryVegaCount = fxConcentrationCategoryVegaKey.size();
+
+		int vegaCategoryIndexOuter = 0;
+		double[][] crossBucketCorrelationMatrix = new
+			double[fxConcentrationCategoryVegaCount][fxConcentrationCategoryVegaCount];
+
+		try
+		{
+			for (String vegaCategoryOuter : fxConcentrationCategoryVegaKey)
+			{
+				vegaCategoryList.add (
+					vegaCategoryOuter
+				);
+
+				bucketVegaSettingsMap.put (
+					vegaCategoryOuter,
+					BucketVegaSettings.ISDA_FX_24 (
+						vegaCategoryOuter
+					)
+				);
+
+				for (int vegaCategoryIndexInner = 0;
+					vegaCategoryIndexInner < fxConcentrationCategoryVegaCount;
+					++vegaCategoryIndexInner)
+				{
+					crossBucketCorrelationMatrix[vegaCategoryIndexOuter][vegaCategoryIndexInner] =
+						vegaCategoryIndexOuter == vegaCategoryIndexInner ? 1. :
+						FXSystemics24.VOLATILITY_CURVATURE_CORRELATION;
+				}
+
+				++vegaCategoryIndexOuter;
+			}
+
+			return new RiskMeasureSensitivitySettings (
+				bucketVegaSettingsMap,
+				new LabelCorrelation (
+					vegaCategoryList,
+					crossBucketCorrelationMatrix
+				)
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct an ISDA 2.0 FX Curvature Standard Instance of RiskMeasureSensitivitySettings
 	 * 
 	 * @param vegaDurationDays The Vega Duration Days
@@ -963,6 +1320,77 @@ public class RiskMeasureSensitivitySettings
 					crossBucketCorrelationMatrix[curvatureCategoryIndexOuter][curvatureCategoryIndexInner] =
 						curvatureCategoryIndexOuter == curvatureCategoryIndexInner ? 1. :
 						FXSystemics21.CORRELATION;
+				}
+
+				++curvatureCategoryIndexOuter;
+			}
+
+			return new RiskMeasureSensitivitySettings (
+				bucketCurvatureSettingsMap,
+				new LabelCorrelation (
+					curvatureCategoryList,
+					crossBucketCorrelationMatrix
+				)
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an ISDA 2.4 FX Curvature Standard Instance of RiskMeasureSensitivitySettings
+	 * 
+	 * @param vegaDurationDays The Vega Duration Days
+	 * 
+	 * @return ISDA 2.4 FX Curvature Standard Instance of RiskMeasureSensitivitySettings
+	 */
+
+	public static final RiskMeasureSensitivitySettings ISDA_FX_CURVATURE_24 (
+		final int vegaDurationDays)
+	{
+		Map<String, BucketSensitivitySettings> bucketCurvatureSettingsMap =
+			new HashMap<String, BucketSensitivitySettings>();
+
+		Map<String, Double> fxConcentrationCategoryCurvatureMap =
+			FXRiskThresholdContainer24.CategoryVegaMap();
+
+		Set<String> fxConcentrationCategoryCurvatureKey = fxConcentrationCategoryCurvatureMap.keySet();
+
+		List<String> curvatureCategoryList = new ArrayList<String>();
+
+		int fxConcentrationCategoryCurvatureCount = fxConcentrationCategoryCurvatureKey.size();
+
+		int curvatureCategoryIndexOuter = 0;
+		double[][] crossBucketCorrelationMatrix = new
+			double[fxConcentrationCategoryCurvatureCount][fxConcentrationCategoryCurvatureCount];
+
+		try
+		{
+			for (String curvatureCategoryOuter : fxConcentrationCategoryCurvatureKey)
+			{
+				curvatureCategoryList.add (
+					curvatureCategoryOuter
+				);
+
+				bucketCurvatureSettingsMap.put (
+					curvatureCategoryOuter,
+					BucketCurvatureSettings.ISDA_FX_24 (
+						curvatureCategoryOuter,
+						vegaDurationDays
+					)
+				);
+
+				for (int curvatureCategoryIndexInner = 0;
+					curvatureCategoryIndexInner < fxConcentrationCategoryCurvatureCount;
+					++curvatureCategoryIndexInner)
+				{
+					crossBucketCorrelationMatrix[curvatureCategoryIndexOuter][curvatureCategoryIndexInner] =
+						curvatureCategoryIndexOuter == curvatureCategoryIndexInner ? 1. :
+						FXSystemics24.VOLATILITY_CURVATURE_CORRELATION;
 				}
 
 				++curvatureCategoryIndexOuter;

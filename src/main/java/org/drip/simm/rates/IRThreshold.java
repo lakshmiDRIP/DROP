@@ -1,6 +1,8 @@
 
 package org.drip.simm.rates;
 
+import org.drip.simm.common.DeltaVegaThreshold;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,8 +123,8 @@ package org.drip.simm.rates;
 
 public class IRThreshold
 {
-	private org.drip.simm.common.DeltaVegaThreshold _deltaVega = null;
-	private org.drip.simm.rates.CurrencyRiskGroup _currencyRiskGroup = null;
+	private DeltaVegaThreshold _deltaVega = null;
+	private CurrencyRiskGroup _currencyRiskGroup = null;
 
 	/**
 	 * IRThreshold Constructor
@@ -130,18 +132,21 @@ public class IRThreshold
 	 * @param currencyRiskGroup The Currency Risk Group
 	 * @param deltaVega The Delta/Vega Concentration Threshold
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public IRThreshold (
-		final org.drip.simm.rates.CurrencyRiskGroup currencyRiskGroup,
-		final org.drip.simm.common.DeltaVegaThreshold deltaVega)
-		throws java.lang.Exception
+		final CurrencyRiskGroup currencyRiskGroup,
+		final DeltaVegaThreshold deltaVega)
+		throws Exception
 	{
 		if (null == (_currencyRiskGroup = currencyRiskGroup) ||
-			null == (_deltaVega = deltaVega))
+			null == (_deltaVega = deltaVega)
+		)
 		{
-			throw new java.lang.Exception ("IRThreshold Constructor => Invalid Inputs");
+			throw new Exception (
+				"IRThreshold Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -151,7 +156,7 @@ public class IRThreshold
 	 * @return The Currency Risk Group
 	 */
 
-	public org.drip.simm.rates.CurrencyRiskGroup currencyRiskGroup()
+	public CurrencyRiskGroup currencyRiskGroup()
 	{
 		return _currencyRiskGroup;
 	}
@@ -162,7 +167,7 @@ public class IRThreshold
 	 * @return The Delta Vega Concentration Threshold
 	 */
 
-	public org.drip.simm.common.DeltaVegaThreshold deltaVega()
+	public DeltaVegaThreshold deltaVega()
 	{
 		return _deltaVega;
 	}

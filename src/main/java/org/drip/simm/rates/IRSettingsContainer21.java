@@ -1,6 +1,16 @@
 
 package org.drip.simm.rates;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.drip.measure.stochastic.LabelCorrelation;
+import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,43 +131,66 @@ package org.drip.simm.rates;
 
 public class IRSettingsContainer21
 {
-	private static org.drip.simm.rates.IRWeight ZERO_RISK_WEIGHT = null;
-	private static org.drip.measure.stochastic.LabelCorrelation s_SingleCurveTenorCorrelation = null;
+	private static IRWeight ZERO_RISK_WEIGHT = null;
+	private static LabelCorrelation s_SingleCurveTenorCorrelation = null;
 
-	private static final java.util.Map<java.lang.String, org.drip.simm.rates.IRWeight> s_RiskWeightMap =
-		new java.util.HashMap<java.lang.String, org.drip.simm.rates.IRWeight>();
+	private static final Map<String, IRWeight> s_RiskWeightMap = new HashMap<String, IRWeight>();
 
 	private static final boolean TenorCorrelation()
 	{
-		java.util.List<java.lang.String> tenorList = new java.util.ArrayList<java.lang.String>();
+		List<String> tenorList = new ArrayList<String>();
 
-		tenorList.add ("2W");
+		tenorList.add (
+			"2W"
+		);
 
-		tenorList.add ("1M");
+		tenorList.add (
+			"1M"
+		);
 
-		tenorList.add ("3M");
+		tenorList.add (
+			"3M"
+		);
 
-		tenorList.add ("6M");
+		tenorList.add (
+			"6M"
+		);
 
-		tenorList.add ("1Y");
+		tenorList.add (
+			"1Y"
+		);
 
-		tenorList.add ("2Y");
+		tenorList.add (
+			"2Y"
+		);
 
-		tenorList.add ("3Y");
+		tenorList.add (
+			"3Y"
+		);
 
-		tenorList.add ("5Y");
+		tenorList.add (
+			"5Y"
+		);
 
-		tenorList.add ("10Y");
+		tenorList.add (
+			"10Y"
+		);
 
-		tenorList.add ("15Y");
+		tenorList.add (
+			"15Y"
+		);
 
-		tenorList.add ("20Y");
+		tenorList.add (
+			"20Y"
+		);
 
-		tenorList.add ("30Y");
+		tenorList.add (
+			"30Y"
+		);
 
 		try
 		{
-			s_SingleCurveTenorCorrelation = new org.drip.measure.stochastic.LabelCorrelation (
+			s_SingleCurveTenorCorrelation = new LabelCorrelation (
 				tenorList,
 				new double[][]
 				{
@@ -178,7 +211,7 @@ public class IRSettingsContainer21
 
 			return true;
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -194,83 +227,78 @@ public class IRSettingsContainer21
 
 	public static final boolean Init()
 	{
-		org.drip.simm.rates.IRWeight lowVolatilityRiskWeight = null;
-		org.drip.simm.rates.IRWeight highVolatilityRiskWeight = null;
-		org.drip.simm.rates.IRWeight regularVolatilityRiskWeight = null;
+		IRWeight lowVolatilityRiskWeight = null;
+		IRWeight highVolatilityRiskWeight = null;
+		IRWeight regularVolatilityRiskWeight = null;
 
-		java.util.Map<java.lang.String, java.lang.Double> zeroIRWeight = new
-			java.util.HashMap<java.lang.String, java.lang.Double>();
+		Map<String, Double> zeroIRWeight = new HashMap<String, Double>();
 
-		java.util.Map<java.lang.String, java.lang.Double> tenorDeltaWeightLowVolatility = new
-			java.util.HashMap<java.lang.String, java.lang.Double>();
+		Map<String, Double> tenorDeltaWeightLowVolatility = new HashMap<String, Double>();
 
-		java.util.Map<java.lang.String, java.lang.Double> tenorDeltaWeightHighVolatility = new
-			java.util.HashMap<java.lang.String, java.lang.Double>();
+		Map<String, Double> tenorDeltaWeightHighVolatility = new HashMap<String, Double>();
 
-		java.util.Map<java.lang.String, java.lang.Double> tenorDeltaWeightRegularVolatility = new
-			java.util.HashMap<java.lang.String, java.lang.Double>();
+		Map<String, Double> tenorDeltaWeightRegularVolatility = new HashMap<String, Double>();
 
-		java.util.Map<java.lang.String, java.lang.Double> tenorVegaRiskWeight = new
-			java.util.HashMap<java.lang.String, java.lang.Double>();
+		Map<String, Double> tenorVegaRiskWeight = new HashMap<String, Double>();
 
 		tenorVegaRiskWeight.put (
 			"2W",
-			org.drip.simm.rates.IRSystemics21.VEGA_RISK_WEIGHT
+			IRSystemics21.VEGA_RISK_WEIGHT
 		);
 
 		tenorVegaRiskWeight.put (
 			"1M",
-			org.drip.simm.rates.IRSystemics21.VEGA_RISK_WEIGHT
+			IRSystemics21.VEGA_RISK_WEIGHT
 		);
 
 		tenorVegaRiskWeight.put (
 			"3M",
-			org.drip.simm.rates.IRSystemics21.VEGA_RISK_WEIGHT
+			IRSystemics21.VEGA_RISK_WEIGHT
 		);
 
 		tenorVegaRiskWeight.put (
 			"6M",
-			org.drip.simm.rates.IRSystemics21.VEGA_RISK_WEIGHT
+			IRSystemics21.VEGA_RISK_WEIGHT
 		);
 
 		tenorVegaRiskWeight.put (
 			"1Y",
-			org.drip.simm.rates.IRSystemics21.VEGA_RISK_WEIGHT
+			IRSystemics21.VEGA_RISK_WEIGHT
 		);
 
 		tenorVegaRiskWeight.put (
 			"2Y",
-			org.drip.simm.rates.IRSystemics21.VEGA_RISK_WEIGHT
+			IRSystemics21.VEGA_RISK_WEIGHT
 		);
 
 		tenorVegaRiskWeight.put (
 			"3Y",
-			org.drip.simm.rates.IRSystemics21.VEGA_RISK_WEIGHT
+			IRSystemics21.VEGA_RISK_WEIGHT
 		);
 
 		tenorVegaRiskWeight.put (
 			"5Y",
-			org.drip.simm.rates.IRSystemics21.VEGA_RISK_WEIGHT
+			IRSystemics21.VEGA_RISK_WEIGHT
 		);
 
 		tenorVegaRiskWeight.put (
 			"10Y",
-			org.drip.simm.rates.IRSystemics21.VEGA_RISK_WEIGHT
+			IRSystemics21.VEGA_RISK_WEIGHT
 		);
 
 		tenorVegaRiskWeight.put (
 			"15Y",
-			org.drip.simm.rates.IRSystemics21.VEGA_RISK_WEIGHT
+			IRSystemics21.VEGA_RISK_WEIGHT
 		);
 
 		tenorVegaRiskWeight.put (
 			"20Y",
-			org.drip.simm.rates.IRSystemics21.VEGA_RISK_WEIGHT
+			IRSystemics21.VEGA_RISK_WEIGHT
 		);
 
 		tenorVegaRiskWeight.put (
 			"30Y",
-			org.drip.simm.rates.IRSystemics21.VEGA_RISK_WEIGHT
+			IRSystemics21.VEGA_RISK_WEIGHT
 		);
 
 		tenorDeltaWeightRegularVolatility.put (
@@ -515,31 +543,31 @@ public class IRSettingsContainer21
 
 		try
 		{
-			regularVolatilityRiskWeight = new org.drip.simm.rates.IRWeight (
-				org.drip.simm.rates.IRSystemics.VOLATILITY_TYPE_REGULAR,
+			regularVolatilityRiskWeight = new IRWeight (
+				IRSystemics.VOLATILITY_TYPE_REGULAR,
 				tenorDeltaWeightRegularVolatility,
 				tenorVegaRiskWeight
 			);
 
-			lowVolatilityRiskWeight = new org.drip.simm.rates.IRWeight (
-				org.drip.simm.rates.IRSystemics.VOLATILITY_TYPE_LOW,
+			lowVolatilityRiskWeight = new IRWeight (
+				IRSystemics.VOLATILITY_TYPE_LOW,
 				tenorDeltaWeightLowVolatility,
 				tenorVegaRiskWeight
 			);
 
-			highVolatilityRiskWeight = new org.drip.simm.rates.IRWeight (
-				org.drip.simm.rates.IRSystemics.VOLATILITY_TYPE_HIGH,
+			highVolatilityRiskWeight = new IRWeight (
+				IRSystemics.VOLATILITY_TYPE_HIGH,
 				tenorDeltaWeightHighVolatility,
 				tenorVegaRiskWeight
 			);
 
-			ZERO_RISK_WEIGHT = new org.drip.simm.rates.IRWeight (
-				org.drip.simm.rates.IRSystemics.VOLATILITY_TYPE_NULL,
+			ZERO_RISK_WEIGHT = new IRWeight (
+				IRSystemics.VOLATILITY_TYPE_NULL,
 				zeroIRWeight,
 				tenorVegaRiskWeight
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 
@@ -635,9 +663,11 @@ public class IRSettingsContainer21
 	 * @return The Standard ISDA Rates Tenor Set
 	 */
 
-	public static final java.util.Set<java.lang.String> TenorSet()
+	public static final Set<String> TenorSet()
 	{
-		return s_RiskWeightMap.get ("USD").tenors();
+		return s_RiskWeightMap.get (
+			"USD"
+		).tenors();
 	}
 
 	/**
@@ -650,27 +680,47 @@ public class IRSettingsContainer21
 	 */
 
 	public static final boolean SubCurveSupported (
-		final java.lang.String currency,
-		final java.lang.String subCurve)
+		final String currency,
+		final String subCurve)
 	{
-		if (null == currency || currency.isEmpty() || null == subCurve)
+		if (null == currency || currency.isEmpty() ||
+			null == subCurve
+		)
 		{
 			return false;
 		}
 
-		if (org.drip.simm.rates.IRSystemics.SUB_CURVE_OIS.equalsIgnoreCase (subCurve) ||
-			org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_1M.equalsIgnoreCase (subCurve) ||
-			org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_3M.equalsIgnoreCase (subCurve) ||
-			org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_6M.equalsIgnoreCase (subCurve) ||
-			org.drip.simm.rates.IRSystemics.SUB_CURVE_LIBOR_12M.equalsIgnoreCase (subCurve))
+		if (IRSystemics.SUB_CURVE_OIS.equalsIgnoreCase (
+				subCurve
+			) ||
+			IRSystemics.SUB_CURVE_LIBOR_1M.equalsIgnoreCase (
+				subCurve
+			) ||
+			IRSystemics.SUB_CURVE_LIBOR_3M.equalsIgnoreCase (
+				subCurve
+			) ||
+			IRSystemics.SUB_CURVE_LIBOR_6M.equalsIgnoreCase (
+				subCurve
+			) ||
+			IRSystemics.SUB_CURVE_LIBOR_12M.equalsIgnoreCase (
+				subCurve
+			)
+		)
 		{
 			return true;
 		}
 
-		if (org.drip.simm.rates.IRSystemics.SUB_CURVE_PRIME.equalsIgnoreCase (subCurve) ||
-			org.drip.simm.rates.IRSystemics.SUB_CURVE_MUNICIPAL.equalsIgnoreCase (subCurve))
+		if (IRSystemics.SUB_CURVE_PRIME.equalsIgnoreCase (
+				subCurve
+			) ||
+			IRSystemics.SUB_CURVE_MUNICIPAL.equalsIgnoreCase (
+				subCurve
+			)
+		)
 		{
-			return "USD".equalsIgnoreCase (currency);
+			return "USD".equalsIgnoreCase (
+				currency
+			);
 		}
 
 		return false;
@@ -682,7 +732,7 @@ public class IRSettingsContainer21
 	 * @return The Set of all Available Currencies
 	 */
 
-	public static final java.util.Set<java.lang.String> CurrencySet()
+	public static final Set<String> CurrencySet()
 	{
 		return s_RiskWeightMap.keySet();
 	}
@@ -695,22 +745,25 @@ public class IRSettingsContainer21
 	 * @return The Set of Currencies for the specified Volatility Type
 	 */
 
-	public static final java.util.Set<java.lang.String> VolatilityTypeCurrencySet (
-		final java.lang.String volatilityType)
+	public static final Set<String> VolatilityTypeCurrencySet (
+		final String volatilityType)
 	{
 		if (null == volatilityType || volatilityType.isEmpty())
 		{
 			return null;
 		}
 
-		java.util.Set<java.lang.String> currencySet = new java.util.HashSet<java.lang.String>();
+		Set<String> currencySet = new HashSet<String>();
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.simm.rates.IRWeight> irRiskWeightMapEntry :
-			s_RiskWeightMap.entrySet())
+		for (Map.Entry<String, IRWeight> irRiskWeightMapEntry : s_RiskWeightMap.entrySet())
 		{
-			if (irRiskWeightMapEntry.getValue().volatilityType().equalsIgnoreCase (volatilityType))
+			if (irRiskWeightMapEntry.getValue().volatilityType().equalsIgnoreCase (
+				volatilityType
+			))
 			{
-				currencySet.add (irRiskWeightMapEntry.getKey());
+				currencySet.add (
+					irRiskWeightMapEntry.getKey()
+				);
 			}
 		}
 
@@ -723,9 +776,11 @@ public class IRSettingsContainer21
 	 * @return The Regular Volatility Currency Set
 	 */
 
-	public static final java.util.Set<java.lang.String> RegularVolatilityCurrencySet()
+	public static final Set<String> RegularVolatilityCurrencySet()
 	{
-		return VolatilityTypeCurrencySet (org.drip.simm.rates.IRSystemics.VOLATILITY_TYPE_REGULAR);
+		return VolatilityTypeCurrencySet (
+			IRSystemics.VOLATILITY_TYPE_REGULAR
+		);
 	}
 
 	/**
@@ -734,9 +789,11 @@ public class IRSettingsContainer21
 	 * @return The Low Volatility Currency Set
 	 */
 
-	public static final java.util.Set<java.lang.String> LowVolatilityCurrencySet()
+	public static final Set<String> LowVolatilityCurrencySet()
 	{
-		return VolatilityTypeCurrencySet (org.drip.simm.rates.IRSystemics.VOLATILITY_TYPE_LOW);
+		return VolatilityTypeCurrencySet (
+			IRSystemics.VOLATILITY_TYPE_LOW
+		);
 	}
 
 	/**
@@ -745,9 +802,11 @@ public class IRSettingsContainer21
 	 * @return The High Volatility Currency Set
 	 */
 
-	public static final java.util.Set<java.lang.String> HighVolatilityCurrencySet()
+	public static final Set<String> HighVolatilityCurrencySet()
 	{
-		return VolatilityTypeCurrencySet (org.drip.simm.rates.IRSystemics.VOLATILITY_TYPE_HIGH);
+		return VolatilityTypeCurrencySet (
+			IRSystemics.VOLATILITY_TYPE_HIGH
+		);
 	}
 
 	/**
@@ -759,9 +818,12 @@ public class IRSettingsContainer21
 	 */
 
 	public static final boolean ContainsRiskWeight (
-		final java.lang.String currency)
+		final String currency)
 	{
-		return null != currency && !currency.isEmpty() && s_RiskWeightMap.containsKey (currency);
+		return null != currency && !currency.isEmpty() &&
+			s_RiskWeightMap.containsKey (
+				currency
+			);
 	}
 
 	/**
@@ -774,13 +836,15 @@ public class IRSettingsContainer21
 	 */
 
 	public static final boolean ContainsRiskWeight (
-		final java.lang.String currency,
-		final java.lang.String subCurve)
+		final String currency,
+		final String subCurve)
 	{
 		return SubCurveSupported (
 			currency,
 			subCurve
-		) && s_RiskWeightMap.containsKey (currency);
+		) && s_RiskWeightMap.containsKey (
+			currency
+		);
 	}
 
 	/**
@@ -791,11 +855,16 @@ public class IRSettingsContainer21
 	 * @return The IR Risk Weight for the specified Currency
 	 */
 
-	public static final org.drip.simm.rates.IRWeight RiskWeight (
-		final java.lang.String currency)
+	public static final IRWeight RiskWeight (
+		final String currency)
 	{
-		return ContainsRiskWeight (currency) ? s_RiskWeightMap.get (currency) : s_RiskWeightMap.get
-			("OTHER");
+		return ContainsRiskWeight (
+			currency
+		) ? s_RiskWeightMap.get (
+			currency
+		) : s_RiskWeightMap.get (
+			"OTHER"
+		);
 	}
 
 	/**
@@ -807,9 +876,9 @@ public class IRSettingsContainer21
 	 * @return The IR Risk Weight for the specified Currency
 	 */
 
-	public static final org.drip.simm.rates.IRWeight RiskWeight (
-		final java.lang.String currency,
-		final java.lang.String subCurve)
+	public static final IRWeight RiskWeight (
+		final String currency,
+		final String subCurve)
 	{
 		if (!SubCurveSupported (
 			currency,
@@ -819,8 +888,13 @@ public class IRSettingsContainer21
 			return ZERO_RISK_WEIGHT;
 		}
 
-		return ContainsRiskWeight (currency) ? s_RiskWeightMap.get (currency) : s_RiskWeightMap.get
-			("OTHER");
+		return ContainsRiskWeight (
+			currency
+		) ? s_RiskWeightMap.get (
+			currency
+		) : s_RiskWeightMap.get (
+			"OTHER"
+		);
 	}
 
 	/**
@@ -829,7 +903,7 @@ public class IRSettingsContainer21
 	 * @return The Interest Rate Single Curve Tenor Correlation Instance
 	 */
 
-	public static final org.drip.measure.stochastic.LabelCorrelation SingleCurveTenorCorrelation()
+	public static final LabelCorrelation SingleCurveTenorCorrelation()
 	{
 		return s_SingleCurveTenorCorrelation;
 	}
@@ -840,7 +914,7 @@ public class IRSettingsContainer21
 	 * @return The Interest Rate Risk Weight Term Structure based on the Volatility Type
 	 */
 
-	public static final java.util.Map<java.lang.String, org.drip.simm.rates.IRWeight> RiskWeight()
+	public static final Map<String, IRWeight> RiskWeight()
 	{
 		return s_RiskWeightMap;
 	}
@@ -854,9 +928,9 @@ public class IRSettingsContainer21
 	 * @return The Currency Pair Principal Co-variance Matrix
 	 */
 
-	public static final org.drip.simm.foundation.RiskGroupPrincipalCovariance CurrencyPairPrincipalCovariance (
-		final java.lang.String currency1,
-		final java.lang.String currency2)
+	public static final RiskGroupPrincipalCovariance CurrencyPairPrincipalCovariance (
+		final String currency1,
+		final String currency2)
 	{
 		if (null == currency1 || currency1.isEmpty() ||
 			null == currency2 || currency2.isEmpty())
@@ -864,22 +938,19 @@ public class IRSettingsContainer21
 			return null;
 		}
 
-		org.drip.simm.rates.IRThreshold irThreshold1 = org.drip.simm.rates.IRThresholdContainer21.Threshold
-			(currency1);
+		IRThreshold irThreshold1 = IRThresholdContainer21.Threshold (
+			currency1
+		);
 
-		org.drip.simm.rates.IRThreshold irThreshold2 = org.drip.simm.rates.IRThresholdContainer21.Threshold
-			(currency2);
+		IRThreshold irThreshold2 = IRThresholdContainer21.Threshold (
+			currency2
+		);
 
-		if (null == irThreshold1 || null == irThreshold2)
-		{
-			return null;
-		}
-
-		return org.drip.simm.foundation.RiskGroupPrincipalCovariance.Standard (
+		return null == irThreshold1 || null == irThreshold2 ? null : RiskGroupPrincipalCovariance.Standard (
 			s_SingleCurveTenorCorrelation.matrix(),
 			irThreshold1.currencyRiskGroup().volatilityType().equalsIgnoreCase (
 				irThreshold2.currencyRiskGroup().volatilityType()
-			) ? 1. : org.drip.simm.rates.IRSystemics21.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION
+			) ? 1. : IRSystemics21.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION
 		);
 	}
 }

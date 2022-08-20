@@ -130,7 +130,7 @@ public interface CurvatureResponse
 	 * 
 	 * @return The Lambda
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract double lambda (

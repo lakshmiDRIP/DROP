@@ -184,6 +184,35 @@ public class RiskClassSensitivitySettings
 	}
 
 	/**
+	 * Generate the ISDA 2.4 Standard Commodity Sensitivity Settings
+	 * 
+	 * @param vegaDurationDays The Vega Duration Days
+	 * 
+	 * @return The ISDA 2.4 Standard Commodity Sensitivity Settings
+	 */
+
+	public static final RiskClassSensitivitySettings ISDA_EQ_24 (
+		final int vegaDurationDays)
+	{
+		try
+		{
+			return new RiskClassSensitivitySettings (
+				RiskMeasureSensitivitySettings.ISDA_EQ_DELTA_24(),
+				RiskMeasureSensitivitySettings.ISDA_EQ_VEGA_24(),
+				RiskMeasureSensitivitySettings.ISDA_EQ_CURVATURE_24 (
+					vegaDurationDays
+				)
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Generate the ISDA 2.0 Standard Commodity Sensitivity Settings
 	 * 
 	 * @param vegaDurationDays The Vega Duration Days
@@ -242,6 +271,35 @@ public class RiskClassSensitivitySettings
 	}
 
 	/**
+	 * Generate the ISDA 2.4 Standard Commodity Sensitivity Settings
+	 * 
+	 * @param vegaDurationDays The Vega Duration Days
+	 * 
+	 * @return The ISDA 2.4 Standard Commodity Sensitivity Settings
+	 */
+
+	public static final RiskClassSensitivitySettings ISDA_CT_24 (
+		final int vegaDurationDays)
+	{
+		try
+		{
+			return new RiskClassSensitivitySettings (
+				RiskMeasureSensitivitySettings.ISDA_CT_DELTA_24(),
+				RiskMeasureSensitivitySettings.ISDA_CT_VEGA_24(),
+				RiskMeasureSensitivitySettings.ISDA_CT_CURVATURE_24 (
+					vegaDurationDays
+				)
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Generate the ISDA 2.0 Standard FX Sensitivity Settings
 	 * 
 	 * @param vegaDurationDays The Vega Duration Days
@@ -287,6 +345,35 @@ public class RiskClassSensitivitySettings
 				RiskMeasureSensitivitySettings.ISDA_FX_DELTA_21(),
 				RiskMeasureSensitivitySettings.ISDA_FX_VEGA_21(),
 				RiskMeasureSensitivitySettings.ISDA_FX_CURVATURE_21 (
+					vegaDurationDays
+				)
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the ISDA 2.4 Standard FX Sensitivity Settings
+	 * 
+	 * @param vegaDurationDays The Vega Duration Days
+	 * 
+	 * @return The ISDA 2.4 Standard FX Sensitivity Settings
+	 */
+
+	public static final RiskClassSensitivitySettings ISDA_FX_24 (
+		final int vegaDurationDays)
+	{
+		try
+		{
+			return new RiskClassSensitivitySettings (
+				RiskMeasureSensitivitySettings.ISDA_FX_DELTA_24(),
+				RiskMeasureSensitivitySettings.ISDA_FX_VEGA_24(),
+				RiskMeasureSensitivitySettings.ISDA_FX_CURVATURE_24 (
 					vegaDurationDays
 				)
 			);

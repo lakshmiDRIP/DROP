@@ -120,9 +120,9 @@ package org.drip.simm.rates;
 
 public class CurrencyRiskGroup
 {
-	private java.lang.String _volatilityType = "";
-	private java.lang.String _tradeFrequencyType = "";
-	private java.lang.String[] _componentArray = null;
+	private String _volatilityType = "";
+	private String _tradeFrequencyType = "";
+	private String[] _componentArray = null;
 
 	/**
 	 * CurrencyRiskGroup Constructor
@@ -131,20 +131,23 @@ public class CurrencyRiskGroup
 	 * @param tradeFrequencyType The Trade Frequency Type
 	 * @param componentArray Array of the COmponent CUrrencies
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CurrencyRiskGroup (
-		final java.lang.String volatilityType,
-		final java.lang.String tradeFrequencyType,
-		final java.lang.String[] componentArray)
-		throws java.lang.Exception
+		final String volatilityType,
+		final String tradeFrequencyType,
+		final String[] componentArray)
+		throws Exception
 	{
 		if (null == (_volatilityType = volatilityType) || _volatilityType.isEmpty() ||
 			null == (_tradeFrequencyType = tradeFrequencyType) || _tradeFrequencyType.isEmpty() ||
-			null == (_componentArray = componentArray) || 0 == _componentArray.length)
+			null == (_componentArray = componentArray) || 0 == _componentArray.length
+		)
 		{
-			throw new java.lang.Exception ("CurrencyRiskGroup Constructor => Invalid Inputs");
+			throw new Exception (
+				"CurrencyRiskGroup Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -154,7 +157,7 @@ public class CurrencyRiskGroup
 	 * @return The Volatility Type
 	 */
 
-	public java.lang.String volatilityType()
+	public String volatilityType()
 	{
 		return _volatilityType;
 	}
@@ -165,7 +168,7 @@ public class CurrencyRiskGroup
 	 * @return The Trade Frequency Type
 	 */
 
-	public java.lang.String tradeFrequencyType()
+	public String tradeFrequencyType()
 	{
 		return _tradeFrequencyType;
 	}
@@ -176,7 +179,7 @@ public class CurrencyRiskGroup
 	 * @return The Component Currency Array
 	 */
 
-	public java.lang.String[] componentArray()
+	public String[] componentArray()
 	{
 		return _componentArray;
 	}

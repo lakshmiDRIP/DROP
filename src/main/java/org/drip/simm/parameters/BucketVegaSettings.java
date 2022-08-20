@@ -8,21 +8,29 @@ import org.drip.numerical.common.NumberUtil;
 import org.drip.simm.commodity.CTBucket;
 import org.drip.simm.commodity.CTRiskThresholdContainer20;
 import org.drip.simm.commodity.CTRiskThresholdContainer21;
+import org.drip.simm.commodity.CTRiskThresholdContainer24;
 import org.drip.simm.commodity.CTSettingsContainer20;
 import org.drip.simm.commodity.CTSettingsContainer21;
+import org.drip.simm.commodity.CTSettingsContainer24;
 import org.drip.simm.commodity.CTSystemics20;
 import org.drip.simm.commodity.CTSystemics21;
+import org.drip.simm.commodity.CTSystemics24;
 import org.drip.simm.equity.EQBucket;
 import org.drip.simm.equity.EQRiskThresholdContainer20;
 import org.drip.simm.equity.EQRiskThresholdContainer21;
+import org.drip.simm.equity.EQRiskThresholdContainer24;
 import org.drip.simm.equity.EQSettingsContainer20;
 import org.drip.simm.equity.EQSettingsContainer21;
+import org.drip.simm.equity.EQSettingsContainer24;
 import org.drip.simm.equity.EQSystemics20;
 import org.drip.simm.equity.EQSystemics21;
+import org.drip.simm.equity.EQSystemics24;
 import org.drip.simm.fx.FXRiskThresholdContainer20;
 import org.drip.simm.fx.FXRiskThresholdContainer21;
+import org.drip.simm.fx.FXRiskThresholdContainer24;
 import org.drip.simm.fx.FXSystemics20;
 import org.drip.simm.fx.FXSystemics21;
+import org.drip.simm.fx.FXSystemics24;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -227,6 +235,45 @@ public class BucketVegaSettings
 	}
 
 	/**
+	 * Retrieve the ISDA 2.4 Equity Vega Settings
+	 * 
+	 * @param bucketIndex The Bucket Index
+	 * 
+	 * @return The ISDA 2.4 Equity Vega Settings
+	 */
+
+	public static BucketVegaSettings ISDA_EQ_24 (
+		final int bucketIndex)
+	{
+		EQBucket equityBucket = EQSettingsContainer24.BucketMap().get (
+			bucketIndex
+		);
+
+		try
+		{
+			return null == equityBucket ? null : new BucketVegaSettings (
+				equityBucket.vegaRiskWeight() * equityBucket.deltaRiskWeight(),
+				EQRiskThresholdContainer24.DeltaVegaThresholdMap().get (
+					bucketIndex
+				).vega(),
+				equityBucket.memberCorrelation(),
+				Math.sqrt (
+					365. / 14.
+				) / NormalQuadrature.InverseCDF (
+					0.99
+				),
+				EQSystemics24.HISTORICAL_VOLATILITY_RATIO
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct the Standard ISDA 2.0 Commodity Vega Settings for the specified Bucket
 	 * 
 	 * @param bucketIndex The Bucket Index
@@ -305,6 +352,45 @@ public class BucketVegaSettings
 	}
 
 	/**
+	 * Construct the Standard ISDA 2.4 Commodity Vega Settings for the specified Bucket
+	 * 
+	 * @param bucketIndex The Bucket Index
+	 * 
+	 * @return The Standard ISDA 2.4 Commodity Vega Settings for the specified Bucket
+	 */
+
+	public static BucketVegaSettings ISDA_CT_24 (
+		final int bucketIndex)
+	{
+		CTBucket commodityBucket = CTSettingsContainer24.BucketMap().get (
+			bucketIndex
+		);
+
+		try
+		{
+			return null == commodityBucket ? null : new BucketVegaSettings (
+				CTSystemics24.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),
+				CTRiskThresholdContainer24.DeltaVegaThresholdMap().get (
+					bucketIndex
+				).vega(),
+				commodityBucket.memberCorrelation(),
+				Math.sqrt (
+					365. / 14.
+				) / NormalQuadrature.InverseCDF (
+					0.99
+				),
+				CTSystemics24.HISTORICAL_VOLATILITY_RATIO
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct the Standard ISDA 2.0 Bucket FX Settings
 	 * 
 	 * @param vegaCategory The Vega Category
@@ -372,6 +458,45 @@ public class BucketVegaSettings
 					0.99
 				),
 				FXSystemics21.HISTORICAL_VOLATILITY_RATIO
+			) : null;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Standard ISDA 2.4 Bucket FX Settings
+	 * 
+	 * @param vegaCategory The Vega Category
+	 * 
+	 * @return The Standard ISDA 2.4 Bucket FX Settings
+	 */
+
+	public static BucketVegaSettings ISDA_FX_24 (
+		final String vegaCategory)
+	{
+		Map<String, Double> fxConcentrationCategoryVegaMap = FXRiskThresholdContainer24.CategoryVegaMap();
+
+		try
+		{
+			return fxConcentrationCategoryVegaMap.containsKey (
+				vegaCategory
+			) ? new BucketVegaSettings (
+				FXSystemics24.VEGA_RISK_WEIGHT * FXSystemics24.REGULAR_REGULAR_DELTA_RISK_WEIGHT,
+				fxConcentrationCategoryVegaMap.get (
+					vegaCategory
+				),
+				FXSystemics24.VOLATILITY_CURVATURE_CORRELATION,
+				Math.sqrt (
+					365. / 14.
+				) / NormalQuadrature.InverseCDF (
+					0.99
+				),
+				FXSystemics24.HISTORICAL_VOLATILITY_RATIO
 			) : null;
 		}
 		catch (Exception e)

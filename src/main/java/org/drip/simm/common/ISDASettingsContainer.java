@@ -3,14 +3,19 @@ package org.drip.simm.common;
 
 import org.drip.simm.commodity.CTSettingsContainer20;
 import org.drip.simm.commodity.CTSettingsContainer21;
+import org.drip.simm.commodity.CTSettingsContainer24;
 import org.drip.simm.credit.CRNQSettingsContainer20;
 import org.drip.simm.credit.CRNQSettingsContainer21;
+import org.drip.simm.credit.CRNQSettingsContainer24;
 import org.drip.simm.credit.CRQSettingsContainer20;
 import org.drip.simm.credit.CRQSettingsContainer21;
+import org.drip.simm.credit.CRQSettingsContainer24;
 import org.drip.simm.equity.EQSettingsContainer20;
 import org.drip.simm.equity.EQSettingsContainer21;
+import org.drip.simm.equity.EQSettingsContainer24;
 import org.drip.simm.rates.IRSettingsContainer20;
 import org.drip.simm.rates.IRSettingsContainer21;
+import org.drip.simm.rates.IRSettingsContainer24;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -152,12 +157,22 @@ public class ISDASettingsContainer
 			return false;
 		}
 
+		if (!IRSettingsContainer24.Init())
+		{
+			return false;
+		}
+
 		if (!CRQSettingsContainer20.Init())
 		{
 			return false;
 		}
 
 		if (!CRQSettingsContainer21.Init())
+		{
+			return false;
+		}
+
+		if (!CRQSettingsContainer24.Init())
 		{
 			return false;
 		}
@@ -172,6 +187,11 @@ public class ISDASettingsContainer
 			return false;
 		}
 
+		if (!CRNQSettingsContainer24.Init())
+		{
+			return false;
+		}
+
 		if (!EQSettingsContainer20.Init())
 		{
 			return false;
@@ -182,12 +202,22 @@ public class ISDASettingsContainer
 			return false;
 		}
 
+		if (!EQSettingsContainer24.Init())
+		{
+			return false;
+		}
+
 		if (!CTSettingsContainer20.Init())
 		{
 			return false;
 		}
 
 		if (!CTSettingsContainer21.Init())
+		{
+			return false;
+		}
+
+		if (!CTSettingsContainer24.Init())
 		{
 			return false;
 		}

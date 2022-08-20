@@ -1,6 +1,10 @@
 
 package org.drip.simm.rates;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,13 +125,11 @@ package org.drip.simm.rates;
 
 public class IRWeight
 {
-	private java.lang.String _volatilityType = "";
+	private String _volatilityType = "";
 
-	private java.util.Map<java.lang.String, java.lang.Double> _tenorVega = new
-		java.util.HashMap<java.lang.String, java.lang.Double>();
+	private Map<String, Double> _tenorVega = new HashMap<String, Double>();
 
-	private java.util.Map<java.lang.String, java.lang.Double> _tenorDelta = new
-		java.util.HashMap<java.lang.String, java.lang.Double>();
+	private Map<String, Double> _tenorDelta = new HashMap<String, Double>();
 
 	/**
 	 * IRWeight Constructor
@@ -136,27 +138,32 @@ public class IRWeight
 	 * @param tenorDelta The Map of Tenor Delta Risk Weights
 	 * @param tenorVega The Map of Tenor Vega Risk Weights
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public IRWeight (
-		final java.lang.String volatilityType,
-		final java.util.Map<java.lang.String, java.lang.Double> tenorDelta,
-		final java.util.Map<java.lang.String, java.lang.Double> tenorVega)
-		throws java.lang.Exception
+		final String volatilityType,
+		final Map<String, Double> tenorDelta,
+		final Map<String, Double> tenorVega)
+		throws Exception
 	{
 		if (null == (_volatilityType = volatilityType) || _volatilityType.isEmpty() ||
 			null == (_tenorDelta = tenorDelta) ||
-			null == (_tenorVega = tenorVega))
+			null == (_tenorVega = tenorVega)
+		)
 		{
-			throw new java.lang.Exception ("IRWeight Constructor => Invalid Inputs");
+			throw new Exception (
+				"IRWeight Constructor => Invalid Inputs"
+			);
 		}
 
 		int tenorCount = _tenorDelta.size();
 
 		if (0 == tenorCount || tenorCount != _tenorVega.size())
 		{
-			throw new java.lang.Exception ("IRWeight Constructor => Invalid Inputs");
+			throw new Exception (
+				"IRWeight Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -166,7 +173,7 @@ public class IRWeight
 	 * @return The Volatility Type
 	 */
 
-	public java.lang.String volatilityType()
+	public String volatilityType()
 	{
 		return _volatilityType;
 	}
@@ -177,7 +184,7 @@ public class IRWeight
 	 * @return The Tenor Delta Weight Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> tenorDelta()
+	public Map<String, Double> tenorDelta()
 	{
 		return _tenorDelta;
 	}
@@ -188,7 +195,7 @@ public class IRWeight
 	 * @return The Tenor Vega Weight Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> tenorVega()
+	public Map<String, Double> tenorVega()
 	{
 		return _tenorVega;
 	}
@@ -199,7 +206,7 @@ public class IRWeight
 	 * @return The Tenors
 	 */
 
-	public java.util.Set<java.lang.String> tenors()
+	public Set<String> tenors()
 	{
 		return _tenorDelta.keySet();
 	}

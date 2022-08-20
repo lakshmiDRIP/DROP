@@ -1,6 +1,10 @@
 
 package org.drip.simm.product;
 
+import org.drip.simm.foundation.MarginEstimationSettings;
+import org.drip.simm.margin.RiskClassAggregate;
+import org.drip.simm.parameters.RiskClassSensitivitySettings;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,9 +125,9 @@ package org.drip.simm.product;
 
 public class RiskClassSensitivity
 {
-	private org.drip.simm.product.RiskMeasureSensitivity _vega = null;
-	private org.drip.simm.product.RiskMeasureSensitivity _delta = null;
-	private org.drip.simm.product.RiskMeasureSensitivity _curvature = null;
+	private RiskMeasureSensitivity _vega = null;
+	private RiskMeasureSensitivity _delta = null;
+	private RiskMeasureSensitivity _curvature = null;
 
 	/**
 	 * RiskClassSensitivity Constructor
@@ -136,16 +140,18 @@ public class RiskClassSensitivity
 	 */
 
 	public RiskClassSensitivity (
-		final org.drip.simm.product.RiskMeasureSensitivity delta,
-		final org.drip.simm.product.RiskMeasureSensitivity vega,
-		final org.drip.simm.product.RiskMeasureSensitivity curvature)
-		throws java.lang.Exception
+		final RiskMeasureSensitivity delta,
+		final RiskMeasureSensitivity vega,
+		final RiskMeasureSensitivity curvature)
+		throws Exception
 	{
 		if (null == (_delta = delta) ||
 			null == (_vega = vega) ||
 			null == (_curvature = curvature))
 		{
-			throw new java.lang.Exception ("RiskClassSensitivity Constructor => Invalid Inputs");
+			throw new Exception (
+				"RiskClassSensitivity Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -155,7 +161,7 @@ public class RiskClassSensitivity
 	 * @return The Delta Risk Measure Sensitivity
 	 */
 
-	public org.drip.simm.product.RiskMeasureSensitivity delta()
+	public RiskMeasureSensitivity delta()
 	{
 		return _delta;
 	}
@@ -166,7 +172,7 @@ public class RiskClassSensitivity
 	 * @return The Vega Risk Measure Sensitivity
 	 */
 
-	public org.drip.simm.product.RiskMeasureSensitivity vega()
+	public RiskMeasureSensitivity vega()
 	{
 		return _vega;
 	}
@@ -177,7 +183,7 @@ public class RiskClassSensitivity
 	 * @return The Curvature Risk Measure Sensitivity
 	 */
 
-	public org.drip.simm.product.RiskMeasureSensitivity curvature()
+	public RiskMeasureSensitivity curvature()
 	{
 		return _curvature;
 	}
@@ -191,18 +197,13 @@ public class RiskClassSensitivity
 	 * @return The Risk Class Sensitivity Aggregate
 	 */
 
-	public org.drip.simm.margin.RiskClassAggregate aggregate (
-		final org.drip.simm.parameters.RiskClassSensitivitySettings riskClassSensitivitySettings,
-		final org.drip.simm.foundation.MarginEstimationSettings marginEstimationSettings)
+	public RiskClassAggregate aggregate (
+		final RiskClassSensitivitySettings riskClassSensitivitySettings,
+		final MarginEstimationSettings marginEstimationSettings)
 	{
-		if (null == riskClassSensitivitySettings)
-		{
-			return null;
-		}
-
 		try
 		{
-			return new org.drip.simm.margin.RiskClassAggregate (
+			return null == riskClassSensitivitySettings ? null : new RiskClassAggregate (
 				_delta.linearAggregate (
 					riskClassSensitivitySettings.delta(),
 					marginEstimationSettings
@@ -217,7 +218,7 @@ public class RiskClassSensitivity
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}

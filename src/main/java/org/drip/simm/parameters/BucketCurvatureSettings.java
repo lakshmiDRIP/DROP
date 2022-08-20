@@ -9,15 +9,20 @@ import org.drip.numerical.common.NumberUtil;
 import org.drip.simm.commodity.CTBucket;
 import org.drip.simm.commodity.CTSettingsContainer20;
 import org.drip.simm.commodity.CTSettingsContainer21;
+import org.drip.simm.commodity.CTSettingsContainer24;
 import org.drip.simm.commodity.CTSystemics20;
 import org.drip.simm.commodity.CTSystemics21;
+import org.drip.simm.commodity.CTSystemics24;
 import org.drip.simm.equity.EQBucket;
 import org.drip.simm.equity.EQSettingsContainer20;
 import org.drip.simm.equity.EQSettingsContainer21;
+import org.drip.simm.equity.EQSettingsContainer24;
 import org.drip.simm.fx.FXRiskThresholdContainer20;
 import org.drip.simm.fx.FXRiskThresholdContainer21;
+import org.drip.simm.fx.FXRiskThresholdContainer24;
 import org.drip.simm.fx.FXSystemics20;
 import org.drip.simm.fx.FXSystemics21;
+import org.drip.simm.fx.FXSystemics24;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -255,6 +260,44 @@ public class BucketCurvatureSettings
 	}
 
 	/**
+	 * Construct the Standard ISDA 2.4 EQ Bucket Curvature Settings
+	 * 
+	 * @param bucketIndex The Bucket Index
+	 * @param vegaDurationDays The Vega Duration Days
+	 * 
+	 * @return The Standard ISDA 2.4 EQ Bucket Curvature Settings
+	 */
+
+	public static BucketCurvatureSettings ISDA_EQ_24 (
+		final int bucketIndex,
+		final int vegaDurationDays)
+	{
+		EQBucket equityBucket = EQSettingsContainer24.BucketMap().get (
+			bucketIndex
+		);
+
+		try
+		{
+			return null == equityBucket ? null : BucketCurvatureSettings.ISDA (
+				equityBucket.vegaRiskWeight() * equityBucket.deltaRiskWeight(),
+				equityBucket.memberCorrelation(),
+				Math.sqrt (
+					365. / 14.
+				) / NormalQuadrature.InverseCDF (
+					0.99
+				),
+				vegaDurationDays
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct the Standard ISDA 2.0 CT Bucket Curvature Settings
 	 * 
 	 * @param bucketIndex The Bucket Index
@@ -313,6 +356,44 @@ public class BucketCurvatureSettings
 		{
 			return null == commodityBucket ? null : BucketCurvatureSettings.ISDA (
 				CTSystemics21.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),
+				commodityBucket.memberCorrelation(),
+				Math.sqrt (
+					365. / 14.
+				) / NormalQuadrature.InverseCDF (
+					0.99
+				),
+				vegaDurationDays
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Standard ISDA 2.4 CT Bucket Curvature Settings
+	 * 
+	 * @param bucketIndex The Bucket Index
+	 * @param vegaDurationDays The Vega Duration Days
+	 * 
+	 * @return The Standard ISDA 2.4 CT Bucket Curvature Settings
+	 */
+
+	public static BucketCurvatureSettings ISDA_CT_24 (
+		final int bucketIndex,
+		final int vegaDurationDays)
+	{
+		CTBucket commodityBucket = CTSettingsContainer24.BucketMap().get (
+			bucketIndex
+		);
+
+		try
+		{
+			return null == commodityBucket ? null : BucketCurvatureSettings.ISDA (
+				CTSystemics24.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),
 				commodityBucket.memberCorrelation(),
 				Math.sqrt (
 					365. / 14.
@@ -390,6 +471,44 @@ public class BucketCurvatureSettings
 			) ? null : BucketCurvatureSettings.ISDA (
 				FXSystemics21.VEGA_RISK_WEIGHT * FXSystemics21.DELTA_RISK_WEIGHT,
 				FXSystemics21.CORRELATION,
+				Math.sqrt (
+					365. / 14.
+				) / NormalQuadrature.InverseCDF (
+					0.99
+				),
+				vegaDurationDays
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Standard ISDA 2.4 FX Bucket Curvature Settings
+	 * 
+	 * @param vegaCategory The Vega Category
+	 * @param vegaDurationDays The Vega Duration Days
+	 * 
+	 * @return The Standard ISDA 2.4 FX Bucket Curvature Settings
+	 */
+
+	public static BucketCurvatureSettings ISDA_FX_24 (
+		final String vegaCategory,
+		final int vegaDurationDays)
+	{
+		Map<String, Double> fxConcentrationCategoryVegaMap = FXRiskThresholdContainer24.CategoryVegaMap();
+
+		try
+		{
+			return !fxConcentrationCategoryVegaMap.containsKey (
+				vegaCategory
+			) ? null : BucketCurvatureSettings.ISDA (
+				FXSystemics24.VEGA_RISK_WEIGHT * FXSystemics24.REGULAR_REGULAR_DELTA_RISK_WEIGHT,
+				FXSystemics24.VOLATILITY_CURVATURE_CORRELATION,
 				Math.sqrt (
 					365. / 14.
 				) / NormalQuadrature.InverseCDF (

@@ -1,6 +1,12 @@
 
 package org.drip.simm.product;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,23 +127,25 @@ package org.drip.simm.product;
 
 public class RiskFactorTenorSensitivity
 {
-	private java.util.Map<java.lang.String, java.lang.Double> _sensitivityMap = null;
+	private Map<String, Double> _sensitivityMap = null;
 
 	/**
 	 * RiskFactorTenorSensitivity Constructor
 	 * 
 	 * @param sensitivityMap The Tenor Sensitivity Map
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiskFactorTenorSensitivity (
-		java.util.Map<java.lang.String, java.lang.Double> sensitivityMap)
-		throws java.lang.Exception
+		final Map<String, Double> sensitivityMap)
+		throws Exception
 	{
 		if (null == (_sensitivityMap = sensitivityMap) || 0 == _sensitivityMap.size())
 		{
-			throw new java.lang.Exception ("RiskFactorTenorSensitivity Constructor => Invalid Inputs");
+			throw new Exception (
+				"RiskFactorTenorSensitivity Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -147,7 +155,7 @@ public class RiskFactorTenorSensitivity
 	 * @return The Set of Tenors
 	 */
 
-	public java.util.Set<java.lang.String> tenorSet()
+	public Set<String> tenorSet()
 	{
 		return _sensitivityMap.keySet();
 	}
@@ -162,10 +170,14 @@ public class RiskFactorTenorSensitivity
 	 */
 
 	public boolean addTenorDelta (
-		final java.lang.String tenor,
+		final String tenor,
 		final double sensitivity)
 	{
-		if (null == tenor || !org.drip.numerical.common.NumberUtil.IsValid (sensitivity))
+		if (null == tenor ||
+			!NumberUtil.IsValid (
+				sensitivity
+			)
+		)
 		{
 			return false;
 		}
@@ -187,9 +199,11 @@ public class RiskFactorTenorSensitivity
 	 */
 
 	public boolean tenorExists (
-		final java.lang.String tenor)
+		final String tenor)
 	{
-		return null != tenor && _sensitivityMap.containsKey (tenor);
+		return null != tenor && _sensitivityMap.containsKey (
+			tenor
+		);
 	}
 
 	/**
@@ -199,19 +213,25 @@ public class RiskFactorTenorSensitivity
 	 * 
 	 * @return The Sensitivity corresponding to the Tenor
 	 * 
-	 * @throws java.lang.Exception Thrown if the Input is Invalid
+	 * @throws Exception Thrown if the Input is Invalid
 	 */
 
 	public double sensitivity (
-		final java.lang.String tenor)
-		throws java.lang.Exception
+		final String tenor)
+		throws Exception
 	{
-		if (!tenorExists (tenor))
+		if (!tenorExists (
+			tenor
+		))
 		{
-			throw new java.lang.Exception ("RiskFactorTenorSensitivity::sensitivity => Invalid Inputs");
+			throw new Exception (
+				"RiskFactorTenorSensitivity::sensitivity => Invalid Inputs"
+			);
 		}
 
-		return _sensitivityMap.get (tenor);
+		return _sensitivityMap.get (
+			tenor
+		);
 	}
 
 	/**
@@ -220,7 +240,7 @@ public class RiskFactorTenorSensitivity
 	 * @return The Map of Tenor Sensitivities
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> sensitivityMap()
+	public Map<String, Double> sensitivityMap()
 	{
 		return _sensitivityMap;
 	}
@@ -235,7 +255,7 @@ public class RiskFactorTenorSensitivity
 	{
 		double cumulative = 0.;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> sensitivityEntry : _sensitivityMap.entrySet())
+		for (Map.Entry<String, Double> sensitivityEntry : _sensitivityMap.entrySet())
 		{
 			cumulative = cumulative + sensitivityEntry.getValue();
 		}
@@ -251,30 +271,32 @@ public class RiskFactorTenorSensitivity
 	 * @return The Tenor Sensitivity Margin Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> sensitivityMargin (
-		final java.util.Map<java.lang.String, java.lang.Double> sensitivityRiskWeightMap)
+	public Map<String, Double> sensitivityMargin (
+		final Map<String, Double> sensitivityRiskWeightMap)
 	{
 		if (null == sensitivityRiskWeightMap || 0 == sensitivityRiskWeightMap.size())
 		{
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.lang.Double> sensitivityMargin = new
-			java.util.HashMap<java.lang.String, java.lang.Double>();
+		Map<String, Double> sensitivityMargin = new HashMap<String, Double>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> sensitivityEntry :
-			_sensitivityMap.entrySet())
+		for (Map.Entry<String, Double> sensitivityEntry : _sensitivityMap.entrySet())
 		{
-			java.lang.String tenor = sensitivityEntry.getKey();
+			String tenor = sensitivityEntry.getKey();
 
-			if (!sensitivityRiskWeightMap.containsKey (tenor))
+			if (!sensitivityRiskWeightMap.containsKey (
+				tenor
+			))
 			{
 				return null;
 			}
 
 			sensitivityMargin.put (
 				tenor,
-				sensitivityEntry.getValue() * sensitivityRiskWeightMap.get (tenor)
+				sensitivityEntry.getValue() * sensitivityRiskWeightMap.get (
+					tenor
+				)
 			);
 		}
 

@@ -221,6 +221,47 @@ public class ProductClassSettings
 	}
 
 	/**
+	 * Construct an ISDA SIMM 2.4 Version of ProductClassSettings
+	 * 
+	 * @param currencyList Currency List
+	 * @param vegaDurationDays The Volatility Duration in Days
+	 * 
+	 * @return ISDA SIMM 2.4 Version of ProductClassSettings
+	 */
+
+	public static final ProductClassSettings ISDA_24 (
+		final List<String> currencyList,
+		final int vegaDurationDays)
+	{
+		try
+		{
+			return new ProductClassSettings (
+				RiskClassSensitivitySettings.ISDA_EQ_24 (
+					vegaDurationDays
+				),
+				RiskClassSensitivitySettings.ISDA_CT_24 (
+					vegaDurationDays
+				),
+				RiskClassSensitivitySettings.ISDA_FX_24 (
+					vegaDurationDays
+				),
+				RiskClassSensitivitySettingsIR.ISDA_24 (
+					currencyList
+				),
+				RiskClassSensitivitySettingsCR.ISDA_CRQ_24(),
+				RiskClassSensitivitySettingsCR.ISDA_CRNQ_24(),
+				CrossRiskClassCorrelation21.Matrix()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * ProductClassSettings Constructor
 	 * 
 	 * @param equityRiskClassSensitivitySettings Equity Risk Class Sensitivity Settings

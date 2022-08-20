@@ -1,6 +1,13 @@
 
 package org.drip.simm.rates;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
+import org.drip.simm.common.DeltaVegaThreshold;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,11 +128,9 @@ package org.drip.simm.rates;
 
 public class IRThresholdContainer20
 {
-	private static final java.util.Map<java.lang.String, java.lang.Integer> s_CurrencyThresholdMap = new
-		java.util.HashMap<java.lang.String, java.lang.Integer>();
+	private static final Map<String, Integer> s_CurrencyThresholdMap = new HashMap<String, Integer>();
 
-	private static final java.util.Map<java.lang.Integer, org.drip.simm.rates.IRThreshold> s_ThresholdMap =
-		new java.util.TreeMap<java.lang.Integer, org.drip.simm.rates.IRThreshold>();
+	private static final Map<Integer, IRThreshold> s_ThresholdMap = new TreeMap<Integer, IRThreshold>();
 
 	private static final boolean SetupCurrencyMap()
 	{
@@ -219,16 +224,16 @@ public class IRThresholdContainer20
 		{
 			s_ThresholdMap.put (
 				1,
-				new org.drip.simm.rates.IRThreshold (
-					new org.drip.simm.rates.CurrencyRiskGroup (
-						org.drip.simm.rates.IRSystemics.VOLATILITY_TYPE_HIGH,
-						org.drip.simm.rates.IRSystemics.TRADE_FREQUENCY_LESS_WELL_TRADED,
-						new java.lang.String[]
+				new IRThreshold (
+					new CurrencyRiskGroup (
+						IRSystemics.VOLATILITY_TYPE_HIGH,
+						IRSystemics.TRADE_FREQUENCY_LESS_WELL_TRADED,
+						new String[]
 						{
 							"Other"
 						}
 					),
-					new org.drip.simm.common.DeltaVegaThreshold (
+					new DeltaVegaThreshold (
 						8.,
 						110.
 					)
@@ -237,18 +242,18 @@ public class IRThresholdContainer20
 
 			s_ThresholdMap.put (
 				2,
-				new org.drip.simm.rates.IRThreshold (
-					new org.drip.simm.rates.CurrencyRiskGroup (
-						org.drip.simm.rates.IRSystemics.VOLATILITY_TYPE_REGULAR,
-						org.drip.simm.rates.IRSystemics.TRADE_FREQUENCY_WELL_TRADED,
-						new java.lang.String[]
+				new IRThreshold (
+					new CurrencyRiskGroup (
+						IRSystemics.VOLATILITY_TYPE_REGULAR,
+						IRSystemics.TRADE_FREQUENCY_WELL_TRADED,
+						new String[]
 						{
 							"USD",
 							"EUR",
 							"GBP"
 						}
 					),
-					new org.drip.simm.common.DeltaVegaThreshold (
+					new DeltaVegaThreshold (
 						230.,
 						2700.
 					)
@@ -257,11 +262,11 @@ public class IRThresholdContainer20
 
 			s_ThresholdMap.put (
 				3,
-				new org.drip.simm.rates.IRThreshold (
-					new org.drip.simm.rates.CurrencyRiskGroup (
-						org.drip.simm.rates.IRSystemics.VOLATILITY_TYPE_REGULAR,
-						org.drip.simm.rates.IRSystemics.TRADE_FREQUENCY_LESS_WELL_TRADED,
-						new java.lang.String[]
+				new IRThreshold (
+					new CurrencyRiskGroup (
+						IRSystemics.VOLATILITY_TYPE_REGULAR,
+						IRSystemics.TRADE_FREQUENCY_LESS_WELL_TRADED,
+						new String[]
 						{
 							"AUD",
 							"CAD",
@@ -276,7 +281,7 @@ public class IRThresholdContainer20
 							"TWD"
 						}
 					),
-					new org.drip.simm.common.DeltaVegaThreshold (
+					new DeltaVegaThreshold (
 						28.,
 						150.
 					)
@@ -285,23 +290,23 @@ public class IRThresholdContainer20
 
 			s_ThresholdMap.put (
 				4,
-				new org.drip.simm.rates.IRThreshold (
-					new org.drip.simm.rates.CurrencyRiskGroup (
-						org.drip.simm.rates.IRSystemics.VOLATILITY_TYPE_LOW,
-						org.drip.simm.rates.IRSystemics.TRADE_FREQUENCY_WELL_TRADED,
-						new java.lang.String[]
+				new IRThreshold (
+					new CurrencyRiskGroup (
+						IRSystemics.VOLATILITY_TYPE_LOW,
+						IRSystemics.TRADE_FREQUENCY_WELL_TRADED,
+						new String[]
 						{
 							"JPY"
 						}
 					),
-					new org.drip.simm.common.DeltaVegaThreshold (
+					new DeltaVegaThreshold (
 						82.,
 						960.
 					)
 				)
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 
@@ -317,7 +322,7 @@ public class IRThresholdContainer20
 	 * @return The Interest Rate Threshold Container Bucket Index Set
 	 */
 
-	public static final java.util.Set<java.lang.Integer> IndexSet()
+	public static final Set<Integer> IndexSet()
 	{
 		return s_ThresholdMap.keySet();
 	}
@@ -328,7 +333,7 @@ public class IRThresholdContainer20
 	 * @return The Interest Rate Threshold Container Currency Set
 	 */
 
-	public static final java.util.Set<java.lang.String> CurrencySet()
+	public static final Set<String> CurrencySet()
 	{
 		return s_CurrencyThresholdMap.keySet();
 	}
@@ -344,7 +349,9 @@ public class IRThresholdContainer20
 	public static final boolean ContainsThreshold (
 		final int groupNumber)
 	{
-		return s_ThresholdMap.containsKey (groupNumber);
+		return s_ThresholdMap.containsKey (
+			groupNumber
+		);
 	}
 
 	/**
@@ -356,9 +363,11 @@ public class IRThresholdContainer20
 	 */
 
 	public static final boolean ContainsThreshold (
-		final java.lang.String currency)
+		final String currency)
 	{
-		return s_CurrencyThresholdMap.containsKey (currency);
+		return s_CurrencyThresholdMap.containsKey (
+			currency
+		);
 	}
 
 	/**
@@ -369,11 +378,18 @@ public class IRThresholdContainer20
 	 * @return The Interest Rate Threshold
 	 */
 
-	public static final org.drip.simm.rates.IRThreshold Threshold (
-		final java.lang.String currency)
+	public static final IRThreshold Threshold (
+		final String currency)
 	{
-		return ContainsThreshold (currency) ? s_ThresholdMap.get (s_CurrencyThresholdMap.get (currency)) :
-			s_ThresholdMap.get (1);
+		return ContainsThreshold (
+			currency
+		) ? s_ThresholdMap.get (
+			s_CurrencyThresholdMap.get (
+				currency
+			)
+		) : s_ThresholdMap.get (
+			1
+		);
 	}
 
 	/**
@@ -384,10 +400,14 @@ public class IRThresholdContainer20
 	 * @return The Interest Rate Threshold
 	 */
 
-	public static final org.drip.simm.rates.IRThreshold Threshold (
+	public static final IRThreshold Threshold (
 		final int groupNumber)
 	{
-		return ContainsThreshold (groupNumber) ? s_ThresholdMap.get (groupNumber) : null;
+		return ContainsThreshold (
+			groupNumber
+		) ? s_ThresholdMap.get (
+			groupNumber
+		) : null;
 	}
 
 	/**
@@ -396,7 +416,7 @@ public class IRThresholdContainer20
 	 * @return The Currency Threshold Map
 	 */
 
-	public static final java.util.Map<java.lang.String, java.lang.Integer> CurrencyThresholdMap()
+	public static final Map<String, Integer> CurrencyThresholdMap()
 	{
 		return s_CurrencyThresholdMap;
 	}
@@ -407,7 +427,7 @@ public class IRThresholdContainer20
 	 * @return The Interest Rate Threshold Map
 	 */
 
-	public static final java.util.Map<java.lang.Integer, org.drip.simm.rates.IRThreshold> ThresholdMap()
+	public static final Map<Integer, IRThreshold> ThresholdMap()
 	{
 		return s_ThresholdMap;
 	}

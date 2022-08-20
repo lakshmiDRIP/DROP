@@ -194,6 +194,39 @@ public class RiskClassSensitivitySettingsIR
 	}
 
 	/**
+	 * Generate the ISDA 2.4 Standard Commodity Sensitivity Settings
+	 * 
+	 * @param currencyList The Currency List
+	 * 
+	 * @return The ISDA 2.4 Standard Commodity Sensitivity Settings
+	 */
+
+	public static final RiskClassSensitivitySettingsIR ISDA_24 (
+		final List<String> currencyList)
+	{
+		try
+		{
+			return new RiskClassSensitivitySettingsIR (
+				RiskMeasureSensitivitySettingsIR.ISDA_DELTA_24 (
+					currencyList
+				),
+				RiskMeasureSensitivitySettingsIR.ISDA_VEGA_24 (
+					currencyList
+				),
+				RiskMeasureSensitivitySettingsIR.ISDA_CURVATURE_24 (
+					currencyList
+				)
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * RiskClassSensitivitySettingsIR Constructor
 	 * 
 	 * @param delta The IR Risk Class Delta Sensitivity Settings
