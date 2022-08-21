@@ -1,12 +1,9 @@
 
 package org.drip.sample.simmsettings;
 
-import java.util.Set;
-
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm.common.DeltaVegaThreshold;
-import org.drip.simm.credit.CRThresholdContainer21;
+import org.drip.simm.fx.FXSystemics24;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -85,8 +82,8 @@ import org.drip.simm.credit.CRThresholdContainer21;
  */
 
 /**
- * <i>CreditRiskConcentrationThreshold21</i> demonstrates the Extraction and Display of ISDA SIMM 2.1 Credit
- * 	Risk Concentration Thresholds. The References are:
+ * <i>FX24</i> demonstrates the Extraction and Display of ISDA SIMM 2.4 FX Bucket Risk Weights, Correlations,
+ * 	and Systemics. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -126,83 +123,125 @@ import org.drip.simm.credit.CRThresholdContainer21;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditRiskConcentrationThreshold21
+public class FX24
 {
 
-	private static final void DisplayQualifyingBuckets()
-		throws Exception
+	private static final void Systemics()
 	{
-		Set<Integer> bucketSet = CRThresholdContainer21.QualifyingBucketSet();
+		System.out.println ("\t||----------------------------------------------------------------||");
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+		System.out.println ("\t||                      2.4 FX SYSTEMICS                          ||");
 
-		System.out.println ("\t||                      2.1 QUALIFYING CREDIT RISK CONCENTRATION THRESHOLD                         ||");
+		System.out.println ("\t||----------------------------------------------------------------||");
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+		System.out.println (
+			"\t|| Regular Given/Regular Calculation FX Delta Weight   => " +
+			FormatUtil.FormatDouble (
+				FXSystemics24.REGULAR_REGULAR_DELTA_RISK_WEIGHT, 3, 2, 1.
+			) + " ||"
+		);
 
-		System.out.println ("\t||                                                                                                 ||");
+		System.out.println (
+			"\t|| High Given/Regular Calculation FX Delta Weight      => " +
+			FormatUtil.FormatDouble (
+				FXSystemics24.HIGH_REGULAR_DELTA_RISK_WEIGHT, 3, 2, 1.
+			) + " ||"
+		);
 
-		System.out.println ("\t||      L -> R:                                                                                    ||");
+		System.out.println (
+			"\t|| Regular Given/High Calculation FX Delta Weight      => " +
+			FormatUtil.FormatDouble (
+				FXSystemics24.REGULAR_HIGH_DELTA_RISK_WEIGHT, 3, 2, 1.
+			) + " ||"
+		);
 
-		System.out.println ("\t||            - Bucket Number                                                                      ||");
+		System.out.println (
+			"\t|| High Given/High Calculation FX Delta Weight         => " +
+			FormatUtil.FormatDouble (
+				FXSystemics24.HIGH_HIGH_DELTA_RISK_WEIGHT, 3, 2, 1.
+			) + " ||"
+		);
 
-		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
+		System.out.println (
+			"\t|| Historical Volatility Ratio                         => " +
+			FormatUtil.FormatDouble (
+				FXSystemics24.HISTORICAL_VOLATILITY_RATIO, 3, 2, 1.
+			) + " ||"
+		);
 
-		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
+		System.out.println (
+			"\t|| Vega Risk Weight                                    => " +
+			FormatUtil.FormatDouble (
+				FXSystemics24.VEGA_RISK_WEIGHT, 3, 2, 1.
+			) + " ||"
+		);
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+		System.out.println (
+			"\t|| Volatility/Curvature Correlation                    => " +
+			FormatUtil.FormatDouble (
+				FXSystemics24.VOLATILITY_CURVATURE_CORRELATION, 3, 2, 1.
+			) + " ||"
+		);
 
-		for (int bucketNumber : bucketSet)
-		{
-			DeltaVegaThreshold creditRiskQualifyingThreshold =
-				CRThresholdContainer21.QualifyingThreshold (bucketNumber);
+		System.out.println (
+			"\t|| Regular Base: Regular Given/Regular Calculation Corr=> " +
+			FormatUtil.FormatDouble (
+				FXSystemics24.REGULAR_REGULAR_REGULAR_CORRELATION, 3, 2, 1.
+			) + " ||"
+		);
 
-			System.out.println (
-				"\t|| " + FormatUtil.FormatDouble (bucketNumber, 2, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (creditRiskQualifyingThreshold.delta(), 1, 2, 1.) + " | " +
-				FormatUtil.FormatDouble (creditRiskQualifyingThreshold.vega(), 3, 1, 1.) + " ||"
-			);
-		}
+		System.out.println (
+			"\t|| Regular Base: Regular Given/High Calculation Corr   => " +
+			FormatUtil.FormatDouble (
+				FXSystemics24.REGULAR_REGULAR_HIGH_CORRELATION, 3, 2, 1.
+			) + " ||"
+		);
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-	}
+		System.out.println (
+			"\t|| Regular Base: High Given/Regular Calculation Corr   => " +
+			FormatUtil.FormatDouble (
+				FXSystemics24.REGULAR_HIGH_REGULAR_CORRELATION, 3, 2, 1.
+			) + " ||"
+		);
 
-	private static final void DisplayNonQualifyingBuckets()
-		throws Exception
-	{
-		Set<Integer> bucketSet = CRThresholdContainer21.NonQualifyingBucketSet();
+		System.out.println (
+			"\t|| Regular Base: High Given/High Calculation Corr      => " +
+			FormatUtil.FormatDouble (
+				FXSystemics24.REGULAR_HIGH_HIGH_CORRELATION, 3, 2, 1.
+			) + " ||"
+		);
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+		System.out.println (
+			"\t|| High Base: Regular Given/Regular Calculation Corr   => " +
+			FormatUtil.FormatDouble (
+				FXSystemics24.HIGH_REGULAR_REGULAR_CORRELATION, 3, 2, 1.
+			) + " ||"
+		);
 
-		System.out.println ("\t||                    2.1 NON-QUALIFYING CREDIT RISK CONCENTRATION THRESHOLD                       ||");
+		System.out.println (
+			"\t|| High Base: Regular Given/High Calculation Corr      => " +
+			FormatUtil.FormatDouble (
+				FXSystemics24.HIGH_REGULAR_HIGH_CORRELATION, 3, 2, 1.
+			) + " ||"
+		);
 
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+		System.out.println (
+			"\t|| High Base: High Given/Regular Calculation Corr      => " +
+			FormatUtil.FormatDouble (
+				FXSystemics24.HIGH_HIGH_REGULAR_CORRELATION, 3, 2, 1.
+			) + " ||"
+		);
 
-		System.out.println ("\t||                                                                                                 ||");
+		System.out.println (
+			"\t|| High Base: High Given/High Calculation Corr         => " +
+			FormatUtil.FormatDouble (
+				FXSystemics24.HIGH_HIGH_HIGH_CORRELATION, 3, 2, 1.
+			) + " ||"
+		);
 
-		System.out.println ("\t||      L -> R:                                                                                    ||");
+		System.out.println ("\t||----------------------------------------------------------------||");
 
-		System.out.println ("\t||            - Bucket Number                                                                      ||");
-
-		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
-
-		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		for (int bucketNumber : bucketSet)
-		{
-			DeltaVegaThreshold creditRiskNonQualifyingThreshold =
-				CRThresholdContainer21.NonQualifyingThreshold (bucketNumber);
-
-			System.out.println (
-				"\t|| " + FormatUtil.FormatDouble (bucketNumber, 2, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (creditRiskNonQualifyingThreshold.delta(), 1, 2, 1.) + " | " +
-				FormatUtil.FormatDouble (creditRiskNonQualifyingThreshold.vega(), 3, 1, 1.) + " ||"
-			);
-		}
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
+		System.out.println();
 	}
 
 	public static final void main (
@@ -211,9 +250,7 @@ public class CreditRiskConcentrationThreshold21
 	{
 		EnvManager.InitEnv ("");
 
-		DisplayQualifyingBuckets();
-
-		DisplayNonQualifyingBuckets();
+		Systemics();
 
 		EnvManager.TerminateEnv();
 	}

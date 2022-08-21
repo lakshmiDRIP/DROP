@@ -3,10 +3,10 @@ package org.drip.sample.simmsettings;
 
 import java.util.Set;
 
-import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.simm.common.DeltaVegaThreshold;
-import org.drip.simm.credit.CRThresholdContainer21;
+import org.drip.simm.rates.CurrencyRiskGroup;
+import org.drip.simm.rates.IRThreshold;
+import org.drip.simm.rates.IRThresholdContainer24;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -85,8 +85,8 @@ import org.drip.simm.credit.CRThresholdContainer21;
  */
 
 /**
- * <i>CreditRiskConcentrationThreshold21</i> demonstrates the Extraction and Display of ISDA SIMM 2.1 Credit
- * 	Risk Concentration Thresholds. The References are:
+ * <i>InterestRateConcentrationThreshold24</i> demonstrates the Extraction and Display of ISDA SIMM 2.4
+ * 	Interest Rate Concentration Thresholds. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -126,17 +126,17 @@ import org.drip.simm.credit.CRThresholdContainer21;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditRiskConcentrationThreshold21
+public class InterestRateConcentrationThreshold24
 {
 
-	private static final void DisplayQualifyingBuckets()
+	private static final void DisplayBuckets()
 		throws Exception
 	{
-		Set<Integer> bucketSet = CRThresholdContainer21.QualifyingBucketSet();
+		Set<Integer> bucketSet = IRThresholdContainer24.IndexSet();
 
 		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 
-		System.out.println ("\t||                      2.1 QUALIFYING CREDIT RISK CONCENTRATION THRESHOLD                         ||");
+		System.out.println ("\t||                           2.4 INTEREST RATE CONCENTRATION THRESHOLD                             ||");
 
 		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 
@@ -146,59 +146,40 @@ public class CreditRiskConcentrationThreshold21
 
 		System.out.println ("\t||            - Bucket Number                                                                      ||");
 
-		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
+		System.out.println ("\t||            - Volatility Type                                                                    ||");
 
-		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		for (int bucketNumber : bucketSet)
-		{
-			DeltaVegaThreshold creditRiskQualifyingThreshold =
-				CRThresholdContainer21.QualifyingThreshold (bucketNumber);
-
-			System.out.println (
-				"\t|| " + FormatUtil.FormatDouble (bucketNumber, 2, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (creditRiskQualifyingThreshold.delta(), 1, 2, 1.) + " | " +
-				FormatUtil.FormatDouble (creditRiskQualifyingThreshold.vega(), 3, 1, 1.) + " ||"
-			);
-		}
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-	}
-
-	private static final void DisplayNonQualifyingBuckets()
-		throws Exception
-	{
-		Set<Integer> bucketSet = CRThresholdContainer21.NonQualifyingBucketSet();
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                    2.1 NON-QUALIFYING CREDIT RISK CONCENTRATION THRESHOLD                       ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                                                                                                 ||");
-
-		System.out.println ("\t||      L -> R:                                                                                    ||");
-
-		System.out.println ("\t||            - Bucket Number                                                                      ||");
+		System.out.println ("\t||            - Trade Frequency                                                                    ||");
 
 		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
 
 		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
 
+		System.out.println ("\t||            - Currency Set                                                                       ||");
+
 		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 
 		for (int bucketNumber : bucketSet)
 		{
-			DeltaVegaThreshold creditRiskNonQualifyingThreshold =
-				CRThresholdContainer21.NonQualifyingThreshold (bucketNumber);
+			IRThreshold interestRateThreshold = IRThresholdContainer24.Threshold (bucketNumber);
+
+			CurrencyRiskGroup currencyRiskGroup = interestRateThreshold.currencyRiskGroup();
+
+			String[] componentArray = currencyRiskGroup.componentArray();
+
+			String componentSet = "";
+
+			for (String component : componentArray)
+			{
+				componentSet = componentSet + component + ",";
+			}
 
 			System.out.println (
-				"\t|| " + FormatUtil.FormatDouble (bucketNumber, 2, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (creditRiskNonQualifyingThreshold.delta(), 1, 2, 1.) + " | " +
-				FormatUtil.FormatDouble (creditRiskNonQualifyingThreshold.vega(), 3, 1, 1.) + " ||"
+				"\t|| " + bucketNumber + " => " +
+				currencyRiskGroup.volatilityType() + " | " +
+				currencyRiskGroup.tradeFrequencyType() + " | " +
+				interestRateThreshold.deltaVega().delta() + " | " +
+				interestRateThreshold.deltaVega().vega() + " | " +
+				componentSet
 			);
 		}
 
@@ -211,9 +192,7 @@ public class CreditRiskConcentrationThreshold21
 	{
 		EnvManager.InitEnv ("");
 
-		DisplayQualifyingBuckets();
-
-		DisplayNonQualifyingBuckets();
+		DisplayBuckets();
 
 		EnvManager.TerminateEnv();
 	}

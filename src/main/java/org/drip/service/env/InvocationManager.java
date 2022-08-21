@@ -194,7 +194,7 @@ public class InvocationManager
 
 		System.out.println ("\t|-----------------------------------------------------------------|");
 
-		System.out.println ("\t|    Copyright (C) 2011-2020 (DRIP, DROP)");
+		System.out.println ("\t|    Copyright (C) 2011-2022 (DRIP, DROP)");
 
 		System.out.println ("\t|-----------------------------------------------------------------|");
 

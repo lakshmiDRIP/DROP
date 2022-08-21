@@ -6,7 +6,7 @@ import java.util.Set;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.common.DeltaVegaThreshold;
-import org.drip.simm.credit.CRThresholdContainer21;
+import org.drip.simm.equity.EQRiskThresholdContainer24;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -85,7 +85,7 @@ import org.drip.simm.credit.CRThresholdContainer21;
  */
 
 /**
- * <i>CreditRiskConcentrationThreshold21</i> demonstrates the Extraction and Display of ISDA SIMM 2.1 Credit
+ * <i>EquityRiskConcentrationThreshold24</i> demonstrates the Extraction and Display of ISDA SIMM 2.4 Equity
  * 	Risk Concentration Thresholds. The References are:
  * 
  * <br><br>
@@ -126,17 +126,17 @@ import org.drip.simm.credit.CRThresholdContainer21;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditRiskConcentrationThreshold21
+public class EquityRiskConcentrationThreshold24
 {
 
-	private static final void DisplayQualifyingBuckets()
+	private static final void DisplayBuckets()
 		throws Exception
 	{
-		Set<Integer> bucketSet = CRThresholdContainer21.QualifyingBucketSet();
+		Set<Integer> bucketSet = EQRiskThresholdContainer24.BucketSet();
 
 		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 
-		System.out.println ("\t||                      2.1 QUALIFYING CREDIT RISK CONCENTRATION THRESHOLD                         ||");
+		System.out.println ("\t||                           2.4 EQUITY RISK CONCENTRATION THRESHOLD                               ||");
 
 		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 
@@ -154,51 +154,12 @@ public class CreditRiskConcentrationThreshold21
 
 		for (int bucketNumber : bucketSet)
 		{
-			DeltaVegaThreshold creditRiskQualifyingThreshold =
-				CRThresholdContainer21.QualifyingThreshold (bucketNumber);
+			DeltaVegaThreshold equityRiskThreshold = EQRiskThresholdContainer24.Threshold (bucketNumber);
 
 			System.out.println (
 				"\t|| " + FormatUtil.FormatDouble (bucketNumber, 2, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (creditRiskQualifyingThreshold.delta(), 1, 2, 1.) + " | " +
-				FormatUtil.FormatDouble (creditRiskQualifyingThreshold.vega(), 3, 1, 1.) + " ||"
-			);
-		}
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-	}
-
-	private static final void DisplayNonQualifyingBuckets()
-		throws Exception
-	{
-		Set<Integer> bucketSet = CRThresholdContainer21.NonQualifyingBucketSet();
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                    2.1 NON-QUALIFYING CREDIT RISK CONCENTRATION THRESHOLD                       ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t||                                                                                                 ||");
-
-		System.out.println ("\t||      L -> R:                                                                                    ||");
-
-		System.out.println ("\t||            - Bucket Number                                                                      ||");
-
-		System.out.println ("\t||            - Delta Concentration Threshold                                                      ||");
-
-		System.out.println ("\t||            - Vega Concentration Threshold                                                       ||");
-
-		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
-
-		for (int bucketNumber : bucketSet)
-		{
-			DeltaVegaThreshold creditRiskNonQualifyingThreshold =
-				CRThresholdContainer21.NonQualifyingThreshold (bucketNumber);
-
-			System.out.println (
-				"\t|| " + FormatUtil.FormatDouble (bucketNumber, 2, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (creditRiskNonQualifyingThreshold.delta(), 1, 2, 1.) + " | " +
-				FormatUtil.FormatDouble (creditRiskNonQualifyingThreshold.vega(), 3, 1, 1.) + " ||"
+				FormatUtil.FormatDouble (equityRiskThreshold.delta(), 3, 1, 1.) + " | " +
+				FormatUtil.FormatDouble (equityRiskThreshold.vega(), 5, 1, 1.) + " ||"
 			);
 		}
 
@@ -211,9 +172,7 @@ public class CreditRiskConcentrationThreshold21
 	{
 		EnvManager.InitEnv ("");
 
-		DisplayQualifyingBuckets();
-
-		DisplayNonQualifyingBuckets();
+		DisplayBuckets();
 
 		EnvManager.TerminateEnv();
 	}
