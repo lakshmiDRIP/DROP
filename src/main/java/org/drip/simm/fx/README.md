@@ -18,11 +18,18 @@ DROP SIMM FX Package contains the FX Risk Factor Calibration Settings.
  <i>FXRiskThresholdContainer21</i> holds the ISDA SIMM 2.1 FX Risk Thresholds - the FX Categories and the
  Delta/Vega Limits defined for the Concentration Thresholds.
 
+ * [***FXRiskThresholdContainer24***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/fx/FXRiskThresholdContainer24.java)
+ <i>FXRiskThresholdContainer24</i> holds the ISDA SIMM 2.4 FX Risk Thresholds - the FX Categories and the
+ Delta/Vega Limits defined for the Concentration Thresholds.
+
  * [***FXSystemics20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/fx/FXSystemics20.java)
  <i>FXSystemics20</i> contains the SIMM 2.0 Systemic Settings Common to FX Risk Factors.
 
  * [***FXSystemics21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/fx/FXSystemics21.java)
  <i>FXSystemics21</i> contains the SIMM 2.1 Systemic Settings Common to FX Risk Factors.
+
+ * [***FXSystemics24***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/fx/FXSystemics24.java)
+ <i>FXSystemics24</i> contains the SIMM 2.4 Systemic Settings Common to FX Risk Factors.
 
 
 ## References
@@ -42,6 +49,9 @@ DROP SIMM FX Package contains the FX Risk Factor Calibration Settings.
 
  * International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
 		https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
+
+ * International Swaps and Derivatives Association (2021): SIMM v2.4 Methodology
+		https://www.isda.org/a/CeggE/ISDA-SIMM-v2.4-PUBLIC.pdf
 
 
 ## DROP Specifications

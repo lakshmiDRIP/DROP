@@ -19,17 +19,27 @@ DROP SIMM Commodity Package implements the Commodity Risk Factor Calibration Set
  <i>CTRiskThresholdContainer21</i> holds the ISDA SIMM 2.1 Commodity Risk Thresholds - the Commodity Buckets
  and the Delta/Vega Limits defined for the Concentration Thresholds.
 
+ * [***CTRiskThresholdContainer24***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/commodity/CTRiskThresholdContainer24.java)
+ <i>CTRiskThresholdContainer24</i> holds the ISDA SIMM 2.4 Commodity Risk Thresholds - the Commodity Buckets
+ and the Delta/Vega Limits defined for the Concentration Thresholds.
+
  * [***CTSettingsContainer20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/commodity/CTSettingsContainer20.java)
  <i>CTSettingsContainer20</i> holds the ISDA SIMM 2.0 Commodity Buckets and their Correlations.
 
  * [***CTSettingsContainer21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/commodity/CTSettingsContainer21.java)
  <i>CTSettingsContainer21</i> holds the ISDA SIMM 2.1 Commodity Buckets and their Correlations.
 
+ * [***CTSettingsContainer24***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/commodity/CTSettingsContainer24.java)
+ <i>CTSettingsContainer24</i> holds the ISDA SIMM 2.4 Commodity Buckets and their Correlations.
+
  * [***CTSystemics20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/commodity/CTSystemics20.java)
  <i>CTSystemics20</i> contains the SIMM 2.0 Systemic Settings Common to Commodity Risk Factors.
 
  * [***CTSystemics21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/commodity/CTSystemics21.java)
  <i>CTSystemics21</i> contains the SIMM 2.1 Systemic Settings Common to Commodity Risk Factors.
+
+ * [***CTSystemics24***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/commodity/CTSystemics24.java)
+ <i>CTSystemics24</i> contains the SIMM 2.4 Systemic Settings Common to Commodity Risk Factors.
 
 
 ## References
@@ -49,6 +59,9 @@ DROP SIMM Commodity Package implements the Commodity Risk Factor Calibration Set
 
  * International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
 		https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
+
+ * International Swaps and Derivatives Association (2021): SIMM v2.4 Methodology
+		https://www.isda.org/a/CeggE/ISDA-SIMM-v2.4-PUBLIC.pdf
 
 
 ## DROP Specifications

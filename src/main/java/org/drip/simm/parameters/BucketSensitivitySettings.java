@@ -126,8 +126,8 @@ import org.drip.simm.fx.FXSystemics24;
  *  				<b>eSSRN</b>
  *  	</li>
  *  	<li>
- *  		International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
- *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
+ *  		International Swaps and Derivatives Association (2021): SIMM v2.4 Methodology
+ *  			https://www.isda.org/a/CeggE/ISDA-SIMM-v2.4-PUBLIC.pdf
  *  	</li>
  *  </ul>
  * 

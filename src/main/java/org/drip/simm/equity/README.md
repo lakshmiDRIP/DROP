@@ -19,17 +19,27 @@ DROP SIMM Equity Package contains the Equity Risk Factor Calibration Settings.
  <i>EQRiskThresholdContainer21</i> holds the ISDA SIMM 2.1 Equity Risk Thresholds - the Equity Buckets and
  the Delta/Vega Limits defined for the Concentration Thresholds.
 
+ * [***EQRiskThresholdContainer24***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/equity/EQRiskThresholdContainer24.java)
+ <i>EQRiskThresholdContainer24</i> holds the ISDA SIMM 2.4 Equity Risk Thresholds - the Equity Buckets and
+ the Delta/Vega Limits defined for the Concentration Thresholds.
+
  * [***EQSettingsContainer20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/equity/EQSettingsContainer20.java)
  <i>EQSettingsContainer20</i> holds the ISDA SIMM 2.0 Equity Buckets and their Correlations.
 
  * [***EQSettingsContainer21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/equity/EQSettingsContainer21.java)
  <i>EQSettingsContainer21</i> holds the ISDA SIMM 2.1 Equity Buckets and their Correlations.
 
+ * [***EQSettingsContainer24***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/equity/EQSettingsContainer24.java)
+ <i>EQSettingsContainer24</i> holds the ISDA SIMM 2.4 Equity Buckets and their Correlations.
+
  * [***EQSystemics20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/equity/EQSystemics20.java)
  <i>EQSystemics20</i> contains the SIMM 2.0 Systemic Settings common to all Equity Risk Factors.
 
  * [***EQSystemics21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/equity/EQSystemics21.java)
  <i>EQSystemics21</i> contains the SIMM 2.1 Systemic Settings common to all Equity Risk Factors.
+
+ * [***EQSystemics24***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/equity/EQSystemics24.java)
+ <i>EQSystemics24</i> contains the SIMM 2.4 Systemic Settings common to all Equity Risk Factors.
 
  * [***MarketCapitalizationSystemics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/equity/MarketCapitalizationSystemics.java)
  <i>MarketCapitalizationSystemics</i> contains the Systemic Settings that contain the Market Capitalization
@@ -56,6 +66,9 @@ DROP SIMM Equity Package contains the Equity Risk Factor Calibration Settings.
 
  * International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
 		https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
+
+ * International Swaps and Derivatives Association (2021): SIMM v2.4 Methodology
+		https://www.isda.org/a/CeggE/ISDA-SIMM-v2.4-PUBLIC.pdf
 
 
 ## DROP Specifications

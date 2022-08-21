@@ -13,8 +13,11 @@ DROP SIMM Common Package contains the Common Cross Risk Factor Utilities.
  * [***CrossRiskClassCorrelation20***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/common/CrossRiskClassCorrelation20.java)
  <i>CrossRiskClassCorrelation20</i> contains the SIMM 2.0 Correlation between the Different Risk Classes.
 
- * [***CrossRiskClassCorrelation21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/common/CrossRiskClassCorrelation20.java)
+ * [***CrossRiskClassCorrelation21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/common/CrossRiskClassCorrelation21.java)
  <i>CrossRiskClassCorrelation21</i> contains the SIMM 2.1 Correlation between the Different Risk Classes.
+
+ * [***CrossRiskClassCorrelation24***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/common/CrossRiskClassCorrelation24.java)
+ <i>CrossRiskClassCorrelation24</i> contains the SIMM 2.4 Correlation between the Different Risk Classes.
 
  * [***DeltaVegaThreshold***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/common/DeltaVegaThreshold.java)
  <i>DeltaVegaThreshold</i> holds the ISDA SIMM Delta/Vega Limits defined for the Concentration Thresholds.
@@ -50,6 +53,9 @@ DROP SIMM Common Package contains the Common Cross Risk Factor Utilities.
 
  * International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
 		https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
+
+ * International Swaps and Derivatives Association (2021): SIMM v2.4 Methodology
+		https://www.isda.org/a/CeggE/ISDA-SIMM-v2.4-PUBLIC.pdf
 
 
 ## DROP Specifications

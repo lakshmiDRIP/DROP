@@ -18,6 +18,10 @@ DROP SIMM Rates Package contains the SIMM IR Risk Factor Settings.
  <i>IRSettingsContainer21</i> holds the ISDA SIMM 2.1 Tenor Vertex Risk Weights/Correlations for Single IR
  Curves, Cross Currencies, and Inflation.
 
+ * [***IRSettingsContainer24***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates/IRSettingsContainer24.java)
+ <i>IRSettingsContainer24</i> holds the ISDA SIMM 2.4 Tenor Vertex Risk Weights/Correlations for Single IR
+ Curves, Cross Currencies, and Inflation.
+
  * [***IRSystemics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates/IRSystemics.java)
  <i>IRSystemics</i> contains the Systemic Settings of the SIMM Interest Rate Risk Factors.
 
@@ -26,6 +30,9 @@ DROP SIMM Rates Package contains the SIMM IR Risk Factor Settings.
 
  * [***IRSystemics21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates/IRSystemics21.java)
  <i>IRSystemics21</i> contains the Systemic Settings of the SIMM 2.1 Interest Rate Risk Factors.
+
+ * [***IRSystemics24***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates/IRSystemics24.java)
+ <i>IRSystemics24</i> contains the Systemic Settings of the SIMM 2.4 Interest Rate Risk Factors.
 
  * [***IRThreshold***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates/IRThreshold.java)
  <i>IRThreshold</i> holds the ISDA SIMM Interest Rate Delta and Vega Concentration Thresholds.
@@ -36,6 +43,10 @@ DROP SIMM Rates Package contains the SIMM IR Risk Factor Settings.
 
  * [***IRThresholdContainer21***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates/IRThresholdContainer21.java)
  <i>IRThresholdContainer21</i> holds the ISDA SIMM 2.1 Interest Rate Thresholds - the Currency Risk Groups,
+ and the Delta/Vega Limits defined for the Concentration Thresholds.
+
+ * [***IRThresholdContainer24***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates/IRThresholdContainer24.java)
+ <i>IRThresholdContainer24</i> holds the ISDA SIMM 2.4 Interest Rate Thresholds - the Currency Risk Groups,
  and the Delta/Vega Limits defined for the Concentration Thresholds.
 
  * [***IRWeight***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates/IRWeight.java)
@@ -60,6 +71,9 @@ DROP SIMM Rates Package contains the SIMM IR Risk Factor Settings.
 
  * International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
 		https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
+
+ * International Swaps and Derivatives Association (2021): SIMM v2.4 Methodology
+		https://www.isda.org/a/CeggE/ISDA-SIMM-v2.4-PUBLIC.pdf
 
 
 ## DROP Specifications
