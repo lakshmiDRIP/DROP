@@ -203,7 +203,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 		org.drip.state.govvie.GovvieCurve gc = csqc.govvieState (govvieLabel());
 
-		return null == gc ? java.lang.Double.NaN : gc.yield (terminationAdjust (iWorkoutDate));
+		return null == gc ? java.lang.Double.NaN : gc.yld (terminationAdjust (iWorkoutDate));
 	}
 
 	private org.drip.param.valuation.WorkoutInfo exerciseCallYieldFromPrice (
@@ -1217,7 +1217,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 		org.drip.state.govvie.GovvieCurve gc = csqc.govvieState (govvieLabel());;
 
-		return null == gc ? java.lang.Double.NaN : gc.yield (terminationAdjust (iWorkoutDate));
+		return null == gc ? java.lang.Double.NaN : gc.yld (terminationAdjust (iWorkoutDate));
 	}
 
 	@Override public boolean setTreasuryBenchmark (
@@ -7387,7 +7387,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 		if (null == gc) throw new java.lang.Exception ("BondComponent::gSpreadFromYield => Invalid inputs");
 
-		return dblYield - gc.yield (iWorkoutDate);
+		return dblYield - gc.yld (iWorkoutDate);
 	}
 
 	@Override public double gSpreadFromYield (
@@ -8520,7 +8520,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 		if (null == gc) throw new java.lang.Exception ("BondComponent::jSpreadFromYield => Invalid inputs");
 
-		return dblYield - gc.yield (weightedAverageMaturityDate (valParams, csqc, iWorkoutDate,
+		return dblYield - gc.yld (weightedAverageMaturityDate (valParams, csqc, iWorkoutDate,
 			dblWorkoutFactor));
 	}
 
@@ -13047,7 +13047,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 		if (null == gc) throw new java.lang.Exception ("BondComponent::yieldFromGSpread => Invalid Inputs");
 
-		return gc.yield (iWorkoutDate) + dblGSpread;
+		return gc.yld (iWorkoutDate) + dblGSpread;
 	}
 
 	@Override public double yieldFromGSpread (
@@ -13132,7 +13132,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 		if (null == gc) throw new java.lang.Exception ("BondComponent::yieldFromJSpread => Invalid Inputs");
 
-		return dblJSpread + gc.yield (weightedAverageMaturityDate (valParams, csqc, iWorkoutDate,
+		return dblJSpread + gc.yld (weightedAverageMaturityDate (valParams, csqc, iWorkoutDate,
 			dblWorkoutFactor));
 	}
 

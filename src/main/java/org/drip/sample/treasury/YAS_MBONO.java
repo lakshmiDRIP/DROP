@@ -103,6 +103,22 @@ import org.drip.state.identifier.ForwardLabel;
  * @author Lakshmi Krishnamurthy
  */
 
+/**
+ * <i>YAS_MBONO</i> contains the sample demonstrating the replication of Bloomberg's Mexican MBONO MXN Bond
+ * 	YAS Functionality.
+ *
+ *	<br><br>
+ *  <ul>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/treasury/README.md">G20 Govvie Bond Definitions YAS</a></li>
+ *  </ul>
+ * <br><br>
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
 public class YAS_MBONO {
 
 	private static BondComponent TSYBond (

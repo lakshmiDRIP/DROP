@@ -109,7 +109,7 @@ public interface YieldEstimator {
 	 * @throws java.lang.Exception Thrown if the Yield cannot be calculated
 	 */
 
-	public abstract double yield (
+	public abstract double yld (
 		final int iDate)
 		throws java.lang.Exception;
 
@@ -123,7 +123,7 @@ public interface YieldEstimator {
 	 * @throws java.lang.Exception Thrown if the Yield cannot be calculated
 	 */
 
-	public abstract double yield (
+	public abstract double yld (
 		final org.drip.analytics.date.JulianDate dt)
 		throws java.lang.Exception;
 
@@ -137,7 +137,7 @@ public interface YieldEstimator {
 	 * @throws java.lang.Exception Thrown if the Yield cannot be calculated
 	 */
 
-	public abstract double yield (
+	public abstract double yld (
 		final java.lang.String strTenor)
 		throws java.lang.Exception;
 

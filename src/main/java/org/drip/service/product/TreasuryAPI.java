@@ -123,7 +123,7 @@ public class TreasuryAPI {
 		double dblFirstGovvieCurveYield = java.lang.Double.NaN;
 
 		try {
-			dblFirstGovvieCurveYield = gcFirst.yield (strMaturityTenor);
+			dblFirstGovvieCurveYield = gcFirst.yld (strMaturityTenor);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 

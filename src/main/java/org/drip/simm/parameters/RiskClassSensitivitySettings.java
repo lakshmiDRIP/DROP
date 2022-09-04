@@ -361,20 +361,32 @@ public class RiskClassSensitivitySettings
 	 * Generate the ISDA 2.4 Standard FX Sensitivity Settings
 	 * 
 	 * @param vegaDurationDays The Vega Duration Days
+	 * @param givenCurrency Given Currency
+	 * @param calculationCurrency Calculation Currency
 	 * 
 	 * @return The ISDA 2.4 Standard FX Sensitivity Settings
 	 */
 
 	public static final RiskClassSensitivitySettings ISDA_FX_24 (
-		final int vegaDurationDays)
+		final int vegaDurationDays,
+		final String givenCurrency,
+		final String calculationCurrency)
 	{
 		try
 		{
 			return new RiskClassSensitivitySettings (
-				RiskMeasureSensitivitySettings.ISDA_FX_DELTA_24(),
-				RiskMeasureSensitivitySettings.ISDA_FX_VEGA_24(),
+				RiskMeasureSensitivitySettings.ISDA_FX_DELTA_24 (
+					givenCurrency,
+					calculationCurrency
+				),
+				RiskMeasureSensitivitySettings.ISDA_FX_VEGA_24 (
+					givenCurrency,
+					calculationCurrency
+				),
 				RiskMeasureSensitivitySettings.ISDA_FX_CURVATURE_24 (
-					vegaDurationDays
+					vegaDurationDays,
+					givenCurrency,
+					calculationCurrency
 				)
 			);
 		}

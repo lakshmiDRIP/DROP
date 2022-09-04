@@ -401,7 +401,7 @@ public class CorporateIssueMetrics {
 						valParams,
 						null,
 						null,
-						mapGovvieCurve.get ("BASE").yield (aComp[i].maturityDate().julian())
+						mapGovvieCurve.get ("BASE").yld (aComp[i].maturityDate().julian())
 					)
 				), 1, 3, 100.) + "% ||"
 			);

@@ -360,7 +360,7 @@ public class FXClassMargin24
 			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
 
 		RiskClassSensitivitySettings riskClassSensitivitySettings = RiskClassSensitivitySettings.ISDA_FX_24
-			(vegaDurationDays);
+			(vegaDurationDays, "TRY", "USD");
 
 		Map<String, Map<String, Double>> bucketDeltaMap = CategorySensitivityMap (
 			currencyArray,

@@ -117,7 +117,7 @@ package org.drip.simm.fx;
 
 public class FXVolatilityGroupContainer24
 {
-	private static FXVolatilityGroup s_RegularFXVolatilityGroup = null;
+	private static FXVolatilityGroup s_Regular = null;
 
 	/**
 	 * Initialize the FX Volatility Group Threshold Container
@@ -129,7 +129,7 @@ public class FXVolatilityGroupContainer24
 	{
 		try
 		{
-			s_RegularFXVolatilityGroup = new FXVolatilityGroup (
+			s_Regular = new FXVolatilityGroup (
 				"Regular",
 				new String[]
 				{
@@ -159,11 +159,66 @@ public class FXVolatilityGroupContainer24
 	 * @return TRUE - The Specified Currency is of Regular Volatility
 	 */
 
-	public boolean IsRegularCurrency (
+	public static final boolean IsCurrencyRegular (
 		final String currency)
 	{
-		return s_RegularFXVolatilityGroup.contains (
+		return s_Regular.contains (
 			currency
 		);
+	}
+
+	/**
+	 * Indicate if the Specified Currency is of High Volatility
+	 * 
+	 * @param currency Specified Currency
+	 * 
+	 * @return TRUE - The Specified Currency is of High Volatility
+	 */
+
+	public static final boolean IsCurrencyHigh (
+		final String currency)
+	{
+		return !s_Regular.contains (
+			currency
+		);
+	}
+
+	/**
+	 * Get the Risk Weight for the Currency Pair
+	 * 
+	 * @param givenCurrency Given Currency
+	 * @param calculationCurrency Calculation Currency
+	 * 
+	 * @return Risk Weight for the Currency Pair
+	 */
+
+	public static final double RiskWeight (
+		final String givenCurrency,
+		final String calculationCurrency)
+	{
+		boolean regularGivenCurrency = IsCurrencyRegular (
+			givenCurrency
+		);
+
+		boolean regularCalculationCurrency = IsCurrencyRegular (
+			calculationCurrency
+		);
+
+		if (regularGivenCurrency && regularCalculationCurrency)
+		{
+			return FXSystemics24.REGULAR_REGULAR_DELTA_RISK_WEIGHT;
+		}
+
+		if (regularGivenCurrency && !regularCalculationCurrency)
+		{
+			return FXSystemics24.REGULAR_HIGH_DELTA_RISK_WEIGHT;
+		}
+
+		if (!regularGivenCurrency && regularCalculationCurrency)
+		{
+			return FXSystemics24.HIGH_REGULAR_DELTA_RISK_WEIGHT;
+		}
+
+		return FXSystemics24.HIGH_HIGH_DELTA_RISK_WEIGHT;
 	}
 }

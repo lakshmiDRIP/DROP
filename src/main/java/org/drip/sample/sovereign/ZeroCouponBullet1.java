@@ -373,7 +373,7 @@ public class ZeroCouponBullet1 {
 						valParams,
 						null,
 						null,
-						gc.yield (aComp[i].maturityDate().julian())
+						gc.yld (aComp[i].maturityDate().julian())
 					)
 				), 1, 3, 100.) + "% ||"
 			);

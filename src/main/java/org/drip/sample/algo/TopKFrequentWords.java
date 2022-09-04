@@ -99,6 +99,21 @@ import java.util.PriorityQueue;
  * @author Lakshmi Krishnamurthy
  */
 
+/**
+ * <i>TopKFrequentWords</i> demonstrates the Extraction of Top K Frequently Occuring Words.
+ * 
+ * <br><br>
+ *  <ul>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/README.md">C<sup>x</sup> R<sup>x</sup> In-Place Manipulation</a></li>
+ *  </ul>
+ * <br><br>
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
 public class TopKFrequentWords
 {
 

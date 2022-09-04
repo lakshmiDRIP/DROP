@@ -82,6 +82,21 @@ package org.drip.state.estimator;
  *  	limitations under the License.
  */
 
+/**
+ * <i>GlobalControlCurveParams</i> contains the Parameters controlling multiple Stretches in a Curve.
+ *
+ *  <br><br>
+ *  <ul>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator/README.md">Multi-Pass Customized Stretch Curve</a></li>
+ *  </ul>
+ * <br><br>
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
 public class GlobalControlCurveParams extends org.drip.state.estimator.SmoothingCurveStretchParams {
 	private org.drip.spline.stretch.BoundarySettings _bs = null;
 

@@ -340,7 +340,7 @@ public class FXVegaMargin24
 			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
 
 		RiskMeasureSensitivitySettings riskMeasureSensitivitySettings =
-			RiskMeasureSensitivitySettings.ISDA_FX_VEGA_24();
+			RiskMeasureSensitivitySettings.ISDA_FX_VEGA_24 ("TRY", "USD");
 
 		Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap = BucketRiskFactorSensitivityMap
 			(notional);

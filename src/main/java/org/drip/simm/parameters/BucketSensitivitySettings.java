@@ -24,6 +24,7 @@ import org.drip.simm.fx.FXRiskThresholdContainer24;
 import org.drip.simm.fx.FXSystemics20;
 import org.drip.simm.fx.FXSystemics21;
 import org.drip.simm.fx.FXSystemics24;
+import org.drip.simm.fx.FXVolatilityGroupContainer24;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -422,12 +423,16 @@ public class BucketSensitivitySettings
 	 * Construct the Standard ISDA 2.4 Instance of FX Delta Settings
 	 * 
 	 * @param categoryIndex The Category Index
+	 * @param givenCurrency Given Currency
+	 * @param calculationCurrency Calculation Currency
 	 * 
 	 * @return The Standard ISDA 2.4 Instance of FX Delta Settings
 	 */
 
 	public static BucketSensitivitySettings ISDA_FX_24 (
-		final int categoryIndex)
+		final int categoryIndex,
+		final String givenCurrency,
+		final String calculationCurrency)
 	{
 		Map<Integer, Double> fxConcentrationCategoryDeltaMap = FXRiskThresholdContainer24.CategoryDeltaMap();
 
@@ -441,7 +446,10 @@ public class BucketSensitivitySettings
 			return fxConcentrationCategoryDeltaMap.containsKey (
 				categoryIndex
 			) ? new BucketSensitivitySettings (
-				FXSystemics24.REGULAR_REGULAR_DELTA_RISK_WEIGHT,
+				FXVolatilityGroupContainer24.RiskWeight (
+					givenCurrency,
+					calculationCurrency
+				),
 				fxConcentrationCategoryDeltaMap.get (
 					categoryIndex
 				),

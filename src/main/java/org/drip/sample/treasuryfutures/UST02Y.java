@@ -443,7 +443,7 @@ public class UST02Y {
 						valParams,
 						null,
 						null,
-						gc.yield (aComp[i].maturityDate().julian())
+						gc.yld (aComp[i].maturityDate().julian())
 					)
 				), 2, 2, 100.) + "% ||"
 			);

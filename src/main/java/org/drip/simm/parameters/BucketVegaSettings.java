@@ -31,6 +31,7 @@ import org.drip.simm.fx.FXRiskThresholdContainer24;
 import org.drip.simm.fx.FXSystemics20;
 import org.drip.simm.fx.FXSystemics21;
 import org.drip.simm.fx.FXSystemics24;
+import org.drip.simm.fx.FXVolatilityGroupContainer24;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -472,12 +473,16 @@ public class BucketVegaSettings
 	 * Construct the Standard ISDA 2.4 Bucket FX Settings
 	 * 
 	 * @param vegaCategory The Vega Category
+	 * @param givenCurrency Given Currency
+	 * @param calculationCurrency Calculation Currency
 	 * 
 	 * @return The Standard ISDA 2.4 Bucket FX Settings
 	 */
 
 	public static BucketVegaSettings ISDA_FX_24 (
-		final String vegaCategory)
+		final String vegaCategory,
+		final String givenCurrency,
+		final String calculationCurrency)
 	{
 		Map<String, Double> fxConcentrationCategoryVegaMap = FXRiskThresholdContainer24.CategoryVegaMap();
 
@@ -486,7 +491,10 @@ public class BucketVegaSettings
 			return fxConcentrationCategoryVegaMap.containsKey (
 				vegaCategory
 			) ? new BucketVegaSettings (
-				FXSystemics24.VEGA_RISK_WEIGHT * FXSystemics24.REGULAR_REGULAR_DELTA_RISK_WEIGHT,
+				FXSystemics24.VEGA_RISK_WEIGHT * FXVolatilityGroupContainer24.RiskWeight (
+					givenCurrency,
+					calculationCurrency
+				),
 				fxConcentrationCategoryVegaMap.get (
 					vegaCategory
 				),

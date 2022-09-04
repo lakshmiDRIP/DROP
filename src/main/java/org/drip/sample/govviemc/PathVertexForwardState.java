@@ -214,7 +214,7 @@ public class PathVertexForwardState {
 			String strDump = "\t[" + FormatUtil.FormatDouble (iPath, 3, 0, 1.) + "] => ";
 
 			for (int iTreasury = 0; iTreasury < iNumTreasury; ++iTreasury)
-				strDump = strDump + FormatUtil.FormatDouble (aGC[iPath].yield (astrTenor[iTreasury]), 1, 3, 100.) + "% |";
+				strDump = strDump + FormatUtil.FormatDouble (aGC[iPath].yld (astrTenor[iTreasury]), 1, 3, 100.) + "% |";
 
 			System.out.println (strDump + "|");
 		}

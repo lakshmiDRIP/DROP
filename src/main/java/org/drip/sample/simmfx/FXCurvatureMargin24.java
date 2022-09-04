@@ -341,7 +341,7 @@ public class FXCurvatureMargin24
 			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
 
 		RiskMeasureSensitivitySettings riskMeasureSensitivitySettings =
-			RiskMeasureSensitivitySettings.ISDA_FX_CURVATURE_24 (vegaDurationDays);
+			RiskMeasureSensitivitySettings.ISDA_FX_CURVATURE_24 (vegaDurationDays, "BRL", "USD");
 
 		Map<String, Map<String, Double>> bucketRiskFactorSensitivityMap = BucketRiskFactorSensitivityMap
 			(notional);

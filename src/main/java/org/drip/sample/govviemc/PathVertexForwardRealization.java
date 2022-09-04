@@ -241,7 +241,7 @@ public class PathVertexForwardRealization {
 			strDump += " " + FormatUtil.FormatDouble (adblInitialForward[i], 1, 3, 100.) + "% |";
 
 		for (int iDimension = 0; iDimension < iNumDimension; ++iDimension)
-			strDump = strDump + " " + FormatUtil.FormatDouble (bsgyGround.yield (astrTenor[iDimension]), 1, 3, 100.) + "% |";
+			strDump = strDump + " " + FormatUtil.FormatDouble (bsgyGround.yld (astrTenor[iDimension]), 1, 3, 100.) + "% |";
 
 		System.out.println (strDump + "|");
 
@@ -307,7 +307,7 @@ public class PathVertexForwardRealization {
 				);
 
 				for (int iDimension = 0; iDimension < iNumDimension; ++iDimension)
-					strDump = strDump + " " + FormatUtil.FormatDouble (ffgc.yield (astrTenor[iDimension]), 1, 3, 100.) + "% |";
+					strDump = strDump + " " + FormatUtil.FormatDouble (ffgc.yld (astrTenor[iDimension]), 1, 3, 100.) + "% |";
 
 				System.out.println (strDump + "|");
 			}

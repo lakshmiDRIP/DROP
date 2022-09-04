@@ -184,7 +184,7 @@ public class BrokenDateGovvieSpot {
 				dtSpot + "," +
 				i + "M," +
 				dtMaturity + "," +
-				FormatUtil.FormatDouble (gc.yield (dtMaturity), 1, 8, 100.) + "%"
+				FormatUtil.FormatDouble (gc.yld (dtMaturity), 1, 8, 100.) + "%"
 			);
 		}
 

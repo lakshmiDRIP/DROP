@@ -339,7 +339,7 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 		double dblShiftedYield = java.lang.Double.NaN;
 
 		try {
-			dblShiftedYield = gc.yield (iWorkoutDate) + dblZCBump;
+			dblShiftedYield = gc.yld (iWorkoutDate) + dblZCBump;
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 

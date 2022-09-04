@@ -200,7 +200,7 @@ public class GovvieStateShifted {
 						valParams,
 						null,
 						null,
-						gc.yield (treasury.maturityDate().julian())
+						gc.yld (treasury.maturityDate().julian())
 					)
 				), 1, 4, 1.) + " |"
 			);
@@ -230,7 +230,7 @@ public class GovvieStateShifted {
 						valParams,
 						null,
 						null,
-						gcBase.yield (treasury.maturityDate().julian())
+						gcBase.yld (treasury.maturityDate().julian())
 					)
 				), 1, 2, 100.) + "% |" +
 				FormatUtil.FormatDouble (treasury.yieldFromPrice (
@@ -243,7 +243,7 @@ public class GovvieStateShifted {
 						valParams,
 						null,
 						null,
-						gcBump.yield (treasury.maturityDate().julian())
+						gcBump.yld (treasury.maturityDate().julian())
 					)
 				), 1, 2, 100.) + "% ||"
 			);

@@ -141,7 +141,7 @@ public class FlatForwardGovvieCurve extends org.drip.state.govvie.ExplicitBootGo
 			throw new java.lang.Exception ("FlatForwardGovvieCurve Constructor => Invalid Inputs!");
 	}
 
-	@Override public double yield (
+	@Override public double yld (
 		final int iDate)
 		throws java.lang.Exception
 	{

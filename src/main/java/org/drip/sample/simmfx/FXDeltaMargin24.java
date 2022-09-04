@@ -257,7 +257,7 @@ public class FXDeltaMargin24
 			(MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA);
 
 		RiskMeasureSensitivitySettings riskMeasureSensitivitySettings =
-			RiskMeasureSensitivitySettings.ISDA_FX_DELTA_24();
+			RiskMeasureSensitivitySettings.ISDA_FX_DELTA_24 ("TRY", "USD");
 
 		Map<String, Map<String, Double>> categorySensitivityMap = CategorySensitivityMap (
 			currencyArray,

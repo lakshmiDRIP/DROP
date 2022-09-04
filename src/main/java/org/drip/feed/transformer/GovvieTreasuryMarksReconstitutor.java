@@ -201,7 +201,7 @@ public class GovvieTreasuryMarksReconstitutor {
 				try {
 					strCleansedInput += "," + org.drip.service.common.FormatUtil.FormatDouble
 						(aOutputBenchmarkTreasury[j].yieldFromPrice (valParamsSpot, null, null,
-							aOutputBenchmarkTreasury[j].priceFromYield (valParamsSpot, null, null, gc.yield
+							aOutputBenchmarkTreasury[j].priceFromYield (valParamsSpot, null, null, gc.yld
 								(aOutputBenchmarkTreasury[j].maturityDate()))), 1, 6, 1.);
 				} catch (java.lang.Exception e) {
 					// e.printStackTrace();

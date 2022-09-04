@@ -146,7 +146,7 @@ public class TreasuryBondExplainProcessor extends org.drip.historical.engine.Hor
 				(govvieLabel);
 
 			try {
-				double dblMarketMeasureRollDown = gc.yield (iMaturityDate);
+				double dblMarketMeasureRollDown = gc.yld (iMaturityDate);
 
 				if ("Native".equalsIgnoreCase (strRollDownTenor))
 					mmrd = new org.drip.historical.engine.MarketMeasureRollDown (dblMarketMeasureRollDown);
@@ -200,7 +200,7 @@ public class TreasuryBondExplainProcessor extends org.drip.historical.engine.Hor
 		java.lang.String strAccrualDC = tsyComponent.accrualDC();
 
 		try {
-			double dblYield = gc.yield (dtMaturity.julian());
+			double dblYield = gc.yld (dtMaturity.julian());
 
 			double dblAccrued = tsyComponent.accrued (iValuationDate, csqc);
 
@@ -285,7 +285,7 @@ public class TreasuryBondExplainProcessor extends org.drip.historical.engine.Hor
 		try {
 			org.drip.state.govvie.GovvieCurve gc = csqc.govvieState (tsyComponent.govvieLabel());
 
-			double dblYield = gc.yield (tsyComponent.maturityDate().julian());
+			double dblYield = gc.yld (tsyComponent.maturityDate().julian());
 
 			double dblCumulativeCouponDCF = org.drip.analytics.daycount.Convention.YearFraction
 				(tsyComponent.effectiveDate().julian(), iValuationDate, tsyComponent.accrualDC(), false,

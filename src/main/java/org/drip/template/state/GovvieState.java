@@ -168,7 +168,7 @@ public class GovvieState {
 				"\t||  " + strLatentStateLabel + " |  TREASURY  | " +
 				adtMaturity[i] + " | " + FormatUtil.FormatDouble (adblYield[i], 1, 2, 100.) +
 				"% | Yield | " +
-				FormatUtil.FormatDouble (gc.yield (adtMaturity[i]), 1, 2, 100.) +
+				FormatUtil.FormatDouble (gc.yld (adtMaturity[i]), 1, 2, 100.) +
 				"% | Discount Factor | " +
 				FormatUtil.FormatDouble (gc.df (adtMaturity[i]), 1, 4, 1.) +
 				"  ||"

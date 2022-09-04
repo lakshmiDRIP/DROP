@@ -121,7 +121,7 @@ public class BasisSplineGovvieYield extends org.drip.state.govvie.GovvieCurve {
 		_span = span;
 	}
 
-	@Override public double yield (
+	@Override public double yld (
 		final int iDate)
 		throws java.lang.Exception
 	{

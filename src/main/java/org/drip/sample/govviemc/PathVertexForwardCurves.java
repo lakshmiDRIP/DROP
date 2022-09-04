@@ -208,7 +208,7 @@ public class PathVertexForwardCurves {
 			strDump = "\t||" + FormatUtil.FormatDouble (iPath + 1, 2, 0, 1.) + " |";
 
 			for (int iVertex = 0; iVertex < iNumVertex; ++iVertex)
-				strDump = strDump + "   " + FormatUtil.FormatDouble (aaGC[iPath][iVertex].yield ("5Y"), 1, 3, 100.) + "%   |";
+				strDump = strDump + "   " + FormatUtil.FormatDouble (aaGC[iPath][iVertex].yld ("5Y"), 1, 3, 100.) + "%   |";
 
 			System.out.println (strDump + "|");
 		}

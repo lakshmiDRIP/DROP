@@ -799,7 +799,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 				mapBondFuturesMeasure.put ("CTDRepoRate", dblCTDRepoRate = repoState.repo (iExpiryDate));
 
 			if (null != gc)
-				mapBondFuturesMeasure.put ("CTDTreasuryYield", dblCTDTreasuryYield = gc.yield (iExpiryDate));
+				mapBondFuturesMeasure.put ("CTDTreasuryYield", dblCTDTreasuryYield = gc.yld (iExpiryDate));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 

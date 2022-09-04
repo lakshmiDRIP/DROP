@@ -943,10 +943,15 @@ public class RiskMeasureSensitivitySettings
 	/**
 	 * Construct an ISDA 2.4 FX DELTA Standard Instance of RiskMeasureSensitivitySettings
 	 * 
+	 * @param givenCurrency Given Currency
+	 * @param calculationCurrency Calculation Currency
+	 * 
 	 * @return ISDA 2.4 FX DELTA Standard Instance of RiskMeasureSensitivitySettings
 	 */
 
-	public static final RiskMeasureSensitivitySettings ISDA_FX_DELTA_24()
+	public static final RiskMeasureSensitivitySettings ISDA_FX_DELTA_24 (
+		final String givenCurrency,
+		final String calculationCurrency)
 	{
 		Map<String, BucketSensitivitySettings> bucketDeltaSettingsMap =
 			new HashMap<String, BucketSensitivitySettings>();
@@ -975,7 +980,9 @@ public class RiskMeasureSensitivitySettings
 				bucketDeltaSettingsMap.put (
 					deltaCategory,
 					BucketSensitivitySettings.ISDA_FX_24 (
-						deltaCategoryIndex
+						deltaCategoryIndex,
+						givenCurrency,
+						calculationCurrency
 					)
 				);
 
@@ -1136,10 +1143,15 @@ public class RiskMeasureSensitivitySettings
 	/**
 	 * Construct an ISDA 2.4 FX VEGA Standard Instance of RiskMeasureSensitivitySettings
 	 * 
+	 * @param givenCurrency Given Currency
+	 * @param calculationCurrency Calculation Currency
+	 * 
 	 * @return ISDA 2.4 FX VEGA Standard Instance of RiskMeasureSensitivitySettings
 	 */
 
-	public static final RiskMeasureSensitivitySettings ISDA_FX_VEGA_24()
+	public static final RiskMeasureSensitivitySettings ISDA_FX_VEGA_24 (
+		final String givenCurrency,
+		final String calculationCurrency)
 	{
 		Map<String, BucketSensitivitySettings> bucketVegaSettingsMap =
 			new HashMap<String, BucketSensitivitySettings>();
@@ -1167,7 +1179,9 @@ public class RiskMeasureSensitivitySettings
 				bucketVegaSettingsMap.put (
 					vegaCategoryOuter,
 					BucketVegaSettings.ISDA_FX_24 (
-						vegaCategoryOuter
+						vegaCategoryOuter,
+						givenCurrency,
+						calculationCurrency
 					)
 				);
 
@@ -1345,12 +1359,16 @@ public class RiskMeasureSensitivitySettings
 	 * Construct an ISDA 2.4 FX Curvature Standard Instance of RiskMeasureSensitivitySettings
 	 * 
 	 * @param vegaDurationDays The Vega Duration Days
+	 * @param givenCurrency Given Currency
+	 * @param calculationCurrency Calculation Currency
 	 * 
 	 * @return ISDA 2.4 FX Curvature Standard Instance of RiskMeasureSensitivitySettings
 	 */
 
 	public static final RiskMeasureSensitivitySettings ISDA_FX_CURVATURE_24 (
-		final int vegaDurationDays)
+		final int vegaDurationDays,
+		final String givenCurrency,
+		final String calculationCurrency)
 	{
 		Map<String, BucketSensitivitySettings> bucketCurvatureSettingsMap =
 			new HashMap<String, BucketSensitivitySettings>();
@@ -1380,7 +1398,9 @@ public class RiskMeasureSensitivitySettings
 					curvatureCategoryOuter,
 					BucketCurvatureSettings.ISDA_FX_24 (
 						curvatureCategoryOuter,
-						vegaDurationDays
+						vegaDurationDays,
+						givenCurrency,
+						calculationCurrency
 					)
 				);
 

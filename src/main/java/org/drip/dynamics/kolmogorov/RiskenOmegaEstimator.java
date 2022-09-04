@@ -75,6 +75,44 @@ package org.drip.dynamics.kolmogorov;
  *  	limitations under the License.
  */
 
+/**
+ * <i>RiskenOmegaEstimator</i> exposes the Omega Estimation using the Risken Algorithm. The References are:
+ *  
+ * 	<br><br>
+ *  <ul>
+ * 		<li>
+ * 			Bogoliubov, N. N., and D. P. Sankevich (1994): N. N. Bogoliubov and Statistical Mechanics
+ * 				<i>Russian Mathematical Surveys</i> <b>49 (5)</b> 19-49
+ * 		</li>
+ * 		<li>
+ * 			Holubec, V., K. Kroy, and S. Steffenoni (2019): Physically Consistent Numerical Solver for
+ * 				Time-dependent Fokker-Planck Equations <i>Physical Review E</i> <b>99 (4)</b> 032117
+ * 		</li>
+ * 		<li>
+ * 			Kadanoff, L. P. (2000): <i>Statistical Physics: Statics, Dynamics, and Re-normalization</i>
+ * 				<b>World Scientific</b>
+ * 		</li>
+ * 		<li>
+ * 			Ottinger, H. C. (1996): <i>Stochastic Processes in Polymeric Fluids</i> <b>Springer-Verlag</b>
+ * 				Berlin-Heidelberg
+ * 		</li>
+ * 		<li>
+ * 			Wikipedia (2019): Fokker-Planck Equation
+ * 				https://en.wikipedia.org/wiki/Fokker%E2%80%93Planck_equation
+ * 		</li>
+ *  </ul>
+ *
+ *	<br><br>
+ *  <ul>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md">HJM, Hull White, LMM, and SABR Dynamic Evolution Models</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/kolmogorov/README.md">Fokker Planck Kolmogorov Forward/Backward</a></li>
+ *  </ul>
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
 public interface RiskenOmegaEstimator
 {
 

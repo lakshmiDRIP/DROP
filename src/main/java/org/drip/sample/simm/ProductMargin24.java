@@ -1205,7 +1205,9 @@ public class ProductMargin24
 
 		ProductClassSettings productClassSettings = ProductClassSettings.ISDA_24 (
 			fxCurrencyList,
-			vegaDurationDays
+			vegaDurationDays,
+			"TRY",
+			"USD"
 		);
 
 		RiskClassSensitivity equityRiskClassSensitivity = EquitySensitivity (

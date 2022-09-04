@@ -225,13 +225,17 @@ public class ProductClassSettings
 	 * 
 	 * @param currencyList Currency List
 	 * @param vegaDurationDays The Volatility Duration in Days
+	 * @param givenCurrency Given Currency
+	 * @param calculationCurrency Calculation Currency
 	 * 
 	 * @return ISDA SIMM 2.4 Version of ProductClassSettings
 	 */
 
 	public static final ProductClassSettings ISDA_24 (
 		final List<String> currencyList,
-		final int vegaDurationDays)
+		final int vegaDurationDays,
+		final String givenCurrency,
+		final String calculationCurrency)
 	{
 		try
 		{
@@ -243,7 +247,9 @@ public class ProductClassSettings
 					vegaDurationDays
 				),
 				RiskClassSensitivitySettings.ISDA_FX_24 (
-					vegaDurationDays
+					vegaDurationDays,
+					givenCurrency,
+					calculationCurrency
 				),
 				RiskClassSensitivitySettingsIR.ISDA_24 (
 					currencyList

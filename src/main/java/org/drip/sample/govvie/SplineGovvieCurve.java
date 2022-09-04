@@ -187,8 +187,8 @@ public class SplineGovvieCurve {
 			System.out.println (
 				"\t[" + new JulianDate (aiMaturityDate[i]) + "] => " +
 				FormatUtil.FormatDouble (adblYield[i], 1, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (gc.yield (aiMaturityDate[i]), 1, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (gcCalib.yield (aiMaturityDate[i]), 1, 2, 100.) + "% || "
+				FormatUtil.FormatDouble (gc.yld (aiMaturityDate[i]), 1, 2, 100.) + "% | " +
+				FormatUtil.FormatDouble (gcCalib.yld (aiMaturityDate[i]), 1, 2, 100.) + "% || "
 			);
 
 		EnvManager.TerminateEnv();

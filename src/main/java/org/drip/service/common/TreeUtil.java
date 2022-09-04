@@ -76,7 +76,7 @@ package org.drip.service.common;
  */
 
 /**
- * <i>TreeUtil</i> implements a Tree Utility Functions.
+ * <i>TreeUtil</i> implements Tree Utility Functions.
  * 
  * <br><br>
  *  <ul>

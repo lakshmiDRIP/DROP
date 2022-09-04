@@ -13,6 +13,7 @@ import org.drip.simm.credit.CRQSettingsContainer24;
 import org.drip.simm.equity.EQSettingsContainer20;
 import org.drip.simm.equity.EQSettingsContainer21;
 import org.drip.simm.equity.EQSettingsContainer24;
+import org.drip.simm.fx.FXVolatilityGroupContainer24;
 import org.drip.simm.rates.IRSettingsContainer20;
 import org.drip.simm.rates.IRSettingsContainer21;
 import org.drip.simm.rates.IRSettingsContainer24;
@@ -218,6 +219,11 @@ public class ISDASettingsContainer
 		}
 
 		if (!CTSettingsContainer24.Init())
+		{
+			return false;
+		}
+
+		if (!FXVolatilityGroupContainer24.Init())
 		{
 			return false;
 		}
