@@ -11,7 +11,7 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v4.67.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v5.73.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -178,6 +178,41 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 	* Related Distributions
 	* Transformations
 	* Use in Tolerance Intervals
+	* References
+ * Householder Transformation
+	* Overview
+	* Definition
+		* Transformation
+		* Householder Matrix
+		* Properties
+	* Applications
+		* Numerical Linear Algebra
+			* QR Decomposition
+			* Tridiagonalization
+			* Examples
+	* Computational and Theoretical Relationship to other Unitary Transformations
+	* References
+ * The Householder Transformation in Numerical Linear Algebra
+	* Abstract
+	* Linear Algebra
+		* Geometric Meanings of the Determinant and Matrix Norm
+		* Computation of Determinants
+		* Computation of Matrix Inverses
+		* Error Propagation
+	* Gaussian Elimination
+		* Row Reduction using Gaussian Elimination
+		* Gaussian Elimination without Pivoting
+		* Gaussian Elimination with Pivoting
+	* Householder Transformations
+		* Geometric Construction
+		* Construction with Specified Source and Destination
+		* Properties of Q, Algebraically Obtained
+		* Properties of Q, Geometrically Obtained
+		* Repeated Householders for Upper-Triangularization
+		* Householders for Column-zeroing
+		* Computation of Determinants
+		* Computation of Matrix Inverses
+		* Rotation Matrices
 	* References
 
 
