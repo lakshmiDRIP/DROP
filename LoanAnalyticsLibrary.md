@@ -11,7 +11,7 @@ Loan Analytics Library contains the Valuation and Risk Functionality for Asset B
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/LoanAnalytics/LoanAnalytics_v4.36.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/LoanAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/LoanAnalytics/LoanAnalytics_v5.74.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/LoanAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -57,6 +57,18 @@ Loan Analytics Library contains the Valuation and Risk Functionality for Asset B
 	* CPR And CDR Curve Estimation
 	* Credit Model Future Enhancements
 	* References
+ * Asset-Backed Requirements
+	* All Asset-Backed Desks
+	* Search, Filter, Group, and Sort Capability
+	* Position Management
+	* Position Summary Reports
+	* Historical
+	* Pricing
+	* PnL
+	* Interest Rate Risk
+	* Offerings
+	* What-if Analysis – Scratch Pads
+	* Non-Agency RMBS/Agency RMBS Pass-through
 
 
 ## DROP Specifications
