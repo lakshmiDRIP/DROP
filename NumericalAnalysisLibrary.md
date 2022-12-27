@@ -11,7 +11,7 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v5.73.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v5.82.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -213,6 +213,76 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 		* Computation of Determinants
 		* Computation of Matrix Inverses
 		* Rotation Matrices
+	* References
+ * Hilbert Space
+	* Overview
+	* Definition and Illustration
+		* Motivating Example: Euclidean Vector Space
+		* Definition
+		* Second Example: Sequence Spaces
+	* Examples
+		* Lebesgue Spaces
+		* Sobolev Spaces
+		* Spaces of Holomorphic Functions
+			* Hardy Spaces
+			* Bergman Spaces
+	* Applications
+		* Sturm-Liouville Theory
+		* Partial Differential Equations
+		* Ergodic Theory
+		* Fourier Analysis
+		* Quantum Mechanics
+		* Color Perception
+	* Properties
+		* Pythagorean Identity
+		* Parallelogram Identity and Polarization
+		* Best Approximation
+		* Duality
+		* Weakly-convergent Sequences
+		* Banach Space Properties
+	* Operators on Hilbert Spaces
+		* Bounded Operators
+		* Unbounded Operators
+	* Constructions
+		* Direct Sums
+		* Tensor Products
+	* Orthonormal Bases
+		* Sequence Spaces
+		* Bessel's Inequality and Parseval's Formula
+		* Hilbert Dimension
+		* Separable Spaces
+	* Orthogonal Complements and Projections
+	* Spectral Theory
+	* References
+ * Positive-definite Kernel
+	* Definition
+		* Some General Properties
+		* Examples of Positive-definite Kernels
+	* Connection with Reproducing Kernel Hilbert Spaces and Feature Maps
+	* Kernels and Distances
+	* Some Applications
+		* Kernels in Machine Learning
+		* Kernels in Probabilistic Models
+		* Numerical Solution of Partial Differential Equations
+		* Other Applications
+	* References
+ * Reproducing Kernel Hilbert Space
+	* Overview
+	* Definition
+	* Example
+	* Moore-Aronszajn Theorem
+	* Integral Operator's and Mercer's Theorem
+	* Featur Maps
+	* Properties
+	* Common Examples
+		* Bilinear Kernels
+		* Polynomial Kernels
+		* Radial Basis Function Kernels
+			* Gaussian or Squared Exponential Kernel
+			* Laplacian Kernel
+		* Bergman Kernels
+	* Extension to Vector-valued Functions
+	* Connection between RKHS and ReLU Function
 	* References
 
 
