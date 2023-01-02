@@ -11,7 +11,7 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v5.82.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v5.84.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -283,6 +283,18 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 		* Bergman Kernels
 	* Extension to Vector-valued Functions
 	* Connection between RKHS and ReLU Function
+	* References
+ * Representer Theorem
+	* Overview
+	* Formal Statement
+	* Generalizations
+	* Applications
+	* References
+ * Kernel Methods
+	* Overview
+	* Motivation and Informal Explanation
+	* Mathematics: The Kernel Trick
+	* Applications
 	* References
 
 
