@@ -93,6 +93,10 @@ package org.drip.service.common;
 public class ListUtil<V>
 {
 
+	/**
+	 * <i>ListNode</i> inside of <i>ListUtil</i>.
+	 */
+
 	public static class ListNode<V>
 	{
 		private V _value = null;

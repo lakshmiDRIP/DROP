@@ -117,6 +117,10 @@ import java.util.PriorityQueue;
 public class TopKFrequentWords
 {
 
+	/**
+	 * <i>WordCount</i> implements the Word Count Duo.
+	 */
+
 	public static class WordCount implements Comparator<WordCount>
 	{
 		public int _count = 0;

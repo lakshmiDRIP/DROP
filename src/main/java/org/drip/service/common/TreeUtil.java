@@ -93,11 +93,23 @@ package org.drip.service.common;
 public class TreeUtil
 {
 
+	/**
+	 * <i>TreeNode</i> implements Linked Tree Node.
+	 */
+
 	public class TreeNode
 	{
 		private TreeNode _left = null;
 		private TreeNode _right = null;
 		private double _value = java.lang.Double.NaN;
+
+		/**
+		 * TreeNode Constructor
+		 * 
+		 * @param value Node Value
+		 * @param left Left Node
+		 * @param right Right Node
+		 */
 
 		public TreeNode (
 			final double value,
@@ -109,21 +121,43 @@ public class TreeUtil
 			_value = value;
 		}
 
+		/**
+		 * Retrieve the Tree Node Value
+		 * 
+		 * @return The Tree Node Value
+		 */
+
 		public double value()
 		{
 			return _value;
 		}
+
+		/**
+		 * Retrieve the Left Tree Node
+		 * 
+		 * @return The Left Tree Node
+		 */
 
 		public TreeNode left()
 		{
 			return _left;
 		}
 
+		/**
+		 * Retrieve the Right Tree Node
+		 * 
+		 * @return The Right Tree Node
+		 */
+
 		public TreeNode right()
 		{
 			return _right;
 		}
 	}
+
+	/**
+	 * <i>DiameterHeightPair</i> implements Diameter Height Duo.
+	 */
 
 	public static class DiameterHeightPair
 	{
@@ -154,6 +188,14 @@ public class TreeUtil
 			return _diameter;
 		}
 	}
+
+	/**
+	 * Retrieve the Right-side View of the Tree
+	 * 
+	 * @param root Root of the Trtee
+	 * 
+	 * @return The Right-side View of the Tree
+	 */
 
 	public static final java.util.List<java.lang.Double> RightSideView (
 		final TreeNode root)
