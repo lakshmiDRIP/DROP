@@ -124,6 +124,14 @@ import org.drip.validation.distance.ImportanceWeight;
 public class ImportanceWeight13e
 {
 
+	/**
+	 * Entry Point
+	 * 
+	 * @param argumentArray Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
+
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception

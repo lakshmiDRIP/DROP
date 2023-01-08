@@ -106,6 +106,10 @@ public class OpenRegressorSet implements org.drip.regression.core.RegressorSet {
 	private java.util.List<org.drip.regression.core.UnitRegressor> _setRegressors = new
 		java.util.ArrayList<org.drip.regression.core.UnitRegressor>();
 
+	/**
+	 * OpenRegressorSet Constructor
+	 */
+
 	public OpenRegressorSet()
 	{
 		_of = new org.drip.function.definition.R1ToR1 (null)

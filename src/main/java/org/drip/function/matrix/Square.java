@@ -117,7 +117,7 @@ package org.drip.function.matrix;
 
 public class Square
 {
-	public double[][] _grid = null;
+	private double[][] _grid = null;
 
 	/**
 	 * Square Constructor

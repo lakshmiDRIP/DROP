@@ -99,6 +99,16 @@ package org.drip.regression.spline;
  */
 
 public class BasisSplineRegressionEngine extends org.drip.regression.core.RegressionEngine {
+
+	/**
+	 * BasisSplineRegressionEngine Constructor
+	 * 
+	 * @param iNumRuns Run Count
+	 * @param iRegressionDetail Regression Detail Setting
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
 	public BasisSplineRegressionEngine (
 		final int iNumRuns,
 		final int iRegressionDetail)
@@ -107,7 +117,7 @@ public class BasisSplineRegressionEngine extends org.drip.regression.core.Regres
 		super (iNumRuns, iRegressionDetail);
 	}
 
-	public static void main (
+	/* public static void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
@@ -118,5 +128,5 @@ public class BasisSplineRegressionEngine extends org.drip.regression.core.Regres
 		bsre.addRegressorSet (new org.drip.regression.spline.BasisSplineRegressorSet());
 
 		bsre.launch();
-	}
+	} */
 }

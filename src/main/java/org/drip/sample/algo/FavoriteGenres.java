@@ -150,7 +150,7 @@ public class FavoriteGenres
 		return userGenreListMap;
 	}
 
-	public static final Map<String, List<String>> LeadingUserGenreMap (
+	private static final Map<String, List<String>> LeadingUserGenreMap (
 		final Map<String, List<String>> userSongListMap,
 		final Map<String, List<String>> genreSongListMap)
 	{
@@ -213,7 +213,7 @@ public class FavoriteGenres
 		return leadingUserGenreMap;
 	}
 
-	public static final void Test1()
+	private static final void Test1()
 	{
 		Map<String, List<String>> userSongListMap = new HashMap<String, List<String>>();
 
@@ -344,7 +344,7 @@ public class FavoriteGenres
 		);
 	}
 
-	public static final void Test2()
+	private static final void Test2()
 		throws Exception
 	{
 		Map<String, List<String>> userSongListMap = new HashMap<String, List<String>>();
@@ -391,6 +391,8 @@ public class FavoriteGenres
 		final String[] argumentArray)
 		throws Exception
 	{
+		Test1();
+
 		Test2();
 	}
 }

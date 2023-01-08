@@ -97,13 +97,28 @@ package org.drip.product.govvie;
 
 public class TreasuryFutures extends org.drip.product.definition.Component {
 
-	/*
-	 * Bond Futures Valuation Settings
+	/**
+	 * Forward Price OAS
 	 */
 
 	public static final int FORWARD_PRICE_OAS = 0;
+
+	/**
+	 * Forward Price Yield
+	 */
+
 	public static final int FORWARD_PRICE_YIELD = 1;
+
+	/**
+	 * Forward Price Z-Spread
+	 */
+
 	public static final int FORWARD_PRICE_ZSPREAD = 2;
+
+	/**
+	 * Forward Price Credit Basis
+	 */
+
 	public static final int FORWARD_PRICE_CREDIT_BASIS = 3;
 
 	private double[] _adblConversionFactor = null;

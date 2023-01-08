@@ -104,15 +104,28 @@ package org.drip.product.creator;
 
 public class CDXRefDataHolder
 {
+
+	/**
+	 * CDX Reference Data Map
+	 */
+
 	public static org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.product.params.CDXRefDataParams>
 		_mapCDXRefData  = new
 			org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.product.params.CDXRefDataParams>();
+
+	/**
+	 * Date/Series CDX Coupon Double Map
+	 */
 
 	public static
 		org.drip.analytics.support.CaseInsensitiveTreeMap<java.util.Map<org.drip.analytics.date.JulianDate,
 			java.lang.Integer>> _mmCDXRDBFirstCouponSeries = new
 				org.drip.analytics.support.CaseInsensitiveTreeMap<java.util.Map<org.drip.analytics.date.JulianDate,
 					java.lang.Integer>>();
+
+	/**
+	 * Series/Date CDX Coupon Double Map
+	 */
 
 	public static org.drip.analytics.support.CaseInsensitiveTreeMap<java.util.Map<java.lang.Integer,
 		org.drip.analytics.date.JulianDate>> _mmCDXRDBSeriesFirstCoupon = new
@@ -29065,6 +29078,12 @@ public class CDXRefDataHolder
 
 		return true;
 	}
+
+	/**
+	 * Initialize the Full CDX Reference Data
+	 * 
+	 * @return TRUE - Full CDX Reference Data succesfully set
+	 */
 
 	public static final boolean InitFullCDXRefDataSet()
 	{

@@ -202,7 +202,7 @@ public class FreshPromotion
 		return encodedWordArray;
 	}
 
-	public static final boolean RewardCriteriaMatch (
+	private static final boolean RewardCriteriaMatch (
 		final List<String[]> criteriaArrayList,
 		final String[] shoppingArray)
 	{
@@ -284,7 +284,7 @@ public class FreshPromotion
 		return true;
 	}
 
-	public static final void Test1()
+	private static final void Test1()
 		throws Exception
 	{
 		List<String[]> criteriaArrayList = new ArrayList<String[]>();
@@ -316,7 +316,7 @@ public class FreshPromotion
 		);
 	}
 
-	public static final void Test2()
+	private static final void Test2()
 		throws Exception
 	{
 		List<String[]> criteriaArrayList = new ArrayList<String[]>();
@@ -348,10 +348,20 @@ public class FreshPromotion
 		);
 	}
 
+	/**
+	 * Entry Point
+	 * 
+	 * @param argumentArray Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
+
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
+		Test1();
+
 		Test2();
 	}
 }

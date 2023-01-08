@@ -358,7 +358,15 @@ public class CDXRefData {
 		return cdxrd;
 	}
 
-	private static final boolean LoadCDXDefinitions (
+	/**
+	 * Load Built-in CDX Definitions
+	 * 
+	 * @param strCDXRefDataFile CDX Reference Data Definitions File
+	 * 
+	 * @return TRUE - Built-in CDX Definitions successfully loaded
+	 */
+
+	public static final boolean LoadCDXDefinitions (
 		final java.lang.String strCDXRefDataFile)
 	{
 		if (null == strCDXRefDataFile || strCDXRefDataFile.isEmpty()) {
@@ -548,9 +556,9 @@ public class CDXRefData {
 		return true;
 	}
 
-	public static void main (
+	/* public static void main (
 		final java.lang.String[] astrArgs)
 	{
 		LoadCDXDefinitions ("C:\\Lakshmi\\RefDataAndMarks\\CDXRefData1Raw.csv");
-	}
+	} */
 }

@@ -225,6 +225,18 @@ public class R1ScaleInvariantScaleParameterEstimator
 		return null;
 	}
 
+	/**
+	 * Infer the Distribution Moment's Scale Parameter
+	 * 
+	 * @param shape Shape Parameter
+	 * @param moment Moment Parameter
+	 * @param gammaEstimator Gamma Estimator
+	 * 
+	 * @return The Scale Parameter
+	 * 
+	 * @throws java.lang.Exception Thrown if the Scale Parameter cannot be estimated
+	 */
+
 	public double inferScaleParameterDistributionMoment (
 		final double shape,
 		final int moment,

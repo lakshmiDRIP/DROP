@@ -126,16 +126,12 @@ public class CreditAnalyticsRegressionEngine extends org.drip.regression.core.Re
 		return super.initRegressionEnv();
 	}
 
-	public static void main (
+	/* public static void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
 		CreditAnalyticsRegressionEngine care = new CreditAnalyticsRegressionEngine (10,
 			org.drip.regression.core.RegressionEngine.REGRESSION_DETAIL_MODULE_UNIT_DECOMPOSED);
-
-		/*
-		 * Add the regressor sets: Refer to the implementation of the corresponding regressors
-		 */
 
 		care.addRegressorSet (new CreditCurveRegressor());
 
@@ -143,10 +139,6 @@ public class CreditAnalyticsRegressionEngine extends org.drip.regression.core.Re
 
 		care.addRegressorSet (new ZeroCurveRegressor());
 
-		/*
-		 * Launch regression - and that's it!
-		 */
-
 		care.launch();
-	}
+	} */
 }

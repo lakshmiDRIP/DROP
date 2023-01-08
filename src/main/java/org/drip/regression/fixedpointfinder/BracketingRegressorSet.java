@@ -107,6 +107,10 @@ public class BracketingRegressorSet implements org.drip.regression.core.Regresso
 	private java.util.List<org.drip.regression.core.UnitRegressor> _setRegressors = new
 		java.util.ArrayList<org.drip.regression.core.UnitRegressor>();
 
+	/**
+	 * BracketingRegressorSet Constructor
+	 */
+
 	public BracketingRegressorSet()
 	{
 		_of = new org.drip.function.definition.R1ToR1 (null)

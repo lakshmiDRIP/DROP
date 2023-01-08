@@ -101,10 +101,10 @@ package org.drip.product.params;
  */
 
 public class CDXIdentifier {
-	public int _iSeries = 0;
-	public int _iVersion = 0;
-	public java.lang.String _strIndex = "";
-	public java.lang.String _strTenor = "";
+	private int _iSeries = 0;
+	private int _iVersion = 0;
+	private java.lang.String _strIndex = "";
+	private java.lang.String _strTenor = "";
 
 	/**
 	 * Create the CDX Identifier from the CDX Code

@@ -98,7 +98,7 @@ import java.util.Stack;
 public class ShopkeeperSale
 {
 
-	public static final int ProcessDiscount (
+	private static final int ProcessDiscount (
 		final int[] priceArray,
 		final List<Integer> discountedItemList)
 	{
@@ -137,7 +137,7 @@ public class ShopkeeperSale
 		return totalDiscountedPrice;
 	}
 
-	public static final void Test1()
+	private static final void Test1()
 		throws Exception
 	{
 		int[] priceArray =
@@ -159,7 +159,7 @@ public class ShopkeeperSale
 		);
 	}
 
-	public static final void Test2()
+	private static final void Test2()
 		throws Exception
 	{
 		int[] priceArray =
@@ -203,10 +203,22 @@ public class ShopkeeperSale
 		);
 	}
 
+	/**
+	 * Entry Point
+	 * 
+	 * @param argumentArray Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
+
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
+		Test1();
+
+		Test2();
+
 		Test3();
 	}
 }

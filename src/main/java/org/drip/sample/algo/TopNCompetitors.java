@@ -145,7 +145,7 @@ public class TopNCompetitors
 		return competitorCountMap;
 	}
 
-	public static final List<String> OrderByDecreasingFrequency (
+	private static final List<String> OrderByDecreasingFrequency (
 		final int topNCompetitors,
 		final List<String> competitorList,
 		final List<String> reviewList)
@@ -218,6 +218,14 @@ public class TopNCompetitors
 
 		return topNCompetitorList;
 	}
+
+	/**
+	 * Entry Point
+	 * 
+	 * @param argumentArray Command line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
 
 	public static final void main (
 		final String[] argumentArray)

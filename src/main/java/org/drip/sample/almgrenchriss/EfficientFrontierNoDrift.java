@@ -133,6 +133,14 @@ import org.drip.service.env.EnvManager;
 
 public class EfficientFrontierNoDrift {
 
+	/**
+	 * Entry Point
+	 * 
+	 * @param astrArgs Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
+
 	public static void main (
 		final String[] astrArgs)
 		throws Exception

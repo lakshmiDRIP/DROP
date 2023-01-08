@@ -95,7 +95,7 @@ package org.drip.portfolioconstruction.optimizer;
 
 public class ConstraintHierarchy
 {
-	public int[] _constraintOrderArray = null;
+	private int[] _constraintOrderArray = null;
 	private org.drip.portfolioconstruction.optimizer.ConstraintTerm[] _constraintTermArray = null;
 
 	/**

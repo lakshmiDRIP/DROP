@@ -176,7 +176,7 @@ public class QuadraticRationalShapeControl extends org.drip.function.definition.
 		return _dblLambda;
 	}
 
-	public static final void main (
+	/* public static final void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
@@ -185,5 +185,5 @@ public class QuadraticRationalShapeControl extends org.drip.function.definition.
 		System.out.println (qrsc.derivative (0., 2));
 
 		System.out.println (qrsc.derivative (1., 2));
-	}
+	} */
 }

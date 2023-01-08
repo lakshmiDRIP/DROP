@@ -1600,6 +1600,14 @@ public class NumberUtil {
 		);
 	}
 
+	/**
+	 * Estimate the Trailing Factorial Zeros
+	 * 
+	 * @param n Factorial NUmber
+	 * 
+	 * @return Number of Training Factor Zeros
+	 */
+
 	public static final int TrailingFactorialZeros (
 		final int n)
 	{
@@ -1682,6 +1690,14 @@ public class NumberUtil {
 		);
 	}
 
+	/**
+	 * Identify the n<sup>th</sup> Digit of the Number
+	 * 
+	 * @param n The Number
+	 * 
+	 * @return The n<sup>th</sup> Digit
+	 */
+
 	public static final int NthDigit (
 		final int n)
 	{
@@ -1728,7 +1744,7 @@ public class NumberUtil {
 		);
 	}
 
-	/*
+	/**
 	 * Given two integers dividend and divisor, divide two integers without using multiplication, division,
 	 *  and mod operator.
 	 *  
@@ -1797,7 +1813,7 @@ public class NumberUtil {
 		return negative ? -1 * reversedNumber : reversedNumber;
 	}
 
-	public static final void main (
+	/* public static final void main (
 		final String[] argumentArray)
 	{
 		System.out.println (ReverseInteger (123));
@@ -1807,5 +1823,5 @@ public class NumberUtil {
 		System.out.println (ReverseInteger (120));
 
 		System.out.println (ReverseInteger (0));
-	}
+	} */
 }

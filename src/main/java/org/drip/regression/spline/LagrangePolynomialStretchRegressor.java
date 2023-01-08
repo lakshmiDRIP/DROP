@@ -119,6 +119,15 @@ public class LagrangePolynomialStretchRegressor extends org.drip.regression.core
 	private org.drip.numerical.differentiation.WengertJacobian _wj = null;
 	private org.drip.spline.stretch.SingleSegmentSequence _sss = null;
 
+	/**
+	 * LagrangePolynomialStretchRegressor Constructor
+	 * 
+	 * @param strName Regressor Name
+	 * @param strScenarioName Scenario Name
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
 	public LagrangePolynomialStretchRegressor (
 		final java.lang.String strName,
 		final java.lang.String strScenarioName)

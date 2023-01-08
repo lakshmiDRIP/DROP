@@ -166,7 +166,7 @@ public class TopKFrequentWords
 		return wordCountMap;
 	}
 
-	public static final List<String> WordList (
+	private static final List<String> WordList (
 		final String[] wordArray,
 		final int k)
 	{
@@ -224,6 +224,14 @@ public class TopKFrequentWords
 
 		return wordList;
 	}
+
+	/**
+	 * Entry Point
+	 * 
+	 * @param argumentArray Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
 
 	public static final void main (
 		final String[] argumentArray)

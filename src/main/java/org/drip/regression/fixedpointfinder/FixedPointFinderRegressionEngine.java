@@ -101,6 +101,16 @@ package org.drip.regression.fixedpointfinder;
  */
 
 public class FixedPointFinderRegressionEngine extends org.drip.regression.core.RegressionEngine {
+
+	/**
+	 * FixedPointFinderRegressionEngine Constuctor
+	 * 
+	 * @param iNumRuns Number of Runs
+	 * @param iRegressionDetail Regression Detail Setting
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
 	public FixedPointFinderRegressionEngine (
 		final int iNumRuns,
 		final int iRegressionDetail)
@@ -109,7 +119,7 @@ public class FixedPointFinderRegressionEngine extends org.drip.regression.core.R
 		super (iNumRuns, iRegressionDetail);
 	}
 
-	public static void main (
+	/* public static void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
@@ -123,5 +133,5 @@ public class FixedPointFinderRegressionEngine extends org.drip.regression.core.R
 		fpfre.addRegressorSet (new org.drip.regression.fixedpointfinder.CompoundBracketingRegressorSet());
 
 		fpfre.launch();
-	}
+	} */
 }

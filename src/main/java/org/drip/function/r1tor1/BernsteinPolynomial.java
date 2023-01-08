@@ -118,12 +118,12 @@ public class BernsteinPolynomial extends org.drip.function.r1tor1.UnivariateConv
 				(iComplementExponent)));
 	}
 
-	public static final void main (
+	/* public static final void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
 		BernsteinPolynomial bp = new BernsteinPolynomial (3, 3);
 
 		System.out.println ("BPDeriv[0.25] = " + bp.derivative (0.25, 1));
-	}
+	} */
 }

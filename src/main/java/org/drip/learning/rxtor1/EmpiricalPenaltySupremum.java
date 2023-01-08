@@ -99,6 +99,15 @@ public class EmpiricalPenaltySupremum {
 	private int _iIndex = -1;
 	private double _dblValue = java.lang.Double.NaN;
 
+	/**
+	 * EmpiricalPenaltySupremum Constructor
+	 * 
+	 * @param iIndex Penalty Index
+	 * @param dblValue Penalty Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
 	public EmpiricalPenaltySupremum (
 		final int iIndex,
 		final double dblValue)

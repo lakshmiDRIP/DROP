@@ -37,17 +37,37 @@ package org.drip.analytics.holset;
  *  	limitations under the License.
  */
 
+/**
+ * <i>THBHoliday</i> holds the THB Holidays.
+ *
+ *	<br><br>
+ *  <ul>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md">Date, Cash Flow, and Cash Flow Period Measure Generation Utilities</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/holset/README.md">Built in Locale Holiday Set</a></li>
+ *  </ul>
+ * <br><br>
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
 public class THBHoliday implements org.drip.analytics.holset.LocationHoliday {
+
+	/**
+	 * THBHoliday Constructor
+	 */
+
 	public THBHoliday()
 	{
 	}
 
-	public java.lang.String getHolidayLoc()
+	@Override public java.lang.String getHolidayLoc()
 	{
 		return "THB";
 	}
 
-	public org.drip.analytics.eventday.Locale getHolidaySet()
+	@Override public org.drip.analytics.eventday.Locale getHolidaySet()
 	{
 		org.drip.analytics.eventday.Locale lh = new
 			org.drip.analytics.eventday.Locale();

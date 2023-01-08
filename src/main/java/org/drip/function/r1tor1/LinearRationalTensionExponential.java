@@ -117,7 +117,7 @@ public class LinearRationalTensionExponential extends org.drip.function.r1tor1.U
 			org.drip.function.r1tor1.LinearRationalShapeControl (dblRationalTension));
 	}
 
-	public static final void main (
+	/* public static final void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
@@ -126,5 +126,5 @@ public class LinearRationalTensionExponential extends org.drip.function.r1tor1.U
 		System.out.println ("LRET[0.00] = " + lret.evaluate (0.00));
 
 		System.out.println ("LRETDeriv[0.00] = " + lret.derivative (0.00, 1));
-	}
+	} */
 }

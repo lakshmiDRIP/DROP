@@ -1400,6 +1400,16 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		return _notionalSetting.notionalAmount();
 	}
 
+	/**
+	 * Retrieve the Coupon Factor for the given Date
+	 * 
+	 * @param iDate The Date
+	 * 
+	 * @return The Coupon Factor
+	 * 
+	 * @throws java.lang.Exception Thrown if the Coupon Factor cannot be calculated
+	 */
+
 	public double couponFactor (
 		final int iDate)
 		throws java.lang.Exception

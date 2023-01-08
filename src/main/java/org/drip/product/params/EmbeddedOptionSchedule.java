@@ -105,6 +105,11 @@ package org.drip.product.params;
  */
 
 public class EmbeddedOptionSchedule {
+
+	/**
+	 * Default Call Notice Period
+	 */
+
 	public static final int CALL_NOTICE_PERIOD_DEFAULT = 30;
 
 	private int _aiDate[] = null;

@@ -2716,6 +2716,12 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 		return sb.toString();
 	}
 
+	/**
+	 * Construct the Bond Reference Data JSON
+	 * 
+	 * @return The Bond Reference Data JSON
+	 */
+
 	public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String> toJSON()
 	{
 		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String> mapJSON = new

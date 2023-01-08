@@ -94,6 +94,14 @@ public class PropertiesParser
 	private java.util.Map<java.lang.String, java.lang.String> _valueMap =
 		new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.String>();
 
+	/**
+	 * Properties Parser Constructor
+	 * 
+	 * @param fileName Properties File Name
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
 	public PropertiesParser (
 		final java.lang.String fileName)
 		throws java.lang.Exception

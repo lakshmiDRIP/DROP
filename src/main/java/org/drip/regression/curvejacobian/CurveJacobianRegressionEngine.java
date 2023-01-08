@@ -125,7 +125,7 @@ public class CurveJacobianRegressionEngine extends org.drip.regression.core.Regr
 		return super.initRegressionEnv();
 	}
 
-	public static void main (
+	/* public static void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
@@ -142,5 +142,5 @@ public class CurveJacobianRegressionEngine extends org.drip.regression.core.Regr
 		cjre.addRegressorSet (new org.drip.regression.curvejacobian.DiscountCurveJacobianRegressorSet());
 
 		cjre.launch();
-	}
+	} */
 }

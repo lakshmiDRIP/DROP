@@ -96,8 +96,8 @@ package org.drip.portfolioconstruction.core;
 public class Asset
 	extends org.drip.portfolioconstruction.core.Block
 {
-	public java.lang.String _sector = "";
-	public java.lang.String _currency = "";
+	private java.lang.String _sector = "";
+	private java.lang.String _currency = "";
 
 	/**
 	 * Asset Constructor

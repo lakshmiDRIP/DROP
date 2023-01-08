@@ -119,12 +119,12 @@ package org.drip.execution.discrete;
  */
 
 public class ShortfallIncrementDistribution extends org.drip.measure.gaussian.R1UnivariateNormal {
-	public double _dblMarketDynamicVariance = java.lang.Double.NaN;
-	public double _dblPermanentImpactVariance = java.lang.Double.NaN;
-	public double _dblTemporaryImpactVariance = java.lang.Double.NaN;
-	public double _dblMarketDynamicExpectation = java.lang.Double.NaN;
-	public double _dblPermanentImpactExpectation = java.lang.Double.NaN;
-	public double _dblTemporaryImpactExpectation = java.lang.Double.NaN;
+	private double _dblMarketDynamicVariance = java.lang.Double.NaN;
+	private double _dblPermanentImpactVariance = java.lang.Double.NaN;
+	private double _dblTemporaryImpactVariance = java.lang.Double.NaN;
+	private double _dblMarketDynamicExpectation = java.lang.Double.NaN;
+	private double _dblPermanentImpactExpectation = java.lang.Double.NaN;
+	private double _dblTemporaryImpactExpectation = java.lang.Double.NaN;
 
 	/**
 	 * ShortfallIncrementDistribution Constructor

@@ -201,7 +201,7 @@ public class HyperbolicTension extends org.drip.function.definition.R1ToR1 {
 		return _dblTension;
 	}
 
-	public static final void main (
+	/* public static final void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
@@ -218,5 +218,5 @@ public class HyperbolicTension extends org.drip.function.definition.R1ToR1 {
 		System.out.println ("EDeriv[0.5] = " + e.derivative (0.5, 2));
 
 		System.out.println ("EDeriv[1.0] = " + e.derivative (1.0, 2));
-	}
+	} */
 }

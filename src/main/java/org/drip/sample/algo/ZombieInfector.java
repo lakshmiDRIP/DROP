@@ -96,6 +96,14 @@ import org.drip.spaces.big.ZombieMatrix;
 public class ZombieInfector
 {
 
+	/**
+	 * Entry Point
+	 * 
+	 * @param argumentArray Command line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
+
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception

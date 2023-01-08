@@ -524,6 +524,14 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 		_strCode = strCode;
 	}
 
+	/**
+	 * Set Name of the CDS Component
+	 * 
+	 * @param strName The Name
+	 * 
+	 * @return CDS Component Name successfully Set
+	 */
+
 	public boolean setName (
 		final java.lang.String strName)
 	{
@@ -1410,8 +1418,17 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 	 */
 
 	public class SpreadCalibOP {
-		public double _dblCalibResult = java.lang.Double.NaN;
-		public org.drip.state.credit.CreditCurve _ccCalib = null;
+		private double _dblCalibResult = java.lang.Double.NaN;
+		private org.drip.state.credit.CreditCurve _ccCalib = null;
+
+		/**
+		 * SpreadCalibOP Constructor
+		 * 
+		 * @param dblCalibResult Calibration Result
+		 * @param ccCalib Calibrated Credit Curve
+		 * 
+		 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+		 */
 
 		public SpreadCalibOP (
 			final double dblCalibResult,
@@ -1433,12 +1450,22 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 	public class SpreadCalibrator {
 		private org.drip.product.definition.CreditDefaultSwap _cds = null;
 
-		/*
-		 * Calibration Type
+		/**
+		 * Flat Instrument Node Calibration Type
 		 */
 
 		public static final int CALIBRATION_TYPE_FLAT_INSTRUMENT_NODE = 1;
+
+		/**
+		 * Flat Curve Node Calibration Type
+		 */
+
 		public static final int CALIBRATION_TYPE_FLAT_CURVE_NODES = 2;
+
+		/**
+		 * Parallel Node Calibration Type
+		 */
+
 		public static final int CALIBRATION_TYPE_NODE_PARALLEL_BUMP = 4;
 
 		private int _iCalibType = CALIBRATION_TYPE_FLAT_CURVE_NODES;

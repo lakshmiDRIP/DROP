@@ -215,7 +215,7 @@ public class LargestItemAssociation
 		return visitedVertexSet;
 	}
 
-	public static final Set<String> MaximalLexicographicGroupSet (
+	private static final Set<String> MaximalLexicographicGroupSet (
 		final List<String[]> vertexPairList)
 	{
 		Map<String, Set<String>> vertexNeighborMap = VertexNeighborMap (
@@ -284,6 +284,14 @@ public class LargestItemAssociation
 
 		return maximalGroupSet;
 	}
+
+	/**
+	 * Entry Point
+	 * 
+	 * @param argumentArray Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
 
 	public static final void main (
 		final String[] argumentArray)

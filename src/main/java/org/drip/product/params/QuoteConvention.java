@@ -139,6 +139,16 @@ public class QuoteConvention implements org.drip.product.params.Validatable {
 			iSettleAdjustMode);
 	}
 
+	/**
+	 * Compute the Settlement Date
+	 * 
+	 * @param valParams Valuation Parameters
+	 * 
+	 * @return The Settlement Date
+	 * 
+	 * @throws java.lang.Exception Thrown if the Settlement Date cannot be calculated
+	 */
+
 	public int settleDate (
 		final org.drip.param.valuation.ValuationParams valParams)
 		throws java.lang.Exception

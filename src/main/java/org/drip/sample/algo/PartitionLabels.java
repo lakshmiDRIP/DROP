@@ -192,7 +192,7 @@ public class PartitionLabels
 		return mergedStretch;
 	}
 
-	public static final TreeMap<Integer, CharStretch> SortedCharacterStretchMap (
+	private static final TreeMap<Integer, CharStretch> SortedCharacterStretchMap (
 		final Map<Character, CharStretch> characterStretchMap)
 	{
 		TreeMap<Integer, CharStretch> sortedCharacterStretchMap = new TreeMap<Integer, CharStretch>();
@@ -210,7 +210,7 @@ public class PartitionLabels
 		return sortedCharacterStretchMap;
 	}
 
-	public static final List<Integer> SegmentIndexList (
+	private static final List<Integer> SegmentIndexList (
 		final String word)
 	{
 		Map<Character, CharStretch> characterStretchMap = CharacterStretchMap (
@@ -266,6 +266,14 @@ public class PartitionLabels
 
 		return segmentIndexList;
 	}
+
+	/**
+	 * Entry Point
+	 * 
+	 * @param argumentArray Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
 
 	public static final void main (
 		final String[] argumentArray)

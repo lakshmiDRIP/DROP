@@ -98,7 +98,7 @@ import java.util.List;
 public class OptimalUtilization
 {
 
-	public static final List<List<Integer>> ClosestTargetPairList (
+	private static final List<List<Integer>> ClosestTargetPairList (
 		final int[][] gridA,
 		final int[][] gridB,
 		final int target)
@@ -182,7 +182,7 @@ public class OptimalUtilization
 		return closestTargetPairList;
 	}
 
-	public static final void Test1()
+	private static final void Test1()
 	{
 		int[][] gridA =
 		{
@@ -204,7 +204,7 @@ public class OptimalUtilization
 		);
 	}
 
-	public static final void Test2()
+	private static final void Test2()
 	{
 		int[][] gridA =
 		{
@@ -230,7 +230,7 @@ public class OptimalUtilization
 		);
 	}
 
-	public static final void Test3()
+	private static final void Test3()
 	{
 		int[][] gridA =
 		{
@@ -254,7 +254,7 @@ public class OptimalUtilization
 		);
 	}
 
-	public static final void Test4()
+	private static final void Test4()
 	{
 		int[][] gridA =
 		{
@@ -278,10 +278,24 @@ public class OptimalUtilization
 		);
 	}
 
+	/**
+	 * Entry Point
+	 * 
+	 * @param argumentArray Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
+
 	public static void main (
 		final String[] argumentArray)
 		throws Exception
 	{
+		Test1();
+
+		Test2();
+
+		Test3();
+
 		Test4();
 	}
 }

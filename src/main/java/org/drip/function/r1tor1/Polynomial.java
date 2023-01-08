@@ -163,7 +163,7 @@ public class Polynomial extends org.drip.function.definition.R1ToR1 {
 		 return _iDegree;
 	}
 
-	public static final void main (
+	/* public static final void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
@@ -180,5 +180,5 @@ public class Polynomial extends org.drip.function.definition.R1ToR1 {
 		System.out.println ("Deriv[0.5] = " + poly.derivative (0.5, 3));
 
 		System.out.println ("Deriv[1.0] = " + poly.derivative (1.0, 3));
-	}
+	} */
 }

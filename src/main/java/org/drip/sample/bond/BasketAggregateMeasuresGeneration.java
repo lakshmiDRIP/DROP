@@ -683,6 +683,14 @@ public class BasketAggregateMeasuresGeneration {
 		System.out.println ("Accrued:          " + FormatUtil.FormatDouble (mapResult.get ("Accrued"), 1, 2, 100.));
 	}
 
+	/**
+	 * Entry Point
+	 * 
+	 * @param astArgs Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
+
 	public static final void main (
 		final String astrArgs[])
 		throws Exception

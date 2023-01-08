@@ -122,7 +122,7 @@ public class UnivariateReciprocal extends org.drip.function.definition.R1ToR1 {
 		return 1. / _au.evaluate (dblVariate);
 	}
 
-	public static final void main (
+	/* public static final void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
@@ -140,5 +140,5 @@ public class UnivariateReciprocal extends org.drip.function.definition.R1ToR1 {
 		System.out.println ("UnivariateReciprocalDeriv[0.5] = " + ur.derivative (0.5, 3));
 
 		System.out.println ("UnivariateReciprocalDeriv[1.0] = " + ur.derivative (1.0, 3));
-	}
+	} */
 }

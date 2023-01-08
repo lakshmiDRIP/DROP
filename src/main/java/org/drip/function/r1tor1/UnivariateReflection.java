@@ -149,7 +149,7 @@ public class UnivariateReflection extends org.drip.function.definition.R1ToR1 {
 		return -1. * _au.integrate (1. - dblBegin, 1. - dblEnd);
 	}
 
-	public static final void main (
+	/* public static final void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
@@ -166,5 +166,5 @@ public class UnivariateReflection extends org.drip.function.definition.R1ToR1 {
 		System.out.println ("UnivariateReflectionDeriv[0.5] = " + ur.derivative (0.5, 3));
 
 		System.out.println ("UnivariateReflectionDeriv[1.0] = " + ur.derivative (1.0, 3));
-	}
+	} */
 }

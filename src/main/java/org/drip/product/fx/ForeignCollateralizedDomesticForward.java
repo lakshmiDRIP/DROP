@@ -127,16 +127,34 @@ public class ForeignCollateralizedDomesticForward {
 		_iMaturityDate = dtMaturity.julian();
 	}
 
+	/**
+	 * Set the Primary Code
+	 * 
+	 * @param strCode The Primary Code
+	 */
+
 	public java.lang.String getPrimaryCode()
 	{
 		return _strCode;
 	}
+
+	/**
+	 * Set the Primary Code
+	 * 
+	 * @param strCode The Primary Code
+	 */
 
 	public void setPrimaryCode (
 		final java.lang.String strCode)
 	{
 		_strCode = strCode;
 	}
+
+	/**
+	 * Retrieve the Array of Secondary Codes
+	 * 
+	 * @return The Array of Secondary Codes
+	 */
 
 	public java.lang.String[] getSecondaryCode()
 	{
@@ -155,6 +173,12 @@ public class ForeignCollateralizedDomesticForward {
 		return new java.lang.String[] {astrCodeTokens[0]};
 	}
 
+	/**
+	 * Retrieve the Maturity Date
+	 * 
+	 * @return The Maturity Date
+	 */
+
 	public org.drip.analytics.date.JulianDate getMaturityDate()
 	{
 		try {
@@ -166,10 +190,27 @@ public class ForeignCollateralizedDomesticForward {
 		return null;
 	}
 
+	/**
+	 * Retrieve the Currency Pair
+	 * 
+	 * @return The Currency Pair
+	 */
+
 	public org.drip.product.params.CurrencyPair getCcyPair()
 	{
 		return _cp;
 	}
+
+	/**
+	 * Value the Product
+	 * 
+	 * @param valParams Valuation Parameters
+	 * @param pricerParams Pricer Parameters
+	 * @param csqs Curve Surface Container Parameters
+	 * @param quotingParams Valuation Customization Parameters
+	 * 
+	 * @return The Computed Product Map
+	 */
 
 	public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> value (
 		final org.drip.param.valuation.ValuationParams valParams,
@@ -236,6 +277,12 @@ public class ForeignCollateralizedDomesticForward {
 
 		return mapResult;
 	}
+
+	/**
+	 * Retrieve the Measure Names
+	 * 
+	 * @return Set of Measure Names
+	 */
 
 	public java.util.Set<java.lang.String> getMeasureNames()
 	{

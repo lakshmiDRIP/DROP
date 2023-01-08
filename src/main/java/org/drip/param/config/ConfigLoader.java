@@ -551,7 +551,7 @@ public class ConfigLoader {
 		return mapHols;
 	}
 
-	public static void main (
+	/* public static void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
@@ -565,5 +565,5 @@ public class ConfigLoader {
 			System.out.println (me.getKey() + "=" + me.getValue());
 
 		System.out.println ("Logger: " + LoggerLocation (strConfigFile));
-	}
+	} */
 }
