@@ -399,7 +399,7 @@ public class CrossOvernightFloatingStream {
 		return lsfc;
 	}
 
-	public static final Map<String, Double> CompoundingRun (
+	private static final Map<String, Double> CompoundingRun (
 		final ForwardLabel fri)
 		throws Exception
 	{
@@ -517,6 +517,14 @@ public class CrossOvernightFloatingStream {
 			null
 		);
 	}
+
+	/**
+	 * Entry Point
+	 * 
+	 * @param astrArgs Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
 
 	public static final void main (
 		final String[] astrArgs)

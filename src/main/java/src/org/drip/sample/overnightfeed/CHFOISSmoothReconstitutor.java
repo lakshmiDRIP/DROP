@@ -100,6 +100,12 @@ import org.drip.service.env.EnvManager;
 
 public class CHFOISSmoothReconstitutor {
 
+	/**
+	 * Entry Point
+	 * 
+	 * @param args Command Line Argument Array
+	 */
+
 	public static final void main (
 		final String[] args)
 	{

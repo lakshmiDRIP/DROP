@@ -104,8 +104,17 @@ import org.drip.state.creator.ScenarioMarketSurfaceBuilder;
  */
 
 public class BrokenDateVolSurface {
+
+	/**
+	 * Entry Point
+	 * 
+	 * @param astrArgs Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
+
 	public static final void main (
-		final String[] asrtArgs)
+		final String[] astrArgs)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");

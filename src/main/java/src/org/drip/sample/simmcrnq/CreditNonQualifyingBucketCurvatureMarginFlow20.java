@@ -338,6 +338,14 @@ public class CreditNonQualifyingBucketCurvatureMarginFlow20
 		System.out.println();
 	}
 
+	/**
+	 * Entry Point
+	 * 
+	 * @param inputs Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
+
 	public static final void main (
 		final String[] inputs)
 		throws Exception
