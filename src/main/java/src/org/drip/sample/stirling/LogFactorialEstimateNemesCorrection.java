@@ -124,6 +124,14 @@ import org.drip.specialfunction.loggamma.StirlingSeriesEstimator;
 public class LogFactorialEstimateNemesCorrection
 {
 
+	/**
+	 * Entry Point
+	 * 
+	 * @param argumentArray Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
+
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception

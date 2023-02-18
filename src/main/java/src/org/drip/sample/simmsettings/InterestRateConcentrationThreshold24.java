@@ -182,6 +182,14 @@ public class InterestRateConcentrationThreshold24
 		System.out.println ("\t||-------------------------------------------------------------------------------------------------||");
 	}
 
+	/**
+	 * Entry Point
+	 * 
+	 * @param args Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
+
 	public static final void main (
 		final String[] args)
 		throws Exception

@@ -325,6 +325,14 @@ public class FXClassMargin21
 		return bucketRiskFactorSensitivityMap;
 	}
 
+	/**
+	 * Entry Point
+	 * 
+	 * @param argumentArray Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
+
 	public static void main (
 		final String[] argumentArray)
 		throws Exception

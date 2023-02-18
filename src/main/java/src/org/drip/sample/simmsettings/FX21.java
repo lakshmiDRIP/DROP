@@ -167,6 +167,14 @@ public class FX21
 		System.out.println();
 	}
 
+	/**
+	 * Entry Point
+	 * 
+	 * @param args Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
+
 	public static final void main (
 		final String[] args)
 		throws Exception

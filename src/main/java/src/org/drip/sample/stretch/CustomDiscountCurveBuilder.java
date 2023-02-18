@@ -149,7 +149,7 @@ public class CustomDiscountCurveBuilder {
 	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
 	 */
 
-	public static final SegmentCustomBuilderControl MakePolynomialSBP (
+	static final SegmentCustomBuilderControl MakePolynomialSBP (
 		final int iNumDegree)
 		throws Exception
 	{
@@ -650,6 +650,14 @@ public class CustomDiscountCurveBuilder {
 				mssFinancialSwap.monotoneType (dblX)
 			);
 	}
+
+	/**
+	 * Entry Point
+	 * 
+	 * @param astrArgs Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
 
 	public static final void main (
 		final String[] astrArgs)

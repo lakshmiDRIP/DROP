@@ -11,7 +11,7 @@ Transaction Cost Analytics Library contains the Functionality to estimate single
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics/TransactionCostAnalytics_v5.52.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics/TransactionCostAnalytics_v5.88.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -25,6 +25,11 @@ Transaction Cost Analytics Library contains the Functionality to estimate single
 
 ## Coverage
 
+ * Volume-weighted Average Price
+	* Overview
+	* Formula
+	* Using VWAP
+	* References
  * Execution Cost and Transaction Trajectories
 	* Motivation and Practice Overview
 	* Post Trade Reporting

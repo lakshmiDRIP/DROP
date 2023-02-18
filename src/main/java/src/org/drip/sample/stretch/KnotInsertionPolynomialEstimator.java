@@ -166,7 +166,7 @@ public class KnotInsertionPolynomialEstimator {
 	 * 	WARNING: Insufficient Error Checking, so use caution
 	 */
 
-	public static final SegmentCustomBuilderControl ExponentialTensionSegmentControlParams (
+	private static final SegmentCustomBuilderControl ExponentialTensionSegmentControlParams (
 		final double dblTension,
 		final SegmentInelasticDesignControl sdic,
 		final ResponseScalingShapeControl rssc)
@@ -717,7 +717,7 @@ public class KnotInsertionPolynomialEstimator {
 	 * 	- Van Leer Limiter Monotone C1 Basis Spline Stretch Test without Filter.
 	 */
 
-	public static final void StretchEstimationTestSequence()
+	private static final void StretchEstimationTestSequence()
 		throws Exception
 	{
 		/*
@@ -1068,6 +1068,14 @@ public class KnotInsertionPolynomialEstimator {
 			)
 		);
 	}
+
+	/**
+	 * Entry Point
+	 * 
+	 * @param astrArgs Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
 
 	public static final void main (
 		final String[] astrArgs)

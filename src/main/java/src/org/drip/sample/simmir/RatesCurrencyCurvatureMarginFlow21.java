@@ -543,6 +543,14 @@ public class RatesCurrencyCurvatureMarginFlow21
 		System.out.println();
 	}
 
+	/**
+	 * Entry Point
+	 * 
+	 * @param inputArray Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
+
 	public static final void main (
 		final String[] inputArray)
 		throws Exception

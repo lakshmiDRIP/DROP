@@ -105,7 +105,8 @@ import org.drip.service.env.EnvManager;
  */
 
 public class HestonAMSTPayoffTransform {
-	public static final double TestPayoffScheme (
+
+	private static final double TestPayoffScheme (
 		final double dblTimeToExpiry,
 		final int iPayoffTransformScheme,
 		final boolean bProb1)
@@ -146,6 +147,14 @@ public class HestonAMSTPayoffTransform {
 
 		return bProb1 ? greeks.prob1() : greeks.prob2();
 	}
+
+	/**
+	 * Entry Point
+	 * 
+	 * @param astrArgs Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
 
 	public static final void main (
 		final String[] astrArgs)

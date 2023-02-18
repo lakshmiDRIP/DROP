@@ -223,6 +223,14 @@ public class RatesClassMargin20
 		);
 	}
 
+	/**
+	 * Entry Point
+	 * 
+	 * @param inputs Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
+
 	public static final void main (
 		final String[] inputs)
 		throws Exception

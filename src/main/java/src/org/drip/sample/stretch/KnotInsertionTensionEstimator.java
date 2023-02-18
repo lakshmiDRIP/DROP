@@ -293,7 +293,7 @@ public class KnotInsertionTensionEstimator {
 	 * 	- KLK Rational Quadratic Tension Basis Spline Stretch Test
 	 */
 
-	public static final void TensionStretchEstimationSample()
+	private static final void TensionStretchEstimationSample()
 		throws Exception
 	{
 		/*
@@ -398,6 +398,14 @@ public class KnotInsertionTensionEstimator {
 			)
 		);
 	}
+
+	/**
+	 * Entry Point
+	 * 
+	 * @param astrArgs Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
 
 	public static final void main (
 		final String[] astrArgs)

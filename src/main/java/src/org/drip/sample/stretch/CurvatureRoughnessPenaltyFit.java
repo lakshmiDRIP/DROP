@@ -126,7 +126,7 @@ public class CurvatureRoughnessPenaltyFit {
 	 * 	WARNING: Insufficient Error Checking, so use caution
 	 */
 
-	public static final SegmentCustomBuilderControl PolynomialSegmentControlParams (
+	private static final SegmentCustomBuilderControl PolynomialSegmentControlParams (
 		final int iNumBasis,
 		final SegmentInelasticDesignControl sdic,
 		final ResponseScalingShapeControl rssc)
@@ -149,7 +149,7 @@ public class CurvatureRoughnessPenaltyFit {
 	 * 	WARNING: Insufficient Error Checking, so use caution
 	 */
 
-	public static final MultiSegmentSequence BasisSplineStretchTest (
+	private static final MultiSegmentSequence BasisSplineStretchTest (
 		final double[] adblX,
 		final double[] adblY,
 		final SegmentCustomBuilderControl scbc,
@@ -197,7 +197,7 @@ public class CurvatureRoughnessPenaltyFit {
 	 * 	- Compute the Best Fit Stretch Curvature Penalty Estimate.
 	 */
 
-	public static final void PenalizedCurvatureFitTest()
+	private static final void PenalizedCurvatureFitTest()
 		throws Exception
 	{
 		/*
@@ -359,6 +359,14 @@ public class CurvatureRoughnessPenaltyFit {
 
 		System.out.println ("\tBEST FIT DPE: " + FormatUtil.FormatDouble (mssBestFit.curvatureDPE(), 10, 0, 1.));
 	}
+
+	/**
+	 * Entry Point
+	 * 
+	 * @param astrArgs Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
 
 	public static final void main (
 		final String[] astrArgs)
