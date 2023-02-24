@@ -133,6 +133,14 @@ import org.drip.xva.settings.*;
 
 public class PortfolioCollateralEstimate {
 
+	/**
+	 * Entry Point
+	 * 
+	 * @param astrArgs Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
+
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception

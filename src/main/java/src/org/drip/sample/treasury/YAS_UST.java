@@ -311,6 +311,14 @@ public class YAS_UST {
 		System.out.println ("\tAccrued   : " + FormatUtil.FormatDouble (dblAccrued * dblNotional, 1, 2, 1.));
 	}
 
+	/**
+	 * Entry Point
+	 * 
+	 * @param astrArgs Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
+
 	public static final void main (
 		final String astrArgs[])
 		throws Exception

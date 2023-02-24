@@ -296,6 +296,14 @@ public class OTCCrossCurrencySwaps {
 		);
 	}
 
+	/**
+	 * Entry Point
+	 * 
+	 * @param astrArgs Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
+
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception

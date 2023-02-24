@@ -11,7 +11,7 @@ Transaction Cost Analytics Library contains the Functionality to estimate single
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics/TransactionCostAnalytics_v5.88.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics/TransactionCostAnalytics_v5.91.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -29,6 +29,34 @@ Transaction Cost Analytics Library contains the Functionality to estimate single
 	* Overview
 	* Formula
 	* Using VWAP
+	* References
+ * Order
+	* Overview
+	* Market Order
+	* Limit Order
+	* Time in Force
+	* Conditional Orders
+		* Stop Orders
+			* Sell-stop Orders
+			* Buy-stop Orders
+			* Stop-limit Orders
+			* Trailing Stop Order
+			* Trailing Stop-limit Order
+		* Peg Order
+			* Peg Best
+			* Mid-price Peg
+		* Market-if-touched Order
+		* One Cancels Other Orders
+		* One Sends Other Orders
+		* Tick-sensitive Orders
+		* At the Opening
+	* Discretionary Order
+	* Bracket
+	* Quantity and Display Instructions
+	* Electronic Markets
+	* References
+ * Central Limit Order Book
+	* Overview
 	* References
  * Execution Cost and Transaction Trajectories
 	* Motivation and Practice Overview

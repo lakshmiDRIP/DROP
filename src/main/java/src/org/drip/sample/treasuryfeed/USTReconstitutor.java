@@ -100,6 +100,12 @@ import org.drip.service.env.EnvManager;
 
 public class USTReconstitutor {
 
+	/**
+	 * Entry Point
+	 * 
+	 * @param astrArgs Command Line Argument Array
+	 */
+
 	public static final void main (
 		final String[] astrArgs)
 	{
