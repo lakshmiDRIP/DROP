@@ -122,29 +122,32 @@ public class MarketOrder
 	/**
 	 * Construct a Standard Instance of MarketOrder
 	 * 
+	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param fillOrKill Fill-or-Kill Flag
+	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
 	 * @return Standard Instance of MarketOrder
 	 */
 
 	public static final MarketOrder Standard (
+		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String side,
 		final double size,
-		final boolean fillOrKill)
+		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
 			return new MarketOrder (
+				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				side,
 				size,
-				fillOrKill
+				fillWholeSettings
 			);
 		}
 		catch (Exception e)
@@ -158,27 +161,30 @@ public class MarketOrder
 	/**
 	 * Construct a Standard Instance of Buy MarketOrder
 	 * 
+	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
-	 * @param fillOrKill Fill-or-Kill Flag
+	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
 	 * @return Standard Instance of Buy MarketOrder
 	 */
 
 	public static final MarketOrder StandardBuy (
+		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final boolean fillOrKill)
+		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
 			return new MarketOrder (
+				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Order.BUY,
 				size,
-				fillOrKill
+				fillWholeSettings
 			);
 		}
 		catch (Exception e)
@@ -192,6 +198,7 @@ public class MarketOrder
 	/**
 	 * Construct a Standard Instance of Buy Fill-or-Kill MarketOrder
 	 * 
+	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * 
@@ -199,18 +206,59 @@ public class MarketOrder
 	 */
 
 	public static final MarketOrder StandardBuyFillOrKill (
+		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size)
 	{
 		try
 		{
 			return new MarketOrder (
+				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Order.BUY,
 				size,
-				true
+				OrderFillWholeSettings.FillOrKill()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct a Standard Instance of Buy All-or-None MarketOrder
+	 * 
+	 * @param issuer Order Issuer
+	 * @param securityIdentifier Security Identifier
+	 * @param size Order Size
+	 * @param fulfillTryLimit Fulfill Try Limit
+	 * 
+	 * @return Standard Instance of Buy All-or-None MarketOrder
+	 */
+
+	public static final MarketOrder StandardBuyAllOrNone (
+		final OrderIssuer issuer,
+		final String securityIdentifier,
+		final double size,
+		final int fulfillTryLimit)
+	{
+		try
+		{
+			return new MarketOrder (
+				issuer,
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Order.BUY,
+				size,
+				OrderFillWholeSettings.AllOrNone (
+					fulfillTryLimit
+				)
 			);
 		}
 		catch (Exception e)
@@ -224,27 +272,30 @@ public class MarketOrder
 	/**
 	 * Construct a Standard Instance of Sell MarketOrder
 	 * 
+	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
-	 * @param fillOrKill Fill-or-Kill Flag
+	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
 	 * @return Standard Instance of Sell MarketOrder
 	 */
 
 	public static final MarketOrder StandardSell (
+		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final boolean fillOrKill)
+		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
 			return new MarketOrder (
+				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Order.SELL,
 				size,
-				fillOrKill
+				fillWholeSettings
 			);
 		}
 		catch (Exception e)
@@ -258,6 +309,7 @@ public class MarketOrder
 	/**
 	 * Construct a Standard Instance of Sell Fill-or-Kill MarketOrder
 	 * 
+	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * 
@@ -265,18 +317,59 @@ public class MarketOrder
 	 */
 
 	public static final MarketOrder StandardSellFillOrKill (
+		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size)
 	{
 		try
 		{
 			return new MarketOrder (
+				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Order.SELL,
 				size,
-				true
+				OrderFillWholeSettings.FillOrKill()
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct a Standard Instance of Sell All-or-None MarketOrder
+	 * 
+	 * @param issuer Order Issuer
+	 * @param securityIdentifier Security Identifier
+	 * @param size Order Size
+	 * @param fulfillTryLimit Fulfill Try Limit
+	 * 
+	 * @return Standard Instance of Sell All-or-None MarketOrder
+	 */
+
+	public static final MarketOrder StandardSellAllOrNone (
+		final OrderIssuer issuer,
+		final String securityIdentifier,
+		final double size,
+		final int fulfillTryLimit)
+	{
+		try
+		{
+			return new MarketOrder (
+				issuer,
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Order.SELL,
+				size,
+				OrderFillWholeSettings.AllOrNone (
+					fulfillTryLimit
+				)
 			);
 		}
 		catch (Exception e)
@@ -290,33 +383,36 @@ public class MarketOrder
 	/**
 	 * MarketOrder Constructor
 	 * 
+	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param id Order ID
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param fillOrKill Fill-or-Kill Flag
+	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MarketOrder (
+		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
 		final String side,
 		final double size,
-		final boolean fillOrKill)
+		final OrderFillWholeSettings fillWholeSettings)
 		throws Exception
 	{
 		super (
+			issuer,
 			securityIdentifier,
 			id,
 			OrderType.MARKET_ORDER,
 			creationTime,
 			side,
 			size,
-			fillOrKill
+			fillWholeSettings
 		);
 	}
 }

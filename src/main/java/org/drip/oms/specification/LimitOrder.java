@@ -124,31 +124,34 @@ public class LimitOrder
 	/**
 	 * Construct a Standard Instance of LimitOrder
 	 * 
+	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param fillOrKill Fill-or-Kill Flag
+	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
 	 * @return Standard Instance of LimitOrder
 	 */
 
 	public static final LimitOrder Standard (
+		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String side,
 		final double size,
-		final boolean fillOrKill,
+		final OrderFillWholeSettings fillWholeSettings,
 		final double thresholdPrice)
 	{
 		try
 		{
 			return new LimitOrder (
+				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				side,
 				size,
-				fillOrKill,
+				fillWholeSettings,
 				thresholdPrice
 			);
 		}
@@ -163,31 +166,34 @@ public class LimitOrder
 	/**
 	 * Construct a Standard Instance of Buy LimitOrder
 	 * 
+	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param fillOrKill Fill-or-Kill Flag
+	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
 	 * @return Standard Instance of Buy LimitOrder
 	 */
 
 	public static final LimitOrder StandardBuy (
+		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String side,
 		final double size,
-		final boolean fillOrKill,
+		final OrderFillWholeSettings fillWholeSettings,
 		final double thresholdPrice)
 	{
 		try
 		{
 			return new LimitOrder (
+				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Order.BUY,
 				size,
-				fillOrKill,
+				fillWholeSettings,
 				thresholdPrice
 			);
 		}
@@ -202,6 +208,7 @@ public class LimitOrder
 	/**
 	 * Construct a Standard Instance of Buy Fill-or-Kill LimitOrder
 	 * 
+	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param side Order Side
 	 * @param size Order Size
@@ -211,6 +218,7 @@ public class LimitOrder
 	 */
 
 	public static final LimitOrder StandardBuyFillOrKill (
+		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String side,
 		final double size,
@@ -219,12 +227,13 @@ public class LimitOrder
 		try
 		{
 			return new LimitOrder (
+				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Order.BUY,
 				size,
-				true,
+				OrderFillWholeSettings.FillOrKill(),
 				thresholdPrice
 			);
 		}
@@ -237,32 +246,38 @@ public class LimitOrder
 	}
 
 	/**
-	 * Construct a Standard Instance of Sell Fill-or-Kill LimitOrder
+	 * Construct a Standard Instance of Buy All-or-None LimitOrder
 	 * 
+	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param thresholdPrice Threshold Price
+	 * @param fulfillTryLimit Fulfill Try Limit
 	 * 
-	 * @return Standard Instance of Sell LimitOrder
+	 * @return Standard Instance of Buy All-or-None LimitOrder
 	 */
 
-	public static final LimitOrder StandardSell (
+	public static final LimitOrder StandardBuyAllOrNone (
+		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String side,
 		final double size,
-		final boolean fillOrKill,
-		final double thresholdPrice)
+		final double thresholdPrice,
+		final int fulfillTryLimit)
 	{
 		try
 		{
 			return new LimitOrder (
+				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
-				Order.SELL,
+				Order.BUY,
 				size,
-				fillOrKill,
+				OrderFillWholeSettings.AllOrNone (
+					fulfillTryLimit
+				),
 				thresholdPrice
 			);
 		}
@@ -277,6 +292,49 @@ public class LimitOrder
 	/**
 	 * Construct a Standard Instance of Sell LimitOrder
 	 * 
+	 * @param issuer Order Issuer
+	 * @param securityIdentifier Security Identifier
+	 * @param side Order Side
+	 * @param size Order Size
+	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param thresholdPrice Threshold Price
+	 * 
+	 * @return Standard Instance of Sell LimitOrder
+	 */
+
+	public static final LimitOrder StandardSell (
+		final OrderIssuer issuer,
+		final String securityIdentifier,
+		final String side,
+		final double size,
+		final OrderFillWholeSettings fillWholeSettings,
+		final double thresholdPrice)
+	{
+		try
+		{
+			return new LimitOrder (
+				issuer,
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Order.SELL,
+				size,
+				fillWholeSettings,
+				thresholdPrice
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct a Standard Instance of Sell Fill-or-Kill LimitOrder
+	 * 
+	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param side Order Side
 	 * @param size Order Size
@@ -286,6 +344,7 @@ public class LimitOrder
 	 */
 
 	public static final LimitOrder StandardSellKillOrFill (
+		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String side,
 		final double size,
@@ -294,12 +353,57 @@ public class LimitOrder
 		try
 		{
 			return new LimitOrder (
+				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Order.SELL,
 				size,
-				true,
+				OrderFillWholeSettings.FillOrKill(),
+				thresholdPrice
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct a Standard Instance of Sell All-or-None LimitOrder
+	 * 
+	 * @param issuer Order Issuer
+	 * @param securityIdentifier Security Identifier
+	 * @param side Order Side
+	 * @param size Order Size
+	 * @param thresholdPrice Threshold Price
+	 * @param fulfillTryLimit Fulfill Try Limit
+	 * 
+	 * @return Standard Instance of Sell All-or-None LimitOrder
+	 */
+
+	public static final LimitOrder StandardSellAllOrNone (
+		final OrderIssuer issuer,
+		final String securityIdentifier,
+		final String side,
+		final double size,
+		final double thresholdPrice,
+		final int fulfillTryLimit)
+	{
+		try
+		{
+			return new LimitOrder (
+				issuer,
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Order.SELL,
+				size,
+				OrderFillWholeSettings.AllOrNone (
+					fulfillTryLimit
+				),
 				thresholdPrice
 			);
 		}
@@ -314,35 +418,38 @@ public class LimitOrder
 	/**
 	 * LimitOrder Constructor
 	 * 
+	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param id Order ID
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param fillOrKill Fill-or-Kill Flag
+	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LimitOrder (
+		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
 		final String side,
 		final double size,
-		final boolean fillOrKill,
+		final OrderFillWholeSettings fillWholeSettings,
 		final double thresholdPrice)
 		throws Exception
 	{
 		super (
+			issuer,
 			securityIdentifier,
 			id,
 			OrderType.LIMIT_ORDER,
 			creationTime,
 			side,
 			size,
-			fillOrKill
+			fillWholeSettings
 		);
 
 		if (!NumberUtil.IsValid (

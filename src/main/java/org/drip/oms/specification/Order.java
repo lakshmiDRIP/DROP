@@ -136,41 +136,45 @@ public class Order
 	private String _side = "";
 	private Date _creationTime = null;
 	private double _size = Double.NaN;
-	private boolean _fillOrKill = false;
+	private OrderIssuer _issuer = null;
 	private Date _completionTime = null;
 	private int _type = Integer.MIN_VALUE;
 	private int _state = Integer.MIN_VALUE;
 	private String _securityIdentifier = "";
+	private OrderFillWholeSettings _fillWholeSettings = null;
 
 	/**
 	 * Construct a Standard Instance of Order
 	 * 
+	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param type Order Type
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param fillOrKill Fill-or-Kill Flag
+	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
 	 * @return Standard Instance of Order
 	 */
 
 	public static final Order Standard (
+		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final int type,
 		final String side,
 		final double size,
-		final boolean fillOrKill)
+		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
 			return new Order (
+				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				type,
 				new Date(),
 				side,
 				size,
-				fillOrKill
+				fillWholeSettings
 			);
 		}
 		catch (Exception e)
@@ -184,28 +188,31 @@ public class Order
 	/**
 	 * Order Constructor
 	 * 
+	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param id Order ID
 	 * @param type Order Type
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param fillOrKill Fill-or-Kill Flag
+	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Order (
+		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
 		final int type,
 		final Date creationTime,
 		final String side,
 		final double size,
-		final boolean fillOrKill)
+		final OrderFillWholeSettings fillWholeSettings)
 		throws Exception
 	{
-		if (null == (_securityIdentifier = securityIdentifier) || _securityIdentifier.isEmpty() ||
+		if (null == (_issuer = issuer) ||
+			null == (_securityIdentifier = securityIdentifier) || _securityIdentifier.isEmpty() ||
 			null == (_id = id) || _id.isEmpty() ||
 			null == (_creationTime = creationTime) ||
 			null == (_side = side) || _side.isEmpty() ||
@@ -220,7 +227,7 @@ public class Order
 		}
 
 		_type = type;
-		_fillOrKill = fillOrKill;
+		_fillWholeSettings = fillWholeSettings;
 		_state = OrderState.OPEN + OrderState.UNFILLED;
 
 		_size = Math.abs (
@@ -248,6 +255,17 @@ public class Order
 	public String id()
 	{
 		return _id;
+	}
+
+	/**
+	 * Retrieve the Order Issuer
+	 * 
+	 * @return The Order Issuer
+	 */
+
+	public OrderIssuer issuer()
+	{
+		return _issuer;
 	}
 
 	/**
@@ -295,14 +313,14 @@ public class Order
 	}
 
 	/**
-	 * Retrieve the Fill-or-Kill Flag
+	 * Retrieve the Fill-Whole Settings
 	 * 
-	 * @return The Fill-or-Kill Flag
+	 * @return The Fill-Whole Settings
 	 */
 
-	public boolean fillOrKill()
+	public OrderFillWholeSettings fillWholeSettings()
 	{
-		return _fillOrKill;
+		return _fillWholeSettings;
 	}
 
 	/**
@@ -325,6 +343,30 @@ public class Order
 	public double size()
 	{
 		return _size;
+	}
+
+	/**
+	 * Retrieve the Fill-or-Kill Flag
+	 * 
+	 * @return The Fill-or-Kill Flag
+	 */
+
+	public boolean fillOrKill()
+	{
+		return null != _fillWholeSettings &&
+			OrderFillWholeSettings.FILL_OR_KILL == _fillWholeSettings.fulfillScheme();
+	}
+
+	/**
+	 * Retrieve the All-or-None Flag
+	 * 
+	 * @return The All-or-None Flag
+	 */
+
+	public boolean allOrNone()
+	{
+		return null != _fillWholeSettings &&
+			OrderFillWholeSettings.ALL_OR_NONE == _fillWholeSettings.fulfillScheme();
 	}
 
 	/**
@@ -368,13 +410,14 @@ public class Order
 				_state = OrderState.PARTIALLY_FILLED;
 
 				return new Order (
+					_issuer,
 					_securityIdentifier,
 					StringUtil.GUID(),
 					_type,
 					new Date(),
 					_side,
 					_size - filledSize,
-					false
+					null
 				);
 			}
 			catch (Exception e)
