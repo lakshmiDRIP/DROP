@@ -1,5 +1,5 @@
 
-package org.drip.oms.specification;
+package org.drip.oms.fill;
 
 import java.util.Date;
 
@@ -78,8 +78,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>VWAP</i> implements the Volume-Weighted Average Price VWAP that carries the Metrics associated with
- * 	Trades in a Session. The References are:
+ * <i>OrderFulfillment</i> holds the Details of a Filled Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -110,161 +109,78 @@ import org.drip.numerical.common.NumberUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/specification/README.md">Order Specification and Session Metrics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/fill/README.md">Order Fulfillment Scheme Implementations/Results</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class VWAP
+public class OrderFulfillment
 {
-	private Date _sessionEnd = null;
-	private Date _sessionStart = null;
-	private double _transactionVolume = Double.NaN;
-	private double _transactionMarketValue = Double.NaN;
+	private Date _executedTime = null;
+	private double _executedSize = Double.NaN;
+	private double _executedPrice = Double.NaN;
 
 	/**
-	 * Construct a Standard Instance of VWAP
+	 * OrderFulfillment Constructor
 	 * 
-	 * @return Standard VWAP Instance
-	 */
-
-	public VWAP Standard()
-	{
-		Date sessionStart = new Date();
-
-		try
-		{
-			return new VWAP (
-				sessionStart,
-				sessionStart
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * VWAP Constructor
-	 * 
-	 * @param sessionStart Session Start
-	 * @param sessionEnd Session End
+	 * @param executedTime Execution Time
+	 * @param executedSize Executed Size
+	 * @param executedPrice Executed Price
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public VWAP (
-		final Date sessionStart,
-		final Date sessionEnd)
+	public OrderFulfillment (
+		final Date executedTime,
+		final double executedSize,
+		final double executedPrice)
 		throws Exception
 	{
-		if (null == (_sessionStart = sessionStart))
-		{
-			throw new Exception (
-				"VWAP Construtor => Invalid Input"
-			);
-		}
-
-		_sessionEnd = sessionEnd;
-	}
-
-	/**
-	 * Retrieve the Start of the Session
-	 * 
-	 * @return Start of the Session
-	 */
-
-	public Date sessionStart()
-	{
-		return _sessionStart;
-	}
-
-	/**
-	 * Retrieve the End of the Session
-	 * 
-	 * @return End of the Session
-	 */
-
-	public Date sessionEnd()
-	{
-		return _sessionEnd;
-	}
-
-	/**
-	 * Retrieve the Session Transaction Volume
-	 * 
-	 * @return The Session Transaction Volume
-	 */
-
-	public double transactionVolume()
-	{
-		return _transactionVolume;
-	}
-
-	/**
-	 * Retrieve the Session Transaction Market Value
-	 * 
-	 * @return The Session Transaction Market Value
-	 */
-
-	public double transactionMarketValue()
-	{
-		return _transactionMarketValue;
-	}
-
-	/**
-	 * Add a Trade to the Session
-	 * 
-	 * @param size Size
-	 * @param price Price
-	 * 
-	 * @return TRUE - The Trade has been successfully added
-	 */
-
-	public boolean addTrade (
-		final double size,
-		final double price)
-	{
-		if (!NumberUtil.IsValid (
-				size
+		if (null == (_executedTime = executedTime) ||
+			!NumberUtil.IsValid (
+				_executedSize = executedSize
 			) || !NumberUtil.IsValid (
-				price
+				_executedSize = executedSize
 			)
 		)
 		{
-			return false;
+			throw new Exception (
+				"OrderFulfillment Constructor => Invalid Inputs"
+			);
 		}
-
-		_transactionMarketValue += price * size;
-		_transactionVolume += size;
-		return true;
 	}
 
 	/**
-	 * Finish the VWAP Session
+	 * Retrieve the Executed Time
 	 * 
-	 * @return TRUE - The Session is Finished
+	 * @return The Executed Time
 	 */
 
-	public boolean finish()
+	public Date executedTime()
 	{
-		_sessionEnd = new Date();
-
-		return true;
+		return _executedTime;
 	}
 
 	/**
-	 * Retrieve the Session VWAP Average
+	 * Retrieve the Executed Size
 	 * 
-	 * @return The Session VWAP Average
+	 * @return The Executed Size
 	 */
 
-	public double sessionAverage()
+	public double executedSize()
 	{
-		return 0. == _transactionVolume ? Double.NaN : _transactionMarketValue / _transactionVolume;
+		return _executedSize;
+	}
+
+	/**
+	 * Retrieve the Executed Price
+	 * 
+	 * @return The Executed Price
+	 */
+
+	public double executedPrice()
+	{
+		return _executedPrice;
 	}
 }

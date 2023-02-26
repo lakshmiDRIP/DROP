@@ -1,7 +1,11 @@
 
 package org.drip.oms.specification;
 
+import java.util.Date;
+
 import org.drip.numerical.common.NumberUtil;
+import org.drip.oms.fill.OrderFulfillment;
+import org.drip.service.common.StringUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -128,24 +132,83 @@ public class Order
 
 	public static final String SELL = "S";
 
+	private String _id = "";
 	private String _side = "";
+	private Date _creationTime = null;
 	private double _size = Double.NaN;
+	private boolean _fillOrKill = false;
+	private Date _completionTime = null;
+	private int _type = Integer.MIN_VALUE;
+	private int _state = Integer.MIN_VALUE;
+	private String _securityIdentifier = "";
+
+	/**
+	 * Construct a Standard Instance of Order
+	 * 
+	 * @param securityIdentifier Security Identifier
+	 * @param type Order Type
+	 * @param side Order Side
+	 * @param size Order Size
+	 * @param fillOrKill Fill-or-Kill Flag
+	 * 
+	 * @return Standard Instance of Order
+	 */
+
+	public static final Order Standard (
+		final String securityIdentifier,
+		final int type,
+		final String side,
+		final double size,
+		final boolean fillOrKill)
+	{
+		try
+		{
+			return new Order (
+				securityIdentifier,
+				StringUtil.GUID(),
+				type,
+				new Date(),
+				side,
+				size,
+				fillOrKill
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
 	 * Order Constructor
 	 * 
+	 * @param securityIdentifier Security Identifier
+	 * @param id Order ID
+	 * @param type Order Type
+	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
+	 * @param fillOrKill Fill-or-Kill Flag
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Order (
+		final String securityIdentifier,
+		final String id,
+		final int type,
+		final Date creationTime,
 		final String side,
-		final double size)
+		final double size,
+		final boolean fillOrKill)
 		throws Exception
 	{
-		if (null == (_side = side) || _side.isEmpty() ||
+		if (null == (_securityIdentifier = securityIdentifier) || _securityIdentifier.isEmpty() ||
+			null == (_id = id) || _id.isEmpty() ||
+			null == (_creationTime = creationTime) ||
+			null == (_side = side) || _side.isEmpty() ||
 			!NumberUtil.IsValid (
 				_size = size
 			)
@@ -156,9 +219,90 @@ public class Order
 			);
 		}
 
+		_type = type;
+		_fillOrKill = fillOrKill;
+		_state = OrderState.OPEN + OrderState.UNFILLED;
+
 		_size = Math.abs (
 			_size
 		);
+	}
+
+	/**
+	 * Retrieve the Order Security Identifier
+	 * 
+	 * @return The Order Security Identifier
+	 */
+
+	public String securityIdentifier()
+	{
+		return _securityIdentifier;
+	}
+
+	/**
+	 * Retrieve the Order ID
+	 * 
+	 * @return The Order ID
+	 */
+
+	public String id()
+	{
+		return _id;
+	}
+
+	/**
+	 * Retrieve the Order Type
+	 * 
+	 * @return The Order Type
+	 */
+
+	public int type()
+	{
+		return _type;
+	}
+
+	/**
+	 * Retrieve the Order State
+	 * 
+	 * @return The Order State
+	 */
+
+	public int state()
+	{
+		return _state;
+	}
+
+	/**
+	 * Retrieve the Order Creation Time
+	 * 
+	 * @return The Order Creation Time
+	 */
+
+	public Date creationTime()
+	{
+		return _creationTime;
+	}
+
+	/**
+	 * Retrieve the Order Completion Time
+	 * 
+	 * @return The Order Completion Time
+	 */
+
+	public Date completionTime()
+	{
+		return _completionTime;
+	}
+
+	/**
+	 * Retrieve the Fill-or-Kill Flag
+	 * 
+	 * @return The Fill-or-Kill Flag
+	 */
+
+	public boolean fillOrKill()
+	{
+		return _fillOrKill;
 	}
 
 	/**
@@ -181,5 +325,99 @@ public class Order
 	public double size()
 	{
 		return _size;
+	}
+
+	/**
+	 * Set the Order State
+	 * 
+	 * @param orderState Order State
+	 * 
+	 * @return TRUE - The Order State successfully set
+	 */
+
+	public boolean setState (
+		final int orderState)
+	{
+		_state = orderState;
+		return true;
+	}
+
+	/**
+	 * Fill an Order Partially/Fully
+	 * 
+	 * @param orderFulfillment Order Fulfillment
+	 * 
+	 * @return Child Order, if any
+	 */
+
+	public Order fulfill (
+		final OrderFulfillment orderFulfillment)
+	{
+		if (null == orderFulfillment)
+		{
+			_state = OrderState.CANCELED;
+			return null;
+		}
+
+		double filledSize = orderFulfillment.executedSize();
+
+		if (filledSize < _size)
+		{
+			try
+			{
+				_state = OrderState.PARTIALLY_FILLED;
+
+				return new Order (
+					_securityIdentifier,
+					StringUtil.GUID(),
+					_type,
+					new Date(),
+					_side,
+					_size - filledSize,
+					false
+				);
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		_completionTime = new Date();
+
+		_state = OrderState.FILLED;
+		return null;
+	}
+
+	/**
+	 * Indicate if the Order is Outstanding
+	 * 
+	 * @return TRUE - Order is Outstanding
+	 */
+
+	public boolean isOutstanding()
+	{
+		return null == _completionTime;
+	}
+
+	/**
+	 * Set the Order Completion Time
+	 * 
+	 * @param completionTime The Order Completion Time
+	 * 
+	 * @return TRUE - Order is Set to Complete
+	 */
+
+	public boolean setComplete (
+		final Date completionTime)
+	{
+		if (null != _completionTime || null == completionTime)
+		{
+			return false;
+		}
+
+		_completionTime = new Date();
+
+		return true;
 	}
 }

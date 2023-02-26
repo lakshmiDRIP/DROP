@@ -1,9 +1,8 @@
 
-package org.drip.oms.specification;
+package org.drip.oms.fill;
 
-import java.util.Date;
-
-import org.drip.numerical.common.NumberUtil;
+import org.drip.oms.specification.Order;
+import org.drip.oms.specification.OrderState;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -78,8 +77,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>VWAP</i> implements the Volume-Weighted Average Price VWAP that carries the Metrics associated with
- * 	Trades in a Session. The References are:
+ * <i>NestedFulfillmentScheme</i> implements an Order Fulfillment Scheme by generating Nested Child Orders.
+ *  The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -110,161 +109,157 @@ import org.drip.numerical.common.NumberUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/specification/README.md">Order Specification and Session Metrics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/fill/README.md">Order Fulfillment Scheme Implementations/Results</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class VWAP
+public class NestedFulfillmentScheme
 {
-	private Date _sessionEnd = null;
-	private Date _sessionStart = null;
-	private double _transactionVolume = Double.NaN;
-	private double _transactionMarketValue = Double.NaN;
+	private Order _orderNode = null;
+	private NestedFulfillmentScheme _child = null;
+	private NestedFulfillmentScheme _parent = null;
 
-	/**
-	 * Construct a Standard Instance of VWAP
-	 * 
-	 * @return Standard VWAP Instance
-	 */
-
-	public VWAP Standard()
+	private boolean fillOrKill (
+		final OrderExecutionProvider orderExecutionProvider)
 	{
-		Date sessionStart = new Date();
+		if (!orderExecutionProvider.isOrderMarketable (
+				_orderNode
+			)
+		)
+		{
+			_orderNode.setState (
+				OrderState.CANCELED
+			);
+
+			return false;
+		}
+
+		return null == _orderNode.fulfill (
+			orderExecutionProvider.attemptFill (
+				_orderNode
+			)
+		);
+	}
+
+	private boolean fillWithChildOrders (
+		final OrderExecutionProvider orderExecutionProvider)
+	{
+		Order childOrder = _orderNode.fulfill (
+			orderExecutionProvider.attemptFill (
+				_orderNode
+			)
+		);
+
+		if (null == childOrder)
+		{
+			return null == _parent ? true : _parent.node().setState (
+				_orderNode.state()
+			);
+		}
 
 		try
 		{
-			return new VWAP (
-				sessionStart,
-				sessionStart
+			_child = new NestedFulfillmentScheme (
+				childOrder,
+				this
 			);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
+
+			return false;
 		}
 
-		return null;
+		return _child.fillWithChildOrders (
+			orderExecutionProvider
+		);
 	}
 
 	/**
-	 * VWAP Constructor
+	 * NestedFulfillmentScheme Constructor
 	 * 
-	 * @param sessionStart Session Start
-	 * @param sessionEnd Session End
+	 * @param orderNode Order Node
+	 * @param parent Parent
 	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if Inputs are Invalid
 	 */
 
-	public VWAP (
-		final Date sessionStart,
-		final Date sessionEnd)
+	public NestedFulfillmentScheme (
+		final Order orderNode,
+		final NestedFulfillmentScheme parent)
 		throws Exception
 	{
-		if (null == (_sessionStart = sessionStart))
+		if (null == (_orderNode = orderNode))
 		{
 			throw new Exception (
-				"VWAP Construtor => Invalid Input"
+				"NestedFulfillmentScheme Constructor => Invalid Inputs"
 			);
 		}
 
-		_sessionEnd = sessionEnd;
+		_parent = parent;
 	}
 
 	/**
-	 * Retrieve the Start of the Session
+	 * Retrieve the Order Node
 	 * 
-	 * @return Start of the Session
+	 * @return The Order Node
 	 */
 
-	public Date sessionStart()
+	public Order node()
 	{
-		return _sessionStart;
+		return _orderNode;
 	}
 
 	/**
-	 * Retrieve the End of the Session
+	 * Retrieve the Parent Order
 	 * 
-	 * @return End of the Session
+	 * @return The Parent Order
 	 */
 
-	public Date sessionEnd()
+	public NestedFulfillmentScheme parent()
 	{
-		return _sessionEnd;
+		return _parent;
 	}
 
 	/**
-	 * Retrieve the Session Transaction Volume
+	 * Retrieve the Child Order
 	 * 
-	 * @return The Session Transaction Volume
+	 * @return The Child Order
 	 */
 
-	public double transactionVolume()
+	public NestedFulfillmentScheme child()
 	{
-		return _transactionVolume;
+		return _child;
 	}
 
 	/**
-	 * Retrieve the Session Transaction Market Value
+	 * Fill the Order Using Child Orders
 	 * 
-	 * @return The Session Transaction Market Value
+	 * @param orderExecutionProvider The Order Execution Provider
+	 * 
+	 * @return TRUE - The Order successfully Filled
 	 */
 
-	public double transactionMarketValue()
+	public boolean fill (
+		final OrderExecutionProvider orderExecutionProvider)
 	{
-		return _transactionMarketValue;
-	}
-
-	/**
-	 * Add a Trade to the Session
-	 * 
-	 * @param size Size
-	 * @param price Price
-	 * 
-	 * @return TRUE - The Trade has been successfully added
-	 */
-
-	public boolean addTrade (
-		final double size,
-		final double price)
-	{
-		if (!NumberUtil.IsValid (
-				size
-			) || !NumberUtil.IsValid (
-				price
-			)
-		)
+		if (null == orderExecutionProvider)
 		{
 			return false;
 		}
 
-		_transactionMarketValue += price * size;
-		_transactionVolume += size;
-		return true;
-	}
+		if (_orderNode.fillOrKill())
+		{
+			return fillOrKill (
+				orderExecutionProvider
+			);
+		}
 
-	/**
-	 * Finish the VWAP Session
-	 * 
-	 * @return TRUE - The Session is Finished
-	 */
-
-	public boolean finish()
-	{
-		_sessionEnd = new Date();
-
-		return true;
-	}
-
-	/**
-	 * Retrieve the Session VWAP Average
-	 * 
-	 * @return The Session VWAP Average
-	 */
-
-	public double sessionAverage()
-	{
-		return 0. == _transactionVolume ? Double.NaN : _transactionMarketValue / _transactionVolume;
+		return fillWithChildOrders (
+			orderExecutionProvider
+		);
 	}
 }

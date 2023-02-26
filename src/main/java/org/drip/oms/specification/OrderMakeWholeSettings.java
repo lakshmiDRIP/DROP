@@ -1,10 +1,6 @@
 
 package org.drip.oms.specification;
 
-import java.util.Date;
-
-import org.drip.numerical.common.NumberUtil;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -78,8 +74,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>VWAP</i> implements the Volume-Weighted Average Price VWAP that carries the Metrics associated with
- * 	Trades in a Session. The References are:
+ * <i>OrderMakeWholeSettings</i> maintains the Make-whole Settings of an Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -116,155 +111,61 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VWAP
+public class OrderMakeWholeSettings
 {
-	private Date _sessionEnd = null;
-	private Date _sessionStart = null;
-	private double _transactionVolume = Double.NaN;
-	private double _transactionMarketValue = Double.NaN;
 
 	/**
-	 * Construct a Standard Instance of VWAP
-	 * 
-	 * @return Standard VWAP Instance
+	 * Fill or Kill
 	 */
 
-	public VWAP Standard()
-	{
-		Date sessionStart = new Date();
-
-		try
-		{
-			return new VWAP (
-				sessionStart,
-				sessionStart
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
+	public static final int FILL_OR_KILL = 1;
 
 	/**
-	 * VWAP Constructor
+	 * All or None
+	 */
+
+	public static final int ALL_OR_NONE = 2;
+
+	private int _fulfillScheme = Integer.MIN_VALUE;
+	private int _fulfillTryLimit = Integer.MIN_VALUE;
+
+	/**
+	 * OrderMakeWholeSettings Constructor
 	 * 
-	 * @param sessionStart Session Start
-	 * @param sessionEnd Session End
+	 * @param fulfillScheme Fulfillment Scheme
+	 * @param fulfillTryLimit Fulfillment Try Limit
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public VWAP (
-		final Date sessionStart,
-		final Date sessionEnd)
+	public OrderMakeWholeSettings (
+		final int fulfillScheme,
+		final int fulfillTryLimit)
 		throws Exception
 	{
-		if (null == (_sessionStart = sessionStart))
-		{
-			throw new Exception (
-				"VWAP Construtor => Invalid Input"
-			);
-		}
-
-		_sessionEnd = sessionEnd;
+		_fulfillScheme = fulfillScheme;
+		_fulfillTryLimit = fulfillTryLimit;
 	}
 
 	/**
-	 * Retrieve the Start of the Session
+	 * Retrieve the Fulfillment Scheme
 	 * 
-	 * @return Start of the Session
+	 * @return The Fulfillment Scheme
 	 */
 
-	public Date sessionStart()
+	public int fulfillScheme()
 	{
-		return _sessionStart;
+		return _fulfillScheme;
 	}
 
 	/**
-	 * Retrieve the End of the Session
+	 * Retrieve the Fulfillment Try Limit
 	 * 
-	 * @return End of the Session
+	 * @return The Fulfillment Try Limit
 	 */
 
-	public Date sessionEnd()
+	public int fulfillTryLimit()
 	{
-		return _sessionEnd;
-	}
-
-	/**
-	 * Retrieve the Session Transaction Volume
-	 * 
-	 * @return The Session Transaction Volume
-	 */
-
-	public double transactionVolume()
-	{
-		return _transactionVolume;
-	}
-
-	/**
-	 * Retrieve the Session Transaction Market Value
-	 * 
-	 * @return The Session Transaction Market Value
-	 */
-
-	public double transactionMarketValue()
-	{
-		return _transactionMarketValue;
-	}
-
-	/**
-	 * Add a Trade to the Session
-	 * 
-	 * @param size Size
-	 * @param price Price
-	 * 
-	 * @return TRUE - The Trade has been successfully added
-	 */
-
-	public boolean addTrade (
-		final double size,
-		final double price)
-	{
-		if (!NumberUtil.IsValid (
-				size
-			) || !NumberUtil.IsValid (
-				price
-			)
-		)
-		{
-			return false;
-		}
-
-		_transactionMarketValue += price * size;
-		_transactionVolume += size;
-		return true;
-	}
-
-	/**
-	 * Finish the VWAP Session
-	 * 
-	 * @return TRUE - The Session is Finished
-	 */
-
-	public boolean finish()
-	{
-		_sessionEnd = new Date();
-
-		return true;
-	}
-
-	/**
-	 * Retrieve the Session VWAP Average
-	 * 
-	 * @return The Session VWAP Average
-	 */
-
-	public double sessionAverage()
-	{
-		return 0. == _transactionVolume ? Double.NaN : _transactionMarketValue / _transactionVolume;
+		return _fulfillTryLimit;
 	}
 }

@@ -4,6 +4,7 @@ package org.drip.oms.specification;
 import java.util.Date;
 
 import org.drip.numerical.common.NumberUtil;
+import org.drip.service.common.StringUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -78,8 +79,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>VWAP</i> implements the Volume-Weighted Average Price VWAP that carries the Metrics associated with
- * 	Trades in a Session. The References are:
+ * <i>LimitOrder</i> holds the Details of a Limit Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -116,28 +116,40 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VWAP
+public class LimitOrder
+	extends Order
 {
-	private Date _sessionEnd = null;
-	private Date _sessionStart = null;
-	private double _transactionVolume = Double.NaN;
-	private double _transactionMarketValue = Double.NaN;
+	private double _thresholdPrice = Double.NaN;
 
 	/**
-	 * Construct a Standard Instance of VWAP
+	 * Construct a Standard Instance of LimitOrder
 	 * 
-	 * @return Standard VWAP Instance
+	 * @param securityIdentifier Security Identifier
+	 * @param side Order Side
+	 * @param size Order Size
+	 * @param fillOrKill Fill-or-Kill Flag
+	 * @param thresholdPrice Threshold Price
+	 * 
+	 * @return Standard Instance of LimitOrder
 	 */
 
-	public VWAP Standard()
+	public static final LimitOrder Standard (
+		final String securityIdentifier,
+		final String side,
+		final double size,
+		final boolean fillOrKill,
+		final double thresholdPrice)
 	{
-		Date sessionStart = new Date();
-
 		try
 		{
-			return new VWAP (
-				sessionStart,
-				sessionStart
+			return new LimitOrder (
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				side,
+				size,
+				fillOrKill,
+				thresholdPrice
 			);
 		}
 		catch (Exception e)
@@ -149,122 +161,209 @@ public class VWAP
 	}
 
 	/**
-	 * VWAP Constructor
+	 * Construct a Standard Instance of Buy LimitOrder
 	 * 
-	 * @param sessionStart Session Start
-	 * @param sessionEnd Session End
+	 * @param securityIdentifier Security Identifier
+	 * @param side Order Side
+	 * @param size Order Size
+	 * @param fillOrKill Fill-or-Kill Flag
+	 * @param thresholdPrice Threshold Price
+	 * 
+	 * @return Standard Instance of Buy LimitOrder
+	 */
+
+	public static final LimitOrder StandardBuy (
+		final String securityIdentifier,
+		final String side,
+		final double size,
+		final boolean fillOrKill,
+		final double thresholdPrice)
+	{
+		try
+		{
+			return new LimitOrder (
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Order.BUY,
+				size,
+				fillOrKill,
+				thresholdPrice
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct a Standard Instance of Buy Fill-or-Kill LimitOrder
+	 * 
+	 * @param securityIdentifier Security Identifier
+	 * @param side Order Side
+	 * @param size Order Size
+	 * @param thresholdPrice Threshold Price
+	 * 
+	 * @return Standard Instance of Buy LimitOrder
+	 */
+
+	public static final LimitOrder StandardBuyFillOrKill (
+		final String securityIdentifier,
+		final String side,
+		final double size,
+		final double thresholdPrice)
+	{
+		try
+		{
+			return new LimitOrder (
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Order.BUY,
+				size,
+				true,
+				thresholdPrice
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct a Standard Instance of Sell Fill-or-Kill LimitOrder
+	 * 
+	 * @param securityIdentifier Security Identifier
+	 * @param side Order Side
+	 * @param size Order Size
+	 * @param thresholdPrice Threshold Price
+	 * 
+	 * @return Standard Instance of Sell LimitOrder
+	 */
+
+	public static final LimitOrder StandardSell (
+		final String securityIdentifier,
+		final String side,
+		final double size,
+		final boolean fillOrKill,
+		final double thresholdPrice)
+	{
+		try
+		{
+			return new LimitOrder (
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Order.SELL,
+				size,
+				fillOrKill,
+				thresholdPrice
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct a Standard Instance of Sell LimitOrder
+	 * 
+	 * @param securityIdentifier Security Identifier
+	 * @param side Order Side
+	 * @param size Order Size
+	 * @param thresholdPrice Threshold Price
+	 * 
+	 * @return Standard Instance of Sell LimitOrder
+	 */
+
+	public static final LimitOrder StandardSellKillOrFill (
+		final String securityIdentifier,
+		final String side,
+		final double size,
+		final double thresholdPrice)
+	{
+		try
+		{
+			return new LimitOrder (
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Order.SELL,
+				size,
+				true,
+				thresholdPrice
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * LimitOrder Constructor
+	 * 
+	 * @param securityIdentifier Security Identifier
+	 * @param id Order ID
+	 * @param creationTime Creation Time
+	 * @param side Order Side
+	 * @param size Order Size
+	 * @param fillOrKill Fill-or-Kill Flag
+	 * @param thresholdPrice Threshold Price
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public VWAP (
-		final Date sessionStart,
-		final Date sessionEnd)
+	public LimitOrder (
+		final String securityIdentifier,
+		final String id,
+		final Date creationTime,
+		final String side,
+		final double size,
+		final boolean fillOrKill,
+		final double thresholdPrice)
 		throws Exception
 	{
-		if (null == (_sessionStart = sessionStart))
-		{
-			throw new Exception (
-				"VWAP Construtor => Invalid Input"
-			);
-		}
+		super (
+			securityIdentifier,
+			id,
+			OrderType.LIMIT_ORDER,
+			creationTime,
+			side,
+			size,
+			fillOrKill
+		);
 
-		_sessionEnd = sessionEnd;
-	}
-
-	/**
-	 * Retrieve the Start of the Session
-	 * 
-	 * @return Start of the Session
-	 */
-
-	public Date sessionStart()
-	{
-		return _sessionStart;
-	}
-
-	/**
-	 * Retrieve the End of the Session
-	 * 
-	 * @return End of the Session
-	 */
-
-	public Date sessionEnd()
-	{
-		return _sessionEnd;
-	}
-
-	/**
-	 * Retrieve the Session Transaction Volume
-	 * 
-	 * @return The Session Transaction Volume
-	 */
-
-	public double transactionVolume()
-	{
-		return _transactionVolume;
-	}
-
-	/**
-	 * Retrieve the Session Transaction Market Value
-	 * 
-	 * @return The Session Transaction Market Value
-	 */
-
-	public double transactionMarketValue()
-	{
-		return _transactionMarketValue;
-	}
-
-	/**
-	 * Add a Trade to the Session
-	 * 
-	 * @param size Size
-	 * @param price Price
-	 * 
-	 * @return TRUE - The Trade has been successfully added
-	 */
-
-	public boolean addTrade (
-		final double size,
-		final double price)
-	{
 		if (!NumberUtil.IsValid (
-				size
-			) || !NumberUtil.IsValid (
-				price
-			)
+				_thresholdPrice = thresholdPrice
+			) || 0. >=_thresholdPrice
 		)
 		{
-			return false;
+			throw new Exception (
+				"LimitOrder Constructor => Invalid Inputs"
+			);
 		}
-
-		_transactionMarketValue += price * size;
-		_transactionVolume += size;
-		return true;
 	}
 
 	/**
-	 * Finish the VWAP Session
+	 * Retrieve the Threshold Price
 	 * 
-	 * @return TRUE - The Session is Finished
+	 * @return The Threshold Price
 	 */
 
-	public boolean finish()
+	public double thresholdPrice()
 	{
-		_sessionEnd = new Date();
-
-		return true;
-	}
-
-	/**
-	 * Retrieve the Session VWAP Average
-	 * 
-	 * @return The Session VWAP Average
-	 */
-
-	public double sessionAverage()
-	{
-		return 0. == _transactionVolume ? Double.NaN : _transactionMarketValue / _transactionVolume;
+		return _thresholdPrice;
 	}
 }

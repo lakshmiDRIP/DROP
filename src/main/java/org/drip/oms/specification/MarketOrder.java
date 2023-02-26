@@ -3,7 +3,7 @@ package org.drip.oms.specification;
 
 import java.util.Date;
 
-import org.drip.numerical.common.NumberUtil;
+import org.drip.service.common.StringUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -78,8 +78,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>VWAP</i> implements the Volume-Weighted Average Price VWAP that carries the Metrics associated with
- * 	Trades in a Session. The References are:
+ * <i>MarketOrder</i> holds the Details of a Market Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -116,28 +115,36 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VWAP
+public class MarketOrder
+	extends Order
 {
-	private Date _sessionEnd = null;
-	private Date _sessionStart = null;
-	private double _transactionVolume = Double.NaN;
-	private double _transactionMarketValue = Double.NaN;
 
 	/**
-	 * Construct a Standard Instance of VWAP
+	 * Construct a Standard Instance of MarketOrder
 	 * 
-	 * @return Standard VWAP Instance
+	 * @param securityIdentifier Security Identifier
+	 * @param side Order Side
+	 * @param size Order Size
+	 * @param fillOrKill Fill-or-Kill Flag
+	 * 
+	 * @return Standard Instance of MarketOrder
 	 */
 
-	public VWAP Standard()
+	public static final MarketOrder Standard (
+		final String securityIdentifier,
+		final String side,
+		final double size,
+		final boolean fillOrKill)
 	{
-		Date sessionStart = new Date();
-
 		try
 		{
-			return new VWAP (
-				sessionStart,
-				sessionStart
+			return new MarketOrder (
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				side,
+				size,
+				fillOrKill
 			);
 		}
 		catch (Exception e)
@@ -149,122 +156,167 @@ public class VWAP
 	}
 
 	/**
-	 * VWAP Constructor
+	 * Construct a Standard Instance of Buy MarketOrder
 	 * 
-	 * @param sessionStart Session Start
-	 * @param sessionEnd Session End
+	 * @param securityIdentifier Security Identifier
+	 * @param size Order Size
+	 * @param fillOrKill Fill-or-Kill Flag
+	 * 
+	 * @return Standard Instance of Buy MarketOrder
+	 */
+
+	public static final MarketOrder StandardBuy (
+		final String securityIdentifier,
+		final double size,
+		final boolean fillOrKill)
+	{
+		try
+		{
+			return new MarketOrder (
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Order.BUY,
+				size,
+				fillOrKill
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct a Standard Instance of Buy Fill-or-Kill MarketOrder
+	 * 
+	 * @param securityIdentifier Security Identifier
+	 * @param size Order Size
+	 * 
+	 * @return Standard Instance of Buy Fill-or-Kill MarketOrder
+	 */
+
+	public static final MarketOrder StandardBuyFillOrKill (
+		final String securityIdentifier,
+		final double size)
+	{
+		try
+		{
+			return new MarketOrder (
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Order.BUY,
+				size,
+				true
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct a Standard Instance of Sell MarketOrder
+	 * 
+	 * @param securityIdentifier Security Identifier
+	 * @param size Order Size
+	 * @param fillOrKill Fill-or-Kill Flag
+	 * 
+	 * @return Standard Instance of Sell MarketOrder
+	 */
+
+	public static final MarketOrder StandardSell (
+		final String securityIdentifier,
+		final double size,
+		final boolean fillOrKill)
+	{
+		try
+		{
+			return new MarketOrder (
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Order.SELL,
+				size,
+				fillOrKill
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct a Standard Instance of Sell Fill-or-Kill MarketOrder
+	 * 
+	 * @param securityIdentifier Security Identifier
+	 * @param size Order Size
+	 * 
+	 * @return Standard Instance of Sell Fill-or-Kill MarketOrder
+	 */
+
+	public static final MarketOrder StandardSellFillOrKill (
+		final String securityIdentifier,
+		final double size)
+	{
+		try
+		{
+			return new MarketOrder (
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Order.SELL,
+				size,
+				true
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * MarketOrder Constructor
+	 * 
+	 * @param securityIdentifier Security Identifier
+	 * @param id Order ID
+	 * @param creationTime Creation Time
+	 * @param side Order Side
+	 * @param size Order Size
+	 * @param fillOrKill Fill-or-Kill Flag
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public VWAP (
-		final Date sessionStart,
-		final Date sessionEnd)
+	public MarketOrder (
+		final String securityIdentifier,
+		final String id,
+		final Date creationTime,
+		final String side,
+		final double size,
+		final boolean fillOrKill)
 		throws Exception
 	{
-		if (null == (_sessionStart = sessionStart))
-		{
-			throw new Exception (
-				"VWAP Construtor => Invalid Input"
-			);
-		}
-
-		_sessionEnd = sessionEnd;
-	}
-
-	/**
-	 * Retrieve the Start of the Session
-	 * 
-	 * @return Start of the Session
-	 */
-
-	public Date sessionStart()
-	{
-		return _sessionStart;
-	}
-
-	/**
-	 * Retrieve the End of the Session
-	 * 
-	 * @return End of the Session
-	 */
-
-	public Date sessionEnd()
-	{
-		return _sessionEnd;
-	}
-
-	/**
-	 * Retrieve the Session Transaction Volume
-	 * 
-	 * @return The Session Transaction Volume
-	 */
-
-	public double transactionVolume()
-	{
-		return _transactionVolume;
-	}
-
-	/**
-	 * Retrieve the Session Transaction Market Value
-	 * 
-	 * @return The Session Transaction Market Value
-	 */
-
-	public double transactionMarketValue()
-	{
-		return _transactionMarketValue;
-	}
-
-	/**
-	 * Add a Trade to the Session
-	 * 
-	 * @param size Size
-	 * @param price Price
-	 * 
-	 * @return TRUE - The Trade has been successfully added
-	 */
-
-	public boolean addTrade (
-		final double size,
-		final double price)
-	{
-		if (!NumberUtil.IsValid (
-				size
-			) || !NumberUtil.IsValid (
-				price
-			)
-		)
-		{
-			return false;
-		}
-
-		_transactionMarketValue += price * size;
-		_transactionVolume += size;
-		return true;
-	}
-
-	/**
-	 * Finish the VWAP Session
-	 * 
-	 * @return TRUE - The Session is Finished
-	 */
-
-	public boolean finish()
-	{
-		_sessionEnd = new Date();
-
-		return true;
-	}
-
-	/**
-	 * Retrieve the Session VWAP Average
-	 * 
-	 * @return The Session VWAP Average
-	 */
-
-	public double sessionAverage()
-	{
-		return 0. == _transactionVolume ? Double.NaN : _transactionMarketValue / _transactionVolume;
+		super (
+			securityIdentifier,
+			id,
+			OrderType.MARKET_ORDER,
+			creationTime,
+			side,
+			size,
+			fillOrKill
+		);
 	}
 }

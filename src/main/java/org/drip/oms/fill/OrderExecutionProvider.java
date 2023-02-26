@@ -1,9 +1,8 @@
 
-package org.drip.oms.specification;
+package org.drip.oms.fill;
 
-import java.util.Date;
-
-import org.drip.numerical.common.NumberUtil;
+import org.drip.oms.specification.Order;
+import org.drip.oms.specification.PriceTick;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -110,161 +109,48 @@ import org.drip.numerical.common.NumberUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/specification/README.md">Order Specification and Session Metrics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/fill/README.md">Order Fulfillment Scheme Implementations/Results</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class VWAP
+public interface OrderExecutionProvider
 {
-	private Date _sessionEnd = null;
-	private Date _sessionStart = null;
-	private double _transactionVolume = Double.NaN;
-	private double _transactionMarketValue = Double.NaN;
 
 	/**
-	 * Construct a Standard Instance of VWAP
+	 * Retrieve the PriceTick given the Security Identifier
 	 * 
-	 * @return Standard VWAP Instance
+	 * @param securityIdentifier The Security Identifier
+	 * 
+	 * @return The PriceTick
 	 */
 
-	public VWAP Standard()
-	{
-		Date sessionStart = new Date();
-
-		try
-		{
-			return new VWAP (
-				sessionStart,
-				sessionStart
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
+	public abstract PriceTick priceTick (
+		final String securityIdentifier
+	);
 
 	/**
-	 * VWAP Constructor
+	 * See if the Order can be fully satisfied
 	 * 
-	 * @param sessionStart Session Start
-	 * @param sessionEnd Session End
+	 * @param order The Order
 	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @return TRUE - The Order can be fully satisfied
 	 */
 
-	public VWAP (
-		final Date sessionStart,
-		final Date sessionEnd)
-		throws Exception
-	{
-		if (null == (_sessionStart = sessionStart))
-		{
-			throw new Exception (
-				"VWAP Construtor => Invalid Input"
-			);
-		}
-
-		_sessionEnd = sessionEnd;
-	}
+	public abstract boolean isOrderMarketable (
+		final Order order
+	);
 
 	/**
-	 * Retrieve the Start of the Session
+	 * Attempt Complete Fulfillment of the Specified Order
 	 * 
-	 * @return Start of the Session
+	 * @param order Input Order
+	 * 
+	 * @return Specifications of the Fulfillment 
 	 */
 
-	public Date sessionStart()
-	{
-		return _sessionStart;
-	}
-
-	/**
-	 * Retrieve the End of the Session
-	 * 
-	 * @return End of the Session
-	 */
-
-	public Date sessionEnd()
-	{
-		return _sessionEnd;
-	}
-
-	/**
-	 * Retrieve the Session Transaction Volume
-	 * 
-	 * @return The Session Transaction Volume
-	 */
-
-	public double transactionVolume()
-	{
-		return _transactionVolume;
-	}
-
-	/**
-	 * Retrieve the Session Transaction Market Value
-	 * 
-	 * @return The Session Transaction Market Value
-	 */
-
-	public double transactionMarketValue()
-	{
-		return _transactionMarketValue;
-	}
-
-	/**
-	 * Add a Trade to the Session
-	 * 
-	 * @param size Size
-	 * @param price Price
-	 * 
-	 * @return TRUE - The Trade has been successfully added
-	 */
-
-	public boolean addTrade (
-		final double size,
-		final double price)
-	{
-		if (!NumberUtil.IsValid (
-				size
-			) || !NumberUtil.IsValid (
-				price
-			)
-		)
-		{
-			return false;
-		}
-
-		_transactionMarketValue += price * size;
-		_transactionVolume += size;
-		return true;
-	}
-
-	/**
-	 * Finish the VWAP Session
-	 * 
-	 * @return TRUE - The Session is Finished
-	 */
-
-	public boolean finish()
-	{
-		_sessionEnd = new Date();
-
-		return true;
-	}
-
-	/**
-	 * Retrieve the Session VWAP Average
-	 * 
-	 * @return The Session VWAP Average
-	 */
-
-	public double sessionAverage()
-	{
-		return 0. == _transactionVolume ? Double.NaN : _transactionMarketValue / _transactionVolume;
-	}
+	public abstract OrderFulfillment attemptFill (
+		final Order order
+	);
 }

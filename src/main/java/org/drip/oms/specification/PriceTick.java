@@ -1,8 +1,6 @@
 
 package org.drip.oms.specification;
 
-import java.util.Date;
-
 import org.drip.numerical.common.NumberUtil;
 
 /*
@@ -78,8 +76,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>VWAP</i> implements the Volume-Weighted Average Price VWAP that carries the Metrics associated with
- * 	Trades in a Session. The References are:
+ * <i>Order</i> holds the Details of an Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -116,155 +113,86 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VWAP
+public class PriceTick
 {
-	private Date _sessionEnd = null;
-	private Date _sessionStart = null;
-	private double _transactionVolume = Double.NaN;
-	private double _transactionMarketValue = Double.NaN;
 
 	/**
-	 * Construct a Standard Instance of VWAP
-	 * 
-	 * @return Standard VWAP Instance
+	 * Price Up-tick
 	 */
 
-	public VWAP Standard()
-	{
-		Date sessionStart = new Date();
-
-		try
-		{
-			return new VWAP (
-				sessionStart,
-				sessionStart
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
+	public static final int UPTICK = 0;
 
 	/**
-	 * VWAP Constructor
+	 * Price Down-tick
+	 */
+
+	public static final int DOWNTICK = 1;
+
+	private double _marketBuyPrice = Double.NaN;
+	private double _marketSellPrice = Double.NaN;
+	private int _tickDirection = Integer.MIN_VALUE;
+
+	/**
+	 * PriceTick Constructor
 	 * 
-	 * @param sessionStart Session Start
-	 * @param sessionEnd Session End
+	 * @param tickDirection Tick Direction
+	 * @param marketBuyPrice Market Buy Price
+	 * @param marketSellPrice Market Sell Price
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public VWAP (
-		final Date sessionStart,
-		final Date sessionEnd)
+	public PriceTick (
+		final int tickDirection,
+		final double marketBuyPrice,
+		final double marketSellPrice)
 		throws Exception
 	{
-		if (null == (_sessionStart = sessionStart))
+		if (!NumberUtil.IsValid (
+				_marketBuyPrice = marketBuyPrice
+			) || 0 >= _marketBuyPrice || !NumberUtil.IsValid (
+				_marketSellPrice = marketSellPrice
+			) || 0 >= _marketSellPrice
+		)
 		{
 			throw new Exception (
-				"VWAP Construtor => Invalid Input"
+				"PriceTick Constructor => Invalid Inputs"
 			);
 		}
 
-		_sessionEnd = sessionEnd;
+		_tickDirection = tickDirection;
 	}
 
 	/**
-	 * Retrieve the Start of the Session
+	 * Retrieve the Tick Direction
 	 * 
-	 * @return Start of the Session
+	 * @return The Tick Direction
 	 */
 
-	public Date sessionStart()
+	public int tickDirection()
 	{
-		return _sessionStart;
+		return _tickDirection;
 	}
 
 	/**
-	 * Retrieve the End of the Session
+	 * Retrieve the Market Buy Price
 	 * 
-	 * @return End of the Session
+	 * @return The Market Buy Price
 	 */
 
-	public Date sessionEnd()
+	public double marketBuyPrice()
 	{
-		return _sessionEnd;
+		return _marketBuyPrice;
 	}
 
 	/**
-	 * Retrieve the Session Transaction Volume
+	 * Retrieve the Market Sell Price
 	 * 
-	 * @return The Session Transaction Volume
+	 * @return The Market Sell Price
 	 */
 
-	public double transactionVolume()
+	public double marketSellPrice()
 	{
-		return _transactionVolume;
-	}
-
-	/**
-	 * Retrieve the Session Transaction Market Value
-	 * 
-	 * @return The Session Transaction Market Value
-	 */
-
-	public double transactionMarketValue()
-	{
-		return _transactionMarketValue;
-	}
-
-	/**
-	 * Add a Trade to the Session
-	 * 
-	 * @param size Size
-	 * @param price Price
-	 * 
-	 * @return TRUE - The Trade has been successfully added
-	 */
-
-	public boolean addTrade (
-		final double size,
-		final double price)
-	{
-		if (!NumberUtil.IsValid (
-				size
-			) || !NumberUtil.IsValid (
-				price
-			)
-		)
-		{
-			return false;
-		}
-
-		_transactionMarketValue += price * size;
-		_transactionVolume += size;
-		return true;
-	}
-
-	/**
-	 * Finish the VWAP Session
-	 * 
-	 * @return TRUE - The Session is Finished
-	 */
-
-	public boolean finish()
-	{
-		_sessionEnd = new Date();
-
-		return true;
-	}
-
-	/**
-	 * Retrieve the Session VWAP Average
-	 * 
-	 * @return The Session VWAP Average
-	 */
-
-	public double sessionAverage()
-	{
-		return 0. == _transactionVolume ? Double.NaN : _transactionMarketValue / _transactionVolume;
+		return _marketSellPrice;
 	}
 }

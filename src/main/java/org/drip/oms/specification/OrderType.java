@@ -1,10 +1,6 @@
 
 package org.drip.oms.specification;
 
-import java.util.Date;
-
-import org.drip.numerical.common.NumberUtil;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -78,8 +74,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>VWAP</i> implements the Volume-Weighted Average Price VWAP that carries the Metrics associated with
- * 	Trades in a Session. The References are:
+ * <i>OrderType</i> holds the different Types of Orders. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -116,155 +111,198 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VWAP
+public class OrderType
 {
-	private Date _sessionEnd = null;
-	private Date _sessionStart = null;
-	private double _transactionVolume = Double.NaN;
-	private double _transactionMarketValue = Double.NaN;
 
 	/**
-	 * Construct a Standard Instance of VWAP
-	 * 
-	 * @return Standard VWAP Instance
+	 * Market Order
 	 */
 
-	public VWAP Standard()
-	{
-		Date sessionStart = new Date();
-
-		try
-		{
-			return new VWAP (
-				sessionStart,
-				sessionStart
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
+	public static final int MARKET_ORDER = 1;
 
 	/**
-	 * VWAP Constructor
-	 * 
-	 * @param sessionStart Session Start
-	 * @param sessionEnd Session End
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * Limit Order
 	 */
 
-	public VWAP (
-		final Date sessionStart,
-		final Date sessionEnd)
-		throws Exception
-	{
-		if (null == (_sessionStart = sessionStart))
-		{
-			throw new Exception (
-				"VWAP Construtor => Invalid Input"
-			);
-		}
-
-		_sessionEnd = sessionEnd;
-	}
+	public static final int LIMIT_ORDER = 2;
 
 	/**
-	 * Retrieve the Start of the Session
-	 * 
-	 * @return Start of the Session
+	 * Day Order
 	 */
 
-	public Date sessionStart()
-	{
-		return _sessionStart;
-	}
+	public static final int DAY_ORDER = 4;
 
 	/**
-	 * Retrieve the End of the Session
-	 * 
-	 * @return End of the Session
+	 * Good for Day Order
 	 */
 
-	public Date sessionEnd()
-	{
-		return _sessionEnd;
-	}
+	public static final int GOOD_FOR_DAY_ORDER = 4;
 
 	/**
-	 * Retrieve the Session Transaction Volume
-	 * 
-	 * @return The Session Transaction Volume
+	 * Good till Canceled Order
 	 */
 
-	public double transactionVolume()
-	{
-		return _transactionVolume;
-	}
+	public static final int GOOD_TILL_CANCELED_ORDER = 5;
 
 	/**
-	 * Retrieve the Session Transaction Market Value
-	 * 
-	 * @return The Session Transaction Market Value
+	 * Immediate or Canceled Order
 	 */
 
-	public double transactionMarketValue()
-	{
-		return _transactionMarketValue;
-	}
+	public static final int IMMEDIATE_OR_CANCELED_ORDER = 6;
 
 	/**
-	 * Add a Trade to the Session
-	 * 
-	 * @param size Size
-	 * @param price Price
-	 * 
-	 * @return TRUE - The Trade has been successfully added
+	 * On the Close Order
 	 */
 
-	public boolean addTrade (
-		final double size,
-		final double price)
-	{
-		if (!NumberUtil.IsValid (
-				size
-			) || !NumberUtil.IsValid (
-				price
-			)
-		)
-		{
-			return false;
-		}
-
-		_transactionMarketValue += price * size;
-		_transactionVolume += size;
-		return true;
-	}
+	public static final int ON_THE_CLOSE_ORDER = 8;
 
 	/**
-	 * Finish the VWAP Session
-	 * 
-	 * @return TRUE - The Session is Finished
+	 * On the Open Order
 	 */
 
-	public boolean finish()
-	{
-		_sessionEnd = new Date();
-
-		return true;
-	}
+	public static final int ON_THE_OPEN_ORDER = 9;
 
 	/**
-	 * Retrieve the Session VWAP Average
-	 * 
-	 * @return The Session VWAP Average
+	 * Market on Close Order
 	 */
 
-	public double sessionAverage()
-	{
-		return 0. == _transactionVolume ? Double.NaN : _transactionMarketValue / _transactionVolume;
-	}
+	public static final int MARKET_ON_CLOSE_ORDER = 10;
+
+	/**
+	 * Market On Open Order
+	 */
+
+	public static final int MARKET_ON_OPEN_ORDER = 11;
+
+	/**
+	 * Limit-on-close Order
+	 */
+
+	public static final int LIMIT_ON_CLOSE_ORDER = 12;
+
+	/**
+	 * Limit-on-open Order
+	 */
+
+	public static final int LIMIT_ON_OPEN_ORDER = 13;
+
+	/**
+	 * Stop Order
+	 */
+
+	public static final int STOP_ORDER = 14;
+
+	/**
+	 * Stop-Loss Order
+	 */
+
+	public static final int STOP_LOSS_ORDER = 14;
+
+	/**
+	 * Sell-stop Order
+	 */
+
+	public static final int SELL_STOP_ORDER = 15;
+
+	/**
+	 * Buy-stop Order
+	 */
+
+	public static final int BUY_STOP_ORDER = 16;
+
+	/**
+	 * Stop-limit Order
+	 */
+
+	public static final int STOP_LIMIT_ORDER = 17;
+
+	/**
+	 * Trailing Stop Order
+	 */
+
+	public static final int TRAILING_STOP_ORDER = 18;
+
+	/**
+	 * Trailing Stop Limit Order
+	 */
+
+	public static final int TRAILING_STOP_LIMIT_ORDER = 19;
+
+	/**
+	 * Peg Order
+	 */
+
+	public static final int PEG_ORDER = 20;
+
+	/**
+	 * Peg Best Order
+	 */
+
+	public static final int PEG_BEST_ORDER = 21;
+
+	/**
+	 * Mid-price Peg Order
+	 */
+
+	public static final int MID_PRICE_PEG_ORDER = 22;
+
+	/**
+	 * Buy Market-if-touched Order
+	 */
+
+	public static final int BUY_MARKET_IF_TOUCHED_ORDER = 23;
+
+	/**
+	 * Sell Market-if-touched Order
+	 */
+
+	public static final int SELL_MARKET_IF_TOUCHED_ORDER = 24;
+
+	/**
+	 * One Cancels Other Order
+	 */
+
+	public static final int ONE_CANCELS_OTHER_ORDER = 25;
+
+	/**
+	 * One Sends Other Order
+	 */
+
+	public static final int ONE_SENDS_OTHER_ORDER = 26;
+
+	/**
+	 * Tick Sensitive Order
+	 */
+
+	public static final int TICK_SENSITIVE_ORDER = 27;
+
+	/**
+	 * At the Opening Order
+	 */
+
+	public static final int AT_THE_OPENING_ORDER = 28;
+
+	/**
+	 * Discretionary Order
+	 */
+
+	public static final int DISCRETIONARY_ORDER = 29;
+
+	/**
+	 * Bracket Order
+	 */
+
+	public static final int BRACKET_ORDER = 30;
+
+	/**
+	 * Hidden Order
+	 */
+
+	public static final int HIDDEN_ORDER = 32;
+
+	/**
+	 * Iceberg Order
+	 */
+
+	public static final int ICEBERG_ORDER = 32;
 }

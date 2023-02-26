@@ -1,10 +1,6 @@
 
 package org.drip.oms.specification;
 
-import java.util.Date;
-
-import org.drip.numerical.common.NumberUtil;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -78,8 +74,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>VWAP</i> implements the Volume-Weighted Average Price VWAP that carries the Metrics associated with
- * 	Trades in a Session. The References are:
+ * <i>OrderState</i> holds the different States of an Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -116,155 +111,36 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VWAP
+public class OrderState
 {
-	private Date _sessionEnd = null;
-	private Date _sessionStart = null;
-	private double _transactionVolume = Double.NaN;
-	private double _transactionMarketValue = Double.NaN;
 
 	/**
-	 * Construct a Standard Instance of VWAP
-	 * 
-	 * @return Standard VWAP Instance
+	 * OPEN
 	 */
 
-	public VWAP Standard()
-	{
-		Date sessionStart = new Date();
-
-		try
-		{
-			return new VWAP (
-				sessionStart,
-				sessionStart
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
+	public static final int OPEN = 1;
 
 	/**
-	 * VWAP Constructor
-	 * 
-	 * @param sessionStart Session Start
-	 * @param sessionEnd Session End
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * UNFILLED
 	 */
 
-	public VWAP (
-		final Date sessionStart,
-		final Date sessionEnd)
-		throws Exception
-	{
-		if (null == (_sessionStart = sessionStart))
-		{
-			throw new Exception (
-				"VWAP Construtor => Invalid Input"
-			);
-		}
-
-		_sessionEnd = sessionEnd;
-	}
+	public static final int UNFILLED = 2;
 
 	/**
-	 * Retrieve the Start of the Session
-	 * 
-	 * @return Start of the Session
+	 * PARTIALLY FILLED
 	 */
 
-	public Date sessionStart()
-	{
-		return _sessionStart;
-	}
+	public static final int PARTIALLY_FILLED = 4;
 
 	/**
-	 * Retrieve the End of the Session
-	 * 
-	 * @return End of the Session
+	 * FILLED
 	 */
 
-	public Date sessionEnd()
-	{
-		return _sessionEnd;
-	}
+	public static final int FILLED = 8;
 
 	/**
-	 * Retrieve the Session Transaction Volume
-	 * 
-	 * @return The Session Transaction Volume
+	 * CANCELED
 	 */
 
-	public double transactionVolume()
-	{
-		return _transactionVolume;
-	}
-
-	/**
-	 * Retrieve the Session Transaction Market Value
-	 * 
-	 * @return The Session Transaction Market Value
-	 */
-
-	public double transactionMarketValue()
-	{
-		return _transactionMarketValue;
-	}
-
-	/**
-	 * Add a Trade to the Session
-	 * 
-	 * @param size Size
-	 * @param price Price
-	 * 
-	 * @return TRUE - The Trade has been successfully added
-	 */
-
-	public boolean addTrade (
-		final double size,
-		final double price)
-	{
-		if (!NumberUtil.IsValid (
-				size
-			) || !NumberUtil.IsValid (
-				price
-			)
-		)
-		{
-			return false;
-		}
-
-		_transactionMarketValue += price * size;
-		_transactionVolume += size;
-		return true;
-	}
-
-	/**
-	 * Finish the VWAP Session
-	 * 
-	 * @return TRUE - The Session is Finished
-	 */
-
-	public boolean finish()
-	{
-		_sessionEnd = new Date();
-
-		return true;
-	}
-
-	/**
-	 * Retrieve the Session VWAP Average
-	 * 
-	 * @return The Session VWAP Average
-	 */
-
-	public double sessionAverage()
-	{
-		return 0. == _transactionVolume ? Double.NaN : _transactionMarketValue / _transactionVolume;
-	}
+	public static final int CANCELED = 16;
 }
