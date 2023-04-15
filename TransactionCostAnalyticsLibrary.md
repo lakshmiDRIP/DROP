@@ -131,6 +131,22 @@ Transaction Cost Analytics Library contains the Functionality to estimate single
 	* Definition of the Information Ratio
 	* Application of the Information Ratio
 	* References
+ * Order Placement in Limit Order Markets
+	* Overview
+	* Introduction
+	* The Order Placement Problem
+		* Assumptions
+		* Proposition 1
+		* Proposition 2
+	* Choice of Order Type: Limit Orders vs Market Orders
+		* Proposition 3 – Single Exchange: Optimal Split between Limit and Market Orders
+	* Optimal Routing of Limit Orders across Multiple Exchanges
+		* Proposition 4
+		* Proposition 4 Corollary
+		* Example
+	* Numerical Solution to the Optimization Problem
+	* Conclusion
+	* References
  * Bayesian Trading with a Daily Trend
 	* Overview, Motivation, and Synopsys
 	* Introduction and the Associated Literature
