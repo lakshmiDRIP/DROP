@@ -243,6 +243,23 @@ public abstract class R1Univariate {
 	}
 
 	/**
+	 * Retrieve the Quantile Variate of the Distribution
+	 * 
+	 * @param p The Quantile Fraction
+	 * 
+	 * @return The Quantile Variate of the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Quantile Variate cannot be estimated
+	 */
+
+	public double quantile (
+		final double p)
+		throws java.lang.Exception
+	{
+		return invCumulative (p);
+	}
+
+	/**
 	 * Retrieve the Mode of the Distribution
 	 * 
 	 * @return The Mode of the Distribution
@@ -378,6 +395,71 @@ public abstract class R1Univariate {
 	public org.drip.function.definition.R1ToR1 probabilityGeneratingFunction()
 	{
 		return null;
+	}
+
+	/**
+	 * Retrieve the Fisher Information of the Distribution
+	 * 
+	 * @return The Fisher Information of the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Fisher Information cannot be estimated
+	 */
+
+	public double fisherInformation()
+		throws java.lang.Exception
+	{
+		throw new java.lang.Exception ("R1Univariate::fisherInformation => Not implemented");
+	}
+
+	/**
+	 * Compute the Kullback-Leibler Divergence against the other R<sup>1</sup> Distribution
+	 * 
+	 * @param r1UnivariateOther Other R<sup>1</sup> Distribution
+	 * 
+	 * @return Kullback-Leibler Divergence against the other R<sup>1</sup> Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Kullback-Leibler Divergence cannot be estimated
+	 */
+
+	public double kullbackLeiblerDivergence (
+		final R1Univariate r1UnivariateOther)
+		throws java.lang.Exception
+	{
+		throw new java.lang.Exception ("R1Univariate::kullbackLeiblerDivergence => Not implemented");
+	}
+
+	/**
+	 * Retrieve the Quantile CVaR (Conditional Value-at-Risk) of the Distribution
+	 * 
+	 * @param p The Quantile
+	 * 
+	 * @return The Quantile CVaR of the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Quantile CVaR cannot be estimated
+	 */
+
+	public double cvar (
+		final double p)
+		throws java.lang.Exception
+	{
+		throw new java.lang.Exception ("R1Univariate::cvar => Not implemented");
+	}
+
+	/**
+	 * Retrieve the Quantile ES (Expected Shortfall) of the Distribution
+	 * 
+	 * @param p The Quantile
+	 * 
+	 * @return The Quantile ES  of the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Quantile ES cannot be estimated
+	 */
+
+	public double expectedShortfall (
+		final double p)
+		throws java.lang.Exception
+	{
+		return cvar (p);
 	}
 
 	/**

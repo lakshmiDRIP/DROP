@@ -11,7 +11,7 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v5.84.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v6.02.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -178,6 +178,34 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 	* Related Distributions
 	* Transformations
 	* Use in Tolerance Intervals
+	* References
+ * Exponential Distribution
+	* Overview
+	* Definitions
+		* Probability Density Function
+		* Cumulative Distribution Function
+		* Alternative Parameterization
+	* Properties
+		* Mean, Variance, Moments, and Median
+		* Memorylessness Property of Exponential Random Variable
+		* Quantiles
+		* Conditional Value at Risk (Expected Shortfall)
+		* Buffered Probability of Exceedance (bPOE)
+		* Kullback-Leibler Divergence
+		* Maximum Entropy Distribution
+		* Distribution of the Minimum of Exponential Random Variables
+		* Joint Moments of i.i.d. Exponential Order Statistics
+		* Sum of Two Independent Exponential Random Variables
+	* Related Distributions
+	* Statistical Inference
+		* Parameter Estimation
+		* Fisher Information
+		* Confidence Intervals
+		* Bayesian Inference
+	* Occurrence and Applications
+		* Occurrence of Events
+		* Prediction
+	* Random Variate Generation
 	* References
  * Householder Transformation
 	* Overview
