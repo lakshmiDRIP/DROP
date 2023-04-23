@@ -1,6 +1,12 @@
 
 package org.drip.measure.continuous;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.r1tor1solver.FixedPointFinderBrent;
+import org.drip.function.r1tor1solver.FixedPointFinderOutput;
+import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.numerical.integration.R1ToR1Integrator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -418,14 +424,59 @@ public abstract class R1Univariate {
 	 * 
 	 * @return Kullback-Leibler Divergence against the other R<sup>1</sup> Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Kullback-Leibler Divergence cannot be estimated
+	 * @throws Exception Thrown if the Kullback-Leibler Divergence cannot be estimated
 	 */
 
 	public double kullbackLeiblerDivergence (
 		final R1Univariate r1UnivariateOther)
-		throws java.lang.Exception
+		throws Exception
 	{
-		throw new java.lang.Exception ("R1Univariate::kullbackLeiblerDivergence => Not implemented");
+		if (null == r1UnivariateOther)
+		{
+			throw new Exception (
+				"R1Univariate::kullbackLeiblerDivergence => Invalid Inputs"
+			);
+		}
+
+		R1ToR1 pdfDifferentialFunction = new R1ToR1 (null) {
+			@Override public double evaluate (
+				final double t)
+				throws Exception
+			{
+				return Math.log (density (t) / r1UnivariateOther.density (t));
+			}
+		};
+
+		double[] leftRight = support();
+
+		if (Double.isFinite (leftRight[0]) && Double.isFinite (leftRight[1]))
+		{
+			return R1ToR1Integrator.Boole (
+				pdfDifferentialFunction,
+				leftRight[0],
+				leftRight[1]
+			);
+		}
+
+		if (Double.isFinite (leftRight[0]))
+		{
+			return NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
+				leftRight[0],
+				1000
+			).integrate (pdfDifferentialFunction);
+		}
+
+		if (Double.isFinite (leftRight[1]))
+		{
+			return NewtonCotesQuadratureGenerator.GaussLaguerreRightDefinite (
+				leftRight[1],
+				1000
+			).integrate (pdfDifferentialFunction);
+		}
+
+		return NewtonCotesQuadratureGenerator.GaussHermite (
+			1000
+		).integrate (pdfDifferentialFunction);
 	}
 
 	/**
@@ -442,7 +493,21 @@ public abstract class R1Univariate {
 		final double p)
 		throws java.lang.Exception
 	{
-		throw new java.lang.Exception ("R1Univariate::cvar => Not implemented");
+		return R1ToR1Integrator.Boole (
+			new R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double t)
+					throws Exception
+				{
+					return quantile (
+						t
+					);
+				}
+			},
+			p,
+			1.
+		) / (1. - p);
 	}
 
 	/**
@@ -460,6 +525,124 @@ public abstract class R1Univariate {
 		throws java.lang.Exception
 	{
 		return cvar (p);
+	}
+
+	/**
+	 * Retrieve the Buffered Probability of Existence
+	 * 
+	 * @param x The Variate
+	 * 
+	 * @return The Buffered Probability of Existence
+	 * 
+	 * @throws Exception Thrown if the Buffered Probability of Existence cannot be estimated
+	 */
+
+	public double bPOE (
+		final double x)
+		throws Exception
+	{
+		FixedPointFinderOutput fixedPointFinderOutput = new FixedPointFinderBrent (
+			0.,
+			new R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double u)
+					throws Exception
+				{
+					return cvar (
+						u
+					) - x;
+				}
+			},
+			true
+		).findRoot();
+
+		if (null == fixedPointFinderOutput)
+		{
+			throw new Exception (
+				"R1Univariate::bPOE => Cannot find Root"
+			);
+		}
+
+		return 1. - fixedPointFinderOutput.getRoot();
+	}
+
+	/**
+	 * Retrieve the n<sup>th</sup> Non-central Moment
+	 * 
+	 * @param n Moment Number
+	 * 
+	 * @return The n<sup>th</sup> Non-central Moment
+	 * 
+	 * @throws java.lang.Exception Thrown if the n<sup>th</sup> Non-central Moment cannot be estimated
+	 */
+
+	public double nonCentralMoment (
+		final int n)
+		throws java.lang.Exception
+	{
+		throw new java.lang.Exception ("R1Univariate::nonCentralMoment => Not implemented");
+	}
+
+	/**
+	 * Retrieve the n<sup>th</sup> Central Moment
+	 * 
+	 * @param n Moment Number
+	 * 
+	 * @return The n<sup>th</sup> Central Moment
+	 * 
+	 * @throws java.lang.Exception Thrown if the n<sup>th</sup> Central Moment cannot be estimated
+	 */
+
+	public double centralMoment (
+		final int n)
+		throws java.lang.Exception
+	{
+		throw new java.lang.Exception ("R1Univariate::centralMoment => Not implemented");
+	}
+
+	/**
+	 * Retrieve the Inter-quantile Range (IQR) of the Distribution
+	 * 
+	 * @return The Inter-quantile Range of the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inter-quantile Range cannot be estimated
+	 */
+
+	public double iqr()
+		throws java.lang.Exception
+	{
+		throw new java.lang.Exception ("R1Univariate::iqr => Not implemented");
+	}
+
+	/**
+	 * Retrieve the Tukey Criterion of the Distribution
+	 * 
+	 * @return The Tukey Criterion of the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Tukey Criterion cannot be estimated
+	 */
+
+	public double tukeyCriterion()
+		throws java.lang.Exception
+	{
+		return invCumulative (
+			0.75
+		) + 1.5 * iqr();
+	}
+
+	/**
+	 * Retrieve the Tukey Anomaly of the Distribution
+	 * 
+	 * @return The Tukey Anomaly of the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Tukey Anomaly cannot be estimated
+	 */
+
+	public double tukeyAnomaly()
+		throws java.lang.Exception
+	{
+		return 1. - tukeyCriterion();
 	}
 
 	/**

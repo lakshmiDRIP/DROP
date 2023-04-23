@@ -122,6 +122,47 @@ public class R1RateDistribution
 	private double _lambda = Double.NaN;
 
 	/**
+	 * Construct a Standard Scale Parameterized Instance of R<sup>1</sup> Exponential Distribution
+	 * 
+	 * @param beta The Scale Parameter Beta
+	 * 
+	 * @return Scale Parameterized Instance of R<sup>1</sup> Exponential Distribution
+	 */
+
+	public static final R1RateDistribution ScaleStandard (
+		final double beta)
+	{
+		try
+		{
+			return new R1RateDistribution (1. / beta);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * R1RateDistribution Constructor
+	 * 
+	 * @param lambda Rate Parameter
+	 * 
+	 * @throws Exception Thrown if lambda is invalid
+	 */
+
+	public R1RateDistribution (
+		final double lambda)
+		throws Exception
+	{
+		if (!NumberUtil.IsValid (_lambda = lambda) || 0. > _lambda)
+		{
+			throw new Exception ("R1RateDistribution Constructor => Invalid lambda");
+		}
+	}
+
+	/**
 	 * Retrieve the Rate Parameter Lambda
 	 * 
 	 * @return Rate Parameter Lambda
@@ -317,5 +358,77 @@ public class R1RateDistribution
 		return lambdaRatio - Math.log (
 			lambdaRatio
 		) - 1.;
+	}
+
+	@Override public double cvar (
+		final double p)
+		throws Exception
+	{
+		if (!NumberUtil.IsValid (
+				p
+			) || 0. > p || 1. < p
+		)
+		{
+			throw new Exception (
+				"R1RateDistribution::cvar => p is Invalid"
+			);
+		}
+
+		return -1. * (
+			1. + Math.log (
+				1. - p
+			)
+		) / _lambda;
+	}
+
+	@Override public double bPOE (
+		final double x)
+		throws Exception
+	{
+		if (!NumberUtil.IsValid (
+				x
+			)
+		)
+		{
+			throw new Exception (
+				"R1RateDistribution::bPOE => x is Invalid"
+			);
+		}
+
+		return Math.exp (
+			1. - _lambda * x
+		);
+	}
+
+	@Override public double nonCentralMoment (
+		final int n)
+		throws java.lang.Exception
+	{
+		return NumberUtil.Factorial (
+			n
+		) * Math.pow (
+			_lambda,
+			-n
+		);
+	}
+
+	@Override public double centralMoment (
+		final int n)
+		throws Exception
+	{
+		return NumberUtil.SubFactorial (
+			n
+		) * Math.pow (
+			_lambda,
+			-n
+		);
+	}
+
+	@Override public double iqr()
+		throws Exception
+	{
+		return Math.log (
+			3.
+		) / _lambda;
 	}
 }

@@ -613,6 +613,29 @@ public class NumberUtil {
 	}
 
 	/**
+	 * This function implements Sub-factorial N.
+	 * 
+	 * @param n N
+	 * 
+	 * @return The Sub-factorial N
+	 */
+
+	public static final double SubFactorial (
+		final int n)
+	{
+		int factorial = 1;
+		double signedInverseFactorial = 1.;
+
+		for (int k = 1; k <= n; ++k) {
+			factorial *= k;
+
+			signedInverseFactorial += (0 == k % 2 ? 1. : -1.) / factorial;
+		}
+
+		return signedInverseFactorial * factorial;
+	}
+
+	/**
 	 * This function implements N Permute K.
 	 * 
 	 * @param n N
