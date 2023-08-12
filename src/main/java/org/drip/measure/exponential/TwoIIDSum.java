@@ -3,7 +3,8 @@ package org.drip.measure.exponential;
 
 import org.drip.function.definition.R1ToR1;
 import org.drip.measure.continuous.R1Univariate;
-import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.numerical.integration.R1ToR1Integrator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -78,8 +79,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>R1RateDistribution</i> implements the Rate Parameterization of the R<sup>1</sup> Exponential
- * 	Distribution. The References are:
+ * <i>TwoIIDSum</i> implements the PDF of the Sum of Two IID Exponential Random Variables. The References
+ *  are:
  * 
  * <br><br>
  * 	<ul>
@@ -116,83 +117,71 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1RateDistribution
+public class TwoIIDSum
 	extends R1Univariate
 {
-	private double _lambda = Double.NaN;
+	private static final int QUADRATURE_POINT_COUNT = 100;
+
+	private R1RateDistribution _largerR1RateDistribution = null;
+	private R1RateDistribution _smallerR1RateDistribution = null;
 
 	/**
-	 * Construct a Standard Scale Parameterized Instance of R<sup>1</sup> Exponential Distribution
+	 * TwoIIDSum Constructor
 	 * 
-	 * @param beta The Scale Parameter Beta
+	 * @param firstR1RateDistribution First R<sup>1</sup> Exponential Distribution
+	 * @param secondR1RateDistribution Second R<sup>1</sup> Exponential Distribution
 	 * 
-	 * @return Scale Parameterized Instance of R<sup>1</sup> Exponential Distribution
+	 * @throws Exception Thrown if Inputs are Invalid
 	 */
 
-	public static final R1RateDistribution ScaleStandard (
-		final double beta)
-	{
-		try
-		{
-			return new R1RateDistribution (1. / beta);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * R1RateDistribution Constructor
-	 * 
-	 * @param lambda Rate Parameter
-	 * 
-	 * @throws Exception Thrown if lambda is invalid
-	 */
-
-	public R1RateDistribution (
-		final double lambda)
+	public TwoIIDSum (
+		final R1RateDistribution firstR1RateDistribution,
+		final R1RateDistribution secondR1RateDistribution)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (_lambda = lambda) || 0. > _lambda)
+		if (null == firstR1RateDistribution || null == secondR1RateDistribution)
 		{
-			throw new Exception ("R1RateDistribution Constructor => Invalid lambda");
+			throw new Exception (
+				"TwoIIDSum Constructor: Invalid Inputs"
+			);
+		}
+
+		double firstRate = firstR1RateDistribution.rate();
+
+		double secondRate = secondR1RateDistribution.rate();
+
+		if (firstRate > secondRate)
+		{
+			_largerR1RateDistribution = secondR1RateDistribution;
+			_smallerR1RateDistribution = firstR1RateDistribution;
+		}
+		else
+		{
+			_largerR1RateDistribution = firstR1RateDistribution;
+			_smallerR1RateDistribution = secondR1RateDistribution;
 		}
 	}
 
 	/**
-	 * Retrieve the Lambda
+	 * Retrieve the Larger Exponential Distribution
 	 * 
-	 * @return Lambda
+	 * @return The Larger Exponential Distribution
 	 */
 
-	public double lambda()
+	public R1RateDistribution largerR1RateDistribution()
 	{
-		return _lambda;
+		return _largerR1RateDistribution;
 	}
 
 	/**
-	 * Retrieve the Rate Parameter
+	 * Retrieve the Smaller Exponential Distribution
 	 * 
-	 * @return Rate Parameter
+	 * @return The Smaller Exponential Distribution
 	 */
 
-	public double rate()
+	public R1RateDistribution smallerR1RateDistribution()
 	{
-		return _lambda;
-	}
-
-	/**
-	 * Retrieve the Scale Parameter
-	 * 
-	 * @return Scale Parameter
-	 */
-
-	public double scale()
-	{
-		return 1. / _lambda;
+		return _smallerR1RateDistribution;
 	}
 
 	@Override public double[] support()
@@ -213,222 +202,107 @@ public class R1RateDistribution
 		))
 		{
 			throw new Exception (
-				"R1RateDistribution::density => Variate not in Range"
+				"TwoIIDSum::density => Variate not in Range"
 			);
 		}
 
-		return 0. > t ? 0. : _lambda * Math.exp (
-			-1. * _lambda * t
-		);
-	}
+		double largerRate = _largerR1RateDistribution.rate();
 
-	@Override public double cumulative (
-		final double t)
-		throws Exception
-	{
-		if (!supported (
-			t
-		))
+		double smallerRate = _smallerR1RateDistribution.rate();
+
+		if (largerRate == smallerRate)
 		{
-			throw new Exception (
-				"R1RateDistribution::cumulative => Variate not in Range"
+			return smallerRate * smallerRate * t * Math.exp (
+				-1. * smallerRate * t
 			);
 		}
 
-		return 0. > t ? 0. : 1. - Math.exp (
-			-1. * _lambda * t
-		);
+		return smallerRate * largerRate * (
+			Math.exp (
+				-1. * smallerRate * t
+			) - Math.exp (
+				-1. * largerRate * t
+			)
+		) / (largerRate - smallerRate);
 	}
 
 	@Override public double mean()
 		throws Exception
 	{
-		return 1. / _lambda;
-	}
-
-	@Override public double median()
-		throws Exception
-	{
-		return Math.exp (
-			2.
-		) / _lambda;
-	}
-
-	@Override public double mode()
-		throws Exception
-	{
-		return 0.;
-	}
-
-	@Override public double quantile (
-		final double p)
-		throws Exception
-	{
-		if (!NumberUtil.IsValid (
-				p
-			) || 0. > p || 1. < p
-		)
-		{
-			throw new Exception (
-				"R1RateDistribution::quantile => p is Invalid"
-			);
-		}
-
-		if (0. == p)
-		{
-			return support()[0];
-		}
-
-		if (1. == p)
-		{
-			return support()[1];
-		}
-
-		return -1. * Math.log (
-			1. - p
-		) / _lambda;
+		return NewtonCotesQuadratureGenerator.GaussLaguerreRightDefinite (
+			0.,
+			QUADRATURE_POINT_COUNT
+		).integrate (
+			new R1ToR1 (
+				null
+			)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws Exception
+				{
+					return z * density (
+						z
+					);
+				}
+			}
+		);
 	}
 
 	@Override public double variance()
 		throws Exception
 	{
-		return 1. / _lambda / _lambda;
-	}
+		final double mean = mean();
 
-	@Override public double skewness()
-		throws Exception
-	{
-		return 2.;
-	}
-
-	@Override public double excessKurtosis()
-		throws Exception
-	{
-		return 1. - Math.log (
-			_lambda
-		);
-	}
-
-	@Override public R1ToR1 momentGeneratingFunction()
-	{
-		return new R1ToR1 (
-			null
-		)
-		{
-			@Override public double evaluate (
-				final double t)
-				throws Exception
+		return NewtonCotesQuadratureGenerator.GaussLaguerreRightDefinite (
+			0.,
+			QUADRATURE_POINT_COUNT
+		).integrate (
+			new R1ToR1 (
+				null
+			)
 			{
-				if (!NumberUtil.IsValid (
-						t
-					)
-				)
+				@Override public double evaluate (
+					final double z)
+					throws Exception
 				{
-					throw new Exception (
-						"R1RateDistribution::momentGeneratingFunction::evaluate => t is Invalid"
+					return (z - mean) * (z - mean) * density (
+						z
 					);
 				}
-
-				return t >= _lambda ? 0. : _lambda / (_lambda - t);
 			}
-		};
+		);
 	}
 
-	@Override public double fisherInformation()
+	@Override public double cumulative (
+		final double upper)
 		throws Exception
 	{
-		return 1. / _lambda / _lambda;
-	}
-
-	@Override public double kullbackLeiblerDivergence (
-		final R1Univariate r1UnivariateOther)
-		throws Exception
-	{
-		if (null == r1UnivariateOther ||
-			!(r1UnivariateOther instanceof R1RateDistribution)
-		)
+		if (Double.isNaN (
+			upper
+		))
 		{
 			throw new Exception (
-				"R1RateDistribution::kullbackLeiblerDivergence => Invalid Inputs"
+				"TwoIIDSum::cumulative => Invalid Upper Variate"
 			);
 		}
 
-		double lambdaRatio = (((R1RateDistribution) r1UnivariateOther).lambda()) / _lambda;
-
-		return lambdaRatio - Math.log (
-			lambdaRatio
-		) - 1.;
-	}
-
-	@Override public double cvar (
-		final double p)
-		throws Exception
-	{
-		if (!NumberUtil.IsValid (
-				p
-			) || 0. > p || 1. < p
-		)
-		{
-			throw new Exception (
-				"R1RateDistribution::cvar => p is Invalid"
-			);
-		}
-
-		return -1. * (
-			1. + Math.log (
-				1. - p
+		return R1ToR1Integrator.Boole (
+			new R1ToR1 (
+				null
 			)
-		) / _lambda;
-	}
-
-	@Override public double bPOE (
-		final double x)
-		throws Exception
-	{
-		if (!NumberUtil.IsValid (
-				x
-			)
-		)
-		{
-			throw new Exception (
-				"R1RateDistribution::bPOE => x is Invalid"
-			);
-		}
-
-		return Math.exp (
-			1. - _lambda * x
+			{
+				@Override public double evaluate (
+					final double z)
+					throws Exception
+				{
+					return density (
+						z
+					);
+				}
+			},
+			0.,
+			upper
 		);
-	}
-
-	@Override public double nonCentralMoment (
-		final int n)
-		throws java.lang.Exception
-	{
-		return NumberUtil.Factorial (
-			n
-		) * Math.pow (
-			_lambda,
-			-n
-		);
-	}
-
-	@Override public double centralMoment (
-		final int n)
-		throws Exception
-	{
-		return NumberUtil.SubFactorial (
-			n
-		) * Math.pow (
-			_lambda,
-			-n
-		);
-	}
-
-	@Override public double iqr()
-		throws Exception
-	{
-		return Math.log (
-			3.
-		) / _lambda;
 	}
 }

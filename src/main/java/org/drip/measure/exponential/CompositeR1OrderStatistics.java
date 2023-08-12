@@ -1,10 +1,6 @@
 
 package org.drip.measure.exponential;
 
-import org.drip.function.definition.R1ToR1;
-import org.drip.measure.continuous.R1Univariate;
-import org.drip.numerical.common.NumberUtil;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -78,8 +74,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>R1RateDistribution</i> implements the Rate Parameterization of the R<sup>1</sup> Exponential
- * 	Distribution. The References are:
+ * <i>CompositeR1OrderStatistics</i> generates the Order Statistics for a Composite Set of R<sup>1</sup>
+ *  Exponential Distributions. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -116,319 +112,64 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1RateDistribution
-	extends R1Univariate
+public class CompositeR1OrderStatistics
 {
-	private double _lambda = Double.NaN;
 
 	/**
-	 * Construct a Standard Scale Parameterized Instance of R<sup>1</sup> Exponential Distribution
+	 * Compute the Joint Moment of a Set of i.i.d. Distributions
 	 * 
-	 * @param beta The Scale Parameter Beta
+	 * @param r1RateDistribution R<sup>1</sup> Exponential Distribution
+	 * @param variateCount Variate Count
+	 * @param index1 First Index
+	 * @param index2 Second Index
 	 * 
-	 * @return Scale Parameterized Instance of R<sup>1</sup> Exponential Distribution
+	 * @return Joint Moment of a Set of i.i.d. Distributions
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final R1RateDistribution ScaleStandard (
-		final double beta)
-	{
-		try
-		{
-			return new R1RateDistribution (1. / beta);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * R1RateDistribution Constructor
-	 * 
-	 * @param lambda Rate Parameter
-	 * 
-	 * @throws Exception Thrown if lambda is invalid
-	 */
-
-	public R1RateDistribution (
-		final double lambda)
+	public static final double IIDJointMoment (
+		final R1RateDistribution r1RateDistribution,
+		final int variateCount,
+		final int index1,
+		final int index2)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (_lambda = lambda) || 0. > _lambda)
-		{
-			throw new Exception ("R1RateDistribution Constructor => Invalid lambda");
-		}
-	}
-
-	/**
-	 * Retrieve the Lambda
-	 * 
-	 * @return Lambda
-	 */
-
-	public double lambda()
-	{
-		return _lambda;
-	}
-
-	/**
-	 * Retrieve the Rate Parameter
-	 * 
-	 * @return Rate Parameter
-	 */
-
-	public double rate()
-	{
-		return _lambda;
-	}
-
-	/**
-	 * Retrieve the Scale Parameter
-	 * 
-	 * @return Scale Parameter
-	 */
-
-	public double scale()
-	{
-		return 1. / _lambda;
-	}
-
-	@Override public double[] support()
-	{
-		return new double[]
-		{
-			0.,
-			Double.POSITIVE_INFINITY
-		};
-	}
-
-	@Override public double density (
-		final double t)
-		throws Exception
-	{
-		if (!supported (
-			t
-		))
-		{
-			throw new Exception (
-				"R1RateDistribution::density => Variate not in Range"
-			);
-		}
-
-		return 0. > t ? 0. : _lambda * Math.exp (
-			-1. * _lambda * t
-		);
-	}
-
-	@Override public double cumulative (
-		final double t)
-		throws Exception
-	{
-		if (!supported (
-			t
-		))
-		{
-			throw new Exception (
-				"R1RateDistribution::cumulative => Variate not in Range"
-			);
-		}
-
-		return 0. > t ? 0. : 1. - Math.exp (
-			-1. * _lambda * t
-		);
-	}
-
-	@Override public double mean()
-		throws Exception
-	{
-		return 1. / _lambda;
-	}
-
-	@Override public double median()
-		throws Exception
-	{
-		return Math.exp (
-			2.
-		) / _lambda;
-	}
-
-	@Override public double mode()
-		throws Exception
-	{
-		return 0.;
-	}
-
-	@Override public double quantile (
-		final double p)
-		throws Exception
-	{
-		if (!NumberUtil.IsValid (
-				p
-			) || 0. > p || 1. < p
+		if (null == r1RateDistribution ||
+			0 > index1 || index1 >= variateCount ||
+			0 > index2 || index2 >= variateCount || index1 == index2
 		)
 		{
 			throw new Exception (
-				"R1RateDistribution::quantile => p is Invalid"
+				"CompositeR1OrderStatistics::IIDJointMoment => Invalid Inputs"
 			);
 		}
 
-		if (0. == p)
+		double expectationMaxIndex = 0.;
+		double expectationMinIndex = 0.;
+		double expectationMinIndexSquared = 0.;
+		int maxIndex = index1 > index2 ? index1 : index2;
+		int minIndex = index1 < index2 ? index1 : index2;
+
+		double inverseRate = 1. / r1RateDistribution.rate();
+
+		for (int k = 0;
+			k < minIndex;
+			++k)
 		{
-			return support()[0];
+			double expectation = inverseRate / (variateCount - k);
+			expectationMinIndexSquared += expectation * expectation;
+			expectationMinIndex += expectation;
 		}
 
-		if (1. == p)
+		for (int k = 0;
+			k < maxIndex;
+			++k)
 		{
-			return support()[1];
+			expectationMaxIndex += inverseRate / (variateCount - k);
 		}
 
-		return -1. * Math.log (
-			1. - p
-		) / _lambda;
-	}
-
-	@Override public double variance()
-		throws Exception
-	{
-		return 1. / _lambda / _lambda;
-	}
-
-	@Override public double skewness()
-		throws Exception
-	{
-		return 2.;
-	}
-
-	@Override public double excessKurtosis()
-		throws Exception
-	{
-		return 1. - Math.log (
-			_lambda
-		);
-	}
-
-	@Override public R1ToR1 momentGeneratingFunction()
-	{
-		return new R1ToR1 (
-			null
-		)
-		{
-			@Override public double evaluate (
-				final double t)
-				throws Exception
-			{
-				if (!NumberUtil.IsValid (
-						t
-					)
-				)
-				{
-					throw new Exception (
-						"R1RateDistribution::momentGeneratingFunction::evaluate => t is Invalid"
-					);
-				}
-
-				return t >= _lambda ? 0. : _lambda / (_lambda - t);
-			}
-		};
-	}
-
-	@Override public double fisherInformation()
-		throws Exception
-	{
-		return 1. / _lambda / _lambda;
-	}
-
-	@Override public double kullbackLeiblerDivergence (
-		final R1Univariate r1UnivariateOther)
-		throws Exception
-	{
-		if (null == r1UnivariateOther ||
-			!(r1UnivariateOther instanceof R1RateDistribution)
-		)
-		{
-			throw new Exception (
-				"R1RateDistribution::kullbackLeiblerDivergence => Invalid Inputs"
-			);
-		}
-
-		double lambdaRatio = (((R1RateDistribution) r1UnivariateOther).lambda()) / _lambda;
-
-		return lambdaRatio - Math.log (
-			lambdaRatio
-		) - 1.;
-	}
-
-	@Override public double cvar (
-		final double p)
-		throws Exception
-	{
-		if (!NumberUtil.IsValid (
-				p
-			) || 0. > p || 1. < p
-		)
-		{
-			throw new Exception (
-				"R1RateDistribution::cvar => p is Invalid"
-			);
-		}
-
-		return -1. * (
-			1. + Math.log (
-				1. - p
-			)
-		) / _lambda;
-	}
-
-	@Override public double bPOE (
-		final double x)
-		throws Exception
-	{
-		if (!NumberUtil.IsValid (
-				x
-			)
-		)
-		{
-			throw new Exception (
-				"R1RateDistribution::bPOE => x is Invalid"
-			);
-		}
-
-		return Math.exp (
-			1. - _lambda * x
-		);
-	}
-
-	@Override public double nonCentralMoment (
-		final int n)
-		throws java.lang.Exception
-	{
-		return NumberUtil.Factorial (
-			n
-		) * Math.pow (
-			_lambda,
-			-n
-		);
-	}
-
-	@Override public double centralMoment (
-		final int n)
-		throws Exception
-	{
-		return NumberUtil.SubFactorial (
-			n
-		) * Math.pow (
-			_lambda,
-			-n
-		);
-	}
-
-	@Override public double iqr()
-		throws Exception
-	{
-		return Math.log (
-			3.
-		) / _lambda;
+		return expectationMinIndex * expectationMaxIndex + expectationMinIndexSquared +
+			expectationMinIndex * expectationMinIndex;
 	}
 }
