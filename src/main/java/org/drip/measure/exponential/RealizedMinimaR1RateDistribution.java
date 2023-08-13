@@ -127,13 +127,10 @@ public class RealizedMinimaR1RateDistribution
 
 	public static final RealizedMinimaR1RateDistribution Standard (
 		final R1RateDistribution[] r1RateDistributionArray)
-		throws Exception
 	{
 		if (null == r1RateDistributionArray)
 		{
-			throw new Exception (
-				"RealizedMinimaR1RateDistribution Constructor => Invalid Input"
-			);
+			return null;
 		}
 
 		double compositeDistributionLambda = 0.;

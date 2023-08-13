@@ -74,8 +74,8 @@ package org.drip.measure.exponential;
  */
 
 /**
- * <i>CompositeR1OrderStatistics</i> generates the Order Statistics for a Composite Set of R<sup>1</sup>
- *  Exponential Distributions. The References are:
+ * <i>CompositeR1OrderStatistics</i> generates Metrics for the Order Statistics for a Composite Set of
+ *  R<sup>1</sup> Exponential Distributions. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -116,14 +116,46 @@ public class CompositeR1OrderStatistics
 {
 
 	/**
-	 * Compute the Joint Moment of a Set of i.i.d. Distributions
+	 * Get the Maximum of the specified Order Statistic
+	 * 
+	 * @param orderStatistic1 First Order Statistic
+	 * @param orderStatistic2 Second Order Statistic
+	 * 
+	 * @return Maximum if the specified Order Statistics Pair
+	 */
+
+	public static final int MaxOrderStatistic (
+		final int orderStatistic1,
+		final int orderStatistic2)
+	{
+		return orderStatistic1 > orderStatistic2 ? orderStatistic1 : orderStatistic2;
+	}
+
+	/**
+	 * Get the Minimum of the specified Order Statistic
+	 * 
+	 * @param orderStatistic1 First Order Statistic
+	 * @param orderStatistic2 Second Order Statistic
+	 * 
+	 * @return Minimum if the specified Order Statistics Pair
+	 */
+
+	public static final int MinOrderStatistic (
+		final int orderStatistic1,
+		final int orderStatistic2)
+	{
+		return orderStatistic1 <= orderStatistic2 ? orderStatistic1 : orderStatistic2;
+	}
+
+	/**
+	 * Compute the Joint Moment of the Order Statistics for a Set of i.i.d. Distributions
 	 * 
 	 * @param r1RateDistribution R<sup>1</sup> Exponential Distribution
 	 * @param variateCount Variate Count
-	 * @param index1 First Index
-	 * @param index2 Second Index
+	 * @param orderStatistic1 First Order Statistic
+	 * @param orderStatistic2 Second Order Statistic
 	 * 
-	 * @return Joint Moment of a Set of i.i.d. Distributions
+	 * @return Joint Moment of the Order Statistics for a Set of i.i.d. Distributions
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
@@ -131,13 +163,13 @@ public class CompositeR1OrderStatistics
 	public static final double IIDJointMoment (
 		final R1RateDistribution r1RateDistribution,
 		final int variateCount,
-		final int index1,
-		final int index2)
+		final int orderStatistic1,
+		final int orderStatistic2)
 		throws Exception
 	{
 		if (null == r1RateDistribution ||
-			0 > index1 || index1 >= variateCount ||
-			0 > index2 || index2 >= variateCount || index1 == index2
+			1 > orderStatistic1 || orderStatistic1 > variateCount ||
+			1 > orderStatistic2 || orderStatistic2 > variateCount || orderStatistic1 == orderStatistic2
 		)
 		{
 			throw new Exception (
@@ -148,8 +180,8 @@ public class CompositeR1OrderStatistics
 		double expectationMaxIndex = 0.;
 		double expectationMinIndex = 0.;
 		double expectationMinIndexSquared = 0.;
-		int maxIndex = index1 > index2 ? index1 : index2;
-		int minIndex = index1 < index2 ? index1 : index2;
+		int maxIndex = orderStatistic1 > orderStatistic2 ? orderStatistic1 : orderStatistic2;
+		int minIndex = orderStatistic1 < orderStatistic2 ? orderStatistic1 : orderStatistic2;
 
 		double inverseRate = 1. / r1RateDistribution.rate();
 

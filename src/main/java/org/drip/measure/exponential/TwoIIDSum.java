@@ -5,6 +5,8 @@ import org.drip.function.definition.R1ToR1;
 import org.drip.measure.continuous.R1Univariate;
 import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
 import org.drip.numerical.integration.R1ToR1Integrator;
+import org.drip.specialfunction.digamma.BinetFirstIntegral;
+import org.drip.specialfunction.gamma.Definitions;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -303,6 +305,29 @@ public class TwoIIDSum
 			},
 			0.,
 			upper
+		);
+	}
+
+	@Override public double differentialEntropy()
+		throws Exception
+	{
+		double largerRate = _largerR1RateDistribution.rate();
+
+		double smallerRate = _smallerR1RateDistribution.rate();
+
+		if (largerRate == smallerRate)
+		{
+			throw new Exception (
+				"TwoIIDSum::differentialEntropy => Cannot compute entropy when rates are equal"
+			);
+		}
+
+		return 1. + Definitions.EULER_MASCHERONI + Math.log (
+			(largerRate - smallerRate) / (largerRate * smallerRate)
+		) + new BinetFirstIntegral (
+			null
+		).evaluate (
+			largerRate / (largerRate - smallerRate)
 		);
 	}
 }
