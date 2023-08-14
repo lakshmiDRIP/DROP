@@ -1,12 +1,10 @@
 
-package org.drip.measure.exponential;
+package org.drip.sample.exponential;
 
-import org.drip.function.definition.R1ToR1;
-import org.drip.measure.continuous.R1Univariate;
-import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
-import org.drip.numerical.integration.R1ToR1Integrator;
-import org.drip.specialfunction.digamma.BinetFirstIntegral;
-import org.drip.specialfunction.gamma.Definitions;
+import org.drip.measure.exponential.R1RateDistribution;
+import org.drip.measure.exponential.TwoIIDSum;
+import org.drip.service.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -81,8 +79,8 @@ import org.drip.specialfunction.gamma.Definitions;
  */
 
 /**
- * <i>TwoIIDSum</i> implements the PDF of the Sum of Two IID Exponential Random Variables. The References
- *  are:
+ * <i>R1TwoIIDSignificantStatistics</i> illustrates the Generation of Significant Statistics for the Sum of
+ * 	Two IID R<sup>1</sup> Exponential Distributions. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -119,238 +117,109 @@ import org.drip.specialfunction.gamma.Definitions;
  * @author Lakshmi Krishnamurthy
  */
 
-public class TwoIIDSum
-	extends R1Univariate
+public class R1TwoIIDSignificantStatistics
 {
-	private static final int QUADRATURE_POINT_COUNT = 100;
-
-	private R1RateDistribution _largerR1RateDistribution = null;
-	private R1RateDistribution _smallerR1RateDistribution = null;
 
 	/**
-	 * TwoIIDSum Constructor
+	 * Entry Point
 	 * 
-	 * @param firstR1RateDistribution First R<sup>1</sup> Exponential Distribution
-	 * @param secondR1RateDistribution Second R<sup>1</sup> Exponential Distribution
+	 * @param argumentArray Command Line Argument Array
 	 * 
-	 * @throws Exception Thrown if Inputs are Invalid
+	 * @throws Exception Thrown on Error/Exception Situation
 	 */
 
-	public TwoIIDSum (
-		final R1RateDistribution firstR1RateDistribution,
-		final R1RateDistribution secondR1RateDistribution)
+	public static final void main (
+		final String[] argumentArray)
 		throws Exception
 	{
-		if (null == firstR1RateDistribution || null == secondR1RateDistribution)
+		EnvManager.InitEnv ("");
+
+		double[] lambdaArray = {0.02, 0.04, 0.08, 0.16, 0.32, 0.64, 1.3, 2.6, 5.1, 10.2, 20.5};
+		// double[] lambdaArray = {1.};
+
+		System.out.println (
+			"\t||----------------------------------------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\t||    L -> R:"
+		);
+
+		System.out.println (
+			"\t||          - Lambda Pair (Input)"
+		);
+
+		System.out.println (
+			"\t||          - Mean"
+		);
+
+		System.out.println (
+			"\t||          - Mode"
+		);
+
+		System.out.println (
+			"\t||          - Variance"
+		);
+
+		System.out.println (
+			"\t||          - Skewness"
+		);
+
+		System.out.println (
+			"\t||          - Excess Kurtosis"
+		);
+
+		System.out.println (
+			"\t||          - Fisher Information"
+		);
+
+		System.out.println (
+			"\t||          - Inter-quantile Range (IQR)"
+		);
+
+		System.out.println (
+			"\t||----------------------------------------------------------------------------------||"
+		);
+
+		for (int i = 0; i < lambdaArray.length; ++i)
 		{
-			throw new Exception (
-				"TwoIIDSum Constructor: Invalid Inputs"
-			);
-		}
-
-		double firstRate = firstR1RateDistribution.rate();
-
-		double secondRate = secondR1RateDistribution.rate();
-
-		if (firstRate > secondRate)
-		{
-			_largerR1RateDistribution = secondR1RateDistribution;
-			_smallerR1RateDistribution = firstR1RateDistribution;
-		}
-		else
-		{
-			_largerR1RateDistribution = firstR1RateDistribution;
-			_smallerR1RateDistribution = secondR1RateDistribution;
-		}
-	}
-
-	/**
-	 * Retrieve the Larger Exponential Distribution
-	 * 
-	 * @return The Larger Exponential Distribution
-	 */
-
-	public R1RateDistribution largerR1RateDistribution()
-	{
-		return _largerR1RateDistribution;
-	}
-
-	/**
-	 * Retrieve the Smaller Exponential Distribution
-	 * 
-	 * @return The Smaller Exponential Distribution
-	 */
-
-	public R1RateDistribution smallerR1RateDistribution()
-	{
-		return _smallerR1RateDistribution;
-	}
-
-	@Override public double[] support()
-	{
-		return new double[]
-		{
-			0.,
-			Double.POSITIVE_INFINITY
-		};
-	}
-
-	@Override public double density (
-		final double t)
-		throws Exception
-	{
-		if (Double.isInfinite (
-			t
-		))
-		{
-			return 0.;
-		}
-
-		if (!supported (
-			t
-		))
-		{
-			throw new Exception (
-				"TwoIIDSum::density => Variate not in Range"
-			);
-		}
-
-		double largerRate = _largerR1RateDistribution.rate();
-
-		double smallerRate = _smallerR1RateDistribution.rate();
-
-		if (largerRate == smallerRate)
-		{
-			return smallerRate * smallerRate * t * Math.exp (
-				-1. * smallerRate * t
-			);
-		}
-
-		return smallerRate * largerRate * (
-			Math.exp (
-				-1. * smallerRate * t
-			) - Math.exp (
-				-1. * largerRate * t
-			)
-		) / (largerRate - smallerRate);
-	}
-
-	@Override public double mean()
-		throws Exception
-	{
-		return NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-			0.,
-			QUADRATURE_POINT_COUNT
-		).integrate (
-			new R1ToR1 (
-				null
-			)
+			for (int j = 0; j < lambdaArray.length; ++j)
 			{
-				@Override public double evaluate (
-					final double z)
-					throws Exception
-				{
-					return z * density (
-						z
-					);
-				}
+				TwoIIDSum exponentialDistribution = new TwoIIDSum (
+					new R1RateDistribution (lambdaArray[i]),
+					new R1RateDistribution (lambdaArray[j])
+				);
+
+				System.out.println (
+					"\t|| {" + FormatUtil.FormatDouble (
+						lambdaArray[i], 2, 2, 1., false
+					) + "," + FormatUtil.FormatDouble (
+						lambdaArray[j], 2, 2, 1.
+					) + "} =>" + FormatUtil.FormatDouble (
+						exponentialDistribution.mean(), 2, 3, 1.
+					) + " |" + FormatUtil.FormatDouble (
+						exponentialDistribution.median(), 2, 3, 1.
+					) + " |" + FormatUtil.FormatDouble (
+						exponentialDistribution.mode(), 2, 3, 1.
+					) + " |" + FormatUtil.FormatDouble (
+						exponentialDistribution.variance(), 4, 4, 1.
+					/* ) + " |" + FormatUtil.FormatDouble (
+						exponentialDistribution.skewness(), 1, 1, 1.
+					) + " |" + FormatUtil.FormatDouble (
+						exponentialDistribution.excessKurtosis(), 2, 3, 1.
+					) + " |" + FormatUtil.FormatDouble (
+						exponentialDistribution.fisherInformation(), 4, 4, 1.
+					) + " |" + FormatUtil.FormatDouble (
+						exponentialDistribution.iqr(), 2, 3, 1. */
+					) + " ||"
+				);
 			}
-		);
-	}
-
-	@Override public double mode()
-		throws Exception
-	{
-		double largerRate = _largerR1RateDistribution.rate();
-
-		double smallerRate = _smallerR1RateDistribution.rate();
-
-		return largerRate == smallerRate ? 1. / largerRate : (
-			Math.log (
-				largerRate
-			) - Math.log (
-				smallerRate
-			)
-		) / (largerRate - smallerRate);
-	}
-
-	@Override public double variance()
-		throws Exception
-	{
-		final double mean = mean();
-
-		return NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-			0.,
-			QUADRATURE_POINT_COUNT
-		).integrate (
-			new R1ToR1 (
-				null
-			)
-			{
-				@Override public double evaluate (
-					final double z)
-					throws Exception
-				{
-					return (z - mean) * (z - mean) * density (
-						z
-					);
-				}
-			}
-		);
-	}
-
-	@Override public double cumulative (
-		final double upper)
-		throws Exception
-	{
-		if (Double.isNaN (
-			upper
-		))
-		{
-			throw new Exception (
-				"TwoIIDSum::cumulative => Invalid Upper Variate"
-			);
 		}
 
-		return R1ToR1Integrator.Boole (
-			new R1ToR1 (
-				null
-			)
-			{
-				@Override public double evaluate (
-					final double z)
-					throws Exception
-				{
-					return density (
-						z
-					);
-				}
-			},
-			0.,
-			upper
+		System.out.println (
+			"\t||----------------------------------------------------------------------------------||"
 		);
-	}
 
-	@Override public double differentialEntropy()
-		throws Exception
-	{
-		double largerRate = _largerR1RateDistribution.rate();
-
-		double smallerRate = _smallerR1RateDistribution.rate();
-
-		if (largerRate == smallerRate)
-		{
-			throw new Exception (
-				"TwoIIDSum::differentialEntropy => Cannot compute entropy when rates are equal"
-			);
-		}
-
-		return 1. + Definitions.EULER_MASCHERONI + Math.log (
-			(largerRate - smallerRate) / (largerRate * smallerRate)
-		) + new BinetFirstIntegral (
-			null
-		).evaluate (
-			largerRate / (largerRate - smallerRate)
-		);
+		EnvManager.TerminateEnv();
 	}
 }

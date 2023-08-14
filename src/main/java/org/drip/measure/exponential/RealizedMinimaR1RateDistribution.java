@@ -120,21 +120,21 @@ public class RealizedMinimaR1RateDistribution
 	/**
 	 * Standard Instance of RealizedMinimaR1RateDistribution
 	 * 
-	 * @param r1RateDistributionArray R<sup>1</sup> Exponential Distribution Array
+	 * @param lambdaArray Array of the Distribution Lambdas
 	 * 
 	 * @return Standard Instance of RealizedMinimaR1RateDistribution
 	 */
 
 	public static final RealizedMinimaR1RateDistribution Standard (
-		final R1RateDistribution[] r1RateDistributionArray)
+		final double[] lambdaArray)
 	{
-		if (null == r1RateDistributionArray)
+		if (null == lambdaArray)
 		{
 			return null;
 		}
 
 		double compositeDistributionLambda = 0.;
-		int exponentialDistributionCount = r1RateDistributionArray.length;
+		int exponentialDistributionCount = lambdaArray.length;
 
 		if (0 == exponentialDistributionCount)
 		{
@@ -143,11 +143,17 @@ public class RealizedMinimaR1RateDistribution
 
 		try
 		{
+			R1RateDistribution[] r1RateDistributionArray =
+				new R1RateDistribution[exponentialDistributionCount];
+
 			for (int distributionIndex = 0;
 				distributionIndex < exponentialDistributionCount;
 				++distributionIndex)
 			{
-				compositeDistributionLambda += r1RateDistributionArray[distributionIndex].rate();
+				r1RateDistributionArray[distributionIndex] =
+					new R1RateDistribution (lambdaArray[distributionIndex]);
+
+				compositeDistributionLambda += lambdaArray[distributionIndex];
 			}
 
 			return new RealizedMinimaR1RateDistribution (

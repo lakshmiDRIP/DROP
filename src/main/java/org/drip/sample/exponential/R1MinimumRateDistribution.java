@@ -1,6 +1,8 @@
 
 package org.drip.sample.exponential;
 
+import org.drip.measure.exponential.RealizedMinimaR1RateDistribution;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -130,6 +132,38 @@ public class R1MinimumRateDistribution
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
+
+		double[] lambdaArray = {0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1., 2., 3., 4., 5.};
+
+		RealizedMinimaR1RateDistribution realizedMinimaR1RateDistribution =
+			RealizedMinimaR1RateDistribution.Standard (lambdaArray);
+
+		System.out.println ("\t||----------------------------------------------------------------------||");
+
+		System.out.println ("\t||           Realized R^1 Minimum Rate Distribution Likelihood          ||");
+
+		System.out.println ("\t||----------------------------------------------------------------------||");
+
+		for (int i = 0; i < lambdaArray.length; ++i)
+		{
+			System.out.println (
+				"\t|| Index:" + FormatUtil.FormatDouble (i + 1, 2, 0, 1.) + "; Lambda:" +
+					FormatUtil.FormatDouble (lambdaArray[i], 1, 2, 1.) +
+					" => Probability as Realized Minimum:" + FormatUtil.FormatDouble (
+						realizedMinimaR1RateDistribution.probabilityOfIndexAsMinimum (i), 1, 6, 1.
+					) + " ||"
+			);
+		}
+
+		System.out.println ("\t||----------------------------------------------------------------------||");
+
+		System.out.println (
+			"\t|| Realized R^1 Minimum Rate Distribution Lambda =>" + FormatUtil.FormatDouble (
+				realizedMinimaR1RateDistribution.lambda(), 2, 2, 1.
+			)
+		);
+
+		System.out.println ("\t||----------------------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

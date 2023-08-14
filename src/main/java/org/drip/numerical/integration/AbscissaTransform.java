@@ -284,7 +284,7 @@ public class AbscissaTransform
 					@Override public double evaluate (
 						final double x)
 					{
-						return left + (x / (1. - x));
+						return 1. == x ? left : left + (x / (1. - x));
 					}
 				},
 				new org.drip.function.definition.R1ToR1 (null)
