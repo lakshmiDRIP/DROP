@@ -1,20 +1,14 @@
 
-package org.drip.measure.transform;
+package org.drip.measure.continuous;
 
-import org.drip.function.definition.R1ToR1;
-import org.drip.function.definition.R2ToR1;
-import org.drip.measure.gamma.R1ShapeScaleDistribution;
-import org.drip.measure.gamma.ShapeScaleParameters;
+import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2022 Lakshmi Krishnamurthy
- * Copyright (C) 2021 Lakshmi Krishnamurthy
- * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -82,8 +76,7 @@ import org.drip.measure.gamma.ShapeScaleParameters;
  */
 
 /**
- * <i>GammaToR1Exponential</i> implements the R<sup>1</sup> Exponential Distribution in Terms of the
- *  R<sup>1</sup> Gamma Distribution. The References are:
+ * <i>R1ParetoDistribution</i> implements the R<sup>1</sup> Pareto Distribution. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -91,20 +84,21 @@ import org.drip.measure.gamma.ShapeScaleParameters;
  * 			Devroye, L. (1986): <i>Non-Uniform Random Variate Generation</i> <b>Springer-Verlag</b> New York
  * 		</li>
  * 		<li>
- * 			Gamma Distribution (2019): Gamma Distribution
- * 				https://en.wikipedia.org/wiki/Chi-squared_distribution
+ * 			Exponential Distribution (2019): Exponential Distribution
+ * 				https://en.wikipedia.org/wiki/Exponential_distribution
  * 		</li>
  * 		<li>
- * 			Louzada, F., P. L. Ramos, and E. Ramos (2019): A Note on Bias of Closed-Form Estimators for the
- * 				Gamma Distribution Derived From Likelihood Equations <i>The American Statistician</i> <b>73
- * 				(2)</b> 195-199
+ * 			Norton, M., V. Khokhlov, and S. Uryasev (2019): Calculating CVaR and bPOE for Common Probability
+ * 				Distributions with Application to Portfolio Optimization and Density Estimation <i>Annals of
+ * 				Operations Research</i> <b>299 (1-2)</b> 1281-1315
  * 		</li>
  * 		<li>
- * 			Minka, T. (2002): Estimating a Gamma distribution https://tminka.github.io/papers/minka-gamma.pdf
+ * 			Ross, S. M. (2009): <i>Introduction to Probability and Statistics for Engineers and Scientists
+ * 				4<sup>th</sup> Edition</i> <b>Associated Press</b> New York, NY
  * 		</li>
  * 		<li>
- * 			Ye, Z. S., and N. Chen (2017): Closed-Form Estimators for the Gamma Distribution Derived from
- * 				Likelihood Equations <i>The American Statistician</i> <b>71 (2)</b> 177-181
+ * 			Schmidt, D. F., and D. Makalic (2009): Universal Models for the Exponential Distribution <i>IEEE
+ * 				Transactions on Information Theory</i> <b>55 (7)</b> 3087-3090
  * 		</li>
  * 	</ul>
  *
@@ -113,73 +107,128 @@ import org.drip.measure.gamma.ShapeScaleParameters;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/exponential/README.md">R<sup>1</sup> Exponential Distribution Implementation/Properties</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class GammaToR1Exponential
-	extends R1ShapeScaleDistribution
+public class R1ParetoDistribution
+	extends R1Univariate
 {
+	private double _k = Double.NaN;
+	private double _lambda = Double.NaN;
 
 	/**
-	 * GammaToR1Exponential Constructor
+	 * R1ParetoDistribution Constructor
 	 * 
-	 * @param scaleParameter Scale Parameter
-	 * @param gammaEstimator Gamma Estimator
-	 * @param digammaEstimator Digamma Estimator
-	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
+	 * @param lambda Rate Parameter
+	 * @param k K Parameter
 	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
-	public GammaToR1Exponential (
-		final double scaleParameter,
-		final R1ToR1 gammaEstimator,
-		final R1ToR1 digammaEstimator,
-		final R2ToR1 lowerIncompleteGammaEstimator)
+	public R1ParetoDistribution (
+		final double lambda,
+		final double k)
 		throws Exception
 	{
-		super (
-			new ShapeScaleParameters (
-				1.,
-				scaleParameter
-			),
-			gammaEstimator,
-			digammaEstimator,
-			lowerIncompleteGammaEstimator
-		);
+		if (!NumberUtil.IsValid (
+				_lambda = lambda
+			) || 0. >= _lambda || !NumberUtil.IsValid (
+				_k = k
+			) || 0. >= _k
+		)
+		{
+			throw new Exception (
+				"R1ParetoDistribution Constructor => Invalid Inputs"
+			);
+		}
 	}
 
 	/**
-	 * Construct a Gamma Distribution Based of n i.i.d. Exponential Distributions
+	 * Retrieve k
 	 * 
-	 * @param n n
+	 * @return k
+
+	 */
+	public double k()
+	{
+		return _k;
+	}
+
+	/**
+	 * Retrieve Lambda
 	 * 
-	 * @return The Gamma Distribution
+	 * @return Lambda
 	 */
 
-	public R1ShapeScaleDistribution iidDistribution (
-		final int n)
+	public double lambda()
 	{
-		try
+		return _lambda;
+	}
+
+	@Override public double[] support()
+	{
+		return new double[]
 		{
-			return new R1ShapeScaleDistribution (
-				new ShapeScaleParameters (
-					n,
-					shapeScaleParameters().scale()
-				),
-				gammaEstimator(),
-				digammaEstimator(),
-				lowerIncompleteGammaEstimator()
+			_k,
+			Double.POSITIVE_INFINITY
+		};
+	}
+
+	@Override public double density (
+		final double t)
+		throws Exception
+	{
+		if (!supported (
+			t
+		))
+		{
+			throw new Exception (
+				"R1ParetoDistribution::density => Variate not in Range"
 			);
 		}
-		catch (Exception e)
+
+		return _lambda * Math.pow (
+			_k,
+			_lambda
+		) * Math.pow (
+			t,
+			-1. - _lambda
+		);
+	}
+
+	@Override public double cumulative (
+		final double t)
+		throws Exception
+	{
+		if (!supported (
+			t
+		))
 		{
-			e.printStackTrace();
+			throw new Exception (
+				"R1ParetoDistribution::cumulative => Variate not in Range"
+			);
 		}
 
-		return null;
+		return 1. - Math.pow (
+			_k / t,
+			_lambda
+		);
+	}
+
+	@Override public double mean()
+		throws Exception
+	{
+		return _lambda * _k / (1. >= _lambda ? 1. - _lambda : _lambda - 1.);
+	}
+
+	@Override public double variance()
+		throws Exception
+	{
+		double mean = mean();
+
+		return _lambda * _k * _k / (2. >= _lambda ? 2. - _lambda : _lambda - 2.) - mean * mean;
 	}
 }

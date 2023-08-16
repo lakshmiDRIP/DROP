@@ -3,7 +3,7 @@ package org.drip.sample.gammadistribution;
 
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.definition.R2ToR1;
-import org.drip.measure.transform.GammaToMaxwellBoltzmannSquared;
+import org.drip.measure.transform.R1GammaToMaxwellBoltzmannSquared;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
@@ -239,8 +239,8 @@ public class MaxwellBoltzmannSquaredPDFEstimate
 
 		for (double a : aArray)
 		{
-			GammaToMaxwellBoltzmannSquared maxwellBoltzmannSquaredDistribution =
-				new GammaToMaxwellBoltzmannSquared (
+			R1GammaToMaxwellBoltzmannSquared maxwellBoltzmannSquaredDistribution =
+				new R1GammaToMaxwellBoltzmannSquared (
 					a,
 					gammaEstimator,
 					digammaEstimator,
@@ -281,8 +281,8 @@ public class MaxwellBoltzmannSquaredPDFEstimate
 
 		for (double a : aArray)
 		{
-			GammaToMaxwellBoltzmannSquared maxwellBoltzmannSquaredDistribution =
-				new GammaToMaxwellBoltzmannSquared (
+			R1GammaToMaxwellBoltzmannSquared maxwellBoltzmannSquaredDistribution =
+				new R1GammaToMaxwellBoltzmannSquared (
 					a,
 					gammaEstimator,
 					digammaEstimator,
@@ -321,8 +321,8 @@ public class MaxwellBoltzmannSquaredPDFEstimate
 
 		for (double a : aArray)
 		{
-			GammaToMaxwellBoltzmannSquared maxwellBoltzmannSquaredDistribution =
-				new GammaToMaxwellBoltzmannSquared (
+			R1GammaToMaxwellBoltzmannSquared maxwellBoltzmannSquaredDistribution =
+				new R1GammaToMaxwellBoltzmannSquared (
 					a,
 					gammaEstimator,
 					digammaEstimator,

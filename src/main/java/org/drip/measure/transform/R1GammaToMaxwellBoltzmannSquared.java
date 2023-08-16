@@ -82,7 +82,7 @@ import org.drip.measure.gamma.ShapeScaleParameters;
  */
 
 /**
- * <i>GammaToMaxwellBoltzmannSquared</i> implements the Maxwell-Boltzmann Squared Distribution using the
+ * <i>R1GammaToMaxwellBoltzmannSquared</i> implements the Maxwell-Boltzmann Squared Distribution using the
  * 	R<sup>1</sup> Gamma Distribution. The References are:
  * 
  * <br><br>
@@ -119,13 +119,13 @@ import org.drip.measure.gamma.ShapeScaleParameters;
  * @author Lakshmi Krishnamurthy
  */
 
-public class GammaToMaxwellBoltzmannSquared
+public class R1GammaToMaxwellBoltzmannSquared
 	extends R1ShapeScaleDistribution
 {
 	private double _a = Double.NaN;
 
 	/**
-	 * GammaToMaxwellBoltzmannSquared Constructor
+	 * R1GammaToMaxwellBoltzmannSquared Constructor
 	 * 
 	 * @param a "A" Parameter
 	 * @param gammaEstimator Gamma Estimator
@@ -135,7 +135,7 @@ public class GammaToMaxwellBoltzmannSquared
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public GammaToMaxwellBoltzmannSquared (
+	public R1GammaToMaxwellBoltzmannSquared (
 		final double a,
 		final R1ToR1 gammaEstimator,
 		final R1ToR1 digammaEstimator,

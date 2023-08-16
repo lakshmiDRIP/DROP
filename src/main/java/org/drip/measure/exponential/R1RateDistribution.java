@@ -156,7 +156,7 @@ public class R1RateDistribution
 		final double lambda)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (_lambda = lambda) || 0. > _lambda)
+		if (!NumberUtil.IsValid (_lambda = lambda) || 0. >= _lambda)
 		{
 			throw new Exception ("R1RateDistribution Constructor => Invalid lambda");
 		}
