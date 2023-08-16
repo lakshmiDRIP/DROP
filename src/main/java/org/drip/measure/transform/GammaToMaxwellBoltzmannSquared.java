@@ -1,5 +1,10 @@
 
-package org.drip.measure.continuous;
+package org.drip.measure.transform;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R2ToR1;
+import org.drip.measure.gamma.R1ShapeScaleDistribution;
+import org.drip.measure.gamma.ShapeScaleParameters;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -77,132 +82,85 @@ package org.drip.measure.continuous;
  */
 
 /**
- * <i>R1UnivariateExponential</i> implements the Univariate R<sup>1</sup> Exponential Distribution. It
- * 	implements the Incremental, the Cumulative, and the Inverse Cumulative Distribution Densities.
+ * <i>GammaToMaxwellBoltzmannSquared</i> implements the Maxwell-Boltzmann Squared Distribution using the
+ * 	R<sup>1</sup> Gamma Distribution. The References are:
+ * 
+ * <br><br>
+ * 	<ul>
+ * 		<li>
+ * 			Devroye, L. (1986): <i>Non-Uniform Random Variate Generation</i> <b>Springer-Verlag</b> New York
+ * 		</li>
+ * 		<li>
+ * 			Gamma Distribution (2019): Gamma Distribution
+ * 				https://en.wikipedia.org/wiki/Chi-squared_distribution
+ * 		</li>
+ * 		<li>
+ * 			Louzada, F., P. L. Ramos, and E. Ramos (2019): A Note on Bias of Closed-Form Estimators for the
+ * 				Gamma Distribution Derived From Likelihood Equations <i>The American Statistician</i> <b>73
+ * 				(2)</b> 195-199
+ * 		</li>
+ * 		<li>
+ * 			Minka, T. (2002): Estimating a Gamma distribution https://tminka.github.io/papers/minka-gamma.pdf
+ * 		</li>
+ * 		<li>
+ * 			Ye, Z. S., and N. Chen (2017): Closed-Form Estimators for the Gamma Distribution Derived from
+ * 				Likelihood Equations <i>The American Statistician</i> <b>71 (2)</b> 177-181
+ * 		</li>
+ * 	</ul>
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/README.md">R<sup>1</sup> and R<sup>d</sup> Continuous Random Measure</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1UnivariateExponential extends org.drip.measure.continuous.R1Univariate
+public class GammaToMaxwellBoltzmannSquared
+	extends R1ShapeScaleDistribution
 {
-	private double _lambda = java.lang.Double.NaN;
+	private double _a = Double.NaN;
 
 	/**
-	 * Construct the Standard R1UnivariateExponential Distribution (lambda = 1.)
+	 * GammaToMaxwellBoltzmannSquared Constructor
 	 * 
-	 * @return The Standard R1UnivariateExponential Distribution
-	 */
-
-	public static final R1UnivariateExponential Standard()
-	{
-		try
-		{
-			return new R1UnivariateExponential (1.);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * R1UnivariateExponential Constructor
-	 * 
-	 * @param lambda Lambda (Inverse Scaling Parameter)
+	 * @param a "A" Parameter
+	 * @param gammaEstimator Gamma Estimator
+	 * @param digammaEstimator Digamma Estimator
+	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public R1UnivariateExponential (
-		final double lambda)
-		throws java.lang.Exception
+	public GammaToMaxwellBoltzmannSquared (
+		final double a,
+		final R1ToR1 gammaEstimator,
+		final R1ToR1 digammaEstimator,
+		final R2ToR1 lowerIncompleteGammaEstimator)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_lambda = lambda) || 0. >= _lambda)
-		{
-			throw new java.lang.Exception ("R1UnivariateExponential Constructor => Invalid Inputs: " + _lambda);
-		}
+		super (
+			new ShapeScaleParameters (
+				1.5,
+				2 * a * a
+			),
+			gammaEstimator,
+			digammaEstimator,
+			lowerIncompleteGammaEstimator
+		);
 	}
 
 	/**
-	 * Retrieve the Lambda (Inverse Scaling Parameter)
+	 * Retrieve the "A" Parameter
 	 * 
-	 * @return The Lambda (Inverse Scaling Parameter)
+	 * @return The "A" Parameter
 	 */
 
-	public double lambda()
+	public double a()
 	{
-		return _lambda;
-	}
-
-	@Override public double[] support()
-	{
-		return new double[]
-		{
-			0.,
-			java.lang.Double.POSITIVE_INFINITY
-		};
-	}
-
-	@Override public double cumulative (
-		final double x)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || x < 0.)
-			throw new java.lang.Exception ("R1UnivariateExponential::cumulative => Invalid Inputs");
-
-		return 1. - java.lang.Math.exp (-1. * _lambda * x);
-	}
-
-	@Override public double incremental (
-		final double xLeft,
-		final double xRight)
-		throws java.lang.Exception
-	{
-		return cumulative (xLeft) - cumulative (xRight);
-	}
-
-	@Override public double invCumulative (
-		final double y)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (y) || 1. < y || 0. > y)
-			throw new java.lang.Exception ("R1UnivariateExponential::invCumulative => Cannot calculate");
-
-	    return -1. / _lambda * java.lang.Math.log (1. - y);
-	}
-
-	@Override public double density (
-		final double x)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || x < 0.)
-			throw new java.lang.Exception ("R1UnivariateExponential::density => Invalid Inputs");
-
-		return _lambda * java.lang.Math.exp (-1. * _lambda * x);
-	}
-
-	@Override public double mean()
-	{
-	    return 1. / _lambda;
-	}
-
-	@Override public double variance()
-	{
-	    return 1. / (_lambda * _lambda);
-	}
-
-	@Override public org.drip.numerical.common.Array2D histogram()
-	{
-		return null;
+		return _a;
 	}
 }

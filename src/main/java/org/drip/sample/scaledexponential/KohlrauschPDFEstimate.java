@@ -2,7 +2,7 @@
 package org.drip.sample.scaledexponential;
 
 import org.drip.function.definition.R1ToR1;
-import org.drip.measure.continuous.R1UnivariateScaledExponential;
+import org.drip.measure.exponential.R1ScaledDistribution;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.definition.ScaledExponentialEstimator;
@@ -195,7 +195,7 @@ public class KohlrauschPDFEstimate
 
 		for (double beta : betaArray)
 		{
-			R1UnivariateScaledExponential r1UnivariateScaledExponential = new R1UnivariateScaledExponential (
+			R1ScaledDistribution r1UnivariateScaledExponential = new R1ScaledDistribution (
 				new ScaledExponentialEstimator (
 					beta,
 					1.
@@ -235,7 +235,7 @@ public class KohlrauschPDFEstimate
 
 		for (double beta : betaArray)
 		{
-			R1UnivariateScaledExponential r1UnivariateScaledExponential = new R1UnivariateScaledExponential (
+			R1ScaledDistribution r1UnivariateScaledExponential = new R1ScaledDistribution (
 				new ScaledExponentialEstimator (
 					beta,
 					1.
@@ -275,7 +275,7 @@ public class KohlrauschPDFEstimate
 
 		for (double beta : betaArray)
 		{
-			R1UnivariateScaledExponential r1UnivariateScaledExponential = new R1UnivariateScaledExponential (
+			R1ScaledDistribution r1UnivariateScaledExponential = new R1ScaledDistribution (
 				new ScaledExponentialEstimator (
 					beta,
 					1.

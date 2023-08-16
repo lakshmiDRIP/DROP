@@ -1,7 +1,7 @@
 
 package org.drip.sample.samplestatistics;
 
-import org.drip.measure.continuous.R1UnivariateExponential;
+import org.drip.measure.exponential.R1RateDistribution;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.evidence.TestStatisticAccumulator;
@@ -128,7 +128,9 @@ public class StandardExponentialPIT
 	private static final double UnivariateRandom()
 		throws Exception
 	{
-		return R1UnivariateExponential.Standard().random();
+		return new R1RateDistribution (
+			1.
+			).random();
 	}
 
 	/**

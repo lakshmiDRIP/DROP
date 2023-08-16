@@ -1,7 +1,7 @@
 
 package org.drip.sample.exponential;
 
-import org.drip.measure.exponential.CompositeR1OrderStatistics;
+import org.drip.measure.exponential.IIDComposite;
 import org.drip.measure.exponential.R1RateDistribution;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
@@ -155,7 +155,7 @@ public class R1OrderStatisticsJointMoment
 								" | Order Statistics Pair: (" +
 								orderStatistic1 + ", " + orderStatistic2 + ")] => " +
 							FormatUtil.FormatDouble (
-								CompositeR1OrderStatistics.IIDJointMoment (
+								IIDComposite.OrderStatisticsJointMoment (
 									r1RateDistribution,
 									variateCount,
 									orderStatistic1,

@@ -1,12 +1,20 @@
 
-package org.drip.measure.exponential;
+package org.drip.measure.transform;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R2ToR1;
+import org.drip.measure.gamma.R1ShapeScaleDistribution;
+import org.drip.measure.gamma.ShapeScaleParameters;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2023 Lakshmi Krishnamurthy
+ * Copyright (C) 2022 Lakshmi Krishnamurthy
+ * Copyright (C) 2021 Lakshmi Krishnamurthy
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -74,8 +82,8 @@ package org.drip.measure.exponential;
  */
 
 /**
- * <i>CompositeR1OrderStatistics</i> generates Metrics for the Order Statistics for a Composite Set of
- *  R<sup>1</sup> Exponential Distributions. The References are:
+ * <i>GammaToR1Exponential</i> implements the R<sup>1</sup> Exponential Distribution in Terms of the
+ *  R<sup>1</sup> Gamma Distribution. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -83,21 +91,20 @@ package org.drip.measure.exponential;
  * 			Devroye, L. (1986): <i>Non-Uniform Random Variate Generation</i> <b>Springer-Verlag</b> New York
  * 		</li>
  * 		<li>
- * 			Exponential Distribution (2019): Exponential Distribution
- * 				https://en.wikipedia.org/wiki/Exponential_distribution
+ * 			Gamma Distribution (2019): Gamma Distribution
+ * 				https://en.wikipedia.org/wiki/Chi-squared_distribution
  * 		</li>
  * 		<li>
- * 			Norton, M., V. Khokhlov, and S. Uryasev (2019): Calculating CVaR and bPOE for Common Probability
- * 				Distributions with Application to Portfolio Optimization and Density Estimation <i>Annals of
- * 				Operations Research</i> <b>299 (1-2)</b> 1281-1315
+ * 			Louzada, F., P. L. Ramos, and E. Ramos (2019): A Note on Bias of Closed-Form Estimators for the
+ * 				Gamma Distribution Derived From Likelihood Equations <i>The American Statistician</i> <b>73
+ * 				(2)</b> 195-199
  * 		</li>
  * 		<li>
- * 			Ross, S. M. (2009): <i>Introduction to Probability and Statistics for Engineers and Scientists
- * 				4<sup>th</sup> Edition</i> <b>Associated Press</b> New York, NY
+ * 			Minka, T. (2002): Estimating a Gamma distribution https://tminka.github.io/papers/minka-gamma.pdf
  * 		</li>
  * 		<li>
- * 			Schmidt, D. F., and D. Makalic (2009): Universal Models for the Exponential Distribution <i>IEEE
- * 				Transactions on Information Theory</i> <b>55 (7)</b> 3087-3090
+ * 			Ye, Z. S., and N. Chen (2017): Closed-Form Estimators for the Gamma Distribution Derived from
+ * 				Likelihood Equations <i>The American Statistician</i> <b>71 (2)</b> 177-181
  * 		</li>
  * 	</ul>
  *
@@ -106,102 +113,73 @@ package org.drip.measure.exponential;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/exponential/README.md">R<sup>1</sup> Exponential Distribution Implementation/Properties</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CompositeR1OrderStatistics
+public class GammaToR1Exponential
+	extends R1ShapeScaleDistribution
 {
 
 	/**
-	 * Get the Maximum of the specified Order Statistic
+	 * GammaToR1Exponential Constructor
 	 * 
-	 * @param orderStatistic1 First Order Statistic
-	 * @param orderStatistic2 Second Order Statistic
-	 * 
-	 * @return Maximum if the specified Order Statistics Pair
-	 */
-
-	public static final int MaxOrderStatistic (
-		final int orderStatistic1,
-		final int orderStatistic2)
-	{
-		return orderStatistic1 > orderStatistic2 ? orderStatistic1 : orderStatistic2;
-	}
-
-	/**
-	 * Get the Minimum of the specified Order Statistic
-	 * 
-	 * @param orderStatistic1 First Order Statistic
-	 * @param orderStatistic2 Second Order Statistic
-	 * 
-	 * @return Minimum if the specified Order Statistics Pair
-	 */
-
-	public static final int MinOrderStatistic (
-		final int orderStatistic1,
-		final int orderStatistic2)
-	{
-		return orderStatistic1 <= orderStatistic2 ? orderStatistic1 : orderStatistic2;
-	}
-
-	/**
-	 * Compute the Joint Moment of the Order Statistics for a Set of i.i.d. Distributions
-	 * 
-	 * @param r1RateDistribution R<sup>1</sup> Exponential Distribution
-	 * @param variateCount Variate Count
-	 * @param orderStatistic1 First Order Statistic
-	 * @param orderStatistic2 Second Order Statistic
-	 * 
-	 * @return Joint Moment of the Order Statistics for a Set of i.i.d. Distributions
+	 * @param scaleParameter Scale Parameter
+	 * @param gammaEstimator Gamma Estimator
+	 * @param digammaEstimator Digamma Estimator
+	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final double IIDJointMoment (
-		final R1RateDistribution r1RateDistribution,
-		final int variateCount,
-		final int orderStatistic1,
-		final int orderStatistic2)
+	public GammaToR1Exponential (
+		final double scaleParameter,
+		final R1ToR1 gammaEstimator,
+		final R1ToR1 digammaEstimator,
+		final R2ToR1 lowerIncompleteGammaEstimator)
 		throws Exception
 	{
-		if (null == r1RateDistribution ||
-			1 > orderStatistic1 || orderStatistic1 > variateCount ||
-			1 > orderStatistic2 || orderStatistic2 > variateCount || orderStatistic1 == orderStatistic2
-		)
+		super (
+			new ShapeScaleParameters (
+				1.,
+				scaleParameter
+			),
+			gammaEstimator,
+			digammaEstimator,
+			lowerIncompleteGammaEstimator
+		);
+	}
+
+	/**
+	 * Construct a Gamma Distribution Based of n i.i.d. Exponential Distributions
+	 * 
+	 * @param n n
+	 * 
+	 * @return The Gamma Distribution
+	 */
+
+	public R1ShapeScaleDistribution iidDistribution (
+		final int n)
+	{
+		try
 		{
-			throw new Exception (
-				"CompositeR1OrderStatistics::IIDJointMoment => Invalid Inputs"
+			return new R1ShapeScaleDistribution (
+				new ShapeScaleParameters (
+					n,
+					shapeScaleParameters().scale()
+				),
+				gammaEstimator(),
+				digammaEstimator(),
+				lowerIncompleteGammaEstimator()
 			);
 		}
-
-		double expectationMaxIndex = 0.;
-		double expectationMinIndex = 0.;
-		double expectationMinIndexSquared = 0.;
-		int maxIndex = orderStatistic1 > orderStatistic2 ? orderStatistic1 : orderStatistic2;
-		int minIndex = orderStatistic1 < orderStatistic2 ? orderStatistic1 : orderStatistic2;
-
-		double inverseRate = 1. / r1RateDistribution.rate();
-
-		for (int k = 0;
-			k < minIndex;
-			++k)
+		catch (Exception e)
 		{
-			double expectation = inverseRate / (variateCount - k);
-			expectationMinIndexSquared += expectation * expectation;
-			expectationMinIndex += expectation;
+			e.printStackTrace();
 		}
 
-		for (int k = 0;
-			k < maxIndex;
-			++k)
-		{
-			expectationMaxIndex += inverseRate / (variateCount - k);
-		}
-
-		return expectationMinIndex * expectationMaxIndex + expectationMinIndexSquared +
-			expectationMinIndex * expectationMinIndex;
+		return null;
 	}
 }

@@ -1,7 +1,7 @@
 
 package org.drip.sample.hypothesistest;
 
-import org.drip.measure.continuous.R1UnivariateExponential;
+import org.drip.measure.exponential.R1RateDistribution;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.hypothesis.SignificanceTestSetting;
@@ -132,7 +132,9 @@ public class StandardExponentialSignificanceTest
 	private static final double UnivariateRandom()
 		throws Exception
 	{
-		return R1UnivariateExponential.Standard().random();
+		return new R1RateDistribution (
+			1.
+		).random();
 	}
 
 	private static final Sample GenerateSample (

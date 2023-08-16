@@ -1,7 +1,7 @@
 
 package org.drip.sample.samplestatistics;
 
-import org.drip.measure.continuous.R1UnivariateExponential;
+import org.drip.measure.exponential.R1RateDistribution;
 import org.drip.measure.statistics.PopulationCentralMeasures;
 import org.drip.measure.statistics.UnivariateMoments;
 import org.drip.service.common.FormatUtil;
@@ -128,12 +128,25 @@ public class StandardExponentialTStatistic
 	private static final double UnivariateRandom()
 		throws Exception
 	{
-		return R1UnivariateExponential.Standard().random();
+		return new R1RateDistribution (
+			1.
+		).random();
 	}
 
 	private static final PopulationCentralMeasures PopulationMeasures()
 	{
-		return R1UnivariateExponential.Standard().populationCentralMeasures();
+		try
+		{
+			return new R1RateDistribution (
+				1.
+			).populationCentralMeasures();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	private static final double SampleMeanEstimate (

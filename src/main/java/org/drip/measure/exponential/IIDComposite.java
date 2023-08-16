@@ -1,15 +1,12 @@
 
-package org.drip.measure.gamma;
+package org.drip.measure.exponential;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2022 Lakshmi Krishnamurthy
- * Copyright (C) 2021 Lakshmi Krishnamurthy
- * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -77,8 +74,8 @@ package org.drip.measure.gamma;
  */
 
 /**
- * <i>MaxwellBoltzmannSquaredDistribution</i> implements the Maxwell Boltzmann Squared Distribution using the
- * 	R<sup>1</sup> Gamma Distribution. The References are:
+ * <i>IIDComposite</i> generates Metrics for a Composite Set of i.i.d. R<sup>1</sup> Exponential
+ *  Distributions. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -86,20 +83,21 @@ package org.drip.measure.gamma;
  * 			Devroye, L. (1986): <i>Non-Uniform Random Variate Generation</i> <b>Springer-Verlag</b> New York
  * 		</li>
  * 		<li>
- * 			Gamma Distribution (2019): Gamma Distribution
- * 				https://en.wikipedia.org/wiki/Chi-squared_distribution
+ * 			Exponential Distribution (2019): Exponential Distribution
+ * 				https://en.wikipedia.org/wiki/Exponential_distribution
  * 		</li>
  * 		<li>
- * 			Louzada, F., P. L. Ramos, and E. Ramos (2019): A Note on Bias of Closed-Form Estimators for the
- * 				Gamma Distribution Derived From Likelihood Equations <i>The American Statistician</i> <b>73
- * 				(2)</b> 195-199
+ * 			Norton, M., V. Khokhlov, and S. Uryasev (2019): Calculating CVaR and bPOE for Common Probability
+ * 				Distributions with Application to Portfolio Optimization and Density Estimation <i>Annals of
+ * 				Operations Research</i> <b>299 (1-2)</b> 1281-1315
  * 		</li>
  * 		<li>
- * 			Minka, T. (2002): Estimating a Gamma distribution https://tminka.github.io/papers/minka-gamma.pdf
+ * 			Ross, S. M. (2009): <i>Introduction to Probability and Statistics for Engineers and Scientists
+ * 				4<sup>th</sup> Edition</i> <b>Associated Press</b> New York, NY
  * 		</li>
  * 		<li>
- * 			Ye, Z. S., and N. Chen (2017): Closed-Form Estimators for the Gamma Distribution Derived from
- * 				Likelihood Equations <i>The American Statistician</i> <b>71 (2)</b> 177-181
+ * 			Schmidt, D. F., and D. Makalic (2009): Universal Models for the Exponential Distribution <i>IEEE
+ * 				Transactions on Information Theory</i> <b>55 (7)</b> 3087-3090
  * 		</li>
  * 	</ul>
  *
@@ -108,54 +106,102 @@ package org.drip.measure.gamma;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/exponential/README.md">R<sup>1</sup> Exponential Distribution Implementation/Properties</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MaxwellBoltzmannSquaredDistribution
-	extends org.drip.measure.gamma.R1ShapeScaleDistribution
+public class IIDComposite
 {
-	private double _a = java.lang.Double.NaN;
 
 	/**
-	 * MaxwellBoltzmannSquaredDistribution Constructor
+	 * Get the Maximum of the specified Order Statistic
 	 * 
-	 * @param a "A" Parameter
-	 * @param gammaEstimator Gamma Estimator
-	 * @param digammaEstimator Digamma Estimator
-	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
+	 * @param orderStatistic1 First Order Statistic
+	 * @param orderStatistic2 Second Order Statistic
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return Maximum if the specified Order Statistics Pair
 	 */
 
-	public MaxwellBoltzmannSquaredDistribution (
-		final double a,
-		final org.drip.function.definition.R1ToR1 gammaEstimator,
-		final org.drip.function.definition.R1ToR1 digammaEstimator,
-		final org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator)
-		throws java.lang.Exception
+	public static final int MaxOrderStatistic (
+		final int orderStatistic1,
+		final int orderStatistic2)
 	{
-		super (
-			new org.drip.measure.gamma.ShapeScaleParameters (
-				1.5,
-				2 * a * a
-			),
-			gammaEstimator,
-			digammaEstimator,
-			lowerIncompleteGammaEstimator
-		);
+		return orderStatistic1 > orderStatistic2 ? orderStatistic1 : orderStatistic2;
 	}
 
 	/**
-	 * Retrieve the "A" Parameter
+	 * Get the Minimum of the specified Order Statistic
 	 * 
-	 * @return The "A" Parameter
+	 * @param orderStatistic1 First Order Statistic
+	 * @param orderStatistic2 Second Order Statistic
+	 * 
+	 * @return Minimum if the specified Order Statistics Pair
 	 */
 
-	public double a()
+	public static final int MinOrderStatistic (
+		final int orderStatistic1,
+		final int orderStatistic2)
 	{
-		return _a;
+		return orderStatistic1 <= orderStatistic2 ? orderStatistic1 : orderStatistic2;
+	}
+
+	/**
+	 * Compute the Joint Moment of the Order Statistics for a Set of i.i.d. Distributions
+	 * 
+	 * @param r1RateDistribution R<sup>1</sup> Exponential Distribution
+	 * @param variateCount Variate Count
+	 * @param orderStatistic1 First Order Statistic
+	 * @param orderStatistic2 Second Order Statistic
+	 * 
+	 * @return Joint Moment of the Order Statistics for a Set of i.i.d. Distributions
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double OrderStatisticsJointMoment (
+		final R1RateDistribution r1RateDistribution,
+		final int variateCount,
+		final int orderStatistic1,
+		final int orderStatistic2)
+		throws Exception
+	{
+		if (null == r1RateDistribution ||
+			1 > orderStatistic1 || orderStatistic1 > variateCount ||
+			1 > orderStatistic2 || orderStatistic2 > variateCount || orderStatistic1 == orderStatistic2
+		)
+		{
+			throw new Exception (
+				"IIDComposite::OrderStatisticsJointMoment => Invalid Inputs"
+			);
+		}
+
+		double expectationMaxIndex = 0.;
+		double expectationMinIndex = 0.;
+		double expectationMinIndexSquared = 0.;
+		int maxIndex = orderStatistic1 > orderStatistic2 ? orderStatistic1 : orderStatistic2;
+		int minIndex = orderStatistic1 < orderStatistic2 ? orderStatistic1 : orderStatistic2;
+
+		double inverseRate = 1. / r1RateDistribution.rate();
+
+		for (int k = 0;
+			k < minIndex;
+			++k)
+		{
+			double expectation = inverseRate / (variateCount - k);
+			expectationMinIndexSquared += expectation * expectation;
+			expectationMinIndex += expectation;
+		}
+
+		for (int k = 0;
+			k < maxIndex;
+			++k)
+		{
+			expectationMaxIndex += inverseRate / (variateCount - k);
+		}
+
+		return expectationMinIndex * expectationMaxIndex + expectationMinIndexSquared +
+			expectationMinIndex * expectationMinIndex;
 	}
 }

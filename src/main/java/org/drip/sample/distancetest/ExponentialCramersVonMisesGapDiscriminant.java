@@ -1,7 +1,7 @@
 
 package org.drip.sample.distancetest;
 
-import org.drip.measure.continuous.R1UnivariateExponential;
+import org.drip.measure.exponential.R1RateDistribution;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.distance.GapTestOutcome;
@@ -147,7 +147,7 @@ public class ExponentialCramersVonMisesGapDiscriminant
 		final double lambda)
 		throws Exception
 	{
-		return new R1UnivariateExponential (lambda).random();
+		return new R1RateDistribution (lambda).random();
 	}
 
 	private static final Sample GenerateSample (

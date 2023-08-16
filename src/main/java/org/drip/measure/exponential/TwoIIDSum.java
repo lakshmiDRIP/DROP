@@ -154,13 +154,13 @@ public class TwoIIDSum
 
 		if (firstRate > secondRate)
 		{
-			_largerR1RateDistribution = secondR1RateDistribution;
-			_smallerR1RateDistribution = firstR1RateDistribution;
+			_largerR1RateDistribution = firstR1RateDistribution;
+			_smallerR1RateDistribution = secondR1RateDistribution;
 		}
 		else
 		{
-			_largerR1RateDistribution = firstR1RateDistribution;
-			_smallerR1RateDistribution = secondR1RateDistribution;
+			_largerR1RateDistribution = secondR1RateDistribution;
+			_smallerR1RateDistribution = firstR1RateDistribution;
 		}
 	}
 
@@ -338,14 +338,7 @@ public class TwoIIDSum
 
 		double smallerRate = _smallerR1RateDistribution.rate();
 
-		if (largerRate == smallerRate)
-		{
-			throw new Exception (
-				"TwoIIDSum::differentialEntropy => Cannot compute entropy when rates are equal"
-			);
-		}
-
-		return 1. + Definitions.EULER_MASCHERONI + Math.log (
+		return largerRate == smallerRate ? Double.NaN : 1. + Definitions.EULER_MASCHERONI + Math.log (
 			(largerRate - smallerRate) / (largerRate * smallerRate)
 		) + new BinetFirstIntegral (
 			null

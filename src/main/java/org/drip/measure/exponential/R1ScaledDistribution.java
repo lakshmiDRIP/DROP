@@ -1,5 +1,11 @@
 
-package org.drip.measure.continuous;
+package org.drip.measure.exponential;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.measure.continuous.R1Univariate;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.specialfunction.definition.ScaledExponentialEstimator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -77,8 +83,8 @@ package org.drip.measure.continuous;
  */
 
 /**
- * <i>R1UnivariateScaledExponential</i> implements the Probability Density Function for the Scaled Univariate
- * 	R<sup>1</sup> Exponential Function. The References are:
+ * <i>R1ScaledDistribution</i> implements the Probability Density Function for the Scaled R<sup>1</sup>
+ *  Exponential Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -116,31 +122,34 @@ package org.drip.measure.continuous;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1UnivariateScaledExponential extends org.drip.measure.continuous.R1Univariate
+public class R1ScaledDistribution
+	extends R1Univariate
 {
-	private double _normalizer = java.lang.Double.NaN;
-	private org.drip.function.definition.R1ToR1 _gammaEstimator = null;
-	private org.drip.specialfunction.definition.ScaledExponentialEstimator _scaledExponentialEstimator =
-		null;
+	private R1ToR1 _gammaEstimator = null;
+	private double _normalizer = Double.NaN;
+	private ScaledExponentialEstimator _scaledExponentialEstimator = null;
 
 	/**
-	 * UnivariateScaledExponential Constructor
+	 * R1ScaledDistribution Constructor
 	 * 
 	 * @param scaledExponentialEstimator Scaled Exponential Estimator
 	 * @param gammaEstimator Gamma Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public R1UnivariateScaledExponential (
-		final org.drip.specialfunction.definition.ScaledExponentialEstimator scaledExponentialEstimator,
-		final org.drip.function.definition.R1ToR1 gammaEstimator)
-		throws java.lang.Exception
+	public R1ScaledDistribution (
+		final ScaledExponentialEstimator scaledExponentialEstimator,
+		final R1ToR1 gammaEstimator)
+		throws Exception
 	{
 		if (null == (_scaledExponentialEstimator = scaledExponentialEstimator) ||
-			null == (_gammaEstimator = gammaEstimator))
+			null == (_gammaEstimator = gammaEstimator)
+			)
 		{
-			throw new java.lang.Exception ("R1UnivariateScaledExponential Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"R1ScaledDistribution Constructor => Invalid Inputs"
+			);
 		}
 
 		_normalizer = 1. / _gammaEstimator.evaluate (1. + (1. / _scaledExponentialEstimator.exponent())) /
@@ -153,7 +162,7 @@ public class R1UnivariateScaledExponential extends org.drip.measure.continuous.R
 	 * @return Scaled Exponential Estimator
 	 */
 
-	public org.drip.specialfunction.definition.ScaledExponentialEstimator scaledExponentialEstimator()
+	public ScaledExponentialEstimator scaledExponentialEstimator()
 	{
 		return _scaledExponentialEstimator;
 	}
@@ -164,7 +173,7 @@ public class R1UnivariateScaledExponential extends org.drip.measure.continuous.R
 	 * @return Gamma Estimator
 	 */
 
-	public org.drip.function.definition.R1ToR1 gammaEstimator()
+	public R1ToR1 gammaEstimator()
 	{
 		return _gammaEstimator;
 	}
@@ -180,33 +189,42 @@ public class R1UnivariateScaledExponential extends org.drip.measure.continuous.R
 
 	@Override public double density (
 		final double t)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return _scaledExponentialEstimator.evaluate (t) * _normalizer;
+		return _scaledExponentialEstimator.evaluate (
+			t
+		) * _normalizer;
 	}
 
 	@Override public double cumulative (
 		final double t)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!supported (t))
+		if (!supported (
+			t
+		))
 		{
-			throw new java.lang.Exception ("R1UnivariateScaledExponential::cumulative => Invalid Inputs");
+			throw new Exception (
+				"R1ScaledDistribution::cumulative => Invalid Inputs"
+			);
 		}
 
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
+		return NewtonCotesQuadratureGenerator.Zero_PlusOne (
 			0.,
 			t,
 			100
 		).integrate (
-			new org.drip.function.definition.R1ToR1 (null)
+			new R1ToR1 (null)
 			{
 				@Override public double evaluate (
 					final double u)
-					throws java.lang.Exception
+					throws Exception
 				{
-					return java.lang.Double.isInfinite (u) || 0. == u ? 0. :
-						_scaledExponentialEstimator.evaluate (u);
+					return Double.isInfinite (
+						u
+					) || 0. == u ? 0. : _scaledExponentialEstimator.evaluate (
+						u
+					);
 				}
 			}
 		) * _normalizer;
@@ -217,54 +235,67 @@ public class R1UnivariateScaledExponential extends org.drip.measure.continuous.R
 		final double t2)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (t1) || 0. > t1 ||
-			!org.drip.numerical.common.NumberUtil.IsValid (t2) || t1 > t2)
+		if (NumberUtil.IsValid (
+				t1
+			) || 0. > t1 || !NumberUtil.IsValid (
+				t2
+			) || t1 > t2
+		)
 		{
-			throw new java.lang.Exception ("R1UnivariateScaledExponential::incremental => Invalid Inputs");
+			throw new Exception (
+				"R1ScaledDistribution::incremental => Invalid Inputs"
+			);
 		}
 
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
+		return NewtonCotesQuadratureGenerator.Zero_PlusOne (
 			t1,
 			t2,
 			100
 		).integrate (
-			new org.drip.function.definition.R1ToR1 (null)
+			new R1ToR1 (null)
 			{
 				@Override public double evaluate (
 					final double u)
-					throws java.lang.Exception
+					throws Exception
 				{
-					return java.lang.Double.isInfinite (u) || 0. == u ? 0. :
-						_scaledExponentialEstimator.evaluate (u);
+					return Double.isInfinite (
+						u
+					) || 0. == u ? 0. : _scaledExponentialEstimator.evaluate (
+						u
+					);
 				}
 			}
 		) * _normalizer;
 	}
 
 	@Override public double mean()
-		throws java.lang.Exception
+		throws Exception
 	{
-		return _scaledExponentialEstimator.firstMoment (_gammaEstimator) * _normalizer;
+		return _scaledExponentialEstimator.firstMoment (
+			_gammaEstimator
+		) * _normalizer;
 	}
 
 	@Override public double variance()
-		throws java.lang.Exception
+		throws Exception
 	{
 		try
 		{
-			double mean = _scaledExponentialEstimator.firstMoment (_gammaEstimator) * _normalizer;
+			double mean = _scaledExponentialEstimator.firstMoment (
+				_gammaEstimator
+			) * _normalizer;
 
 			return _scaledExponentialEstimator.higherMoment (
 				2,
 				_gammaEstimator
 			) * _normalizer * _normalizer - mean * mean;
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
 
-		return java.lang.Double.NaN;
+		return Double.NaN;
 	}
 
 	/**

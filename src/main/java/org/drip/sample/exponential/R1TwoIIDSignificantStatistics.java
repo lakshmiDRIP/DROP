@@ -135,51 +135,26 @@ public class R1TwoIIDSignificantStatistics
 		EnvManager.InitEnv ("");
 
 		double[] lambdaArray = {0.02, 0.04, 0.08, 0.16, 0.32, 0.64, 1.3, 2.6, 5.1, 10.2, 20.5};
-		// double[] lambdaArray = {1.};
 
-		System.out.println (
-			"\t||----------------------------------------------------------------------------------||"
-		);
+		System.out.println ("\t||-----------------------------------------------------------------||");
 
-		System.out.println (
-			"\t||    L -> R:"
-		);
+		System.out.println ("\t||               R^1 Two IID Significant Statistics                ||");
 
-		System.out.println (
-			"\t||          - Lambda Pair (Input)"
-		);
+		System.out.println ("\t||-----------------------------------------------------------------||");
 
-		System.out.println (
-			"\t||          - Mean"
-		);
+		System.out.println ("\t||    L -> R:");
 
-		System.out.println (
-			"\t||          - Mode"
-		);
+		System.out.println ("\t||          - Lambda Pair (Input)");
 
-		System.out.println (
-			"\t||          - Variance"
-		);
+		System.out.println ("\t||          - Mean");
 
-		System.out.println (
-			"\t||          - Skewness"
-		);
+		System.out.println ("\t||          - Mode");
 
-		System.out.println (
-			"\t||          - Excess Kurtosis"
-		);
+		System.out.println ("\t||          - Variance");
 
-		System.out.println (
-			"\t||          - Fisher Information"
-		);
+		System.out.println ("\t||          - Entropy");
 
-		System.out.println (
-			"\t||          - Inter-quantile Range (IQR)"
-		);
-
-		System.out.println (
-			"\t||----------------------------------------------------------------------------------||"
-		);
+		System.out.println ("\t||-----------------------------------------------------------------||");
 
 		for (int i = 0; i < lambdaArray.length; ++i)
 		{
@@ -203,22 +178,14 @@ public class R1TwoIIDSignificantStatistics
 						exponentialDistribution.mode(), 2, 3, 1.
 					) + " |" + FormatUtil.FormatDouble (
 						exponentialDistribution.variance(), 4, 4, 1.
-					/* ) + " |" + FormatUtil.FormatDouble (
-						exponentialDistribution.skewness(), 1, 1, 1.
 					) + " |" + FormatUtil.FormatDouble (
-						exponentialDistribution.excessKurtosis(), 2, 3, 1.
-					) + " |" + FormatUtil.FormatDouble (
-						exponentialDistribution.fisherInformation(), 4, 4, 1.
-					) + " |" + FormatUtil.FormatDouble (
-						exponentialDistribution.iqr(), 2, 3, 1. */
+						exponentialDistribution.differentialEntropy(), 2, 3, 1.
 					) + " ||"
 				);
 			}
 		}
 
-		System.out.println (
-			"\t||----------------------------------------------------------------------------------||"
-		);
+		System.out.println ("\t||-----------------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}
