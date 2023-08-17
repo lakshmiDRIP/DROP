@@ -2,7 +2,6 @@
 package org.drip.sample.pareto;
 
 import org.drip.measure.continuous.R1ParetoDistribution;
-import org.drip.measure.exponential.R1RateDistribution;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -79,7 +78,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>R1CDFAndPDF</i> illustrates the Density and CDF Metrics Suite generated from R<sup>1</sup> Pareto
+ * <i>R1PDFAndCDF</i> illustrates the Density and CDF Metrics Suite generated from R<sup>1</sup> Pareto
  * 	Distribution. The References are:
  * 
  * <br><br>
@@ -117,7 +116,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1CDFAndPDF
+public class R1PDFAndCDF
 {
 
 	/**
@@ -139,15 +138,15 @@ public class R1CDFAndPDF
 		double[] lambdaArray = {0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1., 2., 3., 4., 5.};
 
 		System.out.println (
-			"\t||--------------------------------------------------------------------------------------------------------||"
+			"\t||---------------------------------------------------------------------------------------------------------------||"
 		);
 
 		System.out.println (
-			"\t||                                   Probability Density across Horizon                                   ||"
+			"\t||                                      Probability Density across Horizon                                       ||"
 		);
 
 		System.out.println (
-			"\t||--------------------------------------------------------------------------------------------------------||"
+			"\t||---------------------------------------------------------------------------------------------------------------||"
 		);
 
 		System.out.println (
@@ -155,7 +154,7 @@ public class R1CDFAndPDF
 		);
 
 		System.out.println (
-			"\t||      - Lambda (Left-most Value)"
+			"\t||      - [Lambda, k] (Left-most Values)"
 		);
 
 		System.out.println (
@@ -163,34 +162,92 @@ public class R1CDFAndPDF
 		);
 
 		System.out.println (
-			"\t||--------------------------------------------------------------------------------------------------------||"
+			"\t||---------------------------------------------------------------------------------------------------------------||"
 		);
 
-		for (int i = 0; i < lambdaArray.length; ++i)
+		for (int i = 0; i < kArray.length; ++i)
 		{
-			String metricDisplay = "\t|| " + FormatUtil.FormatDouble (
-				lambdaArray[i], 1, 2, 1.
-			) + " =>";
-
-			R1ParetoDistribution paretoDistribution = new R1ParetoDistribution (lambdaArray[i], 1.);
-
-			for (int j = 0; j < horizonArray.length; ++j)
+			for (int j = 0; j < lambdaArray.length; ++j)
 			{
-				metricDisplay += " " + FormatUtil.FormatDouble (
-					paretoDistribution.density (horizonArray[j]), 1, 6, 1.
-				) + " |";
-			}
+				String metricDisplay = "\t|| [" + FormatUtil.FormatDouble (
+					kArray[i], 1, 2, 1., false
+				) + ", " +FormatUtil.FormatDouble (
+					lambdaArray[j], 1, 2, 1., false
+				) + "] =>";
 
-			System.out.println (metricDisplay + "|");
+				R1ParetoDistribution paretoDistribution = new R1ParetoDistribution (lambdaArray[j], kArray[i]);
+
+				for (int k = 0; k < horizonArray.length; ++k)
+				{
+					metricDisplay += " " + FormatUtil.FormatDouble (
+						paretoDistribution.density (horizonArray[k] + kArray[i]), 1, 6, 1.
+					) + " |";
+				}
+
+				System.out.println (metricDisplay + "|");
+			}
 		}
 
 		System.out.println (
-			"\t||--------------------------------------------------------------------------------------------------------||"
+			"\t||---------------------------------------------------------------------------------------------------------------||"
 		);
 
 		System.out.println();
 
-		System.out.println();
+		System.out.println (
+			"\t||---------------------------------------------------------------------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\t||                                     Cumulative Probability across Horizon                                     ||"
+		);
+
+		System.out.println (
+			"\t||---------------------------------------------------------------------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\t||  L -> R:"
+		);
+
+		System.out.println (
+			"\t||      - [Lambda, k] (Left-most Values)"
+		);
+
+		System.out.println (
+			"\t||      - Probability Density across Time Horizons (Right-most columns)"
+		);
+
+		System.out.println (
+			"\t||---------------------------------------------------------------------------------------------------------------||"
+		);
+
+		for (int i = 0; i < kArray.length; ++i)
+		{
+			for (int j = 0; j < lambdaArray.length; ++j)
+			{
+				String metricDisplay = "\t|| [" + FormatUtil.FormatDouble (
+					kArray[i], 1, 2, 1., false
+				) + ", " +FormatUtil.FormatDouble (
+					lambdaArray[j], 1, 2, 1., false
+				) + "] =>";
+
+				R1ParetoDistribution paretoDistribution = new R1ParetoDistribution (lambdaArray[j], kArray[i]);
+
+				for (int k = 0; k < horizonArray.length; ++k)
+				{
+					metricDisplay += " " + FormatUtil.FormatDouble (
+						paretoDistribution.cumulative (horizonArray[k] + kArray[i]), 1, 6, 1.
+					) + " |";
+				}
+
+				System.out.println (metricDisplay + "|");
+			}
+		}
+
+		System.out.println (
+			"\t||---------------------------------------------------------------------------------------------------------------||"
+		);
 
 		EnvManager.TerminateEnv();
 	}

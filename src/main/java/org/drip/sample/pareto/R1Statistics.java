@@ -1,7 +1,9 @@
 
-package org.drip.measure.continuous;
+package org.drip.sample.pareto;
 
-import org.drip.numerical.common.NumberUtil;
+import org.drip.measure.continuous.R1ParetoDistribution;
+import org.drip.service.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,7 +78,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>R1ParetoDistribution</i> implements the R<sup>1</sup> Pareto Distribution. The References are:
+ * <i>R1Statistics</i> illustrates the Generation of Significant Statistics for the R<sup>1</sup> Pareto
+ *  Distribution. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -113,166 +116,106 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1ParetoDistribution
-	extends R1Univariate
+public class R1Statistics
 {
-	private double _k = Double.NaN;
-	private double _lambda = Double.NaN;
 
 	/**
-	 * R1ParetoDistribution Constructor
+	 * Entry Point
 	 * 
-	 * @param lambda Rate Parameter
-	 * @param k K Parameter
+	 * @param argumentArray Command Line Argument Array
 	 * 
-	 * @throws Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown on Error/Exception Situation
 	 */
 
-	public R1ParetoDistribution (
-		final double lambda,
-		final double k)
+	public static final void main (
+		final String[] argumentArray)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (
-				_lambda = lambda
-			) || 0. >= _lambda || !NumberUtil.IsValid (
-				_k = k
-			) || 0. >= _k
-		)
-		{
-			throw new Exception (
-				"R1ParetoDistribution Constructor => Invalid Inputs"
-			);
-		}
-	}
+		EnvManager.InitEnv ("");
 
-	/**
-	 * Retrieve k
-	 * 
-	 * @return k
+		double[] kArray = {0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1., 2., 3., 4., 5.};
+		double[] lambdaArray = {0.02, 0.05, 0.1, 0.2, 0.5, 1., 2., 3., 4., 5., 10., 20.};
 
-	 */
-	public double k()
-	{
-		return _k;
-	}
-
-	/**
-	 * Retrieve Lambda
-	 * 
-	 * @return Lambda
-	 */
-
-	public double lambda()
-	{
-		return _lambda;
-	}
-
-	@Override public double[] support()
-	{
-		return new double[]
-		{
-			_k,
-			Double.POSITIVE_INFINITY
-		};
-	}
-
-	@Override public double density (
-		final double t)
-		throws Exception
-	{
-		if (!supported (
-			t
-		))
-		{
-			throw new Exception (
-				"R1ParetoDistribution::density => Variate not in Range"
-			);
-		}
-
-		return _lambda * Math.pow (
-			_k,
-			_lambda
-		) * Math.pow (
-			t,
-			-1. - _lambda
+		System.out.println (
+			"\t||----------------------------------------------------------------------------------||"
 		);
-	}
 
-	@Override public double cumulative (
-		final double t)
-		throws Exception
-	{
-		if (!supported (
-			t
-		))
-		{
-			throw new Exception (
-				"R1ParetoDistribution::cumulative => Variate not in Range"
-			);
-		}
-
-		return 1. - Math.pow (
-			_k / t,
-			_lambda
+		System.out.println (
+			"\t||    L -> R:"
 		);
-	}
 
-	@Override public double quantile (
-		final double p)
-		throws Exception
-	{
-		if (!NumberUtil.IsValid (
-				p
-			) || 0. > p || 1. < p
-		)
-		{
-			throw new Exception (
-				"R1ParetoDistribution::quantile => p is Invalid"
-			);
-		}
-
-		if (0. == p)
-		{
-			return support()[0];
-		}
-
-		if (1. == p)
-		{
-			return support()[1];
-		}
-
-		return _k + Math.pow (
-			1. - p,
-			-1. * _lambda
+		System.out.println (
+			"\t||          - Lambda, k [Input]"
 		);
-	}
 
-	@Override public double mean()
-		throws Exception
-	{
-		if (1. >= _lambda)
+		System.out.println (
+			"\t||          - Mean"
+		);
+
+		System.out.println (
+			"\t||          - Mode"
+		);
+
+		System.out.println (
+			"\t||          - Variance"
+		);
+
+		System.out.println (
+			"\t||          - Skewness"
+		);
+
+		System.out.println (
+			"\t||          - Excess Kurtosis"
+		);
+
+		System.out.println (
+			"\t||          - Fisher Information"
+		);
+
+		System.out.println (
+			"\t||          - Inter-quantile Range (IQR)"
+		);
+
+		System.out.println (
+			"\t||----------------------------------------------------------------------------------||"
+		);
+
+		for (int i = 0; i < kArray.length; ++i)
 		{
-			throw new Exception (
-				"R1ParetoDistribution::mean => Does not converge for lambda <= 1."
-			);
+			for (int j = 0; j < lambdaArray.length; ++j)
+			{
+				R1ParetoDistribution paretoDistribution = new R1ParetoDistribution (lambdaArray[j], kArray[i]);
+
+				System.out.println (
+					"\t|| [" + FormatUtil.FormatDouble (
+						lambdaArray[j], 2, 2, 1.
+					) + "," + FormatUtil.FormatDouble (
+						kArray[i], 2, 2, 1.
+					) + "] =>" + FormatUtil.FormatDouble (
+						paretoDistribution.mean(), 2, 3, 1.
+					/* ) + " |" + FormatUtil.FormatDouble (
+						paretoDistribution.median(), 3, 3, 1.
+					) + " |" + FormatUtil.FormatDouble (
+						paretoDistribution.mode(), 1, 1, 1.
+					) + " |" + FormatUtil.FormatDouble (
+						paretoDistribution.variance(), 4, 4, 1.
+					) + " |" + FormatUtil.FormatDouble (
+						paretoDistribution.skewness(), 1, 1, 1.
+					) + " |" + FormatUtil.FormatDouble (
+						paretoDistribution.excessKurtosis(), 2, 3, 1.
+					) + " |" + FormatUtil.FormatDouble (
+						paretoDistribution.fisherInformation(), 4, 4, 1.
+					) + " |" + FormatUtil.FormatDouble (
+						paretoDistribution.iqr(), 2, 3, 1. */
+					) + " ||"
+				);
+			}
 		}
 
-		return _lambda * _k / _lambda - 1.;
-	}
+		System.out.println (
+			"\t||----------------------------------------------------------------------------------||"
+		);
 
-	@Override public double variance()
-		throws Exception
-	{
-		if (1. >= _lambda)
-		{
-			throw new Exception (
-				"R1ParetoDistribution::variance => Does not converge for lambda <= 2."
-			);
-		}
-
-		double mean = mean();
-
-		return _lambda * _k * _k / (_lambda - 2.) - mean * mean;
+		EnvManager.TerminateEnv();
 	}
 }
