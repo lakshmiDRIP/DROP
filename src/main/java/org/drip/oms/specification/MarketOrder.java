@@ -408,7 +408,7 @@ public class MarketOrder
 			issuer,
 			securityIdentifier,
 			id,
-			OrderType.MARKET_ORDER,
+			OrderType.MARKET,
 			creationTime,
 			side,
 			size,

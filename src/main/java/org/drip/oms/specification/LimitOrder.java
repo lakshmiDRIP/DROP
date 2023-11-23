@@ -445,7 +445,7 @@ public class LimitOrder
 			issuer,
 			securityIdentifier,
 			id,
-			OrderType.LIMIT_ORDER,
+			OrderType.LIMIT,
 			creationTime,
 			side,
 			size,
