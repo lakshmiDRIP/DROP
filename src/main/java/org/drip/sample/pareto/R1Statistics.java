@@ -134,18 +134,16 @@ public class R1Statistics
 		EnvManager.InitEnv ("");
 
 		double[] kArray = {0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1., 2., 3., 4., 5.};
-		double[] lambdaArray = {0.02, 0.05, 0.1, 0.2, 0.5, 1., 2., 3., 4., 5., 10., 20.};
+		double[] lambdaArray = {3., 4., 5., 10., 20., 30., 40.};
 
-		System.out.println (
-			"\t||----------------------------------------------------------------------------------||"
-		);
+		System.out.println ("\t||---------------------------------------------------------||");
 
 		System.out.println (
 			"\t||    L -> R:"
 		);
 
 		System.out.println (
-			"\t||          - Lambda, k [Input]"
+			"\t||          - Lambda, k [Inputs]"
 		);
 
 		System.out.println (
@@ -160,25 +158,7 @@ public class R1Statistics
 			"\t||          - Variance"
 		);
 
-		System.out.println (
-			"\t||          - Skewness"
-		);
-
-		System.out.println (
-			"\t||          - Excess Kurtosis"
-		);
-
-		System.out.println (
-			"\t||          - Fisher Information"
-		);
-
-		System.out.println (
-			"\t||          - Inter-quantile Range (IQR)"
-		);
-
-		System.out.println (
-			"\t||----------------------------------------------------------------------------------||"
-		);
+		System.out.println ("\t||---------------------------------------------------------||");
 
 		for (int i = 0; i < kArray.length; ++i)
 		{
@@ -192,29 +172,19 @@ public class R1Statistics
 					) + "," + FormatUtil.FormatDouble (
 						kArray[i], 2, 2, 1.
 					) + "] =>" + FormatUtil.FormatDouble (
-						paretoDistribution.mean(), 2, 3, 1.
-					/* ) + " |" + FormatUtil.FormatDouble (
-						paretoDistribution.median(), 3, 3, 1.
+						paretoDistribution.mean(), 1, 4, 1.
 					) + " |" + FormatUtil.FormatDouble (
-						paretoDistribution.mode(), 1, 1, 1.
+						paretoDistribution.median(), 1, 4, 1.
 					) + " |" + FormatUtil.FormatDouble (
-						paretoDistribution.variance(), 4, 4, 1.
+						paretoDistribution.mode(), 1, 2, 1.
 					) + " |" + FormatUtil.FormatDouble (
-						paretoDistribution.skewness(), 1, 1, 1.
-					) + " |" + FormatUtil.FormatDouble (
-						paretoDistribution.excessKurtosis(), 2, 3, 1.
-					) + " |" + FormatUtil.FormatDouble (
-						paretoDistribution.fisherInformation(), 4, 4, 1.
-					) + " |" + FormatUtil.FormatDouble (
-						paretoDistribution.iqr(), 2, 3, 1. */
+						paretoDistribution.variance(), 2, 8, 1.
 					) + " ||"
 				);
 			}
 		}
 
-		System.out.println (
-			"\t||----------------------------------------------------------------------------------||"
-		);
+		System.out.println ("\t||---------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

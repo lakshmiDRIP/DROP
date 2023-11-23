@@ -199,6 +199,12 @@ public class R1ParetoDistribution
 		);
 	}
 
+	@Override public double mode()
+		throws Exception
+	{
+		return _k;
+	}
+
 	@Override public double cumulative (
 		final double t)
 		throws Exception
@@ -258,13 +264,22 @@ public class R1ParetoDistribution
 			);
 		}
 
-		return _lambda * _k / _lambda - 1.;
+		return _lambda * _k / (_lambda - 1.);
+	}
+
+	@Override public double median()
+		throws Exception
+	{
+		return _k * Math.pow (
+			2.,
+			1. / _lambda
+		);
 	}
 
 	@Override public double variance()
 		throws Exception
 	{
-		if (1. >= _lambda)
+		if (2. >= _lambda)
 		{
 			throw new Exception (
 				"R1ParetoDistribution::variance => Does not converge for lambda <= 2."
