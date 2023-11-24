@@ -232,37 +232,37 @@ public class OrderType
 	 * Peg Order
 	 */
 
-	public static final int PEG_ORDER = 20;
+	public static final int PEG = 20;
 
 	/**
 	 * Peg Best Order
 	 */
 
-	public static final int PEG_BEST_ORDER = 21;
+	public static final int PEG_BEST = 21;
 
 	/**
 	 * Mid-price Peg Order
 	 */
 
-	public static final int MID_PRICE_PEG_ORDER = 22;
+	public static final int MID_PRICE_PEG = 22;
 
 	/**
 	 * Buy Market-if-touched Order
 	 */
 
-	public static final int BUY_MARKET_IF_TOUCHED_ORDER = 23;
+	public static final int BUY_MARKET_IF_TOUCHED = 23;
 
 	/**
 	 * Sell Market-if-touched Order
 	 */
 
-	public static final int SELL_MARKET_IF_TOUCHED_ORDER = 24;
+	public static final int SELL_MARKET_IF_TOUCHED = 24;
 
 	/**
 	 * One Cancels Other Order
 	 */
 
-	public static final int ONE_CANCELS_OTHER_ORDER = 25;
+	public static final int ONE_CANCELS_OTHER = 25;
 
 	/**
 	 * One Sends Other Order
@@ -274,35 +274,35 @@ public class OrderType
 	 * Tick Sensitive Order
 	 */
 
-	public static final int TICK_SENSITIVE_ORDER = 27;
+	public static final int TICK_SENSITIVE = 27;
 
 	/**
 	 * At the Opening Order
 	 */
 
-	public static final int AT_THE_OPENING_ORDER = 28;
+	public static final int AT_THE_OPENING = 28;
 
 	/**
 	 * Discretionary Order
 	 */
 
-	public static final int DISCRETIONARY_ORDER = 29;
+	public static final int DISCRETIONARY = 29;
 
 	/**
 	 * Bracket Order
 	 */
 
-	public static final int BRACKET_ORDER = 30;
+	public static final int BRACKET = 30;
 
 	/**
 	 * Hidden Order
 	 */
 
-	public static final int HIDDEN_ORDER = 31;
+	public static final int HIDDEN = 31;
 
 	/**
 	 * Iceberg Order
 	 */
 
-	public static final int ICEBERG_ORDER = 32;
+	public static final int ICEBERG = 32;
 }
