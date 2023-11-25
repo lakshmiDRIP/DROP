@@ -1,5 +1,5 @@
 
-package org.drip.oms.specification;
+package org.drip.oms.transaction;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -74,7 +74,7 @@ package org.drip.oms.specification;
  */
 
 /**
- * <i>OrderTypeSetting</i> holds the Setting for different Types of Orders. The References are:
+ * <i>OrderType</i> holds the different Types of Orders. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -111,60 +111,198 @@ package org.drip.oms.specification;
  * @author Lakshmi Krishnamurthy
  */
 
-public class OrderTypeSetting
+public class OrderType
 {
-	private int _orderType = Integer.MIN_VALUE;
 
 	/**
-	 * OrderTypeSetting Constructor
-	 * 
-	 * @param orderType Order Type
-	 * 
-	 * @throws Exception Thrown if OrderTypeSetting cannot be constructed
+	 * Market Order
 	 */
 
-	public OrderTypeSetting (
-		final int orderType)
-		throws Exception
-	{
-		if (Integer.MIN_VALUE == (_orderType = orderType))
-		{
-			throw new Exception (
-				"OrderTypeSetting Constructor => Invalid Inputs"
-			);
-		}
-	}
+	public static final int MARKET = 1;
 
 	/**
-	 * Retrieve the Order Type
-	 * 
-	 * @return The Order Type
+	 * Limit Order
 	 */
 
-	public int orderType()
-	{
-		return _orderType;
-	}
+	public static final int LIMIT = 2;
 
 	/**
-	 * Indicate if the Order Type corresponds to DAY Order
-	 * 
-	 * @return TRUE - Order Type corresponds to DAY Order
+	 * Day Order
 	 */
 
-	public boolean day()
-	{
-		return OrderType.DAY == _orderType || OrderType.GOOD_FOR_DAY == _orderType;
-	}
+	public static final int DAY = 3;
 
 	/**
-	 * Indicate if the Order Type corresponds to IOC Order
-	 * 
-	 * @return TRUE - Order Type corresponds to IOC Order
+	 * Good for Day Order
 	 */
 
-	public boolean ioc()
-	{
-		return OrderType.IMMEDIATE_OR_CANCELED == _orderType;
-	}
+	public static final int GOOD_FOR_DAY = 4;
+
+	/**
+	 * Good till Canceled Order
+	 */
+
+	public static final int GOOD_TILL_CANCELED = 5;
+
+	/**
+	 * Immediate or Canceled Order
+	 */
+
+	public static final int IMMEDIATE_OR_CANCELED = 6;
+
+	/**
+	 * On the Close Order
+	 */
+
+	public static final int ON_THE_CLOSE = 7;
+
+	/**
+	 * On the Open Order
+	 */
+
+	public static final int ON_THE_OPEN = 8;
+
+	/**
+	 * Market on Close Order
+	 */
+
+	public static final int MARKET_ON_CLOSE = 9;
+
+	/**
+	 * Market On Open Order
+	 */
+
+	public static final int MARKET_ON_OPEN = 10;
+
+	/**
+	 * Limit-on-close Order
+	 */
+
+	public static final int LIMIT_ON_CLOSE = 11;
+
+	/**
+	 * Limit-on-open Order
+	 */
+
+	public static final int LIMIT_ON_OPEN = 12;
+
+	/**
+	 * Stop Order
+	 */
+
+	public static final int STOP = 13;
+
+	/**
+	 * Stop-Loss Order
+	 */
+
+	public static final int STOP_LOSS = 14;
+
+	/**
+	 * Sell-stop Order
+	 */
+
+	public static final int SELL_STOP = 15;
+
+	/**
+	 * Buy-stop Order
+	 */
+
+	public static final int BUY_STOP = 16;
+
+	/**
+	 * Stop-limit Order
+	 */
+
+	public static final int STOP_LIMIT = 17;
+
+	/**
+	 * Trailing Stop Order
+	 */
+
+	public static final int TRAILING_STOP = 18;
+
+	/**
+	 * Trailing Stop Limit Order
+	 */
+
+	public static final int TRAILING_STOP_LIMIT = 19;
+
+	/**
+	 * Peg Order
+	 */
+
+	public static final int PEG = 20;
+
+	/**
+	 * Peg Best Order
+	 */
+
+	public static final int PEG_BEST = 21;
+
+	/**
+	 * Mid-price Peg Order
+	 */
+
+	public static final int MID_PRICE_PEG = 22;
+
+	/**
+	 * Buy Market-if-touched Order
+	 */
+
+	public static final int BUY_MARKET_IF_TOUCHED = 23;
+
+	/**
+	 * Sell Market-if-touched Order
+	 */
+
+	public static final int SELL_MARKET_IF_TOUCHED = 24;
+
+	/**
+	 * One Cancels Other Order
+	 */
+
+	public static final int ONE_CANCELS_OTHER = 25;
+
+	/**
+	 * One Sends Other Order
+	 */
+
+	public static final int ONE_SENDS_OTHER_ORDER = 26;
+
+	/**
+	 * Tick Sensitive Order
+	 */
+
+	public static final int TICK_SENSITIVE = 27;
+
+	/**
+	 * At the Opening Order
+	 */
+
+	public static final int AT_THE_OPENING = 28;
+
+	/**
+	 * Discretionary Order
+	 */
+
+	public static final int DISCRETIONARY = 29;
+
+	/**
+	 * Bracket Order
+	 */
+
+	public static final int BRACKET = 30;
+
+	/**
+	 * Hidden Order
+	 */
+
+	public static final int HIDDEN = 31;
+
+	/**
+	 * Iceberg Order
+	 */
+
+	public static final int ICEBERG = 32;
 }

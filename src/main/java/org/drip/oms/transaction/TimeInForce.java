@@ -1,9 +1,10 @@
 
-package org.drip.oms.specification;
+package org.drip.oms.transaction;
 
-import java.time.LocalTime;
 import java.time.Period;
 import java.time.ZonedDateTime;
+
+import org.drip.oms.venue.OperatingHours;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -179,7 +180,7 @@ public class TimeInForce
 	}
 
 	/**
-	 * Create an DAY Version of TIF
+	 * Create a DAY Version of TIF
 	 * 
 	 * @return DAY Version of TIF
 	 */
@@ -191,6 +192,109 @@ public class TimeInForce
 			return new TimeInForce (
 				"DAY",
 				TIF_DAY,
+				ZonedDateTime.now(),
+				0
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Create a DTC Version of TIF
+	 * 
+	 * @return DTC Version of TIF
+	 */
+
+	public static final TimeInForce CreateDayTillCanceled()
+	{
+		try
+		{
+			return new TimeInForce (
+				"DTC",
+				TIF_DAY,
+				ZonedDateTime.now(),
+				0
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Create a GTC Version of TIF
+	 * 
+	 * @param durationDays Duration Tenor in Days
+	 * 
+	 * @return GTC Version of TIF
+	 */
+
+	public static final TimeInForce CreateGoodTillCanceled (
+		final int durationDays)
+	{
+		try
+		{
+			return new TimeInForce (
+				"GTC",
+				TIF_EXTENDED,
+				ZonedDateTime.now(),
+				durationDays
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Create a Market Open Version of TIF
+	 * 
+	 * @return Market Open Version of TIF
+	 */
+
+	public static final TimeInForce CreateMarketOpen()
+	{
+		try
+		{
+			return new TimeInForce (
+				"DAY",
+				TIF_ON_MARKET_OPEN,
+				ZonedDateTime.now(),
+				0
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Create a Market Close Version of TIF
+	 * 
+	 * @return Market Close Version of TIF
+	 */
+
+	public static final TimeInForce CreateMarketClose()
+	{
+		try
+		{
+			return new TimeInForce (
+				"DAY",
+				TIF_ON_MARKET_CLOSE,
 				ZonedDateTime.now(),
 				0
 			);
@@ -322,14 +426,8 @@ public class TimeInForce
 		if (TIF_ON_MARKET_OPEN == _tifType)
 		{
 			return currentZonedDateTime.isAfter (
-				ZonedDateTime.of (
-					_setupZonedDateTime.toLocalDate(),
-					LocalTime.of (
-						9,
-						30,
-						0
-					),
-					currentZonedDateTime.getZone()
+				OperatingHours.USMarketOpen (
+					_setupZonedDateTime.toLocalDate()
 				)
 			);
 		}
@@ -337,14 +435,8 @@ public class TimeInForce
 		if (TIF_ON_MARKET_CLOSE == _tifType)
 		{
 			return currentZonedDateTime.isAfter (
-				ZonedDateTime.of (
-					_setupZonedDateTime.toLocalDate(),
-					LocalTime.of (
-						16,
-						0,
-						0
-					),
-					currentZonedDateTime.getZone()
+				OperatingHours.USMarketClose (
+					_setupZonedDateTime.toLocalDate()
 				)
 			);
 		}

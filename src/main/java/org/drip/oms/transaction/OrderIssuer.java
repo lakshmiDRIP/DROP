@@ -1,5 +1,5 @@
 
-package org.drip.oms.specification;
+package org.drip.oms.transaction;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -74,7 +74,7 @@ package org.drip.oms.specification;
  */
 
 /**
- * <i>OrderFillWholeSettings</i> maintains the Fill-whole Settings of an Order. The References are:
+ * <i>OrderIssuer</i> holds the Details of the Order Issuer. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -111,116 +111,89 @@ package org.drip.oms.specification;
  * @author Lakshmi Krishnamurthy
  */
 
-public class OrderFillWholeSettings
+public class OrderIssuer
 {
 
 	/**
-	 * Fill or Kill
+	 * Issuer Type Client
 	 */
 
-	public static final int FILL_OR_KILL = 1;
+	public static final int CLIENT = 1;
 
 	/**
-	 * All or None
+	 * Issuer Type Dealer
 	 */
 
-	public static final int ALL_OR_NONE = 2;
+	public static final int DEALER = 2;
 
-	private int _fulfillScheme = Integer.MIN_VALUE;
-	private int _fulfillTryLimit = Integer.MIN_VALUE;
-
-	/**
-	 * Generate a Standard Fill-and-kill OrderFillWholeSettings Instance
-	 * 
-	 * @return Standard Fill-and-kill OrderFillWholeSettings Instance
-	 */
-
-	public static final OrderFillWholeSettings FillOrKill()
-	{
-		try
-		{
-			return new OrderFillWholeSettings (
-				FILL_OR_KILL,
-				-1
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
+	private String _entity = "";
+	private int _type = Integer.MIN_VALUE;
 
 	/**
-	 * Construct a All-or-none OrderFillWholeSettings Instance
+	 * OrderIssuer Constructor
 	 * 
-	 * @param fulfillTryLimit Fulfillment Try Limit
-	 * 
-	 * @return All-or-none OrderFillWholeSettings Instance
-	 */
-
-	public static final OrderFillWholeSettings AllOrNone (
-		final int fulfillTryLimit)
-	{
-		try
-		{
-			return new OrderFillWholeSettings (
-				ALL_OR_NONE,
-				fulfillTryLimit
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * OrderFillWholeSettings Constructor
-	 * 
-	 * @param fulfillScheme Fulfillment Scheme
-	 * @param fulfillTryLimit Fulfillment Try Limit
+	 * @param entity Order Issuer Entity
+	 * @param type Order Issuer Type
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public OrderFillWholeSettings (
-		final int fulfillScheme,
-		final int fulfillTryLimit)
+	public OrderIssuer (
+		final String entity,
+		final int type)
 		throws Exception
 	{
-		_fulfillScheme = fulfillScheme;
-
-		if (0 >= (_fulfillTryLimit = fulfillTryLimit) && ALL_OR_NONE == _fulfillTryLimit)
+		if (null == (_entity = entity) || _entity.isEmpty())
 		{
 			throw new Exception (
-				"OrderFillWholeSettings Constructor => Invaid Inputs"
+				"OrderIssuer Constructor => Invalid Inputs"
 			);
 		}
+
+		_type = type;
 	}
 
 	/**
-	 * Retrieve the Fulfillment Scheme
+	 * Retrieve the Issuer Entity
 	 * 
-	 * @return The Fulfillment Scheme
+	 * @return The Issuer Entity
 	 */
 
-	public int fulfillScheme()
+	public String entity()
 	{
-		return _fulfillScheme;
+		return _entity;
 	}
 
 	/**
-	 * Retrieve the Fulfillment Try Limit
+	 * Retrieve the Issuer Type
 	 * 
-	 * @return The Fulfillment Try Limit
+	 * @return The Issuer Type
 	 */
 
-	public int fulfillTryLimit()
+	public int type()
 	{
-		return _fulfillTryLimit;
+		return _type;
+	}
+
+	/**
+	 * Check if the Issuer is a Client
+	 * 
+	 * @return TRUE - The Issuer is a Client
+	 */
+
+	public boolean isClient()
+	{
+		return CLIENT == _type;
+	}
+
+	/**
+	 * Check if the Issuer is a Dealer
+	 * 
+	 * @return TRUE - The Issuer is a Dealer
+	 */
+
+	public boolean isDealer()
+	{
+		return DEALER == _type;
 	}
 }

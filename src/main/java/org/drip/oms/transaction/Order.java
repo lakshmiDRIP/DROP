@@ -1,5 +1,5 @@
 
-package org.drip.oms.specification;
+package org.drip.oms.transaction;
 
 import java.util.Date;
 
@@ -141,6 +141,7 @@ public class Order
 	private int _type = Integer.MIN_VALUE;
 	private int _state = Integer.MIN_VALUE;
 	private String _securityIdentifier = "";
+	private TimeInForce _timeInForce = null;
 	private OrderFillWholeSettings _fillWholeSettings = null;
 
 	/**
@@ -151,6 +152,7 @@ public class Order
 	 * @param type Order Type
 	 * @param side Order Side
 	 * @param size Order Size
+	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
 	 * @return Standard Instance of Order
@@ -162,6 +164,7 @@ public class Order
 		final int type,
 		final String side,
 		final double size,
+		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
@@ -174,6 +177,7 @@ public class Order
 				new Date(),
 				side,
 				size,
+				timeInForce,
 				fillWholeSettings
 			);
 		}
@@ -195,6 +199,7 @@ public class Order
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
+	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
@@ -208,6 +213,7 @@ public class Order
 		final Date creationTime,
 		final String side,
 		final double size,
+		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings)
 		throws Exception
 	{
@@ -227,6 +233,7 @@ public class Order
 		}
 
 		_type = type;
+		_timeInForce = timeInForce;
 		_fillWholeSettings = fillWholeSettings;
 		_state = OrderState.OPEN + OrderState.UNFILLED;
 
@@ -310,6 +317,17 @@ public class Order
 	public Date completionTime()
 	{
 		return _completionTime;
+	}
+
+	/**
+	 * Retrieve the Time-in-Force Settings
+	 * 
+	 * @return The Time-in-Force Settings
+	 */
+
+	public TimeInForce timeInForce()
+	{
+		return _timeInForce;
 	}
 
 	/**
@@ -417,6 +435,7 @@ public class Order
 					new Date(),
 					_side,
 					_size - filledSize,
+					null,
 					null
 				);
 			}

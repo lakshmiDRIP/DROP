@@ -1,8 +1,8 @@
 
 package org.drip.oms.fill;
 
-import org.drip.oms.specification.Order;
-import org.drip.oms.specification.OrderState;
+import org.drip.oms.transaction.Order;
+import org.drip.oms.transaction.OrderState;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

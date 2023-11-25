@@ -1,8 +1,13 @@
 
-package org.drip.oms.specification;
+package org.drip.oms.order;
 
 import java.util.Date;
 
+import org.drip.oms.transaction.Order;
+import org.drip.oms.transaction.OrderFillWholeSettings;
+import org.drip.oms.transaction.OrderIssuer;
+import org.drip.oms.transaction.OrderType;
+import org.drip.oms.transaction.TimeInForce;
 import org.drip.service.common.StringUtil;
 
 /*
@@ -115,38 +120,41 @@ import org.drip.service.common.StringUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketOrder
+public class Market
 	extends Order
 {
 
 	/**
-	 * Construct a Standard Instance of MarketOrder
+	 * Construct a Standard Instance of Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param side Order Side
 	 * @param size Order Size
+	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of MarketOrder
+	 * @return Standard Instance of Market Order
 	 */
 
-	public static final MarketOrder Standard (
+	public static final Market Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String side,
 		final double size,
+		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
-			return new MarketOrder (
+			return new Market (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				side,
 				size,
+				timeInForce,
 				fillWholeSettings
 			);
 		}
@@ -159,31 +167,34 @@ public class MarketOrder
 	}
 
 	/**
-	 * Construct a Standard Instance of Buy MarketOrder
+	 * Construct an Instance of Buy Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
+	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Buy MarketOrder
+	 * @return Instance of Buy Market Order
 	 */
 
-	public static final MarketOrder StandardBuy (
+	public static final Market Buy (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
+		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
-			return new MarketOrder (
+			return new Market (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Order.BUY,
 				size,
+				timeInForce,
 				fillWholeSettings
 			);
 		}
@@ -196,29 +207,32 @@ public class MarketOrder
 	}
 
 	/**
-	 * Construct a Standard Instance of Buy Fill-or-Kill MarketOrder
+	 * Construct an Instance of Buy Fill-or-Kill Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
+	 * @param timeInForce Time-in-Force Settings
 	 * 
-	 * @return Standard Instance of Buy Fill-or-Kill MarketOrder
+	 * @return Instance of Buy Fill-or-Kill Market Order
 	 */
 
-	public static final MarketOrder StandardBuyFillOrKill (
+	public static final Market BuyFillOrKill (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
-		final double size)
+		final double size,
+		final TimeInForce timeInForce)
 	{
 		try
 		{
-			return new MarketOrder (
+			return new Market (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Order.BUY,
 				size,
+				timeInForce,
 				OrderFillWholeSettings.FillOrKill()
 			);
 		}
@@ -231,31 +245,34 @@ public class MarketOrder
 	}
 
 	/**
-	 * Construct a Standard Instance of Buy All-or-None MarketOrder
+	 * Construct an Instance of Buy All-or-None Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
+	 * @param timeInForce Time-in-Force Settings
 	 * @param fulfillTryLimit Fulfill Try Limit
 	 * 
-	 * @return Standard Instance of Buy All-or-None MarketOrder
+	 * @return Instance of Buy All-or-None Market Order
 	 */
 
-	public static final MarketOrder StandardBuyAllOrNone (
+	public static final Market BuyAllOrNone (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
+		final TimeInForce timeInForce,
 		final int fulfillTryLimit)
 	{
 		try
 		{
-			return new MarketOrder (
+			return new Market (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Order.BUY,
 				size,
+				timeInForce,
 				OrderFillWholeSettings.AllOrNone (
 					fulfillTryLimit
 				)
@@ -270,17 +287,17 @@ public class MarketOrder
 	}
 
 	/**
-	 * Construct a Standard Instance of Sell MarketOrder
+	 * Construct an Instance of Buy IOC Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Sell MarketOrder
+	 * @return Instance of Buy IOC Market Order
 	 */
 
-	public static final MarketOrder StandardSell (
+	public static final Market BuyIOC (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
@@ -288,13 +305,14 @@ public class MarketOrder
 	{
 		try
 		{
-			return new MarketOrder (
+			return new Market (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
-				Order.SELL,
+				Order.BUY,
 				size,
+				TimeInForce.CreateImmediate(),
 				fillWholeSettings
 			);
 		}
@@ -307,29 +325,148 @@ public class MarketOrder
 	}
 
 	/**
-	 * Construct a Standard Instance of Sell Fill-or-Kill MarketOrder
+	 * Construct an Instance of Buy DAY Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
+	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Sell Fill-or-Kill MarketOrder
+	 * @return Instance of Buy DAY Market Order
 	 */
 
-	public static final MarketOrder StandardSellFillOrKill (
+	public static final Market BuyDAY (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
-		final double size)
+		final double size,
+		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
-			return new MarketOrder (
+			return new Market (
+				issuer,
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Order.BUY,
+				size,
+				TimeInForce.CreateDay(),
+				fillWholeSettings
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an Instance of Buy DTC Market Order
+	 * 
+	 * @param issuer Order Issuer
+	 * @param securityIdentifier Security Identifier
+	 * @param size Order Size
+	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * 
+	 * @return Instance of Buy DTC Market Order
+	 */
+
+	public static final Market BuyDTC (
+		final OrderIssuer issuer,
+		final String securityIdentifier,
+		final double size,
+		final OrderFillWholeSettings fillWholeSettings)
+	{
+		try
+		{
+			return new Market (
+				issuer,
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Order.BUY,
+				size,
+				TimeInForce.CreateDayTillCanceled(),
+				fillWholeSettings
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an Instance of Sell Market Order
+	 * 
+	 * @param issuer Order Issuer
+	 * @param securityIdentifier Security Identifier
+	 * @param size Order Size
+	 * @param timeInForce Time-in-Force Settings
+	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * 
+	 * @return Instance of Sell Market Order
+	 */
+
+	public static final Market Sell (
+		final OrderIssuer issuer,
+		final String securityIdentifier,
+		final double size,
+		final TimeInForce timeInForce,
+		final OrderFillWholeSettings fillWholeSettings)
+	{
+		try
+		{
+			return new Market (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Order.SELL,
 				size,
+				timeInForce,
+				fillWholeSettings
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an Instance of Sell Fill-or-Kill Market Order
+	 * 
+	 * @param issuer Order Issuer
+	 * @param securityIdentifier Security Identifier
+	 * @param size Order Size
+	 * @param timeInForce Time-in-Force Settings
+	 * 
+	 * @return Instance of Sell Fill-or-Kill Market Order
+	 */
+
+	public static final Market SellFillOrKill (
+		final OrderIssuer issuer,
+		final String securityIdentifier,
+		final double size,
+		final TimeInForce timeInForce)
+	{
+		try
+		{
+			return new Market (
+				issuer,
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Order.SELL,
+				size,
+				timeInForce,
 				OrderFillWholeSettings.FillOrKill()
 			);
 		}
@@ -342,31 +479,34 @@ public class MarketOrder
 	}
 
 	/**
-	 * Construct a Standard Instance of Sell All-or-None MarketOrder
+	 * Construct an Instance of Sell All-or-None Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
+	 * @param timeInForce Time-in-Force Settings
 	 * @param fulfillTryLimit Fulfill Try Limit
 	 * 
-	 * @return Standard Instance of Sell All-or-None MarketOrder
+	 * @return Instance of Sell All-or-None Market Order
 	 */
 
-	public static final MarketOrder StandardSellAllOrNone (
+	public static final Market SellAllOrNone (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
+		final TimeInForce timeInForce,
 		final int fulfillTryLimit)
 	{
 		try
 		{
-			return new MarketOrder (
+			return new Market (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Order.SELL,
 				size,
+				timeInForce,
 				OrderFillWholeSettings.AllOrNone (
 					fulfillTryLimit
 				)
@@ -381,7 +521,121 @@ public class MarketOrder
 	}
 
 	/**
-	 * MarketOrder Constructor
+	 * Construct an Instance of Sell IOC Market Order
+	 * 
+	 * @param issuer Order Issuer
+	 * @param securityIdentifier Security Identifier
+	 * @param size Order Size
+	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * 
+	 * @return Instance of Sell IOC Market Order
+	 */
+
+	public static final Market SellIOC (
+		final OrderIssuer issuer,
+		final String securityIdentifier,
+		final double size,
+		final OrderFillWholeSettings fillWholeSettings)
+	{
+		try
+		{
+			return new Market (
+				issuer,
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Order.SELL,
+				size,
+				TimeInForce.CreateImmediate(),
+				fillWholeSettings
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an Instance of Sell DAY Market Order
+	 * 
+	 * @param issuer Order Issuer
+	 * @param securityIdentifier Security Identifier
+	 * @param size Order Size
+	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * 
+	 * @return Instance of Sell DAY Market Order
+	 */
+
+	public static final Market SellDAY (
+		final OrderIssuer issuer,
+		final String securityIdentifier,
+		final double size,
+		final OrderFillWholeSettings fillWholeSettings)
+	{
+		try
+		{
+			return new Market (
+				issuer,
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Order.SELL,
+				size,
+				TimeInForce.CreateDay(),
+				fillWholeSettings
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an Instance of Sell DTC Market Order
+	 * 
+	 * @param issuer Order Issuer
+	 * @param securityIdentifier Security Identifier
+	 * @param size Order Size
+	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * 
+	 * @return Instance of Sell DTC Market Order
+	 */
+
+	public static final Market SellDTC (
+		final OrderIssuer issuer,
+		final String securityIdentifier,
+		final double size,
+		final OrderFillWholeSettings fillWholeSettings)
+	{
+		try
+		{
+			return new Market (
+				issuer,
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Order.SELL,
+				size,
+				TimeInForce.CreateDayTillCanceled(),
+				fillWholeSettings
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Market Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -389,18 +643,20 @@ public class MarketOrder
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
+	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MarketOrder (
+	public Market (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
 		final String side,
 		final double size,
+		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings)
 		throws Exception
 	{
@@ -412,6 +668,7 @@ public class MarketOrder
 			creationTime,
 			side,
 			size,
+			timeInForce,
 			fillWholeSettings
 		);
 	}

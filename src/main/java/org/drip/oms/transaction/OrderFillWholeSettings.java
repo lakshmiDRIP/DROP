@@ -1,5 +1,5 @@
 
-package org.drip.oms.specification;
+package org.drip.oms.transaction;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -74,7 +74,7 @@ package org.drip.oms.specification;
  */
 
 /**
- * <i>OrderState</i> holds the different States of an Order. The References are:
+ * <i>OrderFillWholeSettings</i> maintains the Fill-whole Settings of an Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -111,36 +111,116 @@ package org.drip.oms.specification;
  * @author Lakshmi Krishnamurthy
  */
 
-public class OrderState
+public class OrderFillWholeSettings
 {
 
 	/**
-	 * OPEN
+	 * Fill or Kill
 	 */
 
-	public static final int OPEN = 1;
+	public static final int FILL_OR_KILL = 1;
 
 	/**
-	 * UNFILLED
+	 * All or None
 	 */
 
-	public static final int UNFILLED = 2;
+	public static final int ALL_OR_NONE = 2;
+
+	private int _fulfillScheme = Integer.MIN_VALUE;
+	private int _fulfillTryLimit = Integer.MIN_VALUE;
 
 	/**
-	 * PARTIALLY FILLED
+	 * Generate a Standard Fill-and-kill OrderFillWholeSettings Instance
+	 * 
+	 * @return Standard Fill-and-kill OrderFillWholeSettings Instance
 	 */
 
-	public static final int PARTIALLY_FILLED = 4;
+	public static final OrderFillWholeSettings FillOrKill()
+	{
+		try
+		{
+			return new OrderFillWholeSettings (
+				FILL_OR_KILL,
+				-1
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
-	 * FILLED
+	 * Construct a All-or-none OrderFillWholeSettings Instance
+	 * 
+	 * @param fulfillTryLimit Fulfillment Try Limit
+	 * 
+	 * @return All-or-none OrderFillWholeSettings Instance
 	 */
 
-	public static final int FILLED = 8;
+	public static final OrderFillWholeSettings AllOrNone (
+		final int fulfillTryLimit)
+	{
+		try
+		{
+			return new OrderFillWholeSettings (
+				ALL_OR_NONE,
+				fulfillTryLimit
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
-	 * CANCELED
+	 * OrderFillWholeSettings Constructor
+	 * 
+	 * @param fulfillScheme Fulfillment Scheme
+	 * @param fulfillTryLimit Fulfillment Try Limit
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final int CANCELED = 16;
+	public OrderFillWholeSettings (
+		final int fulfillScheme,
+		final int fulfillTryLimit)
+		throws Exception
+	{
+		_fulfillScheme = fulfillScheme;
+
+		if (0 >= (_fulfillTryLimit = fulfillTryLimit) && ALL_OR_NONE == _fulfillTryLimit)
+		{
+			throw new Exception (
+				"OrderFillWholeSettings Constructor => Invaid Inputs"
+			);
+		}
+	}
+
+	/**
+	 * Retrieve the Fulfillment Scheme
+	 * 
+	 * @return The Fulfillment Scheme
+	 */
+
+	public int fulfillScheme()
+	{
+		return _fulfillScheme;
+	}
+
+	/**
+	 * Retrieve the Fulfillment Try Limit
+	 * 
+	 * @return The Fulfillment Try Limit
+	 */
+
+	public int fulfillTryLimit()
+	{
+		return _fulfillTryLimit;
+	}
 }

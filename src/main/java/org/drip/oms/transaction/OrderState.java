@@ -1,5 +1,5 @@
 
-package org.drip.oms.specification;
+package org.drip.oms.transaction;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -74,7 +74,7 @@ package org.drip.oms.specification;
  */
 
 /**
- * <i>OrderIssuer</i> holds the Details of the Order Issuer. The References are:
+ * <i>OrderState</i> holds the different States of an Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -111,89 +111,36 @@ package org.drip.oms.specification;
  * @author Lakshmi Krishnamurthy
  */
 
-public class OrderIssuer
+public class OrderState
 {
 
 	/**
-	 * Issuer Type Client
+	 * OPEN
 	 */
 
-	public static final int CLIENT = 1;
+	public static final int OPEN = 1;
 
 	/**
-	 * Issuer Type Dealer
+	 * UNFILLED
 	 */
 
-	public static final int DEALER = 2;
-
-	private String _entity = "";
-	private int _type = Integer.MIN_VALUE;
+	public static final int UNFILLED = 2;
 
 	/**
-	 * OrderIssuer Constructor
-	 * 
-	 * @param entity Order Issuer Entity
-	 * @param type Order Issuer Type
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * PARTIALLY FILLED
 	 */
 
-	public OrderIssuer (
-		final String entity,
-		final int type)
-		throws Exception
-	{
-		if (null == (_entity = entity) || _entity.isEmpty())
-		{
-			throw new Exception (
-				"OrderIssuer Constructor => Invalid Inputs"
-			);
-		}
-
-		_type = type;
-	}
+	public static final int PARTIALLY_FILLED = 4;
 
 	/**
-	 * Retrieve the Issuer Entity
-	 * 
-	 * @return The Issuer Entity
+	 * FILLED
 	 */
 
-	public String entity()
-	{
-		return _entity;
-	}
+	public static final int FILLED = 8;
 
 	/**
-	 * Retrieve the Issuer Type
-	 * 
-	 * @return The Issuer Type
+	 * CANCELED
 	 */
 
-	public int type()
-	{
-		return _type;
-	}
-
-	/**
-	 * Check if the Issuer is a Client
-	 * 
-	 * @return TRUE - The Issuer is a Client
-	 */
-
-	public boolean isClient()
-	{
-		return CLIENT == _type;
-	}
-
-	/**
-	 * Check if the Issuer is a Dealer
-	 * 
-	 * @return TRUE - The Issuer is a Dealer
-	 */
-
-	public boolean isDealer()
-	{
-		return DEALER == _type;
-	}
+	public static final int CANCELED = 16;
 }

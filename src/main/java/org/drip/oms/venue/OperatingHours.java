@@ -120,14 +120,14 @@ public class OperatingHours
 {
 
 	/**
-	 * Retrieve the US Market Open Zoned Date Time Instance
+	 * Retrieve the US Market Close Zoned Date Time Instance
 	 * 
 	 * @param localDate Local Date
 	 * 
-	 * @return US Market Open Zoned Date Time Instance
+	 * @return US Market Close Zoned Date Time Instance
 	 */
 
-	public static final ZonedDateTime USMarketOpen (
+	public static final ZonedDateTime USMarketClose (
 		final LocalDate localDate)
 	{
 		return ZonedDateTime.of (
@@ -144,9 +144,54 @@ public class OperatingHours
 	}
 
 	/**
+	 * Retrieve the Current US Market Close Zoned Date Time Instance
+	 * 
+	 * @return Current US Market Open Close Date Time Instance
+	 */
+
+	public static final ZonedDateTime USMarketClose()
+	{
+		return ZonedDateTime.of (
+			LocalDate.now(),
+			LocalTime.of (
+				16,
+				0,
+				0
+			),
+			ZoneId.of (
+				"America/New_York"
+			)
+		);
+	}
+
+	/**
+	 * Retrieve the US Market Open Zoned Date Time Instance
+	 * 
+	 * @param localDate Local Date
+	 * 
+	 * @return US Market Open Zoned Date Time Instance
+	 */
+
+	public static final ZonedDateTime USMarketOpen (
+		final LocalDate localDate)
+	{
+		return ZonedDateTime.of (
+			localDate,
+			LocalTime.of (
+				9,
+				30,
+				0
+			),
+			ZoneId.of (
+				"America/New_York"
+			)
+		);
+	}
+
+	/**
 	 * Retrieve the Current US Market Open Zoned Date Time Instance
 	 * 
-	 * @return Current US Market Open Zoned Date Time Instance
+	 * @return Current US Market Open Open Date Time Instance
 	 */
 
 	public static final ZonedDateTime USMarketOpen()
@@ -154,8 +199,8 @@ public class OperatingHours
 		return ZonedDateTime.of (
 			LocalDate.now(),
 			LocalTime.of (
-				16,
-				0,
+				9,
+				30,
 				0
 			),
 			ZoneId.of (

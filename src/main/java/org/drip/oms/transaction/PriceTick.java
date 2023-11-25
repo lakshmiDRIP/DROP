@@ -1,5 +1,7 @@
 
-package org.drip.oms.specification;
+package org.drip.oms.transaction;
+
+import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -74,7 +76,7 @@ package org.drip.oms.specification;
  */
 
 /**
- * <i>OrderType</i> holds the different Types of Orders. The References are:
+ * <i>Order</i> holds the Details of an Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -111,198 +113,86 @@ package org.drip.oms.specification;
  * @author Lakshmi Krishnamurthy
  */
 
-public class OrderType
+public class PriceTick
 {
 
 	/**
-	 * Market Order
+	 * Price Up-tick
 	 */
 
-	public static final int MARKET = 1;
+	public static final int UPTICK = 0;
 
 	/**
-	 * Limit Order
+	 * Price Down-tick
 	 */
 
-	public static final int LIMIT = 2;
+	public static final int DOWNTICK = 1;
+
+	private double _marketBuyPrice = Double.NaN;
+	private double _marketSellPrice = Double.NaN;
+	private int _tickDirection = Integer.MIN_VALUE;
 
 	/**
-	 * Day Order
+	 * PriceTick Constructor
+	 * 
+	 * @param tickDirection Tick Direction
+	 * @param marketBuyPrice Market Buy Price
+	 * @param marketSellPrice Market Sell Price
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final int DAY = 3;
+	public PriceTick (
+		final int tickDirection,
+		final double marketBuyPrice,
+		final double marketSellPrice)
+		throws Exception
+	{
+		if (!NumberUtil.IsValid (
+				_marketBuyPrice = marketBuyPrice
+			) || 0 >= _marketBuyPrice || !NumberUtil.IsValid (
+				_marketSellPrice = marketSellPrice
+			) || 0 >= _marketSellPrice
+		)
+		{
+			throw new Exception (
+				"PriceTick Constructor => Invalid Inputs"
+			);
+		}
+
+		_tickDirection = tickDirection;
+	}
 
 	/**
-	 * Good for Day Order
+	 * Retrieve the Tick Direction
+	 * 
+	 * @return The Tick Direction
 	 */
 
-	public static final int GOOD_FOR_DAY = 4;
+	public int tickDirection()
+	{
+		return _tickDirection;
+	}
 
 	/**
-	 * Good till Canceled Order
+	 * Retrieve the Market Buy Price
+	 * 
+	 * @return The Market Buy Price
 	 */
 
-	public static final int GOOD_TILL_CANCELED = 5;
+	public double marketBuyPrice()
+	{
+		return _marketBuyPrice;
+	}
 
 	/**
-	 * Immediate or Canceled Order
+	 * Retrieve the Market Sell Price
+	 * 
+	 * @return The Market Sell Price
 	 */
 
-	public static final int IMMEDIATE_OR_CANCELED = 6;
-
-	/**
-	 * On the Close Order
-	 */
-
-	public static final int ON_THE_CLOSE = 7;
-
-	/**
-	 * On the Open Order
-	 */
-
-	public static final int ON_THE_OPEN = 8;
-
-	/**
-	 * Market on Close Order
-	 */
-
-	public static final int MARKET_ON_CLOSE = 9;
-
-	/**
-	 * Market On Open Order
-	 */
-
-	public static final int MARKET_ON_OPEN = 10;
-
-	/**
-	 * Limit-on-close Order
-	 */
-
-	public static final int LIMIT_ON_CLOSE = 11;
-
-	/**
-	 * Limit-on-open Order
-	 */
-
-	public static final int LIMIT_ON_OPEN = 12;
-
-	/**
-	 * Stop Order
-	 */
-
-	public static final int STOP = 13;
-
-	/**
-	 * Stop-Loss Order
-	 */
-
-	public static final int STOP_LOSS = 14;
-
-	/**
-	 * Sell-stop Order
-	 */
-
-	public static final int SELL_STOP = 15;
-
-	/**
-	 * Buy-stop Order
-	 */
-
-	public static final int BUY_STOP = 16;
-
-	/**
-	 * Stop-limit Order
-	 */
-
-	public static final int STOP_LIMIT = 17;
-
-	/**
-	 * Trailing Stop Order
-	 */
-
-	public static final int TRAILING_STOP = 18;
-
-	/**
-	 * Trailing Stop Limit Order
-	 */
-
-	public static final int TRAILING_STOP_LIMIT = 19;
-
-	/**
-	 * Peg Order
-	 */
-
-	public static final int PEG = 20;
-
-	/**
-	 * Peg Best Order
-	 */
-
-	public static final int PEG_BEST = 21;
-
-	/**
-	 * Mid-price Peg Order
-	 */
-
-	public static final int MID_PRICE_PEG = 22;
-
-	/**
-	 * Buy Market-if-touched Order
-	 */
-
-	public static final int BUY_MARKET_IF_TOUCHED = 23;
-
-	/**
-	 * Sell Market-if-touched Order
-	 */
-
-	public static final int SELL_MARKET_IF_TOUCHED = 24;
-
-	/**
-	 * One Cancels Other Order
-	 */
-
-	public static final int ONE_CANCELS_OTHER = 25;
-
-	/**
-	 * One Sends Other Order
-	 */
-
-	public static final int ONE_SENDS_OTHER_ORDER = 26;
-
-	/**
-	 * Tick Sensitive Order
-	 */
-
-	public static final int TICK_SENSITIVE = 27;
-
-	/**
-	 * At the Opening Order
-	 */
-
-	public static final int AT_THE_OPENING = 28;
-
-	/**
-	 * Discretionary Order
-	 */
-
-	public static final int DISCRETIONARY = 29;
-
-	/**
-	 * Bracket Order
-	 */
-
-	public static final int BRACKET = 30;
-
-	/**
-	 * Hidden Order
-	 */
-
-	public static final int HIDDEN = 31;
-
-	/**
-	 * Iceberg Order
-	 */
-
-	public static final int ICEBERG = 32;
+	public double marketSellPrice()
+	{
+		return _marketSellPrice;
+	}
 }
