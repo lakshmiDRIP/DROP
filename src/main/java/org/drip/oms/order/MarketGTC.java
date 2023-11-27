@@ -6,7 +6,6 @@ import java.util.Date;
 import org.drip.oms.transaction.Order;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
-import org.drip.oms.transaction.OrderType;
 import org.drip.oms.transaction.TimeInForce;
 import org.drip.service.common.StringUtil;
 
@@ -83,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>Market</i> holds the Details of a Market Order. The References are:
+ * <i>MarketGTC</i> holds the Details of a Market GTC Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -120,41 +119,41 @@ import org.drip.service.common.StringUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Market
-	extends Order
+public class MarketGTC
+	extends Market
 {
 
 	/**
-	 * Construct a Standard Instance of Market Order
+	 * Create a Standard Instance of Market GTC Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param timeInForce Time-in-Force Settings
+	 * @param durationDays Order Duration Tenor in Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Market Order
+	 * @return Standard Instance of Market GTC Order
 	 */
 
-	public static final Market Standard (
+	public static final MarketGTC Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String side,
 		final double size,
-		final TimeInForce timeInForce,
+		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
-			return new Market (
+			return new MarketGTC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				side,
 				size,
-				timeInForce,
+				durationDays,
 				fillWholeSettings
 			);
 		}
@@ -167,65 +166,87 @@ public class Market
 	}
 
 	/**
-	 * Construct a Standard Instance of Buy Market Order
+	 * Create a Standard Instance of Buy Market GTC Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
-	 * @param timeInForce Time-in-Force Settings
+	 * @param durationDays Order Duration Tenor in Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Buy Market Order
+	 * @return Standard Instance of Buy Market GTC Order
 	 */
 
-	public static final Market StandardBuy (
+	public static final MarketGTC StandardBuy (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final TimeInForce timeInForce,
+		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
-		return Standard (
-			issuer,
-			securityIdentifier,
-			Order.BUY,
-			size,
-			timeInForce,
-			fillWholeSettings
-		);
+		try
+		{
+			return new MarketGTC (
+				issuer,
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Order.BUY,
+				size,
+				durationDays,
+				fillWholeSettings
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
-	 * Construct a Standard Instance of Sell Market Order
+	 * Create a Standard Instance of Sell Market GTC Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
-	 * @param timeInForce Time-in-Force Settings
+	 * @param durationDays Order Duration Tenor in Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Sell Market Order
+	 * @return Standard Instance of Sell Market GTC Order
 	 */
 
-	public static final Market StandardSell (
+	public static final MarketGTC StandardSell (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final TimeInForce timeInForce,
+		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
-		return Standard (
-			issuer,
-			securityIdentifier,
-			Order.SELL,
-			size,
-			timeInForce,
-			fillWholeSettings
-		);
+		try
+		{
+			return new MarketGTC (
+				issuer,
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Order.SELL,
+				size,
+				durationDays,
+				fillWholeSettings
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
-	 * Market Order Constructor
+	 * Market GTC Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -233,20 +254,20 @@ public class Market
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param timeInForce Time-in-Force Settings
+	 * @param durationDays Order Duration Tenor in Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public Market (
+	public MarketGTC (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
 		final String side,
 		final double size,
-		final TimeInForce timeInForce,
+		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings)
 		throws Exception
 	{
@@ -254,11 +275,12 @@ public class Market
 			issuer,
 			securityIdentifier,
 			id,
-			OrderType.MARKET,
 			creationTime,
 			side,
 			size,
-			timeInForce,
+			TimeInForce.CreateGoodTillCanceled (
+				durationDays
+			),
 			fillWholeSettings
 		);
 	}

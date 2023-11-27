@@ -6,7 +6,6 @@ import java.util.Date;
 import org.drip.oms.transaction.Order;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
-import org.drip.oms.transaction.OrderType;
 import org.drip.oms.transaction.TimeInForce;
 import org.drip.service.common.StringUtil;
 
@@ -83,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>Market</i> holds the Details of a Market Order. The References are:
+ * <i>LimitFOK</i> holds the Details of a Limit Fill-or-Kill Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -120,34 +119,34 @@ import org.drip.service.common.StringUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Market
-	extends Order
+public class LimitFOK
+	extends Limit
 {
 
 	/**
-	 * Construct a Standard Instance of Market Order
+	 * Construct a Standard Instance of Buy FOK Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
-	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Market Order
+	 * @return Instance of Buy All-or-None Limit Order
 	 */
 
-	public static final Market Standard (
+	public static final LimitFOK Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String side,
 		final double size,
 		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings)
+		final double thresholdPrice)
 	{
 		try
 		{
-			return new Market (
+			return new LimitFOK (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
@@ -155,7 +154,7 @@ public class Market
 				side,
 				size,
 				timeInForce,
-				fillWholeSettings
+				thresholdPrice
 			);
 		}
 		catch (Exception e)
@@ -167,23 +166,23 @@ public class Market
 	}
 
 	/**
-	 * Construct a Standard Instance of Buy Market Order
+	 * Construct a Standard Instance of Buy FOK Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
-	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Buy Market Order
+	 * @return Standard Instance of Buy All-Or-None Limit Order
 	 */
 
-	public static final Market StandardBuy (
+	public static final LimitFOK StandardBuy (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
 		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings)
+		final double thresholdPrice)
 	{
 		return Standard (
 			issuer,
@@ -191,28 +190,28 @@ public class Market
 			Order.BUY,
 			size,
 			timeInForce,
-			fillWholeSettings
+			thresholdPrice
 		);
 	}
 
 	/**
-	 * Construct a Standard Instance of Sell Market Order
+	 * Construct a Standard Instance of Sell FOK Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
-	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Sell Market Order
+	 * @return Standard Instance of Sell All-Or-None Limit Order
 	 */
 
-	public static final Market StandardSell (
+	public static final LimitFOK StandardSell (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
 		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings)
+		final double thresholdPrice)
 	{
 		return Standard (
 			issuer,
@@ -220,12 +219,12 @@ public class Market
 			Order.SELL,
 			size,
 			timeInForce,
-			fillWholeSettings
+			thresholdPrice
 		);
 	}
 
 	/**
-	 * Market Order Constructor
+	 * Limit FOK Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -234,12 +233,12 @@ public class Market
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
-	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param thresholdPrice Threshold Price
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public Market (
+	public LimitFOK (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
@@ -247,19 +246,19 @@ public class Market
 		final String side,
 		final double size,
 		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings)
+		final double thresholdPrice)
 		throws Exception
 	{
 		super (
 			issuer,
 			securityIdentifier,
 			id,
-			OrderType.MARKET,
 			creationTime,
 			side,
 			size,
 			timeInForce,
-			fillWholeSettings
+			OrderFillWholeSettings.FillOrKill(),
+			thresholdPrice
 		);
 	}
 }
