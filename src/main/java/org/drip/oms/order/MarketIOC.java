@@ -6,7 +6,6 @@ import java.util.Date;
 import org.drip.oms.transaction.Order;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
-import org.drip.oms.transaction.OrderType;
 import org.drip.oms.transaction.TimeInForce;
 import org.drip.service.common.StringUtil;
 
@@ -83,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>Market</i> holds the Details of a Market Order. The References are:
+ * <i>MarketIOC</i> holds the Details of a Market Immediate-or-Cancel Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -120,41 +119,38 @@ import org.drip.service.common.StringUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Market
-	extends Order
+public class MarketIOC
+	extends Market
 {
 
 	/**
-	 * Construct a Standard Instance of Market Order
+	 * Create a Standard Instance of MarketIOC
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Market Order
+	 * @return Standard Instance of MarketIOC
 	 */
 
-	public static final Market Standard (
+	public static final MarketIOC Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String side,
 		final double size,
-		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
-			return new Market (
+			return new MarketIOC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				side,
 				size,
-				timeInForce,
 				fillWholeSettings
 			);
 		}
@@ -167,46 +163,17 @@ public class Market
 	}
 
 	/**
-	 * Construct a Standard Instance of Buy Market Order
-	 * 
-	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
-	 * @param size Order Size
-	 * @param timeInForce Time-in-Force Settings
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * 
-	 * @return Standard Instance of Buy Market Order
-	 */
-
-	public static final Market StandardBuy (
-		final OrderIssuer issuer,
-		final String securityIdentifier,
-		final double size,
-		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings)
-	{
-		return Standard (
-			issuer,
-			securityIdentifier,
-			Order.BUY,
-			size,
-			timeInForce,
-			fillWholeSettings
-		);
-	}
-
-	/**
-	 * Construct an Instance of Buy DTC Market Order
+	 * Create a Standard Instance of Buy MarketIOC
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Instance of Buy DTC Market Order
+	 * @return Standard Instance of Buy MarketIOC
 	 */
 
-	public static final Market BuyDTC (
+	public static final MarketIOC StandardBuy (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
@@ -214,14 +181,13 @@ public class Market
 	{
 		try
 		{
-			return new Market (
+			return new MarketIOC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Order.BUY,
 				size,
-				TimeInForce.CreateDayTillCanceled(),
 				fillWholeSettings
 			);
 		}
@@ -234,46 +200,17 @@ public class Market
 	}
 
 	/**
-	 * Construct a Standard Instance of Sell Market Order
-	 * 
-	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
-	 * @param size Order Size
-	 * @param timeInForce Time-in-Force Settings
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * 
-	 * @return Standard Instance of Sell Market Order
-	 */
-
-	public static final Market StandardSell (
-		final OrderIssuer issuer,
-		final String securityIdentifier,
-		final double size,
-		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings)
-	{
-		return Standard (
-			issuer,
-			securityIdentifier,
-			Order.SELL,
-			size,
-			timeInForce,
-			fillWholeSettings
-		);
-	}
-
-	/**
-	 * Construct an Instance of Sell DTC Market Order
+	 * Create a Standard Instance of Sell MarketIOC
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Instance of Sell DTC Market Order
+	 * @return Standard Instance of Sell MarketIOC
 	 */
 
-	public static final Market SellDTC (
+	public static final MarketIOC StandardSell (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
@@ -281,14 +218,13 @@ public class Market
 	{
 		try
 		{
-			return new Market (
+			return new MarketIOC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Order.SELL,
 				size,
-				TimeInForce.CreateDayTillCanceled(),
 				fillWholeSettings
 			);
 		}
@@ -301,7 +237,7 @@ public class Market
 	}
 
 	/**
-	 * Market Order Constructor
+	 * Market IOC Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -309,20 +245,18 @@ public class Market
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public Market (
+	public MarketIOC (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
 		final String side,
 		final double size,
-		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings)
 		throws Exception
 	{
@@ -330,11 +264,10 @@ public class Market
 			issuer,
 			securityIdentifier,
 			id,
-			OrderType.MARKET,
 			creationTime,
 			side,
 			size,
-			timeInForce,
+			TimeInForce.CreateImmediate(),
 			fillWholeSettings
 		);
 	}

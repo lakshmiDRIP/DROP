@@ -6,7 +6,6 @@ import java.util.Date;
 import org.drip.oms.transaction.Order;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
-import org.drip.oms.transaction.OrderType;
 import org.drip.oms.transaction.TimeInForce;
 import org.drip.service.common.StringUtil;
 
@@ -83,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>Market</i> holds the Details of a Market Order. The References are:
+ * <i>MarketFOK</i> holds the Details of a Market Fill-or-Kill Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -120,42 +119,38 @@ import org.drip.service.common.StringUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Market
-	extends Order
+public class MarketFOK extends Market
 {
 
 	/**
-	 * Construct a Standard Instance of Market Order
+	 * Construct a Standard Instance of Buy Fill-or-Kill Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
-	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Market Order
+	 * @return Instance of Buy Fill-or-Kill Market Order
 	 */
 
-	public static final Market Standard (
+	public static final MarketFOK Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String side,
 		final double size,
-		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings)
+		final TimeInForce timeInForce)
 	{
 		try
 		{
-			return new Market (
+			return new MarketFOK (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				side,
 				size,
-				timeInForce,
-				fillWholeSettings
+				timeInForce
 			);
 		}
 		catch (Exception e)
@@ -167,141 +162,59 @@ public class Market
 	}
 
 	/**
-	 * Construct a Standard Instance of Buy Market Order
+	 * Construct a Standard Instance of Buy Fill-or-Kill Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
-	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Buy Market Order
+	 * @return Standard Instance of Buy Fill-or-Kill Market Order
 	 */
 
-	public static final Market StandardBuy (
+	public static final MarketFOK StandardBuy (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings)
+		final TimeInForce timeInForce)
 	{
 		return Standard (
 			issuer,
 			securityIdentifier,
 			Order.BUY,
 			size,
-			timeInForce,
-			fillWholeSettings
+			timeInForce
 		);
 	}
 
 	/**
-	 * Construct an Instance of Buy DTC Market Order
-	 * 
-	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
-	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * 
-	 * @return Instance of Buy DTC Market Order
-	 */
-
-	public static final Market BuyDTC (
-		final OrderIssuer issuer,
-		final String securityIdentifier,
-		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
-	{
-		try
-		{
-			return new Market (
-				issuer,
-				securityIdentifier,
-				StringUtil.GUID(),
-				new Date(),
-				Order.BUY,
-				size,
-				TimeInForce.CreateDayTillCanceled(),
-				fillWholeSettings
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Construct a Standard Instance of Sell Market Order
+	 * Construct a Standard Instance of Sell Fill-or-Kill Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
-	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Sell Market Order
+	 * @return Standard Instance of Sell Fill-or-Kill Market Order
 	 */
 
-	public static final Market StandardSell (
+	public static final MarketFOK StandardSell (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings)
+		final TimeInForce timeInForce)
 	{
 		return Standard (
 			issuer,
 			securityIdentifier,
 			Order.SELL,
 			size,
-			timeInForce,
-			fillWholeSettings
+			timeInForce
 		);
 	}
 
 	/**
-	 * Construct an Instance of Sell DTC Market Order
-	 * 
-	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
-	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * 
-	 * @return Instance of Sell DTC Market Order
-	 */
-
-	public static final Market SellDTC (
-		final OrderIssuer issuer,
-		final String securityIdentifier,
-		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
-	{
-		try
-		{
-			return new Market (
-				issuer,
-				securityIdentifier,
-				StringUtil.GUID(),
-				new Date(),
-				Order.SELL,
-				size,
-				TimeInForce.CreateDayTillCanceled(),
-				fillWholeSettings
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Market Order Constructor
+	 * Market FOK Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -310,32 +223,29 @@ public class Market
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
-	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public Market (
+	public MarketFOK (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
 		final String side,
 		final double size,
-		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings)
+		final TimeInForce timeInForce)
 		throws Exception
 	{
 		super (
 			issuer,
 			securityIdentifier,
 			id,
-			OrderType.MARKET,
 			creationTime,
 			side,
 			size,
 			timeInForce,
-			fillWholeSettings
+			OrderFillWholeSettings.FillOrKill()
 		);
 	}
 }
