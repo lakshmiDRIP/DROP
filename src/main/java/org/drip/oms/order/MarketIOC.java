@@ -3,7 +3,7 @@ package org.drip.oms.order;
 
 import java.util.Date;
 
-import org.drip.oms.transaction.Order;
+import org.drip.oms.transaction.Side;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.TimeInForce;
@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>MarketIOC</i> holds the Details of a Market Immediate-or-Cancel Order. The References are:
+ * <i>MarketIOC</i> holds the Details of a Immediate-Or-Cancel (IOC) Market Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -124,7 +124,7 @@ public class MarketIOC
 {
 
 	/**
-	 * Create a Standard Instance of MarketIOC
+	 * Create a Standard Instance of Immediate-Or-Cancel (IOC) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -132,13 +132,13 @@ public class MarketIOC
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of MarketIOC
+	 * @return Standard Instance of Immediate-Or-Cancel (IOC) Market Order
 	 */
 
 	public static final MarketIOC Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
-		final String side,
+		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
@@ -163,14 +163,14 @@ public class MarketIOC
 	}
 
 	/**
-	 * Create a Standard Instance of Buy MarketIOC
+	 * Create a Standard Instance of Buy Immediate-Or-Cancel (IOC) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Buy MarketIOC
+	 * @return Standard Instance of Buy Immediate-Or-Cancel (IOC) Market Order
 	 */
 
 	public static final MarketIOC StandardBuy (
@@ -186,7 +186,7 @@ public class MarketIOC
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
-				Order.BUY,
+				Side.Buy(),
 				size,
 				fillWholeSettings
 			);
@@ -200,14 +200,14 @@ public class MarketIOC
 	}
 
 	/**
-	 * Create a Standard Instance of Sell MarketIOC
+	 * Create a Standard Instance of Sell Immediate-Or-Cancel (IOC) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Sell MarketIOC
+	 * @return Standard Instance of Sell Immediate-Or-Cancel (IOC) Market Order
 	 */
 
 	public static final MarketIOC StandardSell (
@@ -223,7 +223,7 @@ public class MarketIOC
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
-				Order.SELL,
+				Side.Sell(),
 				size,
 				fillWholeSettings
 			);
@@ -237,7 +237,7 @@ public class MarketIOC
 	}
 
 	/**
-	 * Market IOC Order Constructor
+	 * Immediate-Or-Cancel (IOC) Market Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -255,7 +255,7 @@ public class MarketIOC
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
-		final String side,
+		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings)
 		throws Exception

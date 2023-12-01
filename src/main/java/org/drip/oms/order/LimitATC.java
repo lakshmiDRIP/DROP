@@ -3,7 +3,7 @@ package org.drip.oms.order;
 
 import java.util.Date;
 
-import org.drip.oms.transaction.Order;
+import org.drip.oms.transaction.Side;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.TimeInForce;
@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>LimitOpen</i> holds the Details of a Limit Market Open Order. The References are:
+ * <i>LimitATC</i> holds the Details of an At-The-Close (ATC) Limit Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -119,12 +119,12 @@ import org.drip.service.common.StringUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitOpen
+public class LimitATC
 	extends Limit
 {
 
 	/**
-	 * Create a Standard Instance of Limit Market Open Order
+	 * Create a Standard Instance of At-The-Close (ATC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -133,20 +133,20 @@ public class LimitOpen
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Limit Market Open Order
+	 * @return Standard Instance of At-The-Close (ATC) Limit Order
 	 */
 
-	public static final LimitOpen Standard (
+	public static final LimitATC Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
-		final String side,
+		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
 		final double thresholdPrice)
 	{
 		try
 		{
-			return new LimitOpen (
+			return new LimitATC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
@@ -166,7 +166,7 @@ public class LimitOpen
 	}
 
 	/**
-	 * Create a Standard Instance of Buy Limit Market Open Order
+	 * Create a Standard Instance of Buy At-The-Close (ATC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -174,10 +174,10 @@ public class LimitOpen
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Buy Limit Market Open Order
+	 * @return Standard Instance of Buy At-The-Close (ATC) Limit Order
 	 */
 
-	public static final LimitOpen StandardBuy (
+	public static final LimitATC StandardBuy (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
@@ -186,12 +186,12 @@ public class LimitOpen
 	{
 		try
 		{
-			return new LimitOpen (
+			return new LimitATC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
-				Order.BUY,
+				Side.Buy(),
 				size,
 				fillWholeSettings,
 				thresholdPrice
@@ -206,7 +206,7 @@ public class LimitOpen
 	}
 
 	/**
-	 * Create a Standard Instance of Sell Limit Market Open Order
+	 * Create a Standard Instance of Sell At-The-Close (ATC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -214,10 +214,10 @@ public class LimitOpen
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Sell Limit Market Open Order
+	 * @return Standard Instance of Sell At-The-Close (ATC) Limit Order
 	 */
 
-	public static final LimitOpen StandardSell (
+	public static final LimitATC StandardSell (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
@@ -226,12 +226,12 @@ public class LimitOpen
 	{
 		try
 		{
-			return new LimitOpen (
+			return new LimitATC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
-				Order.SELL,
+				Side.Sell(),
 				size,
 				fillWholeSettings,
 				thresholdPrice
@@ -246,7 +246,7 @@ public class LimitOpen
 	}
 
 	/**
-	 * Limit Open Order Constructor
+	 * At-The-Close (ATC) Limit Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -260,12 +260,12 @@ public class LimitOpen
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public LimitOpen (
+	public LimitATC (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
-		final String side,
+		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
 		final double thresholdPrice)
@@ -278,7 +278,7 @@ public class LimitOpen
 			creationTime,
 			side,
 			size,
-			TimeInForce.CreateMarketOpen(),
+			TimeInForce.CreateMarketClose(),
 			fillWholeSettings,
 			thresholdPrice
 		);

@@ -3,7 +3,7 @@ package org.drip.oms.order;
 
 import java.util.Date;
 
-import org.drip.oms.transaction.Order;
+import org.drip.oms.transaction.Side;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.TimeInForce;
@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>MarketDAY</i> holds the Details of a Market DAY Order. The References are:
+ * <i>MarketDAY</i> holds the Details of a DAY Market Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -124,7 +124,7 @@ public class MarketDAY
 {
 
 	/**
-	 * Create a Standard Instance of MarketDAY
+	 * Create a Standard Instance of DAY Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -132,13 +132,13 @@ public class MarketDAY
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of MarketDAY
+	 * @return Standard Instance of DAY Market Order
 	 */
 
 	public static final MarketDAY Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
-		final String side,
+		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
@@ -163,14 +163,14 @@ public class MarketDAY
 	}
 
 	/**
-	 * Create a Standard Instance of Buy MarketDAY
+	 * Create a Standard Instance of Buy DAY Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Buy MarketDAY
+	 * @return Standard Instance of Buy DAY Market Order
 	 */
 
 	public static final MarketDAY StandardBuy (
@@ -186,7 +186,7 @@ public class MarketDAY
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
-				Order.BUY,
+				Side.Buy(),
 				size,
 				fillWholeSettings
 			);
@@ -200,14 +200,14 @@ public class MarketDAY
 	}
 
 	/**
-	 * Create a Standard Instance of Sell MarketDAY
+	 * Create a Standard Instance of Sell DAY Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Sell MarketDAY
+	 * @return Standard Instance of Sell DAY Market Order
 	 */
 
 	public static final MarketDAY StandardSell (
@@ -223,7 +223,7 @@ public class MarketDAY
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
-				Order.SELL,
+				Side.Sell(),
 				size,
 				fillWholeSettings
 			);
@@ -237,7 +237,7 @@ public class MarketDAY
 	}
 
 	/**
-	 * Market DAY Order Constructor
+	 * DAY Market Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -255,7 +255,7 @@ public class MarketDAY
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
-		final String side,
+		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings)
 		throws Exception

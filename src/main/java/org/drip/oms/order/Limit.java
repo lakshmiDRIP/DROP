@@ -4,6 +4,7 @@ package org.drip.oms.order;
 import java.util.Date;
 
 import org.drip.numerical.common.NumberUtil;
+import org.drip.oms.transaction.Side;
 import org.drip.oms.transaction.Order;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
@@ -143,7 +144,7 @@ public class Limit
 	public static final Limit Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
-		final String side,
+		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings,
@@ -176,7 +177,6 @@ public class Limit
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
-	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
@@ -188,7 +188,6 @@ public class Limit
 	public static final Limit Buy (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
-		final String side,
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings,
@@ -201,7 +200,7 @@ public class Limit
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
-				Order.BUY,
+				Side.Buy(),
 				size,
 				timeInForce,
 				fillWholeSettings,
@@ -221,7 +220,6 @@ public class Limit
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
-	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
@@ -233,7 +231,6 @@ public class Limit
 	public static final Limit Sell (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
-		final String side,
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings,
@@ -246,7 +243,7 @@ public class Limit
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
-				Order.SELL,
+				Side.Sell(),
 				size,
 				timeInForce,
 				fillWholeSettings,
@@ -282,7 +279,7 @@ public class Limit
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
-		final String side,
+		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings,

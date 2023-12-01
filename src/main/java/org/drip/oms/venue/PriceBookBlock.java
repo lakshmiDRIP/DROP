@@ -1,13 +1,7 @@
 
-package org.drip.oms.order;
+package org.drip.oms.venue;
 
-import java.util.Date;
-
-import org.drip.oms.transaction.Order;
-import org.drip.oms.transaction.OrderFillWholeSettings;
-import org.drip.oms.transaction.OrderIssuer;
-import org.drip.oms.transaction.TimeInForce;
-import org.drip.service.common.StringUtil;
+import java.time.ZonedDateTime;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -82,7 +76,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>MarketClose</i> holds the Details of a Market Close Market Order. The References are:
+ * <i>PriceBookBlock</i> maintains an Entry Block inside a Price Book. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -91,12 +85,12 @@ import org.drip.service.common.StringUtil;
  * 				NYSE <i>Journal of Finance</i> <b>43 (1)</b> 97-112
  * 		</li>
  * 		<li>
- * 			Cont, R., and A. Kukanov (2017): Optimal Order Placement in Limit Order Markets <i>Quantitative
- * 				Finance</i> <b>17 (1)</b> 21-39
+ * 			Chen, J. (2021): Time in Force: Definition, Types, and Examples
+ * 				https://www.investopedia.com/terms/t/timeinforce.asp
  * 		</li>
  * 		<li>
- * 			Vassilis, P. (2005a): A Realistic Model of Market Liquidity and Depth <i>Journal of Futures
- * 				Markets</i> <b>25 (5)</b> 443-464
+ * 			Cont, R., and A. Kukanov (2017): Optimal Order Placement in Limit Order Markets <i>Quantitative
+ * 				Finance</i> <b>17 (1)</b> 21-39
  * 		</li>
  * 		<li>
  * 			Vassilis, P. (2005b): Slow and Fast Markets <i>Journal of Economics and Business</i> <b>57
@@ -119,156 +113,30 @@ import org.drip.service.common.StringUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketClose
-	extends Market
+public class PriceBookBlock
 {
+	private double _size = Double.NaN;
+	private ZonedDateTime _lastUpdateTime = null;
 
 	/**
-	 * Create a Standard Instance of Market Close
+	 * Retrieve the Last Update Time
 	 * 
-	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
-	 * @param side Order Side
-	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * 
-	 * @return Standard Instance of Market Close
+	 * @return The Last Update Time
 	 */
 
-	public static final MarketClose Standard (
-		final OrderIssuer issuer,
-		final String securityIdentifier,
-		final String side,
-		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+	public ZonedDateTime lastUpdateTime()
 	{
-		try
-		{
-			return new MarketClose (
-				issuer,
-				securityIdentifier,
-				StringUtil.GUID(),
-				new Date(),
-				side,
-				size,
-				fillWholeSettings
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return _lastUpdateTime;
 	}
 
 	/**
-	 * Create a Standard Instance of Buy Market Close
+	 * Retrieve the Size
 	 * 
-	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
-	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * 
-	 * @return Standard Instance of Buy Market Close
+	 * @return The Size
 	 */
 
-	public static final MarketClose StandardBuy (
-		final OrderIssuer issuer,
-		final String securityIdentifier,
-		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+	public double size()
 	{
-		try
-		{
-			return new MarketClose (
-				issuer,
-				securityIdentifier,
-				StringUtil.GUID(),
-				new Date(),
-				Order.BUY,
-				size,
-				fillWholeSettings
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Create a Standard Instance of Sell Market Close
-	 * 
-	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
-	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * 
-	 * @return Standard Instance of Sell Market Close
-	 */
-
-	public static final MarketClose StandardSell (
-		final OrderIssuer issuer,
-		final String securityIdentifier,
-		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
-	{
-		try
-		{
-			return new MarketClose (
-				issuer,
-				securityIdentifier,
-				StringUtil.GUID(),
-				new Date(),
-				Order.SELL,
-				size,
-				fillWholeSettings
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Market Close Order Constructor
-	 * 
-	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
-	 * @param id Order ID
-	 * @param creationTime Creation Time
-	 * @param side Order Side
-	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public MarketClose (
-		final OrderIssuer issuer,
-		final String securityIdentifier,
-		final String id,
-		final Date creationTime,
-		final String side,
-		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
-		throws Exception
-	{
-		super (
-			issuer,
-			securityIdentifier,
-			id,
-			creationTime,
-			side,
-			size,
-			TimeInForce.CreateMarketClose(),
-			fillWholeSettings
-		);
+		return _size;
 	}
 }

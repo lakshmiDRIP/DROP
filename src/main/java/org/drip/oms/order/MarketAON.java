@@ -3,7 +3,7 @@ package org.drip.oms.order;
 
 import java.util.Date;
 
-import org.drip.oms.transaction.Order;
+import org.drip.oms.transaction.Side;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.TimeInForce;
@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>MarketAON</i> holds the Details of a Market All-or-None Order. The References are:
+ * <i>MarketAON</i> holds the Details of a All-or-None (AON) Market Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -123,7 +123,7 @@ public class MarketAON extends Market
 {
 
 	/**
-	 * Construct a Standard Instance of Buy All-or-None Market Order
+	 * Construct a Standard Instance of Buy All-or-None (AON) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -132,13 +132,13 @@ public class MarketAON extends Market
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fulfillTryLimit Fulfill Try Limit
 	 * 
-	 * @return Instance of Buy All-or-None Market Order
+	 * @return Instance of Buy All-or-None (AON) Market Order
 	 */
 
 	public static final MarketAON Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
-		final String side,
+		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
 		final int fulfillTryLimit)
@@ -165,7 +165,7 @@ public class MarketAON extends Market
 	}
 
 	/**
-	 * Construct a Standard Instance of Buy All-Or-None Market Order
+	 * Construct a Standard Instance of Buy All-or-None (AON) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -173,7 +173,7 @@ public class MarketAON extends Market
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fulfillTryLimit Fulfill Try Limit
 	 * 
-	 * @return Standard Instance of Buy All-Or-None Market Order
+	 * @return Standard Instance of Buy All-or-None (AON) Market Order
 	 */
 
 	public static final MarketAON StandardBuy (
@@ -186,7 +186,7 @@ public class MarketAON extends Market
 		return Standard (
 			issuer,
 			securityIdentifier,
-			Order.BUY,
+			Side.Buy(),
 			size,
 			timeInForce,
 			fulfillTryLimit
@@ -194,7 +194,7 @@ public class MarketAON extends Market
 	}
 
 	/**
-	 * Construct a Standard Instance of Sell All-Or-None Market Order
+	 * Construct a Standard Instance of Sell All-or-None (AON) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -202,7 +202,7 @@ public class MarketAON extends Market
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fulfillTryLimit Fulfill Try Limit
 	 * 
-	 * @return Standard Instance of Sell All-Or-None Market Order
+	 * @return Standard Instance of Sell All-or-None (AON) Market Order
 	 */
 
 	public static final MarketAON StandardSell (
@@ -215,7 +215,7 @@ public class MarketAON extends Market
 		return Standard (
 			issuer,
 			securityIdentifier,
-			Order.SELL,
+			Side.Sell(),
 			size,
 			timeInForce,
 			fulfillTryLimit
@@ -223,7 +223,7 @@ public class MarketAON extends Market
 	}
 
 	/**
-	 * Market AON Order Constructor
+	 * All-or-None (AON) Market Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -242,7 +242,7 @@ public class MarketAON extends Market
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
-		final String side,
+		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
 		final int fulfillTryLimit)

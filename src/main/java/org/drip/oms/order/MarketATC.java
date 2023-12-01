@@ -3,7 +3,7 @@ package org.drip.oms.order;
 
 import java.util.Date;
 
-import org.drip.oms.transaction.Order;
+import org.drip.oms.transaction.Side;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.TimeInForce;
@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>MarketOpen</i> holds the Details of a Market Open Market Order. The References are:
+ * <i>MarketATC</i> holds the Details of a At-The-Close (ATC) Market Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -119,11 +119,12 @@ import org.drip.service.common.StringUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketOpen extends Market
+public class MarketATC
+	extends Market
 {
 
 	/**
-	 * Create a Standard Instance of Market Open
+	 * Create a Standard Instance of At-The-Close (ATC) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -131,19 +132,19 @@ public class MarketOpen extends Market
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Market Open
+	 * @return Standard Instance of At-The-Close (ATC) Market Order
 	 */
 
-	public static final MarketOpen Standard (
+	public static final MarketATC Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
-		final String side,
+		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
-			return new MarketOpen (
+			return new MarketATC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
@@ -162,17 +163,17 @@ public class MarketOpen extends Market
 	}
 
 	/**
-	 * Create a Standard Instance of Buy Market Open
+	 * Create a Standard Instance of Buy At-The-Close (ATC) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Buy Market Open
+	 * @return Standard Instance of Buy At-The-Close (ATC) Market Order
 	 */
 
-	public static final MarketOpen StandardBuy (
+	public static final MarketATC StandardBuy (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
@@ -180,12 +181,12 @@ public class MarketOpen extends Market
 	{
 		try
 		{
-			return new MarketOpen (
+			return new MarketATC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
-				Order.BUY,
+				Side.Buy(),
 				size,
 				fillWholeSettings
 			);
@@ -199,17 +200,17 @@ public class MarketOpen extends Market
 	}
 
 	/**
-	 * Create a Standard Instance of Sell Market Open
+	 * Create a Standard Instance of Sell At-The-Close (ATC) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Sell Market Open
+	 * @return Standard Instance of Sell At-The-Close (ATC) Market Order
 	 */
 
-	public static final MarketOpen StandardSell (
+	public static final MarketATC StandardSell (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
@@ -217,12 +218,12 @@ public class MarketOpen extends Market
 	{
 		try
 		{
-			return new MarketOpen (
+			return new MarketATC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
-				Order.SELL,
+				Side.Sell(),
 				size,
 				fillWholeSettings
 			);
@@ -236,7 +237,7 @@ public class MarketOpen extends Market
 	}
 
 	/**
-	 * Market Open Order Constructor
+	 * At-The-Close (ATC) Market Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -249,12 +250,12 @@ public class MarketOpen extends Market
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MarketOpen (
+	public MarketATC (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
-		final String side,
+		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings)
 		throws Exception
@@ -266,7 +267,7 @@ public class MarketOpen extends Market
 			creationTime,
 			side,
 			size,
-			TimeInForce.CreateMarketOpen(),
+			TimeInForce.CreateMarketClose(),
 			fillWholeSettings
 		);
 	}

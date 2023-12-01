@@ -3,7 +3,7 @@ package org.drip.oms.order;
 
 import java.util.Date;
 
-import org.drip.oms.transaction.Order;
+import org.drip.oms.transaction.Side;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.TimeInForce;
@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>LimitFOK</i> holds the Details of a Limit Fill-or-Kill Order. The References are:
+ * <i>LimitFOK</i> holds the Details of a Fill-Or-Kill (FOK) Limit Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -124,7 +124,7 @@ public class LimitFOK
 {
 
 	/**
-	 * Construct a Standard Instance of Buy FOK Limit Order
+	 * Construct a Standard Instance of Buy Fill-Or-Kill (FOK) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -133,13 +133,13 @@ public class LimitFOK
 	 * @param timeInForce Time-in-Force Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Instance of Buy All-or-None Limit Order
+	 * @return Instance of Buy Fill-Or-Kill (FOK) Limit Order
 	 */
 
 	public static final LimitFOK Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
-		final String side,
+		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
 		final double thresholdPrice)
@@ -166,7 +166,7 @@ public class LimitFOK
 	}
 
 	/**
-	 * Construct a Standard Instance of Buy FOK Limit Order
+	 * Construct a Standard Instance of Buy Fill-Or-Kill (FOK) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -174,7 +174,7 @@ public class LimitFOK
 	 * @param timeInForce Time-in-Force Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Buy All-Or-None Limit Order
+	 * @return Standard Instance of Buy Fill-Or-Kill (FOK) Limit Order
 	 */
 
 	public static final LimitFOK StandardBuy (
@@ -187,7 +187,7 @@ public class LimitFOK
 		return Standard (
 			issuer,
 			securityIdentifier,
-			Order.BUY,
+			Side.Buy(),
 			size,
 			timeInForce,
 			thresholdPrice
@@ -195,7 +195,7 @@ public class LimitFOK
 	}
 
 	/**
-	 * Construct a Standard Instance of Sell FOK Limit Order
+	 * Construct a Standard Instance of Sell Fill-Or-Kill (FOK) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -203,7 +203,7 @@ public class LimitFOK
 	 * @param timeInForce Time-in-Force Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Sell All-Or-None Limit Order
+	 * @return Standard Instance of Sell Fill-Or-Kill (FOK) Limit Order
 	 */
 
 	public static final LimitFOK StandardSell (
@@ -216,7 +216,7 @@ public class LimitFOK
 		return Standard (
 			issuer,
 			securityIdentifier,
-			Order.SELL,
+			Side.Sell(),
 			size,
 			timeInForce,
 			thresholdPrice
@@ -224,7 +224,7 @@ public class LimitFOK
 	}
 
 	/**
-	 * Limit FOK Order Constructor
+	 * Fill-Or-Kill (FOK) Limit Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -243,7 +243,7 @@ public class LimitFOK
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
-		final String side,
+		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
 		final double thresholdPrice)

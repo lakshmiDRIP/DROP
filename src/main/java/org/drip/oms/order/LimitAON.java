@@ -3,7 +3,7 @@ package org.drip.oms.order;
 
 import java.util.Date;
 
-import org.drip.oms.transaction.Order;
+import org.drip.oms.transaction.Side;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.TimeInForce;
@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>LimitAON</i> holds the Details of a Limit All-or-None Order. The References are:
+ * <i>LimitAON</i> holds the Details of a All-or-None (AON) Limit Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -124,7 +124,7 @@ public class LimitAON
 {
 
 	/**
-	 * Construct a Standard Instance of Buy All-or-None Limit Order
+	 * Construct a Standard Instance of Buy All-or-None (AON) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -134,13 +134,13 @@ public class LimitAON
 	 * @param fulfillTryLimit Fulfill Try Limit
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Instance of Buy All-or-None Limit Order
+	 * @return Instance of Buy All-or-None (AON) Limit Order
 	 */
 
 	public static final LimitAON Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
-		final String side,
+		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
 		final int fulfillTryLimit,
@@ -169,7 +169,7 @@ public class LimitAON
 	}
 
 	/**
-	 * Construct a Standard Instance of Buy All-Or-None Limit Order
+	 * Construct a Standard Instance of Buy All-or-None (AON) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -178,7 +178,7 @@ public class LimitAON
 	 * @param fulfillTryLimit Fulfill Try Limit
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Buy All-Or-None Limit Order
+	 * @return Standard Instance of Buy All-or-None (AON) Limit Order
 	 */
 
 	public static final LimitAON StandardBuy (
@@ -192,7 +192,7 @@ public class LimitAON
 		return Standard (
 			issuer,
 			securityIdentifier,
-			Order.BUY,
+			Side.Buy(),
 			size,
 			timeInForce,
 			fulfillTryLimit,
@@ -201,7 +201,7 @@ public class LimitAON
 	}
 
 	/**
-	 * Construct a Standard Instance of Sell All-Or-None Limit Order
+	 * Construct a Standard Instance of Sell All-or-None (AON) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -210,7 +210,7 @@ public class LimitAON
 	 * @param fulfillTryLimit Fulfill Try Limit
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Sell All-Or-None Limit Order
+	 * @return Standard Instance of Sell All-or-None (AON) Limit Order
 	 */
 
 	public static final LimitAON StandardSell (
@@ -224,7 +224,7 @@ public class LimitAON
 		return Standard (
 			issuer,
 			securityIdentifier,
-			Order.SELL,
+			Side.Sell(),
 			size,
 			timeInForce,
 			fulfillTryLimit,
@@ -233,7 +233,7 @@ public class LimitAON
 	}
 
 	/**
-	 * Limit AON Order Constructor
+	 * All-or-None (AON) Limit Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -253,7 +253,7 @@ public class LimitAON
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
-		final String side,
+		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
 		final int fulfillTryLimit,

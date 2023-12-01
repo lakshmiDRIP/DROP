@@ -3,7 +3,7 @@ package org.drip.oms.order;
 
 import java.util.Date;
 
-import org.drip.oms.transaction.Order;
+import org.drip.oms.transaction.Side;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.TimeInForce;
@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>LimitDTC</i> holds the Details of a Limit DTC Order. The References are:
+ * <i>LimitDTC</i> holds the Details of a Day-Till-Close (DTC) Limit Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -124,7 +124,7 @@ public class LimitDTC
 {
 
 	/**
-	 * Create a Standard Instance of Limit DTC
+	 * Create a Standard Instance of Day-Till-Close (DTC) Limit
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -133,13 +133,13 @@ public class LimitDTC
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Limit DTC
+	 * @return Standard Instance of Day-Till-Close (DTC) Limit
 	 */
 
 	public static final LimitDTC Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
-		final String side,
+		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
 		final double thresholdPrice)
@@ -166,7 +166,7 @@ public class LimitDTC
 	}
 
 	/**
-	 * Create a Standard Instance of Buy Limit DTC
+	 * Create a Standard Instance of Buy Day-Till-Close (DTC) Limit
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -174,7 +174,7 @@ public class LimitDTC
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Buy Limit DTC
+	 * @return Standard Instance of Buy Day-Till-Close (DTC) Limit
 	 */
 
 	public static final LimitDTC StandardBuy (
@@ -191,7 +191,7 @@ public class LimitDTC
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
-				Order.BUY,
+				Side.Buy(),
 				size,
 				fillWholeSettings,
 				thresholdPrice
@@ -206,7 +206,7 @@ public class LimitDTC
 	}
 
 	/**
-	 * Create a Standard Instance of Sell Limit DTC
+	 * Create a Standard Instance of Sell Day-Till-Close (DTC) Limit
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -214,7 +214,7 @@ public class LimitDTC
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Sell Limit DTC
+	 * @return Standard Instance of Sell Day-Till-Close (DTC) Limit
 	 */
 
 	public static final LimitDTC StandardSell (
@@ -231,7 +231,7 @@ public class LimitDTC
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
-				Order.SELL,
+				Side.Sell(),
 				size,
 				fillWholeSettings,
 				thresholdPrice
@@ -246,7 +246,7 @@ public class LimitDTC
 	}
 
 	/**
-	 * Limit DTC Order Constructor
+	 * Day-Till-Close (DTC) Limit Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -265,7 +265,7 @@ public class LimitDTC
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
-		final String side,
+		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
 		final double thresholdPrice)

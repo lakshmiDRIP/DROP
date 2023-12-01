@@ -119,21 +119,8 @@ import org.drip.service.common.StringUtil;
 
 public class Order
 {
-
-	/**
-	 * Buy Side
-	 */
-
-	public static final String BUY = "B";
-
-	/**
-	 * Sell Side
-	 */
-
-	public static final String SELL = "S";
-
 	private String _id = "";
-	private String _side = "";
+	private Side _side = null;
 	private Date _creationTime = null;
 	private double _size = Double.NaN;
 	private OrderIssuer _issuer = null;
@@ -162,7 +149,7 @@ public class Order
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final int type,
-		final String side,
+		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings)
@@ -211,7 +198,7 @@ public class Order
 		final String id,
 		final int type,
 		final Date creationTime,
-		final String side,
+		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings)
@@ -221,7 +208,7 @@ public class Order
 			null == (_securityIdentifier = securityIdentifier) || _securityIdentifier.isEmpty() ||
 			null == (_id = id) || _id.isEmpty() ||
 			null == (_creationTime = creationTime) ||
-			null == (_side = side) || _side.isEmpty() ||
+			null == (_side = side) ||
 			!NumberUtil.IsValid (
 				_size = size
 			)
@@ -347,7 +334,7 @@ public class Order
 	 * @return The Order Side
 	 */
 
-	public String side()
+	public Side side()
 	{
 		return _side;
 	}

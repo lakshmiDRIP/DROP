@@ -3,6 +3,7 @@ package org.drip.oms.order;
 
 import java.util.Date;
 
+import org.drip.oms.transaction.Side;
 import org.drip.oms.transaction.Order;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
@@ -140,7 +141,7 @@ public class Market
 	public static final Market Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
-		final String side,
+		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings)
@@ -188,7 +189,7 @@ public class Market
 		return Standard (
 			issuer,
 			securityIdentifier,
-			Order.BUY,
+			Side.Buy(),
 			size,
 			timeInForce,
 			fillWholeSettings
@@ -217,7 +218,7 @@ public class Market
 		return Standard (
 			issuer,
 			securityIdentifier,
-			Order.SELL,
+			Side.Sell(),
 			size,
 			timeInForce,
 			fillWholeSettings
@@ -244,7 +245,7 @@ public class Market
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
-		final String side,
+		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings)

@@ -1,13 +1,5 @@
 
-package org.drip.oms.order;
-
-import java.util.Date;
-
-import org.drip.oms.transaction.Side;
-import org.drip.oms.transaction.OrderFillWholeSettings;
-import org.drip.oms.transaction.OrderIssuer;
-import org.drip.oms.transaction.TimeInForce;
-import org.drip.service.common.StringUtil;
+package org.drip.oms.transaction;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -82,7 +74,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>MarketGTC</i> holds the Details of a Good-Till-Close (GTC) Market Order. The References are:
+ * <i>Side</i> holds the Buy/Sell Side for an Order/Trade. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -91,12 +83,12 @@ import org.drip.service.common.StringUtil;
  * 				NYSE <i>Journal of Finance</i> <b>43 (1)</b> 97-112
  * 		</li>
  * 		<li>
- * 			Cont, R., and A. Kukanov (2017): Optimal Order Placement in Limit Order Markets <i>Quantitative
- * 				Finance</i> <b>17 (1)</b> 21-39
+ * 			Chen, J. (2021): Time in Force: Definition, Types, and Examples
+ * 				https://www.investopedia.com/terms/t/timeinforce.asp
  * 		</li>
  * 		<li>
- * 			Vassilis, P. (2005a): A Realistic Model of Market Liquidity and Depth <i>Journal of Futures
- * 				Markets</i> <b>25 (5)</b> 443-464
+ * 			Cont, R., and A. Kukanov (2017): Optimal Order Placement in Limit Order Markets <i>Quantitative
+ * 				Finance</i> <b>17 (1)</b> 21-39
  * 		</li>
  * 		<li>
  * 			Vassilis, P. (2005b): Slow and Fast Markets <i>Journal of Economics and Business</i> <b>57
@@ -119,169 +111,63 @@ import org.drip.service.common.StringUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketGTC
-	extends Market
+public class Side
 {
 
 	/**
-	 * Create a Standard Instance of Good-Till-Close (GTC) Market Order
-	 * 
-	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
-	 * @param side Order Side
-	 * @param size Order Size
-	 * @param durationDays Order Duration Tenor in Days
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * 
-	 * @return Standard Instance of Good-Till-Close (GTC) Market Order
+	 * Buy Side
 	 */
 
-	public static final MarketGTC Standard (
-		final OrderIssuer issuer,
-		final String securityIdentifier,
-		final Side side,
-		final double size,
-		final int durationDays,
-		final OrderFillWholeSettings fillWholeSettings)
-	{
-		try
-		{
-			return new MarketGTC (
-				issuer,
-				securityIdentifier,
-				StringUtil.GUID(),
-				new Date(),
-				side,
-				size,
-				durationDays,
-				fillWholeSettings
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
+	public static final char BUY = 'B';
 
 	/**
-	 * Create a Standard Instance of Buy Good-Till-Close (GTC) Market Order
-	 * 
-	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
-	 * @param size Order Size
-	 * @param durationDays Order Duration Tenor in Days
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * 
-	 * @return Standard Instance of Buy Good-Till-Close (GTC) Market Order
+	 * Sell Side
 	 */
 
-	public static final MarketGTC StandardBuy (
-		final OrderIssuer issuer,
-		final String securityIdentifier,
-		final double size,
-		final int durationDays,
-		final OrderFillWholeSettings fillWholeSettings)
-	{
-		try
-		{
-			return new MarketGTC (
-				issuer,
-				securityIdentifier,
-				StringUtil.GUID(),
-				new Date(),
-				Side.Buy(),
-				size,
-				durationDays,
-				fillWholeSettings
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+	public static final char SELL = 'S';
 
-		return null;
-	}
+	private char _buySell = '0';
 
 	/**
-	 * Create a Standard Instance of Sell Good-Till-Close (GTC) Market Order
+	 * Construct "Buy" Side
 	 * 
-	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
-	 * @param size Order Size
-	 * @param durationDays Order Duration Tenor in Days
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * 
-	 * @return Standard Instance of Sell Good-Till-Close (GTC) Market Order
+	 * @return "Buy" Side
 	 */
 
-	public static final MarketGTC StandardSell (
-		final OrderIssuer issuer,
-		final String securityIdentifier,
-		final double size,
-		final int durationDays,
-		final OrderFillWholeSettings fillWholeSettings)
+	public static final Side Buy()
 	{
-		try
-		{
-			return new MarketGTC (
-				issuer,
-				securityIdentifier,
-				StringUtil.GUID(),
-				new Date(),
-				Side.Sell(),
-				size,
-				durationDays,
-				fillWholeSettings
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Good-Till-Close (GTC) Market Order Constructor
-	 * 
-	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
-	 * @param id Order ID
-	 * @param creationTime Creation Time
-	 * @param side Order Side
-	 * @param size Order Size
-	 * @param durationDays Order Duration Tenor in Days
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public MarketGTC (
-		final OrderIssuer issuer,
-		final String securityIdentifier,
-		final String id,
-		final Date creationTime,
-		final Side side,
-		final double size,
-		final int durationDays,
-		final OrderFillWholeSettings fillWholeSettings)
-		throws Exception
-	{
-		super (
-			issuer,
-			securityIdentifier,
-			id,
-			creationTime,
-			side,
-			size,
-			TimeInForce.CreateGoodTillCanceled (
-				durationDays
-			),
-			fillWholeSettings
+		return new Side (
+			BUY
 		);
+	}
+
+	/**
+	 * Construct "Sell" Side
+	 * 
+	 * @return "Sell" Side
+	 */
+
+	public static final Side Sell()
+	{
+		return new Side (
+			SELL
+		);
+	}
+
+	private Side (
+		final char buySell)
+	{
+		_buySell = buySell;
+	}
+
+	/**
+	 * Retrieve the Buy/Sell Indicator
+	 * 
+	 * @return Buy/Sell Indicator
+	 */
+
+	public char buySell()
+	{
+		return _buySell;
 	}
 }

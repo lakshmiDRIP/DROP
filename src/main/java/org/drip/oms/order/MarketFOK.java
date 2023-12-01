@@ -3,7 +3,7 @@ package org.drip.oms.order;
 
 import java.util.Date;
 
-import org.drip.oms.transaction.Order;
+import org.drip.oms.transaction.Side;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.TimeInForce;
@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>MarketFOK</i> holds the Details of a Market Fill-or-Kill Order. The References are:
+ * <i>MarketFOK</i> holds the Details of a Fill-Or-Kill (FOK) Market Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -123,7 +123,7 @@ public class MarketFOK extends Market
 {
 
 	/**
-	 * Construct a Standard Instance of Buy Fill-or-Kill Market Order
+	 * Construct a Standard Instance of Buy Fill-Or-Kill (FOK) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -131,13 +131,13 @@ public class MarketFOK extends Market
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * 
-	 * @return Instance of Buy Fill-or-Kill Market Order
+	 * @return Instance of Buy Fill-Or-Kill (FOK) Market Order
 	 */
 
 	public static final MarketFOK Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
-		final String side,
+		final Side side,
 		final double size,
 		final TimeInForce timeInForce)
 	{
@@ -162,14 +162,14 @@ public class MarketFOK extends Market
 	}
 
 	/**
-	 * Construct a Standard Instance of Buy Fill-or-Kill Market Order
+	 * Construct a Standard Instance of Buy Fill-Or-Kill (FOK) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * 
-	 * @return Standard Instance of Buy Fill-or-Kill Market Order
+	 * @return Standard Instance of Buy Fill-Or-Kill (FOK) Market Order
 	 */
 
 	public static final MarketFOK StandardBuy (
@@ -181,21 +181,21 @@ public class MarketFOK extends Market
 		return Standard (
 			issuer,
 			securityIdentifier,
-			Order.BUY,
+			Side.Buy(),
 			size,
 			timeInForce
 		);
 	}
 
 	/**
-	 * Construct a Standard Instance of Sell Fill-or-Kill Market Order
+	 * Construct a Standard Instance of Sell Fill-Or-Kill (FOK) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * 
-	 * @return Standard Instance of Sell Fill-or-Kill Market Order
+	 * @return Standard Instance of Sell Fill-Or-Kill (FOK) Market Order
 	 */
 
 	public static final MarketFOK StandardSell (
@@ -207,14 +207,14 @@ public class MarketFOK extends Market
 		return Standard (
 			issuer,
 			securityIdentifier,
-			Order.SELL,
+			Side.Sell(),
 			size,
 			timeInForce
 		);
 	}
 
 	/**
-	 * Market FOK Order Constructor
+	 * Fill-Or-Kill (FOK) Market Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -232,7 +232,7 @@ public class MarketFOK extends Market
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
-		final String side,
+		final Side side,
 		final double size,
 		final TimeInForce timeInForce)
 		throws Exception

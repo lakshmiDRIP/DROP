@@ -3,7 +3,7 @@ package org.drip.oms.order;
 
 import java.util.Date;
 
-import org.drip.oms.transaction.Order;
+import org.drip.oms.transaction.Side;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.TimeInForce;
@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>LimitIOC</i> holds the Details of a Limit IOC Order. The References are:
+ * <i>LimitIOC</i> holds the Details of a Immediate-Or-Cancel (IOC) Limit Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -124,7 +124,7 @@ public class LimitIOC
 {
 
 	/**
-	 * Create a Standard Instance of Limit IOC
+	 * Create a Standard Instance of Immediate-Or-Cancel (IOC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -133,13 +133,13 @@ public class LimitIOC
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Limit IOC
+	 * @return Standard Instance of Immediate-Or-Cancel (IOC) Limit Order
 	 */
 
 	public static final LimitIOC Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
-		final String side,
+		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
 		final double thresholdPrice)
@@ -166,7 +166,7 @@ public class LimitIOC
 	}
 
 	/**
-	 * Create a Standard Instance of Buy Limit IOC
+	 * Create a Standard Instance of Buy Immediate-Or-Cancel (IOC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -174,7 +174,7 @@ public class LimitIOC
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Buy Limit IOC
+	 * @return Standard Instance of Buy Immediate-Or-Cancel (IOC) Limit Order
 	 */
 
 	public static final LimitIOC StandardBuy (
@@ -191,7 +191,7 @@ public class LimitIOC
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
-				Order.BUY,
+				Side.Buy(),
 				size,
 				fillWholeSettings,
 				thresholdPrice
@@ -206,7 +206,7 @@ public class LimitIOC
 	}
 
 	/**
-	 * Create a Standard Instance of Sell Limit IOC
+	 * Create a Standard Instance of Sell Immediate-Or-Cancel (IOC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -214,7 +214,7 @@ public class LimitIOC
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Sell Limit IOC
+	 * @return Standard Instance of Sell Immediate-Or-Cancel (IOC) Limit Order
 	 */
 
 	public static final LimitIOC StandardSell (
@@ -231,7 +231,7 @@ public class LimitIOC
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
-				Order.SELL,
+				Side.Sell(),
 				size,
 				fillWholeSettings,
 				thresholdPrice
@@ -246,7 +246,7 @@ public class LimitIOC
 	}
 
 	/**
-	 * Limit IOC Order Constructor
+	 * Immediate-Or-Cancel (IOC) Limit Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -265,7 +265,7 @@ public class LimitIOC
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
-		final String side,
+		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
 		final double thresholdPrice)

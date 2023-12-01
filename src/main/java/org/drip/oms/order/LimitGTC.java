@@ -3,7 +3,7 @@ package org.drip.oms.order;
 
 import java.util.Date;
 
-import org.drip.oms.transaction.Order;
+import org.drip.oms.transaction.Side;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.TimeInForce;
@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>LimitGTC</i> holds the Details of a Limit GTC Order. The References are:
+ * <i>LimitGTC</i> holds the Details of a Good-Till-Close (GTC) Limit Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -124,7 +124,7 @@ public class LimitGTC
 {
 
 	/**
-	 * Create a Standard Instance of Limit GTC
+	 * Create a Standard Instance of Good-Till-Close (GTC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -134,13 +134,13 @@ public class LimitGTC
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Limit GTC
+	 * @return Standard Instance of Good-Till-Close (GTC) Limit Order
 	 */
 
 	public static final LimitGTC Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
-		final String side,
+		final Side side,
 		final double size,
 		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings,
@@ -169,7 +169,7 @@ public class LimitGTC
 	}
 
 	/**
-	 * Create a Standard Instance of Buy Limit GTC
+	 * Create a Standard Instance of Buy Good-Till-Close (GTC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -178,7 +178,7 @@ public class LimitGTC
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Buy Limit GTC
+	 * @return Standard Instance of Buy Good-Till-Close (GTC) Limit Order
 	 */
 
 	public static final LimitGTC StandardBuy (
@@ -196,7 +196,7 @@ public class LimitGTC
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
-				Order.BUY,
+				Side.Buy(),
 				size,
 				durationDays,
 				fillWholeSettings,
@@ -212,7 +212,7 @@ public class LimitGTC
 	}
 
 	/**
-	 * Create a Standard Instance of Sell Limit GTC
+	 * Create a Standard Instance of Sell Good-Till-Close (GTC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -221,7 +221,7 @@ public class LimitGTC
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Sell Limit GTC
+	 * @return Standard Instance of Sell Good-Till-Close (GTC) Limit Order
 	 */
 
 	public static final LimitGTC StandardSell (
@@ -239,7 +239,7 @@ public class LimitGTC
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
-				Order.SELL,
+				Side.Sell(),
 				size,
 				durationDays,
 				fillWholeSettings,
@@ -255,7 +255,7 @@ public class LimitGTC
 	}
 
 	/**
-	 * Limit GTC Order Constructor
+	 * Good-Till-Close (GTC) Limit Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -275,7 +275,7 @@ public class LimitGTC
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
-		final String side,
+		final Side side,
 		final double size,
 		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings,

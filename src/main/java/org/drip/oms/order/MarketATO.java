@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>MarketGTC</i> holds the Details of a Good-Till-Close (GTC) Market Order. The References are:
+ * <i>MarketATO</i> holds the Details of a At-The-Open (ATO) Market Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -119,41 +119,38 @@ import org.drip.service.common.StringUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketGTC
+public class MarketATO
 	extends Market
 {
 
 	/**
-	 * Create a Standard Instance of Good-Till-Close (GTC) Market Order
+	 * Create a Standard Instance of At-The-Open (ATO) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param durationDays Order Duration Tenor in Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Good-Till-Close (GTC) Market Order
+	 * @return Standard Instance of At-The-Open (ATO) Market Order
 	 */
 
-	public static final MarketGTC Standard (
+	public static final MarketATO Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final Side side,
 		final double size,
-		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
-			return new MarketGTC (
+			return new MarketATO (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				side,
 				size,
-				durationDays,
 				fillWholeSettings
 			);
 		}
@@ -166,34 +163,31 @@ public class MarketGTC
 	}
 
 	/**
-	 * Create a Standard Instance of Buy Good-Till-Close (GTC) Market Order
+	 * Create a Standard Instance of Buy At-The-Open (ATO) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
-	 * @param durationDays Order Duration Tenor in Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Buy Good-Till-Close (GTC) Market Order
+	 * @return Standard Instance of Buy At-The-Open (ATO) Market Order
 	 */
 
-	public static final MarketGTC StandardBuy (
+	public static final MarketATO StandardBuy (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
-			return new MarketGTC (
+			return new MarketATO (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Buy(),
 				size,
-				durationDays,
 				fillWholeSettings
 			);
 		}
@@ -206,34 +200,31 @@ public class MarketGTC
 	}
 
 	/**
-	 * Create a Standard Instance of Sell Good-Till-Close (GTC) Market Order
+	 * Create a Standard Instance of Sell At-The-Open (ATO) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
-	 * @param durationDays Order Duration Tenor in Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Sell Good-Till-Close (GTC) Market Order
+	 * @return Standard Instance of Sell At-The-Open (ATO) Market Order
 	 */
 
-	public static final MarketGTC StandardSell (
+	public static final MarketATO StandardSell (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
-			return new MarketGTC (
+			return new MarketATO (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Sell(),
 				size,
-				durationDays,
 				fillWholeSettings
 			);
 		}
@@ -246,7 +237,7 @@ public class MarketGTC
 	}
 
 	/**
-	 * Good-Till-Close (GTC) Market Order Constructor
+	 * At-The-Open (ATO) Market Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -254,20 +245,18 @@ public class MarketGTC
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param durationDays Order Duration Tenor in Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MarketGTC (
+	public MarketATO (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
 		final Side side,
 		final double size,
-		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings)
 		throws Exception
 	{
@@ -278,9 +267,7 @@ public class MarketGTC
 			creationTime,
 			side,
 			size,
-			TimeInForce.CreateGoodTillCanceled (
-				durationDays
-			),
+			TimeInForce.CreateMarketOpen(),
 			fillWholeSettings
 		);
 	}
