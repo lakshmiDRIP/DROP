@@ -1,6 +1,8 @@
 
 package org.drip.oms.venue;
 
+import java.util.TreeMap;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -74,7 +76,8 @@ package org.drip.oms.venue;
  */
 
 /**
- * <i>PostedBlock</i> maintains a Posted L2 Entry Block inside an Order Book. The References are:
+ * <i>MontageL1SizeLayer</i> holds the Posted Blocks for a given Venue and a Price, ordered by Size. The
+ *  References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -111,106 +114,121 @@ package org.drip.oms.venue;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ExchangeSettings
+public class MontageL1SizeLayer
 {
-	private String _code = "";
-	private boolean _isInverted = false;
+	private TreeMap<Double, MontageL1Entry> _orderedEntryMap = null;
 
 	/**
-	 * Generate a Regular Venue
-	 * 
-	 * @param code Venue Code
-	 * 
-	 * @return Regular Venue
+	 * MontageL1SizeLayer Constructor
 	 */
 
-	public static final ExchangeSettings Regular (
-		final String code)
+	public MontageL1SizeLayer()
 	{
-		try
-		{
-			return new ExchangeSettings (
-				code,
-				false
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		_orderedEntryMap = new TreeMap<Double, MontageL1Entry>();
 	}
 
 	/**
-	 * Generate an Inverted Venue
+	 * Retrieve the Ordered L1 Entry Map
 	 * 
-	 * @param code Venue Code
-	 * 
-	 * @return Inverted Venue
+	 * @return Ordered L1 Entry Map
 	 */
 
-	public static final ExchangeSettings Inverted (
-		final String code)
+	public TreeMap<Double, MontageL1Entry> orderedEntryMap()
 	{
-		try
-		{
-			return new ExchangeSettings (
-				code,
-				true
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return _orderedEntryMap;
 	}
 
 	/**
-	 * ExchangeSettings Constructor
+	 * Add the L1 Montage Entry
 	 * 
-	 * @param code Venue Code
-	 * @param isInverted TRUE - The Venue is Inverted
+	 * @param montageL1Entry The L1 Montage Entry
 	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @return TRUE - The L1 Montage Entry successfully added
 	 */
 
-	public ExchangeSettings (
-		final String code,
-		final boolean isInverted)
+	public boolean addEntry (
+		final MontageL1Entry montageL1Entry)
+	{
+		if (null == montageL1Entry)
+		{
+			return false;
+		}
+
+		_orderedEntryMap.put (
+			montageL1Entry.topOfTheBook().size(),
+			montageL1Entry
+		);
+
+		return true;
+	}
+
+	/**
+	 * Retrieve the Price of the Montage Layer
+	 * 
+	 * @return Price of the Montage Layer
+	 * 
+	 * @throws Exception Thrown if the MontageL1SizeLayer is Empty
+	 */
+
+	public double price()
 		throws Exception
 	{
-		if (null == (_code = code) || code.isEmpty())
+		if (_orderedEntryMap.isEmpty())
 		{
 			throw new Exception (
-				"ExchangeSettings Constructor => Invalid Inputs"
+				"MontageL1SizeLayer::price => Empty Container"
 			);
 		}
 
-		_isInverted = isInverted;
+		return _orderedEntryMap.firstEntry().getValue().topOfTheBook().price();
 	}
 
 	/**
-	 * Retrieve the Venue Code
+	 * Retrieve the Peak Size of the Montage Layer
 	 * 
-	 * @return Venue Code
+	 * @return Peak Size of the Montage Layer
+	 * 
+	 * @throws Exception Thrown if the MontageL1SizeLayer is Empty
 	 */
 
-	public String code()
+	public double peak()
+		throws Exception
 	{
-		return _code;
+		if (_orderedEntryMap.isEmpty())
+		{
+			throw new Exception (
+				"MontageL1SizeLayer::peak => Empty Container"
+			);
+		}
+
+		return _orderedEntryMap.lastEntry().getValue().topOfTheBook().size();
 	}
 
 	/**
-	 * Indicate if the Venue is Inverted
+	 * Retrieve the Aggregated Size of the Montage Layer
 	 * 
-	 * @return TRUE - The Venue is Inverted
+	 * @return Aggregated Size of the Montage Layer
+	 * 
+	 * @throws Exception Thrown if the MontageL1SizeLayer is Empty
 	 */
 
-	public boolean isInverted()
+	public double aggregate()
+		throws Exception
 	{
-		return _isInverted;
+		if (_orderedEntryMap.isEmpty())
+		{
+			throw new Exception (
+				"MontageL1SizeLayer::aggregate => Empty Container"
+			);
+		}
+
+		double aggregate = 0;
+
+		for (MontageL1Entry montageL1Entry : _orderedEntryMap.values())
+		{
+			aggregate += montageL1Entry.topOfTheBook().size();
+		}
+
+		return aggregate;
 	}
 }

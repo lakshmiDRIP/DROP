@@ -74,7 +74,7 @@ package org.drip.oms.venue;
  */
 
 /**
- * <i>PostedBlock</i> maintains a Posted L2 Entry Block inside an Order Book. The References are:
+ * <i>MontageL1Entry</i> holds the Bid Top-of-the Book L1 for a Venue. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -111,106 +111,54 @@ package org.drip.oms.venue;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ExchangeSettings
+public class MontageL1Entry
 {
-	private String _code = "";
-	private boolean _isInverted = false;
+	private PostedBlock _topOfTheBook = null;
+	private ExchangeSettings _exchangeSettings = null;
 
 	/**
-	 * Generate a Regular Venue
+	 * MontageL1Entry Constructor
 	 * 
-	 * @param code Venue Code
-	 * 
-	 * @return Regular Venue
-	 */
-
-	public static final ExchangeSettings Regular (
-		final String code)
-	{
-		try
-		{
-			return new ExchangeSettings (
-				code,
-				false
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Generate an Inverted Venue
-	 * 
-	 * @param code Venue Code
-	 * 
-	 * @return Inverted Venue
-	 */
-
-	public static final ExchangeSettings Inverted (
-		final String code)
-	{
-		try
-		{
-			return new ExchangeSettings (
-				code,
-				true
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * ExchangeSettings Constructor
-	 * 
-	 * @param code Venue Code
-	 * @param isInverted TRUE - The Venue is Inverted
+	 * @param exchangeSettings Exchange Settings
+	 * @param topOfTheBook Top of the Book
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public ExchangeSettings (
-		final String code,
-		final boolean isInverted)
+	public MontageL1Entry (
+		final ExchangeSettings exchangeSettings,
+		final PostedBlock topOfTheBook)
 		throws Exception
 	{
-		if (null == (_code = code) || code.isEmpty())
+		if (null == (_exchangeSettings = exchangeSettings))
 		{
 			throw new Exception (
-				"ExchangeSettings Constructor => Invalid Inputs"
+				"MontageL1Entry Constructor => Invalid Inputs"
 			);
 		}
 
-		_isInverted = isInverted;
+		_topOfTheBook = topOfTheBook;
 	}
 
 	/**
-	 * Retrieve the Venue Code
+	 * Retrieve the Exchange Settings
 	 * 
-	 * @return Venue Code
+	 * @return The Exchange Settings
 	 */
 
-	public String code()
+	public ExchangeSettings exchangeSettings()
 	{
-		return _code;
+		return _exchangeSettings;
 	}
 
 	/**
-	 * Indicate if the Venue is Inverted
+	 * Retrieve the Bid Top-of-the-Book
 	 * 
-	 * @return TRUE - The Venue is Inverted
+	 * @return Bid Top-of-the-Book
 	 */
 
-	public boolean isInverted()
+	public PostedBlock topOfTheBook()
 	{
-		return _isInverted;
+		return _topOfTheBook;
 	}
 }

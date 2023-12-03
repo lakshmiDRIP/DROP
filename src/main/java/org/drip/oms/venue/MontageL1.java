@@ -1,6 +1,8 @@
 
 package org.drip.oms.venue;
 
+import java.util.TreeMap;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -74,7 +76,7 @@ package org.drip.oms.venue;
  */
 
 /**
- * <i>PostedBlock</i> maintains a Posted L2 Entry Block inside an Order Book. The References are:
+ * <i>MontageL1</i> holds the Top-of-the Book L1 across Venues. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -111,106 +113,69 @@ package org.drip.oms.venue;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ExchangeSettings
+public class MontageL1
 {
-	private String _code = "";
-	private boolean _isInverted = false;
+	private TreeMap<Double, MontageL1SizeLayer> _orderedAskBook = null;
+	private TreeMap<Double, MontageL1SizeLayer> _orderedBidBook = null;
 
 	/**
-	 * Generate a Regular Venue
-	 * 
-	 * @param code Venue Code
-	 * 
-	 * @return Regular Venue
+	 * Empty MontageL1 Constructor
 	 */
 
-	public static final ExchangeSettings Regular (
-		final String code)
+	public MontageL1()
 	{
+	}
+
+	/**
+	 * Retrieve the Ordered Bid Book
+	 * 
+	 * @return The Ordered Bid Book
+	 */
+
+	public TreeMap<Double, MontageL1SizeLayer> _orderedBidBook()
+	{
+		return _orderedBidBook;
+	}
+
+	/**
+	 * Retrieve the Ordered Ask Book
+	 * 
+	 * @return The Ordered Ask Book
+	 */
+
+	public TreeMap<Double, MontageL1SizeLayer> _orderedAskBook()
+	{
+		return _orderedAskBook;
+	}
+
+	/**
+	 * Add a Bid Venue L1 Montage Size Layer
+	 * 
+	 * @param montageL1SizeLayer Bid Venue L1 Montage Size Layer
+	 * 
+	 * @return TRUE - Successfully added the Bid Venue L1 Montage Size Layer to the Book
+	 */
+
+	public boolean addBidSizeLayer (
+		final MontageL1SizeLayer montageL1SizeLayer)
+	{
+		if (null == montageL1SizeLayer)
+		{
+			return false;
+		}
+
 		try
 		{
-			return new ExchangeSettings (
-				code,
-				false
+			_orderedBidBook.put (
+				montageL1SizeLayer.price(),
+				montageL1SizeLayer
 			);
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			return false;
 		}
 
-		return null;
-	}
-
-	/**
-	 * Generate an Inverted Venue
-	 * 
-	 * @param code Venue Code
-	 * 
-	 * @return Inverted Venue
-	 */
-
-	public static final ExchangeSettings Inverted (
-		final String code)
-	{
-		try
-		{
-			return new ExchangeSettings (
-				code,
-				true
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * ExchangeSettings Constructor
-	 * 
-	 * @param code Venue Code
-	 * @param isInverted TRUE - The Venue is Inverted
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public ExchangeSettings (
-		final String code,
-		final boolean isInverted)
-		throws Exception
-	{
-		if (null == (_code = code) || code.isEmpty())
-		{
-			throw new Exception (
-				"ExchangeSettings Constructor => Invalid Inputs"
-			);
-		}
-
-		_isInverted = isInverted;
-	}
-
-	/**
-	 * Retrieve the Venue Code
-	 * 
-	 * @return Venue Code
-	 */
-
-	public String code()
-	{
-		return _code;
-	}
-
-	/**
-	 * Indicate if the Venue is Inverted
-	 * 
-	 * @return TRUE - The Venue is Inverted
-	 */
-
-	public boolean isInverted()
-	{
-		return _isInverted;
+		return true;
 	}
 }
