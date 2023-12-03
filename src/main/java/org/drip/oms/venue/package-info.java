@@ -1,6 +1,6 @@
 
 /**
- * Definition of Venue Specific Settings
+ * Implementation of Venue Order Handling
  *
  * @author Lakshmi Krishnamurthy
  */

@@ -2,6 +2,9 @@
 package org.drip.oms.venue;
 
 import java.time.ZonedDateTime;
+import java.util.Comparator;
+
+import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,14 +79,10 @@ import java.time.ZonedDateTime;
  */
 
 /**
- * <i>PriceBookBlock</i> maintains an Entry Block inside a Price Book. The References are:
+ * <i>PostedBlock</i> maintains a Posted L2 Entry Block inside an Order Book. The References are:
  *  
  * 	<br><br>
  *  <ul>
- * 		<li>
- * 			Berkowitz, S. A., D. E. Logue, and E. A. J. Noser (1988): The Total Cost of Transactions on the
- * 				NYSE <i>Journal of Finance</i> <b>43 (1)</b> 97-112
- * 		</li>
  * 		<li>
  * 			Chen, J. (2021): Time in Force: Definition, Types, and Examples
  * 				https://www.investopedia.com/terms/t/timeinforce.asp
@@ -100,6 +99,10 @@ import java.time.ZonedDateTime;
  * 			Weiss, D. (2006): <i>After the Trade is Made: Processing Securities Transactions</i> <b>Portfolio
  * 				Publishing</b> London UK
  * 		</li>
+ * 		<li>
+ * 			Wikipedia (2023): Central Limit Order Book
+ * 				https://en.wikipedia.org/wiki/Central_limit_order_book
+ * 		</li>
  *  </ul>
  *
  *	<br><br>
@@ -107,16 +110,77 @@ import java.time.ZonedDateTime;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/specification/README.md">Order Specification and Session Metrics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/venue/README.md">Implementation of Venue Order Handling</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PriceBookBlock
+public class PostedBlock
+	implements Comparator<PostedBlock>
 {
 	private double _size = Double.NaN;
+	private double _price = Double.NaN;
 	private ZonedDateTime _lastUpdateTime = null;
+
+	/**
+	 * Construct a Freshly Posted Instance of the L2 Block
+	 * 
+	 * @param price L2 Price
+	 * @param size L2 Size
+	 * 
+	 * @return Freshly Posted Instance of the L2 Block
+	 */
+
+	public static final PostedBlock PostNow (
+		final double price,
+		final double size)
+	{
+		try
+		{
+			return new PostedBlock (
+				ZonedDateTime.now(),
+				price,
+				size
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * PostedBlock Constructor
+	 * 
+	 * @param lastUpdateTime Last Update Time
+	 * @param price L2 Price
+	 * @param size L2 Size
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public PostedBlock (
+		final ZonedDateTime lastUpdateTime,
+		final double price,
+		final double size)
+		throws Exception
+	{
+		if (null == (_lastUpdateTime = lastUpdateTime) ||
+			!NumberUtil.IsValid (
+				_price = price
+			) || !NumberUtil.IsValid (
+				_size = size
+			)
+		)
+		{
+			throw new Exception (
+				"PostedBlock Constructor => Invalid Inputs"
+			);
+		}
+	}
 
 	/**
 	 * Retrieve the Last Update Time
@@ -130,6 +194,17 @@ public class PriceBookBlock
 	}
 
 	/**
+	 * Retrieve the Price
+	 * 
+	 * @return The Price
+	 */
+
+	public double price()
+	{
+		return _price;
+	}
+
+	/**
 	 * Retrieve the Size
 	 * 
 	 * @return The Size
@@ -138,5 +213,49 @@ public class PriceBookBlock
 	public double size()
 	{
 		return _size;
+	}
+
+	/**
+	 * Up/Down Size using the Augmented Size
+	 * 
+	 * @param augmentedSize Augmented Size
+	 * 
+	 * @return TRUE - The Augmented Size successfully applied
+	 */
+
+	public boolean augmentSize (
+		final double augmentedSize)
+	{
+		if (!NumberUtil.IsValid (
+			augmentedSize
+		))
+		{
+			return false;
+		}
+
+		_size += augmentedSize;
+		return true;
+	}
+
+	@Override public int compare (
+		final PostedBlock l2Block1,
+		final PostedBlock l2Block2)
+	{
+		if (null == l2Block1 && null == l2Block2)
+		{
+			return 0;
+		}
+
+		if (null == l2Block1 && null != l2Block2)
+		{
+			return -1;
+		}
+
+		if (null != l2Block1 && null == l2Block2)
+		{
+			return 1;
+		}
+
+		return l2Block1._price == l2Block2._price ? 0 : l2Block1._price < l2Block2._price ? -1 : 1;
 	}
 }

@@ -84,10 +84,6 @@ import java.time.ZonedDateTime;
  * 	<br><br>
  *  <ul>
  * 		<li>
- * 			Berkowitz, S. A., D. E. Logue, and E. A. J. Noser (1988): The Total Cost of Transactions on the
- * 				NYSE <i>Journal of Finance</i> <b>43 (1)</b> 97-112
- * 		</li>
- * 		<li>
  * 			Chen, J. (2021): Time in Force: Definition, Types, and Examples
  * 				https://www.investopedia.com/terms/t/timeinforce.asp
  * 		</li>
@@ -103,6 +99,10 @@ import java.time.ZonedDateTime;
  * 			Weiss, D. (2006): <i>After the Trade is Made: Processing Securities Transactions</i> <b>Portfolio
  * 				Publishing</b> London UK
  * 		</li>
+ * 		<li>
+ * 			Wikipedia (2023): Central Limit Order Book
+ * 				https://en.wikipedia.org/wiki/Central_limit_order_book
+ * 		</li>
  *  </ul>
  *
  *	<br><br>
@@ -110,7 +110,7 @@ import java.time.ZonedDateTime;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/specification/README.md">Order Specification and Session Metrics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/venue/README.md">Implementation of Venue Order Handling</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
