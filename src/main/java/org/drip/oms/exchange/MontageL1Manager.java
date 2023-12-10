@@ -1,6 +1,9 @@
 
 package org.drip.oms.exchange;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 /*
@@ -298,5 +301,114 @@ public class MontageL1Manager
 		}
 
 		return true;
+	}
+
+	/**
+	 * Retrieve the Ordered Ask Book List
+	 * 
+	 * @return The Ordered Ask Book List
+	 */
+
+	public List<MontageL1Entry> orderedAskBookList()
+	{
+		List<MontageL1Entry> montageL1EntryList = new ArrayList<MontageL1Entry>();
+
+		if (_orderedAskBook.isEmpty())
+		{
+			return montageL1EntryList;
+		}
+
+		for (Map.Entry<Double, MontageL1SizeLayer> montageL1SizeLayerMapEntry : _orderedAskBook.entrySet())
+		{
+			for (Map.Entry<Double, List<MontageL1Entry>> montageL1EntryMapEntry :
+				montageL1SizeLayerMapEntry.getValue().orderedEntryListMap().entrySet())
+			{
+				montageL1EntryList.addAll (
+					montageL1EntryMapEntry.getValue()
+				);
+			}
+		}
+
+		return montageL1EntryList;
+	}
+
+	/**
+	 * Retrieve the Ordered Bid Book List
+	 * 
+	 * @return The Ordered Bid Book List
+	 */
+
+	public List<MontageL1Entry> orderedBidBookList()
+	{
+		List<MontageL1Entry> montageL1EntryList = new ArrayList<MontageL1Entry>();
+
+		if (_orderedBidBook.isEmpty())
+		{
+			return montageL1EntryList;
+		}
+
+		for (Map.Entry<Double, MontageL1SizeLayer> montageL1SizeLayerMapEntry : _orderedBidBook.entrySet())
+		{
+			for (Map.Entry<Double, List<MontageL1Entry>> montageL1EntryMapEntry :
+				montageL1SizeLayerMapEntry.getValue().orderedEntryListMap().entrySet()
+			)
+			{
+				montageL1EntryList.addAll (
+					montageL1EntryMapEntry.getValue()
+				);
+			}
+		}
+
+		return montageL1EntryList;
+	}
+
+	/**
+	 * Retrieve the NBBO Bid Block
+	 * 
+	 * @return The NBBO Bid Block
+	 */
+
+	public PostedBlock bidNBBOBlock()
+	{
+		return _orderedBidBook.isEmpty() ? null :
+			_orderedBidBook.firstEntry().getValue().peakBlockList().get (
+				0
+			).topOfTheBook();
+	}
+
+	/**
+	 * Retrieve the NBBO Ask Block
+	 * 
+	 * @return The NBBO Ask Block
+	 */
+
+	public PostedBlock askNBBOBlock()
+	{
+		return _orderedAskBook.isEmpty() ? null :
+			_orderedAskBook.firstEntry().getValue().peakBlockList().get (
+				0
+			).topOfTheBook();
+	}
+
+	/**
+	 * Retrieve the Bid UBBO Block
+	 * 
+	 * @return The Bid UBBO Block
+	 */
+
+	public UBBOBlock bidUBBOBlock()
+	{
+		return _orderedBidBook.isEmpty() ? null : _orderedBidBook.firstEntry().getValue().ubboBlock();
+	}
+
+	/**
+	 * Retrieve the Ask UBBO Block
+	 * 
+	 * @return The Ask UBBO Block
+	 */
+
+	public UBBOBlock askUBBOBlock()
+	{
+		return _orderedAskBook.isEmpty() ? null : _orderedAskBook.firstEntry().getValue().ubboBlock();
 	}
 }

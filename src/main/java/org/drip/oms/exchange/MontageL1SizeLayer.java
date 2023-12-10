@@ -272,4 +272,35 @@ public class MontageL1SizeLayer
 
 		return aggregate;
 	}
+
+	/**
+	 * Retrieve the UBBO Block
+	 * 
+	 * @return The UBBO Block
+	 */
+
+	public UBBOBlock ubboBlock()
+	{
+		if (_orderedEntryListMap.isEmpty())
+		{
+			return null;
+		}
+
+		UBBOBlock ubboBlock = new UBBOBlock();
+
+		for (List<MontageL1Entry> montageL1EntryList : _orderedEntryListMap.values())
+		{
+			for (MontageL1Entry montageL1Entry : montageL1EntryList)
+			{
+				if (!ubboBlock.addMontageEntry (
+					montageL1Entry
+				))
+				{
+					return null;
+				}
+			}
+		}
+
+		return ubboBlock;
+	}
 }

@@ -152,4 +152,12 @@ public interface PricingRebateFunction
 		final double price,
 		final double size
 	) throws Exception;
+
+	/**
+	 * Indicate if the Venue is Inverted
+	 * 
+	 * @return TRUE - The Venue is Inverted
+	 */
+
+	public boolean isInverted();
 }

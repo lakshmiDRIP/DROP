@@ -1,6 +1,9 @@
 
 package org.drip.oms.exchange;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -74,7 +77,7 @@ package org.drip.oms.exchange;
  */
 
 /**
- * <i>VenueSettings</i> maintains the Settings that Relate to a Venue. The References are:
+ * <i>UBBOBlock</i> retains the Aggregated Top-of-the-Book and its Contributors. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -111,80 +114,94 @@ package org.drip.oms.exchange;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VenueSettings
+public class UBBOBlock
 {
-	private String _jurisdiction = "";
-	private String _localIdentifier = "";
-	private PricingRebateFunction _pricingRebateFunction = null;
+	private double _price = Double.NaN;
+	private double _aggregatedSize = Double.NaN;
+	private List<String> _contributingVenueList = null;
 
 	/**
-	 * VenueSettings Constructor
-	 * 
-	 * @param localIdentifier Venue Local Identifier
-	 * @param jurisdiction Venue Jurisdiction
-	 * @param pricingRebateFunction Pricing Rebate Function
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * Empty UBBOBlock Constructor
 	 */
 
-	public VenueSettings (
-		final String localIdentifier,
-		final String jurisdiction,
-		final PricingRebateFunction pricingRebateFunction)
-		throws Exception
+	public UBBOBlock()
 	{
-		if (null == (_localIdentifier = localIdentifier) || _localIdentifier.isEmpty() ||
-			null == (_jurisdiction = jurisdiction) || _jurisdiction.isEmpty() ||
-			null == (_pricingRebateFunction = pricingRebateFunction)
-		)
+		_price = 0.;
+		_aggregatedSize = 0.;
+
+		_contributingVenueList = new ArrayList<String>();
+	}
+
+	/**
+	 * Retrieve the UBBO Price
+	 * 
+	 * @return The UBBO Price
+	 */
+
+	public double price()
+	{
+		return _price;
+	}
+
+	/**
+	 * Retrieve the Aggregated UBBO Size
+	 * 
+	 * @return The Aggregated UBBO Size
+	 */
+
+	public double aggregatedSize()
+	{
+		return _aggregatedSize;
+	}
+
+	/**
+	 * Retrieve the List of Contributing Venues
+	 * 
+	 * @return List of Contributing Venues
+	 */
+
+	public List<String> contributingVenueList()
+	{
+		return _contributingVenueList;
+	}
+
+	/**
+	 * Indicate if the UBBO Block is Valid
+	 * 
+	 * @return TRUE - The UBBO Block is Valid
+	 */
+
+	public boolean isValid()
+	{
+		return !_contributingVenueList.isEmpty();
+	}
+
+	/**
+	 * Add a Montage Entry
+	 * 
+	 * @param montageL1Entry The Montage Entry
+	 * 
+	 * @return TRUE - The Montage Entry successfully added
+	 */
+
+	public boolean addMontageEntry (
+		final MontageL1Entry montageL1Entry)
+	{
+		if (null == montageL1Entry)
 		{
-			throw new Exception (
-				"VenueSettings Constructor => Invalid Inputs"
-			);
+			return false;
 		}
-	}
 
-	/**
-	 * Retrieve the Venue Jurisdiction
-	 * 
-	 * @return Venue Jurisdiction
-	 */
+		PostedBlock postedBlock = montageL1Entry.topOfTheBook();
 
-	public String jurisdiction()
-	{
-		return _jurisdiction;
-	}
+		_contributingVenueList.add (
+			montageL1Entry.venueCode()
+		);
 
-	/**
-	 * Retrieve the Venue Local Identifier
-	 * 
-	 * @return Venue Local Identifier
-	 */
+		_aggregatedSize += postedBlock.size();
 
-	public String localIdentifier()
-	{
-		return _localIdentifier;
-	}
+		_price = postedBlock.price();
 
-	/**
-	 * Retrieve the Pricing Rebate Function
-	 * 
-	 * @return The Pricing Rebate Function
-	 */
-
-	public PricingRebateFunction pricingRebateFunction()
-	{
-		return _pricingRebateFunction;
-	}
-
-	/**
-	 * Retrieve the Venue Code
-	 * 
-	 * @return Venue Code
-	 */
-
-	public String code()
-	{
-		return _localIdentifier + "::" + _jurisdiction;
+		return true;
 	}
 }

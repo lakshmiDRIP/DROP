@@ -74,7 +74,7 @@ package org.drip.oms.exchange;
  */
 
 /**
- * <i>VenueSettings</i> maintains the Settings that Relate to a Venue. The References are:
+ * <i>Venue</i> implements Functionality corresponding to a Venue. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -111,80 +111,88 @@ package org.drip.oms.exchange;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VenueSettings
+public class Venue
 {
-	private String _jurisdiction = "";
-	private String _localIdentifier = "";
-	private PricingRebateFunction _pricingRebateFunction = null;
+	private VenueSettings _settings = null;
 
 	/**
-	 * VenueSettings Constructor
+	 * Venue Constructor
 	 * 
-	 * @param localIdentifier Venue Local Identifier
-	 * @param jurisdiction Venue Jurisdiction
-	 * @param pricingRebateFunction Pricing Rebate Function
+	 * @param settings Venue Settings
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public VenueSettings (
-		final String localIdentifier,
-		final String jurisdiction,
-		final PricingRebateFunction pricingRebateFunction)
+	public Venue (
+		final VenueSettings settings)
 		throws Exception
 	{
-		if (null == (_localIdentifier = localIdentifier) || _localIdentifier.isEmpty() ||
-			null == (_jurisdiction = jurisdiction) || _jurisdiction.isEmpty() ||
-			null == (_pricingRebateFunction = pricingRebateFunction)
-		)
+		if (null == (_settings = settings))
 		{
 			throw new Exception (
-				"VenueSettings Constructor => Invalid Inputs"
+				"Venue Constructor => Invalid Inputs"
 			);
 		}
 	}
 
 	/**
-	 * Retrieve the Venue Jurisdiction
+	 * Retrieve the Venue Settings
 	 * 
-	 * @return Venue Jurisdiction
+	 * @return The Venue Settings
 	 */
 
-	public String jurisdiction()
+	public VenueSettings settings()
 	{
-		return _jurisdiction;
+		return _settings;
 	}
 
 	/**
-	 * Retrieve the Venue Local Identifier
+	 * Estimate Liquidity Posting Fee for the specified Ticker at the Venue at the Price/Size.
 	 * 
-	 * @return Venue Local Identifier
+	 * @param ticker Ticker
+	 * @param price Price
+	 * @param size Size
+	 * 
+	 * @return Fee for Liquidity Posting
+	 * 
+	 * @throws Exception Thrown if the Liquidity Posting Fee cannot be calculated
 	 */
 
-	public String localIdentifier()
+	public double postFee (
+		final String ticker,
+		final double price,
+		final double size)
+		throws Exception
 	{
-		return _localIdentifier;
+		return _settings.pricingRebateFunction().makerFee (
+			ticker,
+			price,
+			size
+		);
 	}
 
 	/**
-	 * Retrieve the Pricing Rebate Function
+	 * Estimate Liquidity Sweeping Fee for the specified Ticker at the Venue at the Price/Size.
 	 * 
-	 * @return The Pricing Rebate Function
+	 * @param ticker Ticker
+	 * @param price Price
+	 * @param size Size
+	 * 
+	 * @return Fee for Liquidity Sweeping
+	 * 
+	 * @throws Exception Thrown if the Liquidity Sweeping Fee cannot be calculated
 	 */
 
-	public PricingRebateFunction pricingRebateFunction()
+	public double sweepFee (
+		final String ticker,
+		final double price,
+		final double size)
+		throws Exception
 	{
-		return _pricingRebateFunction;
-	}
-
-	/**
-	 * Retrieve the Venue Code
-	 * 
-	 * @return Venue Code
-	 */
-
-	public String code()
-	{
-		return _localIdentifier + "::" + _jurisdiction;
+		return _settings.pricingRebateFunction().makerFee (
+			ticker,
+			price,
+			size
+		);
 	}
 }
