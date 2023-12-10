@@ -1,10 +1,5 @@
 
-package org.drip.oms.venue;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+package org.drip.oms.exchange;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -79,7 +74,7 @@ import java.time.ZonedDateTime;
  */
 
 /**
- * <i>OperatingHours</i> maintains the Venue Specific Operating Hours. The References are:
+ * <i>MontageL1Entry</i> holds the Bid Top-of-the Book L1 for a Venue. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -110,102 +105,60 @@ import java.time.ZonedDateTime;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/venue/README.md">Implementation of Venue Order Handling</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/exchange/README.md">Implementation of Venue Order Handling</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class OperatingHours
+public class MontageL1Entry
 {
+	private String _venueCode = "";
+	private PostedBlock _topOfTheBook = null;
 
 	/**
-	 * Retrieve the US Market Close Zoned Date Time Instance
+	 * MontageL1Entry Constructor
 	 * 
-	 * @param localDate Local Date
+	 * @param venueCode Venue Code
+	 * @param topOfTheBook Top of the Book
 	 * 
-	 * @return US Market Close Zoned Date Time Instance
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final ZonedDateTime USMarketClose (
-		final LocalDate localDate)
+	public MontageL1Entry (
+		final String venueCode,
+		final PostedBlock topOfTheBook)
+		throws Exception
 	{
-		return ZonedDateTime.of (
-			localDate,
-			LocalTime.of (
-				16,
-				0,
-				0
-			),
-			ZoneId.of (
-				"America/New_York"
-			)
-		);
+		if (null == (_venueCode = venueCode) || _venueCode.isEmpty())
+		{
+			throw new Exception (
+				"MontageL1Entry Constructor => Invalid Inputs"
+			);
+		}
+
+		_topOfTheBook = topOfTheBook;
 	}
 
 	/**
-	 * Retrieve the Current US Market Close Zoned Date Time Instance
+	 * Retrieve the Venue Code
 	 * 
-	 * @return Current US Market Open Close Date Time Instance
+	 * @return The Venue Code
 	 */
 
-	public static final ZonedDateTime USMarketClose()
+	public String venueCode()
 	{
-		return ZonedDateTime.of (
-			LocalDate.now(),
-			LocalTime.of (
-				16,
-				0,
-				0
-			),
-			ZoneId.of (
-				"America/New_York"
-			)
-		);
+		return _venueCode;
 	}
 
 	/**
-	 * Retrieve the US Market Open Zoned Date Time Instance
+	 * Retrieve the Bid Top-of-the-Book
 	 * 
-	 * @param localDate Local Date
-	 * 
-	 * @return US Market Open Zoned Date Time Instance
+	 * @return Bid Top-of-the-Book
 	 */
 
-	public static final ZonedDateTime USMarketOpen (
-		final LocalDate localDate)
+	public PostedBlock topOfTheBook()
 	{
-		return ZonedDateTime.of (
-			localDate,
-			LocalTime.of (
-				9,
-				30,
-				0
-			),
-			ZoneId.of (
-				"America/New_York"
-			)
-		);
-	}
-
-	/**
-	 * Retrieve the Current US Market Open Zoned Date Time Instance
-	 * 
-	 * @return Current US Market Open Open Date Time Instance
-	 */
-
-	public static final ZonedDateTime USMarketOpen()
-	{
-		return ZonedDateTime.of (
-			LocalDate.now(),
-			LocalTime.of (
-				9,
-				30,
-				0
-			),
-			ZoneId.of (
-				"America/New_York"
-			)
-		);
+		return _topOfTheBook;
 	}
 }

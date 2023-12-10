@@ -1,7 +1,10 @@
 
-package org.drip.oms.venue;
+package org.drip.oms.exchange;
 
-import java.util.TreeMap;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,8 +79,7 @@ import java.util.TreeMap;
  */
 
 /**
- * <i>MontageL1SizeLayer</i> holds the Posted Blocks for a given Venue and a Price, ordered by Size. The
- *  References are:
+ * <i>OperatingHours</i> maintains the Venue Specific Operating Hours. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -108,138 +110,102 @@ import java.util.TreeMap;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/venue/README.md">Implementation of Venue Order Handling</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/exchange/README.md">Implementation of Venue Order Handling</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MontageL1SizeLayer
+public class OperatingHours
 {
-	private TreeMap<Double, MontageL1Entry> _orderedEntryMap = null;
 
 	/**
-	 * MontageL1SizeLayer Constructor
+	 * Retrieve the US Market Close Zoned Date Time Instance
+	 * 
+	 * @param localDate Local Date
+	 * 
+	 * @return US Market Close Zoned Date Time Instance
 	 */
 
-	public MontageL1SizeLayer()
+	public static final ZonedDateTime USMarketClose (
+		final LocalDate localDate)
 	{
-		_orderedEntryMap = new TreeMap<Double, MontageL1Entry>();
-	}
-
-	/**
-	 * Retrieve the Ordered L1 Entry Map
-	 * 
-	 * @return Ordered L1 Entry Map
-	 */
-
-	public TreeMap<Double, MontageL1Entry> orderedEntryMap()
-	{
-		return _orderedEntryMap;
-	}
-
-	/**
-	 * Add the L1 Montage Entry
-	 * 
-	 * @param montageL1Entry The L1 Montage Entry
-	 * 
-	 * @return TRUE - The L1 Montage Entry successfully added
-	 */
-
-	public boolean addEntry (
-		final MontageL1Entry montageL1Entry)
-	{
-		if (null == montageL1Entry)
-		{
-			return false;
-		}
-
-		_orderedEntryMap.put (
-			montageL1Entry.topOfTheBook().size(),
-			montageL1Entry
+		return ZonedDateTime.of (
+			localDate,
+			LocalTime.of (
+				16,
+				0,
+				0
+			),
+			ZoneId.of (
+				"America/New_York"
+			)
 		);
-
-		return true;
 	}
 
 	/**
-	 * Retrieve the Price of the Montage Layer
+	 * Retrieve the Current US Market Close Zoned Date Time Instance
 	 * 
-	 * @return Price of the Montage Layer
-	 * 
-	 * @throws Exception Thrown if the MontageL1SizeLayer is Empty
+	 * @return Current US Market Open Close Date Time Instance
 	 */
 
-	public double price()
-		throws Exception
+	public static final ZonedDateTime USMarketClose()
 	{
-		if (_orderedEntryMap.isEmpty())
-		{
-			throw new Exception (
-				"MontageL1SizeLayer::price => Empty Container"
-			);
-		}
-
-		return _orderedEntryMap.firstEntry().getValue().topOfTheBook().price();
+		return ZonedDateTime.of (
+			LocalDate.now(),
+			LocalTime.of (
+				16,
+				0,
+				0
+			),
+			ZoneId.of (
+				"America/New_York"
+			)
+		);
 	}
 
 	/**
-	 * Retrieve the Peak Size of the Montage Layer
+	 * Retrieve the US Market Open Zoned Date Time Instance
 	 * 
-	 * @return Peak Size of the Montage Layer
+	 * @param localDate Local Date
 	 * 
-	 * @throws Exception Thrown if the MontageL1SizeLayer is Empty
+	 * @return US Market Open Zoned Date Time Instance
 	 */
 
-	public double peak()
-		throws Exception
+	public static final ZonedDateTime USMarketOpen (
+		final LocalDate localDate)
 	{
-		if (_orderedEntryMap.isEmpty())
-		{
-			throw new Exception (
-				"MontageL1SizeLayer::peak => Empty Container"
-			);
-		}
-
-		return _orderedEntryMap.lastEntry().getValue().topOfTheBook().size();
+		return ZonedDateTime.of (
+			localDate,
+			LocalTime.of (
+				9,
+				30,
+				0
+			),
+			ZoneId.of (
+				"America/New_York"
+			)
+		);
 	}
 
 	/**
-	 * Retrieve the Peak Block of the Montage Layer
+	 * Retrieve the Current US Market Open Zoned Date Time Instance
 	 * 
-	 * @return Peak Block of the Montage Layer
+	 * @return Current US Market Open Open Date Time Instance
 	 */
 
-	public PostedBlock peakBlock()
+	public static final ZonedDateTime USMarketOpen()
 	{
-		return _orderedEntryMap.isEmpty() ? null : _orderedEntryMap.lastEntry().getValue().topOfTheBook();
-	}
-
-	/**
-	 * Retrieve the Aggregated Size of the Montage Layer
-	 * 
-	 * @return Aggregated Size of the Montage Layer
-	 * 
-	 * @throws Exception Thrown if the MontageL1SizeLayer is Empty
-	 */
-
-	public double aggregate()
-		throws Exception
-	{
-		if (_orderedEntryMap.isEmpty())
-		{
-			throw new Exception (
-				"MontageL1SizeLayer::aggregate => Empty Container"
-			);
-		}
-
-		double aggregate = 0;
-
-		for (MontageL1Entry montageL1Entry : _orderedEntryMap.values())
-		{
-			aggregate += montageL1Entry.topOfTheBook().size();
-		}
-
-		return aggregate;
+		return ZonedDateTime.of (
+			LocalDate.now(),
+			LocalTime.of (
+				9,
+				30,
+				0
+			),
+			ZoneId.of (
+				"America/New_York"
+			)
+		);
 	}
 }

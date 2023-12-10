@@ -5,4 +5,4 @@
  * @author Lakshmi Krishnamurthy
  */
 
-package org.drip.oms.venue;
+package org.drip.oms.exchange;

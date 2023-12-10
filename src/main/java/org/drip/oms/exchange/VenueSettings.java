@@ -1,7 +1,5 @@
 
-package org.drip.oms.venue;
-
-import java.util.TreeMap;
+package org.drip.oms.exchange;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,7 +74,7 @@ import java.util.TreeMap;
  */
 
 /**
- * <i>PostedBlockL2</i> maintains a Deep Posted Price Book for a Venue. The References are:
+ * <i>VenueSettings</i> maintains the Settings that Relate to a Venue. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -107,152 +105,86 @@ import java.util.TreeMap;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/venue/README.md">Implementation of Venue Order Handling</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/exchange/README.md">Implementation of Venue Order Handling</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PostedBlockL2
+public class VenueSettings
 {
-	private boolean _descending = false;
-	private TreeMap<Double, PostedBlock> _orderedBlockMap = null;
+	private String _jurisdiction = "";
+	private String _localIdentifier = "";
+	private PricingRebateFunction _pricingRebateFunction = null;
 
 	/**
-	 * Construct a Bid PostedBlockL2 Price Book
+	 * VenueSettings Constructor
 	 * 
-	 * @return Bid PostedBlockL2 Price Book
+	 * @param localIdentifier Venue Local Identifier
+	 * @param jurisdiction Venue Jurisdiction
+	 * @param pricingRebateFunction Pricing Rebate Function
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final PostedBlockL2 Bid()
-	{
-		try
-		{
-			return new PostedBlockL2 (
-				false
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Construct an Ask PostedBlockL2 Price Book
-	 * 
-	 * @return Ask PostedBlockL2 Price Book
-	 */
-
-	public static final PostedBlockL2 Ask()
-	{
-		try
-		{
-			return new PostedBlockL2 (
-				true
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * PostedBlockL2 Constructor
-	 * 
-	 * @param descending TRUE - Price Book is in Descending Order
-	 * 
-	 * @throws Exception Thrown if PostedBlockL2 cannot be constructed
-	 */
-
-	public PostedBlockL2 (
-		final boolean descending)
+	public VenueSettings (
+		final String localIdentifier,
+		final String jurisdiction,
+		final PricingRebateFunction pricingRebateFunction)
 		throws Exception
 	{
-		_descending = descending;
-
-		_orderedBlockMap = new TreeMap<Double, PostedBlock>();
-	}
-
-	/**
-	 * Retrieve the Ordered Block Map
-	 * 
-	 * @return Ordered Block Map
-	 */
-
-	public TreeMap<Double, PostedBlock> orderedBlockMap()
-	{
-		return _orderedBlockMap;
-	}
-
-	/**
-	 * Retrieve the Ascending/Descending Flag
-	 * 
-	 * @return TRUE - Price Book is in Descending Order
-	 */
-
-	public boolean descending()
-	{
-		return _descending;
-	}
-
-	/**
-	 * Add a Posted Block to the Price Book
-	 * 
-	 * @param postedBlock The Posted Block to be added
-	 * 
-	 * @return The Posted Block successfully added to the L2 Price Book
-	 */
-
-	public boolean addBlock (
-		final PostedBlock postedBlock)
-	{
-		if (null == postedBlock)
+		if (null == (_localIdentifier = localIdentifier) || _localIdentifier.isEmpty() ||
+			null == (_jurisdiction = jurisdiction) || _jurisdiction.isEmpty() ||
+			null == (_pricingRebateFunction = pricingRebateFunction)
+		)
 		{
-			return false;
-		}
-
-		double postedPrice = postedBlock.price();
-
-		if (_orderedBlockMap.containsKey (
-			postedPrice
-		))
-		{
-			if (!_orderedBlockMap.get (
-					postedPrice
-				).augmentSize (
-					postedBlock.size()
-				)
-			)
-			{
-				return false;
-			}
-		}
-		else
-		{
-			_orderedBlockMap.put (
-				postedPrice,
-				postedBlock
+			throw new Exception (
+				"VenueSettings Constructor => Invalid Inputs"
 			);
 		}
-
-		return true;
 	}
 
 	/**
-	 * Retrieve the Top of the Book
+	 * Retrieve the Venue Jurisdiction
 	 * 
-	 * @return Top of the Book
+	 * @return Venue Jurisdiction
 	 */
 
-	public PostedBlock topOfTheBook()
+	public String jurisdiction()
 	{
-		return _orderedBlockMap.isEmpty() ? null : _descending ?
-			_orderedBlockMap.lastEntry().getValue() : _orderedBlockMap.firstEntry().getValue();
+		return _jurisdiction;
+	}
+
+	/**
+	 * Retrieve the Venue Local Identifier
+	 * 
+	 * @return Venue Local Identifier
+	 */
+
+	public String localIdentifier()
+	{
+		return _localIdentifier;
+	}
+
+	/**
+	 * Retrieve the Pricing Rebate Function
+	 * 
+	 * @return The Pricing Rebate Function
+	 */
+
+	public PricingRebateFunction pricingRebateFunction()
+	{
+		return _pricingRebateFunction;
+	}
+
+	/**
+	 * Retrieve the Venue Code
+	 * 
+	 * @return Venue Code
+	 */
+
+	public String code()
+	{
+		return _localIdentifier + "::" + _jurisdiction;
 	}
 }
