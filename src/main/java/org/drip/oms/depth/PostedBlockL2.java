@@ -1,8 +1,7 @@
 
-package org.drip.oms.exchange;
+package org.drip.oms.depth;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.TreeMap;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -77,7 +76,7 @@ import java.util.List;
  */
 
 /**
- * <i>UBBOBlock</i> retains the Aggregated Top-of-the-Book and its Contributors. The References are:
+ * <i>PostedBlockL2</i> maintains a Deep Posted Price Book for a Venue. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -108,100 +107,152 @@ import java.util.List;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/exchange/README.md">Implementation of Venue Order Handling</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/depth/README.md">L1, L2, L3 Deep Books</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class UBBOBlock
+public class PostedBlockL2
 {
-	private double _price = Double.NaN;
-	private double _aggregatedSize = Double.NaN;
-	private List<String> _contributingVenueList = null;
+	private boolean _descending = false;
+	private TreeMap<Double, PostedBlock> _orderedBlockMap = null;
 
 	/**
-	 * Empty UBBOBlock Constructor
+	 * Construct a Bid PostedBlockL2 Price Book
+	 * 
+	 * @return Bid PostedBlockL2 Price Book
 	 */
 
-	public UBBOBlock()
+	public static final PostedBlockL2 Bid()
 	{
-		_price = 0.;
-		_aggregatedSize = 0.;
+		try
+		{
+			return new PostedBlockL2 (
+				false
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 
-		_contributingVenueList = new ArrayList<String>();
+		return null;
 	}
 
 	/**
-	 * Retrieve the UBBO Price
+	 * Construct an Ask PostedBlockL2 Price Book
 	 * 
-	 * @return The UBBO Price
+	 * @return Ask PostedBlockL2 Price Book
 	 */
 
-	public double price()
+	public static final PostedBlockL2 Ask()
 	{
-		return _price;
+		try
+		{
+			return new PostedBlockL2 (
+				true
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
-	 * Retrieve the Aggregated UBBO Size
+	 * PostedBlockL2 Constructor
 	 * 
-	 * @return The Aggregated UBBO Size
+	 * @param descending TRUE - Price Book is in Descending Order
+	 * 
+	 * @throws Exception Thrown if PostedBlockL2 cannot be constructed
 	 */
 
-	public double aggregatedSize()
+	public PostedBlockL2 (
+		final boolean descending)
+		throws Exception
 	{
-		return _aggregatedSize;
+		_descending = descending;
+
+		_orderedBlockMap = new TreeMap<Double, PostedBlock>();
 	}
 
 	/**
-	 * Retrieve the List of Contributing Venues
+	 * Retrieve the Ordered Block Map
 	 * 
-	 * @return List of Contributing Venues
+	 * @return Ordered Block Map
 	 */
 
-	public List<String> contributingVenueList()
+	public TreeMap<Double, PostedBlock> orderedBlockMap()
 	{
-		return _contributingVenueList;
+		return _orderedBlockMap;
 	}
 
 	/**
-	 * Indicate if the UBBO Block is Valid
+	 * Retrieve the Ascending/Descending Flag
 	 * 
-	 * @return TRUE - The UBBO Block is Valid
+	 * @return TRUE - Price Book is in Descending Order
 	 */
 
-	public boolean isValid()
+	public boolean descending()
 	{
-		return !_contributingVenueList.isEmpty();
+		return _descending;
 	}
 
 	/**
-	 * Add a Montage Entry
+	 * Add a Posted Block to the Price Book
 	 * 
-	 * @param montageL1Entry The Montage Entry
+	 * @param postedBlock The Posted Block to be added
 	 * 
-	 * @return TRUE - The Montage Entry successfully added
+	 * @return The Posted Block successfully added to the L2 Price Book
 	 */
 
-	public boolean addMontageEntry (
-		final MontageL1Entry montageL1Entry)
+	public boolean addBlock (
+		final PostedBlock postedBlock)
 	{
-		if (null == montageL1Entry)
+		if (null == postedBlock)
 		{
 			return false;
 		}
 
-		PostedBlock postedBlock = montageL1Entry.topOfTheBook();
+		double postedPrice = postedBlock.price();
 
-		_contributingVenueList.add (
-			montageL1Entry.venueCode()
-		);
-
-		_aggregatedSize += postedBlock.size();
-
-		_price = postedBlock.price();
+		if (_orderedBlockMap.containsKey (
+			postedPrice
+		))
+		{
+			if (!_orderedBlockMap.get (
+					postedPrice
+				).augmentSize (
+					postedBlock.size()
+				)
+			)
+			{
+				return false;
+			}
+		}
+		else
+		{
+			_orderedBlockMap.put (
+				postedPrice,
+				postedBlock
+			);
+		}
 
 		return true;
+	}
+
+	/**
+	 * Retrieve the Top of the Book
+	 * 
+	 * @return Top of the Book
+	 */
+
+	public PostedBlock topOfTheBook()
+	{
+		return _orderedBlockMap.isEmpty() ? null : _descending ?
+			_orderedBlockMap.lastEntry().getValue() : _orderedBlockMap.firstEntry().getValue();
 	}
 }

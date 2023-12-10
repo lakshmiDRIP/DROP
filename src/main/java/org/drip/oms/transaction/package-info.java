@@ -1,6 +1,6 @@
 
 /**
- * Definition of Core Order Entities
+ * Order Specification and Session Metrics
  *
  * @author Lakshmi Krishnamurthy
  */

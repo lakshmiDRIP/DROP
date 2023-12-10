@@ -1,5 +1,8 @@
 
-package org.drip.oms.exchange;
+package org.drip.oms.depth;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -74,7 +77,7 @@ package org.drip.oms.exchange;
  */
 
 /**
- * <i>MontageL1Entry</i> holds the Bid Top-of-the Book L1 for a Venue. The References are:
+ * <i>UBBOBlock</i> retains the Aggregated Top-of-the-Book and its Contributors. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -105,60 +108,100 @@ package org.drip.oms.exchange;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/exchange/README.md">Implementation of Venue Order Handling</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/depth/README.md">L1, L2, L3 Deep Books</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MontageL1Entry
+public class UBBOBlock
 {
-	private String _venueCode = "";
-	private PostedBlock _topOfTheBook = null;
+	private double _price = Double.NaN;
+	private double _aggregatedSize = Double.NaN;
+	private List<String> _contributingVenueList = null;
 
 	/**
-	 * MontageL1Entry Constructor
-	 * 
-	 * @param venueCode Venue Code
-	 * @param topOfTheBook Top of the Book
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * Empty UBBOBlock Constructor
 	 */
 
-	public MontageL1Entry (
-		final String venueCode,
-		final PostedBlock topOfTheBook)
-		throws Exception
+	public UBBOBlock()
 	{
-		if (null == (_venueCode = venueCode) || _venueCode.isEmpty())
+		_price = 0.;
+		_aggregatedSize = 0.;
+
+		_contributingVenueList = new ArrayList<String>();
+	}
+
+	/**
+	 * Retrieve the UBBO Price
+	 * 
+	 * @return The UBBO Price
+	 */
+
+	public double price()
+	{
+		return _price;
+	}
+
+	/**
+	 * Retrieve the Aggregated UBBO Size
+	 * 
+	 * @return The Aggregated UBBO Size
+	 */
+
+	public double aggregatedSize()
+	{
+		return _aggregatedSize;
+	}
+
+	/**
+	 * Retrieve the List of Contributing Venues
+	 * 
+	 * @return List of Contributing Venues
+	 */
+
+	public List<String> contributingVenueList()
+	{
+		return _contributingVenueList;
+	}
+
+	/**
+	 * Indicate if the UBBO Block is Valid
+	 * 
+	 * @return TRUE - The UBBO Block is Valid
+	 */
+
+	public boolean isValid()
+	{
+		return !_contributingVenueList.isEmpty();
+	}
+
+	/**
+	 * Add a Montage Entry
+	 * 
+	 * @param montageL1Entry The Montage Entry
+	 * 
+	 * @return TRUE - The Montage Entry successfully added
+	 */
+
+	public boolean addMontageEntry (
+		final MontageL1Entry montageL1Entry)
+	{
+		if (null == montageL1Entry)
 		{
-			throw new Exception (
-				"MontageL1Entry Constructor => Invalid Inputs"
-			);
+			return false;
 		}
 
-		_topOfTheBook = topOfTheBook;
-	}
+		PostedBlock postedBlock = montageL1Entry.topOfTheBook();
 
-	/**
-	 * Retrieve the Venue Code
-	 * 
-	 * @return The Venue Code
-	 */
+		_contributingVenueList.add (
+			montageL1Entry.venueCode()
+		);
 
-	public String venueCode()
-	{
-		return _venueCode;
-	}
+		_aggregatedSize += postedBlock.size();
 
-	/**
-	 * Retrieve the Bid Top-of-the-Book
-	 * 
-	 * @return Bid Top-of-the-Book
-	 */
+		_price = postedBlock.price();
 
-	public PostedBlock topOfTheBook()
-	{
-		return _topOfTheBook;
+		return true;
 	}
 }

@@ -1,7 +1,10 @@
 
-package org.drip.oms.exchange;
+package org.drip.oms.depth;
 
-import java.util.TreeMap;
+import java.time.ZonedDateTime;
+import java.util.Comparator;
+
+import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,7 +79,7 @@ import java.util.TreeMap;
  */
 
 /**
- * <i>PostedBlockL2</i> maintains a Deep Posted Price Book for a Venue. The References are:
+ * <i>PostedBlock</i> maintains a Posted L2 Entry Block inside an Order Book. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -107,29 +110,56 @@ import java.util.TreeMap;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/exchange/README.md">Implementation of Venue Order Handling</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/depth/README.md">L1, L2, L3 Deep Books</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PostedBlockL2
+public class PostedBlock
+	implements Comparator<PostedBlock>, Cloneable
 {
-	private boolean _descending = false;
-	private TreeMap<Double, PostedBlock> _orderedBlockMap = null;
+	private double _size = Double.NaN;
+	private double _price = Double.NaN;
+	private ZonedDateTime _lastUpdateTime = null;
 
 	/**
-	 * Construct a Bid PostedBlockL2 Price Book
+	 * Construct a Freshly Posted Instance of the L2 Block
 	 * 
-	 * @return Bid PostedBlockL2 Price Book
+	 * @param price L2 Price
+	 * @param size L2 Size
+	 * 
+	 * @return Freshly Posted Instance of the L2 Block
 	 */
 
-	public static final PostedBlockL2 Bid()
+	public static final PostedBlock PostNow (
+		final double price,
+		final double size)
 	{
 		try
 		{
-			return new PostedBlockL2 (
-				false
+			return new PostedBlock (
+				ZonedDateTime.now(),
+				price,
+				size
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override protected PostedBlock clone()
+	{
+		try
+		{
+			return new PostedBlock (
+				ZonedDateTime.now(),
+				_price,
+				_size
 			);
 		}
 		catch (Exception e)
@@ -141,118 +171,122 @@ public class PostedBlockL2
 	}
 
 	/**
-	 * Construct an Ask PostedBlockL2 Price Book
+	 * PostedBlock Constructor
 	 * 
-	 * @return Ask PostedBlockL2 Price Book
+	 * @param lastUpdateTime Last Update Time
+	 * @param price L2 Price
+	 * @param size L2 Size
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final PostedBlockL2 Ask()
-	{
-		try
-		{
-			return new PostedBlockL2 (
-				true
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * PostedBlockL2 Constructor
-	 * 
-	 * @param descending TRUE - Price Book is in Descending Order
-	 * 
-	 * @throws Exception Thrown if PostedBlockL2 cannot be constructed
-	 */
-
-	public PostedBlockL2 (
-		final boolean descending)
+	public PostedBlock (
+		final ZonedDateTime lastUpdateTime,
+		final double price,
+		final double size)
 		throws Exception
 	{
-		_descending = descending;
-
-		_orderedBlockMap = new TreeMap<Double, PostedBlock>();
+		if (null == (_lastUpdateTime = lastUpdateTime) ||
+			!NumberUtil.IsValid (
+				_price = price
+			) || !NumberUtil.IsValid (
+				_size = size
+			)
+		)
+		{
+			throw new Exception (
+				"PostedBlock Constructor => Invalid Inputs"
+			);
+		}
 	}
 
 	/**
-	 * Retrieve the Ordered Block Map
+	 * Retrieve the Last Update Time
 	 * 
-	 * @return Ordered Block Map
+	 * @return The Last Update Time
 	 */
 
-	public TreeMap<Double, PostedBlock> orderedBlockMap()
+	public ZonedDateTime lastUpdateTime()
 	{
-		return _orderedBlockMap;
+		return _lastUpdateTime;
 	}
 
 	/**
-	 * Retrieve the Ascending/Descending Flag
+	 * Retrieve the Price
 	 * 
-	 * @return TRUE - Price Book is in Descending Order
+	 * @return The Price
 	 */
 
-	public boolean descending()
+	public double price()
 	{
-		return _descending;
+		return _price;
 	}
 
 	/**
-	 * Add a Posted Block to the Price Book
+	 * Retrieve the Size
 	 * 
-	 * @param postedBlock The Posted Block to be added
-	 * 
-	 * @return The Posted Block successfully added to the L2 Price Book
+	 * @return The Size
 	 */
 
-	public boolean addBlock (
-		final PostedBlock postedBlock)
+	public double size()
 	{
-		if (null == postedBlock)
+		return _size;
+	}
+
+	/**
+	 * Up/Down Size using the Augmented Size
+	 * 
+	 * @param augmentedSize Augmented Size
+	 * 
+	 * @return TRUE - The Augmented Size successfully applied
+	 */
+
+	public boolean augmentSize (
+		final double augmentedSize)
+	{
+		if (!NumberUtil.IsValid (
+			augmentedSize
+		))
 		{
 			return false;
 		}
 
-		double postedPrice = postedBlock.price();
-
-		if (_orderedBlockMap.containsKey (
-			postedPrice
-		))
-		{
-			if (!_orderedBlockMap.get (
-					postedPrice
-				).augmentSize (
-					postedBlock.size()
-				)
-			)
-			{
-				return false;
-			}
-		}
-		else
-		{
-			_orderedBlockMap.put (
-				postedPrice,
-				postedBlock
-			);
-		}
-
+		_size += augmentedSize;
 		return true;
 	}
 
 	/**
-	 * Retrieve the Top of the Book
+	 * Reset the Last Update Time
 	 * 
-	 * @return Top of the Book
+	 * @return TRUE - The Last Update Time successfully Reset
 	 */
 
-	public PostedBlock topOfTheBook()
+	public boolean resetLastUpdateTime()
 	{
-		return _orderedBlockMap.isEmpty() ? null : _descending ?
-			_orderedBlockMap.lastEntry().getValue() : _orderedBlockMap.firstEntry().getValue();
+		_lastUpdateTime = ZonedDateTime.now();
+
+		return true;
+	}
+
+	@Override public int compare (
+		final PostedBlock l2Block1,
+		final PostedBlock l2Block2)
+	{
+		if (null == l2Block1 && null == l2Block2)
+		{
+			return 0;
+		}
+
+		if (null == l2Block1 && null != l2Block2)
+		{
+			return -1;
+		}
+
+		if (null != l2Block1 && null == l2Block2)
+		{
+			return 1;
+		}
+
+		return l2Block1._price == l2Block2._price ? 0 : l2Block1._price < l2Block2._price ? -1 : 1;
 	}
 }

@@ -1,10 +1,5 @@
 
-package org.drip.oms.exchange;
-
-import java.time.ZonedDateTime;
-import java.util.Comparator;
-
-import org.drip.numerical.common.NumberUtil;
+package org.drip.oms.depth;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -79,7 +74,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>PostedBlock</i> maintains a Posted L2 Entry Block inside an Order Book. The References are:
+ * <i>MontageL1Entry</i> holds the Bid Top-of-the Book L1 for a Venue. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -110,152 +105,60 @@ import org.drip.numerical.common.NumberUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/exchange/README.md">Implementation of Venue Order Handling</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/depth/README.md">L1, L2, L3 Deep Books</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PostedBlock
-	implements Comparator<PostedBlock>
+public class MontageL1Entry
 {
-	private double _size = Double.NaN;
-	private double _price = Double.NaN;
-	private ZonedDateTime _lastUpdateTime = null;
+	private String _venueCode = "";
+	private PostedBlock _topOfTheBook = null;
 
 	/**
-	 * Construct a Freshly Posted Instance of the L2 Block
+	 * MontageL1Entry Constructor
 	 * 
-	 * @param price L2 Price
-	 * @param size L2 Size
-	 * 
-	 * @return Freshly Posted Instance of the L2 Block
-	 */
-
-	public static final PostedBlock PostNow (
-		final double price,
-		final double size)
-	{
-		try
-		{
-			return new PostedBlock (
-				ZonedDateTime.now(),
-				price,
-				size
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * PostedBlock Constructor
-	 * 
-	 * @param lastUpdateTime Last Update Time
-	 * @param price L2 Price
-	 * @param size L2 Size
+	 * @param venueCode Venue Code
+	 * @param topOfTheBook Top of the Book
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public PostedBlock (
-		final ZonedDateTime lastUpdateTime,
-		final double price,
-		final double size)
+	public MontageL1Entry (
+		final String venueCode,
+		final PostedBlock topOfTheBook)
 		throws Exception
 	{
-		if (null == (_lastUpdateTime = lastUpdateTime) ||
-			!NumberUtil.IsValid (
-				_price = price
-			) || !NumberUtil.IsValid (
-				_size = size
-			)
-		)
+		if (null == (_venueCode = venueCode) || _venueCode.isEmpty())
 		{
 			throw new Exception (
-				"PostedBlock Constructor => Invalid Inputs"
+				"MontageL1Entry Constructor => Invalid Inputs"
 			);
 		}
+
+		_topOfTheBook = topOfTheBook;
 	}
 
 	/**
-	 * Retrieve the Last Update Time
+	 * Retrieve the Venue Code
 	 * 
-	 * @return The Last Update Time
+	 * @return The Venue Code
 	 */
 
-	public ZonedDateTime lastUpdateTime()
+	public String venueCode()
 	{
-		return _lastUpdateTime;
+		return _venueCode;
 	}
 
 	/**
-	 * Retrieve the Price
+	 * Retrieve the Bid Top-of-the-Book
 	 * 
-	 * @return The Price
+	 * @return Bid Top-of-the-Book
 	 */
 
-	public double price()
+	public PostedBlock topOfTheBook()
 	{
-		return _price;
-	}
-
-	/**
-	 * Retrieve the Size
-	 * 
-	 * @return The Size
-	 */
-
-	public double size()
-	{
-		return _size;
-	}
-
-	/**
-	 * Up/Down Size using the Augmented Size
-	 * 
-	 * @param augmentedSize Augmented Size
-	 * 
-	 * @return TRUE - The Augmented Size successfully applied
-	 */
-
-	public boolean augmentSize (
-		final double augmentedSize)
-	{
-		if (!NumberUtil.IsValid (
-			augmentedSize
-		))
-		{
-			return false;
-		}
-
-		_size += augmentedSize;
-		return true;
-	}
-
-	@Override public int compare (
-		final PostedBlock l2Block1,
-		final PostedBlock l2Block2)
-	{
-		if (null == l2Block1 && null == l2Block2)
-		{
-			return 0;
-		}
-
-		if (null == l2Block1 && null != l2Block2)
-		{
-			return -1;
-		}
-
-		if (null != l2Block1 && null == l2Block2)
-		{
-			return 1;
-		}
-
-		return l2Block1._price == l2Block2._price ? 0 : l2Block1._price < l2Block2._price ? -1 : 1;
+		return _topOfTheBook;
 	}
 }

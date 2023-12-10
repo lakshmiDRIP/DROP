@@ -1,6 +1,12 @@
 
 package org.drip.oms.exchange;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.drip.oms.depth.PostedBlock;
+import org.drip.oms.depth.PriceBook;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -114,6 +120,8 @@ package org.drip.oms.exchange;
 public class Venue
 {
 	private VenueSettings _settings = null;
+	private Map<String, PriceBook> _askTickerPriceBookMap = null;
+	private Map<String, PriceBook> _bidTickerPriceBookMap = null;
 
 	/**
 	 * Venue Constructor
@@ -133,6 +141,10 @@ public class Venue
 				"Venue Constructor => Invalid Inputs"
 			);
 		}
+
+		_askTickerPriceBookMap = new HashMap<String, PriceBook>();
+
+		_bidTickerPriceBookMap = new HashMap<String, PriceBook>();
 	}
 
 	/**
@@ -144,6 +156,28 @@ public class Venue
 	public VenueSettings settings()
 	{
 		return _settings;
+	}
+
+	/**
+	 * Retrieve the Bid Price Book per Ticker
+	 * 
+	 * @return Bid Price Book per Ticker
+	 */
+
+	public Map<String, PriceBook> bidTickerPriceBookMap()
+	{
+		return _bidTickerPriceBookMap;
+	}
+
+	/**
+	 * Retrieve the Ask Price Book per Ticker
+	 * 
+	 * @return Ask Price Book per Ticker
+	 */
+
+	public Map<String, PriceBook> askTickerPriceBookMap()
+	{
+		return _askTickerPriceBookMap;
 	}
 
 	/**
@@ -194,5 +228,133 @@ public class Venue
 			price,
 			size
 		);
+	}
+
+	/**
+	 * Post a Block to the Venue Bid Book for the Ticker
+	 * 
+	 * @param ticker The Ticker
+	 * @param postedBlock The Posted Block
+	 * 
+	 * @return TRUE - The Block posted to the Venue Bid Book for the Ticker
+	 */
+
+	public boolean postBidBlock (
+		final String ticker,
+		final PostedBlock postedBlock)
+	{
+		if (null == ticker || ticker.isEmpty() ||
+			null == postedBlock
+		)
+		{
+			return false;
+		}
+
+		if (!_bidTickerPriceBookMap.containsKey (
+			ticker
+		))
+		{
+			_bidTickerPriceBookMap.put (
+				ticker,
+				new PriceBook()
+			);
+		}
+
+		return _bidTickerPriceBookMap.get (
+			ticker
+		).aggregatePostedBlock (
+			postedBlock
+		);
+	}
+
+	/**
+	 * Post a Block to the Venue Ask Book for the Ticker
+	 * 
+	 * @param ticker The Ticker
+	 * @param postedBlock The Posted Block
+	 * 
+	 * @return TRUE - The Block posted to the Venue Ask Book for the Ticker
+	 */
+
+	public boolean postAskBlock (
+		final String ticker,
+		final PostedBlock postedBlock)
+	{
+		if (null == ticker || ticker.isEmpty() ||
+			null == postedBlock
+		)
+		{
+			return false;
+		}
+
+		if (!_askTickerPriceBookMap.containsKey (
+			ticker
+		))
+		{
+			_askTickerPriceBookMap.put (
+				ticker,
+				new PriceBook()
+			);
+		}
+
+		return _askTickerPriceBookMap.get (
+			ticker
+		).aggregatePostedBlock (
+			postedBlock
+		);
+	}
+
+	/**
+	 * Sweep a Block to the Venue Bid Book for the Ticker
+	 * 
+	 * @param ticker The Ticker
+	 * @param sweptBlock The Swept Block
+	 * @param allowPartialSweep TRUE - Partial Sweep is allowed
+	 * 
+	 * @return TRUE - The Block Swept to the Venue Bid Book for the Ticker
+	 */
+
+	public boolean sweepBidBlock (
+		final String ticker,
+		final PostedBlock sweptBlock,
+		final boolean allowPartialSweep)
+	{
+		return null != ticker && !ticker.isEmpty() &&
+			null != sweptBlock &&
+			_bidTickerPriceBookMap.containsKey (
+				ticker
+			) && _bidTickerPriceBookMap.get (
+				ticker
+			).aggregateSweptBlock (
+				sweptBlock,
+				allowPartialSweep
+			);
+	}
+
+	/**
+	 * Sweep a Block to the Venue Ask Book for the Ticker
+	 * 
+	 * @param ticker The Ticker
+	 * @param sweptBlock The Swept Block
+	 * @param allowPartialSweep TRUE - Partial Sweep is allowed
+	 * 
+	 * @return TRUE - The Block Swept to the Venue Ask Book for the Ticker
+	 */
+
+	public boolean sweepAskBlock (
+		final String ticker,
+		final PostedBlock sweptBlock,
+		final boolean allowPartialSweep)
+	{
+		return null != ticker && !ticker.isEmpty() &&
+			null != sweptBlock &&
+			_askTickerPriceBookMap.containsKey (
+				ticker
+			) && _askTickerPriceBookMap.get (
+				ticker
+			).aggregateSweptBlock (
+				sweptBlock,
+				allowPartialSweep
+			);
 	}
 }
