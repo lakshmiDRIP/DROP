@@ -205,6 +205,17 @@ public class MontageL1SizeLayer
 	}
 
 	/**
+	 * Retrieve the Peak Block of the Montage Layer
+	 * 
+	 * @return Peak Block of the Montage Layer
+	 */
+
+	public PostedBlock peakBlock()
+	{
+		return _orderedEntryMap.isEmpty() ? null : _orderedEntryMap.lastEntry().getValue().topOfTheBook();
+	}
+
+	/**
 	 * Retrieve the Aggregated Size of the Montage Layer
 	 * 
 	 * @return Aggregated Size of the Montage Layer

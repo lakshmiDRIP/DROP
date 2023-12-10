@@ -178,4 +178,35 @@ public class MontageL1
 
 		return true;
 	}
+
+	/**
+	 * Add a Ask Venue L1 Montage Size Layer
+	 * 
+	 * @param montageL1SizeLayer Ask Venue L1 Montage Size Layer
+	 * 
+	 * @return TRUE - Successfully added the Ask Venue L1 Montage Size Layer to the Book
+	 */
+
+	public boolean addAskSizeLayer (
+		final MontageL1SizeLayer montageL1SizeLayer)
+	{
+		if (null == montageL1SizeLayer)
+		{
+			return false;
+		}
+
+		try
+		{
+			_orderedAskBook.put (
+				montageL1SizeLayer.price(),
+				montageL1SizeLayer
+			);
+		}
+		catch (Exception e)
+		{
+			return false;
+		}
+
+		return true;
+	}
 }
