@@ -4,7 +4,7 @@ package org.drip.oms.transaction;
 import java.time.Period;
 import java.time.ZonedDateTime;
 
-import org.drip.oms.venue.OperatingHours;
+import org.drip.oms.exchange.OperatingHours;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

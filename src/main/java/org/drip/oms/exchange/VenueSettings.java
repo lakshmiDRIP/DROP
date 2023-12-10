@@ -1,7 +1,5 @@
 
-package org.drip.oms.venue;
-
-import java.util.TreeMap;
+package org.drip.oms.exchange;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,7 +74,7 @@ import java.util.TreeMap;
  */
 
 /**
- * <i>MontageL1</i> holds the Top-of-the Book L1 across Venues. The References are:
+ * <i>VenueSettings</i> maintains the Settings that Relate to a Venue. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -107,106 +105,210 @@ import java.util.TreeMap;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/venue/README.md">Implementation of Venue Order Handling</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/exchange/README.md">Implementation of Venue Order Handling</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MontageL1
+public class VenueSettings
 {
-	private TreeMap<Double, MontageL1SizeLayer> _orderedAskBook = null;
-	private TreeMap<Double, MontageL1SizeLayer> _orderedBidBook = null;
+	private String _code = "";
+	private String _jurisdiction = "";
+	private boolean _isInverted = false;
+	private String _localIdentifier = "";
+	private PricingRebateFunction _pricingRebateFunction = null;
 
 	/**
-	 * Empty MontageL1 Constructor
+	 * Generate a Regular Venue
+	 * 
+	 * @param code Venue Code
+	 * @param pricingRebateFunction Pricing Rebate Function
+	 * 
+	 * @return Regular Venue
 	 */
 
-	public MontageL1()
+	public static final VenueSettings Regular (
+		final String code,
+		final PricingRebateFunction pricingRebateFunction)
 	{
-	}
-
-	/**
-	 * Retrieve the Ordered Bid Book
-	 * 
-	 * @return The Ordered Bid Book
-	 */
-
-	public TreeMap<Double, MontageL1SizeLayer> _orderedBidBook()
-	{
-		return _orderedBidBook;
-	}
-
-	/**
-	 * Retrieve the Ordered Ask Book
-	 * 
-	 * @return The Ordered Ask Book
-	 */
-
-	public TreeMap<Double, MontageL1SizeLayer> _orderedAskBook()
-	{
-		return _orderedAskBook;
-	}
-
-	/**
-	 * Add a Bid Venue L1 Montage Size Layer
-	 * 
-	 * @param montageL1SizeLayer Bid Venue L1 Montage Size Layer
-	 * 
-	 * @return TRUE - Successfully added the Bid Venue L1 Montage Size Layer to the Book
-	 */
-
-	public boolean addBidSizeLayer (
-		final MontageL1SizeLayer montageL1SizeLayer)
-	{
-		if (null == montageL1SizeLayer)
-		{
-			return false;
-		}
-
 		try
 		{
-			_orderedBidBook.put (
-				montageL1SizeLayer.price(),
-				montageL1SizeLayer
+			return new VenueSettings (
+				code,
+				pricingRebateFunction,
+				false
 			);
 		}
 		catch (Exception e)
 		{
-			return false;
+			e.printStackTrace();
 		}
 
-		return true;
+		return null;
 	}
 
 	/**
-	 * Add a Ask Venue L1 Montage Size Layer
+	 * Generate an Inverted Venue
 	 * 
-	 * @param montageL1SizeLayer Ask Venue L1 Montage Size Layer
+	 * @param code Venue Code
+	 * @param pricingRebateFunction Pricing Rebate Function
 	 * 
-	 * @return TRUE - Successfully added the Ask Venue L1 Montage Size Layer to the Book
+	 * @return Inverted Venue
 	 */
 
-	public boolean addAskSizeLayer (
-		final MontageL1SizeLayer montageL1SizeLayer)
+	public static final VenueSettings Inverted (
+		final String code,
+		final PricingRebateFunction pricingRebateFunction)
 	{
-		if (null == montageL1SizeLayer)
-		{
-			return false;
-		}
-
 		try
 		{
-			_orderedAskBook.put (
-				montageL1SizeLayer.price(),
-				montageL1SizeLayer
+			return new VenueSettings (
+				code,
+				pricingRebateFunction,
+				true
 			);
 		}
 		catch (Exception e)
 		{
-			return false;
+			e.printStackTrace();
 		}
 
-		return true;
+		return null;
+	}
+
+	/**
+	 * VenueSettings Constructor
+	 * 
+	 * @param code Venue Code
+	 * @param pricingRebateFunction Pricing Rebate Function
+	 * @param isInverted TRUE - The Venue is Inverted
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public VenueSettings (
+		final String code,
+		final PricingRebateFunction pricingRebateFunction,
+		final boolean isInverted)
+		throws Exception
+	{
+		if (null == (_code = code) || code.isEmpty() ||
+			null == (_pricingRebateFunction = pricingRebateFunction)
+		)
+		{
+			throw new Exception (
+				"VenueSettings Constructor => Invalid Inputs"
+			);
+		}
+
+		_isInverted = isInverted;
+	}
+
+	/**
+	 * Retrieve the Venue Jurisdiction
+	 * 
+	 * @return Venue Jurisdiction
+	 */
+
+	public String jurisdiction()
+	{
+		return _jurisdiction;
+	}
+
+	/**
+	 * Retrieve the Venue Local Identifier
+	 * 
+	 * @return Venue Local Identifier
+	 */
+
+	public String localIdentifier()
+	{
+		return _localIdentifier;
+	}
+
+	/**
+	 * Retrieve the Venue Code
+	 * 
+	 * @return Venue Code
+	 */
+
+	public String code()
+	{
+		return _code;
+	}
+
+	/**
+	 * Indicate if the Venue is Inverted
+	 * 
+	 * @return TRUE - The Venue is Inverted
+	 */
+
+	public boolean isInverted()
+	{
+		return _isInverted;
+	}
+
+	/**
+	 * Retrieve the Pricing Rebate Function
+	 * 
+	 * @return The Pricing Rebate Function
+	 */
+
+	public PricingRebateFunction pricingRebateFunction()
+	{
+		return _pricingRebateFunction;
+	}
+
+	/**
+	 * Estimate Liquidity Posting Fee for the specified Ticker at the Venue at the Price/Size. Positive
+	 *  number indicates fees paid; negative indicates rebates given.
+	 * 
+	 * @param ticker Ticker
+	 * @param price Price
+	 * @param size Size
+	 * 
+	 * @return Fee for Liquidity Posting
+	 * 
+	 * @throws Exception Thrown if the Liquidity Posting Fee cannot be calculated
+	 */
+
+	public double postFee (
+		final String ticker,
+		final double price,
+		final double size)
+		throws Exception
+	{
+		return _pricingRebateFunction.makerFee (
+			ticker,
+			price,
+			size
+		);
+	}
+
+	/**
+	 * Estimate Liquidity Sweeping Fee for the specified Ticker at the Venue at the Price/Size. Positive
+	 *  number indicates fees paid; negative indicates rebates given.
+	 * 
+	 * @param ticker Ticker
+	 * @param price Price
+	 * @param size Size
+	 * 
+	 * @return Fee for Liquidity Sweeping
+	 * 
+	 * @throws Exception Thrown if the Liquidity Sweeping Fee cannot be calculated
+	 */
+
+	public double sweepFee (
+		final String ticker,
+		final double price,
+		final double size)
+		throws Exception
+	{
+		return _pricingRebateFunction.makerFee (
+			ticker,
+			price,
+			size
+		);
 	}
 }

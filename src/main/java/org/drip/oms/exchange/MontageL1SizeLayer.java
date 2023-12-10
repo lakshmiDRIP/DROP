@@ -1,5 +1,9 @@
 
-package org.drip.oms.venue;
+package org.drip.oms.exchange;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -74,7 +78,8 @@ package org.drip.oms.venue;
  */
 
 /**
- * <i>PostedBlock</i> maintains a Posted L2 Entry Block inside an Order Book. The References are:
+ * <i>MontageL1SizeLayer</i> holds the Posted Blocks for a given Venue and a Price, ordered by Size. The
+ *  References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -105,112 +110,166 @@ package org.drip.oms.venue;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/venue/README.md">Implementation of Venue Order Handling</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/exchange/README.md">Implementation of Venue Order Handling</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ExchangeSettings
+public class MontageL1SizeLayer
 {
-	private String _code = "";
-	private boolean _isInverted = false;
+	private TreeMap<Double, List<MontageL1Entry>> _orderedEntryListMap = null;
 
 	/**
-	 * Generate a Regular Venue
-	 * 
-	 * @param code Venue Code
-	 * 
-	 * @return Regular Venue
+	 * MontageL1SizeLayer Constructor
 	 */
 
-	public static final ExchangeSettings Regular (
-		final String code)
+	public MontageL1SizeLayer()
 	{
-		try
-		{
-			return new ExchangeSettings (
-				code,
-				false
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		_orderedEntryListMap = new TreeMap<Double, List<MontageL1Entry>>();
 	}
 
 	/**
-	 * Generate an Inverted Venue
+	 * Retrieve the Ordered L1 Entry Map
 	 * 
-	 * @param code Venue Code
-	 * 
-	 * @return Inverted Venue
+	 * @return Ordered L1 Entry Map
 	 */
 
-	public static final ExchangeSettings Inverted (
-		final String code)
+	public TreeMap<Double, List<MontageL1Entry>> orderedEntryListMap()
 	{
-		try
-		{
-			return new ExchangeSettings (
-				code,
-				true
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return _orderedEntryListMap;
 	}
 
 	/**
-	 * ExchangeSettings Constructor
+	 * Add the L1 Montage Entry
 	 * 
-	 * @param code Venue Code
-	 * @param isInverted TRUE - The Venue is Inverted
+	 * @param montageL1Entry The L1 Montage Entry
 	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @return TRUE - The L1 Montage Entry successfully added
 	 */
 
-	public ExchangeSettings (
-		final String code,
-		final boolean isInverted)
+	public boolean addEntry (
+		final MontageL1Entry montageL1Entry)
+	{
+		if (null == montageL1Entry)
+		{
+			return false;
+		}
+
+		double size = montageL1Entry.topOfTheBook().size();
+
+		if (_orderedEntryListMap.containsKey (
+			size
+		))
+		{
+			_orderedEntryListMap.get (
+				size
+			).add (
+				montageL1Entry
+			);
+		}
+		else
+		{
+			List<MontageL1Entry> montageL1EntryList = new ArrayList<MontageL1Entry>();
+
+			montageL1EntryList.add (
+				montageL1Entry
+			);
+
+			_orderedEntryListMap.put (
+				size,
+				montageL1EntryList
+			);
+		}
+
+		return true;
+	}
+
+	/**
+	 * Retrieve the Price of the Montage Layer
+	 * 
+	 * @return Price of the Montage Layer
+	 * 
+	 * @throws Exception Thrown if the MontageL1SizeLayer is Empty
+	 */
+
+	public double price()
 		throws Exception
 	{
-		if (null == (_code = code) || code.isEmpty())
+		if (_orderedEntryListMap.isEmpty())
 		{
 			throw new Exception (
-				"ExchangeSettings Constructor => Invalid Inputs"
+				"MontageL1SizeLayer::price => Empty Container"
 			);
 		}
 
-		_isInverted = isInverted;
+		return _orderedEntryListMap.firstEntry().getValue().get (
+			0
+		).topOfTheBook().price();
 	}
 
 	/**
-	 * Retrieve the Venue Code
+	 * Retrieve the Peak Size of the Montage Layer
 	 * 
-	 * @return Venue Code
+	 * @return Peak Size of the Montage Layer
+	 * 
+	 * @throws Exception Thrown if the MontageL1SizeLayer is Empty
 	 */
 
-	public String code()
+	public double peak()
+		throws Exception
 	{
-		return _code;
+		if (_orderedEntryListMap.isEmpty())
+		{
+			throw new Exception (
+				"MontageL1SizeLayer::peak => Empty Container"
+			);
+		}
+
+		return _orderedEntryListMap.lastEntry().getValue().get (
+			0
+		).topOfTheBook().size();
 	}
 
 	/**
-	 * Indicate if the Venue is Inverted
+	 * Retrieve the List of the Peak Blocks of the Montage Layer
 	 * 
-	 * @return TRUE - The Venue is Inverted
+	 * @return List of the Peak Blocks of the Montage Layer
 	 */
 
-	public boolean isInverted()
+	public List<MontageL1Entry> peakBlockList()
 	{
-		return _isInverted;
+		return _orderedEntryListMap.isEmpty() ? null : _orderedEntryListMap.lastEntry().getValue();
+	}
+
+	/**
+	 * Retrieve the Aggregated Size of the Montage Layer
+	 * 
+	 * @return Aggregated Size of the Montage Layer
+	 * 
+	 * @throws Exception Thrown if the MontageL1SizeLayer is Empty
+	 */
+
+	public double aggregate()
+		throws Exception
+	{
+		if (_orderedEntryListMap.isEmpty())
+		{
+			throw new Exception (
+				"MontageL1SizeLayer::aggregate => Empty Container"
+			);
+		}
+
+		double aggregate = 0;
+
+		for (List<MontageL1Entry> montageL1EntryList : _orderedEntryListMap.values())
+		{
+			for (MontageL1Entry montageL1Entry : montageL1EntryList)
+			{
+				aggregate += montageL1Entry.topOfTheBook().size();
+			}
+		}
+
+		return aggregate;
 	}
 }

@@ -1,5 +1,5 @@
 
-package org.drip.oms.venue;
+package org.drip.oms.exchange;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -74,7 +74,8 @@ package org.drip.oms.venue;
  */
 
 /**
- * <i>MontageL1Entry</i> holds the Bid Top-of-the Book L1 for a Venue. The References are:
+ * <i>PricingRebateFunction</i> estimates Fee for the specified Price and Size at the given Venue. The
+ * 	References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -83,8 +84,8 @@ package org.drip.oms.venue;
  * 				https://www.investopedia.com/terms/t/timeinforce.asp
  * 		</li>
  * 		<li>
- * 			Cont, R., and A. Kukanov (2017): Optimal Order Placement in Limit Order Markets <i>Quantitative
- * 				Finance</i> <b>17 (1)</b> 21-39
+ * 			Editorial Staff (2016): Inverted Price Venues Grabbing Market Share in US and Canada
+ * 				https://www.tradersmagazine.com/departments/buyside/inverted-price-venues-grabbing-market-share-in-us-and-canada/
  * 		</li>
  * 		<li>
  * 			Vassilis, P. (2005b): Slow and Fast Markets <i>Journal of Economics and Business</i> <b>57
@@ -105,60 +106,50 @@ package org.drip.oms.venue;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/venue/README.md">Implementation of Venue Order Handling</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/exchange/README.md">Implementation of Venue Order Handling</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MontageL1Entry
+public interface PricingRebateFunction
 {
-	private PostedBlock _topOfTheBook = null;
-	private ExchangeSettings _exchangeSettings = null;
 
 	/**
-	 * MontageL1Entry Constructor
+	 * Estimate Liquidity Maker Fee for the specified Ticker at the Venue at the Price/Size. Positive number
+	 *  indicates fees paid; negative indicates rebates given.
 	 * 
-	 * @param exchangeSettings Exchange Settings
-	 * @param topOfTheBook Top of the Book
+	 * @param ticker Ticker
+	 * @param price Price
+	 * @param size Size
 	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @return Fee for Liquidity Maker
+	 * 
+	 * @throws Exception Thrown if the Liquidity Maker Fee cannot be calculated
 	 */
 
-	public MontageL1Entry (
-		final ExchangeSettings exchangeSettings,
-		final PostedBlock topOfTheBook)
-		throws Exception
-	{
-		if (null == (_exchangeSettings = exchangeSettings))
-		{
-			throw new Exception (
-				"MontageL1Entry Constructor => Invalid Inputs"
-			);
-		}
-
-		_topOfTheBook = topOfTheBook;
-	}
+	abstract public double makerFee (
+		final String ticker,
+		final double price,
+		final double size
+	) throws Exception;
 
 	/**
-	 * Retrieve the Exchange Settings
+	 * Estimate Liquidity Taker Fee for the specified Ticker at the Venue at the Price/Size. Positive number
+	 *  indicates fees paid; negative indicates rebates given.
 	 * 
-	 * @return The Exchange Settings
+	 * @param ticker Ticker
+	 * @param price Price
+	 * @param size Size
+	 * 
+	 * @return Fee for Liquidity Taker
+	 * 
+	 * @throws Exception Thrown if the Liquidity Taker Fee cannot be calculated
 	 */
 
-	public ExchangeSettings exchangeSettings()
-	{
-		return _exchangeSettings;
-	}
-
-	/**
-	 * Retrieve the Bid Top-of-the-Book
-	 * 
-	 * @return Bid Top-of-the-Book
-	 */
-
-	public PostedBlock topOfTheBook()
-	{
-		return _topOfTheBook;
-	}
+	abstract public double takerFee (
+		final String ticker,
+		final double price,
+		final double size
+	) throws Exception;
 }

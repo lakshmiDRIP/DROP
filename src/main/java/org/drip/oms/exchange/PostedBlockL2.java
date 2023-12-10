@@ -1,5 +1,5 @@
 
-package org.drip.oms.venue;
+package org.drip.oms.exchange;
 
 import java.util.TreeMap;
 
@@ -76,8 +76,7 @@ import java.util.TreeMap;
  */
 
 /**
- * <i>MontageL1SizeLayer</i> holds the Posted Blocks for a given Venue and a Price, ordered by Size. The
- *  References are:
+ * <i>PostedBlockL2</i> maintains a Deep Posted Price Book for a Venue. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -108,138 +107,152 @@ import java.util.TreeMap;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/venue/README.md">Implementation of Venue Order Handling</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/exchange/README.md">Implementation of Venue Order Handling</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MontageL1SizeLayer
+public class PostedBlockL2
 {
-	private TreeMap<Double, MontageL1Entry> _orderedEntryMap = null;
+	private boolean _descending = false;
+	private TreeMap<Double, PostedBlock> _orderedBlockMap = null;
 
 	/**
-	 * MontageL1SizeLayer Constructor
+	 * Construct a Bid PostedBlockL2 Price Book
+	 * 
+	 * @return Bid PostedBlockL2 Price Book
 	 */
 
-	public MontageL1SizeLayer()
+	public static final PostedBlockL2 Bid()
 	{
-		_orderedEntryMap = new TreeMap<Double, MontageL1Entry>();
+		try
+		{
+			return new PostedBlockL2 (
+				false
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
-	 * Retrieve the Ordered L1 Entry Map
+	 * Construct an Ask PostedBlockL2 Price Book
 	 * 
-	 * @return Ordered L1 Entry Map
+	 * @return Ask PostedBlockL2 Price Book
 	 */
 
-	public TreeMap<Double, MontageL1Entry> orderedEntryMap()
+	public static final PostedBlockL2 Ask()
 	{
-		return _orderedEntryMap;
+		try
+		{
+			return new PostedBlockL2 (
+				true
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
-	 * Add the L1 Montage Entry
+	 * PostedBlockL2 Constructor
 	 * 
-	 * @param montageL1Entry The L1 Montage Entry
+	 * @param descending TRUE - Price Book is in Descending Order
 	 * 
-	 * @return TRUE - The L1 Montage Entry successfully added
+	 * @throws Exception Thrown if PostedBlockL2 cannot be constructed
 	 */
 
-	public boolean addEntry (
-		final MontageL1Entry montageL1Entry)
+	public PostedBlockL2 (
+		final boolean descending)
+		throws Exception
 	{
-		if (null == montageL1Entry)
+		_descending = descending;
+
+		_orderedBlockMap = new TreeMap<Double, PostedBlock>();
+	}
+
+	/**
+	 * Retrieve the Ordered Block Map
+	 * 
+	 * @return Ordered Block Map
+	 */
+
+	public TreeMap<Double, PostedBlock> orderedBlockMap()
+	{
+		return _orderedBlockMap;
+	}
+
+	/**
+	 * Retrieve the Ascending/Descending Flag
+	 * 
+	 * @return TRUE - Price Book is in Descending Order
+	 */
+
+	public boolean descending()
+	{
+		return _descending;
+	}
+
+	/**
+	 * Add a Posted Block to the Price Book
+	 * 
+	 * @param postedBlock The Posted Block to be added
+	 * 
+	 * @return The Posted Block successfully added to the L2 Price Book
+	 */
+
+	public boolean addBlock (
+		final PostedBlock postedBlock)
+	{
+		if (null == postedBlock)
 		{
 			return false;
 		}
 
-		_orderedEntryMap.put (
-			montageL1Entry.topOfTheBook().size(),
-			montageL1Entry
-		);
+		double postedPrice = postedBlock.price();
+
+		if (_orderedBlockMap.containsKey (
+			postedPrice
+		))
+		{
+			if (!_orderedBlockMap.get (
+					postedPrice
+				).augmentSize (
+					postedBlock.size()
+				)
+			)
+			{
+				return false;
+			}
+		}
+		else
+		{
+			_orderedBlockMap.put (
+				postedPrice,
+				postedBlock
+			);
+		}
 
 		return true;
 	}
 
 	/**
-	 * Retrieve the Price of the Montage Layer
+	 * Retrieve the Top of the Book
 	 * 
-	 * @return Price of the Montage Layer
-	 * 
-	 * @throws Exception Thrown if the MontageL1SizeLayer is Empty
+	 * @return Top of the Book
 	 */
 
-	public double price()
-		throws Exception
+	public PostedBlock topOfTheBook()
 	{
-		if (_orderedEntryMap.isEmpty())
-		{
-			throw new Exception (
-				"MontageL1SizeLayer::price => Empty Container"
-			);
-		}
-
-		return _orderedEntryMap.firstEntry().getValue().topOfTheBook().price();
-	}
-
-	/**
-	 * Retrieve the Peak Size of the Montage Layer
-	 * 
-	 * @return Peak Size of the Montage Layer
-	 * 
-	 * @throws Exception Thrown if the MontageL1SizeLayer is Empty
-	 */
-
-	public double peak()
-		throws Exception
-	{
-		if (_orderedEntryMap.isEmpty())
-		{
-			throw new Exception (
-				"MontageL1SizeLayer::peak => Empty Container"
-			);
-		}
-
-		return _orderedEntryMap.lastEntry().getValue().topOfTheBook().size();
-	}
-
-	/**
-	 * Retrieve the Peak Block of the Montage Layer
-	 * 
-	 * @return Peak Block of the Montage Layer
-	 */
-
-	public PostedBlock peakBlock()
-	{
-		return _orderedEntryMap.isEmpty() ? null : _orderedEntryMap.lastEntry().getValue().topOfTheBook();
-	}
-
-	/**
-	 * Retrieve the Aggregated Size of the Montage Layer
-	 * 
-	 * @return Aggregated Size of the Montage Layer
-	 * 
-	 * @throws Exception Thrown if the MontageL1SizeLayer is Empty
-	 */
-
-	public double aggregate()
-		throws Exception
-	{
-		if (_orderedEntryMap.isEmpty())
-		{
-			throw new Exception (
-				"MontageL1SizeLayer::aggregate => Empty Container"
-			);
-		}
-
-		double aggregate = 0;
-
-		for (MontageL1Entry montageL1Entry : _orderedEntryMap.values())
-		{
-			aggregate += montageL1Entry.topOfTheBook().size();
-		}
-
-		return aggregate;
+		return _orderedBlockMap.isEmpty() ? null : _descending ?
+			_orderedBlockMap.lastEntry().getValue() : _orderedBlockMap.firstEntry().getValue();
 	}
 }

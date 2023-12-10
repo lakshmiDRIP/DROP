@@ -1,7 +1,10 @@
 
-package org.drip.oms.venue;
+package org.drip.oms.exchange;
 
-import java.util.TreeMap;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,7 +79,7 @@ import java.util.TreeMap;
  */
 
 /**
- * <i>PostedBlockL2</i> maintains a Deep Posted Price Book for a Venue. The References are:
+ * <i>OperatingHours</i> maintains the Venue Specific Operating Hours. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -107,152 +110,102 @@ import java.util.TreeMap;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/venue/README.md">Implementation of Venue Order Handling</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/exchange/README.md">Implementation of Venue Order Handling</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PostedBlockL2
+public class OperatingHours
 {
-	private boolean _descending = false;
-	private TreeMap<Double, PostedBlock> _orderedBlockMap = null;
 
 	/**
-	 * Construct a Bid PostedBlockL2 Price Book
+	 * Retrieve the US Market Close Zoned Date Time Instance
 	 * 
-	 * @return Bid PostedBlockL2 Price Book
+	 * @param localDate Local Date
+	 * 
+	 * @return US Market Close Zoned Date Time Instance
 	 */
 
-	public static final PostedBlockL2 Bid()
+	public static final ZonedDateTime USMarketClose (
+		final LocalDate localDate)
 	{
-		try
-		{
-			return new PostedBlockL2 (
-				false
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Construct an Ask PostedBlockL2 Price Book
-	 * 
-	 * @return Ask PostedBlockL2 Price Book
-	 */
-
-	public static final PostedBlockL2 Ask()
-	{
-		try
-		{
-			return new PostedBlockL2 (
-				true
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * PostedBlockL2 Constructor
-	 * 
-	 * @param descending TRUE - Price Book is in Descending Order
-	 * 
-	 * @throws Exception Thrown if PostedBlockL2 cannot be constructed
-	 */
-
-	public PostedBlockL2 (
-		final boolean descending)
-		throws Exception
-	{
-		_descending = descending;
-
-		_orderedBlockMap = new TreeMap<Double, PostedBlock>();
-	}
-
-	/**
-	 * Retrieve the Ordered Block Map
-	 * 
-	 * @return Ordered Block Map
-	 */
-
-	public TreeMap<Double, PostedBlock> orderedBlockMap()
-	{
-		return _orderedBlockMap;
-	}
-
-	/**
-	 * Retrieve the Ascending/Descending Flag
-	 * 
-	 * @return TRUE - Price Book is in Descending Order
-	 */
-
-	public boolean descending()
-	{
-		return _descending;
-	}
-
-	/**
-	 * Add a Posted Block to the Price Book
-	 * 
-	 * @param postedBlock The Posted Block to be added
-	 * 
-	 * @return The Posted Block successfully added to the L2 Price Book
-	 */
-
-	public boolean addBlock (
-		final PostedBlock postedBlock)
-	{
-		if (null == postedBlock)
-		{
-			return false;
-		}
-
-		double postedPrice = postedBlock.price();
-
-		if (_orderedBlockMap.containsKey (
-			postedPrice
-		))
-		{
-			if (!_orderedBlockMap.get (
-					postedPrice
-				).augmentSize (
-					postedBlock.size()
-				)
+		return ZonedDateTime.of (
+			localDate,
+			LocalTime.of (
+				16,
+				0,
+				0
+			),
+			ZoneId.of (
+				"America/New_York"
 			)
-			{
-				return false;
-			}
-		}
-		else
-		{
-			_orderedBlockMap.put (
-				postedPrice,
-				postedBlock
-			);
-		}
-
-		return true;
+		);
 	}
 
 	/**
-	 * Retrieve the Top of the Book
+	 * Retrieve the Current US Market Close Zoned Date Time Instance
 	 * 
-	 * @return Top of the Book
+	 * @return Current US Market Open Close Date Time Instance
 	 */
 
-	public PostedBlock topOfTheBook()
+	public static final ZonedDateTime USMarketClose()
 	{
-		return _orderedBlockMap.isEmpty() ? null : _descending ?
-			_orderedBlockMap.lastEntry().getValue() : _orderedBlockMap.firstEntry().getValue();
+		return ZonedDateTime.of (
+			LocalDate.now(),
+			LocalTime.of (
+				16,
+				0,
+				0
+			),
+			ZoneId.of (
+				"America/New_York"
+			)
+		);
+	}
+
+	/**
+	 * Retrieve the US Market Open Zoned Date Time Instance
+	 * 
+	 * @param localDate Local Date
+	 * 
+	 * @return US Market Open Zoned Date Time Instance
+	 */
+
+	public static final ZonedDateTime USMarketOpen (
+		final LocalDate localDate)
+	{
+		return ZonedDateTime.of (
+			localDate,
+			LocalTime.of (
+				9,
+				30,
+				0
+			),
+			ZoneId.of (
+				"America/New_York"
+			)
+		);
+	}
+
+	/**
+	 * Retrieve the Current US Market Open Zoned Date Time Instance
+	 * 
+	 * @return Current US Market Open Open Date Time Instance
+	 */
+
+	public static final ZonedDateTime USMarketOpen()
+	{
+		return ZonedDateTime.of (
+			LocalDate.now(),
+			LocalTime.of (
+				9,
+				30,
+				0
+			),
+			ZoneId.of (
+				"America/New_York"
+			)
+		);
 	}
 }

@@ -1,10 +1,7 @@
 
-package org.drip.oms.venue;
+package org.drip.oms.exchange;
 
-import java.time.ZonedDateTime;
-import java.util.Comparator;
-
-import org.drip.numerical.common.NumberUtil;
+import java.util.TreeMap;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -79,7 +76,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>PostedBlock</i> maintains a Posted L2 Entry Block inside an Order Book. The References are:
+ * <i>MontageL1Manager</i> manages the Top-of-the Book L1 Montage across Venues. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -110,152 +107,196 @@ import org.drip.numerical.common.NumberUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/venue/README.md">Implementation of Venue Order Handling</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/exchange/README.md">Implementation of Venue Order Handling</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PostedBlock
-	implements Comparator<PostedBlock>
+public class MontageL1Manager
 {
-	private double _size = Double.NaN;
-	private double _price = Double.NaN;
-	private ZonedDateTime _lastUpdateTime = null;
+	private TreeMap<Double, MontageL1SizeLayer> _orderedAskBook = null;
+	private TreeMap<Double, MontageL1SizeLayer> _orderedBidBook = null;
 
 	/**
-	 * Construct a Freshly Posted Instance of the L2 Block
-	 * 
-	 * @param price L2 Price
-	 * @param size L2 Size
-	 * 
-	 * @return Freshly Posted Instance of the L2 Block
+	 * Empty MontageL1Manager Constructor
 	 */
 
-	public static final PostedBlock PostNow (
-		final double price,
-		final double size)
+	public MontageL1Manager()
 	{
-		try
-		{
-			return new PostedBlock (
-				ZonedDateTime.now(),
-				price,
-				size
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
 	}
 
 	/**
-	 * PostedBlock Constructor
+	 * Retrieve the Ordered Bid Book
 	 * 
-	 * @param lastUpdateTime Last Update Time
-	 * @param price L2 Price
-	 * @param size L2 Size
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @return The Ordered Bid Book
 	 */
 
-	public PostedBlock (
-		final ZonedDateTime lastUpdateTime,
-		final double price,
-		final double size)
-		throws Exception
+	public TreeMap<Double, MontageL1SizeLayer> _orderedBidBook()
 	{
-		if (null == (_lastUpdateTime = lastUpdateTime) ||
-			!NumberUtil.IsValid (
-				_price = price
-			) || !NumberUtil.IsValid (
-				_size = size
-			)
-		)
-		{
-			throw new Exception (
-				"PostedBlock Constructor => Invalid Inputs"
-			);
-		}
+		return _orderedBidBook;
 	}
 
 	/**
-	 * Retrieve the Last Update Time
+	 * Retrieve the Ordered Ask Book
 	 * 
-	 * @return The Last Update Time
+	 * @return The Ordered Ask Book
 	 */
 
-	public ZonedDateTime lastUpdateTime()
+	public TreeMap<Double, MontageL1SizeLayer> _orderedAskBook()
 	{
-		return _lastUpdateTime;
+		return _orderedAskBook;
 	}
 
 	/**
-	 * Retrieve the Price
+	 * Add a Bid Venue L1 Montage Size Layer
 	 * 
-	 * @return The Price
+	 * @param montageL1SizeLayer Bid Venue L1 Montage Size Layer
+	 * 
+	 * @return TRUE - Successfully added the Bid Venue L1 Montage Size Layer to the Book
 	 */
 
-	public double price()
+	public boolean addBidSizeLayer (
+		final MontageL1SizeLayer montageL1SizeLayer)
 	{
-		return _price;
-	}
-
-	/**
-	 * Retrieve the Size
-	 * 
-	 * @return The Size
-	 */
-
-	public double size()
-	{
-		return _size;
-	}
-
-	/**
-	 * Up/Down Size using the Augmented Size
-	 * 
-	 * @param augmentedSize Augmented Size
-	 * 
-	 * @return TRUE - The Augmented Size successfully applied
-	 */
-
-	public boolean augmentSize (
-		final double augmentedSize)
-	{
-		if (!NumberUtil.IsValid (
-			augmentedSize
-		))
+		if (null == montageL1SizeLayer)
 		{
 			return false;
 		}
 
-		_size += augmentedSize;
+		try
+		{
+			_orderedBidBook.put (
+				montageL1SizeLayer.price(),
+				montageL1SizeLayer
+			);
+		}
+		catch (Exception e)
+		{
+			return false;
+		}
+
 		return true;
 	}
 
-	@Override public int compare (
-		final PostedBlock l2Block1,
-		final PostedBlock l2Block2)
+	/**
+	 * Add the L1 Bid Entry to the Montage Manager
+	 * 
+	 * @param montageL1BidEntry L1 Montage Bid Entry
+	 * 
+	 * @return TRUE - The L1 Bid Entry successfully added to the Montage Manager
+	 */
+
+	public boolean addBidEntry (
+		final MontageL1Entry montageL1BidEntry)
 	{
-		if (null == l2Block1 && null == l2Block2)
+		if (null == montageL1BidEntry)
 		{
-			return 0;
+			return false;
 		}
 
-		if (null == l2Block1 && null != l2Block2)
+		double price = montageL1BidEntry.topOfTheBook().price();
+
+		if (_orderedBidBook.containsKey (
+			price
+		))
 		{
-			return -1;
+			_orderedBidBook.get (
+				price
+			).addEntry (
+				montageL1BidEntry
+			);
+		}
+		else
+		{
+			MontageL1SizeLayer montageL1SizeLayer = new MontageL1SizeLayer();
+
+			montageL1SizeLayer.addEntry (
+				montageL1BidEntry
+			);
+
+			_orderedBidBook.put (
+				price,
+				montageL1SizeLayer
+			);
 		}
 
-		if (null != l2Block1 && null == l2Block2)
+		return true;
+	}
+
+	/**
+	 * Add a Ask Venue L1 Montage Size Layer
+	 * 
+	 * @param montageL1SizeLayer Ask Venue L1 Montage Size Layer
+	 * 
+	 * @return TRUE - Successfully added the Ask Venue L1 Montage Size Layer to the Book
+	 */
+
+	public boolean addAskSizeLayer (
+		final MontageL1SizeLayer montageL1SizeLayer)
+	{
+		if (null == montageL1SizeLayer)
 		{
-			return 1;
+			return false;
 		}
 
-		return l2Block1._price == l2Block2._price ? 0 : l2Block1._price < l2Block2._price ? -1 : 1;
+		try
+		{
+			_orderedAskBook.put (
+				montageL1SizeLayer.price(),
+				montageL1SizeLayer
+			);
+		}
+		catch (Exception e)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Add the L1 Ask Entry to the Montage Manager
+	 * 
+	 * @param montageL1AskEntry L1 Montage Ask Entry
+	 * 
+	 * @return TRUE - The L1 Ask Entry successfully added to the Montage Manager
+	 */
+
+	public boolean addAskEntry (
+		final MontageL1Entry montageL1AskEntry)
+	{
+		if (null == montageL1AskEntry)
+		{
+			return false;
+		}
+
+		double price = montageL1AskEntry.topOfTheBook().price();
+
+		if (_orderedAskBook.containsKey (
+			price
+		))
+		{
+			_orderedAskBook.get (
+				price
+			).addEntry (
+				montageL1AskEntry
+			);
+		}
+		else
+		{
+			MontageL1SizeLayer montageL1SizeLayer = new MontageL1SizeLayer();
+
+			montageL1SizeLayer.addEntry (
+				montageL1AskEntry
+			);
+
+			_orderedAskBook.put (
+				price,
+				montageL1SizeLayer
+			);
+		}
+
+		return true;
 	}
 }
