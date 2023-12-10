@@ -332,7 +332,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 		int iStartDate = _iEpochDate;
 		int iNumDate = _aiDate.length;
 
-		while (i < iNumDate && (int) iDate >= (int) _aiDate[i]) {
+		while (i < iNumDate && iDate >= _aiDate[i]) {
 			if (_bDiscreteCompounding)
 				dblDF *= java.lang.Math.pow (1. + (_adblForwardRate[i] / _iCompoundingFreq), -1. * yearFract
 					(iStartDate, _aiDate[i]) * _iCompoundingFreq);
@@ -538,7 +538,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 			return null;
 		}
 
-		while (i < _adblForwardRate.length && (int) iDate >= (int) _aiDate[i]) {
+		while (i < _adblForwardRate.length && iDate >= _aiDate[i]) {
 			if (!wj.accumulatePartialFirstDerivative (0, i, dblDF * (iStartDate - _aiDate[i]) / 365.25))
 				return null;
 

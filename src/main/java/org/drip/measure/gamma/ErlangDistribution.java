@@ -164,7 +164,7 @@ public class ErlangDistribution
 
 		org.drip.measure.gamma.ShapeScaleParameters shapeScaleParameters = shapeScaleParameters();
 
-		double rate = (double) shapeScaleParameters.rate();
+		double rate = shapeScaleParameters.rate();
 
 		int shape = (int) shapeScaleParameters.shape();
 

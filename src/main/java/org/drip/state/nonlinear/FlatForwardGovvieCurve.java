@@ -159,7 +159,7 @@ public class FlatForwardGovvieCurve extends org.drip.state.govvie.ExplicitBootGo
 		org.drip.analytics.daycount.ActActDCParams aap =
 			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);
 
-		while (i < iNumDate && (int) iDate >= (int) _aiDate[i]) {
+		while (i < iNumDate && iDate >= _aiDate[i]) {
 			dblDF *= java.lang.Math.pow (1. + (_adblForwardYield[i] / iFreq), -1. * yearFract (iStartDate,
 				_aiDate[i], aap, strDayCount) * iFreq);
 

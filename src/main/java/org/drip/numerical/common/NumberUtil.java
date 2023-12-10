@@ -199,7 +199,7 @@ public class NumberUtil {
 		while (index < stringLength)
 		{
 			integerToDigitList.add (
-				(int) (charArray[index++] - '0')
+				charArray[index++] - '0'
 			);
 		}
 

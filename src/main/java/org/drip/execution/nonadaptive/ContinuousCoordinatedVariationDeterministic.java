@@ -161,8 +161,7 @@ public class ContinuousCoordinatedVariationDeterministic extends
 
 	@Override public org.drip.execution.optimum.EfficientTradingTrajectory generate()
 	{
-		org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep =
-			(org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters) priceEvolutionParameters();
+		org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep = priceEvolutionParameters();
 
 		org.drip.execution.profiletime.BackgroundParticipationRate bprTemporary =
 			apep.temporaryExpectation();

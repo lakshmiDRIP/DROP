@@ -397,7 +397,7 @@ public class StringUtil {
 	private static final int CharToDigit (
 		final int c)
 	{
-		return (int) c - (int) '0';
+		return c - (int) '0';
 	}
 
 	private static final java.util.List<java.lang.Integer> StringToNumber (

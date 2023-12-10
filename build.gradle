@@ -1,72 +1,88 @@
-buildscript
-{
-  repositories
-  { 
-    jcenter()
-    mavenCentral()
-    maven
-    {
-        url "https://plugins.gradle.org/m2/"
-    }
-  }
-  dependencies {
-    classpath "ru.vyarus:gradle-animalsniffer-plugin:1.2.0"
-    classpath "gradle.plugin.nl.javadude.gradle.plugins:license-gradle-plugin:0.13.1"
-    classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
-    classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.5.2"
-    classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.4.0'
-  }
+import com.github.spotbugs.snom.Confidence
+import com.github.spotbugs.snom.Effort
+import com.github.spotbugs.snom.SpotBugsTask
+
+import java.lang.management.ManagementFactory
+
+plugins {
+    id 'build-dashboard'
+    id 'jacoco'
+    id 'java-library'
+    id 'project-report'
+    id 'maven-publish'
+    id 'com.dorongold.task-tree'
+    id 'com.github.andygoossens.gradle-modernizer-plugin'
+    id 'com.github.ben-manes.versions'
+    id 'com.github.hierynomus.license-base'
+    id 'com.github.spotbugs'
+    id 'com.jfrog.bintray'
+    id 'org.kordamp.gradle.coveralls'
+    id 'org.kordamp.gradle.jdeps'
+    id 'ru.vyarus.animalsniffer'
 }
 
 group = "org.drip"
 ext.githubProjectName = "DROP"
-
 version = project.properties["release.version"]
-
-def releaseTag = System.getenv("TRAVIS_TAG");
-if (releaseTag != null && !releaseTag.isEmpty())
-{
-    if (releaseTag.startsWith("v"))
-    {
-        releaseTag = releaseTag.substring(1);
-    }
-    version = releaseTag;
-    project.properties.put("release.version", releaseTag);
-
-    println("Releasing with version " + version);
-}
-
 description = "DROP implements the model libraries and provides systems for fixed income valuation and adjustments, asset allocation and transaction cost analytics, and supporting libraries in numerical optimization and statistical learning."
 
-apply plugin: "java-library"
-apply plugin: "jacoco"
-apply plugin: "maven"
-apply plugin: "osgi"
-apply plugin: "com.github.hierynomus.license"
-apply plugin: "com.jfrog.bintray"
-apply plugin: "com.jfrog.artifactory"
-apply plugin: "com.github.kt3k.coveralls"
+def releaseTag = System.getenv("TRAVIS_TAG")
+if (releaseTag != null && !releaseTag.isEmpty()) {
+    if (releaseTag.startsWith("v")) {
+        releaseTag = releaseTag.substring(1)
+    }
+    version = releaseTag
+    project.properties.put("release.version", releaseTag)
 
-repositories
-{
-  mavenCentral()
+    println("Releasing with version " + version)
 }
 
-dependencies
-{
-    api 'org.apache.commons:commons-math3:3.6.1'
-    testImplementation 'junit:junit:4.12'
+repositories {
+    mavenCentral()
 }
 
-javadoc
-{
+dependencies {
+    compileOnly "com.github.spotbugs:spotbugs-annotations:$spotbugsVersion"
+    compileOnly "com.github.stephenc.jcip:jcip-annotations:$jcipAnnotationsVersion"
+    compileOnly "com.google.code.findbugs:findbugs-annotations:$findbugsAnnotationsVersion"
+    compileOnly "org.apache.commons:commons-math3:$commonsMathVersion"
+    compileOnly "org.gaul:modernizer-maven-annotations:$modernizerVersion"
+
+    testCompileOnly "com.google.code.findbugs:findbugs-annotations:$findbugsAnnotationsVersion"
+
+    testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
+    testImplementation "org.assertj:assertj-core:$assertJVersion"
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+
+    // Quiet build -- build works without this, but JUnit complains
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    spotbugsPlugins "com.h3xstream.findsecbugs:findsecbugs-plugin:$findsecbugsPluginVersion"
+}
+
+sourceSets {
+    integrationTest {
+        compileClasspath += sourceSets.main.output
+        compileClasspath += sourceSets.test.output
+        runtimeClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.test.output
+    }
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of("$jdkVersion"))
+    }
+}
+
+javadoc {
     failOnError = false
     exclude "**/internal/**"
     exclude "**/perf/**"
     exclude "**/test/**"
     exclude "**/zen/**"
-    options
-    {
+    options {
         windowTitle = "DROP Javadoc ${project.version}"
     }
     options.addStringOption("top").value = ""
@@ -76,34 +92,146 @@ javadoc
     options.links("http://docs.oracle.com/javase/7/docs/api/")
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = "sources"
-    from sourceSets.main.allSource
+tasks.withType(JavaCompile).configureEach {
+    // commented out for now to allow empty statement, lossy-conversions related issues
+    // options.compilerArgs += ["-Werror", "-Xlint:all,-processing", "-parameters"]
+    options.encoding = 'Cp1252'
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = "javadoc"
-    from javadoc.destinationDir
+test {
+    // NB -- JaCoCo draws from _unit tests_, not integration tests
+    // When tests fail, you still have a coverage report
+    finalizedBy jacocoTestReport
+    testLogging {
+        events = ["skipped", "failed"]
+        exceptionFormat = "full"
+
+        debug.events = ["skipped", "failed"]
+        debug.exceptionFormat = "full"
+
+        info.events = ["failed", "skipped"]
+        info.exceptionFormat = "full"
+
+        warn.events = ["failed", "skipped"]
+        warn.exceptionFormat = "full"
+    }
+
+    maxHeapSize = "1200m"
+
+    if (System.getenv("CI") == null) {
+        maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+    }
 }
 
-artifacts {
-    archives jar
-    archives sourcesJar
-    archives javadocJar
+tasks.withType(Test).configureEach {
+    // Quieter builds when JUL is in use (you or another library or tool)
+    // TODO: Keep builds noisy in CI
+    systemProperty "java.util.logging.config.file", "$projectDir/config/logging.properties"
+    // This idiom ensures JUnit5 for integration tests, not just unit tests
+    useJUnitPlatform()
+}
+
+task GCandMem(dependsOn: "check") doLast {
+    print("Memory usage before: ")
+    println(ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / 1024.0 / 1024.0)
+    System.gc()
+    Thread.sleep(200)
+    print("Memory usage: ")
+    println(ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / 1024.0 / 1024.0)
+}
+
+task GCandMem2(dependsOn: "test") doLast {
+    print("Memory usage before: ")
+    println(ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / 1024.0 / 1024.0)
+    System.gc()
+    Thread.sleep(200)
+    print("Memory usage: ")
+    println(ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / 1024.0 / 1024.0)
+}
+
+spotbugs {
+    toolVersion = spotbugsVersion
+    effort = Effort.valueOf('MAX')
+    reportLevel = Confidence.valueOf('HIGH')
+    // TODO: Set to false later
+    ignoreFailures = true
+    showProgress = true
+    showStackTraces = true
+}
+
+tasks.withType(SpotBugsTask).configureEach {
+    reports {
+        html {
+            enabled = true
+        }
+        xml {
+            enabled = true
+        }
+    }
+}
+
+modernizer {
+    failOnViolations = true
+    includeTestClasses = true
+    javaVersion = "$jdkVersion"
+}
+
+jacoco {
+    toolVersion = jacocoVersion
+}
+
+jacocoTestReport {
+    dependsOn GCandMem
+
+    reports {
+        xml.required = true
+        html.required = true
+    }
+
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect
+                {
+                    fileTree(dir: it,
+                            exclude: ["org/drip/tck/**"])
+                })
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 1.00
+            }
+        }
+    }
+}
+
+build.dependsOn jacocoTestReport
+
+jdepsReport {
+    // TODO: Report shows a big mess with dependencies
+    // TODO: Why mess with multi-release jars?
+    multiReleaseJars = [".*": "$jdkVersion"]
 }
 
 jar {
     manifest {
-        instruction "Bundle-Vendor", "DROP Contributors"
-        instruction "Bundle-DocURL", "https://github.com/lakshmiDRIP/DROP"
-        instruction "Import-Package", "!org.junit,!junit.framework,*"
-        instruction "Eclipse-ExtensibleAPI", "true"
-        instruction "Automatic-Module-Name", "org.drip"
+        attributes(
+            "Bundle-Vendor": "DROP Contributors",
+            "Bundle-DocURL": "https://github.com/lakshmiDRIP/DROP",
+            "Import-Package": "!org.junit,!junit.framework,*",
+            "Eclipse-ExtensibleAPI": "true",
+            "Automatic-Module-Name": "org.drip"
+        )
     }
 }
 
-license
-{
+check {
+    dependsOn += jacocoTestCoverageVerification
+}
+
+license {
     header rootProject.file("HEADER")
     ext.year = Calendar.getInstance().get(Calendar.YEAR)
     skipExistingHeaders true
@@ -111,143 +239,67 @@ license
     excludes(["**/*.md", "**/*.txt"])
 }
 
-apply plugin: "maven-publish"
-
-install
-{
-    repositories.mavenInstaller.pom.project
-    {
-        name "DROP"
-        description "Fixed Income, Portfolio Construction, XVA, TCost Libraries"
-        url "https://github.com/lakshmiDRIP/DROP"
-        licenses
-        {
-            license
-            {
-                name "The Apache Software License, Version 2.0"
-                url "http://www.apache.org/licenses/LICENSE-2.0.txt"
-                distribution "repo"
-            }
-        }
-        developers
-        {
-            developer
-            {
-                id "lakshmiDRIP"
-                name "Lakshmi Krishnamurthy"
-                email "lakshmimv7977@gmail.com"
-            }
-        }
-        scm
-        {
-            connection "scm:git:git@github.com:lakshmiDRIP/DROP.git"
-            url "scm:git:git@github.com:lakshmiDRIP/DROP.git"
-            developerConnection "scm:git:git@github.com:lakshmiDRIP/DROP.git"
-        }
-        issueManagement
-        {
-            system "github"
-            url "https://github.com/lakshmiDRIP/DROP/issues"
-        }
-    }
+tasks.register('sourceJar', Jar) {
+    from sourceSets.main.allJava
+    archiveClassifier = "sources"
 }
 
-publishing
-{
-    publications
-    {
-        mavenJava(MavenPublication)
-        {
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
             from components.java
-            artifact (sourcesJar) 
-            { 
-                classifier = "sources"
+            artifact sourceJar
+            pom {
+                name = "DROP"
+                description= "Fixed Income, Portfolio Construction, XVA, TCost Libraries"
+                url= "https://github.com/lakshmiDRIP/DROP"
+                licenses {
+                    license {
+                        name= "The Apache Software License, Version 2.0"
+                        url= "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                        distribution= "repo"
+                    }
+                }
+                developers {
+                    developer {
+                        id= "lakshmiDRIP"
+                        name= "Lakshmi Krishnamurthy"
+                        email= "lakshmimv7977@gmail.com"
+                    }
+                }
+                scm {
+                    connection= "scm:git:git@github.com:lakshmiDRIP/DROP.git"
+                    url= "scm:git:git@github.com:lakshmiDRIP/DROP.git"
+                    developerConnection= "scm:git:git@github.com:lakshmiDRIP/DROP.git"
+                }
+                issueManagement {
+                    system= "github"
+                    url= "https://github.com/lakshmiDRIP/DROP/issues"
+                }
             }
         }
     }
 }
 
-publishing.publications.all
-{
-  pom.withXml
-  {
-    asNode().dependencies."*".findAll()
-    {
-      it.scope.text() == "runtime" && project.configurations.compile.allDependencies.find { dep ->
-        dep.name == it.artifactId.text()
-      }
-    }.each { it.scope*.value = "compile"}
-  }
-}
-
-plugins.withType(EclipsePlugin)
-{
-    project.eclipse.classpath.plusConfigurations += [ configurations.jmh ]
-}
-
-test
-{
-    testLogging
-    {
-        events=["skipped", "failed"]
-        exceptionFormat="full"
-
-        debug.events = ["skipped", "failed"]
-        debug.exceptionFormat="full"
-
-        info.events = ["failed", "skipped"]
-        info.exceptionFormat="full"
-        
-        warn.events = ["failed", "skipped"]
-        warn.exceptionFormat="full"
-    }
-
-    maxHeapSize = "1200m"
-
-    if (System.getenv("CI") == null)
-    {
-        maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+publishing.publications.all {
+    pom.withXml {
+        asNode().dependencies."*".findAll() {
+            it.scope.text() == "runtime" && project.configurations.compile.allDependencies.find { dep ->
+                dep.name == it.artifactId.text()
+            }
+        }.each { it.scope*.value = "compile"}
     }
 }
 
-jacoco
-{
-    toolVersion = "0.7.9" // See http://www.eclemma.org/jacoco/.
+plugins.withType(EclipsePlugin).configureEach {
+    project.eclipse.classpath.plusConfigurations += [configurations.jmh]
 }
 
-task GCandMem(dependsOn: "check") doLast {
-    print("Memory usage before: ")
-    println(java.lang.management.ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / 1024.0 / 1024.0)
-    System.gc()
-    Thread.sleep(200)
-    print("Memory usage: ")
-    println(java.lang.management.ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / 1024.0 / 1024.0)
-}
-
-task GCandMem2(dependsOn: "test") doLast {
-    print("Memory usage before: ")
-    println(java.lang.management.ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / 1024.0 / 1024.0)
-    System.gc()
-    Thread.sleep(200)
-    print("Memory usage: ")
-    println(java.lang.management.ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / 1024.0 / 1024.0)
-}
-
-jacocoTestReport {
-    reports {
-        xml.enabled true
-        html.enabled true
+static def isStable(version) {
+    def stableKeyword = ["RELEASE", "FINAL", "GA"].any {
+        version.uppercase().contains(it)
     }
+    def otherReleasePattern = version ==~ '^[0-9,.v-]+(-r)?$'
 
-    afterEvaluate {
-        classDirectories = files(classDirectories.files.collect
-        {
-            fileTree(dir: it,
-                    exclude: ["org/drip/tck/**"])
-        })
-    }
+    return stableKeyword || otherReleasePattern
 }
-
-jacocoTestReport.dependsOn GCandMem
-
-build.dependsOn jacocoTestReport

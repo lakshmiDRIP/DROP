@@ -204,7 +204,7 @@ public class DigammaEqualityLemma
 
 						for (int r = 1; r <= m; ++r)
 						{
-							summation = summation + abramowitzStegun2007.evaluate (((double) r) / ((double) m));
+							summation = summation + abramowitzStegun2007.evaluate (((double) r) / m);
 						}
 
 						return summation;
@@ -271,7 +271,7 @@ public class DigammaEqualityLemma
 
 						for (int r = 1; r < m; ++r)
 						{
-							double z = ((double) r) / ((double) m);
+							double z = ((double) r) / m;
 
 							summation = summation + abramowitzStegun2007.evaluate (z) *
 								java.lang.Math.cos (2. * java.lang.Math.PI * k * z);
@@ -341,7 +341,7 @@ public class DigammaEqualityLemma
 
 						for (int r = 1; r < m; ++r)
 						{
-							double z = ((double) r) / ((double) m);
+							double z = ((double) r) / m;
 
 							summation = summation + abramowitzStegun2007.evaluate (z) *
 								java.lang.Math.sin (2. * java.lang.Math.PI * k * z);
@@ -545,7 +545,7 @@ public class DigammaEqualityLemma
 
 						for (int r = 1; r < m; ++r)
 						{
-							double z = ((double) r) / ((double) m);
+							double z = ((double) r) / m;
 
 							summation = summation + abramowitzStegun2007.evaluate (z) /
 								java.lang.Math.tan (java.lang.Math.PI * z);
@@ -611,7 +611,7 @@ public class DigammaEqualityLemma
 
 						for (int r = 1; r < m; ++r)
 						{
-							double z = ((double) r) / ((double) m);
+							double z = ((double) r) / m;
 
 							summation = summation + z * abramowitzStegun2007.evaluate (z);
 						}
@@ -635,7 +635,7 @@ public class DigammaEqualityLemma
 
 						for (int r = 1; r < m; ++r)
 						{
-							double z = ((double) r) / ((double) m);
+							double z = ((double) r) / m;
 
 							summation = summation + z / java.lang.Math.tan (java.lang.Math.PI * z);
 						}
@@ -695,7 +695,7 @@ public class DigammaEqualityLemma
 
 						for (int r = 1; r < m; ++r)
 						{
-							double z = ((double) r) / ((double) m);
+							double z = ((double) r) / m;
 
 							summation = summation + abramowitzStegun2007.evaluate (z) *
 								java.lang.Math.cos ((2. * l + 1.) * java.lang.Math.PI * z);
@@ -720,7 +720,7 @@ public class DigammaEqualityLemma
 
 						for (int r = 1; r < m; ++r)
 						{
-							double z = ((double) r) / ((double) m);
+							double z = ((double) r) / m;
 
 							double theta = 2. * java.lang.Math.PI * z;
 
@@ -783,7 +783,7 @@ public class DigammaEqualityLemma
 
 						for (int r = 1; r < m; ++r)
 						{
-							double z = ((double) r) / ((double) m);
+							double z = ((double) r) / m;
 
 							summation = summation + abramowitzStegun2007.evaluate (z) *
 								java.lang.Math.sin ((2. * l + 1.) * java.lang.Math.PI * z);
@@ -811,7 +811,8 @@ public class DigammaEqualityLemma
 
 						for (int r = 1; r < m; ++r)
 						{
-							double z = ((double) r) / ((double) m);
+
+							double z = ((double) r) / m;
 
 							double theta = java.lang.Math.PI * z;
 
@@ -868,7 +869,7 @@ public class DigammaEqualityLemma
 
 						for (int r = 1; r < m; ++r)
 						{
-							double digamma = abramowitzStegun2007.evaluate ((double) r) / ((double) m);
+							double digamma = abramowitzStegun2007.evaluate (r) / m;
 
 							summation = summation + digamma * digamma;
 						}

@@ -130,16 +130,12 @@ public class BinaryHeapMeld
 	{
 		BinaryTreeNode<K, V> parent = binaryTreeNode.parent();
 
-		return "[" + FormatUtil.FormatDouble (
-			(double) binaryTreeNode.entry().key(), 1, 3, 1.
-		) + " | " +
+		return "[" + binaryTreeNode.entry().key() + " | " +
 			binaryTreeNode.level() + " | " +
 		(
 			binaryTreeNode.isRightChild() ? "R" : "L"
 		) + " | " + (
-			null != parent ? FormatUtil.FormatDouble (
-				(double) parent.entry().key(), 1, 3, 1.
-			) : "     "
+			null != parent ? parent.entry().key(): "     "
 		) + "]";
 	}
 
