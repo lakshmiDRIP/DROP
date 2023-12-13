@@ -1,11 +1,34 @@
 
 package org.drip.xva.dynamics;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.exposure.mpor.CollateralAmountEstimator;
+import org.drip.exposure.universe.MarketEdge;
+import org.drip.exposure.universe.MarketPath;
+import org.drip.exposure.universe.MarketVertex;
+import org.drip.measure.bridge.BrokenDateInterpolator;
+import org.drip.measure.bridge.BrokenDateInterpolatorBrownian3P;
+import org.drip.measure.bridge.BrokenDateInterpolatorLinearT;
+import org.drip.measure.bridge.BrokenDateInterpolatorSqrtT;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.xva.definition.CloseOut;
+import org.drip.xva.definition.CloseOutBilateral;
+import org.drip.xva.hypothecation.CollateralGroupVertex;
+import org.drip.xva.proto.PositionGroupSpecification;
+import org.drip.xva.settings.BrokenDateScheme;
+import org.drip.xva.settings.CloseOutScheme;
+import org.drip.xva.settings.PositionReplicationScheme;
+import org.drip.xva.vertex.AlbaneseAndersen;
+import org.drip.xva.vertex.BurgardKjaerBuilder;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -118,23 +141,21 @@ package org.drip.xva.dynamics;
 
 public class PositionGroupTrajectory
 {
+	private MarketPath _marketPath = null;
 	private double[][] _positionGroupArrayVertex = null;
-	private org.drip.exposure.universe.MarketPath _marketPath = null;
-	private org.drip.xva.proto.PositionGroupSpecification _positionGroupSpecification = null;
+	private PositionGroupSpecification _positionGroupSpecification = null;
 
-	private org.drip.measure.bridge.BrokenDateInterpolator brokenDateInterpolator (
+	private BrokenDateInterpolator brokenDateInterpolator (
 		final int positionGroupIndex,
 		final int vertexIndex)
 	{
 		int brokenDateScheme = _positionGroupSpecification.brokenDateScheme();
 
-		org.drip.analytics.date.JulianDate[] vertexDateArray = _marketPath.anchorDates();
+		JulianDate[] vertexDateArray = _marketPath.anchorDates();
 
-		try
-		{
-			if (org.drip.xva.settings.BrokenDateScheme.LINEAR_TIME == brokenDateScheme)
-			{
-				return 0 == vertexIndex ? null : new org.drip.measure.bridge.BrokenDateInterpolatorLinearT (
+		try {
+			if (BrokenDateScheme.LINEAR_TIME == brokenDateScheme) {
+				return 0 == vertexIndex ? null : new BrokenDateInterpolatorLinearT (
 					vertexDateArray[vertexIndex - 1].julian(),
 					vertexDateArray[vertexIndex].julian(),
 					_positionGroupArrayVertex[positionGroupIndex][vertexIndex - 1],
@@ -142,9 +163,8 @@ public class PositionGroupTrajectory
 				);
 			}
 
-			if (org.drip.xva.settings.BrokenDateScheme.SQUARE_ROOT_OF_TIME == brokenDateScheme)
-			{
-				return 0 == vertexIndex ? null : new org.drip.measure.bridge.BrokenDateInterpolatorSqrtT (
+			if (BrokenDateScheme.SQUARE_ROOT_OF_TIME == brokenDateScheme) {
+				return 0 == vertexIndex ? null : new BrokenDateInterpolatorSqrtT (
 					vertexDateArray[vertexIndex - 1].julian(),
 					vertexDateArray[vertexIndex].julian(),
 					_positionGroupArrayVertex[positionGroupIndex][vertexIndex - 1],
@@ -152,21 +172,17 @@ public class PositionGroupTrajectory
 				);
 			}
 
-			if (org.drip.xva.settings.BrokenDateScheme.THREE_POINT_BROWNIAN_BRIDGE == brokenDateScheme)
-			{
-				return 0 == vertexIndex || 1 == vertexIndex ? null : new
-					org.drip.measure.bridge.BrokenDateInterpolatorBrownian3P (
-						vertexDateArray[vertexIndex - 2].julian(),
-						vertexDateArray[vertexIndex - 1].julian(),
-						vertexDateArray[vertexIndex].julian(),
-						_positionGroupArrayVertex[positionGroupIndex][vertexIndex - 2],
-						_positionGroupArrayVertex[positionGroupIndex][vertexIndex - 1],
-						_positionGroupArrayVertex[positionGroupIndex][vertexIndex]
-					);
+			if (BrokenDateScheme.THREE_POINT_BROWNIAN_BRIDGE == brokenDateScheme) {
+				return 0 == vertexIndex || 1 == vertexIndex ? null : new BrokenDateInterpolatorBrownian3P (
+					vertexDateArray[vertexIndex - 2].julian(),
+					vertexDateArray[vertexIndex - 1].julian(),
+					vertexDateArray[vertexIndex].julian(),
+					_positionGroupArrayVertex[positionGroupIndex][vertexIndex - 2],
+					_positionGroupArrayVertex[positionGroupIndex][vertexIndex - 1],
+					_positionGroupArrayVertex[positionGroupIndex][vertexIndex]
+				);
 			}
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -176,18 +192,20 @@ public class PositionGroupTrajectory
 	private double collateralBalance (
 		final int positionGroupIndex,
 		final int vertexIndex)
-		throws java.lang.Exception
+		throws Exception
 	{
-		org.drip.measure.bridge.BrokenDateInterpolator brokenDateInterpolator = brokenDateInterpolator (
+		BrokenDateInterpolator brokenDateInterpolator = brokenDateInterpolator (
 			positionGroupIndex,
 			vertexIndex
 		);
 
-		return null == brokenDateInterpolator ? 0. : new org.drip.exposure.mpor.CollateralAmountEstimator (
+		return null == brokenDateInterpolator ? 0. : new CollateralAmountEstimator (
 			_positionGroupSpecification,
 			brokenDateInterpolator,
-			java.lang.Double.NaN
-		).postingRequirement (_marketPath.anchorDates()[vertexIndex]);
+			Double.NaN
+		).postingRequirement (
+			_marketPath.anchorDates()[vertexIndex]
+		);
 	}
 
 	private double[][] positionGroupCollateralBalanceArray()
@@ -197,19 +215,14 @@ public class PositionGroupTrajectory
 		int positionGroupCount = _positionGroupArrayVertex.length;
 		double[][] collateralBalanceArray = new double[positionGroupCount][vertexCount];
 
-		for (int positionGroupIndex = 0; positionGroupIndex < positionGroupCount; ++positionGroupIndex)
-		{
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				try
-				{
+		for (int positionGroupIndex = 0; positionGroupIndex < positionGroupCount; ++positionGroupIndex) {
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				try {
 					collateralBalanceArray[positionGroupIndex][vertexIndex] = collateralBalance (
 						positionGroupIndex,
 						vertexIndex
 					);
-				}
-				catch (java.lang.Exception e)
-				{
+				} catch (Exception e) {
 					e.printStackTrace();
 
 					return null;
@@ -220,28 +233,24 @@ public class PositionGroupTrajectory
 		return collateralBalanceArray;
 	}
 
-	private org.drip.xva.hypothecation.CollateralGroupVertex positionGroupVertex (
-		final org.drip.analytics.date.JulianDate anchorDate,
+	private CollateralGroupVertex positionGroupVertex (
+		final JulianDate anchorDate,
 		final double positionGroupValue,
 		final double realizedCashFlow,
 		final double collateralBalance,
-		final org.drip.exposure.universe.MarketVertex marketVertexLeft,
-		final org.drip.exposure.universe.MarketVertex marketVertexRight)
+		final MarketVertex marketVertexLeft,
+		final MarketVertex marketVertexRight)
 	{
 		int closeOutScheme = _positionGroupSpecification.closeOutScheme();
 
 		int positionReplicationScheme = _positionGroupSpecification.positionReplicationScheme();
 
-		org.drip.xva.definition.CloseOut closeOut =
-			org.drip.xva.settings.CloseOutScheme.ISDA_92 == closeOutScheme ? null :
-				org.drip.xva.definition.CloseOutBilateral.Market (marketVertexRight);
+		CloseOut closeOut = CloseOutScheme.ISDA_92 == closeOutScheme ? null :
+			CloseOutBilateral.Market (marketVertexRight);
 
-		try
-		{
-			if (org.drip.xva.settings.PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX ==
-				positionReplicationScheme)
-			{
-				return new org.drip.xva.vertex.AlbaneseAndersen (
+		try {
+			if (PositionReplicationScheme.ALBANESE_ANDERSEN_VERTEX == positionReplicationScheme) {
+				return new AlbaneseAndersen (
 					anchorDate,
 					positionGroupValue,
 					realizedCashFlow,
@@ -249,116 +258,87 @@ public class PositionGroupTrajectory
 				);
 			}
 
-			if (org.drip.xva.settings.PositionReplicationScheme.BURGARD_KJAER_HEDGE_ERROR_DUAL_BOND_VERTEX ==
-				positionReplicationScheme)
-			{
-				return null != marketVertexLeft ?
-					org.drip.xva.vertex.BurgardKjaerBuilder.HedgeErrorDualBond (
-						anchorDate,
-						positionGroupValue,
-						realizedCashFlow,
-						collateralBalance,
-						_positionGroupSpecification.hedgeError(),
-						new org.drip.exposure.universe.MarketEdge (
-							marketVertexLeft,
-							marketVertexRight
-						),
-						closeOut
-					) : org.drip.xva.vertex.BurgardKjaerBuilder.Initial (
-						anchorDate,
-						positionGroupValue,
-						marketVertexRight,
-						closeOut
-					);
+			if (PositionReplicationScheme.BURGARD_KJAER_HEDGE_ERROR_DUAL_BOND_VERTEX ==
+				positionReplicationScheme) {
+				return null != marketVertexLeft ? BurgardKjaerBuilder.HedgeErrorDualBond (
+					anchorDate,
+					positionGroupValue,
+					realizedCashFlow,
+					collateralBalance,
+					_positionGroupSpecification.hedgeError(),
+					new MarketEdge (marketVertexLeft, marketVertexRight),
+					closeOut
+				) : BurgardKjaerBuilder.Initial (
+					anchorDate,
+					positionGroupValue,
+					marketVertexRight,
+					closeOut
+				);
 			}
 
-			if (org.drip.xva.settings.PositionReplicationScheme.BURGARD_KJAER_SEMI_REPLICATION_DUAL_BOND_VERTEX
-				== positionReplicationScheme)
-			{
-				return null != marketVertexLeft ?
-					org.drip.xva.vertex.BurgardKjaerBuilder.SemiReplicationDualBond (
-						anchorDate,
-						positionGroupValue,
-						realizedCashFlow,
-						collateralBalance,
-						new org.drip.exposure.universe.MarketEdge (
-							marketVertexLeft,
-							marketVertexRight
-						),
-						closeOut
-					) : org.drip.xva.vertex.BurgardKjaerBuilder.Initial (
-						anchorDate,
-						positionGroupValue,
-						marketVertexRight,
-						closeOut
-					);
+			if (PositionReplicationScheme.BURGARD_KJAER_SEMI_REPLICATION_DUAL_BOND_VERTEX ==
+				positionReplicationScheme) {
+				return null != marketVertexLeft ? BurgardKjaerBuilder.SemiReplicationDualBond (
+					anchorDate,
+					positionGroupValue,
+					realizedCashFlow,
+					collateralBalance,
+					new MarketEdge (marketVertexLeft, marketVertexRight),
+					closeOut
+				) : BurgardKjaerBuilder.Initial (
+					anchorDate,
+					positionGroupValue,
+					marketVertexRight,
+					closeOut
+				);
 			}
 
-			if (org.drip.xva.settings.PositionReplicationScheme.BURGARD_KJAER_GOLD_PLATED_TWO_WAY_CSA_VERTEX
-				== positionReplicationScheme)
-			{
-				return null != marketVertexLeft ?
-					org.drip.xva.vertex.BurgardKjaerBuilder.GoldPlatedTwoWayCSA (
-						anchorDate,
-						positionGroupValue,
-						realizedCashFlow,
-						new org.drip.exposure.universe.MarketEdge (
-							marketVertexLeft,
-							marketVertexRight
-						),
-						closeOut
-					) : org.drip.xva.vertex.BurgardKjaerBuilder.Initial (
-						anchorDate,
-						positionGroupValue,
-						marketVertexRight,
-						closeOut
-					);
+			if (PositionReplicationScheme.BURGARD_KJAER_GOLD_PLATED_TWO_WAY_CSA_VERTEX ==
+				positionReplicationScheme) {
+				return null != marketVertexLeft ? BurgardKjaerBuilder.GoldPlatedTwoWayCSA (
+					anchorDate,
+					positionGroupValue,
+					realizedCashFlow,
+					new MarketEdge (marketVertexLeft, marketVertexRight),
+					closeOut
+				) : BurgardKjaerBuilder.Initial (
+					anchorDate,
+					positionGroupValue,
+					marketVertexRight,
+					closeOut
+				);
 			}
 
-			if (org.drip.xva.settings.PositionReplicationScheme.BURGARD_KJAER_ONE_WAY_CSA_VERTEX ==
-				positionReplicationScheme)
-			{
-				return null != marketVertexLeft ?
-					org.drip.xva.vertex.BurgardKjaerBuilder.OneWayCSA (
-						anchorDate,
-						positionGroupValue,
-						realizedCashFlow,
-						new org.drip.exposure.universe.MarketEdge (
-							marketVertexLeft,
-							marketVertexRight
-						),
-						closeOut
-					) : org.drip.xva.vertex.BurgardKjaerBuilder.Initial (
-						anchorDate,
-						positionGroupValue,
-						marketVertexRight,
-						closeOut
-					);
+			if (PositionReplicationScheme.BURGARD_KJAER_ONE_WAY_CSA_VERTEX == positionReplicationScheme) {
+				return null != marketVertexLeft ? BurgardKjaerBuilder.OneWayCSA (
+					anchorDate,
+					positionGroupValue,
+					realizedCashFlow,
+					new MarketEdge (marketVertexLeft, marketVertexRight),
+					closeOut
+				) : BurgardKjaerBuilder.Initial (
+					anchorDate,
+					positionGroupValue,
+					marketVertexRight,
+					closeOut
+				);
 			}
 
-			if (org.drip.xva.settings.PositionReplicationScheme.BURGARD_KJAER_SET_OFF_VERTEX ==
-				positionReplicationScheme)
-			{
-				return null != marketVertexLeft ?
-					org.drip.xva.vertex.BurgardKjaerBuilder.SetOff (
-						anchorDate,
-						positionGroupValue,
-						realizedCashFlow,
-						collateralBalance,
-						new org.drip.exposure.universe.MarketEdge (
-							marketVertexLeft,
-							marketVertexRight
-						)
-					) : org.drip.xva.vertex.BurgardKjaerBuilder.Initial (
-						anchorDate,
-						positionGroupValue,
-						marketVertexRight,
-						closeOut
-					);
+			if (PositionReplicationScheme.BURGARD_KJAER_SET_OFF_VERTEX == positionReplicationScheme) {
+				return null != marketVertexLeft ? BurgardKjaerBuilder.SetOff (
+					anchorDate,
+					positionGroupValue,
+					realizedCashFlow,
+					collateralBalance,
+					new MarketEdge (marketVertexLeft, marketVertexRight)
+				) : BurgardKjaerBuilder.Initial (
+					anchorDate,
+					positionGroupValue,
+					marketVertexRight,
+					closeOut
+				);
 			}
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -372,38 +352,34 @@ public class PositionGroupTrajectory
 	 * @param marketPath The Market Path
 	 * @param positionGroupArrayVertex Vertexes of the Position Group Array
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PositionGroupTrajectory (
-		final org.drip.xva.proto.PositionGroupSpecification positionGroupSpecification,
-		final org.drip.exposure.universe.MarketPath marketPath,
+		final PositionGroupSpecification positionGroupSpecification,
+		final MarketPath marketPath,
 		final double[][] positionGroupArrayVertex)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (null == (_positionGroupSpecification = positionGroupSpecification) ||
 			null == (_marketPath = marketPath) ||
-			null == (_positionGroupArrayVertex = positionGroupArrayVertex))
-		{
-			throw new java.lang.Exception ("PositionGroupTrajectory Constructor => Invalid Inputs");
+			null == (_positionGroupArrayVertex = positionGroupArrayVertex)) {
+			throw new Exception ("PositionGroupTrajectory Constructor => Invalid Inputs");
 		}
 
 		int positionGroupCount = _positionGroupArrayVertex.length;
 
-		if (0 == positionGroupCount)
-		{
-			throw new java.lang.Exception ("PositionGroupTrajectory Constructor => Invalid Inputs");
+		if (0 == positionGroupCount) {
+			throw new Exception ("PositionGroupTrajectory Constructor => Invalid Inputs");
 		}
 
 		int vertexCount = _marketPath.anchorDates().length;
 
-		for (int positionGroupIndex = 0; positionGroupIndex < positionGroupCount; ++positionGroupIndex)
-		{
+		for (int positionGroupIndex = 0; positionGroupIndex < positionGroupCount; ++positionGroupIndex) {
 			if (null == _positionGroupArrayVertex[positionGroupIndex] ||
 				vertexCount != _positionGroupArrayVertex[positionGroupIndex].length ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_positionGroupArrayVertex[positionGroupIndex]))
-			{
-				throw new java.lang.Exception ("PositionGroupTrajectory Constructor => Invalid Inputs");
+				!NumberUtil.IsValid (_positionGroupArrayVertex[positionGroupIndex])) {
+				throw new Exception ("PositionGroupTrajectory Constructor => Invalid Inputs");
 			}
 		}
 	}
@@ -414,7 +390,7 @@ public class PositionGroupTrajectory
 	 * @return The Position Group Specification
 	 */
 
-	public org.drip.xva.proto.PositionGroupSpecification positionGroupSpecification()
+	public PositionGroupSpecification positionGroupSpecification()
 	{
 		return _positionGroupSpecification;
 	}
@@ -425,7 +401,7 @@ public class PositionGroupTrajectory
 	 * @return The Market Path
 	 */
 
-	public org.drip.exposure.universe.MarketPath marketPath()
+	public MarketPath marketPath()
 	{
 		return _marketPath;
 	}
@@ -447,30 +423,26 @@ public class PositionGroupTrajectory
 	 * @return The Position Collateral Group Vertex Array
 	 */
 
-	public org.drip.xva.hypothecation.CollateralGroupVertex[][] positionGroupVertexArray()
+	public CollateralGroupVertex[][] positionGroupVertexArray()
 	{
 		double[][] collateralBalanceArray = positionGroupCollateralBalanceArray();
 
-		if (null == collateralBalanceArray)
-		{
+		if (null == collateralBalanceArray) {
 			return null;
 		}
 
-		org.drip.analytics.date.JulianDate[] vertexDateArray = _marketPath.anchorDates();
+		JulianDate[] vertexDateArray = _marketPath.anchorDates();
 
 		int vertexCount = vertexDateArray.length;
 		int positionGroupCount = _positionGroupArrayVertex.length;
-		org.drip.xva.hypothecation.CollateralGroupVertex[][] positionGroupVertexArray = new
-			org.drip.xva.hypothecation.CollateralGroupVertex[positionGroupCount][vertexCount];
+		CollateralGroupVertex[][] positionGroupVertexArray = new
+			CollateralGroupVertex[positionGroupCount][vertexCount];
 
-		for (int positionGroupIndex = 0; positionGroupIndex < positionGroupCount; ++positionGroupIndex)
-		{
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				org.drip.analytics.date.JulianDate vertexDate = vertexDateArray[vertexIndex];
+		for (int positionGroupIndex = 0; positionGroupIndex < positionGroupCount; ++positionGroupIndex) {
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				JulianDate vertexDate = vertexDateArray[vertexIndex];
 
-				try
-				{
+				try {
 					positionGroupVertexArray[positionGroupIndex][vertexIndex] = positionGroupVertex (
 						vertexDateArray[vertexIndex],
 						_positionGroupArrayVertex[positionGroupIndex][vertexIndex],
@@ -480,9 +452,7 @@ public class PositionGroupTrajectory
 							_marketPath.marketVertex (vertexDateArray[vertexIndex - 1].julian()),
 							_marketPath.marketVertex (vertexDate.julian())
 					);
-				}
-				catch (java.lang.Exception e)
-				{
+				} catch (Exception e) {
 					e.printStackTrace();
 
 					return null;

@@ -6,6 +6,9 @@ package org.drip.xva.basel;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -120,9 +123,9 @@ package org.drip.xva.basel;
 
 public class ValueCategory
 {
-	private java.lang.String _id = "";
+	private String _id = "";
+	private String _decription = "";
 	private boolean _cet1Contributor = false;
-	private java.lang.String _decription = "";
 
 	/**
 	 * Retrieve an Instance of the CF1 Cash Flow
@@ -132,16 +135,13 @@ public class ValueCategory
 
 	public static final ValueCategory CF1()
 	{
-		try
-		{
+		try {
 			return new ValueCategory (
 				"CF1",
 				"Dealer Trade Contractual Cash Flow",
 				true
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -156,16 +156,13 @@ public class ValueCategory
 
 	public static final ValueCategory CF2()
 	{
-		try
-		{
+		try {
 			return new ValueCategory (
 				"CF2",
 				"Client Default Cash Flow",
 				true
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -180,16 +177,13 @@ public class ValueCategory
 
 	public static final ValueCategory CF3()
 	{
-		try
-		{
+		try {
 			return new ValueCategory (
 				"CF3",
 				"Dealer Default Related Cash Flow",
 				false
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -204,16 +198,13 @@ public class ValueCategory
 
 	public static final ValueCategory CF4()
 	{
-		try
-		{
+		try {
 			return new ValueCategory (
 				"CF4",
 				"Pre Dealer Default Dynamic Flow",
 				false
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -228,16 +219,13 @@ public class ValueCategory
 
 	public static final ValueCategory CF5()
 	{
-		try
-		{
+		try {
 			return new ValueCategory (
 				"CF5",
 				"Post Dealer Default Dynamic Flow",
 				false
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -252,16 +240,13 @@ public class ValueCategory
 
 	public static final ValueCategory CF6()
 	{
-		try
-		{
+		try {
 			return new ValueCategory (
 				"CF6",
 				"CSA Related Cash Flow",
 				false
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -276,16 +261,13 @@ public class ValueCategory
 
 	public static final ValueCategory HYBRID()
 	{
-		try
-		{
+		try {
 			return new ValueCategory (
 				"HYBRID",
 				"Mixed Cash Flow Types",
 				false
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -299,19 +281,18 @@ public class ValueCategory
 	 * @param decription The Category Description
 	 * @param cet1Contributor TRUE - The Category is a CET1 Contributor
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ValueCategory (
-		final java.lang.String id,
-		final java.lang.String decription,
+		final String id,
+		final String decription,
 		final boolean cet1Contributor)
 		throws java.lang.Exception
 	{
 		if (null == (_id = id) || _id.isEmpty() ||
-			null == (_decription = decription) || _decription.isEmpty())
-		{
-			throw new java.lang.Exception ("ValueCategory Constructor => Invalid Inputs");
+			null == (_decription = decription) || _decription.isEmpty()) {
+			throw new Exception ("ValueCategory Constructor => Invalid Inputs");
 		}
 
 		_cet1Contributor = cet1Contributor;
@@ -323,7 +304,7 @@ public class ValueCategory
 	 * @return The Category ID
 	 */
 
-	public java.lang.String id()
+	public String id()
 	{
 		return _id;
 	}
@@ -334,7 +315,7 @@ public class ValueCategory
 	 * @return The Category Description
 	 */
 
-	public java.lang.String description()
+	public String description()
 	{
 		return _decription;
 	}

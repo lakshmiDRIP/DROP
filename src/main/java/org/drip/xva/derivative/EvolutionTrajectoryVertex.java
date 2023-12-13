@@ -1,11 +1,18 @@
 
 package org.drip.xva.derivative;
 
+import org.drip.exposure.universe.MarketVertex;
+import org.drip.exposure.universe.MarketVertexEntity;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -123,13 +130,13 @@ package org.drip.xva.derivative;
 
 public class EvolutionTrajectoryVertex
 {
-	private double _time = java.lang.Double.NaN;
-	private double _collateral = java.lang.Double.NaN;
-	private double _hedgeError = java.lang.Double.NaN;
-	private double _clientGainOnDealerDefault = java.lang.Double.NaN;
-	private double _dealerGainOnClientDefault = java.lang.Double.NaN;
-	private org.drip.xva.derivative.PositionGreekVertex _positionGreekVertex = null;
-	private org.drip.xva.derivative.ReplicationPortfolioVertex _replicationPortfolioVertex = null;
+	private double _time = Double.NaN;
+	private double _collateral = Double.NaN;
+	private double _hedgeError = Double.NaN;
+	private double _clientGainOnDealerDefault = Double.NaN;
+	private double _dealerGainOnClientDefault = Double.NaN;
+	private PositionGreekVertex _positionGreekVertex = null;
+	private ReplicationPortfolioVertex _replicationPortfolioVertex = null;
 
 	/**
 	 * EvolutionTrajectoryVertex Constructor
@@ -142,30 +149,27 @@ public class EvolutionTrajectoryVertex
 	 * @param collateral The Vertex Collateral
 	 * @param hedgeError The Vertex Hedge Error
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public EvolutionTrajectoryVertex (
 		final double time,
-		final org.drip.xva.derivative.ReplicationPortfolioVertex replicationPortfolioVertex,
-		final org.drip.xva.derivative.PositionGreekVertex positionGreekVertex,
+		final ReplicationPortfolioVertex replicationPortfolioVertex,
+		final PositionGreekVertex positionGreekVertex,
 		final double clientGainOnDealerDefault,
 		final double dealerGainOnClientDefault,
 		final double collateral,
 		final double hedgeError)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_time = time) ||
+		if (!NumberUtil.IsValid (_time = time) ||
 			null == (_replicationPortfolioVertex = replicationPortfolioVertex) ||
 			null == (_positionGreekVertex = positionGreekVertex) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_clientGainOnDealerDefault =
-				clientGainOnDealerDefault) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dealerGainOnClientDefault =
-				dealerGainOnClientDefault) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_collateral = collateral) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_hedgeError = hedgeError))
-		{
-			throw new java.lang.Exception ("EvolutionTrajectoryVertex Constructor => Invalid Inputs");
+			!NumberUtil.IsValid (_clientGainOnDealerDefault = clientGainOnDealerDefault) ||
+			!NumberUtil.IsValid (_dealerGainOnClientDefault = dealerGainOnClientDefault) ||
+			!NumberUtil.IsValid (_collateral = collateral) ||
+			!NumberUtil.IsValid (_hedgeError = hedgeError)) {
+			throw new Exception ("EvolutionTrajectoryVertex Constructor => Invalid Inputs");
 		}
 	}
 
@@ -208,7 +212,7 @@ public class EvolutionTrajectoryVertex
 	 * @return The Replication Portfolio Vertex
 	 */
 
-	public org.drip.xva.derivative.ReplicationPortfolioVertex replicationPortfolioVertex()
+	public ReplicationPortfolioVertex replicationPortfolioVertex()
 	{
 		return _replicationPortfolioVertex;
 	}
@@ -219,7 +223,7 @@ public class EvolutionTrajectoryVertex
 	 * @return The Position Greek Vertex
 	 */
 
-	public org.drip.xva.derivative.PositionGreekVertex positionGreekVertex()
+	public PositionGreekVertex positionGreekVertex()
 	{
 		return _positionGreekVertex;
 	}
@@ -254,20 +258,18 @@ public class EvolutionTrajectoryVertex
 	 * 
 	 * @return The Funding Constraint Verification Mismatch
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double verifyFundingConstraint (
-		final org.drip.exposure.universe.MarketVertex marketVertex)
-		throws java.lang.Exception
+		final MarketVertex marketVertex)
+		throws Exception
 	{
-		if (null == marketVertex)
-		{
-			throw new java.lang.Exception
-				("EvolutionTrajectoryVertex::verifyFundingConstraint => Invalid Inputs");
+		if (null == marketVertex) {
+			throw new Exception ("EvolutionTrajectoryVertex::verifyFundingConstraint => Invalid Inputs");
 		}
 
-		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();
+		MarketVertexEntity dealerMarketVertex = marketVertex.dealer();
 
 		double fundingConstraint = _positionGreekVertex.derivativeXVAValue() +
 			dealerMarketVertex.seniorFundingReplicator() *
@@ -275,8 +277,7 @@ public class EvolutionTrajectoryVertex
 
 		double dealerSubordinateFundingMarketVertex = dealerMarketVertex.subordinateFundingReplicator();
 
-		if (org.drip.numerical.common.NumberUtil.IsValid (dealerSubordinateFundingMarketVertex))
-		{
+		if (NumberUtil.IsValid (dealerSubordinateFundingMarketVertex)) {
 			fundingConstraint += dealerSubordinateFundingMarketVertex *
 				_replicationPortfolioVertex.dealerSubordinateNumeraireHoldings();
 		}

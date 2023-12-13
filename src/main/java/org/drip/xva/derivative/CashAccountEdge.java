@@ -1,11 +1,16 @@
 
 package org.drip.xva.derivative;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -122,9 +127,9 @@ package org.drip.xva.derivative;
 
 public class CashAccountEdge
 {
-	private double _clientAccumulation = java.lang.Double.NaN;
-	private double _dealerAccumulation = java.lang.Double.NaN;
-	private double _positionAccumulation = java.lang.Double.NaN;
+	private double _clientAccumulation = Double.NaN;
+	private double _dealerAccumulation = Double.NaN;
+	private double _positionAccumulation = Double.NaN;
 
 	/**
 	 * CashAccountEdge Constructor
@@ -134,20 +139,19 @@ public class CashAccountEdge
 	 * 	Borrowing/Funding
 	 * @param clientAccumulation The Incremental Amount added to the Cash Account coming from the Client Repo
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CashAccountEdge (
 		final double positionAccumulation,
 		final double dealerAccumulation,
 		final double clientAccumulation)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_positionAccumulation = positionAccumulation) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dealerAccumulation = dealerAccumulation) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_clientAccumulation = clientAccumulation))
-		{
-			throw new java.lang.Exception ("CashAccountEdge Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_positionAccumulation = positionAccumulation) ||
+			!NumberUtil.IsValid (_dealerAccumulation = dealerAccumulation) ||
+			!NumberUtil.IsValid (_clientAccumulation = clientAccumulation)) {
+			throw new Exception ("CashAccountEdge Constructor => Invalid Inputs");
 		}
 	}
 

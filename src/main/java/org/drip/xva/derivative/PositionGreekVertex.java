@@ -1,11 +1,16 @@
 
 package org.drip.xva.derivative;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -122,10 +127,10 @@ package org.drip.xva.derivative;
 
 public class PositionGreekVertex
 {
-	private double _derivativeXVAValue = java.lang.Double.NaN;
-	private double _derivativeFairValue = java.lang.Double.NaN;
-	private double _derivativeXVAValueDelta = java.lang.Double.NaN;
-	private double _derivativeXVAValueGamma = java.lang.Double.NaN;
+	private double _derivativeXVAValue = Double.NaN;
+	private double _derivativeFairValue = Double.NaN;
+	private double _derivativeXVAValueDelta = Double.NaN;
+	private double _derivativeXVAValueGamma = Double.NaN;
 
 	/**
 	 * PositionGreekVertex Constructor
@@ -135,7 +140,7 @@ public class PositionGreekVertex
 	 * @param derivativeXVAValueGamma The Derivative XVA Value Gamma
 	 * @param derivativeFairValue The Derivative "Fair" Value
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PositionGreekVertex (
@@ -145,12 +150,10 @@ public class PositionGreekVertex
 		final double derivativeFairValue)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVAValue = derivativeXVAValue) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVAValueDelta =
-				derivativeXVAValueDelta) || !org.drip.numerical.common.NumberUtil.IsValid
-					(_derivativeXVAValueGamma = derivativeXVAValueGamma))
-		{
-			throw new java.lang.Exception ("PositionGreekVertex Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_derivativeXVAValue = derivativeXVAValue) ||
+			!NumberUtil.IsValid (_derivativeXVAValueDelta = derivativeXVAValueDelta) ||
+			!NumberUtil.IsValid (_derivativeXVAValueGamma = derivativeXVAValueGamma)) {
+			throw new Exception ("PositionGreekVertex Constructor => Invalid Inputs");
 		}
 
 		_derivativeFairValue = derivativeFairValue;

@@ -1,11 +1,16 @@
 
 package org.drip.xva.derivative;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -123,8 +128,8 @@ package org.drip.xva.derivative;
 
 public class CashAccountRebalancer
 {
-	private double _derivativeXVAValueEdge = java.lang.Double.NaN;
-	private org.drip.xva.derivative.CashAccountEdge _cashAccountEdge = null;
+	private CashAccountEdge _cashAccountEdge = null;
+	private double _derivativeXVAValueEdge = Double.NaN;
 
 	/**
 	 * CashAccountRebalancer Constructor
@@ -132,18 +137,17 @@ public class CashAccountRebalancer
 	 * @param cashAccountEdge The Cash Account Edge
 	 * @param derivativeXVAValueEdge The XVA Derivative Value Edge
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CashAccountRebalancer (
-		final org.drip.xva.derivative.CashAccountEdge cashAccountEdge,
+		final CashAccountEdge cashAccountEdge,
 		final double derivativeXVAValueEdge)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (null == (_cashAccountEdge = cashAccountEdge) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVAValueEdge = derivativeXVAValueEdge))
-		{
-			throw new java.lang.Exception ("CashAccountRebalancer Constructor => Invalid Inputs");
+			!NumberUtil.IsValid (_derivativeXVAValueEdge = derivativeXVAValueEdge)) {
+			throw new Exception ("CashAccountRebalancer Constructor => Invalid Inputs");
 		}
 	}
 
@@ -153,7 +157,7 @@ public class CashAccountRebalancer
 	 * @return The Cash Account Edge Instance
 	 */
 
-	public org.drip.xva.derivative.CashAccountEdge cashAccountEdge()
+	public CashAccountEdge cashAccountEdge()
 	{
 		return _cashAccountEdge;
 	}

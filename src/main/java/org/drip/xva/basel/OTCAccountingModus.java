@@ -1,11 +1,16 @@
 
 package org.drip.xva.basel;
 
+import org.drip.xva.gross.ExposureAdjustmentAggregator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -120,15 +125,14 @@ package org.drip.xva.basel;
 
 public abstract class OTCAccountingModus
 {
-	private org.drip.xva.gross.ExposureAdjustmentAggregator _exposureAdjustmentAggregator = null;
+	private ExposureAdjustmentAggregator _exposureAdjustmentAggregator = null;
 
 	protected OTCAccountingModus (
-		final org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator)
-		throws java.lang.Exception
+		final ExposureAdjustmentAggregator exposureAdjustmentAggregator)
+		throws Exception
 	{
-		if (null == (_exposureAdjustmentAggregator = exposureAdjustmentAggregator))
-		{
-			throw new java.lang.Exception ("OTCAccountingModus Contructor => Invalid Inputs");
+		if (null == (_exposureAdjustmentAggregator = exposureAdjustmentAggregator)) {
+			throw new Exception ("OTCAccountingModus Contructor => Invalid Inputs");
 		}
 	}
 
@@ -138,7 +142,7 @@ public abstract class OTCAccountingModus
 	 * @return The Counter Party Group Aggregator Instance
 	 */
 
-	public org.drip.xva.gross.ExposureAdjustmentAggregator aggregator()
+	public ExposureAdjustmentAggregator aggregator()
 	{
 		return _exposureAdjustmentAggregator;
 	}
@@ -167,6 +171,7 @@ public abstract class OTCAccountingModus
 	 * @return The OTC Fee Policy
 	 */
 
-	public abstract org.drip.xva.basel.OTCAccountingPolicy feePolicy (
-		final org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregatorNext);
+	public abstract OTCAccountingPolicy feePolicy (
+		final ExposureAdjustmentAggregator exposureAdjustmentAggregatorNext
+	);
 }

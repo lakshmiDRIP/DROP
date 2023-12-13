@@ -1,11 +1,18 @@
 
 package org.drip.xva.derivative;
 
+import org.drip.exposure.universe.MarketVertex;
+import org.drip.exposure.universe.MarketVertexEntity;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -122,11 +129,11 @@ package org.drip.xva.derivative;
 
 public class ReplicationPortfolioVertex
 {
-	private double _cashAccount = java.lang.Double.NaN;
-	private double _positionHoldings = java.lang.Double.NaN;
-	private double _clientNumeraireHoldings = java.lang.Double.NaN;
-	private double _dealerSeniorNumeraireHoldings = java.lang.Double.NaN;
-	private double _dealerSubordinateNumeraireHoldings = java.lang.Double.NaN;
+	private double _cashAccount = Double.NaN;
+	private double _positionHoldings = Double.NaN;
+	private double _clientNumeraireHoldings = Double.NaN;
+	private double _dealerSeniorNumeraireHoldings = Double.NaN;
+	private double _dealerSubordinateNumeraireHoldings = Double.NaN;
 
 	/**
 	 * Construct a ReplicationPortfolioVertex Instance without the Zero Recovery Dealer Numeraire
@@ -145,8 +152,7 @@ public class ReplicationPortfolioVertex
 		final double clientNumeraireHoldings,
 		final double cashAccount)
 	{
-		try
-		{
+		try {
 			return new ReplicationPortfolioVertex (
 				positionHoldings,
 				dealerSeniorNumeraireHoldings,
@@ -154,9 +160,7 @@ public class ReplicationPortfolioVertex
 				clientNumeraireHoldings,
 				cashAccount
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -172,7 +176,7 @@ public class ReplicationPortfolioVertex
 	 * @param clientNumeraireHoldings The Client Numeraire Holdings
 	 * @param cashAccount The Cash Account
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ReplicationPortfolioVertex (
@@ -181,16 +185,13 @@ public class ReplicationPortfolioVertex
 		final double dealerSubordinateNumeraireHoldings,
 		final double clientNumeraireHoldings,
 		final double cashAccount)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dealerSeniorNumeraireHoldings =
-				dealerSeniorNumeraireHoldings) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dealerSubordinateNumeraireHoldings =
-				dealerSubordinateNumeraireHoldings) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_clientNumeraireHoldings = clientNumeraireHoldings) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_cashAccount = cashAccount))
-		{
-			throw new java.lang.Exception ("ReplicationPortfolioVertex Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_dealerSeniorNumeraireHoldings = dealerSeniorNumeraireHoldings) ||
+			!NumberUtil.IsValid (_dealerSubordinateNumeraireHoldings = dealerSubordinateNumeraireHoldings) ||
+			!NumberUtil.IsValid (_clientNumeraireHoldings = clientNumeraireHoldings) ||
+			!NumberUtil.IsValid (_cashAccount = cashAccount)) {
+			throw new Exception ("ReplicationPortfolioVertex Constructor => Invalid Inputs");
 		}
 
 		_positionHoldings = positionHoldings;
@@ -258,27 +259,26 @@ public class ReplicationPortfolioVertex
 	 * 
 	 * @return The Market Value of the Dealer Position Pre-Default
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double dealerPreDefaultPositionValue (
-		final org.drip.exposure.universe.MarketVertex marketVertex)
-		throws java.lang.Exception
+		final MarketVertex marketVertex)
+		throws Exception
 	{
-		if (null == marketVertex)
-		{
-			throw new java.lang.Exception
-				("ReplicationPortfolioVertex::dealerPreDefaultPositionValue => Invalid Inputs");
+		if (null == marketVertex) {
+			throw new Exception (
+				"ReplicationPortfolioVertex::dealerPreDefaultPositionValue => Invalid Inputs"
+			);
 		}
 
-		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();
+		MarketVertexEntity dealerMarketVertex = marketVertex.dealer();
 
 		double value = -1. * dealerMarketVertex.seniorFundingReplicator() * _dealerSeniorNumeraireHoldings;
 
 		double dealerSubordinateFundingMarketVertex = dealerMarketVertex.subordinateFundingReplicator();
 
-		if (org.drip.numerical.common.NumberUtil.IsValid (dealerSubordinateFundingMarketVertex))
-		{
+		if (NumberUtil.IsValid (dealerSubordinateFundingMarketVertex)) {
 			value -= dealerSubordinateFundingMarketVertex * _dealerSubordinateNumeraireHoldings;
 		}
 
@@ -292,32 +292,32 @@ public class ReplicationPortfolioVertex
 	 * 
 	 * @return The Market Value of the Dealer Position Post-Default
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double dealerPostDefaultPositionValue (
-		final org.drip.exposure.universe.MarketVertex marketVertex)
-		throws java.lang.Exception
+		final MarketVertex marketVertex)
+		throws Exception
 	{
 		if (null == marketVertex)
 		{
-			throw new java.lang.Exception
-				("ReplicationPortfolioVertex::dealerPostDefaultPositionValue => Invalid Inputs");
+			throw new Exception (
+				"ReplicationPortfolioVertex::dealerPostDefaultPositionValue => Invalid Inputs"
+			);
 		}
 
-		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();
+		MarketVertexEntity dealerMarketVertex = marketVertex.dealer();
 
-		double value = dealerMarketVertex.seniorFundingReplicator() * _dealerSeniorNumeraireHoldings *
-			dealerMarketVertex.seniorRecoveryRate();
+		double dealerPostDefaultPositionValue = dealerMarketVertex.seniorFundingReplicator() *
+			_dealerSeniorNumeraireHoldings * dealerMarketVertex.seniorRecoveryRate();
 
 		double dealerSubordinateFundingMarketVertex = dealerMarketVertex.subordinateFundingReplicator();
 
-		if (org.drip.numerical.common.NumberUtil.IsValid (dealerSubordinateFundingMarketVertex))
-		{
-			value -= dealerSubordinateFundingMarketVertex * _dealerSubordinateNumeraireHoldings *
-				dealerMarketVertex.subordinateRecoveryRate();
+		if (NumberUtil.IsValid (dealerSubordinateFundingMarketVertex)) {
+			dealerPostDefaultPositionValue -= dealerSubordinateFundingMarketVertex *
+				_dealerSubordinateNumeraireHoldings * dealerMarketVertex.subordinateRecoveryRate();
 		}
 
-		return value;
+		return dealerPostDefaultPositionValue;
 	}
 }

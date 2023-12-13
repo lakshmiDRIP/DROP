@@ -1,11 +1,16 @@
 
 package org.drip.xva.definition;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -122,8 +127,8 @@ package org.drip.xva.definition;
 
 public class SimpleBalanceSheet
 {
-	private double _asset = java.lang.Double.NaN;
-	private double _liability = java.lang.Double.NaN;
+	private double _asset = Double.NaN;
+	private double _liability = Double.NaN;
 
 	/**
 	 * SimpleBalanceSheet Constructor
@@ -131,18 +136,16 @@ public class SimpleBalanceSheet
 	 * @param asset The Balance Sheet Asset
 	 * @param liability The Balance Sheet Liability
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public SimpleBalanceSheet (
 		final double asset,
 		final double liability)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_asset = asset) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_liability = liability))
-		{
-			throw new java.lang.Exception ("SimpleBalanceSheet Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_asset = asset) || !NumberUtil.IsValid (_liability = liability)) {
+			throw new Exception ("SimpleBalanceSheet Constructor => Invalid Inputs");
 		}
 	}
 
@@ -190,20 +193,13 @@ public class SimpleBalanceSheet
 	public SimpleBalanceSheet derivativeInfusion (
 		final double dblDerivativeValue)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDerivativeValue) || 0. > dblDerivativeValue)
-		{
-			return null;
-		}
-
-		try
-		{
-			return new SimpleBalanceSheet (
-				_asset + dblDerivativeValue,
-				_liability + dblDerivativeValue
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return !NumberUtil.IsValid (dblDerivativeValue) || 0. > dblDerivativeValue ? null :
+				new SimpleBalanceSheet (
+					_asset + dblDerivativeValue,
+					_liability + dblDerivativeValue
+				);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

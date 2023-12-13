@@ -1,11 +1,16 @@
 
 package org.drip.xva.definition;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -136,8 +141,8 @@ public class PDEEvolutionControl
 
 	public static final int CLOSEOUT_BURGARD_KJAER = 2;
 
+	private double _sensitivityShiftFactor = Double.NaN;
 	private int _closeOutScheme = CLOSEOUT_GREGORY_LI_TANG;
-	private double _sensitivityShiftFactor = java.lang.Double.NaN;
 
 	/**
 	 * PDEEvolutionControl Constructor
@@ -145,19 +150,18 @@ public class PDEEvolutionControl
 	 * @param closeOutScheme The Close Out Scheme
 	 * @param sensitivityShiftFactor The Factor needed to evaluate Sensitivity Shifts
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PDEEvolutionControl (
 		final int closeOutScheme,
 		final double sensitivityShiftFactor)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if ((CLOSEOUT_GREGORY_LI_TANG != (_closeOutScheme = closeOutScheme) &&
 			CLOSEOUT_BURGARD_KJAER != _closeOutScheme) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_sensitivityShiftFactor = sensitivityShiftFactor))
-		{
-			throw new java.lang.Exception ("PDEEvolutionControl Constructor => Invalid Inputs");
+			!NumberUtil.IsValid (_sensitivityShiftFactor = sensitivityShiftFactor)) {
+			throw new Exception ("PDEEvolutionControl Constructor => Invalid Inputs");
 		}
 	}
 

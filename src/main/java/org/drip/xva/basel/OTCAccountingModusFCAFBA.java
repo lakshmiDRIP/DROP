@@ -1,11 +1,16 @@
 
 package org.drip.xva.basel;
 
+import org.drip.xva.gross.ExposureAdjustmentAggregator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -119,7 +124,7 @@ package org.drip.xva.basel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class OTCAccountingModusFCAFBA extends org.drip.xva.basel.OTCAccountingModus
+public class OTCAccountingModusFCAFBA extends OTCAccountingModus
 {
 
 	/**
@@ -127,19 +132,19 @@ public class OTCAccountingModusFCAFBA extends org.drip.xva.basel.OTCAccountingMo
 	 * 
 	 * @param exposureAdjustmentAggregator The Counter Party Group Aggregator Instance
 	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 * @throws Exception Thrown if Inputs are Invalid
 	 */
 
 	public OTCAccountingModusFCAFBA (
-		final org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator)
-		throws java.lang.Exception
+		final ExposureAdjustmentAggregator exposureAdjustmentAggregator)
+		throws Exception
 	{
 		super (exposureAdjustmentAggregator);
 	}
 
 	@Override public double contraAssetAdjustment()
 	{
-		org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();
+		ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();
 
 		return exposureAdjustmentAggregator.ucva().amount() + exposureAdjustmentAggregator.fca().amount() -
 			exposureAdjustmentAggregator.fba().amount() + exposureAdjustmentAggregator.udva().amount();
@@ -150,15 +155,14 @@ public class OTCAccountingModusFCAFBA extends org.drip.xva.basel.OTCAccountingMo
 		return aggregator().udva().amount();
 	}
 
-	@Override public org.drip.xva.basel.OTCAccountingPolicy feePolicy (
-		final org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregatorNext)
+	@Override public OTCAccountingPolicy feePolicy (
+		final ExposureAdjustmentAggregator exposureAdjustmentAggregatorNext)
 	{
-		if (null == exposureAdjustmentAggregatorNext)
-		{
+		if (null == exposureAdjustmentAggregatorNext) {
 			return null;
 		}
 
-		org.drip.xva.gross.ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();
+		ExposureAdjustmentAggregator exposureAdjustmentAggregator = aggregator();
 
 		double contraLiabilityChange = exposureAdjustmentAggregatorNext.fba().amount() -
 			exposureAdjustmentAggregator.fba().amount();
@@ -166,9 +170,8 @@ public class OTCAccountingModusFCAFBA extends org.drip.xva.basel.OTCAccountingMo
 		double collateralVAChange = exposureAdjustmentAggregatorNext.colva().amount() -
 			exposureAdjustmentAggregator.colva().amount();
 
-		try
-		{
-			return new org.drip.xva.basel.OTCAccountingPolicy (
+		try {
+			return new OTCAccountingPolicy (
 				exposureAdjustmentAggregatorNext.ucva().amount() +
 					exposureAdjustmentAggregatorNext.sfva().amount() -
 					exposureAdjustmentAggregator.ucva().amount() -
@@ -177,9 +180,7 @@ public class OTCAccountingModusFCAFBA extends org.drip.xva.basel.OTCAccountingMo
 				contraLiabilityChange,
 				0.
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

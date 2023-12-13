@@ -1,11 +1,16 @@
 
 package org.drip.xva.basel;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -120,8 +125,8 @@ package org.drip.xva.basel;
 
 public class ValueAdjustment
 {
-	private double _amount = java.lang.Double.NaN;
-	private org.drip.xva.basel.ValueCategory _valueCategory = null;
+	private double _amount = Double.NaN;
+	private ValueCategory _valueCategory = null;
 
 	/**
 	 * Construct the Collateralized Transaction Value Adjustment Instance
@@ -134,15 +139,12 @@ public class ValueAdjustment
 	public static final ValueAdjustment Collateralized (
 		final double amount)
 	{
-		try
-		{
+		try {
 			return new ValueAdjustment (
 				amount,
-				org.drip.xva.basel.ValueCategory.CF1()
+				ValueCategory.CF1()
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -160,15 +162,12 @@ public class ValueAdjustment
 	public static final ValueAdjustment UCVA (
 		final double amount)
 	{
-		try
-		{
+		try {
 			return new ValueAdjustment (
 				amount,
-				org.drip.xva.basel.ValueCategory.CF2()
+				ValueCategory.CF2()
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -186,15 +185,12 @@ public class ValueAdjustment
 	public static final ValueAdjustment FTDCVA (
 		final double amount)
 	{
-		try
-		{
+		try {
 			return new ValueAdjustment (
 				amount,
-				org.drip.xva.basel.ValueCategory.CF2()
+				ValueCategory.CF2()
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -212,15 +208,12 @@ public class ValueAdjustment
 	public static final ValueAdjustment DVA (
 		final double amount)
 	{
-		try
-		{
+		try {
 			return new ValueAdjustment (
 				amount,
-				org.drip.xva.basel.ValueCategory.CF3()
+				ValueCategory.CF3()
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -238,15 +231,12 @@ public class ValueAdjustment
 	public static final ValueAdjustment CVACL (
 		final double amount)
 	{
-		try
-		{
+		try {
 			return new ValueAdjustment (
 				amount,
-				org.drip.xva.basel.ValueCategory.CF3()
+				ValueCategory.CF3()
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -265,8 +255,11 @@ public class ValueAdjustment
 		final double amount)
 	{
 		try {
-			return new ValueAdjustment (amount, org.drip.xva.basel.ValueCategory.CF4());
-		} catch (java.lang.Exception e) {
+			return new ValueAdjustment (
+				amount,
+				ValueCategory.CF4()
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -284,15 +277,12 @@ public class ValueAdjustment
 	public static final ValueAdjustment FDA (
 		final double amount)
 	{
-		try
-		{
+		try {
 			return new ValueAdjustment (
 				amount,
-				org.drip.xva.basel.ValueCategory.CF5()
+				ValueCategory.CF5()
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -324,15 +314,12 @@ public class ValueAdjustment
 	public static final ValueAdjustment COLVA (
 		final double amount)
 	{
-		try
-		{
+		try {
 			return new ValueAdjustment (
 				amount,
-				org.drip.xva.basel.ValueCategory.CF6()
+				ValueCategory.CF6()
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -350,15 +337,12 @@ public class ValueAdjustment
 	public static final ValueAdjustment HYBRID (
 		final double amount)
 	{
-		try
-		{
+		try {
 			return new ValueAdjustment (
 				amount,
-				org.drip.xva.basel.ValueCategory.HYBRID()
+				ValueCategory.HYBRID()
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -371,18 +355,16 @@ public class ValueAdjustment
 	 * @param amount Valuation Adjustment Amount
 	 * @param valueCategory Valuation Adjustment Attribution Category
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ValueAdjustment (
 		final double amount,
-		final org.drip.xva.basel.ValueCategory valueCategory)
-		throws java.lang.Exception
+		final ValueCategory valueCategory)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_amount = amount) ||
-			null == (_valueCategory = valueCategory))
-		{
-			throw new java.lang.Exception ("ValueAdjustment Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_amount = amount) || null == (_valueCategory = valueCategory)) {
+			throw new Exception ("ValueAdjustment Constructor => Invalid Inputs");
 		}
 	}
 
@@ -403,7 +385,7 @@ public class ValueAdjustment
 	 * @return The Valuation Adjustment Attribution Category
 	 */
 
-	public org.drip.xva.basel.ValueCategory valueCategory()
+	public ValueCategory valueCategory()
 	{
 		return _valueCategory;
 	}

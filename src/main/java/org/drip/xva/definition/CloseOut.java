@@ -6,6 +6,9 @@ package org.drip.xva.definition;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -125,51 +128,51 @@ public abstract class CloseOut
 	/**
 	 * Retrieve the Close-out from the Exposure on Dealer Default
 	 * 
-	 * @param dblUncollateralizedExposure Group Uncollateralized Exposure
-	 * @param dblCollateralAmount Group Collateral Amount
+	 * @param uncollateralizedExposure Group Uncollateralized Exposure
+	 * @param collateralAmount Group Collateral Amount
 	 * 
 	 * @return Close-out from the Exposure on Dealer Default
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract double dealerDefault (
-		final double dblUncollateralizedExposure,
-		final double dblCollateralAmount)
-		throws java.lang.Exception;
+		final double uncollateralizedExposure,
+		final double collateralAmount)
+		throws Exception;
 
 	/**
 	 * Retrieve the Close-out from the Exposure on a specific Client Default
 	 * 
-	 * @param dblUncollateralizedExposure Group Uncollateralized Exposure
-	 * @param dblCollateralAmount Group Collateral Amount
+	 * @param uncollateralizedExposure Group Uncollateralized Exposure
+	 * @param collateralAmount Group Collateral Amount
 	 * 
 	 * @return The Close-out from the Exposure on a specific Client Default
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract double clientDefault (
-		final double dblUncollateralizedExposure,
-		final double dblCollateralAmount)
-		throws java.lang.Exception;
+		final double uncollateralizedExposure,
+		final double collateralAmount)
+		throws Exception;
 
 	/**
 	 * Retrieve the Close-out from the Exposure on Dealer Default
 	 * 
-	 * @param dblUncollateralizedExposure Group Uncollateralized Exposure
+	 * @param uncollateralizedExposure Group Uncollateralized Exposure
 	 * 
 	 * @return Close-out from the Exposure on Dealer Default
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double dealerDefault (
-		final double dblUncollateralizedExposure)
-		throws java.lang.Exception
+		final double uncollateralizedExposure)
+		throws Exception
 	{
 		return dealerDefault (
-			dblUncollateralizedExposure,
+			uncollateralizedExposure,
 			0.
 		);
 	}

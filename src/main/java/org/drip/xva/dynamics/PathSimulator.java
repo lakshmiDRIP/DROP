@@ -1,11 +1,37 @@
 
 package org.drip.xva.dynamics;
 
+import java.util.List;
+
+import org.drip.analytics.date.JulianDate;
+import org.drip.exposure.holdings.PositionGroup;
+import org.drip.exposure.holdings.PositionGroupContainer;
+import org.drip.exposure.universe.LatentStateWeiner;
+import org.drip.exposure.universe.MarketPath;
+import org.drip.exposure.universe.MarketVertex;
+import org.drip.exposure.universe.MarketVertexGenerator;
+import org.drip.measure.discrete.CorrelatedPathVertexDimension;
+import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.state.identifier.LatentStateLabel;
+import org.drip.xva.gross.ExposureAdjustmentAggregator;
+import org.drip.xva.gross.MonoPathExposureAdjustment;
+import org.drip.xva.gross.PathExposureAdjustment;
+import org.drip.xva.hypothecation.CollateralGroupVertex;
+import org.drip.xva.netting.CollateralGroupPath;
+import org.drip.xva.netting.CreditDebtGroupPath;
+import org.drip.xva.netting.FundingGroupPath;
+import org.drip.xva.settings.AdjustmentDigestScheme;
+import org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath;
+import org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -121,25 +147,22 @@ public class PathSimulator
 {
 	private int _iCount = -1;
 	private int _adjustmentDigestScheme = -1;
-	private org.drip.exposure.universe.MarketVertexGenerator _marketVertexGenerator = null;
-	private org.drip.exposure.holdings.PositionGroupContainer _positionGroupContainer = null;
+	private MarketVertexGenerator _marketVertexGenerator = null;
+	private PositionGroupContainer _positionGroupContainer = null;
 
 	private double[][] positionGroupValueArray (
-		final org.drip.exposure.universe.MarketPath marketPath)
+		final MarketPath marketPath)
 	{
-		org.drip.exposure.holdings.PositionGroup[] positionGroupArray =
-			_positionGroupContainer.positionGroupArray();
+		PositionGroup[] positionGroupArray = _positionGroupContainer.positionGroupArray();
 
-		org.drip.analytics.date.JulianDate[] vertexDateArray = marketPath.anchorDates();
+		JulianDate[] vertexDateArray = marketPath.anchorDates();
 
 		int vertexCount = vertexDateArray.length;
 		int positionGroupCount = positionGroupArray.length;
 		double[][] positionGroupValueArray = new double[positionGroupCount][vertexCount];
 
-		for (int positionGroupIndex = 0; positionGroupIndex < positionGroupCount; ++positionGroupIndex)
-		{
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
+		for (int positionGroupIndex = 0; positionGroupIndex < positionGroupCount; ++positionGroupIndex) {
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
 				int forwardDate = vertexDateArray[vertexIndex].julian();
 
 				try {
@@ -149,9 +172,7 @@ public class PathSimulator
 							forwardDate,
 							marketPath
 						);
-				}
-				catch (java.lang.Exception e)
-				{
+				} catch (Exception e) {
 					e.printStackTrace();
 
 					return null;
@@ -163,52 +184,41 @@ public class PathSimulator
 	}
 
 	private boolean collateralGroupPathArray (
-		final org.drip.exposure.universe.MarketPath marketPath)
+		final MarketPath marketPath)
 	{
-		org.drip.xva.dynamics.PositionGroupTrajectory collateralGroup = null;
+		PositionGroupTrajectory collateralGroup = null;
 
-		try
-		{
-			collateralGroup = new org.drip.xva.dynamics.PositionGroupTrajectory (
+		try {
+			collateralGroup = new PositionGroupTrajectory (
 				_positionGroupContainer.positionGroupArray()[0].positionGroupSpecification().positionGroupSpecification(),
 				marketPath,
 				positionGroupValueArray (marketPath)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return false;
 		}
 
-		org.drip.xva.hypothecation.CollateralGroupVertex[][] collateralGroupVertexArray =
-			collateralGroup.positionGroupVertexArray();
+		CollateralGroupVertex[][] collateralGroupVertexArray = collateralGroup.positionGroupVertexArray();
 
-		if (null == collateralGroupVertexArray)
-		{
+		if (null == collateralGroupVertexArray) {
 			return false;
 		}
 
 		int positionGroupCount = collateralGroupVertexArray.length;
 
-		try
-		{
-			for (int positionGroupIndex = 0; positionGroupIndex < positionGroupCount; ++positionGroupIndex)
-			{
+		try {
+			for (int positionGroupIndex = 0; positionGroupIndex < positionGroupCount; ++positionGroupIndex) {
 				if (!_positionGroupContainer.setCollateralGroupPath (
 					positionGroupIndex,
-					new org.drip.xva.netting.CollateralGroupPath (
-						collateralGroupVertexArray[positionGroupIndex],
-						marketPath
-					)))
+					new CollateralGroupPath (collateralGroupVertexArray[positionGroupIndex], marketPath))) {
 					return false;
+				}
 			}
 
 			return true;
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -227,20 +237,17 @@ public class PathSimulator
 
 	public static final PathSimulator UnitPositionGroupValue (
 		final int iPathCount,
-		final org.drip.exposure.universe.MarketVertexGenerator marketVertexGenerator,
-		final org.drip.exposure.holdings.PositionGroupContainer positionGroupContainer)
+		final MarketVertexGenerator marketVertexGenerator,
+		final PositionGroupContainer positionGroupContainer)
 	{
-		try
-		{
+		try {
 			return new PathSimulator (
 				iPathCount,
 				marketVertexGenerator,
-				org.drip.xva.settings.AdjustmentDigestScheme.ALBANESE_ANDERSEN_METRICS_POINTER,
+				AdjustmentDigestScheme.ALBANESE_ANDERSEN_METRICS_POINTER,
 				positionGroupContainer
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -255,21 +262,19 @@ public class PathSimulator
 	 * @param adjustmentDigestScheme Adjustment Digest Scheme
 	 * @param positionGroupContainer Container of Position Groups
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PathSimulator (
 		final int iCount,
-		final org.drip.exposure.universe.MarketVertexGenerator marketVertexGenerator,
+		final MarketVertexGenerator marketVertexGenerator,
 		final int adjustmentDigestScheme,
-		final org.drip.exposure.holdings.PositionGroupContainer positionGroupContainer)
-		throws java.lang.Exception
+		final PositionGroupContainer positionGroupContainer)
+		throws Exception
 	{
-		if (0 >= (_iCount = iCount) ||
-			null == (_marketVertexGenerator = marketVertexGenerator) ||
-			null == (_positionGroupContainer = positionGroupContainer))
-		{
-			throw new java.lang.Exception ("PathSimulator Constructor => Invalid Inputs");
+		if (0 >= (_iCount = iCount) || null == (_marketVertexGenerator = marketVertexGenerator) ||
+			null == (_positionGroupContainer = positionGroupContainer)) {
+			throw new Exception ("PathSimulator Constructor => Invalid Inputs");
 		}
 
 		_adjustmentDigestScheme = adjustmentDigestScheme;
@@ -292,7 +297,7 @@ public class PathSimulator
 	 * @return The Market Vertex Generator
 	 */
 
-	public org.drip.exposure.universe.MarketVertexGenerator marketVertexGenerator()
+	public MarketVertexGenerator marketVertexGenerator()
 	{
 		return _marketVertexGenerator;
 	}
@@ -314,7 +319,7 @@ public class PathSimulator
 	 * @return Position Group Container
 	 */
 
-	public org.drip.exposure.holdings.PositionGroupContainer positionGroupContainer()
+	public PositionGroupContainer positionGroupContainer()
 	{
 		return _positionGroupContainer;
 	}
@@ -328,67 +333,57 @@ public class PathSimulator
 	 * @return Single Trajectory Path Exposure Adjustment
 	 */
 
-	public org.drip.xva.gross.PathExposureAdjustment singleTrajectory (
-		final org.drip.exposure.universe.MarketVertex initialMarketVertex,
-		final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner)
+	public PathExposureAdjustment singleTrajectory (
+		final MarketVertex initialMarketVertex,
+		final LatentStateWeiner latentStateWeiner)
 	{
-		try
-		{
-			org.drip.exposure.universe.MarketPath marketPath = new org.drip.exposure.universe.MarketPath (
+		try {
+			MarketPath marketPath = new MarketPath (
 				_marketVertexGenerator.marketVertex (
 					initialMarketVertex,
 					latentStateWeiner
 				)
 			);
 
-			if (!collateralGroupPathArray (marketPath))
-			{
+			if (!collateralGroupPathArray (marketPath)) {
 				return null;
 			}
 
-			org.drip.xva.netting.CollateralGroupPath[][] positionFundingGroupPath =
-				_positionGroupContainer.fundingSegmentPaths();
+			CollateralGroupPath[][] positionFundingGroupPath = _positionGroupContainer.fundingSegmentPaths();
 
-			org.drip.xva.netting.CollateralGroupPath[][] positionCreditDebtGroupPath =
+			CollateralGroupPath[][] positionCreditDebtGroupPath =
 				_positionGroupContainer.creditDebtSegmentPaths();
 
 			int positionFundingGroupCount = positionFundingGroupPath.length;
-			org.drip.xva.netting.FundingGroupPath[] fundingGroupPathArray = new
-				org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath[positionFundingGroupCount];
+			FundingGroupPath[] fundingGroupPathArray = new
+				AlbaneseAndersenFundingGroupPath[positionFundingGroupCount];
 
-			if (org.drip.xva.settings.AdjustmentDigestScheme.ALBANESE_ANDERSEN_METRICS_POINTER ==
-				_adjustmentDigestScheme)
-			{
+			if (AdjustmentDigestScheme.ALBANESE_ANDERSEN_METRICS_POINTER == _adjustmentDigestScheme) {
 				int positionCreditDebtGroupCount = positionCreditDebtGroupPath.length;
 
-				org.drip.xva.netting.CreditDebtGroupPath[] creditDebtGroupPathArray = new
-					org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath[positionCreditDebtGroupCount];
+				CreditDebtGroupPath[] creditDebtGroupPathArray = new
+					AlbaneseAndersenNettingGroupPath[positionCreditDebtGroupCount];
 
 				for (int positionCreditDebtGroupIndex = 0; positionCreditDebtGroupIndex <
-					positionCreditDebtGroupCount; ++positionCreditDebtGroupIndex)
-				{
+					positionCreditDebtGroupCount; ++positionCreditDebtGroupIndex) {
 					creditDebtGroupPathArray[positionCreditDebtGroupIndex] =
-						new org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath (
+						new AlbaneseAndersenNettingGroupPath (
 							positionCreditDebtGroupPath[positionCreditDebtGroupIndex],
 							marketPath
 						);
 				}
 
 				for (int positionFundingGroupIndex = 0; positionFundingGroupIndex <
-					positionFundingGroupCount; ++positionFundingGroupIndex)
-				{
-					fundingGroupPathArray[positionFundingGroupIndex] =
-						new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath (
-							creditDebtGroupPathArray,
-							marketPath
-						);
+					positionFundingGroupCount; ++positionFundingGroupIndex) {
+					fundingGroupPathArray[positionFundingGroupIndex] = new AlbaneseAndersenFundingGroupPath (
+						creditDebtGroupPathArray,
+						marketPath
+					);
 				}
 			}
 
-			return new org.drip.xva.gross.MonoPathExposureAdjustment (fundingGroupPathArray);
-		}
-		catch (java.lang.Exception e)
-		{
+			return new MonoPathExposureAdjustment (fundingGroupPathArray);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -405,39 +400,32 @@ public class PathSimulator
 	 * @return The Exposure Adjustment Aggregator - Simulation Result
 	 */
 
-	public org.drip.xva.gross.ExposureAdjustmentAggregator simulate (
-		final java.util.List<org.drip.state.identifier.LatentStateLabel> latentStateLabelList,
-		final org.drip.exposure.universe.MarketVertex initialMarketVertex,
-		final org.drip.measure.discrete.CorrelatedPathVertexDimension correlatedPathVertexDimension)
+	public ExposureAdjustmentAggregator simulate (
+		final List<LatentStateLabel> latentStateLabelList,
+		final MarketVertex initialMarketVertex,
+		final CorrelatedPathVertexDimension correlatedPathVertexDimension)
 	{
-		if (null == correlatedPathVertexDimension)
-		{
+		if (null == correlatedPathVertexDimension) {
 			return null;
 		}
 
-		org.drip.xva.gross.PathExposureAdjustment[] pathExposureAdjustmentArray = new
-			org.drip.xva.gross.PathExposureAdjustment[_iCount];
+		PathExposureAdjustment[] pathExposureAdjustmentArray = new PathExposureAdjustment[_iCount];
 
-		for (int pathIndex = 0; pathIndex < _iCount; ++pathIndex)
-		{
+		for (int pathIndex = 0; pathIndex < _iCount; ++pathIndex) {
 			if (null == (pathExposureAdjustmentArray[pathIndex] = singleTrajectory (
 				initialMarketVertex,
-				org.drip.exposure.universe.LatentStateWeiner.FromUnitRandom (
+				LatentStateWeiner.FromUnitRandom (
 					latentStateLabelList,
-					org.drip.numerical.linearalgebra.Matrix.Transpose
-						(org.drip.numerical.linearalgebra.Matrix.Transpose
-						(correlatedPathVertexDimension.straightPathVertexRd().flatform()))))))
-			{
+					Matrix.Transpose (
+						Matrix.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())))
+			))) {
 				return null;
 			}
 		}
 
-		try
-		{
-			return new org.drip.xva.gross.ExposureAdjustmentAggregator (pathExposureAdjustmentArray);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new ExposureAdjustmentAggregator (pathExposureAdjustmentArray);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

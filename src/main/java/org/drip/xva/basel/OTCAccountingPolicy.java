@@ -1,11 +1,16 @@
 
 package org.drip.xva.basel;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -120,10 +125,10 @@ package org.drip.xva.basel;
 
 public class OTCAccountingPolicy
 {
-	private double _cet1Change = java.lang.Double.NaN;
-	private double _portfolioValueChange = java.lang.Double.NaN;
-	private double _contraLiabilityChange = java.lang.Double.NaN;
-	private double _fundingTransferPricing = java.lang.Double.NaN;
+	private double _cet1Change = Double.NaN;
+	private double _portfolioValueChange = Double.NaN;
+	private double _contraLiabilityChange = Double.NaN;
+	private double _fundingTransferPricing = Double.NaN;
 
 	/**
 	 * OTCAccountingPolicy Constructor
@@ -133,7 +138,7 @@ public class OTCAccountingPolicy
 	 * @param contraLiabilityChange The Contra-Liability Change
 	 * @param portfolioValueChange The Portfolio Value Change
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public OTCAccountingPolicy (
@@ -141,14 +146,13 @@ public class OTCAccountingPolicy
 		final double cet1Change,
 		final double contraLiabilityChange,
 		final double portfolioValueChange)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_fundingTransferPricing = fundingTransferPricing) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_cet1Change = cet1Change) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_contraLiabilityChange = contraLiabilityChange) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_portfolioValueChange = portfolioValueChange))
-		{
-			throw new java.lang.Exception ("OTCAccountingPolicy Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_fundingTransferPricing = fundingTransferPricing) ||
+			!NumberUtil.IsValid (_cet1Change = cet1Change) ||
+			!NumberUtil.IsValid (_contraLiabilityChange = contraLiabilityChange) ||
+			!NumberUtil.IsValid (_portfolioValueChange = portfolioValueChange)) {
+			throw new Exception ("OTCAccountingPolicy Constructor => Invalid Inputs");
 		}
 	}
 

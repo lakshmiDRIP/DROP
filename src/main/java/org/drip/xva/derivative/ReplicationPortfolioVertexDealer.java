@@ -1,11 +1,16 @@
 
 package org.drip.xva.derivative;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -122,8 +127,8 @@ package org.drip.xva.derivative;
 
 public class ReplicationPortfolioVertexDealer
 {
-	private double _seniorNumeraireHoldings = java.lang.Double.NaN;
-	private double _subordinateNumeraireHoldings = java.lang.Double.NaN;
+	private double _seniorNumeraireHoldings = Double.NaN;
+	private double _subordinateNumeraireHoldings = Double.NaN;
 
 	/**
 	 * Construct a ReplicationPortfolioVertexDealer Instance from the Senior Dealer Numeraire alone
@@ -136,15 +141,12 @@ public class ReplicationPortfolioVertexDealer
 	public static final ReplicationPortfolioVertexDealer Standard (
 		final double seniorNumeraireHoldings)
 	{
-		try
-		{
+		try {
 			return new ReplicationPortfolioVertexDealer (
 				seniorNumeraireHoldings,
 				0.
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -157,19 +159,17 @@ public class ReplicationPortfolioVertexDealer
 	 * @param seniorNumeraireHoldings The Dealer Senior Numeraire Holdings
 	 * @param subordinateNumeraireHoldings The Dealer Subordinate Numeraire Holdings
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ReplicationPortfolioVertexDealer (
 		final double seniorNumeraireHoldings,
 		final double subordinateNumeraireHoldings)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_seniorNumeraireHoldings = seniorNumeraireHoldings) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_subordinateNumeraireHoldings =
-				subordinateNumeraireHoldings))
-		{
-			throw new java.lang.Exception ("ReplicationPortfolioVertexDealer Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_seniorNumeraireHoldings = seniorNumeraireHoldings) ||
+			!NumberUtil.IsValid (_subordinateNumeraireHoldings = subordinateNumeraireHoldings)) {
+			throw new Exception ("ReplicationPortfolioVertexDealer Constructor => Invalid Inputs");
 		}
 	}
 

@@ -1,11 +1,17 @@
 
 package org.drip.xva.derivative;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.function.definition.R1ToR1;
+
 /*
  * -*- mode: java; tab-witerminalDateh: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -122,27 +128,25 @@ package org.drip.xva.derivative;
 
 public class TerminalPayout
 {
-	private org.drip.analytics.date.JulianDate _terminalDate = null;
-	private org.drip.function.definition.R1ToR1 _payoutFunction = null;
+	private R1ToR1 _payoutFunction = null;
+	private JulianDate _terminalDate = null;
 
 	/**
 	 * TerminalPayout Constructor
 	 * 
 	 * @param terminalDate The Terminal Pay Out Date
-	 * @param payoutFunction The R^1 To R^1 Pay-out Function
+	 * @param payoutFunction The R<sup>1</sup> To R<sup>1</sup> Pay-out Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public TerminalPayout (
-		final org.drip.analytics.date.JulianDate terminalDate,
-		final org.drip.function.definition.R1ToR1 payoutFunction)
-		throws java.lang.Exception
+		final JulianDate terminalDate,
+		final R1ToR1 payoutFunction)
+		throws Exception
 	{
-		if (null == (_terminalDate = terminalDate) ||
-			null == (_payoutFunction = payoutFunction))
-		{
-			throw new java.lang.Exception ("TerminalPayout Constructor => Invalid Inputs");
+		if (null == (_terminalDate = terminalDate) || null == (_payoutFunction = payoutFunction)) {
+			throw new Exception ("TerminalPayout Constructor => Invalid Inputs");
 		}
 	}
 
@@ -152,18 +156,18 @@ public class TerminalPayout
 	 * @return The Terminal Pay Out Date
 	 */
 
-	public org.drip.analytics.date.JulianDate date()
+	public JulianDate date()
 	{
 		return _terminalDate;
 	}
 
 	/**
-	 * Retrieve the R^1 To R^1 Pay-out Function
+	 * Retrieve the R<sup>1</sup> To R<sup>1</sup> Pay-out Function
 	 * 
-	 * @return The R^1 To R^1 Pay-out Function
+	 * @return The R<sup>1</sup> To R<sup>1</sup> Pay-out Function
 	 */
 
-	public org.drip.function.definition.R1ToR1 function()
+	public R1ToR1 function()
 	{
 		return _payoutFunction;
 	}

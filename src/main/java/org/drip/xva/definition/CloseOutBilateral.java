@@ -1,11 +1,17 @@
 
 package org.drip.xva.definition;
 
+import org.drip.exposure.universe.MarketVertex;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -119,10 +125,10 @@ package org.drip.xva.definition;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
+public class CloseOutBilateral extends CloseOut
 {
-	private double _clientRecovery = java.lang.Double.NaN;;
-	private double _dealerSeniorFundingRecovery = java.lang.Double.NaN;
+	private double _clientRecovery = Double.NaN;;
+	private double _dealerSeniorFundingRecovery = Double.NaN;
 
 	/**
 	 * Generate the Close Out Bilateral Instance from the Market Vertex
@@ -133,22 +139,18 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 	 */
 
 	public static final CloseOutBilateral Market (
-		final org.drip.exposure.universe.MarketVertex marketVertex)
+		final MarketVertex marketVertex)
 	{
-		if (null == marketVertex)
-		{
+		if (null == marketVertex) {
 			return null;
 		}
 
-		try
-		{
+		try {
 			return new CloseOutBilateral (
 				marketVertex.dealer().seniorRecoveryRate(),
 				marketVertex.client().seniorRecoveryRate()
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -161,19 +163,17 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 	 * @param dealerSeniorFundingRecovery The Dealer Senior Funding Recovery Rate
 	 * @param clientRecovery Client Recovery Rate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CloseOutBilateral (
 		final double dealerSeniorFundingRecovery,
 		final double clientRecovery)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dealerSeniorFundingRecovery =
-			dealerSeniorFundingRecovery) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_clientRecovery = clientRecovery))
-		{
-			throw new java.lang.Exception ("CloseOutBilateral Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_dealerSeniorFundingRecovery = dealerSeniorFundingRecovery) ||
+			!NumberUtil.IsValid (_clientRecovery = clientRecovery)) {
+			throw new Exception ("CloseOutBilateral Constructor => Invalid Inputs");
 		}
 	}
 
@@ -202,12 +202,10 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 	@Override public double dealerDefault (
 		final double uncollateralizedExposure,
 		final double collateralAmount)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (uncollateralizedExposure) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (collateralAmount))
-		{
-			throw new java.lang.Exception ("CloseOutBilateral::dealerDefault => Invalid Inputs");
+		if (!NumberUtil.IsValid (uncollateralizedExposure) || !NumberUtil.IsValid (collateralAmount)) {
+			throw new Exception ("CloseOutBilateral::dealerDefault => Invalid Inputs");
 		}
 
 		double collateralizedExposure = uncollateralizedExposure - collateralAmount;
@@ -219,12 +217,10 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 	@Override public double clientDefault (
 		final double uncollateralizedExposure,
 		final double collateralAmount)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (uncollateralizedExposure) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (collateralAmount))
-		{
-			throw new java.lang.Exception ("CloseOutBilateral::clientDefault => Invalid Inputs");
+		if (!NumberUtil.IsValid (uncollateralizedExposure) || !NumberUtil.IsValid (collateralAmount)) {
+			throw new Exception ("CloseOutBilateral::clientDefault => Invalid Inputs");
 		}
 
 		double clientCollateralizedExposure = uncollateralizedExposure - collateralAmount;

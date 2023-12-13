@@ -6,6 +6,9 @@ package org.drip.xva.derivative;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -123,9 +126,9 @@ package org.drip.xva.derivative;
 
 public class EvolutionTrajectoryEdge
 {
-	private org.drip.xva.derivative.CashAccountEdge _cashAccountEdge = null;
-	private org.drip.xva.derivative.EvolutionTrajectoryVertex _startingTrajectoryVertex = null;
-	private org.drip.xva.derivative.EvolutionTrajectoryVertex _finishingTrajectoryVertex = null;
+	private CashAccountEdge _cashAccountEdge = null;
+	private EvolutionTrajectoryVertex _startingTrajectoryVertex = null;
+	private EvolutionTrajectoryVertex _finishingTrajectoryVertex = null;
 
 	/**
 	 * EvolutionTrajectoryEdge Constructor
@@ -134,20 +137,19 @@ public class EvolutionTrajectoryEdge
 	 * @param finishingTrajectoryVertex The Finishing Evolution Trajectory Vertex
 	 * @param cashAccountEdge The Cash Account Edge
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public EvolutionTrajectoryEdge (
-		final org.drip.xva.derivative.EvolutionTrajectoryVertex startingTrajectoryVertex,
-		final org.drip.xva.derivative.EvolutionTrajectoryVertex finishingTrajectoryVertex,
-		final org.drip.xva.derivative.CashAccountEdge cashAccountEdge)
-		throws java.lang.Exception
+		final EvolutionTrajectoryVertex startingTrajectoryVertex,
+		final EvolutionTrajectoryVertex finishingTrajectoryVertex,
+		final CashAccountEdge cashAccountEdge)
+		throws Exception
 	{
 		if (null == (_startingTrajectoryVertex = startingTrajectoryVertex) ||
 			null == (_finishingTrajectoryVertex = finishingTrajectoryVertex) ||
-			null == (_cashAccountEdge = cashAccountEdge))
-		{
-			throw new java.lang.Exception ("EvolutionTrajectoryEdge Constructor => Invalid Inputs");
+			null == (_cashAccountEdge = cashAccountEdge)) {
+			throw new Exception ("EvolutionTrajectoryEdge Constructor => Invalid Inputs");
 		}
 	}
 
@@ -157,7 +159,7 @@ public class EvolutionTrajectoryEdge
 	 * @return The Starting Evolution Trajectory Vertex
 	 */
 
-	public org.drip.xva.derivative.EvolutionTrajectoryVertex vertexStart()
+	public EvolutionTrajectoryVertex vertexStart()
 	{
 		return _startingTrajectoryVertex;
 	}
@@ -168,7 +170,7 @@ public class EvolutionTrajectoryEdge
 	 * @return The Finishing Evolution Trajectory Vertex
 	 */
 
-	public org.drip.xva.derivative.EvolutionTrajectoryVertex vertexFinish()
+	public EvolutionTrajectoryVertex vertexFinish()
 	{
 		return _finishingTrajectoryVertex;
 	}
@@ -179,7 +181,7 @@ public class EvolutionTrajectoryEdge
 	 * @return The Cash Account Edge
 	 */
 
-	public org.drip.xva.derivative.CashAccountEdge cashAccountEdge()
+	public CashAccountEdge cashAccountEdge()
 	{
 		return _cashAccountEdge;
 	}

@@ -6,6 +6,9 @@ package org.drip.xva.basel;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -120,8 +123,8 @@ package org.drip.xva.basel;
 
 public class BalanceSheetEdge
 {
-	private org.drip.xva.basel.BalanceSheetVertex _headBalanceSheetVertex = null;
-	private org.drip.xva.basel.BalanceSheetVertex _tailBalanceSheetVertex = null;
+	private BalanceSheetVertex _headBalanceSheetVertex = null;
+	private BalanceSheetVertex _tailBalanceSheetVertex = null;
 
 	/**
 	 * BalanceSheetEdge Constructor
@@ -129,18 +132,18 @@ public class BalanceSheetEdge
 	 * @param headBalanceSheetVertex Balance Sheet Account Vertex Head Instance
 	 * @param tailBalanceSheetVertex Balance Sheet Account Vertex Tail Instance
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BalanceSheetEdge (
-		final org.drip.xva.basel.BalanceSheetVertex headBalanceSheetVertex,
-		final org.drip.xva.basel.BalanceSheetVertex tailBalanceSheetVertex)
-		throws java.lang.Exception
+		final BalanceSheetVertex headBalanceSheetVertex,
+		final BalanceSheetVertex tailBalanceSheetVertex)
+		throws Exception
 	{
 		if (null == (_headBalanceSheetVertex = headBalanceSheetVertex) ||
 			null == (_tailBalanceSheetVertex = tailBalanceSheetVertex))
 		{
-			throw new java.lang.Exception ("BalanceSheetEdge Constructor => Invalid Inputs");
+			throw new Exception ("BalanceSheetEdge Constructor => Invalid Inputs");
 		}
 	}
 
@@ -150,7 +153,7 @@ public class BalanceSheetEdge
 	 * @return The Balance Sheet Account Vertex Head Instance
 	 */
 
-	public org.drip.xva.basel.BalanceSheetVertex head()
+	public BalanceSheetVertex head()
 	{
 		return _headBalanceSheetVertex;
 	}
@@ -161,7 +164,7 @@ public class BalanceSheetEdge
 	 * @return The Balance Sheet Account Vertex Tail Instance
 	 */
 
-	public org.drip.xva.basel.BalanceSheetVertex tail()
+	public BalanceSheetVertex tail()
 	{
 		return _tailBalanceSheetVertex;
 	}

@@ -1,11 +1,16 @@
 
 package org.drip.xva.basel;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -120,12 +125,12 @@ package org.drip.xva.basel;
 
 public class BalanceSheetVertex
 {
-	private double _cash = java.lang.Double.NaN;
-	private double _asset = java.lang.Double.NaN;
-	private double _liability = java.lang.Double.NaN;
-	private double _contraAsset = java.lang.Double.NaN;
-	private double _contraLiability = java.lang.Double.NaN;
-	private double _retainedEarnings = java.lang.Double.NaN;
+	private double _cash = Double.NaN;
+	private double _asset = Double.NaN;
+	private double _liability = Double.NaN;
+	private double _contraAsset = Double.NaN;
+	private double _contraLiability = Double.NaN;
+	private double _retainedEarnings = Double.NaN;
 
 	/**
 	 * Unrealized Instance of BalanceSheetVertex
@@ -157,7 +162,7 @@ public class BalanceSheetVertex
 				0.
 			);
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -175,7 +180,7 @@ public class BalanceSheetVertex
 	 * @param retainedEarnings The Retained Earnings Account
 	 * @param cash The Cash Account
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BalanceSheetVertex (
@@ -185,16 +190,16 @@ public class BalanceSheetVertex
 		final double contraLiability,
 		final double retainedEarnings,
 		final double cash)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_cash = cash) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_asset = asset) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_liability = liability) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_contraAsset = contraAsset) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_contraLiability = contraLiability) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_retainedEarnings = retainedEarnings))
+		if (!NumberUtil.IsValid (_cash = cash) ||
+			!NumberUtil.IsValid (_asset = asset) ||
+			!NumberUtil.IsValid (_liability = liability) ||
+			!NumberUtil.IsValid (_contraAsset = contraAsset) ||
+			!NumberUtil.IsValid (_contraLiability = contraLiability) ||
+			!NumberUtil.IsValid (_retainedEarnings = retainedEarnings))
 		{
-			throw new java.lang.Exception ("BalanceSheetVertex Constructor => Invalid Inputs");
+			throw new Exception ("BalanceSheetVertex Constructor => Invalid Inputs");
 		}
 	}
 
