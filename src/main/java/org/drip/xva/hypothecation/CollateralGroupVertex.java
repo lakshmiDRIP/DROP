@@ -1,11 +1,17 @@
 
 package org.drip.xva.hypothecation;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -118,29 +124,24 @@ package org.drip.xva.hypothecation;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class CollateralGroupVertex
-	extends org.drip.xva.hypothecation.CollateralGroupVertexExposure
-	implements org.drip.xva.hypothecation.CollateralGroupVertexExposureComponent
+public abstract class CollateralGroupVertex extends CollateralGroupVertexExposure
+	implements CollateralGroupVertexExposureComponent
 {
-	private org.drip.analytics.date.JulianDate _vertexDate = null;
-	private double _variationMarginPosting = java.lang.Double.NaN;
+	private JulianDate _vertexDate = null;
+	private double _variationMarginPosting = Double.NaN;
 
 	protected CollateralGroupVertex (
-		final org.drip.analytics.date.JulianDate vertexDate,
+		final JulianDate vertexDate,
 		final double variationMarginEstimate,
 		final double tradePayment,
 		final double variationMarginPosting)
-		throws java.lang.Exception
+		throws Exception
 	{
-		super (
-			variationMarginEstimate,
-			tradePayment
-		);
+		super (variationMarginEstimate, tradePayment);
 
 		if (null == (_vertexDate = vertexDate) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_variationMarginPosting = variationMarginPosting))
-		{
-			throw new java.lang.Exception ("CollateralGroupVertex Constructor => Invalid Inputs");
+			!NumberUtil.IsValid (_variationMarginPosting = variationMarginPosting)) {
+			throw new Exception ("CollateralGroupVertex Constructor => Invalid Inputs");
 		}
 	}
 
@@ -150,7 +151,7 @@ public abstract class CollateralGroupVertex
 	 * @return The Vertex Date
 	 */
 
-	public org.drip.analytics.date.JulianDate vertexDate()
+	public JulianDate vertexDate()
 	{
 		return _vertexDate;
 	}

@@ -1,11 +1,16 @@
 
 package org.drip.xva.gross;
 
+import org.drip.measure.statistics.UnivariateDiscreteThin;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -121,251 +126,209 @@ package org.drip.xva.gross;
 
 public class ExposureAdjustmentDigest
 {
-	private org.drip.measure.statistics.UnivariateDiscreteThin _cvaThinStatistics = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin _dvaThinStatistics = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin _fbaThinStatistics = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin _fcaThinStatistics = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin _fdaThinStatistics = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin _fvaThinStatistics = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin _ucvaThinStatistics = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin _sfvaThinStatistics = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin _cvaclThinStatistics = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin _ftdcvaThinStatistics = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin _ucolvaThinStatistics = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin _totalvaThinStatistics = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin _ftdcolvaThinStatistics = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin[]
-		_collateralizedExposureThinStatistics = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin[]
-		_uncollateralizedExposureThinStatisticsArray = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin[]
-		_collateralizedExposureThinStatisticsPV = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin[]
-		_uncollateralizedExposurePVThinStatisticsArray = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin[]
-		_collateralizedPositiveExposureThinStatisticsArray = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin[]
-		_collateralizedNegativeExposureThinStatisticsArray = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin[]
-		_uncollateralizedPositiveExposureThinStatisticsArray = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin[]
-		_uncollateralizedNegativeExposureThinStatisticsArray = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin[]
-		_collateralizedPositiveExposurePVThinStatisticsArray = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin[]
-		_collateralizedNegativeExposurePVThinStatisticsArray = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin[]
-		_uncollateralizedPositiveExposurePVThinStatisticsArray = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin[]
-		_uncollateralizedNegativeExposurePVThinStatisticsArray = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin[] _fundingExposureThinStatisticsArray = null;
-	private org.drip.measure.statistics.UnivariateDiscreteThin[] _fundingExposurePVThinStatisticsArray = null;
+	private UnivariateDiscreteThin _cvaThinStatistics = null;
+	private UnivariateDiscreteThin _dvaThinStatistics = null;
+	private UnivariateDiscreteThin _fbaThinStatistics = null;
+	private UnivariateDiscreteThin _fcaThinStatistics = null;
+	private UnivariateDiscreteThin _fdaThinStatistics = null;
+	private UnivariateDiscreteThin _fvaThinStatistics = null;
+	private UnivariateDiscreteThin _ucvaThinStatistics = null;
+	private UnivariateDiscreteThin _sfvaThinStatistics = null;
+	private UnivariateDiscreteThin _cvaclThinStatistics = null;
+	private UnivariateDiscreteThin _ftdcvaThinStatistics = null;
+	private UnivariateDiscreteThin _ucolvaThinStatistics = null;
+	private UnivariateDiscreteThin _totalvaThinStatistics = null;
+	private UnivariateDiscreteThin _ftdcolvaThinStatistics = null;
+	private UnivariateDiscreteThin[] _fundingExposureThinStatisticsArray = null;
+	private UnivariateDiscreteThin[] _collateralizedExposureThinStatistics = null;
+	private UnivariateDiscreteThin[] _fundingExposurePVThinStatisticsArray = null;
+	private UnivariateDiscreteThin[] _collateralizedExposureThinStatisticsPV = null;
+	private UnivariateDiscreteThin[] _uncollateralizedExposureThinStatisticsArray = null;
+	private UnivariateDiscreteThin[] _uncollateralizedExposurePVThinStatisticsArray = null;
+	private UnivariateDiscreteThin[] _collateralizedPositiveExposureThinStatisticsArray = null;
+	private UnivariateDiscreteThin[] _collateralizedNegativeExposureThinStatisticsArray = null;
+	private UnivariateDiscreteThin[] _collateralizedPositiveExposurePVThinStatisticsArray = null;
+	private UnivariateDiscreteThin[] _collateralizedNegativeExposurePVThinStatisticsArray = null;
+	private UnivariateDiscreteThin[] _uncollateralizedPositiveExposureThinStatisticsArray = null;
+	private UnivariateDiscreteThin[] _uncollateralizedNegativeExposureThinStatisticsArray = null;
+	private UnivariateDiscreteThin[] _uncollateralizedPositiveExposurePVThinStatisticsArray = null;
+	private UnivariateDiscreteThin[] _uncollateralizedNegativeExposurePVThinStatisticsArray = null;
 
 	/**
 	 * ExposureAdjustmentDigest Constructor
 	 * 
-	 * @param ucolva The Array of Unilateral Collateral VA
-	 * @param ftdcolva The Array of Bilateral Collateral VA
-	 * @param ucva The Array of UCVA
-	 * @param ftdcva The Array of FTD CVA
-	 * @param cva The Array of CVA
-	 * @param cvacl The Array of CVA Contra-Liabilities
-	 * @param dva The Array of DVA
-	 * @param fva The Array of FVA
-	 * @param fda The Array of FDA
-	 * @param fca The Array of FCA
-	 * @param fba The Array of FBA
-	 * @param sfva The Array of SFVA
-	 * @param totalVA The Array of Total VA
-	 * @param collateralizedExposure Double Array of Collateralized Exposure
-	 * @param collateralizedExposurePV Double Array of Collateralized Exposure PV
-	 * @param collateralizedPositiveExposure Double Array of Collateralized Positive Exposure
-	 * @param collateralizedPositiveExposurePV Double Array of Collateralized Positive Exposure PV
-	 * @param collateralizedNegativeExposure Double Array of Collateralized Negative Exposure
-	 * @param collateralizedNegativeExposurePV Double Array of Collateralized Negative Exposure PV
-	 * @param uncollateralizedExposure Double Array of Uncollateralized Exposure
-	 * @param uncollateralizedExposurePV Double Array of Uncollateralized Exposure PV
-	 * @param uncollateralizedPositiveExposure Double Array of Uncollateralized Positive Exposure
-	 * @param uncollateralizedPositiveExposurePV Double Array of Uncollateralized Positive Exposure PV
-	 * @param uncollateralizedNegativeExposure Double Array of Uncollateralized Negative Exposure
-	 * @param uncollateralizedNegativeExposurePV Double Array of Uncollateralized Negative Exposure PV
-	 * @param fundingExposure Double Array of Funding Exposure
-	 * @param fundingExposurePV Double Array of Funding Exposure PV
+	 * @param ucolvaArray The Array of Unilateral Collateral VA
+	 * @param ftdcolvaArray The Array of Bilateral Collateral VA
+	 * @param ucvaArray The Array of UCVA
+	 * @param ftdcvaArray The Array of FTD CVA
+	 * @param cvaArray The Array of CVA
+	 * @param cvaclArray The Array of CVA Contra-Liabilities
+	 * @param dvaArray The Array of DVA
+	 * @param fvaArray The Array of FVA
+	 * @param fdaArray The Array of FDA
+	 * @param fcaArray The Array of FCA
+	 * @param fbaArray The Array of FBA
+	 * @param sfvaArray The Array of SFVA
+	 * @param totalVAArray The Array of Total VA
+	 * @param collateralizedExposureGrid Grid of Collateralized Exposure
+	 * @param collateralizedExposurePVGrid Grid of Collateralized Exposure PV
+	 * @param collateralizedPositiveExposurGride Grid of Collateralized Positive Exposure
+	 * @param collateralizedPositiveExposurePVGrid Grid of Collateralized Positive Exposure PV
+	 * @param collateralizedNegativeExposureGrid Grid of Collateralized Negative Exposure
+	 * @param collateralizedNegativeExposurePVGrid Grid of Collateralized Negative Exposure PV
+	 * @param uncollateralizedExposureGrid Grid of Uncollateralized Exposure
+	 * @param uncollateralizedExposurePVGrid Grid of Uncollateralized Exposure PV
+	 * @param uncollateralizedPositiveExposureGrid Grid of Uncollateralized Positive Exposure
+	 * @param uncollateralizedPositiveExposurePVGrid Grid of Uncollateralized Positive Exposure PV
+	 * @param uncollateralizedNegativeExposureGrid Grid of Uncollateralized Negative Exposure
+	 * @param uncollateralizedNegativeExposurePVGrid Grid of Uncollateralized Negative Exposure PV
+	 * @param fundingExposureGrid Grid of Funding Exposure
+	 * @param fundingExposurePVGrid Grid of Funding Exposure PV
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ExposureAdjustmentDigest (
-		final double[] ucolva,
-		final double[] ftdcolva,
-		final double[] ucva,
-		final double[] ftdcva,
-		final double[] cva,
-		final double[] cvacl,
-		final double[] dva,
-		final double[] fva,
-		final double[] fda,
-		final double[] fca,
-		final double[] fba,
-		final double[] sfva,
-		final double[] totalVA,
-		final double[][] collateralizedExposure,
-		final double[][] collateralizedExposurePV,
-		final double[][] collateralizedPositiveExposure,
-		final double[][] collateralizedPositiveExposurePV,
-		final double[][] collateralizedNegativeExposure,
-		final double[][] collateralizedNegativeExposurePV,
-		final double[][] uncollateralizedExposure,
-		final double[][] uncollateralizedExposurePV,
-		final double[][] uncollateralizedPositiveExposure,
-		final double[][] uncollateralizedPositiveExposurePV,
-		final double[][] uncollateralizedNegativeExposure,
-		final double[][] uncollateralizedNegativeExposurePV,
-		final double[][] fundingExposure,
-		final double[][] fundingExposurePV)
-		throws java.lang.Exception
+		final double[] ucolvaArray,
+		final double[] ftdcolvaArray,
+		final double[] ucvaArray,
+		final double[] ftdcvaArray,
+		final double[] cvaArray,
+		final double[] cvaclArray,
+		final double[] dvaArray,
+		final double[] fvaArray,
+		final double[] fdaArray,
+		final double[] fcaArray,
+		final double[] fbaArray,
+		final double[] sfvaArray,
+		final double[] totalVAArray,
+		final double[][] collateralizedExposureGrid,
+		final double[][] collateralizedExposurePVGrid,
+		final double[][] collateralizedPositiveExposureGrid,
+		final double[][] collateralizedPositiveExposurePVGrid,
+		final double[][] collateralizedNegativeExposureGrid,
+		final double[][] collateralizedNegativeExposurePVGrid,
+		final double[][] uncollateralizedExposureGrid,
+		final double[][] uncollateralizedExposurePVGrid,
+		final double[][] uncollateralizedPositiveExposureGrid,
+		final double[][] uncollateralizedPositiveExposurePVGrid,
+		final double[][] uncollateralizedNegativeExposureGrid,
+		final double[][] uncollateralizedNegativeExposurePVGrid,
+		final double[][] fundingExposureGrid,
+		final double[][] fundingExposurePVGrid)
+		throws Exception
 	{
-		if (null == ucolva ||
-			null == ftdcolva ||
-			null == ucva ||
-			null == ftdcva ||
-			null == cva ||
-			null == cvacl ||
-			null == dva ||
-			null == fva ||
-			null == fca ||
-			null == fba ||
-			null == sfva ||
-			null == totalVA ||
-			null == collateralizedExposure ||
-			null == collateralizedExposurePV ||
-			null == collateralizedPositiveExposure ||
-			null == collateralizedPositiveExposurePV ||
-			null == collateralizedNegativeExposure ||
-			null == collateralizedNegativeExposurePV ||
-			null == uncollateralizedExposure ||
-			null == uncollateralizedExposurePV ||
-			null == uncollateralizedPositiveExposure ||
-			null == uncollateralizedPositiveExposurePV ||
-			null == uncollateralizedNegativeExposure ||
-			null == uncollateralizedNegativeExposurePV ||
-			null == fundingExposure ||
-			null == fundingExposurePV)
-		{
-			throw new java.lang.Exception ("ExposureAdjustmentDigest Constructor => Invalid Inputs");
+		if (null == collateralizedExposureGrid ||
+			null == collateralizedExposurePVGrid ||
+			null == collateralizedPositiveExposureGrid ||
+			null == collateralizedPositiveExposurePVGrid ||
+			null == collateralizedNegativeExposureGrid ||
+			null == collateralizedNegativeExposurePVGrid ||
+			null == uncollateralizedExposureGrid ||
+			null == uncollateralizedExposurePVGrid ||
+			null == uncollateralizedPositiveExposureGrid ||
+			null == uncollateralizedPositiveExposurePVGrid ||
+			null == uncollateralizedNegativeExposureGrid ||
+			null == uncollateralizedNegativeExposurePVGrid ||
+			null == fundingExposureGrid ||
+			null == fundingExposurePVGrid) {
+			throw new Exception ("ExposureAdjustmentDigest Constructor => Invalid Inputs");
 		}
 
-		_ucolvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (ucolva);
+		_ucolvaThinStatistics = new UnivariateDiscreteThin (ucolvaArray);
 
-		_ftdcolvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (ftdcolva);
+		_ftdcolvaThinStatistics = new UnivariateDiscreteThin (ftdcolvaArray);
 
-		_ucvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (ucva);
+		_ucvaThinStatistics = new UnivariateDiscreteThin (ucvaArray);
 
-		_ftdcvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (ftdcva);
+		_ftdcvaThinStatistics = new UnivariateDiscreteThin (ftdcvaArray);
 
-		_cvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (cva);
+		_cvaThinStatistics = new UnivariateDiscreteThin (cvaArray);
 
-		_cvaclThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (cvacl);
+		_cvaclThinStatistics = new UnivariateDiscreteThin (cvaclArray);
 
-		_dvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (dva);
+		_dvaThinStatistics = new UnivariateDiscreteThin (dvaArray);
 
-		_fvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (fva);
+		_fvaThinStatistics = new UnivariateDiscreteThin (fvaArray);
 
-		_fdaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (fda);
+		_fdaThinStatistics = new UnivariateDiscreteThin (fdaArray);
 
-		_fcaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (fca);
+		_fcaThinStatistics = new UnivariateDiscreteThin (fcaArray);
 
-		_fbaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (fba);
+		_fbaThinStatistics = new UnivariateDiscreteThin (fbaArray);
 
-		_sfvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (sfva);
+		_sfvaThinStatistics = new UnivariateDiscreteThin (sfvaArray);
 
-		_totalvaThinStatistics = new org.drip.measure.statistics.UnivariateDiscreteThin (totalVA);
+		_totalvaThinStatistics = new UnivariateDiscreteThin (totalVAArray);
 
-		int vertexCount = collateralizedExposure.length;
-		_collateralizedExposureThinStatistics = new
-			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-		_uncollateralizedExposureThinStatisticsArray = new
-			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-		_collateralizedExposureThinStatisticsPV = new
-			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-		_uncollateralizedExposurePVThinStatisticsArray = new
-			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-		_collateralizedPositiveExposureThinStatisticsArray = new
-			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-		_collateralizedPositiveExposurePVThinStatisticsArray = new
-			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-		_collateralizedNegativeExposureThinStatisticsArray = new
-			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-		_collateralizedNegativeExposurePVThinStatisticsArray = new
-			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-		_uncollateralizedPositiveExposureThinStatisticsArray = new
-			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-		_uncollateralizedPositiveExposurePVThinStatisticsArray = new
-			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-		_uncollateralizedNegativeExposureThinStatisticsArray = new
-			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-		_uncollateralizedNegativeExposurePVThinStatisticsArray = new
-			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-		_fundingExposureThinStatisticsArray = new
-			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
-		_fundingExposurePVThinStatisticsArray = new
-			org.drip.measure.statistics.UnivariateDiscreteThin[vertexCount];
+		int vertexCount = collateralizedExposureGrid.length;
+		_fundingExposureThinStatisticsArray = new UnivariateDiscreteThin[vertexCount];
+		_collateralizedExposureThinStatistics = new UnivariateDiscreteThin[vertexCount];
+		_fundingExposurePVThinStatisticsArray = new UnivariateDiscreteThin[vertexCount];
+		_collateralizedExposureThinStatisticsPV = new UnivariateDiscreteThin[vertexCount];
+		_uncollateralizedExposureThinStatisticsArray = new UnivariateDiscreteThin[vertexCount];
+		_uncollateralizedExposurePVThinStatisticsArray = new UnivariateDiscreteThin[vertexCount];
+		_collateralizedNegativeExposureThinStatisticsArray = new UnivariateDiscreteThin[vertexCount];
+		_collateralizedPositiveExposureThinStatisticsArray = new UnivariateDiscreteThin[vertexCount];
+		_collateralizedNegativeExposurePVThinStatisticsArray = new UnivariateDiscreteThin[vertexCount];
+		_collateralizedPositiveExposurePVThinStatisticsArray = new UnivariateDiscreteThin[vertexCount];
+		_uncollateralizedNegativeExposureThinStatisticsArray = new UnivariateDiscreteThin[vertexCount];
+		_uncollateralizedPositiveExposureThinStatisticsArray = new UnivariateDiscreteThin[vertexCount];
+		_uncollateralizedNegativeExposurePVThinStatisticsArray = new UnivariateDiscreteThin[vertexCount];
+		_uncollateralizedPositiveExposurePVThinStatisticsArray = new UnivariateDiscreteThin[vertexCount];
 
 		if (0 == vertexCount ||
-			vertexCount != collateralizedExposurePV.length ||
-			vertexCount != collateralizedPositiveExposure.length ||
-			vertexCount != collateralizedPositiveExposurePV.length ||
-			vertexCount != collateralizedNegativeExposure.length ||
-			vertexCount != collateralizedNegativeExposurePV.length ||
-			vertexCount != uncollateralizedExposure.length ||
-			vertexCount != uncollateralizedExposurePV.length ||
-			vertexCount != uncollateralizedPositiveExposure.length ||
-			vertexCount != collateralizedPositiveExposurePV.length ||
-			vertexCount != collateralizedNegativeExposurePV.length ||
-			vertexCount != collateralizedNegativeExposurePV.length ||
-			vertexCount != fundingExposure.length ||
-			vertexCount != fundingExposurePV.length)
-		{
-			throw new java.lang.Exception ("ExposureAdjustmentDigest Constructor => Invalid Inputs");
+			vertexCount != collateralizedExposurePVGrid.length ||
+			vertexCount != collateralizedPositiveExposureGrid.length ||
+			vertexCount != collateralizedPositiveExposurePVGrid.length ||
+			vertexCount != collateralizedNegativeExposureGrid.length ||
+			vertexCount != collateralizedNegativeExposurePVGrid.length ||
+			vertexCount != uncollateralizedExposureGrid.length ||
+			vertexCount != uncollateralizedExposurePVGrid.length ||
+			vertexCount != uncollateralizedPositiveExposureGrid.length ||
+			vertexCount != collateralizedPositiveExposurePVGrid.length ||
+			vertexCount != collateralizedNegativeExposurePVGrid.length ||
+			vertexCount != fundingExposureGrid.length ||
+			vertexCount != fundingExposurePVGrid.length) {
+			throw new Exception ("ExposureAdjustmentDigest Constructor => Invalid Inputs");
 		}
 
-		for (int i = 0 ; i < vertexCount; ++i)
-		{
+		for (int i = 0 ; i < vertexCount; ++i) {
 			_collateralizedExposureThinStatistics[i] = new
-				org.drip.measure.statistics.UnivariateDiscreteThin (collateralizedExposure[i]);
+				UnivariateDiscreteThin (collateralizedExposureGrid[i]);
 
 			_collateralizedExposureThinStatisticsPV[i] = new
-				org.drip.measure.statistics.UnivariateDiscreteThin (collateralizedExposurePV[i]);
+				UnivariateDiscreteThin (collateralizedExposurePVGrid[i]);
 
 			_collateralizedPositiveExposureThinStatisticsArray[i] = new
-				org.drip.measure.statistics.UnivariateDiscreteThin (collateralizedPositiveExposure[i]);
+				UnivariateDiscreteThin (collateralizedPositiveExposureGrid[i]);
 
 			_collateralizedPositiveExposurePVThinStatisticsArray[i] = new
-				org.drip.measure.statistics.UnivariateDiscreteThin (collateralizedPositiveExposurePV[i]);
+				UnivariateDiscreteThin (collateralizedPositiveExposurePVGrid[i]);
 
 			_collateralizedNegativeExposureThinStatisticsArray[i] = new
-				org.drip.measure.statistics.UnivariateDiscreteThin (collateralizedNegativeExposure[i]);
+				UnivariateDiscreteThin (collateralizedNegativeExposureGrid[i]);
 
 			_collateralizedNegativeExposurePVThinStatisticsArray[i] = new
-				org.drip.measure.statistics.UnivariateDiscreteThin (collateralizedNegativeExposurePV[i]);
+				UnivariateDiscreteThin (collateralizedNegativeExposurePVGrid[i]);
 
 			_uncollateralizedExposureThinStatisticsArray[i] = new
-				org.drip.measure.statistics.UnivariateDiscreteThin (uncollateralizedExposure[i]);
+				UnivariateDiscreteThin (uncollateralizedExposureGrid[i]);
 
 			_uncollateralizedExposurePVThinStatisticsArray[i] = new
-				org.drip.measure.statistics.UnivariateDiscreteThin (uncollateralizedExposurePV[i]);
+				UnivariateDiscreteThin (uncollateralizedExposurePVGrid[i]);
 
 			_uncollateralizedPositiveExposureThinStatisticsArray[i] = new
-				org.drip.measure.statistics.UnivariateDiscreteThin (uncollateralizedPositiveExposure[i]);
+				UnivariateDiscreteThin (uncollateralizedPositiveExposureGrid[i]);
 
 			_uncollateralizedPositiveExposurePVThinStatisticsArray[i] = new
-				org.drip.measure.statistics.UnivariateDiscreteThin (uncollateralizedPositiveExposurePV[i]);
+				UnivariateDiscreteThin (uncollateralizedPositiveExposurePVGrid[i]);
 
 			_uncollateralizedNegativeExposureThinStatisticsArray[i] = new
-				org.drip.measure.statistics.UnivariateDiscreteThin (uncollateralizedNegativeExposure[i]);
+				UnivariateDiscreteThin (uncollateralizedNegativeExposureGrid[i]);
 
 			_uncollateralizedNegativeExposurePVThinStatisticsArray[i] = new
-				org.drip.measure.statistics.UnivariateDiscreteThin (uncollateralizedNegativeExposurePV[i]);
+				UnivariateDiscreteThin (uncollateralizedNegativeExposurePVGrid[i]);
 		}
 	}
 
@@ -375,7 +338,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for the Collateralized Exposure
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin[] collateralizedExposure()
+	public UnivariateDiscreteThin[] collateralizedExposure()
 	{
 		return _collateralizedExposureThinStatistics;
 	}
@@ -386,7 +349,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for the Collateralized Exposure PV
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin[] collateralizedExposurePV()
+	public UnivariateDiscreteThin[] collateralizedExposurePV()
 	{
 		return _collateralizedExposureThinStatisticsPV;
 	}
@@ -397,7 +360,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for the Collateralized Positive Exposure
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin[] collateralizedPositiveExposure()
+	public UnivariateDiscreteThin[] collateralizedPositiveExposure()
 	{
 		return _collateralizedPositiveExposureThinStatisticsArray;
 	}
@@ -408,7 +371,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for the Collateralized Positive Exposure PV
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin[] collateralizedPositiveExposurePV()
+	public UnivariateDiscreteThin[] collateralizedPositiveExposurePV()
 	{
 		return _collateralizedPositiveExposurePVThinStatisticsArray;
 	}
@@ -419,7 +382,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for the Collateralized Negative Exposure
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin[] collateralizedNegativeExposure()
+	public UnivariateDiscreteThin[] collateralizedNegativeExposure()
 	{
 		return _collateralizedNegativeExposureThinStatisticsArray;
 	}
@@ -430,7 +393,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for the Collateralized Negative Exposure PV
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin[] collateralizedNegativeExposurePV()
+	public UnivariateDiscreteThin[] collateralizedNegativeExposurePV()
 	{
 		return _collateralizedNegativeExposurePVThinStatisticsArray;
 	}
@@ -441,7 +404,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for the Uncollateralized Exposure
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin[] uncollateralizedExposure()
+	public UnivariateDiscreteThin[] uncollateralizedExposure()
 	{
 		return _uncollateralizedExposureThinStatisticsArray;
 	}
@@ -452,7 +415,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for the Uncollateralized Exposure PV
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin[] uncollateralizedExposurePV()
+	public UnivariateDiscreteThin[] uncollateralizedExposurePV()
 	{
 		return _uncollateralizedExposurePVThinStatisticsArray;
 	}
@@ -463,7 +426,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for the Uncollateralized Positive Exposure
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin[] uncollateralizedPositiveExposure()
+	public UnivariateDiscreteThin[] uncollateralizedPositiveExposure()
 	{
 		return _uncollateralizedPositiveExposureThinStatisticsArray;
 	}
@@ -474,7 +437,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for the Uncollateralized Positive Exposure PV
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin[] uncollateralizedPositiveExposurePV()
+	public UnivariateDiscreteThin[] uncollateralizedPositiveExposurePV()
 	{
 		return _uncollateralizedPositiveExposurePVThinStatisticsArray;
 	}
@@ -485,7 +448,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for the Uncollateralized Negative Exposure
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin[] uncollateralizedNegativeExposure()
+	public UnivariateDiscreteThin[] uncollateralizedNegativeExposure()
 	{
 		return _uncollateralizedNegativeExposureThinStatisticsArray;
 	}
@@ -496,7 +459,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for the Uncollateralized Negative Exposure PV
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin[] uncollateralizedNegativeExposurePV()
+	public UnivariateDiscreteThin[] uncollateralizedNegativeExposurePV()
 	{
 		return _uncollateralizedNegativeExposurePVThinStatisticsArray;
 	}
@@ -507,7 +470,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for the Funding Exposure
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin[] fundingExposure()
+	public UnivariateDiscreteThin[] fundingExposure()
 	{
 		return _fundingExposureThinStatisticsArray;
 	}
@@ -518,7 +481,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for the Funding Exposure PV
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin[] fundingExposurePV()
+	public UnivariateDiscreteThin[] fundingExposurePV()
 	{
 		return _fundingExposurePVThinStatisticsArray;
 	}
@@ -529,7 +492,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for Unilateral Collateral VA
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin ucolva()
+	public UnivariateDiscreteThin ucolva()
 	{
 		return _ucolvaThinStatistics;
 	}
@@ -540,7 +503,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for Bilateral Collateral VA
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin ftdcolva()
+	public UnivariateDiscreteThin ftdcolva()
 	{
 		return _ftdcolvaThinStatistics;
 	}
@@ -551,7 +514,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for UCVA
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin ucva()
+	public UnivariateDiscreteThin ucva()
 	{
 		return _ucvaThinStatistics;
 	}
@@ -562,7 +525,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for FTD CVA
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin ftdcva()
+	public UnivariateDiscreteThin ftdcva()
 	{
 		return _ftdcvaThinStatistics;
 	}
@@ -573,7 +536,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for CVA
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin cva()
+	public UnivariateDiscreteThin cva()
 	{
 		return _cvaThinStatistics;
 	}
@@ -584,7 +547,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for CVA Contra-Liabilities
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin cvacl()
+	public UnivariateDiscreteThin cvacl()
 	{
 		return _cvaclThinStatistics;
 	}
@@ -595,7 +558,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for DVA
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin dva()
+	public UnivariateDiscreteThin dva()
 	{
 		return _dvaThinStatistics;
 	}
@@ -606,7 +569,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for FVA
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin fva()
+	public UnivariateDiscreteThin fva()
 	{
 		return _fvaThinStatistics;
 	}
@@ -617,7 +580,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for FDA
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin fda()
+	public UnivariateDiscreteThin fda()
 	{
 		return _fdaThinStatistics;
 	}
@@ -628,7 +591,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for DVA2
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin dva2()
+	public UnivariateDiscreteThin dva2()
 	{
 		return _fdaThinStatistics;
 	}
@@ -639,7 +602,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for FCA
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin fca()
+	public UnivariateDiscreteThin fca()
 	{
 		return _fcaThinStatistics;
 	}
@@ -650,7 +613,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for FBA
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin fba()
+	public UnivariateDiscreteThin fba()
 	{
 		return _fbaThinStatistics;
 	}
@@ -661,7 +624,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for SFVA
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin sfva()
+	public UnivariateDiscreteThin sfva()
 	{
 		return _sfvaThinStatistics;
 	}
@@ -672,7 +635,7 @@ public class ExposureAdjustmentDigest
 	 * @return Univariate Thin Statistics for Total VA
 	 */
 
-	public org.drip.measure.statistics.UnivariateDiscreteThin totalVA()
+	public UnivariateDiscreteThin totalVA()
 	{
 		return _totalvaThinStatistics;
 	}

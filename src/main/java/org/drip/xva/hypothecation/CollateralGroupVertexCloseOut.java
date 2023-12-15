@@ -1,11 +1,17 @@
 
 package org.drip.xva.hypothecation;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.xva.definition.CloseOut;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -120,8 +126,8 @@ package org.drip.xva.hypothecation;
 
 public class CollateralGroupVertexCloseOut
 {
-	private double _client = java.lang.Double.NaN;
-	private double _dealer = java.lang.Double.NaN;
+	private double _client = Double.NaN;
+	private double _dealer = Double.NaN;
 
 	/**
 	 * Construct a Static Instance of CollateralGroupVertexCloseOut
@@ -134,32 +140,22 @@ public class CollateralGroupVertexCloseOut
 	 */
 
 	public static final CollateralGroupVertexCloseOut Standard (
-		final org.drip.xva.definition.CloseOut closeOutGeneral,
+		final CloseOut closeOutGeneral,
 		final double uncollateralizedExposure,
 		final double collateralBalance)
 	{
 		if (null == closeOutGeneral ||
-			!org.drip.numerical.common.NumberUtil.IsValid (uncollateralizedExposure) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (collateralBalance))
-		{
+			!NumberUtil.IsValid (uncollateralizedExposure) ||
+			!NumberUtil.IsValid (collateralBalance)) {
 			return null;
 		}
 
-		try
-		{
+		try {
 			return new CollateralGroupVertexCloseOut (
-				closeOutGeneral.dealerDefault (
-					uncollateralizedExposure,
-					collateralBalance
-				),
-				closeOutGeneral.clientDefault (
-					uncollateralizedExposure,
-					collateralBalance
-				)
+				closeOutGeneral.dealerDefault (uncollateralizedExposure, collateralBalance),
+				closeOutGeneral.clientDefault (uncollateralizedExposure, collateralBalance)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -172,18 +168,16 @@ public class CollateralGroupVertexCloseOut
 	 * @param dealer The Dealer Close Out
 	 * @param client The Client Close Out
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CollateralGroupVertexCloseOut (
 		final double dealer,
 		final double client)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dealer = dealer) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_client = client))
-		{
-			throw new java.lang.Exception ("CollateralGroupVertexCloseOut Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_dealer = dealer) || !NumberUtil.IsValid (_client = client)) {
+			throw new Exception ("CollateralGroupVertexCloseOut Constructor => Invalid Inputs");
 		}
 	}
 

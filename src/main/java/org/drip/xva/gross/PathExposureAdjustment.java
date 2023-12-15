@@ -1,11 +1,16 @@
 
 package org.drip.xva.gross;
 
+import org.drip.analytics.date.JulianDate;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -127,7 +132,7 @@ public interface PathExposureAdjustment
 	 * @return The Array of the Vertex Anchor Dates
 	 */
 
-	abstract public org.drip.analytics.date.JulianDate[] vertexDates();
+	abstract public JulianDate[] vertexDates();
 
 	/**
 	 * Retrieve the Array of Collateralized Vertex Exposures

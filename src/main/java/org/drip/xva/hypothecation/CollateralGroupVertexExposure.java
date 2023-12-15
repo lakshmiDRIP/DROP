@@ -1,11 +1,16 @@
 
 package org.drip.xva.hypothecation;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -120,8 +125,8 @@ package org.drip.xva.hypothecation;
 
 public class CollateralGroupVertexExposure
 {
-	private double _tradePayment = java.lang.Double.NaN;
-	private double _variationMarginEstimate = java.lang.Double.NaN;
+	private double _tradePayment = Double.NaN;
+	private double _variationMarginEstimate = Double.NaN;
 
 	/**
 	 * Construct the Variation Margin CollateralGroupVertexExposure Instance
@@ -134,15 +139,9 @@ public class CollateralGroupVertexExposure
 	public static final CollateralGroupVertexExposure VariationMarginOnly (
 		final double variationMarginEstimate)
 	{
-		try
-		{
-			return new CollateralGroupVertexExposure (
-				variationMarginEstimate,
-				0.
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new CollateralGroupVertexExposure (variationMarginEstimate, 0.);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -155,7 +154,7 @@ public class CollateralGroupVertexExposure
 	 * @param variationMarginEstimate The Unrealized Variation Margin Forward Exposure Estimate
 	 * @param tradePayment The Accrued Trade Payment Exposure
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CollateralGroupVertexExposure (
@@ -163,10 +162,9 @@ public class CollateralGroupVertexExposure
 		final double tradePayment)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_variationMarginEstimate = variationMarginEstimate) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_tradePayment = tradePayment))
-		{
-			throw new java.lang.Exception ("CollateralGroupVertexExposure Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_variationMarginEstimate = variationMarginEstimate) ||
+			!NumberUtil.IsValid (_tradePayment = tradePayment)) {
+			throw new Exception ("CollateralGroupVertexExposure Constructor => Invalid Inputs");
 		}
 	}
 

@@ -1,11 +1,21 @@
 
 package org.drip.xva.gross;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.drip.analytics.date.JulianDate;
+import org.drip.xva.netting.CreditDebtGroupPath;
+import org.drip.xva.netting.FundingGroupPath;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -119,32 +129,24 @@ package org.drip.xva.gross;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposureAdjustment
+public class MonoPathExposureAdjustment implements PathExposureAdjustment
 {
-	private org.drip.xva.netting.FundingGroupPath[] _fundingGroupPathArray = null;
+	private FundingGroupPath[] _fundingGroupPathArray = null;
 
 	/**
 	 * MonoPathExposureAdjustment Constructor
 	 * 
 	 * @param fundingGroupPathArray The Array of Funding Group Paths
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MonoPathExposureAdjustment (
-		final org.drip.xva.netting.FundingGroupPath[] fundingGroupPathArray)
-		throws java.lang.Exception
+		final FundingGroupPath[] fundingGroupPathArray)
+		throws Exception
 	{
-		if (null == (_fundingGroupPathArray = fundingGroupPathArray))
-		{
-			throw new java.lang.Exception ("MonoPathExposureAdjustment Constructor => Invalid Inputs");
-		}
-
-		int fundingGroupCount = _fundingGroupPathArray.length;
-
-		if (0 == fundingGroupCount)
-		{
-			throw new java.lang.Exception ("MonoPathExposureAdjustment Constructor => Invalid Inputs");
+		if (null == (_fundingGroupPathArray = fundingGroupPathArray) || 0 == _fundingGroupPathArray.length) {
+			throw new Exception ("MonoPathExposureAdjustment Constructor => Invalid Inputs");
 		}
 	}
 
@@ -154,7 +156,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 	 * @return The Array of the Funding Group Trajectory Paths
 	 */
 
-	public org.drip.xva.netting.FundingGroupPath[] fundingGroupTrajectoryPaths()
+	public FundingGroupPath[] fundingGroupTrajectoryPathArray()
 	{
 		return _fundingGroupPathArray;
 	}
@@ -165,37 +167,33 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 	 * @return The Array of Credit/Debt Netting Group Trajectory Paths
 	 */
 
-	public org.drip.xva.netting.CreditDebtGroupPath[] creditDebtGroupTrajectoryPaths()
+	public CreditDebtGroupPath[] creditDebtGroupTrajectoryPathArray()
 	{
 		int creditDebtGroupPathIndex = 0;
 		int fundingGroupCount = _fundingGroupPathArray.length;
 
-		java.util.List<org.drip.xva.netting.CreditDebtGroupPath> creditDebtGroupPathList = new
-			java.util.ArrayList<org.drip.xva.netting.CreditDebtGroupPath>();
+		List<CreditDebtGroupPath> creditDebtGroupPathList = new ArrayList<CreditDebtGroupPath>();
 
-		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex)
-		{
-			org.drip.xva.netting.CreditDebtGroupPath[] creditDebtGroupPathArray =
+		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex) {
+			CreditDebtGroupPath[] creditDebtGroupPathArray =
 				_fundingGroupPathArray[fundingGroupIndex].creditDebtGroupPathArray();
 
-			for (org.drip.xva.netting.CreditDebtGroupPath creditDebtGroupPath : creditDebtGroupPathArray)
-			{
+			for (CreditDebtGroupPath creditDebtGroupPath : creditDebtGroupPathArray) {
 				creditDebtGroupPathList.add (creditDebtGroupPath);
 			}
 		}
 
-		org.drip.xva.netting.CreditDebtGroupPath[] creditDebtGroupPathArray = new
-			org.drip.xva.netting.CreditDebtGroupPath[creditDebtGroupPathList.size()];
+		CreditDebtGroupPath[] creditDebtGroupPathArray = new
+			CreditDebtGroupPath[creditDebtGroupPathList.size()];
 
-		for (org.drip.xva.netting.CreditDebtGroupPath creditDebtGroupPath : creditDebtGroupPathList)
-		{
+		for (CreditDebtGroupPath creditDebtGroupPath : creditDebtGroupPathList) {
 			creditDebtGroupPathArray[creditDebtGroupPathIndex++] = creditDebtGroupPath;
 		}
 
 		return creditDebtGroupPathArray;
 	}
 
-	@Override public org.drip.analytics.date.JulianDate[] vertexDates()
+	@Override public JulianDate[] vertexDates()
 	{
 		return _fundingGroupPathArray[0].vertexDates();
 	}
@@ -204,312 +202,276 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 	{
 		int vertexCount = vertexDates().length;
 
-		double[] vertexCollateralizedExposure = new double[vertexCount];
+		double[] vertexCollateralizedExposureArray = new double[vertexCount];
 
-		for (int j = 0; j < vertexCount; ++j)
-		{
-			vertexCollateralizedExposure[j] = 0.;
+		for (int j = 0; j < vertexCount; ++j) {
+			vertexCollateralizedExposureArray[j] = 0.;
 		}
 
-		for (org.drip.xva.netting.FundingGroupPath fundingGroupPath : _fundingGroupPathArray)
-		{
+		for (FundingGroupPath fundingGroupPath : _fundingGroupPathArray) {
 			double[] fundingGroupVertexCollateralizedExposure =
 				fundingGroupPath.vertexCollateralizedExposure();
 
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexCollateralizedExposure[vertexIndex] +=
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				vertexCollateralizedExposureArray[vertexIndex] +=
 					fundingGroupVertexCollateralizedExposure[vertexIndex];
 			}
 		}
 
-		return vertexCollateralizedExposure;
+		return vertexCollateralizedExposureArray;
 	}
 
 	@Override public double[] vertexCollateralizedExposurePV()
 	{
 		int vertexCount = vertexDates().length;
 
-		double[] vertexCollateralizedExposurePV = new double[vertexCount];
+		double[] vertexCollateralizedExposurePVArray = new double[vertexCount];
 
-		for (int j = 0; j < vertexCount; ++j)
-		{
-			vertexCollateralizedExposurePV[j] = 0.;
+		for (int j = 0; j < vertexCount; ++j) {
+			vertexCollateralizedExposurePVArray[j] = 0.;
 		}
 
-		for (org.drip.xva.netting.FundingGroupPath fundingGroupPath : _fundingGroupPathArray)
-		{
-			double[] fundingGroupVertexCollateralizedExposurePV =
+		for (FundingGroupPath fundingGroupPath : _fundingGroupPathArray) {
+			double[] fundingGroupVertexCollateralizedExposurePVArray =
 				fundingGroupPath.vertexCollateralizedExposurePV();
 
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexCollateralizedExposurePV[vertexIndex] +=
-					fundingGroupVertexCollateralizedExposurePV[vertexIndex];
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				vertexCollateralizedExposurePVArray[vertexIndex] +=
+					fundingGroupVertexCollateralizedExposurePVArray[vertexIndex];
 			}
 		}
 
-		return vertexCollateralizedExposurePV;
+		return vertexCollateralizedExposurePVArray;
 	}
 
 	@Override public double[] vertexCollateralizedPositiveExposure()
 	{
 		int vertexCount = vertexDates().length;
 
-		double[] vertexCollateralizedPositiveExposure = new double[vertexCount];
+		double[] vertexCollateralizedPositiveExposureArray = new double[vertexCount];
 
-		for (int j = 0; j < vertexCount; ++j)
-		{
-			vertexCollateralizedPositiveExposure[j] = 0.;
+		for (int j = 0; j < vertexCount; ++j) {
+			vertexCollateralizedPositiveExposureArray[j] = 0.;
 		}
 
-		for (org.drip.xva.netting.FundingGroupPath fundingGroupPath : _fundingGroupPathArray)
-		{
-			double[] fundingGroupVertexCollateralizedPositiveExposure =
+		for (FundingGroupPath fundingGroupPath : _fundingGroupPathArray) {
+			double[] fundingGroupVertexCollateralizedPositiveExposureArray =
 				fundingGroupPath.vertexCollateralizedPositiveExposure();
 
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexCollateralizedPositiveExposure[vertexIndex] +=
-					fundingGroupVertexCollateralizedPositiveExposure[vertexIndex];
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				vertexCollateralizedPositiveExposureArray[vertexIndex] +=
+					fundingGroupVertexCollateralizedPositiveExposureArray[vertexIndex];
 			}
 		}
 
-		return vertexCollateralizedPositiveExposure;
+		return vertexCollateralizedPositiveExposureArray;
 	}
 
 	@Override public double[] vertexCollateralizedPositiveExposurePV()
 	{
 		int vertexCount = vertexDates().length;
 
-		double[] vertexCollateralizedPositiveExposurePV = new double[vertexCount];
+		double[] vertexCollateralizedPositiveExposurePVArray = new double[vertexCount];
 
-		for (int j = 0; j < vertexCount; ++j)
-		{
-			vertexCollateralizedPositiveExposurePV[j] = 0.;
+		for (int j = 0; j < vertexCount; ++j) {
+			vertexCollateralizedPositiveExposurePVArray[j] = 0.;
 		}
 
-		for (org.drip.xva.netting.FundingGroupPath fundingGroupPath : _fundingGroupPathArray)
-		{
-			double[] fundingGroupVertexCollateralizedPositiveExposurePV =
+		for (FundingGroupPath fundingGroupPath : _fundingGroupPathArray) {
+			double[] fundingGroupVertexCollateralizedPositiveExposurePVArray =
 				fundingGroupPath.vertexCollateralizedPositiveExposurePV();
 
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexCollateralizedPositiveExposurePV[vertexIndex] +=
-					fundingGroupVertexCollateralizedPositiveExposurePV[vertexIndex];
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				vertexCollateralizedPositiveExposurePVArray[vertexIndex] +=
+					fundingGroupVertexCollateralizedPositiveExposurePVArray[vertexIndex];
 			}
 		}
 
-		return vertexCollateralizedPositiveExposurePV;
+		return vertexCollateralizedPositiveExposurePVArray;
 	}
 
 	@Override public double[] vertexCollateralizedNegativeExposure()
 	{
 		int vertexCount = vertexDates().length;
 
-		double[] vertexCollateralizedNegativeExposure = new double[vertexCount];
+		double[] vertexCollateralizedNegativeExposureArray = new double[vertexCount];
 
-		for (int j = 0; j < vertexCount; ++j)
-		{
-			vertexCollateralizedNegativeExposure[j] = 0.;
+		for (int j = 0; j < vertexCount; ++j) {
+			vertexCollateralizedNegativeExposureArray[j] = 0.;
 		}
 
-		for (org.drip.xva.netting.FundingGroupPath fundingGroupPath : _fundingGroupPathArray)
-		{
-			double[] fundingGroupVertexCollateralizedNegativeExposure =
+		for (FundingGroupPath fundingGroupPath : _fundingGroupPathArray) {
+			double[] fundingGroupVertexCollateralizedNegativeExposureArray =
 				fundingGroupPath.vertexCollateralizedNegativeExposure();
 
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexCollateralizedNegativeExposure[vertexIndex] +=
-					fundingGroupVertexCollateralizedNegativeExposure[vertexIndex];
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				vertexCollateralizedNegativeExposureArray[vertexIndex] +=
+					fundingGroupVertexCollateralizedNegativeExposureArray[vertexIndex];
 			}
 		}
 
-		return vertexCollateralizedNegativeExposure;
+		return vertexCollateralizedNegativeExposureArray;
 	}
 
 	@Override public double[] vertexCollateralizedNegativeExposurePV()
 	{
 		int vertexCount = vertexDates().length;
 
-		double[] vertexCollateralizedNegativeExposurePV = new double[vertexCount];
+		double[] vertexCollateralizedNegativeExposurePVArray = new double[vertexCount];
 
-		for (int j = 0; j < vertexCount; ++j)
-		{
-			vertexCollateralizedNegativeExposurePV[j] = 0.;
+		for (int j = 0; j < vertexCount; ++j) {
+			vertexCollateralizedNegativeExposurePVArray[j] = 0.;
 		}
 
-		for (org.drip.xva.netting.FundingGroupPath fundingGroupPath : _fundingGroupPathArray)
-		{
-			double[] fundingGroupVertexCollateralizedNegativeExposurePV =
+		for (FundingGroupPath fundingGroupPath : _fundingGroupPathArray) {
+			double[] fundingGroupVertexCollateralizedNegativeExposurePVArray =
 				fundingGroupPath.vertexCollateralizedNegativeExposurePV();
 
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexCollateralizedNegativeExposurePV[vertexIndex] +=
-					fundingGroupVertexCollateralizedNegativeExposurePV[vertexIndex];
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				vertexCollateralizedNegativeExposurePVArray[vertexIndex] +=
+					fundingGroupVertexCollateralizedNegativeExposurePVArray[vertexIndex];
 			}
 		}
 
-		return vertexCollateralizedNegativeExposurePV;
+		return vertexCollateralizedNegativeExposurePVArray;
 	}
 
 	@Override public double[] vertexUncollateralizedExposure()
 	{
 		int vertexCount = vertexDates().length;
 
-		double[] vertexUncollateralizedExposure = new double[vertexCount];
+		double[] vertexUncollateralizedExposureArray = new double[vertexCount];
 
-		for (int j = 0; j < vertexCount; ++j)
-		{
-			vertexUncollateralizedExposure[j] = 0.;
+		for (int j = 0; j < vertexCount; ++j) {
+			vertexUncollateralizedExposureArray[j] = 0.;
 		}
 
-		for (org.drip.xva.netting.FundingGroupPath fundingGroupPath : _fundingGroupPathArray)
-		{
-			double[] fundingGroupVertexUncollateralizedExposure =
+		for (FundingGroupPath fundingGroupPath : _fundingGroupPathArray) {
+			double[] fundingGroupVertexUncollateralizedExposureArray =
 				fundingGroupPath.vertexUncollateralizedExposure();
 
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexUncollateralizedExposure[vertexIndex] +=
-					fundingGroupVertexUncollateralizedExposure[vertexIndex];
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				vertexUncollateralizedExposureArray[vertexIndex] +=
+					fundingGroupVertexUncollateralizedExposureArray[vertexIndex];
 			}
 		}
 
-		return vertexUncollateralizedExposure;
+		return vertexUncollateralizedExposureArray;
 	}
 
 	@Override public double[] vertexUncollateralizedExposurePV()
 	{
 		int vertexCount = vertexDates().length;
 
-		double[] vertexUncollateralizedExposurePV = new double[vertexCount];
+		double[] vertexUncollateralizedExposurePVArray = new double[vertexCount];
 
-		for (int j = 0; j < vertexCount; ++j)
-		{
-			vertexUncollateralizedExposurePV[j] = 0.;
+		for (int j = 0; j < vertexCount; ++j) {
+			vertexUncollateralizedExposurePVArray[j] = 0.;
 		}
 
-		for (org.drip.xva.netting.FundingGroupPath fundingGroupPath : _fundingGroupPathArray)
-		{
-			double[] fundingGroupVertexUncollateralizedExposurePV =
+		for (org.drip.xva.netting.FundingGroupPath fundingGroupPath : _fundingGroupPathArray) {
+			double[] fundingGroupVertexUncollateralizedExposurePVArray =
 				fundingGroupPath.vertexUncollateralizedExposurePV();
 
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexUncollateralizedExposurePV[vertexIndex] +=
-					fundingGroupVertexUncollateralizedExposurePV[vertexIndex];
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				vertexUncollateralizedExposurePVArray[vertexIndex] +=
+					fundingGroupVertexUncollateralizedExposurePVArray[vertexIndex];
 			}
 		}
 
-		return vertexUncollateralizedExposurePV;
+		return vertexUncollateralizedExposurePVArray;
 	}
 
 	@Override public double[] vertexUncollateralizedPositiveExposure()
 	{
 		int vertexCount = vertexDates().length;
 
-		double[] vertexUncollateralizedPositiveExposure = new double[vertexCount];
+		double[] vertexUncollateralizedPositiveExposureArray = new double[vertexCount];
 
-		for (int j = 0; j < vertexCount; ++j)
-		{
-			vertexUncollateralizedPositiveExposure[j] = 0.;
+		for (int j = 0; j < vertexCount; ++j) {
+			vertexUncollateralizedPositiveExposureArray[j] = 0.;
 		}
 
-		for (org.drip.xva.netting.FundingGroupPath fundingGroupPath : _fundingGroupPathArray)
-		{
-			double[] fundingGroupVertexUncollateralizedPositiveExposure =
+		for (FundingGroupPath fundingGroupPath : _fundingGroupPathArray) {
+			double[] fundingGroupVertexUncollateralizedPositiveExposureArray =
 				fundingGroupPath.vertexUncollateralizedPositiveExposure();
 
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexUncollateralizedPositiveExposure[vertexIndex] +=
-					fundingGroupVertexUncollateralizedPositiveExposure[vertexIndex];
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				vertexUncollateralizedPositiveExposureArray[vertexIndex] +=
+					fundingGroupVertexUncollateralizedPositiveExposureArray[vertexIndex];
 			}
 		}
 
-		return vertexUncollateralizedPositiveExposure;
+		return vertexUncollateralizedPositiveExposureArray;
 	}
 
 	@Override public double[] vertexUncollateralizedPositiveExposurePV()
 	{
 		int vertexCount = vertexDates().length;
 
-		double[] vertexUncollateralizedPositiveExposurePV = new double[vertexCount];
+		double[] vertexUncollateralizedPositiveExposurePVArray = new double[vertexCount];
 
-		for (int j = 0; j < vertexCount; ++j)
-		{
-			vertexUncollateralizedPositiveExposurePV[j] = 0.;
+		for (int j = 0; j < vertexCount; ++j) {
+			vertexUncollateralizedPositiveExposurePVArray[j] = 0.;
 		}
 
-		for (org.drip.xva.netting.FundingGroupPath fundingGroupPath : _fundingGroupPathArray)
-		{
-			double[] fundingGroupVertexUncollateralizedPositiveExposurePV =
+		for (org.drip.xva.netting.FundingGroupPath fundingGroupPath : _fundingGroupPathArray) {
+			double[] fundingGroupVertexUncollateralizedPositiveExposurePVArray =
 				fundingGroupPath.vertexUncollateralizedPositiveExposurePV();
 
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexUncollateralizedPositiveExposurePV[vertexIndex] +=
-					fundingGroupVertexUncollateralizedPositiveExposurePV[vertexIndex];
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				vertexUncollateralizedPositiveExposurePVArray[vertexIndex] +=
+					fundingGroupVertexUncollateralizedPositiveExposurePVArray[vertexIndex];
 			}
 		}
 
-		return vertexUncollateralizedPositiveExposurePV;
+		return vertexUncollateralizedPositiveExposurePVArray;
 	}
 
 	@Override public double[] vertexUncollateralizedNegativeExposure()
 	{
 		int vertexCount = vertexDates().length;
 
-		double[] vertexUncollateralizedNegativeExposure = new double[vertexCount];
+		double[] vertexUncollateralizedNegativeExposureArray = new double[vertexCount];
 
-		for (int j = 0; j < vertexCount; ++j)
-		{
-			vertexUncollateralizedNegativeExposure[j] = 0.;
+		for (int j = 0; j < vertexCount; ++j) {
+			vertexUncollateralizedNegativeExposureArray[j] = 0.;
 		}
 
-		for (org.drip.xva.netting.FundingGroupPath fundingGroupPath : _fundingGroupPathArray)
-		{
-			double[] fundingGroupVertexUncollateralizedNegativeExposure =
+		for (FundingGroupPath fundingGroupPath : _fundingGroupPathArray) {
+			double[] fundingGroupVertexUncollateralizedNegativeExposureArray =
 				fundingGroupPath.vertexUncollateralizedNegativeExposure();
 
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexUncollateralizedNegativeExposure[vertexIndex] +=
-					fundingGroupVertexUncollateralizedNegativeExposure[vertexIndex];
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				vertexUncollateralizedNegativeExposureArray[vertexIndex] +=
+					fundingGroupVertexUncollateralizedNegativeExposureArray[vertexIndex];
 			}
 		}
 
-		return vertexUncollateralizedNegativeExposure;
+		return vertexUncollateralizedNegativeExposureArray;
 	}
 
 	@Override public double[] vertexUncollateralizedNegativeExposurePV()
 	{
 		int vertexCount = vertexDates().length;
 
-		double[] vertexUncollateralizedNegativeExposurePV = new double[vertexCount];
+		double[] vertexUncollateralizedNegativeExposurePVArray = new double[vertexCount];
 
-		for (int j = 0; j < vertexCount; ++j)
-		{
-			vertexUncollateralizedNegativeExposurePV[j] = 0.;
+		for (int j = 0; j < vertexCount; ++j) {
+			vertexUncollateralizedNegativeExposurePVArray[j] = 0.;
 		}
 
-		for (org.drip.xva.netting.FundingGroupPath fundingGroupPath : _fundingGroupPathArray)
-		{
-			double[] fundingGroupVertexUncollateralizedNegativeExposurePV =
+		for (FundingGroupPath fundingGroupPath : _fundingGroupPathArray) {
+			double[] fundingGroupVertexUncollateralizedNegativeExposurePVArray =
 				fundingGroupPath.vertexUncollateralizedNegativeExposurePV();
 
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexUncollateralizedNegativeExposurePV[vertexIndex] +=
-					fundingGroupVertexUncollateralizedNegativeExposurePV[vertexIndex];
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				vertexUncollateralizedNegativeExposurePVArray[vertexIndex] +=
+					fundingGroupVertexUncollateralizedNegativeExposurePVArray[vertexIndex];
 			}
 		}
 
-		return vertexUncollateralizedNegativeExposurePV;
+		return vertexUncollateralizedNegativeExposurePVArray;
 	}
 
 	@Override public double[] vertexFundingExposure()
@@ -517,25 +479,22 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		int vertexCount = vertexDates().length;
 
 		int fundingGroupCount = _fundingGroupPathArray.length;
-		double[] vertexFundingExposure = new double[vertexCount];
+		double[] vertexFundingExposureArray = new double[vertexCount];
 
-		for (int j = 0; j < vertexCount; ++j)
-		{
-			vertexFundingExposure[j] = 0.;
+		for (int j = 0; j < vertexCount; ++j) {
+			vertexFundingExposureArray[j] = 0.;
 		}
 
-		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex)
-		{
-			double[] fundingGroupVertexExposure =
+		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex) {
+			double[] fundingGroupVertexExposureArray =
 				_fundingGroupPathArray[fundingGroupIndex].vertexFundingExposure();
 
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexFundingExposure[vertexIndex] += fundingGroupVertexExposure[vertexIndex];
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				vertexFundingExposureArray[vertexIndex] += fundingGroupVertexExposureArray[vertexIndex];
 			}
 		}
 
-		return vertexFundingExposure;
+		return vertexFundingExposureArray;
 	}
 
 	@Override public double[] vertexFundingExposurePV()
@@ -543,25 +502,22 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		int vertexCount = vertexDates().length;
 
 		int fundingGroupCount = _fundingGroupPathArray.length;
-		double[] vertexFundingExposurePV = new double[vertexCount];
+		double[] vertexFundingExposurePVArray = new double[vertexCount];
 
-		for (int j = 0; j < vertexCount; ++j)
-		{
-			vertexFundingExposurePV[j] = 0.;
+		for (int j = 0; j < vertexCount; ++j) {
+			vertexFundingExposurePVArray[j] = 0.;
 		}
 
-		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex)
-		{
-			double[] fundingGroupVertexExposurePV =
+		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex) {
+			double[] fundingGroupVertexExposurePVArray =
 				_fundingGroupPathArray[fundingGroupIndex].vertexFundingExposurePV();
 
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexFundingExposurePV[vertexIndex] += fundingGroupVertexExposurePV[vertexIndex];
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				vertexFundingExposurePVArray[vertexIndex] += fundingGroupVertexExposurePVArray[vertexIndex];
 			}
 		}
 
-		return vertexFundingExposurePV;
+		return vertexFundingExposurePVArray;
 	}
 
 	@Override public double unilateralCreditAdjustment()
@@ -569,8 +525,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		double unilateralCreditAdjustment = 0.;
 		int fundingGroupCount = _fundingGroupPathArray.length;
 
-		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex)
-		{
+		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex) {
 			unilateralCreditAdjustment +=
 				_fundingGroupPathArray[fundingGroupIndex].unilateralCreditAdjustment();
 		}
@@ -583,8 +538,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		double bilateralCreditAdjustment = 0.;
 		int fundingGroupCount = _fundingGroupPathArray.length;
 
-		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex)
-		{
+		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex) {
 			bilateralCreditAdjustment +=
 				_fundingGroupPathArray[fundingGroupIndex].bilateralCreditAdjustment();
 		}
@@ -602,8 +556,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		double contraLiabilityCreditAdjustment = 0.;
 		int fundingGroupCount = _fundingGroupPathArray.length;
 
-		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex)
-		{
+		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex) {
 			contraLiabilityCreditAdjustment +=
 				_fundingGroupPathArray[fundingGroupIndex].contraLiabilityCreditAdjustment();
 		}
@@ -616,8 +569,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		double unilateralDebtAdjustment = 0.;
 		int fundingGroupCount = _fundingGroupPathArray.length;
 
-		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex)
-		{
+		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex) {
 			unilateralDebtAdjustment += _fundingGroupPathArray[fundingGroupIndex].unilateralDebtAdjustment();
 		}
 
@@ -629,8 +581,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		double bilateralDebtAdjustment = 0.;
 		int fundingGroupCount = _fundingGroupPathArray.length;
 
-		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex)
-		{
+		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex) {
 			bilateralDebtAdjustment += _fundingGroupPathArray[fundingGroupIndex].bilateralDebtAdjustment();
 		}
 
@@ -647,8 +598,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		double contraAssetDebtAdjustment = 0.;
 		int fundingGroupCount = _fundingGroupPathArray.length;
 
-		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex)
-		{
+		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex) {
 			contraAssetDebtAdjustment +=
 				_fundingGroupPathArray[fundingGroupIndex].contraAssetDebtAdjustment();
 		}
@@ -661,8 +611,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		double unilateralCollateralAdjustment = 0.;
 		int fundingGroupCount = _fundingGroupPathArray.length;
 
-		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex)
-		{
+		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex) {
 			unilateralCollateralAdjustment +=
 				_fundingGroupPathArray[fundingGroupIndex].unilateralCollateralAdjustment();
 		}
@@ -675,8 +624,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		double bilateralCollateralAdjustment = 0.;
 		int fundingGroupCount = _fundingGroupPathArray.length;
 
-		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex)
-		{
+		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex) {
 			bilateralCollateralAdjustment +=
 				_fundingGroupPathArray[fundingGroupIndex].bilateralCollateralAdjustment();
 		}
@@ -694,8 +642,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		double unilateralFundingValueAdjustment = 0.;
 		int fundingGroupCount = _fundingGroupPathArray.length;
 
-		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex)
-		{
+		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex) {
 			unilateralFundingValueAdjustment +=
 				_fundingGroupPathArray[fundingGroupIndex].unilateralFundingValueAdjustment();
 		}
@@ -708,8 +655,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		double bilateralFundingValueAdjustment = 0.;
 		int fundingGroupCount = _fundingGroupPathArray.length;
 
-		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex)
-		{
+		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex) {
 			bilateralFundingValueAdjustment +=
 				_fundingGroupPathArray[fundingGroupIndex].bilateralFundingValueAdjustment();
 		}
@@ -722,8 +668,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		double fundingValueAdjustment = 0.;
 		int fundingGroupCount = _fundingGroupPathArray.length;
 
-		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex)
-		{
+		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex) {
 			fundingValueAdjustment += _fundingGroupPathArray[fundingGroupIndex].fundingValueAdjustment();
 		}
 
@@ -735,8 +680,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		double fundingDebtAdjustment = 0.;
 		int fundingGroupCount = _fundingGroupPathArray.length;
 
-		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex)
-		{
+		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex) {
 			fundingDebtAdjustment += _fundingGroupPathArray[fundingGroupIndex].fundingDebtAdjustment();
 		}
 
@@ -748,8 +692,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		double fundingCostAdjustment = 0.;
 		int fundingGroupCount = _fundingGroupPathArray.length;
 
-		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex)
-		{
+		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex) {
 			fundingCostAdjustment += _fundingGroupPathArray[fundingGroupIndex].fundingCostAdjustment();
 		}
 
@@ -761,8 +704,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		double fundingBenefitAdjustment = 0.;
 		int fundingGroupCount = _fundingGroupPathArray.length;
 
-		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex)
-		{
+		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex) {
 			fundingBenefitAdjustment += _fundingGroupPathArray[fundingGroupIndex].fundingBenefitAdjustment();
 		}
 
@@ -774,8 +716,7 @@ public class MonoPathExposureAdjustment implements org.drip.xva.gross.PathExposu
 		double symmetricFundingValueAdjustment = 0.;
 		int fundingGroupCount = _fundingGroupPathArray.length;
 
-		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex)
-		{
+		for (int fundingGroupIndex = 0; fundingGroupIndex < fundingGroupCount; ++fundingGroupIndex) {
 			symmetricFundingValueAdjustment +=
 				_fundingGroupPathArray[fundingGroupIndex].symmetricFundingValueAdjustment();
 		}

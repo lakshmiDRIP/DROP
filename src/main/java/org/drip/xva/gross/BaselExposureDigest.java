@@ -1,11 +1,16 @@
 
 package org.drip.xva.gross;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -120,11 +125,11 @@ package org.drip.xva.gross;
 
 public class BaselExposureDigest
 {
-	private double _expectedExposure = java.lang.Double.NaN;
-	private double _exposureAtDefault = java.lang.Double.NaN;
-	private double _expectedPositiveExposure = java.lang.Double.NaN;
-	private double _effectiveExpectedExposure = java.lang.Double.NaN;
-	private double _effectiveExpectedPositiveExposure = java.lang.Double.NaN;
+	private double _expectedExposure = Double.NaN;
+	private double _exposureAtDefault = Double.NaN;
+	private double _expectedPositiveExposure = Double.NaN;
+	private double _effectiveExpectedExposure = Double.NaN;
+	private double _effectiveExpectedPositiveExposure = Double.NaN;
 
 	/**
 	 * BaselExposureDigest Constructor
@@ -135,7 +140,7 @@ public class BaselExposureDigest
 	 * @param effectiveExpectedPositiveExposure The Effective Expected Positive Exposure
 	 * @param exposureAtDefault The Exposure At Default
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BaselExposureDigest (
@@ -144,18 +149,14 @@ public class BaselExposureDigest
 		final double effectiveExpectedExposure,
 		final double effectiveExpectedPositiveExposure,
 		final double exposureAtDefault)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_expectedExposure = expectedExposure) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_expectedPositiveExposure = expectedPositiveExposure)
-				||
-			!org.drip.numerical.common.NumberUtil.IsValid (_effectiveExpectedExposure =
-				effectiveExpectedExposure) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_effectiveExpectedPositiveExposure =
-				effectiveExpectedPositiveExposure) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_exposureAtDefault = exposureAtDefault))
-		{
-			throw new java.lang.Exception ("BaselExposureDigest Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_expectedExposure = expectedExposure) ||
+			!NumberUtil.IsValid (_expectedPositiveExposure = expectedPositiveExposure) ||
+			!NumberUtil.IsValid (_effectiveExpectedExposure = effectiveExpectedExposure) ||
+			!NumberUtil.IsValid (_effectiveExpectedPositiveExposure = effectiveExpectedPositiveExposure) ||
+			!NumberUtil.IsValid (_exposureAtDefault = exposureAtDefault)) {
+			throw new Exception ("BaselExposureDigest Constructor => Invalid Inputs");
 		}
 	}
 

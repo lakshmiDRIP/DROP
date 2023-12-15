@@ -1,11 +1,18 @@
 
 package org.drip.xva.netting;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.exposure.universe.MarketPath;
+import org.drip.exposure.universe.MarketVertex;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -121,33 +128,29 @@ package org.drip.xva.netting;
 
 public abstract class CreditDebtGroupPath
 {
-	private org.drip.exposure.universe.MarketPath _marketPath = null;
-	private org.drip.xva.netting.CollateralGroupPath[] _collateralGroupPathArray = null;
+	private MarketPath _marketPath = null;
+	private CollateralGroupPath[] _collateralGroupPathArray = null;
 
 	protected CreditDebtGroupPath (
-		final org.drip.xva.netting.CollateralGroupPath[] collateralGroupPathArray,
-		final org.drip.exposure.universe.MarketPath marketPath)
-		throws java.lang.Exception
+		final CollateralGroupPath[] collateralGroupPathArray,
+		final MarketPath marketPath)
+		throws Exception
 	{
 		if (null == (_collateralGroupPathArray = collateralGroupPathArray) ||
-			null == (_marketPath = marketPath))
-		{
-			throw new java.lang.Exception ("CreditDebtGroupPath Constructor => Invalid Inputs");
+			null == (_marketPath = marketPath)) {
+			throw new Exception ("CreditDebtGroupPath Constructor => Invalid Inputs");
 		}
 
 		int collateralGroupCount = _collateralGroupPathArray.length;
 
-		if (0 == collateralGroupCount)
-		{
-			throw new java.lang.Exception ("CreditDebtGroupPath Constructor => Invalid Inputs");
+		if (0 == collateralGroupCount) {
+			throw new Exception ("CreditDebtGroupPath Constructor => Invalid Inputs");
 		}
 
 		for (int collateralGroupIndex = 0; collateralGroupIndex < collateralGroupCount;
-			++collateralGroupIndex)
-		{
-			if (null == _collateralGroupPathArray[collateralGroupIndex])
-			{
-				throw new java.lang.Exception ("CreditDebtGroupPath Constructor => Invalid Inputs");
+			++collateralGroupIndex) {
+			if (null == _collateralGroupPathArray[collateralGroupIndex]) {
+				throw new Exception ("CreditDebtGroupPath Constructor => Invalid Inputs");
 			}
 		}
 	}
@@ -158,7 +161,7 @@ public abstract class CreditDebtGroupPath
 	 * @return Array of the Position Hypothecation Group Trajectory Paths
 	 */
 
-	public org.drip.xva.netting.CollateralGroupPath[] collateralGroupPaths()
+	public CollateralGroupPath[] collateralGroupPaths()
 	{
 		return _collateralGroupPathArray;
 	}
@@ -169,7 +172,7 @@ public abstract class CreditDebtGroupPath
 	 * @return The Market Path
 	 */
 
-	public org.drip.exposure.universe.MarketPath marketPath()
+	public MarketPath marketPath()
 	{
 		return _marketPath;
 	}
@@ -180,7 +183,7 @@ public abstract class CreditDebtGroupPath
 	 * @return The Array of the Vertex Anchor Dates
 	 */
 
-	public org.drip.analytics.date.JulianDate[] vertexDates()
+	public JulianDate[] vertexDates()
 	{
 		return _collateralGroupPathArray[0].vertexDates();
 	}
@@ -196,27 +199,24 @@ public abstract class CreditDebtGroupPath
 		int vertexCount = vertexDates().length;
 
 		int collateralGroupCount = _collateralGroupPathArray.length;
-		double[] vertexCollateralizedExposure = new double[vertexCount];
+		double[] vertexCollateralizedExposureArray = new double[vertexCount];
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			vertexCollateralizedExposure[vertexIndex] = 0.;
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+			vertexCollateralizedExposureArray[vertexIndex] = 0.;
 		}
 
 		for (int collateralGroupIndex = 0; collateralGroupIndex < collateralGroupCount;
-			++collateralGroupIndex)
-		{
-			double[] collateralGroupVertexCollateralizedExposure =
+			++collateralGroupIndex) {
+			double[] collateralGroupVertexCollateralizedExposureArray =
 				_collateralGroupPathArray[collateralGroupIndex].vertexCollateralizedExposure();
 
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexCollateralizedExposure[vertexIndex] +=
-					collateralGroupVertexCollateralizedExposure[vertexIndex];
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				vertexCollateralizedExposureArray[vertexIndex] +=
+					collateralGroupVertexCollateralizedExposureArray[vertexIndex];
 			}
 		}
 
-		return vertexCollateralizedExposure;
+		return vertexCollateralizedExposureArray;
 	}
 
 	/**
@@ -229,28 +229,25 @@ public abstract class CreditDebtGroupPath
 	{
 		int vertexCount = vertexDates().length;
 
-		double[] vertexCollateralizedExposurePV = new double[vertexCount];
 		int collateralGroupCount = _collateralGroupPathArray.length;
+		double[] vertexCollateralizedExposurePVArray = new double[vertexCount];
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			vertexCollateralizedExposurePV[vertexIndex] = 0.;
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+			vertexCollateralizedExposurePVArray[vertexIndex] = 0.;
 		}
 
 		for (int collateralGroupIndex = 0; collateralGroupIndex < collateralGroupCount;
-			++collateralGroupIndex)
-		{
-			double[] collateralGroupVertexCollateralizedExposurePV =
+			++collateralGroupIndex) {
+			double[] collateralGroupVertexCollateralizedExposurePVArray =
 				_collateralGroupPathArray[collateralGroupIndex].vertexCollateralizedExposurePV();
 
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexCollateralizedExposurePV[vertexIndex] +=
-					collateralGroupVertexCollateralizedExposurePV[vertexIndex];
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				vertexCollateralizedExposurePVArray[vertexIndex] +=
+					collateralGroupVertexCollateralizedExposurePVArray[vertexIndex];
 			}
 		}
 
-		return vertexCollateralizedExposurePV;
+		return vertexCollateralizedExposurePVArray;
 	}
 
 	/**
@@ -261,17 +258,16 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexCollateralizedPositiveExposure()
 	{
-		double[] vertexCollateralizedPositiveExposure = vertexCollateralizedExposure();
+		double[] vertexCollateralizedPositiveExposureArray = vertexCollateralizedExposure();
 
-		int vertexCount = vertexCollateralizedPositiveExposure.length;
+		int vertexCount = vertexCollateralizedPositiveExposureArray.length;
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			if (0. > vertexCollateralizedPositiveExposure[vertexIndex])
-				vertexCollateralizedPositiveExposure[vertexIndex] = 0.;
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+			if (0. > vertexCollateralizedPositiveExposureArray[vertexIndex])
+				vertexCollateralizedPositiveExposureArray[vertexIndex] = 0.;
 		}
 
-		return vertexCollateralizedPositiveExposure;
+		return vertexCollateralizedPositiveExposureArray;
 	}
 
 	/**
@@ -282,17 +278,16 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexCollateralizedPositiveExposurePV()
 	{
-		double[] vertexCollateralizedPositiveExposurePV = vertexCollateralizedExposurePV();
+		double[] vertexCollateralizedPositiveExposurePVArray = vertexCollateralizedExposurePV();
 
-		int vertexCount = vertexCollateralizedPositiveExposurePV.length;
+		int vertexCount = vertexCollateralizedPositiveExposurePVArray.length;
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			if (0. > vertexCollateralizedPositiveExposurePV[vertexIndex])
-				vertexCollateralizedPositiveExposurePV[vertexIndex] = 0.;
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+			if (0. > vertexCollateralizedPositiveExposurePVArray[vertexIndex])
+				vertexCollateralizedPositiveExposurePVArray[vertexIndex] = 0.;
 		}
 
-		return vertexCollateralizedPositiveExposurePV;
+		return vertexCollateralizedPositiveExposurePVArray;
 	}
 
 	/**
@@ -303,17 +298,16 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexCollateralizedNegativeExposure()
 	{
-		double[] vertexCollateralizedNegativeExposure = vertexCollateralizedExposure();
+		double[] vertexCollateralizedNegativeExposureArray = vertexCollateralizedExposure();
 
-		int vertexCount = vertexCollateralizedNegativeExposure.length;
+		int vertexCount = vertexCollateralizedNegativeExposureArray.length;
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			if (0. < vertexCollateralizedNegativeExposure[vertexIndex])
-				vertexCollateralizedNegativeExposure[vertexIndex] = 0.;
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+			if (0. < vertexCollateralizedNegativeExposureArray[vertexIndex])
+				vertexCollateralizedNegativeExposureArray[vertexIndex] = 0.;
 		}
 
-		return vertexCollateralizedNegativeExposure;
+		return vertexCollateralizedNegativeExposureArray;
 	}
 
 	/**
@@ -324,17 +318,16 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexCollateralizedNegativeExposurePV()
 	{
-		double[] vertexCollateralizedNegativeExposurePV = vertexCollateralizedExposurePV();
+		double[] vertexCollateralizedNegativeExposurePVArray = vertexCollateralizedExposurePV();
 
-		int vertexCount = vertexCollateralizedNegativeExposurePV.length;
+		int vertexCount = vertexCollateralizedNegativeExposurePVArray.length;
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			if (0. < vertexCollateralizedNegativeExposurePV[vertexIndex])
-				vertexCollateralizedNegativeExposurePV[vertexIndex] = 0.;
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+			if (0. < vertexCollateralizedNegativeExposurePVArray[vertexIndex])
+				vertexCollateralizedNegativeExposurePVArray[vertexIndex] = 0.;
 		}
 
-		return vertexCollateralizedNegativeExposurePV;
+		return vertexCollateralizedNegativeExposurePVArray;
 	}
 
 	/**
@@ -348,27 +341,24 @@ public abstract class CreditDebtGroupPath
 		int vertexCount = vertexDates().length;
 
 		int collateralGroupCount = _collateralGroupPathArray.length;
-		double[] vertexUncollateralizedExposure = new double[vertexCount];
+		double[] vertexUncollateralizedExposureArray = new double[vertexCount];
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			vertexUncollateralizedExposure[vertexIndex] = 0.;
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+			vertexUncollateralizedExposureArray[vertexIndex] = 0.;
 		}
 
 		for (int collateralGroupIndex = 0; collateralGroupIndex < collateralGroupCount;
-			++collateralGroupIndex)
-		{
-			double[] collateralGroupVertexUncollateralizedExposure =
+			++collateralGroupIndex) {
+			double[] collateralGroupVertexUncollateralizedExposureArray =
 				_collateralGroupPathArray[collateralGroupIndex].vertexUncollateralizedExposure();
 
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexUncollateralizedExposure[vertexIndex] +=
-					collateralGroupVertexUncollateralizedExposure[vertexIndex];
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				vertexUncollateralizedExposureArray[vertexIndex] +=
+					collateralGroupVertexUncollateralizedExposureArray[vertexIndex];
 			}
 		}
 
-		return vertexUncollateralizedExposure;
+		return vertexUncollateralizedExposureArray;
 	}
 
 	/**
@@ -382,27 +372,24 @@ public abstract class CreditDebtGroupPath
 		int vertexCount = vertexDates().length;
 
 		int collateralGroupCount = _collateralGroupPathArray.length;
-		double[] vertexUncollateralizedExposurePV = new double[vertexCount];
+		double[] vertexUncollateralizedExposurePVArray = new double[vertexCount];
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			vertexUncollateralizedExposurePV[vertexIndex] = 0.;
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+			vertexUncollateralizedExposurePVArray[vertexIndex] = 0.;
 		}
 
 		for (int collateralGroupIndex = 0; collateralGroupIndex < collateralGroupCount;
-			++collateralGroupIndex)
-		{
-			double[] collateralGroupVertexUncollateralizedExposurePV =
+			++collateralGroupIndex) {
+			double[] collateralGroupVertexUncollateralizedExposurePVArray =
 				_collateralGroupPathArray[collateralGroupIndex].vertexUncollateralizedExposurePV();
 
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexUncollateralizedExposurePV[vertexIndex] +=
-					collateralGroupVertexUncollateralizedExposurePV[vertexIndex];
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				vertexUncollateralizedExposurePVArray[vertexIndex] +=
+					collateralGroupVertexUncollateralizedExposurePVArray[vertexIndex];
 			}
 		}
 
-		return vertexUncollateralizedExposurePV;
+		return vertexUncollateralizedExposurePVArray;
 	}
 
 	/**
@@ -413,17 +400,16 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexUncollateralizedPositiveExposure()
 	{
-		double[] vertexUncollateralizedPositiveExposure = vertexUncollateralizedExposure();
+		double[] vertexUncollateralizedPositiveExposureArray = vertexUncollateralizedExposure();
 
-		int vertexCount = vertexUncollateralizedPositiveExposure.length;
+		int vertexCount = vertexUncollateralizedPositiveExposureArray.length;
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			if (0. > vertexUncollateralizedPositiveExposure[vertexIndex])
-				vertexUncollateralizedPositiveExposure[vertexIndex] = 0.;
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+			if (0. > vertexUncollateralizedPositiveExposureArray[vertexIndex])
+				vertexUncollateralizedPositiveExposureArray[vertexIndex] = 0.;
 		}
 
-		return vertexUncollateralizedPositiveExposure;
+		return vertexUncollateralizedPositiveExposureArray;
 	}
 
 	/**
@@ -434,17 +420,16 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexUncollateralizedPositiveExposurePV()
 	{
-		double[] vertexUncollateralizedPositiveExposurePV = vertexUncollateralizedExposurePV();
+		double[] vertexUncollateralizedPositiveExposurePVArray = vertexUncollateralizedExposurePV();
 
-		int vertexCount = vertexUncollateralizedPositiveExposurePV.length;
+		int vertexCount = vertexUncollateralizedPositiveExposurePVArray.length;
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			if (0. > vertexUncollateralizedPositiveExposurePV[vertexIndex])
-				vertexUncollateralizedPositiveExposurePV[vertexIndex] = 0.;
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+			if (0. > vertexUncollateralizedPositiveExposurePVArray[vertexIndex])
+				vertexUncollateralizedPositiveExposurePVArray[vertexIndex] = 0.;
 		}
 
-		return vertexUncollateralizedPositiveExposurePV;
+		return vertexUncollateralizedPositiveExposurePVArray;
 	}
 
 	/**
@@ -455,17 +440,16 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexUncollateralizedNegativeExposure()
 	{
-		double[] vertexUncollateralizedNegativeExposure = vertexUncollateralizedExposure();
+		double[] vertexUncollateralizedNegativeExposureArray = vertexUncollateralizedExposure();
 
-		int vertexCount = vertexUncollateralizedNegativeExposure.length;
+		int vertexCount = vertexUncollateralizedNegativeExposureArray.length;
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			if (0. < vertexUncollateralizedNegativeExposure[vertexIndex])
-				vertexUncollateralizedNegativeExposure[vertexIndex] = 0.;
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+			if (0. < vertexUncollateralizedNegativeExposureArray[vertexIndex])
+				vertexUncollateralizedNegativeExposureArray[vertexIndex] = 0.;
 		}
 
-		return vertexUncollateralizedNegativeExposure;
+		return vertexUncollateralizedNegativeExposureArray;
 	}
 
 	/**
@@ -476,17 +460,16 @@ public abstract class CreditDebtGroupPath
 
 	public double[] vertexUncollateralizedNegativeExposurePV()
 	{
-		double[] vertexUncollateralizedNegativeExposurePV = vertexUncollateralizedExposurePV();
+		double[] vertexUncollateralizedNegativeExposurePVArray = vertexUncollateralizedExposurePV();
 
-		int vertexCount = vertexUncollateralizedNegativeExposurePV.length;
+		int vertexCount = vertexUncollateralizedNegativeExposurePVArray.length;
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			if (0. < vertexUncollateralizedNegativeExposurePV[vertexIndex])
-				vertexUncollateralizedNegativeExposurePV[vertexIndex] = 0.;
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+			if (0. < vertexUncollateralizedNegativeExposurePVArray[vertexIndex])
+				vertexUncollateralizedNegativeExposurePVArray[vertexIndex] = 0.;
 		}
 
-		return vertexUncollateralizedNegativeExposurePV;
+		return vertexUncollateralizedNegativeExposurePVArray;
 	}
 
 	/**
@@ -566,26 +549,24 @@ public abstract class CreditDebtGroupPath
 		int vertexCount = vertexDates().length;
 
 		int collateralGroupCount = _collateralGroupPathArray.length;
-		double[] vertexCollateralBalance = new double[vertexCount];
+		double[] vertexCollateralBalanceArray = new double[vertexCount];
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			vertexCollateralBalance[vertexIndex] = 0.;
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+			vertexCollateralBalanceArray[vertexIndex] = 0.;
 		}
 
 		for (int collateralGroupIndex = 0; collateralGroupIndex < collateralGroupCount;
-			++collateralGroupIndex)
-		{
-			double[] collateralVertexGroupCollateralBalance =
+			++collateralGroupIndex) {
+			double[] collateralVertexGroupCollateralBalanceArray =
 				_collateralGroupPathArray[collateralGroupIndex].vertexCollateralBalance();
 
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexCollateralBalance[vertexIndex] += collateralVertexGroupCollateralBalance[vertexIndex];
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				vertexCollateralBalanceArray[vertexIndex] +=
+					collateralVertexGroupCollateralBalanceArray[vertexIndex];
 			}
 		}
 
-		return vertexCollateralBalance;
+		return vertexCollateralBalanceArray;
 	}
 
 	/**
@@ -599,27 +580,24 @@ public abstract class CreditDebtGroupPath
 		int vertexCount = vertexDates().length;
 
 		int collateralGroupCount = _collateralGroupPathArray.length;
-		double[] vertexCollateralBalancePV = new double[vertexCount];
+		double[] vertexCollateralBalancePVArray = new double[vertexCount];
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			vertexCollateralBalancePV[vertexIndex] = 0.;
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+			vertexCollateralBalancePVArray[vertexIndex] = 0.;
 		}
 
 		for (int collateralGroupIndex = 0; collateralGroupIndex < collateralGroupCount;
-			++collateralGroupIndex)
-		{
-			double[] collateralVertexGroupCollateralBalancePV =
+			++collateralGroupIndex) {
+			double[] collateralVertexGroupCollateralBalancePVArray =
 				_collateralGroupPathArray[collateralGroupIndex].vertexCollateralBalancePV();
 
-			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-			{
-				vertexCollateralBalancePV[vertexIndex] +=
-					collateralVertexGroupCollateralBalancePV[vertexIndex];
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				vertexCollateralBalancePVArray[vertexIndex] +=
+					collateralVertexGroupCollateralBalancePVArray[vertexIndex];
 			}
 		}
 
-		return vertexCollateralBalancePV;
+		return vertexCollateralBalancePVArray;
 	}
 
 	/**
@@ -634,26 +612,24 @@ public abstract class CreditDebtGroupPath
 
 		int periodCount = vertexCount - 1;
 		int collateralGroupCount = _collateralGroupPathArray.length;
-		double[] periodCollateralSpread01 = new double[periodCount];
+		double[] periodCollateralSpread01Array = new double[periodCount];
 
-		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
-		{
-			periodCollateralSpread01[periodIndex] = 0.;
+		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex) {
+			periodCollateralSpread01Array[periodIndex] = 0.;
 		}
 
 		for (int collateralGroupIndex = 0; collateralGroupIndex < collateralGroupCount;
-			++collateralGroupIndex)
-		{
-			double[] collateralPeriodCollateralSpread01 =
+			++collateralGroupIndex) {
+			double[] collateralPeriodCollateralSpread01Array =
 				_collateralGroupPathArray[collateralGroupIndex].periodCollateralSpread01();
 
-			for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
-			{
-				periodCollateralSpread01[periodIndex] += collateralPeriodCollateralSpread01[periodIndex];
+			for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex) {
+				periodCollateralSpread01Array[periodIndex] +=
+					collateralPeriodCollateralSpread01Array[periodIndex];
 			}
 		}
 
-		return periodCollateralSpread01;
+		return periodCollateralSpread01Array;
 	}
 
 	/**
@@ -668,27 +644,24 @@ public abstract class CreditDebtGroupPath
 
 		int periodCount = vertexCount - 1;
 		int collateralGroupCount = _collateralGroupPathArray.length;
-		double[] periodCollateralValueAdjustment = new double[periodCount];
+		double[] periodCollateralValueAdjustmentArray = new double[periodCount];
 
-		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
-		{
-			periodCollateralValueAdjustment[periodIndex] = 0.;
+		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex) {
+			periodCollateralValueAdjustmentArray[periodIndex] = 0.;
 		}
 
 		for (int collateralGroupIndex = 0; collateralGroupIndex < collateralGroupCount;
-			++collateralGroupIndex)
-		{
-			double[] collateralPeriodCollateralValueAdjustment =
+			++collateralGroupIndex) {
+			double[] collateralPeriodCollateralValueAdjustmentArray =
 				_collateralGroupPathArray[collateralGroupIndex].periodCollateralValueAdjustment();
 
-			for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
-			{
-				periodCollateralValueAdjustment[periodIndex] +=
-					collateralPeriodCollateralValueAdjustment[periodIndex];
+			for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex) {
+				periodCollateralValueAdjustmentArray[periodIndex] +=
+					collateralPeriodCollateralValueAdjustmentArray[periodIndex];
 			}
 		}
 
-		return periodCollateralValueAdjustment;
+		return periodCollateralValueAdjustmentArray;
 	}
 
 	/**
@@ -699,20 +672,19 @@ public abstract class CreditDebtGroupPath
 
 	public double unilateralCreditAdjustment()
 	{
-		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
-		double[] vertexCreditExposurePV = vertexCreditExposurePV();
+		double[] vertexCreditExposurePVArray = vertexCreditExposurePV();
 
-		int vertexCount = vertexCreditExposurePV.length;
+		int vertexCount = vertexCreditExposurePVArray.length;
 		double unilateralCreditAdjustment = 0.;
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			double periodIntegrandStart = vertexCreditExposurePV[vertexIndex - 1] * (1. -
-				marketVertexArray[vertexIndex - 1].client().seniorRecoveryRate());
+		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex) {
+			double periodIntegrandStart = vertexCreditExposurePVArray[vertexIndex - 1] *
+				(1. - marketVertexArray[vertexIndex - 1].client().seniorRecoveryRate());
 
-			double periodIntegrandEnd = vertexCreditExposurePV[vertexIndex] * (1. -
-				marketVertexArray[vertexIndex].client().seniorRecoveryRate());
+			double periodIntegrandEnd = vertexCreditExposurePVArray[vertexIndex] *
+				(1. - marketVertexArray[vertexIndex].client().seniorRecoveryRate());
 
 			unilateralCreditAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *
 				(marketVertexArray[vertexIndex - 1].client().survivalProbability() -
@@ -730,21 +702,20 @@ public abstract class CreditDebtGroupPath
 
 	public double bilateralCreditAdjustment()
 	{
-		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
-		double[] vertexCreditExposurePV = vertexCreditExposurePV();
+		double[] vertexCreditExposurePVArray = vertexCreditExposurePV();
 
-		int vertexCount = vertexCreditExposurePV.length;
+		int vertexCount = vertexCreditExposurePVArray.length;
 		double bilateralCreditAdjustment = 0.;
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			double periodIntegrandStart = vertexCreditExposurePV[vertexIndex - 1] * (1. -
-				marketVertexArray[vertexIndex - 1].client().seniorRecoveryRate()) *
+		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex) {
+			double periodIntegrandStart = vertexCreditExposurePVArray[vertexIndex - 1] *
+				(1. - marketVertexArray[vertexIndex - 1].client().seniorRecoveryRate()) *
 				marketVertexArray[vertexIndex - 1].dealer().survivalProbability();
 
-			double periodIntegrandEnd = vertexCreditExposurePV[vertexIndex] * (1. -
-				marketVertexArray[vertexIndex].client().seniorRecoveryRate()) *
+			double periodIntegrandEnd = vertexCreditExposurePVArray[vertexIndex] *
+				(1. -marketVertexArray[vertexIndex].client().seniorRecoveryRate()) *
 				marketVertexArray[vertexIndex].dealer().survivalProbability();
 
 			bilateralCreditAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *
@@ -774,20 +745,19 @@ public abstract class CreditDebtGroupPath
 
 	public double unilateralDebtAdjustment()
 	{
-		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
-		double[] vertexDebtExposurePV = vertexDebtExposurePV();
+		double[] vertexDebtExposurePVArray = vertexDebtExposurePV();
 
-		int vertexCount = vertexDebtExposurePV.length;
+		int vertexCount = vertexDebtExposurePVArray.length;
 		double unilateralDebtAdjustment = 0.;
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			double periodIntegrandStart = vertexDebtExposurePV[vertexIndex - 1] * (1. -
-				marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate());
+		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex) {
+			double periodIntegrandStart = vertexDebtExposurePVArray[vertexIndex - 1] *
+				(1. -marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate());
 
-			double periodIntegrandEnd = vertexDebtExposurePV[vertexIndex] * (1. -
-				marketVertexArray[vertexIndex].dealer().seniorRecoveryRate());
+			double periodIntegrandEnd = vertexDebtExposurePVArray[vertexIndex] *
+				(1. -marketVertexArray[vertexIndex].dealer().seniorRecoveryRate());
 
 			unilateralDebtAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *
 				(marketVertexArray[vertexIndex - 1].dealer().survivalProbability() -
@@ -805,26 +775,26 @@ public abstract class CreditDebtGroupPath
 
 	public double bilateralDebtAdjustment()
 	{
-		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
-		double[] vertexDebtExposurePV = vertexDebtExposurePV();
+		double[] vertexDebtExposurePVArray = vertexDebtExposurePV();
 
-		int vertexCount = vertexDebtExposurePV.length;
+		int vertexCount = vertexDebtExposurePVArray.length;
 		double bilateralDebtAdjustment = 0.;
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			double periodIntegrandStart = vertexDebtExposurePV[vertexIndex - 1] * (1. -
-				marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate()) *
+		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex) {
+			double periodIntegrandStart = vertexDebtExposurePVArray[vertexIndex - 1] *
+				(1. -marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate()) *
 				marketVertexArray[vertexIndex - 1].client().survivalProbability();
 
-			double periodIntegrandEnd = vertexDebtExposurePV[vertexIndex] * (1. -
-				marketVertexArray[vertexIndex].dealer().seniorRecoveryRate()) *
+			double periodIntegrandEnd = vertexDebtExposurePVArray[vertexIndex] *
+				(1. -marketVertexArray[vertexIndex].dealer().seniorRecoveryRate()) *
 				marketVertexArray[vertexIndex].client().survivalProbability();
 
-			bilateralDebtAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *
-				(marketVertexArray[vertexIndex - 1].dealer().survivalProbability() -
-					marketVertexArray[vertexIndex].dealer().survivalProbability());
+			bilateralDebtAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) * (
+				marketVertexArray[vertexIndex - 1].dealer().survivalProbability() -
+				marketVertexArray[vertexIndex].dealer().survivalProbability()
+			);
 		}
 
 		return bilateralDebtAdjustment;
@@ -849,19 +819,18 @@ public abstract class CreditDebtGroupPath
 
 	public double symmetricFundingValueSpread01()
 	{
-		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
-		double[] vertexCollateralizedExposurePV = vertexCollateralizedExposurePV();
+		double[] vertexCollateralizedExposurePVArray = vertexCollateralizedExposurePV();
 
-		int vertexCount = vertexCollateralizedExposurePV.length;
+		int vertexCount = vertexCollateralizedExposurePVArray.length;
 		double symmetricFundingValueSpread01 = 0.;
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
-		{
+		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex) {
 			symmetricFundingValueSpread01 = 0.5 * (
-				vertexCollateralizedExposurePV[vertexIndex - 1] *
+				vertexCollateralizedExposurePVArray[vertexIndex - 1] *
 				marketVertexArray[vertexIndex - 1].dealer().survivalProbability() +
-				vertexCollateralizedExposurePV[vertexIndex] *
+				vertexCollateralizedExposurePVArray[vertexIndex] *
 				marketVertexArray[vertexIndex].dealer().survivalProbability()
 			) * (
 				marketVertexArray[vertexIndex].anchorDate().julian() -
@@ -880,19 +849,18 @@ public abstract class CreditDebtGroupPath
 
 	public double unilateralFundingValueSpread01()
 	{
-		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
-		double[] vertexFundingExposurePV = vertexFundingExposurePV();
+		double[] vertexFundingExposurePVArray = vertexFundingExposurePV();
 
-		int vertexCount = vertexFundingExposurePV.length;
+		int vertexCount = vertexFundingExposurePVArray.length;
 		double unilateralFundingValueSpread01 = 0.;
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			double periodIntegrandStart = vertexFundingExposurePV[vertexIndex - 1] *
+		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex) {
+			double periodIntegrandStart = vertexFundingExposurePVArray[vertexIndex - 1] *
 				marketVertexArray[vertexIndex - 1].client().survivalProbability();
 
-			double periodIntegrandEnd = vertexFundingExposurePV[vertexIndex] *
+			double periodIntegrandEnd = vertexFundingExposurePVArray[vertexIndex] *
 				marketVertexArray[vertexIndex].client().survivalProbability();
 
 			unilateralFundingValueSpread01 = 0.5 * (periodIntegrandStart + periodIntegrandEnd) * (
@@ -912,20 +880,19 @@ public abstract class CreditDebtGroupPath
 
 	public double bilateralFundingValueSpread01()
 	{
-		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
-		double[] vertexFundingExposurePV = vertexFundingExposurePV();
+		double[] vertexFundingExposurePVArray = vertexFundingExposurePV();
 
-		int vertexCount = vertexFundingExposurePV.length;
+		int vertexCount = vertexFundingExposurePVArray.length;
 		double bilateralFundingValueSpread01 = 0.;
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			double periodIntegrandStart = vertexFundingExposurePV[vertexIndex - 1] *
+		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex) {
+			double periodIntegrandStart = vertexFundingExposurePVArray[vertexIndex - 1] *
 				marketVertexArray[vertexIndex - 1].client().survivalProbability() *
 				marketVertexArray[vertexIndex - 1].dealer().survivalProbability();
 
-			double periodIntegrandEnd = vertexFundingExposurePV[vertexIndex] *
+			double periodIntegrandEnd = vertexFundingExposurePVArray[vertexIndex] *
 				marketVertexArray[vertexIndex].client().survivalProbability() *
 				marketVertexArray[vertexIndex].dealer().survivalProbability();
 
@@ -946,20 +913,19 @@ public abstract class CreditDebtGroupPath
 
 	public double unilateralFundingDebtAdjustment()
 	{
-		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
-		double[] vertexDebtExposurePV = vertexDebtExposurePV();
+		double[] vertexDebtExposurePVArray = vertexDebtExposurePV();
 
-		int vertexCount = vertexDebtExposurePV.length;
+		int vertexCount = vertexDebtExposurePVArray.length;
 		double unilateralFundingDebtAdjustment = 0.;
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			double periodIntegrandStart = vertexDebtExposurePV[vertexIndex - 1] * (1. -
-				marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate());
+		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex) {
+			double periodIntegrandStart = vertexDebtExposurePVArray[vertexIndex - 1] *
+				(1. - marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate());
 
-			double periodIntegrandEnd = vertexDebtExposurePV[vertexIndex] * (1. -
-				marketVertexArray[vertexIndex].dealer().seniorRecoveryRate());
+			double periodIntegrandEnd = vertexDebtExposurePVArray[vertexIndex] *
+				(1. - marketVertexArray[vertexIndex].dealer().seniorRecoveryRate());
 
 			unilateralFundingDebtAdjustment -= 0.5 * (periodIntegrandStart + periodIntegrandEnd) *
 				(marketVertexArray[vertexIndex - 1].dealer().survivalProbability() -
@@ -977,22 +943,21 @@ public abstract class CreditDebtGroupPath
 
 	public double bilateralFundingDebtAdjustment()
 	{
-		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
-		double[] vertexDebtExposurePV = vertexDebtExposurePV();
+		double[] vertexDebtExposurePVArray = vertexDebtExposurePV();
 
-		int vertexCount = vertexDebtExposurePV.length;
+		int vertexCount = vertexDebtExposurePVArray.length;
 		double bilateralFundingDebtAdjustment = 0.;
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			double periodIntegrandStart = vertexDebtExposurePV[vertexIndex - 1] *
-				marketVertexArray[vertexIndex - 1].client().survivalProbability() * (1. -
-				marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate());
+		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex) {
+			double periodIntegrandStart = vertexDebtExposurePVArray[vertexIndex - 1] *
+				marketVertexArray[vertexIndex - 1].client().survivalProbability() *
+				(1. - marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate());
 
-			double periodIntegrandEnd = vertexDebtExposurePV[vertexIndex] *
-				marketVertexArray[vertexIndex].client().survivalProbability() * (1. -
-				marketVertexArray[vertexIndex].dealer().seniorRecoveryRate());
+			double periodIntegrandEnd = vertexDebtExposurePVArray[vertexIndex] *
+				marketVertexArray[vertexIndex].client().survivalProbability() *
+				(1. - marketVertexArray[vertexIndex].dealer().seniorRecoveryRate());
 
 			bilateralFundingDebtAdjustment += 0.5 * (periodIntegrandStart + periodIntegrandEnd) *
 				(marketVertexArray[vertexIndex - 1].dealer().survivalProbability() -
@@ -1010,16 +975,16 @@ public abstract class CreditDebtGroupPath
 
 	public double unilateralCollateralAdjustment()
 	{
-		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
-		double[] periodCollateralValueAdjustment = periodCollateralValueAdjustment();
+		double[] periodCollateralValueAdjustmentArray = periodCollateralValueAdjustment();
 
 		double unilateralCollateralValueAdjustment = 0.;
-		int periodCount = periodCollateralValueAdjustment.length;
+		int periodCount = periodCollateralValueAdjustmentArray.length;
 
-		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
-		{
-			unilateralCollateralValueAdjustment += 0.5 * periodCollateralValueAdjustment[periodIndex] * (
+		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex) {
+			unilateralCollateralValueAdjustment += 0.5 * periodCollateralValueAdjustmentArray[periodIndex] *
+			(
 				marketVertexArray[periodIndex].client().survivalProbability() +
 				marketVertexArray[periodIndex + 1].client().survivalProbability()
 			);
@@ -1036,16 +1001,15 @@ public abstract class CreditDebtGroupPath
 
 	public double bilateralCollateralAdjustment()
 	{
-		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
-		double[] periodCollateralValueAdjustment = periodCollateralValueAdjustment();
+		double[] periodCollateralValueAdjustmentArray = periodCollateralValueAdjustment();
 
 		double bilateralCollateralValueAdjustment = 0.;
-		int periodCount = periodCollateralValueAdjustment.length;
+		int periodCount = periodCollateralValueAdjustmentArray.length;
 
-		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
-		{
-			bilateralCollateralValueAdjustment += 0.5 * periodCollateralValueAdjustment[periodIndex] * (
+		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex) {
+			bilateralCollateralValueAdjustment += 0.5 * periodCollateralValueAdjustmentArray[periodIndex] * (
 				marketVertexArray[periodIndex].dealer().survivalProbability() *
 				marketVertexArray[periodIndex].client().survivalProbability() +
 				marketVertexArray[periodIndex + 1].dealer().survivalProbability() *
@@ -1075,25 +1039,24 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodSymmetricFundingValueSpread01()
 	{
-		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
-		double[] vertexCollateralizedExposurePV = vertexCollateralizedExposurePV();
+		double[] vertexCollateralizedExposurePVArray = vertexCollateralizedExposurePV();
 
-		int periodCount = vertexCollateralizedExposurePV.length - 1;
-		double[] periodSymmetricFundingValueSpread01 = new double[periodCount];
+		int periodCount = vertexCollateralizedExposurePVArray.length - 1;
+		double[] periodSymmetricFundingValueSpread01Array = new double[periodCount];
 
-		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
-		{
-			periodSymmetricFundingValueSpread01[periodIndex] = -0.5 * (
-				vertexCollateralizedExposurePV[periodIndex] +
-				vertexCollateralizedExposurePV[periodIndex + 1]
+		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex) {
+			periodSymmetricFundingValueSpread01Array[periodIndex] = -0.5 * (
+				vertexCollateralizedExposurePVArray[periodIndex] +
+				vertexCollateralizedExposurePVArray[periodIndex + 1]
 			) * (
 				marketVertexArray[periodIndex + 1].anchorDate().julian() -
 				marketVertexArray[periodIndex].anchorDate().julian()
 			) / 365.25;
 		}
 
-		return periodSymmetricFundingValueSpread01;
+		return periodSymmetricFundingValueSpread01Array;
 	}
 
 	/**
@@ -1104,25 +1067,25 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodUnilateralCreditAdjustment()
 	{
-		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
-		double[] vertexCreditExposurePV = vertexCreditExposurePV();
+		double[] vertexCreditExposurePVArray = vertexCreditExposurePV();
 
-		int vertexCount = vertexCreditExposurePV.length;
+		int vertexCount = vertexCreditExposurePVArray.length;
 		double[] periodUnilateralCreditAdjustment = new double[vertexCount - 1];
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			double periodIntegrandStart = vertexCreditExposurePV[vertexIndex - 1] * (1. -
-				marketVertexArray[vertexIndex - 1].client().seniorRecoveryRate());
+		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex) {
+			double periodIntegrandStart = vertexCreditExposurePVArray[vertexIndex - 1] *
+				(1. - marketVertexArray[vertexIndex - 1].client().seniorRecoveryRate());
 
-			double periodIntegrandEnd = vertexCreditExposurePV[vertexIndex] * (1. -
-				marketVertexArray[vertexIndex].client().seniorRecoveryRate());
+			double periodIntegrandEnd = vertexCreditExposurePVArray[vertexIndex] *
+				(1. - marketVertexArray[vertexIndex].client().seniorRecoveryRate());
 
 			periodUnilateralCreditAdjustment[vertexIndex - 1] =
-				-0.5 * (periodIntegrandStart + periodIntegrandEnd) *
-				(marketVertexArray[vertexIndex - 1].client().survivalProbability() -
-				marketVertexArray[vertexIndex].client().survivalProbability());
+				-0.5 * (periodIntegrandStart + periodIntegrandEnd) * (
+					marketVertexArray[vertexIndex - 1].client().survivalProbability() -
+					marketVertexArray[vertexIndex].client().survivalProbability()
+				);
 		}
 
 		return periodUnilateralCreditAdjustment;
@@ -1136,21 +1099,20 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodBilateralCreditAdjustment()
 	{
-		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
-		double[] vertexCreditExposurePV = vertexCreditExposurePV();
+		double[] vertexCreditExposurePVArray = vertexCreditExposurePV();
 
-		int vertexCount = vertexCreditExposurePV.length;
+		int vertexCount = vertexCreditExposurePVArray.length;
 		double[] periodBilateralCreditAdjustment = new double[vertexCount - 1];
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			double periodIntegrandStart = vertexCreditExposurePV[vertexIndex - 1] * (1. -
-				marketVertexArray[vertexIndex - 1].client().seniorRecoveryRate()) *
+		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex) {
+			double periodIntegrandStart = vertexCreditExposurePVArray[vertexIndex - 1] *
+				(1. - marketVertexArray[vertexIndex - 1].client().seniorRecoveryRate()) *
 				marketVertexArray[vertexIndex - 1].dealer().survivalProbability();
 
-			double periodIntegrandEnd = vertexCreditExposurePV[vertexIndex] * (1. -
-				marketVertexArray[vertexIndex].client().seniorRecoveryRate()) *
+			double periodIntegrandEnd = vertexCreditExposurePVArray[vertexIndex] *
+				(1. - marketVertexArray[vertexIndex].client().seniorRecoveryRate()) *
 				marketVertexArray[vertexIndex].dealer().survivalProbability();
 
 			periodBilateralCreditAdjustment[vertexIndex - 1] =
@@ -1170,21 +1132,20 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodContraLiabilityCreditAdjustment()
 	{
-		double[] periodUnilateralCreditAdjustment = periodUnilateralCreditAdjustment();
+		double[] periodUnilateralCreditAdjustmentArray = periodUnilateralCreditAdjustment();
 
-		double[] periodBilateralCreditAdjustment = periodBilateralCreditAdjustment();
+		double[] periodBilateralCreditAdjustmentArray = periodBilateralCreditAdjustment();
 
-		int vertexCount = periodUnilateralCreditAdjustment.length;
-		double[] periodContraLiabilityCreditAdjustment = new double[vertexCount];
+		int vertexCount = periodUnilateralCreditAdjustmentArray.length;
+		double[] periodContraLiabilityCreditAdjustmentArray = new double[vertexCount];
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			periodContraLiabilityCreditAdjustment[vertexIndex] =
-				periodUnilateralCreditAdjustment[vertexIndex] -
-				periodBilateralCreditAdjustment[vertexIndex];
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+			periodContraLiabilityCreditAdjustmentArray[vertexIndex] =
+				periodUnilateralCreditAdjustmentArray[vertexIndex] -
+				periodBilateralCreditAdjustmentArray[vertexIndex];
 		}
 
-		return periodContraLiabilityCreditAdjustment;
+		return periodContraLiabilityCreditAdjustmentArray;
 	}
 
 	/**
@@ -1195,20 +1156,19 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodUnilateralDebtAdjustment()
 	{
-		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
-		double[] vertexDebtExposurePV = vertexDebtExposurePV();
+		double[] vertexDebtExposurePVArray = vertexDebtExposurePV();
 
-		int vertexCount = vertexDebtExposurePV.length;
+		int vertexCount = vertexDebtExposurePVArray.length;
 		double[] periodUnilateralDebtAdjustment = new double[vertexCount - 1];
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			double periodIntegrandStart = vertexDebtExposurePV[vertexIndex - 1] * (1. -
-				marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate());
+		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex) {
+			double periodIntegrandStart = vertexDebtExposurePVArray[vertexIndex - 1] *
+				(1. - marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate());
 
-			double periodIntegrandEnd = vertexDebtExposurePV[vertexIndex] * (1. -
-				marketVertexArray[vertexIndex].dealer().seniorRecoveryRate());
+			double periodIntegrandEnd = vertexDebtExposurePVArray[vertexIndex] *
+				(1. - marketVertexArray[vertexIndex].dealer().seniorRecoveryRate());
 
 			periodUnilateralDebtAdjustment[vertexIndex - 1] =
 				-0.5 * (periodIntegrandStart + periodIntegrandEnd) *
@@ -1227,30 +1187,29 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodBilateralDebtAdjustment()
 	{
-		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
-		double[] vertexDebtExposurePV = vertexDebtExposurePV();
+		double[] vertexDebtExposurePVArray = vertexDebtExposurePV();
 
-		int vertexCount = vertexDebtExposurePV.length;
-		double[] periodBilateralDebtAdjustment = new double[vertexCount - 1];
+		int vertexCount = vertexDebtExposurePVArray.length;
+		double[] periodBilateralDebtAdjustmentArray = new double[vertexCount - 1];
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			double periodIntegrandStart = vertexDebtExposurePV[vertexIndex - 1] * (1. -
-				marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate()) *
+		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex) {
+			double periodIntegrandStart = vertexDebtExposurePVArray[vertexIndex - 1] *
+				(1. - marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate()) *
 				marketVertexArray[vertexIndex - 1].client().survivalProbability();
 
-			double periodIntegrandEnd = vertexDebtExposurePV[vertexIndex] * (1. -
-				marketVertexArray[vertexIndex].dealer().seniorRecoveryRate()) *
+			double periodIntegrandEnd = vertexDebtExposurePVArray[vertexIndex] *
+				(1. - marketVertexArray[vertexIndex].dealer().seniorRecoveryRate()) *
 				marketVertexArray[vertexIndex].client().survivalProbability();
 
-			periodBilateralDebtAdjustment[vertexIndex - 1] =
+			periodBilateralDebtAdjustmentArray[vertexIndex - 1] =
 				-0.5 * (periodIntegrandStart + periodIntegrandEnd) *
 				(marketVertexArray[vertexIndex - 1].dealer().survivalProbability() -
 				marketVertexArray[vertexIndex].dealer().survivalProbability());
 		}
 
-		return periodBilateralDebtAdjustment;
+		return periodBilateralDebtAdjustmentArray;
 	}
 
 	/**
@@ -1261,29 +1220,29 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodUnilateralFundingValueSpread01()
 	{
-		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
-		double[] vertexFundingExposurePV = vertexFundingExposurePV();
+		double[] vertexFundingExposurePVArray = vertexFundingExposurePV();
 
-		int periodCount = vertexFundingExposurePV.length - 1;
-		double[] periodUnilateralFundingValueSpread01 = new double[periodCount];
+		int periodCount = vertexFundingExposurePVArray.length - 1;
+		double[] periodUnilateralFundingValueSpread01Array = new double[periodCount];
 
 		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
 		{
-			double periodIntegrandStart = vertexFundingExposurePV[periodIndex] *
+			double periodIntegrandStart = vertexFundingExposurePVArray[periodIndex] *
 				marketVertexArray[periodIndex].client().survivalProbability();
 
-			double periodIntegrandEnd = vertexFundingExposurePV[periodIndex + 1] *
+			double periodIntegrandEnd = vertexFundingExposurePVArray[periodIndex + 1] *
 				marketVertexArray[periodIndex + 1].client().survivalProbability();
 
-			periodUnilateralFundingValueSpread01[periodIndex] =
+			periodUnilateralFundingValueSpread01Array[periodIndex] =
 				0.5 * (periodIntegrandStart + periodIntegrandEnd) * (
 					marketVertexArray[periodIndex + 1].anchorDate().julian() -
 					marketVertexArray[periodIndex].anchorDate().julian()
 				) / 365.25;
 		}
 
-		return periodUnilateralFundingValueSpread01;
+		return periodUnilateralFundingValueSpread01Array;
 	}
 
 	/**
@@ -1294,31 +1253,30 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodBilateralFundingValueSpread01()
 	{
-		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
-		double[] vertexFundingExposurePV = vertexFundingExposurePV();
+		double[] vertexFundingExposurePVArray = vertexFundingExposurePV();
 
-		int periodCount = vertexFundingExposurePV.length - 1;
-		double[] periodBilateralFundingValueSpread01 = new double[periodCount];
+		int periodCount = vertexFundingExposurePVArray.length - 1;
+		double[] periodBilateralFundingValueSpread01Array = new double[periodCount];
 
-		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex)
-		{
-			double periodIntegrandStart = vertexFundingExposurePV[periodIndex] *
+		for (int periodIndex = 0; periodIndex < periodCount; ++periodIndex) {
+			double periodIntegrandStart = vertexFundingExposurePVArray[periodIndex] *
 				marketVertexArray[periodIndex].client().survivalProbability() *
 				marketVertexArray[periodIndex].dealer().survivalProbability();
 
-			double periodIntegrandEnd = vertexFundingExposurePV[periodIndex + 1] *
+			double periodIntegrandEnd = vertexFundingExposurePVArray[periodIndex + 1] *
 				marketVertexArray[periodIndex + 1].client().survivalProbability() *
 				marketVertexArray[periodIndex + 1].dealer().survivalProbability();
 
-			periodBilateralFundingValueSpread01[periodIndex] =
+			periodBilateralFundingValueSpread01Array[periodIndex] =
 				0.5 * (periodIntegrandStart + periodIntegrandEnd) * (
 					marketVertexArray[periodIndex + 1].anchorDate().julian() -
 					marketVertexArray[periodIndex].anchorDate().julian()
 				) / 365.25;
 		}
 
-		return periodBilateralFundingValueSpread01;
+		return periodBilateralFundingValueSpread01Array;
 	}
 
 	/**
@@ -1329,28 +1287,28 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodUnilateralFundingDebtAdjustment()
 	{
-		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
-		double[] vertexDebtExposurePV = vertexDebtExposurePV();
+		double[] vertexDebtExposurePVArray = vertexDebtExposurePV();
 
-		int vertexCount = vertexDebtExposurePV.length;
-		double[] periodUnilateralFundingDebtAdjustment = new double[vertexCount - 1];
+		int vertexCount = vertexDebtExposurePVArray.length;
+		double[] periodUnilateralFundingDebtAdjustmentArray = new double[vertexCount - 1];
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			double periodIntegrandStart = vertexDebtExposurePV[vertexIndex - 1] * (1. -
-				marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate());
+		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex) {
+			double periodIntegrandStart = vertexDebtExposurePVArray[vertexIndex - 1] *
+				(1. - marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate());
 
-			double periodIntegrandEnd = vertexDebtExposurePV[vertexIndex] * (1. -
-				marketVertexArray[vertexIndex].dealer().seniorRecoveryRate());
+			double periodIntegrandEnd = vertexDebtExposurePVArray[vertexIndex] *
+				(1. - marketVertexArray[vertexIndex].dealer().seniorRecoveryRate());
 
-			periodUnilateralFundingDebtAdjustment[vertexIndex - 1] = -0.5 *
-				(periodIntegrandStart + periodIntegrandEnd) *
-				(marketVertexArray[vertexIndex - 1].dealer().survivalProbability() -
-				marketVertexArray[vertexIndex].dealer().survivalProbability());
+			periodUnilateralFundingDebtAdjustmentArray[vertexIndex - 1] = -0.5 *
+				(periodIntegrandStart + periodIntegrandEnd) * (
+					marketVertexArray[vertexIndex - 1].dealer().survivalProbability() -
+					marketVertexArray[vertexIndex].dealer().survivalProbability()
+				);
 		}
 
-		return periodUnilateralFundingDebtAdjustment;
+		return periodUnilateralFundingDebtAdjustmentArray;
 	}
 
 	/**
@@ -1361,30 +1319,30 @@ public abstract class CreditDebtGroupPath
 
 	public double[] periodBilateralFundingDebtAdjustment()
 	{
-		org.drip.exposure.universe.MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
+		MarketVertex[] marketVertexArray = _marketPath.marketVertexArray();
 
-		double[] vertexDebtExposurePV = vertexDebtExposurePV();
+		double[] vertexDebtExposurePVArray = vertexDebtExposurePV();
 
-		int vertexCount = vertexDebtExposurePV.length;
-		double[] periodBilateralFundingDebtAdjustment = new double[vertexCount - 1];
+		int vertexCount = vertexDebtExposurePVArray.length;
+		double[] periodBilateralFundingDebtAdjustmentArray = new double[vertexCount - 1];
 
-		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			double periodIntegrandStart = vertexDebtExposurePV[vertexIndex - 1] * (1. -
-				marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate()) *
+		for (int vertexIndex = 1; vertexIndex < vertexCount; ++vertexIndex) {
+			double periodIntegrandStart = vertexDebtExposurePVArray[vertexIndex - 1] *
+				(1. - marketVertexArray[vertexIndex - 1].dealer().seniorRecoveryRate()) *
 				marketVertexArray[vertexIndex - 1].client().survivalProbability();
 
-			double periodIntegrandEnd = vertexDebtExposurePV[vertexIndex] * (1. -
-				marketVertexArray[vertexIndex].dealer().seniorRecoveryRate()) *
+			double periodIntegrandEnd = vertexDebtExposurePVArray[vertexIndex] *
+				(1. - marketVertexArray[vertexIndex].dealer().seniorRecoveryRate()) *
 				marketVertexArray[vertexIndex].client().survivalProbability();
 
-			periodBilateralFundingDebtAdjustment[vertexIndex - 1] = -0.5 *
-				(periodIntegrandStart + periodIntegrandEnd) *
-				(marketVertexArray[vertexIndex - 1].dealer().survivalProbability() -
-				marketVertexArray[vertexIndex].dealer().survivalProbability());
+			periodBilateralFundingDebtAdjustmentArray[vertexIndex - 1] = -0.5 *
+				(periodIntegrandStart + periodIntegrandEnd) * (
+					marketVertexArray[vertexIndex - 1].dealer().survivalProbability() -
+					marketVertexArray[vertexIndex].dealer().survivalProbability()
+				);
 		}
 
-		return periodBilateralFundingDebtAdjustment;
+		return periodBilateralFundingDebtAdjustmentArray;
 	}
 
 	/**
