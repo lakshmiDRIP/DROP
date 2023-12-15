@@ -1,11 +1,17 @@
 
 package org.drip.xva.strategy;
 
+import org.drip.exposure.universe.MarketPath;
+import org.drip.xva.netting.CollateralGroupPath;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -132,21 +138,15 @@ public class AlbaneseAndersenNettingGroupPath extends org.drip.xva.netting.Credi
 	 */
 
 	public static final AlbaneseAndersenNettingGroupPath Mono (
-		final org.drip.xva.netting.CollateralGroupPath collateralGroupPath,
-		final org.drip.exposure.universe.MarketPath marketPath)
+		final CollateralGroupPath collateralGroupPath,
+		final MarketPath marketPath)
 	{
-		try
-		{
-			return new org.drip.xva.strategy.AlbaneseAndersenNettingGroupPath (
-				new org.drip.xva.netting.CollateralGroupPath[]
-				{
-					collateralGroupPath
-				},
+		try {
+			return new AlbaneseAndersenNettingGroupPath (
+				new CollateralGroupPath[] {collateralGroupPath},
 				marketPath
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -159,18 +159,15 @@ public class AlbaneseAndersenNettingGroupPath extends org.drip.xva.netting.Credi
 	 * @param collateralGroupPathArray Array of the Hypothecation Group Trajectory Paths
 	 * @param marketPath The Market Path
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AlbaneseAndersenNettingGroupPath (
-		final org.drip.xva.netting.CollateralGroupPath[] collateralGroupPathArray,
-		final org.drip.exposure.universe.MarketPath marketPath)
-		throws java.lang.Exception
+		final CollateralGroupPath[] collateralGroupPathArray,
+		final MarketPath marketPath)
+		throws Exception
 	{
-		super (
-			collateralGroupPathArray,
-			marketPath
-		);
+		super (collateralGroupPathArray, marketPath);
 	}
 
 	@Override public double creditAdjustment()

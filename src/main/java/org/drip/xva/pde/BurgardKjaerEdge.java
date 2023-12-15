@@ -1,11 +1,16 @@
 
 package org.drip.xva.pde;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -122,11 +127,11 @@ package org.drip.xva.pde;
 
 public abstract class BurgardKjaerEdge
 {
-	private double _positionValueBump = java.lang.Double.NaN;
-	private double _derivativeXVACollateralGrowth = java.lang.Double.NaN;
-	private double _derivativeXVAStochasticGrowth = java.lang.Double.NaN;
-	private double _derivativeXVAStochasticGrowthUp = java.lang.Double.NaN;
-	private double _derivativeXVAStochasticGrowthDown = java.lang.Double.NaN;
+	private double _positionValueBump = Double.NaN;
+	private double _derivativeXVACollateralGrowth = Double.NaN;
+	private double _derivativeXVAStochasticGrowth = Double.NaN;
+	private double _derivativeXVAStochasticGrowthUp = Double.NaN;
+	private double _derivativeXVAStochasticGrowthDown = Double.NaN;
 
 	protected BurgardKjaerEdge (
 		final double positionValueBump,
@@ -134,19 +139,14 @@ public abstract class BurgardKjaerEdge
 		final double derivativeXVAStochasticGrowth,
 		final double derivativeXVAStochasticGrowthUp,
 		final double derivativeXVACollateralGrowth)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_positionValueBump = positionValueBump) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVAStochasticGrowthDown =
-				derivativeXVAStochasticGrowthDown) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVAStochasticGrowth =
-				derivativeXVAStochasticGrowth) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVAStochasticGrowthUp =
-				derivativeXVAStochasticGrowthUp) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVACollateralGrowth =
-				derivativeXVACollateralGrowth))
-		{
-			throw new java.lang.Exception ("BurgardKjaerEdge Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_positionValueBump = positionValueBump) ||
+			!NumberUtil.IsValid (_derivativeXVAStochasticGrowthDown = derivativeXVAStochasticGrowthDown) ||
+			!NumberUtil.IsValid (_derivativeXVAStochasticGrowth = derivativeXVAStochasticGrowth) ||
+			!NumberUtil.IsValid (_derivativeXVAStochasticGrowthUp = derivativeXVAStochasticGrowthUp) ||
+			!NumberUtil.IsValid (_derivativeXVACollateralGrowth = derivativeXVACollateralGrowth)) {
+			throw new Exception ("BurgardKjaerEdge Constructor => Invalid Inputs");
 		}
 	}
 

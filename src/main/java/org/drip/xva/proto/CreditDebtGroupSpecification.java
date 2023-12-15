@@ -1,11 +1,17 @@
 
 package org.drip.xva.proto;
 
+import org.drip.state.identifier.EntityHazardLabel;
+import org.drip.state.identifier.EntityRecoveryLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -118,15 +124,15 @@ package org.drip.xva.proto;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditDebtGroupSpecification extends org.drip.xva.proto.ObjectSpecification
+public class CreditDebtGroupSpecification extends ObjectSpecification
 {
 	private boolean _contractual = true;
 	private boolean _enforceable = true;
-	private org.drip.state.identifier.EntityHazardLabel _clientHazardLabel = null;
-	private org.drip.state.identifier.EntityHazardLabel _dealerHazardLabel = null;
-	private org.drip.state.identifier.EntityRecoveryLabel _clientRecoveryLabel = null;
-	private org.drip.state.identifier.EntityRecoveryLabel _dealerSeniorRecoveryLabel = null;
-	private org.drip.state.identifier.EntityRecoveryLabel _dealerSubordinateRecoveryLabel = null;
+	private EntityHazardLabel _clientHazardLabel = null;
+	private EntityHazardLabel _dealerHazardLabel = null;
+	private EntityRecoveryLabel _clientRecoveryLabel = null;
+	private EntityRecoveryLabel _dealerSeniorRecoveryLabel = null;
+	private EntityRecoveryLabel _dealerSubordinateRecoveryLabel = null;
 
 	/**
 	 * Generate a Standard Instance of CreditDebtGroupSpecification
@@ -143,13 +149,13 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ObjectSpeci
 	 */
 
 	public static final CreditDebtGroupSpecification Standard (
-		final java.lang.String id,
-		final java.lang.String name,
-		final org.drip.state.identifier.EntityHazardLabel dealerHazardLabel,
-		final org.drip.state.identifier.EntityHazardLabel clientHazardLabel,
-		final org.drip.state.identifier.EntityRecoveryLabel dealerSeniorRecoveryLabel,
-		final org.drip.state.identifier.EntityRecoveryLabel clientRecoveryLabel,
-		final org.drip.state.identifier.EntityRecoveryLabel dealerSubordinateRecoveryLabel)
+		final String id,
+		final String name,
+		final EntityHazardLabel dealerHazardLabel,
+		final EntityHazardLabel clientHazardLabel,
+		final EntityRecoveryLabel dealerSeniorRecoveryLabel,
+		final EntityRecoveryLabel clientRecoveryLabel,
+		final EntityRecoveryLabel dealerSubordinateRecoveryLabel)
 	{
 		try {
 			return new CreditDebtGroupSpecification (
@@ -163,9 +169,7 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ObjectSpeci
 				true,
 				true
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -185,32 +189,28 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ObjectSpeci
 	 * @param contractual TRUE - The Netting is Contractual
 	 * @param enforceable TRUE - The Netting is Enforceable
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CreditDebtGroupSpecification (
-		final java.lang.String id,
-		final java.lang.String name,
-		final org.drip.state.identifier.EntityHazardLabel dealerHazardLabel,
-		final org.drip.state.identifier.EntityHazardLabel clientHazardLabel,
-		final org.drip.state.identifier.EntityRecoveryLabel dealerSeniorRecoveryLabel,
-		final org.drip.state.identifier.EntityRecoveryLabel clientRecoveryLabel,
-		final org.drip.state.identifier.EntityRecoveryLabel dealerSubordinateRecoveryLabel,
+		final String id,
+		final String name,
+		final EntityHazardLabel dealerHazardLabel,
+		final EntityHazardLabel clientHazardLabel,
+		final EntityRecoveryLabel dealerSeniorRecoveryLabel,
+		final EntityRecoveryLabel clientRecoveryLabel,
+		final EntityRecoveryLabel dealerSubordinateRecoveryLabel,
 		final boolean contractual,
 		final boolean enforceable)
-		throws java.lang.Exception
+		throws Exception
 	{
-		super (
-			id,
-			name
-		);
+		super (id, name);
 
 		if (null == (_dealerHazardLabel = dealerHazardLabel) ||
 			null == (_clientHazardLabel = clientHazardLabel) ||
 			null == (_dealerSeniorRecoveryLabel = dealerSeniorRecoveryLabel) ||
-			null == (_clientRecoveryLabel = clientRecoveryLabel))
-		{
-			throw new java.lang.Exception ("CreditDebtGroupSpecification Constructor");
+			null == (_clientRecoveryLabel = clientRecoveryLabel)) {
+			throw new Exception ("CreditDebtGroupSpecification Constructor");
 		}
 
 		_contractual = contractual;
@@ -246,7 +246,7 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ObjectSpeci
 	 * @return The Dealer Hazard Label
 	 */
 
-	public org.drip.state.identifier.EntityHazardLabel dealerHazardLabel()
+	public EntityHazardLabel dealerHazardLabel()
 	{
 		return _dealerHazardLabel;
 	}
@@ -257,7 +257,7 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ObjectSpeci
 	 * @return The Client Hazard Label
 	 */
 
-	public org.drip.state.identifier.EntityHazardLabel clientHazardLabel()
+	public EntityHazardLabel clientHazardLabel()
 	{
 		return _clientHazardLabel;
 	}
@@ -268,7 +268,7 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ObjectSpeci
 	 * @return The Dealer Senior Recovery Label
 	 */
 
-	public org.drip.state.identifier.EntityRecoveryLabel dealerSeniorRecoveryLabel()
+	public EntityRecoveryLabel dealerSeniorRecoveryLabel()
 	{
 		return _dealerSeniorRecoveryLabel;
 	}
@@ -279,7 +279,7 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ObjectSpeci
 	 * @return The Dealer Subordinate Recovery Label
 	 */
 
-	public org.drip.state.identifier.EntityRecoveryLabel dealerSubordinateRecoveryLabel()
+	public EntityRecoveryLabel dealerSubordinateRecoveryLabel()
 	{
 		return _dealerSubordinateRecoveryLabel;
 	}
@@ -290,7 +290,7 @@ public class CreditDebtGroupSpecification extends org.drip.xva.proto.ObjectSpeci
 	 * @return The Client Recovery Label
 	 */
 
-	public org.drip.state.identifier.EntityRecoveryLabel clientRecoveryLabel()
+	public EntityRecoveryLabel clientRecoveryLabel()
 	{
 		return _clientRecoveryLabel;
 	}

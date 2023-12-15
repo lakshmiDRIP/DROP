@@ -1,11 +1,16 @@
 
 package org.drip.xva.proto;
 
+import org.drip.state.identifier.EntityFundingLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -119,11 +124,11 @@ package org.drip.xva.proto;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FundingGroupSpecification extends org.drip.xva.proto.ObjectSpecification
+public class FundingGroupSpecification extends ObjectSpecification
 {
-	private org.drip.state.identifier.EntityFundingLabel _clientFundingLabel = null;
-	private org.drip.state.identifier.EntityFundingLabel _dealerSeniorFundingLabel = null;
-	private org.drip.state.identifier.EntityFundingLabel _dealerSubordinateFundingLabel = null;
+	private EntityFundingLabel _clientFundingLabel = null;
+	private EntityFundingLabel _dealerSeniorFundingLabel = null;
+	private EntityFundingLabel _dealerSubordinateFundingLabel = null;
 
 	/**
 	 * FundingGroupSpecification Constructor
@@ -134,26 +139,22 @@ public class FundingGroupSpecification extends org.drip.xva.proto.ObjectSpecific
 	 * @param clientFundingLabel Client Funding Label
 	 * @param dealerSubordinateFundingLabel Dealer Subordinate Funding Label
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public FundingGroupSpecification (
-		final java.lang.String id,
-		final java.lang.String name,
-		final org.drip.state.identifier.EntityFundingLabel dealerSeniorFundingLabel,
-		final org.drip.state.identifier.EntityFundingLabel clientFundingLabel,
-		final org.drip.state.identifier.EntityFundingLabel dealerSubordinateFundingLabel)
-		throws java.lang.Exception
+		final String id,
+		final String name,
+		final EntityFundingLabel dealerSeniorFundingLabel,
+		final EntityFundingLabel clientFundingLabel,
+		final EntityFundingLabel dealerSubordinateFundingLabel)
+		throws Exception
 	{
-		super (
-			id,
-			name
-		);
+		super (id, name);
 
 		if (null == (_dealerSeniorFundingLabel = dealerSeniorFundingLabel) ||
-			null == (_clientFundingLabel = clientFundingLabel))
-		{
-			throw new java.lang.Exception ("FundingGroupSpecification Constructor => Invalid Inputs");
+			null == (_clientFundingLabel = clientFundingLabel)) {
+			throw new Exception ("FundingGroupSpecification Constructor => Invalid Inputs");
 		}
 
 		_dealerSubordinateFundingLabel = dealerSubordinateFundingLabel;
@@ -165,7 +166,7 @@ public class FundingGroupSpecification extends org.drip.xva.proto.ObjectSpecific
 	 * @return The Dealer Senior Funding Label
 	 */
 
-	public org.drip.state.identifier.EntityFundingLabel dealerSeniorFundingLabel()
+	public EntityFundingLabel dealerSeniorFundingLabel()
 	{
 		return _dealerSeniorFundingLabel;
 	}
@@ -176,7 +177,7 @@ public class FundingGroupSpecification extends org.drip.xva.proto.ObjectSpecific
 	 * @return The Dealer Subordinate Funding Label
 	 */
 
-	public org.drip.state.identifier.EntityFundingLabel dealerSubordinateFundingLabel()
+	public EntityFundingLabel dealerSubordinateFundingLabel()
 	{
 		return _dealerSubordinateFundingLabel;
 	}
@@ -187,7 +188,7 @@ public class FundingGroupSpecification extends org.drip.xva.proto.ObjectSpecific
 	 * @return The Client Funding Label
 	 */
 
-	public org.drip.state.identifier.EntityFundingLabel clientFundingLabel()
+	public EntityFundingLabel clientFundingLabel()
 	{
 		return _clientFundingLabel;
 	}

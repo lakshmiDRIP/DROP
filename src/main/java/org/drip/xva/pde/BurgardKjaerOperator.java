@@ -1,11 +1,23 @@
 
 package org.drip.xva.pde;
 
+import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
+import org.drip.exposure.universe.MarketEdge;
+import org.drip.exposure.universe.MarketVertex;
+import org.drip.exposure.universe.MarketVertexEntity;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.xva.definition.PDEEvolutionControl;
+import org.drip.xva.derivative.EvolutionTrajectoryVertex;
+import org.drip.xva.derivative.PositionGreekVertex;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -123,8 +135,8 @@ package org.drip.xva.pde;
 
 public class BurgardKjaerOperator
 {
-	private org.drip.xva.definition.PDEEvolutionControl _pdeEvolutionControl = null;
-	private org.drip.exposure.evolver.PrimarySecurityDynamicsContainer _tradeablesContainer = null;
+	private PDEEvolutionControl _pdeEvolutionControl = null;
+	private PrimarySecurityDynamicsContainer _tradeablesContainer = null;
 
 	/**
 	 * BurgardKjaerOperator Constructor
@@ -132,18 +144,17 @@ public class BurgardKjaerOperator
 	 * @param tradeablesContainer The Universe of Tradeable Assets
 	 * @param pdeEvolutionControl The XVA Control Settings
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BurgardKjaerOperator (
-		final org.drip.exposure.evolver.PrimarySecurityDynamicsContainer tradeablesContainer,
-		final org.drip.xva.definition.PDEEvolutionControl pdeEvolutionControl)
+		final PrimarySecurityDynamicsContainer tradeablesContainer,
+		final PDEEvolutionControl pdeEvolutionControl)
 		throws java.lang.Exception
 	{
 		if (null == (_tradeablesContainer = tradeablesContainer) ||
-			null == (_pdeEvolutionControl = pdeEvolutionControl))
-		{
-			throw new java.lang.Exception ("BurgardKjaerOperator Constructor => Invalid Inputs");
+			null == (_pdeEvolutionControl = pdeEvolutionControl)) {
+			throw new Exception ("BurgardKjaerOperator Constructor => Invalid Inputs");
 		}
 	}
 
@@ -153,18 +164,18 @@ public class BurgardKjaerOperator
 	 * @return The Universe of Trade-able Assets
 	 */
 
-	public org.drip.exposure.evolver.PrimarySecurityDynamicsContainer tradeablesContainer()
+	public PrimarySecurityDynamicsContainer tradeablesContainer()
 	{
 		return _tradeablesContainer;
 	}
 
 	/**
-	 * Retrieve the XVA Control Settings
+	 * Retrieve the PDE Evolution Control Settings
 	 * 
-	 * @return The XVA Control Settings
+	 * @return The PDE Evolution Control Settings
 	 */
 
-	public org.drip.xva.definition.PDEEvolutionControl pdeEvolutionControl()
+	public PDEEvolutionControl pdeEvolutionControl()
 	{
 		return _pdeEvolutionControl;
 	}
@@ -179,26 +190,22 @@ public class BurgardKjaerOperator
 	 * @return The Time Increment using the Burgard Kjaer Scheme
 	 */
 
-	public org.drip.xva.pde.BurgardKjaerEdgeRun edgeRun (
-		final org.drip.exposure.universe.MarketEdge marketEdge,
-		final org.drip.xva.derivative.EvolutionTrajectoryVertex initialTrajectoryVertex,
+	public BurgardKjaerEdgeRun edgeRun (
+		final MarketEdge marketEdge,
+		final EvolutionTrajectoryVertex initialTrajectoryVertex,
 		final double collateral)
 	{
-		if (null == marketEdge ||
-			null == initialTrajectoryVertex ||
-			!org.drip.numerical.common.NumberUtil.IsValid (collateral))
-		{
+		if (null == marketEdge || null == initialTrajectoryVertex || !NumberUtil.IsValid (collateral)) {
 			return null;
 		}
 
-		org.drip.exposure.universe.MarketVertex finalMarketVertex = marketEdge.finish();
+		MarketVertex finalMarketVertex = marketEdge.finish();
 
-		org.drip.exposure.universe.MarketVertexEntity finalDealerMarketVertex = finalMarketVertex.dealer();
+		MarketVertexEntity finalDealerMarketVertex = finalMarketVertex.dealer();
 
-		org.drip.exposure.universe.MarketVertexEntity finalClientMarketVertex = finalMarketVertex.client();
+		MarketVertexEntity finalClientMarketVertex = finalMarketVertex.client();
 
-		org.drip.xva.derivative.PositionGreekVertex initialPositionGreekVertex =
-			initialTrajectoryVertex.positionGreekVertex();
+		PositionGreekVertex initialPositionGreekVertex = initialTrajectoryVertex.positionGreekVertex();
 
 		double initialDerivativeXVAValue = initialPositionGreekVertex.derivativeXVAValue();
 
@@ -212,8 +219,7 @@ public class BurgardKjaerOperator
 
 		double gainOnClientDefault = clientDefaultIntensity * dealerGainOnClientDefault;
 
-		try
-		{
+		try {
 			double initialPortfolioValue = finalMarketVertex.latentStateValue
 				(_tradeablesContainer.assetList().get (0).label());
 
@@ -227,12 +233,11 @@ public class BurgardKjaerOperator
 					portfolioValueBump
 				);
 
-			if (null == bumpedThetaArray || 3 != bumpedThetaArray.length)
-			{
+			if (null == bumpedThetaArray || 3 != bumpedThetaArray.length) {
 				return null;
 			}
 
-			return new org.drip.xva.pde.BurgardKjaerEdgeRun (
+			return new BurgardKjaerEdgeRun (
 				portfolioValueBump,
 				-1. * bumpedThetaArray[0],
 				-1. * bumpedThetaArray[1],
@@ -243,9 +248,7 @@ public class BurgardKjaerOperator
 				-1. * gainOnClientDefault,
 				0.
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -262,24 +265,22 @@ public class BurgardKjaerOperator
 	 * @return The Time Increment Run Attribution using the Burgard Kjaer Scheme
 	 */
 
-	public org.drip.xva.pde.BurgardKjaerEdgeAttribution edgeRunAttribution (
-		final org.drip.exposure.universe.MarketEdge marketEdge,
-		final org.drip.xva.derivative.EvolutionTrajectoryVertex initialTrajectoryVertex,
+	public BurgardKjaerEdgeAttribution edgeRunAttribution (
+		final MarketEdge marketEdge,
+		final EvolutionTrajectoryVertex initialTrajectoryVertex,
 		final double collateral)
 	{
-		if (null == marketEdge ||
-			null == initialTrajectoryVertex)
-		{
+		if (null == marketEdge || null == initialTrajectoryVertex) {
 			return null;
 		}
 
-		org.drip.exposure.universe.MarketVertex finalMarketVertex = marketEdge.finish();
+		MarketVertex finalMarketVertex = marketEdge.finish();
 
 		double derivativeXVAValue = initialTrajectoryVertex.positionGreekVertex().derivativeXVAValue();
 
-		org.drip.exposure.universe.MarketVertexEntity finalDealerMarketVertex = finalMarketVertex.dealer();
+		MarketVertexEntity finalDealerMarketVertex = finalMarketVertex.dealer();
 
-		org.drip.exposure.universe.MarketVertexEntity finalClientMarketVertex = finalMarketVertex.client();
+		MarketVertexEntity finalClientMarketVertex = finalMarketVertex.client();
 
 		double clientRecoveryRate = finalClientMarketVertex.seniorRecoveryRate();
 
@@ -287,20 +288,19 @@ public class BurgardKjaerOperator
 
 		double clientDefaultIntensity = finalClientMarketVertex.hazardRate();
 
-		double closeOutMTM = org.drip.xva.definition.PDEEvolutionControl.CLOSEOUT_GREGORY_LI_TANG ==
+		double closeOutMTM = PDEEvolutionControl.CLOSEOUT_GREGORY_LI_TANG ==
 			_pdeEvolutionControl.closeOutScheme() ? derivativeXVAValue : derivativeXVAValue;
 
-		double dealerExposure = closeOutMTM > 0. ? closeOutMTM : finalDealerMarketVertex.seniorRecoveryRate()
+		double dealerExposure = 0. < closeOutMTM ? closeOutMTM : finalDealerMarketVertex.seniorRecoveryRate()
 			* closeOutMTM;
 
 		double derivativeXVAClientDefaultGrowth = -1. * clientDefaultIntensity *
-			(closeOutMTM < 0. ? closeOutMTM : clientRecoveryRate * closeOutMTM);
+			(0. > closeOutMTM ? closeOutMTM : clientRecoveryRate * closeOutMTM);
 
 		double dealerSeniorFundingSpread = finalDealerMarketVertex.seniorFundingSpread() /
 			marketEdge.vertexIncrement();
 
-		try
-		{
+		try {
 			double initialPortfolioValue = finalMarketVertex.latentStateValue
 				(_tradeablesContainer.assetList().get (0).label());
 
@@ -314,8 +314,7 @@ public class BurgardKjaerOperator
 					portfolioValueBump
 				);
 
-			if (null == bumpedThetaArray || 3 != bumpedThetaArray.length)
-			{
+			if (null == bumpedThetaArray || 3 != bumpedThetaArray.length) {
 				return null;
 			}
 
@@ -330,9 +329,7 @@ public class BurgardKjaerOperator
 				-1. * dealerDefaultIntensity * dealerExposure,
 				derivativeXVAClientDefaultGrowth
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

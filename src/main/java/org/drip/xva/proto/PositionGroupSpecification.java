@@ -1,11 +1,19 @@
 
 package org.drip.xva.proto;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.service.common.StringUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -117,18 +125,18 @@ package org.drip.xva.proto;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecification
+public class PositionGroupSpecification extends ObjectSpecification
 {
 	private int _closeOutScheme = -1;
 	private int _brokenDateScheme = -1;
 	private int _clientDefaultWindow = -1;
 	private int _dealerDefaultWindow = -1;
+	private double _hedgeError = Double.NaN;
 	private int _positionReplicationScheme = -1;
-	private double _hedgeError = java.lang.Double.NaN;
-	private double _independentAmount = java.lang.Double.NaN;
-	private double _minimumTransferAmount = java.lang.Double.NaN;
-	private org.drip.function.definition.R1ToR1 _dealerThresholdFunction = null;
-	private org.drip.function.definition.R1ToR1[] _clientThresholdFunctionArray = null;
+	private double _independentAmount = Double.NaN;
+	private R1ToR1 _dealerThresholdFunction = null;
+	private double _minimumTransferAmount = Double.NaN;
+	private R1ToR1[] _clientThresholdFunctionArray = null;
 
 	/**
 	 * Generate a Zero-Threshold Instance of the Named Position Group
@@ -143,16 +151,15 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 	 */
 
 	public static final PositionGroupSpecification ZeroThreshold (
-		final java.lang.String name,
+		final String name,
 		final int positionReplicationScheme,
 		final int brokenDateScheme,
 		final double hedgeError,
 		final int closeOutScheme)
 	{
-		try
-		{
+		try {
 			return new PositionGroupSpecification (
-				org.drip.service.common.StringUtil.GUID(),
+				StringUtil.GUID(),
 				name,
 				14,
 				14,
@@ -165,9 +172,7 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 				hedgeError,
 				closeOutScheme
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -189,7 +194,7 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 	 */
 
 	public static final PositionGroupSpecification FixedThreshold (
-		final java.lang.String name,
+		final String name,
 		final double clientThreshold,
 		final double dealerThreshold,
 		final int positionReplicationScheme,
@@ -197,24 +202,19 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 		final double hedgeError,
 		final int closeOutScheme)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (clientThreshold) || 0. > clientThreshold ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dealerThreshold) || 0. < dealerThreshold)
-		{
+		if (!NumberUtil.IsValid (clientThreshold) || 0. > clientThreshold ||
+			!NumberUtil.IsValid (dealerThreshold) || 0. < dealerThreshold) {
 			return null;
 		}
 
-		try
-		{
+		try {
 			return new PositionGroupSpecification (
-				org.drip.service.common.StringUtil.GUID(),
+				StringUtil.GUID(),
 				name,
 				14,
 				14,
-				new org.drip.function.r1tor1.FlatUnivariate[]
-				{
-					new org.drip.function.r1tor1.FlatUnivariate (clientThreshold)
-				},
-				new org.drip.function.r1tor1.FlatUnivariate (dealerThreshold),
+				new FlatUnivariate[] {new FlatUnivariate (clientThreshold)},
+				new FlatUnivariate (dealerThreshold),
 				0.,
 				0.,
 				positionReplicationScheme,
@@ -222,9 +222,7 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 				hedgeError,
 				closeOutScheme
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -238,8 +236,10 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 	 * @param name The Exposure Roll Up Group Name
 	 * @param clientDefaultWindow The Client Default Window
 	 * @param dealerDefaultWindow The Dealer Default Window
-	 * @param clientThresholdFunctionArray The Array of Collateral Group Client Threshold R^1 - R^1 Functions
-	 * @param dealerThresholdFunction The Collateral Group Dealer Threshold R^1 - R^1 Function
+	 * @param clientThresholdFunctionArray The Array of Collateral Group Client Threshold
+	 * 		R<sup>1</sup> - R<sup>1</sup> Functions
+	 * @param dealerThresholdFunction The Collateral Group Dealer Threshold
+	 * 		R<sup>1</sup> - R<sup>1</sup> Function
 	 * @param minimumTransferAmount The Collateral Group Minimum Transfer Amount
 	 * @param independentAmount The Collateral Group Independent Amount
 	 * @param positionReplicationScheme Position Replication Scheme
@@ -247,36 +247,32 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 	 * @param hedgeError Hedge Error
 	 * @param closeOutScheme Close Out Scheme
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PositionGroupSpecification (
-		final java.lang.String id,
-		final java.lang.String name,
+		final String id,
+		final String name,
 		final int clientDefaultWindow,
 		final int dealerDefaultWindow,
-		final org.drip.function.definition.R1ToR1[] clientThresholdFunctionArray,
-		final org.drip.function.definition.R1ToR1 dealerThresholdFunction,
+		final R1ToR1[] clientThresholdFunctionArray,
+		final R1ToR1 dealerThresholdFunction,
 		final double minimumTransferAmount,
 		final double independentAmount,
 		final int positionReplicationScheme,
 		final int brokenDateScheme,
 		final double hedgeError,
 		final int closeOutScheme)
-		throws java.lang.Exception
+		throws Exception
 	{
-		super (
-			id,
-			name
-		);
+		super (id, name);
 
 		if (-1 >= (_clientDefaultWindow = clientDefaultWindow) ||
 			-1 >= (_dealerDefaultWindow = dealerDefaultWindow) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_minimumTransferAmount = minimumTransferAmount) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_independentAmount = independentAmount) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_hedgeError = hedgeError))
-		{
-			throw new java.lang.Exception ("PositionGroupSpecification Constructor => Invalid Inputs");
+			!NumberUtil.IsValid (_minimumTransferAmount = minimumTransferAmount) ||
+			!NumberUtil.IsValid (_independentAmount = independentAmount) ||
+			!NumberUtil.IsValid (_hedgeError = hedgeError)) {
+			throw new Exception ("PositionGroupSpecification Constructor => Invalid Inputs");
 		}
 
 		_closeOutScheme = closeOutScheme;
@@ -309,23 +305,23 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 	}
 
 	/**
-	 * Retrieve the Array of the Collateral Group Client Threshold R^1 - R^1 Functions
+	 * Retrieve the Array of the Collateral Group Client Threshold R<sup>1</sup> - R<sup>1</sup> Functions
 	 * 
-	 * @return The Array of the Collateral Group Client Threshold R^1 - R^1 Functions
+	 * @return The Array of the Collateral Group Client Threshold R<sup>1</sup> - R<sup>1</sup> Functions
 	 */
 
-	public org.drip.function.definition.R1ToR1[] clientThresholdFunctionArray()
+	public R1ToR1[] clientThresholdFunctionArray()
 	{
 		return _clientThresholdFunctionArray;
 	}
 
 	/**
-	 * Retrieve the Collateral Group Dealer Threshold R^1 - R^1 Function
+	 * Retrieve the Collateral Group Dealer Threshold R<sup>1</sup> - R<sup>1</sup> Function
 	 * 
-	 * @return The Collateral Group Dealer Threshold R^1 - R^1 Function
+	 * @return The Collateral Group Dealer Threshold R<sup>1</sup> - R<sup>1</sup> Function
 	 */
 
-	public org.drip.function.definition.R1ToR1 dealerThresholdFunction()
+	public R1ToR1 dealerThresholdFunction()
 	{
 		return _dealerThresholdFunction;
 	}

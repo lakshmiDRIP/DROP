@@ -6,6 +6,9 @@ package org.drip.xva.proto;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -119,8 +122,8 @@ package org.drip.xva.proto;
 
 public class ObjectSpecification
 {
-	private java.lang.String _id = "";
-	private java.lang.String _name = "";
+	private String _id = "";
+	private String _name = "";
 
 	/**
 	 * ObjectSpecification Constructor
@@ -128,18 +131,17 @@ public class ObjectSpecification
 	 * @param id The Exposure Roll Up Group ID
 	 * @param name The Exposure Roll Up Group Name
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ObjectSpecification (
-		final java.lang.String id,
-		final java.lang.String name)
-		throws java.lang.Exception
+		final String id,
+		final String name)
+		throws Exception
 	{
 		if (null == (_id = id) || _id.isEmpty() ||
-			null == (_name = name) || _name.isEmpty())
-		{
-			throw new java.lang.Exception ("ObjectSpecification Constructor => Invalid Inputs");
+			null == (_name = name) || _name.isEmpty()) {
+			throw new Exception ("ObjectSpecification Constructor => Invalid Inputs");
 		}
 	}
 
@@ -149,7 +151,7 @@ public class ObjectSpecification
 	 * @return The Exposure Roll Up Group ID
 	 */
 
-	public java.lang.String id()
+	public String id()
 	{
 		return _id;
 	}
@@ -160,7 +162,7 @@ public class ObjectSpecification
 	 * @return The Exposure Roll Up Group Name
 	 */
 
-	public java.lang.String name()
+	public String name()
 	{
 		return _name;
 	}

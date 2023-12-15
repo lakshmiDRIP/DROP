@@ -1,11 +1,16 @@
 
 package org.drip.xva.pde;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -120,12 +125,12 @@ package org.drip.xva.pde;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BurgardKjaerEdgeRun extends org.drip.xva.pde.BurgardKjaerEdge
+public class BurgardKjaerEdgeRun extends BurgardKjaerEdge
 {
-	private double _derivativeXVAFundingGrowth = java.lang.Double.NaN;
-	private double _derivativeXVAHedgeErrorGrowth = java.lang.Double.NaN;
-	private double _derivativeXVAClientDefaultGrowth = java.lang.Double.NaN;
-	private double _derivativeXVADealerDefaultGrowth = java.lang.Double.NaN;
+	private double _derivativeXVAFundingGrowth = Double.NaN;
+	private double _derivativeXVAHedgeErrorGrowth = Double.NaN;
+	private double _derivativeXVAClientDefaultGrowth = Double.NaN;
+	private double _derivativeXVADealerDefaultGrowth = Double.NaN;
 
 	/**
 	 * BurgardKjaerEdgeRun Constructor
@@ -144,7 +149,7 @@ public class BurgardKjaerEdgeRun extends org.drip.xva.pde.BurgardKjaerEdge
 	 * 		Growth
 	 * @param derivativeXVAHedgeErrorGrowth The Hedge Error Component of the Derivaitve XVA Growth
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BurgardKjaerEdgeRun (
@@ -157,7 +162,7 @@ public class BurgardKjaerEdgeRun extends org.drip.xva.pde.BurgardKjaerEdge
 		final double derivativeXVADealerDefaultGrowth,
 		final double derivativeXVAClientDefaultGrowth,
 		final double derivativeXVAHedgeErrorGrowth)
-		throws java.lang.Exception
+		throws Exception
 	{
 		super (
 			dblPositionValueBump,
@@ -167,16 +172,11 @@ public class BurgardKjaerEdgeRun extends org.drip.xva.pde.BurgardKjaerEdge
 			derivativeXVACollateralGrowth
 		);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVAFundingGrowth =
-				derivativeXVAFundingGrowth) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVADealerDefaultGrowth =
-				derivativeXVADealerDefaultGrowth) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVAClientDefaultGrowth =
-				derivativeXVAClientDefaultGrowth) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVAHedgeErrorGrowth =
-				derivativeXVAHedgeErrorGrowth))
-		{
-			throw new java.lang.Exception ("BurgardKjaerEdgeRun Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_derivativeXVAFundingGrowth = derivativeXVAFundingGrowth) ||
+			!NumberUtil.IsValid (_derivativeXVADealerDefaultGrowth = derivativeXVADealerDefaultGrowth) ||
+			!NumberUtil.IsValid (_derivativeXVAClientDefaultGrowth = derivativeXVAClientDefaultGrowth) ||
+			!NumberUtil.IsValid (_derivativeXVAHedgeErrorGrowth = derivativeXVAHedgeErrorGrowth)) {
+			throw new Exception ("BurgardKjaerEdgeRun Constructor => Invalid Inputs");
 		}
 	}
 

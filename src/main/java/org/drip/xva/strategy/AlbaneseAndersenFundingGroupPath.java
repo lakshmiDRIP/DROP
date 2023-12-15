@@ -1,11 +1,18 @@
 
 package org.drip.xva.strategy;
 
+import org.drip.exposure.universe.MarketPath;
+import org.drip.xva.netting.CreditDebtGroupPath;
+import org.drip.xva.netting.FundingGroupPath;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -119,7 +126,7 @@ package org.drip.xva.strategy;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AlbaneseAndersenFundingGroupPath extends org.drip.xva.netting.FundingGroupPath
+public class AlbaneseAndersenFundingGroupPath extends FundingGroupPath
 {
 
 	/**
@@ -132,21 +139,15 @@ public class AlbaneseAndersenFundingGroupPath extends org.drip.xva.netting.Fundi
 	 */
 
 	public static final AlbaneseAndersenFundingGroupPath Mono (
-		final org.drip.xva.netting.CreditDebtGroupPath creditDebtGroupPath,
-		final org.drip.exposure.universe.MarketPath marketPath)
+		final CreditDebtGroupPath creditDebtGroupPath,
+		final MarketPath marketPath)
 	{
-		try
-		{
-			return new org.drip.xva.strategy.AlbaneseAndersenFundingGroupPath (
-				new org.drip.xva.netting.CreditDebtGroupPath[]
-				{
-					creditDebtGroupPath
-				},
+		try {
+			return new AlbaneseAndersenFundingGroupPath (
+				new CreditDebtGroupPath[] {creditDebtGroupPath},
 				marketPath
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -159,18 +160,15 @@ public class AlbaneseAndersenFundingGroupPath extends org.drip.xva.netting.Fundi
 	 * @param creditDebtGroupPathArray Array of the Credit Debt Group Trajectory Paths
 	 * @param marketPath The Market Path
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AlbaneseAndersenFundingGroupPath (
-		final org.drip.xva.netting.CreditDebtGroupPath[] creditDebtGroupPathArray,
-		final org.drip.exposure.universe.MarketPath marketPath)
-		throws java.lang.Exception
+		final CreditDebtGroupPath[] creditDebtGroupPathArray,
+		final MarketPath marketPath)
+		throws Exception
 	{
-		super (
-			creditDebtGroupPathArray,
-			marketPath
-		);
+		super (creditDebtGroupPathArray, marketPath);
 	}
 
 	@Override public double fundingValueAdjustment()

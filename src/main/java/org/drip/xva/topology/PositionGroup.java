@@ -1,11 +1,17 @@
 
 package org.drip.xva.topology;
 
+import org.drip.xva.proto.ObjectSpecification;
+import org.drip.xva.proto.PositionGroupSpecification;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -116,9 +122,9 @@ package org.drip.xva.topology;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PositionGroup extends org.drip.xva.proto.ObjectSpecification
+public class PositionGroup extends ObjectSpecification
 {
-	private org.drip.xva.proto.PositionGroupSpecification _positionGroupSpecification = null;
+	private PositionGroupSpecification _positionGroupSpecification = null;
 
 	/**
 	 * PositionGroup Constructor
@@ -127,23 +133,19 @@ public class PositionGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @param name The Exposure Roll Up Group Name
 	 * @param positionGroupSpecification The Position Group Specification
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PositionGroup (
-		final java.lang.String id,
-		final java.lang.String name,
-		final org.drip.xva.proto.PositionGroupSpecification positionGroupSpecification)
-		throws java.lang.Exception
+		final String id,
+		final String name,
+		final PositionGroupSpecification positionGroupSpecification)
+		throws Exception
 	{
-		super (
-			id,
-			name
-		);
+		super (id, name);
 
-		if (null == (_positionGroupSpecification = positionGroupSpecification))
-		{
-			throw new java.lang.Exception ("PositionGroup Constructor => Invalid Inputs");
+		if (null == (_positionGroupSpecification = positionGroupSpecification)) {
+			throw new Exception ("PositionGroup Constructor => Invalid Inputs");
 		}
 	}
 
@@ -153,7 +155,7 @@ public class PositionGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @return The Position Group Specification
 	 */
 
-	public org.drip.xva.proto.PositionGroupSpecification positionGroupSpecification()
+	public PositionGroupSpecification positionGroupSpecification()
 	{
 		return _positionGroupSpecification;
 	}

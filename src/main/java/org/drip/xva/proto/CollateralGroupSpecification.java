@@ -1,11 +1,17 @@
 
 package org.drip.xva.proto;
 
+import org.drip.state.identifier.CSALabel;
+import org.drip.state.identifier.OvernightLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -117,10 +123,10 @@ package org.drip.xva.proto;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CollateralGroupSpecification extends org.drip.xva.proto.ObjectSpecification
+public class CollateralGroupSpecification extends ObjectSpecification
 {
-	private org.drip.state.identifier.CSALabel _csaLabel = null;
-	private org.drip.state.identifier.OvernightLabel _overnightLabel = null;
+	private CSALabel _csaLabel = null;
+	private OvernightLabel _overnightLabel = null;
 
 	/**
 	 * CollateralGroupSpecification Constructor
@@ -130,25 +136,20 @@ public class CollateralGroupSpecification extends org.drip.xva.proto.ObjectSpeci
 	 * @param overnightLabel The Overnight Latent State Label
 	 * @param csaLabel The CSA Latent State Label
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CollateralGroupSpecification (
-		final java.lang.String id,
-		final java.lang.String name,
-		final org.drip.state.identifier.OvernightLabel overnightLabel,
-		final org.drip.state.identifier.CSALabel csaLabel)
-		throws java.lang.Exception
+		final String id,
+		final String name,
+		final OvernightLabel overnightLabel,
+		final CSALabel csaLabel)
+		throws Exception
 	{
-		super (
-			id,
-			name
-		);
+		super (id, name);
 
-		if (null == (_overnightLabel = overnightLabel) ||
-			null == (_csaLabel = csaLabel))
-		{
-			throw new java.lang.Exception ("CollateralGroupSpecification Constructor => Invalid Inputs");
+		if (null == (_overnightLabel = overnightLabel) || null == (_csaLabel = csaLabel)) {
+			throw new Exception ("CollateralGroupSpecification Constructor => Invalid Inputs");
 		}
 	}
 
@@ -158,7 +159,7 @@ public class CollateralGroupSpecification extends org.drip.xva.proto.ObjectSpeci
 	 * @return The Overnight Label
 	 */
 
-	public org.drip.state.identifier.OvernightLabel overnightLabel()
+	public OvernightLabel overnightLabel()
 	{
 		return _overnightLabel;
 	}
@@ -169,7 +170,7 @@ public class CollateralGroupSpecification extends org.drip.xva.proto.ObjectSpeci
 	 * @return The CSA Label
 	 */
 
-	public org.drip.state.identifier.CSALabel csaLabel()
+	public CSALabel csaLabel()
 	{
 		return _csaLabel;
 	}

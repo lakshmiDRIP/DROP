@@ -1,11 +1,31 @@
 
 package org.drip.xva.pde;
 
+import org.drip.exposure.evolver.PrimarySecurity;
+import org.drip.exposure.evolver.PrimarySecurityDynamicsContainer;
+import org.drip.exposure.universe.MarketEdge;
+import org.drip.exposure.universe.MarketVertex;
+import org.drip.exposure.universe.MarketVertexEntity;
+import org.drip.measure.realization.JumpDiffusionVertex;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.xva.definition.CloseOut;
+import org.drip.xva.definition.CloseOutBilateral;
+import org.drip.xva.definition.PDEEvolutionControl;
+import org.drip.xva.derivative.CashAccountEdge;
+import org.drip.xva.derivative.CashAccountRebalancer;
+import org.drip.xva.derivative.EvolutionTrajectoryEdge;
+import org.drip.xva.derivative.EvolutionTrajectoryVertex;
+import org.drip.xva.derivative.PositionGreekVertex;
+import org.drip.xva.derivative.ReplicationPortfolioVertex;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -122,8 +142,8 @@ package org.drip.xva.pde;
 
 public class TrajectoryEvolutionScheme
 {
-	private org.drip.xva.definition.PDEEvolutionControl _pdeEvolutionControl = null;
-	private org.drip.exposure.evolver.PrimarySecurityDynamicsContainer _tradeablesContainer = null;
+	private PDEEvolutionControl _pdeEvolutionControl = null;
+	private PrimarySecurityDynamicsContainer _tradeablesContainer = null;
 
 	/**
 	 * TrajectoryEvolutionScheme Constructor
@@ -131,18 +151,17 @@ public class TrajectoryEvolutionScheme
 	 * @param tradeablesContainer The Universe of Tradeables
 	 * @param pdeEvolutionControl The XVA PDE Control Settings
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public TrajectoryEvolutionScheme (
-		final org.drip.exposure.evolver.PrimarySecurityDynamicsContainer tradeablesContainer,
-		final org.drip.xva.definition.PDEEvolutionControl pdeEvolutionControl)
-		throws java.lang.Exception
+		final PrimarySecurityDynamicsContainer tradeablesContainer,
+		final PDEEvolutionControl pdeEvolutionControl)
+		throws Exception
 	{
 		if (null == (_tradeablesContainer = tradeablesContainer) ||
-			null == (_pdeEvolutionControl = pdeEvolutionControl))
-		{
-			throw new java.lang.Exception ("TrajectoryEvolutionScheme Constructor => Invalid Inputs");
+			null == (_pdeEvolutionControl = pdeEvolutionControl)) {
+			throw new Exception ("TrajectoryEvolutionScheme Constructor => Invalid Inputs");
 		}
 	}
 
@@ -152,7 +171,7 @@ public class TrajectoryEvolutionScheme
 	 * @return The Universe of Tradeables
 	 */
 
-	public org.drip.exposure.evolver.PrimarySecurityDynamicsContainer tradeablesContainer()
+	public PrimarySecurityDynamicsContainer tradeablesContainer()
 	{
 		return _tradeablesContainer;
 	}
@@ -163,7 +182,7 @@ public class TrajectoryEvolutionScheme
 	 * @return The XVA PDE Control Settings
 	 */
 
-	public org.drip.xva.definition.PDEEvolutionControl pdeEvolutionControl()
+	public PDEEvolutionControl pdeEvolutionControl()
 	{
 		return _pdeEvolutionControl;
 	}
@@ -177,17 +196,15 @@ public class TrajectoryEvolutionScheme
 	 * @return The CashAccountRebalancer Instance
 	 */
 
-	public org.drip.xva.derivative.CashAccountRebalancer rebalanceCash (
-		final org.drip.xva.derivative.EvolutionTrajectoryVertex initialTrajectoryVertex,
-		final org.drip.exposure.universe.MarketEdge marketEdge)
+	public CashAccountRebalancer rebalanceCash (
+		final EvolutionTrajectoryVertex initialTrajectoryVertex,
+		final MarketEdge marketEdge)
 	{
-		if (null == initialTrajectoryVertex ||
-			null == marketEdge)
-		{
+		if (null == initialTrajectoryVertex || null == marketEdge) {
 			return null;
 		}
 
-		org.drip.xva.derivative.ReplicationPortfolioVertex initialReplicationPortfolioVertex =
+		ReplicationPortfolioVertex initialReplicationPortfolioVertex =
 			initialTrajectoryVertex.replicationPortfolioVertex();
 
 		double initialPortfolioHoldings = initialReplicationPortfolioVertex.positionHoldings();
@@ -200,15 +217,15 @@ public class TrajectoryEvolutionScheme
 		double initialDealerSubordinateNumeraireHoldings =
 			initialReplicationPortfolioVertex.dealerSubordinateNumeraireHoldings();
 
-		org.drip.exposure.universe.MarketVertex initialMarketVertex = marketEdge.start();
+		MarketVertex initialMarketVertex = marketEdge.start();
 
-		org.drip.exposure.universe.MarketVertex finalMarketVertex = marketEdge.finish();
+		MarketVertex finalMarketVertex = marketEdge.finish();
 
-		org.drip.exposure.universe.MarketVertexEntity emvDealerStart = initialMarketVertex.dealer();
+		MarketVertexEntity emvDealerStart = initialMarketVertex.dealer();
 
-		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = finalMarketVertex.dealer();
+		MarketVertexEntity dealerMarketVertex = finalMarketVertex.dealer();
 
-		org.drip.exposure.universe.MarketVertexEntity clientMarketVertex = finalMarketVertex.client();
+		MarketVertexEntity clientMarketVertex = finalMarketVertex.client();
 
 		double finalDealerSeniorFundingNumeraire = dealerMarketVertex.seniorFundingReplicator();
 
@@ -220,34 +237,31 @@ public class TrajectoryEvolutionScheme
 
 		double timeIncrement = marketEdge.vertexIncrement() / 365.25;
 
-		org.drip.exposure.evolver.PrimarySecurity clientFundingTradeable = _tradeablesContainer.clientFunding();
+		PrimarySecurity clientFundingTradeable = _tradeablesContainer.clientFunding();
 
 		double clientCashAccumulation = initialClientNumeraireHoldings *
 			clientFundingTradeable.cashAccumulationRate() * finalClientNumeraire * timeIncrement;
 
-		double clientHoldingsValueChange = initialClientNumeraireHoldings * (finalClientNumeraire -
-			initialMarketVertex.client().seniorFundingReplicator());
+		double clientHoldingsValueChange = initialClientNumeraireHoldings *
+			(finalClientNumeraire - initialMarketVertex.client().seniorFundingReplicator());
 
 		double cashAccountBalance = -1. * initialTrajectoryVertex.positionGreekVertex().derivativeXVAValue()
 			- initialDealerSeniorNumeraireHoldings * finalDealerSeniorFundingNumeraire;
 
-		if (org.drip.numerical.common.NumberUtil.IsValid (finalDealerSubordinateFundingNumeraire))
-		{
+		if (NumberUtil.IsValid (finalDealerSubordinateFundingNumeraire)) {
 			cashAccountBalance -= initialDealerSubordinateNumeraireHoldings *
 				finalDealerSubordinateFundingNumeraire;
 		}
 
-		org.drip.exposure.evolver.PrimarySecurity csaTradeable = _tradeablesContainer.csa();
+		PrimarySecurity csaTradeable = _tradeablesContainer.csa();
 
-		org.drip.exposure.evolver.PrimarySecurity dealerSeniorFundingTradeable =
-			_tradeablesContainer.dealerSeniorFunding();
+		PrimarySecurity dealerSeniorFundingTradeable = _tradeablesContainer.dealerSeniorFunding();
 
 		double dealerCashAccumulation = cashAccountBalance * (cashAccountBalance > 0. ?
 			csaTradeable.cashAccumulationRate() : dealerSeniorFundingTradeable.cashAccumulationRate()) *
 				timeIncrement;
 
-		try
-		{
+		try {
 			double finalPortfolioValue = finalMarketVertex.latentStateValue
 				(_tradeablesContainer.assetList().get (0).label());
 
@@ -262,24 +276,21 @@ public class TrajectoryEvolutionScheme
 							(portfolioCashChange + clientCashAccumulation + dealerCashAccumulation) *
 								timeIncrement);
 
-			if (org.drip.numerical.common.NumberUtil.IsValid (initialDealerSubordinateFundingNumeraire) &&
-				org.drip.numerical.common.NumberUtil.IsValid (finalDealerSubordinateFundingNumeraire))
-			{
+			if (NumberUtil.IsValid (initialDealerSubordinateFundingNumeraire) &&
+				NumberUtil.IsValid (finalDealerSubordinateFundingNumeraire)) {
 				derivativeXVAValueChange += initialDealerSubordinateNumeraireHoldings *
 					(finalDealerSubordinateFundingNumeraire - initialDealerSubordinateFundingNumeraire);
 			}
 
-			return new org.drip.xva.derivative.CashAccountRebalancer (
-				new org.drip.xva.derivative.CashAccountEdge (
+			return new CashAccountRebalancer (
+				new CashAccountEdge (
 					portfolioCashChange,
 					dealerCashAccumulation * timeIncrement,
 					clientCashAccumulation * timeIncrement
 				),
 				derivativeXVAValueChange
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -297,23 +308,19 @@ public class TrajectoryEvolutionScheme
 	 * @return The Evolution Trajectory Edge
 	 */
 
-	public org.drip.xva.derivative.EvolutionTrajectoryEdge eulerWalk (
-		final org.drip.exposure.universe.MarketEdge marketEdge,
-		final org.drip.xva.pde.BurgardKjaerOperator burgardKjaerOperator,
-		final org.drip.xva.derivative.EvolutionTrajectoryVertex initialTrajectoryVertex,
+	public EvolutionTrajectoryEdge eulerWalk (
+		final MarketEdge marketEdge,
+		final BurgardKjaerOperator burgardKjaerOperator,
+		final EvolutionTrajectoryVertex initialTrajectoryVertex,
 		final double collateral)
 	{
-		if (null == marketEdge ||
-			null == burgardKjaerOperator ||
-			null == initialTrajectoryVertex)
-		{
+		if (null == marketEdge || null == burgardKjaerOperator || null == initialTrajectoryVertex) {
 			return null;
 		}
 
-		org.drip.xva.derivative.PositionGreekVertex initialPositionGreekVertex =
-			initialTrajectoryVertex.positionGreekVertex();
+		PositionGreekVertex initialPositionGreekVertex = initialTrajectoryVertex.positionGreekVertex();
 
-		org.drip.xva.pde.BurgardKjaerEdgeRun burgardKjaerEdgeRun = burgardKjaerOperator.edgeRun (
+		BurgardKjaerEdgeRun burgardKjaerEdgeRun = burgardKjaerOperator.edgeRun (
 			marketEdge,
 			initialTrajectoryVertex,
 			collateral
@@ -323,8 +330,7 @@ public class TrajectoryEvolutionScheme
 
 		double timeIncrement = marketEdge.vertexIncrement() / 365.25;
 
-		if (null == burgardKjaerEdgeRun)
-		{
+		if (null == burgardKjaerEdgeRun) {
 			return null;
 		}
 
@@ -336,37 +342,33 @@ public class TrajectoryEvolutionScheme
 
 		double thetaPositionValueDown = burgardKjaerEdgeRun.thetaPositionValueDown();
 
-		org.drip.exposure.universe.MarketVertex finalMarketVertex = marketEdge.finish();
+		MarketVertex finalMarketVertex = marketEdge.finish();
 
-		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = finalMarketVertex.dealer();
+		MarketVertexEntity dealerMarketVertex = finalMarketVertex.dealer();
 
-		org.drip.exposure.universe.MarketVertexEntity clientMarketVertex = finalMarketVertex.client();
+		MarketVertexEntity clientMarketVertex = finalMarketVertex.client();
 
-		double derivativeXVAValueDeltaFinish =
-			initialPositionGreekVertex.derivativeXVAValueDelta() +
+		double derivativeXVAValueDeltaFinish = initialPositionGreekVertex.derivativeXVAValueDelta() +
 			0.5 * (thetaPositionValueUp - thetaPositionValueDown) * timeIncrement / positionValueBump;
 
-		double clientGainOnDealerDefault = java.lang.Double.NaN;
-		double finalGainOnClientDefault = java.lang.Double.NaN;
+		double clientGainOnDealerDefault = Double.NaN;
+		double finalGainOnClientDefault = Double.NaN;
 
 		double derivativeXVAValueFinish = initialPositionGreekVertex.derivativeXVAValue() - theta *
 			timeIncrement;
 
-		try
-		{
-			org.drip.xva.definition.CloseOut closeOutScheme = new
-				org.drip.xva.definition.CloseOutBilateral (
-					dealerMarketVertex.seniorRecoveryRate(),
-					clientMarketVertex.seniorRecoveryRate()
-				);
+		try {
+			CloseOut closeOutScheme = new CloseOutBilateral (
+				dealerMarketVertex.seniorRecoveryRate(),
+				clientMarketVertex.seniorRecoveryRate()
+			);
 
 			clientGainOnDealerDefault = closeOutScheme.dealerDefault (derivativeXVAValueFinish);
 
-			finalGainOnClientDefault = -1. * (derivativeXVAValueFinish - closeOutScheme.clientDefault
-				(derivativeXVAValueFinish));
-		}
-		catch (java.lang.Exception e)
-		{
+			finalGainOnClientDefault = -1. * (
+				derivativeXVAValueFinish - closeOutScheme.clientDefault (derivativeXVAValueFinish)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
@@ -378,46 +380,39 @@ public class TrajectoryEvolutionScheme
 
 		double finalClientHoldings = finalGainOnClientDefault / clientMarketVertex.seniorFundingReplicator();
 
-		org.drip.xva.derivative.CashAccountRebalancer cashAccountRebalancer = rebalanceCash (
-			initialTrajectoryVertex,
-			marketEdge
-		);
+		CashAccountRebalancer cashAccountRebalancer = rebalanceCash (initialTrajectoryVertex, marketEdge);
 
-		if (null == cashAccountRebalancer)
-		{
+		if (null == cashAccountRebalancer) {
 			return null;
 		}
 
-		org.drip.xva.derivative.CashAccountEdge cashAccountEdge = cashAccountRebalancer.cashAccountEdge();
+		CashAccountEdge cashAccountEdge = cashAccountRebalancer.cashAccountEdge();
 
 		double dealerSeniorFundingNumeraire = dealerMarketVertex.seniorFundingReplicator();
 
-		org.drip.exposure.evolver.PrimarySecurity csaTradeable = _tradeablesContainer.csa();
+		PrimarySecurity csaTradeable = _tradeablesContainer.csa();
 
-		try
-		{
-			org.drip.xva.derivative.EvolutionTrajectoryVertex finalTrajectoryVertex = new
-				org.drip.xva.derivative.EvolutionTrajectoryVertex (
+		try {
+			EvolutionTrajectoryVertex finalTrajectoryVertex = new EvolutionTrajectoryVertex (
 				initialTime + timeIncrement,
-				new org.drip.xva.derivative.ReplicationPortfolioVertex (
+				new ReplicationPortfolioVertex (
 					-1. * derivativeXVAValueDeltaFinish,
 					gainOnDealerDefaultFinish / dealerSeniorFundingNumeraire,
-					!org.drip.numerical.common.NumberUtil.IsValid (dealerSubordinateFundingNumeraire) ? 0. :
+					!NumberUtil.IsValid (dealerSubordinateFundingNumeraire) ? 0. :
 						gainOnDealerDefaultFinish / dealerSubordinateFundingNumeraire,
 					finalClientHoldings,
 					initialTrajectoryVertex.replicationPortfolioVertex().cashAccount() +
 						cashAccountEdge.accumulation()
 				),
-				new org.drip.xva.derivative.PositionGreekVertex (
+				new PositionGreekVertex (
 					derivativeXVAValueFinish,
 					derivativeXVAValueDeltaFinish,
-					initialPositionGreekVertex.derivativeXVAValueGamma() +
-						(thetaPositionValueUp + thetaPositionValueDown - 2. * theta) *
-						timeIncrement / (positionValueBump * positionValueBump),
-					initialPositionGreekVertex.derivativeFairValue() * java.lang.Math.exp (
-						-1. * timeIncrement *
-						csaTradeable.evolver().evaluator().drift().value (
-							new org.drip.measure.realization.JumpDiffusionVertex (
+					initialPositionGreekVertex.derivativeXVAValueGamma() + (
+						thetaPositionValueUp + thetaPositionValueDown - 2. * theta
+					) * timeIncrement / (positionValueBump * positionValueBump),
+					initialPositionGreekVertex.derivativeFairValue() * Math.exp (
+						-1. * timeIncrement * csaTradeable.evolver().evaluator().drift().value (
+							new JumpDiffusionVertex (
 								initialTime - 0.5 * timeIncrement,
 								marketEdge.start().csaReplicator(),
 								0.,
@@ -432,14 +427,12 @@ public class TrajectoryEvolutionScheme
 				burgardKjaerEdgeRun.derivativeXVAHedgeErrorGrowth()
 			);
 
-			return new org.drip.xva.derivative.EvolutionTrajectoryEdge (
+			return new EvolutionTrajectoryEdge (
 				initialTrajectoryVertex,
 				finalTrajectoryVertex,
 				cashAccountEdge
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -457,45 +450,35 @@ public class TrajectoryEvolutionScheme
 	 * @return Array of EvolutionTrajectoryEdge Instances
 	 */
 
-	public org.drip.xva.derivative.EvolutionTrajectoryEdge[] eulerWalk (
-		final org.drip.exposure.universe.MarketVertex[] marketVertexArray,
-		final org.drip.xva.pde.BurgardKjaerOperator burgardKjaerOperator,
-		final org.drip.xva.derivative.EvolutionTrajectoryVertex initialTrajectoryVertex,
+	public EvolutionTrajectoryEdge[] eulerWalk (
+		final MarketVertex[] marketVertexArray,
+		final BurgardKjaerOperator burgardKjaerOperator,
+		final EvolutionTrajectoryVertex initialTrajectoryVertex,
 		final double collateral)
 	{
-		if (null == marketVertexArray)
-		{
+		if (null == marketVertexArray) {
 			return null;
 		}
 
 		int vertexCount = marketVertexArray.length;
-		org.drip.xva.derivative.EvolutionTrajectoryVertex trajectoryVertex = initialTrajectoryVertex;
-		org.drip.xva.derivative.EvolutionTrajectoryEdge[] evolutionTrajectoryEdgeArray = 1 >= vertexCount ?
-			null : new org.drip.xva.derivative.EvolutionTrajectoryEdge[vertexCount - 1];
+		EvolutionTrajectoryVertex trajectoryVertex = initialTrajectoryVertex;
+		EvolutionTrajectoryEdge[] evolutionTrajectoryEdgeArray = 1 >= vertexCount ?
+			null : new EvolutionTrajectoryEdge[vertexCount - 1];
 
-		if (0 == vertexCount)
-		{
+		if (0 == vertexCount) {
 			return null;
 		}
 
-		for (int i = vertexCount - 2; i >= 0; --i)
-		{
-			try
-			{
+		for (int i = vertexCount - 2; i >= 0; --i) {
+			try {
 				if (null == (evolutionTrajectoryEdgeArray[i] = eulerWalk (
-					new org.drip.exposure.universe.MarketEdge (
-						marketVertexArray[i],
-						marketVertexArray[i + 1]
-					),
+					new MarketEdge (marketVertexArray[i], marketVertexArray[i + 1]),
 					burgardKjaerOperator,
 					trajectoryVertex,
-					collateral)))
-				{
+					collateral))) {
 					return null;
 				}
-			}
-			catch (java.lang.Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 

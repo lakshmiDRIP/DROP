@@ -1,11 +1,22 @@
 
 package org.drip.xva.settings;
 
+import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.spline.basis.PolynomialFunctionSetParams;
+import org.drip.spline.params.ResponseScalingShapeControl;
+import org.drip.spline.params.SegmentCustomBuilderControl;
+import org.drip.spline.params.SegmentInelasticDesignControl;
+import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -128,11 +139,9 @@ public class StandardizedExposureGeneratorScheme
 	public static final int BASEL_STANDARD_TIME_INTEGRAND = 365;
 
 	private int _timeIntegrand = -1;
-	private double _eadMultiplier = java.lang.Double.NaN;
-	private org.drip.spline.params.SegmentCustomBuilderControl _collateralizedExposureSegmentBuilderControl =
-		null;
-	private org.drip.spline.params.SegmentCustomBuilderControl
-		_collateralizedPositiveExposureSegmentBuilderControl = null;
+	private double _eadMultiplier = Double.NaN;
+	private SegmentCustomBuilderControl _collateralizedExposureSegmentBuilderControl = null;
+	private SegmentCustomBuilderControl _collateralizedPositiveExposureSegmentBuilderControl = null;
 
 	/**
 	 * Construct a Basel Instance of the StandardizedExposureGeneratorScheme
@@ -145,22 +154,14 @@ public class StandardizedExposureGeneratorScheme
 	public static final StandardizedExposureGeneratorScheme Basel (
 		final double eadMultiplier)
 	{
-		try
-		{
-			org.drip.spline.params.SegmentCustomBuilderControl segmentCustomBuilderControl = new
-				org.drip.spline.params.SegmentCustomBuilderControl (
-					org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
-					new org.drip.spline.basis.PolynomialFunctionSetParams (2),
-					org.drip.spline.params.SegmentInelasticDesignControl.Create (
-						0,
-						2
-					),
-					new org.drip.spline.params.ResponseScalingShapeControl (
-						true,
-						new org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)
-					),
-					null
-				);
+		try {
+			SegmentCustomBuilderControl segmentCustomBuilderControl = new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (2),
+				SegmentInelasticDesignControl.Create (0, 2),
+				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+				null
+			);
 
 			return new StandardizedExposureGeneratorScheme (
 				eadMultiplier,
@@ -168,9 +169,7 @@ public class StandardizedExposureGeneratorScheme
 				segmentCustomBuilderControl,
 				segmentCustomBuilderControl
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -186,26 +185,23 @@ public class StandardizedExposureGeneratorScheme
 	 * @param collateralizedPositiveExposureSegmentBuilderControl The Collateralized Positive Segment Builder
 	 *  Control
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public StandardizedExposureGeneratorScheme (
 		final double eadMultiplier,
 		final int timeIntegrand,
-		final org.drip.spline.params.SegmentCustomBuilderControl collateralizedExposureSegmentBuilderControl,
-		final org.drip.spline.params.SegmentCustomBuilderControl
-			collateralizedPositiveExposureSegmentBuilderControl)
-		throws java.lang.Exception
+		final SegmentCustomBuilderControl collateralizedExposureSegmentBuilderControl,
+		final SegmentCustomBuilderControl collateralizedPositiveExposureSegmentBuilderControl)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_eadMultiplier = eadMultiplier) ||0. >= _eadMultiplier
-			|| 0 >= (_timeIntegrand = timeIntegrand) ||
+		if (!NumberUtil.IsValid (_eadMultiplier = eadMultiplier) || 0. >= _eadMultiplier ||
+			0 >= (_timeIntegrand = timeIntegrand) ||
 			null == (_collateralizedExposureSegmentBuilderControl =
 				collateralizedExposureSegmentBuilderControl) ||
 			null == (_collateralizedPositiveExposureSegmentBuilderControl =
-				collateralizedPositiveExposureSegmentBuilderControl))
-		{
-			throw new java.lang.Exception
-				("StandardizedExposureGeneratorScheme Constructor => Invalid Inputs");
+				collateralizedPositiveExposureSegmentBuilderControl)) {
+			throw new Exception ("StandardizedExposureGeneratorScheme Constructor => Invalid Inputs");
 		}
 	}
 
@@ -237,7 +233,7 @@ public class StandardizedExposureGeneratorScheme
 	 * @return The Collateralized Exposure Segment Builder Control
 	 */
 
-	public org.drip.spline.params.SegmentCustomBuilderControl collateralizedExposureSegmentBuilderControl()
+	public SegmentCustomBuilderControl collateralizedExposureSegmentBuilderControl()
 	{
 		return _collateralizedExposureSegmentBuilderControl;
 	}
@@ -248,8 +244,7 @@ public class StandardizedExposureGeneratorScheme
 	 * @return The Collateralized Positive Exposure Segment Builder Control
 	 */
 
-	public org.drip.spline.params.SegmentCustomBuilderControl
-		collateralizedPositiveExposureSegmentBuilderControl()
+	public SegmentCustomBuilderControl collateralizedPositiveExposureSegmentBuilderControl()
 	{
 		return _collateralizedPositiveExposureSegmentBuilderControl;
 	}

@@ -1,11 +1,16 @@
 
 package org.drip.xva.pde;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -121,12 +126,12 @@ package org.drip.xva.pde;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BurgardKjaerEdgeAttribution extends org.drip.xva.pde.BurgardKjaerEdge
+public class BurgardKjaerEdgeAttribution extends BurgardKjaerEdge
 {
-	private double _derivativeXVAFundingGrowth = java.lang.Double.NaN;
-	private double _derivativeXVAClientDefaultGrowth = java.lang.Double.NaN;
-	private double _derivativeXVADealerDefaultGrowth = java.lang.Double.NaN;
-	private double _derivativeXVAEarlyTerminationGrowth = java.lang.Double.NaN;
+	private double _derivativeXVAFundingGrowth = Double.NaN;
+	private double _derivativeXVAClientDefaultGrowth = Double.NaN;
+	private double _derivativeXVADealerDefaultGrowth = Double.NaN;
+	private double _derivativeXVAEarlyTerminationGrowth = Double.NaN;
 
 	/**
 	 * BurgardKjaerEdgeAttribution Constructor
@@ -146,7 +151,7 @@ public class BurgardKjaerEdgeAttribution extends org.drip.xva.pde.BurgardKjaerEd
 	 * @param derivativeXVAClientDefaultGrowth The Client Default Component of the Derivative XVA Value
 	 * 		Growth
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BurgardKjaerEdgeAttribution (
@@ -159,7 +164,7 @@ public class BurgardKjaerEdgeAttribution extends org.drip.xva.pde.BurgardKjaerEd
 		final double derivativeXVAFundingGrowth,
 		final double derivativeXVADealerDefaultGrowth,
 		final double derivativeXVAClientDefaultGrowth)
-		throws java.lang.Exception
+		throws Exception
 	{
 		super (
 			positionValueBump,
@@ -169,16 +174,12 @@ public class BurgardKjaerEdgeAttribution extends org.drip.xva.pde.BurgardKjaerEd
 			derivativeXVACollateralGrowth
 		);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVAEarlyTerminationGrowth =
+		if (!NumberUtil.IsValid (_derivativeXVAEarlyTerminationGrowth =
 				derivativeXVAEarlyTerminationGrowth) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVAFundingGrowth =
-				derivativeXVAFundingGrowth) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVADealerDefaultGrowth =
-				derivativeXVADealerDefaultGrowth) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVAClientDefaultGrowth =
-				derivativeXVAClientDefaultGrowth))
-		{
-			throw new java.lang.Exception ("BurgardKjaerEdgeAttribution Constructor => Invalid Inputs");
+			!NumberUtil.IsValid (_derivativeXVAFundingGrowth = derivativeXVAFundingGrowth) ||
+			!NumberUtil.IsValid (_derivativeXVADealerDefaultGrowth = derivativeXVADealerDefaultGrowth) ||
+			!NumberUtil.IsValid (_derivativeXVAClientDefaultGrowth = derivativeXVAClientDefaultGrowth)) {
+			throw new Exception ("BurgardKjaerEdgeAttribution Constructor => Invalid Inputs");
 		}
 	}
 
