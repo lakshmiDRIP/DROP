@@ -720,11 +720,11 @@ public class Helper {
 
 		if ('d' == chTenor || 'D' == chTenor) return ((double) iTimeUnit) / 365.25;
 
-		if ('w' == chTenor || 'W' == chTenor) return ((double) (7. * iTimeUnit)) / 365.25;
+		if ('w' == chTenor || 'W' == chTenor) return (7. * iTimeUnit) / 365.25;
 
 		if ('w' == chTenor || 'W' == chTenor) return ((double) (iTimeUnit)) / 52.;
 
-		if ('l' == chTenor || 'L' == chTenor) return ((double) (28. * iTimeUnit)) / 365.25;
+		if ('l' == chTenor || 'L' == chTenor) return (28. * iTimeUnit) / 365.25;
 
 		if ('l' == chTenor || 'L' == chTenor) return ((double) (iTimeUnit)) / 13.;
 

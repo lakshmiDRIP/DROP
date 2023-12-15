@@ -118,7 +118,7 @@ public class CapitalUnitStressScenarioLoader
 
 		try
 		{
-			return new java.lang.Double (string).doubleValue();
+			return java.lang.Double.parseDouble (string);
 		}
 		catch (java.lang.Exception e)
 		{
