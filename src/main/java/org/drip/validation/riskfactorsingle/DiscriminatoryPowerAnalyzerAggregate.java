@@ -1,11 +1,22 @@
 
 package org.drip.validation.riskfactorsingle;
 
+import java.util.Map;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.validation.distance.GapTestOutcome;
+import org.drip.validation.distance.GapTestSetting;
+import org.drip.validation.evidence.Ensemble;
+import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -119,13 +130,11 @@ package org.drip.validation.riskfactorsingle;
 
 public class DiscriminatoryPowerAnalyzerAggregate
 {
-	private org.drip.validation.distance.GapTestSetting _gapTestSetting = null;
-	private org.drip.validation.riskfactorsingle.EventAggregationWeightFunction _eventAggregationWeightFunction =
-		null;
+	private GapTestSetting _gapTestSetting = null;
+	private EventAggregationWeightFunction _eventAggregationWeightFunction = null;
 
-	private java.util.Map<java.lang.String, org.drip.validation.hypothesis.ProbabilityIntegralTransform>
-		_eventSamplePITMap = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.validation.hypothesis.ProbabilityIntegralTransform>();
+	private Map<String, ProbabilityIntegralTransform> _eventSamplePITMap =
+		new CaseInsensitiveHashMap<ProbabilityIntegralTransform>();
 
 	/**
 	 * DiscriminatoryPowerAnalyzerAggregate Constructor
@@ -134,22 +143,19 @@ public class DiscriminatoryPowerAnalyzerAggregate
 	 * @param gapTestSetting The Distance Gap Test Setting
 	 * @param eventAggregationWeightFunction Event Aggregation Weight Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public DiscriminatoryPowerAnalyzerAggregate (
-		final java.util.Map<java.lang.String, org.drip.validation.hypothesis.ProbabilityIntegralTransform>
-			eventSamplePITMap,
-		final org.drip.validation.distance.GapTestSetting gapTestSetting,
-		final org.drip.validation.riskfactorsingle.EventAggregationWeightFunction eventAggregationWeightFunction)
-		throws java.lang.Exception
+		final Map<String, ProbabilityIntegralTransform> eventSamplePITMap,
+		final GapTestSetting gapTestSetting,
+		final EventAggregationWeightFunction eventAggregationWeightFunction)
+		throws Exception
 	{
 		if (null == (_eventSamplePITMap = eventSamplePITMap) || 0 == _eventSamplePITMap.size() ||
 			null == (_gapTestSetting = gapTestSetting) ||
-			null == (_eventAggregationWeightFunction = eventAggregationWeightFunction))
-		{
-			throw new java.lang.Exception
-				("DiscriminatoryPowerAnalyzerAggregate Constructor => Invalid Inputs");
+			null == (_eventAggregationWeightFunction = eventAggregationWeightFunction)) {
+			throw new Exception ("DiscriminatoryPowerAnalyzerAggregate Constructor => Invalid Inputs");
 		}
 	}
 
@@ -159,7 +165,7 @@ public class DiscriminatoryPowerAnalyzerAggregate
 	 * @return The Gap Test Setting
 	 */
 
-	public org.drip.validation.distance.GapTestSetting gapTestSetting()
+	public GapTestSetting gapTestSetting()
 	{
 		return _gapTestSetting;
 	}
@@ -170,7 +176,7 @@ public class DiscriminatoryPowerAnalyzerAggregate
 	 * @return The Event Aggregation Weight Function
 	 */
 
-	public org.drip.validation.riskfactorsingle.EventAggregationWeightFunction eventAggregationWeightFunction()
+	public EventAggregationWeightFunction eventAggregationWeightFunction()
 	{
 		return _eventAggregationWeightFunction;
 	}
@@ -181,63 +187,47 @@ public class DiscriminatoryPowerAnalyzerAggregate
 	 * @return The Event Sample PIT Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.validation.hypothesis.ProbabilityIntegralTransform>
-		eventSamplePITMap()
+	public Map<String, ProbabilityIntegralTransform> eventSamplePITMap()
 	{
 		return _eventSamplePITMap;
 	}
 
-	private org.drip.validation.riskfactorsingle.GapTestOutcomeAggregate eventOutcomeAggregate (
-		final java.lang.String hypothesisID,
-		final java.util.Map<java.lang.String, org.drip.validation.evidence.Ensemble> eventEnsembleMap)
+	private GapTestOutcomeAggregate eventOutcomeAggregate (
+		final String hypothesisID,
+		final Map<String, Ensemble> eventEnsembleMap)
 	{
 		double distanceAggregate = 0.;
 
-		java.util.Map<java.lang.String, org.drip.validation.distance.GapTestOutcome> eventOutcomeMap = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.validation.distance.GapTestOutcome>();
+		Map<String, GapTestOutcome> eventOutcomeMap = new CaseInsensitiveHashMap<GapTestOutcome>();
 
-		try
-		{
-			for (java.util.Map.Entry<java.lang.String, org.drip.validation.evidence.Ensemble> eventEnsemble :
-				eventEnsembleMap.entrySet())
-			{
-				java.lang.String eventID = eventEnsemble.getKey();
+		try {
+			for (Map.Entry<String, Ensemble> eventEnsemble : eventEnsembleMap.entrySet()) {
+				String eventID = eventEnsemble.getKey();
 
-				if (!_eventSamplePITMap.containsKey (eventID))
-				{
+				if (!_eventSamplePITMap.containsKey (eventID)) {
 					return null;
 				}
 
-				DiscriminatoryPowerAnalyzer discriminatoryPowerAnalyzer = new DiscriminatoryPowerAnalyzer
-				(
+				DiscriminatoryPowerAnalyzer discriminatoryPowerAnalyzer = new DiscriminatoryPowerAnalyzer (
 					_eventSamplePITMap.get (eventID),
 					_gapTestSetting
 				);
 
-				org.drip.validation.distance.GapTestOutcome gapTestOutcome =
-					discriminatoryPowerAnalyzer.gapTest (eventEnsemble.getValue());
+				GapTestOutcome gapTestOutcome = discriminatoryPowerAnalyzer.gapTest
+					(eventEnsemble.getValue());
 
-				if (null == gapTestOutcome)
-				{
+				if (null == gapTestOutcome) {
 					return null;
 				}
 
 				distanceAggregate = distanceAggregate + gapTestOutcome.distance() *
 					_eventAggregationWeightFunction.loading (eventID);
 
-				eventOutcomeMap.put (
-					eventID,
-					gapTestOutcome
-				);
+				eventOutcomeMap.put (eventID, gapTestOutcome);
 			}
 
-			return new org.drip.validation.riskfactorsingle.GapTestOutcomeAggregate (
-				eventOutcomeMap,
-				distanceAggregate
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+			return new GapTestOutcomeAggregate (eventOutcomeMap, distanceAggregate);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
@@ -252,39 +242,29 @@ public class DiscriminatoryPowerAnalyzerAggregate
 	 * @return The Suite of Gap Test Outcomes
 	 */
 
-	public org.drip.validation.riskfactorsingle.HypothesisOutcomeSuiteAggregate hypothesisGapTest (
-		final org.drip.validation.riskfactorsingle.HypothesisSuiteAggregate hypothesisSuiteAggregate)
+	public HypothesisOutcomeSuiteAggregate hypothesisGapTest (
+		final HypothesisSuiteAggregate hypothesisSuiteAggregate)
 	{
-		if (null == hypothesisSuiteAggregate)
-		{
+		if (null == hypothesisSuiteAggregate) {
 			return null;
 		}
 
-		java.util.Map<java.lang.String, java.util.Map<java.lang.String,
-			org.drip.validation.evidence.Ensemble>> hypothesisEventMap =
-				hypothesisSuiteAggregate.hypothesisEventMap();
+		Map<String, Map<String, Ensemble>> hypothesisEventMap =
+			hypothesisSuiteAggregate.hypothesisEventMap();
 
-		if (0 == hypothesisEventMap.size())
-		{
+		if (0 == hypothesisEventMap.size()) {
 			return null;
 		}
 
-		org.drip.validation.riskfactorsingle.HypothesisOutcomeSuiteAggregate hypothesisOutcomeSuiteAggregate = new
-			org.drip.validation.riskfactorsingle.HypothesisOutcomeSuiteAggregate();
+		HypothesisOutcomeSuiteAggregate hypothesisOutcomeSuiteAggregate =
+			new HypothesisOutcomeSuiteAggregate();
 
-		for (java.util.Map.Entry<java.lang.String, java.util.Map<java.lang.String,
-			org.drip.validation.evidence.Ensemble>> hypothesisEvent : hypothesisEventMap.entrySet())
-		{
+		for (Map.Entry<String, Map<String, Ensemble>> hypothesisEvent : hypothesisEventMap.entrySet()) {
 			java.lang.String hypothesisID = hypothesisEvent.getKey();
 
 			if (!hypothesisOutcomeSuiteAggregate.add (
 				hypothesisID,
-				eventOutcomeAggregate (
-					hypothesisID,
-					hypothesisEvent.getValue()
-				)
-			))
-			{
+				eventOutcomeAggregate (hypothesisID, hypothesisEvent.getValue()))) {
 				return null;
 			}
 		}

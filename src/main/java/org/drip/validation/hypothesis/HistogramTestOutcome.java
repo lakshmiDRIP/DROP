@@ -1,11 +1,16 @@
 
 package org.drip.validation.hypothesis;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -130,7 +135,7 @@ public class HistogramTestOutcome
 	 * @param pValueIncrementalArray Array of Incremental p-Values
 	 * @param thresholdTestStatistic The Threshold Test Statistic
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public HistogramTestOutcome (
@@ -143,21 +148,16 @@ public class HistogramTestOutcome
 		if (null == (_testStatisticArray = testStatisticArray) ||
 			null == (_pValueCumulativeArray = pValueCumulativeArray) ||
 			null == (_pValueIncrementalArray = pValueIncrementalArray) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_thresholdTestStatistic = thresholdTestStatistic))
-		{
-			throw new java.lang.Exception ("HistogramTestOutcome Constructor => Invalid Inputs");
+			!NumberUtil.IsValid (_thresholdTestStatistic = thresholdTestStatistic)) {
+			throw new Exception ("HistogramTestOutcome Constructor => Invalid Inputs");
 		}
 
 		int count = _testStatisticArray.length;
 
-		if (0 == count ||
-			count != _pValueCumulativeArray.length ||
-			count != _pValueIncrementalArray.length ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_testStatisticArray) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_pValueCumulativeArray) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_pValueIncrementalArray))
-		{
-			throw new java.lang.Exception ("HistogramTestOutcome Constructor => Invalid Inputs");
+		if (0 == count || count != _pValueCumulativeArray.length ||
+			count != _pValueIncrementalArray.length || !NumberUtil.IsValid (_testStatisticArray) ||
+			!NumberUtil.IsValid (_pValueCumulativeArray) || !NumberUtil.IsValid (_pValueIncrementalArray)) {
+			throw new Exception ("HistogramTestOutcome Constructor => Invalid Inputs");
 		}
 	}
 

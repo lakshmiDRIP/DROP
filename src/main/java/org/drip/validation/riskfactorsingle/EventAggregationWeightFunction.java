@@ -1,11 +1,16 @@
 
 package org.drip.validation.riskfactorsingle;
 
+import org.drip.analytics.support.Helper;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -130,10 +135,10 @@ public abstract class EventAggregationWeightFunction
 		return new EventAggregationWeightFunction()
 		{
 			public double loading (
-				final java.lang.String eventID)
-				throws java.lang.Exception
+				final String eventID)
+				throws Exception
 			{
-				return 1. / org.drip.analytics.support.Helper.TenorToYearFraction (eventID);
+				return 1. / Helper.TenorToYearFraction (eventID);
 			}
 		};
 	}
@@ -145,10 +150,10 @@ public abstract class EventAggregationWeightFunction
 	 * 
 	 * @return The Loadings Weight corresponding to the Event ID
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract double loading (
-		final java.lang.String eventID)
-		throws java.lang.Exception;
+		final String eventID)
+		throws Exception;
 }

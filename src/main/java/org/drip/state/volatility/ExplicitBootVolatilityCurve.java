@@ -1,11 +1,17 @@
 
 package org.drip.state.volatility;
 
+import org.drip.analytics.definition.ExplicitBootCurve;
+import org.drip.state.identifier.VolatilityLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -96,15 +102,14 @@ package org.drip.state.volatility;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ExplicitBootVolatilityCurve extends org.drip.state.volatility.VolatilityCurve
-	implements org.drip.analytics.definition.ExplicitBootCurve {
-
+public abstract class ExplicitBootVolatilityCurve extends VolatilityCurve implements ExplicitBootCurve
+{
 	protected ExplicitBootVolatilityCurve (
-		final int iEpochDate,
-		final org.drip.state.identifier.VolatilityLabel label,
-		final java.lang.String strCurrency)
-		throws java.lang.Exception
+		final int epochDate,
+		final VolatilityLabel label,
+		final String currency)
+		throws Exception
 	{
-		super (iEpochDate, label, strCurrency);
+		super (epochDate, label, currency);
 	}
 }

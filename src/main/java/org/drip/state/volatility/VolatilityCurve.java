@@ -1,11 +1,18 @@
 
 package org.drip.state.volatility;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.definition.NodeStructure;
+import org.drip.state.identifier.LatentStateLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -97,21 +104,21 @@ package org.drip.state.volatility;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class VolatilityCurve extends org.drip.analytics.definition.NodeStructure {
-
+public abstract class VolatilityCurve extends NodeStructure
+{
 	protected VolatilityCurve (
-		final int iEpochDate,
-		final org.drip.state.identifier.LatentStateLabel label,
-		final java.lang.String strCurrency)
-		throws java.lang.Exception
+		final int epochDate,
+		final LatentStateLabel label,
+		final String currency)
+		throws Exception
 	{
-		super (iEpochDate, label, strCurrency);
+		super (epochDate, label, currency);
 	}
 
 	/**
 	 * Compute the Deterministic Implied Volatility at the Date Node from the Volatility Term Structure
 	 * 
-	 * @param iDate The Date Node
+	 * @param date The Date Node
 	 * 
 	 * @return The Deterministic Implied Volatility at the Date Node from the Volatility Term Structure
 	 * 
@@ -119,32 +126,34 @@ public abstract class VolatilityCurve extends org.drip.analytics.definition.Node
 	 */
 
 	public abstract double impliedVol (
-		final int iDate)
-		throws java.lang.Exception;
+		final int date)
+		throws Exception;
 
 	/**
 	 * Compute the Deterministic Implied Volatility at the Date Node from the Volatility Term Structure
 	 * 
-	 * @param dt The Date Node
+	 * @param date The Date Node
 	 * 
 	 * @return The Deterministic Implied Volatility at the Date Node from the Volatility Term Structure
 	 * 
-	 * @throws java.lang.Exception Thrown if the Deterministic Implied Volatility cannot be computed
+	 * @throws Exception Thrown if the Deterministic Implied Volatility cannot be computed
 	 */
 
 	public double impliedVol (
-		final org.drip.analytics.date.JulianDate dt)
-		throws java.lang.Exception
+		final JulianDate date)
+		throws Exception
 	{
-		if (null == dt) throw new java.lang.Exception ("VolatilityCurve::impliedVol => Invalid Inputs!");
+		if (null == date) {
+			throw new Exception ("VolatilityCurve::impliedVol => Invalid Inputs!");
+		}
 
-		return impliedVol (dt.julian());
+		return impliedVol (date.julian());
 	}
 
 	/**
 	 * Compute the Deterministic Implied Volatility at the Tenor from the Volatility Term Structure
 	 * 
-	 * @param strTenor The Date Node
+	 * @param tenor The Date Node
 	 * 
 	 * @return The Deterministic Implied Volatility at the Tenor from the Volatility Term Structure
 	 * 
@@ -152,19 +161,20 @@ public abstract class VolatilityCurve extends org.drip.analytics.definition.Node
 	 */
 
 	public double impliedVol (
-		final java.lang.String strTenor)
+		final String tenor)
 		throws java.lang.Exception
 	{
-		if (null == strTenor || strTenor.isEmpty())
-			throw new java.lang.Exception ("VolatilityCurve::impliedVol => Invalid Inputs!");
+		if (null == tenor || tenor.isEmpty()) {
+			throw new Exception ("VolatilityCurve::impliedVol => Invalid Inputs!");
+		}
 
-		return impliedVol (epoch().addTenor (strTenor).julian());
+		return impliedVol (epoch().addTenor (tenor).julian());
 	}
 
 	/**
 	 * Compute the Deterministic Implied Volatility at the Date Node from the Volatility Term Structure
 	 * 
-	 * @param iDate The Date Node
+	 * @param date The Date Node
 	 * 
 	 * @return The Deterministic Implied Volatility at the Date Node from the Volatility Term Structure
 	 * 
@@ -172,6 +182,6 @@ public abstract class VolatilityCurve extends org.drip.analytics.definition.Node
 	 */
 
 	public abstract double vol (
-		final int iDate)
-		throws java.lang.Exception;
+		final int date)
+		throws Exception;
 }

@@ -1,11 +1,19 @@
 
 package org.drip.validation.riskfactorsingle;
 
+import java.util.Map;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.validation.evidence.Ensemble;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -118,10 +126,8 @@ package org.drip.validation.riskfactorsingle;
 
 public class HypothesisSuiteAggregate
 {
-	private java.util.Map<java.lang.String, java.util.Map<java.lang.String,
-		org.drip.validation.evidence.Ensemble>> _hypothesisEventMap = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<java.util.Map<java.lang.String,
-				org.drip.validation.evidence.Ensemble>>();
+	private Map<String, Map<String, Ensemble>> _hypothesisEventMap =
+		new CaseInsensitiveHashMap<Map<String, Ensemble>>();
 
 	/**
 	 * Empty HypothesisSuiteAggregate Constructor
@@ -137,9 +143,7 @@ public class HypothesisSuiteAggregate
 	 * @return The Hypothesis Event Map
 	 */
 
-	public
-		java.util.Map<java.lang.String, java.util.Map<java.lang.String, org.drip.validation.evidence.Ensemble>>
-			hypothesisEventMap()
+	public Map<String, Map<String, Ensemble>> hypothesisEventMap()
 	{
 		return _hypothesisEventMap;
 	}
@@ -155,38 +159,23 @@ public class HypothesisSuiteAggregate
 	 */
 
 	public boolean add (
-		final java.lang.String hypothesisID,
-		final java.lang.String eventID,
-		final org.drip.validation.evidence.Ensemble hypothesis)
+		final String hypothesisID,
+		final String eventID,
+		final Ensemble hypothesis)
 	{
-		if (null == hypothesisID || hypothesisID.isEmpty() ||
-			null == eventID || eventID.isEmpty() ||
-			null == hypothesis)
-		{
+		if (null == hypothesisID || hypothesisID.isEmpty() || null == eventID || eventID.isEmpty() ||
+			null == hypothesis) {
 			return false;
 		}
 
-		if (_hypothesisEventMap.containsKey (hypothesisID))
-		{
-			_hypothesisEventMap.get (hypothesisID).put (
-				eventID,
-				hypothesis
-			);
-		}
-		else
-		{
-			java.util.Map<java.lang.String, org.drip.validation.evidence.Ensemble> eventMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.validation.evidence.Ensemble>();
+		if (_hypothesisEventMap.containsKey (hypothesisID)) {
+			_hypothesisEventMap.get (hypothesisID).put (eventID, hypothesis);
+		} else {
+			Map<String, Ensemble> eventMap = new CaseInsensitiveHashMap<Ensemble>();
 
-			eventMap.put (
-				eventID,
-				hypothesis
-			);
+			eventMap.put (eventID, hypothesis);
 
-			_hypothesisEventMap.put (
-				hypothesisID,
-				eventMap
-			);
+			_hypothesisEventMap.put (hypothesisID, eventMap);
 		}
 
 		return true;
@@ -202,11 +191,10 @@ public class HypothesisSuiteAggregate
 	 */
 
 	public boolean containsHypothesis (
-		final java.lang.String hypothesisID,
-		final java.lang.String eventID)
+		final String hypothesisID,
+		final String eventID)
 	{
-		return null != hypothesisID && !hypothesisID.isEmpty() &&
-			null != eventID && !eventID.isEmpty() &&
+		return null != hypothesisID && null != eventID && !eventID.isEmpty() &&
 			_hypothesisEventMap.containsKey (hypothesisID) &&
 			_hypothesisEventMap.get (hypothesisID).containsKey (eventID);
 	}
@@ -220,13 +208,11 @@ public class HypothesisSuiteAggregate
 	 * @return The Specified Hypothesis
 	 */
 
-	public org.drip.validation.evidence.Ensemble hypothesis (
-		final java.lang.String hypothesisID,
-		final java.lang.String eventID)
+	public Ensemble hypothesis (
+		final String hypothesisID,
+		final String eventID)
 	{
-		return containsHypothesis (
-			hypothesisID,
-			eventID
-		) ? _hypothesisEventMap.get (hypothesisID).get (eventID) : null;
+		return containsHypothesis (hypothesisID, eventID) ?
+			_hypothesisEventMap.get (hypothesisID).get (eventID) : null;
 	}
 }

@@ -1,11 +1,27 @@
 
 package org.drip.validation.hypothesis;
 
+import java.util.Map;
+
+import org.drip.numerical.common.NumberUtil;
+import org.drip.validation.distance.GapLossFunction;
+import org.drip.validation.distance.GapLossWeightFunction;
+import org.drip.validation.distance.GapTestOutcome;
+import org.drip.validation.distance.GapTestSetting;
+import org.drip.validation.evidence.TestStatisticAccumulator;
+import org.drip.validation.quantile.PlottingPosition;
+import org.drip.validation.quantile.PlottingPositionGenerator;
+import org.drip.validation.quantile.QQTestOutcome;
+import org.drip.validation.quantile.QQVertex;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -118,23 +134,22 @@ package org.drip.validation.hypothesis;
 
 public class ProbabilityIntegralTransformTest
 {
-	private org.drip.validation.hypothesis.ProbabilityIntegralTransform _probabilityIntegralTransform = null;
+	private ProbabilityIntegralTransform _probabilityIntegralTransform = null;
 
 	/**
 	 * ProbabilityIntegralTransformTest Constructor
 	 * 
 	 * @param probabilityIntegralTransform The Probability Integral Transform Instance
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ProbabilityIntegralTransformTest (
-		final org.drip.validation.hypothesis.ProbabilityIntegralTransform probabilityIntegralTransform)
-		throws java.lang.Exception
+		final ProbabilityIntegralTransform probabilityIntegralTransform)
+		throws Exception
 	{
-		if (null == (_probabilityIntegralTransform = probabilityIntegralTransform))
-		{
-			throw new java.lang.Exception ("ProbabilityIntegralTransformTest Constructor => Invalid Inputs");
+		if (null == (_probabilityIntegralTransform = probabilityIntegralTransform)) {
+			throw new Exception ("ProbabilityIntegralTransformTest Constructor => Invalid Inputs");
 		}
 	}
 
@@ -144,7 +159,7 @@ public class ProbabilityIntegralTransformTest
 	 * @return The ProbabilityIntegralTransform Instance
 	 */
 
-	public org.drip.validation.hypothesis.ProbabilityIntegralTransform probabilityIntegralTransform()
+	public ProbabilityIntegralTransform probabilityIntegralTransform()
 	{
 		return _probabilityIntegralTransform;
 	}
@@ -153,89 +168,66 @@ public class ProbabilityIntegralTransformTest
 	 * Run the Significance Test for the Realized Test Statistic
 	 * 
 	 * @param testStatistic The Realized Test Statistic
-	 * @param pTestSetting The P-Test Setting
+	 * @param significanceTestSetting The Significance Test Setting
 	 * 
 	 * @return The Significance Test Result for the Realized Test Statistic
 	 */
 
-	public org.drip.validation.hypothesis.SignificanceTestOutcome significanceTest (
+	public SignificanceTestOutcome significanceTest (
 		final double testStatistic,
-		final org.drip.validation.hypothesis.SignificanceTestSetting pTestSetting)
+		final SignificanceTestSetting significanceTestSetting)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (testStatistic) || null == pTestSetting)
-		{
+		if (!NumberUtil.IsValid (testStatistic) || null == significanceTestSetting) {
 			return null;
 		}
 
-		double pValue = java.lang.Double.NaN;
+		double pValue = Double.NaN;
 
-		try
-		{
+		try {
 			pValue = _probabilityIntegralTransform.pValue (testStatistic);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		int tailCheck = pTestSetting.tailCheck();
+		int tailCheck = significanceTestSetting.tailCheck();
 
-		double threshold = pTestSetting.threshold();
+		double threshold = significanceTestSetting.threshold();
 
-		if (org.drip.validation.hypothesis.SignificanceTestSetting.LEFT_TAIL_CHECK == tailCheck)
-		{
-			try
-			{
-				return new SignificanceTestOutcome (
-					testStatistic,
-					1. - pValue,
-					pValue,
-					pValue > threshold
-				);
-			}
-			catch (java.lang.Exception e)
-			{
+		if (SignificanceTestSetting.LEFT_TAIL_CHECK == tailCheck) {
+			try {
+				return new SignificanceTestOutcome (testStatistic, 1. - pValue, pValue, pValue > threshold);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		if (org.drip.validation.hypothesis.SignificanceTestSetting.RIGHT_TAIL_CHECK == tailCheck)
-		{
-			try
-			{
+		if (SignificanceTestSetting.RIGHT_TAIL_CHECK == tailCheck) {
+			try {
 				return new SignificanceTestOutcome (
 					testStatistic,
 					1. - pValue,
 					pValue,
 					1. - pValue > threshold
 				);
-			}
-			catch (java.lang.Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		try
-		{
+		try {
 			return new SignificanceTestOutcome (
 				testStatistic,
 				1. - pValue,
 				pValue,
-				2. * java.lang.Math.min (
-					pValue,
-					1. - pValue
-				) > threshold
+				2. * Math.min (pValue, 1. - pValue) > threshold
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -251,34 +243,28 @@ public class ProbabilityIntegralTransformTest
 	 * @return The Distance Gap Test Outcome
 	 */
 
-	public org.drip.validation.distance.GapTestOutcome distanceTest (
-		final org.drip.validation.hypothesis.ProbabilityIntegralTransform samplePIT,
-		final org.drip.validation.distance.GapTestSetting gapTestSetting)
+	public GapTestOutcome distanceTest (
+		final ProbabilityIntegralTransform samplePIT,
+		final GapTestSetting gapTestSetting)
 	{
-		if (null == samplePIT || null == gapTestSetting)
-		{
+		if (null == samplePIT || null == gapTestSetting) {
 			return null;
 		}
 
 		double distance = 0.;
 		double hypothesisPValueLeft = 0.;
 
-		org.drip.validation.distance.GapLossFunction gapLossFunction = gapTestSetting.lossFunction();
+		GapLossFunction gapLossFunction = gapTestSetting.lossFunction();
 
-		org.drip.validation.distance.GapLossWeightFunction gapLossWeightFunction =
-			gapTestSetting.lossWeightFunction();
+		GapLossWeightFunction gapLossWeightFunction = gapTestSetting.lossWeightFunction();
 
-		org.drip.validation.evidence.TestStatisticAccumulator weightedGapLossAccumulator = new
-			org.drip.validation.evidence.TestStatisticAccumulator();
+		TestStatisticAccumulator weightedGapLossAccumulator = new TestStatisticAccumulator();
 
-		org.drip.validation.evidence.TestStatisticAccumulator unweightedGapLossAccumulator = new
-			org.drip.validation.evidence.TestStatisticAccumulator();
+		TestStatisticAccumulator unweightedGapLossAccumulator = new TestStatisticAccumulator();
 
-		for (java.util.Map.Entry<java.lang.Double, java.lang.Double> testStatisticPValueEntry :
-			samplePIT.testStatisticPValueMap().entrySet())
-		{
-			try
-			{
+		for (Map.Entry<Double, java.lang.Double> testStatisticPValueEntry :
+			samplePIT.testStatisticPValueMap().entrySet()) {
+			try {
 				double hypothesisPValueRight = _probabilityIntegralTransform.pValue
 					(testStatisticPValueEntry.getKey());
 
@@ -290,31 +276,25 @@ public class ProbabilityIntegralTransformTest
 				distance = distance + weightedGapLoss * (hypothesisPValueRight - hypothesisPValueLeft);
 
 				if (!unweightedGapLossAccumulator.addTestStatistic (gapLoss) ||
-					!weightedGapLossAccumulator.addTestStatistic (weightedGapLoss))
-				{
+					!weightedGapLossAccumulator.addTestStatistic (weightedGapLoss)) {
 					return null;
 				}
 
 				hypothesisPValueLeft = hypothesisPValueRight;
-			}
-			catch (java.lang.Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		try
-		{
-			return new org.drip.validation.distance.GapTestOutcome (
+		try {
+			return new GapTestOutcome (
 				unweightedGapLossAccumulator.probabilityIntegralTransform(),
 				weightedGapLossAccumulator.probabilityIntegralTransform(),
 				distance
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -329,27 +309,24 @@ public class ProbabilityIntegralTransformTest
 	 * @return The Histogram Test Corresponding to the Test Statistic and its p-Value
 	 */
 
-	public org.drip.validation.hypothesis.HistogramTestOutcome histogramTest (
-		final org.drip.validation.hypothesis.HistogramTestSetting histogramTestSetting)
+	public HistogramTestOutcome histogramTest (
+		final HistogramTestSetting histogramTestSetting)
 	{
-		if (null == histogramTestSetting)
-		{
+		if (null == histogramTestSetting) {
 			return null;
 		}
 
-		org.drip.validation.quantile.PlottingPositionGenerator plottingPositionGenerator =
+		PlottingPositionGenerator plottingPositionGenerator =
 			histogramTestSetting.plottingPositionGenerator();
 
-		org.drip.validation.quantile.PlottingPosition[] plottingPositionArray =
-			plottingPositionGenerator.generate();
+		PlottingPosition[] plottingPositionArray = plottingPositionGenerator.generate();
 
 		int qqVertexCount = plottingPositionArray.length + 2;
 		double[] testStatisticArray = new double[qqVertexCount];
 		double[] pValueCumulativeArray = new double[qqVertexCount];
 		double[] pValueIncrementalArray = new double[qqVertexCount];
 
-		try
-		{
+		try {
 			pValueIncrementalArray[0] = 0.;
 
 			testStatisticArray[0] = _probabilityIntegralTransform.testStatistic
@@ -357,27 +334,21 @@ public class ProbabilityIntegralTransformTest
 
 			testStatisticArray[qqVertexCount - 1] = _probabilityIntegralTransform.testStatistic
 				(pValueCumulativeArray[qqVertexCount - 1] = 1.);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		for (int qqVertexIndex = 1; qqVertexIndex < qqVertexCount - 1; ++qqVertexIndex)
-		{
-			try
-			{
+		for (int qqVertexIndex = 1; qqVertexIndex < qqVertexCount - 1; ++qqVertexIndex) {
+			try {
 				testStatisticArray[qqVertexIndex] = _probabilityIntegralTransform.testStatistic
 					(pValueCumulativeArray[qqVertexIndex] =
 						plottingPositionArray[qqVertexIndex - 1].quantile());
 
 				pValueIncrementalArray[qqVertexIndex] = pValueCumulativeArray[qqVertexIndex] -
 					pValueCumulativeArray[qqVertexIndex - 1];
-			}
-			catch (java.lang.Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
@@ -387,17 +358,14 @@ public class ProbabilityIntegralTransformTest
 		pValueIncrementalArray[qqVertexCount - 1] = pValueCumulativeArray[qqVertexCount - 1] -
 			pValueCumulativeArray[qqVertexCount - 2];
 
-		try
-		{
-			return new org.drip.validation.hypothesis.HistogramTestOutcome (
+		try {
+			return new HistogramTestOutcome (
 				testStatisticArray,
 				pValueCumulativeArray,
 				pValueIncrementalArray,
 				_probabilityIntegralTransform.testStatistic (histogramTestSetting.pValueThreshold())
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -413,53 +381,42 @@ public class ProbabilityIntegralTransformTest
 	 * @return The Quantile-Quantile Test Outcome
 	 */
 
-	public org.drip.validation.quantile.QQTestOutcome qqTest (
-		final org.drip.validation.hypothesis.ProbabilityIntegralTransform samplePIT,
-		final org.drip.validation.quantile.PlottingPositionGenerator plottingPositionGenerator)
+	public QQTestOutcome qqTest (
+		final ProbabilityIntegralTransform samplePIT,
+		final PlottingPositionGenerator plottingPositionGenerator)
 	{
-		if (null == samplePIT || null == plottingPositionGenerator)
-		{
+		if (null == samplePIT || null == plottingPositionGenerator) {
 			return null;
 		}
 
-		org.drip.validation.quantile.PlottingPosition[] plottingPositionArray =
-			plottingPositionGenerator.generate();
+		PlottingPosition[] plottingPositionArray = plottingPositionGenerator.generate();
 
-		if (null == plottingPositionArray)
-		{
+		if (null == plottingPositionArray) {
 			return null;
 		}
 
 		int orderStatisticCount = plottingPositionArray.length;
-		org.drip.validation.quantile.QQVertex[] qqVertexArray = new
-			org.drip.validation.quantile.QQVertex[orderStatisticCount];
+		QQVertex[] qqVertexArray = new QQVertex[orderStatisticCount];
 
-		for (int orderStatisticIndex = 0; orderStatisticIndex < orderStatisticCount; ++orderStatisticIndex)
-		{
-			try
-			{
+		for (int orderStatisticIndex = 0; orderStatisticIndex < orderStatisticCount; ++orderStatisticIndex) {
+			try {
 				double pValue = plottingPositionArray[orderStatisticIndex].quantile();
 		
-				qqVertexArray[orderStatisticIndex] = new org.drip.validation.quantile.QQVertex (
+				qqVertexArray[orderStatisticIndex] = new QQVertex (
 					plottingPositionArray[orderStatisticIndex],
 					samplePIT.testStatistic (pValue),
 					_probabilityIntegralTransform.testStatistic (pValue)
 				);
-			}
-			catch (java.lang.Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		try
-		{
-			return new org.drip.validation.quantile.QQTestOutcome (qqVertexArray);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new QQTestOutcome (qqVertexArray);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

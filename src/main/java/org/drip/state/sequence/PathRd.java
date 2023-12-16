@@ -1,11 +1,17 @@
 
 package org.drip.state.sequence;
 
+import org.drip.measure.discrete.SequenceGenerator;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -94,33 +100,34 @@ package org.drip.state.sequence;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PathRd {
-	private double[] _adblMean = null;
-	private boolean _bLogNormal = false;
-	private double _dblVolatility = java.lang.Double.NaN;
+public class PathRd
+{
+	private boolean _logNormal = false;
+	private double[] _meanArray = null;
+	private double _volatility = Double.NaN;
 
 	/**
 	 * PathRd Constructor
 	 * 
-	 * @param adblMean Array of Mean
-	 * @param dblVolatility Volatility
-	 * @param bLogNormal TRUE - The Generated Random Numbers are Log Normal
+	 * @param meanArray Array of Means
+	 * @param volatility Volatility
+	 * @param logNormal TRUE - The Generated Random Numbers are Log Normal
 	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 * @throws Exception Thrown if Inputs are Invalid
 	 */
 
 	public PathRd (
-		final double[] adblMean,
-		final double dblVolatility,
-		final boolean bLogNormal)
-		throws java.lang.Exception
+		final double[] meanArray,
+		final double volatility,
+		final boolean logNormal)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_adblMean = adblMean) || null == _adblMean || 0 ==
-			_adblMean.length || !org.drip.numerical.common.NumberUtil.IsValid (_dblVolatility = dblVolatility) ||
-				0. >= _dblVolatility)
-			throw new java.lang.Exception ("PathRd Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_meanArray = meanArray) || null == _meanArray || 0 == _meanArray.length ||
+			!NumberUtil.IsValid (_volatility = volatility) || 0. >= _volatility) {
+			throw new Exception ("PathRd Constructor => Invalid Inputs");
+		}
 
-		_bLogNormal = bLogNormal;
+		_logNormal = logNormal;
 	}
 
 	/**
@@ -131,18 +138,18 @@ public class PathRd {
 
 	public boolean logNormal()
 	{
-		return _bLogNormal;
+		return _logNormal;
 	}
 
 	/**
-	 * Retrieve the R^d Dimension
+	 * Retrieve the R<sup>d</sup> Dimension
 	 * 
-	 * @return The R^d Dimension
+	 * @return The R<sup>d</sup> Dimension
 	 */
 
 	public int dimension()
 	{
-		return _adblMean.length;
+		return _meanArray.length;
 	}
 
 	/**
@@ -153,7 +160,7 @@ public class PathRd {
 
 	public double[] mean()
 	{
-		return _adblMean;
+		return _meanArray;
 	}
 
 	/**
@@ -164,38 +171,42 @@ public class PathRd {
 
 	public double volatility()
 	{
-		return _dblVolatility;
+		return _volatility;
 	}
 
 	/**
 	 * Generate the Sequence of Path Realizations
 	 * 
-	 * @param iNumPath Number of Paths
+	 * @param pathCount Number of Paths
 	 * 
 	 * @return The Sequence of Path Realizations
 	 */
 
 	public double[][] sequence (
-		final int iNumPath)
+		final int pathCount)
 	{
-		if (0 >= iNumPath) return null;
+		if (0 >= pathCount) {
+			return null;
+		}
 
-		int iNumDimension = _adblMean.length;
-		double[][] aadblSequence = new double[iNumPath][iNumDimension];
+		int dimension = _meanArray.length;
+		double[][] sequenceGrid = new double[pathCount][dimension];
 
-		for (int iPath = 0; iPath < iNumPath; ++iPath) {
-			double[] adblRandom = org.drip.measure.discrete.SequenceGenerator.Gaussian (iNumDimension);
+		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex) {
+			double[] randomArray = SequenceGenerator.Gaussian (dimension);
 
-			if (null == adblRandom || iNumDimension != adblRandom.length) return null;
+			if (null == randomArray || dimension != randomArray.length) {
+				return null;
+			}
 
-			for (int iDimension = 0; iDimension < iNumDimension; ++iDimension) {
-				double dblWander = _dblVolatility * adblRandom[iDimension];
+			for (int dimensionIndex = 0; dimensionIndex < dimension; ++dimensionIndex) {
+				double wander = _volatility * randomArray[dimensionIndex];
 
-				aadblSequence[iPath][iDimension] = _bLogNormal ? _adblMean[iDimension] * java.lang.Math.exp
-					(dblWander) : _adblMean[iDimension] + dblWander;
+				sequenceGrid[pathIndex][dimensionIndex] = _logNormal ?
+					_meanArray[dimensionIndex] * Math.exp (wander) : _meanArray[dimensionIndex] + wander;
 			}
 		}
 
-		return aadblSequence;
+		return sequenceGrid;
 	}
 }

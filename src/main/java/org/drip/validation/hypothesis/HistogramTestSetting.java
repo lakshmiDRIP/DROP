@@ -1,11 +1,17 @@
 
 package org.drip.validation.hypothesis;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.validation.quantile.PlottingPositionGenerator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -117,8 +123,8 @@ package org.drip.validation.hypothesis;
 
 public class HistogramTestSetting
 {
-	private double _pValueThreshold = java.lang.Double.NaN;
-	private org.drip.validation.quantile.PlottingPositionGenerator _plottingPositionGenerator = null;
+	private double _pValueThreshold = Double.NaN;
+	private PlottingPositionGenerator _plottingPositionGenerator = null;
 
 	/**
 	 * Construct the Anfuso Karyampas Nawroth (2017) Instance of the Histogram Test Setting
@@ -129,17 +135,14 @@ public class HistogramTestSetting
 	 */
 
 	public static final HistogramTestSetting AnfusoKaryampasNawroth2017 (
-		final org.drip.validation.quantile.PlottingPositionGenerator plottingPositionGenerator)
+		final PlottingPositionGenerator plottingPositionGenerator)
 	{
-		try
-		{
+		try {
 			return new HistogramTestSetting (
 				plottingPositionGenerator,
-				1. - org.drip.validation.hypothesis.SignificanceTestSetting.ANFUSO_KARYAMPAS_NAWROTH_2017_P_TEST_THRESHOLD
+				1. - SignificanceTestSetting.ANFUSO_KARYAMPAS_NAWROTH_2017_P_TEST_THRESHOLD
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -152,19 +155,17 @@ public class HistogramTestSetting
 	 * @param plottingPositionGenerator The Plotting Position Generator
 	 * @param pValueThreshold Histogram Test p-Value Threshold
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public HistogramTestSetting (
-		final org.drip.validation.quantile.PlottingPositionGenerator plottingPositionGenerator,
+		final PlottingPositionGenerator plottingPositionGenerator,
 		final double pValueThreshold)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (null == (_plottingPositionGenerator = plottingPositionGenerator) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_pValueThreshold = pValueThreshold) ||
-				0. >= _pValueThreshold)
-		{
-			throw new java.lang.Exception ("HistogramTestSetting Constructor => Invalid Setting");
+			!NumberUtil.IsValid (_pValueThreshold = pValueThreshold) || 0. >= _pValueThreshold) {
+			throw new Exception ("HistogramTestSetting Constructor => Invalid Setting");
 		}
 	}
 
@@ -174,7 +175,7 @@ public class HistogramTestSetting
 	 * @return The Plotting Position Generator
 	 */
 
-	public org.drip.validation.quantile.PlottingPositionGenerator plottingPositionGenerator()
+	public PlottingPositionGenerator plottingPositionGenerator()
 	{
 		return _plottingPositionGenerator;
 	}

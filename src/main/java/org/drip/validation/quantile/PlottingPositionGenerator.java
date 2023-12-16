@@ -6,6 +6,9 @@ package org.drip.validation.quantile;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -120,11 +123,10 @@ public abstract class PlottingPositionGenerator
 
 	protected PlottingPositionGenerator (
 		final int orderStatisticCount)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (1 >= (_orderStatisticCount = orderStatisticCount))
-		{
-			throw new java.lang.Exception ("PlottingPositionGenerator Constructor => Invalid Inputs");
+		if (1 >= (_orderStatisticCount = orderStatisticCount)) {
+			throw new Exception ("PlottingPositionGenerator Constructor => Invalid Inputs");
 		}
 	}
 
@@ -145,5 +147,5 @@ public abstract class PlottingPositionGenerator
 	 * @return The Plotting Position Array
 	 */
 
-	abstract public org.drip.validation.quantile.PlottingPosition[] generate();
+	abstract public PlottingPosition[] generate();
 }

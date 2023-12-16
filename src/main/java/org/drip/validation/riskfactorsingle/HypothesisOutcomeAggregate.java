@@ -6,6 +6,9 @@ package org.drip.validation.riskfactorsingle;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -118,8 +121,8 @@ package org.drip.validation.riskfactorsingle;
 
 public class HypothesisOutcomeAggregate
 {
-	private java.lang.String _hypothesisID = null;
-	private org.drip.validation.riskfactorsingle.GapTestOutcomeAggregate _gapTestOutcomeAggregate = null;
+	private String _hypothesisID = null;
+	private GapTestOutcomeAggregate _gapTestOutcomeAggregate = null;
 
 	/**
 	 * HypothesisOutcomeAggregate Constructor
@@ -127,18 +130,17 @@ public class HypothesisOutcomeAggregate
 	 * @param hypothesisID Hypothesis ID
 	 * @param gapTestOutcomeAggregate Gap Test Outcome Aggregate
 	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 * @throws Exception Thrown if Inputs are Invalid
 	 */
 
 	public HypothesisOutcomeAggregate (
-		final java.lang.String hypothesisID,
-		final org.drip.validation.riskfactorsingle.GapTestOutcomeAggregate gapTestOutcomeAggregate)
+		final String hypothesisID,
+		final GapTestOutcomeAggregate gapTestOutcomeAggregate)
 		throws java.lang.Exception
 	{
 		if (null == (_hypothesisID = hypothesisID) || _hypothesisID.isEmpty() ||
-			null == (_gapTestOutcomeAggregate = gapTestOutcomeAggregate))
-		{
-			throw new java.lang.Exception ("HypothesisOutcomeAggregate Constructor => Invalid Inputs");
+			null == (_gapTestOutcomeAggregate = gapTestOutcomeAggregate)) {
+			throw new Exception ("HypothesisOutcomeAggregate Constructor => Invalid Inputs");
 		}
 	}
 
@@ -148,7 +150,7 @@ public class HypothesisOutcomeAggregate
 	 * @return The Hypothesis ID
 	 */
 
-	public java.lang.String hypothesisID()
+	public String hypothesisID()
 	{
 		return _hypothesisID;
 	}
@@ -159,7 +161,7 @@ public class HypothesisOutcomeAggregate
 	 * @return The Gap Test Outcome Aggregate
 	 */
 
-	public org.drip.validation.riskfactorsingle.GapTestOutcomeAggregate gapTestOutcomeAggregate()
+	public GapTestOutcomeAggregate gapTestOutcomeAggregate()
 	{
 		return _gapTestOutcomeAggregate;
 	}

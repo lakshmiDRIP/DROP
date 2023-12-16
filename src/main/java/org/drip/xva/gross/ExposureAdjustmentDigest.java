@@ -172,7 +172,7 @@ public class ExposureAdjustmentDigest
 	 * @param totalVAArray The Array of Total VA
 	 * @param collateralizedExposureGrid Grid of Collateralized Exposure
 	 * @param collateralizedExposurePVGrid Grid of Collateralized Exposure PV
-	 * @param collateralizedPositiveExposurGride Grid of Collateralized Positive Exposure
+	 * @param collateralizedPositiveExposureGrid Grid of Collateralized Positive Exposure
 	 * @param collateralizedPositiveExposurePVGrid Grid of Collateralized Positive Exposure PV
 	 * @param collateralizedNegativeExposureGrid Grid of Collateralized Negative Exposure
 	 * @param collateralizedNegativeExposurePVGrid Grid of Collateralized Negative Exposure PV

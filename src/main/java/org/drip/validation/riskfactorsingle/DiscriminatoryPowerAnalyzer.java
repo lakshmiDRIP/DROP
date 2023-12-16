@@ -1,11 +1,25 @@
 
 package org.drip.validation.riskfactorsingle;
 
+import java.util.Map;
+
+import org.drip.validation.distance.GapTestOutcome;
+import org.drip.validation.distance.GapTestSetting;
+import org.drip.validation.distance.HypothesisOutcomeSuite;
+import org.drip.validation.distance.HypothesisSuite;
+import org.drip.validation.evidence.Ensemble;
+import org.drip.validation.evidence.Sample;
+import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
+import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -119,9 +133,8 @@ package org.drip.validation.riskfactorsingle;
 
 public class DiscriminatoryPowerAnalyzer
 {
-	private org.drip.validation.distance.GapTestSetting _gapTestSetting = null;
-	private org.drip.validation.hypothesis.ProbabilityIntegralTransform _sampleProbabilityIntegralTransform =
-		null;
+	private GapTestSetting _gapTestSetting = null;
+	private ProbabilityIntegralTransform _sampleProbabilityIntegralTransform = null;
 
 	/**
 	 * Construct a DiscriminatoryPowerAnalyzer Instance from the Sample
@@ -133,18 +146,15 @@ public class DiscriminatoryPowerAnalyzer
 	 */
 
 	public static final DiscriminatoryPowerAnalyzer FromSample (
-		final org.drip.validation.evidence.Sample sample,
-		final org.drip.validation.distance.GapTestSetting gapTestSetting)
+		final Sample sample,
+		final GapTestSetting gapTestSetting)
 	{
-		try
-		{
+		try {
 			return null == sample ? null : new DiscriminatoryPowerAnalyzer (
 				sample.nativeProbabilityIntegralTransform(),
 				gapTestSetting
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -157,18 +167,17 @@ public class DiscriminatoryPowerAnalyzer
 	 * @param sampleProbabilityIntegralTransform Sample Probability Integral Transform
 	 * @param gapTestSetting The Distance Gap Test Setting
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public DiscriminatoryPowerAnalyzer (
-		final org.drip.validation.hypothesis.ProbabilityIntegralTransform sampleProbabilityIntegralTransform,
-		final org.drip.validation.distance.GapTestSetting gapTestSetting)
-		throws java.lang.Exception
+		final ProbabilityIntegralTransform sampleProbabilityIntegralTransform,
+		final GapTestSetting gapTestSetting)
+		throws Exception
 	{
 		if (null == (_sampleProbabilityIntegralTransform = sampleProbabilityIntegralTransform) ||
-			null == (_gapTestSetting = gapTestSetting))
-		{
-			throw new java.lang.Exception ("DiscriminatoryPowerAnalyzer Constructor => Invalid Inputs");
+			null == (_gapTestSetting = gapTestSetting)) {
+			throw new Exception ("DiscriminatoryPowerAnalyzer Constructor => Invalid Inputs");
 		}
 	}
 
@@ -178,7 +187,7 @@ public class DiscriminatoryPowerAnalyzer
 	 * @return The Sample Probability Integral Transform
 	 */
 
-	public org.drip.validation.hypothesis.ProbabilityIntegralTransform sampleProbabilityIntegralTransform()
+	public ProbabilityIntegralTransform sampleProbabilityIntegralTransform()
 	{
 		return _sampleProbabilityIntegralTransform;
 	}
@@ -189,7 +198,7 @@ public class DiscriminatoryPowerAnalyzer
 	 * @return The Gap Test Setting
 	 */
 
-	public org.drip.validation.distance.GapTestSetting gapTestSetting()
+	public GapTestSetting gapTestSetting()
 	{
 		return _gapTestSetting;
 	}
@@ -202,21 +211,14 @@ public class DiscriminatoryPowerAnalyzer
 	 * @return The Sample-Hypothesis Gap Test Outcome
 	 */
 
-	public org.drip.validation.distance.GapTestOutcome gapTest (
-		final org.drip.validation.evidence.Ensemble hypothesis)
+	public GapTestOutcome gapTest (
+		final Ensemble hypothesis)
 	{
-		try
-		{
-			return null == hypothesis ? null : new
-				org.drip.validation.hypothesis.ProbabilityIntegralTransformTest (
-					hypothesis.nativeProbabilityIntegralTransform()
-				).distanceTest (
-					_sampleProbabilityIntegralTransform,
-					_gapTestSetting
-				);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return null == hypothesis ? null : new ProbabilityIntegralTransformTest (
+				hypothesis.nativeProbabilityIntegralTransform()
+			).distanceTest (_sampleProbabilityIntegralTransform, _gapTestSetting);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -231,40 +233,29 @@ public class DiscriminatoryPowerAnalyzer
 	 * @return The Suite of Gap Test Outcomes
 	 */
 
-	public org.drip.validation.distance.HypothesisOutcomeSuite hypothesisGapTest (
-		final org.drip.validation.distance.HypothesisSuite hypothesisSuite)
+	public HypothesisOutcomeSuite hypothesisGapTest (
+		final HypothesisSuite hypothesisSuite)
 	{
-		if (null == hypothesisSuite)
-		{
+		if (null == hypothesisSuite) {
 			return null;
 		}
 
-		java.util.Map<java.lang.String, org.drip.validation.evidence.Ensemble> hypothesisMap =
-			hypothesisSuite.hypothesisMap();
+		Map<String, Ensemble> hypothesisMap = hypothesisSuite.hypothesisMap();
 
-		if (0 == hypothesisMap.size())
-		{
+		if (0 == hypothesisMap.size()) {
 			return null;
 		}
 
-		org.drip.validation.distance.HypothesisOutcomeSuite hypothesisOutcomeSuite = new
-			org.drip.validation.distance.HypothesisOutcomeSuite();
+		HypothesisOutcomeSuite hypothesisOutcomeSuite = new HypothesisOutcomeSuite();
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.validation.evidence.Ensemble> hypothesisMapEntry
-			: hypothesisMap.entrySet())
-		{
-			org.drip.validation.distance.GapTestOutcome gapTestOutcome = gapTest
-				(hypothesisMapEntry.getValue());
+		for (Map.Entry<String, Ensemble> hypothesisMapEntry : hypothesisMap.entrySet()) {
+			GapTestOutcome gapTestOutcome = gapTest (hypothesisMapEntry.getValue());
 
-			if (null == gapTestOutcome)
-			{
+			if (null == gapTestOutcome) {
 				continue;
 			}
 
-			hypothesisOutcomeSuite.add (
-				hypothesisMapEntry.getKey(),
-				gapTestOutcome
-			);
+			hypothesisOutcomeSuite.add (hypothesisMapEntry.getKey(), gapTestOutcome);
 		}
 
 		return hypothesisOutcomeSuite;

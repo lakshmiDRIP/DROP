@@ -6,6 +6,9 @@ package org.drip.validation.quantile;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -114,7 +117,7 @@ package org.drip.validation.quantile;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PlottingPositionGeneratorFilliben extends org.drip.validation.quantile.PlottingPositionGenerator
+public class PlottingPositionGeneratorFilliben extends PlottingPositionGenerator
 {
 
 	/**
@@ -127,55 +130,39 @@ public class PlottingPositionGeneratorFilliben extends org.drip.validation.quant
 
 	public PlottingPositionGeneratorFilliben (
 		final int orderStatisticCount)
-		throws java.lang.Exception
+		throws Exception
 	{
 		super (orderStatisticCount);
 	}
 
-	@Override public org.drip.validation.quantile.PlottingPosition[] generate()
+	@Override public PlottingPosition[] generate()
 	{
 		int orderStatisticCount = orderStatisticCount();
 
-		org.drip.validation.quantile.PlottingPosition[] plottingPositionArray = new
-			org.drip.validation.quantile.PlottingPosition[orderStatisticCount];
+		PlottingPosition[] plottingPositionArray = new PlottingPosition[orderStatisticCount];
 
-		double terminalQuantile = java.lang.Math.pow (
-			0.5,
-			1. / orderStatisticCount
-		);
+		double terminalQuantile = Math.pow (0.5, 1. / orderStatisticCount);
 
-		try
-		{
-			plottingPositionArray[0] = new org.drip.validation.quantile.PlottingPosition (
-				1,
-				1. - terminalQuantile
+		try {
+			plottingPositionArray[0] = new PlottingPosition (1, 1. - terminalQuantile);
+
+			plottingPositionArray[orderStatisticCount - 1] = new PlottingPosition (
+				orderStatisticCount,
+				terminalQuantile
 			);
-
-			plottingPositionArray[orderStatisticCount - 1] =
-				new org.drip.validation.quantile.PlottingPosition (
-					orderStatisticCount,
-					terminalQuantile
-				);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		for (int orderStatisticIndex = 2; orderStatisticIndex < orderStatisticCount; ++orderStatisticIndex)
-		{
-			try
-			{
-				plottingPositionArray[orderStatisticIndex - 1] =
-					new org.drip.validation.quantile.PlottingPosition (
-						orderStatisticIndex,
-						(((double) orderStatisticIndex) - 0.3175) / (0.365 + orderStatisticCount)
-					);
-			}
-			catch (java.lang.Exception e)
-			{
+		for (int orderStatisticIndex = 2; orderStatisticIndex < orderStatisticCount; ++orderStatisticIndex) {
+			try {
+				plottingPositionArray[orderStatisticIndex - 1] = new PlottingPosition (
+					orderStatisticIndex,
+					(((double) orderStatisticIndex) - 0.3175) / (0.365 + orderStatisticCount)
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;

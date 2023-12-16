@@ -1,11 +1,25 @@
 
 package org.drip.validation.riskfactorjoint;
 
+import java.util.List;
+
+import org.drip.measure.crng.RandomNumberGenerator;
+import org.drip.measure.discrete.CorrelatedPathVertexDimension;
+import org.drip.measure.discrete.VertexRd;
+import org.drip.measure.stochastic.LabelCorrelation;
+import org.drip.measure.stochastic.LabelCovariance;
+import org.drip.measure.stochastic.LabelRdVertex;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.validation.evidence.Sample;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -117,11 +131,11 @@ package org.drip.validation.riskfactorjoint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormalSampleCohort implements org.drip.validation.riskfactorjoint.SampleCohort
+public class NormalSampleCohort implements SampleCohort
 {
-	private double _horizon = java.lang.Double.NaN;
-	private org.drip.measure.stochastic.LabelRdVertex _labelRdVertex = null;
-	private org.drip.measure.stochastic.LabelCovariance _latentStateLabelCovariance = null;
+	private double _horizon = Double.NaN;
+	private LabelRdVertex _labelRdVertex = null;
+	private LabelCovariance _latentStateLabelCovariance = null;
 
 	/**
 	 * Generate a Correlated NormalSampleCohort
@@ -137,83 +151,63 @@ public class NormalSampleCohort implements org.drip.validation.riskfactorjoint.S
 	 */
 
 	public static final NormalSampleCohort Correlated (
-		final java.util.List<java.lang.String> labelList,
+		final List<String> labelList,
 		final double[] annualMeanArray,
 		final double[] annualVolatilityArray,
 		final double[][] correlationMatrix,
 		final int vertexCount,
 		final double horizon)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (horizon))
-		{
+		if (!NumberUtil.IsValid (horizon)) {
 			return null;
 		}
 
-		org.drip.measure.discrete.CorrelatedPathVertexDimension correlatedPathVertexDimension = null;
+		CorrelatedPathVertexDimension correlatedPathVertexDimension = null;
 
-		try
-		{
-			correlatedPathVertexDimension = new org.drip.measure.discrete.CorrelatedPathVertexDimension (
-				new org.drip.measure.crng.RandomNumberGenerator(),
+		try {
+			correlatedPathVertexDimension = new CorrelatedPathVertexDimension (
+				new RandomNumberGenerator(),
 				correlationMatrix,
 				vertexCount,
 				1,
 				false,
 				null
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.measure.discrete.VertexRd[] vertexRdArray =
-			correlatedPathVertexDimension.straightMultiPathVertexRd();
+		VertexRd[] vertexRdArray = correlatedPathVertexDimension.straightMultiPathVertexRd();
 
-		if (null == vertexRdArray || null == vertexRdArray[0])
-		{
+		if (null == vertexRdArray || null == vertexRdArray[0]) {
 			return null;
 		}
 
 		double[][] realization = vertexRdArray[0].flatform();
 
-		if (null == realization)
-		{
+		if (null == realization) {
 			return null;
 		}
 
 		double horizonSQRT = Math.sqrt (horizon);
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			for (int entityIndex = 0; entityIndex < correlationMatrix.length; ++entityIndex)
-			{
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+			for (int entityIndex = 0; entityIndex < correlationMatrix.length; ++entityIndex) {
 				realization[vertexIndex][entityIndex] =
 					realization[vertexIndex][entityIndex] * annualVolatilityArray[entityIndex] * horizonSQRT +
 					annualMeanArray[entityIndex] * horizon;
 			}
 		}
 
-		try
-		{
+		try {
 			return new NormalSampleCohort (
-				new org.drip.measure.stochastic.LabelRdVertex (
-					labelList,
-					realization
-				),
-				new org.drip.measure.stochastic.LabelCovariance (
-					labelList,
-					annualMeanArray,
-					annualVolatilityArray,
-					correlationMatrix
-				),
+				new LabelRdVertex (labelList, realization),
+				new LabelCovariance (labelList, annualMeanArray, annualVolatilityArray, correlationMatrix),
 				horizon
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -227,20 +221,19 @@ public class NormalSampleCohort implements org.drip.validation.riskfactorjoint.S
 	 * @param latentStateLabelCovariance R<sup>d</sup> Labeled Covariance
 	 * @param horizon Horizon
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormalSampleCohort (
-		final org.drip.measure.stochastic.LabelRdVertex labelRdVertex,
-		final org.drip.measure.stochastic.LabelCovariance latentStateLabelCovariance,
+		final LabelRdVertex labelRdVertex,
+		final LabelCovariance latentStateLabelCovariance,
 		final double horizon)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (null == (_labelRdVertex = labelRdVertex) ||
 			null == (_latentStateLabelCovariance = latentStateLabelCovariance) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_horizon = horizon) || _horizon <= 0.)
-		{
-			throw new java.lang.Exception ("NormalSampleCohort Constructor => Invalid Inputs");
+			!NumberUtil.IsValid (_horizon = horizon) || 0. >= _horizon) {
+			throw new Exception ("NormalSampleCohort Constructor => Invalid Inputs");
 		}
 	}
 
@@ -250,7 +243,7 @@ public class NormalSampleCohort implements org.drip.validation.riskfactorjoint.S
 	 * @return The Latent State Label Covariance
 	 */
 
-	public org.drip.measure.stochastic.LabelCorrelation latentStateLabelCovariance()
+	public LabelCorrelation latentStateLabelCovariance()
 	{
 		return _latentStateLabelCovariance;
 	}
@@ -266,34 +259,30 @@ public class NormalSampleCohort implements org.drip.validation.riskfactorjoint.S
 		return _horizon;
 	}
 
-	@Override public java.util.List<java.lang.String> latentStateLabelList()
+	@Override public List<String> latentStateLabelList()
 	{
 		return _latentStateLabelCovariance.labelList();
 	}
 
-	@Override public org.drip.measure.stochastic.LabelRdVertex vertexRd()
+	@Override public LabelRdVertex vertexRd()
 	{
 		return _labelRdVertex;
 	}
 
-	@Override public org.drip.validation.evidence.Sample reduce (
-		final java.lang.String label1,
-		final java.lang.String label2)
+	@Override public Sample reduce (
+		final String label1,
+		final String label2)
 	{
-		double annualMean1 = java.lang.Double.NaN;
-		double annualMean2 = java.lang.Double.NaN;
-		double correlation = java.lang.Double.NaN;
-		double annualPrecision1 = java.lang.Double.NaN;
-		double annualPrecision2 = java.lang.Double.NaN;
-		double annualVolatility1 = java.lang.Double.NaN;
-		double annualVolatility2 = java.lang.Double.NaN;
+		double annualMean1 = Double.NaN;
+		double annualMean2 = Double.NaN;
+		double correlation = Double.NaN;
+		double annualPrecision1 = Double.NaN;
+		double annualPrecision2 = Double.NaN;
+		double annualVolatility1 = Double.NaN;
+		double annualVolatility2 = Double.NaN;
 
-		try
-		{
-			correlation = _latentStateLabelCovariance.entry (
-				label1,
-				label2
-			);
+		try {
+			correlation = _latentStateLabelCovariance.entry (label1, label2);
 
 			annualMean1 = _latentStateLabelCovariance.mean (label1);
 
@@ -302,9 +291,7 @@ public class NormalSampleCohort implements org.drip.validation.riskfactorjoint.S
 			annualPrecision1 = (1. / (annualVolatility1 = _latentStateLabelCovariance.volatility (label1)));
 
 			annualPrecision2 = (1. / (annualVolatility2 = _latentStateLabelCovariance.volatility (label2)));
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
@@ -314,33 +301,26 @@ public class NormalSampleCohort implements org.drip.validation.riskfactorjoint.S
 
 		double[] vertexR1_2 = _labelRdVertex.vertexR1 (label2);
 
-		if (null == vertexR1_1 || null == vertexR1_2)
-		{
+		if (null == vertexR1_1 || null == vertexR1_2) {
 			return null;
 		}
 
 		int cohortCount = vertexR1_1.length;
 		double[] cohortRealization = new double[cohortCount];
-		double cohortScale = java.lang.Math.exp (_horizon * (0.5 * (annualVolatility1 + annualVolatility2) -
+
+		double cohortScale = Math.exp (_horizon * (0.5 * (annualVolatility1 + annualVolatility2) -
 			(1. + correlation) - (annualMean1 * annualPrecision1 + annualMean2 * annualPrecision2)));
 
-		for (int cohortIndex = 0; cohortIndex < cohortCount; ++cohortIndex)
-		{
-			cohortRealization[cohortIndex] = cohortScale * java.lang.Math.pow (
+		for (int cohortIndex = 0; cohortIndex < cohortCount; ++cohortIndex) {
+			cohortRealization[cohortIndex] = cohortScale * Math.pow (
 				vertexR1_1[cohortIndex],
 				annualPrecision1
-			) * java.lang.Math.pow (
-				vertexR1_2[cohortIndex],
-				annualPrecision2
-			);
+			) * Math.pow (vertexR1_2[cohortIndex], annualPrecision2);
 		}
 
-		try
-		{
-			return new org.drip.validation.evidence.Sample (cohortRealization);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new Sample (cohortRealization);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

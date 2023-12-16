@@ -1,11 +1,16 @@
 
 package org.drip.validation.quantile;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -114,8 +119,7 @@ package org.drip.validation.quantile;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PlottingPositionGeneratorHeuristic extends
-	org.drip.validation.quantile.PlottingPositionGenerator
+public class PlottingPositionGeneratorHeuristic extends PlottingPositionGenerator
 {
 
 	/**
@@ -195,15 +199,9 @@ public class PlottingPositionGeneratorHeuristic extends
 	public static final PlottingPositionGeneratorHeuristic Standard (
 		final int orderStatisticCount)
 	{
-		try
-		{
-			return new PlottingPositionGeneratorHeuristic (
-				orderStatisticCount,
-				RELIEF_STANDARD
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new PlottingPositionGeneratorHeuristic (orderStatisticCount, RELIEF_STANDARD);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -221,15 +219,12 @@ public class PlottingPositionGeneratorHeuristic extends
 	public static final PlottingPositionGeneratorHeuristic BernardBosLevenbach1953 (
 		final int orderStatisticCount)
 	{
-		try
-		{
+		try {
 			return new PlottingPositionGeneratorHeuristic (
 				orderStatisticCount,
 				RELIEF_BERNARD_BOS_LEVENBACH_1953
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -247,15 +242,9 @@ public class PlottingPositionGeneratorHeuristic extends
 	public static final PlottingPositionGeneratorHeuristic NIST2013 (
 		final int orderStatisticCount)
 	{
-		try
-		{
-			return new PlottingPositionGeneratorHeuristic (
-				orderStatisticCount,
-				RELIEF_NIST_2013
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new PlottingPositionGeneratorHeuristic (orderStatisticCount, RELIEF_NIST_2013);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -273,15 +262,9 @@ public class PlottingPositionGeneratorHeuristic extends
 	public static final PlottingPositionGeneratorHeuristic YuHuang2001 (
 		final int orderStatisticCount)
 	{
-		try
-		{
-			return new PlottingPositionGeneratorHeuristic (
-				orderStatisticCount,
-				RELIEF_YU_HUANG_2001
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new PlottingPositionGeneratorHeuristic (orderStatisticCount, RELIEF_YU_HUANG_2001);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -299,15 +282,9 @@ public class PlottingPositionGeneratorHeuristic extends
 	public static final PlottingPositionGeneratorHeuristic BMDP2018 (
 		final int orderStatisticCount)
 	{
-		try
-		{
-			return new PlottingPositionGeneratorHeuristic (
-				orderStatisticCount,
-				RELIEF_BMDP_2018
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new PlottingPositionGeneratorHeuristic (orderStatisticCount, RELIEF_BMDP_2018);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -325,15 +302,9 @@ public class PlottingPositionGeneratorHeuristic extends
 	public static final PlottingPositionGeneratorHeuristic Blom1958 (
 		final int orderStatisticCount)
 	{
-		try
-		{
-			return new PlottingPositionGeneratorHeuristic (
-				orderStatisticCount,
-				RELIEF_BLOM_1958
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new PlottingPositionGeneratorHeuristic (orderStatisticCount, RELIEF_BLOM_1958);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -351,15 +322,9 @@ public class PlottingPositionGeneratorHeuristic extends
 	public static final PlottingPositionGeneratorHeuristic Cunnane1978 (
 		final int orderStatisticCount)
 	{
-		try
-		{
-			return new PlottingPositionGeneratorHeuristic (
-				orderStatisticCount,
-				RELIEF_CUNNANE_1978
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new PlottingPositionGeneratorHeuristic (orderStatisticCount, RELIEF_CUNNANE_1978);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -377,15 +342,9 @@ public class PlottingPositionGeneratorHeuristic extends
 	public static final PlottingPositionGeneratorHeuristic Gringorten1963 (
 		final int orderStatisticCount)
 	{
-		try
-		{
-			return new PlottingPositionGeneratorHeuristic (
-				orderStatisticCount,
-				RELIEF_GRINGORTEN_1963
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new PlottingPositionGeneratorHeuristic (orderStatisticCount, RELIEF_GRINGORTEN_1963);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -403,15 +362,9 @@ public class PlottingPositionGeneratorHeuristic extends
 	public static final PlottingPositionGeneratorHeuristic Hazen1913 (
 		final int orderStatisticCount)
 	{
-		try
-		{
-			return new PlottingPositionGeneratorHeuristic (
-				orderStatisticCount,
-				RELIEF_HAZEN_1913
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new PlottingPositionGeneratorHeuristic (orderStatisticCount, RELIEF_HAZEN_1913);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -429,15 +382,12 @@ public class PlottingPositionGeneratorHeuristic extends
 	public static final PlottingPositionGeneratorHeuristic LarsenCurrantHunt1980 (
 		final int orderStatisticCount)
 	{
-		try
-		{
+		try {
 			return new PlottingPositionGeneratorHeuristic (
 				orderStatisticCount,
 				RELIEF_LARSEN_CURRANT_HUNT_1980
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -455,22 +405,16 @@ public class PlottingPositionGeneratorHeuristic extends
 	public static final PlottingPositionGeneratorHeuristic Filliben1975 (
 		final int orderStatisticCount)
 	{
-		try
-		{
-			return new PlottingPositionGeneratorHeuristic (
-				orderStatisticCount,
-				RELIEF_FILLIBEN_1975
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new PlottingPositionGeneratorHeuristic (orderStatisticCount, RELIEF_FILLIBEN_1975);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return null;
 	}
 
-	private double _relief = java.lang.Double.NaN;
+	private double _relief = Double.NaN;
 
 	/**
 	 * PlottingPositionGeneratorHeuristic Constructor
@@ -478,20 +422,18 @@ public class PlottingPositionGeneratorHeuristic extends
 	 * @param orderStatisticCount Count of Order Statistics
 	 * @param relief Leading Relief
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PlottingPositionGeneratorHeuristic (
 		final int orderStatisticCount,
 		final double relief)
-		throws java.lang.Exception
+		throws Exception
 	{
 		super (orderStatisticCount);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_relief = relief) || 0. > _relief || 1. < _relief)
-		{
-			throw new java.lang.Exception
-				("PlottingPositionGeneratorHeuristic Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_relief = relief) || 0. > _relief || 1. < _relief) {
+			throw new Exception ("PlottingPositionGeneratorHeuristic Constructor => Invalid Inputs");
 		}
 	}
 
@@ -506,26 +448,20 @@ public class PlottingPositionGeneratorHeuristic extends
 		return _relief;
 	}
 
-	@Override public org.drip.validation.quantile.PlottingPosition[] generate()
+	@Override public PlottingPosition[] generate()
 	{
 		int orderStatisticCount = orderStatisticCount();
 
-		org.drip.validation.quantile.PlottingPosition[] plottingPositionArray = new
-			org.drip.validation.quantile.PlottingPosition[orderStatisticCount];
+		PlottingPosition[] plottingPositionArray = new PlottingPosition[orderStatisticCount];
 
 		for (int orderStatisticIndex = 1; orderStatisticIndex <= orderStatisticCount; ++orderStatisticIndex)
 		{
-			try
-			{
-				plottingPositionArray[orderStatisticIndex - 1] =
-					new org.drip.validation.quantile.PlottingPosition (
-						orderStatisticIndex,
-						(((double) orderStatisticIndex) - _relief) /
-							(1. + orderStatisticCount - 2. * _relief)
-					);
-			}
-			catch (java.lang.Exception e)
-			{
+			try {
+				plottingPositionArray[orderStatisticIndex - 1] = new PlottingPosition (
+					orderStatisticIndex,
+					(((double) orderStatisticIndex) - _relief) / (1. + orderStatisticCount - 2. * _relief)
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;

@@ -1,11 +1,19 @@
 
 package org.drip.validation.riskfactorsingle;
 
+import java.util.Map;
+
+import org.drip.numerical.common.NumberUtil;
+import org.drip.validation.distance.GapTestOutcome;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -119,28 +127,26 @@ package org.drip.validation.riskfactorsingle;
 
 public class GapTestOutcomeAggregate
 {
-	private double _distance = java.lang.Double.NaN;
-	private java.util.Map<java.lang.String, org.drip.validation.distance.GapTestOutcome> _eventOutcomeMap =
-		null;
+	private double _distance = Double.NaN;
+	private Map<String, GapTestOutcome> _gapTestOutcomeMap = null;
 
 	/**
 	 * GapTestOutcomeAggregate Constructor
 	 * 
-	 * @param eventOutcomeMap Event to Gap Test Outcome Map
+	 * @param gapTestOutcomeMap Event to Gap Test Outcome Map
 	 * @param distance Aggregate Distance
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public GapTestOutcomeAggregate (
-		final java.util.Map<java.lang.String, org.drip.validation.distance.GapTestOutcome> eventOutcomeMap,
+		final Map<String, GapTestOutcome> gapTestOutcomeMap,
 		final double distance)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (null == (_eventOutcomeMap = eventOutcomeMap) || 0 == _eventOutcomeMap.size() ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_distance = distance))
-		{
-			throw new java.lang.Exception ("GapTestOutcomeAggregate Constructor => Invalid inputs");
+		if (null == (_gapTestOutcomeMap = gapTestOutcomeMap) || 0 == _gapTestOutcomeMap.size() ||
+			!NumberUtil.IsValid (_distance = distance)) {
+			throw new Exception ("GapTestOutcomeAggregate Constructor => Invalid inputs");
 		}
 	}
 
@@ -150,9 +156,9 @@ public class GapTestOutcomeAggregate
 	 * @return The Event to Gap Test Outcome Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.validation.distance.GapTestOutcome> eventOutcomeMap()
+	public Map<String, GapTestOutcome> eventOutcomeMap()
 	{
-		return _eventOutcomeMap;
+		return _gapTestOutcomeMap;
 	}
 
 	/**

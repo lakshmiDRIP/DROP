@@ -1,11 +1,20 @@
 
 package org.drip.validation.hypothesis;
 
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -117,32 +126,29 @@ package org.drip.validation.hypothesis;
 
 public class ProbabilityIntegralTransform
 {
-	private java.util.Map<java.lang.Double, java.lang.Double> _pValueTestStatisticMap = null;
-	private java.util.Map<java.lang.Double, java.lang.Double> _testStatisticPValueMap = null;
+	private Map<Double, Double> _pValueTestStatisticMap = null;
+	private Map<Double, Double> _testStatisticPValueMap = null;
 
 	/**
 	 * ProbabilityIntegralTransform Constructor
 	 * 
 	 * @param testStatisticPValueMap Test Statistic - p Value Map
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ProbabilityIntegralTransform (
-		final java.util.Map<java.lang.Double, java.lang.Double> testStatisticPValueMap)
-		throws java.lang.Exception
+		final Map<Double, Double> testStatisticPValueMap)
+		throws Exception
 	{
 		if (null == (_testStatisticPValueMap = testStatisticPValueMap) ||
-			0 == _testStatisticPValueMap.size())
-		{
-			throw new java.lang.Exception ("ProbabilityIntegralTransform Constructor => Invalid Inputs");
+			0 == _testStatisticPValueMap.size()) {
+			throw new Exception ("ProbabilityIntegralTransform Constructor => Invalid Inputs");
 		}
 
-		_pValueTestStatisticMap = new java.util.TreeMap<java.lang.Double, java.lang.Double>();
+		_pValueTestStatisticMap = new TreeMap<Double, Double>();
 
-		for (java.util.Map.Entry<java.lang.Double, java.lang.Double> testStatisticPValueMapEntry :
-			_testStatisticPValueMap.entrySet())
-		{
+		for (Map.Entry<Double, Double> testStatisticPValueMapEntry : _testStatisticPValueMap.entrySet()) {
 			_pValueTestStatisticMap.put (
 				testStatisticPValueMapEntry.getValue(),
 				testStatisticPValueMapEntry.getKey()
@@ -156,7 +162,7 @@ public class ProbabilityIntegralTransform
 	 * @return The p Value - Test Statistic Map
 	 */
 
-	public java.util.Map<java.lang.Double, java.lang.Double> pValueTestStatisticMap()
+	public Map<Double, Double> pValueTestStatisticMap()
 	{
 		return _pValueTestStatisticMap;
 	}
@@ -167,7 +173,7 @@ public class ProbabilityIntegralTransform
 	 * @return The Test Statistic - p Value Map
 	 */
 
-	public java.util.Map<java.lang.Double, java.lang.Double> testStatisticPValueMap()
+	public Map<Double, Double> testStatisticPValueMap()
 	{
 		return _testStatisticPValueMap;
 	}
@@ -179,34 +185,29 @@ public class ProbabilityIntegralTransform
 	 * 
 	 * @return The p-Value
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double pValue (
 		final double testStatistic)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (testStatistic))
-		{
-			throw new java.lang.Exception ("ProbabilityIntegralTransform::pValue => Invalid Inputs");
+		if (!NumberUtil.IsValid (testStatistic)) {
+			throw new Exception ("ProbabilityIntegralTransform::pValue => Invalid Inputs");
 		}
 
-		java.util.Set<java.lang.Double> testStatisticKeySet = _testStatisticPValueMap.keySet();
+		Set<Double> testStatisticKeySet = _testStatisticPValueMap.keySet();
 
-		double testStatisticKeyCurrent = java.lang.Double.NaN;
-		double testStatisticKeyPrevious = java.lang.Double.NaN;
+		double testStatisticKeyCurrent = Double.NaN;
+		double testStatisticKeyPrevious = Double.NaN;
 
-		for (double testStatisticKey : testStatisticKeySet)
-		{
-			if (testStatistic == testStatisticKey)
-			{
+		for (double testStatisticKey : testStatisticKeySet) {
+			if (testStatistic == testStatisticKey) {
 				return _testStatisticPValueMap.get (testStatistic);
 			}
 
-			if (testStatistic < testStatisticKey)
-			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (testStatisticKeyPrevious))
-				{
+			if (testStatistic < testStatisticKey) {
+				if (!NumberUtil.IsValid (testStatisticKeyPrevious)) {
 					return 0.;
 				}
 
@@ -217,13 +218,11 @@ public class ProbabilityIntegralTransform
 			testStatisticKeyPrevious = testStatisticKey;
 		}
 
-		return !org.drip.numerical.common.NumberUtil.IsValid (testStatisticKeyCurrent) ||
-			testStatistic >= testStatisticKeyCurrent ? 1. :
-			((testStatistic - testStatisticKeyPrevious) * _testStatisticPValueMap.get
+		return !NumberUtil.IsValid (testStatisticKeyCurrent) || testStatistic >= testStatisticKeyCurrent ?
+			1. : ((testStatistic - testStatisticKeyPrevious) * _testStatisticPValueMap.get
 				(testStatisticKeyCurrent) +
 			(testStatisticKeyCurrent - testStatistic) * _testStatisticPValueMap.get
-				(testStatisticKeyPrevious)) /
-			(testStatisticKeyCurrent - testStatisticKeyPrevious);
+				(testStatisticKeyPrevious)) / (testStatisticKeyCurrent - testStatisticKeyPrevious);
 	}
 
 	/**
@@ -233,34 +232,29 @@ public class ProbabilityIntegralTransform
 	 * 
 	 * @return The Response Instance
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double testStatistic (
 		final double pValue)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (pValue))
-		{
-			throw new java.lang.Exception ("ProbabilityIntegralTransform::testStatistic => Invalid Inputs");
+		if (!NumberUtil.IsValid (pValue)) {
+			throw new Exception ("ProbabilityIntegralTransform::testStatistic => Invalid Inputs");
 		}
 
-		java.util.Set<java.lang.Double> pValueKeySet = _pValueTestStatisticMap.keySet();
+		Set<Double> pValueKeySet = _pValueTestStatisticMap.keySet();
 
-		double pValueKeyCurrent = java.lang.Double.NaN;
-		double pValueKeyPrevious = java.lang.Double.NaN;
+		double pValueKeyCurrent = Double.NaN;
+		double pValueKeyPrevious = Double.NaN;
 
-		for (double pValueKey : pValueKeySet)
-		{
-			if (pValue == pValueKey)
-			{
+		for (double pValueKey : pValueKeySet) {
+			if (pValue == pValueKey) {
 				return _pValueTestStatisticMap.get (pValue);
 			}
 
-			if (pValue < pValueKey)
-			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (pValueKeyPrevious))
-				{
+			if (pValue < pValueKey) {
+				if (!NumberUtil.IsValid (pValueKeyPrevious)) {
 					return _pValueTestStatisticMap.get (pValueKey);
 				}
 

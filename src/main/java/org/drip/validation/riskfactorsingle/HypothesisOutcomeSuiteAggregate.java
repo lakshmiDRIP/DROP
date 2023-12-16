@@ -1,11 +1,19 @@
 
 package org.drip.validation.riskfactorsingle;
 
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -119,12 +127,10 @@ package org.drip.validation.riskfactorsingle;
 
 public class HypothesisOutcomeSuiteAggregate
 {
-	private java.util.TreeMap<java.lang.Double, java.lang.String> _distanceHypothesisMap = new
-		java.util.TreeMap<java.lang.Double, java.lang.String>();
+	private TreeMap<Double, String> _distanceHypothesisMap = new TreeMap<Double, String>();
 
-	private java.util.Map<java.lang.String, org.drip.validation.riskfactorsingle.GapTestOutcomeAggregate>
-		_hypothesisOutcomeAggregate = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.validation.riskfactorsingle.GapTestOutcomeAggregate>();
+	private Map<String, GapTestOutcomeAggregate> _hypothesisOutcomeAggregate =
+		new CaseInsensitiveHashMap<GapTestOutcomeAggregate>();
 
 	/**
 	 * Empty HypothesisOutcomeSuiteAggregate Constructor
@@ -140,8 +146,7 @@ public class HypothesisOutcomeSuiteAggregate
 	 * @return The Hypothesis Event Gap Test Outcome Aggregate
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.validation.riskfactorsingle.GapTestOutcomeAggregate>
-		hypothesisOutcomeAggregate()
+	public Map<String, GapTestOutcomeAggregate> hypothesisOutcomeAggregate()
 	{
 		return _hypothesisOutcomeAggregate;
 	}
@@ -152,7 +157,7 @@ public class HypothesisOutcomeSuiteAggregate
 	 * @return The Aggregate Distance - Hypothesis ID Map
 	 */
 
-	public java.util.TreeMap<java.lang.Double, java.lang.String> distanceHypothesisMap()
+	public TreeMap<Double, String> distanceHypothesisMap()
 	{
 		return _distanceHypothesisMap;
 	}
@@ -167,24 +172,16 @@ public class HypothesisOutcomeSuiteAggregate
 	 */
 
 	public boolean add (
-		final java.lang.String hypothesisID,
-		final org.drip.validation.riskfactorsingle.GapTestOutcomeAggregate gapTestOutcomeAggregate)
+		final String hypothesisID,
+		final GapTestOutcomeAggregate gapTestOutcomeAggregate)
 	{
-		if (null == hypothesisID || hypothesisID.isEmpty() ||
-			null == gapTestOutcomeAggregate)
-		{
+		if (null == hypothesisID || hypothesisID.isEmpty() || null == gapTestOutcomeAggregate) {
 			return false;
 		}
 
-		_hypothesisOutcomeAggregate.put (
-			hypothesisID,
-			gapTestOutcomeAggregate
-		);
+		_hypothesisOutcomeAggregate.put (hypothesisID, gapTestOutcomeAggregate);
 
-		_distanceHypothesisMap.put (
-			gapTestOutcomeAggregate.distance(),
-			hypothesisID
-		);
+		_distanceHypothesisMap.put (gapTestOutcomeAggregate.distance(), hypothesisID);
 
 		return true;
 	}
@@ -195,24 +192,20 @@ public class HypothesisOutcomeSuiteAggregate
 	 * @return The Leading/Best Fit Hypothesis and its Test Outcome Aggregate
 	 */
 
-	public org.drip.validation.riskfactorsingle.HypothesisOutcomeAggregate leadingHypothesis()
+	public HypothesisOutcomeAggregate leadingHypothesis()
 	{
-		if (0 == _distanceHypothesisMap.size())
-		{
+		if (0 == _distanceHypothesisMap.size()) {
 			return null;
 		}
 
-		java.lang.String leadingHypothesisID = _distanceHypothesisMap.firstEntry().getValue();
+		String leadingHypothesisID = _distanceHypothesisMap.firstEntry().getValue();
 
-		try
-		{
-			return new org.drip.validation.riskfactorsingle.HypothesisOutcomeAggregate (
+		try {
+			return new HypothesisOutcomeAggregate (
 				leadingHypothesisID,
 				_hypothesisOutcomeAggregate.get (leadingHypothesisID)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

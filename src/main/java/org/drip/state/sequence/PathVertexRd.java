@@ -1,11 +1,26 @@
 
 package org.drip.state.sequence;
 
+import java.util.List;
+
+import org.drip.analytics.daycount.ActActDCParams;
+import org.drip.analytics.daycount.Convention;
+import org.drip.analytics.support.Helper;
+import org.drip.measure.discrete.CorrelatedPathVertexDimension;
+import org.drip.measure.discrete.VertexRd;
+import org.drip.measure.process.DiffusionEvolver;
+import org.drip.measure.realization.JumpDiffusionEdgeUnit;
+import org.drip.measure.realization.JumpDiffusionVertex;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,7 +95,21 @@ package org.drip.state.sequence;
 
 /**
  * <i>PathVertexRd</i> exposes the Functionality to generate a Sequence of the Path Vertex Latent State
- * R<sup>d</sup> Realizations across Multiple Paths.
+ * R<sup>d</sup> Realizations across Multiple Paths. It exposes the following functionality:
+ * 
+ *  <br><br>
+ *  <ul>
+ *		<li>PathVertexRd Constructor</li>
+ *		<li>Retrieve the Latent State Dimension</li>
+ *		<li>Retrieve the Latent State Evolver CorrelatedPathVertexDimension Instance</li>
+ *		<li>Retrieve the Array of the Latent State Diffusion Evolvers</li>
+ *		<li>Generate the R<sup>d</sup> Path Vertex Realizations using the Initial R<sup>d</sup> and the Evolution Time Increment Array</li>
+ *		<li>Generate the R<sup>d</sup> Path Vertex Realizations using the Initial R<sup>d</sup> and a Fixed Evolution Time Width</li>
+ *		<li>Generate the R<sup>d</sup> Path Vertex Realizations using the Initial R<sup>d</sup> and the Array of Evolution Tenors</li>
+ *		<li>Generate the R<sup>d</sup> Path Vertex Realizations using the Initial R<sup>d</sup>, Spot Date, and the Array of Event Dates</li>
+ *		<li>Generate a Standard Instance of PathVertexRd</li>
+ *  </ul>
+ *  <br><br>
  *
  *  <br><br>
  *  <ul>
@@ -89,14 +118,15 @@ package org.drip.state.sequence;
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
  *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/sequence/README.md">Monte Carlo Path State Realizations</a></li>
  *  </ul>
- * <br><br>
+ *  <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PathVertexRd {
-	private org.drip.measure.process.DiffusionEvolver[] _aDE = null;
-	private org.drip.measure.discrete.CorrelatedPathVertexDimension _cpvd = null;
+public class PathVertexRd
+{
+	private DiffusionEvolver[] _diffusionEvolverArray = null;
+	private CorrelatedPathVertexDimension _correlatedPathVertexDimension = null;
 
 	/**
 	 * Generate a Standard Instance of PathVertexRd
@@ -133,28 +163,32 @@ public class PathVertexRd {
 	/**
 	 * PathVertexRd Constructor
 	 * 
-	 * @param cpvd Latent State Evolver CPVD Instance
-	 * @param aDE Array of the Latent State Diffusion Evolvers
+	 * @param correlatedPathVertexDimension Latent State Evolver CPVD Instance
+	 * @param diffusionEvolverArray Array of the Latent State Diffusion Evolvers
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PathVertexRd (
-		final org.drip.measure.discrete.CorrelatedPathVertexDimension cpvd,
-		final org.drip.measure.process.DiffusionEvolver[] aDE)
-		throws java.lang.Exception
+		final CorrelatedPathVertexDimension correlatedPathVertexDimension,
+		final DiffusionEvolver[] diffusionEvolverArray)
+		throws Exception
 	{
-		if (null == (_cpvd = cpvd) || null == (_aDE = aDE))
-			throw new java.lang.Exception ("PathVertexRd Constructor => Invalid Inputs");
+		if (null == (_correlatedPathVertexDimension = correlatedPathVertexDimension) ||
+			null == (_diffusionEvolverArray = diffusionEvolverArray)) {
+			throw new Exception ("PathVertexRd Constructor => Invalid Inputs");
+		}
 
-		int iNumDimension = _aDE.length;
+		int dimension = _diffusionEvolverArray.length;
 
-		if (iNumDimension != _cpvd.numDimension())
-			throw new java.lang.Exception ("PathVertexRd Constructor => Invalid Inputs");
+		if (dimension != _correlatedPathVertexDimension.numDimension()) {
+			throw new Exception ("PathVertexRd Constructor => Invalid Inputs");
+		}
 
-		for (int iDimension = 0; iDimension < iNumDimension; ++iDimension) {
-			if (null == _aDE[iDimension])
-				throw new java.lang.Exception ("PathVertexRd Constructor => Invalid Inputs");
+		for (int dimensionIndex = 0; dimensionIndex < dimension; ++dimensionIndex) {
+			if (null == _diffusionEvolverArray[dimensionIndex]) {
+				throw new Exception ("PathVertexRd Constructor => Invalid Inputs");
+			}
 		}
 	}
 
@@ -166,7 +200,7 @@ public class PathVertexRd {
 
 	public int dimension()
 	{
-		return _aDE.length;
+		return _diffusionEvolverArray.length;
 	}
 
 	/**
@@ -175,9 +209,9 @@ public class PathVertexRd {
 	 * @return The Latent State Evolver CPVD Instance
 	 */
 
-	public org.drip.measure.discrete.CorrelatedPathVertexDimension cpvd()
+	public CorrelatedPathVertexDimension cpvd()
 	{
-		return _cpvd;
+		return _correlatedPathVertexDimension;
 	}
 
 	/**
@@ -186,61 +220,74 @@ public class PathVertexRd {
 	 * @return The Array of the Latent State Diffusion Evolvers
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver[] evolver()
+	public DiffusionEvolver[] evolver()
 	{
-		return _aDE;
+		return _diffusionEvolverArray;
 	}
 
 	/**
-	 * Generate the R^d Path Vertex Realizations using the Initial R^d and the Evolution Time Width
+	 * Generate the R<sup>d</sup> Path Vertex Realizations using the Initial R<sup>d</sup> and the Evolution
+	 *  Time Increment Array
 	 * 
-	 * @param adblPathInitial The Initial Path R^d
-	 * @param adblTimeIncrement The Array of Evolution Time Width Increments
+	 * @param startingRd The Starting R<sup>d</sup> Value
+	 * @param timeIncrementArray The Array of Evolution Time Width Increments
 	 * 
-	 * @return The R^d Path Vertex Realizations
+	 * @return The R<sup>d</sup> Path Vertex Realizations
 	 */
 
 	public double[][][] pathVertex (
-		final double[] adblPathInitial,
-		final double[] adblTimeIncrement)
+		final double[] startingRd,
+		final double[] timeIncrementArray)
 	{
-		if (null == adblPathInitial || null == adblTimeIncrement) return null;
+		if (null == startingRd || null == timeIncrementArray) {
+			return null;
+		}
 
-		int iNumPath = _cpvd.numPath();
+		int pathCount = _correlatedPathVertexDimension.numPath();
 
-		int iNumDimension = dimension();
+		int dimension = dimension();
 
-		int iNumVertex = _cpvd.numVertex();
+		int vertexCount = _correlatedPathVertexDimension.numVertex();
 
-		if (iNumDimension != adblPathInitial.length || iNumVertex != adblTimeIncrement.length) return null;
+		if (dimension != startingRd.length || vertexCount != timeIncrementArray.length) {
+			return null;
+		}
 
-		double[][][] aaadblPathForward = new double[iNumPath][iNumVertex][iNumDimension];
+		double[][][] forwardPathVertexDimension = new double[pathCount][vertexCount][dimension];
 
-		org.drip.measure.discrete.VertexRd[] aVertexRd = _cpvd.multiPathVertexRd();
+		VertexRd[] vertexRdArray = _correlatedPathVertexDimension.multiPathVertexRd();
 
-		if (null == aVertexRd || iNumPath != aVertexRd.length) return null;
+		if (null == vertexRdArray || pathCount != vertexRdArray.length) {
+			return null;
+		}
 
-		for (int iPath = 0; iPath < iNumPath; ++iPath) {
-			if (null == aVertexRd[iPath]) return null;
+		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex) {
+			if (null == vertexRdArray[pathIndex]) {
+				return null;
+			}
 
-			java.util.List<double[]> lsVertexRd = aVertexRd[iPath].vertexList();
+			List<double[]> vertexRdList = vertexRdArray[pathIndex].vertexList();
 
-			org.drip.measure.realization.JumpDiffusionEdgeUnit[][] aaJDEU = new
-				org.drip.measure.realization.JumpDiffusionEdgeUnit[iNumDimension][iNumVertex];
-			org.drip.measure.realization.JumpDiffusionVertex[][] aaJDV = new
-				org.drip.measure.realization.JumpDiffusionVertex[iNumDimension][iNumVertex + 1];
+			JumpDiffusionEdgeUnit[][] jumpDiffusionEdgeUnitGrid =
+				new JumpDiffusionEdgeUnit[dimension][vertexCount];
+			JumpDiffusionVertex[][] jumpDiffusionVertexGrid =
+				new JumpDiffusionVertex[dimension][vertexCount + 1];
 
-			for (int iTimeVertex = 0; iTimeVertex < iNumVertex; ++iTimeVertex) {
-				double[] adblRd = lsVertexRd.get (iTimeVertex);
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				double[] rdArray = vertexRdList.get (vertexIndex);
 
-				if (null == adblRd || iNumDimension != adblRd.length) return null;
+				if (null == rdArray || dimension != rdArray.length) {
+					return null;
+				}
 
-				for (int iDimension = 0; iDimension < iNumDimension; ++iDimension) {
+				for (int dimensionIndex = 0; dimensionIndex < dimension; ++dimensionIndex) {
 					try {
-						aaJDEU[iDimension][iTimeVertex] = new
-							org.drip.measure.realization.JumpDiffusionEdgeUnit
-								(adblTimeIncrement[iTimeVertex], adblRd[iDimension], 0.);
-					} catch (java.lang.Exception e) {
+						jumpDiffusionEdgeUnitGrid[dimensionIndex][vertexIndex] = new JumpDiffusionEdgeUnit (
+							timeIncrementArray[vertexIndex],
+							rdArray[dimensionIndex],
+							0.
+						);
+					} catch (Exception e) {
 						e.printStackTrace();
 
 						return null;
@@ -248,125 +295,147 @@ public class PathVertexRd {
 				}
 			}
 
-			for (int iDimension = 0; iDimension < iNumDimension; ++iDimension) {
+			for (int dimensionIndex = 0; dimensionIndex < dimension; ++dimensionIndex) {
 				try {
-					aaJDV[iDimension] = _aDE[iDimension].vertexSequence (new
-						org.drip.measure.realization.JumpDiffusionVertex (0., adblPathInitial[iDimension],
-							0., false), aaJDEU[iDimension], adblTimeIncrement);
-				} catch (java.lang.Exception e) {
+					jumpDiffusionVertexGrid[dimensionIndex] =
+						_diffusionEvolverArray[dimensionIndex].vertexSequence (
+							new JumpDiffusionVertex (0., startingRd[dimensionIndex], 0., false),
+							jumpDiffusionEdgeUnitGrid[dimensionIndex],
+							timeIncrementArray
+						);
+				} catch (Exception e) {
 					e.printStackTrace();
 
 					return null;
 				}
 			}
 
-			for (int iTimeVertex = 0; iTimeVertex < iNumVertex; ++iTimeVertex) {
-				for (int iDimension = 0; iDimension < iNumDimension; ++iDimension)
-					aaadblPathForward[iPath][iTimeVertex][iDimension] =
-						aaJDV[iDimension][iTimeVertex].value();
+			for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+				for (int dimensionIndex = 0; dimensionIndex < dimension; ++dimensionIndex) {
+					forwardPathVertexDimension[pathIndex][vertexIndex][dimensionIndex] =
+						jumpDiffusionVertexGrid[dimensionIndex][vertexIndex].value();
+				}
 			}
 		}
 
-		return aaadblPathForward;
+		return forwardPathVertexDimension;
 	}
 
 	/**
-	 * Generate the R^d Path Vertex Realizations using the Initial R^d and the Evolution Time Width
+	 * Generate the R<sup>d</sup> Path Vertex Realizations using the Initial R<sup>d</sup> and a Fixed
+	 *  Evolution Time Width
 	 * 
-	 * @param adblPathInitial The Initial Path R^d
-	 * @param dblTimeIncrement The Evolution Time Width
+	 * @param startingRd The Starting R<sup>d</sup> Value
+	 * @param timeIncrement The Evolution Time Width
 	 * 
-	 * @return The R^d Path Vertex Realizations
+	 * @return The R<sup>d</sup> Path Vertex Realizations
 	 */
 
 	public double[][][] pathVertex (
-		final double[] adblPathInitial,
-		final double dblTimeIncrement)
+		final double[] startingRd,
+		final double timeIncrement)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTimeIncrement)) return null;
+		if (!NumberUtil.IsValid (timeIncrement)) {
+			return null;
+		}
 
-		int iNumVertex = _cpvd.numVertex();
+		int timeVertexCount = _correlatedPathVertexDimension.numVertex();
 
-		double[] adblTimeIncrement = new double[iNumVertex];
+		double[] timeIncrementArray = new double[timeVertexCount];
 
-		for (int iTimeVertex = 0; iTimeVertex < iNumVertex; ++iTimeVertex)
-			adblTimeIncrement[iTimeVertex] = dblTimeIncrement;
+		for (int timeVertexIndex = 0; timeVertexIndex < timeVertexCount; ++timeVertexIndex) {
+			timeIncrementArray[timeVertexIndex] = timeIncrement;
+		}
 
-		return pathVertex (adblPathInitial, adblTimeIncrement);
+		return pathVertex (startingRd, timeIncrementArray);
 	}
 
 	/**
-	 * Generate the R^d Path Vertex Realizations using the Initial R^d and the Array of Event Tenors
+	 * Generate the R<sup>d</sup> Path Vertex Realizations using the Initial R<sup>d</sup> and the Array of
+	 *  Evolution Tenors
 	 * 
-	 * @param adblPathInitial The Initial Path R^d
-	 * @param astrEventTenor The Array of Event Tenors
+	 * @param startingRd The Starting R<sup>d</sup> Value
+	 * @param evolutionTenorArray The Array of Evolution Tenors
 	 * 
-	 * @return The R^d Path Vertex Realizations
+	 * @return The R<sup>d</sup> Path Vertex Realizations
 	 */
 
 	public double[][][] pathVertex (
-		final double[] adblPathInitial,
-		final java.lang.String[] astrEventTenor)
+		final double[] startingRd,
+		final String[] evolutionTenorArray)
 	{
-		if (null == astrEventTenor) return null;
+		if (null == evolutionTenorArray) {
+			return null;
+		}
 
-		int iNumVertex = _cpvd.numVertex();
+		int timeVertexCount = _correlatedPathVertexDimension.numVertex();
 
-		if (iNumVertex != astrEventTenor.length) return null;
+		if (timeVertexCount != evolutionTenorArray.length) {
+			return null;
+		}
 
-		double[] adblTimeIncrement = new double[iNumVertex];
+		double[] timeIncrementArray = new double[timeVertexCount];
 
-		for (int iTimeVertex = 0; iTimeVertex < iNumVertex; ++iTimeVertex) {
+		for (int timeVertexIndex = 0; timeVertexIndex < timeVertexCount; ++timeVertexIndex) {
 			try {
-				adblTimeIncrement[iTimeVertex] = org.drip.analytics.support.Helper.TenorToYearFraction
-					(astrEventTenor[iTimeVertex]);
-			} catch (java.lang.Exception e) {
+				timeIncrementArray[timeVertexIndex] = Helper.TenorToYearFraction (
+					evolutionTenorArray[timeVertexIndex]
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return pathVertex (adblPathInitial, adblTimeIncrement);
+		return pathVertex (startingRd, timeIncrementArray);
 	}
 
 	/**
-	 * Generate the R^d Path Vertex Realizations using the Initial R^d and the Array of Event Tenors
+	 * Generate the R<sup>d</sup> Path Vertex Realizations using the Initial R<sup>d</sup>, Spot Date, and
+	 *  the Array of Event Dates
 	 * 
-	 * @param adblPathInitial The Initial Path R^d
-	 * @param iSpotDate The Spot Date
-	 * @param aiEventDate The Array of Event Dates
+	 * @param startingRd The Starting R<sup>d</sup> Value
+	 * @param spotDate The Spot Date
+	 * @param eventDateArray The Array of Event Dates
 	 * 
-	 * @return The R^d Path Vertex Realizations
+	 * @return The R<sup>d</sup> Path Vertex Realizations
 	 */
 
 	public double[][][] pathVertex (
-		final double[] adblPathInitial,
-		final int iSpotDate,
-		final int[] aiEventDate)
+		final double[] startingRd,
+		final int spotDate,
+		final int[] eventDateArray)
 	{
-		if (null == aiEventDate) return null;
+		if (null == eventDateArray) {
+			return null;
+		}
 
-		int iNumVertex = _cpvd.numVertex();
+		int timeVertexCount = _correlatedPathVertexDimension.numVertex();
 
-		if (iNumVertex != aiEventDate.length) return null;
+		if (timeVertexCount != eventDateArray.length) return null;
 
-		double[] adblTimeIncrement = new double[iNumVertex];
+		double[] timeIncrementArray = new double[timeVertexCount];
 
-		org.drip.analytics.daycount.ActActDCParams aap =
-			org.drip.analytics.daycount.ActActDCParams.FromFrequency (1);
+		ActActDCParams actActDCParams = ActActDCParams.FromFrequency (1);
 
-		for (int iTimeVertex = 0; iTimeVertex < iNumVertex; ++iTimeVertex) {
+		for (int timeVertexIndex = 0; timeVertexIndex < timeVertexCount; ++timeVertexIndex) {
 			try {
-				adblTimeIncrement[iTimeVertex] = org.drip.analytics.daycount.Convention.YearFraction
-					(iSpotDate, aiEventDate[iTimeVertex], "Act/Act ISDA", false, aap, "");
-			} catch (java.lang.Exception e) {
+				timeIncrementArray[timeVertexIndex] = Convention.YearFraction (
+					spotDate,
+					eventDateArray[timeVertexIndex],
+					"Act/Act ISDA",
+					false,
+					actActDCParams,
+					""
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return pathVertex (adblPathInitial, adblTimeIncrement);
+		return pathVertex (startingRd, timeIncrementArray);
 	}
 }

@@ -6,6 +6,9 @@ package org.drip.validation.hypothesis;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -116,49 +119,48 @@ package org.drip.validation.hypothesis;
 
 public class StatisticalTestOutcome
 {
-	private org.drip.validation.hypothesis.TTestOutcome _tTest = null;
-	private org.drip.validation.hypothesis.SignificanceTestOutcome _significanceTest = null;
+	private TTestOutcome _tTestOutcome = null;
+	private SignificanceTestOutcome _significanceTestOutcome = null;
 
 	/**
 	 * StatisticalTestOutcome Constructor
 	 * 
-	 * @param significanceTest The Significance Test
-	 * @param tTest The t-Test
+	 * @param significanceTestOutcome The Significance Test Outcome
+	 * @param tTestOutcome The t-Test Outcome
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public StatisticalTestOutcome (
-		final org.drip.validation.hypothesis.SignificanceTestOutcome significanceTest,
-		final org.drip.validation.hypothesis.TTestOutcome tTest)
-		throws java.lang.Exception
+		final SignificanceTestOutcome significanceTestOutcome,
+		final TTestOutcome tTestOutcome)
+		throws Exception
 	{
-		if (null == (_significanceTest = significanceTest) ||
-			null == (_tTest = tTest))
-		{
-			throw new java.lang.Exception ("StatisticalTestOutcome Constructor => Invalid Inputs");
+		if (null == (_significanceTestOutcome = significanceTestOutcome) ||
+			null == (_tTestOutcome = tTestOutcome)) {
+			throw new Exception ("StatisticalTestOutcome Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the t-Test Results
+	 * Retrieve the t-Test Outcome
 	 * 
-	 * @return The t-Test Results
+	 * @return The t-Test Outcome
 	 */
 
-	public org.drip.validation.hypothesis.TTestOutcome tTest()
+	public TTestOutcome tTest()
 	{
-		return _tTest;
+		return _tTestOutcome;
 	}
 
 	/**
-	 * Retrieve the Significance Test Results
+	 * Retrieve the Significance Test Outcome
 	 * 
-	 * @return The Significance Test Results
+	 * @return The Significance Test Outcome
 	 */
 
-	public org.drip.validation.hypothesis.SignificanceTestOutcome significanceTest()
+	public SignificanceTestOutcome significanceTest()
 	{
-		return _significanceTest;
+		return _significanceTestOutcome;
 	}
 }

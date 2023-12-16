@@ -1,11 +1,16 @@
 
 package org.drip.validation.quantile;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -116,8 +121,8 @@ package org.drip.validation.quantile;
 
 public class PlottingPosition
 {
+	private double _quantile = Double.NaN;
 	private int _orderStatisticOrdinal = -1;
-	private double _quantile = java.lang.Double.NaN;
 
 	/**
 	 * PlottingPosition Constructor
@@ -125,18 +130,17 @@ public class PlottingPosition
 	 * @param orderStatisticOrdinal The Order Statistic Ordinal
 	 * @param quantile The Order Statistic Quantile
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PlottingPosition (
 		final int orderStatisticOrdinal,
 		final double quantile)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (0 >= (_orderStatisticOrdinal = orderStatisticOrdinal) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_quantile = quantile) || 0. > _quantile)
-		{
-			throw new java.lang.Exception ("PlottingPosition Constructor => Invalid Inputs");
+			!NumberUtil.IsValid (_quantile = quantile) || 0. > _quantile) {
+			throw new Exception ("PlottingPosition Constructor => Invalid Inputs");
 		}
 	}
 

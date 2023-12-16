@@ -1,11 +1,16 @@
 
 package org.drip.validation.quantile;
 
+import org.drip.measure.statistics.MultivariateMoments;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -115,36 +120,32 @@ package org.drip.validation.quantile;
 
 public class QQTestOutcome
 {
-	private org.drip.validation.quantile.QQVertex[] _qqVertexArray = null;
+	private QQVertex[] _qqVertexArray = null;
 
 	/**
 	 * QQTestOutcome Constructor
 	 * 
 	 * @param qqVertexArray Array of Q-Q Vertexes
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public QQTestOutcome (
-		final org.drip.validation.quantile.QQVertex[] qqVertexArray)
-		throws java.lang.Exception
+		final QQVertex[] qqVertexArray)
+		throws Exception
 	{
-		if (null == (_qqVertexArray = qqVertexArray))
-		{
-			throw new java.lang.Exception ("QQTestOutcome Constructor => Invalid Inputs");
+		if (null == (_qqVertexArray = qqVertexArray)) {
+			throw new Exception ("QQTestOutcome Constructor => Invalid Inputs");
 		}
 
 		int qqVertexCount = _qqVertexArray.length;
 
-		if (0 == qqVertexCount)
-		{
-			throw new java.lang.Exception ("QQTestOutcome Constructor => Invalid Inputs");
+		if (0 == qqVertexCount) {
+			throw new Exception ("QQTestOutcome Constructor => Invalid Inputs");
 		}
 
-		for (int qqVertexIndex = 0; qqVertexIndex < qqVertexCount; ++qqVertexIndex)
-		{
-			if (null == _qqVertexArray[qqVertexIndex])
-			{
+		for (int qqVertexIndex = 0; qqVertexIndex < qqVertexCount; ++qqVertexIndex) {
+			if (null == _qqVertexArray[qqVertexIndex]) {
 				throw new java.lang.Exception ("QQTestOutcome Constructor => Invalid Inputs");
 			}
 		}
@@ -156,7 +157,7 @@ public class QQTestOutcome
 	 * @return Array of Q-Q Vertexes
 	 */
 
-	public org.drip.validation.quantile.QQVertex[] qqVertexArray()
+	public QQVertex[] qqVertexArray()
 	{
 		return _qqVertexArray;
 	}
@@ -166,32 +167,22 @@ public class QQTestOutcome
 	 * 
 	 * @return The Probability Plot Correlation Coefficient (PPCC)
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double probabilityPlotCorrelationCoefficient()
-		throws java.lang.Exception
+		throws Exception
 	{
 		int vertexCount = _qqVertexArray.length;
 		double[][] orderStatisticsSequence = new double[2][vertexCount];
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
 			orderStatisticsSequence[0][vertexIndex] = _qqVertexArray[vertexIndex].orderStatisticX();
 
 			orderStatisticsSequence[1][vertexIndex] = _qqVertexArray[vertexIndex].orderStatisticY();
 		}
 
-		return org.drip.measure.statistics.MultivariateMoments.Standard (
-			new java.lang.String[]
-			{
-				"x",
-				"y"
-			},
-			orderStatisticsSequence
-		).correlation (
-			"x",
-			"y"
-		);
+		return MultivariateMoments.Standard (new String[] {"x", "y"}, orderStatisticsSequence).correlation
+			("x", "y");
 	}
 }

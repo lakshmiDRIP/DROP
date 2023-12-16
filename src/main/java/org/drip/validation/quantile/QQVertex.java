@@ -1,11 +1,16 @@
 
 package org.drip.validation.quantile;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -116,9 +121,9 @@ package org.drip.validation.quantile;
 
 public class QQVertex
 {
-	private double _orderStatisticX = java.lang.Double.NaN;
-	private double _orderStatisticY = java.lang.Double.NaN;
-	private org.drip.validation.quantile.PlottingPosition _plottingPosition = null;
+	private double _orderStatisticX = Double.NaN;
+	private double _orderStatisticY = Double.NaN;
+	private PlottingPosition _plottingPosition = null;
 
 	/**
 	 * QQVertex Constructor
@@ -127,20 +132,19 @@ public class QQVertex
 	 * @param orderStatisticX X Order Statistic
 	 * @param orderStatisticY Y Order Statistic
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public QQVertex (
-		final org.drip.validation.quantile.PlottingPosition plottingPosition,
+		final PlottingPosition plottingPosition,
 		final double orderStatisticX,
 		final double orderStatisticY)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (null == (_plottingPosition = plottingPosition) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_orderStatisticX = orderStatisticX) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_orderStatisticY = orderStatisticY))
-		{
-			throw new java.lang.Exception ("QQVertex Constructor => Invalid Inputs");
+			!NumberUtil.IsValid (_orderStatisticX = orderStatisticX) ||
+			!NumberUtil.IsValid (_orderStatisticY = orderStatisticY)) {
+			throw new Exception ("QQVertex Constructor => Invalid Inputs");
 		}
 	}
 
@@ -150,7 +154,7 @@ public class QQVertex
 	 * @return The Vertex Plotting Position
 	 */
 
-	public org.drip.validation.quantile.PlottingPosition plottingPosition()
+	public PlottingPosition plottingPosition()
 	{
 		return _plottingPosition;
 	}

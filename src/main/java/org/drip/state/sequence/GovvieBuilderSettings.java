@@ -1,11 +1,19 @@
 
 package org.drip.state.sequence;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.service.template.LatentMarketStateBuilder;
+import org.drip.state.curve.BasisSplineGovvieYield;
+import org.drip.state.nonlinear.FlatForwardDiscountCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -94,67 +102,84 @@ package org.drip.state.sequence;
  * @author Lakshmi Krishnamurthy
  */
 
-public class GovvieBuilderSettings {
-	private double[] _adblTreasuryYield = null;
-	private double[] _adblTreasuryCoupon = null;
-	private java.lang.String[] _astrTenor = null;
-	private java.lang.String _strTreasuryCode = "";
-	private double[] _adblForwardYieldGround = null;
-	private org.drip.analytics.date.JulianDate _dtSpot = null;
-	private org.drip.state.curve.BasisSplineGovvieYield _bsgyGround = null;
+public class GovvieBuilderSettings
+{
+	private String _treasuryCode = "";
+	private JulianDate _spotDate = null;
+	private String[] _tenorArray = null;
+	private double[] _treasuryYieldArray = null;
+	private double[] _treasuryCouponArray = null;
+	private double[] _forwardYieldGroundArray = null;
+	private BasisSplineGovvieYield _groundYieldCurve = null;
 
-	protected static final org.drip.state.curve.BasisSplineGovvieYield GovvieCurve (
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final java.lang.String strCode,
-		final java.lang.String[] astrTenor,
-		final double[] adblCoupon,
-		final double[] adblYield)
+	protected static final BasisSplineGovvieYield GovvieCurve (
+		final JulianDate spotDate,
+		final String code,
+		final String[] tenorArray,
+		final double[] couponArray,
+		final double[] yieldArray)
 		throws Exception
 	{
-		int iNumInstrument = astrTenor.length;
-		org.drip.analytics.date.JulianDate[] adtMaturity = new
-			org.drip.analytics.date.JulianDate[iNumInstrument];
-		org.drip.analytics.date.JulianDate[] adtEffective = new
-			org.drip.analytics.date.JulianDate[iNumInstrument];
+		int instrumentCount = tenorArray.length;
+		JulianDate[] maturityDateArray = new JulianDate[instrumentCount];
+		JulianDate[] effectiveDateArray = new JulianDate[instrumentCount];
 
-		for (int i = 0; i < iNumInstrument; ++i)
-			adtMaturity[i] = (adtEffective[i] = dtSpot).addTenor (astrTenor[i]);
+		for (int i = 0; i < instrumentCount; ++i) {
+			maturityDateArray[i] = (effectiveDateArray[i] = spotDate).addTenor (tenorArray[i]);
+		}
 
-		return (org.drip.state.curve.BasisSplineGovvieYield)
-			org.drip.service.template.LatentMarketStateBuilder.GovvieCurve (strCode, dtSpot, adtEffective,
-				adtMaturity, adblCoupon, adblYield, "Yield",
-					org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);
+		return (BasisSplineGovvieYield) LatentMarketStateBuilder.GovvieCurve (
+			code,
+			spotDate,
+			effectiveDateArray,
+			maturityDateArray,
+			couponArray,
+			yieldArray,
+			"Yield",
+			LatentMarketStateBuilder.SHAPE_PRESERVING
+		);
 	}
 
 	/**
 	 * GovvieBuilderSettings Constructor
 	 * 
-	 * @param dtSpot The Spot Date
-	 * @param strTreasuryCode The Treasury Code
-	 * @param astrTenor Array of Maturity Tenors
-	 * @param adblTreasuryCoupon Array of Treasury Coupon
-	 * @param adblTreasuryYield Array of Treasury Yield
+	 * @param spotDate The Spot Date
+	 * @param treasuryCode The Treasury Code
+	 * @param tenorArray Array of Maturity Tenors
+	 * @param treasuryCouponArray Array of Treasury Coupon
+	 * @param treasuryYieldArray Array of Treasury Yield
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public GovvieBuilderSettings (
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final java.lang.String strTreasuryCode,
-		final java.lang.String[] astrTenor,
-		final double[] adblTreasuryCoupon,
-		final double[] adblTreasuryYield)
-		throws java.lang.Exception
+		final JulianDate spotDate,
+		final String treasuryCode,
+		final java.lang.String[] tenorArray,
+		final double[] treasuryCouponArray,
+		final double[] treasuryYieldArray)
+		throws Exception
 	{
-		if (null == (_bsgyGround = GovvieCurve (_dtSpot = dtSpot, _strTreasuryCode = strTreasuryCode,
-			_astrTenor = astrTenor, _adblTreasuryCoupon = adblTreasuryCoupon, _adblTreasuryYield =
-				adblTreasuryYield)))
-			throw new java.lang.Exception ("GovvieBuilderSettings Constructor => Invalid Inputs");
+		if (null == (
+			_groundYieldCurve = GovvieCurve (
+				_spotDate = spotDate,
+				_treasuryCode = treasuryCode,
+				_tenorArray = tenorArray,
+				_treasuryCouponArray = treasuryCouponArray,
+				_treasuryYieldArray = treasuryYieldArray
+			)
+		)) {
+			throw new Exception ("GovvieBuilderSettings Constructor => Invalid Inputs");
+		}
 
-		org.drip.state.nonlinear.FlatForwardDiscountCurve ffdcGround = _bsgyGround.flatForward (_astrTenor);
+		FlatForwardDiscountCurve groundFlatForwardDiscountCurve = _groundYieldCurve.flatForward
+			(_tenorArray);
 
-		if (null == ffdcGround || null == (_adblForwardYieldGround = ffdcGround.nodeValues()))
-			throw new java.lang.Exception ("GovvieBuilderSettings Constructor => Invalid Inputs");
+		if (null == groundFlatForwardDiscountCurve ||
+			null == (_forwardYieldGroundArray = groundFlatForwardDiscountCurve.nodeValues())
+		) {
+			throw new Exception ("GovvieBuilderSettings Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -163,9 +188,9 @@ public class GovvieBuilderSettings {
 	 * @return The Spot Date
 	 */
 
-	public org.drip.analytics.date.JulianDate spot()
+	public JulianDate spot()
 	{
-		return _dtSpot;
+		return _spotDate;
 	}
 
 	/**
@@ -174,9 +199,9 @@ public class GovvieBuilderSettings {
 	 * @return The Treasury Code
 	 */
 
-	public java.lang.String code()
+	public String code()
 	{
-		return _strTreasuryCode;
+		return _treasuryCode;
 	}
 
 	/**
@@ -185,9 +210,9 @@ public class GovvieBuilderSettings {
 	 * @return The Treasury Maturity Tenor Array
 	 */
 
-	public java.lang.String[] tenors()
+	public String[] tenors()
 	{
-		return _astrTenor;
+		return _tenorArray;
 	}
 
 	/**
@@ -198,7 +223,7 @@ public class GovvieBuilderSettings {
 
 	public double[] coupon()
 	{
-		return _adblTreasuryCoupon;
+		return _treasuryCouponArray;
 	}
 
 	/**
@@ -209,7 +234,7 @@ public class GovvieBuilderSettings {
 
 	public double[] yield()
 	{
-		return _adblTreasuryYield;
+		return _treasuryYieldArray;
 	}
 
 	/**
@@ -218,9 +243,9 @@ public class GovvieBuilderSettings {
 	 * @return The Ground State Govvie Curve
 	 */
 
-	public org.drip.state.curve.BasisSplineGovvieYield groundState()
+	public BasisSplineGovvieYield groundState()
 	{
-		return _bsgyGround;
+		return _groundYieldCurve;
 	}
 
 	/**
@@ -231,7 +256,7 @@ public class GovvieBuilderSettings {
 
 	public double[] groundForwardYield()
 	{
-		return _adblForwardYieldGround;
+		return _forwardYieldGroundArray;
 	}
 
 	/**
@@ -242,6 +267,6 @@ public class GovvieBuilderSettings {
 
 	public int dimension()
 	{
-		return _astrTenor.length;
+		return _tenorArray.length;
 	}
 }

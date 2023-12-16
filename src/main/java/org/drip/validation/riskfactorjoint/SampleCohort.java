@@ -1,11 +1,19 @@
 
 package org.drip.validation.riskfactorjoint;
 
+import java.util.List;
+
+import org.drip.measure.stochastic.LabelRdVertex;
+import org.drip.validation.evidence.Sample;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -125,7 +133,7 @@ public interface SampleCohort
 	 * @return The List of Latent State Labels
 	 */
 
-	public abstract java.util.List<java.lang.String> latentStateLabelList();
+	public abstract List<String> latentStateLabelList();
 
 	/**
 	 * Retrieve the Vertex R<sup>d</sup> Multi-Factor Realizations
@@ -133,7 +141,7 @@ public interface SampleCohort
 	 * @return The Vertex R<sup>d</sup> Multi-Factor Realizations
 	 */
 
-	public abstract org.drip.measure.stochastic.LabelRdVertex vertexRd();
+	public abstract LabelRdVertex vertexRd();
 
 	/**
 	 * Reduce the Joint Realizations for the Pair of State Labels to a Single Risk Factor Sample
@@ -144,7 +152,8 @@ public interface SampleCohort
 	 * @return The Single Risk Factor Sample
 	 */
 
-	public abstract org.drip.validation.evidence.Sample reduce (
-		final java.lang.String label1,
-		final java.lang.String label2);
+	public abstract Sample reduce (
+		final String label1,
+		final String label2
+	);
 }

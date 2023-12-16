@@ -17,6 +17,9 @@ import org.drip.service.template.*;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -111,42 +114,33 @@ public class GBPLIBOR3M {
 	/**
 	 * Entry Point
 	 * 
-	 * @param args Argument Array
+	 * @param argumentArray Argument Array
 	 * 
 	 * @throws Exception Propagate the Encountered Exception
 	 */
 
 	public static final void main (
-		final String[] args)
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		JulianDate dtSpot = DateUtil.Today();
+		JulianDate spotDate = DateUtil.Today();
 
-		String strCurrency = "GBP";
+		String currency = "GBP";
 
-		Component futures = ExchangeInstrumentBuilder.ForwardRateFutures (
-			dtSpot,
-			strCurrency
-		);
+		Component futures = ExchangeInstrumentBuilder.ForwardRateFutures (spotDate, currency);
 
-		CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = new CurveSurfaceQuoteContainer();
 
-		csqc.setFundingState (
+		curveSurfaceQuoteContainer.setFundingState (
 			LatentMarketStateBuilder.SmoothFundingCurve (
-				dtSpot,
-				strCurrency,
-				new String[] {
-					"04D", "07D", "14D", "30D", "60D"
-				},
-				new double[] {
-					0.0017, 0.0017, 0.0018, 0.0020, 0.0023
-				},
+				spotDate,
+				currency,
+				new String[] {"04D", "07D", "14D", "30D", "60D"},
+				new double[] {0.0017, 0.0017, 0.0018, 0.0020, 0.0023},
 				"ForwardRate",
-				new double[] {
-					0.0027, 0.0032, 0.0041, 0.0054, 0.0077, 0.0104, 0.0134, 0.0160
-				},
+				new double[] {0.0027, 0.0032, 0.0041, 0.0054, 0.0077, 0.0104, 0.0134, 0.0160},
 				"ForwardRate",
 				new String[] {
 					"04Y", "05Y", "06Y", "07Y", "08Y", "09Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y", "40Y", "50Y"
@@ -159,9 +153,9 @@ public class GBPLIBOR3M {
 		);
 
 		Map<String, Double> mapOutput = futures.value (
-			ValuationParams.Spot (dtSpot.julian()),
+			ValuationParams.Spot (spotDate.julian()),
 			null,
-			csqc,
+			curveSurfaceQuoteContainer,
 			null
 		);
 
@@ -200,19 +194,24 @@ public class GBPLIBOR3M {
 
 		System.out.println ("\t\t|-----------------------------------------------------------------------------------------------------------------------||");
 
-		for (CompositePeriod cp : futures.couponPeriods())
+		for (CompositePeriod compositePeriod : futures.couponPeriods())
 			System.out.println ("\t\t| [" +
-				new JulianDate (cp.startDate()) + " - " +
-				new JulianDate (cp.endDate()) + "] => " +
-				new JulianDate (cp.payDate()) + " | " +
-				new JulianDate (cp.fxFixingDate()) + " | " +
-				FormatUtil.FormatDouble (cp.baseNotional(), 1, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (cp.couponDCF(), 1, 4, 1.) + " | " +
-				cp.tenor() + " | " +
-				cp.fundingLabel().fullyQualifiedName() + " | " +
-				cp.floaterLabel().fullyQualifiedName() + " | " +
-				FormatUtil.FormatDouble (cp.df (csqc), 1, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (cp.couponMetrics (dtSpot.julian(), csqc).rate(), 1, 2, 100.) + "% ||"
+				new JulianDate (compositePeriod.startDate()) + " - " +
+				new JulianDate (compositePeriod.endDate()) + "] => " +
+				new JulianDate (compositePeriod.payDate()) + " | " +
+				new JulianDate (compositePeriod.fxFixingDate()) + " | " +
+				FormatUtil.FormatDouble (compositePeriod.baseNotional(), 1, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (compositePeriod.couponDCF(), 1, 4, 1.) + " | " +
+				compositePeriod.tenor() + " | " +
+				compositePeriod.fundingLabel().fullyQualifiedName() + " | " +
+				compositePeriod.floaterLabel().fullyQualifiedName() + " | " +
+				FormatUtil.FormatDouble (compositePeriod.df (curveSurfaceQuoteContainer), 1, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (
+					compositePeriod.couponMetrics (spotDate.julian(), curveSurfaceQuoteContainer).rate(),
+					1,
+					2,
+					100.
+				) + "% ||"
 			);
 
 		System.out.println ("\t\t|-----------------------------------------------------------------------------------------------------------------------||");
