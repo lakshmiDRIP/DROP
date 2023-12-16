@@ -17,6 +17,9 @@ import org.drip.service.template.*;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -106,52 +109,47 @@ import org.drip.service.template.*;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AUD {
+public class AUD
+{
 
 	/**
 	 * Entry Point
 	 * 
-	 * @param args Argument Array
+	 * @param argumentArray Argument Array
 	 * 
 	 * @throws Exception Propagate the Exception encountered
 	 */
 
 	public static final void main (
-		final String[] args)
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		JulianDate dtSpot = DateUtil.Today();
+		JulianDate spotDate = DateUtil.Today();
 
-		String strCurrency = "AUD";
-		String strMaturityTenor = "5Y";
+		String currency = "AUD";
+		String maturityTenor = "5Y";
 
 		FixFloatComponent irs = OTCInstrumentBuilder.FixFloatStandard (
-			dtSpot,
-			strCurrency,
+			spotDate,
+			currency,
 			"ALL",
-			strMaturityTenor,
+			maturityTenor,
 			"MAIN",
 			0.0206
 		);
 
-		CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer marketDataContainer = new CurveSurfaceQuoteContainer();
 
-		csqc.setFundingState (
+		marketDataContainer.setFundingState (
 			LatentMarketStateBuilder.SmoothFundingCurve (
-				dtSpot,
-				strCurrency,
-				new String[] {
-					"04D", "07D", "14D", "30D", "60D"
-				},
-				new double[] {
-					0.0017, 0.0017, 0.0018, 0.0020, 0.0023
-				},
+				spotDate,
+				currency,
+				new String[] {"04D", "07D", "14D", "30D", "60D"},
+				new double[] {0.0017, 0.0017, 0.0018, 0.0020, 0.0023},
 				"ForwardRate",
-				new double[] {
-					0.0027, 0.0032, 0.0041, 0.0054, 0.0077, 0.0104, 0.0134, 0.0160
-				},
+				new double[] {0.0027, 0.0032, 0.0041, 0.0054, 0.0077, 0.0104, 0.0134, 0.0160},
 				"ForwardRate",
 				new String[] {
 					"04Y", "05Y", "06Y", "07Y", "08Y", "09Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y", "40Y", "50Y"
@@ -163,15 +161,15 @@ public class AUD {
 			)
 		);
 
-		Map<String, Double> mapOutput = irs.value (
-			ValuationParams.Spot (dtSpot.julian()),
+		Map<String, Double> measureMap = irs.value (
+			ValuationParams.Spot (spotDate.julian()),
 			null,
-			csqc,
+			marketDataContainer,
 			null
 		);
 
-		for (Map.Entry<String, Double> me : mapOutput.entrySet())
-			System.out.println ("\t | " + me.getKey() + " => " + me.getValue() + " ||");
+		for (Map.Entry<String, Double> measureMapEntry : measureMap.entrySet())
+			System.out.println ("\t | " + measureMapEntry.getKey() + " => " + measureMapEntry.getValue() + " ||");
 
 		System.out.println ("\t |------------------------------||");
 
@@ -205,19 +203,24 @@ public class AUD {
 
 		System.out.println ("\t\t|----------------------------------------------------------------------------------------------------------------------||");
 
-		for (CompositePeriod cp : irs.derivedStream().cashFlowPeriod())
+		for (CompositePeriod compositePeriod : irs.derivedStream().cashFlowPeriod())
 			System.out.println ("\t\t| [" +
-				new JulianDate (cp.startDate()) + " - " +
-				new JulianDate (cp.endDate()) + "] => " +
-				new JulianDate (cp.payDate()) + " | " +
-				new JulianDate (cp.fxFixingDate()) + " | " +
-				FormatUtil.FormatDouble (cp.baseNotional(), 1, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (cp.couponDCF(), 1, 4, 1.) + " | " +
-				cp.tenor() + " | " +
-				cp.fundingLabel().fullyQualifiedName() + " | " +
-				cp.floaterLabel().fullyQualifiedName() + " | " +
-				FormatUtil.FormatDouble (cp.df (csqc), 1, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (cp.couponMetrics (dtSpot.julian(), csqc).rate(), 1, 2, 100.) + "% ||"
+				new JulianDate (compositePeriod.startDate()) + " - " +
+				new JulianDate (compositePeriod.endDate()) + "] => " +
+				new JulianDate (compositePeriod.payDate()) + " | " +
+				new JulianDate (compositePeriod.fxFixingDate()) + " | " +
+				FormatUtil.FormatDouble (compositePeriod.baseNotional(), 1, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (compositePeriod.couponDCF(), 1, 4, 1.) + " | " +
+				compositePeriod.tenor() + " | " +
+				compositePeriod.fundingLabel().fullyQualifiedName() + " | " +
+				compositePeriod.floaterLabel().fullyQualifiedName() + " | " +
+				FormatUtil.FormatDouble (compositePeriod.df (marketDataContainer), 1, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (
+					compositePeriod.couponMetrics (spotDate.julian(), marketDataContainer).rate(),
+					1,
+					2,
+					100.
+				) + "% ||"
 			);
 
 		System.out.println ("\t\t|----------------------------------------------------------------------------------------------------------------------||");
@@ -250,18 +253,23 @@ public class AUD {
 
 		System.out.println ("\t\t|--------------------------------------------------------------------------------------------------------||");
 
-		for (CompositePeriod cp : irs.referenceStream().cashFlowPeriod())
+		for (CompositePeriod compositePeriod : irs.referenceStream().cashFlowPeriod())
 			System.out.println ("\t\t| [" +
-				new JulianDate (cp.startDate()) + " - " +
-				new JulianDate (cp.endDate()) + "] => " +
-				new JulianDate (cp.payDate()) + " | " +
-				new JulianDate (cp.fxFixingDate()) + " | " +
-				FormatUtil.FormatDouble (cp.baseNotional(), 1, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (cp.couponDCF(), 1, 4, 1.) + " | " +
-				cp.tenor() + " | " +
-				cp.fundingLabel().fullyQualifiedName() + " | " +
-				FormatUtil.FormatDouble (cp.df (csqc), 1, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (cp.couponMetrics (dtSpot.julian(), csqc).rate(), 1, 2, 100.) + "% ||"
+				new JulianDate (compositePeriod.startDate()) + " - " +
+				new JulianDate (compositePeriod.endDate()) + "] => " +
+				new JulianDate (compositePeriod.payDate()) + " | " +
+				new JulianDate (compositePeriod.fxFixingDate()) + " | " +
+				FormatUtil.FormatDouble (compositePeriod.baseNotional(), 1, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (compositePeriod.couponDCF(), 1, 4, 1.) + " | " +
+				compositePeriod.tenor() + " | " +
+				compositePeriod.fundingLabel().fullyQualifiedName() + " | " +
+				FormatUtil.FormatDouble (compositePeriod.df (marketDataContainer), 1, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (
+					compositePeriod.couponMetrics (spotDate.julian(), marketDataContainer).rate(),
+					1,
+					2,
+					100.
+				) + "% ||"
 			);
 
 		System.out.println ("\t\t|--------------------------------------------------------------------------------------------------------||");

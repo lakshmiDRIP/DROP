@@ -1,11 +1,18 @@
 
 package org.drip.state.sequence;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.state.govvie.GovvieCurve;
+import org.drip.state.nonlinear.FlatForwardGovvieCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,7 +87,15 @@ package org.drip.state.sequence;
 
 /**
  * <i>PathGovvie</i> exposes the Functionality to generate a Sequence of Govvie Curve Realizations across
- * Multiple Paths.
+ * Multiple Paths. It exposes the following functionality:
+ *  
+ *  <br><br>
+ *  <ul>
+ *		<li>PathGovvie Constructor</li>
+ *		<li>Retrieve the Govvie Builder Settings Instance</li>
+ *		<li>Generate the R<sup>d</sup> Path Govvie Curves using the Ground State Yield</li>
+ *  </ul>
+ *  <br><br>
  *
  *  <br><br>
  *  <ul>
@@ -94,91 +109,105 @@ package org.drip.state.sequence;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PathGovvie extends org.drip.state.sequence.PathRd {
-	private org.drip.state.sequence.GovvieBuilderSettings _gbs = null;
+public class PathGovvie extends PathRd
+{
+	private GovvieBuilderSettings _govvieBuilderSettings = null;
 
 	/**
 	 * PathGovvie Constructor
 	 * 
-	 * @param gbs Govvie Builder Settings Instance
-	 * @param dblVolatility Volatility
-	 * @param bLogNormal TRUE - The Generated Random Numbers are Log Normal
+	 * @param govvieBuilderSettings Govvie Builder Settings Instance
+	 * @param volatility Volatility
+	 * @param logNormal TRUE - The Generated Random Numbers are Log Normal
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PathGovvie (
-		final org.drip.state.sequence.GovvieBuilderSettings gbs,
-		final double dblVolatility,
-		final boolean bLogNormal)
-		throws java.lang.Exception
+		final GovvieBuilderSettings govvieBuilderSettings,
+		final double volatility,
+		final boolean logNormal)
+		throws Exception
 	{
-		super (gbs.groundForwardYield(), dblVolatility, bLogNormal);
+		super (govvieBuilderSettings.groundForwardYield(), volatility, logNormal);
 
-		if (null == (_gbs = gbs)) throw new java.lang.Exception ("PathGovvie Constructor => Invalid Inputs");
+		if (null == (_govvieBuilderSettings = govvieBuilderSettings)) {
+			throw new Exception ("PathGovvie Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Generate the Govvie Builder Settings Instance
+	 * Retrieve the Govvie Builder Settings Instance
 	 * 
 	 * @return The Govvie Builder Settings Instance
 	 */
 
-	public org.drip.state.sequence.GovvieBuilderSettings govvieBuilderSettings()
+	public GovvieBuilderSettings govvieBuilderSettings()
 	{
-		return _gbs;
+		return _govvieBuilderSettings;
 	}
 
 	/**
-	 * Generate the R^d Path Govvie Curves using the Initial R^d and the Evolution Time Width
+	 * Generate the R<sup>d</sup> Path Govvie Curves using the Ground State Yield
 	 * 
-	 * @param iNumPath Number of Paths
+	 * @param pathCount Number of Paths
 	 * 
-	 * @return The R^d Path//Vertex Govvie Curves
+	 * @return The R<sup>d</sup> Path/Vertex Govvie Curves
 	 */
 
-	public org.drip.state.govvie.GovvieCurve[] curveSequence (
-		final int iNumPath)
+	public GovvieCurve[] curveSequence (
+		final int pathCount)
 	{
-		java.lang.String strCurrency = _gbs.groundState().currency();
+		String currency = _govvieBuilderSettings.groundState().currency();
 
-		org.drip.analytics.date.JulianDate dtSpot = _gbs.spot();
+		JulianDate spotDate = _govvieBuilderSettings.spot();
 
-		double[][] aadblPathSequence = sequence (iNumPath);
+		double[][] pathSequenceGrid = sequence (pathCount);
 
-		java.lang.String strTreasuryCode = _gbs.code();
+		String treasuryCode = _govvieBuilderSettings.code();
 
-		java.lang.String[] astrTenor = _gbs.tenors();
+		String[] tenorArray = _govvieBuilderSettings.tenors();
 
-		if (null == aadblPathSequence) return null;
-
-		int iEpochDate = dtSpot.julian();
-
-		int iNumTenor = astrTenor.length;
-		int[] aiDate = new int[iNumTenor];
-		org.drip.state.nonlinear.FlatForwardGovvieCurve[] aFFGC = new
-			org.drip.state.nonlinear.FlatForwardGovvieCurve[iNumPath];
-
-		for (int iTenor = 0; iTenor < iNumTenor; ++iTenor) {
-			org.drip.analytics.date.JulianDate dtTenor = dtSpot.addTenor (astrTenor[iTenor]);
-
-			if (null == dtTenor) return null;
-
-			aiDate[iTenor] = dtTenor.julian();
+		if (null == pathSequenceGrid) {
+			return null;
 		}
 
-		for (int iPath = 0; iPath < iNumPath; ++iPath) {
+		int epochDate = spotDate.julian();
+
+		int tenorCount = tenorArray.length;
+		int[] tenorDateArray = new int[tenorCount];
+		FlatForwardGovvieCurve[] flatForwardGovvieCurveArray = new FlatForwardGovvieCurve[pathCount];
+
+		for (int tenorIndex = 0; tenorIndex < tenorCount; ++tenorIndex) {
+			JulianDate tenorDate = spotDate.addTenor (tenorArray[tenorIndex]);
+
+			if (null == tenorDate) {
+				return null;
+			}
+
+			tenorDateArray[tenorIndex] = tenorDate.julian();
+		}
+
+		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex) {
 			try {
-				if (null == (aFFGC[iPath] = new org.drip.state.nonlinear.FlatForwardGovvieCurve (iEpochDate,
-					strTreasuryCode, strCurrency, aiDate, aadblPathSequence[iPath])))
+				if (null == (
+					flatForwardGovvieCurveArray[pathIndex] = new FlatForwardGovvieCurve (
+						epochDate,
+						treasuryCode,
+						currency,
+						tenorDateArray,
+						pathSequenceGrid[pathIndex]
+					)
+				)) {
 					return null;
-			} catch (java.lang.Exception e) {
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return aFFGC;
+		return flatForwardGovvieCurveArray;
 	}
 }

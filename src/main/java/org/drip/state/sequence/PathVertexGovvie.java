@@ -1,11 +1,21 @@
 
 package org.drip.state.sequence;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.support.Helper;
+import org.drip.measure.discrete.CorrelatedPathVertexDimension;
+import org.drip.measure.process.DiffusionEvolver;
+import org.drip.state.govvie.GovvieCurve;
+import org.drip.state.nonlinear.FlatForwardGovvieCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -79,7 +89,20 @@ package org.drip.state.sequence;
  */
 
 /**
- * <i>PathVertexGovvie</i> exposes the Functionality to generate a Sequence of Path/Vertex Govvie Curves.
+ * <i>PathVertexGovvie</i> exposes the Functionality to generate a Sequence of Path/Vertex Govvie Curves. It
+ *  exposes the following functionality:
+ *  
+ *  <br><br>
+ *  <ul>
+ *		<li>PathVertexGovvie Constructor</li>
+ *		<li>Generate the Govvie Builder Settings Instance</li>
+ *		<li>Generate the R<sup>d</sup> Path/Vertex Govvie Curves using the Initial R<sup>d</sup> and the Evolution Time Increment Array</li>
+ *		<li>Generate the R<sup>d</sup> Path/Vertex Govvie Curves using the Initial R<sup>d</sup> and a Fixed Evolution Time Width</li>
+ *		<li>Generate the R<sup>d</sup> Path/Vertex Govvie Curves using the Initial R<sup>d</sup> and the Array of Forward Evolution Tenors</li>
+ *		<li>Generate the R<sup>d</sup> Path/Vertex Govvie Curves using the Initial R<sup>d</sup> and the Array of Forward Evolution Dates</li>
+ *		<li>Generate a Standard Instance of PathVertexGovvie</li>
+ *  </ul>
+ *  <br><br>
  *
  *  <br><br>
  *  <ul>
@@ -93,47 +116,58 @@ package org.drip.state.sequence;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PathVertexGovvie extends org.drip.state.sequence.PathVertexRd {
-	private org.drip.state.sequence.GovvieBuilderSettings _gbs = null;
+public class PathVertexGovvie extends PathVertexRd
+{
+	private GovvieBuilderSettings _govvieBuilderSettings = null;
 
-	private org.drip.state.govvie.GovvieCurve[][] curveVertex (
-		final double[][][] aaadblPathForward)
+	private GovvieCurve[][] curveVertex (
+		final double[][][] forwardPathRdVertexRealization)
 	{
-		if (null == aaadblPathForward) return null;
+		if (null == forwardPathRdVertexRealization) {
+			return null;
+		}
 
-		org.drip.measure.discrete.CorrelatedPathVertexDimension cpvd = cpvd();
+		CorrelatedPathVertexDimension correlatedPathVertexDimension = cpvd();
 
-		int iNumPath = cpvd.numPath();
+		int pathCount = correlatedPathVertexDimension.numPath();
 
-		int iNumVertex = cpvd.numVertex();
+		int timeVertexCount = correlatedPathVertexDimension.numVertex();
 
-		java.lang.String[] astrTenor = _gbs.tenors();
+		String[] tenorArray = _govvieBuilderSettings.tenors();
 
-		java.lang.String strTreasuryCode = _gbs.code();
+		String treasuryCode = _govvieBuilderSettings.code();
 
-		org.drip.analytics.date.JulianDate dtSpot = _gbs.spot();
+		JulianDate spotDate = _govvieBuilderSettings.spot();
 
-		java.lang.String strCurrency = _gbs.groundState().currency();
+		String currency = _govvieBuilderSettings.groundState().currency();
 
-		org.drip.state.nonlinear.FlatForwardGovvieCurve[][] aaFFGC = new
-			org.drip.state.nonlinear.FlatForwardGovvieCurve[iNumPath][iNumVertex];
+		FlatForwardGovvieCurve[][] flatForwardGovvieCurveGrid =
+			new FlatForwardGovvieCurve[pathCount][timeVertexCount];
 
-		for (int iTimeVertex = 0; iTimeVertex < iNumVertex; ++iTimeVertex) {
-			org.drip.analytics.date.JulianDate dtEvent = dtSpot.addYears (iTimeVertex + 1);
+		for (int timeVertexIndex = 0; timeVertexIndex < timeVertexCount; ++timeVertexIndex) {
+			JulianDate eventDate = spotDate.addYears (timeVertexIndex + 1);
 
-			if (null == dtEvent) return null;
+			if (null == eventDate) {
+				return null;
+			}
 
-			int iEventDate = dtEvent.julian();
+			int eventDateInteger = eventDate.julian();
 
-			int[] aiDate = org.drip.analytics.support.Helper.TenorToDate (dtEvent, astrTenor);
+			int[] tenorDateArray = Helper.TenorToDate (eventDate, tenorArray);
 
-			for (int iPath = 0; iPath < iNumPath; ++iPath) {
+			for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex) {
 				try {
-					if (null == (aaFFGC[iPath][iTimeVertex] = new
-						org.drip.state.nonlinear.FlatForwardGovvieCurve (iEventDate, strTreasuryCode,
-							strCurrency, aiDate, aaadblPathForward[iPath][iTimeVertex])))
+					if (null == (
+						flatForwardGovvieCurveGrid[pathIndex][timeVertexIndex] = new FlatForwardGovvieCurve (
+							eventDateInteger,
+							treasuryCode,
+							currency,
+							tenorDateArray,
+							forwardPathRdVertexRealization[pathIndex][timeVertexIndex]
+						))) {
 						return null;
-				} catch (java.lang.Exception e) {
+					}
+				} catch (Exception e) {
 					e.printStackTrace();
 
 					return null;
@@ -141,37 +175,43 @@ public class PathVertexGovvie extends org.drip.state.sequence.PathVertexRd {
 			}
 		}
 
-		return aaFFGC;
+		return flatForwardGovvieCurveGrid;
 	}
 
 	/**
 	 * Generate a Standard Instance of PathVertexGovvie
 	 * 
-	 * @param gbs Govvie Builder Settings Instance
-	 * @param cpvd Latent State Evolver CPVD Instance
-	 * @param de The Latent State Diffusion Evolver
+	 * @param govvieBuilderSettings Govvie Builder Settings Instance
+	 * @param correlatedPathVertexDimension Latent State Evolver CPVD Instance
+	 * @param diffusionEvolver The Latent State Diffusion Evolver
 	 * 
 	 * @return Standard Instance of PathVertexGovvie
 	 */
 
 	public static final PathVertexGovvie Standard (
-		final org.drip.state.sequence.GovvieBuilderSettings gbs,
-		final org.drip.measure.discrete.CorrelatedPathVertexDimension cpvd,
-		final org.drip.measure.process.DiffusionEvolver de)
+		final GovvieBuilderSettings govvieBuilderSettings,
+		final CorrelatedPathVertexDimension correlatedPathVertexDimension,
+		final DiffusionEvolver diffusionEvolver)
 	{
-		if (null == cpvd || null == de) return null;
+		if (null == correlatedPathVertexDimension || null == diffusionEvolver) {
+			return null;
+		}
 
-		int iNumDimension = cpvd.numDimension();
+		int dimension = correlatedPathVertexDimension.numDimension();
 
-		org.drip.measure.process.DiffusionEvolver[] aDE = new
-			org.drip.measure.process.DiffusionEvolver[iNumDimension];
+		DiffusionEvolver[] diffusionEvolverArray = new DiffusionEvolver[dimension];
 
-		for (int iDimension = 0; iDimension < iNumDimension; ++iDimension)
-			aDE[iDimension] = de;
+		for (int dimensionIndex = 0; dimensionIndex < dimension; ++dimensionIndex) {
+			diffusionEvolverArray[dimensionIndex] = diffusionEvolver;
+		}
 
 		try {
-			return new PathVertexGovvie (gbs, cpvd, aDE);
-		} catch (java.lang.Exception e) {
+			return new PathVertexGovvie (
+				govvieBuilderSettings,
+				correlatedPathVertexDimension,
+				diffusionEvolverArray
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -181,23 +221,24 @@ public class PathVertexGovvie extends org.drip.state.sequence.PathVertexRd {
 	/**
 	 * PathVertexGovvie Constructor
 	 * 
-	 * @param gbs Govvie Builder Settings
-	 * @param cpvd Latent State Evolver CPVD Instance
-	 * @param aDE Array of the Latent State Diffusion Evolvers
+	 * @param govvieBuilderSettings Govvie Builder Settings
+	 * @param correlatedPathVertexDimension Latent State Evolver CPVD Instance
+	 * @param diffusionEvolverArray Array of the Latent State Diffusion Evolvers
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PathVertexGovvie (
-		final org.drip.state.sequence.GovvieBuilderSettings gbs,
-		final org.drip.measure.discrete.CorrelatedPathVertexDimension cpvd,
-		final org.drip.measure.process.DiffusionEvolver[] aDE)
-		throws java.lang.Exception
+		final GovvieBuilderSettings govvieBuilderSettings,
+		final CorrelatedPathVertexDimension correlatedPathVertexDimension,
+		final DiffusionEvolver[] diffusionEvolverArray)
+		throws Exception
 	{
-		super (cpvd, aDE);
+		super (correlatedPathVertexDimension, diffusionEvolverArray);
 
-		if (null == (_gbs = gbs))
-			throw new java.lang.Exception ("PathVertexGovvie Constructor => Invalid Inputs");
+		if (null == (_govvieBuilderSettings = govvieBuilderSettings)) {
+			throw new Exception ("PathVertexGovvie Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -206,64 +247,76 @@ public class PathVertexGovvie extends org.drip.state.sequence.PathVertexRd {
 	 * @return The Govvie Builder Settings Instance
 	 */
 
-	public org.drip.state.sequence.GovvieBuilderSettings govvieBuilderSettings()
+	public GovvieBuilderSettings govvieBuilderSettings()
 	{
-		return _gbs;
+		return _govvieBuilderSettings;
 	}
 
 	/**
-	 * Generate the R^d Path/Vertex Govvie Curves using the Initial R^d and the Evolution Time Width
+	 * Generate the R<sup>d</sup> Path/Vertex Govvie Curves using the Initial R<sup>d</sup> and the Evolution
+	 *  Time Increment Array
 	 * 
-	 * @param adblTimeIncrement Array of the Evolution Time Widths
+	 * @param timeIncrementArray Array of the Evolution Time Widths
 	 * 
-	 * @return The R^d Path//Vertex Govvie Curves
+	 * @return The R<sup>d</sup> Path//Vertex Govvie Curves
 	 */
 
-	public org.drip.state.govvie.GovvieCurve[][] pathVertex (
-		final double[] adblTimeIncrement)
+	public GovvieCurve[][] pathVertex (
+		final double[] timeIncrementArray)
 	{
-		return curveVertex (pathVertex (_gbs.groundForwardYield(), adblTimeIncrement));
+		return curveVertex (pathVertex (_govvieBuilderSettings.groundForwardYield(), timeIncrementArray));
 	}
 
 	/**
-	 * Generate the R^d Path/Vertex Govvie Curves using the Initial R^d and the Evolution Time Width
+	 * Generate the R<sup>d</sup> Path/Vertex Govvie Curves using the Initial R<sup>d</sup> and a Fixed
+	 *  Evolution Time Width
 	 * 
-	 * @param dblTimeIncrement The Evolution Time Widths
+	 * @param timeIncrement The Evolution Time Widths
 	 * 
-	 * @return The R^d Path//Vertex Govvie Curves
+	 * @return The R<sup>d</sup> Path//Vertex Govvie Curves
 	 */
 
-	public org.drip.state.govvie.GovvieCurve[][] pathVertex (
-		final double dblTimeIncrement)
+	public GovvieCurve[][] pathVertex (
+		final double timeIncrement)
 	{
-		return curveVertex (pathVertex (_gbs.groundForwardYield(), dblTimeIncrement));
+		return curveVertex (pathVertex (_govvieBuilderSettings.groundForwardYield(), timeIncrement));
 	}
 
 	/**
-	 * Generate the R^d Path/Vertex Govvie Curves using the Initial R^d and the Array of Event Tenors
+	 * Generate the R<sup>d</sup> Path/Vertex Govvie Curves using the Initial R<sup>d</sup> and the Array of
+	 *  Forward Evolution Tenors
 	 * 
-	 * @param astrEventTenor The Array of Event Tenors
+	 * @param forwardEvolutionTenorArray The Array of Forward Evolution Tenors
 	 * 
-	 * @return The R^d Path//Vertex Govvie Curves
+	 * @return The R<sup>d</sup> Path/Vertex Govvie Curves
 	 */
 
-	public org.drip.state.govvie.GovvieCurve[][] pathVertex (
-		final java.lang.String[] astrEventTenor)
+	public GovvieCurve[][] pathVertex (
+		final String[] forwardEvolutionTenorArray)
 	{
-		return curveVertex (pathVertex (_gbs.groundForwardYield(), astrEventTenor));
+		return curveVertex (
+			pathVertex (_govvieBuilderSettings.groundForwardYield(), forwardEvolutionTenorArray)
+		);
 	}
 
 	/**
-	 * Generate the R^d Path/Vertex Govvie Curves using the Initial R^d and the Array of Event Tenors
+	 * Generate the R<sup>d</sup> Path/Vertex Govvie Curves using the Initial R<sup>d</sup> and the Array of
+	 *  Forward Evolution Dates
 	 * 
-	 * @param aiEventDate The Array of Event Dates
+	 * @param forwardEventDateArray The Array of Forward Event Dates
 	 * 
-	 * @return The R^d Path//Vertex Govvie Curves
+	 * @return The R<sup>d</sup> Path/Vertex Govvie Curves
 	 */
 
-	public org.drip.state.govvie.GovvieCurve[][] pathVertex (
-		final int[] aiEventDate)
+	public GovvieCurve[][] pathVertex (
+		final int[] forwardEventDateArray)
 	{
-		return curveVertex (pathVertex (_gbs.groundForwardYield(), _gbs.spot().julian(), aiEventDate));
+		return curveVertex (
+			pathVertex (
+				_govvieBuilderSettings.groundForwardYield(),
+				_govvieBuilderSettings.spot().julian(),
+				forwardEventDateArray
+			)
+		);
 	}
 }
