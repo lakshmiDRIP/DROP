@@ -1,11 +1,19 @@
 
 package org.drip.validation.distance;
 
+import org.drip.function.e2erf.ErrorFunctionInverse;
+import org.drip.measure.continuous.R1Univariate;
+import org.drip.measure.gaussian.R1UnivariateNormal;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -117,8 +125,8 @@ package org.drip.validation.distance;
 
 public class ImportanceWeight
 {
-	private double _positiveExpectation = java.lang.Double.NaN;
-	private org.drip.measure.continuous.R1Univariate _r1Univariate = null;
+	private R1Univariate _r1Univariate = null;
+	private double _positiveExpectation = Double.NaN;
 
 	/**
 	 * Construct the Importance Weight Version based on Normal Distribution
@@ -129,10 +137,9 @@ public class ImportanceWeight
 	 */
 
 	public static final ImportanceWeight Normal (
-		final org.drip.measure.gaussian.R1UnivariateNormal r1UnivariateNormal)
+		final R1UnivariateNormal r1UnivariateNormal)
 	{
-		if (null == r1UnivariateNormal)
-		{
+		if (null == r1UnivariateNormal) {
 			return null;
 		}
 
@@ -140,38 +147,30 @@ public class ImportanceWeight
 
 		final double sigma = r1UnivariateNormal.sigma();
 
-		org.drip.measure.gaussian.R1UnivariateNormal r1UnivariateNormalStandard =
-			org.drip.measure.gaussian.R1UnivariateNormal.Standard();
+		R1UnivariateNormal r1UnivariateNormalStandard = R1UnivariateNormal.Standard();
 
 		double meanOverSigma = mean / sigma;
 
-		try
-		{
-			final double positiveExpectation = java.lang.Math.max (
+		try {
+			final double positiveExpectation = Math.max (
 				mean * r1UnivariateNormalStandard.cumulative (meanOverSigma) +
 					sigma * r1UnivariateNormalStandard.density (meanOverSigma),
 				0.
 			);
 
-			return new ImportanceWeight (
-				r1UnivariateNormal,
-				positiveExpectation
-			)
-			{
+			return new ImportanceWeight (r1UnivariateNormal, positiveExpectation) {
 				@Override public double quantileLoading (
 					final double q)
-					throws java.lang.Exception
+					throws Exception
 				{
-					return 0. == positiveExpectation ? 0. : java.lang.Math.max (
-						org.drip.function.e2erf.ErrorFunctionInverse.Winitzki2008b().evaluate
-							(2. * q - 1.) * sigma * java.lang.Math.sqrt (2.) + mean,
+					return 0. == positiveExpectation ? 0. : Math.max (
+						ErrorFunctionInverse.Winitzki2008b().evaluate (2. * q - 1.) * sigma * Math.sqrt (2.)
+							+ mean,
 						0
 					) / positiveExpectation;
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -184,19 +183,17 @@ public class ImportanceWeight
 	 * @param r1Univariate The Underlying R<sup>1</sup> Distribution
 	 * @param positiveExpectation The Positive Expectation
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ImportanceWeight (
-		final org.drip.measure.continuous.R1Univariate r1Univariate,
+		final R1Univariate r1Univariate,
 		final double positiveExpectation)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (null == (_r1Univariate = r1Univariate) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_positiveExpectation = positiveExpectation) ||
-				0. > _positiveExpectation)
-		{
-			throw new java.lang.Exception ("ImportanceWeight Constructor => Invalid Inputs");
+			!NumberUtil.IsValid (_positiveExpectation = positiveExpectation) || 0. > _positiveExpectation) {
+			throw new Exception ("ImportanceWeight Constructor => Invalid Inputs");
 		}
 	}
 
@@ -217,7 +214,7 @@ public class ImportanceWeight
 	 * @return The Underlying R<sup>1</sup> Distribution
 	 */
 
-	public org.drip.measure.continuous.R1Univariate r1Univariate()
+	public R1Univariate r1Univariate()
 	{
 		return _r1Univariate;
 	}
@@ -229,16 +226,14 @@ public class ImportanceWeight
 	 * 
 	 * @return The Importance Weight Loading
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double quantileLoading (
 		final double q)
 		throws java.lang.Exception
 	{
-		return 0. == _positiveExpectation ? 0. : java.lang.Math.max (
-			_r1Univariate.invCumulative (q),
-			0
-		) / _positiveExpectation;
+		return 0. == _positiveExpectation ? 0. :
+			Math.max (_r1Univariate.invCumulative (q), 0) / _positiveExpectation;
 	}
 }

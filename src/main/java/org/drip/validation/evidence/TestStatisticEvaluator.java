@@ -6,6 +6,9 @@ package org.drip.validation.evidence;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -126,10 +129,10 @@ public interface TestStatisticEvaluator
 	 * 
 	 * @return The Test Statistic
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract double evaluate (
 		final double[] sampleArray)
-		throws java.lang.Exception;
+		throws Exception;
 }

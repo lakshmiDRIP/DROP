@@ -1,11 +1,19 @@
 
 package org.drip.validation.distance;
 
+import java.util.Map;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.validation.evidence.Ensemble;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -117,8 +125,7 @@ package org.drip.validation.distance;
 
 public class HypothesisSuite
 {
-	private java.util.Map<java.lang.String, org.drip.validation.evidence.Ensemble> _hypothesisMap = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.validation.evidence.Ensemble>();
+	private Map<String, Ensemble> _hypothesisMap = new CaseInsensitiveHashMap<Ensemble>();
 
 	/**
 	 * Empty HypothesisSuite Constructor
@@ -134,7 +141,7 @@ public class HypothesisSuite
 	 * @return The Hypothesis Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.validation.evidence.Ensemble> hypothesisMap()
+	public Map<String, Ensemble> hypothesisMap()
 	{
 		return _hypothesisMap;
 	}
@@ -149,19 +156,14 @@ public class HypothesisSuite
 	 */
 
 	public boolean add (
-		final java.lang.String hypothesisID,
-		final org.drip.validation.evidence.Ensemble hypothesis)
+		final String hypothesisID,
+		final Ensemble hypothesis)
 	{
-		if (null == hypothesisID || hypothesisID.isEmpty() ||
-			null == hypothesis)
-		{
+		if (null == hypothesisID || hypothesisID.isEmpty() || null == hypothesis) {
 			return false;
 		}
 
-		_hypothesisMap.put (
-			hypothesisID,
-			hypothesis
-		);
+		_hypothesisMap.put (hypothesisID, hypothesis);
 
 		return true;
 	}
@@ -175,9 +177,9 @@ public class HypothesisSuite
 	 */
 
 	public boolean containsHypothesis (
-		final java.lang.String hypothesisID)
+		final String hypothesisID)
 	{
-		return null != hypothesisID && !hypothesisID.isEmpty() && _hypothesisMap.containsKey (hypothesisID);
+		return null != hypothesisID && _hypothesisMap.containsKey (hypothesisID);
 	}
 
 	/**
@@ -188,8 +190,8 @@ public class HypothesisSuite
 	 * @return The Hypothesis Specified by the ID
 	 */
 
-	public org.drip.validation.evidence.Ensemble hypothesis (
-		final java.lang.String hypothesisID)
+	public Ensemble hypothesis (
+		final String hypothesisID)
 	{
 		return containsHypothesis (hypothesisID) ? _hypothesisMap.get (hypothesisID) : null;
 	}

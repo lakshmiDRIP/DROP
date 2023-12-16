@@ -1,11 +1,19 @@
 
 package org.drip.validation.distance;
 
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -118,11 +126,9 @@ package org.drip.validation.distance;
 
 public class HypothesisOutcomeSuite
 {
-	private java.util.Map<java.lang.String, org.drip.validation.distance.GapTestOutcome> _outcomeMap = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.validation.distance.GapTestOutcome>();
+	private TreeMap<Double, String> _distanceHypothesisMap = new TreeMap<Double, String>();
 
-	private java.util.TreeMap<java.lang.Double, java.lang.String> _distanceHypothesisMap = new
-		java.util.TreeMap<java.lang.Double, java.lang.String>();
+	private Map<String, GapTestOutcome> _outcomeMap = new CaseInsensitiveHashMap<GapTestOutcome>();
 
 	/**
 	 * Empty HypothesisOutcomeSuite Constructor
@@ -138,7 +144,7 @@ public class HypothesisOutcomeSuite
 	 * @return The Outcome Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.validation.distance.GapTestOutcome> outcomeMap()
+	public Map<String, GapTestOutcome> outcomeMap()
 	{
 		return _outcomeMap;
 	}
@@ -149,7 +155,7 @@ public class HypothesisOutcomeSuite
 	 * @return The Distance-Hypothesis Map
 	 */
 
-	public java.util.TreeMap<java.lang.Double, java.lang.String> distanceHypothesisMap()
+	public TreeMap<Double, String> distanceHypothesisMap()
 	{
 		return _distanceHypothesisMap;
 	}
@@ -164,24 +170,16 @@ public class HypothesisOutcomeSuite
 	 */
 
 	public boolean add (
-		final java.lang.String hypothesisID,
-		final org.drip.validation.distance.GapTestOutcome gapTestOutcome)
+		final String hypothesisID,
+		final GapTestOutcome gapTestOutcome)
 	{
-		if (null == hypothesisID || hypothesisID.isEmpty() ||
-			null == gapTestOutcome)
-		{
+		if (null == hypothesisID || hypothesisID.isEmpty() || null == gapTestOutcome) {
 			return false;
 		}
 
-		_outcomeMap.put (
-			hypothesisID,
-			gapTestOutcome
-		);
+		_outcomeMap.put (hypothesisID, gapTestOutcome);
 
-		_distanceHypothesisMap.put (
-			gapTestOutcome.distance(),
-			hypothesisID
-		);
+		_distanceHypothesisMap.put (gapTestOutcome.distance(), hypothesisID);
 
 		return true;
 	}
@@ -192,24 +190,17 @@ public class HypothesisOutcomeSuite
 	 * @return The Leading/Best Fit Hypothesis and its Test Outcome
 	 */
 
-	public org.drip.validation.distance.HypothesisOutcome leadingHypothesis()
+	public HypothesisOutcome leadingHypothesis()
 	{
-		if (0 == _distanceHypothesisMap.size())
-		{
+		if (0 == _distanceHypothesisMap.size()) {
 			return null;
 		}
 
-		java.lang.String leadingHypothesisID = _distanceHypothesisMap.firstEntry().getValue();
+		String leadingHypothesisID = _distanceHypothesisMap.firstEntry().getValue();
 
-		try
-		{
-			return new org.drip.validation.distance.HypothesisOutcome (
-				leadingHypothesisID,
-				_outcomeMap.get (leadingHypothesisID)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new HypothesisOutcome (leadingHypothesisID, _outcomeMap.get (leadingHypothesisID));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

@@ -1,11 +1,16 @@
 
 package org.drip.validation.hypothesis;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -115,16 +120,16 @@ package org.drip.validation.hypothesis;
 
 public class TTestOutcome
 {
-	private double _ensembleMean = java.lang.Double.NaN;
-	private double _testStatistic = java.lang.Double.NaN;
-	private int _sampleCount = java.lang.Integer.MIN_VALUE;
-	private double _ensembleVariance = java.lang.Double.NaN;
-	private double _ensembleTStatistics = java.lang.Double.NaN;
-	private double _ensembleStandardError = java.lang.Double.NaN;
-	private double _ensembleStandardDeviation = java.lang.Double.NaN;
-	private double _ensembleStandardErrorOffset = java.lang.Double.NaN;
-	private int _ensembleDegreesOfFreedom = java.lang.Integer.MIN_VALUE;
-	private double _ensemblePredictiveConfidenceInterval = java.lang.Double.NaN;
+	private double _ensembleMean = Double.NaN;
+	private double _testStatistic = Double.NaN;
+	private int _sampleCount = Integer.MIN_VALUE;
+	private double _ensembleVariance = Double.NaN;
+	private double _ensembleTStatistics = Double.NaN;
+	private double _ensembleStandardError = Double.NaN;
+	private double _ensembleStandardDeviation = Double.NaN;
+	private double _ensembleStandardErrorOffset = Double.NaN;
+	private int _ensembleDegreesOfFreedom = Integer.MIN_VALUE;
+	private double _ensemblePredictiveConfidenceInterval = Double.NaN;
 
 	/**
 	 * TTestOutcome Constructor
@@ -140,7 +145,7 @@ public class TTestOutcome
 	 * @param ensembleTStatistics Ensemble t-Statistics
 	 * @param ensembleStandardErrorOffset  Ensemble Standard Error Offset
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public TTestOutcome (
@@ -156,21 +161,17 @@ public class TTestOutcome
 		final double ensembleStandardErrorOffset)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_testStatistic = testStatistic) ||
-			0 >= (_sampleCount = sampleCount) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleMean = ensembleMean) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleVariance = ensembleVariance) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleStandardDeviation =
-				ensembleStandardDeviation) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleStandardError = ensembleStandardError) ||
-			0 > (_ensembleDegreesOfFreedom = ensembleDegreesOfFreedom) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_ensemblePredictiveConfidenceInterval =
+		if (!NumberUtil.IsValid (_testStatistic = testStatistic) || 0 >= (_sampleCount = sampleCount) ||
+			!NumberUtil.IsValid (_ensembleMean = ensembleMean) ||
+			!NumberUtil.IsValid (_ensembleVariance = ensembleVariance) ||
+			!NumberUtil.IsValid (_ensembleStandardDeviation = ensembleStandardDeviation) ||
+			!NumberUtil.IsValid (_ensembleStandardError = ensembleStandardError) ||
+				0 > (_ensembleDegreesOfFreedom = ensembleDegreesOfFreedom) ||
+			!NumberUtil.IsValid (_ensemblePredictiveConfidenceInterval =
 				ensemblePredictiveConfidenceInterval) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleTStatistics = ensembleTStatistics) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleStandardErrorOffset =
-				ensembleStandardErrorOffset))
-		{
-			throw new java.lang.Exception ("TTestOutcome Constructor => Invalid Inputs");
+			!NumberUtil.IsValid (_ensembleTStatistics = ensembleTStatistics) ||
+			!NumberUtil.IsValid (_ensembleStandardErrorOffset = ensembleStandardErrorOffset)) {
+			throw new Exception ("TTestOutcome Constructor => Invalid Inputs");
 		}
 	}
 

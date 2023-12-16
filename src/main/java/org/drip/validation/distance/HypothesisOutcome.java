@@ -6,6 +6,9 @@ package org.drip.validation.distance;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -117,8 +120,8 @@ package org.drip.validation.distance;
 
 public class HypothesisOutcome
 {
-	private java.lang.String _hypothesisID = "";
-	private org.drip.validation.distance.GapTestOutcome _gapTestOutcome = null;
+	private String _hypothesisID = "";
+	private GapTestOutcome _gapTestOutcome = null;
 
 	/**
 	 * HypothesisOutcome Constructor
@@ -126,18 +129,17 @@ public class HypothesisOutcome
 	 * @param hypothesisID The Hypothesis ID
 	 * @param gapTestOutcome The Gap Test Outcome
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public HypothesisOutcome (
-		final java.lang.String hypothesisID,
-		final org.drip.validation.distance.GapTestOutcome gapTestOutcome)
-		throws java.lang.Exception
+		final String hypothesisID,
+		final GapTestOutcome gapTestOutcome)
+		throws Exception
 	{
 		if (null == (_hypothesisID = hypothesisID) || _hypothesisID.isEmpty() ||
-			null == (_gapTestOutcome = gapTestOutcome))
-		{
-			throw new java.lang.Exception ("HypothesisOutcome Constructor => Invalid Inputs");
+			null == (_gapTestOutcome = gapTestOutcome)) {
+			throw new Exception ("HypothesisOutcome Constructor => Invalid Inputs");
 		}
 	}
 
@@ -147,7 +149,7 @@ public class HypothesisOutcome
 	 * @return The Hypothesis ID
 	 */
 
-	public java.lang.String hypothesisID()
+	public String hypothesisID()
 	{
 		return _hypothesisID;
 	}
@@ -158,7 +160,7 @@ public class HypothesisOutcome
 	 * @return The Gap Test Outcome
 	 */
 
-	public org.drip.validation.distance.GapTestOutcome gapTestOutcome()
+	public GapTestOutcome gapTestOutcome()
 	{
 		return _gapTestOutcome;
 	}

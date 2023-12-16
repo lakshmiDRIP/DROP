@@ -6,6 +6,9 @@ package org.drip.validation.distance;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -117,8 +120,8 @@ package org.drip.validation.distance;
 
 public class GapTestSetting
 {
-	private org.drip.validation.distance.GapLossFunction _lossFunction = null;
-	private org.drip.validation.distance.GapLossWeightFunction _lossWeightFunction = null;
+	private GapLossFunction _lossFunction = null;
+	private GapLossWeightFunction _lossWeightFunction = null;
 
 	/**
 	 * Construct the Anfuso Karyampas Nawroth (2017) Risk Factor Loss Test Variant of the Gap Test Setting
@@ -129,17 +132,11 @@ public class GapTestSetting
 	 */
 
 	public static final GapTestSetting RiskFactorLossTest (
-		final org.drip.validation.distance.GapLossWeightFunction lossWeightFunction)
+		final GapLossWeightFunction lossWeightFunction)
 	{
-		try
-		{
-			return new GapTestSetting (
-				org.drip.validation.distance.GapLossFunction.RiskFactorTest(),
-				lossWeightFunction
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new GapTestSetting (GapLossFunction.RiskFactorTest(), lossWeightFunction);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -157,17 +154,11 @@ public class GapTestSetting
 	 */
 
 	public static final GapTestSetting ConservativePortfolioLossTest (
-		final org.drip.validation.distance.GapLossWeightFunction lossWeightFunction)
+		final GapLossWeightFunction lossWeightFunction)
 	{
-		try
-		{
-			return new GapTestSetting (
-				org.drip.validation.distance.GapLossFunction.ConservativePortfolioTest(),
-				lossWeightFunction
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new GapTestSetting (GapLossFunction.ConservativePortfolioTest(), lossWeightFunction);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -180,18 +171,16 @@ public class GapTestSetting
 	 * @param lossFunction  Gap Loss Function
 	 * @param lossWeightFunction Gap Loss Weight Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public GapTestSetting (
-		final org.drip.validation.distance.GapLossFunction lossFunction,
-		final org.drip.validation.distance.GapLossWeightFunction lossWeightFunction)
-		throws java.lang.Exception
+		final GapLossFunction lossFunction,
+		final GapLossWeightFunction lossWeightFunction)
+		throws Exception
 	{
-		if (null == (_lossFunction = lossFunction) ||
-			null == (_lossWeightFunction = lossWeightFunction))
-		{
-			throw new java.lang.Exception ("GapTestSetting Constructor => Invalid Inputs");
+		if (null == (_lossFunction = lossFunction) || null == (_lossWeightFunction = lossWeightFunction)) {
+			throw new Exception ("GapTestSetting Constructor => Invalid Inputs");
 		}
 	}
 
@@ -201,7 +190,7 @@ public class GapTestSetting
 	 * @return The Gap Loss Function
 	 */
 
-	public org.drip.validation.distance.GapLossFunction lossFunction()
+	public GapLossFunction lossFunction()
 	{
 		return _lossFunction;
 	}
@@ -212,7 +201,7 @@ public class GapTestSetting
 	 * @return The Gap Loss Weight Function
 	 */
 
-	public org.drip.validation.distance.GapLossWeightFunction lossWeightFunction()
+	public GapLossWeightFunction lossWeightFunction()
 	{
 		return _lossWeightFunction;
 	}

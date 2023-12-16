@@ -1,11 +1,16 @@
 
 package org.drip.validation.hypothesis;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -149,8 +154,8 @@ public class SignificanceTestSetting
 
 	public static final double ANFUSO_KARYAMPAS_NAWROTH_2017_P_TEST_THRESHOLD = 0.01;
 
+	private double _threshold = Double.NaN;
 	private int _tailCheck = RIGHT_TAIL_CHECK;
-	private double _threshold = java.lang.Double.NaN;
 
 	/**
 	 * Construct Right Tail Check Significance Test Setting using the Fisher Threshold
@@ -160,15 +165,9 @@ public class SignificanceTestSetting
 
 	public static final SignificanceTestSetting FisherRightTail()
 	{
-		try
-		{
-			return new SignificanceTestSetting (
-				FISHER_1925_P_TEST_THRESHOLD,
-				RIGHT_TAIL_CHECK
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new SignificanceTestSetting (FISHER_1925_P_TEST_THRESHOLD, RIGHT_TAIL_CHECK);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -183,15 +182,9 @@ public class SignificanceTestSetting
 
 	public static final SignificanceTestSetting FisherLeftTail()
 	{
-		try
-		{
-			return new SignificanceTestSetting (
-				FISHER_1925_P_TEST_THRESHOLD,
-				LEFT_TAIL_CHECK
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new SignificanceTestSetting (FISHER_1925_P_TEST_THRESHOLD, LEFT_TAIL_CHECK);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -206,15 +199,9 @@ public class SignificanceTestSetting
 
 	public static final SignificanceTestSetting FisherDoubleTail()
 	{
-		try
-		{
-			return new SignificanceTestSetting (
-				2. * FISHER_1925_P_TEST_THRESHOLD,
-				DOUBLE_TAIL_CHECK
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new SignificanceTestSetting (2. * FISHER_1925_P_TEST_THRESHOLD, DOUBLE_TAIL_CHECK);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -227,17 +214,16 @@ public class SignificanceTestSetting
 	 * @param threshold The Test Threshold
 	 * @param tailCheck Test Tail Check Flag
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public SignificanceTestSetting (
 		final double threshold,
 		final int tailCheck)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_threshold = threshold))
-		{
-			throw new java.lang.Exception ("SignificanceTestSetting Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_threshold = threshold)) {
+			throw new Exception ("SignificanceTestSetting Constructor => Invalid Inputs");
 		}
 
 		_tailCheck = tailCheck;

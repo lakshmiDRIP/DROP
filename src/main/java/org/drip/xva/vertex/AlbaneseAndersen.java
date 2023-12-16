@@ -1,11 +1,17 @@
 
 package org.drip.xva.vertex;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.xva.hypothecation.CollateralGroupVertex;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -118,7 +124,7 @@ package org.drip.xva.vertex;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AlbaneseAndersen extends org.drip.xva.hypothecation.CollateralGroupVertex
+public class AlbaneseAndersen extends CollateralGroupVertex
 {
 
 	/**
@@ -129,22 +135,17 @@ public class AlbaneseAndersen extends org.drip.xva.hypothecation.CollateralGroup
 	 * @param tradePayment The Trade Payment at the Path Vertex Time Node
 	 * @param variationMarginPosting The Variation Margin Posting at the Path Vertex Time Node
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AlbaneseAndersen (
-		final org.drip.analytics.date.JulianDate vertexDate,
+		final JulianDate vertexDate,
 		final double variationMarginEstimate,
 		final double tradePayment,
 		final double variationMarginPosting)
-		throws java.lang.Exception
+		throws Exception
 	{
-		super (
-			vertexDate,
-			variationMarginEstimate,
-			tradePayment,
-			variationMarginPosting
-		);
+		super (vertexDate, variationMarginEstimate, tradePayment, variationMarginPosting);
 	}
 
 	@Override public double credit()

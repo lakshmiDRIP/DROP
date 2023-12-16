@@ -1,11 +1,22 @@
 
 package org.drip.xva.topology;
 
+import java.util.Map;
+
+import org.drip.state.identifier.CSALabel;
+import org.drip.state.identifier.EntityFundingLabel;
+import org.drip.state.identifier.EntityHazardLabel;
+import org.drip.state.identifier.EntityRecoveryLabel;
+import org.drip.state.identifier.OvernightLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -119,25 +130,16 @@ package org.drip.xva.topology;
 
 public class AdiabatMarketParams
 {
-	private java.util.Map<java.lang.String, org.drip.state.identifier.CSALabel> _csaLabelMap = null;
-	private java.util.Map<java.lang.String, org.drip.state.identifier.OvernightLabel> _overnightLabelMap =
-		null;
-	private java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel>
-		_clientHazardLabelMap = null;
-	private java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel>
-		_dealerHazardLabelMap = null;
-	private java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-		_clientRecoveryLabelMap = null;
-	private java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-		_dealerSeniorRecoveryLabelMap = null;
-	private java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-		_clientFundingLabelMap = null;
-	private java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-		_dealerSubordinateRecoveryLabelMap = null;
-	private java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-		_dealerSeniorFundingLabelMap = null;
-	private java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-		_dealerSubordinateFundingLabelMap = null;
+	private Map<String, CSALabel> _csaLabelMap = null;
+	private Map<String, OvernightLabel> _overnightLabelMap = null;
+	private Map<String, EntityHazardLabel> _clientHazardLabelMap = null;
+	private Map<String, EntityHazardLabel> _dealerHazardLabelMap = null;
+	private Map<String, EntityFundingLabel> _clientFundingLabelMap = null;
+	private Map<String, EntityRecoveryLabel> _clientRecoveryLabelMap = null;
+	private Map<String, EntityFundingLabel> _dealerSeniorFundingLabelMap = null;
+	private Map<String, EntityRecoveryLabel> _dealerSeniorRecoveryLabelMap = null;
+	private Map<String, EntityFundingLabel> _dealerSubordinateFundingLabelMap = null;
+	private Map<String, EntityRecoveryLabel> _dealerSubordinateRecoveryLabelMap = null;
 
 	/**
 	 * AdiabatMarketParams Constructor
@@ -153,43 +155,34 @@ public class AdiabatMarketParams
 	 * @param clientFundingLabelMap Map of Client Funding Labels
 	 * @param dealerSubordinateFundingLabelMap Map of Dealer Subordinate Funding Labels
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AdiabatMarketParams (
-		final java.util.Map<java.lang.String, org.drip.state.identifier.OvernightLabel> overnightLabelMap,
-		final java.util.Map<java.lang.String, org.drip.state.identifier.CSALabel> csaLabelMap,
-		final java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel>
-			dealerHazardLabelMap,
-		final java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel>
-			clientHazardLabelMap,
-		final java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-			dealerSeniorRecoveryLabelMap,
-		final java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-			clientRecoveryLabelMap,
-		final java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-			dealerSubordinateRecoveryLabelMap,
-		final java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-			dealerSeniorFundingLabelMap,
-		final java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-			clientFundingLabelMap,
-		final java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-			dealerSubordinateFundingLabelMap)
-		throws java.lang.Exception
+		final Map<String, OvernightLabel> overnightLabelMap,
+		final Map<String, CSALabel> csaLabelMap,
+		final Map<String, EntityHazardLabel> dealerHazardLabelMap,
+		final Map<String, EntityHazardLabel> clientHazardLabelMap,
+		final Map<String, EntityRecoveryLabel> dealerSeniorRecoveryLabelMap,
+		final Map<String, EntityRecoveryLabel> clientRecoveryLabelMap,
+		final Map<String, EntityRecoveryLabel> dealerSubordinateRecoveryLabelMap,
+		final Map<String, EntityFundingLabel> dealerSeniorFundingLabelMap,
+		final Map<String, EntityFundingLabel> clientFundingLabelMap,
+		final Map<String, EntityFundingLabel> dealerSubordinateFundingLabelMap)
+		throws Exception
 	{
 		if (null == (_overnightLabelMap = overnightLabelMap) || 0 == _overnightLabelMap.size() ||
 			null == (_csaLabelMap = csaLabelMap) || 0 == _csaLabelMap.size() ||
 			null == (_dealerHazardLabelMap = dealerHazardLabelMap) || 0 == _dealerHazardLabelMap.size() ||
 			null == (_clientHazardLabelMap = clientHazardLabelMap) || 0 == _clientHazardLabelMap.size() ||
-			null == (_dealerSeniorRecoveryLabelMap = dealerSeniorRecoveryLabelMap) || 0 ==
-				_dealerSeniorRecoveryLabelMap.size() ||
-			null == (_clientRecoveryLabelMap = clientRecoveryLabelMap) || 0 == _clientRecoveryLabelMap.size()
-				||
-			null == (_dealerSeniorFundingLabelMap = dealerSeniorFundingLabelMap) || 0 ==
-				_dealerSeniorFundingLabelMap.size() ||
-			null == (_clientFundingLabelMap = clientFundingLabelMap) || 0 == _clientFundingLabelMap.size())
-		{
-			throw new java.lang.Exception ("AdiabatMarketParams Constructor => Invalid Inputs");
+			null == (_dealerSeniorRecoveryLabelMap = dealerSeniorRecoveryLabelMap) ||
+				0 == _dealerSeniorRecoveryLabelMap.size() ||
+			null == (_clientRecoveryLabelMap = clientRecoveryLabelMap) ||
+				0 == _clientRecoveryLabelMap.size() ||
+			null == (_dealerSeniorFundingLabelMap = dealerSeniorFundingLabelMap) ||
+				0 == _dealerSeniorFundingLabelMap.size() ||
+			null == (_clientFundingLabelMap = clientFundingLabelMap) || 0 == _clientFundingLabelMap.size()) {
+			throw new Exception ("AdiabatMarketParams Constructor => Invalid Inputs");
 		}
 
 		_dealerSubordinateFundingLabelMap = dealerSubordinateFundingLabelMap;
@@ -202,7 +195,7 @@ public class AdiabatMarketParams
 	 * @return The Map of Overnight Labels
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.state.identifier.OvernightLabel> overnightLabelMap()
+	public Map<String, OvernightLabel> overnightLabelMap()
 	{
 		return _overnightLabelMap;
 	}
@@ -213,7 +206,7 @@ public class AdiabatMarketParams
 	 * @return The Map of CSA Labels
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.state.identifier.CSALabel> csaLabelMap()
+	public Map<String, CSALabel> csaLabelMap()
 	{
 		return _csaLabelMap;
 	}
@@ -224,8 +217,7 @@ public class AdiabatMarketParams
 	 * @return The Map of Dealer Hazard Labels
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel>
-		dealerHazardLabelMap()
+	public Map<String, EntityHazardLabel> dealerHazardLabelMap()
 	{
 		return _dealerHazardLabelMap;
 	}
@@ -236,8 +228,7 @@ public class AdiabatMarketParams
 	 * @return The Map of Client Hazard Labels
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel>
-		clientHazardLabelMap()
+	public Map<String, EntityHazardLabel> clientHazardLabelMap()
 	{
 		return _clientHazardLabelMap;
 	}
@@ -248,8 +239,7 @@ public class AdiabatMarketParams
 	 * @return The Map of Dealer Senior Recovery Labels
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-		dealerSeniorRecoveryLabelMap()
+	public Map<String, EntityRecoveryLabel> dealerSeniorRecoveryLabelMap()
 	{
 		return _dealerSeniorRecoveryLabelMap;
 	}
@@ -260,8 +250,7 @@ public class AdiabatMarketParams
 	 * @return The Map of Client Recovery Labels
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-		clientRecoveryLabelMap()
+	public Map<String, EntityRecoveryLabel> clientRecoveryLabelMap()
 	{
 		return _clientRecoveryLabelMap;
 	}
@@ -272,8 +261,7 @@ public class AdiabatMarketParams
 	 * @return The Map of Dealer Subordinate Recovery Labels
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-		dealerSubordinateRecoveryLabelMap()
+	public Map<String, EntityRecoveryLabel> dealerSubordinateRecoveryLabelMap()
 	{
 		return _dealerSubordinateRecoveryLabelMap;
 	}
@@ -284,8 +272,7 @@ public class AdiabatMarketParams
 	 * @return The Map of Dealer Senior Funding Labels
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-		dealerSeniorFundingLabelMap()
+	public Map<String, EntityFundingLabel> dealerSeniorFundingLabelMap()
 	{
 		return _dealerSeniorFundingLabelMap;
 	}
@@ -296,8 +283,7 @@ public class AdiabatMarketParams
 	 * @return The Map of Client Funding Labels
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-		clientFundingLabelMap()
+	public Map<String, EntityFundingLabel> clientFundingLabelMap()
 	{
 		return _clientFundingLabelMap;
 	}
@@ -308,8 +294,7 @@ public class AdiabatMarketParams
 	 * @return The Map of Dealer Subordinate Funding Labels
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityFundingLabel>
-		dealerSubordinateFundingLabelMap()
+	public Map<String, EntityFundingLabel> dealerSubordinateFundingLabelMap()
 	{
 		return _dealerSubordinateFundingLabelMap;
 	}

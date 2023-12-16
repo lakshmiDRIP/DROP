@@ -1,11 +1,22 @@
 
 package org.drip.xva.topology;
 
+import java.util.Map;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.state.identifier.CSALabel;
+import org.drip.state.identifier.OvernightLabel;
+import org.drip.xva.proto.CollateralGroupSpecification;
+import org.drip.xva.proto.ObjectSpecification;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -117,10 +128,10 @@ package org.drip.xva.topology;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
+public class CollateralGroup extends ObjectSpecification
 {
-	private org.drip.xva.proto.CollateralGroupSpecification _collateralGroupSpecification = null;
-	private java.util.Map<java.lang.String, org.drip.xva.topology.PositionGroup> _positionGroupMap = null;
+	private Map<String, PositionGroup> _positionGroupMap = null;
+	private CollateralGroupSpecification _collateralGroupSpecification = null;
 
 	/**
 	 * CollateralGroup Constructor
@@ -129,27 +140,22 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @param name The Collateral Group Name
 	 * @param collateralGroupSpecification The Collateral Group Specification
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CollateralGroup (
-		final java.lang.String id,
-		final java.lang.String name,
-		final org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification)
-		throws java.lang.Exception
+		final String id,
+		final String name,
+		final CollateralGroupSpecification collateralGroupSpecification)
+		throws Exception
 	{
-		super (
-			id,
-			name
-		);
+		super (id, name);
 
-		if (null == (_collateralGroupSpecification = collateralGroupSpecification))
-		{
-			throw new java.lang.Exception ("CollateralGroup Contructor => Invalid Inputs");
+		if (null == (_collateralGroupSpecification = collateralGroupSpecification)) {
+			throw new Exception ("CollateralGroup Contructor => Invalid Inputs");
 		}
 
-		_positionGroupMap = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.topology.PositionGroup>();
+		_positionGroupMap = new CaseInsensitiveHashMap<PositionGroup>();
 	}
 
 	/**
@@ -158,7 +164,7 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @return The Collateral Group Specification
 	 */
 
-	public org.drip.xva.proto.CollateralGroupSpecification collateralGroupSpecification()
+	public CollateralGroupSpecification collateralGroupSpecification()
 	{
 		return _collateralGroupSpecification;
 	}
@@ -169,7 +175,7 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @return The Position Group Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.topology.PositionGroup> positionGroupMap()
+	public Map<String, PositionGroup> positionGroupMap()
 	{
 		return _positionGroupMap;
 	}
@@ -183,17 +189,13 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 	 */
 
 	public boolean addPositionGroup (
-		final org.drip.xva.topology.PositionGroup positionGroup)
+		final PositionGroup positionGroup)
 	{
-		if (null == positionGroup)
-		{
+		if (null == positionGroup) {
 			return false;
 		}
 
-		_positionGroupMap.put (
-			positionGroup.id(),
-			positionGroup
-		);
+		_positionGroupMap.put (positionGroup.id(), positionGroup);
 
 		return true;
 	}
@@ -207,10 +209,9 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 	 */
 
 	public boolean containsPositionGroup (
-		final java.lang.String positionGroupID)
+		final String positionGroupID)
 	{
-		return null == positionGroupID || positionGroupID.isEmpty() ? false : _positionGroupMap.containsKey
-			(positionGroupID);
+		return null != positionGroupID && _positionGroupMap.containsKey (positionGroupID);
 	}
 
 	/**
@@ -221,8 +222,8 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @return The Position Group
 	 */
 
-	public org.drip.xva.topology.PositionGroup positionGroup (
-		final java.lang.String positionGroupID)
+	public PositionGroup positionGroup (
+		final String positionGroupID)
 	{
 		return containsPositionGroup (positionGroupID) ? _positionGroupMap.get (positionGroupID) : null;
 	}
@@ -233,7 +234,7 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @return The Overnight Label
 	 */
 
-	public org.drip.state.identifier.OvernightLabel overnightLabel()
+	public OvernightLabel overnightLabel()
 	{
 		return _collateralGroupSpecification.overnightLabel();
 	}
@@ -244,7 +245,7 @@ public class CollateralGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @return The CSA Label
 	 */
 
-	public org.drip.state.identifier.CSALabel csaLabel()
+	public CSALabel csaLabel()
 	{
 		return _collateralGroupSpecification.csaLabel();
 	}

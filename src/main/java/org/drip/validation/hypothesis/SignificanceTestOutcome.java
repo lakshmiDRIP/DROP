@@ -1,11 +1,16 @@
 
 package org.drip.validation.hypothesis;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -118,9 +123,9 @@ package org.drip.validation.hypothesis;
 public class SignificanceTestOutcome
 {
 	private boolean _pass = false;
-	private double _testStatistic = java.lang.Double.NaN;
-	private double _leftTailPValue = java.lang.Double.NaN;
-	private double _rightTailPValue = java.lang.Double.NaN;
+	private double _testStatistic = Double.NaN;
+	private double _leftTailPValue = Double.NaN;
+	private double _rightTailPValue = Double.NaN;
 
 	/**
 	 * SignificanceTestOutcome Constructor
@@ -130,7 +135,7 @@ public class SignificanceTestOutcome
 	 * @param rightTailPValue Right Tail p-value
 	 * @param pass TRUE - Test successfully Passed
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public SignificanceTestOutcome (
@@ -138,13 +143,12 @@ public class SignificanceTestOutcome
 		final double leftTailPValue,
 		final double rightTailPValue,
 		final boolean pass)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_testStatistic = testStatistic) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_leftTailPValue = leftTailPValue) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_rightTailPValue = rightTailPValue))
-		{
-			throw new java.lang.Exception ("SignificanceTestOutcome Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_testStatistic = testStatistic) ||
+			!NumberUtil.IsValid (_leftTailPValue = leftTailPValue) ||
+			!NumberUtil.IsValid (_rightTailPValue = rightTailPValue)) {
+			throw new Exception ("SignificanceTestOutcome Constructor => Invalid Inputs");
 		}
 
 		_pass = pass;

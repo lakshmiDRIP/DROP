@@ -1,11 +1,20 @@
 
 package org.drip.validation.evidence;
 
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.drip.numerical.common.NumberUtil;
+import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -118,7 +127,7 @@ package org.drip.validation.evidence;
 public class TestStatisticAccumulator
 {
 	private int _totalInstanceCount = 0;
-	private java.util.TreeMap<java.lang.Double, java.lang.Integer> _instanceCountMap = null;
+	private TreeMap<Double, Integer> _instanceCountMap = null;
 
 	/**
 	 * Empty TestStatisticAccumulator Constructor
@@ -134,7 +143,7 @@ public class TestStatisticAccumulator
 	 * @return The Instance Counter Map
 	 */
 
-	public java.util.Map<java.lang.Double, java.lang.Integer> instanceCountMap()
+	public Map<Double, Integer> instanceCountMap()
 	{
 		return _instanceCountMap;
 	}
@@ -161,14 +170,12 @@ public class TestStatisticAccumulator
 	public boolean addTestStatistic (
 		final double testStatistic)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (testStatistic))
-		{
+		if (!NumberUtil.IsValid (testStatistic)) {
 			return false;
 		}
 
-		if (null == _instanceCountMap)
-		{
-			_instanceCountMap = new java.util.TreeMap<java.lang.Double, java.lang.Integer>();
+		if (null == _instanceCountMap) {
+			_instanceCountMap = new TreeMap<Double, Integer>();
 		}
 
 		_instanceCountMap.put (
@@ -187,25 +194,22 @@ public class TestStatisticAccumulator
 	 * 
 	 * @return The Empirical Cumulative Test Statistic Probability from the Smallest Response Value
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double cumulativeProbabilityFromLeft (
 		final double testStatistic)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (testStatistic) || 0 == _totalInstanceCount)
-		{
-			throw new java.lang.Exception
+		if (!NumberUtil.IsValid (testStatistic) || 0 == _totalInstanceCount) {
+			throw new Exception
 				("TestStatisticAccumulator::cumulativeProbabilityFromLeft => Invalid Inputs");
 		}
 
-		double cumulativeProbabilityFromLeft = 0;
+		double cumulativeProbabilityFromLeft = 0.;
 
-		for (double testStatisticKey : _instanceCountMap.keySet())
-		{
-			if (testStatisticKey > testStatistic)
-			{
+		for (double testStatisticKey : _instanceCountMap.keySet()) {
+			if (testStatisticKey > testStatistic) {
 				break;
 			}
 
@@ -222,25 +226,22 @@ public class TestStatisticAccumulator
 	 * 
 	 * @return The Empirical Cumulative Test Statistic Probability from the Largest Response Value
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double cumulativeProbabilityFromRight (
 		final double testStatistic)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (testStatistic) || 0 == _totalInstanceCount)
-		{
-			throw new java.lang.Exception
+		if (!NumberUtil.IsValid (testStatistic) || 0 == _totalInstanceCount) {
+			throw new Exception
 				("TestStatisticAccumulator::cumulativeProbabilityFromRight => Invalid Inputs");
 		}
 
-		double cumulativeProbabilityFromRight = 0;
+		double cumulativeProbabilityFromRight = 0.;
 
-		for (double testStatisticKey : _instanceCountMap.descendingKeySet())
-		{
-			if (testStatisticKey < testStatistic)
-			{
+		for (double testStatisticKey : _instanceCountMap.descendingKeySet()) {
+			if (testStatisticKey < testStatistic) {
 				break;
 			}
 
@@ -256,30 +257,22 @@ public class TestStatisticAccumulator
 	 * @return The Test Statistic CDF Distribution
 	 */
 
-	public org.drip.validation.hypothesis.ProbabilityIntegralTransform probabilityIntegralTransform()
+	public ProbabilityIntegralTransform probabilityIntegralTransform()
 	{
 		int instanceCount = 0;
 		double totalInstanceCountReciprocal = 1. / _totalInstanceCount;
 
-		java.util.Map<java.lang.Double, java.lang.Double> testStatisticPValueMap = new
-			java.util.TreeMap<java.lang.Double, java.lang.Double>();
+		Map<Double, Double> testStatisticPValueMap = new TreeMap<Double, Double>();
 
-		for (double testStatisticKey : _instanceCountMap.keySet())
-		{
+		for (double testStatisticKey : _instanceCountMap.keySet()) {
 			instanceCount += _instanceCountMap.get (testStatisticKey);
 
-			testStatisticPValueMap.put (
-				testStatisticKey,
-				totalInstanceCountReciprocal * instanceCount
-			);
+			testStatisticPValueMap.put (testStatisticKey, totalInstanceCountReciprocal * instanceCount);
 		}
 
-		try
-		{
-			return new org.drip.validation.hypothesis.ProbabilityIntegralTransform (testStatisticPValueMap);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new ProbabilityIntegralTransform (testStatisticPValueMap);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

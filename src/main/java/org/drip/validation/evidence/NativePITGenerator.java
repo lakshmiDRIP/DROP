@@ -1,11 +1,16 @@
 
 package org.drip.validation.evidence;
 
+import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -125,6 +130,5 @@ public interface NativePITGenerator
 	 * @return PIT over the Sample Instance Realizations
 	 */
 
-	public abstract org.drip.validation.hypothesis.ProbabilityIntegralTransform
-		nativeProbabilityIntegralTransform();
+	public abstract ProbabilityIntegralTransform nativeProbabilityIntegralTransform();
 }

@@ -1,11 +1,22 @@
 
 package org.drip.validation.evidence;
 
+import org.drip.measure.statistics.UnivariateMoments;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
+import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
+import org.drip.validation.hypothesis.SignificanceTestSetting;
+import org.drip.validation.hypothesis.StatisticalTestOutcome;
+import org.drip.validation.hypothesis.TTestOutcome;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -116,14 +127,12 @@ package org.drip.validation.evidence;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Ensemble implements org.drip.validation.evidence.NativePITGenerator
+public class Ensemble implements NativePITGenerator
 {
+	private Sample[] _sampleArray = null;
 	private double[][] _evaluatedSampleTestStatistic = null;
-	private org.drip.validation.evidence.Sample[] _sampleArray = null;
-	private org.drip.validation.evidence.TestStatisticEvaluator[] _testStatisticEvaluatorArray =
-		null;
-	private org.drip.validation.hypothesis.ProbabilityIntegralTransform[] _probabilityIntegralTransformArray
-		= null;
+	private TestStatisticEvaluator[] _testStatisticEvaluatorArray = null;
+	private ProbabilityIntegralTransform[] _probabilityIntegralTransformArray = null;
 
 	/**
 	 * Ensemble Constructor
@@ -131,66 +140,55 @@ public class Ensemble implements org.drip.validation.evidence.NativePITGenerator
 	 * @param sampleArray Array of the Statistical Hypothesis Samples
 	 * @param testStatisticEvaluatorArray Array of the Test Statistic Evaluators
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Ensemble (
-		final org.drip.validation.evidence.Sample[] sampleArray,
-		final org.drip.validation.evidence.TestStatisticEvaluator[] testStatisticEvaluatorArray)
-		throws java.lang.Exception
+		final Sample[] sampleArray,
+		final TestStatisticEvaluator[] testStatisticEvaluatorArray)
+		throws Exception
 	{
 		if (null == (_sampleArray = sampleArray) ||
-			null == (_testStatisticEvaluatorArray = testStatisticEvaluatorArray))
-		{
-			throw new java.lang.Exception ("Ensemble Constructor => Invalid Inputs");
+			null == (_testStatisticEvaluatorArray = testStatisticEvaluatorArray)) {
+			throw new Exception ("Ensemble Constructor => Invalid Inputs");
 		}
 
 		int sampleCount = _sampleArray.length;
 		int testStatisticEvaluatorCount = _testStatisticEvaluatorArray.length;
 		_evaluatedSampleTestStatistic = new double[testStatisticEvaluatorCount][sampleCount];
-		_probabilityIntegralTransformArray = new
-			org.drip.validation.hypothesis.ProbabilityIntegralTransform[testStatisticEvaluatorCount];
+		_probabilityIntegralTransformArray = new ProbabilityIntegralTransform[testStatisticEvaluatorCount];
 
-		if (0 == sampleCount || 0 == testStatisticEvaluatorCount)
-		{
-			throw new java.lang.Exception ("Ensemble Constructor => Invalid Inputs");
+		if (0 == sampleCount || 0 == testStatisticEvaluatorCount) {
+			throw new Exception ("Ensemble Constructor => Invalid Inputs");
 		}
 
-		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
-		{
-			if (null == _sampleArray[sampleIndex])
-			{
-				throw new java.lang.Exception ("Ensemble Constructor => Invalid Inputs");
+		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex) {
+			if (null == _sampleArray[sampleIndex]) {
+				throw new Exception ("Ensemble Constructor => Invalid Inputs");
 			}
 		}
 
 		for (int testStatisticEvaluatorIndex = 0;
 			testStatisticEvaluatorIndex < testStatisticEvaluatorCount;
-			++testStatisticEvaluatorIndex)
-		{
-			if (null == _testStatisticEvaluatorArray[testStatisticEvaluatorIndex])
-			{
-				throw new java.lang.Exception ("Ensemble Constructor => Invalid Inputs");
+			++testStatisticEvaluatorIndex) {
+			if (null == _testStatisticEvaluatorArray[testStatisticEvaluatorIndex]) {
+				throw new Exception ("Ensemble Constructor => Invalid Inputs");
 			}
 
-			org.drip.validation.evidence.TestStatisticAccumulator testStatisticAccumulator = new
-				org.drip.validation.evidence.TestStatisticAccumulator();
+			TestStatisticAccumulator testStatisticAccumulator = new TestStatisticAccumulator();
 
-			for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
-			{
+			for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex) {
 				if (!testStatisticAccumulator.addTestStatistic
 					(_evaluatedSampleTestStatistic[testStatisticEvaluatorIndex][sampleIndex] =
 						_sampleArray[sampleIndex].applyTestStatistic
-							(_testStatisticEvaluatorArray[testStatisticEvaluatorIndex])))
-				{
-					throw new java.lang.Exception ("Ensemble Constructor => Invalid Inputs");
+							(_testStatisticEvaluatorArray[testStatisticEvaluatorIndex]))) {
+					throw new Exception ("Ensemble Constructor => Invalid Inputs");
 				}
 			}
 
 			if (null == (_probabilityIntegralTransformArray[testStatisticEvaluatorIndex] =
-				testStatisticAccumulator.probabilityIntegralTransform()))
-			{
-				throw new java.lang.Exception ("Ensemble Constructor => Invalid Inputs");
+				testStatisticAccumulator.probabilityIntegralTransform())) {
+				throw new Exception ("Ensemble Constructor => Invalid Inputs");
 			}
 		}
 	}
@@ -212,7 +210,7 @@ public class Ensemble implements org.drip.validation.evidence.NativePITGenerator
 	 * @return The Array of the Statistical Hypothesis Samples
 	 */
 
-	public org.drip.validation.evidence.Sample[] sampleArray()
+	public Sample[] sampleArray()
 	{
 		return _sampleArray;
 	}
@@ -223,7 +221,7 @@ public class Ensemble implements org.drip.validation.evidence.NativePITGenerator
 	 * @return The Array of the Test Statistic Evaluators
 	 */
 
-	public org.drip.validation.evidence.TestStatisticEvaluator[] testStatisticEvaluatorArray()
+	public TestStatisticEvaluator[] testStatisticEvaluatorArray()
 	{
 		return _testStatisticEvaluatorArray;
 	}
@@ -234,7 +232,7 @@ public class Ensemble implements org.drip.validation.evidence.NativePITGenerator
 	 * @return The Array of Probability Integral Transforms
 	 */
 
-	public org.drip.validation.hypothesis.ProbabilityIntegralTransform[] probabilityIntegralTransformArray()
+	public ProbabilityIntegralTransform[] probabilityIntegralTransformArray()
 	{
 		return _probabilityIntegralTransformArray;
 	}
@@ -245,25 +243,20 @@ public class Ensemble implements org.drip.validation.evidence.NativePITGenerator
 	 * @return The Test Statistic Based Significance Test Hypothesis Array
 	 */
 
-	public org.drip.validation.hypothesis.ProbabilityIntegralTransformTest[] significanceTest()
+	public ProbabilityIntegralTransformTest[] significanceTest()
 	{
 		int probabilityIntegralTransformCount = _testStatisticEvaluatorArray.length;
-		org.drip.validation.hypothesis.ProbabilityIntegralTransformTest[]
-			probabilityIntegralTransformTestArray = new
-				org.drip.validation.hypothesis.ProbabilityIntegralTransformTest[probabilityIntegralTransformCount];
+		ProbabilityIntegralTransformTest[] probabilityIntegralTransformTestArray =
+			new ProbabilityIntegralTransformTest[probabilityIntegralTransformCount];
 
 		for (int probabilityIntegralTransformIndex = 0;
 			probabilityIntegralTransformIndex < probabilityIntegralTransformCount;
-			++probabilityIntegralTransformIndex)
-		{
-			try
-			{
+			++probabilityIntegralTransformIndex) {
+			try {
 				probabilityIntegralTransformTestArray[probabilityIntegralTransformIndex] = new
 					org.drip.validation.hypothesis.ProbabilityIntegralTransformTest
 						(_probabilityIntegralTransformArray[probabilityIntegralTransformIndex]);
-			}
-			catch (java.lang.Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
@@ -281,33 +274,28 @@ public class Ensemble implements org.drip.validation.evidence.NativePITGenerator
 	 * @return The Array of t-Test Results
 	 */
 
-	public org.drip.validation.hypothesis.TTestOutcome[] tTest (
+	public TTestOutcome[] tTest (
 		final double testStatistic)
 	{
 		int sampleCount = _sampleArray.length;
 		int testStatisticEvaluatorCount = _testStatisticEvaluatorArray.length;
-		org.drip.validation.hypothesis.TTestOutcome[] tTestArray = new
-			org.drip.validation.hypothesis.TTestOutcome[testStatisticEvaluatorCount];
+		TTestOutcome[] tTestOutcomeArray = new TTestOutcome[testStatisticEvaluatorCount];
 
 		for (int testStatisticEvaluatorIndex = 0;
 			testStatisticEvaluatorIndex < testStatisticEvaluatorCount;
-			++testStatisticEvaluatorIndex)
-		{
-			org.drip.measure.statistics.UnivariateMoments ensembleUnivariateMoments =
-				org.drip.measure.statistics.UnivariateMoments.Standard (
-					"UnivariateMoments",
-					_evaluatedSampleTestStatistic[testStatisticEvaluatorIndex],
-					null
-				);
+			++testStatisticEvaluatorIndex) {
+			UnivariateMoments ensembleUnivariateMoments = UnivariateMoments.Standard (
+				"UnivariateMoments",
+				_evaluatedSampleTestStatistic[testStatisticEvaluatorIndex],
+				null
+			);
 
-			if (null == ensembleUnivariateMoments)
-			{
+			if (null == ensembleUnivariateMoments) {
 				return null;
 			}
 
-			try
-			{
-				tTestArray[testStatisticEvaluatorIndex] = new org.drip.validation.hypothesis.TTestOutcome (
+			try {
+				tTestOutcomeArray[testStatisticEvaluatorIndex] = new TTestOutcome (
 					testStatistic,
 					sampleCount,
 					ensembleUnivariateMoments.mean(),
@@ -319,16 +307,14 @@ public class Ensemble implements org.drip.validation.evidence.NativePITGenerator
 					ensembleUnivariateMoments.tStatistic (testStatistic),
 					ensembleUnivariateMoments.standardErrorOffset (testStatistic)
 				);
-			}
-			catch (java.lang.Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return tTestArray;
+		return tTestOutcomeArray;
 	}
 
 	/**
@@ -340,63 +326,54 @@ public class Ensemble implements org.drip.validation.evidence.NativePITGenerator
 	 * @return The Array of Statistical Test Outcomes
 	 */
 
-	public org.drip.validation.hypothesis.StatisticalTestOutcome[] statisticalTest (
+	public StatisticalTestOutcome[] statisticalTest (
 		final double testStatistic,
-		final org.drip.validation.hypothesis.SignificanceTestSetting pTestSetting)
+		final SignificanceTestSetting pTestSetting)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (testStatistic) || null == pTestSetting)
-		{
+		if (!NumberUtil.IsValid (testStatistic) || null == pTestSetting) {
 			return null;
 		}
 
 		int sampleCount = _sampleArray.length;
 		int testStatisticEvaluatorCount = _testStatisticEvaluatorArray.length;
-		org.drip.validation.hypothesis.StatisticalTestOutcome[] statisticalTestOutcomeArray = new
-			org.drip.validation.hypothesis.StatisticalTestOutcome[testStatisticEvaluatorCount];
+		StatisticalTestOutcome[] statisticalTestOutcomeArray =
+			new StatisticalTestOutcome[testStatisticEvaluatorCount];
 
-		org.drip.validation.hypothesis.ProbabilityIntegralTransformTest[]
-			probabilityIntegralTransformTestArray = significanceTest();
+		ProbabilityIntegralTransformTest[] probabilityIntegralTransformTestArray = significanceTest();
 
 		for (int testStatisticEvaluatorIndex = 0;
 			testStatisticEvaluatorIndex < testStatisticEvaluatorCount;
-			++testStatisticEvaluatorIndex)
-		{
-			org.drip.measure.statistics.UnivariateMoments ensembleUnivariateMoments =
-				org.drip.measure.statistics.UnivariateMoments.Standard (
-					"UnivariateMoments",
-					_evaluatedSampleTestStatistic[testStatisticEvaluatorIndex],
-					null
-				);
+			++testStatisticEvaluatorIndex) {
+			UnivariateMoments ensembleUnivariateMoments = UnivariateMoments.Standard (
+				"UnivariateMoments",
+				_evaluatedSampleTestStatistic[testStatisticEvaluatorIndex],
+				null
+			);
 
-			if (null == ensembleUnivariateMoments)
-			{
+			if (null == ensembleUnivariateMoments) {
 				return null;
 			}
 
-			try
-			{
-				statisticalTestOutcomeArray[testStatisticEvaluatorIndex] = new
-					org.drip.validation.hypothesis.StatisticalTestOutcome (
-						probabilityIntegralTransformTestArray[testStatisticEvaluatorIndex].significanceTest (
-							testStatistic,
-							pTestSetting
-						),
-						new org.drip.validation.hypothesis.TTestOutcome (
-							testStatistic,
-							sampleCount,
-							ensembleUnivariateMoments.mean(),
-							ensembleUnivariateMoments.variance(),
-							ensembleUnivariateMoments.stdDev(),
-							ensembleUnivariateMoments.stdError(),
-							ensembleUnivariateMoments.degreesOfFreedom(),
-							ensembleUnivariateMoments.predictiveConfidenceLevel(),
-							ensembleUnivariateMoments.tStatistic (testStatistic),
-							ensembleUnivariateMoments.standardErrorOffset (testStatistic)
-						)
-					);
-			}
-			catch (java.lang.Exception e)
-			{
+			try {
+				statisticalTestOutcomeArray[testStatisticEvaluatorIndex] = new StatisticalTestOutcome (
+					probabilityIntegralTransformTestArray[testStatisticEvaluatorIndex].significanceTest (
+						testStatistic,
+						pTestSetting
+					),
+					new TTestOutcome (
+						testStatistic,
+						sampleCount,
+						ensembleUnivariateMoments.mean(),
+						ensembleUnivariateMoments.variance(),
+						ensembleUnivariateMoments.stdDev(),
+						ensembleUnivariateMoments.stdError(),
+						ensembleUnivariateMoments.degreesOfFreedom(),
+						ensembleUnivariateMoments.predictiveConfidenceLevel(),
+						ensembleUnivariateMoments.tStatistic (testStatistic),
+						ensembleUnivariateMoments.standardErrorOffset (testStatistic)
+					)
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
@@ -406,20 +383,15 @@ public class Ensemble implements org.drip.validation.evidence.NativePITGenerator
 		return statisticalTestOutcomeArray;
 	}
 
-	@Override public org.drip.validation.hypothesis.ProbabilityIntegralTransform
-		nativeProbabilityIntegralTransform()
+	@Override public ProbabilityIntegralTransform nativeProbabilityIntegralTransform()
 	{
-		org.drip.validation.evidence.TestStatisticAccumulator testStatisticAccumulator = new
-			org.drip.validation.evidence.TestStatisticAccumulator();
+		TestStatisticAccumulator testStatisticAccumulator = new TestStatisticAccumulator();
 
 		int sampleCount = _sampleArray.length;
 
-		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
-		{
-			for (double realization : _sampleArray[sampleIndex].realizationArray())
-			{
-				if (!testStatisticAccumulator.addTestStatistic (realization))
-				{
+		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex) {
+			for (double realization : _sampleArray[sampleIndex].realizationArray()) {
+				if (!testStatisticAccumulator.addTestStatistic (realization)) {
 					return null;
 				}
 			}

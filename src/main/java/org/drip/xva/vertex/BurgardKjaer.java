@@ -1,11 +1,19 @@
 
 package org.drip.xva.vertex;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.xva.derivative.ReplicationPortfolioVertexDealer;
+import org.drip.xva.hypothecation.CollateralGroupVertex;
+import org.drip.xva.hypothecation.CollateralGroupVertexCloseOut;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -118,11 +126,11 @@ package org.drip.xva.vertex;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BurgardKjaer extends org.drip.xva.hypothecation.CollateralGroupVertex
+public class BurgardKjaer extends CollateralGroupVertex
 {
-	private org.drip.xva.vertex.BurgardKjaerExposure _burgardKjaerVertexExposure = null;
-	private org.drip.xva.hypothecation.CollateralGroupVertexCloseOut _collateralGroupCloseOut = null;
-	private org.drip.xva.derivative.ReplicationPortfolioVertexDealer _dealerReplicationPortfolioVertex = null;
+	private BurgardKjaerExposure _burgardKjaerVertexExposure = null;
+	private CollateralGroupVertexCloseOut _collateralGroupCloseOut = null;
+	private ReplicationPortfolioVertexDealer _dealerReplicationPortfolioVertex = null;
 
 	/**
 	 * BurgardKjaer Constructor
@@ -134,30 +142,24 @@ public class BurgardKjaer extends org.drip.xva.hypothecation.CollateralGroupVert
 	 * @param collateralGroupCloseOut The Collateral Group Vertex Close Out Instance
 	 * @param dealerReplicationPortfolioVertex The Dealer Replication Portfolio Vertex Instance
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BurgardKjaer (
-		final org.drip.analytics.date.JulianDate anchorDate,
+		final JulianDate anchorDate,
 		final double forward,
 		final double accrued,
-		final org.drip.xva.vertex.BurgardKjaerExposure burgardKjaerVertexExposure,
-		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupCloseOut,
-		final org.drip.xva.derivative.ReplicationPortfolioVertexDealer dealerReplicationPortfolioVertex)
-		throws java.lang.Exception
+		final BurgardKjaerExposure burgardKjaerVertexExposure,
+		final CollateralGroupVertexCloseOut collateralGroupCloseOut,
+		final ReplicationPortfolioVertexDealer dealerReplicationPortfolioVertex)
+		throws Exception
 	{
-		super (
-			anchorDate,
-			forward,
-			accrued,
-			burgardKjaerVertexExposure.variationMarginPosting()
-		);
+		super (anchorDate, forward, accrued, burgardKjaerVertexExposure.variationMarginPosting());
 
 		if (null == (_burgardKjaerVertexExposure = burgardKjaerVertexExposure) ||
 			null == (_collateralGroupCloseOut = collateralGroupCloseOut) ||
-			null == (_dealerReplicationPortfolioVertex = dealerReplicationPortfolioVertex))
-		{
-			throw new java.lang.Exception ("BurgardKjaer Constructor => Invalid Inputs");
+			null == (_dealerReplicationPortfolioVertex = dealerReplicationPortfolioVertex)) {
+			throw new Exception ("BurgardKjaer Constructor => Invalid Inputs");
 		}
 	}
 
@@ -215,7 +217,7 @@ public class BurgardKjaer extends org.drip.xva.hypothecation.CollateralGroupVert
 	 * @return The Dealer Replication Potrfolio Instance
 	 */
 
-	public org.drip.xva.derivative.ReplicationPortfolioVertexDealer dealerReplicationPortfolio()
+	public ReplicationPortfolioVertexDealer dealerReplicationPortfolio()
 	{
 		return _dealerReplicationPortfolioVertex;
 	}

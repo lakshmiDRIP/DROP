@@ -1,11 +1,16 @@
 
 package org.drip.validation.distance;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -131,11 +136,10 @@ public abstract class GapLossFunction
 		{
 			@Override public double loss (
 				final double gap)
-				throws java.lang.Exception
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (gap))
-				{
-					throw new java.lang.Exception ("GapLossFunction::loss => Invalid Inputs");
+				if (!NumberUtil.IsValid (gap)) {
+					throw new Exception ("GapLossFunction::loss => Invalid Inputs");
 				}
 
 				return gap * gap;
@@ -157,11 +161,10 @@ public abstract class GapLossFunction
 		{
 			@Override public double loss (
 				final double gap)
-				throws java.lang.Exception
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (gap))
-				{
-					throw new java.lang.Exception ("GapLossFunction::loss => Invalid Inputs");
+				if (!NumberUtil.IsValid (gap)) {
+					throw new Exception ("GapLossFunction::loss => Invalid Inputs");
 				}
 
 				return gap < 0. ? 0. : gap * gap;
@@ -177,10 +180,10 @@ public abstract class GapLossFunction
 	 * 
 	 * @return The Loss
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract double loss (
 		final double gap)
-		throws java.lang.Exception;
+		throws Exception;
 }

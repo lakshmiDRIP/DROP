@@ -1,11 +1,17 @@
 
 package org.drip.validation.evidence;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -115,7 +121,7 @@ package org.drip.validation.evidence;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Sample implements org.drip.validation.evidence.NativePITGenerator
+public class Sample implements NativePITGenerator
 {
 	private double[] _realizationArray = null;
 
@@ -129,13 +135,11 @@ public class Sample implements org.drip.validation.evidence.NativePITGenerator
 
 	public Sample (
 		final double[] realizationArray)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (null == (_realizationArray = realizationArray) ||
-			0 == _realizationArray.length ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_realizationArray))
-		{
-			throw new java.lang.Exception ("Sample Constructor => Invalid Inputs");
+		if (null == (_realizationArray = realizationArray) || 0 == _realizationArray.length ||
+			!NumberUtil.IsValid (_realizationArray)) {
+			throw new Exception ("Sample Constructor => Invalid Inputs");
 		}
 	}
 
@@ -157,31 +161,26 @@ public class Sample implements org.drip.validation.evidence.NativePITGenerator
 	 * 
 	 * @return The Sample Test Statistic
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double applyTestStatistic (
-		final org.drip.validation.evidence.TestStatisticEvaluator testStatisticEvaluator)
-		throws java.lang.Exception
+		final TestStatisticEvaluator testStatisticEvaluator)
+		throws Exception
 	{
-		if (null == testStatisticEvaluator)
-		{
-			throw new java.lang.Exception ("Sample::applyTestStatistic => Invalid Inputs");
+		if (null == testStatisticEvaluator) {
+			throw new Exception ("Sample::applyTestStatistic => Invalid Inputs");
 		}
 
 		return testStatisticEvaluator.evaluate (_realizationArray);
 	}
 
-	@Override public org.drip.validation.hypothesis.ProbabilityIntegralTransform
-		nativeProbabilityIntegralTransform()
+	@Override public ProbabilityIntegralTransform nativeProbabilityIntegralTransform()
 	{
-		org.drip.validation.evidence.TestStatisticAccumulator testStatisticAccumulator = new
-			org.drip.validation.evidence.TestStatisticAccumulator();
+		TestStatisticAccumulator testStatisticAccumulator = new TestStatisticAccumulator();
 
-		for (double realization : _realizationArray)
-		{
-			if (!testStatisticAccumulator.addTestStatistic (realization))
-			{
+		for (double realization : _realizationArray) {
+			if (!testStatisticAccumulator.addTestStatistic (realization)) {
 				return null;
 			}
 		}

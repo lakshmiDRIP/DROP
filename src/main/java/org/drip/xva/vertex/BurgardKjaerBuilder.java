@@ -1,11 +1,24 @@
 
 package org.drip.xva.vertex;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.exposure.universe.MarketEdge;
+import org.drip.exposure.universe.MarketVertex;
+import org.drip.exposure.universe.MarketVertexEntity;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.xva.definition.CloseOut;
+import org.drip.xva.derivative.ReplicationPortfolioVertexDealer;
+import org.drip.xva.hypothecation.CollateralGroupVertexCloseOut;
+import org.drip.xva.hypothecation.CollateralGroupVertexExposure;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -132,32 +145,23 @@ public class BurgardKjaerBuilder
 	 * @return The Burgard Kjaer Dealer Portfolio Vertex
 	 */
 
-	public static final org.drip.xva.vertex.BurgardKjaer Initial (
-		final org.drip.analytics.date.JulianDate anchorDate,
+	public static final BurgardKjaer Initial (
+		final JulianDate anchorDate,
 		final double forward,
-		final org.drip.exposure.universe.MarketVertex marketVertex,
-		final org.drip.xva.definition.CloseOut closeOutScheme)
+		final MarketVertex marketVertex,
+		final CloseOut closeOutScheme)
 	{
-		if (null == marketVertex)
-		{
+		if (null == marketVertex) {
 			return null;
 		}
 
-		org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut =
-			org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (
-				closeOutScheme,
-				forward,
-				0.
-			);
+		CollateralGroupVertexCloseOut collateralGroupVertexCloseOut =
+			CollateralGroupVertexCloseOut.Standard (closeOutScheme, forward, 0.);
 
-		org.drip.xva.vertex.BurgardKjaerExposure burgardKjaerVertexExposure =
-			org.drip.xva.vertex.BurgardKjaerExposure.Initial (
-				forward,
-				collateralGroupVertexCloseOut
-			);
+		BurgardKjaerExposure burgardKjaerVertexExposure =
+			BurgardKjaerExposure.Initial (forward, collateralGroupVertexCloseOut);
 
-		if (null == burgardKjaerVertexExposure)
-		{
+		if (null == burgardKjaerVertexExposure) {
 			return null;
 		}
 
@@ -165,7 +169,7 @@ public class BurgardKjaerBuilder
 
 		double dealerDefaultCloseOut = collateralGroupVertexCloseOut.dealer();
 
-		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertex = marketVertex.dealer();
+		MarketVertexEntity dealerMarketVertex = marketVertex.dealer();
 
 		double dealerSubordinateFundingMarketVertex = dealerMarketVertex.subordinateFundingReplicator();
 
@@ -186,24 +190,21 @@ public class BurgardKjaerBuilder
 			dealerSurvival * clientSurvival * marketVertex.csaSpread() *
 				burgardKjaerVertexExposure.variationMarginPosting();
 
-		try
-		{
-			return new org.drip.xva.vertex.BurgardKjaer (
+		try {
+			return new BurgardKjaer (
 				anchorDate,
 				forward,
 				0.,
 				burgardKjaerVertexExposure,
 				collateralGroupVertexCloseOut,
-				new org.drip.xva.derivative.ReplicationPortfolioVertexDealer (
+				new ReplicationPortfolioVertexDealer (
 					(fundingExposure + dealerSubordinateRecoveryRate * adjustedExposure - dealerDefaultCloseOut) /
 						(dealerSeniorRecoveryRate - dealerSubordinateRecoveryRate) / dealerMarketVertex.seniorFundingReplicator(),
 					(fundingExposure + dealerSeniorRecoveryRate * adjustedExposure - dealerDefaultCloseOut) /
 						(dealerSubordinateRecoveryRate - dealerSeniorRecoveryRate) / dealerSubordinateFundingMarketVertex
 				)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -222,18 +223,15 @@ public class BurgardKjaerBuilder
 	 * @return The Burgard Kjaer Dealer Portfolio Vertex
 	 */
 
-	public static final org.drip.xva.vertex.BurgardKjaer DealerPortfolioBuilder (
-		final org.drip.analytics.date.JulianDate anchorDate,
-		final org.drip.xva.hypothecation.CollateralGroupVertexExposure collateralGroupVertexExposure,
-		final org.drip.exposure.universe.MarketEdge marketEdge,
-		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut,
-		final org.drip.xva.vertex.BurgardKjaerExposure burgardKjaerVertexExposure)
+	public static final BurgardKjaer DealerPortfolioBuilder (
+		final JulianDate anchorDate,
+		final CollateralGroupVertexExposure collateralGroupVertexExposure,
+		final MarketEdge marketEdge,
+		final CollateralGroupVertexCloseOut collateralGroupVertexCloseOut,
+		final BurgardKjaerExposure burgardKjaerVertexExposure)
 	{
-		if (null == collateralGroupVertexExposure ||
-			null == marketEdge ||
-			null == collateralGroupVertexCloseOut ||
-			null == burgardKjaerVertexExposure)
-		{
+		if (null == collateralGroupVertexExposure || null == marketEdge ||
+			null == collateralGroupVertexCloseOut || null == burgardKjaerVertexExposure) {
 			return null;
 		}
 
@@ -241,13 +239,14 @@ public class BurgardKjaerBuilder
 
 		double dealerDefaultCloseOut = collateralGroupVertexCloseOut.dealer();
 
-		org.drip.exposure.universe.MarketVertex marketVertexStart = marketEdge.start();
+		MarketVertex marketVertexStart = marketEdge.start();
 
-		org.drip.exposure.universe.MarketVertex marketVertexFinish = marketEdge.finish();
+		MarketVertex marketVertexFinish = marketEdge.finish();
 
-		org.drip.exposure.universe.MarketVertexEntity dealerMarketVertexFinish = marketVertexFinish.dealer();
+		MarketVertexEntity dealerMarketVertexFinish = marketVertexFinish.dealer();
 
-		double dealerSubordinateFundingMarketVertexFinish = dealerMarketVertexFinish.subordinateFundingReplicator();
+		double dealerSubordinateFundingMarketVertexFinish =
+			dealerMarketVertexFinish.subordinateFundingReplicator();
 
 		double dealerSurvivalFinish = dealerMarketVertexFinish.survivalProbability();
 
@@ -257,29 +256,28 @@ public class BurgardKjaerBuilder
 
 		double clientSurvivalFinish = marketVertexFinish.client().survivalProbability();
 
-		double incrementalDealerSurvival = dealerSurvivalFinish -
-			(null == marketVertexStart ? 1. : marketVertexStart.dealer().survivalProbability());
+		double incrementalDealerSurvival = dealerSurvivalFinish - (
+			null == marketVertexStart ? 1. : marketVertexStart.dealer().survivalProbability()
+		);
 
-		double adjustedExposure =
-			collateralGroupVertexExposure.uncollateralized() +
-			dealerSurvivalFinish *
-				(clientSurvivalFinish -
-					(null == marketVertexStart ? 1. : marketVertexStart.client().survivalProbability())) *
-				burgardKjaerVertexExposure.credit() +
+		double adjustedExposure = collateralGroupVertexExposure.uncollateralized() + dealerSurvivalFinish * (
+			clientSurvivalFinish - (
+				null == marketVertexStart ? 1. : marketVertexStart.client().survivalProbability()
+			)
+		) * burgardKjaerVertexExposure.credit() +
 			clientSurvivalFinish * incrementalDealerSurvival * burgardKjaerVertexExposure.debt() +
 			clientSurvivalFinish * incrementalDealerSurvival * fundingExposure -
 			dealerSurvivalFinish * clientSurvivalFinish * marketVertexFinish.csaSpread() *
 				burgardKjaerVertexExposure.variationMarginPosting();
 
-		try
-		{
-			return new org.drip.xva.vertex.BurgardKjaer (
+		try {
+			return new BurgardKjaer (
 				anchorDate,
 				collateralGroupVertexExposure.variationMarginEstimate(),
 				collateralGroupVertexExposure.tradePayment(),
 				burgardKjaerVertexExposure,
 				collateralGroupVertexCloseOut,
-				new org.drip.xva.derivative.ReplicationPortfolioVertexDealer (
+				new ReplicationPortfolioVertexDealer (
 					(fundingExposure + dealerSubordinateRecoveryRateFinish * adjustedExposure -
 						dealerDefaultCloseOut) / (dealerSeniorRecoveryRateFinish -
 						dealerSubordinateRecoveryRateFinish) /
@@ -289,9 +287,7 @@ public class BurgardKjaerBuilder
 						dealerSubordinateFundingMarketVertexFinish
 				)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -314,58 +310,47 @@ public class BurgardKjaerBuilder
 	 *  Bonds
 	 */
 
-	public static final org.drip.xva.vertex.BurgardKjaer HedgeErrorDualBond (
-		final org.drip.analytics.date.JulianDate anchorDate,
+	public static final BurgardKjaer HedgeErrorDualBond (
+		final JulianDate anchorDate,
 		final double exposure,
 		final double realizedCashFlow,
 		final double collateralBalance,
 		final double hedgeError,
-		final org.drip.exposure.universe.MarketEdge marketEdge,
-		final org.drip.xva.definition.CloseOut closeOutScheme)
+		final MarketEdge marketEdge,
+		final CloseOut closeOutScheme)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (exposure) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (realizedCashFlow) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (collateralBalance) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (hedgeError))
-		{
+		if (!NumberUtil.IsValid (exposure) || !NumberUtil.IsValid (realizedCashFlow) ||
+			!NumberUtil.IsValid (collateralBalance) || !NumberUtil.IsValid (hedgeError)) {
 			return null;
 		}
 
 		double uncollateralizedExposure = exposure + realizedCashFlow;
 		double collateralizedExposure = uncollateralizedExposure - collateralBalance;
 
-		org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut =
-			org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (
-				closeOutScheme,
+		CollateralGroupVertexCloseOut collateralGroupVertexCloseOut =
+			CollateralGroupVertexCloseOut.Standard (closeOutScheme,
 				uncollateralizedExposure,
 				collateralBalance
 			);
 
-		if (null == collateralGroupVertexCloseOut)
-		{
+		if (null == collateralGroupVertexCloseOut) {
 			return null;
 		}
 
-		try
-		{
+		try {
 			return DealerPortfolioBuilder (
 				anchorDate,
-				new org.drip.xva.hypothecation.CollateralGroupVertexExposure (
-					exposure,
-					realizedCashFlow
-				),
+				new CollateralGroupVertexExposure (exposure, realizedCashFlow),
 				marketEdge,
 				collateralGroupVertexCloseOut,
-				new org.drip.xva.vertex.BurgardKjaerExposure (
+				new BurgardKjaerExposure (
 					collateralizedExposure - collateralGroupVertexCloseOut.client(),
 					collateralizedExposure - collateralGroupVertexCloseOut.dealer(),
 					hedgeError,
 					collateralBalance
 				)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -387,34 +372,28 @@ public class BurgardKjaerBuilder
 	 *  Default using Two Bonds
 	 */
 
-	public static final org.drip.xva.vertex.BurgardKjaer SemiReplicationDualBond (
+	public static final BurgardKjaer SemiReplicationDualBond (
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double exposure,
 		final double realizedCashFlow,
 		final double collateralBalance,
-		final org.drip.exposure.universe.MarketEdge marketEdge,
-		final org.drip.xva.definition.CloseOut closeOutScheme)
+		final MarketEdge marketEdge,
+		final CloseOut closeOutScheme)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (exposure) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (realizedCashFlow) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (collateralBalance))
-		{
+		if (!NumberUtil.IsValid (exposure) || !NumberUtil.IsValid (realizedCashFlow) ||
+			!NumberUtil.IsValid (collateralBalance)) {
 			return null;
 		}
 
 		double uncollateralizedExposure = exposure + realizedCashFlow;
 		double collateralizedExposure = uncollateralizedExposure - collateralBalance;
 
-		try
-		{
+		try {
 			return DealerPortfolioBuilder (
 				anchorDate,
-				new org.drip.xva.hypothecation.CollateralGroupVertexExposure (
-					exposure,
-					realizedCashFlow
-				),
+				new CollateralGroupVertexExposure (exposure, realizedCashFlow),
 				marketEdge,
-				org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (
+				CollateralGroupVertexCloseOut.Standard (
 					closeOutScheme,
 					uncollateralizedExposure,
 					collateralBalance
@@ -426,9 +405,7 @@ public class BurgardKjaerBuilder
 					collateralBalance
 				)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -448,45 +425,32 @@ public class BurgardKjaerBuilder
 	 * @return The Standard Instance of BurgardKjaerVertex using using a Fully Collateralized Strategy
 	 */
 
-	public static final org.drip.xva.vertex.BurgardKjaer GoldPlatedTwoWayCSA (
+	public static final BurgardKjaer GoldPlatedTwoWayCSA (
 		final org.drip.analytics.date.JulianDate anchorDate,
 		final double exposure,
 		final double realizedCashFlow,
-		final org.drip.exposure.universe.MarketEdge marketEdge,
-		final org.drip.xva.definition.CloseOut closeOutScheme)
+		final MarketEdge marketEdge,
+		final CloseOut closeOutScheme)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (exposure) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (realizedCashFlow))
-		{
+		if (!NumberUtil.IsValid (exposure) || !NumberUtil.IsValid (realizedCashFlow)) {
 			return null;
 		}
 
 		double uncollateralizedExposure = exposure + realizedCashFlow;
 
-		try
-		{
+		try {
 			return DealerPortfolioBuilder (
 				anchorDate,
-				new org.drip.xva.hypothecation.CollateralGroupVertexExposure (
-					exposure,
-					realizedCashFlow
-				),
+				new CollateralGroupVertexExposure (exposure, realizedCashFlow),
 				marketEdge,
-				org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (
+				CollateralGroupVertexCloseOut.Standard (
 					closeOutScheme,
 					uncollateralizedExposure,
 					uncollateralizedExposure
 				),
-				new org.drip.xva.vertex.BurgardKjaerExposure (
-					0.,
-					0.,
-					0.,
-					uncollateralizedExposure
-				)
+				new BurgardKjaerExposure (0., 0., 0., uncollateralizedExposure)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -505,46 +469,38 @@ public class BurgardKjaerBuilder
 	 * @return The Standard Instance of BurgardKjaerVertex using One Way CSA
 	 */
 
-	public static final org.drip.xva.vertex.BurgardKjaer OneWayCSA (
-		final org.drip.analytics.date.JulianDate anchorDate,
+	public static final BurgardKjaer OneWayCSA (
+		final JulianDate anchorDate,
 		final double exposure,
 		final double realizedCashFlow,
-		final org.drip.exposure.universe.MarketEdge marketEdge,
-		final org.drip.xva.definition.CloseOut closeOutScheme)
+		final MarketEdge marketEdge,
+		final CloseOut closeOutScheme)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (exposure) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (realizedCashFlow))
-		{
+		if (!NumberUtil.IsValid (exposure) || !NumberUtil.IsValid (realizedCashFlow)) {
 			return null;
 		}
 
 		double uncollateralizedExposure = exposure + realizedCashFlow;
 		double collateralBalance = 0. > uncollateralizedExposure ? uncollateralizedExposure : 0.;
 
-		try
-		{
+		try {
 			return DealerPortfolioBuilder (
 				anchorDate,
-				new org.drip.xva.hypothecation.CollateralGroupVertexExposure (
-					exposure,
-					realizedCashFlow
-				),
+				new CollateralGroupVertexExposure (exposure, realizedCashFlow),
 				marketEdge,
-				org.drip.xva.hypothecation.CollateralGroupVertexCloseOut.Standard (
+				CollateralGroupVertexCloseOut.Standard (
 					closeOutScheme,
 					uncollateralizedExposure,
 					collateralBalance
 				),
-				new org.drip.xva.vertex.BurgardKjaerExposure (
+				new BurgardKjaerExposure (
 					0. < uncollateralizedExposure ? uncollateralizedExposure : 0.,
 					0.,
 					0. < uncollateralizedExposure ? uncollateralizedExposure : 0.,
 					collateralBalance
 				)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -563,21 +519,19 @@ public class BurgardKjaerBuilder
 	 * @return The Standard Instance of BurgardKjaerVertex using the "Set Off" Legal Agreement Scheme
 	 */
 
-	public static final org.drip.xva.vertex.BurgardKjaer SetOff (
-		final org.drip.analytics.date.JulianDate anchorDate,
+	public static final BurgardKjaer SetOff (
+		final JulianDate anchorDate,
 		final double exposure,
 		final double realizedCashFlow,
 		final double collateralBalance,
-		final org.drip.exposure.universe.MarketEdge marketEdge)
+		final MarketEdge marketEdge)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (exposure) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (realizedCashFlow) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (collateralBalance))
-		{
+		if (!NumberUtil.IsValid (exposure) || !NumberUtil.IsValid (realizedCashFlow) ||
+			!NumberUtil.IsValid (collateralBalance)) {
 			return null;
 		}
 
-		org.drip.exposure.universe.MarketVertex marketVertexFinish = marketEdge.finish();
+		MarketVertex marketVertexFinish = marketEdge.finish();
 
 		double dealerSeniorRecoveryRateFinish = marketVertexFinish.dealer().seniorRecoveryRate();
 
@@ -585,29 +539,23 @@ public class BurgardKjaerBuilder
 
 		double collateralizedExposure = exposure + realizedCashFlow - collateralBalance;
 
-		try
-		{
+		try {
 			return DealerPortfolioBuilder (
 				anchorDate,
-				new org.drip.xva.hypothecation.CollateralGroupVertexExposure (
-					exposure,
-					realizedCashFlow
-				),
+				new CollateralGroupVertexExposure (exposure, realizedCashFlow),
 				marketEdge,
-				new org.drip.xva.hypothecation.CollateralGroupVertexCloseOut (
+				new CollateralGroupVertexCloseOut (
 					collateralizedExposure * dealerSeniorRecoveryRateFinish,
 					collateralizedExposure * clientRecoveryFinish
 				),
-				new org.drip.xva.vertex.BurgardKjaerExposure (
+				new BurgardKjaerExposure (
 					collateralizedExposure * (1. - clientRecoveryFinish),
 					collateralizedExposure * (1. - dealerSeniorRecoveryRateFinish),
 					0.,
 					collateralBalance
 				)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

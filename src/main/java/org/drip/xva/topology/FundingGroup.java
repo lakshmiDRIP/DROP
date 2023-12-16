@@ -1,11 +1,25 @@
 
 package org.drip.xva.topology;
 
+import java.util.Map;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.state.identifier.CSALabel;
+import org.drip.state.identifier.EntityFundingLabel;
+import org.drip.state.identifier.EntityHazardLabel;
+import org.drip.state.identifier.EntityRecoveryLabel;
+import org.drip.state.identifier.OvernightLabel;
+import org.drip.xva.proto.FundingGroupSpecification;
+import org.drip.xva.proto.ObjectSpecification;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -117,11 +131,10 @@ package org.drip.xva.topology;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
+public class FundingGroup extends ObjectSpecification
 {
-	private org.drip.xva.proto.FundingGroupSpecification _fundingGroupSpecification = null;
-	private java.util.Map<java.lang.String, org.drip.xva.topology.CreditDebtGroup> _creditDebtGroupMap =
-		null;
+	private Map<String, CreditDebtGroup> _creditDebtGroupMap = null;
+	private FundingGroupSpecification _fundingGroupSpecification = null;
 
 	/**
 	 * FundingGroup Constructor
@@ -130,27 +143,22 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @param name FundingGroup Name
 	 * @param fundingGroupSpecification Funding Group Specification
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public FundingGroup (
-		final java.lang.String id,
-		final java.lang.String name,
-		final org.drip.xva.proto.FundingGroupSpecification fundingGroupSpecification)
-		throws java.lang.Exception
+		final String id,
+		final String name,
+		final FundingGroupSpecification fundingGroupSpecification)
+		throws Exception
 	{
-		super (
-			id,
-			name
-		);
+		super (id, name);
 
-		if (null == (_fundingGroupSpecification = fundingGroupSpecification))
-		{
-			throw new java.lang.Exception ("FundingGroup Constructor => Invalid Inputs");
+		if (null == (_fundingGroupSpecification = fundingGroupSpecification)) {
+			throw new Exception ("FundingGroup Constructor => Invalid Inputs");
 		}
 
-		_creditDebtGroupMap = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.xva.topology.CreditDebtGroup>();
+		_creditDebtGroupMap = new CaseInsensitiveHashMap<CreditDebtGroup>();
 	}
 
 	/**
@@ -159,7 +167,7 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @return The Funding Group Specification
 	 */
 
-	public org.drip.xva.proto.FundingGroupSpecification fundingGroupSpecification()
+	public FundingGroupSpecification fundingGroupSpecification()
 	{
 		return _fundingGroupSpecification;
 	}
@@ -170,7 +178,7 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @return The Credit Debt Group Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.xva.topology.CreditDebtGroup> creditDebtGroupMap()
+	public Map<String, CreditDebtGroup> creditDebtGroupMap()
 	{
 		return _creditDebtGroupMap;
 	}
@@ -184,17 +192,13 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	 */
 
 	public boolean addCreditDebtGroup (
-		final org.drip.xva.topology.CreditDebtGroup creditDebtGroup)
+		final CreditDebtGroup creditDebtGroup)
 	{
-		if (null == creditDebtGroup)
-		{
+		if (null == creditDebtGroup) {
 			return false;
 		}
 
-		_creditDebtGroupMap.put (
-			creditDebtGroup.id(),
-			creditDebtGroup
-		);
+		_creditDebtGroupMap.put (creditDebtGroup.id(), creditDebtGroup);
 
 		return true;
 	}
@@ -208,10 +212,9 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	 */
 
 	public boolean containsCreditDebtGroup (
-		final java.lang.String creditDebtGroupID)
+		final String creditDebtGroupID)
 	{
-		return null == creditDebtGroupID || creditDebtGroupID.isEmpty() ? false :
-			_creditDebtGroupMap.containsKey (creditDebtGroupID);
+		return null != creditDebtGroupID && _creditDebtGroupMap.containsKey (creditDebtGroupID);
 	}
 
 	/**
@@ -222,8 +225,8 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @return The CreditDebtGroup Instance
 	 */
 
-	public org.drip.xva.topology.CreditDebtGroup creditDebtGroup (
-		final java.lang.String creditDebtGroupID)
+	public CreditDebtGroup creditDebtGroup (
+		final String creditDebtGroupID)
 	{
 		return containsCreditDebtGroup (creditDebtGroupID) ? _creditDebtGroupMap.get (creditDebtGroupID) :
 			null;
@@ -235,7 +238,7 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @return The Dealer Senior Funding Label
 	 */
 
-	public org.drip.state.identifier.EntityFundingLabel dealerSeniorFundingLabel()
+	public EntityFundingLabel dealerSeniorFundingLabel()
 	{
 		return _fundingGroupSpecification.dealerSeniorFundingLabel();
 	}
@@ -246,7 +249,7 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @return The Client Funding Label
 	 */
 
-	public org.drip.state.identifier.EntityFundingLabel clientFundingLabel()
+	public EntityFundingLabel clientFundingLabel()
 	{
 		return _fundingGroupSpecification.clientFundingLabel();
 	}
@@ -257,7 +260,7 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @return The Dealer Subordinate Funding Label
 	 */
 
-	public org.drip.state.identifier.EntityFundingLabel dealerSubordinateFundingLabel()
+	public EntityFundingLabel dealerSubordinateFundingLabel()
 	{
 		return _fundingGroupSpecification.dealerSubordinateFundingLabel();
 	}
@@ -268,31 +271,22 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @return The Overnight Label Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.state.identifier.OvernightLabel> overnightLabelMap()
+	public Map<String, OvernightLabel> overnightLabelMap()
 	{
-		java.util.Map<java.lang.String, org.drip.state.identifier.OvernightLabel> overnightLabelMap = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.OvernightLabel>();
+		Map<String, OvernightLabel> overnightLabelMap = new CaseInsensitiveHashMap<OvernightLabel>();
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.CreditDebtGroup>
-			creditDebtGroupEntry : _creditDebtGroupMap.entrySet())
-		{
-			java.util.Map<java.lang.String, org.drip.xva.topology.CollateralGroup> collateralGroupMap =
+		for (Map.Entry<String, CreditDebtGroup> creditDebtGroupEntry : _creditDebtGroupMap.entrySet()) {
+			Map<String, CollateralGroup> collateralGroupMap =
 				creditDebtGroupEntry.getValue().collateralGroupMap();
 
-			for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.CollateralGroup>
-				collateralGroupMapEntry : collateralGroupMap.entrySet())
+			for (Map.Entry<String, CollateralGroup> collateralGroupMapEntry : collateralGroupMap.entrySet())
 			{
-				org.drip.state.identifier.OvernightLabel overnightLabel =
-					collateralGroupMapEntry.getValue().overnightLabel();
+				OvernightLabel overnightLabel = collateralGroupMapEntry.getValue().overnightLabel();
 
-				java.lang.String overnightLabelFQN = overnightLabel.fullyQualifiedName();
+				String overnightLabelFQN = overnightLabel.fullyQualifiedName();
 
-				if (!overnightLabelMap.containsKey (overnightLabelFQN))
-				{
-					overnightLabelMap.put (
-						overnightLabelFQN,
-						overnightLabel
-					);
+				if (!overnightLabelMap.containsKey (overnightLabelFQN)) {
+					overnightLabelMap.put (overnightLabelFQN, overnightLabel);
 				}
 			}
 		}
@@ -306,30 +300,22 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @return The CSA Label Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.state.identifier.CSALabel> csaLabelMap()
+	public Map<String, CSALabel> csaLabelMap()
 	{
-		java.util.Map<java.lang.String, org.drip.state.identifier.CSALabel> csaLabelMap = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.CSALabel>();
+		Map<String, CSALabel> csaLabelMap = new CaseInsensitiveHashMap<CSALabel>();
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.CreditDebtGroup>
-			creditDebtGroupEntry : _creditDebtGroupMap.entrySet())
-		{
-			java.util.Map<java.lang.String, org.drip.xva.topology.CollateralGroup> collateralGroupMap =
+		for (Map.Entry<String, CreditDebtGroup> creditDebtGroupEntry : _creditDebtGroupMap.entrySet()) {
+			Map<String, CollateralGroup> collateralGroupMap =
 				creditDebtGroupEntry.getValue().collateralGroupMap();
 
-			for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.CollateralGroup>
-				collateralGroupMapEntry : collateralGroupMap.entrySet())
+			for (Map.Entry<String, CollateralGroup> collateralGroupMapEntry : collateralGroupMap.entrySet())
 			{
-				org.drip.state.identifier.CSALabel csaLabel = collateralGroupMapEntry.getValue().csaLabel();
+				CSALabel csaLabel = collateralGroupMapEntry.getValue().csaLabel();
 
-				java.lang.String csaLabelFQN = csaLabel.fullyQualifiedName();
+				String csaLabelFQN = csaLabel.fullyQualifiedName();
 
-				if (!csaLabelMap.containsKey (csaLabelFQN))
-				{
-					csaLabelMap.put (
-						csaLabelFQN,
-						csaLabel
-					);
+				if (!csaLabelMap.containsKey (csaLabelFQN)) {
+					csaLabelMap.put (csaLabelFQN, csaLabel);
 				}
 			}
 		}
@@ -343,26 +329,18 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @return The Dealer Hazard Label Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel>
-		dealerHazardLabelMap()
+	public Map<String, EntityHazardLabel> dealerHazardLabelMap()
 	{
-		java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel> dealerHazardLabelMap = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityHazardLabel>();
+		Map<String, EntityHazardLabel> dealerHazardLabelMap =
+			new CaseInsensitiveHashMap<EntityHazardLabel>();
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.CreditDebtGroup>
-			creditDebtGroupMapEntry : _creditDebtGroupMap.entrySet())
-		{
-			org.drip.state.identifier.EntityHazardLabel dealerHazardLabel =
-				creditDebtGroupMapEntry.getValue().dealerHazardLabel();
+		for (Map.Entry<String, CreditDebtGroup> creditDebtGroupMapEntry : _creditDebtGroupMap.entrySet()) {
+			EntityHazardLabel dealerHazardLabel = creditDebtGroupMapEntry.getValue().dealerHazardLabel();
 
-			java.lang.String dealerHazardLabelFQN = dealerHazardLabel.fullyQualifiedName();
+			String dealerHazardLabelFQN = dealerHazardLabel.fullyQualifiedName();
 
-			if (!dealerHazardLabelMap.containsKey (dealerHazardLabelFQN))
-			{
-				dealerHazardLabelMap.put (
-					dealerHazardLabelFQN,
-					dealerHazardLabel
-				);
+			if (!dealerHazardLabelMap.containsKey (dealerHazardLabelFQN)) {
+				dealerHazardLabelMap.put (dealerHazardLabelFQN, dealerHazardLabel);
 			}
 		}
 
@@ -375,26 +353,19 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @return The Client Hazard Label Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel>
-		clientHazardLabelMap()
+	public Map<String, EntityHazardLabel> clientHazardLabelMap()
 	{
-		java.util.Map<java.lang.String, org.drip.state.identifier.EntityHazardLabel> clientHazardLabelMap =
-			new org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityHazardLabel>();
+		Map<String, EntityHazardLabel> clientHazardLabelMap =
+			new CaseInsensitiveHashMap<EntityHazardLabel>();
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.CreditDebtGroup>
-			creditDebtGroupMapEntry : _creditDebtGroupMap.entrySet())
-		{
-			org.drip.state.identifier.EntityHazardLabel clientHazardLabel =
+		for (Map.Entry<String, CreditDebtGroup> creditDebtGroupMapEntry : _creditDebtGroupMap.entrySet()) {
+			EntityHazardLabel clientHazardLabel =
 				creditDebtGroupMapEntry.getValue().clientPartyHazardLabel();
 
-			java.lang.String clientHazardLabelFQN = clientHazardLabel.fullyQualifiedName();
+			String clientHazardLabelFQN = clientHazardLabel.fullyQualifiedName();
 
-			if (!clientHazardLabelMap.containsKey (clientHazardLabelFQN))
-			{
-				clientHazardLabelMap.put (
-					clientHazardLabelFQN,
-					clientHazardLabel
-				);
+			if (!clientHazardLabelMap.containsKey (clientHazardLabelFQN)) {
+				clientHazardLabelMap.put (clientHazardLabelFQN, clientHazardLabel);
 			}
 		}
 
@@ -407,27 +378,19 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @return The Dealer Senior Recovery Label Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-		dealerSeniorRecoveryLabelMap()
+	public Map<String, EntityRecoveryLabel> dealerSeniorRecoveryLabelMap()
 	{
-		java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-			dealerSeniorRecoveryLabelMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityRecoveryLabel>();
+		Map<String, EntityRecoveryLabel> dealerSeniorRecoveryLabelMap =
+			new CaseInsensitiveHashMap<EntityRecoveryLabel>();
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.CreditDebtGroup>
-			creditDebtGroupMapEntry : _creditDebtGroupMap.entrySet())
-		{
-			org.drip.state.identifier.EntityRecoveryLabel dealerSeniorRecoveryLabel =
+		for (Map.Entry<String, CreditDebtGroup> creditDebtGroupMapEntry : _creditDebtGroupMap.entrySet()) {
+			EntityRecoveryLabel dealerSeniorRecoveryLabel =
 				creditDebtGroupMapEntry.getValue().dealerSeniorRecoveryLabel();
 
-			java.lang.String dealerSeniorRecoveryLabelFQN = dealerSeniorRecoveryLabel.fullyQualifiedName();
+			String dealerSeniorRecoveryLabelFQN = dealerSeniorRecoveryLabel.fullyQualifiedName();
 
-			if (!dealerSeniorRecoveryLabelMap.containsKey (dealerSeniorRecoveryLabelFQN))
-			{
-				dealerSeniorRecoveryLabelMap.put (
-					dealerSeniorRecoveryLabelFQN,
-					dealerSeniorRecoveryLabel
-				);
+			if (!dealerSeniorRecoveryLabelMap.containsKey (dealerSeniorRecoveryLabelFQN)) {
+				dealerSeniorRecoveryLabelMap.put (dealerSeniorRecoveryLabelFQN, dealerSeniorRecoveryLabel);
 			}
 		}
 
@@ -440,27 +403,19 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @return The Client Recovery Label Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-		clientRecoveryLabelMap()
+	public Map<String, EntityRecoveryLabel> clientRecoveryLabelMap()
 	{
-		java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel> clientRecoveryLabelMap
-			= new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityRecoveryLabel>();
+		Map<String, EntityRecoveryLabel> clientRecoveryLabelMap =
+			new CaseInsensitiveHashMap<EntityRecoveryLabel>();
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.CreditDebtGroup>
-			creditDebtGroupMapEntry : _creditDebtGroupMap.entrySet())
-		{
-			org.drip.state.identifier.EntityRecoveryLabel clientRecoveryLabel =
+		for (Map.Entry<String, CreditDebtGroup> creditDebtGroupMapEntry : _creditDebtGroupMap.entrySet()) {
+			EntityRecoveryLabel clientRecoveryLabel =
 				creditDebtGroupMapEntry.getValue().clientRecoveryLabel();
 
-			java.lang.String clientRecoveryLabelFQN = clientRecoveryLabel.fullyQualifiedName();
+			String clientRecoveryLabelFQN = clientRecoveryLabel.fullyQualifiedName();
 
-			if (!clientRecoveryLabelMap.containsKey (clientRecoveryLabelFQN))
-			{
-				clientRecoveryLabelMap.put (
-					clientRecoveryLabelFQN,
-					clientRecoveryLabel
-				);
+			if (!clientRecoveryLabelMap.containsKey (clientRecoveryLabelFQN)) {
+				clientRecoveryLabelMap.put (clientRecoveryLabelFQN, clientRecoveryLabel);
 			}
 		}
 
@@ -473,26 +428,20 @@ public class FundingGroup extends org.drip.xva.proto.ObjectSpecification
 	 * @return The Dealer Subordinate Recovery Label Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-		dealerSubordinateRecoveryLabelMap()
+	public Map<String, EntityRecoveryLabel> dealerSubordinateRecoveryLabelMap()
 	{
-		java.util.Map<java.lang.String, org.drip.state.identifier.EntityRecoveryLabel>
-			dealerSubordinateRecoveryLabelMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.identifier.EntityRecoveryLabel>();
+		Map<String, EntityRecoveryLabel> dealerSubordinateRecoveryLabelMap =
+			new CaseInsensitiveHashMap<EntityRecoveryLabel>();
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.xva.topology.CreditDebtGroup>
-			creditDebtGroupMapEntry : _creditDebtGroupMap.entrySet())
-		{
-			org.drip.state.identifier.EntityRecoveryLabel dealerSubordinateRecoveryLabel =
+		for (Map.Entry<String, CreditDebtGroup> creditDebtGroupMapEntry : _creditDebtGroupMap.entrySet()) {
+			EntityRecoveryLabel dealerSubordinateRecoveryLabel =
 				creditDebtGroupMapEntry.getValue().dealerSubordinateRecoveryLabel();
 
-			if (null != dealerSubordinateRecoveryLabel)
-			{
-				java.lang.String dealerSubordinateRecoveryLabelFQN =
+			if (null != dealerSubordinateRecoveryLabel) {
+				String dealerSubordinateRecoveryLabelFQN =
 					dealerSubordinateRecoveryLabel.fullyQualifiedName();
 
-				if (!dealerSubordinateRecoveryLabelMap.containsKey (dealerSubordinateRecoveryLabelFQN))
-				{
+				if (!dealerSubordinateRecoveryLabelMap.containsKey (dealerSubordinateRecoveryLabelFQN)) {
 					dealerSubordinateRecoveryLabelMap.put (
 						dealerSubordinateRecoveryLabelFQN,
 						dealerSubordinateRecoveryLabel

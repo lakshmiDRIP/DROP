@@ -1,11 +1,18 @@
 
 package org.drip.xva.vertex;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.xva.hypothecation.CollateralGroupVertexCloseOut;
+import org.drip.xva.hypothecation.CollateralGroupVertexExposureComponent;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -119,12 +126,12 @@ package org.drip.xva.vertex;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BurgardKjaerExposure implements org.drip.xva.hypothecation.CollateralGroupVertexExposureComponent
+public class BurgardKjaerExposure implements CollateralGroupVertexExposureComponent
 {
-	private double _debt = java.lang.Double.NaN;
-	private double _credit = java.lang.Double.NaN;
-	private double _funding = java.lang.Double.NaN;
-	private double _collateralBalance = java.lang.Double.NaN;
+	private double _debt = Double.NaN;
+	private double _credit = Double.NaN;
+	private double _funding = Double.NaN;
+	private double _collateralBalance = Double.NaN;
 
 	/**
 	 * Generate an Initial Instance of Burgard Kjaer Vertex Exposure
@@ -137,11 +144,9 @@ public class BurgardKjaerExposure implements org.drip.xva.hypothecation.Collater
 
 	public static final BurgardKjaerExposure Initial (
 		final double uncollateralizedExposure,
-		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut)
+		final CollateralGroupVertexCloseOut collateralGroupVertexCloseOut)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (uncollateralizedExposure) ||
-			null == collateralGroupVertexCloseOut)
-		{
+		if (!NumberUtil.IsValid (uncollateralizedExposure) || null == collateralGroupVertexCloseOut) {
 			return null;
 		}
 
@@ -153,9 +158,7 @@ public class BurgardKjaerExposure implements org.drip.xva.hypothecation.Collater
 				0.,
 				0.
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -170,7 +173,7 @@ public class BurgardKjaerExposure implements org.drip.xva.hypothecation.Collater
 	 * @param funding The Funding Exposure of the Collateral Group
 	 * @param collateralBalance The Collateral Balance of the Collateral Group
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BurgardKjaerExposure (
@@ -178,14 +181,12 @@ public class BurgardKjaerExposure implements org.drip.xva.hypothecation.Collater
 		final double debt,
 		final double funding,
 		final double collateralBalance)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_credit = credit) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_debt = debt) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_funding = funding) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_collateralBalance = collateralBalance))
-		{
-			throw new java.lang.Exception ("BurgardKjaerExposure Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_credit = credit) || !NumberUtil.IsValid (_debt = debt) ||
+			!NumberUtil.IsValid (_funding = funding) ||
+			!NumberUtil.IsValid (_collateralBalance = collateralBalance)) {
+			throw new Exception ("BurgardKjaerExposure Constructor => Invalid Inputs");
 		}
 	}
 

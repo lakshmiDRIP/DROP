@@ -16,7 +16,7 @@ DROP XVA Validation Distance implements the Hypothesis Target Distance Test Buil
  * [***GapTestOutcome***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance/GapTestOutcome.java)
  <i>GapTestOutcome</i> holds the Outcomes of a Distance Test of a Sample from the Hypothesis.
 
- * [***GapTestOutcome***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance/GapTestOutcome.java)
+ * [***GapTestSetting***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance/GapTestSetting.java)
  <i>GapTestSetting</i> holds the Settings required to Control a Gap Test Run.
 
  * [***HypothesisOutcome***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance/HypothesisOutcome.java)
@@ -24,9 +24,6 @@ DROP XVA Validation Distance implements the Hypothesis Target Distance Test Buil
 
  * [***HypothesisOutcomeSuite***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance/HypothesisOutcomeSuite.java)
  <i>HypothesisOutcomeSuite</i> holds the Map of Hypotheses Outcomes to be subjected to Discriminatory Power Analysis.
-
- * [***HypothesisSuite***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance/HypothesisSuite.java)
- <i>HypothesisSuite</i> holds the Map of Hypotheses to be subjected to Discriminatory Power Analysis.
 
  * [***HypothesisSuite***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance/HypothesisSuite.java)
  <i>HypothesisSuite</i> holds the Map of Hypotheses to be subjected to Discriminatory Power Analysis.
