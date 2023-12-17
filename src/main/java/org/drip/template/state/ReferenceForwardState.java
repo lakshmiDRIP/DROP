@@ -14,6 +14,9 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -92,54 +95,60 @@ import org.drip.state.identifier.ForwardLabel;
  * <i>ReferenceForwardState</i> sets up the Calibration of the Reference Forward Latent State and examine the
  * Emitted Metrics.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/state/README.md">Standard Latent State Construction Template</a></li>
- *  </ul>
- * <br><br>
+ *  <br><br><br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/state/README.md">Standard Latent State Construction Template</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class ReferenceForwardState {
+public class ReferenceForwardState
+{
 
 	private static final MergedDiscountForwardCurve OvernightCurve (
-		final JulianDate dtSpot,
-		final String strCurrency)
+		final JulianDate spotDate,
+		final String currency)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		String[] astrDepositMaturityTenor = new String[] {
+		String[] depositMaturityTenorArray = new String[] {
 			"1D",
 			// "2D",
 			"3D"
 		};
 
-		double[] adblDepositQuote = new double[] {
+		double[] depositQuoteArray = new double[] {
 			0.0004,		// 1D
 			// 0.0004,		// 2D
 			0.0004		// 3D
 		};
 
-		String[] astrShortEndOISMaturityTenor = new String[] {
+		String[] shortEndOISMaturityTenorArray = new String[] {
 			"1W",
 			"2W",
 			"3W",
 			"1M"
 		};
 
-		double[] adblShortEndOISQuote = new double[] {
+		double[] shortEndOISQuoteArray = new double[] {
 			0.00070,    //   1W
 			0.00069,    //   2W
 			0.00078,    //   3W
 			0.00074     //   1M
 		};
 
-		String[] astrOISFuturesEffectiveTenor = new String[] {
+		String[] oisFuturesEffectiveTenorArray = new String[] {
 			"1M",
 			"2M",
 			"3M",
@@ -147,7 +156,7 @@ public class ReferenceForwardState {
 			"5M"
 		};
 
-		String[] astrOISFuturesMaturityTenor = new String[] {
+		String[] oisFuturesMaturityTenorArray = new String[] {
 			"1M",
 			"1M",
 			"1M",
@@ -155,7 +164,7 @@ public class ReferenceForwardState {
 			"1M"
 		};
 
-		double[] adblOISFuturesQuote = new double[] {
+		double[] oisFuturesQuoteArray = new double[] {
 			 0.00046,    //   1M x 1M
 			 0.00016,    //   2M x 1M
 			-0.00007,    //   3M x 1M
@@ -163,7 +172,7 @@ public class ReferenceForwardState {
 			-0.00014     //   5M x 1M
 		};
 
-		String[] astrLongEndOISMaturityTenor = new String[] {
+		String[] longEndOISMaturityTenorArray = new String[] {
 			"15M",
 			"18M",
 			"21M",
@@ -184,7 +193,7 @@ public class ReferenceForwardState {
 			"30Y"
 		};
 
-		double[] adblLongEndOISQuote = new double[] {
+		double[] longEndOISQuoteArray = new double[] {
 			0.00002,    //  15M
 			0.00008,    //  18M
 			0.00021,    //  21M
@@ -206,20 +215,20 @@ public class ReferenceForwardState {
 		};
 
 		return LatentMarketStateBuilder.SmoothOvernightCurve (
-			dtSpot,
-			strCurrency,
-			astrDepositMaturityTenor,
-			adblDepositQuote,
+			spotDate,
+			currency,
+			depositMaturityTenorArray,
+			depositQuoteArray,
 			"Rate",
-			astrShortEndOISMaturityTenor,
-			adblShortEndOISQuote,
+			shortEndOISMaturityTenorArray,
+			shortEndOISQuoteArray,
 			"SwapRate",
-			astrOISFuturesEffectiveTenor,
-			astrOISFuturesMaturityTenor,
-			adblOISFuturesQuote,
+			oisFuturesEffectiveTenorArray,
+			oisFuturesMaturityTenorArray,
+			oisFuturesQuoteArray,
 			"SwapRate",
-			astrLongEndOISMaturityTenor,
-			adblLongEndOISQuote,
+			longEndOISMaturityTenorArray,
+			longEndOISQuoteArray,
 			"SwapRate"
 		);
 	}
@@ -227,13 +236,13 @@ public class ReferenceForwardState {
 	/**
 	 * Entry Point
 	 * 
-	 * @param astrArgs Argument Array
+	 * @param argumentArray Argument Array
 	 * 
 	 * @throws Exception Propagate the Exception Upwards
 	 */
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
 		/*
@@ -242,26 +251,20 @@ public class ReferenceForwardState {
 
 		EnvManager.InitEnv ("");
 
-		String strCurrency = "GBP";
-		String strForwardTenor = "6M";
+		String currency = "GBP";
+		String forwardTenor = "6M";
 
-		JulianDate dtSpot = DateUtil.CreateFromYMD (
+		JulianDate spotDate = DateUtil.CreateFromYMD (
 			2017,
 			DateUtil.DECEMBER,
 			21
 		);
 
-		MergedDiscountForwardCurve dcOvernight = OvernightCurve (
-			dtSpot,
-			strCurrency
-		);
+		MergedDiscountForwardCurve overnightDiscountCurve = OvernightCurve (spotDate, currency);
 
-		ForwardLabel forwardLabel = ForwardLabel.Create (
-			strCurrency,
-			strForwardTenor
-		);
+		ForwardLabel forwardLabel = ForwardLabel.Create (currency, forwardTenor);
 
-		String[] astrDepositMaturityTenor = new String[] {
+		String[] depositMaturityTenorArray = new String[] {
 			"1D",
 			"1W",
 			"2W",
@@ -273,7 +276,7 @@ public class ReferenceForwardState {
 			"5M"
 		};
 
-		double[] adblDepositQuote = new double[] {
+		double[] depositQuoteArray = new double[] {
 			0.003565,	// 1D
 			0.003858,	// 1W
 			0.003840,	// 2W
@@ -285,7 +288,7 @@ public class ReferenceForwardState {
 			0.003225	// 5M
 		};
 
-		String[] astrFRAExerciseTenor = new String[] {
+		String[] fraExerciseTenorArray = new String[] {
 			"00D",
 			"01M",
 			"02M",
@@ -307,7 +310,7 @@ public class ReferenceForwardState {
 			"18M"
 		};
 
-		double[] adblFRAQuote = new double[] {
+		double[] fraQuoteArray = new double[] {
 			0.003120,	//  0D
 			0.002930,	//  1M
 			0.002720,	//  2M
@@ -329,7 +332,7 @@ public class ReferenceForwardState {
 			0.004090	// 18M
 		};
 
-		String[] astrFixFloatMaturityTenor = new String[] {
+		String[] fixFloatMaturityTenorArray = new String[] {
 			"03Y",
 			"04Y",
 			"05Y",
@@ -349,7 +352,7 @@ public class ReferenceForwardState {
 			"60Y"
 		};
 
-		double[] adblFixFloatQuote = new double[] {
+		double[] fixFloatQuoteArray = new double[] {
 			0.004240,	//  3Y
 			0.005760,	//  4Y			
 			0.007620,	//  5Y
@@ -369,17 +372,17 @@ public class ReferenceForwardState {
 			0.024630	// 60Y
 		};
 
-		ForwardCurve fcReference = LatentMarketStateBuilder.SmoothForwardCurve (
-			dtSpot,
+		ForwardCurve referenceForwardCurve = LatentMarketStateBuilder.SmoothForwardCurve (
+			spotDate,
 			forwardLabel,
-			astrDepositMaturityTenor,
-			adblDepositQuote,
+			depositMaturityTenorArray,
+			depositQuoteArray,
 			"ForwardRate",
-			astrFRAExerciseTenor,
-			adblFRAQuote,
+			fraExerciseTenorArray,
+			fraQuoteArray,
 			"ParForwardRate",
-			astrFixFloatMaturityTenor,
-			adblFixFloatQuote,
+			fixFloatMaturityTenorArray,
+			fixFloatQuoteArray,
 			"SwapRate",
 			null,
 			null,
@@ -387,50 +390,64 @@ public class ReferenceForwardState {
 			null,
 			null,
 			"DerivedParBasisSpread",
-			dcOvernight,
+			overnightDiscountCurve,
 			null
 		);
 
-		String strLatentStateLabel = fcReference.label().fullyQualifiedName();
+		String latentStateLabel = referenceForwardCurve.label().fullyQualifiedName();
 
 		System.out.println ("\n\n\t||-------------------------------------------------------------------------||");
 
-		for (int i = 0; i < adblDepositQuote.length; ++i)
+		for (int i = 0; i < depositQuoteArray.length; ++i)
 			System.out.println (
-				"\t||  " + strLatentStateLabel +
-				" |  DEPOSIT  | " + astrDepositMaturityTenor[i] + "  | " +
-				FormatUtil.FormatDouble (adblDepositQuote[i], 1, 4, 100.) +
+				"\t||  " + latentStateLabel +
+				" |  DEPOSIT  | " + depositMaturityTenorArray[i] + "  | " +
+				FormatUtil.FormatDouble (depositQuoteArray[i], 1, 4, 100.) +
 				"% | Forward Rate | " +
-				FormatUtil.FormatDouble (fcReference.forward (astrDepositMaturityTenor[i]), 1, 4, 100.) +
-				"%  ||"
+				FormatUtil.FormatDouble (
+					referenceForwardCurve.forward (depositMaturityTenorArray[i]),
+					1,
+					4,
+					100.
+				) + "%  ||"
 			);
 
 		System.out.println ("\t||-------------------------------------------------------------------------||");
 
 		System.out.println ("\n\n\t||--------------------------------------------------------------------------||");
 
-		for (int i = 0; i < adblFRAQuote.length; ++i)
+		for (int i = 0; i < fraQuoteArray.length; ++i)
 			System.out.println (
-				"\t||  " + strLatentStateLabel +
-				" |  FRA  | " + astrFRAExerciseTenor[i] + "  | " +
-				FormatUtil.FormatDouble (adblFRAQuote[i], 1, 4, 100.) +
+				"\t||  " + latentStateLabel +
+				" |  FRA  | " + fraExerciseTenorArray[i] + "  | " +
+				FormatUtil.FormatDouble (fraQuoteArray[i], 1, 4, 100.) +
 				"% | Par Forward Rate | " +
-				FormatUtil.FormatDouble (fcReference.forward (dtSpot.addTenor (astrFRAExerciseTenor[i]).addTenor (strForwardTenor)), 1, 4, 100.) +
-				"%  ||"
+				FormatUtil.FormatDouble (
+					referenceForwardCurve.forward (
+						spotDate.addTenor (fraExerciseTenorArray[i]).addTenor (forwardTenor)
+					),
+					1,
+					4,
+					100.
+				) + "%  ||"
 			);
 
 		System.out.println ("\t||--------------------------------------------------------------------------||");
 
 		System.out.println ("\n\n\t||-------------------------------------------------------------------------||");
 
-		for (int i = 0; i < adblFixFloatQuote.length; ++i)
+		for (int i = 0; i < fixFloatQuoteArray.length; ++i)
 			System.out.println (
-				"\t||  " + strLatentStateLabel +
-				" |  FIX FLOAT  | " + astrFixFloatMaturityTenor[i] + "  | " +
-				FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 4, 100.) +
+				"\t||  " + latentStateLabel +
+				" |  FIX FLOAT  | " + fixFloatMaturityTenorArray[i] + "  | " +
+				FormatUtil.FormatDouble (fixFloatQuoteArray[i], 1, 4, 100.) +
 				"% | Swap Rate | " +
-				FormatUtil.FormatDouble (fcReference.forward (astrFixFloatMaturityTenor[i]), 1, 4, 100.) +
-				"%  ||"
+				FormatUtil.FormatDouble (
+					referenceForwardCurve.forward (fixFloatMaturityTenorArray[i]),
+					1,
+					4,
+					100.
+				) + "%  ||"
 			);
 
 		System.out.println ("\t||-------------------------------------------------------------------------||");

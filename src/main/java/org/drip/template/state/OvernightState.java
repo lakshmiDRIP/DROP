@@ -12,6 +12,9 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -107,52 +110,52 @@ public class OvernightState {
 	/**
 	 * Entry Point
 	 * 
-	 * @param astrArgs Argument Array
+	 * @param argumentArray Argument Array
 	 * 
 	 * @throws Exception Propagate the Exception Upwards
 	 */
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		String strCurrency = "EUR";
+		String currency = "EUR";
 
-		JulianDate dtSpot = DateUtil.CreateFromYMD (
+		JulianDate spotDate = DateUtil.CreateFromYMD (
 			2017,
 			DateUtil.DECEMBER,
 			21
 		);
 
-		String[] astrDepositMaturityTenor = new String[] {
+		String[] depositMaturityTenorArray = new String[] {
 			"1D",
 			// "2D",
 			"3D"
 		};
 
-		double[] adblDepositQuote = new double[] {
+		double[] depositQuoteArray = new double[] {
 			0.0004,		// 1D
 			// 0.0004,		// 2D
 			0.0004		// 3D
 		};
 
-		String[] astrShortEndOISMaturityTenor = new String[] {
+		String[] shortEndOISMaturityTenorArray = new String[] {
 			"1W",
 			"2W",
 			"3W",
 			"1M"
 		};
 
-		double[] adblShortEndOISQuote = new double[] {
+		double[] shortEndOISQuoteArray = new double[] {
 			0.00070,    //   1W
 			0.00069,    //   2W
 			0.00078,    //   3W
 			0.00074     //   1M
 		};
 
-		String[] astrOISFuturesEffectiveTenor = new String[] {
+		String[] oisFuturesEffectiveTenorArray = new String[] {
 			"1M",
 			"2M",
 			"3M",
@@ -160,7 +163,7 @@ public class OvernightState {
 			"5M"
 		};
 
-		String[] astrOISFuturesMaturityTenor = new String[] {
+		String[] oisFuturesMaturityTenorArray = new String[] {
 			"1M",
 			"1M",
 			"1M",
@@ -168,7 +171,7 @@ public class OvernightState {
 			"1M"
 		};
 
-		double[] adblOISFuturesQuote = new double[] {
+		double[] oisFuturesQuoteArray = new double[] {
 			 0.00046,    //   1M x 1M
 			 0.00016,    //   2M x 1M
 			-0.00007,    //   3M x 1M
@@ -176,7 +179,7 @@ public class OvernightState {
 			-0.00014     //   5M x 1M
 		};
 
-		String[] astrLongEndOISMaturityTenor = new String[] {
+		String[] longEndOISMaturityTenorArray = new String[] {
 			"15M",
 			"18M",
 			"21M",
@@ -197,7 +200,7 @@ public class OvernightState {
 			"30Y"
 		};
 
-		double[] adblLongEndOISQuote = new double[] {
+		double[] longEndOISQuoteArray = new double[] {
 			0.00002,    //  15M
 			0.00008,    //  18M
 			0.00021,    //  21M
@@ -218,48 +221,55 @@ public class OvernightState {
 			0.02038     //  30Y
 		};
 
-		MergedDiscountForwardCurve dcOvernight = LatentMarketStateBuilder.SmoothOvernightCurve (
-			dtSpot,
-			strCurrency,
-			astrDepositMaturityTenor,
-			adblDepositQuote,
-			"Rate",
-			astrShortEndOISMaturityTenor,
-			adblShortEndOISQuote,
-			"SwapRate",
-			astrOISFuturesEffectiveTenor,
-			astrOISFuturesMaturityTenor,
-			adblOISFuturesQuote,
-			"SwapRate",
-			astrLongEndOISMaturityTenor,
-			adblLongEndOISQuote,
-			"SwapRate"
-		);
+		MergedDiscountForwardCurve overnightMergedDiscountForwardCurve =
+			LatentMarketStateBuilder.SmoothOvernightCurve (
+				spotDate,
+				currency,
+				depositMaturityTenorArray,
+				depositQuoteArray,
+				"Rate",
+				shortEndOISMaturityTenorArray,
+				shortEndOISQuoteArray,
+				"SwapRate",
+				oisFuturesEffectiveTenorArray,
+				oisFuturesMaturityTenorArray,
+				oisFuturesQuoteArray,
+				"SwapRate",
+				longEndOISMaturityTenorArray,
+				longEndOISQuoteArray,
+				"SwapRate"
+			);
 
-		String strLatentStateLabel = dcOvernight.label().fullyQualifiedName();
+		String latentStateLabel = overnightMergedDiscountForwardCurve.label().fullyQualifiedName();
 
 		System.out.println ("\n\n\t||------------------------------------------------------------------||");
 
-		for (int i = 0; i < adblDepositQuote.length; ++i)
+		for (int i = 0; i < depositQuoteArray.length; ++i)
 			System.out.println (
-				"\t||  " + strLatentStateLabel +
-				" |  DEPOSIT  | " + astrDepositMaturityTenor[i] + "  | " +
-				FormatUtil.FormatDouble (adblDepositQuote[i], 1, 4, 1.) +
+				"\t||  " + latentStateLabel +
+				" |  DEPOSIT  | " + depositMaturityTenorArray[i] + "  | " +
+				FormatUtil.FormatDouble (depositQuoteArray[i], 1, 4, 1.) +
 				" | Forward Rate | " +
-				FormatUtil.FormatDouble (dcOvernight.df (astrDepositMaturityTenor[i]), 1, 10, 1.) +
-				"  ||"
+				FormatUtil.FormatDouble (
+					overnightMergedDiscountForwardCurve.df (depositMaturityTenorArray[i]),
+					1,
+					10,
+					1.
+				) + "  ||"
 			);
 
 		System.out.println ("\t||------------------------------------------------------------------||");
 
 		System.out.println ("\n\n\t||------------------------------------------------------------------||");
 
-		for (int i = 0; i < adblShortEndOISQuote.length; ++i)
+		for (int i = 0; i < shortEndOISQuoteArray.length; ++i)
 			System.out.println (
-				"\t||  " + strLatentStateLabel + " |  SHORT END OIS  | " +
-				astrShortEndOISMaturityTenor[i] + "  | " + FormatUtil.FormatDouble (adblShortEndOISQuote[i], 1, 5, 1.) +
+				"\t||  " + latentStateLabel + " |  SHORT END OIS  | " +
+				shortEndOISMaturityTenorArray[i] + "  | " +
+				FormatUtil.FormatDouble (shortEndOISQuoteArray[i], 1, 5, 1.) +
 				" | Swap Rate | " +
-				FormatUtil.FormatDouble (dcOvernight.df (astrShortEndOISMaturityTenor[i]), 1, 6, 1.) +
+				FormatUtil.FormatDouble (
+					overnightMergedDiscountForwardCurve.df (shortEndOISMaturityTenorArray[i]), 1, 6, 1.) +
 				"  ||"
 			);
 
@@ -267,30 +277,40 @@ public class OvernightState {
 
 		System.out.println ("\n\n\t||---------------------------------------------------------------------||");
 
-		for (int i = 0; i < adblOISFuturesQuote.length; ++i)
+		for (int i = 0; i < oisFuturesQuoteArray.length; ++i)
 			System.out.println (
-				"\t||  " + strLatentStateLabel + " |  OIS FUTURES  | " +
-				FormatUtil.FormatDouble (adblOISFuturesQuote[i], 1, 6, 1.) +
-				" | " + astrOISFuturesEffectiveTenor[i] + " x " + astrOISFuturesMaturityTenor[i] +
+				"\t||  " + latentStateLabel + " |  OIS FUTURES  | " +
+				FormatUtil.FormatDouble (oisFuturesQuoteArray[i], 1, 6, 1.) +
+				" | " + oisFuturesEffectiveTenorArray[i] + " x " + oisFuturesMaturityTenorArray[i] +
 				" | Swap Rate | " +
 				FormatUtil.FormatDouble (
-					dcOvernight.df (dtSpot.addTenor (astrOISFuturesEffectiveTenor[i]).addTenor (astrOISFuturesMaturityTenor[i])
-				), 1, 6, 1.) +
-				"  ||"
+					overnightMergedDiscountForwardCurve.df (
+						spotDate.addTenor (
+							oisFuturesEffectiveTenorArray[i]
+						).addTenor (
+							oisFuturesMaturityTenorArray[i]
+						)
+					),
+					1,
+					6,
+					1.
+				) + "  ||"
 			);
 
 		System.out.println ("\t||---------------------------------------------------------------------||");
 
 		System.out.println ("\n\n\t||---------------------------------------------------------------||");
 
-		for (int i = 0; i < adblLongEndOISQuote.length; ++i)
+		for (int i = 0; i < longEndOISQuoteArray.length; ++i)
 			System.out.println (
-				"\t||  " + strLatentStateLabel + " |  LONG END OIS  | " +
-				astrLongEndOISMaturityTenor[i] + " | " + FormatUtil.FormatDouble (adblLongEndOISQuote[i], 1, 5, 1.) +
+				"\t||  " + latentStateLabel + " |  LONG END OIS  | " +
+				longEndOISMaturityTenorArray[i] + " | " +
+				FormatUtil.FormatDouble (longEndOISQuoteArray[i], 1, 5, 1.) +
 				" | Swap Rate | " +
-				FormatUtil.FormatDouble (dcOvernight.df (astrLongEndOISMaturityTenor[i]), 1, 4, 1.) +
-				"  ||"
-			);
+				FormatUtil.FormatDouble (
+					overnightMergedDiscountForwardCurve.df (longEndOISMaturityTenorArray[i]), 1, 4, 1.) +
+					"  ||"
+				);
 
 		System.out.println ("\t||---------------------------------------------------------------||\n");
 	}

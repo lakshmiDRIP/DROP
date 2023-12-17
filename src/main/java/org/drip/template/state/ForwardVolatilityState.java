@@ -14,6 +14,9 @@ import org.drip.state.volatility.VolatilityCurve;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -92,51 +95,53 @@ import org.drip.state.volatility.VolatilityCurve;
  * <i>ForwardVolatilityState</i> sets up the Calibration and the Construction of the Volatility Latent State
  * for the Forward Latent State and examine the Emitted Metrics.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/state/README.md">Standard Latent State Construction Template</a></li>
- *  </ul>
- * <br><br>
+ *  <br><br><br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00; text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/state/README.md">Standard Latent State Construction Template</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class ForwardVolatilityState {
+public class ForwardVolatilityState
+{
 
 	/**
 	 * Entry Point
 	 * 
-	 * @param astrArgs Argument Array
+	 * @param argumentArray Argument Array
 	 * 
 	 * @throws Exception Propagate the Exception Upwards
 	 */
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		String strFRATenor = "3M";
-		String strCurrency = "GBP";
+		String fraTenor = "3M";
+		String currency = "GBP";
 
-		JulianDate dtSpot = DateUtil.CreateFromYMD (
+		JulianDate spotDate = DateUtil.CreateFromYMD (
 			2017,
 			DateUtil.DECEMBER,
 			19
 		);
 
-		ForwardLabel forwardLabel = ForwardLabel.Create (
-			strCurrency,
-			strFRATenor
-		);
+		ForwardLabel forwardLabel = ForwardLabel.Create (currency, fraTenor);
 
-		MergedDiscountForwardCurve dcFunding = LatentMarketStateBuilder.SmoothFundingCurve (
-			dtSpot,
-			strCurrency,
+		MergedDiscountForwardCurve fundingCurve = LatentMarketStateBuilder.SmoothFundingCurve (
+			spotDate,
+			currency,
 			new String[] {
 				 "30D",
 				 "60D",
@@ -173,7 +178,7 @@ public class ForwardVolatilityState {
 			"SwapRate"
 		);
 
-		String[] astrMaturityTenor = new String[] {
+		String[] maturityTenorArray = new String[] {
 			"01Y",
 			"02Y",
 			"03Y",
@@ -183,7 +188,7 @@ public class ForwardVolatilityState {
 			"10Y"
 		};
 
-		double[] adblStrike = new double[] {
+		double[] strikeArray = new double[] {
 			0.0788, //  "1Y",
 			0.0839, // 	"2Y",
 			0.0864, //  "3Y",
@@ -193,7 +198,7 @@ public class ForwardVolatilityState {
 			0.0889  // "10Y"
 		};
 
-		double[] adblPrice = new double[] {
+		double[] priceArray = new double[] {
 			0.0017, //  "1Y",
 			0.0132, // 	"2Y",
 			0.0234, //  "3Y",
@@ -203,29 +208,33 @@ public class ForwardVolatilityState {
 			0.1175  // "10Y"
 		};
 
-		VolatilityCurve vcForward = LatentMarketStateBuilder.ForwardRateVolatilityCurve (
-			dtSpot,
+		VolatilityCurve forwardVolatilityCurve = LatentMarketStateBuilder.ForwardRateVolatilityCurve (
+			spotDate,
 			forwardLabel,
 			true,
-			astrMaturityTenor,
-			adblStrike,
-			adblPrice,
+			maturityTenorArray,
+			strikeArray,
+			priceArray,
 			"Price",
-			dcFunding,
-			dcFunding.nativeForwardCurve (strFRATenor)
+			fundingCurve,
+			fundingCurve.nativeForwardCurve (fraTenor)
 		);
 
-		String strLatentStateLabel = vcForward.label().fullyQualifiedName();
+		String latentStateLabel = forwardVolatilityCurve.label().fullyQualifiedName();
 
 		System.out.println ("\n\n\t||-----------------------------------------------------------------------------||");
 
-		for (int i = 0; i < astrMaturityTenor.length; ++i)
+		for (int i = 0; i < maturityTenorArray.length; ++i)
 			System.out.println (
-				"\t||  " + strLatentStateLabel + " |  CAP PRICE  | " +
-				astrMaturityTenor[i] + " | " + FormatUtil.FormatDouble (adblPrice[i], 1, 4, 1.) +
+				"\t||  " + latentStateLabel + " |  CAP PRICE  | " +
+				maturityTenorArray[i] + " | " + FormatUtil.FormatDouble (priceArray[i], 1, 4, 1.) +
 				" | Forward Implied Vol | " +
-				FormatUtil.FormatDouble (vcForward.impliedVol (astrMaturityTenor[i]), 2, 2, 100.) +
-				"% ||"
+				FormatUtil.FormatDouble (
+					forwardVolatilityCurve.impliedVol (maturityTenorArray[i]),
+					2,
+					2,
+					100.
+				) + "% ||"
 			);
 
 		System.out.println ("\t||-----------------------------------------------------------------------------||\n");

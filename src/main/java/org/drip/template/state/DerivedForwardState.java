@@ -14,6 +14,9 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -107,37 +110,37 @@ import org.drip.state.identifier.ForwardLabel;
 public class DerivedForwardState {
 
 	private static final MergedDiscountForwardCurve OvernightCurve (
-		final JulianDate dtSpot,
-		final String strCurrency)
+		final JulianDate spotDate,
+		final String currency)
 		throws Exception
 	{
-		String[] astrDepositMaturityTenor = new String[] {
+		String[] depositMaturityTenorArray = new String[] {
 			"1D",
 			// "2D",
 			"3D"
 		};
 
-		double[] adblDepositQuote = new double[] {
+		double[] depositQuoteArray = new double[] {
 			0.0004,		// 1D
 			// 0.0004,		// 2D
 			0.0004		// 3D
 		};
 
-		String[] astrShortEndOISMaturityTenor = new String[] {
+		String[] shortEndOISMaturityTenorArray = new String[] {
 			"1W",
 			"2W",
 			"3W",
 			"1M"
 		};
 
-		double[] adblShortEndOISQuote = new double[] {
+		double[] shortEndOISQuoteArray = new double[] {
 			0.00070,    //   1W
 			0.00069,    //   2W
 			0.00078,    //   3W
 			0.00074     //   1M
 		};
 
-		String[] astrOISFuturesEffectiveTenor = new String[] {
+		String[] oisFuturesEffectiveTenorAray = new String[] {
 			"1M",
 			"2M",
 			"3M",
@@ -145,7 +148,7 @@ public class DerivedForwardState {
 			"5M"
 		};
 
-		String[] astrOISFuturesMaturityTenor = new String[] {
+		String[] oisFuturesMaturityTenorArray = new String[] {
 			"1M",
 			"1M",
 			"1M",
@@ -153,7 +156,7 @@ public class DerivedForwardState {
 			"1M"
 		};
 
-		double[] adblOISFuturesQuote = new double[] {
+		double[] oisFuturesQuoteArray = new double[] {
 			 0.00046,    //   1M x 1M
 			 0.00016,    //   2M x 1M
 			-0.00007,    //   3M x 1M
@@ -161,7 +164,7 @@ public class DerivedForwardState {
 			-0.00014     //   5M x 1M
 		};
 
-		String[] astrLongEndOISMaturityTenor = new String[] {
+		String[] longEndOISMaturityTenorArray = new String[] {
 			"15M",
 			"18M",
 			"21M",
@@ -182,7 +185,7 @@ public class DerivedForwardState {
 			"30Y"
 		};
 
-		double[] adblLongEndOISQuote = new double[] {
+		double[] longEndOISQuoteArray = new double[] {
 			0.00002,    //  15M
 			0.00008,    //  18M
 			0.00021,    //  21M
@@ -204,36 +207,36 @@ public class DerivedForwardState {
 		};
 
 		return LatentMarketStateBuilder.SmoothOvernightCurve (
-			dtSpot,
-			strCurrency,
-			astrDepositMaturityTenor,
-			adblDepositQuote,
+			spotDate,
+			currency,
+			depositMaturityTenorArray,
+			depositQuoteArray,
 			"Rate",
-			astrShortEndOISMaturityTenor,
-			adblShortEndOISQuote,
+			shortEndOISMaturityTenorArray,
+			shortEndOISQuoteArray,
 			"SwapRate",
-			astrOISFuturesEffectiveTenor,
-			astrOISFuturesMaturityTenor,
-			adblOISFuturesQuote,
+			oisFuturesEffectiveTenorAray,
+			oisFuturesMaturityTenorArray,
+			oisFuturesQuoteArray,
 			"SwapRate",
-			astrLongEndOISMaturityTenor,
-			adblLongEndOISQuote,
+			longEndOISMaturityTenorArray,
+			longEndOISQuoteArray,
 			"SwapRate"
 		);
 	}
 
 	private static final ForwardCurve Reference (
-		final JulianDate dtSpot,
-		final MergedDiscountForwardCurve dcOvernight,
-		final String strReferenceForwardTenor)
+		final JulianDate spotDate,
+		final MergedDiscountForwardCurve overnightMergedDiscountForwardCurve,
+		final String referenceForwardTenor)
 		throws Exception
 	{
 		ForwardLabel forwardLabel = ForwardLabel.Create (
-			dcOvernight.currency(),
-			strReferenceForwardTenor
+			overnightMergedDiscountForwardCurve.currency(),
+			referenceForwardTenor
 		);
 
-		String[] astrDepositMaturityTenor = new String[] {
+		String[] depositMaturityTenorArray = new String[] {
 			"1D",
 			"1W",
 			"2W",
@@ -245,7 +248,7 @@ public class DerivedForwardState {
 			"5M"
 		};
 
-		double[] adblDepositQuote = new double[] {
+		double[] depositQuoteArray = new double[] {
 			0.003565,	// 1D
 			0.003858,	// 1W
 			0.003840,	// 2W
@@ -257,7 +260,7 @@ public class DerivedForwardState {
 			0.003225	// 5M
 		};
 
-		String[] astrFRAMaturityTenor = new String[] {
+		String[] fraMaturityTenorArray = new String[] {
 			"00D",
 			"01M",
 			"02M",
@@ -279,7 +282,7 @@ public class DerivedForwardState {
 			"18M"
 		};
 
-		double[] adblFRAQuote = new double[] {
+		double[] fraQuoteArray = new double[] {
 			0.003120,	//  0D
 			0.002930,	//  1M
 			0.002720,	//  2M
@@ -301,7 +304,7 @@ public class DerivedForwardState {
 			0.004090	// 18M
 		};
 
-		String[] astrFixFloatMaturityTenor = new String[] {
+		String[] fixFloatMaturityTenorArray = new String[] {
 			"03Y",
 			"04Y",
 			"05Y",
@@ -321,7 +324,7 @@ public class DerivedForwardState {
 			"60Y"
 		};
 
-		double[] adblFixFloatQuote = new double[] {
+		double[] fixFloatQuoteArray = new double[] {
 			0.004240,	//  3Y
 			0.005760,	//  4Y			
 			0.007620,	//  5Y
@@ -342,16 +345,16 @@ public class DerivedForwardState {
 		};
 
 		return LatentMarketStateBuilder.SmoothForwardCurve (
-			dtSpot,
+			spotDate,
 			forwardLabel,
-			astrDepositMaturityTenor,
-			adblDepositQuote,
+			depositMaturityTenorArray,
+			depositQuoteArray,
 			"ForwardRate",
-			astrFRAMaturityTenor,
-			adblFRAQuote,
+			fraMaturityTenorArray,
+			fraQuoteArray,
 			"ParForwardRate",
-			astrFixFloatMaturityTenor,
-			adblFixFloatQuote,
+			fixFloatMaturityTenorArray,
+			fixFloatQuoteArray,
 			"SwapRate",
 			null,
 			null,
@@ -359,7 +362,7 @@ public class DerivedForwardState {
 			null,
 			null,
 			"DerivedParBasisSpread",
-			dcOvernight,
+			overnightMergedDiscountForwardCurve,
 			null
 		);
 	}
@@ -367,13 +370,13 @@ public class DerivedForwardState {
 	/**
 	 * Entry Point
 	 * 
-	 * @param astrArgs Argument Array
+	 * @param argumentArray Argument Array
 	 * 
 	 * @throws Exception Propagate the Exception Upwards
 	 */
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
 		/*
@@ -382,47 +385,47 @@ public class DerivedForwardState {
 
 		EnvManager.InitEnv ("");
 
-		String strCurrency = "EUR";
-		String strDerivedForwardTenor = "3M";
-		String strReferenceForwardTenor = "6M";
+		String currency = "EUR";
+		String derivedForwardTenor = "3M";
+		String referenceForwardTenor = "6M";
 
-		JulianDate dtSpot = DateUtil.CreateFromYMD (
+		JulianDate spotDate = DateUtil.CreateFromYMD (
 			2017,
 			DateUtil.DECEMBER,
 			21
 		);
 
-		MergedDiscountForwardCurve dcOvernight = OvernightCurve (
-			dtSpot,
-			strCurrency
+		MergedDiscountForwardCurve overnightMergedDiscountForwardCurve = OvernightCurve (
+			spotDate,
+			currency
 		);
 
-		ForwardCurve fcReference = Reference (
-			dtSpot,
-			dcOvernight,
-			strReferenceForwardTenor
+		ForwardCurve referenceForwardCurve = Reference (
+			spotDate,
+			overnightMergedDiscountForwardCurve,
+			referenceForwardTenor
 		);
 
 		ForwardLabel forwardLabel = ForwardLabel.Create (
-			strCurrency,
-			strDerivedForwardTenor
+			currency,
+			derivedForwardTenor
 		);
 
-		String[] astrDepositMaturityTenor = new String[] {
+		String[] depositMaturityTenorArray = new String[] {
 			"2W",
 			"3W",
 			"1M",
 			"2M"
 		};
 
-		double[] adblDepositQuote = new double[] {
+		double[] depositQuoteArray = new double[] {
 			0.001865,	// 2W
 			0.001969,	// 3W
 			0.001951,	// 1M
 			0.001874	// 2M
 		};
 
-		String[] astrFRAMaturityTenor = new String[] {
+		String[] fraMaturityTenorArray = new String[] {
 			"00D",
 			"01M",
 			"03M",
@@ -434,7 +437,7 @@ public class DerivedForwardState {
 			"21M"
 		};
 
-		double[] adblFRAQuote = new double[] {
+		double[] fraQuoteArray = new double[] {
 			0.001790,	//  0D
 			0.001775,	//  1M
 			0.001274,	//  3M
@@ -446,7 +449,7 @@ public class DerivedForwardState {
 			0.003101	// 21M
 		};
 
-		String[] astrFixFloatMaturityTenor = new String[] {
+		String[] fixFloatMaturityTenorArray = new String[] {
 			"03Y",
 			"04Y",
 			"05Y",
@@ -462,7 +465,7 @@ public class DerivedForwardState {
 			"30Y"
 		};
 
-		double[] adblFixFloatQuote = new double[] {
+		double[] fixFloatQuoteArray = new double[] {
 			0.002850,	//  3Y
 			0.004370,	//  4Y
 			0.006230,	//  5Y
@@ -478,96 +481,114 @@ public class DerivedForwardState {
 			0.021860 	// 30Y
 		};
 
-		String[] astrSyntheticFloatFloatMaturityTenor = new String[] {
+		String[] syntheticFloatFloatMaturityTenorArray = new String[] {
 			"35Y",
 			"40Y",
 			"50Y",
 			"60Y"
 		};
 
-		double[] adblSyntheticFloatFloatQuote = new double[] {
+		double[] syntheticFloatFloatQuoteArray = new double[] {
 			0.00065,	// 35Y
 			0.00060,	// 40Y
 			0.00054,	// 50Y
 			0.00050		// 60Y
 		};
 
-		ForwardCurve fcDerived = LatentMarketStateBuilder.SmoothForwardCurve (
-			dtSpot,
+		ForwardCurve derivedForwardCurve = LatentMarketStateBuilder.SmoothForwardCurve (
+			spotDate,
 			forwardLabel,
-			astrDepositMaturityTenor,
-			adblDepositQuote,
+			depositMaturityTenorArray,
+			depositQuoteArray,
 			"ForwardRate",
-			astrFRAMaturityTenor,
-			adblFRAQuote,
+			fraMaturityTenorArray,
+			fraQuoteArray,
 			"ParForwardRate",
-			astrFixFloatMaturityTenor,
-			adblFixFloatQuote,
+			fixFloatMaturityTenorArray,
+			fixFloatQuoteArray,
 			"SwapRate",
 			null,
 			null,
 			"DerivedParBasisSpread",
-			astrSyntheticFloatFloatMaturityTenor,
-			adblSyntheticFloatFloatQuote,
+			syntheticFloatFloatMaturityTenorArray,
+			syntheticFloatFloatQuoteArray,
 			"DerivedParBasisSpread",
-			dcOvernight,
-			fcReference
+			overnightMergedDiscountForwardCurve,
+			referenceForwardCurve
 		);
 
-		String strLatentStateLabel = fcDerived.label().fullyQualifiedName();
+		String latentStateLabel = derivedForwardCurve.label().fullyQualifiedName();
 
 		System.out.println ("\n\n\t||-------------------------------------------------------------------------||");
 
-		for (int i = 0; i < adblDepositQuote.length; ++i)
+		for (int i = 0; i < depositQuoteArray.length; ++i)
 			System.out.println (
-				"\t||  " + strLatentStateLabel +
-				" |  DEPOSIT  | " + astrDepositMaturityTenor[i] + "  | " +
-				FormatUtil.FormatDouble (adblDepositQuote[i], 1, 4, 100.) +
+				"\t||  " + latentStateLabel +
+				" |  DEPOSIT  | " + depositMaturityTenorArray[i] + "  | " +
+				FormatUtil.FormatDouble (depositQuoteArray[i], 1, 4, 100.) +
 				"% | Forward Rate | " +
-				FormatUtil.FormatDouble (fcDerived.forward (astrDepositMaturityTenor[i]), 1, 4, 100.) +
-				"%  ||"
+				FormatUtil.FormatDouble (
+					derivedForwardCurve.forward (depositMaturityTenorArray[i]),
+					1,
+					4,
+					100.
+				) + "%  ||"
 			);
 
 		System.out.println ("\t||-------------------------------------------------------------------------||");
 
 		System.out.println ("\n\n\t||--------------------------------------------------------------------------||");
 
-		for (int i = 0; i < adblFRAQuote.length; ++i)
+		for (int i = 0; i < fraQuoteArray.length; ++i)
 			System.out.println (
-				"\t||  " + strLatentStateLabel +
-				" |  FRA  | " + astrFRAMaturityTenor[i] + "  | " +
-				FormatUtil.FormatDouble (adblFRAQuote[i], 1, 4, 100.) +
+				"\t||  " + latentStateLabel +
+				" |  FRA  | " + fraMaturityTenorArray[i] + "  | " +
+				FormatUtil.FormatDouble (fraQuoteArray[i], 1, 4, 100.) +
 				"% | Par Forward Rate | " +
-				FormatUtil.FormatDouble (fcDerived.forward (dtSpot.addTenor (astrFRAMaturityTenor[i]).addTenor (strDerivedForwardTenor)), 1, 4, 100.) +
-				"%  ||"
+				FormatUtil.FormatDouble (
+					derivedForwardCurve.forward (
+						spotDate.addTenor (fraMaturityTenorArray[i]).addTenor (derivedForwardTenor)
+					),
+					1,
+					4,
+					100.
+				) + "%  ||"
 			);
 
 		System.out.println ("\t||--------------------------------------------------------------------------||");
 
 		System.out.println ("\n\n\t||-------------------------------------------------------------------------||");
 
-		for (int i = 0; i < adblFixFloatQuote.length; ++i)
+		for (int i = 0; i < fixFloatQuoteArray.length; ++i)
 			System.out.println (
-				"\t||  " + strLatentStateLabel +
-				" |  FIX FLOAT  | " + astrFixFloatMaturityTenor[i] + "  | " +
-				FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 4, 100.) +
+				"\t||  " + latentStateLabel +
+				" |  FIX FLOAT  | " + fixFloatMaturityTenorArray[i] + "  | " +
+				FormatUtil.FormatDouble (fixFloatQuoteArray[i], 1, 4, 100.) +
 				"% | Swap Rate | " +
-				FormatUtil.FormatDouble (fcDerived.forward (astrFixFloatMaturityTenor[i]), 1, 4, 100.) +
-				"%  ||"
+				FormatUtil.FormatDouble (
+					derivedForwardCurve.forward (fixFloatMaturityTenorArray[i]),
+					1,
+					4,
+					100.
+				) + "%  ||"
 			);
 
 		System.out.println ("\t||-------------------------------------------------------------------------||");
 
 		System.out.println ("\n\n\t||----------------------------------------------------------------------------------------------------||");
 
-		for (int i = 0; i < adblSyntheticFloatFloatQuote.length; ++i)
+		for (int i = 0; i < syntheticFloatFloatQuoteArray.length; ++i)
 			System.out.println (
-				"\t||  " + strLatentStateLabel +
-				" |  SYNTHETIC FLOAT FLOAT  | " + astrSyntheticFloatFloatMaturityTenor[i] + "  | " +
-				FormatUtil.FormatDouble (adblSyntheticFloatFloatQuote[i], 1, 2, 10000.) +
+				"\t||  " + latentStateLabel +
+				" |  SYNTHETIC FLOAT FLOAT  | " + syntheticFloatFloatMaturityTenorArray[i] + "  | " +
+				FormatUtil.FormatDouble (syntheticFloatFloatQuoteArray[i], 1, 2, 10000.) +
 				" bp | Derived Par Basis Spread | " +
-				FormatUtil.FormatDouble (fcDerived.forward (astrSyntheticFloatFloatMaturityTenor[i]), 1, 4, 100.) +
-				"%  ||"
+				FormatUtil.FormatDouble (
+					derivedForwardCurve.forward (syntheticFloatFloatMaturityTenorArray[i]),
+					1,
+					4,
+					100.
+				) + "%  ||"
 			);
 
 		System.out.println ("\t||----------------------------------------------------------------------------------------------------||\n");

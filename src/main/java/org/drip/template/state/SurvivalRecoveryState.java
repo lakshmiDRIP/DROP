@@ -13,6 +13,9 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -106,39 +109,39 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 public class SurvivalRecoveryState {
 
 	private static final MergedDiscountForwardCurve OvernightCurve (
-		final JulianDate dtSpot,
-		final String strCurrency)
+		final JulianDate spotDate,
+		final String currency)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		String[] astrDepositMaturityTenor = new String[] {
+		String[] depositMaturityTenorArray = new String[] {
 			"1D",
 			// "2D",
 			"3D"
 		};
 
-		double[] adblDepositQuote = new double[] {
+		double[] depositQuoteArray = new double[] {
 			0.0004,		// 1D
 			// 0.0004,		// 2D
 			0.0004		// 3D
 		};
 
-		String[] astrShortEndOISMaturityTenor = new String[] {
+		String[] shortEndOISMaturityTenorArray = new String[] {
 			"1W",
 			"2W",
 			"3W",
 			"1M"
 		};
 
-		double[] adblShortEndOISQuote = new double[] {
+		double[] shortEndOISQuoteArray = new double[] {
 			0.00070,    //   1W
 			0.00069,    //   2W
 			0.00078,    //   3W
 			0.00074     //   1M
 		};
 
-		String[] astrOISFuturesEffectiveTenor = new String[] {
+		String[] oisFuturesEffectiveTenorArray = new String[] {
 			"1M",
 			"2M",
 			"3M",
@@ -146,7 +149,7 @@ public class SurvivalRecoveryState {
 			"5M"
 		};
 
-		String[] astrOISFuturesMaturityTenor = new String[] {
+		String[] oisFuturesMaturityTenorArray = new String[] {
 			"1M",
 			"1M",
 			"1M",
@@ -154,7 +157,7 @@ public class SurvivalRecoveryState {
 			"1M"
 		};
 
-		double[] adblOISFuturesQuote = new double[] {
+		double[] oisFuturesQuoteArray = new double[] {
 			 0.00046,    //   1M x 1M
 			 0.00016,    //   2M x 1M
 			-0.00007,    //   3M x 1M
@@ -162,7 +165,7 @@ public class SurvivalRecoveryState {
 			-0.00014     //   5M x 1M
 		};
 
-		String[] astrLongEndOISMaturityTenor = new String[] {
+		String[] longEndOISMaturityTenorArray = new String[] {
 			"15M",
 			"18M",
 			"21M",
@@ -183,7 +186,7 @@ public class SurvivalRecoveryState {
 			"30Y"
 		};
 
-		double[] adblLongEndOISQuote = new double[] {
+		double[] longEndOISQuoteArray = new double[] {
 			0.00002,    //  15M
 			0.00008,    //  18M
 			0.00021,    //  21M
@@ -205,20 +208,20 @@ public class SurvivalRecoveryState {
 		};
 
 		return LatentMarketStateBuilder.SmoothOvernightCurve (
-			dtSpot,
-			strCurrency,
-			astrDepositMaturityTenor,
-			adblDepositQuote,
+			spotDate,
+			currency,
+			depositMaturityTenorArray,
+			depositQuoteArray,
 			"Rate",
-			astrShortEndOISMaturityTenor,
-			adblShortEndOISQuote,
+			shortEndOISMaturityTenorArray,
+			shortEndOISQuoteArray,
 			"SwapRate",
-			astrOISFuturesEffectiveTenor,
-			astrOISFuturesMaturityTenor,
-			adblOISFuturesQuote,
+			oisFuturesEffectiveTenorArray,
+			oisFuturesMaturityTenorArray,
+			oisFuturesQuoteArray,
 			"SwapRate",
-			astrLongEndOISMaturityTenor,
-			adblLongEndOISQuote,
+			longEndOISMaturityTenorArray,
+			longEndOISQuoteArray,
 			"SwapRate"
 		);
 	}
@@ -226,13 +229,13 @@ public class SurvivalRecoveryState {
 	/**
 	 * Entry Point
 	 * 
-	 * @param astrArgs Argument Array
+	 * @param argumentArray Argument Array
 	 * 
 	 * @throws Exception Propagate the Exception Upwards
 	 */
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
 		/*
@@ -241,9 +244,9 @@ public class SurvivalRecoveryState {
 
 		EnvManager.InitEnv ("");
 
-		String strCurrency = "EUR";
+		String currency = "EUR";
 
-		JulianDate dtSpot = DateUtil.CreateFromYMD (
+		JulianDate spotDate = DateUtil.CreateFromYMD (
 			2017,
 			DateUtil.DECEMBER,
 			21
@@ -254,12 +257,12 @@ public class SurvivalRecoveryState {
 			strCurrency
 		); */
 
-		MergedDiscountForwardCurve dcOvernight = OvernightCurve (
-			dtSpot,
-			strCurrency
+		MergedDiscountForwardCurve overnightMergedDiscountForwardCurve = OvernightCurve (
+			spotDate,
+			currency
 		);
 
-		String[] astrCDSMaturityTenor = new String[] {
+		String[] cdsMaturityTenorArray = new String[] {
 			"06M",
 			"01Y",
 			"02Y",
@@ -270,7 +273,7 @@ public class SurvivalRecoveryState {
 			"10Y"
 		};
 
-		double[] adblCDSParSpread = new double[] {
+		double[] cdsParSpreadArray = new double[] {
 			 60.,	//  6M
 			 68.,	//  1Y
 			 88.,	//  2Y
@@ -281,27 +284,27 @@ public class SurvivalRecoveryState {
 			188.	// 10Y
 		};
 
-		CreditCurve cc = LatentMarketStateBuilder.CreditCurve (
-			dtSpot,
+		CreditCurve creditCurve = LatentMarketStateBuilder.CreditCurve (
+			spotDate,
 			"QTX",
-			astrCDSMaturityTenor,
-			adblCDSParSpread,
-			adblCDSParSpread,
+			cdsMaturityTenorArray,
+			cdsParSpreadArray,
+			cdsParSpreadArray,
 			"FairPremium",
-			dcOvernight
+			overnightMergedDiscountForwardCurve
 		);
 
-		String strLatentStateLabel = cc.label().fullyQualifiedName();
+		String latentStateLabel = creditCurve.label().fullyQualifiedName();
 
 		System.out.println ("\n\n\t||----------------------------------------------------------||");
 
-		for (int i = 0; i < adblCDSParSpread.length; ++i)
+		for (int i = 0; i < cdsParSpreadArray.length; ++i)
 			System.out.println (
-				"\t||  " + strLatentStateLabel +
-				" |  CDS  | " + astrCDSMaturityTenor[i] + "  | " +
-				FormatUtil.FormatDouble (adblCDSParSpread[i], 3, 1, 1.) +
+				"\t||  " + latentStateLabel +
+				" |  CDS  | " + cdsMaturityTenorArray[i] + "  | " +
+				FormatUtil.FormatDouble (cdsParSpreadArray[i], 3, 1, 1.) +
 				" | Fair Premium | " +
-				FormatUtil.FormatDouble (cc.survival (astrCDSMaturityTenor[i]), 1, 6, 1.) +
+				FormatUtil.FormatDouble (creditCurve.survival (cdsMaturityTenorArray[i]), 1, 6, 1.) +
 				"  ||"
 			);
 
