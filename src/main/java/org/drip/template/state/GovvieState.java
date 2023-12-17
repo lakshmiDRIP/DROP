@@ -12,6 +12,9 @@ import org.drip.state.govvie.GovvieCurve;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -90,14 +93,19 @@ import org.drip.state.govvie.GovvieCurve;
  * <i>GovvieState</i> sets up the Calibration and the Construction of the Govvie Latent State and examine the
  * Emitted Metrics.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/state/README.md">Standard Latent State Construction Template</a></li>
- *  </ul>
- * <br><br>
+ *  <br><br><br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/state/README.md">Standard Latent State Construction Template</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -107,25 +115,22 @@ public class GovvieState {
 	/**
 	 * Entry Point
 	 * 
-	 * @param astrArgs Argument Array
+	 * @param argumentArray Argument Array
 	 * 
 	 * @throws Exception Propagate the Exception Upwards
 	 */
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		JulianDate dtSpot = DateUtil.Today().addBusDays (
-			0,
-			"USD"
-		);
+		JulianDate spotDate = DateUtil.Today().addBusDays (0, "USD");
 
-		String strCode = "UST";
+		String code = "UST";
 
-		JulianDate[] adtEffective = new JulianDate[] {
+		JulianDate[] effectiveDateArray = new JulianDate[] {
 			DateUtil.CreateFromYMD (2010, DateUtil.SEPTEMBER, 21),
 			DateUtil.CreateFromYMD (2009, DateUtil.JULY, 14),
 			DateUtil.CreateFromYMD (2011, DateUtil.MARCH, 8),
@@ -133,15 +138,15 @@ public class GovvieState {
 			DateUtil.CreateFromYMD (2010, DateUtil.DECEMBER, 3)
 		};
 
-		JulianDate[] adtMaturity = new JulianDate[] {
-			dtSpot.addTenor ("2Y"),
-			dtSpot.addTenor ("4Y"),
-			dtSpot.addTenor ("5Y"),
-			dtSpot.addTenor ("7Y"),
-			dtSpot.addTenor ("10Y")
+		JulianDate[] maturityDateArray = new JulianDate[] {
+			spotDate.addTenor ("2Y"),
+			spotDate.addTenor ("4Y"),
+			spotDate.addTenor ("5Y"),
+			spotDate.addTenor ("7Y"),
+			spotDate.addTenor ("10Y")
 		};
 
-		double[] adblCoupon = new double[] {
+		double[] couponArray = new double[] {
 			0.0200,
 			0.0250,
 			0.0300,
@@ -149,7 +154,7 @@ public class GovvieState {
 			0.0375
 		};
 
-		double[] adblYield = new double[] {
+		double[] yieldArray = new double[] {
 			0.0200,
 			0.0250,
 			0.0300,
@@ -157,28 +162,28 @@ public class GovvieState {
 			0.0375
 		};
 
-		GovvieCurve gc = LatentMarketStateBuilder.ShapePreservingGovvieCurve (
-			strCode,
-			dtSpot,
-			adtEffective,
-			adtMaturity,
-			adblCoupon,
-			adblYield,
+		GovvieCurve govvieCurve = LatentMarketStateBuilder.ShapePreservingGovvieCurve (
+			code,
+			spotDate,
+			effectiveDateArray,
+			maturityDateArray,
+			couponArray,
+			yieldArray,
 			"Yield"
 		);
 
-		String strLatentStateLabel = gc.label().fullyQualifiedName();
+		String latentStateLabel = govvieCurve.label().fullyQualifiedName();
 
 		System.out.println ("\n\n\t||---------------------------------------------------------------------------------------||");
 
-		for (int i = 0; i < adtEffective.length; ++i)
+		for (int i = 0; i < effectiveDateArray.length; ++i)
 			System.out.println (
-				"\t||  " + strLatentStateLabel + " |  TREASURY  | " +
-				adtMaturity[i] + " | " + FormatUtil.FormatDouble (adblYield[i], 1, 2, 100.) +
+				"\t||  " + latentStateLabel + " |  TREASURY  | " +
+				maturityDateArray[i] + " | " + FormatUtil.FormatDouble (yieldArray[i], 1, 2, 100.) +
 				"% | Yield | " +
-				FormatUtil.FormatDouble (gc.yld (adtMaturity[i]), 1, 2, 100.) +
+				FormatUtil.FormatDouble (govvieCurve.yld (maturityDateArray[i]), 1, 2, 100.) +
 				"% | Discount Factor | " +
-				FormatUtil.FormatDouble (gc.df (adtMaturity[i]), 1, 4, 1.) +
+				FormatUtil.FormatDouble (govvieCurve.df (maturityDateArray[i]), 1, 4, 1.) +
 				"  ||"
 			);
 

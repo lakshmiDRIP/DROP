@@ -18,6 +18,9 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -95,14 +98,19 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 /**
  * <i>SurvivalRecoveryStateShifted</i> demonstrates the Generation of the Tenor Bumped Credit Curves.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/statebump/README.md">Shifted Latent State Construction Template</a></li>
- *  </ul>
- * <br><br>
+ *  <br><br><br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/statebump/README.md">Shifted Latent State Construction Template</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -110,37 +118,37 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 public class SurvivalRecoveryStateShifted {
 
 	private static final MergedDiscountForwardCurve OvernightCurve (
-		final JulianDate dtSpot,
-		final String strCurrency)
+		final JulianDate spotDate,
+		final String currency)
 		throws Exception
 	{
-		String[] astrDepositMaturityTenor = new String[] {
+		String[] depositMaturityTenorArray = new String[] {
 			"1D",
 			// "2D",
 			"3D"
 		};
 
-		double[] adblDepositQuote = new double[] {
+		double[] depositQuoteArray = new double[] {
 			0.0004,		// 1D
 			// 0.0004,		// 2D
 			0.0004		// 3D
 		};
 
-		String[] astrShortEndOISMaturityTenor = new String[] {
+		String[] shortEndOISMaturityTenorArray = new String[] {
 			"1W",
 			"2W",
 			"3W",
 			"1M"
 		};
 
-		double[] adblShortEndOISQuote = new double[] {
+		double[] shortEndOISQuoteArray = new double[] {
 			0.00070,    //   1W
 			0.00069,    //   2W
 			0.00078,    //   3W
 			0.00074     //   1M
 		};
 
-		String[] astrOISFuturesEffectiveTenor = new String[] {
+		String[] oisFuturesEffectiveTenorArray = new String[] {
 			"1M",
 			"2M",
 			"3M",
@@ -148,7 +156,7 @@ public class SurvivalRecoveryStateShifted {
 			"5M"
 		};
 
-		String[] astrOISFuturesMaturityTenor = new String[] {
+		String[] oisFuturesMaturityTenorArray = new String[] {
 			"1M",
 			"1M",
 			"1M",
@@ -156,7 +164,7 @@ public class SurvivalRecoveryStateShifted {
 			"1M"
 		};
 
-		double[] adblOISFuturesQuote = new double[] {
+		double[] oisFuturesQuoteArray = new double[] {
 			 0.00046,    //   1M x 1M
 			 0.00016,    //   2M x 1M
 			-0.00007,    //   3M x 1M
@@ -164,7 +172,7 @@ public class SurvivalRecoveryStateShifted {
 			-0.00014     //   5M x 1M
 		};
 
-		String[] astrLongEndOISMaturityTenor = new String[] {
+		String[] longEndOISMaturityTenorArray = new String[] {
 			"15M",
 			"18M",
 			"21M",
@@ -185,7 +193,7 @@ public class SurvivalRecoveryStateShifted {
 			"30Y"
 		};
 
-		double[] adblLongEndOISQuote = new double[] {
+		double[] longEndOISQuoteArray = new double[] {
 			0.00002,    //  15M
 			0.00008,    //  18M
 			0.00021,    //  21M
@@ -207,20 +215,20 @@ public class SurvivalRecoveryStateShifted {
 		};
 
 		return LatentMarketStateBuilder.SmoothOvernightCurve (
-			dtSpot,
-			strCurrency,
-			astrDepositMaturityTenor,
-			adblDepositQuote,
+			spotDate,
+			currency,
+			depositMaturityTenorArray,
+			depositQuoteArray,
 			"Rate",
-			astrShortEndOISMaturityTenor,
-			adblShortEndOISQuote,
+			shortEndOISMaturityTenorArray,
+			shortEndOISQuoteArray,
 			"SwapRate",
-			astrOISFuturesEffectiveTenor,
-			astrOISFuturesMaturityTenor,
-			adblOISFuturesQuote,
+			oisFuturesEffectiveTenorArray,
+			oisFuturesMaturityTenorArray,
+			oisFuturesQuoteArray,
 			"SwapRate",
-			astrLongEndOISMaturityTenor,
-			adblLongEndOISQuote,
+			longEndOISMaturityTenorArray,
+			longEndOISQuoteArray,
 			"SwapRate"
 		);
 	}
@@ -228,13 +236,13 @@ public class SurvivalRecoveryStateShifted {
 	/**
 	 * Entry Point
 	 * 
-	 * @param astrArgs Argument Array
+	 * @param argumentArray Argument Array
 	 * 
 	 * @throws Exception Propagate the Exception Upwards
 	 */
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
 		/*
@@ -243,22 +251,19 @@ public class SurvivalRecoveryStateShifted {
 
 		EnvManager.InitEnv ("");
 
-		String strCurrency = "EUR";
-		double dblBump = 1.0;
-		boolean bIsBumpProportional = false;
+		String currency = "EUR";
+		double bump = 1.0;
+		boolean isBumpProportional = false;
 
-		JulianDate dtSpot = DateUtil.CreateFromYMD (
+		JulianDate spotDate = DateUtil.CreateFromYMD (
 			2017,
 			DateUtil.DECEMBER,
 			21
 		);
 
-		MergedDiscountForwardCurve dcOvernight = OvernightCurve (
-			dtSpot,
-			strCurrency
-		);
+		MergedDiscountForwardCurve oisCurve = OvernightCurve (spotDate, currency);
 
-		String[] astrCDSMaturityTenor = new String[] {
+		String[] cdsMaturityTenorArray = new String[] {
 			"06M",
 			"01Y",
 			"02Y",
@@ -269,7 +274,7 @@ public class SurvivalRecoveryStateShifted {
 			"10Y"
 		};
 
-		double[] adblCDSParSpread = new double[] {
+		double[] cdsParSpreadArray = new double[] {
 			 60.,	//  6M
 			 68.,	//  1Y
 			 88.,	//  2Y
@@ -280,51 +285,58 @@ public class SurvivalRecoveryStateShifted {
 			188.	// 10Y
 		};
 
-		Map<String, CreditCurve> mapBumpedCreditCurve = LatentMarketStateBuilder.BumpedCreditCurve (
-			dtSpot,
+		Map<String, CreditCurve> bumpedCreditCurveMap = LatentMarketStateBuilder.BumpedCreditCurve (
+			spotDate,
 			"QTX",
-			astrCDSMaturityTenor,
-			adblCDSParSpread,
-			adblCDSParSpread,
+			cdsMaturityTenorArray,
+			cdsParSpreadArray,
+			cdsParSpreadArray,
 			"FairPremium",
-			dcOvernight,
-			dblBump,
-			bIsBumpProportional
+			oisCurve,
+			bump,
+			isBumpProportional
 		);
 
-		Component[] aCDS = OTCInstrumentBuilder.CDS (
-			dtSpot,
-			astrCDSMaturityTenor,
-			adblCDSParSpread,
-			strCurrency,
+		Component[] cdsComponentArray = OTCInstrumentBuilder.CDS (
+			spotDate,
+			cdsMaturityTenorArray,
+			cdsParSpreadArray,
+			currency,
 			"QTX"
 		);
 
 		System.out.println ("\n\t|----------------------------------------------------------------------------||");
 
-		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());
+		ValuationParams valuationParams = ValuationParams.Spot (spotDate.julian());
 
-		for (Map.Entry<String, CreditCurve> meCredit : mapBumpedCreditCurve.entrySet()) {
-			String strKey = meCredit.getKey();
+		for (Map.Entry<String, CreditCurve> bumpedCreditCurveMapEntry : bumpedCreditCurveMap.entrySet()) {
+			String key = bumpedCreditCurveMapEntry.getKey();
 
-			if (!strKey.startsWith ("cds")) continue;
+			if (!key.startsWith ("cds")) continue;
 
-			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();
+			CurveSurfaceQuoteContainer marketParamContainer = new CurveSurfaceQuoteContainer();
 
-			csqc.setFundingState (dcOvernight);
+			marketParamContainer.setFundingState (oisCurve);
 
-			csqc.setCreditState (meCredit.getValue());
+			marketParamContainer.setCreditState (bumpedCreditCurveMapEntry.getValue());
 
-			System.out.print ("\t|  [" + meCredit.getKey() + "] => ");
+			System.out.print ("\t|  [" + bumpedCreditCurveMapEntry.getKey() + "] => ");
 
-			for (Component comp : aCDS)
-				System.out.print (FormatUtil.FormatDouble (comp.measureValue (
-					valParams,
-					null,
-					csqc,
-					null,
-					"FairPremium"
-				), 1, 1, 1.) + " |");
+			for (Component cdsComponent : cdsComponentArray)
+				System.out.print (
+					FormatUtil.FormatDouble (
+						cdsComponent.measureValue (
+							valuationParams,
+							null,
+							marketParamContainer,
+							null,
+							"FairPremium"
+						),
+						1,
+						1,
+						1.
+					) + " |"
+				);
 
 			System.out.print ("|\n");
 		}
@@ -333,36 +345,46 @@ public class SurvivalRecoveryStateShifted {
 
 		System.out.println ("\n\t|--------------------------------------------||");
 
-		CurveSurfaceQuoteContainer csqcBase = new CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer baseMarketParamContainer = new CurveSurfaceQuoteContainer();
 
-		csqcBase.setFundingState (dcOvernight);
+		baseMarketParamContainer.setFundingState (oisCurve);
 
-		csqcBase.setCreditState (mapBumpedCreditCurve.get ("Base"));
+		baseMarketParamContainer.setCreditState (bumpedCreditCurveMap.get ("Base"));
 
-		CurveSurfaceQuoteContainer csqcBump = new CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer bumpedMarketParamContainer = new CurveSurfaceQuoteContainer();
 
-		csqcBump.setFundingState (dcOvernight);
+		bumpedMarketParamContainer.setFundingState (oisCurve);
 
-		csqcBump.setCreditState (mapBumpedCreditCurve.get ("Bump"));
+		bumpedMarketParamContainer.setCreditState (bumpedCreditCurveMap.get ("Bump"));
 
-		for (Component comp : aCDS)
+		for (Component cdsComponent : cdsComponentArray)
 			System.out.println (
 				"\t| FAIR PREMIUM => " +
-				comp.maturityDate() + " |" +
-				FormatUtil.FormatDouble (comp.measureValue (
-					valParams,
-					null,
-					csqcBase,
-					null,
-					"FairPremium"
-				), 3, 1, 1.) + " |" +
-				FormatUtil.FormatDouble (comp.measureValue (
-					valParams,
-					null,
-					csqcBump,
-					null,
-					"FairPremium"
-				), 3, 1, 1.) + " ||"
+				cdsComponent.maturityDate() + " |" +
+				FormatUtil.FormatDouble (
+					cdsComponent.measureValue (
+						valuationParams,
+						null,
+						baseMarketParamContainer,
+						null,
+						"FairPremium"
+					),
+					3,
+					1,
+					1.
+				) + " |" +
+				FormatUtil.FormatDouble (
+					cdsComponent.measureValue (
+						valuationParams,
+						null,
+						bumpedMarketParamContainer,
+						null,
+						"FairPremium"
+					),
+					3,
+					1,
+					1.
+				) + " ||"
 			);
 
 		System.out.println ("\t|--------------------------------------------||");

@@ -17,6 +17,9 @@ import org.drip.state.govvie.GovvieCurve;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -94,14 +97,19 @@ import org.drip.state.govvie.GovvieCurve;
 /**
  * <i>GovvieStateShifted</i> demonstrates the Construction and Usage of Tenor Bumped Govvie Curves.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/statebump/README.md">Shifted Latent State Construction Template</a></li>
- *  </ul>
- * <br><br>
+ *  <br><br><br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/statebump/README.md">Shifted Latent State Construction Template</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -111,28 +119,28 @@ public class GovvieStateShifted {
 	/**
 	 * Entry Point
 	 * 
-	 * @param astrArgs Argument Array
+	 * @param argumentArray Argument Array
 	 * 
 	 * @throws Exception Propagate the Exception Upwards
 	 */
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		JulianDate dtSpot = DateUtil.CreateFromYMD (
+		JulianDate spotDate = DateUtil.CreateFromYMD (
 			2017,
 			DateUtil.DECEMBER,
 			21
 		);
 
-		String strCode = "UST";
-		double dblBump = 0.0001;
-		boolean bIsBumpProportional = false;
+		String code = "UST";
+		double bump = 0.0001;
+		boolean isBumpProportional = false;
 
-		JulianDate[] adtEffective = new JulianDate[] {
+		JulianDate[] effectiveDateArray = new JulianDate[] {
 			DateUtil.CreateFromYMD (2010, DateUtil.SEPTEMBER, 21),
 			DateUtil.CreateFromYMD (2009, DateUtil.JULY, 14),
 			DateUtil.CreateFromYMD (2011, DateUtil.MARCH, 8),
@@ -140,15 +148,15 @@ public class GovvieStateShifted {
 			DateUtil.CreateFromYMD (2010, DateUtil.DECEMBER, 3)
 		};
 
-		JulianDate[] adtMaturity = new JulianDate[] {
-			dtSpot.addTenor ("2Y"),
-			dtSpot.addTenor ("4Y"),
-			dtSpot.addTenor ("5Y"),
-			dtSpot.addTenor ("7Y"),
-			dtSpot.addTenor ("10Y")
+		JulianDate[] maturityDateArray = new JulianDate[] {
+			spotDate.addTenor ("2Y"),
+			spotDate.addTenor ("4Y"),
+			spotDate.addTenor ("5Y"),
+			spotDate.addTenor ("7Y"),
+			spotDate.addTenor ("10Y")
 		};
 
-		double[] adblCoupon = new double[] {
+		double[] couponArray = new double[] {
 			0.0200,
 			0.0250,
 			0.0300,
@@ -156,7 +164,7 @@ public class GovvieStateShifted {
 			0.0375
 		};
 
-		double[] adblYield = new double[] {
+		double[] yieldArray = new double[] {
 			0.0200,
 			0.0250,
 			0.0300,
@@ -164,53 +172,62 @@ public class GovvieStateShifted {
 			0.0375
 		};
 
-		Map<String, GovvieCurve> mapBumpedGovvieCurve = LatentMarketStateBuilder.BumpedGovvieCurve (
-			strCode,
-			dtSpot,
-			adtEffective,
-			adtMaturity,
-			adblCoupon,
-			adblYield,
+		Map<String, GovvieCurve> bumpedGovvieCurveMap = LatentMarketStateBuilder.BumpedGovvieCurve (
+			code,
+			spotDate,
+			effectiveDateArray,
+			maturityDateArray,
+			couponArray,
+			yieldArray,
 			"Yield",
 			LatentMarketStateBuilder.SHAPE_PRESERVING,
-			dblBump,
-			bIsBumpProportional
+			bump,
+			isBumpProportional
 		);
 
-		TreasuryComponent[] aTreasury = TreasuryBuilder.FromCode (
-			strCode,
-			adtEffective,
-			adtMaturity,
-			adblCoupon
+		TreasuryComponent[] treasuryComponentArray = TreasuryBuilder.FromCode (
+			code,
+			effectiveDateArray,
+			maturityDateArray,
+			couponArray
 		);
 
-		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());
+		ValuationParams valuationParams = ValuationParams.Spot (spotDate.julian());
 
 		System.out.println ("\n\t|-------------------------------------------------------------------||");
 
-		for (Map.Entry<String, GovvieCurve> meGovvie : mapBumpedGovvieCurve.entrySet()) {
-			String strKey = meGovvie.getKey();
+		for (Map.Entry<String, GovvieCurve> bumpedGovvieCurveMapEntry : bumpedGovvieCurveMap.entrySet()) {
+			String key = bumpedGovvieCurveMapEntry.getKey();
 
-			if (!strKey.startsWith ("tsy")) continue;
+			if (!key.startsWith ("tsy")) {
+				continue;
+			}
 
-			System.out.print ("\t|  [" + meGovvie.getKey() + "] => ");
+			System.out.print ("\t|  [" + key + "] => ");
 
-			GovvieCurve gc = meGovvie.getValue();
+			GovvieCurve govvieCurve = bumpedGovvieCurveMapEntry.getValue();
 
-			for (BondComponent treasury : aTreasury)
-				System.out.print (FormatUtil.FormatDouble (treasury.yieldFromPrice (
-					valParams,
-					null,
-					null,
-					treasury.maturityDate().julian(),
-					1.,
-					treasury.priceFromYield (
-						valParams,
-						null,
-						null,
-						gc.yld (treasury.maturityDate().julian())
-					)
-				), 1, 4, 1.) + " |"
+			for (BondComponent treasury : treasuryComponentArray)
+				System.out.print (
+					FormatUtil.FormatDouble (
+						treasury.yieldFromPrice (
+							valuationParams,
+							null,
+							null,
+							treasury.maturityDate().julian(),
+							1.,
+							treasury.priceFromYield (
+								valuationParams,
+								null,
+								null,
+								govvieCurve.yld (treasury.maturityDate().julian()
+							)
+						)
+					),
+					1,
+					4,
+					1.
+				) + " |"
 			);
 
 			System.out.print ("|\n");
@@ -220,40 +237,50 @@ public class GovvieStateShifted {
 
 		System.out.println ("\n\t|-------------------------------------||");
 
-		GovvieCurve gcBase = mapBumpedGovvieCurve.get ("Base");
+		GovvieCurve baseGovvieCurve = bumpedGovvieCurveMap.get ("Base");
 
-		GovvieCurve gcBump = mapBumpedGovvieCurve.get ("Bump");
+		GovvieCurve bumpedGovvieCurve = bumpedGovvieCurveMap.get ("Bump");
 
-		for (TreasuryComponent treasury : aTreasury)
+		for (TreasuryComponent treasury : treasuryComponentArray)
 			System.out.println (
 				"\t| YIELD => " +
 				treasury.maturityDate() + " |" +
-				FormatUtil.FormatDouble (treasury.yieldFromPrice (
-					valParams,
-					null,
-					null,
-					treasury.maturityDate().julian(),
-					1.,
-					treasury.priceFromYield (
-						valParams,
+				FormatUtil.FormatDouble (
+					treasury.yieldFromPrice (
+						valuationParams,
 						null,
 						null,
-						gcBase.yld (treasury.maturityDate().julian())
-					)
-				), 1, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (treasury.yieldFromPrice (
-					valParams,
-					null,
-					null,
-					treasury.maturityDate().julian(),
-					1.,
-					treasury.priceFromYield (
-						valParams,
+						treasury.maturityDate().julian(),
+						1.,
+						treasury.priceFromYield (
+							valuationParams,
+							null,
+							null,
+							baseGovvieCurve.yld (treasury.maturityDate().julian())
+						)
+					),
+					1,
+					2,
+					100.
+				) + "% |" +
+				FormatUtil.FormatDouble (
+					treasury.yieldFromPrice (
+						valuationParams,
 						null,
 						null,
-						gcBump.yld (treasury.maturityDate().julian())
-					)
-				), 1, 2, 100.) + "% ||"
+						treasury.maturityDate().julian(),
+						1.,
+						treasury.priceFromYield (
+							valuationParams,
+							null,
+							null,
+							bumpedGovvieCurve.yld (treasury.maturityDate().julian())
+						)
+					),
+					1,
+					2,
+					100.
+				) + "% ||"
 			);
 
 		System.out.println ("\t|-------------------------------------||");

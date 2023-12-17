@@ -12,6 +12,9 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -89,42 +92,45 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 /**
  * <i>FundingState</i> sets up the Calibration of the Funding Latent State and examine the Emitted Metrics.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/state/README.md">Standard Latent State Construction Template</a></li>
- *  </ul>
- * <br><br>
+ *  <br><br><br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/state/README.md">Standard Latent State Construction Template</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class FundingState {
+public class FundingState
+{
 
 	/**
 	 * Entry Point
 	 * 
-	 * @param astrArgs Argument Array
+	 * @param argumentArray Argument Array
 	 * 
 	 * @throws Exception Propagate the Exception Upwards
 	 */
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		String strCurrency = "USD";
+		String currency = "USD";
 
-		JulianDate dtSpot = DateUtil.Today().addBusDays (
-			0,
-			strCurrency
-		);
+		JulianDate spotDate = DateUtil.Today().addBusDays (0, currency);
 
-		String[] astrDepositMaturityTenor = new String[] {
+		String[] depositMaturityTenorArray = new String[] {
 			"01D",
 			"04D",
 			"07D",
@@ -133,7 +139,7 @@ public class FundingState {
 			"60D"
 		};
 
-		double[] adblDepositQuote = new double[] {
+		double[] depositQuoteArray = new double[] {
 			0.0013,		//  1D
 			0.0017,		//  2D
 			0.0017,		//  7D
@@ -142,7 +148,7 @@ public class FundingState {
 			0.0023		// 60D
 		};
 
-		double[] adblFuturesQuote = new double[] {
+		double[] futuresQuoteArray = new double[] {
 			0.0027,
 			0.0032,
 			0.0041,
@@ -153,7 +159,7 @@ public class FundingState {
 			0.0160
 		};
 
-		String[] astrFixFloatMaturityTenor = new String[] {
+		String[] fixFloatMaturityTenorArray = new String[] {
 			"04Y",
 			"05Y",
 			"06Y",
@@ -171,7 +177,7 @@ public class FundingState {
 			"50Y"
 		};
 
-		double[] adblFixFloatQuote = new double[] {
+		double[] fixFloatQuoteArray = new double[] {
 			0.0166,		//   4Y
 			0.0206,		//   5Y
 			0.0241,		//   6Y
@@ -189,30 +195,30 @@ public class FundingState {
 			0.0409		//  50Y
 		};
 
-		MergedDiscountForwardCurve dcFunding = LatentMarketStateBuilder.SmoothFundingCurve (
-			dtSpot,
-			strCurrency,
-			astrDepositMaturityTenor,
-			adblDepositQuote,
+		MergedDiscountForwardCurve fundingCurve = LatentMarketStateBuilder.SmoothFundingCurve (
+			spotDate,
+			currency,
+			depositMaturityTenorArray,
+			depositQuoteArray,
 			"ForwardRate",
-			adblFuturesQuote,
+			futuresQuoteArray,
 			"ForwardRate",
-			astrFixFloatMaturityTenor,
-			adblFixFloatQuote,
+			fixFloatMaturityTenorArray,
+			fixFloatQuoteArray,
 			"SwapRate"
 		);
 
-		String strLatentStateLabel = dcFunding.label().fullyQualifiedName();
+		String latentStateLabel = fundingCurve.label().fullyQualifiedName();
 
 		System.out.println ("\n\n\t||---------------------------------------------------------------||");
 
-		for (int i = 0; i < adblDepositQuote.length; ++i)
+		for (int i = 0; i < depositQuoteArray.length; ++i)
 			System.out.println (
-				"\t||  " + strLatentStateLabel +
-				" |  DEPOSIT  | " + astrDepositMaturityTenor[i] + "  | " +
-				FormatUtil.FormatDouble (adblDepositQuote[i], 1, 4, 1.) +
+				"\t||  " + latentStateLabel +
+				" |  DEPOSIT  | " + depositMaturityTenorArray[i] + "  | " +
+				FormatUtil.FormatDouble (depositQuoteArray[i], 1, 4, 1.) +
 				" | Forward Rate | " +
-				FormatUtil.FormatDouble (dcFunding.df (astrDepositMaturityTenor[i]), 1, 6, 1.) +
+				FormatUtil.FormatDouble (fundingCurve.df (depositMaturityTenorArray[i]), 1, 6, 1.) +
 				"  ||"
 			);
 
@@ -220,12 +226,12 @@ public class FundingState {
 
 		System.out.println ("\n\n\t||--------------------------------------------------------||");
 
-		for (int i = 0; i < adblFuturesQuote.length; ++i)
+		for (int i = 0; i < futuresQuoteArray.length; ++i)
 			System.out.println (
-				"\t||  " + strLatentStateLabel + " |  FUTURES  | " +
-				FormatUtil.FormatDouble (adblFuturesQuote[i], 1, 4, 1.) +
+				"\t||  " + latentStateLabel + " |  FUTURES  | " +
+				FormatUtil.FormatDouble (futuresQuoteArray[i], 1, 4, 1.) +
 				" | Forward Rate | " +
-				FormatUtil.FormatDouble (dcFunding.df ((3 + 3 * i) + "M"), 1, 6, 1.) +
+				FormatUtil.FormatDouble (fundingCurve.df ((3 + 3 * i) + "M"), 1, 6, 1.) +
 				"  ||"
 			);
 
@@ -233,13 +239,13 @@ public class FundingState {
 
 		System.out.println ("\n\n\t||--------------------------------------------------------------||");
 
-		for (int i = 0; i < adblFixFloatQuote.length; ++i)
+		for (int i = 0; i < fixFloatQuoteArray.length; ++i)
 			System.out.println (
-				"\t||  " + strLatentStateLabel +
-				" |  FIX FLOAT  | " + astrFixFloatMaturityTenor[i] + "  | " +
-				FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 4, 1.) +
+				"\t||  " + latentStateLabel +
+				" |  FIX FLOAT  | " + fixFloatMaturityTenorArray[i] + "  | " +
+				FormatUtil.FormatDouble (fixFloatQuoteArray[i], 1, 4, 1.) +
 				" | Swap Rate | " +
-				FormatUtil.FormatDouble (dcFunding.df (astrFixFloatMaturityTenor[i]), 1, 6, 1.) +
+				FormatUtil.FormatDouble (fundingCurve.df (fixFloatMaturityTenorArray[i]), 1, 6, 1.) +
 				"  ||"
 			);
 

@@ -19,6 +19,9 @@ import org.drip.state.fx.FXCurve;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -96,14 +99,19 @@ import org.drip.state.fx.FXCurve;
 /**
  * <i>FXStateShifted</i> demonstrates the Generation and the Usage of Tenor Bumped FX Curves.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/statebump/README.md">Shifted Latent State Construction Template</a></li>
- *  </ul>
- * <br><br>
+ *  <br><br><br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/statebump/README.md">Shifted Latent State Construction Template</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -113,34 +121,31 @@ public class FXStateShifted {
 	/**
 	 * Entry Point
 	 * 
-	 * @param astrArgs Argument Array
+	 * @param argumentArray Argument Array
 	 * 
 	 * @throws Exception Propagate the Exception Upwards
 	 */
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		CurrencyPair cp = new CurrencyPair (
+		CurrencyPair currencyPair = new CurrencyPair (
 			"EUR",
 			"USD",
 			"USD",
 			10000.
 		);
 
-		JulianDate dtSpot = DateUtil.Today().addBusDays (
-			0,
-			cp.denomCcy()
-		);
+		JulianDate spotDate = DateUtil.Today().addBusDays (0, currencyPair.denomCcy());
 
-		double dblFXSpot = 1.1013;
-		double dblBump = 0.0001;
-		boolean bIsBumpProportional = false;
+		double fxSpot = 1.1013;
+		double bump = 0.0001;
+		boolean isBumpProportional = false;
 
-		String[] astrMaturityTenor = new String[] {
+		String[] maturityTenorArray = new String[] {
 			"1D",
 			"2D",
 			"3D",
@@ -154,7 +159,7 @@ public class FXStateShifted {
 			"9M"
 		};
 
-		double[] adblFXForward = new double[] {
+		double[] fxForwardArray = new double[] {
 			1.1011,		// "1D"
 			1.1007,		// "2D"
 			1.0999,		// "3D"
@@ -168,48 +173,56 @@ public class FXStateShifted {
 			1.1011		// "9M"
 		};
 
-		Map<String, FXCurve> mapBumpedFXCurve = LatentMarketStateBuilder.BumpedFXCurve (
-			dtSpot,
-			cp,
-			astrMaturityTenor,
-			adblFXForward,
+		Map<String, FXCurve> bumpedFXCurveMap = LatentMarketStateBuilder.BumpedFXCurve (
+			spotDate,
+			currencyPair,
+			maturityTenorArray,
+			fxForwardArray,
 			"Outright",
-			dblFXSpot,
+			fxSpot,
 			LatentMarketStateBuilder.SMOOTH,
-			dblBump,
-			bIsBumpProportional
+			bump,
+			isBumpProportional
 		);
 
-		FXForwardComponent[] aFXFC = OTCInstrumentBuilder.FXForward (
-			dtSpot,
-			cp,
-			astrMaturityTenor
+		FXForwardComponent[] fxForwardComponentArray = OTCInstrumentBuilder.FXForward (
+			spotDate,
+			currencyPair,
+			maturityTenorArray
 		);
 
 		System.out.println ("\n\t|-------------------------------------------------------------------------------------------------------------------||");
 
-		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());
+		ValuationParams valuationParams = ValuationParams.Spot (spotDate.julian());
 
-		for (Map.Entry<String, FXCurve> meFX : mapBumpedFXCurve.entrySet()) {
-			String strKey = meFX.getKey();
+		for (Map.Entry<String, FXCurve> bumpedFXCurveMapEntry : bumpedFXCurveMap.entrySet()) {
+			String key = bumpedFXCurveMapEntry.getKey();
 
-			if (!strKey.startsWith ("fxfwd")) continue;
+			if (!key.startsWith ("fxfwd")) {
+				continue;
+			}
 
-			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();
+			CurveSurfaceQuoteContainer marketParamsContainer = new CurveSurfaceQuoteContainer();
 
-			csqc.setFXState (meFX.getValue());
+			marketParamsContainer.setFXState (bumpedFXCurveMapEntry.getValue());
 
-			System.out.print ("\t|  [" + meFX.getKey() + "] => ");
+			System.out.print ("\t|  [" + key + "] => ");
 
-			for (Component comp : aFXFC)
-				System.out.print (FormatUtil.FormatDouble (
-					comp.measureValue (
-						valParams,
-						null,
-						csqc,
-						null,
-						"Outright"
-					), 1, 4, 1.) + " |");
+			for (Component fxForwardComponent : fxForwardComponentArray)
+				System.out.print (
+					FormatUtil.FormatDouble (
+						fxForwardComponent.measureValue (
+							valuationParams,
+							null,
+							marketParamsContainer,
+							null,
+							"Outright"
+						),
+						1,
+						4,
+						1.
+					) + " |"
+				);
 
 			System.out.print ("|\n");
 		}
@@ -218,32 +231,42 @@ public class FXStateShifted {
 
 		System.out.println ("\n\t|---------------------------------------------||");
 
-		CurveSurfaceQuoteContainer csqcBase = new CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer baseMarketParamsContainer = new CurveSurfaceQuoteContainer();
 
-		csqcBase.setFXState (mapBumpedFXCurve.get ("Base"));
+		baseMarketParamsContainer.setFXState (bumpedFXCurveMap.get ("Base"));
 
-		CurveSurfaceQuoteContainer csqcBump = new CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer bumpedMarketParamsContainer = new CurveSurfaceQuoteContainer();
 
-		csqcBump.setFXState (mapBumpedFXCurve.get ("Bump"));
+		bumpedMarketParamsContainer.setFXState (bumpedFXCurveMap.get ("Bump"));
 
-		for (Component comp : aFXFC)
+		for (Component fxForwardComponent : fxForwardComponentArray)
 			System.out.println (
 				"\t| OUTRIGHT  => " +
-				comp.maturityDate() + " | " +
-				FormatUtil.FormatDouble (comp.measureValue (
-					valParams,
-					null,
-					csqcBase,
-					null,
-					"Outright"
-				), 1, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (comp.measureValue (
-					valParams,
-					null,
-					csqcBump,
-					null,
-					"Outright"
-				), 1, 4, 1.) + " ||"
+				fxForwardComponent.maturityDate() + " | " +
+				FormatUtil.FormatDouble (
+					fxForwardComponent.measureValue (
+						valuationParams,
+						null,
+						baseMarketParamsContainer,
+						null,
+						"Outright"
+					),
+					1,
+					4,
+					1.
+				) + " | " +
+				FormatUtil.FormatDouble (
+					fxForwardComponent.measureValue (
+						valuationParams,
+						null,
+						bumpedMarketParamsContainer,
+						null,
+						"Outright"
+					),
+					1,
+					4,
+					1.
+				) + " ||"
 			);
 
 		System.out.println ("\t|---------------------------------------------||");

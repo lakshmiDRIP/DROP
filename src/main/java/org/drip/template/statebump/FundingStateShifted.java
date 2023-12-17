@@ -17,6 +17,9 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -94,14 +97,19 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 /**
  * <i>FundingStateShifted</i> generates a Sequence of Tenor Bumped Funding Curves.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/statebump/README.md">Shifted Latent State Construction Template</a></li>
- *  </ul>
- * <br><br>
+ *  <br><br><br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/statebump/README.md">Shifted Latent State Construction Template</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -111,28 +119,28 @@ public class FundingStateShifted {
 	/**
 	 * Entry Point
 	 * 
-	 * @param astrArgs Argument Array
+	 * @param argumentArray Argument Array
 	 * 
 	 * @throws Exception Propagate the Exception Upwards
 	 */
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		String strCurrency = "USD";
-		double dblBump = 0.0001;
-		boolean bIsBumpProportional = false;
+		String currency = "USD";
+		double bump = 0.0001;
+		boolean isBumpProportional = false;
 
-		JulianDate dtSpot = DateUtil.CreateFromYMD (
+		JulianDate spotDate = DateUtil.CreateFromYMD (
 			2017,
 			DateUtil.DECEMBER,
 			21
 		);
 
-		String[] astrDepositMaturityTenor = new String[] {
+		String[] depositMaturityTenorArray = new String[] {
 			"01D",
 			"02D",
 			"07D",
@@ -141,7 +149,7 @@ public class FundingStateShifted {
 			"60D"
 		};
 
-		double[] adblDepositQuote = new double[] {
+		double[] depositQuoteArray = new double[] {
 			0.0013,		//  1D
 			0.0017,		//  2D
 			0.0017,		//  7D
@@ -150,7 +158,7 @@ public class FundingStateShifted {
 			0.0023		// 60D
 		};
 
-		double[] adblFuturesQuote = new double[] {
+		double[] futuresQuoteArray = new double[] {
 			0.0027,
 			0.0032,
 			0.0041,
@@ -161,7 +169,7 @@ public class FundingStateShifted {
 			0.0160
 		};
 
-		String[] astrFixFloatMaturityTenor = new String[] {
+		String[] fixFloatMaturityTenorArray = new String[] {
 			"04Y",
 			"05Y",
 			"06Y",
@@ -179,7 +187,7 @@ public class FundingStateShifted {
 			"50Y"
 		};
 
-		double[] adblFixFloatQuote = new double[] {
+		double[] fixFloatQuoteArray = new double[] {
 			0.0166,		//   4Y
 			0.0206,		//   5Y
 			0.0241,		//   6Y
@@ -197,67 +205,76 @@ public class FundingStateShifted {
 			0.0409		//  50Y
 		};
 
-		Map<String, MergedDiscountForwardCurve> mapFundingCurve = LatentMarketStateBuilder.BumpedFundingCurve (
-			dtSpot,
-			strCurrency,
-			astrDepositMaturityTenor,
-			adblDepositQuote,
+		Map<String, MergedDiscountForwardCurve> fundingCurveMap = LatentMarketStateBuilder.BumpedFundingCurve (
+			spotDate,
+			currency,
+			depositMaturityTenorArray,
+			depositQuoteArray,
 			"ForwardRate",
-			adblFuturesQuote,
+			futuresQuoteArray,
 			"ForwardRate",
-			astrFixFloatMaturityTenor,
-			adblFixFloatQuote,
+			fixFloatMaturityTenorArray,
+			fixFloatQuoteArray,
 			"SwapRate",
 			LatentMarketStateBuilder.SMOOTH,
-			dblBump,
-			bIsBumpProportional
+			bump,
+			isBumpProportional
 		);
 
-		Component[] aDepositComp = OTCInstrumentBuilder.FundingDeposit (
-			dtSpot,
-			strCurrency,
-			astrDepositMaturityTenor
+		Component[] depositComponentArray = OTCInstrumentBuilder.FundingDeposit (
+			spotDate,
+			currency,
+			depositMaturityTenorArray
 		);
 
-		Component[] aFuturesComp = ExchangeInstrumentBuilder.ForwardRateFuturesPack (
-			dtSpot,
-			adblFuturesQuote.length,
-			strCurrency
+		Component[] futuresComponentArray = ExchangeInstrumentBuilder.ForwardRateFuturesPack (
+			spotDate,
+			futuresQuoteArray.length,
+			currency
 		);
 
-		Component[] aFixFloatComp = OTCInstrumentBuilder.FixFloatStandard (
-			dtSpot,
-			strCurrency,
+		Component[] fixFloatComponentArray = OTCInstrumentBuilder.FixFloatStandard (
+			spotDate,
+			currency,
 			"ALL",
-			astrFixFloatMaturityTenor,
+			fixFloatMaturityTenorArray,
 			"MAIN",
 			0.
 		);
 
-		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());
+		ValuationParams valuationParams = ValuationParams.Spot (spotDate.julian());
 
 		System.out.println ("\n\t|-------------------------------------------------------------------------||");
 
-		for (Map.Entry<String, MergedDiscountForwardCurve> meFunding : mapFundingCurve.entrySet()) {
-			String strKey = meFunding.getKey();
+		for (Map.Entry<String, MergedDiscountForwardCurve> fundingCurveMapEntry : fundingCurveMap.entrySet())
+		{
+			String key = fundingCurveMapEntry.getKey();
 
-			if (!strKey.startsWith ("deposit")) continue;
+			if (!key.startsWith ("deposit")) {
+				continue;
+			}
 
-			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();
+			CurveSurfaceQuoteContainer marketParamsContainer = new CurveSurfaceQuoteContainer();
 
-			csqc.setFundingState (meFunding.getValue());
+			marketParamsContainer.setFundingState (fundingCurveMapEntry.getValue());
 
-			System.out.print ("\t|  [" + meFunding.getKey() + "] => ");
+			System.out.print ("\t|  [" + key + "] => ");
 
-			for (Component comp : aDepositComp)
-				System.out.print (FormatUtil.FormatDouble (
-					comp.measureValue (
-						valParams,
-						null,
-						csqc,
-						null,
-						"ForwardRate"
-					), 1, 4, 1.) + " |");
+			for (Component depositComponent : depositComponentArray)
+				System.out.print (
+					FormatUtil.FormatDouble (
+						depositComponent.measureValue (
+							valuationParams,
+							null,
+							marketParamsContainer,
+							null,
+							"ForwardRate"
+						),
+						1,
+						4,
+						1.
+					) + " |"
+				);
 
 			System.out.print ("|\n");
 		}
@@ -266,26 +283,35 @@ public class FundingStateShifted {
 
 		System.out.println ("\n\t|-----------------------------------------------------------------------------------------||");
 
-		for (Map.Entry<String, MergedDiscountForwardCurve> meFunding : mapFundingCurve.entrySet()) {
-			String strKey = meFunding.getKey();
+		for (Map.Entry<String, MergedDiscountForwardCurve> fundingCurveMapEntry : fundingCurveMap.entrySet())
+		{
+			String key = fundingCurveMapEntry.getKey();
 
-			if (!strKey.startsWith ("futures")) continue;
+			if (!key.startsWith ("futures")) {
+				continue;
+			}
 
-			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();
+			CurveSurfaceQuoteContainer marketParamsContainer = new CurveSurfaceQuoteContainer();
 
-			csqc.setFundingState (meFunding.getValue());
+			marketParamsContainer.setFundingState (fundingCurveMapEntry.getValue());
 
-			System.out.print ("\t|  [" + meFunding.getKey() + "] => ");
+			System.out.print ("\t|  [" + key + "] => ");
 
-			for (Component comp : aFuturesComp)
-				System.out.print (FormatUtil.FormatDouble (
-					comp.measureValue (
-						valParams,
-						null,
-						csqc,
-						null,
-						"ForwardRate"
-					), 1, 4, 1.) + " |");
+			for (Component futuresComponent : futuresComponentArray)
+				System.out.print (
+					FormatUtil.FormatDouble (
+						futuresComponent.measureValue (
+							valuationParams,
+							null,
+							marketParamsContainer,
+							null,
+							"ForwardRate"
+						),
+						1,
+						4,
+						1.
+					) + " |"
+				);
 
 			System.out.print ("|\n");
 		}
@@ -294,26 +320,35 @@ public class FundingStateShifted {
 
 		System.out.println ("\n\t|--------------------------------------------------------------------------------------------------------------------------------------------||");
 
-		for (Map.Entry<String, MergedDiscountForwardCurve> meFunding : mapFundingCurve.entrySet()) {
-			String strKey = meFunding.getKey();
+		for (Map.Entry<String, MergedDiscountForwardCurve> fundingCurveMapEntry : fundingCurveMap.entrySet())
+		{
+			String key = fundingCurveMapEntry.getKey();
 
-			if (!strKey.startsWith ("fixfloat")) continue;
+			if (!key.startsWith ("fixfloat")) {
+				continue;
+			}
 
-			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();
+			CurveSurfaceQuoteContainer marketParamsContainer = new CurveSurfaceQuoteContainer();
 
-			csqc.setFundingState (meFunding.getValue());
+			marketParamsContainer.setFundingState (fundingCurveMapEntry.getValue());
 
-			System.out.print ("\t|  [" + meFunding.getKey() + "] => ");
+			System.out.print ("\t|  [" + key + "] => ");
 
-			for (Component comp : aFixFloatComp)
-				System.out.print (FormatUtil.FormatDouble (
-					comp.measureValue (
-						valParams,
-						null,
-						csqc,
-						null,
-						"SwapRate"
-					), 1, 4, 1.) + " |");
+			for (Component fixFloatComponent : fixFloatComponentArray)
+				System.out.print (
+					FormatUtil.FormatDouble (
+						fixFloatComponent.measureValue (
+							valuationParams,
+							null,
+							marketParamsContainer,
+							null,
+							"SwapRate"
+						),
+						1,
+						4,
+						1.
+					) + " |"
+				);
 
 			System.out.print ("|\n");
 		}
@@ -322,72 +357,102 @@ public class FundingStateShifted {
 
 		System.out.println ("\n\t|-----------------------------------------------------||");
 
-		CurveSurfaceQuoteContainer csqcBase = new CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer baseMarketParamsContainer = new CurveSurfaceQuoteContainer();
 
-		csqcBase.setFundingState (mapFundingCurve.get ("Base"));
+		baseMarketParamsContainer.setFundingState (fundingCurveMap.get ("Base"));
 
-		CurveSurfaceQuoteContainer csqcBump = new CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer bumpedMarketParamsContainer = new CurveSurfaceQuoteContainer();
 
-		csqcBump.setFundingState (mapFundingCurve.get ("Bump"));
+		bumpedMarketParamsContainer.setFundingState (fundingCurveMap.get ("Bump"));
 
-		for (Component comp : aDepositComp)
+		for (Component depositComponent : depositComponentArray)
 			System.out.println (
 				"\t| FORWARD RATE  => " +
-				comp.maturityDate() + " | " +
-				FormatUtil.FormatDouble (comp.measureValue (
-					valParams,
-					null,
-					csqcBase,
-					null,
-					"ForwardRate"
-				), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (comp.measureValue (
-					valParams,
-					null,
-					csqcBump,
-					null,
-					"ForwardRate"
-				), 1, 6, 1.) + " ||"
+				depositComponent.maturityDate() + " | " +
+				FormatUtil.FormatDouble (
+					depositComponent.measureValue (
+						valuationParams,
+						null,
+						baseMarketParamsContainer,
+						null,
+						"ForwardRate"
+					),
+					1,
+					6,
+					1.
+				) + " | " +
+				FormatUtil.FormatDouble (
+					depositComponent.measureValue (
+						valuationParams,
+						null,
+						bumpedMarketParamsContainer,
+						null,
+						"ForwardRate"
+					),
+					1,
+					6,
+					1.
+				) + " ||"
 			);
 
-		for (Component comp : aFuturesComp)
+		for (Component futuresComponent : futuresComponentArray)
 			System.out.println (
 				"\t| FORWARD RATE  => " +
-				comp.maturityDate() + " | " +
-				FormatUtil.FormatDouble (comp.measureValue (
-					valParams,
-					null,
-					csqcBase,
-					null,
-					"ForwardRate"
-				), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (comp.measureValue (
-					valParams,
-					null,
-					csqcBump,
-					null,
-					"ForwardRate"
-				), 1, 6, 1.) + " ||"
+				futuresComponent.maturityDate() + " | " +
+				FormatUtil.FormatDouble (
+					futuresComponent.measureValue (
+						valuationParams,
+						null,
+						baseMarketParamsContainer,
+						null,
+						"ForwardRate"
+					),
+					1,
+					6,
+					1.
+				) + " | " +
+				FormatUtil.FormatDouble (
+					futuresComponent.measureValue (
+						valuationParams,
+						null,
+						bumpedMarketParamsContainer,
+						null,
+						"ForwardRate"
+					),
+					1,
+					6,
+					1.
+				) + " ||"
 			);
 
-		for (Component comp : aFixFloatComp)
+		for (Component fixFloatComponent : fixFloatComponentArray)
 			System.out.println (
 				"\t|  SWAP   RATE  => " +
-				comp.maturityDate() + " | " +
-				FormatUtil.FormatDouble (comp.measureValue (
-					valParams,
-					null,
-					csqcBase,
-					null,
-					"SwapRate"
-				), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (comp.measureValue (
-					valParams,
-					null,
-					csqcBump,
-					null,
-					"SwapRate"
-				), 1, 6, 1.) + " ||"
+				fixFloatComponent.maturityDate() + " | " +
+				FormatUtil.FormatDouble (
+					fixFloatComponent.measureValue (
+						valuationParams,
+						null,
+						baseMarketParamsContainer,
+						null,
+						"SwapRate"
+					),
+					1,
+					6,
+					1.
+				) + " | " +
+				FormatUtil.FormatDouble (
+					fixFloatComponent.measureValue (
+						valuationParams,
+						null,
+						bumpedMarketParamsContainer,
+						null,
+						"SwapRate"
+					),
+					1,
+					6,
+					1.
+				) + " ||"
 			);
 
 		System.out.println ("\t|-----------------------------------------------------||");

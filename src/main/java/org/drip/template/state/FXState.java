@@ -13,6 +13,9 @@ import org.drip.state.fx.FXCurve;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -91,14 +94,19 @@ import org.drip.state.fx.FXCurve;
  * <i>FXState</i> sets up the Calibration and the Construction of the FX Latent State and examine the Emitted
  * Metrics.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/state/README.md">Standard Latent State Construction Template</a></li>
- *  </ul>
- * <br><br>
+ *  <br><br><br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/state/README.md">Standard Latent State Construction Template</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -108,32 +116,29 @@ public class FXState {
 	/**
 	 * Entry Point
 	 * 
-	 * @param astrArgs Argument Array
+	 * @param argumentArray Argument Array
 	 * 
 	 * @throws Exception Propagate the Exception Upwards
 	 */
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		CurrencyPair cp = new CurrencyPair (
+		CurrencyPair currencyPair = new CurrencyPair (
 			"EUR",
 			"USD",
 			"USD",
 			10000.
 		);
 
-		JulianDate dtSpot = DateUtil.Today().addBusDays (
-			0,
-			cp.denomCcy()
-		);
+		JulianDate spotDate = DateUtil.Today().addBusDays (0, currencyPair.denomCcy());
 
-		double dblFXSpot = 1.1013;
+		double fxSpot = 1.1013;
 
-		String[] astrMaturityTenor = new String[] {
+		String[] maturityTenorArray = new String[] {
 			"1D",
 			"2D",
 			"3D",
@@ -147,7 +152,7 @@ public class FXState {
 			"9M"
 		};
 
-		double[] adblFXForward = new double[] {
+		double[] fxForwardArray = new double[] {
 			1.1011,		// "1D"
 			1.1007,		// "2D"
 			1.0999,		// "3D"
@@ -161,25 +166,25 @@ public class FXState {
 			1.1011		// "9M"
 		};
 
-		FXCurve fxfc = LatentMarketStateBuilder.SmoothFXCurve (
-			dtSpot,
-			cp,
-			astrMaturityTenor,
-			adblFXForward,
+		FXCurve fxForwardCurve = LatentMarketStateBuilder.SmoothFXCurve (
+			spotDate,
+			currencyPair,
+			maturityTenorArray,
+			fxForwardArray,
 			"Outright",
-			dblFXSpot
+			fxSpot
 		);
 
-		String strLatentStateLabel = fxfc.label().fullyQualifiedName();
+		String latentStateLabel = fxForwardCurve.label().fullyQualifiedName();
 
 		System.out.println ("\n\n\t||--------------------------------------------------------------||");
 
-		for (int i = 0; i < adblFXForward.length; ++i)
+		for (int i = 0; i < fxForwardArray.length; ++i)
 			System.out.println (
-				"\t||  " + strLatentStateLabel + " |  FX FORWARD  | " +
-				astrMaturityTenor[i] + " | " + FormatUtil.FormatDouble (adblFXForward[i], 1, 4, 1.) +
+				"\t||  " + latentStateLabel + " |  FX FORWARD  | " +
+				maturityTenorArray[i] + " | " + FormatUtil.FormatDouble (fxForwardArray[i], 1, 4, 1.) +
 				" | Outright | " +
-				FormatUtil.FormatDouble (fxfc.fx (astrMaturityTenor[i]), 1, 4, 1.) +
+				FormatUtil.FormatDouble (fxForwardCurve.fx (maturityTenorArray[i]), 1, 4, 1.) +
 				"  ||"
 			);
 

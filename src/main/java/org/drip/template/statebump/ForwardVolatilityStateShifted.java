@@ -21,6 +21,9 @@ import org.drip.state.volatility.VolatilityCurve;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -99,14 +102,19 @@ import org.drip.state.volatility.VolatilityCurve;
  * <i>ForwardVolatilityStateShifted</i> demonstrates the Generation and the Usage of Tenor Bumped Forward
  * Volatility Curves.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/statebump/README.md">Shifted Latent State Construction Template</a></li>
- *  </ul>
- * <br><br>
+ *  <br><br><br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/statebump/README.md">Shifted Latent State Construction Template</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -116,36 +124,33 @@ public class ForwardVolatilityStateShifted {
 	/**
 	 * Entry Point
 	 * 
-	 * @param astrArgs Argument Array
+	 * @param argumentArray Argument Array
 	 * 
 	 * @throws Exception Propagate the Exception Upwards
 	 */
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		String strFRATenor = "3M";
-		String strCurrency = "GBP";
-		double dblBump = 0.0000001;
-		boolean bIsBumpProportional = false;
+		String fraTenor = "3M";
+		String currency = "GBP";
+		double bump = 0.0000001;
+		boolean isBumpProportional = false;
 
-		JulianDate dtSpot = DateUtil.CreateFromYMD (
+		JulianDate spotDate = DateUtil.CreateFromYMD (
 			2017,
 			DateUtil.DECEMBER,
 			21
 		);
 
-		ForwardLabel forwardLabel = ForwardLabel.Create (
-			strCurrency,
-			strFRATenor
-		);
+		ForwardLabel forwardLabel = ForwardLabel.Create (currency, fraTenor);
 
-		MergedDiscountForwardCurve dcFunding = LatentMarketStateBuilder.SmoothFundingCurve (
-			dtSpot,
-			strCurrency,
+		MergedDiscountForwardCurve fundingCurve = LatentMarketStateBuilder.SmoothFundingCurve (
+			spotDate,
+			currency,
 			new String[] {
 				 "30D",
 				 "60D",
@@ -182,7 +187,7 @@ public class ForwardVolatilityStateShifted {
 			"SwapRate"
 		);
 
-		String[] astrMaturityTenor = new String[] {
+		String[] maturityTenorArray = new String[] {
 			"01Y",
 			"02Y",
 			"03Y",
@@ -192,7 +197,7 @@ public class ForwardVolatilityStateShifted {
 			"10Y"
 		};
 
-		double[] adblStrike = new double[] {
+		double[] strikeArray = new double[] {
 			0.0788, //  "1Y",
 			0.0839, // 	"2Y",
 			0.0864, //  "3Y",
@@ -202,7 +207,7 @@ public class ForwardVolatilityStateShifted {
 			0.0889  // "10Y"
 		};
 
-		double[] adblPrice = new double[] {
+		double[] priceArray = new double[] {
 			0.0017, //  "1Y",
 			0.0132, // 	"2Y",
 			0.0234, //  "3Y",
@@ -212,57 +217,68 @@ public class ForwardVolatilityStateShifted {
 			0.1625  // "10Y"
 		};
 
-		ForwardCurve fc = dcFunding.nativeForwardCurve (strFRATenor);
+		ForwardCurve forwardCurve = fundingCurve.nativeForwardCurve (fraTenor);
 
-		Map<String, VolatilityCurve> bumpedForwardVolatilityCurve = LatentMarketStateBuilder.BumpedForwardVolatilityCurve (
-			dtSpot,
-			forwardLabel,
-			true,
-			astrMaturityTenor,
-			adblStrike,
-			adblPrice,
-			"Price",
-			dcFunding,
-			fc,
-			dblBump,
-			bIsBumpProportional
-		);
+		Map<String, VolatilityCurve> bumpedForwardVolatilityCurveMap =
+			LatentMarketStateBuilder.BumpedForwardVolatilityCurve (
+				spotDate,
+				forwardLabel,
+				true,
+				maturityTenorArray,
+				strikeArray,
+				priceArray,
+				"Price",
+				fundingCurve,
+				forwardCurve,
+				bump,
+				isBumpProportional
+			);
 
-		FRAStandardCapFloor[] aFRACapFloor = OTCInstrumentBuilder.CapFloor (
-			dtSpot,
+		FRAStandardCapFloor[] fraCapFloorArray = OTCInstrumentBuilder.CapFloor (
+			spotDate,
 			forwardLabel,
-			astrMaturityTenor,
-			adblStrike,
+			maturityTenorArray,
+			strikeArray,
 			true
 		);
 
 		System.out.println ("\n\t|---------------------------------------------------------------------------------------------------------------||");
 
-		ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());
+		ValuationParams valuationParams = ValuationParams.Spot (spotDate.julian());
 
-		for (Map.Entry<String, VolatilityCurve> meForwardVolatility : bumpedForwardVolatilityCurve.entrySet()) {
-			String strKey = meForwardVolatility.getKey();
+		for (Map.Entry<String, VolatilityCurve> bumpedForwardVolatilityCurveMapEntry :
+			bumpedForwardVolatilityCurveMap.entrySet()) {
+			String key = bumpedForwardVolatilityCurveMapEntry.getKey();
 
-			if (!strKey.startsWith ("capfloor")) continue;
+			if (!key.startsWith ("capfloor")) {
+				continue;
+			}
 
-			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();
+			CurveSurfaceQuoteContainer marketParamsContainer = new CurveSurfaceQuoteContainer();
 
-			csqc.setFundingState (dcFunding);
+			marketParamsContainer.setFundingState (fundingCurve);
 
-			csqc.setForwardState (fc);
+			marketParamsContainer.setForwardState (forwardCurve);
 
-			csqc.setForwardVolatility (meForwardVolatility.getValue());
+			marketParamsContainer.setForwardVolatility (bumpedForwardVolatilityCurveMapEntry.getValue());
 
-			System.out.print ("\t|  [" + meForwardVolatility.getKey() + "] => ");
+			System.out.print ("\t|  [" + key + "] => ");
 
-			for (Component comp : aFRACapFloor)
-				System.out.print (FormatUtil.FormatDouble (comp.measureValue (
-					valParams,
-					null,
-					csqc,
-					null,
-					"Price"
-				), 1, 8, 1.) + " |");
+			for (Component fraCapFloor : fraCapFloorArray)
+				System.out.print (
+					FormatUtil.FormatDouble (
+						fraCapFloor.measureValue (
+							valuationParams,
+							null,
+							marketParamsContainer,
+							null,
+							"Price"
+						),
+						1,
+						8,
+						1.
+					) + " |"
+				);
 
 			System.out.print ("|\n");
 		}
@@ -271,40 +287,50 @@ public class ForwardVolatilityStateShifted {
 
 		System.out.println ("\n\t|-------------------------------------------------||");
 
-		CurveSurfaceQuoteContainer csqcBase = new CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer baseMarketParamsContainer = new CurveSurfaceQuoteContainer();
 
-		csqcBase.setFundingState (dcFunding);
+		baseMarketParamsContainer.setFundingState (fundingCurve);
 
-		csqcBase.setForwardState (fc);
+		baseMarketParamsContainer.setForwardState (forwardCurve);
 
-		csqcBase.setForwardVolatility (bumpedForwardVolatilityCurve.get ("Base"));
+		baseMarketParamsContainer.setForwardVolatility (bumpedForwardVolatilityCurveMap.get ("Base"));
 
-		CurveSurfaceQuoteContainer csqcBump = new CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer bumpedMarketParamsContainer = new CurveSurfaceQuoteContainer();
 
-		csqcBump.setFundingState (dcFunding);
+		bumpedMarketParamsContainer.setFundingState (fundingCurve);
 
-		csqcBump.setForwardState (fc);
+		bumpedMarketParamsContainer.setForwardState (forwardCurve);
 
-		csqcBump.setForwardVolatility (bumpedForwardVolatilityCurve.get ("Bump"));
+		bumpedMarketParamsContainer.setForwardVolatility (bumpedForwardVolatilityCurveMap.get ("Bump"));
 
-		for (Component comp : aFRACapFloor)
+		for (Component fraCapFloor : fraCapFloorArray)
 			System.out.println (
 				"\t| PRICE => " +
-				comp.maturityDate() + " | " +
-				FormatUtil.FormatDouble (comp.measureValue (
-					valParams,
-					null,
-					csqcBase,
-					null,
-					"Price"
-				), 1, 8, 1.) + " | " +
-				FormatUtil.FormatDouble (comp.measureValue (
-					valParams,
-					null,
-					csqcBump,
-					null,
-					"Price"
-				), 1, 8, 1.) + " ||"
+				fraCapFloor.maturityDate() + " | " +
+				FormatUtil.FormatDouble (
+					fraCapFloor.measureValue (
+						valuationParams,
+						null,
+						baseMarketParamsContainer,
+						null,
+						"Price"
+					),
+					1,
+					8,
+					1.
+				) + " | " +
+				FormatUtil.FormatDouble (
+					fraCapFloor.measureValue (
+						valuationParams,
+						null,
+						bumpedMarketParamsContainer,
+						null,
+						"Price"
+					),
+					1,
+					8,
+					1.
+				) + " ||"
 			);
 
 		System.out.println ("\t|-------------------------------------------------||");
