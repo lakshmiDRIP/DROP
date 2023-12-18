@@ -1,11 +1,20 @@
 
 package org.drip.state.representation;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.drip.numerical.common.NumberUtil;
+import org.drip.state.identifier.LatentStateLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,22 +93,34 @@ package org.drip.state.representation;
 
 /**
  * <i>MergeSubStretchManager</i> manages the different discount-forward merge stretches. It provides
- * functionality to create, expand, or contract the merge stretches.
- *
- *  <br><br>
+ * functionality to create, expand, or contract the merge stretches. It exposes the following functionality:
+ * 
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/representation/README.md">Latent State Merge Sub-stretch</a></li>
+ *		<li>MergeSubStretchManager Constructor</li>
+ *		<li>Indicates whether the specified Latent State Label is Part of the Merge Stretch</li>
+ *		<li>Add the Specified Merge Stretch</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/representation/README.md">Latent State Merge Sub-stretch</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MergeSubStretchManager {
-	private java.util.List<org.drip.state.representation.LatentStateMergeSubStretch> _lsLSMS = null;
+public class MergeSubStretchManager
+{
+	private List<LatentStateMergeSubStretch> _latentStateMergeSubStretchList = null;
 
 	/**
 	 * Empty MergeSubStretchManager constructor
@@ -107,27 +128,31 @@ public class MergeSubStretchManager {
 
 	public MergeSubStretchManager()
 	{
-		_lsLSMS = new java.util.ArrayList<org.drip.state.representation.LatentStateMergeSubStretch>();
+		_latentStateMergeSubStretchList = new ArrayList<LatentStateMergeSubStretch>();
 	}
 
 	/**
 	 * Indicates whether the specified Latent State Label is Part of the Merge Stretch
 	 * 
-	 * @param dblDate The  Date Node
-	 * @param lsl The Latent State Label
+	 * @param date The  Date Node
+	 * @param latentStateLabel The Latent State Label
 	 * 
 	 * @return TRUE - The specified Latent State Label is Part of the Merge Stretch
 	 */
 
 	public boolean partOfMergeState (
-		final double dblDate,
-		final org.drip.state.identifier.LatentStateLabel lsl)
+		final double date,
+		final LatentStateLabel latentStateLabel)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDate) || null == lsl || null == _lsLSMS)
+		if (!NumberUtil.IsValid (date) || null == latentStateLabel) {
 			return false;
+		}
 
-		for (org.drip.state.representation.LatentStateMergeSubStretch lsms : _lsLSMS) {
-			if (null != lsms && lsms.in (dblDate) && lsms.label().match (lsl)) return true;
+		for (LatentStateMergeSubStretch latentStateMergeSubStretch : _latentStateMergeSubStretchList) {
+			if (null != latentStateMergeSubStretch && latentStateMergeSubStretch.in (date) &&
+				latentStateMergeSubStretch.label().match (latentStateLabel)) {
+				return true;
+			}
 		}
 
 		return false;
@@ -136,32 +161,39 @@ public class MergeSubStretchManager {
 	/**
 	 * Add the Specified Merge Stretch
 	 * 
-	 * @param lsms The Merge Stretch
+	 * @param latentStateMergeSubStretch The Merge Stretch
 	 * 
 	 * @return TRUE - Successfully added
 	 */
 
 	public boolean addMergeStretch (
-		final org.drip.state.representation.LatentStateMergeSubStretch lsms)
+		final LatentStateMergeSubStretch latentStateMergeSubStretch)
 	{
-		if (null == lsms) return false;
+		if (null == latentStateMergeSubStretch) {
+			return false;
+		}
 
-		for (org.drip.state.representation.LatentStateMergeSubStretch lsmsConstituent : _lsLSMS) {
-			if (null == lsmsConstituent) continue;
+		for (LatentStateMergeSubStretch constituentLatentStateMergeSubStretch :
+			_latentStateMergeSubStretchList) {
+			if (null == constituentLatentStateMergeSubStretch) {
+				continue;
+			}
 
-			org.drip.state.representation.LatentStateMergeSubStretch lsmsCoalesced = lsmsConstituent.coalesce
-				(lsms);
+			LatentStateMergeSubStretch coalescedLatentStateMergeSubStretch =
+				constituentLatentStateMergeSubStretch.coalesce (constituentLatentStateMergeSubStretch);
 
-			if (null == lsmsCoalesced) continue;
+			if (null == coalescedLatentStateMergeSubStretch) {
+				continue;
+			}
 
-			_lsLSMS.remove (lsmsConstituent);
+			_latentStateMergeSubStretchList.remove (constituentLatentStateMergeSubStretch);
 
-			_lsLSMS.add (lsmsCoalesced);
+			_latentStateMergeSubStretchList.add (coalescedLatentStateMergeSubStretch);
 
 			return true;
 		}
 
-		_lsLSMS.add (lsms);
+		_latentStateMergeSubStretchList.add (latentStateMergeSubStretch);
 
 		return true;
 	}

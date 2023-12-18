@@ -1,11 +1,16 @@
 
 package org.drip.state.representation;
 
+import org.drip.state.identifier.LatentStateLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,45 +89,67 @@ package org.drip.state.representation;
 
 /**
  * <i>LatentStateSpecification</i> holds the fields necessary to specify a complete Latent State. It includes
- * the Latent State Type, the Latent State Label, and the Latent State Quantification metric.
- *
+ * the Latent State Type, the Latent State Label, and the Latent State Quantification metric. It exposes the
+ * following functionality:
+ * 
  *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/representation/README.md">Latent State Merge Sub-stretch</a></li>
+ *		<li>LatentStateSpecification Constructor</li>
+ *		<li>Retrieve the Latent State Dimension</li>
+ *		<li>Retrieve the Latent State Evolver CorrelatedPathVertexDimension Instance</li>
+ *		<li>Retrieve the Array of the Latent State Diffusion Evolvers</li>
+ *		<li>Generate the R<sup>d</sup> Path Vertex Realizations using the Initial R<sup>d</sup> and the Evolution Time Increment Array</li>
+ *		<li>Generate the R<sup>d</sup> Path Vertex Realizations using the Initial R<sup>d</sup> and a Fixed Evolution Time Width</li>
+ *		<li>Generate the R<sup>d</sup> Path Vertex Realizations using the Initial R<sup>d</sup> and the Array of Evolution Tenors</li>
+ *		<li>Generate the R<sup>d</sup> Path Vertex Realizations using the Initial R<sup>d</sup>, Spot Date, and the Array of Event Dates</li>
+ *		<li>Generate a Standard Instance of PathVertexRd</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br><br><br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/representation/README.md">Latent State Merge Sub-stretch</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LatentStateSpecification {
-	private java.lang.String _strLatentState = "";
-	private org.drip.state.identifier.LatentStateLabel _label = null;
-	private java.lang.String _strLatentStateQuantificationMetric = "";
+public class LatentStateSpecification
+{
+	private String _latentState = "";
+	private LatentStateLabel _label = null;
+	private String _quantificationMetric = "";
 
 	/**
 	 * LatentStateSpecification constructor
 	 * 
-	 * @param strLatentState The Latent State
-	 * @param strLatentStateQuantificationMetric The Latent State Quantification Metric
+	 * @param latentState The Latent State
+	 * @param quantificationMetric The Latent State Quantification Metric
 	 * @param label The Specific Latent State Label
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public LatentStateSpecification (
-		final java.lang.String strLatentState,
-		final java.lang.String strLatentStateQuantificationMetric,
+		final String latentState,
+		final String quantificationMetric,
 		final org.drip.state.identifier.LatentStateLabel label)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (null == (_strLatentState = strLatentState) || _strLatentState.isEmpty() || null ==
-			(_strLatentStateQuantificationMetric = strLatentStateQuantificationMetric) ||
-				_strLatentStateQuantificationMetric.isEmpty() || null == (_label = label))
-			throw new java.lang.Exception ("LatentStateSpecification ctr: Invalid Inputs");
+		if (null == (_latentState = latentState) || _latentState.isEmpty() ||
+			null == (_quantificationMetric = quantificationMetric) ||
+				_quantificationMetric.isEmpty() ||
+			null == (_label = label)) {
+			throw new Exception ("LatentStateSpecification ctr: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -131,9 +158,9 @@ public class LatentStateSpecification {
 	 * @return The Latent State
 	 */
 
-	public java.lang.String latentState()
+	public String latentState()
 	{
-		return _strLatentState;
+		return _latentState;
 	}
 
 	/**
@@ -155,23 +182,23 @@ public class LatentStateSpecification {
 
 	public java.lang.String latentStateQuantificationMetric()
 	{
-		return _strLatentStateQuantificationMetric;
+		return _quantificationMetric;
 	}
 
 	/**
 	 * Does the Specified Latent State Specification Instance match the current one?
 	 * 
-	 * @param lssOther The "Other" Latent State Specification Instance
+	 * @param other The "Other" Latent State Specification Instance
 	 * 
 	 * @return TRUE - Matches the Specified Latent State Specification Instance
 	 */
 
 	public boolean match (
-		final LatentStateSpecification lssOther)
+		final LatentStateSpecification other)
 	{
-		return null == lssOther ? false : _strLatentState.equalsIgnoreCase (lssOther.latentState()) &&
-			_strLatentStateQuantificationMetric.equalsIgnoreCase (lssOther.latentStateQuantificationMetric())
-				&& _label.match (lssOther.label());
+		return null != other && _latentState.equalsIgnoreCase (other.latentState()) &&
+			_quantificationMetric.equalsIgnoreCase (other.latentStateQuantificationMetric()) &&
+			_label.match (other.label());
 	}
 
 	/**
@@ -183,7 +210,7 @@ public class LatentStateSpecification {
 	public void displayString (
 		final java.lang.String strComment)
 	{
-		System.out.println ("\t[LatentStateSpecification]: " + _strLatentState + " | " +
-			_strLatentStateQuantificationMetric + " | " + _label.fullyQualifiedName());
+		System.out.println ("\t[LatentStateSpecification]: " + _latentState + " | " +
+			_quantificationMetric + " | " + _label.fullyQualifiedName());
 	}
 }

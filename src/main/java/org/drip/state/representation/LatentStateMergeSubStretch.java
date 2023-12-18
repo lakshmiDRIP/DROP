@@ -1,11 +1,17 @@
 
 package org.drip.state.representation;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.state.identifier.LatentStateLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -103,43 +109,49 @@ package org.drip.state.representation;
  *  	</li>
  *  </ul>
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/representation/README.md">Latent State Merge Sub-stretch</a></li>
- *  </ul>
- * <br><br>
+ *  <br><br><br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/representation/README.md">Latent State Merge Sub-stretch</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LatentStateMergeSubStretch {
-	private double _dblEndDate = java.lang.Double.NaN;
-	private double _dblStartDate = java.lang.Double.NaN;
-	private org.drip.state.identifier.LatentStateLabel _lsl = null;
+public class LatentStateMergeSubStretch
+{
+	private double _endDate = Double.NaN;
+	private LatentStateLabel _label = null;
+	private double _startDate = Double.NaN;
 
 	/**
 	 * LatentStateMergeSubStretch constructor
 	 * 
-	 * @param dblStartDate Merge Stretch Start Date
-	 * @param dblEndDate Merge Stretch End Date
-	 * @param lsl The Latent State Label
+	 * @param startDate Merge Stretch Start Date
+	 * @param endDate Merge Stretch End Date
+	 * @param label The Latent State Label
 	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are invalid
+	 * @throws Exception Thrown if Inputs are invalid
 	 */
 
 	public LatentStateMergeSubStretch (
-		final double dblStartDate,
-		final double dblEndDate,
-		final org.drip.state.identifier.LatentStateLabel lsl)
-		throws java.lang.Exception
+		final double startDate,
+		final double endDate,
+		final LatentStateLabel label)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblStartDate = dblStartDate) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblEndDate = dblEndDate) || _dblStartDate >=
-				_dblEndDate || null == (_lsl = lsl))
-			throw new java.lang.Exception ("LatentStateMergeSubStretch ctr: Invalid Inputs");
+		if (!NumberUtil.IsValid (_startDate = startDate) || !NumberUtil.IsValid (_endDate = endDate) ||
+			_startDate >= _endDate || null == (_label = label)) {
+			throw new Exception ("LatentStateMergeSubStretch ctr: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -150,23 +162,25 @@ public class LatentStateMergeSubStretch {
 
 	public double start()
 	{
-		return _dblStartDate;
+		return _startDate;
 	}
 
 	/**
 	 * Shift/Adjust the Start Date
 	 * 
-	 * @param dblNewStartDate The new Date to be Shifted to
+	 * @param newStartDate The new Date to be Shifted to
 	 * 
 	 * @return TRUE - Start Date successfully shifted
 	 */
 
 	public boolean shiftStart (
-		final double dblNewStartDate)
+		final double newStartDate)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNewStartDate)) return false;
+		if (!NumberUtil.IsValid (newStartDate)) {
+			return false;
+		}
 
-		_dblStartDate = dblNewStartDate;
+		_startDate = newStartDate;
 		return true;
 	}
 
@@ -178,23 +192,25 @@ public class LatentStateMergeSubStretch {
 
 	public double end()
 	{
-		return _dblEndDate;
+		return _endDate;
 	}
 
 	/**
 	 * Shift/Adjust the End Date
 	 * 
-	 * @param dblNewEndDate The new Date to be Shifted to
+	 * @param newEndDate The new Date to be Shifted to
 	 * 
 	 * @return TRUE - End Date successfully shifted
 	 */
 
 	public boolean shiftEnd (
-		final double dblNewEndDate)
+		final double newEndDate)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNewEndDate)) return false;
+		if (!NumberUtil.IsValid (newEndDate)) {
+			return false;
+		}
 
-		_dblEndDate = dblNewEndDate;
+		_endDate = newEndDate;
 		return true;
 	}
 
@@ -204,72 +220,79 @@ public class LatentStateMergeSubStretch {
 	 * @return The Latent State Label
 	 */
 
-	public org.drip.state.identifier.LatentStateLabel label()
+	public LatentStateLabel label()
 	{
-		return _lsl;
+		return _label;
 	}
 
 	/**
 	 * Indicate whether Specified Merge Stretch's Label matches with the current one
 	 * 
-	 * @param lsmsOther The Supplied Merge Stretch
+	 * @param latentStateMergeSubStretchOther The Supplied Merge Stretch
 	 * 
 	 * @return TRUE - Merge Stretches Index Match
 	 */
 
 	public boolean indexMatch (
-		final LatentStateMergeSubStretch lsmsOther)
+		final LatentStateMergeSubStretch latentStateMergeSubStretchOther)
 	{
-		return null != _lsl && null != lsmsOther && lsmsOther.label().match (label());
+		return null != _label && null != latentStateMergeSubStretchOther &&
+			latentStateMergeSubStretchOther.label().match (label());
 	}
 
 	/**
 	 * Indicate whether the specified Date is "inside" the Stretch Range.
 	 * 
-	 * @param dblDate Date whose "inside"ness is asked for
+	 * @param date Date whose "inside"ness is asked for
 	 * 
 	 * @return TRUE - Date is Inside
 	 */
 
 	public boolean in (
-		final double dblDate)
+		final double date)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDate)) return false;
-
-		return dblDate >= _dblStartDate && dblDate <= _dblEndDate;
+		return NumberUtil.IsValid (date) && date >= _startDate && date <= _endDate;
 	}
 
 	/**
 	 * Identify if the Supplied Merge Stretch overlaps with the provided one.
 	 * 
-	 * @param lsmlOther The Supplied Merge Stretch
+	 * @param latentStateMergeSubStretchOther The Supplied Merge Stretch
 	 * 
 	 * @return TRUE - Merge Stretches Overlap
 	 */
 
 	public boolean overlap (
-		final LatentStateMergeSubStretch lsmlOther)
+		final LatentStateMergeSubStretch latentStateMergeSubStretchOther)
 	{
-		return null == lsmlOther || lsmlOther.start() >= end() || lsmlOther.end() <= start() ? false : true;
+		return null == latentStateMergeSubStretchOther || latentStateMergeSubStretchOther.start() >= end() ||
+			latentStateMergeSubStretchOther.end() <= start() ? false : true;
 	}
 
 	/**
 	 * Coalesce the supplied Merge Stretch with the current one (if possible) to create a new Merge Stretch
 	 * 
-	 * @param lsmlOther The Supplied Merge Stretch
+	 * @param latentStateMergeSubStretchOther The Supplied Merge Stretch
 	 * 
 	 * @return The Coalesced Merge Stretch
 	 */
 
 	public LatentStateMergeSubStretch coalesce (
-		final LatentStateMergeSubStretch lsmlOther)
+		final LatentStateMergeSubStretch latentStateMergeSubStretchOther)
 	{
-		if (!overlap (lsmlOther) || !indexMatch (lsmlOther)) return null;
+		if (!overlap (latentStateMergeSubStretchOther) || !indexMatch (latentStateMergeSubStretchOther)) {
+			return null;
+		}
 
 		try {
-			return new LatentStateMergeSubStretch (start() < lsmlOther.start() ? start() :
-				lsmlOther.start(), end() > lsmlOther.end() ? end() : lsmlOther.end(), label());
-		} catch (java.lang.Exception e) {
+			return new LatentStateMergeSubStretch (
+				start() < latentStateMergeSubStretchOther.start() ? start() :
+					latentStateMergeSubStretchOther.start(),
+				end() > latentStateMergeSubStretchOther.end() ? end() :
+					latentStateMergeSubStretchOther.end(),
+				label()
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

@@ -91,66 +91,72 @@ import org.drip.service.template.ExchangeInstrumentBuilder;
  * <i>FV1_05Y</i> demonstrates the Details behind the Implementation and the Pricing of the 5Y FV1 UST
  * Futures Contract.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/ust/README.md">Standard UST Suite Construction Template</a></li>
- *  </ul>
- * <br><br>
+ *  <br><br><br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/README.md">Pricing/Risk Templates for Fixed Income Component Products</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/ust/README.md">Standard UST Suite Construction Template</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class FV1_05Y {
+public class FV1_05Y
+{
 
 	private static final String DeliveryMonths (
-		final TreasuryFutures tsyFutures)
+		final TreasuryFutures treasuryFutures)
 	{
-		int[] aiDeliveryMonth = tsyFutures.deliveryMonths();
+		int[] deliveryMonthArray = treasuryFutures.deliveryMonths();
 
-		String strDeliveryMonths = "";
-		int iNumDeliveryMonth = null == aiDeliveryMonth ? 0 : aiDeliveryMonth.length;
+		String deliveryMonths = "";
+		int deliveryMonthCount = null == deliveryMonthArray ? 0 : deliveryMonthArray.length;
 
-		if (0 != iNumDeliveryMonth) {
-			for (int i = 0; i < iNumDeliveryMonth; ++i) {
+		if (0 != deliveryMonthCount) {
+			for (int i = 0; i < deliveryMonthCount; ++i) {
 				if (0 == i)
-					strDeliveryMonths += "{";
+					deliveryMonths += "{";
 				else
-					strDeliveryMonths += ",";
+					deliveryMonths += ",";
 
-				strDeliveryMonths += DateUtil.MonthChar (aiDeliveryMonth[i]);
+				deliveryMonths += DateUtil.MonthChar (deliveryMonthArray[i]);
 			}
 
-			strDeliveryMonths += "}";
+			deliveryMonths += "}";
 		}
 
-		return strDeliveryMonths;
+		return deliveryMonths;
 	}
 
 	/**
 	 * Entry Point
 	 * 
-	 * @param astrArgs Argument Array
+	 * @param argumentArray Argument Array
 	 * 
 	 * @throws Exception Propagate Exception Encountered
 	 */
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		JulianDate dtSpot = DateUtil.CreateFromYMD (
+		JulianDate spotDate = DateUtil.CreateFromYMD (
 			2015,
 			DateUtil.NOVEMBER,
 			18
 		);
 
 		TreasuryFutures fv1 = ExchangeInstrumentBuilder.TreasuryFutures (
-			dtSpot,
+			spotDate,
 			"UST",
 			new org.drip.analytics.date.JulianDate[] {
 				DateUtil.CreateFromYMD (2014, DateUtil.FEBRUARY,  28), // 912828J5
@@ -201,9 +207,9 @@ public class FV1_05Y {
 			"5Y"
 		);
 
-		double dblFuturesPrice = 119.00000;
+		double futuresPrice = 119.00000;
 
-		double[] adblCleanPrice = new double[] {
+		double[] cleanPriceArray = new double[] {
 			 0.99909375, // 912828J5
 			 0.99900000, // 912828J8
 			 0.99890625, // 912828K5
@@ -216,8 +222,8 @@ public class FV1_05Y {
 		};
 
 		Bond bondCTD = fv1.cheapestToDeliverYield (
-			dtSpot.julian(),
-			adblCleanPrice
+			spotDate.julian(),
+			cleanPriceArray
 		).bond();
 
 		System.out.println ("\n\t|---------------------------------------------------------||");
@@ -238,9 +244,9 @@ public class FV1_05Y {
 
 		System.out.println ("\t|      Last Trading Lag  : " + fv1.lastTradingDayLag() + " Business Days Prior Expiry   ||");
 
-		System.out.println ("\t|      Futures Price     : " + FormatUtil.FormatDouble (dblFuturesPrice, 2, 5, 1.) + "                     ||");
+		System.out.println ("\t|      Futures Price     : " + FormatUtil.FormatDouble (futuresPrice, 2, 5, 1.) + "                     ||");
 
-		System.out.println ("\t|      Contract Value    : " + FormatUtil.FormatDouble (0.01 * fv1.notionalValue() * dblFuturesPrice, 1, 2, 1.) + "                     ||");
+		System.out.println ("\t|      Contract Value    : " + FormatUtil.FormatDouble (0.01 * fv1.notionalValue() * futuresPrice, 1, 2, 1.) + "                     ||");
 
 		System.out.println ("\t|---------------------------------------------------------||\n");
 
@@ -248,8 +254,12 @@ public class FV1_05Y {
 
 		System.out.println ("\t|                                             ||");
 
-		for (int i = 0; i < fv1.basket().length; ++i)
-			System.out.println ("\t|\t" + fv1.basket()[i].name() + " => " + FormatUtil.FormatDouble (adblCleanPrice[i], 2, 5, 1.) + "   ||");
+		for (int i = 0; i < fv1.basket().length; ++i) {
+			System.out.println (
+				"\t|\t" + fv1.basket()[i].name() + " => " +
+				FormatUtil.FormatDouble (cleanPriceArray[i], 2, 5, 1.) + "   ||"
+			);
+		}
 
 		System.out.println ("\t|                                             ||");
 

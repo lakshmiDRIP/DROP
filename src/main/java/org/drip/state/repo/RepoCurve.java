@@ -1,11 +1,25 @@
 
 package org.drip.state.repo;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.definition.Curve;
+import org.drip.analytics.input.CurveConstructionInputSet;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.param.definition.ManifestMeasureTweak;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.product.definition.Component;
+import org.drip.state.identifier.LatentStateLabel;
+import org.drip.state.identifier.RepoLabel;
+import org.drip.state.representation.LatentState;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,133 +97,142 @@ package org.drip.state.repo;
 /**
  * <i>RepoCurve</i> is the Stub for the Re-purchase Rate between applicable to the Specified Entity.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/repo/README.md">Latent State Repo Curve Estimator</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/repo/README.md">Latent State Repo Curve Estimator</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class RepoCurve implements org.drip.state.repo.RepoEstimator,
-	org.drip.analytics.definition.Curve {
+public abstract class RepoCurve implements RepoEstimator, Curve
+{
 
 	/**
 	 * Repo Latent State
 	 */
 
-	public static final java.lang.String LATENT_STATE_REPO = "LATENT_STATE_REPO";
+	public static final String LATENT_STATE_REPO = "LATENT_STATE_REPO";
 
 	/**
 	 * Basis Latent State Quantification Metric - Discount Factor
 	 */
 
-	public static final java.lang.String QUANTIFICATION_METRIC_REPO_RATE =
-		"QUANTIFICATION_METRIC_REPO_RATE";
+	public static final String QUANTIFICATION_METRIC_REPO_RATE = "QUANTIFICATION_METRIC_REPO_RATE";
 
-	private int _iEpochDate = java.lang.Integer.MIN_VALUE;
-	private org.drip.product.definition.Component _comp = null;
+	private Component _component = null;
+	private int _epochDate = Integer.MIN_VALUE;
 
 	protected RepoCurve (
-		final int iEpochDate,
-		final org.drip.product.definition.Component comp)
-		throws java.lang.Exception
+		final int epochDate,
+		final Component component)
+		throws Exception
 	{
-		if (null == (_comp = comp)) throw new java.lang.Exception ("RepoCurve ctr: Invalid Inputs");
+		if (null == (_component = component)) {
+			throw new Exception ("RepoCurve ctr: Invalid Inputs");
+		}
 
-		_iEpochDate = iEpochDate;
+		_epochDate = epochDate;
 	}
 
-	@Override public org.drip.analytics.date.JulianDate epoch()
+	@Override public JulianDate epoch()
 	{
-		return new org.drip.analytics.date.JulianDate (_iEpochDate);
+		return new JulianDate (_epochDate);
 	}
 
-	@Override public org.drip.product.definition.Component component()
+	@Override public Component component()
 	{
-		return _comp;
+		return _component;
 	}
 
-	@Override public org.drip.state.identifier.LatentStateLabel label()
+	@Override public LatentStateLabel label()
 	{
-		return org.drip.state.identifier.RepoLabel.Standard (_comp.name());
+		return RepoLabel.Standard (_component.name());
 	}
 
-	@Override public java.lang.String currency()
+	@Override public String currency()
 	{
-		return _comp.payCurrency();
-	}
-
-	@Override public double repo (
-		final org.drip.analytics.date.JulianDate dt)
-		throws java.lang.Exception
-	{
-		if (null == dt) throw new java.lang.Exception ("RepoCurve::repo got null for date");
-
-		return repo (dt.julian());
+		return _component.payCurrency();
 	}
 
 	@Override public double repo (
-		final java.lang.String strTenor)
-		throws java.lang.Exception
+		final JulianDate date)
+		throws Exception
 	{
-		if (null == strTenor || strTenor.isEmpty())
-			throw new java.lang.Exception ("RepoCurve::repo got bad tenor");
+		if (null == date) {
+			throw new Exception ("RepoCurve::repo got null for date");
+		}
 
-		return repo (epoch().addTenor (strTenor));
+		return repo (date.julian());
+	}
+
+	@Override public double repo (
+		final String tenor)
+		throws Exception
+	{
+		if (null == tenor || tenor.isEmpty()) {
+			throw new Exception ("RepoCurve::repo got bad tenor");
+		}
+
+		return repo (epoch().addTenor (tenor));
 	}
 
 	@Override public boolean setCCIS (
-		final org.drip.analytics.input.CurveConstructionInputSet ccis)
+		final CurveConstructionInputSet curveConstructionInputSet)
 	{
 		return true;
 	}
 
-	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
+	@Override public CalibratableComponent[] calibComp()
 	{
 		return null;
 	}
 
-	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> manifestMeasure (
-		final java.lang.String strInstr)
+	@Override public CaseInsensitiveTreeMap<Double> manifestMeasure (
+		final String instrument)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.representation.LatentState parallelShiftManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final double dblShift)
+	@Override public LatentState parallelShiftManifestMeasure (
+		final String manifestMeasure,
+		final double shift)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.representation.LatentState shiftManifestMeasure (
-		final int iSpanIndex,
-		final java.lang.String strManifestMeasure,
-		final double dblShift)
+	@Override public LatentState shiftManifestMeasure (
+		final int spanIndex,
+		final String manifestMeasure,
+		final double shift)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.representation.LatentState customTweakManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final org.drip.param.definition.ManifestMeasureTweak rvtp)
+	@Override public LatentState customTweakManifestMeasure (
+		final String manifestMeasure,
+		final ManifestMeasureTweak manifestMeasureTweak)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.representation.LatentState parallelShiftQuantificationMetric (
-		final double dblShift)
+	@Override public LatentState parallelShiftQuantificationMetric (
+		final double shift)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.representation.LatentState customTweakQuantificationMetric (
-		final org.drip.param.definition.ManifestMeasureTweak rvtp)
+	@Override public LatentState customTweakQuantificationMetric (
+		final ManifestMeasureTweak manifestMeasureTweak)
 	{
 		return null;
 	}

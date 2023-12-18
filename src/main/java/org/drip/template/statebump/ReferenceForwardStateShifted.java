@@ -116,7 +116,8 @@ import org.drip.state.identifier.ForwardLabel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ReferenceForwardStateShifted {
+public class ReferenceForwardStateShifted
+{
 
 	private static final MergedDiscountForwardCurve OvernightCurve (
 		final JulianDate spotDate,

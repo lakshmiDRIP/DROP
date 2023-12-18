@@ -109,7 +109,6 @@ import org.drip.numerical.common.NumberUtil;
  *		<li>Generate the R<sup>d</sup> Path Vertex Realizations using the Initial R<sup>d</sup>, Spot Date, and the Array of Event Dates</li>
  *		<li>Generate a Standard Instance of PathVertexRd</li>
  *  </ul>
- *  <br><br>
  *
  *  <br><br>
  *  <ul>
