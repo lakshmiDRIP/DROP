@@ -1,7 +1,16 @@
 
 package org.drip.state.nonlinear;
 
+import org.drip.analytics.definition.Curve;
+import org.drip.analytics.support.Helper;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.param.definition.CreditManifestMeasureTweak;
+import org.drip.param.definition.ManifestMeasureTweak;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.state.creator.ScenarioCreditCurveBuilder;
+import org.drip.state.credit.CreditCurve;
 import org.drip.state.credit.ExplicitBootCreditCurve;
+import org.drip.state.identifier.EntityCDSLabel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -139,22 +148,31 @@ import org.drip.state.credit.ExplicitBootCreditCurve;
 public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 {
 	private int[] _hazardDateArray = null;
-	private int[] _aiRecoveryDate = null;
-	private double[] _adblHazardRate = null;
-	private double[] _adblRecoveryRate = null;
+	private int[] _recoveryDateArray = null;
+	private double[] _hazardRateArray = null;
+	private double[] _recoveryRateArray = null;
 
-	private org.drip.state.credit.CreditCurve createFromBaseMMTP (
-		final org.drip.param.definition.ManifestMeasureTweak mmtp)
+	private CreditCurve createFromBaseMMTP (
+		final ManifestMeasureTweak manifestMeasureTweak)
 	{
-		double[] adblHazardBumped = org.drip.analytics.support.Helper.TweakManifestMeasure
-			(_adblHazardRate, mmtp);
+		double[] bumpedHazardRate = Helper.TweakManifestMeasure (_hazardRateArray, manifestMeasureTweak);
 
-		if (null == adblHazardBumped || _adblHazardRate.length != adblHazardBumped.length) return null;
+		if (null == bumpedHazardRate || _hazardRateArray.length != bumpedHazardRate.length) {
+			return null;
+		}
 
 		try {
-			return new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, adblHazardBumped,
-				_hazardDateArray, _adblRecoveryRate, _aiRecoveryDate, _iSpecificDefaultDate);
-		} catch (java.lang.Exception e) {
+			return new ForwardHazardCreditCurve (
+				_iEpochDate,
+				_label,
+				_strCurrency,
+				bumpedHazardRate,
+				_hazardDateArray,
+				_recoveryRateArray,
+				_recoveryDateArray,
+				_iSpecificDefaultDate
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -164,137 +182,172 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 	/**
 	 * Create a credit curve from hazard rate and recovery rate term structures
 	 * 
-	 * @param iStartDate Curve Epoch date
-	 * @param label Credit Curve Label
-	 * @param strCurrency Currency
-	 * @param adblHazardRate Matched array of hazard rates
-	 * @param aiHazardDate Matched array of hazard dates
-	 * @param adblRecoveryRate Matched array of recovery rates
-	 * @param aiRecoveryDate Matched array of recovery dates
-	 * @param iSpecificDefaultDate (Optional) Specific Default Date
+	 * @param startDate Curve Epoch date
+	 * @param entityCDSLabel Credit Curve Label
+	 * @param currency Currency
+	 * @param hazardRateArray Matched array of hazard rates
+	 * @param hazardDateArray Matched array of hazard dates
+	 * @param recoveryRateArray Matched array of recovery rates
+	 * @param recoveryDateArray Matched array of recovery dates
+	 * @param specificDefaultDate (Optional) Specific Default Date
 	 * 
-	 * @throws java.lang.Exception Thrown if inputs are invalid
+	 * @throws Exception Thrown if inputs are invalid
 	 */
 
 	public ForwardHazardCreditCurve (
-		final int iStartDate,
-		final org.drip.state.identifier.EntityCDSLabel label,
-		final java.lang.String strCurrency,
-		final double adblHazardRate[],
-		final int aiHazardDate[],
-		final double[] adblRecoveryRate,
-		final int[] aiRecoveryDate,
-		final int iSpecificDefaultDate)
-		throws java.lang.Exception
+		final int startDate,
+		final EntityCDSLabel entityCDSLabel,
+		final String currency,
+		final double[] hazardRateArray,
+		final int[] hazardDateArray,
+		final double[] recoveryRateArray,
+		final int[] recoveryDateArray,
+		final int specificDefaultDate)
+		throws Exception
 	{
-		super (iStartDate, label, strCurrency);
+		super (startDate, entityCDSLabel, currency);
 
-		if (null == adblHazardRate || 0 == adblHazardRate.length || null == aiHazardDate || 0 ==
-			aiHazardDate.length || adblHazardRate.length != aiHazardDate.length || null ==
-				adblRecoveryRate || 0 == adblRecoveryRate.length || null == aiRecoveryDate || 0 ==
-					aiRecoveryDate.length || adblRecoveryRate.length != aiRecoveryDate.length)
-			throw new java.lang.Exception ("ForwardHazardCreditCurve ctr: Invalid Params!");
+		if (null == hazardRateArray || 0 == hazardRateArray.length ||
+			null == hazardDateArray || 0 == hazardDateArray.length ||
+			hazardRateArray.length != hazardDateArray.length ||
+			null == recoveryRateArray || 0 == recoveryRateArray.length ||
+			null == recoveryDateArray || 0 == recoveryDateArray.length ||
+			recoveryRateArray.length != recoveryDateArray.length) {
+			throw new Exception ("ForwardHazardCreditCurve ctr: Invalid Params!");
+		}
 
-		_iSpecificDefaultDate = iSpecificDefaultDate;
-		_adblHazardRate = new double[adblHazardRate.length];
-		_adblRecoveryRate = new double[adblRecoveryRate.length];
-		_hazardDateArray = new int[aiHazardDate.length];
-		_aiRecoveryDate = new int[aiRecoveryDate.length];
+		_iSpecificDefaultDate = specificDefaultDate;
+		_hazardDateArray = new int[hazardDateArray.length];
+		_hazardRateArray = new double[hazardRateArray.length];
+		_recoveryDateArray = new int[recoveryDateArray.length];
+		_recoveryRateArray = new double[recoveryRateArray.length];
 
-		for (int i = 0; i < adblHazardRate.length; ++i)
-			_adblHazardRate[i] = adblHazardRate[i];
+		for (int i = 0; i < hazardRateArray.length; ++i) {
+			_hazardRateArray[i] = hazardRateArray[i];
+		}
 
-		for (int i = 0; i < _hazardDateArray.length; ++i)
-			_hazardDateArray[i] = aiHazardDate[i];
+		for (int i = 0; i < _hazardDateArray.length; ++i) {
+			_hazardDateArray[i] = hazardDateArray[i];
+		}
 
-		for (int i = 0; i < adblRecoveryRate.length; ++i)
-			_adblRecoveryRate[i] = adblRecoveryRate[i];
+		for (int i = 0; i < recoveryRateArray.length; ++i) {
+			_recoveryRateArray[i] = recoveryRateArray[i];
+		}
 
-		for (int i = 0; i < aiRecoveryDate.length; ++i)
-			_aiRecoveryDate[i] = aiRecoveryDate[i];
+		for (int i = 0; i < recoveryDateArray.length; ++i) {
+			_recoveryDateArray[i] = recoveryDateArray[i];
+		}
 	}
 
 	@Override public double survival (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		if (iDate <= _iEpochDate) return 1.;
+		if (date <= _iEpochDate) return 1.;
 
-		if (java.lang.Integer.MIN_VALUE != _iSpecificDefaultDate && iDate >= _iSpecificDefaultDate)
+		if (Integer.MIN_VALUE != _iSpecificDefaultDate && date >= _iSpecificDefaultDate) {
 			return 0.;
-
-		int i = 0;
-		double dblExpArg = 0.;
-		int iStartDate = _iEpochDate;
-
-		while (i < _adblHazardRate.length && iDate > _hazardDateArray[i]) {
-			dblExpArg -= _adblHazardRate[i] * (_hazardDateArray[i] - iStartDate);
-			iStartDate = _hazardDateArray[i++];
 		}
 
-		if (i >= _adblHazardRate.length) i = _adblHazardRate.length - 1;
+		int i = 0;
+		int startDate = _iEpochDate;
+		double exponentialArgument = 0.;
 
-		dblExpArg -= _adblHazardRate[i] * (iDate - iStartDate);
+		while (i < _hazardRateArray.length && date > _hazardDateArray[i]) {
+			exponentialArgument -= _hazardRateArray[i] * (_hazardDateArray[i] - startDate);
+			startDate = _hazardDateArray[i++];
+		}
 
-		return java.lang.Math.exp (dblExpArg / 365.25);
+		if (i >= _hazardRateArray.length) {
+			i = _hazardRateArray.length - 1;
+		}
+
+		exponentialArgument -= _hazardRateArray[i] * (date - startDate);
+
+		return Math.exp (exponentialArgument / 365.25);
 	}
 
 	@Override public double recovery (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		for (int i = 0; i < _aiRecoveryDate.length; ++i) {
-			if (iDate < _aiRecoveryDate[i]) return _adblRecoveryRate[i];
+		for (int i = 0; i < _recoveryDateArray.length; ++i) {
+			if (date < _recoveryDateArray[i]) {
+				return _recoveryRateArray[i];
+			}
 		}
 
-		return _adblRecoveryRate[_aiRecoveryDate.length - 1];
+		return _recoveryRateArray[_recoveryDateArray.length - 1];
 	}
 
 	@Override public ForwardHazardCreditCurve parallelShiftQuantificationMetric (
-		final double dblShift)
+		final double shift)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift)) return null;
+		if (!NumberUtil.IsValid (shift)) {
+			return null;
+		}
 
-		double[] adblHazard = new double[_adblHazardRate.length];
+		double[] hazardRateArray = new double[_hazardRateArray.length];
 
-		for (int i = 0; i < _adblHazardRate.length; ++i)
-			adblHazard[i] = _adblHazardRate[i] + dblShift;
+		for (int i = 0; i < _hazardRateArray.length; ++i) {
+			hazardRateArray[i] = _hazardRateArray[i] + shift;
+		}
 
 		try {
-			return new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, adblHazard,
-				_hazardDateArray, _adblRecoveryRate, _aiRecoveryDate, _iSpecificDefaultDate);
-		} catch (java.lang.Exception e) {
+			return new ForwardHazardCreditCurve (
+				_iEpochDate,
+				_label,
+				_strCurrency,
+				hazardRateArray,
+				_hazardDateArray,
+				_recoveryRateArray,
+				_recoveryDateArray,
+				_iSpecificDefaultDate
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return null;
 	}
 
-	@Override public org.drip.analytics.definition.Curve customTweakQuantificationMetric (
-		final org.drip.param.definition.ManifestMeasureTweak rvtp)
+	@Override public Curve customTweakQuantificationMetric (
+		final ManifestMeasureTweak manifestMeasureTweak)
 	{
 		return null;
 	}
 
 	@Override public ForwardHazardCreditCurve parallelShiftManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final double dblShift)
+		final String manifestMeasure,
+		final double shift)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift)) return null;
+		if (!NumberUtil.IsValid (shift)) {
+			return null;
+		}
 
-		if (null == _valParam || null == _aCalibInst || 0 == _aCalibInst.length || null == _adblCalibQuote ||
-			0 == _adblCalibQuote.length || null == _astrCalibMeasure || 0 == _astrCalibMeasure.length ||
-				_astrCalibMeasure.length != _adblCalibQuote.length || _adblCalibQuote.length !=
-					_aCalibInst.length)
-			return parallelShiftQuantificationMetric (dblShift);
+		if (null == _valParam || null == _aCalibInst || 0 == _aCalibInst.length ||
+			null == _adblCalibQuote || 0 == _adblCalibQuote.length ||
+			null == _astrCalibMeasure || 0 == _astrCalibMeasure.length ||
+			_astrCalibMeasure.length != _adblCalibQuote.length ||
+			_adblCalibQuote.length != _aCalibInst.length) {
+			return parallelShiftQuantificationMetric (shift);
+		}
 
-		ForwardHazardCreditCurve cc = null;
-		double[] adblCalibQuote = new double[_adblCalibQuote.length];
+		ForwardHazardCreditCurve creditCurve = null;
+		double[] calibrationQuoteArray = new double[_adblCalibQuote.length];
 
 		try {
-			cc = new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, _adblHazardRate,
-				_hazardDateArray, _adblRecoveryRate, _aiRecoveryDate, _iSpecificDefaultDate);
-		} catch (java.lang.Exception e) {
+			creditCurve = new ForwardHazardCreditCurve (
+				_iEpochDate,
+				_label,
+				_strCurrency,
+				_hazardRateArray,
+				_hazardDateArray,
+				_recoveryRateArray,
+				_recoveryDateArray,
+				_iSpecificDefaultDate
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
@@ -302,44 +355,80 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 
 		for (int i = 0; i < _adblCalibQuote.length; ++i) {
 			try {
-				org.drip.state.nonlinear.NonlinearCurveBuilder.CreditCurve (_valParam, _aCalibInst[i],
-					adblCalibQuote[i] = _adblCalibQuote[i] + dblShift, _astrCalibMeasure[i], _bFlat, i, cc,
-						_dc, _gc, _pricerParam, _lsfc, _quotingParams, null);
-			} catch (java.lang.Exception e) {
+				NonlinearCurveBuilder.CreditCurve (
+					_valParam,
+					_aCalibInst[i],
+					calibrationQuoteArray[i] = _adblCalibQuote[i] + shift,
+					_astrCalibMeasure[i],
+					_bFlat,
+					i,
+					creditCurve,
+					_dc,
+					_gc,
+					_pricerParam,
+					_lsfc,
+					_quotingParams,
+					null
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		cc.setInstrCalibInputs (_valParam, _bFlat, _dc, _gc, _pricerParam, _aCalibInst, adblCalibQuote,
-			_astrCalibMeasure, _lsfc, _quotingParams);
+		creditCurve.setInstrCalibInputs (
+			_valParam,
+			_bFlat,
+			_dc,
+			_gc,
+			_pricerParam,
+			_aCalibInst,
+			calibrationQuoteArray,
+			_astrCalibMeasure,
+			_lsfc,
+			_quotingParams
+		);
 
-		return cc;
+		return creditCurve;
 	}
 
 	@Override public ForwardHazardCreditCurve shiftManifestMeasure (
-		final int iSpanIndex,
-		final java.lang.String strManifestMeasure,
-		final double dblShift)
+		final int spanIndex,
+		final String manifestMeasure,
+		final double shift)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift)) return null;
+		if (!NumberUtil.IsValid (shift)) {
+			return null;
+		}
 
-		if (null == _valParam || null == _aCalibInst || 0 == _aCalibInst.length || null == _adblCalibQuote ||
-			0 == _adblCalibQuote.length || null == _astrCalibMeasure || 0 == _astrCalibMeasure.length ||
-				_astrCalibMeasure.length != _adblCalibQuote.length || _adblCalibQuote.length !=
-					_aCalibInst.length)
-			return parallelShiftQuantificationMetric (dblShift);
+		if (null == _valParam || null == _aCalibInst || 0 == _aCalibInst.length ||
+			null == _adblCalibQuote || 0 == _adblCalibQuote.length ||
+			null == _astrCalibMeasure || 0 == _astrCalibMeasure.length ||
+			_astrCalibMeasure.length != _adblCalibQuote.length ||
+			_adblCalibQuote.length != _aCalibInst.length) {
+			return parallelShiftQuantificationMetric (shift);
+		}
 
-		ForwardHazardCreditCurve cc = null;
-		double[] adblCalibQuote = new double[_adblCalibQuote.length];
+		ForwardHazardCreditCurve creditCurve = null;
+		double[] calibrationQuoteArray = new double[_adblCalibQuote.length];
 
-		if (iSpanIndex >= _adblCalibQuote.length) return null;
+		if (spanIndex >= _adblCalibQuote.length) {
+			return null;
+		}
 
 		try {
-			cc = new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, _adblHazardRate,
-				_hazardDateArray, _adblRecoveryRate, _aiRecoveryDate, _iSpecificDefaultDate);
-		} catch (java.lang.Exception e) {
+			creditCurve = new ForwardHazardCreditCurve (
+				_iEpochDate,
+				_label,
+				_strCurrency,
+				_hazardRateArray,
+				_hazardDateArray,
+				_recoveryRateArray,
+				_recoveryDateArray,
+				_iSpecificDefaultDate
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
@@ -347,47 +436,82 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 
 		for (int i = 0; i < _adblCalibQuote.length; ++i) {
 			try {
-				org.drip.state.nonlinear.NonlinearCurveBuilder.CreditCurve (_valParam, _aCalibInst[i],
-					adblCalibQuote[i] = _adblCalibQuote[i] + (i == iSpanIndex ? dblShift : 0.),
-						_astrCalibMeasure[i], _bFlat, i, cc, _dc, _gc, _pricerParam, _lsfc,
-							_quotingParams, null);
-			} catch (java.lang.Exception e) {
+				NonlinearCurveBuilder.CreditCurve (
+					_valParam,
+					_aCalibInst[i],
+					calibrationQuoteArray[i] = _adblCalibQuote[i] + (i == spanIndex ? shift : 0.),
+					_astrCalibMeasure[i],
+					_bFlat,
+					i,
+					creditCurve,
+					_dc,
+					_gc,
+					_pricerParam,
+					_lsfc,
+					_quotingParams,
+					null
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		cc.setInstrCalibInputs (_valParam, _bFlat, _dc, _gc, _pricerParam, _aCalibInst, adblCalibQuote,
-			_astrCalibMeasure, _lsfc, _quotingParams);
+		creditCurve.setInstrCalibInputs (
+			_valParam,
+			_bFlat,
+			_dc,
+			_gc,
+			_pricerParam,
+			_aCalibInst,
+			calibrationQuoteArray,
+			_astrCalibMeasure,
+			_lsfc,
+			_quotingParams
+		);
 
-		return cc;
+		return creditCurve;
 	}
 
-	@Override public org.drip.state.credit.CreditCurve flatCurve (
-		final double dblFlatNodeValue,
-		final boolean bSingleNode,
-		final double dblRecovery)
+	@Override public CreditCurve flatCurve (
+		final double flatNodeValue,
+		final boolean singleNode,
+		final double recovery)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblFlatNodeValue) || 0. >= dblFlatNodeValue || null ==
-			_valParam || null == _aCalibInst || 0 == _aCalibInst.length || null == _adblCalibQuote || 0 ==
-				_adblCalibQuote.length || null == _astrCalibMeasure || 0 == _astrCalibMeasure.length ||
-					_astrCalibMeasure.length != _adblCalibQuote.length || _adblCalibQuote.length !=
-						_aCalibInst.length)
+		if (!NumberUtil.IsValid (flatNodeValue) || 0. >= flatNodeValue || null == _valParam ||
+			null == _aCalibInst || 0 == _aCalibInst.length ||
+			null == _adblCalibQuote || 0 == _adblCalibQuote.length ||
+			null == _astrCalibMeasure || 0 == _astrCalibMeasure.length ||
+			_astrCalibMeasure.length != _adblCalibQuote.length ||
+			_adblCalibQuote.length != _aCalibInst.length) {
 			return null;
+		}
 
-		org.drip.state.credit.ExplicitBootCreditCurve cc = null;
+		ExplicitBootCreditCurve creditCurve = null;
 
 		try {
-			if (bSingleNode)
-				cc = org.drip.state.creator.ScenarioCreditCurveBuilder.Hazard (_iEpochDate,
-					_label.fullyQualifiedName(), _strCurrency, _adblHazardRate[0], _hazardDateArray[0],
-						!org.drip.numerical.common.NumberUtil.IsValid (dblRecovery) ? _adblRecoveryRate[0] :
-							dblRecovery);
+			if (singleNode)
+				creditCurve = ScenarioCreditCurveBuilder.Hazard (
+					_iEpochDate,
+					_label.fullyQualifiedName(),
+					_strCurrency,
+					_hazardRateArray[0],
+					_hazardDateArray[0],
+					!NumberUtil.IsValid (recovery) ? _recoveryRateArray[0] : recovery
+				);
 			else
-				cc = new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, _adblHazardRate,
-					_hazardDateArray, _adblRecoveryRate, _aiRecoveryDate, _iSpecificDefaultDate);
-		} catch (java.lang.Exception e) {
+				creditCurve = new ForwardHazardCreditCurve (
+					_iEpochDate,
+					_label,
+					_strCurrency,
+					_hazardRateArray,
+					_hazardDateArray,
+					_recoveryRateArray,
+					_recoveryDateArray,
+					_iSpecificDefaultDate
+				);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
@@ -395,122 +519,220 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 
 		for (int i = 0; i < _adblCalibQuote.length; ++i) {
 			try {
-				org.drip.state.nonlinear.NonlinearCurveBuilder.CreditCurve (_valParam, _aCalibInst[i],
-					dblFlatNodeValue, _astrCalibMeasure[i], true, i, cc, _dc, _gc, _pricerParam, _lsfc,
-						_quotingParams, null);
-			} catch (java.lang.Exception e) {
+				NonlinearCurveBuilder.CreditCurve (
+					_valParam,
+					_aCalibInst[i],
+					flatNodeValue,
+					_astrCalibMeasure[i],
+					true,
+					i,
+					creditCurve,
+					_dc,
+					_gc,
+					_pricerParam,
+					_lsfc,
+					_quotingParams,
+					null
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		if (bSingleNode)
-			cc.setInstrCalibInputs (_valParam, true, _dc, _gc, _pricerParam, new
-				org.drip.product.definition.CalibratableComponent[] {_aCalibInst[0]}, new double[]
-					{dblFlatNodeValue}, _astrCalibMeasure, _lsfc, _quotingParams);
+		if (singleNode)
+			creditCurve.setInstrCalibInputs (
+				_valParam,
+				true,
+				_dc,
+				_gc,
+				_pricerParam,
+				new CalibratableComponent[] {_aCalibInst[0]},
+				new double[] {flatNodeValue},
+				_astrCalibMeasure,
+				_lsfc,
+				_quotingParams
+			);
 		else {
-			double[] adblCalibValue = new double[_adblCalibQuote.length];
+			double[] calibrationValueArray = new double[_adblCalibQuote.length];
 
-			for (int i = 0; i < _adblCalibQuote.length; ++i)
-				adblCalibValue[i] = dblFlatNodeValue;
+			for (int i = 0; i < _adblCalibQuote.length; ++i) {
+				calibrationValueArray[i] = flatNodeValue;
+			}
 
-			cc.setInstrCalibInputs (_valParam, true, _dc, _gc, _pricerParam, _aCalibInst, adblCalibValue,
-				_astrCalibMeasure, _lsfc, _quotingParams);
+			creditCurve.setInstrCalibInputs (
+				_valParam,
+				true,
+				_dc,
+				_gc,
+				_pricerParam,
+				_aCalibInst,
+				calibrationValueArray,
+				_astrCalibMeasure,
+				_lsfc,
+				_quotingParams
+			);
 		}
 
-		return cc;
+		return creditCurve;
 	}
 
-	@Override  public org.drip.state.credit.CreditCurve customTweakManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final org.drip.param.definition.ManifestMeasureTweak mmtp)
+	@Override public CreditCurve customTweakManifestMeasure (
+		final String manifestMeasure,
+		final ManifestMeasureTweak manifestMeasureTweak)
 	{
-		if (null == mmtp) return null;
+		if (null == manifestMeasureTweak) {
+			return null;
+		}
 
-		if (!(mmtp instanceof org.drip.param.definition.CreditManifestMeasureTweak))
-			return createFromBaseMMTP (mmtp);
+		if (!(manifestMeasureTweak instanceof CreditManifestMeasureTweak)) {
+			return createFromBaseMMTP (manifestMeasureTweak);
+		}
 
-		org.drip.param.definition.CreditManifestMeasureTweak cmmt =
-			(org.drip.param.definition.CreditManifestMeasureTweak) mmtp;
+		CreditManifestMeasureTweak creditManifestMeasureTweak =
+			(CreditManifestMeasureTweak) manifestMeasureTweak;
 
-		if (org.drip.param.definition.CreditManifestMeasureTweak.CREDIT_TWEAK_NODE_PARAM_RECOVERY.equalsIgnoreCase
-			(cmmt.paramType())) {
-			double[] adblRecoveryRateBumped = null;
+		if (CreditManifestMeasureTweak.CREDIT_TWEAK_NODE_PARAM_RECOVERY.equalsIgnoreCase
+			(creditManifestMeasureTweak.paramType())) {
+			double[] bumpedRecoveryRateArray = null;
 
-			if (null == (adblRecoveryRateBumped =
-				org.drip.analytics.support.Helper.TweakManifestMeasure (_adblRecoveryRate, cmmt)) ||
-					adblRecoveryRateBumped.length != _adblRecoveryRate.length)
+			if (null == (
+				bumpedRecoveryRateArray = Helper.TweakManifestMeasure (
+					_recoveryRateArray,
+					creditManifestMeasureTweak
+				)
+			) || bumpedRecoveryRateArray.length != _recoveryRateArray.length) {
 				return null;
+			}
 
 			try {
-				return new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, _adblHazardRate,
-					_hazardDateArray, adblRecoveryRateBumped, _aiRecoveryDate, _iSpecificDefaultDate);
-			} catch (java.lang.Exception e) {
+				return new ForwardHazardCreditCurve (
+					_iEpochDate,
+					_label,
+					_strCurrency,
+					_hazardRateArray,
+					_hazardDateArray,
+					bumpedRecoveryRateArray,
+					_recoveryDateArray,
+					_iSpecificDefaultDate
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} else if
-			(org.drip.param.definition.CreditManifestMeasureTweak.CREDIT_TWEAK_NODE_PARAM_QUOTE.equalsIgnoreCase
-				(cmmt.paramType())) {
-			if (org.drip.param.definition.CreditManifestMeasureTweak.CREDIT_TWEAK_NODE_MEASURE_HAZARD.equalsIgnoreCase
-				(cmmt.measureType())) {
-				double[] adblHazardBumped = null;
+		} else if (CreditManifestMeasureTweak.CREDIT_TWEAK_NODE_PARAM_QUOTE.equalsIgnoreCase (
+			creditManifestMeasureTweak.paramType()
+		)) {
+			if (CreditManifestMeasureTweak.CREDIT_TWEAK_NODE_MEASURE_HAZARD.equalsIgnoreCase (
+				creditManifestMeasureTweak.measureType()
+			)) {
+				double[] bumpedHazardRateArray = null;
 
-				if (null == (adblHazardBumped =
-					org.drip.analytics.support.Helper.TweakManifestMeasure (_adblHazardRate, cmmt))
-						|| adblHazardBumped.length != _adblHazardRate.length)
-					return null;
-
-				try {
-					return new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency,
-						adblHazardBumped, _hazardDateArray, _adblRecoveryRate, _aiRecoveryDate,
-							_iSpecificDefaultDate);
-				} catch (java.lang.Exception e) {
-					e.printStackTrace();
-				}
-			} else if
-				(org.drip.param.definition.CreditManifestMeasureTweak.CREDIT_TWEAK_NODE_MEASURE_QUOTE.equalsIgnoreCase
-					(cmmt.measureType())) {
-				double[] adblQuoteBumped = null;
-
-				if (null == (adblQuoteBumped =
-					org.drip.analytics.support.Helper.TweakManifestMeasure (_adblHazardRate, cmmt))
-						|| adblQuoteBumped.length != _adblHazardRate.length)
-					return null;
-
-				org.drip.state.credit.ExplicitBootCreditCurve cc = null;
-
-				try {
-					if (cmmt.singleNodeCalib())
-						cc = org.drip.state.creator.ScenarioCreditCurveBuilder.Hazard (_iEpochDate,
-							_strCurrency, _label.fullyQualifiedName(), _adblHazardRate[0],
-							_hazardDateArray[0], _adblRecoveryRate[0]);
-					else
-						cc = new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency,
-							_adblHazardRate, _hazardDateArray, _adblRecoveryRate, _aiRecoveryDate,
-								_iSpecificDefaultDate);
-				} catch (java.lang.Exception e) {
-					e.printStackTrace();
-
+				if (null == (
+					bumpedHazardRateArray = Helper.TweakManifestMeasure (
+						_hazardRateArray,
+						creditManifestMeasureTweak
+					)) || bumpedHazardRateArray.length != _hazardRateArray.length
+				) {
 					return null;
 				}
 
-				for (int i = 0; i < adblQuoteBumped.length; ++i) {
+				try {
+					return new ForwardHazardCreditCurve (
+						_iEpochDate,
+						_label,
+						_strCurrency,
+						bumpedHazardRateArray,
+						_hazardDateArray,
+						_recoveryRateArray,
+						_recoveryDateArray,
+						_iSpecificDefaultDate
+					);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else if (CreditManifestMeasureTweak.CREDIT_TWEAK_NODE_MEASURE_QUOTE.equalsIgnoreCase (
+				creditManifestMeasureTweak.measureType()
+			)) {
+				double[] bumpedQuoteArray = null;
+
+				if (null == (
+					bumpedQuoteArray = Helper.TweakManifestMeasure (
+						_hazardRateArray,
+						creditManifestMeasureTweak
+					)) || bumpedQuoteArray.length != _hazardRateArray.length
+				) {
+					return null;
+				}
+
+				ExplicitBootCreditCurve creditCurve = null;
+
+				try {
+					if (creditManifestMeasureTweak.singleNodeCalib()) {
+						creditCurve = ScenarioCreditCurveBuilder.Hazard (
+							_iEpochDate,
+							_strCurrency,
+							_label.fullyQualifiedName(),
+							_hazardRateArray[0],
+							_hazardDateArray[0],
+							_recoveryRateArray[0]
+						);
+					} else {
+						creditCurve = new ForwardHazardCreditCurve (
+							_iEpochDate,
+							_label,
+							_strCurrency,
+							_hazardRateArray,
+							_hazardDateArray,
+							_recoveryRateArray,
+							_recoveryDateArray,
+							_iSpecificDefaultDate
+						);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+
+					return null;
+				}
+
+				for (int i = 0; i < bumpedQuoteArray.length; ++i) {
 					try {
-						org.drip.state.nonlinear.NonlinearCurveBuilder.CreditCurve (_valParam,
-							_aCalibInst[i], adblQuoteBumped[i], _astrCalibMeasure[i], _bFlat, i, cc, _dc,
-								_gc, _pricerParam, _lsfc, _quotingParams, null);
-					} catch (java.lang.Exception e) {
+						NonlinearCurveBuilder.CreditCurve (
+							_valParam,
+							_aCalibInst[i],
+							bumpedQuoteArray[i],
+							_astrCalibMeasure[i],
+							_bFlat,
+							i,
+							creditCurve,
+							_dc,
+							_gc,
+							_pricerParam,
+							_lsfc,
+							_quotingParams,
+							null
+						);
+					} catch (Exception e) {
 						e.printStackTrace();
 
 						return null;
 					}
 				}
 
-				cc.setInstrCalibInputs (_valParam, _bFlat, _dc, _gc, _pricerParam, _aCalibInst,
-					adblQuoteBumped, _astrCalibMeasure, _lsfc, _quotingParams);
+				creditCurve.setInstrCalibInputs (
+					_valParam,
+					_bFlat,
+					_dc,
+					_gc,
+					_pricerParam,
+					_aCalibInst,
+					bumpedQuoteArray,
+					_astrCalibMeasure,
+					_lsfc,
+					_quotingParams
+				);
 
-				return cc;
+				return creditCurve;
 			}
 		}
 
@@ -518,38 +740,45 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 	}
 
 	@Override public boolean setNodeValue (
-		final int iNodeIndex,
-		final double dblValue)
+		final int nodeIndex,
+		final double value)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblHazardRate.length)
+		if (!NumberUtil.IsValid (value) || nodeIndex > _hazardRateArray.length) {
 			return false;
+		}
 
-		for (int i = iNodeIndex; i < _adblHazardRate.length; ++i)
-			_adblHazardRate[i] = dblValue;
+		for (int i = nodeIndex; i < _hazardRateArray.length; ++i) {
+			_hazardRateArray[i] = value;
+		}
 
 		return true;
 	}
 
 	@Override public boolean bumpNodeValue (
-		final int iNodeIndex,
-		final double dblValue)
+		final int nodeIndex,
+		final double value)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblHazardRate.length)
+		if (!NumberUtil.IsValid (value) || nodeIndex > _hazardRateArray.length) {
 			return false;
+		}
 
-		for (int i = iNodeIndex; i < _adblHazardRate.length; ++i)
-			_adblHazardRate[i] += dblValue;
+		for (int i = nodeIndex; i < _hazardRateArray.length; ++i) {
+			_hazardRateArray[i] += value;
+		}
 
 		return true;
 	}
 
 	@Override public boolean setFlatValue (
-		final double dblValue)
+		final double value)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
+		if (!NumberUtil.IsValid (value)) {
+			return false;
+		}
 
-		for (int i = 0; i < _adblHazardRate.length; ++i)
-			_adblHazardRate[i] = dblValue;
+		for (int i = 0; i < _hazardRateArray.length; ++i) {
+			_hazardRateArray[i] = value;
+		}
 
 		return true;
 	}

@@ -1,11 +1,18 @@
 
 package org.drip.state.nonlinear;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.differentiation.WengertJacobian;
+import org.drip.state.govvie.ExplicitBootGovvieCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,116 +90,141 @@ package org.drip.state.nonlinear;
  * <i>FlatYieldGovvieCurve</i> manages the Govvie Latent State, using the Flat Yield as the State Response
  * Representation.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear/README.md">Nonlinear (i.e., Boot) Latent State Construction</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear/README.md">Nonlinear (i.e., Boot) Latent State Construction</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class FlatYieldGovvieCurve extends org.drip.state.govvie.ExplicitBootGovvieCurve {
-	private int[] _aiDate = null;
-	private double[] _adblYield = null;
+public class FlatYieldGovvieCurve extends ExplicitBootGovvieCurve
+{
+	private int[] _dateArray = null;
+	private double[] _yieldArray = null;
 
 	/**
 	 * Construct a Govvie curve from an array of dates and Yields
 	 * 
-	 * @param iEpochDate Epoch Date
-	 * @param strTreasuryCode Treasury Code
-	 * @param strCurrency Currency
-	 * @param aiDate Array of Dates
-	 * @param adblYield Array of Yields
+	 * @param epochDate Epoch Date
+	 * @param treasuryCode Treasury Code
+	 * @param currency Currency
+	 * @param dateArray Array of Dates
+	 * @param yieldArray Array of Yields
 	 * 
-	 * @throws java.lang.Exception Thrown if the curve cannot be created
+	 * @throws Exception Thrown if the curve cannot be created
 	 */
 
 	public FlatYieldGovvieCurve (
-		final int iEpochDate,
-		final java.lang.String strTreasuryCode,
-		final java.lang.String strCurrency,
-		final int[] aiDate,
-		final double[] adblYield)
-		throws java.lang.Exception
+		final int epochDate,
+		final String treasuryCode,
+		final String currency,
+		final int[] dateArray,
+		final double[] yieldArray)
+		throws Exception
 	{
-		super (iEpochDate, strTreasuryCode, strCurrency);
+		super (epochDate, treasuryCode, currency);
 
-		if (null == (_aiDate = aiDate) || null == (_adblYield = adblYield))
-			throw new java.lang.Exception ("FlatYieldGovvieCurve Constructor => Invalid Inputs!");
+		if (null == (_dateArray = dateArray) || null == (_yieldArray = yieldArray)) {
+			throw new Exception ("FlatYieldGovvieCurve Constructor => Invalid Inputs!");
+		}
 
-		int iNumNode = _aiDate.length;
+		int nodeCount = _dateArray.length;
 
-		if (0 == iNumNode || iNumNode != _adblYield.length)
-			throw new java.lang.Exception ("FlatYieldGovvieCurve Constructor => Invalid Inputs!");
+		if (0 == nodeCount || nodeCount != _yieldArray.length) {
+			throw new Exception ("FlatYieldGovvieCurve Constructor => Invalid Inputs!");
+		}
 	}
 
 	@Override public double yld (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		if (iDate <= _iEpochDate) return _adblYield[0];
-
-		int iNumDate = _aiDate.length;
-
-		for (int i = 1; i < iNumDate; ++i) {
-			if (iDate > _aiDate[i - 1] && iDate <= _aiDate[i]) return _adblYield[i];
+		if (date <= _iEpochDate) {
+			return _yieldArray[0];
 		}
 
-		return _adblYield[iNumDate - 1];
+		int nodeCount = _dateArray.length;
+
+		for (int i = 1; i < nodeCount; ++i) {
+			if (date > _dateArray[i - 1] && date <= _dateArray[i]) {
+				return _yieldArray[i];
+			}
+		}
+
+		return _yieldArray[nodeCount - 1];
 	}
 
 	@Override public boolean setNodeValue (
-		final int iNodeIndex,
-		final double dblValue)
+		final int nodeIndex,
+		final double value)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
+		if (!NumberUtil.IsValid (value)) {
+			return false;
+		}
 
-		int iNumDate = _aiDate.length;
+		int nodeCount = _dateArray.length;
 
-		if (iNodeIndex > iNumDate) return false;
+		if (nodeIndex > nodeCount) {
+			return false;
+		}
 
-		for (int i = iNodeIndex; i < iNumDate; ++i)
-			_adblYield[i] = dblValue;
+		for (int i = nodeIndex; i < nodeCount; ++i) {
+			_yieldArray[i] = value;
+		}
 
 		return true;
 	}
 
 	@Override public boolean bumpNodeValue (
-		final int iNodeIndex,
-		final double dblValue)
+		final int nodeIndex,
+		final double value)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
+		if (!NumberUtil.IsValid (value)) {
+			return false;
+		}
 
-		int iNumDate = _aiDate.length;
+		int nodeCount = _dateArray.length;
 
-		if (iNodeIndex > iNumDate) return false;
+		if (nodeIndex > nodeCount) {
+			return false;
+		}
 
-		for (int i = iNodeIndex; i < iNumDate; ++i)
-			_adblYield[i] += dblValue;
+		for (int i = nodeIndex; i < nodeCount; ++i) {
+			_yieldArray[i] += value;
+		}
 
 		return true;
 	}
 
 	@Override public boolean setFlatValue (
-		final double dblValue)
+		final double value)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
+		if (!NumberUtil.IsValid (value)) {
+			return false;
+		}
 
-		int iNumDate = _aiDate.length;
+		int nodeCount = _dateArray.length;
 
-		for (int i = 0; i < iNumDate; ++i)
-			_adblYield[i] = dblValue;
+		for (int i = 0; i < nodeCount; ++i) {
+			_yieldArray[i] = value;
+		}
 
 		return true;
 	}
 
-	@Override public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final int iDate)
+	@Override public WengertJacobian jackDForwardDManifestMeasure (
+		final String manifestMeasure,
+		final int date)
 	{
 		return null;
 	}
