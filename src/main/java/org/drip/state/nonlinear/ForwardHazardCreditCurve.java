@@ -1,11 +1,16 @@
 
 package org.drip.state.nonlinear;
 
+import org.drip.state.credit.ExplicitBootCreditCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -114,20 +119,26 @@ package org.drip.state.nonlinear;
  *  	</li>
  *  </ul>
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear/README.md">Nonlinear (i.e., Boot) Latent State Construction</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear/README.md">Nonlinear (i.e., Boot) Latent State Construction</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBootCreditCurve {
-	private int[] _aiHazardDate = null;
+public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
+{
+	private int[] _hazardDateArray = null;
 	private int[] _aiRecoveryDate = null;
 	private double[] _adblHazardRate = null;
 	private double[] _adblRecoveryRate = null;
@@ -142,7 +153,7 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 
 		try {
 			return new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, adblHazardBumped,
-				_aiHazardDate, _adblRecoveryRate, _aiRecoveryDate, _iSpecificDefaultDate);
+				_hazardDateArray, _adblRecoveryRate, _aiRecoveryDate, _iSpecificDefaultDate);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -187,14 +198,14 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 		_iSpecificDefaultDate = iSpecificDefaultDate;
 		_adblHazardRate = new double[adblHazardRate.length];
 		_adblRecoveryRate = new double[adblRecoveryRate.length];
-		_aiHazardDate = new int[aiHazardDate.length];
+		_hazardDateArray = new int[aiHazardDate.length];
 		_aiRecoveryDate = new int[aiRecoveryDate.length];
 
 		for (int i = 0; i < adblHazardRate.length; ++i)
 			_adblHazardRate[i] = adblHazardRate[i];
 
-		for (int i = 0; i < _aiHazardDate.length; ++i)
-			_aiHazardDate[i] = aiHazardDate[i];
+		for (int i = 0; i < _hazardDateArray.length; ++i)
+			_hazardDateArray[i] = aiHazardDate[i];
 
 		for (int i = 0; i < adblRecoveryRate.length; ++i)
 			_adblRecoveryRate[i] = adblRecoveryRate[i];
@@ -216,9 +227,9 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 		double dblExpArg = 0.;
 		int iStartDate = _iEpochDate;
 
-		while (i < _adblHazardRate.length && iDate > _aiHazardDate[i]) {
-			dblExpArg -= _adblHazardRate[i] * (_aiHazardDate[i] - iStartDate);
-			iStartDate = _aiHazardDate[i++];
+		while (i < _adblHazardRate.length && iDate > _hazardDateArray[i]) {
+			dblExpArg -= _adblHazardRate[i] * (_hazardDateArray[i] - iStartDate);
+			iStartDate = _hazardDateArray[i++];
 		}
 
 		if (i >= _adblHazardRate.length) i = _adblHazardRate.length - 1;
@@ -251,7 +262,7 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 
 		try {
 			return new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, adblHazard,
-				_aiHazardDate, _adblRecoveryRate, _aiRecoveryDate, _iSpecificDefaultDate);
+				_hazardDateArray, _adblRecoveryRate, _aiRecoveryDate, _iSpecificDefaultDate);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -282,7 +293,7 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 
 		try {
 			cc = new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, _adblHazardRate,
-				_aiHazardDate, _adblRecoveryRate, _aiRecoveryDate, _iSpecificDefaultDate);
+				_hazardDateArray, _adblRecoveryRate, _aiRecoveryDate, _iSpecificDefaultDate);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 
@@ -327,7 +338,7 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 
 		try {
 			cc = new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, _adblHazardRate,
-				_aiHazardDate, _adblRecoveryRate, _aiRecoveryDate, _iSpecificDefaultDate);
+				_hazardDateArray, _adblRecoveryRate, _aiRecoveryDate, _iSpecificDefaultDate);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 
@@ -370,12 +381,12 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 		try {
 			if (bSingleNode)
 				cc = org.drip.state.creator.ScenarioCreditCurveBuilder.Hazard (_iEpochDate,
-					_label.fullyQualifiedName(), _strCurrency, _adblHazardRate[0], _aiHazardDate[0],
+					_label.fullyQualifiedName(), _strCurrency, _adblHazardRate[0], _hazardDateArray[0],
 						!org.drip.numerical.common.NumberUtil.IsValid (dblRecovery) ? _adblRecoveryRate[0] :
 							dblRecovery);
 			else
 				cc = new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, _adblHazardRate,
-					_aiHazardDate, _adblRecoveryRate, _aiRecoveryDate, _iSpecificDefaultDate);
+					_hazardDateArray, _adblRecoveryRate, _aiRecoveryDate, _iSpecificDefaultDate);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 
@@ -434,7 +445,7 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 
 			try {
 				return new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, _adblHazardRate,
-					_aiHazardDate, adblRecoveryRateBumped, _aiRecoveryDate, _iSpecificDefaultDate);
+					_hazardDateArray, adblRecoveryRateBumped, _aiRecoveryDate, _iSpecificDefaultDate);
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();
 			}
@@ -452,7 +463,7 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 
 				try {
 					return new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency,
-						adblHazardBumped, _aiHazardDate, _adblRecoveryRate, _aiRecoveryDate,
+						adblHazardBumped, _hazardDateArray, _adblRecoveryRate, _aiRecoveryDate,
 							_iSpecificDefaultDate);
 				} catch (java.lang.Exception e) {
 					e.printStackTrace();
@@ -473,10 +484,10 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 					if (cmmt.singleNodeCalib())
 						cc = org.drip.state.creator.ScenarioCreditCurveBuilder.Hazard (_iEpochDate,
 							_strCurrency, _label.fullyQualifiedName(), _adblHazardRate[0],
-								_aiHazardDate[0], _adblRecoveryRate[0]);
+							_hazardDateArray[0], _adblRecoveryRate[0]);
 					else
 						cc = new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency,
-							_adblHazardRate, _aiHazardDate, _adblRecoveryRate, _aiRecoveryDate,
+							_adblHazardRate, _hazardDateArray, _adblRecoveryRate, _aiRecoveryDate,
 								_iSpecificDefaultDate);
 				} catch (java.lang.Exception e) {
 					e.printStackTrace();

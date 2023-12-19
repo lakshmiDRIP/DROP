@@ -1,11 +1,36 @@
 
 package org.drip.state.nonlinear;
 
+import org.drip.analytics.definition.ExplicitBootCurve;
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.r1tor1solver.FixedPointFinderBrent;
+import org.drip.function.r1tor1solver.FixedPointFinderOutput;
+import org.drip.function.r1tor1solver.FixedPointFinderZheng;
+import org.drip.function.r1tor1solver.InitializationHeuristics;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.param.creator.MarketParamsBuilder;
+import org.drip.param.definition.CalibrationParams;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.market.LatentStateFixingsContainer;
+import org.drip.param.pricer.CreditPricerParams;
+import org.drip.param.valuation.ValuationCustomizationParams;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.definition.Component;
+import org.drip.state.credit.ExplicitBootCreditCurve;
+import org.drip.state.discount.ExplicitBootDiscountCurve;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.forward.ForwardCurve;
+import org.drip.state.govvie.GovvieCurve;
+import org.drip.state.volatility.ExplicitBootVolatilityCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -99,112 +124,139 @@ package org.drip.state.nonlinear;
  * 				the outer sweep calibrates iteratively for the targeted boundary conditions.
  *  	</li>
  *  	<li>
- * 			It may also be used to custom calibrate a single Interest Rate/Hazard Rate Node from the
- * 				corresponding Component.
+ * 			It may also be used to custom calibrate a single Interest Rate/Hazard Rate/Volatility Node from
+ * 				the corresponding Component.
  *  	</li>
  *  </ul>
  * 
  * CurveCalibrator bootstraps/cooks both discount curves and credit curves.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear/README.md">Nonlinear (i.e., Boot) Latent State Construction</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear/README.md">Nonlinear (i.e., Boot) Latent State Construction</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class NonlinearCurveBuilder {
+public class NonlinearCurveBuilder
+{
 
 	private static final boolean SetNode (
-		final org.drip.analytics.definition.ExplicitBootCurve ebc,
-		final int iNodeIndex,
-		final boolean bFlat,
-		final double dblValue)
+		final ExplicitBootCurve explicitBootCurve,
+		final int nodeIndex,
+		final boolean flat,
+		final double value)
 	{
-		return bFlat ? ebc.setFlatValue (dblValue) : ebc.setNodeValue (iNodeIndex, dblValue);
+		return flat ? explicitBootCurve.setFlatValue (value) :
+			explicitBootCurve.setNodeValue (nodeIndex, value);
 	}
 
-	static class CreditCurveCalibrator extends org.drip.function.definition.R1ToR1 {
-		private boolean _bFlat = false;
-		private int _iCurveSegmentIndex = -1;
-		private java.lang.String _strCalibMeasure = "";
-		private double _dblCalibValue = java.lang.Double.NaN;
-		private org.drip.state.govvie.GovvieCurve _gc = null;
-		private org.drip.param.definition.CalibrationParams _cp = null;
-		private org.drip.product.definition.Component _calibComp = null;
-		private org.drip.param.valuation.ValuationParams _valParams = null;
-		private org.drip.state.credit.ExplicitBootCreditCurve _ebcc = null;
-		private org.drip.param.pricer.CreditPricerParams _pricerParams = null;
-		private org.drip.state.discount.MergedDiscountForwardCurve _dc = null;
-		private org.drip.param.market.LatentStateFixingsContainer _lsfc = null;
-		private org.drip.param.valuation.ValuationCustomizationParams _vcp = null;
+	static class CreditCurveCalibrator extends R1ToR1
+	{
+		private boolean _flat = false;
+		private int _curveSegmentIndex = -1;
+		private GovvieCurve _govvieCurve = null;
+		private String _calibrationMeasure = "";
+		private double _calibrationValue = Double.NaN;
+		private Component _calibrationComponent = null;
+		private ValuationParams _valuationParams = null;
+		private CalibrationParams _calibrationParams = null;
+		private CreditPricerParams _creditPricerParams = null;
+		private ExplicitBootCreditCurve _explicitBootCreditCurve = null;
+		private MergedDiscountForwardCurve _mergedDiscountForwardCurve = null;
+		private LatentStateFixingsContainer _latentStateFixingsContainer = null;
+		private ValuationCustomizationParams _valuationCustomizationParams = null;
 
 		CreditCurveCalibrator (
-			final org.drip.param.valuation.ValuationParams valParams,
-			final org.drip.product.definition.Component calibComp,
-			final double dblCalibValue,
-			final java.lang.String strCalibMeasure,
-			final boolean bFlat,
-			final int iCurveSegmentIndex,
-			final org.drip.state.credit.ExplicitBootCreditCurve ebcc,
-			final org.drip.state.discount.MergedDiscountForwardCurve dc,
-			final org.drip.state.govvie.GovvieCurve gc,
-			final org.drip.param.pricer.CreditPricerParams pricerParams,
-			final org.drip.param.market.LatentStateFixingsContainer lsfc,
-			final org.drip.param.valuation.ValuationCustomizationParams vcp,
-			final org.drip.param.definition.CalibrationParams cp)
-			throws java.lang.Exception
+			final ValuationParams valuationParams,
+			final Component calibrationComponent,
+			final double calibrationValue,
+			final String calibrationMeasure,
+			final boolean flat,
+			final int curveSegmentIndex,
+			final ExplicitBootCreditCurve explicitBootCreditCurve,
+			final MergedDiscountForwardCurve mergedDiscountForwardCurve,
+			final GovvieCurve govvieCurve,
+			final CreditPricerParams creditPricerParams,
+			final LatentStateFixingsContainer latentStateFixingsContainer,
+			final ValuationCustomizationParams valuationCustomizationParams,
+			final CalibrationParams calibrationParams)
+			throws Exception
 		{
 			super (null);
 
-			_dc = dc;
-			_gc = gc;
-			_vcp = vcp;
-			_ebcc = ebcc;
-			_lsfc = lsfc;
-			_bFlat = bFlat;
-			_calibComp = calibComp;
-			_valParams = valParams;
-			_dblCalibValue = dblCalibValue;
-			_strCalibMeasure = strCalibMeasure;
-			_iCurveSegmentIndex = iCurveSegmentIndex;
+			_flat = flat;
+			_govvieCurve = govvieCurve;
+			_valuationParams = valuationParams;
+			_calibrationValue = calibrationValue;
+			_curveSegmentIndex = curveSegmentIndex;
+			_calibrationMeasure = calibrationMeasure;
+			_calibrationComponent = calibrationComponent;
+			_explicitBootCreditCurve = explicitBootCreditCurve;
+			_mergedDiscountForwardCurve = mergedDiscountForwardCurve;
+			_latentStateFixingsContainer = latentStateFixingsContainer;
+			_valuationCustomizationParams = valuationCustomizationParams;
 
-			if (null == (_cp = cp))
-				_cp = new org.drip.param.definition.CalibrationParams (strCalibMeasure, 0, null);
+			if (null == (_calibrationParams = calibrationParams)) {
+				_calibrationParams = new CalibrationParams (_calibrationMeasure, 0, null);
+			}
 
-			_pricerParams = new org.drip.param.pricer.CreditPricerParams (pricerParams.unitSize(), _cp,
-				pricerParams.survivalToPayDate(), pricerParams.discretizationScheme());
+			_creditPricerParams = new CreditPricerParams (
+				creditPricerParams.unitSize(),
+				_calibrationParams,
+				creditPricerParams.survivalToPayDate(),
+				creditPricerParams.discretizationScheme()
+			);
 		}
 
 		@Override public double evaluate (
-			final double dblRate)
-			throws java.lang.Exception
+			final double rate)
+			throws Exception
 		{
-			if (!SetNode (_ebcc, _iCurveSegmentIndex, _bFlat, dblRate))
-				throw new java.lang.Exception
-					("NonlinearCurveBuilder::CreditCurveCalibrator::evaluate => Cannot set Rate = " + dblRate
-						+ " for node " + _iCurveSegmentIndex);
+			if (!SetNode (_explicitBootCreditCurve, _curveSegmentIndex, _flat, rate)) {
+				throw new Exception (
+					"NonlinearCurveBuilder::CreditCurveCalibrator::evaluate => Cannot set Rate = " + rate +
+						" for node " + _curveSegmentIndex
+				);
+			}
 
-			return _dblCalibValue - _calibComp.measureValue (_valParams, _pricerParams,
-				org.drip.param.creator.MarketParamsBuilder.Create (_dc, _gc, _ebcc, null, null, null, _lsfc),
-					_vcp, _strCalibMeasure);
+			return _calibrationValue - _calibrationComponent.measureValue (
+				_valuationParams,
+				_creditPricerParams,
+				MarketParamsBuilder.Create (
+					_mergedDiscountForwardCurve,
+					_govvieCurve,
+					_explicitBootCreditCurve,
+					null,
+					null,
+					null,
+					_latentStateFixingsContainer
+				),
+				_valuationCustomizationParams,
+				_calibrationMeasure
+			);
 		}
 	}
 
 	/**
 	 * Calibrate a single Hazard Rate Node from the corresponding Component
 	 * 
-	 * @param valParams Calibration Valuation Parameters
-	 * @param calibComp The Calibration Component
-	 * @param dblCalibValue The Value to be Calibrated to
-	 * @param strCalibMeasure The Calibration Measure
-	 * @param bFlat TRUE - Calibrate a Flat Curve across all Tenors
-	 * @param iCurveSegmentIndex The Curve Segment Index
+	 * @param valuationParams Calibration Valuation Parameters
+	 * @param calibrationComponent The Calibration Component
+	 * @param calibrationValue The Value to be Calibrated to
+	 * @param calibrationMeasure The Calibration Measure
+	 * @param flat TRUE - Calibrate a Flat Curve across all Tenors
+	 * @param curveSegmentIndex The Curve Segment Index
 	 * @param ebcc The Credit Curve to be calibrated
 	 * @param dc The discount curve to be bootstrapped
 	 * @param gc The Govvie Curve
@@ -217,28 +269,43 @@ public class NonlinearCurveBuilder {
 	 */
 
 	public static final boolean CreditCurve (
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.product.definition.Component calibComp,
-		final double dblCalibValue,
-		final java.lang.String strCalibMeasure,
-		final boolean bFlat,
-		final int iCurveSegmentIndex,
-		final org.drip.state.credit.ExplicitBootCreditCurve ebcc,
-		final org.drip.state.discount.MergedDiscountForwardCurve dc,
-		final org.drip.state.govvie.GovvieCurve gc,
-		final org.drip.param.pricer.CreditPricerParams pricerParams,
-		final org.drip.param.market.LatentStateFixingsContainer lsfc,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp,
-		final org.drip.param.definition.CalibrationParams cp)
+		final ValuationParams valuationParams,
+		final Component calibrationComponent,
+		final double calibrationValue,
+		final String calibrationMeasure,
+		final boolean flat,
+		final int curveSegmentIndex,
+		final ExplicitBootCreditCurve explicitBootCreditCurve,
+		final MergedDiscountForwardCurve mergedDiscountForwardCurve,
+		final GovvieCurve govvieCurve,
+		final CreditPricerParams creditPricerParams,
+		final LatentStateFixingsContainer latentStateFixingsContainer,
+		final ValuationCustomizationParams valuationCustomizationParams,
+		final CalibrationParams calibrationParams)
 	{
 		try {
-			org.drip.function.r1tor1solver.FixedPointFinderOutput rfop = new
-				org.drip.function.r1tor1solver.FixedPointFinderZheng (0., new CreditCurveCalibrator
-					(valParams, calibComp, dblCalibValue, strCalibMeasure, bFlat, iCurveSegmentIndex, ebcc,
-						dc, gc, pricerParams, lsfc, vcp, cp), true).findRoot();
+			FixedPointFinderOutput fixedPointFinderOutput = new FixedPointFinderZheng (
+				0.,
+				new CreditCurveCalibrator (
+					valuationParams,
+					calibrationComponent,
+					calibrationValue,
+					calibrationMeasure,
+					flat,
+					curveSegmentIndex,
+					explicitBootCreditCurve,
+					mergedDiscountForwardCurve,
+					govvieCurve,
+					creditPricerParams,
+					latentStateFixingsContainer,
+					valuationCustomizationParams,
+					calibrationParams
+				),
+				true
+			).findRoot();
 
-			return null != rfop && rfop.containsRoot();
-		} catch (java.lang.Exception e) {
+			return null != fixedPointFinderOutput && fixedPointFinderOutput.containsRoot();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -248,11 +315,11 @@ public class NonlinearCurveBuilder {
 	/**
 	 * Calibrate a Single Discount Curve Segment from the corresponding Component
 	 * 
-	 * @param valParams Calibration Valuation Parameters
-	 * @param comp The Calibration Component
-	 * @param dblCalibValue The Value to be Calibrated to
-	 * @param strCalibMeasure The Calibration Measure
-	 * @param bFlat TRUE - Calibrate a Flat Curve across all Tenors
+	 * @param valuationParams Calibration Valuation Parameters
+	 * @param component The Calibration Component
+	 * @param calibrationValue The Value to be Calibrated to
+	 * @param calibrationMeasure The Calibration Measure
+	 * @param flat TRUE - Calibrate a Flat Curve across all Tenors
 	 * @param iCurveSegmentIndex The Curve Segment Index
 	 * @param ebdc The discount curve to be bootstrapped
 	 * @param gc The Govvie Curve
@@ -261,63 +328,81 @@ public class NonlinearCurveBuilder {
 	 * 
 	 * @return The successfully calibrated State IR Point
 	 * 
-	 * @throws java.lang.Exception Thrown if the Bootstrapping is unsuccessful
+	 * @throws Exception Thrown if the Bootstrapping is unsuccessful
 	 */
 
 	public static final double DiscountCurveNode (
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.product.definition.Component comp,
-		final double dblCalibValue,
-		final java.lang.String strCalibMeasure,
-		final boolean bFlat,
-		final int iCurveSegmentIndex,
-		final org.drip.state.discount.ExplicitBootDiscountCurve ebdc,
-		final org.drip.state.govvie.GovvieCurve gc,
-		final org.drip.param.market.LatentStateFixingsContainer lsfc,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp)
-		throws java.lang.Exception
+		final ValuationParams valuationParams,
+		final Component component,
+		final double calibrationValue,
+		final String calibrationMeasure,
+		final boolean flat,
+		final int curveSegmentIndex,
+		final ExplicitBootDiscountCurve explicitBootDiscountCurve,
+		final GovvieCurve govvieCurve,
+		final LatentStateFixingsContainer latentStateFixingsContainer,
+		final ValuationCustomizationParams valuationCustomizationParams)
+		throws Exception
 	{
-		if (null == comp)
-			throw new java.lang.Exception ("NonlinearCurveBuilder::DiscountCurveNode => Invalid inputs!");
+		if (null == component) {
+			throw new Exception ("NonlinearCurveBuilder::DiscountCurveNode => Invalid inputs!");
+		}
 
-		org.drip.function.definition.R1ToR1 ofIRNode = new org.drip.function.definition.R1ToR1 (null) {
+		R1ToR1 nodeObjectiveFunction = new R1ToR1 (null) {
 			@Override public double evaluate (
-				final double dblValue)
-				throws java.lang.Exception
+				final double value)
+				throws Exception
 			{
-				if (!SetNode (ebdc, iCurveSegmentIndex, bFlat, dblValue))
-					throw new java.lang.Exception
-						("NonlinearCurveBuilder::DiscountCurveNode => Cannot set Value = " + dblValue +
-							" for node " + iCurveSegmentIndex);
+				if (!SetNode (explicitBootDiscountCurve, curveSegmentIndex, flat, value)) {
+					throw new Exception (
+						"NonlinearCurveBuilder::DiscountCurveNode => Cannot set Value = " + value +
+							" for node " + curveSegmentIndex
+					);
+				}
 
-				return dblCalibValue - comp.measureValue (valParams, new
-					org.drip.param.pricer.CreditPricerParams (1, new
-						org.drip.param.definition.CalibrationParams (strCalibMeasure, 0, null), true, 0),
-							org.drip.param.creator.MarketParamsBuilder.Create (ebdc, gc, null, null, null,
-								null, lsfc), vcp, strCalibMeasure);
+				return calibrationValue - component.measureValue (
+					valuationParams,
+					new CreditPricerParams (1, new CalibrationParams (calibrationMeasure, 0, null), true, 0),
+					MarketParamsBuilder.Create (
+						explicitBootDiscountCurve,
+						govvieCurve,
+						null,
+						null,
+						null,
+						null,
+						latentStateFixingsContainer
+					),
+					valuationCustomizationParams,
+					calibrationMeasure
+				);
 			}
 		};
 
-		org.drip.function.r1tor1solver.FixedPointFinderOutput rfop = new
-			org.drip.function.r1tor1solver.FixedPointFinderBrent (0., ofIRNode, true).findRoot();
+		FixedPointFinderOutput fixedPointFinderOutput = new FixedPointFinderBrent (
+			0.,
+			nodeObjectiveFunction,
+			true
+		).findRoot();
 
-		if (null == rfop || !rfop.containsRoot())
-			throw new java.lang.Exception
-				("NonlinearCurveBuilder::DiscountCurveNode => Cannot calibrate IR segment for node #" +
-					iCurveSegmentIndex);
+		if (null == fixedPointFinderOutput || !fixedPointFinderOutput.containsRoot()) {
+			throw new Exception (
+				"NonlinearCurveBuilder::DiscountCurveNode => Cannot calibrate IR segment for node #" +
+					curveSegmentIndex
+			);
+		}
 
-		return rfop.getRoot();
+		return fixedPointFinderOutput.getRoot();
 	}
 
 	/**
 	 * Boot-strap a Discount Curve from the set of calibration components
 	 * 
-	 * @param valParams Calibration Valuation Parameters
-	 * @param aCalibComp Array of the calibration components
-	 * @param adblCalibValue Array of Calibration Values
-	 * @param astrCalibMeasure Array of Calibration Measures
-	 * @param dblBump Amount to bump the Quotes by
-	 * @param bFlat TRUE - Calibrate a Flat Curve across all Tenors
+	 * @param valuationParams Calibration Valuation Parameters
+	 * @param calibrationComponentArray Array of the calibration components
+	 * @param calibrationValueArray Array of Calibration Values
+	 * @param calibrationMeasureArray Array of Calibration Measures
+	 * @param bump Amount to bump the Quotes by
+	 * @param flat TRUE - Calibrate a Flat Curve across all Tenors
 	 * @param ebdc The discount curve to be bootstrapped
 	 * @param gc The Govvie Curve
 	 * @param lsfc Latent State Fixings Container
@@ -327,33 +412,48 @@ public class NonlinearCurveBuilder {
 	 */
 
 	public static final boolean DiscountCurve (
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.product.definition.Component[] aCalibComp,
-		final double[] adblCalibValue,
-		final java.lang.String[] astrCalibMeasure,
-		final double dblBump,
-		final boolean bFlat,
-		final org.drip.state.discount.ExplicitBootDiscountCurve ebdc,
-		final org.drip.state.govvie.GovvieCurve gc,
-		final org.drip.param.market.LatentStateFixingsContainer lsfc,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp)
+		final ValuationParams valuationParams,
+		final Component[] calibrationComponentArray,
+		final double[] calibrationValueArray,
+		final String[] calibrationMeasureArray,
+		final double bump,
+		final boolean flat,
+		final ExplicitBootDiscountCurve explicitBootDiscountCurve,
+		final GovvieCurve govvieCurve,
+		final LatentStateFixingsContainer latentStateFixingsContainer,
+		final ValuationCustomizationParams valuationCustomizationParams)
 	{
-		if (null == adblCalibValue || null == aCalibComp || null == astrCalibMeasure ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblBump))
+		if (null == calibrationValueArray || null == calibrationComponentArray ||
+			null == calibrationMeasureArray || !NumberUtil.IsValid (bump)) {
 			return false;
+		}
 
-		int iNumCalibComp = aCalibComp.length;
+		int calibrationComponentCount = calibrationComponentArray.length;
 
-		if (0 == iNumCalibComp || adblCalibValue.length != iNumCalibComp || astrCalibMeasure.length !=
-			iNumCalibComp)
+		if (0 == calibrationComponentCount || calibrationValueArray.length != calibrationComponentCount ||
+			calibrationMeasureArray.length != calibrationComponentCount) {
 			return false;
+		}
 
-		for (int i = 0; i < iNumCalibComp; ++i) {
+		for (int i = 0; i < calibrationComponentCount; ++i) {
 			try {
-				if (!org.drip.numerical.common.NumberUtil.IsValid (DiscountCurveNode (valParams, aCalibComp[i],
-					adblCalibValue[i] + dblBump, astrCalibMeasure[i], bFlat, i, ebdc, gc, lsfc, vcp)))
+				if (!NumberUtil.IsValid (
+					DiscountCurveNode (
+						valuationParams,
+						calibrationComponentArray[i],
+						calibrationValueArray[i] + bump,
+						calibrationMeasureArray[i],
+						flat,
+						i,
+						explicitBootDiscountCurve,
+						govvieCurve,
+						latentStateFixingsContainer,
+						valuationCustomizationParams
+					)
+				)) {
 					return false;
-			} catch (java.lang.Exception e) {
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return false;
@@ -366,125 +466,159 @@ public class NonlinearCurveBuilder {
 	/**
 	 * Calibrate a Single Volatility Curve Segment from the corresponding Component
 	 * 
-	 * @param valParams Calibration Valuation Parameters
-	 * @param comp The Calibration Component
-	 * @param dblCalibValue The Value to be Calibrated to
-	 * @param strCalibMeasure The Calibration Measure
-	 * @param bFlat TRUE - Calibrate a Flat Curve across all Tenors
-	 * @param iCurveSegmentIndex The Curve Segment Index
-	 * @param ebvc The Volatility Curve to be bootstrapped
-	 * @param dc The Discount Curve
-	 * @param fc The Forward Curve
-	 * @param lsfc Latent State Fixings Container
-	 * @param vcp Valuation Customization Parameters
+	 * @param valuationParams Calibration Valuation Parameters
+	 * @param calibrationComponent The Calibration Component
+	 * @param calibrationValue The Value to be Calibrated to
+	 * @param calibrationMeasure The Calibration Measure
+	 * @param flat TRUE - Calibrate a Flat Curve across all Tenors
+	 * @param curveSegmentIndex The Curve Segment Index
+	 * @param explicitBootVolatilityCurve The Volatility Curve to be bootstrapped
+	 * @param mergedDiscountForwardCurve The Discount Curve
+	 * @param forwardCurve The Forward Curve
+	 * @param latentStateFixingsContainer Latent State Fixings Container
+	 * @param valuationCustomizationParams Valuation Customization Parameters
 	 * 
 	 * @return The successfully calibrated State IR Point
 	 * 
-	 * @throws java.lang.Exception Thrown if the Bootstrapping is unsuccessful
+	 * @throws Exception Thrown if the Bootstrapping is unsuccessful
 	 */
 
 	public static final double VolatilityCurveNode (
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.product.definition.Component comp,
-		final double dblCalibValue,
-		final java.lang.String strCalibMeasure,
-		final boolean bFlat,
-		final int iCurveSegmentIndex,
-		final org.drip.state.volatility.ExplicitBootVolatilityCurve ebvc,
-		final org.drip.state.discount.MergedDiscountForwardCurve dc,
-		final org.drip.state.forward.ForwardCurve fc,
-		final org.drip.param.market.LatentStateFixingsContainer lsfc,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp)
-		throws java.lang.Exception
+		final ValuationParams valuationParams,
+		final Component calibrationComponent,
+		final double calibrationValue,
+		final String calibrationMeasure,
+		final boolean flat,
+		final int curveSegmentIndex,
+		final ExplicitBootVolatilityCurve explicitBootVolatilityCurve,
+		final MergedDiscountForwardCurve mergedDiscountForwardCurve,
+		final ForwardCurve forwardCurve,
+		final LatentStateFixingsContainer latentStateFixingsContainer,
+		final ValuationCustomizationParams valuationCustomizationParams)
+		throws Exception
 	{
-		if (null == comp)
-			throw new java.lang.Exception ("NonlinearCurveBuilder::VolatilityCurveNode => Invalid inputs!");
+		if (null == calibrationComponent) {
+			throw new Exception ("NonlinearCurveBuilder::VolatilityCurveNode => Invalid inputs!");
+		}
 
-		org.drip.function.definition.R1ToR1 r1r1VolMetric = new org.drip.function.definition.R1ToR1 (null) {
+		R1ToR1 r1r1VolatilityMetric = new R1ToR1 (null) {
 			@Override public double evaluate (
-				final double dblValue)
-				throws java.lang.Exception
+				final double value)
+				throws Exception
 			{
-				if (!SetNode (ebvc, iCurveSegmentIndex, bFlat, dblValue))
-					throw new java.lang.Exception
-						("NonlinearCurveBuilder::VolatilityCurveNode => Cannot set Value = " + dblValue +
-							" for node " + iCurveSegmentIndex);
+				if (!SetNode (explicitBootVolatilityCurve, curveSegmentIndex, flat, value)) {
+					throw new Exception (
+						"NonlinearCurveBuilder::VolatilityCurveNode => Cannot set Value = " + value +
+							" for node " + curveSegmentIndex
+						);
+				}
 
-				org.drip.param.market.CurveSurfaceQuoteContainer csqs =
-					org.drip.param.creator.MarketParamsBuilder.Create (dc, null, null, null, null, null,
-						lsfc);
+				CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = MarketParamsBuilder.Create (
+					mergedDiscountForwardCurve,
+					null,
+					null,
+					null,
+					null,
+					null,
+					latentStateFixingsContainer
+				);
 
-				if (null == csqs || !csqs.setForwardState (fc) || !csqs.setForwardVolatility (ebvc))
-					throw new java.lang.Exception
-						("NonlinearCurveBuilder::VolatilityCurveNode => Cannot set Value = " + dblValue +
-							" for node " + iCurveSegmentIndex);
+				if (null == curveSurfaceQuoteContainer ||
+					!curveSurfaceQuoteContainer.setForwardState (forwardCurve) ||
+					!curveSurfaceQuoteContainer.setForwardVolatility (explicitBootVolatilityCurve)) {
+					throw new Exception (
+						"NonlinearCurveBuilder::VolatilityCurveNode => Cannot set Value = " + value +
+							" for node " + curveSegmentIndex
+						);
+				}
 
-				return dblCalibValue - comp.measureValue (valParams, new
-					org.drip.param.pricer.CreditPricerParams (1, new
-						org.drip.param.definition.CalibrationParams (strCalibMeasure, 0, null), true, 0),
-							csqs, vcp, strCalibMeasure);
+				return calibrationValue - calibrationComponent.measureValue (
+					valuationParams,
+					new CreditPricerParams (1, new CalibrationParams (calibrationMeasure, 0, null), true, 0),
+					curveSurfaceQuoteContainer,
+					valuationCustomizationParams,
+					calibrationMeasure
+				);
 			}
 		};
 
-		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = (new
-			org.drip.function.r1tor1solver.FixedPointFinderBrent (0., r1r1VolMetric, true)).findRoot
-				(org.drip.function.r1tor1solver.InitializationHeuristics.FromHardSearchEdges (0.00001, 5.));
+		FixedPointFinderOutput fixedPointFinderOutput = (
+			new FixedPointFinderBrent (0., r1r1VolatilityMetric, true)
+		).findRoot (InitializationHeuristics.FromHardSearchEdges (0.00001, 5.));
 
-		if (null == fpfo || !fpfo.containsRoot())
-			throw new java.lang.Exception
-				("NonlinearCurveBuilder::VolatilityCurveNode => Cannot calibrate segment for node #" +
-					iCurveSegmentIndex + " => " + dblCalibValue);
+		if (null == fixedPointFinderOutput || !fixedPointFinderOutput.containsRoot()) {
+			throw new Exception (
+				"NonlinearCurveBuilder::VolatilityCurveNode => Cannot calibrate segment for node #" +
+					curveSegmentIndex + " => " + calibrationValue
+				);
+		}
 
-		return fpfo.getRoot();
+		return fixedPointFinderOutput.getRoot();
 	}
 
 	/**
 	 * Boot-strap a Volatility Curve from the set of calibration components
 	 * 
-	 * @param valParams Calibration Valuation Parameters
-	 * @param aCalibComp Array of the calibration components
-	 * @param adblCalibValue Array of Calibration Values
-	 * @param astrCalibMeasure Array of Calibration Measures
-	 * @param dblBump Amount to bump the Quotes by
-	 * @param bFlat TRUE - Calibrate a Flat Curve across all Tenors
-	 * @param ebvc The Volatility Curve to be bootstrapped
-	 * @param dc The Discount Curve
-	 * @param fc The Forward Curve
-	 * @param lsfc Latent State Fixings Container
-	 * @param vcp Valuation Customization Parameters
+	 * @param valuationParams Calibration Valuation Parameters
+	 * @param calibrationComponentArray Array of the calibration components
+	 * @param calibrationValueArray Array of Calibration Values
+	 * @param calibrationMeasureArray Array of Calibration Measures
+	 * @param bump Amount to bump the Quotes by
+	 * @param flat TRUE - Calibrate a Flat Curve across all Tenors
+	 * @param explicitBootVolatilityCurve The Volatility Curve to be bootstrapped
+	 * @param mergedDiscountForwardCurve The Discount Curve
+	 * @param forwardCurve The Forward Curve
+	 * @param latentStateFixingsContainer Latent State Fixings Container
+	 * @param valuationCustomizationParams Valuation Customization Parameters
 	 * 
 	 * @return TRUE - Bootstrapping was successful
 	 */
 
 	public static final boolean VolatilityCurve (
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.product.definition.Component[] aCalibComp,
-		final double[] adblCalibValue,
-		final java.lang.String[] astrCalibMeasure,
-		final double dblBump,
-		final boolean bFlat,
-		final org.drip.state.volatility.ExplicitBootVolatilityCurve ebvc,
-		final org.drip.state.discount.MergedDiscountForwardCurve dc,
-		final org.drip.state.forward.ForwardCurve fc,
-		final org.drip.param.market.LatentStateFixingsContainer lsfc,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp)
+		final ValuationParams valuationParams,
+		final Component[] calibrationComponentArray,
+		final double[] calibrationValueArray,
+		final String[] calibrationMeasureArray,
+		final double bump,
+		final boolean flat,
+		final ExplicitBootVolatilityCurve explicitBootVolatilityCurve,
+		final MergedDiscountForwardCurve mergedDiscountForwardCurve,
+		final ForwardCurve forwardCurve,
+		final LatentStateFixingsContainer latentStateFixingsContainer,
+		final ValuationCustomizationParams valuationCustomizationParams)
 	{
-		if (null == adblCalibValue || null == aCalibComp || null == astrCalibMeasure ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblBump))
+		if (null == calibrationValueArray || null == calibrationComponentArray ||
+			null == calibrationMeasureArray || !NumberUtil.IsValid (bump)) {
 			return false;
+		}
 
-		int iNumCalibComp = aCalibComp.length;
+		int calibrationComponentCount = calibrationComponentArray.length;
 
-		if (0 == iNumCalibComp || adblCalibValue.length != iNumCalibComp || astrCalibMeasure.length !=
-			iNumCalibComp)
+		if (0 == calibrationComponentCount || calibrationValueArray.length != calibrationComponentCount ||
+			calibrationMeasureArray.length != calibrationComponentCount) {
 			return false;
+		}
 
-		for (int i = 0; i < iNumCalibComp; ++i) {
+		for (int i = 0; i < calibrationComponentCount; ++i) {
 			try {
-				if (!org.drip.numerical.common.NumberUtil.IsValid (VolatilityCurveNode (valParams, aCalibComp[i],
-					adblCalibValue[i] + dblBump, astrCalibMeasure[i], bFlat, i, ebvc, dc, fc, lsfc, vcp)))
+				if (!NumberUtil.IsValid (
+					VolatilityCurveNode (
+						valuationParams,
+						calibrationComponentArray[i],
+						calibrationValueArray[i] + bump,
+						calibrationMeasureArray[i],
+						flat,
+						i,
+						explicitBootVolatilityCurve,
+						mergedDiscountForwardCurve,
+						forwardCurve,
+						latentStateFixingsContainer,
+						valuationCustomizationParams
+					)
+				)) {
 					return false;
-			} catch (java.lang.Exception e) {
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return false;
