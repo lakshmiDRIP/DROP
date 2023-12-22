@@ -140,13 +140,13 @@ public class MultilateralFlatForwardCurve extends org.drip.state.nonlinear.FlatF
 		if (iEpochDate >= iDate)
 			throw new java.lang.Exception ("MultilateralFlatForwardCurve::rate => Invalid Inputs");
 
-		return discreteCompounding() ? ((1. / df (iDate)) - 1.) / yearFract (
+		return discreteCompounding() ? ((1. / df (iDate)) - 1.) / yearFraction (
 			iEpochDate,
 			iDate
 		) : org.drip.analytics.support.Helper.DF2Yield (
 			compoundingFrequency(),
 			df (iDate),
-			yearFract (
+			yearFraction (
 				iEpochDate,
 				iDate
 			)
@@ -180,13 +180,13 @@ public class MultilateralFlatForwardCurve extends org.drip.state.nonlinear.FlatF
 		if (iEpochDate > iDate1 || iDate1 >= iDate2)
 			throw new java.lang.Exception ("MultilateralFlatForwardCurve::rate => Invalid Inputs");
 
-		return discreteCompounding() ? ((df (iDate1) / df (iDate2)) - 1.) / yearFract (
+		return discreteCompounding() ? ((df (iDate1) / df (iDate2)) - 1.) / yearFraction (
 			iDate1,
 			iDate2
 		) : org.drip.analytics.support.Helper.DF2Yield (
 			compoundingFrequency(),
 			df (iDate1) / df (iDate2),
-			yearFract (
+			yearFraction (
 				iDate1,
 				iDate2
 			)

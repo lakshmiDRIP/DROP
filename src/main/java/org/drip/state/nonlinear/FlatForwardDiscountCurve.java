@@ -1,11 +1,34 @@
 
 package org.drip.state.nonlinear;
 
+import java.util.Map;
+
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.daycount.Convention;
+import org.drip.analytics.definition.Curve;
+import org.drip.analytics.definition.LatentStateStatic;
+import org.drip.analytics.input.BootCurveConstructionInput;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.analytics.support.Helper;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.differentiation.WengertJacobian;
+import org.drip.param.definition.ManifestMeasureTweak;
+import org.drip.param.market.LatentStateFixingsContainer;
+import org.drip.param.valuation.ValuationCustomizationParams;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.state.discount.ExplicitBootDiscountCurve;
+import org.drip.state.forward.ForwardRateEstimator;
+import org.drip.state.identifier.ForwardLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -119,82 +142,118 @@ package org.drip.state.nonlinear;
  *  	</li>
  *  </ul>
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear/README.md">Nonlinear (i.e., Boot) Latent State Construction</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear/README.md">Nonlinear (i.e., Boot) Latent State Construction</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBootDiscountCurve {
-	private int _aiDate[] = null;
-	private int _iCompoundingFreq = -1;
-	private double _adblForwardRate[] = null;
-	private boolean _bDiscreteCompounding = false;
-	private java.lang.String _strCompoundingDayCount = "";
+public class FlatForwardDiscountCurve extends ExplicitBootDiscountCurve
+{
+	private int _dateArray[] = null;
+	private int _compoundingFrequency = -1;
+	private String _compoundingDayCount = "";
+	private double _forwardRateArray[] = null;
+	private boolean _discreteCompounding = false;
 
-	protected double yearFract (
-		final int iStartDate,
-		final int iEndDate)
-		throws java.lang.Exception
+	protected double yearFraction (
+		final int startDate,
+		final int endDate)
+		throws Exception
 	{
-		return _bDiscreteCompounding ? org.drip.analytics.daycount.Convention.YearFraction (iStartDate,
-			iEndDate, _strCompoundingDayCount, false, null, currency()) : 1. * (iEndDate - iStartDate) /
-				365.25;
+		return _discreteCompounding ? Convention.YearFraction (
+			startDate,
+			endDate,
+			_compoundingDayCount,
+			false,
+			null,
+			currency()
+		) : 1. * (endDate - startDate) / 365.25;
 	}
 
 	private FlatForwardDiscountCurve shiftManifestMeasure (
-		final double[] adblShift)
+		final double[] shiftArray)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (adblShift) || null == _ccis) return null;
+		if (!NumberUtil.IsValid (shiftArray) || null == _ccis) {
+			return null;
+		}
 
-		org.drip.product.definition.CalibratableComponent[] aCalibInst = _ccis.components();
+		CalibratableComponent[] calibratableComponentArray = _ccis.components();
 
-		org.drip.param.valuation.ValuationParams valParam = _ccis.valuationParameter();
+		ValuationParams valuationParams = _ccis.valuationParameter();
 
-		org.drip.param.valuation.ValuationCustomizationParams quotingParam = _ccis.quotingParameter();
+		ValuationCustomizationParams valuationCustomizationParams = _ccis.quotingParameter();
 
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>
-			mapQuote = _ccis.quoteMap();
+		CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>> quoteDoubleMap = _ccis.quoteMap();
 
-		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String[]> mapMeasures =
-			_ccis.measures();
+		CaseInsensitiveTreeMap<String[]> measureArrayMap = _ccis.measures();
 
-		org.drip.param.market.LatentStateFixingsContainer lsfc = _ccis.fixing();
+		LatentStateFixingsContainer latentStateFixingsContainer = _ccis.fixing();
 
-		int iNumComp = aCalibInst.length;
+		int calibratableComponentCount = calibratableComponentArray.length;
 
-		if (adblShift.length != iNumComp) return null;
+		if (shiftArray.length != calibratableComponentCount) {
+			return null;
+		}
 
 		try {
-			FlatForwardDiscountCurve ffdc = new FlatForwardDiscountCurve (new
-				org.drip.analytics.date.JulianDate (_iEpochDate), _strCurrency, _aiDate, _adblForwardRate,
-					_bDiscreteCompounding, _strCompoundingDayCount, _iCompoundingFreq);
+			FlatForwardDiscountCurve flatForwardDiscountCurve = new FlatForwardDiscountCurve (
+				new JulianDate (_iEpochDate),
+				_strCurrency,
+				_dateArray,
+				_forwardRateArray,
+				_discreteCompounding,
+				_compoundingDayCount,
+				_compoundingFrequency
+			);
 
-			for (int i = 0; i < iNumComp; ++i) {
-				java.lang.String strInstrumentCode = aCalibInst[i].primaryCode();
+			for (int i = 0; i < calibratableComponentCount; ++i) {
+				CaseInsensitiveTreeMap<Double> instrumentQuoteMap = quoteDoubleMap.get
+					(calibratableComponentArray[i].primaryCode());
 
-				org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapInstrumentQuote =
-					mapQuote.get (aCalibInst[i].primaryCode());
+				String calibrationMeasure = measureArrayMap.get
+					(calibratableComponentArray[i].primaryCode())[0];
 
-				java.lang.String strCalibMeasure = mapMeasures.get (strInstrumentCode)[0];
-
-				if (null == mapInstrumentQuote || !mapInstrumentQuote.containsKey (strCalibMeasure))
+				if (null == instrumentQuoteMap || !instrumentQuoteMap.containsKey (calibrationMeasure)) {
 					return null;
+				}
 
-				org.drip.state.nonlinear.NonlinearCurveBuilder.DiscountCurveNode (valParam, aCalibInst[i],
-					mapInstrumentQuote.get (strCalibMeasure) + adblShift[i], strCalibMeasure, false, i, ffdc,
-						null, lsfc, quotingParam);
+				NonlinearCurveBuilder.DiscountCurveNode (
+					valuationParams,
+					calibratableComponentArray[i],
+					instrumentQuoteMap.get (calibrationMeasure) + shiftArray[i],
+					calibrationMeasure,
+					false,
+					i,
+					flatForwardDiscountCurve,
+					null,
+					latentStateFixingsContainer,
+					valuationCustomizationParams
+				);
 			}
 
-			return ffdc.setCCIS (new org.drip.analytics.input.BootCurveConstructionInput (valParam,
-				quotingParam, aCalibInst, mapQuote, mapMeasures, lsfc)) ? ffdc : null;
-		} catch (java.lang.Exception e) {
+			return flatForwardDiscountCurve.setCCIS (
+				new BootCurveConstructionInput (
+					valuationParams,
+					valuationCustomizationParams,
+					calibratableComponentArray,
+					quoteDoubleMap,
+					measureArrayMap,
+					latentStateFixingsContainer
+				)
+			) ? flatForwardDiscountCurve : null;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -204,65 +263,67 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 	/**
 	 * Boot-strap a constant forward discount curve from an array of dates and discount rates
 	 * 
-	 * @param dtStart Epoch Date
-	 * @param strCurrency Currency
-	 * @param aiDate Array of Dates
-	 * @param adblForwardRate Array of Forward Rates
-	 * @param bDiscreteCompounding TRUE - Compounding is Discrete
-	 * @param strCompoundingDayCount Day Count Convention to be used for Discrete Compounding
-	 * @param iCompoundingFreq Frequency to be used for Discrete Compounding
+	 * @param startDate Epoch Date
+	 * @param currency Currency
+	 * @param dateArray Array of Dates
+	 * @param forwardRateArray Array of Forward Rates
+	 * @param discreteCompounding TRUE - Compounding is Discrete
+	 * @param compoundingDayCount Day Count Convention to be used for Discrete Compounding
+	 * @param compoundingFrequency Frequency to be used for Discrete Compounding
 	 * 
-	 * @throws java.lang.Exception Thrown if the curve cannot be created
+	 * @throws Exception Thrown if the curve cannot be created
 	 */
 
 	public FlatForwardDiscountCurve (
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final int[] aiDate,
-		final double[] adblForwardRate,
-		final boolean bDiscreteCompounding,
-		final java.lang.String strCompoundingDayCount,
-		final int iCompoundingFreq)
-		throws java.lang.Exception
+		final JulianDate startDate,
+		final String currency,
+		final int[] dateArray,
+		final double[] forwardRateArray,
+		final boolean discreteCompounding,
+		final String compoundingDayCount,
+		final int compoundingFrequency)
+		throws Exception
 	{
 		super (
-			dtStart.julian(),
-			strCurrency
+			startDate.julian(),
+			currency
 		);
 
-		if (null == aiDate || null == adblForwardRate)
-			throw new java.lang.Exception ("FlatForwardDiscountCurve ctr: Invalid inputs");
+		if (null == dateArray || null == forwardRateArray) {
+			throw new Exception ("FlatForwardDiscountCurve ctr: Invalid inputs");
+		}
 
-		int iNumDate = aiDate.length;
+		int dateArrayCount = dateArray.length;
 
-		if (0 == iNumDate || iNumDate != adblForwardRate.length)
-			throw new java.lang.Exception ("FlatForwardDiscountCurve ctr: Invalid inputs");
+		if (0 == dateArrayCount || dateArrayCount != forwardRateArray.length) {
+			throw new Exception ("FlatForwardDiscountCurve ctr: Invalid inputs");
+		}
 
-		_aiDate = new int[iNumDate];
-		_iCompoundingFreq = iCompoundingFreq;
-		_adblForwardRate = new double[iNumDate];
-		_bDiscreteCompounding = bDiscreteCompounding;
-		_strCompoundingDayCount = strCompoundingDayCount;
+		_dateArray = new int[dateArrayCount];
+		_compoundingDayCount = compoundingDayCount;
+		_discreteCompounding = discreteCompounding;
+		_compoundingFrequency = compoundingFrequency;
+		_forwardRateArray = new double[dateArrayCount];
 
-		for (int i = 0; i < iNumDate; ++i) {
-			_aiDate[i] = aiDate[i];
-			_adblForwardRate[i] = adblForwardRate[i];
+		for (int i = 0; i < dateArrayCount; ++i) {
+			_dateArray[i] = dateArray[i];
+			_forwardRateArray[i] = forwardRateArray[i];
 		}
 	}
 
 	protected FlatForwardDiscountCurve (
-		final FlatForwardDiscountCurve dc)
+		final FlatForwardDiscountCurve flatForwardDiscountCurve)
 		throws java.lang.Exception
 	{
-		super (dc.epoch().julian(), dc.currency());
+		super (flatForwardDiscountCurve.epoch().julian(), flatForwardDiscountCurve.currency());
 
-		_aiDate = dc._aiDate;
-		_strCurrency = dc._strCurrency;
-		_iEpochDate = dc._iEpochDate;
-		_adblForwardRate = dc._adblForwardRate;
-		_iCompoundingFreq = dc._iCompoundingFreq;
-		_bDiscreteCompounding = dc._bDiscreteCompounding;
-		_strCompoundingDayCount = dc._strCompoundingDayCount;
+		_dateArray = flatForwardDiscountCurve._dateArray;
+		_iEpochDate = flatForwardDiscountCurve._iEpochDate;
+		_strCurrency = flatForwardDiscountCurve._strCurrency;
+		_forwardRateArray = flatForwardDiscountCurve._forwardRateArray;
+		_compoundingDayCount = flatForwardDiscountCurve._compoundingDayCount;
+		_discreteCompounding = flatForwardDiscountCurve._discreteCompounding;
+		_compoundingFrequency = flatForwardDiscountCurve._compoundingFrequency;
 	}
 
 	/**
@@ -273,7 +334,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 
 	public int[] dates()
 	{
-		return _aiDate;
+		return _dateArray;
 	}
 
 	/**
@@ -284,7 +345,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 
 	public double[] nodeValues()
 	{
-		return _adblForwardRate;
+		return _forwardRateArray;
 	}
 
 	/**
@@ -295,7 +356,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 
 	public boolean discreteCompounding()
 	{
-		return _bDiscreteCompounding;
+		return _discreteCompounding;
 	}
 
 	/**
@@ -306,7 +367,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 
 	public int compoundingFrequency()
 	{
-		return _iCompoundingFreq;
+		return _compoundingFrequency;
 	}
 
 	/**
@@ -315,159 +376,187 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 	 * @return The Compounding Day Count
 	 */
 
-	public java.lang.String compoundingDayCount()
+	public String compoundingDayCount()
 	{
-		return _strCompoundingDayCount;
+		return _compoundingDayCount;
 	}
 
 	@Override public double df (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		if (iDate <= _iEpochDate) return 1.;
-
-		int i = 0;
-		double dblDF = 1.;
-		double dblExpArg = 0.;
-		int iStartDate = _iEpochDate;
-		int iNumDate = _aiDate.length;
-
-		while (i < iNumDate && (int) iDate >= (int) _aiDate[i]) {
-			if (_bDiscreteCompounding)
-				dblDF *= java.lang.Math.pow (1. + (_adblForwardRate[i] / _iCompoundingFreq), -1. * yearFract
-					(iStartDate, _aiDate[i]) * _iCompoundingFreq);
-				// dblDF /= (1. + (_adblForwardRate[i] * yearFract (iStartDate, _aiDate[i])));
-			else
-				dblExpArg -= _adblForwardRate[i] * yearFract (iStartDate, _aiDate[i]);
-
-			iStartDate = _aiDate[i++];
+		if (date <= _iEpochDate) {
+			return 1.;
 		}
 
-		if (i >= iNumDate) i = iNumDate - 1;
+		int i = 0;
+		double discountFactor = 1.;
+		int startDate = _iEpochDate;
+		double exponentArgument = 0.;
+		int dateArrayCount = _dateArray.length;
 
-		if (_bDiscreteCompounding)
-			dblDF *= java.lang.Math.pow (1. + (_adblForwardRate[i] / _iCompoundingFreq), -1. * yearFract
-				(iStartDate, iDate) * _iCompoundingFreq);
-			// dblDF /= (1. + (_adblForwardRate[i] * yearFract (iStartDate, iDate)));
-		else
-			dblExpArg -= _adblForwardRate[i] * yearFract (iStartDate, iDate);
+		while (i < dateArrayCount && (int) date >= (int) _dateArray[i]) {
+			if (_discreteCompounding) {
+				discountFactor *= Math.pow (
+					1. + (_forwardRateArray[i] / _compoundingFrequency),
+					-1. * yearFraction (startDate, _dateArray[i]) * _compoundingFrequency
+				);
+			} else {
+				exponentArgument -= _forwardRateArray[i] * yearFraction (startDate, _dateArray[i]);
+			}
 
-		return (_bDiscreteCompounding ? dblDF : java.lang.Math.exp (dblExpArg)) * turnAdjust (_iEpochDate,
-			iDate);
+			startDate = _dateArray[i++];
+		}
+
+		if (i >= dateArrayCount) {
+			i = dateArrayCount - 1;
+		}
+
+		if (_discreteCompounding) {
+			discountFactor *= Math.pow (
+				1. + (_forwardRateArray[i] / _compoundingFrequency),
+				-1. * yearFraction (startDate, date) * _compoundingFrequency
+			);
+		} else {
+			exponentArgument -= _forwardRateArray[i] * yearFraction (startDate, date);
+		}
+
+		return (_discreteCompounding ? discountFactor : Math.exp (exponentArgument)) * turnAdjust (
+			_iEpochDate,
+			date
+		);
 	}
 
 	@Override public double forward (
-		final int iDate1,
-		final int iDate2)
-		throws java.lang.Exception
+		final int date1,
+		final int date2)
+		throws Exception
 	{
-		int iStartDate = epoch().julian();
+		int startDate = epoch().julian();
 
-		if (iDate1 < iStartDate || iDate2 < iStartDate) return 0.;
-
-		return 365.25 / (iDate2 - iDate1) * java.lang.Math.log (df (iDate1) / df (iDate2));
+		return date1 < startDate || date2 < startDate ? 0. :
+			365.25 / (date2 - date1) * Math.log (df (date1) / df (date2));
 	}
 
 	@Override public double zero (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		double iStartDate = epoch().julian();
+		double startDate = epoch().julian();
 
-		if (iDate < iStartDate) return 0.;
-
-		return -365.25 / (iDate - iStartDate) * java.lang.Math.log (df (iDate));
+		return date < startDate ? 0. : -365.25 / (date - startDate) * Math.log (df (date));
 	}
 
-	@Override public org.drip.state.forward.ForwardRateEstimator forwardRateEstimator (
-		final int iDate,
-		final org.drip.state.identifier.ForwardLabel fri)
+	@Override public ForwardRateEstimator forwardRateEstimator (
+		final int date,
+		final ForwardLabel forwardLabel)
 	{
 		return null;
 	}
 
-	@Override public java.util.Map<java.lang.Integer, java.lang.Double> canonicalTruthness (
-		final java.lang.String strLatentQuantificationMetric)
+	@Override public Map<Integer, Double> canonicalTruthness (
+		final String latentQuantificationMetric)
 	{
 		return null;
 	}
 
 	@Override public FlatForwardDiscountCurve parallelShiftManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final double dblShift)
+		final String manifestMeasure,
+		final double shift)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift) || null == _ccis) return null;
+		if (!NumberUtil.IsValid (shift) || null == _ccis) {
+			return null;
+		}
 
-		org.drip.product.definition.CalibratableComponent[] aCalibInst = _ccis.components();
+		CalibratableComponent[] calibratableComponentArray = _ccis.components();
 
-		int iNumComp = aCalibInst.length;
-		double[] adblShift = new double[iNumComp];
+		int calibratableComponentCount = calibratableComponentArray.length;
+		double[] shiftArray = new double[calibratableComponentCount];
 
-		for (int i = 0; i < iNumComp; ++i)
-			adblShift[i] = dblShift;
+		for (int i = 0; i < calibratableComponentCount; ++i) {
+			shiftArray[i] = shift;
+		}
 
-		return shiftManifestMeasure (adblShift);
+		return shiftManifestMeasure (shiftArray);
 	}
 
 	@Override public FlatForwardDiscountCurve shiftManifestMeasure (
-		final int iSpanIndex,
-		final java.lang.String strManifestMeasure,
-		final double dblShift)
+		final int spanIndex,
+		final String manifestMeasure,
+		final double shift)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift) || null == _ccis) return null;
+		if (!NumberUtil.IsValid (shift) || null == _ccis) {
+			return null;
+		}
 
-		org.drip.product.definition.CalibratableComponent[] aCalibInst = _ccis.components();
+		CalibratableComponent[] calibratableComponentArray = _ccis.components();
 
-		int iNumComp = aCalibInst.length;
-		double[] adblShift = new double[iNumComp];
+		int calibratableComponentCount = calibratableComponentArray.length;
+		double[] shiftArray = new double[calibratableComponentCount];
 
-		if (iSpanIndex >= iNumComp) return null;
+		if (spanIndex >= calibratableComponentCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumComp; ++i)
-			adblShift[i] = i == iSpanIndex ? dblShift : 0.;
+		for (int i = 0; i < calibratableComponentCount; ++i) {
+			shiftArray[i] = i == spanIndex ? shift : 0.;
+		}
 
-		return shiftManifestMeasure (adblShift);
+		return shiftManifestMeasure (shiftArray);
 	}
 
-	@Override public org.drip.state.discount.ExplicitBootDiscountCurve customTweakManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final org.drip.param.definition.ManifestMeasureTweak rvtp)
+	@Override public ExplicitBootDiscountCurve customTweakManifestMeasure (
+		final String manifestMeasure,
+		final ManifestMeasureTweak manifestMeasureTweak)
 	{
-		return shiftManifestMeasure (org.drip.analytics.support.Helper.TweakManifestMeasure
-			(_adblForwardRate, rvtp));
+		return shiftManifestMeasure (Helper.TweakManifestMeasure (_forwardRateArray, manifestMeasureTweak));
 	}
 
 	@Override public FlatForwardDiscountCurve parallelShiftQuantificationMetric (
-		final double dblShift)
+		final double shift)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift)) return null;
+		if (!NumberUtil.IsValid (shift)) {
+			return null;
+		}
 
-		int iNumDate = _adblForwardRate.length;
-		double[] adblForwardRate = new double[iNumDate];
+		int dateCount = _forwardRateArray.length;
+		double[] forwardRateArray = new double[dateCount];
 
-		for (int i = 0; i < iNumDate; ++i)
-			adblForwardRate[i] = _adblForwardRate[i] + dblShift;
+		for (int i = 0; i < dateCount; ++i) {
+			forwardRateArray[i] = _forwardRateArray[i] + shift;
+		}
 
 		try {
-			return new FlatForwardDiscountCurve (new org.drip.analytics.date.JulianDate (_iEpochDate),
-				_strCurrency, _aiDate, adblForwardRate, _bDiscreteCompounding, _strCompoundingDayCount,
-					_iCompoundingFreq);
-		} catch (java.lang.Exception e) {
+			return new FlatForwardDiscountCurve (
+				new JulianDate (_iEpochDate),
+				_strCurrency,
+				_dateArray,
+				forwardRateArray,
+				_discreteCompounding,
+				_compoundingDayCount,
+				_compoundingFrequency
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return null;
 	}
 
-	@Override public org.drip.analytics.definition.Curve customTweakQuantificationMetric (
-		final org.drip.param.definition.ManifestMeasureTweak rvtp)
+	@Override public Curve customTweakQuantificationMetric (
+		final ManifestMeasureTweak manifestMeasureTweak)
 	{
 		try {
-			return new FlatForwardDiscountCurve (new org.drip.analytics.date.JulianDate (_iEpochDate),
-				_strCurrency, _aiDate, org.drip.analytics.support.Helper.TweakManifestMeasure
-					(_adblForwardRate, rvtp), _bDiscreteCompounding, _strCompoundingDayCount,
-						_iCompoundingFreq);
-		} catch (java.lang.Exception e) {
+			return new FlatForwardDiscountCurve (
+				new JulianDate (_iEpochDate),
+				_strCurrency,
+				_dateArray,
+				Helper.TweakManifestMeasure (_forwardRateArray, manifestMeasureTweak),
+				_discreteCompounding,
+				_compoundingDayCount,
+				_compoundingFrequency
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -475,104 +564,131 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 	}
 
 	@Override public FlatForwardDiscountCurve createBasisRateShiftedCurve (
-		final int[] aiDate,
-		final double[] adblBasis)
+		final int[] dateArray,
+		final double[] basisArray)
 	{
-		if (null == aiDate || null == adblBasis) return null;
+		if (null == dateArray || null == basisArray) {
+			return null;
+		}
 
-		int iNumDate = aiDate.length;
+		int dateArrayCount = dateArray.length;
 
-		if (0 == iNumDate || iNumDate != adblBasis.length) return null;
+		if (0 == dateArrayCount || dateArrayCount != basisArray.length) {
+			return null;
+		}
 
-		double[] adblShiftedRate = new double[iNumDate];
+		double[] shiftedRateArray = new double[dateArrayCount];
 
 		try {
-			for (int i = 0; i < aiDate.length; ++i)
-				adblShiftedRate[i] = zero (aiDate[i]) + adblBasis[i];
+			for (int i = 0; i < dateArray.length; ++i) {
+				shiftedRateArray[i] = zero (dateArray[i]) + basisArray[i];
+			}
 
-			return new FlatForwardDiscountCurve (new org.drip.analytics.date.JulianDate (_iEpochDate),
-				_strCurrency, aiDate, adblShiftedRate, _bDiscreteCompounding, _strCompoundingDayCount,
-					_iCompoundingFreq);
-		} catch (java.lang.Exception e) {
+			return new FlatForwardDiscountCurve (
+				new JulianDate (_iEpochDate),
+				_strCurrency,
+				dateArray,
+				shiftedRateArray,
+				_discreteCompounding,
+				_compoundingDayCount,
+				_compoundingFrequency
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return null;
 	}
 
-	@Override public java.lang.String latentStateQuantificationMetric()
+	@Override public String latentStateQuantificationMetric()
 	{
-		return org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE;
+		return LatentStateStatic.DISCOUNT_QM_ZERO_RATE;
 	}
 
-	@Override public org.drip.numerical.differentiation.WengertJacobian jackDDFDManifestMeasure (
-		final int iDate,
-		final java.lang.String strManifestMeasure)
+	@Override public WengertJacobian jackDDFDManifestMeasure (
+		final int date,
+		final String manifestMeasure)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (iDate)) return null;
+		if (!NumberUtil.IsValid (date)) {
+			return null;
+		}
 
 		int i = 0;
-		double dblDF = java.lang.Double.NaN;
-		double iStartDate = _iEpochDate;
-		org.drip.numerical.differentiation.WengertJacobian wj = null;
+		double startDate = _iEpochDate;
+		double discountFactor = Double.NaN;
+		WengertJacobian wengertJacobian = null;
 
 		try {
-			wj = new org.drip.numerical.differentiation.WengertJacobian (1, _adblForwardRate.length);
-		} catch (java.lang.Exception e) {
+			wengertJacobian = new WengertJacobian (1, _forwardRateArray.length);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		if (iDate <= _iEpochDate) {
-			if (!wj.setWengert (0, 0.)) return null;
-
-			return wj;
+		if (date <= _iEpochDate) {
+			return wengertJacobian.setWengert (0, 0.) ? wengertJacobian : null;
 		}
 
 		try {
-			if (!wj.setWengert (0, dblDF = df (iDate))) return null;
-		} catch (java.lang.Exception e) {
-			e.printStackTrace();
-
-			return null;
-		}
-
-		while (i < _adblForwardRate.length && (int) iDate >= (int) _aiDate[i]) {
-			if (!wj.accumulatePartialFirstDerivative (0, i, dblDF * (iStartDate - _aiDate[i]) / 365.25))
+			if (!wengertJacobian.setWengert (0, discountFactor = df (date))) {
 				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 
-			iStartDate = _aiDate[i++];
+			return null;
 		}
 
-		if (i >= _adblForwardRate.length) i = _adblForwardRate.length - 1;
+		while (i < _forwardRateArray.length && (int) date >= (int) _dateArray[i]) {
+			if (!wengertJacobian.accumulatePartialFirstDerivative (
+				0,
+				i,
+				discountFactor * (startDate - _dateArray[i]) / 365.25
+			)) {
+				return null;
+			}
 
-		return wj.accumulatePartialFirstDerivative (0, i, dblDF * (iStartDate - iDate) / 365.25) ? wj :
-			null;
+			startDate = _dateArray[i++];
+		}
+
+		if (i >= _forwardRateArray.length) {
+			i = _forwardRateArray.length - 1;
+		}
+
+		return wengertJacobian.accumulatePartialFirstDerivative (
+			0,
+			i,
+			discountFactor * (startDate - date) / 365.25
+		) ? wengertJacobian : null;
 	}
 
 	@Override public boolean setNodeValue (
-		final int iNodeIndex,
-		final double dblValue)
+		final int nodeIndex,
+		final double value)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblForwardRate.length)
+		if (!NumberUtil.IsValid (value) || nodeIndex > _forwardRateArray.length) {
 			return false;
+		}
 
-		for (int i = iNodeIndex; i < _adblForwardRate.length; ++i)
-			_adblForwardRate[i] = dblValue;
+		for (int i = nodeIndex; i < _forwardRateArray.length; ++i) {
+			_forwardRateArray[i] = value;
+		}
 
 		return true;
 	}
 
 	@Override public boolean bumpNodeValue (
-		final int iNodeIndex,
-		final double dblValue)
+		final int nodeIndex,
+		final double value)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblForwardRate.length)
+		if (!NumberUtil.IsValid (value) || nodeIndex > _forwardRateArray.length) {
 			return false;
+		}
 
-		for (int i = iNodeIndex; i < _adblForwardRate.length; ++i)
-			_adblForwardRate[i] += dblValue;
+		for (int i = nodeIndex; i < _forwardRateArray.length; ++i) {
+			_forwardRateArray[i] += value;
+		}
 
 		return true;
 	}
@@ -582,8 +698,8 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
 
-		for (int i = 0; i < _adblForwardRate.length; ++i)
-			_adblForwardRate[i] = dblValue;
+		for (int i = 0; i < _forwardRateArray.length; ++i)
+			_forwardRateArray[i] = dblValue;
 
 		return true;
 	}
