@@ -6,6 +6,9 @@ package org.drip.state.identifier;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,37 +86,47 @@ package org.drip.state.identifier;
 
 /**
  * <i>FundingLabel</i> contains the Identifier Parameters referencing the Latent State of the named Funding
- * Discount Curve. Currently it only contains the funding currency.
+ * 	Discount Curve. Currently it only contains the funding currency. It provides the following functionality:
  *
- *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></li>
+ *  	<li><i>FundingLabel</i> Constructor</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></td></tr>
+ *  </table>
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class FundingLabel implements org.drip.state.identifier.LatentStateLabel {
-	private java.lang.String _strCurrency = "";
+public class FundingLabel implements LatentStateLabel
+{
+	private String _currency = "";
 
 	/**
 	 * Make a Standard Funding Label from the Funding Currency
 	 * 
-	 * @param strCurrency The Funding Currency
+	 * @param currency The Funding Currency
 	 * 
 	 * @return The Funding Label
 	 */
 
 	public static final FundingLabel Standard (
-		final java.lang.String strCurrency)
+		final String currency)
 	{
 		try {
-			return new FundingLabel (strCurrency);
-		} catch (java.lang.Exception e) {
+			return new FundingLabel (currency);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -121,22 +134,23 @@ public class FundingLabel implements org.drip.state.identifier.LatentStateLabel 
 	}
 
 	private FundingLabel (
-		final java.lang.String strCurrency)
-		throws java.lang.Exception
+		final String currency)
+		throws Exception
 	{
-		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty())
-			throw new java.lang.Exception ("FundingLabel ctr: Invalid Inputs");
+		if (null == (_currency = currency) || _currency.isEmpty()) {
+			throw new Exception ("FundingLabel ctr: Invalid Inputs");
+		}
 	}
 
-	@Override public java.lang.String fullyQualifiedName()
+	@Override public String fullyQualifiedName()
 	{
-		return _strCurrency;
+		return _currency;
 	}
 
 	@Override public boolean match (
-		final org.drip.state.identifier.LatentStateLabel lslOther)
+		final LatentStateLabel latentStateLabelOther)
 	{
-		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.FundingLabel) ? false :
-			_strCurrency.equalsIgnoreCase (lslOther.fullyQualifiedName());
+		return null != latentStateLabelOther && latentStateLabelOther instanceof FundingLabel &&
+			_currency.equalsIgnoreCase (latentStateLabelOther.fullyQualifiedName());
 	}
 }

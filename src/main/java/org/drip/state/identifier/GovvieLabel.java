@@ -6,6 +6,9 @@ package org.drip.state.identifier;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,37 +86,49 @@ package org.drip.state.identifier;
 
 /**
  * <i>GovvieLabel</i> contains the Identifier Parameters referencing the Latent State of the named Sovereign
- * Curve. Currently it only contains the Sovereign Name.
+ * 	Curve. Currently it only contains the Sovereign Name. It provides the following functionality:
  *
- *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></li>
+ *  	<li>Make a Standard Govvie Label from the Treasury Code</li>
+ *  	<li><i>GovvieLabel</i> Constructor</li>
+ *  	<li>Retrieve the Treasury Code</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></td></tr>
+ *  </table>
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class GovvieLabel implements org.drip.state.identifier.LatentStateLabel {
-	private java.lang.String _strTreasuryCode = "";
+public class GovvieLabel implements LatentStateLabel
+{
+	private String _treasuryCode = "";
 
 	/**
 	 * Make a Standard Govvie Label from the Treasury Code
 	 * 
-	 * @param strTreasuryCode The Treasury Code
+	 * @param treasuryCode The Treasury Code
 	 * 
 	 * @return The Govvie Label
 	 */
 
 	public static final GovvieLabel Standard (
-		final java.lang.String strTreasuryCode)
+		final String treasuryCode)
 	{
 		try {
-			return new GovvieLabel (strTreasuryCode);
-		} catch (java.lang.Exception e) {
+			return new GovvieLabel (treasuryCode);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -121,31 +136,32 @@ public class GovvieLabel implements org.drip.state.identifier.LatentStateLabel {
 	}
 
 	/**
-	 * GovvieLabel constructor
+	 * <i>GovvieLabel</i> constructor
 	 * 
-	 * @param strTreasuryCode The Treasury Code
+	 * @param treasuryCode The Treasury Code
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
-	private GovvieLabel (
-		final java.lang.String strTreasuryCode)
-		throws java.lang.Exception
+	public GovvieLabel (
+		final String treasuryCode)
+		throws Exception
 	{
-		if (null == (_strTreasuryCode = strTreasuryCode) || _strTreasuryCode.isEmpty())
-			throw new java.lang.Exception ("GovvieLabel ctr: Invalid Inputs");
+		if (null == (_treasuryCode = treasuryCode) || _treasuryCode.isEmpty()) {
+			throw new Exception ("GovvieLabel ctr: Invalid Inputs");
+		}
 	}
 
-	@Override public java.lang.String fullyQualifiedName()
+	@Override public String fullyQualifiedName()
 	{
-		return _strTreasuryCode;
+		return _treasuryCode;
 	}
 
 	@Override public boolean match (
-		final org.drip.state.identifier.LatentStateLabel lslOther)
+		final LatentStateLabel latentStateLabelOther)
 	{
-		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.GovvieLabel) ? false :
-			_strTreasuryCode.equalsIgnoreCase (lslOther.fullyQualifiedName());
+		return null != latentStateLabelOther && latentStateLabelOther instanceof GovvieLabel &&
+			_treasuryCode.equalsIgnoreCase (latentStateLabelOther.fullyQualifiedName());
 	}
 
 	/**
@@ -154,8 +170,8 @@ public class GovvieLabel implements org.drip.state.identifier.LatentStateLabel {
 	 * @return The Treasury Code
 	 */
 
-	public java.lang.String treasuryCode()
+	public String treasuryCode()
 	{
-		return _strTreasuryCode;
+		return _treasuryCode;
 	}
 }

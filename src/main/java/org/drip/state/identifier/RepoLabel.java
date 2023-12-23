@@ -82,37 +82,48 @@ package org.drip.state.identifier;
 
 /**
  * <i>RepoLabel</i> contains the Identifier Parameters referencing the Latent State of the named Repo Curve.
- * It holds the Name of the Repo'able Product.
+ * 	It holds the Name of the Repo'able Product. It provides the following functionality:
  *
- *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></li>
+ *  	<li>Make a Standard Repo Label from the Product Code</li>
+ *  	<li><i>RepoLabel</i> Constructor</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></td></tr>
+ *  </table>
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class RepoLabel implements org.drip.state.identifier.LatentStateLabel {
-	private java.lang.String _strCode = "";
+public class RepoLabel implements LatentStateLabel
+{
+	private String _code = "";
 
 	/**
 	 * Make a Standard Repo Label from the Product Code
 	 * 
-	 * @param strCode The Repo'able Product Code
+	 * @param code The Repo'able Product Code
 	 * 
 	 * @return The Repo Label
 	 */
 
 	public static final RepoLabel Standard (
-		final java.lang.String strCode)
+		final String code)
 	{
 		try {
-			return new RepoLabel (strCode);
-		} catch (java.lang.Exception e) {
+			return new RepoLabel (code);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -120,30 +131,31 @@ public class RepoLabel implements org.drip.state.identifier.LatentStateLabel {
 	}
 
 	/**
-	 * RepoLabel constructor
+	 * <i>RepoLabel</i> constructor
 	 * 
-	 * @param strCode The Repo'able Product Code
+	 * @param code The Repo'able Product Code
 	 * 
 	 * @throws java.lang.Exception Thrown if the inputs are invalid
 	 */
 
 	public RepoLabel (
-		final java.lang.String strCode)
-		throws java.lang.Exception
+		final String code)
+		throws Exception
 	{
-		if (null == (_strCode = strCode) || _strCode.isEmpty())
-			throw new java.lang.Exception ("RepoLabel ctr: Invalid Inputs");
+		if (null == (_code = code) || _code.isEmpty()) {
+			throw new Exception ("RepoLabel ctr: Invalid Inputs");
+		}
 	}
 
-	@Override public java.lang.String fullyQualifiedName()
+	@Override public String fullyQualifiedName()
 	{
-		return _strCode;
+		return _code;
 	}
 
 	@Override public boolean match (
-		final org.drip.state.identifier.LatentStateLabel lslOther)
+		final LatentStateLabel latentStateLabelOther)
 	{
-		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.RepoLabel) ? false :
-			_strCode.equalsIgnoreCase (lslOther.fullyQualifiedName());
+		return null != latentStateLabelOther && latentStateLabelOther instanceof RepoLabel &&
+			_code.equalsIgnoreCase (latentStateLabelOther.fullyQualifiedName());
 	}
 }

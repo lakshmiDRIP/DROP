@@ -1,11 +1,16 @@
 
 package org.drip.state.identifier;
 
+import org.drip.product.params.CurrencyPair;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,37 +88,52 @@ package org.drip.state.identifier;
 
 /**
  * <i>FXLabel</i> contains the Identifier Parameters referencing the Latent State of the named FX Curve.
- * Currently it only contains the FX Code.
+ * 	Currently it only contains the FX Code. Currently it only contains the Sovereign Name. It provides the
+ *  following functionality:
  *
- *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></li>
+ *  	<li>Make a Standard FX Label from the Currency Pair Instance</li>
+ *  	<li>Make a Standard FX Label from the Currency Pair Code</li>
+ *  	<li><i>FXLabel</i> Constructor</li>
+ *  	<li>Delegate the Inverse FX Label</li>
+ *  	<li>Retrieve the Currency Pair Instance</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></td></tr>
+ *  </table>
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class FXLabel implements org.drip.state.identifier.LatentStateLabel {
-	private org.drip.product.params.CurrencyPair _cp = null;
+public class FXLabel implements LatentStateLabel
+{
+	private CurrencyPair _currencyPair = null;
 
 	/**
 	 * Make a Standard FX Label from the Currency Pair Instance
 	 * 
-	 * @param cp The Currency Pair Instance
+	 * @param currencyPair The Currency Pair Instance
 	 * 
 	 * @return The FX Label
 	 */
 
 	public static final FXLabel Standard (
-		final org.drip.product.params.CurrencyPair cp)
+		final CurrencyPair currencyPair)
 	{
 		try {
-			return new FXLabel (cp);
-		} catch (java.lang.Exception e) {
+			return new FXLabel (currencyPair);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -123,17 +143,17 @@ public class FXLabel implements org.drip.state.identifier.LatentStateLabel {
 	/**
 	 * Make a Standard FX Label from the Currency Pair Code
 	 * 
-	 * @param strCode The FX Code
+	 * @param code The FX Code
 	 * 
 	 * @return The FX Label
 	 */
 
 	public static final FXLabel Standard (
-		final java.lang.String strCode)
+		final String code)
 	{
 		try {
-			return new FXLabel (org.drip.product.params.CurrencyPair.FromCode (strCode));
-		} catch (java.lang.Exception e) {
+			return new FXLabel (CurrencyPair.FromCode (code));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -141,30 +161,32 @@ public class FXLabel implements org.drip.state.identifier.LatentStateLabel {
 	}
 
 	/**
-	 * FXLabel constructor
+	 * FXLabel Constructor
 	 * 
-	 * @param cp The Currency Pair
+	 * @param currencyPair The Currency Pair
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
-	private FXLabel (
-		final org.drip.product.params.CurrencyPair cp)
-		throws java.lang.Exception
+	public FXLabel (
+		final CurrencyPair currencyPair)
+		throws Exception
 	{
-		if (null == (_cp = cp)) throw new java.lang.Exception ("FXLabel ctr: Invalid Inputs");
+		if (null == (_currencyPair = currencyPair)) {
+			throw new Exception ("FXLabel ctr: Invalid Inputs");
+		}
 	}
 
-	@Override public java.lang.String fullyQualifiedName()
+	@Override public String fullyQualifiedName()
 	{
-		return _cp.code();
+		return _currencyPair.code();
 	}
 
 	@Override public boolean match (
-		final org.drip.state.identifier.LatentStateLabel lslOther)
+		final LatentStateLabel latentStateLabelOther)
 	{
-		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.FXLabel) ? false :
-			_cp.code().equalsIgnoreCase (lslOther.fullyQualifiedName());
+		return null != latentStateLabelOther && latentStateLabelOther instanceof FXLabel &&
+			_currencyPair.code().equalsIgnoreCase (latentStateLabelOther.fullyQualifiedName());
 	}
 
 	/**
@@ -176,8 +198,8 @@ public class FXLabel implements org.drip.state.identifier.LatentStateLabel {
 	public FXLabel inverse()
 	{
 		try {
-			return new FXLabel (org.drip.product.params.CurrencyPair.FromCode (_cp.inverseCode()));
-		} catch (java.lang.Exception e) {
+			return new FXLabel (CurrencyPair.FromCode (_currencyPair.inverseCode()));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -190,8 +212,8 @@ public class FXLabel implements org.drip.state.identifier.LatentStateLabel {
 	 * @return The Underlying Currency Pair Instance
 	 */
 
-	public org.drip.product.params.CurrencyPair currencyPair()
+	public CurrencyPair currencyPair()
 	{
-		return _cp;
+		return _currencyPair;
 	}
 }

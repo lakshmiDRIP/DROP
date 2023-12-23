@@ -6,6 +6,9 @@ package org.drip.state.identifier;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,37 +85,50 @@ package org.drip.state.identifier;
 
 /**
  * <i>VolatilityLabel</i> contains the Identifier Parameters referencing the Latent State of the named
- * Volatility Curve. Currently it only contains the label of the underlying Latent State.
+ * 	Volatility Curve. Currently it only contains the label of the underlying Latent State. It provides the
+ *  following functionality:
  *
- *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></li>
+ *  	<li>Make a Standard Volatility Latent State Label from the Underlying Latent State Label</li>
+ *  	<li><i>VolatilityLabel</i> Constructor</li>
+ *  	<li>Retrieve the Latent State Underlying the Volatility Latent State</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></td></tr>
+ *  </table>
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class VolatilityLabel implements org.drip.state.identifier.LatentStateLabel {
-	private org.drip.state.identifier.LatentStateLabel _lslUnderlyingState = null;
+public class VolatilityLabel implements LatentStateLabel
+{
+	private LatentStateLabel _underlyingLatentStateLabel = null;
 
 	/**
 	 * Make a Standard Volatility Latent State Label from the Underlying Latent State Label
 	 * 
-	 * @param lslUnderlyingState Underlying Latent State Label
+	 * @param underlyingLatentStateLabel Underlying Latent State Label
 	 * 
 	 * @return The Volatility Label
 	 */
 
 	public static final VolatilityLabel Standard (
-		final org.drip.state.identifier.LatentStateLabel lslUnderlyingState)
+		final LatentStateLabel underlyingLatentStateLabel)
 	{
 		try {
-			return new VolatilityLabel (lslUnderlyingState);
-		} catch (java.lang.Exception e) {
+			return new VolatilityLabel (underlyingLatentStateLabel);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -120,19 +136,20 @@ public class VolatilityLabel implements org.drip.state.identifier.LatentStateLab
 	}
 
 	/**
-	 * VolatilityLabel constructor
+	 * <i>VolatilityLabel</i> Constructor
 	 * 
-	 * @param lslUnderlyingState Underlying Latent State Label
+	 * @param underlyingLatentStateLabel Underlying Latent State Label
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	public VolatilityLabel (
-		final org.drip.state.identifier.LatentStateLabel lslUnderlyingState)
-		throws java.lang.Exception
+		final LatentStateLabel underlyingLatentStateLabel)
+		throws Exception
 	{
-		if (null == (_lslUnderlyingState = lslUnderlyingState))
-			throw new java.lang.Exception ("VolatilityLabel ctr: Invalid Inputs");
+		if (null == (_underlyingLatentStateLabel = underlyingLatentStateLabel)) {
+			throw new Exception ("VolatilityLabel ctr: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -141,21 +158,22 @@ public class VolatilityLabel implements org.drip.state.identifier.LatentStateLab
 	 * @return The Latent State Underlying the Volatility Latent State
 	 */
 
-	public org.drip.state.identifier.LatentStateLabel underlyingLatentState()
+	public LatentStateLabel underlyingLatentState()
 	{
-		return _lslUnderlyingState;
+		return _underlyingLatentStateLabel;
 	}
 
-	@Override public java.lang.String fullyQualifiedName()
+	@Override public String fullyQualifiedName()
 	{
-		return _lslUnderlyingState.fullyQualifiedName();
+		return _underlyingLatentStateLabel.fullyQualifiedName();
 	}
 
 	@Override public boolean match (
-		final org.drip.state.identifier.LatentStateLabel lslOther)
+		final LatentStateLabel latentStateLabelOther)
 	{
-		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.VolatilityLabel) ? false :
-			underlyingLatentState().match (((org.drip.state.identifier.VolatilityLabel)
-				lslOther).underlyingLatentState());
+		return null != latentStateLabelOther && latentStateLabelOther instanceof VolatilityLabel &&
+			underlyingLatentState().match (
+				((VolatilityLabel) latentStateLabelOther).underlyingLatentState()
+			);
 	}
 }
