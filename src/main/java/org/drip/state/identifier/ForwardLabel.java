@@ -1,11 +1,18 @@
 
 package org.drip.state.identifier;
 
+import org.drip.market.definition.FloaterIndex;
+import org.drip.market.definition.IBORIndexContainer;
+import org.drip.market.definition.OvernightIndexContainer;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -88,56 +95,62 @@ package org.drip.state.identifier;
  *
  *  <br><br>
  *  <ul>
- *  	<li>
- *  		Indicate if the Index is an Overnight Index
- *  	</li>
- *  	<li>
- *  		Retrieve Index, Tenor, Currency, and Fully Qualified Name
- *  	</li>
+ *  	<li>Indicate if the Index is an Overnight Index</li>
+ *  	<li>Retrieve Index, Tenor, Currency, and Fully Qualified Name</li>
+ *  	<li>Construct a ForwardLabel from the corresponding Fully Qualified Name</li>
+ *  	<li>Construct a ForwardLabel from the tenor and the index</li>
+ *  	<li>Create from the Currency and the Tenor</li>
  *  </ul>
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></td></tr>
+ *  </table>
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class ForwardLabel extends org.drip.state.identifier.FloaterLabel {
+public class ForwardLabel extends FloaterLabel
+{
 
 	/**
 	 * Construct a ForwardLabel from the corresponding Fully Qualified Name
 	 * 
-	 * @param strFullyQualifiedName The Fully Qualified Name
+	 * @param fullyQualifiedName The Fully Qualified Name
 	 * 
 	 * @return ForwardLabel Instance
 	 */
 
 	public static final ForwardLabel Standard (
-		final java.lang.String strFullyQualifiedName)
+		final String fullyQualifiedName)
 	{
-		if (null == strFullyQualifiedName || strFullyQualifiedName.isEmpty()) return null;
+		if (null == fullyQualifiedName || fullyQualifiedName.isEmpty()) {
+			return null;
+		}
 
-		java.lang.String[] astr = strFullyQualifiedName.split ("-");
+		String[] stringArray = fullyQualifiedName.split ("-");
 
-		if (null == astr || 2 != astr.length) return null;
+		if (null == stringArray || 2 != stringArray.length) {
+			return null;
+		}
 
-		java.lang.String strTenor = astr[1];
-		java.lang.String strCurrency = astr[0];
-
-		org.drip.market.definition.FloaterIndex floaterIndex = "ON".equalsIgnoreCase (strTenor) ||
-			"1D".equalsIgnoreCase (strTenor) ?
-				org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction (strCurrency) :
-					org.drip.market.definition.IBORIndexContainer.IndexFromJurisdiction (strCurrency);
+		FloaterIndex floaterIndex = "ON".equalsIgnoreCase (stringArray[1]) ||
+			"1D".equalsIgnoreCase (stringArray[1]) ?
+			OvernightIndexContainer.IndexFromJurisdiction (stringArray[0]) :
+			IBORIndexContainer.IndexFromJurisdiction (stringArray[0]);
 
 		try {
-			return new ForwardLabel (floaterIndex, strTenor);
-		} catch (java.lang.Exception e) {
+			return new ForwardLabel (floaterIndex, stringArray[1]);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -148,18 +161,18 @@ public class ForwardLabel extends org.drip.state.identifier.FloaterLabel {
 	 * Construct a ForwardLabel from the tenor and the index
 	 * 
 	 * @param floaterIndex The Floater Index Details
-	 * @param strTenor Tenor
+	 * @param tenor Tenor
 	 * 
 	 * @return ForwardLabel Instance
 	 */
 
 	public static final ForwardLabel Create (
-		final org.drip.market.definition.FloaterIndex floaterIndex,
-		final java.lang.String strTenor)
+		final FloaterIndex floaterIndex,
+		final String tenor)
 	{
 		try {
-			return new ForwardLabel (floaterIndex, strTenor);
-		} catch (java.lang.Exception e) {
+			return new ForwardLabel (floaterIndex, tenor);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -169,24 +182,24 @@ public class ForwardLabel extends org.drip.state.identifier.FloaterLabel {
 	/**
 	 * Create from the Currency and the Tenor
 	 * 
-	 * @param strCurrency Currency
-	 * @param strTenor Tenor
+	 * @param currency Currency
+	 * @param tenor Tenor
 	 * 
 	 * @return ForwardLabel Instance
 	 */
 
 	public static final ForwardLabel Create (
-		final java.lang.String strCurrency,
-		final java.lang.String strTenor)
+		final String currency,
+		final String tenor)
 	{
-		return Standard (strCurrency + "-" + strTenor);
+		return Standard (currency + "-" + tenor);
 	}
 
 	protected ForwardLabel (
-		final org.drip.market.definition.FloaterIndex floaterIndex,
-		final java.lang.String strTenor)
-		throws java.lang.Exception
+		final FloaterIndex floaterIndex,
+		final String tenor)
+		throws Exception
 	{
-		super (floaterIndex, strTenor);
+		super (floaterIndex, tenor);
 	}
 }

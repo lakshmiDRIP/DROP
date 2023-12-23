@@ -1,11 +1,18 @@
 
 package org.drip.state.identifier;
 
+import org.drip.analytics.support.Helper;
+import org.drip.market.definition.FloaterIndex;
+import org.drip.param.period.UnitCouponAccrualSetting;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,32 +87,47 @@ package org.drip.state.identifier;
 
 /**
  * <i>FloaterLabel</i> is an Abstract Class that underpins the Latent State Labels that use a Single Floater
- * Index.
- *
- *  <br><br>
+ * Index. It implements the following Functionality.
+ * 
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></li>
+ *		<li>Retrieve the Currency</li>
+ *		<li>Retrieve the Family</li>
+ *		<li>Retrieve the Tenor</li>
+ *		<li>Indicate if the Index is an Overnight Index</li>
+ *		<li>Retrieve the Floater Index</li>
+ *		<li>Retrieve a Unit Coupon Accrual Setting</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></td></tr>
+ *  </table>
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class FloaterLabel implements org.drip.state.identifier.LatentStateLabel
+public abstract class FloaterLabel implements LatentStateLabel
 {
-	private java.lang.String _strTenor = "";
-	private org.drip.market.definition.FloaterIndex _floaterIndex = null;
+	private String _tenor = "";
+	private FloaterIndex _floaterIndex = null;
 
 	protected FloaterLabel (
-		final org.drip.market.definition.FloaterIndex floaterIndex,
-		final java.lang.String strTenor)
-		throws java.lang.Exception
+		final FloaterIndex floaterIndex,
+		final String strTenor)
+		throws Exception
 	{
-		if (null == (_floaterIndex = floaterIndex) || null == (_strTenor = strTenor) || _strTenor.isEmpty())
-			throw new java.lang.Exception ("FloaterLabel ctr: Invalid Inputs");
+		if (null == (_floaterIndex = floaterIndex) || null == (_tenor = strTenor) || _tenor.isEmpty()) {
+			throw new Exception ("FloaterLabel ctr: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -114,7 +136,7 @@ public abstract class FloaterLabel implements org.drip.state.identifier.LatentSt
 	 * @return The Currency
 	 */
 
-	public java.lang.String currency()
+	public String currency()
 	{
 		return _floaterIndex.currency();
 	}
@@ -125,7 +147,7 @@ public abstract class FloaterLabel implements org.drip.state.identifier.LatentSt
 	 * @return The Family
 	 */
 
-	public java.lang.String family()
+	public String family()
 	{
 		return _floaterIndex.family();
 	}
@@ -136,9 +158,9 @@ public abstract class FloaterLabel implements org.drip.state.identifier.LatentSt
 	 * @return The Tenor
 	 */
 
-	public java.lang.String tenor()
+	public String tenor()
 	{
-		return _strTenor;
+		return _tenor;
 	}
 
 	/**
@@ -149,7 +171,7 @@ public abstract class FloaterLabel implements org.drip.state.identifier.LatentSt
 
 	public boolean overnight()
 	{
-		return "ON".equalsIgnoreCase (_strTenor) || "1D".equalsIgnoreCase (_strTenor);
+		return "ON".equalsIgnoreCase (_tenor) || "1D".equalsIgnoreCase (_tenor);
 	}
 
 	/**
@@ -158,7 +180,7 @@ public abstract class FloaterLabel implements org.drip.state.identifier.LatentSt
 	 * @return The Floater Index
 	 */
 
-	public org.drip.market.definition.FloaterIndex floaterIndex()
+	public FloaterIndex floaterIndex()
 	{
 		return _floaterIndex;
 	}
@@ -169,30 +191,37 @@ public abstract class FloaterLabel implements org.drip.state.identifier.LatentSt
 	 * @return Unit Coupon Accrual Setting
 	 */
 
-	public org.drip.param.period.UnitCouponAccrualSetting ucas()
+	public UnitCouponAccrualSetting ucas()
 	{
-		java.lang.String strDayCount = _floaterIndex.dayCount();
+		String dayCount = _floaterIndex.dayCount();
 
 		try {
-			return new org.drip.param.period.UnitCouponAccrualSetting (overnight() ? 360 :
-				org.drip.analytics.support.Helper.TenorToFreq (_strTenor), strDayCount, false, strDayCount,
-					false, _floaterIndex.currency(), false, _floaterIndex.accrualCompoundingRule());
-		} catch (java.lang.Exception e) {
+			return new UnitCouponAccrualSetting (
+				overnight() ? 360 : Helper.TenorToFreq (_tenor),
+				dayCount,
+				false,
+				dayCount,
+				false,
+				_floaterIndex.currency(),
+				false,
+				_floaterIndex.accrualCompoundingRule()
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return null;
 	}
 
-	@Override public java.lang.String fullyQualifiedName()
+	@Override public String fullyQualifiedName()
 	{
-		return _floaterIndex.currency() + "-" + _floaterIndex.family() + "-" + _strTenor;
+		return _floaterIndex.currency() + "-" + _floaterIndex.family() + "-" + _tenor;
 	}
 
 	@Override public boolean match (
-		final org.drip.state.identifier.LatentStateLabel lslOther)
+		final LatentStateLabel latentStateLabelOther)
 	{
-		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.ForwardLabel) ? false :
-			fullyQualifiedName().equalsIgnoreCase (lslOther.fullyQualifiedName());
+		return null != latentStateLabelOther && latentStateLabelOther instanceof ForwardLabel &&
+			fullyQualifiedName().equalsIgnoreCase (latentStateLabelOther.fullyQualifiedName());
 	}
 }

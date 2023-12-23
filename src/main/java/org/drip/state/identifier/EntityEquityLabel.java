@@ -6,6 +6,9 @@ package org.drip.state.identifier;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,21 +86,31 @@ package org.drip.state.identifier;
 
 /**
  * <i>EntityEquityLabel</i> contains the Identifier Parameters referencing the Latent State of the Entity
- * Equity Curve.
- *
- *  <br><br>
+ * Equity Curve. It implements the following Functionality.
+ * 
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></li>
+ *		<li><i>EntityEquityLabel</i> Constructor</li>
+ *		<li>Make a Standard Equity Entity Label from the Reference Entity Name</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></td></tr>
+ *  </table>
  *   
  * @author Lakshmi Krishnamurthy
  */
 
-public class EntityEquityLabel extends org.drip.state.identifier.EntityDesignateLabel
+public class EntityEquityLabel extends EntityDesignateLabel
 {
 
 	/**
@@ -110,18 +123,12 @@ public class EntityEquityLabel extends org.drip.state.identifier.EntityDesignate
 	 */
 
 	public static final EntityEquityLabel Standard (
-		final java.lang.String referenceEntity,
-		final java.lang.String currency)
+		final String referenceEntity,
+		final String currency)
 	{
-		try
-		{
-			return new EntityEquityLabel (
-				referenceEntity,
-				currency
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new EntityEquityLabel (referenceEntity, currency);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -129,29 +136,26 @@ public class EntityEquityLabel extends org.drip.state.identifier.EntityDesignate
 	}
 
 	/**
-	 * EntityEquityLabel constructor
+	 * <i>EntityEquityLabel</i> constructor
 	 * 
 	 * @param referenceEntity The Reference Entity
 	 * @param currency The Currency
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	private EntityEquityLabel (
-		final java.lang.String referenceEntity,
-		final java.lang.String currency)
-		throws java.lang.Exception
+		final String referenceEntity,
+		final String currency)
+		throws Exception
 	{
-		super (
-			referenceEntity,
-			currency
-		);
+		super (referenceEntity, currency);
 	}
 
 	@Override public boolean match (
-		final org.drip.state.identifier.LatentStateLabel lslOther)
+		final LatentStateLabel latentStateLabelOther)
 	{
-		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.EntityEquityLabel) ? false
-			: super.match (lslOther);
+		return null != latentStateLabelOther && latentStateLabelOther instanceof EntityEquityLabel &&
+			super.match (latentStateLabelOther);
 	}
 }
