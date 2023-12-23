@@ -6,6 +6,9 @@ package org.drip.state.identifier;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,37 +86,49 @@ package org.drip.state.identifier;
 
 /**
  * <i>CollateralLabel</i> contains the Identifier Parameters referencing the Latent State of the named
- * Collateral Discount Curve. Currently it only contains the collateral currency.
- *
- *  <br><br>
+ * Collateral Discount Curve. Currently it only contains the collateral currency. It implements the following
+ * Functionality.
+ * 
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></li>
+ *		<li>Make a Standard Collateral Label from the Collateral Currency</li>
+ *		<li><i>CollateralLabel</i> constructor</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></td></tr>
+ *  </table>
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class CollateralLabel implements org.drip.state.identifier.LatentStateLabel {
-	private java.lang.String _strCurrency = "";
+public class CollateralLabel implements LatentStateLabel
+{
+	private String _currency = "";
 
 	/**
 	 * Make a Standard Collateral Label from the Collateral Currency
 	 * 
-	 * @param strCurrency The Collateral Currency
+	 * @param currency The Collateral Currency
 	 * 
 	 * @return The Collateral Label
 	 */
 
 	public static final CollateralLabel Standard (
-		final java.lang.String strCurrency)
+		final String currency)
 	{
 		try {
-			return new CollateralLabel (strCurrency);
-		} catch (java.lang.Exception e) {
+			return new CollateralLabel (currency);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -123,28 +138,29 @@ public class CollateralLabel implements org.drip.state.identifier.LatentStateLab
 	/**
 	 * CollateralLabel constructor
 	 * 
-	 * @param strCurrency Collateral Currency
+	 * @param currency Collateral Currency
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	private CollateralLabel (
-		final java.lang.String strCurrency)
-		throws java.lang.Exception
+		final String currency)
+		throws Exception
 	{
-		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty())
-			throw new java.lang.Exception ("CollateralLabel ctr: Invalid Inputs");
+		if (null == (_currency = currency) || _currency.isEmpty()) {
+			throw new Exception ("CollateralLabel ctr: Invalid Inputs");
+		}
 	}
 
-	@Override public java.lang.String fullyQualifiedName()
+	@Override public String fullyQualifiedName()
 	{
-		return _strCurrency;
+		return _currency;
 	}
 
 	@Override public boolean match (
-		final org.drip.state.identifier.LatentStateLabel lslOther)
+		final LatentStateLabel latentStateLabelOther)
 	{
-		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.CollateralLabel) ? false :
-			_strCurrency.equalsIgnoreCase (lslOther.fullyQualifiedName());
+		return null != latentStateLabelOther && latentStateLabelOther instanceof CollateralLabel &&
+			_currency.equalsIgnoreCase (latentStateLabelOther.fullyQualifiedName());
 	}
 }

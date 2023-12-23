@@ -6,6 +6,9 @@ package org.drip.state.identifier;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -79,21 +82,31 @@ package org.drip.state.identifier;
 
 /**
  * <i>EntityCDSLabel</i> contains the Identifier Parameters referencing the Latent State of the named Entity
- * CDS Curve.
- *
- *  <br><br>
+ * 	CDS Curve. It implements the following Functionality.
+ * 
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></li>
+ *		<li><i>EntityCDSLabel</i> Constructor</li>
+ *		<li>Make a Standard SENIOR Entity Credit Label from the Reference Entity</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
  *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></td></tr>
+ *  </table>
+ *   
  * @author Lakshmi Krishnamurthy
  */
 
-public class EntityCDSLabel extends org.drip.state.identifier.EntityCreditLabel
+public class EntityCDSLabel extends EntityCreditLabel
 {
 
 	/**
@@ -106,19 +119,13 @@ public class EntityCDSLabel extends org.drip.state.identifier.EntityCreditLabel
 	 */
 
 	public static EntityCDSLabel Standard (
-		final java.lang.String referenceEntity,
-		final java.lang.String currency)
+		final String referenceEntity,
+		final String currency)
 	{
 		try
 		{
-			return new EntityCDSLabel (
-				referenceEntity,
-				currency,
-				org.drip.state.identifier.EntityCreditLabel.SENIORITY_SENIOR
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+			return new EntityCDSLabel (referenceEntity, currency, EntityCreditLabel.SENIORITY_SENIOR);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -132,30 +139,22 @@ public class EntityCDSLabel extends org.drip.state.identifier.EntityCreditLabel
 	 * @param currency The Currency
 	 * @param seniority The Obligation Seniority
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	public EntityCDSLabel (
-		final java.lang.String referenceEntity,
-		final java.lang.String currency,
-		final java.lang.String seniority)
-		throws java.lang.Exception
+		final String referenceEntity,
+		final String currency,
+		final String seniority)
+		throws Exception
 	{
-		super (
-			referenceEntity,
-			currency,
-			seniority
-		);
+		super (referenceEntity, currency, seniority);
 	}
 
 	@Override public boolean match (
-		final org.drip.state.identifier.LatentStateLabel lslOther)
+		final LatentStateLabel latentStateLabelOther)
 	{
-		if (null == lslOther || !(lslOther instanceof org.drip.state.identifier.EntityCDSLabel))
-		{
-			return false;
-		}
-
-		return super.match (lslOther);
+		return null != latentStateLabelOther && latentStateLabelOther instanceof EntityCDSLabel &&
+			super.match (latentStateLabelOther);
 	}
 }

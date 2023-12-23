@@ -538,42 +538,67 @@ public class LatentStateSequenceBuilder implements SegmentSequenceBuilder
 	}
 
 	@Override public boolean manifestMeasureSensitivity (
-		final double dblLeftSlopeSensitivity)
+		final double leftSlopeSensitivity)
 	{
-		org.drip.spline.segment.LatentStateResponseModel[] aLSRM = _curveStretch.segments();
+		LatentStateResponseModel[] latentStateResponseModelArray = _curveStretch.segments();
 
-		int iNumSegment = aLSRM.length;
+		int segmentCount = latentStateResponseModelArray.length;
 
-		for (int iSegment = 0; iSegment < iNumSegment; ++iSegment) {
-			double dblSegmentRight = aLSRM[iSegment].right();
+		for (int segmentIndex = 0; segmentIndex < segmentCount; ++segmentIndex) {
+			double segmentRight = latentStateResponseModelArray[segmentIndex].right();
 
-			org.drip.spline.params.ResponseValueSensitivityConstraint rvsc = _responseValueSensitivityConstraintMap.get (dblSegmentRight);
+			ResponseValueSensitivityConstraint responseValueSensitivityConstraint =
+				_responseValueSensitivityConstraintMap.get (segmentRight);
 
-			java.util.Set<java.lang.String> setstrManifestMeasures = rvsc.manifestMeasures();
+			Set<String> manifestMeasureSet = responseValueSensitivityConstraint.manifestMeasures();
 
-			if (null == setstrManifestMeasures || 0 == setstrManifestMeasures.size()) return false;
+			if (null == manifestMeasureSet || 0 == manifestMeasureSet.size()) {
+				return false;
+			}
 
-			for (java.lang.String strManifestMeasure : setstrManifestMeasures) {
-				if (!aLSRM[iSegment].setPreceedingManifestSensitivityControl (strManifestMeasure, getPreceedingManifestSensitivityControl
-					(strManifestMeasure)))
+			for (String manifestMeasure : manifestMeasureSet) {
+				if (!latentStateResponseModelArray[segmentIndex].setPreceedingManifestSensitivityControl (
+					manifestMeasure,
+					getPreceedingManifestSensitivityControl (manifestMeasure))) {
 					return false;
+				}
 
-				if (0 == iSegment) {
-					if (!aLSRM[0].manifestMeasureSensitivity (strManifestMeasure,
-						org.drip.spline.params.SegmentResponseValueConstraint.FromPredictorResponsePair
-							(_valuationParams.valueDate(), _epochResponse), rvsc.base(),
-								dblLeftSlopeSensitivity,
-									org.drip.spline.params.SegmentResponseValueConstraint.FromPredictorResponsePair
-						(_valuationParams.valueDate(), 0.), rvsc.manifestMeasureSensitivity (strManifestMeasure),
-							null == _stretchBestFitResponseQuoteSensitivity ? null : _stretchBestFitResponseQuoteSensitivity.sizeToSegment
-								(aLSRM[0])))
+				if (0 == segmentIndex) {
+					if (!latentStateResponseModelArray[0].manifestMeasureSensitivity (
+						manifestMeasure,
+						SegmentResponseValueConstraint.FromPredictorResponsePair (
+							_valuationParams.valueDate(),
+							_epochResponse
+						),
+						responseValueSensitivityConstraint.base(),
+						leftSlopeSensitivity,
+						SegmentResponseValueConstraint.FromPredictorResponsePair (
+							_valuationParams.valueDate(),
+							0.
+						),
+						responseValueSensitivityConstraint.manifestMeasureSensitivity (manifestMeasure),
+						null == _stretchBestFitResponseQuoteSensitivity ? null :
+							_stretchBestFitResponseQuoteSensitivity.sizeToSegment (
+								latentStateResponseModelArray[0]
+							)
+						)
+					) {
 						return false;
+					}
 				} else {
-					if (!aLSRM[iSegment].manifestMeasureSensitivity (aLSRM[iSegment - 1], strManifestMeasure,
-						rvsc.base(), rvsc.manifestMeasureSensitivity (strManifestMeasure), null ==
-							_stretchBestFitResponseQuoteSensitivity ? null : _stretchBestFitResponseQuoteSensitivity.sizeToSegment
-								(aLSRM[iSegment])))
+					if (!latentStateResponseModelArray[segmentIndex].manifestMeasureSensitivity (
+						latentStateResponseModelArray[segmentIndex - 1],
+						manifestMeasure,
+						responseValueSensitivityConstraint.base(),
+						responseValueSensitivityConstraint.manifestMeasureSensitivity (manifestMeasure),
+						null == _stretchBestFitResponseQuoteSensitivity ? null :
+							_stretchBestFitResponseQuoteSensitivity.sizeToSegment (
+								latentStateResponseModelArray[segmentIndex]
+							)
+						)
+					) {
 						return false;
+					}
 				}
 			}
 		}

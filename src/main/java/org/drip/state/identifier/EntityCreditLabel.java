@@ -83,52 +83,58 @@ package org.drip.state.identifier;
 
 /**
  * <i>EntityCreditLabel</i> contains the Identifier Parameters referencing the Latent State of the named
- * Entity Credit Curve.
- *
- *  <br><br>
+ * Entity Credit Curve. It implements the following Functionality.
+ * 
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></li>
+ *		<li>Retrieve the Seniority</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></td></tr>
+ *  </table>
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class EntityCreditLabel extends org.drip.state.identifier.EntityDesignateLabel
+public abstract class EntityCreditLabel extends EntityDesignateLabel
 {
 
 	/**
 	 * The "SENIOR" Seniority Setting
 	 */
 
-	public static final java.lang.String SENIORITY_SENIOR = "SENIOR";
+	public static final String SENIORITY_SENIOR = "SENIOR";
 
 	/**
 	 * The "SUBORDINATE" Seniority Setting
 	 */
 
-	public static final java.lang.String SENIORITY_SUBORDINATE = "SUBORDINATE";
+	public static final String SENIORITY_SUBORDINATE = "SUBORDINATE";
 
-	private java.lang.String _seniority = "";
+	private String _seniority = "";
 
 	protected EntityCreditLabel (
-		final java.lang.String referenceEntity,
-		final java.lang.String currency,
-		final java.lang.String seniority)
-		throws java.lang.Exception
+		final String referenceEntity,
+		final String currency,
+		final String seniority)
+		throws Exception
 	{
-		super (
-			referenceEntity,
-			currency
-		);
+		super (referenceEntity, currency);
 
-		if (null == (_seniority = seniority) ||
-			(!SENIORITY_SENIOR.equals (_seniority) && !SENIORITY_SUBORDINATE.equals (_seniority)))
-		{
-			throw new java.lang.Exception ("EntityCreditLabel Constructor => Invalid Inputs");
+		if (null == (_seniority = seniority) || (
+			!SENIORITY_SENIOR.equals (_seniority) && !SENIORITY_SUBORDINATE.equals (_seniority)
+		)) {
+			throw new Exception ("EntityCreditLabel Constructor => Invalid Inputs");
 		}
 	}
 
@@ -138,25 +144,22 @@ public abstract class EntityCreditLabel extends org.drip.state.identifier.Entity
 	 * @return The Seniority
 	 */
 
-	public java.lang.String seniority()
+	public String seniority()
 	{
 		return _seniority;
 	}
 
-	@Override public java.lang.String fullyQualifiedName()
+	@Override public String fullyQualifiedName()
 	{
 		return super.fullyQualifiedName() + "::" + _seniority;
 	}
 
 	@Override public boolean match (
-		final org.drip.state.identifier.LatentStateLabel lslOther)
+		final LatentStateLabel latentStateLabelOther)
 	{
-		if (null == lslOther || !(lslOther instanceof org.drip.state.identifier.EntityCreditLabel))
-		{
-			return false;
-		}
-
-		return super.match (lslOther) && _seniority.equalsIgnoreCase
-			(((org.drip.state.identifier.EntityCreditLabel) lslOther).seniority());
+		return null != latentStateLabelOther && latentStateLabelOther instanceof EntityCreditLabel &&
+			super.match (latentStateLabelOther) && _seniority.equalsIgnoreCase (
+				((EntityCreditLabel) latentStateLabelOther).seniority()
+			);
 	}
 }

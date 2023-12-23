@@ -6,6 +6,9 @@ package org.drip.state.identifier;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -79,52 +82,59 @@ package org.drip.state.identifier;
 
 /**
  * <i>EntityDesignateLabel</i> contains the Identifier Parameters referencing the Latent State of an Entity
- * Designate.
- *
- *  <br><br>
+ * Designate. It implements the following Functionality.
+ * 
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></li>
+ *		<li>Retrieve the Reference Entity</li>
+ *		<li>Retrieve the Currency</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></td></tr>
+ *  </table>
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class EntityDesignateLabel implements org.drip.state.identifier.LatentStateLabel
+public abstract class EntityDesignateLabel implements LatentStateLabel
 {
-	private java.lang.String _currency = "";
-	private java.lang.String _referenceEntity = "";
+	private String _currency = "";
+	private String _referenceEntity = "";
 
 	protected EntityDesignateLabel (
-		final java.lang.String referenceEntity,
-		final java.lang.String currency)
-		throws java.lang.Exception
+		final String referenceEntity,
+		final String currency)
+		throws Exception
 	{
 		if (null == (_referenceEntity = referenceEntity) || _referenceEntity.isEmpty() ||
-			null == (_currency = currency) || _currency.isEmpty())
-		{
-			throw new java.lang.Exception ("EntityDesignateLabel ctr: Invalid Inputs");
+			null == (_currency = currency) || _currency.isEmpty()) {
+			throw new Exception ("EntityDesignateLabel ctr: Invalid Inputs");
 		}
 	}
 
-	@Override public java.lang.String fullyQualifiedName()
+	@Override public String fullyQualifiedName()
 	{
 		return _referenceEntity + "::" + _currency;
 	}
 
 	@Override public boolean match (
-		final org.drip.state.identifier.LatentStateLabel lslOther)
+		final LatentStateLabel latentStateLabelOther)
 	{
-		if (null == lslOther || !(lslOther instanceof org.drip.state.identifier.EntityDesignateLabel))
-		{
+		if (null == latentStateLabelOther || !(latentStateLabelOther instanceof EntityDesignateLabel)) {
 			return false;
 		}
 
-		org.drip.state.identifier.EntityDesignateLabel entityDesignateLabel =
-			(org.drip.state.identifier.EntityDesignateLabel) lslOther;
+		EntityDesignateLabel entityDesignateLabel = (EntityDesignateLabel) latentStateLabelOther;
 
 		return _referenceEntity.equalsIgnoreCase (entityDesignateLabel.referenceEntity()) &&
 			_currency.equalsIgnoreCase (entityDesignateLabel.currency());
@@ -136,7 +146,7 @@ public abstract class EntityDesignateLabel implements org.drip.state.identifier.
 	 * @return The Reference Entity
 	 */
 
-	public java.lang.String referenceEntity()
+	public String referenceEntity()
 	{
 		return _referenceEntity;
 	}
@@ -147,7 +157,7 @@ public abstract class EntityDesignateLabel implements org.drip.state.identifier.
 	 * @return The Currency
 	 */
 
-	public java.lang.String currency()
+	public String currency()
 	{
 		return _currency;
 	}

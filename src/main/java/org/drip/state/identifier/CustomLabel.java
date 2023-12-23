@@ -6,6 +6,9 @@ package org.drip.state.identifier;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,37 +86,49 @@ package org.drip.state.identifier;
 
 /**
  * <i>CustomLabel</i> contains the Identifier Parameters referencing the Latent State of the named Custom
- * Metric. Currently it only contains the Arbitrarily Assigned Label.
- *
- *  <br><br>
+ * Metric. Currently it only contains the Arbitrarily Assigned Label. It implements the following
+ * Functionality.
+ * 
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></li>
+ *		<li><i>CustomLabel</i> constructor</li>
+ *		<li>Make a Standard Custom Metric Label Instance</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></td></tr>
+ *  </table>
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class CustomLabel implements org.drip.state.identifier.LatentStateLabel {
-	private java.lang.String _strCustomMetricLabel = "";
+public class CustomLabel implements LatentStateLabel
+{
+	private String _customMetricLabel = "";
 
 	/**
 	 * Make a Standard Custom Metric Label Instance
 	 * 
-	 * @param strCustomMetricLabel The Custom Metric Label
+	 * @param customMetricLabel The Custom Metric Label
 	 * 
 	 * @return The Custom Label Instance
 	 */
 
 	public static final CustomLabel Standard (
-		final java.lang.String strCustomMetricLabel)
+		final String customMetricLabel)
 	{
 		try {
-			return new CustomLabel (strCustomMetricLabel);
-		} catch (java.lang.Exception e) {
+			return new CustomLabel (customMetricLabel);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -123,28 +138,29 @@ public class CustomLabel implements org.drip.state.identifier.LatentStateLabel {
 	/**
 	 * CustomLabel constructor
 	 * 
-	 * @param strCustomMetricLabel The Custom Metric Label
+	 * @param customMetricLabel The Custom Metric Label
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
-	private CustomLabel (
-		final java.lang.String strCustomMetricLabel)
-		throws java.lang.Exception
+	public CustomLabel (
+		final String customMetricLabel)
+		throws Exception
 	{
-		if (null == (_strCustomMetricLabel = strCustomMetricLabel) || _strCustomMetricLabel.isEmpty())
-			throw new java.lang.Exception ("CustomLabel ctr: Invalid Inputs");
+		if (null == (_customMetricLabel = customMetricLabel) || _customMetricLabel.isEmpty()) {
+			throw new Exception ("CustomLabel ctr: Invalid Inputs");
+		}
 	}
 
-	@Override public java.lang.String fullyQualifiedName()
+	@Override public String fullyQualifiedName()
 	{
-		return _strCustomMetricLabel;
+		return _customMetricLabel;
 	}
 
 	@Override public boolean match (
-		final org.drip.state.identifier.LatentStateLabel lslOther)
+		final LatentStateLabel latentStateLabelOther)
 	{
-		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.CustomLabel) ? false
-			: _strCustomMetricLabel.equalsIgnoreCase (lslOther.fullyQualifiedName());
+		return null != latentStateLabelOther && latentStateLabelOther instanceof CustomLabel &&
+			_customMetricLabel.equalsIgnoreCase (latentStateLabelOther.fullyQualifiedName());
 	}
 }

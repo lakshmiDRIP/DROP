@@ -6,6 +6,9 @@ package org.drip.state.identifier;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -85,20 +88,32 @@ package org.drip.state.identifier;
 /**
  * <i>LatentStateLabel</i> is the interface that contains the labels inside the sub-stretch of the alternate
  * state. The functionality its derivations implement provide fully qualified label names and their matches.
- *
- *  <br><br>
+ * It exposes the following Functionality.
+ * 
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></li>
+ *		<li>Retrieve the Fully Qualified Name</li>
+ *		<li>Indicate whether this Label matches the supplied.</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface LatentStateLabel {
+public interface LatentStateLabel
+{
 
 	/**
 	 * Retrieve the Fully Qualified Name
@@ -106,16 +121,17 @@ public interface LatentStateLabel {
 	 * @return The Fully Qualified Name
 	 */
 
-	public abstract java.lang.String fullyQualifiedName();
+	public abstract String fullyQualifiedName();
 
 	/**
 	 * Indicate whether this Label matches the supplied.
 	 * 
-	 * @param lslOther The Supplied Label
+	 * @param latentStateLabelOther The Supplied Label
 	 * 
 	 * @return TRUE - The Supplied Label matches this.
 	 */
 
 	public abstract boolean match (
-		final LatentStateLabel lslOther);
+		final LatentStateLabel latentStateLabelOther
+	);
 }

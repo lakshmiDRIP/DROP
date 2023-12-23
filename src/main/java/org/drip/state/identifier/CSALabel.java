@@ -6,6 +6,9 @@ package org.drip.state.identifier;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -79,9 +82,18 @@ package org.drip.state.identifier;
  */
 
 /**
- * <i>CSALabel</i> specifies the Label of of a Credit Support Annex (CSA) Specification. The References are:
+ * <i>CSALabel</i> specifies the Label of of a Credit Support Annex (CSA) Specification. It implements the
+ *  following Functionality.
+ * 
+ *  <ul>
+ *		<li><i>CSALabel</i> constructor</li>
+ *		<li>Retrieve the CSA Currency</li>
+ *		<li>Retrieve the CSA Specification Association/Organization</li>
+ *		<li>Generate the ISDA CSA</li>
+ *  </ul>
+ * 
+ * The References are:
  *
- *  <br><br>
  *  <ul>
  *  	<li>
  *  		Burgard, C., and M. Kjaer (2014): PDE Representations of Derivatives with Bilateral Counter Party
@@ -107,22 +119,27 @@ package org.drip.state.identifier;
  *  	</li>
  *  </ul>
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CSALabel implements org.drip.state.identifier.LatentStateLabel
+public class CSALabel implements LatentStateLabel
 {
-	private java.lang.String _strCurrency = "";
-	private java.lang.String _strAssociation = "";
+	private String _currency = "";
+	private String _association = "";
 
 	/**
 	 * Generate the ISDA CSA
@@ -150,21 +167,20 @@ public class CSALabel implements org.drip.state.identifier.LatentStateLabel
 	/**
 	 * CSALabel Constructor
 	 * 
-	 * @param strCurrency The CSA Currency
-	 * @param strAssociation The CSA Specifier
+	 * @param currency The CSA Currency
+	 * @param association The CSA Specifier
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CSALabel (
-		final java.lang.String strCurrency,
-		final java.lang.String strAssociation)
-		throws java.lang.Exception
+		final String currency,
+		final String association)
+		throws Exception
 	{
-		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() ||
-			null == (_strAssociation = strAssociation) || _strAssociation.isEmpty())
-		{
-			throw new java.lang.Exception ("CSALabel Constructor => Invalid Inputs");
+		if (null == (_currency = currency) || _currency.isEmpty() ||
+			null == (_association = association) || _association.isEmpty()) {
+			throw new Exception ("CSALabel Constructor => Invalid Inputs");
 		}
 	}
 
@@ -174,9 +190,9 @@ public class CSALabel implements org.drip.state.identifier.LatentStateLabel
 	 * @return The CSA Currency
 	 */
 
-	public java.lang.String currency()
+	public String currency()
 	{
-		return _strCurrency;
+		return _currency;
 	}
 
 	/**
@@ -185,20 +201,20 @@ public class CSALabel implements org.drip.state.identifier.LatentStateLabel
 	 * @return The CSA Specification Association/Organization
 	 */
 
-	public java.lang.String association()
+	public String association()
 	{
-		return _strAssociation;
+		return _association;
 	}
 
-	@Override public java.lang.String fullyQualifiedName()
+	@Override public String fullyQualifiedName()
 	{
-		return _strCurrency + "::" + _strAssociation;
+		return _currency + "::" + _association;
 	}
 
 	@Override public boolean match (
-		final org.drip.state.identifier.LatentStateLabel lslOther)
+		final LatentStateLabel latentStateLabelOther)
 	{
-		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.CSALabel) ? false :
-			fullyQualifiedName().equalsIgnoreCase (lslOther.fullyQualifiedName());
+		return null != latentStateLabelOther && latentStateLabelOther instanceof CSALabel &&
+			fullyQualifiedName().equalsIgnoreCase (latentStateLabelOther.fullyQualifiedName());
 	}
 }
