@@ -694,12 +694,14 @@ public class FlatForwardDiscountCurve extends ExplicitBootDiscountCurve
 	}
 
 	@Override public boolean setFlatValue (
-		final double dblValue)
+		final double value)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
+		if (!NumberUtil.IsValid (value)) {
+			return false;
+		}
 
 		for (int i = 0; i < _forwardRateArray.length; ++i)
-			_forwardRateArray[i] = dblValue;
+			_forwardRateArray[i] = value;
 
 		return true;
 	}

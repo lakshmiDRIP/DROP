@@ -1,11 +1,20 @@
 
 package org.drip.state.nonlinear;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.differentiation.WengertJacobian;
+import org.drip.state.forward.ForwardCurve;
+import org.drip.state.identifier.ForwardLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -85,53 +94,60 @@ package org.drip.state.nonlinear;
 /**
  * <i>FlatForwardForwardCurve</i> contains an implementation of the flat forward rate forward curve.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear/README.md">Nonlinear (i.e., Boot) Latent State Construction</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear/README.md">Nonlinear (i.e., Boot) Latent State Construction</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class FlatForwardForwardCurve extends org.drip.state.forward.ForwardCurve {
-	private double _dblFlatForwardRate = java.lang.Double.NaN;
+public class FlatForwardForwardCurve extends ForwardCurve
+{
+	private double _flatForwardRate = Double.NaN;
 
 	/**
 	 * FlatForwardForwardCurve constructor
 	 * 
-	 * @param dtEpoch The Forward Curve Epoch Date
-	 * @param fri The Floating Rate Index
-	 * @param dblFlatForwardRate The Flat FOrward Rate
+	 * @param epochDate The Forward Curve Epoch Date
+	 * @param forwardLabel The Floating Rate Index Forward Label
+	 * @param flatForwardRate The Flat FOrward Rate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public FlatForwardForwardCurve (
-		final org.drip.analytics.date.JulianDate dtEpoch,
-		final org.drip.state.identifier.ForwardLabel fri,
-		final double dblFlatForwardRate)
-		throws java.lang.Exception
+		final JulianDate epochDate,
+		final ForwardLabel forwardLabel,
+		final double flatForwardRate)
+		throws Exception
 	{
-		super (dtEpoch.julian(), fri);
+		super (epochDate.julian(), forwardLabel);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblFlatForwardRate = dblFlatForwardRate))
-			throw new java.lang.Exception ("FlatForwardForwardCurve ctr: Invalid Inputs");
+		if (!NumberUtil.IsValid (_flatForwardRate = flatForwardRate)) {
+			throw new Exception ("FlatForwardForwardCurve ctr: Invalid Inputs");
+		}
 	}
 
 	@Override public double forward (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		return _dblFlatForwardRate;
+		return _flatForwardRate;
 	}
 
-	@Override public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final int iDate)
+	@Override public WengertJacobian jackDForwardDManifestMeasure (
+		final String manifestMeasure,
+		final int date)
 	{
 		return null;
 	}

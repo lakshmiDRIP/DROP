@@ -1,11 +1,19 @@
 
 package org.drip.state.nonlinear;
 
+import org.drip.analytics.daycount.ActActDCParams;
+import org.drip.analytics.daycount.Convention;
+import org.drip.analytics.support.Helper;
+import org.drip.state.govvie.ExplicitBootGovvieCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,94 +91,109 @@ package org.drip.state.nonlinear;
  * <i>FlatForwardGovvieCurve</i> manages the Govvie Latent State, using the Flat Forward Rate as the State
  * Response Representation.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear/README.md">Nonlinear (i.e., Boot) Latent State Construction</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear/README.md">Nonlinear (i.e., Boot) Latent State Construction</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class FlatForwardGovvieCurve extends org.drip.state.govvie.ExplicitBootGovvieCurve {
-	private int[] _aiDate = null;
-	private double[] _adblForwardYield = null;
+public class FlatForwardGovvieCurve extends ExplicitBootGovvieCurve
+{
+	private int[] _dateArray = null;
+	private double[] _forwardYieldArray = null;
 
-	private double yearFract (
-		final int iStartDate,
-		final int iEndDate,
-		final org.drip.analytics.daycount.ActActDCParams aap,
-		final java.lang.String strDayCount)
-		throws java.lang.Exception
+	private double yearFraction (
+		final int startDate,
+		final int endDate,
+		final ActActDCParams actActDCParams,
+		final String dayCount)
+		throws Exception
 	{
-		return org.drip.analytics.daycount.Convention.YearFraction (iStartDate, iEndDate, strDayCount, false,
-			aap, currency());
+		return Convention.YearFraction (startDate, endDate, dayCount, false, actActDCParams, currency());
 	}
 
 	/**
 	 * Construct a Govvie Curve from an Array of Dates and Flat Forward Yields
 	 * 
-	 * @param iEpochDate Epoch Date
-	 * @param strTreasuryCode Treasury Code
-	 * @param strCurrency Currency
-	 * @param aiDate Array of Dates
-	 * @param adblForwardYield Array of Forward Yields
+	 * @param epochDate Epoch Date
+	 * @param treasuryCode Treasury Code
+	 * @param currency Currency
+	 * @param dateArray Array of Dates
+	 * @param forwardYieldArray Array of Forward Yields
 	 * 
-	 * @throws java.lang.Exception Thrown if the curve cannot be created
+	 * @throws Exception Thrown if the curve cannot be created
 	 */
 
 	public FlatForwardGovvieCurve (
-		final int iEpochDate,
-		final java.lang.String strTreasuryCode,
-		final java.lang.String strCurrency,
-		final int[] aiDate,
-		final double[] adblForwardYield)
-		throws java.lang.Exception
+		final int epochDate,
+		final String treasuryCode,
+		final String currency,
+		final int[] dateArray,
+		final double[] forwardYieldArray)
+		throws Exception
 	{
-		super (iEpochDate, strTreasuryCode, strCurrency);
+		super (epochDate, treasuryCode, currency);
 
-		if (null == (_aiDate = aiDate) || null == (_adblForwardYield = adblForwardYield))
-			throw new java.lang.Exception ("FlatForwardGovvieCurve Constructor => Invalid Inputs!");
+		if (null == (_dateArray = dateArray) || null == (_forwardYieldArray = forwardYieldArray)) {
+			throw new Exception ("FlatForwardGovvieCurve Constructor => Invalid Inputs!");
+		}
 
-		int iNumNode = _aiDate.length;
+		int nodeCount = _dateArray.length;
 
-		if (0 == iNumNode || iNumNode != _adblForwardYield.length)
-			throw new java.lang.Exception ("FlatForwardGovvieCurve Constructor => Invalid Inputs!");
+		if (0 == nodeCount || nodeCount != _forwardYieldArray.length) {
+			throw new Exception ("FlatForwardGovvieCurve Constructor => Invalid Inputs!");
+		}
 	}
 
 	@Override public double yld (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		if (iDate <= _iEpochDate) return 1.;
-
-		int i = 0;
-		double dblDF = 1.;
-		int iStartDate = _iEpochDate;
-		int iNumDate = _aiDate.length;
-
-		int iFreq = freq();
-
-		java.lang.String strDayCount = dayCount();
-
-		org.drip.analytics.daycount.ActActDCParams aap =
-			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);
-
-		while (i < iNumDate && (int) iDate >= (int) _aiDate[i]) {
-			dblDF *= java.lang.Math.pow (1. + (_adblForwardYield[i] / iFreq), -1. * yearFract (iStartDate,
-				_aiDate[i], aap, strDayCount) * iFreq);
-
-			iStartDate = _aiDate[i++];
+		if (date <= _iEpochDate) {
+			return 1.;
 		}
 
-		if (i >= iNumDate) i = iNumDate - 1;
+		int i = 0;
+		double discountFactor = 1.;
+		int startDate = _iEpochDate;
+		int dateArrayCount = _dateArray.length;
 
-		return org.drip.analytics.support.Helper.DF2Yield (iFreq, dblDF * java.lang.Math.pow (1. +
-			(_adblForwardYield[i] / iFreq), -1. * yearFract (iStartDate, iDate, aap, strDayCount) * iFreq),
-				yearFract (_iEpochDate, iDate, aap, strDayCount));
+		int frequency = freq();
+
+		String dayCount = dayCount();
+
+		ActActDCParams actActDCParams = ActActDCParams.FromFrequency (frequency);
+
+		while (i < dateArrayCount && (int) date >= (int) _dateArray[i]) {
+			discountFactor *= Math.pow (
+				1. + (_forwardYieldArray[i] / frequency),
+				-1. * yearFraction (startDate, _dateArray[i], actActDCParams, dayCount) * frequency
+			);
+
+			startDate = _dateArray[i++];
+		}
+
+		if (i >= dateArrayCount) {
+			i = dateArrayCount - 1;
+		}
+
+		return Helper.DF2Yield (
+			frequency,
+			discountFactor * Math.pow (1. + (_forwardYieldArray[i] / frequency),
+			-1. * yearFraction (startDate, date, actActDCParams, dayCount) * frequency),
+			yearFraction (_iEpochDate, date, actActDCParams, dayCount)
+		);
 	}
 
 	@Override public boolean setNodeValue (
@@ -179,12 +202,12 @@ public class FlatForwardGovvieCurve extends org.drip.state.govvie.ExplicitBootGo
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
 
-		int iNumDate = _aiDate.length;
+		int iNumDate = _dateArray.length;
 
 		if (iNodeIndex > iNumDate) return false;
 
 		for (int i = iNodeIndex; i < iNumDate; ++i)
-			_adblForwardYield[i] = dblValue;
+			_forwardYieldArray[i] = dblValue;
 
 		return true;
 	}
@@ -195,12 +218,12 @@ public class FlatForwardGovvieCurve extends org.drip.state.govvie.ExplicitBootGo
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
 
-		int iNumDate = _aiDate.length;
+		int iNumDate = _dateArray.length;
 
 		if (iNodeIndex > iNumDate) return false;
 
 		for (int i = iNodeIndex; i < iNumDate; ++i)
-			_adblForwardYield[i] += dblValue;
+			_forwardYieldArray[i] += dblValue;
 
 		return true;
 	}
@@ -210,10 +233,10 @@ public class FlatForwardGovvieCurve extends org.drip.state.govvie.ExplicitBootGo
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
 
-		int iNumDate = _aiDate.length;
+		int iNumDate = _dateArray.length;
 
 		for (int i = 0; i < iNumDate; ++i)
-			_adblForwardYield[i] = dblValue;
+			_forwardYieldArray[i] = dblValue;
 
 		return true;
 	}
