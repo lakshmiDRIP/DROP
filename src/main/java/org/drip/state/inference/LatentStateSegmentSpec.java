@@ -2,6 +2,7 @@
 package org.drip.state.inference;
 
 import org.drip.product.calib.ProductQuoteSet;
+import org.drip.product.definition.CalibratableComponent;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -92,7 +93,7 @@ import org.drip.product.calib.ProductQuoteSet;
  * 
  *  <ul>
  *		<li><i>LatentStateSegmentSpec</i> Constructor</li>
- *		<li>Retrieve the Calibration Component</li>
+ *		<li>Retrieve the Calibration Component Array</li>
  *		<li>Retrieve the Calibration Manifest Measure Quote Set</li>
  *  </ul>
  *
@@ -116,35 +117,37 @@ import org.drip.product.calib.ProductQuoteSet;
 public class LatentStateSegmentSpec
 {
 	private ProductQuoteSet _productQuoteSet = null;
-	private org.drip.product.definition.CalibratableComponent _cfic = null;
+	private CalibratableComponent _calibratableComponentArray = null;
 
 	/**
 	 * LatentStateSegmentSpec constructor
 	 * 
-	 * @param cfic The Calibratable Fixed Income Component
-	 * @param pqs The Product Manifest Measure Quote Set Instance
+	 * @param calibratableComponentArray The Calibratable Fixed Income Component Array
+	 * @param productQuoteSet The Product Manifest Measure Quote Set Instance
 	 * 
-	 * @throws java.lang.Exception Thrown if inputs are invalid
+	 * @throws Exception Thrown if inputs are invalid
 	 */
 
 	public LatentStateSegmentSpec (
-		final org.drip.product.definition.CalibratableComponent cfic,
-		final org.drip.product.calib.ProductQuoteSet pqs)
-		throws java.lang.Exception
+		final CalibratableComponent calibratableComponentArray,
+		final ProductQuoteSet productQuoteSet)
+		throws Exception
 	{
-		if (null == (_cfic = cfic) || null == (_productQuoteSet = pqs))
-			throw new java.lang.Exception ("LatentStateSegmentSpec ctr: Invalid Inputs");
+		if (null == (_calibratableComponentArray = calibratableComponentArray) ||
+			null == (_productQuoteSet = productQuoteSet)) {
+			throw new Exception ("LatentStateSegmentSpec ctr: Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Retrieve the Calibration Component
+	 * Retrieve the Calibration Component Array
 	 * 
-	 * @return The Calibration Component
+	 * @return The Calibration Component Array
 	 */
 
 	public org.drip.product.definition.CalibratableComponent component()
 	{
-		return _cfic;
+		return _calibratableComponentArray;
 	}
 
 	/**

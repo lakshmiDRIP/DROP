@@ -1,11 +1,40 @@
 
 package org.drip.state.inference;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.pricer.CreditPricerParams;
+import org.drip.param.valuation.ValuationCustomizationParams;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.spline.grid.Span;
+import org.drip.spline.params.PreceedingManifestSensitivityControl;
+import org.drip.spline.params.ResponseValueSensitivityConstraint;
+import org.drip.spline.params.SegmentResponseValueConstraint;
+import org.drip.spline.params.StretchBestFitResponse;
+import org.drip.spline.segment.LatentStateResponseModel;
+import org.drip.spline.stretch.BoundarySettings;
+import org.drip.spline.stretch.MultiSegmentSequence;
+import org.drip.spline.stretch.SegmentSequenceBuilder;
+import org.drip.state.estimator.CurveStretch;
+import org.drip.state.estimator.PredictorResponseWeightConstraint;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -85,166 +114,197 @@ package org.drip.state.inference;
  * <i>LatentStateSequenceBuilder</i> holds the logic behind building the bootstrap segments contained in the
  * given Stretch.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/inference/README.md">Latent State Stretch Sequence Inference</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/inference/README.md">Latent State Stretch Sequence Inference</a></td></tr>
+ *  </table>
  * 
- * It extends SegmentSequenceBuilder by implementing/customizing the calibration of the starting as well as
- *  the subsequent segments.
+ * It extends <i>SegmentSequenceBuilder</i> by implementing/customizing the calibration of the starting as
+ *  well as the subsequent segments.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LatentStateSequenceBuilder implements org.drip.spline.stretch.SegmentSequenceBuilder {
-	private org.drip.spline.grid.Span _span = null;
-	private double _dblEpochResponse = java.lang.Double.NaN;
-	private org.drip.spline.stretch.BoundarySettings _bs = null;
-	private org.drip.state.estimator.CurveStretch _stretch = null;
-	private org.drip.param.pricer.CreditPricerParams _pricerParams = null;
-	private org.drip.param.market.CurveSurfaceQuoteContainer _csqs = null;
-	private org.drip.param.valuation.ValuationParams _valParams = null;
-	private org.drip.spline.params.StretchBestFitResponse _sbfr = null;
-	private org.drip.param.valuation.ValuationCustomizationParams _vcp = null;
-	private org.drip.state.inference.LatentStateStretchSpec _stretchSpec = null;
-	private org.drip.spline.params.StretchBestFitResponse _sbfrQuoteSensitivity = null;
-	private
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.spline.params.PreceedingManifestSensitivityControl>
-			_mapPMSC = null;
+public class LatentStateSequenceBuilder implements SegmentSequenceBuilder
+{
+	private Span _span = null;
+	private CurveStretch _curveStretch = null;
+	private double _epochResponse = Double.NaN;
+	private ValuationParams _valuationParams = null;
+	private BoundarySettings _boundarySettings = null;
+	private CreditPricerParams _creditPricerParams = null;
+	private StretchBestFitResponse _stretchBestFitResponse = null;
+	private CurveSurfaceQuoteContainer _curveSurfaceQuoteContainer = null;
+	private LatentStateStretchSpec _latentStateStretchSpecification = null;
+	private ValuationCustomizationParams _valuationCustomizationParams = null;
+	private StretchBestFitResponse _stretchBestFitResponseQuoteSensitivity = null;
+	private CaseInsensitiveHashMap<PreceedingManifestSensitivityControl>
+		_preceedingManifestSensitivityControlMap = null;
 
-	private java.util.Map<java.lang.Double, org.drip.spline.params.ResponseValueSensitivityConstraint>
-		_mapRVSC = new
-			java.util.HashMap<java.lang.Double, org.drip.spline.params.ResponseValueSensitivityConstraint>();
+	private Map<Double, ResponseValueSensitivityConstraint> _responseValueSensitivityConstraintMap =
+		new HashMap<Double, ResponseValueSensitivityConstraint>();
 
-	private org.drip.spline.params.PreceedingManifestSensitivityControl getPMSC (
-		final java.lang.String strManifestMeasure)
+	private PreceedingManifestSensitivityControl getPreceedingManifestSensitivityControl (
+		final String manifestMeasure)
 	{
-		return _mapPMSC.containsKey (strManifestMeasure) ? _mapPMSC.get (strManifestMeasure) : null;
+		return _preceedingManifestSensitivityControlMap.containsKey (manifestMeasure) ?
+			_preceedingManifestSensitivityControlMap.get (manifestMeasure) : null;
 	}
 
-	private org.drip.spline.params.SegmentResponseValueConstraint segmentCalibResponseConstraint (
-		final org.drip.state.estimator.PredictorResponseWeightConstraint prwc)
+	private SegmentResponseValueConstraint segmentCalibResponseConstraint (
+		final PredictorResponseWeightConstraint predictorResponseWeightConstraint)
 	{
-		java.util.TreeMap<java.lang.Double, java.lang.Double> mapPredictorLSQMLoading =
-			prwc.getPredictorResponseWeight();
+		TreeMap<Double, Double> predictorResponseWeightMap =
+			predictorResponseWeightConstraint.getPredictorResponseWeight();
 
-		if (null == mapPredictorLSQMLoading || 0 == mapPredictorLSQMLoading.size()) return null;
+		if (null == predictorResponseWeightMap || 0 == predictorResponseWeightMap.size()) {
+			return null;
+		}
 
-		java.util.Set<java.util.Map.Entry<java.lang.Double, java.lang.Double>> esPredictorLSQMLoading =
-			mapPredictorLSQMLoading.entrySet();
+		Set<Map.Entry<Double, Double>> predictorResponseWeightMapEntrySet =
+			predictorResponseWeightMap.entrySet();
 
-		if (null == esPredictorLSQMLoading || 0 == esPredictorLSQMLoading.size()) return null;
+		if (null == predictorResponseWeightMapEntrySet || 0 == predictorResponseWeightMapEntrySet.size()) {
+			return null;
+		}
 
-		double dblConstraint = 0.;
+		double constraint = 0.;
 
-		java.util.List<java.lang.Double> lsPredictor = new java.util.ArrayList<java.lang.Double>();
+		List<Double> predictorList = new ArrayList<Double>();
 
-		java.util.List<java.lang.Double> lsResponseLSQMLoading = new java.util.ArrayList<java.lang.Double>();
+		List<Double> responseLSQMLoadingList = new ArrayList<Double>();
 
-		for (java.util.Map.Entry<java.lang.Double, java.lang.Double> me : esPredictorLSQMLoading) {
-			if (null == me) return null;
+		for (Map.Entry<Double, Double> predictorResponseWeightMapEntry : predictorResponseWeightMapEntrySet)
+		{
+			if (null == predictorResponseWeightMapEntry) {
+				return null;
+			}
 
-			double dblPredictorDate = me.getKey();
+			double dblPredictorDate = predictorResponseWeightMapEntry.getKey();
 
 			try {
-				if (null != _span && _span.in (dblPredictorDate))
-					dblConstraint -= _span.calcResponseValue (dblPredictorDate) * me.getValue();
-				else if (_stretch.inBuiltRange (dblPredictorDate))
-					dblConstraint -= _stretch.responseValue (dblPredictorDate) * me.getValue();
-				else {
-					lsPredictor.add (dblPredictorDate);
+				if (null != _span && _span.in (dblPredictorDate)) {
+					constraint -= _span.calcResponseValue (dblPredictorDate) *
+						predictorResponseWeightMapEntry.getValue();
+				} else if (_curveStretch.inBuiltRange (dblPredictorDate)) {
+					constraint -= _curveStretch.responseValue (dblPredictorDate) *
+						predictorResponseWeightMapEntry.getValue();
+				} else {
+					predictorList.add (dblPredictorDate);
 
-					lsResponseLSQMLoading.add (me.getValue());
+					responseLSQMLoadingList.add (predictorResponseWeightMapEntry.getValue());
 				}
-			} catch (java.lang.Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		int iSize = lsPredictor.size();
+		int predictorListSize = predictorList.size();
 
-		double[] adblPredictor = new double[iSize];
-		double[] adblResponseLSQMLoading = new double[iSize];
+		double[] predictorArray = new double[predictorListSize];
+		double[] responseLSQMLoadingArray = new double[predictorListSize];
 
-		for (int i = 0; i < iSize; ++i) {
-			adblPredictor[i] = lsPredictor.get (i);
+		for (int predictorListIndex = 0; predictorListIndex < predictorListSize; ++predictorListIndex) {
+			predictorArray[predictorListIndex] = predictorList.get (predictorListIndex);
 
-			adblResponseLSQMLoading[i] = lsResponseLSQMLoading.get (i);
+			responseLSQMLoadingArray[predictorListIndex] = responseLSQMLoadingList.get (predictorListIndex);
 		}
 
 		try {
-			return new org.drip.spline.params.SegmentResponseValueConstraint (adblPredictor,
-				adblResponseLSQMLoading, (prwc.getValue()) + dblConstraint);
-		} catch (java.lang.Exception e) {
+			return new SegmentResponseValueConstraint (
+				predictorArray,
+				responseLSQMLoadingArray,
+				predictorResponseWeightConstraint.getValue() + constraint
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return null;
 	}
 
-	private org.drip.spline.params.SegmentResponseValueConstraint segmentSensResponseConstraint (
-		final org.drip.state.estimator.PredictorResponseWeightConstraint prwc,
-		final java.lang.String strManifestMeasure)
+	private SegmentResponseValueConstraint segmentSensResponseConstraint (
+		final PredictorResponseWeightConstraint predictorResponseWeightConstraint,
+		final String manifestMeasure)
 	{
-		java.util.TreeMap<java.lang.Double, java.lang.Double> mapPredictorSensLoading =
-			prwc.getDResponseWeightDManifestMeasure (strManifestMeasure);
+		TreeMap<Double, Double> predictorSensitivityLoadingMap =
+			predictorResponseWeightConstraint.getDResponseWeightDManifestMeasure (manifestMeasure);
 
-		if (null == mapPredictorSensLoading || 0 == mapPredictorSensLoading.size()) return null;
+		if (null == predictorSensitivityLoadingMap || 0 == predictorSensitivityLoadingMap.size()) {
+			return null;
+		}
 
-		java.util.Set<java.util.Map.Entry<java.lang.Double, java.lang.Double>> esPredictorSensLoading =
-			mapPredictorSensLoading.entrySet();
+		Set<Map.Entry<Double, Double>> predictorSensitivityLoadingMapEntrySet =
+			predictorSensitivityLoadingMap.entrySet();
 
-		if (null == esPredictorSensLoading || 0 == esPredictorSensLoading.size()) return null;
+		if (null == predictorSensitivityLoadingMapEntrySet ||
+			0 == predictorSensitivityLoadingMapEntrySet.size()) {
+			return null;
+		}
 
-		double dblSensLoadingConstraint = 0.;
+		double sensitivityLoadingConstraint = 0.;
 
-		java.util.List<java.lang.Double> lsPredictor = new java.util.ArrayList<java.lang.Double>();
+		List<Double> predictorList = new ArrayList<Double>();
 
-		java.util.List<java.lang.Double> lsSensLoading = new java.util.ArrayList<java.lang.Double>();
+		List<Double> sensitivityLoadingList = new ArrayList<Double>();
 
-		for (java.util.Map.Entry<java.lang.Double, java.lang.Double> me : esPredictorSensLoading) {
-			if (null == me) return null;
+		for (Map.Entry<Double, Double> predictorSensitivityLoadingMapEntry :
+			predictorSensitivityLoadingMapEntrySet) {
+			if (null == predictorSensitivityLoadingMapEntry) {
+				return null;
+			}
 
-			double dblPredictorDate = me.getKey();
+			double predictorDate = predictorSensitivityLoadingMapEntry.getKey();
 
 			try {
-				if (null != _span && _span.in (dblPredictorDate))
-					dblSensLoadingConstraint -= _span.calcResponseValue (dblPredictorDate) * me.getValue();
-				else if (_stretch.inBuiltRange (dblPredictorDate))
-					dblSensLoadingConstraint -= _stretch.responseValue (dblPredictorDate) * me.getValue();
-				else {
-					lsPredictor.add (dblPredictorDate);
+				if (null != _span && _span.in (predictorDate)) {
+					sensitivityLoadingConstraint -= _span.calcResponseValue (predictorDate) *
+						predictorSensitivityLoadingMapEntry.getValue();
+				} else if (_curveStretch.inBuiltRange (predictorDate)) {
+					sensitivityLoadingConstraint -= _curveStretch.responseValue (predictorDate) *
+						predictorSensitivityLoadingMapEntry.getValue();
+				} else {
+					predictorList.add (predictorDate);
 
-					lsSensLoading.add (me.getValue());
+					sensitivityLoadingList.add (predictorSensitivityLoadingMapEntry.getValue());
 				}
-			} catch (java.lang.Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		int iSize = lsPredictor.size();
+		int predictorListSize = predictorList.size();
 
-		double[] adblPredictor = new double[iSize];
-		double[] adblSensLoading = new double[iSize];
+		double[] predictorArray = new double[predictorListSize];
+		double[] sensitivityLoadingArray = new double[predictorListSize];
 
-		for (int i = 0; i < iSize; ++i) {
-			adblPredictor[i] = lsPredictor.get (i);
+		for (int predictorListIndex = 0; predictorListIndex < predictorListSize; ++predictorListIndex) {
+			predictorArray[predictorListIndex] = predictorList.get (predictorListIndex);
 
-			adblSensLoading[i] = lsSensLoading.get (i);
+			sensitivityLoadingArray[predictorListIndex] = sensitivityLoadingList.get (predictorListIndex);
 		}
 
 		try {
-			return new org.drip.spline.params.SegmentResponseValueConstraint (adblPredictor, adblSensLoading,
-				prwc.getDValueDManifestMeasure (strManifestMeasure) + dblSensLoadingConstraint);
-		} catch (java.lang.Exception e) {
+			return new SegmentResponseValueConstraint (
+				predictorArray,
+				sensitivityLoadingArray,
+				predictorResponseWeightConstraint.getDValueDManifestMeasure (manifestMeasure) +
+					sensitivityLoadingConstraint
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -252,42 +312,50 @@ public class LatentStateSequenceBuilder implements org.drip.spline.stretch.Segme
 	}
 
 	private boolean generateSegmentConstraintSet (
-		final double dblSegmentRight,
-		final org.drip.state.estimator.PredictorResponseWeightConstraint prwc)
+		final double segmentRight,
+		final PredictorResponseWeightConstraint predictorResponseWeightConstraint)
 	{
-		org.drip.spline.params.SegmentResponseValueConstraint srvcBase = segmentCalibResponseConstraint
-			(prwc);
+		SegmentResponseValueConstraint baseSegmentResponseValueConstraint = segmentCalibResponseConstraint
+			(predictorResponseWeightConstraint);
 
-		if (null == srvcBase) return false;
+		if (null == baseSegmentResponseValueConstraint) {
+			return false;
+		}
 
-		org.drip.spline.params.ResponseValueSensitivityConstraint rvsc = null;
+		ResponseValueSensitivityConstraint responseValueSensitivityConstraint = null;
 
 		try {
-			rvsc = new org.drip.spline.params.ResponseValueSensitivityConstraint (srvcBase);
-		} catch (java.lang.Exception e) {
+			responseValueSensitivityConstraint = new ResponseValueSensitivityConstraint (
+				baseSegmentResponseValueConstraint
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return false;
 		}
 
-		java.util.Set<java.lang.String> setstrSensitivity = prwc.sensitivityKeys();
+		Set<String> sensitivitySet = predictorResponseWeightConstraint.sensitivityKeys();
 
-		if (null == setstrSensitivity || 0 == setstrSensitivity.size()) {
-			_mapRVSC.put (dblSegmentRight, rvsc);
+		if (null == sensitivitySet || 0 == sensitivitySet.size()) {
+			_responseValueSensitivityConstraintMap.put (segmentRight, responseValueSensitivityConstraint);
 
 			return true;
 		}
 
-		for (java.lang.String strManifestMeasure : setstrSensitivity) {
-			org.drip.spline.params.SegmentResponseValueConstraint srvcSensitivity =
-				segmentSensResponseConstraint (prwc, strManifestMeasure);
+		for (String manifestMeasure : sensitivitySet) {
+			SegmentResponseValueConstraint sensitivitySegmentResponseValueConstraint =
+				segmentSensResponseConstraint (predictorResponseWeightConstraint, manifestMeasure);
 
-			if (null == srvcSensitivity || !rvsc.addManifestMeasureSensitivity (strManifestMeasure,
-				srvcSensitivity))
+			if (null == sensitivitySegmentResponseValueConstraint ||
+				!responseValueSensitivityConstraint.addManifestMeasureSensitivity (
+					manifestMeasure,
+					sensitivitySegmentResponseValueConstraint
+				)) {
 				continue;
+			}
 		}
 
-		_mapRVSC.put (dblSegmentRight, rvsc);
+		_responseValueSensitivityConstraintMap.put (segmentRight, responseValueSensitivityConstraint);
 
 		return true;
 	}
@@ -295,128 +363,175 @@ public class LatentStateSequenceBuilder implements org.drip.spline.stretch.Segme
 	/**
 	 * LatentStateSequenceBuilder constructor
 	 * 
-	 * @param dblEpochResponse Segment Sequence Left-most Response Value
-	 * @param stretchSpec The Latent State Stretch Specification
-	 * @param valParams Valuation Parameter
-	 * @param pricerParams Pricer Parameter
-	 * @param csqs The Market Parameter Set
-	 * @param vcp Valuation Customization Parameters
+	 * @param epochResponse Segment Sequence Left-most Response Value
+	 * @param latentStateStretchSpecification The Latent State Stretch Specification
+	 * @param valuationParams Valuation Parameter
+	 * @param creditPricerParams Credit Pricer Parameter
+	 * @param curveSurfaceQuoteContainer The Market Parameter Set
+	 * @param valuationCustomizationParams Valuation Customization Parameters
 	 * @param span The Containing Span this Stretch will become a part of
-	 * @param sbfr Stretch Fitness Weighted Response
-	 * @param mapPMSC Map of Preceeding Manifest Sensitivity Control Parameters
-	 * @param sbfrQuoteSensitivity Stretch Fitness Weighted Response Quote Sensitivity
-	 * @param bs The Calibration Boundary Condition
+	 * @param stretchBestFitResponse Stretch Fitness Weighted Response
+	 * @param preceedingManifestSensitivityControlMap Map of Preceeding Manifest Sensitivity Control
+	 * 	Parameters
+	 * @param stretchBestFitResponseQuoteSensitivity Stretch Fitness Weighted Response Quote Sensitivity
+	 * @param boundarySettings The Calibration Boundary Condition
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public LatentStateSequenceBuilder (
-		final double dblEpochResponse,
-		final org.drip.state.inference.LatentStateStretchSpec stretchSpec,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.CreditPricerParams pricerParams,
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp,
-		final org.drip.spline.grid.Span span,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.spline.params.PreceedingManifestSensitivityControl>
-				mapPMSC,
-		final org.drip.spline.params.StretchBestFitResponse sbfrQuoteSensitivity,
-		final org.drip.spline.stretch.BoundarySettings bs)
-		throws java.lang.Exception
+		final double epochResponse,
+		final LatentStateStretchSpec latentStateStretchSpecification,
+		final ValuationParams valuationParams,
+		final CreditPricerParams creditPricerParams,
+		final CurveSurfaceQuoteContainer curveSurfaceQuoteContainer,
+		final ValuationCustomizationParams valuationCustomizationParams,
+		final Span span,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final CaseInsensitiveHashMap<PreceedingManifestSensitivityControl>
+			preceedingManifestSensitivityControlMap,
+		final StretchBestFitResponse stretchBestFitResponseQuoteSensitivity,
+		final BoundarySettings boundarySettings)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblEpochResponse = dblEpochResponse) || null ==
-			(_stretchSpec = stretchSpec) || null == (_valParams = valParams) || null == (_bs = bs) || null ==
-				(_mapPMSC = mapPMSC))
-			throw new java.lang.Exception ("LatentStateSequenceBuilder ctr: Invalid Inputs");
+		if (!NumberUtil.IsValid (_epochResponse = epochResponse) ||
+			null == (_latentStateStretchSpecification = latentStateStretchSpecification) ||
+			null == (_valuationParams = valuationParams) || null == (_boundarySettings = boundarySettings) ||
+			null == (_preceedingManifestSensitivityControlMap = preceedingManifestSensitivityControlMap)) {
+			throw new Exception ("LatentStateSequenceBuilder ctr: Invalid Inputs");
+		}
 
-		_vcp = vcp;
-		_csqs = csqs;
-		_sbfr = sbfr;
 		_span = span;
-		_pricerParams = pricerParams;
-		_sbfrQuoteSensitivity = sbfrQuoteSensitivity;
+		_creditPricerParams = creditPricerParams;
+		_stretchBestFitResponse = stretchBestFitResponse;
+		_curveSurfaceQuoteContainer = curveSurfaceQuoteContainer;
+		_valuationCustomizationParams = valuationCustomizationParams;
+		_stretchBestFitResponseQuoteSensitivity = stretchBestFitResponseQuoteSensitivity;
 	}
 
 	@Override public boolean setStretch (
-		final org.drip.spline.stretch.MultiSegmentSequence mss)
+		final MultiSegmentSequence multiSegmentSequence)
 	{
-		if (null == mss || !(mss instanceof org.drip.state.estimator.CurveStretch)) return false;
+		if (null == multiSegmentSequence || !(multiSegmentSequence instanceof CurveStretch)) {
+			return false;
+		}
 
-		_stretch = (org.drip.state.estimator.CurveStretch) mss;
+		LatentStateResponseModel[] latentStateResponseModelArray =
+			((CurveStretch) multiSegmentSequence).segments();
 
-		org.drip.spline.segment.LatentStateResponseModel[] aLSRM = _stretch.segments();
-
-		if (null == aLSRM || aLSRM.length != _stretchSpec.segmentSpec().length) return false;
-
-		return true;
+		return null != latentStateResponseModelArray &&
+			latentStateResponseModelArray.length == _latentStateStretchSpecification.segmentSpec().length;
 	}
 
 	@Override public org.drip.spline.stretch.BoundarySettings getCalibrationBoundaryCondition()
 	{
-		return _bs;
+		return _boundarySettings;
 	}
 
 	@Override public boolean calibStartingSegment (
-		final double dblLeftSlope)
+		final double leftSlope)
 	{
-		if (null == _stretch || !_stretch.clearBuiltRange()) return false;
+		if (null == _curveStretch || !_curveStretch.clearBuiltRange()) {
+			return false;
+		}
 
-		org.drip.product.definition.CalibratableComponent cfic =
-			_stretchSpec.segmentSpec()[0].component();
+		CalibratableComponent calibratableComponent =
+			_latentStateStretchSpecification.segmentSpec()[0].component();
 
-		if (null == cfic) return false;
+		if (null == calibratableComponent) {
+			return false;
+		}
 
-		org.drip.spline.segment.LatentStateResponseModel[] aLSRM = _stretch.segments();
+		LatentStateResponseModel[] latentStateResponseModelArray = _curveStretch.segments();
 
-		if (null == aLSRM || 0 == aLSRM.length) return false;
+		if (null == latentStateResponseModelArray || 0 == latentStateResponseModelArray.length) {
+			return false;
+		}
 
-		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = cfic.calibPRWC (_valParams,
-			_pricerParams, _csqs, _vcp, _stretchSpec.segmentSpec()[0].manifestMeasures());
+		PredictorResponseWeightConstraint predictorResponseWeightConstraint =
+			calibratableComponent.calibPRWC (
+			_valuationParams,
+			_creditPricerParams,
+			_curveSurfaceQuoteContainer,
+			_valuationCustomizationParams,
+			_latentStateStretchSpecification.segmentSpec()[0].manifestMeasures()
+		);
 
-		double dblSegmentRight = aLSRM[0].right();
+		double segmentRight = latentStateResponseModelArray[0].right();
 
-		if (null == prwc || !generateSegmentConstraintSet (dblSegmentRight, prwc)) return false;
+		if (null == predictorResponseWeightConstraint ||
+			!generateSegmentConstraintSet (segmentRight, predictorResponseWeightConstraint)) {
+			return false;
+		}
 
-		org.drip.spline.params.SegmentResponseValueConstraint rvcLeading =
-			org.drip.spline.params.SegmentResponseValueConstraint.FromPredictorResponsePair
-				(_valParams.valueDate(), _dblEpochResponse);
+		SegmentResponseValueConstraint leadingSegmentResponseValueConstraint =
+			SegmentResponseValueConstraint.FromPredictorResponsePair (
+				_valuationParams.valueDate(),
+				_epochResponse
+			);
 
-		if (null == rvcLeading) return false;
-
-		return aLSRM[0].calibrate (rvcLeading, dblLeftSlope, _mapRVSC.get (dblSegmentRight).base(), null ==
-			_sbfr ? null : _sbfr.sizeToSegment (aLSRM[0])) && _stretch.markSegmentBuilt (0,
-				prwc.mergeLabelSet());
+		return null != leadingSegmentResponseValueConstraint &&
+			latentStateResponseModelArray[0].calibrate (
+				leadingSegmentResponseValueConstraint,
+				leftSlope,
+				_responseValueSensitivityConstraintMap.get (segmentRight).base(),
+				null == _stretchBestFitResponse ? null : _stretchBestFitResponse.sizeToSegment (
+					latentStateResponseModelArray[0]
+				)
+			) && _curveStretch.markSegmentBuilt (0, predictorResponseWeightConstraint.mergeLabelSet());
 	}
 
 	@Override public boolean calibSegmentSequence (
-		final int iStartingSegment)
+		final int startingSegmentIndex)
 	{
-		org.drip.spline.segment.LatentStateResponseModel[] aLSRM = _stretch.segments();
+		LatentStateResponseModel[] latentStateResponseModelArray = _curveStretch.segments();
 
-		org.drip.state.inference.LatentStateSegmentSpec[] aLSSS = _stretchSpec.segmentSpec();
+		LatentStateSegmentSpec[] latentStateSegmentSpecificationArray =
+			_latentStateStretchSpecification.segmentSpec();
 
-		int iNumSegment = aLSRM.length;
+		int iNumSegment = latentStateResponseModelArray.length;
 
-		if (null == aLSSS || aLSSS.length != iNumSegment) return false;
+		if (null == latentStateSegmentSpecificationArray ||
+			latentStateSegmentSpecificationArray.length != iNumSegment) {
+			return false;
+		}
 
-		for (int iSegment = iStartingSegment; iSegment < iNumSegment; ++iSegment) {
-			org.drip.product.definition.CalibratableComponent cfic = aLSSS[iSegment].component();
+		for (int segmentIndex = startingSegmentIndex; segmentIndex < iNumSegment; ++segmentIndex) {
+			CalibratableComponent calibratableComponent =
+				latentStateSegmentSpecificationArray[segmentIndex].component();
 
-			if (null == cfic) return false;
-
-			org.drip.state.estimator.PredictorResponseWeightConstraint prwc = cfic.calibPRWC (_valParams,
-				_pricerParams, _csqs, _vcp, aLSSS[iSegment].manifestMeasures());
-
-			double dblSegmentRight = aLSRM[iSegment].right();
-
-			if (null == prwc || !generateSegmentConstraintSet (dblSegmentRight, prwc)) return false;
-
-			if (!aLSRM[iSegment].calibrate (0 == iSegment ? null : aLSRM[iSegment - 1], _mapRVSC.get
-				(dblSegmentRight).base(), null == _sbfr ? null : _sbfr.sizeToSegment (aLSRM[iSegment])) ||
-					!_stretch.markSegmentBuilt (iSegment, prwc.mergeLabelSet()))
+			if (null == calibratableComponent) {
 				return false;
+			}
+
+			PredictorResponseWeightConstraint predictorResponseWeightConstraint =
+				calibratableComponent.calibPRWC (
+					_valuationParams,
+					_creditPricerParams,
+					_curveSurfaceQuoteContainer,
+					_valuationCustomizationParams,
+					latentStateSegmentSpecificationArray[segmentIndex].manifestMeasures()
+				);
+
+			double segmentRight = latentStateResponseModelArray[segmentIndex].right();
+
+			if (null == predictorResponseWeightConstraint ||
+				!generateSegmentConstraintSet (segmentRight, predictorResponseWeightConstraint)) {
+				return false;
+			}
+
+			if (!latentStateResponseModelArray[startingSegmentIndex].calibrate (
+				0 == startingSegmentIndex ? null : latentStateResponseModelArray[startingSegmentIndex - 1],
+				_responseValueSensitivityConstraintMap.get (segmentRight).base(),
+				null == _stretchBestFitResponse ? null : _stretchBestFitResponse.sizeToSegment (
+					latentStateResponseModelArray[startingSegmentIndex]
+				)) || !_curveStretch.markSegmentBuilt (
+					startingSegmentIndex,
+					predictorResponseWeightConstraint.mergeLabelSet()
+				)
+			) {
+				return false;
+			}
 		}
 
 		return true;
@@ -425,38 +540,38 @@ public class LatentStateSequenceBuilder implements org.drip.spline.stretch.Segme
 	@Override public boolean manifestMeasureSensitivity (
 		final double dblLeftSlopeSensitivity)
 	{
-		org.drip.spline.segment.LatentStateResponseModel[] aLSRM = _stretch.segments();
+		org.drip.spline.segment.LatentStateResponseModel[] aLSRM = _curveStretch.segments();
 
 		int iNumSegment = aLSRM.length;
 
 		for (int iSegment = 0; iSegment < iNumSegment; ++iSegment) {
 			double dblSegmentRight = aLSRM[iSegment].right();
 
-			org.drip.spline.params.ResponseValueSensitivityConstraint rvsc = _mapRVSC.get (dblSegmentRight);
+			org.drip.spline.params.ResponseValueSensitivityConstraint rvsc = _responseValueSensitivityConstraintMap.get (dblSegmentRight);
 
 			java.util.Set<java.lang.String> setstrManifestMeasures = rvsc.manifestMeasures();
 
 			if (null == setstrManifestMeasures || 0 == setstrManifestMeasures.size()) return false;
 
 			for (java.lang.String strManifestMeasure : setstrManifestMeasures) {
-				if (!aLSRM[iSegment].setPreceedingManifestSensitivityControl (strManifestMeasure, getPMSC
+				if (!aLSRM[iSegment].setPreceedingManifestSensitivityControl (strManifestMeasure, getPreceedingManifestSensitivityControl
 					(strManifestMeasure)))
 					return false;
 
 				if (0 == iSegment) {
 					if (!aLSRM[0].manifestMeasureSensitivity (strManifestMeasure,
 						org.drip.spline.params.SegmentResponseValueConstraint.FromPredictorResponsePair
-							(_valParams.valueDate(), _dblEpochResponse), rvsc.base(),
+							(_valuationParams.valueDate(), _epochResponse), rvsc.base(),
 								dblLeftSlopeSensitivity,
 									org.drip.spline.params.SegmentResponseValueConstraint.FromPredictorResponsePair
-						(_valParams.valueDate(), 0.), rvsc.manifestMeasureSensitivity (strManifestMeasure),
-							null == _sbfrQuoteSensitivity ? null : _sbfrQuoteSensitivity.sizeToSegment
+						(_valuationParams.valueDate(), 0.), rvsc.manifestMeasureSensitivity (strManifestMeasure),
+							null == _stretchBestFitResponseQuoteSensitivity ? null : _stretchBestFitResponseQuoteSensitivity.sizeToSegment
 								(aLSRM[0])))
 						return false;
 				} else {
 					if (!aLSRM[iSegment].manifestMeasureSensitivity (aLSRM[iSegment - 1], strManifestMeasure,
 						rvsc.base(), rvsc.manifestMeasureSensitivity (strManifestMeasure), null ==
-							_sbfrQuoteSensitivity ? null : _sbfrQuoteSensitivity.sizeToSegment
+							_stretchBestFitResponseQuoteSensitivity ? null : _stretchBestFitResponseQuoteSensitivity.sizeToSegment
 								(aLSRM[iSegment])))
 						return false;
 				}

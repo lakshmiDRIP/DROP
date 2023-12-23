@@ -6,6 +6,9 @@ package org.drip.state.inference;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,52 +86,67 @@ package org.drip.state.inference;
 
 /**
  * <i>LatentStateStretchSpec</i> carries the Latent State Segment Sequence corresponding to the calibratable
- * Stretch.
- *
- *  <br><br>
+ * Stretch. It implements the following Functionality.
+ * 
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/inference/README.md">Latent State Stretch Sequence Inference</a></li>
+ *		<li><i>LatentStateStretchSpec</i> Constructor</li>
+ *		<li>Retrieve the Name of the <i>LatentStateStretchSpec</i> Instance</li>
+ *		<li>Retrieve the Array of the Latent State Segment Product/Manifest Measure Sequence</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/inference/README.md">Latent State Stretch Sequence Inference</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class LatentStateStretchSpec {
-	private java.lang.String _strName = "";
-	private org.drip.state.inference.LatentStateSegmentSpec[] _aLSSS = null;
+public class LatentStateStretchSpec
+{
+	private String _name = "";
+	private LatentStateSegmentSpec[] _latentStateSegmentSpecArray = null;
 
 	/**
-	 * LatentStateStretchSpec constructor
+	 * <i>LatentStateStretchSpec</i> constructor
 	 * 
-	 * @param strName Stretch Name
-	 * @param aLSSS The Latent State Segment Product/Manifest Measure Sequence contained in the Stretch
+	 * @param name Stretch Name
+	 * @param latentStateSegmentSpecArray The Latent State Segment Product/Manifest Measure Sequence
+	 * 	contained in the Stretch
 	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are invalid
+	 * @throws Exception Thrown if Inputs are invalid
 	 */
 
 	public LatentStateStretchSpec (
-		final java.lang.String strName,
-		final org.drip.state.inference.LatentStateSegmentSpec[] aLSSS)
-		throws java.lang.Exception
+		final String name,
+		final LatentStateSegmentSpec[] latentStateSegmentSpecArray)
+		throws Exception
 	{
-		if (null == (_strName = strName) || _strName.isEmpty() || null == (_aLSSS = aLSSS) || 0 ==
-			_aLSSS.length)
-			throw new java.lang.Exception ("LatentStateStretchSpec ctr: Invalid Inputs");
+		if (null == (_name = name) || _name.isEmpty() ||
+			null == (_latentStateSegmentSpecArray = latentStateSegmentSpecArray) ||
+				0 == _latentStateSegmentSpecArray.length) {
+			throw new Exception ("LatentStateStretchSpec ctr: Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Retrieve the name of the LatentStateStretchSpec Instance
+	 * Retrieve the Name of the <i>LatentStateStretchSpec</i> Instance
 	 * 
-	 * @return Name of the LatentStateStretchSpec Instance
+	 * @return Name of the <i>LatentStateStretchSpec</i> Instance
 	 */
 
-	public java.lang.String name()
+	public String name()
 	{
-		return _strName;
+		return _name;
 	}
 
 	/**
@@ -139,6 +157,6 @@ public class LatentStateStretchSpec {
 
 	public org.drip.state.inference.LatentStateSegmentSpec[] segmentSpec()
 	{
-		return _aLSSS;
+		return _latentStateSegmentSpecArray;
 	}
 }

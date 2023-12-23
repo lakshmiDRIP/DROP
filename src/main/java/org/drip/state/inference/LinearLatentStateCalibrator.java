@@ -1,11 +1,28 @@
 
 package org.drip.state.inference;
 
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.pricer.CreditPricerParams;
+import org.drip.param.valuation.ValuationCustomizationParams;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.spline.grid.OverlappingStretchSpan;
+import org.drip.spline.params.PreceedingManifestSensitivityControl;
+import org.drip.spline.params.SegmentCustomBuilderControl;
+import org.drip.spline.params.StretchBestFitResponse;
+import org.drip.spline.stretch.BoundarySettings;
+import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
+import org.drip.state.estimator.CurveStretch;
+import org.drip.state.estimator.GlobalControlCurveParams;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,124 +101,169 @@ package org.drip.state.inference;
 /**
  * <i>LinearLatentStateCalibrator</i> calibrates/constructs the Latent State Stretch/Span from the
  * calibration instrument details. The span construction may be customized using specific settings provided
- * in GlobalControlCurveParams.
- *
- *  <br><br>
+ * in GlobalControlCurveParams. It implements the following Functionality.
+ * 
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/inference/README.md">Latent State Stretch Sequence Inference</a></li>
+ *		<li><i>LinearLatentStateCalibrator</i> Constructor</li>
+ *		<li>Calibrate the Span from the Instruments in the Stretches and their Details.</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/inference/README.md">Latent State Stretch Sequence Inference</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LinearLatentStateCalibrator extends org.drip.state.estimator.GlobalControlCurveParams {
+public class LinearLatentStateCalibrator extends GlobalControlCurveParams
+{
 
 	/**
-	 * LinearLatentStateCalibrator constructor
+	 * <i>LinearLatentStateCalibrator</i> constructor
 	 * 
-	 * @param scbc Segment Builder Control Parameters
-	 * @param bs The Calibration Boundary Condition
-	 * @param iCalibrationDetail The Calibration Detail
-	 * @param sbfr Curve Fitness Weighted Response
-	 * @param sbfrSensitivity Curve Fitness Weighted Response Sensitivity
+	 * @param segmentCustomBuilderControl Segment Builder Control Parameters
+	 * @param boundarySettings The Calibration Boundary Condition
+	 * @param calibrationDetail The Calibration Detail
+	 * @param stretchBestFitResponse Curve Fitness Weighted Response
+	 * @param stretchBestFitResponseSensitivity Curve Fitness Weighted Response Sensitivity
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	public LinearLatentStateCalibrator (
-		final org.drip.spline.params.SegmentCustomBuilderControl scbc,
-		final org.drip.spline.stretch.BoundarySettings bs,
-		final int iCalibrationDetail,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final org.drip.spline.params.StretchBestFitResponse sbfrSensitivity)
-		throws java.lang.Exception
+		final SegmentCustomBuilderControl segmentCustomBuilderControl,
+		final BoundarySettings boundarySettings,
+		final int calibrationDetail,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final StretchBestFitResponse stretchBestFitResponseSensitivity)
+		throws Exception
 	{
-		super ("", scbc, bs, iCalibrationDetail, sbfr, sbfrSensitivity);
+		super (
+			"",
+			segmentCustomBuilderControl,
+			boundarySettings,
+			calibrationDetail,
+			stretchBestFitResponse,
+			stretchBestFitResponseSensitivity
+		);
 	}
 
 	/**
 	 * Calibrate the Span from the Instruments in the Stretches and their Details.
 	 * 
-	 * @param aStretchSpec The Stretch Sequence constituting the Span
-	 * @param dblEpochResponse Segment Sequence Left-most Response Value
-	 * @param valParams Valuation Parameter
-	 * @param pricerParams Pricer Parameter
-	 * @param vcp The Valuation Customization Parameters
-	 * @param csqs The Market Parameters Surface and Quote
+	 * @param latentStateStretchSpecArray The Stretch Sequence constituting the Span
+	 * @param epochResponse Segment Sequence Left-most Response Value
+	 * @param valuationParams Valuation Parameter
+	 * @param creditPricerParams Pricer Parameter
+	 * @param valuationCustomizationParams The Valuation Customization Parameters
+	 * @param curveSurfaceQuoteContainer The Market Parameters Surface and Quote
 	 * 
 	 * @return Instance of the Latent State Span
 	 */
 
-	public org.drip.spline.grid.OverlappingStretchSpan calibrateSpan (
-		final org.drip.state.inference.LatentStateStretchSpec[] aStretchSpec,
-		final double dblEpochResponse,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.CreditPricerParams pricerParams,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp,
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
+	public OverlappingStretchSpan calibrateSpan (
+		final LatentStateStretchSpec[] latentStateStretchSpecArray,
+		final double epochResponse,
+		final ValuationParams valuationParams,
+		final CreditPricerParams creditPricerParams,
+		final ValuationCustomizationParams valuationCustomizationParams,
+		final CurveSurfaceQuoteContainer curveSurfaceQuoteContainer)
 	{
-		if (null == aStretchSpec || null == valParams) return null;
+		if (null == latentStateStretchSpecArray || null == valuationParams) {
+			return null;
+		}
 
-		int iNumStretch = aStretchSpec.length;
-		org.drip.spline.grid.OverlappingStretchSpan oss = null;
+		OverlappingStretchSpan overlappingStretchSpan = null;
+		int stretchCount = latentStateStretchSpecArray.length;
 
-		if (0 == iNumStretch) return null;
+		if (0 == stretchCount) {
+			return null;
+		}
 
-		for (org.drip.state.inference.LatentStateStretchSpec stretchSpec : aStretchSpec) {
-			if (null == stretchSpec) continue;
+		for (LatentStateStretchSpec latentStateStretchSpec : latentStateStretchSpecArray) {
+			if (null == latentStateStretchSpec) {
+				continue;
+			}
 
-			org.drip.state.inference.LatentStateSegmentSpec[] aSegmentSpec = stretchSpec.segmentSpec();
+			LatentStateSegmentSpec[] latentStateSegmentSpecArray = latentStateStretchSpec.segmentSpec();
 
-			int iNumCalibComp = aSegmentSpec.length;
-			org.drip.state.estimator.CurveStretch cs = null;
-			double[] adblPredictorOrdinate = new double[iNumCalibComp + 1];
-			org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new
-				org.drip.spline.params.SegmentCustomBuilderControl[iNumCalibComp];
+			CurveStretch curveStretch = null;
+			int calibrationComponentCount = latentStateSegmentSpecArray.length;
+			double[] predictorOrdinateArray = new double[calibrationComponentCount + 1];
+			SegmentCustomBuilderControl[] segmentCustomBuilderControlArray =
+				new SegmentCustomBuilderControl[calibrationComponentCount];
 
-			for (int i = 0; i <= iNumCalibComp; ++i) {
-				adblPredictorOrdinate[i] = 0 == i ? valParams.valueDate() :
-					aSegmentSpec[i - 1].component().maturityDate().julian();
+			for (int calibrationComponentIndex = 0; calibrationComponentIndex <= calibrationComponentCount;
+				++calibrationComponentIndex) {
+				predictorOrdinateArray[calibrationComponentIndex] = 0 == calibrationComponentIndex ?
+					valuationParams.valueDate() :
+					latentStateSegmentSpecArray[calibrationComponentIndex - 1].component().maturityDate().julian();
 
-				if (i != iNumCalibComp) aSCBC[i] = segmentBuilderControl (stretchSpec.name());
+				if (calibrationComponentIndex != calibrationComponentCount) {
+					segmentCustomBuilderControlArray[calibrationComponentIndex] =
+						segmentBuilderControl (latentStateStretchSpec.name());
+				}
 			}
 
 			try {
-				cs = new org.drip.state.estimator.CurveStretch (stretchSpec.name(),
-					org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateSegmentSet
-						(adblPredictorOrdinate, aSCBC), aSCBC);
+				curveStretch = new CurveStretch (
+					latentStateStretchSpec.name(),
+					MultiSegmentSequenceBuilder.CreateSegmentSet (
+						predictorOrdinateArray,
+						segmentCustomBuilderControlArray
+					),
+					segmentCustomBuilderControlArray
+				);
 
-				if (!cs.setup (new org.drip.state.inference.LatentStateSequenceBuilder (dblEpochResponse,
-					stretchSpec, valParams, pricerParams, csqs, vcp, oss, bestFitWeightedResponse(), new
-						org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.spline.params.PreceedingManifestSensitivityControl>(),
-					bestFitWeightedResponseSensitivity(), calibrationBoundaryCondition()),
-						calibrationDetail())) {
-					System.out.println ("\tMSS Setup Failed!");
-
+				if (!curveStretch.setup (
+					new LatentStateSequenceBuilder (
+						epochResponse,
+						latentStateStretchSpec,
+						valuationParams,
+						creditPricerParams,
+						curveSurfaceQuoteContainer,
+						valuationCustomizationParams,
+						overlappingStretchSpan,
+						bestFitWeightedResponse(),
+						new CaseInsensitiveHashMap<PreceedingManifestSensitivityControl>(),
+						bestFitWeightedResponseSensitivity(),
+						calibrationBoundaryCondition()
+					),
+					calibrationDetail()
+				)) {
 					return null;
 				}
-			} catch (java.lang.Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 
-			if (null == oss) {
+			if (null == overlappingStretchSpan) {
 				try {
-					oss = new org.drip.spline.grid.OverlappingStretchSpan (cs);
-				} catch (java.lang.Exception e) {
+					overlappingStretchSpan = new OverlappingStretchSpan (curveStretch);
+				} catch (Exception e) {
 					e.printStackTrace();
 
 					return null;
 				}
 			} else {
-				if (!oss.addStretch (cs)) return null;
+				if (!overlappingStretchSpan.addStretch (curveStretch)) {
+					return null;
+				}
 			}
 		}
 
-		return oss;
+		return overlappingStretchSpan;
 	}
 }
