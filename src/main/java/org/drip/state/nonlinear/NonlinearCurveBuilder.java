@@ -257,13 +257,13 @@ public class NonlinearCurveBuilder
 	 * @param calibrationMeasure The Calibration Measure
 	 * @param flat TRUE - Calibrate a Flat Curve across all Tenors
 	 * @param curveSegmentIndex The Curve Segment Index
-	 * @param ebcc The Credit Curve to be calibrated
-	 * @param dc The discount curve to be bootstrapped
-	 * @param gc The Govvie Curve
-	 * @param pricerParams Input Pricer Parameters
-	 * @param lsfc The Latent State Fixings Container
-	 * @param vcp Valuation Customization Parameters
-	 * @param cp The Calibration Parameters
+	 * @param explicitBootCreditCurve The Credit Curve to be calibrated
+	 * @param mergedDiscountForwardCurve The discount curve to be bootstrapped
+	 * @param govvieCurve The Govvie Curve
+	 * @param creditPricerParams Input Pricer Parameters
+	 * @param latentStateFixingsContainer The Latent State Fixings Container
+	 * @param valuationCustomizationParams Valuation Customization Parameters
+	 * @param calibrationParams The Calibration Parameters
 	 * 
 	 * @return The successfully calibrated State Hazard Rate Point
 	 */
@@ -320,11 +320,11 @@ public class NonlinearCurveBuilder
 	 * @param calibrationValue The Value to be Calibrated to
 	 * @param calibrationMeasure The Calibration Measure
 	 * @param flat TRUE - Calibrate a Flat Curve across all Tenors
-	 * @param iCurveSegmentIndex The Curve Segment Index
-	 * @param ebdc The discount curve to be bootstrapped
-	 * @param gc The Govvie Curve
-	 * @param lsfc Latent State Fixings Container
-	 * @param vcp Valuation Customization Parameters
+	 * @param curveSegmentIndex The Curve Segment Index
+	 * @param explicitBootDiscountCurve The discount curve to be bootstrapped
+	 * @param govvieCurve The Govvie Curve
+	 * @param latentStateFixingsContainer Latent State Fixings Container
+	 * @param valuationCustomizationParams Valuation Customization Parameters
 	 * 
 	 * @return The successfully calibrated State IR Point
 	 * 
@@ -403,10 +403,10 @@ public class NonlinearCurveBuilder
 	 * @param calibrationMeasureArray Array of Calibration Measures
 	 * @param bump Amount to bump the Quotes by
 	 * @param flat TRUE - Calibrate a Flat Curve across all Tenors
-	 * @param ebdc The discount curve to be bootstrapped
-	 * @param gc The Govvie Curve
-	 * @param lsfc Latent State Fixings Container
-	 * @param vcp Valuation Customization Parameters
+	 * @param explicitBootDiscountCurve The discount curve to be bootstrapped
+	 * @param govvieCurve The Govvie Curve
+	 * @param latentStateFixingsContainer Latent State Fixings Container
+	 * @param valuationCustomizationParams Valuation Customization Parameters
 	 * 
 	 * @return TRUE - Bootstrapping was successful
 	 */

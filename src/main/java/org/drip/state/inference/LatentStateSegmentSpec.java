@@ -1,11 +1,16 @@
 
 package org.drip.state.inference;
 
+import org.drip.product.calib.ProductQuoteSet;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,22 +88,34 @@ package org.drip.state.inference;
 
 /**
  * <i>LatentStateSegmentSpec</i> carries the calibration instrument and the manifest measure set used in
- * calibrating the segment.
- *
- *  <br><br>
+ * calibrating the segment. It implements the following Functionality.
+ * 
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/inference/README.md">Latent State Stretch Sequence Inference</a></li>
+ *		<li><i>LatentStateSegmentSpec</i> Constructor</li>
+ *		<li>Retrieve the Calibration Component</li>
+ *		<li>Retrieve the Calibration Manifest Measure Quote Set</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/inference/README.md">Latent State Stretch Sequence Inference</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class LatentStateSegmentSpec {
-	private org.drip.product.calib.ProductQuoteSet _pqs = null;
+public class LatentStateSegmentSpec
+{
+	private ProductQuoteSet _productQuoteSet = null;
 	private org.drip.product.definition.CalibratableComponent _cfic = null;
 
 	/**
@@ -115,7 +132,7 @@ public class LatentStateSegmentSpec {
 		final org.drip.product.calib.ProductQuoteSet pqs)
 		throws java.lang.Exception
 	{
-		if (null == (_cfic = cfic) || null == (_pqs = pqs))
+		if (null == (_cfic = cfic) || null == (_productQuoteSet = pqs))
 			throw new java.lang.Exception ("LatentStateSegmentSpec ctr: Invalid Inputs");
 	}
 
@@ -138,6 +155,6 @@ public class LatentStateSegmentSpec {
 
 	public org.drip.product.calib.ProductQuoteSet manifestMeasures()
 	{
-		return _pqs;
+		return _productQuoteSet;
 	}
 }

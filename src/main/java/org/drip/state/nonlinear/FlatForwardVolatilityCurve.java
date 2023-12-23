@@ -1,11 +1,19 @@
 
 package org.drip.state.nonlinear;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.state.identifier.VolatilityLabel;
+import org.drip.state.volatility.ExplicitBootVolatilityCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,136 +92,156 @@ package org.drip.state.nonlinear;
  * <i>FlatForwardVolatilityCurve</i> manages the Volatility Latent State, using the Forward Volatility as the
  * State Response Representation.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear/README.md">Nonlinear (i.e., Boot) Latent State Construction</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear/README.md">Nonlinear (i.e., Boot) Latent State Construction</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class FlatForwardVolatilityCurve extends org.drip.state.volatility.ExplicitBootVolatilityCurve {
-	private int[] _aiPillarDate = null;
-	private double[] _adblImpliedVolatility = null;
+public class FlatForwardVolatilityCurve extends ExplicitBootVolatilityCurve
+{
+	private int[] _pillarDateArray = null;
+	private double[] _impliedVolatilityArray = null;
 
 	/**
 	 * FlatForwardVolatilityCurve Constructor
 	 * 
-	 * @param iEpochDate Epoch Date
-	 * @param label Volatility Label
-	 * @param strCurrency Currency
-	 * @param aiPillarDate Array of the Pillar Dates
-	 * @param adblImpliedVolatility Array of the corresponding Implied Volatility Nodes
+	 * @param epochDate Epoch Date
+	 * @param volatilityLabel Volatility Label
+	 * @param currency Currency
+	 * @param pillarDateArray Array of the Pillar Dates
+	 * @param impliedVolatilityArray Array of the corresponding Implied Volatility Nodes
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public FlatForwardVolatilityCurve (
-		final int iEpochDate,
-		final org.drip.state.identifier.VolatilityLabel label,
-		final java.lang.String strCurrency,
-		final int[] aiPillarDate,
-		final double[] adblImpliedVolatility)
-		throws java.lang.Exception
+		final int epochDate,
+		final VolatilityLabel volatilityLabel,
+		final String currency,
+		final int[] pillarDateArray,
+		final double[] impliedVolatilityArray)
+		throws Exception
 	{
-		super (iEpochDate, label, strCurrency);
+		super (epochDate, volatilityLabel, currency);
 
-		if (null == (_aiPillarDate = aiPillarDate) || null == (_adblImpliedVolatility =
-			adblImpliedVolatility))
-			throw new java.lang.Exception ("FlatForwardVolatilityCurve ctr => Invalid Inputs");
+		if (null == (_pillarDateArray = pillarDateArray) ||
+			null == (_impliedVolatilityArray = impliedVolatilityArray)) {
+			throw new Exception ("FlatForwardVolatilityCurve ctr => Invalid Inputs");
+		}
 
-		int iNumPillar = _aiPillarDate.length;
+		int pillarCount = _pillarDateArray.length;
 
-		if (0 == iNumPillar || iNumPillar != _adblImpliedVolatility.length)
-			throw new java.lang.Exception ("FlatForwardVolatilityCurve ctr => Invalid Inputs");
+		if (0 == pillarCount || pillarCount != _impliedVolatilityArray.length) {
+			throw new Exception ("FlatForwardVolatilityCurve ctr => Invalid Inputs");
+		}
 	}
 
 	@Override public double impliedVol (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		if (iDate <= _aiPillarDate[0]) return _adblImpliedVolatility[0];
-
-		int iNumPillar = _adblImpliedVolatility.length;
-
-		for (int i = 1; i < iNumPillar; ++i) {
-			if (_aiPillarDate[i - 1] <= iDate && _aiPillarDate[i] >= iDate)
-				return _adblImpliedVolatility[i];
+		if (date <= _pillarDateArray[0]) {
+			return _impliedVolatilityArray[0];
 		}
 
-		return _adblImpliedVolatility[iNumPillar - 1];
+		int pillarCount = _impliedVolatilityArray.length;
+
+		for (int i = 1; i < pillarCount; ++i) {
+			if (_pillarDateArray[i - 1] <= date && _pillarDateArray[i] >= date) {
+				return _impliedVolatilityArray[i];
+			}
+		}
+
+		return _impliedVolatilityArray[pillarCount - 1];
 	}
 
 	@Override public double node (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
 		return 0.;
 	}
 
 	@Override public double vol (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		return node (iDate);
+		return node (date);
 	}
 
 	@Override public double nodeDerivative (
-		final int iDate,
-		final int iOrder)
-		throws java.lang.Exception
+		final int date,
+		final int order)
+		throws Exception
 	{
-		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1 (null) {
+		return new R1ToR1 (null) {
 			@Override public double evaluate (
-				double dblX)
-				throws java.lang.Exception
+				double x)
+				throws Exception
 			{
-				return node ((int) dblX);
+				return node ((int) x);
 			}
-		};
-
-		return au.derivative (iDate, iOrder);
+		}.derivative (date, order);
 	}
 
 	@Override public boolean setNodeValue (
-		final int iNodeIndex,
-		final double dblValue)
+		final int nodeIndex,
+		final double value)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex >
-			_adblImpliedVolatility.length)
+		if (!NumberUtil.IsValid (value) || nodeIndex > _impliedVolatilityArray.length) {
 			return false;
+		}
 
-		for (int i = iNodeIndex; i < _adblImpliedVolatility.length; ++i)
-			_adblImpliedVolatility[i] = dblValue;
+		for (int impliedVolatilityArrayIndex = nodeIndex;
+			impliedVolatilityArrayIndex < _impliedVolatilityArray.length;
+			++impliedVolatilityArrayIndex) {
+			_impliedVolatilityArray[impliedVolatilityArrayIndex] = value;
+		}
 
 		return true;
 	}
 
 	@Override public boolean bumpNodeValue (
-		final int iNodeIndex,
-		final double dblValue)
+		final int nodeIndex,
+		final double value)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex >
-			_adblImpliedVolatility.length)
+		if (!NumberUtil.IsValid (value) || nodeIndex > _impliedVolatilityArray.length) {
 			return false;
+		}
 
-		for (int i = iNodeIndex; i < _adblImpliedVolatility.length; ++i)
-			_adblImpliedVolatility[i] += dblValue;
+		for (int impliedVolatilityArrayIndex = nodeIndex;
+			impliedVolatilityArrayIndex < _impliedVolatilityArray.length;
+			++impliedVolatilityArrayIndex) {
+			_impliedVolatilityArray[impliedVolatilityArrayIndex] += value;
+		}
 
 		return true;
 	}
 
 	@Override public boolean setFlatValue (
-		final double dblValue)
+		final double value)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
+		if (!NumberUtil.IsValid (value)) {
+			return false;
+		}
 
-		for (int i = 0; i < _adblImpliedVolatility.length; ++i)
-			_adblImpliedVolatility[i] = dblValue;
+		for (int impliedVolatilityArrayIndex = 0;
+			impliedVolatilityArrayIndex < _impliedVolatilityArray.length;
+			++impliedVolatilityArrayIndex) {
+			_impliedVolatilityArray[impliedVolatilityArrayIndex] = value;
+		}
 
 		return true;
 	}

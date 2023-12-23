@@ -4,6 +4,8 @@ package org.drip.state.nonlinear;
 import org.drip.analytics.daycount.ActActDCParams;
 import org.drip.analytics.daycount.Convention;
 import org.drip.analytics.support.Helper;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.differentiation.WengertJacobian;
 import org.drip.state.govvie.ExplicitBootGovvieCurve;
 
 /*
@@ -197,53 +199,66 @@ public class FlatForwardGovvieCurve extends ExplicitBootGovvieCurve
 	}
 
 	@Override public boolean setNodeValue (
-		final int iNodeIndex,
-		final double dblValue)
+		final int nodeIndex,
+		final double value)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
+		if (!NumberUtil.IsValid (value)) {
+			return false;
+		}
 
-		int iNumDate = _dateArray.length;
+		int dateNodeCount = _dateArray.length;
 
-		if (iNodeIndex > iNumDate) return false;
+		if (nodeIndex > dateNodeCount) {
+			return false;
+		}
 
-		for (int i = iNodeIndex; i < iNumDate; ++i)
-			_forwardYieldArray[i] = dblValue;
+		for (int forwardNodeIndex = nodeIndex; forwardNodeIndex < dateNodeCount; ++forwardNodeIndex) {
+			_forwardYieldArray[forwardNodeIndex] = value;
+		}
 
 		return true;
 	}
 
 	@Override public boolean bumpNodeValue (
-		final int iNodeIndex,
-		final double dblValue)
+		final int nodeIndex,
+		final double value)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
+		if (!NumberUtil.IsValid (value)) {
+			return false;
+		}
 
-		int iNumDate = _dateArray.length;
+		int dateNodeCount = _dateArray.length;
 
-		if (iNodeIndex > iNumDate) return false;
+		if (nodeIndex > dateNodeCount) {
+			return false;
+		}
 
-		for (int i = iNodeIndex; i < iNumDate; ++i)
-			_forwardYieldArray[i] += dblValue;
+		for (int forwardNodeIndex = nodeIndex; forwardNodeIndex < dateNodeCount; ++forwardNodeIndex) {
+			_forwardYieldArray[forwardNodeIndex] += value;
+		}
 
 		return true;
 	}
 
 	@Override public boolean setFlatValue (
-		final double dblValue)
+		final double value)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
+		if (!NumberUtil.IsValid (value)) {
+			return false;
+		}
 
-		int iNumDate = _dateArray.length;
+		int dateNodeCount = _dateArray.length;
 
-		for (int i = 0; i < iNumDate; ++i)
-			_forwardYieldArray[i] = dblValue;
+		for (int forwardNodeIndex = 0; forwardNodeIndex < dateNodeCount; ++forwardNodeIndex) {
+			_forwardYieldArray[forwardNodeIndex] = value;
+		}
 
 		return true;
 	}
 
-	@Override public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final int iDate)
+	@Override public WengertJacobian jackDForwardDManifestMeasure (
+		final String manifestMeasure,
+		final int date)
 	{
 		return null;
 	}

@@ -1,11 +1,18 @@
 
 package org.drip.state.nonlinear;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.product.definition.Component;
+import org.drip.state.repo.ExplicitBootRepoCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,107 +91,128 @@ package org.drip.state.nonlinear;
  * <i>FlatForwardRepoCurve</i> manages the Repo Latent State, using the Forward Repo Rate as the State
  * Response Representation.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear/README.md">Nonlinear (i.e., Boot) Latent State Construction</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/nonlinear/README.md">Nonlinear (i.e., Boot) Latent State Construction</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class FlatForwardRepoCurve extends org.drip.state.repo.ExplicitBootRepoCurve {
-	private int[] _aiPillarDate = null;
-	private double[] _adblRepoForward = null;
+public class FlatForwardRepoCurve extends ExplicitBootRepoCurve
+{
+	private int[] _dateArray = null;
+	private double[] _repoForwardArray = null;
 
 	/**
 	 * FlatForwardRepoCurve Constructor
 	 * 
-	 * @param iEpochDate Epoch Date
-	 * @param comp The Repo Component
-	 * @param aiPillarDate Array of Pillar Dates
-	 * @param adblRepoForward Array of Repo Forward Rates
+	 * @param epochDate Epoch Date
+	 * @param repoComponent The Repo Component
+	 * @param pillarDateArray Array of Pillar Dates
+	 * @param forwardRepoRateArray Array of Repo Forward Rates
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public FlatForwardRepoCurve (
-		final int iEpochDate,
-		final org.drip.product.definition.Component comp,
-		final int[] aiPillarDate,
-		final double[] adblRepoForward)
-		throws java.lang.Exception
+		final int epochDate,
+		final Component repoComponent,
+		final int[] pillarDateArray,
+		final double[] forwardRepoRateArray)
+		throws Exception
 	{
-		super (iEpochDate, comp);
+		super (epochDate, repoComponent);
 
-		if (null == (_aiPillarDate = aiPillarDate) || null == (_adblRepoForward = adblRepoForward) ||
-			_aiPillarDate.length != _adblRepoForward.length)
-			throw new java.lang.Exception ("FlatForwardRepoCurve ctr => Invalid Inputs");
+		if (null == (_dateArray = pillarDateArray) || null == (_repoForwardArray = forwardRepoRateArray) ||
+			_dateArray.length != _repoForwardArray.length) {
+			throw new Exception ("FlatForwardRepoCurve ctr => Invalid Inputs");
+		}
 
-		int iNumPillar = _aiPillarDate.length;
+		int pillarCount = _dateArray.length;
 
-		for (int i = 0; i < iNumPillar; ++i) {
-			if (!org.drip.numerical.common.NumberUtil.IsValid (_aiPillarDate[i]) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_adblRepoForward[i]))
-				throw new java.lang.Exception ("FlatForwardRepoCurve ctr => Invalid Inputs");
+		for (int i = 0; i < pillarCount; ++i) {
+			if (!NumberUtil.IsValid (_dateArray[i]) || !NumberUtil.IsValid (_repoForwardArray[i])) {
+				throw new Exception ("FlatForwardRepoCurve ctr => Invalid Inputs");
+			}
 		}
 	}
 
 	@Override public double repo (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		if (iDate >= component().maturityDate().julian())
-			throw new java.lang.Exception ("FlatForwardRepoCurve::repo => Invalid Input");
-
-		if (iDate <= epoch().julian()) return _adblRepoForward[0];
-
-		int iNumPillar = _adblRepoForward.length;
-
-		for (int i = 1; i < iNumPillar; ++i) {
-			if (_aiPillarDate[i - 1] <= iDate && _aiPillarDate[i] > iDate)
-				return _adblRepoForward[i];
+		if (date >= component().maturityDate().julian()) {
+			throw new Exception ("FlatForwardRepoCurve::repo => Invalid Input");
 		}
 
-		return _adblRepoForward[iNumPillar - 1];
+		if (date <= epoch().julian()) {
+			return _repoForwardArray[0];
+		}
+
+		int pillarCount = _repoForwardArray.length;
+
+		for (int i = 1; i < pillarCount; ++i) {
+			if (_dateArray[i - 1] <= date && _dateArray[i] > date) {
+				return _repoForwardArray[i];
+			}
+		}
+
+		return _repoForwardArray[pillarCount - 1];
 	}
 
 	@Override public boolean setNodeValue (
-		final int iNodeIndex,
-		final double dblValue)
+		final int nodeIndex,
+		final double value)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblRepoForward.length)
+		if (!NumberUtil.IsValid (value) || nodeIndex > _repoForwardArray.length) {
 			return false;
+		}
 
-		for (int i = iNodeIndex; i < _adblRepoForward.length; ++i)
-			_adblRepoForward[i] = dblValue;
+		for (int forwardRepoNodeIndex = nodeIndex; forwardRepoNodeIndex < _repoForwardArray.length;
+			++forwardRepoNodeIndex) {
+			_repoForwardArray[forwardRepoNodeIndex] = value;
+		}
 
 		return true;
 	}
 
 	@Override public boolean bumpNodeValue (
-		final int iNodeIndex,
-		final double dblValue)
+		final int nodeIndex,
+		final double value)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblRepoForward.length)
+		if (!NumberUtil.IsValid (value) || nodeIndex > _repoForwardArray.length) {
 			return false;
+		}
 
-		for (int i = iNodeIndex; i < _adblRepoForward.length; ++i)
-			_adblRepoForward[i] += dblValue;
+		for (int forwardRepoNodeIndex = nodeIndex; forwardRepoNodeIndex < _repoForwardArray.length;
+			++forwardRepoNodeIndex) {
+			_repoForwardArray[forwardRepoNodeIndex] += value;
+		}
 
 		return true;
 	}
 
 	@Override public boolean setFlatValue (
-		final double dblValue)
+		final double value)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
+		if (!NumberUtil.IsValid (value)) {
+			return false;
+		}
 
-		for (int i = 0; i < _adblRepoForward.length; ++i)
-			_adblRepoForward[i] = dblValue;
+		for (int forwardRepoNodeIndex = 0; forwardRepoNodeIndex < _repoForwardArray.length;
+			++forwardRepoNodeIndex) {
+			_repoForwardArray[forwardRepoNodeIndex] = value;
+		}
 
 		return true;
 	}
