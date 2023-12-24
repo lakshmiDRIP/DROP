@@ -1,11 +1,19 @@
 
 package org.drip.state.estimator;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.drip.state.identifier.LatentStateLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -90,34 +98,43 @@ package org.drip.state.estimator;
  * 
  * where Function can either be univariate function, or weighted spline basis set. To this end, it
  * implements the following functionality:
- *
- *  <br><br>
+ * 
  *  <ul>
- *  	<li>
- * 			Update/Retrieve Predictor/Response Weights and their Quote Sensitivities
- *  	</li>
- *  	<li>
- * 			Update/Retrieve Predictor/Response Constraint Values and their Quote Sensitivities
- *  	</li>
- *  	<li>
- * 			Display the contents of PredictorResponseWeightConstraint
- *  	</li>
+ *  	<li><i>PredictorResponseWeightConstraint</i> constructor</li>
+ *  	<li>Add a Predictor/Response Weight entry to the Linearized Constraint</li>
+ *  	<li>Update the Constraint Value</li>
+ *  	<li>Update the Constraint Value Sensitivity</li>
+ *  	<li>Retrieve the Constraint Value</li>
+ *  	<li>Retrieve the Constraint Value Sensitivity</li>
+ *  	<li>Add a Merging Latent State Label</li>
+ *  	<li>Return the Set of Merged Latent State Labels</li>
+ *  	<li>Retrieve the Predictor To-From Response Weight Map</li>
+ *  	<li>Retrieve the Predictor To-From Response Weight Sensitivity Map</li>
+ *  	<li>"Absorb" the other <i>PredictorResponseWeightConstraint</i> Instance into the Current One</li>
+ *  	<li>Return the Set of Available Sensitivities (if any)</li>
+ *  	<li>Display the Constraints and the corresponding Weights</li>
  *  </ul>
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator/README.md">Multi-Pass Customized Stretch Curve</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator/README.md">Multi-Pass Customized Stretch Curve</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class PredictorResponseWeightConstraint {
-	private java.util.HashSet<org.drip.state.identifier.LatentStateLabel> _setLSL = null;
+public class PredictorResponseWeightConstraint
+{
+	private HashSet<LatentStateLabel> _latentStateLabelSet = null;
 
 	private org.drip.state.estimator.PredictorResponseRelationSetup _prrsCalib = new
 		org.drip.state.estimator.PredictorResponseRelationSetup();
@@ -139,7 +156,7 @@ public class PredictorResponseWeightConstraint {
 	}
 
 	/**
-	 * Empty PredictorResponseWeightConstraint constructor
+	 * Empty <i>PredictorResponseWeightConstraint</i> constructor
 	 */
 
 	public PredictorResponseWeightConstraint()
@@ -258,9 +275,9 @@ public class PredictorResponseWeightConstraint {
 	{
 		if (null == lslMerge) return false;
 
-		if (null == _setLSL) _setLSL = new java.util.HashSet<org.drip.state.identifier.LatentStateLabel>();
+		if (null == _latentStateLabelSet) _latentStateLabelSet = new java.util.HashSet<org.drip.state.identifier.LatentStateLabel>();
 
-		_setLSL.add (lslMerge);
+		_latentStateLabelSet.add (lslMerge);
 
 		return true;
 	}
@@ -271,9 +288,9 @@ public class PredictorResponseWeightConstraint {
 	 * @return The Set of Merged Latent State Labels
 	 */
 
-	public java.util.Set<org.drip.state.identifier.LatentStateLabel> mergeLabelSet()
+	public Set<LatentStateLabel> mergeLabelSet()
 	{
-		return _setLSL;
+		return _latentStateLabelSet;
 	}
 
 	/**
@@ -303,7 +320,7 @@ public class PredictorResponseWeightConstraint {
 	}
 
 	/**
-	 * "Absorb" the other PRWC Instance into the Current One
+	 * "Absorb" the other <i>PredictorResponseWeightConstraint</i> Instance into the Current One
 	 * 
 	 * @param prwcOther The "Other" PRWC Instance
 	 * 
@@ -378,10 +395,10 @@ public class PredictorResponseWeightConstraint {
 
 		System.out.println ("\t" + strComment + " Constraint: " + _prrsCalib.getValue());
 
-		if (null != _setLSL) {
+		if (null != _latentStateLabelSet) {
 			java.lang.String strLabels = "\t" + strComment + " Labels:";
 
-			for (org.drip.state.identifier.LatentStateLabel lsl : _setLSL)
+			for (org.drip.state.identifier.LatentStateLabel lsl : _latentStateLabelSet)
 				strLabels += " " + lsl.fullyQualifiedName();
 
 			System.out.println (strLabels);

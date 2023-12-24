@@ -1,11 +1,19 @@
 
 package org.drip.state.estimator;
 
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -90,40 +98,41 @@ package org.drip.state.estimator;
  * 
  * where Function can either be univariate function, or weighted spline basis set. To this end, it implements
  * the following functionality:
- *
- *  <br><br>
+ * 
  *  <ul>
- *  	<li>
- * 			Update/Retrieve Predictor/Response Weights and their Quote Sensitivities
- *  	</li>
- *  	<li>
- * 			Update/Retrieve Predictor/Response Constraint Values and their Quote Sensitivities
- *  	</li>
- *  	<li>
- * 			Display the contents of PredictorResponseRelationSetup
- *  	</li>
+ *  	<li><i>PredictorResponseRelationSetup</i> constructor</li>
+ *  	<li>Update the Constraint Value</li>
+ *  	<li>Add a Predictor/Response Weight entry to the Linearized Constraint</li>
+ *  	<li>Retrieve the Constraint Value</li>
+ *  	<li>Retrieve the Predictor To-From Response Weight Map</li>
+ *  	<li>Absorb the "Other" <i>PredictorResponseRelationSetup</i> onto the current one</li>
  *  </ul>
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator/README.md">Multi-Pass Customized Stretch Curve</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator/README.md">Multi-Pass Customized Stretch Curve</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class PredictorResponseRelationSetup {
-	private double _dblValue = 0.;
+public class PredictorResponseRelationSetup
+{
+	private double _value = 0.;
 
-	private java.util.TreeMap<java.lang.Double, java.lang.Double> _mapPredictorResponseWeight = new
-		java.util.TreeMap<java.lang.Double, java.lang.Double>();
+	private TreeMap<Double, Double> _predictorResponseWeightMap = new TreeMap<Double, Double>();
 
 	/**
-	 * Empty PredictorResponseRelationSetup constructor
+	 * Empty <i>PredictorResponseRelationSetup</i> constructor
 	 */
 
 	public PredictorResponseRelationSetup()
@@ -133,41 +142,46 @@ public class PredictorResponseRelationSetup {
 	/**
 	 * Update the Constraint Value
 	 * 
-	 * @param dblValue The Constraint Value Update Increment
+	 * @param value The Constraint Value Update Increment
 	 * 
 	 * @return TRUE - This Update Succeeded
 	 */
 
 	public boolean updateValue (
-		final double dblValue)
+		final double value)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
+		if (!NumberUtil.IsValid (value)) {
+			return false;
+		}
 
-		_dblValue += dblValue;
+		_value += value;
 		return true;
 	}
 
 	/**
 	 * Add a Predictor/Response Weight entry to the Linearized Constraint
 	 * 
-	 * @param dblPredictor The Predictor Node
-	 * @param dblResponseWeight The Response Weight at the Node
+	 * @param predictor The Predictor Node
+	 * @param responseWeight The Response Weight at the Node
 	 * 
 	 * @return TRUE - Successfully added
 	 */
 
 	public boolean addPredictorResponseWeight (
-		final double dblPredictor,
-		final double dblResponseWeight)
+		final double predictor,
+		final double responseWeight)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictor) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblResponseWeight))
+		if (!NumberUtil.IsValid (predictor) || !NumberUtil.IsValid (responseWeight)) {
 			return false;
+		}
 
-		double dblResponseWeightPrior = _mapPredictorResponseWeight.containsKey (dblPredictor) ?
-			_mapPredictorResponseWeight.get (dblPredictor) : 0.;
+		double responseWeightPrior = _predictorResponseWeightMap.containsKey (predictor) ?
+			_predictorResponseWeightMap.get (predictor) : 0.;
 
-		_mapPredictorResponseWeight.put (dblPredictor, dblResponseWeight + dblResponseWeightPrior);
+		_predictorResponseWeightMap.put (
+			predictor,
+			responseWeight + responseWeightPrior
+		);
 
 		return true;
 	}
@@ -180,7 +194,7 @@ public class PredictorResponseRelationSetup {
 
 	public double getValue()
 	{
-		return _dblValue;
+		return _value;
 	}
 
 	/**
@@ -189,31 +203,38 @@ public class PredictorResponseRelationSetup {
 	 * @return The Predictor To-From Response Weight Map
 	 */
 
-	public java.util.TreeMap<java.lang.Double, java.lang.Double> getPredictorResponseWeight()
+	public TreeMap<Double, Double> getPredictorResponseWeight()
 	{
-		return _mapPredictorResponseWeight;
+		return _predictorResponseWeightMap;
 	}
 
 	/**
-	 * Absorb the "Other" PRRS onto the current one
+	 * Absorb the "Other" <i>PredictorResponseRelationSetup</i> onto the current one
 	 * 
-	 * @param prrsOther The "Other" PRRS
+	 * @param predictorResponseRelationSetupOther The "Other" PRRS
 	 * 
 	 * @return TRUE - At least one Entry was absorbed
 	 */
 
 	public boolean absorb (
-		final PredictorResponseRelationSetup prrsOther)
+		final PredictorResponseRelationSetup predictorResponseRelationSetupOther)
 	{
-		if (null == prrsOther || !updateValue (prrsOther.getValue())) return false;
+		if (null == predictorResponseRelationSetupOther ||
+			!updateValue (predictorResponseRelationSetupOther.getValue())) {
+			return false;
+		}
 
-		java.util.TreeMap<java.lang.Double, java.lang.Double> mapPRWOther =
-			prrsOther.getPredictorResponseWeight();
+		TreeMap<Double, Double> predictorResponseWeightMapOther =
+			predictorResponseRelationSetupOther.getPredictorResponseWeight();
 
-		if (null == mapPRWOther || 0 == mapPRWOther.size()) return true;
+		if (null == predictorResponseWeightMapOther || 0 == predictorResponseWeightMapOther.size()) {
+			return true;
+		}
 
-		for (java.util.Map.Entry<java.lang.Double, java.lang.Double> me : mapPRWOther.entrySet()) {
-			if (null != me && !addPredictorResponseWeight (me.getKey(), me.getValue())) return false;
+		for (Map.Entry<Double, Double> mapEntry : predictorResponseWeightMapOther.entrySet()) {
+			if (null != mapEntry && !addPredictorResponseWeight (mapEntry.getKey(), mapEntry.getValue())) {
+				return false;
+			}
 		}
 
 		return true;

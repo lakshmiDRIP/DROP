@@ -4,9 +4,14 @@ package org.drip.state.estimator;
 import org.drip.analytics.definition.LatentStateStatic;
 import org.drip.analytics.support.CaseInsensitiveTreeMap;
 import org.drip.numerical.common.NumberUtil;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.valuation.ValuationParams;
 import org.drip.product.calib.ProductQuoteSet;
 import org.drip.product.definition.CalibratableComponent;
+import org.drip.product.fx.ComponentPair;
+import org.drip.state.identifier.FXLabel;
 import org.drip.state.identifier.ForwardLabel;
+import org.drip.state.identifier.FundingLabel;
 import org.drip.state.inference.LatentStateSegmentSpec;
 import org.drip.state.inference.LatentStateStretchSpec;
 import org.drip.state.representation.LatentStateSpecification;
@@ -205,58 +210,81 @@ public class LatentStateStretchBuilder
 	/**
 	 * Construct a Merged Forward-Funding Latent State Stretch Spec Instance
 	 * 
-	 * @param strName Stretch Name
-	 * @param aCalibComp Array of Calibration Components
-	 * @param astrCalibMeasure Array of the Calibration Measures
-	 * @param adblCalibQuote Array of the Calibration Quotes
+	 * @param stretchName Stretch Name
+	 * @param calibratableComponentArray Array of Calibration Components
+	 * @param calibrationMeasureArray Array of the Calibration Measures
+	 * @param calibrationQuoteArray Array of the Calibration Quotes
 	 * 
 	 * @return Merged Forward-Funding Latent State Stretch Spec Instance
 	 */
 
-	public static final org.drip.state.inference.LatentStateStretchSpec ForwardFundingStretchSpec (
-		final java.lang.String strName,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp,
-		final java.lang.String[] astrCalibMeasure,
-		final double[] adblCalibQuote)
+	public static final LatentStateStretchSpec ForwardFundingStretchSpec (
+		final String stretchName,
+		final CalibratableComponent[] calibratableComponentArray,
+		final String[] calibrationMeasureArray,
+		final double[] calibrationQuoteArray)
 	{
-		if (null == aCalibComp || null == astrCalibMeasure || null == adblCalibQuote) return null;
-
-		int iNumComp = aCalibComp.length;
-		org.drip.state.inference.LatentStateSegmentSpec[] aLSSS = new
-			org.drip.state.inference.LatentStateSegmentSpec[iNumComp];
-
-		if (0 == iNumComp || iNumComp != astrCalibMeasure.length || iNumComp != adblCalibQuote.length)
+		if (null == calibratableComponentArray || null == calibrationMeasureArray ||
+			null == calibrationQuoteArray) {
 			return null;
+		}
+
+		int componentCount = calibratableComponentArray.length;
+		LatentStateSegmentSpec[] latentStateSegmentSpecArray = new LatentStateSegmentSpec[componentCount];
+
+		if (0 == componentCount || componentCount != calibrationMeasureArray.length ||
+			componentCount != calibrationQuoteArray.length) {
+			return null;
+		}
 
 		try {
-			for (int i = 0; i < iNumComp; ++i) {
-				if (null == aCalibComp[i] || null == astrCalibMeasure[i] || astrCalibMeasure[i].isEmpty() ||
-					!org.drip.numerical.common.NumberUtil.IsValid (adblCalibQuote[i]))
+			for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+				if (null == calibratableComponentArray[componentIndex] ||
+					null == calibrationMeasureArray[componentIndex] ||
+					calibrationMeasureArray[componentIndex].isEmpty() ||
+					!NumberUtil.IsValid (calibrationQuoteArray[componentIndex])) {
 					return null;
+				}
 
-				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel>
-					mapForwardLabel = aCalibComp[i].forwardLabel();
+				CaseInsensitiveTreeMap<ForwardLabel> forwardLabelMap =
+					calibratableComponentArray[componentIndex].forwardLabel();
 
-				if (null == mapForwardLabel || 0 == mapForwardLabel.size()) return null;
+				if (null == forwardLabelMap || 0 == forwardLabelMap.size()) {
+					return null;
+				}
 
-				org.drip.product.calib.ProductQuoteSet pqs = aCalibComp[i].calibQuoteSet (new
-					org.drip.state.representation.LatentStateSpecification[] {new
-						org.drip.state.representation.LatentStateSpecification
-							(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FUNDING,
-								org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR,
-					org.drip.state.identifier.FundingLabel.Standard (aCalibComp[i].payCurrency())), new
-						org.drip.state.representation.LatentStateSpecification 
-							(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FORWARD,
-								org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE,
-									mapForwardLabel.get ("DERIVED"))});
+				ProductQuoteSet productQuoteSet = calibratableComponentArray[componentIndex].calibQuoteSet (
+					new LatentStateSpecification[] {
+						new LatentStateSpecification (
+							LatentStateStatic.LATENT_STATE_FUNDING,
+							LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR,
+							FundingLabel.Standard (calibratableComponentArray[componentIndex].payCurrency())
+						),
+						new LatentStateSpecification (
+							LatentStateStatic.LATENT_STATE_FORWARD,
+							LatentStateStatic.FORWARD_QM_FORWARD_RATE,
+							forwardLabelMap.get ("DERIVED")
+						)
+					}
+				);
 
-				if (null == pqs || !pqs.set (astrCalibMeasure[i], adblCalibQuote[i])) return null;
+				if (null == productQuoteSet ||
+					!productQuoteSet.set (
+						calibrationMeasureArray[componentIndex],
+						calibrationQuoteArray[componentIndex]
+					)
+				) {
+					return null;
+				}
 
-				aLSSS[i] = new org.drip.state.inference.LatentStateSegmentSpec (aCalibComp[i], pqs);
+				latentStateSegmentSpecArray[componentIndex] = new LatentStateSegmentSpec (
+					calibratableComponentArray[componentIndex],
+					productQuoteSet
+				);
 			}
 
-			return new org.drip.state.inference.LatentStateStretchSpec (strName, aLSSS);
-		} catch (java.lang.Exception e) {
+			return new LatentStateStretchSpec (stretchName, latentStateSegmentSpecArray);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -266,55 +294,76 @@ public class LatentStateStretchBuilder
 	/**
 	 * Construct a Funding Latent State Stretch Spec Instance
 	 * 
-	 * @param strName Stretch Name
-	 * @param aCalibComp Array of Calibration Components
-	 * @param astrCalibMeasure Array of the Calibration Measures
-	 * @param adblCalibQuote Array of the Calibration Quotes
+	 * @param stretchName Stretch Name
+	 * @param calibratableComponentArray Array of Calibration Components
+	 * @param calibrationMeasureArray Array of the Calibration Measures
+	 * @param calibrationQuoteArray Array of the Calibration Quotes
 	 * 
 	 * @return Funding Latent State Stretch Spec Instance
 	 */
 
 	public static final org.drip.state.inference.LatentStateStretchSpec FundingStretchSpec (
-		final java.lang.String strName,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp,
-		final java.lang.String[] astrCalibMeasure,
-		final double[] adblCalibQuote)
+		final String stretchName,
+		final CalibratableComponent[] calibratableComponentArray,
+		final String[] calibrationMeasureArray,
+		final double[] calibrationQuoteArray)
 	{
-		if (null == aCalibComp || null == astrCalibMeasure || null == adblCalibQuote) return null;
-
-		int iNumComp = aCalibComp.length;
-		org.drip.state.inference.LatentStateSegmentSpec[] aLSSS = new
-			org.drip.state.inference.LatentStateSegmentSpec[iNumComp];
-
-		if (0 == iNumComp || iNumComp != astrCalibMeasure.length || iNumComp != adblCalibQuote.length)
+		if (null == calibratableComponentArray || null == calibrationMeasureArray ||
+			null == calibrationQuoteArray) {
 			return null;
+		}
+
+		int componentCount = calibratableComponentArray.length;
+		LatentStateSegmentSpec[] latentStateSegmentSpecArray = new LatentStateSegmentSpec[componentCount];
+
+		if (0 == componentCount || componentCount != calibrationMeasureArray.length ||
+			componentCount != calibrationQuoteArray.length) {
+			return null;
+		}
 
 		try {
-			for (int i = 0; i < iNumComp; ++i) {
-				if (null == aCalibComp[i] || null == astrCalibMeasure[i] || astrCalibMeasure[i].isEmpty() ||
-					!org.drip.numerical.common.NumberUtil.IsValid (adblCalibQuote[i]))
+			for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+				if (null == calibratableComponentArray[componentIndex] ||
+					null == calibrationMeasureArray[componentIndex] ||
+					calibrationMeasureArray[componentIndex].isEmpty() ||
+					!NumberUtil.IsValid (calibrationQuoteArray[componentIndex])) {
 					return null;
+				}
 
-				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel>
-					mapForwardLabel = aCalibComp[i].forwardLabel();
+				CaseInsensitiveTreeMap<ForwardLabel> forwardLabelMap =
+					calibratableComponentArray[componentIndex].forwardLabel();
 
-				if (null == mapForwardLabel || 0 == mapForwardLabel.size()) return null;
+				if (null == forwardLabelMap || 0 == forwardLabelMap.size()) {
+					return null;
+				}
 
-				org.drip.product.calib.ProductQuoteSet pqs = aCalibComp[i].calibQuoteSet (new
-					org.drip.state.representation.LatentStateSpecification[] {new
-						org.drip.state.representation.LatentStateSpecification
-							(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FUNDING,
-								org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR,
-									org.drip.state.identifier.FundingLabel.Standard
-										(aCalibComp[i].payCurrency()))});
+				ProductQuoteSet productQuoteSet = calibratableComponentArray[componentIndex].calibQuoteSet (
+					new LatentStateSpecification[] {
+						new LatentStateSpecification (
+							LatentStateStatic.LATENT_STATE_FUNDING,
+							LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR,
+							FundingLabel.Standard (calibratableComponentArray[componentIndex].payCurrency())
+						)
+					}
+				);
 
-				if (null == pqs || !pqs.set (astrCalibMeasure[i], adblCalibQuote[i])) return null;
+				if (null == productQuoteSet ||
+					!productQuoteSet.set (
+						calibrationMeasureArray[componentIndex],
+						calibrationQuoteArray[componentIndex]
+					)
+				) {
+					return null;
+				}
 
-				aLSSS[i] = new org.drip.state.inference.LatentStateSegmentSpec (aCalibComp[i], pqs);
+				latentStateSegmentSpecArray[componentIndex] = new LatentStateSegmentSpec (
+					calibratableComponentArray[componentIndex],
+					productQuoteSet
+				);
 			}
 
-			return new org.drip.state.inference.LatentStateStretchSpec (strName, aLSSS);
-		} catch (java.lang.Exception e) {
+			return new LatentStateStretchSpec (stretchName, latentStateSegmentSpecArray);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -324,128 +373,166 @@ public class LatentStateStretchBuilder
 	/**
 	 * Construct a Forward Latent State Stretch Spec Instance
 	 * 
-	 * @param strName Stretch Name
-	 * @param aCalibComp Array of Calibration Components
-	 * @param strCalibMeasure The Calibration Measure
-	 * @param adblCalibQuote Array of the Calibration Quotes
+	 * @param stretchName Stretch Name
+	 * @param calibratableComponentArray Array of Calibration Components
+	 * @param calibrationMeasure The Calibration Measure
+	 * @param calibrationQuoteArray Array of the Calibration Quotes
 	 * 
 	 * @return Forward Latent State Stretch Spec Instance
 	 */
 
-	public static final org.drip.state.inference.LatentStateStretchSpec ForwardStretchSpec (
-		final java.lang.String strName,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp,
-		final java.lang.String strCalibMeasure,
-		final double[] adblCalibQuote)
+	public static final LatentStateStretchSpec ForwardStretchSpec (
+		final String stretchName,
+		final CalibratableComponent[] calibratableComponentArray,
+		final String calibrationMeasure,
+		final double[] calibrationQuoteArray)
 	{
-		if (null == strCalibMeasure || strCalibMeasure.isEmpty() || null == adblCalibQuote) return null;
+		if (null == calibrationMeasure || calibrationMeasure.isEmpty() || null == calibrationQuoteArray) {
+			return null;
+		}
 
-		int iNumComp = adblCalibQuote.length;
-		java.lang.String[] astrCalibMeasure = new java.lang.String[iNumComp];
+		int componentCount = calibrationQuoteArray.length;
+		String[] calibrationMeasureArray = new String[componentCount];
 
-		for (int i = 0; i < iNumComp; ++i)
-			astrCalibMeasure[i] = strCalibMeasure;
+		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+			calibrationMeasureArray[componentIndex] = calibrationMeasure;
+		}
 
-		return ForwardStretchSpec (strName, aCalibComp, astrCalibMeasure, adblCalibQuote);
+		return ForwardStretchSpec (
+			stretchName,
+			calibratableComponentArray,
+			calibrationMeasureArray,
+			calibrationQuoteArray
+		);
 	}
 
 	/**
 	 * Construct a Merged Forward-Funding Latent State Stretch Spec Instance
 	 * 
-	 * @param strName Stretch Name
-	 * @param aCalibComp Array of Calibration Components
-	 * @param strCalibMeasure The Calibration Measure
-	 * @param adblCalibQuote Array of the Calibration Quotes
+	 * @param stretchName Stretch Name
+	 * @param calibratableComponentArray Array of Calibration Components
+	 * @param calibrationMeasure The Calibration Measure
+	 * @param calibrationQuoteArray Array of the Calibration Quotes
 	 * 
 	 * @return Merged Forward-Funding Latent State Stretch Spec Instance
 	 */
 
-	public static final org.drip.state.inference.LatentStateStretchSpec ForwardFundingStretchSpec (
-		final java.lang.String strName,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp,
-		final java.lang.String strCalibMeasure,
-		final double[] adblCalibQuote)
+	public static final LatentStateStretchSpec ForwardFundingStretchSpec (
+		final String stretchName,
+		final CalibratableComponent[] calibratableComponentArray,
+		final String calibrationMeasure,
+		final double[] calibrationQuoteArray)
 	{
-		if (null == strCalibMeasure || strCalibMeasure.isEmpty() || null == adblCalibQuote) return null;
+		if (null == calibrationMeasure || calibrationMeasure.isEmpty() || null == calibrationQuoteArray) {
+			return null;
+		}
 
-		int iNumComp = adblCalibQuote.length;
-		java.lang.String[] astrCalibMeasure = new java.lang.String[iNumComp];
+		int componentCount = calibrationQuoteArray.length;
+		String[] calibrationMeasureArray = new String[componentCount];
 
-		for (int i = 0; i < iNumComp; ++i)
-			astrCalibMeasure[i] = strCalibMeasure;
+		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+			calibrationMeasureArray[componentIndex] = calibrationMeasure;
+		}
 
-		return ForwardFundingStretchSpec (strName, aCalibComp, astrCalibMeasure, adblCalibQuote);
+		return ForwardFundingStretchSpec (
+			stretchName,
+			calibratableComponentArray,
+			calibrationMeasureArray,
+			calibrationQuoteArray
+		);
 	}
 
 	/**
 	 * Construct a Funding Latent State Stretch Spec Instance
 	 * 
-	 * @param strName Stretch Name
-	 * @param aCalibComp Array of Calibration Components
-	 * @param strCalibMeasure The Calibration Measure
-	 * @param adblCalibQuote Array of the Calibration Quotes
+	 * @param stretchName Stretch Name
+	 * @param calibratableComponentArray Array of Calibration Components
+	 * @param calibrationMeasure The Calibration Measure
+	 * @param calibrationQuoteArray Array of the Calibration Quotes
 	 * 
 	 * @return Funding Latent State Stretch Spec Instance
 	 */
 
-	public static final org.drip.state.inference.LatentStateStretchSpec FundingStretchSpec (
-		final java.lang.String strName,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp,
-		final java.lang.String strCalibMeasure,
-		final double[] adblCalibQuote)
+	public static final LatentStateStretchSpec FundingStretchSpec (
+		final String stretchName,
+		final CalibratableComponent[] calibratableComponentArray,
+		final String calibrationMeasure,
+		final double[] calibrationQuoteArray)
 	{
-		if (null == strCalibMeasure || strCalibMeasure.isEmpty() || null == adblCalibQuote) return null;
+		if (null == calibrationMeasure || calibrationMeasure.isEmpty() || null == calibrationQuoteArray) {
+			return null;
+		}
 
-		int iNumComp = adblCalibQuote.length;
-		java.lang.String[] astrCalibMeasure = new java.lang.String[iNumComp];
+		int componentCount = calibrationQuoteArray.length;
+		String[] calibrationMeasureArray = new String[componentCount];
 
-		for (int i = 0; i < iNumComp; ++i)
-			astrCalibMeasure[i] = strCalibMeasure;
+		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+			calibrationMeasureArray[componentIndex] = calibrationMeasure;
+		}
 
-		return FundingStretchSpec (strName, aCalibComp, astrCalibMeasure, adblCalibQuote);
+		return FundingStretchSpec (
+			stretchName,
+			calibratableComponentArray,
+			calibrationMeasureArray,
+			calibrationQuoteArray
+		);
 	}
 
 	/**
 	 * Construct an instance of LatentStateStretchSpec for the Construction of the Forward Curve from the
 	 * 	specified Inputs
 	 * 
-	 * @param strName Stretch Name
-	 * @param aCCSP Array of Calibration Cross Currency Swap Pair Instances
-	 * @param valParams The Valuation Parameters
-	 * @param mktParams The Basket Market Parameters to imply the Market Quote Measure
-	 * @param adblBasis Array of the Basis on either the Reference Component or the Derived Component
-	 * @param bBasisOnDerivedComponent TRUE - Apply the Basis on the Derived Component
-	 * @param bBasisOnDerivedStream TRUE - Apply the Basis on the Derived Stream (FALSE - Reference Stream)
+	 * @param stretchName Stretch Name
+	 * @param componentPairArray Array of Calibration Cross Currency Swap Pair Instances
+	 * @param valuationParams The Valuation Parameters
+	 * @param curveSurfaceQuoteContainer The Basket Market Parameters to imply the Market Quote Measure
+	 * @param basisArray Array of the Basis on either the Reference Component or the Derived Component
+	 * @param basisOnDerivedComponent TRUE - Apply the Basis on the Derived Component
+	 * @param basisOnDerivedStream TRUE - Apply the Basis on the Derived Stream (FALSE - Reference Stream)
 	 * 
 	 * @return Instance of LatentStateStretchSpec
 	 */
 
-	public static final org.drip.state.inference.LatentStateStretchSpec ComponentPairForwardStretch (
-		final java.lang.String strName,
-		final org.drip.product.fx.ComponentPair[] aCCSP,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.market.CurveSurfaceQuoteContainer mktParams,
-		final double[] adblBasis,
-		final boolean bBasisOnDerivedComponent,
-		final boolean bBasisOnDerivedStream)
+	public static final LatentStateStretchSpec ComponentPairForwardStretch (
+		final String stretchName,
+		final ComponentPair[] componentPairArray,
+		final ValuationParams valuationParams,
+		final CurveSurfaceQuoteContainer curveSurfaceQuoteContainer,
+		final double[] basisArray,
+		final boolean basisOnDerivedComponent,
+		final boolean basisOnDerivedStream)
 	{
-		if (null == aCCSP || null == mktParams || null == adblBasis) return null;
+		if (null == componentPairArray || null == curveSurfaceQuoteContainer || null == basisArray) {
+			return null;
+		}
 
-		int iNumCCSP = aCCSP.length;
+		int componentPairCount = componentPairArray.length;
 
-		if (0 == iNumCCSP || adblBasis.length != iNumCCSP) return null;
+		if (0 == componentPairCount || basisArray.length != componentPairCount) {
+			return null;
+		}
 
-		org.drip.state.inference.LatentStateSegmentSpec[] aSegmentSpec = new
-			org.drip.state.inference.LatentStateSegmentSpec[iNumCCSP];
+		LatentStateSegmentSpec[] latentStateSegmentSpecArray =
+			new LatentStateSegmentSpec[componentPairCount];
 
-		for (int i = 0; i < iNumCCSP; ++i) {
-			if (null == aCCSP[i]) return null;
+		for (int componentPairIndex = 0; componentPairIndex < componentPairCount; ++componentPairIndex) {
+			if (null == componentPairArray[componentPairIndex]) return null;
 
 			try {
-				if (null == (aSegmentSpec[i] = aCCSP[i].derivedForwardSpec (valParams, mktParams,
-					adblBasis[i], bBasisOnDerivedComponent, bBasisOnDerivedStream)))
+				if (null == (
+					latentStateSegmentSpecArray[componentPairIndex] =
+						componentPairArray[componentPairIndex].derivedForwardSpec (
+							valuationParams,
+							curveSurfaceQuoteContainer,
+							basisArray[componentPairIndex],
+							basisOnDerivedComponent,
+							basisOnDerivedStream
+						)
+					)
+				) {
 					return null;
-			} catch (java.lang.Exception e) {
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
@@ -453,8 +540,8 @@ public class LatentStateStretchBuilder
 		}
 
 		try {
-			return new org.drip.state.inference.LatentStateStretchSpec (strName, aSegmentSpec);
-		} catch (java.lang.Exception e) {
+			return new LatentStateStretchSpec (stretchName, latentStateSegmentSpecArray);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -465,48 +552,60 @@ public class LatentStateStretchBuilder
 	 * Construct an instance of LatentStateStretchSpec for the Construction of the Discount Curve from the
 	 * 	specified Inputs
 	 * 
-	 * @param strName Stretch Name
-	 * @param aCCSP Array of Calibration Cross Currency Swap Pair Instances
-	 * @param valParams The Valuation Parameters
-	 * @param mktParams The Basket Market Parameters to imply the Market Quote Measure
-	 * @param adblReferenceComponentBasis Array of the Reference Component Reference Leg Basis Spread
-	 * @param adblSwapRate Array of the IRS Calibration Swap Rates
-	 * @param bBasisOnDerivedLeg TRUE - Apply the Basis on the Derived Leg (FALSE - Reference Leg)
+	 * @param stretchName Stretch Name
+	 * @param componentPairArray Array of Calibration Cross Currency Swap Pair Instances
+	 * @param valuationParams The Valuation Parameters
+	 * @param curveSurfaceQuoteContainer The Basket Market Parameters to imply the Market Quote Measure
+	 * @param referenceComponentBasisArray Array of the Reference Component Reference Leg Basis Spread
+	 * @param swapRateArray Array of the IRS Calibration Swap Rates
+	 * @param basisOnDerivedLeg TRUE - Apply the Basis on the Derived Leg (FALSE - Reference Leg)
 	 * 
 	 * @return Instance of LatentStateStretchSpec
 	 */
 
-	public static final org.drip.state.inference.LatentStateStretchSpec ComponentPairDiscountStretch (
-		final java.lang.String strName,
-		final org.drip.product.fx.ComponentPair[] aCCSP,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.market.CurveSurfaceQuoteContainer mktParams,
-		final double[] adblReferenceComponentBasis,
-		final double[] adblSwapRate,
-		final boolean bBasisOnDerivedLeg)
+	public static final LatentStateStretchSpec ComponentPairDiscountStretch (
+		final String stretchName,
+		final ComponentPair[] componentPairArray,
+		final ValuationParams valuationParams,
+		final CurveSurfaceQuoteContainer curveSurfaceQuoteContainer,
+		final double[] referenceComponentBasisArray,
+		final double[] swapRateArray,
+		final boolean basisOnDerivedLeg)
 	{
-		if (null == aCCSP || null == mktParams || null == adblReferenceComponentBasis || null ==
-			adblSwapRate)
+		if (null == componentPairArray || null == curveSurfaceQuoteContainer ||
+			null == referenceComponentBasisArray || null == swapRateArray) {
 			return null;
+		}
 
-		int iNumCCSP = aCCSP.length;
+		int componentPairCount = componentPairArray.length;
 
-		if (0 == iNumCCSP || adblReferenceComponentBasis.length != iNumCCSP || adblSwapRate.length !=
-			iNumCCSP)
+		if (0 == componentPairCount || referenceComponentBasisArray.length != componentPairCount ||
+			swapRateArray.length != componentPairCount) {
 			return null;
+		}
 
-		org.drip.state.inference.LatentStateSegmentSpec[] aSegmentSpec = new
-			org.drip.state.inference.LatentStateSegmentSpec[iNumCCSP];
+		LatentStateSegmentSpec[] latentStateSegmentSpecArray =
+			new LatentStateSegmentSpec[componentPairCount];
 
-		for (int i = 0; i < iNumCCSP; ++i) {
-			if (null == (aSegmentSpec[i] = aCCSP[i].derivedFundingForwardSpec (valParams, mktParams,
-				adblReferenceComponentBasis[i], bBasisOnDerivedLeg, adblSwapRate[i])))
+		for (int componentPairIndex = 0; componentPairIndex < componentPairCount; ++componentPairIndex) {
+			if (null == (
+				latentStateSegmentSpecArray[componentPairIndex] =
+					componentPairArray[componentPairIndex].derivedFundingForwardSpec (
+						valuationParams,
+						curveSurfaceQuoteContainer,
+						referenceComponentBasisArray[componentPairIndex],
+						basisOnDerivedLeg,
+						swapRateArray[componentPairIndex]
+					)
+				)
+			) {
 				return null;
+			}
 		}
 
 		try {
-			return new org.drip.state.inference.LatentStateStretchSpec (strName, aSegmentSpec);
-		} catch (java.lang.Exception e) {
+			return new LatentStateStretchSpec (stretchName, latentStateSegmentSpecArray);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -516,54 +615,74 @@ public class LatentStateStretchBuilder
 	/**
 	 * Construct a FX Latent State Stretch Spec Instance
 	 * 
-	 * @param strName Stretch Name
-	 * @param aCalibComp Array of Calibration Components
-	 * @param astrCalibMeasure Array of the Calibration Measures
-	 * @param adblCalibQuote Array of the Calibration Quotes
+	 * @param stretchName Stretch Name
+	 * @param calibratableComponentArray Array of Calibration Components
+	 * @param calibrationMeasureArray Array of the Calibration Measures
+	 * @param calibrationQuoteArray Array of the Calibration Quotes
 	 * 
 	 * @return FX Latent State Stretch Spec Instance
 	 */
 
-	public static final org.drip.state.inference.LatentStateStretchSpec FXStretchSpec (
-		final java.lang.String strName,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp,
-		final java.lang.String[] astrCalibMeasure,
-		final double[] adblCalibQuote)
+	public static final LatentStateStretchSpec FXStretchSpec (
+		final String stretchName,
+		final CalibratableComponent[] calibratableComponentArray,
+		final String[] calibrationMeasureArray,
+		final double[] calibrationQuoteArray)
 	{
-		if (null == aCalibComp || null == astrCalibMeasure || null == adblCalibQuote) return null;
-
-		int iNumComp = aCalibComp.length;
-		org.drip.state.inference.LatentStateSegmentSpec[] aLSSS = new
-			org.drip.state.inference.LatentStateSegmentSpec[iNumComp];
-
-		if (0 == iNumComp || iNumComp != astrCalibMeasure.length || iNumComp != adblCalibQuote.length)
+		if (null == calibratableComponentArray || null == calibrationMeasureArray ||
+			null == calibrationQuoteArray) {
 			return null;
+		}
+
+		int componentCount = calibratableComponentArray.length;
+		LatentStateSegmentSpec[] latentStateSegmentSpecArray = new LatentStateSegmentSpec[componentCount];
+
+		if (0 == componentCount || componentCount != calibrationMeasureArray.length ||
+			componentCount != calibrationQuoteArray.length) {
+			return null;
+		}
 
 		try {
-			for (int i = 0; i < iNumComp; ++i) {
-				if (null == aCalibComp[i] || null == astrCalibMeasure[i] || astrCalibMeasure[i].isEmpty() ||
-					!org.drip.numerical.common.NumberUtil.IsValid (adblCalibQuote[i]))
+			for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+				if (null == calibratableComponentArray[componentIndex] ||
+					null == calibrationMeasureArray[componentIndex] ||
+					calibrationMeasureArray[componentIndex].isEmpty() ||
+					!NumberUtil.IsValid (calibrationQuoteArray[componentIndex])) {
 					return null;
+				}
 
-				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.FXLabel>
-					mapFXLabel = aCalibComp[i].fxLabel();
+				CaseInsensitiveTreeMap<FXLabel> fxLabelMap =
+					calibratableComponentArray[componentIndex].fxLabel();
 
-				if (null == mapFXLabel || 0 == mapFXLabel.size()) return null;
+				if (null == fxLabelMap || 0 == fxLabelMap.size()) {
+					return null;
+				}
 
-				org.drip.product.calib.ProductQuoteSet pqs = aCalibComp[i].calibQuoteSet (new
-					org.drip.state.representation.LatentStateSpecification[] {new
-						org.drip.state.representation.LatentStateSpecification 
-							(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FX,
-								org.drip.analytics.definition.LatentStateStatic.FX_QM_FORWARD_OUTRIGHT,
-									mapFXLabel.get ("DERIVED"))});
+				ProductQuoteSet productQuoteSet = calibratableComponentArray[componentIndex].calibQuoteSet (
+					new LatentStateSpecification[] {
+						new LatentStateSpecification (
+							LatentStateStatic.LATENT_STATE_FX,
+							LatentStateStatic.FX_QM_FORWARD_OUTRIGHT,
+							fxLabelMap.get ("DERIVED")
+						)
+					}
+				);
 
-				if (null == pqs || !pqs.set (astrCalibMeasure[i], adblCalibQuote[i])) return null;
+				if (null == productQuoteSet || !productQuoteSet.set (
+					calibrationMeasureArray[componentIndex],
+					calibrationQuoteArray[componentIndex]
+				)) {
+					return null;
+				}
 
-				aLSSS[i] = new org.drip.state.inference.LatentStateSegmentSpec (aCalibComp[i], pqs);
+				latentStateSegmentSpecArray[componentIndex] = new LatentStateSegmentSpec (
+					calibratableComponentArray[componentIndex],
+					productQuoteSet
+				);
 			}
 
-			return new org.drip.state.inference.LatentStateStretchSpec (strName, aLSSS);
-		} catch (java.lang.Exception e) {
+			return new LatentStateStretchSpec (stretchName, latentStateSegmentSpecArray);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -573,28 +692,36 @@ public class LatentStateStretchBuilder
 	/**
 	 * Construct a FX Latent State Stretch Spec Instance
 	 * 
-	 * @param strName Stretch Name
-	 * @param aCalibComp Array of Calibration Components
-	 * @param strCalibMeasure The Calibration Measure
-	 * @param adblCalibQuote Array of the Calibration Quotes
+	 * @param stretchName Stretch Name
+	 * @param calibratableComponentArray Array of Calibration Components
+	 * @param calibrationMeasure The Calibration Measure
+	 * @param calibrationQuoteArray Array of the Calibration Quotes
 	 * 
 	 * @return FX Latent State Stretch Spec Instance
 	 */
 
-	public static final org.drip.state.inference.LatentStateStretchSpec FXStretchSpec (
-		final java.lang.String strName,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp,
-		final java.lang.String strCalibMeasure,
-		final double[] adblCalibQuote)
+	public static final LatentStateStretchSpec FXStretchSpec (
+		final String stretchName,
+		final CalibratableComponent[] calibratableComponentArray,
+		final String calibrationMeasure,
+		final double[] calibrationQuoteArray)
 	{
-		if (null == strCalibMeasure || strCalibMeasure.isEmpty() || null == adblCalibQuote) return null;
+		if (null == calibrationMeasure || calibrationMeasure.isEmpty() || null == calibrationQuoteArray) {
+			return null;
+		}
 
-		int iNumComp = adblCalibQuote.length;
-		java.lang.String[] astrCalibMeasure = new java.lang.String[iNumComp];
+		int componentCount = calibrationQuoteArray.length;
+		String[] calibrationMeasureArray = new String[componentCount];
 
-		for (int i = 0; i < iNumComp; ++i)
-			astrCalibMeasure[i] = strCalibMeasure;
+		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+			calibrationMeasureArray[componentIndex] = calibrationMeasure;
+		}
 
-		return FXStretchSpec (strName, aCalibComp, astrCalibMeasure, adblCalibQuote);
+		return FXStretchSpec (
+			stretchName,
+			calibratableComponentArray,
+			calibrationMeasureArray,
+			calibrationQuoteArray
+		);
 	}
 }

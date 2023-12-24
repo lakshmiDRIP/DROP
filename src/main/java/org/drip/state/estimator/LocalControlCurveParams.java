@@ -1,11 +1,17 @@
 	
 package org.drip.state.estimator;
 
+import org.drip.spline.params.SegmentCustomBuilderControl;
+import org.drip.spline.params.StretchBestFitResponse;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,71 +90,78 @@ package org.drip.state.estimator;
 
 /**
  * <i>LocalControlCurveParams</i> enhances the SmoothingCurveStretchParams to produce locally customized
- * curve smoothing. Flags implemented by LocalControlCurveParams control the following:
+ * curve smoothing. Flags implemented by <i>LocalControlCurveParams</i> control the following:
  *
- *  <br><br>
  *  <ul>
- *  	<li>
- *  		The C1 generator scheme to be used
- *  	</li>
- *  	<li>
- *  		Whether to eliminate spurious extrema
- *  	</li>
- *  	<li>
- *  		Whether or not to apply monotone filtering
- *  	</li>
+ *  	<li><i>LocalControlCurveParams</i> constructor</li>
+ *  	<li>Retrieve the Apply Monotone Filter Flag</li>
+ *  	<li>Retrieve the Eliminate Spurious Extrema Flag</li>
+ *  	<li>Retrieve the C1 Generator Scheme</li>
  *  </ul>
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator/README.md">Multi-Pass Customized Stretch Curve</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator/README.md">Multi-Pass Customized Stretch Curve</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LocalControlCurveParams extends org.drip.state.estimator.SmoothingCurveStretchParams {
-	private boolean _bApplyMonotoneFilter = false;
-	private boolean _bEliminateSpuriousExtrema = false;
-	private java.lang.String _strC1GeneratorScheme = "";
+public class LocalControlCurveParams extends SmoothingCurveStretchParams
+{
+	private String _c1GeneratorScheme = "";
+	private boolean _applyMonotoneFilter = false;
+	private boolean _eliminateSpuriousExtrema = false;
 
 	/**
-	 * LocalControlCurveParams constructor
+	 * <i>LocalControlCurveParams</i> constructor
 	 * 
-	 * @param strC1GeneratorScheme C1 Generator Stretch
-	 * @param strSmootheningQuantificationMetric Curve Smoothening Quantification Metric
-	 * @param scbc Segment Builder Parameters
-	 * @param iCalibrationDetail The Calibration Detail
-	 * @param sbfr Curve Fitness Weighted Response
-	 * @param sbfrSensitivity Curve Fitness Weighted Response Sensitivity
-	 * @param bEliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
-	 * @param bApplyMonotoneFilter TRUE - Apply Monotone Filter
+	 * @param c1GeneratorScheme C1 Generator Stretch
+	 * @param smootheningQuantificationMetric Curve Smoothening Quantification Metric
+	 * @param segmentCustomBuilderControl Segment Builder Parameters
+	 * @param calibrationDetail The Calibration Detail
+	 * @param stretchBestFitResponse Curve Fitness Weighted Response
+	 * @param stretchBestFitResponseSensitivity Curve Fitness Weighted Response Sensitivity
+	 * @param eliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
+	 * @param applyMonotoneFilter TRUE - Apply Monotone Filter
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LocalControlCurveParams (
-		final java.lang.String strC1GeneratorScheme,
-		final java.lang.String strSmootheningQuantificationMetric,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbc,
-		final int iCalibrationDetail,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final org.drip.spline.params.StretchBestFitResponse sbfrSensitivity,
-		final boolean bEliminateSpuriousExtrema,
-		final boolean bApplyMonotoneFilter)
-		throws java.lang.Exception
+		final String c1GeneratorScheme,
+		final String smootheningQuantificationMetric,
+		final SegmentCustomBuilderControl segmentCustomBuilderControl,
+		final int calibrationDetail,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final StretchBestFitResponse stretchBestFitResponseSensitivity,
+		final boolean eliminateSpuriousExtrema,
+		final boolean applyMonotoneFilter)
+		throws Exception
 	{
-		super (strSmootheningQuantificationMetric, scbc, iCalibrationDetail, sbfr, sbfrSensitivity);
+		super (
+			smootheningQuantificationMetric,
+			segmentCustomBuilderControl,
+			calibrationDetail,
+			stretchBestFitResponse,
+			stretchBestFitResponseSensitivity
+		);
 
-		if (null == (_strC1GeneratorScheme = strC1GeneratorScheme))
-			throw new java.lang.Exception ("LocalControlCurveParams ctr: Invalid Inputs!");
+		if (null == (_c1GeneratorScheme = c1GeneratorScheme)) {
+			throw new Exception ("LocalControlCurveParams ctr: Invalid Inputs!");
+		}
 
-		_bApplyMonotoneFilter = bApplyMonotoneFilter;
-		_bEliminateSpuriousExtrema = bEliminateSpuriousExtrema;
+		_applyMonotoneFilter = applyMonotoneFilter;
+		_eliminateSpuriousExtrema = eliminateSpuriousExtrema;
 	}
 
 	/**
@@ -159,7 +172,7 @@ public class LocalControlCurveParams extends org.drip.state.estimator.SmoothingC
 
 	public boolean applyMonotoneFilter()
 	{
-		return _bApplyMonotoneFilter;
+		return _applyMonotoneFilter;
 	}
 
 	/**
@@ -170,7 +183,7 @@ public class LocalControlCurveParams extends org.drip.state.estimator.SmoothingC
 
 	public boolean eliminateSpuriousExtrema()
 	{
-		return _bEliminateSpuriousExtrema;
+		return _eliminateSpuriousExtrema;
 	}
 
 	/**
@@ -179,8 +192,8 @@ public class LocalControlCurveParams extends org.drip.state.estimator.SmoothingC
 	 * @return The C1 Generator Scheme
 	 */
 
-	public java.lang.String C1GeneratorScheme()
+	public String C1GeneratorScheme()
 	{
-		return _strC1GeneratorScheme;
+		return _c1GeneratorScheme;
 	}
 }
