@@ -1,11 +1,18 @@
 
 package org.drip.state.identifier;
 
+import org.drip.market.definition.OvernightIndex;
+import org.drip.market.definition.OvernightIndexContainer;
+import org.drip.param.period.UnitCouponAccrualSetting;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,38 +89,56 @@ package org.drip.state.identifier;
 
 /**
  * <i>OvernightLabel</i> contains the Index Parameters referencing an Overnight Index. It provides the
- * functionality to Retrieve Index, Tenor, Currency, and Fully Qualified Name.
+ * 	functionality to Retrieve Index, Tenor, Currency, and Fully Qualified Name. It provides the following
+ * 	functionality:
  *
- *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></li>
+ *  	<li>Construct an <i>OvernightLabel</i> from the Jurisdiction</li>
+ *  	<li>Construct an <i>OvernightLabel</i> from the Index</li>
+ *  	<li><i>OvernightLabel</i> Constructor</li>
+ *  	<li>Retrieve the Currency</li>
+ *  	<li>Retrieve the Family</li>
+ *  	<li>Retrieve the Tenor</li>
+ *  	<li>Indicate if the Index is an Overnight Index</li>
+ *  	<li>Retrieve the Overnight Index</li>
+ *  	<li>Retrieve the Unit Coupon Accrual Setting</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></td></tr>
+ *  </table>
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class OvernightLabel extends org.drip.state.identifier.ForwardLabel {
-	private org.drip.market.definition.OvernightIndex _overnightIndex = null;
+public class OvernightLabel extends ForwardLabel
+{
+	private OvernightIndex _overnightIndex = null;
 
 	/**
-	 * Construct an OvernightLabel from the Jurisdiction
+	 * Construct an <i>OvernightLabel</i> from the Jurisdiction
 	 * 
-	 * @param strCurrency The Currency
+	 * @param currency The Currency
 	 * 
-	 * @return The OvernightLabel Instance
+	 * @return The <i>OvernightLabel</i> Instance
 	 */
 
 	public static final OvernightLabel Create (
-		final java.lang.String strCurrency)
+		final String currency)
 	{
 		try {
-			return new OvernightLabel
-				(org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction (strCurrency));
-		} catch (java.lang.Exception e) {
+			return new OvernightLabel (OvernightIndexContainer.IndexFromJurisdiction (currency));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -121,19 +146,19 @@ public class OvernightLabel extends org.drip.state.identifier.ForwardLabel {
 	}
 
 	/**
-	 * Construct an OvernightLabel from the Index
+	 * Construct an <i>OvernightLabel</i> from the Index
 	 * 
 	 * @param overnightIndex The Overnight Index Details
 	 * 
-	 * @return The OvernightLabel Instance
+	 * @return The <i>OvernightLabel</i> Instance
 	 */
 
 	public static final OvernightLabel Create (
-		final org.drip.market.definition.OvernightIndex overnightIndex)
+		final OvernightIndex overnightIndex)
 	{
 		try {
 			return new OvernightLabel (overnightIndex);
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -141,21 +166,22 @@ public class OvernightLabel extends org.drip.state.identifier.ForwardLabel {
 	}
 
 	/**
-	 * OvernightLabel Constructor
+	 * <i>OvernightLabel</i> Constructor
 	 * 
 	 * @param overnightIndex The Overnight Index Details
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	private OvernightLabel (
-		final org.drip.market.definition.OvernightIndex overnightIndex)
-		throws java.lang.Exception
+		final OvernightIndex overnightIndex)
+		throws Exception
 	{
 		super (overnightIndex, "ON");
 
-		if (null == (_overnightIndex = overnightIndex))
-			throw new java.lang.Exception ("OvernightLabel ctr: Invalid Inputs");
+		if (null == (_overnightIndex = overnightIndex)) {
+			throw new Exception ("OvernightLabel ctr: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -164,7 +190,7 @@ public class OvernightLabel extends org.drip.state.identifier.ForwardLabel {
 	 * @return The Currency
 	 */
 
-	public java.lang.String currency()
+	public String currency()
 	{
 		return _overnightIndex.currency();
 	}
@@ -175,7 +201,7 @@ public class OvernightLabel extends org.drip.state.identifier.ForwardLabel {
 	 * @return The Family
 	 */
 
-	public java.lang.String family()
+	public String family()
 	{
 		return _overnightIndex.family();
 	}
@@ -186,7 +212,7 @@ public class OvernightLabel extends org.drip.state.identifier.ForwardLabel {
 	 * @return The Tenor
 	 */
 
-	public java.lang.String tenor()
+	public String tenor()
 	{
 		return "ON";
 	}
@@ -208,40 +234,48 @@ public class OvernightLabel extends org.drip.state.identifier.ForwardLabel {
 	 * @return The Overnight Index
 	 */
 
-	public org.drip.market.definition.OvernightIndex overnightIndex()
+	public OvernightIndex overnightIndex()
 	{
 		return _overnightIndex;
 	}
 
 	/**
-	 * Retrieve a Unit Coupon Accrual Setting
+	 * Retrieve the Unit Coupon Accrual Setting
 	 * 
 	 * @return Unit Coupon Accrual Setting
 	 */
 
-	public org.drip.param.period.UnitCouponAccrualSetting ucas()
+	public UnitCouponAccrualSetting ucas()
 	{
-		java.lang.String strDayCount = _overnightIndex.dayCount();
+		String dayCount = _overnightIndex.dayCount();
 
 		try {
-			return new org.drip.param.period.UnitCouponAccrualSetting (360, strDayCount, false, strDayCount,
-				false, _overnightIndex.currency(), false, _overnightIndex.accrualCompoundingRule());
-		} catch (java.lang.Exception e) {
+			return new UnitCouponAccrualSetting (
+				360,
+				dayCount,
+				false,
+				dayCount,
+				false,
+				_overnightIndex.currency(),
+				false,
+				_overnightIndex.accrualCompoundingRule()
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return null;
 	}
 
-	@Override public java.lang.String fullyQualifiedName()
+	@Override public String fullyQualifiedName()
 	{
 		return _overnightIndex.currency() + "-" + _overnightIndex.family() + "-ON";
 	}
 
 	@Override public boolean match (
-		final org.drip.state.identifier.LatentStateLabel lslOther)
+		final LatentStateLabel latentStateLabelOther)
 	{
-		return null == lslOther || !(lslOther instanceof org.drip.state.identifier.OvernightLabel) ? false :
-			fullyQualifiedName().equalsIgnoreCase (lslOther.fullyQualifiedName());
+		return null != latentStateLabelOther && latentStateLabelOther instanceof OvernightLabel &&
+			fullyQualifiedName().equalsIgnoreCase (latentStateLabelOther.fullyQualifiedName());
 	}
 }

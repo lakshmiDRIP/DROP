@@ -1,11 +1,18 @@
 
 package org.drip.state.identifier;
 
+import org.drip.market.definition.FloaterIndex;
+import org.drip.market.definition.IBORIndexContainer;
+import org.drip.market.definition.OvernightIndexContainer;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,57 +87,66 @@ package org.drip.state.identifier;
 
 /**
  * <i>OTCFixFloatLabel</i> contains the Index Parameters referencing a Payment on an OTC Fix/Float IRS Par
- * Rate Index.
+ * 	Rate Index. It provides the following Functionality:
  *
- *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></li>
+ *  	<li>Construct a <i>OTCFixFloatLabel</i> from the corresponding Fully Qualified Name</li>
+ *  	<li><i>OTCFixFloatLabel</i> Constructor</li>
+ *  	<li>Retrieve the Fix Float Tenor</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></td></tr>
+ *  </table>
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class OTCFixFloatLabel extends org.drip.state.identifier.FloaterLabel
+public class OTCFixFloatLabel extends FloaterLabel
 {
-	private java.lang.String _strFixFloatTenor = "";
+	private String _fixFloatTenor = "";
 
 	/**
-	 * Construct a OTCFixFloatLabel from the corresponding Fully Qualified Name
+	 * Construct a <i>OTCFixFloatLabel</i> from the corresponding Fully Qualified Name
 	 * 
-	 * @param strFullyQualifiedName The Fully Qualified Name
+	 * @param fullyQualifiedName The Fully Qualified Name
 	 * 
-	 * @return OTCFixFloatLabel Instance
+	 * @return <i>OTCFixFloatLabel</i> Instance
 	 */
 
 	public static final OTCFixFloatLabel Standard (
-		final java.lang.String strFullyQualifiedName)
+		final String fullyQualifiedName)
 	{
-		if (null == strFullyQualifiedName || strFullyQualifiedName.isEmpty()) return null;
+		if (null == fullyQualifiedName || fullyQualifiedName.isEmpty()) {
+			return null;
+		}
 
-		java.lang.String[] astr = strFullyQualifiedName.split ("-");
+		String[] fullyQualifiedNameArray = fullyQualifiedName.split ("-");
 
-		if (null == astr || 3 != astr.length) return null;
-
-		java.lang.String strTenor = astr[1];
-		java.lang.String strCurrency = astr[0];
-		java.lang.String strFixFloatTenor = astr[2];
-
-		org.drip.market.definition.FloaterIndex floaterIndex = "ON".equalsIgnoreCase (strTenor) ||
-			"1D".equalsIgnoreCase (strTenor) ?
-				org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction (strCurrency) :
-					org.drip.market.definition.IBORIndexContainer.IndexFromJurisdiction (strCurrency);
+		if (null == fullyQualifiedNameArray || 3 != fullyQualifiedNameArray.length) {
+			return null;
+		}
 
 		try {
 			return new OTCFixFloatLabel (
-				floaterIndex,
-				strTenor,
-				strFixFloatTenor
+				"ON".equalsIgnoreCase (fullyQualifiedNameArray[1]) ||
+					"1D".equalsIgnoreCase (fullyQualifiedNameArray[1]) ?
+					OvernightIndexContainer.IndexFromJurisdiction (fullyQualifiedNameArray[0]) :
+					IBORIndexContainer.IndexFromJurisdiction (fullyQualifiedNameArray[0]),
+				fullyQualifiedNameArray[1],
+				fullyQualifiedNameArray[2]
 			);
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -138,25 +154,26 @@ public class OTCFixFloatLabel extends org.drip.state.identifier.FloaterLabel
 	}
 
 	/**
-	 * OTCFixFloatLabel Constructor
+	 * <i>OTCFixFloatLabel</i> Constructor
 	 * 
 	 * @param floaterIndex Floater Index
-	 * @param strForwardTenor Forward Tenor
-	 * @param strFixFloatTenor Fix Float Tenor
+	 * @param forwardTenor Forward Tenor
+	 * @param fixFloatTenor Fix Float Tenor
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public OTCFixFloatLabel (
-		final org.drip.market.definition.FloaterIndex floaterIndex,
-		final java.lang.String strForwardTenor,
-		final java.lang.String strFixFloatTenor)
-		throws java.lang.Exception
+		final FloaterIndex floaterIndex,
+		final String forwardTenor,
+		final String fixFloatTenor)
+		throws Exception
 	{
-		super (floaterIndex, strForwardTenor);
+		super (floaterIndex, forwardTenor);
 
-		if (null == (_strFixFloatTenor = strFixFloatTenor) || _strFixFloatTenor.isEmpty())
-			throw new java.lang.Exception ("OTCFixFloatLabel Constructor => Invalid Inputs");
+		if (null == (_fixFloatTenor = fixFloatTenor) || _fixFloatTenor.isEmpty()) {
+			throw new Exception ("OTCFixFloatLabel Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -165,21 +182,20 @@ public class OTCFixFloatLabel extends org.drip.state.identifier.FloaterLabel
 	 * @return The Fix Float Tenor
 	 */
 
-	public java.lang.String fixFloatTenor()
+	public String fixFloatTenor()
 	{
-		return _strFixFloatTenor;
+		return _fixFloatTenor;
 	}
 
-	@Override public java.lang.String fullyQualifiedName()
+	@Override public String fullyQualifiedName()
 	{
-		return super.fullyQualifiedName() + "::" + _strFixFloatTenor;
+		return super.fullyQualifiedName() + "::" + _fixFloatTenor;
 	}
 
 	@Override public boolean match (
-		final org.drip.state.identifier.LatentStateLabel lslOther)
+		final LatentStateLabel latentStateLabelOther)
 	{
-		if (!(lslOther instanceof org.drip.state.identifier.OTCFixFloatLabel)) return false;
-
-		return super.match (lslOther);
+		return null != latentStateLabelOther && latentStateLabelOther instanceof OTCFixFloatLabel &&
+			super.match (latentStateLabelOther);
 	}
 }

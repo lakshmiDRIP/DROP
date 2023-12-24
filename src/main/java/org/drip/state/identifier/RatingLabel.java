@@ -6,6 +6,9 @@ package org.drip.state.identifier;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,40 +84,54 @@ package org.drip.state.identifier;
 
 /**
  * <i>RatingLabel</i> contains the Identifier Parameters referencing the Label corresponding to the Credit
- * Rating Latent State. Currently it holds the Ratings Agency Name and the Rated Code.
+ * 	Rating Latent State. Currently it holds the Ratings Agency Name and the Rated Code. It provides the
+ *  following functionality:
  *
- *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></li>
+ *  	<li>Make a Standard Rating Label from the Rating Agency and the Rated Code.</li>
+ *  	<li><i>RatingLabel</i> Constructor</li>
+ *  	<li>Retrieve the Ratings Agency</li>
+ *  	<li>Retrieve the Rated Code</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/identifier/README.md">Latent State Identifier Labels</a></td></tr>
+ *  </table>
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class RatingLabel implements org.drip.state.identifier.LatentStateLabel {
-	private java.lang.String _strCode = "";
-	private java.lang.String _strAgency = "";
+public class RatingLabel implements LatentStateLabel
+{
+	private String _code = "";
+	private String _agency = "";
 
 	/**
 	 * Make a Standard Rating Label from the Rating Agency and the Rated Code.
 	 * 
-	 * @param strAgency The Rating Agency
-	 * @param strCode The Rated Code
+	 * @param agency The Rating Agency
+	 * @param code The Rated Code
 	 * 
 	 * @return The Rating Label
 	 */
 
 	public static final RatingLabel Standard (
-		final java.lang.String strAgency,
-		final java.lang.String strCode)
+		final String agency,
+		final String code)
 	{
 		try {
-			return new RatingLabel (strAgency, strCode);
-		} catch (java.lang.Exception e) {
+			return new RatingLabel (agency, code);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -122,37 +139,41 @@ public class RatingLabel implements org.drip.state.identifier.LatentStateLabel {
 	}
 
 	/**
-	 * RatingsLabel constructor
+	 * <i>RatingLabel</i> constructor
 	 * 
-	 * @param strAgency The Ratings Agency
-	 * @param strCode The Rated Code
+	 * @param agency The Ratings Agency
+	 * @param code The Rated Code
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	public RatingLabel (
-		final java.lang.String strAgency,
-		final java.lang.String strCode)
-		throws java.lang.Exception
+		final String agency,
+		final String code)
+		throws Exception
 	{
-		if (null == (_strAgency = strAgency) || _strAgency.isEmpty() || null == (_strCode = strCode) ||
-			_strCode.isEmpty())
-			throw new java.lang.Exception ("RatingLabel ctr: Invalid Inputs");
+		if (null == (_agency = agency) || _agency.isEmpty() ||
+			null == (_code = code) || _code.isEmpty()) {
+			throw new Exception ("RatingLabel ctr: Invalid Inputs");
+		}
 	}
 
-	@Override public java.lang.String fullyQualifiedName()
+	@Override public String fullyQualifiedName()
 	{
-		return _strAgency + "::" + _strCode;
+		return _agency + "::" + _code;
 	}
 
 	@Override public boolean match (
-		final org.drip.state.identifier.LatentStateLabel lslOther)
+		final LatentStateLabel latentStateLabelOther)
 	{
-		if (null == lslOther || !(lslOther instanceof org.drip.state.identifier.RatingLabel)) return false;
+		if (null == latentStateLabelOther || !(latentStateLabelOther instanceof RatingLabel)) {
+			return false;
+		}
 
-		org.drip.state.identifier.RatingLabel rlOther = (org.drip.state.identifier.RatingLabel) lslOther;
+		RatingLabel ratingLabelOther = (RatingLabel) latentStateLabelOther;
 
-		return _strAgency.equalsIgnoreCase (rlOther.agency()) && _strCode.equalsIgnoreCase (rlOther.code());
+		return _agency.equalsIgnoreCase (ratingLabelOther.agency()) &&
+			_code.equalsIgnoreCase (ratingLabelOther.code());
 	}
 
 	/**
@@ -161,9 +182,9 @@ public class RatingLabel implements org.drip.state.identifier.LatentStateLabel {
 	 * @return The Ratings Agency
 	 */
 
-	public java.lang.String agency()
+	public String agency()
 	{
-		return _strAgency;
+		return _agency;
 	}
 
 	/**
@@ -172,8 +193,8 @@ public class RatingLabel implements org.drip.state.identifier.LatentStateLabel {
 	 * @return The Rated Code
 	 */
 
-	public java.lang.String code()
+	public String code()
 	{
-		return _strCode;
+		return _code;
 	}
 }
