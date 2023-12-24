@@ -1,11 +1,29 @@
 
 package org.drip.state.discount;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.daycount.ActActDCParams;
+import org.drip.analytics.daycount.Convention;
+import org.drip.analytics.definition.Curve;
+import org.drip.market.otc.FixedFloatSwapConvention;
+import org.drip.market.otc.IBORFixedFloatContainer;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.param.creator.MarketParamsBuilder;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.period.UnitCouponAccrualSetting;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.state.creator.ScenarioDiscountCurveBuilder;
+import org.drip.state.nonlinear.FlatForwardDiscountCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,64 +102,91 @@ package org.drip.state.discount;
 
 /**
  * <i>DiscountCurve</i> Interface combines the Interfaces of Latent State Curve Representation and Discount
- * Factor Estimator.
- *
- *  <br><br>
+ * Factor Estimator. It exposes the following functionality:
+ * 
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/discount/README.md">Discount Curve Spline Latent State</a></li>
+ *  	<li>Construct a Flat Forward Instance of the Curve at the specified Date Nodes</li>
+ *  	<li>Construct Flat Native Forward Instance of the Curve at the specified Date Nodes</li>
+ *  	<li>Construct Flat Native Forward Instance of the Curve at the specified Date Node Tenors</li>
+ *  	<li>Construct Flat Native Forward Instance of the Curve at the specified Date Nodes with (Exclusive/Inclusive) Bumps applied within the Tenors</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/discount/README.md">Discount Curve Spline Latent State</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class DiscountCurve implements org.drip.analytics.definition.Curve,
-	org.drip.state.discount.DiscountFactorEstimator {
+public abstract class DiscountCurve implements Curve, DiscountFactorEstimator
+{
 
 	/**
 	 * Construct a Flat Forward Instance of the Curve at the specified Date Nodes
 	 * 
-	 * @param strDayCount Forward Curve Day Count
-	 * @param iFreq Forward Curve Frequency
-	 * @param aiDate Array of Date Nodes
+	 * @param dayCount Forward Curve Day Count
+	 * @param frequency Forward Curve Frequency
+	 * @param dateArray Array of Date Nodes
 	 * 
 	 * @return The Flat Forward Instance
 	 */
 
-	public org.drip.state.nonlinear.FlatForwardDiscountCurve flatForward (
-		final java.lang.String strDayCount,
-		final int iFreq,
-		final int[] aiDate)
+	public FlatForwardDiscountCurve flatForward (
+		final String dayCount,
+		final int frequency,
+		final int[] dateArray)
 	{
-		if (null == aiDate) return null;
+		if (null == dateArray) {
+			return null;
+		}
 
-		int iNumNode = aiDate.length;
-		double[] adblForwardRate = 0 == iNumNode ? null : new double [iNumNode];
+		int dateNodeCount = dateArray.length;
+		double[] forwardRateArray = 0 == dateNodeCount ? null : new double [dateNodeCount];
 
-		if (0 == iNumNode) return null;
+		if (0 == dateNodeCount) {
+			return null;
+		}
 
-		java.lang.String strCurrency = currency();
+		String currency = currency();
 
-		org.drip.analytics.date.JulianDate dtStart = epoch();
+		JulianDate startDate = epoch();
 
-		org.drip.analytics.daycount.ActActDCParams aap =
-			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);
+		ActActDCParams actActDCParams = ActActDCParams.FromFrequency (frequency);
 
 		try {
-			for (int i = 0; i < iNumNode; ++i) {
-				int iStartDate = 0 == i ? dtStart.julian() : aiDate[i - 1];
-
-				adblForwardRate[i] = ((df (iStartDate) / df (aiDate[i])) - 1.) /
-					org.drip.analytics.daycount.Convention.YearFraction (iStartDate, aiDate[i], strDayCount,
-						false, aap, strCurrency);
+			for (int dateNodeIndex = 0; dateNodeIndex < dateNodeCount; ++dateNodeIndex) {
+				forwardRateArray[dateNodeIndex] = (
+					(df (startDate) / df (dateArray[dateNodeIndex])) - 1.
+				) / Convention.YearFraction (
+					0 == dateNodeIndex ? startDate.julian() : dateArray[dateNodeIndex - 1],
+					dateArray[dateNodeIndex],
+					dayCount,
+					false,
+					actActDCParams,
+					currency
+				);
 			}
 
-			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, aiDate,
-				adblForwardRate, true, strDayCount, iFreq);
-		} catch (java.lang.Exception e) {
+			return new FlatForwardDiscountCurve (
+				startDate,
+				currency,
+				dateArray,
+				forwardRateArray,
+				true,
+				dayCount,
+				frequency
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -151,94 +196,122 @@ public abstract class DiscountCurve implements org.drip.analytics.definition.Cur
 	/**
 	 * Construct Flat Native Forward Instance of the Curve at the specified Date Nodes
 	 * 
-	 * @param aiDate Array of Date Nodes
-	 * @param dblBump The Bump Amount
+	 * @param dateArray Array of Date Nodes
+	 * @param bump The Bump Amount
 	 * 
 	 * @return The Flat Forward Instance
 	 */
 
 	public org.drip.state.nonlinear.FlatForwardDiscountCurve flatNativeForward (
-		final int[] aiDate,
-		final double dblBump)
+		final int[] dateArray,
+		final double bump)
 	{
-		if (null == aiDate || !org.drip.numerical.common.NumberUtil.IsValid (dblBump)) return null;
+		if (null == dateArray || !NumberUtil.IsValid (bump)) {
+			return null;
+		}
 
-		int iNumNode = aiDate.length;
-		double[] adblForwardRate = 0 == iNumNode ? null : new double [iNumNode];
+		int nodeCount = dateArray.length;
+		double[] forwardRateArray = 0 == nodeCount ? null : new double [nodeCount];
 
-		if (0 == iNumNode) return null;
+		if (0 == nodeCount) {
+			return null;
+		}
 
-		java.lang.String strCurrency = currency();
+		String currency = currency();
 
-		org.drip.market.otc.FixedFloatSwapConvention ffsc =
-			org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (strCurrency);
+		FixedFloatSwapConvention fixedFloatSwapConvention =
+			IBORFixedFloatContainer.ConventionFromJurisdiction (currency);
 
-		if (null == ffsc) return null;
+		if (null == fixedFloatSwapConvention) {
+			return null;
+		}
 
-		org.drip.param.period.UnitCouponAccrualSetting ucas =
-			ffsc.floatStreamConvention().floaterIndex().ucas();
+		UnitCouponAccrualSetting unitCouponAccrualSetting =
+			fixedFloatSwapConvention.floatStreamConvention().floaterIndex().ucas();
 
-		org.drip.analytics.date.JulianDate dtStart = epoch();
+		JulianDate epochDate = epoch();
 
-		int iSpotDate = dtStart.julian();
+		int spotDate = epochDate.julian();
 
-		int iFreq = ucas.freq();
+		int frequency = unitCouponAccrualSetting.freq();
 
-		java.lang.String strDayCount = ucas.couponDC();
+		String dayCount = unitCouponAccrualSetting.couponDC();
 
-		org.drip.analytics.daycount.ActActDCParams aap =
-			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);
+		ActActDCParams actActDCParams = ActActDCParams.FromFrequency (frequency);
 
-		org.drip.product.definition.CalibratableComponent[] aCalibComp = calibComp();
+		CalibratableComponent[] calibratableComponentArray = calibComp();
 
-		int iNumComp = aCalibComp.length;
-		double[] adblCompCalibValue = new double[iNumComp];
-		java.lang.String[] astrCalibMeasure = new java.lang.String[iNumComp];
+		int calibratableComponentCount = calibratableComponentArray.length;
+		String[] calibrationMeasureArray = new String[calibratableComponentCount];
+		double[] componentCalibrationValueArray = new double[calibratableComponentCount];
 
-		org.drip.param.market.CurveSurfaceQuoteContainer csqcNative =
-			org.drip.param.creator.MarketParamsBuilder.Create
-				((org.drip.state.discount.MergedDiscountForwardCurve) this, null, null, null, null, null,
-					null);
+		CurveSurfaceQuoteContainer nativeCurveSurfaceQuoteContainer = MarketParamsBuilder.Create (
+			(MergedDiscountForwardCurve) this,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
-		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot
-			(iSpotDate);
+		ValuationParams valuationParams = ValuationParams.Spot (spotDate);
 
-		for (int i = 0; i < iNumComp; ++i)
-		{
-			astrCalibMeasure[i] = "Rate";
+		for (int componentIndex = 0; componentIndex < calibratableComponentCount; ++componentIndex) {
+			calibrationMeasureArray[componentIndex] = "Rate";
 
 			try {
-				adblCompCalibValue[i] = aCalibComp[i].measureValue (valParams, null, csqcNative, null,
-					astrCalibMeasure[i]);
-			} catch (java.lang.Exception e) {
+				componentCalibrationValueArray[componentIndex] =
+					calibratableComponentArray[componentIndex].measureValue (
+						valuationParams,
+						null,
+						nativeCurveSurfaceQuoteContainer,
+						null,
+						calibrationMeasureArray[componentIndex]
+					);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		org.drip.state.discount.MergedDiscountForwardCurve mdfcNonlinear =
-			org.drip.state.creator.ScenarioDiscountCurveBuilder.NonlinearBuild (
-				dtStart,
-				strCurrency,
-				aCalibComp,
-				adblCompCalibValue,
-				astrCalibMeasure,
-				null
-			);
+		MergedDiscountForwardCurve nonLinearDiscountCurve = ScenarioDiscountCurveBuilder.NonlinearBuild (
+			epochDate,
+			currency,
+			calibratableComponentArray,
+			componentCalibrationValueArray,
+			calibrationMeasureArray,
+			null
+		);
 
 		try {
-			for (int i = 0; i < iNumNode; ++i) {
-				int iStartDate = 0 == i ? iSpotDate : aiDate[i - 1];
+			for (int nodeIndex = 0; nodeIndex < nodeCount; ++nodeIndex) {
+				int startDate = 0 == nodeIndex ? spotDate : dateArray[nodeIndex - 1];
 
-				adblForwardRate[i] = ((mdfcNonlinear.df (iStartDate) / mdfcNonlinear.df (aiDate[i])) - 1.) /
-					org.drip.analytics.daycount.Convention.YearFraction (iStartDate, aiDate[i], strDayCount,
-						false, aap, strCurrency) + dblBump;
+				forwardRateArray[nodeIndex] = (
+					(nonLinearDiscountCurve.df (startDate) /
+						nonLinearDiscountCurve.df (dateArray[nodeIndex])) - 1.
+				) / Convention.YearFraction (
+					startDate,
+					dateArray[nodeIndex],
+					dayCount,
+					false,
+					actActDCParams,
+					currency
+				) + bump;
 			}
 
-			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, aiDate,
-				adblForwardRate, true, strDayCount, iFreq);
-		} catch (java.lang.Exception e) {
+			return new FlatForwardDiscountCurve (
+				epochDate,
+				currency,
+				dateArray,
+				forwardRateArray,
+				true,
+				dayCount,
+				frequency
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -248,62 +321,83 @@ public abstract class DiscountCurve implements org.drip.analytics.definition.Cur
 	/**
 	 * Construct Flat Native Forward Instance of the Curve at the specified Date Node Tenors
 	 * 
-	 * @param astrTenor Array of Date Tenors
-	 * @param dblBump The Bump Amount
+	 * @param tenorArray Array of Date Tenors
+	 * @param bump The Bump Amount
 	 * 
 	 * @return The Flat Forward Instance
 	 */
 
-	public org.drip.state.nonlinear.FlatForwardDiscountCurve flatNativeForward (
-		final java.lang.String[] astrTenor,
-		final double dblBump)
+	public FlatForwardDiscountCurve flatNativeForward (
+		final String[] tenorArray,
+		final double bump)
 	{
-		if (null == astrTenor || !org.drip.numerical.common.NumberUtil.IsValid (dblBump)) return null;
+		if (null == tenorArray || !NumberUtil.IsValid (bump)) {
+			return null;
+		}
 
-		int iNumNode = astrTenor.length;
-		double[] adblForwardRate = 0 == iNumNode ? null : new double [iNumNode];
+		int tenorCount = tenorArray.length;
+		double[] forwardRateArray = 0 == tenorCount ? null : new double [tenorCount];
 
-		if (0 == iNumNode) return null;
+		if (0 == tenorCount) {
+			return null;
+		}
 
-		java.lang.String strCurrency = currency();
+		String currency = currency();
 
-		org.drip.market.otc.FixedFloatSwapConvention ffsc =
-			org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (strCurrency);
+		FixedFloatSwapConvention fixedFloatSwapConvention =
+			IBORFixedFloatContainer.ConventionFromJurisdiction (currency);
 
-		if (null == ffsc) return null;
+		if (null == fixedFloatSwapConvention) {
+			return null;
+		}
 
-		org.drip.param.period.UnitCouponAccrualSetting ucas =
-			ffsc.floatStreamConvention().floaterIndex().ucas();
+		UnitCouponAccrualSetting unitCouponAccrualSetting =
+			fixedFloatSwapConvention.floatStreamConvention().floaterIndex().ucas();
 
-		org.drip.analytics.date.JulianDate dtStart = epoch();
+		JulianDate startDate = epoch();
 
-		int iFreq = ucas.freq();
+		int frequency = unitCouponAccrualSetting.freq();
 
-		java.lang.String strDayCount = ucas.couponDC();
+		String dayCount = unitCouponAccrualSetting.couponDC();
 
-		org.drip.analytics.daycount.ActActDCParams aap =
-			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);
+		ActActDCParams actActDCParams = ActActDCParams.FromFrequency (frequency);
 
-		int[] aiDate = new int[iNumNode];
+		int[] dateArray = new int[tenorCount];
 
 		try {
-			for (int i = 0; i < iNumNode; ++i) {
-				org.drip.analytics.date.JulianDate dtTenor = dtStart.addTenor (astrTenor[i]);
+			for (int tenorIndex = 0; tenorIndex < tenorCount; ++tenorIndex) {
+				JulianDate tenorDate = startDate.addTenor (tenorArray[tenorIndex]);
 
-				if (null == dtTenor) return null;
+				if (null == tenorDate) {
+					return null;
+				}
 
-				aiDate[i] = dtTenor.julian();
+				dateArray[tenorIndex] = tenorDate.julian();
 
-				int iStartDate = 0 == i ? dtStart.julian() : aiDate[i - 1];
+				int tenorStartDate = 0 == tenorIndex ? startDate.julian() : dateArray[tenorIndex - 1];
 
-				adblForwardRate[i] = ((df (iStartDate) / df (aiDate[i])) - 1.) /
-					org.drip.analytics.daycount.Convention.YearFraction (iStartDate, aiDate[i], strDayCount,
-						false, aap, strCurrency) + dblBump;
+				forwardRateArray[tenorIndex] = (
+					(df (tenorStartDate) / df (dateArray[tenorIndex])) - 1.
+				) / Convention.YearFraction (
+					tenorStartDate,
+					dateArray[tenorIndex],
+					dayCount,
+					false,
+					actActDCParams,
+					currency
+				) + bump;
 			}
 
-			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, aiDate,
-				adblForwardRate, true, strDayCount, iFreq);
-		} catch (java.lang.Exception e) {
+			return new FlatForwardDiscountCurve (
+				startDate,
+				currency,
+				dateArray,
+				forwardRateArray,
+				true,
+				dayCount,
+				frequency
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -314,56 +408,75 @@ public abstract class DiscountCurve implements org.drip.analytics.definition.Cur
 	 * Construct Flat Native Forward Instance of the Curve at the specified Date Nodes with
 	 * 	(Exclusive/Inclusive) Bumps applied within the Tenors
 	 * 
-	 * @param aiDate Array of Date Nodes
-	 * @param iBumpNode The Node to be Bumped
-	 * @param dblBump The Bump Amount
+	 * @param dateArray Array of Date Nodes
+	 * @param bumpNodeIndex The Node to be Bumped
+	 * @param bump The Bump Amount
 	 * 
 	 * @return The Flat Forward Instance
 	 */
 
-	public org.drip.state.nonlinear.FlatForwardDiscountCurve flatNativeForwardEI (
-		final int[] aiDate,
-		final int iBumpNode,
-		final double dblBump)
+	public FlatForwardDiscountCurve flatNativeForwardEI (
+		final int[] dateArray,
+		final int bumpNodeIndex,
+		final double bump)
 	{
-		if (null == aiDate || !org.drip.numerical.common.NumberUtil.IsValid (dblBump)) return null;
+		if (null == dateArray || !NumberUtil.IsValid (bump)) {
+			return null;
+		}
 
-		int iNumNode = aiDate.length;
-		double[] adblForwardRate = 0 == iNumNode ? null : new double [iNumNode];
+		int nodeCount = dateArray.length;
+		double[] forwardRateArray = 0 == nodeCount ? null : new double [nodeCount];
 
-		if (0 == iNumNode) return null;
+		if (0 == nodeCount) {
+			return null;
+		}
 
-		java.lang.String strCurrency = currency();
+		String currency = currency();
 
-		org.drip.market.otc.FixedFloatSwapConvention ffsc =
-			org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (strCurrency);
+		FixedFloatSwapConvention fixedFloatSwapConvention =
+			IBORFixedFloatContainer.ConventionFromJurisdiction (currency);
 
-		if (null == ffsc) return null;
+		if (null == fixedFloatSwapConvention) {
+			return null;
+		}
 
-		org.drip.param.period.UnitCouponAccrualSetting ucas =
-			ffsc.floatStreamConvention().floaterIndex().ucas();
+		UnitCouponAccrualSetting unitCouponAccrualSetting =
+			fixedFloatSwapConvention.floatStreamConvention().floaterIndex().ucas();
 
-		org.drip.analytics.date.JulianDate dtStart = epoch();
+		JulianDate epochDate = epoch();
 
-		int iFreq = ucas.freq();
+		int frequency = unitCouponAccrualSetting.freq();
 
-		java.lang.String strDayCount = ucas.couponDC();
+		String dayCount = unitCouponAccrualSetting.couponDC();
 
-		org.drip.analytics.daycount.ActActDCParams aap =
-			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);
+		ActActDCParams actActDCParams = ActActDCParams.FromFrequency (frequency);
 
 		try {
-			for (int i = 0; i < iNumNode; ++i) {
-				int iStartDate = 0 == i ? dtStart.julian() : aiDate[i - 1];
+			for (int nodeIndex = 0; nodeIndex < nodeCount; ++nodeIndex) {
+				int startDate = 0 == nodeIndex ? epochDate.julian() : dateArray[nodeIndex - 1];
 
-				adblForwardRate[i] = ((df (iStartDate) / df (aiDate[i])) - 1.) /
-					org.drip.analytics.daycount.Convention.YearFraction (iStartDate, aiDate[i], strDayCount,
-						false, aap, strCurrency) + (i == iBumpNode ? dblBump : 0.);
+				forwardRateArray[nodeIndex] = (
+					(df (startDate) / df (dateArray[nodeIndex])) - 1.
+				) / Convention.YearFraction (
+					startDate,
+					dateArray[nodeIndex],
+					dayCount,
+					false,
+					actActDCParams,
+					currency
+				) + (nodeIndex == bumpNodeIndex ? bump : 0.);
 			}
 
-			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, aiDate,
-				adblForwardRate, true, strDayCount, iFreq);
-		} catch (java.lang.Exception e) {
+			return new FlatForwardDiscountCurve (
+				epochDate,
+				currency,
+				dateArray,
+				forwardRateArray,
+				true,
+				dayCount,
+				frequency
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

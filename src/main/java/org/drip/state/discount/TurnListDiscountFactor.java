@@ -1,11 +1,19 @@
 
 package org.drip.state.discount;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.drip.analytics.definition.Turn;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -85,25 +93,37 @@ package org.drip.state.discount;
 /**
  * <i>TurnListDiscountFactor</i> implements the discounting based off of the turns list. Its functions add a
  * turn instance to the current set, and concurrently apply the discount factor inside the range to each
- * relevant turn.
- *
- *  <br><br>
+ * relevant turn. It exposes the following functionality:
+ * 
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/discount/README.md">Discount Curve Spline Latent State</a></li>
+ *  	<li><i>TurnListDiscountFactor</i> constructor</li>
+ *  	<li>Add a Turn Instance to the Discount Curve</li>
+ *  	<li>Apply the Turns' DF Adjustment</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/discount/README.md">Discount Curve Spline Latent State</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class TurnListDiscountFactor {
-	private java.util.List<org.drip.analytics.definition.Turn> _lsTurn = null;
+public class TurnListDiscountFactor
+{
+	private List<Turn> _turnList = null;
 
 	/**
-	 * Empty TurnListDiscountFactor constructor
+	 * Empty <i>TurnListDiscountFactor</i> constructor
 	 */
 
 	public TurnListDiscountFactor()
@@ -119,13 +139,17 @@ public class TurnListDiscountFactor {
 	 */
 
 	public boolean addTurn (
-		final org.drip.analytics.definition.Turn turn)
+		final Turn turn)
 	{
-		if (null == turn) return false;
+		if (null == turn) {
+			return false;
+		}
 
-		if (null == _lsTurn) _lsTurn = new java.util.ArrayList<org.drip.analytics.definition.Turn>();
+		if (null == _turnList) {
+			_turnList = new ArrayList<Turn>();
+		}
 
-		_lsTurn.add (turn);
+		_turnList.add (turn);
 
 		return true;
 	}
@@ -133,36 +157,40 @@ public class TurnListDiscountFactor {
 	/**
 	 * Apply the Turns' DF Adjustment
 	 * 
-	 * @param iStartDate Turn Start Date
-	 * @param iFinishDate Turn Finish Date
+	 * @param startDate Turn Start Date
+	 * @param finishDate Turn Finish Date
 	 * 
 	 * @return Turns' DF Adjustment
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public double turnAdjust (
-		final int iStartDate,
-		final int iFinishDate)
-		throws java.lang.Exception
+		final int startDate,
+		final int finishDate)
+		throws Exception
 	{
-		if (null == _lsTurn || 0 == _lsTurn.size()) return 1.;
-
-		if (iStartDate >= iFinishDate) return 1.;
-
-		double dblTurnAdjust = 1.;
-
-		for (org.drip.analytics.definition.Turn turn : _lsTurn) {
-			if (null == turn || iStartDate >= turn.finishDate() || iFinishDate <= turn.startDate()) continue;
-
-			int iEffectiveStart = turn.startDate() > iStartDate ? turn.startDate() : iStartDate;
-
-			int iEffectiveFinish = turn.finishDate() < iFinishDate ? turn.finishDate() : iFinishDate;
-
-			dblTurnAdjust *= java.lang.Math.exp (turn.spread() * (iEffectiveStart - iEffectiveFinish) /
-				365.25);
+		if (null == _turnList || 0 == _turnList.size()) {
+			return 1.;
 		}
 
-		return dblTurnAdjust;
+		if (startDate >= finishDate) {
+			return 1.;
+		}
+
+		double turnAdjustExponent = 0.;
+
+		for (Turn turn : _turnList) {
+			if (null == turn || startDate >= turn.finishDate() || finishDate <= turn.startDate()) {
+				continue;
+			}
+
+			turnAdjustExponent += turn.spread() * (
+				(turn.startDate() > startDate ? turn.startDate() : startDate) -
+				(turn.finishDate() < finishDate ? turn.finishDate() : finishDate)
+			) / 365.25;
+		}
+
+		return Math.exp (turnAdjustExponent);
 	}
 }
