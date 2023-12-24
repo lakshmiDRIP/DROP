@@ -1,11 +1,17 @@
 
 package org.drip.state.govvie;
 
+import org.drip.analytics.definition.ExplicitBootCurve;
+import org.drip.analytics.input.CurveConstructionInputSet;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,48 +88,53 @@ package org.drip.state.govvie;
 /**
  * <i>ExplicitBootGovvieCurve</i> exposes the Functionality associated with the bootstrapped Govvie Curve.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/govvie/README.md">Govvie Latent State Curve Estimator</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/govvie/README.md">Govvie Latent State Curve Estimator</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ExplicitBootGovvieCurve extends org.drip.state.govvie.GovvieCurve implements
-	org.drip.analytics.definition.ExplicitBootCurve {
+public abstract class ExplicitBootGovvieCurve extends GovvieCurve implements ExplicitBootCurve
+{
 
 	protected ExplicitBootGovvieCurve (
-		final int iEpochDate,
-		final java.lang.String strTreasuryCode,
-		final java.lang.String strCurrency)
-		throws java.lang.Exception
+		final int epochDate,
+		final String treasuryCode,
+		final String currency)
+		throws Exception
 	{
-		super (iEpochDate, strTreasuryCode, strCurrency);
+		super (epochDate, treasuryCode, currency);
 	}
 
 	@Override public boolean setCCIS (
-		final org.drip.analytics.input.CurveConstructionInputSet ccis)
+		final CurveConstructionInputSet curveConstructionInputSet)
 	{
-		return null != (_ccis = ccis);
+		return null != (_curveConstructionInputSet = curveConstructionInputSet);
 	}
 
 	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
 	{
-		return null == _ccis ? null : _ccis.components();
+		return null == _curveConstructionInputSet ? null : _curveConstructionInputSet.components();
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> manifestMeasure (
 		final java.lang.String strInstrumentCode)
 	{
-		if (null == _ccis) return null;
+		if (null == _curveConstructionInputSet) return null;
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>
-			mapQuote = _ccis.quoteMap();
+			mapQuote = _curveConstructionInputSet.quoteMap();
 
 		if (null == mapQuote || !mapQuote.containsKey (strInstrumentCode)) return null;
 

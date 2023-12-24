@@ -1,11 +1,16 @@
 
 package org.drip.state.govvie;
 
+import org.drip.analytics.date.JulianDate;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,93 +88,107 @@ package org.drip.state.govvie;
  */
 
 /**
- * <i>YieldEstimator</i> is the Interface that exposes the Computation of the Yield of a specified Issue.
- *
- *  <br><br>
+ * <i>YieldEstimator</i> is the Interface that exposes the Computation of the Yield of a specified Issue. It
+ * 	implements the following Functionality.
+ * 
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/govvie/README.md">Govvie Latent State Curve Estimator</a></li>
+ *		<li>Calculate the Yield to the given Date</li>
+ *		<li>Calculate the Yield to the Tenor implied by the given Date</li>
+ *		<li>Calculate the Discount Factor to the given Date Using the specified Day-count Fraction</li>
+ *		<li>Estimate the Forward Yield between the specified Dates</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/govvie/README.md">Govvie Latent State Curve Estimator</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface YieldEstimator {
+public interface YieldEstimator
+{
 
 	/**
 	 * Calculate the Yield to the given Date
 	 * 
-	 * @param iDate Date
+	 * @param date Date
 	 * 
 	 * @return The Yield
 	 * 
-	 * @throws java.lang.Exception Thrown if the Yield cannot be calculated
+	 * @throws Exception Thrown if the Yield cannot be calculated
 	 */
 
 	public abstract double yld (
-		final int iDate)
-		throws java.lang.Exception;
+		final int date)
+		throws Exception;
 
 	/**
 	 * Calculate the Yield to the given Date
 	 * 
-	 * @param dt Date
+	 * @param date Date
 	 * 
 	 * @return The Yield
 	 * 
-	 * @throws java.lang.Exception Thrown if the Yield cannot be calculated
+	 * @throws Exception Thrown if the Yield cannot be calculated
 	 */
 
 	public abstract double yld (
-		final org.drip.analytics.date.JulianDate dt)
-		throws java.lang.Exception;
+		final JulianDate date)
+		throws Exception;
 
 	/**
 	 * Calculate the Yield to the Tenor implied by the given Date
 	 * 
-	 * @param strTenor The Tenor
+	 * @param tenor The Tenor
 	 * 
 	 * @return The Yield
 	 * 
-	 * @throws java.lang.Exception Thrown if the Yield cannot be calculated
+	 * @throws Exception Thrown if the Yield cannot be calculated
 	 */
 
 	public abstract double yld (
-		final java.lang.String strTenor)
-		throws java.lang.Exception;
+		final String tenor)
+		throws Exception;
 
 	/**
-	 * Calculate the Discount Factor to the given Date Using the specified DCF
+	 * Calculate the Discount Factor to the given Date Using the specified Day Count Fraction
 	 * 
-	 * @param iDate Date
-	 * @param dblDCF The Day Count Fraction
+	 * @param date Date
+	 * @param dayCountFraction The Day Count Fraction
 	 * 
 	 * @return Discount Factor
 	 * 
-	 * @throws java.lang.Exception Thrown if the Discount Factor cannot be calculated
+	 * @throws Exception Thrown if the Discount Factor cannot be calculated
 	 */
 
 	public abstract double yieldDF (
-		final int iDate,
-		final double dblDCF)
-		throws java.lang.Exception;
+		final int date,
+		final double dayCountFraction)
+		throws Exception;
 
 	/**
 	 * Estimate the Forward Yield between the specified Dates
 	 * 
-	 * @param iDate1 First Date
-	 * @param iDate2 Second Date
+	 * @param date1 First Date
+	 * @param date2 Second Date
 	 * 
 	 * @return The Forward Yield
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double forwardYield (
-		final int iDate1,
-		final int iDate2)
-		throws java.lang.Exception;
+		final int date1,
+		final int date2)
+		throws Exception;
 }

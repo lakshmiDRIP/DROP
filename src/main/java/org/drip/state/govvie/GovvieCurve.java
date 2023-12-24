@@ -1,11 +1,28 @@
 
 package org.drip.state.govvie;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.daycount.ActActDCParams;
+import org.drip.analytics.daycount.Convention;
+import org.drip.analytics.input.CurveConstructionInputSet;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.analytics.support.Helper;
+import org.drip.numerical.differentiation.WengertJacobian;
+import org.drip.param.definition.ManifestMeasureTweak;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.state.discount.DiscountCurve;
+import org.drip.state.identifier.GovvieLabel;
+import org.drip.state.identifier.LatentStateLabel;
+import org.drip.state.representation.LatentState;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,173 +97,224 @@ package org.drip.state.govvie;
  */
 
 /**
- * <i>GovvieCurve</i> is the Stub for the Govvie Curve for the specified Govvie/Treasury.
- *
- *  <br><br>
+ * <i>GovvieCurve</i> is the Stub for the Govvie Curve for the specified Govvie/Treasury. It implements the
+ *  following Functionality.
+ * 
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/govvie/README.md">Govvie Latent State Curve Estimator</a></li>
+ *		<li>Retrieve the Yield Frequency</li>
+ *		<li>Retrieve the Yield Day Count</li>
+ *		<li>Retrieve the Manifest Measure Jacobian of the Forward Rate to the given date</li>
+ *		<li>Retrieve the Manifest Measure Jacobian of the Forward Rate to the date implied by the given Tenor</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/govvie/README.md">Govvie Latent State Curve Estimator</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve implements
-	org.drip.state.govvie.YieldEstimator {
+public abstract class GovvieCurve extends DiscountCurve implements YieldEstimator
+{
 	private static final int NUM_DF_QUADRATURES = 5;
 
-	private int _iFreq = 2;
-	private java.lang.String _strCurrency = "";
-	private java.lang.String _strTreasuryCode = "";
-	private java.lang.String _strDayCount = "DCAct_Act_UST";
-
-	protected int _iEpochDate = java.lang.Integer.MIN_VALUE;
-	protected org.drip.analytics.input.CurveConstructionInputSet _ccis = null;
+	private int _frequency = 2;
+	private String _currency = "";
+	private String _treasuryCode = "";
+	protected int _epochDate = Integer.MIN_VALUE;
+	private String _dayCountConvention = "DCAct_Act_UST";
+	protected CurveConstructionInputSet _curveConstructionInputSet = null;
 
 	protected GovvieCurve (
-		final int iEpochDate,
-		final java.lang.String strTreasuryCode,
-		final java.lang.String strCurrency)
-		throws java.lang.Exception
+		final int epochDate,
+		final String treasuryCode,
+		final String currency)
+		throws Exception
 	{
-		if (null == (_strTreasuryCode = strTreasuryCode) || _strTreasuryCode.isEmpty() || null ==
-			(_strCurrency = strCurrency) || _strCurrency.isEmpty())
-			throw new java.lang.Exception ("GovvieCurve ctr: Invalid Inputs");
+		if (null == (_treasuryCode = treasuryCode) || _treasuryCode.isEmpty() ||
+			null == (_currency = currency) || _currency.isEmpty()) {
+			throw new Exception ("GovvieCurve ctr: Invalid Inputs");
+		}
 
-		_iEpochDate = iEpochDate;
+		_epochDate = epochDate;
 	}
 
-	@Override public org.drip.analytics.date.JulianDate epoch()
+	@Override public JulianDate epoch()
 	{
-		return new org.drip.analytics.date.JulianDate (_iEpochDate);
+		return new JulianDate (_epochDate);
 	}
 
-	@Override public java.lang.String currency()
+	@Override public String currency()
 	{
-		return _strCurrency;
+		return _currency;
 	}
 
-	@Override public org.drip.state.identifier.LatentStateLabel label()
+	@Override public LatentStateLabel label()
 	{
-		return org.drip.state.identifier.GovvieLabel.Standard (_strTreasuryCode);
-	}
-
-	@Override public double yld (
-		final org.drip.analytics.date.JulianDate dt)
-		throws java.lang.Exception
-	{
-		if (null == dt) throw new java.lang.Exception ("GovvieCurve::yield => Invalid Inputs");
-
-		return yld (dt.julian());
+		return GovvieLabel.Standard (_treasuryCode);
 	}
 
 	@Override public double yld (
-		final java.lang.String strTenor)
-		throws java.lang.Exception
+		final JulianDate date)
+		throws Exception
 	{
-		return yld (epoch().addTenor (strTenor));
+		if (null == date) {
+			throw new Exception ("GovvieCurve::yld => Invalid Inputs");
+		}
+
+		return yld (date.julian());
+	}
+
+	@Override public double yld (
+		final String tenor)
+		throws Exception
+	{
+		return yld (epoch().addTenor (tenor));
 	}
 
 	@Override public double forwardYield (
-		final int iDate1,
-		final int iDate2)
-		throws java.lang.Exception
+		final int date1,
+		final int date2)
+		throws Exception
 	{
-		if (iDate1 >= iDate2) throw new java.lang.Exception ("GovvieCurve::forwardYield => Invalid Inputs");
+		if (date1 >= date2) {
+			throw new Exception ("GovvieCurve::forwardYield => Invalid Inputs");
+		}
 
-		org.drip.analytics.daycount.ActActDCParams aadp =
-			org.drip.analytics.daycount.ActActDCParams.FromFrequency (_iFreq);
+		ActActDCParams actActDCParams = ActActDCParams.FromFrequency (_frequency);
 
-		double dblYearFraction = org.drip.analytics.daycount.Convention.YearFraction (iDate1, iDate2,
-			_strDayCount, false, aadp, _strCurrency);
-
-		double dblDF1 = org.drip.analytics.support.Helper.Yield2DF  (_iFreq, yld (iDate1),
-			org.drip.analytics.daycount.Convention.YearFraction (_iEpochDate, iDate1, _strDayCount, false,
-				aadp, _strCurrency));
-
-		double dblDF2 = org.drip.analytics.support.Helper.Yield2DF  (_iFreq, yld (iDate2),
-			org.drip.analytics.daycount.Convention.YearFraction (_iEpochDate, iDate2, _strDayCount, false,
-				aadp, _strCurrency));
-
-		return org.drip.analytics.support.Helper.DF2Yield (
-			_iFreq,
-			dblDF2 / dblDF1,
-			dblYearFraction
+		return Helper.DF2Yield (
+			_frequency,
+			Helper.Yield2DF (
+				_frequency,
+				yld (date2),
+				Convention.YearFraction (
+					_epochDate,
+					date2,
+					_dayCountConvention,
+					false,
+					actActDCParams,
+					_currency
+				)
+			) / Helper.Yield2DF (
+				_frequency,
+				yld (date1),
+				Convention.YearFraction (
+					_epochDate,
+					date1,
+					_dayCountConvention,
+					false,
+					actActDCParams,
+					_currency
+				)
+			),
+			Convention.YearFraction (
+				date1,
+				date2,
+				_dayCountConvention,
+				false,
+				actActDCParams,
+				_currency
+			)
 		);
 	}
 
 	@Override public double df (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		return org.drip.analytics.support.Helper.Yield2DF  (_iFreq, yld (iDate),
-			org.drip.analytics.daycount.Convention.YearFraction (_iEpochDate, iDate, _strDayCount, false,
-				org.drip.analytics.daycount.ActActDCParams.FromFrequency (_iFreq), _strCurrency));
+		return Helper.Yield2DF (
+			_frequency,
+			yld (date),
+			Convention.YearFraction (
+				_epochDate,
+				date,
+				_dayCountConvention,
+				false,
+				ActActDCParams.FromFrequency (_frequency),
+				_currency
+			)
+		);
 	}
 
 	@Override public double df (
-		final org.drip.analytics.date.JulianDate dt)
-		throws java.lang.Exception
+		final JulianDate date)
+		throws Exception
 	{
-		if (null == dt) throw new java.lang.Exception ("GovvieCurve::df => Invalid Inputs");
-
-		return df (dt.julian());
-	}
-
-	@Override public double df (
-		final java.lang.String strTenor)
-		throws java.lang.Exception
-	{
-		return df (new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor (strTenor));
-	}
-
-	@Override public double effectiveDF (
-		final int iDate1,
-		final int iDate2)
-		throws java.lang.Exception
-	{
-		if (iDate1 == iDate2) return df (iDate1);
-
-		int iNumQuadratures = 0;
-		double dblEffectiveDF = 0.;
-		int iQuadratureWidth = (iDate2 - iDate1) / NUM_DF_QUADRATURES;
-
-		if (0 == iQuadratureWidth) iQuadratureWidth = 1;
-
-		for (int iDate = iDate1; iDate <= iDate2; iDate += iQuadratureWidth) {
-			++iNumQuadratures;
-
-			dblEffectiveDF += (df (iDate) + df (iDate + iQuadratureWidth));
+		if (null == date) {
+			throw new Exception ("GovvieCurve::df => Invalid Inputs");
 		}
 
-		return dblEffectiveDF / (2. * iNumQuadratures);
+		return df (date.julian());
+	}
+
+	@Override public double df (
+		final String tenor)
+		throws Exception
+	{
+		return df (new JulianDate (_epochDate).addTenor (tenor));
 	}
 
 	@Override public double effectiveDF (
-		final org.drip.analytics.date.JulianDate dt1,
-		final org.drip.analytics.date.JulianDate dt2)
-		throws java.lang.Exception
+		final int date1,
+		final int date2)
+		throws Exception
 	{
-		if (null == dt1 || null == dt2)
-			throw new java.lang.Exception ("GovvieCurve::effectiveDF => Got null for date");
+		if (date1 == date2) {
+			return df (date1);
+		}
 
-		return effectiveDF (dt1.julian(), dt2.julian());
+		int quadratureCount = 0;
+		double effectiveDiscountFactor = 0.;
+		int quadratureWidth = (date2 - date1) / NUM_DF_QUADRATURES;
+
+		if (0 == quadratureWidth) {
+			quadratureWidth = 1;
+		}
+
+		for (int date = date1; date <= date2; date += quadratureWidth) {
+			++quadratureCount;
+
+			effectiveDiscountFactor += (df (date) + df (date + quadratureWidth));
+		}
+
+		return effectiveDiscountFactor / (2. * quadratureCount);
 	}
 
 	@Override public double effectiveDF (
-		final java.lang.String strTenor1,
-		final java.lang.String strTenor2)
+		final JulianDate date1,
+		final JulianDate date2)
 		throws java.lang.Exception
 	{
-		if (null == strTenor1 || strTenor1.isEmpty() || null == strTenor2 || strTenor2.isEmpty())
-			throw new java.lang.Exception ("GovvieCurve::effectiveDF => Got bad tenor");
+		if (null == date1 || null == date2) {
+			throw new Exception ("GovvieCurve::effectiveDF => Got null for date");
+		}
 
-		org.drip.analytics.date.JulianDate dtStart = epoch();
+		return effectiveDF (date1.julian(), date2.julian());
+	}
 
-		return effectiveDF (dtStart.addTenor (strTenor1), dtStart.addTenor (strTenor2));
+	@Override public double effectiveDF (
+		final String tenor1,
+		final String tenor2)
+		throws Exception
+	{
+		if (null == tenor1 || tenor1.isEmpty() || null == tenor2 || tenor2.isEmpty()) {
+			throw new Exception ("GovvieCurve::effectiveDF => Got bad tenor");
+		}
+
+		JulianDate startDate = epoch();
+
+		return effectiveDF (startDate.addTenor (tenor1), startDate.addTenor (tenor2));
 	}
 
 	@Override public double yieldDF (
@@ -254,57 +322,57 @@ public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve 
 		final double dblDCF)
 		throws java.lang.Exception
 	{
-		return org.drip.analytics.support.Helper.Yield2DF (_iFreq, yld (iDate), dblDCF);
+		return org.drip.analytics.support.Helper.Yield2DF (_frequency, yld (iDate), dblDCF);
 	}
 
 	@Override public boolean setCCIS (
-		final org.drip.analytics.input.CurveConstructionInputSet ccis)
+		final CurveConstructionInputSet curveConstructionInputSet)
 	{
-		_ccis = ccis;
+		_curveConstructionInputSet = curveConstructionInputSet;
 		return true;
 	}
 
-	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
+	@Override public CalibratableComponent[] calibComp()
 	{
 		return null;
 	}
 
-	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> manifestMeasure (
-		final java.lang.String strInstr)
+	@Override public CaseInsensitiveTreeMap<Double> manifestMeasure (
+		final String instrument)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.representation.LatentState parallelShiftManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final double dblShift)
+	@Override public LatentState parallelShiftManifestMeasure (
+		final String manifestMeasure,
+		final double shift)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.representation.LatentState shiftManifestMeasure (
-		final int iSpanIndex,
-		final java.lang.String strManifestMeasure,
-		final double dblShift)
+	@Override public LatentState shiftManifestMeasure (
+		final int spanIndex,
+		final String manifestMeasure,
+		final double shift)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.representation.LatentState customTweakManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final org.drip.param.definition.ManifestMeasureTweak rvtp)
+	@Override public LatentState customTweakManifestMeasure (
+		final String manifestMeasure,
+		final ManifestMeasureTweak manifestMeasureTweak)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.representation.LatentState parallelShiftQuantificationMetric (
-		final double dblShift)
+	@Override public LatentState parallelShiftQuantificationMetric (
+		final double shift)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.representation.LatentState customTweakQuantificationMetric (
-		final org.drip.param.definition.ManifestMeasureTweak rvtp)
+	@Override public LatentState customTweakQuantificationMetric (
+		final ManifestMeasureTweak manifestMeasureTweak)
 	{
 		return null;
 	}
@@ -317,7 +385,7 @@ public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve 
 
 	public int freq()
 	{
-		return _iFreq;
+		return _frequency;
 	}
 
 	/**
@@ -326,60 +394,58 @@ public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve 
 	 * @return The Yield Day Count
 	 */
 
-	public java.lang.String dayCount()
+	public String dayCount()
 	{
-		return _strDayCount;
+		return _dayCountConvention;
 	}
 
 	/**
 	 * Retrieve the Manifest Measure Jacobian of the Forward Rate to the given date
 	 * 
-	 * @param strManifestMeasure Manifest Measure
-	 * @param iDate Date
+	 * @param manifestMeasure Manifest Measure
+	 * @param date Date
 	 * 
 	 * @return The Manifest Measure Jacobian of the Forward Rate to the given date
 	 */
 
-	public abstract org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final int iDate);
+	public abstract WengertJacobian jackDForwardDManifestMeasure (
+		final String manifestMeasure,
+		final int date
+	);
 
 	/**
 	 * Retrieve the Manifest Measure Jacobian of the Forward Rate to the given date
 	 * 
-	 * @param strManifestMeasure Manifest Measure
-	 * @param dt Date
+	 * @param manifestMeasure Manifest Measure
+	 * @param date Date
 	 * 
 	 * @return The Manifest Measure Jacobian of the Forward Rate to the given date
 	 */
 
-	public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final org.drip.analytics.date.JulianDate dt)
+	public WengertJacobian jackDForwardDManifestMeasure (
+		final String manifestMeasure,
+		final JulianDate date)
 	{
-		if (null == dt) return null;
-
-		return jackDForwardDManifestMeasure (strManifestMeasure, dt.julian());
+		return null == date ? null : jackDForwardDManifestMeasure (manifestMeasure, date.julian());
 	}
 
 	/**
 	 * Retrieve the Manifest Measure Jacobian of the Forward Rate to the date implied by the given Tenor
 	 * 
-	 * @param strManifestMeasure Manifest Measure
-	 * @param strTenor Tenor
+	 * @param manifestMeasure Manifest Measure
+	 * @param tenor Tenor
 	 * 
 	 * @return The Manifest Measure Jacobian of the Forward Rate to the date implied by the given Tenor
 	 */
 
-	public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final java.lang.String strTenor)
+	public WengertJacobian jackDForwardDManifestMeasure (
+		final String manifestMeasure,
+		final String tenor)
 	{
-		if (null == strTenor || strTenor.isEmpty()) return null;
-
 		try {
-			return jackDForwardDManifestMeasure (strManifestMeasure, epoch().addTenor (strTenor));
-		} catch (java.lang.Exception e) {
+			return null == tenor || tenor.isEmpty() ? null :
+				jackDForwardDManifestMeasure (manifestMeasure, epoch().addTenor (tenor));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

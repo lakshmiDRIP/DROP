@@ -149,7 +149,7 @@ public class FlatYieldGovvieCurve extends ExplicitBootGovvieCurve
 		final int date)
 		throws Exception
 	{
-		if (date <= _iEpochDate) {
+		if (date <= _epochDate) {
 			return _yieldArray[0];
 		}
 

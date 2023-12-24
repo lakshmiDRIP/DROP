@@ -162,13 +162,13 @@ public class FlatForwardGovvieCurve extends ExplicitBootGovvieCurve
 		final int date)
 		throws Exception
 	{
-		if (date <= _iEpochDate) {
+		if (date <= _epochDate) {
 			return 1.;
 		}
 
 		int i = 0;
 		double discountFactor = 1.;
-		int startDate = _iEpochDate;
+		int startDate = _epochDate;
 		int dateArrayCount = _dateArray.length;
 
 		int frequency = freq();
@@ -194,7 +194,7 @@ public class FlatForwardGovvieCurve extends ExplicitBootGovvieCurve
 			frequency,
 			discountFactor * Math.pow (1. + (_forwardYieldArray[i] / frequency),
 			-1. * yearFraction (startDate, date, actActDCParams, dayCount) * frequency),
-			yearFraction (_iEpochDate, date, actActDCParams, dayCount)
+			yearFraction (_epochDate, date, actActDCParams, dayCount)
 		);
 	}
 
