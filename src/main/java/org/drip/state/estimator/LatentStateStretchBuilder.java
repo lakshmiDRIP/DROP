@@ -1,11 +1,24 @@
 
 package org.drip.state.estimator;
 
+import org.drip.analytics.definition.LatentStateStatic;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.product.calib.ProductQuoteSet;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.state.identifier.ForwardLabel;
+import org.drip.state.inference.LatentStateSegmentSpec;
+import org.drip.state.inference.LatentStateStretchSpec;
+import org.drip.state.representation.LatentStateSpecification;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,73 +95,107 @@ package org.drip.state.estimator;
 
 /**
  * <i>LatentStateStretchBuilder</i> contains the Functionality to construct the Curve Latent State Stretch
- * for the different Latent States.
+ * 	for the different Latent States. It provides Functionality to:
  *
- *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator/README.md">Multi-Pass Customized Stretch Curve</a></li>
+ *  	<li>Construct a Forward Latent State Stretch Spec Instance</li>
+ *  	<li>Construct a Merged Forward-Funding Latent State Stretch Spec Instance</li>
+ *  	<li>Construct a Funding Latent State Stretch Spec Instance</li>
+ *  	<li>Construct an instance of LatentStateStretchSpec for the Construction of the Forward Curve from the specified Inputs</li>
+ *  	<li>Construct an instance of LatentStateStretchSpec for the Construction of the Discount Curve from the specified Inputs</li>
+ *  	<li>Construct a FX Latent State Stretch Spec Instance</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator/README.md">Multi-Pass Customized Stretch Curve</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class LatentStateStretchBuilder {
+public class LatentStateStretchBuilder
+{
 
 	/**
 	 * Construct a Forward Latent State Stretch Spec Instance
 	 * 
-	 * @param strName Stretch Name
-	 * @param aCalibComp Array of Calibration Components
-	 * @param astrCalibMeasure Array of the Calibration Measures
-	 * @param adblCalibQuote Array of the Calibration Quotes
+	 * @param stretchName Stretch Name
+	 * @param calibratableComponentArray Array of Calibration Components
+	 * @param calibrationMeasureArray Array of the Calibration Measures
+	 * @param calibrationQuoteArray Array of the Calibration Quotes
 	 * 
 	 * @return Forward Latent State Stretch Spec Instance
 	 */
 
-	public static final org.drip.state.inference.LatentStateStretchSpec ForwardStretchSpec (
-		final java.lang.String strName,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp,
-		final java.lang.String[] astrCalibMeasure,
-		final double[] adblCalibQuote)
+	public static final LatentStateStretchSpec ForwardStretchSpec (
+		final String stretchName,
+		final CalibratableComponent[] calibratableComponentArray,
+		final String[] calibrationMeasureArray,
+		final double[] calibrationQuoteArray)
 	{
-		if (null == aCalibComp || null == astrCalibMeasure || null == adblCalibQuote) return null;
-
-		int iNumComp = aCalibComp.length;
-		org.drip.state.inference.LatentStateSegmentSpec[] aLSSS = new
-			org.drip.state.inference.LatentStateSegmentSpec[iNumComp];
-
-		if (0 == iNumComp || iNumComp != astrCalibMeasure.length || iNumComp != adblCalibQuote.length)
+		if (null == calibratableComponentArray || null == calibrationMeasureArray ||
+			null == calibrationQuoteArray) {
 			return null;
+		}
+
+		int componentCount = calibratableComponentArray.length;
+		LatentStateSegmentSpec[] latentStateSegmentSpeArray = new LatentStateSegmentSpec[componentCount];
+
+		if (0 == componentCount || componentCount != calibrationMeasureArray.length ||
+			componentCount != calibrationQuoteArray.length) {
+			return null;
+		}
 
 		try {
-			for (int i = 0; i < iNumComp; ++i) {
-				if (null == aCalibComp[i] || null == astrCalibMeasure[i] || astrCalibMeasure[i].isEmpty() ||
-					!org.drip.numerical.common.NumberUtil.IsValid (adblCalibQuote[i]))
+			for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+				if (null == calibrationMeasureArray[componentIndex] ||
+					null == calibrationMeasureArray[componentIndex] ||
+					calibrationMeasureArray[componentIndex].isEmpty() ||
+					!NumberUtil.IsValid (calibrationQuoteArray[componentIndex])) {
 					return null;
+				}
 
-				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel>
-					mapForwardLabel = aCalibComp[i].forwardLabel();
+				CaseInsensitiveTreeMap<ForwardLabel> forwardLabelMap =
+					calibratableComponentArray[componentIndex].forwardLabel();
 
-				if (null == mapForwardLabel || 0 == mapForwardLabel.size()) return null;
+				if (null == forwardLabelMap || 0 == forwardLabelMap.size()) {
+					return null;
+				}
 
-				org.drip.product.calib.ProductQuoteSet pqs = aCalibComp[i].calibQuoteSet (new
-					org.drip.state.representation.LatentStateSpecification[] {new
-						org.drip.state.representation.LatentStateSpecification 
-							(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FORWARD,
-								org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE,
-									mapForwardLabel.get ("DERIVED"))});
+				ProductQuoteSet productQuoteSet = calibratableComponentArray[componentIndex].calibQuoteSet (
+					new LatentStateSpecification[] {
+						new LatentStateSpecification (
+							LatentStateStatic.LATENT_STATE_FORWARD,
+							LatentStateStatic.FORWARD_QM_FORWARD_RATE,
+							forwardLabelMap.get ("DERIVED")
+						)
+					}
+				);
 
-				if (null == pqs || !pqs.set (astrCalibMeasure[i], adblCalibQuote[i])) return null;
+				if (null == productQuoteSet || !productQuoteSet.set (
+					calibrationMeasureArray[componentIndex],
+					calibrationQuoteArray[componentIndex])) {
+					return null;
+				}
 
-				aLSSS[i] = new org.drip.state.inference.LatentStateSegmentSpec (aCalibComp[i], pqs);
+				latentStateSegmentSpeArray[componentIndex] = new LatentStateSegmentSpec (
+					calibratableComponentArray[componentIndex],
+					productQuoteSet
+				);
 			}
 
-			return new org.drip.state.inference.LatentStateStretchSpec (strName, aLSSS);
-		} catch (java.lang.Exception e) {
+			return new LatentStateStretchSpec (stretchName, latentStateSegmentSpeArray);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

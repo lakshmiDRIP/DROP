@@ -1,11 +1,18 @@
 	
 package org.drip.state.estimator;
 
+import org.drip.spline.params.SegmentCustomBuilderControl;
+import org.drip.spline.params.StretchBestFitResponse;
+import org.drip.spline.stretch.BoundarySettings;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,49 +90,68 @@ package org.drip.state.estimator;
  */
 
 /**
- * <i>GlobalControlCurveParams</i> contains the Parameters controlling multiple Stretches in a Curve.
+ * <i>GlobalControlCurveParams</i> contains the Parameters controlling multiple Stretches in a Curve. It
+ * 	provides Functionality to:
  *
- *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator/README.md">Multi-Pass Customized Stretch Curve</a></li>
+ *  	<li><i>GlobalControlCurveParams</i> constructor</li>
+ *  	<li>Retrieve the Calibration Boundary Condition</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator/README.md">Multi-Pass Customized Stretch Curve</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class GlobalControlCurveParams extends org.drip.state.estimator.SmoothingCurveStretchParams {
-	private org.drip.spline.stretch.BoundarySettings _bs = null;
+public class GlobalControlCurveParams extends SmoothingCurveStretchParams
+{
+	private BoundarySettings _boundarySettings = null;
 
 	/**
-	 * GlobalControlCurveParams constructor
+	 * <i>GlobalControlCurveParams</i> constructor
 	 * 
-	 * @param strSmootheningQuantificationMetric Curve Smoothening Quantification Metric
-	 * @param prbp Segment Builder Parameters
-	 * @param bs The Calibration Boundary Condition
-	 * @param iCalibrationDetail The Calibration Detail
-	 * @param sbfr Curve Fitness Weighted Response
-	 * @param sbfrSensitivity Curve Fitness Weighted Response Sensitivity
+	 * @param smootheningQuantificationMetric Curve Smoothening Quantification Metric
+	 * @param segmentCustomBuilderControl Segment Builder Parameters
+	 * @param boundarySettings The Calibration Boundary Condition
+	 * @param calibrationDetail The Calibration Detail
+	 * @param stretchBestFitResponse Curve Fitness Weighted Response
+	 * @param stretchBestFitResponseSensitivity Curve Fitness Weighted Response Sensitivity
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	public GlobalControlCurveParams (
-		final java.lang.String strSmootheningQuantificationMetric,
-		final org.drip.spline.params.SegmentCustomBuilderControl prbp,
-		final org.drip.spline.stretch.BoundarySettings bs,
-		final int iCalibrationDetail,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final org.drip.spline.params.StretchBestFitResponse sbfrSensitivity)
-		throws java.lang.Exception
+		final String smootheningQuantificationMetric,
+		final SegmentCustomBuilderControl segmentCustomBuilderControl,
+		final BoundarySettings boundarySettings,
+		final int calibrationDetail,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final StretchBestFitResponse stretchBestFitResponseSensitivity)
+		throws Exception
 	{
-		super (strSmootheningQuantificationMetric, prbp, iCalibrationDetail, sbfr, sbfrSensitivity);
+		super (
+			smootheningQuantificationMetric,
+			segmentCustomBuilderControl,
+			calibrationDetail,
+			stretchBestFitResponse,
+			stretchBestFitResponseSensitivity
+		);
 
-		if (null == (_bs = bs))
-			throw new java.lang.Exception ("GlobalControlCurveParams ctr: Invalid Inputs");
+		if (null == (_boundarySettings = boundarySettings)) {
+			throw new Exception ("GlobalControlCurveParams ctr: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -134,8 +160,8 @@ public class GlobalControlCurveParams extends org.drip.state.estimator.Smoothing
 	 * @return The Calibration Boundary Condition
 	 */
 
-	public org.drip.spline.stretch.BoundarySettings calibrationBoundaryCondition()
+	public BoundarySettings calibrationBoundaryCondition()
 	{
-		return _bs;
+		return _boundarySettings;
 	}
 }

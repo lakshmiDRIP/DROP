@@ -1,11 +1,18 @@
 
 package org.drip.state.estimator;
 
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.spline.params.SegmentCustomBuilderControl;
+import org.drip.spline.params.StretchBestFitResponse;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -86,89 +93,94 @@ package org.drip.state.estimator;
  * <i>SmoothingCurveStretchParams</i> contains the Parameters needed to hold the Stretch. It provides
  * functionality to:
  *
- *  <br><br>
  *  <ul>
- *  	<li>
- * 			The Stretch Best fit Response and the corresponding Quote Sensitivity
- *  	</li>
- *  	<li>
- * 			The Calibration Detail and the Curve Smoothening Quantification Metric
- *  	</li>
- *  	<li>
- * 			The Segment Builder Parameters
- *  	</li>
+ *  	<li><i>SmoothingCurveStretchParams</i> constructor</li>
+ *  	<li>Set the Stretch's Segment Builder Control</li>
+ *  	<li>Retrieve the Curve Smoothening Quantification Metric</li>
+ *  	<li>Retrieve the Calibration Detail</li>
+ *  	<li>Retrieve the Default Segment Builder Parameters</li>
+ *  	<li>Retrieve the Segment Builder Parameters</li>
+ *  	<li>Retrieve the Best Fit Weighted Response</li>
+ *  	<li>Retrieve the Best Fit Weighted Response Sensitivity</li>
  *  </ul>
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator/README.md">Multi-Pass Customized Stretch Curve</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator/README.md">Multi-Pass Customized Stretch Curve</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class SmoothingCurveStretchParams {
-	private int _iCalibrationDetail = -1;
-	private java.lang.String _strSmootheningQuantificationMetric = "";
-	private org.drip.spline.params.StretchBestFitResponse _sbfr = null;
-	private org.drip.spline.params.StretchBestFitResponse _sbfrSensitivity = null;
+public abstract class SmoothingCurveStretchParams
+{
+	private int _calibrationDetail = -1;
+	private String _smootheningQuantificationMetric = "";
+	private StretchBestFitResponse _stretchBestFitResponse = null;
+	private StretchBestFitResponse _stretchBestFitResponseSensitivity = null;
 
-	private
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.spline.params.SegmentCustomBuilderControl>
-			_mapSCBC = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.spline.params.SegmentCustomBuilderControl>();
+	private CaseInsensitiveHashMap<SegmentCustomBuilderControl> _segmentCustomBuilderControlMap =
+		new CaseInsensitiveHashMap<SegmentCustomBuilderControl>();
 
 	/**
-	 * SmoothingCurveStretchParams constructor
+	 * <i>SmoothingCurveStretchParams</i> constructor
 	 * 
-	 * @param strSmootheningQuantificationMetric Curve Smoothening Quantification Metric
-	 * @param scbcDefault Default Segment Builder Parameters
-	 * @param iCalibrationDetail The Calibration Detail
-	 * @param sbfr Stretch Fitness Weighted Response
-	 * @param sbfrSensitivity Stretch Fitness Weighted Response Sensitivity
+	 * @param smootheningQuantificationMetric Curve Smoothening Quantification Metric
+	 * @param segmentCustomBuilderControlDefault Default Segment Builder Parameters
+	 * @param calibrationDetail The Calibration Detail
+	 * @param stretchBestFitResponse Stretch Fitness Weighted Response
+	 * @param stretchBestFitResponseSensitivity Stretch Fitness Weighted Response Sensitivity
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	public SmoothingCurveStretchParams (
-		final java.lang.String strSmootheningQuantificationMetric,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbcDefault,
-		final int iCalibrationDetail,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final org.drip.spline.params.StretchBestFitResponse sbfrSensitivity)
-		throws java.lang.Exception
+		final String smootheningQuantificationMetric,
+		final SegmentCustomBuilderControl segmentCustomBuilderControlDefault,
+		final int calibrationDetail,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final StretchBestFitResponse stretchBestFitResponseSensitivity)
+		throws Exception
 	{
-		if (null == scbcDefault)
-			throw new java.lang.Exception ("SmoothingCurveStretchParams ctr: Invalid Inputs");
+		if (null == segmentCustomBuilderControlDefault) {
+			throw new Exception ("SmoothingCurveStretchParams ctr: Invalid Inputs");
+		}
 
-		_sbfr = sbfr;
-		_sbfrSensitivity = sbfrSensitivity;
-		_iCalibrationDetail = iCalibrationDetail;
-		_strSmootheningQuantificationMetric = strSmootheningQuantificationMetric;
+		_calibrationDetail = calibrationDetail;
+		_stretchBestFitResponse = stretchBestFitResponse;
+		_smootheningQuantificationMetric = smootheningQuantificationMetric;
+		_stretchBestFitResponseSensitivity = stretchBestFitResponseSensitivity;
 
-		_mapSCBC.put ("default", scbcDefault);
+		_segmentCustomBuilderControlMap.put ("default", segmentCustomBuilderControlDefault);
 	}
 
 	/**
 	 * Set the Stretch's Segment Builder Control
 	 * 
-	 * @param strStretchName Name of the Stretch for which the Segment Builder Parameters need to be set
-	 * @param scbc The Segment Builder Parameters
+	 * @param stretchName Name of the Stretch for which the Segment Builder Parameters need to be set
+	 * @param segmentCustomBuilderControl The Segment Builder Parameters
 	 * 
 	 * @return TRUE - The Segment Builder Control Parameters have been successfully set
 	 */
 
 	public boolean setStretchSegmentBuilderControl (
-		final java.lang.String strStretchName,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
+		final String stretchName,
+		final SegmentCustomBuilderControl segmentCustomBuilderControl)
 	{
-		if (null == strStretchName || strStretchName.isEmpty() || null == scbc) return false;
+		if (null == stretchName || stretchName.isEmpty() || null == segmentCustomBuilderControl) {
+			return false;
+		}
 
-		_mapSCBC.put (strStretchName, scbc);
+		_segmentCustomBuilderControlMap.put (stretchName, segmentCustomBuilderControl);
 
 		return true;
 	}
@@ -179,9 +191,9 @@ public abstract class SmoothingCurveStretchParams {
 	 * @return The Curve Smoothening Quantification Metric
 	 */
 
-	public java.lang.String smootheningQuantificationMetric()
+	public String smootheningQuantificationMetric()
 	{
-		return _strSmootheningQuantificationMetric;
+		return _smootheningQuantificationMetric;
 	}
 
 	/**
@@ -192,7 +204,7 @@ public abstract class SmoothingCurveStretchParams {
 
 	public int calibrationDetail()
 	{
-		return _iCalibrationDetail;
+		return _calibrationDetail;
 	}
 
 	/**
@@ -201,24 +213,25 @@ public abstract class SmoothingCurveStretchParams {
 	 * @return The Default Segment Builder Parameters
 	 */
 
-	public org.drip.spline.params.SegmentCustomBuilderControl defaultSegmentBuilderControl()
+	public SegmentCustomBuilderControl defaultSegmentBuilderControl()
 	{
-		return _mapSCBC.get ("default");
+		return _segmentCustomBuilderControlMap.get ("default");
 	}
 
 	/**
 	 * Retrieve the Segment Builder Parameters
 	 * 
-	 * @param strStretchName Name of the Stretch for which the Segment Builder Parameters are requested
+	 * @param stretchName Name of the Stretch for which the Segment Builder Parameters are requested
 	 * 
 	 * @return The Segment Builder Parameters
 	 */
 
-	public org.drip.spline.params.SegmentCustomBuilderControl segmentBuilderControl (
-		final java.lang.String strStretchName)
+	public SegmentCustomBuilderControl segmentBuilderControl (
+		final String stretchName)
 	{
-		return _mapSCBC.containsKey (strStretchName) ? _mapSCBC.get (strStretchName) : _mapSCBC.get
-			("default");
+		return _segmentCustomBuilderControlMap.containsKey (stretchName) ?
+			_segmentCustomBuilderControlMap.get (stretchName) :
+			_segmentCustomBuilderControlMap.get ("default");
 	}
 
 	/**
@@ -227,9 +240,9 @@ public abstract class SmoothingCurveStretchParams {
 	 * @return The Best Fit Weighted Response
 	 */
 
-	public org.drip.spline.params.StretchBestFitResponse bestFitWeightedResponse()
+	public StretchBestFitResponse bestFitWeightedResponse()
 	{
-		return _sbfr;
+		return _stretchBestFitResponse;
 	}
 
 	/**
@@ -238,8 +251,8 @@ public abstract class SmoothingCurveStretchParams {
 	 * @return The Best Fit Weighted Response Sensitivity
 	 */
 
-	public org.drip.spline.params.StretchBestFitResponse bestFitWeightedResponseSensitivity()
+	public StretchBestFitResponse bestFitWeightedResponseSensitivity()
 	{
-		return _sbfrSensitivity;
+		return _stretchBestFitResponseSensitivity;
 	}
 }

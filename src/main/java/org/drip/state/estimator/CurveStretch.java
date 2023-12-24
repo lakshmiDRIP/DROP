@@ -1,11 +1,24 @@
 
 package org.drip.state.estimator;
 
+import java.util.Set;
+
+import org.drip.numerical.common.NumberUtil;
+import org.drip.spline.params.SegmentCustomBuilderControl;
+import org.drip.spline.segment.LatentStateResponseModel;
+import org.drip.spline.stretch.CalibratableMultiSegmentSequence;
+import org.drip.state.identifier.LatentStateLabel;
+import org.drip.state.representation.LatentStateMergeSubStretch;
+import org.drip.state.representation.MergeSubStretchManager;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,91 +97,100 @@ package org.drip.state.estimator;
 
 /**
  * <i>CurveStretch</i> expands the regular Multi-Segment Stretch to aid the calibration of Boot-strapped
- * Instruments. In particular, CurveStretch implements the following functions that are used at different
- * stages of curve construction sequence:
+ * 	Instruments. In particular, CurveStretch implements the following functions that are used at different
+ * 	stages of curve construction sequence:
  *
- *  <br><br>
  *  <ul>
- *  	<li>
- * 			Mark the Range of the "built" Segments
- *  	</li>
- *  	<li>
- * 			Clear the built range mark to signal the start of a fresh calibration run
- *  	</li>
- *  	<li>
- * 			Indicate if the specified Predictor Ordinate is inside the "Built" Range
- *  	</li>
- *  	<li>
- * 			Retrieve the MergeSubStretchManager
- *  	</li>
+ *  	<li>Mark the Range of the "built" Segments</li>
+ *  	<li>Clear the built range mark to signal the start of a fresh calibration run</li>
+ *  	<li>Indicate if the specified Predictor Ordinate is inside the "Built" Range</li>
+ *  	<li>Retrieve the MergeSubStretchManager</li>
  *  </ul>
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator/README.md">Multi-Pass Customized Stretch Curve</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/estimator/README.md">Multi-Pass Customized Stretch Curve</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CurveStretch extends org.drip.spline.stretch.CalibratableMultiSegmentSequence {
-	private double _dblBuiltPredictorOrdinateRight = java.lang.Double.NaN;
-	private org.drip.state.representation.MergeSubStretchManager _msm = null;
+public class CurveStretch extends CalibratableMultiSegmentSequence
+{
+	private double _builtPredictorOrdinateRight = Double.NaN;
+	private MergeSubStretchManager _mergeSubStretchManager = null;
 
 	/**
 	 * CurveStretch constructor - Construct a sequence of Basis Spline Segments
 	 * 
-	 * @param strName Name of the Stretch
-	 * @param aCS Array of Segments
-	 * @param aSCBC Array of Segment Builder Parameters
+	 * @param name Name of the Stretch
+	 * @param latentStateResponseModelArray Array of Segments
+	 * @param segmentCustomBuilderControlArray Array of Segment Builder Parameters
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	public CurveStretch (
-		final java.lang.String strName,
-		final org.drip.spline.segment.LatentStateResponseModel[] aCS,
-		final org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC)
-		throws java.lang.Exception
+		final String name,
+		final LatentStateResponseModel[] latentStateResponseModelArray,
+		final SegmentCustomBuilderControl[] segmentCustomBuilderControlArray)
+		throws Exception
 	{
-		super (strName, aCS, aSCBC);
+		super (name, latentStateResponseModelArray, segmentCustomBuilderControlArray);
 
-		_dblBuiltPredictorOrdinateRight = getLeftPredictorOrdinateEdge();
+		_builtPredictorOrdinateRight = getLeftPredictorOrdinateEdge();
 	}
 
 	/**
 	 * Mark the Range of the "built" Segments, and set the set of Merge Latent States
 	 * 
-	 * @param iSegment The Current Segment Range Built
-	 * @param setLSL Set of the merging Latent State Labels
+	 * @param segmentIndex The Current Segment Range Built
+	 * @param latentStateLabelSet Set of the merging Latent State Labels
 	 * 
 	 * @return TRUE - Range successfully marked as "built"
 	 */
 
 	public boolean markSegmentBuilt (
-		final int iSegment,
-		final java.util.Set<org.drip.state.identifier.LatentStateLabel> setLSL)
+		final int segmentIndex,
+		final Set<LatentStateLabel> latentStateLabelSet)
 	{
-		org.drip.spline.segment.LatentStateResponseModel[] aCS = segments();
+		LatentStateResponseModel[] latentStateResponseModelArray = segments();
 
-		if (iSegment >= aCS.length) return false;
+		if (segmentIndex >= latentStateResponseModelArray.length) {
+			return false;
+		}
 
-		_dblBuiltPredictorOrdinateRight = aCS[iSegment].right();
+		_builtPredictorOrdinateRight = latentStateResponseModelArray[segmentIndex].right();
 
-		if (null == setLSL || 0 == setLSL.size()) return true;
+		if (null == latentStateLabelSet || 0 == latentStateLabelSet.size()) {
+			return true;
+		}
 
-		if (null == _msm) _msm = new org.drip.state.representation.MergeSubStretchManager();
+		if (null == _mergeSubStretchManager) {
+			_mergeSubStretchManager = new MergeSubStretchManager();
+		}
 
-		for (org.drip.state.identifier.LatentStateLabel lsl : setLSL) {
+		for (LatentStateLabel latentStateLabel : latentStateLabelSet) {
 			try {
-				if (!_msm.addMergeStretch (new org.drip.state.representation.LatentStateMergeSubStretch
-					(aCS[iSegment].left(), aCS[iSegment].right(), lsl)))
+				if (!_mergeSubStretchManager.addMergeStretch (
+					new LatentStateMergeSubStretch (
+						latentStateResponseModelArray[segmentIndex].left(),
+						latentStateResponseModelArray[segmentIndex].right(),
+						latentStateLabel
+					)
+				)) {
 					return false;
-			} catch (java.lang.Exception e) {
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -184,35 +206,36 @@ public class CurveStretch extends org.drip.spline.stretch.CalibratableMultiSegme
 
 	public boolean clearBuiltRange()
 	{
-		_dblBuiltPredictorOrdinateRight = getLeftPredictorOrdinateEdge();
+		_builtPredictorOrdinateRight = getLeftPredictorOrdinateEdge();
 
-		_msm = null;
+		_mergeSubStretchManager = null;
 		return true;
 	}
 
 	/**
 	 * Indicate if the specified Predictor Ordinate is inside the "Built" Range
 	 * 
-	 * @param dblPredictorOrdinate The Predictor Ordinate
+	 * @param predictorOrdinate The Predictor Ordinate
 	 * 
 	 * @return TRUE - The specified Predictor Ordinate is inside the "Built" Range
 	 * 
-	 * @throws java.lang.Exception Thrown if inputs are invalid
+	 * @throws Exception Thrown if inputs are invalid
 	 */
 
 	public boolean inBuiltRange (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))
-			throw new java.lang.Exception ("CurveStretch.inBuiltRange => Invalid Inputs");
+		if (!NumberUtil.IsValid (predictorOrdinate)) {
+			throw new Exception ("CurveStretch::inBuiltRange => Invalid Inputs");
+		}
 
-		return dblPredictorOrdinate >= getLeftPredictorOrdinateEdge() && dblPredictorOrdinate <=
-			_dblBuiltPredictorOrdinateRight;
+		return predictorOrdinate >= getLeftPredictorOrdinateEdge() &&
+			predictorOrdinate <= _builtPredictorOrdinateRight;
 	}
 
-	@Override public org.drip.state.representation.MergeSubStretchManager msm()
+	@Override public MergeSubStretchManager msm()
 	{
-		return _msm;
+		return _mergeSubStretchManager;
 	}
 }
