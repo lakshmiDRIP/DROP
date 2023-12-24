@@ -186,7 +186,7 @@ public class FlatForwardFXCurve extends ExplicitBootFXCurve
 		final int date)
 		throws Exception
 	{
-		if (date <= _iEpochDate) {
+		if (date <= _epochDate) {
 			return _fxForwardArray[0];
 		}
 

@@ -1,11 +1,17 @@
 
 package org.drip.state.forward;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.state.identifier.ForwardLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,22 +90,35 @@ package org.drip.state.forward;
 
 /**
  * <i>ForwardRateEstimator</i> is the interface that exposes the calculation of the Forward Rate for a
- * specific Index. It exposes methods to compute forward rates to a given date/tenor, extract the forward
- * rate index and the Tenor.
- *
- *  <br><br>
+ * 	specific Index. It exposes methods to compute forward rates to a given date/tenor, extract the forward
+ * 	rate index and the Tenor. It implements the following Functionality.
+ * 
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/forward/README.md">Forward Latent State Curve Estimator</a></li>
+ *		<li>Retrieve the Forward Rate Index</li>
+ *		<li>Retrieve the Forward Rate Tenor</li>
+ *		<li>Calculate the Forward Rate to the given date</li>
+ *		<li>Calculate the Forward Rate to the tenor implied by the given date</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/forward/README.md">Forward Latent State Curve Estimator</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface ForwardRateEstimator {
+public interface ForwardRateEstimator
+{
 
 	/**
 	 * Retrieve the Forward Rate Index
@@ -107,7 +126,7 @@ public interface ForwardRateEstimator {
 	 * @return The Forward Rate Index
 	 */
 
-	public abstract org.drip.state.identifier.ForwardLabel index();
+	public abstract ForwardLabel index();
 
 	/**
 	 * Retrieve the Forward Rate Tenor
@@ -115,47 +134,47 @@ public interface ForwardRateEstimator {
 	 * @return The Forward Rate Tenor
 	 */
 
-	public abstract java.lang.String tenor();
+	public abstract String tenor();
 
 	/**
 	 * Calculate the Forward Rate to the given Date
 	 * 
-	 * @param iDate Date
+	 * @param date Date
 	 * 
 	 * @return The Forward Rate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Forward Rate cannot be calculated
+	 * @throws Exception Thrown if the Forward Rate cannot be calculated
 	 */
 
 	public abstract double forward (
-		final int iDate)
-		throws java.lang.Exception;
+		final int date)
+		throws Exception;
 
 	/**
 	 * Calculate the Forward Rate to the given date
 	 * 
-	 * @param dt Date
+	 * @param date Date
 	 * 
 	 * @return The Forward Rate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Forward Rate cannot be calculated
+	 * @throws Exception Thrown if the Forward Rate cannot be calculated
 	 */
 
 	public abstract double forward (
-		final org.drip.analytics.date.JulianDate dt)
-		throws java.lang.Exception;
+		final JulianDate date)
+		throws Exception;
 
 	/**
 	 * Calculate the Forward Rate to the tenor implied by the given date
 	 * 
-	 * @param strTenor The Tenor
+	 * @param tenor The Tenor
 	 * 
 	 * @return The Forward Rate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Forward Rate cannot be calculated
+	 * @throws Exception Thrown if the Forward Rate cannot be calculated
 	 */
 
 	public abstract double forward (
-		final java.lang.String strTenor)
-		throws java.lang.Exception;
+		final String tenor)
+		throws Exception;
 }

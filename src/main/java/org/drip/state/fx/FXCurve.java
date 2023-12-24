@@ -1,11 +1,28 @@
 
 package org.drip.state.fx;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.definition.Curve;
+import org.drip.analytics.input.CurveConstructionInputSet;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.numerical.differentiation.WengertJacobian;
+import org.drip.param.definition.ManifestMeasureTweak;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.product.params.CurrencyPair;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.identifier.FXLabel;
+import org.drip.state.identifier.LatentStateLabel;
+import org.drip.state.representation.LatentState;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,261 +98,290 @@ package org.drip.state.fx;
  */
 
 /**
- * <i>FXCurve</i> is the Stub for the FX Curve for the specified Currency Pair.
- *
- *  <br><br>
+ * <i>FXCurve</i> is the Stub for the FX Curve for the specified Currency Pair. It implements the following
+ *  Functionality.
+ * 
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/fx/README.md">FX Latent State Curve Estimator</a></li>
+ *		<li>Calculate the FX Forward to the given Date</li>
+ *		<li>Calculate the set of Zero basis given the input discount curves</li>
+ *		<li>Bootstrap the basis to the discount curve inputs</li>
+ *		<li>Bootstrap the discount curve from the discount curve inputs</li>
+ *		<li>Calculate the rates implied by the discount curve inputs</li>
+ *		<li>Calculate the rate implied by the discount curve inputs to a specified date</li>
+ *		<li>Return the Currency Pair</li>
+ *		<li>Calculate the FX Forward to the given date</li>
+ *		<li>Retrieve the Manifest Measure Jacobian of the Forward Rate to the given date</li>
+ *		<li>Retrieve the Manifest Measure Jacobian of the Forward Rate to the date implied by the given Tenor</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/fx/README.md">FX Latent State Curve Estimator</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class FXCurve implements org.drip.analytics.definition.Curve {
-	private org.drip.product.params.CurrencyPair _cp = null;
+public abstract class FXCurve implements Curve
+{
+	private CurrencyPair _currencyPair = null;
 
-	protected int _iEpochDate = java.lang.Integer.MIN_VALUE;
+	protected int _epochDate = Integer.MIN_VALUE;
 
 	protected FXCurve (
-		final int iEpochDate,
-		final org.drip.product.params.CurrencyPair cp)
+		final int epochDate,
+		final CurrencyPair currencyPair)
 		throws java.lang.Exception
 	{
-		if (null == (_cp = cp)) throw new java.lang.Exception ("FXCurve ctr: Invalid Inputs");
+		if (null == (_currencyPair = currencyPair)) {
+			throw new Exception ("FXCurve ctr: Invalid Inputs");
+		}
 
-		_iEpochDate = iEpochDate;
+		_epochDate = epochDate;
 	}
 
 	/**
 	 * Calculate the FX Forward to the given Date
 	 * 
-	 * @param iDate Date
+	 * @param date Date
 	 * 
 	 * @return The FX Forward
 	 * 
-	 * @throws java.lang.Exception Thrown if the FX Forward cannot be calculated
+	 * @throws Exception Thrown if the FX Forward cannot be calculated
 	 */
 
 	public abstract double fx (
-		final int iDate)
-		throws java.lang.Exception;
+		final int date)
+		throws Exception;
 
 	/**
 	 * Calculate the set of Zero basis given the input discount curves
 	 * 
-	 * @param aiDateNode Array of Date Nodes
-	 * @param valParams Valuation Parameters
-	 * @param dcNum Discount Curve Numerator
-	 * @param dcDenom Discount Curve Denominator
-	 * @param bBasisOnDenom True if the basis is calculated on the denominator discount curve
+	 * @param dateNodeArray Array of Date Nodes
+	 * @param valuationParams Valuation Parameters
+	 * @param numeratorDiscountCurve Discount Curve Numerator
+	 * @param denominatorDiscountCurve Discount Curve Denominator
+	 * @param basisOnDenominator True if the basis is calculated on the denominator discount curve
 	 * 
 	 * @return Array of the computed basis
 	 */
 
 	public abstract double[] zeroBasis (
-		final int[] aiDateNode,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcNum,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcDenom,
-		final boolean bBasisOnDenom);
+		final int[] dateNodeArray,
+		final ValuationParams valuationParams,
+		final MergedDiscountForwardCurve numeratorDiscountCurve,
+		final MergedDiscountForwardCurve denominatorDiscountCurve,
+		final boolean basisOnDenominator
+	);
 
 	/**
 	 * Bootstrap the basis to the discount curve inputs
 	 * 
-	 * @param aiDateNode Array of Date Nodes
-	 * @param valParams Valuation Parameters
-	 * @param dcNum Discount Curve Numerator
-	 * @param dcDenom Discount Curve Denominator
-	 * @param bBasisOnDenom True if the basis is calculated on the denominator discount curve
+	 * @param dateNodeArray Array of Date Nodes
+	 * @param valuationParams Valuation Parameters
+	 * @param numeratorDiscountCurve Discount Curve Numerator
+	 * @param denominatorDiscountCurve Discount Curve Denominator
+	 * @param basisOnDenominator True if the basis is calculated on the denominator discount curve
 	 * 
 	 * @return Array of the computed basis
 	 */
 
 	public abstract double[] bootstrapBasis (
-		final int[] aiDateNode,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcNum,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcDenom,
-		final boolean bBasisOnDenom);
+		final int[] dateNodeArray,
+		final ValuationParams valuationParams,
+		final MergedDiscountForwardCurve numeratorDiscountCurve,
+		final MergedDiscountForwardCurve denominatorDiscountCurve,
+		final boolean basisOnDenominator
+	);
 
 	/**
 	 * Bootstrap the discount curve from the discount curve inputs
 	 * 
-	 * @param aiDateNode Array of Date Nodes
-	 * @param valParams Valuation Parameters
-	 * @param dcNum Discount Curve Numerator
-	 * @param dcDenom Discount Curve Denominator
-	 * @param bBasisOnDenom True if the basis is calculated on the denominator discount curve
+	 * @param dateNodeArray Array of Date Nodes
+	 * @param valuationParams Valuation Parameters
+	 * @param numeratorDiscountCurve Discount Curve Numerator
+	 * @param denominatorDiscountCurve Discount Curve Denominator
+	 * @param basisOnDenominator True if the basis is calculated on the denominator discount curve
 	 * 
 	 * @return Array of the computed basis
 	 */
 
-	public abstract org.drip.state.discount.MergedDiscountForwardCurve bootstrapBasisDC (
-		final int[] aiDateNode,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcNum,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcDenom,
-		final boolean bBasisOnDenom);
+	public abstract MergedDiscountForwardCurve bootstrapBasisDC (
+		final int[] dateNodeArray,
+		final ValuationParams valuationParams,
+		final MergedDiscountForwardCurve numeratorDiscountCurve,
+		final MergedDiscountForwardCurve denominatorDiscountCurve,
+		final boolean basisOnDenominator
+	);
 
 	/**
 	 * Calculate the rates implied by the discount curve inputs
 	 * 
-	 * @param aiDateNode Array of Date Nodes
-	 * @param valParams Valuation Parameters
-	 * @param dcNum Discount Curve Numerator
-	 * @param dcDenom Discount Curve Denominator
-	 * @param bBasisOnDenom True if the basis is calculated on the denominator discount curve
+	 * @param dateNodeArray Array of Date Nodes
+	 * @param valuationParams Valuation Parameters
+	 * @param numeratorDiscountCurve Discount Curve Numerator
+	 * @param denominatorDiscountCurve Discount Curve Denominator
+	 * @param basisOnDenominator True if the basis is calculated on the denominator discount curve
 	 * 
 	 * @return Array of the computed implied rates
 	 */
 
 	public abstract double[] impliedNodeRates (
-		final int[] aiDateNode,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcNum,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcDenom,
-		final boolean bBasisOnDenom);
+		final int[] dateNodeArray,
+		final ValuationParams valuationParams,
+		final MergedDiscountForwardCurve numeratorDiscountCurve,
+		final MergedDiscountForwardCurve denominatorDiscountCurve,
+		final boolean basisOnDenominator
+	);
 
 	/**
 	 * Calculate the rate implied by the discount curve inputs to a specified date
 	 * 
-	 * @param aiDateNode Array of Date Nodes
-	 * @param valParams ValuationParams
-	 * @param dcNum Discount Curve Numerator
-	 * @param dcDenom Discount Curve Denominator
-	 * @param iDate Date to which the implied rate is sought
-	 * @param bBasisOnDenom True if the implied rate is calculated on the denominator discount curve
+	 * @param dateNodeArray Array of Date Nodes
+	 * @param valuationParams ValuationParams
+	 * @param numeratorDiscountCurve Discount Curve Numerator
+	 * @param denominatorDiscountCurve Discount Curve Denominator
+	 * @param date Date to which the implied rate is sought
+	 * @param basisOnDenominator True if the implied rate is calculated on the denominator discount curve
 	 * 
 	 * @return Implied rate
 	 * 
-	 * @throws java.lang.Exception Thrown if the implied rate cannot be calculated
+	 * @throws Exception Thrown if the implied rate cannot be calculated
 	 */
 
 	public abstract double rate (
-		final int[] aiDateNode,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcNum,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcDenom,
-		final int iDate,
-		final boolean bBasisOnDenom)
-		throws java.lang.Exception;
+		final int[] dateNodeArray,
+		final ValuationParams valuationParams,
+		final MergedDiscountForwardCurve numeratorDiscountCurve,
+		final MergedDiscountForwardCurve denominatorDiscountCurve,
+		final int date,
+		final boolean basisOnDenominator)
+		throws Exception;
 
-	@Override public org.drip.state.identifier.LatentStateLabel label()
+	@Override public LatentStateLabel label()
 	{
-		return org.drip.state.identifier.FXLabel.Standard (_cp);
+		return FXLabel.Standard (_currencyPair);
 	}
 
-	@Override public java.lang.String currency()
+	@Override public String currency()
 	{
-		return _cp.quoteCcy();
+		return _currencyPair.quoteCcy();
 	}
 
-	@Override public org.drip.analytics.date.JulianDate epoch()
+	@Override public JulianDate epoch()
 	{
-		return new org.drip.analytics.date.JulianDate (_iEpochDate);
+		return new JulianDate (_epochDate);
 	}
 
 	/**
-	 * Return the CurrencyPair
+	 * Return the Currency Pair
 	 * 
 	 * @return CurrencyPair
 	 */
 
-	public org.drip.product.params.CurrencyPair currencyPair()
+	public CurrencyPair currencyPair()
 	{
-		return _cp;
+		return _currencyPair;
 	}
 
 	/**
 	 * Calculate the FX Forward to the given date
 	 * 
-	 * @param dt Date
+	 * @param date Date
 	 * 
 	 * @return The FX Forward
 	 * 
-	 * @throws java.lang.Exception Thrown if the FX Forward cannot be calculated
+	 * @throws Exception Thrown if the FX Forward cannot be calculated
 	 */
 
 	public double fx (
-		final org.drip.analytics.date.JulianDate dt)
-		throws java.lang.Exception
+		final JulianDate date)
+		throws Exception
 	{
-		if (null == dt) throw new java.lang.Exception ("FXCurve::fx got null for date");
+		if (null == date) {
+			throw new Exception ("FXCurve::fx got null for date");
+		}
 
-		return fx (dt.julian());
+		return fx (date.julian());
 	}
 
 	/**
 	 * Calculate the FX Forward to the given date
 	 * 
-	 * @param strTenor The Tenor
+	 * @param tenor The Tenor
 	 * 
 	 * @return The FX Forward
 	 * 
-	 * @throws java.lang.Exception Thrown if the FX Forward cannot be calculated
+	 * @throws Exception Thrown if the FX Forward cannot be calculated
 	 */
 
 	public double fx (
-		final java.lang.String strTenor)
-		throws java.lang.Exception
+		final String tenor)
+		throws Exception
 	{
-		if (null == strTenor || strTenor.isEmpty())
-			throw new java.lang.Exception ("FXCurve::fx got bad tenor");
+		if (null == tenor || tenor.isEmpty()) {
+			throw new Exception ("FXCurve::fx got bad tenor");
+		}
 
-		return fx (epoch().addTenor (strTenor));
+		return fx (epoch().addTenor (tenor));
 	}
 
 	@Override public boolean setCCIS (
-		final org.drip.analytics.input.CurveConstructionInputSet ccis)
+		final CurveConstructionInputSet curveConstructionInputSet)
 	{
 		return true;
 	}
 
-	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
+	@Override public CalibratableComponent[] calibComp()
 	{
 		return null;
 	}
 
-	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> manifestMeasure (
-		final java.lang.String strInstr)
+	@Override public CaseInsensitiveTreeMap<Double> manifestMeasure (
+		final String instrument)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.representation.LatentState parallelShiftManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final double dblShift)
+	@Override public LatentState parallelShiftManifestMeasure (
+		final String manifestMeasure,
+		final double shift)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.representation.LatentState shiftManifestMeasure (
-		final int iSpanIndex,
-		final java.lang.String strManifestMeasure,
-		final double dblShift)
+	@Override public LatentState shiftManifestMeasure (
+		final int spanIndex,
+		final String manifestMeasure,
+		final double shift)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.representation.LatentState customTweakManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final org.drip.param.definition.ManifestMeasureTweak rvtp)
+	@Override public LatentState customTweakManifestMeasure (
+		final String manifestMeasure,
+		final ManifestMeasureTweak manifestMeasureTweak)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.representation.LatentState parallelShiftQuantificationMetric (
-		final double dblShift)
+	@Override public LatentState parallelShiftQuantificationMetric (
+		final double shift)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.representation.LatentState customTweakQuantificationMetric (
-		final org.drip.param.definition.ManifestMeasureTweak rvtp)
+	@Override public LatentState customTweakQuantificationMetric (
+		final ManifestMeasureTweak manifestMeasureTweak)
 	{
 		return null;
 	}
@@ -343,52 +389,50 @@ public abstract class FXCurve implements org.drip.analytics.definition.Curve {
 	/**
 	 * Retrieve the Manifest Measure Jacobian of the Forward Rate to the given date
 	 * 
-	 * @param strManifestMeasure Manifest Measure
-	 * @param iDate Date
+	 * @param manifestMeasure Manifest Measure
+	 * @param date Date
 	 * 
 	 * @return The Manifest Measure Jacobian of the Forward Rate to the given date
 	 */
 
-	public abstract org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final int iDate);
+	public abstract WengertJacobian jackDForwardDManifestMeasure (
+		final String manifestMeasure,
+		final int date
+	);
 
 	/**
 	 * Retrieve the Manifest Measure Jacobian of the Forward Rate to the given date
 	 * 
-	 * @param strManifestMeasure Manifest Measure
-	 * @param dt Date
+	 * @param manifestMeasure Manifest Measure
+	 * @param date Date
 	 * 
 	 * @return The Manifest Measure Jacobian of the Forward Rate to the given date
 	 */
 
-	public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final org.drip.analytics.date.JulianDate dt)
+	public WengertJacobian jackDForwardDManifestMeasure (
+		final String manifestMeasure,
+		final JulianDate date)
 	{
-		if (null == dt) return null;
-
-		return jackDForwardDManifestMeasure (strManifestMeasure, dt.julian());
+		return null == date ? null : jackDForwardDManifestMeasure (manifestMeasure, date.julian());
 	}
 
 	/**
 	 * Retrieve the Manifest Measure Jacobian of the Forward Rate to the date implied by the given Tenor
 	 * 
-	 * @param strManifestMeasure Manifest Measure
-	 * @param strTenor Tenor
+	 * @param manifestMeasure Manifest Measure
+	 * @param tenor Tenor
 	 * 
 	 * @return The Manifest Measure Jacobian of the Forward Rate to the date implied by the given Tenor
 	 */
 
-	public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final java.lang.String strTenor)
+	public WengertJacobian jackDForwardDManifestMeasure (
+		final String manifestMeasure,
+		final String tenor)
 	{
-		if (null == strTenor || strTenor.isEmpty()) return null;
-
 		try {
-			return jackDForwardDManifestMeasure (strManifestMeasure, epoch().addTenor (strTenor));
-		} catch (java.lang.Exception e) {
+			return null == tenor || tenor.isEmpty() ? null :
+				jackDForwardDManifestMeasure (manifestMeasure, epoch().addTenor (tenor));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

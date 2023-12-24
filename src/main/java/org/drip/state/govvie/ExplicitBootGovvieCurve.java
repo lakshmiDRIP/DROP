@@ -3,6 +3,8 @@ package org.drip.state.govvie;
 
 import org.drip.analytics.definition.ExplicitBootCurve;
 import org.drip.analytics.input.CurveConstructionInputSet;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.product.definition.CalibratableComponent;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -123,21 +125,22 @@ public abstract class ExplicitBootGovvieCurve extends GovvieCurve implements Exp
 		return null != (_curveConstructionInputSet = curveConstructionInputSet);
 	}
 
-	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
+	@Override public CalibratableComponent[] calibComp()
 	{
 		return null == _curveConstructionInputSet ? null : _curveConstructionInputSet.components();
 	}
 
-	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> manifestMeasure (
-		final java.lang.String strInstrumentCode)
+	@Override public CaseInsensitiveTreeMap<Double> manifestMeasure (
+		final String instrumentCode)
 	{
-		if (null == _curveConstructionInputSet) return null;
+		if (null == _curveConstructionInputSet) {
+			return null;
+		}
 
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>
-			mapQuote = _curveConstructionInputSet.quoteMap();
+		CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>> quoteDoubleMap =
+			_curveConstructionInputSet.quoteMap();
 
-		if (null == mapQuote || !mapQuote.containsKey (strInstrumentCode)) return null;
-
-		return mapQuote.get (strInstrumentCode);
+		return null == quoteDoubleMap || !quoteDoubleMap.containsKey (instrumentCode) ? null : 
+			quoteDoubleMap.get (instrumentCode);
 	}
 }

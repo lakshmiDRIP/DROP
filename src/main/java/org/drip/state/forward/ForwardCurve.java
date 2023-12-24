@@ -1,11 +1,25 @@
 
 package org.drip.state.forward;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.definition.Curve;
+import org.drip.analytics.input.CurveConstructionInputSet;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.numerical.differentiation.WengertJacobian;
+import org.drip.param.definition.ManifestMeasureTweak;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.state.identifier.ForwardLabel;
+import org.drip.state.identifier.LatentStateLabel;
+import org.drip.state.representation.LatentState;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -88,26 +102,13 @@ package org.drip.state.forward;
  *
  *  <br><br>
  *  <ul>
- *  	<li>
- * 			The name/epoch of the forward rate instance
- *  	</li>
- *  	<li>
- * 			The index/currency/tenor associated with the forward rate instance
- *  	</li>
- *  	<li>
- *  		Forward Rate to a specific date/tenor
- *  	</li>
- *  	<li>
- *  		Generate scenario tweaked Latent State from the base forward curve corresponding to mode adjusted
- *  			(flat/parallel/custom) manifest measure/quantification metric
- *  	</li>
- *  	<li>
- *  		Retrieve array of latent state manifest measure, instrument quantification metric, and the array
- *  			of calibration components
- *  	</li>
- *  	<li>
- *  		Set/retrieve curve construction input instrument sets
- *  	</li>
+ *  	<li>The name/epoch of the forward rate instance</li>
+ *  	<li>The index/currency/tenor associated with the forward rate instance</li>
+ *  	<li>Forward Rate to a specific date/tenor</li>
+ *  	<li>Generate scenario tweaked Latent State from the base forward curve corresponding to mode adjusted (flat/parallel/custom) manifest measure/quantification metric</li>
+ *  	<li>Retrieve array of latent state manifest measure, instrument quantification metric, and the array of calibration components</li>
+ *  	<li>Set/retrieve curve construction input instrument sets</li>
+ *  	<li>Retrieve the Manifest Measure Jacobian of the Forward Rate to the date</li>
  *  </ul>
  *
  *  <br><br>
@@ -122,119 +123,123 @@ package org.drip.state.forward;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ForwardCurve implements org.drip.state.forward.ForwardRateEstimator,
-	org.drip.analytics.definition.Curve {
-
-	private int _iEpochDate = java.lang.Integer.MIN_VALUE;
-	private org.drip.state.identifier.ForwardLabel _fri = null;
+public abstract class ForwardCurve implements ForwardRateEstimator, Curve
+{
+	private ForwardLabel _forwardLabel = null;
+	private int _epochDate = Integer.MIN_VALUE;
 
 	protected ForwardCurve (
-		final int iEpochDate,
-		final org.drip.state.identifier.ForwardLabel fri)
-		throws java.lang.Exception
+		final int epochDate,
+		final ForwardLabel forwardLabel)
+		throws Exception
 	{
-		if (null == (_fri = fri)) throw new java.lang.Exception ("ForwardCurve ctr: Invalid Inputs");
+		if (null == (_forwardLabel = forwardLabel)) {
+			throw new Exception ("ForwardCurve ctr: Invalid Inputs");
+		}
 
-		_iEpochDate = iEpochDate;
+		_epochDate = epochDate;
 	}
 
-	@Override public org.drip.state.identifier.LatentStateLabel label()
+	@Override public LatentStateLabel label()
 	{
-		return _fri;
+		return _forwardLabel;
 	}
 
-	@Override public java.lang.String currency()
+	@Override public String currency()
 	{
-		return _fri.currency();
+		return _forwardLabel.currency();
 	}
 
-	@Override public org.drip.analytics.date.JulianDate epoch()
+	@Override public JulianDate epoch()
 	{
 		try {
-			return new org.drip.analytics.date.JulianDate (_iEpochDate);
-		} catch (java.lang.Exception e) {
+			return new JulianDate (_epochDate);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return null;
 	}
 
-	@Override public java.lang.String tenor()
+	@Override public String tenor()
 	{
-		return _fri.tenor();
+		return _forwardLabel.tenor();
 	}
 
-	@Override public org.drip.state.identifier.ForwardLabel index()
+	@Override public ForwardLabel index()
 	{
-		return _fri;
-	}
-
-	@Override public double forward (
-		final org.drip.analytics.date.JulianDate dt)
-		throws java.lang.Exception
-	{
-		if (null == dt) throw new java.lang.Exception ("ForwardRate::forward got null for date");
-
-		return forward (dt.julian());
+		return _forwardLabel;
 	}
 
 	@Override public double forward (
-		final java.lang.String strTenor)
-		throws java.lang.Exception
+		final JulianDate date)
+		throws Exception
 	{
-		if (null == strTenor || strTenor.isEmpty())
-			throw new java.lang.Exception ("ForwardRate::forward got bad tenor");
+		if (null == date) {
+			throw new Exception ("ForwardRate::forward got null for date");
+		}
 
-		return forward (epoch().addTenor (strTenor));
+		return forward (date);
+	}
+
+	@Override public double forward (
+		final String tenor)
+		throws Exception
+	{
+		if (null == tenor || tenor.isEmpty()) {
+			throw new Exception ("ForwardRate::forward got bad tenor");
+		}
+
+		return forward (epoch().addTenor (tenor));
 	}
 
 	@Override public boolean setCCIS (
-		final org.drip.analytics.input.CurveConstructionInputSet ccis)
+		final CurveConstructionInputSet curveConstructionInputSet)
 	{
 		return true;
 	}
 
-	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
+	@Override public CalibratableComponent[] calibComp()
 	{
 		return null;
 	}
 
-	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> manifestMeasure (
-		final java.lang.String strInstrumentCode)
+	@Override public CaseInsensitiveTreeMap<Double> manifestMeasure (
+		final String instrumentCode)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.representation.LatentState parallelShiftManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final double dblShift)
+	@Override public LatentState parallelShiftManifestMeasure (
+		final String manifestMeasure,
+		final double shift)
 	{
 		return null;
 	}
 
 	@Override public org.drip.state.representation.LatentState shiftManifestMeasure (
-		final int iSpanIndex,
-		final java.lang.String strManifestMeasure,
-		final double dblShift)
+		final int spanIndex,
+		final String manifestMeasure,
+		final double shift)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.representation.LatentState customTweakManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final org.drip.param.definition.ManifestMeasureTweak rvtp)
+	@Override public LatentState customTweakManifestMeasure (
+		final String manifestMeasure,
+		final ManifestMeasureTweak manifestMeasureTweak)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.representation.LatentState parallelShiftQuantificationMetric (
-		final double dblShift)
+	@Override public LatentState parallelShiftQuantificationMetric (
+		final double shift)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.representation.LatentState customTweakQuantificationMetric (
-		final org.drip.param.definition.ManifestMeasureTweak rvtp)
+	@Override public LatentState customTweakQuantificationMetric (
+		final ManifestMeasureTweak manifestMeasureTweak)
 	{
 		return null;
 	}
@@ -242,52 +247,50 @@ public abstract class ForwardCurve implements org.drip.state.forward.ForwardRate
 	/**
 	 * Retrieve the Manifest Measure Jacobian of the Forward Rate to the given date
 	 * 
-	 * @param strManifestMeasure Manifest Measure
-	 * @param dblDate Date
+	 * @param manifestMeasure Manifest Measure
+	 * @param date Date
 	 * 
 	 * @return The Manifest Measure Jacobian of the Forward Rate to the given date
 	 */
 
-	public abstract org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final int dblDate);
+	public abstract WengertJacobian jackDForwardDManifestMeasure (
+		final String manifestMeasure,
+		final int date
+	);
 
 	/**
 	 * Retrieve the Manifest Measure Jacobian of the Forward Rate to the given date
 	 * 
-	 * @param strManifestMeasure Manifest Measure
-	 * @param dt Date
+	 * @param manifestMeasure Manifest Measure
+	 * @param date Date
 	 * 
 	 * @return The Manifest Measure Jacobian of the Forward Rate to the given date
 	 */
 
-	public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final org.drip.analytics.date.JulianDate dt)
+	public WengertJacobian jackDForwardDManifestMeasure (
+		final String manifestMeasure,
+		final JulianDate date)
 	{
-		if (null == dt) return null;
-
-		return jackDForwardDManifestMeasure (strManifestMeasure, dt.julian());
+		return null == date ? null : jackDForwardDManifestMeasure (manifestMeasure, date.julian());
 	}
 
 	/**
 	 * Retrieve the Manifest Measure Jacobian of the Forward Rate to the date implied by the given Tenor
 	 * 
-	 * @param strManifestMeasure Manifest Measure
-	 * @param strTenor Tenor
+	 * @param manifestMeasure Manifest Measure
+	 * @param tenor Tenor
 	 * 
 	 * @return The Manifest Measure Jacobian of the Forward Rate to the date implied by the given Tenor
 	 */
 
-	public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final java.lang.String strTenor)
+	public WengertJacobian jackDForwardDManifestMeasure (
+		final String manifestMeasure,
+		final String tenor)
 	{
-		if (null == strTenor || strTenor.isEmpty()) return null;
-
 		try {
-			return jackDForwardDManifestMeasure (strManifestMeasure, epoch().addTenor (strTenor));
-		} catch (java.lang.Exception e) {
+			return null == tenor || tenor.isEmpty() ? null :
+				jackDForwardDManifestMeasure (manifestMeasure, epoch().addTenor (tenor));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
