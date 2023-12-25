@@ -1,11 +1,19 @@
 
 package org.drip.state.curve;
 
+import org.drip.numerical.differentiation.WengertJacobian;
+import org.drip.spline.grid.Span;
+import org.drip.state.basis.BasisCurve;
+import org.drip.state.identifier.ForwardLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,72 +91,76 @@ package org.drip.state.curve;
 
 /**
  * <i>BasisSplineBasisCurve</i> manages the Basis Latent State, using the Basis as the State Response
- * Representation. It exports the following functionality:
+ * 	Representation. It exports the following functionality:
  *
- *  <br><br>
  *  <ul>
- *  	<li>
- *  		Calculate implied forward rate / implied forward rate Jacobian
- *  	</li>
+ *  	<li><i>BasisSplineBasisCurve</i> Constructor</li>
+ *  	<li>Calculate implied forward rate / implied forward rate Jacobian</li>
  *  </ul>
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BasisSplineBasisCurve extends org.drip.state.basis.BasisCurve {
-	private org.drip.spline.grid.Span _span = null;
+public class BasisSplineBasisCurve extends BasisCurve
+{
+	private Span _span = null;
 
 	/**
 	 * BasisSplineBasisCurve constructor
 	 * 
-	 * @param friReference The Reference Leg FRI
-	 * @param friDerived The Derived Leg FRI
-	 * @param bBasisOnReference TRUE - Is the Quoted Basis On the Reference Leg/Derived Leg
+	 * @param referenceForwardLabel The Reference Leg Forward Label
+	 * @param derivedForwardLabel The Derived Leg Forward Label
+	 * @param basisOnReference TRUE - Is the Quoted Basis On the Reference Leg/Derived Leg
 	 * @param span The Span over which the Basis Representation is valid
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BasisSplineBasisCurve (
-		final org.drip.state.identifier.ForwardLabel friReference,
-		final org.drip.state.identifier.ForwardLabel friDerived,
-		final boolean bBasisOnReference,
-		final org.drip.spline.grid.Span span)
-		throws java.lang.Exception
+		final ForwardLabel referenceForwardLabel,
+		final ForwardLabel derivedForwardLabel,
+		final boolean basisOnReference,
+		final Span span)
+		throws Exception
 	{
-		super ((int) span.left(), friReference, friDerived, bBasisOnReference);
+		super ((int) span.left(), referenceForwardLabel, derivedForwardLabel, basisOnReference);
 
 		_span = span;
 	}
 
 	@Override public double basis (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		double dblSpanLeft = _span.left();
+		double spanLeft = _span.left();
 
-		if (iDate <= dblSpanLeft) return _span.calcResponseValue (dblSpanLeft);
+		if (date <= spanLeft) return _span.calcResponseValue (spanLeft);
 
-		double dblSpanRight = _span.right();
+		double spanRight = _span.right();
 
-		if (iDate >= dblSpanRight) return _span.calcResponseValue (dblSpanRight);
+		if (date >= spanRight) return _span.calcResponseValue (spanRight);
 
-		return _span.calcResponseValue (iDate);
+		return _span.calcResponseValue (date);
 	}
 
-	@Override public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final int iDate)
+	@Override public WengertJacobian jackDForwardDManifestMeasure (
+		final String manifestMeasure,
+		final int date)
 	{
-		return _span.jackDResponseDManifestMeasure (strManifestMeasure, iDate, 1);
+		return _span.jackDResponseDManifestMeasure (manifestMeasure, date, 1);
 	}
 }

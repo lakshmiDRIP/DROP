@@ -1,11 +1,20 @@
 
 package org.drip.state.curve;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.spline.grid.Span;
+import org.drip.state.identifier.CustomLabel;
+import org.drip.state.volatility.VolatilityCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -85,96 +94,107 @@ package org.drip.state.curve;
  * <i>BasisSplineDeterministicVolatility</i> extends the BasisSplineTermStructure for the specific case of
  * the Implementation of the Deterministic Volatility Term Structure.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BasisSplineDeterministicVolatility extends org.drip.state.volatility.VolatilityCurve {
-	private org.drip.spline.grid.Span _spanImpliedVolatility = null;
+public class BasisSplineDeterministicVolatility extends VolatilityCurve
+{
+	private Span _impliedVolatilitySpan = null;
 
 	/**
 	 * BasisSplineDeterministicVolatility Constructor
 	 * 
-	 * @param iEpochDate The Epoch Date
-	 * @param label Latent State Label
-	 * @param strCurrency The Currency
-	 * @param spanImpliedVolatility The Implied Volatility Span
+	 * @param epochDate The Epoch Date
+	 * @param customLabel Latent State Label
+	 * @param currency The Currency
+	 * @param impliedVolatilitySpan The Implied Volatility Span
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BasisSplineDeterministicVolatility (
-		final int iEpochDate,
-		final org.drip.state.identifier.CustomLabel label,
-		final java.lang.String strCurrency,
-		final org.drip.spline.grid.Span spanImpliedVolatility)
-		throws java.lang.Exception
+		final int epochDate,
+		final CustomLabel customLabel,
+		final String currency,
+		final Span impliedVolatilitySpan)
+		throws Exception
 	{
-		super (iEpochDate, label, strCurrency);
+		super (epochDate, customLabel, currency);
 
-		if (null == (_spanImpliedVolatility = spanImpliedVolatility))
-			throw new java.lang.Exception ("BasisSplineDeterministicVolatility ctr: Invalid Inputs");
+		if (null == (_impliedVolatilitySpan = impliedVolatilitySpan)) {
+			throw new Exception ("BasisSplineDeterministicVolatility ctr: Invalid Inputs");
+		}
 	}
 
 	@Override public double impliedVol (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		double dblSpanLeft = _spanImpliedVolatility.left();
+		double spanLeft = _impliedVolatilitySpan.left();
 
-		if (dblSpanLeft >= iDate) return _spanImpliedVolatility.calcResponseValue (dblSpanLeft);
+		if (spanLeft >= date) {
+			return _impliedVolatilitySpan.calcResponseValue (spanLeft);
+		}
 
-		double dblSpanRight = _spanImpliedVolatility.right();
+		double spanRight = _impliedVolatilitySpan.right();
 
-		if (dblSpanRight <= iDate) return _spanImpliedVolatility.calcResponseValue (dblSpanRight);
+		if (spanRight <= date) {
+			return _impliedVolatilitySpan.calcResponseValue (spanRight);
+		}
 
-		return _spanImpliedVolatility.calcResponseValue (iDate);
+		return _impliedVolatilitySpan.calcResponseValue (date);
 	}
 
 	@Override public double node (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		double dblImpliedVol = impliedVol (iDate);
+		double impliedVolatility = impliedVol (date);
 
-		return java.lang.Math.sqrt (dblImpliedVol * dblImpliedVol + 2. * dblImpliedVol * (iDate -
-			epoch().julian()) / 365.25 * _spanImpliedVolatility.calcResponseValueDerivative (iDate, 1));
+		return Math.sqrt (
+			impliedVolatility * impliedVolatility + 2. * impliedVolatility * (
+				date - epoch().julian()
+			) / 365.25 * _impliedVolatilitySpan.calcResponseValueDerivative (date, 1)
+		);
 	}
 
 	@Override public double vol (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		return node (iDate);
+		return node (date);
 	}
 
 	@Override public double nodeDerivative (
-		final int iDate,
-		final int iOrder)
-		throws java.lang.Exception
+		final int date,
+		final int order)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (iDate))
-			throw new java.lang.Exception
-				("BasisSplineDeterministicVolatility::nodeDerivative => Invalid Inputs");
+		if (!NumberUtil.IsValid (date)) {
+			throw new Exception ("BasisSplineDeterministicVolatility::nodeDerivative => Invalid Inputs");
+		}
 
-		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1
-			(null) {
+		return new R1ToR1 (null) {
 			@Override public double evaluate (
-				double dblX)
-				throws java.lang.Exception
+				double x)
+				throws Exception
 			{
-				return node ((int) dblX);
+				return node ((int) x);
 			}
-		};
-
-		return au.derivative (iDate, iOrder);
+		}.derivative (date, order);
 	}
 }

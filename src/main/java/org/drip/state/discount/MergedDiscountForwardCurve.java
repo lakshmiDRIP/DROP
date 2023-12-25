@@ -3,15 +3,20 @@ package org.drip.state.discount;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
+import org.drip.analytics.cashflow.CompositePeriod;
 import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.daycount.Convention;
+import org.drip.analytics.definition.LatentStateStatic;
 import org.drip.analytics.input.CurveConstructionInputSet;
 import org.drip.analytics.support.CaseInsensitiveTreeMap;
 import org.drip.analytics.support.CompositePeriodBuilder;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.differentiation.WengertJacobian;
 import org.drip.param.creator.MarketParamsBuilder;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.period.ComposableFixedUnitSetting;
 import org.drip.param.period.CompositePeriodSetting;
 import org.drip.param.period.UnitCouponAccrualSetting;
@@ -25,6 +30,7 @@ import org.drip.spline.stretch.BoundarySettings;
 import org.drip.spline.stretch.MultiSegmentSequence;
 import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
 import org.drip.state.forward.ForwardCurve;
+import org.drip.state.forward.ForwardRateEstimator;
 import org.drip.state.identifier.ForwardLabel;
 import org.drip.state.identifier.FundingLabel;
 import org.drip.state.identifier.LatentStateLabel;
@@ -848,11 +854,13 @@ public abstract class MergedDiscountForwardCurve extends DiscountCurve
 	}
 
 	@Override public boolean setCCIS (
-		final org.drip.analytics.input.CurveConstructionInputSet ccis)
+		final CurveConstructionInputSet curveConstructionInputSet)
 	{
-		if (null == ccis) return false;
+		if (null == curveConstructionInputSet) {
+			return false;
+		}
 
-		_curveConstructionInputSet = ccis;
+		_curveConstructionInputSet = curveConstructionInputSet;
 		return true;
 	}
 
@@ -860,15 +868,16 @@ public abstract class MergedDiscountForwardCurve extends DiscountCurve
 	 * Retrieve the Forward Curve that might be implied by the Latent State of this Discount Curve Instance
 	 * 	corresponding to the specified Floating Rate Index
 	 * 
-	 * @param iDate The Date
-	 * @param fri The Floating Rate Index
+	 * @param date The Date
+	 * @param forwardLabel The Floating Rate Index
 	 * 
 	 * @return The Forward Curve Implied by the Discount Curve Latent State
 	 */
 
-	public abstract org.drip.state.forward.ForwardRateEstimator forwardRateEstimator (
-		final int iDate,
-		final org.drip.state.identifier.ForwardLabel fri);
+	public abstract ForwardRateEstimator forwardRateEstimator (
+		final int date,
+		final ForwardLabel forwardLabel
+	);
 
 	/**
 	 * Retrieve the Latent State Quantification Metric
@@ -876,57 +885,55 @@ public abstract class MergedDiscountForwardCurve extends DiscountCurve
 	 * @return The Latent State Quantification Metric
 	 */
 
-	public abstract java.lang.String latentStateQuantificationMetric();
+	public abstract String latentStateQuantificationMetric();
 
 	/**
 	 * Retrieve the Manifest Measure Jacobian of the Discount Factor to the given date
 	 * 
-	 * @param iDate Date
-	 * @param strManifestMeasure Manifest Measure
+	 * @param date Date
+	 * @param manifestMeasure Manifest Measure
 	 * 
 	 * @return The Manifest Measure Jacobian of the Discount Factor to the given date
 	 */
 
-	public abstract org.drip.numerical.differentiation.WengertJacobian jackDDFDManifestMeasure (
-		final int iDate,
-		final java.lang.String strManifestMeasure);
+	public abstract WengertJacobian jackDDFDManifestMeasure (
+		final int date,
+		final String manifestMeasure
+	);
 
 	/**
 	 * Retrieve the Manifest Measure Jacobian of the Discount Factor to the given date
 	 * 
-	 * @param dt Date
-	 * @param strManifestMeasure Manifest Measure
+	 * @param date Date
+	 * @param manifestMeasure Manifest Measure
 	 * 
 	 * @return The Manifest Measure Jacobian of the Discount Factor to the given date
 	 */
 
-	public org.drip.numerical.differentiation.WengertJacobian jackDDFDManifestMeasure (
-		final org.drip.analytics.date.JulianDate dt,
-		final java.lang.String strManifestMeasure)
+	public WengertJacobian jackDDFDManifestMeasure (
+		final JulianDate date,
+		final String manifestMeasure)
 	{
-		if (null == dt) return null;
-
-		return jackDDFDManifestMeasure (dt.julian(), strManifestMeasure);
+		return null == date ? null : jackDDFDManifestMeasure (date.julian(), manifestMeasure);
 	}
 
 	/**
 	 * Retrieve the Manifest Measure Jacobian of the Discount Factor to the date implied by the given Tenor
 	 * 
-	 * @param strTenor Tenor
-	 * @param strManifestMeasure Manifest Measure
+	 * @param tenor Tenor
+	 * @param manifestMeasure Manifest Measure
 	 * 
 	 * @return The Manifest Measure Jacobian of the Discount Factor to the date implied by the given Tenor
 	 */
 
-	public org.drip.numerical.differentiation.WengertJacobian jackDDFDManifestMeasure (
-		final java.lang.String strTenor,
-		final java.lang.String strManifestMeasure)
+	public WengertJacobian jackDDFDManifestMeasure (
+		final String tenor,
+		final String manifestMeasure)
 	{
-		if (null == strTenor || strTenor.isEmpty()) return null;
-
 		try {
-			return jackDDFDManifestMeasure (epoch().addTenor (strTenor), strManifestMeasure);
-		} catch (java.lang.Exception e) {
+			return null == tenor || tenor.isEmpty() ? null :
+				jackDDFDManifestMeasure (epoch().addTenor (tenor), manifestMeasure);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -937,284 +944,336 @@ public abstract class MergedDiscountForwardCurve extends DiscountCurve
 	 * Calculate the Jacobian of PV at the given date to the Manifest Measure of each component in the
 	 * 	calibration set to the DF
 	 * 
-	 * @param iDate Date for which the Jacobian is needed
+	 * @param date Date for which the Jacobian is needed
 	 * 
 	 * @return The Jacobian
 	 */
 
-	public org.drip.numerical.differentiation.WengertJacobian compJackDPVDManifestMeasure (
-		final int iDate)
+	public WengertJacobian compJackDPVDManifestMeasure (
+		final int date)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (iDate)) return null;
+		if (!NumberUtil.IsValid (date)) {
+			return null;
+		}
 
-		org.drip.product.definition.CalibratableComponent[] aCalibComp = calibComp();
+		CalibratableComponent[] calibratableComponentArray = calibComp();
 
-		if (null == aCalibComp || 0 == aCalibComp.length) return null;
+		if (null == calibratableComponentArray || 0 == calibratableComponentArray.length) {
+			return null;
+		}
 
-		int iNumParameters = 0;
-		int iNumComponents = aCalibComp.length;
-		org.drip.numerical.differentiation.WengertJacobian wjCompPVDF = null;
+		int parameterCount = 0;
+		WengertJacobian wengertJacobianComponentPVDF = null;
+		int componentCount = calibratableComponentArray.length;
 
-		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot
-			(iDate);
+		ValuationParams valuationParams = ValuationParams.Spot (date);
 
-		org.drip.param.market.CurveSurfaceQuoteContainer csqs =
-			org.drip.param.creator.MarketParamsBuilder.Create (this, null, null, null, null, null,
-				null, null == _curveConstructionInputSet ? null : _curveConstructionInputSet.fixing());
+		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = MarketParamsBuilder.Create (
+			this,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null == _curveConstructionInputSet ? null : _curveConstructionInputSet.fixing()
+		);
 
-		for (int i = 0; i < iNumComponents; ++i) {
-			org.drip.numerical.differentiation.WengertJacobian wjCompDDirtyPVDManifestMeasure =
-				aCalibComp[i].jackDDirtyPVDManifestMeasure (valParams, null, csqs, null);
+		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+			WengertJacobian wengertJacobianComponentDDirtyPVDManifestMeasure =
+				calibratableComponentArray[componentIndex].jackDDirtyPVDManifestMeasure (
+					valuationParams,
+					null,
+					curveSurfaceQuoteContainer,
+					null
+				);
 
-			if (null == wjCompDDirtyPVDManifestMeasure) return null;
+			if (null == wengertJacobianComponentDDirtyPVDManifestMeasure) {
+				return null;
+			}
 
-			iNumParameters = wjCompDDirtyPVDManifestMeasure.numParameters();
+			parameterCount = wengertJacobianComponentDDirtyPVDManifestMeasure.numParameters();
 
-			if (null == wjCompPVDF) {
+			if (null == wengertJacobianComponentPVDF) {
 				try {
-					wjCompPVDF = new org.drip.numerical.differentiation.WengertJacobian (iNumComponents,
-						iNumParameters);
-				} catch (java.lang.Exception e) {
+					wengertJacobianComponentPVDF = new WengertJacobian (componentCount, parameterCount);
+				} catch (Exception e) {
 					e.printStackTrace();
 
 					return null;
 				}
 			}
 
-			for (int k = 0; k < iNumParameters; ++k) {
-				if (!wjCompPVDF.accumulatePartialFirstDerivative (i, k,
-					wjCompDDirtyPVDManifestMeasure.firstDerivative (0, k)))
+			for (int parameterIndex = 0; parameterIndex < parameterCount; ++parameterIndex) {
+				if (!wengertJacobianComponentPVDF.accumulatePartialFirstDerivative (
+					componentIndex,
+					parameterIndex,
+					wengertJacobianComponentDDirtyPVDManifestMeasure.firstDerivative (0, parameterIndex)
+				)) {
 					return null;
+				}
 			}
 		}
 
-		return wjCompPVDF;
+		return wengertJacobianComponentPVDF;
 	}
 
 	/**
 	 * Calculate the Jacobian of PV at the given date to the Manifest Measure of each component in the
 	 * 	calibration set to the DF
 	 * 
-	 * @param dt Date for which the Jacobian is needed
+	 * @param date Date for which the Jacobian is needed
 	 * 
 	 * @return The Jacobian
 	 */
 
-	public org.drip.numerical.differentiation.WengertJacobian compJackDPVDManifestMeasure (
-		final org.drip.analytics.date.JulianDate dt)
+	public WengertJacobian compJackDPVDManifestMeasure (
+		final JulianDate date)
 	{
-		return null == dt ? null : compJackDPVDManifestMeasure (dt.julian());
+		return null == date ? null : compJackDPVDManifestMeasure (date.julian());
 	}
 
 	/**
 	 * Retrieve the Jacobian of the Forward Rate to the Manifest Measure between the given dates
 	 * 
-	 * @param iDate1 Date 1
-	 * @param iDate2 Date 2
-	 * @param strManifestMeasure Manifest Measure
-	 * @param dblElapsedYear The Elapsed Year (in the appropriate Day Count) between dates 1 and 2
+	 * @param date1 Date 1
+	 * @param date2 Date 2
+	 * @param manifestMeasure Manifest Measure
+	 * @param elapsedYearFraction The Elapsed Year (in the appropriate Day Count) between dates 1 and 2
 	 * 
 	 * @return The Jacobian
 	 */
 
-	public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
-		final int iDate1,
-		final int iDate2,
-		final java.lang.String strManifestMeasure,
-		final double dblElapsedYear)
+	public WengertJacobian jackDForwardDManifestMeasure (
+		final int date1,
+		final int date2,
+		final String manifestMeasure,
+		final double elapsedYearFraction)
 	{
-		if (iDate1 == iDate2) return null;
-
-		org.drip.numerical.differentiation.WengertJacobian wjDDFDManifestMeasureDate1 = jackDDFDManifestMeasure
-			(iDate1, strManifestMeasure);
-
-		if (null == wjDDFDManifestMeasureDate1) return null;
-
-		int iNumQuote = wjDDFDManifestMeasureDate1.numParameters();
-
-		if (0 == iNumQuote) return null;
-
-		org.drip.numerical.differentiation.WengertJacobian wjDDFDManifestMeasureDate2 = jackDDFDManifestMeasure
-			(iDate2, strManifestMeasure);
-
-		if (null == wjDDFDManifestMeasureDate2 || iNumQuote != wjDDFDManifestMeasureDate2.numParameters())
+		if (date1 == date2) {
 			return null;
+		}
 
-		double dblDF1 = java.lang.Double.NaN;
-		double dblDF2 = java.lang.Double.NaN;
-		org.drip.numerical.differentiation.WengertJacobian wjDForwardDManifestMeasure = null;
+		WengertJacobian wengertJacobianDDFDManifestMeasureDate1 = jackDDFDManifestMeasure (
+			date1,
+			manifestMeasure
+		);
+
+		if (null == wengertJacobianDDFDManifestMeasureDate1) {
+			return null;
+		}
+
+		int quoteCount = wengertJacobianDDFDManifestMeasureDate1.numParameters();
+
+		if (0 == quoteCount) {
+			return null;
+		}
+
+		WengertJacobian wengertJacobianDDFDManifestMeasureDate2 = jackDDFDManifestMeasure (
+			date2,
+			manifestMeasure
+		);
+
+		if (null == wengertJacobianDDFDManifestMeasureDate2 ||
+			quoteCount != wengertJacobianDDFDManifestMeasureDate2.numParameters()) {
+			return null;
+		}
+
+		double discountFactor1 = Double.NaN;
+		double discountFactor2 = Double.NaN;
+		WengertJacobian wengertJacobianDForwardDManifestMeasure = null;
 
 		try {
-			dblDF1 = df (iDate1);
+			discountFactor1 = df (date1);
 
-			dblDF2 = df (iDate2);
+			discountFactor2 = df (date2);
 
-			wjDForwardDManifestMeasure = new org.drip.numerical.differentiation.WengertJacobian (1, iNumQuote);
-		} catch (java.lang.Exception e) {
+			wengertJacobianDForwardDManifestMeasure = new WengertJacobian (1, quoteCount);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		double dblDForwardDManifestMeasure1iScale = 1. / dblDF2;
-		double dblDForwardDManifestMeasure2iScale = dblDF1 / (dblDF2 * dblDF2);
-		double dblInverseAnnualizedTenorLength = 1. / dblElapsedYear;
+		double dForwardDManifestMeasure1Scale = 1. / discountFactor2;
+		double inverseAnnualizedTenorLength = 1. / elapsedYearFraction;
+		double dForwardDManifestMeasure2Scale = discountFactor1 / (discountFactor2 * discountFactor2);
 
-		for (int i = 0; i < iNumQuote; ++i) {
-			double dblDForwardDQManifestMeasurei = ((wjDDFDManifestMeasureDate1.firstDerivative (0, i) *
-				dblDForwardDManifestMeasure1iScale) - (wjDDFDManifestMeasureDate2.firstDerivative (0, i) *
-					dblDForwardDManifestMeasure2iScale)) * dblInverseAnnualizedTenorLength;
-
-			if (!wjDForwardDManifestMeasure.accumulatePartialFirstDerivative (0, i,
-				dblDForwardDQManifestMeasurei))
+		for (int quoteIndex = 0; quoteIndex < quoteCount; ++quoteIndex) {
+			if (!wengertJacobianDForwardDManifestMeasure.accumulatePartialFirstDerivative (
+				0,
+				quoteIndex, (
+					wengertJacobianDDFDManifestMeasureDate1.firstDerivative (0, quoteIndex) *
+						dForwardDManifestMeasure1Scale -
+					wengertJacobianDDFDManifestMeasureDate2.firstDerivative (0, quoteIndex) *
+						dForwardDManifestMeasure2Scale
+					) * inverseAnnualizedTenorLength
+				)) {
 				return null;
+			}
 		}
 
-		return wjDForwardDManifestMeasure;
+		return wengertJacobianDForwardDManifestMeasure;
 	}
 
 	/**
 	 * Retrieve the Jacobian of the Forward Rate to the Manifest Measure between the given dates
 	 * 
-	 * @param dt1 Julian Date 1
-	 * @param dt2 Julian Date 2
-	 * @param strManifestMeasure Manifest Measure
-	 * @param dblElapsedYear The Elapsed Year (in the appropriate Day Count) between dates 1 and 2
+	 * @param date1 Julian Date 1
+	 * @param date2 Julian Date 2
+	 * @param manifestMeasure Manifest Measure
+	 * @param elapsedYearFraction The Elapsed Year (in the appropriate Day Count) between dates 1 and 2
 	 * 
 	 * @return The Jacobian
 	 */
 
-	public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
-		final org.drip.analytics.date.JulianDate dt1,
-		final org.drip.analytics.date.JulianDate dt2,
-		final java.lang.String strManifestMeasure,
-		final double dblElapsedYear)
+	public WengertJacobian jackDForwardDManifestMeasure (
+		final JulianDate date1,
+		final JulianDate date2,
+		final String manifestMeasure,
+		final double elapsedYearFraction)
 	{
-		if (null == dt1 || null == dt2) return null;
-
-		return jackDForwardDManifestMeasure (dt1.julian(), dt2.julian(), strManifestMeasure, dblElapsedYear);
+		return null == date1 || null == date2 ? null : jackDForwardDManifestMeasure (
+			date1.julian(),
+			date2.julian(),
+			manifestMeasure,
+			elapsedYearFraction
+		);
 	}
 
 	/**
 	 * Retrieve the Jacobian of the Forward Rate to the Manifest Measure at the given date
 	 * 
-	 * @param dt Given Julian Date
-	 * @param strTenor Tenor
-	 * @param strManifestMeasure Manifest Measure
-	 * @param dblElapsedYear The Elapsed Year (in the appropriate Day Count) implied by the Tenor
+	 * @param date Given Julian Date
+	 * @param tenor Tenor
+	 * @param manifestMeasure Manifest Measure
+	 * @param elapsedYearFraction The Elapsed Year (in the appropriate Day Count) implied by the Tenor
 	 * 
 	 * @return The Jacobian
 	 */
 
-	public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
-		final org.drip.analytics.date.JulianDate dt,
-		final java.lang.String strTenor,
-		final java.lang.String strManifestMeasure,
-		final double dblElapsedYear)
+	public WengertJacobian jackDForwardDManifestMeasure (
+		final JulianDate date,
+		final String tenor,
+		final String manifestMeasure,
+		final double elapsedYearFraction)
 	{
-		if (null == dt || null == strTenor || strTenor.isEmpty()) return null;
-
-		return jackDForwardDManifestMeasure (dt.julian(), dt.addTenor (strTenor).julian(),
-			strManifestMeasure, dblElapsedYear);
+		return null == date || null == tenor || tenor.isEmpty() ? null : jackDForwardDManifestMeasure (
+			date.julian(),
+			date.addTenor (tenor).julian(),
+			manifestMeasure,
+			elapsedYearFraction
+		);
 	}
 
 	/**
 	 * Retrieve the Jacobian for the Zero Rate to the given date
 	 * 
-	 * @param iDate Date
-	 * @param strManifestMeasure Manifest Measure
+	 * @param date Date
+	 * @param manifestMeasure Manifest Measure
 	 * 
 	 * @return The Jacobian
 	 */
 
-	public org.drip.numerical.differentiation.WengertJacobian zeroRateJack (
-		final int iDate,
-		final java.lang.String strManifestMeasure)
+	public WengertJacobian zeroRateJack (
+		final int date,
+		final String manifestMeasure)
 	{
-		int iEpochDate = epoch().julian();
+		int epochDate = epoch().julian();
 
-		return jackDForwardDManifestMeasure (iEpochDate, iDate, strManifestMeasure, 1. * (iDate - iEpochDate) /
-			365.25);
+		return jackDForwardDManifestMeasure (
+			epochDate,
+			date,
+			manifestMeasure,
+			1. * (date - epochDate) / 365.25
+		);
 	}
 
 	/**
 	 * Retrieve the Jacobian for the Zero Rate to the given date
 	 * 
-	 * @param dt Julian Date
-	 * @param strManifestMeasure Manifest Measure
+	 * @param date Julian Date
+	 * @param manifestMeasure Manifest Measure
 	 * 
 	 * @return The Jacobian
 	 */
 
-	public org.drip.numerical.differentiation.WengertJacobian zeroRateJack (
-		final org.drip.analytics.date.JulianDate dt,
-		final java.lang.String strManifestMeasure)
+	public WengertJacobian zeroRateJack (
+		final JulianDate date,
+		final String manifestMeasure)
 	{
-		return null == dt? null : zeroRateJack (dt.julian(), strManifestMeasure);
+		return null == date ? null : zeroRateJack (date.julian(), manifestMeasure);
 	}
 
 	/**
 	 * Convert the inferred Formulation Constraint into a "Truthness" Entity
 	 * 
-	 * @param strLatentStateQuantificationMetric Latent State Quantification Metric
+	 * @param latentStateQuantificationMetric Latent State Quantification Metric
 	 * 
 	 * @return Map of the Truthness Entities
 	 */
 
-	public java.util.Map<java.lang.Integer, java.lang.Double> canonicalTruthness (
-		final java.lang.String strLatentStateQuantificationMetric)
+	public Map<Integer, Double> canonicalTruthness (
+		final String latentStateQuantificationMetric)
 	{
-		if (null == strLatentStateQuantificationMetric ||
-			(!org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE.equalsIgnoreCase
-				(strLatentStateQuantificationMetric) && !
-					org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR.equalsIgnoreCase
-			(strLatentStateQuantificationMetric)))
+		if (null == latentStateQuantificationMetric || (
+			!LatentStateStatic.DISCOUNT_QM_ZERO_RATE.equalsIgnoreCase (latentStateQuantificationMetric) &&
+			!LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR.equalsIgnoreCase (latentStateQuantificationMetric)
+		)) {
 			return null;
+		}
 
-		org.drip.product.definition.CalibratableComponent[] aCC = calibComp();
+		CalibratableComponent[] calibratableComponentArray = calibComp();
 
-		if (null == aCC) return null;
+		if (null == calibratableComponentArray) {
+			return null;
+		}
 
-		int iNumComp = aCC.length;
-		boolean bFirstCashFlow = true;
+		boolean firstCashFlow = true;
 
-		if (0 == iNumComp) return null;
+		if (0 == calibratableComponentArray.length) {
+			return null;
+		}
 
-		java.util.Map<java.lang.Integer, java.lang.Double> mapCanonicalTruthness = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		Map<Integer, Double> canonicalTruthnessMap = new TreeMap<Integer, Double>();
 
-		if (org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR.equalsIgnoreCase
-			(strLatentStateQuantificationMetric))
-			mapCanonicalTruthness.put (_epochDate, 1.);
+		if (LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR.equalsIgnoreCase (latentStateQuantificationMetric))
+		{
+			canonicalTruthnessMap.put (_epochDate, 1.);
+		}
 
-		for (org.drip.product.definition.CalibratableComponent cc : aCC) {
-			if (null == cc) continue;
+		for (CalibratableComponent calibratableComponent : calibratableComponentArray) {
+			if (null == calibratableComponent) {
+				continue;
+			}
 
-			java.util.List<org.drip.analytics.cashflow.CompositePeriod> lsCouponPeriod = cc.couponPeriods();
+			List<CompositePeriod> couponPeriodList = calibratableComponent.couponPeriods();
 
-			if (null == lsCouponPeriod || 0 == lsCouponPeriod.size()) continue;
+			if (null == couponPeriodList || 0 == couponPeriodList.size()) continue;
 
-			for (org.drip.analytics.cashflow.CompositePeriod cpnPeriod : lsCouponPeriod) {
-				if (null == cpnPeriod) continue;
+			for (CompositePeriod compositePeriod : couponPeriodList) {
+				if (null == compositePeriod) {
+					continue;
+				}
 
-				int iPeriodPayDate = cpnPeriod.payDate();
+				int periodPayDate = compositePeriod.payDate();
 
-				if (iPeriodPayDate >= _epochDate) {
+				if (periodPayDate >= _epochDate) {
 					try {
-						if (org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR.equalsIgnoreCase
-							(strLatentStateQuantificationMetric))
-							mapCanonicalTruthness.put (iPeriodPayDate, df (iPeriodPayDate));
-						else if (org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE.equalsIgnoreCase
-							(strLatentStateQuantificationMetric)) {
-							if (bFirstCashFlow) {
-								bFirstCashFlow = false;
+						if (LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR.equalsIgnoreCase
+							(latentStateQuantificationMetric)) {
+							canonicalTruthnessMap.put (periodPayDate, df (periodPayDate));
+						} else if (LatentStateStatic.DISCOUNT_QM_ZERO_RATE.equalsIgnoreCase
+							(latentStateQuantificationMetric)) {
+							if (firstCashFlow) {
+								firstCashFlow = false;
 
-								mapCanonicalTruthness.put (_epochDate, zero (iPeriodPayDate));
+								canonicalTruthnessMap.put (_epochDate, zero (periodPayDate));
 							}
 
-							mapCanonicalTruthness.put (iPeriodPayDate, zero (iPeriodPayDate));
+							canonicalTruthnessMap.put (periodPayDate, zero (periodPayDate));
 						}
-					} catch (java.lang.Exception e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 
 						return null;
@@ -1223,6 +1282,6 @@ public abstract class MergedDiscountForwardCurve extends DiscountCurve
 			}
 		}
 
-		return mapCanonicalTruthness;
+		return canonicalTruthnessMap;
 	}
 }
