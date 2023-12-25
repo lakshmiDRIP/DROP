@@ -1,11 +1,18 @@
 
 package org.drip.state.curve;
 
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.forward.ForwardRateEstimator;
+import org.drip.state.identifier.ForwardLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,143 +91,167 @@ package org.drip.state.curve;
 
 /**
  * <i>DeterministicCollateralChoiceDiscountCurve</i> implements the Dynamically Switchable Collateral Choice
- * Discount Curve among the choice of provided "deterministic" collateral curves.
+ * 	Discount Curve among the choice of provided "deterministic" collateral curves.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DeterministicCollateralChoiceDiscountCurve extends org.drip.state.discount.MergedDiscountForwardCurve {
-	private int _iDiscreteCollateralizationIncrement = -1;
-	private org.drip.state.discount.MergedDiscountForwardCurve _dcDomesticCollateralized = null;
-	private org.drip.state.curve.ForeignCollateralizedDiscountCurve[] _aFCDC = null;
+public class DeterministicCollateralChoiceDiscountCurve extends MergedDiscountForwardCurve
+{
+	private int _discreteCollateralizationIncrement = -1;
+	private MergedDiscountForwardCurve _domesticCollateralizedDiscountCurve = null;
+	private ForeignCollateralizedDiscountCurve[] _foreignCollateralizedDiscountCurveArray = null;
 
 	/**
-	 * DeterministicCollateralChoiceDiscountCurve constructor
+	 * <i>DeterministicCollateralChoiceDiscountCurve</i> constructor
 	 * 
-	 * @param dcDomesticCollateralized The Domestic Collateralized Curve
-	 * @param aFCDC Array of The Foreign Collateralized Curves
-	 * @param iDiscreteCollateralizationIncrement The Discrete Collateralization Increment
+	 * @param domesticCollateralizedDiscountCurve The Domestic Collateralized Curve
+	 * @param foreignCollateralizedDiscountCurveArray Array of The Foreign Collateralized Curves
+	 * @param discreteCollateralizationIncrement The Discrete Collateralization Increment
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public DeterministicCollateralChoiceDiscountCurve (
-		final org.drip.state.discount.MergedDiscountForwardCurve dcDomesticCollateralized,
-		final org.drip.state.curve.ForeignCollateralizedDiscountCurve[] aFCDC,
-		final int iDiscreteCollateralizationIncrement)
-		throws java.lang.Exception
+		final MergedDiscountForwardCurve domesticCollateralizedDiscountCurve,
+		final ForeignCollateralizedDiscountCurve[] foreignCollateralizedDiscountCurveArray,
+		final int discreteCollateralizationIncrement)
+		throws Exception
 	{
-		super (dcDomesticCollateralized.epoch().julian(), dcDomesticCollateralized.currency(), null);
+		super (
+			domesticCollateralizedDiscountCurve.epoch().julian(),
+			domesticCollateralizedDiscountCurve.currency(),
+			null
+		);
 
-		if (0 >= (_iDiscreteCollateralizationIncrement = iDiscreteCollateralizationIncrement))
-			throw new java.lang.Exception
-				("DeterministicCollateralChoiceDiscountCurve ctr: Invalid Collateralization Increment!");
+		if (0 >= (_discreteCollateralizationIncrement = discreteCollateralizationIncrement)) {
+			throw new Exception (
+				"DeterministicCollateralChoiceDiscountCurve ctr: Invalid Collateralization Increment!"
+			);
+		}
 
-		_aFCDC = aFCDC;
-		_dcDomesticCollateralized = dcDomesticCollateralized;
+		_domesticCollateralizedDiscountCurve = domesticCollateralizedDiscountCurve;
+		_foreignCollateralizedDiscountCurveArray = foreignCollateralizedDiscountCurveArray;
 	}
 
 	@Override public double df (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		if (null == _aFCDC) return _dcDomesticCollateralized.df (iDate);
-
-		int iNumCollateralizer = _aFCDC.length;
-
-		if (0 == iNumCollateralizer) return _dcDomesticCollateralized.df (iDate);
-
-		if (iDate <= _epochDate) return 1.;
-
-		double dblDF = 1.;
-		int iWorkoutDate = _epochDate;
-
-		while (java.lang.Math.abs (iDate - iWorkoutDate) > _iDiscreteCollateralizationIncrement) {
-			int iWorkoutEndDate = iWorkoutDate + _iDiscreteCollateralizationIncrement;
-
-			double dblDFIncrement = _dcDomesticCollateralized.df (iWorkoutEndDate) /
-				_dcDomesticCollateralized.df (iWorkoutDate);
-
-			for (int i = 0; i < iNumCollateralizer; ++i) {
-				double dblCollateralizerDFIncrement = _aFCDC[i].df (iWorkoutEndDate) / _aFCDC[i].df
-					(iWorkoutDate);
-
-				if (dblCollateralizerDFIncrement < dblDFIncrement)
-					dblDFIncrement = dblCollateralizerDFIncrement;
-			}
-
-			dblDF *= dblDFIncrement;
-			iWorkoutDate = iWorkoutEndDate;
+		if (null == _foreignCollateralizedDiscountCurveArray) {
+			return _domesticCollateralizedDiscountCurve.df (date);
 		}
 
-		if (iDate > iWorkoutDate) {
-			double dblDFIncrement = _dcDomesticCollateralized.df (iDate) / _dcDomesticCollateralized.df
-				(iWorkoutDate);
+		int collateralizerCount = _foreignCollateralizedDiscountCurveArray.length;
 
-			for (int i = 0; i < iNumCollateralizer; ++i) {
-				double dblCollateralizerDFIncrement = _aFCDC[i].df (iDate) / _aFCDC[i].df (iWorkoutDate);
-
-				if (dblCollateralizerDFIncrement < dblDFIncrement)
-					dblDFIncrement = dblCollateralizerDFIncrement;
-			}
-
-			dblDF *= dblDFIncrement;
+		if (0 == collateralizerCount) {
+			return _domesticCollateralizedDiscountCurve.df (date);
 		}
 
-		return dblDF;
+		if (date <= _epochDate) {
+			return 1.;
+		}
+
+		double discountFactor = 1.;
+		int workoutDate = _epochDate;
+
+		while (Math.abs (date - workoutDate) > _discreteCollateralizationIncrement) {
+			int workoutEndDate = workoutDate + _discreteCollateralizationIncrement;
+
+			double discountFactorIncrement = _domesticCollateralizedDiscountCurve.df (workoutEndDate) /
+				_domesticCollateralizedDiscountCurve.df (workoutDate);
+
+			for (int collateralizerIndex = 0; collateralizerIndex < collateralizerCount;
+				++collateralizerIndex) {
+				double dblCollateralizerDFIncrement =
+					_foreignCollateralizedDiscountCurveArray[collateralizerIndex].df (workoutEndDate) /
+					_foreignCollateralizedDiscountCurveArray[collateralizerIndex].df (workoutDate);
+
+				if (dblCollateralizerDFIncrement < discountFactorIncrement) {
+					discountFactorIncrement = dblCollateralizerDFIncrement;
+				}
+			}
+
+			discountFactor *= discountFactorIncrement;
+			workoutDate = workoutEndDate;
+		}
+
+		if (date > workoutDate) {
+			double discountFactorIncrement = _domesticCollateralizedDiscountCurve.df (date) /
+				_domesticCollateralizedDiscountCurve.df (workoutDate);
+
+			for (int collateralizerIndex = 0; collateralizerIndex < collateralizerCount;
+				++collateralizerIndex) {
+				double dblCollateralizerDFIncrement =
+					_foreignCollateralizedDiscountCurveArray[collateralizerIndex].df (date) /
+					_foreignCollateralizedDiscountCurveArray[collateralizerIndex].df (workoutDate);
+
+				if (dblCollateralizerDFIncrement < discountFactorIncrement) {
+					discountFactorIncrement = dblCollateralizerDFIncrement;
+				}
+			}
+
+			discountFactor *= discountFactorIncrement;
+		}
+
+		return discountFactor;
 	}
 
 	@Override public double forward (
-		final int iDate1,
-		final int iDate2)
-		throws java.lang.Exception
+		final int date1,
+		final int date2)
+		throws Exception
 	{
-		if (iDate1 < _epochDate || iDate2 < _epochDate) return 0.;
-
-		return 365.25 / (iDate2 - iDate1) * java.lang.Math.log (df (iDate1) / df (iDate2));
+		return date1 < _epochDate || date2 < _epochDate ? 0. :
+			365.25 / (date2 - date1) * Math.log (df (date1) / df (date2));
 	}
 
 	@Override public double zero (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		if (iDate < _epochDate) return 0.;
+		if (date < _epochDate) return 0.;
 
-		return -365.25 / (iDate - _epochDate) * java.lang.Math.log (df (iDate));
+		return -365.25 / (date - _epochDate) * Math.log (df (date));
 	}
 
-	@Override public org.drip.state.forward.ForwardRateEstimator forwardRateEstimator (
-		final int iDate,
-		final org.drip.state.identifier.ForwardLabel fri)
+	@Override public ForwardRateEstimator forwardRateEstimator (
+		final int date,
+		final ForwardLabel forwardLabel)
 	{
 		return null;
 	}
 
-	@Override public java.lang.String latentStateQuantificationMetric()
+	@Override public String latentStateQuantificationMetric()
 	{
 		return null;
 	}
 
 	@Override public DiscountFactorDiscountCurve parallelShiftManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final double dblShift)
+		final String manifestMeasure,
+		final double shift)
 	{
 		return null;
 	}
 
 	@Override public DiscountFactorDiscountCurve shiftManifestMeasure (
-		final int iSpanIndex,
-		final java.lang.String strManifestMeasure,
-		final double dblShift)
+		final int spanIndex,
+		final String manifestMeasure,
+		final double shift)
 	{
 		return null;
 	}

@@ -3,8 +3,11 @@ package org.drip.state.curve;
 
 import java.util.Map;
 
+import org.drip.analytics.definition.Curve;
+import org.drip.analytics.definition.LatentStateStatic;
 import org.drip.analytics.support.OptionHelper;
 import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.differentiation.WengertJacobian;
 import org.drip.param.definition.ManifestMeasureTweak;
 import org.drip.state.discount.ExplicitBootDiscountCurve;
 import org.drip.state.discount.MergedDiscountForwardCurve;
@@ -234,47 +237,47 @@ public class ForeignCollateralizedDiscountCurve extends ExplicitBootDiscountCurv
 		return null;
 	}
 
-	@Override public org.drip.analytics.definition.Curve customTweakQuantificationMetric (
-		final org.drip.param.definition.ManifestMeasureTweak rvtp)
+	@Override public Curve customTweakQuantificationMetric (
+		final ManifestMeasureTweak manifestMeasureTweak)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.nonlinear.FlatForwardDiscountCurve createBasisRateShiftedCurve (
-		final int[] aiDate,
-		final double[] adblBasis)
+	@Override public FlatForwardDiscountCurve createBasisRateShiftedCurve (
+		final int[] dateArray,
+		final double[] basisArray)
 	{
 		return null;
 	}
 
-	@Override public java.lang.String latentStateQuantificationMetric()
+	@Override public String latentStateQuantificationMetric()
 	{
-		return org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE;
+		return LatentStateStatic.DISCOUNT_QM_ZERO_RATE;
 	}
 
-	@Override public org.drip.numerical.differentiation.WengertJacobian jackDDFDManifestMeasure (
-		final int iDate,
-		final java.lang.String strManifestMeasure)
+	@Override public WengertJacobian jackDDFDManifestMeasure (
+		final int date,
+		final String manifestMeasure)
 	{
 		return null;
 	}
 
 	@Override public boolean setNodeValue (
-		final int iNodeIndex,
-		final double dblValue)
+		final int nodeIndex,
+		final double value)
 	{
 		return true;
 	}
 
 	@Override public boolean bumpNodeValue (
-		final int iNodeIndex,
-		final double dblValue)
+		final int nodeIndex,
+		final double value)
 	{
 		return true;
 	}
 
 	@Override public boolean setFlatValue (
-		final double dblValue)
+		final double value)
 	{
 		return true;
 	}

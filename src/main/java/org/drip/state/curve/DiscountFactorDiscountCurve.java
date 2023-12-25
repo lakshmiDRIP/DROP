@@ -1,11 +1,28 @@
 
 package org.drip.state.curve;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.definition.Curve;
+import org.drip.analytics.definition.LatentStateStatic;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.analytics.support.Helper;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.differentiation.WengertJacobian;
+import org.drip.param.definition.ManifestMeasureTweak;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.spline.grid.Span;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.forward.ForwardRateEstimator;
+import org.drip.state.identifier.ForwardLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,49 +101,41 @@ package org.drip.state.curve;
 
 /**
  * <i>DiscountFactorDiscountCurve</i> manages the Discounting Latent State, using the Discount Factor as the
- * State Response Representation. It exports the following functionality:
+ * 	State Response Representation. It exports the following Functionality:
+ *
  *  <ul>
- *  	<li>
- *  		Compute the discount factor, forward rate, or the zero rate from the Discount Factor Latent State
- *  	</li>
- *  	<li>
- *  		Create a ForwardRateEstimator instance for the given Index
- *  	</li>
- *  	<li>
- *  		Retrieve Array of the Calibration Components
- *  	</li>
- *  	<li>
- *  		Retrieve the Curve Construction Input Set
- *  	</li>
- *  	<li>
- *  		Compute the Jacobian of the Discount Factor Latent State to the input Quote
- *  	</li>
- *  	<li>
- *  		Synthesize scenario Latent State by parallel shifting/custom tweaking the quantification metric
- *  	</li>
- *  	<li>
- *  		Synthesize scenario Latent State by parallel/custom shifting/custom tweaking the manifest measure
- *  	</li>
- *  	<li>
- *  		Serialize into and de-serialize out of byte array
- *  	</li>
+ *  	<li><i>DiscountFactorDiscountCurve</i> Constructor</li>
+ *  	<li>Compute the discount factor, forward rate, or the zero rate from the Discount Factor Latent State</li>
+ *  	<li>Create a ForwardRateEstimator instance for the given Index</li>
+ *  	<li>Retrieve Array of the Calibration Components</li>
+ *  	<li>Retrieve the Curve Construction Input Set</li>
+ *  	<li>Compute the Jacobian of the Discount Factor Latent State to the input Quote</li>
+ *  	<li>Synthesize scenario Latent State by parallel shifting/custom tweaking the quantification metric</li>
+ *  	<li>Synthesize scenario Latent State by parallel/custom shifting/custom tweaking the manifest measure</li>
+ *  	<li>Serialize into and de-serialize out of byte array</li>
  *  </ul>
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DiscountFactorDiscountCurve extends org.drip.state.discount.MergedDiscountForwardCurve {
-	private org.drip.spline.grid.Span _span = null;
-	private double _dblRightFlatForwardRate = java.lang.Double.NaN;
+public class DiscountFactorDiscountCurve extends MergedDiscountForwardCurve
+{
+	private Span _span = null;
+	private double _rightFlatForwardRate = Double.NaN;
 
 	private DiscountFactorDiscountCurve shiftManifestMeasure (
 		final double[] adblShiftedManifestMeasure)
@@ -135,215 +144,235 @@ public class DiscountFactorDiscountCurve extends org.drip.state.discount.MergedD
 	}
 
 	/**
-	 * DiscountFactorDiscountCurve constructor
+	 * <i>DiscountFactorDiscountCurve</i> constructor
 	 * 
-	 * @param strCurrency Currency
+	 * @param currency Currency
 	 * @param span The Span Instance
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public DiscountFactorDiscountCurve (
-		final java.lang.String strCurrency,
-		final org.drip.spline.grid.Span span)
-		throws java.lang.Exception
+		final String currency,
+		final Span span)
+		throws Exception
 	{
-		super ((int) span.left(), strCurrency, null);
+		super ((int) span.left(), currency, null);
 
-		_dblRightFlatForwardRate = -365.25 * java.lang.Math.log ((_span = span).calcResponseValue
-			(_span.right())) / (_span.right() - _span.left());
+		_rightFlatForwardRate = -365.25 * Math.log (
+			(_span = span).calcResponseValue (_span.right())
+		) / (_span.right() - _span.left());
 	}
 
 	@Override public double df (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		int iEpochDate = epoch().julian();
+		int epochDate = epoch().julian();
 
-		if (iDate <= iEpochDate) return 1.;
-
-		return (iDate <= _span.right() ? _span.calcResponseValue (iDate) : java.lang.Math.exp (-1. *
-			_dblRightFlatForwardRate * (iDate - iEpochDate) / 365.25)) * turnAdjust (iEpochDate, iDate);
+		return date <= epochDate ? 1. : (date <= _span.right() ? _span.calcResponseValue (date) : Math.exp (
+			-1. * _rightFlatForwardRate * (date - epochDate) / 365.25
+		)) * turnAdjust (epochDate, date);
 	}
 
 	@Override public double forward (
-		final int iDate1,
-		final int iDate2)
-		throws java.lang.Exception
+		final int date1,
+		final int date2)
+		throws Exception
 	{
 		int iEpochDate = epoch().julian();
 
-		if (iDate1 < iEpochDate || iDate2 < iEpochDate) return 0.;
-
-		return 365.25 / (iDate2 - iDate1) * java.lang.Math.log (df (iDate1) / df (iDate2));
+		return date1 < iEpochDate || date2 < iEpochDate ? 0. :
+			365.25 / (date2 - date1) * Math.log (df (date1) / df (date2));
 	}
 
 	@Override public double zero (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
 		int iEpochDate = epoch().julian();
 
-		if (iDate < iEpochDate) return 0.;
-
-		return -365.25 / (iDate - iEpochDate) * java.lang.Math.log (df (iDate));
+		return date < iEpochDate ? 0. : -365.25 / (date - iEpochDate) * Math.log (df (date));
 	}
 
-	@Override public org.drip.state.forward.ForwardRateEstimator forwardRateEstimator (
-		final int iDate,
-		final org.drip.state.identifier.ForwardLabel fri)
+	@Override public ForwardRateEstimator forwardRateEstimator (
+		final int date,
+		final ForwardLabel forwardLabel)
 	{
-		if (null == _span || !_span.isMergeState (iDate, fri)) return null;
+		if (null == _span || !_span.isMergeState (date, forwardLabel)) {
+			return null;
+		}
 
-		return new org.drip.state.forward.ForwardRateEstimator() {
-			@Override public org.drip.state.identifier.ForwardLabel index()
+		return new ForwardRateEstimator() {
+			@Override public ForwardLabel index()
 			{
-				return fri;
+				return forwardLabel;
 			}
 
-			@Override public java.lang.String tenor()
+			@Override public String tenor()
 			{
-				return fri.tenor();
-			}
-
-			@Override public double forward (
-				final org.drip.analytics.date.JulianDate dt)
-				throws java.lang.Exception
-			{
-				if (null == dt)
-					throw new java.lang.Exception
-						("DiscountFactorDiscountCurve::ForwardEstimator::forward => Invalid Inputs!");
-
-				java.lang.String strTenor = fri.tenor();
-
-				return libor (dt.subtractTenor (strTenor).julian(), strTenor);
+				return forwardLabel.tenor();
 			}
 
 			@Override public double forward (
-				final int iDate)
-				throws java.lang.Exception
+				final JulianDate date)
+				throws Exception
 			{
-				return forward (new org.drip.analytics.date.JulianDate (iDate));
+				if (null == date) {
+					throw new Exception (
+						"DiscountFactorDiscountCurve::ForwardEstimator::forward => Invalid Inputs!"
+					);
+				}
+
+				String tenor = forwardLabel.tenor();
+
+				return libor (date.subtractTenor (tenor).julian(), tenor);
 			}
 
 			@Override public double forward (
-				final java.lang.String strTenor)
-				throws java.lang.Exception
+				final int date)
+				throws Exception
 			{
-				if (null == strTenor || strTenor.isEmpty())
-					throw new java.lang.Exception
-						("DiscountFactorDiscountCurve::ForwardEstimator::forward => Invalid Inputs!");
+				return forward (new JulianDate (date));
+			}
+
+			@Override public double forward (
+				final String strTenor)
+				throws Exception
+			{
+				if (null == strTenor || strTenor.isEmpty()) {
+					throw new Exception (
+						"DiscountFactorDiscountCurve::ForwardEstimator::forward => Invalid Inputs!"
+					);
+				}
 
 				return forward (epoch().addTenor (strTenor));
 			}
 		};
 	}
 
-	@Override public java.lang.String latentStateQuantificationMetric()
+	@Override public String latentStateQuantificationMetric()
 	{
-		return org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR;
+		return LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR;
 	}
 
 	@Override public DiscountFactorDiscountCurve parallelShiftManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final double dblShift)
+		final String manifestMeasure,
+		final double shift)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift)) return null;
+		if (!NumberUtil.IsValid (shift)) {
+			return null;
+		}
 
-		org.drip.product.definition.CalibratableComponent[] aCC = calibComp();
+		CalibratableComponent[] calibratableComponentArray = calibComp();
 
-		if (null == aCC) return null;
+		if (null == calibratableComponentArray) {
+			return null;
+		}
 
-		int iNumComp = aCC.length;
-		double[] adblShiftedManifestMeasure = new double[iNumComp];
+		int componentCount = calibratableComponentArray.length;
+		double[] shiftedManifestMeasureArray = new double[componentCount];
 
-		for (int i = 0; i < iNumComp; ++i)
-			adblShiftedManifestMeasure[i] += dblShift;
+		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+			shiftedManifestMeasureArray[componentIndex] += shift;
+		}
 
-		return shiftManifestMeasure (adblShiftedManifestMeasure);
+		return shiftManifestMeasure (shiftedManifestMeasureArray);
 	}
 
 	@Override public DiscountFactorDiscountCurve shiftManifestMeasure (
-		final int iSpanIndex,
-		final java.lang.String strManifestMeasure,
-		final double dblShift)
+		final int spanIndex,
+		final String manifestMeasure,
+		final double shift)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift)) return null;
+		if (!NumberUtil.IsValid (shift)) {
+			return null;
+		}
 
-		org.drip.product.definition.CalibratableComponent[] aCC = calibComp();
+		CalibratableComponent[] calibratableComponentArray = calibComp();
 
-		if (null == aCC) return null;
+		if (null == calibratableComponentArray) {
+			return null;
+		}
 
-		int iNumComp = aCC.length;
-		double[] adblShiftedManifestMeasure = new double[iNumComp];
+		int componentCount = calibratableComponentArray.length;
+		double[] shiftedManifestMeasureArray = new double[componentCount];
 
-		if (iSpanIndex >= iNumComp) return null;
+		if (spanIndex >= componentCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumComp; ++i)
-			adblShiftedManifestMeasure[i] += (i == iSpanIndex ? dblShift : 0.);
+		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+			shiftedManifestMeasureArray[componentIndex] += (componentIndex == spanIndex ? shift : 0.);
+		}
 
-		return shiftManifestMeasure (adblShiftedManifestMeasure);
+		return shiftManifestMeasure (shiftedManifestMeasureArray);
 	}
 
-	@Override public org.drip.state.discount.MergedDiscountForwardCurve customTweakManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final org.drip.param.definition.ManifestMeasureTweak rvtp)
+	@Override public MergedDiscountForwardCurve customTweakManifestMeasure (
+		final String manifestMeasure,
+		final ManifestMeasureTweak manifestMeasureTweak)
 	{
-		if (null == rvtp) return null;
+		if (null == manifestMeasureTweak) {
+			return null;
+		}
 
-		org.drip.product.definition.CalibratableComponent[] aCC = calibComp();
+		CalibratableComponent[] calibratableComponentArray = calibComp();
 
-		if (null == aCC) return null;
+		if (null == calibratableComponentArray) {
+			return null;
+		}
 
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>
-			mapQuote = _curveConstructionInputSet.quoteMap();
+		CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>> quoteDoubleMap =
+			_curveConstructionInputSet.quoteMap();
 
-		int iNumComp = aCC.length;
-		double[] adblQuote = new double[iNumComp];
+		int componentCount = calibratableComponentArray.length;
+		double[] quoteArray = new double[componentCount];
 
-		for (int i = 0; i < iNumComp; ++i)
-			adblQuote[i] = mapQuote.get (aCC[i].primaryCode()).get (strManifestMeasure);
+		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+			quoteArray[componentIndex] = quoteDoubleMap.get (
+				calibratableComponentArray[componentIndex].primaryCode()
+			).get (manifestMeasure);
+		}
 
-		double[] adblShiftedManifestMeasure = org.drip.analytics.support.Helper.TweakManifestMeasure
-			(adblQuote, rvtp);
-
-		return shiftManifestMeasure (adblShiftedManifestMeasure);
+		return shiftManifestMeasure (Helper.TweakManifestMeasure (quoteArray, manifestMeasureTweak));
 	}
 
 	@Override public DiscountFactorDiscountCurve parallelShiftQuantificationMetric (
-		final double dblShift)
+		final double shift)
 	{
 		return null;
 	}
 
-	@Override public org.drip.analytics.definition.Curve customTweakQuantificationMetric (
-		final org.drip.param.definition.ManifestMeasureTweak rvtp)
+	@Override public Curve customTweakQuantificationMetric (
+		final ManifestMeasureTweak manifestMeasureTweak)
 	{
 		return null;
 	}
 
-	@Override public org.drip.numerical.differentiation.WengertJacobian jackDDFDManifestMeasure (
-		final int iDate,
-		final java.lang.String strManifestMeasure)
+	@Override public WengertJacobian jackDDFDManifestMeasure (
+		final int date,
+		final String manifestMeasure)
 	{
-		return null == _span ? null : _span.jackDResponseDManifestMeasure (strManifestMeasure, iDate, 1);
+		return null == _span ? null : _span.jackDResponseDManifestMeasure (manifestMeasure, date, 1);
 	}
 
-	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
+	@Override public CalibratableComponent[] calibComp()
 	{
 		return null == _curveConstructionInputSet ? null : _curveConstructionInputSet.components();
 	}
 
-	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> manifestMeasure (
-		final java.lang.String strInstrumentCode)
+	@Override public CaseInsensitiveTreeMap<Double> manifestMeasure (
+		final String instrumentCode)
 	{
-		if (null == _curveConstructionInputSet) return null;
+		if (null == _curveConstructionInputSet) {
+			return null;
+		}
 
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>
-			mapQuote = _curveConstructionInputSet.quoteMap();
+		CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>> quoteDoubleMap =
+			_curveConstructionInputSet.quoteMap();
 
-		if (null == mapQuote || !mapQuote.containsKey (strInstrumentCode)) return null;
-
-		return mapQuote.get (strInstrumentCode);
+		return null == quoteDoubleMap || !quoteDoubleMap.containsKey (instrumentCode) ? null :
+			quoteDoubleMap.get (instrumentCode);
 	}
 }
