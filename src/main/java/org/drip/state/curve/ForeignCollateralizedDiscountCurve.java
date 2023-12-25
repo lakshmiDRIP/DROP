@@ -1,11 +1,27 @@
 
 package org.drip.state.curve;
 
+import java.util.Map;
+
+import org.drip.analytics.support.OptionHelper;
+import org.drip.function.definition.R1ToR1;
+import org.drip.param.definition.ManifestMeasureTweak;
+import org.drip.state.discount.ExplicitBootDiscountCurve;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.forward.ForwardRateEstimator;
+import org.drip.state.fx.FXCurve;
+import org.drip.state.identifier.ForwardLabel;
+import org.drip.state.nonlinear.FlatForwardDiscountCurve;
+import org.drip.state.volatility.VolatilityCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,124 +99,137 @@ package org.drip.state.curve;
 
 /**
  * <i>ForeignCollateralizedDiscountCurve</i> computes the discount factor corresponding to one unit of
- * domestic currency collateralized by a foreign collateral.
+ * 	domestic currency collateralized by a foreign collateral.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ForeignCollateralizedDiscountCurve extends org.drip.state.discount.ExplicitBootDiscountCurve {
-	private java.lang.String _strCurrency = null;
-	private org.drip.state.fx.FXCurve _fxForward = null;
-	private org.drip.state.volatility.VolatilityCurve _vcFX = null;
-	private org.drip.state.discount.MergedDiscountForwardCurve _dcCollateralForeign = null;
-	private org.drip.state.volatility.VolatilityCurve _vcCollateralForeign = null;
-	private org.drip.function.definition.R1ToR1 _r1r1CollateralForeignFXCorrelation = null;
+public class ForeignCollateralizedDiscountCurve extends ExplicitBootDiscountCurve
+{
+	private String _currency = null;
+	private FXCurve _fxCurve = null;
+	private VolatilityCurve _fxVolatilityCurve = null;
+	private R1ToR1 _collateralForeignFXCorrelationFunction = null;
+	private VolatilityCurve _foreignCollateralizedVolatilityCurve = null;
+	private MergedDiscountForwardCurve _foreignCollateralizedDiscountCurve = null;
 
 	/**
-	 * ForeignCollateralizedDiscountCurve constructor
+	 * <i>ForeignCollateralizedDiscountCurve</i> constructor
 	 * 
-	 * @param strCurrency The Currency
-	 * @param dcCollateralForeign The Collateralized Foreign Discount Curve
-	 * @param fxForward The FX Forward Curve
-	 * @param vcCollateralForeign The Foreign Collateral Volatility Curve
-	 * @param vcFX The FX Volatility Curve
-	 * @param r1r1CollateralForeignFXCorrelation The FX Foreign Collateral Correlation Curve
+	 * @param currency The Currency
+	 * @param foreignCollateralizedDiscountCurve The Collateralized Foreign Discount Curve
+	 * @param fxCurve The FX Forward Curve
+	 * @param foreignCollateralizedVolatilityCurve The Foreign Collateral Volatility Curve
+	 * @param fxVolatilityCurve The FX Volatility Curve
+	 * @param collateralForeignFXCorrelationFunction The FX Foreign Collateral Correlation Curve
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public ForeignCollateralizedDiscountCurve (
-		final java.lang.String strCurrency,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcCollateralForeign,
-		final org.drip.state.fx.FXCurve fxForward,
-		final org.drip.state.volatility.VolatilityCurve vcCollateralForeign,
-		final org.drip.state.volatility.VolatilityCurve vcFX,
-		final org.drip.function.definition.R1ToR1 r1r1CollateralForeignFXCorrelation)
-		throws java.lang.Exception
+		final String currency,
+		final MergedDiscountForwardCurve foreignCollateralizedDiscountCurve,
+		final FXCurve fxCurve,
+		final VolatilityCurve foreignCollateralizedVolatilityCurve,
+		final VolatilityCurve fxVolatilityCurve,
+		final R1ToR1 collateralForeignFXCorrelationFunction)
+		throws Exception
 	{
-		super (dcCollateralForeign.epoch().julian(), strCurrency);
+		super (foreignCollateralizedDiscountCurve.epoch().julian(), currency);
 
-		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() || null == (_vcCollateralForeign =
-			vcCollateralForeign) || null == (_vcFX = vcFX) || null == (_r1r1CollateralForeignFXCorrelation =
-				r1r1CollateralForeignFXCorrelation) || null == (_dcCollateralForeign = dcCollateralForeign)
-					|| null == (_fxForward = fxForward))
-			throw new java.lang.Exception ("ForeignCollateralizedDiscountCurve ctr: Invalid Inputs");
+		if (null == (_currency = currency) || _currency.isEmpty() ||
+			null == (_foreignCollateralizedVolatilityCurve = foreignCollateralizedVolatilityCurve) ||
+			null == (_fxVolatilityCurve = fxVolatilityCurve) ||
+			null == (_collateralForeignFXCorrelationFunction = collateralForeignFXCorrelationFunction) ||
+			null == (_foreignCollateralizedDiscountCurve = foreignCollateralizedDiscountCurve) ||
+			null == (_fxCurve = fxCurve)) {
+			throw new Exception ("ForeignCollateralizedDiscountCurve ctr: Invalid Inputs");
+		}
 	}
 
 	@Override public double df (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		return iDate <= _epochDate ? 1. : _dcCollateralForeign.df (iDate) * _fxForward.fx (iDate) *
-			java.lang.Math.exp (-1. * org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto
-				(_vcFX, _vcCollateralForeign, _r1r1CollateralForeignFXCorrelation, _epochDate, iDate));
+		return date <= _epochDate ? 1. :
+			_foreignCollateralizedDiscountCurve.df (date) * _fxCurve.fx (date) * Math.exp (
+				-1. * OptionHelper.IntegratedCrossVolQuanto (
+					_fxVolatilityCurve,
+					_foreignCollateralizedVolatilityCurve,
+					_collateralForeignFXCorrelationFunction,
+					_epochDate,
+					date
+				)
+			);
 	}
 
 	@Override public double forward (
-		final int iDate1,
-		final int iDate2)
-		throws java.lang.Exception
+		final int date1,
+		final int date2)
+		throws Exception
 	{
-		if (iDate1 < _epochDate || iDate2 < _epochDate) return 0.;
-
-		return 365.25 / (iDate2 - iDate1) * java.lang.Math.log (df (iDate1) / df (iDate2));
+		return date1 < _epochDate || date2 < _epochDate ? 0. :
+			365.25 / (date2 - date1) * Math.log (df (date1) / df (date2));
 	}
 
 	@Override public double zero (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		if (iDate < _epochDate) return 0.;
-
-		return -365.25 / (iDate - _epochDate) * java.lang.Math.log (df (iDate));
+		return date < _epochDate ? 0. : -365.25 / (date - _epochDate) * Math.log (df (date));
 	}
 
-	@Override public org.drip.state.forward.ForwardRateEstimator forwardRateEstimator (
-		final int iDate,
-		final org.drip.state.identifier.ForwardLabel fri)
+	@Override public ForwardRateEstimator forwardRateEstimator (
+		final int date,
+		final ForwardLabel forwardLabel)
 	{
 		return null;
 	}
 
-	@Override public java.util.Map<java.lang.Integer, java.lang.Double> canonicalTruthness (
-		final java.lang.String strLatentQuantificationMetric)
+	@Override public Map<Integer, Double> canonicalTruthness (
+		final String latentQuantificationMetric)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.nonlinear.FlatForwardDiscountCurve parallelShiftManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final double dblShift)
+	@Override public FlatForwardDiscountCurve parallelShiftManifestMeasure (
+		final String manifestMeasure,
+		final double shift)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.nonlinear.FlatForwardDiscountCurve shiftManifestMeasure (
-		final int iSpanIndex,
-		final java.lang.String strManifestMeasure,
-		final double dblShift)
+	@Override public FlatForwardDiscountCurve shiftManifestMeasure (
+		final int spanIndex,
+		final String manifestMeasure,
+		final double shift)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.discount.ExplicitBootDiscountCurve customTweakManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final org.drip.param.definition.ManifestMeasureTweak rvtp)
+	@Override public ExplicitBootDiscountCurve customTweakManifestMeasure (
+		final String manifestMeasure,
+		final ManifestMeasureTweak manifestMeasureTweak)
 	{
 		return null;
 	}
 
-	@Override public org.drip.state.nonlinear.FlatForwardDiscountCurve parallelShiftQuantificationMetric (
-		final double dblShift)
+	@Override public FlatForwardDiscountCurve parallelShiftQuantificationMetric (
+		final double shift)
 	{
 		return null;
 	}

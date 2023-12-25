@@ -201,12 +201,12 @@ public class DerivedZeroRate extends ZeroCurve
 	 * @param zeroCurveApplyEOMAdjustment Zero Coupon EOM Adjustment Flag
 	 * @param couponPeriodList List of Bond coupon periods
 	 * @param workoutDate Work-out Date
-	 * @param iValueDate Value Date
-	 * @param iCashPayDate Cash-Pay Date
-	 * @param dc Underlying Discount Curve
-	 * @param dblZCBump DC Bump
-	 * @param vcp Valuation Customization Parameters
-	 * @param scbc Segment Custom Builder Control Parameters
+	 * @param valuationDate Value Date
+	 * @param cashPayDate Cash-Pay Date
+	 * @param discountCurve Underlying Discount Curve
+	 * @param zeroCurveBump DC Bump
+	 * @param valuationCustomizationParams Valuation Customization Parameters
+	 * @param segmentCustomBuilderControl Segment Custom Builder Control Parameters
 	 * 
 	 * @return The Derived Zero Rate Instance
 	 */
@@ -755,7 +755,7 @@ public class DerivedZeroRate extends ZeroCurve
 
 	@Override public double df (
 		final JulianDate date)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (null == date) {
 			throw new Exception ("DerivedZeroRate::df => Invalid Inputs");
@@ -765,48 +765,54 @@ public class DerivedZeroRate extends ZeroCurve
 	}
 
 	@Override public double effectiveDF (
-		final int iDate1,
-		final int iDate2)
-		throws java.lang.Exception
+		final int date1,
+		final int date2)
+		throws Exception
 	{
-		if (iDate1 == iDate2) return df (iDate1);
-
-		int iNumQuadratures = 0;
-		double dblEffectiveDF = 0.;
-		int iQuadratureWidth = (iDate2 - iDate1) / NUM_DF_QUADRATURES;
-
-		if (0 == iQuadratureWidth) iQuadratureWidth = 1;
-
-		for (int iDate = iDate1; iDate <= iDate2; iDate += iQuadratureWidth) {
-			++iNumQuadratures;
-
-			dblEffectiveDF += (df (iDate) + df (iDate + iQuadratureWidth));
+		if (date1 == date2) {
+			return df (date1);
 		}
 
-		return dblEffectiveDF / (2. * iNumQuadratures);
+		int quadratureCount = 0;
+		double effectiveDiscountFactor = 0.;
+		int quadratureWidth = (date2 - date1) / NUM_DF_QUADRATURES;
+
+		if (0 == quadratureWidth) {
+			quadratureWidth = 1;
+		}
+
+		for (int date = date1; date <= date2; date += quadratureWidth) {
+			++quadratureCount;
+
+			effectiveDiscountFactor += (df (date) + df (date + quadratureWidth));
+		}
+
+		return effectiveDiscountFactor / (2. * quadratureCount);
 	}
 
 	@Override public double effectiveDF (
-		final org.drip.analytics.date.JulianDate dt1,
-		final org.drip.analytics.date.JulianDate dt2)
+		final JulianDate date1,
+		final JulianDate date2)
 		throws java.lang.Exception
 	{
-		if (null == dt1 || null == dt2)
-			throw new java.lang.Exception ("DerivedZeroRate::effectiveDF => Got null for date");
+		if (null == date1 || null == date2) {
+			throw new Exception ("DerivedZeroRate::effectiveDF => Got null for date");
+		}
 
-		return effectiveDF (dt1.julian(), dt2.julian());
+		return effectiveDF (date1.julian(), date2.julian());
 	}
 
 	@Override public double effectiveDF (
-		final java.lang.String strTenor1,
-		final java.lang.String strTenor2)
-		throws java.lang.Exception
+		final String tenor1,
+		final String tenor2)
+		throws Exception
 	{
-		if (null == strTenor1 || strTenor1.isEmpty() || null == strTenor2 || strTenor2.isEmpty())
-			throw new java.lang.Exception ("DerivedZeroRate::effectiveDF => Got bad tenor");
+		if (null == tenor1 || tenor1.isEmpty() || null == tenor2 || tenor2.isEmpty()) {
+			throw new Exception ("DerivedZeroRate::effectiveDF => Got bad tenor");
+		}
 
-		org.drip.analytics.date.JulianDate dtStart = epoch();
+		JulianDate startDate = epoch();
 
-		return effectiveDF (dtStart.addTenor (strTenor1), dtStart.addTenor (strTenor2));
+		return effectiveDF (startDate.addTenor (tenor1), startDate.addTenor (tenor2));
 	}
 }
