@@ -1,11 +1,39 @@
 
 package org.drip.state.curve;
 
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.drip.analytics.cashflow.CompositePeriod;
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.daycount.ActActDCParams;
+import org.drip.analytics.daycount.Convention;
+import org.drip.analytics.definition.Curve;
+import org.drip.analytics.input.CurveConstructionInputSet;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.analytics.support.Helper;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.param.definition.ManifestMeasureTweak;
+import org.drip.param.valuation.ValuationCustomizationParams;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.spline.params.SegmentCustomBuilderControl;
+import org.drip.spline.stretch.BoundarySettings;
+import org.drip.spline.stretch.MultiSegmentSequence;
+import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
+import org.drip.state.discount.DiscountCurve;
+import org.drip.state.discount.ZeroCurve;
+import org.drip.state.govvie.GovvieCurve;
+import org.drip.state.identifier.LatentStateLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -85,47 +113,58 @@ package org.drip.state.curve;
 
 /**
  * <i>DerivedZeroRate</i> implements the delegated ZeroCurve functionality. Beyond discount factor/zero rate
- * computation at specific cash pay nodes, all other functions are delegated to the embedded discount curve.
+ * 	computation at specific cash pay nodes, all other functions are delegated to the embedded discount curve.
+ *  It exports the following Functionality:
  *
- *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></li>
+ *  	<li>Construct an Instance from the Discount Curve and the related Parameters</li>
+ *  	<li>Construct an Instance from the Govvie Curve and the related Parameters</li>
+ *  	<li>Construct an Instance from the Input Curve and the related Parameters</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
+public class DerivedZeroRate extends ZeroCurve
+{
 	private static final int NUM_DF_QUADRATURES = 5;
 
-	private org.drip.state.discount.DiscountCurve _dc = null;
-	private org.drip.spline.stretch.MultiSegmentSequence _mssDF = null;
-	private org.drip.spline.stretch.MultiSegmentSequence _mssZeroRate = null;
+	private DiscountCurve _discountCurve = null;
+	private MultiSegmentSequence _zeroRateMultiSegmentSequence = null;
+	private MultiSegmentSequence _discountFactorMultiSegmentSequence = null;
 
 	private static final boolean EntryFromDiscountCurve (
-		final org.drip.state.discount.DiscountCurve dc,
-		final int iDate,
-		final int iFreq,
-		final double dblYearFraction,
-		final double dblShift,
-		final java.util.Map<java.lang.Integer, java.lang.Double> mapDF,
-		final java.util.Map<java.lang.Integer, java.lang.Double> mapZeroRate)
+		final DiscountCurve discountCurve,
+		final int date,
+		final int frequency,
+		final double yearFraction,
+		final double shift,
+		final Map<Integer, Double> dateDiscountFactorMap,
+		final Map<Integer, Double> dateZeroRateMap)
 	{
 		try {
-			double dblZeroRate = org.drip.analytics.support.Helper.DF2Yield (iFreq, dc.df (iDate),
-				dblYearFraction) + dblShift;
+			double zeroRate = Helper.DF2Yield (frequency, discountCurve.df (date), yearFraction) + shift;
 
-			mapDF.put (iDate, org.drip.analytics.support.Helper.Yield2DF (iFreq, dblZeroRate,
-				dblYearFraction));
+			dateDiscountFactorMap.put (date, Helper.Yield2DF (frequency, zeroRate, yearFraction));
 
-			mapZeroRate.put (iDate, dblZeroRate);
+			dateZeroRateMap.put (date, zeroRate);
 
 			return true;
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -133,21 +172,20 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 	}
 
 	private static final boolean EntryFromYield (
-		final int iDate,
-		final int iFreq,
-		final double dblYearFraction,
-		final double dblShiftedYield,
-		final java.util.Map<java.lang.Integer, java.lang.Double> mapDF,
-		final java.util.Map<java.lang.Integer, java.lang.Double> mapZeroRate)
+		final int date,
+		final int frequency,
+		final double yearFraction,
+		final double shiftedYield,
+		final Map<Integer, Double> dateDiscountFactorMap,
+		final Map<Integer, Double> dateZeroRateMap)
 	{
 		try {
-			mapDF.put (iDate, org.drip.analytics.support.Helper.Yield2DF (iFreq, dblShiftedYield,
-				dblYearFraction));
+			dateDiscountFactorMap.put (date, Helper.Yield2DF (frequency, shiftedYield, yearFraction));
 
-			mapZeroRate.put (iDate, dblShiftedYield);
+			dateZeroRateMap.put (date, shiftedYield);
 
 			return true;
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -157,12 +195,12 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 	/**
 	 * Construct an Instance from the Discount Curve and the related Parameters
 	 * 
-	 * @param iFreqZC Zero Curve Frequency
-	 * @param strDCZC Zero Curve Day Count
-	 * @param strCalendarZC Zero Curve Calendar
-	 * @param bApplyEOMAdjZC Zero Coupon EOM Adjustment Flag
-	 * @param lsCouponPeriod List of Bond coupon periods
-	 * @param iWorkoutDate Work-out Date
+	 * @param zeroCurveFrequency Zero Curve Frequency
+	 * @param zeroCurveDayCount Zero Curve Day Count
+	 * @param zeroCurveCalendar Zero Curve Calendar
+	 * @param zeroCurveApplyEOMAdjustment Zero Coupon EOM Adjustment Flag
+	 * @param couponPeriodList List of Bond coupon periods
+	 * @param workoutDate Work-out Date
 	 * @param iValueDate Value Date
 	 * @param iCashPayDate Cash-Pay Date
 	 * @param dc Underlying Discount Curve
@@ -174,122 +212,182 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 	 */
 
 	public static final DerivedZeroRate FromDiscountCurve (
-		final int iFreqZC,
-		final java.lang.String strDCZC,
-		final java.lang.String strCalendarZC,
-		final boolean bApplyEOMAdjZC,
-		final java.util.List<org.drip.analytics.cashflow.CompositePeriod> lsCouponPeriod,
-		final int iWorkoutDate,
-		final int iValueDate,
-		final int iCashPayDate,
-		final org.drip.state.discount.DiscountCurve dc,
-		final double dblZCBump,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
+		final int zeroCurveFrequency,
+		final String zeroCurveDayCount,
+		final String zeroCurveCalendar,
+		final boolean zeroCurveApplyEOMAdjustment,
+		final List<CompositePeriod> couponPeriodList,
+		final int workoutDate,
+		final int valuationDate,
+		final int cashPayDate,
+		final DiscountCurve discountCurve,
+		final double zeroCurveBump,
+		final ValuationCustomizationParams valuationCustomizationParams,
+		final SegmentCustomBuilderControl segmentCustomBuilderControl)
 	{
-		if (null == lsCouponPeriod || 2 > lsCouponPeriod.size() || null == dc ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblZCBump) || null == scbc)
+		if (null == couponPeriodList || 2 > couponPeriodList.size() || null == discountCurve ||
+			!NumberUtil.IsValid (zeroCurveBump) || null == segmentCustomBuilderControl) {
 			return null;
-
-		int iFreq = 0 == iFreqZC ? 2 : iFreqZC;
-		java.lang.String strCalendar = strCalendarZC;
-
-		java.lang.String strDC = null == strDCZC || strDCZC.isEmpty() ? "30/360" : strDCZC;
-
-		if (null != vcp) {
-			strDC = vcp.yieldDayCount();
-
-			iFreq = vcp.yieldFreq();
-
-			strCalendar = vcp.yieldCalendar();
 		}
 
-		java.util.Map<java.lang.Integer, java.lang.Double> mapDF = new java.util.TreeMap<java.lang.Integer,
-			java.lang.Double>();
+		String calendar = zeroCurveCalendar;
+		int frequency = 0 == zeroCurveFrequency ? 2 : zeroCurveFrequency;
 
-		java.util.Map<java.lang.Integer, java.lang.Double> mapZeroRate = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		String dayCount = null == zeroCurveDayCount || zeroCurveDayCount.isEmpty() ?
+			"30/360" : zeroCurveDayCount;
 
-		mapDF.put (iValueDate, 1.);
+		if (null != valuationCustomizationParams) {
+			dayCount = valuationCustomizationParams.yieldDayCount();
 
-		mapZeroRate.put (iValueDate, 0.);
+			frequency = valuationCustomizationParams.yieldFreq();
 
-		for (org.drip.analytics.cashflow.CompositePeriod period : lsCouponPeriod) {
-			int iPeriodPayDate = period.payDate();
+			calendar = valuationCustomizationParams.yieldCalendar();
+		}
 
-			if (iValueDate >= iPeriodPayDate) continue;
+		Map<Integer, Double> dateDiscountFactorMap = new TreeMap<Integer, Double>();
 
-			int iPeriodStartDate = period.startDate();
+		Map<Integer, Double> dateZeroRateMap = new TreeMap<Integer, Double>();
 
-			int iPeriodEndDate = period.endDate();
+		dateDiscountFactorMap.put (valuationDate, 1.);
+
+		dateZeroRateMap.put (valuationDate, 0.);
+
+		for (CompositePeriod period : couponPeriodList) {
+			int periodPayDate = period.payDate();
+
+			if (valuationDate >= periodPayDate) {
+				continue;
+			}
+
+			int periodStartDate = period.startDate();
+
+			int periodEndDate = period.endDate();
 
 			try {
-				if (!EntryFromDiscountCurve (dc, iPeriodPayDate, iFreq,
-					org.drip.analytics.daycount.Convention.YearFraction (iValueDate, iPeriodPayDate, strDC,
-						true, new org.drip.analytics.daycount.ActActDCParams (iFreq, iPeriodEndDate -
-							iPeriodStartDate), strCalendar), dblZCBump, mapDF, mapZeroRate))
+				if (!EntryFromDiscountCurve (
+					discountCurve,
+					periodPayDate,
+					frequency,
+					Convention.YearFraction (
+						valuationDate,
+						periodPayDate,
+						dayCount,
+						true,
+						new ActActDCParams (
+							frequency,
+							periodEndDate - periodStartDate
+						),
+						calendar
+					),
+					zeroCurveBump,
+					dateDiscountFactorMap,
+					dateZeroRateMap
+				)) {
 					return null;
-			} catch (java.lang.Exception e) {
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		org.drip.analytics.daycount.ActActDCParams aap =
-			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);
+		ActActDCParams actActDCParams = ActActDCParams.FromFrequency (frequency);
 
 		try {
-			if (!EntryFromDiscountCurve (dc, iWorkoutDate, iFreq,
-				org.drip.analytics.daycount.Convention.YearFraction (iValueDate, iWorkoutDate, strDC, true,
-					aap, strCalendar), dblZCBump, mapDF, mapZeroRate))
+			if (!EntryFromDiscountCurve (
+				discountCurve,
+				workoutDate,
+				frequency,
+				Convention.YearFraction (
+					valuationDate,
+					workoutDate,
+					dayCount,
+					true,
+					actActDCParams,
+					calendar
+				),
+				zeroCurveBump,
+				dateDiscountFactorMap,
+				dateZeroRateMap
+			)) {
 				return null;
-
-			if (iValueDate != iCashPayDate) {
-				if (!EntryFromDiscountCurve (dc, iCashPayDate, iFreq,
-					org.drip.analytics.daycount.Convention.YearFraction (iValueDate, iCashPayDate, strDC,
-						true, aap, strCalendar), dblZCBump, mapDF, mapZeroRate))
-					return null;
 			}
-		} catch (java.lang.Exception e) {
+
+			if (valuationDate != cashPayDate) {
+				if (!EntryFromDiscountCurve (
+					discountCurve,
+					cashPayDate,
+					frequency,
+					Convention.YearFraction (
+						valuationDate,
+						cashPayDate,
+						dayCount,
+						true,
+						actActDCParams,
+						calendar
+					),
+					zeroCurveBump,
+					dateDiscountFactorMap,
+					dateZeroRateMap
+				)) {
+					return null;
+				}
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		int iNumNode = mapDF.size();
+		int nodeCount = dateDiscountFactorMap.size();
 
-		int iNode = 0;
-		double[] adblDF = new double[iNumNode];
-		double[] aiDate = new double[iNumNode];
-		double[] adblZeroRate = new double[iNumNode];
+		int nodeIndex = 0;
+		double[] dateArray = new double[nodeCount];
+		double[] zeroRateArray = new double[nodeCount];
+		double[] discountFactorArray = new double[nodeCount];
 
-		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> me : mapDF.entrySet()) {
-			adblDF[iNode] = me.getValue();
+		for (Map.Entry<Integer, Double> dateDiscountFactorMapEntry : dateDiscountFactorMap.entrySet()) {
+			dateArray[nodeIndex] = dateDiscountFactorMapEntry.getKey();
 
-			aiDate[iNode] = me.getKey();
+			discountFactorArray[nodeIndex] = dateDiscountFactorMapEntry.getValue();
 
-			adblZeroRate[iNode++] = mapZeroRate.get (me.getKey());
+			zeroRateArray[nodeIndex++] = dateZeroRateMap.get (dateDiscountFactorMapEntry.getKey());
 		}
 
-		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new
-			org.drip.spline.params.SegmentCustomBuilderControl[adblDF.length - 1]; 
+		SegmentCustomBuilderControl[] segmentCustomBuilderControlArray =
+			new SegmentCustomBuilderControl[discountFactorArray.length - 1]; 
 
-		for (int i = 0; i < adblDF.length - 1; ++i)
-			aSCBC[i] = scbc;
+		for (int discountFactorArrayIndex = 0; discountFactorArrayIndex < discountFactorArray.length - 1;
+			++discountFactorArrayIndex) {
+			segmentCustomBuilderControlArray[discountFactorArrayIndex] = segmentCustomBuilderControl;
+		}
 
-		org.drip.spline.stretch.BoundarySettings bsNatural =
-			org.drip.spline.stretch.BoundarySettings.NaturalStandard();
+		BoundarySettings naturalBoundarySettings = BoundarySettings.NaturalStandard();
 
-		try{
-			return new DerivedZeroRate (dc,
-				org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-					("DF_STRETCH", aiDate, adblDF, aSCBC, null, bsNatural,
-						org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE),
-							org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-				("ZERO_RATE_STRETCH", aiDate, adblZeroRate, aSCBC, null, bsNatural,
-					org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE));
-		} catch (java.lang.Exception e) {
+		try {
+			return new DerivedZeroRate (
+				discountCurve,
+				MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
+					"DF_STRETCH",
+					dateArray,
+					discountFactorArray,
+					segmentCustomBuilderControlArray,
+					null,
+					naturalBoundarySettings,
+					MultiSegmentSequence.CALIBRATE
+				),
+				MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
+					"ZERO_RATE_STRETCH",
+					dateArray,
+					zeroRateArray,
+					segmentCustomBuilderControlArray,
+					null,
+					naturalBoundarySettings,
+					MultiSegmentSequence.CALIBRATE
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -299,152 +397,201 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 	/**
 	 * Construct an Instance from the Govvie Curve and the related Parameters
 	 * 
-	 * @param iFreqZC Zero Curve Frequency
-	 * @param strDCZC Zero Curve Day Count
-	 * @param strCalendarZC Zero Curve Calendar
-	 * @param bApplyEOMAdjZC Zero Coupon EOM Adjustment Flag
-	 * @param lsCouponPeriod List of bond coupon periods
-	 * @param iWorkoutDate Work-out Date
-	 * @param iValueDate Value Date
-	 * @param iCashPayDate Cash-Pay Date
-	 * @param gc Underlying Govvie Curve
-	 * @param dblZCBump DC Bump
-	 * @param vcp Valuation Customization Parameters
-	 * @param scbc Segment Custom Builder Control Parameters
+	 * @param zeroCurveFrequency Zero Curve Frequency
+	 * @param zeroCurveDayCountConvention Zero Curve Day Count
+	 * @param zeroCurveCalendar Zero Curve Calendar
+	 * @param zeroCurveApplyEOMAdjustment Zero Coupon EOM Adjustment Flag
+	 * @param couponPeriodList List of bond coupon periods
+	 * @param workoutDate Work-out Date
+	 * @param valuationDate Value Date
+	 * @param cashPayDate Cash-Pay Date
+	 * @param govvieCurve Underlying Govvie Curve
+	 * @param zeroCurveBump DC Bump
+	 * @param valuationCustomizationParams Valuation Customization Parameters
+	 * @param segmentCustomBuilderControl Segment Custom Builder Control Parameters
 	 * 
 	 * @return The Derived Zero Rate Instance
 	 */
 
 	public static final DerivedZeroRate FromGovvieCurve (
-		final int iFreqZC,
-		final java.lang.String strDCZC,
-		final java.lang.String strCalendarZC,
-		final boolean bApplyEOMAdjZC,
-		final java.util.List<org.drip.analytics.cashflow.CompositePeriod> lsCouponPeriod,
-		final int iWorkoutDate,
-		final int iValueDate,
-		final int iCashPayDate,
-		final org.drip.state.govvie.GovvieCurve gc,
-		final double dblZCBump,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
+		final int zeroCurveFrequency,
+		final String zeroCurveDayCountConvention,
+		final String zeroCurveCalendar,
+		final boolean zeroCurveApplyEOMAdjustment,
+		final List<CompositePeriod> couponPeriodList,
+		final int workoutDate,
+		final int valuationDate,
+		final int cashPayDate,
+		final GovvieCurve govvieCurve,
+		final double zeroCurveBump,
+		final ValuationCustomizationParams valuationCustomizationParams,
+		final SegmentCustomBuilderControl segmentCustomBuilderControl)
 	{
-		if (null == lsCouponPeriod || 2 > lsCouponPeriod.size() || null == gc ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblZCBump) || null == scbc)
+		if (null == couponPeriodList || 2 > couponPeriodList.size() || null == govvieCurve ||
+			!NumberUtil.IsValid (zeroCurveBump) || null == segmentCustomBuilderControl) {
 			return null;
+		}
 
-		int iFreq = 0 == iFreqZC ? 2 : iFreqZC;
-		boolean bApplyCpnEOMAdj = bApplyEOMAdjZC;
-		java.lang.String strCalendar = strCalendarZC;
-		double dblShiftedYield = java.lang.Double.NaN;
+		int frequency = 0 == zeroCurveFrequency ? 2 : zeroCurveFrequency;
+		boolean applyCouponEOMAdjustment = zeroCurveApplyEOMAdjustment;
+		String calendar = zeroCurveCalendar;
+		double shiftedYield = Double.NaN;
 
 		try {
-			dblShiftedYield = gc.yld (iWorkoutDate) + dblZCBump;
-		} catch (java.lang.Exception e) {
+			shiftedYield = govvieCurve.yld (workoutDate) + zeroCurveBump;
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		java.lang.String strDC = null == strDCZC || strDCZC.isEmpty() ? "30/360" : strDCZC;
+		String dayCountConvention = null == zeroCurveDayCountConvention ||
+			zeroCurveDayCountConvention.isEmpty() ? "30/360" : zeroCurveDayCountConvention;
 
-		if (null != vcp) {
-			strDC = vcp.yieldDayCount();
+		if (null != valuationCustomizationParams) {
+			frequency = valuationCustomizationParams.yieldFreq();
 
-			iFreq = vcp.yieldFreq();
+			calendar = valuationCustomizationParams.yieldCalendar();
 
-			bApplyCpnEOMAdj = vcp.applyYieldEOMAdj();
+			dayCountConvention = valuationCustomizationParams.yieldDayCount();
 
-			strCalendar = vcp.yieldCalendar();
+			applyCouponEOMAdjustment = valuationCustomizationParams.applyYieldEOMAdj();
 		}
 
-		java.util.Map<java.lang.Integer, java.lang.Double> mapDF = new java.util.TreeMap<java.lang.Integer,
-			java.lang.Double>();
+		Map<Integer, Double> dateDiscountFactorMap = new TreeMap<Integer, Double>();
 
-		java.util.Map<java.lang.Integer, java.lang.Double> mapZeroRate = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		Map<Integer, Double> dateZeroRateMap = new TreeMap<Integer, Double>();
 
-		mapDF.put (iValueDate, 1.);
+		dateDiscountFactorMap.put (valuationDate, 1.);
 
-		mapZeroRate.put (iValueDate, 0.);
+		dateZeroRateMap.put (valuationDate, 0.);
 
-		for (org.drip.analytics.cashflow.CompositePeriod period : lsCouponPeriod) {
-			int iPeriodPayDate = period.payDate();
+		for (CompositePeriod period : couponPeriodList) {
+			int periodPayDate = period.payDate();
 
-			if (iValueDate >= iPeriodPayDate) continue;
-
-			int iPeriodStartDate = period.startDate();
-
-			int iPeriodEndDate = period.endDate();
+			if (valuationDate >= periodPayDate) {
+				continue;
+			}
 
 			try {
-				if (!EntryFromYield (iPeriodPayDate, iFreq,
-					org.drip.analytics.daycount.Convention.YearFraction (iValueDate, iPeriodPayDate, strDC,
-						bApplyCpnEOMAdj, new org.drip.analytics.daycount.ActActDCParams (iFreq,
-							iPeriodEndDate - iPeriodStartDate), strCalendar), dblShiftedYield, mapDF,
-								mapZeroRate))
+				if (!EntryFromYield (
+					periodPayDate,
+					frequency,
+					Convention.YearFraction (
+						valuationDate,
+						periodPayDate,
+						dayCountConvention,
+						applyCouponEOMAdjustment,
+						new ActActDCParams (frequency, period.endDate() - period.startDate()),
+						calendar
+					),
+					shiftedYield,
+					dateDiscountFactorMap,
+					dateZeroRateMap
+				)) {
 					return null;
-			} catch (java.lang.Exception e) {
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		org.drip.analytics.daycount.ActActDCParams aap =
-			org.drip.analytics.daycount.ActActDCParams.FromFrequency (iFreq);
+		ActActDCParams actActDCParams = ActActDCParams.FromFrequency (frequency);
 
 		try {
-			if (!EntryFromYield (iWorkoutDate, iFreq, org.drip.analytics.daycount.Convention.YearFraction
-				(iValueDate, iWorkoutDate, strDC, bApplyCpnEOMAdj, aap, strCalendar), dblShiftedYield, mapDF,
-					mapZeroRate))
+			if (!EntryFromYield (
+				workoutDate,
+				frequency,
+				Convention.YearFraction (
+					valuationDate,
+					workoutDate,
+					dayCountConvention,
+					applyCouponEOMAdjustment,
+					actActDCParams,
+					calendar
+				),
+				shiftedYield,
+				dateDiscountFactorMap,
+				dateZeroRateMap
+			)) {
 				return null;
-
-			if (iCashPayDate != iValueDate) {
-				if (!EntryFromYield (iCashPayDate, iFreq, org.drip.analytics.daycount.Convention.YearFraction
-					(iValueDate, iCashPayDate, strDC, bApplyCpnEOMAdj, aap, strCalendar), dblShiftedYield,
-						mapDF, mapZeroRate))
-					return null;
 			}
-		} catch (java.lang.Exception e) {
+
+			if (cashPayDate != valuationDate) {
+				if (!EntryFromYield (
+					cashPayDate,
+					frequency,
+					Convention.YearFraction (
+						valuationDate,
+						cashPayDate,
+						dayCountConvention,
+						applyCouponEOMAdjustment,
+						actActDCParams,
+						calendar
+					),
+					shiftedYield,
+					dateDiscountFactorMap,
+					dateZeroRateMap
+				)) {
+					return null;
+				}
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		int iNumNode = mapDF.size();
+		int nodeCount = dateDiscountFactorMap.size();
 
-		int iNode = 0;
-		double[] adblDF = new double[iNumNode];
-		double[] aiDate = new double[iNumNode];
-		double[] adblZeroRate = new double[iNumNode];
+		int nodeIndex = 0;
+		double[] dateArray = new double[nodeCount];
+		double[] zeroRateArray = new double[nodeCount];
+		double[] discountFactorArray = new double[nodeCount];
 
-		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> me : mapDF.entrySet()) {
-			adblDF[iNode] = me.getValue();
+		for (Map.Entry<Integer, Double> dateDiscountFactorMapEntry : dateDiscountFactorMap.entrySet()) {
+			dateArray[nodeIndex] = dateDiscountFactorMapEntry.getKey();
 
-			aiDate[iNode] = me.getKey();
+			discountFactorArray[nodeIndex] = dateDiscountFactorMapEntry.getValue();
 
-			adblZeroRate[iNode++] = mapZeroRate.get (me.getKey());
+			zeroRateArray[nodeIndex++] = dateZeroRateMap.get (dateDiscountFactorMapEntry.getKey());
 		}
 
-		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new
-			org.drip.spline.params.SegmentCustomBuilderControl[adblDF.length - 1]; 
+		SegmentCustomBuilderControl[] segmentCustomBuilderControlArray =
+			new SegmentCustomBuilderControl[discountFactorArray.length - 1]; 
 
-		for (int i = 0; i < adblDF.length - 1; ++i)
-			aSCBC[i] = scbc;
+		for (int discountFactorArrayIndex = 0; discountFactorArrayIndex < discountFactorArray.length - 1;
+			++discountFactorArrayIndex) {
+			segmentCustomBuilderControlArray[discountFactorArrayIndex] = segmentCustomBuilderControl;
+		}
 
-		org.drip.spline.stretch.BoundarySettings bsNatural =
-			org.drip.spline.stretch.BoundarySettings.NaturalStandard();
+		BoundarySettings naturalBoundarySettings = BoundarySettings.NaturalStandard();
 
 		try {
-			return new DerivedZeroRate (gc,
-				org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-					("DF_STRETCH", aiDate, adblDF, aSCBC, null, bsNatural,
-						org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE),
-							org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-				("ZERO_RATE_STRETCH", aiDate, adblZeroRate, aSCBC, null, bsNatural,
-					org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE));
-		} catch (java.lang.Exception e) {
+			return new DerivedZeroRate (
+				govvieCurve,
+				MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
+					"DF_STRETCH",
+					dateArray,
+					discountFactorArray,
+					segmentCustomBuilderControlArray,
+					null,
+					naturalBoundarySettings,
+					MultiSegmentSequence.CALIBRATE
+				),
+				MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
+					"ZERO_RATE_STRETCH",
+					dateArray,
+					zeroRateArray,
+					segmentCustomBuilderControlArray,
+					null,
+					naturalBoundarySettings,
+					MultiSegmentSequence.CALIBRATE
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -454,147 +601,167 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 	/**
 	 * Construct an Instance from the Input Curve and the related Parameters
 	 * 
-	 * @param iFreq Zero Curve Frequency
-	 * @param strDayCount Zero Curve Day Count
-	 * @param strCalendar Zero Curve Calendar
-	 * @param bApplyEOMAdj Zero Coupon EOM Adjustment Flag
-	 * @param lsCouponPeriod List of bond coupon periods
-	 * @param iWorkoutDate Work-out Date
-	 * @param iValueDate Value Date
-	 * @param iCashPayDate Cash-Pay Date
-	 * @param dc Underlying Discount Curve
-	 * @param dblBump DC Bump
-	 * @param vcp Valuation Customization Parameters
-	 * @param scbc Segment Custom Builder Control Parameters
+	 * @param frequency Zero Curve Frequency
+	 * @param dayCount Zero Curve Day Count
+	 * @param calendar Zero Curve Calendar
+	 * @param applyEOMAdjustment Zero Coupon EOM Adjustment Flag
+	 * @param couponPeriodList List of bond coupon periods
+	 * @param workoutDate Work-out Date
+	 * @param valuationDate Value Date
+	 * @param cashPayDate Cash-Pay Date
+	 * @param discountCurve Underlying Discount Curve
+	 * @param bump DC Bump
+	 * @param valuationCustomizationParams Valuation Customization Parameters
+	 * @param segmentCustomBuilderControl Segment Custom Builder Control Parameters
 	 * 
 	 * @return The Derived Zero Rate Instance
 	 */
 
 	public static final DerivedZeroRate FromBaseCurve (
-		final int iFreq,
-		final java.lang.String strDayCount,
-		final java.lang.String strCalendar,
-		final boolean bApplyEOMAdj,
-		final java.util.List<org.drip.analytics.cashflow.CompositePeriod> lsCouponPeriod,
-		final int iWorkoutDate,
-		final int iValueDate,
-		final int iCashPayDate,
-		final org.drip.state.discount.DiscountCurve dc,
-		final double dblBump,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
+		final int frequency,
+		final String dayCount,
+		final String calendar,
+		final boolean applyEOMAdjustment,
+		final List<CompositePeriod> couponPeriodList,
+		final int workoutDate,
+		final int valuationDate,
+		final int cashPayDate,
+		final DiscountCurve discountCurve,
+		final double bump,
+		final ValuationCustomizationParams valuationCustomizationParams,
+		final SegmentCustomBuilderControl segmentCustomBuilderControl)
 	{
-		if (null == dc) return null;
-
-		return dc instanceof org.drip.state.govvie.GovvieCurve ? FromGovvieCurve (iFreq, strDayCount,
-			strCalendar, bApplyEOMAdj, lsCouponPeriod, iWorkoutDate, iValueDate, iCashPayDate,
-				(org.drip.state.govvie.GovvieCurve) dc, dblBump, vcp, scbc) : FromDiscountCurve (iFreq,
-					strDayCount, strCalendar, bApplyEOMAdj, lsCouponPeriod, iWorkoutDate, iValueDate,
-						iCashPayDate, dc, dblBump, vcp, scbc);
+		return null == discountCurve ? null : discountCurve instanceof GovvieCurve ? FromGovvieCurve (
+			frequency,
+			dayCount,
+			calendar,
+			applyEOMAdjustment,
+			couponPeriodList,
+			workoutDate,
+			valuationDate,
+			cashPayDate,
+			(GovvieCurve) discountCurve,
+			bump,
+			valuationCustomizationParams,
+			segmentCustomBuilderControl
+		) : FromDiscountCurve (
+			frequency,
+			dayCount,
+			calendar,
+			applyEOMAdjustment,
+			couponPeriodList,
+			workoutDate,
+			valuationDate,
+			cashPayDate,
+			discountCurve,
+			bump,
+			valuationCustomizationParams,
+			segmentCustomBuilderControl
+		);
 	}
 
 	private DerivedZeroRate (
-		final org.drip.state.discount.DiscountCurve dc,
-		final org.drip.spline.stretch.MultiSegmentSequence mssDF,
-		final org.drip.spline.stretch.MultiSegmentSequence mssZeroRate)
-		throws java.lang.Exception
+		final DiscountCurve discountCurve,
+		final MultiSegmentSequence discountFactorMultiSegmentSequence,
+		final MultiSegmentSequence zeroRateMultiSegmentSequence)
+		throws Exception
 	{
-		super (dc.epoch().julian(), dc.currency());
+		super (discountCurve.epoch().julian(), discountCurve.currency());
 
-		if (null == (_mssDF = mssDF) || null == (_mssZeroRate = mssZeroRate))
-			throw new java.lang.Exception ("DerivedZeroRate Constructor: Invalid Inputs");
+		if (null == (_discountFactorMultiSegmentSequence = discountFactorMultiSegmentSequence) ||
+			null == (_zeroRateMultiSegmentSequence = zeroRateMultiSegmentSequence)) {
+			throw new Exception ("DerivedZeroRate Constructor: Invalid Inputs");
+		}
 
-		_dc = dc;
+		_discountCurve = discountCurve;
 	}
 
 	@Override public double df (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		if (iDate <= epoch().julian()) return 1.;
-
-		return _mssDF.responseValue (iDate);
+		return date <= epoch().julian() ? 1. : _discountFactorMultiSegmentSequence.responseValue (date);
 	}
 
 	@Override public double df (
-		final java.lang.String strTenor)
-		throws java.lang.Exception
+		final String tenor)
+		throws Exception
 	{
-		return df (epoch().addTenor (strTenor));
+		return df (epoch().addTenor (tenor));
 	}
 
 	@Override public double zeroRate (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		if (iDate <= epoch().julian()) return 1.;
-
-		return _mssZeroRate.responseValue (iDate);
+		return date <= epoch().julian() ? 1. : _zeroRateMultiSegmentSequence.responseValue (date);
 	}
 
-	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> manifestMeasure (
-		final java.lang.String strInstr)
+	@Override public CaseInsensitiveTreeMap<Double> manifestMeasure (
+		final String instrument)
 	{
-		return _dc.manifestMeasure (strInstr);
+		return _discountCurve.manifestMeasure (instrument);
 	}
 
-	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
+	@Override public CalibratableComponent[] calibComp()
 	{
-		return _dc.calibComp();
+		return _discountCurve.calibComp();
 	}
 
-	@Override public org.drip.state.identifier.LatentStateLabel label()
+	@Override public LatentStateLabel label()
 	{
-		return _dc.label();
+		return _discountCurve.label();
 	}
 
-	@Override public org.drip.analytics.definition.Curve parallelShiftManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final double dblShift)
+	@Override public Curve parallelShiftManifestMeasure (
+		final String manifestMeasure,
+		final double shift)
 	{
 		return null;
 	}
 
 	@Override public org.drip.analytics.definition.Curve shiftManifestMeasure (
-		final int iSpanIndex,
-		final java.lang.String strManifestMeasure,
-		final double dblShift)
+		final int spanIndex,
+		final String manifestMeasure,
+		final double shift)
 	{
 		return null;
 	}
 
 	@Override public org.drip.analytics.definition.Curve customTweakManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final org.drip.param.definition.ManifestMeasureTweak mmtp)
+		final String manifestMeasure,
+		final ManifestMeasureTweak manifestMeasureTweak)
 	{
 		return null;
 	}
 
 	@Override public boolean setCCIS (
-		final org.drip.analytics.input.CurveConstructionInputSet ccis)
+		final CurveConstructionInputSet curveConstructionInputSet)
 	{
-		 return _dc.setCCIS (ccis);
+		 return _discountCurve.setCCIS (curveConstructionInputSet);
 	}
 
 	@Override public org.drip.state.representation.LatentState parallelShiftQuantificationMetric (
-		final double dblShift)
+		final double shift)
 	{
-		return _dc.parallelShiftQuantificationMetric (dblShift);
+		return _discountCurve.parallelShiftQuantificationMetric (shift);
 	}
 
 	@Override public org.drip.state.representation.LatentState customTweakQuantificationMetric (
-		final org.drip.param.definition.ManifestMeasureTweak rvtp)
+		final ManifestMeasureTweak manifestMeasureTweak)
 	{
-		return _dc.customTweakQuantificationMetric (rvtp);
+		return _discountCurve.customTweakQuantificationMetric (manifestMeasureTweak);
 	}
 
 	@Override public double df (
-		final org.drip.analytics.date.JulianDate dt)
+		final JulianDate date)
 		throws java.lang.Exception
 	{
-		if (null == dt) throw new java.lang.Exception ("DerivedZeroRate::df => Invalid Inputs");
+		if (null == date) {
+			throw new Exception ("DerivedZeroRate::df => Invalid Inputs");
+		}
 
-		return df (dt.julian());
+		return df (date.julian());
 	}
 
 	@Override public double effectiveDF (

@@ -1,11 +1,18 @@
 
 package org.drip.state.curve;
 
+import org.drip.product.definition.Component;
+import org.drip.spline.grid.Span;
+import org.drip.state.repo.RepoCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,53 +89,58 @@ package org.drip.state.curve;
 
 /**
  * <i>BasisSplineRepoCurve</i> manages the Basis Latent State, using the Repo as the State Response
- * Representation.
+ * 	Representation.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BasisSplineRepoCurve extends org.drip.state.repo.RepoCurve {
-	private org.drip.spline.grid.Span _span = null;
+public class BasisSplineRepoCurve extends RepoCurve
+{
+	private Span _span = null;
 
 	/**
-	 * BasisSplineRepoCurve constructor
+	 * <i>BasisSplineRepoCurve</i> constructor
 	 * 
-	 * @param comp The Underlying Repo Component
+	 * @param component The Underlying Repo Component
 	 * @param span The Span over which the Basis Representation is valid
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BasisSplineRepoCurve (
-		final org.drip.product.definition.Component comp,
-		final org.drip.spline.grid.Span span)
-		throws java.lang.Exception
+		final Component component,
+		final Span span)
+		throws Exception
 	{
-		super ((int) span.left(), comp);
+		super ((int) span.left(), component);
 
 		_span = span;
 	}
 
 	@Override public double repo (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		if (iDate < _span.left() || iDate >= component().maturityDate().julian())
-			throw new java.lang.Exception ("BasisSplineRepoCurve::repo => Invalid Input");
+		if (date < _span.left() || date >= component().maturityDate().julian()) {
+			throw new Exception ("BasisSplineRepoCurve::repo => Invalid Input");
+		}
 
-		double dblSpanRight = _span.right();
+		double spanRight = _span.right();
 
-		if (iDate >= dblSpanRight) return _span.calcResponseValue (dblSpanRight);
-
-		return _span.calcResponseValue (iDate);
+		return date >= spanRight ? _span.calcResponseValue (spanRight) : _span.calcResponseValue (date);
 	}
 }

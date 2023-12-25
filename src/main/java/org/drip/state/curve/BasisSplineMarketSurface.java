@@ -1,6 +1,7 @@
 
 package org.drip.state.curve;
 
+import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.definition.MarketSurface;
 import org.drip.analytics.definition.NodeStructure;
 import org.drip.spline.multidimensional.WireSurfaceStretch;
@@ -162,15 +163,17 @@ public class BasisSplineMarketSurface extends MarketSurface
 		return null;
 	}
 
-	@Override public org.drip.analytics.definition.NodeStructure yAnchorTermStructure (
-		final double dblMaturityDateAnchor)
+	@Override public NodeStructure yAnchorTermStructure (
+		final double maturityDateAnchor)
 	{
 		try {
-			return new BasisSplineTermStructure (epoch().julian(),
-				org.drip.state.identifier.CustomLabel.Standard (label() + "_" + new
-					org.drip.analytics.date.JulianDate ((int) dblMaturityDateAnchor)), currency(),
-				_wireSurfaceStretch.wireSpanYAnchor (dblMaturityDateAnchor));
-		} catch (java.lang.Exception e) {
+			return new BasisSplineTermStructure (
+				epoch().julian(),
+				CustomLabel.Standard (label() + "_" + new JulianDate ((int) maturityDateAnchor)),
+				currency(),
+				_wireSurfaceStretch.wireSpanYAnchor (maturityDateAnchor)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

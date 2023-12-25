@@ -1,11 +1,19 @@
 
 package org.drip.state.curve;
 
+import org.drip.analytics.definition.NodeStructure;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.spline.grid.Span;
+import org.drip.state.identifier.CustomLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,79 +91,92 @@ package org.drip.state.curve;
 
 /**
  * <i>BasisSplineTermStructure</i> implements the TermStructure Interface - if holds the latent states Term
- * Structure Parameters.
+ * 	Structure Parameters.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BasisSplineTermStructure extends org.drip.analytics.definition.NodeStructure {
-	private org.drip.spline.grid.Span _span = null;
+public class BasisSplineTermStructure extends NodeStructure
+{
+	private Span _span = null;
 
 	/**
-	 * BasisSplineTermStructure Constructor
+	 * <i>BasisSplineTermStructure</i> Constructor
 	 * 
-	 * @param iEpochDate The Epoch Date
-	 * @param label Term Structure Latent State Label
-	 * @param strCurrency The Currency
+	 * @param epochDate The Epoch Date
+	 * @param customLabel Term Structure Latent State Label
+	 * @param currency The Currency
 	 * @param span The Latent State Span
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BasisSplineTermStructure (
-		final int iEpochDate,
-		final org.drip.state.identifier.CustomLabel label,
-		final java.lang.String strCurrency,
-		final org.drip.spline.grid.Span span)
-		throws java.lang.Exception
+		final int epochDate,
+		final CustomLabel customLabel,
+		final String currency,
+		final Span span)
+		throws Exception
 	{
-		super (iEpochDate, label, strCurrency);
+		super (epochDate, customLabel, currency);
 
 		_span = span;
 	}
 
 	@Override public double node (
-		final int iPredictorOrdinate)
-		throws java.lang.Exception
+		final int predictorOrdinate)
+		throws Exception
 	{
-		double dblSpanLeft = _span.left();
+		double spanLeft = _span.left();
 
-		if (dblSpanLeft >= iPredictorOrdinate) return _span.calcResponseValue (dblSpanLeft);
+		if (spanLeft >= predictorOrdinate) {
+			return _span.calcResponseValue (spanLeft);
+		}
 
-		double dblSpanRight = _span.right();
+		double spanRight = _span.right();
 
-		if (dblSpanRight <= iPredictorOrdinate) return _span.calcResponseValue (dblSpanRight);
+		if (spanRight <= predictorOrdinate) {
+			return _span.calcResponseValue (spanRight);
+		}
 
-		return _span.calcResponseValue (iPredictorOrdinate);
+		return _span.calcResponseValue (predictorOrdinate);
 	}
 
 	@Override public double nodeDerivative (
-		final int iPredictorOrdinate,
-		final int iOrder)
-		throws java.lang.Exception
+		final int predictorOrdinate,
+		final int order)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (iPredictorOrdinate))
-			throw new java.lang.Exception ("BasisSplineTermStructure::nodeDerivative => Invalid Inputs");
+		if (!NumberUtil.IsValid (predictorOrdinate)) {
+			throw new Exception ("BasisSplineTermStructure::nodeDerivative => Invalid Inputs");
+		}
 
-		double dblSpanLeft = _span.left();
+		double spanLeft = _span.left();
 
-		if (dblSpanLeft >= iPredictorOrdinate)
-			return _span.calcResponseValueDerivative (dblSpanLeft, iOrder);
+		if (spanLeft >= predictorOrdinate) {
+			return _span.calcResponseValueDerivative (spanLeft, order);
+		}
 
-		double dblSpanRight = _span.right();
+		double spanRight = _span.right();
 
-		if (dblSpanRight <= iPredictorOrdinate)
-			return _span.calcResponseValueDerivative (dblSpanRight, iOrder);
+		if (spanRight <= predictorOrdinate) {
+			return _span.calcResponseValueDerivative (spanRight, order);
+		}
 
-		return _span.calcResponseValueDerivative (iPredictorOrdinate, iOrder);
+		return _span.calcResponseValueDerivative (predictorOrdinate, order);
 	}
 }
