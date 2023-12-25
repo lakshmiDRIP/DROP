@@ -139,10 +139,10 @@ public class DeterministicCollateralChoiceDiscountCurve extends org.drip.state.d
 
 		if (0 == iNumCollateralizer) return _dcDomesticCollateralized.df (iDate);
 
-		if (iDate <= _iEpochDate) return 1.;
+		if (iDate <= _epochDate) return 1.;
 
 		double dblDF = 1.;
-		int iWorkoutDate = _iEpochDate;
+		int iWorkoutDate = _epochDate;
 
 		while (java.lang.Math.abs (iDate - iWorkoutDate) > _iDiscreteCollateralizationIncrement) {
 			int iWorkoutEndDate = iWorkoutDate + _iDiscreteCollateralizationIncrement;
@@ -184,7 +184,7 @@ public class DeterministicCollateralChoiceDiscountCurve extends org.drip.state.d
 		final int iDate2)
 		throws java.lang.Exception
 	{
-		if (iDate1 < _iEpochDate || iDate2 < _iEpochDate) return 0.;
+		if (iDate1 < _epochDate || iDate2 < _epochDate) return 0.;
 
 		return 365.25 / (iDate2 - iDate1) * java.lang.Math.log (df (iDate1) / df (iDate2));
 	}
@@ -193,9 +193,9 @@ public class DeterministicCollateralChoiceDiscountCurve extends org.drip.state.d
 		final int iDate)
 		throws java.lang.Exception
 	{
-		if (iDate < _iEpochDate) return 0.;
+		if (iDate < _epochDate) return 0.;
 
-		return -365.25 / (iDate - _iEpochDate) * java.lang.Math.log (df (iDate));
+		return -365.25 / (iDate - _epochDate) * java.lang.Math.log (df (iDate));
 	}
 
 	@Override public org.drip.state.forward.ForwardRateEstimator forwardRateEstimator (

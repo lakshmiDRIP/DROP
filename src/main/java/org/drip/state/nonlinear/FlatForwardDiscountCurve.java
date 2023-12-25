@@ -185,21 +185,21 @@ public class FlatForwardDiscountCurve extends ExplicitBootDiscountCurve
 	private FlatForwardDiscountCurve shiftManifestMeasure (
 		final double[] shiftArray)
 	{
-		if (!NumberUtil.IsValid (shiftArray) || null == _ccis) {
+		if (!NumberUtil.IsValid (shiftArray) || null == _curveConstructionInputSet) {
 			return null;
 		}
 
-		CalibratableComponent[] calibratableComponentArray = _ccis.components();
+		CalibratableComponent[] calibratableComponentArray = _curveConstructionInputSet.components();
 
-		ValuationParams valuationParams = _ccis.valuationParameter();
+		ValuationParams valuationParams = _curveConstructionInputSet.valuationParameter();
 
-		ValuationCustomizationParams valuationCustomizationParams = _ccis.quotingParameter();
+		ValuationCustomizationParams valuationCustomizationParams = _curveConstructionInputSet.quotingParameter();
 
-		CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>> quoteDoubleMap = _ccis.quoteMap();
+		CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>> quoteDoubleMap = _curveConstructionInputSet.quoteMap();
 
-		CaseInsensitiveTreeMap<String[]> measureArrayMap = _ccis.measures();
+		CaseInsensitiveTreeMap<String[]> measureArrayMap = _curveConstructionInputSet.measures();
 
-		LatentStateFixingsContainer latentStateFixingsContainer = _ccis.fixing();
+		LatentStateFixingsContainer latentStateFixingsContainer = _curveConstructionInputSet.fixing();
 
 		int calibratableComponentCount = calibratableComponentArray.length;
 
@@ -209,8 +209,8 @@ public class FlatForwardDiscountCurve extends ExplicitBootDiscountCurve
 
 		try {
 			FlatForwardDiscountCurve flatForwardDiscountCurve = new FlatForwardDiscountCurve (
-				new JulianDate (_iEpochDate),
-				_strCurrency,
+				new JulianDate (_epochDate),
+				_currency,
 				_dateArray,
 				_forwardRateArray,
 				_discreteCompounding,
@@ -318,8 +318,8 @@ public class FlatForwardDiscountCurve extends ExplicitBootDiscountCurve
 		super (flatForwardDiscountCurve.epoch().julian(), flatForwardDiscountCurve.currency());
 
 		_dateArray = flatForwardDiscountCurve._dateArray;
-		_iEpochDate = flatForwardDiscountCurve._iEpochDate;
-		_strCurrency = flatForwardDiscountCurve._strCurrency;
+		_epochDate = flatForwardDiscountCurve._epochDate;
+		_currency = flatForwardDiscountCurve._currency;
 		_forwardRateArray = flatForwardDiscountCurve._forwardRateArray;
 		_compoundingDayCount = flatForwardDiscountCurve._compoundingDayCount;
 		_discreteCompounding = flatForwardDiscountCurve._discreteCompounding;
@@ -385,13 +385,13 @@ public class FlatForwardDiscountCurve extends ExplicitBootDiscountCurve
 		final int date)
 		throws Exception
 	{
-		if (date <= _iEpochDate) {
+		if (date <= _epochDate) {
 			return 1.;
 		}
 
 		int i = 0;
 		double discountFactor = 1.;
-		int startDate = _iEpochDate;
+		int startDate = _epochDate;
 		double exponentArgument = 0.;
 		int dateArrayCount = _dateArray.length;
 
@@ -422,7 +422,7 @@ public class FlatForwardDiscountCurve extends ExplicitBootDiscountCurve
 		}
 
 		return (_discreteCompounding ? discountFactor : Math.exp (exponentArgument)) * turnAdjust (
-			_iEpochDate,
+			_epochDate,
 			date
 		);
 	}
@@ -464,11 +464,11 @@ public class FlatForwardDiscountCurve extends ExplicitBootDiscountCurve
 		final String manifestMeasure,
 		final double shift)
 	{
-		if (!NumberUtil.IsValid (shift) || null == _ccis) {
+		if (!NumberUtil.IsValid (shift) || null == _curveConstructionInputSet) {
 			return null;
 		}
 
-		CalibratableComponent[] calibratableComponentArray = _ccis.components();
+		CalibratableComponent[] calibratableComponentArray = _curveConstructionInputSet.components();
 
 		int calibratableComponentCount = calibratableComponentArray.length;
 		double[] shiftArray = new double[calibratableComponentCount];
@@ -485,11 +485,11 @@ public class FlatForwardDiscountCurve extends ExplicitBootDiscountCurve
 		final String manifestMeasure,
 		final double shift)
 	{
-		if (!NumberUtil.IsValid (shift) || null == _ccis) {
+		if (!NumberUtil.IsValid (shift) || null == _curveConstructionInputSet) {
 			return null;
 		}
 
-		CalibratableComponent[] calibratableComponentArray = _ccis.components();
+		CalibratableComponent[] calibratableComponentArray = _curveConstructionInputSet.components();
 
 		int calibratableComponentCount = calibratableComponentArray.length;
 		double[] shiftArray = new double[calibratableComponentCount];
@@ -528,8 +528,8 @@ public class FlatForwardDiscountCurve extends ExplicitBootDiscountCurve
 
 		try {
 			return new FlatForwardDiscountCurve (
-				new JulianDate (_iEpochDate),
-				_strCurrency,
+				new JulianDate (_epochDate),
+				_currency,
 				_dateArray,
 				forwardRateArray,
 				_discreteCompounding,
@@ -548,8 +548,8 @@ public class FlatForwardDiscountCurve extends ExplicitBootDiscountCurve
 	{
 		try {
 			return new FlatForwardDiscountCurve (
-				new JulianDate (_iEpochDate),
-				_strCurrency,
+				new JulianDate (_epochDate),
+				_currency,
 				_dateArray,
 				Helper.TweakManifestMeasure (_forwardRateArray, manifestMeasureTweak),
 				_discreteCompounding,
@@ -585,8 +585,8 @@ public class FlatForwardDiscountCurve extends ExplicitBootDiscountCurve
 			}
 
 			return new FlatForwardDiscountCurve (
-				new JulianDate (_iEpochDate),
-				_strCurrency,
+				new JulianDate (_epochDate),
+				_currency,
 				dateArray,
 				shiftedRateArray,
 				_discreteCompounding,
@@ -614,7 +614,7 @@ public class FlatForwardDiscountCurve extends ExplicitBootDiscountCurve
 		}
 
 		int i = 0;
-		double startDate = _iEpochDate;
+		double startDate = _epochDate;
 		double discountFactor = Double.NaN;
 		WengertJacobian wengertJacobian = null;
 
@@ -626,7 +626,7 @@ public class FlatForwardDiscountCurve extends ExplicitBootDiscountCurve
 			return null;
 		}
 
-		if (date <= _iEpochDate) {
+		if (date <= _epochDate) {
 			return wengertJacobian.setWengert (0, 0.) ? wengertJacobian : null;
 		}
 

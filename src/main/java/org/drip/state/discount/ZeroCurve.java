@@ -1,11 +1,16 @@
 
 package org.drip.state.discount;
 
+import org.drip.analytics.date.JulianDate;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -88,54 +93,61 @@ package org.drip.state.discount;
  * curve functionality that it automatically provides by extension, it provides the functionality to
  * calculate the zero rate.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/discount/README.md">Discount Curve Spline Latent State</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/discount/README.md">Discount Curve Spline Latent State</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ZeroCurve extends org.drip.state.discount.DiscountCurve {
-	private int _iEpochDate = -1;
-	private java.lang.String _strCurrency = "";
+public abstract class ZeroCurve extends DiscountCurve
+{
+	private int _epochDate = -1;
+	private String _currency = "";
 
 	protected ZeroCurve (
-		final int iEpochDate,
-		final java.lang.String strCurrency)
-		throws java.lang.Exception
+		final int epochDate,
+		final String currency)
+		throws Exception
 	{
-		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty())
-			throw new java.lang.Exception ("ZeroCurve Constructor => Invalid Inputs!");
+		if (null == (_currency = currency) || _currency.isEmpty()) {
+			throw new Exception ("ZeroCurve Constructor => Invalid Inputs!");
+		}
 
-		_iEpochDate = iEpochDate;
+		_epochDate = epochDate;
 	}
 
-	@Override public org.drip.analytics.date.JulianDate epoch()
+	@Override public JulianDate epoch()
 	{
-		return new org.drip.analytics.date.JulianDate (_iEpochDate);
+		return new JulianDate (_epochDate);
 	}
 
-	@Override public java.lang.String currency()
+	@Override public String currency()
 	{
-		return _strCurrency;
+		return _currency;
 	}
 
 	/**
 	 * Retrieve the zero rate corresponding to the given date
 	 * 
-	 * @param iDate Date for which the zero rate is requested
+	 * @param date Date for which the zero rate is requested
 	 * 
 	 * @return Zero Rate
 	 * 
-	 * @throws java.lang.Exception Thrown if the date is not represented in the map
+	 * @throws Exception Thrown if the date is not represented in the map
 	 */
 
 	public abstract double zeroRate (
-		final int iDate)
-		throws java.lang.Exception;
+		final int date)
+		throws Exception;
 }

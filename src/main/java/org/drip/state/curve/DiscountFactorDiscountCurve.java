@@ -296,7 +296,7 @@ public class DiscountFactorDiscountCurve extends org.drip.state.discount.MergedD
 		if (null == aCC) return null;
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>
-			mapQuote = _ccis.quoteMap();
+			mapQuote = _curveConstructionInputSet.quoteMap();
 
 		int iNumComp = aCC.length;
 		double[] adblQuote = new double[iNumComp];
@@ -331,16 +331,16 @@ public class DiscountFactorDiscountCurve extends org.drip.state.discount.MergedD
 
 	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
 	{
-		return null == _ccis ? null : _ccis.components();
+		return null == _curveConstructionInputSet ? null : _curveConstructionInputSet.components();
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> manifestMeasure (
 		final java.lang.String strInstrumentCode)
 	{
-		if (null == _ccis) return null;
+		if (null == _curveConstructionInputSet) return null;
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>
-			mapQuote = _ccis.quoteMap();
+			mapQuote = _curveConstructionInputSet.quoteMap();
 
 		if (null == mapQuote || !mapQuote.containsKey (strInstrumentCode)) return null;
 

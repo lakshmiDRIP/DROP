@@ -143,21 +143,21 @@ public abstract class ExplicitBootDiscountCurve extends org.drip.state.discount.
 	@Override public boolean setCCIS (
 		final org.drip.analytics.input.CurveConstructionInputSet ccis)
 	{
-		return null != (_ccis = ccis);
+		return null != (_curveConstructionInputSet = ccis);
 	}
 
 	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
 	{
-		return null == _ccis ? null : _ccis.components();
+		return null == _curveConstructionInputSet ? null : _curveConstructionInputSet.components();
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> manifestMeasure (
 		final java.lang.String strInstrumentCode)
 	{
-		if (null == _ccis) return null;
+		if (null == _curveConstructionInputSet) return null;
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>
-			mapQuote = _ccis.quoteMap();
+			mapQuote = _curveConstructionInputSet.quoteMap();
 
 		if (null == mapQuote || !mapQuote.containsKey (strInstrumentCode)) return null;
 

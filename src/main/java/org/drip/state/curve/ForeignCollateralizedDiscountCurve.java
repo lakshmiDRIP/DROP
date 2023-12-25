@@ -140,9 +140,9 @@ public class ForeignCollateralizedDiscountCurve extends org.drip.state.discount.
 		final int iDate)
 		throws java.lang.Exception
 	{
-		return iDate <= _iEpochDate ? 1. : _dcCollateralForeign.df (iDate) * _fxForward.fx (iDate) *
+		return iDate <= _epochDate ? 1. : _dcCollateralForeign.df (iDate) * _fxForward.fx (iDate) *
 			java.lang.Math.exp (-1. * org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto
-				(_vcFX, _vcCollateralForeign, _r1r1CollateralForeignFXCorrelation, _iEpochDate, iDate));
+				(_vcFX, _vcCollateralForeign, _r1r1CollateralForeignFXCorrelation, _epochDate, iDate));
 	}
 
 	@Override public double forward (
@@ -150,7 +150,7 @@ public class ForeignCollateralizedDiscountCurve extends org.drip.state.discount.
 		final int iDate2)
 		throws java.lang.Exception
 	{
-		if (iDate1 < _iEpochDate || iDate2 < _iEpochDate) return 0.;
+		if (iDate1 < _epochDate || iDate2 < _epochDate) return 0.;
 
 		return 365.25 / (iDate2 - iDate1) * java.lang.Math.log (df (iDate1) / df (iDate2));
 	}
@@ -159,9 +159,9 @@ public class ForeignCollateralizedDiscountCurve extends org.drip.state.discount.
 		final int iDate)
 		throws java.lang.Exception
 	{
-		if (iDate < _iEpochDate) return 0.;
+		if (iDate < _epochDate) return 0.;
 
-		return -365.25 / (iDate - _iEpochDate) * java.lang.Math.log (df (iDate));
+		return -365.25 / (iDate - _epochDate) * java.lang.Math.log (df (iDate));
 	}
 
 	@Override public org.drip.state.forward.ForwardRateEstimator forwardRateEstimator (
