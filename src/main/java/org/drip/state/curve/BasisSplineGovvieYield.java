@@ -1,11 +1,20 @@
 
 package org.drip.state.curve;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.numerical.differentiation.WengertJacobian;
+import org.drip.spline.grid.Span;
+import org.drip.state.govvie.GovvieCurve;
+import org.drip.state.nonlinear.FlatForwardDiscountCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,108 +92,127 @@ package org.drip.state.curve;
 
 /**
  * <i>BasisSplineGovvieYield</i> manages the Basis Spline Latent State, using the Basis as the State Response
- * Representation, for the Govvie Curve with Yield Quantification Metric.
+ * 	Representation, for the Govvie Curve with Yield Quantification Metric. It exports the following
+ *  functionality:
  *
- *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></li>
+ *  	<li><i>BasisSplineGovvieYield</i> Constructor</li>
+ *  	<li>Construct a Flat Forward Instance of the Curve at the specified Date Nodes</li>
+ *  	<li>Construct a Flat Forward Instance of the Curve at the specified Date Node Tenors</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BasisSplineGovvieYield extends org.drip.state.govvie.GovvieCurve {
-	private org.drip.spline.grid.Span _span = null;
+public class BasisSplineGovvieYield extends GovvieCurve
+{
+	private Span _span = null;
 
 	/**
-	 * BasisSplineGovvieYield Constructor
+	 * <i>BasisSplineGovvieYield</i> Constructor
 	 * 
-	 * @param strTreasuryCode Treasury Code
-	 * @param strCurrency Currency
+	 * @param treasuryCode Treasury Code
+	 * @param currency Currency
 	 * @param span Govvie Curve Span
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BasisSplineGovvieYield (
-		final java.lang.String strTreasuryCode,
-		final java.lang.String strCurrency,
-		final org.drip.spline.grid.Span span)
-		throws java.lang.Exception
+		final String treasuryCode,
+		final String currency,
+		final Span span)
+		throws Exception
 	{
-		super ((int) span.left(), strTreasuryCode, strCurrency);
+		super ((int) span.left(), treasuryCode, currency);
 
 		_span = span;
 	}
 
 	@Override public double yld (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		double dblSpanLeft = _span.left();
+		double spanLeft = _span.left();
 
-		if (iDate <= dblSpanLeft) return _span.calcResponseValue (dblSpanLeft);
+		if (date <= spanLeft) {
+			return _span.calcResponseValue (spanLeft);
+		}
 
-		double dblSpanRight = _span.right();
+		double spanRight = _span.right();
 
-		if (iDate >= dblSpanRight) return _span.calcResponseValue (dblSpanRight);
+		if (date >= spanRight) {
+			return _span.calcResponseValue (spanRight);
+		}
 
-		return _span.calcResponseValue (iDate);
+		return _span.calcResponseValue (date);
 	}
 
-	@Override public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final int iDate)
+	@Override public WengertJacobian jackDForwardDManifestMeasure (
+		final String manifestMeasure,
+		final int date)
 	{
-		return _span.jackDResponseDManifestMeasure (strManifestMeasure, iDate, 1);
+		return _span.jackDResponseDManifestMeasure (manifestMeasure, date, 1);
 	}
 
 	/**
 	 * Construct a Flat Forward Instance of the Curve at the specified Date Nodes
 	 * 
-	 * @param aiDate Array of Date Nodes
+	 * @param dateArray Array of Date Nodes
 	 * 
 	 * @return The Flat Forward Instance
 	 */
 
-	public org.drip.state.nonlinear.FlatForwardDiscountCurve flatForward (
-		final int[] aiDate)
+	public FlatForwardDiscountCurve flatForward (
+		final int[] dateArray)
 	{
-		return flatForward (dayCount(), freq(), aiDate);
+		return flatForward (dayCount(), freq(), dateArray);
 	}
 
 	/**
 	 * Construct a Flat Forward Instance of the Curve at the specified Date Node Tenors
 	 * 
-	 * @param astrTenor Array of Date Node Tenors
+	 * @param tenorArray Array of Date Node Tenors
 	 * 
 	 * @return The Flat Forward Instance
 	 */
 
-	public org.drip.state.nonlinear.FlatForwardDiscountCurve flatForward (
-		final java.lang.String[] astrTenor)
+	public FlatForwardDiscountCurve flatForward (
+		final String[] tenorArray)
 	{
-		if (null == astrTenor) return null;
+		if (null == tenorArray) {
+			return null;
+		}
 
-		int iNumTenor = astrTenor.length;
-		int[] aiDate = 0 == iNumTenor ? null : new int[iNumTenor];
+		int tenorCount = tenorArray.length;
+		int[] dateArray = 0 == tenorCount ? null : new int[tenorCount];
 
-		org.drip.analytics.date.JulianDate dtEpoch = epoch();
+		JulianDate epochDate = epoch();
 
-		for (int i = 0; i < iNumTenor; ++i) {
+		for (int tenorIndex = 0; tenorIndex < tenorCount; ++tenorIndex) {
 			try {
-				aiDate[i] = dtEpoch.addTenor (astrTenor[i]).julian();
-			} catch (java.lang.Exception e) {
+				dateArray[tenorIndex] = epochDate.addTenor (tenorArray[tenorIndex]).julian();
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return flatForward (dayCount(), freq(), aiDate);
+		return flatForward (dayCount(), freq(), dateArray);
 	}
 }

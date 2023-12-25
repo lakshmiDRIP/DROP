@@ -1,8 +1,11 @@
 
 package org.drip.state.curve;
 
+import org.drip.numerical.differentiation.WengertJacobian;
+import org.drip.spline.grid.OverlappingStretchSpan;
 import org.drip.spline.grid.Span;
 import org.drip.state.forward.ForwardCurve;
+import org.drip.state.identifier.ForwardLabel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -121,41 +124,45 @@ public class BasisSplineForwardRate extends ForwardCurve {
 	/**
 	 * BasisSplineForwardRate constructor
 	 * 
-	 * @param fri The Floating Rate Index
+	 * @param forwardLabel The Floating Rate Index Forward Label
 	 * @param span The Span over which the Forward Rate Representation is valid
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BasisSplineForwardRate (
-		final org.drip.state.identifier.ForwardLabel fri,
-		final org.drip.spline.grid.OverlappingStretchSpan span)
-		throws java.lang.Exception
+		final ForwardLabel forwardLabel,
+		final OverlappingStretchSpan span)
+		throws Exception
 	{
-		super ((int) span.left(), fri);
+		super ((int) span.left(), forwardLabel);
 
 		_span = span;
 	}
 
 	@Override public double forward (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		double dblSpanLeft = _span.left();
+		double spanLeft = _span.left();
 
-		if (iDate <= dblSpanLeft) return _span.calcResponseValue (dblSpanLeft);
+		if (date <= spanLeft) {
+			return _span.calcResponseValue (spanLeft);
+		}
 
-		double dblSpanRight = _span.right();
+		double spanRight = _span.right();
 
-		if (iDate >= dblSpanRight) return _span.calcResponseValue (dblSpanRight);
+		if (date >= spanRight) {
+			return _span.calcResponseValue (spanRight);
+		}
 
-		return _span.calcResponseValue (iDate);
+		return _span.calcResponseValue (date);
 	}
 
-	@Override public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final int iDate)
+	@Override public WengertJacobian jackDForwardDManifestMeasure (
+		final String manifestMeasure,
+		final int date)
 	{
-		return _span.jackDResponseDManifestMeasure (strManifestMeasure, iDate, 1);
+		return _span.jackDResponseDManifestMeasure (manifestMeasure, date, 1);
 	}
 }

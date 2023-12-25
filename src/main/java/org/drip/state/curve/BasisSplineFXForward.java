@@ -1,11 +1,25 @@
 
 package org.drip.state.curve;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.numerical.differentiation.WengertJacobian;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.fx.FXForwardComponent;
+import org.drip.product.params.CurrencyPair;
+import org.drip.service.common.StringUtil;
+import org.drip.spline.grid.Span;
+import org.drip.state.creator.ScenarioDiscountCurveBuilder;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.fx.FXCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,72 +97,96 @@ package org.drip.state.curve;
 
 /**
  * <i>BasisSplineFXForward</i> manages the Basis Latent State, using the Basis as the State Response
- * Representation.
+ * Representation. It exports the following functionality:
  *
- *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></li>
+ *  	<li><i>BasisSplineFXForward</i> Constructor</li>
+ *  	<li>Retrieve the FX Spot</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BasisSplineFXForward extends org.drip.state.fx.FXCurve {
-	private org.drip.spline.grid.Span _span = null;
-	private double _dblFXSpot = java.lang.Double.NaN;
+public class BasisSplineFXForward extends FXCurve
+{
+	private Span _span = null;
+	private double _fxSpot = Double.NaN;
 
 	private double nodeBasis (
-		final int iNodeDate,
-		final org.drip.param.valuation.ValuationParams valParam,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcNum,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcDenom,
-		final boolean bBasisOnDenom)
-		throws java.lang.Exception
+		final int nodeDate,
+		final ValuationParams valuationParams,
+		final MergedDiscountForwardCurve numeratorDiscountCurve,
+		final MergedDiscountForwardCurve denominatorDiscountCurve,
+		final boolean basisOnDenominator)
+		throws Exception
 	{
-		return new org.drip.product.fx.FXForwardComponent ("FXFWD_" +
-			org.drip.service.common.StringUtil.GUID(), currencyPair(), epoch().julian(), iNodeDate, 1.,
-				null).discountCurveBasis (valParam, dcNum, dcDenom, _dblFXSpot, fx (iNodeDate),
-					bBasisOnDenom);
+		return new FXForwardComponent (
+			"FXFWD_" + StringUtil.GUID(),
+			currencyPair(),
+			epoch().julian(),
+			nodeDate,
+			1.,
+			null
+		).discountCurveBasis (
+			valuationParams,
+			numeratorDiscountCurve,
+			denominatorDiscountCurve,
+			_fxSpot,
+			fx (nodeDate),
+			basisOnDenominator
+		);
 	}
 
 	/**
 	 * BasisSplineFXForward constructor
 	 * 
-	 * @param cp The Currency Pair
+	 * @param currencyPair The Currency Pair
 	 * @param span The Span over which the Basis Representation is valid
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BasisSplineFXForward (
-		final org.drip.product.params.CurrencyPair cp,
-		final org.drip.spline.grid.Span span)
-		throws java.lang.Exception
+		final CurrencyPair currencyPair,
+		final Span span)
+		throws Exception
 	{
-		super ((int) span.left(), cp);
+		super ((int) span.left(), currencyPair);
 
-		_span = span;
-
-		_dblFXSpot = _span.calcResponseValue (_span.left());
+		_fxSpot = (_span = span).calcResponseValue (_span.left());
 	}
 
 	@Override public double fx (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
-		double dblSpanLeft = _span.left();
+		double spanLeft = _span.left();
 
-		if (iDate <= dblSpanLeft) return _span.calcResponseValue (dblSpanLeft);
+		if (date <= spanLeft) {
+			return _span.calcResponseValue (spanLeft);
+		}
 
-		double dblSpanRight = _span.right();
+		double spanRight = _span.right();
 
-		if (iDate >= dblSpanRight) return _span.calcResponseValue (dblSpanRight);
+		if (date >= spanRight) {
+			return _span.calcResponseValue (spanRight);
+		}
 
-		return _span.calcResponseValue (iDate);
+		return _span.calcResponseValue (date);
 	}
 
 	/**
@@ -159,130 +197,172 @@ public class BasisSplineFXForward extends org.drip.state.fx.FXCurve {
 
 	public double fxSpot()
 	{
-		return _dblFXSpot;
+		return _fxSpot;
 	}
 
 	@Override public double[] zeroBasis (
-		final int[] aiDateNode,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcNum,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcDenom,
-		final boolean bBasisOnDenom)
+		final int[] nodeDateArray,
+		final ValuationParams valuationParams,
+		final MergedDiscountForwardCurve numeratorDiscountCurve,
+		final MergedDiscountForwardCurve denominatorDiscountCurve,
+		final boolean basisOnDenominator)
 	{
-		if (null == aiDateNode) return null;
+		if (null == nodeDateArray) {
+			return null;
+		}
 
-		int iNumBasis = aiDateNode.length;
-		double[] adblBasis = new double[iNumBasis];
+		int nodeCount = nodeDateArray.length;
+		double[] basisArray = new double[nodeCount];
 
-		if (0 == iNumBasis) return null;
+		if (0 == nodeCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumBasis; ++i) {
+		for (int nodeIndex = 0; nodeIndex < nodeCount; ++nodeIndex) {
 			try {
-				adblBasis[i] = nodeBasis (aiDateNode[i], valParams, dcNum, dcDenom, bBasisOnDenom);
-			} catch (java.lang.Exception e) {
+				basisArray[nodeIndex] = nodeBasis (
+					nodeDateArray[nodeIndex],
+					valuationParams,
+					numeratorDiscountCurve,
+					denominatorDiscountCurve,
+					basisOnDenominator
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return adblBasis;
+		return basisArray;
 	}
 
 	@Override public double[] bootstrapBasis (
-		final int[] aiDateNode,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcNum,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcDenom,
-		final boolean bBasisOnDenom)
+		final int[] nodeDateArray,
+		final ValuationParams valuationParams,
+		final MergedDiscountForwardCurve numeratorDiscountCurve,
+		final MergedDiscountForwardCurve denominatorDiscountCurve,
+		final boolean basisOnDenominator)
 	{
-		if (null == aiDateNode) return null;
+		if (null == nodeDateArray) {
+			return null;
+		}
 
-		int iNumBasis = aiDateNode.length;
-		double[] adblBasis = new double[iNumBasis];
-		org.drip.state.discount.MergedDiscountForwardCurve dcBasis = bBasisOnDenom ? dcDenom : dcNum;
+		int nodeCount = nodeDateArray.length;
+		double[] basisArray = new double[nodeCount];
+		MergedDiscountForwardCurve basisDiscountCurve = basisOnDenominator ? denominatorDiscountCurve :
+			numeratorDiscountCurve;
 
-		if (0 == iNumBasis || null == dcBasis) return null;
+		if (0 == nodeCount || null == basisDiscountCurve) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumBasis; ++i) {
+		for (int nodeIndex = 0; nodeIndex < nodeCount; ++nodeIndex) {
 			try {
-				if (bBasisOnDenom)
-					adblBasis[i] = nodeBasis (aiDateNode[i], valParams, dcNum, dcBasis, true);
-				else
-					adblBasis[i] = nodeBasis (aiDateNode[i], valParams, dcBasis, dcDenom, false);
-			} catch (java.lang.Exception e) {
+				basisArray[nodeIndex] = nodeBasis (
+					nodeDateArray[nodeIndex],
+					valuationParams,
+					basisOnDenominator ? numeratorDiscountCurve : basisDiscountCurve,
+					basisOnDenominator ? basisDiscountCurve : denominatorDiscountCurve,
+					true
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return adblBasis;
+		return basisArray;
 	}
 
 	@Override public double[] impliedNodeRates (
-		final int[] aiDateNode,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcNum,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcDenom,
-		final boolean bBasisOnDenom)
+		final int[] nodeDateArray,
+		final ValuationParams valuationParams,
+		final MergedDiscountForwardCurve numeratorDiscountCurve,
+		final MergedDiscountForwardCurve denominatorDiscountCurve,
+		final boolean basisOnDenominator)
 	{
-		if (null == aiDateNode) return null;
+		if (null == nodeDateArray) {
+			return null;
+		}
 
-		int iNumBasis = aiDateNode.length;
-		double[] adblImpliedNodeRate = new double[iNumBasis];
+		int nodeCount = nodeDateArray.length;
+		double[] impliedNodeRateArray = new double[nodeCount];
 
-		if (0 == iNumBasis) return null;
+		if (0 == nodeCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumBasis; ++i) {
+		for (int nodeIndex = 0; nodeIndex < nodeCount; ++nodeIndex) {
 			try {
-				double dblBaseImpliedRate = java.lang.Double.NaN;
-
-				if (bBasisOnDenom)
-					dblBaseImpliedRate = dcNum.zero (aiDateNode[i]);
-				else
-					dblBaseImpliedRate = dcDenom.zero (aiDateNode[i]);
-
-				adblImpliedNodeRate[i] = dblBaseImpliedRate + nodeBasis (i,	valParams, dcNum, dcDenom,
-					bBasisOnDenom);
-			} catch (java.lang.Exception e) {
+				impliedNodeRateArray[nodeIndex] = (
+					basisOnDenominator ? numeratorDiscountCurve.zero (nodeDateArray[nodeIndex]) :
+					denominatorDiscountCurve.zero (nodeDateArray[nodeIndex])
+				) + nodeBasis (
+					nodeIndex,
+					valuationParams,
+					numeratorDiscountCurve,
+					denominatorDiscountCurve,
+					basisOnDenominator
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 
-		return adblImpliedNodeRate;
+		return impliedNodeRateArray;
 	}
 
-	@Override public org.drip.state.discount.MergedDiscountForwardCurve bootstrapBasisDC (
-		final int[] aiDateNode,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcNum,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcDenom,
-		final boolean bBasisOnDenom)
+	@Override public MergedDiscountForwardCurve bootstrapBasisDC (
+		final int[] nodeDateArray,
+		final ValuationParams valuationParams,
+		final MergedDiscountForwardCurve numeratorDiscountCurve,
+		final MergedDiscountForwardCurve denominatorDiscountCurve,
+		final boolean basisOnDenominator)
 	{
-		double[] adblImpliedRate = impliedNodeRates (aiDateNode, valParams, dcNum, dcDenom, bBasisOnDenom);
+		double[] impliedRateArray = impliedNodeRates (
+			nodeDateArray,
+			valuationParams,
+			numeratorDiscountCurve,
+			denominatorDiscountCurve,
+			basisOnDenominator
+		);
 
-		if (null == adblImpliedRate) return null;
+		if (null == impliedRateArray) {
+			return null;
+		}
 
-		int iNumDF = adblImpliedRate.length;
-		double[] adblDF = new double[iNumDF];
-		org.drip.state.discount.MergedDiscountForwardCurve dc = bBasisOnDenom ? dcDenom : dcNum;
+		int impliedRateArrayCount = impliedRateArray.length;
+		double[] discountFactorArray = new double[impliedRateArrayCount];
+		MergedDiscountForwardCurve discountCurve = basisOnDenominator ? denominatorDiscountCurve :
+			numeratorDiscountCurve;
 
-		if (0 == iNumDF) return null;
+		if (0 == impliedRateArrayCount) {
+			return null;
+		}
 
-		int iSpotDate = valParams.valueDate();
+		int spotDate = valuationParams.valueDate();
 
-		java.lang.String strCurrency = dc.currency();
+		String currency = discountCurve.currency();
 
-		for (int i = 0; i < iNumDF; ++i)
-			adblDF[i] = java.lang.Math.exp (-1. * adblImpliedRate[i] * (aiDateNode[i] - iSpotDate) /
-				365.25);
+		for (int impliedRateArrayIndex = 0; impliedRateArrayIndex < impliedRateArrayCount;
+			++impliedRateArrayIndex) {
+			discountFactorArray[impliedRateArrayIndex] = Math.exp (
+				-1. * impliedRateArray[impliedRateArrayIndex] *
+					(nodeDateArray[impliedRateArrayIndex] - spotDate) / 365.25
+			);
+		}
 
 		try {
-			return org.drip.state.creator.ScenarioDiscountCurveBuilder.CubicPolynomialDiscountCurve
-				(strCurrency + "::BASIS", new org.drip.analytics.date.JulianDate (iSpotDate), strCurrency,
-					aiDateNode, adblDF);
-		} catch (java.lang.Exception e) {
+			return ScenarioDiscountCurveBuilder.CubicPolynomialDiscountCurve (
+				currency + "::BASIS",
+				new JulianDate (spotDate),
+				currency,
+				nodeDateArray,
+				discountFactorArray
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -290,27 +370,33 @@ public class BasisSplineFXForward extends org.drip.state.fx.FXCurve {
 	}
 
 	@Override public double rate (
-		final int[] aiDateNode,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcNum,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcDenom,
-		final int iDate,
-		final boolean bBasisOnDenom)
-		throws java.lang.Exception
+		final int[] nodeDateArray,
+		final ValuationParams valuationParams,
+		final MergedDiscountForwardCurve numeratorDiscountCurve,
+		final MergedDiscountForwardCurve denominatorDiscountCurve,
+		final int date,
+		final boolean basisOnDenominator)
+		throws Exception
 	{
-		org.drip.state.discount.MergedDiscountForwardCurve dcImplied = bootstrapBasisDC (aiDateNode, valParams, dcNum,
-			dcDenom, bBasisOnDenom);
+		MergedDiscountForwardCurve impliedDiscountCurve = bootstrapBasisDC (
+			nodeDateArray,
+			valuationParams,
+			numeratorDiscountCurve,
+			denominatorDiscountCurve,
+			basisOnDenominator
+		);
 
-		if (null == dcImplied)
-			throw new java.lang.Exception ("BasisSplineFXForward::rate: Cannot imply basis DC!");
+		if (null == impliedDiscountCurve) {
+			throw new Exception ("BasisSplineFXForward::rate: Cannot imply basis DC!");
+		}
 
-		return dcImplied.zero (iDate);
+		return impliedDiscountCurve.zero (date);
 	}
 
-	@Override public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final int iDate)
+	@Override public WengertJacobian jackDForwardDManifestMeasure (
+		final String manifestMeasure,
+		final int date)
 	{
-		return _span.jackDResponseDManifestMeasure (strManifestMeasure, iDate, 1);
+		return _span.jackDResponseDManifestMeasure (manifestMeasure, date, 1);
 	}
 }

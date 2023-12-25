@@ -1,11 +1,19 @@
 
 package org.drip.state.curve;
 
+import org.drip.analytics.definition.MarketSurface;
+import org.drip.analytics.definition.NodeStructure;
+import org.drip.spline.multidimensional.WireSurfaceStretch;
+import org.drip.state.identifier.CustomLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -85,60 +93,69 @@ package org.drip.state.curve;
  * <i>BasisSplineMarketSurface</i> implements the Market surface that holds the latent state Dynamics
  * parameters.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/curve/README.md">Basis Spline Based Latent States</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BasisSplineMarketSurface extends org.drip.analytics.definition.MarketSurface {
-	private org.drip.spline.multidimensional.WireSurfaceStretch _wss = null;
+public class BasisSplineMarketSurface extends MarketSurface
+{
+	private WireSurfaceStretch _wireSurfaceStretch = null;
 
 	/**
 	 * BasisSplineMarketSurface Constructor
 	 * 
-	 * @param iEpochDate The Starting Date
-	 * @param label The Spline Market Surface Latent State Label
-	 * @param strCurrency The Currency
-	 * @param wss Wire Surface Stretch Instance
+	 * @param epochDate The Starting Date
+	 * @param customLabel The Spline Market Surface Latent State Label
+	 * @param currency The Currency
+	 * @param wireSurfaceStretch Wire Surface Stretch Instance
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BasisSplineMarketSurface (
-		final int iEpochDate,
-		final org.drip.state.identifier.CustomLabel label,
-		final java.lang.String strCurrency,
-		final org.drip.spline.multidimensional.WireSurfaceStretch wss)
-		throws java.lang.Exception
+		final int epochDate,
+		final CustomLabel customLabel,
+		final String currency,
+		final WireSurfaceStretch wireSurfaceStretch)
+		throws Exception
 	{
-		super (iEpochDate, label, strCurrency);
+		super (epochDate, customLabel, currency);
 
-		_wss = wss;
+		_wireSurfaceStretch = wireSurfaceStretch;
 	}
 
 	@Override public double node (
-		final double dblStrike,
-		final double dblDate)
-		throws java.lang.Exception
+		final double strike,
+		final double date)
+		throws Exception
 	{
-		return _wss.responseValue (dblStrike, dblDate);
+		return _wireSurfaceStretch.responseValue (strike, date);
 	}
 
-	@Override public org.drip.analytics.definition.NodeStructure xAnchorTermStructure (
-		final double dblStrikeAnchor)
+	@Override public NodeStructure xAnchorTermStructure (
+		final double strikeAnchor)
 	{
 		try {
-			return new BasisSplineTermStructure (epoch().julian(),
-				org.drip.state.identifier.CustomLabel.Standard (label() + "_" + dblStrikeAnchor),
-					currency(), _wss.wireSpanXAnchor (dblStrikeAnchor));
-		} catch (java.lang.Exception e) {
+			return new BasisSplineTermStructure (
+				epoch().julian(),
+				CustomLabel.Standard (label() + "_" + strikeAnchor),
+				currency(),
+				_wireSurfaceStretch.wireSpanXAnchor (strikeAnchor)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -152,7 +169,7 @@ public class BasisSplineMarketSurface extends org.drip.analytics.definition.Mark
 			return new BasisSplineTermStructure (epoch().julian(),
 				org.drip.state.identifier.CustomLabel.Standard (label() + "_" + new
 					org.drip.analytics.date.JulianDate ((int) dblMaturityDateAnchor)), currency(),
-						_wss.wireSpanYAnchor (dblMaturityDateAnchor));
+				_wireSurfaceStretch.wireSpanYAnchor (dblMaturityDateAnchor));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
