@@ -1,11 +1,17 @@
 
 package org.drip.state.csa;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,26 +84,37 @@ package org.drip.state.csa;
  */
 
 /**
- * <i>MultilateralBasisCurve</i> implements the CSA Cash Rate Curve as a Basis over an Overnight Curve.
+ * <i>MultilateralBasisCurve</i> implements the CSA Cash Rate Curve as a Basis over an Overnight Curve. It
+ *  exports the following Functionality:
  *
- *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/csa/README.md">Credit Support Annex Latent State</a></li>
+ *  	<li>Retrieve the Overnight Curve</li>
+ *  	<li>Retrieve the Basis to the Overnight Curve</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/ca/README.md">Credit Support Annex Latent State</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MultilateralBasisCurve implements org.drip.state.csa.CashFlowEstimator
+public class MultilateralBasisCurve implements CashFlowEstimator
 {
 	private static final int NUM_DF_QUADRATURES = 5;
 
-	private double _dblBasis = java.lang.Double.NaN;
-	private org.drip.state.discount.MergedDiscountForwardCurve _mdfcOvernight = null;
+	private double _basis = Double.NaN;
+	private MergedDiscountForwardCurve _overnightMergedDiscountForwardCurve = null;
 
 	/**
 	 * Retrieve the Overnight Curve
@@ -105,9 +122,9 @@ public class MultilateralBasisCurve implements org.drip.state.csa.CashFlowEstima
 	 * @return The Overnight Curve
 	 */
 
-	public org.drip.state.discount.MergedDiscountForwardCurve overnightCurve()
+	public MergedDiscountForwardCurve overnightCurve()
 	{
-		return _mdfcOvernight;
+		return _overnightMergedDiscountForwardCurve;
 	}
 
 	/**
@@ -118,158 +135,158 @@ public class MultilateralBasisCurve implements org.drip.state.csa.CashFlowEstima
 
 	public double basis()
 	{
-		return _dblBasis;
+		return _basis;
 	}
 
-	@Override public org.drip.analytics.date.JulianDate epoch()
+	@Override public JulianDate epoch()
 	{
-		return _mdfcOvernight.epoch();
+		return _overnightMergedDiscountForwardCurve.epoch();
 	}
 
 	@Override public double df (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
 		int iEpochDate = epoch().julian();
 
-		if (iEpochDate >= iDate)
-			throw new java.lang.Exception ("MultilateralBasisCurve::df => Invalid Inputs");
-
-		return _mdfcOvernight.df (iDate) * java.lang.Math.exp (_dblBasis * (iEpochDate - iDate) / 365.25);
-	}
-
-	@Override public double df (
-		final org.drip.analytics.date.JulianDate dt)
-		throws java.lang.Exception
-	{
-		if (null == dt) throw new java.lang.Exception ("MultilateralBasisCurve::df => Invalid Inputs");
-
-		return df (dt.julian());
-	}
-
-	@Override public double df (
-		final java.lang.String strTenor)
-		throws java.lang.Exception
-	{
-		return df (epoch().addTenor (strTenor));
-	}
-
-	@Override public double effectiveDF (
-		final int iDate1,
-		final int iDate2)
-		throws java.lang.Exception
-	{
-		if (epoch().julian() > iDate1 || iDate1 >= iDate2)
-			throw new java.lang.Exception ("MultilateralFlatForwardCurve::effectiveDF => Invalid Inputs");
-
-		int iNumQuadratures = 0;
-		double dblEffectiveDF = 0.;
-		int iQuadratureWidth = (iDate2 - iDate1) / NUM_DF_QUADRATURES;
-
-		if (0 == iQuadratureWidth) iQuadratureWidth = 1;
-
-		for (int iDate = iDate1; iDate <= iDate2; iDate += iQuadratureWidth) {
-			++iNumQuadratures;
-
-			dblEffectiveDF += (df (iDate) + df (iDate + iQuadratureWidth));
+		if (iEpochDate >= date) {
+			throw new Exception ("MultilateralBasisCurve::df => Invalid Inputs");
 		}
 
-		return dblEffectiveDF / (2. * iNumQuadratures);
+		return _overnightMergedDiscountForwardCurve.df (date) *
+			Math.exp (_basis * (iEpochDate - date) / 365.25);
+	}
+
+	@Override public double df (
+		final JulianDate date)
+		throws Exception
+	{
+		if (null == date) {
+			throw new Exception ("MultilateralBasisCurve::df => Invalid Inputs");
+		}
+
+		return df (date.julian());
+	}
+
+	@Override public double df (
+		final String tenor)
+		throws Exception
+	{
+		return df (epoch().addTenor (tenor));
 	}
 
 	@Override public double effectiveDF (
-		final org.drip.analytics.date.JulianDate dt1,
-		final org.drip.analytics.date.JulianDate dt2)
-		throws java.lang.Exception
+		final int date1,
+		final int date2)
+		throws Exception
 	{
-		if (null == dt1 || null == dt2)
-			throw new java.lang.Exception ("MultilateralFlatForwardCurve::effectiveDF => Invalid Inputs");
+		if (epoch().julian() > date1 || date1 >= date2) {
+			throw new Exception ("MultilateralFlatForwardCurve::effectiveDF => Invalid Inputs");
+		}
 
-		return effectiveDF (
-			dt1.julian(),
-			dt2.julian()
-		);
+		int quadratureCount = 0;
+		double effectiveDiscountFactor = 0.;
+		int quadratureWidth = (date2 - date1) / NUM_DF_QUADRATURES;
+
+		if (0 == quadratureWidth) {
+			quadratureWidth = 1;
+		}
+
+		for (int date = date1; date <= date2; date += quadratureWidth) {
+			++quadratureCount;
+
+			effectiveDiscountFactor += (df (date) + df (date + quadratureWidth));
+		}
+
+		return effectiveDiscountFactor / (2. * quadratureCount);
 	}
 
 	@Override public double effectiveDF (
-		final java.lang.String strTenor1,
-		final java.lang.String strTenor2)
-		throws java.lang.Exception
+		final JulianDate date1,
+		final JulianDate date2)
+		throws Exception
 	{
-		org.drip.analytics.date.JulianDate dtEpoch = epoch();
+		if (null == date1 || null == date2) {
+			throw new Exception ("MultilateralFlatForwardCurve::effectiveDF => Invalid Inputs");
+		}
 
-		return effectiveDF (
-			dtEpoch.addTenor (strTenor1),
-			dtEpoch.addTenor (strTenor2)
-		);
+		return effectiveDF (date1.julian(), date2.julian());
+	}
+
+	@Override public double effectiveDF (
+		final String tenor1,
+		final String tenor2)
+		throws Exception
+	{
+		JulianDate epochDate = epoch();
+
+		return effectiveDF (epochDate.addTenor (tenor1), epochDate.addTenor (tenor2));
 	}
 
 	@Override public double rate (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
 	{
 		int iEpochDate = epoch().julian();
 
-		if (iEpochDate >= iDate)
-			throw new java.lang.Exception ("MultilateralFlatForwardCurve::rate => Invalid Inputs");
+		if (iEpochDate >= date) {
+			throw new Exception ("MultilateralFlatForwardCurve::rate => Invalid Inputs");
+		}
 
-		return 365.25 * java.lang.Math.log (df (iEpochDate) / df (iDate)) / (iEpochDate - iDate);
+		return 365.25 * Math.log (df (iEpochDate) / df (date)) / (iEpochDate - date);
 	}
 
 	@Override public double rate (
-		final org.drip.analytics.date.JulianDate dt)
-		throws java.lang.Exception
+		final JulianDate date)
+		throws Exception
 	{
-		if (null == dt)
-			throw new java.lang.Exception ("MultilateralFlatForwardCurve::rate => Invalid Inputs");
+		if (null == date) {
+			throw new Exception ("MultilateralFlatForwardCurve::rate => Invalid Inputs");
+		}
 
-		return rate (dt.julian());
+		return rate (date.julian());
 	}
 
 	@Override public double rate (
-		final java.lang.String strTenor)
-		throws java.lang.Exception
+		final String tenor)
+		throws Exception
 	{
-		return rate (epoch().addTenor (strTenor));
+		return rate (epoch().addTenor (tenor));
 	}
 
 	@Override public double rate (
-		final int iDate1,
-		final int iDate2)
-		throws java.lang.Exception
+		final int date1,
+		final int date2)
+		throws Exception
 	{
-		int iEpochDate = epoch().julian();
+		int epochDate = epoch().julian();
 
-		if (iEpochDate > iDate1 || iDate1 >= iDate2)
-			throw new java.lang.Exception ("MultilateralFlatForwardCurve::rate => Invalid Inputs");
+		if (epochDate > date1 || date1 >= date2) {
+			throw new Exception ("MultilateralFlatForwardCurve::rate => Invalid Inputs");
+		}
 
-		return 365.25 * java.lang.Math.log (df (iDate1) / df (iDate2)) / (iDate2 - iDate1);
+		return 365.25 * Math.log (df (date1) / df (date2)) / (date2 - date1);
 	}
 
 	@Override public double rate (
-		final org.drip.analytics.date.JulianDate dt1,
-		final org.drip.analytics.date.JulianDate dt2)
-		throws java.lang.Exception
+		final JulianDate date1,
+		final JulianDate date2)
+		throws Exception
 	{
-		if (null == dt1 || null == dt2)
-			throw new java.lang.Exception ("MultilateralFlatForwardCurve::rate => Invalid Inputs");
+		if (null == date1 || null == date2) {
+			throw new Exception ("MultilateralFlatForwardCurve::rate => Invalid Inputs");
+		}
 
-		return rate (
-			dt1.julian(),
-			dt2.julian()
-		);
+		return rate (date1.julian(), date2.julian());
 	}
 
 	@Override public double rate (
-		final java.lang.String strTenor1,
-		final java.lang.String strTenor2)
-		throws java.lang.Exception
+		final String tenor1,
+		final String tenor2)
+		throws Exception
 	{
-		org.drip.analytics.date.JulianDate dtEpoch = epoch();
+		JulianDate epochDate = epoch();
 
-		return rate (
-			dtEpoch.addTenor (strTenor1),
-			dtEpoch.addTenor (strTenor2)
-		);
+		return rate (epochDate.addTenor (tenor1), epochDate.addTenor (tenor2));
 	}
 }

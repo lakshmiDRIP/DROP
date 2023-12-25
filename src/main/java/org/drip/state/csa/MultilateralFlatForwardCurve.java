@@ -1,11 +1,18 @@
 
 package org.drip.state.csa;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.support.Helper;
+import org.drip.state.nonlinear.FlatForwardDiscountCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,117 +87,106 @@ package org.drip.state.csa;
 /**
  * <i>MultilateralFlatForwardCurve</i> implements the CSA Cash Rate Curve using a Flat Forward CSA Rate.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/csa/README.md">Credit Support Annex Latent State</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/ca/README.md">Credit Support Annex Latent State</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MultilateralFlatForwardCurve extends org.drip.state.nonlinear.FlatForwardDiscountCurve
-	implements org.drip.state.csa.CashFlowEstimator
+public class MultilateralFlatForwardCurve extends FlatForwardDiscountCurve implements CashFlowEstimator
 {
 
 	/**
-	 * MultilateralFlatForwardCurve Constructor
+	 * <i>MultilateralFlatForwardCurve</i> Constructor
 	 * 
-	 * @param dtEpoch Epoch Date
-	 * @param strCurrency Currency
-	 * @param aiDate Array of Dates
-	 * @param adblForwardRate Array of Forward Rates
-	 * @param bDiscreteCompounding TRUE - Compounding is Discrete
-	 * @param strCompoundingDayCount Day Count Convention to be used for Discrete Compounding
-	 * @param iCompoundingFreq Frequency to be used for Discrete Compounding
+	 * @param epochDate Epoch Date
+	 * @param currency Currency
+	 * @param dateArray Array of Dates
+	 * @param forwardRateArray Array of Forward Rates
+	 * @param discreteCompounding TRUE - Compounding is Discrete
+	 * @param compoundingDayCountConvention Day Count Convention to be used for Discrete Compounding
+	 * @param compoundingFrequency Frequency to be used for Discrete Compounding
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MultilateralFlatForwardCurve (
-		final org.drip.analytics.date.JulianDate dtEpoch,
-		final java.lang.String strCurrency,
-		final int[] aiDate,
-		final double[] adblForwardRate,
-		final boolean bDiscreteCompounding,
-		final java.lang.String strCompoundingDayCount,
-		final int iCompoundingFreq)
-		throws java.lang.Exception
+		final JulianDate epochDate,
+		final String currency,
+		final int[] dateArray,
+		final double[] forwardRateArray,
+		final boolean discreteCompounding,
+		final String compoundingDayCountConvention,
+		final int compoundingFrequency)
+		throws Exception
 	{
 		super (
-			dtEpoch,
-			strCurrency,
-			aiDate,
-			adblForwardRate,
-			bDiscreteCompounding,
-			strCompoundingDayCount,
-			iCompoundingFreq
+			epochDate,
+			currency,
+			dateArray,
+			forwardRateArray,
+			discreteCompounding,
+			compoundingDayCountConvention,
+			compoundingFrequency
 		);
 	}
 
 	@Override public double rate (
-		final int iDate)
-		throws java.lang.Exception
+		final int date)
+		throws Exception
+	{
+		int epochDate = epoch().julian();
+
+		if (epochDate >= date) {
+			throw new Exception ("MultilateralFlatForwardCurve::rate => Invalid Inputs");
+		}
+
+		return discreteCompounding() ? ((1. / df (date)) - 1.) / yearFraction (epochDate, date) :
+			Helper.DF2Yield (compoundingFrequency(), df (date), yearFraction (epochDate, date));
+	}
+
+	@Override public double rate (
+		final JulianDate date)
+		throws Exception
+	{
+		if (null == date) {
+			throw new Exception ("MultilateralFlatForwardCurve::rate => Invalid Inputs");
+		}
+
+		return rate (date.julian());
+	}
+
+	@Override public double rate (
+		final String tenor)
+		throws Exception
+	{
+		return rate (epoch().addTenor (tenor));
+	}
+
+	@Override public double rate (
+		final int date1,
+		final int date2)
+		throws Exception
 	{
 		int iEpochDate = epoch().julian();
 
-		if (iEpochDate >= iDate)
-			throw new java.lang.Exception ("MultilateralFlatForwardCurve::rate => Invalid Inputs");
+		if (iEpochDate > date1 || date1 >= date2) {
+			throw new Exception ("MultilateralFlatForwardCurve::rate => Invalid Inputs");
+		}
 
-		return discreteCompounding() ? ((1. / df (iDate)) - 1.) / yearFraction (
-			iEpochDate,
-			iDate
-		) : org.drip.analytics.support.Helper.DF2Yield (
-			compoundingFrequency(),
-			df (iDate),
-			yearFraction (
-				iEpochDate,
-				iDate
-			)
-		);
-	}
-
-	@Override public double rate (
-		final org.drip.analytics.date.JulianDate dt)
-		throws java.lang.Exception
-	{
-		if (null == dt)
-			throw new java.lang.Exception ("MultilateralFlatForwardCurve::rate => Invalid Inputs");
-
-		return rate (dt.julian());
-	}
-
-	@Override public double rate (
-		final java.lang.String strTenor)
-		throws java.lang.Exception
-	{
-		return rate (epoch().addTenor (strTenor));
-	}
-
-	@Override public double rate (
-		final int iDate1,
-		final int iDate2)
-		throws java.lang.Exception
-	{
-		int iEpochDate = epoch().julian();
-
-		if (iEpochDate > iDate1 || iDate1 >= iDate2)
-			throw new java.lang.Exception ("MultilateralFlatForwardCurve::rate => Invalid Inputs");
-
-		return discreteCompounding() ? ((df (iDate1) / df (iDate2)) - 1.) / yearFraction (
-			iDate1,
-			iDate2
-		) : org.drip.analytics.support.Helper.DF2Yield (
-			compoundingFrequency(),
-			df (iDate1) / df (iDate2),
-			yearFraction (
-				iDate1,
-				iDate2
-			)
-		);
+		return discreteCompounding() ? ((df (date1) / df (date2)) - 1.) / yearFraction (date1, date2) :
+			Helper.DF2Yield (compoundingFrequency(), df (date1) / df (date2), yearFraction (date1, date2));
 	}
 
 	@Override public double rate (

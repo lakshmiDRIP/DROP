@@ -1,6 +1,12 @@
 
 package org.drip.state.curve;
 
+import org.drip.analytics.definition.Curve;
+import org.drip.analytics.input.CurveConstructionInputSet;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.numerical.differentiation.WengertJacobian;
+import org.drip.param.definition.ManifestMeasureTweak;
+import org.drip.product.definition.CalibratableComponent;
 import org.drip.state.discount.MergedDiscountForwardCurve;
 import org.drip.state.forward.ForwardRateEstimator;
 import org.drip.state.identifier.ForwardLabel;
@@ -256,45 +262,45 @@ public class DeterministicCollateralChoiceDiscountCurve extends MergedDiscountFo
 		return null;
 	}
 
-	@Override public org.drip.state.discount.MergedDiscountForwardCurve customTweakManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final org.drip.param.definition.ManifestMeasureTweak rvtp)
+	@Override public MergedDiscountForwardCurve customTweakManifestMeasure (
+		final String manifestMeasure,
+		final ManifestMeasureTweak manifestMeasureTweak)
 	{
 		return null;
 	}
 
 	@Override public DiscountFactorDiscountCurve parallelShiftQuantificationMetric (
-		final double dblShift)
+		final double shift)
 	{
 		return null;
 	}
 
-	@Override public org.drip.analytics.definition.Curve customTweakQuantificationMetric (
-		final org.drip.param.definition.ManifestMeasureTweak rvtp)
+	@Override public Curve customTweakQuantificationMetric (
+		final ManifestMeasureTweak manifestMeasureTweak)
 	{
 		return null;
 	}
 
-	@Override public org.drip.numerical.differentiation.WengertJacobian jackDDFDManifestMeasure (
-		final int iDate,
-		final java.lang.String strManifestMeasure)
+	@Override public WengertJacobian jackDDFDManifestMeasure (
+		final int date,
+		final String strManifestMeasure)
 	{
 		return null;
 	}
 
 	@Override public boolean setCCIS (
-		final org.drip.analytics.input.CurveConstructionInputSet ccis)
+		final CurveConstructionInputSet curveConstructionInputSet)
 	{
 		return false;
 	}
 
-	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
+	@Override public CalibratableComponent[] calibComp()
 	{
 		return null;
 	}
 
-	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> manifestMeasure (
-		final java.lang.String strInstr)
+	@Override public CaseInsensitiveTreeMap<Double> manifestMeasure (
+		final String instrument)
 	{
 		return null;
 	}

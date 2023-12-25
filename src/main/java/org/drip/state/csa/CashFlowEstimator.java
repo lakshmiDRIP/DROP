@@ -1,11 +1,17 @@
 
 package org.drip.state.csa;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.state.discount.DiscountFactorEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,110 +84,123 @@ package org.drip.state.csa;
  */
 
 /**
- * <i>CashFlowEstimator</i> estimates the Cash Flow Rate to be applied between the specified Dates.
+ * <i>CashFlowEstimator</i> estimates the Cash Flow Rate to be applied between the specified Dates. It
+ *  exports the following Functionality:
  *
- *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/csa/README.md">Credit Support Annex Latent State</a></li>
+ *  	<li>Calculate the Cash Flow Rate Effective to the given Date</li>
+ *  	<li>Calculate the Cash Flow Rate Effective to the given Tenor</li>
+ *  	<li>Calculate the Cash Flow Rate Effective between the Tenors</li>
+ *  	<li>Calculate the Cash Flow Rate Effective between the Dates</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/ca/README.md">Credit Support Annex Latent State</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface CashFlowEstimator extends org.drip.state.discount.DiscountFactorEstimator
+public interface CashFlowEstimator extends DiscountFactorEstimator
 {
 
 	/**
 	 * Calculate the Cash Flow Rate Effective to the given Date
 	 * 
-	 * @param iDate Date
+	 * @param date Date
 	 * 
 	 * @return The Cash Flow Rate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Cash Flow Rate cannot be calculated
+	 * @throws Exception Thrown if the Cash Flow Rate cannot be calculated
 	 */
 
 	public abstract double rate (
-		final int iDate)
-		throws java.lang.Exception;
+		final int date)
+		throws Exception;
 
 	/**
 	 * Calculate the Cash Flow Rate Effective to the given date
 	 * 
-	 * @param dt Date
+	 * @param date Date
 	 * 
 	 * @return The Cash Flow Rate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Cash Flow Rate cannot be Calculated
+	 * @throws Exception Thrown if the Cash Flow Rate cannot be Calculated
 	 */
 
 	public abstract double rate (
-		final org.drip.analytics.date.JulianDate dt)
-		throws java.lang.Exception;
+		final JulianDate date)
+		throws Exception;
 
 	/**
 	 * Calculate the Cash Flow Rate Effective to the given Tenor
 	 * 
-	 * @param strTenor Tenor
+	 * @param tenor Tenor
 	 * 
 	 * @return The Cash Flow Rate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Cash Flow Rate cannot be calculated
+	 * @throws Exception Thrown if the Cash Flow Rate cannot be calculated
 	 */
 
 	public abstract double rate (
-		final java.lang.String strTenor)
-		throws java.lang.Exception;
+		final String tenor)
+		throws Exception;
 
 	/**
 	 * Calculate the Cash Flow Rate Effective between the Tenors
 	 * 
-	 * @param strTenor1 Tenor #1
-	 * @param strTenor2 Tenor #2
+	 * @param tenor1 Tenor #1
+	 * @param tenor2 Tenor #2
 	 * 
 	 * @return The Cash Flow Rate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Cash Flow Rate cannot be calculated
+	 * @throws Exception Thrown if the Cash Flow Rate cannot be calculated
 	 */
 
 	public abstract double rate (
-		final java.lang.String strTenor1,
-		final java.lang.String strTenor2)
-		throws java.lang.Exception;
+		final String tenor1,
+		final String tenor2)
+		throws Exception;
 
 	/**
 	 * Calculate the Cash Flow Rate Effective between the Dates
 	 * 
-	 * @param iDate1 Date #1
-	 * @param iDate2 Date #2
+	 * @param date1 Date #1
+	 * @param date2 Date #2
 	 * 
 	 * @return The Cash Flow Rate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Cash Flow Rate cannot be calculated
+	 * @throws Exception Thrown if the Cash Flow Rate cannot be calculated
 	 */
 
 	public abstract double rate (
-		final int iDate1,
-		final int iDate2)
-		throws java.lang.Exception;
+		final int date1,
+		final int date2)
+		throws Exception;
 
 	/**
 	 * Calculate the Cash Flow Rate Effective between the Dates
 	 * 
-	 * @param dt1 Date #1
-	 * @param dt2 Date #2
+	 * @param date1 Date #1
+	 * @param date2 Date #2
 	 * 
 	 * @return The Cash Flow Rate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Cash Flow Rate cannot be calculated
+	 * @throws Exception Thrown if the Cash Flow Rate cannot be calculated
 	 */
 
 	public abstract double rate (
-		final org.drip.analytics.date.JulianDate dt1,
-		final org.drip.analytics.date.JulianDate dt2)
-		throws java.lang.Exception;
+		final JulianDate date1,
+		final JulianDate date2)
+		throws Exception;
 }
