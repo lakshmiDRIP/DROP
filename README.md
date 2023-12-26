@@ -1,6 +1,6 @@
 # DROP
 
-*v5.95*  *25 December 2023*
+*v5.96*  *26 December 2023*
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 

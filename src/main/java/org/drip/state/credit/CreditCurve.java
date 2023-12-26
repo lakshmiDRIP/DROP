@@ -367,7 +367,7 @@ public abstract class CreditCurve implements Curve
 	/**
 	 * Calculate the recovery rate to the given date
 	 * 
-	 * @param iDate Date
+	 * @param date Date
 	 * 
 	 * @return Recovery Rate
 	 * 

@@ -1,6 +1,7 @@
 
 package org.drip.state.basis;
 
+import org.drip.analytics.date.JulianDate;
 import org.drip.state.identifier.ForwardLabel;
 
 /*
@@ -131,47 +132,47 @@ public interface BasisEstimator
 	 * @return The Derived Index
 	 */
 
-	public abstract org.drip.state.identifier.ForwardLabel derivedIndex();
+	public abstract ForwardLabel derivedIndex();
 
 	/**
 	 * Calculate the Basis to the given Date
 	 * 
-	 * @param iDate Date
+	 * @param date Date
 	 * 
 	 * @return The Basis
 	 * 
-	 * @throws java.lang.Exception Thrown if the Basis cannot be calculated
+	 * @throws Exception Thrown if the Basis cannot be calculated
 	 */
 
 	public abstract double basis (
-		final int iDate)
-		throws java.lang.Exception;
+		final int date)
+		throws Exception;
 
 	/**
 	 * Calculate the Basis to the given Date
 	 * 
-	 * @param dt Date
+	 * @param date Date
 	 * 
 	 * @return The Basis
 	 * 
-	 * @throws java.lang.Exception Thrown if the Basis cannot be calculated
+	 * @throws Exception Thrown if the Basis cannot be calculated
 	 */
 
 	public abstract double basis (
-		final org.drip.analytics.date.JulianDate dt)
-		throws java.lang.Exception;
+		final JulianDate date)
+		throws Exception;
 
 	/**
 	 * Calculate the Basis to the given Tenor
 	 * 
-	 * @param strTenor The Tenor
+	 * @param tenor The Tenor
 	 * 
 	 * @return The Basis
 	 * 
-	 * @throws java.lang.Exception Thrown if the Basis cannot be calculated
+	 * @throws Exception Thrown if the Basis cannot be calculated
 	 */
 
 	public abstract double basis (
-		final java.lang.String strTenor)
-		throws java.lang.Exception;
+		final String tenor)
+		throws Exception;
 }

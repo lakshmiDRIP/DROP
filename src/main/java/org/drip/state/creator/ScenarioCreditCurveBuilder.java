@@ -1,11 +1,22 @@
 
 package org.drip.state.creator;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.param.definition.CalibrationParams;
+import org.drip.param.market.CreditCurveScenarioContainer;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.state.boot.CreditCurveScenario;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -85,15 +96,31 @@ package org.drip.state.creator;
 
 /**
  * <i>ScenarioCreditCurveBuilder</i> implements the construction of the custom Scenario based credit curves.
+ *  It exposes the following Functions:
  *
- *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md">Scenario State Curve/Surface Builders</a></li>
+ * 		<li>Create <i>CreditScenarioCurve</i> from the array of calibration instruments</li>
+ * 		<li>Calibrate the base credit curve from the input credit instruments, measures, and the quotes</li>
+ * 		<li>Create a <i>CreditCurve</i> instance from a single node hazard rate</li>
+ * 		<li>Create a <i>CreditCurve</i> Instance from the Input Array of Survival Probabilities</li>
+ * 		<li>Create an instance of the CreditCurve object from a solitary hazard rate node</li>
+ * 		<li>Create a credit curve from an array of dates and hazard rates</li>
+ * 		<li>Create a credit curve from hazard rate and recovery rate term structures</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md">Scenario State Curve/Surface Builders</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -101,19 +128,19 @@ package org.drip.state.creator;
 public class ScenarioCreditCurveBuilder {
 
 	/**
-	 * Create CreditScenarioCurve from the array of calibration instruments
+	 * Create <i>CreditScenarioCurve</i> from the array of calibration instruments
 	 * 
-	 * @param aCalibInst Array of calibration instruments
+	 * @param calibratableComponentArray Array of calibration instruments
 	 * 
-	 * @return CreditScenarioCurve object
+	 * @return <i>CreditScenarioCurve</i> object
 	 */
 
-	public static final org.drip.param.market.CreditCurveScenarioContainer CreateCCSC (
-		final org.drip.product.definition.CalibratableComponent[] aCalibInst)
+	public static final CreditCurveScenarioContainer CreateCCSC (
+		final CalibratableComponent[] calibratableComponentArray)
 	{
 		try {
-			return new org.drip.param.market.CreditCurveScenarioContainer (aCalibInst, 0.0001, 0.01);
-		} catch (java.lang.Exception e) {
+			return new CreditCurveScenarioContainer (calibratableComponentArray, 0.0001, 0.01);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -123,33 +150,44 @@ public class ScenarioCreditCurveBuilder {
 	/**
 	 * Calibrate the base credit curve from the input credit instruments, measures, and the quotes
 	 * 
-	 * @param strName Credit Curve Name
-	 * @param dtSpot Spot Date
-	 * @param aCalibInst Array of calibration instruments
-	 * @param dc Discount Curve
-	 * @param adblCalibQuote Array of Instrument Quotes
-	 * @param astrCalibMeasure Array of calibration Measures
-	 * @param dblRecovery Recovery Rate
-	 * @param bFlat Whether the Calibration is based off of a flat spread
-	 * @param cp The Calibration Parameters
+	 * @param name Credit Curve Name
+	 * @param spotDate Spot Date
+	 * @param calibratableComponentArray Array of calibration instruments
+	 * @param discountCurve Discount Curve
+	 * @param calibrationQuoteArray Array of Instrument Quotes
+	 * @param calibrationMeasureArray Array of calibration Measures
+	 * @param recovery Recovery Rate
+	 * @param flat Whether the Calibration is based off of a flat spread
+	 * @param calibrationParams The Calibration Parameters
 	 * 
 	 * @return The cooked Credit Curve
 	 */
 
 	public static final org.drip.state.credit.CreditCurve Custom (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final org.drip.product.definition.CalibratableComponent[] aCalibInst,
-		final org.drip.state.discount.MergedDiscountForwardCurve dc,
-		final double[] adblCalibQuote,
-		final java.lang.String[] astrCalibMeasure,
-		final double dblRecovery,
-		final boolean bFlat,
-		final org.drip.param.definition.CalibrationParams cp)
+		final String name,
+		final JulianDate spotDate,
+		final CalibratableComponent[] calibratableComponentArray,
+		final MergedDiscountForwardCurve discountCurve,
+		final double[] calibrationQuoteArray,
+		final String[] calibrationMeasureArray,
+		final double recovery,
+		final boolean flat,
+		final CalibrationParams calibrationParams)
 	{
-		return null == dtSpot ? null : org.drip.state.boot.CreditCurveScenario.Standard (strName,
-			org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), aCalibInst, adblCalibQuote,
-				astrCalibMeasure, dblRecovery, bFlat, dc, null, null, null, cp);
+		return null == spotDate ? null : CreditCurveScenario.Standard (
+			name,
+			ValuationParams.Spot (spotDate.julian()),
+			calibratableComponentArray,
+			calibrationQuoteArray,
+			calibrationMeasureArray,
+			recovery,
+			flat,
+			discountCurve,
+			null,
+			null,
+			null,
+			calibrationParams
+		);
 	}
 
 	/**
@@ -182,7 +220,7 @@ public class ScenarioCreditCurveBuilder {
 	}
 
 	/**
-	 * Create a CreditCurve instance from a single node hazard rate
+	 * Create a <i>CreditCurve</i> instance from a single node hazard rate
 	 * 
 	 * @param iStartDate Curve epoch date
 	 * @param strName Credit Curve Name
@@ -190,7 +228,7 @@ public class ScenarioCreditCurveBuilder {
 	 * @param dblHazardRate Curve hazard rate
 	 * @param dblRecovery Curve recovery
 	 * 
-	 * @return CreditCurve instance
+	 * @return <i>CreditCurve</i> instance
 	 */
 
 	public static final org.drip.state.credit.ExplicitBootCreditCurve FlatHazard (
@@ -213,7 +251,7 @@ public class ScenarioCreditCurveBuilder {
 	}
 
 	/**
-	 * Create a CreditCurve Instance from the Input Array of Survival Probabilities
+	 * Create a <i>CreditCurve</i> Instance from the Input Array of Survival Probabilities
 	 * 
 	 * @param iStartDate Start Date
 	 * @param strName Credit Curve Name
@@ -222,7 +260,7 @@ public class ScenarioCreditCurveBuilder {
 	 * @param adblSurvivalProbability Array of Survival Probabilities
 	 * @param dblRecovery Recovery Rate
 	 * 
-	 * @return The CreditCurve Instance
+	 * @return The <i>CreditCurve</i> Instance
 	 */
 
 	public static final org.drip.state.credit.ExplicitBootCreditCurve Survival (

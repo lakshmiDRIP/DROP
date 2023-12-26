@@ -1,11 +1,28 @@
 
 package org.drip.state.creator;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.spline.basis.ExponentialTensionSetParams;
+import org.drip.spline.basis.KaklisPandelisSetParams;
+import org.drip.spline.basis.PolynomialFunctionSetParams;
+import org.drip.spline.grid.OverlappingStretchSpan;
+import org.drip.spline.params.SegmentCustomBuilderControl;
+import org.drip.spline.params.SegmentInelasticDesignControl;
+import org.drip.spline.stretch.BoundarySettings;
+import org.drip.spline.stretch.MultiSegmentSequence;
+import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
+import org.drip.state.basis.BasisCurve;
+import org.drip.state.curve.BasisSplineBasisCurve;
+import org.drip.state.identifier.ForwardLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,85 +100,123 @@ package org.drip.state.creator;
 
 /**
  * <i>ScenarioBasisCurveBuilder</i> implements the construction of the scenario basis curve using the input
- * instruments and their quotes.
+ * instruments and their quotes. It exposes the following
+ *  functions:
  *
- *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md">Scenario State Curve/Surface Builders</a></li>
+ * 		<li>Create an Instance of the Custom Splined Basis Curve</li>
+ * 		<li>Create an Instance of the Cubic Polynomial Splined Basis Curve</li>
+ * 		<li>Create an Instance of the Quartic Polynomial Splined Basis Curve</li>
+ * 		<li>Create an Instance of the Kaklis-Pandelis Splined Basis Curve</li>
+ * 		<li>Create an Instance of the KLK Hyperbolic Splined Basis Curve</li>
+ * 		<li>Create an Instance of the KLK Rational Linear Splined Basis Curve</li>
+ * 		<li>Create an Instance of the KLK Rational Quadratic Splined Basis Curve</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md">Scenario State Curve/Surface Builders</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class ScenarioBasisCurveBuilder {
+public class ScenarioBasisCurveBuilder
+{
 
 	/**
 	 * Create an Instance of the Custom Splined Basis Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtSpot The Spot Date
-	 * @param friReference Reference Leg FRI
-	 * @param friDerived Derived Leg FRI
-	 * @param bBasisOnReference TRUE - The Basis Quote is on the Reference Leg
-	 * @param astrTenor Array of the Tenors
-	 * @param adblBasis Array of the Basis Spreads
-	 * @param scbc The Segment Custom Builder Control
+	 * @param name Curve Name
+	 * @param spotDate The Spot Date
+	 * @param referenceForwardLabel Reference Leg FRI
+	 * @param derivedForwardLabel Derived Leg FRI
+	 * @param basisOnReference TRUE - The Basis Quote is on the Reference Leg
+	 * @param tenorArray Array of the Tenors
+	 * @param basisArray Array of the Basis Spreads
+	 * @param segmentCustomBuilderControl The Segment Custom Builder Control
 	 * 
 	 * @return The Instance of the Basis Curve
 	 */
 
-	public static final org.drip.state.basis.BasisCurve CustomSplineBasisCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final org.drip.state.identifier.ForwardLabel friReference,
-		final org.drip.state.identifier.ForwardLabel friDerived,
-		final boolean bBasisOnReference,
-		final java.lang.String[] astrTenor,
-		final double[] adblBasis,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
+	public static final BasisCurve CustomSplineBasisCurve (
+		final String name,
+		final JulianDate spotDate,
+		final ForwardLabel referenceForwardLabel,
+		final ForwardLabel derivedForwardLabel,
+		final boolean basisOnReference,
+		final String[] tenorArray,
+		final double[] basisArray,
+		final SegmentCustomBuilderControl segmentCustomBuilderControl)
 	{
-		if (null == strName || null == dtSpot || strName.isEmpty() || null == astrTenor || null == adblBasis)
+		if (null == spotDate || null == tenorArray || null == basisArray) {
 			return null;
+		}
 
-		int iNumTenor = astrTenor.length;
-		int[] aiBasisPredictorOrdinate = new int[iNumTenor + 1];
-		double[] adblBasisResponseValue = new double[iNumTenor + 1];
-		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new
-			org.drip.spline.params.SegmentCustomBuilderControl[iNumTenor];
+		int tenorCount = tenorArray.length;
+		int[] basisPredictorOrdinateArray = new int[tenorCount + 1];
+		double[] basisResponseValueArray = new double[tenorCount + 1];
+		SegmentCustomBuilderControl[] segmentCustomBuilderControlArray =
+			new SegmentCustomBuilderControl[tenorCount];
 
-		if (0 == iNumTenor || iNumTenor != adblBasis.length) return null;
+		if (0 == tenorCount || tenorCount != basisArray.length) {
+			return null;
+		}
 
-		for (int i = 0; i <= iNumTenor; ++i) {
-			if (0 != i) {
-				java.lang.String strTenor = astrTenor[i - 1];
+		for (int tenorIndex = 0; tenorIndex <= tenorCount; ++tenorIndex) {
+			if (0 != tenorIndex) {
+				String tenor = tenorArray[tenorIndex - 1];
 
-				if (null == strTenor || strTenor.isEmpty()) return null;
+				if (null == tenor || tenor.isEmpty()) {
+					return null;
+				}
 
-				org.drip.analytics.date.JulianDate dtMaturity = dtSpot.addTenor (strTenor);
+				JulianDate maturityDate = spotDate.addTenor (tenor);
 
-				if (null == dtMaturity) return null;
+				if (null == maturityDate) {
+					return null;
+				}
 
-				aiBasisPredictorOrdinate[i] = dtMaturity.julian();
-			} else
-				aiBasisPredictorOrdinate[i] = dtSpot.julian();
+				basisPredictorOrdinateArray[tenorIndex] = maturityDate.julian();
+			} else {
+				basisPredictorOrdinateArray[tenorIndex] = spotDate.julian();
+			}
 
-			adblBasisResponseValue[i] = 0 == i ? adblBasis[0] : adblBasis[i - 1];
+			basisResponseValueArray[tenorIndex] = 0 == tenorIndex ?
+				basisArray[0] : basisArray[tenorIndex - 1];
 
-			if (0 != i) aSCBC[i - 1] = scbc;
+			if (0 != tenorIndex) {
+				segmentCustomBuilderControlArray[tenorIndex - 1] = segmentCustomBuilderControl;
+			}
 		}
 
 		try {
-			return new org.drip.state.curve.BasisSplineBasisCurve (friReference, friDerived,
-				bBasisOnReference, new org.drip.spline.grid.OverlappingStretchSpan
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-						(strName, aiBasisPredictorOrdinate, adblBasisResponseValue, aSCBC, null,
-							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
-								org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE)));
-		} catch (java.lang.Exception e) {
+			return new BasisSplineBasisCurve (
+				referenceForwardLabel,
+				derivedForwardLabel,
+				basisOnReference,
+				new OverlappingStretchSpan (
+					MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
+						name,
+						basisPredictorOrdinateArray,
+						basisResponseValueArray,
+						segmentCustomBuilderControlArray,
+						null,
+						BoundarySettings.NaturalStandard(),
+						MultiSegmentSequence.CALIBRATE
+					)
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -171,33 +226,44 @@ public class ScenarioBasisCurveBuilder {
 	/**
 	 * Create an Instance of the Cubic Polynomial Splined Basis Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart The Tenor Start Date
-	 * @param friReference Reference Leg FRI
-	 * @param friDerived Derived Leg FRI
-	 * @param bBasisOnReference TRUE - The Basis Quote is on the Reference Leg
-	 * @param astrTenor Array of the Tenors
-	 * @param adblBasis Array of the Basis Spreads
+	 * @param name Curve Name
+	 * @param spotDate The Spot Date
+	 * @param referenceForwardLabel Reference Leg FRI
+	 * @param derivedForwardLabel Derived Leg FRI
+	 * @param basisOnReference TRUE - The Basis Quote is on the Reference Leg
+	 * @param tenorArray Array of the Tenors
+	 * @param basisArray Array of the Basis Spreads
 	 * 
 	 * @return The Instance of the Basis Curve
 	 */
 
-	public static final org.drip.state.basis.BasisCurve CubicPolynomialBasisCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final org.drip.state.identifier.ForwardLabel friReference,
-		final org.drip.state.identifier.ForwardLabel friDerived,
-		final boolean bBasisOnReference,
-		final java.lang.String[] astrTenor,
-		final double[] adblBasis)
+	public static final BasisCurve CubicPolynomialBasisCurve (
+		final String name,
+		final JulianDate spotDate,
+		final ForwardLabel referenceForwardLabel,
+		final ForwardLabel derivedForwardLabel,
+		final boolean basisOnReference,
+		final String[] tenorArray,
+		final double[] basisArray)
 	{
 		try {
-			return CustomSplineBasisCurve (strName, dtStart, friReference, friDerived, bBasisOnReference,
-				astrTenor, adblBasis, new org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-						org.drip.spline.basis.PolynomialFunctionSetParams (4),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineBasisCurve (
+				name,
+				spotDate,
+				referenceForwardLabel,
+				derivedForwardLabel,
+				basisOnReference,
+				tenorArray,
+				basisArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+					new PolynomialFunctionSetParams (4),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -207,33 +273,44 @@ public class ScenarioBasisCurveBuilder {
 	/**
 	 * Create an Instance of the Quartic Polynomial Splined Basis Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart The Tenor Start Date
-	 * @param friReference Reference Leg FRI
-	 * @param friDerived Derived Leg FRI
-	 * @param bBasisOnReference TRUE - The Basis Quote is on the Reference Leg
-	 * @param astrTenor Array of the Tenors
-	 * @param adblBasis Array of the Basis Spreads
+	 * @param name Curve Name
+	 * @param spotDate The Spot Date
+	 * @param referenceForwardLabel Reference Leg FRI
+	 * @param derivedForwardLabel Derived Leg FRI
+	 * @param basisOnReference TRUE - The Basis Quote is on the Reference Leg
+	 * @param tenorArray Array of the Tenors
+	 * @param basisArray Array of the Basis Spreads
 	 * 
 	 * @return The Instance of the Basis Curve
 	 */
 
-	public static final org.drip.state.basis.BasisCurve QuarticPolynomialBasisCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final org.drip.state.identifier.ForwardLabel friReference,
-		final org.drip.state.identifier.ForwardLabel friDerived,
-		final boolean bBasisOnReference,
-		final java.lang.String[] astrTenor,
-		final double[] adblBasis)
+	public static final BasisCurve QuarticPolynomialBasisCurve (
+		final String name,
+		final JulianDate spotDate,
+		final ForwardLabel referenceForwardLabel,
+		final ForwardLabel derivedForwardLabel,
+		final boolean basisOnReference,
+		final String[] tenorArray,
+		final double[] basisArray)
 	{
 		try {
-			return CustomSplineBasisCurve (strName, dtStart, friReference, friDerived, bBasisOnReference,
-				astrTenor, adblBasis, new org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-						org.drip.spline.basis.PolynomialFunctionSetParams (5),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineBasisCurve (
+				name,
+				spotDate,
+				referenceForwardLabel,
+				derivedForwardLabel,
+				basisOnReference,
+				tenorArray,
+				basisArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+					new PolynomialFunctionSetParams (5),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -243,33 +320,44 @@ public class ScenarioBasisCurveBuilder {
 	/**
 	 * Create an Instance of the Kaklis-Pandelis Splined Basis Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart The Tenor Start Date
-	 * @param friReference Reference Leg FRI
-	 * @param friDerived Derived Leg FRI
-	 * @param bBasisOnReference TRUE - The Basis Quote is on the Reference Leg
-	 * @param astrTenor Array of the Tenors
-	 * @param adblBasis Array of the Basis Spreads
+	 * @param name Curve Name
+	 * @param spotDate The Spot Date
+	 * @param referenceForwardLabel Reference Leg FRI
+	 * @param derivedForwardLabel Derived Leg FRI
+	 * @param basisOnReference TRUE - The Basis Quote is on the Reference Leg
+	 * @param tenorArray Array of the Tenors
+	 * @param basisArray Array of the Basis Spreads
 	 * 
 	 * @return The Instance of the Basis Curve
 	 */
 
-	public static final org.drip.state.basis.BasisCurve KaklisPandelisBasisCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final org.drip.state.identifier.ForwardLabel friReference,
-		final org.drip.state.identifier.ForwardLabel friDerived,
-		final boolean bBasisOnReference,
-		final java.lang.String[] astrTenor,
-		final double[] adblBasis)
+	public static final BasisCurve KaklisPandelisBasisCurve (
+		final String name,
+		final JulianDate spotDate,
+		final ForwardLabel referenceForwardLabel,
+		final ForwardLabel derivedForwardLabel,
+		final boolean basisOnReference,
+		final String[] tenorArray,
+		final double[] basisArray)
 	{
 		try {
-			return CustomSplineBasisCurve (strName, dtStart, friReference, friDerived, bBasisOnReference,
-				astrTenor, adblBasis, new org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS,
-						new org.drip.spline.basis.KaklisPandelisSetParams (2),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineBasisCurve (
+				name,
+				spotDate,
+				referenceForwardLabel,
+				derivedForwardLabel,
+				basisOnReference,
+				tenorArray,
+				basisArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS,
+					new KaklisPandelisSetParams (2),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -279,35 +367,46 @@ public class ScenarioBasisCurveBuilder {
 	/**
 	 * Create an Instance of the KLK Hyperbolic Splined Basis Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart The Tenor Start Date
-	 * @param friReference Reference Leg FRI
-	 * @param friDerived Derived Leg FRI
-	 * @param bBasisOnReference TRUE - The Basis Quote is on the Reference Leg
-	 * @param astrTenor Array of the Tenors
-	 * @param adblBasis Array of the Basis Spreads
-	 * @param dblTension The Tension Parameter
+	 * @param name Curve Name
+	 * @param spotDate The Spot Date
+	 * @param referenceForwardLabel Reference Leg FRI
+	 * @param derivedForwardLabel Derived Leg FRI
+	 * @param basisOnReference TRUE - The Basis Quote is on the Reference Leg
+	 * @param tenorArray Array of the Tenors
+	 * @param basisArray Array of the Basis Spreads
+	 * @param tension The Tension Parameter
 	 * 
 	 * @return The Instance of the Basis Curve
 	 */
 
-	public static final org.drip.state.basis.BasisCurve KLKHyperbolicBasisCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final org.drip.state.identifier.ForwardLabel friReference,
-		final org.drip.state.identifier.ForwardLabel friDerived,
-		final boolean bBasisOnReference,
-		final java.lang.String[] astrTenor,
-		final double[] adblBasis,
-		final double dblTension)
+	public static final BasisCurve KLKHyperbolicBasisCurve (
+		final String name,
+		final JulianDate spotDate,
+		final ForwardLabel referenceForwardLabel,
+		final ForwardLabel derivedForwardLabel,
+		final boolean basisOnReference,
+		final String[] tenorArray,
+		final double[] basisArray,
+		final double tension)
 	{
 		try {
-			return CustomSplineBasisCurve (strName, dtStart, friReference, friDerived, bBasisOnReference,
-				astrTenor, adblBasis, new org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
-						new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineBasisCurve (
+				name,
+				spotDate,
+				referenceForwardLabel,
+				derivedForwardLabel,
+				basisOnReference,
+				tenorArray,
+				basisArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
+					new ExponentialTensionSetParams (tension),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -317,35 +416,46 @@ public class ScenarioBasisCurveBuilder {
 	/**
 	 * Create an Instance of the KLK Rational Linear Splined Basis Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart The Tenor Start Date
-	 * @param friReference Reference Leg FRI
-	 * @param friDerived Derived Leg FRI
-	 * @param bBasisOnReference TRUE - The Basis Quote is on the Reference Leg
-	 * @param astrTenor Array of the Tenors
-	 * @param adblBasis Array of the Basis Spreads
-	 * @param dblTension The Tension Parameter
+	 * @param name Curve Name
+	 * @param spotDate The Spot Date
+	 * @param referenceForwardLabel Reference Leg FRI
+	 * @param derivedForwardLabel Derived Leg FRI
+	 * @param basisOnReference TRUE - The Basis Quote is on the Reference Leg
+	 * @param tenorArray Array of the Tenors
+	 * @param basisArray Array of the Basis Spreads
+	 * @param tension The Tension Parameter
 	 * 
 	 * @return The Instance of the Basis Curve
 	 */
 
 	public static final org.drip.state.basis.BasisCurve KLKRationalLinearBasisCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final org.drip.state.identifier.ForwardLabel friReference,
-		final org.drip.state.identifier.ForwardLabel friDerived,
-		final boolean bBasisOnReference,
-		final java.lang.String[] astrTenor,
-		final double[] adblBasis,
-		final double dblTension)
+		final String name,
+		final JulianDate spotDate,
+		final ForwardLabel referenceForwardLabel,
+		final ForwardLabel derivedForwardLabel,
+		final boolean basisOnReference,
+		final String[] tenorArray,
+		final double[] basisArray,
+		final double tension)
 	{
 		try {
-			return CustomSplineBasisCurve (strName, dtStart, friReference, friDerived, bBasisOnReference,
-				astrTenor, adblBasis, new org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
-				new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineBasisCurve (
+				name,
+				spotDate,
+				referenceForwardLabel,
+				derivedForwardLabel,
+				basisOnReference,
+				tenorArray,
+				basisArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
+					new ExponentialTensionSetParams (tension),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -355,35 +465,46 @@ public class ScenarioBasisCurveBuilder {
 	/**
 	 * Create an Instance of the KLK Rational Quadratic Splined Basis Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart The Tenor Start Date
-	 * @param friReference Reference Leg FRI
-	 * @param friDerived Derived Leg FRI
-	 * @param bBasisOnReference TRUE - The Basis Quote is on the Reference Leg
-	 * @param astrTenor Array of the Tenors
-	 * @param adblBasis Array of the Basis Spreads
-	 * @param dblTension The Tension Parameter
+	 * @param name Curve Name
+	 * @param spotDate The Spot Date
+	 * @param referenceForwardLabel Reference Leg FRI
+	 * @param derivedForwardLabel Derived Leg FRI
+	 * @param basisOnReference TRUE - The Basis Quote is on the Reference Leg
+	 * @param tenorArray Array of the Tenors
+	 * @param basisArray Array of the Basis Spreads
+	 * @param tension The Tension Parameter
 	 * 
 	 * @return The Instance of the Basis Curve
 	 */
 
 	public static final org.drip.state.basis.BasisCurve KLKRationalQuadraticBasisCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final org.drip.state.identifier.ForwardLabel friReference,
-		final org.drip.state.identifier.ForwardLabel friDerived,
-		final boolean bBasisOnReference,
-		final java.lang.String[] astrTenor,
-		final double[] adblBasis,
-		final double dblTension)
+		final String name,
+		final JulianDate spotDate,
+		final ForwardLabel referenceForwardLabel,
+		final ForwardLabel derivedForwardLabel,
+		final boolean basisOnReference,
+		final String[] tenorArray,
+		final double[] basisArray,
+		final double tension)
 	{
 		try {
-			return CustomSplineBasisCurve (strName, dtStart, friReference, friDerived, bBasisOnReference,
-				astrTenor, adblBasis, new org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
-				new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineBasisCurve (
+				name,
+				spotDate,
+				referenceForwardLabel,
+				derivedForwardLabel,
+				basisOnReference,
+				tenorArray,
+				basisArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
+					new ExponentialTensionSetParams (tension),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
