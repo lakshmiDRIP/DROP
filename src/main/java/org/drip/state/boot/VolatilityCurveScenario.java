@@ -1,11 +1,30 @@
 
 package org.drip.state.boot;
 
+import org.drip.analytics.date.DateUtil;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.param.market.LatentStateFixingsContainer;
+import org.drip.param.valuation.ValuationCustomizationParams;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.fra.FRAStandardCapFloor;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.forward.ForwardCurve;
+import org.drip.state.identifier.LatentStateLabel;
+import org.drip.state.identifier.VolatilityLabel;
+import org.drip.state.nonlinear.FlatForwardVolatilityCurve;
+import org.drip.state.nonlinear.NonlinearCurveBuilder;
+import org.drip.state.volatility.ExplicitBootVolatilityCurve;
+import org.drip.state.volatility.VolatilityCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,16 +101,27 @@ package org.drip.state.boot;
 
 /**
  * <i>VolatilityCurveScenario</i> uses the Volatility calibration instruments along with the component
- * calibrator to produce scenario Volatility curves.
+ * calibrator to produce scenario Volatility curves. It exposes the following functions:
  *
- *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/boot/README.md">Bootable Discount, Credit, Volatility States</a></li>
+ * 		<li>Calibrate a Volatility Curve</li>
+ * 		<li>Create an array of tenor bumped Volatility curves</li>
+ * 		<li>Create an tenor named map of tenor bumped Volatility curves</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/boot/README.md">Bootable Discount, Credit, Volatility States</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -101,193 +131,252 @@ public class VolatilityCurveScenario {
 	/**
 	 * Calibrate a Volatility Curve
 	 * 
-	 * @param strName Volatility Curve name
-	 * @param valParams ValuationParams
-	 * @param lslUnderlying Underlying Latent State Label
-	 * @param aFRACapFloor Array of the FRA Cap Floor Instruments
-	 * @param adblCalibQuote Array of component quotes
-	 * @param astrCalibMeasure Array of the calibration measures
-	 * @param bFlat Flat Calibration (True), or real bootstrapping (false)
-	 * @param dc Discount Curve
-	 * @param fc Forward Curve
-	 * @param lsfc Latent State Fixings Container
-	 * @param vcp Valuation Customization Parameters
+	 * @param name Volatility Curve name
+	 * @param valuationParams ValuationParams
+	 * @param underlyingLatentStateLabel Underlying Latent State Label
+	 * @param fraStandardCapFloorArray Array of the FRA Cap Floor Instruments
+	 * @param calibrationQuoteArray Array of component quotes
+	 * @param calibrationMeasureArray Array of the calibration measures
+	 * @param flat Flat Calibration (True), or real bootstrapping (false)
+	 * @param discountCurve Discount Curve
+	 * @param forwardCurve Forward Curve
+	 * @param latentStateFixingsContainer Latent State Fixings Container
+	 * @param valuationCustomizationParams Valuation Customization Parameters
 	 * 
 	 * @return VolatilityCurve Instance
 	 */
 
 	public static final org.drip.state.volatility.VolatilityCurve Standard (
-		final java.lang.String strName,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.state.identifier.LatentStateLabel lslUnderlying,
-		final org.drip.product.fra.FRAStandardCapFloor[] aFRACapFloor,
-		final double[] adblCalibQuote,
-		final java.lang.String[] astrCalibMeasure,
-		final boolean bFlat,
-		final org.drip.state.discount.MergedDiscountForwardCurve dc,
-		final org.drip.state.forward.ForwardCurve fc,
-		final org.drip.param.market.LatentStateFixingsContainer lsfc,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp)
+		final String name,
+		final ValuationParams valuationParams,
+		final LatentStateLabel underlyingLatentStateLabel,
+		final FRAStandardCapFloor[] fraStandardCapFloorArray,
+		final double[] calibrationQuoteArray,
+		final String[] calibrationMeasureArray,
+		final boolean flat,
+		final MergedDiscountForwardCurve discountCurve,
+		final ForwardCurve forwardCurve,
+		final LatentStateFixingsContainer latentStateFixingsContainer,
+		final ValuationCustomizationParams valuationCustomizationParams)
 	{
-		if (null == valParams || null == aFRACapFloor || null == adblCalibQuote || null == astrCalibMeasure
-			|| null == dc)
+		if (null == fraStandardCapFloorArray || null == calibrationQuoteArray ||
+			null == calibrationMeasureArray || null == discountCurve) {
 			return null;
+		}
 
-		int iNumComp = aFRACapFloor.length;
-		int aiPillarDate[] = new int[iNumComp];
-		double adblVolatility[] = new double[iNumComp];
-		org.drip.state.volatility.ExplicitBootVolatilityCurve ebvc = null;
+		int componentCount = fraStandardCapFloorArray.length;
+		int[] pillarDateArray = new int[componentCount];
+		double[] volatilityArray = new double[componentCount];
+		ExplicitBootVolatilityCurve explicitBootVolatilityCurve = null;
 
-		if (0 == iNumComp || adblCalibQuote.length != iNumComp || astrCalibMeasure.length != iNumComp)
+		if (0 == componentCount || calibrationQuoteArray.length != componentCount ||
+			calibrationMeasureArray.length != componentCount) {
 			return null;
+		}
 
-		for (int i = 0; i < iNumComp; ++i) {
-			if (null == aFRACapFloor[i]) return null;
+		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+			if (null == fraStandardCapFloorArray[componentIndex]) {
+				return null;
+			}
 
-			adblVolatility[i] = 0.001;
+			volatilityArray[componentIndex] = 0.001;
 
-			aiPillarDate[i] = aFRACapFloor[i].stream().maturity().julian();
+			pillarDateArray[componentIndex] =
+				fraStandardCapFloorArray[componentIndex].stream().maturity().julian();
 		}
 
 		try {
-			ebvc = new org.drip.state.nonlinear.FlatForwardVolatilityCurve (dc.epoch().julian(),
-				org.drip.state.identifier.VolatilityLabel.Standard (lslUnderlying), dc.currency(),
-					aiPillarDate, adblVolatility);
-		} catch (java.lang.Exception e) {
+			explicitBootVolatilityCurve = new FlatForwardVolatilityCurve (
+				discountCurve.epoch().julian(),
+				VolatilityLabel.Standard (underlyingLatentStateLabel),
+				discountCurve.currency(),
+				pillarDateArray,
+				volatilityArray
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		for (int i = 0; i < iNumComp; ++i) {
+		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
 			try {
-				org.drip.state.nonlinear.NonlinearCurveBuilder.VolatilityCurveNode (valParams,
-					aFRACapFloor[i], adblCalibQuote[i], astrCalibMeasure[i], bFlat, i, ebvc, dc, fc, lsfc,
-						vcp);
-			} catch (java.lang.Exception e) {
+				NonlinearCurveBuilder.VolatilityCurveNode (
+					valuationParams,
+					fraStandardCapFloorArray[componentIndex],
+					calibrationQuoteArray[componentIndex],
+					calibrationMeasureArray[componentIndex],
+					flat,
+					componentIndex,
+					explicitBootVolatilityCurve,
+					discountCurve,
+					forwardCurve,
+					latentStateFixingsContainer,
+					valuationCustomizationParams
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return ebvc;
+		return explicitBootVolatilityCurve;
 	}
 
 	/**
 	 * Create an array of tenor bumped Volatility curves
 	 * 
-	 * @param strName Volatility Curve Name
-	 * @param valParams ValuationParams
-	 * @param lslUnderlying Underlying Latent State Label
-	 * @param aFRACapFloor Array of the FRA Cap Floor Instruments
-	 * @param adblCalibQuote Array of component quotes
-	 * @param astrCalibMeasure Array of the calibration measures
-	 * @param bFlat Flat Calibration (True), or real bootstrapping (false)
-	 * @param dblBump Amount of bump applied to the tenor
-	 * @param dc Base Discount Curve
-	 * @param fc Forward Curve
-	 * @param lsfc Latent State Fixings Container
-	 * @param vcp Valuation Customization Parameters
+	 * @param name Volatility Curve Name
+	 * @param valuationParams ValuationParams
+	 * @param underlyingLatentStateLabel Underlying Latent State Label
+	 * @param fraStandardCapFloorArray Array of the FRA Cap Floor Instruments
+	 * @param calibrationQuoteArray Array of component quotes
+	 * @param calibrationMeasureArray Array of the calibration measures
+	 * @param flat Flat Calibration (True), or real bootstrapping (false)
+	 * @param bump Amount of bump applied to the tenor
+	 * @param discountCurve Base Discount Curve
+	 * @param forwardCurve Forward Curve
+	 * @param latentStateFixingsContainer Latent State Fixings Container
+	 * @param valuationCustomizationParams Valuation Customization Parameters
 	 * 
 	 * @return Array of Volatility Curves
 	 */
 
 	public static final org.drip.state.volatility.VolatilityCurve[] Tenor (
-		final java.lang.String strName,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.state.identifier.LatentStateLabel lslUnderlying,
-		final org.drip.product.fra.FRAStandardCapFloor[] aFRACapFloor,
-		final double[] adblCalibQuote,
-		final java.lang.String[] astrCalibMeasure,
-		final boolean bFlat,
-		final double dblBump,
-		final org.drip.state.discount.MergedDiscountForwardCurve dc,
-		final org.drip.state.forward.ForwardCurve fc,
-		final org.drip.param.market.LatentStateFixingsContainer lsfc,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp)
+		final String name,
+		final ValuationParams valuationParams,
+		final LatentStateLabel underlyingLatentStateLabel,
+		final FRAStandardCapFloor[] fraStandardCapFloorArray,
+		final double[] calibrationQuoteArray,
+		final String[] calibrationMeasureArray,
+		final boolean flat,
+		final double bump,
+		final MergedDiscountForwardCurve discountCurve,
+		final ForwardCurve forwardCurve,
+		final LatentStateFixingsContainer latentStateFixingsContainer,
+		final ValuationCustomizationParams valuationCustomizationParams)
 	{
-		if (null == aFRACapFloor || !org.drip.numerical.common.NumberUtil.IsValid (dblBump)) return null;
-
-		int iNumComp = aFRACapFloor.length;
-		org.drip.state.volatility.VolatilityCurve[] aVolatilityCurve = new
-			org.drip.state.volatility.VolatilityCurve[iNumComp];
-
-		if (0 == iNumComp) return null;
-
-		for (int i = 0; i < iNumComp; ++i) {
-			double[] adblTenorQuote = new double [iNumComp];
-
-			for (int j = 0; j < iNumComp; ++j)
-				adblTenorQuote[j] += (j == i ? dblBump : 0.);
-
-			if (null == (aVolatilityCurve[i] = Standard (strName, valParams, lslUnderlying, aFRACapFloor,
-				adblTenorQuote, astrCalibMeasure, bFlat, dc, fc, lsfc, vcp)))
-				return null;
+		if (null == fraStandardCapFloorArray || !NumberUtil.IsValid (bump)) {
+			return null;
 		}
 
-		return aVolatilityCurve;
+		int componentCount = fraStandardCapFloorArray.length;
+		VolatilityCurve[] volatilityCurveArray = new VolatilityCurve[componentCount];
+
+		if (0 == componentCount) {
+			return null;
+		}
+
+		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+			double[] tenorQuoteArray = new double[componentCount];
+
+			for (int bumpIndex = 0; bumpIndex < componentCount; ++bumpIndex) {
+				tenorQuoteArray[bumpIndex] = calibrationQuoteArray[bumpIndex] +
+					(bumpIndex == componentIndex ? bump : 0.);
+			}
+
+			if (null == (
+				volatilityCurveArray[componentIndex] = Standard (
+					name,
+					valuationParams,
+					underlyingLatentStateLabel,
+					fraStandardCapFloorArray,
+					tenorQuoteArray,
+					calibrationMeasureArray,
+					flat,
+					discountCurve,
+					forwardCurve,
+					latentStateFixingsContainer,
+					valuationCustomizationParams
+				)
+			)) {
+				return null;
+			}
+		}
+
+		return volatilityCurveArray;
 	}
 
 	/**
 	 * Create an tenor named map of tenor bumped Volatility curves
 	 * 
-	 * @param strName Volatility Curve name
-	 * @param valParams ValuationParams
-	 * @param lslUnderlying Underlying Latent State Label
-	 * @param aFRACapFloor Array of the FRA Cap Floor Instruments
-	 * @param adblCalibQuote Array of component quotes
-	 * @param astrCalibMeasure Array of the calibration measures
-	 * @param bFlat Flat Calibration (True), or real bootstrapping (false)
-	 * @param dblBump Amount of bump applied to the tenor
-	 * @param dc Base Discount Curve
-	 * @param fc Forward Curve
-	 * @param lsfc Latent State Fixings Container
-	 * @param vcp Valuation Customization Parameters
+	 * @param name Volatility Curve name
+	 * @param valuationParams ValuationParams
+	 * @param underlyingLatentStateLabel Underlying Latent State Label
+	 * @param fraStandardCapFloorArray Array of the FRA Cap Floor Instruments
+	 * @param calibrationQuoteArray Array of component quotes
+	 * @param calibrationMeasureArray Array of the calibration measures
+	 * @param flat Flat Calibration (True), or real bootstrapping (false)
+	 * @param bump Amount of bump applied to the tenor
+	 * @param discountCurve Base Discount Curve
+	 * @param forwardCurve Forward Curve
+	 * @param latentStateFixingsContainer Latent State Fixings Container
+	 * @param valuationCustomizationParams Valuation Customization Parameters
 	 * 
 	 * @return Tenor named map of tenor bumped Volatility curves
 	 */
 
-	public org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.volatility.VolatilityCurve>
-		TenorMap (
-			final java.lang.String strName,
-			final org.drip.param.valuation.ValuationParams valParams,
-			final org.drip.state.identifier.LatentStateLabel lslUnderlying,
-			final org.drip.product.fra.FRAStandardCapFloor[] aFRACapFloor,
-			final double[] adblCalibQuote,
-			final java.lang.String[] astrCalibMeasure,
-			final boolean bFlat,
-			final double dblBump,
-			final org.drip.state.discount.MergedDiscountForwardCurve dc,
-			final org.drip.state.forward.ForwardCurve fc,
-			final org.drip.param.market.LatentStateFixingsContainer lsfc,
-			final org.drip.param.valuation.ValuationCustomizationParams vcp)
+	public CaseInsensitiveTreeMap<VolatilityCurve> TenorMap (
+		final String name,
+		final ValuationParams valuationParams,
+		final LatentStateLabel underlyingLatentStateLabel,
+		final FRAStandardCapFloor[] fraStandardCapFloorArray,
+		final double[] calibrationQuoteArray,
+		final String[] calibrationMeasureArray,
+		final boolean flat,
+		final double bump,
+		final MergedDiscountForwardCurve discountCurve,
+		final ForwardCurve forwardCurve,
+		final LatentStateFixingsContainer latentStateFixingsContainer,
+		final ValuationCustomizationParams valuationCustomizationParams)
 	{
-		if (null == aFRACapFloor || !org.drip.numerical.common.NumberUtil.IsValid (dblBump)) return null;
-
-		int iNumComp = aFRACapFloor.length;
-
-		if (0 == iNumComp) return null;
-
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.volatility.VolatilityCurve>
-			mapTenorVolatilityCurve = new
-				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.volatility.VolatilityCurve>();
-
-		for (int i = 0; i < iNumComp; ++i) {
-			double[] adblTenorQuote = new double[iNumComp];
-			org.drip.state.volatility.VolatilityCurve volCurve = null;
-
-			for (int j = 0; j < iNumComp; ++j)
-				adblTenorQuote[j] = adblCalibQuote[j] + (j == i ? dblBump : 0.);
-
-			if (null == (volCurve = Standard (strName, valParams, lslUnderlying, aFRACapFloor, adblTenorQuote,
-				astrCalibMeasure, bFlat, dc, fc, lsfc, vcp)))
-				return null;
-
-			mapTenorVolatilityCurve.put (org.drip.analytics.date.DateUtil.YYYYMMDD
-				(aFRACapFloor[i].maturityDate().julian()), volCurve);
+		if (null == fraStandardCapFloorArray || !NumberUtil.IsValid (bump)) {
+			return null;
 		}
 
-		return mapTenorVolatilityCurve;
+		int componentCount = fraStandardCapFloorArray.length;
+
+		if (0 == componentCount) {
+			return null;
+		}
+
+		CaseInsensitiveTreeMap<VolatilityCurve> tenorVolatilityCurveMap =
+			new CaseInsensitiveTreeMap<VolatilityCurve>();
+
+		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+			VolatilityCurve volatilityCurve = null;
+			double[] tenorQuoteArray = new double[componentCount];
+
+			for (int bumpComponentIndex = 0; bumpComponentIndex < componentCount; ++bumpComponentIndex) {
+				tenorQuoteArray[bumpComponentIndex] = calibrationQuoteArray[bumpComponentIndex] +
+					(bumpComponentIndex == componentIndex ? bump : 0.);
+			}
+
+			if (null == (
+				volatilityCurve = Standard (
+					name,
+					valuationParams,
+					underlyingLatentStateLabel,
+					fraStandardCapFloorArray,
+					tenorQuoteArray,
+					calibrationMeasureArray,
+					flat,
+					discountCurve,
+					forwardCurve,
+					latentStateFixingsContainer,
+					valuationCustomizationParams
+				)
+			)) {
+				return null;
+			}
+
+			tenorVolatilityCurveMap.put (
+				DateUtil.YYYYMMDD (fraStandardCapFloorArray[componentIndex].maturityDate().julian()),
+				volatilityCurve
+			);
+		}
+
+		return tenorVolatilityCurveMap;
 	}
 }

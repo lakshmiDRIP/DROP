@@ -3,6 +3,7 @@ package org.drip.state.credit;
 
 import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.definition.Curve;
+import org.drip.analytics.input.CurveConstructionInputSet;
 import org.drip.analytics.support.CaseInsensitiveTreeMap;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.param.market.LatentStateFixingsContainer;
@@ -588,67 +589,80 @@ public abstract class CreditCurve implements Curve
 	/**
 	 * Set the calibration inputs for the CreditCurve
 	 * 
-	 * @param valParam ValuationParams
-	 * @param bFlat Flat calibration desired (True)
-	 * @param dc Base Discount Curve
-	 * @param gc Govvie Curve
-	 * @param pricerParam PricerParams
-	 * @param aCalibInst Array of calibration instruments
-	 * @param adblCalibQuote Array of calibration quotes
-	 * @param astrCalibMeasure Array of calibration measures
-	 * @param lsfc Latent State Fixings Container
-	 * @param quotingParams Quoting Parameters
+	 * @param valuationParams Valuation Params
+	 * @param flat Flat calibration desired (True)
+	 * @param discountCurve Base Discount Curve
+	 * @param govvieCurve Govvie Curve
+	 * @param creditPricerParams PricerParams
+	 * @param calibratableComponentArray Array of calibration instruments
+	 * @param calibrationQuoteArray Array of calibration quotes
+	 * @param calibrationMeasureArray Array of calibration measures
+	 * @param latentStateFixingsContainer Latent State Fixings Container
+	 * @param valuationCustomizationParams Quoting Parameters
 	 */
 
 	public void setInstrCalibInputs (
-		final org.drip.param.valuation.ValuationParams valParam,
-		final boolean bFlat,
-		final org.drip.state.discount.MergedDiscountForwardCurve dc,
-		final org.drip.state.govvie.GovvieCurve gc,
-		final org.drip.param.pricer.CreditPricerParams pricerParam,
-		final org.drip.product.definition.CalibratableComponent[] aCalibInst,
-		final double[] adblCalibQuote,
-		final java.lang.String[] astrCalibMeasure,
-		final org.drip.param.market.LatentStateFixingsContainer lsfc,
-		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
+		final ValuationParams valuationParams,
+		final boolean flat,
+		final MergedDiscountForwardCurve discountCurve,
+		final GovvieCurve govvieCurve,
+		final CreditPricerParams creditPricerParams,
+		final CalibratableComponent[] calibratableComponentArray,
+		final double[] calibrationQuoteArray,
+		final String[] calibrationMeasureArray,
+		final LatentStateFixingsContainer latentStateFixingsContainer,
+		final org.drip.param.valuation.ValuationCustomizationParams valuationCustomizationParams)
 	{
-		_discountCurve = dc;
-		_govvieCurve = gc;
-		_latentStateFixingsContainer = lsfc;
-		_flat = bFlat;
-		_valuationParams = valParam;
-		_calibratableComponentArray = aCalibInst;
-		_creditPricerParams = pricerParam;
-		_valuationCustomizationParams = quotingParams;
-		_calibrationQuoteArray = adblCalibQuote;
-		_calibrationMeasureArray = astrCalibMeasure;
+		_flat = flat;
+		_govvieCurve = govvieCurve;
+		_discountCurve = discountCurve;
+		_valuationParams = valuationParams;
+		_creditPricerParams = creditPricerParams;
+		_calibrationQuoteArray = calibrationQuoteArray;
+		_calibrationMeasureArray = calibrationMeasureArray;
+		_calibratableComponentArray = calibratableComponentArray;
+		_latentStateFixingsContainer = latentStateFixingsContainer;
+		_valuationCustomizationParams = valuationCustomizationParams;
 
-		_doubleQuoteMap = new
-			org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>();
+		_measureMap = new CaseInsensitiveTreeMap<String>();
 
-		_measureMap = new org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String>();
+		_doubleQuoteMap = new CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>();
 
-		for (int i = 0; i < aCalibInst.length; ++i) {
-			_measureMap.put (_calibratableComponentArray[i].primaryCode(), astrCalibMeasure[i]);
+		for (int componentIndex = 0; componentIndex < calibratableComponentArray.length; ++componentIndex) {
+			_measureMap.put (
+				_calibratableComponentArray[componentIndex].primaryCode(),
+				calibrationMeasureArray[componentIndex]
+			);
 
-			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapManifestMeasureCalibQuote
-				= new org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
+			CaseInsensitiveTreeMap<Double> manifestMeasureCalibrationQuoteMap =
+				new CaseInsensitiveTreeMap<Double>();
 
-			mapManifestMeasureCalibQuote.put (_calibrationMeasureArray[i], adblCalibQuote[i]);
+			manifestMeasureCalibrationQuoteMap.put (
+				_calibrationMeasureArray[componentIndex],
+				calibrationQuoteArray[componentIndex]
+			);
 
-			_doubleQuoteMap.put (_calibratableComponentArray[i].primaryCode(), mapManifestMeasureCalibQuote);
+			_doubleQuoteMap.put (
+				_calibratableComponentArray[componentIndex].primaryCode(),
+				manifestMeasureCalibrationQuoteMap
+			);
 
-			java.lang.String[] astrSecCode = _calibratableComponentArray[i].secondaryCode();
+			String[] secondaryCodeArray = _calibratableComponentArray[componentIndex].secondaryCode();
 
-			if (null != astrSecCode) {
-				for (int j = 0; j < astrSecCode.length; ++j)
-					_doubleQuoteMap.put (astrSecCode[j], mapManifestMeasureCalibQuote);
+			if (null != secondaryCodeArray) {
+				for (int secondaryCodeIndex = 0; secondaryCodeIndex < secondaryCodeArray.length;
+					++secondaryCodeIndex) {
+					_doubleQuoteMap.put (
+						secondaryCodeArray[secondaryCodeIndex],
+						manifestMeasureCalibrationQuoteMap
+					);
+				}
 			}
 		}
 	}
 
 	@Override public boolean setCCIS (
-		final org.drip.analytics.input.CurveConstructionInputSet ccis)
+		final CurveConstructionInputSet curveConstructionInputSet)
 	{
 		return false;
 	}
@@ -658,13 +672,11 @@ public abstract class CreditCurve implements Curve
 		return _calibratableComponentArray;
 	}
 
-	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> manifestMeasure (
-		final java.lang.String strInstr)
+	@Override public CaseInsensitiveTreeMap<Double> manifestMeasure (
+		final String instrument)
 	{
-		if (null == _doubleQuoteMap || 0 == _doubleQuoteMap.size() || null == strInstr || strInstr.isEmpty() ||
-			!_doubleQuoteMap.containsKey (strInstr))
-			return null;
-
-		return _doubleQuoteMap.get (strInstr);
+		return null == _doubleQuoteMap || 0 == _doubleQuoteMap.size() ||
+			null == instrument || instrument.isEmpty() || !_doubleQuoteMap.containsKey (instrument) ?
+			null : _doubleQuoteMap.get (instrument);
 	}
 }

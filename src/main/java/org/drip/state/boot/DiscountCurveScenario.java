@@ -1,11 +1,29 @@
 
 package org.drip.state.boot;
 
+import org.drip.analytics.date.DateUtil;
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.input.BootCurveConstructionInput;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.param.market.LatentStateFixingsContainer;
+import org.drip.param.valuation.ValuationCustomizationParams;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.state.creator.ScenarioDiscountCurveBuilder;
+import org.drip.state.discount.ExplicitBootDiscountCurve;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.govvie.GovvieCurve;
+import org.drip.state.nonlinear.NonlinearCurveBuilder;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -86,182 +104,251 @@ package org.drip.state.boot;
 
 /**
  * <i>DiscountCurveScenario</i> uses the interest rate calibration instruments along with the component
- * calibrator to produce scenario interest rate curves. DiscountCurveScenario typically first constructs the
- * actual curve calibrator instance to localize the intelligence around curve construction. It then uses this
- * curve calibrator instance to build individual curves or the sequence of node bumped scenario curves. The
- * curves in the set may be an array, or tenor-keyed.
+ * 	calibrator to produce scenario interest rate curves. DiscountCurveScenario typically first constructs the
+ * 	actual curve calibrator instance to localize the intelligence around curve construction. It then uses this
+ * 	curve calibrator instance to build individual curves or the sequence of node bumped scenario curves. The
+ * 	curves in the set may be an array, or tenor-keyed. It exposes the following functions:
  *
- *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/boot/README.md">Bootable Discount, Credit, Volatility States</a></li>
+ * 		<li>Calibrate a discount curve</li>
+ * 		<li>Calibrate an array of tenor bumped discount curves</li>
+ * 		<li>Calibrate a tenor map of tenor bumped discount curves</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/boot/README.md">Bootable Discount, Credit, Volatility States</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DiscountCurveScenario {
+public class DiscountCurveScenario
+{
 
 	/**
 	 * Calibrate a discount curve
 	 * 
-	 * @param valParams ValuationParams
-	 * @param aCalibInst Array of Calibratable Components
-	 * @param adblCalibQuote Array of component quotes
-	 * @param astrCalibMeasure Array of the calibration measures
-	 * @param dblBump Quote bump
-	 * @param gc Govvie Curve
-	 * @param lsfc Latent State Fixings Container
-	 * @param vcp Valuation Customization Parameters
+	 * @param valuationParams ValuationParams
+	 * @param calibratableComponentArray Array of Calibratable Components
+	 * @param calibrationQuoteArray Array of component quotes
+	 * @param calibrationMeasureArray Array of the calibration measures
+	 * @param bump Quote bump
+	 * @param govvieCurve Govvie Curve
+	 * @param latentStateFixingsContainer Latent State Fixings Container
+	 * @param valuationCustomizationParams Valuation Customization Parameters
 	 * 
 	 * @return DiscountCurve Instance
 	 */
 
-	public static final org.drip.state.discount.MergedDiscountForwardCurve Standard (
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.product.definition.CalibratableComponent[] aCalibInst,
-		final double[] adblCalibQuote,
-		final java.lang.String[] astrCalibMeasure,
-		final double dblBump,
-		final org.drip.state.govvie.GovvieCurve gc,
-		final org.drip.param.market.LatentStateFixingsContainer lsfc,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp)
+	public static final MergedDiscountForwardCurve Standard (
+		final ValuationParams valuationParams,
+		final CalibratableComponent[] calibratableComponentArray,
+		final double[] calibrationQuoteArray,
+		final String[] calibrationMeasureArray,
+		final double bump,
+		final GovvieCurve govvieCurve,
+		final LatentStateFixingsContainer latentStateFixingsContainer,
+		final ValuationCustomizationParams valuationCustomizationParams)
 	{
-		if (null == valParams || null == aCalibInst || null == adblCalibQuote || null == astrCalibMeasure)
+		if (null == valuationParams || null == calibratableComponentArray || null == calibrationQuoteArray ||
+			null == calibrationMeasureArray) {
 			return null;
-
-		int iNumComp = aCalibInst.length;
-		int aiDate[] = new int[iNumComp];
-		double adblRate[] = new double[iNumComp];
-
-		if (0 == iNumComp || adblCalibQuote.length != iNumComp || astrCalibMeasure.length != iNumComp)
-			return null;
-
-		java.lang.String strCurrency = aCalibInst[0].payCurrency();
-
-		for (int i = 0; i < iNumComp; ++i) {
-			if (null == aCalibInst[i] || !strCurrency.equalsIgnoreCase (aCalibInst[i].payCurrency()))
-				return null;
-
-			adblRate[i] = 0.02;
-
-			aiDate[i] = aCalibInst[i].maturityDate().julian();
 		}
 
-		org.drip.state.discount.ExplicitBootDiscountCurve ebdc =
-			org.drip.state.creator.ScenarioDiscountCurveBuilder.PiecewiseForward (new
-				org.drip.analytics.date.JulianDate (valParams.valueDate()), strCurrency, aiDate, adblRate);
+		int componentCount = calibratableComponentArray.length;
+		double rateArray[] = new double[componentCount];
+		int dateArray[] = new int[componentCount];
 
-		if (!org.drip.state.nonlinear.NonlinearCurveBuilder.DiscountCurve (valParams, aCalibInst,
-			adblCalibQuote, astrCalibMeasure, dblBump, false, ebdc, gc, lsfc, vcp))
+		if (0 == componentCount || calibrationQuoteArray.length != componentCount ||
+			calibrationMeasureArray.length != componentCount) {
 			return null;
+		}
 
-		ebdc.setCCIS (org.drip.analytics.input.BootCurveConstructionInput.Create (valParams, vcp, aCalibInst,
-			adblCalibQuote, astrCalibMeasure, lsfc));
+		String currency = calibratableComponentArray[0].payCurrency();
 
-		return ebdc;
+		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+			if (null == calibratableComponentArray[componentIndex] ||
+				!currency.equalsIgnoreCase (calibratableComponentArray[componentIndex].payCurrency())) {
+				return null;
+			}
+
+			rateArray[componentIndex] = 0.02;
+
+			dateArray[componentIndex] = calibratableComponentArray[componentIndex].maturityDate().julian();
+		}
+
+		ExplicitBootDiscountCurve explicitBootDiscountCurve = ScenarioDiscountCurveBuilder.PiecewiseForward (
+			new JulianDate (valuationParams.valueDate()),
+			currency,
+			dateArray,
+			rateArray
+		);
+
+		if (!NonlinearCurveBuilder.DiscountCurve (
+			valuationParams,
+			calibratableComponentArray,
+			calibrationQuoteArray,
+			calibrationMeasureArray,
+			bump,
+			false,
+			explicitBootDiscountCurve,
+			govvieCurve,
+			latentStateFixingsContainer,
+			valuationCustomizationParams
+		)) {
+			return null;
+		}
+
+		explicitBootDiscountCurve.setCCIS (
+			BootCurveConstructionInput.Create (
+				valuationParams,
+				valuationCustomizationParams,
+				calibratableComponentArray,
+				calibrationQuoteArray,
+				calibrationMeasureArray,
+				latentStateFixingsContainer
+			)
+		);
+
+		return explicitBootDiscountCurve;
 	}
 
 	/**
 	 * Calibrate an array of tenor bumped discount curves
 	 * 
-	 * @param valParams Valuation Parameters
-	 * @param aCalibInst Array of Calibratable Components
-	 * @param adblCalibQuote Array of component quotes
-	 * @param astrCalibMeasure Array of the calibration measures
-	 * @param dblBump Quote bump
-	 * @param gc Govvie Curve
-	 * @param lsfc Latent State Fixings Container
-	 * @param vcp Valuation Customization Parameters
+	 * @param valuationParams Valuation Parameters
+	 * @param calibratableComponentArray Array of Calibratable Components
+	 * @param calibrationQuoteArray Array of component quotes
+	 * @param calibrationMeasureArray Array of the calibration measures
+	 * @param bump Quote bump
+	 * @param govvieCurve Govvie Curve
+	 * @param latentStateFixingsContainer Latent State Fixings Container
+	 * @param valuationCustomizationParams Valuation Customization Parameters
 	 * 
 	 * @return Array of tenor bumped discount curves
 	 */
 
-	public static final org.drip.state.discount.MergedDiscountForwardCurve[] Tenor (
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.product.definition.CalibratableComponent[] aCalibInst,
-		final double[] adblCalibQuote,
-		final java.lang.String[] astrCalibMeasure,
-		final double dblBump,
-		final org.drip.state.govvie.GovvieCurve gc,
-		final org.drip.param.market.LatentStateFixingsContainer lsfc,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp)
+	public static final MergedDiscountForwardCurve[] Tenor (
+		final ValuationParams valuationParams,
+		final CalibratableComponent[] calibratableComponentArray,
+		final double[] calibrationQuoteArray,
+		final String[] calibrationMeasureArray,
+		final double bump,
+		final GovvieCurve govvieCurve,
+		final LatentStateFixingsContainer latentStateFixingsContainer,
+		final ValuationCustomizationParams valuationCustomizationParams)
 	{
-		if (null == aCalibInst || !org.drip.numerical.common.NumberUtil.IsValid (dblBump)) return null;
-
-		int iNumComp = aCalibInst.length;
-		org.drip.state.discount.MergedDiscountForwardCurve[] aDiscountCurve = new
-			org.drip.state.discount.MergedDiscountForwardCurve[iNumComp];
-
-		if (0 == iNumComp || adblCalibQuote.length != iNumComp || astrCalibMeasure.length != iNumComp)
+		if (null == calibratableComponentArray || !NumberUtil.IsValid (bump)) {
 			return null;
-
-		for (int i = 0; i < iNumComp; ++i) {
-			double[] adblTenorQuote = new double [iNumComp];
-
-			for (int j = 0; j < iNumComp; ++j)
-				adblTenorQuote[j] = adblCalibQuote[j] + (j == i ? dblBump : 0.);
-
-			if (null == (aDiscountCurve[i] = Standard (valParams, aCalibInst, adblTenorQuote,
-				astrCalibMeasure, 0., gc, lsfc, vcp)))
-				return null;
 		}
 
-		return aDiscountCurve;
+		int componentCount = calibratableComponentArray.length;
+		MergedDiscountForwardCurve[] discountCurveArray = new MergedDiscountForwardCurve[componentCount];
+
+		if (0 == componentCount || calibrationQuoteArray.length != componentCount ||
+			calibrationMeasureArray.length != componentCount) {
+			return null;
+		}
+
+		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+			double[] tenorQuoteArray = new double [componentCount];
+
+			for (int tenorComponentIndex = 0; tenorComponentIndex < componentCount; ++tenorComponentIndex) {
+				tenorQuoteArray[tenorComponentIndex] = calibrationQuoteArray[tenorComponentIndex] +
+					(tenorComponentIndex == componentIndex ? bump : 0.);
+			}
+
+			if (null == (
+				discountCurveArray[componentIndex] = Standard (
+					valuationParams,
+					calibratableComponentArray,
+					tenorQuoteArray,
+					calibrationMeasureArray,
+					0.,
+					govvieCurve,
+					latentStateFixingsContainer,
+					valuationCustomizationParams
+				)
+			)) {
+				return null;
+			}
+		}
+
+		return discountCurveArray;
 	}
 
 	/**
 	 * Calibrate a tenor map of tenor bumped discount curves
 	 * 
-	 * @param valParams ValuationParams
-	 * @param aCalibInst Array of Calibratable Components
-	 * @param adblCalibQuote Array of component quotes
-	 * @param astrCalibMeasure Array of the calibration measures
-	 * @param dblBump Quote bump
-	 * @param gc Govvie Curve
-	 * @param lsfc Latent State Fixings Container
-	 * @param vcp Valuation Customization Parameters
+	 * @param valuationParams ValuationParams
+	 * @param calibratableComponentArray Array of Calibratable Components
+	 * @param calibrationQuoteArray Array of component quotes
+	 * @param calibrationMeasureArray Array of the calibration measures
+	 * @param bump Quote bump
+	 * @param govvieCurve Govvie Curve
+	 * @param latentStateFixingsContainer Latent State Fixings Container
+	 * @param valuationCustomizationParams Valuation Customization Parameters
 	 * 
 	 * @return Tenor map of tenor bumped discount curves
 	 */
 
-	public static final
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.discount.MergedDiscountForwardCurve> TenorMap (
-			final org.drip.param.valuation.ValuationParams valParams,
-			final org.drip.product.definition.CalibratableComponent[] aCalibInst,
-			final double[] adblCalibQuote,
-			final java.lang.String[] astrCalibMeasure,
-			final double dblBump,
-			final org.drip.state.govvie.GovvieCurve gc,
-			final org.drip.param.market.LatentStateFixingsContainer lsfc,
-			final org.drip.param.valuation.ValuationCustomizationParams vcp)
+	public static final CaseInsensitiveTreeMap<MergedDiscountForwardCurve> TenorMap (
+		final ValuationParams valuationParams,
+		final CalibratableComponent[] calibratableComponentArray,
+		final double[] calibrationQuoteArray,
+		final String[] calibrationMeasureArray,
+		final double bump,
+		final GovvieCurve govvieCurve,
+		final LatentStateFixingsContainer latentStateFixingsContainer,
+		final ValuationCustomizationParams valuationCustomizationParams)
 	{
-		if (null == aCalibInst || null == adblCalibQuote || !org.drip.numerical.common.NumberUtil.IsValid
-			(dblBump))
+		if (null == calibratableComponentArray || null == calibrationQuoteArray ||
+			!NumberUtil.IsValid (bump)) {
 			return null;
-
-		int iNumComp = aCalibInst.length;
-
-		if (0 == iNumComp || adblCalibQuote.length != iNumComp) return null;
-
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.discount.MergedDiscountForwardCurve>
-			mapTenorDiscountCurve = new
-				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.discount.MergedDiscountForwardCurve>();
-
-		for (int i = 0; i < iNumComp; ++i) {
-			double[] adblTenorQuote = new double [iNumComp];
-
-			for (int j = 0; j < iNumComp; ++j)
-				adblTenorQuote[j] = adblCalibQuote[j] + (j == i ? dblBump : 0.);
-
-			mapTenorDiscountCurve.put (org.drip.analytics.date.DateUtil.YYYYMMDD
-				(aCalibInst[i].maturityDate().julian()), Standard (valParams, aCalibInst, adblTenorQuote,
-					astrCalibMeasure, 0., gc, lsfc, vcp));
 		}
 
-		return mapTenorDiscountCurve;
+		int componentCount = calibratableComponentArray.length;
+
+		if (0 == componentCount || calibrationQuoteArray.length != componentCount) {
+			return null;
+		}
+
+		CaseInsensitiveTreeMap<MergedDiscountForwardCurve> tenorDiscountCurveMap =
+			new CaseInsensitiveTreeMap<MergedDiscountForwardCurve>();
+
+		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+			double[] tenorQuoteArray = new double [componentCount];
+
+			for (int tenorComponentIndex = 0; tenorComponentIndex < componentCount; ++tenorComponentIndex) {
+				tenorQuoteArray[tenorComponentIndex] = calibrationQuoteArray[tenorComponentIndex] +
+					(tenorComponentIndex == componentIndex ? bump : 0.);
+			}
+
+			tenorDiscountCurveMap.put (
+				DateUtil.YYYYMMDD (calibratableComponentArray[componentIndex].maturityDate().julian()),
+				Standard (
+					valuationParams,
+					calibratableComponentArray,
+					tenorQuoteArray,
+					calibrationMeasureArray,
+					0.,
+					govvieCurve,
+					latentStateFixingsContainer,
+					valuationCustomizationParams
+				)
+			);
+		}
+
+		return tenorDiscountCurveMap;
 	}
 }

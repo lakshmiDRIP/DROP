@@ -1,11 +1,17 @@
 
 package org.drip.state.credit;
 
+import org.drip.analytics.definition.ExplicitBootCurve;
+import org.drip.state.identifier.EntityCDSLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -86,27 +92,32 @@ package org.drip.state.credit;
 /**
  * <i>ExplicitBootCreditCurve</i> exposes the functionality associated with the bootstrapped Credit Curve.
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/credit/README.md">Credit Latent State Curve Representation</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/credit/README.md">Credit Latent State Curve Representation</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ExplicitBootCreditCurve extends org.drip.state.credit.CreditCurve implements
-	org.drip.analytics.definition.ExplicitBootCurve {
+public abstract class ExplicitBootCreditCurve extends CreditCurve implements ExplicitBootCurve
+{
 
 	protected ExplicitBootCreditCurve (
-		final int iEpochDate,
-		final org.drip.state.identifier.EntityCDSLabel label,
-		final java.lang.String strCurrency)
+		final int epochDate,
+		final EntityCDSLabel entityCDSLabel,
+		final String currency)
 		throws java.lang.Exception
 	{
-		super (iEpochDate, label, strCurrency);
+		super (epochDate, entityCDSLabel, currency);
 	}
 }

@@ -1,11 +1,32 @@
 
 package org.drip.state.boot;
 
+import org.drip.analytics.date.DateUtil;
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.param.creator.MarketParamsBuilder;
+import org.drip.param.definition.CalibrationParams;
+import org.drip.param.market.LatentStateFixingsContainer;
+import org.drip.param.pricer.CreditPricerParams;
+import org.drip.param.valuation.ValuationCustomizationParams;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.product.definition.CreditDefaultSwap;
+import org.drip.state.creator.ScenarioCreditCurveBuilder;
+import org.drip.state.credit.CreditCurve;
+import org.drip.state.credit.ExplicitBootCreditCurve;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.govvie.GovvieCurve;
+import org.drip.state.nonlinear.NonlinearCurveBuilder;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -89,253 +110,360 @@ package org.drip.state.boot;
  * calibrator to produce scenario hazard rate curves. CreditCurveScenario typically first constructs the
  * actual curve calibrator instance to localize the intelligence around curve construction. It then uses this
  * curve calibrator instance to build individual curves or the sequence of node bumped scenario curves. The
- * curves in the set may be an array, or tenor-keyed.
+ * curves in the set may be an array, or tenor-keyed. It exposes the following functions:
  *
- *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/boot/README.md">Bootable Discount, Credit, Volatility States</a></li>
+ * 		<li>Calibrate a credit curve</li>
+ * 		<li>Create an array of tenor bumped credit curves</li>
+ * 		<li>Create an tenor named map of tenor bumped credit curves</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/boot/README.md">Bootable Discount, Credit, Volatility States</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditCurveScenario {
-	static class TranslatedQuoteMeasure {
-		java.lang.String _strMeasure = "";
-		double _dblQuote = java.lang.Double.NaN;
+public class CreditCurveScenario
+{
+	static class TranslatedQuoteMeasure
+	{
+		String _measure = "";
+		double _quote = Double.NaN;
 
 		TranslatedQuoteMeasure (
-			final java.lang.String strMeasure,
-			final double dblQuote)
+			final String measure,
+			final double quote)
 		{
-			_dblQuote = dblQuote;
-			_strMeasure = strMeasure;
+			_quote = quote;
+			_measure = measure;
 		}
 	}
 
 	private static final TranslatedQuoteMeasure TranslateQuoteMeasure (
-		final org.drip.product.definition.CalibratableComponent comp,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.CreditPricerParams pricerParams,
-		final org.drip.state.discount.MergedDiscountForwardCurve dc,
-		final org.drip.state.credit.CreditCurve cc,
-		final java.lang.String strMeasure,
-		final double dblQuote)
+		final CalibratableComponent calibratableComponent,
+		final ValuationParams valuationParams,
+		final CreditPricerParams creditPricerParams,
+		final MergedDiscountForwardCurve discountCurve,
+		final CreditCurve creditCurve,
+		final String measure,
+		final double quote)
 	{
-		if (!(comp instanceof org.drip.product.definition.CreditDefaultSwap) ||
-			(!"FlatSpread".equalsIgnoreCase (strMeasure) && !"QuotedSpread".equalsIgnoreCase (strMeasure)))
-			return new TranslatedQuoteMeasure (strMeasure, dblQuote);
+		if (!(calibratableComponent instanceof CreditDefaultSwap) || (
+			!"FlatSpread".equalsIgnoreCase (measure) && !"QuotedSpread".equalsIgnoreCase (measure)
+		)) {
+			return new TranslatedQuoteMeasure (measure, quote);
+		}
 
-		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapQSMeasures =
-			((org.drip.product.definition.CreditDefaultSwap) comp).valueFromQuotedSpread (valParams,
-				pricerParams, org.drip.param.creator.MarketParamsBuilder.Credit (dc, cc), null,
-					0.01, dblQuote);
+		CaseInsensitiveTreeMap<Double> quotedSpreadMeasureMap =
+			((CreditDefaultSwap) calibratableComponent).valueFromQuotedSpread (
+				valuationParams,
+				creditPricerParams,
+				MarketParamsBuilder.Credit (discountCurve, creditCurve),
+				null,
+				0.01,
+				quote
+			);
 
-		return null == mapQSMeasures ? null : new TranslatedQuoteMeasure ("Upfront", mapQSMeasures.get
-			("Upfront"));
+		return null == quotedSpreadMeasureMap ? null : new TranslatedQuoteMeasure (
+			"Upfront",
+			quotedSpreadMeasureMap.get ("Upfront")
+		);
 	}
 
 	/**
 	 * Calibrate a Credit Curve
 	 * 
-	 * @param strName Credit Curve name
-	 * @param valParams ValuationParams
-	 * @param aCalibInst Array of Calibration Instruments
-	 * @param adblCalibQuote Array of component quotes
-	 * @param astrCalibMeasure Array of the calibration measures
-	 * @param dblRecovery Component recovery
-	 * @param bFlat Flat Calibration (True), or real bootstrapping (false)
-	 * @param dc Base Discount Curve
-	 * @param gc Govvie Curve
-	 * @param lsfc Latent State Fixings Container
-	 * @param vcp Valuation Customization Parameters
-	 * @param cp The Calibration Parameters
+	 * @param name Credit Curve name
+	 * @param valuationParams ValuationParams
+	 * @param calibratableComponentArray Array of Calibration Instruments
+	 * @param calibrationQuoteArray Array of component quotes
+	 * @param calibrationMeasureArray Array of the calibration measures
+	 * @param recovery Component recovery
+	 * @param flat Flat Calibration (True), or real bootstrapping (false)
+	 * @param discountCurve Base Discount Curve
+	 * @param govvieCurve Govvie Curve
+	 * @param latentStateFixingsContainer Latent State Fixings Container
+	 * @param valuationCustomizationParams Valuation Customization Parameters
+	 * @param calibrationParams The Calibration Parameters
 	 * 
 	 * @return CreditCurve Instance
 	 */
 
 	public static final org.drip.state.credit.CreditCurve Standard (
-		final java.lang.String strName,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.product.definition.CalibratableComponent[] aCalibInst,
-		final double[] adblCalibQuote,
-		final java.lang.String[] astrCalibMeasure,
-		final double dblRecovery,
-		final boolean bFlat,
-		final org.drip.state.discount.MergedDiscountForwardCurve dc,
-		final org.drip.state.govvie.GovvieCurve gc,
-		final org.drip.param.market.LatentStateFixingsContainer lsfc,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp,
-		final org.drip.param.definition.CalibrationParams cp)
+		final String name,
+		final ValuationParams valuationParams,
+		final CalibratableComponent[] calibratableComponentArray,
+		final double[] calibrationQuoteArray,
+		final String[] calibrationMeasureArray,
+		final double recovery,
+		final boolean flat,
+		final MergedDiscountForwardCurve discountCurve,
+		final GovvieCurve govvieCurve,
+		final LatentStateFixingsContainer latentStateFixingsContainer,
+		final ValuationCustomizationParams valuationCustomizationParams,
+		final CalibrationParams calibrationParams)
 	{
-		if (null == valParams || null == aCalibInst || null == adblCalibQuote || null == astrCalibMeasure ||
-			null == dc)
+		if (null == valuationParams || null == calibratableComponentArray || null == calibrationQuoteArray ||
+			null == calibrationMeasureArray || null == discountCurve) {
 			return null;
-
-		int iNumComp = aCalibInst.length;
-		int aiDate[] = new int[iNumComp];
-		double adblHazardRate[] = new double[iNumComp];
-
-		if (0 == iNumComp || adblCalibQuote.length != iNumComp || astrCalibMeasure.length != iNumComp)
-			return null;
-
-		for (int i = 0; i < iNumComp; ++i) {
-			if (null == aCalibInst[i]) return null;
-
-			adblHazardRate[i] = java.lang.Double.NaN;
-
-			aiDate[i] = aCalibInst[i].maturityDate().julian();
 		}
 
-		org.drip.state.credit.ExplicitBootCreditCurve ebcc =
-			org.drip.state.creator.ScenarioCreditCurveBuilder.Hazard (new org.drip.analytics.date.JulianDate
-				(valParams.valueDate()), strName, dc.currency(), aiDate, adblHazardRate, dblRecovery);
+		int componentCount = calibratableComponentArray.length;
+		double hazardRateArray[] = new double[componentCount];
+		int dateArray[] = new int[componentCount];
 
-		org.drip.param.pricer.CreditPricerParams pricerParams = new org.drip.param.pricer.CreditPricerParams
-			(7, null, false, org.drip.param.pricer.CreditPricerParams.PERIOD_DISCRETIZATION_DAY_STEP);
+		if (0 == componentCount || calibrationQuoteArray.length != componentCount ||
+			calibrationMeasureArray.length != componentCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumComp; ++i) {
-			TranslatedQuoteMeasure tqm = TranslateQuoteMeasure (aCalibInst[i], valParams, pricerParams, dc,
-				ebcc, astrCalibMeasure[i], adblCalibQuote[i]);
+		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+			if (null == calibratableComponentArray[componentIndex]) {
+				return null;
+			}
 
-			if (null == tqm) return null;
+			hazardRateArray[componentIndex] = Double.NaN;
 
-			if (!org.drip.state.nonlinear.NonlinearCurveBuilder.CreditCurve (valParams, aCalibInst[i],
-				tqm._dblQuote, tqm._strMeasure, bFlat, i, ebcc, dc, gc, pricerParams, lsfc, vcp, cp))
+			dateArray[componentIndex] = calibratableComponentArray[componentIndex].maturityDate().julian();
+		}
+
+		ExplicitBootCreditCurve explicitBootCreditCurve = ScenarioCreditCurveBuilder.Hazard (
+			new JulianDate (valuationParams.valueDate()),
+			name,
+			discountCurve.currency(),
+			dateArray,
+			hazardRateArray,
+			recovery
+		);
+
+		CreditPricerParams creditPricerParams = new CreditPricerParams (
+			7,
+			null,
+			false,
+			CreditPricerParams.PERIOD_DISCRETIZATION_DAY_STEP
+		);
+
+		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+			TranslatedQuoteMeasure translatedQuoteMeasure = TranslateQuoteMeasure (
+				calibratableComponentArray[componentIndex],
+				valuationParams,
+				creditPricerParams,
+				discountCurve,
+				explicitBootCreditCurve,
+				calibrationMeasureArray[componentIndex],
+				calibrationQuoteArray[componentIndex]
+			);
+
+			if (null == translatedQuoteMeasure) {
+				return null;
+			}
+
+			if (!NonlinearCurveBuilder.CreditCurve (
+				valuationParams,
+				calibratableComponentArray[componentIndex],
+				translatedQuoteMeasure._quote,
+				translatedQuoteMeasure._measure,
+				flat,
+				componentIndex,
+				explicitBootCreditCurve,
+				discountCurve,
+				govvieCurve,
+				creditPricerParams,
+				latentStateFixingsContainer,
+				valuationCustomizationParams,
+				calibrationParams
+			))
 			{
 				return null;
 			}
 		}
 
-		ebcc.setInstrCalibInputs (valParams, bFlat, dc, gc, pricerParams, aCalibInst, adblCalibQuote,
-			astrCalibMeasure, lsfc, vcp);
+		explicitBootCreditCurve.setInstrCalibInputs (
+			valuationParams,
+			flat,
+			discountCurve,
+			govvieCurve,
+			creditPricerParams,
+			calibratableComponentArray,
+			calibrationQuoteArray,
+			calibrationMeasureArray,
+			latentStateFixingsContainer,
+			valuationCustomizationParams
+		);
 
-		return ebcc;
+		return explicitBootCreditCurve;
 	}
 
 	/**
 	 * Create an array of tenor bumped credit curves
 	 * 
-	 * @param strName Credit Curve Name
-	 * @param valParams ValuationParams
-	 * @param aCalibInst Array of Calibration Instruments
-	 * @param adblCalibQuote Array of component quotes
-	 * @param astrCalibMeasure Array of the calibration measures
-	 * @param dblRecovery Component recovery
-	 * @param bFlat Flat Calibration (True), or real bootstrapping (false)
-	 * @param dblBump Amount of bump applied to the tenor
-	 * @param dc Base Discount Curve
-	 * @param gc Govvie Curve
-	 * @param lsfc Latent State Fixings Container
-	 * @param vcp Valuation Customization Parameters
+	 * @param name Credit Curve name
+	 * @param valuationParams ValuationParams
+	 * @param calibratableComponentArray Array of Calibration Instruments
+	 * @param calibrationQuoteArray Array of component quotes
+	 * @param calibrationMeasureArray Array of the calibration measures
+	 * @param recovery Component recovery
+	 * @param flat Flat Calibration (True), or real bootstrapping (false)
+	 * @param bump Amount of bump applied to the tenor
+	 * @param discountCurve Base Discount Curve
+	 * @param govvieCurve Govvie Curve
+	 * @param latentStateFixingsContainer Latent State Fixings Container
+	 * @param valuationCustomizationParams Valuation Customization Parameters
 	 * 
 	 * @return Array of CreditCurves
 	 */
 
-	public static final org.drip.state.credit.CreditCurve[] Tenor (
-		final java.lang.String strName,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.product.definition.CalibratableComponent[] aCalibInst,
-		final double[] adblCalibQuote,
-		final java.lang.String[] astrCalibMeasure,
-		final double dblRecovery,
-		final boolean bFlat,
-		final double dblBump,
-		final org.drip.state.discount.MergedDiscountForwardCurve dc,
-		final org.drip.state.govvie.GovvieCurve gc,
-		final org.drip.param.market.LatentStateFixingsContainer lsfc,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp)
+	public static final CreditCurve[] Tenor (
+		final String name,
+		final ValuationParams valuationParams,
+		final CalibratableComponent[] calibratableComponentArray,
+		final double[] calibrationQuoteArray,
+		final String[] calibrationMeasureArray,
+		final double recovery,
+		final boolean flat,
+		final double bump,
+		final MergedDiscountForwardCurve discountCurve,
+		final GovvieCurve govvieCurve,
+		final LatentStateFixingsContainer latentStateFixingsContainer,
+		final ValuationCustomizationParams valuationCustomizationParams)
 	{
-		if (null == valParams || null == aCalibInst || null == adblCalibQuote || null == astrCalibMeasure ||
-			null == dc)
+		if (null == valuationParams || null == calibratableComponentArray || null == calibrationQuoteArray ||
+			null == calibrationMeasureArray || null == discountCurve) {
 			return null;
-
-		int iNumComp = aCalibInst.length;
-		org.drip.state.credit.CreditCurve[] aCreditCurve = new org.drip.state.credit.CreditCurve[iNumComp];
-
-		if (0 == iNumComp || adblCalibQuote.length != iNumComp || astrCalibMeasure.length != iNumComp)
-			return null;
-
-		for (int i = 0; i < iNumComp; ++i) {
-			double[] adblTenorQuote = new double [iNumComp];
-
-			for (int j = 0; j < iNumComp; ++j)
-				adblTenorQuote[j] += (j == i ? dblBump : 0.);
-
-			if (null == (aCreditCurve[i] = Standard (strName, valParams, aCalibInst, adblTenorQuote,
-				astrCalibMeasure, dblRecovery, bFlat, dc, gc, lsfc, vcp, null)))
-				return null;
 		}
 
-		return aCreditCurve;
+		int componentCount = calibratableComponentArray.length;
+		CreditCurve[] creditCurveArray = new CreditCurve[componentCount];
+
+		if (0 == componentCount || calibrationQuoteArray.length != componentCount ||
+			calibrationMeasureArray.length != componentCount) {
+			return null;
+		}
+
+		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+			double[] tenorQuoteArray = new double[componentCount];
+
+			for (int bumpComponentIndex = 0; bumpComponentIndex < componentCount; ++bumpComponentIndex) {
+				tenorQuoteArray[bumpComponentIndex] += calibrationQuoteArray[bumpComponentIndex] +
+					(bumpComponentIndex == componentIndex ? bump : 0.);
+			}
+
+			if (null == (
+				creditCurveArray[componentIndex] = Standard (
+					name,
+					valuationParams,
+					calibratableComponentArray,
+					tenorQuoteArray,
+					calibrationMeasureArray,
+					recovery,
+					flat,
+					discountCurve,
+					govvieCurve,
+					latentStateFixingsContainer,
+					valuationCustomizationParams,
+					null
+				)
+			)) {
+				return null;
+			}
+		}
+
+		return creditCurveArray;
 	}
 
 	/**
 	 * Create an tenor named map of tenor bumped credit curves
 	 * 
-	 * @param strName Credit Curve name
-	 * @param valParams ValuationParams
-	 * @param aCalibInst Array of Calibration Instruments
-	 * @param adblCalibQuote Array of component quotes
-	 * @param astrCalibMeasure Array of the calibration measures
-	 * @param dblRecovery Component recovery
-	 * @param bFlat Flat Calibration (True), or real bootstrapping (false)
-	 * @param dblBump Amount of bump applied to the tenor
-	 * @param dc Base Discount Curve
-	 * @param gc Govvie Curve
-	 * @param lsfc Latent State Fixings Container
-	 * @param vcp Valuation Customization Parameters
+	 * @param name Credit Curve name
+	 * @param valuationParams ValuationParams
+	 * @param calibratableComponentArray Array of Calibration Instruments
+	 * @param calibrationQuoteArray Array of component quotes
+	 * @param calibrationMeasureArray Array of the calibration measures
+	 * @param recovery Component recovery
+	 * @param flat Flat Calibration (True), or real bootstrapping (false)
+	 * @param bump Amount of bump applied to the tenor
+	 * @param discountCurve Base Discount Curve
+	 * @param govvieCurve Govvie Curve
+	 * @param latentStateFixingsContainer Latent State Fixings Container
+	 * @param valuationCustomizationParams Valuation Customization Parameters
 	 * 
 	 * @return Tenor named map of tenor bumped credit curves
 	 */
 
-	public static final org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.credit.CreditCurve>
-		TenorMap (
-			final java.lang.String strName,
-			final org.drip.param.valuation.ValuationParams valParams,
-			final org.drip.product.definition.CalibratableComponent[] aCalibInst,
-			final double[] adblCalibQuote,
-			final java.lang.String[] astrCalibMeasure,
-			final double dblRecovery,
-			final boolean bFlat,
-			final double dblBump,
-			final org.drip.state.discount.MergedDiscountForwardCurve dc,
-			final org.drip.state.govvie.GovvieCurve gc,
-			final org.drip.param.market.LatentStateFixingsContainer lsfc,
-			final org.drip.param.valuation.ValuationCustomizationParams vcp)
+	public static final CaseInsensitiveTreeMap<CreditCurve> TenorMap (
+		final String name,
+		final ValuationParams valuationParams,
+		final CalibratableComponent[] calibratableComponentArray,
+		final double[] calibrationQuoteArray,
+		final String[] calibrationMeasureArray,
+		final double recovery,
+		final boolean flat,
+		final double bump,
+		final MergedDiscountForwardCurve discountCurve,
+		final GovvieCurve govvieCurve,
+		final LatentStateFixingsContainer latentStateFixingsContainer,
+		final ValuationCustomizationParams valuationCustomizationParams)
 	{
-		if (null == valParams || null == aCalibInst || null == adblCalibQuote || null == astrCalibMeasure ||
-			null == dc)
+		if (null == valuationParams || null == calibratableComponentArray || null == calibrationQuoteArray ||
+			null == calibrationMeasureArray || null == discountCurve) {
 			return null;
-
-		int iNumComp = aCalibInst.length;
-
-		if (0 == iNumComp || adblCalibQuote.length != iNumComp || astrCalibMeasure.length != iNumComp)
-			return null;
-
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.credit.CreditCurve>
-			mapTenorCreditCurve = new
-				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.credit.CreditCurve>();
-
-		for (int i = 0; i < iNumComp; ++i) {
-			org.drip.state.credit.CreditCurve cc = null;
-			double[] adblTenorQuote = new double[iNumComp];
-
-			for (int j = 0; j < iNumComp; ++j)
-				adblTenorQuote[j] = adblCalibQuote[j] + (j == i ? dblBump : 0.);
-
-			if (null == (cc = Standard (strName, valParams, aCalibInst, adblTenorQuote, astrCalibMeasure,
-				dblRecovery, bFlat, dc, gc, lsfc, vcp, null)))
-				return null;
-
-			mapTenorCreditCurve.put (org.drip.analytics.date.DateUtil.YYYYMMDD
-				(aCalibInst[i].maturityDate().julian()), cc);
 		}
 
-		return mapTenorCreditCurve;
+		int componentCount = calibratableComponentArray.length;
+
+		if (0 == componentCount || calibrationQuoteArray.length != componentCount ||
+			calibrationMeasureArray.length != componentCount) {
+			return null;
+		}
+
+		CaseInsensitiveTreeMap<CreditCurve> tenorCreditCurveMap = new CaseInsensitiveTreeMap<CreditCurve>();
+
+		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+			CreditCurve creditCurve = null;
+			double[] tenorQuoteArray = new double[componentCount];
+
+			for (int bumpComponentIndex = 0; bumpComponentIndex < componentCount; ++bumpComponentIndex) {
+				tenorQuoteArray[bumpComponentIndex] = calibrationQuoteArray[bumpComponentIndex] +
+					(bumpComponentIndex == componentIndex ? bump : 0.);
+			}
+
+			if (null == (
+				creditCurve = Standard (
+					name,
+					valuationParams,
+					calibratableComponentArray,
+					tenorQuoteArray,
+					calibrationMeasureArray,
+					recovery,
+					flat,
+					discountCurve,
+					govvieCurve,
+					latentStateFixingsContainer,
+					valuationCustomizationParams,
+					null
+				)
+			)) {
+				return null;
+			}
+
+			tenorCreditCurveMap.put (
+				DateUtil.YYYYMMDD (calibratableComponentArray[componentIndex].maturityDate().julian()),
+				creditCurve
+			);
+		}
+
+		return tenorCreditCurveMap;
 	}
 }
