@@ -98,7 +98,7 @@ import org.drip.state.nonlinear.FlatForwardDiscountCurve;
  *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
  *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
  *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
- *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/ca/README.md">Credit Support Annex Latent State</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/csa/README.md">Credit Support Annex Latent State</a></td></tr>
  *  </table>
  *
  * @author Lakshmi Krishnamurthy
@@ -190,29 +190,24 @@ public class MultilateralFlatForwardCurve extends FlatForwardDiscountCurve imple
 	}
 
 	@Override public double rate (
-		final org.drip.analytics.date.JulianDate dt1,
-		final org.drip.analytics.date.JulianDate dt2)
-		throws java.lang.Exception
+		final JulianDate date1,
+		final JulianDate date2)
+		throws Exception
 	{
-		if (null == dt1 || null == dt2)
-			throw new java.lang.Exception ("MultilateralFlatForwardCurve::rate => Invalid Inputs");
+		if (null == date1 || null == date2) {
+			throw new Exception ("MultilateralFlatForwardCurve::rate => Invalid Inputs");
+		}
 
-		return rate (
-			dt1.julian(),
-			dt2.julian()
-		);
+		return rate (date1.julian(), date2.julian());
 	}
 
 	@Override public double rate (
-		final java.lang.String strTenor1,
-		final java.lang.String strTenor2)
-		throws java.lang.Exception
+		final String tenor1,
+		final String tenor2)
+		throws Exception
 	{
-		org.drip.analytics.date.JulianDate dtEpoch = epoch();
+		JulianDate epochDate = epoch();
 
-		return rate (
-			dtEpoch.addTenor (strTenor1),
-			dtEpoch.addTenor (strTenor2)
-		);
+		return rate (epochDate.addTenor (tenor1), epochDate.addTenor (tenor2));
 	}
 }

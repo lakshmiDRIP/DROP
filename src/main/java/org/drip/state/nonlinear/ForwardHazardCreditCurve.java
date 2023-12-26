@@ -163,14 +163,14 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 
 		try {
 			return new ForwardHazardCreditCurve (
-				_iEpochDate,
-				_label,
-				_strCurrency,
+				_epochDate,
+				_entityCDSLabel,
+				_currency,
 				bumpedHazardRate,
 				_hazardDateArray,
 				_recoveryRateArray,
 				_recoveryDateArray,
-				_iSpecificDefaultDate
+				_specificDefaultDate
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -216,7 +216,7 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 			throw new Exception ("ForwardHazardCreditCurve ctr: Invalid Params!");
 		}
 
-		_iSpecificDefaultDate = specificDefaultDate;
+		_specificDefaultDate = specificDefaultDate;
 		_hazardDateArray = new int[hazardDateArray.length];
 		_hazardRateArray = new double[hazardRateArray.length];
 		_recoveryDateArray = new int[recoveryDateArray.length];
@@ -243,14 +243,16 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 		final int date)
 		throws Exception
 	{
-		if (date <= _iEpochDate) return 1.;
+		if (date <= _epochDate) {
+			return 1.;
+		}
 
-		if (Integer.MIN_VALUE != _iSpecificDefaultDate && date >= _iSpecificDefaultDate) {
+		if (Integer.MIN_VALUE != _specificDefaultDate && date >= _specificDefaultDate) {
 			return 0.;
 		}
 
 		int i = 0;
-		int startDate = _iEpochDate;
+		int startDate = _epochDate;
 		double exponentialArgument = 0.;
 
 		while (i < _hazardRateArray.length && date > _hazardDateArray[i]) {
@@ -295,14 +297,14 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 
 		try {
 			return new ForwardHazardCreditCurve (
-				_iEpochDate,
-				_label,
-				_strCurrency,
+				_epochDate,
+				_entityCDSLabel,
+				_currency,
 				hazardRateArray,
 				_hazardDateArray,
 				_recoveryRateArray,
 				_recoveryDateArray,
-				_iSpecificDefaultDate
+				_specificDefaultDate
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -325,27 +327,27 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 			return null;
 		}
 
-		if (null == _valParam || null == _aCalibInst || 0 == _aCalibInst.length ||
-			null == _adblCalibQuote || 0 == _adblCalibQuote.length ||
-			null == _astrCalibMeasure || 0 == _astrCalibMeasure.length ||
-			_astrCalibMeasure.length != _adblCalibQuote.length ||
-			_adblCalibQuote.length != _aCalibInst.length) {
+		if (null == _valuationParams || null == _calibratableComponentArray || 0 == _calibratableComponentArray.length ||
+			null == _calibrationQuoteArray || 0 == _calibrationQuoteArray.length ||
+			null == _calibrationMeasureArray || 0 == _calibrationMeasureArray.length ||
+					_calibrationMeasureArray.length != _calibrationQuoteArray.length ||
+					_calibrationQuoteArray.length != _calibratableComponentArray.length) {
 			return parallelShiftQuantificationMetric (shift);
 		}
 
 		ForwardHazardCreditCurve creditCurve = null;
-		double[] calibrationQuoteArray = new double[_adblCalibQuote.length];
+		double[] calibrationQuoteArray = new double[_calibrationQuoteArray.length];
 
 		try {
 			creditCurve = new ForwardHazardCreditCurve (
-				_iEpochDate,
-				_label,
-				_strCurrency,
+				_epochDate,
+				_entityCDSLabel,
+				_currency,
 				_hazardRateArray,
 				_hazardDateArray,
 				_recoveryRateArray,
 				_recoveryDateArray,
-				_iSpecificDefaultDate
+				_specificDefaultDate
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -353,21 +355,21 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 			return null;
 		}
 
-		for (int i = 0; i < _adblCalibQuote.length; ++i) {
+		for (int i = 0; i < _calibrationQuoteArray.length; ++i) {
 			try {
 				NonlinearCurveBuilder.CreditCurve (
-					_valParam,
-					_aCalibInst[i],
-					calibrationQuoteArray[i] = _adblCalibQuote[i] + shift,
-					_astrCalibMeasure[i],
-					_bFlat,
+					_valuationParams,
+					_calibratableComponentArray[i],
+					calibrationQuoteArray[i] = _calibrationQuoteArray[i] + shift,
+					_calibrationMeasureArray[i],
+					_flat,
 					i,
 					creditCurve,
-					_dc,
-					_gc,
-					_pricerParam,
-					_lsfc,
-					_quotingParams,
+					_discountCurve,
+					_govvieCurve,
+					_creditPricerParams,
+					_latentStateFixingsContainer,
+					_valuationCustomizationParams,
 					null
 				);
 			} catch (Exception e) {
@@ -378,16 +380,16 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 		}
 
 		creditCurve.setInstrCalibInputs (
-			_valParam,
-			_bFlat,
-			_dc,
-			_gc,
-			_pricerParam,
-			_aCalibInst,
+			_valuationParams,
+			_flat,
+			_discountCurve,
+			_govvieCurve,
+			_creditPricerParams,
+			_calibratableComponentArray,
 			calibrationQuoteArray,
-			_astrCalibMeasure,
-			_lsfc,
-			_quotingParams
+			_calibrationMeasureArray,
+			_latentStateFixingsContainer,
+			_valuationCustomizationParams
 		);
 
 		return creditCurve;
@@ -402,31 +404,31 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 			return null;
 		}
 
-		if (null == _valParam || null == _aCalibInst || 0 == _aCalibInst.length ||
-			null == _adblCalibQuote || 0 == _adblCalibQuote.length ||
-			null == _astrCalibMeasure || 0 == _astrCalibMeasure.length ||
-			_astrCalibMeasure.length != _adblCalibQuote.length ||
-			_adblCalibQuote.length != _aCalibInst.length) {
+		if (null == _valuationParams || null == _calibratableComponentArray || 0 == _calibratableComponentArray.length ||
+			null == _calibrationQuoteArray || 0 == _calibrationQuoteArray.length ||
+			null == _calibrationMeasureArray || 0 == _calibrationMeasureArray.length ||
+					_calibrationMeasureArray.length != _calibrationQuoteArray.length ||
+					_calibrationQuoteArray.length != _calibratableComponentArray.length) {
 			return parallelShiftQuantificationMetric (shift);
 		}
 
 		ForwardHazardCreditCurve creditCurve = null;
-		double[] calibrationQuoteArray = new double[_adblCalibQuote.length];
+		double[] calibrationQuoteArray = new double[_calibrationQuoteArray.length];
 
-		if (spanIndex >= _adblCalibQuote.length) {
+		if (spanIndex >= _calibrationQuoteArray.length) {
 			return null;
 		}
 
 		try {
 			creditCurve = new ForwardHazardCreditCurve (
-				_iEpochDate,
-				_label,
-				_strCurrency,
+				_epochDate,
+				_entityCDSLabel,
+				_currency,
 				_hazardRateArray,
 				_hazardDateArray,
 				_recoveryRateArray,
 				_recoveryDateArray,
-				_iSpecificDefaultDate
+				_specificDefaultDate
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -434,21 +436,21 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 			return null;
 		}
 
-		for (int i = 0; i < _adblCalibQuote.length; ++i) {
+		for (int i = 0; i < _calibrationQuoteArray.length; ++i) {
 			try {
 				NonlinearCurveBuilder.CreditCurve (
-					_valParam,
-					_aCalibInst[i],
-					calibrationQuoteArray[i] = _adblCalibQuote[i] + (i == spanIndex ? shift : 0.),
-					_astrCalibMeasure[i],
-					_bFlat,
+					_valuationParams,
+					_calibratableComponentArray[i],
+					calibrationQuoteArray[i] = _calibrationQuoteArray[i] + (i == spanIndex ? shift : 0.),
+					_calibrationMeasureArray[i],
+					_flat,
 					i,
 					creditCurve,
-					_dc,
-					_gc,
-					_pricerParam,
-					_lsfc,
-					_quotingParams,
+					_discountCurve,
+					_govvieCurve,
+					_creditPricerParams,
+					_latentStateFixingsContainer,
+					_valuationCustomizationParams,
 					null
 				);
 			} catch (Exception e) {
@@ -459,16 +461,16 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 		}
 
 		creditCurve.setInstrCalibInputs (
-			_valParam,
-			_bFlat,
-			_dc,
-			_gc,
-			_pricerParam,
-			_aCalibInst,
+			_valuationParams,
+			_flat,
+			_discountCurve,
+			_govvieCurve,
+			_creditPricerParams,
+			_calibratableComponentArray,
 			calibrationQuoteArray,
-			_astrCalibMeasure,
-			_lsfc,
-			_quotingParams
+			_calibrationMeasureArray,
+			_latentStateFixingsContainer,
+			_valuationCustomizationParams
 		);
 
 		return creditCurve;
@@ -479,59 +481,60 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 		final boolean singleNode,
 		final double recovery)
 	{
-		if (!NumberUtil.IsValid (flatNodeValue) || 0. >= flatNodeValue || null == _valParam ||
-			null == _aCalibInst || 0 == _aCalibInst.length ||
-			null == _adblCalibQuote || 0 == _adblCalibQuote.length ||
-			null == _astrCalibMeasure || 0 == _astrCalibMeasure.length ||
-			_astrCalibMeasure.length != _adblCalibQuote.length ||
-			_adblCalibQuote.length != _aCalibInst.length) {
+		if (!NumberUtil.IsValid (flatNodeValue) || 0. >= flatNodeValue || null == _valuationParams ||
+			null == _calibratableComponentArray || 0 == _calibratableComponentArray.length ||
+			null == _calibrationQuoteArray || 0 == _calibrationQuoteArray.length ||
+			null == _calibrationMeasureArray || 0 == _calibrationMeasureArray.length ||
+					_calibrationMeasureArray.length != _calibrationQuoteArray.length ||
+					_calibrationQuoteArray.length != _calibratableComponentArray.length) {
 			return null;
 		}
 
 		ExplicitBootCreditCurve creditCurve = null;
 
 		try {
-			if (singleNode)
+			if (singleNode) {
 				creditCurve = ScenarioCreditCurveBuilder.Hazard (
-					_iEpochDate,
-					_label.fullyQualifiedName(),
-					_strCurrency,
+					_epochDate,
+					_entityCDSLabel.fullyQualifiedName(),
+					_currency,
 					_hazardRateArray[0],
 					_hazardDateArray[0],
 					!NumberUtil.IsValid (recovery) ? _recoveryRateArray[0] : recovery
 				);
-			else
+			} else {
 				creditCurve = new ForwardHazardCreditCurve (
-					_iEpochDate,
-					_label,
-					_strCurrency,
+					_epochDate,
+					_entityCDSLabel,
+					_currency,
 					_hazardRateArray,
 					_hazardDateArray,
 					_recoveryRateArray,
 					_recoveryDateArray,
-					_iSpecificDefaultDate
+					_specificDefaultDate
 				);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		for (int i = 0; i < _adblCalibQuote.length; ++i) {
+		for (int i = 0; i < _calibrationQuoteArray.length; ++i) {
 			try {
 				NonlinearCurveBuilder.CreditCurve (
-					_valParam,
-					_aCalibInst[i],
+					_valuationParams,
+					_calibratableComponentArray[i],
 					flatNodeValue,
-					_astrCalibMeasure[i],
+					_calibrationMeasureArray[i],
 					true,
 					i,
 					creditCurve,
-					_dc,
-					_gc,
-					_pricerParam,
-					_lsfc,
-					_quotingParams,
+					_discountCurve,
+					_govvieCurve,
+					_creditPricerParams,
+					_latentStateFixingsContainer,
+					_valuationCustomizationParams,
 					null
 				);
 			} catch (Exception e) {
@@ -543,35 +546,35 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 
 		if (singleNode)
 			creditCurve.setInstrCalibInputs (
-				_valParam,
+				_valuationParams,
 				true,
-				_dc,
-				_gc,
-				_pricerParam,
-				new CalibratableComponent[] {_aCalibInst[0]},
+				_discountCurve,
+				_govvieCurve,
+				_creditPricerParams,
+				new CalibratableComponent[] {_calibratableComponentArray[0]},
 				new double[] {flatNodeValue},
-				_astrCalibMeasure,
-				_lsfc,
-				_quotingParams
+				_calibrationMeasureArray,
+				_latentStateFixingsContainer,
+				_valuationCustomizationParams
 			);
 		else {
-			double[] calibrationValueArray = new double[_adblCalibQuote.length];
+			double[] calibrationValueArray = new double[_calibrationQuoteArray.length];
 
-			for (int i = 0; i < _adblCalibQuote.length; ++i) {
+			for (int i = 0; i < _calibrationQuoteArray.length; ++i) {
 				calibrationValueArray[i] = flatNodeValue;
 			}
 
 			creditCurve.setInstrCalibInputs (
-				_valParam,
+				_valuationParams,
 				true,
-				_dc,
-				_gc,
-				_pricerParam,
-				_aCalibInst,
+				_discountCurve,
+				_govvieCurve,
+				_creditPricerParams,
+				_calibratableComponentArray,
 				calibrationValueArray,
-				_astrCalibMeasure,
-				_lsfc,
-				_quotingParams
+				_calibrationMeasureArray,
+				_latentStateFixingsContainer,
+				_valuationCustomizationParams
 			);
 		}
 
@@ -608,14 +611,14 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 
 			try {
 				return new ForwardHazardCreditCurve (
-					_iEpochDate,
-					_label,
-					_strCurrency,
+					_epochDate,
+					_entityCDSLabel,
+					_currency,
 					_hazardRateArray,
 					_hazardDateArray,
 					bumpedRecoveryRateArray,
 					_recoveryDateArray,
-					_iSpecificDefaultDate
+					_specificDefaultDate
 				);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -639,14 +642,14 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 
 				try {
 					return new ForwardHazardCreditCurve (
-						_iEpochDate,
-						_label,
-						_strCurrency,
+						_epochDate,
+						_entityCDSLabel,
+						_currency,
 						bumpedHazardRateArray,
 						_hazardDateArray,
 						_recoveryRateArray,
 						_recoveryDateArray,
-						_iSpecificDefaultDate
+						_specificDefaultDate
 					);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -670,23 +673,23 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 				try {
 					if (creditManifestMeasureTweak.singleNodeCalib()) {
 						creditCurve = ScenarioCreditCurveBuilder.Hazard (
-							_iEpochDate,
-							_strCurrency,
-							_label.fullyQualifiedName(),
+							_epochDate,
+							_currency,
+							_entityCDSLabel.fullyQualifiedName(),
 							_hazardRateArray[0],
 							_hazardDateArray[0],
 							_recoveryRateArray[0]
 						);
 					} else {
 						creditCurve = new ForwardHazardCreditCurve (
-							_iEpochDate,
-							_label,
-							_strCurrency,
+							_epochDate,
+							_entityCDSLabel,
+							_currency,
 							_hazardRateArray,
 							_hazardDateArray,
 							_recoveryRateArray,
 							_recoveryDateArray,
-							_iSpecificDefaultDate
+							_specificDefaultDate
 						);
 					}
 				} catch (Exception e) {
@@ -698,18 +701,18 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 				for (int i = 0; i < bumpedQuoteArray.length; ++i) {
 					try {
 						NonlinearCurveBuilder.CreditCurve (
-							_valParam,
-							_aCalibInst[i],
+							_valuationParams,
+							_calibratableComponentArray[i],
 							bumpedQuoteArray[i],
-							_astrCalibMeasure[i],
-							_bFlat,
+							_calibrationMeasureArray[i],
+							_flat,
 							i,
 							creditCurve,
-							_dc,
-							_gc,
-							_pricerParam,
-							_lsfc,
-							_quotingParams,
+							_discountCurve,
+							_govvieCurve,
+							_creditPricerParams,
+							_latentStateFixingsContainer,
+							_valuationCustomizationParams,
 							null
 						);
 					} catch (Exception e) {
@@ -720,16 +723,16 @@ public class ForwardHazardCreditCurve extends ExplicitBootCreditCurve
 				}
 
 				creditCurve.setInstrCalibInputs (
-					_valParam,
-					_bFlat,
-					_dc,
-					_gc,
-					_pricerParam,
-					_aCalibInst,
+					_valuationParams,
+					_flat,
+					_discountCurve,
+					_govvieCurve,
+					_creditPricerParams,
+					_calibratableComponentArray,
 					bumpedQuoteArray,
-					_astrCalibMeasure,
-					_lsfc,
-					_quotingParams
+					_calibrationMeasureArray,
+					_latentStateFixingsContainer,
+					_valuationCustomizationParams
 				);
 
 				return creditCurve;

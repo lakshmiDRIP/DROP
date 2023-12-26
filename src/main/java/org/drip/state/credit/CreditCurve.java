@@ -1,11 +1,28 @@
 
 package org.drip.state.credit;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.definition.Curve;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.param.market.LatentStateFixingsContainer;
+import org.drip.param.pricer.CreditPricerParams;
+import org.drip.param.valuation.ValuationCustomizationParams;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.govvie.GovvieCurve;
+import org.drip.state.identifier.EntityCDSLabel;
+import org.drip.state.identifier.LatentStateLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -87,98 +104,96 @@ package org.drip.state.credit;
  * <i>CreditCurve</i> is the stub for the survival curve functionality. It extends the Curve object by
  * exposing the following functions:
  *
- *  <br><br>
  *  <ul>
- *  	<li>
- * 			Set of curve and market identifiers
- *  	</li>
- *  	<li>
- * 			Recovery to a specific date/tenor, and effective recovery between a date interval
- *  	</li>
- *  	<li>
- * 			Hazard Rate to a specific date/tenor, and effective hazard rate between a date interval
- *  	</li>
- *  	<li>
- * 			Survival to a specific date/tenor, and effective survival between a date interval
- *  	</li>
- *  	<li>
- *  		Set/unset date of specific default
- *  	</li>
- *  	<li>
- *  		Generate scenario curves from the base credit curve (flat/parallel/custom)
- *  	</li>
- *  	<li>
- *  		Set/unset the Curve Construction Inputs, Latent State, and the Manifest Metrics
- *  	</li>
- *  	<li>
- *  		Serialization/De-serialization to and from Byte Arrays
- *  	</li>
+ *  	<li>Set of curve and market identifiers</li>
+ *  	<li>Recovery to a specific date/tenor, and effective recovery between a date interval</li>
+ *  	<li>Hazard Rate to a specific date/tenor, and effective hazard rate between a date interval</li>
+ *  	<li>Survival to a specific date/tenor, and effective survival between a date interval</li>
+ *  	<li>Set/unset date of specific default</li>
+ *  	<li>Generate scenario curves from the base credit curve (flat/parallel/custom)</li>
+ *  	<li>Set/unset the Curve Construction Inputs, Latent State, and the Manifest Metrics</li>
+ *  	<li>Serialization/De-serialization to and from Byte Arrays</li>
+ *    	<li>Set the Specific Default Date</li>
+ * 		<li>Remove the Specific Default Date</li>
+ * 		<li>Calculate the survival to the given date</li>
+ * 		<li>Calculate the survival to the given tenor</li>
+ * 		<li>Calculate the time-weighted survival between a pair of 2 dates</li>
+ * 		<li>Calculate the time-weighted survival between a pair of 2 tenors</li>
+ * 		<li>Calculate the recovery rate to the given date</li>
+ * 		<li>Calculate the recovery rate to the given tenor</li>
+ * 		<li>Calculate the time-weighted recovery between a pair of dates</li>
+ * 		<li>Calculate the time-weighted recovery between a pair of tenors</li>
+ * 		<li>Calculate the hazard rate between a pair of forward dates</li>
+ * 		<li>Calculate the hazard rate to the given date</li>
+ * 		<li>Calculate the hazard rate to the given tenor</li>
+ * 		<li>Create a flat hazard curve from the inputs</li>
  *  </ul>
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/credit/README.md">Credit Latent State Curve Representation</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/credit/README.md">Credit Latent State Curve Representation</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class CreditCurve implements org.drip.analytics.definition.Curve {
+public abstract class CreditCurve implements Curve
+{
 	private static final int NUM_DF_QUADRATURES = 5;
 
-	protected java.lang.String _strCurrency = "";
-	protected int _iEpochDate = java.lang.Integer.MIN_VALUE;
-	protected org.drip.state.identifier.EntityCDSLabel _label = null;
-	protected int _iSpecificDefaultDate = java.lang.Integer.MIN_VALUE;
-
-	/*
-	 * Manifest Measure Inputs that go into building the Curve Span
-	 */
-
-	protected boolean _bFlat = false;
-	protected double[] _adblCalibQuote = null;
-	protected java.lang.String[] _astrCalibMeasure = null;
-	protected org.drip.state.govvie.GovvieCurve _gc = null;
-	protected org.drip.state.discount.MergedDiscountForwardCurve _dc = null;
-	protected org.drip.param.valuation.ValuationParams _valParam = null;
-	protected org.drip.param.pricer.CreditPricerParams _pricerParam = null;
-	protected org.drip.param.market.LatentStateFixingsContainer _lsfc = null;
-	protected org.drip.product.definition.CalibratableComponent[] _aCalibInst = null;
-	protected org.drip.param.valuation.ValuationCustomizationParams _quotingParams = null;
-	protected org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String> _mapMeasure = null;
-	protected org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>
-		_mapQuote = null;
+	protected boolean _flat = false;
+	protected String _currency = "";
+	protected GovvieCurve _govvieCurve = null;
+	protected int _epochDate = Integer.MIN_VALUE;
+	protected EntityCDSLabel _entityCDSLabel = null;
+	protected double[] _calibrationQuoteArray = null;
+	protected ValuationParams _valuationParams = null;
+	protected String[] _calibrationMeasureArray = null;
+	protected int _specificDefaultDate = Integer.MIN_VALUE;
+	protected CreditPricerParams _creditPricerParams = null;
+	protected MergedDiscountForwardCurve _discountCurve = null;
+	protected CaseInsensitiveTreeMap<String> _measureMap = null;
+	protected CalibratableComponent[] _calibratableComponentArray = null;
+	protected LatentStateFixingsContainer _latentStateFixingsContainer = null;
+	protected ValuationCustomizationParams _valuationCustomizationParams = null;
+	protected CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>> _doubleQuoteMap = null;
 
 	protected CreditCurve (
-		final int iEpochDate,
-		final org.drip.state.identifier.EntityCDSLabel label,
-		final java.lang.String strCurrency)
-		throws java.lang.Exception
+		final int epochDate,
+		final EntityCDSLabel entityCDSLabel,
+		final String currency)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_iEpochDate = iEpochDate) || null == (_label =
-			label) || null == (_strCurrency = strCurrency) || _strCurrency.isEmpty())
-			throw new java.lang.Exception ("CreditCurve ctr: Invalid Inputs");
+		if (!NumberUtil.IsValid (_epochDate = epochDate) || null == (_entityCDSLabel = entityCDSLabel) ||
+			null == (_currency = currency) || _currency.isEmpty()) {
+			throw new Exception ("CreditCurve ctr: Invalid Inputs");
+		}
 	}
 
-	@Override public org.drip.state.identifier.LatentStateLabel label()
+	@Override public LatentStateLabel label()
 	{
-		return _label;
+		return _entityCDSLabel;
 	}
 
-	@Override public java.lang.String currency()
+	@Override public String currency()
 	{
-		return _strCurrency;
+		return _currency;
 	}
 
-	@Override public org.drip.analytics.date.JulianDate epoch()
+	@Override public JulianDate epoch()
 	{
 		try {
-			return new org.drip.analytics.date.JulianDate (_iEpochDate);
-		} catch (java.lang.Exception e) {
+			return new JulianDate (_epochDate);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -188,15 +203,15 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 	/**
 	 * Set the Specific Default Date
 	 * 
-	 * @param iSpecificDefaultDate Date of Specific Default
+	 * @param specificDefaultDate Date of Specific Default
 	 * 
 	 * @return TRUE if successful
 	 */
 
 	public boolean setSpecificDefault (
-		final int iSpecificDefaultDate)
+		final int specificDefaultDate)
 	{
-		_iSpecificDefaultDate = iSpecificDefaultDate;
+		_specificDefaultDate = specificDefaultDate;
 		return true;
 	}
 
@@ -208,23 +223,23 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 
 	public boolean unsetSpecificDefault()
 	{
-		_iSpecificDefaultDate = java.lang.Integer.MIN_VALUE;
+		_specificDefaultDate = Integer.MIN_VALUE;
 		return true;
 	}
 
 	/**
 	 * Calculate the survival to the given date
 	 * 
-	 * @param iDate Date
+	 * @param date Date
 	 * 
 	 * @return Survival Probability
 	 * 
-	 * @throws java.lang.Exception Thrown if the survival probability cannot be calculated
+	 * @throws Exception Thrown if the survival probability cannot be calculated
 	 */
 
 	public abstract double survival (
-		final int iDate)
-		throws java.lang.Exception;
+		final int date)
+		throws Exception;
 
 	/**
 	 * Calculate the survival to the given date
@@ -248,97 +263,104 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 	/**
 	 * Calculate the survival to the given tenor
 	 * 
-	 * @param strTenor Tenor
+	 * @param tenor Tenor
 	 * 
 	 * @return Survival Probability
 	 * 
-	 * @throws java.lang.Exception Thrown if the survival probability cannot be calculated
+	 * @throws Exception Thrown if the survival probability cannot be calculated
 	 */
 
 	public double survival (
-		final java.lang.String strTenor)
-		throws java.lang.Exception
+		final String tenor)
+		throws Exception
 	{
-		if (null == strTenor || strTenor.isEmpty())
-			throw new java.lang.Exception ("CreditCurve::survival => Bad tenor");
-
-		return survival (new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor (strTenor));
-	}
-
-	/**
-	 * Calculate the time-weighted survival between a pair of 2 dates
-	 * 
-	 * @param iDate1 First Date
-	 * @param iDate2 Second Date
-	 * 
-	 * @return Survival Probability
-	 * 
-	 * @throws java.lang.Exception Thrown if the survival probability cannot be calculated
-	 */
-
-	public double effectiveSurvival (
-		final int iDate1,
-		final int iDate2)
-		throws java.lang.Exception
-	{
-		if (iDate1 == iDate2) return survival (iDate1);
-
-		int iNumQuadratures = 0;
-		double dblEffectiveSurvival = 0.;
-		int iQuadratureWidth = (iDate2 - iDate1) / NUM_DF_QUADRATURES;
-
-		for (int iDate = iDate1; iDate <= iDate2; iDate += iQuadratureWidth) {
-			++iNumQuadratures;
-
-			dblEffectiveSurvival += (survival (iDate) + survival (iDate + iQuadratureWidth));
+		if (null == tenor || tenor.isEmpty()) {
+			throw new Exception ("CreditCurve::survival => Bad tenor");
 		}
 
-		return dblEffectiveSurvival / (2. * iNumQuadratures);
+		return survival (new JulianDate (_epochDate).addTenor (tenor));
 	}
 
 	/**
 	 * Calculate the time-weighted survival between a pair of 2 dates
 	 * 
-	 * @param dt1 First Date
-	 * @param dt2 Second Date
+	 * @param date1 First Date
+	 * @param date2 Second Date
 	 * 
 	 * @return Survival Probability
 	 * 
-	 * @throws java.lang.Exception Thrown if the survival probability cannot be calculated
+	 * @throws Exception Thrown if the survival probability cannot be calculated
 	 */
 
 	public double effectiveSurvival (
-		final org.drip.analytics.date.JulianDate dt1,
-		final org.drip.analytics.date.JulianDate dt2)
-		throws java.lang.Exception
+		final int date1,
+		final int date2)
+		throws Exception
 	{
-		if (null == dt1 || null == dt2)
-			throw new java.lang.Exception ("CreditCurve::effectiveSurvival => Invalid date");
+		if (date1 == date2) {
+			return survival (date1);
+		}
 
-		return effectiveSurvival (dt1.julian(), dt2.julian());
+		int quadratureCount = 0;
+		double effectiveSurvival = 0.;
+		int quadratureWidth = (date2 - date1) / NUM_DF_QUADRATURES;
+
+		for (int date = date1; date <= date2; date += quadratureWidth) {
+			++quadratureCount;
+
+			effectiveSurvival += (survival (date) + survival (date + quadratureWidth));
+		}
+
+		return effectiveSurvival / (2. * quadratureCount);
+	}
+
+	/**
+	 * Calculate the time-weighted survival between a pair of 2 dates
+	 * 
+	 * @param date1 First Date
+	 * @param date2 Second Date
+	 * 
+	 * @return Survival Probability
+	 * 
+	 * @throws Exception Thrown if the survival probability cannot be calculated
+	 */
+
+	public double effectiveSurvival (
+		final JulianDate date1,
+		final JulianDate date2)
+		throws Exception
+	{
+		if (null == date1 || null == date2) {
+			throw new Exception ("CreditCurve::effectiveSurvival => Invalid date");
+		}
+
+		return effectiveSurvival (date1.julian(), date2.julian());
 	}
 
 	/**
 	 * Calculate the time-weighted survival between a pair of 2 tenors
 	 * 
-	 * @param strTenor1 First tenor
-	 * @param strTenor2 Second tenor
+	 * @param tenor1 First tenor
+	 * @param tenor2 Second tenor
 	 * 
 	 * @return Survival Probability
 	 * 
-	 * @throws java.lang.Exception Thrown if the survival probability cannot be calculated
+	 * @throws Exception Thrown if the survival probability cannot be calculated
 	 */
 
 	public double effectiveSurvival (
-		final java.lang.String strTenor1,
-		final java.lang.String strTenor2)
-		throws java.lang.Exception
+		final String tenor1,
+		final String tenor2)
+		throws Exception
 	{
-		if (null == strTenor1 || strTenor1.isEmpty() || null == strTenor2 || strTenor2.isEmpty())
-			throw new java.lang.Exception ("CreditCurve::effectiveSurvival => bad tenor");
+		if (null == tenor1 || tenor1.isEmpty() || null == tenor2 || tenor2.isEmpty()) {
+			throw new Exception ("CreditCurve::effectiveSurvival => bad tenor");
+		}
 
-		return effectiveSurvival (new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor
-			(strTenor1), new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor (strTenor2));
+		return effectiveSurvival (
+			new JulianDate (_epochDate).addTenor (tenor1),
+			new JulianDate (_epochDate).addTenor (tenor2)
+		);
 	}
 
 	/**
@@ -348,205 +370,220 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 	 * 
 	 * @return Recovery Rate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Recovery rate cannot be calculated
+	 * @throws Exception Thrown if the Recovery rate cannot be calculated
 	 */
 
 	public abstract double recovery (
-		final int iDate)
-		throws java.lang.Exception;
+		final int date)
+		throws Exception;
 
 	/**
 	 * Calculate the recovery rate to the given date
 	 * 
-	 * @param dt Date
+	 * @param date Date
 	 * 
 	 * @return Recovery Rate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Recovery rate cannot be calculated
+	 * @throws Exception Thrown if the Recovery rate cannot be calculated
 	 */
 
 	public double recovery (
-		final org.drip.analytics.date.JulianDate dt)
-		throws java.lang.Exception
+		final JulianDate date)
+		throws Exception
 	{
-		if (null == dt) throw new java.lang.Exception ("CreditCurve::recovery => Invalid Date");
+		if (null == date) {
+			throw new Exception ("CreditCurve::recovery => Invalid Date");
+		}
 
-		return recovery (dt.julian());
+		return recovery (date.julian());
 	}
 
 	/**
 	 * Calculate the recovery rate to the given tenor
 	 * 
-	 * @param strTenor Tenor
+	 * @param tenor Tenor
 	 * 
 	 * @return Recovery Rate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Recovery rate cannot be calculated
+	 * @throws Exception Thrown if the Recovery rate cannot be calculated
 	 */
 
 	public double recovery (
-		final java.lang.String strTenor)
-		throws java.lang.Exception
+		final String tenor)
+		throws Exception
 	{
-		if (null == strTenor || strTenor.isEmpty())
-			throw new java.lang.Exception ("CreditCurve::recovery => Invalid Tenor");
-
-		return recovery (new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor (strTenor));
-	}
-
-	/**
-	 * Calculate the time-weighted recovery between a pair of dates
-	 * 
-	 * @param iDate1 First Date
-	 * @param iDate2 Second Date
-	 * 
-	 * @return Time-weighted recovery
-	 * 
-	 * @throws java.lang.Exception Thrown if the recovery cannot be calculated
-	 */
-
-	public double effectiveRecovery (
-		final int iDate1,
-		final int iDate2)
-		throws java.lang.Exception
-	{
-		if (iDate1 == iDate2) return recovery (iDate1);
-
-		int iNumQuadratures = 0;
-		double dblEffectiveRecovery = 0.;
-		int iQuadratureWidth = (iDate2 - iDate1) / NUM_DF_QUADRATURES;
-
-		if (0 == iQuadratureWidth) iQuadratureWidth = 1;
-
-		for (int iDate = iDate1; iDate <= iDate2; iDate += iQuadratureWidth) {
-			++iNumQuadratures;
-
-			dblEffectiveRecovery += (recovery (iDate) + recovery (iDate + iQuadratureWidth));
+		if (null == tenor || tenor.isEmpty()) {
+			throw new Exception ("CreditCurve::recovery => Invalid Tenor");
 		}
 
-		return dblEffectiveRecovery / (2. * iNumQuadratures);
+		return recovery (new JulianDate (_epochDate).addTenor (tenor));
 	}
 
 	/**
 	 * Calculate the time-weighted recovery between a pair of dates
 	 * 
-	 * @param dt1 First Date
-	 * @param dt2 Second Date
+	 * @param date1 First Date
+	 * @param date2 Second Date
 	 * 
 	 * @return Time-weighted recovery
 	 * 
-	 * @throws java.lang.Exception Thrown if the recovery cannot be calculated
+	 * @throws Exception Thrown if the recovery cannot be calculated
 	 */
 
 	public double effectiveRecovery (
-		final org.drip.analytics.date.JulianDate dt1,
-		final org.drip.analytics.date.JulianDate dt2)
-		throws java.lang.Exception
+		final int date1,
+		final int date2)
+		throws Exception
 	{
-		if (null == dt1 || null == dt2)
-			throw new java.lang.Exception ("CreditCurve::effectiveRecovery => Invalid date");
+		if (date1 == date2) {
+			return recovery (date1);
+		}
 
-		return effectiveRecovery (dt1.julian(), dt2.julian());
+		int quadratureCount = 0;
+		double effectiveRecovery = 0.;
+		int quadratureWidth = (date2 - date1) / NUM_DF_QUADRATURES;
+
+		if (0 == quadratureWidth) {
+			quadratureWidth = 1;
+		}
+
+		for (int date = date1; date <= date2; date += quadratureWidth) {
+			++quadratureCount;
+
+			effectiveRecovery += (recovery (date) + recovery (date + quadratureWidth));
+		}
+
+		return effectiveRecovery / (2. * quadratureCount);
+	}
+
+	/**
+	 * Calculate the time-weighted recovery between a pair of dates
+	 * 
+	 * @param date1 First Date
+	 * @param date2 Second Date
+	 * 
+	 * @return Time-weighted recovery
+	 * 
+	 * @throws Exception Thrown if the recovery cannot be calculated
+	 */
+
+	public double effectiveRecovery (
+		final JulianDate date1,
+		final JulianDate date2)
+		throws Exception
+	{
+		if (null == date1 || null == date2) {
+			throw new Exception ("CreditCurve::effectiveRecovery => Invalid date");
+		}
+
+		return effectiveRecovery (date1.julian(), date2.julian());
 	}
 
 	/**
 	 * Calculate the time-weighted recovery between a pair of tenors
 	 * 
-	 * @param strTenor1 First Tenor
-	 * @param strTenor2 Second Tenor
+	 * @param tenor1 First Tenor
+	 * @param tenor2 Second Tenor
 	 * 
 	 * @return Time-weighted recovery
 	 * 
-	 * @throws java.lang.Exception Thrown if the recovery cannot be calculated
+	 * @throws Exception Thrown if the recovery cannot be calculated
 	 */
 
 	public double effectiveRecovery (
-		final java.lang.String strTenor1,
-		final java.lang.String strTenor2)
-		throws java.lang.Exception
+		final String tenor1,
+		final String tenor2)
+		throws Exception
 	{
-		if (null == strTenor1 || strTenor1.isEmpty() || null == strTenor2 || strTenor2.isEmpty())
-			throw new java.lang.Exception ("CreditCurve::effectiveRecovery => Invalid tenor");
+		if (null == tenor1 || tenor1.isEmpty() || null == tenor2 || tenor2.isEmpty()) {
+			throw new Exception ("CreditCurve::effectiveRecovery => Invalid tenor");
+		}
 
-		return effectiveRecovery (new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor
-			(strTenor1), new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor (strTenor2));
+		return effectiveRecovery (
+			new JulianDate (_epochDate).addTenor (tenor1),
+			new JulianDate (_epochDate).addTenor (tenor2)
+		);
 	}
 
 	/**
 	 * Calculate the hazard rate between a pair of forward dates
 	 * 
-	 * @param dt1 First Date
-	 * @param dt2 Second Date
+	 * @param date1 First Date
+	 * @param date2 Second Date
 	 * 
 	 * @return Hazard Rate
 	 * 
-	 * @throws java.lang.Exception Thrown if the hazard rate cannot be calculated
+	 * @throws Exception Thrown if the hazard rate cannot be calculated
 	 */
 
 	public double hazard (
-		final org.drip.analytics.date.JulianDate dt1,
-		final org.drip.analytics.date.JulianDate dt2)
-		throws java.lang.Exception
+		final JulianDate date1,
+		final JulianDate date2)
+		throws Exception
 	{
-		if (null == dt1 || null == dt2)
-			throw new java.lang.Exception ("CreditCurve::hazard => Invalid dates");
+		if (null == date1 || null == date2) {
+			throw new Exception ("CreditCurve::hazard => Invalid dates");
+		}
 
-		if (dt1.julian() < _iEpochDate || dt2.julian() < _iEpochDate) return 0.;
+		if (date1.julian() < _epochDate || date2.julian() < _epochDate) return 0.;
 
-		return 365.25 / (dt2.julian() - dt1.julian()) * java.lang.Math.log (survival (dt1) / survival (dt2));
+		return date1.julian() < _epochDate || date2.julian() < _epochDate ? 0. :
+			365.25 / (date2.julian() - date1.julian()) * Math.log (survival (date1) / survival (date2));
 	}
 
 	/**
 	 * Calculate the hazard rate to the given date
 	 * 
-	 * @param dt Date
+	 * @param date Date
 	 * 
 	 * @return Hazard Rate
 	 * 
-	 * @throws java.lang.Exception Thrown if the hazard rate cannot be calculated
+	 * @throws Exception Thrown if the hazard rate cannot be calculated
 	 */
 
 	public double hazard (
-		final org.drip.analytics.date.JulianDate dt)
-		throws java.lang.Exception
+		final JulianDate date)
+		throws Exception
 	{
-		return hazard (dt, new org.drip.analytics.date.JulianDate (_iEpochDate));
+		return hazard (date, new JulianDate (_epochDate));
 	}
 
 	/**
 	 * Calculate the hazard rate to the given tenor
 	 * 
-	 * @param strTenor Tenor
+	 * @param tenor Tenor
 	 * 
 	 * @return Hazard Rate
 	 * 
-	 * @throws java.lang.Exception Thrown if the hazard rate cannot be calculated
+	 * @throws Exception Thrown if the hazard rate cannot be calculated
 	 */
 
 	public double hazard (
-		final java.lang.String strTenor)
-		throws java.lang.Exception
+		final String tenor)
+		throws Exception
 	{
-		if (null == strTenor || strTenor.isEmpty())
-			throw new java.lang.Exception ("CreditCurve::hazard => Bad Tenor");
+		if (null == tenor || tenor.isEmpty()) {
+			throw new Exception ("CreditCurve::hazard => Bad Tenor");
+		}
 
-		return hazard (new org.drip.analytics.date.JulianDate (_iEpochDate).addTenor (strTenor));
+		return hazard (new JulianDate (_epochDate).addTenor (tenor));
 	}
 
 	/**
 	 * Create a flat hazard curve from the inputs
 	 * 
-	 * @param dblFlatNodeValue Flat hazard node value
-	 * @param bSingleNode Uses a single node for Calibration (True)
-	 * @param dblRecovery (Optional) Recovery to be used in creation of the flat curve
+	 * @param flatNodeValue Flat hazard node value
+	 * @param singleNode Uses a single node for Calibration (True)
+	 * @param recovery (Optional) Recovery to be used in creation of the flat curve
 	 * 
 	 * @return New CreditCurve instance
 	 */
 
 	public abstract CreditCurve flatCurve (
-		final double dblFlatNodeValue,
-		final boolean bSingleNode,
-		final double dblRecovery);
+		final double flatNodeValue,
+		final boolean singleNode,
+		final double recovery
+	);
 
 	/**
 	 * Set the calibration inputs for the CreditCurve
@@ -575,37 +612,37 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 		final org.drip.param.market.LatentStateFixingsContainer lsfc,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
-		_dc = dc;
-		_gc = gc;
-		_lsfc = lsfc;
-		_bFlat = bFlat;
-		_valParam = valParam;
-		_aCalibInst = aCalibInst;
-		_pricerParam = pricerParam;
-		_quotingParams = quotingParams;
-		_adblCalibQuote = adblCalibQuote;
-		_astrCalibMeasure = astrCalibMeasure;
+		_discountCurve = dc;
+		_govvieCurve = gc;
+		_latentStateFixingsContainer = lsfc;
+		_flat = bFlat;
+		_valuationParams = valParam;
+		_calibratableComponentArray = aCalibInst;
+		_creditPricerParams = pricerParam;
+		_valuationCustomizationParams = quotingParams;
+		_calibrationQuoteArray = adblCalibQuote;
+		_calibrationMeasureArray = astrCalibMeasure;
 
-		_mapQuote = new
+		_doubleQuoteMap = new
 			org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>();
 
-		_mapMeasure = new org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String>();
+		_measureMap = new org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String>();
 
 		for (int i = 0; i < aCalibInst.length; ++i) {
-			_mapMeasure.put (_aCalibInst[i].primaryCode(), astrCalibMeasure[i]);
+			_measureMap.put (_calibratableComponentArray[i].primaryCode(), astrCalibMeasure[i]);
 
 			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapManifestMeasureCalibQuote
 				= new org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
 
-			mapManifestMeasureCalibQuote.put (_astrCalibMeasure[i], adblCalibQuote[i]);
+			mapManifestMeasureCalibQuote.put (_calibrationMeasureArray[i], adblCalibQuote[i]);
 
-			_mapQuote.put (_aCalibInst[i].primaryCode(), mapManifestMeasureCalibQuote);
+			_doubleQuoteMap.put (_calibratableComponentArray[i].primaryCode(), mapManifestMeasureCalibQuote);
 
-			java.lang.String[] astrSecCode = _aCalibInst[i].secondaryCode();
+			java.lang.String[] astrSecCode = _calibratableComponentArray[i].secondaryCode();
 
 			if (null != astrSecCode) {
 				for (int j = 0; j < astrSecCode.length; ++j)
-					_mapQuote.put (astrSecCode[j], mapManifestMeasureCalibQuote);
+					_doubleQuoteMap.put (astrSecCode[j], mapManifestMeasureCalibQuote);
 			}
 		}
 	}
@@ -616,18 +653,18 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 		return false;
 	}
 
-	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
+	@Override public CalibratableComponent[] calibComp()
 	{
-		return _aCalibInst;
+		return _calibratableComponentArray;
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> manifestMeasure (
 		final java.lang.String strInstr)
 	{
-		if (null == _mapQuote || 0 == _mapQuote.size() || null == strInstr || strInstr.isEmpty() ||
-			!_mapQuote.containsKey (strInstr))
+		if (null == _doubleQuoteMap || 0 == _doubleQuoteMap.size() || null == strInstr || strInstr.isEmpty() ||
+			!_doubleQuoteMap.containsKey (strInstr))
 			return null;
 
-		return _mapQuote.get (strInstr);
+		return _doubleQuoteMap.get (strInstr);
 	}
 }
