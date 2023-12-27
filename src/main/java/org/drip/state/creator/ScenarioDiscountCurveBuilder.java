@@ -3,22 +3,57 @@ package org.drip.state.creator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.definition.LatentStateStatic;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
 import org.drip.analytics.support.CompositePeriodBuilder;
+import org.drip.function.r1tor1.QuadraticRationalShapeControl;
 import org.drip.market.otc.FixedFloatSwapConvention;
 import org.drip.market.otc.IBORFixedFloatContainer;
+import org.drip.param.creator.MarketParamsBuilder;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.market.DiscountCurveScenarioContainer;
 import org.drip.param.market.LatentStateFixingsContainer;
 import org.drip.param.period.ComposableFloatingUnitSetting;
 import org.drip.param.period.CompositePeriodSetting;
+import org.drip.param.pricer.CreditPricerParams;
+import org.drip.param.valuation.ValuationCustomizationParams;
 import org.drip.param.valuation.ValuationParams;
+import org.drip.product.calib.ProductQuoteSet;
 import org.drip.product.definition.CalibratableComponent;
 import org.drip.product.rates.SingleStreamComponent;
+import org.drip.spline.basis.ExponentialTensionSetParams;
+import org.drip.spline.basis.FunctionSetBuilderParams;
+import org.drip.spline.basis.KaklisPandelisSetParams;
+import org.drip.spline.basis.PolynomialFunctionSetParams;
+import org.drip.spline.grid.OverlappingStretchSpan;
+import org.drip.spline.grid.Span;
+import org.drip.spline.params.ResponseScalingShapeControl;
+import org.drip.spline.params.SegmentCustomBuilderControl;
+import org.drip.spline.params.SegmentInelasticDesignControl;
+import org.drip.spline.pchip.LocalControlStretchBuilder;
+import org.drip.spline.pchip.LocalMonotoneCkGenerator;
+import org.drip.spline.stretch.BoundarySettings;
+import org.drip.spline.stretch.MultiSegmentSequence;
+import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
 import org.drip.state.boot.DiscountCurveScenario;
+import org.drip.state.curve.DiscountFactorDiscountCurve;
+import org.drip.state.curve.ZeroRateDiscountCurve;
+import org.drip.state.discount.ExplicitBootDiscountCurve;
 import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.discount.TurnListDiscountFactor;
+import org.drip.state.estimator.GlobalControlCurveParams;
+import org.drip.state.estimator.LocalControlCurveParams;
 import org.drip.state.identifier.ForwardLabel;
+import org.drip.state.identifier.FundingLabel;
+import org.drip.state.inference.LatentStateSegmentSpec;
+import org.drip.state.inference.LatentStateStretchSpec;
+import org.drip.state.inference.LinearLatentStateCalibrator;
+import org.drip.state.nonlinear.FlatForwardDiscountCurve;
+import org.drip.state.representation.LatentStateSpecification;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -342,42 +377,62 @@ public class ScenarioDiscountCurveBuilder
 	/**
 	 * Build the Shape Preserving Discount Curve using the Custom Parameters
 	 * 
-	 * @param strCurrency Currency
-	 * @param llsc The Linear Latent State Calibrator Instance
-	 * @param aStretchSpec Array of the Instrument Representation Stretches
-	 * @param valParam Valuation Parameters
-	 * @param pricerParam Pricer Parameters
-	 * @param csqs Market Parameters
-	 * @param quotingParam Quoting Parameters
-	 * @param dblEpochResponse The Starting Response Value
+	 * @param currency Currency
+	 * @param linearLatentStateCalibrator The Linear Latent State Calibrator Instance
+	 * @param latentStateStretchSpecArray Array of the Instrument Representation Stretches
+	 * @param valuationParams Valuation Parameters
+	 * @param creditPricerParams Pricer Parameters
+	 * @param curveSurfaceQuoteContainer Market Parameters
+	 * @param valuationCustomizationParams Quoting Parameters
+	 * @param epochResponse The Starting Response Value
 	 * 
 	 * @return Instance of the Shape Preserving Discount Curve
 	 */
 
-	public static final org.drip.state.discount.MergedDiscountForwardCurve ShapePreservingDFBuild (
-		final java.lang.String strCurrency,
-		final org.drip.state.inference.LinearLatentStateCalibrator llsc,
-		final org.drip.state.inference.LatentStateStretchSpec[] aStretchSpec,
-		final org.drip.param.valuation.ValuationParams valParam,
-		final org.drip.param.pricer.CreditPricerParams pricerParam,
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
-		final org.drip.param.valuation.ValuationCustomizationParams quotingParam,
-		final double dblEpochResponse)
+	public static final MergedDiscountForwardCurve ShapePreservingDFBuild (
+		final String currency,
+		final LinearLatentStateCalibrator linearLatentStateCalibrator,
+		final LatentStateStretchSpec[] latentStateStretchSpecArray,
+		final ValuationParams valuationParams,
+		final CreditPricerParams creditPricerParams,
+		final CurveSurfaceQuoteContainer curveSurfaceQuoteContainer,
+		final ValuationCustomizationParams valuationCustomizationParams,
+		final double epochResponse)
 	{
-		if (null == llsc) return null;
+		if (null == linearLatentStateCalibrator) {
+			return null;
+		}
 
 		try {
-			org.drip.spline.grid.Span spanDF = llsc.calibrateSpan (aStretchSpec, dblEpochResponse, valParam,
-				pricerParam, quotingParam, csqs);
+			Span discountFactorSpan = linearLatentStateCalibrator.calibrateSpan (
+				latentStateStretchSpecArray,
+				epochResponse,
+				valuationParams,
+				creditPricerParams,
+				valuationCustomizationParams,
+				curveSurfaceQuoteContainer
+			);
 
-			if (null == spanDF) return null;
+			if (null == discountFactorSpan) {
+				return null;
+			}
 
-			org.drip.state.curve.DiscountFactorDiscountCurve dcdf = new
-				org.drip.state.curve.DiscountFactorDiscountCurve (strCurrency, spanDF);
+			DiscountFactorDiscountCurve discountFactorDiscountCurve = new DiscountFactorDiscountCurve (
+				currency,
+				discountFactorSpan
+			);
 
-			return dcdf.setCCIS (new org.drip.analytics.input.LatentStateShapePreservingCCIS (llsc,
-				aStretchSpec, valParam, pricerParam, quotingParam, csqs)) ? dcdf : null;
-		} catch (java.lang.Exception e) {
+			return discountFactorDiscountCurve.setCCIS (
+				new org.drip.analytics.input.LatentStateShapePreservingCCIS (
+					linearLatentStateCalibrator,
+					latentStateStretchSpecArray,
+					valuationParams,
+					creditPricerParams,
+					valuationCustomizationParams,
+					curveSurfaceQuoteContainer
+				)
+			) ? discountFactorDiscountCurve : null;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -387,88 +442,115 @@ public class ScenarioDiscountCurveBuilder
 	/**
 	 * Build a Globally Smoothed Instance of the Discount Curve using the Custom Parameters
 	 * 
-	 * @param dcShapePreserver Instance of the Shape Preserving Discount Curve
-	 * @param llsc The Linear Latent State Calibrator Instance
-	 * @param gccp Global Smoothing Curve Control Parameters
-	 * @param valParam Valuation Parameters
-	 * @param pricerParam Pricer Parameters
-	 * @param csqs Market Parameters
-	 * @param quotingParam Quoting Parameters
+	 * @param shapePreserverDiscountCurve Instance of the Shape Preserving Discount Curve
+	 * @param linearLatentStateCalibrator The Linear Latent State Calibrator Instance
+	 * @param globalControlCurveParams Global Smoothing Curve Control Parameters
+	 * @param valuationParams Valuation Parameters
+	 * @param creditPricerParams Pricer Parameters
+	 * @param curveSurfaceQuoteContainer Market Parameters
+	 * @param valuationCustomizationParams Quoting Parameters
 	 * 
 	 * @return Globally Smoothed Instance of the Discount Curve
 	 */
 
-	public static final org.drip.state.discount.MergedDiscountForwardCurve SmoothingGlobalControlBuild (
-		final org.drip.state.discount.MergedDiscountForwardCurve dcShapePreserver,
-		final org.drip.state.inference.LinearLatentStateCalibrator llsc,
-		final org.drip.state.estimator.GlobalControlCurveParams gccp,
-		final org.drip.param.valuation.ValuationParams valParam,
-		final org.drip.param.pricer.CreditPricerParams pricerParam,
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
-		final org.drip.param.valuation.ValuationCustomizationParams quotingParam)
+	public static final MergedDiscountForwardCurve SmoothingGlobalControlBuild (
+		final MergedDiscountForwardCurve shapePreserverDiscountCurve,
+		final LinearLatentStateCalibrator linearLatentStateCalibrator,
+		final GlobalControlCurveParams globalControlCurveParams,
+		final ValuationParams valuationParams,
+		final CreditPricerParams creditPricerParams,
+		final CurveSurfaceQuoteContainer curveSurfaceQuoteContainer,
+		final ValuationCustomizationParams valuationCustomizationParams)
 	{
-		if (null == dcShapePreserver) return null;
+		if (null == shapePreserverDiscountCurve) {
+			return null;
+		}
 
-		if (null == gccp) return dcShapePreserver;
+		if (null == globalControlCurveParams) {
+			return shapePreserverDiscountCurve;
+		}
 
-		java.lang.String strSmootheningQM = gccp.smootheningQuantificationMetric();
+		String smootheningQuantificationMetric = globalControlCurveParams.smootheningQuantificationMetric();
 
-		java.util.Map<java.lang.Integer, java.lang.Double> mapQMTruth = dcShapePreserver.canonicalTruthness
-			(strSmootheningQM);
+		Map<Integer, Double> canonicalTruthnessMap = shapePreserverDiscountCurve.canonicalTruthness
+			(smootheningQuantificationMetric);
 
-		if (null == mapQMTruth) return null;
+		if (null == canonicalTruthnessMap) {
+			return null;
+		}
 
-		int iTruthSize = mapQMTruth.size();
+		int truthnessSize = canonicalTruthnessMap.size();
 
-		if (0 == iTruthSize) return null;
+		if (0 == truthnessSize) {
+			return null;
+		}
 
-		java.util.Set<java.util.Map.Entry<java.lang.Integer, java.lang.Double>> esQMTruth =
-			mapQMTruth.entrySet();
+		Set<Map.Entry<Integer, Double>> canonicalTruthnessEntrySet = canonicalTruthnessMap.entrySet();
 
-		if (null == esQMTruth || 0 == esQMTruth.size()) return null;
+		if (null == canonicalTruthnessEntrySet || 0 == canonicalTruthnessEntrySet.size()) {
+			return null;
+		}
 
-		java.lang.String strName = dcShapePreserver.label().fullyQualifiedName();
+		String name = shapePreserverDiscountCurve.label().fullyQualifiedName();
 
 		int i = 0;
-		int[] aiDate = new int[iTruthSize];
-		double[] adblQM = new double[iTruthSize];
-		org.drip.spline.params.SegmentCustomBuilderControl[] aPRBP = new
-			org.drip.spline.params.SegmentCustomBuilderControl[iTruthSize - 1];
+		int[] dateArray = new int[truthnessSize];
+		double[] quantificationMetricArray = new double[truthnessSize];
+		SegmentCustomBuilderControl[] segmentCustomBuilderControlArray =
+			new SegmentCustomBuilderControl[truthnessSize - 1];
 
-		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> meQMTruth : esQMTruth) {
-			if (null == meQMTruth) return null;
+		for (Map.Entry<Integer, Double> canonicalTruthnessEntry : canonicalTruthnessEntrySet) {
+			if (null == canonicalTruthnessEntry) {
+				return null;
+			}
 
-			if (0 != i) aPRBP[i - 1] = gccp.defaultSegmentBuilderControl();
+			if (0 != i) {
+				segmentCustomBuilderControlArray[i - 1] =
+					globalControlCurveParams.defaultSegmentBuilderControl();
+			}
 
-			aiDate[i] = meQMTruth.getKey();
+			dateArray[i] = canonicalTruthnessEntry.getKey();
 
-			adblQM[i++] = meQMTruth.getValue();
+			quantificationMetricArray[i++] = canonicalTruthnessEntry.getValue();
 
-			if (BLOG)
-				System.out.println ("\t\t" + new org.drip.analytics.date.JulianDate (meQMTruth.getKey()) +
-					" = " + meQMTruth.getValue());
+			if (BLOG) {
+				System.out.println (
+					"\t\t" + new JulianDate (canonicalTruthnessEntry.getKey()) + " = " +
+						canonicalTruthnessEntry.getValue()
+				);
+			}
 		}
 
 		try {
-			org.drip.spline.stretch.MultiSegmentSequence stretch =
-				org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-					(strName + "_STRETCH", aiDate, adblQM, aPRBP, gccp.bestFitWeightedResponse(),
-						gccp.calibrationBoundaryCondition(), gccp.calibrationDetail());
+			MultiSegmentSequence multiSegmentSequence =
+				MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
+					name + "_STRETCH",
+					dateArray,
+					quantificationMetricArray,
+					segmentCustomBuilderControlArray,
+					globalControlCurveParams.bestFitWeightedResponse(),
+					globalControlCurveParams.calibrationBoundaryCondition(),
+					globalControlCurveParams.calibrationDetail()
+				);
 
-			org.drip.state.discount.MergedDiscountForwardCurve dcMultiPass = null;
+			MergedDiscountForwardCurve multiPassMergedDiscountForwardCurve = null;
 
-			if (org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR.equalsIgnoreCase
-				(strSmootheningQM))
-				dcMultiPass = new org.drip.state.curve.DiscountFactorDiscountCurve (strName, new
-					org.drip.spline.grid.OverlappingStretchSpan (stretch));
-			else if
-				(org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE.equalsIgnoreCase
-				(strSmootheningQM))
-				dcMultiPass = new org.drip.state.curve.ZeroRateDiscountCurve (strName, new
-					org.drip.spline.grid.OverlappingStretchSpan (stretch));
+			if (LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR.equalsIgnoreCase
+				(smootheningQuantificationMetric)) {
+				multiPassMergedDiscountForwardCurve = new DiscountFactorDiscountCurve (
+					name,
+					new OverlappingStretchSpan (multiSegmentSequence)
+				);
+			} else if (LatentStateStatic.DISCOUNT_QM_ZERO_RATE.equalsIgnoreCase
+				(smootheningQuantificationMetric)) {
+				multiPassMergedDiscountForwardCurve = new ZeroRateDiscountCurve (
+					name,
+					new OverlappingStretchSpan (multiSegmentSequence)
+				);
+			}
 
-			return dcMultiPass;
-		} catch (java.lang.Exception e) {
+			return multiPassMergedDiscountForwardCurve;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -478,94 +560,125 @@ public class ScenarioDiscountCurveBuilder
 	/**
 	 * Build a Locally Smoothed Instance of the Discount Curve using the Custom Parameters
 	 * 
-	 * @param dcShapePreserver Instance of the Shape Preserving Discount Curve
-	 * @param llsc The Linear Latent State Calibrator Instance
-	 * @param lccp Local Smoothing Curve Control Parameters
-	 * @param valParam Valuation Parameters
-	 * @param pricerParam Pricer Parameters
-	 * @param csqs Market Parameters
-	 * @param quotingParam Quoting Parameters
+	 * @param shapePreserverDiscountCurve Instance of the Shape Preserving Discount Curve
+	 * @param linearLatentStateCalibrator The Linear Latent State Calibrator Instance
+	 * @param localControlCurveParams Local Smoothing Curve Control Parameters
+	 * @param valuationParams Valuation Parameters
+	 * @param creditPricerParams Pricer Parameters
+	 * @param curveSurfaceQuoteContainer Market Parameters
+	 * @param valuationCustomizationParams Quoting Parameters
 	 * 
 	 * @return Locally Smoothed Instance of the Discount Curve
 	 */
 
-	public static final org.drip.state.discount.MergedDiscountForwardCurve SmoothingLocalControlBuild (
-		final org.drip.state.discount.MergedDiscountForwardCurve dcShapePreserver,
-		final org.drip.state.inference.LinearLatentStateCalibrator llsc,
-		final org.drip.state.estimator.LocalControlCurveParams lccp,
-		final org.drip.param.valuation.ValuationParams valParam,
-		final org.drip.param.pricer.CreditPricerParams pricerParam,
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
-		final org.drip.param.valuation.ValuationCustomizationParams quotingParam)
+	public static final MergedDiscountForwardCurve SmoothingLocalControlBuild (
+		final MergedDiscountForwardCurve shapePreserverDiscountCurve,
+		final LinearLatentStateCalibrator linearLatentStateCalibrator,
+		final LocalControlCurveParams localControlCurveParams,
+		final ValuationParams valuationParams,
+		final CreditPricerParams creditPricerParams,
+		final CurveSurfaceQuoteContainer curveSurfaceQuoteContainer,
+		final ValuationCustomizationParams valuationCustomizationParams)
 	{
-		if (null == dcShapePreserver) return null;
+		if (null == shapePreserverDiscountCurve) {
+			return null;
+		}
 
-		if (null == lccp) return dcShapePreserver;
+		if (null == localControlCurveParams) {
+			return shapePreserverDiscountCurve;
+		}
 
-		java.lang.String strSmootheningQM = lccp.smootheningQuantificationMetric();
+		String smootheningQuantificationMetric = localControlCurveParams.smootheningQuantificationMetric();
 
-		java.util.Map<java.lang.Integer, java.lang.Double> mapQMTruth = dcShapePreserver.canonicalTruthness
-			(strSmootheningQM);
+		Map<Integer, Double> canonicalTruthnessMap = shapePreserverDiscountCurve.canonicalTruthness
+			(smootheningQuantificationMetric);
 
-		if (null == mapQMTruth) return null;
+		if (null == canonicalTruthnessMap) {
+			return null;
+		}
 
-		int iTruthSize = mapQMTruth.size();
+		int truthnessSize = canonicalTruthnessMap.size();
 
-		if (0 == iTruthSize) return null;
+		if (0 == truthnessSize) {
+			return null;
+		}
 
-		java.util.Set<java.util.Map.Entry<java.lang.Integer, java.lang.Double>> esQMTruth =
-			mapQMTruth.entrySet();
+		Set<Map.Entry<Integer, Double>> canonicalTruthnessMapEntrySet = canonicalTruthnessMap.entrySet();
 
-		if (null == esQMTruth || 0 == esQMTruth.size()) return null;
+		if (null == canonicalTruthnessMapEntrySet || 0 == canonicalTruthnessMapEntrySet.size()) {
+			return null;
+		}
 
-		java.lang.String strName = dcShapePreserver.label().fullyQualifiedName();
+		String name = shapePreserverDiscountCurve.label().fullyQualifiedName();
 
 		int i = 0;
-		int[] aiDate = new int[iTruthSize];
-		double[] adblQM = new double[iTruthSize];
-		org.drip.spline.params.SegmentCustomBuilderControl[] aPRBP = new
-			org.drip.spline.params.SegmentCustomBuilderControl[iTruthSize - 1];
+		int[] dateArray = new int[truthnessSize];
+		double[] quantificationMetricArray = new double[truthnessSize];
+		SegmentCustomBuilderControl[] segmentCustomBuilderControlArray =
+			new SegmentCustomBuilderControl[truthnessSize - 1];
 
-		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> meQMTruth : esQMTruth) {
-			if (null == meQMTruth) return null;
+		for (Map.Entry<Integer, Double> canonicalTruthnessMapEntry : canonicalTruthnessMapEntrySet) {
+			if (null == canonicalTruthnessMapEntry) {
+				return null;
+			}
 
-			if (0 != i) aPRBP[i - 1] = lccp.defaultSegmentBuilderControl();
+			if (0 != i) {
+				segmentCustomBuilderControlArray[i - 1] =
+					localControlCurveParams.defaultSegmentBuilderControl();
+			}
 
-			aiDate[i] = meQMTruth.getKey();
+			dateArray[i] = canonicalTruthnessMapEntry.getKey();
 
-			adblQM[i++] = meQMTruth.getValue();
+			quantificationMetricArray[i++] = canonicalTruthnessMapEntry.getValue();
 
-			if (BLOG)
-				System.out.println ("\t\t" + new org.drip.analytics.date.JulianDate (meQMTruth.getKey()) +
-					" = " + meQMTruth.getValue());
+			if (BLOG) {
+				System.out.println (
+					"\t\t" + new JulianDate (canonicalTruthnessMapEntry.getKey()) + " = " +
+						canonicalTruthnessMapEntry.getValue());
+			}
 		}
 
 		try {
-			org.drip.spline.pchip.LocalMonotoneCkGenerator lcr =
-				org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (aiDate, adblQM,
-					lccp.C1GeneratorScheme(), lccp.eliminateSpuriousExtrema(), lccp.applyMonotoneFilter());
+			LocalMonotoneCkGenerator localMonotoneCkGenerator = LocalMonotoneCkGenerator.Create (
+				dateArray,
+				quantificationMetricArray,
+				localControlCurveParams.C1GeneratorScheme(),
+				localControlCurveParams.eliminateSpuriousExtrema(),
+				localControlCurveParams.applyMonotoneFilter()
+			);
 
-			if (null == lcr) return null;
+			if (null == localMonotoneCkGenerator) {
+				return null;
+			}
 
-			org.drip.spline.stretch.MultiSegmentSequence stretch =
-				org.drip.spline.pchip.LocalControlStretchBuilder.CustomSlopeHermiteSpline (strName +
-					"_STRETCH", aiDate, adblQM, lcr.C1(), aPRBP, lccp.bestFitWeightedResponse(),
-						lccp.calibrationDetail());
+			MultiSegmentSequence multiSegmentSequence = LocalControlStretchBuilder.CustomSlopeHermiteSpline (
+				name + "_STRETCH",
+				dateArray,
+				quantificationMetricArray,
+				localMonotoneCkGenerator.C1(),
+				segmentCustomBuilderControlArray,
+				localControlCurveParams.bestFitWeightedResponse(),
+				localControlCurveParams.calibrationDetail()
+			);
 
-			org.drip.state.discount.MergedDiscountForwardCurve dcMultiPass = null;
+			MergedDiscountForwardCurve multiPassDiscountCurve = null;
 
-			if (org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR.equalsIgnoreCase
-				(strSmootheningQM))
-				dcMultiPass = new org.drip.state.curve.DiscountFactorDiscountCurve (strName, new
-					org.drip.spline.grid.OverlappingStretchSpan (stretch));
-			else if
-				(org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE.equalsIgnoreCase
-				(strSmootheningQM))
-				dcMultiPass = new org.drip.state.curve.ZeroRateDiscountCurve (strName, new
-					org.drip.spline.grid.OverlappingStretchSpan (stretch));
+			if (LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR.equalsIgnoreCase
+				(smootheningQuantificationMetric)) {
+				multiPassDiscountCurve = new DiscountFactorDiscountCurve (
+					name,
+					new OverlappingStretchSpan (multiSegmentSequence)
+				);
+			} else if (LatentStateStatic.DISCOUNT_QM_ZERO_RATE.equalsIgnoreCase
+				(smootheningQuantificationMetric)) {
+				multiPassDiscountCurve = new ZeroRateDiscountCurve (
+					name,
+					new OverlappingStretchSpan (multiSegmentSequence)
+				);
+			}
 
-			return dcMultiPass;
-		} catch (java.lang.Exception e) {
+			return multiPassDiscountCurve;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -576,232 +689,313 @@ public class ScenarioDiscountCurveBuilder
 	 * Construct an instance of the Shape Preserver of the desired basis type, using the specified basis set
 	 * 	builder parameters.
 	 * 
-	 * @param strName Curve Name
-	 * @param valParams Valuation Parameters
-	 * @param pricerParam Pricer Parameters
-	 * @param csqs Market Parameters
-	 * @param quotingParam Quoting Parameters
-	 * @param strBasisType The Basis Type
-	 * @param fsbp The Function Set Basis Parameters
-	 * @param aCalibComp1 Array of Calibration Components #1
-	 * @param adblQuote1 Array of Calibration Quotes #1
-	 * @param astrManifestMeasure1 Array of Manifest Measures for component Array #1
-	 * @param aCalibComp2 Array of Calibration Components #2
-	 * @param adblQuote2 Array of Calibration Quotes #2
-	 * @param astrManifestMeasure2 Array of Manifest Measures for component Array #2
-	 * @param dblEpochResponse The Stretch Start DF
-	 * @param bZeroSmooth TRUE - Turn on the Zero Rate Smoothing
+	 * @param name Curve Name
+	 * @param valuationParams Valuation Parameters
+	 * @param creditPricerParams Pricer Parameters
+	 * @param curveSurfaceQuoteContainer Market Parameters
+	 * @param valuationCustomizationParams Quoting Parameters
+	 * @param basisType The Basis Type
+	 * @param functionSetBuilderParams The Function Set Basis Parameters
+	 * @param calibrationComponentArray1 Array of Calibration Components #1
+	 * @param calibrationQuoteArray1 Array of Calibration Quotes #1
+	 * @param manifestMeasureArray1 Array of Manifest Measures for component Array #1
+	 * @param calibrationComponentArray2 Array of Calibration Components #2
+	 * @param calibrationQuoteArray2 Array of Calibration Quotes #2
+	 * @param manifestMeasureArray2 Array of Manifest Measures for component Array #2
+	 * @param epochResponse The Stretch Start DF
+	 * @param zeroSmooth TRUE - Turn on the Zero Rate Smoothing
 	 * 
 	 * @return Instance of the Shape Preserver of the desired basis type
 	 */
 
-	public static final org.drip.state.discount.MergedDiscountForwardCurve DFRateShapePreserver (
-		final java.lang.String strName,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.CreditPricerParams pricerParam,
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
-		final org.drip.param.valuation.ValuationCustomizationParams quotingParam,
-		final java.lang.String strBasisType,
-		final org.drip.spline.basis.FunctionSetBuilderParams fsbp,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp1,
-		final double[] adblQuote1,
-		final java.lang.String[] astrManifestMeasure1,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp2,
-		final double[] adblQuote2,
-		final java.lang.String[] astrManifestMeasure2,
-		final double dblEpochResponse,
-		final boolean bZeroSmooth)
+	public static final MergedDiscountForwardCurve DFRateShapePreserver (
+		final String name,
+		final ValuationParams valuationParams,
+		final CreditPricerParams creditPricerParams,
+		final CurveSurfaceQuoteContainer curveSurfaceQuoteContainer,
+		final ValuationCustomizationParams valuationCustomizationParams,
+		final String basisType,
+		final FunctionSetBuilderParams functionSetBuilderParams,
+		final CalibratableComponent[] calibrationComponentArray1,
+		final double[] calibrationQuoteArray1,
+		final String[] manifestMeasureArray1,
+		final CalibratableComponent[] calibrationComponentArray2,
+		final double[] calibrationQuoteArray2,
+		final String[] manifestMeasureArray2,
+		final double epochResponse,
+		final boolean zeroSmooth)
 	{
-		if (null == strName || strName.isEmpty() || null == strBasisType || strBasisType.isEmpty() || null ==
-			valParams || null == fsbp)
+		if (null == name || name.isEmpty() || null == basisType || basisType.isEmpty() ||
+			null == valuationParams || null == functionSetBuilderParams) {
 			return null;
+		}
 
-		int iNumQuote1 = null == adblQuote1 ? 0 : adblQuote1.length;
-		int iNumQuote2 = null == adblQuote2 ? 0 : adblQuote2.length;
-		int iNumComp1 = null == aCalibComp1 ? 0 : aCalibComp1.length;
-		int iNumComp2 = null == aCalibComp2 ? 0 : aCalibComp2.length;
-		org.drip.state.estimator.LocalControlCurveParams lccp = null;
-		org.drip.state.inference.LinearLatentStateCalibrator llsc = null;
-		org.drip.state.inference.LatentStateStretchSpec stretchSpec1 = null;
-		org.drip.state.inference.LatentStateStretchSpec stretchSpec2 = null;
-		org.drip.state.representation.LatentStateSpecification[] aLSS = null;
-		org.drip.state.inference.LatentStateStretchSpec[] aStretchSpec = null;
-		org.drip.state.representation.LatentStateSpecification lssFunding = null;
-		org.drip.state.discount.MergedDiscountForwardCurve dcShapePreserving = null;
-		int iNumManifestMeasures1 = null == astrManifestMeasure1 ? 0 : astrManifestMeasure1.length;
-		int iNumManifestMeasures2 = null == astrManifestMeasure2 ? 0 : astrManifestMeasure2.length;
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel>
-			mapForwardLabel = null;
+		LatentStateStretchSpec latentStateStretchSpec1 = null;
+		LatentStateStretchSpec latentStateStretchSpec2 = null;
+		LocalControlCurveParams localControlCurveParams = null;
+		CaseInsensitiveTreeMap<ForwardLabel> forwardLabelMap = null;
+		LatentStateStretchSpec[] latentStateStretchSpecArray = null;
+		LinearLatentStateCalibrator linearLatentStateCalibrator = null;
+		MergedDiscountForwardCurve shapePreservingDiscountCurve = null;
+		LatentStateSpecification fundingLatentStateSpecification = null;
+		LatentStateSpecification[] latentStateSpecificationArray = null;
+		int manifestMeasureCount1 = null == manifestMeasureArray1 ? 0 : manifestMeasureArray1.length;
+		int manifestMeasureCount2 = null == manifestMeasureArray2 ? 0 : manifestMeasureArray2.length;
+		int componentQuoteCount1 = null == calibrationQuoteArray1 ? 0 : calibrationQuoteArray1.length;
+		int componentQuoteCount2 = null == calibrationQuoteArray2 ? 0 : calibrationQuoteArray2.length;
+		int componentCount1 = null == calibrationComponentArray1 ? 0 : calibrationComponentArray1.length;
+		int componentCount2 = null == calibrationComponentArray2 ? 0 : calibrationComponentArray2.length;
 
-		if ((0 == iNumComp1 && 0 == iNumComp2) || iNumComp1 != iNumQuote1 || iNumComp2 != iNumQuote2 ||
-			iNumComp1 != iNumManifestMeasures1 || iNumComp2 != iNumManifestMeasures2)
+		if ((0 == componentCount1 && 0 == componentCount2) || componentCount1 != componentQuoteCount1 ||
+			componentCount2 != componentQuoteCount2 || componentCount1 != manifestMeasureCount1 ||
+			componentCount2 != manifestMeasureCount2) {
 			return null;
+		}
 
-		java.lang.String strCurrency = (0 == iNumComp1 ? aCalibComp2 : aCalibComp1)[0].payCurrency();
+		String currency = (
+			0 == componentCount1 ? calibrationComponentArray2 : calibrationComponentArray1
+		)[0].payCurrency();
 
 		try {
-			lssFunding = new org.drip.state.representation.LatentStateSpecification
-				(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FUNDING,
-					org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR,
-						org.drip.state.identifier.FundingLabel.Standard (strCurrency));
-		} catch (java.lang.Exception e) {
+			fundingLatentStateSpecification = new LatentStateSpecification (
+				LatentStateStatic.LATENT_STATE_FUNDING,
+				LatentStateStatic.DISCOUNT_QM_DISCOUNT_FACTOR,
+				FundingLabel.Standard (currency)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		if (0 != iNumComp1) mapForwardLabel = aCalibComp1[0].forwardLabel();
+		if (0 != componentCount1) {
+			forwardLabelMap = calibrationComponentArray1[0].forwardLabel();
+		}
 
-		if (null == mapForwardLabel && 0 != iNumComp2) mapForwardLabel = aCalibComp2[0].forwardLabel();
+		if (null == forwardLabelMap && 0 != componentCount2) {
+			forwardLabelMap = calibrationComponentArray2[0].forwardLabel();
+		}
 
-		if (null == mapForwardLabel || 0 == mapForwardLabel.size())
-			aLSS = new org.drip.state.representation.LatentStateSpecification[] {lssFunding};
+		if (null == forwardLabelMap || 0 == forwardLabelMap.size())
+			latentStateSpecificationArray = new LatentStateSpecification[] {fundingLatentStateSpecification};
 		else {
 			try {
-				aLSS = new org.drip.state.representation.LatentStateSpecification[] {lssFunding, new
-					org.drip.state.representation.LatentStateSpecification
-						(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FORWARD,
-							org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE,
-								mapForwardLabel.get ("DERIVED"))};
-			} catch (java.lang.Exception e) {
+				latentStateSpecificationArray = new LatentStateSpecification[] {
+					fundingLatentStateSpecification,
+					new LatentStateSpecification (
+						LatentStateStatic.LATENT_STATE_FORWARD,
+						LatentStateStatic.FORWARD_QM_FORWARD_RATE,
+						forwardLabelMap.get ("DERIVED")
+					)
+				};
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		if (0 != iNumComp1) {
-			org.drip.state.inference.LatentStateSegmentSpec[] aSegmentSpec = new
-				org.drip.state.inference.LatentStateSegmentSpec[iNumComp1];
+		if (0 != componentCount1) {
+			LatentStateSegmentSpec[] latentStateSegmentSpecArray =
+				new LatentStateSegmentSpec[componentCount1];
 
 			try {
-				for (int i = 0; i < iNumComp1; ++i) {
-					org.drip.product.calib.ProductQuoteSet pqs = aCalibComp1[i].calibQuoteSet (aLSS);
+				for (int componentIndex1 = 0; componentIndex1 < componentCount1; ++componentIndex1) {
+					ProductQuoteSet productQuoteSet =
+						calibrationComponentArray1[componentIndex1].calibQuoteSet
+							(latentStateSpecificationArray);
 
-					if (null == pqs || !pqs.set (astrManifestMeasure1[i], adblQuote1[i])) return null;
+					if (null == productQuoteSet ||
+						!productQuoteSet.set (
+							manifestMeasureArray1[componentIndex1],
+							calibrationQuoteArray1[componentIndex1]
+						)
+					) {
+						return null;
+					}
 
-					aSegmentSpec[i] = new org.drip.state.inference.LatentStateSegmentSpec (aCalibComp1[i],
-						pqs);
+					latentStateSegmentSpecArray[componentIndex1] = new LatentStateSegmentSpec (
+						calibrationComponentArray1[componentIndex1],
+						productQuoteSet
+					);
 				}
 
-				stretchSpec1 = new org.drip.state.inference.LatentStateStretchSpec (strName + "_COMP1",
-					aSegmentSpec);
-			} catch (java.lang.Exception e) {
+				latentStateStretchSpec1 = new LatentStateStretchSpec (
+					name + "_COMP1",
+					latentStateSegmentSpecArray
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		if (0 != iNumComp2) {
-			org.drip.state.inference.LatentStateSegmentSpec[] aSegmentSpec = new
-				org.drip.state.inference.LatentStateSegmentSpec[iNumComp2];
+		if (0 != componentCount2) {
+			LatentStateSegmentSpec[] latentStateSegmentSpecArray =
+				new LatentStateSegmentSpec[componentCount2];
 
 			try {
-				for (int i = 0; i < iNumComp2; ++i) {
-					org.drip.product.calib.ProductQuoteSet pqs = aCalibComp2[i].calibQuoteSet (aLSS);
+				for (int componentIndex2 = 0; componentIndex2 < componentCount2; ++componentIndex2) {
+					ProductQuoteSet productQuoteSet =
+						calibrationComponentArray2[componentIndex2].calibQuoteSet
+							(latentStateSpecificationArray);
 
-					if (null == pqs || !pqs.set (astrManifestMeasure2[i], adblQuote2[i])) return null;
+					if (null == productQuoteSet || !productQuoteSet.set (
+						manifestMeasureArray2[componentIndex2],
+						calibrationQuoteArray2[componentIndex2]
+					)) {
+						return null;
+					}
 
-					aSegmentSpec[i] = new org.drip.state.inference.LatentStateSegmentSpec (aCalibComp2[i],
-						pqs);
+					latentStateSegmentSpecArray[componentIndex2] = new LatentStateSegmentSpec (
+						calibrationComponentArray2[componentIndex2],
+						productQuoteSet
+					);
 				}
 
-				stretchSpec2 = new org.drip.state.inference.LatentStateStretchSpec (strName + "_COMP2",
-					aSegmentSpec);
-			} catch (java.lang.Exception e) {
+				latentStateStretchSpec2 = new LatentStateStretchSpec (
+					name + "_COMP2",
+					latentStateSegmentSpecArray
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		if (null == stretchSpec1 && null == stretchSpec2) return null;
+		if (null == latentStateStretchSpec1 && null == latentStateStretchSpec2) {
+			return null;
+		}
 
-		if (null == stretchSpec1)
-			aStretchSpec = new org.drip.state.inference.LatentStateStretchSpec[] {stretchSpec2};
-		else if (null == stretchSpec2)
-			aStretchSpec = new org.drip.state.inference.LatentStateStretchSpec[] {stretchSpec1};
-		else
-			aStretchSpec = new org.drip.state.inference.LatentStateStretchSpec[] {stretchSpec1,
-				stretchSpec2};
+		if (null == latentStateStretchSpec1) {
+			latentStateStretchSpecArray = new LatentStateStretchSpec[] {latentStateStretchSpec2};
+		} else if (null == latentStateStretchSpec2) {
+			latentStateStretchSpecArray = new LatentStateStretchSpec[] {latentStateStretchSpec1};
+		} else {
+			latentStateStretchSpecArray = new LatentStateStretchSpec[] {
+				latentStateStretchSpec1,
+				latentStateStretchSpec2
+			};
+		}
 
 		try {
-			llsc = new org.drip.state.inference.LinearLatentStateCalibrator (new
-				org.drip.spline.params.SegmentCustomBuilderControl (strBasisType, fsbp,
-					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), new
-						org.drip.spline.params.ResponseScalingShapeControl (true, new
-							org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)), null),
-								org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
-									org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE, null, null);
+			linearLatentStateCalibrator = new LinearLatentStateCalibrator (
+				new SegmentCustomBuilderControl (
+					basisType,
+					functionSetBuilderParams,
+					SegmentInelasticDesignControl.Create (2, 2),
+					new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+					null
+				),
+				BoundarySettings.NaturalStandard(),
+				MultiSegmentSequence.CALIBRATE,
+				null,
+				null
+			);
 
-			dcShapePreserving = ShapePreservingDFBuild (strCurrency, llsc, aStretchSpec, valParams,
-				pricerParam, csqs, quotingParam, dblEpochResponse);
-		} catch (java.lang.Exception e) {
+			shapePreservingDiscountCurve = ShapePreservingDFBuild (
+				currency,
+				linearLatentStateCalibrator,
+				latentStateStretchSpecArray,
+				valuationParams,
+				creditPricerParams,
+				curveSurfaceQuoteContainer,
+				valuationCustomizationParams,
+				epochResponse
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		if (!bZeroSmooth) return dcShapePreserving;
+		if (!zeroSmooth) {
+			return shapePreservingDiscountCurve;
+		}
 
 		try {
-			lccp = new org.drip.state.estimator.LocalControlCurveParams
-				(org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_HYMAN83,
-					org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE, new
-						org.drip.spline.params.SegmentCustomBuilderControl
-							(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-								org.drip.spline.basis.PolynomialFunctionSetParams (4),
-									org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), new
-										org.drip.spline.params.ResponseScalingShapeControl (true, new
-											org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)),
-												null),
-													org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE,
-														null, null, true, true);
-		} catch (java.lang.Exception e) {
+			localControlCurveParams = new LocalControlCurveParams (
+				LocalMonotoneCkGenerator.C1_HYMAN83,
+				LatentStateStatic.DISCOUNT_QM_ZERO_RATE,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+					new PolynomialFunctionSetParams (4),
+					SegmentInelasticDesignControl.Create (2, 2),
+					new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+					null
+				),
+				MultiSegmentSequence.CALIBRATE,
+				null,
+				null,
+				true,
+				true
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		return SmoothingLocalControlBuild (dcShapePreserving, llsc, lccp, valParams, null, null, null);
+		return SmoothingLocalControlBuild (
+			shapePreservingDiscountCurve,
+			linearLatentStateCalibrator,
+			localControlCurveParams,
+			valuationParams,
+			null,
+			null,
+			null
+		);
 	}
 
 	/**
 	 * Construct an instance of the Shape Preserver of the KLK Hyperbolic Tension Type, using the specified
 	 *  basis set builder parameters.
 	 * 
-	 * @param strName Curve Name
-	 * @param valParams Valuation Parameters
-	 * @param aCalibComp1 Array of Calibration Components #1
-	 * @param adblQuote1 Array of Calibration Quotes #1
-	 * @param astrManifestMeasure1 Array of Manifest Measures for component Array #1
-	 * @param aCalibComp2 Array of Calibration Components #2
-	 * @param adblQuote2 Array of Calibration Quotes #2
-	 * @param astrManifestMeasure2 Array of Manifest Measures for component Array #2
-	 * @param bZeroSmooth TRUE - Turn on the Zero Rate Smoothing
+	 * @param name Curve Name
+	 * @param valuationParams Valuation Parameters
+	 * @param calibrationComponentArray1 Array of Calibration Components #1
+	 * @param calibrationQuoteArray1 Array of Calibration Quotes #1
+	 * @param manifestMeasureArray1 Array of Manifest Measures for component Array #1
+	 * @param calibrationComponentArray2 Array of Calibration Components #2
+	 * @param calibrationQuoteArray2 Array of Calibration Quotes #2
+	 * @param manifestMeasureArray2 Array of Manifest Measures for component Array #2
+	 * @param zeroSmooth TRUE - Turn on the Zero Rate Smoothing
 	 * 
 	 * @return Instance of the Shape Preserver of the desired basis type
 	 */
 
-	public static final org.drip.state.discount.MergedDiscountForwardCurve CubicKLKHyperbolicDFRateShapePreserver (
-		final java.lang.String strName,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp1,
-		final double[] adblQuote1,
-		final java.lang.String[] astrManifestMeasure1,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp2,
-		final double[] adblQuote2,
-		final java.lang.String[] astrManifestMeasure2,
-		final boolean bZeroSmooth)
+	public static final MergedDiscountForwardCurve CubicKLKHyperbolicDFRateShapePreserver (
+		final String name,
+		final ValuationParams valuationParams,
+		final CalibratableComponent[] calibrationComponentArray1,
+		final double[] calibrationQuoteArray1,
+		final String[] manifestMeasureArray1,
+		final CalibratableComponent[] calibrationComponentArray2,
+		final double[] calibrationQuoteArray2,
+		final String[] manifestMeasureArray2,
+		final boolean zeroSmooth)
 	{
 		try {
-			return DFRateShapePreserver (strName, valParams, null, null, null,
-				org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION, new
-					org.drip.spline.basis.ExponentialTensionSetParams (1.), aCalibComp1, adblQuote1,
-						astrManifestMeasure1, aCalibComp2, adblQuote2, astrManifestMeasure2, 1.,
-							bZeroSmooth);
-		} catch (java.lang.Exception e) {
+			return DFRateShapePreserver (
+				name,
+				valuationParams,
+				null,
+				null,
+				null,
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
+				new ExponentialTensionSetParams (1.),
+				calibrationComponentArray1,
+				calibrationQuoteArray1,
+				manifestMeasureArray1,
+				calibrationComponentArray2,
+				calibrationQuoteArray2,
+				manifestMeasureArray2,
+				1.,
+				zeroSmooth
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -812,37 +1006,49 @@ public class ScenarioDiscountCurveBuilder
 	 * Construct an instance of the Shape Preserver of the Cubic Polynomial Type, using the specified
 	 *  basis set builder parameters.
 	 * 
-	 * @param strName Curve Name
-	 * @param valParams Valuation Parameters
-	 * @param aCalibComp1 Array of Calibration Components #1
-	 * @param adblQuote1 Array of Calibration Quotes #1
-	 * @param astrManifestMeasure1 Array of Manifest Measures for component Array #1
-	 * @param aCalibComp2 Array of Calibration Components #2
-	 * @param adblQuote2 Array of Calibration Quotes #2
-	 * @param astrManifestMeasure2 Array of Manifest Measures for component Array #2
-	 * @param bZeroSmooth TRUE - Turn on the Zero Rate Smoothing
+	 * @param name Curve Name
+	 * @param valuationParams Valuation Parameters
+	 * @param calibrationComponentArray1 Array of Calibration Components #1
+	 * @param calibrationQuoteArray1 Array of Calibration Quotes #1
+	 * @param manifestMeasureArray1 Array of Manifest Measures for component Array #1
+	 * @param calibrationComponentArray2 Array of Calibration Components #2
+	 * @param calibrationQuoteArray2 Array of Calibration Quotes #2
+	 * @param manifestMeasureArray2 Array of Manifest Measures for component Array #2
+	 * @param zeroSmooth TRUE - Turn on the Zero Rate Smoothing
 	 * 
 	 * @return Instance of the Shape Preserver of the desired basis type
 	 */
 
-	public static final org.drip.state.discount.MergedDiscountForwardCurve CubicPolyDFRateShapePreserver (
-		final java.lang.String strName,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp1,
-		final double[] adblQuote1,
-		final java.lang.String[] astrManifestMeasure1,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp2,
-		final double[] adblQuote2,
-		final java.lang.String[] astrManifestMeasure2,
-		final boolean bZeroSmooth)
+	public static final MergedDiscountForwardCurve CubicPolyDFRateShapePreserver (
+		final String name,
+		final ValuationParams valuationParams,
+		final CalibratableComponent[] calibrationComponentArray1,
+		final double[] calibrationQuoteArray1,
+		final String[] manifestMeasureArray1,
+		final CalibratableComponent[] calibrationComponentArray2,
+		final double[] calibrationQuoteArray2,
+		final String[] manifestMeasureArray2,
+		final boolean zeroSmooth)
 	{
 		try {
-			return DFRateShapePreserver (strName, valParams, null, null, null,
-				org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-					org.drip.spline.basis.PolynomialFunctionSetParams (4), aCalibComp1, adblQuote1,
-						astrManifestMeasure1, aCalibComp2, adblQuote2, astrManifestMeasure2, 1.,
-							bZeroSmooth);
-		} catch (java.lang.Exception e) {
+			return DFRateShapePreserver (
+				name,
+				valuationParams,
+				null,
+				null,
+				null,
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+				calibrationComponentArray1,
+				calibrationQuoteArray1,
+				manifestMeasureArray1,
+				calibrationComponentArray2,
+				calibrationQuoteArray2,
+				manifestMeasureArray2,
+				1.,
+				zeroSmooth
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -860,99 +1066,156 @@ public class ScenarioDiscountCurveBuilder
 	 *  
 	 *  - Kinlay, J., and X. Bai (2009): Yield Curve Construction Models – Tools and Techniques 
 	 *  	(http://www.jonathankinlay.com/Articles/Yield Curve Construction Models.pdf)
-	 *  
-	 * @param strName The Curve Name
-	 * @param valParams Valuation Parameters
-	 * @param aCalibComp1 Array of Stretch #1 Calibration Components
-	 * @param adblQuote1 Array of Stretch #1 Calibration Quotes
-	 * @param strTenor1 Stretch #1 Instrument set re-construction Tenor
-	 * @param astrManifestMeasure1 Array of Manifest Measures for component Array #1
-	 * @param aCalibComp2 Array of Stretch #2 Calibration Components
-	 * @param adblQuote2 Array of Stretch #2 Calibration Quotes
-	 * @param strTenor2 Stretch #2 Instrument set re-construction Tenor
-	 * @param astrManifestMeasure2 Array of Manifest Measures for component Array #2
-	 * @param tldf The Turns List
+	 * 
+	 * @param name Curve Name
+	 * @param valuationParams Valuation Parameters
+	 * @param calibrationComponentArray1 Array of Calibration Components #1
+	 * @param calibrationQuoteArray1 Array of Calibration Quotes #1
+	 * @param tenor1 Stretch #1 Instrument set re-construction Tenor
+	 * @param manifestMeasureArray1 Array of Manifest Measures for component Array #1
+	 * @param calibrationComponentArray2 Array of Calibration Components #2
+	 * @param calibrationQuoteArray2 Array of Calibration Quotes #2
+	 * @param tenor2 Stretch #2 Instrument set re-construction Tenor
+	 * @param manifestMeasureArray2 Array of Manifest Measures for component Array #2
+	 * @param turnListDiscountFactor The Turns List
 	 * 
 	 * @return The Customized DENSE Curve.
 	 */
 
-	public static final org.drip.state.discount.MergedDiscountForwardCurve CustomDENSE (
-		final java.lang.String strName,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp1,
-		final double[] adblQuote1,
-		final java.lang.String strTenor1,
-		final java.lang.String[] astrManifestMeasure1,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp2,
-		final double[] adblQuote2,
-		final java.lang.String strTenor2,
-		final java.lang.String[] astrManifestMeasure2,
-		final org.drip.state.discount.TurnListDiscountFactor tldf)
+	public static final MergedDiscountForwardCurve CustomDENSE (
+		final String name,
+		final ValuationParams valuationParams,
+		final CalibratableComponent[] calibrationComponentArray1,
+		final double[] calibrationQuoteArray1,
+		final String tenor1,
+		final String[] manifestMeasureArray1,
+		final CalibratableComponent[] calibrationComponentArray2,
+		final double[] calibrationQuoteArray2,
+		final String tenor2,
+		final String[] manifestMeasureArray2,
+		final TurnListDiscountFactor turnListDiscountFactor)
 	{
-		org.drip.state.discount.MergedDiscountForwardCurve dcShapePreserver = CubicKLKHyperbolicDFRateShapePreserver
-			(strName, valParams, aCalibComp1, adblQuote1, astrManifestMeasure1, aCalibComp2, adblQuote2,
-				astrManifestMeasure2, false);
+		MergedDiscountForwardCurve shapePreserverDiscountFactor = CubicKLKHyperbolicDFRateShapePreserver (
+			name,
+			valuationParams,
+			calibrationComponentArray1,
+			calibrationQuoteArray1,
+			manifestMeasureArray1,
+			calibrationComponentArray2,
+			calibrationQuoteArray2,
+			manifestMeasureArray2,
+			false
+		);
 
-		if (null == dcShapePreserver || (null != tldf && !dcShapePreserver.setTurns (tldf))) return null;
-
-		org.drip.param.market.CurveSurfaceQuoteContainer csqs = org.drip.param.creator.MarketParamsBuilder.Create
-			(dcShapePreserver, null, null, null, null, null, null);
-
-		if (null == csqs) return null;
-
-		CompQuote[] aCQ1 = null;
-
-		java.lang.String strCurrency = aCalibComp1[0].payCurrency();
-
-		if (null == strTenor1 || strTenor1.isEmpty()) {
-			if (null != aCalibComp1) {
-				int iNumComp1 = aCalibComp1.length;
-
-				if (0 != iNumComp1) {
-					aCQ1 = new CompQuote[iNumComp1];
-
-					for (int i = 0; i < iNumComp1; ++i)
-						aCQ1[i] = new CompQuote (aCalibComp1[i], adblQuote1[i]);
-				}
-			}
-		} else
-			aCQ1 = CompQuote (valParams, csqs, strCurrency, aCalibComp1[0].effectiveDate(),
-				aCalibComp1[0].maturityDate(), aCalibComp1[aCalibComp1.length - 1].maturityDate(), strTenor1,
-					false);
-
-		if (null == strTenor2 || strTenor2.isEmpty()) return dcShapePreserver;
-
-		CompQuote[] aCQ2 = CompQuote (valParams, csqs, strCurrency, aCalibComp2[0].effectiveDate(),
-			aCalibComp2[0].maturityDate(), aCalibComp2[aCalibComp2.length - 1].maturityDate(), strTenor2,
-				true);
-
-		int iNumDENSEComp1 = null == aCQ1 ? 0 : aCQ1.length;
-		int iNumDENSEComp2 = null == aCQ2 ? 0 : aCQ2.length;
-		int iTotalNumDENSEComp = iNumDENSEComp1 + iNumDENSEComp2;
-
-		if (0 == iTotalNumDENSEComp) return null;
-
-		double[] adblCalibQuote = new double[iTotalNumDENSEComp];
-		java.lang.String[] astrCalibMeasure = new java.lang.String[iTotalNumDENSEComp];
-		org.drip.product.definition.CalibratableComponent[] aCalibComp = new
-			org.drip.product.definition.CalibratableComponent[iTotalNumDENSEComp];
-
-		for (int i = 0; i < iNumDENSEComp1; ++i) {
-			astrCalibMeasure[i] = "Rate";
-			aCalibComp[i] = aCQ1[i]._calibratableComponent;
-			adblCalibQuote[i] = aCQ1[i]._quote;
+		if (null == shapePreserverDiscountFactor || (
+				null != turnListDiscountFactor &&
+					!shapePreserverDiscountFactor.setTurns (turnListDiscountFactor)
+			)
+		) {
+			return null;
 		}
 
-		for (int i = iNumDENSEComp1; i < iTotalNumDENSEComp; ++i) {
-			astrCalibMeasure[i] = "Rate";
-			aCalibComp[i] = aCQ2[i - iNumDENSEComp1]._calibratableComponent;
-			adblCalibQuote[i] = aCQ2[i - iNumDENSEComp1]._quote;
+		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = MarketParamsBuilder.Create (
+			shapePreserverDiscountFactor,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
+
+		if (null == curveSurfaceQuoteContainer) {
+			return null;
+		}
+
+		CompQuote[] compQuoteArray1 = null;
+
+		String currency = calibrationComponentArray1[0].payCurrency();
+
+		if (null == tenor1 || tenor1.isEmpty()) {
+			if (null != calibrationComponentArray1) {
+				int componentCount1 = calibrationComponentArray1.length;
+
+				if (0 != componentCount1) {
+					compQuoteArray1 = new CompQuote[componentCount1];
+
+					for (int componentIndex1 = 0; componentIndex1 < componentCount1; ++componentIndex1) {
+						compQuoteArray1[componentIndex1] = new CompQuote (
+							calibrationComponentArray1[componentIndex1],
+							calibrationQuoteArray1[componentIndex1]
+						);
+					}
+				}
+			}
+		} else {
+			compQuoteArray1 = CompQuote (
+				valuationParams,
+				curveSurfaceQuoteContainer,
+				currency,
+				calibrationComponentArray1[0].effectiveDate(),
+				calibrationComponentArray1[0].maturityDate(),
+				calibrationComponentArray1[calibrationComponentArray1.length - 1].maturityDate(),
+				tenor1,
+				false
+			);
+		}
+
+		if (null == tenor2 || tenor2.isEmpty()) {
+			return shapePreserverDiscountFactor;
+		}
+
+		CompQuote[] compQuoteArray2 = CompQuote (
+			valuationParams,
+			curveSurfaceQuoteContainer,
+			currency,
+			calibrationComponentArray2[0].effectiveDate(),
+			calibrationComponentArray2[0].maturityDate(),
+			calibrationComponentArray2[calibrationComponentArray2.length - 1].maturityDate(),
+			tenor2,
+			true
+		);
+
+		int denseComponentCount2 = null == compQuoteArray2 ? 0 : compQuoteArray2.length;
+		int denseComponentCount1 = null == compQuoteArray1 ? 0 : compQuoteArray1.length;
+		int totalDENSEComponentCount = denseComponentCount1 + denseComponentCount2;
+
+		if (0 == totalDENSEComponentCount) {
+			return null;
+		}
+
+		double[] calibrationQuoteArray = new double[totalDENSEComponentCount];
+		String[] calibrationMeasureArray = new String[totalDENSEComponentCount];
+		CalibratableComponent[] calibratableComponentArray =
+			new CalibratableComponent[totalDENSEComponentCount];
+
+		for (int denseComponentIndex = 0; denseComponentIndex < denseComponentCount1; ++denseComponentIndex)
+		{
+			calibrationMeasureArray[denseComponentIndex] = "Rate";
+			calibrationQuoteArray[denseComponentIndex] = compQuoteArray1[denseComponentIndex]._quote;
+			calibratableComponentArray[denseComponentIndex] =
+				compQuoteArray1[denseComponentIndex]._calibratableComponent;
+		}
+
+		for (int denseComponentIndex = denseComponentCount1; denseComponentIndex < totalDENSEComponentCount;
+			++denseComponentIndex) {
+			calibrationMeasureArray[denseComponentIndex] = "Rate";
+			calibrationQuoteArray[denseComponentIndex] =
+				compQuoteArray2[denseComponentIndex - denseComponentCount1]._quote;
+			calibratableComponentArray[denseComponentIndex] =
+				compQuoteArray2[denseComponentIndex - denseComponentCount1]._calibratableComponent;
 		}
 
 		try {
-			return ScenarioDiscountCurveBuilder.NonlinearBuild (new org.drip.analytics.date.JulianDate
-				(valParams.valueDate()), strCurrency, aCalibComp, adblCalibQuote, astrCalibMeasure, null);
-		} catch (java.lang.Exception e) {
+			return ScenarioDiscountCurveBuilder.NonlinearBuild (
+				new JulianDate (valuationParams.valueDate()),
+				currency,
+				calibratableComponentArray,
+				calibrationQuoteArray,
+				calibrationMeasureArray,
+				null
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -971,33 +1234,44 @@ public class ScenarioDiscountCurveBuilder
 	 *  
 	 *  - Kinlay, J., and X. Bai (2009): Yield Curve Construction Models – Tools and Techniques 
 	 *  	(http://www.jonathankinlay.com/Articles/Yield Curve Construction Models.pdf)
-	 *  
-	 * @param strName The Curve Name
-	 * @param valParams Valuation Parameters
-	 * @param aCalibComp1 Array of Stretch #1 Calibration Components
-	 * @param adblQuote1 Array of Stretch #1 Calibration Quotes
-	 * @param astrManifestMeasure1 Array of Manifest Measures for component Array #1
-	 * @param aCalibComp2 Array of Stretch #2 Calibration Components
-	 * @param adblQuote2 Array of Stretch #2 Calibration Quotes
-	 * @param astrManifestMeasure2 Array of Manifest Measures for component Array #2
-	 * @param tldf The Turns List
+	 * 
+	 * @param name Curve Name
+	 * @param valuationParams Valuation Parameters
+	 * @param calibrationComponentArray1 Array of Calibration Components #1
+	 * @param calibrationQuoteArray1 Array of Calibration Quotes #1
+	 * @param manifestMeasureArray1 Array of Manifest Measures for component Array #1
+	 * @param calibrationComponentArray2 Array of Calibration Components #2
+	 * @param calibrationQuoteArray2 Array of Calibration Quotes #2
+	 * @param manifestMeasureArray2 Array of Manifest Measures for component Array #2
+	 * @param turnListDiscountFactor The Turns List
 	 * 
 	 * @return The Customized DENSE Curve.
 	 */
 
-	public static final org.drip.state.discount.MergedDiscountForwardCurve DENSE (
-		final java.lang.String strName,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp1,
-		final double[] adblQuote1,
-		final java.lang.String[] astrManifestMeasure1,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp2,
-		final double[] adblQuote2,
-		final java.lang.String[] astrManifestMeasure2,
-		final org.drip.state.discount.TurnListDiscountFactor tldf)
+	public static final MergedDiscountForwardCurve DENSE (
+		final String name,
+		final ValuationParams valuationParams,
+		final CalibratableComponent[] calibrationComponentArray1,
+		final double[] calibrationQuoteArray1,
+		final String[] manifestMeasureArray1,
+		final CalibratableComponent[] calibrationComponentArray2,
+		final double[] calibrationQuoteArray2,
+		final String[] manifestMeasureArray2,
+		final TurnListDiscountFactor turnListDiscountFactor)
 	{
-		return CustomDENSE (strName, valParams, aCalibComp1, adblQuote1, null, astrManifestMeasure1,
-			aCalibComp2, adblQuote2, "3M", astrManifestMeasure2, tldf);
+		return CustomDENSE (
+			name,
+			valuationParams,
+			calibrationComponentArray1,
+			calibrationQuoteArray1,
+			null,
+			manifestMeasureArray1,
+			calibrationComponentArray2,
+			calibrationQuoteArray2,
+			"3M",
+			manifestMeasureArray2,
+			turnListDiscountFactor
+		);
 	}
 
 	/**
@@ -1013,87 +1287,114 @@ public class ScenarioDiscountCurveBuilder
 	 *  
 	 *  - Kinlay, J., and X. Bai (2009): Yield Curve Construction Models – Tools and Techniques 
 	 *  	(http://www.jonathankinlay.com/Articles/Yield Curve Construction Models.pdf)
-	 *  
-	 * @param strName The Curve Name
-	 * @param valParams Valuation Parameters
-	 * @param aCalibComp1 Array of Stretch #1 Calibration Components
-	 * @param adblQuote1 Array of Stretch #1 Calibration Quotes
-	 * @param strTenor1 Stretch #1 Instrument set re-construction Tenor
-	 * @param astrManifestMeasure1 Array of Manifest Measures for component Array #1
-	 * @param aCalibComp2 Array of Stretch #2 Calibration Components
-	 * @param adblQuote2 Array of Stretch #2 Calibration Quotes
-	 * @param strTenor2 Stretch #2 Instrument set re-construction Tenor
-	 * @param astrManifestMeasure2 Array of Manifest Measures for component Array #2
-	 * @param tldf The Turns List
+	 * 
+	 * @param name Curve Name
+	 * @param valuationParams Valuation Parameters
+	 * @param calibrationComponentArray1 Array of Calibration Components #1
+	 * @param calibrationQuoteArray1 Array of Calibration Quotes #1
+	 * @param tenor1 Stretch #1 Instrument set re-construction Tenor
+	 * @param manifestMeasureArray1 Array of Manifest Measures for component Array #1
+	 * @param calibrationComponentArray2 Array of Calibration Components #2
+	 * @param calibrationQuoteArray2 Array of Calibration Quotes #2
+	 * @param tenor2 Stretch #2 Instrument set re-construction Tenor
+	 * @param manifestMeasureArray2 Array of Manifest Measures for component Array #2
+	 * @param turnListDiscountFactor The Turns List
 	 * 
 	 * @return The Customized DENSE Curve.
 	 */
 
-	public static final org.drip.state.discount.MergedDiscountForwardCurve DUALDENSE (
-		final java.lang.String strName,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp1,
-		final double[] adblQuote1,
-		final java.lang.String strTenor1,
-		final java.lang.String[] astrManifestMeasure1,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp2,
-		final double[] adblQuote2,
-		final java.lang.String strTenor2,
-		final java.lang.String[] astrManifestMeasure2,
-		final org.drip.state.discount.TurnListDiscountFactor tldf)
+	public static final MergedDiscountForwardCurve DUALDENSE (
+		final String name,
+		final ValuationParams valuationParams,
+		final CalibratableComponent[] calibrationComponentArray1,
+		final double[] calibrationQuoteArray1,
+		final String tenor1,
+		final String[] manifestMeasureArray1,
+		final CalibratableComponent[] calibrationComponentArray2,
+		final double[] calibrationQuoteArray2,
+		final String tenor2,
+		final String[] manifestMeasureArray2,
+		final TurnListDiscountFactor turnListDiscountFactor)
 	{
-		return CustomDENSE (strName, valParams, aCalibComp1, adblQuote1, strTenor1, astrManifestMeasure1,
-			aCalibComp2, adblQuote2, strTenor2, astrManifestMeasure2, tldf);
+		return CustomDENSE (
+			name,
+			valuationParams,
+			calibrationComponentArray1,
+			calibrationQuoteArray1,
+			tenor1,
+			manifestMeasureArray1,
+			calibrationComponentArray2,
+			calibrationQuoteArray2,
+			tenor2,
+			manifestMeasureArray2,
+			turnListDiscountFactor
+		);
 	}
 
 	/**
 	 * Create an Instance of the Custom Splined Discount Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart Tenor Start Date
-	 * @param strCurrency The Currency
-	 * @param aiDate Array of Dates
-	 * @param adblDF Array of Discount Factors
-	 * @param scbc The Segment Custom Builder Control
+	 * @param name Curve Name
+	 * @param startDate Tenor Start Date
+	 * @param currency The Currency
+	 * @param dateArray Array of Dates
+	 * @param discountFactorArray Array of Discount Factors
+	 * @param segmentCustomBuilderControl The Segment Custom Builder Control
 	 * 
 	 * @return The Instance of the Basis Curve
 	 */
 
-	public static final org.drip.state.discount.MergedDiscountForwardCurve CustomSplineDiscountCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final int[] aiDate,
-		final double[] adblDF,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
+	public static final MergedDiscountForwardCurve CustomSplineDiscountCurve (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final int[] dateArray,
+		final double[] discountFactorArray,
+		final SegmentCustomBuilderControl segmentCustomBuilderControl)
 	{
-		if (null == strName || strName.isEmpty() || null == aiDate || null == dtStart) return null;
+		if (null == dateArray || null == startDate) {
+			return null;
+		}
 
-		int iNumDate = aiDate.length;
+		int dateNodeCount = dateArray.length;
 
-		if (0 == iNumDate) return null;
+		if (0 == dateNodeCount) {
+			return null;
+		}
 
-		double[] adblResponseValue = new double[iNumDate + 1];
-		double[] adblPredictorOrdinate = new double[iNumDate + 1];
-		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new
-			org.drip.spline.params.SegmentCustomBuilderControl[iNumDate];
+		double[] responseValueArray = new double[dateNodeCount + 1];
+		double[] predictorOrdinateArray = new double[dateNodeCount + 1];
+		SegmentCustomBuilderControl[] segmentCustomBuilderControlArray =
+			new SegmentCustomBuilderControl[dateNodeCount];
 
-		for (int i = 0; i <= iNumDate; ++i) {
-			adblPredictorOrdinate[i] = 0 == i ? dtStart.julian() : aiDate[i - 1];
+		for (int dateNodeIndex = 0; dateNodeIndex <= dateNodeCount; ++dateNodeIndex) {
+			predictorOrdinateArray[dateNodeIndex] =
+				0 == dateNodeIndex ? startDate.julian() : dateArray[dateNodeIndex - 1];
 
-			adblResponseValue[i] = 0 == i ? 1. : adblDF[i - 1];
+			responseValueArray[dateNodeIndex] =
+				0 == dateNodeIndex ? 1. : discountFactorArray[dateNodeIndex - 1];
 
-			if (0 != i) aSCBC[i - 1] = scbc;
+			if (0 != dateNodeIndex) {
+				segmentCustomBuilderControlArray[dateNodeIndex - 1] = segmentCustomBuilderControl;
+			}
 		}
 
 		try {
-			return new org.drip.state.curve.DiscountFactorDiscountCurve (strCurrency, new
-				org.drip.spline.grid.OverlappingStretchSpan
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-						(strName, adblPredictorOrdinate, adblResponseValue, aSCBC, null,
-							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
-								org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE)));
-		} catch (java.lang.Exception e) {
+			return new DiscountFactorDiscountCurve (
+				currency,
+				new OverlappingStretchSpan (
+					MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
+						name,
+						predictorOrdinateArray,
+						responseValueArray,
+						segmentCustomBuilderControlArray,
+						null,
+						BoundarySettings.NaturalStandard(),
+						MultiSegmentSequence.CALIBRATE
+					)
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -1103,29 +1404,38 @@ public class ScenarioDiscountCurveBuilder
 	/**
 	 * Create an Instance of the Cubic Polynomial Splined DF Discount Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart Tenor Start Date
-	 * @param strCurrency The Currency
-	 * @param aiDate Array of Dates
-	 * @param adblDF Array of Discount Factors
+	 * @param name Curve Name
+	 * @param startDate Tenor Start Date
+	 * @param currency The Currency
+	 * @param dateArray Array of Dates
+	 * @param discountFactorArray Array of Discount Factors
 	 * 
 	 * @return The Instance of the Discount Curve
 	 */
 
-	public static final org.drip.state.discount.MergedDiscountForwardCurve CubicPolynomialDiscountCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final int[] aiDate,
-		final double[] adblDF)
+	public static final MergedDiscountForwardCurve CubicPolynomialDiscountCurve (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final int[] dateArray,
+		final double[] discountFactorArray)
 	{
 		try {
-			return CustomSplineDiscountCurve (strName, dtStart, strCurrency, aiDate, adblDF, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-						org.drip.spline.basis.PolynomialFunctionSetParams (4),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineDiscountCurve (
+				name,
+				startDate,
+				currency,
+				dateArray,
+				discountFactorArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+					new PolynomialFunctionSetParams (4),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -1135,29 +1445,38 @@ public class ScenarioDiscountCurveBuilder
 	/**
 	 * Create an Instance of the Quartic Polynomial Splined DF Discount Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart Tenor Start Date
-	 * @param strCurrency The Currency
-	 * @param aiDate Array of Dates
-	 * @param adblDF Array of Discount Factors
+	 * @param name Curve Name
+	 * @param startDate Tenor Start Date
+	 * @param currency The Currency
+	 * @param dateArray Array of Dates
+	 * @param discountFactorArray Array of Discount Factors
 	 * 
 	 * @return The Instance of the Discount Curve
 	 */
 
-	public static final org.drip.state.discount.MergedDiscountForwardCurve QuarticPolynomialDiscountCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final int[] aiDate,
-		final double[] adblDF)
+	public static final MergedDiscountForwardCurve QuarticPolynomialDiscountCurve (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final int[] dateArray,
+		final double[] discountFactorArray)
 	{
 		try {
-			return CustomSplineDiscountCurve (strName, dtStart, strCurrency, aiDate, adblDF, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-						org.drip.spline.basis.PolynomialFunctionSetParams (5),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineDiscountCurve (
+				name,
+				startDate,
+				currency,
+				dateArray,
+				discountFactorArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+					new PolynomialFunctionSetParams (5),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -1167,29 +1486,38 @@ public class ScenarioDiscountCurveBuilder
 	/**
 	 * Create an Instance of the Kaklis-Pandelis Splined DF Discount Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart Tenor Start Date
-	 * @param strCurrency The Currency
-	 * @param aiDate Array of Dates
-	 * @param adblDF Array of Discount Factors
+	 * @param name Curve Name
+	 * @param startDate Tenor Start Date
+	 * @param currency The Currency
+	 * @param dateArray Array of Dates
+	 * @param discountFactorArray Array of Discount Factors
 	 * 
 	 * @return The Instance of the Discount Curve
 	 */
 
-	public static final org.drip.state.discount.MergedDiscountForwardCurve KaklisPandelisDiscountCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final int[] aiDate,
-		final double[] adblDF)
+	public static final MergedDiscountForwardCurve KaklisPandelisDiscountCurve (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final int[] dateArray,
+		final double[] discountFactorArray)
 	{
 		try {
-			return CustomSplineDiscountCurve (strName, dtStart, strCurrency, aiDate, adblDF, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS, new
-						org.drip.spline.basis.KaklisPandelisSetParams (2),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineDiscountCurve (
+				name,
+				startDate,
+				currency,
+				dateArray,
+				discountFactorArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS, new
+					KaklisPandelisSetParams (2),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -1199,31 +1527,40 @@ public class ScenarioDiscountCurveBuilder
 	/**
 	 * Create an Instance of the KLK Hyperbolic Splined DF Discount Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart Tenor Start Date
-	 * @param strCurrency The Currency
-	 * @param aiDate Array of Dates
-	 * @param adblDF Array of Discount Factors
-	 * @param dblTension The Tension Parameter
+	 * @param name Curve Name
+	 * @param startDate Tenor Start Date
+	 * @param currency The Currency
+	 * @param dateArray Array of Dates
+	 * @param discountFactorArray Array of Discount Factors
+	 * @param tension The Tension Parameter
 	 * 
 	 * @return The Instance of the Discount Curve
 	 */
 
-	public static final org.drip.state.discount.MergedDiscountForwardCurve KLKHyperbolicDiscountCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final int[] aiDate,
-		final double[] adblDF,
-		final double dblTension)
+	public static final MergedDiscountForwardCurve KLKHyperbolicDiscountCurve (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final int[] dateArray,
+		final double[] discountFactorArray,
+		final double tension)
 	{
 		try {
-			return CustomSplineDiscountCurve (strName, dtStart, strCurrency, aiDate, adblDF, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
-						new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineDiscountCurve (
+				name,
+				startDate,
+				currency,
+				dateArray,
+				discountFactorArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
+					new ExponentialTensionSetParams (tension),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -1233,31 +1570,40 @@ public class ScenarioDiscountCurveBuilder
 	/**
 	 * Create an Instance of the KLK Exponential Splined DF Discount Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart Tenor Start Date
-	 * @param strCurrency The Currency
-	 * @param aiDate Array of Dates
-	 * @param adblDF Array of Discount Factors
-	 * @param dblTension The Tension Parameter
+	 * @param name Curve Name
+	 * @param startDate Tenor Start Date
+	 * @param currency The Currency
+	 * @param dateArray Array of Dates
+	 * @param discountFactorArray Array of Discount Factors
+	 * @param tension The Tension Parameter
 	 * 
 	 * @return The Instance of the Discount Curve
 	 */
 
-	public static final org.drip.state.discount.MergedDiscountForwardCurve KLKExponentialDiscountCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final int[] aiDate,
-		final double[] adblDF,
-		final double dblTension)
+	public static final MergedDiscountForwardCurve KLKExponentialDiscountCurve (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final int[] dateArray,
+		final double[] discountFactorArray,
+		final double tension)
 	{
 		try {
-			return CustomSplineDiscountCurve (strName, dtStart, strCurrency, aiDate, adblDF, new
-			org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_EXPONENTIAL_TENSION,
-				new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineDiscountCurve (
+				name,
+				startDate,
+				currency,
+				dateArray,
+				discountFactorArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_EXPONENTIAL_TENSION,
+					new ExponentialTensionSetParams (tension),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -1267,31 +1613,40 @@ public class ScenarioDiscountCurveBuilder
 	/**
 	 * Create an Instance of the KLK Linear Rational Splined DF Discount Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart Tenor Start Date
-	 * @param strCurrency The Currency
-	 * @param aiDate Array of Dates
-	 * @param adblDF Array of Discount Factors
-	 * @param dblTension The Tension Parameter
+	 * @param name Curve Name
+	 * @param startDate Tenor Start Date
+	 * @param currency The Currency
+	 * @param dateArray Array of Dates
+	 * @param discountFactorArray Array of Discount Factors
+	 * @param tension The Tension Parameter
 	 * 
 	 * @return The Instance of the Discount Curve
 	 */
 
-	public static final org.drip.state.discount.MergedDiscountForwardCurve KLKRationalLinearDiscountCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final int[] aiDate,
-		final double[] adblDF,
-		final double dblTension)
+	public static final MergedDiscountForwardCurve KLKRationalLinearDiscountCurve (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final int[] dateArray,
+		final double[] discountFactorArray,
+		final double tension)
 	{
 		try {
-			return CustomSplineDiscountCurve (strName, dtStart, strCurrency, aiDate, adblDF, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
-				new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineDiscountCurve (
+				name,
+				startDate,
+				currency,
+				dateArray,
+				discountFactorArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
+					new ExponentialTensionSetParams (tension),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -1301,31 +1656,40 @@ public class ScenarioDiscountCurveBuilder
 	/**
 	 * Create an Instance of the KLK Quadratic Rational Splined DF Discount Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart Tenor Start Date
-	 * @param strCurrency The Currency
-	 * @param aiDate Array of Dates
-	 * @param adblDF Array of Discount Factors
-	 * @param dblTension The Tension Parameter
+	 * @param name Curve Name
+	 * @param startDate Tenor Start Date
+	 * @param currency The Currency
+	 * @param dateArray Array of Dates
+	 * @param discountFactorArray Array of Discount Factors
+	 * @param tension The Tension Parameter
 	 * 
 	 * @return The Instance of the Discount Curve
 	 */
 
-	public static final org.drip.state.discount.MergedDiscountForwardCurve KLKRationalQuadraticDiscountCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final int[] aiDate,
-		final double[] adblDF,
-		final double dblTension)
+	public static final MergedDiscountForwardCurve KLKRationalQuadraticDiscountCurve (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final int[] dateArray,
+		final double[] discountFactorArray,
+		final double tension)
 	{
 		try {
-			return CustomSplineDiscountCurve (strName, dtStart, strCurrency, aiDate, adblDF, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
-				new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineDiscountCurve (
+				name,
+				startDate,
+				currency,
+				dateArray,
+				discountFactorArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
+					new ExponentialTensionSetParams (tension),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -1335,43 +1699,51 @@ public class ScenarioDiscountCurveBuilder
 	/**
 	 * Build a Discount Curve from an array of discount factors
 	 * 
-	 * @param dtStart Start Date
-	 * @param strCurrency Currency
-	 * @param aiDate Array of dates
-	 * @param adblDF array of discount factors
+	 * @param startDate Start Date
+	 * @param currency Currency
+	 * @param dateArray Array of dates
+	 * @param discountFactorArray array of discount factors
 	 * 
 	 * @return Discount Curve
 	 */
 
-	public static final org.drip.state.discount.MergedDiscountForwardCurve BuildFromDF (
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final int aiDate[],
-		final double adblDF[])
+	public static final MergedDiscountForwardCurve BuildFromDF (
+		final JulianDate startDate,
+		final String currency,
+		final int[] dateArray,
+		final double[] discountFactorArray)
 	{
-		if (null == aiDate || 0 == aiDate.length || null == adblDF || aiDate.length != adblDF.length ||
-			null == dtStart || null == strCurrency || strCurrency.isEmpty())
+		if (null == dateArray || 0 == dateArray.length || null == discountFactorArray ||
+			dateArray.length != discountFactorArray.length || null == startDate) {
 			return null;
+		}
 
-		double dblDFBegin = 1.;
-		double[] adblRate = new double[aiDate.length];
+		double beginDiscountFactor = 1.;
+		double[] rateArray = new double[dateArray.length];
 
-		double dblPeriodBegin = dtStart.julian();
+		double periodBegin = startDate.julian();
 
-		for (int i = 0; i < aiDate.length; ++i) {
-			if (aiDate[i] <= dblPeriodBegin) return null;
+		for (int dateArrayIndex = 0; dateArrayIndex < dateArray.length; ++dateArrayIndex) {
+			if (dateArray[dateArrayIndex] <= periodBegin) return null;
 
-			adblRate[i] = 365.25 / (aiDate[i] - dblPeriodBegin) * java.lang.Math.log (dblDFBegin /
-				adblDF[i]);
+			rateArray[dateArrayIndex] = 365.25 / (dateArray[dateArrayIndex] - periodBegin) *
+				Math.log (beginDiscountFactor / discountFactorArray[dateArrayIndex]);
 
-			dblDFBegin = adblDF[i];
-			dblPeriodBegin = aiDate[i];
+			beginDiscountFactor = discountFactorArray[dateArrayIndex];
+			periodBegin = dateArray[dateArrayIndex];
 		}
 
 		try {
-			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, aiDate,
-				adblRate, false, "", -1);
-		} catch (java.lang.Exception e) {
+			return new FlatForwardDiscountCurve (
+				startDate,
+				currency,
+				dateArray,
+				rateArray,
+				false,
+				"",
+				-1
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -1381,24 +1753,29 @@ public class ScenarioDiscountCurveBuilder
 	/**
 	 * Create a Discount Curve from the Exponentially Compounded Flat Rate
 	 * 
-	 * @param dtStart Start Date
-	 * @param strCurrency Currency
-	 * @param dblRate Rate
+	 * @param startDate Start Date
+	 * @param currency Currency
+	 * @param rate Rate
 	 * 
 	 * @return Discount Curve
 	 */
 
-	public static final org.drip.state.discount.ExplicitBootDiscountCurve ExponentiallyCompoundedFlatRate (
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final double dblRate)
+	public static final ExplicitBootDiscountCurve ExponentiallyCompoundedFlatRate (
+		final JulianDate startDate,
+		final String currency,
+		final double rate)
 	{
-		if (null == dtStart) return null;
-
 		try {
-			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, new int[]
-				{dtStart.julian()}, new double[] {dblRate}, false, "", -1);
-		} catch (java.lang.Exception e) {
+			return null == startDate ? null : new FlatForwardDiscountCurve (
+				startDate,
+				currency,
+				new int[] {startDate.julian()},
+				new double[] {rate},
+				false,
+				"",
+				-1
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -1408,28 +1785,33 @@ public class ScenarioDiscountCurveBuilder
 	/**
 	 * Create a Discount Curve from the Discretely Compounded Flat Rate
 	 * 
-	 * @param dtStart Start Date
-	 * @param strCurrency Currency
-	 * @param dblRate Rate
-	 * @param strCompoundingDayCount Day Count Convention to be used for Discrete Compounding
-	 * @param iCompoundingFreq Frequency to be used for Discrete Compounding
+	 * @param startDate Start Date
+	 * @param currency Currency
+	 * @param rate Rate
+	 * @param compoundingDayCount Day Count Convention to be used for Discrete Compounding
+	 * @param compoundingFrequency Frequency to be used for Discrete Compounding
 	 * 
 	 * @return Discount Curve
 	 */
 
-	public static final org.drip.state.discount.ExplicitBootDiscountCurve DiscretelyCompoundedFlatRate (
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final double dblRate,
-		final java.lang.String strCompoundingDayCount,
-		final int iCompoundingFreq)
+	public static final ExplicitBootDiscountCurve DiscretelyCompoundedFlatRate (
+		final JulianDate startDate,
+		final String currency,
+		final double rate,
+		final String compoundingDayCount,
+		final int compoundingFrequency)
 	{
-		if (null == dtStart) return null;
-
 		try {
-			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, new int[]
-				{dtStart.julian()}, new double[] {dblRate}, true, strCompoundingDayCount, iCompoundingFreq);
-		} catch (java.lang.Exception e) {
+			return null == startDate ? null : new FlatForwardDiscountCurve (
+				startDate,
+				currency,
+				new int[] {startDate.julian()},
+				new double[] {rate},
+				true,
+				compoundingDayCount,
+				compoundingFrequency
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
