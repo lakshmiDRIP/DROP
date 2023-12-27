@@ -2,12 +2,17 @@
 package org.drip.state.creator;
 
 import org.drip.analytics.date.JulianDate;
+import org.drip.numerical.common.NumberUtil;
 import org.drip.param.definition.CalibrationParams;
 import org.drip.param.market.CreditCurveScenarioContainer;
 import org.drip.param.valuation.ValuationParams;
 import org.drip.product.definition.CalibratableComponent;
 import org.drip.state.boot.CreditCurveScenario;
+import org.drip.state.credit.CreditCurve;
+import org.drip.state.credit.ExplicitBootCreditCurve;
 import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.identifier.EntityCDSLabel;
+import org.drip.state.nonlinear.ForwardHazardCreditCurve;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -163,7 +168,7 @@ public class ScenarioCreditCurveBuilder {
 	 * @return The cooked Credit Curve
 	 */
 
-	public static final org.drip.state.credit.CreditCurve Custom (
+	public static final CreditCurve Custom (
 		final String name,
 		final JulianDate spotDate,
 		final CalibratableComponent[] calibratableComponentArray,
@@ -193,57 +198,72 @@ public class ScenarioCreditCurveBuilder {
 	/**
 	 * Calibrate the base credit curve from the input credit instruments, measures, and the quotes
 	 * 
-	 * @param strName Credit Curve Name
-	 * @param dtSpot Spot Date
-	 * @param aCalibInst Array of calibration instruments
-	 * @param dc Discount Curve
-	 * @param adblCalibQuote Array of Instrument Quotes
-	 * @param astrCalibMeasure Array of calibration Measures
-	 * @param dblRecovery Recovery Rate
-	 * @param bFlat Whether the Calibration is based off of a flat spread
+	 * @param name Credit Curve Name
+	 * @param spotDate Spot Date
+	 * @param calibratableComponentArray Array of calibration instruments
+	 * @param discountCurve Discount Curve
+	 * @param calibrationQuoteArray Array of Instrument Quotes
+	 * @param calibrationMeasureArray Array of calibration Measures
+	 * @param recovery Recovery Rate
+	 * @param flat Whether the Calibration is based off of a flat spread
 	 * 
 	 * @return The cooked Credit Curve
 	 */
 
-	public static final org.drip.state.credit.CreditCurve Custom (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final org.drip.product.definition.CalibratableComponent[] aCalibInst,
-		final org.drip.state.discount.MergedDiscountForwardCurve dc,
-		final double[] adblCalibQuote,
-		final java.lang.String[] astrCalibMeasure,
-		final double dblRecovery,
-		final boolean bFlat)
+	public static final CreditCurve Custom (
+		final String name,
+		final JulianDate spotDate,
+		final CalibratableComponent[] calibratableComponentArray,
+		final MergedDiscountForwardCurve discountCurve,
+		final double[] calibrationQuoteArray,
+		final String[] calibrationMeasureArray,
+		final double recovery,
+		final boolean flat)
 	{
-		return Custom (strName, dtSpot, aCalibInst, dc, adblCalibQuote, astrCalibMeasure, dblRecovery, bFlat,
-			null);
+		return Custom (
+			name,
+			spotDate,
+			calibratableComponentArray,
+			discountCurve,
+			calibrationQuoteArray,
+			calibrationMeasureArray,
+			recovery,
+			flat,
+			null
+		);
 	}
 
 	/**
 	 * Create a <i>CreditCurve</i> instance from a single node hazard rate
 	 * 
-	 * @param iStartDate Curve epoch date
-	 * @param strName Credit Curve Name
-	 * @param strCurrency Currency
-	 * @param dblHazardRate Curve hazard rate
-	 * @param dblRecovery Curve recovery
+	 * @param startDate Curve epoch date
+	 * @param name Credit Curve Name
+	 * @param currency Currency
+	 * @param hazardRate Curve hazard rate
+	 * @param recovery Curve recovery
 	 * 
 	 * @return <i>CreditCurve</i> instance
 	 */
 
 	public static final org.drip.state.credit.ExplicitBootCreditCurve FlatHazard (
-		final int iStartDate,
-		final java.lang.String strName,
-		final java.lang.String strCurrency,
-		final double dblHazardRate,
-		final double dblRecovery)
+		final int startDate,
+		final String name,
+		final String currency,
+		final double hazardRate,
+		final double recovery)
 	{
 		try {
-			return new org.drip.state.nonlinear.ForwardHazardCreditCurve (iStartDate,
-				org.drip.state.identifier.EntityCDSLabel.Standard (strName, strCurrency), strCurrency, new
-					double[] {dblHazardRate}, new int[] {iStartDate}, new double[] {dblRecovery}, new int[]
-						{iStartDate}, java.lang.Integer.MIN_VALUE);
-		} catch (java.lang.Exception e) {
+			return new ForwardHazardCreditCurve (
+				startDate,
+				EntityCDSLabel.Standard (name, currency),
+				currency,
+				new double[] {hazardRate},
+				new int[] {startDate},
+				new double[] {recovery},
+				new int[] {startDate},
+				Integer.MIN_VALUE
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -253,51 +273,65 @@ public class ScenarioCreditCurveBuilder {
 	/**
 	 * Create a <i>CreditCurve</i> Instance from the Input Array of Survival Probabilities
 	 * 
-	 * @param iStartDate Start Date
-	 * @param strName Credit Curve Name
-	 * @param strCurrency Currency
-	 * @param aiSurvivalDate Array of Dates
-	 * @param adblSurvivalProbability Array of Survival Probabilities
-	 * @param dblRecovery Recovery Rate
+	 * @param startDate Curve epoch date
+	 * @param name Credit Curve Name
+	 * @param currency Currency
+	 * @param survivalDateArray Array of Dates
+	 * @param survivalProbabilityArray Array of Survival Probabilities
+	 * @param recovery Curve recovery
 	 * 
 	 * @return The <i>CreditCurve</i> Instance
 	 */
 
 	public static final org.drip.state.credit.ExplicitBootCreditCurve Survival (
-		final int iStartDate,
-		final java.lang.String strName,
-		final java.lang.String strCurrency,
-		final int[] aiSurvivalDate,
-		final double[] adblSurvivalProbability,
-		final double dblRecovery)
+		final int startDate,
+		final String name,
+		final String currency,
+		final int[] survivalDateArray,
+		final double[] survivalProbabilityArray,
+		final double recovery)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblRecovery)) return null;
+		if (!NumberUtil.IsValid (recovery)) {
+			return null;
+		}
 
 		try {
-			double dblSurvivalBegin = 1.;
-			int iPeriodBegin = iStartDate;
-			double[] adblHazard = new double[adblSurvivalProbability.length];
-			double[] adblRecovery = new double[1];
-			int[] aiRecoveryDate = new int[1];
-			adblRecovery[0] = dblRecovery;
-			aiRecoveryDate[0] = iStartDate;
+			double[] hazardRateArray = new double[survivalProbabilityArray.length];
+			double[] recoveryArray = new double[1];
+			int[] recoveryDateArray = new int[1];
+			recoveryDateArray[0] = startDate;
+			int periodBeginDate = startDate;
+			recoveryArray[0] = recovery;
+			double beginSurvival = 1.;
 
-			for (int i = 0; i < adblSurvivalProbability.length; ++i) {
-				if (!org.drip.numerical.common.NumberUtil.IsValid (adblSurvivalProbability[i]) ||
-					aiSurvivalDate[i] <= iPeriodBegin || dblSurvivalBegin < adblSurvivalProbability[i])
+			for (int survivalProbabilityArrayIndex = 0;
+				survivalProbabilityArrayIndex < survivalProbabilityArray.length;
+				++survivalProbabilityArrayIndex) {
+				if (!NumberUtil.IsValid (survivalProbabilityArray[survivalProbabilityArrayIndex]) ||
+					survivalDateArray[survivalProbabilityArrayIndex] <= periodBeginDate ||
+					beginSurvival < survivalProbabilityArray[survivalProbabilityArrayIndex]) {
 					return null;
+				}
 
-				adblHazard[i] = 365.25 / (aiSurvivalDate[i] - iPeriodBegin) * java.lang.Math.log
-					(dblSurvivalBegin / adblSurvivalProbability[i]);
+				hazardRateArray[survivalProbabilityArrayIndex] = 365.25 /
+					(survivalDateArray[survivalProbabilityArrayIndex] - periodBeginDate) * Math.log
+					(beginSurvival / survivalProbabilityArray[survivalProbabilityArrayIndex]);
 
-				iPeriodBegin = aiSurvivalDate[i];
-				dblSurvivalBegin = adblSurvivalProbability[i];
+				periodBeginDate = survivalDateArray[survivalProbabilityArrayIndex];
+				beginSurvival = survivalProbabilityArray[survivalProbabilityArrayIndex];
 			}
 
-			return new org.drip.state.nonlinear.ForwardHazardCreditCurve (iStartDate,
-				org.drip.state.identifier.EntityCDSLabel.Standard (strName, strCurrency), strCurrency,
-					adblHazard, aiSurvivalDate, adblRecovery, aiRecoveryDate, java.lang.Integer.MIN_VALUE);
-		} catch (java.lang.Exception e) {
+			return new ForwardHazardCreditCurve (
+				startDate,
+				EntityCDSLabel.Standard (name, currency),
+				currency,
+				hazardRateArray,
+				survivalDateArray,
+				recoveryArray,
+				recoveryDateArray,
+				Integer.MIN_VALUE
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -307,83 +341,93 @@ public class ScenarioCreditCurveBuilder {
 	/**
 	 * Create a CreditCurve Instance from the Input Array of Survival Probabilities
 	 * 
-	 * @param iStartDate Start Date
-	 * @param strName Credit Curve Name
-	 * @param strCurrency Currency
-	 * @param astrSurvivalTenor Array of Survival Tenors
-	 * @param adblSurvivalProbability Array of Survival Probabilities
-	 * @param dblRecovery Recovery Rate
+	 * @param startDate Curve epoch date
+	 * @param name Credit Curve Name
+	 * @param currency Currency
+	 * @param survivalTenorArray Array of Survival Tenors
+	 * @param survivalProbabilityArray Array of Survival Probabilities
+	 * @param recovery Curve recovery
 	 * 
 	 * @return The CreditCurve Instance
 	 */
 
 	public static final org.drip.state.credit.ExplicitBootCreditCurve Survival (
-		final int iStartDate,
-		final java.lang.String strName,
-		final java.lang.String strCurrency,
-		final java.lang.String[] astrSurvivalTenor,
-		final double[] adblSurvivalProbability,
-		final double dblRecovery)
+		final int startDate,
+		final String name,
+		final String currency,
+		final String[] survivalTenorArray,
+		final double[] survivalProbabilityArray,
+		final double recovery)
 	{
-		if (null == astrSurvivalTenor) return null;
-
-		org.drip.analytics.date.JulianDate dtStart = new org.drip.analytics.date.JulianDate (iStartDate);
-
-		int iNumSurvivalTenor = astrSurvivalTenor.length;
-		int[] aiSurvivalDate = new int[iNumSurvivalTenor];
-
-		for (int i = 0; i < iNumSurvivalTenor; ++i) {
-			org.drip.analytics.date.JulianDate dtTenor = dtStart.addTenor (astrSurvivalTenor[i]);
-
-			if (null == dtTenor) return null;
-
-			aiSurvivalDate[i] = dtTenor.julian();
+		if (null == survivalTenorArray) {
+			return null;
 		}
 
-		return Survival (iStartDate, strName, strCurrency, aiSurvivalDate, adblSurvivalProbability,
-			dblRecovery);
+		JulianDate spotDate = new JulianDate (startDate);
+
+		int survivalTenorCount = survivalTenorArray.length;
+		int[] survivalDateArray = new int[survivalTenorCount];
+
+		for (int survivalTenorIndex = 0; survivalTenorIndex < survivalTenorCount; ++survivalTenorIndex) {
+			JulianDate tenorDate = spotDate.addTenor (survivalTenorArray[survivalTenorIndex]);
+
+			if (null == tenorDate) {
+				return null;
+			}
+
+			survivalDateArray[survivalTenorIndex] = tenorDate.julian();
+		}
+
+		return Survival (startDate, name, currency, survivalDateArray, survivalProbabilityArray, recovery);
 	}
 
 	/**
 	 * Create an instance of the CreditCurve object from a solitary hazard rate node
 	 * 
-	 * @param iStartDate The Curve epoch date
-	 * @param strName Credit Curve Name
-	 * @param strCurrency Currency
-	 * @param dblHazardRate The solo hazard rate
-	 * @param iHazardDate Date
-	 * @param dblRecovery Recovery
+	 * @param startDate Curve epoch date
+	 * @param name Credit Curve Name
+	 * @param currency Currency
+	 * @param hazardRate The solo hazard rate
+	 * @param hazardDate Date
+	 * @param recovery Curve recovery
 	 * 
 	 * @return CreditCurve instance
 	 */
 
 	public static final org.drip.state.credit.ExplicitBootCreditCurve Hazard (
-		final int iStartDate,
-		final java.lang.String strName,
-		final java.lang.String strCurrency,
-		final double dblHazardRate,
-		final int iHazardDate,
-		final double dblRecovery)
+		final int startDate,
+		final String name,
+		final String currency,
+		final double hazardRate,
+		final int hazardDate,
+		final double recovery)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (iStartDate) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblHazardRate) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (dblRecovery))
+		if (!NumberUtil.IsValid (startDate) || !NumberUtil.IsValid (hazardRate) ||
+			!NumberUtil.IsValid (recovery)) {
 			return null;
+		}
 
-		double[] adblHazard = new double[1];
-		double[] adblRecovery = new double[1];
-		int[] aiHazardDate = new int[1];
-		int[] aiRecoveryDate = new int[1];
-		adblHazard[0] = dblHazardRate;
-		adblRecovery[0] = dblRecovery;
-		aiHazardDate[0] = iHazardDate;
-		aiRecoveryDate[0] = iStartDate;
+		double[] hazardRateArray = new double[1];
+		double[] recoveryArray = new double[1];
+		int[] recoveryDateArray = new int[1];
+		int[] hazardDateArray = new int[1];
+		hazardRateArray[0] = hazardRate;
+		recoveryArray[0] = recovery;
+		hazardDateArray[0] = hazardDate;
+		recoveryDateArray[0] = startDate;
 
 		try {
-			return new org.drip.state.nonlinear.ForwardHazardCreditCurve (iStartDate,
-				org.drip.state.identifier.EntityCDSLabel.Standard (strName, strCurrency), strCurrency,
-					adblHazard, aiHazardDate, adblRecovery, aiRecoveryDate, java.lang.Integer.MIN_VALUE);
-		} catch (java.lang.Exception e) {
+			return new ForwardHazardCreditCurve (
+				startDate,
+				EntityCDSLabel.Standard (name, currency),
+				currency,
+				hazardRateArray,
+				hazardDateArray,
+				recoveryArray,
+				recoveryDateArray,
+				Integer.MIN_VALUE
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -393,39 +437,47 @@ public class ScenarioCreditCurveBuilder {
 	/**
 	 * Create a credit curve from an array of dates and hazard rates
 	 * 
-	 * @param dtStart Curve epoch date
-	 * @param strName Credit Curve Name
-	 * @param strCurrency Currency
-	 * @param aiDate Array of dates
-	 * @param adblHazardRate Array of hazard rates
-	 * @param dblRecovery Recovery
+	 * @param startDate Curve epoch date
+	 * @param name Credit Curve Name
+	 * @param currency Currency
+	 * @param dateArray Array of dates
+	 * @param hazardRateArray Array of hazard rates
+	 * @param recovery Curve recovery
 	 * 
 	 * @return CreditCurve instance
 	 */
 
-	public static final org.drip.state.credit.ExplicitBootCreditCurve Hazard (
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strName,
-		final java.lang.String strCurrency,
-		final int[] aiDate,
-		final double[] adblHazardRate,
-		final double dblRecovery)
+	public static final ExplicitBootCreditCurve Hazard (
+		final JulianDate startDate,
+		final String name,
+		final String currency,
+		final int[] dateArray,
+		final double[] hazardRateArray,
+		final double recovery)
 	{
-		if (null == dtStart || null == adblHazardRate || null == aiDate || adblHazardRate.length !=
-			aiDate.length || !org.drip.numerical.common.NumberUtil.IsValid (dblRecovery))
+		if (null == startDate || null == hazardRateArray || null == dateArray ||
+			hazardRateArray.length != dateArray.length || !NumberUtil.IsValid (recovery)) {
 			return null;
+		}
 
 		try {
-			double[] adblRecovery = new double[1];
-			int[] aiRecoveryDate = new int[1];
-			adblRecovery[0] = dblRecovery;
+			double[] recoveryRateArray = new double[1];
+			int[] recoveryDateArray = new int[1];
+			recoveryRateArray[0] = recovery;
 
-			aiRecoveryDate[0] = dtStart.julian();
+			recoveryDateArray[0] = startDate.julian();
 
-			return new org.drip.state.nonlinear.ForwardHazardCreditCurve (dtStart.julian(),
-				org.drip.state.identifier.EntityCDSLabel.Standard (strName, strCurrency), strCurrency,
-					adblHazardRate, aiDate, adblRecovery, aiRecoveryDate, java.lang.Integer.MIN_VALUE);
-		} catch (java.lang.Exception e) {
+			return new ForwardHazardCreditCurve (
+				startDate.julian(),
+				EntityCDSLabel.Standard (name, currency),
+				currency,
+				hazardRateArray,
+				dateArray,
+				recoveryRateArray,
+				recoveryDateArray,
+				Integer.MIN_VALUE
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -435,33 +487,40 @@ public class ScenarioCreditCurveBuilder {
 	/**
 	 * Create a credit curve from hazard rate and recovery rate term structures
 	 * 
-	 * @param iStartDate Curve Epoch date
-	 * @param strName Credit Curve Name
-	 * @param strCurrency Currency
-	 * @param adblHazardRate Matched array of hazard rates
-	 * @param aiHazardDate Matched array of hazard dates
-	 * @param adblRecoveryRate Matched array of recovery rates
-	 * @param aiRecoveryDate Matched array of recovery dates
-	 * @param iSpecificDefaultDate (Optional) Specific Default Date
+	 * @param startDate Curve epoch date
+	 * @param name Credit Curve Name
+	 * @param currency Currency
+	 * @param hazardRateArray Array of hazard rates
+	 * @param hazardDateArray Matched array of hazard dates
+	 * @param recoveryRateArray Matched array of recovery rates
+	 * @param recoveryDateArray Matched array of recovery dates
+	 * @param rpecificDefaultDate (Optional) Specific Default Date
 	 * 
-	 * @return CreditCurve instance
+	 * @return <i>CreditCurve</i> instance
 	 */
 
-	public static final org.drip.state.credit.ExplicitBootCreditCurve Hazard (
-		final int iStartDate,
-		final java.lang.String strName,
-		final java.lang.String strCurrency,
-		final double[] adblHazardRate,
-		final int[] aiHazardDate,
-		final double[] adblRecoveryRate,
-		final int[] aiRecoveryDate,
-		final int iSpecificDefaultDate)
+	public static final ExplicitBootCreditCurve Hazard (
+		final int startDate,
+		final String name,
+		final String currency,
+		final double[] hazardRateArray,
+		final int[] hazardDateArray,
+		final double[] recoveryRateArray,
+		final int[] recoveryDateArray,
+		final int specificDefaultDate)
 	{
 		try {
-			return new org.drip.state.nonlinear.ForwardHazardCreditCurve (iStartDate,
-				org.drip.state.identifier.EntityCDSLabel.Standard (strName, strCurrency), strCurrency,
-					adblHazardRate, aiHazardDate, adblRecoveryRate, aiRecoveryDate, iSpecificDefaultDate);
-		} catch (java.lang.Exception e) {
+			return new ForwardHazardCreditCurve (
+				startDate,
+				EntityCDSLabel.Standard (name, currency),
+				currency,
+				hazardRateArray,
+				hazardDateArray,
+				recoveryRateArray,
+				recoveryDateArray,
+				specificDefaultDate
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

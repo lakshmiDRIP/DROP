@@ -1,6 +1,25 @@
 
 package org.drip.state.creator;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.support.CompositePeriodBuilder;
+import org.drip.market.otc.FixedFloatSwapConvention;
+import org.drip.market.otc.IBORFixedFloatContainer;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.market.DiscountCurveScenarioContainer;
+import org.drip.param.market.LatentStateFixingsContainer;
+import org.drip.param.period.ComposableFloatingUnitSetting;
+import org.drip.param.period.CompositePeriodSetting;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.product.rates.SingleStreamComponent;
+import org.drip.state.boot.DiscountCurveScenario;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.identifier.ForwardLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -88,144 +107,199 @@ package org.drip.state.creator;
  * the input discount curve instruments, and a wide variety of custom builds. It implements the following
  * functionality:
  *
- *  <br><br>
  *  <ul>
- *  	<li>
- * 			Non-linear Custom Discount Curve
- *  	</li>
- *  	<li>
- * 			Shape Preserving Discount Curve Builds - Standard Cubic Polynomial/Cubic KLK Hyperbolic Tension,
- * 				and other Custom Builds
- *  	</li>
- *  	<li>
- * 			Smoothing Local/Control Custom Build - DC/Forward/Zero Rate LSQM's
- *  	</li>
- *  	<li>
- * 			"Industry Standard Methodologies" - DENSE/DUALDENSE/CUSTOMDENSE and Hagan-West Forward
- * 				Interpolator Schemes
- *  	</li>
+ * 		<li>Create an DiscountCurveScenarioContainer Instance from the currency and the array of the calibration instruments</li>
+ * 		<li>Create Discount Curve from the Calibration Instruments</li>
+ * 		<li>Build the Shape Preserving Discount Curve using the Custom Parameters</li>
+ * 		<li>Build a Globally Smoothed Instance of the Discount Curve using the Custom Parameters</li>
+ * 		<li>Build a Locally Smoothed Instance of the Discount Curve using the Custom Parameters</li>
+ * 		<li>Construct an instance of the Shape Preserver of the desired basis type, using the specified basis set builder parameters</li>
+ * 		<li>Construct an instance of the Shape Preserver of the KLK Hyperbolic Tension Type, using the specified basis set builder parameters</li>
+ * 		<li>Construct an instance of the Shape Preserver of the Cubic Polynomial Type, using the specified basis set builder parameters</li>
+ * 		<li>Customizable DENSE Curve Creation Methodology</li>
+ * 		<li>Standard DENSE Curve Creation Methodology</li>
+ * 		<li>DUAL DENSE Curve Creation Methodology</li>
+ * 		<li>Create an Instance of the Custom Splined DF Discount Curve</li>
+ * 		<li>Create an Instance of the Cubic Polynomial Splined DF Discount Curve</li>
+ * 		<li>Create an Instance of the Quartic Polynomial Splined DF Discount Curve</li>
+ * 		<li>Create an Instance of the Kaklis-Pandelis Splined DF Discount Curve</li>
+ * 		<li>Create an Instance of the KLK Hyperbolic Splined DF Discount Curve</li>
+ * 		<li>Create an Instance of the KLK Exponential Splined DF Discount Curve</li>
+ * 		<li>Create an Instance of the KLK Linear Rational Splined DF Discount Curve</li>
+ * 		<li>Create an Instance of the KLK Quadratic Rational Splined DF Discount Curve</li>
+ * 		<li>Build a Discount Curve from an array of discount factors</li>
+ * 		<li>Create a Discount Curve from the Exponentially Compounded Flat Rate</li>
+ * 		<li>Create a Discount Curve from the Discretely Compounded Flat Rate</li>
+ * 		<li>Create a Discount Curve from the Flat Yield</li>
+ * 		<li>Create a discount curve from an array of dates/rates</li>
  *  </ul>
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md">Scenario State Curve/Surface Builders</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md">Scenario State Curve/Surface Builders</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class ScenarioDiscountCurveBuilder {
-	static class CompQuote {
-		double _dblQuote = java.lang.Double.NaN;
-		org.drip.product.definition.CalibratableComponent _comp = null;
+public class ScenarioDiscountCurveBuilder
+{
+	static class CompQuote
+	{
+		double _quote = Double.NaN;
+		CalibratableComponent _calibratableComponent = null;
  
 		CompQuote (
-			final org.drip.product.definition.CalibratableComponent comp,
-			final double dblQuote)
+			final CalibratableComponent calibratableComponent,
+			final double quote)
 		{
-			_comp = comp;
-			_dblQuote = dblQuote;
+			_quote = quote;
+			_calibratableComponent = calibratableComponent;
 		}
 	}
 
-	private static final boolean s_bBlog = false;
+	private static final boolean BLOG = false;
 
 	private static final CompQuote[] CompQuote (
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
-		final java.lang.String strCurrency,
-		final org.drip.analytics.date.JulianDate dtEffective,
-		final org.drip.analytics.date.JulianDate dtInitialMaturity,
-		final org.drip.analytics.date.JulianDate dtTerminalMaturity,
-		final java.lang.String strTenor,
-		final boolean bIsIRS)
+		final ValuationParams valuationParams,
+		final CurveSurfaceQuoteContainer curveSurfaceQuoteContainer,
+		final String currency,
+		final JulianDate effectiveDate,
+		final JulianDate initialMaturityDate,
+		final JulianDate terminalMaturityDate,
+		final String tenor,
+		final boolean isIRS)
 	{
-		java.util.List<java.lang.Double> lsCalibQuote = new java.util.ArrayList<java.lang.Double>();
+		List<Double> calibrationQuoteList = new ArrayList<Double>();
 
-		java.util.List<org.drip.product.definition.CalibratableComponent> lsCompDENSE = new
-			java.util.ArrayList<org.drip.product.definition.CalibratableComponent>();
+		List<CalibratableComponent> denseCalibrationComponentList = new ArrayList<CalibratableComponent>();
 
-		org.drip.analytics.date.JulianDate dtMaturity = dtInitialMaturity;
+		JulianDate maturityDate = initialMaturityDate;
 
-		while (dtMaturity.julian() <= dtTerminalMaturity.julian()) {
+		while (maturityDate.julian() <= terminalMaturityDate.julian()) {
 			try {
-				org.drip.product.definition.CalibratableComponent comp = null;
+				CalibratableComponent calibratableComponent = null;
 
-				if (bIsIRS) {
-					java.lang.String strMaturityTenor = ((int) ((dtMaturity.julian() - dtEffective.julian())
-						* 12 / 365.25)) + "M";
+				if (isIRS) {
+					String maturityTenor =
+						((int) ((maturityDate.julian() - effectiveDate.julian()) * 12 / 365.25)) + "M";
 
-					org.drip.market.otc.FixedFloatSwapConvention ffConv =
-						org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (strCurrency,
-							"ALL", strMaturityTenor, "MAIN");
+					FixedFloatSwapConvention fixedFloatSwapConvention =
+						IBORFixedFloatContainer.ConventionFromJurisdiction (
+							currency,
+							"ALL",
+							maturityTenor,
+							"MAIN"
+						);
 
-					if (null == ffConv) return null;
+					if (null == fixedFloatSwapConvention) {
+						return null;
+					}
 
-					comp = ffConv.createFixFloatComponent (dtEffective, strMaturityTenor, 0., 0., 1.);
+					calibratableComponent = fixedFloatSwapConvention.createFixFloatComponent (
+						effectiveDate,
+						maturityTenor,
+						0.,
+						0.,
+						1.
+					);
 				} else {
-					org.drip.param.period.ComposableFloatingUnitSetting cfusDeposit = new
-						org.drip.param.period.ComposableFloatingUnitSetting ("3M",
-							org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
-								null, org.drip.state.identifier.ForwardLabel.Standard (strCurrency + "-3M"),
-									org.drip.analytics.support.CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
-						0.);
-
-					org.drip.param.period.CompositePeriodSetting cpsDeposit = new
-						org.drip.param.period.CompositePeriodSetting (4, "3M", strCurrency, null, 1., null,
-							null, null, null);
-
-					comp = new org.drip.product.rates.SingleStreamComponent ("DEPOSIT_" + dtMaturity, new
-						org.drip.product.rates.Stream
-							(org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit
-								(org.drip.analytics.support.CompositePeriodBuilder.EdgePair (dtEffective,
-									dtMaturity), cpsDeposit, cfusDeposit)), null);
+					calibratableComponent = new SingleStreamComponent (
+						"DEPOSIT_" + maturityDate,
+						new org.drip.product.rates.Stream (
+							CompositePeriodBuilder.FloatingCompositeUnit (
+								CompositePeriodBuilder.EdgePair (effectiveDate, maturityDate),
+								new CompositePeriodSetting (
+									4,
+									"3M",
+									currency,
+									null,
+									1.,
+									null,
+									null,
+									null,
+									null
+								),
+								new ComposableFloatingUnitSetting (
+									"3M",
+									CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
+									null,
+									ForwardLabel.Standard (currency + "-3M"),
+									CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
+									0.
+								)
+							)
+						),
+						null
+					);
 				}
 
-				lsCompDENSE.add (comp);
+				denseCalibrationComponentList.add (calibratableComponent);
 
-				lsCalibQuote.add (comp.measureValue (valParams, null, csqs, null, "Rate"));
-			} catch (java.lang.Exception e) {
+				calibrationQuoteList.add (
+					calibratableComponent.measureValue (
+						valuationParams,
+						null,
+						curveSurfaceQuoteContainer,
+						null,
+						"Rate"
+					)
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 
-			if (null == (dtMaturity = dtMaturity.addTenorAndAdjust (strTenor, strCurrency))) return null;
+			if (null == (maturityDate = maturityDate.addTenorAndAdjust (tenor, currency))) {
+				return null;
+			}
 		}
 
-		int iNumDENSEComp = lsCompDENSE.size();
+		int denseComponentCount = denseCalibrationComponentList.size();
 
-		if (0 == iNumDENSEComp) return null;
+		if (0 == denseComponentCount) {
+			return null;
+		}
 
-		CompQuote[] aCQ = new CompQuote[iNumDENSEComp];
+		CompQuote[] compQuoteArray = new CompQuote[denseComponentCount];
 
-		for (int i = 0; i < iNumDENSEComp; ++i)
-			aCQ[i] = new CompQuote (lsCompDENSE.get (i), lsCalibQuote.get (i));
+		for (int denseComponentIndex = 0; denseComponentIndex < denseComponentCount; ++denseComponentIndex) {
+			compQuoteArray[denseComponentIndex] = new CompQuote (
+				denseCalibrationComponentList.get (denseComponentIndex),
+				calibrationQuoteList.get (denseComponentIndex)
+			);
+		}
 
-		return aCQ;
+		return compQuoteArray;
 	}
 
 	/**
 	 * Create an DiscountCurveScenarioContainer Instance from the currency and the array of the calibration
 	 * 	instruments
 	 * 
-	 * @param strCurrency Currency
-	 * @param aCalibInst Array of the calibration instruments
+	 * @param currency Currency
+	 * @param calibratableComponentArray Array of the calibration instruments
 	 * 
 	 * @return The DiscountCurveScenarioContainer instance
 	 */
 
-	public static final org.drip.param.market.DiscountCurveScenarioContainer FromIRCSG (
-		final java.lang.String strCurrency,
-		final org.drip.product.definition.CalibratableComponent[] aCalibInst)
+	public static final DiscountCurveScenarioContainer FromIRCSG (
+		final String currency,
+		final CalibratableComponent[] calibratableComponentArray)
 	{
 		try {
-			return new org.drip.param.market.DiscountCurveScenarioContainer (aCalibInst);
-		} catch (java.lang.Exception e) {
+			return new DiscountCurveScenarioContainer (calibratableComponentArray);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -235,27 +309,34 @@ public class ScenarioDiscountCurveBuilder {
 	/**
 	 * Create Discount Curve from the Calibration Instruments
 	 * 
-	 * @param dt Valuation Date
-	 * @param strCurrency Currency
-	 * @param aCalibInst Input Calibration Instruments
-	 * @param adblCalibQuote Input Calibration Quotes
-	 * @param astrCalibMeasure Input Calibration Measures
-	 * @param lsfc Latent State Fixings Container
+	 * @param date Valuation Date
+	 * @param currency Currency
+	 * @param calibrationInstrumentArray Input Calibration Instruments
+	 * @param calibrationQuoteArray Input Calibration Quotes
+	 * @param calibrationMeasureArray Input Calibration Measures
+	 * @param latentStateFixingsContainer Latent State Fixings Container
 	 * 
 	 * @return The Calibrated Discount Curve
 	 */
 
-	public static final org.drip.state.discount.MergedDiscountForwardCurve NonlinearBuild (
-		final org.drip.analytics.date.JulianDate dt,
-		final java.lang.String strCurrency,
-		final org.drip.product.definition.CalibratableComponent[] aCalibInst,
-		final double[] adblCalibQuote,
-		final java.lang.String[] astrCalibMeasure,
-		final org.drip.param.market.LatentStateFixingsContainer lsfc)
+	public static final MergedDiscountForwardCurve NonlinearBuild (
+		final JulianDate date,
+		final String currency,
+		final CalibratableComponent[] calibrationInstrumentArray,
+		final double[] calibrationQuoteArray,
+		final String[] calibrationMeasureArray,
+		final LatentStateFixingsContainer latentStateFixingsContainer)
 	{
-		return null == dt ? null : org.drip.state.boot.DiscountCurveScenario.Standard
-			(org.drip.param.valuation.ValuationParams.Spot (dt.julian()), aCalibInst, adblCalibQuote,
-				astrCalibMeasure, 0., null, lsfc, null);
+		return null == date ? null : DiscountCurveScenario.Standard (
+			ValuationParams.Spot (date.julian()),
+			calibrationInstrumentArray,
+			calibrationQuoteArray,
+			calibrationMeasureArray,
+			0.,
+			null,
+			latentStateFixingsContainer,
+			null
+		);
 	}
 
 	/**
@@ -363,7 +444,7 @@ public class ScenarioDiscountCurveBuilder {
 
 			adblQM[i++] = meQMTruth.getValue();
 
-			if (s_bBlog)
+			if (BLOG)
 				System.out.println ("\t\t" + new org.drip.analytics.date.JulianDate (meQMTruth.getKey()) +
 					" = " + meQMTruth.getValue());
 		}
@@ -454,7 +535,7 @@ public class ScenarioDiscountCurveBuilder {
 
 			adblQM[i++] = meQMTruth.getValue();
 
-			if (s_bBlog)
+			if (BLOG)
 				System.out.println ("\t\t" + new org.drip.analytics.date.JulianDate (meQMTruth.getKey()) +
 					" = " + meQMTruth.getValue());
 		}
@@ -858,14 +939,14 @@ public class ScenarioDiscountCurveBuilder {
 
 		for (int i = 0; i < iNumDENSEComp1; ++i) {
 			astrCalibMeasure[i] = "Rate";
-			aCalibComp[i] = aCQ1[i]._comp;
-			adblCalibQuote[i] = aCQ1[i]._dblQuote;
+			aCalibComp[i] = aCQ1[i]._calibratableComponent;
+			adblCalibQuote[i] = aCQ1[i]._quote;
 		}
 
 		for (int i = iNumDENSEComp1; i < iTotalNumDENSEComp; ++i) {
 			astrCalibMeasure[i] = "Rate";
-			aCalibComp[i] = aCQ2[i - iNumDENSEComp1]._comp;
-			adblCalibQuote[i] = aCQ2[i - iNumDENSEComp1]._dblQuote;
+			aCalibComp[i] = aCQ2[i - iNumDENSEComp1]._calibratableComponent;
+			adblCalibQuote[i] = aCQ2[i - iNumDENSEComp1]._quote;
 		}
 
 		try {
