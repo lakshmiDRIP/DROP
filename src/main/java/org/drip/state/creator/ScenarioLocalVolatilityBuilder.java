@@ -304,7 +304,7 @@ public class ScenarioLocalVolatilityBuilder
 		final String name,
 		final JulianDate startDate,
 		final String currency,
-		final double dblRiskFreeRate,
+		final double riskFreeRate,
 		final double[] strikeArray,
 		final String[] tenorArray,
 		final double[][] nodeGrid)
@@ -352,7 +352,7 @@ public class ScenarioLocalVolatilityBuilder
 			name,
 			startDate,
 			currency,
-			dblRiskFreeRate,
+			riskFreeRate,
 			strikeArray,
 			maturityArray,
 			nodeGrid,

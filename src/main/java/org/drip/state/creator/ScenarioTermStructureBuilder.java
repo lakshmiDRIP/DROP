@@ -1,11 +1,27 @@
 
 package org.drip.state.creator;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.definition.NodeStructure;
+import org.drip.spline.basis.KaklisPandelisSetParams;
+import org.drip.spline.basis.PolynomialFunctionSetParams;
+import org.drip.spline.grid.OverlappingStretchSpan;
+import org.drip.spline.params.SegmentCustomBuilderControl;
+import org.drip.spline.params.SegmentInelasticDesignControl;
+import org.drip.spline.stretch.BoundarySettings;
+import org.drip.spline.stretch.MultiSegmentSequence;
+import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
+import org.drip.state.curve.BasisSplineTermStructure;
+import org.drip.state.identifier.CustomLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,65 +99,94 @@ package org.drip.state.creator;
 
 /**
  * <i>ScenarioTermStructureBuilder</i> implements the construction of the basis spline term structure using
- * the input instruments and their quotes.
+ * the input instruments and their quotes. It implements the following Functions:
+ * 
+ * <ul>
+ * 		<li>Construct a Term Structure Instance using the specified Custom Spline</li>
+ * 		<li>Construct a Term Structure Instance based off of a Cubic Polynomial Spline</li>
+ * 		<li>Construct a Term Structure Instance based off of a Quartic Polynomial Spline</li>
+ * 		<li>Construct a Term Structure Instance based off of a Kaklis-Pandelis Polynomial Tension Spline</li>
+ * 		<li>Construct a Term Structure Instance based off of a KLK Hyperbolic Tension Spline</li>
+ * 		<li>Construct a Term Structure Instance based off of a KLK Rational Linear Tension Spline</li>
+ * 		<li>Construct a Term Structure Instance based off of a KLK Rational Quadratic Tension Spline</li>
+ * </ul>
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md">Scenario State Curve/Surface Builders</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md">Scenario State Curve/Surface Builders</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class ScenarioTermStructureBuilder {
+public class ScenarioTermStructureBuilder
+{
 
 	/**
 	 * Construct a Term Structure Instance using the specified Custom Spline
 	 * 
-	 * @param strName Name of the the Term Structure Instance
-	 * @param dtStart The Start Date
-	 * @param strCurrency Currency
-	 * @param adblDate Array of Dates
-	 * @param adblNode Array of Term Structure Nodes
-	 * @param scbc Segment Custom Builder Parameters
+	 * @param name Name of the the Term Structure Instance
+	 * @param startDate The Start Date
+	 * @param currency Currency
+	 * @param dateArray Array of Dates
+	 * @param nodeArray Array of Term Structure Nodes
+	 * @param segmentCustomBuilderControl Segment Custom Builder Parameters
 	 * 
 	 * @return Instance of the Term Structure
 	 */
 
-	public static final org.drip.analytics.definition.NodeStructure CustomSplineTermStructure (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final double[] adblDate,
-		final double[] adblNode,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
+	public static final NodeStructure CustomSplineTermStructure (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final double[] dateArray,
+		final double[] nodeArray,
+		final SegmentCustomBuilderControl segmentCustomBuilderControl)
 	{
-		if (null == strName || strName.isEmpty() || null == dtStart || null == adblDate || null == adblNode
-			|| null == scbc)
+		if (null == startDate || null == dateArray || null == nodeArray ||
+			null == segmentCustomBuilderControl) {
 			return null;
+		}
 
-		int iNumDate = adblDate.length;
-		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new
-			org.drip.spline.params.SegmentCustomBuilderControl[iNumDate - 1];
+		int nodeCount = dateArray.length;
+		SegmentCustomBuilderControl[] segmentCustomBuilderControlArray =
+			new SegmentCustomBuilderControl[nodeCount - 1];
 
-		if (0 == iNumDate || iNumDate != adblNode.length) return null;
+		if (0 == nodeCount || nodeCount != nodeArray.length) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumDate - 1; ++i)
-			aSCBC[i] = scbc;
+		for (int nodeIndex = 0; nodeIndex < nodeCount - 1; ++nodeIndex) {
+			segmentCustomBuilderControlArray[nodeIndex] = segmentCustomBuilderControl;
+		}
 
 		try {
-			return new org.drip.state.curve.BasisSplineTermStructure (dtStart.julian(),
-				org.drip.state.identifier.CustomLabel.Standard (strName), strCurrency, new
-					org.drip.spline.grid.OverlappingStretchSpan
-						(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-							(strName, adblDate, adblNode, aSCBC, null,
-								org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
-									org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE)));
-		} catch (java.lang.Exception e) {
+			return new BasisSplineTermStructure (
+				startDate.julian(),
+				CustomLabel.Standard (name),
+				currency,
+				new OverlappingStretchSpan (
+					MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
+						name,
+						dateArray,
+						nodeArray,
+						segmentCustomBuilderControlArray,
+						null,
+						BoundarySettings.NaturalStandard(),
+						MultiSegmentSequence.CALIBRATE
+					)
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -151,39 +196,53 @@ public class ScenarioTermStructureBuilder {
 	/**
 	 * Construct a Term Structure Instance based off of a Cubic Polynomial Spline
 	 * 
-	 * @param strName Name of the the Term Structure Instance
-	 * @param dtStart The Start Date
-	 * @param strCurrency Currency
-	 * @param astrTenor Array of Tenors
-	 * @param adblNode Array of Term Structure Nodes
+	 * @param name Name of the the Term Structure Instance
+	 * @param startDate The Start Date
+	 * @param currency Currency
+	 * @param tenorArray Array of Tenors
+	 * @param nodeArray Array of Term Structure Nodes
 	 * 
 	 * @return The Term Structure Instance based off of a Cubic Polynomial Spline
 	 */
 
-	public static final org.drip.analytics.definition.NodeStructure CubicPolynomialTermStructure (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final java.lang.String[] astrTenor,
-		final double[] adblNode)
+	public static final NodeStructure CubicPolynomialTermStructure (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final String[] tenorArray,
+		final double[] nodeArray)
 	{
-		if (null == dtStart || null == astrTenor) return null;
+		if (null == startDate || null == tenorArray) {
+			return null;
+		}
 
-		int iNumTenor = astrTenor.length;
-		double[] adblDate = new double[iNumTenor];
+		int tenorCount = tenorArray.length;
+		double[] dateArray = new double[tenorCount];
 
-		if (0 == iNumTenor) return null;
+		if (0 == tenorCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumTenor; ++i)
-			adblDate[i] = dtStart.addTenor (astrTenor[i]).julian();
+		for (int tenorIndex = 0; tenorIndex < tenorCount; ++tenorIndex) {
+			dateArray[tenorIndex] = startDate.addTenor (tenorArray[tenorIndex]).julian();
+		}
 
 		try {
-			return CustomSplineTermStructure (strName, dtStart, strCurrency, adblDate, adblNode, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-						org.drip.spline.basis.PolynomialFunctionSetParams (4),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineTermStructure (
+				name,
+				startDate,
+				currency,
+				dateArray,
+				nodeArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+					new PolynomialFunctionSetParams (4),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -193,39 +252,53 @@ public class ScenarioTermStructureBuilder {
 	/**
 	 * Construct a Term Structure Instance based off of a Quartic Polynomial Spline
 	 * 
-	 * @param strName Name of the the Term Structure Instance
-	 * @param dtStart The Start Date
-	 * @param strCurrency Currency
-	 * @param astrTenor Array of Tenors
-	 * @param adblNode Array of Term Structure Nodes
+	 * @param name Name of the the Term Structure Instance
+	 * @param startDate The Start Date
+	 * @param currency Currency
+	 * @param tenorArray Array of Tenors
+	 * @param nodeArray Array of Term Structure Nodes
 	 * 
 	 * @return The Term Structure Instance based off of a Quartic Polynomial Spline
 	 */
 
-	public static final org.drip.analytics.definition.NodeStructure QuarticPolynomialTermStructure (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final java.lang.String[] astrTenor,
-		final double[] adblNode)
+	public static final NodeStructure QuarticPolynomialTermStructure (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final String[] tenorArray,
+		final double[] nodeArray)
 	{
-		if (null == dtStart || null == astrTenor) return null;
+		if (null == startDate || null == tenorArray) {
+			return null;
+		}
 
-		int iNumTenor = astrTenor.length;
-		double[] adblDate = new double[iNumTenor];
+		int tenorCount = tenorArray.length;
+		double[] dateArray = new double[tenorCount];
 
-		if (0 == iNumTenor) return null;
+		if (0 == tenorCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumTenor; ++i)
-			adblDate[i] = dtStart.addTenor (astrTenor[i]).julian();
+		for (int tenorIndex = 0; tenorIndex < tenorCount; ++tenorIndex) {
+			dateArray[tenorIndex] = startDate.addTenor (tenorArray[tenorIndex]).julian();
+		}
 
 		try {
-			return CustomSplineTermStructure (strName, dtStart, strCurrency, adblDate, adblNode, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-						org.drip.spline.basis.PolynomialFunctionSetParams (5),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineTermStructure (
+				name,
+				startDate,
+				currency,
+				dateArray,
+				nodeArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+					new PolynomialFunctionSetParams (5),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -235,39 +308,53 @@ public class ScenarioTermStructureBuilder {
 	/**
 	 * Construct a Term Structure Instance based off of a Kaklis-Pandelis Polynomial Tension Spline
 	 * 
-	 * @param strName Name of the the Term Structure Instance
-	 * @param dtStart The Start Date
-	 * @param strCurrency Currency
-	 * @param astrTenor Array of Tenors
-	 * @param adblNode Array of Term Structure Nodes
+	 * @param name Name of the the Term Structure Instance
+	 * @param startDate The Start Date
+	 * @param currency Currency
+	 * @param tenorArray Array of Tenors
+	 * @param nodeArray Array of Term Structure Nodes
 	 * 
 	 * @return The Term Structure Instance based off of a Kaklis-Pandelis Polynomial Tension Spline
 	 */
 
-	public static final org.drip.analytics.definition.NodeStructure KaklisPandelisTermStructure (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final java.lang.String[] astrTenor,
-		final double[] adblNode)
+	public static final NodeStructure KaklisPandelisTermStructure (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final String[] tenorArray,
+		final double[] nodeArray)
 	{
-		if (null == dtStart || null == astrTenor) return null;
+		if (null == startDate || null == tenorArray) {
+			return null;
+		}
 
-		int iNumTenor = astrTenor.length;
-		double[] adblDate = new double[iNumTenor];
+		int tenorCount = tenorArray.length;
+		double[] dateArray = new double[tenorCount];
 
-		if (0 == iNumTenor) return null;
+		if (0 == tenorCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumTenor; ++i)
-			adblDate[i] = dtStart.addTenor (astrTenor[i]).julian();
+		for (int tenorIndex = 0; tenorIndex < tenorCount; ++tenorIndex) {
+			dateArray[tenorIndex] = startDate.addTenor (tenorArray[tenorIndex]).julian();
+		}
 
 		try {
-			return CustomSplineTermStructure (strName, dtStart, strCurrency, adblDate, adblNode, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS, new
-						org.drip.spline.basis.KaklisPandelisSetParams (2),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineTermStructure (
+				name,
+				startDate,
+				currency,
+				dateArray,
+				nodeArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS,
+					new KaklisPandelisSetParams (2),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

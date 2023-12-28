@@ -1,11 +1,29 @@
 
 package org.drip.state.creator;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.product.definition.Component;
+import org.drip.spline.basis.ExponentialTensionSetParams;
+import org.drip.spline.basis.KaklisPandelisSetParams;
+import org.drip.spline.basis.PolynomialFunctionSetParams;
+import org.drip.spline.grid.OverlappingStretchSpan;
+import org.drip.spline.params.SegmentCustomBuilderControl;
+import org.drip.spline.params.SegmentInelasticDesignControl;
+import org.drip.spline.stretch.BoundarySettings;
+import org.drip.spline.stretch.MultiSegmentSequence;
+import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
+import org.drip.state.curve.BasisSplineRepoCurve;
+import org.drip.state.nonlinear.FlatForwardRepoCurve;
+import org.drip.state.repo.RepoCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,70 +100,102 @@ package org.drip.state.creator;
 
 /**
  * <i>ScenarioRepoCurveBuilder</i> implements the Construction of the Scenario Repo Curve using the Input
- * Instruments and their Quotes.
+ * 	Instruments and their Quotes. It implements the following Functions:
+ * 
+ * <ul>
+ * 		<li>Create an Instance of the Custom Splined Repo Curve</li>
+ * 		<li>Create an Instance of the Cubic Polynomial Splined Repo Curve</li>
+ * 		<li>Create an Instance of the Quartic Polynomial Splined Repo Curve</li>
+ * 		<li>Create an Instance of the Kaklis-Pandelis Splined Repo Curve</li>
+ * 		<li>Create an Instance of the KLK Hyperbolic Splined Repo Curve</li>
+ * 		<li>Create an Instance of the KLK Rational Linear Splined Repo Curve</li>
+ * 		<li>Create an Instance of the KLK Rational Quadratic Splined Repo Curve</li>
+ * 		<li>Construct a Repo Curve using the Flat Repo Rate</li>
+ * </ul>
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md">Scenario State Curve/Surface Builders</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md">Scenario State Curve/Surface Builders</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class ScenarioRepoCurveBuilder {
+public class ScenarioRepoCurveBuilder
+{
 
 	/**
 	 * Create an Instance of the Custom Splined Repo Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtSpot The Spot Date
-	 * @param comp The Underlying Repo Component
-	 * @param aiDate Array of the Dates
-	 * @param adblRepo Array of the Repo Rates
-	 * @param scbc The Segment Custom Builder Control
+	 * @param name Curve Name
+	 * @param spotDate The Spot Date
+	 * @param component The Underlying Repo Component
+	 * @param dateArray Array of the Dates
+	 * @param repoRateArray Array of the Repo Rates
+	 * @param segmentCustomBuilderControl The Segment Custom Builder Control
 	 * 
 	 * @return The Instance of the Custom Splined Repo Curve
 	 */
 
-	public static final org.drip.state.repo.RepoCurve CustomSplineRepoCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final org.drip.product.definition.Component comp,
-		final int[] aiDate,
-		final double[] adblRepo,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
+	public static final RepoCurve CustomSplineRepoCurve (
+		final String name,
+		final JulianDate spotDate,
+		final Component component,
+		final int[] dateArray,
+		final double[] repoRateArray,
+		final SegmentCustomBuilderControl segmentCustomBuilderControl)
 	{
-		if (null == strName || null == dtSpot || strName.isEmpty() || null == aiDate || null == adblRepo)
+		if (null == spotDate || null == dateArray || null == repoRateArray) {
 			return null;
+		}
 
-		int iNumInstrument = aiDate.length;
-		int[] aiBasisPredictorOrdinate = new int[iNumInstrument + 1];
-		double[] adblBasisResponseValue = new double[iNumInstrument + 1];
-		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new
-			org.drip.spline.params.SegmentCustomBuilderControl[iNumInstrument];
+		int instrumentCount = dateArray.length;
+		int[] basisPredictorOrdinateArray = new int[instrumentCount + 1];
+		double[] basisResponseValueArray = new double[instrumentCount + 1];
+		SegmentCustomBuilderControl[] segmentCustomBuilderControlArray =
+			new SegmentCustomBuilderControl[instrumentCount];
 
-		if (0 == iNumInstrument || iNumInstrument != adblRepo.length) return null;
+		if (0 == instrumentCount || instrumentCount != repoRateArray.length) {
+			return null;
+		}
 
-		for (int i = 0; i <= iNumInstrument; ++i) {
-			aiBasisPredictorOrdinate[i] = 0 == i ? dtSpot.julian() : aiDate[i - 1];
+		for (int instrumentIndex = 0; instrumentIndex <= instrumentCount; ++instrumentIndex) {
+			basisPredictorOrdinateArray[instrumentIndex] = 0 == instrumentIndex ?
+				spotDate.julian() : dateArray[instrumentIndex - 1];
 
-			adblBasisResponseValue[i] = 0 == i ? adblRepo[0] : adblRepo[i - 1];
+			basisResponseValueArray[instrumentIndex] = 0 == instrumentIndex ?
+				repoRateArray[0] : repoRateArray[instrumentIndex - 1];
 
-			if (0 != i) aSCBC[i - 1] = scbc;
+			if (0 != instrumentIndex) {
+				segmentCustomBuilderControlArray[instrumentIndex - 1] = segmentCustomBuilderControl;
+			}
 		}
 
 		try {
-			return new org.drip.state.curve.BasisSplineRepoCurve (comp, new
-				org.drip.spline.grid.OverlappingStretchSpan
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-						(strName, aiBasisPredictorOrdinate, adblBasisResponseValue, aSCBC, null,
-							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
-								org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE)));
-		} catch (java.lang.Exception e) {
+			return new BasisSplineRepoCurve (
+				component,
+				new OverlappingStretchSpan (
+					MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
+						name,
+						basisPredictorOrdinateArray,
+						basisResponseValueArray,
+						segmentCustomBuilderControlArray,
+						null,
+						BoundarySettings.NaturalStandard(),
+						MultiSegmentSequence.CALIBRATE
+					)
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -155,29 +205,38 @@ public class ScenarioRepoCurveBuilder {
 	/**
 	 * Create an Instance of the Cubic Polynomial Splined Repo Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtSpot The Spot Date
-	 * @param comp The Underlying Repo Component
-	 * @param aiDate Array of the Dates
-	 * @param adblRepo Array of the Repo Rates
+	 * @param name Curve Name
+	 * @param spotDate The Spot Date
+	 * @param component The Underlying Repo Component
+	 * @param dateArray Array of the Dates
+	 * @param repoRateArray Array of the Repo Rates
 	 * 
 	 * @return The Instance of the Basis Curve
 	 */
 
-	public static final org.drip.state.repo.RepoCurve CubicPolynomialRepoCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final org.drip.product.definition.Component comp,
-		final int[] aiDate,
-		final double[] adblRepo)
+	public static final RepoCurve CubicPolynomialRepoCurve (
+		final String name,
+		final JulianDate spotDate,
+		final Component component,
+		final int[] dateArray,
+		final double[] repoRateArray)
 	{
 		try {
-			return CustomSplineRepoCurve (strName, dtSpot, comp, aiDate, adblRepo, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-						org.drip.spline.basis.PolynomialFunctionSetParams (4),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineRepoCurve (
+				name,
+				spotDate,
+				component,
+				dateArray,
+				repoRateArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+					new PolynomialFunctionSetParams (4),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -187,29 +246,38 @@ public class ScenarioRepoCurveBuilder {
 	/**
 	 * Create an Instance of the Quartic Polynomial Splined Repo Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtSpot The Spot Date
-	 * @param comp The Underlying Repo Component
-	 * @param aiDate Array of the Dates
-	 * @param adblRepo Array of the Repo Rates
+	 * @param name Curve Name
+	 * @param spotDate The Spot Date
+	 * @param component The Underlying Repo Component
+	 * @param dateArray Array of the Dates
+	 * @param repoRateArray Array of the Repo Rates
 	 * 
 	 * @return The Instance of the Splined Repo Curve
 	 */
 
-	public static final org.drip.state.repo.RepoCurve QuarticPolynomialRepoCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final org.drip.product.definition.Component comp,
-		final int[] aiDate,
-		final double[] adblRepo)
+	public static final RepoCurve QuarticPolynomialRepoCurve (
+		final String name,
+		final JulianDate spotDate,
+		final Component component,
+		final int[] dateArray,
+		final double[] repoRateArray)
 	{
 		try {
-			return CustomSplineRepoCurve (strName, dtSpot, comp, aiDate, adblRepo, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-						org.drip.spline.basis.PolynomialFunctionSetParams (5),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineRepoCurve (
+				name,
+				spotDate,
+				component,
+				dateArray,
+				repoRateArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+					new PolynomialFunctionSetParams (5),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -219,29 +287,38 @@ public class ScenarioRepoCurveBuilder {
 	/**
 	 * Create an Instance of the Kaklis-Pandelis Splined Repo Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtSpot The Spot Date
-	 * @param comp The Underlying Repo Component
-	 * @param aiDate Array of the Dates
-	 * @param adblRepo Array of the Repo Rates
+	 * @param name Curve Name
+	 * @param spotDate The Spot Date
+	 * @param component The Underlying Repo Component
+	 * @param dateArray Array of the Dates
+	 * @param repoRateArray Array of the Repo Rates
 	 * 
 	 * @return The Instance of the Splined Repo Curve
 	 */
 
-	public static final org.drip.state.repo.RepoCurve KaklisPandelisRepoCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final org.drip.product.definition.Component comp,
-		final int[] aiDate,
-		final double[] adblRepo)
+	public static final RepoCurve KaklisPandelisRepoCurve (
+		final String name,
+		final JulianDate spotDate,
+		final Component component,
+		final int[] dateArray,
+		final double[] repoRateArray)
 	{
 		try {
-			return CustomSplineRepoCurve (strName, dtSpot, comp, aiDate, adblRepo, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS, new
-						org.drip.spline.basis.KaklisPandelisSetParams (2),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineRepoCurve (
+				name,
+				spotDate,
+				component,
+				dateArray,
+				repoRateArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS,
+					new KaklisPandelisSetParams (2),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -251,31 +328,40 @@ public class ScenarioRepoCurveBuilder {
 	/**
 	 * Create an Instance of the KLK Hyperbolic Splined Repo Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtSpot The Spot Date
-	 * @param comp The Underlying Repo Component
-	 * @param aiDate Array of the Dates
-	 * @param adblRepo Array of the Repo Rates
-	 * @param dblTension The Tension Parameter
+	 * @param name Curve Name
+	 * @param spotDate The Spot Date
+	 * @param component The Underlying Repo Component
+	 * @param dateArray Array of the Dates
+	 * @param repoRateArray Array of the Repo Rates
+	 * @param tension The Tension Parameter
 	 * 
 	 * @return The Instance of the Splined Repo Curve
 	 */
 
-	public static final org.drip.state.repo.RepoCurve KLKHyperbolicRepoCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final org.drip.product.definition.Component comp,
-		final int[] aiDate,
-		final double[] adblRepo,
-		final double dblTension)
+	public static final RepoCurve KLKHyperbolicRepoCurve (
+		final String name,
+		final JulianDate spotDate,
+		final Component component,
+		final int[] dateArray,
+		final double[] repoRateArray,
+		final double tension)
 	{
 		try {
-			return CustomSplineRepoCurve (strName, dtSpot, comp, aiDate, adblRepo, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
-						new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineRepoCurve (
+				name,
+				spotDate,
+				component,
+				dateArray,
+				repoRateArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
+					new ExponentialTensionSetParams (2),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -285,31 +371,40 @@ public class ScenarioRepoCurveBuilder {
 	/**
 	 * Create an Instance of the KLK Rational Linear Splined Repo Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtSpot The Spot Date
-	 * @param comp The Underlying Repo Component
-	 * @param aiDate Array of the Dates
-	 * @param adblRepo Array of the Repo Rates
-	 * @param dblTension The Tension Parameter
+	 * @param name Curve Name
+	 * @param spotDate The Spot Date
+	 * @param component The Underlying Repo Component
+	 * @param dateArray Array of the Dates
+	 * @param repoRateArray Array of the Repo Rates
+	 * @param tension The Tension Parameter
 	 * 
 	 * @return The Instance of the Repo Curve
 	 */
 
-	public static final org.drip.state.repo.RepoCurve KLKRationalLinearRepoCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final org.drip.product.definition.Component comp,
-		final int[] aiDate,
-		final double[] adblRepo,
-		final double dblTension)
+	public static final RepoCurve KLKRationalLinearRepoCurve (
+		final String name,
+		final JulianDate spotDate,
+		final Component component,
+		final int[] dateArray,
+		final double[] repoRateArray,
+		final double tension)
 	{
 		try {
-			return CustomSplineRepoCurve (strName, dtSpot, comp, aiDate, adblRepo, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
-				new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineRepoCurve (
+				name,
+				spotDate,
+				component,
+				dateArray,
+				repoRateArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
+					new ExponentialTensionSetParams (2),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -319,31 +414,40 @@ public class ScenarioRepoCurveBuilder {
 	/**
 	 * Create an Instance of the KLK Rational Quadratic Splined Repo Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtSpot The Spot Date
-	 * @param comp The Underlying Repo Component
-	 * @param aiDate Array of the Dates
-	 * @param adblRepo Array of the Repo Rates
-	 * @param dblTension The Tension Parameter
+	 * @param name Curve Name
+	 * @param spotDate The Spot Date
+	 * @param component The Underlying Repo Component
+	 * @param dateArray Array of the Dates
+	 * @param repoRateArray Array of the Repo Rates
+	 * @param tension The Tension Parameter
 	 * 
 	 * @return The Instance of the Repo Curve
 	 */
 
-	public static final org.drip.state.repo.RepoCurve KLKRationalQuadraticRepoCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final org.drip.product.definition.Component comp,
-		final int[] aiDate,
-		final double[] adblRepo,
-		final double dblTension)
+	public static final RepoCurve KLKRationalQuadraticRepoCurve (
+		final String name,
+		final JulianDate spotDate,
+		final Component component,
+		final int[] dateArray,
+		final double[] repoRateArray,
+		final double tension)
 	{
 		try {
-			return CustomSplineRepoCurve (strName, dtSpot, comp, aiDate, adblRepo, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
-				new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineRepoCurve (
+				name,
+				spotDate,
+				component,
+				dateArray,
+				repoRateArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
+					new ExponentialTensionSetParams (2),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -353,26 +457,32 @@ public class ScenarioRepoCurveBuilder {
 	/**
 	 * Construct a Repo Curve using the Flat Repo Rate
 	 * 
-	 * @param dtSpot Spot Date
-	 * @param comp Repo Component
-	 * @param dblRepoRate The Flat Repo Rate
+	 * @param spotDate Spot Date
+	 * @param component Repo Component
+	 * @param repoRate The Flat Repo Rate
 	 * 
 	 * @return The Flat Repo Rate Curve
 	 */
 
-	public static final org.drip.state.repo.RepoCurve FlatRateRepoCurve (
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final org.drip.product.definition.Component comp,
-		final double dblRepoRate)
+	public static final RepoCurve FlatRateRepoCurve (
+		final JulianDate spotDate,
+		final Component component,
+		final double repoRate)
 	{
-		if (null == dtSpot) return null;
+		if (null == spotDate) {
+			return null;
+		}
 
-		int iEpochDate = dtSpot.julian();
+		int epochDate = spotDate.julian();
 
 		try {
-			return new org.drip.state.nonlinear.FlatForwardRepoCurve (iEpochDate, comp, new int[]
-				{iEpochDate}, new double[] {dblRepoRate});
-		} catch (java.lang.Exception e) {
+			return new FlatForwardRepoCurve (
+				epochDate,
+				component,
+				new int[] {epochDate},
+				new double[] {repoRate}
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

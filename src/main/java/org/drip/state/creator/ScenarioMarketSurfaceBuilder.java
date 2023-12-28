@@ -5,7 +5,14 @@ import java.util.TreeMap;
 
 import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.definition.MarketSurface;
+import org.drip.analytics.support.Helper;
+import org.drip.param.pricer.HestonOptionPricerParams;
+import org.drip.pricer.option.BlackScholesAlgorithm;
+import org.drip.pricer.option.Greeks;
+import org.drip.pricer.option.HestonStochasticVolatilityAlgorithm;
 import org.drip.service.common.StringUtil;
+import org.drip.spline.basis.ExponentialTensionSetParams;
+import org.drip.spline.basis.KaklisPandelisSetParams;
 import org.drip.spline.basis.PolynomialFunctionSetParams;
 import org.drip.spline.grid.OverlappingStretchSpan;
 import org.drip.spline.grid.Span;
@@ -103,8 +110,8 @@ import org.drip.state.identifier.CustomLabel;
 
 /**
  * <i>ScenarioMarketSurfaceBuilder</i> implements the construction of the scenario market Node surface using
- * the input option instruments, their quotes, and a wide variety of custom builds. It
- *  implements the following Functions:
+ * 	the input option instruments, their quotes, and a wide variety of custom builds. It implements the
+ *  following Functions:
  * 
  * <ul>
  * 		<li>Build an Instance of the Market Node Surface using Custom Wire Span and Surface Splines</li>
@@ -385,348 +392,460 @@ public class ScenarioMarketSurfaceBuilder {
 	 * Construct a Scenario Market Surface off of Kaklis-Pandelis Wire Spline and Kaklis-Pandelis Surface
 	 * 	Spline.
 	 * 
-	 * @param strName Name of the Volatility Surface
-	 * @param dtStart Start/Epoch Julian Date
-	 * @param strCurrency Currency
-	 * @param adblX Array of X Ordinates
-	 * @param astrTenor Array of Maturity Tenors
-	 * @param aadblNode Double Array of the Surface Nodes
+	 * @param name Name of the Volatility Surface
+	 * @param startDate Start/Epoch Julian Date
+	 * @param currency Currency
+	 * @param xArray Array of X Ordinates
+	 * @param tenorArray Array of Maturity Tenors
+	 * @param nodeGrid Double Array of the Surface Nodes
 	 * 
 	 * @return Instance of the Market Node Surface
 	 */
 
-	public static final org.drip.analytics.definition.MarketSurface KaklisPandelisWireSurface (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final double[] adblX,
-		final java.lang.String[] astrTenor,
-		final double[][] aadblNode)
+	public static final MarketSurface KaklisPandelisWireSurface (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final double[] xArray,
+		final String[] tenorArray,
+		final double[][] nodeGrid)
 	{
-		if (null == astrTenor) return null;
+		if (null == tenorArray) {
+			return null;
+		}
 
-		int iNumTenor = astrTenor.length;
-		double[] adblY = new double[iNumTenor];
-		org.drip.spline.params.SegmentCustomBuilderControl scbcSurface = null;
-		org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan = null;
+		int tenorCount = tenorArray.length;
+		double[] yArray = new double[tenorCount];
+		SegmentCustomBuilderControl surfaceSegmentCustomBuilderControl = null;
+		SegmentCustomBuilderControl wireSpanSegmentCustomBuilderControl = null;
 
-		if (0 == iNumTenor) return null;
+		if (0 == tenorCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumTenor; ++i)
-			adblY[i] = dtStart.addTenor (astrTenor[i]).julian();
+		for (int yIndex = 0; yIndex < tenorCount; ++yIndex) {
+			yArray[yIndex] = startDate.addTenor (tenorArray[yIndex]).julian();
+		}
 
 		try {
-			scbcWireSpan = new org.drip.spline.params.SegmentCustomBuilderControl
-				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS, new
-					org.drip.spline.basis.KaklisPandelisSetParams (2),
-						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);
+			wireSpanSegmentCustomBuilderControl = new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS,
+				new KaklisPandelisSetParams (2),
+				SegmentInelasticDesignControl.Create (2, 2),
+				null,
+				null
+			);
 
-			scbcSurface = new org.drip.spline.params.SegmentCustomBuilderControl
-				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS, new
-					org.drip.spline.basis.KaklisPandelisSetParams (2),
-						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);
-		} catch (java.lang.Exception e) {
+			surfaceSegmentCustomBuilderControl = new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS,
+				new KaklisPandelisSetParams (2),
+				SegmentInelasticDesignControl.Create (2, 2),
+				null,
+				null
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		return CustomSplineWireSurface (strName, dtStart, strCurrency, adblX, adblY, aadblNode, scbcWireSpan,
-			scbcSurface);
+		return CustomSplineWireSurface (
+			name,
+			startDate,
+			currency,
+			xArray,
+			yArray,
+			nodeGrid,
+			wireSpanSegmentCustomBuilderControl,
+			surfaceSegmentCustomBuilderControl
+		);
 	}
 
 	/**
 	 * Construct a Scenario Market Surface off of KLK Hyperbolic Wire Spline and KLK Hyperbolic Surface
 	 * 	Spline.
 	 * 
-	 * @param strName Name of the Volatility Surface
-	 * @param dtStart Start/Epoch Julian Date
-	 * @param strCurrency Currency
-	 * @param adblX Array of X Ordinates
-	 * @param astrTenor Array of Maturity Tenors
-	 * @param aadblNode Double Array of the Surface Nodes
-	 * @param dblTension The Tension Parameter
+	 * @param name Name of the Volatility Surface
+	 * @param startDate Start/Epoch Julian Date
+	 * @param currency Currency
+	 * @param xArray Array of X Ordinates
+	 * @param tenorArray Array of Maturity Tenors
+	 * @param nodeGrid Double Array of the Surface Nodes
+	 * @param tension The Tension Parameter
 	 * 
 	 * @return Instance of the Market Node Surface
 	 */
 
-	public static final org.drip.analytics.definition.MarketSurface KLKHyperbolicWireSurface (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final double[] adblX,
-		final java.lang.String[] astrTenor,
-		final double[][] aadblNode,
-		final double dblTension)
+	public static final MarketSurface KLKHyperbolicWireSurface (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final double[] xArray,
+		final String[] tenorArray,
+		final double[][] nodeGrid,
+		final double tension)
 	{
-		if (null == astrTenor) return null;
+		if (null == tenorArray) {
+			return null;
+		}
 
-		int iNumTenor = astrTenor.length;
-		double[] adblY = new double[iNumTenor];
-		org.drip.spline.params.SegmentCustomBuilderControl scbcSurface = null;
-		org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan = null;
+		int tenorCount = tenorArray.length;
+		double[] yArray = new double[tenorCount];
+		SegmentCustomBuilderControl surfaceSegmentCustomBuilderControl = null;
+		SegmentCustomBuilderControl wireSpanSegmentCustomBuilderControl = null;
 
-		if (0 == iNumTenor) return null;
+		if (0 == tenorCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumTenor; ++i)
-			adblY[i] = dtStart.addTenor (astrTenor[i]).julian();
+		for (int yIndex = 0; yIndex < tenorCount; ++yIndex) {
+			yArray[yIndex] = startDate.addTenor (tenorArray[yIndex]).julian();
+		}
 
 		try {
-			scbcWireSpan = new org.drip.spline.params.SegmentCustomBuilderControl
-				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION, new
-					org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);
+			wireSpanSegmentCustomBuilderControl = new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
+				new ExponentialTensionSetParams (tension),
+				SegmentInelasticDesignControl.Create (2, 2),
+				null,
+				null
+			);
 
-			scbcSurface = new org.drip.spline.params.SegmentCustomBuilderControl
-				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION, new
-					org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);
-		} catch (java.lang.Exception e) {
+			surfaceSegmentCustomBuilderControl = new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
+				new ExponentialTensionSetParams (tension),
+				SegmentInelasticDesignControl.Create (2, 2),
+				null,
+				null
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		return CustomSplineWireSurface (strName, dtStart, strCurrency, adblX, adblY, aadblNode, scbcWireSpan,
-			scbcSurface);
+		return CustomSplineWireSurface (
+			name,
+			startDate,
+			currency,
+			xArray,
+			yArray,
+			nodeGrid,
+			wireSpanSegmentCustomBuilderControl,
+			surfaceSegmentCustomBuilderControl
+		);
 	}
 
 	/**
 	 * Construct a Scenario Market Surface off of KLK Rational Linear Wire Spline and KLK Rational Linear
 	 * 	Surface Spline.
 	 * 
-	 * @param strName Name of the Volatility Surface
-	 * @param dtStart Start/Epoch Julian Date
-	 * @param strCurrency Currency
-	 * @param adblX Array of X Ordinates
-	 * @param astrTenor Array of Maturity Tenors
-	 * @param aadblNode Double Array of the Surface Nodes
-	 * @param dblTension The Tension Parameter
+	 * @param name Name of the Volatility Surface
+	 * @param startDate Start/Epoch Julian Date
+	 * @param currency Currency
+	 * @param xArray Array of X Ordinates
+	 * @param tenorArray Array of Maturity Tenors
+	 * @param nodeGrid Double Array of the Surface Nodes
+	 * @param tension The Tension Parameter
 	 * 
 	 * @return Instance of the Market Node Surface
 	 */
 
-	public static final org.drip.analytics.definition.MarketSurface KLKRationalLinearWireSurface (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final double[] adblX,
-		final java.lang.String[] astrTenor,
-		final double[][] aadblNode,
-		final double dblTension)
+	public static final MarketSurface KLKRationalLinearWireSurface (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final double[] xArray,
+		final String[] tenorArray,
+		final double[][] nodeGrid,
+		final double tension)
 	{
-		if (null == astrTenor) return null;
+		if (null == tenorArray) {
+			return null;
+		}
 
-		int iNumTenor = astrTenor.length;
-		double[] adblY = new double[iNumTenor];
-		org.drip.spline.params.SegmentCustomBuilderControl scbcSurface = null;
-		org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan = null;
+		int tenorCount = tenorArray.length;
+		double[] yArray = new double[tenorCount];
+		SegmentCustomBuilderControl surfaceSegmentCustomBuilderControl = null;
+		SegmentCustomBuilderControl wireSpanSegmentCustomBuilderControl = null;
 
-		if (0 == iNumTenor) return null;
+		if (0 == tenorCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumTenor; ++i)
-			adblY[i] = dtStart.addTenor (astrTenor[i]).julian();
+		for (int yIndex = 0; yIndex < tenorCount; ++yIndex) {
+			yArray[yIndex] = startDate.addTenor (tenorArray[yIndex]).julian();
+		}
 
 		try {
-			scbcWireSpan = new org.drip.spline.params.SegmentCustomBuilderControl
-				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
-					new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);
+			wireSpanSegmentCustomBuilderControl = new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
+				new ExponentialTensionSetParams (tension),
+				SegmentInelasticDesignControl.Create (2, 2),
+				null,
+				null
+			);
 
-			scbcSurface = new org.drip.spline.params.SegmentCustomBuilderControl
-				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
-					new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);
-		} catch (java.lang.Exception e) {
+			surfaceSegmentCustomBuilderControl = new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
+				new ExponentialTensionSetParams (tension),
+				SegmentInelasticDesignControl.Create (2, 2),
+				null,
+				null
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		return CustomSplineWireSurface (strName, dtStart, strCurrency, adblX, adblY, aadblNode, scbcWireSpan,
-			scbcSurface);
+		return CustomSplineWireSurface (
+			name,
+			startDate,
+			currency,
+			xArray,
+			yArray,
+			nodeGrid,
+			wireSpanSegmentCustomBuilderControl,
+			surfaceSegmentCustomBuilderControl
+		);
 	}
 
 	/**
 	 * Construct a Scenario Market Surface off of KLK Rational Quadratic Wire Spline and KLK Rational
 	 * 	Quadratic Surface Spline.
 	 * 
-	 * @param strName Name of the Volatility Surface
-	 * @param dtStart Start/Epoch Julian Date
-	 * @param strCurrency Currency
-	 * @param adblX Array of X Ordinates
-	 * @param astrTenor Array of Maturity Tenors
-	 * @param aadblNode Double Array of the Surface Nodes
-	 * @param dblTension The Tension Parameter
+	 * @param name Name of the Volatility Surface
+	 * @param startDate Start/Epoch Julian Date
+	 * @param currency Currency
+	 * @param xArray Array of X Ordinates
+	 * @param tenorArray Array of Maturity Tenors
+	 * @param nodeGrid Double Array of the Surface Nodes
+	 * @param tension The Tension Parameter
 	 * 
 	 * @return Instance of the Market Node Surface
 	 */
 
-	public static final org.drip.analytics.definition.MarketSurface KLKRationalQuadraticWireSurface (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final double[] adblX,
-		final java.lang.String[] astrTenor,
-		final double[][] aadblNode,
-		final double dblTension)
+	public static final MarketSurface KLKRationalQuadraticWireSurface (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final double[] xArray,
+		final String[] tenorArray,
+		final double[][] nodeGrid,
+		final double tension)
 	{
-		if (null == astrTenor) return null;
+		if (null == tenorArray) {
+			return null;
+		}
 
-		int iNumTenor = astrTenor.length;
-		double[] adblY = new double[iNumTenor];
-		org.drip.spline.params.SegmentCustomBuilderControl scbcSurface = null;
-		org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan = null;
+		int tenorCount = tenorArray.length;
+		double[] yArray = new double[tenorCount];
+		SegmentCustomBuilderControl surfaceSegmentCustomBuilderControl = null;
+		SegmentCustomBuilderControl wireSpanSegmentCustomBuilderControl = null;
 
-		if (0 == iNumTenor) return null;
+		if (0 == tenorCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumTenor; ++i)
-			adblY[i] = dtStart.addTenor (astrTenor[i]).julian();
+		for (int yIndex = 0; yIndex < tenorCount; ++yIndex) {
+			yArray[yIndex] = startDate.addTenor (tenorArray[yIndex]).julian();
+		}
 
 		try {
-			scbcWireSpan = new org.drip.spline.params.SegmentCustomBuilderControl
-				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
-					new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);
+			wireSpanSegmentCustomBuilderControl = new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
+				new ExponentialTensionSetParams (tension),
+				SegmentInelasticDesignControl.Create (2, 2),
+				null,
+				null
+			);
 
-			scbcSurface = new org.drip.spline.params.SegmentCustomBuilderControl
-				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
-					new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);
-		} catch (java.lang.Exception e) {
+			surfaceSegmentCustomBuilderControl = new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
+				new ExponentialTensionSetParams (tension),
+				SegmentInelasticDesignControl.Create (2, 2),
+				null,
+				null
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		return CustomSplineWireSurface (strName, dtStart, strCurrency, adblX, adblY, aadblNode, scbcWireSpan,
-			scbcSurface);
+		return CustomSplineWireSurface (
+			name,
+			startDate,
+			currency,
+			xArray,
+			yArray,
+			nodeGrid,
+			wireSpanSegmentCustomBuilderControl,
+			surfaceSegmentCustomBuilderControl
+		);
 	}
 
 	/**
 	 * Construct a Scenario Market Surface off of Custom Wire Spline and Custom Surface Spline.
 	 * 
-	 * @param strName Name of the Volatility Surface
-	 * @param dtStart Start/Epoch Julian Date
-	 * @param strCurrency Currency
-	 * @param adblX Array of X Ordinates
-	 * @param astrTenor Array of Maturity Tenors
-	 * @param aadblNode Double Array of the Surface Nodes
-	 * @param scbcWireSpan The Wire Span Segment Customizer
-	 * @param scbcSurface The Surface Segment Customizer
+	 * @param name Name of the Volatility Surface
+	 * @param startDate Start/Epoch Julian Date
+	 * @param currency Currency
+	 * @param xArray Array of X Ordinates
+	 * @param tenorArray Array of Maturity Tenors
+	 * @param nodeGrid Double Array of the Surface Nodes
+	 * @param wireSpanSegmentCustomBuilderControl The Wire Span Segment Customizer
+	 * @param surfaceSegmentCustomBuilderControl The Surface Segment Customizer
 	 * 
 	 * @return Instance of the Market Node Surface
 	 */
 
-	public static final org.drip.analytics.definition.MarketSurface CustomWireSurface (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final double[] adblX,
-		final java.lang.String[] astrTenor,
-		final double[][] aadblNode,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbcSurface)
+	public static final MarketSurface CustomWireSurface (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final double[] xArray,
+		final String[] tenorArray,
+		final double[][] nodeGrid,
+		final SegmentCustomBuilderControl wireSpanSegmentCustomBuilderControl,
+		final SegmentCustomBuilderControl surfaceSegmentCustomBuilderControl)
 	{
-		if (null == astrTenor) return null;
+		if (null == startDate || null == tenorArray) {
+			return null;
+		}
 
-		int iNumTenor = astrTenor.length;
-		double[] adblY = new double[iNumTenor];
+		int tenorCount = tenorArray.length;
+		double[] yArray = new double[tenorCount];
 
-		if (0 == iNumTenor) return null;
+		if (0 == tenorCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumTenor; ++i)
-			adblY[i] = dtStart.addTenor (astrTenor[i]).julian();
+		for (int tenorIndex = 0; tenorIndex < tenorCount; ++tenorIndex) {
+			yArray[tenorIndex] = startDate.addTenor (tenorArray[tenorIndex]).julian();
+		}
 
-		return CustomSplineWireSurface (strName, dtStart, strCurrency, adblX, adblY, aadblNode, scbcWireSpan,
-			scbcSurface);
+		return CustomSplineWireSurface (
+			name,
+			startDate,
+			currency,
+			xArray,
+			yArray,
+			nodeGrid,
+			wireSpanSegmentCustomBuilderControl,
+			surfaceSegmentCustomBuilderControl
+		);
 	}
 
 	/**
 	 * Create a Price/Volatility Market Surface Based off of a Single Run using the Heston 1993 Model
 	 * 
-	 * @param strName Surface Name
-	 * @param dtStart Epoch/Start Date
-	 * @param strCurrency Currency
-	 * @param dblRiskFreeRate Risk-Free Rate
-	 * @param dblUnderlier The Underlier
-	 * @param bIsForward TRUE - The Underlier represents the Forward, FALSE - it represents Spot
-	 * @param dblInitialVolatility Initial Volatility
-	 * @param adblStrike Array of Strikes
-	 * @param astrTenor Array of Maturity Tenors
-	 * @param fphp The Heston Stochastic Volatility Generation Parameters
-	 * @param bPriceSurface TRUE - Generate the Price Surface; FALSE - Generate the Vol Surface
-	 * @param scbcWireSpan The Wire Span Segment Customizer
-	 * @param scbcSurface The Surface Segment Customizer
+	 * @param name Surface Name
+	 * @param startDate Epoch/Start Date
+	 * @param currency Currency
+	 * @param riskFreeRate Risk-Free Rate
+	 * @param underlier The Underlier
+	 * @param isForward TRUE - The Underlier represents the Forward, FALSE - it represents Spot
+	 * @param initialVolatility Initial Volatility
+	 * @param strikeArray Array of Strikes
+	 * @param tenorArray Array of Maturity Tenors
+	 * @param hestonOptionPricerParams The Heston Stochastic Volatility Generation Parameters
+	 * @param generatePriceSurface TRUE - Generate the Price Surface; FALSE - Generate the Vol Surface
+	 * @param wireSpanSegmentCustomBuilderControl The Wire Span Segment Customizer
+	 * @param surfaceSpanSegmentCustomBuilderControl The Surface Segment Customizer
 	 * 
 	 * @return Instance of the Market Node Surface
 	 */
 
-	public static final org.drip.analytics.definition.MarketSurface HestonRunMarketSurface (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final double dblRiskFreeRate,
-		final double dblUnderlier,
-		final boolean bIsForward,
-		final double dblInitialVolatility,
-		final double[] adblStrike,
-		final java.lang.String[] astrTenor,
-		final org.drip.param.pricer.HestonOptionPricerParams fphp,
-		final boolean bPriceSurface,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbcSurface)
+	public static final MarketSurface HestonRunMarketSurface (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final double riskFreeRate,
+		final double underlier,
+		final boolean isForward,
+		final double initialVolatility,
+		final double[] strikeArray,
+		final String[] tenorArray,
+		final HestonOptionPricerParams hestonOptionPricerParams,
+		final boolean generatePriceSurface,
+		final SegmentCustomBuilderControl wireSpanSegmentCustomBuilderControl,
+		final SegmentCustomBuilderControl surfaceSpanSegmentCustomBuilderControl)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblRiskFreeRate) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblUnderlier) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (dblInitialVolatility) || null == adblStrike ||
-					null == astrTenor || null == fphp)
+		if (null == strikeArray || null == tenorArray) {
 			return null;
+		}
 
-		int iStrike = 0;
-		int iNumTenor = astrTenor.length;
-		int iNumStrike = adblStrike.length;
-		double[][] aadblImpliedNode = new double[iNumStrike][iNumTenor];
-		org.drip.pricer.option.HestonStochasticVolatilityAlgorithm hsva = null;
+		int strikeCounter = 0;
+		int tenorCount = tenorArray.length;
+		int strikeCount = strikeArray.length;
+		double[][] impliedNodeGrid = new double[strikeCount][tenorCount];
+		HestonStochasticVolatilityAlgorithm hestonStochasticVolatilityAlgorithm = null;
 
 		try {
-			hsva = new org.drip.pricer.option.HestonStochasticVolatilityAlgorithm (fphp);
-		} catch (java.lang.Exception e) {
+			hestonStochasticVolatilityAlgorithm = new HestonStochasticVolatilityAlgorithm
+				(hestonOptionPricerParams);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		if (0 == iNumTenor || 0 == iNumStrike) return null;
+		if (0 == tenorCount || 0 == strikeCount) {
+			return null;
+		}
 
-		for (double dblStrike : adblStrike) {
-			int iTenor = 0;
+		for (double strike : strikeArray) {
+			int tenorCounter = 0;
 
-			for (java.lang.String strTenor : astrTenor) {
+			for (String tenor : tenorArray) {
 				try {
-					double dblTimeToExpiry = org.drip.analytics.support.Helper.TenorToYearFraction
-						(strTenor);
+					double timeToExpiry = Helper.TenorToYearFraction (tenor);
 
-					org.drip.pricer.option.Greeks callGreeks = hsva.greeks (dblStrike, dblTimeToExpiry,
-						dblRiskFreeRate, dblUnderlier, false, bIsForward, dblInitialVolatility);
+					Greeks callGreeks = hestonStochasticVolatilityAlgorithm.greeks (
+						strike,
+						timeToExpiry,
+						riskFreeRate,
+						underlier,
+						false,
+						isForward,
+						initialVolatility
+					);
 
-					if (null == callGreeks) return null;
+					if (null == callGreeks) {
+						return null;
+					}
 
-					aadblImpliedNode[iStrike][iTenor++] = bPriceSurface ? callGreeks.price() : new
-						org.drip.pricer.option.BlackScholesAlgorithm().impliedVolatilityFromPrice
-							(dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblUnderlier, false, false,
-								callGreeks.price());
-				} catch (java.lang.Exception e) {
+					impliedNodeGrid[strikeCounter][tenorCounter++] = generatePriceSurface ?
+						callGreeks.price() : new BlackScholesAlgorithm().impliedVolatilityFromPrice (
+							strike,
+							timeToExpiry,
+							riskFreeRate,
+							underlier,
+							false,
+							false,
+							callGreeks.price()
+						);
+				} catch (Exception e) {
 					e.printStackTrace();
 
 					return null;
 				}
 			}
 
-			++iStrike;
+			++strikeCounter;
 		}
 
-		return CustomWireSurface (strName, dtStart, strCurrency, adblStrike, astrTenor, aadblImpliedNode,
-			scbcWireSpan, scbcSurface);
+		return CustomWireSurface (
+			name,
+			startDate,
+			currency,
+			strikeArray,
+			tenorArray,
+			impliedNodeGrid,
+			wireSpanSegmentCustomBuilderControl,
+			surfaceSpanSegmentCustomBuilderControl
+		);
 	}
 }

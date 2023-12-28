@@ -494,7 +494,7 @@ public class ScenarioCreditCurveBuilder {
 	 * @param hazardDateArray Matched array of hazard dates
 	 * @param recoveryRateArray Matched array of recovery rates
 	 * @param recoveryDateArray Matched array of recovery dates
-	 * @param rpecificDefaultDate (Optional) Specific Default Date
+	 * @param specificDefaultDate (Optional) Specific Default Date
 	 * 
 	 * @return <i>CreditCurve</i> instance
 	 */
