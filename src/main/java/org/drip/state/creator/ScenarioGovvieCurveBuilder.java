@@ -1,11 +1,24 @@
 
 package org.drip.state.creator;
 
+import org.drip.analytics.input.LatentStateShapePreservingCCIS;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.pricer.CreditPricerParams;
+import org.drip.param.valuation.ValuationCustomizationParams;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.state.curve.BasisSplineGovvieYield;
+import org.drip.state.govvie.GovvieCurve;
+import org.drip.state.inference.LatentStateStretchSpec;
+import org.drip.state.inference.LinearLatentStateCalibrator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,59 +94,101 @@ package org.drip.state.creator;
 
 /**
  * <i>ScenarioGovvieCurveBuilder</i> implements the Construction of the Scenario Govvie Curve using the Input
- * Govvie Curve Instruments.
+ * 	Govvie Curve Instruments. It implements the following Functions:
+ * 
+ * <ul>
+ * 		<li>Build the Shape Preserving Govvie Curve using the Custom Parameters</li>
+ * 		<li>Construct an Instance of the Shape Preserver of the desired Basis Spline Type, using the Specified Basis Set Builder Parameters</li>
+ * 		<li>Construct an Instance of the Shape Preserver of the Linear Polynomial Type, using the Specified Basis Set Builder Parameters</li>
+ * 		<li>Construct an Instance of the Shape Preserver of the Cubic Polynomial Type, using the Specified Basis Set Builder Parameters</li>
+ * 		<li>Create an Instance of the Custom Splined Govvie Yield Curve</li>
+ * 		<li>Create an Instance of the Linear Polynomial Splined Govvie Yield Curve</li>
+ * 		<li>Create an Instance of the Cubic Polynomial Splined Govvie Yield Curve</li>
+ * 		<li>Create an Instance of the Quartic Polynomial Splined Govvie Yield Curve</li>
+ * 		<li>Create an Instance of the Kaklis-Pandelis Splined Govvie Yield Curve</li>
+ * 		<li>Create an Instance of the KLK Hyperbolic Splined Govvie Yield Curve</li>
+ * 		<li>Create an Instance of the KLK Rational Linear Splined Govvie Yield Curve</li>
+ * 		<li>Create an Instance of the KLK Rational Quadratic Splined Govvie Yield Curve</li>
+ * 		<li>Construct a Govvie Curve from an Array of Dates and Yields</li>
+ * 		<li>Construct a Govvie Curve from the Specified Date and Yield</li>
+ * </ul>
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md">Scenario State Curve/Surface Builders</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md">Scenario State Curve/Surface Builders</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class ScenarioGovvieCurveBuilder {
+public class ScenarioGovvieCurveBuilder
+{
 
 	/**
 	 * Build the Shape Preserving Govvie Curve using the Custom Parameters
 	 * 
-	 * @param llsc The Linear Latent State Calibrator Instance
-	 * @param aStretchSpec Array of the Latent State Stretches
-	 * @param strTreasuryCode Treasury Code
-	 * @param strCurrency Currency
-	 * @param valParams Valuation Parameters
-	 * @param pricerParams Pricer Parameters
-	 * @param csqc Market Parameters
-	 * @param vcp Valuation Customization Parameters
-	 * @param dblEpochResponse The Starting Response Value
+	 * @param linearLatentStateCalibrator The Linear Latent State Calibrator Instance
+	 * @param latentStateStretchSpecArray Array of the Latent State Stretches
+	 * @param treasuryCode Treasury Code
+	 * @param currency Currency
+	 * @param valuationParams Valuation Parameters
+	 * @param creditPricerParams Pricer Parameters
+	 * @param curveSurfaceQuoteContainer Market Parameters
+	 * @param valuationCustomizationParams Valuation Customization Parameters
+	 * @param epochResponse The Starting Response Value
 	 * 
 	 * @return Instance of the Shape Preserving Discount Curve
 	 */
 
-	public static final org.drip.state.govvie.GovvieCurve ShapePreservingGovvieCurve (
-		final org.drip.state.inference.LinearLatentStateCalibrator llsc,
-		final org.drip.state.inference.LatentStateStretchSpec[] aStretchSpec,
-		final java.lang.String strTreasuryCode,
-		final java.lang.String strCurrency,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.CreditPricerParams pricerParams,
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp,
-		final double dblEpochResponse)
+	public static final GovvieCurve ShapePreservingGovvieCurve (
+		final LinearLatentStateCalibrator linearLatentStateCalibrator,
+		final LatentStateStretchSpec[] latentStateStretchSpecArray,
+		final String treasuryCode,
+		final String currency,
+		final ValuationParams valuationParams,
+		final CreditPricerParams creditPricerParams,
+		final CurveSurfaceQuoteContainer curveSurfaceQuoteContainer,
+		final ValuationCustomizationParams valuationCustomizationParams,
+		final double epochResponse)
 	{
-		if (null == llsc) return null;
+		if (null == linearLatentStateCalibrator) {
+			return null;
+		}
 
 		try {
-			org.drip.state.govvie.GovvieCurve govvieCurve = new org.drip.state.curve.BasisSplineGovvieYield
-				(strTreasuryCode, strCurrency, llsc.calibrateSpan (aStretchSpec, dblEpochResponse, valParams,
-					pricerParams, vcp, csqc));
+			GovvieCurve govvieCurve = new BasisSplineGovvieYield (
+				treasuryCode,
+				currency,
+				linearLatentStateCalibrator.calibrateSpan (
+					latentStateStretchSpecArray,
+					epochResponse,
+					valuationParams,
+					creditPricerParams,
+					valuationCustomizationParams,
+					curveSurfaceQuoteContainer
+				)
+			);
 
-			return govvieCurve.setCCIS (new org.drip.analytics.input.LatentStateShapePreservingCCIS (llsc,
-				aStretchSpec, valParams, pricerParams, vcp, csqc)) ? govvieCurve : null;
-		} catch (java.lang.Exception e) {
+			return govvieCurve.setCCIS (
+				new LatentStateShapePreservingCCIS (
+					linearLatentStateCalibrator,
+					latentStateStretchSpecArray,
+					valuationParams,
+					creditPricerParams,
+					valuationCustomizationParams,
+					curveSurfaceQuoteContainer
+				)
+			) ? govvieCurve : null;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -372,7 +427,7 @@ public class ScenarioGovvieCurveBuilder {
 	 * @return The Instance of the Govvie Yield Curve
 	 */
 
-	/* public static final org.drip.state.govvie.GovvieCurve LinearPolynomialCurve (
+	public static final org.drip.state.govvie.GovvieCurve LinearPolynomialCurve (
 		final java.lang.String strName,
 		final org.drip.analytics.date.JulianDate dtStart,
 		final java.lang.String strTreasuryCode,
@@ -391,7 +446,7 @@ public class ScenarioGovvieCurveBuilder {
 		}
 
 		return null;
-	} */
+	}
 
 	/**
 	 * Create an Instance of the Cubic Polynomial Splined Govvie Yield Curve

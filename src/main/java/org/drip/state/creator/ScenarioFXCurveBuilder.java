@@ -1,11 +1,47 @@
 
 package org.drip.state.creator;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.definition.LatentStateStatic;
+import org.drip.analytics.input.LatentStateShapePreservingCCIS;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.pricer.CreditPricerParams;
+import org.drip.param.valuation.ValuationCustomizationParams;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.calib.ProductQuoteSet;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.product.params.CurrencyPair;
+import org.drip.product.rates.DualStreamComponent;
+import org.drip.spline.basis.ExponentialTensionSetParams;
+import org.drip.spline.basis.FunctionSetBuilderParams;
+import org.drip.spline.basis.KaklisPandelisSetParams;
+import org.drip.spline.basis.PolynomialFunctionSetParams;
+import org.drip.spline.grid.OverlappingStretchSpan;
+import org.drip.spline.params.ResponseScalingShapeControl;
+import org.drip.spline.params.SegmentCustomBuilderControl;
+import org.drip.spline.params.SegmentInelasticDesignControl;
+import org.drip.spline.stretch.BoundarySettings;
+import org.drip.spline.stretch.MultiSegmentSequence;
+import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
+import org.drip.state.curve.BasisSplineFXForward;
+import org.drip.state.fx.FXCurve;
+import org.drip.state.identifier.FXLabel;
+import org.drip.state.inference.LatentStateSegmentSpec;
+import org.drip.state.inference.LatentStateStretchSpec;
+import org.drip.state.inference.LinearLatentStateCalibrator;
+import org.drip.state.representation.LatentStateSpecification;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,56 +118,94 @@ package org.drip.state.creator;
 
 /**
  * <i>ScenarioFXCurveBuilder</i> implements the construction of the scenario FX Curve using the input FX
- * Curve instruments.
- *
- *  <br><br>
+ * Curve instruments. It implements the following Functions:
+ * 
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md">Scenario State Curve/Surface Builders</a></li>
+ *		<li>Build the Shape Preserving FX Curve using the Custom Parameters</li>
+ * 		<li>Construct an instance of the Shape Preserver of the desired basis type, using the specified basis set builder parameters</li>
+ * 		<li>Construct an Instance of the Shape Preserver of the Cubic Polynomial Type, using the Specified Basis Set Builder Parameters</li>
+ * 		<li>Create an Instance of the Custom Splined FX Forward Curve</li>
+ * 		<li>Create an Instance of the Cubic Polynomial Splined FX Forward Curve</li>
+ * 		<li>Create an Instance of the Quartic Polynomial Splined FX Forward Curve</li>
+ * 		<li>Create an Instance of the Kaklis-Pandelis Splined FX Forward Curve</li>
+ * 		<li>Create an Instance of the KLK Hyperbolic Splined FX Forward Curve</li>
+ * 		<li>Create an Instance of the KLK Rational Linear Splined FX Forward Curve</li>
+ * 		<li>Create an Instance of the KLK Rational Quadratic Splined FX Forward Curve</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md">Scenario State Curve/Surface Builders</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class ScenarioFXCurveBuilder {
+public class ScenarioFXCurveBuilder
+{
 
 	/**
 	 * Build the Shape Preserving FX Curve using the Custom Parameters
 	 * 
-	 * @param llsc The Linear Latent State Calibrator Instance
-	 * @param aStretchSpec Array of the Latent State Stretches
-	 * @param cp The FX Currency Pair
-	 * @param valParams Valuation Parameters
-	 * @param pricerParams Pricer Parameters
-	 * @param csqs Market Parameters
-	 * @param vcp Quoting Parameters
-	 * @param dblEpochResponse The Starting Response Value
+	 * @param linearLatentStateCalibrator The Linear Latent State Calibrator Instance
+	 * @param latentStateStretchSpecArray Array of the Latent State Stretches
+	 * @param currencyPair The FX Currency Pair
+	 * @param valuationParams Valuation Parameters
+	 * @param creditPricerParams Pricer Parameters
+	 * @param curveSurfaceQuoteContainer Market Parameters
+	 * @param valuationCustomizationParams Quoting Parameters
+	 * @param epochResponse The Starting Response Value
 	 * 
 	 * @return Instance of the Shape Preserving Discount Curve
 	 */
 
-	public static final org.drip.state.fx.FXCurve ShapePreservingFXCurve (
-		final org.drip.state.inference.LinearLatentStateCalibrator llsc,
-		final org.drip.state.inference.LatentStateStretchSpec[] aStretchSpec,
-		final org.drip.product.params.CurrencyPair cp,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.CreditPricerParams pricerParams,
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp,
-		final double dblEpochResponse)
+	public static final FXCurve ShapePreservingFXCurve (
+		final LinearLatentStateCalibrator linearLatentStateCalibrator,
+		final LatentStateStretchSpec[] latentStateStretchSpecArray,
+		final CurrencyPair currencyPair,
+		final ValuationParams valuationParams,
+		final CreditPricerParams creditPricerParams,
+		final CurveSurfaceQuoteContainer curveSurfaceQuoteContainer,
+		final ValuationCustomizationParams valuationCustomizationParams,
+		final double epochResponse)
 	{
-		if (null == llsc) return null;
+		if (null == linearLatentStateCalibrator) {
+			return null;
+		}
 
 		try {
-			org.drip.state.fx.FXCurve fxCurve = new org.drip.state.curve.BasisSplineFXForward (cp,
-				llsc.calibrateSpan (aStretchSpec, dblEpochResponse, valParams, pricerParams, vcp, csqs));
+			FXCurve fxCurve = new BasisSplineFXForward (
+				currencyPair,
+				linearLatentStateCalibrator.calibrateSpan (
+					latentStateStretchSpecArray,
+					epochResponse,
+					valuationParams,
+					creditPricerParams,
+					valuationCustomizationParams,
+					curveSurfaceQuoteContainer
+				)
+			);
 
-			return fxCurve.setCCIS (new org.drip.analytics.input.LatentStateShapePreservingCCIS (llsc,
-				aStretchSpec, valParams, pricerParams, vcp, csqs)) ? fxCurve : null;
-		} catch (java.lang.Exception e) {
+			return fxCurve.setCCIS (
+				new LatentStateShapePreservingCCIS (
+					linearLatentStateCalibrator,
+					latentStateStretchSpecArray,
+					valuationParams,
+					creditPricerParams,
+					valuationCustomizationParams,
+					curveSurfaceQuoteContainer
+				)
+			) ? fxCurve : null;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -142,86 +216,103 @@ public class ScenarioFXCurveBuilder {
 	 * Construct an instance of the Shape Preserver of the desired basis type, using the specified basis set
 	 * 	builder parameters.
 	 * 
-	 * @param strName Curve Name
-	 * @param cp The FX Currency Pair
-	 * @param valParams Valuation Parameters
-	 * @param pricerParams Pricer Parameters
-	 * @param csqs Market Parameters
-	 * @param vcp Quoting Parameters
-	 * @param aCalibComp Array of Calibration Components
-	 * @param strManifestMeasure The Calibration Manifest Measure
-	 * @param adblQuote Array of Calibration Quotes
-	 * @param dblEpochResponse The Stretch Start DF
-	 * @param scbc Segment Custom Builder Control Parameters
+	 * @param name Curve Name
+	 * @param currencyPair The FX Currency Pair
+	 * @param valuationParams Valuation Parameters
+	 * @param creditPricerParams Pricer Parameters
+	 * @param curveSurfaceQuoteContainer Market Parameters
+	 * @param valuationCustomizationParams Quoting Parameters
+	 * @param calibratableComponentArray Array of Calibration Components
+	 * @param manifestMeasure The Calibration Manifest Measure
+	 * @param quoteArray Array of Calibration Quotes
+	 * @param epochResponse The Stretch Start DF
+	 * @param segmentCustomBuilderControl Segment Custom Builder Control Parameters
 	 * 
 	 * @return Instance of the Shape Preserver of the desired basis type
 	 */
 
-	public static final org.drip.state.fx.FXCurve ShapePreservingFXCurve (
-		final java.lang.String strName,
-		final org.drip.product.params.CurrencyPair cp,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.CreditPricerParams pricerParams,
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp,
-		final java.lang.String strManifestMeasure,
-		final double[] adblQuote,
-		final double dblEpochResponse,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
+	public static final FXCurve ShapePreservingFXCurve (
+		final String name,
+		final CurrencyPair currencyPair,
+		final ValuationParams valuationParams,
+		final CreditPricerParams creditPricerParams,
+		final CurveSurfaceQuoteContainer curveSurfaceQuoteContainer,
+		final ValuationCustomizationParams valuationCustomizationParams,
+		final CalibratableComponent[] calibratableComponentArray,
+		final String manifestMeasure,
+		final double[] quoteArray,
+		final double epochResponse,
+		final SegmentCustomBuilderControl segmentCustomBuilderControl)
 	{
-		if (null == strName || strName.isEmpty() || null == valParams || null == scbc || null ==
-			strManifestMeasure || strManifestMeasure.isEmpty())
+		if (null == segmentCustomBuilderControl) {
 			return null;
+		}
 
-		int iNumQuote = null == adblQuote ? 0 : adblQuote.length;
-		int iNumComp = null == aCalibComp ? 0 : aCalibComp.length;
+		int quoteCount = null == quoteArray ? 0 : quoteArray.length;
+		int componentCount = null == calibratableComponentArray ? 0 : calibratableComponentArray.length;
 
-		if (0 == iNumComp || iNumComp != iNumQuote) return null;
+		if (0 == componentCount || componentCount != quoteCount) {
+			return null;
+		}
 
 		try {
-			org.drip.state.identifier.FXLabel fxLabel = null;
+			FXLabel fxLabel = null;
 
-			if (aCalibComp[0] instanceof org.drip.product.rates.DualStreamComponent)
-				fxLabel = ((org.drip.product.rates.DualStreamComponent)
-					aCalibComp[0]).derivedStream().fxLabel();
-			else {
-				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.FXLabel>
-					mapFXLabel = aCalibComp[0].fxLabel();
+			if (calibratableComponentArray[0] instanceof DualStreamComponent) {
+				fxLabel = ((DualStreamComponent) calibratableComponentArray[0]).derivedStream().fxLabel();
+			} else {
+				CaseInsensitiveTreeMap<FXLabel> fxLabelMap = calibratableComponentArray[0].fxLabel();
 
-				if (null != mapFXLabel && 0 != mapFXLabel.size()) fxLabel = mapFXLabel.get ("DERIVED");
+				if (null != fxLabelMap && 0 != fxLabelMap.size()) {
+					fxLabel = fxLabelMap.get ("DERIVED");
+				}
 			}
 
-			org.drip.state.representation.LatentStateSpecification[] aLSS = new
-				org.drip.state.representation.LatentStateSpecification[] {new
-					org.drip.state.representation.LatentStateSpecification
-						(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FX,
-							org.drip.analytics.definition.LatentStateStatic.FX_QM_FORWARD_OUTRIGHT,
-								fxLabel)};
+			LatentStateSpecification[] latentStateSpecificationArray = new LatentStateSpecification[] {
+				new LatentStateSpecification (
+					LatentStateStatic.LATENT_STATE_FX,
+					LatentStateStatic.FX_QM_FORWARD_OUTRIGHT,
+					fxLabel
+				)
+			};
 
-			org.drip.state.inference.LatentStateSegmentSpec[] aSegmentSpec = new
-				org.drip.state.inference.LatentStateSegmentSpec[iNumComp];
+			LatentStateSegmentSpec[] latentStateSegmentSpecArray =
+				new LatentStateSegmentSpec[componentCount];
 
-			for (int i = 0; i < iNumComp; ++i) {
-				org.drip.product.calib.ProductQuoteSet pqs = aCalibComp[i].calibQuoteSet (aLSS);
+			for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+				ProductQuoteSet productQuoteSet = calibratableComponentArray[componentIndex].calibQuoteSet
+					(latentStateSpecificationArray);
 
-				if (null == pqs || !pqs.set (strManifestMeasure, adblQuote[i])) return null;
+				if (null == productQuoteSet || !productQuoteSet.set (
+					manifestMeasure,
+					quoteArray[componentIndex]
+				)) {
+					return null;
+				}
 
-				aSegmentSpec[i] = new org.drip.state.inference.LatentStateSegmentSpec (aCalibComp[i], pqs);
+				latentStateSegmentSpecArray[componentIndex] =
+					new LatentStateSegmentSpec (calibratableComponentArray[componentIndex], productQuoteSet);
 			}
 
-			org.drip.state.inference.LatentStateStretchSpec[] aStretchSpec = new
-				org.drip.state.inference.LatentStateStretchSpec[] {new
-					org.drip.state.inference.LatentStateStretchSpec (strName, aSegmentSpec)};
-
-			org.drip.state.inference.LinearLatentStateCalibrator llsc = new
-				org.drip.state.inference.LinearLatentStateCalibrator (scbc,
-					org.drip.spline.stretch.BoundarySettings.FinancialStandard(),
-						org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE, null, null);
-
-			return ShapePreservingFXCurve (llsc, aStretchSpec, cp, valParams, pricerParams, csqs, vcp,
-				dblEpochResponse);
-		} catch (java.lang.Exception e) {
+			return ShapePreservingFXCurve (
+				new LinearLatentStateCalibrator (
+					segmentCustomBuilderControl,
+					BoundarySettings.FinancialStandard(),
+					MultiSegmentSequence.CALIBRATE,
+					null,
+					null
+				),
+				new LatentStateStretchSpec[] {
+					new LatentStateStretchSpec (name, latentStateSegmentSpecArray)
+				},
+				currencyPair,
+				valuationParams,
+				creditPricerParams,
+				curveSurfaceQuoteContainer,
+				valuationCustomizationParams,
+				epochResponse
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -232,92 +323,114 @@ public class ScenarioFXCurveBuilder {
 	 * Construct an instance of the Shape Preserver of the desired basis type, using the specified basis set
 	 * 	builder parameters.
 	 * 
-	 * @param strName Curve Name
-	 * @param cp The FX Currency Pair
-	 * @param valParams Valuation Parameters
-	 * @param pricerParams Pricer Parameters
-	 * @param csqs Market Parameters
-	 * @param vcp Quoting Parameters
-	 * @param strBasisType The Basis Type
-	 * @param fsbp The Function Set Basis Parameters
-	 * @param aCalibComp Array of Calibration Components
-	 * @param strManifestMeasure The Calibration Manifest Measure
-	 * @param adblQuote Array of Calibration Quotes
-	 * @param dblEpochResponse The Stretch Start DF
+	 * @param name Curve Name
+	 * @param currencyPair The FX Currency Pair
+	 * @param valuationParams Valuation Parameters
+	 * @param creditPricerParams Pricer Parameters
+	 * @param curveSurfaceQuoteContainer Market Parameters
+	 * @param valuationCustomizationParams Quoting Parameters
+	 * @param basisType The Basis Type
+	 * @param functionSetBuilderParams The Function Set Basis Parameters
+	 * @param calibratableComponentArray Array of Calibration Components
+	 * @param manifestMeasure The Calibration Manifest Measure
+	 * @param quoteArray Array of Calibration Quotes
+	 * @param epochResponse The Stretch Start DF
 	 * 
 	 * @return Instance of the Shape Preserver of the desired basis type
 	 */
 
-	public static final org.drip.state.fx.FXCurve ShapePreservingFXCurve (
-		final java.lang.String strName,
-		final org.drip.product.params.CurrencyPair cp,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.CreditPricerParams pricerParams,
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp,
-		final java.lang.String strBasisType,
-		final org.drip.spline.basis.FunctionSetBuilderParams fsbp,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp,
-		final java.lang.String strManifestMeasure,
-		final double[] adblQuote,
-		final double dblEpochResponse)
+	public static final FXCurve ShapePreservingFXCurve (
+		final String name,
+		final CurrencyPair currencyPair,
+		final ValuationParams valuationParams,
+		final CreditPricerParams creditPricerParams,
+		final CurveSurfaceQuoteContainer curveSurfaceQuoteContainer,
+		final ValuationCustomizationParams valuationCustomizationParams,
+		final String basisType,
+		final FunctionSetBuilderParams functionSetBuilderParams,
+		final CalibratableComponent[] calibratableComponentArray,
+		final String manifestMeasure,
+		final double[] quoteArray,
+		final double epochResponse)
 	{
-		if (null == strName || strName.isEmpty() || null == strBasisType || strBasisType.isEmpty() || null ==
-			valParams || null == fsbp || null == strManifestMeasure || strManifestMeasure.isEmpty())
+		int quoteCount = null == quoteArray ? 0 : quoteArray.length;
+		int componentCount = null == calibratableComponentArray ? 0 : calibratableComponentArray.length;
+
+		if (0 == componentCount || componentCount != quoteCount) {
 			return null;
-
-		int iNumQuote = null == adblQuote ? 0 : adblQuote.length;
-		int iNumComp = null == aCalibComp ? 0 : aCalibComp.length;
-
-		if (0 == iNumComp || iNumComp != iNumQuote) return null;
+		}
 
 		try {
-			org.drip.state.identifier.FXLabel fxLabel = null;
+			FXLabel fxLabel = null;
 
-			if (aCalibComp[0] instanceof org.drip.product.rates.DualStreamComponent)
-				fxLabel = ((org.drip.product.rates.DualStreamComponent)
-					aCalibComp[0]).derivedStream().fxLabel();
-			else {
-				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.FXLabel>
-					mapFXLabel = aCalibComp[0].fxLabel();
+			if (calibratableComponentArray[0] instanceof DualStreamComponent) {
+				fxLabel = ((DualStreamComponent) calibratableComponentArray[0]).derivedStream().fxLabel();
+			} else {
+				CaseInsensitiveTreeMap<FXLabel> fxLabelMap = calibratableComponentArray[0].fxLabel();
 
-				if (null != mapFXLabel && 0 != mapFXLabel.size()) fxLabel = mapFXLabel.get ("DERIVED");
+				if (null != fxLabelMap && 0 != fxLabelMap.size()) {
+					fxLabel = fxLabelMap.get ("DERIVED");
+				}
 			}
 
-			org.drip.state.representation.LatentStateSpecification[] aLSS = new
-				org.drip.state.representation.LatentStateSpecification[] {new
-					org.drip.state.representation.LatentStateSpecification
-						(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FX,
-							org.drip.analytics.definition.LatentStateStatic.FX_QM_FORWARD_OUTRIGHT,
-								fxLabel)};
+			LatentStateSpecification[] latentStateSpecificationArray = new LatentStateSpecification[] {
+				new LatentStateSpecification (
+					LatentStateStatic.LATENT_STATE_FX,
+					LatentStateStatic.FX_QM_FORWARD_OUTRIGHT,
+					fxLabel
+				)
+			};
 
-			org.drip.state.inference.LatentStateSegmentSpec[] aSegmentSpec = new
-				org.drip.state.inference.LatentStateSegmentSpec[iNumComp];
+			LatentStateSegmentSpec[] latentStateSegmentSpecArray =
+				new LatentStateSegmentSpec[componentCount];
 
-			for (int i = 0; i < iNumComp; ++i) {
-				org.drip.product.calib.ProductQuoteSet pqs = aCalibComp[i].calibQuoteSet (aLSS);
+			for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+				ProductQuoteSet productQuoteSet = calibratableComponentArray[componentIndex].calibQuoteSet
+					(latentStateSpecificationArray);
 
-				if (null == pqs || !pqs.set (strManifestMeasure, adblQuote[i])) return null;
+				if (null == productQuoteSet ||
+					!productQuoteSet.set (
+						manifestMeasure,
+						quoteArray[componentIndex]
+					)
+				) {
+					return null;
+				}
 
-				aSegmentSpec[i] = new org.drip.state.inference.LatentStateSegmentSpec (aCalibComp[i], pqs);
+				latentStateSegmentSpecArray[componentIndex] = new LatentStateSegmentSpec (
+					calibratableComponentArray[componentIndex],
+					productQuoteSet
+				);
 			}
 
-			org.drip.state.inference.LatentStateStretchSpec[] aStretchSpec = new
-				org.drip.state.inference.LatentStateStretchSpec[] {new
-					org.drip.state.inference.LatentStateStretchSpec (strName, aSegmentSpec)};
-
-			org.drip.state.inference.LinearLatentStateCalibrator llsc = new
-				org.drip.state.inference.LinearLatentStateCalibrator (new
-					org.drip.spline.params.SegmentCustomBuilderControl (strBasisType, fsbp,
-						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), new
-							org.drip.spline.params.ResponseScalingShapeControl (true, new
-								org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)), null),
-									org.drip.spline.stretch.BoundarySettings.FinancialStandard(),
-										org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE, null, null);
-
-			return ShapePreservingFXCurve (llsc, aStretchSpec, cp, valParams, pricerParams, csqs, vcp,
-				dblEpochResponse);
-		} catch (java.lang.Exception e) {
+			return ShapePreservingFXCurve (
+				new LinearLatentStateCalibrator (
+					new SegmentCustomBuilderControl (
+						basisType,
+						functionSetBuilderParams,
+						SegmentInelasticDesignControl.Create (2, 2),
+						new ResponseScalingShapeControl (
+							true,
+							new QuadraticRationalShapeControl (0.)
+						),
+						null
+					),
+					BoundarySettings.FinancialStandard(),
+					MultiSegmentSequence.CALIBRATE,
+					null,
+					null
+				),
+				new LatentStateStretchSpec[] {
+					new LatentStateStretchSpec (name, latentStateSegmentSpecArray)
+				},
+				currencyPair,
+				valuationParams,
+				creditPricerParams,
+				curveSurfaceQuoteContainer,
+				valuationCustomizationParams,
+				epochResponse
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -328,33 +441,42 @@ public class ScenarioFXCurveBuilder {
 	 * Construct an Instance of the Shape Preserver of the Cubic Polynomial Type, using the Specified Basis
 	 *  Set Builder Parameters.
 	 * 
-	 * @param strName Curve Name
-	 * @param cp The FX Currency Pair
-	 * @param iSpotDate Spot Date
-	 * @param aComp Array of Calibration Components
-	 * @param adblQuote Array of Calibration Quotes
-	 * @param strManifestMeasure The Calibration Manifest Measure
-	 * @param dblFXSpot The FX Spot
+	 * @param name Curve Name
+	 * @param currencyPair The FX Currency Pair
+	 * @param spotDate Spot Date
+	 * @param calibratableComponentArray Array of Calibration Components
+	 * @param quoteArray Array of Calibration Quotes
+	 * @param manifestMeasure The Calibration Manifest Measure
+	 * @param fxSpot The FX Spot
 	 * 
 	 * @return Instance of the Shape Preserver of the Cubic Polynomial Type
 	 */
 
-	public static final org.drip.state.fx.FXCurve CubicPolyShapePreserver (
-		final java.lang.String strName,
-		final org.drip.product.params.CurrencyPair cp,
-		final int iSpotDate,
-		final org.drip.product.definition.CalibratableComponent[] aComp,
-		final double[] adblQuote,
-		final java.lang.String strManifestMeasure,
-		final double dblFXSpot)
+	public static final FXCurve CubicPolyShapePreserver (
+		final String name,
+		final CurrencyPair currencyPair,
+		final int spotDate,
+		final CalibratableComponent[] calibratableComponentArray,
+		final double[] quoteArray,
+		final String manifestMeasure,
+		final double fxSpot)
 	{
 		try {
-			return ShapePreservingFXCurve (strName, cp, org.drip.param.valuation.ValuationParams.Spot
-				(iSpotDate), null, null, null,
-					org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-						org.drip.spline.basis.PolynomialFunctionSetParams (4), aComp, strManifestMeasure,
-							adblQuote, dblFXSpot);
-		} catch (java.lang.Exception e) {
+			return ShapePreservingFXCurve (
+				name,
+				currencyPair,
+				ValuationParams.Spot (spotDate),
+				null,
+				null,
+				null,
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+				calibratableComponentArray,
+				manifestMeasure,
+				quoteArray,
+				fxSpot
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -364,66 +486,81 @@ public class ScenarioFXCurveBuilder {
 	/**
 	 * Create an Instance of the Custom Splined FX Forward Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart The Tenor Start Date
-	 * @param cp The Currency Pair
-	 * @param astrTenor Array of the Tenors
-	 * @param adblFXForward Array of the FX Forwards
-	 * @param scbc The Segment Custom Builder Control
-	 * @param dblFXSpot FX Spot
+	 * @param name Curve Name
+	 * @param startDate The Tenor Start Date
+	 * @param currencyPair The FX Currency Pair
+	 * @param tenorArray Array of the Tenors
+	 * @param fxForwardArray Array of the FX Forwards
+	 * @param segmentCustomBuilderControl The Segment Custom Builder Control
+	 * @param fxSpot The FX Spot
 	 * 
 	 * @return The Instance of the FX Forward Curve
 	 */
 
-	public static final org.drip.state.fx.FXCurve CustomSplineCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final org.drip.product.params.CurrencyPair cp,
-		final java.lang.String[] astrTenor,
-		final double[] adblFXForward,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbc,
-		final double dblFXSpot)
+	public static final FXCurve CustomSplineCurve (
+		final String name,
+		final JulianDate startDate,
+		final CurrencyPair currencyPair,
+		final String[] tenorArray,
+		final double[] fxForwardArray,
+		final SegmentCustomBuilderControl segmentCustomBuilderControl,
+		final double fxSpot)
 	{
-		if (null == strName || strName.isEmpty() || null == astrTenor || null == dtStart ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblFXSpot))
+		if (null == tenorArray || null == startDate || !NumberUtil.IsValid (fxSpot)) {
 			return null;
+		}
 
-		int iNumTenor = astrTenor.length;
+		int tenorCount = tenorArray.length;
 
-		if (0 == iNumTenor) return null;
+		if (0 == tenorCount) {
+			return null;
+		}
 
-		int[] aiBasisPredictorOrdinate = new int[iNumTenor + 1];
-		double[] adblBasisResponseValue = new double[iNumTenor + 1];
-		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new
-			org.drip.spline.params.SegmentCustomBuilderControl[iNumTenor];
+		int[] basisPredictorOrdinateArray = new int[tenorCount + 1];
+		double[] basisResponseValueArray = new double[tenorCount + 1];
+		SegmentCustomBuilderControl[] segmentCustomBuilderControlArray =
+			new SegmentCustomBuilderControl[tenorCount];
 
-		for (int i = 0; i <= iNumTenor; ++i) {
-			if (0 != i) {
-				java.lang.String strTenor = astrTenor[i - 1];
+		for (int tenorIndex = 0; tenorIndex <= tenorCount; ++tenorIndex) {
+			if (0 != tenorIndex) {
+				String strTenor = tenorArray[tenorIndex - 1];
 
 				if (null == strTenor || strTenor.isEmpty()) return null;
 
-				org.drip.analytics.date.JulianDate dtMaturity = dtStart.addTenor (strTenor);
+				JulianDate maturityDate = startDate.addTenor (strTenor);
 
-				if (null == dtMaturity) return null;
+				if (null == maturityDate) {
+					return null;
+				}
 
-				aiBasisPredictorOrdinate[i] = dtMaturity.julian();
-			} else
-				aiBasisPredictorOrdinate[i] = dtStart.julian();
+				basisPredictorOrdinateArray[tenorIndex] = maturityDate.julian();
+			} else {
+				basisPredictorOrdinateArray[tenorIndex] = startDate.julian();
+			}
 
-			adblBasisResponseValue[i] = 0 == i ? dblFXSpot : adblFXForward[i - 1];
+			basisResponseValueArray[tenorIndex] = 0 == tenorIndex ? fxSpot : fxForwardArray[tenorIndex - 1];
 
-			if (0 != i) aSCBC[i - 1] = scbc;
+			if (0 != tenorIndex) {
+				segmentCustomBuilderControlArray[tenorIndex - 1] = segmentCustomBuilderControl;
+			}
 		}
 
 		try {
-			return new org.drip.state.curve.BasisSplineFXForward (cp, new
-				org.drip.spline.grid.OverlappingStretchSpan
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-						(strName, aiBasisPredictorOrdinate, adblBasisResponseValue, aSCBC, null,
-							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
-								org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE)));
-		} catch (java.lang.Exception e) {
+			return new BasisSplineFXForward (
+				currencyPair,
+				new OverlappingStretchSpan (
+					MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
+						name,
+						basisPredictorOrdinateArray,
+						basisResponseValueArray,
+						segmentCustomBuilderControlArray,
+						null,
+						BoundarySettings.NaturalStandard(),
+						MultiSegmentSequence.CALIBRATE
+					)
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -433,32 +570,41 @@ public class ScenarioFXCurveBuilder {
 	/**
 	 * Create an Instance of the Cubic Polynomial Splined FX Forward Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart The Tenor Start Date
-	 * @param cp The Currency Pair
-	 * @param astrTenor Array of the Tenors
-	 * @param adblFXForward Array of the FX Forwards
-	 * @param dblFXSpot FX Spot
+	 * @param name Curve Name
+	 * @param startDate The Tenor Start Date
+	 * @param currencyPair The FX Currency Pair
+	 * @param tenorArray Array of the Tenors
+	 * @param fxForwardArray Array of the FX Forwards
+	 * @param fxSpot The FX Spot
 	 * 
 	 * @return The Instance of the FX Forward Curve
 	 */
 
-	public static final org.drip.state.fx.FXCurve CubicPolynomialCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final org.drip.product.params.CurrencyPair cp,
-		final java.lang.String[] astrTenor,
-		final double[] adblFXForward,
-		final double dblFXSpot)
+	public static final FXCurve CubicPolynomialCurve (
+		final String name,
+		final JulianDate startDate,
+		final CurrencyPair currencyPair,
+		final String[] tenorArray,
+		final double[] fxForwardArray,
+		final double fxSpot)
 	{
 		try {
-			return CustomSplineCurve (strName, dtStart, cp, astrTenor, adblFXForward, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-						org.drip.spline.basis.PolynomialFunctionSetParams (4),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null),
-								dblFXSpot);
-		} catch (java.lang.Exception e) {
+			return CustomSplineCurve (
+				name,
+				startDate,
+				currencyPair,
+				tenorArray,
+				fxForwardArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+					new PolynomialFunctionSetParams (4),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				),
+				fxSpot
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -468,32 +614,41 @@ public class ScenarioFXCurveBuilder {
 	/**
 	 * Create an Instance of the Quartic Polynomial Splined FX Forward Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart The Tenor Start Date
-	 * @param cp The Currency Pair
-	 * @param astrTenor Array of the Tenors
-	 * @param adblFXForward Array of the FX Forwards
-	 * @param dblFXSpot FX Spot
+	 * @param name Curve Name
+	 * @param startDate The Tenor Start Date
+	 * @param currencyPair The FX Currency Pair
+	 * @param tenorArray Array of the Tenors
+	 * @param fxForwardArray Array of the FX Forwards
+	 * @param fxSpot The FX Spot
 	 * 
 	 * @return The Instance of the FX Forward Curve
 	 */
 
-	public static final org.drip.state.fx.FXCurve QuarticPolynomialCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final org.drip.product.params.CurrencyPair cp,
-		final java.lang.String[] astrTenor,
-		final double[] adblFXForward,
-		final double dblFXSpot)
+	public static final FXCurve QuarticPolynomialCurve (
+		final String name,
+		final JulianDate startDate,
+		final CurrencyPair currencyPair,
+		final String[] tenorArray,
+		final double[] fxForwardArray,
+		final double fxSpot)
 	{
 		try {
-			return CustomSplineCurve (strName, dtStart, cp, astrTenor, adblFXForward, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-						org.drip.spline.basis.PolynomialFunctionSetParams (5),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null),
-								dblFXSpot);
-		} catch (java.lang.Exception e) {
+			return CustomSplineCurve (
+				name,
+				startDate,
+				currencyPair,
+				tenorArray,
+				fxForwardArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+					new PolynomialFunctionSetParams (5),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				),
+				fxSpot
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -503,32 +658,41 @@ public class ScenarioFXCurveBuilder {
 	/**
 	 * Create an Instance of the Kaklis-Pandelis Splined FX Forward Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart The Tenor Start Date
-	 * @param cp The Currency Pair
-	 * @param astrTenor Array of the Tenors
-	 * @param adblFXForward Array of the FX Forwards
-	 * @param dblFXSpot FX Spot
+	 * @param name Curve Name
+	 * @param startDate The Tenor Start Date
+	 * @param currencyPair The FX Currency Pair
+	 * @param tenorArray Array of the Tenors
+	 * @param fxForwardArray Array of the FX Forwards
+	 * @param fxSpot The FX Spot
 	 * 
 	 * @return The Instance of the FX Forward Curve
 	 */
 
-	public static final org.drip.state.fx.FXCurve KaklisPandelisCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final org.drip.product.params.CurrencyPair cp,
-		final java.lang.String[] astrTenor,
-		final double[] adblFXForward,
-		final double dblFXSpot)
+	public static FXCurve KaklisPandelisCurve (
+		final String name,
+		final JulianDate startDate,
+		final CurrencyPair currencyPair,
+		final String[] tenorArray,
+		final double[] fxForwardArray,
+		final double fxSpot)
 	{
 		try {
-			return CustomSplineCurve (strName, dtStart, cp, astrTenor, adblFXForward, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS, new
-						org.drip.spline.basis.KaklisPandelisSetParams (2),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null),
-								dblFXSpot);
-		} catch (java.lang.Exception e) {
+			return CustomSplineCurve (
+				name,
+				startDate,
+				currencyPair,
+				tenorArray,
+				fxForwardArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS,
+					new KaklisPandelisSetParams (5),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				),
+				fxSpot
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -538,34 +702,43 @@ public class ScenarioFXCurveBuilder {
 	/**
 	 * Create an Instance of the KLK Hyperbolic Splined FX Forward Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart The Tenor Start Date
-	 * @param cp The Currency Pair
-	 * @param astrTenor Array of the Tenors
-	 * @param adblFXForward Array of the FX Forwards
-	 * @param dblFXSpot FX Spot
-	 * @param dblTension The Tension Parameter
+	 * @param name Curve Name
+	 * @param startDate The Tenor Start Date
+	 * @param currencyPair The FX Currency Pair
+	 * @param tenorArray Array of the Tenors
+	 * @param fxForwardArray Array of the FX Forwards
+	 * @param fxSpot The FX Spot
+	 * @param tension The Tension Parameter
 	 * 
 	 * @return The Instance of the FX Forward Curve
 	 */
 
 	public static final org.drip.state.fx.FXCurve KLKHyperbolicCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final org.drip.product.params.CurrencyPair cp,
-		final java.lang.String[] astrTenor,
-		final double[] adblFXForward,
-		final double dblFXSpot,
-		final double dblTension)
+		final String name,
+		final JulianDate startDate,
+		final CurrencyPair currencyPair,
+		final String[] tenorArray,
+		final double[] fxForwardArray,
+		final double fxSpot,
+		final double tension)
 	{
 		try {
-			return CustomSplineCurve (strName, dtStart, cp, astrTenor, adblFXForward, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
-						new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null),
-								dblFXSpot);
-		} catch (java.lang.Exception e) {
+			return CustomSplineCurve (
+				name,
+				startDate,
+				currencyPair,
+				tenorArray,
+				fxForwardArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
+					new ExponentialTensionSetParams (tension),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				),
+				fxSpot
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -575,34 +748,43 @@ public class ScenarioFXCurveBuilder {
 	/**
 	 * Create an Instance of the KLK Rational Linear Splined FX Forward Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart The Tenor Start Date
-	 * @param cp The Currency Pair
-	 * @param astrTenor Array of the Tenors
-	 * @param adblFXForward Array of the FX Forwards
-	 * @param dblFXSpot FX Spot
-	 * @param dblTension The Tension Parameter
+	 * @param name Curve Name
+	 * @param startDate The Tenor Start Date
+	 * @param currencyPair The FX Currency Pair
+	 * @param tenorArray Array of the Tenors
+	 * @param fxForwardArray Array of the FX Forwards
+	 * @param fxSpot The FX Spot
+	 * @param tension The Tension Parameter
 	 * 
 	 * @return The Instance of the FX Forward Curve
 	 */
 
-	public static final org.drip.state.fx.FXCurve KLKRationalLinearCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final org.drip.product.params.CurrencyPair cp,
-		final java.lang.String[] astrTenor,
-		final double[] adblFXForward,
-		final double dblFXSpot,
-		final double dblTension)
+	public static final FXCurve KLKRationalLinearCurve (
+		final String name,
+		final JulianDate startDate,
+		final CurrencyPair currencyPair,
+		final String[] tenorArray,
+		final double[] fxForwardArray,
+		final double fxSpot,
+		final double tension)
 	{
 		try {
-			return CustomSplineCurve (strName, dtStart, cp, astrTenor, adblFXForward, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
-				new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null),
-						dblFXSpot);
-		} catch (java.lang.Exception e) {
+			return CustomSplineCurve (
+				name,
+				startDate,
+				currencyPair,
+				tenorArray,
+				fxForwardArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
+					new ExponentialTensionSetParams (tension),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				),
+				fxSpot
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -612,34 +794,43 @@ public class ScenarioFXCurveBuilder {
 	/**
 	 * Create an Instance of the KLK Rational Quadratic Splined FX Forward Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart The Tenor Start Date
-	 * @param cp The Currency Pair
-	 * @param astrTenor Array of the Tenors
-	 * @param adblFXForward Array of the FX Forwards
-	 * @param dblFXSpot FX Spot
-	 * @param dblTension The Tension Parameter
+	 * @param name Curve Name
+	 * @param startDate The Tenor Start Date
+	 * @param currencyPair The FX Currency Pair
+	 * @param tenorArray Array of the Tenors
+	 * @param fxForwardArray Array of the FX Forwards
+	 * @param fxSpot The FX Spot
+	 * @param tension The Tension Parameter
 	 * 
 	 * @return The Instance of the FX Forward Curve
 	 */
 
-	public static final org.drip.state.fx.FXCurve KLKRationalQuadraticCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final org.drip.product.params.CurrencyPair cp,
-		final java.lang.String[] astrTenor,
-		final double[] adblFXForward,
-		final double dblFXSpot,
-		final double dblTension)
+	public static final FXCurve KLKRationalQuadraticCurve (
+		final String name,
+		final JulianDate startDate,
+		final CurrencyPair currencyPair,
+		final String[] tenorArray,
+		final double[] fxForwardArray,
+		final double fxSpot,
+		final double tension)
 	{
 		try {
-			return CustomSplineCurve (strName, dtStart, cp, astrTenor, adblFXForward, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
-				new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null),
-						dblFXSpot);
-		} catch (java.lang.Exception e) {
+			return CustomSplineCurve (
+				name,
+				startDate,
+				currencyPair,
+				tenorArray,
+				fxForwardArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
+					new ExponentialTensionSetParams (tension),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				),
+				fxSpot
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

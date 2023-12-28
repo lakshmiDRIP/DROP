@@ -13,6 +13,7 @@ import org.drip.analytics.support.CompositePeriodBuilder;
 import org.drip.function.r1tor1.QuadraticRationalShapeControl;
 import org.drip.market.otc.FixedFloatSwapConvention;
 import org.drip.market.otc.IBORFixedFloatContainer;
+import org.drip.numerical.common.NumberUtil;
 import org.drip.param.creator.MarketParamsBuilder;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.market.DiscountCurveScenarioContainer;
@@ -60,6 +61,9 @@ import org.drip.state.representation.LatentStateSpecification;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -1821,28 +1825,33 @@ public class ScenarioDiscountCurveBuilder
 	/**
 	 * Create a Discount Curve from the Flat Yield
 	 * 
-	 * @param dtStart Start Date
-	 * @param strCurrency Currency
-	 * @param dblYield Yield
-	 * @param strCompoundingDayCount Day Count Convention to be used for Discrete Compounding
-	 * @param iCompoundingFreq Frequency to be used for Discrete Compounding
+	 * @param startDate Start Date
+	 * @param currency Currency
+	 * @param yield Yield
+	 * @param compoundingDayCount Day Count Convention to be used for Discrete Compounding
+	 * @param compoundingFrequency Frequency to be used for Discrete Compounding
 	 * 
 	 * @return The Discount Curve Instance
 	 */
 
-	public static final org.drip.state.discount.ExplicitBootDiscountCurve CreateFromFlatYield (
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final double dblYield,
-		final java.lang.String strCompoundingDayCount,
-		final int iCompoundingFreq)
+	public static final ExplicitBootDiscountCurve CreateFromFlatYield (
+		final JulianDate startDate,
+		final String currency,
+		final double yield,
+		final String compoundingDayCount,
+		final int compoundingFrequency)
 	{
-		if (null == dtStart || !org.drip.numerical.common.NumberUtil.IsValid (dblYield)) return null;
-
 		try {
-			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, new int[]
-				{dtStart.julian()}, new double[] {dblYield}, true, strCompoundingDayCount, iCompoundingFreq);
-		} catch (java.lang.Exception e) {
+			return null == startDate || !NumberUtil.IsValid (yield) ? null : new FlatForwardDiscountCurve (
+				startDate,
+				currency,
+				new int[] {startDate.julian()},
+				new double[] {yield},
+				true,
+				compoundingDayCount,
+				compoundingFrequency
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -1852,24 +1861,31 @@ public class ScenarioDiscountCurveBuilder
 	/**
 	 * Create a discount curve from an array of dates/rates
 	 * 
-	 * @param dtStart Start Date
-	 * @param strCurrency Currency
-	 * @param aiDate array of dates
-	 * @param adblRate array of rates
+	 * @param startDate Start Date
+	 * @param currency Currency
+	 * @param dateArray array of dates
+	 * @param rateArray array of rates
 	 * 
 	 * @return Creates the discount curve
 	 */
 
-	public static final org.drip.state.discount.ExplicitBootDiscountCurve PiecewiseForward (
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final int[] aiDate,
-		final double[] adblRate)
+	public static final ExplicitBootDiscountCurve PiecewiseForward (
+		final JulianDate startDate,
+		final String currency,
+		final int[] dateArray,
+		final double[] rateArray)
 	{
 		try {
-			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, aiDate,
-				adblRate, false, "", -1);
-		} catch (java.lang.Exception e) {
+			return new FlatForwardDiscountCurve (
+				startDate,
+				currency,
+				dateArray,
+				rateArray,
+				false,
+				"",
+				-1
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

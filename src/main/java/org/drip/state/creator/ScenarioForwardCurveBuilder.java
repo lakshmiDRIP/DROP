@@ -1,11 +1,37 @@
 
 package org.drip.state.creator;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.definition.LatentStateStatic;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.pricer.CreditPricerParams;
+import org.drip.param.valuation.ValuationCustomizationParams;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.calib.ProductQuoteSet;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.product.rates.DualStreamComponent;
+import org.drip.spline.basis.FunctionSetBuilderParams;
+import org.drip.spline.params.ResponseScalingShapeControl;
+import org.drip.spline.params.SegmentCustomBuilderControl;
+import org.drip.spline.stretch.BoundarySettings;
+import org.drip.spline.stretch.MultiSegmentSequence;
+import org.drip.state.forward.ForwardCurve;
+import org.drip.state.identifier.ForwardLabel;
+import org.drip.state.inference.LatentStateSegmentSpec;
+import org.drip.state.inference.LatentStateStretchSpec;
+import org.drip.state.inference.LinearLatentStateCalibrator;
+import org.drip.state.representation.LatentStateSpecification;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -88,32 +114,25 @@ package org.drip.state.creator;
  * input discount curve instruments, and a wide variety of custom builds. It implements the following
  * functionality:
  *
- *  <br><br>
  *  <ul>
- *  	<li>
- * 			Non-linear Custom Discount Curve
- *  	</li>
- *  	<li>
- * 			Shape Preserving Discount Curve Builds - Standard Cubic Polynomial/Cubic KLK Hyperbolic Tension,
- * 				and other Custom Builds
- *  	</li>
- *  	<li>
- * 			Smoothing Local/Control Custom Build - DC/Forward/Zero Rate LSQM's
- *  	</li>
- *  	<li>
- * 			"Industry Standard Methodologies" - DENSE/DUALDENSE/CUSTOMDENSE and Hagan-West Forward
- * 				Interpolator Schemes
- *  	</li>
+ * 		<li>Build the Shape Preserving Forward Curve using the Custom Parameters</li>
+ * 		<li>Construct an instance of the Shape Preserver of the desired basis type, using the specified basis set builder parameters</li>
+ * 		<li>Construct an Instance of the Flat Forward Rate Forward Curve</li>
  *  </ul>
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md">Scenario State Curve/Surface Builders</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md">Scenario State Curve/Surface Builders</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -123,38 +142,56 @@ public class ScenarioForwardCurveBuilder {
 	/**
 	 * Build the Shape Preserving Forward Curve using the Custom Parameters
 	 * 
-	 * @param llsc The Linear Latent State Calibrator Instance
-	 * @param aStretchSpec Array of the Latent State Stretches
-	 * @param fri The Floating Rate Index
-	 * @param valParam Valuation Parameters
-	 * @param pricerParam Pricer Parameters
-	 * @param csqs Market Parameters
-	 * @param quotingParam Quoting Parameters
-	 * @param dblEpochResponse The Starting Response Value
+	 * @param linearLatentStateCalibrator The Linear Latent State Calibrator Instance
+	 * @param latentStateStretchSpecArray Array of the Latent State Stretches
+	 * @param forwardLabel The Floating Rate Index Forward Label
+	 * @param valuationParams Valuation Parameters
+	 * @param creditPricerParams Pricer Parameters
+	 * @param curveSurfaceQuoteContainer Market Parameters
+	 * @param valuationCustomizationParams Quoting Parameters
+	 * @param epochResponse The Starting Response Value
 	 * 
 	 * @return Instance of the Shape Preserving Discount Curve
 	 */
 
-	public static final org.drip.state.forward.ForwardCurve ShapePreservingForwardCurve (
-		final org.drip.state.inference.LinearLatentStateCalibrator llsc,
-		final org.drip.state.inference.LatentStateStretchSpec[] aStretchSpec,
-		final org.drip.state.identifier.ForwardLabel fri,
-		final org.drip.param.valuation.ValuationParams valParam,
-		final org.drip.param.pricer.CreditPricerParams pricerParam,
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
-		final org.drip.param.valuation.ValuationCustomizationParams quotingParam,
-		final double dblEpochResponse)
+	public static final ForwardCurve ShapePreservingForwardCurve (
+		final LinearLatentStateCalibrator linearLatentStateCalibrator,
+		final LatentStateStretchSpec[] latentStateStretchSpecArray,
+		final ForwardLabel forwardLabel,
+		final ValuationParams valuationParams,
+		final CreditPricerParams creditPricerParams,
+		final CurveSurfaceQuoteContainer curveSurfaceQuoteContainer,
+		final ValuationCustomizationParams valuationCustomizationParams,
+		final double epochResponse)
 	{
-		if (null == llsc) return null;
+		if (null == linearLatentStateCalibrator) {
+			return null;
+		}
 
 		try {
-			org.drip.state.forward.ForwardCurve fc = new org.drip.state.curve.BasisSplineForwardRate (fri,
-				llsc.calibrateSpan (aStretchSpec, dblEpochResponse, valParam, pricerParam, quotingParam,
-					csqs));
+			ForwardCurve forwardCurve = new org.drip.state.curve.BasisSplineForwardRate (
+				forwardLabel,
+				linearLatentStateCalibrator.calibrateSpan (
+					latentStateStretchSpecArray,
+					epochResponse,
+					valuationParams,
+					creditPricerParams,
+					valuationCustomizationParams,
+					curveSurfaceQuoteContainer
+				)
+			);
 
-			return fc.setCCIS (new org.drip.analytics.input.LatentStateShapePreservingCCIS (llsc,
-				aStretchSpec, valParam, pricerParam, quotingParam, csqs)) ? fc : null;
-		} catch (java.lang.Exception e) {
+			return forwardCurve.setCCIS (
+				new org.drip.analytics.input.LatentStateShapePreservingCCIS (
+					linearLatentStateCalibrator,
+					latentStateStretchSpecArray,
+					valuationParams,
+					creditPricerParams,
+					valuationCustomizationParams,
+					curveSurfaceQuoteContainer
+				)
+			) ? forwardCurve : null;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -165,93 +202,115 @@ public class ScenarioForwardCurveBuilder {
 	 * Construct an instance of the Shape Preserver of the desired basis type, using the specified basis set
 	 * 	builder parameters.
 	 * 
-	 * @param strName Curve Name
-	 * @param fri The Floating Rate Index
-	 * @param valParams Valuation Parameters
-	 * @param pricerParam Pricer Parameters
-	 * @param csqs Market Parameters
-	 * @param quotingParam Quoting Parameters
-	 * @param strBasisType The Basis Type
-	 * @param fsbp The Function Set Basis Parameters
-	 * @param aCalibComp Array of Calibration Components
-	 * @param strManifestMeasure The Calibration Manifest Measure
-	 * @param adblQuote Array of Calibration Quotes
-	 * @param dblEpochResponse The Stretch Start DF
+	 * @param name Curve Name
+	 * @param friForwardLabel The Floating Rate Index Forward Label
+	 * @param valuationParams Valuation Parameters
+	 * @param creditPricerParams Pricer Parameters
+	 * @param curveSurfaceQuoteContainer Market Parameters
+	 * @param valuationCustomizationParams Quoting Parameters
+	 * @param basisType The Basis Type
+	 * @param functionSetBuilderParams The Function Set Basis Parameters
+	 * @param calibrationComponentArray Array of Calibration Components
+	 * @param manifestMeasure The Calibration Manifest Measure
+	 * @param quoteArray Array of Calibration Quotes
+	 * @param epochResponse The Starting Response Value
 	 * 
 	 * @return Instance of the Shape Preserver of the desired basis type
 	 */
 
-	public static final org.drip.state.forward.ForwardCurve ShapePreservingForwardCurve (
-		final java.lang.String strName,
-		final org.drip.state.identifier.ForwardLabel fri,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.CreditPricerParams pricerParam,
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
-		final org.drip.param.valuation.ValuationCustomizationParams quotingParam,
-		final java.lang.String strBasisType,
-		final org.drip.spline.basis.FunctionSetBuilderParams fsbp,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp,
-		final java.lang.String strManifestMeasure,
-		final double[] adblQuote,
-		final double dblEpochResponse)
+	public static final ForwardCurve ShapePreservingForwardCurve (
+		final String name,
+		final ForwardLabel friForwardLabel,
+		final ValuationParams valuationParams,
+		final CreditPricerParams creditPricerParams,
+		final CurveSurfaceQuoteContainer curveSurfaceQuoteContainer,
+		final ValuationCustomizationParams valuationCustomizationParams,
+		final String basisType,
+		final FunctionSetBuilderParams functionSetBuilderParams,
+		final CalibratableComponent[] calibrationComponentArray,
+		final String manifestMeasure,
+		final double[] quoteArray,
+		final double epochResponse)
 	{
-		if (null == strName || strName.isEmpty() || null == strBasisType || strBasisType.isEmpty() || null ==
-			valParams || null == fsbp || null == strManifestMeasure || strManifestMeasure.isEmpty())
+		if (null == functionSetBuilderParams || null == manifestMeasure || manifestMeasure.isEmpty()) {
 			return null;
+		}
 
-		int iNumQuote = null == adblQuote ? 0 : adblQuote.length;
-		int iNumComp = null == aCalibComp ? 0 : aCalibComp.length;
+		int quoteCount = null == quoteArray ? 0 : quoteArray.length;
+		int componentCount = null == calibrationComponentArray ? 0 : calibrationComponentArray.length;
 
-		if (0 == iNumComp || iNumComp != iNumQuote) return null;
+		if (0 == componentCount || componentCount != quoteCount) {
+			return null;
+		}
 
 		try {
-			org.drip.state.identifier.ForwardLabel forwardLabel = null;
+			ForwardLabel forwardLabel = null;
 
-			if (aCalibComp[0] instanceof org.drip.product.rates.DualStreamComponent)
-				forwardLabel = ((org.drip.product.rates.DualStreamComponent)
-					aCalibComp[0]).derivedStream().forwardLabel();
-			else {
-				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel>
-					mapForwardLabel = aCalibComp[0].forwardLabel();
+			if (calibrationComponentArray[0] instanceof DualStreamComponent) {
+				forwardLabel =
+					((DualStreamComponent) calibrationComponentArray[0]).derivedStream().forwardLabel();
+			} else {
+				CaseInsensitiveTreeMap<ForwardLabel> forwardLabelMap =
+					calibrationComponentArray[0].forwardLabel();
 
-				if (null != mapForwardLabel && 0 != mapForwardLabel.size())
-					forwardLabel = mapForwardLabel.get ("BASE");
+				if (null != forwardLabelMap && 0 != forwardLabelMap.size()) {
+					forwardLabel = forwardLabelMap.get ("BASE");
+				}
 			}
 
-			org.drip.state.representation.LatentStateSpecification[] aLSS = new
-				org.drip.state.representation.LatentStateSpecification[] {new
-					org.drip.state.representation.LatentStateSpecification
-						(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_FORWARD,
-							org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE,
-								forwardLabel)};
+			LatentStateSpecification[] latentStateSpecificationArray = new LatentStateSpecification[] {
+				new LatentStateSpecification (
+					LatentStateStatic.LATENT_STATE_FORWARD,
+					LatentStateStatic.FORWARD_QM_FORWARD_RATE,
+					forwardLabel
+				)
+			};
 
-			org.drip.state.inference.LatentStateSegmentSpec[] aSegmentSpec = new
-				org.drip.state.inference.LatentStateSegmentSpec[iNumComp];
+			LatentStateSegmentSpec[] latentStateSegmentSpecArray =
+				new LatentStateSegmentSpec[componentCount];
 
-			for (int i = 0; i < iNumComp; ++i) {
-				org.drip.product.calib.ProductQuoteSet pqs = aCalibComp[i].calibQuoteSet (aLSS);
+			for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+				ProductQuoteSet productQuoteSet = calibrationComponentArray[componentIndex].calibQuoteSet
+					(latentStateSpecificationArray);
 
-				if (null == pqs || !pqs.set (strManifestMeasure, adblQuote[i])) return null;
+				if (null == productQuoteSet || !productQuoteSet.set (
+					manifestMeasure,
+					quoteArray[componentIndex]
+				)) {
+					return null;
+				}
 
-				aSegmentSpec[i] = new org.drip.state.inference.LatentStateSegmentSpec (aCalibComp[i], pqs);
+				latentStateSegmentSpecArray[componentIndex] = new LatentStateSegmentSpec (
+					calibrationComponentArray[componentIndex],
+					productQuoteSet
+				);
 			}
 
-			org.drip.state.inference.LatentStateStretchSpec[] aStretchSpec = new
-				org.drip.state.inference.LatentStateStretchSpec[] {new
-					org.drip.state.inference.LatentStateStretchSpec (strName, aSegmentSpec)};
-
-			org.drip.state.inference.LinearLatentStateCalibrator llsc = new
-				org.drip.state.inference.LinearLatentStateCalibrator (new
-					org.drip.spline.params.SegmentCustomBuilderControl (strBasisType, fsbp,
-						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), new
-							org.drip.spline.params.ResponseScalingShapeControl (true, new
-								org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)), null),
-									org.drip.spline.stretch.BoundarySettings.FinancialStandard(),
-										org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE, null, null);
-
-			return ShapePreservingForwardCurve (llsc, aStretchSpec, fri, valParams, pricerParam, csqs,
-				quotingParam, dblEpochResponse);
-		} catch (java.lang.Exception e) {
+			return ShapePreservingForwardCurve (
+				new LinearLatentStateCalibrator (
+					new SegmentCustomBuilderControl (
+						basisType,
+						functionSetBuilderParams,
+						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2),
+						new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+						null
+					),
+					BoundarySettings.FinancialStandard(),
+					MultiSegmentSequence.CALIBRATE,
+					null,
+					null
+				),
+				new LatentStateStretchSpec[] {
+					new LatentStateStretchSpec (name, latentStateSegmentSpecArray)
+				},
+				friForwardLabel,
+				valuationParams,
+				creditPricerParams,
+				curveSurfaceQuoteContainer,
+				valuationCustomizationParams,
+				epochResponse
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -261,21 +320,25 @@ public class ScenarioForwardCurveBuilder {
 	/**
 	 * Construct an Instance of the Flat Forward Rate Forward Curve
 	 * 
-	 * @param dtStart The Forward Curve Start Date
-	 * @param fri The Floating Rate Index
-	 * @param dblFlatForwardRate The Flat Forward Rate
+	 * @param startDate The Forward Curve Start Date
+	 * @param forwardLabel The Floating Rate Index
+	 * @param flatForwardRate The Flat Forward Rate
 	 * 
 	 * @return Instance of the Flat Forward Rate Forward Curve
 	 */
 
-	public static final org.drip.state.forward.ForwardCurve FlatForwardForwardCurve (
-		final org.drip.analytics.date.JulianDate dtStart,
-		final org.drip.state.identifier.ForwardLabel fri,
-		final double dblFlatForwardRate)
+	public static final ForwardCurve FlatForwardForwardCurve (
+		final JulianDate startDate,
+		final ForwardLabel forwardLabel,
+		final double flatForwardRate)
 	{
 		try {
-			return new org.drip.state.nonlinear.FlatForwardForwardCurve (dtStart, fri, dblFlatForwardRate);
-		} catch (java.lang.Exception e) {
+			return new org.drip.state.nonlinear.FlatForwardForwardCurve (
+				startDate,
+				forwardLabel,
+				flatForwardRate
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
