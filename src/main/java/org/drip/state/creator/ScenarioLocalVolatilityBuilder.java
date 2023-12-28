@@ -1,11 +1,31 @@
 
 package org.drip.state.creator;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.definition.MarketSurface;
+import org.drip.analytics.definition.NodeStructure;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.param.market.LatentStateFixingsContainer;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.fra.FRAStandardCapFloor;
+import org.drip.spline.basis.PolynomialFunctionSetParams;
+import org.drip.spline.params.SegmentCustomBuilderControl;
+import org.drip.spline.params.SegmentInelasticDesignControl;
+import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
+import org.drip.state.boot.VolatilityCurveScenario;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.forward.ForwardCurve;
+import org.drip.state.identifier.LatentStateLabel;
+import org.drip.state.volatility.VolatilityCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,115 +102,170 @@ package org.drip.state.creator;
 
 /**
  * <i>ScenarioLocalVolatilityBuilder</i> implements the construction of the Local Volatility surface using
- * the input option instruments, their Call Prices, and a wide variety of custom build schemes.
+ * 	the input option instruments, their Call Prices, and a wide variety of custom build schemes. It
+ *  implements the following Functions:
+ * 
+ * <ul>
+ * 		<li>Create a Volatility Curve from the Calibration Instruments</li>
+ * 		<li>Build an Instance of the Volatility Surface using custom wire span and surface splines</li>
+ * 		<li>Construct a Scenario Market Surface off of cubic polynomial wire spline and cubic polynomial surface Spline</li>
+ * </ul>
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md">Scenario State Curve/Surface Builders</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md">Scenario State Curve/Surface Builders</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class ScenarioLocalVolatilityBuilder {
+public class ScenarioLocalVolatilityBuilder
+{
 
 	/**
 	 * Create a Volatility Curve from the Calibration Instruments
 	 * 
-	 * @param strName Volatility Curve name
-	 * @param dtSpot Spot Date
-	 * @param lslUnderlying Underlying Latent State Label
-	 * @param aFRACapFloor Array of the FRA Cap Floor Instruments
-	 * @param adblCalibQuote Input Calibration Quotes
-	 * @param astrCalibMeasure Input Calibration Measures
-	 * @param dc Base Discount Curve
-	 * @param fc Forward Curve
-	 * @param lsfc Latent State Fixings Container
+	 * @param name Volatility Curve name
+	 * @param spotDate Spot Date
+	 * @param underlyingLatentStateLabel Underlying Latent State Label
+	 * @param fraStandardCapFloorArray Array of the FRA Cap Floor Instruments
+	 * @param calibrationQuoteArray Input Calibration Quotes
+	 * @param calibrationMeasureArray Input Calibration Measures
+	 * @param discountCurve Base Discount Curve
+	 * @param forwardCurve Forward Curve
+	 * @param latentStateFixingsContainer Latent State Fixings Container
 	 * 
 	 * @return The Calibrated Volatility Curve
 	 */
 
-	public static final org.drip.state.volatility.VolatilityCurve NonlinearBuild (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final org.drip.state.identifier.LatentStateLabel lslUnderlying,
-		final org.drip.product.fra.FRAStandardCapFloor[] aFRACapFloor,
-		final double[] adblCalibQuote,
-		final java.lang.String[] astrCalibMeasure,
-		final org.drip.state.discount.MergedDiscountForwardCurve dc,
-		final org.drip.state.forward.ForwardCurve fc,
-		final org.drip.param.market.LatentStateFixingsContainer lsfc)
+	public static final VolatilityCurve NonlinearBuild (
+		final String name,
+		final JulianDate spotDate,
+		final LatentStateLabel underlyingLatentStateLabel,
+		final FRAStandardCapFloor[] fraStandardCapFloorArray,
+		final double[] calibrationQuoteArray,
+		final String[] calibrationMeasureArray,
+		final MergedDiscountForwardCurve discountCurve,
+		final ForwardCurve forwardCurve,
+		final LatentStateFixingsContainer latentStateFixingsContainer)
 	{
-		return null == dtSpot ? null : org.drip.state.boot.VolatilityCurveScenario.Standard (strName,
-			org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), lslUnderlying, aFRACapFloor,
-				adblCalibQuote, astrCalibMeasure, false, dc, fc, lsfc, null);
+		return null == spotDate ? null : VolatilityCurveScenario.Standard (
+			name,
+			ValuationParams.Spot (spotDate.julian()),
+			underlyingLatentStateLabel,
+			fraStandardCapFloorArray,
+			calibrationQuoteArray,
+			calibrationMeasureArray,
+			false,
+			discountCurve,
+			forwardCurve,
+			latentStateFixingsContainer,
+			null
+		);
 	}
 
 	/**
 	 * Build an Instance of the Volatility Surface using custom wire span and surface splines
 	 * 
-	 * @param strName Name of the Volatility Surface
-	 * @param dtStart Start/Epoch Julian Date
-	 * @param strCurrency Currency
-	 * @param dblRiskFreeRate Risk Free Discounting Rate
-	 * @param adblStrike Array of Strikes
-	 * @param adblMaturity Array of Maturities
-	 * @param aadblCallPrice Double Array of the Call Prices
-	 * @param scbcWireSpan The Wire Span Segment Customizer
-	 * @param scbcSurface The Surface Segment Customizer
+	 * @param name Name of the Volatility Surface
+	 * @param startDate Start/Epoch Julian Date
+	 * @param currency Currency
+	 * @param riskFreeRate Risk Free Discounting Rate
+	 * @param strikeArray Array of Strikes
+	 * @param maturityArray Array of Maturities
+	 * @param callPriceGrid Double Array of the Call Prices
+	 * @param wireSpanSegmentCustomBuilderControl The Wire Span Segment Customizer
+	 * @param surfaceSegmentCustomBuilderControl The Surface Segment Customizer
 	 * 
 	 * @return Instance of the Market Node Surface
 	 */
 
-	public static final org.drip.analytics.definition.MarketSurface CustomSplineWireSurface (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final double dblRiskFreeRate,
-		final double[] adblStrike,
-		final double[] adblMaturity,
-		final double[][] aadblCallPrice,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbcSurface)
+	public static final MarketSurface CustomSplineWireSurface (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final double riskFreeRate,
+		final double[] strikeArray,
+		final double[] maturityArray,
+		final double[][] callPriceGrid,
+		final SegmentCustomBuilderControl wireSpanSegmentCustomBuilderControl,
+		final SegmentCustomBuilderControl surfaceSegmentCustomBuilderControl)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblRiskFreeRate)) return null;
-
-		org.drip.analytics.definition.MarketSurface msCallPrice =
-			org.drip.state.creator.ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (strName +
-				"_CALL_PRICE_SURFACE", dtStart, strCurrency, adblStrike, adblMaturity, aadblCallPrice,
-					scbcWireSpan, scbcSurface);
-
-		if (null == msCallPrice) return null;
-
-		int iNumStrike = adblStrike.length;
-		int iNumMaturity = adblMaturity.length;
-		double[][] aadblLocalVolatility = new double[iNumStrike][iNumMaturity];
-		org.drip.analytics.definition.NodeStructure[] aTSMaturityAnchor = new
-			org.drip.analytics.definition.NodeStructure[iNumMaturity];
-
-		for (int j = 0; j < iNumMaturity; ++j) {
-			if (null == (aTSMaturityAnchor[j] = msCallPrice.yAnchorTermStructure (adblMaturity[j])))
-				return null;
+		if (!NumberUtil.IsValid (riskFreeRate)) {
+			return null;
 		}
 
-		for (int i = 0; i < iNumStrike; ++i) {
-			org.drip.analytics.definition.NodeStructure tsStrikeAnchor = msCallPrice.xAnchorTermStructure
-				(adblStrike[i]);
+		MarketSurface callPriceMarketSurface = ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (
+			name + "_CALL_PRICE_SURFACE",
+			startDate,
+			currency,
+			strikeArray,
+			maturityArray,
+			callPriceGrid,
+			wireSpanSegmentCustomBuilderControl,
+			surfaceSegmentCustomBuilderControl
+		);
 
-			if (null == tsStrikeAnchor) return null;
+		if (null == callPriceMarketSurface) {
+			return null;
+		}
 
-			for (int j = 0; j < iNumMaturity; ++j) {
+		int strikeCount = strikeArray.length;
+		int maturityCount = maturityArray.length;
+		double[][] localVolatilityGrid = new double[strikeCount][maturityCount];
+		NodeStructure[] maturityAnchorNodeStructureArray = new NodeStructure[maturityCount];
+
+		for (int maturityIndex = 0; maturityIndex < maturityCount; ++maturityIndex) {
+			if (null == (
+				maturityAnchorNodeStructureArray[maturityIndex] =
+					callPriceMarketSurface.yAnchorTermStructure (
+						maturityArray[maturityIndex]
+					)
+				)
+			) {
+				return null;
+			}
+		}
+
+		for (int strikeIndex = 0; strikeIndex < strikeCount; ++strikeIndex) {
+			NodeStructure strikeAnchorNodeStructure = callPriceMarketSurface.xAnchorTermStructure (
+				strikeArray[strikeIndex]
+			);
+
+			if (null == strikeAnchorNodeStructure) {
+				return null;
+			}
+
+			for (int maturityIndex = 0; maturityIndex < maturityCount; ++maturityIndex) {
 				try {
-					aadblLocalVolatility[i][j] = java.lang.Math.sqrt ((tsStrikeAnchor.nodeDerivative ((int)
-						adblMaturity[j], 1) + dblRiskFreeRate * adblStrike[i] *
-							aTSMaturityAnchor[j].nodeDerivative ((int) adblStrike[i], 1)) / (adblStrike[i] *
-								adblStrike[i] * aTSMaturityAnchor[j].nodeDerivative ((int) adblStrike[i],
-									2)));
-				} catch (java.lang.Exception e) {
+					localVolatilityGrid[strikeIndex][maturityIndex] = Math.sqrt (
+						(
+							strikeAnchorNodeStructure.nodeDerivative (
+								(int) maturityArray[maturityIndex],
+								1
+							) + riskFreeRate * strikeArray[strikeIndex] *
+							maturityAnchorNodeStructureArray[maturityIndex].nodeDerivative (
+								(int) strikeArray[strikeIndex],
+								1
+							)
+						) / (
+							strikeArray[strikeIndex] * strikeArray[strikeIndex] *
+							maturityAnchorNodeStructureArray[maturityIndex].nodeDerivative (
+								(int) strikeArray[strikeIndex],
+								2
+							)
+						)
+					);
+				} catch (Exception e) {
 					e.printStackTrace();
 
 					return null;
@@ -198,63 +273,91 @@ public class ScenarioLocalVolatilityBuilder {
 			}
 		}
 
-		return org.drip.state.creator.ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (strName, dtStart,
-			strCurrency, adblStrike, adblMaturity, aadblLocalVolatility, scbcWireSpan, scbcSurface);
+		return ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (
+			name,
+			startDate,
+			currency,
+			strikeArray,
+			maturityArray,
+			localVolatilityGrid,
+			wireSpanSegmentCustomBuilderControl,
+			surfaceSegmentCustomBuilderControl
+		);
 	}
 
 	/**
 	 * Construct a Scenario Market Surface off of cubic polynomial wire spline and cubic polynomial surface
 	 * 	Spline.
 	 * 
-	 * @param strName Name of the Volatility Surface
-	 * @param dtStart Start/Epoch Julian Date
-	 * @param strCurrency Currency
-	 * @param dblRiskFreeRate Risk Free Discounting Rate
-	 * @param adblStrike Array of Strikes
-	 * @param astrTenor Array of Maturity Tenors
-	 * @param aadblNode Double Array of the Surface Nodes
+	 * @param name Name of the Volatility Surface
+	 * @param startDate Start/Epoch Julian Date
+	 * @param currency Currency
+	 * @param riskFreeRate Risk Free Discounting Rate
+	 * @param strikeArray Array of Strikes
+	 * @param tenorArray Array of Maturity Tenors
+	 * @param nodeGrid Double Array of the Surface Nodes
 	 * 
 	 * @return Instance of the Market Node Surface
 	 */
 
-	public static final org.drip.analytics.definition.MarketSurface CubicPolynomialWireSurface (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
+	public static final MarketSurface CubicPolynomialWireSurface (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
 		final double dblRiskFreeRate,
-		final double[] adblStrike,
-		final java.lang.String[] astrTenor,
-		final double[][] aadblNode)
+		final double[] strikeArray,
+		final String[] tenorArray,
+		final double[][] nodeGrid)
 	{
-		if (null == astrTenor) return null;
+		if (null == tenorArray) {
+			return null;
+		}
 
-		int iNumTenor = astrTenor.length;
-		double[] adblMaturity = new double[iNumTenor];
-		org.drip.spline.params.SegmentCustomBuilderControl scbcSurface = null;
-		org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan = null;
+		int tenorCount = tenorArray.length;
+		double[] maturityArray = new double[tenorCount];
+		SegmentCustomBuilderControl surfaceSegmentCustomBuilderControl = null;
+		SegmentCustomBuilderControl wireSpanSegmentCustomBuilderControl = null;
 
-		if (0 == iNumTenor) return null;
+		if (0 == tenorCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumTenor; ++i)
-			adblMaturity[i] = dtStart.addTenor (astrTenor[i]).julian();
+		for (int tenorIndex = 0; tenorIndex < tenorCount; ++tenorIndex) {
+			maturityArray[tenorIndex] = startDate.addTenor (tenorArray[tenorIndex]).julian();
+		}
 
 		try {
-			scbcWireSpan = new org.drip.spline.params.SegmentCustomBuilderControl
-				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-					org.drip.spline.basis.PolynomialFunctionSetParams (4),
-						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);
+			wireSpanSegmentCustomBuilderControl = new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+				SegmentInelasticDesignControl.Create (2, 2),
+				null,
+				null
+			);
 
-			scbcSurface = new org.drip.spline.params.SegmentCustomBuilderControl
-				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-					org.drip.spline.basis.PolynomialFunctionSetParams (4),
-						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);
-		} catch (java.lang.Exception e) {
+			surfaceSegmentCustomBuilderControl = new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+				SegmentInelasticDesignControl.Create (2, 2),
+				null,
+				null
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		return CustomSplineWireSurface (strName, dtStart, strCurrency, dblRiskFreeRate, adblStrike,
-			adblMaturity, aadblNode, scbcWireSpan, scbcSurface);
+		return CustomSplineWireSurface (
+			name,
+			startDate,
+			currency,
+			dblRiskFreeRate,
+			strikeArray,
+			maturityArray,
+			nodeGrid,
+			wireSpanSegmentCustomBuilderControl,
+			surfaceSegmentCustomBuilderControl
+		);
 	}
 }

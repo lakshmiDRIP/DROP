@@ -1,15 +1,35 @@
 
 package org.drip.state.creator;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.definition.LatentStateStatic;
 import org.drip.analytics.input.LatentStateShapePreservingCCIS;
+import org.drip.function.r1tor1.QuadraticRationalShapeControl;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.pricer.CreditPricerParams;
 import org.drip.param.valuation.ValuationCustomizationParams;
 import org.drip.param.valuation.ValuationParams;
+import org.drip.product.calib.ProductQuoteSet;
+import org.drip.product.definition.CalibratableComponent;
+import org.drip.spline.basis.ExponentialTensionSetParams;
+import org.drip.spline.basis.FunctionSetBuilderParams;
+import org.drip.spline.basis.KaklisPandelisSetParams;
+import org.drip.spline.basis.PolynomialFunctionSetParams;
+import org.drip.spline.grid.OverlappingStretchSpan;
+import org.drip.spline.params.ResponseScalingShapeControl;
+import org.drip.spline.params.SegmentCustomBuilderControl;
+import org.drip.spline.params.SegmentInelasticDesignControl;
+import org.drip.spline.stretch.BoundarySettings;
+import org.drip.spline.stretch.MultiSegmentSequence;
+import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
 import org.drip.state.curve.BasisSplineGovvieYield;
 import org.drip.state.govvie.GovvieCurve;
+import org.drip.state.identifier.GovvieLabel;
+import org.drip.state.inference.LatentStateSegmentSpec;
 import org.drip.state.inference.LatentStateStretchSpec;
 import org.drip.state.inference.LinearLatentStateCalibrator;
+import org.drip.state.nonlinear.FlatYieldGovvieCurve;
+import org.drip.state.representation.LatentStateSpecification;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -198,83 +218,103 @@ public class ScenarioGovvieCurveBuilder
 	/**
 	 * Construct an Instance of the Shape Preserver of the desired Basis Spline Type, using the specified
 	 *  Basis Spline Set Builder Parameters.
-	 * 
-	 * @param strName Curve Name
-	 * @param strTreasuryCode Treasury Code
-	 * @param strCurrency Currency
-	 * @param valParams Valuation Parameters
-	 * @param pricerParams Pricer Parameters
-	 * @param csqc Market Parameters
-	 * @param vcp Valuation Customization Parameters
-	 * @param strBasisType The Basis Type
-	 * @param fsbp The Function Set Basis Parameters
-	 * @param sdic Segment Design In-elastic Control
-	 * @param aCalibComp Array of Calibration Components
-	 * @param strManifestMeasure The Calibration Manifest Measure
-	 * @param adblQuote Array of Calibration Quotes
+	 *  
+	 * @param name Curve Name
+	 * @param treasuryCode Treasury Code
+	 * @param currency Currency
+	 * @param valuationParams Valuation Parameters
+	 * @param creditPricerParams Pricer Parameters
+	 * @param curveSurfaceQuoteContainer Market Parameters
+	 * @param valuationCustomizationParams Valuation Customization Parameters
+	 * @param basisType The Basis Type
+	 * @param functionSetBuilderParams The Function Set Basis Parameters
+	 * @param segmentInelasticDesignControl Segment Design In-elastic Control
+	 * @param calibratableComponentArray Array of Calibration Components
+	 * @param manifestMeasure The Calibration Manifest Measure
+	 * @param quoteArray Array of Calibration Quotes
 	 * 
 	 * @return Instance of the Shape Preserver of the Desired Basis Type
 	 */
 
-	public static final org.drip.state.govvie.GovvieCurve ShapePreservingGovvieCurve (
-		final java.lang.String strName,
-		final java.lang.String strTreasuryCode,
-		final java.lang.String strCurrency,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.CreditPricerParams pricerParams,
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
-		final org.drip.param.valuation.ValuationCustomizationParams vcp,
-		final java.lang.String strBasisType,
-		final org.drip.spline.basis.FunctionSetBuilderParams fsbp,
-		final org.drip.spline.params.SegmentInelasticDesignControl sdic,
-		final org.drip.product.definition.CalibratableComponent[] aCalibComp,
-		final java.lang.String strManifestMeasure,
-		final double[] adblQuote)
+	public static final GovvieCurve ShapePreservingGovvieCurve (
+		final String name,
+		final String treasuryCode,
+		final String currency,
+		final ValuationParams valuationParams,
+		final CreditPricerParams creditPricerParams,
+		final CurveSurfaceQuoteContainer curveSurfaceQuoteContainer,
+		final ValuationCustomizationParams valuationCustomizationParams,
+		final String basisType,
+		final FunctionSetBuilderParams functionSetBuilderParams,
+		final SegmentInelasticDesignControl segmentInelasticDesignControl,
+		final CalibratableComponent[] calibratableComponentArray,
+		final String manifestMeasure,
+		final double[] quoteArray)
 	{
-		if (null == strName || strName.isEmpty() || null == strBasisType || strBasisType.isEmpty() || null ==
-			valParams || null == fsbp || null == strManifestMeasure || strManifestMeasure.isEmpty())
+		int quoteCount = null == quoteArray ? 0 : quoteArray.length;
+		int componentCount = null == calibratableComponentArray ? 0 : calibratableComponentArray.length;
+
+		if (0 == componentCount || componentCount != quoteCount) {
 			return null;
+		}
 
-		int iNumQuote = null == adblQuote ? 0 : adblQuote.length;
-		int iNumComp = null == aCalibComp ? 0 : aCalibComp.length;
-
-		if (0 == iNumComp || iNumComp != iNumQuote) return null;
-
-		org.drip.state.identifier.GovvieLabel govvieLabel = aCalibComp[0].govvieLabel();
+		GovvieLabel govvieLabel = calibratableComponentArray[0].govvieLabel();
 
 		try {
-			org.drip.state.representation.LatentStateSpecification[] aLSS = new
-				org.drip.state.representation.LatentStateSpecification[] {new
-					org.drip.state.representation.LatentStateSpecification
-						(org.drip.analytics.definition.LatentStateStatic.LATENT_STATE_GOVVIE,
-							org.drip.analytics.definition.LatentStateStatic.GOVVIE_QM_YIELD, govvieLabel)};
+			LatentStateSpecification[] latentStateSpecificationArray = new LatentStateSpecification[] {
+				new LatentStateSpecification (
+					LatentStateStatic.LATENT_STATE_GOVVIE,
+					LatentStateStatic.GOVVIE_QM_YIELD, govvieLabel
+				)
+			};
 
-			org.drip.state.inference.LatentStateSegmentSpec[] aSegmentSpec = new
-				org.drip.state.inference.LatentStateSegmentSpec[iNumComp];
+			LatentStateSegmentSpec[] latentStateSegmentSpecArray =
+				new LatentStateSegmentSpec[componentCount];
 
-			for (int i = 0; i < iNumComp; ++i) {
-				org.drip.product.calib.ProductQuoteSet pqs = aCalibComp[i].calibQuoteSet (aLSS);
+			for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
+				ProductQuoteSet productQuoteSet = calibratableComponentArray[componentIndex].calibQuoteSet
+					(latentStateSpecificationArray);
 
-				if (null == pqs || !pqs.set (strManifestMeasure, adblQuote[i])) return null;
+				if (null == productQuoteSet ||
+					!productQuoteSet.set (manifestMeasure, quoteArray[componentIndex])) {
+					return null;
+				}
 
-				aSegmentSpec[i] = new org.drip.state.inference.LatentStateSegmentSpec (aCalibComp[i], pqs);
+				latentStateSegmentSpecArray[componentIndex] = new LatentStateSegmentSpec (
+					calibratableComponentArray[componentIndex],
+					productQuoteSet
+				);
 			}
 
-			org.drip.state.inference.LatentStateStretchSpec[] aStretchSpec = new
-				org.drip.state.inference.LatentStateStretchSpec[] {new
-					org.drip.state.inference.LatentStateStretchSpec (strName, aSegmentSpec)};
-
-			org.drip.state.inference.LinearLatentStateCalibrator llsc = new
-				org.drip.state.inference.LinearLatentStateCalibrator (new
-					org.drip.spline.params.SegmentCustomBuilderControl (strBasisType, fsbp, sdic, new
-						org.drip.spline.params.ResponseScalingShapeControl (true, new
-							org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)), null),
-								org.drip.spline.stretch.BoundarySettings.FinancialStandard(),
-									org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE, null, null);
-
-			return ShapePreservingGovvieCurve (llsc, aStretchSpec, strTreasuryCode, strCurrency, valParams,
-				pricerParams, csqc, vcp, adblQuote[0]);
-		} catch (java.lang.Exception e) {
+			return ShapePreservingGovvieCurve (
+				new LinearLatentStateCalibrator (
+					new SegmentCustomBuilderControl (
+						basisType,
+						functionSetBuilderParams,
+						segmentInelasticDesignControl,
+						new ResponseScalingShapeControl (
+							true,
+							new QuadraticRationalShapeControl (0.)
+						),
+						null
+					),
+					BoundarySettings.FinancialStandard(),
+					MultiSegmentSequence.CALIBRATE,
+					null,
+					null
+				),
+				new LatentStateStretchSpec[] {
+					new LatentStateStretchSpec (name, latentStateSegmentSpecArray)
+				},
+				treasuryCode,
+				currency,
+				valuationParams,
+				creditPricerParams,
+				curveSurfaceQuoteContainer,
+				valuationCustomizationParams,
+				quoteArray[0]
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -284,35 +324,44 @@ public class ScenarioGovvieCurveBuilder
 	/**
 	 * Construct an Instance of the Shape Preserver of the Linear Polynomial Type, using the Specified Basis
 	 *  Set Builder Parameters.
-	 * 
-	 * @param strName Curve Name
-	 * @param strTreasuryCode Treasury Code
-	 * @param strCurrency Currency
-	 * @param iSpotDate Spot Date
-	 * @param aComp Array of Calibration Components
-	 * @param adblQuote Array of Calibration Quotes
-	 * @param strManifestMeasure The Calibration Manifest Measure
+	 *
+	 * @param name Curve Name
+	 * @param treasuryCode Treasury Code
+	 * @param currency Currency
+	 * @param spotDate Spot Date
+	 * @param calibratableComponentArray Array of Calibration Components
+	 * @param quoteArray Array of Calibration Quotes
+	 * @param manifestMeasure The Calibration Manifest Measure
 	 * 
 	 * @return Instance of the Shape Preserver of the Cubic Polynomial Type
 	 */
 
-	public static final org.drip.state.govvie.GovvieCurve LinearPolyShapePreserver (
-		final java.lang.String strName,
-		final java.lang.String strTreasuryCode,
-		final java.lang.String strCurrency,
-		final int iSpotDate,
-		final org.drip.product.definition.CalibratableComponent[] aComp,
-		final double[] adblQuote,
-		final java.lang.String strManifestMeasure)
+	public static final GovvieCurve LinearPolyShapePreserver (
+		final String name,
+		final String treasuryCode,
+		final String currency,
+		final int spotDate,
+		final CalibratableComponent[] calibratableComponentArray,
+		final double[] quoteArray,
+		final String manifestMeasure)
 	{
 		try {
-			return ShapePreservingGovvieCurve (strName, strTreasuryCode, strCurrency,
-				org.drip.param.valuation.ValuationParams.Spot (iSpotDate), null, null, null,
-					org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-						org.drip.spline.basis.PolynomialFunctionSetParams (2),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (0, 2), aComp,
-								strManifestMeasure, adblQuote);
-		} catch (java.lang.Exception e) {
+			return ShapePreservingGovvieCurve (
+				name,
+				treasuryCode,
+				currency,
+				ValuationParams.Spot (spotDate),
+				null,
+				null,
+				null,
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (2),
+				SegmentInelasticDesignControl.Create (0, 2),
+				calibratableComponentArray,
+				manifestMeasure,
+				quoteArray
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -322,35 +371,44 @@ public class ScenarioGovvieCurveBuilder
 	/**
 	 * Construct an Instance of the Shape Preserver of the Cubic Polynomial Type, using the Specified Basis
 	 *  Set Builder Parameters.
-	 * 
-	 * @param strName Curve Name
-	 * @param strTreasuryCode Treasury Code
-	 * @param strCurrency Currency
-	 * @param iSpotDate Spot Date
-	 * @param aComp Array of Calibration Components
-	 * @param adblQuote Array of Calibration Quotes
-	 * @param strManifestMeasure The Calibration Manifest Measure
+	 *
+	 * @param name Curve Name
+	 * @param treasuryCode Treasury Code
+	 * @param currency Currency
+	 * @param spotDate Spot Date
+	 * @param calibratableComponentArray Array of Calibration Components
+	 * @param quoteArray Array of Calibration Quotes
+	 * @param manifestMeasure The Calibration Manifest Measure
 	 * 
 	 * @return Instance of the Shape Preserver of the Cubic Polynomial Type
 	 */
 
-	public static final org.drip.state.govvie.GovvieCurve CubicPolyShapePreserver (
-		final java.lang.String strName,
-		final java.lang.String strTreasuryCode,
-		final java.lang.String strCurrency,
-		final int iSpotDate,
-		final org.drip.product.definition.CalibratableComponent[] aComp,
-		final double[] adblQuote,
-		final java.lang.String strManifestMeasure)
+	public static final GovvieCurve CubicPolyShapePreserver (
+		final String name,
+		final String treasuryCode,
+		final String currency,
+		final int spotDate,
+		final CalibratableComponent[] calibratableComponentArray,
+		final double[] quoteArray,
+		final String manifestMeasure)
 	{
 		try {
-			return ShapePreservingGovvieCurve (strName, strTreasuryCode, strCurrency,
-				org.drip.param.valuation.ValuationParams.Spot (iSpotDate), null, null, null,
-					org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-						org.drip.spline.basis.PolynomialFunctionSetParams (4),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), aComp,
-								strManifestMeasure, adblQuote);
-		} catch (java.lang.Exception e) {
+			return ShapePreservingGovvieCurve (
+				name,
+				treasuryCode,
+				currency,
+				ValuationParams.Spot (spotDate),
+				null,
+				null,
+				null,
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+				SegmentInelasticDesignControl.Create (0, 2),
+				calibratableComponentArray,
+				manifestMeasure,
+				quoteArray
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -360,54 +418,69 @@ public class ScenarioGovvieCurveBuilder
 	/**
 	 * Create an Instance of the Custom Splined Govvie Yield Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart The Tenor Start Date
-	 * @param strTreasuryCode Treasury Code
-	 * @param strCurrency Currency
-	 * @param aiMaturityDate Array of the Maturity Dates
-	 * @param adblYield Array of the Yields
-	 * @param scbc The Segment Custom Builder Control
+	 * @param name Curve Name
+	 * @param startDate The Tenor Start Date
+	 * @param treasuryCode Treasury Code
+	 * @param currency Currency
+	 * @param maturityDateArray Array of the Maturity Dates
+	 * @param yieldArray Array of the Yields
+	 * @param segmentCustomBuilderControl The Segment Custom Builder Control
 	 * 
 	 * @return The Instance of the Govvie Yield Curve
 	 */
 
-	public static final org.drip.state.govvie.GovvieCurve CustomSplineCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strTreasuryCode,
-		final java.lang.String strCurrency,
-		final int[] aiMaturityDate,
-		final double[] adblYield,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
+	public static final GovvieCurve CustomSplineCurve (
+		final String name,
+		final JulianDate startDate,
+		final String treasuryCode,
+		final String currency,
+		final int[] maturityDateArray,
+		final double[] yieldArray,
+		final SegmentCustomBuilderControl segmentCustomBuilderControl)
 	{
-		if (null == strName || strName.isEmpty() || null == dtStart || null == aiMaturityDate || null ==
-			adblYield)
+		if (null == startDate || null == maturityDateArray || null == yieldArray) {
 			return null;
+		}
 
-		int iNumTreasury = aiMaturityDate.length;
-		int[] aiPredictorOrdinate = new int[iNumTreasury + 1];
-		double[] adblResponseValue = new double[iNumTreasury + 1];
-		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new
-			org.drip.spline.params.SegmentCustomBuilderControl[iNumTreasury];
+		int treasuryCount = maturityDateArray.length;
+		int[] predictorOrdinateCount = new int[treasuryCount + 1];
+		double[] responseValueArray = new double[treasuryCount + 1];
+		SegmentCustomBuilderControl[] segmentCustomBuilderControlArray =
+			new SegmentCustomBuilderControl[treasuryCount];
 
-		if (0 == iNumTreasury || iNumTreasury != adblYield.length) return null;
+		if (0 == treasuryCount || treasuryCount != yieldArray.length) {
+			return null;
+		}
 
-		for (int i = 0; i <= iNumTreasury; ++i) {
-			aiPredictorOrdinate[i] = 0 == i ? dtStart.julian() : aiMaturityDate[i - 1];
+		for (int treasuryIndex = 0; treasuryIndex <= treasuryCount; ++treasuryIndex) {
+			predictorOrdinateCount[treasuryIndex] = 0 == treasuryIndex ? startDate.julian() :
+				maturityDateArray[treasuryIndex - 1];
 
-			adblResponseValue[i] = 0 == i ? adblYield[0] : adblYield[i - 1];
+			responseValueArray[treasuryIndex] = 0 == treasuryIndex ?
+				yieldArray[0] : yieldArray[treasuryIndex - 1];
 
-			if (0 != i) aSCBC[i - 1] = scbc;
+			if (0 != treasuryIndex) {
+				segmentCustomBuilderControlArray[treasuryIndex - 1] = segmentCustomBuilderControl;
+			}
 		}
 
 		try {
-			return new org.drip.state.curve.BasisSplineGovvieYield (strTreasuryCode, strCurrency, new
-				org.drip.spline.grid.OverlappingStretchSpan
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-						(strName, aiPredictorOrdinate, adblResponseValue, aSCBC, null,
-							org.drip.spline.stretch.BoundarySettings.FloatingStandard(),
-								org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE)));
-		} catch (java.lang.Exception e) {
+			return new BasisSplineGovvieYield (
+				treasuryCode,
+				currency,
+				new OverlappingStretchSpan (
+					MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
+						name,
+						predictorOrdinateCount,
+						responseValueArray,
+						segmentCustomBuilderControlArray,
+						null,
+						BoundarySettings.FloatingStandard(),
+						MultiSegmentSequence.CALIBRATE
+					)
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -417,31 +490,41 @@ public class ScenarioGovvieCurveBuilder
 	/**
 	 * Create an Instance of the Linear Polynomial Splined Govvie Yield Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart The Tenor Start Date
-	 * @param strTreasuryCode Treasury Code
-	 * @param strCurrency Currency
-	 * @param aiMaturityDate Array of the Maturity Dates
-	 * @param adblYield Array of the Govvie Yields
+	 * @param name Curve Name
+	 * @param startDate The Tenor Start Date
+	 * @param treasuryCode Treasury Code
+	 * @param currency Currency
+	 * @param maturityDateArray Array of the Maturity Dates
+	 * @param yieldArray Array of the Yields
 	 * 
 	 * @return The Instance of the Govvie Yield Curve
 	 */
 
-	public static final org.drip.state.govvie.GovvieCurve LinearPolynomialCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strTreasuryCode,
-		final java.lang.String strCurrency,
-		final int[] aiMaturityDate,
-		final double[] adblYield)
+	public static final GovvieCurve LinearPolynomialCurve (
+		final String name,
+		final JulianDate startDate,
+		final String treasuryCode,
+		final String currency,
+		final int[] maturityDateArray,
+		final double[] yieldArray)
 	{
 		try {
-			return CustomSplineCurve (strName, dtStart, strTreasuryCode, strCurrency, aiMaturityDate,
-				adblYield, new org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-						org.drip.spline.basis.PolynomialFunctionSetParams (2),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (0, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineCurve (
+				name,
+				startDate,
+				treasuryCode,
+				currency,
+				maturityDateArray,
+				yieldArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+					new PolynomialFunctionSetParams (2),
+					SegmentInelasticDesignControl.Create (0, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -451,31 +534,41 @@ public class ScenarioGovvieCurveBuilder
 	/**
 	 * Create an Instance of the Cubic Polynomial Splined Govvie Yield Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart The Tenor Start Date
-	 * @param strTreasuryCode Treasury Code
-	 * @param strCurrency Currency
-	 * @param aiMaturityDate Array of the Maturity Dates
-	 * @param adblYield Array of the Govvie Yields
+	 * @param name Curve Name
+	 * @param startDate The Tenor Start Date
+	 * @param treasuryCode Treasury Code
+	 * @param currency Currency
+	 * @param maturityDateArray Array of the Maturity Dates
+	 * @param yieldArray Array of the Yields
 	 * 
 	 * @return The Instance of the Govvie Yield Curve
 	 */
 
-	public static final org.drip.state.govvie.GovvieCurve CubicPolynomialCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strTreasuryCode,
-		final java.lang.String strCurrency,
-		final int[] aiMaturityDate,
-		final double[] adblYield)
+	public static final GovvieCurve CubicPolynomialCurve (
+		final String name,
+		final JulianDate startDate,
+		final String treasuryCode,
+		final String currency,
+		final int[] maturityDateArray,
+		final double[] yieldArray)
 	{
 		try {
-			return CustomSplineCurve (strName, dtStart, strTreasuryCode, strCurrency, aiMaturityDate,
-				adblYield, new org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-						org.drip.spline.basis.PolynomialFunctionSetParams (4),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineCurve (
+				name,
+				startDate,
+				treasuryCode,
+				currency,
+				maturityDateArray,
+				yieldArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+					new PolynomialFunctionSetParams (4),
+					SegmentInelasticDesignControl.Create (0, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -485,31 +578,41 @@ public class ScenarioGovvieCurveBuilder
 	/**
 	 * Create an Instance of the Quartic Polynomial Splined Govvie Yield Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart The Tenor Start Date
-	 * @param strTreasuryCode Treasury Code
-	 * @param strCurrency Currency
-	 * @param aiMaturityDate Array of the Maturity Dates
-	 * @param adblYield Array of the Yields
+	 * @param name Curve Name
+	 * @param startDate The Tenor Start Date
+	 * @param treasuryCode Treasury Code
+	 * @param currency Currency
+	 * @param maturityDateArray Array of the Maturity Dates
+	 * @param yieldArray Array of the Yields
 	 * 
 	 * @return The Instance of the Govvie Yield Curve
 	 */
 
-	public static final org.drip.state.govvie.GovvieCurve QuarticPolynomialCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strTreasuryCode,
-		final java.lang.String strCurrency,
-		final int[] aiMaturityDate,
-		final double[] adblYield)
+	public static final GovvieCurve QuarticPolynomialCurve (
+		final String name,
+		final JulianDate startDate,
+		final String treasuryCode,
+		final String currency,
+		final int[] maturityDateArray,
+		final double[] yieldArray)
 	{
 		try {
-			return CustomSplineCurve (strName, dtStart, strTreasuryCode, strCurrency, aiMaturityDate,
-				adblYield, new org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-						org.drip.spline.basis.PolynomialFunctionSetParams (5),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineCurve (
+				name,
+				startDate,
+				treasuryCode,
+				currency,
+				maturityDateArray,
+				yieldArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+					new PolynomialFunctionSetParams (5),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -519,31 +622,41 @@ public class ScenarioGovvieCurveBuilder
 	/**
 	 * Create an Instance of the Kaklis-Pandelis Splined Govvie Yield Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart The Tenor Start Date
-	 * @param strTreasuryCode Treasury Code
-	 * @param strCurrency Currency
-	 * @param aiMaturityDate Array of the Maturity Dates
-	 * @param adblYield Array of the Yields
+	 * @param name Curve Name
+	 * @param startDate The Tenor Start Date
+	 * @param treasuryCode Treasury Code
+	 * @param currency Currency
+	 * @param maturityDateArray Array of the Maturity Dates
+	 * @param yieldArray Array of the Yields
 	 * 
 	 * @return The Instance of the Govvie Yield Curve
 	 */
 
-	public static final org.drip.state.govvie.GovvieCurve KaklisPandelisCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strTreasuryCode,
-		final java.lang.String strCurrency,
-		final int[] aiMaturityDate,
-		final double[] adblYield)
+	public static final GovvieCurve KaklisPandelisCurve (
+		final String name,
+		final JulianDate startDate,
+		final String treasuryCode,
+		final String currency,
+		final int[] maturityDateArray,
+		final double[] yieldArray)
 	{
 		try {
-			return CustomSplineCurve (strName, dtStart, strTreasuryCode, strCurrency, aiMaturityDate,
-				adblYield, new org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS, new
-						org.drip.spline.basis.KaklisPandelisSetParams (2),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineCurve (
+				name,
+				startDate,
+				treasuryCode,
+				currency,
+				maturityDateArray,
+				yieldArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS,
+					new KaklisPandelisSetParams (2),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -553,33 +666,43 @@ public class ScenarioGovvieCurveBuilder
 	/**
 	 * Create an Instance of the KLK Hyperbolic Splined Govvie Yield Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart The Tenor Start Date
-	 * @param strTreasuryCode Treasury Code
-	 * @param strCurrency Currency
-	 * @param aiMaturityDate Array of the Maturity Dates
-	 * @param adblYield Array of the Yields
-	 * @param dblTension The Tension Parameter
+	 * @param name Curve Name
+	 * @param startDate The Tenor Start Date
+	 * @param treasuryCode Treasury Code
+	 * @param currency Currency
+	 * @param maturityDateArray Array of the Maturity Dates
+	 * @param yieldArray Array of the Yields
+	 * @param tension The Tension Parameter
 	 * 
 	 * @return The Instance of the Govvie Yield Curve
 	 */
 
-	public static final org.drip.state.govvie.GovvieCurve KLKHyperbolicCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strTreasuryCode,
-		final java.lang.String strCurrency,
-		final int[] aiMaturityDate,
-		final double[] adblYield,
-		final double dblTension)
+	public static final GovvieCurve KLKHyperbolicCurve (
+		final String name,
+		final JulianDate startDate,
+		final String treasuryCode,
+		final String currency,
+		final int[] maturityDateArray,
+		final double[] yieldArray,
+		final double tension)
 	{
 		try {
-			return CustomSplineCurve (strName, dtStart, strTreasuryCode, strCurrency, aiMaturityDate,
-				adblYield, new org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
-						new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineCurve (
+				name,
+				startDate,
+				treasuryCode,
+				currency,
+				maturityDateArray,
+				yieldArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
+					new ExponentialTensionSetParams (tension),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -589,33 +712,43 @@ public class ScenarioGovvieCurveBuilder
 	/**
 	 * Create an Instance of the KLK Rational Linear Splined Govvie Yield Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart The Tenor Start Date
-	 * @param strTreasuryCode Treasury Code
-	 * @param strCurrency Currency
-	 * @param aiMaturityDate Array of the Maturity Dates
-	 * @param adblYield Array of the Yields
-	 * @param dblTension The Tension Parameter
+	 * @param name Curve Name
+	 * @param startDate The Tenor Start Date
+	 * @param treasuryCode Treasury Code
+	 * @param currency Currency
+	 * @param maturityDateArray Array of the Maturity Dates
+	 * @param yieldArray Array of the Yields
+	 * @param tension The Tension Parameter
 	 * 
 	 * @return The Instance of the Govvie Yield Curve
 	 */
 
-	public static final org.drip.state.govvie.GovvieCurve KLKRationalLinearCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strTreasuryCode,
-		final java.lang.String strCurrency,
-		final int[] aiMaturityDate,
-		final double[] adblYield,
-		final double dblTension)
+	public static final GovvieCurve KLKRationalLinearCurve (
+		final String name,
+		final JulianDate startDate,
+		final String treasuryCode,
+		final String currency,
+		final int[] maturityDateArray,
+		final double[] yieldArray,
+		final double tension)
 	{
 		try {
-			return CustomSplineCurve (strName, dtStart, strTreasuryCode, strCurrency, aiMaturityDate,
-				adblYield, new org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
-				new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineCurve (
+				name,
+				startDate,
+				treasuryCode,
+				currency,
+				maturityDateArray,
+				yieldArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
+					new ExponentialTensionSetParams (tension),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -625,33 +758,43 @@ public class ScenarioGovvieCurveBuilder
 	/**
 	 * Create an Instance of the KLK Rational Quadratic Splined Govvie Yield Curve
 	 * 
-	 * @param strName Curve Name
-	 * @param dtStart The Tenor Start Date
-	 * @param strTreasuryCode Treasury Code
-	 * @param strCurrency Currency
-	 * @param aiMaturityDate Array of the Maturity Dates
-	 * @param adblYield Array of the Yields
-	 * @param dblTension The Tension Parameter
+	 * @param name Curve Name
+	 * @param startDate The Tenor Start Date
+	 * @param treasuryCode Treasury Code
+	 * @param currency Currency
+	 * @param maturityDateArray Array of the Maturity Dates
+	 * @param yieldArray Array of the Yields
+	 * @param tension The Tension Parameter
 	 * 
 	 * @return The Instance of the Govvie Yield Curve
 	 */
 
-	public static final org.drip.state.govvie.GovvieCurve KLKRationalQuadraticCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strTreasuryCode,
-		final java.lang.String strCurrency,
-		final int[] aiMaturityDate,
-		final double[] adblYield,
-		final double dblTension)
+	public static final GovvieCurve KLKRationalQuadraticCurve (
+		final String name,
+		final JulianDate startDate,
+		final String treasuryCode,
+		final String currency,
+		final int[] maturityDateArray,
+		final double[] yieldArray,
+		final double tension)
 	{
 		try {
-			return CustomSplineCurve (strName, dtStart, strTreasuryCode, strCurrency, aiMaturityDate,
-				adblYield, new org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
-				new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-					org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineCurve (
+				name,
+				startDate,
+				treasuryCode,
+				currency,
+				maturityDateArray,
+				yieldArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
+					new ExponentialTensionSetParams (tension),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -661,26 +804,25 @@ public class ScenarioGovvieCurveBuilder
 	/**
 	 * Construct a Govvie Curve from an Array of Dates and Yields
 	 * 
-	 * @param iEpochDate Epoch Date
-	 * @param strTreasuryCode Treasury Code
-	 * @param strCurrency Currency
-	 * @param aiDate Array of Dates
-	 * @param adblYield Array of Yields
+	 * @param epochDate Epoch Date
+	 * @param treasuryCode Treasury Code
+	 * @param currency Currency
+	 * @param dateArray Array of Dates
+	 * @param yieldArray Array of Yields
 	 * 
 	 * @return The Govvie Curve Instance
 	 */
 
-	public static final org.drip.state.govvie.GovvieCurve DateYield (
-		final int iEpochDate,
-		final java.lang.String strTreasuryCode,
-		final java.lang.String strCurrency,
-		final int[] aiDate,
-		final double[] adblYield)
+	public static final GovvieCurve DateYield (
+		final int epochDate,
+		final String treasuryCode,
+		final String currency,
+		final int[] dateArray,
+		final double[] yieldArray)
 	{
 		try {
-			return new org.drip.state.nonlinear.FlatYieldGovvieCurve (iEpochDate, strTreasuryCode,
-				strCurrency, aiDate, adblYield);
-		} catch (java.lang.Exception e) {
+			return new FlatYieldGovvieCurve (epochDate, treasuryCode, currency, dateArray, yieldArray);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -690,23 +832,29 @@ public class ScenarioGovvieCurveBuilder
 	/**
 	 * Construct a Govvie Curve from the Specified Date and Yield
 	 * 
-	 * @param iEpochDate Epoch Date
-	 * @param strTreasuryCode Treasury Code
-	 * @param strCurrency Currency
-	 * @param dblYield Yield
+	 * @param epochDate Epoch Date
+	 * @param treasuryCode Treasury Code
+	 * @param currency Currency
+	 * @param yield Yield
 	 * 
 	 * @return The Govvie Curve Instance
 	 */
 
-	public static final org.drip.state.govvie.GovvieCurve ConstantYield (
-		final int iEpochDate,
-		final java.lang.String strTreasuryCode,
-		final java.lang.String strCurrency,
-		final double dblYield)	{
+	public static final GovvieCurve ConstantYield (
+		final int epochDate,
+		final String treasuryCode,
+		final String currency,
+		final double yield)
+	{
 		try {
-			return new org.drip.state.nonlinear.FlatYieldGovvieCurve (iEpochDate, strTreasuryCode,
-				strCurrency, new int[] {iEpochDate}, new double[] {dblYield});
-		} catch (java.lang.Exception e) {
+			return new FlatYieldGovvieCurve (
+				epochDate,
+				treasuryCode,
+				currency,
+				new int[] {epochDate},
+				new double[] {yield}
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

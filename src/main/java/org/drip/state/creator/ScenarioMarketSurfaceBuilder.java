@@ -1,11 +1,31 @@
 
 package org.drip.state.creator;
 
+import java.util.TreeMap;
+
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.definition.MarketSurface;
+import org.drip.service.common.StringUtil;
+import org.drip.spline.basis.PolynomialFunctionSetParams;
+import org.drip.spline.grid.OverlappingStretchSpan;
+import org.drip.spline.grid.Span;
+import org.drip.spline.multidimensional.WireSurfaceStretch;
+import org.drip.spline.params.SegmentCustomBuilderControl;
+import org.drip.spline.params.SegmentInelasticDesignControl;
+import org.drip.spline.stretch.BoundarySettings;
+import org.drip.spline.stretch.MultiSegmentSequence;
+import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
+import org.drip.state.curve.BasisSplineMarketSurface;
+import org.drip.state.identifier.CustomLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,16 +103,34 @@ package org.drip.state.creator;
 
 /**
  * <i>ScenarioMarketSurfaceBuilder</i> implements the construction of the scenario market Node surface using
- * the input option instruments, their quotes, and a wide variety of custom builds.
+ * the input option instruments, their quotes, and a wide variety of custom builds. It
+ *  implements the following Functions:
+ * 
+ * <ul>
+ * 		<li>Build an Instance of the Market Node Surface using Custom Wire Span and Surface Splines</li>
+ * 		<li>Construct a Scenario Market Surface off of Cubic Polynomial Wire Spline and Cubic Polynomial Surface Spline</li>
+ * 		<li>Construct a Scenario Market Surface off of Quartic Polynomial Wire Spline and Quartic Polynomial Surface Spline</li>
+ * 		<li>Construct a Scenario Market Surface off of Kaklis-Pandelis Wire Spline and Kaklis-Pandelis Surface Spline</li>
+ * 		<li>Construct a Scenario Market Surface off of KLK Hyperbolic Wire Spline and KLK Hyperbolic Surface Spline</li>
+ * 		<li>Construct a Scenario Market Surface off of KLK Rational Linear Wire Spline and KLK Rational Linear Surface Spline</li>
+ * 		<li>Construct a Scenario Market Surface off of KLK Rational Quadratic Wire Spline and KLK Rational Quadratic Surface Spline</li>
+ * 		<li>Construct a Scenario Market Surface off of Custom Wire Spline and Custom Surface Spline</li>
+ * 		<li>Create a Price/Volatility Market Surface Based off of a Single Run using the Heston 1993 Model</li>
+ * </ul>
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md">Scenario State Curve/Surface Builders</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/README.md">Latent State Inference and Creation Utilities</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/state/creator/README.md">Scenario State Curve/Surface Builders</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -102,67 +140,77 @@ public class ScenarioMarketSurfaceBuilder {
 	/**
 	 * Build an Instance of the Market Node Surface using Custom Wire Span and Surface Splines.
 	 * 
-	 * @param strName Name of the Volatility Surface
-	 * @param dtStart Start/Epoch Julian Date
-	 * @param strCurrency Currency
-	 * @param adblX Array of X Ordinates
-	 * @param adblY Array of Y Ordinates
-	 * @param aadblNode Double Array of the Surface Nodes
-	 * @param scbcWireSpan The Wire Span Segment Customizer
-	 * @param scbcSurface The Surface Segment Customizer
+	 * @param name Name of the Volatility Surface
+	 * @param startDate Start/Epoch Julian Date
+	 * @param currency Currency
+	 * @param xArray Array of X Ordinates
+	 * @param yArray Array of Y Ordinates
+	 * @param nodeGrid Double Array of the Surface Nodes
+	 * @param wireSpanSegmentCustomBuilderControl The Wire Span Segment Customizer
+	 * @param surfaceSegmentCustomBuilderControl The Surface Segment Customizer
 	 * 
 	 * @return Instance of the Market Node Surface
 	 */
 
-	public static final org.drip.analytics.definition.MarketSurface CustomSplineWireSurface (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final double[] adblX,
-		final double[] adblY,
-		final double[][] aadblNode,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbcSurface)
+	public static final MarketSurface CustomSplineWireSurface (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final double[] xArray,
+		final double[] yArray,
+		final double[][] nodeGrid,
+		final SegmentCustomBuilderControl wireSpanSegmentCustomBuilderControl,
+		final SegmentCustomBuilderControl surfaceSegmentCustomBuilderControl)
 	{
-		if (null == dtStart || null == strName || strName.isEmpty() || null == strCurrency ||
-			strCurrency.isEmpty() || null == adblX || null == adblY || null == aadblNode || null ==
-				scbcWireSpan || null == scbcSurface)
+		if (null == name || name.isEmpty() || null == startDate || null == currency || currency.isEmpty() ||
+			null == xArray || null == yArray || null == nodeGrid ||
+			null == wireSpanSegmentCustomBuilderControl || null == surfaceSegmentCustomBuilderControl)
 			return null;
 
-		int iNumX = adblX.length;
-		int iNumMaturity = adblY.length;
-		int iNumOuterNode = aadblNode.length;
+		int xCount = xArray.length;
+		int maturityCount = yArray.length;
+		int nodeGridOuterArrayCount = nodeGrid.length;
 
-		if (0 == iNumX || 0 == iNumMaturity || iNumX != iNumOuterNode) return null;
-
-		for (int i = 0; i < iNumX; ++i) {
-			double[] adblInner = aadblNode[i];
-
-			if (null == adblInner || iNumMaturity != adblInner.length) return null;
+		if (0 == xCount || 0 == maturityCount || xCount != nodeGridOuterArrayCount) {
+			return null;
 		}
 
-		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBCWireSpan = new
-			org.drip.spline.params.SegmentCustomBuilderControl[iNumX - 1];
+		for (int xIndex = 0; xIndex < xCount; ++xIndex) {
+			double[] nodeGridInnerArray = nodeGrid[xIndex];
 
-		for (int i = 0; i < iNumX - 1; ++i)
-			aSCBCWireSpan[i] = scbcWireSpan;
+			if (null == nodeGridInnerArray || maturityCount != nodeGridInnerArray.length) {
+				return null;
+			}
+		}
 
-		java.util.TreeMap<java.lang.Double, org.drip.spline.grid.Span> mapWireSpan = new
-			java.util.TreeMap<java.lang.Double, org.drip.spline.grid.Span>();
+		SegmentCustomBuilderControl[] wireSpanSegmentCustomBuilderControlArray =
+			new SegmentCustomBuilderControl[xCount - 1];
 
-		for (int i = 0; i < iNumX; ++i) {
-			org.drip.spline.stretch.MultiSegmentSequence mssWire =
-				org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-					("Stretch@" + strName + "@" + org.drip.service.common.StringUtil.GUID(), adblY,
-						aadblNode[i], aSCBCWireSpan, null,
-							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
-								org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE);
+		for (int xIndex = 0; xIndex < xCount - 1; ++xIndex) {
+			wireSpanSegmentCustomBuilderControlArray[xIndex] = wireSpanSegmentCustomBuilderControl;
+		}
 
-			if (null == mssWire) return null;
+		TreeMap<Double, Span> wireSpanMap = new TreeMap<Double, Span>();
+
+		for (int xIndex = 0; xIndex < xCount; ++xIndex) {
+			MultiSegmentSequence wireMultiSegmentSequence =
+				MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
+					"Stretch@" + name + "@" + StringUtil.GUID(),
+					yArray,
+					nodeGrid[xIndex],
+					wireSpanSegmentCustomBuilderControlArray,
+					null,
+					BoundarySettings.NaturalStandard(),
+					MultiSegmentSequence.CALIBRATE
+				);
+
+			if (null == wireMultiSegmentSequence) {
+				return null;
+			}
 
 			try {
-				mapWireSpan.put (adblX[i], new org.drip.spline.grid.OverlappingStretchSpan (mssWire));
-			} catch (java.lang.Exception e) {
+				wireSpanMap.put (xArray[xIndex], new OverlappingStretchSpan (wireMultiSegmentSequence));
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
@@ -170,11 +218,17 @@ public class ScenarioMarketSurfaceBuilder {
 		}
 
 		try {
-			return new org.drip.state.curve.BasisSplineMarketSurface (dtStart.julian(),
-				org.drip.state.identifier.CustomLabel.Standard (strName), strCurrency, new
-					org.drip.spline.multidimensional.WireSurfaceStretch ("WireSurfaceStretch@" + strName +
-						"@" + org.drip.service.common.StringUtil.GUID(), scbcSurface, mapWireSpan));
-		} catch (java.lang.Exception e) {
+			return new BasisSplineMarketSurface (
+				startDate.julian(),
+				CustomLabel.Standard (name),
+				currency,
+				new WireSurfaceStretch (
+					"WireSurfaceStretch@" + name + "@" + StringUtil.GUID(),
+					surfaceSegmentCustomBuilderControl,
+					wireSpanMap
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -185,108 +239,146 @@ public class ScenarioMarketSurfaceBuilder {
 	 * Construct a Scenario Market Surface off of Cubic Polynomial Wire Spline and Cubic Polynomial Surface
 	 * 	Spline.
 	 * 
-	 * @param strName Name of the Volatility Surface
-	 * @param dtStart Start/Epoch Julian Date
-	 * @param strCurrency Currency
-	 * @param adblX Array of X Ordinates
-	 * @param astrTenor Array of Maturity Tenors
-	 * @param aadblNode Double Array of the Surface Nodes
+	 * @param name Name of the Volatility Surface
+	 * @param startDate Start/Epoch Julian Date
+	 * @param currency Currency
+	 * @param xArray Array of X Ordinates
+	 * @param tenorArray Array of Maturity Tenors
+	 * @param nodeGrid Double Array of the Surface Nodes
 	 * 
 	 * @return Instance of the Market Node Surface
 	 */
 
-	public static final org.drip.analytics.definition.MarketSurface CubicPolynomialWireSurface (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final double[] adblX,
-		final java.lang.String[] astrTenor,
-		final double[][] aadblNode)
+	public static final MarketSurface CubicPolynomialWireSurface (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final double[] xArray,
+		final String[] tenorArray,
+		final double[][] nodeGrid)
 	{
-		if (null == astrTenor) return null;
+		if (null == tenorArray) {
+			return null;
+		}
 
-		int iNumTenor = astrTenor.length;
-		double[] adblY = new double[iNumTenor];
-		org.drip.spline.params.SegmentCustomBuilderControl scbcSurface = null;
-		org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan = null;
+		int tenorCount = tenorArray.length;
+		double[] yArray = new double[tenorCount];
+		SegmentCustomBuilderControl surfaceSegmentCustomBuilderControl = null;
+		SegmentCustomBuilderControl wireSpanSegmentCustomBuilderControl = null;
 
-		if (0 == iNumTenor) return null;
+		if (0 == tenorCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumTenor; ++i)
-			adblY[i] = dtStart.addTenor (astrTenor[i]).julian();
+		for (int yIndex = 0; yIndex < tenorCount; ++yIndex) {
+			yArray[yIndex] = startDate.addTenor (tenorArray[yIndex]).julian();
+		}
 
 		try {
-			scbcWireSpan = new org.drip.spline.params.SegmentCustomBuilderControl
-				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-					org.drip.spline.basis.PolynomialFunctionSetParams (4),
-						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);
+			wireSpanSegmentCustomBuilderControl = new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+				SegmentInelasticDesignControl.Create (2, 2),
+				null,
+				null
+			);
 
-			scbcSurface = new org.drip.spline.params.SegmentCustomBuilderControl
-				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-					org.drip.spline.basis.PolynomialFunctionSetParams (4),
-						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);
-		} catch (java.lang.Exception e) {
+			surfaceSegmentCustomBuilderControl = new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+				SegmentInelasticDesignControl.Create (2, 2),
+				null,
+				null
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		return CustomSplineWireSurface (strName, dtStart, strCurrency, adblX, adblY, aadblNode, scbcWireSpan,
-			scbcSurface);
+		return CustomSplineWireSurface (
+			name,
+			startDate,
+			currency,
+			xArray,
+			yArray,
+			nodeGrid,
+			wireSpanSegmentCustomBuilderControl,
+			surfaceSegmentCustomBuilderControl
+		);
 	}
 
 	/**
 	 * Construct a Scenario Market Surface off of Quartic Polynomial Wire Spline and Quartic Polynomial
 	 * 	Surface Spline.
 	 * 
-	 * @param strName Name of the Volatility Surface
-	 * @param dtStart Start/Epoch Julian Date
-	 * @param strCurrency Currency
-	 * @param adblX Array of X Ordinates
-	 * @param astrTenor Array of Maturity Tenors
-	 * @param aadblNode Double Array of the Surface Nodes
+	 * @param name Name of the Volatility Surface
+	 * @param startDate Start/Epoch Julian Date
+	 * @param currency Currency
+	 * @param xArray Array of X Ordinates
+	 * @param tenorArray Array of Maturity Tenors
+	 * @param nodeGrid Double Array of the Surface Nodes
 	 * 
 	 * @return Instance of the Market Node Surface
 	 */
 
-	public static final org.drip.analytics.definition.MarketSurface QuarticPolynomialWireSurface (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final double[] adblX,
-		final java.lang.String[] astrTenor,
-		final double[][] aadblNode)
+	public static final MarketSurface QuarticPolynomialWireSurface (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final double[] xArray,
+		final String[] tenorArray,
+		final double[][] nodeGrid)
 	{
-		if (null == astrTenor) return null;
+		if (null == tenorArray) {
+			return null;
+		}
 
-		int iNumTenor = astrTenor.length;
-		double[] adblY = new double[iNumTenor];
-		org.drip.spline.params.SegmentCustomBuilderControl scbcSurface = null;
-		org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan = null;
+		int tenorCount = tenorArray.length;
+		double[] yArray = new double[tenorCount];
+		SegmentCustomBuilderControl surfaceSegmentCustomBuilderControl = null;
+		SegmentCustomBuilderControl wireSpanSegmentCustomBuilderControl = null;
 
-		if (0 == iNumTenor) return null;
+		if (0 == tenorCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumTenor; ++i)
-			adblY[i] = dtStart.addTenor (astrTenor[i]).julian();
+		for (int yIndex = 0; yIndex < tenorCount; ++yIndex) {
+			yArray[yIndex] = startDate.addTenor (tenorArray[yIndex]).julian();
+		}
 
 		try {
-			scbcWireSpan = new org.drip.spline.params.SegmentCustomBuilderControl
-				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-					org.drip.spline.basis.PolynomialFunctionSetParams (5),
-						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);
+			wireSpanSegmentCustomBuilderControl = new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (5),
+				SegmentInelasticDesignControl.Create (2, 2),
+				null,
+				null
+			);
 
-			scbcSurface = new org.drip.spline.params.SegmentCustomBuilderControl
-				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL, new
-					org.drip.spline.basis.PolynomialFunctionSetParams (5),
-						org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null);
-		} catch (java.lang.Exception e) {
+			surfaceSegmentCustomBuilderControl = new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (5),
+				SegmentInelasticDesignControl.Create (2, 2),
+				null,
+				null
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		return CustomSplineWireSurface (strName, dtStart, strCurrency, adblX, adblY, aadblNode, scbcWireSpan,
-			scbcSurface);
+		return CustomSplineWireSurface (
+			name,
+			startDate,
+			currency,
+			xArray,
+			yArray,
+			nodeGrid,
+			wireSpanSegmentCustomBuilderControl,
+			surfaceSegmentCustomBuilderControl
+		);
 	}
 
 	/**
