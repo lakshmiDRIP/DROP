@@ -3,7 +3,9 @@ package org.drip.oms.exchange;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
+import org.drip.oms.depth.MontageL1Entry;
 import org.drip.oms.depth.PostedBlock;
 import org.drip.oms.depth.PriceBook;
 
@@ -356,5 +358,121 @@ public class Venue
 				sweptBlock,
 				allowPartialSweep
 			);
+	}
+
+	/**
+	 * Retrieve the Top-of-the-Bid-Book for the specified Ticker
+	 * 
+	 * @param String Ticker
+	 * 
+	 * @return The Top-of-the-Bid-Book
+	 */
+
+	public PostedBlock topOfTheBidBook (
+		final String ticker)
+	{
+		return null != ticker && !ticker.isEmpty() && _bidTickerPriceBookMap.containsKey (
+			ticker
+		) ? _bidTickerPriceBookMap.get (
+			ticker
+		).topOfTheBook (
+			true
+		) : null;
+	}
+
+	/**
+	 * Retrieve the Top-of-the-Ask-Book for the specified Ticker
+	 * 
+	 * @param String Ticker
+	 * 
+	 * @return The Top-of-the-Ask-Book
+	 */
+
+	public PostedBlock topOfTheAskBook (
+		final String ticker)
+	{
+		return null != ticker && !ticker.isEmpty() && _askTickerPriceBookMap.containsKey (
+			ticker
+		) ? _askTickerPriceBookMap.get (
+			ticker
+		).topOfTheBook (
+			false
+		) : null;
+	}
+
+	/**
+	 * Retrieve the Bid L1 Montage Entry for the specified Ticker
+	 * 
+	 * @param ticker Ticker
+	 * 
+	 * @return The Bid L1 Montage Entry
+	 */
+
+	public MontageL1Entry bidMontageL1Entry (
+		final String ticker)
+	{
+		PostedBlock topOfTheBidBook = topOfTheBidBook (
+			ticker
+		);
+
+		try {
+			return null == topOfTheBidBook ? null : new MontageL1Entry (
+				settings().code(),
+				topOfTheBidBook
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Retrieve the Ask L1 Montage Entry for the specified Ticker
+	 * 
+	 * @param ticker Ticker
+	 * 
+	 * @return The Ask L1 Montage Entry
+	 */
+
+	public MontageL1Entry askMontageL1Entry (
+		final String ticker)
+	{
+		PostedBlock topOfTheAskBook = topOfTheAskBook (
+			ticker
+		);
+
+		try {
+			return null == topOfTheAskBook ? null : new MontageL1Entry (
+				settings().code(),
+				topOfTheAskBook
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Retrieve the Bid Ticker Set
+	 * 
+	 * @return The Bid Ticker Set
+	 */
+
+	public Set<String> bidTickerSet()
+	{
+		return _bidTickerPriceBookMap.keySet();
+	}
+
+	/**
+	 * Retrieve the Ask Ticker Set
+	 * 
+	 * @return The Ask Ticker Set
+	 */
+
+	public Set<String> askTickerSet()
+	{
+		return _askTickerPriceBookMap.keySet();
 	}
 }

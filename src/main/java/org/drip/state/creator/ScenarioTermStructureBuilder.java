@@ -3,6 +3,7 @@ package org.drip.state.creator;
 
 import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.definition.NodeStructure;
+import org.drip.spline.basis.ExponentialTensionSetParams;
 import org.drip.spline.basis.KaklisPandelisSetParams;
 import org.drip.spline.basis.PolynomialFunctionSetParams;
 import org.drip.spline.grid.OverlappingStretchSpan;
@@ -364,41 +365,55 @@ public class ScenarioTermStructureBuilder
 	/**
 	 * Construct a Term Structure Instance based off of a KLK Hyperbolic Tension Spline
 	 * 
-	 * @param strName Name of the the Term Structure Instance
-	 * @param dtStart The Start Date
-	 * @param strCurrency Currency
-	 * @param astrTenor Array of Tenors
-	 * @param adblNode Array of Term Structure Nodes
-	 * @param dblTension Tension
+	 * @param name Name of the the Term Structure Instance
+	 * @param startDate The Start Date
+	 * @param currency Currency
+	 * @param tenorArray Array of Tenors
+	 * @param nodeArray Array of Term Structure Nodes
+	 * @param tension Tension
 	 * 
 	 * @return The Term Structure Instance based off of a KLK Hyperbolic Tension Spline
 	 */
 
-	public static final org.drip.analytics.definition.NodeStructure KLKHyperbolicTermStructure (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final java.lang.String[] astrTenor,
-		final double[] adblNode,
-		final double dblTension)
+	public static final NodeStructure KLKHyperbolicTermStructure (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final String[] tenorArray,
+		final double[] nodeArray,
+		final double tension)
 	{
-		if (null == dtStart || null == astrTenor) return null;
+		if (null == startDate || null == tenorArray) {
+			return null;
+		}
 
-		int iNumTenor = astrTenor.length;
-		double[] adblDate = new double[iNumTenor];
+		int tenorCount = tenorArray.length;
+		double[] dateArray = new double[tenorCount];
 
-		if (0 == iNumTenor) return null;
+		if (0 == tenorCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumTenor; ++i)
-			adblDate[i] = dtStart.addTenor (astrTenor[i]).julian();
+		for (int tenorIndex = 0; tenorIndex < tenorCount; ++tenorIndex) {
+			dateArray[tenorIndex] = startDate.addTenor (tenorArray[tenorIndex]).julian();
+		}
 
 		try {
-			return CustomSplineTermStructure (strName, dtStart, strCurrency, adblDate, adblNode, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
-						new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineTermStructure (
+				name,
+				startDate,
+				currency,
+				dateArray,
+				nodeArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
+					new ExponentialTensionSetParams (tension),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -408,41 +423,55 @@ public class ScenarioTermStructureBuilder
 	/**
 	 * Construct a Term Structure Instance based off of a KLK Rational Linear Tension Spline
 	 * 
-	 * @param strName Name of the the Term Structure Instance
-	 * @param dtStart The Start Date
-	 * @param strCurrency Currency
-	 * @param astrTenor Array of Tenors
-	 * @param adblNode Array of Term Structure Nodes
-	 * @param dblTension Tension
+	 * @param name Name of the the Term Structure Instance
+	 * @param startDate The Start Date
+	 * @param currency Currency
+	 * @param tenorArray Array of Tenors
+	 * @param nodeArray Array of Term Structure Nodes
+	 * @param tension Tension
 	 * 
 	 * @return The Term Structure Instance based off of a KLK Rational Linear Tension Spline
 	 */
 
-	public static final org.drip.analytics.definition.NodeStructure KLKRationalLinearTermStructure (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final java.lang.String[] astrTenor,
-		final double[] adblNode,
-		final double dblTension)
+	public static final NodeStructure KLKRationalLinearTermStructure (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final String[] tenorArray,
+		final double[] nodeArray,
+		final double tension)
 	{
-		if (null == dtStart || null == astrTenor) return null;
+		if (null == startDate || null == tenorArray) {
+			return null;
+		}
 
-		int iNumTenor = astrTenor.length;
-		double[] adblDate = new double[iNumTenor];
+		int tenorCount = tenorArray.length;
+		double[] dateArray = new double[tenorCount];
 
-		if (0 == iNumTenor) return null;
+		if (0 == tenorCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumTenor; ++i)
-			adblDate[i] = dtStart.addTenor (astrTenor[i]).julian();
+		for (int tenorIndex = 0; tenorIndex < tenorCount; ++tenorIndex) {
+			dateArray[tenorIndex] = startDate.addTenor (tenorArray[tenorIndex]).julian();
+		}
 
 		try {
-			return CustomSplineTermStructure (strName, dtStart, strCurrency, adblDate, adblNode, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
-						new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineTermStructure (
+				name,
+				startDate,
+				currency,
+				dateArray,
+				nodeArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
+					new ExponentialTensionSetParams (tension),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -452,41 +481,55 @@ public class ScenarioTermStructureBuilder
 	/**
 	 * Construct a Term Structure Instance based off of a KLK Rational Quadratic Tension Spline
 	 * 
-	 * @param strName Name of the the Term Structure Instance
-	 * @param dtStart The Start Date
-	 * @param strCurrency Currency
-	 * @param astrTenor Array of Tenors
-	 * @param adblNode Array of Term Structure Nodes
-	 * @param dblTension Tension
+	 * @param name Name of the the Term Structure Instance
+	 * @param startDate The Start Date
+	 * @param currency Currency
+	 * @param tenorArray Array of Tenors
+	 * @param nodeArray Array of Term Structure Nodes
+	 * @param tension Tension
 	 * 
 	 * @return The Term Structure Instance based off of a KLK Rational Quadratic Tension Spline
 	 */
 
-	public static final org.drip.analytics.definition.NodeStructure KLKRationalQuadraticTermStructure (
-		final java.lang.String strName,
-		final org.drip.analytics.date.JulianDate dtStart,
-		final java.lang.String strCurrency,
-		final java.lang.String[] astrTenor,
-		final double[] adblNode,
-		final double dblTension)
+	public static final NodeStructure KLKRationalQuadraticTermStructure (
+		final String name,
+		final JulianDate startDate,
+		final String currency,
+		final String[] tenorArray,
+		final double[] nodeArray,
+		final double tension)
 	{
-		if (null == dtStart || null == astrTenor) return null;
+		if (null == startDate || null == tenorArray) {
+			return null;
+		}
 
-		int iNumTenor = astrTenor.length;
-		double[] adblDate = new double[iNumTenor];
+		int tenorCount = tenorArray.length;
+		double[] dateArray = new double[tenorCount];
 
-		if (0 == iNumTenor) return null;
+		if (0 == tenorCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumTenor; ++i)
-			adblDate[i] = dtStart.addTenor (astrTenor[i]).julian();
+		for (int tenorIndex = 0; tenorIndex < tenorCount; ++tenorIndex) {
+			dateArray[tenorIndex] = startDate.addTenor (tenorArray[tenorIndex]).julian();
+		}
 
 		try {
-			return CustomSplineTermStructure (strName, dtStart, strCurrency, adblDate, adblNode, new
-				org.drip.spline.params.SegmentCustomBuilderControl
-					(org.drip.spline.stretch.MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
-						new org.drip.spline.basis.ExponentialTensionSetParams (dblTension),
-							org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), null, null));
-		} catch (java.lang.Exception e) {
+			return CustomSplineTermStructure (
+				name,
+				startDate,
+				currency,
+				dateArray,
+				nodeArray,
+				new SegmentCustomBuilderControl (
+					MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
+					new ExponentialTensionSetParams (tension),
+					SegmentInelasticDesignControl.Create (2, 2),
+					null,
+					null
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
