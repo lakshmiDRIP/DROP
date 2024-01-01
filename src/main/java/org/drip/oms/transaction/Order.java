@@ -5,7 +5,6 @@ import java.util.Date;
 
 import org.drip.numerical.common.NumberUtil;
 import org.drip.oms.fill.OrderFulfillment;
-import org.drip.service.common.StringUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -117,10 +116,11 @@ import org.drip.service.common.StringUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Order
+public abstract class Order
 {
 	private String _id = "";
 	private Side _side = null;
+	private Date _updateTime = null;
 	private Date _creationTime = null;
 	private double _size = Double.NaN;
 	private OrderIssuer _issuer = null;
@@ -130,51 +130,6 @@ public class Order
 	private String _securityIdentifier = "";
 	private TimeInForce _timeInForce = null;
 	private OrderFillWholeSettings _fillWholeSettings = null;
-
-	/**
-	 * Construct a Standard Instance of Order
-	 * 
-	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
-	 * @param type Order Type
-	 * @param side Order Side
-	 * @param size Order Size
-	 * @param timeInForce Time-in-Force Settings
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * 
-	 * @return Standard Instance of Order
-	 */
-
-	public static final Order Standard (
-		final OrderIssuer issuer,
-		final String securityIdentifier,
-		final int type,
-		final Side side,
-		final double size,
-		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings)
-	{
-		try
-		{
-			return new Order (
-				issuer,
-				securityIdentifier,
-				StringUtil.GUID(),
-				type,
-				new Date(),
-				side,
-				size,
-				timeInForce,
-				fillWholeSettings
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
 
 	/**
 	 * Order Constructor
@@ -221,6 +176,7 @@ public class Order
 
 		_type = type;
 		_timeInForce = timeInForce;
+		_updateTime = creationTime;
 		_fillWholeSettings = fillWholeSettings;
 		_state = OrderState.OPEN + OrderState.UNFILLED;
 
@@ -296,6 +252,17 @@ public class Order
 	}
 
 	/**
+	 * Retrieve the Order Update Time
+	 * 
+	 * @return The Order Update Time
+	 */
+
+	public Date updateTime()
+	{
+		return _updateTime;
+	}
+
+	/**
 	 * Retrieve the Order Completion Time
 	 * 
 	 * @return The Order Completion Time
@@ -351,6 +318,32 @@ public class Order
 	}
 
 	/**
+	 * Indicate if the Order is Conditional
+	 * 
+	 * @return TRUE - Order is Conditional
+	 */
+
+	public abstract boolean isConditional();
+
+	/**
+	 * Generate a Child Order of the same Type
+	 * 
+	 * @return Child Order of the same Type
+	 */
+
+	/**
+	 * Generate a Child Order of the same Type
+	 * 
+	 * @param filledSize Filled Size
+	 * 
+	 * @return Child Order of the same Type
+	 */
+
+	public abstract Order generateChildOrder (
+		final double filledSize
+	);
+
+	/**
 	 * Retrieve the Fill-or-Kill Flag
 	 * 
 	 * @return The Fill-or-Kill Flag
@@ -385,7 +378,34 @@ public class Order
 	public boolean setState (
 		final int orderState)
 	{
+		_updateTime = new Date();
+
 		_state = orderState;
+		return true;
+	}
+
+	/**
+	 * Amend the Order Size
+	 * 
+	 * @param orderSize Order Size
+	 * 
+	 * @return TRUE - The Order Size successfully set
+	 */
+
+	public boolean amendSize (
+		final double orderSize)
+	{
+		if (!NumberUtil.IsValid (
+				orderSize
+			) || 0. >= orderSize
+		)
+		{
+			return false;
+		}
+
+		_updateTime = new Date();
+
+		_size = orderSize;
 		return true;
 	}
 
@@ -408,13 +428,20 @@ public class Order
 
 		double filledSize = orderFulfillment.executedSize();
 
+		_updateTime = new Date();
+
 		if (filledSize < _size)
 		{
+			int currentState = _state;
+			_state = OrderState.PARTIALLY_FILLED;
+
 			try
 			{
-				_state = OrderState.PARTIALLY_FILLED;
+				return generateChildOrder (
+					filledSize
+				);
 
-				return new Order (
+				/* return new Order (
 					_issuer,
 					_securityIdentifier,
 					StringUtil.GUID(),
@@ -424,11 +451,15 @@ public class Order
 					_size - filledSize,
 					null,
 					null
-				);
+				); */
 			}
 			catch (Exception e)
 			{
+				_state = currentState;
+
 				e.printStackTrace();
+
+				return null;
 			}
 		}
 

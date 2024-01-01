@@ -1,13 +1,8 @@
 
 package org.drip.oms.exchange;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.drip.oms.depth.MontageL1Entry;
 import org.drip.oms.depth.MontageL1Manager;
 
 /*
@@ -83,8 +78,7 @@ import org.drip.oms.depth.MontageL1Manager;
  */
 
 /**
- * <i>CrossVenueMontageProcessor</i> compiles and processes cross-Venue Montage Functionality. The References
- *  are:
+ * <i>CrossVenueMontageDigest</i> contains the Digest of cross-Venue Montage Calculation. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -121,168 +115,54 @@ import org.drip.oms.depth.MontageL1Manager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CrossVenueMontageProcessor
+public class CrossVenueMontageDigest
 {
-	private Set<String> _askTickerSet = null;
-	private Set<String> _bidTickerSet = null;
-	private Map<String, Venue> _l1Container = null;
+	private Map<String, MontageL1Manager> _askL1MontageManagerMap = null;
+	private Map<String, MontageL1Manager> _bidL1MontageManagerMap = null;
 
 	/**
-	 * Empty CrossVenueMontageProcessor Constructor
+	 * CrossVenueMontageDigest Constructor
+	 * 
+	 * @param bidL1MontageManagerMap Bid Venue to L1 Montage Manager Map
+	 * @param askL1MontageManagerMap Ask Venue to L1 Montage Manager Map
+	 * 
+	 * @throws Exception Thrown if Inputs are Invalid
 	 */
 
-	public CrossVenueMontageProcessor (
-		final List<Venue> venueList)
+	public CrossVenueMontageDigest (
+		final Map<String, MontageL1Manager> bidL1MontageManagerMap,
+		final Map<String, MontageL1Manager> askL1MontageManagerMap)
 		throws Exception
 	{
-		if (null == venueList || 0 == venueList.size())
+		if (null == (_bidL1MontageManagerMap = bidL1MontageManagerMap) ||
+			null == (_askL1MontageManagerMap = askL1MontageManagerMap)
+		)
 		{
 			throw new Exception (
-				"CrossVenueMontageProcessor Contructor => Invalid Inputs"
-			);
-		}
-
-		_l1Container = new HashMap<String, Venue>();
-
-		_bidTickerSet = new HashSet<String>();
-
-		_askTickerSet = new HashSet<String>();
-
-		for (Venue venue : venueList)
-		{
-			_l1Container.put (
-				venue.settings().code(),
-				venue
-			);
-
-			_bidTickerSet.addAll (
-				venue.bidTickerSet()
-			);
-
-			_askTickerSet.addAll (
-				venue.askTickerSet()
+				"CrossVenueMontageDigest Constructor => Invalid Inputs"
 			);
 		}
 	}
 
 	/**
-	 * Retrieve the Venue L1 Container
+	 * Retrieve the Bid Venue to L1 Montage Manager Map
 	 * 
-	 * @return The Venue L1 Container
+	 * @return The Bid Venue to L1 Montage Manager Map
 	 */
 
-	public Map<String, Venue> l1Container()
+	public Map<String, MontageL1Manager> bidL1MontageManagerMap()
 	{
-		return _l1Container;
+		return _bidL1MontageManagerMap;
 	}
 
 	/**
-	 * Retrieve the Bid Ticker Set
+	 * Retrieve the Ask Venue to L1 Montage Manager Map
 	 * 
-	 * @return The Bid Ticker Set
+	 * @return The Ask Venue to L1 Montage Manager Map
 	 */
 
-	public Set<String> bidTickerSet()
+	public Map<String, MontageL1Manager> askL1MontageManagerMap()
 	{
-		return _bidTickerSet;
-	}
-
-	/**
-	 * Retrieve the Ask Ticker Set
-	 * 
-	 * @return The Ask Ticker Set
-	 */
-
-	public Set<String> askTickerSet()
-	{
-		return _askTickerSet;
-	}
-
-	private boolean updateL1MontageManagerMap (
-		final Venue venue,
-		final Set<String> tickerSet,
-		final Set<String> venueMontageTickerSet,
-		final Map<String, MontageL1Manager> l1MontageManagerMap,
-		final boolean bid)
-	{
-		for (String venueMontageTicker : venueMontageTickerSet) {
-			MontageL1Entry montageL1Entry = bid ? venue.bidMontageL1Entry (
-				venueMontageTicker
-			) : venue.askMontageL1Entry (
-				venueMontageTicker
-			);
-
-			if (null == montageL1Entry) {
-				continue;
-			}
-
-			if (!tickerSet.contains (
-				venueMontageTicker
-			))
-			{
-				MontageL1Manager montageL1Manager = new MontageL1Manager();
-
-				if (bid) {
-					montageL1Manager.addBidEntry (
-						montageL1Entry
-					);
-				} else {
-					montageL1Manager.addAskEntry (
-						montageL1Entry
-					);
-				}
-
-				l1MontageManagerMap.put (
-					venue.settings().code(),
-					montageL1Manager
-				);
-			} else {
-				l1MontageManagerMap.get (
-					venueMontageTicker
-				).addBidEntry (
-					montageL1Entry
-				);
-			}
-		}
-
-		return true;
-	}
-
-	public CrossVenueMontageDigest munge()
-	{
-		Map<String, MontageL1Manager> bidL1MontageManagerMap = new HashMap<String, MontageL1Manager>();
-
-		Map<String, MontageL1Manager> askL1MontageManagerMap = new HashMap<String, MontageL1Manager>();
-
-		for (Map.Entry<String, Venue> l1ContainerMapEntry : _l1Container.entrySet()) {
-			Venue venue = l1ContainerMapEntry.getValue();
-
-			updateL1MontageManagerMap (
-				venue,
-				_bidTickerSet,
-				venue.bidTickerSet(),
-				bidL1MontageManagerMap,
-				true
-			);
-
-			updateL1MontageManagerMap (
-				venue,
-				_askTickerSet,
-				venue.askTickerSet(),
-				askL1MontageManagerMap,
-				false
-			);
-		};
-
-		try {
-			return new CrossVenueMontageDigest (
-				bidL1MontageManagerMap,
-				askL1MontageManagerMap
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		return _askL1MontageManagerMap;
 	}
 }

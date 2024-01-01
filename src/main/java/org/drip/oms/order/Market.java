@@ -263,4 +263,30 @@ public class Market
 			fillWholeSettings
 		);
 	}
+
+	@Override public boolean isConditional()
+	{
+		return false;
+	}
+
+	@Override public Order generateChildOrder (
+		final double filledSize)
+	{
+		try {
+			return new Market (
+				issuer(),
+				securityIdentifier(),
+				StringUtil.GUID(),
+				new Date(),
+				side(),
+				size() - filledSize,
+				null,
+				null
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }

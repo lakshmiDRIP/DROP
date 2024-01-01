@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.drip.oms.transaction.OrderBlock;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -368,7 +370,7 @@ public class MontageL1Manager
 	 * @return The NBBO Bid Block
 	 */
 
-	public PostedBlock bidNBBOBlock()
+	public OrderBlock bidNBBOBlock()
 	{
 		return _orderedBidBook.isEmpty() ? null :
 			_orderedBidBook.firstEntry().getValue().peakBlockList().get (
@@ -382,7 +384,7 @@ public class MontageL1Manager
 	 * @return The NBBO Ask Block
 	 */
 
-	public PostedBlock askNBBOBlock()
+	public OrderBlock askNBBOBlock()
 	{
 		return _orderedAskBook.isEmpty() ? null :
 			_orderedAskBook.firstEntry().getValue().peakBlockList().get (

@@ -3,6 +3,8 @@ package org.drip.oms.depth;
 
 import java.util.TreeMap;
 
+import org.drip.oms.transaction.OrderBlock;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -115,7 +117,7 @@ import java.util.TreeMap;
 
 public class PriceBook
 {
-	private TreeMap<Double, PostedBlock> _aggregatedPostedBlockMap = null;
+	private TreeMap<Double, OrderBlock> _aggregatedPostedBlockMap = null;
 
 	/**
 	 * PriceBook Constructor
@@ -123,7 +125,7 @@ public class PriceBook
 
 	public PriceBook()
 	{
-		_aggregatedPostedBlockMap = new TreeMap<Double, PostedBlock>();
+		_aggregatedPostedBlockMap = new TreeMap<Double, OrderBlock>();
 	}
 
 	/**
@@ -132,7 +134,7 @@ public class PriceBook
 	 * @return The Aggregated Posted Block Price Map
 	 */
 
-	public TreeMap<Double, PostedBlock> aggregatedPostedBlockMap()
+	public TreeMap<Double, OrderBlock> aggregatedPostedBlockMap()
 	{
 		return _aggregatedPostedBlockMap;
 	}
@@ -146,7 +148,7 @@ public class PriceBook
 	 */
 
 	public boolean aggregatePostedBlock (
-		final PostedBlock postedBlock)
+		final OrderBlock postedBlock)
 	{
 		if (null == postedBlock)
 		{
@@ -186,7 +188,7 @@ public class PriceBook
 	 */
 
 	public boolean aggregateSweptBlock (
-		final PostedBlock sweptBlock,
+		final OrderBlock sweptBlock,
 		final boolean allowPartialSweep)
 	{
 		if (null == sweptBlock)
@@ -205,7 +207,7 @@ public class PriceBook
 
 		double sweptBlockSize = sweptBlock.size();
 
-		PostedBlock postedBlock = _aggregatedPostedBlockMap.get (
+		OrderBlock postedBlock = _aggregatedPostedBlockMap.get (
 			price
 		);
 
@@ -237,7 +239,7 @@ public class PriceBook
 	 * @return The Top-of-the-Book
 	 */
 
-	public PostedBlock topOfTheBook (
+	public OrderBlock topOfTheBook (
 		final boolean bid)
 	{
 		return _aggregatedPostedBlockMap.isEmpty() ? null : bid ?

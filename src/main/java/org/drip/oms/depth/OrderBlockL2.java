@@ -3,6 +3,8 @@ package org.drip.oms.depth;
 
 import java.util.TreeMap;
 
+import org.drip.oms.transaction.OrderBlock;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -76,7 +78,7 @@ import java.util.TreeMap;
  */
 
 /**
- * <i>PostedBlockL2</i> maintains a Deep Posted Price Book for a Venue. The References are:
+ * <i>OrderBlockL2</i> maintains a Deep Price Book for a Venue. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -113,22 +115,22 @@ import java.util.TreeMap;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PostedBlockL2
+public class OrderBlockL2
 {
 	private boolean _descending = false;
-	private TreeMap<Double, PostedBlock> _orderedBlockMap = null;
+	private TreeMap<Double, OrderBlock> _orderedBlockMap = null;
 
 	/**
-	 * Construct a Bid PostedBlockL2 Price Book
+	 * Construct a Bid <i>OrderBlockL2</i> Price Book
 	 * 
-	 * @return Bid PostedBlockL2 Price Book
+	 * @return Bid <i>OrderBlockL2</i> Price Book
 	 */
 
-	public static final PostedBlockL2 Bid()
+	public static final OrderBlockL2 Bid()
 	{
 		try
 		{
-			return new PostedBlockL2 (
+			return new OrderBlockL2 (
 				false
 			);
 		}
@@ -141,16 +143,16 @@ public class PostedBlockL2
 	}
 
 	/**
-	 * Construct an Ask PostedBlockL2 Price Book
+	 * Construct an Ask <i>OrderBlockL2</i> Price Book
 	 * 
-	 * @return Ask PostedBlockL2 Price Book
+	 * @return Ask <i>OrderBlockL2</i> Price Book
 	 */
 
-	public static final PostedBlockL2 Ask()
+	public static final OrderBlockL2 Ask()
 	{
 		try
 		{
-			return new PostedBlockL2 (
+			return new OrderBlockL2 (
 				true
 			);
 		}
@@ -163,20 +165,20 @@ public class PostedBlockL2
 	}
 
 	/**
-	 * PostedBlockL2 Constructor
+	 * <i>OrderBlockL2</i> Constructor
 	 * 
 	 * @param descending TRUE - Price Book is in Descending Order
 	 * 
-	 * @throws Exception Thrown if PostedBlockL2 cannot be constructed
+	 * @throws Exception Thrown if <i>OrderBlockL2</i> cannot be constructed
 	 */
 
-	public PostedBlockL2 (
+	public OrderBlockL2 (
 		final boolean descending)
 		throws Exception
 	{
 		_descending = descending;
 
-		_orderedBlockMap = new TreeMap<Double, PostedBlock>();
+		_orderedBlockMap = new TreeMap<Double, OrderBlock>();
 	}
 
 	/**
@@ -185,7 +187,7 @@ public class PostedBlockL2
 	 * @return Ordered Block Map
 	 */
 
-	public TreeMap<Double, PostedBlock> orderedBlockMap()
+	public TreeMap<Double, OrderBlock> orderedBlockMap()
 	{
 		return _orderedBlockMap;
 	}
@@ -210,7 +212,7 @@ public class PostedBlockL2
 	 */
 
 	public boolean addBlock (
-		final PostedBlock postedBlock)
+		final OrderBlock postedBlock)
 	{
 		if (null == postedBlock)
 		{
@@ -250,7 +252,7 @@ public class PostedBlockL2
 	 * @return Top of the Book
 	 */
 
-	public PostedBlock topOfTheBook()
+	public OrderBlock topOfTheBook()
 	{
 		return _orderedBlockMap.isEmpty() ? null : _descending ?
 			_orderedBlockMap.lastEntry().getValue() : _orderedBlockMap.firstEntry().getValue();

@@ -319,4 +319,31 @@ public class Limit
 	{
 		return _thresholdPrice;
 	}
+
+	@Override public boolean isConditional()
+	{
+		return true;
+	}
+
+	@Override public Order generateChildOrder (
+		final double filledSize)
+	{
+		try {
+			return new Limit (
+				issuer(),
+				securityIdentifier(),
+				StringUtil.GUID(),
+				new Date(),
+				side(),
+				size() - filledSize,
+				null,
+				null,
+				_thresholdPrice
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }

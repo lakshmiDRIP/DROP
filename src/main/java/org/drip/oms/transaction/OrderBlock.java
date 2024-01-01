@@ -1,5 +1,5 @@
 
-package org.drip.oms.depth;
+package org.drip.oms.transaction;
 
 import java.time.ZonedDateTime;
 import java.util.Comparator;
@@ -79,7 +79,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>PostedBlock</i> maintains a Posted L2 Entry Block inside an Order Book. The References are:
+ * <i>OrderBlock</i> maintains an L2 Entry Block inside an Order Book. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -110,35 +110,35 @@ import org.drip.numerical.common.NumberUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/depth/README.md">L1, L2, L3 Deep Books</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/transaction/README.md">Order Specification and Session Metrics</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PostedBlock
-	implements Comparator<PostedBlock>, Cloneable
+public class OrderBlock
+	implements Comparator<OrderBlock>, Cloneable
 {
 	private double _size = Double.NaN;
 	private double _price = Double.NaN;
 	private ZonedDateTime _lastUpdateTime = null;
 
 	/**
-	 * Construct a Freshly Posted Instance of the L2 Block
+	 * Construct a Fresh Instance of the L2 <i>OrderBlock</i>
 	 * 
 	 * @param price L2 Price
 	 * @param size L2 Size
 	 * 
-	 * @return Freshly Posted Instance of the L2 Block
+	 * @return Fresh Instance of the L2 <i>OrderBlock</i>
 	 */
 
-	public static final PostedBlock PostNow (
+	public static final OrderBlock Now (
 		final double price,
 		final double size)
 	{
 		try
 		{
-			return new PostedBlock (
+			return new OrderBlock (
 				ZonedDateTime.now(),
 				price,
 				size
@@ -152,26 +152,8 @@ public class PostedBlock
 		return null;
 	}
 
-	@Override protected PostedBlock clone()
-	{
-		try
-		{
-			return new PostedBlock (
-				ZonedDateTime.now(),
-				_price,
-				_size
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
 	/**
-	 * PostedBlock Constructor
+	 * <i>OrderBlock</i> Constructor
 	 * 
 	 * @param lastUpdateTime Last Update Time
 	 * @param price L2 Price
@@ -180,7 +162,7 @@ public class PostedBlock
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public PostedBlock (
+	public OrderBlock (
 		final ZonedDateTime lastUpdateTime,
 		final double price,
 		final double size)
@@ -195,7 +177,7 @@ public class PostedBlock
 		)
 		{
 			throw new Exception (
-				"PostedBlock Constructor => Invalid Inputs"
+				"OrderBlock Constructor => Invalid Inputs"
 			);
 		}
 	}
@@ -269,8 +251,8 @@ public class PostedBlock
 	}
 
 	@Override public int compare (
-		final PostedBlock l2Block1,
-		final PostedBlock l2Block2)
+		final OrderBlock l2Block1,
+		final OrderBlock l2Block2)
 	{
 		if (null == l2Block1 && null == l2Block2)
 		{
@@ -288,5 +270,23 @@ public class PostedBlock
 		}
 
 		return l2Block1._price == l2Block2._price ? 0 : l2Block1._price < l2Block2._price ? -1 : 1;
+	}
+
+	@Override public OrderBlock clone()
+	{
+		try
+		{
+			return new OrderBlock (
+				ZonedDateTime.now(),
+				_price,
+				_size
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

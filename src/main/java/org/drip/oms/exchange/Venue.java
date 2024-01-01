@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.drip.oms.depth.MontageL1Entry;
-import org.drip.oms.depth.PostedBlock;
 import org.drip.oms.depth.PriceBook;
+import org.drip.oms.transaction.OrderBlock;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -243,7 +243,7 @@ public class Venue
 
 	public boolean postBidBlock (
 		final String ticker,
-		final PostedBlock postedBlock)
+		final OrderBlock postedBlock)
 	{
 		if (null == ticker || ticker.isEmpty() ||
 			null == postedBlock
@@ -280,7 +280,7 @@ public class Venue
 
 	public boolean postAskBlock (
 		final String ticker,
-		final PostedBlock postedBlock)
+		final OrderBlock postedBlock)
 	{
 		if (null == ticker || ticker.isEmpty() ||
 			null == postedBlock
@@ -318,7 +318,7 @@ public class Venue
 
 	public boolean sweepBidBlock (
 		final String ticker,
-		final PostedBlock sweptBlock,
+		final OrderBlock sweptBlock,
 		final boolean allowPartialSweep)
 	{
 		return null != ticker && !ticker.isEmpty() &&
@@ -345,7 +345,7 @@ public class Venue
 
 	public boolean sweepAskBlock (
 		final String ticker,
-		final PostedBlock sweptBlock,
+		final OrderBlock sweptBlock,
 		final boolean allowPartialSweep)
 	{
 		return null != ticker && !ticker.isEmpty() &&
@@ -368,7 +368,7 @@ public class Venue
 	 * @return The Top-of-the-Bid-Book
 	 */
 
-	public PostedBlock topOfTheBidBook (
+	public OrderBlock topOfTheBidBook (
 		final String ticker)
 	{
 		return null != ticker && !ticker.isEmpty() && _bidTickerPriceBookMap.containsKey (
@@ -388,7 +388,7 @@ public class Venue
 	 * @return The Top-of-the-Ask-Book
 	 */
 
-	public PostedBlock topOfTheAskBook (
+	public OrderBlock topOfTheAskBook (
 		final String ticker)
 	{
 		return null != ticker && !ticker.isEmpty() && _askTickerPriceBookMap.containsKey (
@@ -411,7 +411,7 @@ public class Venue
 	public MontageL1Entry bidMontageL1Entry (
 		final String ticker)
 	{
-		PostedBlock topOfTheBidBook = topOfTheBidBook (
+		OrderBlock topOfTheBidBook = topOfTheBidBook (
 			ticker
 		);
 
@@ -438,7 +438,7 @@ public class Venue
 	public MontageL1Entry askMontageL1Entry (
 		final String ticker)
 	{
-		PostedBlock topOfTheAskBook = topOfTheAskBook (
+		OrderBlock topOfTheAskBook = topOfTheAskBook (
 			ticker
 		);
 

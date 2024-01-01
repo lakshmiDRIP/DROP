@@ -4,6 +4,8 @@ package org.drip.oms.depth;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.drip.oms.transaction.OrderBlock;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -192,7 +194,7 @@ public class UBBOBlock
 			return false;
 		}
 
-		PostedBlock postedBlock = montageL1Entry.topOfTheBook();
+		OrderBlock postedBlock = montageL1Entry.topOfTheBook();
 
 		_contributingVenueList.add (
 			montageL1Entry.venueCode()
