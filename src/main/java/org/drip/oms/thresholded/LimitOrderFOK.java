@@ -1,5 +1,5 @@
 
-package org.drip.oms.order;
+package org.drip.oms.thresholded;
 
 import java.util.Date;
 
@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>MarketGTC</i> holds the Details of a Good-Till-Close (GTC) Market Order. The References are:
+ * <i>LimitOrderFOK</i> holds the Details of a Fill-Or-Kill (FOK) Limit Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -113,48 +113,48 @@ import org.drip.service.common.StringUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/order/README.md">Implementation of Different Order Types</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/thresholded/README.md">Implementation of Thresholded Limit Order</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketGTC
-	extends Market
+public class LimitOrderFOK
+	extends LimitOrder
 {
 
 	/**
-	 * Create a Standard Instance of Good-Till-Close (GTC) Market Order
+	 * Construct a Standard Instance of Buy Fill-Or-Kill (FOK) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param durationDays Order Duration Tenor in Days
-	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param timeInForce Time-in-Force Settings
+	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Good-Till-Close (GTC) Market Order
+	 * @return Instance of Buy Fill-Or-Kill (FOK) Limit Order
 	 */
 
-	public static final MarketGTC Standard (
+	public static final LimitOrderFOK Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final Side side,
 		final double size,
-		final int durationDays,
-		final OrderFillWholeSettings fillWholeSettings)
+		final TimeInForce timeInForce,
+		final double thresholdPrice)
 	{
 		try
 		{
-			return new MarketGTC (
+			return new LimitOrderFOK (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				side,
 				size,
-				durationDays,
-				fillWholeSettings
+				timeInForce,
+				thresholdPrice
 			);
 		}
 		catch (Exception e)
@@ -166,87 +166,65 @@ public class MarketGTC
 	}
 
 	/**
-	 * Create a Standard Instance of Buy Good-Till-Close (GTC) Market Order
+	 * Construct a Standard Instance of Buy Fill-Or-Kill (FOK) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
-	 * @param durationDays Order Duration Tenor in Days
-	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param timeInForce Time-in-Force Settings
+	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Buy Good-Till-Close (GTC) Market Order
+	 * @return Standard Instance of Buy Fill-Or-Kill (FOK) Limit Order
 	 */
 
-	public static final MarketGTC StandardBuy (
+	public static final LimitOrderFOK StandardBuy (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final int durationDays,
-		final OrderFillWholeSettings fillWholeSettings)
+		final TimeInForce timeInForce,
+		final double thresholdPrice)
 	{
-		try
-		{
-			return new MarketGTC (
-				issuer,
-				securityIdentifier,
-				StringUtil.GUID(),
-				new Date(),
-				Side.Buy(),
-				size,
-				durationDays,
-				fillWholeSettings
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return Standard (
+			issuer,
+			securityIdentifier,
+			Side.Buy(),
+			size,
+			timeInForce,
+			thresholdPrice
+		);
 	}
 
 	/**
-	 * Create a Standard Instance of Sell Good-Till-Close (GTC) Market Order
+	 * Construct a Standard Instance of Sell Fill-Or-Kill (FOK) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
-	 * @param durationDays Order Duration Tenor in Days
-	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param timeInForce Time-in-Force Settings
+	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Sell Good-Till-Close (GTC) Market Order
+	 * @return Standard Instance of Sell Fill-Or-Kill (FOK) Limit Order
 	 */
 
-	public static final MarketGTC StandardSell (
+	public static final LimitOrderFOK StandardSell (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final int durationDays,
-		final OrderFillWholeSettings fillWholeSettings)
+		final TimeInForce timeInForce,
+		final double thresholdPrice)
 	{
-		try
-		{
-			return new MarketGTC (
-				issuer,
-				securityIdentifier,
-				StringUtil.GUID(),
-				new Date(),
-				Side.Sell(),
-				size,
-				durationDays,
-				fillWholeSettings
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return Standard (
+			issuer,
+			securityIdentifier,
+			Side.Sell(),
+			size,
+			timeInForce,
+			thresholdPrice
+		);
 	}
 
 	/**
-	 * Good-Till-Close (GTC) Market Order Constructor
+	 * Fill-Or-Kill (FOK) Limit Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -254,21 +232,21 @@ public class MarketGTC
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param durationDays Order Duration Tenor in Days
-	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param timeInForce Time-in-Force Settings
+	 * @param thresholdPrice Threshold Price
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MarketGTC (
+	public LimitOrderFOK (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
 		final Side side,
 		final double size,
-		final int durationDays,
-		final OrderFillWholeSettings fillWholeSettings)
+		final TimeInForce timeInForce,
+		final double thresholdPrice)
 		throws Exception
 	{
 		super (
@@ -278,10 +256,9 @@ public class MarketGTC
 			creationTime,
 			side,
 			size,
-			TimeInForce.CreateGoodTillCanceled (
-				durationDays
-			),
-			fillWholeSettings
+			timeInForce,
+			OrderFillWholeSettings.FillOrKill(),
+			thresholdPrice
 		);
 	}
 }

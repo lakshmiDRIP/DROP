@@ -1,5 +1,5 @@
 
-package org.drip.oms.order;
+package org.drip.oms.thresholded;
 
 import java.util.Date;
 
@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>LimitAON</i> holds the Details of a All-or-None (AON) Limit Order. The References are:
+ * <i>LimitOrderDAY</i> holds the Details of a DAY Limit Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -113,50 +113,47 @@ import org.drip.service.common.StringUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/specification/README.md">Order Specification and Session Metrics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/thresholded/README.md">Implementation of Thresholded Limit Order</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitAON
-	extends Limit
+public class LimitOrderDAY
+	extends LimitOrder
 {
 
 	/**
-	 * Construct a Standard Instance of Buy All-or-None (AON) Limit Order
+	 * Create a Standard Instance of DAY Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param timeInForce Time-in-Force Settings
-	 * @param fulfillTryLimit Fulfill Try Limit
+	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Instance of Buy All-or-None (AON) Limit Order
+	 * @return Standard Instance of DAY Limit Order
 	 */
 
-	public static final LimitAON Standard (
+	public static final LimitOrderDAY Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final Side side,
 		final double size,
-		final TimeInForce timeInForce,
-		final int fulfillTryLimit,
+		final OrderFillWholeSettings fillWholeSettings,
 		final double thresholdPrice)
 	{
 		try
 		{
-			return new LimitAON (
+			return new LimitOrderDAY (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				side,
 				size,
-				timeInForce,
-				fulfillTryLimit,
+				fillWholeSettings,
 				thresholdPrice
 			);
 		}
@@ -169,71 +166,87 @@ public class LimitAON
 	}
 
 	/**
-	 * Construct a Standard Instance of Buy All-or-None (AON) Limit Order
+	 * Create a Standard Instance of Buy DAY Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
-	 * @param timeInForce Time-in-Force Settings
-	 * @param fulfillTryLimit Fulfill Try Limit
+	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Buy All-or-None (AON) Limit Order
+	 * @return Standard Instance of Buy DAY Limit Order
 	 */
 
-	public static final LimitAON StandardBuy (
+	public static final LimitOrderDAY StandardBuy (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final TimeInForce timeInForce,
-		final int fulfillTryLimit,
+		final OrderFillWholeSettings fillWholeSettings,
 		final double thresholdPrice)
 	{
-		return Standard (
-			issuer,
-			securityIdentifier,
-			Side.Buy(),
-			size,
-			timeInForce,
-			fulfillTryLimit,
-			thresholdPrice
-		);
+		try
+		{
+			return new LimitOrderDAY (
+				issuer,
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Side.Buy(),
+				size,
+				fillWholeSettings,
+				thresholdPrice
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
-	 * Construct a Standard Instance of Sell All-or-None (AON) Limit Order
+	 * Create a Standard Instance of Sell DAY Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
-	 * @param timeInForce Time-in-Force Settings
-	 * @param fulfillTryLimit Fulfill Try Limit
+	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Sell All-or-None (AON) Limit Order
+	 * @return Standard Instance of Sell DAY Limit Order
 	 */
 
-	public static final LimitAON StandardSell (
+	public static final LimitOrderDAY StandardSell (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final TimeInForce timeInForce,
-		final int fulfillTryLimit,
+		final OrderFillWholeSettings fillWholeSettings,
 		final double thresholdPrice)
 	{
-		return Standard (
-			issuer,
-			securityIdentifier,
-			Side.Sell(),
-			size,
-			timeInForce,
-			fulfillTryLimit,
-			thresholdPrice
-		);
+		try
+		{
+			return new LimitOrderDAY (
+				issuer,
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Side.Sell(),
+				size,
+				fillWholeSettings,
+				thresholdPrice
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
-	 * All-or-None (AON) Limit Order Constructor
+	 * DAY Limit Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -241,22 +254,20 @@ public class LimitAON
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param timeInForce Time-in-Force Settings
-	 * @param fulfillTryLimit Fulfill Try Limit
+	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public LimitAON (
+	public LimitOrderDAY (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
 		final Side side,
 		final double size,
-		final TimeInForce timeInForce,
-		final int fulfillTryLimit,
+		final OrderFillWholeSettings fillWholeSettings,
 		final double thresholdPrice)
 		throws Exception
 	{
@@ -267,10 +278,8 @@ public class LimitAON
 			creationTime,
 			side,
 			size,
-			timeInForce,
-			OrderFillWholeSettings.AllOrNone (
-				fulfillTryLimit
-			),
+			TimeInForce.CreateDay(),
+			fillWholeSettings,
 			thresholdPrice
 		);
 	}

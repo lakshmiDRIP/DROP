@@ -1,5 +1,5 @@
 
-package org.drip.oms.order;
+package org.drip.oms.thresholded;
 
 import java.util.Date;
 
@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>LimitATO</i> holds the Details of a At-The-Open (ATO) Limit Order. The References are:
+ * <i>LimitOrderATC</i> holds the Details of an At-The-Close (ATC) Limit Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -113,18 +113,18 @@ import org.drip.service.common.StringUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/order/README.md">Implementation of Different Order Types</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/thresholded/README.md">Implementation of Thresholded Limit Order</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitATO
-	extends Limit
+public class LimitOrderATC
+	extends LimitOrder
 {
 
 	/**
-	 * Create a Standard Instance of At-The-Open (ATO) Limit Order
+	 * Create a Standard Instance of At-The-Close (ATC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -133,10 +133,10 @@ public class LimitATO
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of At-The-Open (ATO) Limit Order
+	 * @return Standard Instance of At-The-Close (ATC) Limit Order
 	 */
 
-	public static final LimitATO Standard (
+	public static final LimitOrderATC Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final Side side,
@@ -146,7 +146,7 @@ public class LimitATO
 	{
 		try
 		{
-			return new LimitATO (
+			return new LimitOrderATC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
@@ -166,7 +166,7 @@ public class LimitATO
 	}
 
 	/**
-	 * Create a Standard Instance of Buy At-The-Open (ATO) Limit Order
+	 * Create a Standard Instance of Buy At-The-Close (ATC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -174,10 +174,10 @@ public class LimitATO
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Buy At-The-Open (ATO) Limit Order
+	 * @return Standard Instance of Buy At-The-Close (ATC) Limit Order
 	 */
 
-	public static final LimitATO StandardBuy (
+	public static final LimitOrderATC StandardBuy (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
@@ -186,7 +186,7 @@ public class LimitATO
 	{
 		try
 		{
-			return new LimitATO (
+			return new LimitOrderATC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
@@ -206,7 +206,7 @@ public class LimitATO
 	}
 
 	/**
-	 * Create a Standard Instance of Sell At-The-Open (ATO) Limit Order
+	 * Create a Standard Instance of Sell At-The-Close (ATC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -214,10 +214,10 @@ public class LimitATO
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Sell At-The-Open (ATO) Limit Order
+	 * @return Standard Instance of Sell At-The-Close (ATC) Limit Order
 	 */
 
-	public static final LimitATO StandardSell (
+	public static final LimitOrderATC StandardSell (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
@@ -226,7 +226,7 @@ public class LimitATO
 	{
 		try
 		{
-			return new LimitATO (
+			return new LimitOrderATC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
@@ -246,7 +246,7 @@ public class LimitATO
 	}
 
 	/**
-	 * At-The-Open (ATO) Limit Order Constructor
+	 * At-The-Close (ATC) Limit Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -260,7 +260,7 @@ public class LimitATO
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public LimitATO (
+	public LimitOrderATC (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
@@ -278,7 +278,7 @@ public class LimitATO
 			creationTime,
 			side,
 			size,
-			TimeInForce.CreateMarketOpen(),
+			TimeInForce.CreateMarketClose(),
 			fillWholeSettings,
 			thresholdPrice
 		);

@@ -1,5 +1,5 @@
 
-package org.drip.oms.order;
+package org.drip.oms.unthresholded;
 
 import java.util.Date;
 
@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>LimitIOC</i> holds the Details of a Immediate-Or-Cancel (IOC) Limit Order. The References are:
+ * <i>MarketOrderATC</i> holds the Details of a At-The-Close (ATC) Market Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -113,48 +113,45 @@ import org.drip.service.common.StringUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/order/README.md">Implementation of Different Order Types</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/unthresholded/README.md">Implementation of Unthresholded Market Variants</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitIOC
-	extends Limit
+public class MarketOrderATC
+	extends MarketOrder
 {
 
 	/**
-	 * Create a Standard Instance of Immediate-Or-Cancel (IOC) Limit Order
+	 * Create a Standard Instance of At-The-Close (ATC) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Immediate-Or-Cancel (IOC) Limit Order
+	 * @return Standard Instance of At-The-Close (ATC) Market Order
 	 */
 
-	public static final LimitIOC Standard (
+	public static final MarketOrderATC Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final Side side,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
-			return new LimitIOC (
+			return new MarketOrderATC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				side,
 				size,
-				fillWholeSettings,
-				thresholdPrice
+				fillWholeSettings
 			);
 		}
 		catch (Exception e)
@@ -166,35 +163,32 @@ public class LimitIOC
 	}
 
 	/**
-	 * Create a Standard Instance of Buy Immediate-Or-Cancel (IOC) Limit Order
+	 * Create a Standard Instance of Buy At-The-Close (ATC) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Buy Immediate-Or-Cancel (IOC) Limit Order
+	 * @return Standard Instance of Buy At-The-Close (ATC) Market Order
 	 */
 
-	public static final LimitIOC StandardBuy (
+	public static final MarketOrderATC StandardBuy (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
-			return new LimitIOC (
+			return new MarketOrderATC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Buy(),
 				size,
-				fillWholeSettings,
-				thresholdPrice
+				fillWholeSettings
 			);
 		}
 		catch (Exception e)
@@ -206,35 +200,32 @@ public class LimitIOC
 	}
 
 	/**
-	 * Create a Standard Instance of Sell Immediate-Or-Cancel (IOC) Limit Order
+	 * Create a Standard Instance of Sell At-The-Close (ATC) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Sell Immediate-Or-Cancel (IOC) Limit Order
+	 * @return Standard Instance of Sell At-The-Close (ATC) Market Order
 	 */
 
-	public static final LimitIOC StandardSell (
+	public static final MarketOrderATC StandardSell (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
-			return new LimitIOC (
+			return new MarketOrderATC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Sell(),
 				size,
-				fillWholeSettings,
-				thresholdPrice
+				fillWholeSettings
 			);
 		}
 		catch (Exception e)
@@ -246,7 +237,7 @@ public class LimitIOC
 	}
 
 	/**
-	 * Immediate-Or-Cancel (IOC) Limit Order Constructor
+	 * At-The-Close (ATC) Market Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -255,20 +246,18 @@ public class LimitIOC
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public LimitIOC (
+	public MarketOrderATC (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
 		final Side side,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final OrderFillWholeSettings fillWholeSettings)
 		throws Exception
 	{
 		super (
@@ -278,9 +267,8 @@ public class LimitIOC
 			creationTime,
 			side,
 			size,
-			TimeInForce.CreateImmediate(),
-			fillWholeSettings,
-			thresholdPrice
+			TimeInForce.CreateMarketClose(),
+			fillWholeSettings
 		);
 	}
 }

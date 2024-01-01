@@ -1,5 +1,5 @@
 
-package org.drip.oms.order;
+package org.drip.oms.thresholded;
 
 import java.util.Date;
 
@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>MarketFOK</i> holds the Details of a Fill-Or-Kill (FOK) Market Order. The References are:
+ * <i>LimitOrderIOC</i> holds the Details of a Immediate-Or-Cancel (IOC) Limit Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -113,44 +113,48 @@ import org.drip.service.common.StringUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/order/README.md">Implementation of Different Order Types</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/thresholded/README.md">Implementation of Thresholded Limit Order</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketFOK extends Market
+public class LimitOrderIOC
+	extends LimitOrder
 {
 
 	/**
-	 * Construct a Standard Instance of Buy Fill-Or-Kill (FOK) Market Order
+	 * Create a Standard Instance of Immediate-Or-Cancel (IOC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param timeInForce Time-in-Force Settings
+	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Instance of Buy Fill-Or-Kill (FOK) Market Order
+	 * @return Standard Instance of Immediate-Or-Cancel (IOC) Limit Order
 	 */
 
-	public static final MarketFOK Standard (
+	public static final LimitOrderIOC Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final Side side,
 		final double size,
-		final TimeInForce timeInForce)
+		final OrderFillWholeSettings fillWholeSettings,
+		final double thresholdPrice)
 	{
 		try
 		{
-			return new MarketFOK (
+			return new LimitOrderIOC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				side,
 				size,
-				timeInForce
+				fillWholeSettings,
+				thresholdPrice
 			);
 		}
 		catch (Exception e)
@@ -162,59 +166,87 @@ public class MarketFOK extends Market
 	}
 
 	/**
-	 * Construct a Standard Instance of Buy Fill-Or-Kill (FOK) Market Order
+	 * Create a Standard Instance of Buy Immediate-Or-Cancel (IOC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
-	 * @param timeInForce Time-in-Force Settings
+	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Buy Fill-Or-Kill (FOK) Market Order
+	 * @return Standard Instance of Buy Immediate-Or-Cancel (IOC) Limit Order
 	 */
 
-	public static final MarketFOK StandardBuy (
+	public static final LimitOrderIOC StandardBuy (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final TimeInForce timeInForce)
+		final OrderFillWholeSettings fillWholeSettings,
+		final double thresholdPrice)
 	{
-		return Standard (
-			issuer,
-			securityIdentifier,
-			Side.Buy(),
-			size,
-			timeInForce
-		);
+		try
+		{
+			return new LimitOrderIOC (
+				issuer,
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Side.Buy(),
+				size,
+				fillWholeSettings,
+				thresholdPrice
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
-	 * Construct a Standard Instance of Sell Fill-Or-Kill (FOK) Market Order
+	 * Create a Standard Instance of Sell Immediate-Or-Cancel (IOC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
-	 * @param timeInForce Time-in-Force Settings
+	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Sell Fill-Or-Kill (FOK) Market Order
+	 * @return Standard Instance of Sell Immediate-Or-Cancel (IOC) Limit Order
 	 */
 
-	public static final MarketFOK StandardSell (
+	public static final LimitOrderIOC StandardSell (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final TimeInForce timeInForce)
+		final OrderFillWholeSettings fillWholeSettings,
+		final double thresholdPrice)
 	{
-		return Standard (
-			issuer,
-			securityIdentifier,
-			Side.Sell(),
-			size,
-			timeInForce
-		);
+		try
+		{
+			return new LimitOrderIOC (
+				issuer,
+				securityIdentifier,
+				StringUtil.GUID(),
+				new Date(),
+				Side.Sell(),
+				size,
+				fillWholeSettings,
+				thresholdPrice
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
-	 * Fill-Or-Kill (FOK) Market Order Constructor
+	 * Immediate-Or-Cancel (IOC) Limit Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -222,19 +254,21 @@ public class MarketFOK extends Market
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param timeInForce Time-in-Force Settings
+	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param thresholdPrice Threshold Price
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MarketFOK (
+	public LimitOrderIOC (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
 		final Side side,
 		final double size,
-		final TimeInForce timeInForce)
+		final OrderFillWholeSettings fillWholeSettings,
+		final double thresholdPrice)
 		throws Exception
 	{
 		super (
@@ -244,8 +278,9 @@ public class MarketFOK extends Market
 			creationTime,
 			side,
 			size,
-			timeInForce,
-			OrderFillWholeSettings.FillOrKill()
+			TimeInForce.CreateImmediate(),
+			fillWholeSettings,
+			thresholdPrice
 		);
 	}
 }

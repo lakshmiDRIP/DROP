@@ -1,5 +1,5 @@
 
-package org.drip.oms.order;
+package org.drip.oms.unthresholded;
 
 import java.util.Date;
 
@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>MarketIOC</i> holds the Details of a Immediate-Or-Cancel (IOC) Market Order. The References are:
+ * <i>MarketOrderAON</i> holds the Details of a All-or-None (AON) Market Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -113,45 +113,48 @@ import org.drip.service.common.StringUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/order/README.md">Implementation of Different Order Types</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/unthresholded/README.md">Implementation of Unthresholded Market Variants</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketIOC
-	extends Market
+public class MarketOrderAON
+	extends MarketOrder
 {
 
 	/**
-	 * Create a Standard Instance of Immediate-Or-Cancel (IOC) Market Order
+	 * Construct a Standard Instance of Buy All-or-None (AON) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param timeInForce Time-in-Force Settings
+	 * @param fulfillTryLimit Fulfill Try Limit
 	 * 
-	 * @return Standard Instance of Immediate-Or-Cancel (IOC) Market Order
+	 * @return Instance of Buy All-or-None (AON) Market Order
 	 */
 
-	public static final MarketIOC Standard (
+	public static final MarketOrderAON Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final Side side,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final TimeInForce timeInForce,
+		final int fulfillTryLimit)
 	{
 		try
 		{
-			return new MarketIOC (
+			return new MarketOrderAON (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				side,
 				size,
-				fillWholeSettings
+				timeInForce,
+				fulfillTryLimit
 			);
 		}
 		catch (Exception e)
@@ -163,81 +166,65 @@ public class MarketIOC
 	}
 
 	/**
-	 * Create a Standard Instance of Buy Immediate-Or-Cancel (IOC) Market Order
+	 * Construct a Standard Instance of Buy All-or-None (AON) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param timeInForce Time-in-Force Settings
+	 * @param fulfillTryLimit Fulfill Try Limit
 	 * 
-	 * @return Standard Instance of Buy Immediate-Or-Cancel (IOC) Market Order
+	 * @return Standard Instance of Buy All-or-None (AON) Market Order
 	 */
 
-	public static final MarketIOC StandardBuy (
+	public static final MarketOrderAON StandardBuy (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final TimeInForce timeInForce,
+		final int fulfillTryLimit)
 	{
-		try
-		{
-			return new MarketIOC (
-				issuer,
-				securityIdentifier,
-				StringUtil.GUID(),
-				new Date(),
-				Side.Buy(),
-				size,
-				fillWholeSettings
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return Standard (
+			issuer,
+			securityIdentifier,
+			Side.Buy(),
+			size,
+			timeInForce,
+			fulfillTryLimit
+		);
 	}
 
 	/**
-	 * Create a Standard Instance of Sell Immediate-Or-Cancel (IOC) Market Order
+	 * Construct a Standard Instance of Sell All-or-None (AON) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param timeInForce Time-in-Force Settings
+	 * @param fulfillTryLimit Fulfill Try Limit
 	 * 
-	 * @return Standard Instance of Sell Immediate-Or-Cancel (IOC) Market Order
+	 * @return Standard Instance of Sell All-or-None (AON) Market Order
 	 */
 
-	public static final MarketIOC StandardSell (
+	public static final MarketOrderAON StandardSell (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final TimeInForce timeInForce,
+		final int fulfillTryLimit)
 	{
-		try
-		{
-			return new MarketIOC (
-				issuer,
-				securityIdentifier,
-				StringUtil.GUID(),
-				new Date(),
-				Side.Sell(),
-				size,
-				fillWholeSettings
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return Standard (
+			issuer,
+			securityIdentifier,
+			Side.Sell(),
+			size,
+			timeInForce,
+			fulfillTryLimit
+		);
 	}
 
 	/**
-	 * Immediate-Or-Cancel (IOC) Market Order Constructor
+	 * All-or-None (AON) Market Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -245,19 +232,21 @@ public class MarketIOC
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param timeInForce Time-in-Force Settings
+	 * @param fulfillTryLimit Fulfill Try Limit
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MarketIOC (
+	public MarketOrderAON (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
 		final Side side,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final TimeInForce timeInForce,
+		final int fulfillTryLimit)
 		throws Exception
 	{
 		super (
@@ -267,8 +256,10 @@ public class MarketIOC
 			creationTime,
 			side,
 			size,
-			TimeInForce.CreateImmediate(),
-			fillWholeSettings
+			timeInForce,
+			OrderFillWholeSettings.AllOrNone (
+				fulfillTryLimit
+			)
 		);
 	}
 }

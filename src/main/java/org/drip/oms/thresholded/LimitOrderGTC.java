@@ -1,5 +1,5 @@
 
-package org.drip.oms.order;
+package org.drip.oms.thresholded;
 
 import java.util.Date;
 
@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>MarketATO</i> holds the Details of a At-The-Open (ATO) Market Order. The References are:
+ * <i>LimitOrderGTC</i> holds the Details of a Good-Till-Close (GTC) Limit Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -113,45 +113,51 @@ import org.drip.service.common.StringUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/order/README.md">Implementation of Different Order Types</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/thresholded/README.md">Implementation of Thresholded Limit Order</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketATO
-	extends Market
+public class LimitOrderGTC
+	extends LimitOrder
 {
 
 	/**
-	 * Create a Standard Instance of At-The-Open (ATO) Market Order
+	 * Create a Standard Instance of Good-Till-Close (GTC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param side Order Side
 	 * @param size Order Size
+	 * @param durationDays Duration Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of At-The-Open (ATO) Market Order
+	 * @return Standard Instance of Good-Till-Close (GTC) Limit Order
 	 */
 
-	public static final MarketATO Standard (
+	public static final LimitOrderGTC Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final Side side,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final int durationDays,
+		final OrderFillWholeSettings fillWholeSettings,
+		final double thresholdPrice)
 	{
 		try
 		{
-			return new MarketATO (
+			return new LimitOrderGTC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				side,
 				size,
-				fillWholeSettings
+				durationDays,
+				fillWholeSettings,
+				thresholdPrice
 			);
 		}
 		catch (Exception e)
@@ -163,32 +169,38 @@ public class MarketATO
 	}
 
 	/**
-	 * Create a Standard Instance of Buy At-The-Open (ATO) Market Order
+	 * Create a Standard Instance of Buy Good-Till-Close (GTC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
+	 * @param durationDays Duration Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Buy At-The-Open (ATO) Market Order
+	 * @return Standard Instance of Buy Good-Till-Close (GTC) Limit Order
 	 */
 
-	public static final MarketATO StandardBuy (
+	public static final LimitOrderGTC StandardBuy (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final int durationDays,
+		final OrderFillWholeSettings fillWholeSettings,
+		final double thresholdPrice)
 	{
 		try
 		{
-			return new MarketATO (
+			return new LimitOrderGTC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Buy(),
 				size,
-				fillWholeSettings
+				durationDays,
+				fillWholeSettings,
+				thresholdPrice
 			);
 		}
 		catch (Exception e)
@@ -200,32 +212,38 @@ public class MarketATO
 	}
 
 	/**
-	 * Create a Standard Instance of Sell At-The-Open (ATO) Market Order
+	 * Create a Standard Instance of Sell Good-Till-Close (GTC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
+	 * @param durationDays Duration Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Sell At-The-Open (ATO) Market Order
+	 * @return Standard Instance of Sell Good-Till-Close (GTC) Limit Order
 	 */
 
-	public static final MarketATO StandardSell (
+	public static final LimitOrderGTC StandardSell (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final int durationDays,
+		final OrderFillWholeSettings fillWholeSettings,
+		final double thresholdPrice)
 	{
 		try
 		{
-			return new MarketATO (
+			return new LimitOrderGTC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Sell(),
 				size,
-				fillWholeSettings
+				durationDays,
+				fillWholeSettings,
+				thresholdPrice
 			);
 		}
 		catch (Exception e)
@@ -237,7 +255,7 @@ public class MarketATO
 	}
 
 	/**
-	 * At-The-Open (ATO) Market Order Constructor
+	 * Good-Till-Close (GTC) Limit Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -245,19 +263,23 @@ public class MarketATO
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
+	 * @param durationDays Duration Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param thresholdPrice Threshold Price
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MarketATO (
+	public LimitOrderGTC (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
 		final Side side,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final int durationDays,
+		final OrderFillWholeSettings fillWholeSettings,
+		final double thresholdPrice)
 		throws Exception
 	{
 		super (
@@ -267,8 +289,11 @@ public class MarketATO
 			creationTime,
 			side,
 			size,
-			TimeInForce.CreateMarketOpen(),
-			fillWholeSettings
+			TimeInForce.CreateGoodTillCanceled (
+				durationDays
+			),
+			fillWholeSettings,
+			thresholdPrice
 		);
 	}
 }

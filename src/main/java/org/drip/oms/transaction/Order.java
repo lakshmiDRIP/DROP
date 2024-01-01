@@ -120,6 +120,7 @@ public abstract class Order
 {
 	private String _id = "";
 	private Side _side = null;
+	private String _ticker = "";
 	private Date _updateTime = null;
 	private Date _creationTime = null;
 	private double _size = Double.NaN;
@@ -127,7 +128,6 @@ public abstract class Order
 	private Date _completionTime = null;
 	private int _type = Integer.MIN_VALUE;
 	private int _state = Integer.MIN_VALUE;
-	private String _securityIdentifier = "";
 	private TimeInForce _timeInForce = null;
 	private OrderFillWholeSettings _fillWholeSettings = null;
 
@@ -135,7 +135,7 @@ public abstract class Order
 	 * Order Constructor
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param id Order ID
 	 * @param type Order Type
 	 * @param creationTime Creation Time
@@ -149,7 +149,7 @@ public abstract class Order
 
 	public Order (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final String id,
 		final int type,
 		final Date creationTime,
@@ -160,7 +160,7 @@ public abstract class Order
 		throws Exception
 	{
 		if (null == (_issuer = issuer) ||
-			null == (_securityIdentifier = securityIdentifier) || _securityIdentifier.isEmpty() ||
+			null == (_ticker = ticker) || _ticker.isEmpty() ||
 			null == (_id = id) || _id.isEmpty() ||
 			null == (_creationTime = creationTime) ||
 			null == (_side = side) ||
@@ -186,14 +186,14 @@ public abstract class Order
 	}
 
 	/**
-	 * Retrieve the Order Security Identifier
+	 * Retrieve the Order Security Identifier/Ticker
 	 * 
-	 * @return The Order Security Identifier
+	 * @return The Order Security Identifier/Ticker
 	 */
 
-	public String securityIdentifier()
+	public String ticker()
 	{
-		return _securityIdentifier;
+		return _ticker;
 	}
 
 	/**
@@ -440,18 +440,6 @@ public abstract class Order
 				return generateChildOrder (
 					filledSize
 				);
-
-				/* return new Order (
-					_issuer,
-					_securityIdentifier,
-					StringUtil.GUID(),
-					_type,
-					new Date(),
-					_side,
-					_size - filledSize,
-					null,
-					null
-				); */
 			}
 			catch (Exception e)
 			{

@@ -1,11 +1,13 @@
 
-package org.drip.oms.order;
+package org.drip.oms.unthresholded;
 
 import java.util.Date;
 
 import org.drip.oms.transaction.Side;
+import org.drip.oms.transaction.Order;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
+import org.drip.oms.transaction.OrderType;
 import org.drip.oms.transaction.TimeInForce;
 import org.drip.service.common.StringUtil;
 
@@ -82,7 +84,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>LimitGTC</i> holds the Details of a Good-Till-Close (GTC) Limit Order. The References are:
+ * <i>MarketOrder</i> holds the Details of a Market Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -113,51 +115,48 @@ import org.drip.service.common.StringUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/order/README.md">Implementation of Different Order Types</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/unthresholded/README.md">Implementation of Unthresholded Market Variants</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitGTC
-	extends Limit
+public class MarketOrder
+	extends Order
 {
 
 	/**
-	 * Create a Standard Instance of Good-Till-Close (GTC) Limit Order
+	 * Construct a Standard Instance of Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param durationDays Duration Days
+	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Good-Till-Close (GTC) Limit Order
+	 * @return Standard Instance of Market Order
 	 */
 
-	public static final LimitGTC Standard (
+	public static final MarketOrder Standard (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final Side side,
 		final double size,
-		final int durationDays,
-		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final TimeInForce timeInForce,
+		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
-			return new LimitGTC (
+			return new MarketOrder (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				side,
 				size,
-				durationDays,
-				fillWholeSettings,
-				thresholdPrice
+				timeInForce,
+				fillWholeSettings
 			);
 		}
 		catch (Exception e)
@@ -169,131 +168,125 @@ public class LimitGTC
 	}
 
 	/**
-	 * Create a Standard Instance of Buy Good-Till-Close (GTC) Limit Order
+	 * Construct a Standard Instance of Buy Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
-	 * @param durationDays Duration Days
+	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Buy Good-Till-Close (GTC) Limit Order
+	 * @return Standard Instance of Buy Market Order
 	 */
 
-	public static final LimitGTC StandardBuy (
+	public static final MarketOrder StandardBuy (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
-		final int durationDays,
-		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final TimeInForce timeInForce,
+		final OrderFillWholeSettings fillWholeSettings)
 	{
-		try
-		{
-			return new LimitGTC (
-				issuer,
-				securityIdentifier,
-				StringUtil.GUID(),
-				new Date(),
-				Side.Buy(),
-				size,
-				durationDays,
-				fillWholeSettings,
-				thresholdPrice
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return Standard (
+			issuer,
+			ticker,
+			Side.Buy(),
+			size,
+			timeInForce,
+			fillWholeSettings
+		);
 	}
 
 	/**
-	 * Create a Standard Instance of Sell Good-Till-Close (GTC) Limit Order
+	 * Construct a Standard Instance of Sell Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
-	 * @param durationDays Duration Days
+	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Sell Good-Till-Close (GTC) Limit Order
+	 * @return Standard Instance of Sell Market Order
 	 */
 
-	public static final LimitGTC StandardSell (
+	public static final MarketOrder StandardSell (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
-		final int durationDays,
-		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final TimeInForce timeInForce,
+		final OrderFillWholeSettings fillWholeSettings)
 	{
-		try
-		{
-			return new LimitGTC (
-				issuer,
-				securityIdentifier,
-				StringUtil.GUID(),
-				new Date(),
-				Side.Sell(),
-				size,
-				durationDays,
-				fillWholeSettings,
-				thresholdPrice
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return Standard (
+			issuer,
+			ticker,
+			Side.Sell(),
+			size,
+			timeInForce,
+			fillWholeSettings
+		);
 	}
 
 	/**
-	 * Good-Till-Close (GTC) Limit Order Constructor
+	 * Market Order Constructor
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param id Order ID
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param durationDays Duration Days
+	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public LimitGTC (
+	public MarketOrder (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final String id,
 		final Date creationTime,
 		final Side side,
 		final double size,
-		final int durationDays,
-		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final TimeInForce timeInForce,
+		final OrderFillWholeSettings fillWholeSettings)
 		throws Exception
 	{
 		super (
 			issuer,
-			securityIdentifier,
+			ticker,
 			id,
+			OrderType.MARKET,
 			creationTime,
 			side,
 			size,
-			TimeInForce.CreateGoodTillCanceled (
-				durationDays
-			),
-			fillWholeSettings,
-			thresholdPrice
+			timeInForce,
+			fillWholeSettings
 		);
+	}
+
+	@Override public boolean isConditional()
+	{
+		return false;
+	}
+
+	@Override public Order generateChildOrder (
+		final double filledSize)
+	{
+		try {
+			return new MarketOrder (
+				issuer(),
+				ticker(),
+				StringUtil.GUID(),
+				new Date(),
+				side(),
+				size() - filledSize,
+				null,
+				null
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

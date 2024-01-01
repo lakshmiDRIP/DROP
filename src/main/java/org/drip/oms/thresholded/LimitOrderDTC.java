@@ -1,5 +1,5 @@
 
-package org.drip.oms.order;
+package org.drip.oms.thresholded;
 
 import java.util.Date;
 
@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>MarketATC</i> holds the Details of a At-The-Close (ATC) Market Order. The References are:
+ * <i>LimitOrderDTC</i> holds the Details of a Day-Till-Close (DTC) Limit Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -113,45 +113,48 @@ import org.drip.service.common.StringUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/order/README.md">Implementation of Different Order Types</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/thresholded/README.md">Implementation of Thresholded Limit Order</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketATC
-	extends Market
+public class LimitOrderDTC
+	extends LimitOrder
 {
 
 	/**
-	 * Create a Standard Instance of At-The-Close (ATC) Market Order
+	 * Create a Standard Instance of Day-Till-Close (DTC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of At-The-Close (ATC) Market Order
+	 * @return Standard Instance of Day-Till-Close (DTC) Limit Order
 	 */
 
-	public static final MarketATC Standard (
+	public static final LimitOrderDTC Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final Side side,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final OrderFillWholeSettings fillWholeSettings,
+		final double thresholdPrice)
 	{
 		try
 		{
-			return new MarketATC (
+			return new LimitOrderDTC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				side,
 				size,
-				fillWholeSettings
+				fillWholeSettings,
+				thresholdPrice
 			);
 		}
 		catch (Exception e)
@@ -163,32 +166,35 @@ public class MarketATC
 	}
 
 	/**
-	 * Create a Standard Instance of Buy At-The-Close (ATC) Market Order
+	 * Create a Standard Instance of Buy Day-Till-Close (DTC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Buy At-The-Close (ATC) Market Order
+	 * @return Standard Instance of Buy Day-Till-Close (DTC) Limit Order
 	 */
 
-	public static final MarketATC StandardBuy (
+	public static final LimitOrderDTC StandardBuy (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final OrderFillWholeSettings fillWholeSettings,
+		final double thresholdPrice)
 	{
 		try
 		{
-			return new MarketATC (
+			return new LimitOrderDTC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Buy(),
 				size,
-				fillWholeSettings
+				fillWholeSettings,
+				thresholdPrice
 			);
 		}
 		catch (Exception e)
@@ -200,32 +206,35 @@ public class MarketATC
 	}
 
 	/**
-	 * Create a Standard Instance of Sell At-The-Close (ATC) Market Order
+	 * Create a Standard Instance of Sell Day-Till-Close (DTC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Sell At-The-Close (ATC) Market Order
+	 * @return Standard Instance of Sell Day-Till-Close (DTC) Limit Order
 	 */
 
-	public static final MarketATC StandardSell (
+	public static final LimitOrderDTC StandardSell (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final OrderFillWholeSettings fillWholeSettings,
+		final double thresholdPrice)
 	{
 		try
 		{
-			return new MarketATC (
+			return new LimitOrderDTC (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Sell(),
 				size,
-				fillWholeSettings
+				fillWholeSettings,
+				thresholdPrice
 			);
 		}
 		catch (Exception e)
@@ -237,7 +246,7 @@ public class MarketATC
 	}
 
 	/**
-	 * At-The-Close (ATC) Market Order Constructor
+	 * Day-Till-Close (DTC) Limit Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -246,18 +255,20 @@ public class MarketATC
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param thresholdPrice Threshold Price
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MarketATC (
+	public LimitOrderDTC (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
 		final Side side,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final OrderFillWholeSettings fillWholeSettings,
+		final double thresholdPrice)
 		throws Exception
 	{
 		super (
@@ -267,8 +278,9 @@ public class MarketATC
 			creationTime,
 			side,
 			size,
-			TimeInForce.CreateMarketClose(),
-			fillWholeSettings
+			TimeInForce.CreateDayTillCanceled(),
+			fillWholeSettings,
+			thresholdPrice
 		);
 	}
 }

@@ -1,5 +1,5 @@
 
-package org.drip.oms.order;
+package org.drip.oms.unthresholded;
 
 import java.util.Date;
 
@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>MarketDAY</i> holds the Details of a DAY Market Order. The References are:
+ * <i>MarketOrderATO</i> holds the Details of a At-The-Open (ATO) Market Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -113,18 +113,18 @@ import org.drip.service.common.StringUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/order/README.md">Implementation of Different Order Types</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/unthresholded/README.md">Implementation of Unthresholded Market Variants</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketDAY
-	extends Market
+public class MarketOrderATO
+	extends MarketOrder
 {
 
 	/**
-	 * Create a Standard Instance of DAY Market Order
+	 * Create a Standard Instance of At-The-Open (ATO) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -132,10 +132,10 @@ public class MarketDAY
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of DAY Market Order
+	 * @return Standard Instance of At-The-Open (ATO) Market Order
 	 */
 
-	public static final MarketDAY Standard (
+	public static final MarketOrderATO Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final Side side,
@@ -144,7 +144,7 @@ public class MarketDAY
 	{
 		try
 		{
-			return new MarketDAY (
+			return new MarketOrderATO (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
@@ -163,17 +163,17 @@ public class MarketDAY
 	}
 
 	/**
-	 * Create a Standard Instance of Buy DAY Market Order
+	 * Create a Standard Instance of Buy At-The-Open (ATO) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Buy DAY Market Order
+	 * @return Standard Instance of Buy At-The-Open (ATO) Market Order
 	 */
 
-	public static final MarketDAY StandardBuy (
+	public static final MarketOrderATO StandardBuy (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
@@ -181,7 +181,7 @@ public class MarketDAY
 	{
 		try
 		{
-			return new MarketDAY (
+			return new MarketOrderATO (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
@@ -200,17 +200,17 @@ public class MarketDAY
 	}
 
 	/**
-	 * Create a Standard Instance of Sell DAY Market Order
+	 * Create a Standard Instance of Sell At-The-Open (ATO) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Sell DAY Market Order
+	 * @return Standard Instance of Sell At-The-Open (ATO) Market Order
 	 */
 
-	public static final MarketDAY StandardSell (
+	public static final MarketOrderATO StandardSell (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
@@ -218,7 +218,7 @@ public class MarketDAY
 	{
 		try
 		{
-			return new MarketDAY (
+			return new MarketOrderATO (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
@@ -237,7 +237,7 @@ public class MarketDAY
 	}
 
 	/**
-	 * DAY Market Order Constructor
+	 * At-The-Open (ATO) Market Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -250,7 +250,7 @@ public class MarketDAY
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MarketDAY (
+	public MarketOrderATO (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
@@ -267,7 +267,7 @@ public class MarketDAY
 			creationTime,
 			side,
 			size,
-			TimeInForce.CreateDay(),
+			TimeInForce.CreateMarketOpen(),
 			fillWholeSettings
 		);
 	}

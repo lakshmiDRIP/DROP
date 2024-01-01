@@ -233,7 +233,7 @@ public class CrossVenueMontageProcessor
 				}
 
 				l1MontageManagerMap.put (
-					venue.settings().code(),
+					venueMontageTicker,
 					montageL1Manager
 				);
 			} else {

@@ -1,5 +1,5 @@
 
-package org.drip.oms.order;
+package org.drip.oms.thresholded;
 
 import java.util.Date;
 
@@ -82,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>MarketDAY</i> holds the Details of a Day-Till-Close (DTC) Market Order. The References are:
+ * <i>LimitOrderAON</i> holds the Details of a All-or-None (AON) Limit Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -113,45 +113,51 @@ import org.drip.service.common.StringUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/order/README.md">Implementation of Different Order Types</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/thresholded/README.md">Implementation of Thresholded Limit Order</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketDTC
-	extends Market
+public class LimitOrderAON
+	extends LimitOrder
 {
 
 	/**
-	 * Create a Standard Instance of Day-Till-Close (DTC) Market Order
+	 * Construct a Standard Instance of Buy All-or-None (AON) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param timeInForce Time-in-Force Settings
+	 * @param fulfillTryLimit Fulfill Try Limit
+	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Day-Till-Close (DTC) Market Order
+	 * @return Instance of Buy All-or-None (AON) Limit Order
 	 */
 
-	public static final MarketDTC Standard (
+	public static final LimitOrderAON Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final Side side,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final TimeInForce timeInForce,
+		final int fulfillTryLimit,
+		final double thresholdPrice)
 	{
 		try
 		{
-			return new MarketDTC (
+			return new LimitOrderAON (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				side,
 				size,
-				fillWholeSettings
+				timeInForce,
+				fulfillTryLimit,
+				thresholdPrice
 			);
 		}
 		catch (Exception e)
@@ -163,81 +169,71 @@ public class MarketDTC
 	}
 
 	/**
-	 * Create a Standard Instance of Buy Day-Till-Close (DTC) Market Order
+	 * Construct a Standard Instance of Buy All-or-None (AON) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param timeInForce Time-in-Force Settings
+	 * @param fulfillTryLimit Fulfill Try Limit
+	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Buy Day-Till-Close (DTC) Market Order
+	 * @return Standard Instance of Buy All-or-None (AON) Limit Order
 	 */
 
-	public static final MarketDTC StandardBuy (
+	public static final LimitOrderAON StandardBuy (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final TimeInForce timeInForce,
+		final int fulfillTryLimit,
+		final double thresholdPrice)
 	{
-		try
-		{
-			return new MarketDTC (
-				issuer,
-				securityIdentifier,
-				StringUtil.GUID(),
-				new Date(),
-				Side.Buy(),
-				size,
-				fillWholeSettings
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return Standard (
+			issuer,
+			securityIdentifier,
+			Side.Buy(),
+			size,
+			timeInForce,
+			fulfillTryLimit,
+			thresholdPrice
+		);
 	}
 
 	/**
-	 * Create a Standard Instance of Sell Day-Till-Close (DTC) Market Order
+	 * Construct a Standard Instance of Sell All-or-None (AON) Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param timeInForce Time-in-Force Settings
+	 * @param fulfillTryLimit Fulfill Try Limit
+	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Standard Instance of Sell Day-Till-Close (DTC) Market Order
+	 * @return Standard Instance of Sell All-or-None (AON) Limit Order
 	 */
 
-	public static final MarketDTC StandardSell (
+	public static final LimitOrderAON StandardSell (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final TimeInForce timeInForce,
+		final int fulfillTryLimit,
+		final double thresholdPrice)
 	{
-		try
-		{
-			return new MarketDTC (
-				issuer,
-				securityIdentifier,
-				StringUtil.GUID(),
-				new Date(),
-				Side.Sell(),
-				size,
-				fillWholeSettings
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return Standard (
+			issuer,
+			securityIdentifier,
+			Side.Sell(),
+			size,
+			timeInForce,
+			fulfillTryLimit,
+			thresholdPrice
+		);
 	}
 
 	/**
-	 * Day-Till-Close (DTC) Market Order Constructor
+	 * All-or-None (AON) Limit Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -245,19 +241,23 @@ public class MarketDTC
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param timeInForce Time-in-Force Settings
+	 * @param fulfillTryLimit Fulfill Try Limit
+	 * @param thresholdPrice Threshold Price
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MarketDTC (
+	public LimitOrderAON (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
 		final Side side,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final TimeInForce timeInForce,
+		final int fulfillTryLimit,
+		final double thresholdPrice)
 		throws Exception
 	{
 		super (
@@ -267,8 +267,11 @@ public class MarketDTC
 			creationTime,
 			side,
 			size,
-			TimeInForce.CreateDayTillCanceled(),
-			fillWholeSettings
+			timeInForce,
+			OrderFillWholeSettings.AllOrNone (
+				fulfillTryLimit
+			),
+			thresholdPrice
 		);
 	}
 }

@@ -1,15 +1,18 @@
 
-package org.drip.oms.order;
+package org.drip.oms.switchable;
 
 import java.util.Date;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.oms.transaction.Side;
+import org.drip.oms.depth.MontageL1Manager;
+import org.drip.oms.exchange.CrossVenueMontageDigest;
 import org.drip.oms.transaction.Order;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.OrderType;
+import org.drip.oms.transaction.Side;
 import org.drip.oms.transaction.TimeInForce;
+import org.drip.oms.unthresholded.MarketOrder;
 import org.drip.service.common.StringUtil;
 
 /*
@@ -85,7 +88,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>LimitOrder</i> holds the Details of a Limit Order. The References are:
+ * <i>StopOrder</i> holds the Details of a Stop Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -116,52 +119,52 @@ import org.drip.service.common.StringUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/order/README.md">Implementation of Different Order Types</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/switchable/README.md">Implementation of Switchable Stop Order</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Limit
+public class StopOrder
 	extends Order
 {
-	private double _thresholdPrice = Double.NaN;
+	private double _switchPrice = Double.NaN;
 
 	/**
-	 * Construct a Standard Instance of Limit Order
+	 * Construct a Standard Instance of Stop Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
+	 * @param switchPrice Switch-to-Market Price
 	 * 
-	 * @return Standard Instance of Limit Order
+	 * @return Standard Instance of Stop Order
 	 */
 
-	public static final Limit Standard (
+	public static final StopOrder Standard (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final double switchPrice)
 	{
 		try
 		{
-			return new Limit (
+			return new StopOrder (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				side,
 				size,
 				timeInForce,
 				fillWholeSettings,
-				thresholdPrice
+				switchPrice
 			);
 		}
 		catch (Exception e)
@@ -173,124 +176,38 @@ public class Limit
 	}
 
 	/**
-	 * Construct an Instance of Buy Limit Order
+	 * Stop Order Constructor
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
-	 * @param size Order Size
-	 * @param timeInForce Time-in-Force Settings
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
-	 * 
-	 * @return Instance of Buy Limit Order
-	 */
-
-	public static final Limit Buy (
-		final OrderIssuer issuer,
-		final String securityIdentifier,
-		final double size,
-		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
-	{
-		try
-		{
-			return new Limit (
-				issuer,
-				securityIdentifier,
-				StringUtil.GUID(),
-				new Date(),
-				Side.Buy(),
-				size,
-				timeInForce,
-				fillWholeSettings,
-				thresholdPrice
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Construct an Instance of Sell Limit Order
-	 * 
-	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
-	 * @param size Order Size
-	 * @param timeInForce Time-in-Force Settings
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
-	 * 
-	 * @return Instance of Sell Limit Order
-	 */
-
-	public static final Limit Sell (
-		final OrderIssuer issuer,
-		final String securityIdentifier,
-		final double size,
-		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
-	{
-		try
-		{
-			return new Limit (
-				issuer,
-				securityIdentifier,
-				StringUtil.GUID(),
-				new Date(),
-				Side.Sell(),
-				size,
-				timeInForce,
-				fillWholeSettings,
-				thresholdPrice
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Limit Order Constructor
-	 * 
-	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param id Order ID
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
+	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public Limit (
+	public StopOrder (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final String id,
 		final Date creationTime,
 		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final double switchPrice)
 		throws Exception
 	{
 		super (
 			issuer,
-			securityIdentifier,
+			ticker,
 			id,
-			OrderType.LIMIT,
+			OrderType.STOP,
 			creationTime,
 			side,
 			size,
@@ -299,25 +216,83 @@ public class Limit
 		);
 
 		if (!NumberUtil.IsValid (
-				_thresholdPrice = thresholdPrice
-			) || 0. >=_thresholdPrice
+				_switchPrice = switchPrice
+			) || 0. >=_switchPrice
 		)
 		{
 			throw new Exception (
-				"Limit Constructor => Invalid Inputs"
+				"Stop Constructor => Invalid Inputs"
 			);
 		}
 	}
 
 	/**
-	 * Retrieve the Threshold Price
+	 * Retrieve the Switch-to-Market Price
 	 * 
-	 * @return The Threshold Price
+	 * @return The Switch-to-Market Price
 	 */
 
-	public double thresholdPrice()
+	public double switchPrice()
 	{
-		return _thresholdPrice;
+		return _switchPrice;
+	}
+
+	/**
+	 * Switch to Market Order based on the side and the L1 Montage
+	 * 
+	 * @param crossVenueMontageDigest The L1 Cross Venue Montage Digest
+	 * 
+	 * @return The Switched to Market Order (or NULL if not switch happens)
+	 */
+
+	public MarketOrder switchToMarket (
+		final CrossVenueMontageDigest crossVenueMontageDigest)
+	{
+		if (null == crossVenueMontageDigest) {
+			return null;
+		}
+
+		Side side = side();
+
+		boolean buy = Side.BUY == side.buySell();
+
+		MontageL1Manager montageL1Manager = buy ? crossVenueMontageDigest.bidL1MontageManagerMap().get (
+			ticker()
+		) : crossVenueMontageDigest.askL1MontageManagerMap().get (
+			ticker()
+		);
+
+		if (null == montageL1Manager) {
+			return null;
+		}
+
+		double topOfTheBookPrice = buy ? montageL1Manager.bidNBBOBlock().price() :
+			montageL1Manager.askNBBOBlock().price();
+
+		if (buy && topOfTheBookPrice > _switchPrice) {
+			return null;
+		}
+
+		if (!buy && topOfTheBookPrice < _switchPrice) {
+			return null;
+		}
+
+		try {
+			return new MarketOrder (
+				issuer(),
+				ticker(),
+				StringUtil.GUID(),
+				new Date(),
+				side(),
+				size(),
+				null,
+				null
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	@Override public boolean isConditional()
@@ -328,22 +303,6 @@ public class Limit
 	@Override public Order generateChildOrder (
 		final double filledSize)
 	{
-		try {
-			return new Limit (
-				issuer(),
-				securityIdentifier(),
-				StringUtil.GUID(),
-				new Date(),
-				side(),
-				size() - filledSize,
-				null,
-				null,
-				_thresholdPrice
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 		return null;
 	}
 }

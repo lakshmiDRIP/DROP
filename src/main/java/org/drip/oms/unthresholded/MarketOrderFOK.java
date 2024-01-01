@@ -1,13 +1,11 @@
 
-package org.drip.oms.order;
+package org.drip.oms.unthresholded;
 
 import java.util.Date;
 
 import org.drip.oms.transaction.Side;
-import org.drip.oms.transaction.Order;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
-import org.drip.oms.transaction.OrderType;
 import org.drip.oms.transaction.TimeInForce;
 import org.drip.service.common.StringUtil;
 
@@ -84,7 +82,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>Market</i> holds the Details of a Market Order. The References are:
+ * <i>MarketOrderFOK</i> holds the Details of a Fill-Or-Kill (FOK) Market Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -115,48 +113,44 @@ import org.drip.service.common.StringUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/order/README.md">Implementation of Different Order Types</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/unthresholded/README.md">Implementation of Unthresholded Market Variants</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Market
-	extends Order
+public class MarketOrderFOK extends MarketOrder
 {
 
 	/**
-	 * Construct a Standard Instance of Market Order
+	 * Construct a Standard Instance of Buy Fill-Or-Kill (FOK) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
-	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Market Order
+	 * @return Instance of Buy Fill-Or-Kill (FOK) Market Order
 	 */
 
-	public static final Market Standard (
+	public static final MarketOrderFOK Standard (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final Side side,
 		final double size,
-		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings)
+		final TimeInForce timeInForce)
 	{
 		try
 		{
-			return new Market (
+			return new MarketOrderFOK (
 				issuer,
 				securityIdentifier,
 				StringUtil.GUID(),
 				new Date(),
 				side,
 				size,
-				timeInForce,
-				fillWholeSettings
+				timeInForce
 			);
 		}
 		catch (Exception e)
@@ -168,65 +162,59 @@ public class Market
 	}
 
 	/**
-	 * Construct a Standard Instance of Buy Market Order
+	 * Construct a Standard Instance of Buy Fill-Or-Kill (FOK) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
-	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Buy Market Order
+	 * @return Standard Instance of Buy Fill-Or-Kill (FOK) Market Order
 	 */
 
-	public static final Market StandardBuy (
+	public static final MarketOrderFOK StandardBuy (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings)
+		final TimeInForce timeInForce)
 	{
 		return Standard (
 			issuer,
 			securityIdentifier,
 			Side.Buy(),
 			size,
-			timeInForce,
-			fillWholeSettings
+			timeInForce
 		);
 	}
 
 	/**
-	 * Construct a Standard Instance of Sell Market Order
+	 * Construct a Standard Instance of Sell Fill-Or-Kill (FOK) Market Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
-	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
-	 * @return Standard Instance of Sell Market Order
+	 * @return Standard Instance of Sell Fill-Or-Kill (FOK) Market Order
 	 */
 
-	public static final Market StandardSell (
+	public static final MarketOrderFOK StandardSell (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final double size,
-		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings)
+		final TimeInForce timeInForce)
 	{
 		return Standard (
 			issuer,
 			securityIdentifier,
 			Side.Sell(),
 			size,
-			timeInForce,
-			fillWholeSettings
+			timeInForce
 		);
 	}
 
 	/**
-	 * Market Order Constructor
+	 * Fill-Or-Kill (FOK) Market Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param securityIdentifier Security Identifier
@@ -235,58 +223,29 @@ public class Market
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
-	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public Market (
+	public MarketOrderFOK (
 		final OrderIssuer issuer,
 		final String securityIdentifier,
 		final String id,
 		final Date creationTime,
 		final Side side,
 		final double size,
-		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings)
+		final TimeInForce timeInForce)
 		throws Exception
 	{
 		super (
 			issuer,
 			securityIdentifier,
 			id,
-			OrderType.MARKET,
 			creationTime,
 			side,
 			size,
 			timeInForce,
-			fillWholeSettings
+			OrderFillWholeSettings.FillOrKill()
 		);
-	}
-
-	@Override public boolean isConditional()
-	{
-		return false;
-	}
-
-	@Override public Order generateChildOrder (
-		final double filledSize)
-	{
-		try {
-			return new Market (
-				issuer(),
-				securityIdentifier(),
-				StringUtil.GUID(),
-				new Date(),
-				side(),
-				size() - filledSize,
-				null,
-				null
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
 	}
 }
