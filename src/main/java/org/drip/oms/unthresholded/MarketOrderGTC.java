@@ -169,7 +169,7 @@ public class MarketOrderGTC
 	 * Create a Standard Instance of Buy Good-Till-Close (GTC) Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier/Ticker
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param durationDays Order Duration Tenor in Days
 	 * @param fillWholeSettings Order Fill-Whole Settings

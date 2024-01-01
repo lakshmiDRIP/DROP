@@ -209,7 +209,7 @@ public class LimitOrderIOC
 	 * Create a Standard Instance of Sell Immediate-Or-Cancel (IOC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier/Ticker
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price

@@ -215,7 +215,7 @@ public class LimitOrderGTC
 	 * Create a Standard Instance of Sell Good-Till-Close (GTC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier/Ticker
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param durationDays Duration Days
 	 * @param fillWholeSettings Order Fill-Whole Settings

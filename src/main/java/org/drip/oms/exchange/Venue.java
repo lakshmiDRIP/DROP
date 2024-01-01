@@ -363,7 +363,7 @@ public class Venue
 	/**
 	 * Retrieve the Top-of-the-Bid-Book for the specified Ticker
 	 * 
-	 * @param String Ticker
+	 * @param ticker Ticker
 	 * 
 	 * @return The Top-of-the-Bid-Book
 	 */
@@ -383,7 +383,7 @@ public class Venue
 	/**
 	 * Retrieve the Top-of-the-Ask-Book for the specified Ticker
 	 * 
-	 * @param String Ticker
+	 * @param ticker Ticker
 	 * 
 	 * @return The Top-of-the-Ask-Book
 	 */

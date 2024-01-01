@@ -255,7 +255,7 @@ public class LimitOrderDTC
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
+	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
@@ -268,7 +268,7 @@ public class LimitOrderDTC
 		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final double switchPrice)
 		throws Exception
 	{
 		super (
@@ -280,7 +280,7 @@ public class LimitOrderDTC
 			size,
 			TimeInForce.CreateDayTillCanceled(),
 			fillWholeSettings,
-			thresholdPrice
+			switchPrice
 		);
 	}
 }
