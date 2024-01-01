@@ -124,22 +124,22 @@ public class LimitOrderAON
 {
 
 	/**
-	 * Construct a Standard Instance of Buy All-or-None (AON) Limit Order
+	 * Construct a Standard Instance of All-or-None (AON) Limit Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fulfillTryLimit Fulfill Try Limit
 	 * @param thresholdPrice Threshold Price
 	 * 
-	 * @return Instance of Buy All-or-None (AON) Limit Order
+	 * @return Instance of All-or-None (AON) Limit Order
 	 */
 
 	public static final LimitOrderAON Standard (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
@@ -150,7 +150,7 @@ public class LimitOrderAON
 		{
 			return new LimitOrderAON (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				side,
@@ -172,7 +172,7 @@ public class LimitOrderAON
 	 * Construct a Standard Instance of Buy All-or-None (AON) Limit Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fulfillTryLimit Fulfill Try Limit
@@ -183,7 +183,7 @@ public class LimitOrderAON
 
 	public static final LimitOrderAON StandardBuy (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
 		final TimeInForce timeInForce,
 		final int fulfillTryLimit,
@@ -191,7 +191,7 @@ public class LimitOrderAON
 	{
 		return Standard (
 			issuer,
-			securityIdentifier,
+			ticker,
 			Side.Buy(),
 			size,
 			timeInForce,
@@ -204,7 +204,7 @@ public class LimitOrderAON
 	 * Construct a Standard Instance of Sell All-or-None (AON) Limit Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fulfillTryLimit Fulfill Try Limit
@@ -215,7 +215,7 @@ public class LimitOrderAON
 
 	public static final LimitOrderAON StandardSell (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
 		final TimeInForce timeInForce,
 		final int fulfillTryLimit,
@@ -223,7 +223,7 @@ public class LimitOrderAON
 	{
 		return Standard (
 			issuer,
-			securityIdentifier,
+			ticker,
 			Side.Sell(),
 			size,
 			timeInForce,
@@ -236,7 +236,7 @@ public class LimitOrderAON
 	 * All-or-None (AON) Limit Order Constructor
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param id Order ID
 	 * @param creationTime Creation Time
 	 * @param side Order Side
@@ -250,7 +250,7 @@ public class LimitOrderAON
 
 	public LimitOrderAON (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final String id,
 		final Date creationTime,
 		final Side side,
@@ -262,7 +262,7 @@ public class LimitOrderAON
 	{
 		super (
 			issuer,
-			securityIdentifier,
+			ticker,
 			id,
 			creationTime,
 			side,

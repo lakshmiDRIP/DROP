@@ -176,6 +176,92 @@ public class StopOrder
 	}
 
 	/**
+	 * Construct an Instance of Buy Stop Order
+	 * 
+	 * @param issuer Order Issuer
+	 * @param ticker Security Identifier/Ticker
+	 * @param size Order Size
+	 * @param timeInForce Time-in-Force Settings
+	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param switchPrice Switch-to-Market Price
+	 * 
+	 * @return Instance of Buy Stop Order
+	 */
+
+	public static final StopOrder Buy (
+		final OrderIssuer issuer,
+		final String ticker,
+		final double size,
+		final TimeInForce timeInForce,
+		final OrderFillWholeSettings fillWholeSettings,
+		final double switchPrice)
+	{
+		try
+		{
+			return new StopOrder (
+				issuer,
+				ticker,
+				StringUtil.GUID(),
+				new Date(),
+				Side.Buy(),
+				size,
+				timeInForce,
+				fillWholeSettings,
+				switchPrice
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an Instance of Sell Stop Order
+	 * 
+	 * @param issuer Order Issuer
+	 * @param ticker Security Identifier/Ticker
+	 * @param size Order Size
+	 * @param timeInForce Time-in-Force Settings
+	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param switchPrice Switch-to-Market Price
+	 * 
+	 * @return Instance of Sell Stop Order
+	 */
+
+	public static final StopOrder Sell (
+		final OrderIssuer issuer,
+		final String ticker,
+		final double size,
+		final TimeInForce timeInForce,
+		final OrderFillWholeSettings fillWholeSettings,
+		final double switchPrice)
+	{
+		try
+		{
+			return new StopOrder (
+				issuer,
+				ticker,
+				StringUtil.GUID(),
+				new Date(),
+				Side.Sell(),
+				size,
+				timeInForce,
+				fillWholeSettings,
+				switchPrice
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Stop Order Constructor
 	 * 
 	 * @param issuer Order Issuer

@@ -127,7 +127,7 @@ public class MarketOrderDTC
 	 * Create a Standard Instance of Day-Till-Close (DTC) Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
@@ -137,7 +137,7 @@ public class MarketOrderDTC
 
 	public static final MarketOrderDTC Standard (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings)
@@ -146,7 +146,7 @@ public class MarketOrderDTC
 		{
 			return new MarketOrderDTC (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				side,
@@ -166,7 +166,7 @@ public class MarketOrderDTC
 	 * Create a Standard Instance of Buy Day-Till-Close (DTC) Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
@@ -175,7 +175,7 @@ public class MarketOrderDTC
 
 	public static final MarketOrderDTC StandardBuy (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
@@ -183,7 +183,7 @@ public class MarketOrderDTC
 		{
 			return new MarketOrderDTC (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Buy(),
@@ -203,7 +203,7 @@ public class MarketOrderDTC
 	 * Create a Standard Instance of Sell Day-Till-Close (DTC) Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
@@ -212,7 +212,7 @@ public class MarketOrderDTC
 
 	public static final MarketOrderDTC StandardSell (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
@@ -220,7 +220,7 @@ public class MarketOrderDTC
 		{
 			return new MarketOrderDTC (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Sell(),
@@ -240,7 +240,7 @@ public class MarketOrderDTC
 	 * Day-Till-Close (DTC) Market Order Constructor
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param id Order ID
 	 * @param creationTime Creation Time
 	 * @param side Order Side
@@ -252,7 +252,7 @@ public class MarketOrderDTC
 
 	public MarketOrderDTC (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final String id,
 		final Date creationTime,
 		final Side side,
@@ -262,7 +262,7 @@ public class MarketOrderDTC
 	{
 		super (
 			issuer,
-			securityIdentifier,
+			ticker,
 			id,
 			creationTime,
 			side,

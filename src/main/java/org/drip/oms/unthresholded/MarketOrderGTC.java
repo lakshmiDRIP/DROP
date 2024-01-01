@@ -127,7 +127,7 @@ public class MarketOrderGTC
 	 * Create a Standard Instance of Good-Till-Close (GTC) Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param durationDays Order Duration Tenor in Days
@@ -138,7 +138,7 @@ public class MarketOrderGTC
 
 	public static final MarketOrderGTC Standard (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final Side side,
 		final double size,
 		final int durationDays,
@@ -148,7 +148,7 @@ public class MarketOrderGTC
 		{
 			return new MarketOrderGTC (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				side,
@@ -169,7 +169,7 @@ public class MarketOrderGTC
 	 * Create a Standard Instance of Buy Good-Till-Close (GTC) Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param securityIdentifier Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param durationDays Order Duration Tenor in Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
@@ -179,7 +179,7 @@ public class MarketOrderGTC
 
 	public static final MarketOrderGTC StandardBuy (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
 		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings)
@@ -188,7 +188,7 @@ public class MarketOrderGTC
 		{
 			return new MarketOrderGTC (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Buy(),
@@ -209,7 +209,7 @@ public class MarketOrderGTC
 	 * Create a Standard Instance of Sell Good-Till-Close (GTC) Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param durationDays Order Duration Tenor in Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
@@ -219,7 +219,7 @@ public class MarketOrderGTC
 
 	public static final MarketOrderGTC StandardSell (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
 		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings)
@@ -228,7 +228,7 @@ public class MarketOrderGTC
 		{
 			return new MarketOrderGTC (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Sell(),
@@ -249,7 +249,7 @@ public class MarketOrderGTC
 	 * Good-Till-Close (GTC) Market Order Constructor
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param id Order ID
 	 * @param creationTime Creation Time
 	 * @param side Order Side
@@ -262,7 +262,7 @@ public class MarketOrderGTC
 
 	public MarketOrderGTC (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final String id,
 		final Date creationTime,
 		final Side side,
@@ -273,7 +273,7 @@ public class MarketOrderGTC
 	{
 		super (
 			issuer,
-			securityIdentifier,
+			ticker,
 			id,
 			creationTime,
 			side,

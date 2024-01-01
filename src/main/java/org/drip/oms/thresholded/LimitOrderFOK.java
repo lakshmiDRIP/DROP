@@ -127,7 +127,7 @@ public class LimitOrderFOK
 	 * Construct a Standard Instance of Buy Fill-Or-Kill (FOK) Limit Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
@@ -138,7 +138,7 @@ public class LimitOrderFOK
 
 	public static final LimitOrderFOK Standard (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
@@ -148,7 +148,7 @@ public class LimitOrderFOK
 		{
 			return new LimitOrderFOK (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				side,
@@ -169,7 +169,7 @@ public class LimitOrderFOK
 	 * Construct a Standard Instance of Buy Fill-Or-Kill (FOK) Limit Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param thresholdPrice Threshold Price
@@ -179,14 +179,14 @@ public class LimitOrderFOK
 
 	public static final LimitOrderFOK StandardBuy (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
 		final TimeInForce timeInForce,
 		final double thresholdPrice)
 	{
 		return Standard (
 			issuer,
-			securityIdentifier,
+			ticker,
 			Side.Buy(),
 			size,
 			timeInForce,
@@ -198,7 +198,7 @@ public class LimitOrderFOK
 	 * Construct a Standard Instance of Sell Fill-Or-Kill (FOK) Limit Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param thresholdPrice Threshold Price
@@ -208,14 +208,14 @@ public class LimitOrderFOK
 
 	public static final LimitOrderFOK StandardSell (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
 		final TimeInForce timeInForce,
 		final double thresholdPrice)
 	{
 		return Standard (
 			issuer,
-			securityIdentifier,
+			ticker,
 			Side.Sell(),
 			size,
 			timeInForce,
@@ -227,7 +227,7 @@ public class LimitOrderFOK
 	 * Fill-Or-Kill (FOK) Limit Order Constructor
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param id Order ID
 	 * @param creationTime Creation Time
 	 * @param side Order Side
@@ -240,7 +240,7 @@ public class LimitOrderFOK
 
 	public LimitOrderFOK (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final String id,
 		final Date creationTime,
 		final Side side,
@@ -251,7 +251,7 @@ public class LimitOrderFOK
 	{
 		super (
 			issuer,
-			securityIdentifier,
+			ticker,
 			id,
 			creationTime,
 			side,

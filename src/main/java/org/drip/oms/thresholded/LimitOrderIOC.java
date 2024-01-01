@@ -127,7 +127,7 @@ public class LimitOrderIOC
 	 * Create a Standard Instance of Immediate-Or-Cancel (IOC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
@@ -138,7 +138,7 @@ public class LimitOrderIOC
 
 	public static final LimitOrderIOC Standard (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
@@ -148,7 +148,7 @@ public class LimitOrderIOC
 		{
 			return new LimitOrderIOC (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				side,
@@ -169,7 +169,7 @@ public class LimitOrderIOC
 	 * Create a Standard Instance of Buy Immediate-Or-Cancel (IOC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
@@ -179,7 +179,7 @@ public class LimitOrderIOC
 
 	public static final LimitOrderIOC StandardBuy (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
 		final double thresholdPrice)
@@ -188,7 +188,7 @@ public class LimitOrderIOC
 		{
 			return new LimitOrderIOC (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Buy(),
@@ -209,7 +209,7 @@ public class LimitOrderIOC
 	 * Create a Standard Instance of Sell Immediate-Or-Cancel (IOC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param securityIdentifier Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * @param thresholdPrice Threshold Price
@@ -219,7 +219,7 @@ public class LimitOrderIOC
 
 	public static final LimitOrderIOC StandardSell (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
 		final double thresholdPrice)
@@ -228,7 +228,7 @@ public class LimitOrderIOC
 		{
 			return new LimitOrderIOC (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Sell(),
@@ -249,7 +249,7 @@ public class LimitOrderIOC
 	 * Immediate-Or-Cancel (IOC) Limit Order Constructor
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param id Order ID
 	 * @param creationTime Creation Time
 	 * @param side Order Side
@@ -262,7 +262,7 @@ public class LimitOrderIOC
 
 	public LimitOrderIOC (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final String id,
 		final Date creationTime,
 		final Side side,
@@ -273,7 +273,7 @@ public class LimitOrderIOC
 	{
 		super (
 			issuer,
-			securityIdentifier,
+			ticker,
 			id,
 			creationTime,
 			side,

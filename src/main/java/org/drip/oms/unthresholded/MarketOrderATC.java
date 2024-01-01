@@ -127,7 +127,7 @@ public class MarketOrderATC
 	 * Create a Standard Instance of At-The-Close (ATC) Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
@@ -137,7 +137,7 @@ public class MarketOrderATC
 
 	public static final MarketOrderATC Standard (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings)
@@ -146,7 +146,7 @@ public class MarketOrderATC
 		{
 			return new MarketOrderATC (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				side,
@@ -166,7 +166,7 @@ public class MarketOrderATC
 	 * Create a Standard Instance of Buy At-The-Close (ATC) Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
@@ -175,7 +175,7 @@ public class MarketOrderATC
 
 	public static final MarketOrderATC StandardBuy (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
@@ -183,7 +183,7 @@ public class MarketOrderATC
 		{
 			return new MarketOrderATC (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Buy(),
@@ -203,7 +203,7 @@ public class MarketOrderATC
 	 * Create a Standard Instance of Sell At-The-Close (ATC) Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
@@ -212,7 +212,7 @@ public class MarketOrderATC
 
 	public static final MarketOrderATC StandardSell (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
@@ -220,7 +220,7 @@ public class MarketOrderATC
 		{
 			return new MarketOrderATC (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Sell(),
@@ -240,7 +240,7 @@ public class MarketOrderATC
 	 * At-The-Close (ATC) Market Order Constructor
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param id Order ID
 	 * @param creationTime Creation Time
 	 * @param side Order Side
@@ -252,7 +252,7 @@ public class MarketOrderATC
 
 	public MarketOrderATC (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final String id,
 		final Date creationTime,
 		final Side side,
@@ -262,7 +262,7 @@ public class MarketOrderATC
 	{
 		super (
 			issuer,
-			securityIdentifier,
+			ticker,
 			id,
 			creationTime,
 			side,

@@ -127,7 +127,7 @@ public class MarketOrderATO
 	 * Create a Standard Instance of At-The-Open (ATO) Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
@@ -137,7 +137,7 @@ public class MarketOrderATO
 
 	public static final MarketOrderATO Standard (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings)
@@ -146,7 +146,7 @@ public class MarketOrderATO
 		{
 			return new MarketOrderATO (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				side,
@@ -166,7 +166,7 @@ public class MarketOrderATO
 	 * Create a Standard Instance of Buy At-The-Open (ATO) Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
@@ -175,7 +175,7 @@ public class MarketOrderATO
 
 	public static final MarketOrderATO StandardBuy (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
@@ -183,7 +183,7 @@ public class MarketOrderATO
 		{
 			return new MarketOrderATO (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Buy(),
@@ -203,7 +203,7 @@ public class MarketOrderATO
 	 * Create a Standard Instance of Sell At-The-Open (ATO) Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
@@ -212,7 +212,7 @@ public class MarketOrderATO
 
 	public static final MarketOrderATO StandardSell (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
@@ -220,7 +220,7 @@ public class MarketOrderATO
 		{
 			return new MarketOrderATO (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Sell(),
@@ -240,7 +240,7 @@ public class MarketOrderATO
 	 * At-The-Open (ATO) Market Order Constructor
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param id Order ID
 	 * @param creationTime Creation Time
 	 * @param side Order Side
@@ -252,7 +252,7 @@ public class MarketOrderATO
 
 	public MarketOrderATO (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final String id,
 		final Date creationTime,
 		final Side side,
@@ -262,7 +262,7 @@ public class MarketOrderATO
 	{
 		super (
 			issuer,
-			securityIdentifier,
+			ticker,
 			id,
 			creationTime,
 			side,

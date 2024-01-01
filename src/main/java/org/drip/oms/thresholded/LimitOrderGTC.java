@@ -127,7 +127,7 @@ public class LimitOrderGTC
 	 * Create a Standard Instance of Good-Till-Close (GTC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param durationDays Duration Days
@@ -139,7 +139,7 @@ public class LimitOrderGTC
 
 	public static final LimitOrderGTC Standard (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final Side side,
 		final double size,
 		final int durationDays,
@@ -150,7 +150,7 @@ public class LimitOrderGTC
 		{
 			return new LimitOrderGTC (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				side,
@@ -172,7 +172,7 @@ public class LimitOrderGTC
 	 * Create a Standard Instance of Buy Good-Till-Close (GTC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param durationDays Duration Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
@@ -183,7 +183,7 @@ public class LimitOrderGTC
 
 	public static final LimitOrderGTC StandardBuy (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
 		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings,
@@ -193,7 +193,7 @@ public class LimitOrderGTC
 		{
 			return new LimitOrderGTC (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Buy(),
@@ -215,7 +215,7 @@ public class LimitOrderGTC
 	 * Create a Standard Instance of Sell Good-Till-Close (GTC) Limit Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param securityIdentifier Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param durationDays Duration Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
@@ -226,7 +226,7 @@ public class LimitOrderGTC
 
 	public static final LimitOrderGTC StandardSell (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
 		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings,
@@ -236,7 +236,7 @@ public class LimitOrderGTC
 		{
 			return new LimitOrderGTC (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Sell(),
@@ -258,7 +258,7 @@ public class LimitOrderGTC
 	 * Good-Till-Close (GTC) Limit Order Constructor
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param id Order ID
 	 * @param creationTime Creation Time
 	 * @param side Order Side
@@ -272,7 +272,7 @@ public class LimitOrderGTC
 
 	public LimitOrderGTC (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final String id,
 		final Date creationTime,
 		final Side side,
@@ -284,7 +284,7 @@ public class LimitOrderGTC
 	{
 		super (
 			issuer,
-			securityIdentifier,
+			ticker,
 			id,
 			creationTime,
 			side,

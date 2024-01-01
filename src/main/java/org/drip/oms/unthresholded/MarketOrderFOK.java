@@ -126,7 +126,7 @@ public class MarketOrderFOK extends MarketOrder
 	 * Construct a Standard Instance of Buy Fill-Or-Kill (FOK) Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
@@ -136,7 +136,7 @@ public class MarketOrderFOK extends MarketOrder
 
 	public static final MarketOrderFOK Standard (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final Side side,
 		final double size,
 		final TimeInForce timeInForce)
@@ -145,7 +145,7 @@ public class MarketOrderFOK extends MarketOrder
 		{
 			return new MarketOrderFOK (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				side,
@@ -165,7 +165,7 @@ public class MarketOrderFOK extends MarketOrder
 	 * Construct a Standard Instance of Buy Fill-Or-Kill (FOK) Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * 
@@ -174,13 +174,13 @@ public class MarketOrderFOK extends MarketOrder
 
 	public static final MarketOrderFOK StandardBuy (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
 		final TimeInForce timeInForce)
 	{
 		return Standard (
 			issuer,
-			securityIdentifier,
+			ticker,
 			Side.Buy(),
 			size,
 			timeInForce
@@ -191,7 +191,7 @@ public class MarketOrderFOK extends MarketOrder
 	 * Construct a Standard Instance of Sell Fill-Or-Kill (FOK) Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * 
@@ -200,13 +200,13 @@ public class MarketOrderFOK extends MarketOrder
 
 	public static final MarketOrderFOK StandardSell (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
 		final TimeInForce timeInForce)
 	{
 		return Standard (
 			issuer,
-			securityIdentifier,
+			ticker,
 			Side.Sell(),
 			size,
 			timeInForce
@@ -217,7 +217,7 @@ public class MarketOrderFOK extends MarketOrder
 	 * Fill-Or-Kill (FOK) Market Order Constructor
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param id Order ID
 	 * @param creationTime Creation Time
 	 * @param side Order Side
@@ -229,7 +229,7 @@ public class MarketOrderFOK extends MarketOrder
 
 	public MarketOrderFOK (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final String id,
 		final Date creationTime,
 		final Side side,
@@ -239,7 +239,7 @@ public class MarketOrderFOK extends MarketOrder
 	{
 		super (
 			issuer,
-			securityIdentifier,
+			ticker,
 			id,
 			creationTime,
 			side,

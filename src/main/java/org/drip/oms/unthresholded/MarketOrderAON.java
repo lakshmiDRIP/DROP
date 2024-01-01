@@ -127,7 +127,7 @@ public class MarketOrderAON
 	 * Construct a Standard Instance of Buy All-or-None (AON) Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
@@ -138,7 +138,7 @@ public class MarketOrderAON
 
 	public static final MarketOrderAON Standard (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
@@ -148,7 +148,7 @@ public class MarketOrderAON
 		{
 			return new MarketOrderAON (
 				issuer,
-				securityIdentifier,
+				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				side,
@@ -169,7 +169,7 @@ public class MarketOrderAON
 	 * Construct a Standard Instance of Buy All-or-None (AON) Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fulfillTryLimit Fulfill Try Limit
@@ -179,14 +179,14 @@ public class MarketOrderAON
 
 	public static final MarketOrderAON StandardBuy (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
 		final TimeInForce timeInForce,
 		final int fulfillTryLimit)
 	{
 		return Standard (
 			issuer,
-			securityIdentifier,
+			ticker,
 			Side.Buy(),
 			size,
 			timeInForce,
@@ -198,7 +198,7 @@ public class MarketOrderAON
 	 * Construct a Standard Instance of Sell All-or-None (AON) Market Order
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fulfillTryLimit Fulfill Try Limit
@@ -208,14 +208,14 @@ public class MarketOrderAON
 
 	public static final MarketOrderAON StandardSell (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final double size,
 		final TimeInForce timeInForce,
 		final int fulfillTryLimit)
 	{
 		return Standard (
 			issuer,
-			securityIdentifier,
+			ticker,
 			Side.Sell(),
 			size,
 			timeInForce,
@@ -227,7 +227,7 @@ public class MarketOrderAON
 	 * All-or-None (AON) Market Order Constructor
 	 * 
 	 * @param issuer Order Issuer
-	 * @param securityIdentifier Security Identifier
+	 * @param ticker Security Identifier/Ticker
 	 * @param id Order ID
 	 * @param creationTime Creation Time
 	 * @param side Order Side
@@ -240,7 +240,7 @@ public class MarketOrderAON
 
 	public MarketOrderAON (
 		final OrderIssuer issuer,
-		final String securityIdentifier,
+		final String ticker,
 		final String id,
 		final Date creationTime,
 		final Side side,
@@ -251,7 +251,7 @@ public class MarketOrderAON
 	{
 		super (
 			issuer,
-			securityIdentifier,
+			ticker,
 			id,
 			creationTime,
 			side,

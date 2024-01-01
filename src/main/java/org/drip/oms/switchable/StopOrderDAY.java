@@ -1,11 +1,12 @@
 
-package org.drip.oms.unthresholded;
+package org.drip.oms.switchable;
 
 import java.util.Date;
 
-import org.drip.oms.transaction.Side;
+import org.drip.oms.thresholded.LimitOrderDAY;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
+import org.drip.oms.transaction.Side;
 import org.drip.oms.transaction.TimeInForce;
 import org.drip.service.common.StringUtil;
 
@@ -82,7 +83,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>MarketOrderDAY</i> holds the Details of a DAY Market Order. The References are:
+ * <i>StopOrderDAY</i> holds the Details of a DAY Stop Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -113,45 +114,48 @@ import org.drip.service.common.StringUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/unthresholded/README.md">Implementation of Unthresholded Market Variants</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/switchable/README.md">Implementation of Switchable Stop Order</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketOrderDAY
-	extends MarketOrder
+public class StopOrderDAY
+	extends StopOrder
 {
 
 	/**
-	 * Create a Standard Instance of DAY Market Order
+	 * Create a Standard Instance of DAY Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param switchPrice Switch-to-Market Price
 	 * 
-	 * @return Standard Instance of DAY Market Order
+	 * @return Standard Instance of DAY Limit Order
 	 */
 
-	public static final MarketOrderDAY Standard (
+	public static final LimitOrderDAY Standard (
 		final OrderIssuer issuer,
 		final String ticker,
 		final Side side,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final OrderFillWholeSettings fillWholeSettings,
+		final double switchPrice)
 	{
 		try
 		{
-			return new MarketOrderDAY (
+			return new LimitOrderDAY (
 				issuer,
 				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				side,
 				size,
-				fillWholeSettings
+				fillWholeSettings,
+				switchPrice
 			);
 		}
 		catch (Exception e)
@@ -163,32 +167,35 @@ public class MarketOrderDAY
 	}
 
 	/**
-	 * Create a Standard Instance of Buy DAY Market Order
+	 * Create a Standard Instance of Buy DAY Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param switchPrice Switch-to-Market Price
 	 * 
-	 * @return Standard Instance of Buy DAY Market Order
+	 * @return Standard Instance of Buy DAY Limit Order
 	 */
 
-	public static final MarketOrderDAY StandardBuy (
+	public static final LimitOrderDAY StandardBuy (
 		final OrderIssuer issuer,
 		final String ticker,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final OrderFillWholeSettings fillWholeSettings,
+		final double switchPrice)
 	{
 		try
 		{
-			return new MarketOrderDAY (
+			return new LimitOrderDAY (
 				issuer,
 				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Buy(),
 				size,
-				fillWholeSettings
+				fillWholeSettings,
+				switchPrice
 			);
 		}
 		catch (Exception e)
@@ -200,32 +207,35 @@ public class MarketOrderDAY
 	}
 
 	/**
-	 * Create a Standard Instance of Sell DAY Market Order
+	 * Create a Standard Instance of Sell DAY Limit Order
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param switchPrice Switch-to-Market Price
 	 * 
-	 * @return Standard Instance of Sell DAY Market Order
+	 * @return Standard Instance of Sell DAY Limit Order
 	 */
 
-	public static final MarketOrderDAY StandardSell (
+	public static final LimitOrderDAY StandardSell (
 		final OrderIssuer issuer,
 		final String ticker,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final OrderFillWholeSettings fillWholeSettings,
+		final double switchPrice)
 	{
 		try
 		{
-			return new MarketOrderDAY (
+			return new LimitOrderDAY (
 				issuer,
 				ticker,
 				StringUtil.GUID(),
 				new Date(),
 				Side.Sell(),
 				size,
-				fillWholeSettings
+				fillWholeSettings,
+				switchPrice
 			);
 		}
 		catch (Exception e)
@@ -237,7 +247,7 @@ public class MarketOrderDAY
 	}
 
 	/**
-	 * DAY Market Order Constructor
+	 * DAY Stop Order Constructor
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
@@ -246,18 +256,20 @@ public class MarketOrderDAY
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MarketOrderDAY (
+	public StopOrderDAY (
 		final OrderIssuer issuer,
 		final String ticker,
 		final String id,
 		final Date creationTime,
 		final Side side,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final OrderFillWholeSettings fillWholeSettings,
+		final double switchPrice)
 		throws Exception
 	{
 		super (
@@ -268,7 +280,8 @@ public class MarketOrderDAY
 			side,
 			size,
 			TimeInForce.CreateDay(),
-			fillWholeSettings
+			fillWholeSettings,
+			switchPrice
 		);
 	}
 }
