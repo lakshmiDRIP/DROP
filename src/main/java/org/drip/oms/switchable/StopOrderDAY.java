@@ -3,7 +3,6 @@ package org.drip.oms.switchable;
 
 import java.util.Date;
 
-import org.drip.oms.thresholded.LimitOrderDAY;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.Side;
@@ -137,7 +136,7 @@ public class StopOrderDAY
 	 * @return Standard Instance of DAY Limit Order
 	 */
 
-	public static final LimitOrderDAY Standard (
+	public static final StopOrderDAY Standard (
 		final OrderIssuer issuer,
 		final String ticker,
 		final Side side,
@@ -147,7 +146,7 @@ public class StopOrderDAY
 	{
 		try
 		{
-			return new LimitOrderDAY (
+			return new StopOrderDAY (
 				issuer,
 				ticker,
 				StringUtil.GUID(),
@@ -178,7 +177,7 @@ public class StopOrderDAY
 	 * @return Standard Instance of Buy DAY Limit Order
 	 */
 
-	public static final LimitOrderDAY StandardBuy (
+	public static final StopOrderDAY StandardBuy (
 		final OrderIssuer issuer,
 		final String ticker,
 		final double size,
@@ -187,7 +186,7 @@ public class StopOrderDAY
 	{
 		try
 		{
-			return new LimitOrderDAY (
+			return new StopOrderDAY (
 				issuer,
 				ticker,
 				StringUtil.GUID(),
@@ -218,7 +217,7 @@ public class StopOrderDAY
 	 * @return Standard Instance of Sell DAY Limit Order
 	 */
 
-	public static final LimitOrderDAY StandardSell (
+	public static final StopOrderDAY StandardSell (
 		final OrderIssuer issuer,
 		final String ticker,
 		final double size,
@@ -227,7 +226,7 @@ public class StopOrderDAY
 	{
 		try
 		{
-			return new LimitOrderDAY (
+			return new StopOrderDAY (
 				issuer,
 				ticker,
 				StringUtil.GUID(),

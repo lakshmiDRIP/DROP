@@ -117,26 +117,21 @@ import org.drip.oms.depth.MontageL1Manager;
 
 public class CrossVenueMontageDigest
 {
-	private Map<String, MontageL1Manager> _askL1MontageManagerMap = null;
-	private Map<String, MontageL1Manager> _bidL1MontageManagerMap = null;
+	private Map<String, MontageL1Manager> _tickerL1ManagerMap = null;
 
 	/**
 	 * CrossVenueMontageDigest Constructor
 	 * 
-	 * @param bidL1MontageManagerMap Bid Venue to L1 Montage Manager Map
-	 * @param askL1MontageManagerMap Ask Venue to L1 Montage Manager Map
+	 * @param tickerL1ManagerMap Ticker to L1 Montage Manager Map
 	 * 
 	 * @throws Exception Thrown if Inputs are Invalid
 	 */
 
 	public CrossVenueMontageDigest (
-		final Map<String, MontageL1Manager> bidL1MontageManagerMap,
-		final Map<String, MontageL1Manager> askL1MontageManagerMap)
+		final Map<String, MontageL1Manager> tickerL1ManagerMap)
 		throws Exception
 	{
-		if (null == (_bidL1MontageManagerMap = bidL1MontageManagerMap) ||
-			null == (_askL1MontageManagerMap = askL1MontageManagerMap)
-		)
+		if (null == (_tickerL1ManagerMap = tickerL1ManagerMap))
 		{
 			throw new Exception (
 				"CrossVenueMontageDigest Constructor => Invalid Inputs"
@@ -145,24 +140,13 @@ public class CrossVenueMontageDigest
 	}
 
 	/**
-	 * Retrieve the Bid Venue to L1 Montage Manager Map
+	 * Retrieve the Ticker to L1 Montage Manager Map
 	 * 
-	 * @return The Bid Venue to L1 Montage Manager Map
+	 * @return The Ticker to L1 Montage Manager Map
 	 */
 
-	public Map<String, MontageL1Manager> bidL1MontageManagerMap()
+	public Map<String, MontageL1Manager> tickerL1ManagerMap()
 	{
-		return _bidL1MontageManagerMap;
-	}
-
-	/**
-	 * Retrieve the Ask Venue to L1 Montage Manager Map
-	 * 
-	 * @return The Ask Venue to L1 Montage Manager Map
-	 */
-
-	public Map<String, MontageL1Manager> askL1MontageManagerMap()
-	{
-		return _askL1MontageManagerMap;
+		return _tickerL1ManagerMap;
 	}
 }

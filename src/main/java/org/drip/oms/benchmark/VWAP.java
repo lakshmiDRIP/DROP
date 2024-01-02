@@ -1,14 +1,9 @@
 
-package org.drip.oms.thresholded;
+package org.drip.oms.benchmark;
 
 import java.util.Date;
 
-import org.drip.oms.transaction.Side;
-import org.drip.oms.benchmark.PegScheme;
-import org.drip.oms.transaction.OrderFillWholeSettings;
-import org.drip.oms.transaction.OrderIssuer;
-import org.drip.oms.transaction.TimeInForce;
-import org.drip.service.common.StringUtil;
+import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -83,7 +78,8 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>LimitOrderDAY</i> holds the Details of a DAY Limit Order. The References are:
+ * <i>VWAP</i> implements the Volume-Weighted Average Price VWAP that carries the Metrics associated with
+ * 	Trades in a Session. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -114,48 +110,34 @@ import org.drip.service.common.StringUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/thresholded/README.md">Implementation of Thresholded Limit Order</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/benchmark/README.md">Benchmark/Tie/Peg Price Thresholds</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitOrderDAY
-	extends LimitOrder
+public class VWAP
 {
+	private Date _sessionEnd = null;
+	private Date _sessionStart = null;
+	private double _transactionVolume = Double.NaN;
+	private double _transactionMarketValue = Double.NaN;
 
 	/**
-	 * Create a Standard Instance of DAY Limit Order
+	 * Construct a Standard Instance of VWAP
 	 * 
-	 * @param issuer Order Issuer
-	 * @param ticker Security Identifier/Ticker
-	 * @param side Order Side
-	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param pegScheme Peg Price Generation Scheme
-	 * 
-	 * @return Standard Instance of DAY Limit Order
+	 * @return Standard VWAP Instance
 	 */
 
-	public static final LimitOrderDAY Standard (
-		final OrderIssuer issuer,
-		final String ticker,
-		final Side side,
-		final double size,
-		final OrderFillWholeSettings fillWholeSettings,
-		final PegScheme pegScheme)
+	public VWAP Standard()
 	{
+		Date sessionStart = new Date();
+
 		try
 		{
-			return new LimitOrderDAY (
-				issuer,
-				ticker,
-				StringUtil.GUID(),
-				new Date(),
-				side,
-				size,
-				fillWholeSettings,
-				pegScheme
+			return new VWAP (
+				sessionStart,
+				sessionStart
 			);
 		}
 		catch (Exception e)
@@ -167,121 +149,122 @@ public class LimitOrderDAY
 	}
 
 	/**
-	 * Create a Standard Instance of Buy DAY Limit Order
+	 * VWAP Constructor
 	 * 
-	 * @param issuer Order Issuer
-	 * @param ticker Security Identifier/Ticker
-	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param pegScheme Peg Price Generation Scheme
-	 * 
-	 * @return Standard Instance of Buy DAY Limit Order
-	 */
-
-	public static final LimitOrderDAY StandardBuy (
-		final OrderIssuer issuer,
-		final String ticker,
-		final double size,
-		final OrderFillWholeSettings fillWholeSettings,
-		final PegScheme pegScheme)
-	{
-		try
-		{
-			return new LimitOrderDAY (
-				issuer,
-				ticker,
-				StringUtil.GUID(),
-				new Date(),
-				Side.Buy(),
-				size,
-				fillWholeSettings,
-				pegScheme
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Create a Standard Instance of Sell DAY Limit Order
-	 * 
-	 * @param issuer Order Issuer
-	 * @param ticker Security Identifier/Ticker
-	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param pegScheme Peg Price Generation Scheme
-	 * 
-	 * @return Standard Instance of Sell DAY Limit Order
-	 */
-
-	public static final LimitOrderDAY StandardSell (
-		final OrderIssuer issuer,
-		final String ticker,
-		final double size,
-		final OrderFillWholeSettings fillWholeSettings,
-		final PegScheme pegScheme)
-	{
-		try
-		{
-			return new LimitOrderDAY (
-				issuer,
-				ticker,
-				StringUtil.GUID(),
-				new Date(),
-				Side.Sell(),
-				size,
-				fillWholeSettings,
-				pegScheme
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * DAY Limit Order Constructor
-	 * 
-	 * @param issuer Order Issuer
-	 * @param ticker Security Identifier/Ticker
-	 * @param id Order ID
-	 * @param creationTime Creation Time
-	 * @param side Order Side
-	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param pegScheme Peg Price Generation Scheme
+	 * @param sessionStart Session Start
+	 * @param sessionEnd Session End
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public LimitOrderDAY (
-		final OrderIssuer issuer,
-		final String ticker,
-		final String id,
-		final Date creationTime,
-		final Side side,
-		final double size,
-		final OrderFillWholeSettings fillWholeSettings,
-		final PegScheme pegScheme)
+	public VWAP (
+		final Date sessionStart,
+		final Date sessionEnd)
 		throws Exception
 	{
-		super (
-			issuer,
-			ticker,
-			id,
-			creationTime,
-			side,
-			size,
-			TimeInForce.CreateDay(),
-			fillWholeSettings,
-			pegScheme
-		);
+		if (null == (_sessionStart = sessionStart))
+		{
+			throw new Exception (
+				"VWAP Construtor => Invalid Input"
+			);
+		}
+
+		_sessionEnd = sessionEnd;
+	}
+
+	/**
+	 * Retrieve the Start of the Session
+	 * 
+	 * @return Start of the Session
+	 */
+
+	public Date sessionStart()
+	{
+		return _sessionStart;
+	}
+
+	/**
+	 * Retrieve the End of the Session
+	 * 
+	 * @return End of the Session
+	 */
+
+	public Date sessionEnd()
+	{
+		return _sessionEnd;
+	}
+
+	/**
+	 * Retrieve the Session Transaction Volume
+	 * 
+	 * @return The Session Transaction Volume
+	 */
+
+	public double transactionVolume()
+	{
+		return _transactionVolume;
+	}
+
+	/**
+	 * Retrieve the Session Transaction Market Value
+	 * 
+	 * @return The Session Transaction Market Value
+	 */
+
+	public double transactionMarketValue()
+	{
+		return _transactionMarketValue;
+	}
+
+	/**
+	 * Add a Trade to the Session
+	 * 
+	 * @param size Size
+	 * @param price Price
+	 * 
+	 * @return TRUE - The Trade has been successfully added
+	 */
+
+	public boolean addTrade (
+		final double size,
+		final double price)
+	{
+		if (!NumberUtil.IsValid (
+				size
+			) || !NumberUtil.IsValid (
+				price
+			)
+		)
+		{
+			return false;
+		}
+
+		_transactionMarketValue += price * size;
+		_transactionVolume += size;
+		return true;
+	}
+
+	/**
+	 * Finish the VWAP Session
+	 * 
+	 * @return TRUE - The Session is Finished
+	 */
+
+	public boolean finish()
+	{
+		_sessionEnd = new Date();
+
+		return true;
+	}
+
+	/**
+	 * Retrieve the Session VWAP Average
+	 * 
+	 * @return The Session VWAP Average
+	 */
+
+	public double sessionAverage()
+	{
+		return 0. == _transactionVolume ? Double.NaN : _transactionMarketValue / _transactionVolume;
 	}
 }

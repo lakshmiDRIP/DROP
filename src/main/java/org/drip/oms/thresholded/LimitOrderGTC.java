@@ -4,6 +4,7 @@ package org.drip.oms.thresholded;
 import java.util.Date;
 
 import org.drip.oms.transaction.Side;
+import org.drip.oms.benchmark.PegScheme;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.TimeInForce;
@@ -132,7 +133,7 @@ public class LimitOrderGTC
 	 * @param size Order Size
 	 * @param durationDays Duration Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
+	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @return Standard Instance of Good-Till-Close (GTC) Limit Order
 	 */
@@ -144,7 +145,7 @@ public class LimitOrderGTC
 		final double size,
 		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final PegScheme pegScheme)
 	{
 		try
 		{
@@ -157,7 +158,7 @@ public class LimitOrderGTC
 				size,
 				durationDays,
 				fillWholeSettings,
-				thresholdPrice
+				pegScheme
 			);
 		}
 		catch (Exception e)
@@ -176,7 +177,7 @@ public class LimitOrderGTC
 	 * @param size Order Size
 	 * @param durationDays Duration Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
+	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @return Standard Instance of Buy Good-Till-Close (GTC) Limit Order
 	 */
@@ -187,7 +188,7 @@ public class LimitOrderGTC
 		final double size,
 		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final PegScheme pegScheme)
 	{
 		try
 		{
@@ -200,7 +201,7 @@ public class LimitOrderGTC
 				size,
 				durationDays,
 				fillWholeSettings,
-				thresholdPrice
+				pegScheme
 			);
 		}
 		catch (Exception e)
@@ -219,7 +220,7 @@ public class LimitOrderGTC
 	 * @param size Order Size
 	 * @param durationDays Duration Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
+	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @return Standard Instance of Sell Good-Till-Close (GTC) Limit Order
 	 */
@@ -230,7 +231,7 @@ public class LimitOrderGTC
 		final double size,
 		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final PegScheme pegScheme)
 	{
 		try
 		{
@@ -243,7 +244,7 @@ public class LimitOrderGTC
 				size,
 				durationDays,
 				fillWholeSettings,
-				thresholdPrice
+				pegScheme
 			);
 		}
 		catch (Exception e)
@@ -265,7 +266,7 @@ public class LimitOrderGTC
 	 * @param size Order Size
 	 * @param durationDays Duration Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
+	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
@@ -279,7 +280,7 @@ public class LimitOrderGTC
 		final double size,
 		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final PegScheme pegScheme)
 		throws Exception
 	{
 		super (
@@ -293,7 +294,7 @@ public class LimitOrderGTC
 				durationDays
 			),
 			fillWholeSettings,
-			thresholdPrice
+			pegScheme
 		);
 	}
 }

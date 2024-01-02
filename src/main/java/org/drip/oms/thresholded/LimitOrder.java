@@ -3,8 +3,8 @@ package org.drip.oms.thresholded;
 
 import java.util.Date;
 
-import org.drip.numerical.common.NumberUtil;
 import org.drip.oms.transaction.Side;
+import org.drip.oms.benchmark.PegScheme;
 import org.drip.oms.transaction.Order;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
@@ -125,7 +125,7 @@ import org.drip.service.common.StringUtil;
 public class LimitOrder
 	extends Order
 {
-	private double _thresholdPrice = Double.NaN;
+	private PegScheme _pegScheme = null;
 
 	/**
 	 * Construct a Standard Instance of Limit Order
@@ -136,7 +136,7 @@ public class LimitOrder
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
+	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @return Standard Instance of Limit Order
 	 */
@@ -148,7 +148,7 @@ public class LimitOrder
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final PegScheme pegScheme)
 	{
 		try
 		{
@@ -161,7 +161,7 @@ public class LimitOrder
 				size,
 				timeInForce,
 				fillWholeSettings,
-				thresholdPrice
+				pegScheme
 			);
 		}
 		catch (Exception e)
@@ -180,7 +180,7 @@ public class LimitOrder
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
+	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @return Instance of Buy Limit Order
 	 */
@@ -191,7 +191,7 @@ public class LimitOrder
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final PegScheme pegScheme)
 	{
 		try
 		{
@@ -204,7 +204,7 @@ public class LimitOrder
 				size,
 				timeInForce,
 				fillWholeSettings,
-				thresholdPrice
+				pegScheme
 			);
 		}
 		catch (Exception e)
@@ -223,7 +223,7 @@ public class LimitOrder
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
+	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @return Instance of Sell Limit Order
 	 */
@@ -234,7 +234,7 @@ public class LimitOrder
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final PegScheme pegScheme)
 	{
 		try
 		{
@@ -247,7 +247,7 @@ public class LimitOrder
 				size,
 				timeInForce,
 				fillWholeSettings,
-				thresholdPrice
+				pegScheme
 			);
 		}
 		catch (Exception e)
@@ -269,7 +269,7 @@ public class LimitOrder
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
+	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
@@ -283,7 +283,7 @@ public class LimitOrder
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final PegScheme pegScheme)
 		throws Exception
 	{
 		super (
@@ -298,10 +298,7 @@ public class LimitOrder
 			fillWholeSettings
 		);
 
-		if (!NumberUtil.IsValid (
-				_thresholdPrice = thresholdPrice
-			) || 0. >=_thresholdPrice
-		)
+		if (null == (_pegScheme = pegScheme))
 		{
 			throw new Exception (
 				"Limit Constructor => Invalid Inputs"
@@ -310,14 +307,14 @@ public class LimitOrder
 	}
 
 	/**
-	 * Retrieve the Threshold Price
+	 * Retrieve the Pegging Scheme
 	 * 
-	 * @return The Threshold Price
+	 * @return The Pegging Scheme
 	 */
 
-	public double thresholdPrice()
+	public PegScheme pegScheme()
 	{
-		return _thresholdPrice;
+		return _pegScheme;
 	}
 
 	@Override public boolean isConditional()
@@ -338,7 +335,7 @@ public class LimitOrder
 				size() - filledSize,
 				null,
 				null,
-				_thresholdPrice
+				_pegScheme
 			);
 		} catch (Exception e) {
 			e.printStackTrace();

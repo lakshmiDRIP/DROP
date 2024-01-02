@@ -4,6 +4,7 @@ package org.drip.oms.thresholded;
 import java.util.Date;
 
 import org.drip.oms.transaction.Side;
+import org.drip.oms.benchmark.PegScheme;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.TimeInForce;
@@ -131,7 +132,7 @@ public class LimitOrderATO
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
+	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @return Standard Instance of At-The-Open (ATO) Limit Order
 	 */
@@ -142,7 +143,7 @@ public class LimitOrderATO
 		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final PegScheme pegScheme)
 	{
 		try
 		{
@@ -154,7 +155,7 @@ public class LimitOrderATO
 				side,
 				size,
 				fillWholeSettings,
-				thresholdPrice
+				pegScheme
 			);
 		}
 		catch (Exception e)
@@ -172,7 +173,7 @@ public class LimitOrderATO
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
+	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @return Standard Instance of Buy At-The-Open (ATO) Limit Order
 	 */
@@ -182,7 +183,7 @@ public class LimitOrderATO
 		final String ticker,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final PegScheme pegScheme)
 	{
 		try
 		{
@@ -194,7 +195,7 @@ public class LimitOrderATO
 				Side.Buy(),
 				size,
 				fillWholeSettings,
-				thresholdPrice
+				pegScheme
 			);
 		}
 		catch (Exception e)
@@ -212,7 +213,7 @@ public class LimitOrderATO
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
+	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @return Standard Instance of Sell At-The-Open (ATO) Limit Order
 	 */
@@ -222,7 +223,7 @@ public class LimitOrderATO
 		final String ticker,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final PegScheme pegScheme)
 	{
 		try
 		{
@@ -234,7 +235,7 @@ public class LimitOrderATO
 				Side.Sell(),
 				size,
 				fillWholeSettings,
-				thresholdPrice
+				pegScheme
 			);
 		}
 		catch (Exception e)
@@ -255,7 +256,7 @@ public class LimitOrderATO
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param thresholdPrice Threshold Price
+	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
@@ -268,7 +269,7 @@ public class LimitOrderATO
 		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
-		final double thresholdPrice)
+		final PegScheme pegScheme)
 		throws Exception
 	{
 		super (
@@ -280,7 +281,7 @@ public class LimitOrderATO
 			size,
 			TimeInForce.CreateMarketOpen(),
 			fillWholeSettings,
-			thresholdPrice
+			pegScheme
 		);
 	}
 }

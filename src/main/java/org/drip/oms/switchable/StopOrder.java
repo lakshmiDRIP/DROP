@@ -342,9 +342,7 @@ public class StopOrder
 
 		boolean buy = Side.BUY == side.buySell();
 
-		MontageL1Manager montageL1Manager = buy ? crossVenueMontageDigest.bidL1MontageManagerMap().get (
-			ticker()
-		) : crossVenueMontageDigest.askL1MontageManagerMap().get (
+		MontageL1Manager montageL1Manager = crossVenueMontageDigest.tickerL1ManagerMap().get (
 			ticker()
 		);
 

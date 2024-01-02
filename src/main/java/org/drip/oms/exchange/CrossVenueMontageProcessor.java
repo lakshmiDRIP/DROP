@@ -250,9 +250,7 @@ public class CrossVenueMontageProcessor
 
 	public CrossVenueMontageDigest munge()
 	{
-		Map<String, MontageL1Manager> bidL1MontageManagerMap = new HashMap<String, MontageL1Manager>();
-
-		Map<String, MontageL1Manager> askL1MontageManagerMap = new HashMap<String, MontageL1Manager>();
+		Map<String, MontageL1Manager> tickerMontageL1ManagerMap = new HashMap<String, MontageL1Manager>();
 
 		for (Map.Entry<String, Venue> l1ContainerMapEntry : _l1Container.entrySet()) {
 			Venue venue = l1ContainerMapEntry.getValue();
@@ -261,7 +259,7 @@ public class CrossVenueMontageProcessor
 				venue,
 				_bidTickerSet,
 				venue.bidTickerSet(),
-				bidL1MontageManagerMap,
+				tickerMontageL1ManagerMap,
 				true
 			);
 
@@ -269,15 +267,14 @@ public class CrossVenueMontageProcessor
 				venue,
 				_askTickerSet,
 				venue.askTickerSet(),
-				askL1MontageManagerMap,
+				tickerMontageL1ManagerMap,
 				false
 			);
 		};
 
 		try {
 			return new CrossVenueMontageDigest (
-				bidL1MontageManagerMap,
-				askL1MontageManagerMap
+				tickerMontageL1ManagerMap
 			);
 		} catch (Exception e) {
 			e.printStackTrace();

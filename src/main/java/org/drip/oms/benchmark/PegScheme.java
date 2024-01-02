@@ -1,14 +1,8 @@
 
-package org.drip.oms.thresholded;
+package org.drip.oms.benchmark;
 
-import java.util.Date;
-
+import org.drip.oms.exchange.CrossVenueMontageDigest;
 import org.drip.oms.transaction.Side;
-import org.drip.oms.benchmark.PegScheme;
-import org.drip.oms.transaction.OrderFillWholeSettings;
-import org.drip.oms.transaction.OrderIssuer;
-import org.drip.oms.transaction.TimeInForce;
-import org.drip.service.common.StringUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -83,7 +77,7 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>LimitOrderDAY</i> holds the Details of a DAY Limit Order. The References are:
+ * <i>PegScheme</i> exposes the Peg Price Generation Scheme for Peg Orders. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -114,174 +108,30 @@ import org.drip.service.common.StringUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/thresholded/README.md">Implementation of Thresholded Limit Order</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/benchmark/README.md">Benchmark/Tie/Peg Price Thresholds</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitOrderDAY
-	extends LimitOrder
+public interface PegScheme
 {
 
 	/**
-	 * Create a Standard Instance of DAY Limit Order
+	 * Generate the Threshold Limit Price using the <i>CrossVenueMontageDigest</i> Market Data
 	 * 
-	 * @param issuer Order Issuer
-	 * @param ticker Security Identifier/Ticker
-	 * @param side Order Side
-	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param pegScheme Peg Price Generation Scheme
+	 * @param ticker Ticker
+	 * @param side Side
+	 * @param crossVenueMontageDigest <i>CrossVenueMontageDigest</i> Market Data
 	 * 
-	 * @return Standard Instance of DAY Limit Order
+	 * @return The Generated Threshold Price
+	 * 
+	 * @throws Exception Thrown if the Threshold Limit Price cannot be generated
 	 */
 
-	public static final LimitOrderDAY Standard (
-		final OrderIssuer issuer,
+	public abstract double limitPrice (
 		final String ticker,
 		final Side side,
-		final double size,
-		final OrderFillWholeSettings fillWholeSettings,
-		final PegScheme pegScheme)
-	{
-		try
-		{
-			return new LimitOrderDAY (
-				issuer,
-				ticker,
-				StringUtil.GUID(),
-				new Date(),
-				side,
-				size,
-				fillWholeSettings,
-				pegScheme
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Create a Standard Instance of Buy DAY Limit Order
-	 * 
-	 * @param issuer Order Issuer
-	 * @param ticker Security Identifier/Ticker
-	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param pegScheme Peg Price Generation Scheme
-	 * 
-	 * @return Standard Instance of Buy DAY Limit Order
-	 */
-
-	public static final LimitOrderDAY StandardBuy (
-		final OrderIssuer issuer,
-		final String ticker,
-		final double size,
-		final OrderFillWholeSettings fillWholeSettings,
-		final PegScheme pegScheme)
-	{
-		try
-		{
-			return new LimitOrderDAY (
-				issuer,
-				ticker,
-				StringUtil.GUID(),
-				new Date(),
-				Side.Buy(),
-				size,
-				fillWholeSettings,
-				pegScheme
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Create a Standard Instance of Sell DAY Limit Order
-	 * 
-	 * @param issuer Order Issuer
-	 * @param ticker Security Identifier/Ticker
-	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param pegScheme Peg Price Generation Scheme
-	 * 
-	 * @return Standard Instance of Sell DAY Limit Order
-	 */
-
-	public static final LimitOrderDAY StandardSell (
-		final OrderIssuer issuer,
-		final String ticker,
-		final double size,
-		final OrderFillWholeSettings fillWholeSettings,
-		final PegScheme pegScheme)
-	{
-		try
-		{
-			return new LimitOrderDAY (
-				issuer,
-				ticker,
-				StringUtil.GUID(),
-				new Date(),
-				Side.Sell(),
-				size,
-				fillWholeSettings,
-				pegScheme
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * DAY Limit Order Constructor
-	 * 
-	 * @param issuer Order Issuer
-	 * @param ticker Security Identifier/Ticker
-	 * @param id Order ID
-	 * @param creationTime Creation Time
-	 * @param side Order Side
-	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param pegScheme Peg Price Generation Scheme
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public LimitOrderDAY (
-		final OrderIssuer issuer,
-		final String ticker,
-		final String id,
-		final Date creationTime,
-		final Side side,
-		final double size,
-		final OrderFillWholeSettings fillWholeSettings,
-		final PegScheme pegScheme)
-		throws Exception
-	{
-		super (
-			issuer,
-			ticker,
-			id,
-			creationTime,
-			side,
-			size,
-			TimeInForce.CreateDay(),
-			fillWholeSettings,
-			pegScheme
-		);
-	}
+		final CrossVenueMontageDigest crossVenueMontageDigest)
+		throws Exception;
 }

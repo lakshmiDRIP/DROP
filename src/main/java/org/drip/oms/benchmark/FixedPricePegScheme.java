@@ -1,16 +1,16 @@
 
-package org.drip.oms.transaction;
-
-import java.util.Date;
+package org.drip.oms.benchmark;
 
 import org.drip.numerical.common.NumberUtil;
+import org.drip.oms.exchange.CrossVenueMontageDigest;
+import org.drip.oms.transaction.Side;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2023 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -78,8 +78,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>VWAP</i> implements the Volume-Weighted Average Price VWAP that carries the Metrics associated with
- * 	Trades in a Session. The References are:
+ * <i>FixedPricePegScheme</i> implements Fixed Peg Price Scheme for Peg Orders. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -110,161 +109,57 @@ import org.drip.numerical.common.NumberUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/transaction/README.md">Order Specification and Session Metrics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/benchmark/README.md">Benchmark/Tie/Peg Price Thresholds</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class VWAP
+public class FixedPricePegScheme
+	implements PegScheme
 {
-	private Date _sessionEnd = null;
-	private Date _sessionStart = null;
-	private double _transactionVolume = Double.NaN;
-	private double _transactionMarketValue = Double.NaN;
+	private double _threshold = Double.NaN;
 
 	/**
-	 * Construct a Standard Instance of VWAP
+	 * FixedPricePegScheme Constructor
 	 * 
-	 * @return Standard VWAP Instance
+	 * @param threshold Fixed Threshold Price
+	 * 
+	 * @throws Exception Thrown if Threshold is Invalid
 	 */
 
-	public VWAP Standard()
-	{
-		Date sessionStart = new Date();
-
-		try
-		{
-			return new VWAP (
-				sessionStart,
-				sessionStart
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * VWAP Constructor
-	 * 
-	 * @param sessionStart Session Start
-	 * @param sessionEnd Session End
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public VWAP (
-		final Date sessionStart,
-		final Date sessionEnd)
+	public FixedPricePegScheme (
+		final double threshold)
 		throws Exception
 	{
-		if (null == (_sessionStart = sessionStart))
-		{
-			throw new Exception (
-				"VWAP Construtor => Invalid Input"
-			);
-		}
-
-		_sessionEnd = sessionEnd;
-	}
-
-	/**
-	 * Retrieve the Start of the Session
-	 * 
-	 * @return Start of the Session
-	 */
-
-	public Date sessionStart()
-	{
-		return _sessionStart;
-	}
-
-	/**
-	 * Retrieve the End of the Session
-	 * 
-	 * @return End of the Session
-	 */
-
-	public Date sessionEnd()
-	{
-		return _sessionEnd;
-	}
-
-	/**
-	 * Retrieve the Session Transaction Volume
-	 * 
-	 * @return The Session Transaction Volume
-	 */
-
-	public double transactionVolume()
-	{
-		return _transactionVolume;
-	}
-
-	/**
-	 * Retrieve the Session Transaction Market Value
-	 * 
-	 * @return The Session Transaction Market Value
-	 */
-
-	public double transactionMarketValue()
-	{
-		return _transactionMarketValue;
-	}
-
-	/**
-	 * Add a Trade to the Session
-	 * 
-	 * @param size Size
-	 * @param price Price
-	 * 
-	 * @return TRUE - The Trade has been successfully added
-	 */
-
-	public boolean addTrade (
-		final double size,
-		final double price)
-	{
 		if (!NumberUtil.IsValid (
-				size
-			) || !NumberUtil.IsValid (
-				price
-			)
+				_threshold = threshold
+			) || 0. >= threshold
 		)
 		{
-			return false;
+			throw new Exception (
+				"FixedPricePegScheme Constructor => Invalid Threshold"
+			);
 		}
-
-		_transactionMarketValue += price * size;
-		_transactionVolume += size;
-		return true;
 	}
 
 	/**
-	 * Finish the VWAP Session
+	 * Retrieve the Fixed Threshold Price
 	 * 
-	 * @return TRUE - The Session is Finished
+	 * @return Fixed Threshold Price
 	 */
 
-	public boolean finish()
+	public double threshold()
 	{
-		_sessionEnd = new Date();
-
-		return true;
+		return _threshold;
 	}
 
-	/**
-	 * Retrieve the Session VWAP Average
-	 * 
-	 * @return The Session VWAP Average
-	 */
-
-	public double sessionAverage()
+	@Override public double limitPrice (
+		final String ticker,
+		final Side side,
+		final CrossVenueMontageDigest crossVenueMontageDigest)
+		throws Exception
 	{
-		return 0. == _transactionVolume ? Double.NaN : _transactionMarketValue / _transactionVolume;
+		return _threshold;
 	}
 }

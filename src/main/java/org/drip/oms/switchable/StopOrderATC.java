@@ -3,7 +3,6 @@ package org.drip.oms.switchable;
 
 import java.util.Date;
 
-import org.drip.oms.thresholded.LimitOrderATC;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.Side;
@@ -178,7 +177,7 @@ public class StopOrderATC
 	 * @return Standard Instance of Buy At-The-Close (ATC) Limit Order
 	 */
 
-	public static final LimitOrderATC Buy (
+	public static final StopOrderATC Buy (
 		final OrderIssuer issuer,
 		final String ticker,
 		final double size,
@@ -187,7 +186,7 @@ public class StopOrderATC
 	{
 		try
 		{
-			return new LimitOrderATC (
+			return new StopOrderATC (
 				issuer,
 				ticker,
 				StringUtil.GUID(),
@@ -218,7 +217,7 @@ public class StopOrderATC
 	 * @return Standard Instance of Sell At-The-Close (ATC) Limit Order
 	 */
 
-	public static final LimitOrderATC Sell (
+	public static final StopOrderATC Sell (
 		final OrderIssuer issuer,
 		final String ticker,
 		final double size,
@@ -227,7 +226,7 @@ public class StopOrderATC
 	{
 		try
 		{
-			return new LimitOrderATC (
+			return new StopOrderATC (
 				issuer,
 				ticker,
 				StringUtil.GUID(),
