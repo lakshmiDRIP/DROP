@@ -130,6 +130,9 @@ public class MontageL1Manager
 
 	public MontageL1Manager()
 	{
+		_orderedAskBook = new TreeMap<Double, MontageL1SizeLayer>();
+
+		_orderedBidBook = new TreeMap<Double, MontageL1SizeLayer>();
 	}
 
 	/**
@@ -392,6 +395,14 @@ public class MontageL1Manager
 				0
 			).topOfTheBook();
 	}
+
+	/**
+	 * Compute the Mid-price
+	 * 
+	 * @return The Mid-price
+	 * 
+	 * @throws Exception Thrown if the mid-price cannot be calculated
+	 */
 
 	public double midPrice()
 		throws Exception

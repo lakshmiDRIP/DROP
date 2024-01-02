@@ -2,7 +2,6 @@
 package org.drip.oms.benchmark;
 
 import org.drip.oms.exchange.CrossVenueMontageDigest;
-import org.drip.oms.transaction.Side;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -120,8 +119,6 @@ public interface PegScheme
 	/**
 	 * Generate the Threshold Limit Price using the <i>CrossVenueMontageDigest</i> Market Data
 	 * 
-	 * @param ticker Ticker
-	 * @param side Side
 	 * @param crossVenueMontageDigest <i>CrossVenueMontageDigest</i> Market Data
 	 * 
 	 * @return The Generated Threshold Price
@@ -130,8 +127,6 @@ public interface PegScheme
 	 */
 
 	public abstract double limitPrice (
-		final String ticker,
-		final Side side,
 		final CrossVenueMontageDigest crossVenueMontageDigest)
 		throws Exception;
 }

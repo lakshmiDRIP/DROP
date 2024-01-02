@@ -1,17 +1,17 @@
 
-package org.drip.oms.exchange;
-
-import java.util.Map;
-import java.util.Set;
+package org.drip.oms.benchmark;
 
 import org.drip.oms.depth.MontageL1Manager;
+import org.drip.oms.exchange.CrossVenueMontageDigest;
+import org.drip.oms.transaction.OrderBlock;
+import org.drip.oms.transaction.Side;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2023 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -79,17 +79,22 @@ import org.drip.oms.depth.MontageL1Manager;
  */
 
 /**
- * <i>CrossVenueMontageDigest</i> contains the Digest of cross-Venue Montage Calculation. The References are:
+ * <i>CrossingMarketMakingPegScheme</i> implements the Crosser Market Making Scheme for Peg Orders. The
+ *  References are:
  *  
  * 	<br><br>
  *  <ul>
  * 		<li>
- * 			Chen, J. (2021): Time in Force: Definition, Types, and Examples
- * 				https://www.investopedia.com/terms/t/timeinforce.asp
+ * 			Berkowitz, S. A., D. E. Logue, and E. A. J. Noser (1988): The Total Cost of Transactions on the
+ * 				NYSE <i>Journal of Finance</i> <b>43 (1)</b> 97-112
  * 		</li>
  * 		<li>
  * 			Cont, R., and A. Kukanov (2017): Optimal Order Placement in Limit Order Markets <i>Quantitative
  * 				Finance</i> <b>17 (1)</b> 21-39
+ * 		</li>
+ * 		<li>
+ * 			Vassilis, P. (2005a): A Realistic Model of Market Liquidity and Depth <i>Journal of Futures
+ * 				Markets</i> <b>25 (5)</b> 443-464
  * 		</li>
  * 		<li>
  * 			Vassilis, P. (2005b): Slow and Fast Markets <i>Journal of Economics and Business</i> <b>57
@@ -99,10 +104,6 @@ import org.drip.oms.depth.MontageL1Manager;
  * 			Weiss, D. (2006): <i>After the Trade is Made: Processing Securities Transactions</i> <b>Portfolio
  * 				Publishing</b> London UK
  * 		</li>
- * 		<li>
- * 			Wikipedia (2023): Central Limit Order Book
- * 				https://en.wikipedia.org/wiki/Central_limit_order_book
- * 		</li>
  *  </ul>
  *
  *	<br><br>
@@ -110,89 +111,90 @@ import org.drip.oms.depth.MontageL1Manager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/exchange/README.md">Implementation of Venue Order Handling</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/benchmark/README.md">Benchmark/Tie/Peg Price Thresholds</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CrossVenueMontageDigest
+public class CrossingMarketMakingPegScheme
+	extends MarketMakingPegScheme
 {
-	private Map<String, MontageL1Manager> _tickerL1ManagerMap = null;
 
 	/**
-	 * CrossVenueMontageDigest Constructor
-	 * 
-	 * @param tickerL1ManagerMap Ticker to L1 Montage Manager Map
-	 * 
-	 * @throws Exception Thrown if Inputs are Invalid
-	 */
-
-	public CrossVenueMontageDigest (
-		final Map<String, MontageL1Manager> tickerL1ManagerMap)
-		throws Exception
-	{
-		if (null == (_tickerL1ManagerMap = tickerL1ManagerMap))
-		{
-			throw new Exception (
-				"CrossVenueMontageDigest Constructor => Invalid Inputs"
-			);
-		}
-	}
-
-	/**
-	 * Retrieve the Ticker to L1 Montage Manager Map
-	 * 
-	 * @return The Ticker to L1 Montage Manager Map
-	 */
-
-	public Map<String, MontageL1Manager> tickerL1ManagerMap()
-	{
-		return _tickerL1ManagerMap;
-	}
-
-	/**
-	 * Retrieve the Set of Montage Tickers
-	 * 
-	 * @return Set of Montage Tickers
-	 */
-
-	public Set<String> tickerSet()
-	{
-		return _tickerL1ManagerMap.keySet();
-	}
-
-	/**
-	 * Indicate if the Specified Ticker is available in the Montage
+	 * <i>CrossingMarketMakingPegScheme</i> Constructor
 	 * 
 	 * @param ticker Ticker
+	 * @param side Side
 	 * 
-	 * @return TRUE - The Specified Ticker is available in the Montage
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public boolean containsTicker (
-		final String ticker)
+	public CrossingMarketMakingPegScheme (
+		final String ticker,
+		final Side side)
+		throws Exception
 	{
-		return null != ticker && !ticker.isEmpty() && _tickerL1ManagerMap.containsKey (
-			ticker
+		super (
+			ticker,
+			side
 		);
 	}
 
-	/**
-	 * Retrieve the L1 Montage Manager Map for specified Ticker
-	 * 
-	 * @param ticker Ticker
-	 * 
-	 * @return L1 Montage Manager Map for specified Ticker
-	 */
-
-	public MontageL1Manager retrieveTickerMontageL1Manager (
-		final String ticker)
+	@Override public double limitPrice (
+		final CrossVenueMontageDigest crossVenueMontageDigest)
+		throws Exception
 	{
-		return containsTicker (
-			ticker
-		) ? _tickerL1ManagerMap.get (
-			ticker
-		) : null;
+		if (null == crossVenueMontageDigest)
+		{
+			throw new Exception (
+				"MidPricePegScheme::limitPrice => Invalid Inputs"
+			);
+		}
+
+		MontageL1Manager montageL1Manager = crossVenueMontageDigest.retrieveTickerMontageL1Manager (
+			ticker()
+		);
+
+		if (null == montageL1Manager)
+		{
+			throw new Exception (
+				"MidPricePegScheme::limitPrice => Invalid L1 Montage Manager"
+			);
+		}
+
+		char buySell = side().buySell();
+
+		if (Side.BUY == buySell)
+		{
+			OrderBlock askNBBOBlock = montageL1Manager.askNBBOBlock();
+
+			if (null == askNBBOBlock)
+			{
+				throw new Exception (
+					"MidPricePegScheme::limitPrice => Invalid Ask NBBO Block"
+				);
+			}
+
+			return askNBBOBlock.price();
+		}
+
+		if (Side.SELL == buySell)
+		{
+			OrderBlock bidNBBOBlock = montageL1Manager.bidNBBOBlock();
+
+			if (null == bidNBBOBlock)
+			{
+				throw new Exception (
+					"MidPricePegScheme::limitPrice => Invalid Bid NBBO Block"
+				);
+			}
+
+			return bidNBBOBlock.price();
+		}
+
+		throw new Exception (
+			"MidPricePegScheme::limitPrice => Cannot compute Limit Price"
+		);
 	}
 }

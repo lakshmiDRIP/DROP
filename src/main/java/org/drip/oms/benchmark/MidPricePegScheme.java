@@ -1,17 +1,15 @@
 
-package org.drip.oms.exchange;
-
-import java.util.Map;
-import java.util.Set;
+package org.drip.oms.benchmark;
 
 import org.drip.oms.depth.MontageL1Manager;
+import org.drip.oms.exchange.CrossVenueMontageDigest;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2023 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -79,17 +77,21 @@ import org.drip.oms.depth.MontageL1Manager;
  */
 
 /**
- * <i>CrossVenueMontageDigest</i> contains the Digest of cross-Venue Montage Calculation. The References are:
+ * <i>MidPricePegScheme</i> implements Mid-Peg Price Scheme for Peg Orders. The References are:
  *  
  * 	<br><br>
  *  <ul>
  * 		<li>
- * 			Chen, J. (2021): Time in Force: Definition, Types, and Examples
- * 				https://www.investopedia.com/terms/t/timeinforce.asp
+ * 			Berkowitz, S. A., D. E. Logue, and E. A. J. Noser (1988): The Total Cost of Transactions on the
+ * 				NYSE <i>Journal of Finance</i> <b>43 (1)</b> 97-112
  * 		</li>
  * 		<li>
  * 			Cont, R., and A. Kukanov (2017): Optimal Order Placement in Limit Order Markets <i>Quantitative
  * 				Finance</i> <b>17 (1)</b> 21-39
+ * 		</li>
+ * 		<li>
+ * 			Vassilis, P. (2005a): A Realistic Model of Market Liquidity and Depth <i>Journal of Futures
+ * 				Markets</i> <b>25 (5)</b> 443-464
  * 		</li>
  * 		<li>
  * 			Vassilis, P. (2005b): Slow and Fast Markets <i>Journal of Economics and Business</i> <b>57
@@ -99,10 +101,6 @@ import org.drip.oms.depth.MontageL1Manager;
  * 			Weiss, D. (2006): <i>After the Trade is Made: Processing Securities Transactions</i> <b>Portfolio
  * 				Publishing</b> London UK
  * 		</li>
- * 		<li>
- * 			Wikipedia (2023): Central Limit Order Book
- * 				https://en.wikipedia.org/wiki/Central_limit_order_book
- * 		</li>
  *  </ul>
  *
  *	<br><br>
@@ -110,89 +108,70 @@ import org.drip.oms.depth.MontageL1Manager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/exchange/README.md">Implementation of Venue Order Handling</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/benchmark/README.md">Benchmark/Tie/Peg Price Thresholds</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CrossVenueMontageDigest
+public class MidPricePegScheme
+	implements PegScheme
 {
-	private Map<String, MontageL1Manager> _tickerL1ManagerMap = null;
+	private String _ticker = "";
 
 	/**
-	 * CrossVenueMontageDigest Constructor
+	 * MidPricePegScheme Constructor
 	 * 
-	 * @param tickerL1ManagerMap Ticker to L1 Montage Manager Map
+	 * @param ticker Ticker
 	 * 
 	 * @throws Exception Thrown if Inputs are Invalid
 	 */
 
-	public CrossVenueMontageDigest (
-		final Map<String, MontageL1Manager> tickerL1ManagerMap)
+	public MidPricePegScheme (
+		final String ticker)
 		throws Exception
 	{
-		if (null == (_tickerL1ManagerMap = tickerL1ManagerMap))
+		if (null == (_ticker = ticker) || _ticker.isEmpty())
 		{
 			throw new Exception (
-				"CrossVenueMontageDigest Constructor => Invalid Inputs"
+				"MidPricePegScheme Constructor => Invalid Inputs"
 			);
 		}
 	}
 
 	/**
-	 * Retrieve the Ticker to L1 Montage Manager Map
+	 * Retrieve the Ticker
 	 * 
-	 * @return The Ticker to L1 Montage Manager Map
+	 * @return The Ticker
 	 */
 
-	public Map<String, MontageL1Manager> tickerL1ManagerMap()
+	public String ticker()
 	{
-		return _tickerL1ManagerMap;
+		return _ticker;
 	}
 
-	/**
-	 * Retrieve the Set of Montage Tickers
-	 * 
-	 * @return Set of Montage Tickers
-	 */
-
-	public Set<String> tickerSet()
+	@Override public double limitPrice (
+		final CrossVenueMontageDigest crossVenueMontageDigest)
+		throws Exception
 	{
-		return _tickerL1ManagerMap.keySet();
-	}
+		if (null == crossVenueMontageDigest)
+		{
+			throw new Exception (
+				"MidPricePegScheme::limitPrice => Invalid Inputs"
+			);
+		}
 
-	/**
-	 * Indicate if the Specified Ticker is available in the Montage
-	 * 
-	 * @param ticker Ticker
-	 * 
-	 * @return TRUE - The Specified Ticker is available in the Montage
-	 */
-
-	public boolean containsTicker (
-		final String ticker)
-	{
-		return null != ticker && !ticker.isEmpty() && _tickerL1ManagerMap.containsKey (
-			ticker
+		MontageL1Manager montageL1Manager = crossVenueMontageDigest.retrieveTickerMontageL1Manager (
+			_ticker
 		);
-	}
 
-	/**
-	 * Retrieve the L1 Montage Manager Map for specified Ticker
-	 * 
-	 * @param ticker Ticker
-	 * 
-	 * @return L1 Montage Manager Map for specified Ticker
-	 */
+		if (null == montageL1Manager)
+		{
+			throw new Exception (
+				"MidPricePegScheme::limitPrice => Invalid L1 Montage Manager"
+			);
+		}
 
-	public MontageL1Manager retrieveTickerMontageL1Manager (
-		final String ticker)
-	{
-		return containsTicker (
-			ticker
-		) ? _tickerL1ManagerMap.get (
-			ticker
-		) : null;
+		return montageL1Manager.midPrice();
 	}
 }

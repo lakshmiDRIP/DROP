@@ -1,6 +1,8 @@
 
 package org.drip.state.identifier;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -90,6 +92,8 @@ package org.drip.state.identifier;
  * 
  *  <ul>
  *		<li><i>EntityEquityLabel</i> Constructor</li>
+ *		<li>Retrieve the Ticker</li>
+ *		<li>Retrieve the Tick Size</li>
  *		<li>Make a Standard Equity Entity Label from the Reference Entity Name</li>
  *  </ul>
  *
@@ -114,6 +118,15 @@ public class EntityEquityLabel extends EntityDesignateLabel
 {
 
 	/**
+	 * Tick Size Default 1 cent
+	 */
+
+	public static final double DEFAULT_TICK_SIZE = 0.01;
+
+	private String _ticker = "";
+	private double _tickSize = Double.NaN;
+
+	/**
 	 * Make a Standard Equity Entity Label from the Reference Entity Name
 	 * 
 	 * @param referenceEntity The Reference Entity Name
@@ -127,7 +140,7 @@ public class EntityEquityLabel extends EntityDesignateLabel
 		final String currency)
 	{
 		try {
-			return new EntityEquityLabel (referenceEntity, currency);
+			return new EntityEquityLabel (referenceEntity, currency, referenceEntity, DEFAULT_TICK_SIZE);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -140,16 +153,53 @@ public class EntityEquityLabel extends EntityDesignateLabel
 	 * 
 	 * @param referenceEntity The Reference Entity
 	 * @param currency The Currency
+	 * @param ticker Ticker
+	 * @param tickSize Default Tick Size
 	 * 
 	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	private EntityEquityLabel (
 		final String referenceEntity,
-		final String currency)
+		final String currency,
+		final String ticker,
+		final double tickSize)
 		throws Exception
 	{
 		super (referenceEntity, currency);
+
+		if (null == (_ticker = ticker) || !_ticker.isEmpty() ||
+			!NumberUtil.IsValid (
+				_tickSize = tickSize
+			) || 0. >= _tickSize
+		)
+		{
+			throw new Exception (
+				"EntityEquityLabel Constructor => Invalid Inputs"
+			);
+		}
+	}
+
+	/**
+	 * Retrieve the Ticker
+	 * 
+	 * @return The Ticker
+	 */
+
+	public String ticker()
+	{
+		return _ticker;
+	}
+
+	/**
+	 * Retrieve the Tick Size
+	 * 
+	 * @return The Tick Size
+	 */
+
+	public double tickSize()
+	{
+		return _tickSize;
 	}
 
 	@Override public boolean match (
