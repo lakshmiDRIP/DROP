@@ -117,42 +117,48 @@ public class PriceTick
 {
 
 	/**
+	 * Price No-tick
+	 */
+
+	public static final int NOTICK = 0;
+
+	/**
 	 * Price Up-tick
 	 */
 
-	public static final int UPTICK = 0;
+	public static final int UPTICK = 1;
 
 	/**
 	 * Price Down-tick
 	 */
 
-	public static final int DOWNTICK = 1;
+	public static final int DOWNTICK = 2;
 
-	private double _marketBuyPrice = Double.NaN;
-	private double _marketSellPrice = Double.NaN;
+	private double _nbboAsk = Double.NaN;
+	private double _nbboBid = Double.NaN;
 	private int _tickDirection = Integer.MIN_VALUE;
 
 	/**
 	 * PriceTick Constructor
 	 * 
 	 * @param tickDirection Tick Direction
-	 * @param marketBuyPrice Market Buy Price
-	 * @param marketSellPrice Market Sell Price
+	 * @param nbboBid NBBO Bid
+	 * @param nbboAsk NBBO Ask
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PriceTick (
 		final int tickDirection,
-		final double marketBuyPrice,
-		final double marketSellPrice)
+		final double nbboBid,
+		final double nbboAsk)
 		throws Exception
 	{
 		if (!NumberUtil.IsValid (
-				_marketBuyPrice = marketBuyPrice
-			) || 0 >= _marketBuyPrice || !NumberUtil.IsValid (
-				_marketSellPrice = marketSellPrice
-			) || 0 >= _marketSellPrice
+				_nbboBid = nbboBid
+			) || 0 >= nbboBid || !NumberUtil.IsValid (
+				_nbboAsk = nbboAsk
+			) || 0 >= _nbboAsk
 		)
 		{
 			throw new Exception (
@@ -175,24 +181,35 @@ public class PriceTick
 	}
 
 	/**
-	 * Retrieve the Market Buy Price
+	 * Retrieve the NBBO Bid
 	 * 
-	 * @return The Market Buy Price
+	 * @return The NBBO Bid
 	 */
 
-	public double marketBuyPrice()
+	public double nbboBid()
 	{
-		return _marketBuyPrice;
+		return _nbboBid;
 	}
 
 	/**
-	 * Retrieve the Market Sell Price
+	 * Retrieve the NBBO Ask
 	 * 
-	 * @return The Market Sell Price
+	 * @return The NBBO Ask
 	 */
 
-	public double marketSellPrice()
+	public double nbboAsk()
 	{
-		return _marketSellPrice;
+		return _nbboAsk;
+	}
+
+	/**
+	 * Retrieve the NBBO Mid
+	 * 
+	 * @return The NBBO Mid
+	 */
+
+	public double nbboMid()
+	{
+		return 0.5 * (_nbboBid + _nbboAsk);
 	}
 }

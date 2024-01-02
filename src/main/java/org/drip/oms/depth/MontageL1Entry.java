@@ -76,7 +76,7 @@ import org.drip.oms.transaction.OrderBlock;
  */
 
 /**
- * <i>MontageL1Entry</i> holds the Bid Top-of-the Book L1 for a Venue. The References are:
+ * <i>MontageL1Entry</i> holds the Venue-specific Top-of-the Book L1 for a given Ticker. The References are:
  *  
  * 	<br><br>
  *  <ul>

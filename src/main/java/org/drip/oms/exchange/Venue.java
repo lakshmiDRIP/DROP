@@ -327,7 +327,7 @@ public class Venue
 				ticker
 			) && _bidTickerPriceBookMap.get (
 				ticker
-			).aggregateSweptBlock (
+			).disaggregateSweptBlock (
 				sweptBlock,
 				allowPartialSweep
 			);
@@ -354,7 +354,7 @@ public class Venue
 				ticker
 			) && _askTickerPriceBookMap.get (
 				ticker
-			).aggregateSweptBlock (
+			).disaggregateSweptBlock (
 				sweptBlock,
 				allowPartialSweep
 			);

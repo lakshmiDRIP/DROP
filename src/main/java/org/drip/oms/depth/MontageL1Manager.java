@@ -81,7 +81,8 @@ import org.drip.oms.transaction.OrderBlock;
  */
 
 /**
- * <i>MontageL1Manager</i> manages the Top-of-the Book L1 Montage across Venues. The References are:
+ * <i>MontageL1Manager</i> manages the Top-of-the Book L1 Montage across Venues for a single Ticker. The
+ * 	References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -137,7 +138,7 @@ public class MontageL1Manager
 	 * @return The Ordered Bid Book
 	 */
 
-	public TreeMap<Double, MontageL1SizeLayer> _orderedBidBook()
+	public TreeMap<Double, MontageL1SizeLayer> orderedBidBook()
 	{
 		return _orderedBidBook;
 	}
@@ -148,7 +149,7 @@ public class MontageL1Manager
 	 * @return The Ordered Ask Book
 	 */
 
-	public TreeMap<Double, MontageL1SizeLayer> _orderedAskBook()
+	public TreeMap<Double, MontageL1SizeLayer> orderedAskBook()
 	{
 		return _orderedAskBook;
 	}
@@ -373,7 +374,7 @@ public class MontageL1Manager
 	public OrderBlock bidNBBOBlock()
 	{
 		return _orderedBidBook.isEmpty() ? null :
-			_orderedBidBook.firstEntry().getValue().peakBlockList().get (
+			_orderedBidBook.lastEntry().getValue().leadingBlockList().get (
 				0
 			).topOfTheBook();
 	}
@@ -387,9 +388,35 @@ public class MontageL1Manager
 	public OrderBlock askNBBOBlock()
 	{
 		return _orderedAskBook.isEmpty() ? null :
-			_orderedAskBook.firstEntry().getValue().peakBlockList().get (
+			_orderedAskBook.firstEntry().getValue().leadingBlockList().get (
 				0
 			).topOfTheBook();
+	}
+
+	public double midPrice()
+		throws Exception
+	{
+		OrderBlock bidNBBOBlock = bidNBBOBlock();
+
+		if (null == bidNBBOBlock)
+		{
+			throw new Exception (
+				"MontageL1Manager::midPrice => No Bid available"
+			);
+		}
+
+		OrderBlock askNBBOBlock = askNBBOBlock();
+
+		if (null == askNBBOBlock)
+		{
+			throw new Exception (
+				"MontageL1Manager::midPrice => No Ask available"
+			);
+		}
+
+		return 0.5 * (
+			bidNBBOBlock.price() + askNBBOBlock.price()
+		);
 	}
 
 	/**
@@ -400,7 +427,7 @@ public class MontageL1Manager
 
 	public UBBOBlock bidUBBOBlock()
 	{
-		return _orderedBidBook.isEmpty() ? null : _orderedBidBook.firstEntry().getValue().ubboBlock();
+		return _orderedBidBook.isEmpty() ? null : _orderedBidBook.lastEntry().getValue().ubboBlock();
 	}
 
 	/**

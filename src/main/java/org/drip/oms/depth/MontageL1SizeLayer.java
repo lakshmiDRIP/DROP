@@ -78,8 +78,8 @@ import java.util.TreeMap;
  */
 
 /**
- * <i>MontageL1SizeLayer</i> holds the Posted Blocks for a given Venue and a Price, ordered by Size. The
- *  References are:
+ * <i>MontageL1SizeLayer</i> holds the Per-ticker Posted Blocks for a given Venue and a Price, ordered by
+ *  Size. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -130,9 +130,9 @@ public class MontageL1SizeLayer
 	}
 
 	/**
-	 * Retrieve the Ordered L1 Entry Map
+	 * Retrieve the Ordered Montage L1 Entry Map
 	 * 
-	 * @return Ordered L1 Entry Map
+	 * @return Ordered Montage L1 Entry Map
 	 */
 
 	public TreeMap<Double, List<MontageL1Entry>> orderedEntryListMap()
@@ -203,26 +203,26 @@ public class MontageL1SizeLayer
 			);
 		}
 
-		return _orderedEntryListMap.firstEntry().getValue().get (
+		return _orderedEntryListMap.lastEntry().getValue().get (
 			0
 		).topOfTheBook().price();
 	}
 
 	/**
-	 * Retrieve the Peak Size of the Montage Layer
+	 * Retrieve the Leading Size of the Montage Layer
 	 * 
-	 * @return Peak Size of the Montage Layer
+	 * @return Leading Size of the Montage Layer
 	 * 
 	 * @throws Exception Thrown if the MontageL1SizeLayer is Empty
 	 */
 
-	public double peak()
+	public double leadingSize()
 		throws Exception
 	{
 		if (_orderedEntryListMap.isEmpty())
 		{
 			throw new Exception (
-				"MontageL1SizeLayer::peak => Empty Container"
+				"MontageL1SizeLayer::leadingSize => Empty Container"
 			);
 		}
 
@@ -232,12 +232,12 @@ public class MontageL1SizeLayer
 	}
 
 	/**
-	 * Retrieve the List of the Peak Blocks of the Montage Layer
+	 * Retrieve the List of the Leading Blocks of the Montage Layer
 	 * 
-	 * @return List of the Peak Blocks of the Montage Layer
+	 * @return List of the Leading Blocks of the Montage Layer
 	 */
 
-	public List<MontageL1Entry> peakBlockList()
+	public List<MontageL1Entry> leadingBlockList()
 	{
 		return _orderedEntryListMap.isEmpty() ? null : _orderedEntryListMap.lastEntry().getValue();
 	}

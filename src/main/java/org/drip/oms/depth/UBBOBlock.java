@@ -1,8 +1,8 @@
 
 package org.drip.oms.depth;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.drip.oms.transaction.OrderBlock;
 
@@ -120,7 +120,7 @@ public class UBBOBlock
 {
 	private double _price = Double.NaN;
 	private double _aggregatedSize = Double.NaN;
-	private List<String> _contributingVenueList = null;
+	private Set<String> _contributingVenueSet = null;
 
 	/**
 	 * Empty UBBOBlock Constructor
@@ -131,7 +131,7 @@ public class UBBOBlock
 		_price = 0.;
 		_aggregatedSize = 0.;
 
-		_contributingVenueList = new ArrayList<String>();
+		_contributingVenueSet = new HashSet<String>();
 	}
 
 	/**
@@ -157,14 +157,14 @@ public class UBBOBlock
 	}
 
 	/**
-	 * Retrieve the List of Contributing Venues
+	 * Retrieve the Set of Contributing Venues
 	 * 
-	 * @return List of Contributing Venues
+	 * @return Set of Contributing Venues
 	 */
 
-	public List<String> contributingVenueList()
+	public Set<String> contributingVenueSet()
 	{
-		return _contributingVenueList;
+		return _contributingVenueSet;
 	}
 
 	/**
@@ -175,7 +175,7 @@ public class UBBOBlock
 
 	public boolean isValid()
 	{
-		return !_contributingVenueList.isEmpty();
+		return !_contributingVenueSet.isEmpty();
 	}
 
 	/**
@@ -194,15 +194,15 @@ public class UBBOBlock
 			return false;
 		}
 
-		OrderBlock postedBlock = montageL1Entry.topOfTheBook();
+		OrderBlock topOfTheBookBlock = montageL1Entry.topOfTheBook();
 
-		_contributingVenueList.add (
+		_contributingVenueSet.add (
 			montageL1Entry.venueCode()
 		);
 
-		_aggregatedSize += postedBlock.size();
+		_aggregatedSize += topOfTheBookBlock.size();
 
-		_price = postedBlock.price();
+		_price = topOfTheBookBlock.price();
 
 		return true;
 	}

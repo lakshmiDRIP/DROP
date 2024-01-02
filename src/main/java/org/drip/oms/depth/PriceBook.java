@@ -187,7 +187,7 @@ public class PriceBook
 	 * @return TRUE - The Swept Block successfully disaggregated to the Price Book
 	 */
 
-	public boolean aggregateSweptBlock (
+	public boolean disaggregateSweptBlock (
 		final OrderBlock sweptBlock,
 		final boolean allowPartialSweep)
 	{
@@ -243,7 +243,7 @@ public class PriceBook
 		final boolean bid)
 	{
 		return _aggregatedPostedBlockMap.isEmpty() ? null : bid ?
-			_aggregatedPostedBlockMap.firstEntry().getValue() :
-			_aggregatedPostedBlockMap.lastEntry().getValue();
+			_aggregatedPostedBlockMap.lastEntry().getValue() :
+			_aggregatedPostedBlockMap.firstEntry().getValue();
 	}
 }
