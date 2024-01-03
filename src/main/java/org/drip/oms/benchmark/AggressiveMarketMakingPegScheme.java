@@ -1,6 +1,11 @@
 
 package org.drip.oms.benchmark;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.oms.depth.MontageL1Manager;
+import org.drip.oms.exchange.CrossVenueMontageDigest;
+import org.drip.oms.transaction.OrderBlock;
+import org.drip.oms.transaction.Side;
 import org.drip.state.identifier.EntityEquityLabel;
 
 /*
@@ -115,7 +120,170 @@ import org.drip.state.identifier.EntityEquityLabel;
  */
 
 public class AggressiveMarketMakingPegScheme
+	extends MarketMakingPegScheme
 {
-	private EntityEquityLabel _entityEquityLabel = null;
+	private boolean _noCross = false;
+	private double _stepValue = Double.NaN;
 
+	/**
+	 * Construct a Standard Instance of AggressiveMarketMakingPegScheme
+	 * 
+	 * @param entityEquityLabel Entity Equity Label
+	 * @param side Side
+	 * @param noCross TRUE - The "No Jumping Over" Indicator Set
+	 * 
+	 * @return Standard Instance of AggressiveMarketMakingPegScheme
+	 */
+
+	public static final AggressiveMarketMakingPegScheme Standard (
+		final EntityEquityLabel entityEquityLabel,
+		final Side side,
+		final boolean noCross)
+	{
+		try
+		{
+			return null == entityEquityLabel ? null : new AggressiveMarketMakingPegScheme (
+				entityEquityLabel.ticker(),
+				side,
+				entityEquityLabel.tickSize(),
+				noCross
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * <i>AggressiveMarketMakingPegScheme</i> Constructor
+	 * 
+	 * @param ticker Ticker
+	 * @param side Side
+	 * @param stepValue Step Value
+	 * @param noCross TRUE - The "No Jumping Over" Indicator Set
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public AggressiveMarketMakingPegScheme (
+		final String ticker,
+		final Side side,
+		final double stepValue,
+		final boolean noCross)
+		throws Exception
+	{
+		super (
+			ticker,
+			side
+		);
+
+		if (!NumberUtil.IsValid (
+			_stepValue = stepValue
+			))
+		{
+			throw new Exception (
+				"AggressiveMarketMakingPegScheme Constructor => Invalid Inputs"
+			);
+		}
+
+		_noCross = noCross;
+	}
+
+	/**
+	 * Retrieve the Step Value
+	 * 
+	 * @return The Step Value
+	 */
+
+	public double stepValue()
+	{
+		return _stepValue;
+	}
+
+	/**
+	 * Retrieve the "No Jumping Over" Indicator
+	 * 
+	 * @return TRUE - The "No Jumping Over" Indicator Set
+	 */
+
+	public boolean noCross()
+	{
+		return _noCross;
+	}
+
+	@Override public double limitPrice (
+		final CrossVenueMontageDigest crossVenueMontageDigest)
+		throws Exception
+	{
+		if (null == crossVenueMontageDigest)
+		{
+			throw new Exception (
+				"AggressiveMarketMakingPegScheme::limitPrice => Invalid Inputs"
+			);
+		}
+
+		MontageL1Manager montageL1Manager = crossVenueMontageDigest.retrieveTickerMontageL1Manager (
+			ticker()
+		);
+
+		if (null == montageL1Manager)
+		{
+			throw new Exception (
+				"AggressiveMarketMakingPegScheme::limitPrice => Invalid L1 Montage Manager"
+			);
+		}
+
+		char buySell = side().buySell();
+
+		OrderBlock bidNBBOBlock = montageL1Manager.bidNBBOBlock();
+
+		if (null == bidNBBOBlock)
+		{
+			throw new Exception (
+				"AggressiveMarketMakingPegScheme::limitPrice => Invalid Bid NBBO Block"
+			);
+		}
+
+		OrderBlock askNBBOBlock = montageL1Manager.askNBBOBlock();
+
+		if (null == askNBBOBlock)
+		{
+			throw new Exception (
+				"AggressiveMarketMakingPegScheme::limitPrice => Invalid Ask NBBO Block"
+			);
+		}
+
+		if (Side.BUY == buySell)
+		{
+			double marketMakingBidPrice = bidNBBOBlock.price() + _stepValue;
+
+			if (_noCross && marketMakingBidPrice > askNBBOBlock.price())
+			{
+				throw new Exception (
+					"AggressiveMarketMakingPegScheme::limitPrice => No Jumping Over Ask"
+				);
+			}
+
+			return marketMakingBidPrice;
+		}
+
+		if (Side.SELL == buySell)
+		{
+			double marketMakingAskPrice = askNBBOBlock.price() - _stepValue;
+
+			if (_noCross && marketMakingAskPrice < bidNBBOBlock.price())
+			{
+				throw new Exception (
+					"AggressiveMarketMakingPegScheme::limitPrice => No Jumping Over Bid"
+				);
+			}
+
+			return marketMakingAskPrice;
+		}
+
+		throw new Exception (
+			"AggressiveMarketMakingPegScheme::limitPrice => Cannot compute Limit Price"
+		);
+	}
 }
