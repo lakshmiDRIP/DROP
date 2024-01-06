@@ -1,11 +1,16 @@
 
 package org.drip.spline.basis;
 
+import org.drip.function.definition.R1ToR1;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,35 +88,51 @@ package org.drip.spline.basis;
  */
 
 /**
- * <i>FunctionSet</i> implements the basis spline function set.
+ * <i>FunctionSet</i> implements the basis spline function set. It has the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/basis/README.md">Basis Spline Construction/Customization Parameters</a></li>
+	 * <li><i>FunctionSet</i> Constructor</li>
+	 * <li>Retrieve the Number of Basis Functions</li>
+	 * <li>Retrieve the Basis Function identified by the specified Index</li>
  *  </ul>
- * <br><br>
+ *  
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/basis/README.md">Basis Spline Construction/Customization Parameters</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class FunctionSet {
-	private org.drip.function.definition.R1ToR1[] _aAUResponseBasis = null;
+public class FunctionSet
+{
+	private R1ToR1[] _r1ToR1ResponseBasisArray = null;
 
 	/**
-	 * @param aAUResponseBasis Array of the Basis Function Set
+	 * <i>FunctionSet</i> Constructor
+	 * 
+	 * @param r1ToR1ResponseBasisArray Array of the Basis Function Set
 	 * 
 	 * @throws java.lang.Exception Thrown if Inputs are invalid
 	 */
 
 	public FunctionSet (
-		final org.drip.function.definition.R1ToR1[] aAUResponseBasis)
-		throws java.lang.Exception
+		final R1ToR1[] r1ToR1ResponseBasisArray)
+		throws Exception
 	{
-		if (null == (_aAUResponseBasis = aAUResponseBasis) || 0 == _aAUResponseBasis.length)
-			throw new java.lang.Exception ("FunctionSet ctr: Invalid Inputs!");
+		if (null == (_r1ToR1ResponseBasisArray = r1ToR1ResponseBasisArray) ||
+			0 == _r1ToR1ResponseBasisArray.length) {
+			throw new Exception ("FunctionSet ctr: Invalid Inputs!");
+		}
 	}
 
 	/**
@@ -122,22 +143,20 @@ public class FunctionSet {
 
 	public int numBasis()
 	{
-		return _aAUResponseBasis.length;
+		return _r1ToR1ResponseBasisArray.length;
 	}
 
 	/**
 	 * Retrieve the Basis Function identified by the specified Index
 	 * 
-	 * @param iBasisIndex The Basis Function Index
+	 * @param basisIndex The Basis Function Index
 	 * 
 	 * @return The Basis Function identified by the specified Index
 	 */
 
-	public org.drip.function.definition.R1ToR1 indexedBasisFunction (
-		final int iBasisIndex)
+	public R1ToR1 indexedBasisFunction (
+		final int basisIndex)
 	{
-		if (iBasisIndex >= numBasis()) return null;
-
-		return _aAUResponseBasis[iBasisIndex];
+		return basisIndex >= numBasis() ? null : _r1ToR1ResponseBasisArray[basisIndex];
 	}
 }

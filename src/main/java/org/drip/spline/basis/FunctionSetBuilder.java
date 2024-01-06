@@ -1,11 +1,19 @@
 
 package org.drip.spline.basis;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.r1tor1.ExponentialTension;
+import org.drip.function.r1tor1.HyperbolicTension;
+import org.drip.function.r1tor1.Polynomial;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -85,23 +93,15 @@ package org.drip.spline.basis;
 /**
  * <i>FunctionSetBuilder</i> implements the basis set and spline builder for the following types of splines:
  *
- * <br><br>
  *  <ul>
- *  	<li>
- * 			Exponential basis tension splines
- *  	</li>
- *  	<li>
- * 			Hyperbolic basis tension splines
- *  	</li>
- *  	<li>
- * 			Polynomial basis splines
- *  	</li>
- *  	<li>
- *  		Bernstein Polynomial basis splines
- *  	</li>
- *  	<li>
- *  		Kaklis Pandelis basis tension splines
- *  	</li>
+ * 		<li>Construct Exponential Tension Basis Function Set</li>
+ * 		<li>Construct Hyperbolic Tension Basis Function Set</li>
+ * 		<li>Construct Polynomial Basis Function Set</li>
+ * 		<li>Construct Bernstein Polynomial Basis Function Set</li>
+ * 		<li>Construct KaklisPandelis from the polynomial tension basis function set</li>
+ * 		<li>Construct the Exponential Rational Basis Set</li>
+ * 		<li>Construct the Exponential Mixture Basis Set</li>
+ * 		<li>Construct the BSpline Basis Function Set</li>
  *  </ul>
  * 
  * This elastic coefficients for the segment using Ck basis splines inside [0,...,1) - Globally
@@ -115,19 +115,25 @@ package org.drip.spline.basis;
  * 
  * The inverse quadratic/rational spline is a typical shape controller spline used.
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/basis/README.md">Basis Spline Construction/Customization Parameters</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/basis/README.md">Basis Spline Construction/Customization Parameters</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class FunctionSetBuilder {
+public class FunctionSetBuilder
+{
 
 	/**
 	 * This function implements the elastic coefficients for the segment using tension exponential basis
@@ -139,24 +145,30 @@ public class FunctionSetBuilder {
 	 * 
 	 * 		x .gte. (x - x_i-1) / (x_i - x_i-1)
 	 * 
-	 * @param etsp Exponential Tension Basis set Builder Parameters
+	 * @param exponentialTensionSetParams Exponential Tension Basis set Builder Parameters
 	 * 
 	 * @return Exponential Tension Basis Functions
 	 */
 
-	public static final org.drip.spline.basis.FunctionSet ExponentialTensionBasisSet (
-		final org.drip.spline.basis.ExponentialTensionSetParams etsp)
+	public static final FunctionSet ExponentialTensionBasisSet (
+		final ExponentialTensionSetParams exponentialTensionSetParams)
 	{
-		if (null == etsp) return null;
+		if (null == exponentialTensionSetParams) {
+			return null;
+		}
 
-		double dblTension = etsp.tension();
+		double tension = exponentialTensionSetParams.tension();
 
 		try {
-			return new org.drip.spline.basis.FunctionSet (new org.drip.function.definition.R1ToR1[]
-				{new org.drip.function.r1tor1.Polynomial (0), new org.drip.function.r1tor1.Polynomial (1),
-					new org.drip.function.r1tor1.ExponentialTension (java.lang.Math.E, dblTension), new
-						org.drip.function.r1tor1.ExponentialTension (java.lang.Math.E, -dblTension)});
-		} catch (java.lang.Exception e) {
+			return new FunctionSet (
+				new R1ToR1[] {
+					new Polynomial (0),
+					new Polynomial (1),
+					new ExponentialTension (Math.E, tension),
+					new ExponentialTension (Math.E, -tension)
+				}
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -173,26 +185,30 @@ public class FunctionSetBuilder {
 	 * 
 	 * 		x .ge. (x - x_i-1) / (x_i - x_i-1)
 	 * 
-	 * @param etsp Exponential Tension Basis set Builder Parameters
+	 * @param exponentialTensionSetParams Exponential Tension Basis set Builder Parameters
 	 * 
 	 * @return Hyperbolic Tension Basis Set
 	 */
 
-	public static final org.drip.spline.basis.FunctionSet HyperbolicTensionBasisSet (
-		final org.drip.spline.basis.ExponentialTensionSetParams etsp)
+	public static final FunctionSet HyperbolicTensionBasisSet (
+		final ExponentialTensionSetParams exponentialTensionSetParams)
 	{
-		if (null == etsp) return null;
+		if (null == exponentialTensionSetParams) {
+			return null;
+		}
 
-		double dblTension = etsp.tension();
+		double tension = exponentialTensionSetParams.tension();
 
 		try {
-			return new org.drip.spline.basis.FunctionSet (new org.drip.function.definition.R1ToR1[]
-				{new org.drip.function.r1tor1.Polynomial (0), new org.drip.function.r1tor1.Polynomial (1),
-					new org.drip.function.r1tor1.HyperbolicTension
-						(org.drip.function.r1tor1.HyperbolicTension.COSH, dblTension), new
-							org.drip.function.r1tor1.HyperbolicTension
-								(org.drip.function.r1tor1.HyperbolicTension.SINH, dblTension)});
-		} catch (java.lang.Exception e) {
+			return new FunctionSet (
+				new R1ToR1[] {
+					new Polynomial (0),
+					new Polynomial (1),
+					new HyperbolicTension (HyperbolicTension.COSH, tension),
+					new HyperbolicTension (HyperbolicTension.SINH, tension)
+				}
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -417,28 +433,5 @@ public class FunctionSetBuilder {
 		}
 
 		return null;
-	}
-
-	/**
-	 * Entry Point
-	 * 
-	 * @param astrArgs Argument Array
-	 * 
-	 * @throws java.lang.Exception Propagate Exception Encountered
-	 */
-
-	public static final void main (
-		final java.lang.String[] astrArgs)
-		throws java.lang.Exception
-	{
-		org.drip.spline.basis.BSplineSequenceParams bssp = new org.drip.spline.basis.BSplineSequenceParams
-			(org.drip.spline.bspline.BasisHatPairGenerator.RAW_TENSION_HYPERBOLIC,
-				org.drip.spline.bspline.BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR, 2, 4, 1., -1);
-
-		org.drip.numerical.common.NumberUtil.Print1DArray ("BSSP", bssp.predictorOrdinates(), false);
-
-		org.drip.spline.basis.FunctionSet fsBSS = BSplineBasisSet (bssp);
-
-		System.out.println ("fsBSS Size = " + fsBSS.numBasis());
 	}
 }

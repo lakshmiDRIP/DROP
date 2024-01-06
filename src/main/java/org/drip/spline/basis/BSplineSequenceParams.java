@@ -6,6 +6,9 @@ package org.drip.spline.basis;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -86,79 +89,71 @@ package org.drip.spline.basis;
  * <i>BSplineSequenceParams</i> implements the parameter set for constructing the B Spline Sequence. It
  * provides functionality to:
  *
- * <br><br>
  *  <ul>
- *  	<li>
- * 			Retrieve the B Spline Order
- *  	</li>
- *  	<li>
- * 			Retrieve the Number of Basis Functions
- *  	</li>
- *  	<li>
- * 			Retrieve the Processed Basis Derivative Order
- *  	</li>
- *  	<li>
- * 			Retrieve the Basis Hat Type
- *  	</li>
- *  	<li>
- * 			Retrieve the Shape Control Type
- *  	</li>
- *  	<li>
- * 			Retrieve the Tension
- *  	</li>
- *  	<li>
- * 			Retrieve the Array of Predictor Ordinates
- *  	</li>
+ * 		<li><i>BSplineSequenceParams</i> Constructor</li>
+ * 		<li>Retrieve the B Spline Order</li>
+ * 		<li>Retrieve the Number of Basis Functions</li>
+ * 		<li>Retrieve the Processed Basis Derivative Order</li>
+ * 		<li>Retrieve the Basis Hat Type</li>
+ * 		<li>Retrieve the Shape Control Type</li>
+ * 		<li>Retrieve the Tension</li>
+ * 		<li>Retrieve the Array of Predictor Ordinates</li>
  *  </ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/basis/README.md">Basis Spline Construction/Customization Parameters</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/basis/README.md">Basis Spline Construction/Customization Parameters</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class BSplineSequenceParams {
-	private int _iNumBasis = -1;
-	private int _iBSplineOrder = -1;
-	private int _iProcBasisDerivOrder = -1;
-	private java.lang.String _strHatType = "";
-	private double _dblTension = java.lang.Double.NaN;
-	private java.lang.String _strShapeControlType = "";
+public class BSplineSequenceParams
+{
+	private String _hatType = "";
+	private double _tension = Double.NaN;
+	private String _shapeControlType = "";
+	private int _basisCount = Integer.MIN_VALUE;
+	private int _bSplineOrder = Integer.MIN_VALUE;
+	private int _processedBasisDerivativeOrder = Integer.MIN_VALUE;
 
 	/**
-	 * BSplineSequenceParams Constructor
+	 * <i>BSplineSequenceParams</i> Constructor
 	 * 
-	 * @param strHatType Hat Type
-	 * @param strShapeControlType Shape Controller Type
-	 * @param iNumBasis Number of Basis
-	 * @param iBSplineOrder Spline Penalty Order
-	 * @param dblTension Tension
-	 * @param iProcBasisDerivOrder Processed Basis Derivative Order
+	 * @param hatType Hat Type
+	 * @param shapeControlType Shape Controller Type
+	 * @param basisCount Number of Basis
+	 * @param bSplineOrder Spline Penalty Order
+	 * @param tension Tension
+	 * @param processedBasisDerivativeOrder Processed Basis Derivative Order
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BSplineSequenceParams (
-		final java.lang.String strHatType,
-		final java.lang.String strShapeControlType,
-		final int iNumBasis,
-		final int iBSplineOrder,
-		final double dblTension,
-		final int iProcBasisDerivOrder)
-		throws java.lang.Exception
+		final String hatType,
+		final String shapeControlType,
+		final int basisCount,
+		final int bSplineOrder,
+		final double tension,
+		final int processedBasisDerivativeOrder)
+		throws Exception
 	{
-		_iNumBasis = iNumBasis;
-		_strHatType = strHatType;
-		_dblTension = dblTension;
-		_iBSplineOrder = iBSplineOrder;
-		_strShapeControlType = strShapeControlType;
-		_iProcBasisDerivOrder = iProcBasisDerivOrder;
+		_hatType = hatType;
+		_tension = tension;
+		_basisCount = basisCount;
+		_bSplineOrder = bSplineOrder;
+		_shapeControlType = shapeControlType;
+		_processedBasisDerivativeOrder = processedBasisDerivativeOrder;
 	}
 
 	/**
@@ -169,7 +164,7 @@ public class BSplineSequenceParams {
 
 	public int bSplineOrder()
 	{
-		return _iBSplineOrder;
+		return _bSplineOrder;
 	}
 
 	/**
@@ -180,7 +175,7 @@ public class BSplineSequenceParams {
 
 	public int numBasis()
 	{
-		return _iNumBasis;
+		return _basisCount;
 	}
 
 	/**
@@ -191,7 +186,7 @@ public class BSplineSequenceParams {
 
 	public int procBasisDerivOrder()
 	{
-		return _iProcBasisDerivOrder;
+		return _processedBasisDerivativeOrder;
 	}
 
 	/**
@@ -200,9 +195,9 @@ public class BSplineSequenceParams {
 	 * @return The Basis Hat Type
 	 */
 
-	public java.lang.String hat()
+	public String hat()
 	{
-		return _strHatType;
+		return _hatType;
 	}
 
 	/**
@@ -211,9 +206,9 @@ public class BSplineSequenceParams {
 	 * @return The Shape Control Type
 	 */
 
-	public java.lang.String shapeControl()
+	public String shapeControl()
 	{
-		return _strShapeControlType;
+		return _shapeControlType;
 	}
 
 	/**
@@ -224,7 +219,7 @@ public class BSplineSequenceParams {
 
 	public double tension()
 	{
-		return _dblTension;
+		return _tension;
 	}
 
 	/**
@@ -235,13 +230,16 @@ public class BSplineSequenceParams {
 
 	public double[] predictorOrdinates()
 	{
-		int iNumPredictorOrdinate = _iBSplineOrder + _iNumBasis;
-		double[] adblPredictorOrdinate = new double[iNumPredictorOrdinate];
-		double dblPredictorOrdinateIncrement = 1. / (_iBSplineOrder + _iNumBasis - 1);
+		int predictorOrdinateCount = _bSplineOrder + _basisCount;
+		double[] predictorOrdinateArray = new double[predictorOrdinateCount];
+		double predictorOrdinateIncrement = 1. / (_bSplineOrder + _basisCount - 1);
 
-		for (int i = 0; i < iNumPredictorOrdinate; ++i)
-			adblPredictorOrdinate[i] = dblPredictorOrdinateIncrement * i;
+		for (int predictorOrdinateIndex = 0; predictorOrdinateIndex < predictorOrdinateCount;
+			++predictorOrdinateIndex) {
+			predictorOrdinateArray[predictorOrdinateIndex] = predictorOrdinateIncrement *
+				predictorOrdinateIndex;
+		}
 
-		return adblPredictorOrdinate;
+		return predictorOrdinateArray;
 	}
 }

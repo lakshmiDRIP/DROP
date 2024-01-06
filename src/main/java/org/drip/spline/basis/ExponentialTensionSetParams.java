@@ -1,11 +1,16 @@
 
 package org.drip.spline.basis;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -86,35 +91,48 @@ package org.drip.spline.basis;
  * <i>ExponentialTensionSetParams</i> implements per-segment parameters for the exponential tension basis
  * set. Currently it only contains the tension parameter.
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/basis/README.md">Basis Spline Construction/Customization Parameters</a></li>
+ * 		<li><i>ExponentialTensionSetParams</i> Constructor</li>
+ * 		<li>Get the Segment Tension</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/basis/README.md">Basis Spline Construction/Customization Parameters</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ExponentialTensionSetParams implements org.drip.spline.basis.FunctionSetBuilderParams {
-	private double _dblTension = java.lang.Double.NaN;
+public class ExponentialTensionSetParams
+	implements FunctionSetBuilderParams
+{
+	private double _tension = Double.NaN;
 
 	/**
-	 * ExponentialTensionSetParams constructor
+	 * <i>ExponentialTensionSetParams</i> constructor
 	 * 
-	 * @param dblTension Segment Tension
+	 * @param tension Segment Tension
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ExponentialTensionSetParams (
-		final double dblTension)
-		throws java.lang.Exception
+		final double tension)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblTension = dblTension))
-			throw new java.lang.Exception ("ExponentialTensionSetParams ctr: Invalid Inputs");
+		if (!NumberUtil.IsValid (_tension = tension)) {
+			throw new Exception ("ExponentialTensionSetParams ctr: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -125,6 +143,6 @@ public class ExponentialTensionSetParams implements org.drip.spline.basis.Functi
 
 	public double tension()
 	{
-		return _dblTension;
+		return _tension;
 	}
 }
