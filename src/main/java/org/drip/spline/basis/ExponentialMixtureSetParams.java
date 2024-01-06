@@ -1,6 +1,8 @@
 
 package org.drip.spline.basis;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -87,7 +89,12 @@ package org.drip.spline.basis;
 
 /**
  * <i>ExponentialMixtureSetParams</i> implements per-segment parameters for the exponential mixture basis
- * set, i.e., the array of the exponential tension parameters, one per each entity in the mixture.
+ * 	set, i.e., the array of the exponential tension parameters, one per each entity in the mixture.
+ *
+ *  <ul>
+ * 		<li><i>ExponentialMixtureSetParams</i> Constructor</li>
+ * 		<li>Get the Indexed Exponential Tension Entry</li>
+ *  </ul>
  *
  *  <br>
  *  <style>table, td, th {
@@ -106,42 +113,46 @@ package org.drip.spline.basis;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ExponentialMixtureSetParams implements org.drip.spline.basis.FunctionSetBuilderParams {
-	private double[] _adblTension = null;
+public class ExponentialMixtureSetParams
+	implements FunctionSetBuilderParams
+{
+	private double[] _tensionArray = null;
 
 	/**
-	 * ExponentialMixtureSetParams constructor
+	 * <i>ExponentialMixtureSetParams</i> constructor
 	 * 
-	 * @param adblTension Array of the Tension Parameters
+	 * @param tensionArray Array of the Tension Parameters
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ExponentialMixtureSetParams (
-		final double[] adblTension)
-		throws java.lang.Exception
+		final double[] tensionArray)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_adblTension = adblTension))
-			throw new java.lang.Exception ("ExponentialMixtureSetParams ctr: Invalid Inputs");
+		if (!NumberUtil.IsValid (_tensionArray = tensionArray)) {
+			throw new Exception ("ExponentialMixtureSetParams Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
 	 * Get the Indexed Exponential Tension Entry
 	 * 
-	 * @param iIndex The Index
+	 * @param index The Index
 	 * 
 	 * @return The Indexed Exponential Tension Entry
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double tension (
-		final int iIndex)
-		throws java.lang.Exception
+		final int index)
+		throws Exception
 	{
-		if (iIndex >= _adblTension.length)
-			throw new java.lang.Exception ("ExponentialMixtureSetParams::tension => Invalid Index");
+		if (index >= _tensionArray.length) {
+			throw new Exception ("ExponentialMixtureSetParams::tension => Invalid Index");
+		}
 
-		return _adblTension[iIndex];
+		return _tensionArray[index];
 	}
 }

@@ -87,7 +87,7 @@ package org.drip.spline.basis;
 
 /**
  * <i>BSplineSequenceParams</i> implements the parameter set for constructing the B Spline Sequence. It
- * provides functionality to:
+ * 	provides functionality to:
  *
  *  <ul>
  * 		<li><i>BSplineSequenceParams</i> Constructor</li>

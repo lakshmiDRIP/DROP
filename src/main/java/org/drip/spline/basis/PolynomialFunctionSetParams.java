@@ -111,23 +111,26 @@ package org.drip.spline.basis;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PolynomialFunctionSetParams implements org.drip.spline.basis.FunctionSetBuilderParams {
-	private int _iNumBasis = -1;
+public class PolynomialFunctionSetParams
+	implements FunctionSetBuilderParams
+{
+	private int _basisCount = -1;
 
 	/**
 	 * <i>PolynomialFunctionSetParams</i> constructor
 	 * 
 	 * @param iNumBasis Number of Spline Basis Functions in the Set
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PolynomialFunctionSetParams (
 		final int iNumBasis)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (0 >= (_iNumBasis = iNumBasis))
-			throw new java.lang.Exception ("PolynomialFunctionSetParams ctr: Invalid Inputs");
+		if (0 >= (_basisCount = iNumBasis)) {
+			throw new Exception ("PolynomialFunctionSetParams Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -138,6 +141,6 @@ public class PolynomialFunctionSetParams implements org.drip.spline.basis.Functi
 
 	public int numBasis()
 	{
-		return _iNumBasis;
+		return _basisCount;
 	}
 }

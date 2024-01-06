@@ -1,11 +1,16 @@
 
 package org.drip.spline.basis;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,41 +89,55 @@ package org.drip.spline.basis;
 
 /**
  * <i>ExponentialRationalSetParams</i> implements per-segment parameters for the exponential rational basis
- * set, i.e., the exponential tension and the rational tension parameters.
+ * 	set, i.e., the exponential tension and the rational tension parameters. It provides functionality to:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/basis/README.md">Basis Spline Construction/Customization Parameters</a></li>
+ * 		<li><i>ExponentialRationalSetParams</i> Constructor</li>
+ * 		<li>Get the Exponential Tension</li>
+ * 		<li>Get the Rational Tension</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/basis/README.md">Basis Spline Construction/Customization Parameters</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ExponentialRationalSetParams implements org.drip.spline.basis.FunctionSetBuilderParams {
-	private double _dblRationalTension = java.lang.Double.NaN;
-	private double _dblExponentialTension = java.lang.Double.NaN;
+public class ExponentialRationalSetParams
+	implements FunctionSetBuilderParams
+{
+	private double _rationalTension = Double.NaN;
+	private double _exponentialTension = Double.NaN;
 
 	/**
-	 * ExponentialRationalSetParams constructor
+	 * <i>ExponentialRationalSetParams</i> constructor
 	 * 
-	 * @param dblExponentialTension Segment Tension
-	 * @param dblRationalTension Segment Tension
+	 * @param exponentialTension Segment Exponential Tension
+	 * @param rationalTension Segment Rational Tension
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ExponentialRationalSetParams (
-		final double dblExponentialTension,
-		final double dblRationalTension)
-		throws java.lang.Exception
+		final double exponentialTension,
+		final double rationalTension)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblExponentialTension = dblExponentialTension) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblRationalTension = dblRationalTension))
-			throw new java.lang.Exception ("ExponentialRationalSetParams ctr: Invalid Inputs");
+		if (!NumberUtil.IsValid (_exponentialTension = exponentialTension) ||
+			!NumberUtil.IsValid (_rationalTension = rationalTension)) {
+			throw new Exception ("ExponentialRationalSetParams Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -129,7 +148,7 @@ public class ExponentialRationalSetParams implements org.drip.spline.basis.Funct
 
 	public double exponentialTension()
 	{
-		return _dblExponentialTension;
+		return _exponentialTension;
 	}
 
 	/**
@@ -140,6 +159,6 @@ public class ExponentialRationalSetParams implements org.drip.spline.basis.Funct
 
 	public double rationalTension()
 	{
-		return _dblRationalTension;
+		return _rationalTension;
 	}
 }

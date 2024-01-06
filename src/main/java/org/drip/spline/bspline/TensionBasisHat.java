@@ -1,11 +1,17 @@
 
 package org.drip.spline.bspline;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,59 +90,74 @@ package org.drip.spline.bspline;
 
 /**
  * <i>TensionBasisHat</i> implements the common basis hat function that form the basis for all B Splines. It
- * contains the left/right ordinates, the tension, and the normalizer.
+ * 	contains the left/right ordinates, the tension, and the normalizer.
  *
- * <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></li>
+ * 		<li>Identifies if the ordinate is local to the range</li>
+ * 		<li>Retrieve the Left Predictor Ordinate</li>
+ * 		<li>Retrieve the Right Predictor Ordinate</li>
+ * 		<li>Retrieve the Tension</li>
+ * 		<li>Compute the Normalizer</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class TensionBasisHat extends org.drip.function.definition.R1ToR1 {
-	private double _dblTension = java.lang.Double.NaN;
-	private double _dblLeftPredictorOrdinate = java.lang.Double.NaN;
-	private double _dblRightPredictorOrdinate = java.lang.Double.NaN;
+public abstract class TensionBasisHat
+	extends R1ToR1
+{
+	private double _tension = Double.NaN;
+	private double _leftPredictorOrdinate = Double.NaN;
+	private double _rightPredictorOrdinate = Double.NaN;
 
 	protected TensionBasisHat (
-		final double dblLeftPredictorOrdinate,
-		final double dblRightPredictorOrdinate,
-		final double dblTension)
-		throws java.lang.Exception
+		final double leftPredictorOrdinate,
+		final double rightPredictorOrdinate,
+		final double tension)
+		throws Exception
 	{
 		super (null);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLeftPredictorOrdinate = dblLeftPredictorOrdinate)
-			|| !org.drip.numerical.common.NumberUtil.IsValid (_dblRightPredictorOrdinate =
-				dblRightPredictorOrdinate) || !org.drip.numerical.common.NumberUtil.IsValid (_dblTension =
-					dblTension))
-			throw new java.lang.Exception ("TensionBasisHat ctr: Invalid Inputs");
+		if (!NumberUtil.IsValid (_leftPredictorOrdinate = leftPredictorOrdinate) ||
+			!NumberUtil.IsValid (_rightPredictorOrdinate = rightPredictorOrdinate) ||
+			!NumberUtil.IsValid (_tension = tension)) {
+			throw new Exception ("TensionBasisHat ctr: Invalid Inputs");
+		}
 	}
 
 	/**
 	 * Identifies if the ordinate is local to the range
 	 * 
-	 * @param dblPredictorOrdinate The Predictor Ordinate
+	 * @param predictorOrdinate The Predictor Ordinate
 	 * 
 	 * @return TRUE - The Ordinate is local to the Specified Range
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	public boolean in (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))
-			throw new java.lang.Exception ("TensionBasisHat::in => Invalid Input");
+		if (!NumberUtil.IsValid (predictorOrdinate)) {
+			throw new Exception ("TensionBasisHat::in => Invalid Input");
+		}
 
-		return dblPredictorOrdinate >= _dblLeftPredictorOrdinate && dblPredictorOrdinate <=
-			_dblRightPredictorOrdinate;
+		return predictorOrdinate >= _leftPredictorOrdinate && predictorOrdinate <= _rightPredictorOrdinate;
 	}
 
 	/**
@@ -147,7 +168,7 @@ public abstract class TensionBasisHat extends org.drip.function.definition.R1ToR
 
 	public double left()
 	{
-		return _dblLeftPredictorOrdinate;
+		return _leftPredictorOrdinate;
 	}
 
 	/**
@@ -158,7 +179,7 @@ public abstract class TensionBasisHat extends org.drip.function.definition.R1ToR
 
 	public double right()
 	{
-		return _dblRightPredictorOrdinate;
+		return _rightPredictorOrdinate;
 	}
 
 	/**
@@ -169,7 +190,7 @@ public abstract class TensionBasisHat extends org.drip.function.definition.R1ToR
 
 	public double tension()
 	{
-		return _dblTension;
+		return _tension;
 	}
 
 	/**
@@ -177,9 +198,8 @@ public abstract class TensionBasisHat extends org.drip.function.definition.R1ToR
 	 * 
 	 * @return The Normalizer
 	 * 
-	 * @throws java.lang.Exception Thrown if the Normalizer cannot be computed
+	 * @throws Exception Thrown if the Normalizer cannot be computed
 	 */
 
-	public abstract double normalizer()
-		throws java.lang.Exception;
+	public abstract double normalizer() throws Exception;
 }

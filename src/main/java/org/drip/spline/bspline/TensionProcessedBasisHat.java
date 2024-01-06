@@ -6,6 +6,9 @@ package org.drip.spline.bspline;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,49 +87,58 @@ package org.drip.spline.bspline;
 
 /**
  * <i>TensionProcessedBasisHat</i> implements the processed hat basis function of the form laid out in the
- * basic framework outlined in Koch and Lyche (1989), Koch and Lyche (1993), and Kvasov (2000) Papers.
+ * 	basic framework outlined in Koch and Lyche (1989), Koch and Lyche (1993), and Kvasov (2000) Papers.
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class TensionProcessedBasisHat extends org.drip.spline.bspline.TensionBasisHat {
-	private int _iDerivOrder = -1;
-	private org.drip.spline.bspline.TensionBasisHat _tbhRaw = null;
+public class TensionProcessedBasisHat
+	extends TensionBasisHat
+{
+	private int _derivativeOrder = Integer.MIN_VALUE;
+	private TensionBasisHat _rawTensionBasisHat = null;
 
 	/**
 	 * TensionProcessedBasisHat constructor
 	 * 
-	 * @param tbhRaw The Raw TBH
-	 * @param iDerivOrder Derivative Order off of the Raw TBH
+	 * @param rawTensionBasisHat The Raw TBH
+	 * @param derivativeOrder Derivative Order off of the Raw TBH
 	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
+	 * @throws Exception Thrown if the input is invalid
 	 */
 
 	public TensionProcessedBasisHat (
-		final org.drip.spline.bspline.TensionBasisHat tbhRaw,
-		final int iDerivOrder)
-		throws java.lang.Exception
+		final TensionBasisHat rawTensionBasisHat,
+		final int derivativeOrder)
+		throws Exception
 	{
-		super (tbhRaw.left(), tbhRaw.right(), tbhRaw.tension());
+		super (rawTensionBasisHat.left(), rawTensionBasisHat.right(), rawTensionBasisHat.tension());
 
-		if (null == (_tbhRaw = tbhRaw) || 0 >= (_iDerivOrder = iDerivOrder))
-			throw new java.lang.Exception ("TensionProcessedBasisHat ctr: Invalid Input");
+		if (null == (_rawTensionBasisHat = rawTensionBasisHat) || 0 >= (_derivativeOrder = derivativeOrder))
+		{
+			throw new Exception ("TensionProcessedBasisHat ctr: Invalid Input");
+		}
 	}
 
 	@Override public double evaluate (
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-		return in (dblPredictorOrdinate) ? _tbhRaw.derivative (dblPredictorOrdinate, _iDerivOrder) : 0.;
+		return in (dblPredictorOrdinate) ? _rawTensionBasisHat.derivative (dblPredictorOrdinate, _derivativeOrder) : 0.;
 	}
 
 	@Override public double derivative (
@@ -139,7 +151,7 @@ public class TensionProcessedBasisHat extends org.drip.spline.bspline.TensionBas
 
 		if (!in (dblPredictorOrdinate)) return 0.;
 
-		return _tbhRaw.derivative (dblPredictorOrdinate, iOrder + _iDerivOrder);
+		return _rawTensionBasisHat.derivative (dblPredictorOrdinate, iOrder + _derivativeOrder);
 	}
 
 	@Override public double integrate (
@@ -157,18 +169,18 @@ public class TensionProcessedBasisHat extends org.drip.spline.bspline.TensionBas
 
 		if (dblBoundedBegin >= dblBoundedEnd) return 0.;
 
-		if (1 == _iDerivOrder) return _tbhRaw.evaluate (dblBoundedEnd) - _tbhRaw.evaluate (dblBoundedBegin);
+		if (1 == _derivativeOrder) return _rawTensionBasisHat.evaluate (dblBoundedEnd) - _rawTensionBasisHat.evaluate (dblBoundedBegin);
 
-		return _tbhRaw.derivative (dblBoundedEnd, _iDerivOrder - 1) - _tbhRaw.derivative (dblBoundedBegin,
-			_iDerivOrder - 1);
+		return _rawTensionBasisHat.derivative (dblBoundedEnd, _derivativeOrder - 1) - _rawTensionBasisHat.derivative (dblBoundedBegin,
+			_derivativeOrder - 1);
 	}
 
 	@Override public double normalizer()
 		throws java.lang.Exception
 	{
-		if (1 == _iDerivOrder) return _tbhRaw.evaluate (right()) - _tbhRaw.evaluate (left());
+		if (1 == _derivativeOrder) return _rawTensionBasisHat.evaluate (right()) - _rawTensionBasisHat.evaluate (left());
 
-		return _tbhRaw.derivative (right(), _iDerivOrder - 1) - _tbhRaw.derivative (left(), _iDerivOrder -
+		return _rawTensionBasisHat.derivative (right(), _derivativeOrder - 1) - _rawTensionBasisHat.derivative (left(), _derivativeOrder -
 			1);
 	}
 }

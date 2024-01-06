@@ -2,6 +2,7 @@
 package org.drip.spline.basis;
 
 import org.drip.function.definition.R1ToR1;
+import org.drip.function.r1tor1.BernsteinPolynomial;
 import org.drip.function.r1tor1.ExponentialTension;
 import org.drip.function.r1tor1.HyperbolicTension;
 import org.drip.function.r1tor1.Polynomial;
@@ -225,27 +226,29 @@ public class FunctionSetBuilder
 	 * 
 	 * 			x .gte. (x - x_i-1) / (x_i - x_i-1)
 	 * 
-	 * @param pfsp Polynomial Basis set Builder Parameters
+	 * @param polynomialFunctionSetParams Polynomial Basis set Builder Parameters
 	 * 
 	 * @return The Polynomial Basis Spline Set
 	 */
 
-	public static final org.drip.spline.basis.FunctionSet PolynomialBasisSet (
-		final org.drip.spline.basis.PolynomialFunctionSetParams pfsp)
+	public static final FunctionSet PolynomialBasisSet (
+		final PolynomialFunctionSetParams polynomialFunctionSetParams)
 	{
-		if (null == pfsp) return null;
+		if (null == polynomialFunctionSetParams) {
+			return null;
+		}
 
-		int iNumBasis = pfsp.numBasis();
+		int basisCount = polynomialFunctionSetParams.numBasis();
 
-		org.drip.function.definition.R1ToR1[] aAU = new
-			org.drip.function.definition.R1ToR1[iNumBasis];
+		R1ToR1[] r1ToR1Array = new R1ToR1[basisCount];
 
 		try {
-			for (int i = 0; i < iNumBasis; ++i)
-				aAU[i] = new org.drip.function.r1tor1.Polynomial (i);
+			for (int basisIndex = 0; basisIndex < basisCount; ++basisIndex) {
+				r1ToR1Array[basisIndex] = new Polynomial (basisIndex);
+			}
 
-			return new org.drip.spline.basis.FunctionSet (aAU);
-		} catch (java.lang.Exception e) {
+			return new FunctionSet (r1ToR1Array);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -264,27 +267,29 @@ public class FunctionSetBuilder
 	 * 
 	 * 		and B^i(x) is the Bernstein basis polynomial of order i.
 	 * 
-	 * @param pfsp Polynomial Basis set Builder Parameters
+	 * @param polynomialFunctionSetParams Polynomial Basis Set Builder Parameters
 	 * 
 	 * @return The Bernstein polynomial basis
 	 */
 
-	public static final org.drip.spline.basis.FunctionSet BernsteinPolynomialBasisSet (
-		final org.drip.spline.basis.PolynomialFunctionSetParams pfsp)
+	public static final FunctionSet BernsteinPolynomialBasisSet (
+		final PolynomialFunctionSetParams polynomialFunctionSetParams)
 	{
-		if (null == pfsp) return null;
+		if (null == polynomialFunctionSetParams) {
+			return null;
+		}
 
-		int iNumBasis = pfsp.numBasis();
+		int basisCount = polynomialFunctionSetParams.numBasis();
 
-		org.drip.function.definition.R1ToR1[] aAU = new
-			org.drip.function.definition.R1ToR1[iNumBasis];
+		R1ToR1[] r1ToR1Array = new R1ToR1[basisCount];
 
 		try {
-			for (int i = 0; i < iNumBasis; ++i)
-				aAU[i] = new org.drip.function.r1tor1.BernsteinPolynomial (i, iNumBasis - 1 - i);
+			for (int basisIndex = 0; basisIndex < basisCount; ++basisIndex) {
+				r1ToR1Array[basisIndex] = new BernsteinPolynomial (basisIndex, basisCount - 1 - basisIndex);
+			}
 
-			return new org.drip.spline.basis.FunctionSet (aAU);
-		} catch (java.lang.Exception e) {
+			return new FunctionSet (r1ToR1Array);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -296,15 +301,15 @@ public class FunctionSetBuilder
 	 * 
 	 * 		y = A * (1-x) + B * x + C * x * (1-x)^m + D * x^m * (1-x)
 	 * 
-	 * @param kpsp Kaklis Pandelis Basis set Builder Parameters
+	 * @param kaklisPandelisSetParams Kaklis Pandelis Basis set Builder Parameters
 	 * 
 	 * @return The KaklisPandelis Basis Set
 	 */
 
-	public static final org.drip.spline.basis.FunctionSet KaklisPandelisBasisSet (
-		final org.drip.spline.basis.KaklisPandelisSetParams kpsp)
+	public static final FunctionSet KaklisPandelisBasisSet (
+		final org.drip.spline.basis.KaklisPandelisSetParams kaklisPandelisSetParams)
 	{
-		if (null == kpsp) return null;
+		if (null == kaklisPandelisSetParams) return null;
 
 		try {
 			org.drip.function.definition.R1ToR1 auLinearPoly = new org.drip.function.r1tor1.Polynomial
@@ -314,7 +319,7 @@ public class FunctionSetBuilder
 				org.drip.function.r1tor1.UnivariateReflection (auLinearPoly);
 
 			org.drip.function.definition.R1ToR1 auKaklisPandelisPolynomial = new
-				org.drip.function.r1tor1.Polynomial (kpsp.polynomialTensionDegree());
+				org.drip.function.r1tor1.Polynomial (kaklisPandelisSetParams.polynomialTensionDegree());
 
 			return new org.drip.spline.basis.FunctionSet (new org.drip.function.definition.R1ToR1[]
 				{auReflectedLinearPoly, auLinearPoly, new org.drip.function.r1tor1.UnivariateConvolution
