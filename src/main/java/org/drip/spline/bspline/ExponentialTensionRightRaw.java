@@ -1,11 +1,16 @@
 
 package org.drip.spline.bspline;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,110 +89,143 @@ package org.drip.spline.bspline;
 
 /**
  * <i>ExponentialTensionRightRaw</i> implements the TensionBasisHat interface in accordance with the raw
- * right exponential hat basis function laid out in the basic framework outlined in Koch and Lyche (1989),
- * Koch and Lyche (1993), and Kvasov (2000) Papers.
+ * 	right exponential hat basis function laid out in the basic framework outlined in Koch and Lyche (1989),
+ * 	Koch and Lyche (1993), and Kvasov (2000) Papers.
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ExponentialTensionRightRaw extends org.drip.spline.bspline.TensionBasisHat {
+public class ExponentialTensionRightRaw
+	extends TensionBasisHat
+{
 
 	/**
-	 * ExponentialTensionRightRaw constructor
+	 * <i>ExponentialTensionRightRaw</i> constructor
 	 * 
-	 * @param dblLeftPredictorOrdinate The Left Predictor Ordinate
-	 * @param dblRightPredictorOrdinate The Right Predictor Ordinate
-	 * @param dblTension Tension of the Tension Hat Function
+	 * @param leftPredictorOrdinate The Left Predictor Ordinate
+	 * @param rightPredictorOrdinate The Right Predictor Ordinate
+	 * @param tension Tension of the Tension Hat Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
+	 * @throws Exception Thrown if the input is invalid
 	 */
 
 	public ExponentialTensionRightRaw (
-		final double dblLeftPredictorOrdinate,
-		final double dblRightPredictorOrdinate,
-		final double dblTension)
-		throws java.lang.Exception
+		final double leftPredictorOrdinate,
+		final double rightPredictorOrdinate,
+		final double tension)
+		throws Exception
 	{
-		super (dblLeftPredictorOrdinate, dblRightPredictorOrdinate, dblTension);
+		super (leftPredictorOrdinate, rightPredictorOrdinate, tension);
 	}
 
 	@Override public double evaluate (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
-		if (!in (dblPredictorOrdinate)) return 0.;
+		if (!in (predictorOrdinate)) {
+			return 0.;
+		}
 
-		double dblAdjPredictorOrdinate = tension() * (right() - dblPredictorOrdinate);
+		double right = right();
 
-		return (java.lang.Math.sinh (dblAdjPredictorOrdinate) - dblAdjPredictorOrdinate) / (tension() *
-			tension() * java.lang.Math.sinh (tension() * (right() - left())));
+		double tension = tension();
+
+		double adjustedPredictorOrdinate = tension * (right - predictorOrdinate);
+
+		return (Math.sinh (adjustedPredictorOrdinate) - adjustedPredictorOrdinate) / (
+			tension * tension * Math.sinh (tension * (right - left()))
+		);
 	}
 
 	@Override public double derivative (
-		final double dblPredictorOrdinate,
-		final int iOrder)
-		throws java.lang.Exception
+		final double predictorOrdinate,
+		final int order)
+		throws Exception
 	{
-		if (0 > iOrder)
-			throw new java.lang.Exception ("ExponentialTensionRightRaw::derivative => Invalid Inputs");
+		if (0 > order) {
+			throw new Exception ("ExponentialTensionRightRaw::derivative => Invalid Inputs");
+		}
 
-		if (!in (dblPredictorOrdinate)) return 0.;
+		if (!in (predictorOrdinate)) {
+			return 0.;
+		}
 
-		double dblWidth = right() - left();
+		double right = right();
 
-		if (1 == iOrder)
-			return (1. - java.lang.Math.cosh (tension() * (right() - dblPredictorOrdinate))) / (tension() *
-				java.lang.Math.sinh (tension() * dblWidth));
+		double tension = tension();
 
-		return java.lang.Math.pow (-tension(), iOrder - 2) * (0 == iOrder % 2 ? java.lang.Math.sinh
-			(tension() * (right() - dblPredictorOrdinate)) : java.lang.Math.cosh (tension() * (right() -
-				dblPredictorOrdinate))) / java.lang.Math.sinh (tension() * dblWidth);
+		double width = right - left();
+
+		return 1 == order ? (
+			1. - Math.cosh (tension * (right - predictorOrdinate))
+		) / (tension * Math.sinh (tension * width)) : Math.pow (-tension, order - 2) * (
+			0 == order % 2 ? Math.sinh (tension * (right - predictorOrdinate)) : Math.cosh (
+				tension * (right - predictorOrdinate)
+			)
+		) / Math.sinh (tension * width);
 	}
 
 	@Override public double integrate (
-		final double dblBegin,
-		final double dblEnd)
-		throws java.lang.Exception
+		final double begin,
+		final double end)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
-			(dblEnd))
-			throw new java.lang.Exception ("ExponentialTensionRightRaw::integrate => Invalid Inputs");
+		if (!NumberUtil.IsValid (begin) || !NumberUtil.IsValid (end)) {
+			throw new Exception ("ExponentialTensionRightRaw::integrate => Invalid Inputs");
+		}
 
-		double dblBoundedBegin = org.drip.numerical.common.NumberUtil.Bound (dblBegin, left(), right());
+		double left = left();
 
-		double dblBoundedEnd = org.drip.numerical.common.NumberUtil.Bound (dblEnd, left(), right());
+		double right = right();
 
-		if (dblBoundedBegin >= dblBoundedEnd) return 0.;
+		double boundedEnd = NumberUtil.Bound (end, left, right);
 
-		if (0. == tension()) return dblBoundedEnd - dblBoundedBegin;
+		double boundedBegin = NumberUtil.Bound (begin, left, right);
 
-		double dblBoundedBeginRightGap = right() - dblBoundedBegin;
+		if (boundedBegin >= boundedEnd) {
+			return 0.;
+		}
 
-		double dblBoundedEndRightGap = right() - dblBoundedEnd;
+		double tension = tension();
 
-		return (0.5 * tension() * tension() * (dblBoundedEndRightGap * dblBoundedEndRightGap -
-			dblBoundedBeginRightGap * dblBoundedBeginRightGap) + java.lang.Math.cosh (tension() *
-				dblBoundedBeginRightGap) - java.lang.Math.cosh (tension() * dblBoundedEndRightGap)) /
-					(tension() * tension() * tension() * java.lang.Math.sinh (tension() * (right() -
-						left())));
+		if (0. == tension) {
+			return boundedEnd - boundedBegin;
+		}
+
+		double boundedEndRightGap = right - boundedEnd;
+		double boundedBeginRightGap = right - boundedBegin;
+
+		return (
+			0.5 * tension * tension * (
+				boundedEndRightGap * boundedEndRightGap - boundedBeginRightGap * boundedBeginRightGap
+			) + Math.cosh (tension * boundedBeginRightGap) - Math.cosh (tension * boundedEndRightGap)
+		) / (tension * tension * tension * Math.sinh (tension * (right - left)));
 	}
 
 	@Override public double normalizer()
-		throws java.lang.Exception
+		throws Exception
 	{
-		double dblWidth = right() - left();
+		double tension = tension();
 
-		return (-0.5 * tension() * tension() * dblWidth * dblWidth + java.lang.Math.cosh (tension() *
-			dblWidth) - 1.) / (tension() * tension() * tension() * java.lang.Math.sinh (tension() *
-				dblWidth));
+		double width = right() - left();
+
+		return (-0.5 * tension * tension * width * width + Math.cosh (tension * width) - 1.) / (
+			tension * tension * tension * Math.sinh (tension * width)
+		);
 	}
 }

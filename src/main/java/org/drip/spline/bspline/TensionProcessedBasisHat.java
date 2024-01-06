@@ -1,6 +1,8 @@
 
 package org.drip.spline.bspline;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -113,10 +115,10 @@ public class TensionProcessedBasisHat
 	private TensionBasisHat _rawTensionBasisHat = null;
 
 	/**
-	 * TensionProcessedBasisHat constructor
+	 * <i>TensionProcessedBasisHat</i> constructor
 	 * 
-	 * @param rawTensionBasisHat The Raw TBH
-	 * @param derivativeOrder Derivative Order off of the Raw TBH
+	 * @param rawTensionBasisHat The Raw <i>TensionBasisHat</i>
+	 * @param derivativeOrder Derivative Order off of the Raw <i>TensionBasisHat</i>
 	 * 
 	 * @throws Exception Thrown if the input is invalid
 	 */
@@ -135,52 +137,50 @@ public class TensionProcessedBasisHat
 	}
 
 	@Override public double evaluate (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
-		return in (dblPredictorOrdinate) ? _rawTensionBasisHat.derivative (dblPredictorOrdinate, _derivativeOrder) : 0.;
+		return in (predictorOrdinate) ?
+			_rawTensionBasisHat.derivative (predictorOrdinate, _derivativeOrder) : 0.;
 	}
 
 	@Override public double derivative (
-		final double dblPredictorOrdinate,
-		final int iOrder)
-		throws java.lang.Exception
+		final double predictorOrdinate,
+		final int order)
+		throws Exception
 	{
-		if (0 > iOrder)
-			throw new java.lang.Exception ("TensionProcessedBasisHat::derivative => Invalid Inputs");
+		if (0 > order) {
+			throw new Exception ("TensionProcessedBasisHat::derivative => Invalid Inputs");
+		}
 
-		if (!in (dblPredictorOrdinate)) return 0.;
-
-		return _rawTensionBasisHat.derivative (dblPredictorOrdinate, iOrder + _derivativeOrder);
+		return in (predictorOrdinate) ?
+			_rawTensionBasisHat.derivative (predictorOrdinate, order + _derivativeOrder) : 0.;
 	}
 
 	@Override public double integrate (
-		final double dblBegin,
-		final double dblEnd)
-		throws java.lang.Exception
+		final double begin,
+		final double end)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
-			(dblEnd))
-			throw new java.lang.Exception ("TensionProcessedBasisHat::integrate => Invalid Inputs");
+		if (!NumberUtil.IsValid (begin) || !NumberUtil.IsValid (end)) {
+			throw new Exception ("TensionProcessedBasisHat::integrate => Invalid Inputs");
+		}
 
-		double dblBoundedBegin = org.drip.numerical.common.NumberUtil.Bound (dblBegin, left(), right());
+		double boundedBegin = NumberUtil.Bound (begin, left(), right());
 
-		double dblBoundedEnd = org.drip.numerical.common.NumberUtil.Bound (dblEnd, left(), right());
+		double boundedEnd = NumberUtil.Bound (end, left(), right());
 
-		if (dblBoundedBegin >= dblBoundedEnd) return 0.;
-
-		if (1 == _derivativeOrder) return _rawTensionBasisHat.evaluate (dblBoundedEnd) - _rawTensionBasisHat.evaluate (dblBoundedBegin);
-
-		return _rawTensionBasisHat.derivative (dblBoundedEnd, _derivativeOrder - 1) - _rawTensionBasisHat.derivative (dblBoundedBegin,
-			_derivativeOrder - 1);
+		return boundedBegin >= boundedEnd ? 0. : 1 == _derivativeOrder ?
+			_rawTensionBasisHat.evaluate (boundedEnd) - _rawTensionBasisHat.evaluate (boundedBegin) :
+			_rawTensionBasisHat.derivative (boundedEnd, _derivativeOrder - 1) -
+			_rawTensionBasisHat.derivative (boundedBegin, _derivativeOrder - 1);
 	}
 
-	@Override public double normalizer()
-		throws java.lang.Exception
+	@Override public double normalizer() throws Exception
 	{
-		if (1 == _derivativeOrder) return _rawTensionBasisHat.evaluate (right()) - _rawTensionBasisHat.evaluate (left());
-
-		return _rawTensionBasisHat.derivative (right(), _derivativeOrder - 1) - _rawTensionBasisHat.derivative (left(), _derivativeOrder -
-			1);
+		return 1 == _derivativeOrder ?
+			_rawTensionBasisHat.evaluate (right()) - _rawTensionBasisHat.evaluate (left()) :
+			_rawTensionBasisHat.derivative (right(), _derivativeOrder - 1) -
+			_rawTensionBasisHat.derivative (left(), _derivativeOrder - 1);
 	}
 }

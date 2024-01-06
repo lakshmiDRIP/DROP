@@ -6,6 +6,9 @@ package org.drip.spline.bspline;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -87,27 +90,29 @@ package org.drip.spline.bspline;
  * framework outlined in Koch and Lyche (1989), Koch and Lyche (1993), and Kvasov (2000) Papers. Currently
  * BasisHatShapeControl implements the following shape control customizers:
  *
- * <br><br>
+ * <br>
  *  <ul>
- *  	<li>
- *  		Cubic Polynomial with Rational Linear Shape Controller.
- *  	</li>
- *  	<li>
- *  		Cubic Polynomial with Rational Quadratic Shape Controller.
- *  	</li>
- *  	<li>
- *  		Cubic Polynomial with Rational Exponential Shape Controller.
- *  	</li>
+ *  	<li><i>BasisHatShapeControl</i> Constructor</li>
+ *  	<li>Retrieve the Type of the Shape Controller</li>
+ *  	<li>Cubic Polynomial with Rational Linear Shape Controller</li>
+ *  	<li>Cubic Polynomial with Rational Quadratic Shape Controller</li>
+ *  	<li>Cubic Polynomial with Rational Exponential Shape Controller</li>
  *  </ul>
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -138,7 +143,7 @@ public abstract class BasisHatShapeControl extends org.drip.spline.bspline.Tensi
 	private java.lang.String _strShapeControlType = "";
 
 	/**
-	 * BasisHatShapeControl constructor
+	 * <i>BasisHatShapeControl</i> constructor
 	 * 
 	 * @param dblLeftPredictorOrdinate The Left Predictor Ordinate
 	 * @param dblRightPredictorOrdinate The Right Predictor Ordinate

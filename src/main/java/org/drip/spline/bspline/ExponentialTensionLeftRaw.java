@@ -6,6 +6,9 @@ package org.drip.spline.bspline;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -87,49 +90,62 @@ package org.drip.spline.bspline;
  * exponential hat basis function laid out in the basic framework outlined in Koch and Lyche (1989), Koch and
  * Lyche (1993), and Kvasov (2000) Papers.
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ExponentialTensionLeftRaw extends org.drip.spline.bspline.TensionBasisHat {
+public class ExponentialTensionLeftRaw
+	extends TensionBasisHat
+{
 
 	/**
 	 * ExponentialTensionLeftRaw constructor
 	 * 
-	 * @param dblLeftPredictorOrdinate The Left Predictor Ordinate
-	 * @param dblRightPredictorOrdinate The Right Predictor Ordinate
-	 * @param dblTension Tension of the Tension Hat Function
+	 * @param leftPredictorOrdinate The Left Predictor Ordinate
+	 * @param rightPredictorOrdinate The Right Predictor Ordinate
+	 * @param tension Tension of the Tension Hat Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
+	 * @throws Exception Thrown if the input is invalid
 	 */
 
 	public ExponentialTensionLeftRaw (
-		final double dblLeftPredictorOrdinate,
-		final double dblRightPredictorOrdinate,
-		final double dblTension)
-		throws java.lang.Exception
+		final double leftPredictorOrdinate,
+		final double rightPredictorOrdinate,
+		final double tension)
+		throws Exception
 	{
-		super (dblLeftPredictorOrdinate, dblRightPredictorOrdinate, dblTension);
+		super (leftPredictorOrdinate, rightPredictorOrdinate, tension);
 	}
 
 	@Override public double evaluate (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
-		if (!in (dblPredictorOrdinate)) return 0.;
+		if (!in (predictorOrdinate)) {
+			return 0.;
+		}
 
-		double dblAdjPredictorOrdinate = tension() * (dblPredictorOrdinate - left());
+		double tension = tension();
 
-		return (java.lang.Math.sinh (dblAdjPredictorOrdinate) - dblAdjPredictorOrdinate) / (tension() *
-			tension() * java.lang.Math.sinh (tension() * (right() - left())));
+		double adjustedPredictorOrdinate = tension * (predictorOrdinate - left());
+
+		return (Math.sinh (adjustedPredictorOrdinate) - adjustedPredictorOrdinate) / (
+			tension * tension * Math.sinh (tension * (right() - left()))
+		);
 	}
 
 	@Override public double derivative (
