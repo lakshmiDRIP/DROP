@@ -6,6 +6,9 @@ package org.drip.spline.params;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,87 +87,93 @@ package org.drip.spline.params;
 
 /**
  * <i>SegmentStateCalibrationInputs</i> implements basis per-segment Calibration Parameter Input Set. It
- * exposes the following functionality:
+ * 	exposes the following functionality:
  *
- * <br><br>
+ * <br>
  *  <ul>
- *  	<li>
- *  		Retrieve the Array of the Calibration Predictor Ordinates.
- *  	</li>
- *  	<li>
- *  		Retrieve the Array of the Calibration Response Values.
- *  	</li>
- *  	<li>
- *  		Retrieve the Array of the Left/Right Edge Derivatives.
- *  	</li>
- *  	<li>
- *  		Retrieve the Segment Best Fit Response.
- *  	</li>
- *  	<li>
- *  		Retrieve the Array of Segment Basis Flexure Constraints.
- *  	</li>
+ * 		<li><i>SegmentStateCalibrationInputs</i> Constructor</li>
+ * 		<li>Retrieve the Array of the Calibration Predictor Ordinates</li>
+ * 		<li>Retrieve the Array of the Calibration Response Values</li>
+ * 		<li>Retrieve the Array of the Left Edge Derivatives</li>
+ * 		<li>Retrieve the Array of the Right Edge Derivatives</li>
+ * 		<li>Retrieve the Segment Best Fit Response</li>
+ * 		<li>Retrieve the Array of Segment Basis Flexure Constraints</li>
  *  </ul>
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SegmentStateCalibrationInputs {
-	private double[] _adblResponseValue = null;
-	private double[] _adblLeftEdgeDeriv = null;
-	private double[] _adblRightEdgeDeriv = null;
-	private double[] _adblPredictorOrdinate = null;
-	private org.drip.spline.params.SegmentBestFitResponse _sbfr = null;
-	private org.drip.spline.params.SegmentBasisFlexureConstraint[] _aSBFC = null;
+public class SegmentStateCalibrationInputs
+{
+	private double[] _responseValueArray = null;
+	private double[] _predictorOrdinateArray = null;
+	private double[] _leftEdgeDerivativeArray = null;
+	private double[] _rightEdgeDerivativeArray = null;
+	private SegmentBestFitResponse _segmentBestFitResponse = null;
+	private SegmentBasisFlexureConstraint[] _segmentBasisFlexureConstraintArray = null;
 
 	/**
-	 * SegmentStateCalibrationInputs Constructor
+	 * <i>SegmentStateCalibrationInputs</i> Constructor
 	 * 
-	 * @param adblPredictorOrdinate Array of Predictor Ordinates
-	 * @param adblResponseValue Array of Response Values
-	 * @param adblLeftEdgeDeriv Array of the Left Edge Derivatives
-	 * @param adblRightEdgeDeriv Array of the Right Edge  Derivatives
-	 * @param aSBFC Array of the Segment Basis Flexure Constraints
-	 * @param sbfr Segment Basis Fit Response
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
+	 * @param responseValueArray Array of Response Values
+	 * @param leftEdgeDerivativeArray Array of the Left Edge Derivatives
+	 * @param rightEdgeDerivativeArray Array of the Right Edge  Derivatives
+	 * @param segmentBasisFlexureConstraintArray Array of the Segment Basis Flexure Constraints
+	 * @param segmentBestFitResponse Segment Basis Fit Response
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public SegmentStateCalibrationInputs (
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue,
-		final double[] adblLeftEdgeDeriv,
-		final double[] adblRightEdgeDeriv,
-		final org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFC,
-		final org.drip.spline.params.SegmentBestFitResponse sbfr)
-		throws java.lang.Exception
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray,
+		final double[] leftEdgeDerivativeArray,
+		final double[] rightEdgeDerivativeArray,
+		final SegmentBasisFlexureConstraint[] segmentBasisFlexureConstraintArray,
+		final SegmentBestFitResponse segmentBestFitResponse)
+		throws Exception
 	{
-		_sbfr = sbfr;
-		int iNumSBFC = null == (_aSBFC = aSBFC) ? 0 : _aSBFC.length;
-		int iNumLeftEdgeDeriv = null == (_adblLeftEdgeDeriv = adblLeftEdgeDeriv) ? 0 :
-			_adblLeftEdgeDeriv.length;
-		int iNumResponseValue = null == (_adblResponseValue = adblResponseValue) ? 0 :
-			_adblResponseValue.length;
-		int iNumRightEdgeDeriv = null == (_adblRightEdgeDeriv = adblRightEdgeDeriv) ? 0 :
-			_adblRightEdgeDeriv.length;
-		int iNumPredictorOrdinate = null == (_adblPredictorOrdinate = adblPredictorOrdinate) ? 0 :
-			_adblPredictorOrdinate.length;
+		_segmentBestFitResponse = segmentBestFitResponse;
+		int segmentBasisFlexureConstraintCount =
+			null == (_segmentBasisFlexureConstraintArray = segmentBasisFlexureConstraintArray) ? 0 :
+			_segmentBasisFlexureConstraintArray.length;
+		int leftEdgeDerivativeCount = null == (_leftEdgeDerivativeArray = leftEdgeDerivativeArray) ? 0 :
+			_leftEdgeDerivativeArray.length;
+		int responseValueCount = null == (_responseValueArray = responseValueArray) ? 0 :
+			_responseValueArray.length;
+		int rightEdgeDerivativeCount = null == (_rightEdgeDerivativeArray = rightEdgeDerivativeArray) ? 0 :
+			_rightEdgeDerivativeArray.length;
+		int predictorOrdinateCount = null == (_predictorOrdinateArray = predictorOrdinateArray) ? 0 :
+			_predictorOrdinateArray.length;
 
-		if (null == _sbfr && null == _aSBFC && null == _adblPredictorOrdinate && null == _adblResponseValue
-			&& null == _adblLeftEdgeDeriv && null == _adblRightEdgeDeriv)
-			throw new java.lang.Exception ("SegmentStateCalibrationInputs ctr: Invalid Inputs");
+		if (null == _segmentBestFitResponse && null == _segmentBasisFlexureConstraintArray &&
+			null == _predictorOrdinateArray && null == _responseValueArray &&
+			null == _leftEdgeDerivativeArray && null == _rightEdgeDerivativeArray) {
+			throw new Exception ("SegmentStateCalibrationInputs ctr: Invalid Inputs");
+		}
 
-		if (iNumPredictorOrdinate != iNumResponseValue || (null == _sbfr && 0 == iNumSBFC && 0 ==
-			iNumPredictorOrdinate && 0 == iNumLeftEdgeDeriv && 0 == iNumRightEdgeDeriv))
-			throw new java.lang.Exception ("SegmentStateCalibrationInputs ctr: Invalid Inputs");
+		if (predictorOrdinateCount != responseValueCount || (
+			null == _segmentBestFitResponse && 0 == segmentBasisFlexureConstraintCount &&
+			0 == predictorOrdinateCount && 0 == leftEdgeDerivativeCount && 0 == rightEdgeDerivativeCount
+		)) {
+			throw new Exception ("SegmentStateCalibrationInputs ctr: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -175,7 +184,7 @@ public class SegmentStateCalibrationInputs {
 
 	public double[] predictorOrdinates()
 	{
-		return _adblPredictorOrdinate;
+		return _predictorOrdinateArray;
 	}
 
 	/**
@@ -186,7 +195,7 @@ public class SegmentStateCalibrationInputs {
 
 	public double[] responseValues()
 	{
-		return _adblResponseValue;
+		return _responseValueArray;
 	}
 
 	/**
@@ -197,7 +206,7 @@ public class SegmentStateCalibrationInputs {
 
 	public double[] leftEdgeDeriv()
 	{
-		return _adblLeftEdgeDeriv;
+		return _leftEdgeDerivativeArray;
 	}
 
 	/**
@@ -208,7 +217,7 @@ public class SegmentStateCalibrationInputs {
 
 	public double[] rightEdgeDeriv()
 	{
-		return _adblRightEdgeDeriv;
+		return _rightEdgeDerivativeArray;
 	}
 
 	/**
@@ -219,7 +228,7 @@ public class SegmentStateCalibrationInputs {
 
 	public org.drip.spline.params.SegmentBestFitResponse bestFitResponse()
 	{
-		return _sbfr;
+		return _segmentBestFitResponse;
 	}
 
 	/**
@@ -230,6 +239,6 @@ public class SegmentStateCalibrationInputs {
 
 	public org.drip.spline.params.SegmentBasisFlexureConstraint[] flexureConstraint()
 	{
-		return _aSBFC;
+		return _segmentBasisFlexureConstraintArray;
 	}
 }

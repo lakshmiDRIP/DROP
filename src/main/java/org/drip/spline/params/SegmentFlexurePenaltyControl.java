@@ -1,6 +1,8 @@
 
 package org.drip.spline.params;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -84,42 +86,56 @@ package org.drip.spline.params;
 
 /**
  * <i>SegmentFlexurePenaltyControl</i> implements basis per-segment Flexure Penalty Parameter Set. Currently
- * it contains the Flexure Penalty Derivative Order and the Roughness Coefficient Amplitude. Flexure Penalty
- * Control may be used to implement Segment Curvature Control and/or Segment Length Control.
+ * 	it contains the Flexure Penalty Derivative Order and the Roughness Coefficient Amplitude. Flexure Penalty
+ * 	Control may be used to implement Segment Curvature Control and/or Segment Length Control.
  *
- * <br><br>
+ * <br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></li>
+ * 		<li><i>SegmentFlexurePenaltyControl</i> constructor</li>
+ * 		<li>Retrieve the Derivative Order</li>
+ * 		<li>Retrieve the Roughness Curvature Penalty Amplitude</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SegmentFlexurePenaltyControl {
-	private int _iDerivativeOrder = -1;
-	private double _dblAmplitude = java.lang.Double.NaN;
+public class SegmentFlexurePenaltyControl
+{
+	private double _amplitude = Double.NaN;
+	private int _derivativeOrder = Integer.MIN_VALUE;
 
 	/**
-	 * SegmentFlexurePenaltyControl constructor
+	 * <i>SegmentFlexurePenaltyControl</i> constructor
 	 * 
-	 * @param iDerivativeOrder Roughness Penalty Derivative Order
-	 * @param dblAmplitude Roughness Curvature Penalty Amplitude
+	 * @param derivativeOrder Roughness Penalty Derivative Order
+	 * @param amplitude Roughness Curvature Penalty Amplitude
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	public SegmentFlexurePenaltyControl (
-		final int iDerivativeOrder,
-		final double dblAmplitude)
-		throws java.lang.Exception
+		final int derivativeOrder,
+		final double amplitude)
+		throws Exception
 	{
-		if (0 >= (_iDerivativeOrder = iDerivativeOrder) || !org.drip.numerical.common.NumberUtil.IsValid
-			(_dblAmplitude = dblAmplitude))
-			throw new java.lang.Exception ("SegmentFlexurePenaltyControl ctr: Invalid Inputs");
+		if (0 >= (_derivativeOrder = derivativeOrder) || !NumberUtil.IsValid (_amplitude = amplitude)) {
+			throw new Exception ("SegmentFlexurePenaltyControl ctr: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -130,7 +146,7 @@ public class SegmentFlexurePenaltyControl {
 
 	public int derivativeOrder()
 	{
-		return _iDerivativeOrder;
+		return _derivativeOrder;
 	}
 
 	/**
@@ -141,6 +157,6 @@ public class SegmentFlexurePenaltyControl {
 
 	public double amplitude()
 	{
-		return _dblAmplitude;
+		return _amplitude;
 	}
 }

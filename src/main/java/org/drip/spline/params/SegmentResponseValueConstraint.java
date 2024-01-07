@@ -1,6 +1,8 @@
 
 package org.drip.spline.params;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -96,45 +98,41 @@ package org.drip.spline.params;
  * 
  * SegmentResponseValueConstraint exports the following functionality:
  *
- * <br><br>
+ * <br>
  *  <ul>
- *  	<li>
- * 			Retrieve the Array of Predictor Ordinates.
- *  	</li>
- *  	<li>
- * 			Retrieve the Array of Response Weights at each Predictor Ordinate.
- *  	</li>
- *  	<li>
- * 			Retrieve the Constraint Value.
- *  	</li>
- *  	<li>
- * 			Convert the Segment Constraint onto Local Predictor Ordinates, the corresponding Response Basis
- * 				Function, and the Shape Controller Realizations.
- *  	</li>
- *  	<li>
- * 			Get the Position of the Predictor Knot relative to the Constraints.
- *  	</li>
- *  	<li>
- * 			Generate a SegmentResponseValueConstraint instance from the given predictor/response pair.
- *  	</li>
+ * 		<li>Indicator specifying that the knot is to the left of the constraint ordinates</li>
+ * 		<li>Indicator specifying that the knot is to the right of the constraint ordinates</li>
+ * 		<li>Indicator specifying that the knot splits the constraint ordinates</li>
+ * 		<li>Generate a SegmentResponseValueConstraint instance from the given predictor/response pair</li>
+ * 		<li>SegmentResponseValueConstraint constructor</li>
+ * 		<li>Retrieve the Array of Predictor Ordinates</li>
+ * 		<li>Retrieve the Array of Response Weights at each Predictor Ordinate</li>
+ * 		<li>Retrieve the Constraint Value</li>
+ * 		<li>Display the Comment Annotated State</li>
+ * 		<li>Convert the Segment Constraint onto Local Predictor Ordinates, the corresponding Response Basis Function, and the Shape Controller Realizations</li>
+ * 		<li>Get the Position of the Predictor Knot relative to the Constraints</li>
  *  </ul>
- * 
- * SegmentResponseValueConstraint can be viewed as the global response point value transform of
- *  SegmentBasisFlexureConstraint.
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></td></tr>
+ *  </table>
+ *  <br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class SegmentResponseValueConstraint {
+public class SegmentResponseValueConstraint
+{
 
 	/**
 	 * Indicator specifying that the knot is to the left of the constraint ordinates
@@ -154,31 +152,31 @@ public class SegmentResponseValueConstraint {
 
 	public static final int SPLITS_CONSTRAINT = 4;
 
-	private double[] _adblPredictorOrdinate = null;
-	private double[] _adblResponseValueWeight = null;
-	private double _dblWeightedResponseValueConstraint = java.lang.Double.NaN;
+	private double[] _predictorOrdinateArray = null;
+	private double[] _responseValueWeightArray = null;
+	private double _weightedResponseValueConstraint = Double.NaN;
 
 	/**
 	 * Generate a SegmentResponseValueConstraint instance from the given predictor/response pair.
 	 * 
-	 * @param dblPredictorOrdinate The Predictor Ordinate
-	 * @param dblResponseValue The Response Value
+	 * @param predictorOrdinate The Predictor Ordinate
+	 * @param responseValue The Response Value
 	 * 
 	 * @return The SegmentResponseValueConstraint instance
 	 */
 
 	public static final SegmentResponseValueConstraint FromPredictorResponsePair (
-		final double dblPredictorOrdinate,
-		final double dblResponseValue)
+		final double predictorOrdinate,
+		final double responseValue)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblResponseValue))
-			return null;
-
 		try {
-			return new SegmentResponseValueConstraint (new double[] {dblPredictorOrdinate}, new double[]
-				{1.}, dblResponseValue);
-		} catch (java.lang.Exception e) {
+			return !NumberUtil.IsValid (predictorOrdinate) || !NumberUtil.IsValid (responseValue) ? null :
+				new SegmentResponseValueConstraint (
+					new double[] {predictorOrdinate},
+					new double[] {1.},
+					responseValue
+				);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -202,14 +200,14 @@ public class SegmentResponseValueConstraint {
 		final double dblWeightedResponseValueConstraint)
 		throws java.lang.Exception
 	{
-		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate) || null == (_adblResponseValueWeight =
+		if (null == (_predictorOrdinateArray = adblPredictorOrdinate) || null == (_responseValueWeightArray =
 			adblResponseValueWeight) || !org.drip.numerical.common.NumberUtil.IsValid
-				(_dblWeightedResponseValueConstraint = dblWeightedResponseValueConstraint))
+				(_weightedResponseValueConstraint = dblWeightedResponseValueConstraint))
 			throw new java.lang.Exception ("SegmentResponseValueConstraint ctr: Invalid Inputs");
 
 		int iNumPredictorOrdinate = adblPredictorOrdinate.length;
 
-		if (0 == iNumPredictorOrdinate || _adblResponseValueWeight.length != iNumPredictorOrdinate)
+		if (0 == iNumPredictorOrdinate || _responseValueWeightArray.length != iNumPredictorOrdinate)
 			throw new java.lang.Exception ("SegmentResponseValueConstraint ctr: Invalid Inputs");
 	}
 
@@ -221,7 +219,7 @@ public class SegmentResponseValueConstraint {
 
 	public double[] predictorOrdinates()
 	{
-		return _adblPredictorOrdinate;
+		return _predictorOrdinateArray;
 	}
 
 	/**
@@ -232,7 +230,7 @@ public class SegmentResponseValueConstraint {
 
 	public double[] responseWeights()
 	{
-		return _adblResponseValueWeight;
+		return _responseValueWeightArray;
 	}
 
 	/**
@@ -243,7 +241,7 @@ public class SegmentResponseValueConstraint {
 
 	public double constraintValue()
 	{
-		return _dblWeightedResponseValueConstraint;
+		return _weightedResponseValueConstraint;
 	}
 
 	/**
@@ -255,11 +253,11 @@ public class SegmentResponseValueConstraint {
 	public void display (
 		final java.lang.String strComment)
 	{
-		for (int i = 0; i < _adblPredictorOrdinate.length; ++i)
+		for (int i = 0; i < _predictorOrdinateArray.length; ++i)
 			System.out.println ("\t\t" + strComment + " - " + new org.drip.analytics.date.JulianDate ((int)
-				_adblPredictorOrdinate[i]) + " => " + _adblResponseValueWeight[i]);
+				_predictorOrdinateArray[i]) + " => " + _responseValueWeightArray[i]);
 
-		System.out.println ("\tConstraint: " + _dblWeightedResponseValueConstraint);
+		System.out.println ("\tConstraint: " + _weightedResponseValueConstraint);
 	}
 
 	/**
@@ -280,7 +278,7 @@ public class SegmentResponseValueConstraint {
 
 		int iNumResponseBasis = lbe.numBasis();
 
-		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;
+		int iNumPredictorOrdinate = _predictorOrdinateArray.length;
 		double[] adblResponseBasisWeight = new double[iNumResponseBasis];
 
 		if (0 == iNumResponseBasis) return null;
@@ -290,12 +288,12 @@ public class SegmentResponseValueConstraint {
 				adblResponseBasisWeight[i] = 0.;
 
 				for (int j = 0; j < iNumPredictorOrdinate; ++j)
-					adblResponseBasisWeight[i] += _adblResponseValueWeight[j] *
-						lbe.shapedBasisFunctionResponse (_adblPredictorOrdinate[j], i);
+					adblResponseBasisWeight[i] += _responseValueWeightArray[j] *
+						lbe.shapedBasisFunctionResponse (_predictorOrdinateArray[j], i);
 			}
 
 			return new org.drip.spline.params.SegmentBasisFlexureConstraint (adblResponseBasisWeight,
-				_dblWeightedResponseValueConstraint);
+					_weightedResponseValueConstraint);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -321,9 +319,9 @@ public class SegmentResponseValueConstraint {
 		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorKnot))
 			throw new java.lang.Exception ("SegmentResponseValueConstraint::knotPosition => Invalid Inputs");
 
-		if (dblPredictorKnot < _adblPredictorOrdinate[0]) return LEFT_OF_CONSTRAINT;
+		if (dblPredictorKnot < _predictorOrdinateArray[0]) return LEFT_OF_CONSTRAINT;
 
-		if (dblPredictorKnot > _adblPredictorOrdinate[_adblPredictorOrdinate.length - 1])
+		if (dblPredictorKnot > _predictorOrdinateArray[_predictorOrdinateArray.length - 1])
 			return RIGHT_OF_CONSTRAINT;
 
 		return SPLITS_CONSTRAINT;

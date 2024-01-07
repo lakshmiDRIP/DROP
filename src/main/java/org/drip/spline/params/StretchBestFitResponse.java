@@ -1,6 +1,12 @@
 
 package org.drip.spline.params;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.drip.numerical.common.NumberUtil;
+import org.drip.spline.segment.LatentStateInelastic;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -199,60 +205,70 @@ public class StretchBestFitResponse
 	 * Construct the <i>StretchBestFitResponse</i> Instance from the given Predictor Ordinate/Response Pairs,
 	 * 	using Uniform Weightings.
 	 * 
-	 * @param adblPredictorOrdinate Array of Predictor Ordinates
-	 * @param adblResponseValue Array of Response Values
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
+	 * @param responseValueArray Array of Response Values
 	 * 
 	 * @return Instance of StretchBestFitResponse
 	 */
 
 	public static final StretchBestFitResponse Create (
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue)
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (adblPredictorOrdinate)) return null;
+		if (!NumberUtil.IsValid (predictorOrdinateArray)) {
+			return null;
+		}
 
-		int iNumWeight = adblPredictorOrdinate.length;
-		double[] adblWeight = new double[iNumWeight];
+		int weightCount = predictorOrdinateArray.length;
+		double[] weightArray = new double[weightCount];
 
-		for (int i = 0; i < iNumWeight; ++i)
-			adblWeight[i] = 1.;
+		for (int weightArrayIndex = 0; weightArrayIndex < weightCount; ++weightArrayIndex) {
+			weightArray[weightArrayIndex] = 1.;
+		}
 
-		return Create (adblPredictorOrdinate, adblResponseValue, adblWeight);
+		return Create (predictorOrdinateArray, responseValueArray, weightArray);
 	}
 
 	private StretchBestFitResponse (
-		final double[] adblWeight,
-		final double[] adblResponse,
-		final double[] adblPredictorOrdinate)
-		throws java.lang.Exception
+		final double[] weightArray,
+		final double[] responseArray,
+		final double[] predictorOrdinateArray)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_weightArray = adblWeight) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_responseArray = adblResponse) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_predictorOrdinateArray = adblPredictorOrdinate))
-			throw new java.lang.Exception ("StretchBestFitResponse ctr: Invalid Inputs");
+		if (!NumberUtil.IsValid (_weightArray = weightArray) ||
+			!NumberUtil.IsValid (_responseArray = responseArray) ||
+			!NumberUtil.IsValid (_predictorOrdinateArray = predictorOrdinateArray)) {
+			throw new Exception ("StretchBestFitResponse ctr: Invalid Inputs");
+		}
 
-		int iNumPointsToFit = _weightArray.length;
+		int pointsToFit = _weightArray.length;
 
-		if (0 == iNumPointsToFit || _responseArray.length != iNumPointsToFit || _predictorOrdinateArray.length
-			!= iNumPointsToFit)
-			throw new java.lang.Exception ("StretchBestFitResponse ctr: Invalid Inputs");
+		if (0 == pointsToFit || _responseArray.length != pointsToFit ||
+			_predictorOrdinateArray.length != pointsToFit) {
+			throw new Exception ("StretchBestFitResponse ctr: Invalid Inputs");
+		}
 	}
 
 	private boolean normalizeWeights()
 	{
-		double dblCumulativeWeight = 0.;
-		int iNumPointsToFit = _weightArray.length;
+		double cumulativeWeight = 0.;
+		int pointsToFit = _weightArray.length;
 
-		for (int i = 0; i < iNumPointsToFit; ++i) {
-			if (_weightArray[i] < 0.) return false;
+		for (int pointIndex = 0; pointIndex < pointsToFit; ++pointIndex) {
+			if (_weightArray[pointIndex] < 0.) {
+				return false;
+			}
 
-			dblCumulativeWeight += _weightArray[i];
+			cumulativeWeight += _weightArray[pointIndex];
 		}
 
-		if (0. >= dblCumulativeWeight) return false;
+		if (0. >= cumulativeWeight) {
+			return false;
+		}
 
-		for (int i = 0; i < iNumPointsToFit; ++i)
-			_weightArray[i] /= dblCumulativeWeight;
+		for (int pointIndex = 0; pointIndex < pointsToFit; ++pointIndex) {
+			_weightArray[pointIndex] /= cumulativeWeight;
+		}
 
 		return true;
 	}
@@ -271,21 +287,22 @@ public class StretchBestFitResponse
 	/**
 	 * Retrieve the Indexed Fitness Weight Element
 	 * 
-	 * @param iIndex The Element Index
+	 * @param index The Element Index
 	 * 
 	 * @return The Indexed Fitness Weight Element
 	 * 
-	 * @throws java.lang.Exception Thrown if the Index is Invalid
+	 * @throws Exception Thrown if the Index is Invalid
 	 */
 
 	public double weight (
-		final int iIndex)
-		throws java.lang.Exception
+		final int index)
+		throws Exception
 	{
-		if (iIndex >= numPoint())
-			throw new java.lang.Exception ("StretchBestFitResponse::weight => Invalid Index");
+		if (index >= numPoint()) {
+			throw new Exception ("StretchBestFitResponse::weight => Invalid Index");
+		}
 
-		return _weightArray[iIndex];
+		return _weightArray[index];
 	}
 
 	/**
@@ -302,21 +319,22 @@ public class StretchBestFitResponse
 	/**
 	 * Retrieve the Indexed Predictor Ordinate Element
 	 * 
-	 * @param iIndex The Element Index
+	 * @param index The Element Index
 	 * 
 	 * @return The Indexed Predictor Ordinate Element
 	 * 
-	 * @throws java.lang.Exception Thrown if the Index is Invalid
+	 * @throws Exception Thrown if the Index is Invalid
 	 */
 
 	public double predictorOrdinate (
-		final int iIndex)
-		throws java.lang.Exception
+		final int index)
+		throws Exception
 	{
-		if (iIndex >= numPoint())
-			throw new java.lang.Exception ("StretchBestFitResponse::predictorOrdinate => Invalid Index");
+		if (index >= numPoint()) {
+			throw new Exception ("StretchBestFitResponse::predictorOrdinate => Invalid Index");
+		}
 
-		return _predictorOrdinateArray[iIndex];
+		return _predictorOrdinateArray[index];
 	}
 
 	/**
@@ -333,21 +351,22 @@ public class StretchBestFitResponse
 	/**
 	 * Retrieve the Indexed Response Element
 	 * 
-	 * @param iIndex The Element Index
+	 * @param index The Element Index
 	 * 
 	 * @return The Indexed Response Element
 	 * 
-	 * @throws java.lang.Exception Thrown if the Index is Invalid
+	 * @throws Exception Thrown if the Index is Invalid
 	 */
 
 	public double response (
-		final int iIndex)
-		throws java.lang.Exception
+		final int index)
+		throws Exception
 	{
-		if (iIndex >= numPoint())
-			throw new java.lang.Exception ("StretchBestFitResponse::response => Invalid Index");
+		if (index >= numPoint()) {
+			throw new Exception ("StretchBestFitResponse::response => Invalid Index");
+		}
 
-		return _responseArray[iIndex];
+		return _responseArray[index];
 	}
 
 	/**
@@ -364,46 +383,51 @@ public class StretchBestFitResponse
 	/**
 	 * Generate the Segment Local Best Fit Weighted Response contained within the specified Segment
 	 * 
-	 * @param ics The Inelastics Instance to be used for the Localization
+	 * @param latentStateInelastic The Inelastics Instance to be used for the Localization
 	 * 
 	 * @return The Segment Local Best Fit Weighted Response
 	 */
 
 	public SegmentBestFitResponse sizeToSegment (
-		final org.drip.spline.segment.LatentStateInelastic ics)
+		final LatentStateInelastic latentStateInelastic)
 	{
-		if (null == ics) return null;
+		if (null == latentStateInelastic) {
+			return null;
+		}
 
-		int iNumPoint = numPoint();
+		int pointCount = numPoint();
 
-		java.util.List<java.lang.Integer> lsIndex = new java.util.ArrayList<java.lang.Integer>();
+		List<Integer> indexList = new ArrayList<Integer>();
 
-		for (int i = 0; i < iNumPoint; ++i) {
+		for (int pointIndex = 0; pointIndex < pointCount; ++pointIndex) {
 			try {
-				if (ics.in (_predictorOrdinateArray[i])) lsIndex.add (i);
-			} catch (java.lang.Exception e) {
+				if (latentStateInelastic.in (_predictorOrdinateArray[pointIndex])) {
+					indexList.add (pointIndex);
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		int iNumLocalPoint = lsIndex.size();
+		int localPointCount = indexList.size();
 
-		if (0 == iNumLocalPoint) return null;
-
-		int iIndex = 0;
-		double[] adblWeight = new double[iNumLocalPoint];
-		double[] adblResponse = new double[iNumLocalPoint];
-		double[] adblPredictor = new double[iNumLocalPoint];
-
-		for (int i : lsIndex) {
-			adblWeight[iIndex] = _weightArray[i];
-			adblResponse[iIndex] = _responseArray[i];
-			adblPredictor[iIndex++] = _predictorOrdinateArray[i];
+		if (0 == localPointCount) {
+			return null;
 		}
 
-		return org.drip.spline.params.SegmentBestFitResponse.Create (adblPredictor, adblResponse,
-			adblWeight);
+		int counter = 0;
+		double[] weightArray = new double[localPointCount];
+		double[] responseArray = new double[localPointCount];
+		double[] predictorOrdinateArray = new double[localPointCount];
+
+		for (int index : indexList) {
+			weightArray[counter] = _weightArray[index];
+			responseArray[counter] = _responseArray[index];
+			predictorOrdinateArray[counter++] = _predictorOrdinateArray[index];
+		}
+
+		return SegmentBestFitResponse.Create (predictorOrdinateArray, responseArray, weightArray);
 	}
 }
