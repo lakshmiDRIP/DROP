@@ -1,11 +1,16 @@
 
 package org.drip.spline.params;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,89 +89,115 @@ package org.drip.spline.params;
 
 /**
  * <i>SegmentPredictorResponseDerivative</i> contains the segment local parameters used for the segment
- * calibration. It holds the edge Y value and the derivatives. It exposes the following functions:
+ * 	calibration. It holds the edge Y value and the derivatives. It exposes the following functions:
  *
- * <br><br>
+ * <br>
  *  <ul>
- *  	<li>
- * 			Retrieve the Response Value as well as the DResponseDPredictorOrdinate Array.
- *  	</li>
- *  	<li>
- * 			Aggregate the 2 Predictor Ordinate Response Derivatives by applying the Cardinal Tension Weight.
- *  	</li>
+ * 		<li>Aggregate the 2 Predictor Ordinate Response Derivatives by applying the Cardinal Tension Weight</li>
+ * 		<li><i>SegmentPredictorResponseDerivative</i> constructor</li>
+ * 		<li>Retrieve the Response Value</li>
+ * 		<li>Retrieve the DResponseDPredictorOrdinate Array</li>
  *  </ul>
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SegmentPredictorResponseDerivative {
-	private double _dblResponseValue = java.lang.Double.NaN;
-	private double[] _adblDResponseDPredictorOrdinate = null;
+public class SegmentPredictorResponseDerivative
+{
+	private double _responseValue = Double.NaN;
+	private double[] _dResponseDPredictorOrdinateArray = null;
 
 	/**
 	 * Aggregate the 2 Predictor Ordinate Response Derivatives by applying the Cardinal Tension Weight
 	 * 
-	 * @param sprdA Predictor Ordinate Response Derivative A
-	 * @param sprdB Predictor Ordinate Response Derivative B
-	 * @param dblCardinalTension Cardinal Tension
+	 * @param segmentPredictorResponseDerivativeA Predictor Ordinate Response Derivative A
+	 * @param segmentPredictorResponseDerivativeB Predictor Ordinate Response Derivative B
+	 * @param cardinalTension Cardinal Tension
 	 * 
 	 * @return The Aggregated Predictor Ordinate Response Derivatives
 	 */
 
 	public static final SegmentPredictorResponseDerivative CardinalEdgeAggregate (
-		final org.drip.spline.params.SegmentPredictorResponseDerivative sprdA,
-		final org.drip.spline.params.SegmentPredictorResponseDerivative sprdB,
-		final double dblCardinalTension)
+		final SegmentPredictorResponseDerivative segmentPredictorResponseDerivativeA,
+		final SegmentPredictorResponseDerivative segmentPredictorResponseDerivativeB,
+		final double cardinalTension)
 	{
-		if (null == sprdA || null == sprdB || !org.drip.numerical.common.NumberUtil.IsValid (dblCardinalTension))
+		if (null == segmentPredictorResponseDerivativeA || null == segmentPredictorResponseDerivativeB ||
+			!NumberUtil.IsValid (cardinalTension)) {
 			return null;
+		}
 
-		int iNumDeriv = 0;
+		int derivativeCount = 0;
 
-		double[] adblEdgeDResponseDPredictorOrdinateA = sprdA.getDResponseDPredictorOrdinate();
+		double[] edgeDResponseDPredictorOrdinateAArray =
+			segmentPredictorResponseDerivativeA.getDResponseDPredictorOrdinate();
 
-		double[] adblEdgeDResponseDPredictorOrdinateB = sprdB.getDResponseDPredictorOrdinate();
+		double[] edgeDResponseDPredictorOrdinateBArray =
+			segmentPredictorResponseDerivativeB.getDResponseDPredictorOrdinate();
 
-		if ((null != adblEdgeDResponseDPredictorOrdinateA && null == adblEdgeDResponseDPredictorOrdinateB) ||
-			(null == adblEdgeDResponseDPredictorOrdinateA && null != adblEdgeDResponseDPredictorOrdinateB) ||
-				(null != adblEdgeDResponseDPredictorOrdinateA && null != adblEdgeDResponseDPredictorOrdinateB
-					&& (iNumDeriv = adblEdgeDResponseDPredictorOrdinateA.length) !=
-						adblEdgeDResponseDPredictorOrdinateB.length))
+		if (
+			(
+				null != edgeDResponseDPredictorOrdinateAArray &&
+				null == edgeDResponseDPredictorOrdinateBArray
+			) || (
+				null == edgeDResponseDPredictorOrdinateAArray &&
+				null != edgeDResponseDPredictorOrdinateBArray
+			) || (
+				null != edgeDResponseDPredictorOrdinateAArray &&
+				null != edgeDResponseDPredictorOrdinateBArray && (
+					derivativeCount = edgeDResponseDPredictorOrdinateAArray.length
+				) != edgeDResponseDPredictorOrdinateBArray.length
+			)
+		) {
 			return null;
+		}
 
-		double dblAggregatedEdgeResponseValue = 0.5 * (1. - dblCardinalTension) * (sprdA.responseValue() +
-			sprdB.responseValue());
+		double aggregatedEdgeResponseValue = 0.5 * (1. - cardinalTension) * (
+			segmentPredictorResponseDerivativeA.responseValue() +
+			segmentPredictorResponseDerivativeB.responseValue()
+		);
 
-		if (null == adblEdgeDResponseDPredictorOrdinateA || null == adblEdgeDResponseDPredictorOrdinateB || 0
-			== iNumDeriv) {
+		if (null == edgeDResponseDPredictorOrdinateAArray || null == edgeDResponseDPredictorOrdinateBArray ||
+			0 == derivativeCount) {
 			try {
-				return new SegmentPredictorResponseDerivative (dblAggregatedEdgeResponseValue, null);
-			} catch (java.lang.Exception e) {
+				return new SegmentPredictorResponseDerivative (aggregatedEdgeResponseValue, null);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		double[] adblEdgeDResponseDPredictorOrdinate = new double[iNumDeriv];
+		double[] edgeDResponseDPredictorOrdinateArray = new double[derivativeCount];
 
-		for (int i = 0; i < iNumDeriv; ++i)
-			adblEdgeDResponseDPredictorOrdinate[i] = 0.5 * (1. - dblCardinalTension) *
-				(adblEdgeDResponseDPredictorOrdinateA[i] + adblEdgeDResponseDPredictorOrdinateB[i]);
+		for (int derivativeIndex = 0; derivativeIndex < derivativeCount; ++derivativeIndex) {
+			edgeDResponseDPredictorOrdinateArray[derivativeIndex] = 0.5 * (1. - cardinalTension) * (
+				edgeDResponseDPredictorOrdinateAArray[derivativeIndex] +
+				edgeDResponseDPredictorOrdinateBArray[derivativeIndex]
+			);
+		}
 
 		try {
-			return new SegmentPredictorResponseDerivative (dblAggregatedEdgeResponseValue,
-				adblEdgeDResponseDPredictorOrdinate);
-		} catch (java.lang.Exception e) {
+			return new SegmentPredictorResponseDerivative (
+				aggregatedEdgeResponseValue,
+				edgeDResponseDPredictorOrdinateArray
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -174,23 +205,24 @@ public class SegmentPredictorResponseDerivative {
 	}
 
 	/**
-	 * SegmentPredictorResponseDerivative constructor
+	 * <i>SegmentPredictorResponseDerivative</i> constructor
 	 * 
-	 * @param dblResponseValue Edge Response Value
-	 * @param adblDResponseDPredictorOrdinate Array of ordered Edge Derivatives
+	 * @param responseValue Edge Response Value
+	 * @param dResponseDPredictorOrdinateArray Array of ordered Edge Derivatives
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	public SegmentPredictorResponseDerivative (
-		final double dblResponseValue,
-		final double[] adblDResponseDPredictorOrdinate)
-		throws java.lang.Exception
+		final double responseValue,
+		final double[] dResponseDPredictorOrdinateArray)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblResponseValue = dblResponseValue))
-			throw new java.lang.Exception ("SegmentPredictorResponseDerivative ctr: Invalid Inputs!");
+		if (!NumberUtil.IsValid (_responseValue = responseValue)) {
+			throw new Exception ("SegmentPredictorResponseDerivative ctr: Invalid Inputs!");
+		}
 
-		_adblDResponseDPredictorOrdinate = adblDResponseDPredictorOrdinate;
+		_dResponseDPredictorOrdinateArray = dResponseDPredictorOrdinateArray;
 	}
 
 	/**
@@ -201,7 +233,7 @@ public class SegmentPredictorResponseDerivative {
 
 	public double responseValue()
 	{
-		return _dblResponseValue;
+		return _responseValue;
 	}
 
 	/**
@@ -212,6 +244,6 @@ public class SegmentPredictorResponseDerivative {
 
 	public double[] getDResponseDPredictorOrdinate()
 	{
-		return _adblDResponseDPredictorOrdinate;
+		return _dResponseDPredictorOrdinateArray;
 	}
 }

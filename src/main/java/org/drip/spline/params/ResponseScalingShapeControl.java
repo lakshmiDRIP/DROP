@@ -1,11 +1,16 @@
 
 package org.drip.spline.params;
 
+import org.drip.function.definition.R1ToR1;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,43 +89,50 @@ package org.drip.spline.params;
 
 /**
  * <i>ResponseScalingShapeControl</i> implements the segment level basis functions proportional adjustment to
- * achieve the desired shape behavior of the response. In addition to the actual shape controller function,
- * it interprets whether the control is applied on a local or global predicate ordinate basis.
+ * 	achieve the desired shape behavior of the response. In addition to the actual shape controller function,
+ * 	it interprets whether the control is applied on a local or global predicate ordinate basis.
  *
- * <br><br>
+ * <br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></li>
+ * 		<li><i>ResponseScalingShapeControl</i> constructor</li>
+ * 		<li>Indicate if the Control is applied on a Local or a Global Predicate Ordinate Basis</li>
+ * 		<li>Retrieve the Shape Control Univariate Function</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ResponseScalingShapeControl {
-	private boolean _bIsLocal = false;
-	private org.drip.function.definition.R1ToR1 _auShapeControl = null;
+public class ResponseScalingShapeControl
+{
+	private boolean _isLocal = false;
+	private R1ToR1 _shapeControl = null;
 
 	/**
-	 * ResponseScalingShapeControl constructor
+	 * <i>ResponseScalingShapeControl</i> constructor
 	 * 
-	 * @param bIsLocal TRUE - Shape Control is applied on a local segment basis
-	 * @param auShapeControl - Univariate Shape Controller Function
+	 * @param isLocal TRUE - Shape Control is applied on a local segment basis
+	 * @param shapeControl - Univariate Shape Controller Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public ResponseScalingShapeControl (
-		final boolean bIsLocal,
-		final org.drip.function.definition.R1ToR1 auShapeControl)
-		throws java.lang.Exception
+		final boolean isLocal,
+		final R1ToR1 shapeControl)
+		throws Exception
 	{
-		if (null == (_auShapeControl = auShapeControl))
-			throw new java.lang.Exception ("ResponseScalingShapeControl ctr: Invalid Inputs");
+		if (null == (_shapeControl = shapeControl)) {
+			throw new Exception ("ResponseScalingShapeControl ctr: Invalid Inputs");
+		}
 
-		_bIsLocal = bIsLocal;
+		_isLocal = isLocal;
 	}
 
 	/**
@@ -131,7 +143,7 @@ public class ResponseScalingShapeControl {
 
 	public boolean isLocal()
 	{
-		return _bIsLocal;
+		return _isLocal;
 	}
 
 	/**
@@ -140,8 +152,8 @@ public class ResponseScalingShapeControl {
 	 * @return The Shape Control Univariate Function
 	 */
 
-	public org.drip.function.definition.R1ToR1 shapeController()
+	public R1ToR1 shapeController()
 	{
-		return _auShapeControl;
+		return _shapeControl;
 	}
 }

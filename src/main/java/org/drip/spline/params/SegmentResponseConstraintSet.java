@@ -6,6 +6,9 @@ package org.drip.spline.params;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,27 +87,43 @@ package org.drip.spline.params;
 
 /**
  * <i>SegmentResponseConstraintSet</i> holds the set of SegmentResponseValueConstraint (Base + One/more
- * Sensitivities) for the given Segment. It exposes functions to add/retrieve the base RVC as well as
- * additional RVC sensitivities.
+ * 	Sensitivities) for the given Segment. It exposes functions to add/retrieve the base RVC as well as
+ * 	additional RVC sensitivities.
  *
- * <br><br>
+ * <br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></li>
+ * 		<li><i>SegmentResponseConstraintSet</i> Constructor</li>
+ * 		<li>Add the Base Segment Response Value Constraint</li>
+ * 		<li>Add the Base Segment Response Value Constraint Sensitivity</li>
+ * 		<li>Retrieve the Base Segment Response Value Constraint</li>
+ * 		<li>Retrieve the Base Segment Response Value Constraint Sensitivity</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></td></tr>
+ *  </table>
+ *  <br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class SegmentResponseConstraintSet {
-	private org.drip.spline.params.SegmentResponseValueConstraint _srvcBase = null;
-	private org.drip.spline.params.SegmentResponseValueConstraint _srvcSensitivity = null;
+public class SegmentResponseConstraintSet
+{
+	private SegmentResponseValueConstraint _baseSegmentResponseValueConstraint = null;
+	private SegmentResponseValueConstraint _sensitivitySegmentResponseValueConstraint = null;
 
 	/**
-	 * Empty SegmentResponseConstraintSet Constructor
+	 * Empty <i>SegmentResponseConstraintSet</i> Constructor
 	 */
 
 	public SegmentResponseConstraintSet()
@@ -114,34 +133,39 @@ public class SegmentResponseConstraintSet {
 	/**
 	 * Add the Base Segment Response Value Constraint
 	 * 
-	 * @param srvcBase The Base Segment Response Value Constraint
+	 * @param baseSegmentResponseValueConstraint The Base Segment Response Value Constraint
 	 * 
 	 * @return TRUE - The Base Segment Response Value Constraint Successfully Set
 	 */
 
 	public boolean addBase (
-		final org.drip.spline.params.SegmentResponseValueConstraint srvcBase)
+		final SegmentResponseValueConstraint baseSegmentResponseValueConstraint)
 	{
-		if (null == srvcBase) return false;
+		if (null == baseSegmentResponseValueConstraint) {
+			return false;
+		}
 
-		_srvcBase = srvcBase;
+		_baseSegmentResponseValueConstraint = baseSegmentResponseValueConstraint;
 		return true;
 	}
 
 	/**
 	 * Add the Base Segment Response Value Constraint Sensitivity
 	 * 
-	 * @param srvcSensitivity The Base Segment Response Value Constraint Sensitivity
+	 * @param sensitivitySegmentResponseValueConstraint The Base Segment Response Value Constraint
+	 *  Sensitivity
 	 * 
 	 * @return TRUE - The Base Segment Response Value Constraint Sensitivity Successfully Set
 	 */
 
 	public boolean addSensitivity (
-		final org.drip.spline.params.SegmentResponseValueConstraint srvcSensitivity)
+		final SegmentResponseValueConstraint sensitivitySegmentResponseValueConstraint)
 	{
-		if (null == srvcSensitivity) return false;
+		if (null == sensitivitySegmentResponseValueConstraint) {
+			return false;
+		}
 
-		_srvcSensitivity = srvcSensitivity;
+		_sensitivitySegmentResponseValueConstraint = sensitivitySegmentResponseValueConstraint;
 		return true;
 	}
 
@@ -151,9 +175,9 @@ public class SegmentResponseConstraintSet {
 	 * @return The Base Segment Response Value Constraint
 	 */
 
-	public org.drip.spline.params.SegmentResponseValueConstraint getBase()
+	public SegmentResponseValueConstraint getBase()
 	{
-		return _srvcBase;
+		return _baseSegmentResponseValueConstraint;
 	}
 
 	/**
@@ -162,8 +186,8 @@ public class SegmentResponseConstraintSet {
 	 * @return The Base Segment Response Value Constraint Sensitivity
 	 */
 
-	public org.drip.spline.params.SegmentResponseValueConstraint getSensitivity()
+	public SegmentResponseValueConstraint getSensitivity()
 	{
-		return _srvcSensitivity;
+		return _sensitivitySegmentResponseValueConstraint;
 	}
 }

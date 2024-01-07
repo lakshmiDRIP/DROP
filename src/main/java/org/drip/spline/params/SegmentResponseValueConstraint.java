@@ -1,13 +1,19 @@
 
 package org.drip.spline.params;
 
+import org.drip.analytics.date.JulianDate;
 import org.drip.numerical.common.NumberUtil;
+import org.drip.spline.segment.BasisEvaluator;
+import org.drip.spline.segment.LatentStateInelastic;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -86,8 +92,8 @@ import org.drip.numerical.common.NumberUtil;
 
 /**
  * <i>SegmentResponseValueConstraint</i> holds the following set of fields that characterize a single global
- * linear constraint between the predictor and the response variables within a single segment, expressed
- * linearly across the constituent nodes. Constraints are expressed as
+ * 	linear constraint between the predictor and the response variables within a single segment, expressed
+ * 	linearly across the constituent nodes. Constraints are expressed as
  * 
  * 			C = Sigma_j [W_j * y_j] = V where
  * 
@@ -186,29 +192,31 @@ public class SegmentResponseValueConstraint
 	/**
 	 * SegmentResponseValueConstraint constructor
 	 * 
-	 * @param adblPredictorOrdinate The Array of Global Predictor Ordinates
-	 * @param adblResponseValueWeight The Array of the Weights to be applied to the Response at each
+	 * @param predictorOrdinateArray The Array of Global Predictor Ordinates
+	 * @param responseValueWeightArray The Array of the Weights to be applied to the Response at each
 	 *  Predictor Ordinate
-	 * @param dblWeightedResponseValueConstraint The Value of the Weighted Response Value Constraint
+	 * @param weightedResponseValueConstraint The Value of the Weighted Response Value Constraint
 	 * 
-	 * @throws java.lang.Exception Throws if the Inputs are Invalid
+	 * @throws Exception Throws if the Inputs are Invalid
 	 */
 
 	public SegmentResponseValueConstraint (
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValueWeight,
-		final double dblWeightedResponseValueConstraint)
-		throws java.lang.Exception
+		final double[] predictorOrdinateArray,
+		final double[] responseValueWeightArray,
+		final double weightedResponseValueConstraint)
+		throws Exception
 	{
-		if (null == (_predictorOrdinateArray = adblPredictorOrdinate) || null == (_responseValueWeightArray =
-			adblResponseValueWeight) || !org.drip.numerical.common.NumberUtil.IsValid
-				(_weightedResponseValueConstraint = dblWeightedResponseValueConstraint))
-			throw new java.lang.Exception ("SegmentResponseValueConstraint ctr: Invalid Inputs");
+		if (null == (_predictorOrdinateArray = predictorOrdinateArray) ||
+			null == (_responseValueWeightArray = responseValueWeightArray) ||
+			!NumberUtil.IsValid (_weightedResponseValueConstraint = weightedResponseValueConstraint)) {
+			throw new Exception ("SegmentResponseValueConstraint ctr: Invalid Inputs");
+		}
 
-		int iNumPredictorOrdinate = adblPredictorOrdinate.length;
+		int predictorOrdinateCount = predictorOrdinateArray.length;
 
-		if (0 == iNumPredictorOrdinate || _responseValueWeightArray.length != iNumPredictorOrdinate)
-			throw new java.lang.Exception ("SegmentResponseValueConstraint ctr: Invalid Inputs");
+		if (0 == predictorOrdinateCount || _responseValueWeightArray.length != predictorOrdinateCount) {
+			throw new Exception ("SegmentResponseValueConstraint ctr: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -247,15 +255,20 @@ public class SegmentResponseValueConstraint
 	/**
 	 * Display the Comment Annotated State
 	 * 
-	 * @param strComment Annotation Comment
+	 * @param comment Annotation Comment
 	 */
 
 	public void display (
-		final java.lang.String strComment)
+		final String comment)
 	{
-		for (int i = 0; i < _predictorOrdinateArray.length; ++i)
-			System.out.println ("\t\t" + strComment + " - " + new org.drip.analytics.date.JulianDate ((int)
-				_predictorOrdinateArray[i]) + " => " + _responseValueWeightArray[i]);
+		for (int predictorOrdinateIndex = 0; predictorOrdinateIndex < _predictorOrdinateArray.length;
+			++predictorOrdinateIndex) {
+			System.out.println (
+				"\t\t" + comment + " - " +
+				new JulianDate ((int) _predictorOrdinateArray[predictorOrdinateIndex]) + " => " +
+				_responseValueWeightArray[predictorOrdinateIndex]
+			);
+		}
 
 		System.out.println ("\tConstraint: " + _weightedResponseValueConstraint);
 	}
@@ -264,37 +277,49 @@ public class SegmentResponseValueConstraint
 	 * Convert the Segment Constraint onto Local Predictor Ordinates, the corresponding Response Basis
 	 *  Function, and the Shape Controller Realizations
 	 * 
-	 * @param lbe The Local Basis Evaluator
-	 * @param ics Inelastics transformer to convert coordinate space to Local from Global
+	 * @param basisEvaluator The Local Basis Evaluator
+	 * @param latentStateInelastic Inelastics transformer to convert coordinate space to Local from Global
 	 * 
 	 * @return The Segment Basis Function Constraint
 	 */
 
-	public org.drip.spline.params.SegmentBasisFlexureConstraint responseIndexedBasisConstraint (
-		final org.drip.spline.segment.BasisEvaluator lbe,
-		final org.drip.spline.segment.LatentStateInelastic ics)
+	public SegmentBasisFlexureConstraint responseIndexedBasisConstraint (
+		final BasisEvaluator basisEvaluator,
+		final LatentStateInelastic latentStateInelastic)
 	{
-		if (null == lbe || null == ics) return null;
+		if (null == basisEvaluator) {
+			return null;
+		}
 
-		int iNumResponseBasis = lbe.numBasis();
+		int responseBasisCount = basisEvaluator.numBasis();
 
-		int iNumPredictorOrdinate = _predictorOrdinateArray.length;
-		double[] adblResponseBasisWeight = new double[iNumResponseBasis];
+		int predictorOrdinateCount = _predictorOrdinateArray.length;
+		double[] responseBasisWeightArray = new double[responseBasisCount];
 
-		if (0 == iNumResponseBasis) return null;
+		if (0 == responseBasisCount) {
+			return null;
+		}
 
 		try {
-			for (int i = 0; i < iNumResponseBasis; ++i) {
-				adblResponseBasisWeight[i] = 0.;
+			for (int basisIndex = 0; basisIndex < responseBasisCount; ++basisIndex) {
+				responseBasisWeightArray[basisIndex] = 0.;
 
-				for (int j = 0; j < iNumPredictorOrdinate; ++j)
-					adblResponseBasisWeight[i] += _responseValueWeightArray[j] *
-						lbe.shapedBasisFunctionResponse (_predictorOrdinateArray[j], i);
+				for (int predictorOrdinateIndex = 0; predictorOrdinateIndex < predictorOrdinateCount;
+					++predictorOrdinateIndex) {
+					responseBasisWeightArray[basisIndex] +=
+						_responseValueWeightArray[predictorOrdinateIndex] *
+						basisEvaluator.shapedBasisFunctionResponse (
+							_predictorOrdinateArray[predictorOrdinateIndex],
+							basisIndex
+						);
+				}
 			}
 
-			return new org.drip.spline.params.SegmentBasisFlexureConstraint (adblResponseBasisWeight,
-					_weightedResponseValueConstraint);
-		} catch (java.lang.Exception e) {
+			return new SegmentBasisFlexureConstraint (
+				responseBasisWeightArray,
+				_weightedResponseValueConstraint
+				);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -304,25 +329,29 @@ public class SegmentResponseValueConstraint
 	/**
 	 * Get the Position of the Predictor Knot relative to the Constraints
 	 * 
-	 * @param dblPredictorKnot The Predictor Knot Ordinate
+	 * @param predictorKnot The Predictor Knot Ordinate
 	 * 
 	 * @return Indicator specifying whether the Knot is Left of the constraints, Right of the Constraints, or
 	 *  splits the Constraints
 	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are invalid
+	 * @throws Exception Thrown if Inputs are invalid
 	 */
 
 	public int knotPosition (
-		final double dblPredictorKnot)
-		throws java.lang.Exception
+		final double predictorKnot)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorKnot))
-			throw new java.lang.Exception ("SegmentResponseValueConstraint::knotPosition => Invalid Inputs");
+		if (!NumberUtil.IsValid (predictorKnot)) {
+			throw new Exception ("SegmentResponseValueConstraint::knotPosition => Invalid Inputs");
+		}
 
-		if (dblPredictorKnot < _predictorOrdinateArray[0]) return LEFT_OF_CONSTRAINT;
+		if (predictorKnot < _predictorOrdinateArray[0]) {
+			return LEFT_OF_CONSTRAINT;
+		}
 
-		if (dblPredictorKnot > _predictorOrdinateArray[_predictorOrdinateArray.length - 1])
+		if (predictorKnot > _predictorOrdinateArray[_predictorOrdinateArray.length - 1]) {
 			return RIGHT_OF_CONSTRAINT;
+		}
 
 		return SPLITS_CONSTRAINT;
 	}

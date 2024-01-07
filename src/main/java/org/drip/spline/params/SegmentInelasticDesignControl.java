@@ -6,6 +6,9 @@ package org.drip.spline.params;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,54 +87,53 @@ package org.drip.spline.params;
 
 /**
  * <i>SegmentInelasticDesignControl</i> implements basis per-segment inelastic parameter set. It exports the
- * following functionality:
+ * 	following functionality:
  *
- * <br><br>
+ * <br>
  *  <ul>
- *  	<li>
- *  		Retrieve the Continuity Order.
- *  	</li>
- *  	<li>
- *  		Retrieve the Length Penalty and the Curvature Penalty Parameters.
- *  	</li>
- *  	<li>
- *  		Create the C2 Inelastic Design Parameters.
- *  	</li>
- *  	<li>
- *  		Create the Inelastic Design Parameters for the desired Ck Criterion and the Roughness Penalty.
- *  			Order.
- *  	</li>
+ * 		<li>Create the C<sup>2</sup> Inelastic Design Params</li>
+ * 		<li>Create the Inelastic Design Parameters for the desired C<sup>k</sup> Criterion and the Roughness Penalty Order</li>
+ * 		<li><i>SegmentInelasticDesignControl</i> Constructor</li>
+ * 		<li>Retrieve the Continuity Order</li>
+ * 		<li>Retrieve the Length Penalty Parameters</li>
+ * 		<li>Retrieve the Curvature Penalty Parameters</li>
  *  </ul>
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SegmentInelasticDesignControl {
-	private int _iCk = -1;
-	private org.drip.spline.params.SegmentFlexurePenaltyControl _sfpcLength = null;
-	private org.drip.spline.params.SegmentFlexurePenaltyControl _sfpcCurvature = null;
+public class SegmentInelasticDesignControl
+{
+	private int _k = -1;
+	private SegmentFlexurePenaltyControl _lengthSegmentFlexurePenaltyControl = null;
+	private SegmentFlexurePenaltyControl _curvatureSegmentFlexurePenaltyControl = null;
 
 	/**
-	 * Create the C2 Inelastic Design Params
+	 * Create the C<sup>2</sup> Inelastic Design Params
 	 * 
-	 * @return SegmentInelasticDesignControl instance
+	 * @return <i>SegmentInelasticDesignControl</i> instance
 	 */
 
 	public static final SegmentInelasticDesignControl MakeC2DesignInelasticControl()
 	{
 		try {
-			return new SegmentInelasticDesignControl (2, null, new
-				org.drip.spline.params.SegmentFlexurePenaltyControl (2, 1.));
-		} catch (java.lang.Exception e) {
+			return new SegmentInelasticDesignControl (2, null, new SegmentFlexurePenaltyControl (2, 1.));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -139,22 +141,26 @@ public class SegmentInelasticDesignControl {
 	}
 
 	/**
-	 * Create the Inelastic Design Parameters for the desired Ck Criterion and the Roughness Penalty Order
+	 * Create the Inelastic Design Parameters for the desired C<sup>k</sup> Criterion and the Roughness
+	 * 	Penalty Order
 	 * 
-	 * @param iCk Continuity Order
-	 * @param iCurvaturePenaltyDerivativeOrder Curvature Penalty Derivative Order
+	 * @param k Continuity Order
+	 * @param curvaturePenaltyDerivativeOrder Curvature Penalty Derivative Order
 	 * 
-	 * @return SegmentInelasticDesignControl instance
+	 * @return <i>SegmentInelasticDesignControl</i> instance
 	 */
 
 	public static final SegmentInelasticDesignControl Create (
-		final int iCk,
-		final int iCurvaturePenaltyDerivativeOrder)
+		final int k,
+		final int curvaturePenaltyDerivativeOrder)
 	{
 		try {
-			return new SegmentInelasticDesignControl (iCk, null, new
-				org.drip.spline.params.SegmentFlexurePenaltyControl (iCurvaturePenaltyDerivativeOrder, 1.));
-		} catch (java.lang.Exception e) {
+			return new SegmentInelasticDesignControl (
+				k,
+				null,
+				new SegmentFlexurePenaltyControl (curvaturePenaltyDerivativeOrder, 1.)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -162,27 +168,28 @@ public class SegmentInelasticDesignControl {
 	}
 
 	/**
-	 * Constructor for the Segment Inelastic Design Parameters given the desired Ck, the Segment Length and
-	 *  the Roughness Penalty Order
+	 * Constructor for the Segment Inelastic Design Parameters given the desired C<sup>k</sup>, the Segment
+	 * 	Length and the Roughness Penalty Order
 	 * 
-	 * @param iCk Continuity Order
-	 * @param sfpcLength Segment Length Penalty
-	 * @param sfpcCurvature Segment Curvature Penalty
+	 * @param k Continuity Order
+	 * @param lengthSegmentFlexurePenaltyControl Segment Length Penalty
+	 * @param curvatureSegmentFlexurePenaltyControl Segment Curvature Penalty
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public SegmentInelasticDesignControl (
-		final int iCk,
-		final org.drip.spline.params.SegmentFlexurePenaltyControl sfpcLength,
-		final org.drip.spline.params.SegmentFlexurePenaltyControl sfpcCurvature)
-		throws java.lang.Exception
+		final int k,
+		final org.drip.spline.params.SegmentFlexurePenaltyControl lengthSegmentFlexurePenaltyControl,
+		final org.drip.spline.params.SegmentFlexurePenaltyControl curvatureSegmentFlexurePenaltyControl)
+		throws Exception
 	{
-		if (0 > (_iCk = iCk))
-			throw new java.lang.Exception ("SegmentInelasticDesignControl ctr: Invalid Inputs");
+		if (0 > (_k = k)) {
+			throw new Exception ("SegmentInelasticDesignControl ctr: Invalid Inputs");
+		}
 
-		_sfpcLength = sfpcLength;
-		_sfpcCurvature = sfpcCurvature;
+		_lengthSegmentFlexurePenaltyControl = lengthSegmentFlexurePenaltyControl;
+		_curvatureSegmentFlexurePenaltyControl = curvatureSegmentFlexurePenaltyControl;
 	}
 
 	/**
@@ -193,7 +200,7 @@ public class SegmentInelasticDesignControl {
 
 	public int Ck()
 	{
-		return _iCk;
+		return _k;
 	}
 
 	/**
@@ -202,9 +209,9 @@ public class SegmentInelasticDesignControl {
 	 * @return The Length Penalty Parameters
 	 */
 
-	public org.drip.spline.params.SegmentFlexurePenaltyControl lengthPenaltyControl()
+	public SegmentFlexurePenaltyControl lengthPenaltyControl()
 	{
-		return _sfpcLength;
+		return _lengthSegmentFlexurePenaltyControl;
 	}
 
 	/**
@@ -213,8 +220,8 @@ public class SegmentInelasticDesignControl {
 	 * @return The Curvature Penalty Parameters
 	 */
 
-	public org.drip.spline.params.SegmentFlexurePenaltyControl curvaturePenaltyControl()
+	public SegmentFlexurePenaltyControl curvaturePenaltyControl()
 	{
-		return _sfpcCurvature;
+		return _curvatureSegmentFlexurePenaltyControl;
 	}
 }
