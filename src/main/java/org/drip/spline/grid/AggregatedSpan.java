@@ -1,11 +1,18 @@
 
 package org.drip.spline.grid;
 
+import java.util.List;
+
+import org.drip.spline.stretch.MultiSegmentSequence;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,107 +90,125 @@ package org.drip.spline.grid;
 
 /**
  * <i>AggregatedSpan</i> implements the Span interface. Here response from an array of spans whose responses
- * are aggregated by their weights.
- *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/grid/README.md">Aggregated/Overlapping Stretch/Span Grids</a></li>
- *  </ul>
- * <br><br>
+ * 	are aggregated by their weights.
+ * 
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/grid/README.md">Aggregated/Overlapping Stretch/Span Grids</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class AggregatedSpan implements org.drip.spline.grid.Span {
-	private java.util.List<java.lang.Double> _lsWeight = null;
-	private java.util.List<org.drip.spline.grid.Span> _lsSpan = null;
+public class AggregatedSpan
+	implements Span
+{
+	private List<Span> _spanList = null;
+	private List<Double> _weightList = null;
 
 	/**
-	 * AggregatedSpan Constructor
+	 * <i>AggregatedSpan</i> Constructor
 	 * 
-	 * @param lsSpan List of Spans
-	 * @param lsWeight List of Weights
+	 * @param spanList List of Spans
+	 * @param weightList List of Weights
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AggregatedSpan (
-		final java.util.List<org.drip.spline.grid.Span> lsSpan,
-		final java.util.List<java.lang.Double> lsWeight)
-		throws java.lang.Exception
+		final List<Span> spanList,
+		final List<Double> weightList)
+		throws Exception
 	{
-		if (null == (_lsSpan = lsSpan) || null == (_lsWeight = lsWeight))
-			throw new java.lang.Exception ("AggregatedSpan ctr: Invalid Inputs");
+		if (null == (_spanList = spanList) || null == (_weightList = weightList)) {
+			throw new Exception ("AggregatedSpan ctr: Invalid Inputs");
+		}
 
-		int iNumSpan = _lsSpan.size();
+		int spanCount = _spanList.size();
 
-		if (0 == iNumSpan || iNumSpan != _lsWeight.size())
-			throw new java.lang.Exception ("AggregatedSpan ctr: Invalid Inputs");
+		if (0 == spanCount || spanCount != _weightList.size()) {
+			throw new Exception ("AggregatedSpan ctr: Invalid Inputs");
+		}
 
-		for (org.drip.spline.grid.Span span : _lsSpan) {
-			if (null == span) throw new java.lang.Exception ("AggregatedSpan ctr: Invalid Inputs");
+		for (Span span : _spanList) {
+			if (null == span) {
+				throw new Exception ("AggregatedSpan ctr: Invalid Inputs");
+			}
 		}
 	}
 
 	@Override public boolean addStretch (
-		final org.drip.spline.stretch.MultiSegmentSequence mss)
+		final MultiSegmentSequence multiSegmentSequence)
 	{
 		return false;
 	}
 
-	@Override public org.drip.spline.stretch.MultiSegmentSequence getContainingStretch (
-		final double dblPredictorOrdinate)
+	@Override public MultiSegmentSequence getContainingStretch (
+		final double predictorOrdinate)
 	{
-		for (org.drip.spline.grid.Span span : _lsSpan) {
-			org.drip.spline.stretch.MultiSegmentSequence mss = span.getContainingStretch
-				(dblPredictorOrdinate);
+		for (Span span : _spanList) {
+			MultiSegmentSequence multiSegmentSequence = span.getContainingStretch (predictorOrdinate);
 
-			if (null != mss) return mss;
+			if (null != multiSegmentSequence) {
+				return multiSegmentSequence;
+			}
 		}
 
 		return null;
 	}
 
-	@Override public org.drip.spline.stretch.MultiSegmentSequence getStretch (
-		final java.lang.String strName)
+	@Override public MultiSegmentSequence getStretch (
+		final String name)
 	{
-		if (null == strName || strName.isEmpty()) return null;
+		if (null == name || name.isEmpty()) {
+			return null;
+		}
 
-		for (org.drip.spline.grid.Span span : _lsSpan) {
-			org.drip.spline.stretch.MultiSegmentSequence mss = span.getStretch (strName);
+		for (Span span : _spanList) {
+			MultiSegmentSequence multiSegmentSequence = span.getStretch (name);
 
-			if (null != mss) return mss;
+			if (null != multiSegmentSequence) {
+				return multiSegmentSequence;
+			}
 		}
 
 		return null;
 	}
 
 	@Override public double left()
-		throws java.lang.Exception
+		throws Exception
 	{
-		return _lsSpan.get (0).left();
+		return _spanList.get (0).left();
 	}
 
 	@Override public double right()
-		throws java.lang.Exception
+		throws Exception
 	{
-		return _lsSpan.get (_lsSpan.size() - 1).right();
+		return _spanList.get (_spanList.size() - 1).right();
 	}
 
 	@Override public double calcResponseValue (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
 		int i = 0;
-		double dblResponseValue = 0.;
+		double responseValue = 0.;
 
-		for (org.drip.spline.grid.Span span : _lsSpan)
-			dblResponseValue += span.calcResponseValue (dblPredictorOrdinate) * _lsWeight.get (i++);
+		for (Span span : _spanList) {
+			responseValue += span.calcResponseValue (predictorOrdinate) * _weightList.get (i++);
+		}
 
-		return dblResponseValue;
+		return responseValue;
 	}
 
 	@Override public double calcResponseValueDerivative (
@@ -194,9 +219,9 @@ public class AggregatedSpan implements org.drip.spline.grid.Span {
 		int i = 0;
 		double dblResponseValueDerivative = 0.;
 
-		for (org.drip.spline.grid.Span span : _lsSpan)
+		for (org.drip.spline.grid.Span span : _spanList)
 			dblResponseValueDerivative += span.calcResponseValueDerivative (dblPredictorOrdinate,iOrder) *
-				_lsWeight.get (i++);
+				_weightList.get (i++);
 
 		return dblResponseValueDerivative;
 	}
@@ -205,7 +230,7 @@ public class AggregatedSpan implements org.drip.spline.grid.Span {
 		final double dblPredictorOrdinate,
 		final org.drip.state.identifier.LatentStateLabel lsl)
 	{
-		for (org.drip.spline.grid.Span span : _lsSpan) {
+		for (org.drip.spline.grid.Span span : _spanList) {
 			if (span.isMergeState (dblPredictorOrdinate, lsl)) return true;
 		}
 
@@ -220,16 +245,16 @@ public class AggregatedSpan implements org.drip.spline.grid.Span {
 		int i = 0;
 		org.drip.numerical.differentiation.WengertJacobian wjAggregate = null;
 
-		for (org.drip.spline.grid.Span span : _lsSpan) {
+		for (org.drip.spline.grid.Span span : _spanList) {
 			org.drip.numerical.differentiation.WengertJacobian wj = span.jackDResponseDManifestMeasure
 				(strManifestMeasure, dblPredictorOrdinate, iOrder);
 
 			if (null == wj) return null;
 
 			if (null == wjAggregate) {
-				if (!(wjAggregate = wj).scale (_lsWeight.get (i++))) return null;
+				if (!(wjAggregate = wj).scale (_weightList.get (i++))) return null;
 			} else {
-				if (!wjAggregate.cumulativeMerge (wj, _lsWeight.get (i++))) return null;
+				if (!wjAggregate.cumulativeMerge (wj, _weightList.get (i++))) return null;
 			}
 		}
 
@@ -240,7 +265,7 @@ public class AggregatedSpan implements org.drip.spline.grid.Span {
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-		for (org.drip.spline.grid.Span span : _lsSpan) {
+		for (org.drip.spline.grid.Span span : _spanList) {
 			if (span.in (dblPredictorOrdinate)) return true;
 		}
 
@@ -253,8 +278,8 @@ public class AggregatedSpan implements org.drip.spline.grid.Span {
 
 		java.lang.StringBuffer sb = new java.lang.StringBuffer();
 
-		for (org.drip.spline.grid.Span span : _lsSpan)
-			sb.append (span.displayString() + " | " + _lsWeight.get (i++));
+		for (org.drip.spline.grid.Span span : _spanList)
+			sb.append (span.displayString() + " | " + _weightList.get (i++));
 
 		return sb.toString();
 	}

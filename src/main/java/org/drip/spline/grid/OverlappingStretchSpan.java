@@ -1,6 +1,16 @@
 
 package org.drip.spline.grid;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.drip.analytics.date.JulianDate;
+import org.drip.numerical.differentiation.WengertJacobian;
+import org.drip.service.common.CollectionUtil;
+import org.drip.spline.stretch.MultiSegmentSequence;
+import org.drip.state.identifier.LatentStateLabel;
+import org.drip.state.representation.MergeSubStretchManager;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -86,10 +96,15 @@ package org.drip.spline.grid;
 
 /**
  * <i>OverlappingStretchSpan</i> implements the Span interface, and the collection functionality of
- * overlapping Stretches. In addition to providing a custom implementation of all the Span interface stubs,
- * it also converts the Overlapping Stretch Span to a non-overlapping Stretch Span. Overlapping Stretches are
- * clipped from the Left.
+ * 	overlapping Stretches. In addition to providing a custom implementation of all the Span interface stubs,
+ * 	it also converts the Overlapping Stretch Span to a non-overlapping Stretch Span. Overlapping Stretches
+ * 	are clipped from the Left.
  *
+ * <ul>
+ * 		<li><i>OverlappingStretchSpan</i> constructor</li>
+ * 		<li>Convert the Overlapping Stretch Span to a non-overlapping Stretch Span. Overlapping Stretches are clipped from the Left</li>
+ * </ul>
+ * 
  *  <br>
  *  <style>table, td, th {
  *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
@@ -108,46 +123,55 @@ package org.drip.spline.grid;
  * @author Lakshmi Krishnamurthy
  */
 
-public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
-	private java.util.List<org.drip.spline.stretch.MultiSegmentSequence> _lsMSS = new
-		java.util.ArrayList<org.drip.spline.stretch.MultiSegmentSequence>();
+public class OverlappingStretchSpan
+	implements Span
+{
+	private List<MultiSegmentSequence> _multiSegmentSequenceList = new ArrayList<MultiSegmentSequence>();
 
 	/**
-	 * OverlappingStretchSpan constructor
+	 * <i>OverlappingStretchSpan</i> constructor
 	 * 
-	 * @param mss The Initial Stretch in the Span
+	 * @param multiSegmentSequence The Initial Stretch in the Span
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public OverlappingStretchSpan (
-		final org.drip.spline.stretch.MultiSegmentSequence mss)
-		throws java.lang.Exception
+		final MultiSegmentSequence multiSegmentSequence)
+		throws Exception
 	{
-		if (null == mss) throw new java.lang.Exception ("OverlappingStretchSpan ctr: Invalid Inputs");
+		if (null == multiSegmentSequence) {
+			throw new Exception ("OverlappingStretchSpan ctr: Invalid Inputs");
+		}
 
-		_lsMSS.add (mss);
+		_multiSegmentSequenceList.add (multiSegmentSequence);
 	}
 
 	@Override public boolean addStretch (
-		final org.drip.spline.stretch.MultiSegmentSequence mss)
+		final MultiSegmentSequence multiSegmentSequence)
 	{
-		if (null == mss) return false;
+		if (null == multiSegmentSequence) {
+			return false;
+		}
 
-		_lsMSS.add (mss);
+		_multiSegmentSequenceList.add (multiSegmentSequence);
 
 		return true;
 	}
 
-	@Override public org.drip.spline.stretch.MultiSegmentSequence getContainingStretch (
-		final double dblPredictorOrdinate)
+	@Override public MultiSegmentSequence getContainingStretch (
+		final double predictorOrdinate)
 	{
-		if (null == _lsMSS || 0 == _lsMSS.size()) return null;
+		if (null == _multiSegmentSequenceList || 0 == _multiSegmentSequenceList.size()) {
+			return null;
+		}
 
-		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {
+		for (MultiSegmentSequence multiSegmentSequence : _multiSegmentSequenceList) {
 			try {
-				if (mss.in (dblPredictorOrdinate)) return mss;
-			} catch (java.lang.Exception e) {
+				if (multiSegmentSequence.in (predictorOrdinate)) {
+					return multiSegmentSequence;
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
@@ -157,123 +181,145 @@ public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
 		return null;
 	}
 
-	@Override public org.drip.spline.stretch.MultiSegmentSequence getStretch (
-		final java.lang.String strName)
+	@Override public MultiSegmentSequence getStretch (
+		final String name)
 	{
-		if (null == strName) return null;
+		if (null == name) {
+			return null;
+		}
 
-		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {
-			if (strName.equalsIgnoreCase (mss.name())) return mss;
+		for (MultiSegmentSequence multiSegmentSequence : _multiSegmentSequenceList) {
+			if (name.equalsIgnoreCase (multiSegmentSequence.name())) {
+				return multiSegmentSequence;
+			}
 		}
 
 		return null;
 	}
 
 	@Override public double left()
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (0 == _lsMSS.size())
-			throw new java.lang.Exception ("OverlappingStretchSpan::left => No valid Stretches found");
+		if (0 == _multiSegmentSequenceList.size()) {
+			throw new Exception ("OverlappingStretchSpan::left => No valid Stretches found");
+		}
 
-		return _lsMSS.get (0).getLeftPredictorOrdinateEdge();
+		return _multiSegmentSequenceList.get (0).getLeftPredictorOrdinateEdge();
 	}
 
 	@Override public double right()
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (0 == _lsMSS.size())
-			throw new java.lang.Exception ("OverlappingStretchSpan::right => No valid Stretches found");
+		if (0 == _multiSegmentSequenceList.size()) {
+			throw new Exception ("OverlappingStretchSpan::right => No valid Stretches found");
+		}
 
-		return _lsMSS.get (_lsMSS.size() - 1).getRightPredictorOrdinateEdge();
+		return _multiSegmentSequenceList.get (
+			_multiSegmentSequenceList.size() - 1
+		).getRightPredictorOrdinateEdge();
 	}
 
 	@Override public double calcResponseValue (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
-		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {
-			if (mss.in (dblPredictorOrdinate)) return mss.responseValue (dblPredictorOrdinate);
+		for (MultiSegmentSequence multiSegmentSequence : _multiSegmentSequenceList) {
+			if (multiSegmentSequence.in (predictorOrdinate)) {
+				return multiSegmentSequence.responseValue (predictorOrdinate);
+			}
 		}
 
-		throw new java.lang.Exception ("OverlappingStretchSpan::calcResponseValue => Cannot Calculate!");
+		throw new Exception ("OverlappingStretchSpan::calcResponseValue => Cannot Calculate!");
 	}
 
 	@Override public double calcResponseValueDerivative (
-		final double dblPredictorOrdinate,
-		final int iOrder)
+		final double predictorOrdinate,
+		final int order)
 		throws java.lang.Exception
 	{
-		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {
-			if (mss.in (dblPredictorOrdinate))
-				return mss.responseValueDerivative (dblPredictorOrdinate, iOrder);
+		for (MultiSegmentSequence multiSegmentSequence : _multiSegmentSequenceList) {
+			if (multiSegmentSequence.in (predictorOrdinate)) {
+				return multiSegmentSequence.responseValueDerivative (predictorOrdinate, order);
+			}
 		}
 
-		throw new java.lang.Exception
-			("OverlappingStretchSpan::calcResponseValueDerivative => Cannot Calculate!");
+		throw new Exception ("OverlappingStretchSpan::calcResponseValueDerivative => Cannot Calculate!");
 	}
 
 	@Override public boolean isMergeState (
-		final double dblPredictorOrdinate,
-		final org.drip.state.identifier.LatentStateLabel lsl)
+		final double predictorOrdinate,
+		final LatentStateLabel latentStateLabel)
 	{
 		try {
-			for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {
-				if (mss.in (dblPredictorOrdinate)) {
-					org.drip.state.representation.MergeSubStretchManager msm = mss.msm();
+			for (MultiSegmentSequence multiSegmentSequence : _multiSegmentSequenceList) {
+				if (multiSegmentSequence.in (predictorOrdinate)) {
+					MergeSubStretchManager mergeSubStretchManager = multiSegmentSequence.msm();
 
-					return null == msm ? false : msm.partOfMergeState (dblPredictorOrdinate, lsl);
+					return null == mergeSubStretchManager ? false :
+						mergeSubStretchManager.partOfMergeState (predictorOrdinate, latentStateLabel);
 				}
 			}
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return false;
 	}
 
-	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final double dblPredictorOrdinate,
-		final int iOrder)
+	@Override public WengertJacobian jackDResponseDManifestMeasure (
+		final String manifestMeasure,
+		final double predictorOrdinate,
+		final int order)
 	{
-		if (0 == _lsMSS.size()) return null;
+		if (0 == _multiSegmentSequenceList.size()) {
+			return null;
+		}
 
-		java.util.List<org.drip.numerical.differentiation.WengertJacobian> lsWJ = new
-			java.util.ArrayList<org.drip.numerical.differentiation.WengertJacobian>();
+		List<WengertJacobian> wengertJacobianList = new ArrayList<WengertJacobian>();
 
-		boolean bPredictorOrdinateCovered = false;
+		boolean predictorOrdinateCovered = false;
 
-		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {
-			if (null == mss) continue;
+		for (MultiSegmentSequence multiSegmentSequence : _multiSegmentSequenceList) {
+			if (null == multiSegmentSequence) {
+				continue;
+			}
 
 			try {
-				org.drip.numerical.differentiation.WengertJacobian wj = null;
+				WengertJacobian wengertJacobian = null;
 
-				if (!bPredictorOrdinateCovered && mss.in (dblPredictorOrdinate)) {
-					wj = mss.jackDResponseDManifestMeasure (strManifestMeasure, dblPredictorOrdinate,
-						iOrder);
+				if (!predictorOrdinateCovered && multiSegmentSequence.in (predictorOrdinate)) {
+					wengertJacobian = multiSegmentSequence.jackDResponseDManifestMeasure (
+						manifestMeasure,
+						predictorOrdinate,
+						order
+					);
 
-					bPredictorOrdinateCovered = true;
-				} else
-					wj = new org.drip.numerical.differentiation.WengertJacobian (1, mss.segments().length);
+					predictorOrdinateCovered = true;
+				} else {
+					wengertJacobian = new WengertJacobian (1, multiSegmentSequence.segments().length);
+				}
 
-				if (null != wj) lsWJ.add (wj);
-			} catch (java.lang.Exception e) {
+				if (null != wengertJacobian) {
+					wengertJacobianList.add (wengertJacobian);
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return org.drip.service.common.CollectionUtil.AppendWengert (lsWJ);
+		return CollectionUtil.AppendWengert (wengertJacobianList);
 	}
 
 	@Override public boolean in (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
-		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {
-			if (mss.in (dblPredictorOrdinate)) return true;
+		for (MultiSegmentSequence multiSegmentSequence : _multiSegmentSequenceList) {
+			if (multiSegmentSequence.in (predictorOrdinate)) {
+				return true;
+			}
 		}
 
 		return false;
@@ -286,48 +332,65 @@ public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
 	 * @return The Non-overlapping Stretch Span Instance
 	 */
 
-	public org.drip.spline.grid.Span toNonOverlapping()
+	public Span toNonOverlapping()
 	{
-		if (0 == _lsMSS.size()) return null;
+		if (0 == _multiSegmentSequenceList.size()) {
+			return null;
+		}
 
-		org.drip.spline.grid.OverlappingStretchSpan oss = null;
-		org.drip.spline.stretch.MultiSegmentSequence mssPrev = null;
+		OverlappingStretchSpan overlappingStretchSpan = null;
+		MultiSegmentSequence previousMultiSegmentSequence = null;
 
-		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS) {
-			if (null == mss) continue;
+		for (MultiSegmentSequence multiSegmentSequence : _multiSegmentSequenceList) {
+			if (null == multiSegmentSequence) {
+				continue;
+			}
 
-			if (null == oss) {
+			if (null == overlappingStretchSpan) {
 				try {
-					oss = new org.drip.spline.grid.OverlappingStretchSpan (mssPrev = mss);
-				} catch (java.lang.Exception e) {
+					overlappingStretchSpan = new OverlappingStretchSpan (
+						previousMultiSegmentSequence = multiSegmentSequence
+					);
+				} catch (Exception e) {
 					e.printStackTrace();
 
 					return null;
 				}
 			} else {
-				double dblPrevRightPredictorOrdinateEdge = mssPrev.getRightPredictorOrdinateEdge();
+				double previousRightPredictorOrdinateEdge =
+					previousMultiSegmentSequence.getRightPredictorOrdinateEdge();
 
-				double dblCurrentLeftPredictorOrdinateEdge = mss.getLeftPredictorOrdinateEdge();
+				double currentLeftPredictorOrdinateEdge =
+					multiSegmentSequence.getLeftPredictorOrdinateEdge();
 
-				if (dblCurrentLeftPredictorOrdinateEdge >= dblPrevRightPredictorOrdinateEdge)
-					oss.addStretch (mss);
-				else
-					oss.addStretch (mss.clipLeft (mss.name(), dblPrevRightPredictorOrdinateEdge));
+				if (currentLeftPredictorOrdinateEdge >= previousRightPredictorOrdinateEdge) {
+					overlappingStretchSpan.addStretch (multiSegmentSequence);
+				} else {
+					overlappingStretchSpan.addStretch (
+						multiSegmentSequence.clipLeft (
+							multiSegmentSequence.name(),
+							previousRightPredictorOrdinateEdge
+						)
+					);
+				}
 			}
 		}
 
-		return oss;
+		return overlappingStretchSpan;
 	}
 
-	@Override public java.lang.String displayString()
+	@Override public String displayString()
 	{
-		java.lang.StringBuffer sb = new java.lang.StringBuffer();
+		StringBuffer stringBuffer = new java.lang.StringBuffer();
 
-		for (org.drip.spline.stretch.MultiSegmentSequence mss : _lsMSS)
-			sb.append (mss.name() + " | " + new org.drip.analytics.date.JulianDate ((int)
-				mss.getLeftPredictorOrdinateEdge()) + " => " + new org.drip.analytics.date.JulianDate ((int)
-					mss.getRightPredictorOrdinateEdge()) + "\n");
+		for (MultiSegmentSequence multiSegmentSequence : _multiSegmentSequenceList) {
+			stringBuffer.append (
+				multiSegmentSequence.name() + " | " +
+					new JulianDate ((int) multiSegmentSequence.getLeftPredictorOrdinateEdge()) + " => " +
+					new JulianDate ((int) multiSegmentSequence.getRightPredictorOrdinateEdge()) + "\n"
+			);
+		}
 
-		return sb.toString();
+		return stringBuffer.toString();
 	}
 }
