@@ -6,6 +6,9 @@ package org.drip.spline.params;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,120 +87,117 @@ package org.drip.spline.params;
 
 /**
  * <i>StretchBestFitResponse</i> implements basis per-Stretch Fitness Penalty Parameter Set. Currently it
- * contains the Best Fit Penalty Weight Grid Matrix and the corresponding Local Predictor Ordinate/Response
- * Match Pair. StretchBestFitResponse exports the following methods:
+ * 	contains the Best Fit Penalty Weight Grid Matrix and the corresponding Local Predictor Ordinate/Response
+ * 	Match Pair. StretchBestFitResponse exports the following methods:
  *
- * <br><br>
+ * <br>
  *  <ul>
- *  	<li>
- *  		Retrieve the Array of the Fitness Weights.
- *  	</li>
- *  	<li>
- *  		Retrieve the Indexed Fitness Weight Element.
- *  	</li>
- *  	<li>
- *  		Retrieve the Array of Predictor Ordinates.
- *  	</li>
- *  	<li>
- *  		Retrieve the Indexed Predictor Ordinate Element.
- *  	</li>
- *  	<li>
- *  		Retrieve the Array of Responses.
- *  	</li>
- *  	<li>
- *  		Retrieve the Indexed Response Element.
- *  	</li>
- *  	<li>
- *  		Retrieve the Number of Fitness Points.
- *  	</li>
- *  	<li>
- *  		Generate the Segment Local Best Fit Weighted Response contained within the specified Segment.
- *  	</li>
- *  	<li>
- *  		Construct the StretchBestFitResponse Instance from the given Inputs.
- *  	</li>
- *  	<li>
- *  		Construct the StretchBestFitResponse Instance from the given Predictor Ordinate/Response Pairs,
- *  			using Uniform Weightings.
- *  	</li>
+ * 		<li>Construct the <i>StretchBestFitResponse</i> Instance from the given Inputs</li>
+ * 		<li>Construct the <i>StretchBestFitResponse</i> Instance from the given Predictor Ordinate/Response Pairs, using Uniform Weightings</li>
+ * 		<li>Retrieve the Array of the Fitness Weights</li>
+ * 		<li>Retrieve the Indexed Fitness Weight Element</li>
+ * 		<li>Retrieve the Array of Predictor Ordinates</li>
+ * 		<li>Retrieve the Indexed Predictor Ordinate Element</li>
+ * 		<li>Retrieve the Array of Responses</li>
+ * 		<li>Retrieve the Indexed Response Element</li>
+ * 		<li>Retrieve the Number of Fitness Points</li>
+ * 		<li>Generate the Segment Local Best Fit Weighted Response contained within the specified Segment</li>
  *  </ul>
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class StretchBestFitResponse {
-	private double[] _adblWeight = null;
-	private double[] _adblResponse = null;
-	private double[] _adblPredictorOrdinate = null;
+public class StretchBestFitResponse
+{
+	private double[] _weightArray = null;
+	private double[] _responseArray = null;
+	private double[] _predictorOrdinateArray = null;
 
 	/**
-	 * Construct the StretchBestFitResponse Instance from the given Inputs
+	 * Construct the <i>StretchBestFitResponse</i> Instance from the given Inputs
 	 * 
-	 * @param adblPredictorOrdinate Array of Predictor Ordinates
-	 * @param adblResponseValue Array of Response Values
-	 * @param adblWeight Array of Weights
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
+	 * @param responseValueArray Array of Response Values
+	 * @param weightArray Array of Weights
 	 * 
 	 * @return Instance of StretchBestFitResponse
 	 */
 
 	public static final StretchBestFitResponse Create (
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue,
-		final double[] adblWeight)
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray,
+		final double[] weightArray)
 	{
-		StretchBestFitResponse frp = null;
+		StretchBestFitResponse stretchBestFitResponse = null;
 
 		try {
-			frp = new StretchBestFitResponse (adblWeight, adblResponseValue, adblPredictorOrdinate);
-		} catch (java.lang.Exception e) {
+			stretchBestFitResponse = new StretchBestFitResponse (
+				weightArray,
+				responseValueArray,
+				predictorOrdinateArray
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		return frp.normalizeWeights() ? frp : null;
+		return stretchBestFitResponse.normalizeWeights() ? stretchBestFitResponse : null;
 	}
 
 	/**
-	 * Construct the StretchBestFitResponse Instance from the given Inputs
+	 * Construct the <i>StretchBestFitResponse</i> Instance from the given Inputs
 	 * 
-	 * @param aiPredictorOrdinate Array of Predictor Ordinates
-	 * @param adblResponseValue Array of Response Values
-	 * @param adblWeight Array of Weights
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
+	 * @param responseValueArray Array of Response Values
+	 * @param weightArray Array of Weights
 	 * 
 	 * @return Instance of StretchBestFitResponse
 	 */
 
 	public static final StretchBestFitResponse Create (
-		final int[] aiPredictorOrdinate,
-		final double[] adblResponseValue,
-		final double[] adblWeight)
+		final int[] predictorOrdinateArray,
+		final double[] responseValueArray,
+		final double[] weightArray)
 	{
-		if (null == aiPredictorOrdinate) return null;
+		if (null == predictorOrdinateArray) {
+			return null;
+		}
 
-		int iNumPredictorOrdinate = aiPredictorOrdinate.length;
-		double[] adblPredictorOrdinate = new double[iNumPredictorOrdinate];
+		int predictorOrdinateCount = predictorOrdinateArray.length;
+		double[] clonedPredictorOrdinateArray = new double[predictorOrdinateCount];
 
-		if (0 == iNumPredictorOrdinate) return null;
+		if (0 == predictorOrdinateCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumPredictorOrdinate; ++i)
-			adblPredictorOrdinate[i] = aiPredictorOrdinate[i];
+		for (int predictorOrdinateIndex = 0; predictorOrdinateIndex < predictorOrdinateCount;
+			++predictorOrdinateIndex) {
+			clonedPredictorOrdinateArray[predictorOrdinateIndex] =
+				predictorOrdinateArray[predictorOrdinateIndex];
+		}
 
-		return Create (adblPredictorOrdinate, adblResponseValue, adblWeight);
+		return Create (clonedPredictorOrdinateArray, responseValueArray, weightArray);
 	}
 
 	/**
-	 * Construct the StretchBestFitResponse Instance from the given Predictor Ordinate/Response Pairs, using
-	 * 	Uniform Weightings.
+	 * Construct the <i>StretchBestFitResponse</i> Instance from the given Predictor Ordinate/Response Pairs,
+	 * 	using Uniform Weightings.
 	 * 
 	 * @param adblPredictorOrdinate Array of Predictor Ordinates
 	 * @param adblResponseValue Array of Response Values
@@ -226,14 +226,14 @@ public class StretchBestFitResponse {
 		final double[] adblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_adblWeight = adblWeight) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_adblResponse = adblResponse) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_adblPredictorOrdinate = adblPredictorOrdinate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_weightArray = adblWeight) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_responseArray = adblResponse) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_predictorOrdinateArray = adblPredictorOrdinate))
 			throw new java.lang.Exception ("StretchBestFitResponse ctr: Invalid Inputs");
 
-		int iNumPointsToFit = _adblWeight.length;
+		int iNumPointsToFit = _weightArray.length;
 
-		if (0 == iNumPointsToFit || _adblResponse.length != iNumPointsToFit || _adblPredictorOrdinate.length
+		if (0 == iNumPointsToFit || _responseArray.length != iNumPointsToFit || _predictorOrdinateArray.length
 			!= iNumPointsToFit)
 			throw new java.lang.Exception ("StretchBestFitResponse ctr: Invalid Inputs");
 	}
@@ -241,18 +241,18 @@ public class StretchBestFitResponse {
 	private boolean normalizeWeights()
 	{
 		double dblCumulativeWeight = 0.;
-		int iNumPointsToFit = _adblWeight.length;
+		int iNumPointsToFit = _weightArray.length;
 
 		for (int i = 0; i < iNumPointsToFit; ++i) {
-			if (_adblWeight[i] < 0.) return false;
+			if (_weightArray[i] < 0.) return false;
 
-			dblCumulativeWeight += _adblWeight[i];
+			dblCumulativeWeight += _weightArray[i];
 		}
 
 		if (0. >= dblCumulativeWeight) return false;
 
 		for (int i = 0; i < iNumPointsToFit; ++i)
-			_adblWeight[i] /= dblCumulativeWeight;
+			_weightArray[i] /= dblCumulativeWeight;
 
 		return true;
 	}
@@ -265,7 +265,7 @@ public class StretchBestFitResponse {
 
 	public double[] weight()
 	{
-		return _adblWeight;
+		return _weightArray;
 	}
 
 	/**
@@ -285,7 +285,7 @@ public class StretchBestFitResponse {
 		if (iIndex >= numPoint())
 			throw new java.lang.Exception ("StretchBestFitResponse::weight => Invalid Index");
 
-		return _adblWeight[iIndex];
+		return _weightArray[iIndex];
 	}
 
 	/**
@@ -296,7 +296,7 @@ public class StretchBestFitResponse {
 
 	public double[] predictorOrdinate()
 	{
-		return _adblPredictorOrdinate;
+		return _predictorOrdinateArray;
 	}
 
 	/**
@@ -316,7 +316,7 @@ public class StretchBestFitResponse {
 		if (iIndex >= numPoint())
 			throw new java.lang.Exception ("StretchBestFitResponse::predictorOrdinate => Invalid Index");
 
-		return _adblPredictorOrdinate[iIndex];
+		return _predictorOrdinateArray[iIndex];
 	}
 
 	/**
@@ -327,7 +327,7 @@ public class StretchBestFitResponse {
 
 	public double[] response()
 	{
-		return _adblResponse;
+		return _responseArray;
 	}
 
 	/**
@@ -347,7 +347,7 @@ public class StretchBestFitResponse {
 		if (iIndex >= numPoint())
 			throw new java.lang.Exception ("StretchBestFitResponse::response => Invalid Index");
 
-		return _adblResponse[iIndex];
+		return _responseArray[iIndex];
 	}
 
 	/**
@@ -358,7 +358,7 @@ public class StretchBestFitResponse {
 
 	public int numPoint()
 	{
-		return null == _adblResponse ? 0 : _adblResponse.length;
+		return null == _responseArray ? 0 : _responseArray.length;
 	}
 
 	/**
@@ -380,7 +380,7 @@ public class StretchBestFitResponse {
 
 		for (int i = 0; i < iNumPoint; ++i) {
 			try {
-				if (ics.in (_adblPredictorOrdinate[i])) lsIndex.add (i);
+				if (ics.in (_predictorOrdinateArray[i])) lsIndex.add (i);
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();
 
@@ -398,9 +398,9 @@ public class StretchBestFitResponse {
 		double[] adblPredictor = new double[iNumLocalPoint];
 
 		for (int i : lsIndex) {
-			adblWeight[iIndex] = _adblWeight[i];
-			adblResponse[iIndex] = _adblResponse[i];
-			adblPredictor[iIndex++] = _adblPredictorOrdinate[i];
+			adblWeight[iIndex] = _weightArray[i];
+			adblResponse[iIndex] = _responseArray[i];
+			adblPredictor[iIndex++] = _predictorOrdinateArray[i];
 		}
 
 		return org.drip.spline.params.SegmentBestFitResponse.Create (adblPredictor, adblResponse,

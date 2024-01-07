@@ -3,7 +3,9 @@ package org.drip.spline.grid;
 
 import java.util.List;
 
+import org.drip.numerical.differentiation.WengertJacobian;
 import org.drip.spline.stretch.MultiSegmentSequence;
+import org.drip.state.identifier.LatentStateLabel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -212,75 +214,90 @@ public class AggregatedSpan
 	}
 
 	@Override public double calcResponseValueDerivative (
-		final double dblPredictorOrdinate,
-		final int iOrder)
-		throws java.lang.Exception
+		final double predictorOrdinate,
+		final int order)
+		throws Exception
 	{
 		int i = 0;
-		double dblResponseValueDerivative = 0.;
+		double responseValueDerivative = 0.;
 
-		for (org.drip.spline.grid.Span span : _spanList)
-			dblResponseValueDerivative += span.calcResponseValueDerivative (dblPredictorOrdinate,iOrder) *
+		for (Span span : _spanList) {
+			responseValueDerivative += span.calcResponseValueDerivative (predictorOrdinate, order) *
 				_weightList.get (i++);
+		}
 
-		return dblResponseValueDerivative;
+		return responseValueDerivative;
 	}
 
 	@Override public boolean isMergeState (
-		final double dblPredictorOrdinate,
-		final org.drip.state.identifier.LatentStateLabel lsl)
+		final double predictorOrdinate,
+		final LatentStateLabel latentStateLabel)
 	{
-		for (org.drip.spline.grid.Span span : _spanList) {
-			if (span.isMergeState (dblPredictorOrdinate, lsl)) return true;
-		}
-
-		return false;
-	}
-
-	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final double dblPredictorOrdinate,
-		final int iOrder)
-	{
-		int i = 0;
-		org.drip.numerical.differentiation.WengertJacobian wjAggregate = null;
-
-		for (org.drip.spline.grid.Span span : _spanList) {
-			org.drip.numerical.differentiation.WengertJacobian wj = span.jackDResponseDManifestMeasure
-				(strManifestMeasure, dblPredictorOrdinate, iOrder);
-
-			if (null == wj) return null;
-
-			if (null == wjAggregate) {
-				if (!(wjAggregate = wj).scale (_weightList.get (i++))) return null;
-			} else {
-				if (!wjAggregate.cumulativeMerge (wj, _weightList.get (i++))) return null;
+		for (Span span : _spanList) {
+			if (span.isMergeState (predictorOrdinate, latentStateLabel)) {
+				return true;
 			}
 		}
 
-		return wjAggregate;
+		return false;
+	}
+
+	@Override public WengertJacobian jackDResponseDManifestMeasure (
+		final String manifestMeasure,
+		final double predictorOrdinate,
+		final int order)
+	{
+		int i = 0;
+		WengertJacobian aggregateWengertJacobian = null;
+
+		for (Span span : _spanList) {
+			WengertJacobian wengertJacobian = span.jackDResponseDManifestMeasure (
+				manifestMeasure,
+				predictorOrdinate,
+				order
+			);
+
+			if (null == wengertJacobian) {
+				return null;
+			}
+
+			if (null == aggregateWengertJacobian) {
+				if (!(aggregateWengertJacobian = wengertJacobian).scale (_weightList.get (i++))) {
+					return null;
+				}
+			} else {
+				if (!aggregateWengertJacobian.cumulativeMerge (wengertJacobian, _weightList.get (i++))) {
+					return null;
+				}
+			}
+		}
+
+		return aggregateWengertJacobian;
 	}
 
 	@Override public boolean in (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
-		for (org.drip.spline.grid.Span span : _spanList) {
-			if (span.in (dblPredictorOrdinate)) return true;
+		for (Span span : _spanList) {
+			if (span.in (predictorOrdinate)) {
+				return true;
+			}
 		}
 
 		return false;
 	}
 
-	@Override public java.lang.String displayString()
+	@Override public String displayString()
 	{
 		int i = 0;
 
-		java.lang.StringBuffer sb = new java.lang.StringBuffer();
+		StringBuffer stringBuffer = new StringBuffer();
 
-		for (org.drip.spline.grid.Span span : _spanList)
-			sb.append (span.displayString() + " | " + _weightList.get (i++));
+		for (Span span : _spanList) {
+			stringBuffer.append (span.displayString() + " | " + _weightList.get (i++));
+		}
 
-		return sb.toString();
+		return stringBuffer.toString();
 	}
 }

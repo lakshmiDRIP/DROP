@@ -1,11 +1,16 @@
 
 package org.drip.spline.multidimensional;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,164 +87,193 @@ package org.drip.spline.multidimensional;
 
 /**
  * <i>WireSurfacePiecewiseConstant</i> implements the piecewise Constant version of the 2D Spline Response
- * Surface. It synthesizes this from an array of 1D Span Instances, each of which is referred to as wire
- * spline in this case.
+ * 	Surface. It synthesizes this from an array of 1D Span Instances, each of which is referred to as wire
+ * 	spline in this case.
  *
- * <br><br>
+ * <br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/multidimensional/README.md">Multi-dimensional Wire Surface Stretch</a></li>
+ * 		<li><i>WireSurfacePiecewiseConstant</i> Constructor</li>
+ * 		<li>Enclosing X Index</li>
+ * 		<li>Enclosing Y Index</li>
+ * 		<li>Compute the Bivariate Surface Response Value</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/multidimensional/README.md">Multi-dimensional Wire Surface Stretch</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class WireSurfacePiecewiseConstant {
-	private double[] _adblX = null;
-	private double[] _adblY = null;
-	private double[][] _aadblResponse = null;
+public class WireSurfacePiecewiseConstant
+{
+	private double[] _xArray = null;
+	private double[] _yArray = null;
+	private double[][] _responseGrid = null;
 
 	/**
-	 * WireSurfacePiecewiseConstant Constructor
+	 * <i>WireSurfacePiecewiseConstant</i> Constructor
 	 * 
-	 * @param adblX Array of the X Ordinates
-	 * @param adblY Array of the Y Ordinates
-	 * @param aadblResponse Double Array of the Responses corresponding to {X, Y}
+	 * @param xArray Array of the X Ordinates
+	 * @param yArray Array of the Y Ordinates
+	 * @param responseGrid Double Array of the Responses corresponding to {X, Y}
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public WireSurfacePiecewiseConstant (
-		final double[] adblX,
-		final double[] adblY,
-		final double[][] aadblResponse)
-		throws java.lang.Exception
+		final double[] xArray,
+		final double[] yArray,
+		final double[][] responseGrid)
+		throws Exception
 	{
-		if (null == (_adblX = adblX) || null == (_adblY = adblY))
-			throw new java.lang.Exception ("WireSurfacePiecewiseConstant ctr: Invalid Inputs");
+		if (null == (_xArray = xArray) || null == (_yArray = yArray)) {
+			throw new Exception ("WireSurfacePiecewiseConstant ctr: Invalid Inputs");
+		}
 
-		int iXLength = _adblX.length;
-		int iYLength = _adblY.length;
+		int xLength = _xArray.length;
+		int yLength = _yArray.length;
 
-		if (0 == iXLength || 0 == iYLength || null == (_aadblResponse = aadblResponse) || iXLength !=
-			_aadblResponse.length || iYLength != _aadblResponse[0].length)
-			throw new java.lang.Exception ("WireSurfacePiecewiseConstant ctr: Invalid Inputs");
+		if (0 == xLength || 0 == yLength || null == (_responseGrid = responseGrid) ||
+			xLength != _responseGrid.length || yLength != _responseGrid[0].length) {
+			throw new Exception ("WireSurfacePiecewiseConstant ctr: Invalid Inputs");
+		}
 	}
 
 	/**
 	 * Enclosing X Index
 	 * 
-	 * @param dblX The X Ordinate
+	 * @param x The X Ordinate
 	 * 
 	 * @return The Corresponding Index
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public int enclosingXIndex (
-		final double dblX)
-		throws java.lang.Exception
+		final double x)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-			throw new java.lang.Exception
-				("WireSurfacePiecewiseConstant::enclosingXIndex => Invalid Inputs");
-
-		if (dblX < _adblX[0]) return java.lang.Integer.MIN_VALUE;
-
-		int iTerminalXIndex = _adblX.length - 1;
-
-		if (dblX > _adblX[iTerminalXIndex]) return java.lang.Integer.MAX_VALUE;
-
-		for (int i = 1; i <= iTerminalXIndex; ++i) {
-			if (dblX >= _adblX[i - 1] && dblX >= _adblX[i]) return i;
+		if (!NumberUtil.IsValid (x)) {
+			throw new Exception ("WireSurfacePiecewiseConstant::enclosingXIndex => Invalid Inputs");
 		}
 
-		throw new java.lang.Exception ("WireSurfacePiecewiseConstant::enclosingXIndex => Invalid Inputs");
+		if (x < _xArray[0]) {
+			return Integer.MIN_VALUE;
+		}
+
+		int terminalXIndex = _xArray.length - 1;
+
+		if (x > _xArray[terminalXIndex]) {
+			return Integer.MAX_VALUE;
+		}
+
+		for (int xIndex = 1; xIndex <= terminalXIndex; ++xIndex) {
+			if (x >= _xArray[xIndex - 1] && x >= _xArray[xIndex]) {
+				return xIndex;
+			}
+		}
+
+		throw new Exception ("WireSurfacePiecewiseConstant::enclosingXIndex => Invalid Inputs");
 	}
 
 	/**
 	 * Enclosing Y Index
 	 * 
-	 * @param dblY The Y Ordinate
+	 * @param y The Y Ordinate
 	 * 
 	 * @return The Corresponding Index
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public int enclosingYIndex (
-		final double dblY)
-		throws java.lang.Exception
+		final double y)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY))
-			throw new java.lang.Exception
-				("WireSurfacePiecewiseConstant::enclosingYIndex => Invalid Inputs");
-
-		if (dblY < _adblY[0]) return java.lang.Integer.MIN_VALUE;
-
-		int iTerminalYIndex = _adblY.length - 1;
-
-		if (dblY > _adblY[iTerminalYIndex]) return java.lang.Integer.MAX_VALUE;
-
-		for (int i = 1; i <= iTerminalYIndex; ++i) {
-			if (dblY >= _adblY[i - 1] && dblY >= _adblY[i]) return i;
+		if (!NumberUtil.IsValid (y)) {
+			throw new Exception ("WireSurfacePiecewiseConstant::enclosingYIndex => Invalid Inputs");
 		}
 
-		throw new java.lang.Exception ("WireSurfacePiecewiseConstant::enclosingXIndex => Invalid Inputs");
+		if (y < _yArray[0]) {
+			return Integer.MIN_VALUE;
+		}
+
+		int terminalYIndex = _yArray.length - 1;
+
+		if (y > _yArray[terminalYIndex]) {
+			return Integer.MAX_VALUE;
+		}
+
+		for (int yIndex = 1; yIndex <= terminalYIndex; ++yIndex) {
+			if (y >= _yArray[yIndex - 1] && y >= _yArray[yIndex]) {
+				return yIndex;
+			}
+		}
+
+		throw new Exception ("WireSurfacePiecewiseConstant::enclosingXIndex => Invalid Inputs");
 	}
 
 	/**
 	 * Compute the Bivariate Surface Response Value
 	 * 
-	 * @param dblX X
-	 * @param dblY Y
+	 * @param x X
+	 * @param y Y
 	 * 
 	 * @return The Bivariate Surface Response Value
 	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 * @throws Exception Thrown if Inputs are Invalid
 	 */
 
 	public double responseValue (
-		final double dblX,
-		final double dblY)
-		throws java.lang.Exception
+		final double x,
+		final double y)
+		throws Exception
 	{
-		int iTerminalXIndex = _adblX.length - 1;
-		int iTerminalYIndex = _adblY.length - 1;
+		int terminalXIndex = _xArray.length - 1;
+		int terminalYIndex = _yArray.length - 1;
 
-		int iEnclosingXIndex = enclosingXIndex (dblX);
+		int enclosingXIndex = enclosingXIndex (x);
 
-		int iEnclosingYIndex = enclosingYIndex (dblY);
+		int enclosingYIndex = enclosingYIndex (y);
 
-		if (java.lang.Integer.MIN_VALUE == iEnclosingXIndex)
-			iEnclosingXIndex = 0;
-		else if (java.lang.Integer.MAX_VALUE == iEnclosingXIndex)
-			iEnclosingXIndex = iTerminalXIndex;
-		else {
-			for (int i = 1; i <= iTerminalXIndex; ++i) {
-				if (dblX >= _adblX[i - 1] && dblX >= _adblX[i]) {
-					iEnclosingXIndex = i;
+		if (Integer.MIN_VALUE == enclosingXIndex) {
+			enclosingXIndex = 0;
+		} else if (Integer.MAX_VALUE == enclosingXIndex) {
+			enclosingXIndex = terminalXIndex;
+		} else {
+			for (int xIndex = 1; xIndex <= terminalXIndex; ++xIndex) {
+				if (x >= _xArray[xIndex - 1] && x >= _xArray[xIndex]) {
+					enclosingXIndex = xIndex;
 					break;
 				}
 			}
 		}
 
-		if (java.lang.Integer.MIN_VALUE == iEnclosingYIndex)
-			iEnclosingYIndex = 0;
-		else if (java.lang.Integer.MAX_VALUE == iEnclosingYIndex)
-			iEnclosingYIndex = iTerminalYIndex;
-		else {
-			for (int i = 1; i <= iTerminalYIndex; ++i) {
-				if (dblY >= _adblY[i - 1] && dblY >= _adblY[i]) {
-					iEnclosingYIndex = i;
+		if (Integer.MIN_VALUE == enclosingYIndex) {
+			enclosingYIndex = 0;
+		} else if (Integer.MAX_VALUE == enclosingYIndex) {
+			enclosingYIndex = terminalYIndex;
+		} else {
+			for (int yIndex = 1; yIndex <= terminalYIndex; ++yIndex) {
+				if (y >= _yArray[yIndex - 1] && y >= _yArray[yIndex]) {
+					enclosingYIndex = yIndex;
 					break;
 				}
 			}
 		}
 
-		return _aadblResponse[iEnclosingXIndex][iEnclosingYIndex];
+		return _responseGrid[enclosingXIndex][enclosingYIndex];
 	}
 }

@@ -1,11 +1,29 @@
 
 package org.drip.spline.multidimensional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.drip.numerical.common.NumberUtil;
+import org.drip.service.common.StringUtil;
+import org.drip.spline.grid.AggregatedSpan;
+import org.drip.spline.grid.OverlappingStretchSpan;
+import org.drip.spline.grid.Span;
+import org.drip.spline.params.SegmentCustomBuilderControl;
+import org.drip.spline.stretch.BoundarySettings;
+import org.drip.spline.stretch.MultiSegmentSequence;
+import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,28 +100,43 @@ package org.drip.spline.multidimensional;
 
 /**
  * <i>WireSurfaceStretch</i> implements a 2D spline surface stretch. It synthesizes this from an array of 1D
- * Span instances, each of which is referred to as wire spline in this case.
+ * 	Span instances, each of which is referred to as wire spline in this case.
  *
- * <br><br>
+ * <br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/multidimensional/README.md">Multi-dimensional Wire Surface Stretch</a></li>
+ * 		<li><i>WireSurfaceStretch</i> Constructor</li>
+ * 		<li>Compute the Bivariate Surface Response Value</li>
+ * 		<li>Retrieve the Surface Span Stretch that corresponds to the given Y Anchor</li>
+ * 		<li>Retrieve the Surface Span Stretch that corresponds to the given X Anchor</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/multidimensional/README.md">Multi-dimensional Wire Surface Stretch</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class WireSurfaceStretch {
-	private org.drip.spline.params.SegmentCustomBuilderControl _scbc = null;
-	private java.util.TreeMap<java.lang.Double, org.drip.spline.grid.Span> _mapWireSpan = null;
+public class WireSurfaceStretch
+{
+	private TreeMap<Double, Span> _wireSpanMap = null;
+	private SegmentCustomBuilderControl _segmentCustomBuilderControl = null;
 
 	/**
-	 * WireSurfaceStretch Constructor
+	 * <i>WireSurfaceStretch</i> Constructor
 	 * 
-	 * @param strName Name
+	 * @param name Name
 	 * @param scbc Segment Custom Builder Control Parameters
 	 * @param mapWireSpan X-mapped Array of Y Basis Spline Wire Spans
 	 * 
@@ -111,129 +144,154 @@ public class WireSurfaceStretch {
 	 */
 
 	public WireSurfaceStretch (
-		final java.lang.String strName,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbc,
-		final java.util.TreeMap<java.lang.Double, org.drip.spline.grid.Span> mapWireSpan)
-		throws java.lang.Exception
+		final String strnameName,
+		final SegmentCustomBuilderControl segmentCustomBuilderControl,
+		final TreeMap<Double, Span> wireSpanMap)
+		throws Exception
 	{
-		if (null == (_mapWireSpan = mapWireSpan) || 0 == _mapWireSpan.size() || null == (_scbc = scbc))
-			throw new java.lang.Exception ("WireSurfaceStretch ctr: Invalid Inputs");
+		if (null == (_wireSpanMap = wireSpanMap) || 0 == _wireSpanMap.size() ||
+			null == (_segmentCustomBuilderControl = segmentCustomBuilderControl)) {
+			throw new Exception ("WireSurfaceStretch ctr: Invalid Inputs");
+		}
 	}
 
 	/**
 	 * Compute the Bivariate Surface Response Value
 	 * 
-	 * @param dblX X
-	 * @param dblY Y
+	 * @param x X
+	 * @param y Y
 	 * 
 	 * @return The Bivariate Surface Response Value
 	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 * @throws Exception Thrown if Inputs are Invalid
 	 */
 
 	public double responseValue (
-		final double dblX,
-		final double dblY)
-		throws java.lang.Exception
+		final double x,
+		final double y)
+		throws Exception
 	{
-		int iSize = _mapWireSpan.size();
+		int wireSpanMapSize = _wireSpanMap.size();
 
 		int i = 0;
-		double[] adblX = new double[iSize];
-		double[] adblZ = new double[iSize];
-		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new
-			org.drip.spline.params.SegmentCustomBuilderControl[iSize - 1];
+		double[] xArray = new double[wireSpanMapSize];
+		double[] zArray = new double[wireSpanMapSize];
+		SegmentCustomBuilderControl[] segmentCustomBuilderControlArray =
+			new SegmentCustomBuilderControl[wireSpanMapSize - 1];
 
-		for (java.util.Map.Entry<java.lang.Double, org.drip.spline.grid.Span> me : _mapWireSpan.entrySet()) {
-			if (null == me)
-				throw new java.lang.Exception ("WireSurfaceStretch::responseValue => Invalid Wire Span Map");
+		for (Map.Entry<Double, Span> wireSpanMapEntry : _wireSpanMap.entrySet()) {
+			if (null == wireSpanMapEntry) {
+				throw new Exception ("WireSurfaceStretch::responseValue => Invalid Wire Span Map");
+			}
 
-			if (0 != i) aSCBC[i - 1] = _scbc;
+			if (0 != i) {
+				segmentCustomBuilderControlArray[i - 1] = _segmentCustomBuilderControl;
+			}
 
-			adblX[i] = me.getKey();
+			xArray[i] = wireSpanMapEntry.getKey();
 
-			org.drip.spline.grid.Span wireSpan = me.getValue();
+			Span wireSpan = wireSpanMapEntry.getValue();
 
-			if (null == wireSpan)
-				throw new java.lang.Exception ("WireSurfaceStretch::responseValue => Invalid Wire Span Map");
+			if (null == wireSpan) {
+				throw new Exception ("WireSurfaceStretch::responseValue => Invalid Wire Span Map");
+			}
 
-			double dblLeftY = wireSpan.left();
+			double leftY = wireSpan.left();
 
-			double dblRightY = wireSpan.right();
+			double rightY = wireSpan.right();
 
-			if (dblY <= dblLeftY)
-				adblZ[i++] = wireSpan.calcResponseValue (dblLeftY);
-			else if (dblY >= dblRightY)
-				adblZ[i++] = wireSpan.calcResponseValue (dblRightY);
-			else
-				adblZ[i++] = wireSpan.calcResponseValue (dblY);
+			if (y <= leftY) {
+				zArray[i++] = wireSpan.calcResponseValue (leftY);
+			} else if (y >= rightY) {
+				zArray[i++] = wireSpan.calcResponseValue (rightY);
+			} else {
+				zArray[i++] = wireSpan.calcResponseValue (y);
+			}
 		}
 
-		org.drip.spline.stretch.MultiSegmentSequence mss =
-			org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-				("org.drip.spline.multidimensional.WireSurfaceStretch@" +
-					org.drip.service.common.StringUtil.GUID(), adblX, adblZ, aSCBC, null,
-						org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
-							org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE);
+		MultiSegmentSequence multiSegmentSequence =
+			MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
+				"org.drip.spline.multidimensional.WireSurfaceStretch@" + StringUtil.GUID(),
+				xArray,
+				zArray,
+				segmentCustomBuilderControlArray,
+				null,
+				BoundarySettings.NaturalStandard(),
+				MultiSegmentSequence.CALIBRATE
+			);
 
-		if (null == mss)
-			throw new java.lang.Exception ("WireSurfaceStretch::responseValue => Cannot extract MSS");
+		if (null == multiSegmentSequence) {
+			throw new Exception ("WireSurfaceStretch::responseValue => Cannot extract MSS");
+		}
 
-		double dblLeftX = mss.getLeftPredictorOrdinateEdge();
+		double leftX = multiSegmentSequence.getLeftPredictorOrdinateEdge();
 
-		if (dblX <= dblLeftX) return mss.responseValue (dblLeftX);
+		if (x <= leftX) {
+			return multiSegmentSequence.responseValue (leftX);
+		}
 
-		double dblRightX = mss.getRightPredictorOrdinateEdge();
+		double rightX = multiSegmentSequence.getRightPredictorOrdinateEdge();
 
-		if (dblX >= dblRightX) return mss.responseValue (dblRightX);
+		if (x >= rightX) {
+			return multiSegmentSequence.responseValue (rightX);
+		}
 
-		return mss.responseValue (dblX);
+		return multiSegmentSequence.responseValue (x);
 	}
 
 	/**
 	 * Retrieve the Surface Span Stretch that corresponds to the given Y Anchor
 	 * 
-	 * @param dblYAnchor Y Anchor
+	 * @param yAnchor Y Anchor
 	 * 
 	 * @return The Surface Span Stretch Instance
 	 */
 
-	public org.drip.spline.grid.Span wireSpanYAnchor (
-		final double dblYAnchor)
+	public Span wireSpanYAnchor (
+		final double yAnchor)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblYAnchor)) return null;
+		if (!NumberUtil.IsValid (yAnchor)) {
+			return null;
+		}
 
-		int iSize = _mapWireSpan.size();
+		int wireSpanMapSize = _wireSpanMap.size();
 
 		int i = 0;
-		double[] adblX = new double[iSize];
-		double[] adblZ = new double[iSize];
-		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new
-			org.drip.spline.params.SegmentCustomBuilderControl[iSize - 1];
+		double[] xArray = new double[wireSpanMapSize];
+		double[] zArray = new double[wireSpanMapSize];
+		SegmentCustomBuilderControl[] segmentCustomBuilderControlArray =
+			new SegmentCustomBuilderControl[wireSpanMapSize - 1];
 
-		for (java.util.Map.Entry<java.lang.Double, org.drip.spline.grid.Span> me : _mapWireSpan.entrySet()) {
-			if (null == me) return null;
+		for (Map.Entry<Double, Span> wireSpanMapEntry : _wireSpanMap.entrySet()) {
+			if (null == wireSpanMapEntry) {
+				return null;
+			}
 
-			if (0 != i) aSCBC[i - 1] = _scbc;
+			if (0 != i) {
+				segmentCustomBuilderControlArray[i - 1] = _segmentCustomBuilderControl;
+			}
 
-			adblX[i] = me.getKey();
+			xArray[i] = wireSpanMapEntry.getKey();
 
-			org.drip.spline.grid.Span wireSpan = me.getValue();
+			Span wireSpan = wireSpanMapEntry.getValue();
 
-			if (null == wireSpan) return null;
+			if (null == wireSpan) {
+				return null;
+			}
 
 			try {
-				double dblLeftY = wireSpan.left();
+				double leftY = wireSpan.left();
 
-				double dblRightY = wireSpan.right();
+				double rightY = wireSpan.right();
 
-				if (dblYAnchor <= dblLeftY)
-					adblZ[i++] = wireSpan.calcResponseValue (dblLeftY);
-				else if (dblYAnchor >= dblRightY)
-					adblZ[i++] = wireSpan.calcResponseValue (dblRightY);
-				else
-					adblZ[i++] = wireSpan.calcResponseValue (dblYAnchor);
-			} catch (java.lang.Exception e) {
+				if (yAnchor <= leftY) {
+					zArray[i++] = wireSpan.calcResponseValue (leftY);
+				} else if (yAnchor >= rightY) {
+					zArray[i++] = wireSpan.calcResponseValue (rightY);
+				} else {
+					zArray[i++] = wireSpan.calcResponseValue (yAnchor);
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
@@ -241,13 +299,18 @@ public class WireSurfaceStretch {
 		}
 
 		try {
-			return new org.drip.spline.grid.OverlappingStretchSpan
-				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-					("org.drip.spline.multidimensional.WireSurfaceStretch@" +
-						org.drip.service.common.StringUtil.GUID(), adblX, adblZ, aSCBC, null,
-							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
-								org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE));
-		} catch (java.lang.Exception e) {
+			return new OverlappingStretchSpan (
+				MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
+					"org.drip.spline.multidimensional.WireSurfaceStretch@" + StringUtil.GUID(),
+					xArray,
+					zArray,
+					segmentCustomBuilderControlArray,
+					null,
+					BoundarySettings.NaturalStandard(),
+					MultiSegmentSequence.CALIBRATE
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -257,65 +320,69 @@ public class WireSurfaceStretch {
 	/**
 	 * Retrieve the Surface Span Stretch that corresponds to the given X Anchor
 	 * 
-	 * @param dblXAnchor X Anchor
+	 * @param xAnchor X Anchor
 	 * 
 	 * @return The Surface Span Stretch Instance
 	 */
 
-	public org.drip.spline.grid.Span wireSpanXAnchor (
-		final double dblXAnchor)
+	public Span wireSpanXAnchor (
+		final double xAnchor)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblXAnchor)) return null;
+		if (!NumberUtil.IsValid (xAnchor)) {
+			return null;
+		}
 
-		org.drip.spline.grid.Span spanPrev = null;
-		org.drip.spline.grid.Span spanCurrent = null;
-		double dblXAnchorPrev = java.lang.Double.NaN;
-		double dblXAnchorCurrent = java.lang.Double.NaN;
+		Span currentSpan = null;
+		Span previousSpan = null;
+		double currentXAnchor = Double.NaN;
+		double previousXAnchor = Double.NaN;
 
-		for (java.util.Map.Entry<java.lang.Double, org.drip.spline.grid.Span> me : _mapWireSpan.entrySet()) {
-			if (null == me) return null;
+		for (Map.Entry<Double, Span> wireSpanMapEntry : _wireSpanMap.entrySet()) {
+			if (null == wireSpanMapEntry) {
+				return null;
+			}
 
-			dblXAnchorCurrent = me.getKey();
+			currentXAnchor = wireSpanMapEntry.getKey();
 
-			spanCurrent = me.getValue();
+			currentSpan = wireSpanMapEntry.getValue();
 
-			if (!org.drip.numerical.common.NumberUtil.IsValid (dblXAnchorPrev)) {
-				if (dblXAnchor <= (dblXAnchorPrev = dblXAnchorCurrent)) return spanCurrent;
+			if (!NumberUtil.IsValid (previousXAnchor)) {
+				if (xAnchor <= (previousXAnchor = currentXAnchor)) {
+					return currentSpan;
+				}
 
-				spanPrev = spanCurrent;
+				previousSpan = currentSpan;
 				continue;
 			}
 
-			if (dblXAnchor > dblXAnchorPrev && dblXAnchor <= dblXAnchorCurrent) {
-				double dblLeftWeight = (dblXAnchorCurrent - dblXAnchor) / (dblXAnchorCurrent -
-					dblXAnchorPrev);
+			if (xAnchor > previousXAnchor && xAnchor <= currentXAnchor) {
+				double leftWeight = (currentXAnchor - xAnchor) / (currentXAnchor - previousXAnchor);
 
-				java.util.List<java.lang.Double> lsWeight = new java.util.ArrayList<java.lang.Double>();
+				List<Double> weightList = new ArrayList<Double>();
 
-				java.util.List<org.drip.spline.grid.Span> lsSpan = new
-					java.util.ArrayList<org.drip.spline.grid.Span>();
+				List<Span> spanList = new ArrayList<Span>();
 
-				lsSpan.add (spanPrev);
+				spanList.add (previousSpan);
 
-				lsSpan.add (spanCurrent);
+				spanList.add (currentSpan);
 
-				lsWeight.add (dblLeftWeight);
+				weightList.add (leftWeight);
 
-				lsWeight.add (1. - dblLeftWeight);
+				weightList.add (1. - leftWeight);
 
 				try {
-					return new org.drip.spline.grid.AggregatedSpan (lsSpan, lsWeight);
-				} catch (java.lang.Exception e) {
+					return new AggregatedSpan (spanList, weightList);
+				} catch (Exception e) {
 					e.printStackTrace();
 
 					return null;
 				}
 			}
 
-			spanPrev = spanCurrent;
-			dblXAnchorPrev = dblXAnchorCurrent;
+			previousSpan = currentSpan;
+			previousXAnchor = currentXAnchor;
 		}
 
-		return spanCurrent;
+		return currentSpan;
 	}
 }
