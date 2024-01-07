@@ -1,11 +1,16 @@
 
 package org.drip.spline.params;
 
+import org.drip.spline.basis.FunctionSetBuilderParams;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,29 +89,46 @@ package org.drip.spline.params;
 
 /**
  * <i>SegmentCustomBuilderControl</i> holds the parameters the guide the creation/behavior of the segment. It
- * holds the segment elastic/inelastic parameters and the named basis function set.
+ * 	holds the segment elastic/inelastic parameters and the named basis function set.
  *
- * <br><br>
+ * <br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></li>
+ * 		<li><i>SegmentCustomBuilderControl</i> constructor</li>
+ * 		<li>Retrieve the Basis Spline Name</li>
+ * 		<li>Retrieve the Basis Set Parameters</li>
+ * 		<li>Retrieve the Segment Inelastic Controller</li>
+ * 		<li>Retrieve the Segment Shape Controller</li>
+ * 		<li>Retrieve the Preceeding Manifest Sensitivity Control Parameters</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SegmentCustomBuilderControl {
-	private java.lang.String _strBasisSpline = "";
-	private org.drip.spline.basis.FunctionSetBuilderParams _fsbp = null;
-	private org.drip.spline.params.ResponseScalingShapeControl _rssc = null;
-	private org.drip.spline.params.SegmentInelasticDesignControl _sdic = null;
+public class SegmentCustomBuilderControl
+{
+	private String _basisSpline = "";
+	private FunctionSetBuilderParams _functionSetBuilderParams = null;
+	private ResponseScalingShapeControl _responseScalingShapeControl = null;
+	private SegmentInelasticDesignControl _segmentInelasticDesignControl = null;
 	private org.drip.spline.params.PreceedingManifestSensitivityControl _pmsc = null;
 
 	/**
-	 * SegmentCustomBuilderControl constructor
+	 * <i>SegmentCustomBuilderControl</i> constructor
 	 * 
 	 * @param strBasisSpline Named Segment Basis Spline
 	 * @param fsbp Segment Basis Set Construction Parameters
@@ -125,11 +147,12 @@ public class SegmentCustomBuilderControl {
 		final org.drip.spline.params.PreceedingManifestSensitivityControl pmsc)
 		throws java.lang.Exception
 	{
-		if (null == (_strBasisSpline = strBasisSpline) || null == (_fsbp = fsbp) || null == (_sdic = sdic))
+		if (null == (_basisSpline = strBasisSpline) || null == (_functionSetBuilderParams = fsbp) ||
+			null == (_segmentInelasticDesignControl = sdic))
 			throw new java.lang.Exception ("SegmentCustomBuilderControl ctr => Invalid Inputs");
 
 		_pmsc = pmsc;
-		_rssc = rssc;
+		_responseScalingShapeControl = rssc;
 	}
 
 	/**
@@ -138,9 +161,9 @@ public class SegmentCustomBuilderControl {
 	 * @return The Basis Spline Name
 	 */
 
-	public java.lang.String basisSpline()
+	public String basisSpline()
 	{
-		return _strBasisSpline;
+		return _basisSpline;
 	}
 
 	/**
@@ -149,9 +172,9 @@ public class SegmentCustomBuilderControl {
 	 * @return The Basis Set Parameters
 	 */
 
-	public org.drip.spline.basis.FunctionSetBuilderParams basisSetParams()
+	public FunctionSetBuilderParams basisSetParams()
 	{
-		return _fsbp;
+		return _functionSetBuilderParams;
 	}
 
 	/**
@@ -160,9 +183,9 @@ public class SegmentCustomBuilderControl {
 	 * @return The Segment Inelastic Parameters
 	 */
 
-	public org.drip.spline.params.SegmentInelasticDesignControl inelasticParams()
+	public SegmentInelasticDesignControl inelasticParams()
 	{
-		return _sdic;
+		return _segmentInelasticDesignControl;
 	}
 
 	/**
@@ -171,9 +194,9 @@ public class SegmentCustomBuilderControl {
 	 * @return The Segment Shape Controller
 	 */
 
-	public org.drip.spline.params.ResponseScalingShapeControl shapeController()
+	public ResponseScalingShapeControl shapeController()
 	{
-		return _rssc;
+		return _responseScalingShapeControl;
 	}
 
 	/**

@@ -1,11 +1,16 @@
 
 package org.drip.spline.params;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,113 +88,147 @@ package org.drip.spline.params;
  */
 
 /**
- * <i>SegmentBestFitResponse </i>implements basis per-segment Fitness Penalty Parameter Set. Currently it
- * contains the Best Fit Penalty Weight Grid Matrix and the corresponding Segment Local Predictor
- * Ordinate/Response Match Pair.
+ * <i>SegmentBestFitResponse</i> implements basis per-segment Fitness Penalty Parameter Set. Currently it
+ * 	contains the Best Fit Penalty Weight Grid Matrix and the corresponding Segment Local Predictor
+ * 	Ordinate/Response Match Pair.
  *
- * <br><br>
+ * <br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></li>
+ * 		<li>Construct the <i>SegmentBestFitResponse</i> Instance from the given Inputs</li>
+ * 		<li>Construct the <i>SegmentBestFitResponse</i> Instance from the given Predictor Ordinate/Response Pairs, using Uniform Weightings</li>
+ * 		<li>Retrieve the Array of the Fitness Weights</li>
+ * 		<li>Retrieve the Indexed Fitness Weight Element</li>
+ * 		<li>Retrieve the Array of Predictor Ordinates</li>
+ * 		<li>Retrieve the Indexed Predictor Ordinate Element</li>
+ * 		<li>Retrieve the Array of Responses</li>
+ * 		<li>Retrieve the Indexed Response Element</li>
+ * 		<li>Retrieve the Number of Fitness Points</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SegmentBestFitResponse {
-	private double[] _adblWeight = null;
-	private double[] _adblResponse = null;
-	private double[] _adblPredictorOrdinate = null;
+public class SegmentBestFitResponse
+{
+	private double[] _weightArray = null;
+	private double[] _responseArray = null;
+	private double[] _predictorOrdinateArray = null;
 
 	/**
-	 * Construct the SegmentBestFitResponse Instance from the given Inputs
+	 * Construct the <i>SegmentBestFitResponse</i> Instance from the given Inputs
 	 * 
-	 * @param adblPredictorOrdinate Array of Predictor Ordinates
-	 * @param adblResponseValue Array of Response Values
-	 * @param adblWeight Array of Weights
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
+	 * @param responseValueArray Array of Response Values
+	 * @param weightArray Array of Weights
 	 * 
-	 * @return Instance of SegmentBestFitResponse
+	 * @return Instance of <i>SegmentBestFitResponse</i>
 	 */
 
 	public static final SegmentBestFitResponse Create (
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue,
-		final double[] adblWeight)
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray,
+		final double[] weightArray)
 	{
-		SegmentBestFitResponse frp = null;
+		SegmentBestFitResponse segmentBestFitResponse = null;
 
 		try {
-			frp = new SegmentBestFitResponse (adblWeight, adblResponseValue, adblPredictorOrdinate);
-		} catch (java.lang.Exception e) {
+			segmentBestFitResponse = new SegmentBestFitResponse (
+				weightArray,
+				responseValueArray,
+				predictorOrdinateArray
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		return frp.normalizeWeights() ? frp : null;
+		return segmentBestFitResponse.normalizeWeights() ? segmentBestFitResponse : null;
 	}
 
 	/**
-	 * Construct the SegmentBestFitResponse Instance from the given Predictor Ordinate/Response Pairs, using
-	 * 	Uniform Weightings.
+	 * Construct the <i>SegmentBestFitResponse</i> Instance from the given Predictor Ordinate/Response Pairs,
+	 *  using Uniform Weightings.
 	 * 
-	 * @param adblPredictorOrdinate Array of Predictor Ordinates
-	 * @param adblResponseValue Array of Response Values
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
+	 * @param responseValueArray Array of Response Values
 	 * 
-	 * @return Instance of SegmentBestFitResponse
+	 * @return Instance of <i>SegmentBestFitResponse</i>
 	 */
 
 	public static final SegmentBestFitResponse Create (
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue)
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (adblPredictorOrdinate)) return null;
+		if (!NumberUtil.IsValid (predictorOrdinateArray)) {
+			return null;
+		}
 
-		int iNumWeight = adblPredictorOrdinate.length;
-		double[] adblWeight = new double[iNumWeight];
+		int weightCount = predictorOrdinateArray.length;
+		double[] weightArray = new double[weightCount];
 
-		for (int i = 0; i < iNumWeight; ++i)
-			adblWeight[i] = 1.;
+		for (int weightIndex = 0; weightIndex < weightCount; ++weightIndex) {
+			weightArray[weightIndex] = 1.;
+		}
 
-		return Create (adblPredictorOrdinate, adblResponseValue, adblWeight);
+		return Create (predictorOrdinateArray, responseValueArray, weightArray);
 	}
 
 	private SegmentBestFitResponse (
-		final double[] adblWeight,
-		final double[] adblResponse,
-		final double[] adblPredictorOrdinate)
-		throws java.lang.Exception
+		final double[] weightArray,
+		final double[] responseArray,
+		final double[] predictorOrdinateArray)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_adblWeight = adblWeight) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_adblResponse = adblResponse) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_adblPredictorOrdinate = adblPredictorOrdinate))
-			throw new java.lang.Exception ("SegmentBestFitResponse ctr: Invalid Inputs");
+		if (!NumberUtil.IsValid (_weightArray = weightArray) ||
+			!NumberUtil.IsValid (_responseArray = responseArray) ||
+			!NumberUtil.IsValid (_predictorOrdinateArray = predictorOrdinateArray)) {
+			throw new Exception ("SegmentBestFitResponse ctr: Invalid Inputs");
+		}
 
-		int iNumPointsToFit = _adblWeight.length;
+		int pointsToFit = _weightArray.length;
 
-		if (0 == iNumPointsToFit || _adblResponse.length != iNumPointsToFit ||
-			_adblPredictorOrdinate.length != iNumPointsToFit)
-			throw new java.lang.Exception ("SegmentBestFitResponse ctr: Invalid Inputs");
+		if (0 == pointsToFit || _responseArray.length != pointsToFit ||
+			_predictorOrdinateArray.length != pointsToFit) {
+			throw new Exception ("SegmentBestFitResponse ctr: Invalid Inputs");
+		}
 	}
 
 	private boolean normalizeWeights()
 	{
-		double dblCumulativeWeight = 0.;
-		int iNumPointsToFit = _adblWeight.length;
+		double cumulativeWeight = 0.;
+		int pointsToFit = _weightArray.length;
 
-		for (int i = 0; i < iNumPointsToFit; ++i) {
-			if (_adblWeight[i] < 0.) return false;
+		for (int pointIndex = 0; pointIndex < pointsToFit; ++pointIndex) {
+			if (0. > _weightArray[pointIndex]) {
+				return false;
+			}
 
-			dblCumulativeWeight += _adblWeight[i];
+			cumulativeWeight += _weightArray[pointIndex];
 		}
 
-		if (0. >= dblCumulativeWeight) return false;
+		if (0. >= cumulativeWeight) {
+			return false;
+		}
 
-		for (int i = 0; i < iNumPointsToFit; ++i)
-			_adblWeight[i] /= dblCumulativeWeight;
+		for (int pointIndex = 0; pointIndex < pointsToFit; ++pointIndex) {
+			_weightArray[pointIndex] /= cumulativeWeight;
+		}
 
 		return true;
 	}
@@ -202,27 +241,28 @@ public class SegmentBestFitResponse {
 
 	public double[] weight()
 	{
-		return _adblWeight;
+		return _weightArray;
 	}
 
 	/**
 	 * Retrieve the Indexed Fitness Weight Element
 	 * 
-	 * @param iIndex The Element Index
+	 * @param index The Element Index
 	 * 
 	 * @return The Indexed Fitness Weight Element
 	 * 
-	 * @throws java.lang.Exception Thrown if the Index is Invalid
+	 * @throws Exception Thrown if the Index is Invalid
 	 */
 
 	public double weight (
-		final int iIndex)
-		throws java.lang.Exception
+		final int index)
+		throws Exception
 	{
-		if (iIndex >= numPoint())
-			throw new java.lang.Exception ("SegmentBestFitResponse::weight => Invalid Index");
+		if (index >= numPoint()) {
+			throw new Exception ("SegmentBestFitResponse::weight => Invalid Index");
+		}
 
-		return _adblWeight[iIndex];
+		return _weightArray[index];
 	}
 
 	/**
@@ -233,27 +273,28 @@ public class SegmentBestFitResponse {
 
 	public double[] predictorOrdinate()
 	{
-		return _adblPredictorOrdinate;
+		return _predictorOrdinateArray;
 	}
 
 	/**
 	 * Retrieve the Indexed Predictor Ordinate Element
 	 * 
-	 * @param iIndex The Element Index
+	 * @param index The Element Index
 	 * 
 	 * @return The Indexed Predictor Ordinate Element
 	 * 
-	 * @throws java.lang.Exception Thrown if the Index is Invalid
+	 * @throws Exception Thrown if the Index is Invalid
 	 */
 
 	public double predictorOrdinate (
-		final int iIndex)
-		throws java.lang.Exception
+		final int index)
+		throws Exception
 	{
-		if (iIndex >= numPoint())
-			throw new java.lang.Exception ("SegmentBestFitResponse::predictorOrdinate => Invalid Index");
+		if (index >= numPoint()) {
+			throw new Exception ("SegmentBestFitResponse::predictorOrdinate => Invalid Index");
+		}
 
-		return _adblPredictorOrdinate[iIndex];
+		return _predictorOrdinateArray[index];
 	}
 
 	/**
@@ -264,27 +305,28 @@ public class SegmentBestFitResponse {
 
 	public double[] response()
 	{
-		return _adblResponse;
+		return _responseArray;
 	}
 
 	/**
 	 * Retrieve the Indexed Response Element
 	 * 
-	 * @param iIndex The Element Index
+	 * @param index The Element Index
 	 * 
 	 * @return The Indexed Response Element
 	 * 
-	 * @throws java.lang.Exception Thrown if the Index is Invalid
+	 * @throws Exception Thrown if the Index is Invalid
 	 */
 
 	public double response (
-		final int iIndex)
-		throws java.lang.Exception
+		final int index)
+		throws Exception
 	{
-		if (iIndex >= numPoint())
-			throw new java.lang.Exception ("SegmentBestFitResponse::response => Invalid Index");
+		if (index >= numPoint()) {
+			throw new Exception ("SegmentBestFitResponse::response => Invalid Index");
+		}
 
-		return _adblResponse[iIndex];
+		return _responseArray[index];
 	}
 
 	/**
@@ -295,6 +337,6 @@ public class SegmentBestFitResponse {
 
 	public int numPoint()
 	{
-		return null == _adblResponse ? 0 : _adblResponse.length;
+		return null == _responseArray ? 0 : _responseArray.length;
 	}
 }

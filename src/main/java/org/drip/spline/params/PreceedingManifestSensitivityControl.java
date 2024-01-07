@@ -1,11 +1,16 @@
 
 package org.drip.spline.params;
 
+import org.drip.spline.segment.BasisEvaluator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,57 +89,73 @@ package org.drip.spline.params;
 
 /**
  * <i>PreceedingManifestSensitivityControl</i> provides the control parameters that determine the behavior of
- * non local manifest sensitivity.
+ *  non local manifest sensitivity.
  *
- * <br><br>
+ * <br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></li>
+ * 		<li><i>PreceedingManifestSensitivityControl</i> constructor</li>
+ * 		<li>Retrieve the C<sup>k</sup> of Basis Coefficient to Preceeding Manifest Gradient</li>
+ * 		<li>Retrieve the Basis Evaluator Instance</li>
+ * 		<li>Retrieve the Preceeding Manifest Measure Impact Flag</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PreceedingManifestSensitivityControl {
-	private boolean _bImpactFade = false;
-	private int _iCkDBasisCoeffDPreceedingManifest = 0;
-	private org.drip.spline.segment.BasisEvaluator _be = null;
+public class PreceedingManifestSensitivityControl
+{
+	private boolean _impactFade = false;
+	private BasisEvaluator _basisEvaluator = null;
+	private int _kDBasisCoefficientToDPreceedingManifest = 0;
 
 	/**
-	 * PreceedingManifestSensitivityControl constructor
+	 * <i>PreceedingManifestSensitivityControl</i> constructor
 	 * 
-	 * @param bImpactFade TRUE - Fade the Manifest Sensitivity Impact; FALSE - Retain it
-	 * @param iCkDBasisCoeffDPreceedingManifest Ck of DBasisCoeffDPreceedingManifest
-	 * @param be Basis Evaluator Instance
+	 * @param impactFade TRUE - Fade the Manifest Sensitivity Impact; FALSE - Retain it
+	 * @param kDBasisCoefficientToDPreceedingManifest Ck of DBasisCoeffDPreceedingManifest
+	 * @param basisEvaluator Basis Evaluator Instance
 	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are invalid
+	 * @throws Exception Thrown if Inputs are invalid
 	 */
 
 	public PreceedingManifestSensitivityControl (
-		final boolean bImpactFade,
-		final int iCkDBasisCoeffDPreceedingManifest,
-		final org.drip.spline.segment.BasisEvaluator be)
-		throws java.lang.Exception
+		final boolean impactFade,
+		final int kDBasisCoefficientToDPreceedingManifest,
+		final BasisEvaluator basisEvaluator)
+		throws Exception
 	{
-		if (0 > (_iCkDBasisCoeffDPreceedingManifest = iCkDBasisCoeffDPreceedingManifest))
-			throw new java.lang.Exception ("PreceedingManifestSensitivityControl ctr: Invalid Inputs");
+		if (0 > (_kDBasisCoefficientToDPreceedingManifest = kDBasisCoefficientToDPreceedingManifest)) {
+			throw new Exception ("PreceedingManifestSensitivityControl ctr: Invalid Inputs");
+		}
 
-		_be = be;
-		_bImpactFade = bImpactFade;
+		_impactFade = impactFade;
+		_basisEvaluator = basisEvaluator;
 	}
 
 	/**
-	 * Retrieve the Ck of DBasisCoeffDPreceedingManifest
+	 * Retrieve the C<sup>k</sup> of Basis Coefficient to Preceeding Manifest Gradient
 	 * 
-	 * @return Ck of DBasisCoeffDPreceedingManifest
+	 * @return C<sup>k</sup> of DBasisCoeffDPreceedingManifest
 	 */
 
 	public int Ck()
 	{
-		return _iCkDBasisCoeffDPreceedingManifest;
+		return _kDBasisCoefficientToDPreceedingManifest;
 	}
 
 	/**
@@ -143,9 +164,9 @@ public class PreceedingManifestSensitivityControl {
 	 * @return The Basis Evaluator Instance
 	 */
 
-	public org.drip.spline.segment.BasisEvaluator basisEvaluator()
+	public BasisEvaluator basisEvaluator()
 	{
-		return _be;
+		return _basisEvaluator;
 	}
 
 	/**
@@ -156,6 +177,6 @@ public class PreceedingManifestSensitivityControl {
 
 	public boolean impactFade()
 	{
-		return _bImpactFade;
+		return _impactFade;
 	}
 }
