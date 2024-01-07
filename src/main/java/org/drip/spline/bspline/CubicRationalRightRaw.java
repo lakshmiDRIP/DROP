@@ -1,11 +1,16 @@
 
 package org.drip.spline.bspline;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,110 +89,141 @@ package org.drip.spline.bspline;
 
 /**
  * <i>CubicRationalRightRaw</i> implements the TensionBasisHat interface in accordance with the raw right
- * cubic rational hat basis function laid out in the basic framework outlined in Koch and Lyche (1989), Koch
- * and Lyche (1993), and Kvasov (2000) Papers.
+ * 	cubic rational hat basis function laid out in the basic framework outlined in Koch and Lyche (1989), Koch
+ * 	and Lyche (1993), and Kvasov (2000) Papers.
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CubicRationalRightRaw extends org.drip.spline.bspline.TensionBasisHat {
-	private org.drip.spline.bspline.RightHatShapeControl _rhsc = null;
+public class CubicRationalRightRaw
+	extends TensionBasisHat
+{
+	private RightHatShapeControl _rightHatShapeControl = null;
 
 	/**
-	 * CubicRationalRightRaw constructor
+	 * <i>CubicRationalRightRaw</i> constructor
 	 * 
-	 * @param dblLeftPredictorOrdinate The Left Predictor Ordinate
-	 * @param dblRightPredictorOrdinate The Right Predictor Ordinate
-	 * @param strShapeControlType Type of the Shape Controller to be used - NONE, LINEAR/QUADRATIC Rational
-	 * @param dblTension Tension of the Tension Hat Function
+	 * @param leftPredictorOrdinate The Left Predictor Ordinate
+	 * @param rightPredictorOrdinate The Right Predictor Ordinate
+	 * @param shapeControlType Type of the Shape Controller to be used - NONE, LINEAR/QUADRATIC Rational
+	 * @param tension Tension of the Tension Hat Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	public CubicRationalRightRaw (
-		final double dblLeftPredictorOrdinate,
-		final double dblRightPredictorOrdinate,
-		final java.lang.String strShapeControlType,
-		final double dblTension)
-		throws java.lang.Exception
+		final double leftPredictorOrdinate,
+		final double rightPredictorOrdinate,
+		final String shapeControlType,
+		final double tension)
+		throws Exception
 	{
-		super (dblLeftPredictorOrdinate, dblRightPredictorOrdinate, dblTension);
+		super (leftPredictorOrdinate, rightPredictorOrdinate, tension);
 
-		_rhsc = new org.drip.spline.bspline.RightHatShapeControl (dblLeftPredictorOrdinate,
-			dblRightPredictorOrdinate, strShapeControlType, dblTension);
+		_rightHatShapeControl = new RightHatShapeControl (
+			leftPredictorOrdinate,
+			rightPredictorOrdinate,
+			shapeControlType,
+			tension
+		);
 	}
 
 	@Override public double evaluate (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
-		if (!in (dblPredictorOrdinate)) return 0.;
+		if (!in (predictorOrdinate)) {
+			return 0.;
+		}
 
-		double dblCubicValue = (right() - dblPredictorOrdinate) * (right() - dblPredictorOrdinate) *
-			(right() - dblPredictorOrdinate);
+		double adjustedRightOrdinate = right() - predictorOrdinate;
 
-		return 0. == tension() ? dblCubicValue / 6. : dblCubicValue * _rhsc.evaluate (dblPredictorOrdinate);
+		double cubicValue = adjustedRightOrdinate * adjustedRightOrdinate * adjustedRightOrdinate;
+
+		return 0. == tension() ? cubicValue / 6. : cubicValue * _rightHatShapeControl.evaluate (
+			predictorOrdinate
+			);
 	}
 
 	@Override public double derivative (
-		final double dblPredictorOrdinate,
-		final int iOrder)
-		throws java.lang.Exception
+		final double predictorOrdinate,
+		final int order)
+		throws Exception
 	{
-		if (0 > iOrder)
-			throw new java.lang.Exception ("CubicRationalRightRaw::derivative => Invalid Inputs");
+		if (0 > order) {
+			throw new Exception ("CubicRationalRightRaw::derivative => Invalid Inputs");
+		}
 
-		if (!in (dblPredictorOrdinate)) return 0.;
+		if (!in (predictorOrdinate)) {
+			return 0.;
+		}
 
-		if (0. != tension()) return super.derivative (dblPredictorOrdinate, iOrder);
+		if (0. != tension()) {
+			return super.derivative (predictorOrdinate, order);
+		}
 
-		double dblGap = right() - dblPredictorOrdinate;
+		double gap = right() - predictorOrdinate;
 
-		if (1 == iOrder) return -0.5 * dblGap * dblGap;
+		if (1 == order) {
+			return -0.5 * gap * gap;
+		}
 
-		if (2 == iOrder) return dblGap;
+		if (2 == order) {
+			return gap;
+		}
 
-		return 3 == iOrder ? -1. : 0.;
+		return 3 == order ? -1. : 0.;
 	}
 
 	@Override public double integrate (
-		final double dblBegin,
-		final double dblEnd)
-		throws java.lang.Exception
+		final double begin,
+		final double end)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
-			(dblEnd))
-			throw new java.lang.Exception ("CubicRationalRightRaw::integrate => Invalid Inputs");
+		if (!NumberUtil.IsValid (begin) || !NumberUtil.IsValid (end)) {
+			throw new Exception ("CubicRationalRightRaw::integrate => Invalid Inputs");
+		}
 
-		if (dblEnd >= dblBegin) return 0.;
+		if (end >= begin) {
+			return 0.;
+		}
 
-		double dblBoundedBegin = org.drip.numerical.common.NumberUtil.Bound (dblBegin, left(), right());
+		double left = left();
 
-		double dblBoundedEnd = org.drip.numerical.common.NumberUtil.Bound (dblEnd, left(), right());
+		double right = right();
 
-		if (0. != tension()) return super.integrate (dblBoundedBegin, dblBoundedEnd);
+		double boundedEnd = NumberUtil.Bound (end, left, right);
 
-		double dblBeginGap = right() - dblBoundedBegin;
+		double boundedBegin = NumberUtil.Bound (begin, left, right);
 
-		double dblEndGap = right() - dblBoundedEnd;
+		if (0. != tension()) {
+			return super.integrate (boundedBegin, boundedEnd);
+		}
 
-		return -0.25 * (dblEndGap * dblEndGap * dblEndGap * dblEndGap - dblBeginGap * dblBeginGap *
-			dblBeginGap * dblBeginGap);
+		double endGap = right - boundedEnd;
+		double beginGap = right - boundedBegin;
+		return -0.25 * (endGap * endGap * endGap * endGap - beginGap * beginGap * beginGap * beginGap);
 	}
 
 	@Override public double normalizer()
 	{
-		double dblWidth = right() - left();
+		double width = right() - left();
 
-		return 0.25 * dblWidth * dblWidth * dblWidth * dblWidth;
+		return 0.25 * width * width * width * width;
 	}
 }

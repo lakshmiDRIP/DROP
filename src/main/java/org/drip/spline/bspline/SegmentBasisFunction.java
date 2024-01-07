@@ -1,11 +1,17 @@
 
 package org.drip.spline.bspline;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,63 +90,60 @@ package org.drip.spline.bspline;
 
 /**
  * <i>SegmentBasisFunction</i> is the abstract class over which the local ordered envelope functions for the
- * B Splines are implemented. It exposes the following stubs:
+ * 	B Splines are implemented. It exposes the following stubs:
+ * 
  *  <ul>
- *  	<li>
- * 			Retrieve the Order of the B Spline.
- *  	</li>
- *  	<li>
- * 			Retrieve the Leading Predictor Ordinate.
- *  	</li>
- *  	<li>
- * 			Retrieve the Following Predictor Ordinate.
- *  	</li>
- *  	<li>
- * 			Retrieve the Trailing Predictor Ordinate.
- *  	</li>
- *  	<li>
- * 			Compute the complete Envelope Integrand - this will serve as the Envelope Normalizer.
- *  	</li>
- *  	<li>
- * 			Evaluate the Cumulative Normalized Integrand up to the given ordinate.
- *  	</li>
+ * 		<li>Retrieve the Order of the B Spline</li>
+ * 		<li>Retrieve the Leading Predictor Ordinate</li>
+ * 		<li>Retrieve the Following Predictor Ordinate</li>
+ * 		<li>Retrieve the Trailing Predictor Ordinate</li>
+ * 		<li>Compute the complete Envelope Integrand - this will serve as the Envelope Normalizer</li>
+ * 		<li>Evaluate the Cumulative Normalized Integrand up to the given ordinate</li>
  *  </ul>
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class SegmentBasisFunction extends org.drip.function.definition.R1ToR1 {
-	private int _iBSplineOrder = -1;
-	private double _dblLeadingPredictorOrdinate = java.lang.Double.NaN;
-	private double _dblTrailingPredictorOrdinate = java.lang.Double.NaN;
-	private double _dblFollowingPredictorOrdinate = java.lang.Double.NaN;
+public abstract class SegmentBasisFunction
+	extends R1ToR1
+{
+	private int _bSplineOrder = -1;
+	private double _leadingPredictorOrdinate = Double.NaN;
+	private double _trailingPredictorOrdinate = Double.NaN;
+	private double _followingPredictorOrdinate = Double.NaN;
 
 	protected SegmentBasisFunction (
-		final int iBSplineOrder,
-		final double dblLeadingPredictorOrdinate,
-		final double dblFollowingPredictorOrdinate,
-		final double dblTrailingPredictorOrdinate)
-		throws java.lang.Exception
+		final int bSplineOrder,
+		final double leadingPredictorOrdinate,
+		final double followingPredictorOrdinate,
+		final double trailingPredictorOrdinate)
+		throws Exception
 	{
 		super (null);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLeadingPredictorOrdinate =
-			dblLeadingPredictorOrdinate) || !org.drip.numerical.common.NumberUtil.IsValid
-				(_dblFollowingPredictorOrdinate = dblFollowingPredictorOrdinate) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (_dblTrailingPredictorOrdinate =
-						dblTrailingPredictorOrdinate) || _dblLeadingPredictorOrdinate >=
-							_dblFollowingPredictorOrdinate || _dblFollowingPredictorOrdinate >=
-								_dblTrailingPredictorOrdinate || 2 > (_iBSplineOrder = iBSplineOrder))
-			throw new java.lang.Exception ("SegmentBasisFunction ctr: Invalid Inputs");
+		if (!NumberUtil.IsValid (_leadingPredictorOrdinate = leadingPredictorOrdinate) ||
+			!NumberUtil.IsValid (_followingPredictorOrdinate = followingPredictorOrdinate) ||
+			!NumberUtil.IsValid (_trailingPredictorOrdinate = trailingPredictorOrdinate) ||
+			_leadingPredictorOrdinate >= _followingPredictorOrdinate ||
+			_followingPredictorOrdinate >= _trailingPredictorOrdinate || 2 > (_bSplineOrder = bSplineOrder)
+		) {
+			throw new Exception ("SegmentBasisFunction ctr: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -151,7 +154,7 @@ public abstract class SegmentBasisFunction extends org.drip.function.definition.
 
 	public int bSplineOrder()
 	{
-		return _iBSplineOrder;
+		return _bSplineOrder;
 	}
 
 	/**
@@ -162,7 +165,7 @@ public abstract class SegmentBasisFunction extends org.drip.function.definition.
 
 	public double leading()
 	{
-		return _dblLeadingPredictorOrdinate;
+		return _leadingPredictorOrdinate;
 	}
 
 	/**
@@ -173,7 +176,7 @@ public abstract class SegmentBasisFunction extends org.drip.function.definition.
 
 	public double following()
 	{
-		return _dblFollowingPredictorOrdinate;
+		return _followingPredictorOrdinate;
 	}
 
 	/**
@@ -184,7 +187,7 @@ public abstract class SegmentBasisFunction extends org.drip.function.definition.
 
 	public double trailing()
 	{
-		return _dblTrailingPredictorOrdinate;
+		return _trailingPredictorOrdinate;
 	}
 
 	/**

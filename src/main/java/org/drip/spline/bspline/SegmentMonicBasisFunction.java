@@ -6,6 +6,9 @@ package org.drip.spline.bspline;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,43 +87,53 @@ package org.drip.spline.bspline;
 
 /**
  * <i>SegmentMonicBasisFunction</i> implements the local monic B Spline that envelopes the predictor
- * ordinates, and the corresponding set of ordinates/basis functions. SegmentMonicBasisFunction uses the
- * left/right TensionBasisHat instances to achieve its implementation goals.
+ * 	ordinates, and the corresponding set of ordinates/basis functions. SegmentMonicBasisFunction uses the
+ * 	left/right TensionBasisHat instances to achieve its implementation goals.
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SegmentMonicBasisFunction extends org.drip.spline.bspline.SegmentBasisFunction {
-	private org.drip.spline.bspline.TensionBasisHat _tbhLeft = null;
-	private org.drip.spline.bspline.TensionBasisHat _tbhRight = null;
+public class SegmentMonicBasisFunction
+	extends SegmentBasisFunction
+{
+	private TensionBasisHat _leftTensionBasisHat = null;
+	private TensionBasisHat _rightTensionBasisHat = null;
 
 	/**
 	 * SegmentMonicBasisFunction constructor
 	 * 
-	 * @param tbhLeft Left Tension Basis Hat Function
-	 * @param tbhRight Right Tension Basis Hat Function
+	 * @param leftTensionBasisHat Left Tension Basis Hat Function
+	 * @param rightTensionBasisHat Right Tension Basis Hat Function
 	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are invalid
+	 * @throws Exception Thrown if Inputs are invalid
 	 */
 
 	public SegmentMonicBasisFunction (
-		final org.drip.spline.bspline.TensionBasisHat tbhLeft,
-		final org.drip.spline.bspline.TensionBasisHat tbhRight)
-		throws java.lang.Exception
+		final TensionBasisHat leftTensionBasisHat,
+		final TensionBasisHat rightTensionBasisHat)
+		throws Exception
 	{
-		super (2, tbhLeft.left(), tbhRight.left(), tbhRight.right());
+		super (2, leftTensionBasisHat.left(), rightTensionBasisHat.left(), rightTensionBasisHat.right());
 
-		if (null == (_tbhLeft = tbhLeft) || null == (_tbhRight = tbhRight))
-			throw new java.lang.Exception ("SegmentMonicBasisFunction ctr: Invalid Inputs");
+		if (null == (_leftTensionBasisHat = leftTensionBasisHat) ||
+			null == (_rightTensionBasisHat = rightTensionBasisHat)) {
+			throw new Exception ("SegmentMonicBasisFunction ctr: Invalid Inputs");
+		}
 	}
 
 	@Override public double evaluate (
@@ -132,8 +145,8 @@ public class SegmentMonicBasisFunction extends org.drip.spline.bspline.SegmentBa
 
 		if (dblPredictorOrdinate < leading() || dblPredictorOrdinate > trailing()) return 0.;
 
-		return dblPredictorOrdinate < following() ? _tbhLeft.evaluate (dblPredictorOrdinate) :
-			_tbhRight.evaluate (dblPredictorOrdinate);
+		return dblPredictorOrdinate < following() ? _leftTensionBasisHat.evaluate (dblPredictorOrdinate) :
+			_rightTensionBasisHat.evaluate (dblPredictorOrdinate);
 	}
 
 	@Override public double derivative (
@@ -146,8 +159,8 @@ public class SegmentMonicBasisFunction extends org.drip.spline.bspline.SegmentBa
 
 		if (dblPredictorOrdinate < leading() || dblPredictorOrdinate > trailing()) return 0.;
 
-		return dblPredictorOrdinate < following() ? _tbhLeft.derivative (dblPredictorOrdinate, iOrder) :
-			_tbhRight.derivative (dblPredictorOrdinate, iOrder);
+		return dblPredictorOrdinate < following() ? _leftTensionBasisHat.derivative (dblPredictorOrdinate, iOrder) :
+			_rightTensionBasisHat.derivative (dblPredictorOrdinate, iOrder);
 	}
 
 	@Override public double integrate (
@@ -164,31 +177,31 @@ public class SegmentMonicBasisFunction extends org.drip.spline.bspline.SegmentBa
 		if (dblBegin <= leading()) {
 			if (dblEnd <= leading()) return 0.;
 
-			if (dblEnd <= following()) return _tbhLeft.integrate (leading(), dblEnd);
+			if (dblEnd <= following()) return _leftTensionBasisHat.integrate (leading(), dblEnd);
 
 			if (dblEnd <= trailing())
-				return _tbhLeft.integrate (leading(), following()) + _tbhRight.integrate (following(),
+				return _leftTensionBasisHat.integrate (leading(), following()) + _rightTensionBasisHat.integrate (following(),
 					dblEnd);
 
-			return _tbhLeft.integrate (leading(), following()) + _tbhRight.integrate (following(),
+			return _leftTensionBasisHat.integrate (leading(), following()) + _rightTensionBasisHat.integrate (following(),
 				trailing());
 		}
 
 		if (dblBegin <= following()) {
-			if (dblEnd <= following()) return _tbhLeft.integrate (dblBegin, dblEnd);
+			if (dblEnd <= following()) return _leftTensionBasisHat.integrate (dblBegin, dblEnd);
 
 			if (dblEnd <= trailing())
-				return _tbhLeft.integrate (dblBegin, following()) + _tbhRight.integrate (following(),
+				return _leftTensionBasisHat.integrate (dblBegin, following()) + _rightTensionBasisHat.integrate (following(),
 					dblEnd);
 
-			return _tbhLeft.integrate (dblBegin, following()) + _tbhRight.integrate (following(),
+			return _leftTensionBasisHat.integrate (dblBegin, following()) + _rightTensionBasisHat.integrate (following(),
 				trailing());
 		}
 
 		if (dblBegin <= trailing()) {
-			if (dblEnd <= trailing()) return _tbhRight.integrate (following(), dblEnd);
+			if (dblEnd <= trailing()) return _rightTensionBasisHat.integrate (following(), dblEnd);
 
-			return _tbhRight.integrate (following(), trailing());
+			return _rightTensionBasisHat.integrate (following(), trailing());
 		}
 
 		return 0.;
@@ -197,7 +210,7 @@ public class SegmentMonicBasisFunction extends org.drip.spline.bspline.SegmentBa
 	@Override public double normalizer()
 		throws java.lang.Exception
 	{
-		return _tbhLeft.integrate (leading(), following()) + _tbhRight.integrate (following(), trailing());
+		return _leftTensionBasisHat.integrate (leading(), following()) + _rightTensionBasisHat.integrate (following(), trailing());
 	}
 
 	@Override public double normalizedCumulative (
@@ -213,9 +226,9 @@ public class SegmentMonicBasisFunction extends org.drip.spline.bspline.SegmentBa
 		if (dblPredictorOrdinate >= trailing()) return 1.;
 
 		if (dblPredictorOrdinate <= following())
-			return _tbhLeft.integrate (leading(), dblPredictorOrdinate) / normalizer();
+			return _leftTensionBasisHat.integrate (leading(), dblPredictorOrdinate) / normalizer();
 
-		return (_tbhLeft.integrate (leading(), following()) + _tbhRight.integrate (following(),
+		return (_leftTensionBasisHat.integrate (leading(), following()) + _rightTensionBasisHat.integrate (following(),
 			dblPredictorOrdinate)) / normalizer();
 	}
 }

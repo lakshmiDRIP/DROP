@@ -6,6 +6,9 @@ package org.drip.spline.bspline;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,78 +87,84 @@ package org.drip.spline.bspline;
 
 /**
  * <i>BasisHatPairGenerator</i> implements the generation functionality behind the hat basis function pair.
- * It provides the following functionality:
+ * 	It provides the following functionality:
  *  <ul>
- *  	<li>
- * 			Generate the array of the Hyperbolic Phy and Psy Hat Function Pair.
- *  	</li>
- *  	<li>
- * 			Generate the array of the Hyperbolic Phy and Psy Hat Function Pair From their Raw Counterparts.
- *  	</li>
- *  	<li>
- * 		Generate the array of the Cubic Rational Phy and Psy Hat Function Pair From their Raw Counterparts.
- *  	</li>
- *  	<li>
- * 			Generate the array of the Custom Phy and Psy Hat Function Pair From their Raw Counterparts.
- *  	</li>
+	 * <li>Generate the array of the Hyperbolic Phy and Psy Hat Function Pair</li>
+	 * <li>Generate the array of the Hyperbolic Phy and Psy Hat Function Pair From their Raw Counterparts</li>
+	 * <li>Generate the array of the Cubic Rational Phy and Psy Hat Function Pair From their Raw Counterparts</li>
+	 * <li>Generate the array of the Hat Function Pair From their Raw Counterparts</li>
  *  </ul>
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BasisHatPairGenerator {
+public class BasisHatPairGenerator
+{
 
 	/**
 	 * Raw Tension Hyperbolic B Spline Basis Hat Phy and Psy
 	 */
 
-	public static final java.lang.String RAW_TENSION_HYPERBOLIC = "RAW_TENSION_HYPERBOLIC";
+	public static final String RAW_TENSION_HYPERBOLIC = "RAW_TENSION_HYPERBOLIC";
 
 	/**
 	 * Processed Tension Hyperbolic B Spline Basis Hat Phy and Psy
 	 */
 
-	public static final java.lang.String PROCESSED_TENSION_HYPERBOLIC = "PROCESSED_TENSION_HYPERBOLIC";
+	public static final String PROCESSED_TENSION_HYPERBOLIC = "PROCESSED_TENSION_HYPERBOLIC";
 
 	/**
 	 * Processed Cubic Rational B Spline Basis Hat Phy and Psy
 	 */
 
-	public static final java.lang.String PROCESSED_CUBIC_RATIONAL = "PROCESSED_CUBIC_RATIONAL";
+	public static final String PROCESSED_CUBIC_RATIONAL = "PROCESSED_CUBIC_RATIONAL";
 
 	/**
 	 * Generate the array of the Hyperbolic Phy and Psy Hat Function Pair
 	 * 
-	 * @param dblPredictorOrdinateLeading The Leading Predictor Ordinate
-	 * @param dblPredictorOrdinateFollowing The Following Predictor Ordinate
-	 * @param dblPredictorOrdinateTrailing The Trailing Predictor Ordinate
-	 * @param dblTension Tension
+	 * @param leadingPredictorOrdinate The Leading Predictor Ordinate
+	 * @param followingPredictorOrdinate The Following Predictor Ordinate
+	 * @param trailingPredictorOrdinate The Trailing Predictor Ordinate
+	 * @param tension Tension
 	 * 
 	 * @return The array of Hyperbolic Phy and Psy Hat Function Pair
 	 */
 
-	public static final org.drip.spline.bspline.TensionBasisHat[] HyperbolicTensionHatPair (
-		final double dblPredictorOrdinateLeading,
-		final double dblPredictorOrdinateFollowing,
-		final double dblPredictorOrdinateTrailing,
-		final double dblTension)
+	public static final TensionBasisHat[] HyperbolicTensionHatPair (
+		final double leadingPredictorOrdinate,
+		final double followingPredictorOrdinate,
+		final double trailingPredictorOrdinate,
+		final double tension)
 	{
 		try {
-			return new org.drip.spline.bspline.TensionBasisHat[] {new
-				org.drip.spline.bspline.ExponentialTensionLeftHat (dblPredictorOrdinateLeading,
-					dblPredictorOrdinateFollowing, dblTension), new
-						org.drip.spline.bspline.ExponentialTensionRightHat (dblPredictorOrdinateFollowing,
-							dblPredictorOrdinateTrailing, dblTension)};
-		} catch (java.lang.Exception e) {
+			return new TensionBasisHat[] {
+				new ExponentialTensionLeftHat (
+					leadingPredictorOrdinate,
+					followingPredictorOrdinate,
+					tension
+				),
+				new ExponentialTensionRightHat (
+					followingPredictorOrdinate,
+					trailingPredictorOrdinate,
+					tension
+				)
+			};
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -165,32 +174,42 @@ public class BasisHatPairGenerator {
 	/**
 	 * Generate the array of the Hyperbolic Phy and Psy Hat Function Pair From their Raw Counterparts
 	 * 
-	 * @param dblPredictorOrdinateLeading The Leading Predictor Ordinate
-	 * @param dblPredictorOrdinateFollowing The Following Predictor Ordinate
-	 * @param dblPredictorOrdinateTrailing The Trailing Predictor Ordinate
-	 * @param iDerivOrder The Derivative Order
-	 * @param dblTension Tension
+	 * @param leadingPredictorOrdinate The Leading Predictor Ordinate
+	 * @param followingPredictorOrdinate The Following Predictor Ordinate
+	 * @param trailingPredictorOrdinate The Trailing Predictor Ordinate
+	 * @param derivativeOrder The Derivative Order
+	 * @param tension Tension
 	 * 
 	 * @return The array of Hyperbolic Phy and Psy Hat Function Pair
 	 */
 
-	public static final org.drip.spline.bspline.TensionBasisHat[] ProcessedHyperbolicTensionHatPair (
-		final double dblPredictorOrdinateLeading,
-		final double dblPredictorOrdinateFollowing,
-		final double dblPredictorOrdinateTrailing,
-		final int iDerivOrder,
-		final double dblTension)
+	public static final TensionBasisHat[] ProcessedHyperbolicTensionHatPair (
+		final double leadingPredictorOrdinate,
+		final double followingPredictorOrdinate,
+		final double trailingPredictorOrdinate,
+		final int derivativeOrder,
+		final double tension)
 	{
 		try {
-			return new org.drip.spline.bspline.TensionBasisHat[] {new
-				org.drip.spline.bspline.TensionProcessedBasisHat (new
-					org.drip.spline.bspline.ExponentialTensionLeftRaw (dblPredictorOrdinateLeading,
-						dblPredictorOrdinateFollowing, dblTension), iDerivOrder), new
-							org.drip.spline.bspline.TensionProcessedBasisHat (new
-								org.drip.spline.bspline.ExponentialTensionRightRaw
-									(dblPredictorOrdinateFollowing, dblPredictorOrdinateTrailing,
-										dblTension), iDerivOrder)};
-		} catch (java.lang.Exception e) {
+			return new TensionBasisHat[] {
+				new TensionProcessedBasisHat (
+					new ExponentialTensionLeftRaw (
+						leadingPredictorOrdinate,
+						followingPredictorOrdinate,
+						tension
+					),
+					derivativeOrder
+				),
+				new TensionProcessedBasisHat (
+					new ExponentialTensionRightRaw (
+						followingPredictorOrdinate,
+						trailingPredictorOrdinate,
+						tension
+					),
+					derivativeOrder
+				)
+			};
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -200,34 +219,46 @@ public class BasisHatPairGenerator {
 	/**
 	 * Generate the array of the Cubic Rational Phy and Psy Hat Function Pair From their Raw Counterparts
 	 * 
-	 * @param strShapeControlType Type of the Shape Controller to be used - NONE, LINEAR/QUADRATIC Rational
-	 * @param dblPredictorOrdinateLeading The Leading Predictor Ordinate
-	 * @param dblPredictorOrdinateFollowing The Following Predictor Ordinate
-	 * @param dblPredictorOrdinateTrailing The Trailing Predictor Ordinate
-	 * @param iDerivOrder The Derivative Order
-	 * @param dblTension Tension
+	 * @param shapeControlType Type of the Shape Controller to be used - NONE, LINEAR/QUADRATIC Rational
+	 * @param leadingPredictorOrdinate The Leading Predictor Ordinate
+	 * @param followingPredictorOrdinate The Following Predictor Ordinate
+	 * @param trailingPredictorOrdinate The Trailing Predictor Ordinate
+	 * @param derivativeOrder The Derivative Order
+	 * @param tension Tension
 	 * 
 	 * @return The array of Cubic Rational Phy and Psy Hat Function Pair
 	 */
 
-	public static final org.drip.spline.bspline.TensionBasisHat[] ProcessedCubicRationalHatPair (
-		final java.lang.String strShapeControlType,
-		final double dblPredictorOrdinateLeading,
-		final double dblPredictorOrdinateFollowing,
-		final double dblPredictorOrdinateTrailing,
-		final int iDerivOrder,
-		final double dblTension)
+	public static final TensionBasisHat[] ProcessedCubicRationalHatPair (
+		final String shapeControlType,
+		final double leadingPredictorOrdinate,
+		final double followingPredictorOrdinate,
+		final double trailingPredictorOrdinate,
+		final int derivativeOrder,
+		final double tension)
 	{
 		try {
-			return new org.drip.spline.bspline.TensionBasisHat[] {new
-				org.drip.spline.bspline.TensionProcessedBasisHat (new
-					org.drip.spline.bspline.CubicRationalLeftRaw (dblPredictorOrdinateLeading,
-						dblPredictorOrdinateFollowing, strShapeControlType, dblTension), iDerivOrder), new
-							org.drip.spline.bspline.TensionProcessedBasisHat (new
-								org.drip.spline.bspline.CubicRationalRightRaw (dblPredictorOrdinateFollowing,
-									dblPredictorOrdinateTrailing, strShapeControlType, dblTension),
-										iDerivOrder)};
-		} catch (java.lang.Exception e) {
+			return new TensionBasisHat[] {
+				new TensionProcessedBasisHat (
+					new CubicRationalLeftRaw (
+						leadingPredictorOrdinate,
+						followingPredictorOrdinate,
+						shapeControlType,
+						tension
+					),
+					derivativeOrder
+				),
+				new TensionProcessedBasisHat (
+					new CubicRationalRightRaw (
+						followingPredictorOrdinate,
+						trailingPredictorOrdinate,
+						shapeControlType,
+						tension
+					),
+					derivativeOrder
+				)
+			};
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -235,44 +266,60 @@ public class BasisHatPairGenerator {
 	}
 
 	/**
-	 * Generate the array of the Cubic Rational Phy and Psy Hat Function Pair From their Raw Counterparts
+	 * Generate the array of the Hat Function Pair From their Raw Counterparts
 	 * 
-	 * @param strHatType The Primitive Hat Type
-	 * @param strShapeControlType Type of the Shape Controller to be used - NONE, LINEAR/QUADRATIC Rational
-	 * @param dblPredictorOrdinateLeading The Leading Predictor Ordinate
-	 * @param dblPredictorOrdinateFollowing The Following Predictor Ordinate
-	 * @param dblPredictorOrdinateTrailing The Trailing Predictor Ordinate
-	 * @param iDerivOrder The Derivative Order
-	 * @param dblTension Tension
+	 * @param hatType The Primitive Hat Type
+	 * @param shapeControlType Type of the Shape Controller to be used - NONE, LINEAR/QUADRATIC Rational
+	 * @param leadingPredictorOrdinate The Leading Predictor Ordinate
+	 * @param followingPredictorOrdinate The Following Predictor Ordinate
+	 * @param trailingPredictorOrdinate The Trailing Predictor Ordinate
+	 * @param derivativeOrder The Derivative Order
+	 * @param tension Tension
 	 * 
 	 * @return The array of Cubic Rational Phy and Psy Hat Function Pair
 	 */
 
-	public static final org.drip.spline.bspline.TensionBasisHat[] GenerateHatPair (
-		final java.lang.String strHatType,
-		final java.lang.String strShapeControlType,
-		final double dblPredictorOrdinateLeading,
-		final double dblPredictorOrdinateFollowing,
-		final double dblPredictorOrdinateTrailing,
-		final int iDerivOrder,
-		final double dblTension)
+	public static final TensionBasisHat[] GenerateHatPair (
+		final String hatType,
+		final String shapeControlType,
+		final double leadingPredictorOrdinate,
+		final double followingPredictorOrdinate,
+		final double trailingPredictorOrdinate,
+		final int derivativeOrder,
+		final double tension)
 	{
-		if (null == strHatType || (!RAW_TENSION_HYPERBOLIC.equalsIgnoreCase (strHatType) &&
-			!PROCESSED_TENSION_HYPERBOLIC.equalsIgnoreCase (strHatType) &&
-				!PROCESSED_CUBIC_RATIONAL.equalsIgnoreCase (strHatType)))
-				return null;
+		if (null == hatType || (!RAW_TENSION_HYPERBOLIC.equalsIgnoreCase (hatType) &&
+			!PROCESSED_TENSION_HYPERBOLIC.equalsIgnoreCase (hatType) &&
+			!PROCESSED_CUBIC_RATIONAL.equalsIgnoreCase (hatType))) {
+			return null;
+		}
 
-		if (org.drip.spline.bspline.BasisHatPairGenerator.RAW_TENSION_HYPERBOLIC.equalsIgnoreCase
-			(strHatType))
-			return HyperbolicTensionHatPair (dblPredictorOrdinateLeading, dblPredictorOrdinateFollowing,
-				dblPredictorOrdinateTrailing, dblTension);
+		if (BasisHatPairGenerator.RAW_TENSION_HYPERBOLIC.equalsIgnoreCase (hatType)) {
+			return HyperbolicTensionHatPair (
+				leadingPredictorOrdinate,
+				followingPredictorOrdinate,
+				trailingPredictorOrdinate,
+				tension
+			);
+		}
 
-		if (org.drip.spline.bspline.BasisHatPairGenerator.PROCESSED_TENSION_HYPERBOLIC.equalsIgnoreCase
-			(strHatType))
-			return ProcessedHyperbolicTensionHatPair (dblPredictorOrdinateLeading,
-				dblPredictorOrdinateFollowing, dblPredictorOrdinateTrailing, iDerivOrder, dblTension);
+		if (BasisHatPairGenerator.PROCESSED_TENSION_HYPERBOLIC.equalsIgnoreCase (hatType)) {
+			return ProcessedHyperbolicTensionHatPair (
+				leadingPredictorOrdinate,
+				followingPredictorOrdinate,
+				trailingPredictorOrdinate,
+				derivativeOrder,
+				tension
+			);
+		}
 
-		return ProcessedCubicRationalHatPair (strShapeControlType, dblPredictorOrdinateLeading,
-			dblPredictorOrdinateFollowing, dblPredictorOrdinateTrailing, iDerivOrder, dblTension);
+		return ProcessedCubicRationalHatPair (
+			shapeControlType,
+			leadingPredictorOrdinate,
+			followingPredictorOrdinate,
+			trailingPredictorOrdinate,
+			derivativeOrder,
+			tension
+		);
 	}
 }
