@@ -117,57 +117,59 @@ package org.drip.spline.bspline;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class BasisHatShapeControl extends org.drip.spline.bspline.TensionBasisHat {
+public abstract class BasisHatShapeControl
+	extends TensionBasisHat
+{
 
 	/**
 	 * Cubic Polynomial with Rational Linear Shape Controller
 	 */
 
-	public static final java.lang.String SHAPE_CONTROL_RATIONAL_LINEAR =
-		"SHAPE_CONTROL_RATIONAL_LINEAR";
+	public static final String SHAPE_CONTROL_RATIONAL_LINEAR = "SHAPE_CONTROL_RATIONAL_LINEAR";
 
 	/**
 	 * Cubic Polynomial with Rational Quadratic Shape Controller
 	 */
 
-	public static final java.lang.String SHAPE_CONTROL_RATIONAL_QUADRATIC =
-		"SHAPE_CONTROL_RATIONAL_QUADRATIC";
+	public static final String SHAPE_CONTROL_RATIONAL_QUADRATIC = "SHAPE_CONTROL_RATIONAL_QUADRATIC";
 
 	/**
 	 * Cubic Polynomial with Rational Exponential Shape Controller
 	 */
 
-	public static final java.lang.String SHAPE_CONTROL_RATIONAL_EXPONENTIAL =
-		"SHAPE_CONTROL_RATIONAL_EXPONENTIAL";
+	public static final String SHAPE_CONTROL_RATIONAL_EXPONENTIAL = "SHAPE_CONTROL_RATIONAL_EXPONENTIAL";
 
-	private java.lang.String _strShapeControlType = "";
+	private String _shapeControlType = "";
 
 	/**
 	 * <i>BasisHatShapeControl</i> constructor
 	 * 
-	 * @param dblLeftPredictorOrdinate The Left Predictor Ordinate
-	 * @param dblRightPredictorOrdinate The Right Predictor Ordinate
-	 * @param strShapeControlType Type of the Shape Controller to be used - LINEAR/QUADRATIC/EXPONENTIAL
+	 * @param leftPredictorOrdinate The Left Predictor Ordinate
+	 * @param rightPredictorOrdinate The Right Predictor Ordinate
+	 * @param shapeControlType Type of the Shape Controller to be used - LINEAR/QUADRATIC/EXPONENTIAL
 	 * 	Rational
-	 * @param dblTension Tension of the Tension Hat Function
+	 * @param tension Tension of the Tension Hat Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
+	 * @throws Exception Thrown if the input is invalid
 	 */
 
 	public BasisHatShapeControl (
-		final double dblLeftPredictorOrdinate,
-		final double dblRightPredictorOrdinate,
-		final java.lang.String strShapeControlType,
-		final double dblTension)
-		throws java.lang.Exception
+		final double leftPredictorOrdinate,
+		final double rightPredictorOrdinate,
+		final String shapeControlType,
+		final double tension)
+		throws Exception
 	{
-		super (dblLeftPredictorOrdinate, dblRightPredictorOrdinate, dblTension);
+		super (leftPredictorOrdinate, rightPredictorOrdinate, tension);
 
-		if (null == (_strShapeControlType = strShapeControlType) ||
-			(!SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (_strShapeControlType) &&
-				!SHAPE_CONTROL_RATIONAL_QUADRATIC.equalsIgnoreCase (_strShapeControlType) &&
-					!SHAPE_CONTROL_RATIONAL_EXPONENTIAL.equalsIgnoreCase (_strShapeControlType)))
-			throw new java.lang.Exception ("BasisHatShapeControl ctr: Invalid Inputs");
+		if (null == (_shapeControlType = shapeControlType) || (
+			!SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (_shapeControlType) &&
+			!SHAPE_CONTROL_RATIONAL_QUADRATIC.equalsIgnoreCase (_shapeControlType) &&
+			!SHAPE_CONTROL_RATIONAL_EXPONENTIAL.equalsIgnoreCase (_shapeControlType)
+		))
+		{
+			throw new Exception ("BasisHatShapeControl ctr: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -176,8 +178,8 @@ public abstract class BasisHatShapeControl extends org.drip.spline.bspline.Tensi
 	 * @return The Type of the Shape Controller
 	 */
 
-	public java.lang.String shapeControlType()
+	public String shapeControlType()
 	{
-		return _strShapeControlType;
+		return _shapeControlType;
 	}
 }

@@ -1,11 +1,16 @@
 
 package org.drip.spline.bspline;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,140 +89,193 @@ package org.drip.spline.bspline;
 
 /**
  * <i>LeftHatShapeControl</i> implements the BasisHatShapeControl interface for the left hat basis set as
- * laid out in the basic framework outlined in Koch and Lyche (1989), Koch and Lyche (1993), and Kvasov
- * (2000) Papers.
+ * 	laid out in the basic framework outlined in Koch and Lyche (1989), Koch and Lyche (1993), and Kvasov
+ * 	(2000) Papers.
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LeftHatShapeControl extends org.drip.spline.bspline.BasisHatShapeControl {
+public class LeftHatShapeControl
+	extends BasisHatShapeControl
+{
 
 	/**
-	 * LeftHatShapeControl constructor
+	 * <i>LeftHatShapeControl</i> constructor
 	 * 
-	 * @param dblLeftPredictorOrdinate The Left Predictor Ordinate
-	 * @param dblRightPredictorOrdinate The Right Predictor Ordinate
-	 * @param strShapeControlType Type of the Shape Controller to be used - NONE, LINEAR/QUADRATIC Rational
-	 * @param dblTension Tension of the Tension Hat Function
+	 * @param leftPredictorOrdinate The Left Predictor Ordinate
+	 * @param rightPredictorOrdinate The Right Predictor Ordinate
+	 * @param shapeControlType Type of the Shape Controller to be used - NONE, LINEAR/QUADRATIC Rational
+	 * @param tension Tension of the Tension Hat Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
+	 * @throws Exception Thrown if the input is invalid
 	 */
 
 	public LeftHatShapeControl (
-		final double dblLeftPredictorOrdinate,
-		final double dblRightPredictorOrdinate,
-		final java.lang.String strShapeControlType,
-		final double dblTension)
-		throws java.lang.Exception
+		final double leftPredictorOrdinate,
+		final double rightPredictorOrdinate,
+		final String shapeControlType,
+		final double tension)
+		throws Exception
 	{
-		super (dblLeftPredictorOrdinate, dblRightPredictorOrdinate, strShapeControlType, dblTension);
+		super (leftPredictorOrdinate, rightPredictorOrdinate, shapeControlType, tension);
 	}
 
 	@Override public double evaluate (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
-		if (!in (dblPredictorOrdinate)) return 0.;
+		if (!in (predictorOrdinate)) {
+			return 0.;
+		}
 
-		double dblWidth = right() - left();
+		double left = left();
 
-		double dblScale = 1. / (dblWidth * (6. + 6. * tension() * dblWidth + 2. * tension() * dblWidth *
-			dblWidth));
+		double right = right();
 
-		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType()))
-			return dblScale / (1. + tension() * (right() - dblPredictorOrdinate));
+		double tension = tension();
 
-		if (SHAPE_CONTROL_RATIONAL_QUADRATIC.equalsIgnoreCase (shapeControlType()))
-			return dblScale / (1. + tension() * (right() - dblPredictorOrdinate) * (dblPredictorOrdinate -
-				left()) / dblWidth);
+		double width = right - left;
+		double scale = 1. / (width * (6. + 6. * tension * width + 2. * tension * width * width));
 
-		return (java.lang.Math.exp (-tension() * (right() - dblPredictorOrdinate))) / (dblWidth * (6. + 6. *
-			tension() * dblWidth + tension() * dblWidth * dblWidth));
+		String shapeControlType = shapeControlType();
+
+		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType)) {
+			return scale / (1. + tension * (right - predictorOrdinate));
+		}
+
+		if (SHAPE_CONTROL_RATIONAL_QUADRATIC.equalsIgnoreCase (shapeControlType)) {
+			return scale / (1. + tension * (right - predictorOrdinate) * (predictorOrdinate - left) / width);
+		}
+
+		return (Math.exp (-tension * (right - predictorOrdinate))) / (
+			width * (6. + 6. * tension * width + tension * width * width)
+		);
 	}
 
 	@Override public double derivative (
-		final double dblPredictorOrdinate,
-		final int iOrder)
-		throws java.lang.Exception
+		final double predictorOrdinate,
+		final int order)
+		throws Exception
 	{
-		if (0 >= iOrder) throw new java.lang.Exception ("LeftHatShapeControl::derivative => Invalid Inputs");
+		if (0 >= order) {
+			throw new Exception ("LeftHatShapeControl::derivative => Invalid Inputs");
+		}
 
-		if (!in (dblPredictorOrdinate) || 0. == tension()) return 0.;
+		double tension = tension();
 
-		double dblWidth = right() - left();
+		if (!in (predictorOrdinate) || 0. == tension) {
+			return 0.;
+		}
 
-		double dblScale = 1. / (dblWidth * (6. + 6. * tension() * dblWidth + 2. * tension() * dblWidth *
-			dblWidth));
+		double right = right();
 
-		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType()))
-			return dblScale * org.drip.numerical.common.NumberUtil.Factorial (iOrder) * java.lang.Math.pow
-				(tension(), iOrder) * java.lang.Math.pow (1. + tension() * (right() - dblPredictorOrdinate),
-					-iOrder - 1);
+		double width = right - left();
 
-		if (SHAPE_CONTROL_RATIONAL_EXPONENTIAL.equalsIgnoreCase (shapeControlType()))
-			return (java.lang.Math.pow (tension(), iOrder) * java.lang.Math.exp (-tension() * (right() -
-				dblPredictorOrdinate))) / (dblWidth * (6. + 6. * tension() * dblWidth + tension() * dblWidth
-					* dblWidth));
+		String shapeControlType = shapeControlType();
 
-		return super.derivative (dblPredictorOrdinate, iOrder);
+		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType)) {
+			return (
+				NumberUtil.Factorial (order) * Math.pow (tension, order) *
+					Math.pow (1. + tension * (right - predictorOrdinate), -order - 1)
+			) / (width * (6. + 6. * tension * width + 2. * tension * width * width));
+		}
+
+		if (SHAPE_CONTROL_RATIONAL_EXPONENTIAL.equalsIgnoreCase (shapeControlType)) {
+			return (Math.pow (tension, order) * Math.exp (-tension * (right - predictorOrdinate))) /
+				(width * (6. + 6. * tension * width + tension * width * width));
+		}
+
+		return super.derivative (predictorOrdinate, order);
 	}
 
 	@Override public double integrate (
-		final double dblBegin,
-		final double dblEnd)
-		throws java.lang.Exception
+		final double begin,
+		final double end)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
-			(dblEnd))
-			throw new java.lang.Exception ("LeftHatShapeControl::integrate => Invalid Inputs");
+		if (!NumberUtil.IsValid (begin) || !NumberUtil.IsValid (end)) {
+			throw new Exception ("LeftHatShapeControl::integrate => Invalid Inputs");
+		}
 
-		double dblBoundedBegin = org.drip.numerical.common.NumberUtil.Bound (dblBegin, left(), right());
+		double left = left();
 
-		double dblBoundedEnd = org.drip.numerical.common.NumberUtil.Bound (dblEnd, left(), right());
+		double right = right();
 
-		if (dblBoundedBegin >= dblBoundedEnd) return 0.;
+		double boundedEnd = NumberUtil.Bound (end, left, right);
 
-		if (0. == tension()) return dblBoundedEnd - dblBoundedBegin;
+		double boundedBegin = NumberUtil.Bound (begin, left, right);
 
-		double dblWidth = right() - left();
+		if (boundedBegin >= boundedEnd) {
+			return 0.;
+		}
 
-		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType()))
-			return (java.lang.Math.log ((1. + tension() * (right() - dblBoundedBegin)) / (1. + tension() *
-				(right() - dblBoundedEnd)))) / tension() / (dblWidth * (6. + 6. * tension() * dblWidth + 2. *
-					tension() * dblWidth * dblWidth));
+		double tension = tension();
 
-		if (SHAPE_CONTROL_RATIONAL_EXPONENTIAL.equalsIgnoreCase (shapeControlType()))
-			return (java.lang.Math.exp (tension() * (dblBoundedEnd - right())) - java.lang.Math.exp
-				(tension() * (dblBoundedBegin - right()))) / tension() / (dblWidth * (6. + 6. * tension() *
-					dblWidth + tension() * dblWidth * dblWidth));
+		if (0. == tension) {
+			return boundedEnd - boundedBegin;
+		}
 
-		return super.integrate (dblBoundedBegin, dblBoundedEnd);
+		double width = right - left;
+
+		String shapeControlType = shapeControlType();
+
+		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType)) {
+			return (
+				Math.log ((1. + tension * (right - boundedBegin)) / (1. + tension * (right - boundedEnd)))
+			) / tension / (width * (6. + 6. * tension * width + 2. * tension * width * width));
+		}
+
+		if (SHAPE_CONTROL_RATIONAL_EXPONENTIAL.equalsIgnoreCase (shapeControlType)) {
+			return (
+				Math.exp (tension * (boundedEnd - right)) - Math.exp (tension * (boundedBegin - right))
+			) / tension / (width * (6. + 6. * tension * width + tension * width * width));
+		}
+
+		return super.integrate (boundedBegin, boundedEnd);
 	}
 
 	@Override public double normalizer()
-		throws java.lang.Exception
+		throws Exception
 	{
-		double dblWidth = right() - left();
+		double left = left();
 
-		if (0. == tension()) return dblWidth;
+		double right = right();
 
-		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType()))
-			return (java.lang.Math.log ((1. + tension() * dblWidth))) / tension() / (dblWidth * (6. + 6. *
-				tension() * dblWidth + 2. * tension() * dblWidth * dblWidth));
+		double width = right - left;
 
-		if (SHAPE_CONTROL_RATIONAL_EXPONENTIAL.equalsIgnoreCase (shapeControlType()))
-			return (1. - java.lang.Math.exp (tension() * dblWidth)) / tension() / (dblWidth * (6. + 6. *
-				tension() * dblWidth + tension() * dblWidth * dblWidth));
+		double tension = tension();
 
-		return super.integrate (left(), right());
+		if (0. == tension) {
+			return width;
+		}
+
+		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType())) {
+			return (Math.log (1. + tension * width)) / tension / (
+				width * (6. + 6. * tension * width + 2. * tension * width * width)
+			);
+		}
+
+		if (SHAPE_CONTROL_RATIONAL_EXPONENTIAL.equalsIgnoreCase (shapeControlType())) {
+			return (1. - Math.exp (tension * width)) / tension / (
+				width * (6. + 6. * tension * width + tension * width * width)
+			);
+		}
+
+		return super.integrate (left, right);
 	}
 }
