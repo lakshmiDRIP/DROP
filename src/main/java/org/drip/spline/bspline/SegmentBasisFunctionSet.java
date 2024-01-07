@@ -1,11 +1,20 @@
 
 package org.drip.spline.bspline;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.r1tor1.Polynomial;
+import org.drip.function.r1tor1.UnivariateReflection;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.spline.basis.FunctionSet;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,43 +93,57 @@ package org.drip.spline.bspline;
 
 /**
  * <i>SegmentBasisFunctionSet</i> class implements per-segment function set for B Splines and tension
- * splines. Derived implementations expose explicit targeted basis functions.
- *
- * <br><br>
+ * 	splines. Derived implementations expose explicit targeted basis functions.
+ * 
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></li>
+ * 		<li><i>SegmentBasisFunctionSet</i> Constructor</li>
+ * 		<li>Retrieve the Tension Parameter</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SegmentBasisFunctionSet extends org.drip.spline.basis.FunctionSet {
-	protected double _dblTension = java.lang.Double.NaN;
+public class SegmentBasisFunctionSet
+	extends FunctionSet
+{
+	protected double _tension = Double.NaN;
 
-	private static final org.drip.function.definition.R1ToR1[] responseBasis (
-		final int iNumBasisToUse,
-		final org.drip.function.definition.R1ToR1[] aAUHat)
+	private static final R1ToR1[] ResponseBasisArray (
+		final int basisCountToUse,
+		final R1ToR1[] basisHatFunctionArray)
 	{
-		if (null == aAUHat || iNumBasisToUse > aAUHat.length) return null;
+		if (null == basisHatFunctionArray || basisCountToUse > basisHatFunctionArray.length) {
+			return null;
+		}
 
 		try {
-			org.drip.function.definition.R1ToR1[] aAU = new
-				org.drip.function.definition.R1ToR1[iNumBasisToUse + 2];
+			R1ToR1[] basisHatFunctionArrayToUse = new R1ToR1[basisCountToUse + 2];
 
-			aAU[0] = new org.drip.function.r1tor1.Polynomial (0);
+			basisHatFunctionArrayToUse[0] = new Polynomial (0);
 
-			aAU[1] = new org.drip.function.r1tor1.UnivariateReflection (new
-				org.drip.function.r1tor1.Polynomial (1));
+			basisHatFunctionArrayToUse[1] = new UnivariateReflection (new Polynomial (1));
 
-			for (int i = 0; i < iNumBasisToUse; ++i)
-				aAU[2 + i] = aAUHat[i];
+			for (int basisIndex = 0; basisIndex < basisCountToUse; ++basisIndex) {
+				basisHatFunctionArrayToUse[2 + basisIndex] = basisHatFunctionArray[basisIndex];
+			}
 
-			return aAU;
-		} catch (java.lang.Exception e) {
+			return basisHatFunctionArrayToUse;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -128,25 +151,26 @@ public class SegmentBasisFunctionSet extends org.drip.spline.basis.FunctionSet {
 	}
 
 	/**
-	 * SegmentBasisFunctionSet constructor
+	 * <i>SegmentBasisFunctionSet</i> constructor
 	 * 
-	 * @param iNumBasisToUse Number of Basis in the Hat Basis Set to Use
-	 * @param dblTension Tension Parameter
-	 * @param aAUHat The Hat Representation Function Set
+	 * @param basisCountToUse Number of Basis in the Hat Basis Set to Use
+	 * @param tension Tension Parameter
+	 * @param basisHatFunctionArray The Hat Representation Function Set
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	public SegmentBasisFunctionSet (
-		final int iNumBasisToUse,
-		final double dblTension,
-		final org.drip.function.definition.R1ToR1[] aAUHat)
-		throws java.lang.Exception
+		final int basisCountToUse,
+		final double tension,
+		final R1ToR1[] basisHatFunctionArray)
+		throws Exception
 	{
-		super (responseBasis (iNumBasisToUse, aAUHat));
+		super (ResponseBasisArray (basisCountToUse, basisHatFunctionArray));
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblTension = dblTension))
-			throw new java.lang.Exception ("SegmentBasisFunctionSet ctr: Invalid Inputs!");
+		if (!NumberUtil.IsValid (_tension = tension)) {
+			throw new Exception ("SegmentBasisFunctionSet ctr: Invalid Inputs!");
+		}
 	}
 
 	/**
@@ -157,6 +181,6 @@ public class SegmentBasisFunctionSet extends org.drip.spline.basis.FunctionSet {
 
 	public double tension()
 	{
-		return _dblTension;
+		return _tension;
 	}
 }

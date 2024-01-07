@@ -88,11 +88,12 @@ package org.drip.spline.bspline;
 /**
  * <i>BasisHatPairGenerator</i> implements the generation functionality behind the hat basis function pair.
  * 	It provides the following functionality:
+ * 
  *  <ul>
-	 * <li>Generate the array of the Hyperbolic Phy and Psy Hat Function Pair</li>
-	 * <li>Generate the array of the Hyperbolic Phy and Psy Hat Function Pair From their Raw Counterparts</li>
-	 * <li>Generate the array of the Cubic Rational Phy and Psy Hat Function Pair From their Raw Counterparts</li>
-	 * <li>Generate the array of the Hat Function Pair From their Raw Counterparts</li>
+ * 		<li>Generate the array of the Hyperbolic Phy and Psy Hat Function Pair</li>
+ * 		<li>Generate the array of the Hyperbolic Phy and Psy Hat Function Pair From their Raw Counterparts</li>
+ * 		<li>Generate the array of the Cubic Rational Phy and Psy Hat Function Pair From their Raw Counterparts</li>
+ * 		<li>Generate the array of the Hat Function Pair From their Raw Counterparts</li>
  *  </ul>
  *
  *  <br>

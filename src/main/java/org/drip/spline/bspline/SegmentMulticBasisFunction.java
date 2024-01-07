@@ -1,11 +1,17 @@
 
 package org.drip.spline.bspline;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.integration.R1ToR1Integrator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,84 +90,98 @@ package org.drip.spline.bspline;
 
 /**
  * <i>SegmentMulticBasisFunction</i> implements the local quadratic B Spline that envelopes the predictor
- * ordinates, and the corresponding set of ordinates/basis functions. SegmentMulticBasisFunction uses the
- * left/right SegmentBasisFunction instances to achieve its implementation goals.
+ * 	ordinates, and the corresponding set of ordinates/basis functions. SegmentMulticBasisFunction uses the
+ * 	left/right SegmentBasisFunction instances to achieve its implementation goals.
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/bspline/README.md">de Boor Rational/Exponential/Tension B-Splines</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SegmentMulticBasisFunction extends org.drip.spline.bspline.SegmentBasisFunction {
-	private org.drip.spline.bspline.SegmentBasisFunction _oeLeft = null;
-	private org.drip.spline.bspline.SegmentBasisFunction _oeRight = null;
+public class SegmentMulticBasisFunction
+	extends SegmentBasisFunction
+{
+	private SegmentBasisFunction _leftSegmentBasisFunction = null;
+	private SegmentBasisFunction _rightSegmentBasisFunction = null;
 
 	/**
-	 * SegmentMulticBasisFunction constructor
+	 * <i>SegmentMulticBasisFunction</i> constructor
 	 * 
-	 * @param oeLeft Left Ordered Envelope Spline Function
-	 * @param oeRight Right Ordered Envelope Spline Function
+	 * @param leftSegmentBasisFunction Left Ordered Envelope Spline Function
+	 * @param rightSegmentBasisFunction Right Ordered Envelope Spline Function
 	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are invalid
+	 * @throws Exception Thrown if Inputs are invalid
 	 */
 
 	public SegmentMulticBasisFunction (
-		final org.drip.spline.bspline.SegmentBasisFunction oeLeft,
-		final org.drip.spline.bspline.SegmentBasisFunction oeRight)
-		throws java.lang.Exception
+		final SegmentBasisFunction leftSegmentBasisFunction,
+		final SegmentBasisFunction rightSegmentBasisFunction)
+		throws Exception
 	{
-		super (oeLeft.bSplineOrder() + 1, oeLeft.leading(), oeRight.leading(), oeRight.trailing());
+		super (
+			leftSegmentBasisFunction.bSplineOrder() + 1,
+			leftSegmentBasisFunction.leading(),
+			rightSegmentBasisFunction.leading(),
+			rightSegmentBasisFunction.trailing()
+		);
 
-		if ((_oeLeft = oeLeft).bSplineOrder() != (_oeRight = oeRight).bSplineOrder())
-			throw new java.lang.Exception ("SegmentMulticBasisFunction ctr: Invalid Inputs");
+		if ((_leftSegmentBasisFunction = leftSegmentBasisFunction).bSplineOrder() !=
+			(_rightSegmentBasisFunction = rightSegmentBasisFunction).bSplineOrder()) {
+			throw new Exception ("SegmentMulticBasisFunction ctr: Invalid Inputs");
+		}
 	}
 
 	@Override public double evaluate (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))
-			throw new java.lang.Exception ("SegmentMulticBasisFunction::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (predictorOrdinate)) {
+			throw new Exception ("SegmentMulticBasisFunction::evaluate => Invalid Inputs");
+		}
 
-		if (dblPredictorOrdinate < leading() || dblPredictorOrdinate > trailing()) return 0.;
-
-		return _oeLeft.normalizedCumulative (dblPredictorOrdinate) - _oeRight.normalizedCumulative
-			(dblPredictorOrdinate);
+		return predictorOrdinate < leading() || predictorOrdinate > trailing() ? 0. :
+			_leftSegmentBasisFunction.normalizedCumulative (predictorOrdinate) -
+			_rightSegmentBasisFunction.normalizedCumulative (predictorOrdinate);
 	}
 
 	@Override public double integrate (
-		final double dblBegin,
-		final double dblEnd)
-		throws java.lang.Exception
+		final double begin,
+		final double end)
+		throws Exception
 	{
-		return org.drip.numerical.integration.R1ToR1Integrator.Simpson (this, dblBegin, dblEnd);
+		return R1ToR1Integrator.Simpson (this, begin, end);
 	}
 
 	@Override public double normalizer()
-		throws java.lang.Exception
+		throws Exception
 	{
 		return integrate (leading(), trailing());
 	}
 
 	@Override public double normalizedCumulative (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))
-			throw new java.lang.Exception
-				("SegmentMulticBasisFunction::normalizedCumulative => Invalid Inputs");
+		if (!NumberUtil.IsValid (predictorOrdinate)) {
+			throw new Exception ("SegmentMulticBasisFunction::normalizedCumulative => Invalid Inputs");
+		}
 
-		if (dblPredictorOrdinate < leading()) return 0.;
+		double leading = leading();
 
-		if (dblPredictorOrdinate > trailing()) return 1.;
-
-		return integrate (leading(), dblPredictorOrdinate) / normalizer();
+		return predictorOrdinate < leading ? 0. : predictorOrdinate > trailing() ? 1. :
+			integrate (leading, predictorOrdinate) / normalizer();
 	}
 }

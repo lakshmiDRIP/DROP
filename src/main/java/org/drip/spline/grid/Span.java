@@ -1,11 +1,18 @@
 
 package org.drip.spline.grid;
 
+import org.drip.numerical.differentiation.WengertJacobian;
+import org.drip.spline.stretch.MultiSegmentSequence;
+import org.drip.state.identifier.LatentStateLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -85,174 +92,170 @@ package org.drip.spline.grid;
  * <i>Span</i> is the interface that exposes the functionality behind the collection of Stretches that may be
  * overlapping or non-overlapping. It exposes the following stubs:
  *
- * <br><br>
+ * <br>
  *  <ul>
- *  	<li>
- *  		Retrieve the Left/Right Span Edge.
- *  	</li>
- *  	<li>
- *  		Indicate if the specified Label is part of the Merge State at the specified Predictor Ordinate.
- *  	</li>
- *  	<li>
- *  		Compute the Response from the containing Stretches.
- *  	</li>
- *  	<li>
- *  		Add a Stretch to the Span.
- *  	</li>
- *  	<li>
- *  		Retrieve the first Stretch that contains the Predictor Ordinate.
- *  	</li>
- *  	<li>
- *  		Retrieve the Stretch by Name.
- *  	</li>
- *  	<li>
- *  		Calculate the Response Derivative to the Quote at the specified Ordinate.
- *  	</li>
- *  	<li>
- *  		Display the Span Edge Coordinates.
- *  	</li>
+ *  	<li>Retrieve the Left/Right Span Edge</li>
+ *  	<li>Indicate if the specified Label is part of the Merge State at the specified Predictor Ordinate</li>
+ *  	<li>Compute the Response from the containing Stretches</li>
+ *  	<li>Add a Stretch to the Span</li>
+ *  	<li>Retrieve the first Stretch that contains the Predictor Ordinate</li>
+ *  	<li>Retrieve the Stretch by Name</li>
+ *  	<li>Calculate the Response Derivative to the Quote at the specified Ordinate</li>
+ *  	<li>Display the Span Edge Coordinates</li>
  *  </ul>
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/grid/README.md">Aggregated/Overlapping Stretch/Span Grids</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/grid/README.md">Aggregated/Overlapping Stretch/Span Grids</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface Span {
+public interface Span
+{
 
 	/**
 	 * Retrieve the Left Span Edge
 	 * 
 	 * @return The Left Span Edge
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public abstract double left()
-		throws java.lang.Exception;
+		throws Exception;
 
 	/**
 	 * Retrieve the Right Span Edge
 	 * 
 	 * @return The Left Span Edge
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public abstract double right()
-		throws java.lang.Exception;
+		throws Exception;
 
 	/**
 	 * Indicate if the specified Label is part of the Merge State at the specified Predictor Ordinate
 	 * 
-	 * @param dblPredictorOrdinate The Predictor Ordinate
-	 * @param lsl Merge State Label
+	 * @param predictorOrdinate The Predictor Ordinate
+	 * @param latentStateLabel Merge State Label
 	 * 
 	 * @return TRUE - The specified Label is part of the Merge State at the specified Predictor Ordinate
 	 */
 
 	public abstract boolean isMergeState (
-		final double dblPredictorOrdinate,
-		final org.drip.state.identifier.LatentStateLabel lsl);
+		final double predictorOrdinate,
+		final LatentStateLabel latentStateLabel
+	);
 
 	/**
 	 * Compute the Response from the containing Stretches
 	 * 
-	 * @param dblPredictorOrdinate The Predictor Ordinate
+	 * @param predictorOrdinate The Predictor Ordinate
 	 * 
 	 * @return The Response
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public abstract double calcResponseValue (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception;
+		final double predictorOrdinate
+	) throws Exception;
 
 	/**
 	 * Compute the Response Value Derivative from the containing Stretches
 	 * 
-	 * @param dblPredictorOrdinate The Predictor Ordinate
-	 * @param iOrder Order of the Derivative to be calculated
+	 * @param predictorOrdinate The Predictor Ordinate
+	 * @param order Order of the Derivative to be calculated
 	 * 
 	 * @return The Response Value Derivative
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public abstract double calcResponseValueDerivative (
-		final double dblPredictorOrdinate,
-		final int iOrder)
-		throws java.lang.Exception;
+		final double predictorOrdinate,
+		final int order
+	) throws Exception;
 
 	/**
 	 * Add a Stretch to the Span
 	 * 
-	 * @param mss Stretch to be added
+	 * @param multiSegmentSequence Stretch to be added
 	 * 
 	 * @return TRUE - Stretch added successfully
 	 */
 
 	public abstract boolean addStretch (
-		final org.drip.spline.stretch.MultiSegmentSequence mss);
+		final MultiSegmentSequence multiSegmentSequence
+	);
 
 	/**
 	 * Retrieve the first Stretch that contains the Predictor Ordinate
 	 * 
-	 * @param dblPredictorOrdinate The Predictor Ordinate
+	 * @param predictorOrdinate The Predictor Ordinate
 	 * 
 	 * @return The containing Stretch
 	 */
 
-	public abstract org.drip.spline.stretch.MultiSegmentSequence getContainingStretch (
-		final double dblPredictorOrdinate);
+	public abstract MultiSegmentSequence getContainingStretch (
+		final double predictorOrdinate
+	);
 
 	/**
 	 * Retrieve the Stretch by Name
 	 * 
-	 * @param strName The Stretch Name
+	 * @param name The Stretch Name
 	 * 
 	 * @return The Stretch
 	 */
 
-	public abstract org.drip.spline.stretch.MultiSegmentSequence getStretch (
-		final java.lang.String strName);
+	public abstract MultiSegmentSequence getStretch (
+		final String name
+	);
 
 	/**
 	 * Calculate the Response Derivative to the Manifest Measure at the specified Ordinate
 	 * 
-	 * @param strManifestMeasure Manifest Measure whose Sensitivity is sought
-	 * @param dblPredictorOrdinate Predictor Ordinate
-	 * @param iOrder Order of Derivative desired
+	 * @param manifestMeasure Manifest Measure whose Sensitivity is sought
+	 * @param predictorOrdinate Predictor Ordinate
+	 * @param order Order of Derivative desired
 	 * 
 	 * @return Jacobian of the Response Derivative to the Manifest Measure at the Ordinate
 	 */
 
-	public abstract org.drip.numerical.differentiation.WengertJacobian jackDResponseDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final double dblPredictorOrdinate,
-		final int iOrder);
+	public abstract WengertJacobian jackDResponseDManifestMeasure (
+		final String manifestMeasure,
+		final double predictorOrdinate,
+		final int order
+	);
 
 	/**
 	 * Check if the Predictor Ordinate is in the Stretch Range
 	 * 
-	 * @param dblPredictorOrdinate Predictor Ordinate
+	 * @param predictorOrdinate Predictor Ordinate
 	 * 
 	 * @return TRUE - Predictor Ordinate is in the Range
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public abstract boolean in (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception;
+		final double predictorOrdinate
+	) throws Exception;
 
 	/**
 	 * Display the Span Edge Coordinates
@@ -260,5 +263,5 @@ public interface Span {
 	 * @return The Edge Coordinates String
 	 */
 
-	public java.lang.String displayString();
+	public String displayString();
 }

@@ -1,6 +1,8 @@
 
 package org.drip.spline.bspline;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -137,98 +139,107 @@ public class SegmentMonicBasisFunction
 	}
 
 	@Override public double evaluate (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))
-			throw new java.lang.Exception ("SegmentMonicBasisFunction::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (predictorOrdinate)) {
+			throw new Exception ("SegmentMonicBasisFunction::evaluate => Invalid Inputs");
+		}
 
-		if (dblPredictorOrdinate < leading() || dblPredictorOrdinate > trailing()) return 0.;
+		if (predictorOrdinate < leading() || predictorOrdinate > trailing()) {
+			return 0.;
+		}
 
-		return dblPredictorOrdinate < following() ? _leftTensionBasisHat.evaluate (dblPredictorOrdinate) :
-			_rightTensionBasisHat.evaluate (dblPredictorOrdinate);
+		return predictorOrdinate < following() ? _leftTensionBasisHat.evaluate (predictorOrdinate) :
+			_rightTensionBasisHat.evaluate (predictorOrdinate);
 	}
 
 	@Override public double derivative (
-		final double dblPredictorOrdinate,
-		final int iOrder)
-		throws java.lang.Exception
+		final double predictorOrdinate,
+		final int order)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))
-			throw new java.lang.Exception ("SegmentMonicBasisFunction::derivative => Invalid Inputs");
+		if (!NumberUtil.IsValid (predictorOrdinate)) {
+			throw new Exception ("SegmentMonicBasisFunction::derivative => Invalid Inputs");
+		}
 
-		if (dblPredictorOrdinate < leading() || dblPredictorOrdinate > trailing()) return 0.;
+		if (predictorOrdinate < leading() || predictorOrdinate > trailing()) {
+			return 0.;
+		}
 
-		return dblPredictorOrdinate < following() ? _leftTensionBasisHat.derivative (dblPredictorOrdinate, iOrder) :
-			_rightTensionBasisHat.derivative (dblPredictorOrdinate, iOrder);
+		return predictorOrdinate < following() ? _leftTensionBasisHat.derivative (predictorOrdinate, order) :
+			_rightTensionBasisHat.derivative (predictorOrdinate, order);
 	}
 
 	@Override public double integrate (
-		final double dblBegin,
-		final double dblEnd)
-		throws java.lang.Exception
+		final double begin,
+		final double end)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
-			(dblEnd))
-			throw new java.lang.Exception ("SegmentMonicBasisFunction::integrate => Invalid Inputs");
-
-		if (dblBegin >= dblEnd) return 0.;
-
-		if (dblBegin <= leading()) {
-			if (dblEnd <= leading()) return 0.;
-
-			if (dblEnd <= following()) return _leftTensionBasisHat.integrate (leading(), dblEnd);
-
-			if (dblEnd <= trailing())
-				return _leftTensionBasisHat.integrate (leading(), following()) + _rightTensionBasisHat.integrate (following(),
-					dblEnd);
-
-			return _leftTensionBasisHat.integrate (leading(), following()) + _rightTensionBasisHat.integrate (following(),
-				trailing());
+		if (!NumberUtil.IsValid (begin) || !NumberUtil.IsValid (end)) {
+			throw new Exception ("SegmentMonicBasisFunction::integrate => Invalid Inputs");
 		}
 
-		if (dblBegin <= following()) {
-			if (dblEnd <= following()) return _leftTensionBasisHat.integrate (dblBegin, dblEnd);
-
-			if (dblEnd <= trailing())
-				return _leftTensionBasisHat.integrate (dblBegin, following()) + _rightTensionBasisHat.integrate (following(),
-					dblEnd);
-
-			return _leftTensionBasisHat.integrate (dblBegin, following()) + _rightTensionBasisHat.integrate (following(),
-				trailing());
+		if (begin >= end) {
+			return 0.;
 		}
 
-		if (dblBegin <= trailing()) {
-			if (dblEnd <= trailing()) return _rightTensionBasisHat.integrate (following(), dblEnd);
+		double leading = leading();
 
-			return _rightTensionBasisHat.integrate (following(), trailing());
+		double trailing = trailing();
+
+		double following = following();
+
+		if (begin <= leading) {
+			return end <= leading ? 0. :
+				_leftTensionBasisHat.integrate (leading, end <= following ? end : following) +
+				_rightTensionBasisHat.integrate (following, end <= trailing ? end : trailing);
 		}
 
-		return 0.;
+		if (begin <= following) {
+			return _leftTensionBasisHat.integrate (begin, end <= following ? end : following) +
+				_rightTensionBasisHat.integrate (following, end <= trailing ? end : trailing);
+		}
+
+		return begin <= trailing ? 0. :
+			_rightTensionBasisHat.integrate (following, end <= trailing ? end : trailing);
 	}
 
 	@Override public double normalizer()
-		throws java.lang.Exception
+		throws Exception
 	{
-		return _leftTensionBasisHat.integrate (leading(), following()) + _rightTensionBasisHat.integrate (following(), trailing());
+		double following = following();
+
+		return _leftTensionBasisHat.integrate (leading(), following) +
+			_rightTensionBasisHat.integrate (following, trailing());
 	}
 
 	@Override public double normalizedCumulative (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))
-			throw new java.lang.Exception
-				("SegmentMonicBasisFunction::normalizedCumulative => Invalid Inputs");
+		if (!NumberUtil.IsValid (predictorOrdinate)) {
+			throw new Exception ("SegmentMonicBasisFunction::normalizedCumulative => Invalid Inputs");
+		}
 
-		if (dblPredictorOrdinate <= leading()) return 0.;
+		double leading = leading();
 
-		if (dblPredictorOrdinate >= trailing()) return 1.;
+		double following = following();
 
-		if (dblPredictorOrdinate <= following())
-			return _leftTensionBasisHat.integrate (leading(), dblPredictorOrdinate) / normalizer();
+		if (predictorOrdinate <= leading) {
+			return 0.;
+		}
 
-		return (_leftTensionBasisHat.integrate (leading(), following()) + _rightTensionBasisHat.integrate (following(),
-			dblPredictorOrdinate)) / normalizer();
+		if (predictorOrdinate >= trailing()) {
+			return 1.;
+		}
+
+		double normalizer = normalizer();
+
+		return predictorOrdinate <= following ?
+			_leftTensionBasisHat.integrate (leading, predictorOrdinate) / normalizer : (
+				_leftTensionBasisHat.integrate (leading, following) +
+				_rightTensionBasisHat.integrate (following, predictorOrdinate)
+			) / normalizer;
 	}
 }
