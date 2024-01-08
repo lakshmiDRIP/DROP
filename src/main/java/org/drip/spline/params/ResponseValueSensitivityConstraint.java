@@ -1,11 +1,18 @@
 
 package org.drip.spline.params;
 
+import java.util.Set;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,89 +90,108 @@ package org.drip.spline.params;
  */
 
 /**
- * <i>SegmentResponseValueConstraint</i> holds the SegmentBasisFlexureConstraint instances for the Base
- * Calibration and one for each Manifest Measure Sensitivity.
+ * <i>ResponseValueSensitivityConstraint</i> holds the <i>SegmentResponseValueConstraint</i> instances for
+ *  the Base Calibration and one for each Manifest Measure Sensitivity.
  *
- * <br><br>
+ * <br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></li>
+ * 		<li><i>ResponseValueSensitivityConstraint</i> constructor</li>
+ * 		<li>Add the <i>SegmentResponseValueConstraint</i> Instance corresponding to the specified Manifest Measure</li>
+ * 		<li>Return the Retrieve the base <i>SegmentResponseValueConstraint</i> Instance</li>
+ * 		<li>Retrieve the <i>SegmentResponseValueConstraint</i> Instance Specified by the Manifest Measure</li>
+ * 		<li>Return the Set of Available Manifest Measures (if any)</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></td></tr>
+ *  </table>
+ *  <br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class ResponseValueSensitivityConstraint {
-	private org.drip.spline.params.SegmentResponseValueConstraint _srvcBase = null;
+public class ResponseValueSensitivityConstraint
+{
+	private SegmentResponseValueConstraint _baseSegmentResponseValueConstraint = null;
 
-	private
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.spline.params.SegmentResponseValueConstraint>
-			_mapSRVCManifestMeasure = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.spline.params.SegmentResponseValueConstraint>();
+	private CaseInsensitiveHashMap<SegmentResponseValueConstraint> _segmentResponseValueManifestMeasureMap =
+		new CaseInsensitiveHashMap<SegmentResponseValueConstraint>();
 
 	/**
-	 * ResponseValueSensitivityConstraint constructor
+	 * <i>ResponseValueSensitivityConstraint</i> constructor
 	 * 
-	 * @param srvcBase The Base Calibration Instance of SRVC
+	 * @param baseSegmentResponseValueConstraint The Base Calibration Instance of
+	 *  <i>SegmentResponseValueConstraint</i>
 	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 * @throws Exception Thrown if Inputs are Invalid
 	 */
 
 	public ResponseValueSensitivityConstraint (
-		final org.drip.spline.params.SegmentResponseValueConstraint srvcBase)
-		throws java.lang.Exception
+		final SegmentResponseValueConstraint baseSegmentResponseValueConstraint)
+		throws Exception
 	{
-		if (null == (_srvcBase = srvcBase))
-			throw new java.lang.Exception ("ResponseValueSensitivityConstraint ctr: Invalid Inputs");
+		if (null == (_baseSegmentResponseValueConstraint = baseSegmentResponseValueConstraint)) {
+			throw new Exception ("ResponseValueSensitivityConstraint ctr: Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Add the SRVC Instance corresponding to the specified Manifest Measure
+	 * Add the <i>SegmentResponseValueConstraint</i> Instance corresponding to the specified Manifest Measure
 	 * 
-	 * @param strManifestMeasure The Manifest Measure
-	 * @param srvc The SRVC Instance
+	 * @param manifestMeasure The Manifest Measure
+	 * @param segmentResponseValueConstraint The <i>SegmentResponseValueConstraint</i> Instance
 	 * 
-	 * @return TRUE - The SRVC Instance was successfully added
+	 * @return TRUE - The <i>SegmentResponseValueConstraint</i> Instance was successfully added
 	 */
 
 	public boolean addManifestMeasureSensitivity (
-		final java.lang.String strManifestMeasure,
-		final org.drip.spline.params.SegmentResponseValueConstraint srvc)
+		final String manifestMeasure,
+		final SegmentResponseValueConstraint segmentResponseValueConstraint)
 	{
-		if (null == strManifestMeasure || strManifestMeasure.isEmpty() || null == srvc) return false;
+		if (null == manifestMeasure || manifestMeasure.isEmpty() || null == segmentResponseValueConstraint) {
+			return false;
+		}
 
-		_mapSRVCManifestMeasure.put (strManifestMeasure, srvc);
+		_segmentResponseValueManifestMeasureMap.put (manifestMeasure, segmentResponseValueConstraint);
 
 		return true;
 	}
 
 	/**
-	 * Retrieve the base SRVC Instance
+	 * Retrieve the base <i>SegmentResponseValueConstraint</i> Instance
 	 * 
-	 * @return The Base SRVC Instance
+	 * @return The Base <i>SegmentResponseValueConstraint</i> Instance
 	 */
 
-	public org.drip.spline.params.SegmentResponseValueConstraint base()
+	public SegmentResponseValueConstraint base()
 	{
-		return _srvcBase;
+		return _baseSegmentResponseValueConstraint;
 	}
 
 	/**
-	 * Retrieve the SRVC Instance Specified by the Manifest Measure
+	 * Retrieve the <i>SegmentResponseValueConstraint</i> Instance Specified by the Manifest Measure
 	 * 
-	 * @param strManifestMeasure The Manifest Measure
+	 * @param manifestMeasure The Manifest Measure
 	 * 
-	 * @return The SRVC Instance Specified by the Manifest Measure
+	 * @return The <i>SegmentResponseValueConstraint</i> Instance Specified by the Manifest Measure
 	 */
 
-	public org.drip.spline.params.SegmentResponseValueConstraint manifestMeasureSensitivity (
-		final java.lang.String strManifestMeasure)
+	public SegmentResponseValueConstraint manifestMeasureSensitivity (
+		final String manifestMeasure)
 	{
-		return null != strManifestMeasure && _mapSRVCManifestMeasure.containsKey (strManifestMeasure) ?
-			_mapSRVCManifestMeasure.get (strManifestMeasure) : null;
+		return null != manifestMeasure &&
+			_segmentResponseValueManifestMeasureMap.containsKey (manifestMeasure) ?
+			_segmentResponseValueManifestMeasureMap.get (manifestMeasure) : null;
 	}
 
 	/**
@@ -174,8 +200,8 @@ public class ResponseValueSensitivityConstraint {
 	 * @return The Set of Available Manifest Measures
 	 */
 
-	public java.util.Set<java.lang.String> manifestMeasures()
+	public Set<String> manifestMeasures()
 	{
-		return _mapSRVCManifestMeasure.keySet();
+		return _segmentResponseValueManifestMeasureMap.keySet();
 	}
 }

@@ -125,34 +125,36 @@ public class SegmentCustomBuilderControl
 	private FunctionSetBuilderParams _functionSetBuilderParams = null;
 	private ResponseScalingShapeControl _responseScalingShapeControl = null;
 	private SegmentInelasticDesignControl _segmentInelasticDesignControl = null;
-	private org.drip.spline.params.PreceedingManifestSensitivityControl _pmsc = null;
+	private PreceedingManifestSensitivityControl _preceedingManifestSensitivityControl = null;
 
 	/**
 	 * <i>SegmentCustomBuilderControl</i> constructor
 	 * 
-	 * @param strBasisSpline Named Segment Basis Spline
-	 * @param fsbp Segment Basis Set Construction Parameters
-	 * @param sdic Segment Design Inelastic Parameters
-	 * @param rssc Segment Shape Controller
-	 * @param pmsc Preceeding Manifest Sensitivity Control Parameters
+	 * @param basisSpline Named Segment Basis Spline
+	 * @param functionSetBuilderParams Segment Basis Set Construction Parameters
+	 * @param segmentInelasticDesignControl Segment Design Inelastic Parameters
+	 * @param responseScalingShapeControl Segment Shape Controller
+	 * @param preceedingManifestSensitivityControl Preceeding Manifest Sensitivity Control Parameters
 	 * 
-	 * @throws java.lang.Exception Thrown if inputs are invalid
+	 * @throws Exception Thrown if inputs are invalid
 	 */
 
 	public SegmentCustomBuilderControl (
-		final java.lang.String strBasisSpline,
-		final org.drip.spline.basis.FunctionSetBuilderParams fsbp,
-		final org.drip.spline.params.SegmentInelasticDesignControl sdic,
-		final org.drip.spline.params.ResponseScalingShapeControl rssc,
-		final org.drip.spline.params.PreceedingManifestSensitivityControl pmsc)
-		throws java.lang.Exception
+		final String basisSpline,
+		final FunctionSetBuilderParams functionSetBuilderParams,
+		final SegmentInelasticDesignControl segmentInelasticDesignControl,
+		final ResponseScalingShapeControl responseScalingShapeControl,
+		final PreceedingManifestSensitivityControl preceedingManifestSensitivityControl)
+		throws Exception
 	{
-		if (null == (_basisSpline = strBasisSpline) || null == (_functionSetBuilderParams = fsbp) ||
-			null == (_segmentInelasticDesignControl = sdic))
-			throw new java.lang.Exception ("SegmentCustomBuilderControl ctr => Invalid Inputs");
+		if (null == (_basisSpline = basisSpline) ||
+			null == (_functionSetBuilderParams = functionSetBuilderParams) ||
+			null == (_segmentInelasticDesignControl = segmentInelasticDesignControl)) {
+			throw new Exception ("SegmentCustomBuilderControl ctr => Invalid Inputs");
+		}
 
-		_pmsc = pmsc;
-		_responseScalingShapeControl = rssc;
+		_preceedingManifestSensitivityControl = preceedingManifestSensitivityControl;
+		_responseScalingShapeControl = responseScalingShapeControl;
 	}
 
 	/**
@@ -205,8 +207,8 @@ public class SegmentCustomBuilderControl
 	 * @return The Preceeding Manifest Sensitivity Control Parameters
 	 */
 
-	public org.drip.spline.params.PreceedingManifestSensitivityControl preceedingManifestSensitivityControl()
+	public PreceedingManifestSensitivityControl preceedingManifestSensitivityControl()
 	{
-		return _pmsc;
+		return _preceedingManifestSensitivityControl;
 	}
 }

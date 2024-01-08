@@ -137,14 +137,14 @@ public class WireSurfaceStretch
 	 * <i>WireSurfaceStretch</i> Constructor
 	 * 
 	 * @param name Name
-	 * @param scbc Segment Custom Builder Control Parameters
-	 * @param mapWireSpan X-mapped Array of Y Basis Spline Wire Spans
+	 * @param segmentCustomBuilderControl Segment Custom Builder Control Parameters
+	 * @param wireSpanMap X-mapped Array of Y Basis Spline Wire Spans
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public WireSurfaceStretch (
-		final String strnameName,
+		final String name,
 		final SegmentCustomBuilderControl segmentCustomBuilderControl,
 		final TreeMap<Double, Span> wireSpanMap)
 		throws Exception

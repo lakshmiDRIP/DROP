@@ -1,11 +1,16 @@
 
 package org.drip.spline.params;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,8 +89,8 @@ package org.drip.spline.params;
 
 /**
  * <i>SegmentBasisFlexureConstraint</i> holds the set of fields needed to characterize a single local linear
- * Constraint, expressed linearly as a combination of the local Predictor Ordinates and their corresponding
- * Response Basis Function Realizations. Constraints are expressed as
+ * 	Constraint, expressed linearly as a combination of the local Predictor Ordinates and their corresponding
+ * 	Response Basis Function Realizations. Constraints are expressed as
  * 
  * 			C := Sigma_(i,j) [W_i * B_i(x_j)] = V where
  * 
@@ -94,43 +99,59 @@ package org.drip.spline.params;
  * 	W_i - Weight applied for the Response Basis Function i
  * 	V - Value of the Constraint
  * 
- * SegmentBasisFlexureConstraint can be viewed as the localized basis function transpose of
- * SegmentResponseValueConstraint.
+ * <i>SegmentBasisFlexureConstraint</i> can be viewed as the localized basis function transpose of
+ * 	SegmentResponseValueConstraint.
  *
- * <br><br>
+ * <br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></li>
+ * 		<li><i>SegmentBasisFlexureConstraint</i> constructor</li>
+ * 		<li>Retrieve the Array of the Response Basis Coefficient Weights</li>
+ * 		<li>Retrieve the Constraint Value</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/params/README.md">Spline Segment Construction Control Parameters</a></td></tr>
+ *  </table>
+ *  <br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class SegmentBasisFlexureConstraint {
-	private double[] _adblResponseBasisCoeffWeight = null;
-	private double _dblConstraintValue = java.lang.Double.NaN;
+public class SegmentBasisFlexureConstraint
+{
+	private double _constraintValue = Double.NaN;
+	private double[] _responseBasisCoefficientWeightArray = null;
 
 	/**
-	 * SegmentBasisFlexureConstraint constructor
+	 * <i>SegmentBasisFlexureConstraint</i> constructor
 	 * 
-	 * @param adblResponseBasisCoeffWeight The Weight for each of the Coefficients in the Basis Function Set
-	 * @param dblConstraintValue The Constraint Value
+	 * @param responseBasisCoefficientWeightArray The Weight for each of the Coefficients in the Basis
+	 * 	Function Set
+	 * @param constraintValue The Constraint Value
 	 *
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	public SegmentBasisFlexureConstraint (
-		double[] adblResponseBasisCoeffWeight,
-		double dblConstraintValue)
-		throws java.lang.Exception
+		double[] responseBasisCoefficientWeightArray,
+		double constraintValue)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblConstraintValue = dblConstraintValue) || null ==
-			(_adblResponseBasisCoeffWeight = adblResponseBasisCoeffWeight) || 0 ==
-				_adblResponseBasisCoeffWeight.length)
-			throw new java.lang.Exception ("SegmentBasisFlexureConstraint ctr: Invalid Inputs");
+		if (!NumberUtil.IsValid (_constraintValue = constraintValue) ||
+			null == (_responseBasisCoefficientWeightArray = responseBasisCoefficientWeightArray) ||
+			0 == _responseBasisCoefficientWeightArray.length) {
+			throw new Exception ("SegmentBasisFlexureConstraint ctr: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -141,7 +162,7 @@ public class SegmentBasisFlexureConstraint {
 
 	public double[] responseBasisCoeffWeights()
 	{
-		return _adblResponseBasisCoeffWeight;
+		return _responseBasisCoefficientWeightArray;
 	}
 
 	/**
@@ -152,6 +173,6 @@ public class SegmentBasisFlexureConstraint {
 
 	public double contraintValue()
 	{
-		return _dblConstraintValue;
+		return _constraintValue;
 	}
 }
