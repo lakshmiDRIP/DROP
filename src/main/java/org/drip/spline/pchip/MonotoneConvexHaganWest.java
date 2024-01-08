@@ -240,59 +240,65 @@ public class MonotoneConvexHaganWest
 	{
 		private double _eta = Double.NaN;
 		private double _responseZScoreLeft = Double.NaN;
-		private double _dblResponseZScoreRight = Double.NaN;
-		private double _dblPredictorOrdinateLeft = Double.NaN;
-		private double _dblPredictorOrdinateRight = Double.NaN;
+		private double _responseZScoreRight = Double.NaN;
+		private double _predictorOrdinateLeft = Double.NaN;
+		private double _predictorOrdinateRight = Double.NaN;
 
 		Case3Univariate (
-			final double dblPredictorOrdinateLeft,
-			final double dblPredictorOrdinateRight,
-			final double dblResponseZScoreLeft,
-			final double dblResponseZScoreRight)
+			final double predictorOrdinateLeft,
+			final double predictorOrdinateRight,
+			final double responseZScoreLeft,
+			final double responseZScoreRight)
 		{
 			super (null);
 
-			_responseZScoreLeft = dblResponseZScoreLeft;
-			_dblResponseZScoreRight = dblResponseZScoreRight;
-			_dblPredictorOrdinateLeft = dblPredictorOrdinateLeft;
-			_dblPredictorOrdinateRight = dblPredictorOrdinateRight;
-			_eta = _responseZScoreLeft != _dblResponseZScoreRight ? 3. * _dblResponseZScoreRight /
-				(_dblResponseZScoreRight - _responseZScoreLeft) : 0.;
+			_responseZScoreLeft = responseZScoreLeft;
+			_responseZScoreRight = responseZScoreRight;
+			_predictorOrdinateLeft = predictorOrdinateLeft;
+			_predictorOrdinateRight = predictorOrdinateRight;
+			_eta = _responseZScoreLeft != _responseZScoreRight ? 3. * _responseZScoreRight / (
+				_responseZScoreRight - _responseZScoreLeft
+			) : 0.;
 		}
 
 		@Override public double evaluate (
-			final double dblPredictorOrdinate)
-			throws java.lang.Exception
+			final double predictorOrdinate)
+			throws Exception
 		{
-			if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate) || dblPredictorOrdinate <
-				_dblPredictorOrdinateLeft || dblPredictorOrdinate > _dblPredictorOrdinateRight)
-				throw new java.lang.Exception ("Case3Univariate::evaluate => Invalid Inputs");
+			if (!NumberUtil.IsValid (predictorOrdinate) || predictorOrdinate < _predictorOrdinateLeft ||
+				predictorOrdinate > _predictorOrdinateRight) {
+				throw new Exception ("Case3Univariate::evaluate => Invalid Inputs");
+			}
 
-			if (_responseZScoreLeft == _dblResponseZScoreRight) return _dblResponseZScoreRight;
+			if (_responseZScoreLeft == _responseZScoreRight) {
+				return _responseZScoreRight;
+			}
 
-			double dblX = (dblPredictorOrdinate - _dblPredictorOrdinateLeft) / (_dblPredictorOrdinateRight -
-				_dblPredictorOrdinateLeft);
-			return dblX < _eta ? _responseZScoreLeft + (_responseZScoreLeft -
-				_dblResponseZScoreRight) * (_eta - dblX) * (_eta - dblX) / _eta / _eta :
-					_dblResponseZScoreRight;
+			double x = (predictorOrdinate - _predictorOrdinateLeft) / (
+				_predictorOrdinateRight - _predictorOrdinateLeft
+			);
+			return x < _eta ? _responseZScoreLeft + (_responseZScoreLeft - _responseZScoreRight) * (_eta - x)
+				* (_eta - x) / _eta / _eta : _responseZScoreRight;
 		}
 
 		@Override public double integrate (
-			final double dblBegin,
-			final double dblEnd)
-			throws java.lang.Exception
+			final double begin,
+			final double end)
+			throws Exception
 		{
-			return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+			return R1ToR1Integrator.Boole (this, begin, end);
 		}
 	}
 
-	class Case4Univariate extends org.drip.function.definition.R1ToR1 {
-		private double _dblA = java.lang.Double.NaN;
-		private double _dblEta = java.lang.Double.NaN;
-		private double _dblResponseZScoreLeft = java.lang.Double.NaN;
-		private double _dblResponseZScoreRight = java.lang.Double.NaN;
-		private double _dblPredictorOrdinateLeft = java.lang.Double.NaN;
-		private double _dblPredictorOrdinateRight = java.lang.Double.NaN;
+	class Case4Univariate
+		extends R1ToR1
+	{
+		private double _a = Double.NaN;
+		private double _eta = Double.NaN;
+		private double _responseZScoreLeft = Double.NaN;
+		private double _responseZScoreRight = Double.NaN;
+		private double _predictorOrdinateLeft = Double.NaN;
+		private double _predictorOrdinateRight = Double.NaN;
 
 		Case4Univariate (
 			final double dblPredictorOrdinateLeft,
@@ -302,140 +308,184 @@ public class MonotoneConvexHaganWest
 		{
 			super (null);
 
-			_dblResponseZScoreLeft = dblResponseZScoreLeft;
-			_dblResponseZScoreRight = dblResponseZScoreRight;
-			_dblPredictorOrdinateLeft = dblPredictorOrdinateLeft;
-			_dblPredictorOrdinateRight = dblPredictorOrdinateRight;
+			_responseZScoreLeft = dblResponseZScoreLeft;
+			_responseZScoreRight = dblResponseZScoreRight;
+			_predictorOrdinateLeft = dblPredictorOrdinateLeft;
+			_predictorOrdinateRight = dblPredictorOrdinateRight;
 
-			if (_dblResponseZScoreLeft != _dblResponseZScoreRight) {
-				_dblEta = _dblResponseZScoreRight / (_dblResponseZScoreRight - _dblResponseZScoreLeft);
-				_dblA = -1. * _dblResponseZScoreLeft * _dblResponseZScoreRight / (_dblResponseZScoreRight -
-					_dblResponseZScoreLeft);
+			if (_responseZScoreLeft != _responseZScoreRight) {
+				_eta = _responseZScoreRight / (_responseZScoreRight - _responseZScoreLeft);
+				_a = -1. * _responseZScoreLeft * _responseZScoreRight / (
+					_responseZScoreRight - _responseZScoreLeft
+				);
 			} else {
-				_dblA = 0.;
-				_dblEta = 0.;
+				_a = 0.;
+				_eta = 0.;
 			}
 		}
 
 		@Override public double evaluate (
-			final double dblPredictorOrdinate)
-			throws java.lang.Exception
+			final double predictorOrdinate)
+			throws Exception
 		{
-			if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate) || dblPredictorOrdinate <
-				_dblPredictorOrdinateLeft || dblPredictorOrdinate > _dblPredictorOrdinateRight)
-				throw new java.lang.Exception ("Case4Univariate::evaluate => Invalid Inputs");
+			if (!NumberUtil.IsValid (predictorOrdinate) || predictorOrdinate < _predictorOrdinateLeft ||
+				predictorOrdinate > _predictorOrdinateRight) {
+				throw new Exception ("Case4Univariate::evaluate => Invalid Inputs");
+			}
 
-			if (_dblResponseZScoreLeft == _dblResponseZScoreRight) return _dblResponseZScoreRight;
+			if (_responseZScoreLeft == _responseZScoreRight) {
+				return _responseZScoreRight;
+			}
 
-			double dblX = (dblPredictorOrdinate - _dblPredictorOrdinateLeft) / (_dblPredictorOrdinateRight -
-				_dblPredictorOrdinateLeft);
-			return dblX < _dblEta ? _dblA + (_dblResponseZScoreLeft - _dblA) * (_dblEta - dblX) * (_dblEta -
-				dblX) / _dblEta / _dblEta : _dblA + (_dblResponseZScoreRight - _dblA) * (dblX - _dblEta) *
-					(dblX - _dblEta) / (1. - _dblEta) / (1. - _dblEta);
+			double x = (predictorOrdinate - _predictorOrdinateLeft) / (
+				_predictorOrdinateRight - _predictorOrdinateLeft
+			);
+			return x < _eta ? _a + (_responseZScoreLeft - _a) * (_eta - x) * (_eta - x) / _eta / _eta :
+				_a + (_responseZScoreRight - _a) * (x - _eta) * (x - _eta) / (1. - _eta) / (1. - _eta);
 		}
 
 		@Override public double integrate (
-			final double dblBegin,
-			final double dblEnd)
-			throws java.lang.Exception
+			final double begin,
+			final double end)
+			throws Exception
 		{
-			return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+			return R1ToR1Integrator.Boole (this, begin, end);
 		}
 	}
 
 	/**
 	 * Create an instance of <i>MonotoneConvexHaganWest</i>
 	 * 
-	 * @param adblPredictorOrdinate Array of Predictor Ordinates
-	 * @param adblObservation Array of Observations
-	 * @param bLinearNodeInference Apply Linear Node Inference from Observations
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
+	 * @param observationArray Array of Observations
+	 * @param linearNodeInference Apply Linear Node Inference from Observations
 	 * 
 	 * @return Instance of <i>MonotoneConvexHaganWest</i>
 	 */
 
 	public static final MonotoneConvexHaganWest Create (
-		final double[] adblPredictorOrdinate,
-		final double[] adblObservation,
-		final boolean bLinearNodeInference)
+		final double[] predictorOrdinateArray,
+		final double[] observationArray,
+		final boolean linearNodeInference)
 	{
-		MonotoneConvexHaganWest mchw = null;
+		MonotoneConvexHaganWest monotoneConvexHaganWest = null;
 
 		try {
-			mchw = new MonotoneConvexHaganWest (adblPredictorOrdinate, adblObservation,
-				bLinearNodeInference);
-		} catch (java.lang.Exception e) {
+			monotoneConvexHaganWest = new MonotoneConvexHaganWest (
+				predictorOrdinateArray,
+				observationArray,
+				linearNodeInference
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		return mchw.inferResponseValues() && mchw.inferResponseZScores() && mchw.generateUnivariate() ? mchw
-			: null;
+		return monotoneConvexHaganWest.inferResponseValues() &&
+			monotoneConvexHaganWest.inferResponseZScores() && monotoneConvexHaganWest.generateUnivariate() ?
+			monotoneConvexHaganWest : null;
 	}
 
 	private MonotoneConvexHaganWest (
-		final double[] adblPredictorOrdinate,
-		final double[] adblObservation,
-		final boolean bLinearNodeInference)
-		throws java.lang.Exception
+		final double[] predictorOrdinateArray,
+		final double[] observationArray,
+		final boolean linearNodeInference)
+		throws Exception
 	{
 		super (null);
 
-		if (null == (_observationArray = adblObservation) || null == (_predictorOrdinateArray =
-			adblPredictorOrdinate))
-			throw new java.lang.Exception ("MonotoneConvexHaganWest ctr: Invalid Inputs!");
+		if (null == (_observationArray = observationArray) ||
+			null == (_predictorOrdinateArray = predictorOrdinateArray)) {
+			throw new Exception ("MonotoneConvexHaganWest ctr: Invalid Inputs!");
+		}
 
-		_linearNodeInference = bLinearNodeInference;
-		int iNumObservation = _observationArray.length;
+		_linearNodeInference = linearNodeInference;
+		int observationCount = _observationArray.length;
 
-		if (1 >= iNumObservation || iNumObservation + 1 != _predictorOrdinateArray.length)
-			throw new java.lang.Exception ("MonotoneConvexHaganWest ctr: Invalid Inputs!");
+		if (1 >= observationCount || observationCount + 1 != _predictorOrdinateArray.length) {
+			throw new Exception ("MonotoneConvexHaganWest ctr: Invalid Inputs!");
+		}
 	}
 
 	private boolean inferResponseValues()
 	{
-		int iNumPredictorOrdinate = _predictorOrdinateArray.length;
-		_responseValueArray = new double[iNumPredictorOrdinate];
+		int predictorOrdinateArray = _predictorOrdinateArray.length;
+		_responseValueArray = new double[predictorOrdinateArray];
 
-		for (int i = 1; i < iNumPredictorOrdinate - 1; ++i) {
-			if (_linearNodeInference)
-				_responseValueArray[i] = (_predictorOrdinateArray[i] - _predictorOrdinateArray[i - 1]) /
-					(_predictorOrdinateArray[i + 1] - _predictorOrdinateArray[i - 1]) * _observationArray[i] +
-						(_predictorOrdinateArray[i + 1] - _predictorOrdinateArray[i]) /
-							(_predictorOrdinateArray[i + 1] - _predictorOrdinateArray[i - 1]) *
-								_observationArray[i - 1];
-			else {
-				_responseValueArray[i] = 0.;
+		for (int predictorOrdinateIndex = 1; predictorOrdinateIndex < predictorOrdinateArray - 1;
+			++predictorOrdinateIndex) {
+			if (_linearNodeInference) {
+				_responseValueArray[predictorOrdinateIndex] = (
+					_predictorOrdinateArray[predictorOrdinateIndex] -
+					_predictorOrdinateArray[predictorOrdinateIndex - 1]
+				) / (
+					_predictorOrdinateArray[predictorOrdinateIndex + 1] -
+					_predictorOrdinateArray[predictorOrdinateIndex - 1]
+				) * _observationArray[predictorOrdinateIndex] + (
+					_predictorOrdinateArray[predictorOrdinateIndex + 1] -
+					_predictorOrdinateArray[predictorOrdinateIndex]
+				) / (
+					_predictorOrdinateArray[predictorOrdinateIndex + 1] -
+					_predictorOrdinateArray[predictorOrdinateIndex - 1]
+				) * _observationArray[predictorOrdinateIndex - 1];
+			} else {
+				_responseValueArray[predictorOrdinateIndex] = 0.;
 
-				if (_observationArray[i - 1] * _observationArray[i] > 0.) {
-					_responseValueArray[i] = (_predictorOrdinateArray[i] - _predictorOrdinateArray[i - 1] + 2. *
-						(_predictorOrdinateArray[i + 1] - _predictorOrdinateArray[i])) / (3. *
-							(_predictorOrdinateArray[i + 1] - _predictorOrdinateArray[i])) /
-								_observationArray[i - 1];
-					_responseValueArray[i] += (_predictorOrdinateArray[i + 1] - _predictorOrdinateArray[i] + 2.
-						* (_predictorOrdinateArray[i] - _predictorOrdinateArray[i - 1])) / (3. *
-							(_predictorOrdinateArray[i + 1] - _predictorOrdinateArray[i])) /
-								_observationArray[i];
-					_responseValueArray[i] = 1. / _responseValueArray[i];
+				if (0. < _observationArray[predictorOrdinateIndex - 1] * _observationArray[predictorOrdinateIndex])
+				{
+					_responseValueArray[predictorOrdinateIndex] = (
+						_predictorOrdinateArray[predictorOrdinateIndex] -
+						_predictorOrdinateArray[predictorOrdinateIndex - 1] + 2. * (
+							_predictorOrdinateArray[predictorOrdinateIndex + 1] -
+							_predictorOrdinateArray[predictorOrdinateIndex]
+						)
+					) / (
+						3. * (
+							_predictorOrdinateArray[predictorOrdinateIndex + 1] -
+							_predictorOrdinateArray[predictorOrdinateIndex]
+						)
+					) / _observationArray[predictorOrdinateIndex - 1];
+					_responseValueArray[predictorOrdinateIndex] += (
+						_predictorOrdinateArray[predictorOrdinateIndex + 1] -
+						_predictorOrdinateArray[predictorOrdinateIndex] + 2. * (
+							_predictorOrdinateArray[predictorOrdinateIndex] -
+							_predictorOrdinateArray[predictorOrdinateIndex - 1]
+						)
+					) / (
+						3. * (
+							_predictorOrdinateArray[predictorOrdinateIndex + 1] -
+							_predictorOrdinateArray[predictorOrdinateIndex]
+						)
+					) / _observationArray[predictorOrdinateIndex];
+					_responseValueArray[predictorOrdinateIndex] = 1. /
+						_responseValueArray[predictorOrdinateIndex];
 				}
 			}
 		}
 
-		_responseValueArray[0] = _observationArray[0] - 0.5 * (_responseValueArray[1] - _observationArray[0]);
-		_responseValueArray[iNumPredictorOrdinate - 1] = _observationArray[iNumPredictorOrdinate - 2] - 0.5 *
-			(_responseValueArray[iNumPredictorOrdinate - 2] - _observationArray[iNumPredictorOrdinate - 2]);
+		_responseValueArray[0] = _observationArray[0] - 0.5 * (
+			_responseValueArray[1] - _observationArray[0]
+		);
+		_responseValueArray[predictorOrdinateArray - 1] =
+			_observationArray[predictorOrdinateArray - 2] - 0.5 * (
+				_responseValueArray[predictorOrdinateArray - 2] -
+				_observationArray[predictorOrdinateArray - 2]
+			);
 		return true;
 	}
 
 	private boolean inferResponseZScores()
 	{
-		int iNumSegment = _predictorOrdinateArray.length - 1;
-		_responseZScoreLeftArray = new double[iNumSegment];
-		_responseZScoreRightArray = new double[iNumSegment];
+		int segmentCount = _predictorOrdinateArray.length - 1;
+		_responseZScoreRightArray = new double[segmentCount];
+		_responseZScoreLeftArray = new double[segmentCount];
 
-		for (int i = 0; i < iNumSegment; ++i) {
-			_responseZScoreLeftArray[i] = _responseValueArray[i] - _observationArray[i];
-			_responseZScoreRightArray[i] = _responseValueArray[i + 1] - _observationArray[i];
+		for (int segmentIndex = 0; segmentIndex < segmentCount; ++segmentIndex) {
+			_responseZScoreLeftArray[segmentIndex] = _responseValueArray[segmentIndex] -
+				_observationArray[segmentIndex];
+			_responseZScoreRightArray[segmentIndex] = _responseValueArray[segmentIndex + 1] -
+				_observationArray[segmentIndex];
 		}
 
 		return true;
@@ -443,115 +493,194 @@ public class MonotoneConvexHaganWest
 
 	private boolean generateUnivariate()
 	{
-		int iNumSegment = _predictorOrdinateArray.length - 1;
-		_univariateFunctionArray = new org.drip.function.definition.R1ToR1[iNumSegment];
+		int segmentCount = _predictorOrdinateArray.length - 1;
+		_univariateFunctionArray = new R1ToR1[segmentCount];
 
-		for (int i = 0; i < iNumSegment; ++i) {
-			if ((_responseZScoreLeftArray[i] > 0. && -0.5 * _responseZScoreLeftArray[i] >=
-				_responseZScoreRightArray[i] && _responseZScoreRightArray[i] >= -2. *
-					_responseZScoreLeftArray[i]) || (_responseZScoreLeftArray[i] < 0. && -0.5 *
-						_responseZScoreLeftArray[i] <= _responseZScoreRightArray[i] &&
-							_responseZScoreRightArray[i] <= -2. * _responseZScoreLeftArray[i]))
-				_univariateFunctionArray[i] = new Case1Univariate (_predictorOrdinateArray[i], _predictorOrdinateArray[i + 1],
-					_responseZScoreLeftArray[i], _responseZScoreRightArray[i]);
-			else if ((_responseZScoreLeftArray[i] < 0. && _responseZScoreRightArray[i] > -2. *
-				_responseZScoreLeftArray[i]) || (_responseZScoreLeftArray[i] > 0. &&
-					_responseZScoreRightArray[i] < -2. * _responseZScoreLeftArray[i]))
-				_univariateFunctionArray[i] = new Case2Univariate (_predictorOrdinateArray[i], _predictorOrdinateArray[i + 1],
-					_responseZScoreLeftArray[i], _responseZScoreRightArray[i]);
-			else if ((_responseZScoreLeftArray[i] > 0. && _responseZScoreRightArray[i] > -0.5 *
-				_responseZScoreLeftArray[i]) || (_responseZScoreLeftArray[i] < 0. &&
-					_responseZScoreRightArray[i] < -0.5 * _responseZScoreLeftArray[i]))
-				_univariateFunctionArray[i] = new Case3Univariate (_predictorOrdinateArray[i], _predictorOrdinateArray[i + 1],
-					_responseZScoreLeftArray[i], _responseZScoreRightArray[i]);
-			else if ((_responseZScoreLeftArray[i] >= 0. && _responseZScoreRightArray[i] >= 0.) ||
-				(_responseZScoreLeftArray[i] <= 0. && _responseZScoreRightArray[i] <= 0.))
-				_univariateFunctionArray[i] = new Case4Univariate (_predictorOrdinateArray[i], _predictorOrdinateArray[i + 1],
-					_responseZScoreLeftArray[i], _responseZScoreRightArray[i]);
+		for (int segmentIndex = 0; segmentIndex < segmentCount; ++segmentIndex) {
+			if (
+				(
+					0. < _responseZScoreLeftArray[segmentIndex] &&
+					-0.5 * _responseZScoreLeftArray[segmentIndex] >= _responseZScoreRightArray[segmentIndex] &&
+					_responseZScoreRightArray[segmentIndex] >= -2. * _responseZScoreLeftArray[segmentIndex]
+				) || (
+					0. > _responseZScoreLeftArray[segmentIndex] &&
+					-0.5 * _responseZScoreLeftArray[segmentIndex] <= _responseZScoreRightArray[segmentIndex] &&
+					_responseZScoreRightArray[segmentIndex] <= -2. * _responseZScoreLeftArray[segmentIndex]
+				)
+			) {
+				_univariateFunctionArray[segmentIndex] = new Case1Univariate (
+					_predictorOrdinateArray[segmentIndex],
+					_predictorOrdinateArray[segmentIndex + 1],
+					_responseZScoreLeftArray[segmentIndex],
+					_responseZScoreRightArray[segmentIndex]
+				);
+			} else if (
+				(
+					0. > _responseZScoreLeftArray[segmentIndex] &&
+					_responseZScoreRightArray[segmentIndex] > -2. * _responseZScoreLeftArray[segmentIndex]
+				) || (
+					0. < _responseZScoreLeftArray[segmentIndex] &&
+					_responseZScoreRightArray[segmentIndex] < -2. * _responseZScoreLeftArray[segmentIndex]
+				)
+			) {
+				_univariateFunctionArray[segmentIndex] = new Case2Univariate (
+					_predictorOrdinateArray[segmentIndex],
+					_predictorOrdinateArray[segmentIndex + 1],
+					_responseZScoreLeftArray[segmentIndex],
+					_responseZScoreRightArray[segmentIndex]
+				);
+			} else if (
+				(
+					0. < _responseZScoreLeftArray[segmentIndex] &&
+					_responseZScoreRightArray[segmentIndex] > -0.5 * _responseZScoreLeftArray[segmentIndex]
+				) || (
+					0. > _responseZScoreLeftArray[segmentIndex] &&
+					_responseZScoreRightArray[segmentIndex] < -0.5 * _responseZScoreLeftArray[segmentIndex]
+				)
+			) {
+				_univariateFunctionArray[segmentIndex] = new Case3Univariate (
+					_predictorOrdinateArray[segmentIndex],
+					_predictorOrdinateArray[segmentIndex + 1],
+					_responseZScoreLeftArray[segmentIndex],
+					_responseZScoreRightArray[segmentIndex]
+				);
+			} else if (
+				(
+					0. <= _responseZScoreLeftArray[segmentIndex] &&
+					0. <= _responseZScoreRightArray[segmentIndex]
+				) || (
+					0. >= _responseZScoreLeftArray[segmentIndex] &&
+					0. >= _responseZScoreRightArray[segmentIndex]
+				)
+			) {
+				_univariateFunctionArray[segmentIndex] = new Case4Univariate (
+					_predictorOrdinateArray[segmentIndex],
+					_predictorOrdinateArray[segmentIndex + 1],
+					_responseZScoreLeftArray[segmentIndex],
+					_responseZScoreRightArray[segmentIndex]
+				);
+			}
 		}
 
 		return true;
 	}
 
 	private boolean ameliorate (
-		final double[] adblResponseLeftMin,
-		final double[] adblResponseLeftMax,
-		final double[] adblResponseRightMin,
-		final double[] adblResponseRightMax)
+		final double[] minimumLeftResponseArray,
+		final double[] maximumLeftResponseArray,
+		final double[] minimumRightResponseArray,
+		final double[] maximumRightResponseArray)
 	{
-		int iNumObservation = _observationArray.length;
+		int observationCount = _observationArray.length;
 
-		if (iNumObservation != adblResponseLeftMin.length || iNumObservation != adblResponseLeftMax.length ||
-			iNumObservation != adblResponseRightMin.length || iNumObservation != adblResponseRightMax.length)
+		if (observationCount != minimumLeftResponseArray.length ||
+			observationCount != maximumLeftResponseArray.length ||
+			observationCount != minimumRightResponseArray.length ||
+			observationCount != maximumRightResponseArray.length) {
 			return false;
+		}
 
-		for (int i = 0; i < iNumObservation; ++i) {
-			if (_responseValueArray[i] < java.lang.Math.max (adblResponseLeftMin[i], adblResponseRightMin[i])
-				|| _responseValueArray[i] > java.lang.Math.min (adblResponseLeftMax[i],
-					adblResponseRightMax[i])) {
-				if (_responseValueArray[i] < java.lang.Math.max (adblResponseLeftMin[i],
-					adblResponseRightMin[i]))
-					_responseValueArray[i] = java.lang.Math.max (adblResponseLeftMin[i],
-						adblResponseRightMin[i]);
-				else if (_responseValueArray[i] > java.lang.Math.min (adblResponseLeftMax[i],
-					adblResponseRightMax[i]))
-					_responseValueArray[i] = java.lang.Math.min (adblResponseLeftMax[i],
-						adblResponseRightMax[i]);
+		for (int observationIndex = 0; observationIndex < observationCount; ++observationIndex) {
+			if (_responseValueArray[observationIndex] < Math.max (
+					minimumLeftResponseArray[observationIndex],
+					minimumRightResponseArray[observationIndex]
+				) || _responseValueArray[observationIndex] > Math.min (
+					maximumLeftResponseArray[observationIndex],
+					maximumRightResponseArray[observationIndex]
+				)
+			) {
+				if (_responseValueArray[observationIndex] < Math.max (
+						minimumLeftResponseArray[observationIndex],
+						minimumRightResponseArray[observationIndex]
+					)
+				) {
+					_responseValueArray[observationIndex] = Math.max (
+						minimumLeftResponseArray[observationIndex],
+						minimumRightResponseArray[observationIndex]
+					);
+				} else if (_responseValueArray[observationIndex] > Math.min (
+						maximumLeftResponseArray[observationIndex],
+						maximumRightResponseArray[observationIndex]
+					)
+				) {
+					_responseValueArray[observationIndex] = Math.min (
+						maximumLeftResponseArray[observationIndex],
+						maximumRightResponseArray[observationIndex]
+					);
+				}
 			} else {
-				if (_responseValueArray[i] < java.lang.Math.min (adblResponseLeftMax[i],
-					adblResponseRightMax[i]))
-					_responseValueArray[i] = java.lang.Math.min (adblResponseLeftMax[i],
-						adblResponseRightMax[i]);
-				else if (_responseValueArray[i] > java.lang.Math.max (adblResponseLeftMin[i],
-					adblResponseRightMin[i]))
-					_responseValueArray[i] = java.lang.Math.max (adblResponseLeftMin[i],
-						adblResponseRightMin[i]);
+				if (_responseValueArray[observationIndex] < Math.min (
+						maximumLeftResponseArray[observationIndex],
+						maximumRightResponseArray[observationIndex]
+					)
+				) {
+					_responseValueArray[observationIndex] = Math.min (
+						maximumLeftResponseArray[observationIndex],
+						maximumRightResponseArray[observationIndex]
+					);
+				} else if (_responseValueArray[observationIndex] > Math.max (
+						minimumLeftResponseArray[observationIndex],
+						minimumRightResponseArray[observationIndex]
+					)
+				) {
+					_responseValueArray[observationIndex] = Math.max (
+						minimumLeftResponseArray[observationIndex],
+						minimumRightResponseArray[observationIndex]
+					);
+				}
 			}
 		}
 
-		if (java.lang.Math.abs (_responseValueArray[0] - _observationArray[0]) > 0.5 * java.lang.Math.abs
-			(_responseValueArray[1] - _observationArray[0]))
-			_responseValueArray[0] = _observationArray[1] - 0.5 * (_responseValueArray[1] -
-				_observationArray[0]);
+		if (Math.abs (_responseValueArray[0] - _observationArray[0]) >
+			0.5 * Math.abs (_responseValueArray[1] - _observationArray[0])) {
+			_responseValueArray[0] = _observationArray[1] - 0.5 * (
+				_responseValueArray[1] - _observationArray[0]
+			);
+		}
 
-		if (java.lang.Math.abs (_responseValueArray[iNumObservation] - _observationArray[iNumObservation - 1])
-			> 0.5 * java.lang.Math.abs (_responseValueArray[iNumObservation - 1] -
-				_observationArray[iNumObservation - 1]))
-			_responseValueArray[iNumObservation] = _observationArray[iNumObservation - 1] - 0.5 *
-				(_observationArray[iNumObservation - 1] - _responseValueArray[iNumObservation - 1]);
+		if (Math.abs (_responseValueArray[observationCount] - _observationArray[observationCount - 1]) >
+			0.5 * Math.abs (
+				_responseValueArray[observationCount - 1] - _observationArray[observationCount - 1]
+			)
+		) {
+			_responseValueArray[observationCount] = _observationArray[observationCount - 1] - 0.5 * (
+				_observationArray[observationCount - 1] - _responseValueArray[observationCount - 1]
+			);
+		}
 
 		return inferResponseZScores() && generateUnivariate();
 	}
 
 	private int containingIndex (
-		final double dblPredictorOrdinate,
-		final boolean bIncludeLeft,
-		final boolean bIncludeRight)
-		throws java.lang.Exception
+		final double predictorOrdinate,
+		final boolean includeLeft,
+		final boolean includeRight)
+		throws Exception
 	{
-		int iNumSegment = _univariateFunctionArray.length;
+		for (int segmentIndex = 0 ; segmentIndex < _univariateFunctionArray.length; ++segmentIndex) {
+			boolean leftValid = includeLeft ? _predictorOrdinateArray[segmentIndex] <= predictorOrdinate :
+				_predictorOrdinateArray[segmentIndex] < predictorOrdinate;
 
-		for (int i = 0 ; i < iNumSegment; ++i) {
-			boolean bLeftValid = bIncludeLeft ? _predictorOrdinateArray[i] <= dblPredictorOrdinate :
-				_predictorOrdinateArray[i] < dblPredictorOrdinate;
+			boolean rightValid = includeRight ?
+				_predictorOrdinateArray[segmentIndex + 1] >= predictorOrdinate :
+				_predictorOrdinateArray[segmentIndex + 1] > predictorOrdinate;
 
-			boolean bRightValid = bIncludeRight ? _predictorOrdinateArray[i + 1] >= dblPredictorOrdinate :
-				_predictorOrdinateArray[i + 1] > dblPredictorOrdinate;
-
-			if (bLeftValid && bRightValid) return i;
+			if (leftValid && rightValid) {
+				return segmentIndex;
+			}
 		}
 
-		throw new java.lang.Exception
-			("MonotoneConvexHaganWest::containingIndex => Cannot locate Containing Index");
+		throw new Exception ("MonotoneConvexHaganWest::containingIndex => Cannot locate Containing Index");
 	}
 
 	@Override public double evaluate (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
-		int iContainingIndex = containingIndex (dblPredictorOrdinate, true, true);
+		int containingIndex = containingIndex (predictorOrdinate, true, true);
 
-		return _univariateFunctionArray[iContainingIndex].evaluate (dblPredictorOrdinate) + _observationArray[iContainingIndex];
+		return _univariateFunctionArray[containingIndex].evaluate (predictorOrdinate) +
+			_observationArray[containingIndex];
 	}
 
 	/**
@@ -563,17 +692,28 @@ public class MonotoneConvexHaganWest
 	public boolean enforcePositivity()
 	{
 		try {
-			_responseValueArray[0] = org.drip.numerical.common.NumberUtil.Bound (_responseValueArray[0], 0., 2. *
-				_observationArray[0]);
+			_responseValueArray[0] = NumberUtil.Bound (
+				_responseValueArray[0],
+				0.,
+				2. * _observationArray[0]
+			);
 
-			int iNumObservation = _observationArray.length;
+			for (int observationIndex = 1; observationIndex < _observationArray.length; ++observationIndex) {
+				_responseValueArray[observationIndex] = NumberUtil.Bound (
+					_responseValueArray[observationIndex],
+					0.,
+					2. * Math.min (
+						_observationArray[observationIndex - 1],
+						_observationArray[observationIndex]
+					)
+				);
+			}
 
-			for (int i = 1; i < iNumObservation; ++i)
-				_responseValueArray[i] = org.drip.numerical.common.NumberUtil.Bound (_responseValueArray[i], 0., 2.
-					* java.lang.Math.min (_observationArray[i - 1], _observationArray[i]));
-
-			_responseValueArray[iNumObservation] = org.drip.numerical.common.NumberUtil.Bound
-				(_responseValueArray[iNumObservation], 0., 2. * _observationArray[iNumObservation - 1]);
+			_responseValueArray[_observationArray.length] = NumberUtil.Bound (
+				_responseValueArray[_observationArray.length],
+				0.,
+				2. * _observationArray[_observationArray.length - 1]
+			);
 
 			return inferResponseZScores() && generateUnivariate();
 		} catch (java.lang.Exception e) {
@@ -586,66 +726,97 @@ public class MonotoneConvexHaganWest
 	/**
 	 * Create an Ameliorated Instance of the Current Instance
 	 * 
-	 * @param adblResponseLeftMin Response Left Floor
-	 * @param adblResponseLeftMax Response Left Ceiling
-	 * @param adblResponseRightMin Response Right Floor
-	 * @param adblResponseRightMax Response Right Ceiling
-	 * @param bEnforcePositivity TRUE - Enforce Positivity
+	 * @param minimumLeftResponseArray Response Left Floor
+	 * @param maximumLeftResponseArray Response Left Ceiling
+	 * @param minimumRightResponseArray Response Right Floor
+	 * @param maximumRightResponseArray Response Right Ceiling
+	 * @param enforcePositivity TRUE - Enforce Positivity
 	 * 
 	 * @return The Ameliorated Version of the Current Instance
 	 */
 
 	public MonotoneConvexHaganWest generateAmelioratedInstance (
-		final double[] adblResponseLeftMin,
-		final double[] adblResponseLeftMax,
-		final double[] adblResponseRightMin,
-		final double[] adblResponseRightMax,
-		final boolean bEnforcePositivity)
+		final double[] minimumLeftResponseArray,
+		final double[] maximumLeftResponseArray,
+		final double[] minimumRightResponseArray,
+		final double[] maximumRightResponseArray,
+		final boolean enforcePositivity)
 	{
-		if (null == adblResponseLeftMin || null == adblResponseLeftMax | null == adblResponseRightMin || null
-			== adblResponseRightMax)
+		if (null == minimumLeftResponseArray || null == maximumLeftResponseArray ||
+			null == minimumRightResponseArray || null == maximumRightResponseArray) {
 			return null;
-
-		int iNumAmelioratedObservation = _observationArray.length + 2;
-		int iNumAmelioratedPredicatorOrdinate = _predictorOrdinateArray.length + 2;
-		double[] adblAmelioratedObservation = new double[iNumAmelioratedObservation];
-		double[] adblAmelioratedPredictorOrdinate = new double[iNumAmelioratedPredicatorOrdinate];
-
-		for (int i = 0; i < iNumAmelioratedPredicatorOrdinate; ++i) {
-			if (0 == i)
-				adblAmelioratedPredictorOrdinate[0] = -1. * _predictorOrdinateArray[1];
-			else if (iNumAmelioratedPredicatorOrdinate - 1 == i)
-				adblAmelioratedPredictorOrdinate[i] = 2. * _predictorOrdinateArray[i - 1] -
-					_predictorOrdinateArray[i - 2];
-			else
-				adblAmelioratedPredictorOrdinate[i] = _predictorOrdinateArray[i - 1];
 		}
 
-		for (int i = 0; i < iNumAmelioratedObservation; ++i) {
-			if (0 == i)
-				adblAmelioratedObservation[0] = _observationArray[0] - (_predictorOrdinateArray[1] -
-					_predictorOrdinateArray[0]) * (_observationArray[1] - _observationArray[0]) /
-						(_predictorOrdinateArray[2] - _predictorOrdinateArray[0]);
-			else if (iNumAmelioratedPredicatorOrdinate - 1 == i)
-				adblAmelioratedObservation[i] = _observationArray[i - 1] - (_predictorOrdinateArray[i - 1] -
-					_predictorOrdinateArray[i - 2]) * (_observationArray[i - 1] - _observationArray[i - 2]) /
-						(_predictorOrdinateArray[i - 1] - _predictorOrdinateArray[i - 3]);
-			else
-				adblAmelioratedObservation[i] = _observationArray[i - 1];
+		int amelioratedObservationCount = _observationArray.length + 2;
+		int amelioratedPredicatorOrdinateCount = _predictorOrdinateArray.length + 2;
+		double[] amelioratedObservationArray = new double[amelioratedObservationCount];
+		double[] amelioratedPredictorOrdinateArray = new double[amelioratedPredicatorOrdinateCount];
+
+		for (int amelioratedPredicatorOrdinateIndex = 0;
+			amelioratedPredicatorOrdinateIndex < amelioratedPredicatorOrdinateCount;
+			++amelioratedPredicatorOrdinateIndex) {
+			if (0 == amelioratedPredicatorOrdinateIndex) {
+				amelioratedPredictorOrdinateArray[0] = -1. * _predictorOrdinateArray[1];
+			} else if (amelioratedPredicatorOrdinateCount - 1 == amelioratedPredicatorOrdinateIndex) {
+				amelioratedPredictorOrdinateArray[amelioratedPredicatorOrdinateIndex] =
+					2. * _predictorOrdinateArray[amelioratedPredicatorOrdinateIndex - 1] -
+						_predictorOrdinateArray[amelioratedPredicatorOrdinateIndex - 2];
+			} else {
+				amelioratedPredictorOrdinateArray[amelioratedPredicatorOrdinateIndex] =
+					_predictorOrdinateArray[amelioratedPredicatorOrdinateIndex - 1];
+			}
 		}
 
-		MonotoneConvexHaganWest mchwAmeliorated = Create (adblAmelioratedPredictorOrdinate,
-			adblAmelioratedObservation, _linearNodeInference);
+		for (int amelioratedObservationIndex = 0; amelioratedObservationIndex < amelioratedObservationCount;
+			++amelioratedObservationIndex) {
+			if (0 == amelioratedObservationIndex) {
+				amelioratedObservationArray[0] = _observationArray[0] - (
+					_predictorOrdinateArray[1] - _predictorOrdinateArray[0]
+				) * (_observationArray[1] - _observationArray[0]) / (
+					_predictorOrdinateArray[2] - _predictorOrdinateArray[0]
+				);
+			} else if (amelioratedPredicatorOrdinateCount - 1 == amelioratedObservationIndex) {
+				amelioratedObservationArray[amelioratedObservationIndex] =
+					_observationArray[amelioratedObservationIndex - 1] - (
+						_predictorOrdinateArray[amelioratedObservationIndex - 1] -
+						_predictorOrdinateArray[amelioratedObservationIndex - 2]
+					) * (
+						_observationArray[amelioratedObservationIndex - 1] -
+						_observationArray[amelioratedObservationIndex - 2]
+					) / (
+						_predictorOrdinateArray[amelioratedObservationIndex - 1] -
+						_predictorOrdinateArray[amelioratedObservationIndex - 3]
+					);
+			} else {
+				amelioratedObservationArray[amelioratedObservationIndex] =
+					_observationArray[amelioratedObservationIndex - 1];
+			}
+		}
 
-		if (null == mchwAmeliorated || mchwAmeliorated.ameliorate (adblResponseLeftMin, adblResponseLeftMax,
-			adblResponseRightMin, adblResponseRightMax))
+		MonotoneConvexHaganWest amelioratedMonotoneConvexHaganWest = Create (
+			amelioratedPredictorOrdinateArray,
+			amelioratedObservationArray,
+			_linearNodeInference
+		);
+
+		if (null == amelioratedMonotoneConvexHaganWest ||
+			amelioratedMonotoneConvexHaganWest.ameliorate (
+				minimumLeftResponseArray,
+				maximumLeftResponseArray,
+				minimumRightResponseArray,
+				maximumRightResponseArray
+			)
+		) {
 			return null;
-
-		if (bEnforcePositivity) {
-			if (!mchwAmeliorated.enforcePositivity()) return null;
 		}
 
-		return mchwAmeliorated;
+		if (enforcePositivity) {
+			if (!amelioratedMonotoneConvexHaganWest.enforcePositivity()) {
+				return null;
+			}
+		}
+
+		return amelioratedMonotoneConvexHaganWest;
 	}
 
 	/**

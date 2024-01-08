@@ -6,6 +6,9 @@ package org.drip.spline.pchip;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,36 +87,50 @@ package org.drip.spline.pchip;
 
 /**
  * <i>MinimalQuadraticHaganWest</i> implements the regime using the Hagan and West (2006) Minimal Quadratic
- * Estimator.
+ * 	Estimator.
  *
- * <br><br>
+ * <br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/pchip/README.md">Monotone Convex Themed PCHIP Splines</a></li>
+ * 		<li>Calculate an instance of <i>MinimalQuadraticHaganWest</i></li>
+ * 		<li>Calculate the Response Value given the Predictor Ordinate</li>
+ * 		<li>Calculate the Conserved Constraint</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/pchip/README.md">Monotone Convex Themed PCHIP Splines</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MinimalQuadraticHaganWest {
-	private double[] _adblA = null;
-	private double[] _adblB = null;
-	private double[] _adblC = null;
-	private double[] _adblObservation = null;
-	private double[] _adblPredictorOrdinate = null;
-	private double _dblWeight = java.lang.Double.NaN;
+public class MinimalQuadraticHaganWest
+{
+	private double[] _aArray = null;
+	private double[] _bArray = null;
+	private double[] _cArray = null;
+	private double[] _observationArray = null;
+	private double[] _predictorOrdinateArray = null;
+	private double _dblWeight = Double.NaN;
 
 	/**
-	 * Create an instance of MinimalQuadraticHaganWest
+	 * Create an instance of <i>MinimalQuadraticHaganWest</i>
 	 * 
 	 * @param adblPredictorOrdinate Array of Predictor Ordinates
 	 * @param adblObservation Array of Observations
 	 * @param dblWeight Relative Weights applied across the first and the second derivatives
 	 * 
-	 * @return Instance of MinimalQuadraticHaganWest
+	 * @return Instance of <i>MinimalQuadraticHaganWest</i>
 	 */
 
 	public static final MinimalQuadraticHaganWest Create (
@@ -140,22 +157,22 @@ public class MinimalQuadraticHaganWest {
 		final double dblWeight)
 		throws java.lang.Exception
 	{
-		if (null == (_adblObservation = adblObservation) || null == (_adblPredictorOrdinate =
+		if (null == (_observationArray = adblObservation) || null == (_predictorOrdinateArray =
 			adblPredictorOrdinate) || !org.drip.numerical.common.NumberUtil.IsValid (_dblWeight = dblWeight))
 			throw new java.lang.Exception ("MinimalQuadraticHaganWest ctr: Invalid Inputs!");
 
-		int iNumObservation = _adblObservation.length;
+		int iNumObservation = _observationArray.length;
 
-		if (1 >= iNumObservation || iNumObservation + 1 != _adblPredictorOrdinate.length)
+		if (1 >= iNumObservation || iNumObservation + 1 != _predictorOrdinateArray.length)
 			throw new java.lang.Exception ("MinimalQuadraticHaganWest ctr: Invalid Inputs!");
 	}
 
 	private boolean setupCoefficients()
 	{
-		int iNumObservation = _adblObservation.length;
-		_adblA = new double[iNumObservation];
-		_adblB = new double[iNumObservation];
-		_adblC = new double[iNumObservation];
+		int iNumObservation = _observationArray.length;
+		_aArray = new double[iNumObservation];
+		_bArray = new double[iNumObservation];
+		_cArray = new double[iNumObservation];
 		double[] adblH = new double[iNumObservation];
 		double[] adblRHS = new double[3 * iNumObservation];
 		double[][] aadblCoeffMatrix = new double[3 * iNumObservation][3 * iNumObservation];
@@ -168,7 +185,7 @@ public class MinimalQuadraticHaganWest {
 		}
 
 		for (int i = 0; i < iNumObservation; ++i)
-			adblH[i] = _adblPredictorOrdinate[i + 1] - _adblPredictorOrdinate[i];
+			adblH[i] = _predictorOrdinateArray[i + 1] - _predictorOrdinateArray[i];
 
 		/*
 		 * Setting up the coefficient linear constraint equation set
@@ -184,7 +201,7 @@ public class MinimalQuadraticHaganWest {
 
 		for (int iEq = 0; iEq < iNumObservation; ++iEq) {
 			int iSegmentIndex = iEq;
-			adblRHS[iEq] = _adblObservation[iEq]; // Z_i
+			adblRHS[iEq] = _observationArray[iEq]; // Z_i
 			aadblCoeffMatrix[iEq][3 * iSegmentIndex] = 1.; // A_i
 			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 1] = 0.5 * adblH[iSegmentIndex]; // B_i
 			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 2] = adblH[iSegmentIndex] * adblH[iSegmentIndex] / 3.; // C_i
@@ -245,11 +262,11 @@ public class MinimalQuadraticHaganWest {
 
 		for (int i = 0; i < 3 * iNumObservation; ++i) {
 			if (0 == i % 3)
-				_adblA[iSegment] = adblCoeff[i];
+				_aArray[iSegment] = adblCoeff[i];
 			else if (1 == i % 3)
-				_adblB[iSegment] = adblCoeff[i];
+				_bArray[iSegment] = adblCoeff[i];
 			else if (2 == i % 3) {
-				_adblC[iSegment] = adblCoeff[i];
+				_cArray[iSegment] = adblCoeff[i];
 				++iSegment;
 			}
 		}
@@ -263,14 +280,14 @@ public class MinimalQuadraticHaganWest {
 		final boolean bIncludeRight)
 		throws java.lang.Exception
 	{
-		int iNumSegment = _adblA.length;
+		int iNumSegment = _aArray.length;
 
 		for (int i = 0 ; i < iNumSegment; ++i) {
-			boolean bLeftValid = bIncludeLeft ? _adblPredictorOrdinate[i] <= dblPredictorOrdinate :
-				_adblPredictorOrdinate[i] < dblPredictorOrdinate;
+			boolean bLeftValid = bIncludeLeft ? _predictorOrdinateArray[i] <= dblPredictorOrdinate :
+				_predictorOrdinateArray[i] < dblPredictorOrdinate;
 
-			boolean bRightValid = bIncludeRight ? _adblPredictorOrdinate[i + 1] >= dblPredictorOrdinate :
-				_adblPredictorOrdinate[i + 1] > dblPredictorOrdinate;
+			boolean bRightValid = bIncludeRight ? _predictorOrdinateArray[i + 1] >= dblPredictorOrdinate :
+				_predictorOrdinateArray[i + 1] > dblPredictorOrdinate;
 
 			if (bLeftValid && bRightValid) return i;
 		}
@@ -295,9 +312,9 @@ public class MinimalQuadraticHaganWest {
 	{
 		int i = containingIndex (dblPredictorOrdinate, true, true);
 
-		return _adblA[i] + _adblB[i] * (dblPredictorOrdinate - _adblPredictorOrdinate[i]) + _adblC[i] *
-			(dblPredictorOrdinate - _adblPredictorOrdinate[i]) * (dblPredictorOrdinate -
-				_adblPredictorOrdinate[i]);
+		return _aArray[i] + _bArray[i] * (dblPredictorOrdinate - _predictorOrdinateArray[i]) + _cArray[i] *
+			(dblPredictorOrdinate - _predictorOrdinateArray[i]) * (dblPredictorOrdinate -
+				_predictorOrdinateArray[i]);
 	}
 
 	/**
@@ -308,41 +325,12 @@ public class MinimalQuadraticHaganWest {
 
 	public double[] calcConservedConstraint()
 	{
-		int iNumObservation = _adblObservation.length;
+		int iNumObservation = _observationArray.length;
 		double[] adblConservedConstraint = new double[iNumObservation];
 
 		for (int i = 0; i < iNumObservation; ++i)
-			adblConservedConstraint[i] = _adblA[i] + _adblB[i] * 0.5 + _adblC[i] / 3.;
+			adblConservedConstraint[i] = _aArray[i] + _bArray[i] * 0.5 + _cArray[i] / 3.;
 
 		return adblConservedConstraint;
-	}
-
-	/**
-	 * Entry Point
-	 * 
-	 * @param astrArgs Argument Array
-	 * 
-	 * @throws java.lang.Exception Propagate the Exception Encountered
-	 */
-
-	public static final void main (
-		final String[] astrArgs)
-		throws Exception
-	{
-		double[] adblTime = new double[] {0., 1.0, 2.0};
-		double[] adblForwardRate = new double[] {0.02, 0.026};
-
-		MinimalQuadraticHaganWest mqhw = MinimalQuadraticHaganWest.Create (adblTime, adblForwardRate, 0.5);
-
-		double[] adblConservedConstraint = mqhw.calcConservedConstraint();
-
-		for (int i = 0; i < adblConservedConstraint.length; ++i)
-			System.out.println ("Conserved Constraint[" + i + "] => " +
-				org.drip.service.common.FormatUtil.FormatDouble (adblConservedConstraint[i], 1, 6, 1.));
-
-		for (double dblTime = adblTime[0]; dblTime <= adblTime[adblTime.length - 1]; dblTime += 0.25)
-			System.out.println ("Response[" + org.drip.service.common.FormatUtil.FormatDouble (dblTime, 2, 2,
-				1.) + "] = " + org.drip.service.common.FormatUtil.FormatDouble (mqhw.responseValue (dblTime), 1,
-					6, 1.));
 	}
 }
