@@ -1,6 +1,10 @@
 
 package org.drip.spline.pchip;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.linearalgebra.LinearSystemSolver;
+import org.drip.numerical.linearalgebra.LinearizationOutput;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -119,73 +123,84 @@ public class MinimalQuadraticHaganWest
 	private double[] _aArray = null;
 	private double[] _bArray = null;
 	private double[] _cArray = null;
+	private double _weight = Double.NaN;
 	private double[] _observationArray = null;
 	private double[] _predictorOrdinateArray = null;
-	private double _dblWeight = Double.NaN;
 
 	/**
 	 * Create an instance of <i>MinimalQuadraticHaganWest</i>
 	 * 
-	 * @param adblPredictorOrdinate Array of Predictor Ordinates
-	 * @param adblObservation Array of Observations
-	 * @param dblWeight Relative Weights applied across the first and the second derivatives
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
+	 * @param observationArray Array of Observations
+	 * @param weight Relative Weights applied across the first and the second derivatives
 	 * 
 	 * @return Instance of <i>MinimalQuadraticHaganWest</i>
 	 */
 
 	public static final MinimalQuadraticHaganWest Create (
-		final double[] adblPredictorOrdinate,
-		final double[] adblObservation,
-		final double dblWeight)
+		final double[] predictorOrdinateArray,
+		final double[] observationArray,
+		final double weight)
 	{
-		MinimalQuadraticHaganWest mchw = null;
+		MinimalQuadraticHaganWest minimalQuadraticHaganWest = null;
 
 		try {
-			mchw = new MinimalQuadraticHaganWest (adblPredictorOrdinate, adblObservation, dblWeight);
-		} catch (java.lang.Exception e) {
+			minimalQuadraticHaganWest = new MinimalQuadraticHaganWest (
+				predictorOrdinateArray,
+				observationArray,
+				weight
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		return mchw.setupCoefficients() ? mchw : null;
+		return minimalQuadraticHaganWest.setupCoefficients() ? minimalQuadraticHaganWest : null;
 	}
 
 	private MinimalQuadraticHaganWest (
-		final double[] adblPredictorOrdinate,
-		final double[] adblObservation,
-		final double dblWeight)
-		throws java.lang.Exception
+		final double[] predictorOrdinateArray,
+		final double[] observationArray,
+		final double weight)
+		throws Exception
 	{
-		if (null == (_observationArray = adblObservation) || null == (_predictorOrdinateArray =
-			adblPredictorOrdinate) || !org.drip.numerical.common.NumberUtil.IsValid (_dblWeight = dblWeight))
-			throw new java.lang.Exception ("MinimalQuadraticHaganWest ctr: Invalid Inputs!");
+		if (null == (_observationArray = observationArray) ||
+			null == (_predictorOrdinateArray = predictorOrdinateArray) ||
+			!NumberUtil.IsValid (_weight = weight)
+		) {
+			throw new Exception ("MinimalQuadraticHaganWest ctr: Invalid Inputs!");
+		}
 
-		int iNumObservation = _observationArray.length;
+		int observationCount = _observationArray.length;
 
-		if (1 >= iNumObservation || iNumObservation + 1 != _predictorOrdinateArray.length)
-			throw new java.lang.Exception ("MinimalQuadraticHaganWest ctr: Invalid Inputs!");
+		if (1 >= observationCount || observationCount + 1 != _predictorOrdinateArray.length) {
+			throw new Exception ("MinimalQuadraticHaganWest ctr: Invalid Inputs!");
+		}
 	}
 
 	private boolean setupCoefficients()
 	{
-		int iNumObservation = _observationArray.length;
-		_aArray = new double[iNumObservation];
-		_bArray = new double[iNumObservation];
-		_cArray = new double[iNumObservation];
-		double[] adblH = new double[iNumObservation];
-		double[] adblRHS = new double[3 * iNumObservation];
-		double[][] aadblCoeffMatrix = new double[3 * iNumObservation][3 * iNumObservation];
+		int observationCount = _observationArray.length;
+		_aArray = new double[observationCount];
+		_bArray = new double[observationCount];
+		_cArray = new double[observationCount];
+		double[] hArray = new double[observationCount];
+		double[] rhsArray = new double[3 * observationCount];
+		double[][] coefficientMatrix = new double[3 * observationCount][3 * observationCount];
 
-		for (int i = 0; i < 3 * iNumObservation; ++i) {
-			adblRHS[i] = 0.;
+		for (int observationIndexI = 0; observationIndexI < 3 * observationCount; ++observationIndexI) {
+			rhsArray[observationIndexI] = 0.;
 
-			for (int j = 0; j < 3 * iNumObservation; ++j)
-				aadblCoeffMatrix[i][j] = 0.;
+			for (int observationIndexJ = 0; observationIndexJ < 3 * observationCount; ++observationIndexJ) {
+				coefficientMatrix[observationIndexI][observationIndexJ] = 0.;
+			}
 		}
 
-		for (int i = 0; i < iNumObservation; ++i)
-			adblH[i] = _predictorOrdinateArray[i + 1] - _predictorOrdinateArray[i];
+		for (int observationIndex = 0; observationIndex < observationCount; ++observationIndex) {
+			hArray[observationIndex] = _predictorOrdinateArray[observationIndex + 1] -
+				_predictorOrdinateArray[observationIndex];
+		}
 
 		/*
 		 * Setting up the coefficient linear constraint equation set
@@ -199,12 +214,13 @@ public class MinimalQuadraticHaganWest
 		 * 		A_i + (H_i / 2.) * B_i + (H_i * H_i / 3.) * C_i = Observation_i
 		 */
 
-		for (int iEq = 0; iEq < iNumObservation; ++iEq) {
-			int iSegmentIndex = iEq;
-			adblRHS[iEq] = _observationArray[iEq]; // Z_i
-			aadblCoeffMatrix[iEq][3 * iSegmentIndex] = 1.; // A_i
-			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 1] = 0.5 * adblH[iSegmentIndex]; // B_i
-			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 2] = adblH[iSegmentIndex] * adblH[iSegmentIndex] / 3.; // C_i
+		for (int equationIndex = 0; equationIndex < observationCount; ++equationIndex) {
+			int segmentIndex = equationIndex;
+			rhsArray[equationIndex] = _observationArray[equationIndex]; // Z_i
+			coefficientMatrix[equationIndex][3 * segmentIndex] = 1.; // A_i
+			coefficientMatrix[equationIndex][3 * segmentIndex + 1] = 0.5 * hArray[segmentIndex]; // B_i
+			coefficientMatrix[equationIndex][3 * segmentIndex + 2] =
+				hArray[segmentIndex] * hArray[segmentIndex] / 3.; // C_i
 		}
 
 		/*
@@ -212,13 +228,15 @@ public class MinimalQuadraticHaganWest
 		 * 		A_i + H_i * B_i + (H_i * H_i) * C_i - A_i+1 = 0.
 		 */
 
-		for (int iEq = iNumObservation; iEq < 2 * iNumObservation - 1; ++iEq) {
-			adblRHS[iEq] = 0.;
-			int iSegmentIndex = iEq - iNumObservation;
-			aadblCoeffMatrix[iEq][3 * iSegmentIndex] = 1.; // A_i
-			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 1] = adblH[iSegmentIndex]; // B_i
-			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 2] = adblH[iSegmentIndex] * adblH[iSegmentIndex]; // C_i
-			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 3] = -1.; // A_i+1
+		for (int equationIndex = observationCount; equationIndex < 2 * observationCount - 1; ++equationIndex)
+		{
+			rhsArray[equationIndex] = 0.;
+			int segmentIndex = equationIndex - observationCount;
+			coefficientMatrix[equationIndex][3 * segmentIndex] = 1.; // A_i
+			coefficientMatrix[equationIndex][3 * segmentIndex + 1] = hArray[segmentIndex]; // B_i
+			coefficientMatrix[equationIndex][3 * segmentIndex + 2] =
+				hArray[segmentIndex] * hArray[segmentIndex]; // C_i
+			coefficientMatrix[equationIndex][3 * segmentIndex + 3] = -1.; // A_i+1
 		}
 
 		/*
@@ -226,48 +244,51 @@ public class MinimalQuadraticHaganWest
 		 * 		w * B_i + (2. * H_i) * C_i - w * B_i+1 = 0.
 		 */
 
-		for (int iEq = 2 * iNumObservation - 1; iEq < 3 * iNumObservation - 2; ++iEq) {
-			adblRHS[iEq] = 0.;
-			int iSegmentIndex = iEq - 2 * iNumObservation + 1;
-			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 1] = _dblWeight; // B_i
-			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 2] = 2. * adblH[iSegmentIndex]; // C_i
-			aadblCoeffMatrix[iEq][3 * iSegmentIndex + 4] = -1. * _dblWeight; // B_i+1
+		for (int equationIndex = 2 * observationCount - 1; equationIndex < 3 * observationCount - 2;
+			++equationIndex) {
+			rhsArray[equationIndex] = 0.;
+			int segmentIndex = equationIndex - 2 * observationCount + 1;
+			coefficientMatrix[equationIndex][3 * segmentIndex + 1] = _weight; // B_i
+			coefficientMatrix[equationIndex][3 * segmentIndex + 2] = 2. * hArray[segmentIndex]; // C_i
+			coefficientMatrix[equationIndex][3 * segmentIndex + 4] = -1. * _weight; // B_i+1
 		}
 
 		/*
 		 * Left Boundary Condition: Starting Left Slope is zero, i.e., B_0 = 0.
 		 */
 
-		adblRHS[3 * iNumObservation - 2] = 0.;
-		aadblCoeffMatrix[3 * iNumObservation - 2][1] = 1.;
+		rhsArray[3 * observationCount - 2] = 0.;
+		coefficientMatrix[3 * observationCount - 2][1] = 1.;
 
 		/*
 		 * Right Boundary Condition: Final First Derivative is zero, i.e., B_n-1 = 0.
 		 */
 
-		adblRHS[3 * iNumObservation - 1] = 0.;
-		aadblCoeffMatrix[3 * iNumObservation - 1][3 * iNumObservation - 2] = 1.;
+		rhsArray[3 * observationCount - 1] = 0.;
+		coefficientMatrix[3 * observationCount - 1][3 * observationCount - 2] = 1.;
 
-		org.drip.numerical.linearalgebra.LinearizationOutput lssGaussianElimination =
-			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingGaussianElimination (aadblCoeffMatrix,
-				adblRHS);
+		LinearizationOutput gaussianEliminationLinearizationOutput =
+			LinearSystemSolver.SolveUsingGaussianElimination (coefficientMatrix, rhsArray);
 
-		if (null == lssGaussianElimination) return false;
+		if (null == gaussianEliminationLinearizationOutput) {
+			return false;
+		}
 
-		double[] adblCoeff = lssGaussianElimination.getTransformedRHS();
+		double[] coefficientArray = gaussianEliminationLinearizationOutput.getTransformedRHS();
 
-		if (null == adblCoeff || 3 * iNumObservation != adblCoeff.length) return false;
+		if (null == coefficientArray || 3 * observationCount != coefficientArray.length) {
+			return false;
+		}
 
-		int iSegment = 0;
+		int segmentIndex = 0;
 
-		for (int i = 0; i < 3 * iNumObservation; ++i) {
-			if (0 == i % 3)
-				_aArray[iSegment] = adblCoeff[i];
-			else if (1 == i % 3)
-				_bArray[iSegment] = adblCoeff[i];
-			else if (2 == i % 3) {
-				_cArray[iSegment] = adblCoeff[i];
-				++iSegment;
+		for (int observationIndex = 0; observationIndex < 3 * observationCount; ++observationIndex) {
+			if (0 == observationIndex % 3) {
+				_aArray[segmentIndex] = coefficientArray[observationIndex];
+			} else if (1 == observationIndex % 3) {
+				_bArray[segmentIndex] = coefficientArray[observationIndex];
+			} else if (2 == observationIndex % 3) {
+				_cArray[segmentIndex++] = coefficientArray[observationIndex];
 			}
 		}
 
@@ -275,46 +296,47 @@ public class MinimalQuadraticHaganWest
 	}
 
 	private int containingIndex (
-		final double dblPredictorOrdinate,
-		final boolean bIncludeLeft,
-		final boolean bIncludeRight)
-		throws java.lang.Exception
+		final double predictorOrdinate,
+		final boolean includeLeft,
+		final boolean includeRight)
+		throws Exception
 	{
-		int iNumSegment = _aArray.length;
+		for (int segmentIndex = 0 ; segmentIndex < _aArray.length; ++segmentIndex) {
+			boolean leftValid = includeLeft ? _predictorOrdinateArray[segmentIndex] <= predictorOrdinate :
+				_predictorOrdinateArray[segmentIndex] < predictorOrdinate;
 
-		for (int i = 0 ; i < iNumSegment; ++i) {
-			boolean bLeftValid = bIncludeLeft ? _predictorOrdinateArray[i] <= dblPredictorOrdinate :
-				_predictorOrdinateArray[i] < dblPredictorOrdinate;
+			boolean rightValid = includeRight ?
+				_predictorOrdinateArray[segmentIndex + 1] >= predictorOrdinate :
+				_predictorOrdinateArray[segmentIndex + 1] > predictorOrdinate;
 
-			boolean bRightValid = bIncludeRight ? _predictorOrdinateArray[i + 1] >= dblPredictorOrdinate :
-				_predictorOrdinateArray[i + 1] > dblPredictorOrdinate;
-
-			if (bLeftValid && bRightValid) return i;
+			if (leftValid && rightValid) {
+				return segmentIndex;
+			}
 		}
 
-		throw new java.lang.Exception
-			("MinimalQuadraticHaganWest::containingIndex => Cannot locate Containing Index");
+		throw new Exception ("MinimalQuadraticHaganWest::containingIndex => Cannot locate Containing Index");
 	}
 
 	/**
 	 * Calculate the Response Value given the Predictor Ordinate
 	 * 
-	 * @param dblPredictorOrdinate The Predictor Ordinate
+	 * @param predictorOrdinate The Predictor Ordinate
 	 * 
 	 * @return The Response Value
 	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
+	 * @throws Exception Thrown if the input is invalid
 	 */
 
 	public double responseValue (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
-		int i = containingIndex (dblPredictorOrdinate, true, true);
+		int containingIndex = containingIndex (predictorOrdinate, true, true);
 
-		return _aArray[i] + _bArray[i] * (dblPredictorOrdinate - _predictorOrdinateArray[i]) + _cArray[i] *
-			(dblPredictorOrdinate - _predictorOrdinateArray[i]) * (dblPredictorOrdinate -
-				_predictorOrdinateArray[i]);
+		return _aArray[containingIndex] + _bArray[containingIndex] * (
+			predictorOrdinate - _predictorOrdinateArray[containingIndex]
+		) + _cArray[containingIndex] * (predictorOrdinate - _predictorOrdinateArray[containingIndex]) *
+			(predictorOrdinate - _predictorOrdinateArray[containingIndex]);
 	}
 
 	/**
@@ -325,12 +347,14 @@ public class MinimalQuadraticHaganWest
 
 	public double[] calcConservedConstraint()
 	{
-		int iNumObservation = _observationArray.length;
-		double[] adblConservedConstraint = new double[iNumObservation];
+		int observationCount = _observationArray.length;
+		double[] conservedConstraintArray = new double[observationCount];
 
-		for (int i = 0; i < iNumObservation; ++i)
-			adblConservedConstraint[i] = _aArray[i] + _bArray[i] * 0.5 + _cArray[i] / 3.;
+		for (int observationIndex = 0; observationIndex < observationCount; ++observationIndex) {
+			conservedConstraintArray[observationIndex] = _aArray[observationIndex] +
+				_bArray[observationIndex] * 0.5 + _cArray[observationIndex] / 3.;
+		}
 
-		return adblConservedConstraint;
+		return conservedConstraintArray;
 	}
 }

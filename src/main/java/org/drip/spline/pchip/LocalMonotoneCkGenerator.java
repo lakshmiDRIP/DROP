@@ -1,11 +1,16 @@
 
 package org.drip.spline.pchip;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,353 +88,468 @@ package org.drip.spline.pchip;
  */
 
 /**
- * <i>LocalMonotoneCkGenerator</i> generates customized Local Stretch by trading off Ck for local control.
- * This class implements the following variants: Akima, Bessel, Harmonic, Hyman83, Hyman89, Kruger, Monotone
- * Convex, as well as the Van Leer and the Huynh/LeFloch limiters. It also provides the following custom
- * control on the resulting C1:
+ * <i>LocalMonotoneCkGenerator</i> generates customized Local Stretch by trading off C<sup>k</sup> for local
+ * 	control. This class implements the following variants: Akima, Bessel, Harmonic, Hyman83, Hyman89, Kruger,
+ *  Monotone Convex, as well as the Van Leer and the Huynh/LeFloch limiters. It also provides the following
+ *  custom control on the resulting C<sup>1</sup>:
  *
- * <br><br>
+ * <br>
  *  <ul>
- *  	<li>
- *  		Eliminate the Spurious Extrema in the Input C1 Entry
- *  	</li>
- *  	<li>
- *  		Apply the Monotone Filter in the Input C1 Entry
- *  	</li>
- *  	<li>
- *  		Generate a Vanilla C1 Array from the specified Array of Predictor Ordinates and the Response
- *  			Values
- *  	</li>
- *  	<li>
- *  		Verify if the given Quintic Polynomial is Monotone using the Hyman89 Algorithm, and generate it
- *  			if necessary
- *  	</li>
+	 * <li>Eliminate the Spurious Filter in the Input C<sup>1</sup> Entry</li>
+	 * <li>Apply the Monotone Filter in the Input C<sup>1</sup> Entry</li>
+	 * <li>Generate a Vanilla C<sup>1</sup> Array from the specified Array of Predictor Ordinates and the Response Values</li>
+	 * <li>Generate a Bessel C<sup>1</sup> Array from the specified Array of Predictor Ordinates and the Response Values</li>
+	 * <li>Generate a Hyman83 C<sup>1</sup> Array from the specified Array of Predictor Ordinates and the Response Values</li>
+	 * <li>Generate a Hyman89 C<sup>1</sup> Array from the specified Array of Predictor Ordinates and the Response Values</li>
+	 * <li>Generate a Harmonic C<sup>1</sup> Array from the specified Array of Predictor Ordinates and the Response Values</li>
+	 * <li>Generate a van Leer Limiter C<sup>1</sup> Array from the specified Array of Predictor Ordinates and the Response Values</li>
+	 * <li>Generate a Huynh Le Floch Limiter C<sup>1</sup> Array from the specified Array of Predictor Ordinates and the Response Values</li>
+	 * <li>Generate a Kruger C<sup>1</sup> Array from the specified Array of Predictor Ordinates and the Response Values</li>
+	 * <li>Generate a Akima C<sup>1</sup> Array from the specified Array of Predictor Ordinates and the Response Values</li>
+	 * <li>Verify if the given Quintic Polynomial is Monotone using the Hyman89 Algorithm</li>
+	 * <li>Generate C<sup>1</sup> Slope Quintic Polynomial is Monotone using the Hyman89 Algorithm</li>
+	 * <li>Generate the Local Control Stretch in accordance with the desired Customization Parameters</li>
+	 * <li>Retrieve the C<sup>1</sup> Array</li>
  *  </ul>
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/pchip/README.md">Monotone Convex Themed PCHIP Splines</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/pchip/README.md">Monotone Convex Themed PCHIP Splines</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LocalMonotoneCkGenerator {
+public class LocalMonotoneCkGenerator
+{
 
 	/**
-	 * C1 Type: Vanilla
+	 * C<sup>1</sup> Type: Vanilla
 	 */
 
-	public static final java.lang.String C1_VANILLA = "C1_VANILLA";
+	public static final String C1_VANILLA = "C1_VANILLA";
 
 	/**
-	 * C1 Type: Akima
+	 * C<sup>1</sup> Type: Akima
 	 */
 
-	public static final java.lang.String C1_AKIMA = "C1_AKIMA";
+	public static final String C1_AKIMA = "C1_AKIMA";
 
 	/**
-	 * C1 Type: Bessel
+	 * C<sup>1</sup> Type: Bessel
 	 */
 
-	public static final java.lang.String C1_BESSEL = "C1_BESSEL";
+	public static final String C1_BESSEL = "C1_BESSEL";
 
 	/**
-	 * C1 Type: Harmonic
+	 * C<sup>1</sup> Type: Harmonic
 	 */
 
-	public static final java.lang.String C1_HARMONIC = "C1_HARMONIC";
+	public static final String C1_HARMONIC = "C1_HARMONIC";
 
 	/**
-	 * C1 Type: Huynh - Le Floch Limiter
+	 * C<sup>1</sup> Type: Huynh - Le Floch Limiter
 	 */
 
-	public static final java.lang.String C1_HUYNH_LE_FLOCH = "C1_HUYNH_LE_FLOCH";
+	public static final String C1_HUYNH_LE_FLOCH = "C1_HUYNH_LE_FLOCH";
 
 	/**
-	 * C1 Type: Hyman83
+	 * C<sup>1</sup> Type: Hyman83
 	 */
 
-	public static final java.lang.String C1_HYMAN83 = "C1_HYMAN83";
+	public static final String C1_HYMAN83 = "C1_HYMAN83";
 
 	/**
-	 * C1 Type: Hyman89
+	 * C<sup>1</sup> Type: Hyman89
 	 */
 
-	public static final java.lang.String C1_HYMAN89 = "C1_HYMAN89";
+	public static final String C1_HYMAN89 = "C1_HYMAN89";
 
 	/**
-	 * C1 Type: Kruger
+	 * C<sup>1</sup> Type: Kruger
 	 */
 
-	public static final java.lang.String C1_KRUGER = "C1_KRUGER";
+	public static final String C1_KRUGER = "C1_KRUGER";
 
 	/**
-	 * C1 Type: Monotone Convex
+	 * C<sup>1</sup> Type: Monotone Convex
 	 */
 
-	public static final java.lang.String C1_MONOTONE_CONVEX = "C1_MONOTONE_CONVEX";
+	public static final String C1_MONOTONE_CONVEX = "C1_MONOTONE_CONVEX";
 
 	/**
-	 * C1 Type: Van Leer Limiter
+	 * C<sup>1</sup> Type: Van Leer Limiter
 	 */
 
-	public static final java.lang.String C1_VAN_LEER = "C1_VAN_LEER";
+	public static final String C1_VAN_LEER = "C1_VAN_LEER";
 
 	private double[] _adblC1 = null;
 	private double[] _adblResponseValue = null;
 	private double[] _adblPredictorOrdinate = null;
 
 	/**
-	 * Eliminate the Spurious Extrema in the Input C1 Entry
+	 * Eliminate the Spurious Extrema in the Input C<sup>1</sup> Entry
 	 * 
-	 * @param adblC1 The C1 Array in which the Spurious Extrema is to be eliminated
-	 * @param adblLinearC1 Array of the Linear C1 Entries
+	 * @param c1Array The C<sup>1</sup> Array in which the Spurious Extrema is to be eliminated
+	 * @param linearC1Array Array of the Linear C<sup>1</sup> Entries
 	 * 
-	 * @return The C1 Array with the Spurious Extrema eliminated
+	 * @return The C<sup>1</sup> Array with the Spurious Extrema eliminated
 	 */
 
 	public static final double[] EliminateSpuriousExtrema (
-		final double[] adblC1,
-		final double[] adblLinearC1)
+		final double[] c1Array,
+		final double[] linearC1Array)
 	{
-		if (null == adblC1 || null == adblLinearC1) return null;
+		if (null == c1Array || null == linearC1Array) {
+			return null;
+		}
 
-		int iNumEntries = adblC1.length;
-		double[] adblUpdatedC1 = new double[iNumEntries];
-		adblUpdatedC1[0] = adblC1[0];
-		adblUpdatedC1[iNumEntries - 1] = adblC1[iNumEntries - 1];
+		int entryCount = c1Array.length;
+		double[] updatedC1Array = new double[entryCount];
+		updatedC1Array[entryCount - 1] = c1Array[entryCount - 1];
+		updatedC1Array[0] = c1Array[0];
 
-		if (1 >= iNumEntries || iNumEntries != adblLinearC1.length + 1) return null;
+		if (1 >= entryCount || entryCount != linearC1Array.length + 1) {
+			return null;
+		}
 
-		for (int i = 1; i < iNumEntries - 1; ++i)
-			adblUpdatedC1[i] = 0. < adblLinearC1[i] ? java.lang.Math.min (java.lang.Math.max (0., adblC1[i]),
-				java.lang.Math.min (adblLinearC1[i], adblLinearC1[i - 1])) : java.lang.Math.max
-					(java.lang.Math.min (0., adblC1[i]), java.lang.Math.max (adblLinearC1[i],
-						adblLinearC1[i - 1]));
+		for (int entryIndex = 1; entryIndex < entryCount - 1; ++entryIndex) {
+			updatedC1Array[entryIndex] = 0. < linearC1Array[entryIndex] ?
+				Math.min (
+					Math.max (0., c1Array[entryIndex]),
+					Math.min (linearC1Array[entryIndex], linearC1Array[entryIndex - 1])
+				) : Math.max (
+					Math.min (0., c1Array[entryIndex]),
+					Math.max (linearC1Array[entryIndex], linearC1Array[entryIndex - 1])
+				);
+		}
 
-		return adblUpdatedC1;
+		return updatedC1Array;
 	}
 
 	/**
-	 * Apply the Monotone Filter in the Input C1 Entry
+	 * Apply the Monotone Filter in the Input C<sup>1</sup> Entry
 	 * 
-	 * @param adblC1 The C1 Array in which the Monotone Filter is to be applied
-	 * @param adblLinearC1 Array of the Linear C1 Entries
+	 * @param c1Array The C<sup>1</sup> Array in which the Monotone Filter is to be applied
+	 * @param linearC1Array Array of the Linear C<sup>1</sup> Entries
 	 * 
-	 * @return The C1 Array with the Monotone Filter applied
+	 * @return The C<sup>1</sup> Array with the Monotone Filter applied
 	 */
 
 	public static final double[] ApplyMonotoneFilter (
-		final double[] adblC1,
-		final double[] adblLinearC1)
+		final double[] c1Array,
+		final double[] linearC1Array)
 	{
-		if (null == adblC1 || null == adblLinearC1) return null;
-
-		int iNumEntries = adblC1.length;
-		double[] adblUpdatedC1 = new double[iNumEntries];
-		adblUpdatedC1[0] = adblC1[0];
-
-		if (1 >= iNumEntries || iNumEntries != adblLinearC1.length + 1) return null;
-
-		for (int i = 0; i < iNumEntries; ++i) {
-			if (0 == i) {
-				if (adblC1[0] * adblLinearC1[0] > 0. && adblLinearC1[0] * adblLinearC1[1] > 0. &&
-					java.lang.Math.abs (adblC1[0]) < 3. * java.lang.Math.abs (adblLinearC1[0]))
-					adblUpdatedC1[0] = 3. * adblLinearC1[0];
-				else if (adblC1[0] * adblLinearC1[0] <= 0.)
-					adblUpdatedC1[0] = 0.;
-			} else if (iNumEntries == i) {
-				if (adblC1[i] * adblLinearC1[i - 1] > 0. && adblLinearC1[i - 1] * adblLinearC1[i - 2] > 0. &&
-					java.lang.Math.abs (adblC1[i]) < 3. * java.lang.Math.abs (adblLinearC1[i - 1]))
-					adblUpdatedC1[i] = 3. * adblLinearC1[i - 1];
-				else if (adblC1[i] * adblLinearC1[i - 1] <= 0.)
-					adblUpdatedC1[i] = 0.;
-			} else
-				adblUpdatedC1[i] = adblC1[i];
+		if (null == c1Array || null == linearC1Array) {
+			return null;
 		}
 
-		return adblUpdatedC1;
-	}
+		int entryCount = c1Array.length;
+		double[] updatedC1Array = new double[entryCount];
+		updatedC1Array[0] = c1Array[0];
 
-	/**
-	 * Generate a Vanilla C1 Array from the specified Array of Predictor Ordinates and the Response Values
-	 * 
-	 * @param adblPredictorOrdinate The Predictor Ordinate Array
-	 * @param adblResponseValue The Response Value Array
-	 * 
-	 * @return The C1 Array
-	 */
+		if (1 >= entryCount || entryCount != linearC1Array.length + 1) {
+			return null;
+		}
 
-	public static final double[] LinearC1 (
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue)
-	{
-		int iNumSegment = adblResponseValue.length - 1;
-		double[] adblLinearC1 = new double[iNumSegment];
-
-		for (int i = 0; i < iNumSegment; ++i)
-			adblLinearC1[i] = (adblResponseValue[i + 1] - adblResponseValue[i]) /
-				(adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i]);
-
-		return adblLinearC1;
-	}
-
-	/**
-	 * Generate a Bessel C1 Array from the specified Array of Predictor Ordinates and the Response Values
-	 * 
-	 * @param adblPredictorOrdinate The Predictor Ordinate Array
-	 * @param adblResponseValue The Response Value Array
-	 * 
-	 * @return The C1 Array
-	 */
-
-	public static final double[] BesselC1 (
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue)
-	{
-		int iNumResponse = adblResponseValue.length;
-		double[] adblBesselC1 = new double[iNumResponse];
-
-		for (int i = 0; i < iNumResponse; ++i) {
-			if (0 == i) {
-				adblBesselC1[i] = (adblPredictorOrdinate[2] + adblPredictorOrdinate[1] - 2. *
-					adblPredictorOrdinate[0]) * (adblResponseValue[1] - adblResponseValue[0]) /
-						(adblPredictorOrdinate[1] - adblPredictorOrdinate[0]);
-				adblBesselC1[i] -= (adblPredictorOrdinate[1] - adblPredictorOrdinate[0]) *
-					(adblResponseValue[2] - adblResponseValue[1]) / (adblPredictorOrdinate[2] -
-						adblPredictorOrdinate[1]);
-				adblBesselC1[i] /= (adblPredictorOrdinate[2] - adblPredictorOrdinate[0]);
-			} else if (iNumResponse - 1 == i) {
-				adblBesselC1[i] = (adblPredictorOrdinate[iNumResponse - 1] -
-					adblPredictorOrdinate[iNumResponse - 2]) * (adblResponseValue[iNumResponse - 2] -
-						adblResponseValue[iNumResponse - 3]) / (adblPredictorOrdinate[iNumResponse - 2] -
-							adblPredictorOrdinate[iNumResponse - 3]);
-				adblBesselC1[i] -= (2. * adblPredictorOrdinate[iNumResponse - 1] -
-					adblPredictorOrdinate[iNumResponse - 2] - adblPredictorOrdinate[iNumResponse - 3]) *
-						(adblResponseValue[iNumResponse - 1] - adblResponseValue[iNumResponse - 2]) /
-							(adblPredictorOrdinate[iNumResponse - 1] -
-								adblPredictorOrdinate[iNumResponse - 2]);
-				adblBesselC1[i] /= (adblPredictorOrdinate[iNumResponse - 1] -
-					adblPredictorOrdinate[iNumResponse - 3]);
+		for (int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
+			if (0 == entryIndex) {
+				if (0. < c1Array[0] * linearC1Array[0] && 0. < linearC1Array[0] * linearC1Array[1] &&
+					Math.abs (c1Array[0]) < 3. * Math.abs (linearC1Array[0])) {
+					updatedC1Array[0] = 3. * linearC1Array[0];
+				} else if (0. >= c1Array[0] * linearC1Array[0]) {
+					updatedC1Array[0] = 0.;
+				}
+			} else if (entryCount == entryIndex) {
+				if (0. < c1Array[entryIndex] * linearC1Array[entryIndex - 1] &&
+					0. < linearC1Array[entryIndex - 1] * linearC1Array[entryIndex - 2] &&
+					Math.abs (c1Array[entryIndex]) < 3. * Math.abs (linearC1Array[entryIndex - 1])) {
+					updatedC1Array[entryIndex] = 3. * linearC1Array[entryIndex - 1];
+				} else if (0. >= c1Array[entryIndex] * linearC1Array[entryIndex - 1]) {
+					updatedC1Array[entryIndex] = 0.;
+				}
 			} else {
-				adblBesselC1[i] = (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i]) *
-					(adblResponseValue[i] - adblResponseValue[i - 1]) / (adblPredictorOrdinate[i] -
-						adblPredictorOrdinate[i - 1]);
-				adblBesselC1[i] += (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]) *
-					(adblResponseValue[i + 1] - adblResponseValue[i]) / (adblPredictorOrdinate[i + 1] -
-						adblPredictorOrdinate[i]);
-				adblBesselC1[i] /= (adblPredictorOrdinate[iNumResponse - 1] -
-					adblPredictorOrdinate[iNumResponse - 3]);
+				updatedC1Array[entryIndex] = c1Array[entryIndex];
 			}
 		}
 
-		return adblBesselC1;
+		return updatedC1Array;
 	}
 
 	/**
-	 * Generate a Hyman83 C1 Array from the specified Array of Predictor Ordinates and the Response Values
+	 * Generate a Vanilla C<sup>1</sup> Array from the specified Array of Predictor Ordinates and the
+	 *  Response Values
+	 * 
+	 * @param predictorOrdinateArray The Predictor Ordinate Array
+	 * @param responseValueArray The Response Value Array
+	 * 
+	 * @return The C<sup>1</sup> Array
+	 */
+
+	public static final double[] LinearC1 (
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray)
+	{
+		int segmentCount = responseValueArray.length - 1;
+		double[] linearC1Array = new double[segmentCount];
+
+		for (int segmentIndex = 0; segmentIndex < segmentCount; ++segmentIndex) {
+			linearC1Array[segmentIndex] = (
+				responseValueArray[segmentIndex + 1] - responseValueArray[segmentIndex]
+			) / (predictorOrdinateArray[segmentIndex + 1] - predictorOrdinateArray[segmentIndex]);
+		}
+
+		return linearC1Array;
+	}
+
+	/**
+	 * Generate a Bessel C<sup>1</sup> Array from the specified Array of Predictor Ordinates and the Response
+	 *  Values
+	 * 
+	 * @param predictorOrdinateArray The Predictor Ordinate Array
+	 * @param responseValueArray The Response Value Array
+	 * 
+	 * @return The C<sup>1</sup> Array
+	 */
+
+	public static final double[] BesselC1 (
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray)
+	{
+		int reponseValueCount = responseValueArray.length;
+		double[] besselC1Array = new double[reponseValueCount];
+
+		for (int reponseValueIndex = 0; reponseValueIndex < reponseValueCount; ++reponseValueIndex) {
+			if (0 == reponseValueIndex) {
+				besselC1Array[reponseValueIndex] = (
+					predictorOrdinateArray[2] + predictorOrdinateArray[1] - 2. * predictorOrdinateArray[0]
+				) * (
+					responseValueArray[1] - responseValueArray[0]
+				) / (
+					predictorOrdinateArray[1] - predictorOrdinateArray[0]
+				);
+				besselC1Array[reponseValueIndex] -= (
+					predictorOrdinateArray[1] - predictorOrdinateArray[0]
+				) * (
+					responseValueArray[2] - responseValueArray[1]
+				) / (
+					predictorOrdinateArray[2] - predictorOrdinateArray[1]
+				);
+				besselC1Array[reponseValueIndex] /= (predictorOrdinateArray[2] - predictorOrdinateArray[0]);
+			} else if (reponseValueCount - 1 == reponseValueIndex) {
+				besselC1Array[reponseValueIndex] = (
+					predictorOrdinateArray[reponseValueCount - 1] -
+					predictorOrdinateArray[reponseValueCount - 2]
+				) * (
+					responseValueArray[reponseValueCount - 2] - responseValueArray[reponseValueCount - 3]
+				) / (
+					predictorOrdinateArray[reponseValueCount - 2] -
+					predictorOrdinateArray[reponseValueCount - 3]
+				);
+				besselC1Array[reponseValueIndex] -= (
+					2. * predictorOrdinateArray[reponseValueCount - 1] -
+					predictorOrdinateArray[reponseValueCount - 2] -
+					predictorOrdinateArray[reponseValueCount - 3]
+				) * (
+					responseValueArray[reponseValueCount - 1] - responseValueArray[reponseValueCount - 2]
+				) / (
+					predictorOrdinateArray[reponseValueCount - 1] -
+					predictorOrdinateArray[reponseValueCount - 2]
+				);
+				besselC1Array[reponseValueIndex] /= (predictorOrdinateArray[reponseValueCount - 1] -
+					predictorOrdinateArray[reponseValueCount - 3]);
+			} else {
+				besselC1Array[reponseValueIndex] = (
+					predictorOrdinateArray[reponseValueIndex + 1] - predictorOrdinateArray[reponseValueIndex]
+				) * (
+					responseValueArray[reponseValueIndex] - responseValueArray[reponseValueIndex - 1]
+				) / (
+					predictorOrdinateArray[reponseValueIndex] - predictorOrdinateArray[reponseValueIndex - 1]
+				);
+				besselC1Array[reponseValueIndex] += (
+					predictorOrdinateArray[reponseValueIndex] - predictorOrdinateArray[reponseValueIndex - 1]
+				) * (
+					responseValueArray[reponseValueIndex + 1] - responseValueArray[reponseValueIndex]
+				) / (
+					predictorOrdinateArray[reponseValueIndex + 1] - predictorOrdinateArray[reponseValueIndex]
+				);
+				besselC1Array[reponseValueIndex] /= (
+					predictorOrdinateArray[reponseValueCount - 1] -
+					predictorOrdinateArray[reponseValueCount - 3]
+				);
+			}
+		}
+
+		return besselC1Array;
+	}
+
+	/**
+	 * Generate a Hyman83 C<sup>1</sup> Array from the specified Array of Predictor Ordinates and the
+	 *  Response Values
 	 * 
 	 * 	Hyman (1983) Accurate Monotonicity Preserving Cubic Interpolation -
 	 *  	SIAM J on Numerical Analysis 4 (4), 645-654.
 	 * 
-	 * @param adblPredictorOrdinate The Predictor Ordinate Array
-	 * @param adblResponseValue The Response Value Array
+	 * @param predictorOrdinateArray The Predictor Ordinate Array
+	 * @param responseValueArray The Response Value Array
 	 * 
-	 * @return The C1 Array
+	 * @return The C<sup>1</sup> Array
 	 */
 
 	public static final double[] Hyman83C1 (
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue)
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray)
 	{
-		int iNumResponse = adblResponseValue.length;
-		double dblLinearSlopePrev = java.lang.Double.NaN;
-		double[] adblHyman83C1 = new double[iNumResponse];
+		double previousLinearSlope = Double.NaN;
+		int responseValueCount = responseValueArray.length;
+		double[] hyman83C1Array = new double[responseValueCount];
 
-		for (int i = 0; i < iNumResponse; ++i) {
-			adblHyman83C1[i] = 0.;
-			double dblLinearSlope = iNumResponse - 1 != i ? (adblResponseValue[i + 1] - adblResponseValue[i])
-				/ (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i]) : java.lang.Double.NaN;
+		for (int responseValueIndex = 0; responseValueIndex < responseValueCount; ++responseValueIndex) {
+			hyman83C1Array[responseValueIndex] = 0.;
+			double currentLinearSlope = responseValueCount - 1 != responseValueIndex ? (
+				responseValueArray[responseValueIndex + 1] - responseValueArray[responseValueIndex]
+			) / (
+				predictorOrdinateArray[responseValueIndex + 1] - predictorOrdinateArray[responseValueIndex]
+			) : Double.NaN;
 
-			if (0 != i && iNumResponse - 1 != i) {
-				double dblMonotoneIndicator = dblLinearSlopePrev * dblLinearSlope;
+			if (0 != responseValueIndex && responseValueCount - 1 != responseValueIndex) {
+				double monotoneIndicator = previousLinearSlope * currentLinearSlope;
 
-				if (0. <= dblMonotoneIndicator)
-					adblHyman83C1[i] = 3. * dblMonotoneIndicator / (java.lang.Math.max (dblLinearSlope,
-						dblLinearSlopePrev) + 2. * java.lang.Math.min (dblLinearSlope, dblLinearSlopePrev));
+				if (0. <= monotoneIndicator) {
+					hyman83C1Array[responseValueIndex] = 3. * monotoneIndicator / (
+						Math.max (currentLinearSlope, previousLinearSlope) +
+						2. * Math.min (currentLinearSlope, previousLinearSlope)
+					);
+				}
 			}
 
-			dblLinearSlopePrev = dblLinearSlope;
+			previousLinearSlope = currentLinearSlope;
 		}
 
-		return adblHyman83C1;
+		return hyman83C1Array;
 	}
 
 	/**
-	 * Generate a Hyman89 C1 Array from the specified Array of Predictor Ordinates and the Response Values
+	 * Generate a Hyman89 C<sup>1</sup> Array from the specified Array of Predictor Ordinates and the
+	 *  Response Values
 	 * 
 	 * 	Doherty, Edelman, and Hyman (1989) Non-negative, monotonic, or convexity preserving cubic and quintic
 	 *  	Hermite interpolation - Mathematics of Computation 52 (186), 471-494.
 	 * 
-	 * @param adblPredictorOrdinate The Predictor Ordinate Array
-	 * @param adblResponseValue The Response Value Array
+	 * @param predictorOrdinateArray The Predictor Ordinate Array
+	 * @param responseValueArray The Response Value Array
 	 * 
-	 * @return The C1 Array
+	 * @return The C<sup>1</sup> Array
 	 */
 
 	public static final double[] Hyman89C1 (
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue)
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray)
 	{
-		int iNumResponse = adblResponseValue.length;
-		double[] adblHyman89C1 = new double[iNumResponse];
+		int responseValueCount = responseValueArray.length;
+		double[] hyman89C1Array = new double[responseValueCount];
 
-		double[] adblNodeC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);
+		double[] nodeC1Array = LinearC1 (predictorOrdinateArray, responseValueArray);
 
-		double[] adblBesselC1 = BesselC1 (adblPredictorOrdinate, adblResponseValue);
+		double[] besselC1Array = BesselC1 (predictorOrdinateArray, responseValueArray);
 
-		for (int i = 0; i < iNumResponse; ++i) {
-			if (i < 2 || i >= iNumResponse - 2)
-				adblHyman89C1[i] = adblBesselC1[i];
-			else {
-				double dMuMinus = (adblNodeC1[i - 1] * (2. * (adblPredictorOrdinate[i] -
-					adblPredictorOrdinate[i - 1]) + adblPredictorOrdinate[i - 1] -
-						adblPredictorOrdinate[i - 2]) - adblNodeC1[i - 2] * (adblPredictorOrdinate[i] -
-							adblPredictorOrdinate[i - 1])) / (adblPredictorOrdinate[i] -
-								adblPredictorOrdinate[i - 2]);
-				double dMu0 = (adblNodeC1[i - 1] * (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i])
-					+ adblNodeC1[i] * (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1])) /
-						(adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i - 1]);
-				double dMuPlus = (adblNodeC1[i] * (2. * (adblPredictorOrdinate[i + 1] -
-					adblPredictorOrdinate[i]) + adblPredictorOrdinate[i + 2] - adblPredictorOrdinate[i + 1])
-						- adblNodeC1[i + 1] * (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i])) /
-							(adblPredictorOrdinate[i + 2] - adblPredictorOrdinate[i]);
+		for (int responseValueIndex = 0; responseValueIndex < responseValueCount; ++responseValueIndex) {
+			if (responseValueIndex < 2 || responseValueIndex >= responseValueCount - 2) {
+				hyman89C1Array[responseValueIndex] = besselC1Array[responseValueIndex];
+			} else {
+				double muMinus = (
+					nodeC1Array[responseValueIndex - 1] * (
+						2. * (
+							predictorOrdinateArray[responseValueIndex] -
+							predictorOrdinateArray[responseValueIndex - 1]
+						) +
+						predictorOrdinateArray[responseValueIndex - 1] -
+						predictorOrdinateArray[responseValueIndex - 2]
+					) - nodeC1Array[responseValueIndex - 2] * (
+						predictorOrdinateArray[responseValueIndex] -
+						predictorOrdinateArray[responseValueIndex - 1]
+					)
+				) / (
+					predictorOrdinateArray[responseValueIndex] -
+					predictorOrdinateArray[responseValueIndex - 2]
+				);
+				double mu0 = (
+					nodeC1Array[responseValueIndex - 1] * (
+						predictorOrdinateArray[responseValueIndex + 1] -
+						predictorOrdinateArray[responseValueIndex]
+					) + nodeC1Array[responseValueIndex] * (
+						predictorOrdinateArray[responseValueIndex] -
+						predictorOrdinateArray[responseValueIndex - 1]
+					)
+				) / (
+					predictorOrdinateArray[responseValueIndex + 1] -
+					predictorOrdinateArray[responseValueIndex - 1]
+				);
+				double muPlus = (
+					nodeC1Array[responseValueIndex] * (
+						2. * (
+							predictorOrdinateArray[responseValueIndex + 1] -
+							predictorOrdinateArray[responseValueIndex]
+						) +
+						predictorOrdinateArray[responseValueIndex + 2] -
+						predictorOrdinateArray[responseValueIndex + 1]
+					) - nodeC1Array[responseValueIndex + 1] * (
+						predictorOrdinateArray[responseValueIndex + 1] -
+						predictorOrdinateArray[responseValueIndex]
+					)
+				) / (
+					predictorOrdinateArray[responseValueIndex + 2] -
+					predictorOrdinateArray[responseValueIndex]
+				);
 
 				try {
-					double dblM = 3 * org.drip.numerical.common.NumberUtil.Minimum (new double[]
-						{java.lang.Math.abs (adblNodeC1[i - 1]), java.lang.Math.abs (adblNodeC1[i]),
-							java.lang.Math.abs (dMu0), java.lang.Math.abs (dMuPlus)});
+					double m = 3 * NumberUtil.Minimum (
+						new double[] {
+							Math.abs (nodeC1Array[responseValueIndex - 1]),
+							Math.abs (nodeC1Array[responseValueIndex]),
+							Math.abs (mu0),
+							Math.abs (muPlus)
+						}
+					);
 
-					if (!org.drip.numerical.common.NumberUtil.SameSign (new double[] {dMu0, dMuMinus,
-							adblNodeC1[i - 1] - adblNodeC1[i - 2], adblNodeC1[i] - adblNodeC1[i - 1]}))
-						dblM = java.lang.Math.max (dblM, 1.5 * java.lang.Math.min (java.lang.Math.abs (dMu0),
-							java.lang.Math.abs (dMuMinus)));
-					else if (!org.drip.numerical.common.NumberUtil.SameSign (new double[] {-dMu0, -dMuPlus,
-							adblNodeC1[i] - adblNodeC1[i - 1], adblNodeC1[i + 1] - adblNodeC1[i]}))
-						dblM = java.lang.Math.max (dblM, 1.5 * java.lang.Math.min (java.lang.Math.abs (dMu0),
-							java.lang.Math.abs (dMuPlus)));
+					if (!NumberUtil.SameSign (
+						new double[] {
+							mu0,
+							muMinus,
+							nodeC1Array[responseValueIndex - 1] - nodeC1Array[responseValueIndex - 2],
+							nodeC1Array[responseValueIndex] - nodeC1Array[responseValueIndex - 1]
+						}
+					)) {
+						m = Math.max (m, 1.5 * Math.min (Math.abs (mu0), Math.abs (muMinus)));
+					} else if (!NumberUtil.SameSign (
+						new double[] {
+							-mu0,
+							-muPlus,
+							nodeC1Array[responseValueIndex] - nodeC1Array[responseValueIndex - 1],
+							nodeC1Array[responseValueIndex + 1] - nodeC1Array[responseValueIndex]
+						}
+					)) {
+						m = Math.max (m, 1.5 * Math.min (Math.abs (mu0), Math.abs (muPlus)));
+					}
 
-					adblHyman89C1[i] = 0.;
+					hyman89C1Array[responseValueIndex] = 0.;
 
-					if (adblBesselC1[i] * dMu0 > 0.)
-						adblHyman89C1[i] = adblBesselC1[i] / java.lang.Math.abs (adblBesselC1[i]) *
-							java.lang.Math.min (java.lang.Math.abs (adblBesselC1[i]), dblM);
-				} catch (java.lang.Exception e) {
+					if (0. < besselC1Array[responseValueIndex] * mu0) {
+						hyman89C1Array[responseValueIndex] = besselC1Array[responseValueIndex] / Math.abs (
+							besselC1Array[responseValueIndex]
+						) * Math.min (Math.abs (besselC1Array[responseValueIndex]), m);
+					}
+				} catch (Exception e) {
 					e.printStackTrace();
 
 					return null;
@@ -437,202 +557,265 @@ public class LocalMonotoneCkGenerator {
 			}
 		}
 
-		return adblHyman89C1;
+		return hyman89C1Array;
 	}
 
 	/**
-	 * Generate a Harmonic C1 Array from the specified Array of Predictor Ordinates and the Response Values
+	 * Generate a Harmonic C<sup>1</sup> Array from the specified Array of Predictor Ordinates and the
+	 *  Response Values
 	 * 
 	 * 	Fritcsh and Butland (1984) A Method for constructing local monotonic piece-wise cubic interpolants -
 	 *  	SIAM J on Scientific and Statistical Computing 5, 300-304.
 	 * 
-	 * @param adblPredictorOrdinate The Predictor Ordinate Array
-	 * @param adblResponseValue The Response Value Array
+	 * @param predictorOrdinateArray The Predictor Ordinate Array
+	 * @param responseValueArray The Response Value Array
 	 * 
-	 * @return The C1 Array
+	 * @return The C<sup>1</sup> Array
 	 */
 
 	public static final double[] HarmonicC1 (
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue)
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray)
 	{
-		int iNumResponse = adblResponseValue.length;
-		double[] adblHarmonicC1 = new double[iNumResponse];
+		int responseValueCount = responseValueArray.length;
+		double[] harmonicC1Array = new double[responseValueCount];
 
-		double[] adblLinearC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);
+		double[] linearC1Array = LinearC1 (predictorOrdinateArray, responseValueArray);
 
-		for (int i = 0; i < iNumResponse; ++i) {
-			if (0 == i) {
-				adblHarmonicC1[i] = (adblPredictorOrdinate[2] + adblPredictorOrdinate[1] - 2. *
-					adblPredictorOrdinate[0]) * adblLinearC1[0] / (adblPredictorOrdinate[2] -
-						adblPredictorOrdinate[0]);
-				adblHarmonicC1[i] -= (adblPredictorOrdinate[1] - adblPredictorOrdinate[0]) * adblLinearC1[1]
-					/ (adblPredictorOrdinate[2] - adblPredictorOrdinate[0]);
-			} else if (iNumResponse - 1 == i) {
-				adblHarmonicC1[i] = -(adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]) *
-					adblLinearC1[i - 2] / (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 2]);
-				adblHarmonicC1[i] += (2. * adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1] -
-					adblPredictorOrdinate[i - 2]) * adblLinearC1[i - 1] / (adblPredictorOrdinate[i] -
-						adblPredictorOrdinate[i - 2]);
+		for (int responseValueIndex = 0; responseValueIndex < responseValueCount; ++responseValueIndex) {
+			if (0 == responseValueIndex) {
+				harmonicC1Array[responseValueIndex] = (
+					predictorOrdinateArray[2] + predictorOrdinateArray[1] - 2. * predictorOrdinateArray[0]
+				) * linearC1Array[0] / (predictorOrdinateArray[2] - predictorOrdinateArray[0]);
+				harmonicC1Array[responseValueIndex] -= (
+					predictorOrdinateArray[1] - predictorOrdinateArray[0]
+				) * linearC1Array[1] / (predictorOrdinateArray[2] - predictorOrdinateArray[0]);
+			} else if (responseValueCount - 1 == responseValueIndex) {
+				harmonicC1Array[responseValueIndex] = -(
+					predictorOrdinateArray[responseValueIndex] -
+					predictorOrdinateArray[responseValueIndex - 1]
+				) * linearC1Array[responseValueIndex - 2] / (
+					predictorOrdinateArray[responseValueIndex] -
+					predictorOrdinateArray[responseValueIndex - 2]
+				);
+				harmonicC1Array[responseValueIndex] += (
+					2. * predictorOrdinateArray[responseValueIndex] -
+					predictorOrdinateArray[responseValueIndex - 1] -
+					predictorOrdinateArray[responseValueIndex - 2]
+				) * linearC1Array[responseValueIndex - 1] / (
+					predictorOrdinateArray[responseValueIndex] -
+					predictorOrdinateArray[responseValueIndex - 2]
+				);
 			} else {
-				if (adblLinearC1[i - 1] * adblLinearC1[i] <= 0.)
-					adblHarmonicC1[i] = 0.;
-				else {
-					adblHarmonicC1[i] = (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1] + 2. *
-						(adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i])) / (3. *
-							(adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i])) / adblLinearC1[i - 1];
-					adblHarmonicC1[i] += (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i] + 2. *
-						(adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1])) / (3. *
-							(adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i])) / adblLinearC1[i];
-					adblHarmonicC1[i] = 1. / adblHarmonicC1[i];
+				if (0. >= linearC1Array[responseValueIndex - 1] * linearC1Array[responseValueIndex]) {
+					harmonicC1Array[responseValueIndex] = 0.;
+				} else {
+					harmonicC1Array[responseValueIndex] = (
+						predictorOrdinateArray[responseValueIndex] -
+						predictorOrdinateArray[responseValueIndex - 1] + 2. * (
+							predictorOrdinateArray[responseValueIndex + 1] -
+							predictorOrdinateArray[responseValueIndex]
+						)
+					) / (
+						3. * (
+							predictorOrdinateArray[responseValueIndex + 1] -
+							predictorOrdinateArray[responseValueIndex]
+						)
+					) / linearC1Array[responseValueIndex - 1];
+					harmonicC1Array[responseValueIndex] += (
+						predictorOrdinateArray[responseValueIndex + 1] -
+						predictorOrdinateArray[responseValueIndex] + 2. * (
+							predictorOrdinateArray[responseValueIndex] -
+							predictorOrdinateArray[responseValueIndex - 1]
+						)
+					) / (
+						3. * (
+							predictorOrdinateArray[responseValueIndex + 1] -
+							predictorOrdinateArray[responseValueIndex]
+						)
+					) / linearC1Array[responseValueIndex];
+					harmonicC1Array[responseValueIndex] = 1. / harmonicC1Array[responseValueIndex];
 				}
 			}
 		}
 
-		return adblHarmonicC1;
+		return harmonicC1Array;
 	}
 
 	/**
-	 * Generate a Van Leer Limiter C1 Array from the specified Array of Predictor Ordinates and the Response
-	 *  Values.
+	 * Generate a Van Leer Limiter C<sup>1</sup> Array from the specified Array of Predictor Ordinates and
+	 *  the Response Values.
 	 * 
 	 * 	Van Leer (1974) Towards the Ultimate Conservative Difference Scheme. II - Monotonicity and
 	 * 		Conservation combined in a Second-Order Scheme, Journal of Computational Physics 14 (4), 361-370.
 	 * 
-	 * @param adblPredictorOrdinate The Predictor Ordinate Array
-	 * @param adblResponseValue The Response Value Array
+	 * @param predictorOrdinateArray The Predictor Ordinate Array
+	 * @param responseValueArray The Response Value Array
 	 * 
-	 * @return The C1 Array
+	 * @return The C<sup>1</sup> Array
 	 */
 
 	public static final double[] VanLeerLimiterC1 (
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue)
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray)
 	{
-		int iNumResponse = adblResponseValue.length;
-		double[] dblVanLeerLimiterC1 = new double[iNumResponse];
+		int responseValueCount = responseValueArray.length;
+		double[] vanLeerLimiterC1Array = new double[responseValueCount];
 
-		double[] adblNodeC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);
+		double[] nodeC1Array = LinearC1 (predictorOrdinateArray, responseValueArray);
 
-		for (int i = 0; i < iNumResponse; ++i) {
-			if (0 == i) {
-				dblVanLeerLimiterC1[i] = (adblPredictorOrdinate[2] + adblPredictorOrdinate[1] - 2. *
-					adblPredictorOrdinate[0]) * adblNodeC1[0] / (adblPredictorOrdinate[2] -
-						adblPredictorOrdinate[0]);
-				dblVanLeerLimiterC1[i] -= (adblPredictorOrdinate[1] - adblPredictorOrdinate[0]) *
-					adblNodeC1[1] / (adblPredictorOrdinate[2] - adblPredictorOrdinate[0]);
-			} else if (iNumResponse - 1 == i) {
-				dblVanLeerLimiterC1[i] = -(adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]) *
-					adblNodeC1[i - 2] / (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 2]);
-				dblVanLeerLimiterC1[i] += (2. * adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1] -
-					adblPredictorOrdinate[i - 2]) * adblNodeC1[i - 1] / (adblPredictorOrdinate[i] -
-						adblPredictorOrdinate[i - 2]);
+		for (int responseValueIndex = 0; responseValueIndex < responseValueCount; ++responseValueIndex) {
+			if (0 == responseValueIndex) {
+				vanLeerLimiterC1Array[responseValueIndex] = (
+					predictorOrdinateArray[2] + predictorOrdinateArray[1] - 2. * predictorOrdinateArray[0]
+				) * nodeC1Array[0] / (predictorOrdinateArray[2] - predictorOrdinateArray[0]);
+				vanLeerLimiterC1Array[responseValueIndex] -= (
+					predictorOrdinateArray[1] - predictorOrdinateArray[0]
+				) * nodeC1Array[1] / (predictorOrdinateArray[2] - predictorOrdinateArray[0]);
+			} else if (responseValueCount - 1 == responseValueIndex) {
+				vanLeerLimiterC1Array[responseValueIndex] = -(
+					predictorOrdinateArray[responseValueIndex] -
+					predictorOrdinateArray[responseValueIndex - 1]
+				) * nodeC1Array[responseValueIndex - 2] / (
+					predictorOrdinateArray[responseValueIndex] -
+					predictorOrdinateArray[responseValueIndex - 2]
+				);
+				vanLeerLimiterC1Array[responseValueIndex] += (
+					2. * predictorOrdinateArray[responseValueIndex] -
+					predictorOrdinateArray[responseValueIndex - 1] -
+					predictorOrdinateArray[responseValueIndex - 2]
+				) * nodeC1Array[responseValueIndex - 1] / (
+					predictorOrdinateArray[responseValueIndex] -
+					predictorOrdinateArray[responseValueIndex - 2]
+				);
 			} else {
-				if (0. != adblNodeC1[i - 1]) {
-					double dblR = adblNodeC1[i] / adblNodeC1[i - 1];
+				if (0. != nodeC1Array[responseValueIndex - 1]) {
+					double r = nodeC1Array[responseValueIndex] / nodeC1Array[responseValueIndex - 1];
 
-					double dblRAbsolute = java.lang.Math.abs (dblR);
+					double rAbsolute = Math.abs (r);
 
-					dblVanLeerLimiterC1[i] = adblNodeC1[i] * (dblR + dblRAbsolute) / (1. + dblRAbsolute);
-				} else if (0. >= adblNodeC1[i])
-					dblVanLeerLimiterC1[i] = 0.;
-				else if (0. < adblNodeC1[i])
-					dblVanLeerLimiterC1[i] = 2. * adblNodeC1[i];
+					vanLeerLimiterC1Array[responseValueIndex] = nodeC1Array[responseValueIndex] *
+						(r + rAbsolute) / (1. + rAbsolute);
+				} else if (0. >= nodeC1Array[responseValueIndex]) {
+					vanLeerLimiterC1Array[responseValueIndex] = 0.;
+				} else if (0. < nodeC1Array[responseValueIndex]) {
+					vanLeerLimiterC1Array[responseValueIndex] = 2. * nodeC1Array[responseValueIndex];
+				}
 			}
 		}
 
-		return dblVanLeerLimiterC1;
+		return vanLeerLimiterC1Array;
 	}
 
 	/**
-	 * Generate a Huynh Le Floch Limiter C1 Array from the specified Array of Predictor Ordinates and the
-	 *  Response Values.
+	 * Generate a Huynh Le Floch Limiter C<sup>1</sup> Array from the specified Array of Predictor Ordinates
+	 *  and the Response Values.
 	 * 
 	 * 	Huynh (1993) Accurate Monotone Cubic Interpolation, SIAM J on Numerical Analysis 30 (1), 57-100.
 	 * 
-	 * @param adblPredictorOrdinate The Predictor Ordinate Array
-	 * @param adblResponseValue The Response Value Array
+	 * @param predictorOrdinateArray The Predictor Ordinate Array
+	 * @param responseValueArray The Response Value Array
 	 * 
-	 * @return The C1 Array
+	 * @return The C<sup>1</sup> Array
 	 */
 
 	public static final double[] HuynhLeFlochLimiterC1 (
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue)
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray)
 	{
-		int iNumResponse = adblResponseValue.length;
-		double[] adblHuynhLeFlochLimiterC1 = new double[iNumResponse];
+		int responseValueCount = responseValueArray.length;
+		double[] huynhLeFlochLimiterC1Array = new double[responseValueCount];
 
-		double[] adblNodeC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);
+		double[] nodeC1Array = LinearC1 (predictorOrdinateArray, responseValueArray);
 
-		for (int i = 0; i < iNumResponse; ++i) {
-			if (0 == i) {
-				adblHuynhLeFlochLimiterC1[i] = (adblPredictorOrdinate[2] + adblPredictorOrdinate[1] - 2. *
-					adblPredictorOrdinate[0]) * adblNodeC1[0] / (adblPredictorOrdinate[2] -
-						adblPredictorOrdinate[0]);
-				adblHuynhLeFlochLimiterC1[i] -= (adblPredictorOrdinate[1] - adblPredictorOrdinate[0]) *
-					adblNodeC1[1] / (adblPredictorOrdinate[2] - adblPredictorOrdinate[0]);
-			} else if (iNumResponse - 1 == i) {
-				adblHuynhLeFlochLimiterC1[i] = -(adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]) *
-					adblNodeC1[i - 2] / (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 2]);
-				adblHuynhLeFlochLimiterC1[i] += (2. * adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]
-					- adblPredictorOrdinate[i - 2]) * adblNodeC1[i - 1] / (adblPredictorOrdinate[i] -
-						adblPredictorOrdinate[i - 2]);
+		for (int responseValueIndex = 0; responseValueIndex < responseValueCount; ++responseValueIndex) {
+			if (0 == responseValueIndex) {
+				huynhLeFlochLimiterC1Array[responseValueIndex] = (
+					predictorOrdinateArray[2] + predictorOrdinateArray[1] - 2. * predictorOrdinateArray[0]
+				) * nodeC1Array[0] / (predictorOrdinateArray[2] - predictorOrdinateArray[0]);
+				huynhLeFlochLimiterC1Array[responseValueIndex] -= (
+					predictorOrdinateArray[1] - predictorOrdinateArray[0]
+				) * nodeC1Array[1] / (predictorOrdinateArray[2] - predictorOrdinateArray[0]);
+			} else if (responseValueCount - 1 == responseValueIndex) {
+				huynhLeFlochLimiterC1Array[responseValueIndex] = -(
+					predictorOrdinateArray[responseValueIndex] -
+					predictorOrdinateArray[responseValueIndex - 1]
+				) * nodeC1Array[responseValueIndex - 2] / (
+					predictorOrdinateArray[responseValueIndex] -
+					predictorOrdinateArray[responseValueIndex - 2]
+				);
+				huynhLeFlochLimiterC1Array[responseValueIndex] += (
+					2. * predictorOrdinateArray[responseValueIndex] -
+					predictorOrdinateArray[responseValueIndex - 1] -
+					predictorOrdinateArray[responseValueIndex - 2]
+				) * nodeC1Array[responseValueIndex - 1] / (
+					predictorOrdinateArray[responseValueIndex] -
+					predictorOrdinateArray[responseValueIndex - 2]
+				);
 			} else {
-				double dblMonotoneIndicator = adblNodeC1[i] * adblNodeC1[i - 1];
+				double monotoneIndicator = nodeC1Array[responseValueIndex] *
+					nodeC1Array[responseValueIndex - 1];
 
-				if (0. < dblMonotoneIndicator)
-					adblHuynhLeFlochLimiterC1[i] = 3. * dblMonotoneIndicator * (adblNodeC1[i] +
-						adblNodeC1[i - 1]) / (adblNodeC1[i] * adblNodeC1[i] + adblNodeC1[i - 1] *
-							adblNodeC1[i - 1] * 4. * dblMonotoneIndicator);
-				else
-					adblHuynhLeFlochLimiterC1[i] = 0.;
+					huynhLeFlochLimiterC1Array[responseValueIndex] = 0. >= monotoneIndicator ? 0. :
+						3. * monotoneIndicator * (
+							nodeC1Array[responseValueIndex] +
+							nodeC1Array[responseValueIndex - 1]
+						) / (
+							nodeC1Array[responseValueIndex] * nodeC1Array[responseValueIndex] +
+							nodeC1Array[responseValueIndex - 1] * nodeC1Array[responseValueIndex - 1] * 4. *
+								monotoneIndicator
+						);
 			}
 		}
 
-		return adblHuynhLeFlochLimiterC1;
+		return huynhLeFlochLimiterC1Array;
 	}
 
 	/**
-	 * Generate a Kruger C1 Array from the specified Array of Predictor Ordinates and the Response Values.
+	 * Generate a Kruger C<sup>1</sup> Array from the specified Array of Predictor Ordinates and the Response
+	 *  Values.
 	 * 
 	 * 	Kruger (2002) Constrained Cubic Spline Interpolations for Chemical Engineering Application,
 	 *  	http://www.korf.co.uk/spline.pdf
 	 * 
-	 * @param adblPredictorOrdinate The Predictor Ordinate Array
-	 * @param adblResponseValue The Response Value Array
+	 * @param predictorOrdinateArray The Predictor Ordinate Array
+	 * @param responseValueArray The Response Value Array
 	 * 
-	 * @return The C1 Array
+	 * @return The C<sup>1</sup> Array
 	 */
 
 	public static final double[] KrugerC1 (
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue)
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray)
 	{
-		int iNumResponse = adblResponseValue.length;
-		double[] adblKrugerSlope = new double[iNumResponse];
+		int responseValueCount = responseValueArray.length;
+		double[] krugerSlopeArray = new double[responseValueCount];
 
-		double[] adblSlopeC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);
+		double[] slopeC1Array = LinearC1 (predictorOrdinateArray, responseValueArray);
 
-		if (null == adblSlopeC1 || adblSlopeC1.length != iNumResponse - 1) return null;
+		if (null == slopeC1Array || slopeC1Array.length != responseValueCount - 1) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumResponse; ++i) {
-			if (0 != i && iNumResponse - 1 != i) {
-				if (adblSlopeC1[i - 1] * adblSlopeC1[i] <= 0.)
-					adblKrugerSlope[i] = 0.;
-				else
-					adblKrugerSlope[i] = 2. / ((1. / adblSlopeC1[i - 1]) + (1. / adblSlopeC1[i]));
+		for (int responseValueIndex = 0; responseValueIndex < responseValueCount; ++responseValueIndex) {
+			if (0 != responseValueIndex && responseValueCount - 1 != responseValueIndex) {
+				krugerSlopeArray[responseValueIndex] =
+					0. >= slopeC1Array[responseValueIndex - 1] * slopeC1Array[responseValueIndex] ? 0. :
+					2. / (
+						(1. / slopeC1Array[responseValueIndex - 1]) + (1. / slopeC1Array[responseValueIndex])
+					);
 			}
 		}
 
-		adblKrugerSlope[0] = 3.5 * adblSlopeC1[0] - 0.5 * adblKrugerSlope[1];
-		adblKrugerSlope[iNumResponse - 1] = 3.5 * adblSlopeC1[iNumResponse - 2] - 0.5 *
-			adblKrugerSlope[iNumResponse - 2];
-		return adblKrugerSlope;
+		krugerSlopeArray[0] = 3.5 * slopeC1Array[0] - 0.5 * krugerSlopeArray[1];
+		krugerSlopeArray[responseValueCount - 1] = 3.5 * slopeC1Array[responseValueCount - 2] - 0.5 *
+			krugerSlopeArray[responseValueCount - 2];
+		return krugerSlopeArray;
 	}
 
 	/**
-	 * Generate a Akima C1 Array from the specified Array of Predictor Ordinates and the Response Values.
+	 * Generate a Akima C<sup>1</sup> Array from the specified Array of Predictor Ordinates and the Response
+	 *  Values.
 	 * 
 	 * 	Akima (1970): A New Method of Interpolation and Smooth Curve Fitting based on Local Procedures,
 	 * 		Journal of the Association for the Computing Machinery 17 (4), 589-602.
@@ -640,7 +823,7 @@ public class LocalMonotoneCkGenerator {
 	 * @param adblPredictorOrdinate The Predictor Ordinate Array
 	 * @param adblResponseValue The Response Value Array
 	 * 
-	 * @return The C1 Array
+	 * @return The C<sup>1</sup> Array
 	 */
 
 	public static final double[] AkimaC1 (
@@ -710,7 +893,7 @@ public class LocalMonotoneCkGenerator {
 	}
 
 	/**
-	 * Generate C1 Slope Quintic Polynomial is Monotone using the Hyman89 Algorithm
+	 * Generate C<sup>1</sup> Slope Quintic Polynomial is Monotone using the Hyman89 Algorithm
 	 * 
 	 * 	Doherty, Edelman, and Hyman (1989) Non-negative, monotonic, or convexity preserving cubic and quintic
 	 *  	Hermite interpolation - Mathematics of Computation 52 (186), 471-494.
@@ -720,7 +903,7 @@ public class LocalMonotoneCkGenerator {
 	 * @param adblFirstDerivative Array of First Derivatives
 	 * @param adblSecondDerivative Array of Second Derivatives
 	 * 
-	 * @return The C1 Slope Quintic Stretch
+	 * @return The C<sup>1</sup> Slope Quintic Stretch
 	 */
 
 	public static final double[] Hyman89QuinticMonotoneC1 (
@@ -798,7 +981,7 @@ public class LocalMonotoneCkGenerator {
 	 * 
 	 * @param adblPredictorOrdinate The Predictor Ordinate Array
 	 * @param adblResponseValue The Response Value Array
-	 * @param strGeneratorType The C1 Generator Type
+	 * @param strGeneratorType The C<sup>1</sup> Generator Type
 	 * @param bEliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
 	 * @param bApplyMonotoneFilter TRUE - Apply Monotone Filter
 	 * 
@@ -837,7 +1020,7 @@ public class LocalMonotoneCkGenerator {
 	 * 
 	 * @param aiPredictorOrdinate The Predictor Ordinate Array
 	 * @param adblResponseValue The Response Value Array
-	 * @param strGeneratorType The C1 Generator Type
+	 * @param strGeneratorType The C<sup>1</sup> Generator Type
 	 * @param bEliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
 	 * @param bApplyMonotoneFilter TRUE - Apply Monotone Filter
 	 * 
@@ -941,9 +1124,9 @@ public class LocalMonotoneCkGenerator {
 	}
 
 	/**
-	 * Retrieve the C1 Array
+	 * Retrieve the C<sup>1</sup> Array
 	 * 
-	 * @return The C1 Array
+	 * @return The C<sup>1</sup> Array
 	 */
 
 	public double[] C1()
