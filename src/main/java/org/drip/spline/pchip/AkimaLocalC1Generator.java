@@ -6,6 +6,9 @@ package org.drip.spline.pchip;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,119 +86,159 @@ package org.drip.spline.pchip;
  */
 
 /**
- * <i>AkimaLocalC1Generator</i> generates the local control C1 Slope using the Akima Cubic Algorithm.
+ * <i>AkimaLocalC1Generator</i> implements the regime using the Akima (1970) Local C<sup>1</sup> Generator.
  *
- * <br><br>
+ * <br>
  *  <ul>
- *  	<li>
- * 			Akima (1970): A New Method of Interpolation and Smooth Curve Fitting based on Local Procedures
- * 				<i>Journal of the Association for the Computing Machinery</i> <b>17 (4)</b> 589-602
- *  	</li>
+	 * <li>Construct an Instance of <i>AkimaLocalC1Generator</i> from the Array of the supplied Predictor Ordinates and the Response Values</li>
+	 * <li>Generate the C<sup>1</sup> Array</li>
  *  </ul>
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/pchip/README.md">Monotone Convex Themed PCHIP Splines</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/pchip/README.md">Monotone Convex Themed PCHIP Splines</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class AkimaLocalC1Generator {
-	private double[] _adblResponseValue = null;
-	private double[] _adblPredictorOrdinate = null;
-	private double[] _adblExtendedResponseValue = null;
-	private double[] _adblExtendedPredictorOrdinate = null;
+public class AkimaLocalC1Generator
+{
+	private double[] _responseValueArray = null;
+	private double[] _predictorOrdinateArray = null;
+	private double[] _extendedResponseValueArray = null;
+	private double[] _extendedPredictorOrdinateArray = null;
 
 	/**
-	 * Construct an Instance of AkimaLocalC1Generator from the Array of the supplied Predictor Ordinates
-	 *  and the Response Values
+	 * Construct an Instance of <i>AkimaLocalC1Generator</i> from the Array of the supplied Predictor
+	 *  Ordinates and the Response Values
 	 *  
-	 * @param adblPredictorOrdinate Array of the Predictor Ordinates
-	 * @param adblResponseValue Array of the Response Values
+	 * @param predictorOrdinateArray Array of the Predictor Ordinates
+	 * @param responseValueArray Array of the Response Values
 	 * 
 	 * @return Instance of AkimaLocalC1Generator
 	 */
 
 	public static final AkimaLocalC1Generator Create (
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue)
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray)
 	{
-		AkimaLocalC1Generator alcr = null;
+		AkimaLocalC1Generator akimaLocalC1Generator = null;
 
 		try {
-			alcr = new AkimaLocalC1Generator (adblPredictorOrdinate, adblResponseValue);
-		} catch (java.lang.Exception e) {
+			akimaLocalC1Generator = new AkimaLocalC1Generator (predictorOrdinateArray, responseValueArray);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		return alcr.extendPredictorOrdinate() && alcr.extendResponseValue() ? alcr : null;
+		return akimaLocalC1Generator.extendPredictorOrdinate() && akimaLocalC1Generator.extendResponseValue()
+			? akimaLocalC1Generator : null;
 	}
 
 	private AkimaLocalC1Generator (
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue)
-		throws java.lang.Exception
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray)
+		throws Exception
 	{
-		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate) || null == (_adblResponseValue =
-			adblResponseValue))
-			throw new java.lang.Exception ("AkimaLocalC1Generator ctr: Invalid Inputs");
+		if (null == (_predictorOrdinateArray = predictorOrdinateArray) ||
+			null == (_responseValueArray = responseValueArray)) {
+			throw new Exception ("AkimaLocalC1Generator ctr: Invalid Inputs");
+		}
 
-		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;
+		int predictorOrdinateCount = _predictorOrdinateArray.length;
 
-		if (2 >= iNumPredictorOrdinate || iNumPredictorOrdinate != _adblResponseValue.length)
-			throw new java.lang.Exception ("AkimaLocalC1Generator ctr: Invalid Inputs");
+		if (2 >= predictorOrdinateCount || predictorOrdinateCount != _responseValueArray.length) {
+			throw new Exception ("AkimaLocalC1Generator ctr: Invalid Inputs");
+		}
 	}
 
 	private boolean extendPredictorOrdinate()
 	{
-		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;
-		int iNumExtendedPredictorOrdinate = iNumPredictorOrdinate + 4;
-		_adblExtendedPredictorOrdinate = new double[iNumExtendedPredictorOrdinate];
+		int predictorOrdinateCount = _predictorOrdinateArray.length;
+		int extendedPredictorOrdinateCount = predictorOrdinateCount + 4;
+		_extendedPredictorOrdinateArray = new double[extendedPredictorOrdinateCount];
 
-		for (int i = 0; i < iNumExtendedPredictorOrdinate; ++i) {
-			if (2 <= i && iNumExtendedPredictorOrdinate - 3 >= i)
-				_adblExtendedPredictorOrdinate[i] = _adblPredictorOrdinate[i - 2];
+		for (int extendedPredictorOrdinateIndex = 0;
+			extendedPredictorOrdinateIndex < extendedPredictorOrdinateCount;
+			++extendedPredictorOrdinateIndex) {
+			if (2 <= extendedPredictorOrdinateIndex &&
+				extendedPredictorOrdinateCount - 3 >= extendedPredictorOrdinateIndex) {
+				_extendedPredictorOrdinateArray[extendedPredictorOrdinateIndex] =
+					_predictorOrdinateArray[extendedPredictorOrdinateIndex - 2];
+			}
 		}
 
-		double dblSkippedLeftPredictorWidth = _adblPredictorOrdinate[2] - _adblPredictorOrdinate[0];
-		_adblExtendedPredictorOrdinate[0] = _adblPredictorOrdinate[0] - dblSkippedLeftPredictorWidth;
-		_adblExtendedPredictorOrdinate[1] = _adblPredictorOrdinate[1] - dblSkippedLeftPredictorWidth;
-		double dblSkippedRightPredictorWidth = _adblPredictorOrdinate[iNumPredictorOrdinate - 1] -
-			_adblPredictorOrdinate[iNumPredictorOrdinate - 3];
-		_adblExtendedPredictorOrdinate[iNumExtendedPredictorOrdinate - 2] =
-			_adblPredictorOrdinate[iNumPredictorOrdinate - 2] + dblSkippedRightPredictorWidth;
-		_adblExtendedPredictorOrdinate[iNumExtendedPredictorOrdinate - 1] =
-			_adblPredictorOrdinate[iNumPredictorOrdinate - 1] + dblSkippedRightPredictorWidth;
+		double skippedLeftPredictorWidth = _predictorOrdinateArray[2] - _predictorOrdinateArray[0];
+		_extendedPredictorOrdinateArray[0] = _predictorOrdinateArray[0] - skippedLeftPredictorWidth;
+		_extendedPredictorOrdinateArray[1] = _predictorOrdinateArray[1] - skippedLeftPredictorWidth;
+		double skippedRightPredictorWidth = _predictorOrdinateArray[predictorOrdinateCount - 1] -
+			_predictorOrdinateArray[predictorOrdinateCount - 3];
+		_extendedPredictorOrdinateArray[extendedPredictorOrdinateCount - 2] =
+			_predictorOrdinateArray[predictorOrdinateCount - 2] + skippedRightPredictorWidth;
+		_extendedPredictorOrdinateArray[extendedPredictorOrdinateCount - 1] =
+			_predictorOrdinateArray[predictorOrdinateCount - 1] + skippedRightPredictorWidth;
 		return true;
 	}
 
 	private boolean setExtendedResponseValue (
-		final int i,
-		final boolean bRight)
+		final int extendedPredictorOrdinateIndex,
+		final boolean right)
 	{
-		if (bRight) {
-			_adblExtendedResponseValue[i] = 2. * (_adblExtendedResponseValue[i - 1] -
-				_adblExtendedResponseValue[i - 2]) / (_adblExtendedPredictorOrdinate[i - 1] -
-					_adblExtendedPredictorOrdinate[i - 2]) - ((_adblExtendedResponseValue[i - 2] -
-						_adblExtendedResponseValue[i - 3]) / (_adblExtendedPredictorOrdinate[i - 2] -
-							_adblExtendedPredictorOrdinate[i - 3]));
-			_adblExtendedResponseValue[i] = _adblExtendedResponseValue[i] * (_adblExtendedResponseValue[i] -
-				_adblExtendedResponseValue[i - 1]) + _adblExtendedResponseValue[i - 1];
+		if (right) {
+			_extendedResponseValueArray[extendedPredictorOrdinateIndex] = 2. * (
+				_extendedResponseValueArray[extendedPredictorOrdinateIndex - 1] -
+				_extendedResponseValueArray[extendedPredictorOrdinateIndex - 2]
+			) / (
+				_extendedPredictorOrdinateArray[extendedPredictorOrdinateIndex - 1] -
+				_extendedPredictorOrdinateArray[extendedPredictorOrdinateIndex - 2]
+			) - (
+				(
+					_extendedResponseValueArray[extendedPredictorOrdinateIndex - 2] -
+					_extendedResponseValueArray[extendedPredictorOrdinateIndex - 3]
+				) / (
+					_extendedPredictorOrdinateArray[extendedPredictorOrdinateIndex - 2] -
+					_extendedPredictorOrdinateArray[extendedPredictorOrdinateIndex - 3]
+				)
+			);
+			_extendedResponseValueArray[extendedPredictorOrdinateIndex] =
+				_extendedResponseValueArray[extendedPredictorOrdinateIndex] * (
+					_extendedResponseValueArray[extendedPredictorOrdinateIndex] -
+					_extendedResponseValueArray[extendedPredictorOrdinateIndex - 1]
+				) + _extendedResponseValueArray[extendedPredictorOrdinateIndex - 1];
 		} else {
-			_adblExtendedResponseValue[i] = 2. * (_adblExtendedResponseValue[i + 2] -
-				_adblExtendedResponseValue[i + 1]) / (_adblExtendedPredictorOrdinate[i + 2] -
-					_adblExtendedPredictorOrdinate[i + 1]) - ((_adblExtendedResponseValue[i + 3] -
-						_adblExtendedResponseValue[i + 2]) / (_adblExtendedPredictorOrdinate[i + 3] -
-							_adblExtendedPredictorOrdinate[i + 2]));
-			_adblExtendedResponseValue[i] = _adblExtendedResponseValue[i + 1] - _adblExtendedResponseValue[i]
-				* (_adblExtendedResponseValue[i + 1] - _adblExtendedResponseValue[i]);
+			_extendedResponseValueArray[extendedPredictorOrdinateIndex] = 2. * (
+				_extendedResponseValueArray[extendedPredictorOrdinateIndex + 2] -
+				_extendedResponseValueArray[extendedPredictorOrdinateIndex + 1]
+			) / (
+				_extendedPredictorOrdinateArray[extendedPredictorOrdinateIndex + 2] -
+				_extendedPredictorOrdinateArray[extendedPredictorOrdinateIndex + 1]
+			) - (
+				(
+					_extendedResponseValueArray[extendedPredictorOrdinateIndex + 3] -
+					_extendedResponseValueArray[extendedPredictorOrdinateIndex + 2]
+				) / (
+					_extendedPredictorOrdinateArray[extendedPredictorOrdinateIndex + 3] -
+					_extendedPredictorOrdinateArray[extendedPredictorOrdinateIndex + 2]
+				)
+			);
+			_extendedResponseValueArray[extendedPredictorOrdinateIndex] =
+				_extendedResponseValueArray[extendedPredictorOrdinateIndex + 1] -
+				_extendedResponseValueArray[extendedPredictorOrdinateIndex] * (
+					_extendedResponseValueArray[extendedPredictorOrdinateIndex + 1] -
+					_extendedResponseValueArray[extendedPredictorOrdinateIndex]
+				);
 		}
 
 		return true;
@@ -203,48 +246,68 @@ public class AkimaLocalC1Generator {
 
 	private boolean extendResponseValue()
 	{
-		int iNumResponseValue = _adblResponseValue.length;
-		int iNumExtendedResponseValue = iNumResponseValue + 4;
-		_adblExtendedResponseValue = new double[iNumExtendedResponseValue];
+		int responseValueCount = _responseValueArray.length;
+		int extendedResponseValueCount = responseValueCount + 4;
+		_extendedResponseValueArray = new double[extendedResponseValueCount];
 
-		for (int i = 0; i < iNumExtendedResponseValue; ++i) {
-			if (2 <= i && iNumExtendedResponseValue - 3 >= i)
-				_adblExtendedResponseValue[i] = _adblResponseValue[i - 2];
+		for (int extendedPredictorOrdinateIndex = 0;
+			extendedPredictorOrdinateIndex < extendedResponseValueCount;
+			++extendedPredictorOrdinateIndex) {
+			if (2 <= extendedPredictorOrdinateIndex &&
+				extendedResponseValueCount - 3 >= extendedPredictorOrdinateIndex) {
+				_extendedResponseValueArray[extendedPredictorOrdinateIndex] =
+					_responseValueArray[extendedPredictorOrdinateIndex - 2];
+			}
 		}
 
-		return setExtendedResponseValue (1, false) && setExtendedResponseValue (0, false) &&
-			setExtendedResponseValue (iNumExtendedResponseValue - 2, true) && setExtendedResponseValue
-				(iNumExtendedResponseValue - 1, true) ? true : false;
+		return setExtendedResponseValue (1, false) &&
+			setExtendedResponseValue (0, false) &&
+			setExtendedResponseValue (extendedResponseValueCount - 2, true) &&
+			setExtendedResponseValue (extendedResponseValueCount - 1, true);
 	}
 
 	/**
-	 * Generate the C1 Array
+	 * Generate the C<sup>1</sup> Array
 	 * 
-	 * @return The C1 Array
+	 * @return The C<sup>1</sup> Array
 	 */
 
 	public double[] C1()
 	{
-		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;
-		double[] adblC1 = new double[iNumPredictorOrdinate];
-		double[] adblExtendedSlope = new double[iNumPredictorOrdinate + 3];
+		int predictorOrdinateCount = _predictorOrdinateArray.length;
+		double[] c1Array = new double[predictorOrdinateCount];
+		double[] extendedSlopeArray = new double[predictorOrdinateCount + 3];
 
-		for (int i = 0; i < iNumPredictorOrdinate + 3; ++i)
-			adblExtendedSlope[i] = (_adblExtendedResponseValue[i + 1] - _adblExtendedResponseValue[i]) /
-				(_adblExtendedPredictorOrdinate[i + 1] - _adblExtendedPredictorOrdinate[i]);
-
-		for (int i = 0; i < iNumPredictorOrdinate; ++i) {
-			double dblSlope10 = java.lang.Math.abs (adblExtendedSlope[i + 1] - adblExtendedSlope[i]);
-
-			double dblSlope32 = java.lang.Math.abs (adblExtendedSlope[i + 3] - adblExtendedSlope[i + 2]);
-
-			if (0. == dblSlope10 && 0. == dblSlope32)
-				adblC1[i] = 0.5 * (adblExtendedSlope[i + 1] + adblExtendedSlope[i + 2]);
-			else
-				adblC1[i] = (dblSlope32 * adblExtendedSlope[i + 1] + dblSlope10 * adblExtendedSlope[i + 2]) /
-					(dblSlope10 + dblSlope32);
+		for (int predictorOrdinateIndex = 0; predictorOrdinateIndex < predictorOrdinateCount + 3;
+			++predictorOrdinateIndex) {
+			extendedSlopeArray[predictorOrdinateIndex] = (
+				_extendedResponseValueArray[predictorOrdinateIndex + 1] -
+				_extendedResponseValueArray[predictorOrdinateIndex]
+			) / (
+				_extendedPredictorOrdinateArray[predictorOrdinateIndex + 1] -
+				_extendedPredictorOrdinateArray[predictorOrdinateIndex]
+			);
 		}
 
-		return adblC1;
+		for (int predictorOrdinateIndex = 0; predictorOrdinateIndex < predictorOrdinateCount;
+			++predictorOrdinateIndex) {
+			double slope10 = Math.abs (
+				extendedSlopeArray[predictorOrdinateIndex + 1] - extendedSlopeArray[predictorOrdinateIndex]
+			);
+
+			double slope32 = Math.abs (
+				extendedSlopeArray[predictorOrdinateIndex + 3] -
+				extendedSlopeArray[predictorOrdinateIndex + 2]
+			);
+
+			c1Array[predictorOrdinateIndex] = 0. == slope10 && 0. == slope32 ? 0.5 * (
+				extendedSlopeArray[predictorOrdinateIndex + 1] + extendedSlopeArray[predictorOrdinateIndex + 2]
+			) : (
+				slope32 * extendedSlopeArray[predictorOrdinateIndex + 1] +
+				slope10 * extendedSlopeArray[predictorOrdinateIndex + 2]
+			) / (slope10 + slope32);
+		}
+
+		return c1Array;
 	}
 }

@@ -820,20 +820,22 @@ public class LocalMonotoneCkGenerator
 	 * 	Akima (1970): A New Method of Interpolation and Smooth Curve Fitting based on Local Procedures,
 	 * 		Journal of the Association for the Computing Machinery 17 (4), 589-602.
 	 * 
-	 * @param adblPredictorOrdinate The Predictor Ordinate Array
-	 * @param adblResponseValue The Response Value Array
+	 * @param predictorOrdinateArray The Predictor Ordinate Array
+	 * @param responseValueArray The Response Value Array
 	 * 
 	 * @return The C<sup>1</sup> Array
 	 */
 
 	public static final double[] AkimaC1 (
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue)
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray)
 	{
-		org.drip.spline.pchip.AkimaLocalC1Generator alcr =
-			org.drip.spline.pchip.AkimaLocalC1Generator.Create (adblPredictorOrdinate, adblResponseValue);
+		AkimaLocalC1Generator akimaLocalC1Generator = AkimaLocalC1Generator.Create (
+			predictorOrdinateArray,
+			responseValueArray
+		);
 
-		return null == alcr ? null : alcr.C1();
+		return null == akimaLocalC1Generator ? null : akimaLocalC1Generator.C1();
 	}
 
 	/**
@@ -842,10 +844,10 @@ public class LocalMonotoneCkGenerator
 	 * 	Doherty, Edelman, and Hyman (1989) Non-negative, monotonic, or convexity preserving cubic and quintic
 	 *  	Hermite interpolation - Mathematics of Computation 52 (186), 471-494.
 	 * 
-	 * @param adblPredictorOrdinate Array of Predictor Ordinates
-	 * @param adblResponseValue Array of Response Values
-	 * @param adblFirstDerivative Array of First Derivatives
-	 * @param adblSecondDerivative Array of Second Derivatives
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
+	 * @param responseValueArray Array of Response Values
+	 * @param firstDerivativeArray Array of First Derivatives
+	 * @param secondDerivativeArray Array of Second Derivatives
 	 * 
 	 * @return TRUE - The given Quintic Polynomial is Monotone
 	 * 
@@ -853,40 +855,61 @@ public class LocalMonotoneCkGenerator
 	 */
 
 	public static final boolean VerifyHyman89QuinticMonotonicity (
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue,
-		final double[] adblFirstDerivative,
-		final double[] adblSecondDerivative)
-		throws java.lang.Exception
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray,
+		final double[] firstDerivativeArray,
+		final double[] secondDerivativeArray)
+		throws Exception
 	{
-		if (null == adblPredictorOrdinate || null == adblResponseValue || null == adblFirstDerivative || null
-			== adblSecondDerivative)
-			throw new java.lang.Exception
-				("LocalMonotoneCkGenerator::VerifyHyman89QuinticMonotonicity => Invalid Inputs");
+		if (null == predictorOrdinateArray || null == responseValueArray || null == firstDerivativeArray ||
+			null == secondDerivativeArray) {
+			throw new Exception (
+				"LocalMonotoneCkGenerator::VerifyHyman89QuinticMonotonicity => Invalid Inputs"
+			);
+		}
 
-		int iNumPredictor = adblPredictorOrdinate.length;
+		int predictorOrdinateCount = predictorOrdinateArray.length;
 
-		if (1 >= iNumPredictor || iNumPredictor != adblResponseValue.length || iNumPredictor !=
-			adblResponseValue.length || iNumPredictor != adblResponseValue.length)
-			throw new java.lang.Exception
-				("LocalMonotoneCkGenerator::VerifyHyman89QuinticMonotonicity => Invalid Inputs");
+		if (1 >= predictorOrdinateCount || predictorOrdinateCount != responseValueArray.length ||
+			predictorOrdinateCount != responseValueArray.length ||
+			predictorOrdinateCount != responseValueArray.length) {
+			throw new Exception (
+				"LocalMonotoneCkGenerator::VerifyHyman89QuinticMonotonicity => Invalid Inputs"
+			);
+		}
 
-		for (int i = 1; i < iNumPredictor - 1; ++i) {
-			double dblAbsoluteResponseValue = java.lang.Math.abs (adblResponseValue[i]);
+		for (int predictorOrdinateIndex = 1; predictorOrdinateIndex < predictorOrdinateCount - 1;
+			++predictorOrdinateIndex) {
+			double absoluteResponseValue = Math.abs (responseValueArray[predictorOrdinateIndex]);
 
-			double dblResponseValueSign = adblResponseValue[i] > 0. ? 1. : -1.;
-			double dblHMinus = (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]);
-			double dblHPlus = (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i]);
+			double responseValueSign = responseValueArray[predictorOrdinateIndex] > 0. ? 1. : -1.;
+			double hMinus = (
+				predictorOrdinateArray[predictorOrdinateIndex] -
+				predictorOrdinateArray[predictorOrdinateIndex - 1]
+			);
+			double hPlus = (
+				predictorOrdinateArray[predictorOrdinateIndex + 1] -
+				predictorOrdinateArray[predictorOrdinateIndex]
+			);
 
-			if (-5. * dblAbsoluteResponseValue / dblHPlus > dblResponseValueSign * adblFirstDerivative[i] ||
-				5. * dblAbsoluteResponseValue / dblHMinus < dblResponseValueSign * adblFirstDerivative[i])
+			if (-5. * absoluteResponseValue / hPlus >
+					responseValueSign * firstDerivativeArray[predictorOrdinateIndex] ||
+				5. * absoluteResponseValue / hMinus <
+					responseValueSign * firstDerivativeArray[predictorOrdinateIndex]
+			) {
 				return false;
+			}
 
-			if (dblResponseValueSign * adblSecondDerivative[i] < dblResponseValueSign * java.lang.Math.max
-				(8. * adblFirstDerivative[i] / dblHMinus - 20. * adblResponseValue[i] / dblHMinus /
-					dblHMinus, -8. * adblFirstDerivative[i] / dblHPlus - 20. * adblResponseValue[i] /
-						dblHPlus / dblHPlus))
+			if (responseValueSign * secondDerivativeArray[predictorOrdinateIndex] <
+				responseValueSign * Math.max (
+					8. * firstDerivativeArray[predictorOrdinateIndex] / hMinus -
+						20. * responseValueArray[predictorOrdinateIndex] / hMinus / hMinus,
+					-8. * firstDerivativeArray[predictorOrdinateIndex] / hPlus -
+						20. * responseValueArray[predictorOrdinateIndex] / hPlus / hPlus
+				)
+			) {
 				return false;
+			}
 		}
 
 		return true;
