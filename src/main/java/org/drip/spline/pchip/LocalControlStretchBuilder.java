@@ -1,11 +1,20 @@
 
 package org.drip.spline.pchip;
 
+import org.drip.spline.params.SegmentCustomBuilderControl;
+import org.drip.spline.params.SegmentPredictorResponseDerivative;
+import org.drip.spline.params.StretchBestFitResponse;
+import org.drip.spline.stretch.MultiSegmentSequence;
+import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,190 +93,219 @@ package org.drip.spline.pchip;
 
 /**
  * <i>LocalControlStretchBuilder</i> exports Stretch creation/calibration methods to generate customized
- * basis splines, with customized segment behavior using the segment control. It provides the following
- * local-control functionality:
+ * 	basis splines, with customized segment behavior using the segment control. It provides the following
+ * 	local-control functionality:
  *
- * <br><br>
- *  <ul>
- *  	<li>
- *  		Create a Stretch off of Hermite Splines from the specified the Predictor Ordinates, the Response
- *  			Values, the Custom Slopes, and the Segment Builder Parameters
- *  	</li>
- *  	<li>
- *  		Create Hermite/Bessel C1 Cubic Spline Stretch
- *  	</li>
- *  	<li>
- *  		Create Hyman (1983) Monotone Preserving Stretch
- *  	</li>
- *  	<li>
- *  		Create Hyman (1989) enhancement to the Hyman (1983) Monotone Preserving Stretch
- *  	</li>
- *  	<li>
- *  		Create the Harmonic Monotone Preserving Stretch
- *  	</li>
- *  	<li>
- *  		Create the Van Leer Limiter Stretch
- *  	</li>
- *  	<li>
- *  		Create the Huynh Le Floch Limiter Stretch
- *  	</li>
- *  	<li>
- *  		Generate the local control C1 Slope using the Akima Cubic Algorithm
- *  	</li>
- *  	<li>
- *  		Generate the local control C1 Slope using the Hagan-West Monotone Convex Algorithm
- *  	</li>
- *  </ul>
+ * <br>
+ * <ul>
+ * 		<li>Create a Stretch off of Hermite Splines from the specified the Predictor Ordinates, the Response Values, the Custom Slopes, and the Segment Builder Parameters</li>
+ * 		<li>Create Hermite/Bessel C<sup>1</sup> Cubic Spline Stretch</li>
+ * 		<li>Create Hyman (1983) Monotone Preserving Stretch</li>
+ * 		<li>Create Hyman (1989) enhancement to the Hyman (1983) Monotone Preserving Stretch</li>
+ * 		<li>Create the Harmonic Monotone Preserving Stretch</li>
+ * 		<li>Create the van Leer Limiter Stretch</li>
+ * 		<li>Create the Kruger Stretch</li>
+ * 		<li>Create the Huynh Le Floch Limiter Stretch</li>
+ * 		<li>Generate the local control C<sup>1</sup> Slope using the Akima Cubic Algorithm</li>
+ * 		<li>Generate the local control C<sup>1</sup> Slope using the Hagan-West Monotone Convex Algorithm</li>
+ * </ul>
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/pchip/README.md">Monotone Convex Themed PCHIP Splines</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/pchip/README.md">Monotone Convex Themed PCHIP Splines</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LocalControlStretchBuilder {
+public class LocalControlStretchBuilder
+{
 
 	/**
 	 * Create a Stretch off of Hermite Splines from the specified the Predictor Ordinates, the Response
 	 *  Values, the Custom Slopes, and the Segment Builder Parameters.
 	 * 
-	 * @param strName Stretch Name
-	 * @param adblPredictorOrdinate Array of Predictor Ordinates
-	 * @param adblResponseValue Array of Response Values
-	 * @param adblCustomSlope Array of Custom Slopes
-	 * @param aSCBC Array of Segment Builder Parameters
-	 * @param sbfr Stretch Fitness Weighted Response
-	 * @param iSetupMode Calibration Set up Mode NATURAL | FINANCIAL | FLOATING | NOTAKNOT
+	 * @param name Stretch Name
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
+	 * @param responseValueArray Array of Response Values
+	 * @param customSlopeArray Array of Custom Slopes
+	 * @param segmentCustomBuilderControlArray Array of Segment Builder Parameters
+	 * @param stretchBestFitResponse Stretch Fitness Weighted Response
+	 * @param setupMode Calibration Set up Mode NATURAL | FINANCIAL | FLOATING | NOTAKNOT
 	 * 
 	 * @return The Instance of the Hermite Spline Stretch
 	 */
 
-	public static final org.drip.spline.stretch.MultiSegmentSequence CustomSlopeHermiteSpline (
-		final java.lang.String strName,
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue,
-		final double[] adblCustomSlope,
-		final org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final int iSetupMode)
+	public static final MultiSegmentSequence CustomSlopeHermiteSpline (
+		final String name,
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray,
+		final double[] customSlopeArray,
+		final SegmentCustomBuilderControl[] segmentCustomBuilderControlArray,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final int setupMode)
 	{
-		org.drip.spline.stretch.MultiSegmentSequence msr =
-			org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateUncalibratedStretchEstimator (strName,
-				adblPredictorOrdinate, aSCBC);
+		MultiSegmentSequence multiSegmentSequence =
+			MultiSegmentSequenceBuilder.CreateUncalibratedStretchEstimator (
+				name,
+				predictorOrdinateArray,
+				segmentCustomBuilderControlArray
+			);
 
-		if (null == msr || null == adblResponseValue || null == adblCustomSlope) return null;
-
-		int iNumResponseValue = adblResponseValue.length;
-		org.drip.spline.params.SegmentPredictorResponseDerivative[] aSPRDLeft = new
-			org.drip.spline.params.SegmentPredictorResponseDerivative[iNumResponseValue - 1];
-		org.drip.spline.params.SegmentPredictorResponseDerivative[] aSPRDRight = new
-			org.drip.spline.params.SegmentPredictorResponseDerivative[iNumResponseValue - 1];
-
-		if (1 >= iNumResponseValue || adblPredictorOrdinate.length != iNumResponseValue ||
-			adblCustomSlope.length != iNumResponseValue)
+		if (null == multiSegmentSequence || null == responseValueArray || null == customSlopeArray) {
 			return null;
+		}
 
-		for (int i = 0; i < iNumResponseValue; ++i) {
-			org.drip.spline.params.SegmentPredictorResponseDerivative sprd = null;
+		int responseCount = responseValueArray.length;
+		SegmentPredictorResponseDerivative[] leftSegmentPredictorResponseDerivativeArray =
+			new SegmentPredictorResponseDerivative[responseCount - 1];
+		SegmentPredictorResponseDerivative[] rightSegmentPredictorResponseDerivativeArray =
+			new SegmentPredictorResponseDerivative[responseCount - 1];
+
+		if (1 >= responseCount || predictorOrdinateArray.length != responseCount ||
+			customSlopeArray.length != responseCount) {
+			return null;
+		}
+
+		for (int responseIndex = 0; responseIndex < responseCount; ++responseIndex) {
+			SegmentPredictorResponseDerivative segmentPredictorResponseDerivative = null;
 
 			try {
-				sprd = new org.drip.spline.params.SegmentPredictorResponseDerivative (adblResponseValue[i],
-					new double[] {adblCustomSlope[i]});
-			} catch (java.lang.Exception e) {
+				segmentPredictorResponseDerivative = new SegmentPredictorResponseDerivative (
+					responseValueArray[responseIndex],
+					new double[] {customSlopeArray[responseIndex]}
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 
-			if (0 == i)
-				aSPRDLeft[i] = sprd;
-			else if (iNumResponseValue - 1 == i)
-				aSPRDRight[i - 1] = sprd;
-			else {
-				aSPRDLeft[i] = sprd;
-				aSPRDRight[i - 1] = sprd;
+			if (0 == responseIndex) {
+				leftSegmentPredictorResponseDerivativeArray[responseIndex] =
+					segmentPredictorResponseDerivative;
+			} else if (responseCount - 1 == responseIndex) {
+				rightSegmentPredictorResponseDerivativeArray[responseIndex - 1] =
+					segmentPredictorResponseDerivative;
+			} else {
+				leftSegmentPredictorResponseDerivativeArray[responseIndex] =
+					segmentPredictorResponseDerivative;
+				rightSegmentPredictorResponseDerivativeArray[responseIndex - 1] =
+					segmentPredictorResponseDerivative;
 			}
 		}
 
-		return msr.setupHermite (aSPRDLeft, aSPRDRight, null, sbfr, iSetupMode) ? msr : null;
+		return multiSegmentSequence.setupHermite (
+			leftSegmentPredictorResponseDerivativeArray,
+			rightSegmentPredictorResponseDerivativeArray,
+			null,
+			stretchBestFitResponse,
+			setupMode
+		) ? multiSegmentSequence : null;
 	}
 
 	/**
 	 * Create a Stretch off of Hermite Splines from the specified the Predictor Ordinates, the Response
 	 *  Values, the Custom Slopes, and the Segment Builder Parameters.
 	 * 
-	 * @param strName Stretch Name
-	 * @param aiPredictorOrdinate Array of Predictor Ordinates
-	 * @param adblResponseValue Array of Response Values
-	 * @param adblCustomSlope Array of Custom Slopes
-	 * @param aSCBC Array of Segment Builder Parameters
-	 * @param sbfr Stretch Fitness Weighted Response
-	 * @param iSetupMode Calibration Set up Mode NATURAL | FINANCIAL | FLOATING | NOTAKNOT
+	 * @param name Stretch Name
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
+	 * @param responseValueArray Array of Response Values
+	 * @param customSlopeArray Array of Custom Slopes
+	 * @param segmentCustomBuilderControlArray Array of Segment Builder Parameters
+	 * @param stretchBestFitResponse Stretch Fitness Weighted Response
+	 * @param setupMode Calibration Set up Mode NATURAL | FINANCIAL | FLOATING | NOTAKNOT
 	 * 
 	 * @return The Instance of the Hermite Spline Stretch
 	 */
 
-	public static final org.drip.spline.stretch.MultiSegmentSequence CustomSlopeHermiteSpline (
-		final java.lang.String strName,
-		final int[] aiPredictorOrdinate,
-		final double[] adblResponseValue,
-		final double[] adblCustomSlope,
-		final org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final int iSetupMode)
+	public static final MultiSegmentSequence CustomSlopeHermiteSpline (
+		final String name,
+		final int[] predictorOrdinateArray,
+		final double[] responseValueArray,
+		final double[] customSlopeArray,
+		final SegmentCustomBuilderControl[] segmentCustomBuilderControlArray,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final int setupMode)
 	{
-		if (null == aiPredictorOrdinate) return null;
+		if (null == predictorOrdinateArray) {
+			return null;
+		}
 
-		int iNumPredictorOrdinate = aiPredictorOrdinate.length;
-		double[] adblPredictorOrdinate = new double[iNumPredictorOrdinate];
+		int predictorCount = predictorOrdinateArray.length;
+		double[] clonedPredictorOrdinateArray = new double[predictorCount];
 
-		if (0 == iNumPredictorOrdinate) return null;
+		if (0 == predictorCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumPredictorOrdinate; ++i)
-			adblPredictorOrdinate[i] = aiPredictorOrdinate[i];
+		for (int predictorIndex = 0; predictorIndex < predictorCount; ++predictorIndex) {
+			clonedPredictorOrdinateArray[predictorIndex] = predictorOrdinateArray[predictorIndex];
+		}
 
-		return CustomSlopeHermiteSpline (strName, adblPredictorOrdinate, adblResponseValue, adblCustomSlope,
-			aSCBC, sbfr, iSetupMode);
+		return CustomSlopeHermiteSpline (
+			name,
+			clonedPredictorOrdinateArray,
+			responseValueArray,
+			customSlopeArray,
+			segmentCustomBuilderControlArray,
+			stretchBestFitResponse,
+			setupMode
+		);
 	}
 
 	/**
-	 * Create Hermite/Bessel C1 Cubic Spline Stretch
+	 * Create Hermite/Bessel C<sup>1</sup> Cubic Spline Stretch
 	 * 
-	 * @param strName Stretch Name
-	 * @param adblPredictorOrdinate Array of Predictor Ordinates
-	 * @param adblResponseValue Array of Response Values
-	 * @param aSCBC Array of Segment Builder Parameters
-	 * @param sbfr Stretch Fitness Weighted Response
-	 * @param iSetupMode Segment Setup Mode
-	 * @param bEliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
-	 * @param bApplyMonotoneFilter TRUE - Apply Monotone Filter
+	 * @param name Stretch Name
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
+	 * @param responseValueArray Array of Response Values
+	 * @param segmentCustomBuilderControlArray Array of Segment Builder Parameters
+	 * @param stretchBestFitResponse Stretch Fitness Weighted Response
+	 * @param setupMode Segment Setup Mode
+	 * @param eliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
+	 * @param applyMonotoneFilter TRUE - Apply Monotone Filter
 	 * 
-	 * @return Hermite/Bessel C1 Cubic Spline Stretch
+	 * @return Hermite/Bessel C<sup>1</sup> Cubic Spline Stretch
 	 */
 
-	public static final org.drip.spline.stretch.MultiSegmentSequence CreateBesselCubicSplineStretch (
-		final java.lang.String strName,
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue,
-		final org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final int iSetupMode,
-		final boolean bEliminateSpuriousExtrema,
-		final boolean bApplyMonotoneFilter)
+	public static final MultiSegmentSequence CreateBesselCubicSplineStretch (
+		final String name,
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray,
+		final SegmentCustomBuilderControl[] segmentCustomBuilderControlArray,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final int setupMode,
+		final boolean eliminateSpuriousExtrema,
+		final boolean applyMonotoneFilter)
 	{
-		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =
-			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,
-				org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_BESSEL, bEliminateSpuriousExtrema,
-					bApplyMonotoneFilter);
+		LocalMonotoneCkGenerator localMonotoneCkGenerator = LocalMonotoneCkGenerator.Create (
+			predictorOrdinateArray,
+			responseValueArray,
+			LocalMonotoneCkGenerator.C1_BESSEL,
+			eliminateSpuriousExtrema,
+			applyMonotoneFilter
+		);
 
-		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,
-			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);
+		return null == localMonotoneCkGenerator ? null : CustomSlopeHermiteSpline (
+			name,
+			predictorOrdinateArray,
+			responseValueArray,
+			localMonotoneCkGenerator.C1(),
+			segmentCustomBuilderControlArray,
+			stretchBestFitResponse,
+			setupMode
+		);
 	}
 
 	/**
@@ -276,35 +314,45 @@ public class LocalControlStretchBuilder {
 	 * 	Hyman (1983) Accurate Monotonicity Preserving Cubic Interpolation -
 	 *  	SIAM J on Numerical Analysis 4 (4), 645-654.
 	 * 
-	 * @param strName Stretch Name
-	 * @param adblPredictorOrdinate Array of Predictor Ordinates
-	 * @param adblResponseValue Array of Response Values
-	 * @param aSCBC Array of Segment Builder Parameters
-	 * @param sbfr Stretch Fitness Weighted Response
-	 * @param iSetupMode Segment Setup Mode
-	 * @param bEliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
-	 * @param bApplyMonotoneFilter TRUE - Apply Monotone Filter
+	 * @param name Stretch Name
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
+	 * @param responseValueArray Array of Response Values
+	 * @param segmentCustomBuilderControlArray Array of Segment Builder Parameters
+	 * @param stretchBestFitResponse Stretch Fitness Weighted Response
+	 * @param setupMode Segment Setup Mode
+	 * @param eliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
+	 * @param applyMonotoneFilter TRUE - Apply Monotone Filter
 	 * 
 	 * @return Hyman (1983) Monotone Preserving Stretch
 	 */
 
-	public static final org.drip.spline.stretch.MultiSegmentSequence CreateHyman83MonotoneStretch (
-		final java.lang.String strName,
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue,
-		final org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final int iSetupMode,
-		final boolean bEliminateSpuriousExtrema,
-		final boolean bApplyMonotoneFilter)
+	public static final MultiSegmentSequence CreateHyman83MonotoneStretch (
+		final String name,
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray,
+		final SegmentCustomBuilderControl[] segmentCustomBuilderControlArray,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final int setupMode,
+		final boolean eliminateSpuriousExtrema,
+		final boolean applyMonotoneFilter)
 	{
-		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =
-			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,
-				org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_HYMAN83, bEliminateSpuriousExtrema,
-					bApplyMonotoneFilter);
+		LocalMonotoneCkGenerator localMonotoneCkGenerator = LocalMonotoneCkGenerator.Create (
+			predictorOrdinateArray,
+			responseValueArray,
+			LocalMonotoneCkGenerator.C1_HYMAN83,
+			eliminateSpuriousExtrema,
+			applyMonotoneFilter
+		);
 
-		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,
-			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);
+		return null == localMonotoneCkGenerator ? null : CustomSlopeHermiteSpline (
+			name,
+			predictorOrdinateArray,
+			responseValueArray,
+			localMonotoneCkGenerator.C1(),
+			segmentCustomBuilderControlArray,
+			stretchBestFitResponse,
+			setupMode
+		);
 	}
 
 	/**
@@ -313,35 +361,45 @@ public class LocalControlStretchBuilder {
 	 * 	Doherty, Edelman, and Hyman (1989) Non-negative, monotonic, or convexity preserving cubic and quintic
 	 *  	Hermite interpolation - Mathematics of Computation 52 (186), 471-494.
 	 * 
-	 * @param strName Stretch Name
-	 * @param adblPredictorOrdinate Array of Predictor Ordinates
-	 * @param adblResponseValue Array of Response Values
-	 * @param aSCBC Array of Segment Builder Parameters
-	 * @param sbfr Stretch Fitness Weighted Response
-	 * @param iSetupMode Segment Setup Mode
-	 * @param bEliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
-	 * @param bApplyMonotoneFilter TRUE - Apply Monotone Filter
+	 * @param name Stretch Name
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
+	 * @param responseValueArray Array of Response Values
+	 * @param segmentCustomBuilderControlArray Array of Segment Builder Parameters
+	 * @param stretchBestFitResponse Stretch Fitness Weighted Response
+	 * @param setupMode Segment Setup Mode
+	 * @param eliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
+	 * @param applyMonotoneFilter TRUE - Apply Monotone Filter
 	 * 
 	 * @return Hyman (1989) Monotone Preserving Stretch
 	 */
 
-	public static final org.drip.spline.stretch.MultiSegmentSequence CreateHyman89MonotoneStretch (
-		final java.lang.String strName,
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue,
-		final org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final int iSetupMode,
-		final boolean bEliminateSpuriousExtrema,
-		final boolean bApplyMonotoneFilter)
+	public static final MultiSegmentSequence CreateHyman89MonotoneStretch (
+		final String name,
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray,
+		final SegmentCustomBuilderControl[] segmentCustomBuilderControlArray,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final int setupMode,
+		final boolean eliminateSpuriousExtrema,
+		final boolean applyMonotoneFilter)
 	{
-		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =
-			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,
-				org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_HYMAN89, bEliminateSpuriousExtrema,
-					bApplyMonotoneFilter);
+		LocalMonotoneCkGenerator localMonotoneCkGenerator = LocalMonotoneCkGenerator.Create (
+			predictorOrdinateArray,
+			responseValueArray,
+			LocalMonotoneCkGenerator.C1_HYMAN89,
+			eliminateSpuriousExtrema,
+			applyMonotoneFilter
+		);
 
-		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,
-			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);
+		return null == localMonotoneCkGenerator ? null : CustomSlopeHermiteSpline (
+			name,
+			predictorOrdinateArray,
+			responseValueArray,
+			localMonotoneCkGenerator.C1(),
+			segmentCustomBuilderControlArray,
+			stretchBestFitResponse,
+			setupMode
+		);
 	}
 
 	/**
@@ -350,35 +408,45 @@ public class LocalControlStretchBuilder {
 	 * 	Fritcsh and Butland (1984) A Method for constructing local monotonic piece-wise cubic interpolants -
 	 *  	SIAM J on Scientific and Statistical Computing 5, 300-304.
 	 * 
-	 * @param strName Stretch Name
-	 * @param adblPredictorOrdinate Array of Predictor Ordinates
-	 * @param adblResponseValue Array of Response Values
-	 * @param aSCBC Array of Segment Builder Parameters
-	 * @param sbfr Stretch Fitness Weighted Response
-	 * @param iSetupMode Segment Setup Mode
-	 * @param bEliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
-	 * @param bApplyMonotoneFilter TRUE - Apply Monotone Filter
+	 * @param name Stretch Name
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
+	 * @param responseValueArray Array of Response Values
+	 * @param segmentCustomBuilderControlArray Array of Segment Builder Parameters
+	 * @param stretchBestFitResponse Stretch Fitness Weighted Response
+	 * @param setupMode Segment Setup Mode
+	 * @param eliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
+	 * @param applyMonotoneFilter TRUE - Apply Monotone Filter
 	 * 
 	 * @return Harmonic Monotone Preserving Stretch
 	 */
 
-	public static final org.drip.spline.stretch.MultiSegmentSequence CreateHarmonicMonotoneStretch (
-		final java.lang.String strName,
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue,
-		final org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final int iSetupMode,
-		final boolean bEliminateSpuriousExtrema,
-		final boolean bApplyMonotoneFilter)
+	public static final MultiSegmentSequence CreateHarmonicMonotoneStretch (
+		final String name,
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray,
+		final SegmentCustomBuilderControl[] segmentCustomBuilderControlArray,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final int setupMode,
+		final boolean eliminateSpuriousExtrema,
+		final boolean applyMonotoneFilter)
 	{
-		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =
-			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,
-				org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_HARMONIC, bEliminateSpuriousExtrema,
-					bApplyMonotoneFilter);
+		LocalMonotoneCkGenerator localMonotoneCkGenerator = LocalMonotoneCkGenerator.Create (
+			predictorOrdinateArray,
+			responseValueArray,
+			LocalMonotoneCkGenerator.C1_HARMONIC,
+			eliminateSpuriousExtrema,
+			applyMonotoneFilter
+		);
 
-		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,
-			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);
+		return null == localMonotoneCkGenerator ? null : CustomSlopeHermiteSpline (
+			name,
+			predictorOrdinateArray,
+			responseValueArray,
+			localMonotoneCkGenerator.C1(),
+			segmentCustomBuilderControlArray,
+			stretchBestFitResponse,
+			setupMode
+		);
 	}
 
 	/**
@@ -387,35 +455,45 @@ public class LocalControlStretchBuilder {
 	 * 	Van Leer (1974) Towards the Ultimate Conservative Difference Scheme. II - Monotonicity and
 	 * 		Conservation combined in a Second-Order Scheme, Journal of Computational Physics 14 (4), 361-370.
 	 * 
-	 * @param strName Stretch Name
-	 * @param adblPredictorOrdinate Array of Predictor Ordinates
-	 * @param adblResponseValue Array of Response Values
-	 * @param aSCBC Array of Segment Builder Parameters
-	 * @param sbfr Stretch Fitness Weighted Response
-	 * @param iSetupMode Segment Setup Mode
-	 * @param bEliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
-	 * @param bApplyMonotoneFilter TRUE - Apply Monotone Filter
+	 * @param name Stretch Name
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
+	 * @param responseValueArray Array of Response Values
+	 * @param segmentCustomBuilderControlArray Array of Segment Builder Parameters
+	 * @param stretchBestFitResponse Stretch Fitness Weighted Response
+	 * @param setupMode Segment Setup Mode
+	 * @param eliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
+	 * @param applyMonotoneFilter TRUE - Apply Monotone Filter
 	 * 
 	 * @return The Van Leer Limiter Stretch
 	 */
 
-	public static final org.drip.spline.stretch.MultiSegmentSequence CreateVanLeerLimiterStretch (
-		final java.lang.String strName,
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue,
-		final org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final int iSetupMode,
-		final boolean bEliminateSpuriousExtrema,
-		final boolean bApplyMonotoneFilter)
+	public static final MultiSegmentSequence CreateVanLeerLimiterStretch (
+		final String name,
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray,
+		final SegmentCustomBuilderControl[] segmentCustomBuilderControlArray,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final int setupMode,
+		final boolean eliminateSpuriousExtrema,
+		final boolean applyMonotoneFilter)
 	{
-		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =
-			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,
-				org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_VAN_LEER, bEliminateSpuriousExtrema,
-					bApplyMonotoneFilter);
+		LocalMonotoneCkGenerator localMonotoneCkGenerator = LocalMonotoneCkGenerator.Create (
+			predictorOrdinateArray,
+			responseValueArray,
+			LocalMonotoneCkGenerator.C1_VAN_LEER,
+			eliminateSpuriousExtrema,
+			applyMonotoneFilter
+		);
 
-		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,
-			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);
+		return null == localMonotoneCkGenerator ? null : CustomSlopeHermiteSpline (
+			name,
+			predictorOrdinateArray,
+			responseValueArray,
+			localMonotoneCkGenerator.C1(),
+			segmentCustomBuilderControlArray,
+			stretchBestFitResponse,
+			setupMode
+		);
 	}
 
 	/**
@@ -424,35 +502,45 @@ public class LocalControlStretchBuilder {
 	 * 	Kruger (2002) Constrained Cubic Spline Interpolations for Chemical Engineering Application,
 	 *  	http://www.korf.co.uk/spline.pdf
 	 * 
-	 * @param strName Stretch Name
-	 * @param adblPredictorOrdinate Array of Predictor Ordinates
-	 * @param adblResponseValue Array of Response Values
-	 * @param aSCBC Array of Segment Builder Parameters
-	 * @param sbfr Stretch Fitness Weighted Response
-	 * @param iSetupMode Segment Setup Mode
-	 * @param bEliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
-	 * @param bApplyMonotoneFilter TRUE - Apply Monotone Filter
+	 * @param name Stretch Name
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
+	 * @param responseValueArray Array of Response Values
+	 * @param segmentCustomBuilderControlArray Array of Segment Builder Parameters
+	 * @param stretchBestFitResponse Stretch Fitness Weighted Response
+	 * @param setupMode Segment Setup Mode
+	 * @param eliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
+	 * @param applyMonotoneFilter TRUE - Apply Monotone Filter
 	 * 
 	 * @return The Kruger Stretch
 	 */
 
-	public static final org.drip.spline.stretch.MultiSegmentSequence CreateKrugerStretch (
-		final java.lang.String strName,
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue,
-		final org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final int iSetupMode,
-		final boolean bEliminateSpuriousExtrema,
-		final boolean bApplyMonotoneFilter)
+	public static final MultiSegmentSequence CreateKrugerStretch (
+		final String name,
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray,
+		final SegmentCustomBuilderControl[] segmentCustomBuilderControlArray,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final int setupMode,
+		final boolean eliminateSpuriousExtrema,
+		final boolean applyMonotoneFilter)
 	{
-		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =
-			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,
-				org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_KRUGER, bEliminateSpuriousExtrema,
-					bApplyMonotoneFilter);
+		LocalMonotoneCkGenerator localMonotoneCkGenerator = LocalMonotoneCkGenerator.Create (
+			predictorOrdinateArray,
+			responseValueArray,
+			LocalMonotoneCkGenerator.C1_KRUGER,
+			eliminateSpuriousExtrema,
+			applyMonotoneFilter
+		);
 
-		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,
-			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);
+		return null == localMonotoneCkGenerator ? null : CustomSlopeHermiteSpline (
+			name,
+			predictorOrdinateArray,
+			responseValueArray,
+			localMonotoneCkGenerator.C1(),
+			segmentCustomBuilderControlArray,
+			stretchBestFitResponse,
+			setupMode
+		);
 	}
 
 	/**
@@ -460,77 +548,97 @@ public class LocalControlStretchBuilder {
 	 * 
 	 * 	Huynh (1993) Accurate Monotone Cubic Interpolation, SIAM J on Numerical Analysis 30 (1), 57-100.
 	 * 
-	 * @param strName Stretch Name
-	 * @param adblPredictorOrdinate Array of Predictor Ordinates
-	 * @param adblResponseValue Array of Response Values
-	 * @param aSCBC Array of Segment Builder Parameters
-	 * @param sbfr Stretch Fitness Weighted Response
-	 * @param iSetupMode Segment Setup Mode
-	 * @param bEliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
-	 * @param bApplyMonotoneFilter TRUE - Apply Monotone Filter
+	 * @param name Stretch Name
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
+	 * @param responseValueArray Array of Response Values
+	 * @param segmentCustomBuilderControlArray Array of Segment Builder Parameters
+	 * @param stretchBestFitResponse Stretch Fitness Weighted Response
+	 * @param setupMode Segment Setup Mode
+	 * @param eliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
+	 * @param applyMonotoneFilter TRUE - Apply Monotone Filter
 	 * 
 	 * @return The Huynh Le Floch Limiter Stretch
 	 */
 
-	public static final org.drip.spline.stretch.MultiSegmentSequence CreateHuynhLeFlochLimiterStretch (
-		final java.lang.String strName,
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue,
-		final org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final int iSetupMode,
-		final boolean bEliminateSpuriousExtrema,
-		final boolean bApplyMonotoneFilter)
+	public static final MultiSegmentSequence CreateHuynhLeFlochLimiterStretch (
+		final String name,
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray,
+		final SegmentCustomBuilderControl[] segmentCustomBuilderControlArray,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final int setupMode,
+		final boolean eliminateSpuriousExtrema,
+		final boolean applyMonotoneFilter)
 	{
-		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =
-			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,
-				org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_KRUGER, bEliminateSpuriousExtrema,
-					bApplyMonotoneFilter);
+		LocalMonotoneCkGenerator localMonotoneCkGenerator = LocalMonotoneCkGenerator.Create (
+			predictorOrdinateArray,
+			responseValueArray,
+			LocalMonotoneCkGenerator.C1_HUYNH_LE_FLOCH,
+			eliminateSpuriousExtrema,
+			applyMonotoneFilter
+		);
 
-		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,
-			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);
+		return null == localMonotoneCkGenerator ? null : CustomSlopeHermiteSpline (
+			name,
+			predictorOrdinateArray,
+			responseValueArray,
+			localMonotoneCkGenerator.C1(),
+			segmentCustomBuilderControlArray,
+			stretchBestFitResponse,
+			setupMode
+		);
 	}
 
 	/**
-	 * Generate the local control C1 Slope using the Akima Cubic Algorithm. The reference is:
+	 * Generate the local control C<sup>1</sup> Slope using the Akima Cubic Algorithm. The reference is:
 	 * 
 	 * 	Akima (1970): A New Method of Interpolation and Smooth Curve Fitting based on Local Procedures,
 	 * 		Journal of the Association for the Computing Machinery 17 (4), 589-602.
 	 * 
-	 * @param strName Stretch Name
-	 * @param adblPredictorOrdinate Array of Predictor Ordinates
-	 * @param adblResponseValue Array of Response Values
-	 * @param aSCBC Array of Segment Builder Parameters
-	 * @param sbfr Stretch Fitness Weighted Response
-	 * @param iSetupMode Segment Setup Mode
-	 * @param bEliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
-	 * @param bApplyMonotoneFilter TRUE - Apply Monotone Filter
+	 * @param name Stretch Name
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
+	 * @param responseValueArray Array of Response Values
+	 * @param segmentCustomBuilderControlArray Array of Segment Builder Parameters
+	 * @param stretchBestFitResponse Stretch Fitness Weighted Response
+	 * @param setupMode Segment Setup Mode
+	 * @param eliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
+	 * @param applyMonotoneFilter TRUE - Apply Monotone Filter
 	 * 
 	 * @return The Akima Local Control Stretch Instance
 	 */
 
 	public static final org.drip.spline.stretch.MultiSegmentSequence CreateAkimaStretch (
-		final java.lang.String strName,
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue,
-		final org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final int iSetupMode,
-		final boolean bEliminateSpuriousExtrema,
-		final boolean bApplyMonotoneFilter)
+		final String name,
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray,
+		final SegmentCustomBuilderControl[] segmentCustomBuilderControlArray,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final int setupMode,
+		final boolean eliminateSpuriousExtrema,
+		final boolean applyMonotoneFilter)
 	{
-		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =
-			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (adblPredictorOrdinate, adblResponseValue,
-				org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_AKIMA, bEliminateSpuriousExtrema,
-					bApplyMonotoneFilter);
+		LocalMonotoneCkGenerator localMonotoneCkGenerator = LocalMonotoneCkGenerator.Create (
+			predictorOrdinateArray,
+			responseValueArray,
+			LocalMonotoneCkGenerator.C1_AKIMA,
+			eliminateSpuriousExtrema,
+			applyMonotoneFilter
+		);
 
-		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, adblPredictorOrdinate,
-			adblResponseValue, lmcg.C1(), aSCBC, sbfr, iSetupMode);
+		return null == localMonotoneCkGenerator ? null : CustomSlopeHermiteSpline (
+			name,
+			predictorOrdinateArray,
+			responseValueArray,
+			localMonotoneCkGenerator.C1(),
+			segmentCustomBuilderControlArray,
+			stretchBestFitResponse,
+			setupMode
+		);
 	}
 
 	/**
-	 * Generate the local control C1 Slope using the Hagan-West Monotone Convex Algorithm. The references
-	 *  are:
+	 * Generate the local control C<sup>1</sup> Slope using the Hagan-West Monotone Convex Algorithm. The
+	 * 	references are:
 	 * 
 	 * 	Hagan, P., and G. West (2006): Interpolation Methods for Curve Construction, Applied Mathematical
 	 * 	 Finance 13 (2): 89-129.

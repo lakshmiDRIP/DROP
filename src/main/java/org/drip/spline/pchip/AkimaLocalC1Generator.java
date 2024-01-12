@@ -89,10 +89,10 @@ package org.drip.spline.pchip;
  * <i>AkimaLocalC1Generator</i> implements the regime using the Akima (1970) Local C<sup>1</sup> Generator.
  *
  * <br>
- *  <ul>
-	 * <li>Construct an Instance of <i>AkimaLocalC1Generator</i> from the Array of the supplied Predictor Ordinates and the Response Values</li>
-	 * <li>Generate the C<sup>1</sup> Array</li>
- *  </ul>
+ * <ul>
+ * 		<li>Construct an Instance of <i>AkimaLocalC1Generator</i> from the Array of the supplied Predictor Ordinates and the Response Values</li>
+ * 		<li>Generate the C<sup>1</sup> Array</li>
+ * </ul>
  *
  *  <br>
  *  <style>table, td, th {

@@ -193,9 +193,9 @@ public class LocalMonotoneCkGenerator
 
 	public static final String C1_VAN_LEER = "C1_VAN_LEER";
 
-	private double[] _adblC1 = null;
-	private double[] _adblResponseValue = null;
-	private double[] _adblPredictorOrdinate = null;
+	private double[] _c1Array = null;
+	private double[] _responseValueArray = null;
+	private double[] _predictorOrdinateArray = null;
 
 	/**
 	 * Eliminate the Spurious Extrema in the Input C<sup>1</sup> Entry
@@ -921,117 +921,141 @@ public class LocalMonotoneCkGenerator
 	 * 	Doherty, Edelman, and Hyman (1989) Non-negative, monotonic, or convexity preserving cubic and quintic
 	 *  	Hermite interpolation - Mathematics of Computation 52 (186), 471-494.
 	 * 
-	 * @param adblPredictorOrdinate Array of Predictor Ordinates
-	 * @param adblResponseValue Array of Response Values
-	 * @param adblFirstDerivative Array of First Derivatives
-	 * @param adblSecondDerivative Array of Second Derivatives
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
+	 * @param responseValueArray Array of Response Values
+	 * @param firstDerivativeArray Array of First Derivatives
+	 * @param secondDerivativeArray Array of Second Derivatives
 	 * 
 	 * @return The C<sup>1</sup> Slope Quintic Stretch
 	 */
 
 	public static final double[] Hyman89QuinticMonotoneC1 (
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue,
-		final double[] adblFirstDerivative,
-		final double[] adblSecondDerivative)
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray,
+		final double[] firstDerivativeArray,
+		final double[] secondDerivativeArray)
 	{
-		if (null == adblPredictorOrdinate || null == adblResponseValue || null == adblFirstDerivative || null
-			== adblSecondDerivative)
+		if (null == predictorOrdinateArray || null == responseValueArray || null == firstDerivativeArray ||
+			null == secondDerivativeArray) {
 			return null;
+		}
 
-		int iNumPredictor = adblPredictorOrdinate.length;
+		int predictorCount = predictorOrdinateArray.length;
 
-		if (1 >= iNumPredictor || iNumPredictor != adblResponseValue.length || iNumPredictor !=
-			adblResponseValue.length || iNumPredictor != adblResponseValue.length)
+		if (1 >= predictorCount || predictorCount != responseValueArray.length ||
+			predictorCount != responseValueArray.length || predictorCount != responseValueArray.length) {
 			return null;
+		}
 
-		double[] adblAdjFirstDerivative = new double[iNumPredictor];
+		double[] adjustedFirstDerivativeArray = new double[predictorCount];
 
-		double[] adblNodeC1 = LinearC1 (adblPredictorOrdinate, adblResponseValue);
+		double[] nodeC1Array = LinearC1 (predictorOrdinateArray, responseValueArray);
 
-		double[] adblBesselC1 = BesselC1 (adblPredictorOrdinate, adblResponseValue);
+		double[] besselC1Array = BesselC1 (predictorOrdinateArray, responseValueArray);
 
-		for (int i = 0; i < iNumPredictor; ++i) {
-			if (i < 2 || i >= iNumPredictor - 2)
-				adblAdjFirstDerivative[i] = adblBesselC1[i];
-			else {
-				double dblSign = 0.;
-				double dblHMinus = (adblPredictorOrdinate[i] - adblPredictorOrdinate[i - 1]);
-				double dblHPlus = (adblPredictorOrdinate[i + 1] - adblPredictorOrdinate[i]);
+		for (int predictorIndex = 0; predictorIndex < predictorCount; ++predictorIndex) {
+			if (2 < predictorIndex || predictorIndex >= predictorCount - 2) {
+				adjustedFirstDerivativeArray[predictorIndex] = besselC1Array[predictorIndex];
+			} else {
+				double sign = 0.;
+				double hPlus = predictorOrdinateArray[predictorIndex + 1] -
+					predictorOrdinateArray[predictorIndex];
+				double hMinus = predictorOrdinateArray[predictorIndex] -
+					predictorOrdinateArray[predictorIndex - 1];
 
-				if (adblFirstDerivative[i - 1] * adblFirstDerivative[i] < 0.)
-					dblSign = adblResponseValue[i] > 0. ? 1. : -1.;
+				if (0. > firstDerivativeArray[predictorIndex - 1] * firstDerivativeArray[predictorIndex]) {
+					sign = 0. < responseValueArray[predictorIndex] ? 1. : -1.;
+				}
 
-				double dblMinSlope = java.lang.Math.min (java.lang.Math.abs (adblFirstDerivative[i - 1]),
-					java.lang.Math.abs (adblFirstDerivative[i]));
+				adjustedFirstDerivativeArray[predictorIndex] = Math.max (
+					Math.min (0., firstDerivativeArray[predictorIndex]),
+					(0. <= sign ? 5. : -5.) * Math.min (
+						Math.abs (firstDerivativeArray[predictorIndex - 1]),
+						Math.abs (firstDerivativeArray[predictorIndex])
+					)
+				);
 
-				if (dblSign >= 0.)
-					adblAdjFirstDerivative[i] = java.lang.Math.min (java.lang.Math.max (0.,
-						adblFirstDerivative[i]), 5. * dblMinSlope);
-				else
-					adblAdjFirstDerivative[i] = java.lang.Math.max (java.lang.Math.min (0.,
-						adblFirstDerivative[i]), -5. * dblMinSlope);
+				double a = Math.max (
+					0.,
+					adjustedFirstDerivativeArray[predictorIndex] / nodeC1Array[predictorIndex - 1]
+				);
 
-				double dblA = java.lang.Math.max (0., adblAdjFirstDerivative[i] / adblNodeC1[i - 1]);
+				double b = Math.max (
+					0.,
+					adjustedFirstDerivativeArray[predictorIndex + 1] / nodeC1Array[predictorIndex]
+				);
 
-				double dblB = java.lang.Math.max (0., adblAdjFirstDerivative[i + 1] / adblNodeC1[i]);
+				double dPlus =
+					0. < adjustedFirstDerivativeArray[predictorIndex] * nodeC1Array[predictorIndex] ?
+					adjustedFirstDerivativeArray[predictorIndex] : 0.;
+				double dMinus =
+					0. < adjustedFirstDerivativeArray[predictorIndex] * nodeC1Array[predictorIndex - 1] ?
+					adjustedFirstDerivativeArray[predictorIndex] : 0.;
+				double aLeft = (-7.9 * dPlus - 0.26 * dPlus * b) / hPlus;
+				double aRight = (
+					(20. - 2. * b) * nodeC1Array[predictorIndex] - 8. * dPlus - 0.48 * dPlus * b
+				) / hPlus;
+				double bLeft = (
+					(2 * a - 20) * nodeC1Array[predictorIndex - 1] + 8 * dMinus - 0.48 * dMinus * a
+				) / hMinus;
+				double bRight = (7.9 * dMinus + 0.26 * dMinus * a) / hMinus;
 
-				double dblDPlus = adblAdjFirstDerivative[i] * adblNodeC1[i] > 0. ? adblAdjFirstDerivative[i]
-					: 0.;
-				double dblDMinus = adblAdjFirstDerivative[i] * adblNodeC1[i - 1] > 0. ?
-					adblAdjFirstDerivative[i] : 0.;
-				double dblALeft = (-7.9 * dblDPlus - 0.26 * dblDPlus * dblB) / dblHPlus;
-				double dblARight = ((20. - 2. * dblB) * adblNodeC1[i] - 8. * dblDPlus - 0.48 * dblDPlus *
-					dblB) / dblHPlus;
-				double dblBLeft = ((2. * dblA - 20.) * adblNodeC1[i - 1] + 8. * dblDMinus - 0.48 * dblDMinus
-					* dblA) / dblHMinus;
-				double dblBRight = (7.9 * dblDMinus + 0.26 * dblDMinus * dblA) / dblHMinus;
-
-				if (dblARight <= dblBLeft || dblALeft >= dblBRight) {
-					double dblDenom = ((8. + 0.48 * dblB) / dblHPlus) + ((8. + 0.48 * dblA) / dblHMinus);
-					adblAdjFirstDerivative[i] = (20. - 2. * dblB) * adblNodeC1[i] / dblHPlus;
-					adblAdjFirstDerivative[i] += (20. - 2. * dblA) * adblNodeC1[i - 1] / dblHMinus;
-					adblAdjFirstDerivative[i] /= dblDenom;
+				if (aRight <= bLeft || aLeft >= bRight) {
+					adjustedFirstDerivativeArray[predictorIndex] =
+						(20. - 2. * b) * nodeC1Array[predictorIndex] / hPlus;
+					adjustedFirstDerivativeArray[predictorIndex] +=
+						(20. - 2. * a) * nodeC1Array[predictorIndex - 1] / hMinus;
+					adjustedFirstDerivativeArray[predictorIndex] /= (
+						(8. + 0.48 * b) / hMinus) + ((8. + 0.48 * a) / hMinus
+					);
 				}
 			}
 		}
 
-		return adblAdjFirstDerivative;
+		return adjustedFirstDerivativeArray;
 	}
 
 	/**
 	 * Generate the Local Control Stretch in accordance with the desired Customization Parameters
 	 * 
-	 * @param adblPredictorOrdinate The Predictor Ordinate Array
-	 * @param adblResponseValue The Response Value Array
-	 * @param strGeneratorType The C<sup>1</sup> Generator Type
-	 * @param bEliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
-	 * @param bApplyMonotoneFilter TRUE - Apply Monotone Filter
+	 * @param predictorOrdinateArray The Predictor Ordinate Array
+	 * @param responseValueArray The Response Value Array
+	 * @param generatorType The C<sup>1</sup> Generator Type
+	 * @param eliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
+	 * @param applyMonotoneFilter TRUE - Apply Monotone Filter
 	 * 
 	 * @return Instance of the Local Control Stretch
 	 */
 
 	public static final LocalMonotoneCkGenerator Create (
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue,
-		final java.lang.String strGeneratorType,
-		final boolean bEliminateSpuriousExtrema,
-		final boolean bApplyMonotoneFilter)
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray,
+		final String generatorType,
+		final boolean eliminateSpuriousExtrema,
+		final boolean applyMonotoneFilter)
 	{
 		try {
-			LocalMonotoneCkGenerator lcr = new LocalMonotoneCkGenerator (adblPredictorOrdinate,
-				adblResponseValue);
+			LocalMonotoneCkGenerator localMonotoneCkGenerator = new LocalMonotoneCkGenerator (
+				predictorOrdinateArray,
+				responseValueArray
+			);
 
-			if (!lcr.generateC1 (strGeneratorType)) return null;
-
-			if (bEliminateSpuriousExtrema && !lcr.eliminateSpuriousExtrema()) return null;
-
-			if (bApplyMonotoneFilter) {
-				if (!lcr.applyMonotoneFilter()) return null;
+			if (!localMonotoneCkGenerator.generateC1 (generatorType)) {
+				return null;
 			}
 
-			return lcr;
-		} catch (java.lang.Exception e) {
+			if (eliminateSpuriousExtrema && !localMonotoneCkGenerator.eliminateSpuriousExtrema()) {
+				return null;
+			}
+
+			if (applyMonotoneFilter) {
+				if (!localMonotoneCkGenerator.applyMonotoneFilter()) {
+					return null;
+				}
+			}
+
+			return localMonotoneCkGenerator;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -1041,109 +1065,141 @@ public class LocalMonotoneCkGenerator
 	/**
 	 * Generate the Local Control Stretch in accordance with the desired Customization Parameters
 	 * 
-	 * @param aiPredictorOrdinate The Predictor Ordinate Array
-	 * @param adblResponseValue The Response Value Array
-	 * @param strGeneratorType The C<sup>1</sup> Generator Type
-	 * @param bEliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
-	 * @param bApplyMonotoneFilter TRUE - Apply Monotone Filter
+	 * @param predictorOrdinateArray The Predictor Ordinate Array
+	 * @param responseValueArray The Response Value Array
+	 * @param generatorType The C<sup>1</sup> Generator Type
+	 * @param eliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
+	 * @param applyMonotoneFilter TRUE - Apply Monotone Filter
 	 * 
 	 * @return Instance of the Local Control Stretch
 	 */
 
 	public static final LocalMonotoneCkGenerator Create (
-		final int[] aiPredictorOrdinate,
-		final double[] adblResponseValue,
-		final java.lang.String strGeneratorType,
-		final boolean bEliminateSpuriousExtrema,
-		final boolean bApplyMonotoneFilter)
+		final int[] predictorOrdinateArray,
+		final double[] responseValueArray,
+		final String generatorType,
+		final boolean eliminateSpuriousExtrema,
+		final boolean applyMonotoneFilter)
 	{
-		if (null == aiPredictorOrdinate) return null;
+		if (null == predictorOrdinateArray) {
+			return null;
+		}
 
-		int iNumPredictorOrdinate = aiPredictorOrdinate.length;
-		double[] adblPredictorOrdinate = new double[iNumPredictorOrdinate];
+		int predictorCount = predictorOrdinateArray.length;
+		double[] clonedPredictorArray = new double[predictorCount];
 
-		if (0 == iNumPredictorOrdinate) return null;
+		if (0 == predictorCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumPredictorOrdinate; ++i)
-			adblPredictorOrdinate[i] = aiPredictorOrdinate[i];
+		for (int predictorIndex = 0; predictorIndex < predictorCount; ++predictorIndex) {
+			clonedPredictorArray[predictorIndex] = predictorOrdinateArray[predictorIndex];
+		}
 
-		return Create (adblPredictorOrdinate, adblResponseValue, strGeneratorType, bEliminateSpuriousExtrema,
-			bApplyMonotoneFilter);
+		return Create (
+			clonedPredictorArray,
+			responseValueArray,
+			generatorType,
+			eliminateSpuriousExtrema,
+			applyMonotoneFilter
+		);
 	}
 
 	private LocalMonotoneCkGenerator (
-		final double[] adblPredictorOrdinate,
-		final double[] adblResponseValue)
-		throws java.lang.Exception
+		final double[] predictorOrdinateArray,
+		final double[] responseValueArray)
+		throws Exception
 	{
-		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate) || null == (_adblResponseValue =
-			adblResponseValue))
-			throw new java.lang.Exception ("LocalMonotoneCkGenerator ctr: Invalid Inputs!");
+		if (null == (_predictorOrdinateArray = predictorOrdinateArray) ||
+			null == (_responseValueArray = responseValueArray)) {
+			throw new Exception ("LocalMonotoneCkGenerator ctr: Invalid Inputs!");
+		}
 
-		int iSize = _adblPredictorOrdinate.length;
+		int predictorCount = _predictorOrdinateArray.length;
 
-		if (0 == iSize || iSize != _adblResponseValue.length)
-			throw new java.lang.Exception ("LocalMonotoneCkGenerator ctr: Invalid Inputs!");
+		if (0 == predictorCount || predictorCount != _responseValueArray.length) {
+			throw new Exception ("LocalMonotoneCkGenerator ctr: Invalid Inputs!");
+		}
 	}
 
 	private boolean generateC1 (
-		final java.lang.String strGeneratorType)
+		final String generatorType)
 	{
-		if (null == strGeneratorType || strGeneratorType.isEmpty()) return false;
+		if (null == generatorType || generatorType.isEmpty()) {
+			return false;
+		}
 
-		if (C1_AKIMA.equalsIgnoreCase (strGeneratorType))
-			return null != (_adblC1 = AkimaC1 (_adblPredictorOrdinate, _adblResponseValue)) && 0 !=
-				_adblC1.length;
+		if (C1_AKIMA.equalsIgnoreCase (generatorType)) {
+			return null != (_c1Array = AkimaC1 (_predictorOrdinateArray, _responseValueArray)) &&
+				0 != _c1Array.length;
+		}
 
-		if (C1_BESSEL.equalsIgnoreCase (strGeneratorType))
-			return null != (_adblC1 = BesselC1 (_adblPredictorOrdinate, _adblResponseValue)) && 0 !=
-				_adblC1.length;
+		if (C1_BESSEL.equalsIgnoreCase (generatorType)) {
+			return null != (_c1Array = BesselC1 (_predictorOrdinateArray, _responseValueArray)) &&
+				0 != _c1Array.length;
+		}
 
-		if (C1_HARMONIC.equalsIgnoreCase (strGeneratorType))
-			return null != (_adblC1 = HarmonicC1 (_adblPredictorOrdinate, _adblResponseValue)) && 0 !=
-				_adblC1.length;
+		if (C1_HARMONIC.equalsIgnoreCase (generatorType)) {
+			return null != (_c1Array = HarmonicC1 (_predictorOrdinateArray, _responseValueArray)) &&
+				0 != _c1Array.length;
+		}
 
-		if (C1_HUYNH_LE_FLOCH.equalsIgnoreCase (strGeneratorType))
-			return null != (_adblC1 = HuynhLeFlochLimiterC1 (_adblPredictorOrdinate, _adblResponseValue)) &&
-				0 != _adblC1.length;
+		if (C1_HUYNH_LE_FLOCH.equalsIgnoreCase (generatorType)) {
+			return null != (_c1Array = HuynhLeFlochLimiterC1 (_predictorOrdinateArray, _responseValueArray))
+				&& 0 != _c1Array.length;
+		}
 
-		if (C1_HYMAN83.equalsIgnoreCase (strGeneratorType))
-			return null != (_adblC1 = Hyman83C1 (_adblPredictorOrdinate, _adblResponseValue)) && 0 !=
-				_adblC1.length;
+		if (C1_HYMAN83.equalsIgnoreCase (generatorType)) {
+			return null != (_c1Array = Hyman83C1 (_predictorOrdinateArray, _responseValueArray)) &&
+				0 != _c1Array.length;
+		}
 
-		if (C1_HYMAN89.equalsIgnoreCase (strGeneratorType))
-			return null != (_adblC1 = Hyman89C1 (_adblPredictorOrdinate, _adblResponseValue)) && 0 !=
-				_adblC1.length;
+		if (C1_HYMAN89.equalsIgnoreCase (generatorType)) {
+			return null != (_c1Array = Hyman89C1 (_predictorOrdinateArray, _responseValueArray)) &&
+				0 != _c1Array.length;
+		}
 
-		if (C1_KRUGER.equalsIgnoreCase (strGeneratorType))
-			return null != (_adblC1 = KrugerC1 (_adblPredictorOrdinate, _adblResponseValue)) && 0 !=
-				_adblC1.length;
+		if (C1_KRUGER.equalsIgnoreCase (generatorType)) {
+			return null != (_c1Array = KrugerC1 (_predictorOrdinateArray, _responseValueArray)) &&
+				0 != _c1Array.length;
+		}
 
-		if (C1_MONOTONE_CONVEX.equalsIgnoreCase (strGeneratorType))
-			return null != (_adblC1 = BesselC1 (_adblPredictorOrdinate, _adblResponseValue)) && 0 !=
-			_adblC1.length;
+		if (C1_MONOTONE_CONVEX.equalsIgnoreCase (generatorType)) {
+			return null != (_c1Array = BesselC1 (_predictorOrdinateArray, _responseValueArray)) &&
+				0 != _c1Array.length;
+		}
 
-		if (C1_VANILLA.equalsIgnoreCase (strGeneratorType))
-			return null != (_adblC1 = LinearC1 (_adblPredictorOrdinate, _adblResponseValue)) && 0 !=
-				_adblC1.length;
+		if (C1_VANILLA.equalsIgnoreCase (generatorType)) {
+			return null != (_c1Array = LinearC1 (_predictorOrdinateArray, _responseValueArray)) &&
+				0 != _c1Array.length;
+		}
 
-		if (C1_VAN_LEER.equalsIgnoreCase (strGeneratorType))
-			return null != (_adblC1 = VanLeerLimiterC1 (_adblPredictorOrdinate, _adblResponseValue)) && 0 !=
-				_adblC1.length;
+		if (C1_VAN_LEER.equalsIgnoreCase (generatorType)) {
+			return null != (_c1Array = VanLeerLimiterC1 (_predictorOrdinateArray, _responseValueArray)) &&
+				0 != _c1Array.length;
+		}
 
 		return false;
 	}
 
 	private boolean eliminateSpuriousExtrema()
 	{
-		return null != (_adblC1 = EliminateSpuriousExtrema (_adblC1, LinearC1 (_adblPredictorOrdinate,
-			_adblResponseValue))) && 0 != _adblC1.length; 
+		return null != (
+			_c1Array = EliminateSpuriousExtrema (
+				_c1Array,
+				LinearC1 (_predictorOrdinateArray, _responseValueArray)
+			)
+		) && 0 != _c1Array.length; 
 	}
 
 	private boolean applyMonotoneFilter()
 	{
-		return null != (_adblC1 = ApplyMonotoneFilter (_adblC1, LinearC1 (_adblPredictorOrdinate,
-			_adblResponseValue))) && 0 != _adblC1.length; 
+		return null != (
+			_c1Array = ApplyMonotoneFilter (
+				_c1Array,
+				LinearC1 (_predictorOrdinateArray, _responseValueArray)
+			)
+		) && 0 != _c1Array.length; 
 	}
 
 	/**
@@ -1154,6 +1210,6 @@ public class LocalMonotoneCkGenerator
 
 	public double[] C1()
 	{
-		return _adblC1;
+		return _c1Array;
 	}
 }
