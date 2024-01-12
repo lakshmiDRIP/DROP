@@ -645,42 +645,56 @@ public class LocalControlStretchBuilder
 	 * 
 	 * 	Hagan, P., and G. West (2008): Methods for Curve a Yield Curve, Wilmott Magazine: 70-81.
 	 * 
-	 * @param strName Stretch Name
-	 * @param adblPredictorOrdinate Array of Predictor Ordinates
-	 * @param adblObservation Array of Observations
-	 * @param aSCBC Array of Segment Builder Parameters
-	 * @param sbfr Stretch Fitness Weighted Response
-	 * @param iSetupMode Segment Setup Mode
-	 * @param bLinearNodeInference Apply Linear Node Inference from Observations
-	 * @param bEliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
-	 * @param bApplyMonotoneFilter TRUE - Apply Monotone Filter
+	 * @param name Stretch Name
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
+	 * @param observationArray Array of Observations
+	 * @param segmentCustomBuilderControlArray Array of Segment Builder Parameters
+	 * @param stretchBestFitResponse Stretch Fitness Weighted Response
+	 * @param setupMode Segment Setup Mode
+	 * @param linearNodeInference Apply Linear Node Inference from Observations
+	 * @param eliminateSpuriousExtrema TRUE - Eliminate Spurious Extrema
+	 * @param applyMonotoneFilter TRUE - Apply Monotone Filter
 	 * 
 	 * @return The Monotone-Convex Local Control Stretch Instance
 	 */
 
-	public static final org.drip.spline.stretch.MultiSegmentSequence CreateMonotoneConvexStretch (
-		final java.lang.String strName,
-		final double[] adblPredictorOrdinate,
-		final double[] adblObservation,
-		final org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final int iSetupMode,
-		final boolean bLinearNodeInference,
-		final boolean bEliminateSpuriousExtrema,
-		final boolean bApplyMonotoneFilter)
+	public static final MultiSegmentSequence CreateMonotoneConvexStretch (
+		final String name,
+		final double[] predictorOrdinateArray,
+		final double[] observationArray,
+		final SegmentCustomBuilderControl[] segmentCustomBuilderControlArray,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final int setupMode,
+		final boolean linearNodeInference,
+		final boolean eliminateSpuriousExtrema,
+		final boolean applyMonotoneFilter)
 	{
-		org.drip.spline.pchip.MonotoneConvexHaganWest mchw =
-			org.drip.spline.pchip.MonotoneConvexHaganWest.Create (adblPredictorOrdinate, adblObservation,
-				bLinearNodeInference);
+		MonotoneConvexHaganWest monotoneConvexHaganWest = MonotoneConvexHaganWest.Create (
+			predictorOrdinateArray,
+			observationArray,
+			linearNodeInference
+		);
 
-		if (null == mchw) return null;
+		if (null == monotoneConvexHaganWest) {
+			return null;
+		}
 
-		org.drip.spline.pchip.LocalMonotoneCkGenerator lmcg =
-			org.drip.spline.pchip.LocalMonotoneCkGenerator.Create (mchw.predictorOrdinates(),
-				mchw.responseValues(), org.drip.spline.pchip.LocalMonotoneCkGenerator.C1_MONOTONE_CONVEX,
-					bEliminateSpuriousExtrema, bApplyMonotoneFilter);
+		LocalMonotoneCkGenerator localMonotoneCkGenerator = LocalMonotoneCkGenerator.Create (
+			monotoneConvexHaganWest.predictorOrdinates(),
+			monotoneConvexHaganWest.responseValues(),
+			LocalMonotoneCkGenerator.C1_MONOTONE_CONVEX,
+			eliminateSpuriousExtrema,
+			applyMonotoneFilter
+		);
 
-		return null == lmcg ? null : CustomSlopeHermiteSpline (strName, mchw.predictorOrdinates(),
-			mchw.responseValues(), lmcg.C1(), aSCBC, sbfr, iSetupMode);
+		return null == localMonotoneCkGenerator ? null : CustomSlopeHermiteSpline (
+			name,
+			monotoneConvexHaganWest.predictorOrdinates(),
+			monotoneConvexHaganWest.responseValues(),
+			localMonotoneCkGenerator.C1(),
+			segmentCustomBuilderControlArray,
+			stretchBestFitResponse,
+			setupMode
+		);
 	}
 }

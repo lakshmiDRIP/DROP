@@ -6,6 +6,9 @@ package org.drip.spline.segment;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,16 +87,34 @@ package org.drip.spline.segment;
 
 /**
  * <i>LatentStateManifestSensitivity</i> contains the Manifest Sensitivity generation control parameters and
- * the Manifest Sensitivity outputs related to the given Segment.
+ * 	the Manifest Sensitivity outputs related to the given Segment.
  *
- * <br><br>
+ * <br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment/README.md">Flexure Penalizing Best Fit Segment</a></li>
+ *  	<li><i>LatentStateManifestSensitivity</i> Constructor</li>
+ * 		<li>Set the Array containing the Sensitivities of the Basis Coefficients to the Local Manifest Measure</li>
+ * 		<li>Get the Array containing the Sensitivities of the Basis Coefficients to the Local Manifest Measure</li>
+ * 		<li>Set the Array containing the Sensitivities of the Basis Coefficients to the Preceding Manifest Measure</li>
+ * 		<li>Get the Array containing the Sensitivities of the Basis Coefficients to the Preceding Manifest Measure</li>
+ * 		<li>Set the Sensitivity of the Segment Response to the Preceding Manifest Measure</li>
+ * 		<li>Get the Sensitivity of the Segment Response to the Preceding Manifest Measure</li>
+ * 		<li>Get the Preceding Manifest Measure Sensitivity Control Parameters</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment/README.md">Flexure Penalizing Best Fit Segment</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -105,9 +126,9 @@ public class LatentStateManifestSensitivity {
 	private org.drip.spline.params.PreceedingManifestSensitivityControl _pmsc = null;
 
 	/**
-	 * LatentStateManifestSensitivity constructor
+	 * <i>LatentStateManifestSensitivity</i> constructor
 	 * 
-	 * @param pmsc The Preceeding Manifest Measure Sensitivity Control Parameters
+	 * @param pmsc The Preceding Manifest Measure Sensitivity Control Parameters
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are invalid
 	 */
@@ -160,11 +181,11 @@ public class LatentStateManifestSensitivity {
 	}
 
 	/**
-	 * Set the Array containing the Sensitivities of the Basis Coefficients to the Preceeding Manifest
+	 * Set the Array containing the Sensitivities of the Basis Coefficients to the Preceding Manifest
 	 * 	Measure
 	 * 
 	 * @param adblDBasisCoeffDPreceedingManifest The Array containing the Sensitivities of the Basis
-	 *  Coefficients to the Preceeding Manifest Measure
+	 *  Coefficients to the Preceding Manifest Measure
 	 * 
 	 * @return TRUE - Array Entries successfully set
 	 */
@@ -189,10 +210,10 @@ public class LatentStateManifestSensitivity {
 	}
 
 	/**
-	 * Get the Array containing the Sensitivities of the Basis Coefficients to the Preceeding Manifest
+	 * Get the Array containing the Sensitivities of the Basis Coefficients to the Preceding Manifest
 	 *	Measure
 	 * 
-	 * @return The Array containing the Sensitivities of the Basis Coefficients to the Preceeding Manifest
+	 * @return The Array containing the Sensitivities of the Basis Coefficients to the Preceding Manifest
 	 * 	Measure
 	 */
 
@@ -202,12 +223,12 @@ public class LatentStateManifestSensitivity {
 	}
 
 	/**
-	 * Set the Sensitivity of the Segment Response to the Preceeding Manifest Measure
+	 * Set the Sensitivity of the Segment Response to the Preceding Manifest Measure
 	 * 
-	 * @param dblDResponseDPreceedingManifest Sensitivity of the Segment Response to the Preceeding Manifest
+	 * @param dblDResponseDPreceedingManifest Sensitivity of the Segment Response to the Preceding Manifest
 	 * 	Measure
 	 * 
-	 * @return TRUE - Sensitivity of the Segment Response to the Preceeding Manifest Measure successfully
+	 * @return TRUE - Sensitivity of the Segment Response to the Preceding Manifest Measure successfully
 	 * 	set
 	 */
 
@@ -221,9 +242,9 @@ public class LatentStateManifestSensitivity {
 	}
 
 	/**
-	 * Get the Sensitivity of the Segment Response to the Preceeding Manifest Measure
+	 * Get the Sensitivity of the Segment Response to the Preceding Manifest Measure
 	 * 
-	 * @return The Sensitivity of the Segment Response to the Preceeding Manifest Measure
+	 * @return The Sensitivity of the Segment Response to the Preceding Manifest Measure
 	 */
 
 	public double getDResponseDPreceedingManifest()
@@ -232,9 +253,9 @@ public class LatentStateManifestSensitivity {
 	}
 
 	/**
-	 * Get the Preceeding Manifest Measure Sensitivity Control Parameters
+	 * Get the Preceding Manifest Measure Sensitivity Control Parameters
 	 * 
-	 * @return The Preceeding Manifest Measure Sensitivity Control Parameters
+	 * @return The Preceding Manifest Measure Sensitivity Control Parameters
 	 */
 
 	public org.drip.spline.params.PreceedingManifestSensitivityControl getPMSC()

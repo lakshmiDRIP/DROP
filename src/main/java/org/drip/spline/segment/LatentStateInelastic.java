@@ -1,11 +1,16 @@
 
 package org.drip.spline.segment;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,61 +89,62 @@ package org.drip.spline.segment;
 
 /**
  * <i>LatentStateInelastic</i> contains the spline segment in-elastic fields - in this case the start/end
- * ranges. It exports the following functions:
+ * 	ranges. It exports the following functions:
  *
- * <br><br>
+ * <br>
  *  <ul>
- *  	<li>
- * 			Retrieve the Segment Left/Right Predictor Ordinate
- *  	</li>
- *  	<li>
- * 			Find out if the Predictor Ordinate is inside the segment - inclusive of left/right
- *  	</li>
- *  	<li>
- * 			Get the Width of the Predictor Ordinate in this Segment
- *  	</li>
- *  	<li>
- * 			Transform the Predictor Ordinate to the Local Segment Predictor Ordinate
- *  	</li>
- *  	<li>
- * 			Transform the Local Predictor Ordinate to the Segment Ordinate
- *  	</li>
+ * 		<li><i>LatentStateInelastic</i> constructor</li>
+ * 		<li>Retrieve the Segment Left Predictor Ordinate</li>
+ * 		<li>Retrieve the Segment Right Predictor Ordinate</li>
+ * 		<li>Find out if the Predictor Ordinate is inside the segment - inclusive of left/right</li>
+ * 		<li>Get the Width of the Predictor Ordinate in this Segment</li>
+ * 		<li>Transform the Predictor Ordinate to the Local Segment Predictor Ordinate</li>
+ * 		<li>Transform the Local Predictor Ordinate to the Segment Ordinate</li>
  *  </ul>
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment/README.md">Flexure Penalizing Best Fit Segment</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment/README.md">Flexure Penalizing Best Fit Segment</a></td></tr>
+ *  </table>
+ *  <br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class LatentStateInelastic implements java.lang.Comparable<LatentStateInelastic> {
-	private double _dblPredictorOrdinateLeft = java.lang.Double.NaN;
-	private double _dblPredictorOrdinateRight = java.lang.Double.NaN;
+public class LatentStateInelastic
+	implements Comparable<LatentStateInelastic>
+{
+	private double _predictorOrdinateLeft = Double.NaN;
+	private double _predictorOrdinateRight = Double.NaN;
 
 	/**
-	 * LatentStateInelastic constructor
+	 * <i>LatentStateInelastic</i> constructor
 	 * 
-	 * @param dblPredictorOrdinateLeft Segment Predictor Ordinate Left
-	 * @param dblPredictorOrdinateRight Segment Predictor Ordinate Right
+	 * @param predictorOrdinateLeft Segment Predictor Ordinate Left
+	 * @param predictorOrdinateRight Segment Predictor Ordinate Right
 	 * 
-	 * @throws java.lang.Exception Thrown if inputs are invalid
+	 * @throws Exception Thrown if inputs are invalid
 	 */
 
 	public LatentStateInelastic (
-		final double dblPredictorOrdinateLeft,
-		final double dblPredictorOrdinateRight)
-		throws java.lang.Exception
+		final double predictorOrdinateLeft,
+		final double predictorOrdinateRight)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblPredictorOrdinateLeft = dblPredictorOrdinateLeft)
-			|| !org.drip.numerical.common.NumberUtil.IsValid (_dblPredictorOrdinateRight =
-				dblPredictorOrdinateRight) || _dblPredictorOrdinateLeft >= _dblPredictorOrdinateRight)
-			throw new java.lang.Exception ("LatentStateInelastic ctr: Invalid inputs!");
+		if (!NumberUtil.IsValid (_predictorOrdinateLeft = predictorOrdinateLeft) ||
+			!NumberUtil.IsValid (_predictorOrdinateRight = predictorOrdinateRight) ||
+			_predictorOrdinateLeft >= _predictorOrdinateRight) {
+			throw new Exception ("LatentStateInelastic ctr: Invalid inputs!");
+		}
 	}
 
 	/**
@@ -149,7 +155,7 @@ public class LatentStateInelastic implements java.lang.Comparable<LatentStateIne
 
 	public double left()
 	{
-		return _dblPredictorOrdinateLeft;
+		return _predictorOrdinateLeft;
 	}
 
 	/**
@@ -160,28 +166,28 @@ public class LatentStateInelastic implements java.lang.Comparable<LatentStateIne
 
 	public double right()
 	{
-		return _dblPredictorOrdinateRight;
+		return _predictorOrdinateRight;
 	}
 
 	/**
 	 * Find out if the Predictor Ordinate is inside the segment - inclusive of left/right.
 	 * 
-	 * @param dblPredictorOrdinate Predictor Ordinate
+	 * @param predictorOrdinate Predictor Ordinate
 	 * 
 	 * @return TRUE - Predictor Ordinate is inside the segment
 	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
+	 * @throws Exception Thrown if the input is invalid
 	 */
 
 	public boolean in (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))
-			throw new java.lang.Exception ("LatentStateInelastic::in => Invalid Inputs");
+		if (!NumberUtil.IsValid (predictorOrdinate)) {
+			throw new Exception ("LatentStateInelastic::in => Invalid Inputs");
+		}
 
-		return _dblPredictorOrdinateLeft <= dblPredictorOrdinate && _dblPredictorOrdinateRight >=
-			dblPredictorOrdinate;
+		return _predictorOrdinateLeft <= predictorOrdinate && _predictorOrdinateRight >= predictorOrdinate;
 	}
 
 	/**
@@ -192,64 +198,71 @@ public class LatentStateInelastic implements java.lang.Comparable<LatentStateIne
 
 	public double width()
 	{
-		return _dblPredictorOrdinateRight - _dblPredictorOrdinateLeft;
+		return _predictorOrdinateRight - _predictorOrdinateLeft;
 	}
 
 	/**
 	 * Transform the Predictor Ordinate to the Local Segment Predictor Ordinate
 	 * 
-	 * @param dblPredictorOrdinate The Global Predictor Ordinate
+	 * @param predictorOrdinate The Global Predictor Ordinate
 	 * 
 	 * @return Local Segment Predictor Ordinate
 	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
+	 * @throws Exception Thrown if the input is invalid
 	 */
 
 	public double localize (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
-		if (!in (dblPredictorOrdinate))
-			throw new java.lang.Exception ("LatentStateInelastic::localize: Invalid inputs!");
+		if (!in (predictorOrdinate)) {
+			throw new Exception ("LatentStateInelastic::localize: Invalid inputs!");
+		}
 
-		return (dblPredictorOrdinate - _dblPredictorOrdinateLeft) / (_dblPredictorOrdinateRight -
-			_dblPredictorOrdinateLeft);
+		return (predictorOrdinate - _predictorOrdinateLeft) /
+			(_predictorOrdinateRight - _predictorOrdinateLeft);
 	}
 
 	/**
 	 * Transform the Local Predictor Ordinate to the Segment Ordinate
 	 * 
-	 * @param dblLocalPredictorOrdinate The Local Segment Predictor Ordinate
+	 * @param localPredictorOrdinate The Local Segment Predictor Ordinate
 	 * 
 	 * @return The Segment Ordinate
 	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
+	 * @throws Exception Thrown if the input is invalid
 	 */
 
 	public double delocalize (
-		final double dblLocalPredictorOrdinate)
-		throws java.lang.Exception
+		final double localPredictorOrdinate)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLocalPredictorOrdinate))
-			throw new java.lang.Exception ("LatentStateInelastic::delocalize => Invalid Inputs");
+		if (!NumberUtil.IsValid (localPredictorOrdinate)) {
+			throw new Exception ("LatentStateInelastic::delocalize => Invalid Inputs");
+		}
 
-		return _dblPredictorOrdinateLeft + dblLocalPredictorOrdinate * (_dblPredictorOrdinateRight -
-			_dblPredictorOrdinateLeft);
+		return _predictorOrdinateLeft + localPredictorOrdinate * (
+			_predictorOrdinateRight - _predictorOrdinateLeft
+		);
 	}
 
 	@Override public int hashCode()
 	{
-		long lBits = java.lang.Double.doubleToLongBits ((int) _dblPredictorOrdinateLeft);
+		long bits = Double.doubleToLongBits ((int) _predictorOrdinateLeft);
 
-		return (int) (lBits ^ (lBits >>> 32));
+		return (int) (bits ^ (bits >>> 32));
 	}
 
 	@Override public int compareTo (
-		final org.drip.spline.segment.LatentStateInelastic ieOther)
+		final LatentStateInelastic other)
 	{
-		if (_dblPredictorOrdinateLeft > ieOther._dblPredictorOrdinateLeft) return 1;
+		if (_predictorOrdinateLeft > other._predictorOrdinateLeft) {
+			return 1;
+		}
 
-		if (_dblPredictorOrdinateLeft < ieOther._dblPredictorOrdinateLeft) return -1;
+		if (_predictorOrdinateLeft < other._predictorOrdinateLeft) {
+			return -1;
+		}
 
 		return 0;
 	}

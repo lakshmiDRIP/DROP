@@ -1,11 +1,19 @@
 
 package org.drip.spline.segment;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.integration.R1ToR1Integrator;
+import org.drip.spline.params.SegmentBestFitResponse;
+import org.drip.spline.params.SegmentFlexurePenaltyControl;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,242 +92,260 @@ package org.drip.spline.segment;
 
 /**
  * <i>BestFitFlexurePenalizer</i> implements the Segment's Best Fit, Curvature, and Length Penalizers. It
- * provides the following functionality:
+ * 	provides the following functionality:
  *
- * <br><br>
+ * <br>
  *  <ul>
- *  	<li>
- * 			Compute the Cross-Curvature Penalty for the given Basis Pair
- *  	</li>
- *  	<li>
- * 			Compute the Cross-Length Penalty for the given Basis Pair
- *  	</li>
- *  	<li>
- * 			Compute the Best Fit Cross-Product Penalty for the given Basis Pair
- *  	</li>
- *  	<li>
- * 			Compute the Basis Pair Penalty Coefficient for the Best Fit and the Curvature Penalties
- *  	</li>
- *  	<li>
- * 			Compute the Penalty Constraint for the Basis Pair
- *  	</li>
+ *  	<li><i>BestFitFlexurePenalizer</i> Constructor</li>
+ *  	<li>Compute the Cross-Curvature Penalty for the given Basis Pair</li>
+ *  	<li>Compute the Cross-Length Penalty for the given Basis Pair</li>
+ *  	<li>Compute the Best Fit Cross-Product Penalty for the given Basis Pair</li>
+ *  	<li>Compute the Basis Pair Penalty Coefficient for the Best Fit and the Curvature Penalties</li>
+ *  	<li>Compute the Penalty Constraint for the Basis Pair</li>
  *  </ul>
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment/README.md">Flexure Penalizing Best Fit Segment</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment/README.md">Flexure Penalizing Best Fit Segment</a></td></tr>
+ *  </table>
+ *  <br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class BestFitFlexurePenalizer {
-	private org.drip.spline.segment.BasisEvaluator _lbe = null;
-	private org.drip.spline.segment.LatentStateInelastic _ics = null;
-	private org.drip.spline.params.SegmentBestFitResponse _sbfr = null;
-	private org.drip.spline.params.SegmentFlexurePenaltyControl _sfpcLength = null;
-	private org.drip.spline.params.SegmentFlexurePenaltyControl _sfpcCurvature = null;
+public class BestFitFlexurePenalizer
+{
+	private BasisEvaluator _basisEvaluator = null;
+	private LatentStateInelastic _latentStateInelastic = null;
+	private SegmentBestFitResponse _segmentBestFitResponse = null;
+	private SegmentFlexurePenaltyControl _lengthSegmentFlexurePenaltyControl = null;
+	private SegmentFlexurePenaltyControl _curvatureSegmentFlexurePenaltyControl = null;
 
 	/**
-	 * BestFitFlexurePenalizer constructor
+	 * <i>BestFitFlexurePenalizer</i> constructor
 	 * 
-	 * @param ics Segment Inelastics
-	 * @param sfpcCurvature Curvature Penalty Parameters
-	 * @param sfpcLength Length Penalty Parameters
-	 * @param sbfr Best Fit Weighted Response
-	 * @param lbe The Local Basis Evaluator
+	 * @param latentStateInelastic Segment Inelastics
+	 * @param curvatureSegmentFlexurePenaltyControl Curvature Penalty Parameters
+	 * @param lengthSegmentFlexurePenaltyControl Length Penalty Parameters
+	 * @param segmentBestFitResponse Best Fit Weighted Response
+	 * @param basisEvaluator The Local Basis Evaluator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BestFitFlexurePenalizer (
-		final org.drip.spline.segment.LatentStateInelastic ics,
-		final org.drip.spline.params.SegmentFlexurePenaltyControl sfpcCurvature,
-		final org.drip.spline.params.SegmentFlexurePenaltyControl sfpcLength,
-		final org.drip.spline.params.SegmentBestFitResponse sbfr,
-		final org.drip.spline.segment.BasisEvaluator lbe)
-		throws java.lang.Exception
+		final LatentStateInelastic latentStateInelastic,
+		final SegmentFlexurePenaltyControl curvatureSegmentFlexurePenaltyControl,
+		final SegmentFlexurePenaltyControl lengthSegmentFlexurePenaltyControl,
+		final SegmentBestFitResponse segmentBestFitResponse,
+		final BasisEvaluator basisEvaluator)
+		throws Exception
 	{
-		if (null == (_lbe = lbe) || null == (_ics = ics))
-			throw new java.lang.Exception ("BestFitFlexurePenalizer ctr: Invalid Inputs");
+		if (null == (_basisEvaluator = basisEvaluator) ||
+			null == (_latentStateInelastic = latentStateInelastic)) {
+			throw new Exception ("BestFitFlexurePenalizer ctr: Invalid Inputs");
+		}
 
-		_sbfr = sbfr;
-		_sfpcLength = sfpcLength;
-		_sfpcCurvature = sfpcCurvature;
+		_segmentBestFitResponse = segmentBestFitResponse;
+		_lengthSegmentFlexurePenaltyControl = lengthSegmentFlexurePenaltyControl;
+		_curvatureSegmentFlexurePenaltyControl = curvatureSegmentFlexurePenaltyControl;
 	}
 
 	/**
 	 * Compute the Cross-Curvature Penalty for the given Basis Pair
 	 * 
-	 * @param iBasisIndexI I Basis Index (I is the Summation Index)
-	 * @param iBasisIndexR R Basis Index (R is the Separator Index)
+	 * @param basisIndexI I Basis Index (I is the Summation Index)
+	 * @param basisIndexR R Basis Index (R is the Separator Index)
 	 * 
 	 * @return The Cross-Curvature Penalty for the given Basis Pair
 	 * 
-	 * @throws java.lang.Exception Thrown if the Cross-Curvature Penalty cannot be computed
+	 * @throws Exception Thrown if the Cross-Curvature Penalty cannot be computed
 	 */
 
 	public double basisPairCurvaturePenalty (
-		final int iBasisIndexI,
-		final int iBasisIndexR)
-		throws java.lang.Exception
+		final int basisIndexI,
+		final int basisIndexR)
+		throws Exception
 	{
-		if (null == _sfpcCurvature) return 0.;
+		if (null == _curvatureSegmentFlexurePenaltyControl) {
+			return 0.;
+		}
 
-		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1
-			(null) {
+		R1ToR1 curvaturePenaltyFunction = new R1ToR1 (null) {
 			@Override public double evaluate (
-				final double dblVariate)
+				final double variate)
 				throws Exception
 			{
-				int iOrder = _sfpcCurvature.derivativeOrder();
+				int order = _curvatureSegmentFlexurePenaltyControl.derivativeOrder();
 
-				return _lbe.shapedBasisFunctionDerivative (dblVariate, iOrder, iBasisIndexI) *
-					_lbe.shapedBasisFunctionDerivative (dblVariate, iOrder, iBasisIndexR);
+				return _basisEvaluator.shapedBasisFunctionDerivative (variate, order, basisIndexI) *
+					_basisEvaluator.shapedBasisFunctionDerivative (variate, order, basisIndexR);
 			}
 
 			@Override public double integrate (
-				final double dblBegin,
-				final double dblEnd)
-				throws java.lang.Exception
+				final double begin,
+				final double end)
+				throws Exception
 			{
-				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+				return R1ToR1Integrator.Boole (this, begin, end);
 			}
 		};
 
-		return _sfpcCurvature.amplitude() * au.integrate (_ics.left(), _ics.right());
+		return _curvatureSegmentFlexurePenaltyControl.amplitude() * curvaturePenaltyFunction.integrate (
+			_latentStateInelastic.left(),
+			_latentStateInelastic.right()
+			);
 	}
 
 	/**
 	 * Compute the Cross-Length Penalty for the given Basis Pair
 	 * 
-	 * @param iBasisIndexI I Basis Index (I is the Summation Index)
-	 * @param iBasisIndexR R Basis Index (R is the Separator Index)
+	 * @param basisIndexI I Basis Index (I is the Summation Index)
+	 * @param basisIndexR R Basis Index (R is the Separator Index)
 	 * 
 	 * @return The Cross-Length Penalty for the given Basis Pair
 	 * 
-	 * @throws java.lang.Exception Thrown if the Cross-Length Penalty cannot be computed
+	 * @throws Exception Thrown if the Cross-Length Penalty cannot be computed
 	 */
 
 	public double basisPairLengthPenalty (
-		final int iBasisIndexI,
-		final int iBasisIndexR)
-		throws java.lang.Exception
+		final int basisIndexI,
+		final int basisIndexR)
+		throws Exception
 	{
-		if (null == _sfpcLength) return 0.;
+		if (null == _lengthSegmentFlexurePenaltyControl) {
+			return 0.;
+		}
 
-		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1
-			(null) {
+		R1ToR1 lengthPenaltyFunction = new R1ToR1 (null) {
 			@Override public double evaluate (
-				final double dblVariate)
+				final double variate)
 				throws Exception
 			{
-				int iOrder = _sfpcLength.derivativeOrder();
+				int order = _lengthSegmentFlexurePenaltyControl.derivativeOrder();
 
-				return _lbe.shapedBasisFunctionDerivative (dblVariate, iOrder, iBasisIndexI) *
-					_lbe.shapedBasisFunctionDerivative (dblVariate, iOrder, iBasisIndexR);
+				return _basisEvaluator.shapedBasisFunctionDerivative (variate, order, basisIndexI) *
+					_basisEvaluator.shapedBasisFunctionDerivative (variate, order, basisIndexR);
 			}
 
 			@Override public double integrate (
-				final double dblBegin,
-				final double dblEnd)
+				final double begin,
+				final double end)
 				throws java.lang.Exception
 			{
-				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+				return R1ToR1Integrator.Boole (this, begin, end);
 			}
 		};
 
-		return _sfpcLength.amplitude() * au.integrate (_ics.left(), _ics.right());
+		return _lengthSegmentFlexurePenaltyControl.amplitude() * lengthPenaltyFunction.integrate (
+			_latentStateInelastic.left(),
+			_latentStateInelastic.right()
+		);
 	}
 
 	/**
 	 * Compute the Best Fit Cross-Product Penalty for the given Basis Pair
 	 * 
-	 * @param iBasisIndexI I Basis Index (I is the Summation Index)
-	 * @param iBasisIndexR R Basis Index (R is the Separator Index)
+	 * @param basisIndexI I Basis Index (I is the Summation Index)
+	 * @param basisIndexR R Basis Index (R is the Separator Index)
 	 * 
 	 * @return The Best Fit Cross-Product Penalty for the given Basis Pair
 	 * 
-	 * @throws java.lang.Exception Thrown if the Best Fit Cross-Product Penalty cannot be computed
+	 * @throws Exception Thrown if the Best Fit Cross-Product Penalty cannot be computed
 	 */
 
 	public double basisBestFitPenalty (
-		final int iBasisIndexI,
-		final int iBasisIndexR)
-		throws java.lang.Exception
+		final int basisIndexI,
+		final int basisIndexR)
+		throws Exception
 	{
-		if (null == _sbfr) return 0.;
-
-		int iNumPoint = _sbfr.numPoint();
-
-		if (0 == iNumPoint) return 0.;
-
-		double dblBasisPairFitnessPenalty = 0.;
-
-		for (int i = 0; i < iNumPoint; ++i) {
-			double dblPredictorOrdinate = _sbfr.predictorOrdinate (i);
-
-			dblBasisPairFitnessPenalty += _sbfr.weight (i) * _lbe.shapedBasisFunctionResponse
-				(dblPredictorOrdinate, iBasisIndexI) * _lbe.shapedBasisFunctionResponse
-					(dblPredictorOrdinate, iBasisIndexR);
+		if (null == _segmentBestFitResponse) {
+			return 0.;
 		}
 
-		return dblBasisPairFitnessPenalty / iNumPoint;
+		int pointCount = _segmentBestFitResponse.numPoint();
+
+		if (0 == pointCount) {
+			return 0.;
+		}
+
+		double basisPairFitnessPenalty = 0.;
+
+		for (int pointIndex = 0; pointIndex < pointCount; ++pointIndex) {
+			double predictorOrdinate = _segmentBestFitResponse.predictorOrdinate (pointIndex);
+
+			basisPairFitnessPenalty += _segmentBestFitResponse.weight (pointIndex) *
+				_basisEvaluator.shapedBasisFunctionResponse (predictorOrdinate, basisIndexI) *
+				_basisEvaluator.shapedBasisFunctionResponse (predictorOrdinate, basisIndexR);
+		}
+
+		return basisPairFitnessPenalty / pointCount;
 	}
 
 	/**
 	 * Compute the Basis Pair Penalty Coefficient for the Best Fit and the Curvature Penalties
 	 * 
-	 * @param iBasisIndexI I Basis Index (I is the Summation Index)
-	 * @param iBasisIndexR R Basis Index (R is the Separator Index)
+	 * @param basisIndexI I Basis Index (I is the Summation Index)
+	 * @param basisIndexR R Basis Index (R is the Separator Index)
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 * 
 	 * @return The Basis Pair Penalty Coefficient for the Fitness and the Curvature Penalties
 	 */
 
 	public double basisPairConstraintCoefficient (
-		final int iBasisIndexI,
-		final int iBasisIndexR)
-		throws java.lang.Exception
+		final int basisIndexI,
+		final int basisIndexR)
+		throws Exception
 	{
-		return basisPairCurvaturePenalty (iBasisIndexI, iBasisIndexR) + basisPairLengthPenalty (iBasisIndexI,
-			iBasisIndexR) + basisBestFitPenalty (iBasisIndexI, iBasisIndexR);
+		return basisPairCurvaturePenalty (basisIndexI, basisIndexR) +
+			basisPairLengthPenalty (basisIndexI, basisIndexR) +
+			basisBestFitPenalty (basisIndexI, basisIndexR);
 	}
 
 	/**
 	 * Compute the Penalty Constraint for the Basis Pair
 	 * 
-	 * @param iBasisIndexR R Basis Index (R is the Separator Index)
+	 * @param basisIndexR R Basis Index (R is the Separator Index)
 	 * 
 	 * @return Penalty Constraint for the Basis Pair
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public double basisPairPenaltyConstraint (
-		final int iBasisIndexR)
-		throws java.lang.Exception
+		final int basisIndexR)
+		throws Exception
 	{
-		if (null == _sbfr) return 0.;
-
-		int iNumPoint = _sbfr.numPoint();
-
-		if (0 == iNumPoint) return 0.;
-
-		double dblBasisPairPenaltyConstraint = 0.;
-
-		for (int i = 0; i < iNumPoint; ++i) {
-			double dblPredictorOrdinate = _sbfr.predictorOrdinate (i);
-
-			dblBasisPairPenaltyConstraint += _sbfr.weight (i) * _lbe.shapedBasisFunctionResponse
-				(dblPredictorOrdinate, iBasisIndexR) * _sbfr.response (i);
+		if (null == _segmentBestFitResponse) {
+			return 0.;
 		}
 
-		return dblBasisPairPenaltyConstraint / iNumPoint;
+		int pointCount = _segmentBestFitResponse.numPoint();
+
+		if (0 == pointCount) {
+			return 0.;
+		}
+
+		double basisPairPenaltyConstraint = 0.;
+
+		for (int pointIndex = 0; pointIndex < pointCount; ++pointIndex) {
+			double predictorOrdinate = _segmentBestFitResponse.predictorOrdinate (pointIndex);
+
+			basisPairPenaltyConstraint += _segmentBestFitResponse.weight (pointIndex) *
+				_basisEvaluator.shapedBasisFunctionResponse (predictorOrdinate, basisIndexR) *
+				_segmentBestFitResponse.response (pointIndex);
+		}
+
+		return basisPairPenaltyConstraint / pointCount;
 	}
 }

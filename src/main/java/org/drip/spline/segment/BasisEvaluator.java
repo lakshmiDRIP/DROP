@@ -6,6 +6,9 @@ package org.drip.spline.segment;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,54 +87,41 @@ package org.drip.spline.segment;
 
 /**
  * <i>BasisEvaluator</i> implements the Segment's Basis Evaluator Functions. It exports the following
- * functions:
+ * 	functions:
  *
- * <br><br>
+ * <br>
  *  <ul>
- *  	<li>
- * 			Retrieve the number of Segment's Basis Functions
- *  	</li>
- *  	<li>
- * 			Set the Inelastics that provides the enveloping Context the Basis Evaluation
- *  	</li>
- *  	<li>
- * 			Clone/Replicate the current Basis Evaluator Instance
- *  	</li>
- *  	<li>
- * 			Compute the Response Value of the indexed Basis Function at the specified Predictor Ordinate
- *  	</li>
- *  	<li>
- * 			Compute the Basis Function Value at the specified Predictor Ordinate
- *  	</li>
- *  	<li>
- * 			Compute the Response Value at the specified Predictor Ordinate
- *  	</li>
- *  	<li>
- * 			Compute the Ordered Derivative of the Response Value off of the indexed Basis Function at the
- * 				specified Predictor Ordinate
- *  	</li>
- *  	<li>
- * 			Compute the Ordered Derivative of the Response Value off of the Basis Function Set at the
- * 			specified Predictor Ordinate
- *  	</li>
- *  	<li>
- * 			Compute the Response Value Derivative at the specified Predictor Ordinate.
- *  	</li>
+ *  	<li>Retrieve the number of Segment's Basis Functions</li>
+ *  	<li>Set the Inelastics that provides the enveloping Context the Basis Evaluation</li>
+ *  	<li>Clone/Replicate the current Basis Evaluator Instance</li>
+ *  	<li>Compute the Response Value of the indexed Basis Function at the specified Predictor Ordinate</li>
+ *  	<li>Compute the Basis Function Value at the specified Predictor Ordinate</li>
+ *  	<li>Compute the Response Value at the specified Predictor Ordinate</li>
+ *  	<li>Compute the Ordered Derivative of the Response Value off of the indexed Basis Function at the specified Predictor Ordinate</li>
+ *  	<li>Compute the Ordered Derivative of the Response Value off of the Basis Function Set at the specified Predictor Ordinate</li>
+ *  	<li>Compute the Response Value Derivative at the specified Predictor Ordinate</li>
  *  </ul>
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment/README.md">Flexure Penalizing Best Fit Segment</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment/README.md">Flexure Penalizing Best Fit Segment</a></td></tr>
+ *  </table>
+ *  <br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public interface BasisEvaluator {
+public interface BasisEvaluator
+{
 
 	/**
 	 * Retrieve the number of Segment's Basis Functions
@@ -144,13 +134,14 @@ public interface BasisEvaluator {
 	/**
 	 * Set the Inelastics that provides the enveloping Context the Basis Evaluation
 	 * 
-	 * @param ics The Inelastic Settings
+	 * @param latentStateInelastic The Inelastic Settings
 	 * 
 	 * @return TRUE - The inelastics has been set
 	 */
 
 	public abstract boolean setContainingInelastics (
-		final org.drip.spline.segment.LatentStateInelastic ics);
+		final LatentStateInelastic latentStateInelastic
+	);
 
 	/**
 	 * Clone/Replicate the current Basis Evaluator Instance
@@ -163,105 +154,104 @@ public interface BasisEvaluator {
 	/**
 	 * Compute the Response Value of the indexed Basis Function at the specified Predictor Ordinate
 	 * 
-	 * @param dblPredictorOrdinate The specified Predictor Ordinate
-	 * @param iBasisFunctionIndex Index representing the Basis Function in the Basis Function Set
+	 * @param predictorOrdinate The specified Predictor Ordinate
+	 * @param basisFunctionIndex Index representing the Basis Function in the Basis Function Set
 	 *  
 	 * @return The Response Value of the indexed Basis Function at the specified Predictor Ordinate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Ordered Derivative cannot be computed
+	 * @throws Exception Thrown if the Ordered Derivative cannot be computed
 	 */
 
 	public abstract double shapedBasisFunctionResponse (
-		final double dblPredictorOrdinate,
-		final int iBasisFunctionIndex)
-		throws java.lang.Exception;
+		final double predictorOrdinate,
+		final int basisFunctionIndex)
+		throws Exception;
 
 	/**
 	 * Compute the Basis Function Value at the specified Predictor Ordinate
 	 * 
-	 * @param adblResponseBasisCoeff Array of the Response Basis Coefficients
-	 * @param dblPredictorOrdinate The specified Predictor Ordinate
+	 * @param responseBasisCoefficientArray Array of the Response Basis Coefficients
+	 * @param predictorOrdinate The specified Predictor Ordinate
 	 * 
 	 * @return The Basis Function Value
 	 * 
-	 * @throws java.lang.Exception Thrown if the Basis Function Value cannot be computed
+	 * @throws Exception Thrown if the Basis Function Value cannot be computed
 	 */
 
 	public abstract double unshapedResponseValue (
-		final double[] adblResponseBasisCoeff,
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception;
+		final double[] responseBasisCoefficientArray,
+		final double predictorOrdinate)
+		throws Exception;
 
 	/**
 	 * Compute the Response Value at the specified Predictor Ordinate
 	 * 
-	 * @param adblResponseBasisCoeff Array of the Response Basis Coefficients
-	 * @param dblPredictorOrdinate The specified Predictor Ordinate
+	 * @param responseBasisCoefficientArray Array of the Response Basis Coefficients
+	 * @param predictorOrdinate The specified Predictor Ordinate
 	 * 
 	 * @return The Response Value
 	 * 
-	 * @throws java.lang.Exception Thrown if the Basis Function Value cannot be computed
+	 * @throws Exception Thrown if the Basis Function Value cannot be computed
 	 */
 
 	public abstract double responseValue (
-		final double[] adblResponseBasisCoeff,
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception;
+		final double[] responseBasisCoefficientArray,
+		final double predictorOrdinate)
+		throws Exception;
 
 	/**
 	 * Compute the Ordered Derivative of the Response Value off of the indexed Basis Function at the
 	 *	specified Predictor Ordinate
 	 * 
-	 * @param dblPredictorOrdinate The specified Predictor Ordinate
-	 * @param iOrder Order of the Derivative
-	 * @param iBasisFunctionIndex Index representing the Basis Function in the Basis Function Set
+	 * @param predictorOrdinate The specified Predictor Ordinate
+	 * @param order Order of the Derivative
+	 * @param basisFunctionIndex Index representing the Basis Function in the Basis Function Set
 	 *  
 	 * @return The Ordered Derivative of the Response Value off of the Indexed Basis Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the Ordered Derivative cannot be computed
+	 * @throws Exception Thrown if the Ordered Derivative cannot be computed
 	 */
 
 	public abstract double shapedBasisFunctionDerivative (
-		final double dblPredictorOrdinate,
-		final int iOrder,
-		final int iBasisFunctionIndex)
-		throws java.lang.Exception;
+		final double predictorOrdinate,
+		final int order,
+		final int basisFunctionIndex)
+		throws Exception;
 
 	/**
 	 * Compute the Ordered Derivative of the Response Value off of the Basis Function Set at the specified
 	 *  Predictor Ordinate
 	 * 
-	 * @param adblResponseBasisCoeff Array of the Response Basis Coefficients
-	 * @param dblPredictorOrdinate The specified Predictor Ordinate
-	 * @param iOrder Order of the Derivative
+	 * @param responseBasisCoefficientArray Array of the Response Basis Coefficients
+	 * @param predictorOrdinate The specified Predictor Ordinate
+	 * @param order Order of the Derivative
 	 * 
 	 * @return The Ordered Derivative of the Response Value off of the Basis Function Set
 	 * 
-	 * @throws java.lang.Exception Thrown if the Ordered Derivative of the Basis Function Set cannot be
-	 * 	computed
+	 * @throws Exception Thrown if the Ordered Derivative of the Basis Function Set cannot be computed
 	 */
 
 	public abstract double unshapedBasisFunctionDerivative (
-		final double[] adblResponseBasisCoeff,
-		final double dblPredictorOrdinate,
-		final int iOrder)
-		throws java.lang.Exception;
+		final double[] responseBasisCoefficientArray,
+		final double predictorOrdinate,
+		final int order)
+		throws Exception;
 
 	/**
 	 * Compute the Response Value Derivative at the specified Predictor Ordinate
 	 * 
-	 * @param adblResponseBasisCoeff Array of the Response Basis Coefficients
-	 * @param dblPredictorOrdinate The specified Predictor Ordinate
-	 * @param iOrder Order of the Derivative
+	 * @param responseBasisCoefficientArray Array of the Response Basis Coefficients
+	 * @param predictorOrdinate The specified Predictor Ordinate
+	 * @param order Order of the Derivative
 	 * 
 	 * @return The Response Value Derivative
 	 * 
-	 * @throws java.lang.Exception Thrown if the Response Value Derivative cannot be computed
+	 * @throws Exception Thrown if the Response Value Derivative cannot be computed
 	 */
 
 	public abstract double responseValueDerivative (
-		final double[] adblResponseBasisCoeff,
-		final double dblPredictorOrdinate,
-		final int iOrder)
-		throws java.lang.Exception;
+		final double[] responseBasisCoefficientArray,
+		final double predictorOrdinate,
+		final int order)
+		throws Exception;
 }
