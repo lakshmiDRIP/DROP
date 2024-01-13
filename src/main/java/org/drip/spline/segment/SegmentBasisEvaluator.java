@@ -1,11 +1,18 @@
 
 package org.drip.spline.segment;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.spline.basis.FunctionSet;
+import org.drip.spline.params.ResponseScalingShapeControl;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,61 +91,71 @@ package org.drip.spline.segment;
 
 /**
  * <i>SegmentBasisEvaluator</i> implements the BasisEvaluator interface for the given set of the Segment
- * Basis Evaluator Functions.
+ * 	Basis Evaluator Functions.
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment/README.md">Flexure Penalizing Best Fit Segment</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment/README.md">Flexure Penalizing Best Fit Segment</a></td></tr>
+ *  </table>
+ *  <br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvaluator {
-	private org.drip.spline.basis.FunctionSet _fs = null;
-	private org.drip.spline.segment.LatentStateInelastic _ics = null;
-	private org.drip.spline.params.ResponseScalingShapeControl _rssc = null;
+public class SegmentBasisEvaluator
+	implements BasisEvaluator
+{
+	private FunctionSet _functionSet = null;
+	private LatentStateInelastic _latentStateInelastic = null;
+	private ResponseScalingShapeControl _responseScalingShapeControl = null;
 
 	/**
 	 * SegmentBasisEvaluator constructor
 	 * 
-	 * @param fs The Function Set Instance the contains the Basis Function Set
-	 * @param rssc The Segment Wide Shape Controller
+	 * @param functionSet The Function Set Instance the contains the Basis Function Set
+	 * @param responseScalingShapeControl The Segment Wide Shape Controller
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are invalid
 	 */
 
 	public SegmentBasisEvaluator (
-		final org.drip.spline.basis.FunctionSet fs,
-		final org.drip.spline.params.ResponseScalingShapeControl rssc)
-		throws java.lang.Exception
+		final FunctionSet functionSet,
+		final ResponseScalingShapeControl responseScalingShapeControl)
+		throws Exception
 	{
-		if (null == (_fs = fs)) throw new java.lang.Exception ("SegmentBasisEvaluator ctr: Invalid Inputs");
+		if (null == (_functionSet = functionSet)) {
+			throw new Exception ("SegmentBasisEvaluator ctr: Invalid Inputs");
+		}
 
-		_rssc = rssc;
+		_responseScalingShapeControl = responseScalingShapeControl;
 	}
 
 	@Override public int numBasis()
 	{
-		return _fs.numBasis();
+		return _functionSet.numBasis();
 	}
 
 	@Override public boolean setContainingInelastics (
-		final org.drip.spline.segment.LatentStateInelastic ics)
+		final LatentStateInelastic latentStateInelastic)
 	{
-		_ics = ics;
+		_latentStateInelastic = latentStateInelastic;
 		return true;
 	}
 
-	@Override public org.drip.spline.segment.BasisEvaluator replicate()
+	@Override public BasisEvaluator replicate()
 	{
 		try {
-			return new SegmentBasisEvaluator (_fs, _rssc);
-		} catch (java.lang.Exception e) {
+			return new SegmentBasisEvaluator (_functionSet, _responseScalingShapeControl);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -146,97 +163,126 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 	}
 
 	@Override public double shapedBasisFunctionResponse (
-		final double dblPredictorOrdinate,
-		final int iBasisFunctionIndex)
-		throws java.lang.Exception
+		final double predictorOrdinate,
+		final int basisFunctionIndex)
+		throws Exception
 	{
-		double dblX = null == _ics ? dblPredictorOrdinate : _ics.localize (dblPredictorOrdinate);
-
-		double dblResponseValue = _fs.indexedBasisFunction (iBasisFunctionIndex).evaluate (dblX);
-
-		return dblResponseValue * (null == _rssc ? 1. : _rssc.shapeController().evaluate (_rssc.isLocal() &&
-			null != _ics ? _ics.localize (dblPredictorOrdinate) : dblPredictorOrdinate));
+		return _functionSet.indexedBasisFunction (basisFunctionIndex).evaluate (
+			null == _latentStateInelastic ? predictorOrdinate : _latentStateInelastic.localize (
+				predictorOrdinate
+			)
+		) * (
+			null == _responseScalingShapeControl ? 1. :
+				_responseScalingShapeControl.shapeController().evaluate (
+					_responseScalingShapeControl.isLocal() && null != _latentStateInelastic ?
+					_latentStateInelastic.localize (predictorOrdinate) : predictorOrdinate
+				)
+			);
 	}
 
 	@Override public double unshapedResponseValue (
-		final double[] adblResponseBasisCoeff,
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double[] responseBasisCoefficientArray,
+		final double predictorOrdinate)
+		throws Exception
 	{
-		double dblResponse = 0.;
+		double response = 0.;
 
-		int iNumBasis = numBasis();
+		int basisCount = numBasis();
 
-		for (int i = 0; i < iNumBasis; ++i) {
-			dblResponse += adblResponseBasisCoeff[i] * _fs.indexedBasisFunction (i).evaluate (null == _ics ?
-				dblPredictorOrdinate : _ics.localize (dblPredictorOrdinate));
+		for (int basisIndex = 0; basisIndex < basisCount; ++basisIndex) {
+			response += responseBasisCoefficientArray[basisIndex] * _functionSet.indexedBasisFunction (
+				basisIndex
+			).evaluate (
+				null == _latentStateInelastic ? predictorOrdinate : _latentStateInelastic.localize (
+					predictorOrdinate
+				)
+			);
 		}
 
-		return dblResponse;
+		return response;
 	}
 
 	@Override public double responseValue (
-		final double[] adblResponseBasisCoeff,
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double[] responseBasisCoefficientArray,
+		final double predictorOrdinate)
+		throws Exception
 	{
-		if (null == _rssc) return unshapedResponseValue (adblResponseBasisCoeff, dblPredictorOrdinate);
-
-		return unshapedResponseValue (adblResponseBasisCoeff, dblPredictorOrdinate) *
-			_rssc.shapeController().evaluate (_rssc.isLocal() && null != _ics ? _ics.localize
-				(dblPredictorOrdinate) : dblPredictorOrdinate);
+		return unshapedResponseValue (responseBasisCoefficientArray, predictorOrdinate) * (
+			null == _responseScalingShapeControl ? 1. :
+			_responseScalingShapeControl.shapeController().evaluate (
+				_responseScalingShapeControl.isLocal() && null != _latentStateInelastic ?
+					_latentStateInelastic.localize (predictorOrdinate) : predictorOrdinate
+			)
+		);
 	}
 
 	@Override public double shapedBasisFunctionDerivative (
-		final double dblPredictorOrdinate,
-		final int iOrder,
-		final int iBasisFunctionIndex)
-		throws java.lang.Exception
+		final double predictorOrdinate,
+		final int order,
+		final int basisFunctionIndex)
+		throws Exception
 	{
-		double dblX = null == _ics ? dblPredictorOrdinate : _ics.localize (dblPredictorOrdinate);
+		double x = null == _latentStateInelastic ? predictorOrdinate : _latentStateInelastic.localize (
+			predictorOrdinate
+		);
 
-		if (null == _rssc) return _fs.indexedBasisFunction (iBasisFunctionIndex).derivative (dblX, iOrder);
-
-		double dblShapeControllerPredictorOrdinate = _rssc.isLocal() && null != _ics ? dblX :
-			dblPredictorOrdinate;
-
-		double dblResponseDerivative = 0.;
-
-		for (int i = 0; i <= iOrder; ++i) {
-			double dblBasisFunctionDeriv = 0 == i ? _fs.indexedBasisFunction (iBasisFunctionIndex).evaluate
-				(dblX) : _fs.indexedBasisFunction (iBasisFunctionIndex).derivative (dblX, i);
-
-			if (!org.drip.numerical.common.NumberUtil.IsValid (dblBasisFunctionDeriv))
-				throw new java.lang.Exception
-					("SegmentBasisEvaluator::shapedBasisFunctionDerivative => Cannot compute Basis Function Derivative");
-
-			double dblShapeControlDeriv = iOrder == i ? _rssc.shapeController().evaluate
-				(dblShapeControllerPredictorOrdinate) : _rssc.shapeController().derivative
-					(dblShapeControllerPredictorOrdinate, iOrder - i);
-
-			if (!org.drip.numerical.common.NumberUtil.IsValid (dblShapeControlDeriv))
-				throw new java.lang.Exception
-					("SegmentBasisEvaluator::shapedBasisFunctionDerivative => Cannot compute Shape Control Derivative");
-
-			double dblBasisFunctionDerivScale = 1.;
-			double dblShapeControllerDerivScale = 1.;
-
-			if (null != _ics) {
-				for (int j = 0; j < i; ++j)
-					dblBasisFunctionDerivScale /= _ics.width();
-			}
-
-			if (_rssc.isLocal() && null != _ics) {
-				for (int j = 0; j < iOrder - i; ++j)
-					dblShapeControllerDerivScale /= _ics.width();
-			}
-
-			dblResponseDerivative += (org.drip.numerical.common.NumberUtil.NCK (iOrder, i) *
-				dblBasisFunctionDeriv * dblBasisFunctionDerivScale * dblShapeControllerDerivScale *
-					dblShapeControlDeriv);
+		if (null == _responseScalingShapeControl) {
+			return _functionSet.indexedBasisFunction (basisFunctionIndex).derivative (x, order);
 		}
 
-		return dblResponseDerivative;
+		double shapeControllerPredictorOrdinate =
+			_responseScalingShapeControl.isLocal() && null != _latentStateInelastic ? x : predictorOrdinate;
+
+		double responseDerivative = 0.;
+
+		for (int subIndex = 0; subIndex <= order; ++subIndex) {
+			double basisFunctionDerivative = 0 == subIndex ? _functionSet.indexedBasisFunction (
+				basisFunctionIndex
+			).evaluate (x) : _functionSet.indexedBasisFunction (basisFunctionIndex).derivative (x, subIndex);
+
+			if (!NumberUtil.IsValid (basisFunctionDerivative)) {
+				throw new Exception (
+					"SegmentBasisEvaluator::shapedBasisFunctionDerivative => Cannot compute Basis Function Derivative"
+				);
+			}
+
+			double shapeControlDerivative = order == subIndex ?
+				_responseScalingShapeControl.shapeController().evaluate (shapeControllerPredictorOrdinate) :
+				_responseScalingShapeControl.shapeController().derivative (
+					shapeControllerPredictorOrdinate,
+					order - subIndex
+				);
+
+			if (!NumberUtil.IsValid (shapeControlDerivative)) {
+				throw new Exception (
+					"SegmentBasisEvaluator::shapedBasisFunctionDerivative => Cannot compute Shape Control Derivative"
+				);
+			}
+
+			double basisFunctionDerivativeScale = 1.;
+			double shapeControllerDerivativeScale = 1.;
+
+			if (null != _latentStateInelastic) {
+				for (int subSubIndex = 0; subSubIndex < subIndex; ++subSubIndex) {
+					basisFunctionDerivativeScale /= _latentStateInelastic.width();
+				}
+			}
+
+			if (_responseScalingShapeControl.isLocal() && null != _latentStateInelastic) {
+				for (int subSubComplementIndex = 0; subSubComplementIndex < order - subIndex;
+					++subSubComplementIndex) {
+					shapeControllerDerivativeScale /= _latentStateInelastic.width();
+				}
+			}
+
+			responseDerivative += (
+				NumberUtil.NCK (order, subIndex) * basisFunctionDerivative * basisFunctionDerivativeScale *
+				shapeControllerDerivativeScale *
+				shapeControlDerivative
+			);
+		}
+
+		return responseDerivative;
 	}
 
 	@Override public double unshapedBasisFunctionDerivative (
@@ -249,10 +295,10 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 
 		int iNumBasis = numBasis();
 
-		double dblX = null == _ics ? dblPredictorOrdinate : _ics.localize (dblPredictorOrdinate);
+		double dblX = null == _latentStateInelastic ? dblPredictorOrdinate : _latentStateInelastic.localize (dblPredictorOrdinate);
 
 		for (int i = 0; i < iNumBasis; ++i)
-			dblDerivative += adblResponseBasisCoeff[i] * _fs.indexedBasisFunction (i).derivative (dblX,
+			dblDerivative += adblResponseBasisCoeff[i] * _functionSet.indexedBasisFunction (i).derivative (dblX,
 				iOrder);
 
 		return dblDerivative;
@@ -264,10 +310,10 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 		final int iOrder)
 		throws java.lang.Exception
 	{
-		if (null == _rssc)
+		if (null == _responseScalingShapeControl)
 			return unshapedBasisFunctionDerivative (adblResponseBasisCoeff, dblPredictorOrdinate, iOrder);
 
-		double dblShapeControllerPredictorOrdinate = _rssc.isLocal() && null != _ics ? _ics.localize
+		double dblShapeControllerPredictorOrdinate = _responseScalingShapeControl.isLocal() && null != _latentStateInelastic ? _latentStateInelastic.localize
 			(dblPredictorOrdinate) : dblPredictorOrdinate;
 
 		double dblResponseDerivative = 0.;
@@ -281,8 +327,8 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 				throw new java.lang.Exception
 					("SegmentBasisEvaluator::responseValueDerivative => Cannot compute Basis Function Derivative");
 
-			double dblShapeControlDeriv = iOrder == i ? _rssc.shapeController().evaluate
-				(dblShapeControllerPredictorOrdinate) : _rssc.shapeController().derivative
+			double dblShapeControlDeriv = iOrder == i ? _responseScalingShapeControl.shapeController().evaluate
+				(dblShapeControllerPredictorOrdinate) : _responseScalingShapeControl.shapeController().derivative
 					(dblShapeControllerPredictorOrdinate, iOrder - i);
 
 			if (!org.drip.numerical.common.NumberUtil.IsValid (dblShapeControlDeriv))
@@ -292,14 +338,14 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 			double dblBasisFunctionDerivScale = 1.;
 			double dblShapeControllerDerivScale = 1.;
 
-			if (null != _ics) {
+			if (null != _latentStateInelastic) {
 				for (int j = 0; j < i; ++j)
-					dblBasisFunctionDerivScale /= _ics.width();
+					dblBasisFunctionDerivScale /= _latentStateInelastic.width();
 			}
 
-			if (_rssc.isLocal() && null != _ics) {
+			if (_responseScalingShapeControl.isLocal() && null != _latentStateInelastic) {
 				for (int j = 0; j < iOrder - i; ++j)
-					dblShapeControllerDerivScale /= _ics.width();
+					dblShapeControllerDerivScale /= _latentStateInelastic.width();
 			}
 
 			dblResponseDerivative += (org.drip.numerical.common.NumberUtil.NCK (iOrder, i) *

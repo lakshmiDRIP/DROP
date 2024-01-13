@@ -1,6 +1,9 @@
 
 package org.drip.spline.segment;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.spline.params.PreceedingManifestSensitivityControl;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -119,51 +122,60 @@ package org.drip.spline.segment;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LatentStateManifestSensitivity {
-	private double[] _adblDBasisCoeffDLocalManifest = null;
-	private double[] _adblDBasisCoeffDPreceedingManifest = null;
-	private double _dblDResponseDPreceedingManifest = java.lang.Double.NaN;
-	private org.drip.spline.params.PreceedingManifestSensitivityControl _pmsc = null;
+public class LatentStateManifestSensitivity
+{
+	private double _responseToPrecedingManifestSensitivity = Double.NaN;
+	private double[] _basisCoefficientToLocalManifestSensitivityArray = null;
+	private double[] _basisCoefficientToPrecedingManifestSensitivityArray = null;
+	private PreceedingManifestSensitivityControl _precedingManifestSensitivityControl = null;
 
 	/**
 	 * <i>LatentStateManifestSensitivity</i> constructor
 	 * 
-	 * @param pmsc The Preceding Manifest Measure Sensitivity Control Parameters
+	 * @param precedingManifestSensitivityControl Preceding Manifest Measure Sensitivity Control Parameters
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public LatentStateManifestSensitivity (
-		final org.drip.spline.params.PreceedingManifestSensitivityControl pmsc)
-		throws java.lang.Exception
+		final PreceedingManifestSensitivityControl precedingManifestSensitivityControl)
+		throws Exception
 	{
-		if (null == (_pmsc = pmsc))
-			_pmsc = new org.drip.spline.params.PreceedingManifestSensitivityControl (true, 0, null);
+		if (null == (_precedingManifestSensitivityControl = precedingManifestSensitivityControl)) {
+			_precedingManifestSensitivityControl = new PreceedingManifestSensitivityControl (true, 0, null);
+		}
 	}
 
 	/**
 	 * Set the Array containing the Sensitivities of the Basis Coefficients to the Local Manifest Measure
 	 * 
-	 * @param adblDBasisCoeffDLocalManifest The Array containing the Sensitivities of the Basis Coefficients
-	 * 	to the Local Manifest Measure
+	 * @param basisCoefficientToLocalManifestSensitivityArray The Array containing the Sensitivities of the
+	 *  Basis Coefficients to the Local Manifest Measure
 	 * 
 	 * @return TRUE - Basis Coefficient Manifest Measure Sensitivity Array Entries successfully set
 	 */
 
 	public boolean setDBasisCoeffDLocalManifest (
-		final double[] adblDBasisCoeffDLocalManifest)
+		final double[] basisCoefficientToLocalManifestSensitivityArray)
 	{
-		if (null == adblDBasisCoeffDLocalManifest) return false;
+		if (null == basisCoefficientToLocalManifestSensitivityArray) {
+			return false;
+		}
 
-		int iNumCoeff = adblDBasisCoeffDLocalManifest.length;
-		_adblDBasisCoeffDLocalManifest = new double[iNumCoeff];
+		int coefficientCount = basisCoefficientToLocalManifestSensitivityArray.length;
+		_basisCoefficientToLocalManifestSensitivityArray = new double[coefficientCount];
 
-		if (0 == iNumCoeff) return false;
+		if (0 == coefficientCount) {
+			return false;
+		}
 
-		for (int i = 0; i < iNumCoeff; ++i) {
-			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblDBasisCoeffDLocalManifest[i] =
-				adblDBasisCoeffDLocalManifest[i]))
+		for (int coefficientIndex = 0; coefficientIndex < coefficientCount; ++coefficientIndex) {
+			if (!NumberUtil.IsValid (
+				_basisCoefficientToLocalManifestSensitivityArray[coefficientIndex] =
+				basisCoefficientToLocalManifestSensitivityArray[coefficientIndex]
+			)) {
 				return false;
+			}
 		}
 
 		return true;
@@ -177,33 +189,40 @@ public class LatentStateManifestSensitivity {
 
 	public double[] getDBasisCoeffDLocalManifest()
 	{
-		return _adblDBasisCoeffDLocalManifest;
+		return _basisCoefficientToLocalManifestSensitivityArray;
 	}
 
 	/**
 	 * Set the Array containing the Sensitivities of the Basis Coefficients to the Preceding Manifest
 	 * 	Measure
 	 * 
-	 * @param adblDBasisCoeffDPreceedingManifest The Array containing the Sensitivities of the Basis
-	 *  Coefficients to the Preceding Manifest Measure
+	 * @param basisCoefficientToPrecedingManifestSensitivityArray The Array containing the Sensitivities of
+	 *  the Basis Coefficients to the Preceding Manifest Measure
 	 * 
 	 * @return TRUE - Array Entries successfully set
 	 */
 
 	public boolean setDBasisCoeffDPreceedingManifest (
-		final double[] adblDBasisCoeffDPreceedingManifest)
+		final double[] basisCoefficientToPrecedingManifestSensitivityArray)
 	{
-		if (null == adblDBasisCoeffDPreceedingManifest) return false;
+		if (null == basisCoefficientToPrecedingManifestSensitivityArray) {
+			return false;
+		}
 
-		int iNumCoeff = adblDBasisCoeffDPreceedingManifest.length;
-		_adblDBasisCoeffDPreceedingManifest= new double[iNumCoeff];
+		int coefficientCount = basisCoefficientToPrecedingManifestSensitivityArray.length;
+		_basisCoefficientToPrecedingManifestSensitivityArray = new double[coefficientCount];
 
-		if (0 == iNumCoeff) return false;
+		if (0 == coefficientCount) {
+			return false;
+		}
 
-		for (int i = 0; i < iNumCoeff; ++i) {
-			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblDBasisCoeffDPreceedingManifest[i] =
-				adblDBasisCoeffDPreceedingManifest[i]))
+		for (int coefficientIndex = 0; coefficientIndex < coefficientCount; ++coefficientIndex) {
+			if (!NumberUtil.IsValid (
+				_basisCoefficientToPrecedingManifestSensitivityArray[coefficientIndex] =
+				basisCoefficientToPrecedingManifestSensitivityArray[coefficientIndex]
+			)) {
 				return false;
+			}
 		}
 
 		return true;
@@ -219,25 +238,27 @@ public class LatentStateManifestSensitivity {
 
 	public double[] getDBasisCoeffDPreceedingManifest()
 	{
-		return _adblDBasisCoeffDPreceedingManifest;
+		return _basisCoefficientToPrecedingManifestSensitivityArray;
 	}
 
 	/**
 	 * Set the Sensitivity of the Segment Response to the Preceding Manifest Measure
 	 * 
-	 * @param dblDResponseDPreceedingManifest Sensitivity of the Segment Response to the Preceding Manifest
-	 * 	Measure
+	 * @param responseToPrecedingManifestSensitivity Sensitivity of the Segment Response to the Preceding
+	 *  Manifest Measure
 	 * 
 	 * @return TRUE - Sensitivity of the Segment Response to the Preceding Manifest Measure successfully
 	 * 	set
 	 */
 
 	public boolean setDResponseDPreceedingManifest (
-		final double dblDResponseDPreceedingManifest)
+		final double responseToPrecedingManifestSensitivity)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDResponseDPreceedingManifest)) return false;
+		if (!NumberUtil.IsValid (responseToPrecedingManifestSensitivity)) {
+			return false;
+		}
 
-		_dblDResponseDPreceedingManifest = dblDResponseDPreceedingManifest;
+		_responseToPrecedingManifestSensitivity = responseToPrecedingManifestSensitivity;
 		return true;
 	}
 
@@ -249,7 +270,7 @@ public class LatentStateManifestSensitivity {
 
 	public double getDResponseDPreceedingManifest()
 	{
-		return _dblDResponseDPreceedingManifest;
+		return _responseToPrecedingManifestSensitivity;
 	}
 
 	/**
@@ -258,8 +279,8 @@ public class LatentStateManifestSensitivity {
 	 * @return The Preceding Manifest Measure Sensitivity Control Parameters
 	 */
 
-	public org.drip.spline.params.PreceedingManifestSensitivityControl getPMSC()
+	public PreceedingManifestSensitivityControl getPMSC()
 	{
-		return _pmsc;
+		return _precedingManifestSensitivityControl;
 	}
 }
