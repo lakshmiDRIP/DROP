@@ -286,73 +286,93 @@ public class SegmentBasisEvaluator
 	}
 
 	@Override public double unshapedBasisFunctionDerivative (
-		final double[] adblResponseBasisCoeff,
-		final double dblPredictorOrdinate,
-		final int iOrder)
-		throws java.lang.Exception
+		final double[] responseBasisCoefficientArray,
+		final double predictorOrdinate,
+		final int order)
+		throws Exception
 	{
-		double dblDerivative = 0.;
+		double derivative = 0.;
 
-		int iNumBasis = numBasis();
+		int basisCount = numBasis();
 
-		double dblX = null == _latentStateInelastic ? dblPredictorOrdinate : _latentStateInelastic.localize (dblPredictorOrdinate);
+		double x = null == _latentStateInelastic ? predictorOrdinate : _latentStateInelastic.localize (
+			predictorOrdinate
+		);
 
-		for (int i = 0; i < iNumBasis; ++i)
-			dblDerivative += adblResponseBasisCoeff[i] * _functionSet.indexedBasisFunction (i).derivative (dblX,
-				iOrder);
+		for (int basisIndex = 0; basisIndex < basisCount; ++basisIndex) {
+			derivative += responseBasisCoefficientArray[basisIndex] * _functionSet.indexedBasisFunction (
+				basisIndex
+			).derivative (x, order);
+		}
 
-		return dblDerivative;
+		return derivative;
 	}
 
 	@Override public double responseValueDerivative (
-		final double[] adblResponseBasisCoeff,
-		final double dblPredictorOrdinate,
-		final int iOrder)
+		final double[] responseBasisCoefficientArray,
+		final double predictorOrdinate,
+		final int order)
 		throws java.lang.Exception
 	{
-		if (null == _responseScalingShapeControl)
-			return unshapedBasisFunctionDerivative (adblResponseBasisCoeff, dblPredictorOrdinate, iOrder);
+		if (null == _responseScalingShapeControl) {
+			return unshapedBasisFunctionDerivative (responseBasisCoefficientArray, predictorOrdinate, order);
+		}
 
-		double dblShapeControllerPredictorOrdinate = _responseScalingShapeControl.isLocal() && null != _latentStateInelastic ? _latentStateInelastic.localize
-			(dblPredictorOrdinate) : dblPredictorOrdinate;
+		double shapeControllerPredictorOrdinate =
+			_responseScalingShapeControl.isLocal() && null != _latentStateInelastic ?
+			_latentStateInelastic.localize (predictorOrdinate) : predictorOrdinate;
 
-		double dblResponseDerivative = 0.;
+		double responseDerivative = 0.;
 
-		for (int i = 0; i <= iOrder; ++i) {
-			double dblBasisFunctionDeriv = 0 == i ? unshapedResponseValue (adblResponseBasisCoeff,
-				dblPredictorOrdinate) : unshapedBasisFunctionDerivative (adblResponseBasisCoeff,
-					dblPredictorOrdinate, i);
+		double latentStateInelasticWidth = _latentStateInelastic.width();
 
-			if (!org.drip.numerical.common.NumberUtil.IsValid (dblBasisFunctionDeriv))
-				throw new java.lang.Exception
-					("SegmentBasisEvaluator::responseValueDerivative => Cannot compute Basis Function Derivative");
+		for (int subOrder = 0; subOrder <= order; ++subOrder) {
+			double basisFunctionDerivative = 0 == subOrder ? unshapedResponseValue (
+				responseBasisCoefficientArray,
+				predictorOrdinate
+			) : unshapedBasisFunctionDerivative (responseBasisCoefficientArray, predictorOrdinate, subOrder);
 
-			double dblShapeControlDeriv = iOrder == i ? _responseScalingShapeControl.shapeController().evaluate
-				(dblShapeControllerPredictorOrdinate) : _responseScalingShapeControl.shapeController().derivative
-					(dblShapeControllerPredictorOrdinate, iOrder - i);
+			if (!NumberUtil.IsValid (basisFunctionDerivative)) {
+				throw new Exception (
+					"SegmentBasisEvaluator::responseValueDerivative => Cannot compute Basis Function Derivative"
+				);
+			}
 
-			if (!org.drip.numerical.common.NumberUtil.IsValid (dblShapeControlDeriv))
-				throw new java.lang.Exception
-					("SegmentBasisEvaluator::responseValueDerivative => Cannot compute Shape Control Derivative");
+			double shapeControlDerivative = order == subOrder ?
+				_responseScalingShapeControl.shapeController().evaluate (shapeControllerPredictorOrdinate) :
+				_responseScalingShapeControl.shapeController().derivative (
+					shapeControllerPredictorOrdinate,
+					order - subOrder
+				);
 
-			double dblBasisFunctionDerivScale = 1.;
-			double dblShapeControllerDerivScale = 1.;
+			if (!NumberUtil.IsValid (shapeControlDerivative)) {
+				throw new Exception (
+					"SegmentBasisEvaluator::responseValueDerivative => Cannot compute Shape Control Derivative"
+				);
+			}
+
+			double basisFunctionDerivativeScale = 1.;
+			double shapeControllerDerivativeScale = 1.;
 
 			if (null != _latentStateInelastic) {
-				for (int j = 0; j < i; ++j)
-					dblBasisFunctionDerivScale /= _latentStateInelastic.width();
+				for (int subSubOrder = 0; subSubOrder < subOrder; ++subSubOrder) {
+					basisFunctionDerivativeScale /= latentStateInelasticWidth;
+				}
 			}
 
 			if (_responseScalingShapeControl.isLocal() && null != _latentStateInelastic) {
-				for (int j = 0; j < iOrder - i; ++j)
-					dblShapeControllerDerivScale /= _latentStateInelastic.width();
+				for (int subSubOrderComplement = 0; subSubOrderComplement < order - subOrder;
+					++subSubOrderComplement) {
+					shapeControllerDerivativeScale /= latentStateInelasticWidth;
+				}
 			}
 
-			dblResponseDerivative += (org.drip.numerical.common.NumberUtil.NCK (iOrder, i) *
-				dblBasisFunctionDeriv * dblBasisFunctionDerivScale * dblShapeControllerDerivScale *
-					dblShapeControlDeriv);
+			responseDerivative += (
+				NumberUtil.NCK (order, subOrder) * basisFunctionDerivative * basisFunctionDerivativeScale *
+				shapeControllerDerivativeScale * shapeControlDerivative
+			);
 		}
 
-		return dblResponseDerivative;
+		return responseDerivative;
 	}
 }

@@ -6,6 +6,9 @@ package org.drip.spline.segment;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,21 +87,39 @@ package org.drip.spline.segment;
 
 /**
  * <i>Monotonocity</i> contains the monotonicity details related to the given segment. Indicates whether the
- * segment is monotonic, and if not, whether it contains a maximum, a minimum, or an inflection.
+ * 	segment is monotonic, and if not, whether it contains a maximum, a minimum, or an inflection.
  *
- * <br><br>
+ * <br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment/README.md">Flexure Penalizing Best Fit Segment</a></li>
+ *  	<li>MONOTONIC</li>
+ *  	<li>NON-MONOTONIC</li>
+ *  	<li>NON MONOTONE - MINIMA</li>
+ *  	<li>NON MONOTONE - MAXIMA</li>
+ *  	<li>NON MONOTONE - INFLECTION</li>
+ *  	<li><i>Monotonocity</i> constructor</li>
+ *  	<li>Retrieve the Monotone Type</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/segment/README.md">Flexure Penalizing Best Fit Segment</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Monotonocity {
+public class Monotonocity
+{
 
 	/**
 	 * MONOTONIC
@@ -130,26 +151,27 @@ public class Monotonocity {
 
 	public static final int INFLECTION = 7;
 
-	private int _iMonotoneType = -1;
+	private int _monotoneType = -1;
 
 	/**
-	 * Monotonocity constructor
+	 * <i>Monotonocity</i> constructor
 	 * 
-	 * @param iMonotoneType One of the valid monotone types
+	 * @param monotoneType One of the valid monotone types
 	 * 
-	 * @throws java.lang.Exception Thrown if the input monotone type is invalid
+	 * @throws Exception Thrown if the input monotone type is invalid
 	 */
 
 	public Monotonocity (
-		final int iMonotoneType)
-		throws java.lang.Exception
+		final int monotoneType)
+		throws Exception
 	{
-		if (org.drip.spline.segment.Monotonocity.MONOTONIC != (_iMonotoneType = iMonotoneType) &&
-			org.drip.spline.segment.Monotonocity.NON_MONOTONIC != _iMonotoneType &&
-				org.drip.spline.segment.Monotonocity.MINIMA != _iMonotoneType &&
-					org.drip.spline.segment.Monotonocity.MAXIMA != _iMonotoneType &&
-						org.drip.spline.segment.Monotonocity.INFLECTION != _iMonotoneType)
-			throw new java.lang.Exception ("Monotonocity ctr: Unknown monotone type " + _iMonotoneType);
+		if (MONOTONIC != (_monotoneType = monotoneType) &&
+			NON_MONOTONIC != _monotoneType &&
+			MINIMA != _monotoneType &&
+			MAXIMA != _monotoneType &&
+			INFLECTION != _monotoneType) {
+			throw new Exception ("Monotonocity ctr: Unknown monotone type " + _monotoneType);
+		}
 	}
 
 	/**
@@ -160,18 +182,26 @@ public class Monotonocity {
 
 	public int type()
 	{
-		return _iMonotoneType;
+		return _monotoneType;
 	}
 
-	@Override public java.lang.String toString()
+	@Override public String toString()
 	{
-		if (org.drip.spline.segment.Monotonocity.NON_MONOTONIC == _iMonotoneType) return "NON_MONOTONIC";
+		if (NON_MONOTONIC == _monotoneType) {
+			return "NON_MONOTONIC";
+		}
 
-		if (org.drip.spline.segment.Monotonocity.MONOTONIC == _iMonotoneType) return "MONOTONIC    ";
+		if (MONOTONIC == _monotoneType) {
+			return "MONOTONIC    ";
+		}
 
-		if (org.drip.spline.segment.Monotonocity.MINIMA == _iMonotoneType) return "MINIMA       ";
+		if (MINIMA == _monotoneType) {
+			return "MINIMA       ";
+		}
 
-		if (org.drip.spline.segment.Monotonocity.MAXIMA == _iMonotoneType) return "MAXIMA       ";
+		if (MAXIMA == _monotoneType) {
+			return "MAXIMA       ";
+		}
 
 		return "INFLECTION   ";
 	}

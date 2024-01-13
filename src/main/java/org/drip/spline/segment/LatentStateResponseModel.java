@@ -4,9 +4,16 @@ package org.drip.spline.segment;
 import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.differentiation.WengertJacobian;
+import org.drip.numerical.linearalgebra.LinearSystemSolver;
+import org.drip.numerical.linearalgebra.LinearizationOutput;
 import org.drip.spline.basis.FunctionSet;
+import org.drip.spline.params.PreceedingManifestSensitivityControl;
 import org.drip.spline.params.ResponseScalingShapeControl;
+import org.drip.spline.params.SegmentBasisFlexureConstraint;
+import org.drip.spline.params.SegmentBestFitResponse;
 import org.drip.spline.params.SegmentInelasticDesignControl;
+import org.drip.spline.params.SegmentResponseValueConstraint;
+import org.drip.spline.params.SegmentStateCalibrationInputs;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -215,27 +222,31 @@ public class LatentStateResponseModel
 	/**
 	 * Build the <i>LatentStateResponseModel</i> instance from the Basis Evaluator Set
 	 * 
-	 * @param dblLeftPredictorOrdinate Left Predictor Ordinate
-	 * @param dblRightPredictorOrdinate Right Predictor Ordinate
-	 * @param be Basis Evaluator
-	 * @param sidc Segment Inelastic Design Parameters
+	 * @param leftPredictorOrdinate Left Predictor Ordinate
+	 * @param rightPredictorOrdinate Right Predictor Ordinate
+	 * @param basisEvaluator Basis Evaluator
+	 * @param segmentInelasticDesignControl Segment Inelastic Design Parameters
 	 * 
 	 * @return Instance of <i>LatentStateResponseModel</i>
 	 */
 
-	public static final org.drip.spline.segment.LatentStateResponseModel Create (
-		final double dblLeftPredictorOrdinate,
-		final double dblRightPredictorOrdinate,
-		final org.drip.spline.segment.BasisEvaluator be,
-		final org.drip.spline.params.SegmentInelasticDesignControl sidc)
+	public static final LatentStateResponseModel Create (
+		final double leftPredictorOrdinate,
+		final double rightPredictorOrdinate,
+		final BasisEvaluator basisEvaluator,
+		final SegmentInelasticDesignControl segmentInelasticDesignControl)
 	{
 		try {
-			org.drip.spline.segment.LatentStateResponseModel lsrm = new
-				org.drip.spline.segment.LatentStateResponseModel (dblLeftPredictorOrdinate,
-					dblRightPredictorOrdinate, be, sidc);
+			LatentStateResponseModel latentStateResponseModel = new LatentStateResponseModel (
+				leftPredictorOrdinate,
+				rightPredictorOrdinate,
+				basisEvaluator,
+				segmentInelasticDesignControl
+			);
 
-			return be.setContainingInelastics (lsrm) ? lsrm : null;
-		} catch (java.lang.Exception e) {
+			return basisEvaluator.setContainingInelastics (latentStateResponseModel) ?
+				latentStateResponseModel : null;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -243,117 +254,135 @@ public class LatentStateResponseModel
 	}
 
 	private LatentStateResponseModel (
-		final double dblLeftPredictorOrdinate,
-		final double dblRightPredictorOrdinate,
-		final org.drip.spline.segment.BasisEvaluator be,
-		final org.drip.spline.params.SegmentInelasticDesignControl sidc)
-		throws java.lang.Exception
+		final double leftPredictorOrdinate,
+		final double rightPredictorOrdinate,
+		final BasisEvaluator basisEvaluator,
+		final SegmentInelasticDesignControl segmentInelasticDesignControl)
+		throws Exception
 	{
-		super (dblLeftPredictorOrdinate, dblRightPredictorOrdinate);
+		super (leftPredictorOrdinate, rightPredictorOrdinate);
 
-		if (null == (_basisEvaluator = be) || null == (_segmentInelasticDesignControl = sidc))
-			throw new java.lang.Exception ("LatentStateResponseModel ctr: Invalid Basis Functions!");
+		if (null == (_basisEvaluator = basisEvaluator) ||
+			null == (_segmentInelasticDesignControl = segmentInelasticDesignControl)) {
+			throw new Exception ("LatentStateResponseModel ctr: Invalid Basis Functions!");
+		}
 
-		int iNumBasis = _basisEvaluator.numBasis();
+		int basisCount = _basisEvaluator.numBasis();
 
-		_responseToBasisCoefficientSensitivity = new double[iNumBasis];
+		_responseToBasisCoefficientSensitivity = new double[basisCount];
 
-		if (0 >= iNumBasis || _segmentInelasticDesignControl.Ck() > iNumBasis - 2)
-			throw new java.lang.Exception ("LatentStateResponseModel ctr: Invalid inputs!");
+		if (0 >= basisCount || _segmentInelasticDesignControl.Ck() > basisCount - 2) {
+			throw new Exception ("LatentStateResponseModel ctr: Invalid inputs!");
+		}
 	}
 
 	private double[] DResponseDBasisCoeff (
-		final double dblPredictorOrdinate,
-		final int iOrder)
+		final double predictorOrdinate,
+		final int order)
 	{
-		if (0 == iOrder) return null;
+		if (0 == order) {
+			return null;
+		}
 
-		int iNumBasis = _basisEvaluator.numBasis();
+		int basisCount = _basisEvaluator.numBasis();
 
-		double[] adblDResponseDBasisCoeff = new double[iNumBasis];
+		double[] responseToBasisCoefficientSensitivityArray = new double[basisCount];
 
-		for (int i = 0; i < iNumBasis; ++i) {
+		for (int basisIndex = 0; basisIndex < basisCount; ++basisIndex) {
 			try {
-				adblDResponseDBasisCoeff[i] = 1 == iOrder ? _basisEvaluator.shapedBasisFunctionResponse
-					(dblPredictorOrdinate, i) : 0.;
-			} catch (java.lang.Exception e) {
+				responseToBasisCoefficientSensitivityArray[basisIndex] = 1 == order ?
+					_basisEvaluator.shapedBasisFunctionResponse (predictorOrdinate, basisIndex) : 0.;
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return adblDResponseDBasisCoeff;
+		return responseToBasisCoefficientSensitivityArray;
 	}
 
 	private double[] transmissionCk (
-		final double dblPredictorOrdinate,
-		final org.drip.spline.segment.LatentStateResponseModel csPreceeding,
-		final int iCk)
+		final double predictorOrdinate,
+		final LatentStateResponseModel precedingLatentStateResponseModel,
+		final int ck)
 	{
-		double[] adblDeriv = new double[iCk];
+		double[] derivativeArray = new double[ck];
 
-		for (int i = 0; i < iCk; ++i) {
+		for (int ci = 0; ci < ck; ++ci) {
 			try {
-				adblDeriv[i] = csPreceeding.calcResponseValueDerivative (dblPredictorOrdinate, i + 1);
-			} catch (java.lang.Exception e) {
+				derivativeArray[ci] = precedingLatentStateResponseModel.calcResponseValueDerivative (
+					predictorOrdinate,
+					ci + 1
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return adblDeriv;
+		return derivativeArray;
 	}
 
-	private org.drip.spline.segment.LatentStateManifestSensitivity manifestSensitivity (
-		final java.lang.String strManifestMeasure)
+	private LatentStateManifestSensitivity manifestSensitivity (
+		final String manifestMeasure)
 	{
-		return null == strManifestMeasure || strManifestMeasure.isEmpty() || !_latentStateManifestSensitivityMap.containsKey
-			(strManifestMeasure) ? null : _latentStateManifestSensitivityMap.get (strManifestMeasure);
+		return null == manifestMeasure || manifestMeasure.isEmpty() ||
+			!_latentStateManifestSensitivityMap.containsKey (manifestMeasure) ?
+			null : _latentStateManifestSensitivityMap.get (manifestMeasure);
 	}
 
 	private double[] CkDBasisCoeffDPreceedingManifestMeasure (
-		final java.lang.String strManifestMeasure)
+		final String manifestMeasure)
 	{
-		org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity
-			(strManifestMeasure);
+		LatentStateManifestSensitivity latentStateManifestSensitivity = manifestSensitivity
+			(manifestMeasure);
 
-		if (null == lsms) return null;
+		if (null == latentStateManifestSensitivity) {
+			return null;
+		}
 
-		int iCk = lsms.getPMSC().Ck();
+		int ck = latentStateManifestSensitivity.getPMSC().Ck();
 
-		if (0 == iCk) return null;
+		if (0 == ck) {
+			return null;
+		}
 
-		double[] adblDBasisCoeffDPreceedingManifestTail = new double[iCk];
+		double[] basisCoefficientToPrecedingManifestTailSensitivity = new double[ck];
 
-		for (int i = 0; i < iCk; ++i)
-			adblDBasisCoeffDPreceedingManifestTail[i] = 0.;
+		for (int i = 0; i < ck; ++i) {
+			basisCoefficientToPrecedingManifestTailSensitivity[i] = 0.;
+		}
 
-		return adblDBasisCoeffDPreceedingManifestTail;
+		return basisCoefficientToPrecedingManifestTailSensitivity;
 	}
 
 	/**
-	 * Set the Preceeding Manifest Sensitivity Control Parameters for the specified Manifest Measure
+	 * Set the Preceding Manifest Sensitivity Control Parameters for the specified Manifest Measure
 	 * 
-	 * @param strManifestMeasure The Manifest Measure
-	 * @param pmsc The Preceeding Manifest Sensitivity Control Instance
+	 * @param manifestMeasure The Manifest Measure
+	 * @param precedingManifestSensitivityControl The Preceding Manifest Sensitivity Control Instance
 	 * 
-	 * @return TRUE - Named Preceeding Manifest Sensitivity Control Instance Successfully Set
+	 * @return TRUE - Named Preceding Manifest Sensitivity Control Instance Successfully Set
 	 */
 
 	public boolean setPreceedingManifestSensitivityControl (
-		final java.lang.String strManifestMeasure,
-		final org.drip.spline.params.PreceedingManifestSensitivityControl pmsc)
+		final String manifestMeasure,
+		final PreceedingManifestSensitivityControl precedingManifestSensitivityControl)
 	{
-		if (null == strManifestMeasure || strManifestMeasure.isEmpty()) return false;
+		if (null == manifestMeasure || manifestMeasure.isEmpty()) {
+			return false;
+		}
 
 		try {
-			_latentStateManifestSensitivityMap.put (strManifestMeasure, new org.drip.spline.segment.LatentStateManifestSensitivity
-				(pmsc));
+			_latentStateManifestSensitivityMap.put (
+				manifestMeasure,
+				new LatentStateManifestSensitivity (precedingManifestSensitivityControl)
+			);
 
 			return true;
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -407,118 +436,174 @@ public class LatentStateResponseModel
 	/**
 	 * Main Calibrator: Calibrate the Segment State from the Calibration Parameter Set
 	 * 
-	 * @param ssciState The Segment State Calibration Inputs Set
+	 * @param stateSegmentStateCalibrationInputs The Segment State Calibration Inputs Set
 	 * 
 	 * @return TRUE - Calibration Successful
 	 */
 
 	public boolean calibrateState (
-		final org.drip.spline.params.SegmentStateCalibrationInputs ssciState)
+		final SegmentStateCalibrationInputs stateSegmentStateCalibrationInputs)
 	{
-		if (null == ssciState) return false;
+		if (null == stateSegmentStateCalibrationInputs) {
+			return false;
+		}
 
-		double[] adblPredictorOrdinate = ssciState.predictorOrdinates();
+		double[] predictorOrdinateArray = stateSegmentStateCalibrationInputs.predictorOrdinates();
 
-		double[] adblResponseValue = ssciState.responseValues();
+		double[] responseValueArray = stateSegmentStateCalibrationInputs.responseValues();
 
-		double[] adblLeftEdgeDeriv = ssciState.leftEdgeDeriv();
+		double[] leftEdgeDerivativeArray = stateSegmentStateCalibrationInputs.leftEdgeDeriv();
 
-		double[] adblRightEdgeDeriv = ssciState.rightEdgeDeriv();
+		double[] rightEdgeDerivativeArray = stateSegmentStateCalibrationInputs.rightEdgeDeriv();
 
-		org.drip.spline.params.SegmentBestFitResponse sbfr = ssciState.bestFitResponse();
+		SegmentBestFitResponse segmentBestFitResponse = stateSegmentStateCalibrationInputs.bestFitResponse();
 
-		org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFC = ssciState.flexureConstraint();
+		SegmentBasisFlexureConstraint[] segmentBasisFlexureConstraintArray =
+			stateSegmentStateCalibrationInputs.flexureConstraint();
 
-		int iNumConstraint = 0;
-		int iNumResponseBasisCoeff = _responseToBasisCoefficientSensitivity.length;
-		int iNumLeftDeriv = null == adblLeftEdgeDeriv ? 0 : adblLeftEdgeDeriv.length;
-		int iNumRightDeriv = null == adblRightEdgeDeriv ? 0 : adblRightEdgeDeriv.length;
-		double[] adblPredictorResponseConstraintValue = new double[iNumResponseBasisCoeff];
-		int iNumPredictorOrdinate = null == adblPredictorOrdinate ? 0 : adblPredictorOrdinate.length;
-		double[][] aadblResponseBasisCoeffConstraint = new
-			double[iNumResponseBasisCoeff][iNumResponseBasisCoeff];
+		int constraintCount = 0;
+		int responseBasisCoefficientCount = _responseToBasisCoefficientSensitivity.length;
+		int leftDerivativeCount = null == leftEdgeDerivativeArray ? 0 : leftEdgeDerivativeArray.length;
+		int rightDerivativeCount = null == rightEdgeDerivativeArray ? 0 : rightEdgeDerivativeArray.length;
+		double[] predictorResponseConstraintValueArray = new double[responseBasisCoefficientCount];
+		int predictorCount = null == predictorOrdinateArray ? 0 : predictorOrdinateArray.length;
+		double[][] responseBasisCoefficientConstraintMatrix = new
+			double[responseBasisCoefficientCount][responseBasisCoefficientCount];
 
-		if (null != aSBFC) {
-			int iNumPotentialConstraint = aSBFC.length;
+		if (null != segmentBasisFlexureConstraintArray) {
+			int potentialConstraintCount = segmentBasisFlexureConstraintArray.length;
 
-			for (int i = 0; i < iNumPotentialConstraint; ++i) {
-				if (null != aSBFC[i]) ++iNumConstraint;
+			for (int potentialConstraintIndex = 0; potentialConstraintIndex < potentialConstraintCount;
+				++potentialConstraintIndex) {
+				if (null != segmentBasisFlexureConstraintArray[potentialConstraintIndex]) {
+					++constraintCount;
+				}
 			}
 		}
 
-		if (iNumResponseBasisCoeff < iNumPredictorOrdinate + iNumLeftDeriv + iNumRightDeriv + iNumConstraint)
+		if (responseBasisCoefficientCount <
+			predictorCount + leftDerivativeCount + rightDerivativeCount + constraintCount) {
 			return false;
+		}
 
 		try {
-			org.drip.spline.segment.BestFitFlexurePenalizer bffp = new
-				org.drip.spline.segment.BestFitFlexurePenalizer (this, _segmentInelasticDesignControl.curvaturePenaltyControl(),
-						_segmentInelasticDesignControl.lengthPenaltyControl(), sbfr, _basisEvaluator);
+			BestFitFlexurePenalizer bestFitFlexurePenalizer = new BestFitFlexurePenalizer (
+				this,
+				_segmentInelasticDesignControl.curvaturePenaltyControl(),
+				_segmentInelasticDesignControl.lengthPenaltyControl(),
+				segmentBestFitResponse,
+				_basisEvaluator
+			);
 
-			for (int j = 0; j < iNumResponseBasisCoeff; ++j) {
-				if (j < iNumPredictorOrdinate)
-					adblPredictorResponseConstraintValue[j] = adblResponseValue[j];
-				else if (j < iNumPredictorOrdinate + iNumConstraint)
-					adblPredictorResponseConstraintValue[j] = aSBFC[j -
-					    iNumPredictorOrdinate].contraintValue();
-				else if (j < iNumPredictorOrdinate + iNumConstraint + iNumLeftDeriv)
-					adblPredictorResponseConstraintValue[j] = adblLeftEdgeDeriv[j - iNumPredictorOrdinate -
-					    iNumConstraint];
-				else if (j < iNumPredictorOrdinate + iNumConstraint + iNumLeftDeriv + iNumRightDeriv)
-					adblPredictorResponseConstraintValue[j] = adblRightEdgeDeriv[j - iNumPredictorOrdinate -
-					    iNumConstraint - iNumLeftDeriv];
-				else
-					adblPredictorResponseConstraintValue[j] = bffp.basisPairPenaltyConstraint (j);
-			}
-
-			for (int i = 0; i < iNumResponseBasisCoeff; ++i) {
-				for (int l = 0; l < iNumResponseBasisCoeff; ++l) {
-					double[] adblCalibBasisConstraintWeight = null;
-
-					if (0 != iNumConstraint && (l >= iNumPredictorOrdinate && l < iNumPredictorOrdinate +
-						iNumConstraint))
-						adblCalibBasisConstraintWeight = aSBFC[l -
-						    iNumPredictorOrdinate].responseBasisCoeffWeights();
-
-					if (l < iNumPredictorOrdinate)
-						aadblResponseBasisCoeffConstraint[l][i] = _basisEvaluator.shapedBasisFunctionResponse
-							(adblPredictorOrdinate[l], i);
-					else if (l < iNumPredictorOrdinate + iNumConstraint)
-						aadblResponseBasisCoeffConstraint[l][i] = adblCalibBasisConstraintWeight[i];
-					else if (l < iNumPredictorOrdinate + iNumConstraint + iNumLeftDeriv)
-						aadblResponseBasisCoeffConstraint[l][i] = _basisEvaluator.shapedBasisFunctionDerivative (left(),
-							l - iNumPredictorOrdinate - iNumConstraint + 1, i);
-					else if (l < iNumPredictorOrdinate + iNumConstraint + iNumLeftDeriv + iNumRightDeriv)
-						aadblResponseBasisCoeffConstraint[l][i] = _basisEvaluator.shapedBasisFunctionDerivative
-							(right(), l - iNumPredictorOrdinate - iNumConstraint - iNumLeftDeriv + 1, i);
-					else
-						aadblResponseBasisCoeffConstraint[l][i] = bffp.basisPairConstraintCoefficient (i, l);
+			for (int responseBasisCoefficientIndex = 0;
+				responseBasisCoefficientIndex < responseBasisCoefficientCount;
+				++responseBasisCoefficientIndex) {
+				if (responseBasisCoefficientIndex < predictorCount) {
+					predictorResponseConstraintValueArray[responseBasisCoefficientIndex] =
+						responseValueArray[responseBasisCoefficientIndex];
+				} else if (responseBasisCoefficientIndex < predictorCount + constraintCount) {
+					predictorResponseConstraintValueArray[responseBasisCoefficientIndex] =
+						segmentBasisFlexureConstraintArray[responseBasisCoefficientIndex - predictorCount].contraintValue();
+				} else if (responseBasisCoefficientIndex <
+					predictorCount + constraintCount + leftDerivativeCount) {
+					predictorResponseConstraintValueArray[responseBasisCoefficientIndex] =
+						leftEdgeDerivativeArray[responseBasisCoefficientIndex - predictorCount - constraintCount];
+				} else if (responseBasisCoefficientIndex <
+					predictorCount + constraintCount + leftDerivativeCount + rightDerivativeCount) {
+					predictorResponseConstraintValueArray[responseBasisCoefficientIndex] =
+						rightEdgeDerivativeArray[responseBasisCoefficientIndex - predictorCount - constraintCount - leftDerivativeCount];
+				} else {
+					predictorResponseConstraintValueArray[responseBasisCoefficientIndex] =
+						bestFitFlexurePenalizer.basisPairPenaltyConstraint (responseBasisCoefficientIndex);
 				}
 			}
-		} catch (java.lang.Exception e) {
+
+			for (int responseBasisCoefficientIndexI = 0;
+				responseBasisCoefficientIndexI < responseBasisCoefficientCount;
+				++responseBasisCoefficientIndexI) {
+				for (int responseBasisCoefficientIndexL = 0;
+					responseBasisCoefficientIndexL < responseBasisCoefficientCount;
+					++responseBasisCoefficientIndexL) {
+					double[] adblCalibBasisConstraintWeight = null;
+
+					if (0 != constraintCount && (
+						responseBasisCoefficientIndexL >= predictorCount &&
+						responseBasisCoefficientIndexL < predictorCount + constraintCount
+					)) {
+						adblCalibBasisConstraintWeight =
+							segmentBasisFlexureConstraintArray[responseBasisCoefficientIndexL - predictorCount].responseBasisCoeffWeights();
+					}
+
+					if (responseBasisCoefficientIndexL < predictorCount) {
+						responseBasisCoefficientConstraintMatrix[responseBasisCoefficientIndexL][responseBasisCoefficientIndexI] =
+							_basisEvaluator.shapedBasisFunctionResponse (
+								predictorOrdinateArray[responseBasisCoefficientIndexL],
+								responseBasisCoefficientIndexI
+							);
+					} else if (responseBasisCoefficientIndexL < predictorCount + constraintCount) {
+						responseBasisCoefficientConstraintMatrix[responseBasisCoefficientIndexL][responseBasisCoefficientIndexI] =
+							adblCalibBasisConstraintWeight[responseBasisCoefficientIndexI];
+					} else if (responseBasisCoefficientIndexL <
+						predictorCount + constraintCount + leftDerivativeCount) {
+						responseBasisCoefficientConstraintMatrix[responseBasisCoefficientIndexL][responseBasisCoefficientIndexI] =
+							_basisEvaluator.shapedBasisFunctionDerivative (
+								left(),
+								responseBasisCoefficientIndexL - predictorCount - constraintCount + 1,
+								responseBasisCoefficientIndexI
+							);
+					} else if (responseBasisCoefficientIndexL <
+						predictorCount + constraintCount + leftDerivativeCount + rightDerivativeCount) {
+						responseBasisCoefficientConstraintMatrix[responseBasisCoefficientIndexL][responseBasisCoefficientIndexI] =
+							_basisEvaluator.shapedBasisFunctionDerivative (
+								right(),
+								responseBasisCoefficientIndexL - predictorCount - constraintCount -
+									leftDerivativeCount + 1,
+								responseBasisCoefficientIndexI
+							);
+					} else {
+						responseBasisCoefficientConstraintMatrix[responseBasisCoefficientIndexL][responseBasisCoefficientIndexI] =
+							bestFitFlexurePenalizer.basisPairConstraintCoefficient (
+								responseBasisCoefficientIndexI,
+								responseBasisCoefficientIndexL
+							);
+					}
+				}
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return false;
 		}
 
-		org.drip.numerical.linearalgebra.LinearizationOutput lo =
-			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion
-				(aadblResponseBasisCoeffConstraint, adblPredictorResponseConstraintValue);
+		LinearizationOutput linearizationOutput = LinearSystemSolver.SolveUsingMatrixInversion (
+			responseBasisCoefficientConstraintMatrix,
+			predictorResponseConstraintValueArray
+		);
 
-		if (null == lo) return false;
-
-		double[] adblCalibResponseBasisCoeff = lo.getTransformedRHS();
-
-		if (null == adblCalibResponseBasisCoeff || adblCalibResponseBasisCoeff.length !=
-			iNumResponseBasisCoeff || null == (_responseBasisCoefficientToConstraintHessian =
-				lo.getTransformedMatrix()) || _responseBasisCoefficientToConstraintHessian.length !=
-					iNumResponseBasisCoeff || _responseBasisCoefficientToConstraintHessian[0].length !=
-						iNumResponseBasisCoeff)
+		if (null == linearizationOutput) {
 			return false;
+		}
 
-		for (int i = 0; i < iNumResponseBasisCoeff; ++i) {
-			if (!org.drip.numerical.common.NumberUtil.IsValid (_responseToBasisCoefficientSensitivity[i] =
-				adblCalibResponseBasisCoeff[i]))
+		double[] calibrationResponseBasisCoefficientArray = linearizationOutput.getTransformedRHS();
+
+		if (null == calibrationResponseBasisCoefficientArray ||
+			calibrationResponseBasisCoefficientArray.length != responseBasisCoefficientCount ||
+			null == (
+				_responseBasisCoefficientToConstraintHessian = linearizationOutput.getTransformedMatrix()
+			) ||
+			_responseBasisCoefficientToConstraintHessian.length != responseBasisCoefficientCount ||
+			_responseBasisCoefficientToConstraintHessian[0].length != responseBasisCoefficientCount) {
+			return false;
+		}
+
+		for (int responseBasisCoefficientIndex = 0;
+			responseBasisCoefficientIndex < responseBasisCoefficientCount;
+			++responseBasisCoefficientIndex) {
+			if (!NumberUtil.IsValid (
+				_responseToBasisCoefficientSensitivity[responseBasisCoefficientIndex] =
+				calibrationResponseBasisCoefficientArray[responseBasisCoefficientIndex])) {
 				return false;
+			}
 		}
 
 		return true;
@@ -527,241 +612,318 @@ public class LatentStateResponseModel
 	/**
 	 * Sensitivity Calibrator: Calibrate the Segment Manifest Measure Jacobian from the Calibration Inputs
 	 * 
-	 * @param ssciManifestSensitivity The Segment Manifest Calibration Sensitivity Inputs
-	 * @param aSBFCState Array of Segment State Basis Flexure Constraints
+	 * @param manifestSensitivitySegmentStateCalibrationInputs The Segment Manifest Calibration Sensitivity
+	 *  Inputs
+	 * @param stateSegmentBasisFlexureConstraintArray Array of Segment State Basis Flexure Constraints
 	 * 
 	 * @return The Manifest Sensitivity Coefficients
 	 */
 
 	public double[] calibrateManifestJacobian (
-		final org.drip.spline.params.SegmentStateCalibrationInputs ssciManifestSensitivity,
-		final org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFCState)
+		final SegmentStateCalibrationInputs manifestSensitivitySegmentStateCalibrationInputs,
+		final SegmentBasisFlexureConstraint[] stateSegmentBasisFlexureConstraintArray)
 	{
-		if (null == ssciManifestSensitivity) return null;
+		if (null == manifestSensitivitySegmentStateCalibrationInputs) {
+			return null;
+		}
 
-		double[] adblPredictorOrdinate = ssciManifestSensitivity.predictorOrdinates();
+		double[] predictorOrdinateArray =
+			manifestSensitivitySegmentStateCalibrationInputs.predictorOrdinates();
 
-		double[] adblResponseValueManifestSensitivity = ssciManifestSensitivity.responseValues();
+		double[] responseValueManifestSensitivityArray =
+			manifestSensitivitySegmentStateCalibrationInputs.responseValues();
 
-		double[] adblLeftEdgeDerivManifestSensitivity = ssciManifestSensitivity.leftEdgeDeriv();
+		double[] leftEdgeDerivativeManifestSensitivityArray =
+			manifestSensitivitySegmentStateCalibrationInputs.leftEdgeDeriv();
 
-		double[] adblRightEdgeDerivManifestSensitivity = ssciManifestSensitivity.rightEdgeDeriv();
+		double[] rightEdgeDerivativeManifestSensitivityArray =
+			manifestSensitivitySegmentStateCalibrationInputs.rightEdgeDeriv();
 
-		org.drip.spline.params.SegmentBestFitResponse sbfrManifestSensitivity =
-			ssciManifestSensitivity.bestFitResponse();
+		SegmentBasisFlexureConstraint[] manifestSensitivitySegmentBasisFlexureConstraintArray =
+			manifestSensitivitySegmentStateCalibrationInputs.flexureConstraint();
 
-		org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFCManifestSensitivity =
-			ssciManifestSensitivity.flexureConstraint();
+		int constraintCount = 0;
+		int responseBasisCoefficientCount = _responseToBasisCoefficientSensitivity.length;
+		int predictorOrdinateCount = null == predictorOrdinateArray ? 0 : predictorOrdinateArray.length;
+		double[] predictorResponseManifestSensitivityConstraintArray =
+			new double[responseBasisCoefficientCount];
+		int leftDerivativeManifestSensitivityCount = null == leftEdgeDerivativeManifestSensitivityArray ?
+			0 : leftEdgeDerivativeManifestSensitivityArray.length;
+		int rightDerivativeManifestSensitivityCount = null == rightEdgeDerivativeManifestSensitivityArray ?
+			0 : rightEdgeDerivativeManifestSensitivityArray.length;
+		double[][] responseCoefficientConstraintManifestSensitivityMatrix = new
+			double[responseBasisCoefficientCount][responseBasisCoefficientCount];
 
-		int iNumConstraint = 0;
-		int iNumResponseBasisCoeff = _responseToBasisCoefficientSensitivity.length;
-		int iNumPredictorOrdinate = null == adblPredictorOrdinate ? 0 : adblPredictorOrdinate.length;
-		double[] adblPredictorResponseManifestSensitivityConstraint = new double[iNumResponseBasisCoeff];
-		int iNumLeftDerivManifestSensitivity = null == adblLeftEdgeDerivManifestSensitivity ? 0 :
-			adblLeftEdgeDerivManifestSensitivity.length;
-		int iNumRightDerivManifestSensitivity = null == adblRightEdgeDerivManifestSensitivity ? 0 :
-			adblRightEdgeDerivManifestSensitivity.length;
-		double[][] aadblResponseCoeffConstraintManifestSensitivity = new
-			double[iNumResponseBasisCoeff][iNumResponseBasisCoeff];
+		if (null != stateSegmentBasisFlexureConstraintArray) {
+			int potentialConstraintCount = stateSegmentBasisFlexureConstraintArray.length;
 
-		if (null != aSBFCState) {
-			int iNumPotentialConstraint = aSBFCState.length;
-
-			for (int i = 0; i < iNumPotentialConstraint; ++i) {
-				if (null != aSBFCState[i]) ++iNumConstraint;
+			for (int potentialConstraintIndex = 0; potentialConstraintIndex < potentialConstraintCount;
+				++potentialConstraintIndex) {
+				if (null != stateSegmentBasisFlexureConstraintArray[potentialConstraintIndex]) {
+					++constraintCount;
+				}
 			}
 		}
 
-		if (iNumResponseBasisCoeff < iNumPredictorOrdinate + iNumLeftDerivManifestSensitivity +
-			iNumRightDerivManifestSensitivity + iNumConstraint)
+		if (responseBasisCoefficientCount < predictorOrdinateCount + leftDerivativeManifestSensitivityCount +
+			rightDerivativeManifestSensitivityCount + constraintCount) {
 			return null;
+		}
 
 		try {
-			org.drip.spline.segment.BestFitFlexurePenalizer bffpManifestSensitivity = new
-				org.drip.spline.segment.BestFitFlexurePenalizer (this, null == _segmentInelasticDesignControl ? null :
-					_segmentInelasticDesignControl.curvaturePenaltyControl(), null == _segmentInelasticDesignControl ? null : _segmentInelasticDesignControl.lengthPenaltyControl(),
-						sbfrManifestSensitivity, _basisEvaluator);
+			BestFitFlexurePenalizer manifestSensitivityBestFitFlexurePenalizer =
+				new BestFitFlexurePenalizer (
+					this,
+					null == _segmentInelasticDesignControl ?
+						null : _segmentInelasticDesignControl.curvaturePenaltyControl(),
+					null == _segmentInelasticDesignControl ?
+						null : _segmentInelasticDesignControl.lengthPenaltyControl(),
+					manifestSensitivitySegmentStateCalibrationInputs.bestFitResponse(),
+					_basisEvaluator
+				);
 
-			for (int j = 0; j < iNumResponseBasisCoeff; ++j) {
-				if (j < iNumPredictorOrdinate)
-					adblPredictorResponseManifestSensitivityConstraint[j] =
-						adblResponseValueManifestSensitivity[j];
-				else if (j < iNumPredictorOrdinate + iNumConstraint) {
-					adblPredictorResponseManifestSensitivityConstraint[j] = 0.;
-					org.drip.spline.params.SegmentBasisFlexureConstraint sbfcManifestSensitivity =
-						aSBFCManifestSensitivity[j - iNumPredictorOrdinate];
+			for (int responseBasisCoefficientIndex = 0;
+				responseBasisCoefficientIndex < responseBasisCoefficientCount;
+				++responseBasisCoefficientIndex) {
+				if (responseBasisCoefficientIndex < predictorOrdinateCount) {
+					predictorResponseManifestSensitivityConstraintArray[responseBasisCoefficientIndex] =
+						responseValueManifestSensitivityArray[responseBasisCoefficientIndex];
+				} else if (responseBasisCoefficientIndex < predictorOrdinateCount + constraintCount) {
+					predictorResponseManifestSensitivityConstraintArray[responseBasisCoefficientIndex] = 0.;
+					SegmentBasisFlexureConstraint manifestSensitivitySegmentBasisFlexureConstraint =
+						manifestSensitivitySegmentBasisFlexureConstraintArray[responseBasisCoefficientIndex - predictorOrdinateCount];
 
-					if (null != sbfcManifestSensitivity) {
-						adblPredictorResponseManifestSensitivityConstraint[j] =
-							sbfcManifestSensitivity.contraintValue();
+					if (null != manifestSensitivitySegmentBasisFlexureConstraint) {
+						predictorResponseManifestSensitivityConstraintArray[responseBasisCoefficientIndex] =
+							manifestSensitivitySegmentBasisFlexureConstraint.contraintValue();
 
-						double[] adblCalibConstraintWeightManifestSensitivity =
-							sbfcManifestSensitivity.responseBasisCoeffWeights();
+						double[] calibrationConstraintWeightManifestSensitivityArray =
+							manifestSensitivitySegmentBasisFlexureConstraint.responseBasisCoeffWeights();
 
-						for (int i = 0; i < iNumResponseBasisCoeff; ++i)
-							adblPredictorResponseManifestSensitivityConstraint[j] -=
-									_responseToBasisCoefficientSensitivity[i] * adblCalibConstraintWeightManifestSensitivity[i];
+						for (int i = 0; i < responseBasisCoefficientCount; ++i) {
+							predictorResponseManifestSensitivityConstraintArray[responseBasisCoefficientIndex] -=
+								_responseToBasisCoefficientSensitivity[i] *
+								calibrationConstraintWeightManifestSensitivityArray[i];
+						}
 					}
-				} else if (j < iNumPredictorOrdinate + iNumConstraint + iNumLeftDerivManifestSensitivity)
-					adblPredictorResponseManifestSensitivityConstraint[j] =
-						adblLeftEdgeDerivManifestSensitivity[j - iNumPredictorOrdinate - iNumConstraint];
-				else if (j < iNumPredictorOrdinate + iNumConstraint + iNumLeftDerivManifestSensitivity +
-					iNumRightDerivManifestSensitivity)
-					adblPredictorResponseManifestSensitivityConstraint[j] =
-						adblRightEdgeDerivManifestSensitivity[j - iNumPredictorOrdinate - iNumConstraint -
-						    iNumLeftDerivManifestSensitivity];
-				else
-					adblPredictorResponseManifestSensitivityConstraint[j] =
-						bffpManifestSensitivity.basisPairPenaltyConstraint (j);
-			}
-
-			for (int i = 0; i < iNumResponseBasisCoeff; ++i) {
-				for (int l = 0; l < iNumResponseBasisCoeff; ++l) {
-					double[] adblCalibBasisConstraintWeight = null;
-
-					if (0 != iNumConstraint && (l >= iNumPredictorOrdinate && l < iNumPredictorOrdinate +
-						iNumConstraint))
-						adblCalibBasisConstraintWeight = aSBFCState[l -
-						    iNumPredictorOrdinate].responseBasisCoeffWeights();
-
-					if (l < iNumPredictorOrdinate)
-						aadblResponseCoeffConstraintManifestSensitivity[l][i] =
-							_basisEvaluator.shapedBasisFunctionResponse (adblPredictorOrdinate[l], i);
-					else if (l < iNumPredictorOrdinate + iNumConstraint)
-						aadblResponseCoeffConstraintManifestSensitivity[l][i] =
-							adblCalibBasisConstraintWeight[i];
-					else if (l < iNumPredictorOrdinate + iNumConstraint + iNumLeftDerivManifestSensitivity)
-						aadblResponseCoeffConstraintManifestSensitivity[l][i] =
-							_basisEvaluator.shapedBasisFunctionDerivative (left(), l - iNumPredictorOrdinate -
-								iNumConstraint + 1, i);
-					else if (l < iNumPredictorOrdinate + iNumConstraint + iNumLeftDerivManifestSensitivity +
-						iNumRightDerivManifestSensitivity)
-						aadblResponseCoeffConstraintManifestSensitivity[l][i] =
-							_basisEvaluator.shapedBasisFunctionDerivative (right(), l - iNumPredictorOrdinate -
-								iNumConstraint - iNumLeftDerivManifestSensitivity + 1, i);
-					else
-						aadblResponseCoeffConstraintManifestSensitivity[l][i] =
-							bffpManifestSensitivity.basisPairConstraintCoefficient (i, l);
+				} else if (responseBasisCoefficientIndex <
+					predictorOrdinateCount + constraintCount + leftDerivativeManifestSensitivityCount) {
+					predictorResponseManifestSensitivityConstraintArray[responseBasisCoefficientIndex] =
+						leftEdgeDerivativeManifestSensitivityArray[responseBasisCoefficientIndex - predictorOrdinateCount - constraintCount];
+				} else if (responseBasisCoefficientIndex < predictorOrdinateCount + constraintCount +
+					leftDerivativeManifestSensitivityCount + rightDerivativeManifestSensitivityCount) {
+					predictorResponseManifestSensitivityConstraintArray[responseBasisCoefficientIndex] =
+						rightEdgeDerivativeManifestSensitivityArray[responseBasisCoefficientIndex - predictorOrdinateCount - constraintCount - leftDerivativeManifestSensitivityCount];
+				} else {
+					predictorResponseManifestSensitivityConstraintArray[responseBasisCoefficientIndex] =
+						manifestSensitivityBestFitFlexurePenalizer.basisPairPenaltyConstraint (
+							responseBasisCoefficientIndex
+						);
 				}
 			}
-		} catch (java.lang.Exception e) {
+
+			for (int responseBasisCoefficientIndexI = 0;
+				responseBasisCoefficientIndexI < responseBasisCoefficientCount;
+				++responseBasisCoefficientIndexI) {
+				for (int responseBasisCoefficientIndexL = 0;
+					responseBasisCoefficientIndexL < responseBasisCoefficientCount;
+					++responseBasisCoefficientIndexL) {
+					double[] adblCalibBasisConstraintWeight = null;
+
+					if (0 != constraintCount && (
+						responseBasisCoefficientIndexL >= predictorOrdinateCount &&
+						responseBasisCoefficientIndexL < predictorOrdinateCount + constraintCount
+					)) {
+						adblCalibBasisConstraintWeight =
+							stateSegmentBasisFlexureConstraintArray[responseBasisCoefficientIndexL - predictorOrdinateCount].responseBasisCoeffWeights();
+					}
+
+					if (responseBasisCoefficientIndexL < predictorOrdinateCount) {
+						responseCoefficientConstraintManifestSensitivityMatrix[responseBasisCoefficientIndexL][responseBasisCoefficientIndexI] =
+							_basisEvaluator.shapedBasisFunctionResponse (predictorOrdinateArray[responseBasisCoefficientIndexL], responseBasisCoefficientIndexI);
+					} else if (responseBasisCoefficientIndexL < predictorOrdinateCount + constraintCount) {
+						responseCoefficientConstraintManifestSensitivityMatrix[responseBasisCoefficientIndexL][responseBasisCoefficientIndexI] =
+							adblCalibBasisConstraintWeight[responseBasisCoefficientIndexI];
+					} else if (responseBasisCoefficientIndexL <
+						predictorOrdinateCount + constraintCount + leftDerivativeManifestSensitivityCount) {
+						responseCoefficientConstraintManifestSensitivityMatrix[responseBasisCoefficientIndexL][responseBasisCoefficientIndexI] =
+							_basisEvaluator.shapedBasisFunctionDerivative (
+								left(),
+								responseBasisCoefficientIndexL - predictorOrdinateCount - constraintCount + 1,
+								responseBasisCoefficientIndexI
+							);
+					} else if (responseBasisCoefficientIndexL <
+						predictorOrdinateCount + constraintCount + leftDerivativeManifestSensitivityCount +
+							rightDerivativeManifestSensitivityCount) {
+						responseCoefficientConstraintManifestSensitivityMatrix[responseBasisCoefficientIndexL][responseBasisCoefficientIndexI] =
+							_basisEvaluator.shapedBasisFunctionDerivative (
+								right(),
+								responseBasisCoefficientIndexL - predictorOrdinateCount - constraintCount -
+									leftDerivativeManifestSensitivityCount + 1,
+								responseBasisCoefficientIndexI
+							);
+					} else {
+						responseCoefficientConstraintManifestSensitivityMatrix[responseBasisCoefficientIndexL][responseBasisCoefficientIndexI] =
+							manifestSensitivityBestFitFlexurePenalizer.basisPairConstraintCoefficient (
+								responseBasisCoefficientIndexI,
+								responseBasisCoefficientIndexL
+							);
+					}
+				}
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.numerical.linearalgebra.LinearizationOutput lo =
-			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion
-				(aadblResponseCoeffConstraintManifestSensitivity,
-					adblPredictorResponseManifestSensitivityConstraint);
+		LinearizationOutput linearizationOutput = LinearSystemSolver.SolveUsingMatrixInversion (
+			responseCoefficientConstraintManifestSensitivityMatrix,
+			predictorResponseManifestSensitivityConstraintArray
+		);
 
-		return null == lo ? null : lo.getTransformedRHS();
+		return null == linearizationOutput ? null : linearizationOutput.getTransformedRHS();
 	}
 
 	/**
 	 * Sensitivity Calibrator: Calibrate the Segment Local Manifest Jacobian from the Calibration Parameter
 	 * 	Set
 	 * 
-	 * @param strManifestMeasure Latent State Manifest Measure
-	 * @param ssciManifestSensitivity The Segment Manifest Calibration Parameter Sensitivity
-	 * @param aSBFCState Array of Segment State Basis Flexure Constraints
+	 * @param manifestMeasure Latent State Manifest Measure
+	 * @param manifestSensitivitySegmentStateCalibrationInputs The Segment Manifest Calibration Parameter
+	 *  Sensitivity
+	 * @param stateSegmentBasisFlexureConstraintArray Array of Segment State Basis Flexure Constraints
 	 * 
 	 * @return TRUE - Local Manifest Sensitivity Calibration Successful
 	 */
 
 	public boolean calibrateLocalManifestJacobian (
-		final java.lang.String strManifestMeasure,
-		final org.drip.spline.params.SegmentStateCalibrationInputs ssciManifestSensitivity,
-		final org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFCState)
+		final String manifestMeasure,
+		final SegmentStateCalibrationInputs manifestSensitivitySegmentStateCalibrationInputs,
+		final SegmentBasisFlexureConstraint[] stateSegmentBasisFlexureConstraintArray)
 	{
-		org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity
-			(strManifestMeasure);
+		LatentStateManifestSensitivity latentStateManifestSensitivity = manifestSensitivity (
+			manifestMeasure
+		);
 
-		if (null == lsms) return false;
+		if (null == latentStateManifestSensitivity) {
+			return false;
+		}
 
-		double[] adblDBasisCoeffDLocalManifest = calibrateManifestJacobian (ssciManifestSensitivity,
-			aSBFCState);
+		double[] basisCoefficientToLocalManifestSensitivityArray = calibrateManifestJacobian (
+			manifestSensitivitySegmentStateCalibrationInputs,
+			stateSegmentBasisFlexureConstraintArray
+		);
 
-		return null == adblDBasisCoeffDLocalManifest || adblDBasisCoeffDLocalManifest.length !=
-			_responseToBasisCoefficientSensitivity.length ? false : lsms.setDBasisCoeffDLocalManifest
-				(adblDBasisCoeffDLocalManifest);
+		return null != basisCoefficientToLocalManifestSensitivityArray &&
+			basisCoefficientToLocalManifestSensitivityArray.length ==
+				_responseToBasisCoefficientSensitivity.length &&
+			latentStateManifestSensitivity.setDBasisCoeffDLocalManifest (
+				basisCoefficientToLocalManifestSensitivityArray
+			);
 	}
 
 	/**
-	 * Sensitivity Calibrator: Calibrate the Segment Preceeding Manifest Jacobian from the Calibration
+	 * Sensitivity Calibrator: Calibrate the Segment Preceding Manifest Jacobian from the Calibration
 	 *	Parameter Set
 	 * 
-	 * @param strManifestMeasure Latent State Manifest
-	 * @param ssciPreceedingManifestSensitivity The Segment Preceeding Manifest Calibration Parameter
-	 * 	Sensitivity
+	 * @param manifestMeasure Latent State Manifest
+	 * @param precedingManifestSensitivitySegmentStateCalibrationInputs The Segment Preceding Manifest
+	 *  Calibration Parameter Sensitivity
 	 * 
-	 * @return TRUE - Preceeding Manifest Sensitivity Calibration Successful
+	 * @return TRUE - Preceding Manifest Sensitivity Calibration Successful
 	 */
 
 	public boolean calibratePreceedingManifestJacobian (
-		final java.lang.String strManifestMeasure,
-		final org.drip.spline.params.SegmentStateCalibrationInputs ssciPreceedingManifestSensitivity)
+		final String manifestMeasure,
+		final SegmentStateCalibrationInputs precedingManifestSensitivitySegmentStateCalibrationInputs)
 	{
-		org.drip.spline.segment.LatentStateManifestSensitivity lsms = manifestSensitivity
-			(strManifestMeasure);
+		LatentStateManifestSensitivity latentStateManifestSensitivity = manifestSensitivity (
+			manifestMeasure
+		);
 
-		if (null == lsms) return false;
+		if (null == latentStateManifestSensitivity) {
+			return false;
+		}
 
-		double[] adblDBasisCoeffDPreceedingManifest = calibrateManifestJacobian
-			(ssciPreceedingManifestSensitivity, null);
+		double[] basisCoefficientToPrecedingManifestSensitivityArray = calibrateManifestJacobian (
+			precedingManifestSensitivitySegmentStateCalibrationInputs,
+			null
+		);
 
-		return null == adblDBasisCoeffDPreceedingManifest || adblDBasisCoeffDPreceedingManifest.length !=
-			_responseToBasisCoefficientSensitivity.length ? false : lsms.setDBasisCoeffDPreceedingManifest
-				(adblDBasisCoeffDPreceedingManifest);
+		return null != basisCoefficientToPrecedingManifestSensitivityArray &&
+			basisCoefficientToPrecedingManifestSensitivityArray.length ==
+				_responseToBasisCoefficientSensitivity.length &&
+			latentStateManifestSensitivity.setDBasisCoeffDPreceedingManifest (
+				basisCoefficientToPrecedingManifestSensitivityArray
+			);
 	}
 
 	/**
 	 * Calibrate the coefficients from the prior Predictor/Response Segment, the Constraint, and fitness
 	 * 	Weights
 	 * 
-	 * @param csPreceeding Preceeding Predictor/Response Segment
-	 * @param srvcState The Segment State Response Value Constraint
-	 * @param sbfrState Segment's Best Fit Weighted State Response Values
+	 * @param precedingLatentStateResponseModel Preceeding Predictor/Response Segment
+	 * @param stateSegmentResponseValueConstraint The Segment State Response Value Constraint
+	 * @param stateSegmentBestFitResponse Segment's Best Fit Weighted State Response Values
 	 * 
 	 * @return TRUE - If the calibration succeeds
 	 */
 
 	public boolean calibrate (
-		final org.drip.spline.segment.LatentStateResponseModel csPreceeding,
-		final org.drip.spline.params.SegmentResponseValueConstraint srvcState,
-		final org.drip.spline.params.SegmentBestFitResponse sbfrState)
+		final LatentStateResponseModel precedingLatentStateResponseModel,
+		final SegmentResponseValueConstraint stateSegmentResponseValueConstraint,
+		final SegmentBestFitResponse stateSegmentBestFitResponse)
 	{
-		int iCk = _segmentInelasticDesignControl.Ck();
+		int ck = _segmentInelasticDesignControl.Ck();
 
-		org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFCState = null == srvcState ? null : new
-			org.drip.spline.params.SegmentBasisFlexureConstraint[] {srvcState.responseIndexedBasisConstraint
-				(_basisEvaluator, this)};
+		SegmentBasisFlexureConstraint[] stateSegmentBasisFlexureConstraintArray =
+			null == stateSegmentResponseValueConstraint ? null : new SegmentBasisFlexureConstraint[] {
+				stateSegmentResponseValueConstraint.responseIndexedBasisConstraint (
+					_basisEvaluator,
+					this
+				)
+			};
 
-		double[] adblManifestJacobianDerivAtLeftOrdinate = null;
+		double[] manifestJacobianDerivativeAtLeftOrdinateArray = null;
 
-		if (0 != iCk) {
-			adblManifestJacobianDerivAtLeftOrdinate = new double[iCk];
+		if (0 != ck) {
+			manifestJacobianDerivativeAtLeftOrdinateArray = new double[ck];
 
-			for (int i = 0; i < iCk; ++i)
-				adblManifestJacobianDerivAtLeftOrdinate[i] = 0.;
+			for (int ci = 0; ci < ck; ++ci) {
+				manifestJacobianDerivativeAtLeftOrdinateArray[ci] = 0.;
+			}
 		}
 
-		if (null == csPreceeding) {
+		if (null == precedingLatentStateResponseModel) {
 			try {
-				double[] adblStateDerivAtLeftOrdinate = null;
+				double[] stateDerivationAtLeftOrdinateArray = null;
 
-				if (0 != iCk) {
-					adblStateDerivAtLeftOrdinate = new double[iCk];
+				if (0 != ck) {
+					stateDerivationAtLeftOrdinateArray = new double[ck];
 
-					for (int i = 0; i < iCk; ++i)
-						adblStateDerivAtLeftOrdinate[i] = _basisEvaluator.responseValueDerivative
-							(_responseToBasisCoefficientSensitivity, left(), i);
+					for (int ci = 0; ci < ck; ++ci) {
+						stateDerivationAtLeftOrdinateArray[ci] = _basisEvaluator.responseValueDerivative (
+							_responseToBasisCoefficientSensitivity,
+							left(),
+							ci
+						);
+					}
 				}
 
-				return calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (new double[]
-					{left()}, new double[] {_basisEvaluator.responseValue (_responseToBasisCoefficientSensitivity, left())},
-						adblStateDerivAtLeftOrdinate, null, aSBFCState, sbfrState));
-			} catch (java.lang.Exception e) {
+				return calibrateState (
+					new SegmentStateCalibrationInputs (
+						new double[] {left()},
+						new double[] {
+							_basisEvaluator.responseValue (_responseToBasisCoefficientSensitivity, left())
+						},
+						stateDerivationAtLeftOrdinateArray,
+						null,
+						stateSegmentBasisFlexureConstraintArray,
+						stateSegmentBestFitResponse
+					)
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
@@ -769,10 +931,17 @@ public class LatentStateResponseModel
 		}
 
 		try {
-			return calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (new double[]
-				{left()}, new double[] {csPreceeding.responseValue (left())}, 0 == iCk ? null :
-					transmissionCk (left(), csPreceeding, iCk), null, aSBFCState, sbfrState));
-		} catch (java.lang.Exception e) {
+			return calibrateState (
+				new SegmentStateCalibrationInputs (
+					new double[] {left()},
+					new double[] {precedingLatentStateResponseModel.responseValue (left())},
+					0 == ck ? null : transmissionCk (left(), precedingLatentStateResponseModel, ck),
+					null,
+					stateSegmentBasisFlexureConstraintArray,
+					stateSegmentBestFitResponse
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -783,27 +952,36 @@ public class LatentStateResponseModel
 	 * Calibrate the coefficients from the prior Segment and the Response Value at the Right Predictor
 	 *  Ordinate
 	 * 
-	 * @param csPreceeding Preceeding Predictor/Response Segment
-	 * @param dblRightStateValue Response Value at the Right Predictor Ordinate
-	 * @param sbfrState Segment's Best Fit Weighted Response Values
+	 * @param precedingLatentStateResponseModel Preceding Predictor/Response Segment
+	 * @param rightStateValue Response Value at the Right Predictor Ordinate
+	 * @param stateSegmentBestFitResponse Segment's Best Fit Weighted Response Values
 	 * 
 	 * @return TRUE - If the calibration succeeds
 	 */
 
 	public boolean calibrate (
-		final LatentStateResponseModel csPreceeding,
-		final double dblRightStateValue,
-		final org.drip.spline.params.SegmentBestFitResponse sbfrState)
+		final LatentStateResponseModel precedingLatentStateResponseModel,
+		final double rightStateValue,
+		final SegmentBestFitResponse stateSegmentBestFitResponse)
 	{
-		if (null == csPreceeding) return false;
+		if (null == precedingLatentStateResponseModel) {
+			return false;
+		}
 
-		int iCk = _segmentInelasticDesignControl.Ck();
+		int ck = _segmentInelasticDesignControl.Ck();
 
 		try {
-			return calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (new double[]
-				{left(), right()}, new double[] {csPreceeding.responseValue (left()), dblRightStateValue}, 0
-					!= iCk ? csPreceeding.transmissionCk (left(), this, iCk) : null, null, null, sbfrState));
-		} catch (java.lang.Exception e) {
+			return calibrateState (
+				new SegmentStateCalibrationInputs (
+					new double[] {left(), right()},
+					new double[] {precedingLatentStateResponseModel.responseValue (left()), rightStateValue},
+					0 != ck ? precedingLatentStateResponseModel.transmissionCk (left(), this, ck) : null,
+					null,
+					null,
+					stateSegmentBestFitResponse
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
