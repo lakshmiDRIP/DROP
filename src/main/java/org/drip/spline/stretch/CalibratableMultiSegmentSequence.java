@@ -2,7 +2,19 @@
 package org.drip.spline.stretch;
 
 import org.drip.function.definition.R1ToR1;
+import org.drip.function.r1tor1solver.FixedPointFinderOutput;
+import org.drip.function.r1tor1solver.FixedPointFinderZheng;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.differentiation.WengertJacobian;
+import org.drip.numerical.integration.R1ToR1Integrator;
+import org.drip.spline.params.SegmentBasisFlexureConstraint;
+import org.drip.spline.params.SegmentCustomBuilderControl;
+import org.drip.spline.params.SegmentPredictorResponseDerivative;
+import org.drip.spline.params.SegmentResponseValueConstraint;
+import org.drip.spline.params.SegmentStateCalibrationInputs;
+import org.drip.spline.params.StretchBestFitResponse;
 import org.drip.spline.segment.LatentStateResponseModel;
+import org.drip.spline.segment.Monotonocity;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -122,97 +134,137 @@ public class CalibratableMultiSegmentSequence
 
 	private String _name = "";
 	private SegmentSequenceBuilder _segmentSequenceBuilder = null;
+	private WengertJacobian _coefficientToEdgeParamsWengertJacobian = null;
 	private LatentStateResponseModel[] _latentStateResponseModelArray = null;
-	private org.drip.spline.params.SegmentCustomBuilderControl[] _aSCBC = null;
-	private org.drip.numerical.differentiation.WengertJacobian _wjDCoeffDEdgeParams = null;
+	private SegmentCustomBuilderControl[] _segmentCustomBuilderControlArray = null;
 
 	private boolean setDCoeffDEdgeParams (
-		final int iNodeIndex,
-		final org.drip.numerical.differentiation.WengertJacobian wjDCoeffDEdgeParams)
+		final int nodeIndex,
+		final WengertJacobian coefficientToEdgeParamsWengertJacobian)
 	{
-		if (null == wjDCoeffDEdgeParams) return false;
-
-		int iParameterIndex = 0 == iNodeIndex ? 0 : 2;
-
-		if (!_wjDCoeffDEdgeParams.accumulatePartialFirstDerivative (0, iNodeIndex,
-			wjDCoeffDEdgeParams.firstDerivative (0, iParameterIndex)))
+		if (null == coefficientToEdgeParamsWengertJacobian) {
 			return false;
+		}
 
-		if (!_wjDCoeffDEdgeParams.accumulatePartialFirstDerivative (1, iNodeIndex,
-			wjDCoeffDEdgeParams.firstDerivative (1, iParameterIndex)))
+		int parameterIndex = 0 == nodeIndex ? 0 : 2;
+
+		if (!_coefficientToEdgeParamsWengertJacobian.accumulatePartialFirstDerivative (
+			0,
+			nodeIndex,
+			coefficientToEdgeParamsWengertJacobian.firstDerivative (0, parameterIndex)
+		)) {
 			return false;
+		}
 
-		if (!_wjDCoeffDEdgeParams.accumulatePartialFirstDerivative (2, iNodeIndex,
-			wjDCoeffDEdgeParams.firstDerivative (2, iParameterIndex)))
+		if (!_coefficientToEdgeParamsWengertJacobian.accumulatePartialFirstDerivative (
+			1,
+			nodeIndex,
+			coefficientToEdgeParamsWengertJacobian.firstDerivative (1, parameterIndex)
+		)) {
 			return false;
+		}
 
-		return _wjDCoeffDEdgeParams.accumulatePartialFirstDerivative (3, iNodeIndex,
-			wjDCoeffDEdgeParams.firstDerivative (3, iParameterIndex));
+		if (!_coefficientToEdgeParamsWengertJacobian.accumulatePartialFirstDerivative (
+			2,
+			nodeIndex,
+			coefficientToEdgeParamsWengertJacobian.firstDerivative (2, parameterIndex)
+		)) {
+			return false;
+		}
+
+		return _coefficientToEdgeParamsWengertJacobian.accumulatePartialFirstDerivative (
+			3,
+			nodeIndex,
+			coefficientToEdgeParamsWengertJacobian.firstDerivative (3, parameterIndex)
+		);
 	}
 
-	private final org.drip.numerical.differentiation.WengertJacobian setDResponseDEdgeResponse (
-		final int iNodeIndex,
-		final org.drip.numerical.differentiation.WengertJacobian wjDResponseDEdgeParams)
+	private final WengertJacobian setDResponseDEdgeResponse (
+		final int nodeIndex,
+		final WengertJacobian responseToEdgeParamsWengertJacobian)
 	{
-		if (null == wjDResponseDEdgeParams) return null;
+		if (null == responseToEdgeParamsWengertJacobian) {
+			return null;
+		}
 
-		int iNumSegment = _latentStateResponseModelArray.length;
-		org.drip.numerical.differentiation.WengertJacobian wjDResponseDEdgeResponse = null;
+		WengertJacobian responseToEdgeWengertJacobian = null;
+		int segmentCount = _latentStateResponseModelArray.length;
 
 		try {
-			wjDResponseDEdgeResponse = new org.drip.numerical.differentiation.WengertJacobian (1, iNumSegment + 1);
-		} catch (java.lang.Exception e) {
+			responseToEdgeWengertJacobian = new WengertJacobian (1, segmentCount + 1);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		for (int i = 0; i <= iNumSegment; ++i) {
-			if (i == iNodeIndex) {
-				if (!wjDResponseDEdgeResponse.accumulatePartialFirstDerivative (0, i,
-					wjDResponseDEdgeParams.firstDerivative (0,
-						org.drip.spline.segment.LatentStateResponseModel.LEFT_NODE_VALUE_PARAMETER_INDEX)) ||
-							!wjDResponseDEdgeResponse.accumulatePartialFirstDerivative (0, i + 1,
-								wjDResponseDEdgeParams.firstDerivative (0,
-									org.drip.spline.segment.LatentStateResponseModel.RIGHT_NODE_VALUE_PARAMETER_INDEX)))
+		for (int segmentIndex = 0; segmentIndex <= segmentCount; ++segmentIndex) {
+			if (segmentIndex == nodeIndex) {
+				if (!responseToEdgeWengertJacobian.accumulatePartialFirstDerivative (
+					0,
+					segmentIndex,
+					responseToEdgeParamsWengertJacobian.firstDerivative (
+						0,
+						LatentStateResponseModel.LEFT_NODE_VALUE_PARAMETER_INDEX
+					)
+				) || !responseToEdgeWengertJacobian.accumulatePartialFirstDerivative (
+					0,
+					segmentIndex + 1,
+					responseToEdgeParamsWengertJacobian.firstDerivative (
+						0,
+						LatentStateResponseModel.RIGHT_NODE_VALUE_PARAMETER_INDEX
+					)
+				)) {
 					return null;
+				}
 			}
 		}
 
-		return wjDResponseDEdgeResponse;
+		return responseToEdgeWengertJacobian;
 	}
 
 	/**
 	 * <i>CalibratableMultiSegmentSequence</i> constructor - Construct a sequence of Basis Spline Segments
 	 * 
-	 * @param strName Name of the Stretch
-	 * @param aCS Array of Segments
-	 * @param aSCBC Array of Segment Builder Parameters
+	 * @param name Name of the Stretch
+	 * @param latentStateResponseModelArray Array of Segments
+	 * @param segmentCustomBuilderControlArray Array of Segment Builder Parameters
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	public CalibratableMultiSegmentSequence (
-		final java.lang.String strName,
-		final org.drip.spline.segment.LatentStateResponseModel[] aCS,
-		final org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC)
-		throws java.lang.Exception
+		final String name,
+		final LatentStateResponseModel[] latentStateResponseModelArray,
+		final SegmentCustomBuilderControl[] segmentCustomBuilderControlArray)
+		throws Exception
 	{
 		super (null);
 
-		if (null == aCS || null == aSCBC || null == (_name = strName) || _name.isEmpty())
-			throw new java.lang.Exception ("CalibratableMultiSegmentSequence ctr => Invalid inputs!");
+		if (null == latentStateResponseModelArray || null == segmentCustomBuilderControlArray ||
+			null == (_name = name) || _name.isEmpty()) {
+			throw new Exception ("CalibratableMultiSegmentSequence ctr => Invalid inputs!");
+		}
 
-		int iNumSegment = aCS.length;
-		_latentStateResponseModelArray = new org.drip.spline.segment.LatentStateResponseModel[iNumSegment];
-		_aSCBC = new org.drip.spline.params.SegmentCustomBuilderControl[iNumSegment];
+		int segmentCount = latentStateResponseModelArray.length;
+		_latentStateResponseModelArray = new LatentStateResponseModel[segmentCount];
+		_segmentCustomBuilderControlArray = new SegmentCustomBuilderControl[segmentCount];
 
-		if (0 == iNumSegment || iNumSegment != aSCBC.length)
-			throw new java.lang.Exception ("CalibratableMultiSegmentSequence ctr => Invalid inputs!");
+		if (0 == segmentCount || segmentCount != segmentCustomBuilderControlArray.length) {
+			throw new Exception ("CalibratableMultiSegmentSequence ctr => Invalid inputs!");
+		}
 
-		for (int i = 0; i < iNumSegment; ++i) {
-			if (null == (_latentStateResponseModelArray[i] = aCS[i]) || null == (_aSCBC[i] = aSCBC[i]))
-				throw new java.lang.Exception ("CalibratableMultiSegmentSequence ctr => Invalid inputs!");
+		for (int segmentIndex = 0; segmentIndex < segmentCount; ++segmentIndex) {
+			if (null == (
+					_latentStateResponseModelArray[segmentIndex] =
+					latentStateResponseModelArray[segmentIndex]
+				) || null == (
+					_segmentCustomBuilderControlArray[segmentIndex] =
+					segmentCustomBuilderControlArray[segmentIndex]
+				)
+			) {
+				throw new Exception ("CalibratableMultiSegmentSequence ctr => Invalid inputs!");
+			}
 		}
 	}
 
@@ -221,68 +273,90 @@ public class CalibratableMultiSegmentSequence
 		return _name;
 	}
 
-	@Override public org.drip.spline.segment.LatentStateResponseModel[] segments()
+	@Override public LatentStateResponseModel[] segments()
 	{
 		return _latentStateResponseModelArray;
 	}
 
-	@Override public org.drip.spline.params.SegmentCustomBuilderControl[] segmentBuilderControl()
+	@Override public SegmentCustomBuilderControl[] segmentBuilderControl()
 	{
-		return _aSCBC;
+		return _segmentCustomBuilderControlArray;
 	}
 
 	@Override public boolean setup (
-		final org.drip.spline.stretch.SegmentSequenceBuilder ssb,
-		final int iCalibrationDetail)
+		final SegmentSequenceBuilder segmentSequenceBuilder,
+		final int calibrationDetail)
 	{
-		if (null == (_segmentSequenceBuilder = ssb) || !_segmentSequenceBuilder.setStretch (this)) return false;
+		if (null == (_segmentSequenceBuilder = segmentSequenceBuilder) ||
+			!_segmentSequenceBuilder.setStretch (this)) {
+			return false;
+		}
 
-		if (org.drip.spline.stretch.BoundarySettings.BOUNDARY_CONDITION_FLOATING ==
+		if (BoundarySettings.BOUNDARY_CONDITION_FLOATING ==
 			_segmentSequenceBuilder.getCalibrationBoundaryCondition().boundaryCondition()) {
-			if (!_segmentSequenceBuilder.calibStartingSegment (0.) || !_segmentSequenceBuilder.calibSegmentSequence (1) ||
-				!_segmentSequenceBuilder.manifestMeasureSensitivity (0.))
+			if (!_segmentSequenceBuilder.calibStartingSegment (0.) ||
+				!_segmentSequenceBuilder.calibSegmentSequence (1) ||
+				!_segmentSequenceBuilder.manifestMeasureSensitivity (0.)
+			) {
 				return false;
-		} else if (0 != (org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE & iCalibrationDetail)) {
-			org.drip.function.r1tor1solver.FixedPointFinderOutput fpop = null;
+			}
+		} else if (0 != (MultiSegmentSequence.CALIBRATE & calibrationDetail)) {
+			FixedPointFinderOutput fixedPointFinderOutput = null;
 
-			if (null == fpop || !fpop.containsRoot()) {
+			if (null == fixedPointFinderOutput || !fixedPointFinderOutput.containsRoot()) {
 				try {
-					fpop = new org.drip.function.r1tor1solver.FixedPointFinderZheng (0., this,
-						true).findRoot();
-				} catch (java.lang.Exception e) {
+					fixedPointFinderOutput = new FixedPointFinderZheng (
+						0.,
+						this,
+						true
+					).findRoot();
+				} catch (Exception e) {
 					e.printStackTrace();
 
 					return false;
 				}
 			}
 
-			if (null == fpop || !org.drip.numerical.common.NumberUtil.IsValid (fpop.getRoot()) ||
+			if (null == fixedPointFinderOutput || !NumberUtil.IsValid (fixedPointFinderOutput.getRoot()) ||
 				!_segmentSequenceBuilder.manifestMeasureSensitivity (0.)) {
-				System.out.println ("FPOP: " + fpop);
+				System.out.println ("FPOP: " + fixedPointFinderOutput);
 
 				return false;
 			}
 		}
 
-		if (0 != (org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE_JACOBIAN & iCalibrationDetail)) {
-			int iNumSegment = _latentStateResponseModelArray.length;
+		if (0 != (MultiSegmentSequence.CALIBRATE_JACOBIAN & calibrationDetail)) {
+			int segmentCount = _latentStateResponseModelArray.length;
 
 			try {
-				if (null == (_wjDCoeffDEdgeParams = new org.drip.numerical.differentiation.WengertJacobian
-					(_latentStateResponseModelArray[0].basisEvaluator().numBasis(), iNumSegment + 1)))
+				if (null == (
+					_coefficientToEdgeParamsWengertJacobian = new WengertJacobian (
+						_latentStateResponseModelArray[0].basisEvaluator().numBasis(),
+						segmentCount + 1
+					)
+				)) {
 					return false;
-			} catch (java.lang.Exception e) {
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return false;
 			}
 
-			org.drip.numerical.differentiation.WengertJacobian wjHead = _latentStateResponseModelArray[0].jackDCoeffDEdgeInputs();
+			WengertJacobian headWengertJacobian = _latentStateResponseModelArray[0].jackDCoeffDEdgeInputs();
 
-			if (!setDCoeffDEdgeParams (0, wjHead) || !setDCoeffDEdgeParams (1, wjHead)) return false;
+			if (!setDCoeffDEdgeParams (0, headWengertJacobian) ||
+				!setDCoeffDEdgeParams (1, headWengertJacobian)) {
+				return false;
+			}
 
-			for (int i = 1; i < iNumSegment; ++i) {
-				if (!setDCoeffDEdgeParams (i + 1, _latentStateResponseModelArray[i].jackDCoeffDEdgeInputs())) return false;
+			for (int segmentIndex = 1; segmentIndex < segmentCount; ++segmentIndex) {
+				if (!setDCoeffDEdgeParams (
+					segmentIndex + 1,
+					_latentStateResponseModelArray[segmentIndex].jackDCoeffDEdgeInputs()
+				)) {
+					return false;
+				}
 			}
 		}
 
@@ -290,16 +364,23 @@ public class CalibratableMultiSegmentSequence
 	}
 
 	@Override public boolean setup (
-		final org.drip.spline.params.SegmentResponseValueConstraint srvcLeading,
-		final org.drip.spline.params.SegmentResponseValueConstraint[] aSRVC,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final org.drip.spline.stretch.BoundarySettings bs,
-		final int iCalibrationDetail)
+		final SegmentResponseValueConstraint leadingSegmentResponseValueConstraint,
+		final SegmentResponseValueConstraint[] segmentResponseValueConstraintArray,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final BoundarySettings boundarySettings,
+		final int calibrationDetail)
 	{
 		try {
-			return setup (new org.drip.spline.stretch.CkSegmentSequenceBuilder (srvcLeading, aSRVC, sbfr,
-				bs), iCalibrationDetail);
-		} catch (java.lang.Exception e) {
+			return setup (
+				new CkSegmentSequenceBuilder (
+					leadingSegmentResponseValueConstraint,
+					segmentResponseValueConstraintArray,
+					stretchBestFitResponse,
+					boundarySettings
+				),
+				calibrationDetail
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -307,107 +388,167 @@ public class CalibratableMultiSegmentSequence
 	}
 
 	@Override public boolean setup (
-		final double dblLeftStretchResponseValue,
-		final org.drip.spline.params.SegmentResponseValueConstraint[] aSRVC,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final org.drip.spline.stretch.BoundarySettings bs,
-		final int iCalibrationDetail)
+		final double leftStretchResponseValue,
+		final SegmentResponseValueConstraint[] segmentResponseValueConstraintArray,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final BoundarySettings bBoundarySettings,
+		final int calibrationDetail)
 	{
-		return setup (org.drip.spline.params.SegmentResponseValueConstraint.FromPredictorResponsePair
-			(getLeftPredictorOrdinateEdge(), dblLeftStretchResponseValue), aSRVC, sbfr, bs,
-				iCalibrationDetail);
+		return setup (
+			SegmentResponseValueConstraint.FromPredictorResponsePair (
+				getLeftPredictorOrdinateEdge(),
+				leftStretchResponseValue
+			),
+			segmentResponseValueConstraintArray,
+			stretchBestFitResponse,
+			bBoundarySettings,
+			calibrationDetail
+		);
 	}
 
 	@Override public boolean setup (
-		final double dblLeftStretchResponseValue,
-		final double[] adblSegmentRightResponseValue,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final org.drip.spline.stretch.BoundarySettings bs,
-		final int iCalibrationDetail)
+		final double leftStretchResponseValue,
+		final double[] segmentRightResponseValueArray,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final BoundarySettings boundarySettings,
+		final int calibrationDetail)
 	{
-		int iNumSegment = _latentStateResponseModelArray.length;
-		org.drip.spline.params.SegmentResponseValueConstraint[] aSRVCRight = new
-			org.drip.spline.params.SegmentResponseValueConstraint[iNumSegment];
+		int segmentCount = _latentStateResponseModelArray.length;
+		SegmentResponseValueConstraint[] rightSegmentResponseValueConstraintArray =
+			new SegmentResponseValueConstraint[segmentCount];
 
-		if (0 == iNumSegment || iNumSegment != adblSegmentRightResponseValue.length) return false;
+		if (0 == segmentCount || segmentCount != segmentRightResponseValueArray.length) {
+			return false;
+		}
 
 		try {
-			for (int i = 0; i < iNumSegment; ++i)
-				aSRVCRight[i] = new org.drip.spline.params.SegmentResponseValueConstraint (new double[]
-					{_latentStateResponseModelArray[i].right()}, new double[] {1.}, adblSegmentRightResponseValue[i]);
-		} catch (java.lang.Exception e) {
+			for (int segmentIndex = 0; segmentIndex < segmentCount; ++segmentIndex) {
+				rightSegmentResponseValueConstraintArray[segmentIndex] = new SegmentResponseValueConstraint (
+					new double[] {_latentStateResponseModelArray[segmentIndex].right()},
+					new double[] {1.},
+					segmentRightResponseValueArray[segmentIndex]
+				);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return false;
 		}
 
-		return setup (dblLeftStretchResponseValue, aSRVCRight, sbfr, bs, iCalibrationDetail);
+		return setup (
+			leftStretchResponseValue,
+			rightSegmentResponseValueConstraintArray,
+			stretchBestFitResponse,
+			boundarySettings,
+			calibrationDetail
+		);
 	}
 
 	@Override public boolean setupHermite (
-		final org.drip.spline.params.SegmentPredictorResponseDerivative[] aSPRDLeft,
-		final org.drip.spline.params.SegmentPredictorResponseDerivative[] aSPRDRight,
-		final org.drip.spline.params.SegmentResponseValueConstraint[][] aaSRVC,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
+		final SegmentPredictorResponseDerivative[] leftSegmentPredictorResponseDerivativeArray,
+		final SegmentPredictorResponseDerivative[] rightSegmentPredictorResponseDerivativeArray,
+		final SegmentResponseValueConstraint[][] segmentResponseValueConstraintGrid,
+		final StretchBestFitResponse sbfr,
 		final int iSetupMode)
 	{
-		if (null == aSPRDLeft || null == aSPRDRight) return false;
-
-		int iNumSegment = _latentStateResponseModelArray.length;
-
-		if (iNumSegment != aSPRDLeft.length || iNumSegment != aSPRDRight.length || (null != aaSRVC &&
-			iNumSegment != aaSRVC.length))
+		if (null == leftSegmentPredictorResponseDerivativeArray ||
+			null == rightSegmentPredictorResponseDerivativeArray) {
 			return false;
+		}
 
-		for (int i = 0; i < iNumSegment; ++i) {
+		int segmentCount = _latentStateResponseModelArray.length;
+
+		if (segmentCount != leftSegmentPredictorResponseDerivativeArray.length ||
+			segmentCount != rightSegmentPredictorResponseDerivativeArray.length || (
+				null != segmentResponseValueConstraintGrid &&
+				segmentCount != segmentResponseValueConstraintGrid.length
+			)
+		) {
+			return false;
+		}
+
+		for (int segmentIndex = 0; segmentIndex < segmentCount; ++segmentIndex) {
 			try {
-				int iNumSegmentConstraint = 0;
-				org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFC = null;
+				int segmentConstraintCount = 0;
+				SegmentBasisFlexureConstraint[] segmentBasisFlexureConstraintArray = null;
 
-				if (null != aaSRVC && null != aaSRVC[i]) {
-					aSBFC = new org.drip.spline.params.SegmentBasisFlexureConstraint[iNumSegmentConstraint =
-						aaSRVC[i].length];
+				if (null != segmentResponseValueConstraintGrid &&
+					null != segmentResponseValueConstraintGrid[segmentIndex]) {
+					segmentBasisFlexureConstraintArray =
+						new SegmentBasisFlexureConstraint[segmentConstraintCount = segmentResponseValueConstraintGrid[segmentIndex].length];
 
-					for (int j = 0; i < iNumSegmentConstraint; ++j)
-						aSBFC[j] = null == aaSRVC[i][j] ? null : aaSRVC[i][j].responseIndexedBasisConstraint
-							(_latentStateResponseModelArray[i].basisEvaluator(), _latentStateResponseModelArray[i]);
+					for (int segmentConstraintIndex = 0; segmentConstraintIndex < segmentConstraintCount;
+						++segmentConstraintIndex) {
+						segmentBasisFlexureConstraintArray[segmentConstraintIndex] =
+							null == segmentResponseValueConstraintGrid[segmentIndex][segmentConstraintIndex]
+								? null :
+								segmentResponseValueConstraintGrid[segmentIndex][segmentConstraintIndex].responseIndexedBasisConstraint (
+									_latentStateResponseModelArray[segmentIndex].basisEvaluator(),
+									_latentStateResponseModelArray[segmentIndex]
+								);
+					}
 				}
 
-				if (0 != (org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE & iSetupMode) &&
-					!_latentStateResponseModelArray[i].calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (new
-						double[] {_latentStateResponseModelArray[i].left(), _latentStateResponseModelArray[i].right()}, new double[]
-							{aSPRDLeft[i].responseValue(), aSPRDRight[i].responseValue()},
-								aSPRDLeft[i].getDResponseDPredictorOrdinate(),
-									aSPRDRight[i].getDResponseDPredictorOrdinate(), aSBFC, null == sbfr ?
-										null : sbfr.sizeToSegment (_latentStateResponseModelArray[i]))))
+				if (0 != (MultiSegmentSequence.CALIBRATE & iSetupMode) &&
+					!_latentStateResponseModelArray[segmentIndex].calibrateState (
+						new SegmentStateCalibrationInputs (
+							new double[] {
+								_latentStateResponseModelArray[segmentIndex].left(),
+								_latentStateResponseModelArray[segmentIndex].right()
+							},
+							new double[] {
+								leftSegmentPredictorResponseDerivativeArray[segmentIndex].responseValue(),
+								rightSegmentPredictorResponseDerivativeArray[segmentIndex].responseValue()
+							},
+							leftSegmentPredictorResponseDerivativeArray[segmentIndex].getDResponseDPredictorOrdinate(),
+							rightSegmentPredictorResponseDerivativeArray[segmentIndex].getDResponseDPredictorOrdinate(),
+							segmentBasisFlexureConstraintArray,
+							null == sbfr ? null : sbfr.sizeToSegment (
+								_latentStateResponseModelArray[segmentIndex]
+							)
+						)
+					)
+				) {
 					return false;
-			} catch (java.lang.Exception e) {
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return false;
 			}
 		}
 
-		if (0 != (org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE_JACOBIAN & iSetupMode)) {
+		if (0 != (MultiSegmentSequence.CALIBRATE_JACOBIAN & iSetupMode)) {
 			try {
-				if (null == (_wjDCoeffDEdgeParams = new org.drip.numerical.differentiation.WengertJacobian
-					(_latentStateResponseModelArray[0].basisEvaluator().numBasis(), iNumSegment + 1)))
+				if (null == (
+					_coefficientToEdgeParamsWengertJacobian = new WengertJacobian (
+						_latentStateResponseModelArray[0].basisEvaluator().numBasis(),
+						segmentCount + 1
+					)
+				)) {
 					return false;
-			} catch (java.lang.Exception e) {
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return false;
 			}
 
-			org.drip.numerical.differentiation.WengertJacobian wjDCoeffDEdgeParamsHead =
+			WengertJacobian headCoefficientToEdgeParamsWengertJacobian =
 				_latentStateResponseModelArray[0].jackDCoeffDEdgeInputs();
 
-			if (!setDCoeffDEdgeParams (0, wjDCoeffDEdgeParamsHead) || !setDCoeffDEdgeParams (1,
-				wjDCoeffDEdgeParamsHead))
+			if (!setDCoeffDEdgeParams (0, headCoefficientToEdgeParamsWengertJacobian) ||
+				!setDCoeffDEdgeParams (1, headCoefficientToEdgeParamsWengertJacobian)) {
 				return false;
+			}
 
-			for (int i = 1; i < iNumSegment; ++i) {
-				if (!setDCoeffDEdgeParams (i + 1, _latentStateResponseModelArray[i].jackDCoeffDEdgeInputs())) return false;
+			for (int segmentIndex = 1; segmentIndex < segmentCount; ++segmentIndex) {
+				if (!setDCoeffDEdgeParams (
+					segmentIndex + 1,
+					_latentStateResponseModelArray[segmentIndex].jackDCoeffDEdgeInputs()
+				)) {
+					return false;
+				}
 			}
 		}
 
@@ -415,253 +556,298 @@ public class CalibratableMultiSegmentSequence
 	}
 
 	@Override public double evaluate (
-		final double dblLeftSlope)
-		throws java.lang.Exception
+		final double leftSlope)
+		throws Exception
 	{
-		if (null == _segmentSequenceBuilder || !_segmentSequenceBuilder.calibStartingSegment (dblLeftSlope) || !_segmentSequenceBuilder.calibSegmentSequence (1))
-			throw new java.lang.Exception
-				("CalibratableMultiSegmentSequence::evaluate => cannot set up segments!");
-
-		org.drip.spline.stretch.BoundarySettings bs = _segmentSequenceBuilder.getCalibrationBoundaryCondition();
-
-		int iBC = bs.boundaryCondition();
-
-		if (org.drip.spline.stretch.BoundarySettings.BOUNDARY_CONDITION_NATURAL == iBC)
-			return calcRightEdgeDerivative (bs.rightDerivOrder());
-
-		if (org.drip.spline.stretch.BoundarySettings.BOUNDARY_CONDITION_FINANCIAL == iBC)
-		{
-			return calcRightEdgeDerivative (bs.rightDerivOrder());
+		if (null == _segmentSequenceBuilder ||
+			!_segmentSequenceBuilder.calibStartingSegment (leftSlope) ||
+			!_segmentSequenceBuilder.calibSegmentSequence (1)) {
+			throw new Exception ("CalibratableMultiSegmentSequence::evaluate => cannot set up segments!");
 		}
 
-		if (org.drip.spline.stretch.BoundarySettings.BOUNDARY_CONDITION_NOT_A_KNOT == iBC)
-			return calcRightEdgeDerivative (bs.rightDerivOrder()) - calcLeftEdgeDerivative
-				(bs.leftDerivOrder());
+		BoundarySettings boundarySettings = _segmentSequenceBuilder.getCalibrationBoundaryCondition();
 
-		throw new java.lang.Exception ("CalibratableMultiSegmentSequence::evaluate => Boundary Condition " +
-			iBC + " unknown");
+		int boundaryCondition = boundarySettings.boundaryCondition();
+
+		if (BoundarySettings.BOUNDARY_CONDITION_NATURAL == boundaryCondition) {
+			return calcRightEdgeDerivative (boundarySettings.rightDerivOrder());
+		}
+
+		if (BoundarySettings.BOUNDARY_CONDITION_FINANCIAL == boundaryCondition) {
+			return calcRightEdgeDerivative (boundarySettings.rightDerivOrder());
+		}
+
+		if (BoundarySettings.BOUNDARY_CONDITION_NOT_A_KNOT == boundaryCondition) {
+			return calcRightEdgeDerivative (boundarySettings.rightDerivOrder()) -
+				calcLeftEdgeDerivative (boundarySettings.leftDerivOrder());
+		}
+
+		throw new Exception (
+			"CalibratableMultiSegmentSequence::evaluate => Boundary Condition " + boundaryCondition +
+				" unknown"
+		);
 	}
 
 	@Override public double integrate (
-		final double dblBegin,
-		final double dblEnd)
-		throws java.lang.Exception
+		final double begin,
+		final double end)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
-			(dblEnd))
-			throw new java.lang.Exception ("CalibratableMultiSegmentSequence::integrate => Invalid Inputs");
-
-		return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+		return R1ToR1Integrator.Boole (this, begin, end);
 	}
 
 	@Override public boolean setLeftNode (
-		final double dblStretchLeftResponse,
-		final double dblStretchLeftResponseSlope,
-		final double dblStretchRightResponse,
-		final org.drip.spline.params.StretchBestFitResponse sbfr)
+		final double stretchLeftResponse,
+		final double stretchLeftResponseSlope,
+		final double stretchRightResponse,
+		final StretchBestFitResponse stretchBestFitResponse)
 	{
-		return _latentStateResponseModelArray[0].calibrate
-			(org.drip.spline.params.SegmentResponseValueConstraint.FromPredictorResponsePair
-				(getLeftPredictorOrdinateEdge(), dblStretchLeftResponse), dblStretchLeftResponseSlope,
-					org.drip.spline.params.SegmentResponseValueConstraint.FromPredictorResponsePair
-						(getRightPredictorOrdinateEdge(), dblStretchRightResponse), null == sbfr ? null :
-							sbfr.sizeToSegment (_latentStateResponseModelArray[0]));
+		return _latentStateResponseModelArray[0].calibrate (
+			SegmentResponseValueConstraint.FromPredictorResponsePair (
+				getLeftPredictorOrdinateEdge(),
+				stretchLeftResponse
+			),
+			stretchLeftResponseSlope,
+			SegmentResponseValueConstraint.FromPredictorResponsePair (
+				getRightPredictorOrdinateEdge(),
+				stretchRightResponse
+			),
+			null == stretchBestFitResponse ? null : stretchBestFitResponse.sizeToSegment (
+				_latentStateResponseModelArray[0]
+			)
+		);
 	}
 
 	@Override public double responseValue (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
-		return _latentStateResponseModelArray[containingIndex (dblPredictorOrdinate, true, true)].responseValue
-			(dblPredictorOrdinate);
+		return _latentStateResponseModelArray[containingIndex (predictorOrdinate, true, true)].responseValue
+			(predictorOrdinate);
 	}
 
 	@Override public double responseValueDerivative (
-		final double dblPredictorOrdinate,
+		final double predictorOrdinate,
 		final int iOrder)
 		throws java.lang.Exception
 	{
-		return _latentStateResponseModelArray[containingIndex (dblPredictorOrdinate, true, true)].calcResponseValueDerivative
-			(dblPredictorOrdinate, iOrder);
+		return _latentStateResponseModelArray[containingIndex (predictorOrdinate, true, true)].calcResponseValueDerivative
+			(predictorOrdinate, iOrder);
 	}
 
-	@Override public org.drip.spline.params.SegmentPredictorResponseDerivative calcSPRD (
-		final double dblPredictorOrdinate)
+	@Override public SegmentPredictorResponseDerivative calcSPRD (
+		final double predictorOrdinate)
 	{
-		int iIndex = -1;
+		int index = -1;
 
 		try {
-			iIndex = containingIndex (dblPredictorOrdinate, true, true);
-		} catch (java.lang.Exception e) {
+			index = containingIndex (predictorOrdinate, true, true);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		int iCk = _aSCBC[iIndex].inelasticParams().Ck();
+		int ck = _segmentCustomBuilderControlArray[index].inelasticParams().Ck();
 
-		double adblDeriv[] = new double[iCk];
+		double derivativeArray[] = new double[ck];
 
 		try {
-			for (int i = 0; i < iCk; ++i)
-				adblDeriv[i] = _latentStateResponseModelArray[iIndex].calcResponseValueDerivative (dblPredictorOrdinate, i);
+			for (int ci = 0; ci < ck; ++ci) {
+				derivativeArray[ci] = _latentStateResponseModelArray[index].calcResponseValueDerivative (
+					predictorOrdinate,
+					ci
+				);
+			}
 
-			return new org.drip.spline.params.SegmentPredictorResponseDerivative
-				(_latentStateResponseModelArray[iIndex].responseValue (dblPredictorOrdinate), adblDeriv);
-		} catch (java.lang.Exception e) {
+			return new SegmentPredictorResponseDerivative (
+				_latentStateResponseModelArray[index].responseValue (predictorOrdinate),
+				derivativeArray
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return null;
 	}
 
-	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDCalibrationInput (
-		final double dblPredictorOrdinate,
-		final int iOrder)
+	@Override public WengertJacobian jackDResponseDCalibrationInput (
+		final double predictorOrdinate,
+		final int order)
 	{
-		int iIndex = -1;
+		int index = -1;
 
 		try {
-			iIndex = containingIndex (dblPredictorOrdinate, true, true);
-		} catch (java.lang.Exception e) {
+			index = containingIndex (predictorOrdinate, true, true);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		return setDResponseDEdgeResponse (iIndex, _latentStateResponseModelArray[iIndex].jackDResponseDEdgeInput
-			(dblPredictorOrdinate, iOrder));
+		return setDResponseDEdgeResponse (
+			index,
+			_latentStateResponseModelArray[index].jackDResponseDEdgeInput (predictorOrdinate, order)
+		);
 	}
 
-	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final double dblPredictorOrdinate,
-		final int iOrder)
+	@Override public WengertJacobian jackDResponseDManifestMeasure (
+		final String manifestMeasure,
+		final double predictorOrdinate,
+		final int order)
 	{
-		int iPriorImpactFadeIndex = 0;
-		int iNumSegment = _latentStateResponseModelArray.length;
+		int priorImpactFadeIndex = 0;
+		int segmentCount = _latentStateResponseModelArray.length;
 
 		try {
-			int iIndex = containingIndex (dblPredictorOrdinate, true, true);
+			int containingIndex = containingIndex (predictorOrdinate, true, true);
 
-			boolean bContainingSegmentImpactFade = _latentStateResponseModelArray[iIndex].impactFade (strManifestMeasure);
+			boolean containsSegmentImpactFade = _latentStateResponseModelArray[containingIndex].impactFade (
+				manifestMeasure
+			);
 
-			if (!bContainingSegmentImpactFade && 0 != iIndex) {
-				for (int i = iIndex - 1; i >= 0; --i) {
-					if (_latentStateResponseModelArray[i].impactFade (strManifestMeasure)) {
-						iPriorImpactFadeIndex = i;
+			if (!containsSegmentImpactFade && 0 != containingIndex) {
+				for (int index = containingIndex - 1; index >= 0; --index) {
+					if (_latentStateResponseModelArray[index].impactFade (manifestMeasure)) {
+						priorImpactFadeIndex = index;
 						break;
 					}
 				}
 			}
 
-			org.drip.numerical.differentiation.WengertJacobian wjDResponseDManifestMeasure = new
-				org.drip.numerical.differentiation.WengertJacobian (1, iNumSegment);
+			WengertJacobian responseToManifestMeasureWengertJacobian = new WengertJacobian (1, segmentCount);
 
-			for (int i = 0; i < iNumSegment; ++i) {
-				double dblDResponseDManifestMeasurei = 0.;
+			for (int segmentIndex = 0; segmentIndex < segmentCount; ++segmentIndex) {
+				double responseToManifestMeasureSensitivity = 0.;
 
-				if (i == iIndex)
-					dblDResponseDManifestMeasurei = _latentStateResponseModelArray[i].calcDResponseDManifest (strManifestMeasure,
-						dblPredictorOrdinate, iOrder);
-				else if (i == iIndex - 1)
-					dblDResponseDManifestMeasurei = _latentStateResponseModelArray[i + 1].calcDResponseDPreceedingManifest
-						(strManifestMeasure, dblPredictorOrdinate, iOrder);
-				else if (!bContainingSegmentImpactFade && i >= iPriorImpactFadeIndex && i < iIndex - 1)
-					dblDResponseDManifestMeasurei = _latentStateResponseModelArray[i].calcDResponseDManifest (strManifestMeasure,
-						_latentStateResponseModelArray[i].right(), iOrder);
+				if (segmentIndex == containingIndex) {
+					responseToManifestMeasureSensitivity =
+						_latentStateResponseModelArray[segmentIndex].calcDResponseDManifest (
+							manifestMeasure,
+							predictorOrdinate,
+							order
+						);
+				} else if (segmentIndex == containingIndex - 1) {
+					responseToManifestMeasureSensitivity =
+						_latentStateResponseModelArray[segmentIndex + 1].calcDResponseDPreceedingManifest (
+							manifestMeasure,
+							predictorOrdinate,
+							order
+						);
+				} else if (!containsSegmentImpactFade &&
+					segmentIndex >= priorImpactFadeIndex &&
+					segmentIndex < containingIndex - 1) {
+					responseToManifestMeasureSensitivity =
+						_latentStateResponseModelArray[segmentIndex].calcDResponseDManifest (
+							manifestMeasure,
+							_latentStateResponseModelArray[segmentIndex].right(),
+							order
+						);
+				}
 
-				if (!wjDResponseDManifestMeasure.accumulatePartialFirstDerivative (0, i,
-					dblDResponseDManifestMeasurei))
+				if (!responseToManifestMeasureWengertJacobian.accumulatePartialFirstDerivative (
+					0,
+					segmentIndex,
+					responseToManifestMeasureSensitivity)) {
 					return null;
+				}
 			}
 
-			return wjDResponseDManifestMeasure;
-		} catch (java.lang.Exception e) {
+			return responseToManifestMeasureWengertJacobian;
+		} catch (Exception e) {
 			// e.printStackTrace();
 		}
 
 		return null;
 	}
 
-	@Override public org.drip.spline.segment.Monotonocity monotoneType (
-		final double dblPredictorOrdinate)
+	@Override public Monotonocity monotoneType (
+		final double predictorOrdinate)
 	{
-		int iIndex = -1;
+		int index = -1;
 
 		try {
-			iIndex = containingIndex (dblPredictorOrdinate, true, true);
-		} catch (java.lang.Exception e) {
+			index = containingIndex (predictorOrdinate, true, true);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		return _latentStateResponseModelArray[iIndex].monotoneType();
+		return _latentStateResponseModelArray[index].monotoneType();
 	}
 
 	@Override public boolean isLocallyMonotone()
-		throws java.lang.Exception
+		throws Exception
 	{
-		int iNumSegment = _latentStateResponseModelArray.length;
+		int segmentCount = _latentStateResponseModelArray.length;
 
-		for (int i = 0; i < iNumSegment; ++i) {
-			org.drip.spline.segment.Monotonocity mono = null;
+		for (int segmentIndex = 0; segmentIndex < segmentCount; ++segmentIndex) {
+			Monotonocity monotonocity = null;
 
 			try {
-				mono = _latentStateResponseModelArray[i].monotoneType();
+				monotonocity = _latentStateResponseModelArray[segmentIndex].monotoneType();
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();
 			}
 
-			if (null == mono || org.drip.spline.segment.Monotonocity.MONOTONIC != mono.type()) return false;
+			if (null == monotonocity || Monotonocity.MONOTONIC != monotonocity.type()) {
+				return false;
+			}
 		}
 
 		return true;
 	}
 
 	@Override public boolean isCoMonotone (
-		final double[] adblMeasuredResponse)
-		throws java.lang.Exception
+		final double[] measuredResponseArray)
+		throws Exception
 	{
-		int iNumSegment = _latentStateResponseModelArray.length;
-		int[] aiMonotoneType = new int[iNumSegment];
-		int[] aiNodeMiniMax = new int[iNumSegment + 1];
+		int segmentCount = _latentStateResponseModelArray.length;
+		int[] nodeMinimaxIndex = new int[segmentCount + 1];
+		int[] monotoneTypeArray = new int[segmentCount];
 
-		if (null == adblMeasuredResponse || adblMeasuredResponse.length != iNumSegment + 1)
-			throw new java.lang.Exception
-				("CalibratableMultiSegmentSequence::isCoMonotone => Data input inconsistent with the segment");
+		if (null == measuredResponseArray || measuredResponseArray.length != segmentCount + 1) {
+			throw new Exception (
+				"CalibratableMultiSegmentSequence::isCoMonotone => Data input inconsistent with the segment"
+			);
+		}
 
-		for (int i = 0; i < iNumSegment + 1; ++i) {
-			if (0 == i || iNumSegment == i)
-				aiNodeMiniMax[i] = MONOTONE_PREDICTOR_ORDINATE_NODE;
-			else {
-				if (adblMeasuredResponse[i - 1] < adblMeasuredResponse[i] && adblMeasuredResponse[i + 1] <
-					adblMeasuredResponse[i])
-					aiNodeMiniMax[i] = MAXIMA_PREDICTOR_ORDINATE_NODE;
-				else if (adblMeasuredResponse[i - 1] > adblMeasuredResponse[i] && adblMeasuredResponse[i + 1]
-					> adblMeasuredResponse[i])
-					aiNodeMiniMax[i] = MINIMA_PREDICTOR_ORDINATE_NODE;
-				else
-					aiNodeMiniMax[i] = MONOTONE_PREDICTOR_ORDINATE_NODE;
+		for (int segmentIndex = 0; segmentIndex < segmentCount + 1; ++segmentIndex) {
+			if (0 == segmentIndex || segmentCount == segmentIndex) {
+				nodeMinimaxIndex[segmentIndex] = MONOTONE_PREDICTOR_ORDINATE_NODE;
+			} else {
+				if (measuredResponseArray[segmentIndex - 1] < measuredResponseArray[segmentIndex] &&
+					measuredResponseArray[segmentIndex + 1] < measuredResponseArray[segmentIndex]) {
+					nodeMinimaxIndex[segmentIndex] = MAXIMA_PREDICTOR_ORDINATE_NODE;
+				} else if (measuredResponseArray[segmentIndex - 1] > measuredResponseArray[segmentIndex] &&
+					measuredResponseArray[segmentIndex + 1] > measuredResponseArray[segmentIndex]) {
+					nodeMinimaxIndex[segmentIndex] = MINIMA_PREDICTOR_ORDINATE_NODE;
+				} else {
+					nodeMinimaxIndex[segmentIndex] = MONOTONE_PREDICTOR_ORDINATE_NODE;
+				}
 			}
 
-			if (i < iNumSegment) {
-				org.drip.spline.segment.Monotonocity mono = _latentStateResponseModelArray[i].monotoneType();
+			if (segmentIndex < segmentCount) {
+				Monotonocity monotonocity = _latentStateResponseModelArray[segmentIndex].monotoneType();
 
-				if (null != mono) aiMonotoneType[i] = mono.type();
+				if (null != monotonocity) {
+					monotoneTypeArray[segmentIndex] = monotonocity.type();
+				}
 			}
 		}
 
-		for (int i = 1; i < iNumSegment; ++i) {
-			if (MAXIMA_PREDICTOR_ORDINATE_NODE == aiNodeMiniMax[i]) {
-				if (org.drip.spline.segment.Monotonocity.MAXIMA != aiMonotoneType[i] &&
-					org.drip.spline.segment.Monotonocity.MAXIMA != aiMonotoneType[i - 1])
+		for (int segmentIndex = 1; segmentIndex < segmentCount; ++segmentIndex) {
+			if (MAXIMA_PREDICTOR_ORDINATE_NODE == nodeMinimaxIndex[segmentIndex]) {
+				if (Monotonocity.MAXIMA != monotoneTypeArray[segmentIndex] &&
+					Monotonocity.MAXIMA != monotoneTypeArray[segmentIndex - 1]) {
 					return false;
-			} else if (MINIMA_PREDICTOR_ORDINATE_NODE == aiNodeMiniMax[i]) {
-				if (org.drip.spline.segment.Monotonocity.MINIMA != aiMonotoneType[i] &&
-					org.drip.spline.segment.Monotonocity.MINIMA != aiMonotoneType[i - 1])
+				}
+			} else if (MINIMA_PREDICTOR_ORDINATE_NODE == nodeMinimaxIndex[segmentIndex]) {
+				if (Monotonocity.MINIMA != monotoneTypeArray[segmentIndex] &&
+					Monotonocity.MINIMA != monotoneTypeArray[segmentIndex - 1]) {
 					return false;
+				}
 			}
 		}
 
@@ -669,35 +855,40 @@ public class CalibratableMultiSegmentSequence
 	}
 
 	@Override public boolean isKnot (
-		final double dblPredictorOrdinate)
+		final double predictorOrdinate)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate)) return false;
-
-		int iNumSegment = _latentStateResponseModelArray.length;
-
-		for (int i = 0; i < iNumSegment; ++i) {
-			if (dblPredictorOrdinate == _latentStateResponseModelArray[i].left()) return false;
+		if (!NumberUtil.IsValid (predictorOrdinate)) {
+			return false;
 		}
 
-		return dblPredictorOrdinate == _latentStateResponseModelArray[iNumSegment - 1].left();
+		int segmentCount = _latentStateResponseModelArray.length;
+
+		for (int segmentIndex = 0; segmentIndex < segmentCount; ++segmentIndex) {
+			if (predictorOrdinate == _latentStateResponseModelArray[segmentIndex].left()) {
+				return false;
+			}
+		}
+
+		return predictorOrdinate == _latentStateResponseModelArray[segmentCount - 1].left();
 	}
 
 	@Override public double calcLeftEdgeDerivative (
-		final int iOrder)
-		throws java.lang.Exception
+		final int order)
+		throws Exception
 	{
-		org.drip.spline.segment.LatentStateResponseModel lsrm = _latentStateResponseModelArray[0];
-
-		return lsrm.calcResponseValueDerivative (lsrm.left(), iOrder);
+		return _latentStateResponseModelArray[0].calcResponseValueDerivative (
+			_latentStateResponseModelArray[0].left(),
+			order
+		);
 	}
 
 	@Override public double calcRightEdgeDerivative (
-		final int iOrder)
+		final int order)
 		throws java.lang.Exception
 	{
 		org.drip.spline.segment.LatentStateResponseModel lsrm = _latentStateResponseModelArray[_latentStateResponseModelArray.length - 1];
 
-		return lsrm.calcResponseValueDerivative (lsrm.right(), iOrder);
+		return lsrm.calcResponseValueDerivative (lsrm.right(), order);
 	}
 
 	@Override public boolean resetNode (
@@ -822,7 +1013,7 @@ public class CalibratableMultiSegmentSequence
 					: _latentStateResponseModelArray[i + iContainingPredictorOrdinateIndex]))
 				return null;
 
-			aSCBC[i] = _aSCBC[i + iContainingPredictorOrdinateIndex];
+			aSCBC[i] = _segmentCustomBuilderControlArray[i + iContainingPredictorOrdinateIndex];
 		}
 
 		try {
@@ -859,7 +1050,7 @@ public class CalibratableMultiSegmentSequence
 					: _latentStateResponseModelArray[i]))
 				return null;
 
-			aSCBC[i] = _aSCBC[i];
+			aSCBC[i] = _segmentCustomBuilderControlArray[i];
 		}
 
 		try {
