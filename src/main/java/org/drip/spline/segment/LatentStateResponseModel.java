@@ -2115,28 +2115,40 @@ public class LatentStateResponseModel
 	 * Clip the part of the Segment to the Right of the specified Predictor Ordinate. Retain all other
 	 * 	constraints the same.
 	 * 
-	 * @param dblPredictorOrdinate The Predictor Ordinate
+	 * @param predictorOrdinate The Predictor Ordinate
 	 * 
 	 * @return The Clipped Segment
 	 */
 
 	public LatentStateResponseModel clipLeftOfPredictorOrdinate (
-		final double dblPredictorOrdinate)
+		final double predictorOrdinate)
 	{
 		try {
-			LatentStateResponseModel csLeftSnipped = LatentStateResponseModel.Create (dblPredictorOrdinate,
-				right(), _basisEvaluator.replicate(), _segmentInelasticDesignControl);
+			LatentStateResponseModel leftSnippedLatentStateResponseModel =
+				LatentStateResponseModel.Create (
+					predictorOrdinate,
+					right(),
+					_basisEvaluator.replicate(),
+					_segmentInelasticDesignControl
+				);
 
-			int iCk = _segmentInelasticDesignControl.Ck();
+			int ck = _segmentInelasticDesignControl.Ck();
 
-			double[] adblCalibLeftEdgeDeriv = 0 != iCk ? csLeftSnipped.transmissionCk (dblPredictorOrdinate,
-				this, iCk) : null;
-
-			return csLeftSnipped.calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs
-				(new double[] {dblPredictorOrdinate, right()}, new double[] {responseValue
-					(dblPredictorOrdinate), responseValue (right())}, adblCalibLeftEdgeDeriv, null, null,
-						null)) ? csLeftSnipped : null;
-		} catch (java.lang.Exception e) {
+			return leftSnippedLatentStateResponseModel.calibrateState (
+				new SegmentStateCalibrationInputs (
+					new double[] {predictorOrdinate, right()},
+					new double[] {responseValue (predictorOrdinate), responseValue (right())},
+					0 != ck ? leftSnippedLatentStateResponseModel.transmissionCk (
+						predictorOrdinate,
+						this,
+						ck
+					) : null,
+					null,
+					null,
+					null
+				)
+			) ? leftSnippedLatentStateResponseModel : null;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -2147,25 +2159,35 @@ public class LatentStateResponseModel
 	 * Clip the part of the Segment to the Right of the specified Predictor Ordinate. Retain all other
 	 * 	constraints the same.
 	 * 
-	 * @param dblPredictorOrdinate The Predictor Ordinate
+	 * @param predictorOrdinate The Predictor Ordinate
 	 * 
 	 * @return The Clipped Segment
 	 */
 
 	public LatentStateResponseModel clipRightOfPredictorOrdinate (
-		final double dblPredictorOrdinate)
+		final double predictorOrdinate)
 	{
 		try {
-			LatentStateResponseModel csRightSnipped = LatentStateResponseModel.Create (left(),
-				dblPredictorOrdinate, _basisEvaluator.replicate(), _segmentInelasticDesignControl);
+			LatentStateResponseModel rightSnippedLatentStateResponseModel = LatentStateResponseModel.Create (
+				left(),
+				predictorOrdinate,
+				_basisEvaluator.replicate(),
+				_segmentInelasticDesignControl
+			);
 
-			int iCk = _segmentInelasticDesignControl.Ck();
+			int ck = _segmentInelasticDesignControl.Ck();
 
-			return csRightSnipped.calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs
-				(new double[] {left(), dblPredictorOrdinate}, new double[] {responseValue (left()),
-					responseValue (dblPredictorOrdinate)}, 0 != iCk ? csRightSnipped.transmissionCk (left(),
-						this, iCk) : null, null, null, null)) ? csRightSnipped : null;
-		} catch (java.lang.Exception e) {
+			return rightSnippedLatentStateResponseModel.calibrateState (
+				new SegmentStateCalibrationInputs (
+					new double[] {left(), predictorOrdinate},
+					new double[] {responseValue (left()), responseValue (predictorOrdinate)},
+					0 != ck ? rightSnippedLatentStateResponseModel.transmissionCk (left(), this, ck) : null,
+					null,
+					null,
+					null
+				)
+			) ? rightSnippedLatentStateResponseModel : null;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -2178,18 +2200,24 @@ public class LatentStateResponseModel
 	 * @return The string representation
 	 */
 
-	public java.lang.String displayString()
+	public String displayString()
 	{
-		java.lang.StringBuffer sb = new java.lang.StringBuffer();
+		StringBuffer stringBuffer = new StringBuffer();
 
-		sb.append ("\t\t\t[" + left() + " => " + right() + "\n");
+		stringBuffer.append ("\t\t\t[" + left() + " => " + right() + "\n");
 
-		for (int i = 0; i < _responseToBasisCoefficientSensitivity.length; ++i) {
-			if (0 != i) sb.append ("  |  ");
+		for (int responseToBasisCoefficientSensitivityIndex = 0;
+			responseToBasisCoefficientSensitivityIndex < _responseToBasisCoefficientSensitivity.length;
+			++responseToBasisCoefficientSensitivityIndex) {
+			if (0 != responseToBasisCoefficientSensitivityIndex) {
+				stringBuffer.append ("  |  ");
+			}
 
-			sb.append (_responseToBasisCoefficientSensitivity[i] + "\n");
+			stringBuffer.append (
+				_responseToBasisCoefficientSensitivity[responseToBasisCoefficientSensitivityIndex] + "\n"
+			);
 		}
 
-		return sb.toString();
+		return stringBuffer.toString();
 	}
 }

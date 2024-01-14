@@ -1,11 +1,20 @@
 
 package org.drip.spline.stretch;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.differentiation.WengertJacobian;
+import org.drip.spline.params.SegmentResponseValueConstraint;
+import org.drip.spline.params.StretchBestFitResponse;
+import org.drip.spline.segment.Monotonocity;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,195 +93,205 @@ package org.drip.spline.stretch;
 
 /**
  * <i>SingleSegmentSequence</i> is the interface that exposes functionality that spans multiple segments. Its
- * derived instances hold the ordered segment sequence, the segment control parameters, and, if available,
- * the spanning Jacobian. SingleSegmentSequence exports the following group of functionality:
+ * 	derived instances hold the ordered segment sequence, the segment control parameters, and, if available,
+ * 	the spanning Jacobian. SingleSegmentSequence exports the following group of functionality:
  *
- * <br><br>
+ * <br>
  *  <ul>
- *  	<li>
- * 			Construct adjoining segment sequences in accordance with the segment control parameters
- *  	</li>
- *  	<li>
- * 			Calibrate according to a varied set of (i.e., NATURAL/FINANCIAL) boundary conditions
- *  	</li>
- *  	<li>
- * 			Estimate both the value, the ordered derivatives, and the Jacobian (quote/coefficient) at the
- * 				given ordinate
- *  	</li>
- *  	<li>
- * 			Compute the monotonicity details - segment/Stretch level monotonicity, co-monotonicity, local
- * 				monotonicity
- *  	</li>
- *  	<li>
- * 			Predictor Ordinate Details - identify the left/right predictor ordinate edges, and whether the
- * 				given predictor ordinate is a knot
- *  	</li>
+ * 		<li>Set up (i.e., calibrate) the individual Segments in the Stretch to the Response Values corresponding to each Segment Predictor right Ordinate</li>
+ * 		<li>Calculate the Response Value at the given Predictor Ordinate</li>
+ * 		<li>Calculate the Response Value Derivative at the given Predictor Ordinate for the specified order</li>
+ * 		<li>Calculate the Response Derivative to the Calibration Inputs at the specified Ordinate</li>
+ * 		<li>Calculate the Response Derivative to the Manifest Measure at the specified Ordinate</li>
+ * 		<li>Identify the Monotone Type for the Segment underlying the given Predictor Ordinate</li>
+ * 		<li>Indicate if all the comprising Segments are Monotone</li>
+ * 		<li>Verify whether the Stretch mini-max Behavior matches the Measurement</li>
+ * 		<li>Is the given Predictor Ordinate a Knot Location</li>
+ * 		<li>Reset the Predictor Ordinate Node Index with the given Response</li>
+ * 		<li>Reset the Predictor Ordinate Node Index with the given Segment Constraint</li>
+ * 		<li>Return the Left Predictor Ordinate Edge</li>
+ * 		<li>Return the Right Predictor Ordinate Edge</li>
+ * 		<li>Convert the Segment Sequence into an Abstract Univariate Instance</li>
  *  </ul>
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch/README.md">Multi-Segment Sequence Spline Stretch</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch/README.md">Multi-Segment Sequence Spline Stretch</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface SingleSegmentSequence {
+public interface SingleSegmentSequence
+{
 
 	/**
 	 * Set up (i.e., calibrate) the individual Segments in the Stretch to the Response Values corresponding
 	 * 	to each Segment Predictor right Ordinate.
 	 * 
-	 * @param dblStretchLeadingResponse Stretch Left-most Response
-	 * @param adblSegmentRightEdgeResponse Array of Segment Right Edge Responses
-	 * @param sbfr Stretch Fitness Weighted Response
-	 * @param bs The Calibration Boundary Condition
-	 * @param iCalibrationDetail The Calibration Detail
+	 * @param stretchLeadingResponse Stretch Left-most Response
+	 * @param segmentRightEdgeResponseArray Array of Segment Right Edge Responses
+	 * @param stretchBestFitResponse Stretch Fitness Weighted Response
+	 * @param boundarySettings The Calibration Boundary Condition
+	 * @param calibrationDetail The Calibration Detail
 	 * 
 	 * @return TRUE - Set up was successful
 	 */
 
 	public abstract boolean setup (
-		final double dblStretchLeadingResponse,
-		final double[] adblSegmentRightEdgeResponse,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final org.drip.spline.stretch.BoundarySettings bs,
-		final int iCalibrationDetail);
+		final double stretchLeadingResponse,
+		final double[] segmentRightEdgeResponseArray,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final BoundarySettings boundarySettings,
+		final int calibrationDetail
+	);
 
 	/**
 	 * Calculate the Response Value at the given Predictor Ordinate
 	 * 
-	 * @param dblPredictorOrdinate Predictor Ordinate
+	 * @param predictorOrdinate Predictor Ordinate
 	 * 
 	 * @return The Response Value
 	 * 
-	 * @throws java.lang.Exception Thrown if the Response Value cannot be calculated
+	 * @throws Exception Thrown if the Response Value cannot be calculated
 	 */
 
 	public abstract double responseValue (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception;
+		final double predictorOrdinate)
+		throws Exception;
 
 	/**
 	 * Calculate the Response Value Derivative at the given Predictor Ordinate for the specified order
 	 * 
-	 * @param dblPredictorOrdinate Predictor Ordinate
-	 * @param iOrder Order the Derivative
+	 * @param predictorOrdinate Predictor Ordinate
+	 * @param order Order the Derivative
 	 * 
 	 * @return The Response Value
 	 * 
-	 * @throws java.lang.Exception Thrown if the Response Value Derivative cannot be calculated
+	 * @throws Exception Thrown if the Response Value Derivative cannot be calculated
 	 */
 
 	public abstract double responseValueDerivative (
-		final double dblPredictorOrdinate,
-		final int iOrder)
-		throws java.lang.Exception;
+		final double predictorOrdinate,
+		final int order)
+		throws Exception;
 
 	/**
 	 * Calculate the Response Derivative to the Calibration Inputs at the specified Ordinate
 	 * 
-	 * @param dblPredictorOrdinate Predictor Ordinate
-	 * @param iOrder Order of Derivative desired
+	 * @param predictorOrdinate Predictor Ordinate
+	 * @param order Order of Derivative desired
 	 * 
 	 * @return Jacobian of the Response Derivative to the Calibration Inputs at the Ordinate
 	 */
 
-	public abstract org.drip.numerical.differentiation.WengertJacobian jackDResponseDCalibrationInput (
-		final double dblPredictorOrdinate,
-		final int iOrder);
+	public abstract WengertJacobian jackDResponseDCalibrationInput (
+		final double predictorOrdinate,
+		final int order
+	);
 
 	/**
 	 * Calculate the Response Derivative to the Manifest Measure at the specified Ordinate
 	 * 
-	 * @param strManifestMeasure Manifest Measure whose Sensitivity is sought
-	 * @param dblPredictorOrdinate Predictor Ordinate
-	 * @param iOrder Order of Derivative desired
+	 * @param manifestMeasure Manifest Measure whose Sensitivity is sought
+	 * @param predictorOrdinate Predictor Ordinate
+	 * @param order Order of Derivative desired
 	 * 
 	 * @return Jacobian of the Response Derivative to the Quote at the Ordinate
 	 */
 
-	public abstract org.drip.numerical.differentiation.WengertJacobian jackDResponseDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final double dblPredictorOrdinate,
-		final int iOrder);
+	public abstract WengertJacobian jackDResponseDManifestMeasure (
+		final String manifestMeasure,
+		final double predictorOrdinate,
+		final int order
+	);
 
 	/**
 	 * Identify the Monotone Type for the Segment underlying the given Predictor Ordinate
 	 * 
-	 * @param dblPredictorOrdinate Predictor Ordinate
+	 * @param predictorOrdinate Predictor Ordinate
 	 * 
 	 * @return Segment Monotone Type
 	 */
 
-	public abstract org.drip.spline.segment.Monotonocity monotoneType (
-		final double dblPredictorOrdinate);
+	public abstract Monotonocity monotoneType (
+		final double predictorOrdinate
+	);
 
 	/**
 	 * Indicate if all the comprising Segments are Monotone
 	 * 
 	 * @return TRUE - Fully locally monotonic
 	 * 
-	 * @throws java.lang.Exception Thrown if the Segment Monotone Type could not be estimated
+	 * @throws Exception Thrown if the Segment Monotone Type could not be estimated
 	 */
 
 	public abstract boolean isLocallyMonotone()
-		throws java.lang.Exception;
+		throws Exception;
 
 	/**
 	 * Verify whether the Stretch mini-max Behavior matches the Measurement
 	 * 
-	 * @param adblMeasuredResponse The Array of Measured Responses
+	 * @param measuredResponseArray The Array of Measured Responses
 	 * 
 	 * @return TRUE - Stretch is co-monotonic with the measured Responses
 	 * 
-	 * @throws java.lang.Exception Thrown if the Segment Monotone Type could not be estimated
+	 * @throws Exception Thrown if the Segment Monotone Type could not be estimated
 	 */
 
 	public abstract boolean isCoMonotone (
-		final double[] adblMeasuredResponse)
-		throws java.lang.Exception;
+		final double[] measuredResponseArray)
+		throws Exception;
 
 	/**
 	 * Is the given Predictor Ordinate a Knot Location
 	 * 
-	 * @param dblPredictorOrdinate Predictor Ordinate
+	 * @param predictorOrdinate Predictor Ordinate
 	 * 
 	 * @return TRUE - Given Predictor Ordinate corresponds to a Knot
 	 */
 
 	public abstract boolean isKnot (
-		final double dblPredictorOrdinate);
+		final double predictorOrdinate
+	);
 
 	/**
 	 * Reset the Predictor Ordinate Node Index with the given Response
 	 * 
-	 * @param iPredictorOrdinateNodeIndex The Predictor Ordinate Node Index whose Response is to be reset
-	 * @param dblResetResponse The Response to reset
+	 * @param predictorOrdinateNodeIndex The Predictor Ordinate Node Index whose Response is to be reset
+	 * @param resetResponse The Response to reset
 	 * 
 	 * @return TRUE - Reset succeeded
 	 */
 
 	public abstract boolean resetNode (
-		final int iPredictorOrdinateNodeIndex,
-		final double dblResetResponse);
+		final int predictorOrdinateNodeIndex,
+		final double resetResponse
+	);
 
 	/**
 	 * Reset the Predictor Ordinate Node Index with the given Segment Constraint
 	 * 
-	 * @param iNodeIndex The Predictor Ordinate Node Index whose Response is to be reset
-	 * @param srvcReset The Segment Constraint
+	 * @param nodeIndex The Predictor Ordinate Node Index whose Response is to be reset
+	 * @param resetSegmentResponseValueConstraint The Segment Constraint
 	 * 
 	 * @return TRUE - Reset succeeded
 	 */
 
 	public abstract boolean resetNode (
-		final int iNodeIndex,
-		final org.drip.spline.params.SegmentResponseValueConstraint srvcReset);
+		final int nodeIndex,
+		final SegmentResponseValueConstraint resetSegmentResponseValueConstraint
+	);
 
 	/**
 	 * Return the Left Predictor Ordinate Edge
@@ -296,5 +315,5 @@ public interface SingleSegmentSequence {
 	 * @return The AbstractUnivariate Instance
 	 */
 
-	public abstract org.drip.function.definition.R1ToR1 toAU();
+	public abstract R1ToR1 toAU();
 }

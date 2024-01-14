@@ -6,6 +6,9 @@ package org.drip.spline.stretch;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,34 +87,44 @@ package org.drip.spline.stretch;
 
 /**
  * <i>BoundarySettings</i> implements the Boundary Settings that determine the full extent of description of
- * the regime's State. It exports functions that:
+ * 	the regime's State. It exports functions that:
  *
- * <br><br>
+ * <br>
  *  <ul>
- *  	<li>
- * 			Specify the type of the boundary condition (NATURAL/FLOATING/IS-A-KNOT)
- *  	</li>
- *  	<li>
- * 			Boundary Condition specific additional parameters (e.g., Derivative Orders and Matches)
- *  	</li>
- *  	<li>
- * 			Static methods that help construct standard boundary settings
- *  	</li>
+ * 		<li>Calibration Boundary Condition: Floating Boundary Condition</li>
+ * 		<li>Calibration Boundary Condition: Natural Boundary Condition</li>
+ * 		<li>Calibration Boundary Condition: Financial Boundary Condition</li>
+ * 		<li>Calibration Boundary Condition: Not-A-Knot Boundary Condition</li>
+ * 		<li>Return the Instance of the Standard Natural Boundary Condition</li>
+ * 		<li>Return the Instance of the Standard Floating Boundary Condition</li>
+ * 		<li>Return the Instance of the Standard Financial Boundary Condition</li>
+ * 		<li>Return the Instance of the Standard Not-A-Knot Boundary Condition</li>
+ * 		<li><i>BoundarySettings</i> constructor</li>
+ * 		<li>Retrieve the Order of the Left Derivative</li>
+ * 		<li>Retrieve the Order of the Right Derivative</li>
+ * 		<li>Retrieve the Type of the Boundary Condition</li>
  *  </ul>
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch/README.md">Multi-Segment Sequence Spline Stretch</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch/README.md">Multi-Segment Sequence Spline Stretch</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BoundarySettings {
+public class BoundarySettings
+{
 
 	/**
 	 * Calibration Boundary Condition: Floating Boundary Condition
@@ -137,9 +150,9 @@ public class BoundarySettings {
 
 	public static final int BOUNDARY_CONDITION_NOT_A_KNOT = 8;
 
-	private int _iLeftDerivOrder = -1;
-	private int _iRightDerivOrder = -1;
-	private int _iBoundaryConditionType = -1;
+	private int _leftDerivativeOrder = -1;
+	private int _rightDerivativeOrder = -1;
+	private int _boundaryConditionType = -1;
 
 	/**
 	 * Return the Instance of the Standard Natural Boundary Condition
@@ -151,7 +164,7 @@ public class BoundarySettings {
 	{
 		try {
 			return new BoundarySettings (-1, 2, BOUNDARY_CONDITION_NATURAL);
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -168,7 +181,7 @@ public class BoundarySettings {
 	{
 		try {
 			return new BoundarySettings (-1, -1, BOUNDARY_CONDITION_FLOATING);
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -185,7 +198,7 @@ public class BoundarySettings {
 	{
 		try {
 			return new BoundarySettings (-1, 1, BOUNDARY_CONDITION_FINANCIAL);
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -195,19 +208,23 @@ public class BoundarySettings {
 	/**
 	 * Return the Instance of the Standard Not-A-Knot Boundary Condition
 	 * 
-	 * @param iLeftDerivOrder Order of the Left Derivative
-	 * @param iRightDerivOrder Order of the Right Derivative
+	 * @param leftDerivativeOrder Order of the Left Derivative
+	 * @param rightDerivativeOrder Order of the Right Derivative
 	 * 
 	 * @return Instance of the Standard Not-A-Knot Boundary Condition
 	 */
 
 	public static final BoundarySettings NotAKnotStandard (
-		final int iLeftDerivOrder,
-		final int iRightDerivOrder)
+		final int leftDerivativeOrder,
+		final int rightDerivativeOrder)
 	{
 		try {
-			return new BoundarySettings (iLeftDerivOrder, iRightDerivOrder, BOUNDARY_CONDITION_NOT_A_KNOT);
-		} catch (java.lang.Exception e) {
+			return new BoundarySettings (
+				leftDerivativeOrder,
+				rightDerivativeOrder,
+				BOUNDARY_CONDITION_NOT_A_KNOT
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -215,28 +232,30 @@ public class BoundarySettings {
 	}
 
 	/**
-	 * BoundarySettings constructor
+	 * <i>BoundarySettings</i> constructor
 	 * 
-	 * @param iLeftDerivOrder Order of the Left Derivative
-	 * @param iRightDerivOrder Order of the Right Derivative
-	 * @param iBoundaryConditionType Type of the Boundary Condition - NATURAL/FINANCIAL/NOT_A_KNOT
+	 * @param leftDerivativeOrder Order of the Left Derivative
+	 * @param rightDerivativeOrder Order of the Right Derivative
+	 * @param boundaryConditionType Type of the Boundary Condition - NATURAL/FINANCIAL/NOT_A_KNOT
 	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are invalid
+	 * @throws Exception Thrown if Inputs are invalid
 	 */
 
 	public BoundarySettings (
-		final int iLeftDerivOrder,
-		final int iRightDerivOrder,
-		final int iBoundaryConditionType)
-		throws java.lang.Exception
+		final int leftDerivativeOrder,
+		final int rightDerivativeOrder,
+		final int boundaryConditionType)
+		throws Exception
 	{
-		if (BOUNDARY_CONDITION_FLOATING != (_iBoundaryConditionType = iBoundaryConditionType) &&
-			BOUNDARY_CONDITION_NATURAL != _iBoundaryConditionType && BOUNDARY_CONDITION_FINANCIAL !=
-				_iBoundaryConditionType && BOUNDARY_CONDITION_NOT_A_KNOT != _iBoundaryConditionType)
-			throw new java.lang.Exception ("BoundarySettings ct: Invalid Inputs");
+		if (BOUNDARY_CONDITION_FLOATING != (_boundaryConditionType = boundaryConditionType) &&
+			BOUNDARY_CONDITION_NATURAL != _boundaryConditionType &&
+			BOUNDARY_CONDITION_FINANCIAL != _boundaryConditionType &&
+			BOUNDARY_CONDITION_NOT_A_KNOT != _boundaryConditionType) {
+			throw new Exception ("BoundarySettings ct: Invalid Inputs");
+		}
 
-		_iLeftDerivOrder = iLeftDerivOrder;
-		_iRightDerivOrder = iRightDerivOrder;
+		_leftDerivativeOrder = leftDerivativeOrder;
+		_rightDerivativeOrder = rightDerivativeOrder;
 	}
 
 	/**
@@ -247,7 +266,7 @@ public class BoundarySettings {
 
 	public int leftDerivOrder()
 	{
-		return _iLeftDerivOrder;
+		return _leftDerivativeOrder;
 	}
 
 	/**
@@ -258,7 +277,7 @@ public class BoundarySettings {
 
 	public int rightDerivOrder()
 	{
-		return _iRightDerivOrder;
+		return _rightDerivativeOrder;
 	}
 
 	/**
@@ -269,6 +288,6 @@ public class BoundarySettings {
 
 	public int boundaryCondition()
 	{
-		return _iBoundaryConditionType;
+		return _boundaryConditionType;
 	}
 }
