@@ -1,11 +1,18 @@
 	
 package org.drip.spline.stretch;
 
+import org.drip.spline.params.SegmentResponseValueConstraint;
+import org.drip.spline.params.StretchBestFitResponse;
+import org.drip.spline.segment.LatentStateResponseModel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,111 +91,136 @@ package org.drip.spline.stretch;
 
 /**
  * <i>CkSegmentSequenceBuilder</i> implements the SegmentSequenceBuilder interface to customize segment
- * sequence construction. Customization is applied at several levels:
+ * 	sequence construction. Customization is applied at several levels:
  *
- * <br><br>
- *  <ul>
- *  	<li>
- * 			Segment Calibration Boundary Setting/Segment Best Fit Response Settings
- *  	</li>
- *  	<li>
- * 			Segment Response Value Constraints for the starting and the subsequent Segments
- *  	</li>
- *  </ul>
- *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch/README.md">Multi-Segment Sequence Spline Stretch</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch/README.md">Multi-Segment Sequence Spline Stretch</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CkSegmentSequenceBuilder implements org.drip.spline.stretch.SegmentSequenceBuilder {
-	private org.drip.spline.stretch.BoundarySettings _bs = null;
-	private org.drip.spline.stretch.MultiSegmentSequence _mss = null;
-	private org.drip.spline.params.StretchBestFitResponse _rbfr = null;
-	private org.drip.spline.params.SegmentResponseValueConstraint[] _aSRVC = null;
-	private org.drip.spline.params.SegmentResponseValueConstraint _srvcLeading = null;
+public class CkSegmentSequenceBuilder
+	implements SegmentSequenceBuilder
+{
+	private BoundarySettings _boundarySettings = null;
+	private MultiSegmentSequence _multiSegmentSequence = null;
+	private StretchBestFitResponse _stretchBestFitResponse = null;
+	private SegmentResponseValueConstraint _leadingSegmentResponseValueConstraint = null;
+	private SegmentResponseValueConstraint[] _segmentResponseValueConstraintArray = null;
 
 	/**
-	 * CkSegmentSequenceBuilder constructor
+	 * <i>CkSegmentSequenceBuilder</i> constructor
 	 * 
-	 * @param srvcLeading Leading Segment Response Value Constraint
-	 * @param aSRVC Array of Segment Response Value Constraints
-	 * @param rbfr Sequence Best Fit Weighted Response
-	 * @param bs The Calibration Boundary Condition
+	 * @param leadingSegmentResponseValueConstraint Leading Segment Response Value Constraint
+	 * @param segmentResponseValueConstraintArray Array of Segment Response Value Constraints
+	 * @param stretchBestFitResponse Sequence Best Fit Weighted Response
+	 * @param boundarySettings The Calibration Boundary Condition
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	public CkSegmentSequenceBuilder (
-		final org.drip.spline.params.SegmentResponseValueConstraint srvcLeading,
-		final org.drip.spline.params.SegmentResponseValueConstraint[] aSRVC,
-		final org.drip.spline.params.StretchBestFitResponse rbfr,
-		final org.drip.spline.stretch.BoundarySettings bs)
-		throws java.lang.Exception
+		final SegmentResponseValueConstraint leadingSegmentResponseValueConstraint,
+		final SegmentResponseValueConstraint[] segmentResponseValueConstraintArray,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final BoundarySettings boundarySettings)
+		throws Exception
 	{
-		_rbfr = rbfr;
-		_aSRVC = aSRVC;
-		_srvcLeading = srvcLeading;
+		_stretchBestFitResponse = stretchBestFitResponse;
+		_segmentResponseValueConstraintArray = segmentResponseValueConstraintArray;
+		_leadingSegmentResponseValueConstraint = leadingSegmentResponseValueConstraint;
 
-		if (null == _srvcLeading && (null == _aSRVC || 0 == _aSRVC.length) && null == _rbfr)
-			throw new java.lang.Exception ("CkSegmentSequenceBuilder ctr: Invalid inputs!");
+		if (null == _leadingSegmentResponseValueConstraint && (
+				null == _segmentResponseValueConstraintArray ||
+				0 == _segmentResponseValueConstraintArray.length
+			) && null == _stretchBestFitResponse
+		) {
+			throw new Exception ("CkSegmentSequenceBuilder ctr: Invalid inputs!");
+		}
 
-		if (null == (_bs = bs))
-			throw new java.lang.Exception ("CkSegmentSequenceBuilder ctr: Invalid inputs!");
+		if (null == (_boundarySettings = boundarySettings)) {
+			throw new Exception ("CkSegmentSequenceBuilder ctr: Invalid inputs!");
+		}
 	}
 
 	@Override public boolean setStretch (
-		final org.drip.spline.stretch.MultiSegmentSequence mss)
+		final MultiSegmentSequence multiSegmentSequence)
 	{
-		if (null == mss) return false;
+		if (null == multiSegmentSequence) {
+			return false;
+		}
 
-		_mss = mss;
+		_multiSegmentSequence = multiSegmentSequence;
 		return true;
 	}
 
-	@Override public org.drip.spline.stretch.BoundarySettings getCalibrationBoundaryCondition()
+	@Override public BoundarySettings getCalibrationBoundaryCondition()
 	{
-		return _bs;
+		return _boundarySettings;
 	}
 
 	@Override public boolean calibStartingSegment (
-		final double dblLeftSlope)
+		final double leftSlope)
 	{
-		if (null == _mss) return false;
+		if (null == _multiSegmentSequence) {
+			return false;
+		}
 
-		org.drip.spline.segment.LatentStateResponseModel[] aCS = _mss.segments();
+		LatentStateResponseModel[] latentStateResponseModelArray = _multiSegmentSequence.segments();
 
-		return null != aCS && 0 < aCS.length && aCS[0].calibrate (_srvcLeading, dblLeftSlope, null == _aSRVC
-			? null : _aSRVC[0], null == _rbfr ? null : _rbfr.sizeToSegment (aCS[0]));
+		return null != latentStateResponseModelArray && 0 < latentStateResponseModelArray.length &&
+			latentStateResponseModelArray[0].calibrate (
+				_leadingSegmentResponseValueConstraint,
+				leftSlope,
+				null == _segmentResponseValueConstraintArray ?
+					null : _segmentResponseValueConstraintArray[0],
+				null == _stretchBestFitResponse ? null : _stretchBestFitResponse.sizeToSegment (
+					latentStateResponseModelArray[0]
+				)
+			);
 	}
 
 	@Override public boolean calibSegmentSequence (
-		final int iStartingSegment)
+		final int startingSegment)
 	{
-		if (null == _mss) return false;
+		if (null == _multiSegmentSequence) {
+			return false;
+		}
 
-		org.drip.spline.segment.LatentStateResponseModel[] aCS = _mss.segments();
+		LatentStateResponseModel[] latentStateResponseModelArray = _multiSegmentSequence.segments();
 
-		int iNumSegment = aCS.length;
+		int segmentCount = latentStateResponseModelArray.length;
 
-		for (int iSegment = iStartingSegment; iSegment < iNumSegment; ++iSegment) {
-			if (!aCS[iSegment].calibrate (0 == iSegment ? null : aCS[iSegment - 1], null == _aSRVC ? null :
-				_aSRVC[iSegment], null == _rbfr ? null : _rbfr.sizeToSegment (aCS[iSegment])))
+		for (int segmentIndex = startingSegment; segmentIndex < segmentCount; ++segmentIndex) {
+			if (!latentStateResponseModelArray[segmentIndex].calibrate (
+				0 == segmentIndex ? null : latentStateResponseModelArray[segmentIndex - 1],
+				null == _segmentResponseValueConstraintArray ?
+					null : _segmentResponseValueConstraintArray[segmentIndex],
+				null == _stretchBestFitResponse ? null : _stretchBestFitResponse.sizeToSegment (
+					latentStateResponseModelArray[segmentIndex]
+				)
+			)) {
 				return false;
+			}
 		}
 
 		return true;
 	}
 
 	@Override public boolean manifestMeasureSensitivity (
-		final double dblLeftSlopeSensitivity)
+		final double leftSlopeSensitivity)
 	{
 		return true;
 	}

@@ -6,6 +6,7 @@ import org.drip.spline.params.SegmentPredictorResponseDerivative;
 import org.drip.spline.params.SegmentResponseValueConstraint;
 import org.drip.spline.params.StretchBestFitResponse;
 import org.drip.spline.segment.LatentStateResponseModel;
+import org.drip.state.representation.MergeSubStretchManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -206,208 +207,215 @@ public interface MultiSegmentSequence
 	/**
 	 * Set the Slope at the left Edge of the Stretch
 	 * 
-	 * @param dblStretchLeftResponse Response Value at the Left Edge of the Stretch
-	 * @param dblStretchLeftResponseSlope Response Slope Value at the Left Edge of the Stretch
-	 * @param dblStretchRightResponse Response Value at the Right Edge of the Stretch
-	 * @param sbfr Stretch Fitness Weighted Response
+	 * @param stretchLeftResponse Response Value at the Left Edge of the Stretch
+	 * @param stretchLeftResponseSlope Response Slope Value at the Left Edge of the Stretch
+	 * @param stretchRightResponse Response Value at the Right Edge of the Stretch
+	 * @param stretchBestFitResponse Stretch Fitness Weighted Response
 	 * 
 	 * @return TRUE - Left slope successfully set
 	 */
 
 	public abstract boolean setLeftNode (
-		final double dblStretchLeftResponse,
-		final double dblStretchLeftResponseSlope,
-		final double dblStretchRightResponse,
-		final org.drip.spline.params.StretchBestFitResponse sbfr);
+		final double stretchLeftResponse,
+		final double stretchLeftResponseSlope,
+		final double stretchRightResponse,
+		final StretchBestFitResponse stretchBestFitResponse
+	);
 
 	/**
 	 * Calculate the <i>SegmentPredictorResponseDerivative</i> at the specified Predictor Ordinate
 	 * 
-	 * @param dblPredictorOrdinate The Predictor Ordinate
+	 * @param predictorOrdinate The Predictor Ordinate
 	 * 
-	 * @return The Computed SPRD
+	 * @return The Computed <i>SegmentPredictorResponseDerivative</i>
 	 */
 
-	public abstract org.drip.spline.params.SegmentPredictorResponseDerivative calcSPRD (
-		final double dblPredictorOrdinate);
+	public abstract SegmentPredictorResponseDerivative calcSPRD (
+		final double predictorOrdinate
+	);
 
 	/**
 	 * Calculate the Derivative of the requested order at the Left Edge of the Stretch
 	 * 
-	 * @param iOrder Order of the Derivative
+	 * @param order Order of the Derivative
 	 * 
 	 * @return The Derivative of the requested order at the Left Edge of the Stretch
 	 * 
-	 * @throws java.lang.Exception Thrown if the Derivative cannot be calculated
+	 * @throws Exception Thrown if the Derivative cannot be calculated
 	 */
 
 	public abstract double calcLeftEdgeDerivative (
-		final int iOrder)
-		throws java.lang.Exception;
+		final int order)
+		throws Exception;
 
 	/**
 	 * Calculate the Derivative of the requested order at the right Edge of the Stretch
 	 * 
-	 * @param iOrder Order of the Derivative
+	 * @param order Order of the Derivative
 	 * 
 	 * @return The Derivative of the requested order at the right Edge of the Stretch
 	 * 
-	 * @throws java.lang.Exception Thrown if the Derivative cannot be calculated
+	 * @throws Exception Thrown if the Derivative cannot be calculated
 	 */
 
 	public abstract double calcRightEdgeDerivative (
-		final int iOrder)
-		throws java.lang.Exception;
+		final int order)
+		throws Exception;
 
 	/**
 	 * Check if the Predictor Ordinate is in the Stretch Range
 	 * 
-	 * @param dblPredictorOrdinate Predictor Ordinate
+	 * @param predictorOrdinate Predictor Ordinate
 	 * 
 	 * @return TRUE - Predictor Ordinate is in the Range
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public abstract boolean in (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception;
+		final double predictorOrdinate)
+		throws Exception;
 
 	/**
 	 * Return the Index for the Segment containing specified Predictor Ordinate
 	 * 
-	 * @param dblPredictorOrdinate Predictor Ordinate
-	 * @param bIncludeLeft TRUE - Less than or equal to the Left Predictor Ordinate
-	 * @param bIncludeRight TRUE - Less than or equal to the Right Predictor Ordinate
+	 * @param predictorOrdinate Predictor Ordinate
+	 * @param includeLeft TRUE - Less than or equal to the Left Predictor Ordinate
+	 * @param includeRight TRUE - Less than or equal to the Right Predictor Ordinate
 	 * 
 	 * @return Index for the Segment containing specified Predictor Ordinate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public int containingIndex (
-		final double dblPredictorOrdinate,
-		final boolean bIncludeLeft,
-		final boolean bIncludeRight)
-		throws java.lang.Exception;
+		final double predictorOrdinate,
+		final boolean includeLeft,
+		final boolean includeRight)
+		throws Exception;
 
 	/**
 	 * Set up (i.e., calibrate) the individual Segments in the Stretch to the Stretch Edge, the Target
 	 *  Constraints, and the custom segment sequence builder.
 	 * 
-	 * @param ssb The Segment Sequence Builder Instance
-	 * @param iCalibrationDetail The Calibration Detail
+	 * @param segmentSequenceBuilder The Segment Sequence Builder Instance
+	 * @param calibrationDetail The Calibration Detail
 	 * 
 	 * @return TRUE - Set up was successful
 	 */
 
 	public abstract boolean setup (
-		final org.drip.spline.stretch.SegmentSequenceBuilder ssb,
-		final int iCalibrationDetail);
+		final SegmentSequenceBuilder segmentSequenceBuilder,
+		final int calibrationDetail
+	);
 
 	/**
-	 * Set up (i.e., calibrate) the individual Segments in the Stretch to the Stretch Left Edge and the Target
-	 *  Constraints.
+	 * Set up (i.e., calibrate) the individual Segments in the Stretch to the Stretch Left Edge and the
+	 *  Target Constraints.
 	 * 
-	 * @param srvcLeading Stretch Left-most Segment Response Value Constraint
-	 * @param aSRVC Array of Segment Response Value Constraints
-	 * @param sbfr Stretch Fitness Weighted Response
-	 * @param bs The Calibration Boundary Condition
-	 * @param iCalibrationDetail The Calibration Detail
+	 * @param leadingSegmentResponseValueConstraint Stretch Left-most Segment Response Value Constraint
+	 * @param segmentResponseValueConstraintArray Array of Segment Response Value Constraints
+	 * @param stretchBestFitResponse Stretch Fitness Weighted Response
+	 * @param boundarySettings The Calibration Boundary Condition
+	 * @param calibrationDetail The Calibration Detail
 	 * 
 	 * @return TRUE - Set up was successful
 	 */
 
 	public abstract boolean setup (
-		final org.drip.spline.params.SegmentResponseValueConstraint srvcLeading,
-		final org.drip.spline.params.SegmentResponseValueConstraint[] aSRVC,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final org.drip.spline.stretch.BoundarySettings bs,
-		final int iCalibrationDetail);
+		final SegmentResponseValueConstraint leadingSegmentResponseValueConstraint,
+		final SegmentResponseValueConstraint[] segmentResponseValueConstraintArray,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final BoundarySettings boundarySettings,
+		final int calibrationDetail
+	);
 
 	/**
 	 * Set up (i.e., calibrate) the individual Segments in the Stretch to the Stretch Left Edge Response and
 	 * 	the Target Constraints.
 	 * 
-	 * @param dblStretchLeftResponseValue Stretch Left-most Response Value
-	 * @param aSRVC Array of Segment Response Value Constraints
-	 * @param sbfr Stretch Best Fit Weighted Response Values
-	 * @param bs The Calibration Boundary Condition
-	 * @param iCalibrationDetail The Calibration Detail
+	 * @param stretchLeftResponseValue Stretch Left-most Response Value
+	 * @param segmentResponseValueConstraintArray Array of Segment Response Value Constraints
+	 * @param stretchBestFitResponse Stretch Best Fit Weighted Response Values
+	 * @param boundarySettings The Calibration Boundary Condition
+	 * @param calibrationDetail The Calibration Detail
 	 * 
 	 * @return TRUE - Set up was successful
 	 */
 
 	public abstract boolean setup (
-		final double dblStretchLeftResponseValue,
-		final org.drip.spline.params.SegmentResponseValueConstraint[] aSRVC,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final org.drip.spline.stretch.BoundarySettings bs,
-		final int iCalibrationDetail);
+		final double stretchLeftResponseValue,
+		final SegmentResponseValueConstraint[] segmentResponseValueConstraintArray,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final BoundarySettings boundarySettings,
+		final int calibrationDetail
+	);
 
 	/**
 	 * Generate a new Stretch by clipping all the Segments to the Left of the specified Predictor Ordinate.
 	 *  Smoothness Constraints will be maintained.
 	 * 
-	 * @param strName Name of the Clipped Stretch 
-	 * @param dblPredictorOrdinate Predictor Ordinate Left of which the Clipping is to be applied
+	 * @param name Name of the Clipped Stretch 
+	 * @param predictorOrdinate Predictor Ordinate Left of which the Clipping is to be applied
 	 * 
 	 * @return The Clipped Stretch
 	 */
 
 	public abstract MultiSegmentSequence clipLeft (
-		final java.lang.String strName,
-		final double dblPredictorOrdinate);
+		final String name,
+		final double predictorOrdinate
+	);
 
 	/**
 	 * Generate a new Stretch by clipping all the Segments to the Right of the specified Predictor Ordinate.
 	 * 	Smoothness Constraints will be maintained.
 	 * 
-	 * @param strName Name of the Clipped Stretch 
-	 * @param dblPredictorOrdinate Predictor Ordinate Right of which the Clipping is to be applied
+	 * @param name Name of the Clipped Stretch 
+	 * @param predictorOrdinate Predictor Ordinate Right of which the Clipping is to be applied
 	 * 
 	 * @return The Clipped Stretch
 	 */
 
 	public abstract MultiSegmentSequence clipRight (
-		final java.lang.String strName,
-		final double dblPredictorOrdinate);
+		final String name,
+		final double predictorOrdinate
+	);
 
 	/**
 	 * Retrieve the Span Curvature DPE
 	 * 
 	 * @return The Span Curvature DPE
 	 * 
-	 * @throws java.lang.Exception Thrown if the Span Curvature DPE cannot be computed
+	 * @throws Exception Thrown if the Span Curvature DPE cannot be computed
 	 */
 
 	public abstract double curvatureDPE()
-		throws java.lang.Exception;
+		throws Exception;
 
 	/**
 	 * Retrieve the Span Length DPE
 	 * 
 	 * @return The Span Length DPE
 	 * 
-	 * @throws java.lang.Exception Thrown if the Span Length DPE cannot be computed
+	 * @throws Exception Thrown if the Span Length DPE cannot be computed
 	 */
 
 	public abstract double lengthDPE()
-		throws java.lang.Exception;
+		throws Exception;
 
 	/**
 	 * Retrieve the Stretch Best Fit DPE
 	 * 
-	 * @param sbfr Stretch Best Fit Weighted Response Values
+	 * @param stretchBestFitResponse Stretch Best Fit Weighted Response Values
 	 * 
 	 * @return The Stretch Best Fit DPE
 	 * 
-	 * @throws java.lang.Exception Thrown if the Stretch Best Fit DPE cannot be computed
+	 * @throws Exception Thrown if the Stretch Best Fit DPE cannot be computed
 	 */
 
 	public abstract double bestFitDPE (
-		final org.drip.spline.params.StretchBestFitResponse sbfr)
-		throws java.lang.Exception;
+		final StretchBestFitResponse stretchBestFitResponse)
+		throws Exception;
 
 	/**
 	 * Retrieve the Merge Stretch Manager if it exists.
@@ -415,7 +423,7 @@ public interface MultiSegmentSequence
 	 * @return The Merge Stretch Manager
 	 */
 
-	public org.drip.state.representation.MergeSubStretchManager msm();
+	public MergeSubStretchManager msm();
 
 	/**
 	 * Display the Segments
@@ -423,5 +431,5 @@ public interface MultiSegmentSequence
 	 * @return The Segments String
 	 */
 
-	public abstract java.lang.String displayString();
+	public abstract String displayString();
 }

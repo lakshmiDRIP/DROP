@@ -6,6 +6,9 @@ package org.drip.spline.stretch;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,48 +87,49 @@ package org.drip.spline.stretch;
 
 /**
  * <i>SegmentSequenceBuilder</i> is the interface that contains the stubs required for the construction of
- * the segment stretch. It exposes the following functions:
+ * 	the segment stretch. It exposes the following functions:
  *
  * <br><br>
  *  <ul>
- *  	<li>
- * 			Set the Stretch whose Segments are to be calibrated
- *  	</li>
- *  	<li>
- * 			Retrieve the Calibration Boundary Condition
- *  	</li>
- *  	<li>
- * 			Calibrate the Starting Segment using the LeftSlope
- *  	</li>
- *  	<li>
- * 			Calibrate the Segment Sequence in the Stretch
- *  	</li>
+ *  	<li>Set the Stretch whose Segments are to be calibrated</li>
+ *  	<li>Retrieve the Calibration Boundary Condition</li>
+ *  	<li>Calibrate the Starting Segment using the LeftSlope</li>
+ *  	<li>Calibrate the Segment Sequence in the Stretch</li>
+ *  	<li>Compute the Stretch Manifest Measure Sensitivity Sequence</li>
  *  </ul>
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch/README.md">Multi-Segment Sequence Spline Stretch</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch/README.md">Multi-Segment Sequence Spline Stretch</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface SegmentSequenceBuilder {
+public interface SegmentSequenceBuilder
+{
 
 	/**
 	 * Set the Stretch whose Segments are to be calibrated
 	 * 
-	 * @param mss The Stretch that needs to be calibrated
+	 * @param multiSegmentSequence The Stretch that needs to be calibrated
 	 * 
 	 * @return TRUE - Stretch successfully set
 	 */
 
 	public abstract boolean setStretch (
-		final org.drip.spline.stretch.MultiSegmentSequence mss);
+		final MultiSegmentSequence multiSegmentSequence
+	);
 
 	/**
 	 * Retrieve the Calibration Boundary Condition
@@ -138,33 +142,36 @@ public interface SegmentSequenceBuilder {
 	/**
 	 * Calibrate the Starting Segment using the LeftSlope
 	 * 
-	 * @param dblLeftSlope The Slope
+	 * @param leftSlope The Slope
 	 * 
 	 * @return TRUE - The Segment was successfully set up.
 	 */
 
 	public abstract boolean calibStartingSegment (
-		final double dblLeftSlope);
+		final double leftSlope
+	);
 
 	/**
 	 * Calibrate the Segment Sequence in the Stretch
 	 * 
-	 * @param iStartingSegment The Starting Segment in the Sequence
+	 * @param startingSegment The Starting Segment in the Sequence
 	 * 
 	 * @return TRUE - The Segment Sequence successfully calibrated
 	 */
 
 	public abstract boolean calibSegmentSequence (
-		final int iStartingSegment);
+		final int startingSegment
+	);
 
 	/**
 	 * Compute the Stretch Manifest Measure Sensitivity Sequence
 	 * 
-	 * @param dblLeftSlopeSensitivity The Leading Segment Left Slope Sensitivity
+	 * @param leftSlopeSensitivity The Leading Segment Left Slope Sensitivity
 	 * 
 	 * @return TRUE - The Stretch Manifest Measure Sensitivity Sequence successfully computed
 	 */
 
 	public boolean manifestMeasureSensitivity (
-		final double dblLeftSlopeSensitivity);
+		final double leftSlopeSensitivity
+	);
 }
